@@ -1,0 +1,24 @@
+#pragma once
+
+////////////////////////////////////////////////////////
+
+#include "Configuration_ProxxonMF70.h"
+
+////////////////////////////////////////////////////////
+
+class CProbeControl
+{
+public:
+
+	static void Init()
+	{
+		pinMode(PROBE1_PIN,INPUT_PULLUP);
+	}
+
+	bool IsOn()
+	{
+		return digitalRead(PROBE1_PIN)==PROBE_ON;
+	}
+};
+
+////////////////////////////////////////////////////////
