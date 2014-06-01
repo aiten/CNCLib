@@ -88,7 +88,7 @@ namespace Framework.Logic
 			ErrorIsReply = false;		// each command must end with ok
 
 			ResetOnConnect = false;
-            ArduinoBuffersize = 64;	
+            ArduinoBuffersize = 63;	
         }
 
         #endregion 
