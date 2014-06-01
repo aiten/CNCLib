@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\GCodeExpressionParser.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\GCodeParser.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\GCodeTools.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\RotaryButton.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperRamps14_pins.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\Configuration.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\Control.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\ExpressionParser.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\fastio.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\HAL.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperRampsFD_pins.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperSystem.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\HelpParser.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\LCD.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\MotionControl.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\Parser.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\RingBuffer.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StreamReader.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\Stepper.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperRamps14.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperRampsFD.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperSMC800.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\Utilities.h" />
+    <ClInclude Include="..\Include\arduino.h" />
+    <ClInclude Include="..\Include\HardwareSerial.h" />
+    <ClInclude Include="..\Include\LiquidCrystal_I2C.h" />
+    <ClInclude Include="..\Include\SD.h" />
+    <ClInclude Include="..\Include\SPI.h" />
+    <ClInclude Include="..\Include\u8glib.h" />
+    <ClInclude Include="..\MsvcStepper\MsvcStepper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\Control.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\ExpressionParser.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\GCodeExpressionParser.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\GCodeParser.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\GCodeTools.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\HAL.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\HelpParser.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\LCD.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\MotionControl.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\Parser.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\StreamReader.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\Stepper.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperRamps14.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperRampsFD.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperSMC800.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\Utilities.cpp" />
+    <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{65F3EA50-71B8-4573-8D35-786D97FDFA91}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>HAStepper</RootNamespace>
+    <ProjectName>StepperSystem</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(SolutionDir)Include;$(IncludePath)</IncludePath>
+    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(SolutionDir)Include;$(IncludePath)</IncludePath>
+    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib />
+    <Lib />
+    <PostBuildEvent>
+      <Command>@echo off
+echo Copying $(OutDir)$(TargetName)$(TargetExt) as $(SolutionDir)Lib\$(TargetName)$(TargetExt)
+copy /Y $(OutDir)$(TargetName)$(TargetExt) $(SolutionDir)Lib\$(TargetName)$(TargetExt)</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib />
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

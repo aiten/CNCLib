@@ -1,0 +1,91 @@
+﻿<Window x:Class="Roboter.Wpf.ManualControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Roboter.Wpf.ViewModel"
+        Title="ManualControl" Height="300" Width="800">
+    <Window.DataContext>
+        <vm:RoboterModel />
+    </Window.DataContext>
+
+    <StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="12"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="12"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="12"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="12"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="12"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="12"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="Auto" MinWidth="179"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid/>
+        <TextBox x:Name="PositionX"  Grid.Row="0" Grid.Column="1" IsReadOnly="True"/>
+        <Button Click="Button_XUp2Click" Grid.Row="1" Grid.Column="1" Content="X ++"/>
+        <Button Click="Button_XUp1Click" Grid.Row="2" Grid.Column="1" Content="X +"/>
+        <Button Click="Button_XDown1Click" Grid.Row="3" Grid.Column="1" Content="X -"/>
+        <Button Click="Button_XDown2Click" Grid.Row="4" Grid.Column="1" Content="X --"/>
+        <Button Click="Button_XRefClick" Grid.Row="6" Grid.Column="1" Content="X ref"/>
+
+        <TextBox x:Name="MaxSpeed"  Text="{Binding MaxSpeed}" Grid.Row="8" Grid.Column="1" />
+        <Button Command="{Binding Path=CommandSetMaxSpeed}" Grid.Row="9" Grid.Column="1" Content="Set Max Speed"/>
+
+        <TextBox x:Name="PositionY"  Grid.Row="0" Grid.Column="3" IsReadOnly="True"/>
+        <Button Click="Button_YUp2Click" Grid.Row="1" Grid.Column="3" Content="Y ++"/>
+        <Button Click="Button_YUp1Click" Grid.Row="2" Grid.Column="3" Content="Y +"/>
+        <Button Click="Button_YDown1Click" Grid.Row="3" Grid.Column="3" Content="Y -"/>
+        <Button Click="Button_YDown2Click" Grid.Row="4" Grid.Column="3" Content="Y --"/>
+        <Button Click="Button_YRefClick" Grid.Row="6" Grid.Column="3" Content="Y ref"/>
+            
+        <TextBox x:Name="DirectCommand"  Text="{Binding DirectCommand}" Grid.Row="8" Grid.Column="3" />
+        <Button Command="{Binding Path=CommandDirectCommand}" Grid.Row="9" Grid.Column="3" Content="Send Command"/>
+
+            <TextBox x:Name="PositionZ"  Grid.Row="0" Grid.Column="5" IsReadOnly="True"/>
+        <Button Click="Button_ZUp2Click" Grid.Row="1" Grid.Column="5" Content="Z ++"/>
+        <Button Click="Button_ZUp1Click" Grid.Row="2" Grid.Column="5" Content="Z +"/>
+        <Button Click="Button_ZDown1Click" Grid.Row="3" Grid.Column="5" Content="Z -"/>
+        <Button Click="Button_ZDown2Click" Grid.Row="4" Grid.Column="5" Content="Z --"/>
+        <Button Click="Button_ZRefClick" Grid.Row="6" Grid.Column="5" Content="Z ref"/>
+
+        <TextBox x:Name="PositionE0"  Grid.Row="0" Grid.Column="7" IsReadOnly="True"/>
+        <Button Click="Button_E0Up2Click" Grid.Row="1" Grid.Column="7" Content="E0 ++"/>
+        <Button Click="Button_E0Up1Click" Grid.Row="2" Grid.Column="7" Content="E0 +"/>
+        <Button Click="Button_E0Down1Click" Grid.Row="3" Grid.Column="7" Content="E0 -"/>
+        <Button Click="Button_E0Down2Click" Grid.Row="4" Grid.Column="7" Content="E0 --"/>
+
+        <TextBox x:Name="PositionE1"  Grid.Row="0" Grid.Column="9" IsReadOnly="True"/>
+        <Button Click="Button_E1Up2Click" Grid.Row="1" Grid.Column="9" Content="E1 ++"/>
+        <Button Click="Button_E1Up1Click" Grid.Row="2" Grid.Column="9" Content="E1 +"/>
+        <Button Click="Button_E1Down1Click" Grid.Row="3" Grid.Column="9" Content="E1 -"/>
+        <Button Click="Button_E1Down2Click" Grid.Row="4" Grid.Column="9" Content="E1 --"/>
+
+        <TextBox x:Name="Memory"  Grid.Row="0" Grid.Column="11" IsReadOnly="True"/>
+        <Button Click="Button_MCClick" Grid.Row="1" Grid.Column="11" Content="mc"/>
+        <Button Click="Button_MPClick" Grid.Row="2" Grid.Column="11" Content="m+"/>
+        <Button Click="Button_MMClick" Grid.Row="3" Grid.Column="11" Content="m-"/>
+        <Button Click="Button_MRClick" Grid.Row="4" Grid.Column="11" Content="mr"/>
+        <Button Click="Button_MGClick" Grid.Row="5" Grid.Column="11" Content="mg"/>
+
+    </Grid>
+        <ListView >
+        </ListView>
+    </StackPanel>
+</Window>
