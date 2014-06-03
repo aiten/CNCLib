@@ -83,9 +83,11 @@ public:
 	void SetMaxSpeed(axis_t axis, steprate_t vMax)				{ _timerMax[axis] = SpeedToTimer(vMax); }
 	void SetAcc(axis_t axis, steprate_t v0Acc)					{ _timerAcc[axis] = SpeedToTimer(v0Acc); }
 	void SetDec(axis_t axis, steprate_t v0Dec)					{ _timerDec[axis] = SpeedToTimer(v0Dec); }
+	void SetAccDec(axis_t axis, steprate_t v0Acc, steprate_t v0Dec) { SetAcc(axis, v0Acc); SetDec(axis, v0Dec); }
 
 	void SetDefaultMaxSpeed(steprate_t vMax)					{ _timerMaxDefault = SpeedToTimer(vMax); }
-	void SetDefaultMaxSpeed(steprate_t vMax, steprate_t v0Acc, steprate_t v0Dec)	{ SetDefaultMaxSpeed(vMax); for (axis_t i = 0; i < NUM_AXIS; i++) { SetAcc(i, v0Acc); SetDec(i, v0Dec); } }
+	void SetDefaultMaxSpeed(steprate_t vMax, steprate_t v0Acc, steprate_t v0Dec)				{ SetDefaultMaxSpeed(vMax); for (axis_t i = 0; i < NUM_AXIS; i++) { SetAcc(i, v0Acc); SetDec(i, v0Dec); } }
+	void SetDefaultMaxSpeed(steprate_t vMax, axis_t axis, steprate_t v0Acc, steprate_t v0Dec)	{ SetDefaultMaxSpeed(vMax); SetAccDec(axis, v0Acc, v0Dec); }
 
 	void SetJerkSpeed(axis_t axis, steprate_t vMaxJerk)			{ _maxJerkSpeed[axis] = vMaxJerk; }
 	void SetStepMode(axis_t axis, EnumAsByte(EStepMode) stepMode){ _stepMode[axis] = stepMode; };

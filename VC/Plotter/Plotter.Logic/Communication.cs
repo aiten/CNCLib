@@ -26,7 +26,7 @@ namespace Plotter.Logic
                 {
                     lines.Add(line);
                 }          
-                SendCommands(lines.ToArray(),true);
+                SendCommands(lines.ToArray());
             }
         }
     }

@@ -30,45 +30,18 @@ CStepperSMC800 Stepper;
 
 CMyControl Control;
 CPlotter Plotter;
+
+#ifdef __USE_LCD__
 CMyLcd Lcd;
+#endif
 
 void setup()
 {  
   StepperSerial.begin(115200);
-  StepperSerial.println(F("Plotter(HA) is starting ... ("__DATE__", "__TIME__")"));
-
-  Lcd.Init();
-  Stepper.Init();
-
-  Stepper.SetDefaultMaxSpeed(CHPGLParser::_state.penUp.max, CHPGLParser::_state.penUp.acc , CHPGLParser::_state.penUp.dec);
-
-  Stepper.SetLimitMax(0, 55600);  // 6950*8
-  Stepper.SetLimitMax(1, 32000);  // 4000*8
-  Stepper.SetLimitMax(2, 8000);   // 100*8
-
-  Stepper.SetJerkSpeed(0, 4000);  // 500 * 8?
-  Stepper.SetJerkSpeed(1, 4000);
-  Stepper.SetJerkSpeed(2, 4000);
 }
 
 void loop()
 {
   Control.Run();
 }
-/*
-void GoToReference(axis_t axis)
-{
-        sdist_t dist = Stepper.GetLimitMax(axis) - Stepper.GetLimitMin(axis);
-        // goto min
-          Stepper.MoveReference(axis, -dist, 2000, 10000, Stepper.ToReferenceId(axis, true), Stepper.GetDefaultVmax() / 4);
-}
 
-////////////////////////////////////////////////////////////
-
-void GoToReference()
-{
-	GoToReference(Z_AXIS);
-	GoToReference(Y_AXIS);
-	GoToReference(X_AXIS);
-}
-*/

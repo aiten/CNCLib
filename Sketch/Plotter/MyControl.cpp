@@ -14,7 +14,23 @@ void CMyControl::Init()
 {
 	super::Init();
 
-	CStepper::GetInstance()->SetWaitFinishMove(false);
+	StepperSerial.println(F("Plotter(HA) is starting ... ("__DATE__", "__TIME__")"));
+
+#ifdef __USE_LCD__
+	Lcd.Init();
+#endif
+
+	CStepper::GetInstance()->Init();
+	//CStepper::GetInstance()->SetWaitFinishMove(false);	=> default changed
+
+	CStepper::GetInstance()->SetLimitMax(0, 55600);  // 6950*8
+	CStepper::GetInstance()->SetLimitMax(1, 32000);  // 4000*8
+	CStepper::GetInstance()->SetLimitMax(2, 8000);   // 100*8
+
+	CStepper::GetInstance()->SetJerkSpeed(0, 4000);  // 500 * 8?
+	CStepper::GetInstance()->SetJerkSpeed(1, 4000);
+	CStepper::GetInstance()->SetJerkSpeed(2, 4000);
+
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penUp.max, CHPGLParser::_state.penUp.acc, CHPGLParser::_state.penUp.dec);
 
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__SAM3X8E__)
@@ -28,9 +44,6 @@ void CMyControl::Init()
 	CStepper::GetInstance()->UseReference(EMERGENCY_ENDSTOP,true);    // not stop
 #endif    
 
-	CStepper::GetInstance()->MoveReference(Z_AXIS, CStepper::GetInstance()->ToReferenceId(Z_AXIS, true), true, CStepper::GetInstance()->GetDefaultVmax() / 4);
-	CStepper::GetInstance()->MoveReference(X_AXIS, CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true, CStepper::GetInstance()->GetDefaultVmax() / 4);
-	CStepper::GetInstance()->MoveReference(Y_AXIS, CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true, CStepper::GetInstance()->GetDefaultVmax() / 4);
 }
 ////////////////////////////////////////////////////////////
 

@@ -2,6 +2,12 @@
 
 ////////////////////////////////////////////////////////
 
+#ifndef X__AVR_ATmega328P__
+
+#define __USE_LCD__
+
+////////////////////////////////////////////////////////
+
 #include <LCD.h>
 
 ////////////////////////////////////////////////////////
@@ -20,7 +26,7 @@ private:
 public:
 
 	virtual void Init();
-	virtual void Idle(unsigned int idletime);
+//	virtual void Idle(unsigned int idletime);
 	virtual void TimerInterrupt();
 
 	virtual unsigned char TextModeCols()					{ return MYLCD_COLS; }
@@ -47,3 +53,5 @@ private:
 ////////////////////////////////////////////////////////
 
 extern CMyLcd Lcd;
+
+#endif

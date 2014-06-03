@@ -106,7 +106,6 @@ private:
 	void DrawLoopDefaultHead();
 
 	void Beep();
-	static char* ToString(sdist_t pos, char*tmp, unsigned char precision);
 };
 
 ////////////////////////////////////////////////////////

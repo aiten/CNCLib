@@ -25,6 +25,20 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	char tmp[20];
 
+	printf("%s\n", CSDist::ToString(0, tmp, 12));
+	printf("%s\n", CSDist::ToString(1, tmp, 12));
+	printf("%s\n", CSDist::ToString(-1, tmp, 12));
+	printf("%s\n", CSDist::ToString(10, tmp, 12));
+	printf("%s\n", CSDist::ToString(-10, tmp, 12));
+	printf("%s\n", CSDist::ToString(LONG_MAX, tmp, 12));
+	printf("%s\n", CSDist::ToString(LONG_MIN, tmp, 12));
+
+	printf("%s\n", CSDist::ToString(LONG_MAX, tmp, 10));
+	printf("%s\n", CSDist::ToString(LONG_MIN, tmp, 11));
+
+	printf("%s\n", CSDist::ToString(LONG_MIN, tmp, 9));
+	printf("%s\n", CSDist::ToString(LONG_MIN, tmp, 10));
+
 	printf("%s\n",CMm1000::ToString(0,tmp,9,3));
 	printf("%s\n",CMm1000::ToString(1,tmp,9,3));
 	printf("%s\n",CMm1000::ToString(1000,tmp,9,3));
@@ -66,6 +80,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	printf("%s\n",CMm1000::ToString(-1000,tmp,9,0));
 	printf("%s\n",CMm1000::ToString(-12345,tmp,9,0));
 
+	printf("%s\n", CMm1000::ToString(LONG_MAX, tmp, 11, 3));
+	printf("%s\n", CMm1000::ToString(LONG_MIN, tmp, 12, 3));
 
 	// only drive stepper  
 	Stepper.Init();

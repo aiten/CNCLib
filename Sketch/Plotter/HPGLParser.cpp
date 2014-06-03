@@ -82,8 +82,8 @@ void CHPGLParser::PenMoveCommand(unsigned char cmdidx)
 	{
 		case PU:	Plotter.DelayPenUp();		break;
 		case PD:	Plotter.PenDown();			break;
-		case PA:	_state.HPGLIsAbsolut = 1; break;
-		case PR:	_state.HPGLIsAbsolut = 0; break;
+		case PA:	_state.HPGLIsAbsolut = 1;	break;
+		case PR:	_state.HPGLIsAbsolut = 0;	break;
 	}
 
 	if (IsToken(F("PD"), false, false))											{ PenMoveCommand(PD);	return; }
@@ -106,10 +106,10 @@ void CHPGLParser::PenMoveCommand(unsigned char cmdidx)
 			// Colon
 		}
 		else
-		{ 
-ERROR_MISSINGARGUMENT:
-			Error(F("Missing or invalid parameter")); 
-			return; 
+		{
+		ERROR_MISSINGARGUMENT:
+			Error(F("Missing or invalid parameter"));
+			return;
 		}
 
 		sdist_t y = GetSDist();
@@ -121,7 +121,7 @@ ERROR_MISSINGARGUMENT:
 
 		if (_state.HPGLIsAbsolut)
 		{
-			if (x != (sdist_t) CStepper::GetInstance()->GetPosition(X_AXIS) || y != (sdist_t) CStepper::GetInstance()->GetPosition(Y_AXIS))
+			if (x != (sdist_t)CStepper::GetInstance()->GetPosition(X_AXIS) || y != (sdist_t)CStepper::GetInstance()->GetPosition(Y_AXIS))
 			{
 				Plotter.DelayPen();
 				CStepper::GetInstance()->MoveAbs3(x, y, CStepper::GetInstance()->GetPosition(Z_AXIS));
@@ -137,7 +137,7 @@ ERROR_MISSINGARGUMENT:
 		}
 		if (_reader->SkipSpaces() != ',')
 			break;
-		
+
 		_reader->GetNextCharSkipScaces();
 	}
 }

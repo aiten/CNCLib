@@ -312,7 +312,7 @@ bool CMyLcd::DrawLoopDebug(bool setup)
 
 		udist_t pos = CStepper::GetInstance()->GetCurrentPosition(i);
 
-		u8g.print(ToString(pos, tmp, 6));
+		u8g.print(CSDist::ToString(pos, tmp, 6));
 		u8g.print(F(" "));
 		u8g.print(CMm1000::ToString(CMotionControl::ToMm1000(i, pos), tmp, 6, 2));
 		u8g.print(F(" "));
@@ -328,7 +328,7 @@ bool CMyLcd::DrawLoopDebug(bool setup)
 	u8g.print(prob.IsOn() ? '1' : '0');
 
 	u8g.setPrintPos(ToCol(19), ToRow(0 + 5) + PosLineOffset);
-	u8g.print(ToString(CStepper::GetInstance()->QueuedMovements(), tmp, 2));
+	u8g.print(CSDist::ToString(CStepper::GetInstance()->QueuedMovements(), tmp, 2));
 
 	return true;
 }
@@ -504,22 +504,6 @@ void CMyLcd::Draw(EDrawType /* draw */)
 {
 	DrawFunction fnc = (DrawFunction)pgm_read_ptr(&_pagedef[GetPage()].draw);
 	DrawLoop(fnc);
-}
-
-////////////////////////////////////////////////////////////
-
-char* CMyLcd::ToString(sdist_t pos, char*tmp, unsigned char precision)
-{
-	tmp[0] = tmp[1] = tmp[2] = tmp[3] = tmp[4] = tmp[5] = tmp[6] = ' ';
-	char* t = tmp + 7;
-	_ltoa(pos, t, 10);
-
-	unsigned char len = (unsigned char)strlen(t);
-	len = (unsigned char)strlen(t);
-	if (precision > len)
-		t = t - (precision - len);
-
-	return t;
 }
 
 ////////////////////////////////////////////////////////////

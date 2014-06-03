@@ -1,3 +1,5 @@
+////////////////////////////////////////////////////////
+
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
@@ -9,6 +11,9 @@
 #include <LiquidCrystal_I2C.h>
 
 #include "MyLCD.h"
+
+#ifdef __USE_LCD__
+
 #include "PlotterControl.h"
 #include "HPGLParser.h"
 
@@ -51,19 +56,19 @@ void CMyLcd::TimerInterrupt()
 	if (READ(KILL_PIN)==0)
 	{
 		CStepper::GetInstance()->AbortMove();
-	}
+	}	
 
 	button.Tick(READ(BTN_EN1),READ(BTN_EN2));
 */
 }
 
 ////////////////////////////////////////////////////////////
-
+/*
 void CMyLcd::Idle(unsigned int idletime)
 {
 	super::Idle(idletime);
 }
-
+*/
 ////////////////////////////////////////////////////////////
 
 void CMyLcd::TextModeDraw(unsigned char col, unsigned char row, const __FlashStringHelper* s)
@@ -171,3 +176,5 @@ void CMyLcd::DrawPen(unsigned char col, unsigned char row)
 	lcd.print(Plotter.GetPen());
 	lcd.print(Plotter.IsPenDown() ? F(" down") : F(" up  ") );
 }
+
+#endif

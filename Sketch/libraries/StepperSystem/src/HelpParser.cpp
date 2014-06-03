@@ -33,25 +33,34 @@ void CHelpParser::Parse()
 	if (IsToken(F("r1"), true, false)) { MoveRel(X_AXIS); return; }
 	if (IsToken(F("r2"), true, false)) { MoveRel(Y_AXIS); return; }
 	if (IsToken(F("r3"), true, false)) { MoveRel(Z_AXIS); return; }
+#if NUM_AXIS > 3
 	if (IsToken(F("r4"), true, false)) { MoveRel(A_AXIS); return; }
 	if (IsToken(F("r5"), true, false)) { MoveRel(B_AXIS); return; }
 	if (IsToken(F("r6"), true, false)) { MoveRel(C_AXIS); return; }
+#endif
 	if (IsToken(F("r"), true, false))  { MoveRel(); return; }
 
 	if (IsToken(F("a1"), true, false)) { MoveAbs(X_AXIS); return; }
 	if (IsToken(F("a2"), true, false)) { MoveAbs(Y_AXIS); return; }
 	if (IsToken(F("a3"), true, false)) { MoveAbs(Z_AXIS); return; }
+#if NUM_AXIS > 3
 	if (IsToken(F("a4"), true, false)) { MoveAbs(A_AXIS); return; }
 	if (IsToken(F("a5"), true, false)) { MoveAbs(B_AXIS); return; }
 	if (IsToken(F("a6"), true, false)) { MoveAbs(C_AXIS); return; }
+#endif
 	if (IsToken(F("a"), true, false))  { MoveAbs(); return; }
+
+#ifndef REDUCED_DUMP
 
 	if (IsToken(F("p1"), true, false)) { SetPosition(X_AXIS); return; }
 	if (IsToken(F("p2"), true, false)) { SetPosition(Y_AXIS); return; }
 	if (IsToken(F("p3"), true, false)) { SetPosition(Z_AXIS); return; }
+#if NUM_AXIS > 3
 	if (IsToken(F("p4"), true, false)) { SetPosition(A_AXIS); return; }
 	if (IsToken(F("p5"), true, false)) { SetPosition(B_AXIS); return; }
 	if (IsToken(F("p6"), true, false)) { SetPosition(C_AXIS); return; }
+#endif
+#endif
 	/*
 		if (IsToken(F("ix"), true, false)) { MyGoToReference(X_AXIS); return; }
 		if (IsToken(F("iy"), true, false)) { MyGoToReference(Y_AXIS); return; }
@@ -65,6 +74,7 @@ void CHelpParser::Parse()
 	if (IsToken(F("!"), true, false))	{ if (CheckEOC()) { CStepper::GetInstance()->AbortMove(); } return; }
 	if (IsToken(F("?"), true, false))	{ if (CheckEOC()) { CStepper::GetInstance()->Dump(CStepper::DumpAll); }	return; }
 
+#ifndef REDUCED_DUMP
 	if (IsToken(F("-"), true, false))
 	{
 		if (CheckEOC())
@@ -77,8 +87,8 @@ void CHelpParser::Parse()
 		}
 		return;
 	}
-
 	if (IsToken(F("w"), true, false))  { if (CheckEOC())	{ CStepper::GetInstance()->WaitBusy(); } return; }
+#endif
 
 	Error(F("Illegal command"));
 }

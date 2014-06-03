@@ -54,7 +54,7 @@ private:
 
 public:
 
-	CGCodeParser(CStreamReader* reader) : super(reader)		{  };
+	CGCodeParser(CStreamReader* reader) : super(reader)		{ _modalstate.Init(); _modlessstate.Init(); };
 	virtual void Parse();
 
 	static void SetG0FeedRate(feedrate_t feedrate)			{ _modalstate.G0FeedRate = feedrate; }
@@ -148,7 +148,7 @@ protected:
 
 		unsigned long	Parameter[NUM_PARAMETER];
 
-		SModalState()
+		void Init()	
 		{
 			ZeroPresetIdx = 1;						// always 54
 			Linenumber = 0;
@@ -174,17 +174,13 @@ protected:
 		}
 	};
 
-	static struct SModalState _modalstate;
+	static SModalState _modalstate;
 
 	////////////////////////////////////////////////////////
 	// Modeless State
 
 	struct SModlessState
 	{
-		SModlessState()
-		{
-			ZeroPresetIdx = 1;
-		}
 		unsigned char	ZeroPresetIdx;				// 0:g53-, 1:G54-
 		void Init()
 		{
@@ -192,7 +188,7 @@ protected:
 		}
 	};
 
-	static struct SModlessState _modlessstate;
+	static SModlessState _modlessstate;
 
 	////////////////////////////////////////////////////////
 	// Parser structure

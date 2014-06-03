@@ -24,7 +24,7 @@ public:
 	virtual void DrawRequest(bool forcedraw, EDrawType draw);
 
 	virtual void Idle(unsigned int idletime);
-	virtual void TimerInterrupt() = 0;
+	virtual void TimerInterrupt();
 
 protected:
 

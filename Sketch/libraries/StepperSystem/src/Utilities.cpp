@@ -13,33 +13,41 @@
 
 ////////////////////////////////////////////////////////
 
-unsigned char ToPrecision10(unsigned short v)
+unsigned char ToPrecisionU10(unsigned short v)
 {
-	if (v >= 10000) return 5;
-	if (v >= 1000) return 4;
-	if (v >= 100) return 3;
-	if (v >= 10) return 2;
-	if (v >= 1) return 1;
-	return 0;
+	if (v < 1)   return 0;
+	if (v < 10)  return 1;
+	if (v < 100) return 2;
+	if (v < 1000) return 3;
+	if (v < 10000) return 4;
+	return 5;
 }
 
-unsigned char ToPrecision10(unsigned long v)
+unsigned char ToPrecisionU10(unsigned long v)
 {
-	if (v >= 100000000) return 9;
-	if (v >= 10000000) return 8;
-	if (v >= 1000000) return 7;
-	if (v >= 100000) return 6;
-	if (v >= 10000) return 5;
-	if (v >= 1000) return 4;
-	if (v >= 100) return 3;
-	if (v >= 10) return 2;
-	if (v >= 1) return 1;
-	return 0;
+	if (v < 1)   return 0;
+	if (v < 10)  return 1;
+	if (v < 100) return 2;
+	if (v < 1000) return 3;
+	if (v < 10000) return 4;
+	if (v < 100000) return 5;
+	if (v < 1000000) return 6;
+	if (v < 10000000) return 7;
+	if (v < 100000000) return 8;
+	if (v < 1000000000) return 9;
+	return 10;
 }
+
+unsigned char ToPrecisionS10(long v)
+{
+	if (v < 0) return ToPrecisionU10((unsigned long) -v);
+	return ToPrecisionU10((unsigned long) v);
+}
+
 
 ////////////////////////////////////////////////////////
 
-unsigned char ToPrecision2(unsigned short v)
+unsigned char ToPrecisionU2(unsigned short v)
 {
 	register unsigned char i = 0;
 	for (; v != 0; i++)
@@ -49,7 +57,7 @@ unsigned char ToPrecision2(unsigned short v)
 	return i;
 }
 
-unsigned char ToPrecision2(unsigned long v)
+unsigned char ToPrecisionU2(unsigned long v)
 {
 	register unsigned char i = 0;
 	for (; v != 0; i++)
@@ -129,41 +137,52 @@ unsigned long _ulsqrt(unsigned long val)
 }
 
 ////////////////////////////////////////////////////////
-// right alligned with precision and scale  (TODO: +round to scale)
+// right alligned with precision and scale  (+round to scale)
 
 char* CMm1000::ToString(mm1000_t pos, char*tmp, unsigned char precision, unsigned char scale)
 {
 	bool isNegativ = pos < 0;
-	if (isNegativ)
-	{
-		pos = -pos;
-	}
+
+#define SCALE 3
+#define SCALEMASK 1000
 
 	//round
-	switch (scale)
+	if (isNegativ)
 	{
-		case 0: pos += 500; break;
-		case 1: pos += 50; break;
-		case 2: pos += 5; break;
+		switch (scale)
+		{
+			case 0: pos -= 500; break;
+			case 1: pos -= 50; break;
+			case 2: pos -= 5; break;
+		}
+	}
+	else
+	{
+		switch (scale)
+		{
+			case 0: pos += 500; break;
+			case 1: pos += 50; break;
+			case 2: pos += 5; break;
+		}
 	}
 
-	unsigned char x = ToPrecision10((unsigned long)pos);
-	if (x < 4) x = 4;	// 0..999 => 0.000
+	unsigned char x = ToPrecisionS10(pos);
+	if (x < (SCALE + 1)) x = (SCALE + 1);	// 0..999 => 0.000
 	if (isNegativ) x++;
 
 	if (scale == 0)
 	{
-		x -= 3;	// with dot
+		x -= SCALE;	// with dot
 	}
-	else if (scale <= 3)
+	else if (scale <= SCALE)
 	{
 		// need dot
 		x++;
-		x -= 3 - scale;
+		x -= SCALE - scale;
 	}
 	else
 	{
-		x += scale - 3;
+		x += scale - SCALE;
 	}
 
 	if (x > precision)
@@ -176,18 +195,20 @@ char* CMm1000::ToString(mm1000_t pos, char*tmp, unsigned char precision, unsigne
 	{
 		tmp[precision--] = 0;
 
-		ldiv_t ud = ldiv(pos, 1000);
+		ldiv_t ud = ldiv(pos, SCALEMASK);
 
-		// reuse of x
-		udiv_t sud;
+		if (ud.quot < 0) ud.quot = -ud.quot;
+		if (ud.rem < 0)  ud.rem = -ud.rem;
 
 		if (scale > 0)
 		{
-			for (x = scale; x > 3; x--)
+			for (x = scale; x > SCALE; x--)
 				tmp[precision--] = '0';
 
+			udiv_t sud;
 			sud.quot = (unsigned short)ud.rem;
-			for (x = 3; x > 0; x--)
+
+			for (x = SCALE; x > 0; x--)
 			{
 				sud = udiv(sud.quot, 10);
 				if (x <= scale)
@@ -196,13 +217,12 @@ char* CMm1000::ToString(mm1000_t pos, char*tmp, unsigned char precision, unsigne
 			tmp[precision--] = '.';
 		}
 
-		sud.quot = (unsigned short)ud.quot;
 		do 
 		{
-			sud = udiv(sud.quot, 10);
-			tmp[precision--] = '0' + (unsigned char) sud.rem;
+			ud = ldiv(ud.quot, 10);
+			tmp[precision--] = '0' + (unsigned char) ud.rem;
 		} 
-		while (sud.quot != 0);
+		while (ud.quot != 0);
 		
 		if (isNegativ) 
 			tmp[precision--] = '-';
@@ -214,72 +234,11 @@ char* CMm1000::ToString(mm1000_t pos, char*tmp, unsigned char precision, unsigne
 	return tmp;
 }
 
-/*
-char* CMm1000::ToString(mm1000_t pos, char*tmp, unsigned char precision, unsigned char scale)
-{
-	tmp[0] = tmp[1] = tmp[2] = tmp[3] = tmp[4] = ' ';
-	char* t = tmp + 5;
-
-	if (pos < 0)
-	{
-		pos = -pos;
-		*(t++) = '-';
-	}
-
-	ldiv_t ud = ldiv(pos, 1000);
-
-	unsigned short mm = (unsigned short)ud.quot;
-	unsigned short rem = (unsigned short)ud.rem;
-
-	unsigned char len;
-
-	if (scale == 0)
-	{
-		if (rem > 500) mm++;
-		_itoa(mm, t, 10);
-	}
-	else
-	{
-		_itoa(mm, t, 10);
-		unsigned char len = (unsigned char)strlen(t);
-		t[len++] = '.';
-		unsigned char r = len;
-
-		if (rem < 100)
-			t[len++] = '0';
-		if (rem < 10)
-			t[len++] = '0';
-		_itoa(rem, t + len, 10);
-
-		if (scale>3)
-		{
-			// fill with 0
-			r += 3;
-			for (;scale>3;scale--)
-			{
-				t[r++] = '0';
-			}
-			t[r++] = 0;
-		}
-		else
-		{
-			t[r+3-(3-scale)] = 0;
-		}
-
-	}
-
-	len = (unsigned char)strlen(t);
-	if (precision > len)
-		t = t - (precision - len);
-
-	return t;
-}
-*/
 ////////////////////////////////////////////////////////////
 
 char* CMm1000::ToString(mm1000_t pos, char*tmp,unsigned char scale)
 {
-	char* t = ToString(pos,tmp,9,scale);
+	char* t = ToString(pos,tmp,11,scale);
 	while(*t == ' ')
 		t++;
 
@@ -287,3 +246,28 @@ char* CMm1000::ToString(mm1000_t pos, char*tmp,unsigned char scale)
 }
 
 ////////////////////////////////////////////////////////////
+// right aligned
+
+char* CSDist::ToString(sdist_t v, char*tmp, unsigned char precision)
+{
+	tmp[precision] = 0;						// terminating 0
+
+	unsigned char x = ToPrecisionS10(v);
+	if (x == 0) x = 1;						// 0 => Precision = 0
+	if (v < 0) x++;							// add -
+
+	if (precision < x)
+	{
+		for (x = 0; x < precision; x++)
+			tmp[x] = 'x';
+	}
+	else
+	{
+		precision = precision - x;
+		for (x = 0; x < precision; x++)
+			tmp[x] = ' ';
+		_ltoa(v, tmp + precision, 10);
+	}
+
+	return tmp;
+}

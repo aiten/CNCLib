@@ -43,7 +43,7 @@ void CStepper::InitMemVar()
 	for (i = 0; i < NUM_AXIS; i++)	_stepMode[i] = HalfStep;
 
 	_timerRunning = false;
-	_waitFinishMove = true;
+	_waitFinishMove = false;
 	_checkReference = true;
 	_timerbacklash = (timer_t) -1;
 
@@ -882,7 +882,7 @@ timer_t CStepper::GetTimer(mdist_t steps, timer_t timerstart)
 
 	unsigned long a2 = 2 * GetAccelerationFromTimer(timerstart);
 
-	if (ToPrecision2(a2) + ToPrecision2(steps) > 31)
+	if (ToPrecisionU2(a2) + ToPrecisionU2(steps) > 31)
 		return TIMER1VALUEMAXSPEED;
 
 	unsigned long ad = a2 * steps;
@@ -909,7 +909,7 @@ timer_t CStepper::GetTimerAccelerating(mdist_t steps, timer_t timerv0, timer_t t
 
 	unsigned long a2 = 2 * GetAccelerationFromTimer(timerstart);
 
-	if (ToPrecision2(a2) + ToPrecision2(steps) > 31)
+	if (ToPrecisionU2(a2) + ToPrecisionU2(steps) > 31)
 		return TIMER1VALUEMAXSPEED;
 
 	unsigned long ad = a2 * steps;
@@ -936,7 +936,7 @@ timer_t CStepper::GetTimerDecelerating(mdist_t steps, timer_t timerv, timer_t ti
 
 	unsigned long a2 = 2 * GetAccelerationFromTimer(timerstart);
 
-	if (ToPrecision2(a2) + ToPrecision2(steps) > 31)
+	if (ToPrecisionU2(a2) + ToPrecisionU2(steps) > 31)
 		return TIMER1VALUEMAXSPEED;
 
 	unsigned long ad = a2 * steps;
@@ -1036,19 +1036,13 @@ void CStepper::EmergencyStopResurrect()
 
 unsigned char CStepper::GetStepMultiplier(timer_t timermax)
 {
-	if (timermax < TIMER1VALUE(SPEED_MULTIPLIER_7))
-		return 7;
-	else if (timermax < TIMER1VALUE(SPEED_MULTIPLIER_6))
-		return 6;
-	else if (timermax < TIMER1VALUE(SPEED_MULTIPLIER_5))
-		return 5;
-	else if (timermax < TIMER1VALUE(SPEED_MULTIPLIER_4))
-		return 4;
-	else if (timermax < TIMER1VALUE(SPEED_MULTIPLIER_3))
-		return 3;
-	else if (timermax < TIMER1VALUE(SPEED_MULTIPLIER_2))
-		return 2;
-	return 1;
+	if (timermax >= TIMER1VALUE(SPEED_MULTIPLIER_2)) return 1;
+	if (timermax >= TIMER1VALUE(SPEED_MULTIPLIER_3)) return 2;
+	if (timermax >= TIMER1VALUE(SPEED_MULTIPLIER_4)) return 3;
+	if (timermax >= TIMER1VALUE(SPEED_MULTIPLIER_5)) return 4;
+	if (timermax >= TIMER1VALUE(SPEED_MULTIPLIER_6)) return 5;
+	if (timermax >= TIMER1VALUE(SPEED_MULTIPLIER_7)) return 6;
+	return 7;
 }
 
 ////////////////////////////////////////////////////////
@@ -1751,8 +1745,15 @@ steprate_t CStepper::TimerToSpeed(timer_t timer) const
 
 ////////////////////////////////////////////////////////
 
+//static void DumpTypeBool(const __FlashStringHelper* head, bool value, bool newline)	{ DumpType<bool>(head, value, newline); }
+//void DumpArray_udist_t(const __FlashStringHelper* head, const udist_t pos[NUM_AXIS], bool newline) { DumpArray<udist_t, NUM_AXIS>(head,pos,newline); }
+
 void CStepper::Dump(unsigned char options)
 {
+#ifdef REDUCED_DUMP
+	return;
+#endif
+
 	unsigned char i;
 
 	if (options&DumpPos)
@@ -1783,11 +1784,11 @@ void CStepper::Dump(unsigned char options)
 		DumpType<bool>(F("CheckReference"), _checkReference, false);
 		DumpType<bool>(F("WaitFinishMove"), _waitFinishMove, false);
 
-		DumpType<bool>(F("limitCheck"), _limitCheck, false);
-		DumpArray<udist_t, NUM_AXIS>(F("min"), _limitMin, false);
-		DumpArray<udist_t, NUM_AXIS>(F("max"), _limitMax, false);
+		DumpType<bool>(F("LimitCheck"), _limitCheck, false);
+		DumpArray<udist_t, NUM_AXIS>(F("Min"), _limitMin, false);
+		DumpArray<udist_t, NUM_AXIS>(F("Max"), _limitMax, false);
 
-		DumpArray<EnumAsByte(EStepMode), NUM_AXIS>(F("StepMode"), _stepMode, true);
+//		DumpArray<EnumAsByte(EStepMode), NUM_AXIS>(F("StepMode"), _stepMode, true);
 
 		DumpType<timer_t>(F("TimerMaxDefault"), _timerMaxDefault, false);
 
@@ -1814,6 +1815,10 @@ void CStepper::Dump(unsigned char options)
 
 void CStepper::SMovement::Dump(unsigned char idx, unsigned char options)
 {
+#ifdef REDUCED_DUMP
+	return;
+#endif
+
 	DumpType<unsigned char>(F("Idx"), idx, false);
 	if (idx == 0)
 	{
@@ -1821,6 +1826,7 @@ void CStepper::SMovement::Dump(unsigned char idx, unsigned char options)
 	}
 	DumpType<udist_t>(F("Steps"), _steps, false);
 	DumpType<udist_t>(F("State"), _state, false);
+
 	DumpType<DirCountAll_t>(F("DirCount"), _dirCount.all, false);
 	DumpType<DirCountAll_t>(F("LastDirCount"), _lastStepDirCount.all, false);
 	DumpArray<mdist_t, NUM_AXIS>(F("Dist"), _distance_, false);
@@ -1851,6 +1857,10 @@ void CStepper::SMovement::Dump(unsigned char idx, unsigned char options)
 
 void CStepper::SMovementState::Dump(unsigned char /* options */)
 {
+#ifdef REDUCED_DUMP
+	return;
+#endif
+
 	DumpType<mdist_t>(F("n"), _n, false);
 	DumpType<timer_t>(F("t"), _timer, false);
 	DumpType<timer_t>(F("r"), _rest, false);

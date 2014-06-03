@@ -154,11 +154,11 @@ void CStepperSMC800::Remove()
 
 ////////////////////////////////////////////////////////
 
-void  CStepperSMC800::Step(const unsigned char steps[NUM_AXIS], bool directionUp[NUM_AXIS])
+void  CStepperSMC800::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
 {
 	for (axis_t axis=0;axis < SMC800_NUM_AXIS;axis++)
 	{
-		if (directionUp[axis])
+		if (IsBitSet(directionUp,axis))
 			_stepIdx[axis] += steps[axis];
 		else
 			_stepIdx[axis] -= steps[axis];;

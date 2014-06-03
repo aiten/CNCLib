@@ -89,6 +89,8 @@ typedef long feedrate_t;		// mm_1000 / min
 #undef NUM_AXIS
 #define NUM_AXIS 3
 
+#define REDUCED_DUMP
+
 ////////////////////////////////////////////////////////
 
 #elif defined(__SAM3X8E__)

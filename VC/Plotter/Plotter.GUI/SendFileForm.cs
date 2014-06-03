@@ -158,7 +158,7 @@ namespace Plotter.GUI
             Com.CommandSending += new Communication.CommandEventHandler(CommandSending);
             Com.ReplyReceived += new Communication.CommandEventHandler(ReplyReceived);
             Com.CommandSent += new Communication.CommandEventHandler(CommandSent);
-            Com.CommandWaitSingleStepContinue += new Communication.CommandEventHandler(AskSingleStepContinue);
+            //Com.CommandWaitSingleStepContinue += new Communication.CommandEventHandler(AskSingleStepContinue);
  
             (_guicopyThread=new Thread(() =>
             {
@@ -236,7 +236,7 @@ namespace Plotter.GUI
             Com.CommandSending -= new Communication.CommandEventHandler(CommandSending);
             Com.ReplyReceived -= new Communication.CommandEventHandler(ReplyReceived);
             Com.CommandSent -= new Communication.CommandEventHandler(CommandSent);
-            Com.CommandWaitSingleStepContinue -= new Communication.CommandEventHandler(AskSingleStepContinue);
+            //Com.CommandWaitSingleStepContinue -= new Communication.CommandEventHandler(AskSingleStepContinue);
 
         }
    }
