@@ -42,7 +42,7 @@ namespace Plotter.GUI.Shapes
 
         void Circle(Point center, int r, List<string> hpgl)
         {
-          Polygon(center,r,2*r*3/50,0,hpgl);
+          Polygon(center,r,2*r*3/75,0,hpgl);
         }
 
         void Polygon(Point center, int radius, int n, int grad, List<string> hpgl)
@@ -53,14 +53,33 @@ namespace Plotter.GUI.Shapes
             int i;
             Point dp = new Point();
             Point pt = new Point(radius, 0);
+			StringBuilder cmd = new StringBuilder();
 
             for (i=0;i<=n;i++)
             {
                 double rad = ((360.0/n*i)+grad) / 180.0 * Math.PI;
                 Rotate(pt, ref dp, rad);
                 dp.Offset(center);
-                hpgl.Add(HPGLHelper(i == 0 ? "PU" : "PD", dp));
+				if (i == 0) hpgl.Add(HPGLHelper("PU", dp));
+				else if (cmd.Length == 0)
+				{
+					cmd.Append(HPGLHelper("PD", dp));
+				}
+				else
+				{
+					cmd.Append(HPGLHelper(",", dp));
+
+					if (cmd.Length > 50)
+					{
+						hpgl.Add(cmd.ToString());
+						cmd.Clear();
+					}
+				}
             }
+			if (string.IsNullOrEmpty(cmd.ToString())==false)
+			{
+				hpgl.Add(cmd.ToString());
+			}
           }
         }
     }

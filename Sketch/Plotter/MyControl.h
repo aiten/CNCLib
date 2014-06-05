@@ -17,6 +17,7 @@ public:
 protected:
 
 	virtual void Init();
+	virtual void Initialized();
 	virtual void Parse();
 	virtual void Idle(unsigned int idletime);
 

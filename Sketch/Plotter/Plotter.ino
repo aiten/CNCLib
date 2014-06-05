@@ -6,6 +6,7 @@
 #include "HPGLParser.h"
 
 #include <Wire.h>  // Comes with Arduino IDE
+
 #include <LiquidCrystal_I2C.h>
 
 ////////////////////////////////////////////////////////////

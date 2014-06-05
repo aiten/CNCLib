@@ -1016,6 +1016,22 @@ void CStepper::AbortMove()
 	if (_timerRunning)
 		SetIdleTimer();
 
+	// sub all pending steps to _totalsteps
+
+	unsigned long steps = _steps.Count();
+
+	for (unsigned char idx = _movements._queue.T2HInit(); _movements._queue.T2HTest(idx); idx = _movements._queue.T2HInc(idx))
+	{
+		if (_movements._queue.Buffer[idx].IsActive())
+		{
+			steps += _movements._queue.Buffer[idx]._steps;
+			if (_movements._queue.Buffer[idx].IsProcessing())
+				steps -= _movementstate._n;
+		}
+	}
+
+	_totalSteps -= steps;
+
 	_steps.Clear();
 	_movements._queue.Clear();
 
@@ -1516,7 +1532,7 @@ bool CStepper::MoveAwayFromReference(axis_t axis, unsigned char referenceid, sdi
 	{
 		Info(MESSAGE_STEPPER_IsReferenceIsOn);
 		CRememberOld<bool> OldCheckForReference(&_checkReference, false);
-		MoveRel(axis, dist, vMax);
+		MoveAwayFromReference(axis, dist, vMax);
 
 		if (!MoveUntil(referenceid, false, REFERENCESTABLETIME))
 			return false;
@@ -1750,10 +1766,7 @@ steprate_t CStepper::TimerToSpeed(timer_t timer) const
 
 void CStepper::Dump(unsigned char options)
 {
-#ifdef REDUCED_DUMP
-	return;
-#endif
-
+#ifndef REDUCED_SIZE
 	unsigned char i;
 
 	if (options&DumpPos)
@@ -1809,15 +1822,14 @@ void CStepper::Dump(unsigned char options)
 			_movements._queue.Buffer[idx].Dump(i++, options);
 		}
 	}
+#endif
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepper::SMovement::Dump(unsigned char idx, unsigned char options)
 {
-#ifdef REDUCED_DUMP
-	return;
-#endif
+#ifndef REDUCED_SIZE
 
 	DumpType<unsigned char>(F("Idx"), idx, false);
 	if (idx == 0)
@@ -1851,19 +1863,18 @@ void CStepper::SMovement::Dump(unsigned char idx, unsigned char options)
 	}
 
 	StepperSerial.println();
+#endif
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepper::SMovementState::Dump(unsigned char /* options */)
 {
-#ifdef REDUCED_DUMP
-	return;
-#endif
-
+#ifndef REDUCED_SIZE
 	DumpType<mdist_t>(F("n"), _n, false);
 	DumpType<timer_t>(F("t"), _timer, false);
 	DumpType<timer_t>(F("r"), _rest, false);
 	DumpType<unsigned long>(F("sum"), _sumTimer, false);
 	DumpArray<mdist_t, NUM_AXIS>(F("a"), _add, false);
+#endif
 }

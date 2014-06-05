@@ -29,9 +29,9 @@ public:
 
 protected:
 
-	virtual void  Step(axis_t axis, bool directionUp, unsigned char count);
 	virtual void  SetEnable(axis_t axis, unsigned char level);
 	virtual unsigned char GetEnable(axis_t axis);
+	virtual void  Step(const unsigned char cnt[NUM_AXIS], unsigned char directionUp);
 
 public:
 

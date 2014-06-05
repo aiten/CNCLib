@@ -29,7 +29,8 @@ void CMyControl::Init()
 
 	super::Init();
 
-	CStepper::GetInstance()->SetWaitFinishMove(false);
+	//CStepper::GetInstance()->SetWaitFinishMove(false); = > default changed
+	
 	//CStepper::GetInstance()->SetBacklash(5000);
 	CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControl::ToMachine(X_AXIS,20));  
 	CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,35));  
@@ -71,6 +72,7 @@ void CMyControl::Init()
 	_controllerfan.Init();
 
 	CProbeControl::Init();
+	CGCode3DParser::Init();
 
 	StepperSerial.print(MESSAGE_MYCONTROL_InitializingSDCard);
 

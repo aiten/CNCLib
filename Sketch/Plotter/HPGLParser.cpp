@@ -76,7 +76,7 @@ void CHPGLParser::InitCommand()
 
 void CHPGLParser::PenMoveCommand(unsigned char cmdidx)
 {
-	Plotter.Resume(false);
+	Plotter.Resume();
 
 	switch (cmdidx)
 	{
@@ -123,16 +123,16 @@ void CHPGLParser::PenMoveCommand(unsigned char cmdidx)
 		{
 			if (x != (sdist_t)CStepper::GetInstance()->GetPosition(X_AXIS) || y != (sdist_t)CStepper::GetInstance()->GetPosition(Y_AXIS))
 			{
-				Plotter.DelayPen();
-				CStepper::GetInstance()->MoveAbs3(x, y, CStepper::GetInstance()->GetPosition(Z_AXIS));
+				Plotter.DelayPenNow();
+				CStepper::GetInstance()->MoveAbsEx(0, X_AXIS, x, Y_AXIS, y, -1);
 			}
 		}
 		else
 		{
 			if (x != 0 || y != 0)
 			{
-				Plotter.DelayPen();
-				CStepper::GetInstance()->MoveRel3(x, y, 0);
+				Plotter.DelayPenNow();
+				CStepper::GetInstance()->MoveRelEx(0,X_AXIS,x, Y_AXIS, y, -1);
 			}
 		}
 		if (_reader->SkipSpaces() != ',')

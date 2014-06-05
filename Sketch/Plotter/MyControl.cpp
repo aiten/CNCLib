@@ -20,8 +20,7 @@ void CMyControl::Init()
 	Lcd.Init();
 #endif
 
-	CStepper::GetInstance()->Init();
-	//CStepper::GetInstance()->SetWaitFinishMove(false);	=> default changed
+	CHPGLParser::Init();
 
 	CStepper::GetInstance()->SetLimitMax(0, 55600);  // 6950*8
 	CStepper::GetInstance()->SetLimitMax(1, 32000);  // 4000*8
@@ -43,8 +42,14 @@ void CMyControl::Init()
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true),true);  
 	CStepper::GetInstance()->UseReference(EMERGENCY_ENDSTOP,true);    // not stop
 #endif    
-
 }
+
+void CMyControl::Initialized()
+{
+	super::Initialized();
+	GoToReference();
+}
+
 ////////////////////////////////////////////////////////////
 
 void CMyControl::GoToReference()

@@ -170,7 +170,11 @@ void LiquidCrystal::setBacklight ( uint8_t value )
    {
       // Check if the pin is associated to a timer, i.e. PWM
       // ---------------------------------------------------
-      if(digitalPinToTimer(_backlightPin) != NOT_ON_TIMER)
+#ifndef __SAM3X8E__
+	   if(digitalPinToTimer(_backlightPin) != NOT_ON_TIMER)
+#else
+	   if (true)
+#endif
       {
          // Check for control polarity inversion
          // ---------------------------------------------------

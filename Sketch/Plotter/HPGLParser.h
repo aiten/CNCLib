@@ -8,16 +8,20 @@
 
 class CHPGLParser : public CParser
 {
-public:
+private:
+
+	typedef CParser super;
 
 public:
 
-	CHPGLParser(CStreamReader* reader) : CParser(reader)	{  };
+	CHPGLParser(CStreamReader* reader) : CParser(reader)	{ };
 
 	virtual void Parse();
 
 	sdist_t HPGLToPlotterCordX(sdist_t xx);
 	sdist_t HPGLToPlotterCordY(sdist_t yy);
+
+	static void Init()											{ super::Init(); _state.Init(); }
 
 	struct SState
 	{
@@ -46,7 +50,7 @@ public:
 		struct SSPEED movePenUp;
 		struct SSPEED movePenDown;
 
-		SState()
+		void Init()
 		{
 #define X_AXIS_ENDSTOP 0
 #define Y_AXIS_ENDSTOP 2

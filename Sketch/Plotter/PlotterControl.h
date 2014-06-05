@@ -9,14 +9,14 @@ public:
 	CPlotter();
 
 	void Idle(unsigned int idletime);
-	void Resume(bool resetpen);
+	void Resume();
 
 	void PenUp();
 	void PenDown();
 
 	void DelayPenUp()  { _isDelayPen = true; _isDelayPenDown = false; }
 	void DelayPenDown(){ _isDelayPen = true; _isDelayPenDown = true; }
-	void DelayPen();    // go
+	void DelayPenNow();    // go
 
 	void StopPen()
 	{

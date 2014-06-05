@@ -134,7 +134,9 @@ namespace Framework.Logic
         public void Connect(string portname)
         {
             // Create a new SerialPort object with default settings.
-            SetupCom(portname);
+			Abort = false;
+
+			SetupCom(portname);
 
             _serialPort.Open();
             _readThread = new Thread(Read);
@@ -167,6 +169,10 @@ namespace Framework.Logic
             if (_readThread != null)
                 _readThread.Join();
             _readThread = null;
+
+			if (_writeThread != null)
+				_writeThread.Join();
+			_writeThread = null;
 
             if (_serialPort != null)
             {
@@ -351,11 +357,9 @@ Console.WriteLine(cmd.CommandText);
             while (_continue)
             {
                 Command nextcmd=null;
-                int cmdlenght = 0;
-				bool queueEmpyt;
+                int queuedcmdlenght = 0;
                 lock(_pendingCommands)
                 {
-					queueEmpyt = _pendingCommands.Count == 0;
                     foreach (Command cmd in _pendingCommands)
                     {
                         if (cmd.SentTime == new DateTime())
@@ -365,8 +369,8 @@ Console.WriteLine(cmd.CommandText);
                         }
                         else
                         {
-                            cmdlenght += cmd.CommandText.Length;
-                            cmdlenght += 2; // CRLF
+                            queuedcmdlenght += cmd.CommandText.Length;
+                            queuedcmdlenght += 2; // CRLF
 
                         }
                     }
@@ -375,7 +379,7 @@ Console.WriteLine(cmd.CommandText);
                 {
 					// send everyting if queue is empty
 					// or send command if pending commands + this fit into arduino queue
-					if (queueEmpyt || cmdlenght + nextcmd.CommandText.Length + 2 < ArduinoBuffersize)
+					if (queuedcmdlenght==0 || queuedcmdlenght + nextcmd.CommandText.Length + 2 < ArduinoBuffersize)
                     {
                         SendCommand(nextcmd);
                     }

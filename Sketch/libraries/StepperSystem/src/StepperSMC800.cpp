@@ -233,36 +233,14 @@ bool  CStepperSMC800::IsReference(unsigned char /*referenceid*/)
 
 ////////////////////////////////////////////////////////
 
-bool CStepperSMC800::MoveAwayFromReference(axis_t /* axis */, unsigned char referenceid, sdist_t dist, steprate_t vMax)
+void CStepperSMC800::MoveAwayFromReference(axis_t /* axis */, sdist_t dist, steprate_t vMax)
 {
-	if (IsReference(referenceid))
-	{
-		StepperSerial.print(MESSAGE_INFO); StepperSerial.println(MESSAGE_STEPPER_IsReferenceIsOn);
-
-		CRememberOld<bool> OldCheckForReference(&_checkReference, false);
-		MoveRel3(min(dist, (sdist_t)GetLimitMax(0) / 2), min(dist, (sdist_t)GetLimitMax(1) / 2), min(dist, (sdist_t)GetLimitMax(2) / 2), vMax);
-
-		while (IsBusy())
-		{
-			StepperSerial.print(MESSAGE_INFO); StepperSerial.println(MESSAGE_STEPPER_MoveAwayFromReference);
-			if (!IsReference(referenceid))
-			{
-				AbortMove();
-				break;
-			}
-		}
-	}
-
-	return !IsReference(referenceid);
+	MoveRelEx(vMax, X_AXIS, min(dist, (sdist_t)GetLimitMax(X_AXIS) / 2), 
+					Y_AXIS, min(dist, (sdist_t)GetLimitMax(Y_AXIS) / 2), 
+					Z_AXIS, min(dist, (sdist_t)GetLimitMax(Z_AXIS) / 2), 
+					-1);
 }
-
-////////////////////////////////////////////////////////
 /*
-void CStepperSMC800::OnIdle(unsigned long idletime)
-{
-super::OnIdle(idletime);
-};
-*/
 ////////////////////////////////////////////////////////
 
 void CStepperSMC800::OnStart()
@@ -271,3 +249,4 @@ void CStepperSMC800::OnStart()
 }
 
 ////////////////////////////////////////////////////////
+*/

@@ -79,26 +79,71 @@ void CStepperRampsFD::Init()
 
 ////////////////////////////////////////////////////////
 
-void CStepperRampsFD::Step(axis_t axis, bool directionUp, unsigned char count)
+void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
 {
+	// The timing requirements for minimum pulse durations on the STEP pin are different for the two drivers. 
+	// With the DRV8825, the high and low STEP pulses must each be at least 1.9 us; 
+	// they can be as short as 1 us when using the A4988.
 
-	// call Step only within Critical region => use _WRITE_NC of fastio.h!!!
-#define SETDIR(dirpin)		if (directionUp) _WRITE_NC(dirpin,PINOFF); else _WRITE_NC(dirpin,PINON);
-#define OUTSTEP(steppin)	{	_WRITE_NC(steppin, PINOFF); _WRITE_NC(steppin, PINON); }
+	// For shorter delays use assembly language call 'nop' (no operation). Each 'nop' statement executes in one machine cycle (at 16 MHz) yielding a 62.5 ns (nanosecond) delay. 
 
-	switch (axis)
+#define NOPREQUIRED
+
+#if defined(__SAM3X8E__) || defined(USE_A4998)
+#undef NOPREQUIRED
+#endif
+
+#define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) _WRITE_NC(dirpin,PINOFF); else _WRITE_NC(dirpin,PINON);
+#define STEPPINOFF(steppin)		_WRITE_NC(steppin, PINOFF);
+#define STEPPINON(steppin)		_WRITE_NC(steppin, PINON);
+
+	SETDIR(X_AXIS, X_DIR_PIN);
+	SETDIR(Y_AXIS, Y_DIR_PIN);
+	SETDIR(Z_AXIS, Z_DIR_PIN);
+	SETDIR(E0_AXIS, E0_DIR_PIN);
+	SETDIR(E1_AXIS, E1_DIR_PIN);
+	SETDIR(E2_AXIS, E2_DIR_PIN);
+
+	for (unsigned char cnt = 0;; cnt++)
 	{
-#pragma warning( disable : 4127 )
-		case X_AXIS:  SETDIR(X_DIR_PIN);   for (; count != 0; count--) OUTSTEP(X_STEP_PIN); return;
-		case Y_AXIS:  SETDIR(Y_DIR_PIN);   for (; count != 0; count--) OUTSTEP(Y_STEP_PIN); return;
-		case Z_AXIS:  SETDIR(Z_DIR_PIN);   for (; count != 0; count--) OUTSTEP(Z_STEP_PIN); return;
-		case E0_AXIS: SETDIR(E0_DIR_PIN);  for (; count != 0; count--) OUTSTEP(E0_STEP_PIN); return;
-		case E1_AXIS: SETDIR(E1_DIR_PIN);  for (; count != 0; count--) OUTSTEP(E1_STEP_PIN); return;
-		case E2_AXIS: SETDIR(E1_DIR_PIN);  for (; count != 0; count--) OUTSTEP(E2_STEP_PIN); return;
-#pragma warning( default : 4127 )
+		register bool have = false;
+		if (steps[X_AXIS] > cnt)  { STEPPINOFF(X_STEP_PIN); have = true; }
+		if (steps[Y_AXIS] > cnt)  { STEPPINOFF(Y_STEP_PIN); have = true; }
+		if (steps[Z_AXIS] > cnt)  { STEPPINOFF(Z_STEP_PIN); have = true; }
+		if (steps[E0_AXIS] > cnt) { STEPPINOFF(E0_STEP_PIN); have = true; }
+		if (steps[E1_AXIS] > cnt) { STEPPINOFF(E1_STEP_PIN); have = true; }
+		if (steps[E2_AXIS] > cnt) { STEPPINOFF(E2_STEP_PIN); have = true; }
+
+#if defined(NOPREQUIRED)
+		__asm__("nop\n\tnop\n\tnop\n\t");
+		__asm__("nop\n\tnop\n\t");
+
+		if (steps[X_AXIS] > cnt)  { STEPPINON(X_STEP_PIN); }
+		if (steps[Y_AXIS] > cnt)  { STEPPINON(Y_STEP_PIN); }
+		if (steps[Z_AXIS] > cnt)  { STEPPINON(Z_STEP_PIN); }
+		if (steps[E0_AXIS] > cnt) { STEPPINON(E0_STEP_PIN); }
+		if (steps[E1_AXIS] > cnt) { STEPPINON(E1_STEP_PIN); }
+		if (steps[E2_AXIS] > cnt) { STEPPINON(E2_STEP_PIN); }
+#else
+		STEPPINON(X_STEP_PIN);
+		STEPPINON(Y_STEP_PIN);
+		STEPPINON(Z_STEP_PIN);
+		STEPPINON(E0_STEP_PIN);
+		STEPPINON(E1_STEP_PIN);
+		STEPPINON(E2_STEP_PIN);
+#endif
+
+		if (!have) break;
+
+#if defined(NOPREQUIRED)
+		__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
+		__asm__("nop\n\tnop\n\tnop\n\t");
+#endif
 	}
 
-#undef OUTSTEP
+#undef SETDIR
+#undef STEPPINON
+#undef STEPPINOFF
 }
 
 ////////////////////////////////////////////////////////

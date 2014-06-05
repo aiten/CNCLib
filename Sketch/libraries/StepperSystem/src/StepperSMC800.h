@@ -41,9 +41,9 @@ protected:
 	virtual void  SetEnable(axis_t axis, unsigned char level);
 	virtual unsigned char GetEnable(axis_t axis);
 
-	virtual bool  MoveAwayFromReference(axis_t axis, unsigned char referenceid, sdist_t diff, steprate_t vMax);
+	virtual void MoveAwayFromReference(axis_t axis, sdist_t diff, steprate_t vMax);
 
-	virtual void OnStart();
+	//virtual void OnStart();
 
 	////////////////////////////////////////////////////////
 

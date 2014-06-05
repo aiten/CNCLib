@@ -63,24 +63,6 @@ void CMyLcd::TimerInterrupt()
 }
 
 ////////////////////////////////////////////////////////////
-/*
-void CMyLcd::Idle(unsigned int idletime)
-{
-	super::Idle(idletime);
-}
-*/
-////////////////////////////////////////////////////////////
-
-void CMyLcd::TextModeDraw(unsigned char col, unsigned char row, const __FlashStringHelper* s)
-{
-	lcd.setCursor(col, row); lcd.print(s);
-}
-void CMyLcd::TextModeDraw(unsigned char col, unsigned char row, char* s)
-{
-	lcd.setCursor(col, row); lcd.print(s);
-}
-
-////////////////////////////////////////////////////////////
 
 void CMyLcd::FirstDraw()
 {
@@ -113,13 +95,6 @@ unsigned long CMyLcd::Splash()
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::TextModeClear()
-{
-	lcd.clear();
-}
-
-////////////////////////////////////////////////////////////
-
 void CMyLcd::Draw(EDrawType /* draw */)
 {
 	DrawPos(2, 0, CStepper::GetInstance()->GetCurrentPosition(X_AXIS));
@@ -128,6 +103,12 @@ void CMyLcd::Draw(EDrawType /* draw */)
 	DrawES(18, 0, CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true)));
 	DrawES(19, 0, CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true)));
 	DrawPen(4, 2);
+
+        unsigned char queued = CStepper::GetInstance()->QueuedMovements();
+    	lcd.setCursor(18, 3);
+        if (queued<10)
+          lcd.print(' ');
+        lcd.print((short) queued);
 }
 
 ////////////////////////////////////////////////////////////

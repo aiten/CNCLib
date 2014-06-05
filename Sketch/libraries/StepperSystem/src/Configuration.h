@@ -36,7 +36,7 @@ typedef long feedrate_t;		// mm_1000 / min
 #define SERIALBUFFERSIZE	128			// even size 
 #define REFERENCESTABLETIME	2			// time in ms for reference must not change (in Reference move) => signal bounce
 
-#define TIMEOUTCALLIDEL		100			// time in ms after move completet to call Idle
+#define TIMEOUTCALLIDEL		333			// time in ms after move completet to call Idle
 
 #define IDLETIMER0VALUE     TIMER0VALUE(1000)		// AVR dont care ... Timer 0 shared with milli	
 
@@ -89,7 +89,7 @@ typedef long feedrate_t;		// mm_1000 / min
 #undef NUM_AXIS
 #define NUM_AXIS 3
 
-#define REDUCED_DUMP
+#define REDUCED_SIZE
 
 ////////////////////////////////////////////////////////
 

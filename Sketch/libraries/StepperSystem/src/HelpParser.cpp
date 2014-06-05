@@ -50,7 +50,7 @@ void CHelpParser::Parse()
 #endif
 	if (IsToken(F("a"), true, false))  { MoveAbs(); return; }
 
-#ifndef REDUCED_DUMP
+#ifndef REDUCED_SIZE
 
 	if (IsToken(F("p1"), true, false)) { SetPosition(X_AXIS); return; }
 	if (IsToken(F("p2"), true, false)) { SetPosition(Y_AXIS); return; }
@@ -74,7 +74,7 @@ void CHelpParser::Parse()
 	if (IsToken(F("!"), true, false))	{ if (CheckEOC()) { CStepper::GetInstance()->AbortMove(); } return; }
 	if (IsToken(F("?"), true, false))	{ if (CheckEOC()) { CStepper::GetInstance()->Dump(CStepper::DumpAll); }	return; }
 
-#ifndef REDUCED_DUMP
+#ifndef REDUCED_SIZE
 	if (IsToken(F("-"), true, false))
 	{
 		if (CheckEOC())

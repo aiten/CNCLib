@@ -28,6 +28,8 @@ public:
 
 	CStreamReader* GetReader()								{ return _reader; }
 
+	static void Init()										{}
+
 protected:
 
 	////////////////////////////////////////////////////////

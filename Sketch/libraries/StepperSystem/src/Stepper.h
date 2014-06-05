@@ -30,7 +30,8 @@ public:
 		QuarterStep = 4,
 		EighthStep = 8,
 		SixteenStep = 16,
-		ThirtytwoStep = 32
+		ThirtytwoStep = 32,
+		SixtyfourStep = 64
 	};
 
 	enum EState
@@ -141,12 +142,6 @@ public:
 	bool MoveUntil(TestContinueMove testcontinue, void*param);
 
 	//////////////////////////////
-	// for x,y,z coordinats
-
-	void MoveRel3(sdist_t dX, sdist_t dY, sdist_t dZ, steprate_t vMax = 0)	{ MoveRelEx(vMax, X_AXIS, dX, Y_AXIS, dY, Z_AXIS, dZ, -1); }
-	void MoveAbs3(udist_t X, udist_t Y, udist_t Z, steprate_t vMax = 0)		{ MoveAbsEx(vMax, X_AXIS, X, Y_AXIS, Y, Z_AXIS, Z, -1); }
-
-	//////////////////////////////
 
 	const udist_t* GetPositions() const							{ return _calculatedpos; }
 	void GetPositions(udist_t pos[NUM_AXIS]) const				{ memcpy(pos, _calculatedpos, sizeof(_calculatedpos)); }
@@ -182,6 +177,8 @@ private:
 		if (directionUp) return (sdist_t)current + (sdist_t)dist;
 		return (sdist_t)current - (sdist_t)dist;
 	}
+
+protected:
 
 	bool MoveUntil(unsigned char referenceId, bool referencevalue, unsigned short stabletime);
 
@@ -505,8 +502,8 @@ public:
 
 protected:
 
-	virtual bool  MoveAwayFromReference(axis_t axis, unsigned char referenceid, sdist_t dist, steprate_t vMax);
-
+	bool  MoveAwayFromReference(axis_t axis, unsigned char referenceid, sdist_t dist, steprate_t vMax);
+	virtual void MoveAwayFromReference(axis_t axis, sdist_t dist, steprate_t vMax)							{ MoveRel(axis, dist, vMax); };
 
 #ifdef _MSC_VER
 	virtual void  StepBegin(const SStepBuffer* step) { step; };

@@ -165,36 +165,41 @@ void CControl::ReadAndExecuteCommand(Stream* stream, bool filestream)
 {
 	// call this methode if ch is available in stream
 
-	while (stream->available() > 0)
+	if (stream->available() > 0)
 	{
+		while (stream->available() > 0)
+		{
+			_buffer[_bufferidx] = stream->read();
+
+			if (IsEndOfCommandChar(_buffer[_bufferidx]))
+			{
+				_buffer[_bufferidx] = 0;			// remove from buffer 
+				Command(_buffer);
+				_bufferidx = 0;
+
+				_lasttime = millis();
+
+				return;
+			}
+
+			_bufferidx++;
+			if (_bufferidx > sizeof(_buffer))
+			{
+				StepperSerial.print(MESSAGE_ERROR); StepperSerial.println(MESSAGE_CONTROL_FLUSHBUFFER);
+				_bufferidx = 0;
+			}
+		}
+
+		if (filestream)						// e.g. SD card => execute last line without "EndOfLine"
+		{
+			if (_bufferidx > 0)
+			{
+				_buffer[_bufferidx + 1] = 0;
+				Command(_buffer);
+				_bufferidx = 0;
+			}
+		}
 		_lasttime = millis();
-
-		_buffer[_bufferidx] = stream->read();
-
-		if (IsEndOfCommandChar(_buffer[_bufferidx]))
-		{
-			_buffer[_bufferidx] = 0;			// remove from buffer 
-			Command(_buffer);
-			_bufferidx = 0;
-			return;
-		}
-
-		_bufferidx++;
-		if (_bufferidx > sizeof(_buffer))
-		{
-			StepperSerial.print(MESSAGE_ERROR); StepperSerial.println(MESSAGE_CONTROL_FLUSHBUFFER);
-			_bufferidx = 0;
-		}
-	}
-
-	if (filestream)						// e.g. SD card => execute last line without "EndOfLine"
-	{
-		if (_bufferidx > 0)
-		{
-			_buffer[_bufferidx + 1] = 0;
-			Command(_buffer);
-			_bufferidx = 0;
-		}
 	}
 }
 
@@ -204,7 +209,7 @@ bool CControl::SerialReadAndExecuteCommand()
 {
 	if (StepperSerial.available() > 0)
 	{
-		ReadAndExecuteCommand(&StepperSerial, false);
+		ReadAndExecuteCommand(&StepperSerial, false);			
 	}
 
 	return _bufferidx > 0;		// command pending, buffer not empty

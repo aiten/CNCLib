@@ -54,7 +54,7 @@ private:
 
 public:
 
-	CGCodeParser(CStreamReader* reader) : super(reader)		{ _modalstate.Init(); _modlessstate.Init(); };
+	CGCodeParser(CStreamReader* reader) : super(reader)		{  };
 	virtual void Parse();
 
 	static void SetG0FeedRate(feedrate_t feedrate)			{ _modalstate.G0FeedRate = feedrate; }
@@ -67,6 +67,8 @@ public:
 	static void SetZeroPresetIdx(unsigned char idx)			{ _modalstate.ZeroPresetIdx = idx; }
 
 	static mm1000_t GetAllPreset(axis_t axis)				{ return GetG92PosPreset(axis) + GetG54PosPreset(axis) + GetToolHeightPosPreset(axis); }
+
+	static void Init()										{ super::Init(); _modalstate.Init(); _modlessstate.Init(); }
 
 protected:
 

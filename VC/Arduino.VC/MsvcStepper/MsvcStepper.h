@@ -26,6 +26,9 @@ public:
 	virtual bool  IsReference(unsigned char referenceId);
 	virtual bool  IsAnyReference() { return IsReference(0); };
 
+	void MoveRel3(sdist_t dX, sdist_t dY, sdist_t dZ, steprate_t vMax = 0)	{ MoveRelEx(vMax, X_AXIS, dX, Y_AXIS, dY, Z_AXIS, dZ, -1); }
+	void MoveAbs3(udist_t X, udist_t Y, udist_t Z, steprate_t vMax = 0)		{ MoveAbsEx(vMax, X_AXIS, X, Y_AXIS, Y, Z_AXIS, Z, -1); }
+
 protected:
 
 	virtual void  StepBegin(const SStepBuffer* step);

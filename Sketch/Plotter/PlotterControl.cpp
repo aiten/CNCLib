@@ -23,7 +23,7 @@ CPlotter::CPlotter()
 
 void CPlotter::Idle(unsigned int idletime)
 {
-	if (!CStepper::GetInstance()->IsBusy() && idletime > CHPGLParser::_state.penUpTimeOut)
+	if (!CStepper::GetInstance()->IsBusy() && (millis() - CStepper::GetInstance()->IdleTime()) > CHPGLParser::_state.penUpTimeOut)
 	{
 		if (_isPenDown)
 		{
@@ -35,7 +35,7 @@ void CPlotter::Idle(unsigned int idletime)
 
 ////////////////////////////////////////////////////////////
 
-void CPlotter::Resume(bool /* resetpen */)
+void CPlotter::Resume()
 {
 	if (_isPenDownTimeout)
 	{
@@ -86,7 +86,7 @@ void CPlotter::PenDown()
 
 ////////////////////////////////////////////////////////////
 
-void CPlotter::DelayPen()
+void CPlotter::DelayPenNow()
 {
 	if (_isDelayPen)
 	{

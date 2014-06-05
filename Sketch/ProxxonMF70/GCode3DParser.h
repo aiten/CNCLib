@@ -18,10 +18,12 @@ private:
 
 public:
 
-	CGCode3DParser(CStreamReader* reader) : super(reader)		{ }
+	CGCode3DParser(CStreamReader* reader) : super(reader)		{  }
 
 	static File& GetExecutingFile()								{ return _state._file; }
 	static void  SetExecutingFilePosition(unsigned long pos)	{ _state._printfilepos = pos; }
+
+	static void Init()											{ super::Init(); _state.Init(); }
 
 protected:
 
@@ -44,7 +46,7 @@ private:
 		unsigned long		_printfilepos;
 		unsigned long		_printfilesize;
 
-		GCodeState()
+		void Init()
 		{
 			_printfilesize = 0;
 			_printfilepos = 0;

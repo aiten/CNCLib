@@ -211,7 +211,8 @@ void fio_shiftOut1(fio_register shift1Register, fio_bit shift1Bit, uint8_t value
       
 		// assume that pin is HIGH (smokin' pot all day... :) - requires 
       // initialization
-		if(value & _BV(i))
+//if (value & _BV(i))
+	 if (value & (1 << (i)))
       {
          ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
          {

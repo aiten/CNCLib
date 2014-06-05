@@ -2,7 +2,9 @@
 
 ////////////////////////////////////////////////////////
 
-#ifndef X__AVR_ATmega328P__
+#if  defined(__AVR_ATmega328P__) || defined(__SAM3X8E__)
+
+#else
 
 #define __USE_LCD__
 
@@ -26,15 +28,7 @@ private:
 public:
 
 	virtual void Init();
-//	virtual void Idle(unsigned int idletime);
 	virtual void TimerInterrupt();
-
-	virtual unsigned char TextModeCols()					{ return MYLCD_COLS; }
-	virtual unsigned char TextModeRows()					{ return MYLCD_ROWS; }
-
-	virtual void TextModeClear();
-	virtual void TextModeDraw(unsigned char col, unsigned char row, const __FlashStringHelper* s);
-	virtual void TextModeDraw(unsigned char col, unsigned char row, char* s);
 
 protected:
 
