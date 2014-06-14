@@ -274,7 +274,7 @@ private:
 
 	void GetFeedrate(SAxisMove& move);
 	void GetAxis(axis_t axis, SAxisMove& move, EnumAsByte(EAxisPosType) posType);
-	void GetIJK(axis_t axis, SAxisMove& move, float offset[2]);
+	void GetIJK(axis_t axis, SAxisMove& move, mm1000_t offset[2]);
 	void GetRadius(SAxisMove& move, mm1000_t& radius);
 	void GetR81(SAxisMove& move);
 	void GetP81(SAxisMove& move);

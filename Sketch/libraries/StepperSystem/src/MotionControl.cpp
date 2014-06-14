@@ -58,15 +58,15 @@ cos O near 1 - O2 / 2 at about 0.664 radians(38Grad).
 
 #define ARCCORRECTION	( 10.0 * M_PI / 180.0)		// every 10grad
 
-void CMotionControl::Arc(const mm1000_t to[NUM_AXIS], float offset0, float offset1, axis_t  axis_0, axis_t axis_1, bool isclockwise, feedrate_t feedrate)
+void CMotionControl::Arc(const mm1000_t to[NUM_AXIS], mm1000_t offset0, mm1000_t offset1, axis_t  axis_0, axis_t axis_1, bool isclockwise, feedrate_t feedrate)
 {
 	// start from current position!
 
 	mm1000_t current[NUM_AXIS];
 	GetPositions(current);
 
-	float center_axis0 = current[axis_0] + offset0;
-	float center_axis1 = current[axis_1] + offset1;
+	mm1000_t center_axis0 = current[axis_0] + offset0;
+	mm1000_t center_axis1 = current[axis_1] + offset1;
 
 	mm1000_t linear_travel_max = 0;
 	mm1000_t dist_linear[NUM_AXIS] = { 0 };
@@ -81,12 +81,12 @@ void CMotionControl::Arc(const mm1000_t to[NUM_AXIS], float offset0, float offse
 		}
 	}
 
-	float radius = hypot((float)offset0, offset1);
+	float radius = hypot((float)offset0, (float)offset1);
 
-	float r_axis0 = -offset0;  // Radius vector from center to current location
-	float r_axis1 = -offset1;
-	float rt_axis0 = to[axis_0] - center_axis0;
-	float rt_axis1 = to[axis_1] - center_axis1;
+	float r_axis0 = (float) -offset0;  // Radius vector from center to current location
+	float r_axis1 = (float) -offset1;
+	mm1000_t rt_axis0 = to[axis_0] - center_axis0;
+	mm1000_t rt_axis1 = to[axis_1] - center_axis1;
 
 	// CCW angle between position and target from circle center. Only one atan2() trig computation required.
 	float angular_travel = atan2(r_axis0*rt_axis1 - r_axis1*rt_axis0, r_axis0*rt_axis0 + r_axis1*rt_axis1);

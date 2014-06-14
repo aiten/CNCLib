@@ -30,7 +30,6 @@
         {
 			this._connect = new System.Windows.Forms.Button();
 			this._com = new System.Windows.Forms.ComboBox();
-			this._sendFile = new System.Windows.Forms.Button();
 			this._paint = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
@@ -72,19 +71,9 @@
 			this._com.Size = new System.Drawing.Size(102, 21);
 			this._com.TabIndex = 13;
 			// 
-			// _sendFile
-			// 
-			this._sendFile.Location = new System.Drawing.Point(20, 50);
-			this._sendFile.Name = "_sendFile";
-			this._sendFile.Size = new System.Drawing.Size(210, 23);
-			this._sendFile.TabIndex = 15;
-			this._sendFile.Text = "Send File";
-			this._sendFile.UseVisualStyleBackColor = true;
-			this._sendFile.Click += new System.EventHandler(this._sendFile_Click);
-			// 
 			// _paint
 			// 
-			this._paint.Location = new System.Drawing.Point(20, 79);
+			this._paint.Location = new System.Drawing.Point(20, 53);
 			this._paint.Name = "_paint";
 			this._paint.Size = new System.Drawing.Size(210, 23);
 			this._paint.TabIndex = 16;
@@ -96,9 +85,8 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(248, 261);
+			this.ClientSize = new System.Drawing.Size(248, 99);
 			this.Controls.Add(this._paint);
-			this.Controls.Add(this._sendFile);
 			this.Controls.Add(this._connect);
 			this.Controls.Add(this._com);
 			this.Name = "MainForm";
@@ -111,8 +99,7 @@
         #endregion
 
         private System.Windows.Forms.Button _connect;
-        private System.Windows.Forms.ComboBox _com;
-        private System.Windows.Forms.Button _sendFile;
+		private System.Windows.Forms.ComboBox _com;
         private System.Windows.Forms.Button _paint;
     }
 }

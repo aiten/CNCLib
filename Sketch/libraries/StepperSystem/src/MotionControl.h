@@ -25,7 +25,7 @@ private:
 
 public:
 
-	static void Arc(const mm1000_t to[NUM_AXIS], float offset0, float offset1, axis_t  axis_0, axis_t axis_1, bool isclockwise, feedrate_t feedrate);
+	static void Arc(const mm1000_t to[NUM_AXIS], mm1000_t offset0, mm1000_t offset1, axis_t  axis_0, axis_t axis_1, bool isclockwise, feedrate_t feedrate);
 	static void MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrate);
 
 	static void GetPositions(mm1000_t current[NUM_AXIS]);

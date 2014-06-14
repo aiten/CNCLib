@@ -188,8 +188,13 @@ char* CMm1000::ToString(mm1000_t pos, char*tmp, unsigned char precision, unsigne
 	if (x > precision)
 	{
 		// overflow
-		tmp[0] = 'X';
-		tmp[1] = 0;
+		for (x = 0; x < precision; x++)
+			tmp[x] = 'x';
+		if (scale > 0)
+			tmp[precision-scale-1] = '.';
+		if (isNegativ) 
+			tmp[0] = '-';
+		tmp[x] = 0;
 	}
 	else
 	{

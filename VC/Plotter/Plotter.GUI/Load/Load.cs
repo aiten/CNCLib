@@ -231,6 +231,5 @@ namespace Plotter.GUI.Load
             if (LoadOptions.ScaleY != 0)
 				pt.Y = Math.Round(pt.Y.Value * LoadOptions.ScaleY, 3);
         }
-
     }
 }

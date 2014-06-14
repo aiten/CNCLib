@@ -34,12 +34,10 @@ namespace Plotter.GUI
         {
             if (Framework.Tools.Singleton<Communication>.Allocated && Com.IsConnected)
             {
-                _sendFile.Enabled = true;
                 _paint.Enabled = true;
             }
             else
             {
-                _sendFile.Enabled = false;
  //               _paint.Enabled = false;
             }
         }
@@ -55,14 +53,6 @@ namespace Plotter.GUI
                 Com.Connect(_com.SelectedItem.ToString());
             }
             UpdateButtons();
-        }
-
-        private void _sendFile_Click(object sender, EventArgs e)
-        {
-            using (SendFileForm form = new SendFileForm())
-            {
-                form.ShowDialog();
-            }
         }
 
         private void _paint_Click(object sender, EventArgs e)

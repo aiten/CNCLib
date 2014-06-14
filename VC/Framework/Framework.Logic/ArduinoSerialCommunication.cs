@@ -184,7 +184,12 @@ namespace Framework.Logic
 
         public void AbortCommand()
         {
-            Abort = true;
+			lock (_pendingCommands)
+			{
+				_pendingCommands.Clear();
+			}
+			
+			Abort = true;
         }
 
         virtual protected void SetupCom(string portname)
@@ -227,7 +232,7 @@ namespace Framework.Logic
         public void SendCommand(string line)
         {
             AsyncSendCommand(line);
-            WaitNoPendingCommands();
+            WaitUntilNoPendingCommands();
         }
 
         public void SendCommands(string[] commands)
@@ -240,7 +245,7 @@ namespace Framework.Logic
                     if (Abort)
                         break;
                 }
-				WaitNoPendingCommands();
+				WaitUntilNoPendingCommands();
             }
         }
 
@@ -316,7 +321,7 @@ Console.WriteLine(cmd.CommandText);
         }
 
 
-        private void WaitNoPendingCommands()
+        private void WaitUntilNoPendingCommands()
 		{
 			_autoEvent.Reset();
 			while (_continue)
@@ -332,24 +337,10 @@ Console.WriteLine(cmd.CommandText);
 
 				var eventarg = new ArduinoSerialCommunicationEventArgs(null,cmd);
                 OnCommandWaitReply(eventarg);
-                if (eventarg.Abort) return;
+                if (Abort || eventarg.Abort) return;
 
 				_autoEvent.WaitOne(100);
             }
-/*
-			Stopwatch sw = new Stopwatch();
-			sw.Start();
-			while (!_replyreceived && !Abort)
-			{
-				Thread.Sleep(10);
-				var eventarg = new ArduinoSerialCommunicationEventArgs(cmd.CommandText);
-				OnCommandWaitReply(eventarg);
-				if (eventarg.Abort) return;
-
-				if (sw.ElapsedMilliseconds > _replyTimeout)
-					throw new TimeoutException();
-			}
- */
 		}
 
         private void Write()
@@ -375,21 +366,26 @@ Console.WriteLine(cmd.CommandText);
                         }
                     }
                 }
-                if (nextcmd != null)
-                {
+				if (nextcmd != null)
+				{
 					// send everyting if queue is empty
 					// or send command if pending commands + this fit into arduino queue
-					if (queuedcmdlenght==0 || queuedcmdlenght + nextcmd.CommandText.Length + 2 < ArduinoBuffersize)
-                    {
-                        SendCommand(nextcmd);
-                    }
-                    else
-                    {
-                        var eventarg = new ArduinoSerialCommunicationEventArgs(null,nextcmd);
-                        OnWaitForSend(eventarg);
-                        if (eventarg.Abort) return;
-                    }
-                }
+					if (queuedcmdlenght == 0 || queuedcmdlenght + nextcmd.CommandText.Length + 2 < ArduinoBuffersize)
+					{
+						SendCommand(nextcmd);
+					}
+					else
+					{
+						var eventarg = new ArduinoSerialCommunicationEventArgs(null, nextcmd);
+						OnWaitForSend(eventarg);
+						if (Abort || eventarg.Abort) return;
+						_autoEvent.WaitOne(100);
+					}
+				}
+				else
+				{
+					_autoEvent.WaitOne(100);
+				}
             }
         }
 

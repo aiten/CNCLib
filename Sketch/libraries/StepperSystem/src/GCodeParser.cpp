@@ -707,7 +707,7 @@ void CGCodeParser::GetAxis(axis_t axis, SAxisMove& move, EnumAsByte(EAxisPosType
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParser::GetIJK(axis_t axis, SAxisMove& move, float offset[2])
+void CGCodeParser::GetIJK(axis_t axis, SAxisMove& move, mm1000_t offset[2])
 {
 	if (!CheckAxisSpecified(axis, move.bitfield.all))
 		return;
@@ -715,9 +715,9 @@ void CGCodeParser::GetIJK(axis_t axis, SAxisMove& move, float offset[2])
 	_reader->GetNextChar();
 
 	if (axis == _modalstate.Plane_axis_0)
-		offset[0] = (float)ParseCoordinate();
+		offset[0] = ParseCoordinate();
 	else if (axis == _modalstate.Plane_axis_1)
-		offset[1] = (float)ParseCoordinate();
+		offset[1] = ParseCoordinate();
 	else
 	{
 		Error(MESSAGE_GCODE_AxisOffsetMustNotBeSpecified);
@@ -915,7 +915,7 @@ void CGCodeParser::G0203Command(bool isG02)
 
 	SAxisMove move(true);
 	mm1000_t radius;
-	float offset[2] = { 0.0, 0.0 };
+	mm1000_t offset[2] = { 0, 0 };
 
 	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
 	{
@@ -960,8 +960,8 @@ void CGCodeParser::G0203Command(bool isG02)
 		}
 
 		// Complete the operation by calculating the actual center of the arc
-		offset[0] = float(0.5*(x - (y*h_x2_div_d)));
-		offset[1] = float(0.5*(y + (x*h_x2_div_d)));
+		offset[0] = mm1000_t(0.5*(x - (y*h_x2_div_d)));
+		offset[1] = mm1000_t(0.5*(y + (x*h_x2_div_d)));
 	}
 
 	CMotionControl::Arc(move.newpos, offset[0], offset[1], _modalstate.Plane_axis_0, _modalstate.Plane_axis_1, isG02, _modalstate.G1FeedRate);
