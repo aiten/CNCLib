@@ -9,6 +9,8 @@
 #include <LCD.h>
 #include "RotaryButton.h"
 
+#define ROTARY_ACCURACY	4
+
 ////////////////////////////////////////////////////////
 
 class CMyLcd : public CLcd
@@ -25,9 +27,7 @@ public:
 	virtual void Idle(unsigned int idletime);
 	virtual void TimerInterrupt();
 
-	typedef unsigned short rotarypos_t;
-
-	CRotaryButton<rotarypos_t> button;
+	typedef signed char rotarypos_t;
 
 	enum EPage
 	{
@@ -45,12 +45,12 @@ public:
 	enum ERotaryFocus
 	{
 		MainPage,
-		SubPage
+		MenuPage
 	};
 
 	EnumAsByte(EPage) GetPage();
-	unsigned char GetSubPage(unsigned char count);
-	void SetRotaryFocus(EnumAsByte(ERotaryFocus) focus);
+	void SetRotaryFocusMainPage();
+	void SetRotaryFocusMenuPage();
 
 protected:
 
@@ -58,14 +58,16 @@ protected:
 	virtual unsigned long Splash();
 	virtual void FirstDraw();
 
+	CRotaryButton<rotarypos_t, ROTARY_ACCURACY> _button;
+
 private:
 
 	EnumAsByte(ERotaryFocus) _rotaryFocus;
 	EnumAsByte(EPage)		_currentpage;
-	unsigned char			_currentSubPage;
+	unsigned char			_currentMenu;
+	unsigned char			_currentMenuOffset;
 
 	bool _expectButtonOff;
-
 
 	typedef bool(*DrawFunction)(CMyLcd* t, bool setup);
 	typedef void(*ButtonFunction)(CMyLcd* t);
@@ -89,9 +91,7 @@ private:
 	void ButtonPressPresetPage();		static void MyButtonPressPresetPage(CMyLcd* t)			{ return t->ButtonPressPresetPage(); };
 	void ButtonPressStartSDPage();		static void MyButtonPressStartSDPage(CMyLcd* t)			{ return t->ButtonPressStartSDPage(); };
 	void ButtonPressPause();			static void MyButtonPressPause(CMyLcd* t)				{ return t->ButtonPressPause(); };
-
-	void ButtonPressXXPage();			static void MyButtonPressXXPage(CMyLcd* t)				{ return t->ButtonPressXXPage(); };
-	void ButtonPressXXSubPage();		static void MyButtonPressXXSubPage(CMyLcd* t)			{ return t->ButtonPressXXSubPage(); };
+	void ButtonPressMenuPage();			static void MyButtonPressMenuPage(CMyLcd* t)			{ return t->ButtonPressMenuPage(); };
 
 	bool DrawLoopSplash(bool setup);	static bool MyDrawLoopSplash(CMyLcd* t, bool setup)		{ return t->DrawLoopSplash(setup); };
 	bool DrawLoopDebug(bool setup);		static bool MyDrawLoopDebug(CMyLcd* t, bool setup)		{ return t->DrawLoopDebug(setup); };
@@ -100,12 +100,15 @@ private:
 	bool DrawLoopStartSD(bool setup);	static bool MyDrawLoopStartSD(CMyLcd* t, bool setup)    { return t->DrawLoopStartSD(setup); };
 	bool DrawLoopPause(bool setup);		static bool MyDrawLoopPause(CMyLcd* t, bool setup)		{ return t->DrawLoopPause(setup); };
 	bool DrawLoopError(bool setup);		static bool MyDrawLoopError(CMyLcd* t, bool setup)		{ return t->DrawLoopError(setup); };
-	bool DrawLoopXX(bool setup);		static bool MyDrawLoopXX(CMyLcd* t, bool setup)			{ return t->DrawLoopXX(setup); };
+	bool DrawLoopMenu(bool setup);		static bool MyDrawLoopMenu(CMyLcd* t, bool setup)		{ return t->DrawLoopMenu(setup); };
 
 	bool DrawLoopSetupDefault();
 	void DrawLoopDefaultHead();
 
 	void Beep();
+
+	unsigned char GetMenuIdx();
+	unsigned char GetMenuCount();
 };
 
 ////////////////////////////////////////////////////////

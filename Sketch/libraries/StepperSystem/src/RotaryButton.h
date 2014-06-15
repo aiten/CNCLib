@@ -2,17 +2,22 @@
 
 ////////////////////////////////////////////////////////
 
-template <class rang>
+template <class rang_t, unsigned char ACCURACY>
 class CRotaryButton
 {
 public:
 
+	typedef unsigned char rotarypage_t;
+
 	CRotaryButton()
 	{
-		Pos = 0;
+		_pos = 0;
 		_lastchangedA = false;
 		_lastPinValue = 0;
 		_lastadd = 0;
+		_minpos  = 0;
+		_maxpos     = 127/ACCURACY;
+		_overrunpos = false;
 	}
 
 	void Tick(unsigned char pinAValue, unsigned char pinBValue)
@@ -45,20 +50,53 @@ public:
 			}
 		}
 
-		if (add != 0)										// chech for chaned of direction
+		if (add != 0)										// chech for change of direction
 		{
-			Pos += add;
+			_pos += add;
 			if (add != _lastadd)
 			{
-				Pos += add;
+				_pos += add;
 				_lastadd = add;
+			}
+
+			rang_t pos = GetPos();
+			if (pos > _maxpos) 
+			{
+				if (_overrunpos) 
+					_pos -= (_maxpos - _minpos +1) * ACCURACY;
+				else
+					_pos -= ACCURACY;
+			}
+			else if (pos < _minpos) 
+			{
+				if (_overrunpos) 
+					_pos += (_maxpos - _minpos +1) * ACCURACY;
+				else
+					_pos += ACCURACY;
 			}
 		}
 	}
 
-	volatile rang   Pos;
+	void SetMinMax(rang_t minpos, rang_t maxpos, bool overrun)	{ _minpos = minpos; _maxpos = maxpos; _overrunpos = overrun; }
+
+	rang_t GetMin()												{ return _minpos; }
+	rang_t GetMax()												{ return _maxpos; }
+	bool GetOverrrunMode()										{ return _overrunpos; }
+
+	rang_t GetFullRangePos()									{ return _pos; }
+
+	rang_t GetPos()												{ return (_pos + ((_pos > 0) ? ACCURACY/2 : -(ACCURACY/2))) / ACCURACY; }
+	void SetPos(rang_t pos)										{ _pos = pos * ACCURACY; }
+
+	void SetPageIdx(rotarypage_t page)							{ SetPos(page); }
+	rotarypage_t GetPageIdx(rotarypage_t pages)					{ rang_t rpage = GetPos()%pages; if (rpage < 0) rpage = pages+rpage; return (rotarypage_t) rpage; }
 
 protected:
+
+	volatile rang_t  _pos;
+	rang_t			_minpos;
+	rang_t			_maxpos;
+	bool			_overrunpos;
 
 	bool 			_lastchangedA;
 	unsigned char 	_lastPinValue;

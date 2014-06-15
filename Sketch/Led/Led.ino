@@ -20,6 +20,8 @@ COLOR Display[NUM_LEDS];
 
 CKeyPad16 keypad;
 
+unsigned short lastkeys=1;
+
 void setup()
 {
   Serial.begin(9600);
@@ -36,6 +38,46 @@ void KeyPadLoop(unsigned long maxtime);
 
 void loop()
 {
+  unsigned short allkeys = keypad.GetAllKeys();
+  if (allkeys!=0) 
+  {
+    lastkeys = allkeys;
+  }
+  else
+  {
+    lastkeys = lastkeys<<1;
+    if ((lastkeys&31)==0)
+      lastkeys=1;
+  }
+  
+  if (lastkeys&1)
+  {
+    BoxLoop(5000);
+  }
+  if (lastkeys&2)
+  {
+    WheelLoop(10000);
+  }
+  if (lastkeys&4)
+  {
+    BallLoop(100000, true);
+  }
+  if (lastkeys&8)
+  {
+    ClockLoop(99, true, 100);
+  }
+  if (lastkeys&16)
+  {
+    ClockLoop(9, false, 1000);
+  }
+  
+   TickerLoop("TABEA ist 9 Jahre alt - Willkommen bei der Geburtstagsparty", ScrollFromRight, 1000);
+  
+return;
+  BallLoop(100000, true);
+  ClockLoop(9, false, 1000);
+
+  
   TickerLoop("Press Key", ScrollFromRight, 1000);
   KeyPadLoop(10000);
   //return;

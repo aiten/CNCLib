@@ -63,13 +63,13 @@ CMyLcd Lcd;
 PROGMEM CMyLcd::SPageDef CMyLcd::_pagedef[] =
 {
 	{ CMyLcd::MyDrawLoopSplash, CMyLcd::MyButtonPressNOP },
-	{ CMyLcd::MyDrawLoopDebug,	CMyLcd::MyButtonPressNOP },
+	{ CMyLcd::MyDrawLoopDebug, CMyLcd::MyButtonPressNOP },
 	{ CMyLcd::MyDrawLoopPosAbs, CMyLcd::MyButtonPressNOP },
 	{ CMyLcd::MyDrawLoopPreset, CMyLcd::MyButtonPressPresetPage },
-	{ CMyLcd::MyDrawLoopStartSD,CMyLcd::MyButtonPressStartSDPage },
-	{ CMyLcd::MyDrawLoopPause,	CMyLcd::MyButtonPressPause },
-	{ CMyLcd::MyDrawLoopError,	CMyLcd::MyButtonPressNOP },
-	{ CMyLcd::MyDrawLoopXX,		CMyLcd::MyButtonPressXXPage  }
+	{ CMyLcd::MyDrawLoopStartSD, CMyLcd::MyButtonPressStartSDPage },
+	{ CMyLcd::MyDrawLoopPause, CMyLcd::MyButtonPressPause },
+	{ CMyLcd::MyDrawLoopError, CMyLcd::MyButtonPressNOP },
+	{ CMyLcd::MyDrawLoopMenu, CMyLcd::MyButtonPressMenuPage }
 };
 
 ////////////////////////////////////////////////////////////
@@ -87,10 +87,10 @@ void CMyLcd::Init()
 
 	pinMode(LCD_KILL_PIN, INPUT_PULLUP);
 
-	button.Tick(READ(ROTARY_EN1), READ(ROTARY_EN2));
+	_button.Tick(READ(ROTARY_EN1), READ(ROTARY_EN2));
 
 	_currentpage = AbsPage;
-	SetRotaryFocus(MainPage);
+	SetRotaryFocusMainPage();
 }
 
 ////////////////////////////////////////////////////////////
@@ -112,11 +112,13 @@ EnumAsByte(CMyLcd::EPage) CMyLcd::GetPage()
 {
 	if (_rotaryFocus == MainPage)
 	{
-		EnumAsByte(EPage) page = (EnumAsByte(EPage))((button.Pos / 4) % PageCount);
+		EnumAsByte(EPage) page = (EnumAsByte(EPage))(_button.GetPageIdx(PageCount));
+
 		if (page != _currentpage)
 		{
 			_currentpage = page;
-			_currentSubPage = 0;
+			_currentMenu = 0;
+			_currentMenuOffset = 0;
 		}
 	}
 
@@ -125,30 +127,10 @@ EnumAsByte(CMyLcd::EPage) CMyLcd::GetPage()
 
 ////////////////////////////////////////////////////////////
 
-unsigned char CMyLcd::GetSubPage(unsigned char count)
+void CMyLcd::SetRotaryFocusMainPage()
 {
-	if (_rotaryFocus == SubPage)
-	{
-		unsigned char page = (EnumAsByte(EPage))((button.Pos / 4) % count);
-		if (page != _currentSubPage)
-		{
-			_currentSubPage = page;
-		}
-	}
-
-	return _currentSubPage;
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyLcd::SetRotaryFocus(EnumAsByte(ERotaryFocus) focus)
-{
-	switch (focus)
-	{
-		case MainPage:  button.Pos = (rotarypos_t)(_currentpage * 4 + 2); break;
-		case SubPage:   button.Pos = (rotarypos_t)(_currentSubPage * 4 + 2); break;
-	}
-	_rotaryFocus = focus;
+	_button.SetPageIdx(_currentpage); _button.SetMinMax(0, PageCount - 1, true);
+	_rotaryFocus = MainPage;
 }
 
 ////////////////////////////////////////////////////////////
@@ -162,7 +144,7 @@ void CMyLcd::TimerInterrupt()
 		Control.Kill();
 	}
 
-	button.Tick(READ(ROTARY_EN1), READ(ROTARY_EN2));
+	_button.Tick(READ(ROTARY_EN1), READ(ROTARY_EN2));
 }
 
 ////////////////////////////////////////////////////////////
@@ -187,70 +169,12 @@ void CMyLcd::Idle(unsigned int idletime)
 
 void CMyLcd::ButtonPress()
 {
-	ButtonFunction fnc=NULL;
-	switch(_rotaryFocus)
-	{
-		case MainPage: 
-		case SubPage: fnc = (ButtonFunction)pgm_read_ptr(&_pagedef[GetPage()].buttonpress); break;
-	}
+	ButtonFunction fnc = (ButtonFunction)pgm_read_ptr(&_pagedef[GetPage()].buttonpress);
 
 	if (fnc)
 	{
 		fnc(this);
 		DrawLoop();
-	}
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyLcd::ButtonPressPresetPage()
-{
-	// set current position to AbsPosPreset
-
-	mm1000_t current[NUM_AXIS];
-	CMotionControl::GetPositions(current);
-
-	for (register unsigned char i = 0; i < NUM_AXIS; i++)
-	{
-		CGCodeParser::SetG54PosPreset(i, current[i]);
-	}
-	CGCodeParser::SetZeroPresetIdx(1);
-
-	Beep();
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyLcd::ButtonPressStartSDPage()
-{
-	char tmp[16]; strcpy_P(tmp, (PGM_P)F("auto0.g"));;  //avoid string in memory
-	CGCode3DParser::GetExecutingFile() = SD.open(tmp);
-	if (CGCode3DParser::GetExecutingFile() && CGCode3DParser::GetExecutingFile().seek(0))
-		Control.StartPrintFromSD();
-
-	Beep();
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyLcd::ButtonPressPause()
-{
-	if (Control.IsPause())
-		Control.Continue();
-	else
-		Control.Pause();
-
-	Beep();
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyLcd::ButtonPressXXPage()
-{
-	switch (_rotaryFocus)
-	{
-		case MainPage:	SetRotaryFocus(SubPage); Beep();  break;
-		case SubPage:	SetRotaryFocus(MainPage); Beep();  break;
 	}
 }
 
@@ -327,7 +251,7 @@ bool CMyLcd::DrawLoopDebug(bool setup)
 	u8g.setPrintPos(ToCol(20), ToRow(0 + 1) + PosLineOffset);
 	u8g.print(prob.IsOn() ? '1' : '0');
 
-	u8g.setPrintPos(ToCol(19), ToRow(0 + 5) + PosLineOffset);
+	u8g.setPrintPos(ToCol(19), ToRow(0 + 2) + PosLineOffset);
 	u8g.print(CSDist::ToString(CStepper::GetInstance()->QueuedMovements(), tmp, 2));
 
 	return true;
@@ -357,6 +281,24 @@ bool CMyLcd::DrawLoopPosAbs(bool setup)
 	}
 
 	return true;
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyLcd::ButtonPressPresetPage()
+{
+	// set current position to AbsPosPreset
+
+	mm1000_t current[NUM_AXIS];
+	CMotionControl::GetPositions(current);
+
+	for (register unsigned char i = 0; i < NUM_AXIS; i++)
+	{
+		CGCodeParser::SetG54PosPreset(i, current[i]);
+	}
+	CGCodeParser::SetZeroPresetIdx(1);
+
+	Beep();
 }
 
 ////////////////////////////////////////////////////////////
@@ -392,6 +334,18 @@ bool CMyLcd::DrawLoopPreset(bool setup)
 
 ////////////////////////////////////////////////////////////
 
+void CMyLcd::ButtonPressStartSDPage()
+{
+	char tmp[16]; strcpy_P(tmp, (PGM_P)F("auto0.g"));;  //avoid string in memory
+	CGCode3DParser::GetExecutingFile() = SD.open(tmp);
+	if (CGCode3DParser::GetExecutingFile() && CGCode3DParser::GetExecutingFile().seek(0))
+		Control.StartPrintFromSD();
+
+	Beep();
+}
+
+////////////////////////////////////////////////////////////
+
 bool CMyLcd::DrawLoopStartSD(bool setup)
 {
 	if (setup)	return DrawLoopSetupDefault();
@@ -401,6 +355,18 @@ bool CMyLcd::DrawLoopStartSD(bool setup)
 	u8g.drawStr(ToCol(3), ToRow(3), F("auto0.g from SD"));
 
 	return true;
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyLcd::ButtonPressPause()
+{
+	if (Control.IsPause())
+		Control.Continue();
+	else
+		Control.Pause();
+
+	Beep();
 }
 
 ////////////////////////////////////////////////////////////
@@ -440,38 +406,157 @@ bool CMyLcd::DrawLoopError(bool setup)
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::DrawLoopXX(bool setup)
+unsigned char CMyLcd::GetMenuCount()
 {
-	if (setup)	return DrawLoopSetupDefault();
+	return 21;		// see const __FlashStringHelper* menuName[] PROGMEM in CMyLcd::DrawLoopMenu
+}
 
-	unsigned char x = GetSubPage(NUM_AXIS+1);
+////////////////////////////////////////////////////////////
 
-	const __FlashStringHelper* axisName1[] PROGMEM = { F("X"), F("Y"), F("Z"), F("A"), F("B"), F("C") };
-
-	unsigned char i;
-	for (i = 0; i < NUM_AXIS; i++)
+unsigned char CMyLcd::GetMenuIdx()
+{
+	if (_rotaryFocus == MenuPage)
 	{
-		u8g.setPrintPos(ToCol(0), ToRow(i) + PosLineOffset);
-		if (i==x && _rotaryFocus == SubPage)
-			u8g.print(F(">"));
-                else
-	  	  u8g.print(F(" "));
-
-		u8g.print(axisName1[i]);
+		unsigned char menu = _button.GetPageIdx(GetMenuCount());
+		if (menu != _currentMenu)
+		{
+			_currentMenu = menu;
+		}
 	}
 
-	u8g.setPrintPos(ToCol(0), ToRow(i) + PosLineOffset);
-	if (i==x && _rotaryFocus == SubPage)
-		u8g.print(F(">"));
-        else
-		u8g.print(F(" "));
-	u8g.print(F("back"));
-/*
-	char tmp[16];
+	return _currentMenu;
+}
 
-	u8g.setPrintPos(ToCol(1), ToRow(0 + 1) + PosLineOffset);
-	u8g.print(ToString(_currentSubPage, tmp, 2));
+////////////////////////////////////////////////////////////
+
+void CMyLcd::SetRotaryFocusMenuPage()
+{
+	_button.SetPageIdx(_currentMenu); _button.SetMinMax(0, GetMenuCount()-1, false); 
+	_rotaryFocus = MenuPage;
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyLcd::ButtonPressMenuPage()
+{
+	switch (_rotaryFocus)
+	{
+		case MainPage:	SetRotaryFocusMenuPage(); Beep();  break;
+		case MenuPage:	
+		{
+			unsigned char x = GetMenuIdx();
+			if (x==GetMenuCount()-1)		// last is always back
+			{
+				SetRotaryFocusMainPage(); 
+				Beep();  
+			}
+			else
+			{
+				Beep();  
+				Beep();  
+			}
+			break;
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+bool CMyLcd::DrawLoopMenu(bool setup)
+{
+	const __FlashStringHelper* menuName[] PROGMEM = 
+	{ 
+		F("Move X"), 
+		F("Move Y"), 
+		F("Move Z"), 
+		F("Probe Z"), 
+		F("M5"), 
+		F("M6"),
+		F("M7"),
+		F("M8"),
+		F("M9"),
+		F("M10"),
+		F("M11"),
+		F("M12"),
+		F("M13"),
+		F("M14"),
+		F("M15"),
+		F("M16"),
+		F("M17"),
+		F("M18"),
+		F("M19"),
+		F("M20"),
+		F("back")		// see GetMenuCount()
+	};
+
+	if (setup)	return DrawLoopSetupDefault();
+
+	u8g.drawStr(ToCol(0), ToRow(0) + HeadLineOffset, F("Menu"));
+
+	unsigned char x = 255;
+	const unsigned char printFirstLine = 1;
+	const unsigned char printLastLine  = (TotalRows - 1);
+	const unsigned char menuEntries = GetMenuCount();
+
+	if (_rotaryFocus == MenuPage)
+	{
+		x = GetMenuIdx();
+
+		if (x == 0)
+		{
+			_currentMenuOffset = 0;				// first menuitem selected => move to first line
+		}
+		else if (x - 1 < _currentMenuOffset)
+		{
+			_currentMenuOffset -= _currentMenuOffset - (x - 1);
+		}
+
+		if (x == menuEntries - 1)
+		{
+			_currentMenuOffset += x + printFirstLine - _currentMenuOffset - printLastLine;	// last menuitem selected => move to last line
+		}
+		else if (((x + 1) + printFirstLine - _currentMenuOffset) > printLastLine)
+		{
+			_currentMenuOffset += (x + 1) + printFirstLine - _currentMenuOffset - printLastLine;
+		}
+	}
+	unsigned char i;
+
+	for (i = 0; i < menuEntries; i++)
+	{
+		unsigned char printtorow = i+printFirstLine-_currentMenuOffset;	// may overrun => no need to check for minus
+		if (printtorow >= printFirstLine && printtorow <= printLastLine)
+		{
+			u8g.setPrintPos(ToCol(0), ToRow(printtorow) + PosLineOffset);
+			if (i == x && _rotaryFocus == MenuPage)
+				u8g.print(F(">"));
+			else
+				u8g.print(F(" "));
+
+			u8g.print(menuName[i]);
+/*
+			if (printtorow==(TotalRows-2))
+			{
+				u8g.print(F(">"));
+				u8g.print(_currentMenuOffset);
+			}
+			if (printtorow==printLastLine)
+			{
+				u8g.print(F(">"));
+				u8g.print(_button.GetFullRangePos());
+				u8g.print(F(">"));
+				u8g.print(_button.GetPos());
+				u8g.print(F(">"));
+				u8g.print(_button.GetMin());
+				u8g.print(F(">"));
+				u8g.print(_button.GetMax());
+				u8g.print(F(">"));
+				u8g.print(x);
+			}
 */
+		}
+	}
+
 	return true;
 }
 
