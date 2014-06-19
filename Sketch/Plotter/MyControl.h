@@ -18,7 +18,7 @@ protected:
 
 	virtual void Init();
 	virtual void Initialized();
-	virtual void Parse();
+	virtual bool Parse();
 	virtual void Idle(unsigned int idletime);
 
 	virtual void GoToReference();

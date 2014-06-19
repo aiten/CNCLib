@@ -176,6 +176,7 @@
                 <Button Command="{Binding SendM30FileCommand}" Grid.Row="5" Grid.Column="5" Content="M30 - Del" />
                 <Button Command="{Binding SendM20FileCommand}" Grid.Row="6" Grid.Column="5" Content="M20 - Dir"/>
                 <Button Command="{Binding SendM114Command}" Grid.Row="7" Grid.Column="5" Content="M114 - Pos"/>
+                <Button Command="{Binding SendZHomeCommand}" Grid.Row="8" Grid.Column="5" Content="Z Home"/>
 
                 <Label Height="23" Content="Command:" Grid.Row="1" Grid.Column="7" />
                 <Label Height="23" Content="SDFile" Grid.Row="2" Grid.Column="7" />

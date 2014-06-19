@@ -186,10 +186,10 @@ void CMyControl::GoToReference(axis_t axis)
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::Parse()
+bool CMyControl::Parse()
 {
 	CGCode3DParser gcode(&_reader);
-	ParseAndPrintResult(&gcode);
+	return ParseAndPrintResult(&gcode);
 }
 
 ////////////////////////////////////////////////////////////

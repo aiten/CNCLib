@@ -44,7 +44,6 @@ private:
 	unsigned long _nextdrawtime;
 
 	bool _splash;
-
 };
 
 ////////////////////////////////////////////////////////

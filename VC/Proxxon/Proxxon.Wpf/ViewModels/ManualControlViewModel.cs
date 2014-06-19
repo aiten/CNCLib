@@ -261,6 +261,7 @@ namespace Proxxon.Wpf.ViewModels
 		public void SendZRefMove()		{ AsyncRunCommand(() => { Com.SendCommand("g28 Z0"); }); }
 		public void SendZG92()			{ AsyncRunCommand(() => { Com.SendCommand("g92 Z" + ZParamDec.ToString(CultureInfo.InvariantCulture)); }); }
 		public void SendZG31()			{ SendProbeCommand("Z"); }
+		public void SendZHome() { AsyncRunCommand(() => { Com.SendCommand("g53 g0z#5163"); }); }
 
 		#endregion
 
@@ -545,6 +546,7 @@ namespace Proxxon.Wpf.ViewModels
 		public ICommand SendZRefMoveCommand { get { return new DelegateCommand(SendZRefMove, CanSendCommand); } }
 		public ICommand SendZG92Command { get { return new DelegateCommand(SendZG92, CanSendCommandZDecimal); } }
 		public ICommand SendZG31Command { get { return new DelegateCommand(SendZG31, CanSendCommand); } }
+		public ICommand SendZHomeCommand { get { return new DelegateCommand(SendZHome, CanSendCommand); } }
 
 		#endregion
 

@@ -58,6 +58,11 @@ public:
 
 	//////////////////////////////////////////
 
+	bool PostCommand(const __FlashStringHelper* cmd);
+	bool PostCommand(char* cmd);
+
+	//////////////////////////////////////////
+
 	const char* GetBuffer()				{ return _buffer; }
 
 protected:
@@ -68,15 +73,15 @@ protected:
 	virtual void Init();
 	virtual void Initialized();									// called if Init() is done
 
-	virtual void Parse() = 0;									// abstract: specify Parser
-	virtual void Command(char* xbuffer);						// execute Command (call parser)
+	virtual bool Parse() = 0;									// abstract: specify Parser
+	virtual bool Command(char* xbuffer);						// execute Command (call parser)
 	virtual void Idle(unsigned int idletime);					// called after TIMEOUTCALLIDEL in idle state
 	virtual bool IsEndOfCommandChar(char ch);					// override default End of command char, default \n \r
 	virtual void ReadAndExecuteCommand();						// read and execute commands from other source e.g. SD.File
 
 	virtual void TimerInterrupt();								// called from timer (timer0 on AVR) 
 
-	void ParseAndPrintResult(CParser* parser);
+	bool ParseAndPrintResult(CParser* parser);
 
 	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, unsigned char addinfo);
 

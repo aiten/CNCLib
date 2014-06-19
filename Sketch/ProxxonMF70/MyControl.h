@@ -30,7 +30,7 @@ protected:
 
 	virtual void Init();
 	virtual void Initialized();
-	virtual void Parse();
+	virtual bool Parse();
 
 	virtual void GoToReference();
 	virtual void GoToReference(axis_t axis);

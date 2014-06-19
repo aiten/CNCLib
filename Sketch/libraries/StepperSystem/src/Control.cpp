@@ -89,7 +89,7 @@ void CControl::Idle(unsigned int idletime)
 
 ////////////////////////////////////////////////////////////
 
-void CControl::ParseAndPrintResult(CParser *parser)
+bool CControl::ParseAndPrintResult(CParser *parser)
 {
 // send OK pre Parse => give PC time to send next
 #define SENDOKIMMEDIATELY
@@ -97,6 +97,8 @@ void CControl::ParseAndPrintResult(CParser *parser)
 #ifdef SENDOKIMMEDIATELY 
 	StepperSerial.println(MESSAGE_OK);
 #endif
+
+	bool ret = true;
 
 	parser->Parse();
 
@@ -106,6 +108,7 @@ void CControl::ParseAndPrintResult(CParser *parser)
 		StepperSerial.print(parser->GetError());
 		StepperSerial.print(F(" => "));
 		StepperSerial.println(_buffer);
+		ret = false;
 	}
 
 #ifndef SENDOKIMMEDIATELY 
@@ -126,30 +129,38 @@ void CControl::ParseAndPrintResult(CParser *parser)
 #ifndef SENDOKIMMEDIATELY 
 	StepperSerial.println();
 #endif
+
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////
 
-void CControl::Command(char* buffer)
+bool CControl::Command(char* buffer)
 {
 	if (IsKilled())
 	{
 		if (IsResurrectCommand(buffer))		// restart with "!!!"
 		{
 			Resurrect();
-			return;
+			return true;
 		}
 		StepperSerial.print(MESSAGE_ERROR); StepperSerial.println(MESSAGE_CONTROL_KILLED);
+		return false;
 	}
-	else
-	{
-		_reader.Init(buffer);
 
-		while (_reader.GetChar())
-		{
-			Parse();
-		}
+	// if one Parse failes, return false
+	
+	bool ret = true;
+	
+	_reader.Init(buffer);
+
+	while (_reader.GetChar())
+	{
+		if (!Parse())
+			ret = false;
 	}
+	
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////
@@ -275,6 +286,52 @@ void CControl::ReadAndExecuteCommand()
 {
 	// override for alternative command source e.g. File
 }
+
+////////////////////////////////////////////////////////////
+
+bool CControl::PostCommand(const __FlashStringHelper* cmd)
+{
+	if (_bufferidx > 0) return false;
+	const char* cmd1 = (const char*) cmd;
+
+	for (;_bufferidx<sizeof(_buffer);_bufferidx++)
+	{
+		_buffer[_bufferidx] = pgm_read_byte(&cmd1[_bufferidx]);
+
+		if (_buffer[_bufferidx] == 0)
+		{
+			bool ret = Command(_buffer);
+			_bufferidx=0;
+			return ret;
+		}
+	}
+
+	_bufferidx = 0;
+	return false;
+}
+
+////////////////////////////////////////////////////////////
+
+bool CControl::PostCommand(char* cmd)
+{
+	if (_bufferidx > 0) return false;
+
+	for (;_bufferidx<sizeof(_buffer);_bufferidx++)
+	{
+		_buffer[_bufferidx] = cmd[_bufferidx];
+
+		if (_buffer[_bufferidx] == 0)
+		{
+			bool ret = Command(_buffer);
+			_bufferidx=0;
+			return ret;
+		}
+	}
+
+	_bufferidx = 0;
+	return false;
+}
+
 
 ////////////////////////////////////////////////////////////
 

@@ -174,7 +174,7 @@ unsigned long CGCodeParser::ParseParameter()
 static bool IsParam(param_t paramNo, param_t offset, axis_t&axis)
 {
 	if (paramNo < offset || paramNo >= offset+NUM_AXIS) return false;
-	axis = (axis_t) (offset-paramNo);
+	axis = (axis_t) (paramNo-offset);
 	return true;
 }
 

@@ -20,7 +20,17 @@ public:
 		_overrunpos = false;
 	}
 
-	void Tick(unsigned char pinAValue, unsigned char pinBValue)
+	enum ERotaryEvent
+	{
+		Nothing=0,
+		RightTurn,
+		LeftTurn,
+		Overrun,
+		Underflow,
+	};
+	
+
+	EnumAsByte(ERotaryEvent) Tick(unsigned char pinAValue, unsigned char pinBValue)
 	{
 		signed char add = 0;
 
@@ -50,31 +60,39 @@ public:
 			}
 		}
 
-		if (add != 0)										// chech for change of direction
+		if (add==0) return Nothing;
+		
+		// check for change of direction
+
+		_pos += add;
+		if (add != _lastadd)
 		{
 			_pos += add;
-			if (add != _lastadd)
-			{
-				_pos += add;
-				_lastadd = add;
-			}
-
-			rang_t pos = GetPos();
-			if (pos > _maxpos) 
-			{
-				if (_overrunpos) 
-					_pos -= (_maxpos - _minpos +1) * ACCURACY;
-				else
-					_pos -= ACCURACY;
-			}
-			else if (pos < _minpos) 
-			{
-				if (_overrunpos) 
-					_pos += (_maxpos - _minpos +1) * ACCURACY;
-				else
-					_pos += ACCURACY;
-			}
+			_lastadd = add;
 		}
+
+		rang_t pos = GetPos();
+		if (pos > _maxpos) 
+		{
+			if (_overrunpos) 
+				_pos -= (_maxpos - _minpos +1) * ACCURACY;
+			else
+				_pos -= ACCURACY;
+			
+			return Overrun;
+		}
+		
+		if (pos < _minpos) 
+		{
+			if (_overrunpos) 
+				_pos += (_maxpos - _minpos +1) * ACCURACY;
+			else
+				_pos += ACCURACY;
+
+			return Underflow;
+		}
+		
+		return add > 0 ? RightTurn : LeftTurn;
 	}
 
 	void SetMinMax(rang_t minpos, rang_t maxpos, bool overrun)	{ _minpos = minpos; _maxpos = maxpos; _overrunpos = overrun; }

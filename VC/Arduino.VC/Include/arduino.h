@@ -37,6 +37,7 @@
 //#define min(a,b) ((a)<=(b)?(a):(b))
 
 #define strcpy_P(a,b) strcpy(a,b)
+#define strcat_P(a,b) strcat(a,b)
 
 #define __FlashStringHelper char
 #define F(a) a
@@ -155,7 +156,7 @@ static unsigned char SREG;
 inline unsigned long   pgm_read_dword(const void* p) { return *(unsigned long*)p; }
 inline unsigned short  pgm_read_word(const void* p) { return *(unsigned short*)p; }
 inline  unsigned char  pgm_read_byte(const void* p) { return *(unsigned char*)p; }
-inline  void* pgm_read_ptr(const void* p)  { return *((void **) p); }
+inline  const void* pgm_read_ptr(const void* p)  { return *((void **) p); }
 
 //extern unsigned int GetTickCount();
 #pragma warning(suppress: 28159)

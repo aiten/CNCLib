@@ -60,11 +60,13 @@ public:
 	static void SetG0FeedRate(feedrate_t feedrate)			{ _modalstate.G0FeedRate = feedrate; }
 	static void SetG1FeedRate(feedrate_t feedrate)			{ _modalstate.G1FeedRate = feedrate; }
 	static mm1000_t GetG54PosPreset(axis_t axis);
-	static mm1000_t GetG92PosPreset(axis_t axis)			{ return _modalstate.G92Pospreset[axis]; }
-	static mm1000_t GetToolHeightPosPreset(axis_t axis)		{ return axis == _modalstate.Plane_axis_2 ? _modalstate.ToolHeigtCompensation : 0; }
+	static mm1000_t GetG92PosPreset(axis_t axis)			{ return IsG53Present() ? 0 : _modalstate.G92Pospreset[axis]; }
+	static mm1000_t GetToolHeightPosPreset(axis_t axis)		{ return IsG53Present() ? 0 : (axis == _modalstate.Plane_axis_2 ? _modalstate.ToolHeigtCompensation : 0); }
 	static void SetG54PosPreset(axis_t axis, mm1000_t pos)	{ _modalstate.G54Pospreset[axis] = pos; }
 	static unsigned char GetZeroPresetIdx()					{ return _modalstate.ZeroPresetIdx; }
 	static void SetZeroPresetIdx(unsigned char idx)			{ _modalstate.ZeroPresetIdx = idx; }
+
+	static bool IsG53Present()								{ return _modlessstate.ZeroPresetIdx == 0; }
 
 	static mm1000_t GetAllPreset(axis_t axis)				{ return GetG92PosPreset(axis) + GetG54PosPreset(axis) + GetToolHeightPosPreset(axis); }
 
