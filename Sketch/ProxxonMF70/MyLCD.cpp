@@ -338,15 +338,13 @@ bool CMyLcd::DrawLoopPosAbs(bool setup)
 	u8g.setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); u8g.print(F("Absolut  Current"));
 	char tmp[16];
 
-	const __FlashStringHelper* axisName1[] PROGMEM = { F("X"), F("Y"), F("Z"), F("A"), F("B"), F("C") };
-
 	for (unsigned char i = 0; i < NUM_AXIS; i++)
 	{
 		udist_t cur = CStepper::GetInstance()->GetCurrentPosition(i);
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
 
 		u8g.setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-		u8g.print(axisName1[i]);
+		tmp[0] = 0; u8g.print(AddAxisName(tmp,i));
 		u8g.print(CMm1000::ToString(CMotionControl::ToMm1000(i, cur), tmp, 7, 2));
 		u8g.print(F(" "));
 		u8g.print(CMm1000::ToString(CMotionControl::ToMm1000(i, cur) - psall, tmp, 7, 2));
@@ -424,13 +422,12 @@ bool CMyLcd::DrawLoopPreset(bool setup)
 
 	u8g.setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset);  u8g.print(F("Preset: ")); u8g.print(zeroShiftName[CGCodeParser::GetZeroPresetIdx()]); u8g.print(F(" G92 Height"));
 
-	const __FlashStringHelper* axisName1[] PROGMEM = { F("X"), F("Y"), F("Z"), F("A"), F("B"), F("C") };
 	char tmp[16];
 
 	for (unsigned char i = 0; i < NUM_AXIS; i++)
 	{
 		u8g.setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-		u8g.print(axisName1[i]);
+		tmp[0] = 0; u8g.print(AddAxisName(tmp,i));
 		ps = CGCodeParser::GetG54PosPreset(i);
 		u8g.print(CMm1000::ToString(ps, tmp, 7, 2));
 
