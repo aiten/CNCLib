@@ -14,9 +14,10 @@ class CHelpParser : public CParser
 public:
 
 	CHelpParser(CStreamReader* reader) : CParser(reader){}
-	virtual void Parse();
 
 protected:
+
+	virtual void Parse();
 
 	bool MoveRel();
 	bool MoveRel(axis_t axis);

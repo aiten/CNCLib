@@ -113,6 +113,9 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 	switch (tool)
 	{
 		case Probe:			{ CProbeControl probe;	return probe.IsOn(); }
+		case Spindel:		{ return _spindel.IsOn(); }
+		case Coolant:		{ return _coolant.IsOn(); }
+		case ControllerFan:	{ return _controllerfan.Level; }
 	}
 
 	return super::IOControl(tool);

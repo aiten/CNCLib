@@ -100,7 +100,7 @@ bool CControl::ParseAndPrintResult(CParser *parser)
 
 	bool ret = true;
 
-	parser->Parse();
+	parser->ParseCommand();
 
 	if (parser->GetError() != NULL)
 	{

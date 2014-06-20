@@ -46,9 +46,22 @@ bool CGCodeParser::SetParamCommand(param_t /* paramNo */)	{ return false; }
 
 bool CGCodeParser::InitParse()
 {
+	if (!super::InitParse())
+		return false;
+
+	CStepper::GetInstance()->ClearError();
+
 	_modlessstate.Init();
-	return false;				// continue
+	return true;				// continue
 }
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::CleanupParse()
+{
+	_modlessstate.Init();		// state for no command
+}
+
 
 ////////////////////////////////////////////////////////////
 
@@ -417,11 +430,6 @@ mm1000_t CGCodeParser::GetG54PosPreset(axis_t axis)
 
 void CGCodeParser::Parse()
 {
-	CStepper::GetInstance()->ClearError();
-
-	if (InitParse())
-		return;
-
 	do
 	{
 		unsigned char ch = _reader->GetCharToUpper();

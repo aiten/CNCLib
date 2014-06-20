@@ -55,7 +55,6 @@ private:
 public:
 
 	CGCodeParser(CStreamReader* reader) : super(reader)		{  };
-	virtual void Parse();
 
 	static void SetG0FeedRate(feedrate_t feedrate)			{ _modalstate.G0FeedRate = feedrate; }
 	static void SetG1FeedRate(feedrate_t feedrate)			{ _modalstate.G1FeedRate = feedrate; }
@@ -76,7 +75,10 @@ protected:
 
 	// overrides to exend parser
 
-	virtual bool InitParse();						// begin parsing of a command (override for prechecks)
+	virtual void Parse();
+	virtual bool InitParse();
+	virtual void CleanupParse();
+
 	virtual bool GCommand(unsigned char gcode);		// check for GCode extension => return true if command is parsed, false to do default
 	virtual bool MCommand(unsigned char mcode);
 	virtual bool SetParamCommand(param_t pramNo);

@@ -23,6 +23,12 @@ public:
 		else
 			digitalWrite(COOLANT_PIN, COOLANT_OFF);
 	}
+
+	bool IsOn()
+	{
+		return digitalRead(COOLANT_PIN)==COOLANT_ON;
+	}
+
 };
 
 ////////////////////////////////////////////////////////

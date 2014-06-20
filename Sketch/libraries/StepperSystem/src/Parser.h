@@ -18,7 +18,7 @@ public:
 
 	CParser(CStreamReader* reader)							{ _reader = reader; _error = NULL; _OkMessage = NULL; };
 
-	virtual void Parse() = 0;
+	void ParseCommand();
 
 	bool IsError()											{ return _error != NULL; };
 	const __FlashStringHelper * GetError()					{ return _error; }
@@ -33,6 +33,10 @@ public:
 protected:
 
 	////////////////////////////////////////////////////////
+
+	virtual void Parse() = 0;
+	virtual bool InitParse()								{ return true; };		// begin parsing of a command (override for prechecks), return true to continue
+	virtual void CleanupParse()								{};						// called after calle to Parse()
 
 	bool CheckError();
 	virtual char SkipSpacesOrComment()						{ return _reader->SkipSpaces(); }

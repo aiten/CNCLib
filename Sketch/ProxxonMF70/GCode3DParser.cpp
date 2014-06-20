@@ -23,13 +23,13 @@ struct CGCode3DParser::GCodeState CGCode3DParser::_state;
 
 bool CGCode3DParser::InitParse()
 {
-	if (super::InitParse())
-		return true;
+	if (!super::InitParse())
+		return false;
 
 	if (_state._isM28)
 	{
 		const char* linestart = _reader->GetBuffer();
-		if (!ParseLineNumber(false))	return true;
+		if (!ParseLineNumber(false))	return false;
 
 		// m28 writes all subsequent commands to the sd file
 		// m29 ends the writing => we have to check first
@@ -37,12 +37,12 @@ bool CGCode3DParser::InitParse()
 		{
 			GetExecutingFile().println(linestart);
 			_reader->MoveToEnd();
-			return true;
+			return false;
 		}
 		_reader->ResetBuffer(linestart);
 	}
 
-	return false;
+	return true;
 }
 
 ////////////////////////////////////////////////////////////
@@ -335,7 +335,7 @@ void CGCode3DParser::CommandEscape()
 		_reader->GetNextChar();
 
 	CHelpParser mycommand(_reader);
-	mycommand.Parse();
+	mycommand.ParseCommand();
 
 	if (mycommand.IsError()) Error(mycommand.GetError());
 	_OkMessage = mycommand.GetOkMessage();

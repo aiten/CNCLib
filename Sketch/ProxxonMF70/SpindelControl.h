@@ -23,6 +23,11 @@ public:
 		else
 			digitalWrite(SPINDEL_PIN, SPINDEL_OFF);
 	}
+
+	bool IsOn()
+	{
+		return digitalRead(SPINDEL_PIN)==SPINDEL_ON;
+	}
 };
 
 ////////////////////////////////////////////////////////

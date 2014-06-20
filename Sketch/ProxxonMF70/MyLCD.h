@@ -65,6 +65,9 @@ private:
 	typedef void(CMyLcd::*ButtonFunction)();
 	typedef void(CMyLcd::*MenuButtonFunction)(unsigned short param);
 
+	void DrawLoop(DrawFunction drawfnc)						{ _curretDraw = drawfnc; DrawLoop(); }
+	void DrawLoop();
+
 	struct SPageDef
 	{
 		DrawFunction draw;
@@ -102,12 +105,9 @@ private:
 	static bool SendCommand(const __FlashStringHelper* cmd);
 	static bool SendCommand(char* cmd);
 
-	void DrawLoop(DrawFunction drawfnc)						{ _curretDraw = drawfnc; DrawLoop(); }
-	void DrawLoop();
 
 	void ButtonPress();
 
-	void ButtonPressPresetPage();
 	void ButtonPressStartSDPage();
 	void ButtonPressPause();
 	void ButtonPressMenuPage();
@@ -131,37 +131,49 @@ private:
 	unsigned char GetMenuCount();
 	const __FlashStringHelper* GetMenuText(unsigned char idx);
 	MenuButtonFunction GetMenuFnc(unsigned char idx);
-	unsigned short GetMenuParam(unsigned char idx)             { return (unsigned short)pgm_read_word(&_currentMenu[idx].param); }
+	unsigned short GetMenuParam(unsigned char idx)				{ return (unsigned short)pgm_read_word(&_currentMenu[idx].param); }
 
-	void ButtonPressMenuBack(unsigned short param);
+	unsigned char FindMenuIdx(MenuButtonFunction f, unsigned short param, unsigned char valueIffail);
+
+	char* AddAxisName(char*buffer, axis_t axis);
+
+	void ButtonPressMenuG92Clear(unsigned short)				{ SendCommand(F("g92")); Beep(); }
 	void ButtonPressMenuEnd(unsigned short param);
 
-	void ButtonPressMenuHomeZ(unsigned short)													{ SendCommand(F("g53 g0z#5163")); SetDefaultPage(); };
-	void ButtonPressMenuZM10(unsigned short)													{ SendCommand(F("g91 g0z-10 g90")); };
-	void ButtonPressMenuProbeZ(unsigned short);
+	void ButtonPressMenuHome(unsigned short);
+	void ButtonPressMenuProbe(unsigned short);
+	void ButtonPressMenuSpindle(unsigned short);
+	void ButtonPressMenuCoolant(unsigned short);
+
+	void ButtonPressMenuMoveG92(unsigned short);
+	void ButtonPressMenuMove(unsigned short movetype);
+	void ButtonPressMenuMoveBack(unsigned short);
+
+	void ButtonPressMenuSDInit(unsigned short)				{ SendCommand(F("m21")); Beep(); }
+	void ButtonPressMenuSDBack(unsigned short);
 
 	void ButtonPressMenuSetMove(unsigned short axis);
+	void ButtonPressMenuSetSD(unsigned short);
 
 	enum EMoveType
 	{
 		MoveP10,
 		MoveP1,
 		MoveP01,
-		MoveM01,
+		MoveP001,
+		MoveM10,
 		MoveM1,
-		MoveM10
+		MoveM01,
+		MoveM001,
+		MoveHome
 	};
-
-	void ButtonPressMenuMove(unsigned short movetype);
-
-	void ButtonPressMenuSetAxis(unsigned short);
 
 	void SetMenu(const SMenuDef* pMenu,const __FlashStringHelper* name)			{ _currentMenu = pMenu; _currentMenuName = name; _currentMenuIdx = 0; _currentMenuOffset = 0; };
 	void SetMainMenu()															{ SetMenu(_mainMenu,F("Main")); }
 
 	static const SMenuDef _mainMenu[] PROGMEM;
-	static const SMenuDef _axisMenu[] PROGMEM;
 	static const SMenuDef _axisMenuMove[] PROGMEM;
+	static const SMenuDef _SDMenu[] PROGMEM;
 
 #if defined(__AVR_ARCH__)
 
