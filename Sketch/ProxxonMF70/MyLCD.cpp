@@ -602,14 +602,15 @@ void CMyLcd::ButtonPressMenuEnd(unsigned short)
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::ButtonPressMenuProbe(unsigned short)
+void CMyLcd::ButtonPressMenuSetMove(unsigned short axis)
 {
-	if (SendCommand(F("g91 g31 Z-10 F100 g90")))
-	{
-		SendCommand(F("g92 Z-25"));
-		SetDefaultPage();
-		SendCommand(F("g91 Z3 g90"));
-	}
+	const __FlashStringHelper* axisName[] PROGMEM = { F("Move X"), F("Move Y"), F("Move Z"), F("Move A"), F("Move B"), F("Move C") };
+
+	_currentMenuAxis = (axis_t)axis;
+	SetMenu(_axisMenuMove, axisName[axis]);
+	SetRotaryFocusMenuPage();
+	DrawLoop();
+	Beep();
 }
 
 ////////////////////////////////////////////////////////////
@@ -624,14 +625,41 @@ void CMyLcd::ButtonPressMenuSetSD(unsigned short)
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::ButtonPressMenuSetMove(unsigned short axis)
+void CMyLcd::ButtonPressMenuSetExtra(unsigned short)
 {
-	const __FlashStringHelper* axisName[] PROGMEM = { F("Move X"), F("Move Y"), F("Move Z"), F("Move A"), F("Move B"), F("Move C") };
-
-	_currentMenuAxis = (axis_t)axis;
-	SetMenu(_axisMenuMove, axisName[axis]);
+	SetMenu(_ExtraMenu, F("Extra"));
 	SetRotaryFocusMenuPage();
 	DrawLoop();
+	Beep();
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyLcd::ButtonPressMenuMoveBack(unsigned short)
+{
+	SetMainMenu();
+	_currentMenuIdx = FindMenuIdx(&CMyLcd::ButtonPressMenuSetMove,_currentMenuAxis,0);
+	SetRotaryFocusMenuPage();
+	Beep();
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyLcd::ButtonPressMenuSDBack(unsigned short)
+{
+	SetMainMenu();
+	_currentMenuIdx = FindMenuIdx(&CMyLcd::ButtonPressMenuSetSD,0,0);
+	SetRotaryFocusMenuPage();
+	Beep();
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyLcd::ButtonPressMenuExtraBack(unsigned short)
+{
+	SetMainMenu();
+	_currentMenuIdx = FindMenuIdx(&CMyLcd::ButtonPressMenuSetExtra,0,0);
+	SetRotaryFocusMenuPage();
 	Beep();
 }
 
@@ -665,6 +693,18 @@ void CMyLcd::ButtonPressMenuMove(unsigned short dist)
 
 ////////////////////////////////////////////////////////////
 
+void CMyLcd::ButtonPressMenuProbe(unsigned short)
+{
+	if (SendCommand(F("g91 g31 Z-10 F100 g90")))
+	{
+		SendCommand(F("g92 Z-25"));
+		SetDefaultPage();
+		SendCommand(F("g91 Z3 g90"));
+	}
+}
+
+////////////////////////////////////////////////////////////
+
 void CMyLcd::ButtonPressMenuHome(unsigned short param)
 {
 	char tmp[16];
@@ -692,26 +732,6 @@ void CMyLcd::ButtonPressMenuMoveG92(unsigned short)
 	strcat_P(tmp, PSTR("0"));
 
 	SendCommand(tmp);
-	Beep();
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyLcd::ButtonPressMenuMoveBack(unsigned short)
-{
-	SetMainMenu();
-	_currentMenuIdx = FindMenuIdx(&CMyLcd::ButtonPressMenuSetMove,_currentMenuAxis,0);
-	SetRotaryFocusMenuPage();
-	Beep();
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyLcd::ButtonPressMenuSDBack(unsigned short)
-{
-	SetMainMenu();
-	_currentMenuIdx = FindMenuIdx(&CMyLcd::ButtonPressMenuSetSD,0,0);
-	SetRotaryFocusMenuPage();
 	Beep();
 }
 
@@ -853,30 +873,22 @@ bool CMyLcd::DrawLoopMenu(bool setup)
 
 #define MenuText(a,b)  static const char a[] PROGMEM = b;
 
-MenuText(_mHomeZ, "Home Z");
-MenuText(_mProbeZ, "Probe Z");
-MenuText(_m4, "Axis");
-MenuText(_mMoveX, "Move X");
-MenuText(_mMoveY, "Move Y");
-MenuText(_mMoveZ, "Move Z");
-MenuText(_mG92Clear, "G92 Clear");
-MenuText(_mSpindle, "Spindle On/Off");
-MenuText(_mCoolant, "Coolant On/Off");
-MenuText(_mSD, "SD");
-MenuText(_mBack, "Back");
-MenuText(_mEnd, "End");
+MenuText(_mMoveX,	"Move X             >");
+MenuText(_mMoveY,	"Move Y             >");
+MenuText(_mMoveZ,	"Move Z             >");
+MenuText(_mG92Clear,"G92 Clear");
+MenuText(_mSD,		"SD                 >");
+MenuText(_mExtra,	"Extra              >");
+MenuText(_mBack,	"Back               <");
+MenuText(_mEnd,		"End");
 
 const CMyLcd::SMenuDef CMyLcd::_mainMenu[] PROGMEM =
 {
 	{ _mMoveX, &CMyLcd::ButtonPressMenuSetMove, X_AXIS },
 	{ _mMoveY, &CMyLcd::ButtonPressMenuSetMove, Y_AXIS },
 	{ _mMoveZ, &CMyLcd::ButtonPressMenuSetMove, Z_AXIS },
-	{ _mHomeZ, &CMyLcd::ButtonPressMenuHome, Z_AXIS },
-	{ _mProbeZ, &CMyLcd::ButtonPressMenuProbe, Z_AXIS },
-	{ _mG92Clear, &CMyLcd::ButtonPressMenuG92Clear },
-	{ _mSpindle, &CMyLcd::ButtonPressMenuSpindle },
-	{ _mCoolant, &CMyLcd::ButtonPressMenuCoolant },
 	{ _mSD, &CMyLcd::ButtonPressMenuSetSD },
+	{ _mExtra, &CMyLcd::ButtonPressMenuSetExtra },
 	{ _mEnd, &CMyLcd::ButtonPressMenuEnd },
 	{ NULL, 0 }
 };
@@ -890,8 +902,7 @@ MenuText(_mM001, "-0.01");
 MenuText(_mM1, "-1");
 MenuText(_mM10, "-10");
 MenuText(_mHome, "Home");
-MenuText(_mProbe, "Probe");
-MenuText(_mG92, "G92");
+MenuText(_mG92, "Zero Offset(G92)");
 
 const CMyLcd::SMenuDef CMyLcd::_axisMenuMove[] PROGMEM =
 {
@@ -915,5 +926,21 @@ const CMyLcd::SMenuDef CMyLcd::_SDMenu[] PROGMEM =
 {
 	{ _mSDInit, &CMyLcd::ButtonPressMenuSDInit },
 	{ _mBack, &CMyLcd::ButtonPressMenuSDBack },
+	{ NULL, 0 }
+};
+
+MenuText(_mSpindle, "Spindle On/Off");
+MenuText(_mCoolant, "Coolant On/Off");
+MenuText(_mHomeZ,	"Home Z");
+MenuText(_mProbeZ,	"Probe Z");
+
+const CMyLcd::SMenuDef CMyLcd::_ExtraMenu[] PROGMEM =
+{
+	{ _mG92Clear, &CMyLcd::ButtonPressMenuG92Clear },
+	{ _mHomeZ, &CMyLcd::ButtonPressMenuHome, Z_AXIS },
+	{ _mProbeZ, &CMyLcd::ButtonPressMenuProbe, Z_AXIS },
+	{ _mSpindle, &CMyLcd::ButtonPressMenuSpindle },
+	{ _mCoolant, &CMyLcd::ButtonPressMenuCoolant },
+	{ _mBack, &CMyLcd::ButtonPressMenuExtraBack },
 	{ NULL, 0 }
 };

@@ -152,8 +152,11 @@ private:
 	void ButtonPressMenuSDInit(unsigned short)				{ SendCommand(F("m21")); Beep(); }
 	void ButtonPressMenuSDBack(unsigned short);
 
+	void ButtonPressMenuExtraBack(unsigned short);
+
 	void ButtonPressMenuSetMove(unsigned short axis);
 	void ButtonPressMenuSetSD(unsigned short);
+	void ButtonPressMenuSetExtra(unsigned short);
 
 	enum EMoveType
 	{
@@ -174,6 +177,7 @@ private:
 	static const SMenuDef _mainMenu[] PROGMEM;
 	static const SMenuDef _axisMenuMove[] PROGMEM;
 	static const SMenuDef _SDMenu[] PROGMEM;
+	static const SMenuDef _ExtraMenu[] PROGMEM;
 
 #if defined(__AVR_ARCH__)
 
