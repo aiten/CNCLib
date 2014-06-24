@@ -57,6 +57,7 @@
     <Compile Include="Commands\G19Command.cs" />
     <Compile Include="Commands\G20Command.cs" />
     <Compile Include="Commands\IsGCommandAttribute.cs" />
+    <Compile Include="Commands\MxxCommand.cs" />
     <Compile Include="Commands\SetParameterCommand.cs" />
     <Compile Include="Commands\G21Command.cs" />
     <Compile Include="Commands\G28Command.cs" />

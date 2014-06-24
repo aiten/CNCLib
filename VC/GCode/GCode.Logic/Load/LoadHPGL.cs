@@ -76,6 +76,7 @@ namespace GCode.Logic.Load
 
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
             {
+				commands.AddCommand(new MxxCommand() { GCodeAdd = "m3" });
 				commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#1 = " + _penUpZ.ToString(CultureInfo.InvariantCulture) });
 				commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#2 = " + _penDownZ.ToString(CultureInfo.InvariantCulture) });
 				
@@ -97,6 +98,8 @@ namespace GCode.Logic.Load
 					r.AddVariableParam('Z', "1");
 					commands.AddCommand(r);
 				}
+
+				commands.AddCommand(new MxxCommand() { GCodeAdd = "m5" } );
             }
 			commands.UpdateCache();
         }

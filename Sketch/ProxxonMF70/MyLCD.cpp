@@ -893,6 +893,8 @@ const CMyLcd::SMenuDef CMyLcd::_mainMenu[] PROGMEM =
 	{ NULL, 0 }
 };
 
+////////////////////////////////////////////////////////////
+
 MenuText(_mP10, "+10");
 MenuText(_mP1, "+1");
 MenuText(_mP01, "+0.1");
@@ -920,6 +922,8 @@ const CMyLcd::SMenuDef CMyLcd::_axisMenuMove[] PROGMEM =
 	{ NULL, 0 }
 };
 
+////////////////////////////////////////////////////////////
+
 MenuText(_mSDInit, "Init Card");
 
 const CMyLcd::SMenuDef CMyLcd::_SDMenu[] PROGMEM =
@@ -928,6 +932,8 @@ const CMyLcd::SMenuDef CMyLcd::_SDMenu[] PROGMEM =
 	{ _mBack, &CMyLcd::ButtonPressMenuSDBack },
 	{ NULL, 0 }
 };
+
+////////////////////////////////////////////////////////////
 
 MenuText(_mSpindle, "Spindle On/Off");
 MenuText(_mCoolant, "Coolant On/Off");

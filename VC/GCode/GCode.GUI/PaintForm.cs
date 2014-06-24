@@ -187,7 +187,7 @@ namespace GCode.GUI
                     }
 					last = r;
 				}
-            }
+			}
         }
 
 		#endregion
