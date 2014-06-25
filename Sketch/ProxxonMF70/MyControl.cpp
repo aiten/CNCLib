@@ -21,11 +21,7 @@ CGCodeTools GCodeTools;
 
 void CMyControl::Init()
 {
-#if defined(__SAM3X8E__)
-	StepperSerial.println(MESSAGE_MYCONTROL_Proxxon_Starting_due);
-#else
-	StepperSerial.println(MESSAGE_MYCONTROL_Proxxon_Starting_mega);
-#endif
+	StepperSerial.println(MESSAGE_MYCONTROL_Proxxon_Starting);
 
 	super::Init();
 

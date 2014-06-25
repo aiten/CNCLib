@@ -873,14 +873,14 @@ bool CMyLcd::DrawLoopMenu(bool setup)
 
 #define MenuText(a,b)  static const char a[] PROGMEM = b;
 
-MenuText(_mMoveX,	"Move X             >");
-MenuText(_mMoveY,	"Move Y             >");
-MenuText(_mMoveZ,	"Move Z             >");
-MenuText(_mG92Clear,"G92 Clear");
-MenuText(_mSD,		"SD                 >");
-MenuText(_mExtra,	"Extra              >");
-MenuText(_mBack,	"Back               <");
-MenuText(_mEnd,		"End");
+static const char _mMoveX[] PROGMEM		= "Move X             >";
+static const char _mMoveY[] PROGMEM		= "Move Y             >";
+static const char _mMoveZ[] PROGMEM		= "Move Z             >";
+static const char _mG92Clear[] PROGMEM	= "G92 Clear";
+static const char _mSD[] PROGMEM		= "SD                 >";
+static const char _mExtra[] PROGMEM		= "Extra              >";
+static const char _mBack[] PROGMEM		= "Back               <";
+static const char _mEnd[] PROGMEM		= "End";
 
 const CMyLcd::SMenuDef CMyLcd::_mainMenu[] PROGMEM =
 {
@@ -895,16 +895,16 @@ const CMyLcd::SMenuDef CMyLcd::_mainMenu[] PROGMEM =
 
 ////////////////////////////////////////////////////////////
 
-MenuText(_mP10, "+10");
-MenuText(_mP1, "+1");
-MenuText(_mP01, "+0.1");
-MenuText(_mP001, "+0.01");
-MenuText(_mM01, "-0.1");
-MenuText(_mM001, "-0.01");
-MenuText(_mM1, "-1");
-MenuText(_mM10, "-10");
-MenuText(_mHome, "Home");
-MenuText(_mG92, "Zero Offset(G92)");
+static const char _mP10[] PROGMEM	= "+10";
+static const char _mP1[] PROGMEM	= "+1";
+static const char _mP01[] PROGMEM	= "+0.1";
+static const char _mP001[] PROGMEM	= "+0.01";
+static const char _mM01[] PROGMEM	= "-0.1";
+static const char _mM001[] PROGMEM	= "-0.01";
+static const char _mM1[] PROGMEM	= "-1";
+static const char _mM10[] PROGMEM	= "-10";
+static const char _mHome[] PROGMEM	= "Home";
+static const char _mG92[] PROGMEM	= "Zero Offset(G92)";
 
 const CMyLcd::SMenuDef CMyLcd::_axisMenuMove[] PROGMEM =
 {
@@ -924,7 +924,7 @@ const CMyLcd::SMenuDef CMyLcd::_axisMenuMove[] PROGMEM =
 
 ////////////////////////////////////////////////////////////
 
-MenuText(_mSDInit, "Init Card");
+static const char _mSDInit[] PROGMEM = "Init Card";
 
 const CMyLcd::SMenuDef CMyLcd::_SDMenu[] PROGMEM =
 {
@@ -935,10 +935,10 @@ const CMyLcd::SMenuDef CMyLcd::_SDMenu[] PROGMEM =
 
 ////////////////////////////////////////////////////////////
 
-MenuText(_mSpindle, "Spindle On/Off");
-MenuText(_mCoolant, "Coolant On/Off");
-MenuText(_mHomeZ,	"Home Z");
-MenuText(_mProbeZ,	"Probe Z");
+static const char _mSpindle[] PROGMEM	= "Spindle On/Off";
+static const char _mCoolant[] PROGMEM	= "Coolant On/Off";
+static const char _mHomeZ[] PROGMEM		= "Home Z";
+static const char _mProbeZ[] PROGMEM	= "Probe Z";
 
 const CMyLcd::SMenuDef CMyLcd::_ExtraMenu[] PROGMEM =
 {

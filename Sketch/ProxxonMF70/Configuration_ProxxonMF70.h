@@ -77,8 +77,13 @@
 ////////////////////////////////////////////////////////
 
 
-#define MESSAGE_MYCONTROL_Proxxon_Starting_due				F("Proxxon MF 70(HA) Ramps 1.4 due is starting ... ("__DATE__", "__TIME__")")
-#define MESSAGE_MYCONTROL_Proxxon_Starting_mega				F("Proxxon MF 70(HA) Ramps 1.4 mega is starting ... ("__DATE__", "__TIME__")")
+#if defined(__SAM3X8E__)
+#define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps 1.4 due is starting ... ("__DATE__", "__TIME__")")
+#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+#define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps 1.4 mega is starting ... ("__DATE__", "__TIME__")")
+#else
+#define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps 1.4 is starting ... ("__DATE__", "__TIME__")")
+#endif
 #define MESSAGE_MYCONTROL_InitializingSDCard				F("Initializing SD card...")
 #define MESSAGE_MYCONTROL_initializationFailed				F("initialization failed!")
 #define MESSAGE_MYCONTROL_initializationDone				F("initialization done.")
