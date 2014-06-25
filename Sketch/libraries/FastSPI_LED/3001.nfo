@@ -1,5 +1,0 @@
-Use SPI for tls3001/cyt300[15] chips - data rate is clock/2 - 01 for 0 bit, 10 for 1 bit - use lookup table to keep fast?
-
-init header:  15b111111111111111 4b0001 11b00000000000 - 30 bits, how does this play with spi in 8 bit chunks? need to send 00 for padding to 8 bits?
-
-http://diyblinky.com/apps/simplemachinesforum/index.php?topic=127.0
