@@ -950,3 +950,5 @@ const CMyLcd::SMenuDef CMyLcd::_ExtraMenu[] PROGMEM =
 	{ _mBack, &CMyLcd::ButtonPressMenuExtraBack },
 	{ NULL, 0 }
 };
+
+////////////////////////////////////////////////////////////
