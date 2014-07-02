@@ -1,4 +1,3 @@
-////////////////////////////////////////////////////////
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -15,7 +14,6 @@
   GNU General Public License for more details.
   http://www.gnu.org/licenses/
 */
-////////////////////////////////////////////////////////
 
 #include <StepperSystem.h>
 
@@ -26,6 +24,7 @@
 #include "GCodeParser.h"
 
 #include <U8glib.h>
+
 
 ////////////////////////////////////////////////////////////
 

@@ -41,10 +41,10 @@
 #define COORD_MIN_INCH		-99999l
 #define COORD_MAX_INCH		99999l
 
-#define COORD_MAXSCALE		5
+#define COORD_MAXSCALE		255			// dont care about max scale => always round and skip
 
 #define FEEDRATE_SCALE		3
-#define FEEDRATE_MAXSCALE	5
+#define FEEDRATE_MAXSCALE	255			// dont care about max scale => always round and skip
 #define FEEDRATE_MIN		5l
 #define FEEDRATE_MAX		99999999l
 
