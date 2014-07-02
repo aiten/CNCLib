@@ -330,7 +330,20 @@ namespace Framework.Logic
 			}
 
              cmd.SentTime = DateTime.Now;
-			_serialPort.WriteLine(cmd.CommandText);
+
+			 string commandtext = cmd.CommandText;
+
+			 while (commandtext.Length > 63)
+			 {
+				 // give "control" class the chance to read from arduino to control buffer
+
+				 string first50 = commandtext.Substring(0, 50);
+				 commandtext = commandtext.Substring(50);
+				 _serialPort.Write(first50);
+				 Thread.Sleep(100);
+			 }
+
+			 _serialPort.WriteLine(commandtext);
 
 Console.WriteLine(cmd.CommandText);
 
