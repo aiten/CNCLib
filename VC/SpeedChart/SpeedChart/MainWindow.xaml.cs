@@ -38,11 +38,22 @@ namespace SpeedChart
 		}
 		private void LoadFile()
 		{
-			string filename = GetFilename(_fileNo);
-			_list.ReadFiles(filename);
-			_fileNoLbl.Content = _fileNo.ToString();
-			_chart.List = _list;
-			_chart.InvalidateVisual();
+			try
+			{
+				string filename = GetFilename(_fileNo);
+				_list.ReadFiles(filename);
+				_fileNoLbl.Content = _fileNo.ToString();
+				_chart.List = _list;
+				_chart.InvalidateVisual();
+			}
+			catch(FileNotFoundException e)
+			{
+				MessageBox.Show(e.Message);
+			}
+			catch (DirectoryNotFoundException e)
+			{
+				MessageBox.Show(e.Message);
+			}
 		}
 
 		private string GetFilename(int fileno)
