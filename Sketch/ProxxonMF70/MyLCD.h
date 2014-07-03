@@ -156,26 +156,27 @@ private:
 
 	char* AddAxisName(char*buffer, axis_t axis);
 
-	void ButtonPressMenuG92Clear(unsigned short)				{ SendCommand(F("g92")); Beep(); }
-	void ButtonPressMenuEnd(unsigned short param);
+	void MenuButtonPressG92Clear(unsigned short)				{ SendCommand(F("g92")); Beep(); }
+	void MenuButtonPressEnd(unsigned short param);
 
-	void ButtonPressMenuHome(unsigned short);
-	void ButtonPressMenuProbe(unsigned short);
-	void ButtonPressMenuSpindle(unsigned short);
-	void ButtonPressMenuCoolant(unsigned short);
+	void MenuButtonPressHome(unsigned short);
+	void MenuButtonPressProbe(unsigned short);
+	void MenuButtonPressSpindle(unsigned short);
+	void MenuButtonPressCoolant(unsigned short);
 
-	void ButtonPressMenuMoveG92(unsigned short);
-	void ButtonPressMenuMove(unsigned short movetype);
-	void ButtonPressMenuMoveBack(unsigned short);
+	void MenuButtonPressMoveNextAxis(unsigned short);
+	void MenuButtonPressMoveG92(unsigned short);
+	void MenuButtonPressMove(unsigned short movetype);
+	void MenuButtonPressMoveBack(unsigned short);
 
-	void ButtonPressMenuSDInit(unsigned short)				{ SendCommand(F("m21")); Beep(); }
-	void ButtonPressMenuSDBack(unsigned short);
+	void MenuButtonPressSDInit(unsigned short)				{ SendCommand(F("m21")); Beep(); }
+	void MenuButtonPressSDBack(unsigned short);
 
-	void ButtonPressMenuExtraBack(unsigned short);
+	void MenuButtonPressExtraBack(unsigned short);
 
-	void ButtonPressMenuSetMove(unsigned short axis);
-	void ButtonPressMenuSetSD(unsigned short);
-	void ButtonPressMenuSetExtra(unsigned short);
+	void MenuButtonPressSetMove(unsigned short axis);
+	void MenuButtonPressSetSD(unsigned short);
+	void MenuButtonPressSetExtra(unsigned short);
 
 	enum EMoveType
 	{
@@ -194,9 +195,9 @@ private:
 	void SetMainMenu()															{ SetMenu(_mainMenu,F("Main")); }
 
 	static const SMenuDef _mainMenu[] PROGMEM;
-	static const SMenuDef _axisMenuMove[] PROGMEM;
+	static const SMenuDef _moveMenu[] PROGMEM;
 	static const SMenuDef _SDMenu[] PROGMEM;
-	static const SMenuDef _ExtraMenu[] PROGMEM;
+	static const SMenuDef _extraMenu[] PROGMEM;
 
 #if defined(__AVR_ARCH__)
 

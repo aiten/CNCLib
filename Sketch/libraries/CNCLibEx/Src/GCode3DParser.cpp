@@ -28,6 +28,7 @@
 #include <MotionControl.h>
 
 #include "GCode3DParser.h"
+#include "MessageCNCExLib.h"
 #include <Control.h>
 
 ////////////////////////////////////////////////////////////
@@ -132,13 +133,13 @@ void CGCode3DParser::M20Command()
 	if (root)
 	{
 		root.rewindDirectory();
-		StepperSerial.println(F("Begin file list"));
+		StepperSerial.println(MESSAGE_PARSER3D_BEGIN_FILE_LIST);
 		PrintSDFileListRecurse(root, 0, count, filenamebuffer, '\n');
 		if (count > 0)
 		{
 			StepperSerial.println();
 		}
-		StepperSerial.println(F("End file list"));
+		StepperSerial.println(MESSAGE_PARSER3D_END_FILE_LIST);
 	}
 	root.close();
 }
@@ -157,7 +158,7 @@ void CGCode3DParser::PrintSDFileListRecurse(File& dir, unsigned char depth, unsi
 		{
 			unsigned int lastidx = strlen(filenamebuffer);
 			strcat(filenamebuffer, entry.name());
-			strcat(filenamebuffer, "/");
+			strcat_P(filenamebuffer, MESSAGE_PARSER3D_SLASH);
 			PrintSDFileListRecurse(entry, depth + 1, count, filenamebuffer, seperatorchar);
 			filenamebuffer[lastidx] = 0;
 		}
@@ -184,10 +185,10 @@ void CGCode3DParser::M21Command()
 {
 	if (!SD.begin(53))
 	{
-		StepperSerial.println(F("initialization failed!"));
+		StepperSerial.println(MESSAGE_PARSER3D_INITIALIZATION_FAILED);
 		return;
 	}
-	StepperSerial.println(F("initialization done."));
+	StepperSerial.println(MESSAGE_PARSER3D_INITIALIZATION_DONE);
 }
 
 ////////////////////////////////////////////////////////////
@@ -207,19 +208,19 @@ void CGCode3DParser::M23Command()
 	GetExecutingFile() = SD.open(filename, FILE_READ);
 	if (!GetExecutingFile())
 	{
-		Error(F("error reading file"));
+		Error(MESSAGE_PARSER3D_ERROR_READING_FILE);
 		return;
 	}
 
 	_state._printfilepos = 0;
 	_state._printfilesize = GetExecutingFile().size();
 
-	StepperSerial.print(F("File opened: "));
+	StepperSerial.print(MESSAGE_PARSER3D_FILE_OPENED);
 	StepperSerial.print(filename);
-	StepperSerial.print(F(" Size: "));
+	StepperSerial.print(MESSAGE_PARSER3D_SIZE);
 	StepperSerial.println(_state._printfilesize);
 
-	StepperSerial.println(F("File selected"));
+	StepperSerial.println(MESSAGE_PARSER3D_FILE_SELECTED);
 }
 
 ////////////////////////////////////////////////////////////
@@ -245,7 +246,7 @@ void CGCode3DParser::M26Command()
 
 	if (!GetExecutingFile() || CControl::GetInstance()->PrintFromSDRunnding())
 	{
-		Error(F("No file selected for execution or running"));
+		Error(MESSAGE_PARSER3D_NO_FILE_SELECTED);
 		return;
 	}
 
@@ -264,14 +265,14 @@ void CGCode3DParser::M27Command()
 {
 	if (GetExecutingFile())
 	{
-		StepperSerial.print(F("SD printing byte "));
+		StepperSerial.print(MESSAGE_PARSER3D_SD_PRINTING_BYTE);
 		StepperSerial.print(_state._printfilepos);
-		StepperSerial.print(F("/"));
+		StepperSerial.print(MESSAGE_PARSER3D_COLON);
 		StepperSerial.println(_state._printfilesize);
 	}
 	else
 	{
-		StepperSerial.println(F("Not SD printing"));
+		StepperSerial.println(MESSAGE_PARSER3D_NOT_SD_PRINTING);
 	}
 }
 
@@ -288,11 +289,11 @@ void CGCode3DParser::M28Command()
 		_state._file = SD.open(filename, FILE_WRITE);
 		if (!GetExecutingFile())
 		{
-			Error(F("error creating/writing file"));
+			Error(MESSAGE_PARSER3D_ERROR_CREATING_FILE);
 			return;
 		}
 
-		StepperSerial.print(F("Writing to file: "));
+		StepperSerial.print(MESSAGE_PARSER3D_WRITING_TO_FILE);
 		StepperSerial.println(filename);
 
 		_state._isM28 = true;
@@ -309,7 +310,7 @@ void CGCode3DParser::M29Command()
 			GetExecutingFile().close();
 
 		_state._isM28 = false;
-		StepperSerial.println(F("Done saving file."));
+		StepperSerial.println(MESSAGE_PARSER3D_DONE_SAVE_FILE);
 	}
 }
 
@@ -323,7 +324,7 @@ void CGCode3DParser::M30Command()
 
 	if (DeleteSDFile(filename, true))
 	{
-		StepperSerial.print(F("File deleted: "));
+		StepperSerial.print(MESSAGE_PARSER3D_FILE_DELETED);
 		StepperSerial.println(filename);
 	}
 }
@@ -368,14 +369,14 @@ void CGCode3DParser::PrintPosition()
 	for (unsigned char i = 0; i < NUM_AXIS; i++)
 	{
 		if (i != 0)
-			StepperSerial.print(F(":"));
+			StepperSerial.print(MESSAGE_PARSER3D_COLON);
 		StepperSerial.print(CMm1000::ToString(CMotionControl::ToMm1000(i, CStepper::GetInstance()->GetPosition(i)),tmp,3));
 	}
 }
 
 void CGCode3DParser::PrintVersion()
 {
-	StepperSerial.print(F("PROTOCOL_VERSION:1.0 FIRMWARE_URL:http//xx.com FIRMWARE_NAME:ProxxonMF70 MACHINE_TYPE:ProxxonMF70 EXTRUDER_COUNT:0"));
+	StepperSerial.print(MESSAGE_PARSER3D_VERSION);
 }
 
 ////////////////////////////////////////////////////////////
@@ -384,7 +385,7 @@ bool CGCode3DParser::CheckSD()
 {
 	if (GetExecutingFile())
 	{
-		Error(F("File occupied"));
+		Error(MESSAGE_PARSER3D_FILE_OCCUPIED);
 		return false;
 	}
 	return true;
@@ -400,20 +401,20 @@ bool CGCode3DParser::DeleteSDFile(char*filename, bool errorifnotexists)
 		if (GetExecutingFile().isDirectory())
 		{
 			GetExecutingFile().close();
-			Error(F("directory specified"));
+			Error(MESSAGE_PARSER3D_DIRECOTRY_SPECIFIED);
 			return false;
 		}
 		GetExecutingFile().close();
 		if (!SD.remove(filename))
 		{
-			Error(F("cannot delete file"));
+			Error(MESSAGE_PARSER3D_CANNOT_DELETE_FILE);
 			return false;
 		}
 		return true;
 	}
 	else if (errorifnotexists)
 	{
-		Error(F("file not exists"));
+		Error(MESSAGE_PARSER3D_FILE_NOT_EXIST);
 		return false;
 	}
 
@@ -441,7 +442,7 @@ bool CGCode3DParser::GetFileName(char*buffer)
 		}
 		else
 		{
-			Error(F("Illegal Filename"));
+			Error(MESSAGE_PARSER3D_ILLEGAL_FILENAME);
 			return false;
 		}
 		ch = _reader->GetNextChar();

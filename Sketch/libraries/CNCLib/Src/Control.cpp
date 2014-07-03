@@ -123,7 +123,7 @@ bool CControl::ParseAndPrintResult(CParser *parser)
 	{
 		StepperSerial.print(MESSAGE_ERROR);
 		StepperSerial.print(parser->GetError());
-		StepperSerial.print(F(" => "));
+		StepperSerial.print(MESSAGE_CONTROL_RESULTS);
 		StepperSerial.println(_buffer);
 		ret = false;
 	}

@@ -19,3 +19,5 @@
 
 #include <StepperLib.h>
 #include <CNCLib.h>
+
+#include "ConfigurationCNCLibEx.h"

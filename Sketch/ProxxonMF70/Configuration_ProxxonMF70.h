@@ -95,6 +95,7 @@
 
 ////////////////////////////////////////////////////////
 
+#include <MessageCNCExLib.h>
 
 #if defined(__SAM3X8E__)
 #define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps 1.4 due is starting ... ("__DATE__", "__TIME__")")
@@ -104,8 +105,8 @@
 #define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps 1.4 is starting ... ("__DATE__", "__TIME__")")
 #endif
 #define MESSAGE_MYCONTROL_InitializingSDCard				F("Initializing SD card...")
-#define MESSAGE_MYCONTROL_initializationFailed				F("initialization failed!")
-#define MESSAGE_MYCONTROL_initializationDone				F("initialization done.")
+#define MESSAGE_MYCONTROL_initializationFailed				MESSAGE_PARSER3D_INITIALIZATION_FAILED
+#define MESSAGE_MYCONTROL_initializationDone				MESSAGE_PARSER3D_INITIALIZATION_DONE
 #define MESSAGE_MYCONTROL_ExecutingStartupNc				F("Executing startup.nc")
 #define MESSAGE_MYCONTROL_NoStartupNcFoundOnSD				F("no startup.nc found on SD")
 #define MESSAGE_MYCONTROL_ExecutingStartupNcDone			F("Executing startup.nc done")

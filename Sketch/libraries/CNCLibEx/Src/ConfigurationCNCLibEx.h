@@ -20,9 +20,38 @@
 
 ////////////////////////////////////////////////////////
 
+#include <StepperLib.h>
+#include "MessageCNCLib.h"
+
+////////////////////////////////////////////////////////
+
+typedef float expr_t;			// type for expression parser
+
+typedef long mm1000_t;			// 1/1000 mm
+typedef long feedrate_t;		// mm_1000 / min
+
+////////////////////////////////////////////////////////
+//
+// Control
+
+#define SERIALBUFFERSIZE	128			// even size 
+
+#define TIMEOUTCALLIDEL		333			// time in ms after move completet to call Idle
+
+#define IDLETIMER0VALUE     TIMER0VALUE(1000)		// AVR dont care ... Timer 0 shared with milli	
+
+#define BLINK_LED			13
+#define TIMEOUTBLINK		1000		// blink of led 13
+
+////////////////////////////////////////////////////////
+
+#define MESSAGE_OK									F("ok")
+#define MESSAGE_ERROR								F("Error: ")
+#define MESSAGE_INFO								F("Info: ")
+#define MESSAGE_WARNING								F("Warning: ")
+
 #define MESSAGE_CONTROL_KILLED						F("Killed - command ignored!")
 #define MESSAGE_CONTROL_FLUSHBUFFER					F("Flush Buffer")
-#define MESSAGE_CONTROL_RESULTS						F(" => ")
 
 #define MESSAGE_EXPR_EMPTY_EXPR						F("Empty expression")
 #define MESSAGE_EXPR_FORMAT							F("Expression format error")
@@ -96,6 +125,15 @@
 #define MESSAGE_PARSER_ValueGreaterThanMax			F("value greater than max")
 #define MESSAGE_PARSER_ValueLessThanMin				F("value less than min")
 #define MESSAGE_PARSER_ValueGreaterThanMax			F("value greater than max")
+
+#define MESSAGE_STEPPER_EmptyMoveSkipped			F("EmptyMove skipped")
+#define MESSAGE_STEPPER_Backlash					F("Backlash")
+#define MESSAGE_STEPPER_IsAnyReference				F("IsAnyReference")
+#define MESSAGE_STEPPER_RangeLimit					F("Range limit")
+#define MESSAGE_STEPPER_IsReferenceIsOn				F("IsReference is on")
+#define MESSAGE_STEPPER_MoveReferenceFailed			F("MoveReference failed")
+
+#define MESSAGE_STEPPER_MoveAwayFromReference		F("Move away from reference")
 
 ////////////////////////////////////////////////////////
 
