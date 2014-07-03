@@ -22,10 +22,9 @@
 ////////////////////////////////////////////////////////
 
 #include <Control.h>
+#include <OnOffIOControl.h>
+#include <Analog8IOControl.h>
 
-#include "CoolantControl.h"
-#include "SpindelControl.h"
-#include "ControllerFanControl.h"
 #include "ProbeControl.h"
 
 ////////////////////////////////////////////////////////
@@ -60,9 +59,9 @@ protected:
 
 private:
 
-	CCoolantControl _coolant;
-	CSpindelControl _spindel;
-	CControllerFanControl _controllerfan;
+	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
+	COnOffIOControl<SPINDEL_PIN, SPINDEL_ON, SPINDEL_OFF> _spindel;
+	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
 
 };
 

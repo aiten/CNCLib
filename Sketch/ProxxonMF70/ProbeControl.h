@@ -21,23 +21,17 @@
 
 ////////////////////////////////////////////////////////
 
+#include <ReadPinIOControl.h>
+
+////////////////////////////////////////////////////////
+
 #include "Configuration_ProxxonMF70.h"
 
 ////////////////////////////////////////////////////////
 
-class CProbeControl
+class CProbeControl : public CReadPinIOControl<PROBE1_PIN, PROBE_ON> 
 {
-public:
 
-	static void Init()
-	{
-		pinMode(PROBE1_PIN,INPUT_PULLUP);
-	}
-
-	bool IsOn()
-	{
-		return digitalRead(PROBE1_PIN)==PROBE_ON;
-	}
 };
 
 ////////////////////////////////////////////////////////

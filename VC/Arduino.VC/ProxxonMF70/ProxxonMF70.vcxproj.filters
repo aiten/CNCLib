@@ -22,15 +22,6 @@
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\MyLCD.h">
       <Filter>ProxxonMF70</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\ProxxonMF70\CoolantControl.h">
-      <Filter>ProxxonMF70</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\ProxxonMF70\SpindelControl.h">
-      <Filter>ProxxonMF70</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\ProxxonMF70\ControllerFanControl.h">
-      <Filter>ProxxonMF70</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\ProbeControl.h">
       <Filter>ProxxonMF70</Filter>
     </ClInclude>

@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\CNCLibEx.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\GCode3DParser.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Analog8IOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\CNCLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigurationCNCLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Control.h" />
@@ -24,7 +25,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\LCD.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MessageCNCLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControl.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\OnOffIOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Parser.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ReadPinIOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\RotaryButton.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\StreamReader.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\UtilitiesCNCLib.h" />
