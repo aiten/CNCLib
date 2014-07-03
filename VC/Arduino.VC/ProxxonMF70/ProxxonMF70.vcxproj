@@ -42,13 +42,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Include;$(SolutionDir)..\..\Sketch\libraries\StepperSystem\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\Sketch\libraries\CNCLibEx\Src;$(SolutionDir)..\..\Sketch\libraries\CNCLib\Src;$(SolutionDir)..\..\Sketch\libraries\StepperLib\Src;$(SolutionDir)Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Include;$(SolutionDir)..\..\Sketch\libraries\StepperSystem\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\Sketch\libraries\CNCLibEx\Src;$(SolutionDir)..\..\Sketch\libraries\CNCLib\Src;$(SolutionDir)..\..\Sketch\libraries\StepperLib\Src;$(SolutionDir)Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -85,7 +85,6 @@
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\Configuration_ProxxonMF70.h" />
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\ControllerFanControl.h" />
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\CoolantControl.h" />
-    <ClInclude Include="..\..\..\Sketch\ProxxonMF70\GCode3DParser.h" />
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\MyControl.h" />
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\MyLCD.h" />
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\ProbeControl.h" />
@@ -94,7 +93,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Sketch\ProxxonMF70\GCode3DParser.cpp" />
     <ClCompile Include="..\..\..\Sketch\ProxxonMF70\MyControl.cpp" />
     <ClCompile Include="..\..\..\Sketch\ProxxonMF70\MyLCD.cpp" />
     <ClCompile Include="ProxxonMF70.cpp" />

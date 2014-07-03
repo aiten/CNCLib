@@ -23,7 +23,7 @@
 #include <arduino.h>
 #include <ctype.h>
 
-#include "Stepper.h"
+#include "CNCLib.h"
 #include "MotionControl.h"
 
 #ifdef _MSC_VER

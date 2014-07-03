@@ -24,7 +24,8 @@
 #include <stdlib.h>
 #include <arduino.h>
 
-#include <StepperSystem.h>
+#include <StepperLib.h>
+#include <CNCLib.h>
 #include <LiquidCrystal_I2C.h>
 
 #include "MyLCD.h"

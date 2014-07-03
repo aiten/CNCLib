@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <arduino.h>
 
-#include <StepperSystem.h>
+#include <CNCLib.h>
 #include <HelpParser.h>
 
 #include "HPGLParser.h"

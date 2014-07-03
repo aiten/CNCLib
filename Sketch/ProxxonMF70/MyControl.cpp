@@ -26,9 +26,10 @@
 #include <SPI.h>
 #include <SD.h>
 
-#include <StepperSystem.h>
+#include <CNCLib.h>
+#include <CNCLibEx.h>
 
-#include "GCode3DParser.h"
+#include <GCode3DParser.h>
 #include "MyControl.h"
 #include "MyLcd.h"
 

@@ -20,8 +20,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <arduino.h>
+#include <StepperLib.h>
 
-#include "StepperSystem.h"
+#include "Control.h"
 #include "HelpParser.h"
 #include "MotionControl.h"
 #include "ExpressionParser.h"

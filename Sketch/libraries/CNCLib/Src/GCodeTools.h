@@ -21,8 +21,8 @@
 
 ////////////////////////////////////////////////////////
 
-#include "Configuration.h"
-#include "Utilities.h"
+#include "ConfigurationCNCLib.h"
+#include "UtilitiesCNCLib.h"
 #include "MotionControl.h"
 
 ////////////////////////////////////////////////////////

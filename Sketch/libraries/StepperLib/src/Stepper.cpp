@@ -24,7 +24,7 @@
 #include <ctype.h>
 
 #include "Stepper.h"
-#include "Utilities.h"
+#include "UtilitiesStepperLib.h"
 
 ////////////////////////////////////////////////////////
 

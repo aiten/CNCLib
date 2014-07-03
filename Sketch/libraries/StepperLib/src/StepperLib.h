@@ -20,11 +20,7 @@
 #include "StepperSMC800.h"
 #include "StepperRamps14.h"
 #include "StepperRampsFD.h"
-#include "Utilities.h"
-#include "MotionControl.h"
-
-#include "Parser.h"
-#include "Control.h"
+#include "UtilitiesStepperLib.h"
 
 
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)

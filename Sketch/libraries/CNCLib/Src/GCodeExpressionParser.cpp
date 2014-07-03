@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <arduino.h>
 
+#include "CNCLib.h"
 #include "MotionControl.h"
 
 #include "GCodeExpressionParser.h"

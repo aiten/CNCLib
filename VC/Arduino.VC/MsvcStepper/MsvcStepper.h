@@ -24,8 +24,8 @@
 #include <stdio.h>
 #include <memory.h>
 
-#include "..\..\..\sketch\libraries\StepperSystem\src\StepperSystem.h"
-#include "..\..\..\sketch\libraries\StepperSystem\src\HelpParser.h"
+#include "..\..\..\sketch\libraries\StepperLib\src\StepperLib.h"
+#include "..\..\..\sketch\libraries\CNCLib\src\HelpParser.h"
 
 #define _STORETIMEVALUES	1000000
 

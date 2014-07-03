@@ -26,7 +26,7 @@
 ////////////////////////////////////////////////////////
 
 #include <LCD.h>
-#include "RotaryButton.h"
+#include <RotaryButton.h>
 
 #define ROTARY_ACCURACY	4
 

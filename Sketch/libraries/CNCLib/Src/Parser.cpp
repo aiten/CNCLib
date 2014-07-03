@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <arduino.h>
 
-#include "Configuration.h"
+#include "ConfigurationCNCLib.h"
 #include "Parser.h"
 #include "Stepper.h"
 

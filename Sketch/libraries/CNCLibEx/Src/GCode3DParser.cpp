@@ -24,11 +24,11 @@
 #include <stdlib.h>
 #include <arduino.h>
 
-#include "HelpParser.h"
-#include "MotionControl.h"
+#include <HelpParser.h>
+#include <MotionControl.h>
 
 #include "GCode3DParser.h"
-#include "Control.h"
+#include <Control.h>
 
 ////////////////////////////////////////////////////////////
 

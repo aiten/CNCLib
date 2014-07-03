@@ -18,7 +18,8 @@
 
 #pragma once
 
-#include "..\..\..\sketch\libraries\StepperSystem\src\Utilities.h"
+#include <StepperLib.h>
+#include <CNCLib.h>
 
 void PenUp()
 {

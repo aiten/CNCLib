@@ -7,8 +7,14 @@
     <Filter Include="MsvcStepper">
       <UniqueIdentifier>{76bc09d4-50a0-49d8-ae90-ea548336f57f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="StepperSystem">
+    <Filter Include="StepperLib">
       <UniqueIdentifier>{68b0d30c-d356-44a8-b637-337fb170abed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CNCLib">
+      <UniqueIdentifier>{ff2fabaf-e798-42fe-8c95-5a53f0b32fe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CNCLibEx">
+      <UniqueIdentifier>{6f3a3e8a-55d3-4191-953e-10e6daec1150}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,127 +39,154 @@
     <ClInclude Include="..\MsvcStepper\MsvcStepper.h">
       <Filter>MsvcStepper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\Configuration.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ConfigurationStepperLib.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\Control.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\fastio.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\ExpressionParser.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\fastio.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\MessageStepperLib.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\HAL.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\RingBuffer.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\HelpParser.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\LCD.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperLib.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\MotionControl.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRamps14.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\Parser.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRamps14_pins.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\RingBuffer.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRampsFD.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\Stepper.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRampsFD_pins.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperSystem.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperSMC800.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperRamps14.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\UtilitiesStepperLib.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperRamps14_pins.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\CNCLib.h">
+      <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperRampsFD.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigurationCNCLib.h">
+      <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperSMC800.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Control.h">
+      <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StreamReader.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ExpressionParser.h">
+      <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\Utilities.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeExpressionParser.h">
+      <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperRampsFD_pins.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeParser.h">
+      <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\RotaryButton.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeTools.h">
+      <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\GCodeExpressionParser.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\HelpParser.h">
+      <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\GCodeParser.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\LCD.h">
+      <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperSystem\src\GCodeTools.h">
-      <Filter>StepperSystem</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MessageCNCLib.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControl.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Parser.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\RotaryButton.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\StreamReader.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\UtilitiesCNCLib.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\CNCLibEx.h">
+      <Filter>CNCLibEx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\GCode3DParser.h">
+      <Filter>CNCLibEx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">
       <Filter>MsvcStepper</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\Control.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL.cpp">
+      <Filter>StepperLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\ExpressionParser.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.cpp">
+      <Filter>StepperLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\HAL.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRamps14.cpp">
+      <Filter>StepperLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\HelpParser.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRampsFD.cpp">
+      <Filter>StepperLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\LCD.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperSMC800.cpp">
+      <Filter>StepperLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\MotionControl.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\UtilitiesStepperLib.cpp">
+      <Filter>StepperLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\Parser.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\Control.cpp">
+      <Filter>CNCLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\Stepper.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\ExpressionParser.cpp">
+      <Filter>CNCLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperRamps14.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeExpressionParser.cpp">
+      <Filter>CNCLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperRampsFD.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeParser.cpp">
+      <Filter>CNCLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\StepperSMC800.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeTools.cpp">
+      <Filter>CNCLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\StreamReader.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\HelpParser.cpp">
+      <Filter>CNCLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\Utilities.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\LCD.cpp">
+      <Filter>CNCLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\GCodeExpressionParser.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControl.cpp">
+      <Filter>CNCLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\GCodeParser.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\Parser.cpp">
+      <Filter>CNCLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperSystem\src\GCodeTools.cpp">
-      <Filter>StepperSystem</Filter>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\StreamReader.cpp">
+      <Filter>CNCLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\UtilitiesCNCLib.cpp">
+      <Filter>CNCLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\GCode3DParser.cpp">
+      <Filter>CNCLibEx</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

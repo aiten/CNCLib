@@ -100,42 +100,9 @@ public:
 
 //////////////////////////////////////////
 
-class CMm1000
-{
-private:
-	mm1000_t	_value;
-
-public:
-
-	CMm1000()	{ _value = 0; }
-	CMm1000(mm1000_t v)	{ _value = v; }
-
-	static char* ToString(mm1000_t v, char*tmp, unsigned char precision, unsigned char scale);	// right aligned
-	static char* ToString(mm1000_t v, char*tmp, unsigned char scale);
-
-	char*ToString(char*tmp, unsigned char precision, unsigned char scale)	{ return ToString(_value, tmp, precision, scale); } // right aligned
-	char*ToString(char*tmp, unsigned char scale)							{ return ToString(_value, tmp, scale); }
-};
-
-////////////////////////////////////////////////////////
-
-class CSDist
-{
-private:
-	sdist_t	_value;
-
-public:
-
-	CSDist()	{ _value = 0; }
-	CSDist(sdist_t v)	{ _value = v; }
-
-	static char* ToString(sdist_t v, char*tmp, unsigned char precision);		// right aligned
-};
-
-//////////////////////////////////////////
-
 extern unsigned char ToPrecisionU10(unsigned long);
 extern unsigned char ToPrecisionU10(unsigned short);
+extern unsigned char ToPrecisionS10(long v);
 
 extern unsigned char ToPrecisionU2(unsigned long);
 extern unsigned char ToPrecisionU2(unsigned short);

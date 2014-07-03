@@ -26,7 +26,9 @@
 #include <stdlib.h>
 #include <arduino.h>
 
-#include <StepperSystem.h>
+#include <CNCLib.h>
+#include <CNCLibEx.h>
+
 #include "MyLcd.h"
 #include "MyControl.h"
 #include "RotaryButton.h"

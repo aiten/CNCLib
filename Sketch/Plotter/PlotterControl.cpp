@@ -22,7 +22,8 @@
 #include <stdlib.h>
 #include <arduino.h>
 
-#include <StepperSystem.h>
+#include <StepperLib.h>
+#include <CNCLib.h>
 #include "PlotterControl.h"
 #include "MyControl.h"
 #include "MyLcd.h"

@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <arduino.h>
 
-#include "Configuration.h"
+#include "ConfigurationCNCLib.h"
 #include "ExpressionParser.h"
 
 ////////////////////////////////////////////////////////////

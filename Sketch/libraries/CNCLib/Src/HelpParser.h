@@ -17,52 +17,42 @@
 */
 ////////////////////////////////////////////////////////
 
-#include <StepperLib.h>
-#include <CNCLib.h>
+#pragma once
 
-#include "MyControl.h"
-#include "PlotterControl.h"
-#include "MyLcd.h"
-#include "HPGLParser.h"
+////////////////////////////////////////////////////////
 
-#include <Wire.h>  // Comes with Arduino IDE
+#include "ConfigurationCNCLib.h"
+#include "Parser.h"
 
-#include <LiquidCrystal_I2C.h>
+////////////////////////////////////////////////////////
+// Parser for NOT G-Code and HTML 
+// use this parser for testing
 
-////////////////////////////////////////////////////////////
-
-#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-
-CStepperRamps14 Stepper;
-
-#elif defined(__SAM3X8E__)
-
-CStepperRampsFD Stepper;
-
-#elif defined(__AVR_ATmega328P__)
-
-CStepperSMC800 Stepper;
-
-#elif defined(_MSC_VER)
-
-#error NOT in MVC
-
-#endif
-
-CMyControl Control;
-CPlotter Plotter;
-
-#ifdef __USE_LCD__
-CMyLcd Lcd;
-#endif
-
-void setup()
-{  
-  StepperSerial.begin(115200);
-}
-
-void loop()
+class CHelpParser : public CParser
 {
-  Control.Run();
-}
+public:
 
+	CHelpParser(CStreamReader* reader) : CParser(reader){}
+
+protected:
+
+	virtual void Parse();
+
+	bool MoveRel();
+	bool MoveRel(axis_t axis);
+	bool MoveAbs();
+	bool MoveAbs(axis_t axis);
+	bool SetPosition(axis_t axis);
+	bool MyGoToReference(axis_t axis);
+	bool SetSpeed();
+
+	bool CheckEOC();
+
+#ifdef _MSC_VER
+public:
+	static bool _exit;
+#endif
+
+};
+
+////////////////////////////////////////////////////////

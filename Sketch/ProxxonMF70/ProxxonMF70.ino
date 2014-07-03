@@ -15,7 +15,9 @@
   http://www.gnu.org/licenses/
 */
 
-#include <StepperSystem.h>
+#include <StepperLib.h>
+#include <CNCLib.h>
+#include <CNCLibEx.h>
 
 #include <SPI.h>
 #include <SD.h>

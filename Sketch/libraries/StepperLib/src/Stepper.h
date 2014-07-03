@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include "Configuration.h"
+#include "ConfigurationStepperLib.h"
 #include "HAL.h"
 #include "RingBuffer.h"
-#include "Utilities.h"
+#include "UtilitiesStepperLib.h"
 
 ////////////////////////////////////////////////////////
 //

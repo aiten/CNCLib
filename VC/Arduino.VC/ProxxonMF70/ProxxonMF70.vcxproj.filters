@@ -34,9 +34,6 @@
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\ProbeControl.h">
       <Filter>ProxxonMF70</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\ProxxonMF70\GCode3DParser.h">
-      <Filter>ProxxonMF70</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\Configuration_ProxxonMF70.h">
       <Filter>ProxxonMF70</Filter>
     </ClInclude>
@@ -52,9 +49,6 @@
       <Filter>ProxxonMF70</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\ProxxonMF70\MyLCD.cpp">
-      <Filter>ProxxonMF70</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\ProxxonMF70\GCode3DParser.cpp">
       <Filter>ProxxonMF70</Filter>
     </ClCompile>
   </ItemGroup>
