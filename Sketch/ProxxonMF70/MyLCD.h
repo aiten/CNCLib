@@ -115,7 +115,7 @@ private:
 
 	CRotaryButton<rotarypos_t, ROTARY_ACCURACY> _button;
 
-	static SPageDef _pagedef[];
+	static const SPageDef _pagedef[];
 
 	void SetDefaultPage();
 	void SetMenuPage();

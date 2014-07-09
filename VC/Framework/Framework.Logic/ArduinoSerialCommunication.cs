@@ -307,8 +307,12 @@ namespace Framework.Logic
 
             lock (_pendingCommands)
             {
+				if (_pendingCommands.Count==0)
+					_autoEvent.Set();			// start now!
+
                 Command c = new Command() { CommandText = cmd };
                 _pendingCommands.Add(c);
+
                 return c;
             }
         }
@@ -340,9 +344,10 @@ namespace Framework.Logic
 				 string first50 = commandtext.Substring(0, 50);
 				 commandtext = commandtext.Substring(50);
 				 _serialPort.Write(first50);
-				 Thread.Sleep(100);
+				 Thread.Sleep(250);
 			 }
 
+			 _autoEvent.Reset();
 			 _serialPort.WriteLine(commandtext);
 
 Console.WriteLine(cmd.CommandText);
@@ -354,7 +359,6 @@ Console.WriteLine(cmd.CommandText);
 
         private void WaitUntilNoPendingCommands()
 		{
-			_autoEvent.Reset();
 			while (_continue)
             {
                 Command cmd = null; ;

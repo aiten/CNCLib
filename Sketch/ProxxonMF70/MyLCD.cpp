@@ -81,7 +81,7 @@ CMyLcd Lcd;
 
 ////////////////////////////////////////////////////////////
 
-PROGMEM CMyLcd::SPageDef CMyLcd::_pagedef[] =
+PROGMEM const CMyLcd::SPageDef CMyLcd::_pagedef[] =
 {
 	{ &CMyLcd::DrawLoopSplash, &CMyLcd::ButtonPressShowMenu },
 	{ &CMyLcd::DrawLoopDebug, &CMyLcd::ButtonPressShowMenu },

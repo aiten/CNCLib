@@ -1298,7 +1298,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 				_state = _pStepper->_movementstate._timer > _timerRun ? StateUpAcc : StateUpDec;
 				if (_pStepper->_movementstate._count > 1 && _nUpOffset == 0)
 				{
-					static unsigned short corrtab[][2] PROGMEM =
+					static const unsigned short corrtab[][2] PROGMEM =
 					{
 						{ 1300, 1402 },
 						{ 611, 709 },

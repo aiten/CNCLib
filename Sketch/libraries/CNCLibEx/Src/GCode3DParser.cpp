@@ -432,7 +432,7 @@ bool CGCode3DParser::GetFileName(char*buffer)
 	char ch = _reader->GetChar();
 	for (unsigned char i = 0; i < MAXPATHNAME; i++)
 	{
-		if (ch == '.' || isdigit(ch) || isalpha(ch) || ch == '/')
+		if (ch == '.' || isdigit(ch) || isalpha(ch) || ch == '/' || ch == '_')
 		{
 			*(buffer++) = ch;
 		}

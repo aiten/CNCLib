@@ -1008,7 +1008,14 @@ void CGCodeParser::G04Command()
 	if (_reader->SkipSpacesToUpper() == 'P')
 	{
 		_reader->GetNextChar();
+		const char*current = _reader->GetBuffer();
 		dweelms = GetUint32OrParam();
+		if (_reader->GetChar() == '.')
+		{
+			// this is "sec" and not "ms"
+			_reader->ResetBuffer(current);
+			dweelms = GetInt32Scale(0,1000,3,255);
+		}
 	}
 
 	if (ExpectEndOfCommand())		{ return; }
