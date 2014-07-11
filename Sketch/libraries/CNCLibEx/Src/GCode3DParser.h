@@ -37,7 +37,7 @@ private:
 
 public:
 
-	CGCode3DParser(CStreamReader* reader) : super(reader)		{  }
+	CGCode3DParser(CStreamReader* reader,Stream* output) : super(reader,output)		{  }
 
 	static File& GetExecutingFile()								{ return _state._file; }
 	static void  SetExecutingFilePosition(unsigned long pos)	{ _state._printfilepos = pos; }

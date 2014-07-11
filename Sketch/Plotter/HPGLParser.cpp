@@ -70,7 +70,7 @@ void CHPGLParser::Parse()
 
 	// command escape to "own" extension
 
-	CHelpParser mycommand(_reader);
+	CHelpParser mycommand(GetReader(),GetOutput());
 	mycommand.ParseCommand();
 
 	if (mycommand.IsError()) Error(mycommand.GetError());

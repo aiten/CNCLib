@@ -110,10 +110,10 @@ void CMyControl::Idle(unsigned int idletime)
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::Parse()
+bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 {
-	CHPGLParser hpgl(&_reader);
-	return ParseAndPrintResult(&hpgl);
+	CHPGLParser hpgl(reader,output);
+	return ParseAndPrintResult(&hpgl,output);
 }
 
 ////////////////////////////////////////////////////////////

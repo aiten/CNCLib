@@ -37,7 +37,7 @@ private:
 
 public:
 
-	CExpressionParser(CStreamReader* reader) : super(reader)	{ _LeftParenthesis = '('; _RightParenthesis = ')'; };
+	CExpressionParser(CStreamReader* reader, Stream* output) : super(reader,output)	{ _LeftParenthesis = '('; _RightParenthesis = ')'; };
 
 	virtual void Parse();
 

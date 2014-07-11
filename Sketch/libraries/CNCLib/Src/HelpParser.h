@@ -32,7 +32,7 @@ class CHelpParser : public CParser
 {
 public:
 
-	CHelpParser(CStreamReader* reader) : CParser(reader){}
+	CHelpParser(CStreamReader* reader,Stream* output) : CParser(reader,output){}
 
 protected:
 

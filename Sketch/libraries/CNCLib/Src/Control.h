@@ -76,8 +76,8 @@ public:
 
 	//////////////////////////////////////////
 
-	bool PostCommand(const __FlashStringHelper* cmd);
-	bool PostCommand(char* cmd);
+	bool PostCommand(const __FlashStringHelper* cmd, Stream* output=NULL);
+	bool PostCommand(char* cmd, Stream* output=NULL);
 
 	//////////////////////////////////////////
 
@@ -86,20 +86,20 @@ public:
 protected:
 
 	bool SerialReadAndExecuteCommand();							// read from serial an execut command, return true if command pending (buffer not empty)
-	void FileReadAndExecuteCommand(Stream* stream);				// read command until "IsEndOfCommandChar" and execute command (NOT Serial)
+	void FileReadAndExecuteCommand(Stream* stream, Stream* output);// read command until "IsEndOfCommandChar" and execute command (NOT Serial)
 
 	virtual void Init();
 	virtual void Initialized();									// called if Init() is done
 
-	virtual bool Parse() = 0;									// abstract: specify Parser
-	virtual bool Command(char* xbuffer);						// execute Command (call parser)
+	virtual bool Parse(CStreamReader* reader, Stream* output) = 0;// abstract: specify Parser
+	virtual bool Command(char* xbuffer, Stream* output);		// execute Command (call parser)
 	virtual void Idle(unsigned int idletime);					// called after TIMEOUTCALLIDEL in idle state
 	virtual bool IsEndOfCommandChar(char ch);					// override default End of command char, default \n \r
 	virtual void ReadAndExecuteCommand();						// read and execute commands from other source e.g. SD.File
 
 	virtual void TimerInterrupt();								// called from timer (timer0 on AVR) 
 
-	bool ParseAndPrintResult(CParser* parser);
+	bool ParseAndPrintResult(CParser* parser, Stream* output);
 
 	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, unsigned char addinfo);
 
@@ -107,7 +107,7 @@ protected:
 
 private:
 
-	void ReadAndExecuteCommand(Stream* stream, bool filestream);	// read command until "IsEndOfCommandChar" and execute command (Serial or SD.File)
+	void ReadAndExecuteCommand(Stream* stream, Stream* output, bool filestream);	// read command until "IsEndOfCommandChar" and execute command (Serial or SD.File)
 
 	void CheckIdle();											// check idle time and call Idle every 100ms
 
@@ -128,8 +128,6 @@ private:
 	static void HandleInterrupt()								{ GetInstance()->TimerInterrupt(); }
 
 	static bool MyStepperEvent(CStepper*stepper, void* param, EnumAsByte(CStepper::EStepperEvent) eventtype, unsigned char addinfo) { return ((CControl*)param)->OnStepperEvent(stepper, eventtype, addinfo); }
-
-protected:
 
 	CStreamReader		_reader;
 

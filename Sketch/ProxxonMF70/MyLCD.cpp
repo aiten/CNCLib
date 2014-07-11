@@ -413,14 +413,14 @@ void CMyLcd::Draw(EDrawType /* draw */)
 
 bool CMyLcd::SendCommand(const __FlashStringHelper* cmd)
 {
-	return Control.PostCommand(cmd);
+	return Control.PostCommand(cmd,NULL);
 }
 
 ////////////////////////////////////////////////////////////
 
 bool CMyLcd::SendCommand(char* cmd)
 {
-	return Control.PostCommand(cmd);
+	return Control.PostCommand(cmd,NULL);
 }
 
 

@@ -354,7 +354,7 @@ void CGCode3DParser::CommandEscape()
 	if (_reader->GetChar() == '$')
 		_reader->GetNextChar();
 
-	CHelpParser mycommand(_reader);
+	CHelpParser mycommand(GetReader(),GetOutput());
 	mycommand.ParseCommand();
 
 	if (mycommand.IsError()) Error(mycommand.GetError());

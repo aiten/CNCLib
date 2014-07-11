@@ -33,7 +33,7 @@ private:
 
 public:
 
-	CGCodeExpressionParser(CGCodeParser* parser) : super(parser->GetReader())	{ _gcodeparser = parser; _LeftParenthesis = '['; _RightParenthesis = ']'; };
+	CGCodeExpressionParser(CGCodeParser* parser) : super(parser->GetReader(),parser->GetOutput())	{ _gcodeparser = parser; _LeftParenthesis = '['; _RightParenthesis = ']'; };
 
 protected:
 

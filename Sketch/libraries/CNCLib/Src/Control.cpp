@@ -106,13 +106,14 @@ void CControl::Idle(unsigned int idletime)
 
 ////////////////////////////////////////////////////////////
 
-bool CControl::ParseAndPrintResult(CParser *parser)
+bool CControl::ParseAndPrintResult(CParser *parser, Stream* output)
 {
 // send OK pre Parse => give PC time to send next
 #define SENDOKIMMEDIATELY
 #undef SENDOKIMMEDIATELY
+
 #ifdef SENDOKIMMEDIATELY 
-	StepperSerial.println(MESSAGE_OK);
+	if (output) output->println(MESSAGE_OK);
 #endif
 
 	bool ret = true;
@@ -121,30 +122,36 @@ bool CControl::ParseAndPrintResult(CParser *parser)
 
 	if (parser->GetError() != NULL)
 	{
-		StepperSerial.print(MESSAGE_ERROR);
-		StepperSerial.print(parser->GetError());
-		StepperSerial.print(MESSAGE_CONTROL_RESULTS);
-		StepperSerial.println(_buffer);
+		if (output) 
+		{
+			output->print(MESSAGE_ERROR);
+			output->print(parser->GetError());
+			output->print(MESSAGE_CONTROL_RESULTS);
+			output->println(_buffer);
+		}
 		ret = false;
 	}
 
 #ifndef SENDOKIMMEDIATELY 
-	StepperSerial.print(MESSAGE_OK);
+	if (output) output->print(MESSAGE_OK);
 #endif
 	if (parser->GetOkMessage() != NULL)
 	{
+		if (output)
+		{
 #ifdef SENDOKIMMEDIATELY 
-		StepperSerial.print(MESSAGE_OK);
+			output->print(MESSAGE_OK);
 #endif
-		StepperSerial.print(F(" "));
+			output->print(F(" "));
+		}
 		parser->GetOkMessage()();
 #ifdef SENDOKIMMEDIATELY 
-		StepperSerial.println();
+		if (output) output->println();
 #endif
 	}
 
 #ifndef SENDOKIMMEDIATELY 
-	StepperSerial.println();
+	if (output) output->println();
 #endif
 
 	return ret;
@@ -152,7 +159,7 @@ bool CControl::ParseAndPrintResult(CParser *parser)
 
 ////////////////////////////////////////////////////////////
 
-bool CControl::Command(char* buffer)
+bool CControl::Command(char* buffer, Stream* output)
 {
 	if (IsKilled())
 	{
@@ -161,7 +168,10 @@ bool CControl::Command(char* buffer)
 			Resurrect();
 			return true;
 		}
-		StepperSerial.print(MESSAGE_ERROR); StepperSerial.println(MESSAGE_CONTROL_KILLED);
+		if (output)
+		{
+			output->print(MESSAGE_ERROR); output->println(MESSAGE_CONTROL_KILLED);
+		}
 		return false;
 	}
 
@@ -173,7 +183,7 @@ bool CControl::Command(char* buffer)
 
 	while (_reader.GetChar())
 	{
-		if (!Parse())
+		if (!Parse(&_reader,output))
 			ret = false;
 	}
 	
@@ -189,7 +199,7 @@ bool CControl::IsEndOfCommandChar(char ch)
 
 ////////////////////////////////////////////////////////////
 
-void CControl::ReadAndExecuteCommand(Stream* stream, bool filestream)
+void CControl::ReadAndExecuteCommand(Stream* stream, Stream* output, bool filestream)
 {
 	// call this methode if ch is available in stream
 
@@ -202,7 +212,7 @@ void CControl::ReadAndExecuteCommand(Stream* stream, bool filestream)
 			if (IsEndOfCommandChar(_buffer[_bufferidx]))
 			{
 				_buffer[_bufferidx] = 0;			// remove from buffer 
-				Command(_buffer);
+				Command(_buffer, output);
 				_bufferidx = 0;
 
 				_lasttime = millis();
@@ -213,7 +223,10 @@ void CControl::ReadAndExecuteCommand(Stream* stream, bool filestream)
 			_bufferidx++;
 			if (_bufferidx > sizeof(_buffer))
 			{
-				StepperSerial.print(MESSAGE_ERROR); StepperSerial.println(MESSAGE_CONTROL_FLUSHBUFFER);
+				if (output)
+				{
+					output->print(MESSAGE_ERROR); output->println(MESSAGE_CONTROL_FLUSHBUFFER);
+				}
 				_bufferidx = 0;
 			}
 		}
@@ -223,7 +236,7 @@ void CControl::ReadAndExecuteCommand(Stream* stream, bool filestream)
 			if (_bufferidx > 0)
 			{
 				_buffer[_bufferidx + 1] = 0;
-				Command(_buffer);
+				Command(_buffer,output);
 				_bufferidx = 0;
 			}
 		}
@@ -237,7 +250,7 @@ bool CControl::SerialReadAndExecuteCommand()
 {
 	if (StepperSerial.available() > 0)
 	{
-		ReadAndExecuteCommand(&StepperSerial, false);			
+		ReadAndExecuteCommand(&StepperSerial, &StepperSerial, false);			
 	}
 
 	return _bufferidx > 0;		// command pending, buffer not empty
@@ -245,10 +258,10 @@ bool CControl::SerialReadAndExecuteCommand()
 
 ////////////////////////////////////////////////////////
 
-void CControl::FileReadAndExecuteCommand(Stream* stream)
+void CControl::FileReadAndExecuteCommand(Stream* stream, Stream* output)
 {
 	if (!_pause)
-		ReadAndExecuteCommand(stream, true);
+		ReadAndExecuteCommand(stream, output, true);
 }
 
 ////////////////////////////////////////////////////////////
@@ -306,7 +319,7 @@ void CControl::ReadAndExecuteCommand()
 
 ////////////////////////////////////////////////////////////
 
-bool CControl::PostCommand(const __FlashStringHelper* cmd)
+bool CControl::PostCommand(const __FlashStringHelper* cmd, Stream* output)
 {
 	if (_bufferidx > 0) return false;
 	const char* cmd1 = (const char*) cmd;
@@ -317,7 +330,7 @@ bool CControl::PostCommand(const __FlashStringHelper* cmd)
 
 		if (_buffer[_bufferidx] == 0)
 		{
-			bool ret = Command(_buffer);
+			bool ret = Command(_buffer,output);
 			_bufferidx=0;
 			return ret;
 		}
@@ -329,7 +342,7 @@ bool CControl::PostCommand(const __FlashStringHelper* cmd)
 
 ////////////////////////////////////////////////////////////
 
-bool CControl::PostCommand(char* cmd)
+bool CControl::PostCommand(char* cmd, Stream* output)
 {
 	if (_bufferidx > 0) return false;
 
@@ -339,7 +352,7 @@ bool CControl::PostCommand(char* cmd)
 
 		if (_buffer[_bufferidx] == 0)
 		{
-			bool ret = Command(_buffer);
+			bool ret = Command(_buffer,output);
 			_bufferidx=0;
 			return ret;
 		}

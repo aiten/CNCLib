@@ -73,7 +73,7 @@ private:
 
 public:
 
-	CGCodeParser(CStreamReader* reader) : super(reader)		{  };
+	CGCodeParser(CStreamReader* reader,Stream* output) : super(reader,output)		{  };
 
 	static void SetG0FeedRate(feedrate_t feedrate)			{ _modalstate.G0FeedRate = feedrate; }
 	static void SetG1FeedRate(feedrate_t feedrate)			{ _modalstate.G1FeedRate = feedrate; }

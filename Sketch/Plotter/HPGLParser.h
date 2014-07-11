@@ -33,7 +33,7 @@ private:
 
 public:
 
-	CHPGLParser(CStreamReader* reader) : CParser(reader)	{ };
+	CHPGLParser(CStreamReader* reader,Stream* output) : CParser(reader,output)	{ };
 
 	virtual void Parse();
 

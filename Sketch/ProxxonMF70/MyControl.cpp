@@ -206,10 +206,10 @@ void CMyControl::GoToReference(axis_t axis)
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::Parse()
+bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 {
-	CGCode3DParser gcode(&_reader);
-	return ParseAndPrintResult(&gcode);
+	CGCode3DParser gcode(reader,output);
+	return ParseAndPrintResult(&gcode,output);
 }
 
 ////////////////////////////////////////////////////////////
@@ -230,7 +230,7 @@ void CMyControl::ReadAndExecuteCommand()
 		{
 			CGCode3DParser::SetExecutingFilePosition(file.position());
 
-			FileReadAndExecuteCommand(&file);			// one line!!!
+			FileReadAndExecuteCommand(&file,NULL);			// one line!!! Output goes to NULL
 
 			if (file.available() == 0)
 			{

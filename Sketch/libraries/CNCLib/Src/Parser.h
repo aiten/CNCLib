@@ -35,7 +35,7 @@ class CParser
 {
 public:
 
-	CParser(CStreamReader* reader)							{ _reader = reader; _error = NULL; _OkMessage = NULL; };
+	CParser(CStreamReader* reader,Stream* output)			{ _reader = reader; _output = output; _error = NULL; _OkMessage = NULL; };
 
 	void ParseCommand();
 
@@ -46,6 +46,7 @@ public:
 	PrintOKMessage	GetOkMessage()							{ return _OkMessage; }
 
 	CStreamReader* GetReader()								{ return _reader; }
+	Stream* GetOutput()										{ return _output; }
 
 	static void Init()										{}
 
@@ -70,9 +71,10 @@ protected:
 
 	void ErrorAdd(const __FlashStringHelper * error)		{ if (!IsError()) Error(error); }
 	void Error(const __FlashStringHelper * error)			{ _error = error; _reader->MoveToEnd(); }
-	void Info(const __FlashStringHelper* s1)				{ StepperSerial.print(MESSAGE_INFO);  StepperSerial.println(s1); }
-	void Warning(const __FlashStringHelper* s1)				{ StepperSerial.print(MESSAGE_WARNING);  StepperSerial.println(s1); }
+	void Info(const __FlashStringHelper* s1)				{ if (_output) { _output->print(MESSAGE_INFO);  _output->println(s1); } }
+	void Warning(const __FlashStringHelper* s1)				{ if (_output) { _output->print(MESSAGE_WARNING);  _output->println(s1); } }
 
+	Stream*							_output;
 	CStreamReader*					_reader;
 	const __FlashStringHelper *		_error;
 	PrintOKMessage					_OkMessage;

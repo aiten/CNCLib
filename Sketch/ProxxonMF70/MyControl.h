@@ -48,7 +48,7 @@ protected:
 
 	virtual void Init();
 	virtual void Initialized();
-	virtual bool Parse();
+	virtual bool Parse(CStreamReader* reader, Stream* output);
 
 	virtual void GoToReference();
 	virtual void GoToReference(axis_t axis);
