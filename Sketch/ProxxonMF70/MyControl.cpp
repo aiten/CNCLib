@@ -97,9 +97,9 @@ void CMyControl::Init()
 
 	pinMode(10, OUTPUT);
 	digitalWrite(10, HIGH);
-	pinMode(53, OUTPUT);
+	pinMode(SD_ENABLE, OUTPUT);
 
-	if (!SD.begin(53))
+	if (!SD.begin(SD_ENABLE))
 	{
 		StepperSerial.println(MESSAGE_MYCONTROL_initializationFailed);
 	}

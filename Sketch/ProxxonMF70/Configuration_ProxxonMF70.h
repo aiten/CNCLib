@@ -85,7 +85,11 @@
 #define ROTARY_EN1           33   // Dreh Encoder auf Ramps 1.4
 #define ROTARY_EN2           31   // Dreh Encoder auf Ramps 1.4
 
+#define SD_ENABLE				52
+
 #else
+
+#define SD_ENABLE				53
 
 #define ROTARY_EN1           31   // Dreh Encoder auf Ramps 1.4
 #define ROTARY_EN2           33   // Dreh Encoder auf Ramps 1.4
