@@ -21,7 +21,20 @@
 
 ////////////////////////////////////////////////////////
 
+#define USE_RAMPS14
+//8#define USE_RAMPSFD
+
+////////////////////////////////////////////////////////
+
+#if defined(USE_RAMPS14)
+
 #include <StepperRamps14_pins.h>
+
+#else if  defined(USE_RAMPSFD)
+
+#include <StepperRampsFD_pins.h>
+
+#endif
 
 ////////////////////////////////////////////////////////
 
@@ -82,14 +95,24 @@
 
 #if defined(__SAM3X8E__)
 
+
+#if defined (USE_RAMPSFD)
+
+#define SD_ENABLE				SDSS	
+#define ROTARY_EN1           31   // Dreh Encoder auf Ramps 1.4
+#define ROTARY_EN2           33   // Dreh Encoder auf Ramps 1.4
+
+#else if defined (USE_RAMPS14)
+
+#define SD_ENABLE				52
 #define ROTARY_EN1           33   // Dreh Encoder auf Ramps 1.4
 #define ROTARY_EN2           31   // Dreh Encoder auf Ramps 1.4
 
-#define SD_ENABLE				52
+#endif
 
 #else
 
-#define SD_ENABLE				53
+#define SD_ENABLE				SDSS	
 
 #define ROTARY_EN1           31   // Dreh Encoder auf Ramps 1.4
 #define ROTARY_EN2           33   // Dreh Encoder auf Ramps 1.4
@@ -102,7 +125,11 @@
 #include <MessageCNCExLib.h>
 
 #if defined(__SAM3X8E__)
+#if defined(USE_RAMPS14)
 #define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps 1.4 due is starting ... ("__DATE__", "__TIME__")")
+#elseif defined(USE_RAMPSFD)
+#define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps FD due is starting ... ("__DATE__", "__TIME__")")
+#endif
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 #define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps 1.4 mega is starting ... ("__DATE__", "__TIME__")")
 #else

@@ -60,9 +60,9 @@
 #define E2_STEP_PIN        32
 #define E2_DIR_PIN         47
 #define E2_ENABLE_PIN      45
-/*
+
 #define SDPOWER            -1
-#define SDSS               53
+#define SDSS               4
 #define LED_PIN            13
 
 #define FAN_PIN            9 // (Sprinter config)
@@ -92,6 +92,6 @@
 #define MAX_MISO_PIN         50
 #define MAX_MOSI_PIN         51
 #define MAX6675_SS       53
-*/
+
 ////////////////////////////////////////////////////////
 

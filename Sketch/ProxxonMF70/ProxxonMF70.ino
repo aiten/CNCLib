@@ -29,9 +29,17 @@
 
 
 ////////////////////////////////////////////////////////////
+// => see Configuration_ProxxonMF70.h
 
-CStepperRampsFD Stepper;		// ramps14 or rampsfd
-//CStepperRamps14 Stepper;		// ramps14 or rampsfd
+#if defined(USE_RAMPS14)
+
+CStepperRamps14 Stepper;
+
+#else if  defined(USE_RAMPSFD)
+
+CStepperRampsFD Stepper;
+
+#endif
 
 ////////////////////////////////////////////////////////////
 

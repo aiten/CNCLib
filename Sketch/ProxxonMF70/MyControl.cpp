@@ -95,9 +95,8 @@ void CMyControl::Init()
 
 	ClearPrintFromSD ();
 
-	pinMode(10, OUTPUT);
-	digitalWrite(10, HIGH);
 	pinMode(SD_ENABLE, OUTPUT);
+	digitalWrite(SD_ENABLE, HIGH);
 
 	if (!SD.begin(SD_ENABLE))
 	{
