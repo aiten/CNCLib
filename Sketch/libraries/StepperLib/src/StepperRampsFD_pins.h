@@ -89,29 +89,73 @@
 
 #define RAMPSFD_ESTOP		       40
 
+#define RAMPSFD_AUX2_1				-1	// VLogic
+#define RAMPSFD_AUX2_2				-1	// GND
+#define RAMPSFD_AUX2_3				58	// A4
+#define RAMPSFD_AUX2_4				59	// A5
+#define RAMPSFD_AUX2_5				60	// A5
+#define RAMPSFD_AUX2_6				61	// A7
+#define RAMPSFD_AUX2_7				14	// AD14
+#define RAMPSFD_AUX2_8				15	// AD15
+#define RAMPSFD_AUX2_9				-1	// UART3_TX
+#define RAMPSFD_AUX2_10				-1	// UART3_RX
+
+#define RAMPSFD_AUX3_1				-1	// 5V
+#define RAMPSFD_AUX3_2				49	// D49
+#define RAMPSFD_AUX3_3				4	// MISO
+#define RAMPSFD_AUX3_4				5	// MOSI
+#define RAMPSFD_AUX3_5				6	// SCK
+#define RAMPSFD_AUX3_6				7	// SPI_CS1
+#define RAMPSFD_AUX3_7				-1	// GND
+#define RAMPSFD_AUX3_8				-1	// NC
+#define RAMPSFD_AUX3_9				50	// D50 - MISO
+#define RAMPSFD_AUX3_10				51	// D51 - MOSI
+#define RAMPSFD_AUX3_11				52	// D52 - SCK
+#define RAMPSFD_AUX3_12				-1	// CLOGIC
+
+#define RAMPSFD_AUX4_1				-1	// VLOGIC
+#define RAMPSFD_AUX4_2				-1	// GND
+#define RAMPSFD_AUX4_3				32	// D32
+#define RAMPSFD_AUX4_4				47	// D47
+#define RAMPSFD_AUX4_5				45	// D45
+#define RAMPSFD_AUX4_6				43	// D43
+#define RAMPSFD_AUX4_7				41	// D41
+#define RAMPSFD_AUX4_8				39	// D39
+#define RAMPSFD_AUX4_9				37	// D37
+#define RAMPSFD_AUX4_10				35	// D35
+#define RAMPSFD_AUX4_11				33	// D33
+#define RAMPSFD_AUX4_12				31	// D31
+#define RAMPSFD_AUX4_13				29	// D29
+#define RAMPSFD_AUX4_14				27	// D27
+#define RAMPSFD_AUX4_15				25	// D25
+#define RAMPSFD_AUX4_16				23	// D23
+#define RAMPSFD_AUX4_17				17	// UART2_RX  Serial2 on pins 17 (RX) and 16 (TX)
+#define RAMPSFD_AUX4_18				16	// UART2_TX
+// 3-8: share E1&E2
+
 ////////////////////////////////////////////////////////
 // LCD
 
-#define RAMPSFD_LCD_ROTARY_ENC		35  // Dreh Encoder auf Ramps 1.4 - Press button
-#define RAMPSFD_LCD_ROTARY_EN1      31  // Dreh Encoder auf Ramps 1.4
-#define RAMPSFD_LCD_ROTARY_EN2      33  // Dreh Encoder auf Ramps 1.4
+#define RAMPSFD_LCD_ROTARY_ENC		RAMPSFD_AUX4_10		// Dreh Encoder auf Ramps FD - Press button
+#define RAMPSFD_LCD_ROTARY_EN1      RAMPSFD_AUX4_12		// Dreh Encoder auf Ramps FD
+#define RAMPSFD_LCD_ROTARY_EN2      RAMPSFD_AUX4_11		// Dreh Encoder auf Ramps FD
 
-#define RAMPSFD_LCD_ROTARY_ENC_ON  LOW		// Pressed
-#define RAMPSFD_LCD_ROTARY_ENC_OFF HIGH
+#define RAMPSFD_LCD_ROTARY_ENC_ON	LOW					// Pressed
+#define RAMPSFD_LCD_ROTARY_ENC_OFF	HIGH
 
-#define RAMPSFD_LCD_BEEPER          37   // Summer auf Ramps 1.4
-#define RAMPSFD_LCD_KILL_PIN        41   // Stoptaste auf Ramps 1.4
+#define RAMPSFD_LCD_BEEPER          RAMPSFD_AUX4_9		// Summer auf Ramps FD
+#define RAMPSFD_LCD_KILL_PIN        RAMPSFD_AUX4_7		// Stoptaste auf Ramps 1.4
 
-#define RAMPSFD_LCD_KILL_PIN_ON  LOW	// Pressed
-#define RAMPSFD_LCD_KILL_PIN_OFF HIGH
+#define RAMPSFD_LCD_KILL_PIN_ON		LOW	// Pressed
+#define RAMPSFD_LCD_KILL_PIN_OFF	HIGH
 
-#define RAMPSFD_LCD_PINS_RS 16 
-#define RAMPSFD_LCD_PINS_ENABLE 17
-#define RAMPSFD_LCD_PINS_D4 23
-#define RAMPSFD_LCD_PINS_D5 25 
-#define RAMPSFD_LCD_PINS_D6 27
-#define RAMPSFD_LCD_PINS_D7 29
+#define RAMPSFD_LCD_PINS_RS			RAMPSFD_AUX4_18
+#define RAMPSFD_LCD_PINS_ENABLE		RAMPSFD_AUX4_17
+#define RAMPSFD_LCD_PINS_D4			RAMPSFD_AUX4_16
+#define RAMPSFD_LCD_PINS_D5			RAMPSFD_AUX4_15 
+#define RAMPSFD_LCD_PINS_D6			RAMPSFD_AUX4_14
+#define RAMPSFD_LCD_PINS_D7			RAMPSFD_AUX4_13
 
-#define RAMPSFD_ST7920_CLK_PIN  RAMPSFD_LCD_PINS_D4
-#define RAMPSFD_ST7920_DAT_PIN  RAMPSFD_LCD_PINS_ENABLE
-#define RAMPSFD_ST7920_CS_PIN   RAMPSFD_LCD_PINS_RS
+#define RAMPSFD_ST7920_CLK_PIN		RAMPSFD_LCD_PINS_D4
+#define RAMPSFD_ST7920_DAT_PIN		RAMPSFD_LCD_PINS_ENABLE
+#define RAMPSFD_ST7920_CS_PIN		RAMPSFD_LCD_PINS_RS
