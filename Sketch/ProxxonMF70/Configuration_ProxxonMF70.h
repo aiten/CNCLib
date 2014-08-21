@@ -49,22 +49,22 @@
 
 ////////////////////////////////////////////////////////
 
-#define COOLANT_PIN	42
+#define COOLANT_PIN	CAT(BOARDNAME,_AUX2_8)	// Ramps1.4 D42
 
 #define COOLANT_ON  LOW
 #define COOLANT_OFF HIGH
 
 ////////////////////////////////////////////////////////
 
-#define SPINDEL_PIN	40
+#define SPINDEL_PIN	CAT(BOARDNAME,_AUX2_6)	// Ramps1.4 D40
 
 #define SPINDEL_ON  LOW
 #define SPINDEL_OFF HIGH
 
 ////////////////////////////////////////////////////////
 
-#define PROBE1_PIN	44	// on AUX2
-#define PROBE2_PIN	64	// on AUX2
+#define PROBE1_PIN	CAT(BOARDNAME,_AUX2_7)	// Ramps 1.4 D44 
+#define PROBE2_PIN	CAT(BOARDNAME,_AUX2_5)	// Ramps 1.4 A10 
 
 #define PROBE_ON  LOW
 #define PROBE_OFF HIGH
@@ -75,7 +75,7 @@
 #define LCD_GCOL 128
 
 #define ROTARY_ENC           CAT(BOARDNAME,_LCD_ROTARY_ENC)
-#define ROTARY_ENC_ON		CAT(BOARDNAME,_LCD_ROTARY_ENC_ON)
+#define ROTARY_ENC_ON		 CAT(BOARDNAME,_LCD_ROTARY_ENC_ON)
 
 #if defined(__SAM3X8E__) && defined (USE_RAMPS14)
 
@@ -88,7 +88,7 @@
 
 #define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN1)
 #define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN2)
-#define SD_ENABLE			CAT(BOARDNAME,_SDSS)
+#define SD_ENABLE			 CAT(BOARDNAME,_SDSS)
 
 #endif
 

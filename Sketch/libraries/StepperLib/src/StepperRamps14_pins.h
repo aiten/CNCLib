@@ -88,34 +88,74 @@
 #define RAMPS14_SERVO3_PIN         4
 
 // these pins are defined in the SD library if building with SD support  
-#define RAMPS14_MAX_SCK_PIN          52
-#define RAMPS14_MAX_MISO_PIN         50
-#define RAMPS14_MAX_MOSI_PIN         51
-#define RAMPS14_MAX6675_SS       53
+#define RAMPS14_MAX_SCK_PIN         52
+#define RAMPS14_MAX_MISO_PIN        50
+#define RAMPS14_MAX_MOSI_PIN        51
+#define RAMPS14_MAX6675_SS			53
+
+#define RAMPS14_AUX2_1				-1	// VLogic
+#define RAMPS14_AUX2_2				-1	// GND
+#define RAMPS14_AUX2_3				59	// A5
+#define RAMPS14_AUX2_4				63	// A9
+#define RAMPS14_AUX2_5				64	// A10
+#define RAMPS14_AUX2_6				40	// D40
+#define RAMPS14_AUX2_7				44	// D44
+#define RAMPS14_AUX2_8				42	// D42
+#define RAMPS14_AUX2_9				66	// A12
+#define RAMPS14_AUX2_10				65	// A11
+
+#define RAMPS14_AUX3_1				-1	// 5V
+#define RAMPS14_AUX3_2				49	// D49
+#define RAMPS14_AUX3_3				50	// MISO - D50
+#define RAMPS14_AUX3_4				51	// MOSI - D51
+#define RAMPS14_AUX3_5				52	// SCK  - D52
+#define RAMPS14_AUX3_6				53	// SPI_CS1 - D53
+#define RAMPS14_AUX3_7				-1	// GND
+#define RAMPS14_AUX3_8				-1	// NC
+
+#define RAMPS14_AUX4_1				-1	// VLOGIC
+#define RAMPS14_AUX4_2				-1	// GND
+#define RAMPS14_AUX4_3				32	// D32
+#define RAMPS14_AUX4_4				47	// D47
+#define RAMPS14_AUX4_5				45	// D45
+#define RAMPS14_AUX4_6				43	// D43
+#define RAMPS14_AUX4_7				41	// D41
+#define RAMPS14_AUX4_8				39	// D39
+#define RAMPS14_AUX4_9				37	// D37
+#define RAMPS14_AUX4_10				35	// D35
+#define RAMPS14_AUX4_11				33	// D33
+#define RAMPS14_AUX4_12				31	// D31
+#define RAMPS14_AUX4_13				29	// D29
+#define RAMPS14_AUX4_14				27	// D27
+#define RAMPS14_AUX4_15				25	// D25
+#define RAMPS14_AUX4_16				23	// D23
+#define RAMPS14_AUX4_17				17	// UART2_RX  Serial2 on pins 17 (RX) and 16 (TX)
+#define RAMPS14_AUX4_18				16	// UART2_TX
+// 3-8: share E1&E2
 
 ////////////////////////////////////////////////////////
 // LCD
 
-#define RAMPS14_LCD_ROTARY_ENC		35  // Dreh Encoder auf Ramps 1.4 - Press button
-#define RAMPS14_LCD_ROTARY_EN1      31  // Dreh Encoder auf Ramps 1.4
-#define RAMPS14_LCD_ROTARY_EN2      33  // Dreh Encoder auf Ramps 1.4
+#define RAMPS14_LCD_ROTARY_ENC		RAMPS14_AUX4_10		// Dreh Encoder auf Ramps 1.4 - Press button
+#define RAMPS14_LCD_ROTARY_EN1      RAMPS14_AUX4_12		// Dreh Encoder auf Ramps 1.4
+#define RAMPS14_LCD_ROTARY_EN2      RAMPS14_AUX4_11		// Dreh Encoder auf Ramps 1.4
 
-#define RAMPS14_LCD_ROTARY_ENC_ON  LOW		// Pressed
-#define RAMPS14_LCD_ROTARY_ENC_OFF HIGH
+#define RAMPS14_LCD_ROTARY_ENC_ON	LOW		// Pressed
+#define RAMPS14_LCD_ROTARY_ENC_OFF	HIGH
 
-#define RAMPS14_LCD_BEEPER          37   // Summer auf Ramps 1.4
-#define RAMPS14_LCD_KILL_PIN        41   // Stoptaste auf Ramps 1.4
+#define RAMPS14_LCD_BEEPER          RAMPS14_AUX4_9		// Summer auf Ramps 1.4
+#define RAMPS14_LCD_KILL_PIN        RAMPS14_AUX4_7		// Stoptaste auf Ramps 1.4
 
 #define RAMPS14_LCD_KILL_PIN_ON  LOW	// Pressed
 #define RAMPS14_LCD_KILL_PIN_OFF HIGH
 
-#define RAMPS14_LCD_PINS_RS 16 
-#define RAMPS14_LCD_PINS_ENABLE 17
-#define RAMPS14_LCD_PINS_D4 23
-#define RAMPS14_LCD_PINS_D5 25 
-#define RAMPS14_LCD_PINS_D6 27
-#define RAMPS14_LCD_PINS_D7 29
+#define RAMPS14_LCD_PINS_RS			RAMPS14_AUX4_18 
+#define RAMPS14_LCD_PINS_ENABLE		RAMPS14_AUX4_17
+#define RAMPS14_LCD_PINS_D4			RAMPS14_AUX4_16
+#define RAMPS14_LCD_PINS_D5			RAMPS14_AUX4_15  
+#define RAMPS14_LCD_PINS_D6			RAMPS14_AUX4_14
+#define RAMPS14_LCD_PINS_D7			RAMPS14_AUX4_13
 
-#define RAMPS14_ST7920_CLK_PIN  RAMPS14_LCD_PINS_D4
-#define RAMPS14_ST7920_DAT_PIN  RAMPS14_LCD_PINS_ENABLE
-#define RAMPS14_ST7920_CS_PIN   RAMPS14_LCD_PINS_RS
+#define RAMPS14_ST7920_CLK_PIN		RAMPS14_LCD_PINS_D4
+#define RAMPS14_ST7920_DAT_PIN		RAMPS14_LCD_PINS_ENABLE
+#define RAMPS14_ST7920_CS_PIN		RAMPS14_LCD_PINS_RS

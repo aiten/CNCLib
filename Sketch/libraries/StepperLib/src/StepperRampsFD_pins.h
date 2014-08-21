@@ -93,7 +93,7 @@
 #define RAMPSFD_AUX2_2				-1	// GND
 #define RAMPSFD_AUX2_3				58	// A4
 #define RAMPSFD_AUX2_4				59	// A5
-#define RAMPSFD_AUX2_5				60	// A5
+#define RAMPSFD_AUX2_5				60	// A6
 #define RAMPSFD_AUX2_6				61	// A7
 #define RAMPSFD_AUX2_7				14	// AD14
 #define RAMPSFD_AUX2_8				15	// AD15
