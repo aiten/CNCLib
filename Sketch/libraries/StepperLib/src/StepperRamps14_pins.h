@@ -21,77 +21,101 @@
 
 ////////////////////////////////////////////////////////
 
-#define PINOFF 0
-#define PINON 1
+#define RAMPS14_PINOFF 0
+#define RAMPS14_PINON 1
 
 ////////////////////////////////////////////////////////
 
 // only available on Arduino Mega / due
 
-#define REF_ON	0
-#define REF_OFF	1
+#define RAMPS14_REF_ON	0
+#define RAMPS14_REF_OFF	1
 
-#define X_STEP_PIN         54
-#define X_DIR_PIN          55
-#define X_ENABLE_PIN       38
-#define X_MIN_PIN           3
-#define X_MAX_PIN           2
+#define RAMPS14_X_STEP_PIN         54
+#define RAMPS14_X_DIR_PIN          55
+#define RAMPS14_X_ENABLE_PIN       38
+#define RAMPS14_X_MIN_PIN           3
+#define RAMPS14_X_MAX_PIN           2
 
-#define Y_STEP_PIN         60
-#define Y_DIR_PIN          61
-#define Y_ENABLE_PIN       56
-#define Y_MIN_PIN          14
-#define Y_MAX_PIN          15
+#define RAMPS14_Y_STEP_PIN         60
+#define RAMPS14_Y_DIR_PIN          61
+#define RAMPS14_Y_ENABLE_PIN       56
+#define RAMPS14_Y_MIN_PIN          14
+#define RAMPS14_Y_MAX_PIN          15
 
-#define Z_STEP_PIN         46
-#define Z_DIR_PIN          48
-#define Z_ENABLE_PIN       62
-#define Z_MIN_PIN          18
-#define Z_MAX_PIN          19
+#define RAMPS14_Z_STEP_PIN         46
+#define RAMPS14_Z_DIR_PIN          48
+#define RAMPS14_Z_ENABLE_PIN       62
+#define RAMPS14_Z_MIN_PIN          18
+#define RAMPS14_Z_MAX_PIN          19
 
-#define Z2_STEP_PIN        36
-#define Z2_DIR_PIN         34
-#define Z2_ENABLE_PIN      30
+#define RAMPS14_Z2_STEP_PIN        36
+#define RAMPS14_Z2_DIR_PIN         34
+#define RAMPS14_Z2_ENABLE_PIN      30
 
-#define E0_STEP_PIN        26
-#define E0_DIR_PIN         28
-#define E0_ENABLE_PIN      24
+#define RAMPS14_E0_STEP_PIN        26
+#define RAMPS14_E0_DIR_PIN         28
+#define RAMPS14_E0_ENABLE_PIN      24
 
-#define E1_STEP_PIN        36
-#define E1_DIR_PIN         34
-#define E1_ENABLE_PIN      30
+#define RAMPS14_E1_STEP_PIN        36
+#define RAMPS14_E1_DIR_PIN         34
+#define RAMPS14_E1_ENABLE_PIN      30
 
-#define SDPOWER            -1
-#define SDSS               53
-#define LED_PIN            13
+#define RAMPS14_SDPOWER            -1
+#define RAMPS14_SDSS               53
+#define RAMPS14_LED_PIN            13
 
-#define FAN_PIN            9 // (Sprinter config)
+#define RAMPS14_FAN_PIN            9 // (Sprinter config)
 
-#define CONTROLLERFAN_PIN  10 //Pin used for the fan to cool controller
+#define RAMPS14_CONTROLLERFAN_PIN  10 //Pin used for the fan to cool controller
 
-#define PS_ON_PIN          12
+#define RAMPS14_PS_ON_PIN          12
 
-#define KILL_PIN           41
-#define HEATER_0_PIN       8
-#define HEATER_1_PIN       9    // EXTRUDER 2 (FAN On Sprinter)
+#define RAMPS14_KILL_PIN           41
+#define RAMPS14_HEATER_0_PIN       8
+#define RAMPS14_HEATER_1_PIN       9    // EXTRUDER 2 (FAN On Sprinter)
 
-#define TEMP_0_PIN         13   // ANALOG NUMBERING
-#define TEMP_1_PIN         15   // ANALOG NUMBERING
-#define TEMP_2_PIN         -1   // ANALOG NUMBERING
+#define RAMPS14_TEMP_0_PIN         13   // ANALOG NUMBERING
+#define RAMPS14_TEMP_1_PIN         15   // ANALOG NUMBERING
+#define RAMPS14_TEMP_2_PIN         -1   // ANALOG NUMBERING
 
-#define HEATER_BED_PIN     -1    // NO BED
-#define TEMP_BED_PIN       14   // ANALOG NUMBERING
+#define RAMPS14_HEATER_BED_PIN     -1    // NO BED
+#define RAMPS14_TEMP_BED_PIN       14   // ANALOG NUMBERING
 
-#define SERVO0_PIN         11
-#define SERVO1_PIN         6
-#define SERVO2_PIN         5
-#define SERVO3_PIN         4
+#define RAMPS14_SERVO0_PIN         11
+#define RAMPS14_SERVO1_PIN         6
+#define RAMPS14_SERVO2_PIN         5
+#define RAMPS14_SERVO3_PIN         4
 
 // these pins are defined in the SD library if building with SD support  
-#define MAX_SCK_PIN          52
-#define MAX_MISO_PIN         50
-#define MAX_MOSI_PIN         51
-#define MAX6675_SS       53
+#define RAMPS14_MAX_SCK_PIN          52
+#define RAMPS14_MAX_MISO_PIN         50
+#define RAMPS14_MAX_MOSI_PIN         51
+#define RAMPS14_MAX6675_SS       53
 
 ////////////////////////////////////////////////////////
+// LCD
 
+#define RAMPS14_LCD_ROTARY_ENC		35  // Dreh Encoder auf Ramps 1.4 - Press button
+#define RAMPS14_LCD_ROTARY_EN1      31  // Dreh Encoder auf Ramps 1.4
+#define RAMPS14_LCD_ROTARY_EN2      33  // Dreh Encoder auf Ramps 1.4
+
+#define RAMPS14_LCD_ROTARY_ENC_ON  LOW		// Pressed
+#define RAMPS14_LCD_ROTARY_ENC_OFF HIGH
+
+#define RAMPS14_LCD_BEEPER          37   // Summer auf Ramps 1.4
+#define RAMPS14_LCD_KILL_PIN        41   // Stoptaste auf Ramps 1.4
+
+#define RAMPS14_LCD_KILL_PIN_ON  LOW	// Pressed
+#define RAMPS14_LCD_KILL_PIN_OFF HIGH
+
+#define RAMPS14_LCD_PINS_RS 16 
+#define RAMPS14_LCD_PINS_ENABLE 17
+#define RAMPS14_LCD_PINS_D4 23
+#define RAMPS14_LCD_PINS_D5 25 
+#define RAMPS14_LCD_PINS_D6 27
+#define RAMPS14_LCD_PINS_D7 29
+
+#define RAMPS14_ST7920_CLK_PIN  RAMPS14_LCD_PINS_D4
+#define RAMPS14_ST7920_DAT_PIN  RAMPS14_LCD_PINS_ENABLE
+#define RAMPS14_ST7920_CS_PIN   RAMPS14_LCD_PINS_RS

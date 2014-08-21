@@ -42,7 +42,7 @@
 //
 ////////////////////////////////////////////////////////////
 
-U8GLIB_ST7920_128X64_1X u8g(ST7920_CLK_PIN, ST7920_DAT_PIN, ST7920_CS_PIN);	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
+U8GLIB_ST7920_128X64_1X u8g(CAT(BOARDNAME,_ST7920_CLK_PIN), CAT(BOARDNAME,_ST7920_DAT_PIN), CAT(BOARDNAME,_ST7920_CS_PIN));	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
 
 ////////////////////////////////////////////////////////////
 
@@ -97,8 +97,8 @@ PROGMEM const CMyLcd::SPageDef CMyLcd::_pagedef[] =
 
 void CMyLcd::Init()
 {
-	pinMode(LCD_BEEPER, OUTPUT);
-	digitalWrite(LCD_BEEPER, LOW);
+	pinMode(CAT(BOARDNAME,_LCD_BEEPER), OUTPUT);
+	digitalWrite(CAT(BOARDNAME,_LCD_BEEPER), LOW);
 
 	super::Init();
 
@@ -106,7 +106,7 @@ void CMyLcd::Init()
 	pinMode(ROTARY_EN1, INPUT_PULLUP);
 	pinMode(ROTARY_EN2, INPUT_PULLUP);
 
-	pinMode(LCD_KILL_PIN, INPUT_PULLUP);
+	pinMode(CAT(BOARDNAME,_LCD_KILL_PIN), INPUT_PULLUP);
 
 	_button.Tick(READ(ROTARY_EN1), READ(ROTARY_EN2));
 
@@ -136,9 +136,9 @@ void CMyLcd::Beep()
 {
 	for (int8_t i = 0; i < 10; i++)
 	{
-		digitalWrite(LCD_BEEPER, HIGH);
+		digitalWrite(CAT(BOARDNAME,_LCD_BEEPER), HIGH);
 		delay(3);
-		digitalWrite(LCD_BEEPER, LOW);
+		digitalWrite(CAT(BOARDNAME,_LCD_BEEPER), LOW);
 		delay(3);
 	}
 }
@@ -179,7 +179,7 @@ void CMyLcd::TimerInterrupt()
 {
 	super::TimerInterrupt();
 
-	if (READ(KILL_PIN) == LCD_KILL_PIN_ON)
+	if (READ(CAT(BOARDNAME,_LCD_KILL_PIN)) == CAT(BOARDNAME,_LCD_KILL_PIN_ON))
 	{
 		Control.Kill();
 	}

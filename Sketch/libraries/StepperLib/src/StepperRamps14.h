@@ -37,7 +37,7 @@
 #define RAMPS14_ENDSTOPCOUNT 6
 
 #undef  USE_A4998
-#define USE_DRV58825
+#define USE_DRV8825
 
 ////////////////////////////////////////////////////////
 

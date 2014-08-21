@@ -21,25 +21,31 @@
 
 ////////////////////////////////////////////////////////
 
-#define USE_RAMPS14
-//8#define USE_RAMPSFD
+//#define USE_RAMPS14
+#define USE_RAMPSFD
 
 ////////////////////////////////////////////////////////
 
 #if defined(USE_RAMPS14)
 
 #include <StepperRamps14_pins.h>
-
+#define BOARDNAME RAMPS14
 #else if  defined(USE_RAMPSFD)
 
 #include <StepperRampsFD_pins.h>
+#define BOARDNAME RAMPSFD
 
 #endif
 
 ////////////////////////////////////////////////////////
 
+#define CAT(x, y) CAT_(x, y)
+#define CAT_(x, y) x ## y
+
+////////////////////////////////////////////////////////
+
 #define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
-#define CONTROLLERFAN_FAN_PIN	FAN_PIN
+#define CONTROLLERFAN_FAN_PIN	CAT(BOARDNAME,_FAN_PIN)
 
 ////////////////////////////////////////////////////////
 
@@ -65,60 +71,26 @@
 
 ////////////////////////////////////////////////////////
 
-#define LCD_PINS_RS 16 
-#define LCD_PINS_ENABLE 17
-#define LCD_PINS_D4 23
-#define LCD_PINS_D5 25 
-#define LCD_PINS_D6 27
-#define LCD_PINS_D7 29
-
-#define ST7920_CLK_PIN  LCD_PINS_D4
-#define ST7920_DAT_PIN  LCD_PINS_ENABLE
-#define ST7920_CS_PIN   LCD_PINS_RS
-
-////////////////////////////////////////////////////////
-
 #define LCD_GROW 64
 #define LCD_GCOL 128
 
-#define LCD_BEEPER          37   // Summer auf Ramps 1.4
-#define LCD_KILL_PIN        41   // Stoptaste auf Ramps 1.4
-#define ROTARY_ENC			35   // Dreh Encoder auf Ramps 1.4 - Press button
+#define ROTARY_ENC           CAT(BOARDNAME,_LCD_ROTARY_ENC)
+#define ROTARY_ENC_ON		CAT(BOARDNAME,_LCD_ROTARY_ENC_ON)
 
-#define ROTARY_ENC_ON  LOW		// Pressed
-#define ROTARY_ENC_OFF HIGH
-
-
-#define LCD_KILL_PIN_ON  LOW	// Pressed
-#define LCD_KILL_PIN_OFF HIGH
-
-
-#if defined(__SAM3X8E__)
-
-
-#if defined (USE_RAMPSFD)
-
-#define SD_ENABLE				SDSS	
-#define ROTARY_EN1           31   // Dreh Encoder auf Ramps 1.4
-#define ROTARY_EN2           33   // Dreh Encoder auf Ramps 1.4
-
-#else if defined (USE_RAMPS14)
+#if defined(__SAM3X8E__) && defined (USE_RAMPS14)
 
 #define SD_ENABLE				52
-#define ROTARY_EN1           33   // Dreh Encoder auf Ramps 1.4
-#define ROTARY_EN2           31   // Dreh Encoder auf Ramps 1.4
-
-#endif
+#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN2)
+#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN1)
+#define ROTARY_ENC           CAT(BOARDNAME,_LCD_ROTARY_ENC)
 
 #else
 
-#define SD_ENABLE				SDSS	
-
-#define ROTARY_EN1           31   // Dreh Encoder auf Ramps 1.4
-#define ROTARY_EN2           33   // Dreh Encoder auf Ramps 1.4
+#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN1)
+#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN2)
+#define SD_ENABLE			CAT(BOARDNAME,_SDSS)
 
 #endif
-
 
 ////////////////////////////////////////////////////////
 
@@ -127,7 +99,7 @@
 #if defined(__SAM3X8E__)
 #if defined(USE_RAMPS14)
 #define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps 1.4 due is starting ... ("__DATE__", "__TIME__")")
-#elseif defined(USE_RAMPSFD)
+#else if defined(USE_RAMPSFD)
 #define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps FD due is starting ... ("__DATE__", "__TIME__")")
 #endif
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
