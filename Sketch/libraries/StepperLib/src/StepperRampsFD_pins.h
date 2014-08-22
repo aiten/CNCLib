@@ -65,11 +65,14 @@
 #define RAMPSFD_SDSS               4
 #define RAMPSFD_LED_PIN            13
 
-#define RAMPSFD_FAN_PIN            9 // (Sprinter config)
+#define RAMPSFD_D2		           2		// active hi
+#define RAMPSFD_D9		           9
+#define RAMPSFD_D10		           10
+#define RAMPSFD_D11		           11
+#define RAMPSFD_D12		           12		// active hi
+#define RAMPSFD_FAN_PIN            RAMPSFD_D9
 
-#define RAMPSFD_CONTROLLERFAN_PIN  10 //Pin used for the fan to cool controller
-
-#define RAMPSFD_PS_ON_PIN          12
+#define RAMPSFD_PS_ON_PIN          53
 
 #define RAMPSFD_KILL_PIN           41
 #define RAMPSFD_HEATER_0_PIN       8

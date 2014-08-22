@@ -21,8 +21,8 @@
 
 ////////////////////////////////////////////////////////
 
-//#define USE_RAMPS14
-#define USE_RAMPSFD
+#define USE_RAMPS14
+//#define USE_RAMPSFD
 
 ////////////////////////////////////////////////////////
 
@@ -30,6 +30,7 @@
 
 #include <StepperRamps14_pins.h>
 #define BOARDNAME RAMPS14
+
 #else if  defined(USE_RAMPSFD)
 
 #include <StepperRampsFD_pins.h>
