@@ -66,6 +66,7 @@
 #define MESSAGE_GCODE_QalreadySpecified				F("Q already specified")
 #define MESSAGE_GCODE_QmustBeAPositivNumber			F("Q must be a positiv number")
 #define MESSAGE_GCODE_FalreadySpecified				F("F already specified")
+#define MESSAGE_GCODE_FeedrateWithG0				F("F not allowed with G0")
 #define MESSAGE_GCODE_IJKandRspecified				F("IJK and R specified")
 #define MESSAGE_GCODE_MissingIKJorR					F("missing IKJ or R")
 #define MESSAGE_GCODE_360withRandMissingAxes		F("360 with R and missing axes")

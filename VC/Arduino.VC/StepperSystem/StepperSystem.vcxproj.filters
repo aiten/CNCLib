@@ -144,6 +144,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\MessageCNCExLib.h">
       <Filter>CNCLibEx</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Analog8InvertIOControl.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">

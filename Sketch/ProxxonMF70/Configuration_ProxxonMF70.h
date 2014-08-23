@@ -46,7 +46,7 @@
 ////////////////////////////////////////////////////////
 
 #define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
-#define CONTROLLERFAN_FAN_PIN	CAT(BOARDNAME,_FAN_PIN)
+#define CONTROLLERFAN_FAN_PIN	CAT(BOARDNAME,_FET2D9_PIN)
 
 ////////////////////////////////////////////////////////
 
@@ -80,7 +80,7 @@
 
 #if defined(__SAM3X8E__) && defined (USE_RAMPS14)
 
-#define SD_ENABLE				52
+#define SD_ENABLE_PIN	 	 52
 #define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN2)
 #define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN1)
 #define ROTARY_ENC           CAT(BOARDNAME,_LCD_ROTARY_ENC)
@@ -89,7 +89,7 @@
 
 #define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN1)
 #define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN2)
-#define SD_ENABLE			 CAT(BOARDNAME,_SDSS)
+#define SD_ENABLE_PIN		 CAT(BOARDNAME,_SDSS_PIN)
 
 #endif
 

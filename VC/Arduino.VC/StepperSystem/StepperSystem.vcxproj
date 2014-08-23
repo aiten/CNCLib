@@ -15,6 +15,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\ConfigurationCNCLibEx.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\GCode3DParser.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\MessageCNCExLib.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Analog8InvertIOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Analog8IOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\CNCLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigurationCNCLib.h" />

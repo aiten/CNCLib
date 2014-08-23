@@ -236,6 +236,8 @@ static bool IsBacklashFeedrateParam(param_t paramNo)					{ return IsParam(paramN
 
 static bool IsControllerFanParam(param_t paramNo)						{ return IsParam(paramNo, PARAMSTART_CONTROLLERFAN); }
 
+static bool IsRapidMoveFeedRate(param_t paramNo)						{ return IsParam(paramNo, PARAMSTART_RAPIDMOVEFEED); }
+
 
 mm1000_t CGCodeParser::GetParamValue(param_t paramNo)
 {
@@ -292,6 +294,10 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 		else if (IsControllerFanParam(paramNo))
 		{
 			CControl::GetInstance()->IOControl(CControl::ControllerFan,(unsigned short)exprpars.Answer);
+		}
+		else if (IsRapidMoveFeedRate(paramNo))
+		{
+			SetG0FeedRate(-exprpars.Answer*1000);
 		}
 		else
 		{
@@ -867,7 +873,7 @@ void CGCodeParser::GetFeedrate(SAxisMove& move)
 	if (feedrate < FEEDRATE_MIN_ALLOWED) feedrate = FEEDRATE_MIN_ALLOWED;
 	if (feedrate > FEEDRATE_MAX_ALLOWED) feedrate = FEEDRATE_MAX_ALLOWED;
 
-	_modalstate.G1FeedRate = feedrate;
+	SetG0FeedRate(feedrate);
 }
 
 ////////////////////////////////////////////////////////////
@@ -918,7 +924,8 @@ void CGCodeParser::G0001Command(bool isG00)
 	{
 		axis_t axis;
 		if ((axis = CharToAxis(ch)) < NUM_AXIS) GetAxis(axis, move, _modalstate.IsAbsolut ? AbsolutWithZeroShiftPosition : RelativPosition);
-		else if (ch == 'F') GetFeedrate(move);
+		else if (ch == 'F' && isG00) { Error(MESSAGE_GCODE_FeedrateWithG0); return; }
+		else if (ch == 'F' && !isG00) GetFeedrate(move);
 		else break;
 
 		if (CheckError()) { return; }

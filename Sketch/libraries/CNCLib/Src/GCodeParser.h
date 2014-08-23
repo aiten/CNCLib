@@ -44,6 +44,7 @@ typedef unsigned short param_t;
 #define PARAMSTART_BACKLASH_FEEDRATE 5469	// Feedrate for backlash (0 if disabled)
 
 #define PARAMSTART_CONTROLLERFAN 5470		// Controllerfan if not idle (0 if disabled, 255 max)
+#define PARAMSTART_RAPIDMOVEFEED 5471		// RapidMove Feedrate
 
 
 // g73 retraction

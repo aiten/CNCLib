@@ -31,109 +31,112 @@
 #define RAMPSFD_REF_ON	0
 #define RAMPSFD_REF_OFF	1
 
-#define RAMPSFD_X_STEP_PIN         63		// A9
-#define RAMPSFD_X_DIR_PIN          62		// A8
-#define RAMPSFD_X_ENABLE_PIN       48
-#define RAMPSFD_X_MIN_PIN          22
-#define RAMPSFD_X_MAX_PIN          30
+#define RAMPSFD_X_STEP_PIN			63		// AD9
+#define RAMPSFD_X_DIR_PIN			62		// AD8
+#define RAMPSFD_X_ENABLE_PIN		48		// D48
+#define RAMPSFD_X_MIN_PIN			22		// D22
+#define RAMPSFD_X_MAX_PIN			30		// D30
 
-#define RAMPSFD_Y_STEP_PIN         65		//A11
-#define RAMPSFD_Y_DIR_PIN          64		//A10
-#define RAMPSFD_Y_ENABLE_PIN       46
-#define RAMPSFD_Y_MIN_PIN          24
-#define RAMPSFD_Y_MAX_PIN          38
+#define RAMPSFD_Y_STEP_PIN			65		// AD11
+#define RAMPSFD_Y_DIR_PIN			64		// AD10
+#define RAMPSFD_Y_ENABLE_PIN		46		// D46
+#define RAMPSFD_Y_MIN_PIN			24		// D24
+#define RAMPSFD_Y_MAX_PIN			38		// D38
 
-#define RAMPSFD_Z_STEP_PIN         67		//A13
-#define RAMPSFD_Z_DIR_PIN          66		//A12
-#define RAMPSFD_Z_ENABLE_PIN       44
-#define RAMPSFD_Z_MIN_PIN          26
-#define RAMPSFD_Z_MAX_PIN          34
+#define RAMPSFD_Z_STEP_PIN			67		// AD13
+#define RAMPSFD_Z_DIR_PIN			66		// AD12
+#define RAMPSFD_Z_ENABLE_PIN		44		// D44
+#define RAMPSFD_Z_MIN_PIN			26		// D26
+#define RAMPSFD_Z_MAX_PIN			34		// D34
 
-#define RAMPSFD_E0_STEP_PIN        36
-#define RAMPSFD_E0_DIR_PIN         28
-#define RAMPSFD_E0_ENABLE_PIN      42
+#define RAMPSFD_E0_STEP_PIN			36		// D36
+#define RAMPSFD_E0_DIR_PIN			28		// D28
+#define RAMPSFD_E0_ENABLE_PIN		42		// D42
 
-#define RAMPSFD_E1_STEP_PIN        43
-#define RAMPSFD_E1_DIR_PIN         41
-#define RAMPSFD_E1_ENABLE_PIN      39
+#define RAMPSFD_E1_STEP_PIN			43		// D43
+#define RAMPSFD_E1_DIR_PIN			41		// D41
+#define RAMPSFD_E1_ENABLE_PIN		39		// D39
 
-#define RAMPSFD_E2_STEP_PIN        32
-#define RAMPSFD_E2_DIR_PIN         47
-#define RAMPSFD_E2_ENABLE_PIN      45
+#define RAMPSFD_E2_STEP_PIN			32		// D32
+#define RAMPSFD_E2_DIR_PIN			47		// D47
+#define RAMPSFD_E2_ENABLE_PIN		45		// D45
 
-#define RAMPSFD_SDPOWER            -1
-#define RAMPSFD_SDSS               4
-#define RAMPSFD_LED_PIN            13
+#define RAMPSFD_SDPOWER_PIN			-1
+#define RAMPSFD_SDSS_PIN			4		// D4
+#define RAMPSFD_LED_PIN				13		// D13
 
-#define RAMPSFD_D2		           2		// active hi
-#define RAMPSFD_D9		           9
-#define RAMPSFD_D10		           10
-#define RAMPSFD_D11		           11
-#define RAMPSFD_D12		           12		// active hi
-#define RAMPSFD_FAN_PIN            RAMPSFD_D9
+#define RAMPSFD_UART3_TX_PIN		14		// D14
+#define RAMPSFD_UART3_RX_PIN		15		// D15
+#define RAMPSFD_UART2_TX_PIN		16		// D16
+#define RAMPSFD_UART2_RX_PIN		17		// D17
+#define RAMPSFD_UART1_TX_PIN		18		// D18
+#define RAMPSFD_UART1_RX_PIN		19		// D19
+#define RAMPSFD_SDA_PIN				20		// D20
+#define RAMPSFD_SLC_PIN				21		// D21
 
-#define RAMPSFD_PS_ON_PIN          53
+#define RAMPSFD_FET1D8_PIN			8		// D8 FET1
+#define RAMPSFD_FET2D9_PIN			9		// D9 FET2
+#define RAMPSFD_FET3D10_PIN			10		// D10 FET3
+#define RAMPSFD_FET4D11_PIN			11		// D11 FET4
+#define RAMPSFD_FET5D12_PIN			12		// D12 FET5 - active hi
+#define RAMPSFD_FET6D2_PIN			2		// D2 FET6 - active hi
 
-#define RAMPSFD_KILL_PIN           41
-#define RAMPSFD_HEATER_0_PIN       8
-#define RAMPSFD_HEATER_1_PIN       9    // EXTRUDER 2 (FAN On Sprinter)
+#define RAMPSFD_PS_ON_PIN			53		// D53
 
-#define RAMPSFD_TEMP_0_PIN         13   // ANALOG NUMBERING
-#define RAMPSFD_TEMP_1_PIN         15   // ANALOG NUMBERING
-#define RAMPSFD_TEMP_2_PIN         -1   // ANALOG NUMBERING
+#define RAMPSFD_ESTOP_PIN			40		// D40
 
-#define RAMPSFD_HEATER_BED_PIN     -1    // NO BED
-#define RAMPSFD_TEMP_BED_PIN       14   // ANALOG NUMBERING
+#define RAMPSFD_TEMP_0_PIN			54		// AD0
+#define RAMPSFD_TEMP_1_PIN			55		// AD1
+#define RAMPSFD_TEMP_2_PIN			56		// AD2
+#define RAMPSFD_TEMP_3_PIN			57		// AD3
 
-#define RAMPSFD_SERVO0_PIN         11
-#define RAMPSFD_SERVO1_PIN         6
-#define RAMPSFD_SERVO2_PIN         5
-#define RAMPSFD_SERVO3_PIN         4
+#define RAMPSFD_SERVO1_PIN			7		// D7
+#define RAMPSFD_SERVO2_PIN			6		// D6
+#define RAMPSFD_SERVO3_PIN			5		// D5
+#define RAMPSFD_SERVO4_PIN			3		// D3
 
-#define RAMPSFD_ESTOP		       40
+#define RAMPSFD_AUX2_1				-1		// VLogic
+#define RAMPSFD_AUX2_2				-1		// GND
+#define RAMPSFD_AUX2_3				58		// AD4
+#define RAMPSFD_AUX2_4				59		// AD5
+#define RAMPSFD_AUX2_5				60		// AD6
+#define RAMPSFD_AUX2_6				61		// AD7
+#define RAMPSFD_AUX2_7				68		// AD14 - CANRX
+#define RAMPSFD_AUX2_8				69		// AD15	- CANTX
+#define RAMPSFD_AUX2_9				-1		// UART3_TX
+#define RAMPSFD_AUX2_10				-1		// UART3_RX
 
-#define RAMPSFD_AUX2_1				-1	// VLogic
-#define RAMPSFD_AUX2_2				-1	// GND
-#define RAMPSFD_AUX2_3				58	// A4
-#define RAMPSFD_AUX2_4				59	// A5
-#define RAMPSFD_AUX2_5				60	// A6
-#define RAMPSFD_AUX2_6				61	// A7
-#define RAMPSFD_AUX2_7				14	// AD14
-#define RAMPSFD_AUX2_8				15	// AD15
-#define RAMPSFD_AUX2_9				-1	// UART3_TX
-#define RAMPSFD_AUX2_10				-1	// UART3_RX
+#define RAMPSFD_AUX3_1				-1		// 5V
+#define RAMPSFD_AUX3_2				49		// D49
+#define RAMPSFD_AUX3_3				4		// MISO
+#define RAMPSFD_AUX3_4				5		// MOSI
+#define RAMPSFD_AUX3_5				6		// SCK
+#define RAMPSFD_AUX3_6				7		// SPI_CS1
+#define RAMPSFD_AUX3_7				-1		// GND
+#define RAMPSFD_AUX3_8				-1		// NC
+#define RAMPSFD_AUX3_9				50		// D50 - MISO
+#define RAMPSFD_AUX3_10				51		// D51 - MOSI
+#define RAMPSFD_AUX3_11				52		// D52 - SCK
+#define RAMPSFD_AUX3_12				-1		// CLOGIC
 
-#define RAMPSFD_AUX3_1				-1	// 5V
-#define RAMPSFD_AUX3_2				49	// D49
-#define RAMPSFD_AUX3_3				4	// MISO
-#define RAMPSFD_AUX3_4				5	// MOSI
-#define RAMPSFD_AUX3_5				6	// SCK
-#define RAMPSFD_AUX3_6				7	// SPI_CS1
-#define RAMPSFD_AUX3_7				-1	// GND
-#define RAMPSFD_AUX3_8				-1	// NC
-#define RAMPSFD_AUX3_9				50	// D50 - MISO
-#define RAMPSFD_AUX3_10				51	// D51 - MOSI
-#define RAMPSFD_AUX3_11				52	// D52 - SCK
-#define RAMPSFD_AUX3_12				-1	// CLOGIC
-
-#define RAMPSFD_AUX4_1				-1	// VLOGIC
-#define RAMPSFD_AUX4_2				-1	// GND
-#define RAMPSFD_AUX4_3				32	// D32
-#define RAMPSFD_AUX4_4				47	// D47
-#define RAMPSFD_AUX4_5				45	// D45
-#define RAMPSFD_AUX4_6				43	// D43
-#define RAMPSFD_AUX4_7				41	// D41
-#define RAMPSFD_AUX4_8				39	// D39
-#define RAMPSFD_AUX4_9				37	// D37
-#define RAMPSFD_AUX4_10				35	// D35
-#define RAMPSFD_AUX4_11				33	// D33
-#define RAMPSFD_AUX4_12				31	// D31
-#define RAMPSFD_AUX4_13				29	// D29
-#define RAMPSFD_AUX4_14				27	// D27
-#define RAMPSFD_AUX4_15				25	// D25
-#define RAMPSFD_AUX4_16				23	// D23
-#define RAMPSFD_AUX4_17				17	// UART2_RX  Serial2 on pins 17 (RX) and 16 (TX)
-#define RAMPSFD_AUX4_18				16	// UART2_TX
+#define RAMPSFD_AUX4_1				-1		// VLOGIC
+#define RAMPSFD_AUX4_2				-1		// GND
+#define RAMPSFD_AUX4_3				32		// D32
+#define RAMPSFD_AUX4_4				47		// D47
+#define RAMPSFD_AUX4_5				45		// D45
+#define RAMPSFD_AUX4_6				43		// D43
+#define RAMPSFD_AUX4_7				41		// D41
+#define RAMPSFD_AUX4_8				39		// D39
+#define RAMPSFD_AUX4_9				37		// D37
+#define RAMPSFD_AUX4_10				35		// D35
+#define RAMPSFD_AUX4_11				33		// D33
+#define RAMPSFD_AUX4_12				31		// D31
+#define RAMPSFD_AUX4_13				29		// D29
+#define RAMPSFD_AUX4_14				27		// D27
+#define RAMPSFD_AUX4_15				25		// D25
+#define RAMPSFD_AUX4_16				23		// D23
+#define RAMPSFD_AUX4_17				RAMPSFD_UART2_RX_PIN
+#define RAMPSFD_AUX4_18				RAMPSFD_UART2_TX_PIN
 // 3-8: share E1&E2
 
 ////////////////////////////////////////////////////////
@@ -147,7 +150,7 @@
 #define RAMPSFD_LCD_ROTARY_ENC_OFF	HIGH
 
 #define RAMPSFD_LCD_BEEPER          RAMPSFD_AUX4_9		// Summer auf Ramps FD
-#define RAMPSFD_LCD_KILL_PIN        RAMPSFD_AUX4_7		// Stoptaste auf Ramps 1.4
+#define RAMPSFD_LCD_KILL_PIN        RAMPSFD_AUX4_7		// Stoptaste auf Ramps FD
 
 #define RAMPSFD_LCD_KILL_PIN_ON		LOW	// Pressed
 #define RAMPSFD_LCD_KILL_PIN_OFF	HIGH

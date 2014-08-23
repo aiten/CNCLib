@@ -95,10 +95,10 @@ void CMyControl::Init()
 
 	ClearPrintFromSD ();
 
-	pinMode(SD_ENABLE, OUTPUT);
-	digitalWrite(SD_ENABLE, HIGH);
+	pinMode(SD_ENABLE_PIN, OUTPUT);
+	digitalWrite(SD_ENABLE_PIN, HIGH);
 
-	if (!SD.begin(SD_ENABLE))
+	if (!SD.begin(SD_ENABLE_PIN))
 	{
 		StepperSerial.println(MESSAGE_MYCONTROL_initializationFailed);
 	}
