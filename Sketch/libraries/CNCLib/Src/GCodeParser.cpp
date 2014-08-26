@@ -873,7 +873,7 @@ void CGCodeParser::GetFeedrate(SAxisMove& move)
 	if (feedrate < FEEDRATE_MIN_ALLOWED) feedrate = FEEDRATE_MIN_ALLOWED;
 	if (feedrate > FEEDRATE_MAX_ALLOWED) feedrate = FEEDRATE_MAX_ALLOWED;
 
-	SetG0FeedRate(feedrate);
+	SetG1FeedRate(feedrate);
 }
 
 ////////////////////////////////////////////////////////////

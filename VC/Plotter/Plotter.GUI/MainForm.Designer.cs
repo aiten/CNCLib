@@ -65,7 +65,17 @@
             "COM16",
             "COM17",
             "COM18",
-            "COM19"});
+            "COM19",
+            "COM20",
+            "COM21",
+            "COM22",
+            "COM23",
+            "COM24",
+            "COM25",
+            "COM26",
+            "COM27",
+            "COM28",
+            "COM29"});
 			this._com.Location = new System.Drawing.Point(20, 11);
 			this._com.Name = "_com";
 			this._com.Size = new System.Drawing.Size(102, 21);

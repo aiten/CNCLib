@@ -48,7 +48,7 @@ namespace Proxxon.Wpf.ViewModels
         private string _comport;
         public string ComPort
         {
-            get { return string.IsNullOrEmpty(_comport) ? "com8" : _comport; }
+            get { return string.IsNullOrEmpty(_comport) ? "com4" : _comport; }
             set { SetProperty(ref _comport,value); }
         }
 

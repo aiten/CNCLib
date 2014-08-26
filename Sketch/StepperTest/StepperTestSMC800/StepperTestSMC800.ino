@@ -4,7 +4,14 @@
 //#error Only Works with Arduino:Duemilanove
 #endif
 
+#undef REFMOVE
+
+#define PENUPPOS 30
+#define PENDOWNPOS 0
+
 CStepperSMC800 Stepper;
+
+//////////////////////////////////////////////////////////////////////
 
 void setup()
 {
@@ -14,23 +21,39 @@ void setup()
   Stepper.Init();
   pinMode(13, OUTPUT);
 
+  pinMode(A0,INPUT_PULLUP);
+  pinMode(A1,INPUT_PULLUP);
+  pinMode(A2,INPUT_PULLUP);
+  pinMode(A3,INPUT_PULLUP);
+  pinMode(A4,INPUT_PULLUP);
+  pinMode(A5,INPUT_PULLUP);
+
+  pinMode(12,INPUT_PULLUP);
+//  pinMode(13,INPUT_PULLUP);
+
   Stepper.SetDefaultMaxSpeed(5000, 100 , 150);
   Stepper.SetLimitMax(0, 6950);
   Stepper.SetLimitMax(1, 4000);
-  Stepper.SetLimitMax(2, 100);
+  Stepper.SetLimitMax(2, 4000);
 
   int dist2 = Stepper.GetLimitMax(2) - Stepper.GetLimitMin(2);
   int dist0 = Stepper.GetLimitMax(0) - Stepper.GetLimitMin(0);
   int dist1 = Stepper.GetLimitMax(1) - Stepper.GetLimitMin(1);
 
+#ifdef REFMOVE
+
   Stepper.MoveReference(2, -min(dist2, 10000), 10, 100, Stepper.ToReferenceId(2, true), Stepper.GetDefaultVmax() / 4);
   Stepper.MoveReference(0, -min(dist0, 10000), 12, 100, Stepper.ToReferenceId(0, true), Stepper.GetDefaultVmax() / 4);
   Stepper.MoveReference(1, -min(dist1, 10000), 10, 100, Stepper.ToReferenceId(1, true), Stepper.GetDefaultVmax() / 4);
+
+#endif
 
   Stepper.SetJerkSpeed(0, 400);
   Stepper.SetJerkSpeed(1, 400);
   Stepper.SetJerkSpeed(2, 400);
 }
+
+//////////////////////////////////////////////////////////////////////
 
 static void WaitBusy()
 {
@@ -55,6 +78,8 @@ static void MoveAbs3(udist_t X, udist_t Y, udist_t Z, steprate_t vMax = 0)
   Stepper.MoveAbsEx(vMax, X_AXIS, X, Y_AXIS, Y, Z_AXIS, Z, -1);
 }
 
+//////////////////////////////////////////////////////////////////////
+
 static void Test1()
 {
   int count = 0;
@@ -76,36 +101,21 @@ static void Test1()
   WaitBusy();
 
   int count2 = 0;
-  Stepper.CStepper::MoveRel(2, 10, 40); count2 += 10;
-  Stepper.CStepper::MoveRel(2, 30, 75); count2 += 30;
-  Stepper.CStepper::MoveRel(2, 60, 40); count2 += 60;
+  Stepper.CStepper::MoveRel(2, 300, 1000); count2 += 300;
+  Stepper.CStepper::MoveRel(2, 800, 2000); count2 += 800;
+  Stepper.CStepper::MoveRel(2, 800, 3000); count2 += 800;
+  Stepper.CStepper::MoveRel(2, 1400, 5000); count2 += 1400;
+  Stepper.CStepper::MoveRel(2, 300, 500); count2 += 300;
+  Stepper.CStepper::MoveRel(2, 400, 2000); count2 += 400;
   WaitBusy();
 
   Stepper.CStepper::MoveRel(0, -count, 5000);
   Stepper.CStepper::MoveRel(1, -count1, 5000);
-  Stepper.CStepper::MoveRel(2, -count2, 50);
+  Stepper.CStepper::MoveRel(2, -count2, 5000);
   WaitBusy();
 }
 
-static void Test2()
-{
-  Stepper.SetDefaultMaxSpeed(5000, 200 , 250);
-  while (1)
-  {
-    MoveRel3(0, 0, 50, 250);
-    Stepper.WaitBusy();
-    MoveRel3(0, 0, -50, 250);
-    Stepper.WaitBusy();
-    MoveRel3(3000, 100, 0, 5000);
-    Stepper.WaitBusy();
-    MoveRel3(0, 0, 50, 250);
-    Stepper.WaitBusy();
-    MoveRel3(0, 0, -50, 250);
-    Stepper.WaitBusy();
-    MoveRel3(-3000, -100, 0, 5000);
-    Stepper.WaitBusy();
-  }
-}
+//////////////////////////////////////////////////////////////////////
 
 static bool _isPenDown = true;
 static void PenUp()
@@ -116,7 +126,7 @@ static void PenUp()
     Stepper.SetDefaultMaxSpeed(1000); Stepper.SetAcc(Z_AXIS, 100); Stepper.SetDec(Z_AXIS, 150);
 
     _isPenDown = false;
-    Stepper.MoveAbs(Z_AXIS, 0);
+    Stepper.MoveAbs(Z_AXIS, PENDOWNPOS);
     Stepper.WaitBusy();
 
     Stepper.SetDefaultMaxSpeed(5000);
@@ -133,7 +143,7 @@ static void PenDown()
     Stepper.SetDefaultMaxSpeed(250); Stepper.SetAcc(Z_AXIS, 65); Stepper.SetDec(Z_AXIS, 65);
 
     _isPenDown = true;
-    Stepper.MoveAbs(Z_AXIS, 30);
+    Stepper.MoveAbs(Z_AXIS, PENUPPOS);
     Stepper.WaitBusy();
 
     Stepper.SetDefaultMaxSpeed(1000);
@@ -141,6 +151,9 @@ static void PenDown()
     Stepper.SetAcc(Y_AXIS, 200); Stepper.SetDec(Y_AXIS, 250);
   }
 }
+
+//////////////////////////////////////////////////////////////////////
+// Test HPGL Move
 
 static void Test3()
 {
@@ -195,9 +208,30 @@ static void Test3()
   // Stepper.MoveAbs3(ToHPLG(3762),ToHPLG(5046),Stepper.GetPosition(Z_AXIS));
 }
 
+//////////////////////////////////////////////////////////////////////
+
+static void Test4()
+{
+  while(1)
+  {
+    Serial.print(digitalRead(A0) ? F("1") : F("0"));
+    Serial.print(digitalRead(A1) ? F("1") : F("0"));
+    Serial.print(digitalRead(A2) ? F("1") : F("0"));
+    Serial.print(digitalRead(A3) ? F("1") : F("0"));
+    Serial.print(digitalRead(A4) ? F("1") : F("0"));
+    Serial.print(digitalRead(A5) ? F("1") : F("0"));
+    Serial.print(digitalRead(12) ? F("1") : F("0"));
+    Serial.print(digitalRead(13) ? F("1") : F("0"));
+    Serial.println();
+    delay(100);
+   }
+}
+
+//////////////////////////////////////////////////////////////////////
+
 void loop()
 {
   PenUp();
   MoveAbs3(0, 0, 0);
-  Test3();
-}
+  Test1();
+ }
