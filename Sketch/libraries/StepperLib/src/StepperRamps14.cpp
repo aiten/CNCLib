@@ -95,6 +95,40 @@ void CStepperRamps14::Step(const unsigned char steps[NUM_AXIS], unsigned char di
 
 // For shorter delays use assembly language call 'nop' (no operation). Each 'nop' statement executes in one machine cycle (at 16 MHz) yielding a 62.5 ns (nanosecond) delay. 
 
+#if defined(USE_A4998)
+
+#define NOPREQUIRED_1()
+#define NOPREQUIRED_2()
+
+#elif defined(__SAM3X8E__)
+
+// 1 nop at 84Mhz = 11ns => 19us => 172NOPs?!
+
+#define NOPREQUIRED_1()	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
+
+#define NOPREQUIRED_2()	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
+						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
+
+#else //AVR
+
+#define NOPREQUIRED_1()	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
+#define NOPREQUIRED_2()	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
+
+#endif
+
+
 #define NOPREQUIRED
 
 #if defined(__SAM3X8E__) || defined(USE_A4998)
@@ -120,29 +154,17 @@ void CStepperRamps14::Step(const unsigned char steps[NUM_AXIS], unsigned char di
 		if (steps[E0_AXIS] > cnt) { STEPPINOFF(RAMPS14_E0_STEP_PIN); have = true; }
 		if (steps[E1_AXIS] > cnt) { STEPPINOFF(RAMPS14_E1_STEP_PIN); have = true; }
 
-#if defined(NOPREQUIRED)
-		__asm__("nop\n\tnop\n\tnop\n\t");
-		__asm__("nop\n\tnop\n\t");
+		NOPREQUIRED_1();
 
 		if (steps[X_AXIS] > cnt)  { STEPPINON(RAMPS14_X_STEP_PIN); }
 		if (steps[Y_AXIS] > cnt)  { STEPPINON(RAMPS14_Y_STEP_PIN);  }
 		if (steps[Z_AXIS] > cnt)  { STEPPINON(RAMPS14_Z_STEP_PIN);  }
 		if (steps[E0_AXIS] > cnt) { STEPPINON(RAMPS14_E0_STEP_PIN); }
 		if (steps[E1_AXIS] > cnt) { STEPPINON(RAMPS14_E1_STEP_PIN); }
-#else
-		STEPPINON(RAMPS14_X_STEP_PIN);
-		STEPPINON(RAMPS14_Y_STEP_PIN);
-		STEPPINON(RAMPS14_Z_STEP_PIN);
-		STEPPINON(RAMPS14_E0_STEP_PIN);
-		STEPPINON(RAMPS14_E1_STEP_PIN);
-#endif
 
 		if (!have) break;
 
-#if defined(NOPREQUIRED)
-		__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
-		__asm__("nop\n\tnop\n\tnop\n\t");
-#endif
+		NOPREQUIRED_2();
 	}
 
 #undef SETDIR
