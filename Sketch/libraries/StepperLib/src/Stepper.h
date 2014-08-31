@@ -198,7 +198,9 @@ private:
 	}
 
 	inline void StepOut();
+	inline void StartBackground();
 	inline void FillStepBuffer();
+	void Background();
 
 	void GoIdle();
 	void ContinueIdle();
@@ -556,6 +558,7 @@ protected:
 	debugvirtula void StopTimer();
 
 	static void HandleInterrupt()								{ GetInstance()->Step(true); }
+	static void HandleBackground()								{ GetInstance()->Background(); }
 
 	//////////////////////////////////////////
 };

@@ -29,15 +29,15 @@
 
 static void IgnoreIrq() {}
 
-CHAL::TimerEvent CHAL::_TimerEvent0 = IgnoreIrq;
-CHAL::TimerEvent CHAL::_TimerEvent1 = IgnoreIrq;
-CHAL::TimerEvent CHAL::_TimerEvent2 = IgnoreIrq;
+CHAL::HALEvent CHAL::_TimerEvent0 = IgnoreIrq;
+CHAL::HALEvent CHAL::_TimerEvent1 = IgnoreIrq;
+CHAL::HALEvent CHAL::_TimerEvent2 = IgnoreIrq;
 
 #if !defined(__AVR_ATmega328P__)
 
-CHAL::TimerEvent CHAL::_TimerEvent3 = IgnoreIrq;
-CHAL::TimerEvent CHAL::_TimerEvent4 = IgnoreIrq;
-CHAL::TimerEvent CHAL::_TimerEvent5 = IgnoreIrq;
+CHAL::HALEvent CHAL::_TimerEvent3 = IgnoreIrq;
+CHAL::HALEvent CHAL::_TimerEvent4 = IgnoreIrq;
+CHAL::HALEvent CHAL::_TimerEvent5 = IgnoreIrq;
 
 #endif
 
@@ -58,6 +58,12 @@ void TC6_Handler()
 	CHAL::_TimerEvent3();
 }
 
+void CAN0_Handler()
+{
+	CHAL::_CAM0Event();
+}
+
+CHAL::HALEvent CHAL::_CAM0Event = IgnoreIrq;
 
 ////////////////////////////////////////////////////////
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega328P__)

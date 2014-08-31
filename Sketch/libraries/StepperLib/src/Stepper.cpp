@@ -95,6 +95,9 @@ void CStepper::Init()
 {
 	InitMemVar();
 	InitTimer();
+#if defined(__SAM3X8E__)
+	CHAL::InitBackground(HandleBackground);
+#endif
 
 	_timerOnIdle = millis();
 	SetIdleTimer();
@@ -1148,6 +1151,33 @@ inline void CStepper::StepOut()
 
 ////////////////////////////////////////////////////////
 
+void CStepper::StartBackground()
+{
+	static volatile unsigned char reentercount = 0;
+
+	reentercount++;
+
+	if (reentercount != 1)
+	{
+		// other ISR is calculating!
+		_timerISRBusy++;
+		reentercount--;
+		return;
+	}
+
+	// Reenable nested interrupts	=> usual EnableInterrupts
+	CHAL::EnableInterrupts();
+
+	// calculate next steps until buffer is full or nothing to do!
+	// other timerIRQs may occur
+	FillStepBuffer();
+
+	CHAL::DisableInterrupts();
+	reentercount--;
+}
+
+////////////////////////////////////////////////////////
+
 void CStepper::FillStepBuffer()
 {
 	// calculate next steps until buffer is full or nothing to do!
@@ -1161,6 +1191,14 @@ void CStepper::FillStepBuffer()
 			_movements._queue.Dequeue();
 		}
 	}
+}
+
+////////////////////////////////////////////////////////
+// called as Tail-chaining on due (after Step() )
+
+void CStepper::Background()
+{
+	StartBackground();
 }
 
 ////////////////////////////////////////////////////////
@@ -1224,31 +1262,7 @@ void CStepper::Step(bool isr)
 	//////////////////////////////////////////////
 	// calculate next step 
 
-	static volatile unsigned char reentercount = 0;
-
-	reentercount++;
-
-	if (reentercount != 1)
-	{
-		// other ISR is calculating!
-		_timerISRBusy++;
-		reentercount--;
-		return;
-	}
-
-	// Reenable nested interrupts	=> usual EnableInterrupts
-	CHAL::NestedTimer1();
-
-	// calculate next steps until buffer is full or nothing to do!
-	// other timerIRQs may occur
-	FillStepBuffer();
-
-	CHAL::DisableInterrupts();
-	reentercount--;
-
-#if defined(__SAM3X8E__)
-	CHAL::EnableInterrupts();	// => done with return of ISR (AVR)
-#endif
+	StartBackground();
 }
 
 ////////////////////////////////////////////////////////

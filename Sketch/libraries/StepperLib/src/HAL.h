@@ -50,54 +50,64 @@ class CHAL
 {
 public:
 
-	typedef void(*TimerEvent)();
+	typedef void(*HALEvent)();
 
 	// min 8 bit 
-	static void InitTimer0(TimerEvent evt);
+	static void InitTimer0(HALEvent evt);
 	static void RemoveTimer0();
 	static void StartTimer0(timer_t timer);
 	static void StopTimer0();
 
 	// min 16 bit
-	static void InitTimer1(TimerEvent evt);
+	static void InitTimer1(HALEvent evt);
 	static void RemoveTimer1();
 	static void StartTimer1(timer_t timer);
 	static void StopTimer1();
-	static void NestedTimer1();
 
 	// 8 bit
-	static void InitTimer2(TimerEvent evt);
+	static void InitTimer2(HALEvent evt);
 	static void RemoveTimer2();
 	static void StartTimer2(timer_t timer);
 	static void StopTimer2();
 
-	static TimerEvent _TimerEvent0;
-	static TimerEvent _TimerEvent1;
-	static TimerEvent _TimerEvent2;
+	static HALEvent _TimerEvent0;
+	static HALEvent _TimerEvent1;
+	static HALEvent _TimerEvent2;
 
 #if !defined( __AVR_ATmega328P__)
 
 	// min 16 bit
-	static void InitTimer3(TimerEvent evt);
+	static void InitTimer3(HALEvent evt);
 	static void RemoveTimer3();
 	static void StartTimer3(timer_t timer);
 	static void StopTimer3();
 
 	// min 16 bit
-	static void InitTimer4(TimerEvent evt);
+	static void InitTimer4(HALEvent evt);
 	static void RemoveTimer4();
 	static void StartTimer4(timer_t timer);
 	static void StopTimer4();
 
 	// min 16 bit
-	static void InitTimer5(TimerEvent evt);
+	static void InitTimer5(HALEvent evt);
 	static void RemoveTimer5();
 	static void StartTimer5(timer_t timer);
 	static void StopTimer5();
 
-	static TimerEvent _TimerEvent3;
-	static TimerEvent _TimerEvent4;
-	static TimerEvent _TimerEvent5;
+	static HALEvent _TimerEvent3;
+	static HALEvent _TimerEvent4;
+	static HALEvent _TimerEvent5;
+
+#endif
+
+#if defined(__SAM3X8E__)
+
+	// use CAN as backgroundworker thread
+
+	static void BackgroundRequest()				{ NVIC_SetPendingIRQ(CAN0_IRQn); }
+	static void InitBackground(HALEvent evt)	{ NVIC_EnableIRQ(CAN0_IRQn);  NVIC_SetPriority(CAN0_IRQn, NVIC_EncodePriority(4, 7, 0)); _CAM0Event = evt; }
+
+	static HALEvent _CAM0Event;
 
 #endif
 
@@ -227,7 +237,7 @@ inline void CHAL::StartTimer0(timer_t delay)
 	StartTimer3(delay);
 }
 
-inline void  CHAL::InitTimer0(TimerEvent evt)
+inline void  CHAL::InitTimer0(HALEvent evt)
 {
 	InitTimer3(evt);
 }
@@ -249,15 +259,9 @@ inline void CHAL::StartTimer1(timer_t delay)
 	TC_Start(DUETIMER1_TC, DUETIMER1_CHANNEL);
 }
 
-inline void CHAL::NestedTimer1()
-{
-	// reenable IRQ during ISR
-	EnableInterrupts();
-}
-
 ////////////////////////////////////////////////////////
 
-inline void  CHAL::InitTimer1(TimerEvent evt)
+inline void  CHAL::InitTimer1(HALEvent evt)
 {
 	_TimerEvent1 = evt;
 
@@ -295,7 +299,7 @@ inline void CHAL::StartTimer3(timer_t timer_count)
 
 ////////////////////////////////////////////////////////
 
-inline void  CHAL::InitTimer3(TimerEvent evt)
+inline void  CHAL::InitTimer3(HALEvent evt)
 {
 	_TimerEvent3 = evt;
 
@@ -367,7 +371,7 @@ inline void CHAL::SetSREG(irqflags_t a)	{ SREG=a; }
 
 inline void  CHAL::RemoveTimer0() {}
 
-inline void  CHAL::InitTimer0(TimerEvent evt)
+inline void  CHAL::InitTimer0(HALEvent evt)
 {
 	// shared with millis!
 	_TimerEvent0 = evt;
@@ -393,7 +397,7 @@ inline void CHAL::StopTimer0()
 
 inline void  CHAL::RemoveTimer1() {}
 
-inline void  CHAL::InitTimer1(TimerEvent evt)
+inline void  CHAL::InitTimer1(HALEvent evt)
 {
 	_TimerEvent1 = evt;
 
@@ -421,19 +425,13 @@ inline void CHAL::StopTimer1()
 	TCNT1=0;  
 }  
 
-inline void CHAL::NestedTimer1()
-{
-	// reenable IRQ during ISR
-	EnableInterrupts();
-}
-
 ////////////////////////////////////////////////////////
 
 inline void  CHAL::RemoveTimer2() {}
 
 ////////////////////////////////////////////////////////
 
-inline void  CHAL::InitTimer2(TimerEvent evt)
+inline void  CHAL::InitTimer2(HALEvent evt)
 {
 	_TimerEvent2 = evt;  
 	TCCR2A = 0x00;							// stetzt Statusregiser A Vom Timer eins auf null
@@ -468,7 +466,7 @@ inline void CHAL::StopTimer2()
 
 inline void  CHAL::RemoveTimer3() {}
 
-inline void  CHAL::InitTimer3(TimerEvent evt)
+inline void  CHAL::InitTimer3(HALEvent evt)
 {
 	_TimerEvent3 = evt;
 
@@ -500,7 +498,7 @@ inline void CHAL::StopTimer3()
 
 inline void  CHAL::RemoveTimer4() {}
 
-inline void  CHAL::InitTimer4(TimerEvent evt)
+inline void  CHAL::InitTimer4(HALEvent evt)
 {
 	_TimerEvent4 = evt;
 
@@ -532,7 +530,7 @@ inline void CHAL::StopTimer4()
 
 inline void  CHAL::RemoveTimer5() {}
 
-inline void  CHAL::InitTimer5(TimerEvent evt)
+inline void  CHAL::InitTimer5(HALEvent evt)
 {
 	_TimerEvent5 = evt;
 
@@ -614,33 +612,32 @@ inline void CHAL::SetSREG(irqflags_t a)			{ SREG=a; }
 
 #define __asm__(a)
 
-inline void CHAL::InitTimer0(TimerEvent evt){ _TimerEvent0 = evt; }
+inline void CHAL::InitTimer0(HALEvent evt){ _TimerEvent0 = evt; }
 inline void CHAL::RemoveTimer0()			{}
 inline void CHAL::StartTimer0(timer_t)		{}
 inline void CHAL::StopTimer0()				{}
 
-inline void CHAL::InitTimer1(TimerEvent evt){ _TimerEvent1 = evt; }
+inline void CHAL::InitTimer1(HALEvent evt){ _TimerEvent1 = evt; }
 inline void CHAL::RemoveTimer1()			{}
 inline void CHAL::StartTimer1(timer_t)		{}
 inline void CHAL::StopTimer1()				{}
-inline void CHAL::NestedTimer1()			{}
 
-inline void CHAL::InitTimer2(TimerEvent evt){ _TimerEvent2 = evt; }
+inline void CHAL::InitTimer2(HALEvent evt){ _TimerEvent2 = evt; }
 inline void CHAL::RemoveTimer2()			{}
 inline void CHAL::StartTimer2(timer_t)		{}
 inline void CHAL::StopTimer2()				{}
 
-inline void CHAL::InitTimer3(TimerEvent evt){ _TimerEvent3 = evt; }
+inline void CHAL::InitTimer3(HALEvent evt){ _TimerEvent3 = evt; }
 inline void CHAL::RemoveTimer3()			{}
 inline void CHAL::StartTimer3(timer_t)		{}
 inline void CHAL::StopTimer3()				{}
 
-inline void CHAL::InitTimer4(TimerEvent evt){ _TimerEvent4 = evt; }
+inline void CHAL::InitTimer4(HALEvent evt){ _TimerEvent4 = evt; }
 inline void CHAL::RemoveTimer4()			{}
 inline void CHAL::StartTimer4(timer_t)		{}
 inline void CHAL::StopTimer4()				{}
 
-inline void CHAL::InitTimer5(TimerEvent evt){ _TimerEvent5 = evt; }
+inline void CHAL::InitTimer5(HALEvent evt){ _TimerEvent5 = evt; }
 inline void CHAL::RemoveTimer5()			{}
 inline void CHAL::StartTimer5(timer_t)		{}
 inline void CHAL::StopTimer5()				{}
