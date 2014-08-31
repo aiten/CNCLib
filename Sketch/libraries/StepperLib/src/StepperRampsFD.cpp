@@ -46,59 +46,59 @@ void CStepperRampsFD::InitMemVar()
 
 void CStepperRampsFD::Init()
 {
-	pinMode(RAMPSFD_X_STEP_PIN, OUTPUT);
-	pinMode(RAMPSFD_X_DIR_PIN, OUTPUT);
-	pinMode(RAMPSFD_X_ENABLE_PIN, OUTPUT);
-	pinMode(RAMPSFD_X_MIN_PIN, INPUT_PULLUP);
-	pinMode(RAMPSFD_X_MAX_PIN, INPUT_PULLUP);
+	CHAL::pinMode(RAMPSFD_X_STEP_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_X_DIR_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_X_ENABLE_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_X_MIN_PIN, INPUT_PULLUP);
+	CHAL::pinMode(RAMPSFD_X_MAX_PIN, INPUT_PULLUP);
 
-	pinMode(RAMPSFD_Y_STEP_PIN, OUTPUT);
-	pinMode(RAMPSFD_Y_DIR_PIN, OUTPUT);
-	pinMode(RAMPSFD_Y_ENABLE_PIN, OUTPUT);
-	pinMode(RAMPSFD_Y_MIN_PIN, INPUT_PULLUP);
-	pinMode(RAMPSFD_Y_MAX_PIN, INPUT_PULLUP);
+	CHAL::pinMode(RAMPSFD_Y_STEP_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_Y_DIR_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_Y_ENABLE_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_Y_MIN_PIN, INPUT_PULLUP);
+	CHAL::pinMode(RAMPSFD_Y_MAX_PIN, INPUT_PULLUP);
 
-	pinMode(RAMPSFD_Z_STEP_PIN, OUTPUT);
-	pinMode(RAMPSFD_Z_DIR_PIN, OUTPUT);
-	pinMode(RAMPSFD_Z_ENABLE_PIN, OUTPUT);
-	pinMode(RAMPSFD_Z_MIN_PIN, INPUT_PULLUP);
-	pinMode(RAMPSFD_Z_MAX_PIN, INPUT_PULLUP);
+	CHAL::pinMode(RAMPSFD_Z_STEP_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_Z_DIR_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_Z_ENABLE_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_Z_MIN_PIN, INPUT_PULLUP);
+	CHAL::pinMode(RAMPSFD_Z_MAX_PIN, INPUT_PULLUP);
 
-	pinMode(RAMPSFD_E0_STEP_PIN, OUTPUT);
-	pinMode(RAMPSFD_E0_DIR_PIN, OUTPUT);
-	pinMode(RAMPSFD_E0_ENABLE_PIN, OUTPUT);
-	//  pinMode(RAMPSFD_E0_MIN_PIN,	INPUT_PULLUP);         
-	//  pinMode(RAMPSFD_E0_MAX_PIN,	INPUT_PULLUP);         
+	CHAL::pinMode(RAMPSFD_E0_STEP_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_E0_DIR_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_E0_ENABLE_PIN, OUTPUT);
+	//  CHAL::pinMode(RAMPSFD_E0_MIN_PIN,	INPUT_PULLUP);         
+	//  CHAL::pinMode(RAMPSFD_E0_MAX_PIN,	INPUT_PULLUP);         
 
-	pinMode(RAMPSFD_E1_STEP_PIN, OUTPUT);
-	pinMode(RAMPSFD_E1_DIR_PIN, OUTPUT);
-	pinMode(RAMPSFD_E1_ENABLE_PIN, OUTPUT);
-	//  pinMode(RAMPSFD_E1_MIN_PIN,	INPUT_PULLUP);         
-	//  pinMode(RAMPSFD_E1_MAX_PIN,	INPUT_PULLUP);         
+	CHAL::pinMode(RAMPSFD_E1_STEP_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_E1_DIR_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_E1_ENABLE_PIN, OUTPUT);
+	//  CHAL::pinMode(RAMPSFD_E1_MIN_PIN,	INPUT_PULLUP);         
+	//  CHAL::pinMode(RAMPSFD_E1_MAX_PIN,	INPUT_PULLUP);         
 
-	pinMode(RAMPSFD_E2_STEP_PIN, OUTPUT);
-	pinMode(RAMPSFD_E2_DIR_PIN, OUTPUT);
-	pinMode(RAMPSFD_E2_ENABLE_PIN, OUTPUT);
-	//  pinMode(E2_MIN_PIN,	INPUT_PULLUP);         
-	//  pinMode(E2_MAX_PIN,	INPUT_PULLUP);         
+	CHAL::pinMode(RAMPSFD_E2_STEP_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_E2_DIR_PIN, OUTPUT);
+	CHAL::pinMode(RAMPSFD_E2_ENABLE_PIN, OUTPUT);
+	//  CHAL::pinMode(E2_MIN_PIN,	INPUT_PULLUP);         
+	//  CHAL::pinMode(E2_MAX_PIN,	INPUT_PULLUP);         
 
 #pragma warning( disable : 4127 )
 
-	WRITE(RAMPSFD_X_STEP_PIN, RAMPSFD_PINON);
-	WRITE(RAMPSFD_Y_STEP_PIN, RAMPSFD_PINON);
-	WRITE(RAMPSFD_Z_STEP_PIN, RAMPSFD_PINON);
-	WRITE(RAMPSFD_E0_STEP_PIN, RAMPSFD_PINON);
-	WRITE(RAMPSFD_E1_STEP_PIN, RAMPSFD_PINON);
-	WRITE(RAMPSFD_E2_STEP_PIN, RAMPSFD_PINON);
+	HALFastdigitalWrite(RAMPSFD_X_STEP_PIN, RAMPSFD_PINON);
+	HALFastdigitalWrite(RAMPSFD_Y_STEP_PIN, RAMPSFD_PINON);
+	HALFastdigitalWrite(RAMPSFD_Z_STEP_PIN, RAMPSFD_PINON);
+	HALFastdigitalWrite(RAMPSFD_E0_STEP_PIN, RAMPSFD_PINON);
+	HALFastdigitalWrite(RAMPSFD_E1_STEP_PIN, RAMPSFD_PINON);
+	HALFastdigitalWrite(RAMPSFD_E2_STEP_PIN, RAMPSFD_PINON);
 
 #pragma warning( default : 4127 )
 
 	// init some outputs!
 
-	pinMode(RAMPSFD_ESTOP_PIN, INPUT_PULLUP);
+	CHAL::pinMode(RAMPSFD_ESTOP_PIN, INPUT_PULLUP);
 
-	pinMode(RAMPSFD_FET5D12_PIN, OUTPUT); WRITE(RAMPSFD_FET5D12_PIN,0);
-	pinMode(RAMPSFD_FET6D2_PIN,  OUTPUT); WRITE(RAMPSFD_FET6D2_PIN,0);
+	CHAL::pinMode(RAMPSFD_FET5D12_PIN, OUTPUT); HALFastdigitalWrite(RAMPSFD_FET5D12_PIN,0);
+	CHAL::pinMode(RAMPSFD_FET6D2_PIN,  OUTPUT); HALFastdigitalWrite(RAMPSFD_FET6D2_PIN,0);
 	
 	InitMemVar();
 	super::Init();
@@ -120,9 +120,9 @@ void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], unsigned char di
 #undef NOPREQUIRED
 #endif
 
-#define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) _WRITE_NC(dirpin,RAMPSFD_PINOFF); else _WRITE_NC(dirpin,RAMPSFD_PINON);
-#define STEPPINOFF(steppin)		_WRITE_NC(steppin, RAMPSFD_PINOFF);
-#define STEPPINON(steppin)		_WRITE_NC(steppin, RAMPSFD_PINON);
+#define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,RAMPSFD_PINOFF); else HALFastdigitalWriteNC(dirpin,RAMPSFD_PINON);
+#define STEPPINOFF(steppin)		HALFastdigitalWriteNC(steppin, RAMPSFD_PINOFF);
+#define STEPPINON(steppin)		HALFastdigitalWriteNC(steppin, RAMPSFD_PINON);
 
 	SETDIR(X_AXIS, RAMPSFD_X_DIR_PIN);
 	SETDIR(Y_AXIS, RAMPSFD_Y_DIR_PIN);
@@ -178,7 +178,7 @@ void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], unsigned char di
 void CStepperRampsFD::SetEnable(axis_t axis, unsigned char level)
 {
 
-#define SETLEVEL(pin) if (level != 0)	WRITE(pin,RAMPSFD_PINOFF);	else	WRITE(pin,RAMPSFD_PINON);
+#define SETLEVEL(pin) if (level != 0)	HALFastdigitalWrite(pin,RAMPSFD_PINOFF);	else	HALFastdigitalWrite(pin,RAMPSFD_PINON);
 	switch (axis)
 	{
 #pragma warning( disable : 4127 )
@@ -200,12 +200,12 @@ unsigned char CStepperRampsFD::GetEnable(axis_t axis)
 	switch (axis)
 	{
 #pragma warning( disable : 4127 )
-		case X_AXIS:  return READ(RAMPSFD_X_ENABLE_PIN) == RAMPSFD_PINON ? 0 : 100;
-		case Y_AXIS:  return READ(RAMPSFD_Y_ENABLE_PIN) == RAMPSFD_PINON ? 0 : 100;
-		case Z_AXIS:  return READ(RAMPSFD_Z_ENABLE_PIN) == RAMPSFD_PINON ? 0 : 100;
-		case E0_AXIS: return READ(RAMPSFD_E0_ENABLE_PIN) == RAMPSFD_PINON ? 0 : 100;
-		case E1_AXIS: return READ(RAMPSFD_E1_ENABLE_PIN) == RAMPSFD_PINON ? 0 : 100;
-		case E2_AXIS: return READ(RAMPSFD_E2_ENABLE_PIN) == RAMPSFD_PINON ? 0 : 100;
+		case X_AXIS:  return HALFastdigitalRead(RAMPSFD_X_ENABLE_PIN) == RAMPSFD_PINON ? 0 : 100;
+		case Y_AXIS:  return HALFastdigitalRead(RAMPSFD_Y_ENABLE_PIN) == RAMPSFD_PINON ? 0 : 100;
+		case Z_AXIS:  return HALFastdigitalRead(RAMPSFD_Z_ENABLE_PIN) == RAMPSFD_PINON ? 0 : 100;
+		case E0_AXIS: return HALFastdigitalRead(RAMPSFD_E0_ENABLE_PIN) == RAMPSFD_PINON ? 0 : 100;
+		case E1_AXIS: return HALFastdigitalRead(RAMPSFD_E1_ENABLE_PIN) == RAMPSFD_PINON ? 0 : 100;
+		case E2_AXIS: return HALFastdigitalRead(RAMPSFD_E2_ENABLE_PIN) == RAMPSFD_PINON ? 0 : 100;
 #pragma warning( default : 4127 )
 	}
 	return 0;
@@ -217,19 +217,19 @@ bool  CStepperRampsFD::IsReference(unsigned char referenceid)
 {
 	switch (referenceid)
 	{
-		case 0: return READ(RAMPSFD_X_MIN_PIN) == RAMPSFD_REF_ON;
-		case 1: return READ(RAMPSFD_X_MAX_PIN) == RAMPSFD_REF_ON;
-		case 2: return READ(RAMPSFD_Y_MIN_PIN) == RAMPSFD_REF_ON;
-		case 3: return READ(RAMPSFD_Y_MAX_PIN) == RAMPSFD_REF_ON;
-		case 4: return READ(RAMPSFD_Z_MIN_PIN) == RAMPSFD_REF_ON;
-		case 5: return READ(RAMPSFD_Z_MAX_PIN) == RAMPSFD_REF_ON;
+		case 0: return HALFastdigitalRead(RAMPSFD_X_MIN_PIN) == RAMPSFD_REF_ON;
+		case 1: return HALFastdigitalRead(RAMPSFD_X_MAX_PIN) == RAMPSFD_REF_ON;
+		case 2: return HALFastdigitalRead(RAMPSFD_Y_MIN_PIN) == RAMPSFD_REF_ON;
+		case 3: return HALFastdigitalRead(RAMPSFD_Y_MAX_PIN) == RAMPSFD_REF_ON;
+		case 4: return HALFastdigitalRead(RAMPSFD_Z_MIN_PIN) == RAMPSFD_REF_ON;
+		case 5: return HALFastdigitalRead(RAMPSFD_Z_MAX_PIN) == RAMPSFD_REF_ON;
 /* No reference for E0 & E1 & E2
-		case 6: return READ(RAMPSFD_E0_MIN_PIN)==REF_ON;
-		case 7: return READ(RAMPSFD_E0_MAX_PIN)==REF_ON;
-		case 8: return READ(RAMPSFD_E1_MIN_PIN)==REF_ON;
-		case 9: return READ(RAMPSFD_E1_MAX_PIN)==REF_ON;
-		case 10:return READ(RAMPSFD_E2_MIN_PIN)==REF_ON;
-		case 11:return READ(RAMPSFD_E2_MAX_PIN)==REF_ON;
+		case 6: return HALFastdigitalRead(RAMPSFD_E0_MIN_PIN)==REF_ON;
+		case 7: return HALFastdigitalRead(RAMPSFD_E0_MAX_PIN)==REF_ON;
+		case 8: return HALFastdigitalRead(RAMPSFD_E1_MIN_PIN)==REF_ON;
+		case 9: return HALFastdigitalRead(RAMPSFD_E1_MAX_PIN)==REF_ON;
+		case 10:return HALFastdigitalRead(RAMPSFD_E2_MIN_PIN)==REF_ON;
+		case 11:return HALFastdigitalRead(RAMPSFD_E2_MAX_PIN)==REF_ON;
 		*/
 	}
 	return false;
@@ -240,12 +240,12 @@ bool  CStepperRampsFD::IsReference(unsigned char referenceid)
 bool  CStepperRampsFD::IsAnyReference()
 {
 	return	
-		(_useReference[0] && READ(RAMPSFD_X_MIN_PIN) == RAMPSFD_REF_ON) ||
-		(_useReference[1] && READ(RAMPSFD_X_MAX_PIN) == RAMPSFD_REF_ON) ||
-		(_useReference[2] && READ(RAMPSFD_Y_MIN_PIN) == RAMPSFD_REF_ON) ||
-		(_useReference[3] && READ(RAMPSFD_Y_MAX_PIN) == RAMPSFD_REF_ON) ||
-		(_useReference[4] && READ(RAMPSFD_Z_MIN_PIN) == RAMPSFD_REF_ON) ||
-		(_useReference[5] && READ(RAMPSFD_Z_MAX_PIN) == RAMPSFD_REF_ON);
+		(_useReference[0] && HALFastdigitalRead(RAMPSFD_X_MIN_PIN) == RAMPSFD_REF_ON) ||
+		(_useReference[1] && HALFastdigitalRead(RAMPSFD_X_MAX_PIN) == RAMPSFD_REF_ON) ||
+		(_useReference[2] && HALFastdigitalRead(RAMPSFD_Y_MIN_PIN) == RAMPSFD_REF_ON) ||
+		(_useReference[3] && HALFastdigitalRead(RAMPSFD_Y_MAX_PIN) == RAMPSFD_REF_ON) ||
+		(_useReference[4] && HALFastdigitalRead(RAMPSFD_Z_MIN_PIN) == RAMPSFD_REF_ON) ||
+		(_useReference[5] && HALFastdigitalRead(RAMPSFD_Z_MAX_PIN) == RAMPSFD_REF_ON);
 }
 
 ////////////////////////////////////////////////////////

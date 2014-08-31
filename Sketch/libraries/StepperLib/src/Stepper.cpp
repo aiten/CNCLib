@@ -125,14 +125,14 @@ void CStepper::AddEvent(StepperEvent event, void* eventparam, StepperEvent& olde
 void CStepper::StartTimer(timer_t timer)
 {
 	_timerRunning = true;
-	HALStartTimer1(timer);
+	CHAL::StartTimer1(timer);
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepper::SetIdleTimer()
 {
-	HALStartTimer1(IDLETIMER1VALUE);
+	CHAL::StartTimer1(IDLETIMER1VALUE);
 	_timerRunning = false;
 }
 
@@ -140,7 +140,7 @@ void CStepper::SetIdleTimer()
 
 void CStepper::StopTimer()
 {
-	HALStopTimer1();
+	CHAL::StopTimer1();
 	_timerRunning = false;
 }
 
@@ -1081,119 +1081,75 @@ unsigned char CStepper::GetStepMultiplier(timer_t timermax)
 }
 
 ////////////////////////////////////////////////////////
-// called in interrupt => must be "fast"
 
-void CStepper::Step(bool isr)
+inline void CStepper::StepOut()
 {
-	// interrups are disabled (ISR)
-	// or disable: see OnStart
+	// called in interrupt => must be "fast"
+	// "Out" the Step to the stepper 
+	 
+	// calculate all axes and set PINS paralell - DRV 8225 requires 1.9us * 2 per step => sequential is to slow 
 
-	if (isr  && !_timerRunning)
+	register DirCountAll_t dir_count;	// do not use DirCount_t => AVR do not use registers for struct
+	unsigned char axescount[NUM_AXIS];
+	unsigned char directionUp = 0;
+
 	{
-		// idle Timer
-		SetIdleTimer();
-		OnIdle(millis() - _timerOnIdle);
-		return;
+		const SStepBuffer* stepbuffer = &_steps.Head();
+		StartTimer(stepbuffer->Timer - TIMEROVERHEAD);
+		dir_count = stepbuffer->DirStepCount.all;
 	}
-
-	if (_steps.IsEmpty())
-	{
-		// start idle timer
-		_timerOnIdle = millis();
-		SetIdleTimer();
-		OnIdle(0);
-		return;
-	}
-
-	if (_emergencyStop)
-	{
-		AbortMove();
-		return;
-	}
-	else
-	{
-		// first send commands to stepper driver
-		// calculate all axes and set PINS paralell - DRV 8225 requires 1.9us * 2 per step => sequential is to slow 
-
-		register DirCountAll_t dir_count;	// do not use DirCount_t => AVR do not use registers for struct
-		unsigned char axescount[NUM_AXIS];
-		unsigned char directionUp = 0;
-
-		{
-			const SStepBuffer* stepbuffer = &_steps.Head();
-			StartTimer(stepbuffer->Timer - TIMEROVERHEAD);
-			dir_count = stepbuffer->DirStepCount.all;
-		}
 
 #ifdef _MSC_VER
-		StepBegin(&_steps.Head());
+	StepBegin(&_steps.Head());
 #endif
-		// div with 256 is faster than 16 (loop shift)
+	// div with 256 is faster than 16 (loop shift)
 
-		unsigned char bytedircount=0;
-		bool countit = true;
-		if (((DirCount_t*) &dir_count)->byte.byteInfo.nocount != 0)
-			countit = false;
+	unsigned char bytedircount=0;
+	bool countit = true;
+	if (((DirCount_t*) &dir_count)->byte.byteInfo.nocount != 0)
+		countit = false;
 
-		for (register unsigned char i = 0;; i++)
+	for (register unsigned char i = 0;; i++)
+	{
+		if (i % 2 == 1)
 		{
-			if (i % 2 == 1)
+			bytedircount = bytedircount / 16;
+		}
+		else
+		{
+			bytedircount = (unsigned char)dir_count; //  &255;
+			dir_count /= 256;
+		}
+
+		axescount[i] = bytedircount & 7;
+		directionUp /=2;
+
+		if (axescount[i])
+		{
+			if ((bytedircount&8) != 0)
 			{
-				bytedircount = bytedircount / 16;
+				directionUp += (1<<(NUM_AXIS-1));
+				if (countit) _current[i] += axescount[i];
 			}
 			else
 			{
-				bytedircount = (unsigned char)dir_count; //  &255;
-				dir_count /= 256;
+				if (countit) _current[i] -= axescount[i];
 			}
-
-			axescount[i] = bytedircount & 7;
-			directionUp /=2;
-
-			if (axescount[i])
-			{
-				if ((bytedircount&8) != 0)
-				{
-					directionUp += (1<<(NUM_AXIS-1));
-					if (countit) _current[i] += axescount[i];
-				}
-				else
-				{
-					if (countit) _current[i] -= axescount[i];
-				}
-			}
-
-			if (i == NUM_AXIS - 1)
-				break;
 		}
 
-		Step(axescount,directionUp);
-
-		_steps.Dequeue();
+		if (i == NUM_AXIS - 1)
+			break;
 	}
 
-	// check reference and calculate next steps
+	Step(axescount,directionUp);
 
-	if ((_checkReference && IsAnyReference()))
-	{
-		Error(MESSAGE_STEPPER_IsAnyReference);
-		SetIdleTimer();
-		return;
-	}
+	_steps.Dequeue();
+}
 
-	static volatile unsigned char reentercount = 0;
+////////////////////////////////////////////////////////
 
-	reentercount++;
-
-	if (reentercount != 1)
-	{
-		_timerISRBusy++;
-		reentercount--;
-		return;
-	}
-
-	EnableInterrupts();
-
+void CStepper::FillStepBuffer()
+{
 	// calculate next steps until buffer is full or nothing to do!
 	while (!_movements._queue.IsEmpty())
 	{
@@ -1205,10 +1161,94 @@ void CStepper::Step(bool isr)
 			_movements._queue.Dequeue();
 		}
 	}
+}
 
-	DisableInterrupts();
+////////////////////////////////////////////////////////
+
+void CStepper::GoIdle()
+{
+	// start idle timer
+	_timerOnIdle = millis();
+	SetIdleTimer();
+	OnIdle(0);
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::ContinueIdle()
+{
+		// idle Timer
+		SetIdleTimer();
+		OnIdle(millis() - _timerOnIdle);
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::Step(bool isr)
+{
+	// called in interrupt => must be "fast"
+	// first send commands to stepper driver
+	// afterwards calculate the next steps
+
+	// interrups are disabled (ISR)
+	// or disable: see OnStart
+
+	if (isr  && !_timerRunning)
+	{
+		ContinueIdle();
+		return;
+	}
+
+	if (_steps.IsEmpty())
+	{
+		// start idle timer
+		GoIdle();
+		return;
+	}
+
+	if (_emergencyStop)
+	{
+		AbortMove();
+		return;
+	}
+
+	StepOut();
+
+	if ((_checkReference && IsAnyReference()))
+	{
+		Error(MESSAGE_STEPPER_IsAnyReference);
+		SetIdleTimer();
+		return;
+	}
+
+	//////////////////////////////////////////////
+	// calculate next step 
+
+	static volatile unsigned char reentercount = 0;
+
+	reentercount++;
+
+	if (reentercount != 1)
+	{
+		// other ISR is calculating!
+		_timerISRBusy++;
+		reentercount--;
+		return;
+	}
+
+	// Reenable nested interrupts	=> usual EnableInterrupts
+	CHAL::NestedTimer1();
+
+	// calculate next steps until buffer is full or nothing to do!
+	// other timerIRQs may occur
+	FillStepBuffer();
+
+	CHAL::DisableInterrupts();
 	reentercount--;
-	EnableInterrupts();
+
+#if defined(__SAM3X8E__)
+	CHAL::EnableInterrupts();	// => done with return of ISR (AVR)
+#endif
 }
 
 ////////////////////////////////////////////////////////

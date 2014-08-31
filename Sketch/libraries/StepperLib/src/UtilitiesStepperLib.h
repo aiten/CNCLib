@@ -87,19 +87,6 @@ public:
 
 //////////////////////////////////////////
 
-class CCriticalRegion
-{
-private:
-	SREG_T _sreg;
-
-public:
-
-	CCriticalRegion()	{ _sreg = GetSREG(); DisableInterrupts(); }
-	~CCriticalRegion()	{ SetSREG(_sreg); }
-};
-
-//////////////////////////////////////////
-
 extern unsigned char ToPrecisionU10(unsigned long);
 extern unsigned char ToPrecisionU10(unsigned short);
 extern unsigned char ToPrecisionS10(long v);

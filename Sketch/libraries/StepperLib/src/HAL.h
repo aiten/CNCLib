@@ -21,6 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
+#include <arduino.h>
 #include "ConfigurationStepperLib.h"
 
 ////////////////////////////////////////////////////////
@@ -34,55 +35,98 @@
 
 ////////////////////////////////////////////////////////
 
-typedef void(*HALTimerEvent)();
+#if defined(__SAM3X8E__)
 
-// min 8 bit 
-extern void HALInitTimer0(HALTimerEvent evt);
-extern void HALRemoveTimer0();
-extern void HALStartTimer0(timer_t timer);
-extern void HALStopTimer0();
+#else
 
-// min 16 bit
-extern void HALInitTimer1(HALTimerEvent evt);
-extern void HALRemoveTimer1();
-extern void HALStartTimer1(timer_t timer);
-extern void HALStopTimer1();
+#define irqflags_t unsigned char
 
-// 8 bit
-extern void HALInitTimer2(HALTimerEvent evt);
-extern void HALRemoveTimer2();
-extern void HALStartTimer2(timer_t timer);
-extern void HALStopTimer2();
+#endif
 
-extern HALTimerEvent _halTimerEvent0;
-extern HALTimerEvent _halTimerEvent1;
-extern HALTimerEvent _halTimerEvent2;
+
+////////////////////////////////////////////////////////
+
+class CHAL
+{
+public:
+
+	typedef void(*TimerEvent)();
+
+	// min 8 bit 
+	static void InitTimer0(TimerEvent evt);
+	static void RemoveTimer0();
+	static void StartTimer0(timer_t timer);
+	static void StopTimer0();
+
+	// min 16 bit
+	static void InitTimer1(TimerEvent evt);
+	static void RemoveTimer1();
+	static void StartTimer1(timer_t timer);
+	static void StopTimer1();
+	static void NestedTimer1();
+
+	// 8 bit
+	static void InitTimer2(TimerEvent evt);
+	static void RemoveTimer2();
+	static void StartTimer2(timer_t timer);
+	static void StopTimer2();
+
+	static TimerEvent _TimerEvent0;
+	static TimerEvent _TimerEvent1;
+	static TimerEvent _TimerEvent2;
 
 #if !defined( __AVR_ATmega328P__)
 
-// min 16 bit
-extern void HALInitTimer3(HALTimerEvent evt);
-extern void HALRemoveTimer3();
-extern void HALStartTimer3(timer_t timer);
-extern void HALStopTimer3();
+	// min 16 bit
+	static void InitTimer3(TimerEvent evt);
+	static void RemoveTimer3();
+	static void StartTimer3(timer_t timer);
+	static void StopTimer3();
 
-// min 16 bit
-extern void HALInitTimer4(HALTimerEvent evt);
-extern void HALRemoveTimer4();
-extern void HALStartTimer4(timer_t timer);
-extern void HALStopTimer4();
+	// min 16 bit
+	static void InitTimer4(TimerEvent evt);
+	static void RemoveTimer4();
+	static void StartTimer4(timer_t timer);
+	static void StopTimer4();
 
-// min 16 bit
-extern void HALInitTimer5(HALTimerEvent evt);
-extern void HALRemoveTimer5();
-extern void HALStartTimer5(timer_t timer);
-extern void HALStopTimer5();
+	// min 16 bit
+	static void InitTimer5(TimerEvent evt);
+	static void RemoveTimer5();
+	static void StartTimer5(timer_t timer);
+	static void StopTimer5();
 
-extern HALTimerEvent _halTimerEvent3;
-extern HALTimerEvent _halTimerEvent4;
-extern HALTimerEvent _halTimerEvent5;
+	static TimerEvent _TimerEvent3;
+	static TimerEvent _TimerEvent4;
+	static TimerEvent _TimerEvent5;
 
 #endif
+
+	static inline void DisableInterrupts();
+	static inline void EnableInterrupts();
+
+	static inline irqflags_t GetSREG();
+	static inline void SetSREG(irqflags_t);
+
+	static inline void pinMode(unsigned char pin, unsigned char mode);
+
+	static void digitalWrite(unsigned char pin, unsigned char lowOrHigh);
+	static void digitalWriteNC(unsigned char pin, unsigned char lowOrHigh);		// no disableIRQ
+	static unsigned char digitalRead(unsigned char pin);
+
+};
+
+//////////////////////////////////////////
+
+class CCriticalRegion
+{
+private:
+	irqflags_t _sreg;
+
+public:
+
+	inline CCriticalRegion() :_sreg(CHAL::GetSREG()) {  CHAL::DisableInterrupts(); };
+	inline ~CCriticalRegion()	{ CHAL::SetSREG(_sreg); }
+};
 
 ////////////////////////////////////////////////////////
 // Due 32Bit
@@ -90,7 +134,6 @@ extern HALTimerEvent _halTimerEvent5;
 
 #if defined(__SAM3X8E__)
 
-#include <arduino.h>
 #include <itoa.h>
 
 #define pgm_read_ptr pgm_read_dword
@@ -121,17 +164,49 @@ extern HALTimerEvent _halTimerEvent5;
 
 #define TIMEROVERHEAD		1			// decrease Timervalue for ISR overhead before set new timer
 
-#define SREG_T irqflags_t
+inline void CHAL::DisableInterrupts()		{	cpu_irq_disable(); }
+inline void CHAL::EnableInterrupts()		{	cpu_irq_enable(); }
 
-#define DisableInterrupts()				cpu_irq_disable()
-#define EnableInterrupts()				cpu_irq_enable()
+inline irqflags_t CHAL::GetSREG()			{ return cpu_irq_save(); }
+inline void CHAL::SetSREG(irqflags_t a)		{ cpu_irq_restore(a); }
 
-#define GetSREG()						cpu_irq_save()
-#define SetSREG(a)						cpu_irq_restore(a)
+#define HALFastdigitalRead(a)	CHAL::digitalRead(a)
+#define HALFastdigitalWrite(a,b) CHAL::digitalWrite(a,b)
+#define HALFastdigitalWriteNC(a,b) CHAL::digitalWriteNC(a,b)
+/*
+inline void digitalWriteDirect(int pin, boolean val){
+  if(val) g_APinDescription[pin].pPort -> PIO_SODR = g_APinDescription[pin].ulPin;
+  else    g_APinDescription[pin].pPort -> PIO_CODR = g_APinDescription[pin].ulPin;
+}
 
-#define READ digitalRead
-#define WRITE digitalWrite
-#define _WRITE_NC digitalWrite
+inline int digitalReadDirect(int pin){
+  return !!(g_APinDescription[pin].pPort -> PIO_PDSR & g_APinDescription[pin].ulPin);
+}
+*/
+inline unsigned char CHAL::digitalRead(uint8_t pin)
+{
+  return (g_APinDescription[pin].pPort -> PIO_PDSR & g_APinDescription[pin].ulPin) ? HIGH : LOW;
+//	return ::digitalReadDirect(pin);
+}
+
+inline void CHAL::digitalWrite(uint8_t pin, uint8_t val)
+{
+  if(val) g_APinDescription[pin].pPort -> PIO_SODR = g_APinDescription[pin].ulPin;
+  else    g_APinDescription[pin].pPort -> PIO_CODR = g_APinDescription[pin].ulPin;
+  //	digitalWriteDirect(pin,lowOrHigh);
+}
+
+inline void CHAL::digitalWriteNC(uint8_t pin, uint8_t val)
+{
+  if(val) g_APinDescription[pin].pPort -> PIO_SODR = g_APinDescription[pin].ulPin;
+  else    g_APinDescription[pin].pPort -> PIO_CODR = g_APinDescription[pin].ulPin;
+//	digitalWriteDirect(pin,lowOrHigh);
+}
+
+inline void CHAL::pinMode(unsigned char pin, unsigned char mode)			
+{ 
+	::pinMode(pin,mode); 
+}
 
 ////////////////////////////////////////////////////////
 
@@ -145,21 +220,21 @@ extern HALTimerEvent _halTimerEvent5;
 
 ////////////////////////////////////////////////////////
 
-inline void  HALRemoveTimer0() {}
+inline void  CHAL::RemoveTimer0() {}
 
-inline void HALStartTimer0(timer_t delay)
+inline void CHAL::StartTimer0(timer_t delay)
 {
-	HALStartTimer3(delay);
+	StartTimer3(delay);
 }
 
-inline void  HALInitTimer0(HALTimerEvent evt)
+inline void  CHAL::InitTimer0(TimerEvent evt)
 {
-	HALInitTimer3(evt);
+	InitTimer3(evt);
 }
 
-inline void  HALRemoveTimer1() {}
+inline void  CHAL::RemoveTimer1() {}
 
-inline void HALStartTimer1(timer_t delay)
+inline void CHAL::StartTimer1(timer_t delay)
 {
 	// convert old AVR timer delay value for SAM timers
 	delay *= 21;		// 2MhZ to 42MhZ
@@ -174,11 +249,17 @@ inline void HALStartTimer1(timer_t delay)
 	TC_Start(DUETIMER1_TC, DUETIMER1_CHANNEL);
 }
 
+inline void CHAL::NestedTimer1()
+{
+	// reenable IRQ during ISR
+	EnableInterrupts();
+}
+
 ////////////////////////////////////////////////////////
 
-inline void  HALInitTimer1(HALTimerEvent evt)
+inline void  CHAL::InitTimer1(TimerEvent evt)
 {
-	_halTimerEvent1 = evt;
+	_TimerEvent1 = evt;
 
 	pmc_enable_periph_clk(DUETIMER1_IRQTYPE );
 	NVIC_SetPriority(DUETIMER1_IRQTYPE, NVIC_EncodePriority(4, 1, 0));
@@ -195,7 +276,7 @@ inline void  HALInitTimer1(HALTimerEvent evt)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStopTimer1()
+inline void CHAL::StopTimer1()
 {
 	NVIC_DisableIRQ(DUETIMER1_IRQTYPE);
 	TC_Stop(DUETIMER1_TC, DUETIMER1_CHANNEL);
@@ -203,9 +284,9 @@ inline void HALStopTimer1()
 
 ////////////////////////////////////////////////////////
 
-inline void  HALRemoveTimer3() {}
+inline void  CHAL::RemoveTimer3() {}
 
-inline void HALStartTimer3(timer_t timer_count)
+inline void CHAL::StartTimer3(timer_t timer_count)
 {
 	if (timer_count == 0) timer_count = 1;
 	TC_SetRC(DUETIMER3_TC, DUETIMER3_CHANNEL, timer_count);
@@ -214,12 +295,12 @@ inline void HALStartTimer3(timer_t timer_count)
 
 ////////////////////////////////////////////////////////
 
-inline void  HALInitTimer3(HALTimerEvent evt)
+inline void  CHAL::InitTimer3(TimerEvent evt)
 {
-	_halTimerEvent3 = evt;
+	_TimerEvent3 = evt;
 
 	pmc_enable_periph_clk(DUETIMER3_IRQTYPE);
-	NVIC_SetPriority(DUETIMER3_IRQTYPE, NVIC_EncodePriority(4, 1, 0));
+	NVIC_SetPriority(DUETIMER3_IRQTYPE, NVIC_EncodePriority(4, 3, 0));
 
 	TC_Configure(DUETIMER3_TC, DUETIMER3_CHANNEL, TC_CMR_WAVSEL_UP_RC | TC_CMR_WAVE | TC_CMR_TCCLKS_TIMER_CLOCK1);
 
@@ -233,7 +314,7 @@ inline void  HALInitTimer3(HALTimerEvent evt)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStopTimer3()
+inline void CHAL::StopTimer3()
 {
 	NVIC_DisableIRQ(DUETIMER3_IRQTYPE);
 	TC_Stop(DUETIMER3_TC, DUETIMER3_CHANNEL);
@@ -271,15 +352,6 @@ inline void HALStopTimer3()
 
 #define TIMEROVERHEAD		(14)		// decrease Timervalue for ISR overhead before set new timer
 
-#define SREG_T unsigned char
-#define irqflags_t SREG_T
-
-#define DisableInterrupts()				cli()
-#define EnableInterrupts()				sei()
-#define GetSREG()						SREG
-#define SetSREG(a)						SREG=a
-
-#include <arduino.h>
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
@@ -287,17 +359,23 @@ inline void HALStopTimer3()
 
 ////////////////////////////////////////////////////////
 
-inline void  HALRemoveTimer0() {}
+inline void CHAL::DisableInterrupts()	{	cli(); }
+inline void CHAL::EnableInterrupts()	{	sei(); }
 
-inline void  HALInitTimer0(HALTimerEvent evt)
+inline irqflags_t CHAL::GetSREG()		{ return SREG; }
+inline void CHAL::SetSREG(irqflags_t a)	{ SREG=a; }
+
+inline void  CHAL::RemoveTimer0() {}
+
+inline void  CHAL::InitTimer0(TimerEvent evt)
 {
 	// shared with millis!
-	_halTimerEvent0 = evt;
+	_TimerEvent0 = evt;
 }
 
 ////////////////////////////////////////////////////////
 
-inline void HALStartTimer0(timer_t timer)
+inline void CHAL::StartTimer0(timer_t timer)
 {
 	// shared with millis => set only interrup mask!
 	TIMSK0 |= (1<<OCIE0B);  
@@ -306,18 +384,18 @@ inline void HALStartTimer0(timer_t timer)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStopTimer0()
+inline void CHAL::StopTimer0()
 {
 	TIMSK0 &= ~(1<<OCIE0B);  
 }  
 
 ////////////////////////////////////////////////////////
 
-inline void  HALRemoveTimer1() {}
+inline void  CHAL::RemoveTimer1() {}
 
-inline void  HALInitTimer1(HALTimerEvent evt)
+inline void  CHAL::InitTimer1(TimerEvent evt)
 {
-	_halTimerEvent1 = evt;
+	_TimerEvent1 = evt;
 
 	TCCR1A = 0x00;							// stetzt Statusregiser A Vom Timer eins auf null
 	TCCR1B = 0x00;							// stetzt Statusregiser B Vom Timer eins auf null
@@ -326,7 +404,7 @@ inline void  HALInitTimer1(HALTimerEvent evt)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStartTimer1(timer_t timer)
+inline void CHAL::StartTimer1(timer_t timer)
 {
 	TCNT1  = 0 - timer;  
 	TIMSK1 |= (1<<TOIE1);					// Aktiviert Interrupt beim Overflow des Timers 1
@@ -336,22 +414,28 @@ inline void HALStartTimer1(timer_t timer)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStopTimer1()
+inline void CHAL::StopTimer1()
 {
 	TCCR1B = 0x00;							// stetzt Statusregiser B Vom Timer eins auf null
 	TIMSK1 &= ~(1<<TOIE1);					// Deaktiviert Interrupt beim Overflow des Timers 1
 	TCNT1=0;  
 }  
 
-////////////////////////////////////////////////////////
-
-inline void  HALRemoveTimer2() {}
-
-////////////////////////////////////////////////////////
-
-inline void  HALInitTimer2(HALTimerEvent evt)
+inline void CHAL::NestedTimer1()
 {
-	_halTimerEvent2 = evt;  
+	// reenable IRQ during ISR
+	EnableInterrupts();
+}
+
+////////////////////////////////////////////////////////
+
+inline void  CHAL::RemoveTimer2() {}
+
+////////////////////////////////////////////////////////
+
+inline void  CHAL::InitTimer2(TimerEvent evt)
+{
+	_TimerEvent2 = evt;  
 	TCCR2A = 0x00;							// stetzt Statusregiser A Vom Timer eins auf null
 	TCCR2B = 0x00;							// stetzt Statusregiser B Vom Timer eins auf null
 	TCCR2B |= ((1 << CS22) | (1 << CS21) | (1 << CS20));	// timer laeuft mit 1/1024 des CPU Takt.
@@ -359,7 +443,7 @@ inline void  HALInitTimer2(HALTimerEvent evt)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStartTimer2(timer_t timer)
+inline void CHAL::StartTimer2(timer_t timer)
 {
 	TCNT2 = (0x100 - timer);				// timer2 is 8bit
 	TIMSK2 |= (1 << TOIE2);					// Aktiviert Interrupt beim Overflow des Timers 2
@@ -369,7 +453,7 @@ inline void HALStartTimer2(timer_t timer)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStopTimer2()
+inline void CHAL::StopTimer2()
 {
 	TCCR2B = 0x00;							// stetzt Statusregiser B Vom Timer eins auf null
 	TIMSK2 &= ~(1 << TOIE2);				// Deaktiviert Interrupt beim Overflow des Timers 2
@@ -382,11 +466,11 @@ inline void HALStopTimer2()
 
 ////////////////////////////////////////////////////////
 
-inline void  HALRemoveTimer3() {}
+inline void  CHAL::RemoveTimer3() {}
 
-inline void  HALInitTimer3(HALTimerEvent evt)
+inline void  CHAL::InitTimer3(TimerEvent evt)
 {
-	_halTimerEvent3 = evt;
+	_TimerEvent3 = evt;
 
 	TCCR3A = 0x00;							// stetzt Statusregiser A Vom Timer eins auf null
 	TCCR3B = 0x00;							// stetzt Statusregiser B Vom Timer eins auf null
@@ -395,7 +479,7 @@ inline void  HALInitTimer3(HALTimerEvent evt)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStartTimer3(timer_t timer)
+inline void CHAL::StartTimer3(timer_t timer)
 {
 	TCNT3  = 0 - timer;  
 	TIMSK3 |= (1<<TOIE3);					// Aktiviert Interrupt beim Overflow des Timers 1
@@ -405,7 +489,7 @@ inline void HALStartTimer3(timer_t timer)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStopTimer3()
+inline void CHAL::StopTimer3()
 {
 	TCCR3B = 0x00;							// stetzt Statusregiser B Vom Timer eins auf null
 	TIMSK3 &= ~(1<<TOIE3);					// Deaktiviert Interrupt beim Overflow des Timers 1
@@ -414,11 +498,11 @@ inline void HALStopTimer3()
 
 ////////////////////////////////////////////////////////
 
-inline void  HALRemoveTimer4() {}
+inline void  CHAL::RemoveTimer4() {}
 
-inline void  HALInitTimer4(HALTimerEvent evt)
+inline void  CHAL::InitTimer4(TimerEvent evt)
 {
-	_halTimerEvent4 = evt;
+	_TimerEvent4 = evt;
 
 	TCCR4A = 0x00;							// stetzt Statusregiser A Vom Timer eins auf null
 	TCCR4B = 0x00;							// stetzt Statusregiser B Vom Timer eins auf null
@@ -427,7 +511,7 @@ inline void  HALInitTimer4(HALTimerEvent evt)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStartTimer4(timer_t timer)
+inline void CHAL::StartTimer4(timer_t timer)
 {
 	TCNT4  = 0 - timer;  
 	TIMSK4 |= (1<<TOIE4);					// Aktiviert Interrupt beim Overflow des Timers 1
@@ -437,7 +521,7 @@ inline void HALStartTimer4(timer_t timer)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStopTimer4()
+inline void CHAL::StopTimer4()
 {
 	TCCR4B = 0x00;							// stetzt Statusregiser B Vom Timer eins auf null
 	TIMSK4 &= ~(1<<TOIE4);					// Deaktiviert Interrupt beim Overflow des Timers 1
@@ -446,11 +530,11 @@ inline void HALStopTimer4()
 
 ////////////////////////////////////////////////////////
 
-inline void  HALRemoveTimer5() {}
+inline void  CHAL::RemoveTimer5() {}
 
-inline void  HALInitTimer5(HALTimerEvent evt)
+inline void  CHAL::InitTimer5(TimerEvent evt)
 {
-	_halTimerEvent5 = evt;
+	_TimerEvent5 = evt;
 
 	TCCR5A = 0x00;							// stetzt Statusregiser A Vom Timer eins auf null
 	TCCR5B = 0x00;							// stetzt Statusregiser B Vom Timer eins auf null
@@ -459,7 +543,7 @@ inline void  HALInitTimer5(HALTimerEvent evt)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStartTimer5(timer_t timer)
+inline void CHAL::StartTimer5(timer_t timer)
 {
 	TCNT5  = 0 - timer;  
 	TIMSK5 |= (1<<TOIE5);					// Aktiviert Interrupt beim Overflow des Timers 1
@@ -469,7 +553,7 @@ inline void HALStartTimer5(timer_t timer)
 
 ////////////////////////////////////////////////////////
 
-inline void HALStopTimer5()
+inline void CHAL::StopTimer5()
 {
 	TCCR5B = 0x00;							// stetzt Statusregiser B Vom Timer eins auf null
 	TIMSK5 &= ~(1<<TOIE5);					// Deaktiviert Interrupt beim Overflow des Timers 1
@@ -477,6 +561,31 @@ inline void HALStopTimer5()
 }  
 
 #endif
+
+#define HALFastdigitalWrite(a,b) WRITE(a,b)
+#define HALFastdigitalWriteNC(a,b) _WRITE_NC(a,b)
+#define HALFastdigitalRead(a) READ(a)
+
+inline void CHAL::digitalWrite(uint8_t pin, uint8_t lowOrHigh)
+{
+	::digitalWrite(pin,lowOrHigh);
+}
+
+inline void CHAL::digitalWriteNC(uint8_t pin, uint8_t lowOrHigh)
+{
+	::digitalWrite(pin,lowOrHigh);
+}
+
+inline unsigned char CHAL::digitalRead(uint8_t pin)
+{
+	return ::digitalRead(pin);
+}
+
+inline void CHAL::pinMode(unsigned char pin, unsigned char mode)			
+{ 
+	::pinMode(pin,mode); 
+}
+
 
 ////////////////////////////////////////////////////////
 // MSC
@@ -497,49 +606,68 @@ inline void HALStopTimer5()
 
 #define TIMEROVERHEAD		(0)				// decrease Timervalue for ISR overhead before set new timer
 
-#define SREG_T unsigned char
+inline void CHAL::DisableInterrupts()	{	cli(); }
+inline void CHAL::EnableInterrupts()	{	sei(); }
 
-#define DisableInterrupts()				cli()
-#define EnableInterrupts()				sei()
-#define GetSREG()						SREG
-#define SetSREG(a)						SREG=a
-
-#define READ digitalRead
-#define WRITE digitalWrite
-#define _WRITE_NC digitalWrite
+inline irqflags_t CHAL::GetSREG()				{ return SREG; }
+inline void CHAL::SetSREG(irqflags_t a)			{ SREG=a; }
 
 #define __asm__(a)
 
-inline void  HALInitTimer0(HALTimerEvent evt){ _halTimerEvent1 = evt; }
-inline void  HALRemoveTimer0()			{}
-inline void HALStartTimer0(timer_t)		{}
-inline void HALStopTimer0()				{}
+inline void CHAL::InitTimer0(TimerEvent evt){ _TimerEvent0 = evt; }
+inline void CHAL::RemoveTimer0()			{}
+inline void CHAL::StartTimer0(timer_t)		{}
+inline void CHAL::StopTimer0()				{}
 
-inline void  HALInitTimer1(HALTimerEvent evt){ _halTimerEvent1 = evt; }
-inline void  HALRemoveTimer1()			{}
-inline void HALStartTimer1(timer_t)		{}
-inline void HALStopTimer1()				{}
+inline void CHAL::InitTimer1(TimerEvent evt){ _TimerEvent1 = evt; }
+inline void CHAL::RemoveTimer1()			{}
+inline void CHAL::StartTimer1(timer_t)		{}
+inline void CHAL::StopTimer1()				{}
+inline void CHAL::NestedTimer1()			{}
 
-inline void  HALInitTimer2(HALTimerEvent evt){ _halTimerEvent2 = evt; }
-inline void  HALRemoveTimer2()			{}
-inline void HALStartTimer2(timer_t)		{}
-inline void HALStopTimer2()				{}
+inline void CHAL::InitTimer2(TimerEvent evt){ _TimerEvent2 = evt; }
+inline void CHAL::RemoveTimer2()			{}
+inline void CHAL::StartTimer2(timer_t)		{}
+inline void CHAL::StopTimer2()				{}
 
-inline void  HALInitTimer3(HALTimerEvent evt){ _halTimerEvent3 = evt; }
-inline void  HALRemoveTimer3()			{}
-inline void HALStartTimer3(timer_t)		{}
-inline void HALStopTimer3()				{}
+inline void CHAL::InitTimer3(TimerEvent evt){ _TimerEvent3 = evt; }
+inline void CHAL::RemoveTimer3()			{}
+inline void CHAL::StartTimer3(timer_t)		{}
+inline void CHAL::StopTimer3()				{}
 
-inline void  HALInitTimer4(HALTimerEvent evt){ _halTimerEvent4 = evt; }
-inline void  HALRemoveTimer4()			{}
-inline void HALStartTimer4(timer_t)		{}
-inline void HALStopTimer4()				{}
+inline void CHAL::InitTimer4(TimerEvent evt){ _TimerEvent4 = evt; }
+inline void CHAL::RemoveTimer4()			{}
+inline void CHAL::StartTimer4(timer_t)		{}
+inline void CHAL::StopTimer4()				{}
 
-inline void  HALInitTimer5(HALTimerEvent evt){ _halTimerEvent5 = evt; }
-inline void  HALRemoveTimer5()			{}
-inline void HALStartTimer5(timer_t)		{}
-inline void HALStopTimer5()				{}
+inline void CHAL::InitTimer5(TimerEvent evt){ _TimerEvent5 = evt; }
+inline void CHAL::RemoveTimer5()			{}
+inline void CHAL::StartTimer5(timer_t)		{}
+inline void CHAL::StopTimer5()				{}
 
+#define HALFastdigitalRead(a) CHAL::digitalRead(a)
+#define HALFastdigitalWrite(a,b) CHAL::digitalWrite(a,b)
+#define HALFastdigitalWriteNC(a,b) CHAL::digitalWriteNC(a,b)
+
+inline void CHAL::digitalWrite(uint8_t pin, uint8_t lowOrHigh)
+{
+	::digitalWrite(pin,lowOrHigh);
+}
+
+inline void CHAL::digitalWriteNC(uint8_t pin, uint8_t lowOrHigh)
+{
+	::digitalWrite(pin,lowOrHigh);
+}
+
+inline unsigned char CHAL::digitalRead(uint8_t pin)
+{
+	return ::digitalRead(pin);
+}
+
+inline void CHAL::pinMode(unsigned char pin, unsigned char mode)			
+{ 
+	::pinMode(pin,mode); 
+}
 
 ////////////////////////////////////////////////////////
 
@@ -548,3 +676,4 @@ inline void HALStopTimer5()				{}
 ToDo;
 
 #endif 
+

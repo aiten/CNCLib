@@ -54,7 +54,7 @@ void setup()
 
   // only drive stepper  
   Stepper.Init();
-  pinMode(13, OUTPUT);     
+  CHAL::pinMode(13, OUTPUT);     
 
   Stepper.SetDefaultMaxSpeed(5000, 100 , 150);
   Stepper.SetLimitMax(0,6950*8);

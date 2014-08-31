@@ -97,18 +97,18 @@ PROGMEM const CMyLcd::SPageDef CMyLcd::_pagedef[] =
 
 void CMyLcd::Init()
 {
-	pinMode(CAT(BOARDNAME,_LCD_BEEPER), OUTPUT);
-	digitalWrite(CAT(BOARDNAME,_LCD_BEEPER), LOW);
+	CHAL::pinMode(CAT(BOARDNAME,_LCD_BEEPER), OUTPUT);
+	HALFastdigitalWrite(CAT(BOARDNAME,_LCD_BEEPER), LOW);
 
 	super::Init();
 
-	pinMode(ROTARY_ENC, INPUT_PULLUP);
-	pinMode(ROTARY_EN1, INPUT_PULLUP);
-	pinMode(ROTARY_EN2, INPUT_PULLUP);
+	CHAL::pinMode(ROTARY_ENC, INPUT_PULLUP);
+	CHAL::pinMode(ROTARY_EN1, INPUT_PULLUP);
+	CHAL::pinMode(ROTARY_EN2, INPUT_PULLUP);
 
-	pinMode(CAT(BOARDNAME,_LCD_KILL_PIN), INPUT_PULLUP);
+	CHAL::pinMode(CAT(BOARDNAME,_LCD_KILL_PIN), INPUT_PULLUP);
 
-	_button.Tick(READ(ROTARY_EN1), READ(ROTARY_EN2));
+	_button.Tick(HALFastdigitalRead(ROTARY_EN1), HALFastdigitalRead(ROTARY_EN2));
 
 	SetMainMenu();
 	SetDefaultPage();
@@ -136,9 +136,9 @@ void CMyLcd::Beep()
 {
 	for (int8_t i = 0; i < 10; i++)
 	{
-		digitalWrite(CAT(BOARDNAME,_LCD_BEEPER), HIGH);
+		HALFastdigitalWrite(CAT(BOARDNAME,_LCD_BEEPER), HIGH);
 		delay(3);
-		digitalWrite(CAT(BOARDNAME,_LCD_BEEPER), LOW);
+		HALFastdigitalWrite(CAT(BOARDNAME,_LCD_BEEPER), LOW);
 		delay(3);
 	}
 }
@@ -179,12 +179,12 @@ void CMyLcd::TimerInterrupt()
 {
 	super::TimerInterrupt();
 
-	if (READ(CAT(BOARDNAME,_LCD_KILL_PIN)) == CAT(BOARDNAME,_LCD_KILL_PIN_ON))
+	if (CHAL::digitalRead(CAT(BOARDNAME,_LCD_KILL_PIN)) == CAT(BOARDNAME,_LCD_KILL_PIN_ON))
 	{
 		Control.Kill();
 	}
 
-	switch (_button.Tick(READ(ROTARY_EN1), READ(ROTARY_EN2)))
+	switch (_button.Tick(HALFastdigitalRead(ROTARY_EN1), HALFastdigitalRead(ROTARY_EN2)))
 	{
 		case CRotaryButton<rotarypos_t, ROTARY_ACCURACY>::Overrun:
 			break;
@@ -201,10 +201,10 @@ void CMyLcd::Idle(unsigned int idletime)
 
 	if (_expectButtonOff)
 	{
-		if (READ(ROTARY_ENC) != ROTARY_ENC_ON)
+		if (HALFastdigitalRead(ROTARY_ENC) != ROTARY_ENC_ON)
 			_expectButtonOff = false;
 	}
-	else if (READ(ROTARY_ENC) == ROTARY_ENC_ON)
+	else if (HALFastdigitalRead(ROTARY_ENC) == ROTARY_ENC_ON)
 	{
 		_expectButtonOff = true;
 		ButtonPress();

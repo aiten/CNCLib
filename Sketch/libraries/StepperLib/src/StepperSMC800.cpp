@@ -95,8 +95,8 @@ void CStepperSMC800::OutSMC800Cmd(const unsigned char val)
 	ToDo
 #endif
 
-	digitalWrite(SMC800_STROBEPIN, 0);
-	digitalWrite(SMC800_STROBEPIN, 1);
+	HALFastdigitalWrite(SMC800_STROBEPIN, 0);
+	HALFastdigitalWrite(SMC800_STROBEPIN, 1);
 }
 
 ////////////////////////////////////////////////////////
@@ -133,10 +133,10 @@ void CStepperSMC800::Init()
 	ToDo
 #endif
 
-	pinMode(SMC800_STROBEPIN, OUTPUT);
-	digitalWrite(SMC800_STROBEPIN, 1);
+	CHAL::pinMode(SMC800_STROBEPIN, OUTPUT);
+	HALFastdigitalWrite(SMC800_STROBEPIN, 1);
 
-	pinMode(SMC800_REFININ, INPUT_PULLUP);
+	CHAL::pinMode(SMC800_REFININ, INPUT_PULLUP);
 
 	super::Init();
 	InitMemVar();
@@ -165,8 +165,8 @@ void CStepperSMC800::Remove()
 	ToDo
 #endif
 
-	pinMode(SMC800_REFININ, INPUT);
-	pinMode(SMC800_STROBEPIN, INPUT);
+	CHAL::pinMode(SMC800_REFININ, INPUT);
+	CHAL::pinMode(SMC800_STROBEPIN, INPUT);
 
 	super::Remove();
 }
@@ -247,7 +247,7 @@ void CStepperSMC800::SetPhase(axis_t axis)
 
 bool  CStepperSMC800::IsReference(unsigned char /*referenceid*/)
 {
-	return digitalRead(SMC800_REFININ) == HIGH;
+	return HALFastdigitalRead(SMC800_REFININ) == HIGH;
 }
 
 ////////////////////////////////////////////////////////

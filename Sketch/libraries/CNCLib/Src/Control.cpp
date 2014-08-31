@@ -52,10 +52,10 @@ void CControl::Init()
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->Init();
 
-	pinMode(BLINK_LED, OUTPUT);
+	CHAL::pinMode(BLINK_LED, OUTPUT);
 
-	HALInitTimer0(HandleInterrupt);
-	HALStartTimer0(IDLETIMER0VALUE);
+	CHAL::InitTimer0(HandleInterrupt);
+	CHAL::StartTimer0(IDLETIMER0VALUE);
 }
 
 ////////////////////////////////////////////////////////////
@@ -305,7 +305,7 @@ void CControl::CheckIdle()
 
 	if (_timeBlink < time)
 	{
-		digitalWrite(BLINK_LED, digitalRead(BLINK_LED) == HIGH ? LOW : HIGH);
+		HALFastdigitalWrite(BLINK_LED, digitalRead(BLINK_LED) == HIGH ? LOW : HIGH);
 		_timeBlink = time + TIMEOUTBLINK;
 	}
 }
@@ -367,7 +367,7 @@ bool CControl::PostCommand(char* cmd, Stream* output)
 
 void CControl::TimerInterrupt()
 {
-	EnableInterrupts();	// enable irq for timer1 (Stepper)
+	CHAL::EnableInterrupts();	// enable irq for timer1 (Stepper)
 
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->TimerInterrupt();

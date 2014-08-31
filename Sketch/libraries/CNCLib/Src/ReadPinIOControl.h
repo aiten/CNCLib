@@ -28,12 +28,12 @@ public:
 
 	static void Init()
 	{
-		pinMode(PIN, INPUT_PULLUP);
+		CHAL::pinMode(PIN, INPUT_PULLUP);
 	}
 
 	bool IsOn()
 	{
-		return digitalRead(PIN) == ONVALUE;
+		return CHAL::digitalRead(PIN) == ONVALUE;
 	}
 };
 

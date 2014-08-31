@@ -29,20 +29,20 @@ public:
 	void Init()
 	{
 		On(0);
-		pinMode(PIN, OUTPUT);
+		CHAL::pinMode(PIN, OUTPUT);
 	}
 
 	void On(unsigned short level)
 	{
 		if (level)
-			digitalWrite(PIN, ONVALUE);
+			CHAL::digitalWrite(PIN, ONVALUE);
 		else
-			digitalWrite(PIN, OFFVALUE);
+			CHAL::digitalWrite(PIN, OFFVALUE);
 	}
 
 	bool IsOn()
 	{
-		return digitalRead(PIN) == ONVALUE;
+		return CHAL::digitalRead(PIN) == ONVALUE;
 	}
 
 };

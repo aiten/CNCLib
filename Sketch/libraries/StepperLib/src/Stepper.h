@@ -197,6 +197,12 @@ private:
 		return (sdist_t)current - (sdist_t)dist;
 	}
 
+	inline void StepOut();
+	inline void FillStepBuffer();
+
+	void GoIdle();
+	void ContinueIdle();
+
 protected:
 
 	bool MoveUntil(unsigned char referenceId, bool referencevalue, unsigned short stabletime);
@@ -208,6 +214,7 @@ protected:
 	debugvirtula void Step(bool isr);
 
 	debugvirtula void OptimizeMovementQueue(bool force);
+
 
 	////////////////////////////////////////////////////////
 
@@ -541,8 +548,8 @@ private:
 
 protected:
 
-	debugvirtula void InitTimer()								{ HALInitTimer1(HandleInterrupt); }
-	debugvirtula void RemoveTimer()								{ HALRemoveTimer1(); }
+	debugvirtula void InitTimer()								{ CHAL::InitTimer1(HandleInterrupt); }
+	debugvirtula void RemoveTimer()								{ CHAL::RemoveTimer1(); }
 
 	debugvirtula void StartTimer(timer_t timerB);
 	debugvirtula void SetIdleTimer();
