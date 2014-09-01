@@ -1105,7 +1105,7 @@ inline void CStepper::StepOut()
 #ifdef _MSC_VER
 	StepBegin(&_steps.Head());
 #endif
-	// div with 256 is faster than 16 (loop shift)
+	// AVR: div with 256 is faster than 16 (loop shift)
 
 	unsigned char bytedircount=0;
 	bool countit = true;
@@ -1151,8 +1151,25 @@ inline void CStepper::StepOut()
 
 ////////////////////////////////////////////////////////
 
+static volatile bool _backgroundactive = false;
+
 void CStepper::StartBackground()
 {
+#if defined(__SAM3X8E__)
+	// sam3x cannot call timer interrupt nested.
+	// we use a other ISR (CAN) as Tail-chaining with lower (priority value is higher) priority and exit the Timer ISR
+
+	if (_backgroundactive)
+	{
+		_timerISRBusy++;
+	}
+	else
+	{
+		CHAL::BackgroundRequest();
+	}
+
+#else
+
 	static volatile unsigned char reentercount = 0;
 
 	reentercount++;
@@ -1174,6 +1191,8 @@ void CStepper::StartBackground()
 
 	CHAL::DisableInterrupts();
 	reentercount--;
+
+#endif
 }
 
 ////////////////////////////////////////////////////////
@@ -1195,10 +1214,13 @@ void CStepper::FillStepBuffer()
 
 ////////////////////////////////////////////////////////
 // called as Tail-chaining on due (after Step() )
+// due: do not check reenter => ISR on due can be only called once (not nested)
 
 void CStepper::Background()
 {
-	StartBackground();
+	_backgroundactive = true;
+	FillStepBuffer();
+	_backgroundactive = false;
 }
 
 ////////////////////////////////////////////////////////
@@ -1215,9 +1237,8 @@ void CStepper::GoIdle()
 
 void CStepper::ContinueIdle()
 {
-		// idle Timer
-		SetIdleTimer();
-		OnIdle(millis() - _timerOnIdle);
+	SetIdleTimer();
+	OnIdle(millis() - _timerOnIdle);
 }
 
 ////////////////////////////////////////////////////////
@@ -1226,10 +1247,10 @@ void CStepper::Step(bool isr)
 {
 	// called in interrupt => must be "fast"
 	// first send commands to stepper driver
-	// afterwards calculate the next steps
+	// afterwards calculate the next steps in background
 
-	// interrups are disabled (ISR)
-	// or disable: see OnStart
+	// AVR:	 interrups are disabled (ISR) or disable: see OnStart
+	// SAM3X:no nested call of ISR 
 
 	if (isr  && !_timerRunning)
 	{
@@ -1239,7 +1260,6 @@ void CStepper::Step(bool isr)
 
 	if (_steps.IsEmpty())
 	{
-		// start idle timer
 		GoIdle();
 		return;
 	}
