@@ -427,14 +427,35 @@ bool CGCode3DParser::GetFileName(char*buffer)
 {
 	_reader->SkipSpaces();
 
-#pragma message ("TODO => check 8.3!")
+	unsigned char dotidx = 0;
+	unsigned char length = 0;
 
 	char ch = _reader->GetChar();
 	for (unsigned char i = 0; i < MAXPATHNAME; i++)
 	{
-		if (ch == '.' || isdigit(ch) || isalpha(ch) || ch == '/' || ch == '_')
+		if (ch == '.')
+		{
+			length = 0;
+			dotidx++;
+			if (dotidx > 1)
+			{
+				// only one dot is allowed
+				Error(MESSAGE_PARSER3D_ILLEGAL_FILENAME);
+				return false;
+			}
+			*(buffer++) = ch;
+		}
+		else if (isdigit(ch) || isalpha(ch) || ch == '/' || ch == '_' || ch == '~')
 		{
 			*(buffer++) = ch;
+			length++;
+
+			if ((dotidx == 0 && length > 8) ||
+				(dotidx == 1 && length > 3))
+			{
+				Error(MESSAGE_PARSER3D_ILLEGAL_FILENAME);
+				return false;
+			}
 		}
 		else if (ch == 0 || ch == ' ' || ch == '\t')
 		{
