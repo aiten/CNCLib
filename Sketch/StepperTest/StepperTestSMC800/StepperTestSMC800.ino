@@ -57,7 +57,7 @@ void setup()
 
 static void WaitBusy()
 {
-  while (true && Stepper.IsBusy())
+  while (false && Stepper.IsBusy())
   {
     StepperSerial.print(Stepper.GetCurrentPosition(0)); StepperSerial.print(F(":"));
     StepperSerial.print(Stepper.GetCurrentPosition(1)); StepperSerial.print(F(":"));
@@ -82,6 +82,8 @@ static void MoveAbs3(udist_t X, udist_t Y, udist_t Z, steprate_t vMax = 0)
 
 static void Test1()
 {
+  Serial.println(F("Test 1"));
+  
   int count = 0;
   Stepper.CStepper::MoveRel(0, 300, 1000); count += 300;
   Stepper.CStepper::MoveRel(0, 800, 2000); count += 800;
@@ -157,6 +159,7 @@ static void PenDown()
 
 static void Test3()
 {
+  Serial.println(F("Test 3"));
 
   /*
   PU 2683 5738;
@@ -212,6 +215,8 @@ static void Test3()
 
 static void Test4()
 {
+  Serial.println(F("Test 4"));
+  
   while(1)
   {
     Serial.print(digitalRead(A0) ? F("1") : F("0"));

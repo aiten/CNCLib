@@ -147,6 +147,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Analog8InvertIOControl.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperL298N.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">
@@ -205,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\GCode3DParser.cpp">
       <Filter>CNCLibEx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperL298N.cpp">
+      <Filter>StepperLib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

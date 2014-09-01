@@ -20,6 +20,7 @@
 #include "StepperSMC800.h"
 #include "StepperRamps14.h"
 #include "StepperRampsFD.h"
+#include "StepperL298N.h"
 #include "UtilitiesStepperLib.h"
 
 
