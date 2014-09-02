@@ -72,9 +72,9 @@ static void Test1()
   int count1 = 0;
   int count2 = 0;
 
-  int mydelay=1500;
+  int mydelay=100;
 
-for(register char j=0;j<10;j++)
+for(register char j=0;j<100;j++)
 {
   Stepper.MoveRelEx(1000,X_AXIS,sdist_t(1),Y_AXIS,sdist_t(1),-1);
   delay(mydelay);

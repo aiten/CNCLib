@@ -21,8 +21,11 @@
 
 ////////////////////////////////////////////////////////
 
-static unsigned char L298Nhalfstep[8] = { 1, 3, 2, 6, 4, 12, 8, 9 };
-static unsigned char L298Nfullstep[4] = { 1, 2, 4, 8 };
+ // 1010 -> 1000 -> 1001 -> 0001 -> 0101 -> 0100 -> 0110 -> 0010
+static unsigned char _L298Nhalfstep4Pin[8] = { 10, 8, 9, 1, 5, 4, 6, 2 };
+
+// 1010 -> 1001 -> 0101 -> 0110
+ static unsigned char _L298Nfullstep4Pin[4] = { 10, 9, 5, 6 };
 
 ////////////////////////////////////////////////////////
 
@@ -80,13 +83,16 @@ void CStepperL298N::InitMemVar()
 
 void  CStepperL298N::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
 {
+	unsigned char mask=1;
 	for (axis_t axis=0;axis < NUM_AXIS;axis++)
 	{
-		if (IsBitSet(directionUp,axis))
+		if (directionUp&mask)
+//		if (IsBitSet(directionUp,axis))
 			_stepIdx[axis] += steps[axis];
 		else
-			_stepIdx[axis] -= steps[axis];;
+			_stepIdx[axis] -= steps[axis];
 		SetPhase(axis);
+		mask *= 2;
 	}
 }
 
@@ -120,11 +126,11 @@ void CStepperL298N::SetPhase(axis_t axis)
 
 		if (_stepMode[axis] == FullStep)
 		{
-			bitmask = L298Nfullstep[_stepIdx[axis] & 0x3];
+			bitmask = _L298Nfullstep4Pin[_stepIdx[axis] & 0x3];
 		}
 		else
 		{
-			bitmask = L298Nhalfstep[_stepIdx[axis] & 0x7];
+			bitmask = _L298Nhalfstep4Pin[_stepIdx[axis] & 0x7];
 		}
 
 		CHAL::digitalWrite(_pin[axis][0], (bitmask & 1) ? HIGH : LOW);
