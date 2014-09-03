@@ -28,7 +28,7 @@ static unsigned char _L298Nhalfstep4Pin[8] = { 10, 8, 9, 1, 5, 4, 6, 2 };
  static unsigned char _L298Nfullstep4Pin[4] = { 10, 9, 5, 6 };
 
  // 1010 -> 1001 -> 0101 -> 0110
- // aAbB
+ // aAbB => a => !a=A 
  static unsigned char _L298Nfullstep2Pin[4] = { 3, 2, 0, 1 };
 
 ////////////////////////////////////////////////////////
@@ -175,10 +175,10 @@ void CStepperL298N::SetPhase(axis_t axis)
 			bitmask = _L298Nfullstep2Pin[_stepIdx[axis] & 0x3];
 		}
 
-		CHAL::digitalWrite(_pin[axis][0], (bitmask & 1) ? HIGH : LOW);
-		CHAL::digitalWrite(_pin[axis][1], (bitmask & 2) ? HIGH : LOW);
-		CHAL::digitalWrite(_pin[axis][2], (bitmask & 4) ? HIGH : LOW);
-		CHAL::digitalWrite(_pin[axis][3], (bitmask & 8) ? HIGH : LOW);
+		CHAL::digitalWrite(_pin[axis][0], bitmask & 1);
+		CHAL::digitalWrite(_pin[axis][1], bitmask & 2);
+		CHAL::digitalWrite(_pin[axis][2], bitmask & 4);
+		CHAL::digitalWrite(_pin[axis][3], bitmask & 8);
 	}
 }
 
