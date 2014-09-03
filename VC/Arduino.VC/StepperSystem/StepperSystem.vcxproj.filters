@@ -150,6 +150,15 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperL298N.h">
       <Filter>StepperLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_AVR.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Msvc.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">
@@ -210,6 +219,12 @@
       <Filter>CNCLibEx</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperL298N.cpp">
+      <Filter>StepperLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_AVR.cpp">
+      <Filter>StepperLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.cpp">
       <Filter>StepperLib</Filter>
     </ClCompile>
   </ItemGroup>

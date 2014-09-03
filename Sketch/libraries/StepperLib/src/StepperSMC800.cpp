@@ -175,13 +175,18 @@ void CStepperSMC800::Remove()
 
 void  CStepperSMC800::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
 {
-	for (axis_t axis=0;axis < SMC800_NUM_AXIS;axis++)
+	unsigned char mask = 1;
+	for (axis_t axis = 0; axis < NUM_AXIS; axis++)
 	{
-		if (IsBitSet(directionUp,axis))
-			_stepIdx[axis] += steps[axis];
-		else
-			_stepIdx[axis] -= steps[axis];;
-		SetPhase(axis);
+		if (steps[axis])
+		{
+			if (directionUp&mask)
+				_stepIdx[axis] += steps[axis];
+			else
+				_stepIdx[axis] -= steps[axis];
+			SetPhase(axis);
+		}
+		mask *= 2;
 	}
 }
 

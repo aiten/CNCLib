@@ -27,6 +27,10 @@ static unsigned char _L298Nhalfstep4Pin[8] = { 10, 8, 9, 1, 5, 4, 6, 2 };
 // 1010 -> 1001 -> 0101 -> 0110
  static unsigned char _L298Nfullstep4Pin[4] = { 10, 9, 5, 6 };
 
+ // 1010 -> 1001 -> 0101 -> 0110
+ // aAbB
+ static unsigned char _L298Nfullstep2Pin[4] = { 3, 2, 0, 1 };
+
 ////////////////////////////////////////////////////////
 
 CStepperL298N::CStepperL298N()
@@ -36,17 +40,17 @@ CStepperL298N::CStepperL298N()
 
 ////////////////////////////////////////////////////////
 
-unsigned char CStepperL298N::_pin[NUM_AXIS][4] =
+pin_t CStepperL298N::_pin[NUM_AXIS][4] =
 {
 	{ 2, 3, 4, 5 },
 	{ 6, 7, 8, 9 },
 	{}
 };
 
-unsigned char CStepperL298N::_pinenable[NUM_AXIS][2] =
+pin_t CStepperL298N::_pinenable[NUM_AXIS][2] =
 {
-	{ 10, 11 },
-	{ 12, 13 },
+	{ 0, 0 },		// 0 ... not used
+	{ 0, 0 },
 	{}
 };
 
@@ -56,15 +60,24 @@ void CStepperL298N::Init(void)
 {
 	register unsigned char i, n;
 
-	for (i = 0; i < NUM_AXIS && _pin[i][0] != 0 ; i++)
+	for (i = 0; i < NUM_AXIS; i++)
 	{
-		for (n = 0; n < 4; n++)
+		if (IsActive(i))
 		{
-			CHAL::pinMode(_pin[i][n], OUTPUT);
-		}
+			CHAL::pinMode(_pin[i][0], OUTPUT);
+			CHAL::pinMode(_pin[i][1], OUTPUT);
+			if (Is4Pin(i))
+			{
+				CHAL::pinMode(_pin[i][2], OUTPUT);
+				CHAL::pinMode(_pin[i][3], OUTPUT);
+			}
 
-		CHAL::pinMode(_pinenable[i][0], OUTPUT);
-		CHAL::pinMode(_pinenable[i][1], OUTPUT);
+			if (IsUseEN1(i))
+			{
+				CHAL::pinMode(_pinenable[i][0], OUTPUT);
+				if (IsUseEN2(i)) CHAL::pinMode(_pinenable[i][1], OUTPUT);
+			}
+		}
 	}
 
 	super::Init();
@@ -86,12 +99,14 @@ void  CStepperL298N::Step(const unsigned char steps[NUM_AXIS], unsigned char dir
 	unsigned char mask=1;
 	for (axis_t axis=0;axis < NUM_AXIS;axis++)
 	{
-		if (directionUp&mask)
-//		if (IsBitSet(directionUp,axis))
-			_stepIdx[axis] += steps[axis];
-		else
-			_stepIdx[axis] -= steps[axis];
-		SetPhase(axis);
+		if (steps[axis])
+		{
+			if (directionUp&mask)
+				_stepIdx[axis] += steps[axis];
+			else
+				_stepIdx[axis] -= steps[axis];
+			SetPhase(axis);
+		}
 		mask *= 2;
 	}
 }
@@ -100,10 +115,19 @@ void  CStepperL298N::Step(const unsigned char steps[NUM_AXIS], unsigned char dir
 
 void CStepperL298N::SetEnable(axis_t axis, unsigned char level)
 {
-	if (_pinenable[axis][0] != 0)
+	if (IsUseEN1(axis))
 	{
 		CHAL::digitalWrite(_pinenable[axis][0],level > 0 ? HIGH : LOW);
-		CHAL::digitalWrite(_pinenable[axis][1],level > 0 ? HIGH : LOW);
+		if (IsUseEN2(axis)) CHAL::digitalWrite(_pinenable[axis][1],level > 0 ? HIGH : LOW);
+	}
+	else
+	{
+		// 4 PIN => set all to off
+
+		CHAL::digitalWrite(_pin[axis][0], LOW);
+		CHAL::digitalWrite(_pin[axis][1], LOW);
+		CHAL::digitalWrite(_pin[axis][2], LOW);
+		CHAL::digitalWrite(_pin[axis][3], LOW);
 	}
 }
 
@@ -111,26 +135,44 @@ void CStepperL298N::SetEnable(axis_t axis, unsigned char level)
 
 unsigned char CStepperL298N::GetEnable(axis_t axis)
 {
-	if (_pinenable[axis][0] != 0)
+	if (IsUseEN1(axis))
 		return CHAL::digitalRead(_pinenable[axis][0]) == LOW ? 0 : 100;
-	return 0;
+
+	// no enable PIN => with 4 PIN test if one PIN is set
+
+	if (Is2Pin(axis))	return 100;		// 2PIN and no enable => can't be turned off
+
+	return (
+		CHAL::digitalRead(_pin[axis][0]) == LOW &&
+		CHAL::digitalRead(_pin[axis][1]) == LOW &&
+		CHAL::digitalRead(_pin[axis][2]) == LOW &&
+		CHAL::digitalRead(_pin[axis][3]) == LOW)
+		? 0 : 100;
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepperL298N::SetPhase(axis_t axis)
 {
-	if (_pin[axis][0] != 0)
+	if (IsActive(axis))
 	{
 		register unsigned char bitmask;
 
-		if (_stepMode[axis] == FullStep)
+		if (Is4Pin(axis))
 		{
-			bitmask = _L298Nfullstep4Pin[_stepIdx[axis] & 0x3];
+			if (_stepMode[axis] == FullStep)
+			{
+				bitmask = _L298Nfullstep4Pin[_stepIdx[axis] & 0x3];
+			}
+			else
+			{
+				bitmask = _L298Nhalfstep4Pin[_stepIdx[axis] & 0x7];
+			}
 		}
 		else
 		{
-			bitmask = _L298Nhalfstep4Pin[_stepIdx[axis] & 0x7];
+			// 2 pin, only full step
+			bitmask = _L298Nfullstep2Pin[_stepIdx[axis] & 0x3];
 		}
 
 		CHAL::digitalWrite(_pin[axis][0], (bitmask & 1) ? HIGH : LOW);

@@ -27,17 +27,30 @@
 
 ////////////////////////////////////////////////////////
 
-static void IgnoreIrq() {}
+#if defined(__SAM3X8E__)
 
-CHAL::HALEvent CHAL::_TimerEvent0 = IgnoreIrq;
-CHAL::HALEvent CHAL::_TimerEvent1 = IgnoreIrq;
-CHAL::HALEvent CHAL::_TimerEvent2 = IgnoreIrq;
+//__attribute__((__interrupt__))
+//__attribute__((nesting))
+void TC8_Handler()
+{
+	TC_GetStatus(DUETIMER1_TC, DUETIMER1_CHANNEL);
+	CHAL::_TimerEvent1();
+}
 
-#if !defined(__AVR_ATmega328P__)
+void TC6_Handler()
+{
+	TC_GetStatus(DUETIMER3_TC, DUETIMER3_CHANNEL);
+	CHAL::_TimerEvent3();
+}
 
-CHAL::HALEvent CHAL::_TimerEvent3 = IgnoreIrq;
-CHAL::HALEvent CHAL::_TimerEvent4 = IgnoreIrq;
-CHAL::HALEvent CHAL::_TimerEvent5 = IgnoreIrq;
+void CAN0_Handler()
+{
+	CHAL::_CAM0Event();
+}
 
-#endif
+CHAL::HALEvent CHAL::_CAM0Event = IgnoreIrq;
+
+////////////////////////////////////////////////////////
+
+#endif 
 

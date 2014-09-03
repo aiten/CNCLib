@@ -37,6 +37,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ConfigurationStepperLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\fastio.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_AVR.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Msvc.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\MessageStepperLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\RingBuffer.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.h" />
@@ -70,6 +73,8 @@
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\StreamReader.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\UtilitiesCNCLib.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_AVR.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperL298N.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRamps14.cpp" />

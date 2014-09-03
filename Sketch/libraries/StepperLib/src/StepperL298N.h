@@ -36,9 +36,8 @@ public:
 
 protected:
 
-	static unsigned char _pin[NUM_AXIS][4];
-	static unsigned char _pinenable[NUM_AXIS][2];
-
+	static pin_t _pin[NUM_AXIS][4];
+	static pin_t _pinenable[NUM_AXIS][2];
 
 protected:
 
@@ -51,7 +50,19 @@ public:
 	virtual bool IsAnyReference()									{ return IsReference(0); };
 	virtual bool IsReference(unsigned char /* referenceid */)		{ return 0; }
 
+	// Set before Init()
+	void SetPin(axis_t axis, pin_t in1, pin_t in2, pin_t in3, pin_t in4) { _pin[axis][0] = in1;  _pin[axis][1] = in2; _pin[axis][2] = in3; _pin[axis][3] = in4; }
+	void SetPin(axis_t axis, pin_t in1, pin_t in2)					{ _pin[axis][0] = in1;  _pin[axis][1] = in2; _pin[axis][2] = 0; _pin[axis][3] = 0; }
+	void SetEnablePin(axis_t axis, pin_t en1, pin_t en2)			{ _pinenable[axis][0] = en1;  _pinenable[axis][1] = en2; }
+
 private:
+
+	bool IsActive(axis_t axis)										{ return _pin[axis][0] != 0; }
+	bool Is4Pin(axis_t axis)										{ return _pin[axis][2] != 0; }
+	bool Is2Pin(axis_t axis)										{ return _pin[axis][2] == 0; }
+
+	bool IsUseEN1(axis_t axis)										{ return _pinenable[axis][0] != 0; }
+	bool IsUseEN2(axis_t axis)										{ return _pinenable[axis][1] != 0; }
 
 	unsigned char _stepIdx[NUM_AXIS];
 
