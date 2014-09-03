@@ -1,10 +1,13 @@
 #include <StepperLib.h>
+#include "StepperTB6560.h"
 
 #if !defined(__AVR_ATmega328P__)
-//#error Only Works with Arduino:__AVR_ATmega328P__
+//#error Only Works with Arduino:Duemilanove
 #endif
 
-CStepperL298N Stepper;
+CStepperTB6560 Stepper;
+
+int defspeed=20000;
 
 //////////////////////////////////////////////////////////////////////
 
@@ -13,8 +16,6 @@ void setup()
   StepperSerial.begin(115200);
   StepperSerial.println(F("StepperTestL298N is starting ... ("__DATE__", "__TIME__")"));
 
-  Stepper.SetEnablePin(X_AXIS,10,11);
-  Stepper.SetEnablePin(Y_AXIS,12,13);
   Stepper.Init();
   pinMode(13, OUTPUT);
 
@@ -22,11 +23,11 @@ void setup()
   Stepper.SetStepMode(0,CStepper::HalfStep);
   Stepper.SetStepMode(1,CStepper::HalfStep);
 
-  Stepper.SetDefaultMaxSpeed(410, 62 , 62);
+  Stepper.SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, 350, 350);
 
-  Stepper.SetLimitMax(0, 6950);
-  Stepper.SetLimitMax(1, 4000);
-  Stepper.SetLimitMax(2, 4000);
+  Stepper.SetLimitMax(0, 695000);
+  Stepper.SetLimitMax(1, 40000);
+  Stepper.SetLimitMax(2, 40000);
 
   int dist2 = Stepper.GetLimitMax(2) - Stepper.GetLimitMin(2);
   int dist0 = Stepper.GetLimitMax(0) - Stepper.GetLimitMin(0);
@@ -40,9 +41,9 @@ void setup()
 
 #endif
 
-  Stepper.SetJerkSpeed(0, 62);
-  Stepper.SetJerkSpeed(1, 62);
-  Stepper.SetJerkSpeed(2, 62);
+  Stepper.SetJerkSpeed(0, 400);
+  Stepper.SetJerkSpeed(1, 400);
+  Stepper.SetJerkSpeed(2, 400);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -67,20 +68,25 @@ static void Test1()
   Serial.println(F("Test 1"));
   
   sdist_t count[NUM_AXIS] = { 0 };
+  count[X_AXIS] = 0;
 
-  int divspeed=12;
-  int divdist=6;
-  int dist=0;
+  long divspeed=20;
+  long divdist=10;
+  sdist_t dist=0;
 
-  Stepper.CStepper::MoveRel(0, dist=300/divdist, 1000/divspeed); count[0] -= dist;
-  Stepper.CStepper::MoveRel(0, dist=800/divdist, 2000/divspeed); count[0] -= dist;
-  Stepper.CStepper::MoveRel(0, dist=1500/divdist, 3000/divspeed); count[0] -= dist;
-  Stepper.CStepper::MoveRel(0, dist=3500/divdist, 5000/divspeed); count[0] -= dist;
-  Stepper.CStepper::MoveRel(0, dist=300/divdist, 500/divspeed); count[0] -= dist;
-  Stepper.CStepper::MoveRel(0, dist=550/divdist, 2000/divspeed); count[0] -= dist;
+  Stepper.CStepper::MoveRel(X_AXIS, dist= (300000l/divdist), 100000l/divspeed); count[X_AXIS] -= dist;
+Stepper.CStepper::MoveRel(X_AXIS, -dist, 100000l/divspeed); count[X_AXIS] += dist;
+
+
+//  Stepper.CStepper::MoveRel(X_AXIS, dist= (30000l/divdist), 100000l/divspeed); count[X_AXIS] -= dist;
+//  Stepper.CStepper::MoveRel(X_AXIS, dist= (80000l/divdist), 200000l/divspeed); count[X_AXIS] -= dist;
+//  Stepper.CStepper::MoveRel(X_AXIS, dist=(150000l/divdist), 300000l/divspeed); count[X_AXIS] -= dist;
+//  Stepper.CStepper::MoveRel(X_AXIS, dist=(350000l/divdist), 500000l/divspeed); count[X_AXIS] -= dist;
+//  Stepper.CStepper::MoveRel(X_AXIS, dist= (30000l/divdist),  50000l/divspeed); count[X_AXIS] -= dist;
+//  Stepper.CStepper::MoveRel(X_AXIS, dist= (55000l/divdist), 200000l/divspeed); count[X_AXIS] -= dist;
 
   WaitBusy();
-
+/*
   divspeed=12;
   divdist=6;
   Stepper.CStepper::MoveRel(1, dist=300/divdist, 1000/divspeed); count[1] -= dist;
@@ -90,8 +96,11 @@ static void Test1()
   Stepper.CStepper::MoveRel(1, dist=300/divdist, 500/divspeed); count[1] -= dist;
   Stepper.CStepper::MoveRel(1, dist=550/divdist, 2000/divspeed); count[1] -= dist;
   WaitBusy();
+*/
+  Stepper.MoveRel(count,defspeed);
 
-  Stepper.MoveRel(count);
+  Serial.println(Stepper.GetPosition(X_AXIS));
+
   WaitBusy();
 }
 
@@ -101,15 +110,17 @@ static void Test2()
 {
   Serial.println(F("Test 2"));
 
-  sdist_t count[NUM_AXIS] = { 500,500 };
+  sdist_t count[NUM_AXIS] = { 50000 };
   udist_t c0[NUM_AXIS] = { 0 };
-  Stepper.MoveRel(count);
-  Stepper.MoveAbs(c0);
+ 
+  Stepper.MoveRel(count,defspeed);
+  Stepper.MoveAbs(c0,defspeed);
 }
 //////////////////////////////////////////////////////////////////////
 
 void loop()
 {
-  Test2();
   Test1();
- }
+//  Test2();
+ } 
+ 

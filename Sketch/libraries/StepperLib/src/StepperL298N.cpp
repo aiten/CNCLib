@@ -26,6 +26,7 @@ static unsigned char _L298Nhalfstep4Pin[8] = { 10, 8, 9, 1, 5, 4, 6, 2 };
 
 // 1010 -> 1001 -> 0101 -> 0110
  static unsigned char _L298Nfullstep4Pin[4] = { 10, 9, 5, 6 };
+// static unsigned char _L298Nfullstep4Pin[4] = { 1+2, 2+4, 4+8, 8+1 };
 
  // 1010 -> 1001 -> 0101 -> 0110
  // aAbB => a => !a=A 
