@@ -60,21 +60,22 @@
 // For shorter delays use assembly language call 'nop' (no operation). Each 'nop' statement executes in one machine cycle (at 16 MHz) yielding a 62.5 ns (nanosecond) delay. 
 
 inline void CHAL::delayMicroseconds0250() {	__asm__("nop\n\tnop\n\tnop\n\tnop\n\t"); }
+
 inline void CHAL::delayMicroseconds0312() {	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\t"); }
+
 inline void CHAL::delayMicroseconds0500() {	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t"); }
 
-inline void CHAL::delayMicroseconds(unsigned int us)
-{
-	::delayMicroseconds(us);
-}
+inline void CHAL::delayMicroseconds(unsigned int us) {	::delayMicroseconds(us); }
 
 inline void CHAL::DisableInterrupts()	{	cli(); }
+
 inline void CHAL::EnableInterrupts()	{	sei(); }
 
 inline irqflags_t CHAL::GetSREG()		{ return SREG; }
+
 inline void CHAL::SetSREG(irqflags_t a)	{ SREG=a; }
 
-inline void  CHAL::RemoveTimer0() {}
+inline void  CHAL::RemoveTimer0()		{}
 
 inline void  CHAL::InitTimer0(HALEvent evt)
 {
