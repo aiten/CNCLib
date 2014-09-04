@@ -39,7 +39,24 @@
 
 typedef uint32_t pin_t;
 
+#define ALWAYSINLINE	__attribute__((__always_inline__)) 
+#define ALWAYSINLINE_SAM __attribute__((__always_inline__)) 
+#define ALWAYSINLINE_AVR
+
+
+#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega328P__)
+
+#define ALWAYSINLINE __attribute__((__always_inline__)) 
+#define ALWAYSINLINE_AVR __attribute__((__always_inline__)) 
+#define ALWAYSINLINE_SAM
+
+#define irqflags_t unsigned char
+typedef uint8_t pin_t;
+
 #else
+
+#define ALWAYSINLINE
+#define ALWAYSINLINE_AVR
 
 #define irqflags_t unsigned char
 typedef uint8_t pin_t;
@@ -114,16 +131,16 @@ public:
 
 #endif
 
-	static inline void DisableInterrupts();
-	static inline void EnableInterrupts();
+	static inline void DisableInterrupts() ALWAYSINLINE;
+	static inline void EnableInterrupts() ALWAYSINLINE;
 
-	static inline void delayMicroseconds(unsigned int us);
-	static inline void delayMicroseconds0250();		// delay 1/4 us (4 nop on AVR)
-	static inline void delayMicroseconds0312();		// delay 0.312us (5 nop on AVR)
-	static inline void delayMicroseconds0500();		// delay 1/2 (8 nop on AVR)
+	static inline void delayMicroseconds(unsigned int us) ALWAYSINLINE ;
+	static inline void delayMicroseconds0250() ALWAYSINLINE;		// delay 1/4 us (4 nop on AVR)
+	static inline void delayMicroseconds0312() ALWAYSINLINE;		// delay 0.312us (5 nop on AVR)
+	static inline void delayMicroseconds0500() ALWAYSINLINE;		// delay 1/2 (8 nop on AVR)
 
-	static inline irqflags_t GetSREG();
-	static inline void SetSREG(irqflags_t);
+	static inline irqflags_t GetSREG() ALWAYSINLINE;
+	static inline void SetSREG(irqflags_t) ALWAYSINLINE;
 
 	static inline void pinMode(unsigned char pin, unsigned char mode);
 
@@ -141,8 +158,8 @@ private:
 
 public:
 
-	inline CCriticalRegion() :_sreg(CHAL::GetSREG()) {  CHAL::DisableInterrupts(); };
-	inline ~CCriticalRegion()	{ CHAL::SetSREG(_sreg); }
+	inline CCriticalRegion() ALWAYSINLINE :_sreg(CHAL::GetSREG()) {  CHAL::DisableInterrupts(); };
+	inline ~CCriticalRegion() ALWAYSINLINE { CHAL::SetSREG(_sreg); }
 };
 
 //////////////////////////////////////////

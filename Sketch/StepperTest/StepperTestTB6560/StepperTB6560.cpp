@@ -99,7 +99,7 @@ void CStepperTB6560::Step(const unsigned char steps[NUM_AXIS], unsigned char dir
 //		if (steps[E0_AXIS] > cnt) { STEPPINOFF(TB6560_E0_STEP_PIN); have = true; }
 //		if (steps[E1_AXIS] > cnt) { STEPPINOFF(TB6560_E1_STEP_PIN); have = true; }
 
-		CHAL::delayMicroseconds(3);
+		CHAL::delayMicroseconds(7);
 
 		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_X_STEP_PIN,TB6560_PINOFF); }
 //		if (steps[Y_AXIS] > cnt)  { STEPPINON(TB6560_Y_STEP_PIN);  }
@@ -109,7 +109,7 @@ void CStepperTB6560::Step(const unsigned char steps[NUM_AXIS], unsigned char dir
 
 		if (!have) break;
 
-		CHAL::delayMicroseconds(3);
+		CHAL::delayMicroseconds(7);
 	}
 
 #undef SETDIR

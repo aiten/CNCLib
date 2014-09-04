@@ -7,7 +7,7 @@
 
 CStepperTB6560 Stepper;
 
-int defspeed=20000;
+int defspeed=25500;  // tested by try and errror
 
 //////////////////////////////////////////////////////////////////////
 
@@ -41,7 +41,7 @@ void setup()
 
 #endif
 
-  Stepper.SetJerkSpeed(0, 400);
+  Stepper.SetJerkSpeed(X_AXIS, 1000);
   Stepper.SetJerkSpeed(1, 400);
   Stepper.SetJerkSpeed(2, 400);
 }
@@ -58,7 +58,7 @@ static void WaitBusy()
   }
   Stepper.WaitBusy();
 
-  delay(1000);
+  delay(1200);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -68,35 +68,32 @@ static void Test1()
   Serial.println(F("Test 1"));
   
   sdist_t count[NUM_AXIS] = { 0 };
-  count[X_AXIS] = 0;
 
-  long divspeed=20;
-  long divdist=10;
-  sdist_t dist=0;
+  struct MV
+  {
+    sdist_t dist;
+    steprate_t rate;
+  }
+  mv[] = 
+  {
+    {  3000,   10000 },
+    {  8000,   20000 },
+    { 15000,   30000 },
+    { 25000,   50000 },
+    {  3000,    5000 },
+    {  5500,   20000 },
+    { 0 }
+  };
 
-  Stepper.CStepper::MoveRel(X_AXIS, dist= (300000l/divdist), 100000l/divspeed); count[X_AXIS] -= dist;
-Stepper.CStepper::MoveRel(X_AXIS, -dist, 100000l/divspeed); count[X_AXIS] += dist;
-
-
-//  Stepper.CStepper::MoveRel(X_AXIS, dist= (30000l/divdist), 100000l/divspeed); count[X_AXIS] -= dist;
-//  Stepper.CStepper::MoveRel(X_AXIS, dist= (80000l/divdist), 200000l/divspeed); count[X_AXIS] -= dist;
-//  Stepper.CStepper::MoveRel(X_AXIS, dist=(150000l/divdist), 300000l/divspeed); count[X_AXIS] -= dist;
-//  Stepper.CStepper::MoveRel(X_AXIS, dist=(350000l/divdist), 500000l/divspeed); count[X_AXIS] -= dist;
-//  Stepper.CStepper::MoveRel(X_AXIS, dist= (30000l/divdist),  50000l/divspeed); count[X_AXIS] -= dist;
-//  Stepper.CStepper::MoveRel(X_AXIS, dist= (55000l/divdist), 200000l/divspeed); count[X_AXIS] -= dist;
+  for (register unsigned char i=0;mv[i].dist != 0; i++)
+  {
+    sdist_t    dist = mv[i].dist;
+    steprate_t rate = RoundMulDivUInt(mv[i].rate,defspeed,50000);
+    Stepper.CStepper::MoveRel(X_AXIS, dist, rate); count[X_AXIS] -= dist;
+  }
 
   WaitBusy();
-/*
-  divspeed=12;
-  divdist=6;
-  Stepper.CStepper::MoveRel(1, dist=300/divdist, 1000/divspeed); count[1] -= dist;
-  Stepper.CStepper::MoveRel(1, dist=800/divdist, 2000/divspeed); count[1] -= dist;
-  Stepper.CStepper::MoveRel(1, dist=1500/divdist, 3000/divspeed); count[1] -= dist;
-  Stepper.CStepper::MoveRel(1, dist=3500/divdist, 5000/divspeed); count[1] -= dist;
-  Stepper.CStepper::MoveRel(1, dist=300/divdist, 500/divspeed); count[1] -= dist;
-  Stepper.CStepper::MoveRel(1, dist=550/divdist, 2000/divspeed); count[1] -= dist;
-  WaitBusy();
-*/
+
   Stepper.MoveRel(count,defspeed);
 
   Serial.println(Stepper.GetPosition(X_AXIS));

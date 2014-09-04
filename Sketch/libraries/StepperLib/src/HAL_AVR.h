@@ -68,11 +68,9 @@ inline void CHAL::delayMicroseconds0500() {	__asm__("nop\n\tnop\n\tnop\n\tnop\n\
 inline void CHAL::delayMicroseconds(unsigned int us) {	::delayMicroseconds(us); }
 
 inline void CHAL::DisableInterrupts()	{	cli(); }
-
 inline void CHAL::EnableInterrupts()	{	sei(); }
 
 inline irqflags_t CHAL::GetSREG()		{ return SREG; }
-
 inline void CHAL::SetSREG(irqflags_t a)	{ SREG=a; }
 
 inline void  CHAL::RemoveTimer0()		{}
