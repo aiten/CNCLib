@@ -82,63 +82,7 @@ void CStepperTB6560::Init()
 
 void CStepperTB6560::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
 {
-// The timing requirements for minimum pulse durations on the STEP pin are different for the two drivers. 
-// With the DRV8825, the high and low STEP pulses must each be at least 1.9 us; 
-// they can be as short as 1 us when using the A4988.
-
-// For shorter delays use assembly language call 'nop' (no operation). Each 'nop' statement executes in one machine cycle (at 16 MHz) yielding a 62.5 ns (nanosecond) delay. 
-
-#if defined(USE_A4998)
-
-#define NOPREQUIRED_1()
-#define NOPREQUIRED_2()
-
-#elif defined(__SAM3X8E__)
-
-// 1 nop at 84Mhz = 11ns => 19us => 172NOPs?!
-
-#define NOPREQUIRED_1()	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
-
-#define NOPREQUIRED_2()	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
-
-#else //AVR
-
-#define NOPREQUIRED_1()	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-                        __asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-                        __asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-                        __asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-                        __asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
-#define NOPREQUIRED_2()	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-                        __asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-                        __asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-                        __asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-                        __asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
-
-#endif
-
-
-#define NOPREQUIRED
-
-#if defined(__SAM3X8E__) || defined(USE_A4998)
-#undef NOPREQUIRED
-#endif
-
 #define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,TB6560_PINOFF); else HALFastdigitalWriteNC(dirpin,TB6560_PINON);
-#define STEPPINOFF(steppin)		HALFastdigitalWriteNC(steppin, TB6560_PINOFF);
-#define STEPPINON(steppin)		HALFastdigitalWriteNC(steppin, TB6560_PINON);
 
 	SETDIR(X_AXIS, TB6560_X_DIR_PIN);
 //	SETDIR(Y_AXIS, TB6560_Y_DIR_PIN);
@@ -149,15 +93,15 @@ void CStepperTB6560::Step(const unsigned char steps[NUM_AXIS], unsigned char dir
 	for (unsigned char cnt=0;;cnt++)
 	{
 		register bool have=false;
-		if (steps[X_AXIS] > cnt)  { STEPPINOFF(TB6560_X_STEP_PIN); have = true; }
+		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_X_STEP_PIN,TB6560_PINON); have = true; }
 //		if (steps[Y_AXIS] > cnt)  { STEPPINOFF(TB6560_Y_STEP_PIN); have = true; }
 //		if (steps[Z_AXIS] > cnt)  { STEPPINOFF(TB6560_Z_STEP_PIN); have = true; }
 //		if (steps[E0_AXIS] > cnt) { STEPPINOFF(TB6560_E0_STEP_PIN); have = true; }
 //		if (steps[E1_AXIS] > cnt) { STEPPINOFF(TB6560_E1_STEP_PIN); have = true; }
 
-		NOPREQUIRED_1();
+		CHAL::delayMicroseconds(3);
 
-		if (steps[X_AXIS] > cnt)  { STEPPINON(TB6560_X_STEP_PIN); }
+		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_X_STEP_PIN,TB6560_PINOFF); }
 //		if (steps[Y_AXIS] > cnt)  { STEPPINON(TB6560_Y_STEP_PIN);  }
 //		if (steps[Z_AXIS] > cnt)  { STEPPINON(TB6560_Z_STEP_PIN);  }
 //		if (steps[E0_AXIS] > cnt) { STEPPINON(TB6560_E0_STEP_PIN); }
@@ -165,13 +109,10 @@ void CStepperTB6560::Step(const unsigned char steps[NUM_AXIS], unsigned char dir
 
 		if (!have) break;
 
-		NOPREQUIRED_2();
+		CHAL::delayMicroseconds(3);
 	}
 
 #undef SETDIR
-#undef STEPPINON
-#undef STEPPINOFF
-
 }
 
 ////////////////////////////////////////////////////////

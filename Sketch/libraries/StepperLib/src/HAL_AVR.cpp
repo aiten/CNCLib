@@ -89,46 +89,6 @@ void CHAL::digitalWrite(uint8_t pin, uint8_t val)
 	}
 
 	SREG = oldSREG;
-	/*
-	if (lowOrHigh)
-	{
-		switch (pin)
-		{
-			case 2: WRITE(2, 1); return;
-			case 3: WRITE(3, 1); return;
-			case 4: WRITE(4, 1); return;
-			case 5: WRITE(5, 1); return;
-			case 6: WRITE(6, 1); return;
-			case 7: WRITE(7, 1); return;
-			case 8: WRITE(8, 1); return;
-			case 9: WRITE(9, 1); return;
-			case 10: WRITE(10, 1); return;
-			case 11: WRITE(11, 1); return;
-			case 12: WRITE(12, 1); return;
-			case 13: WRITE(13, 1); return;
-		}
-	}
-	else
-	{
-		switch (pin)
-		{
-			case 2: WRITE(2, 0); return;
-			case 3: WRITE(3, 0); return;
-			case 4: WRITE(4, 0); return;
-			case 5: WRITE(5, 0); return;
-			case 6: WRITE(6, 0); return;
-			case 7: WRITE(7, 0); return;
-			case 8: WRITE(8, 0); return;
-			case 9: WRITE(9, 0); return;
-			case 10: WRITE(10, 0); return;
-			case 11: WRITE(11, 0); return;
-			case 12: WRITE(12, 0); return;
-			case 13: WRITE(13, 0); return;
-		}
-	}
-
-	::digitalWrite(pin, lowOrHigh);
-*/
 }
 
 #endif 

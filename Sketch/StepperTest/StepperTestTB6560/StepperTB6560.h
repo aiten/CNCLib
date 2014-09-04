@@ -45,11 +45,10 @@ public:
 	virtual bool IsReference(unsigned char referenceid);
 	virtual bool IsAnyReference();
 
-protected:
+    protected:
 
 	////////////////////////////////////////////////////////
 
 private:
 
-	void InitMemVar();
 };

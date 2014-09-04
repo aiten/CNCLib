@@ -112,8 +112,6 @@ void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], unsigned char di
 	// With the DRV8825, the high and low STEP pulses must each be at least 1.9 us; 
 	// they can be as short as 1 us when using the A4988.
 
-	// For shorter delays use assembly language call 'nop' (no operation). Each 'nop' statement executes in one machine cycle (at 16 MHz, AMGA2560) yielding a 62.5 ns (nanosecond) delay.
-
 #if defined(USE_A4998)
 
 #define NOPREQUIRED_1()
@@ -121,35 +119,17 @@ void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], unsigned char di
 
 #elif defined(__SAM3X8E__)
 
-// 1 nop at 84Mhz = 11ns => 19us => 172NOPs?!
-
-#define NOPREQUIRED_1()	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
-
-#define NOPREQUIRED_2()	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");\
-						__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
+#define NOPREQUIRED_1()	CHAL::delayMicroseconds0500();
+#define NOPREQUIRED_2()	CHAL::delayMicroseconds0500();
 
 #else //AVR
 
-#define NOPREQUIRED_1()	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
-#define NOPREQUIRED_2()	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t");
+#define NOPREQUIRED_1()	CHAL::delayMicroseconds0312();
+#define NOPREQUIRED_2()	CHAL::delayMicroseconds0500();
 
 #endif
 
 #define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,RAMPSFD_PINOFF); else HALFastdigitalWriteNC(dirpin,RAMPSFD_PINON);
-#define STEPPINOFF(steppin)		HALFastdigitalWriteNC(steppin, RAMPSFD_PINOFF);
-#define STEPPINON(steppin)		HALFastdigitalWriteNC(steppin, RAMPSFD_PINON);
 
 	SETDIR(X_AXIS, RAMPSFD_X_DIR_PIN);
 	SETDIR(Y_AXIS, RAMPSFD_Y_DIR_PIN);
@@ -161,21 +141,21 @@ void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], unsigned char di
 	for (unsigned char cnt = 0;; cnt++)
 	{
 		register bool have = false;
-		if (steps[X_AXIS] > cnt)  { STEPPINOFF(RAMPSFD_X_STEP_PIN); have = true; }
-		if (steps[Y_AXIS] > cnt)  { STEPPINOFF(RAMPSFD_Y_STEP_PIN); have = true; }
-		if (steps[Z_AXIS] > cnt)  { STEPPINOFF(RAMPSFD_Z_STEP_PIN); have = true; }
-		if (steps[E0_AXIS] > cnt) { STEPPINOFF(RAMPSFD_E0_STEP_PIN); have = true; }
-		if (steps[E1_AXIS] > cnt) { STEPPINOFF(RAMPSFD_E1_STEP_PIN); have = true; }
-		if (steps[E2_AXIS] > cnt) { STEPPINOFF(RAMPSFD_E2_STEP_PIN); have = true; }
+		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPSFD_X_STEP_PIN,  RAMPSFD_PINOFF); have = true; }
+		if (steps[Y_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPSFD_Y_STEP_PIN,  RAMPSFD_PINOFF); have = true; }
+		if (steps[Z_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPSFD_Z_STEP_PIN,  RAMPSFD_PINOFF); have = true; }
+		if (steps[E0_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPSFD_E0_STEP_PIN, RAMPSFD_PINOFF); have = true; }
+		if (steps[E1_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPSFD_E1_STEP_PIN, RAMPSFD_PINOFF); have = true; }
+		if (steps[E2_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPSFD_E2_STEP_PIN, RAMPSFD_PINOFF); have = true; }
 
 		NOPREQUIRED_1();
 
-		if (steps[X_AXIS] > cnt)  { STEPPINON(RAMPSFD_X_STEP_PIN); }
-		if (steps[Y_AXIS] > cnt)  { STEPPINON(RAMPSFD_Y_STEP_PIN); }
-		if (steps[Z_AXIS] > cnt)  { STEPPINON(RAMPSFD_Z_STEP_PIN); }
-		if (steps[E0_AXIS] > cnt) { STEPPINON(RAMPSFD_E0_STEP_PIN); }
-		if (steps[E1_AXIS] > cnt) { STEPPINON(RAMPSFD_E1_STEP_PIN); }
-		if (steps[E2_AXIS] > cnt) { STEPPINON(RAMPSFD_E2_STEP_PIN); }
+		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPSFD_X_STEP_PIN,  RAMPSFD_PINON); }
+		if (steps[Y_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPSFD_Y_STEP_PIN,  RAMPSFD_PINON); }
+		if (steps[Z_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPSFD_Z_STEP_PIN,  RAMPSFD_PINON); }
+		if (steps[E0_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPSFD_E0_STEP_PIN, RAMPSFD_PINON); }
+		if (steps[E1_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPSFD_E1_STEP_PIN, RAMPSFD_PINON); }
+		if (steps[E2_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPSFD_E2_STEP_PIN, RAMPSFD_PINON); }
 
 		if (!have) break;
 
@@ -183,8 +163,6 @@ void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], unsigned char di
 	}
 
 #undef SETDIR
-#undef STEPPINON
-#undef STEPPINOFF
 }
 
 ////////////////////////////////////////////////////////

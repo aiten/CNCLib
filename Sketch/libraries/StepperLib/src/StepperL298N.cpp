@@ -59,7 +59,7 @@ pin_t CStepperL298N::_pinenable[NUM_AXIS][2] =
 
 void CStepperL298N::Init(void)
 {
-	register unsigned char i, n;
+	register unsigned char i;
 
 	for (i = 0; i < NUM_AXIS; i++)
 	{

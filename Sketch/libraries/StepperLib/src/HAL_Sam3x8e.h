@@ -94,6 +94,38 @@ inline void CHAL::pinMode(unsigned char pin, unsigned char mode)
 
 ////////////////////////////////////////////////////////
 
+inline void CHAL::delayMicroseconds(unsigned int usec)
+{
+	::delayMicroseconds(usec);
+}
+
+inline void CHAL::delayMicroseconds0500()
+{
+	// uint32_t n = usec * (VARIANT_MCK / 3000000);
+	uint32_t n = 1 * (VARIANT_MCK / 3000000) / 2;
+	asm volatile(
+		"L_%=_delayMicroseconds:"       "\n\t"
+		"subs   %0, #1"                 "\n\t"
+		"bne    L_%=_delayMicroseconds" "\n"
+		: "+r" (n) :
+		);
+}
+
+inline void CHAL::delayMicroseconds0250()
+{
+	// uint32_t n = usec * (VARIANT_MCK / 3000000);
+	uint32_t n = 1 * (VARIANT_MCK / 3000000) / 4;
+	asm volatile(
+		"L_%=_delayMicroseconds:"       "\n\t"
+		"subs   %0, #1"                 "\n\t"
+		"bne    L_%=_delayMicroseconds" "\n"
+		: "+r" (n) :
+		);
+}
+
+
+////////////////////////////////////////////////////////
+
 #define DUETIMER1_TC					TC2
 #define DUETIMER1_CHANNEL				2
 #define DUETIMER1_IRQTYPE				((IRQn_Type) ID_TC8)

@@ -117,6 +117,11 @@ public:
 	static inline void DisableInterrupts();
 	static inline void EnableInterrupts();
 
+	static inline void delayMicroseconds(unsigned int us);
+	static inline void delayMicroseconds0250();		// delay 1/4 us (4 nop on AVR)
+	static inline void delayMicroseconds0312();		// delay 0.312us (5 nop on AVR)
+	static inline void delayMicroseconds0500();		// delay 1/2 (8 nop on AVR)
+
 	static inline irqflags_t GetSREG();
 	static inline void SetSREG(irqflags_t);
 

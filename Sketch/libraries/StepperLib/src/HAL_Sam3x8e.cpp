@@ -29,6 +29,8 @@
 
 #if defined(__SAM3X8E__)
 
+static void IgnoreIrq() {}
+
 //__attribute__((__interrupt__))
 //__attribute__((nesting))
 void TC8_Handler()
