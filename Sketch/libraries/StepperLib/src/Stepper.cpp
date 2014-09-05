@@ -1115,6 +1115,7 @@ inline void CStepper::StepOut()
 
 	for (register unsigned char i = 0;; i++)
 	{
+#if defined (__AVR_ARCH__)
 		if (i % 2 == 1)
 		{
 			bytedircount = bytedircount / 16;
@@ -1124,6 +1125,11 @@ inline void CStepper::StepOut()
 			bytedircount = (unsigned char)dir_count; //  &255;
 			dir_count /= 256;
 		}
+#else
+		bytedircount = dir_count&15;
+		dir_count /= 16;
+#endif
+
 
 		axescount[i] = bytedircount & 7;
 		directionUp /=2;
