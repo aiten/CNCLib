@@ -44,17 +44,17 @@ void CMyControl::Init()
 {
 	StepperSerial.println(MESSAGE_MYCONTROL_Proxxon_Starting);
 
+	CMotionControl::InitConversion(ConversionToMm1000,ConversionToMachine);
+
 	super::Init();
 
-	//CStepper::GetInstance()->SetWaitFinishMove(false); = > default changed
-	
-	//CStepper::GetInstance()->SetBacklash(5000);
+	//CStepper::GetInstance()->SetBacklash(SPEEDFACTOR*5000);
 	CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControl::ToMachine(X_AXIS,20));  
 	CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,35));  
-	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Y_AXIS,20));
+	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
 	//  CStepper::GetInstance()->SetMaxSpeed(20000);
-	CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, 350, 350);
+	CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350*SPEEDFACTOR_SQT), steprate_t(350*SPEEDFACTOR_SQT));
 
 	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControl::ToMachine(X_AXIS,130000));
 	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,45000));
@@ -62,15 +62,15 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControl::ToMachine(A_AXIS,360000));		// grad
 	CStepper::GetInstance()->SetLimitMax(B_AXIS, CMotionControl::ToMachine(B_AXIS,360000));
 
-	CStepper::GetInstance()->SetJerkSpeed(X_AXIS, 1000);
-	CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, 1000);
-	CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, 1000);
-	CStepper::GetInstance()->SetJerkSpeed(A_AXIS, 1000);
-	CStepper::GetInstance()->SetJerkSpeed(B_AXIS, 1000);
+	CStepper::GetInstance()->SetJerkSpeed(X_AXIS, SPEEDFACTOR*1000);
+	CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, SPEEDFACTOR*1000);
+	CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, SPEEDFACTOR*1000);
+	CStepper::GetInstance()->SetJerkSpeed(A_AXIS, SPEEDFACTOR*1000);
+	CStepper::GetInstance()->SetJerkSpeed(B_AXIS, SPEEDFACTOR*1000);
 
 #if NUM_AXIS > 5
 	CStepper::GetInstance()->SetLimitMax(C_AXIS, CMotionControl::ToMachine(B_AXIS,360000));
-	CStepper::GetInstance()->SetJerkSpeed(C_AXIS, 1000);
+	CStepper::GetInstance()->SetJerkSpeed(C_AXIS, SPEEDFACTOR*1000);
 #endif
 
 	for (register unsigned char i = 0; i < NUM_AXIS * 2; i++)
@@ -193,12 +193,12 @@ void CMyControl::GoToReference(axis_t axis)
 	if (axis == Z_AXIS)
 	{
 		// goto max
-		CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, false), false, FEEDRATE_REFMOVE);
+		CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, false), false, STEPRATE_REFMOVE);
 	}
 	else
 	{
 		// goto min
-		CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, true), true, FEEDRATE_REFMOVE);
+		CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, true), true, STEPRATE_REFMOVE);
 	}
 #endif
 }

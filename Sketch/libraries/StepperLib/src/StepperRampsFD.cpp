@@ -119,8 +119,8 @@ void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], unsigned char di
 
 #elif defined(__SAM3X8E__)
 
-#define NOPREQUIRED_1()	CHAL::delayMicroseconds0500();
-#define NOPREQUIRED_2()	CHAL::delayMicroseconds0500();
+#define NOPREQUIRED_1()	CHAL::delayMicroseconds(1);
+#define NOPREQUIRED_2()	CHAL::delayMicroseconds(1);
 
 #else //AVR
 

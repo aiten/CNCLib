@@ -33,35 +33,31 @@ typedef unsigned short param_t;
 
 // see: http://linuxcnc.org/docs/html/gcode/overview.html#_numbered_parameters_a_id_sub_numbered_parameters_a
 
-#define PARAMSTART_G28HOME 5161			// 5161-5169 - G28 Home for (X Y Z A B C U V W)
-#define PARAMSTART_G92OFFSET 5211		// 5211-5219 - G92 offset (X Y Z A B C U V W) 
-#define PARAMSTART_G54OFFSET 5221		// 5221-5230 - Coordinate System 1, G54 (X Y Z A B C U V W R) - R denotes the XY rotation angle around the Z axis 
-#define PARAMSTART_CURRENTPOS 5420		// 5420-5428 - Current Position including offsets in current program units (X Y Z A B C U V W)
+#define PARAMSTART_G28HOME		5161		// 5161-5169 - G28 Home for (X Y Z A B C U V W)
+#define PARAMSTART_G92OFFSET	5211		// 5211-5219 - G92 offset (X Y Z A B C U V W) 
+#define PARAMSTART_G54OFFSET	5221		// 5221-5230 - Coordinate System 1, G54 (X Y Z A B C U V W R) - R denotes the XY rotation angle around the Z axis 
+#define PARAMSTART_CURRENTPOS	5420		// 5420-5428 - Current Position including offsets in current program units (X Y Z A B C U V W)
 
 // extent
 #define PARAMSTART_CURRENTABSPOS 5430	// Current Absolut maschine position in current program units (X Y Z A B C U V W)
-#define PARAMSTART_BACKLASH 5450			// Backlash in current units(e.g. mm) (X Y Z A B C U V W)
+#define PARAMSTART_BACKLASH		5450			// Backlash in current units(e.g. mm) (X Y Z A B C U V W)
 #define PARAMSTART_BACKLASH_FEEDRATE 5469	// Feedrate for backlash (0 if disabled)
 
 #define PARAMSTART_CONTROLLERFAN 5470		// Controllerfan if not idle (0 if disabled, 255 max)
 #define PARAMSTART_RAPIDMOVEFEED 5471		// RapidMove Feedrate
 
-
 // g73 retraction
-#define G73RETRACTION	200				// mm1000_t => 0.2mm
+#define G73RETRACTION			200			// mm1000_t => 0.2mm
 
-#define FEEDRATE_MIN_ALLOWED	VMAXTOFEEDRATE(100)
-//#define FEEDRATE_MAX_ALLOWED	VMAXTOFEEDRATE(40000)
-//#define FEEDRATE_MAX_G0			VMAXTOFEEDRATE(35000)
-#define FEEDRATE_MAX_ALLOWED	VMAXTOFEEDRATE(26667)
+#define FEEDRATE_MIN_ALLOWED	STEPRATETOFEEDRATE(100)		// use VMAX => min is 100Steps/Sec because of CStepper
+#define FEEDRATE_MAX_ALLOWED	feedrate_t(500000)			// 500mm/min is STEPRATETOFEEDRATE(26667) with 3200Steps/rotation(16Steps) 
 
-#define FEEDRATE_MAX_G0			VMAXTOFEEDRATE(((SPEED_MULTIPLIER_4)-5))
-//#define FEEDRATE_MAX_G0			VMAXTOFEEDRATE(30000)
+#define FEEDRATE_MAX_G0			feedrate_t(526518)		// VMAXTOFEEDRATE(((SPEED_MULTIPLIER_4)-5))
 
-#define FEEDRATE_DEFAULT_G0	-FEEDRATE_MAX_G0
-#define FEEDRATE_DEFAULT_G1	VMAXTOFEEDRATE(5000)
+#define FEEDRATE_DEFAULT_G0		-FEEDRATE_MAX_G0
+#define FEEDRATE_DEFAULT_G1		feedrate_t(100000)						// 100mm/min
 
-#define FEEDRATE_REFMOVE	15000                  // in Steps/sec
+#define STEPRATE_REFMOVE		steprate_t(FEEDRATETOSTEPRATE(300000))	// 300*3.2/60 = 16000 Steps/sec with 3200Steps/rotation(16Steps) 
 
 ////////////////////////////////////////////////////////
 

@@ -30,7 +30,8 @@
 
 ////////////////////////////////////////////////////////
 
-#define VMAXTOFEEDRATE(a) (CMotionControl::ToMm1000(0,a*60l))
+#define STEPRATETOFEEDRATE(a) (CMotionControl::ToMm1000(0,a*60l))
+#define FEEDRATETOSTEPRATE(a) (CMotionControl::ToMachine(0,a/60l))
 
 typedef mm1000_t(*ToMm1000_t) (axis_t axis, sdist_t val);
 typedef sdist_t(*ToMachine_t) (axis_t axis, mm1000_t val);
@@ -99,6 +100,11 @@ public:
 
 	static mm1000_t ToMm1000_3_3200(axis_t /* axis */, sdist_t val)								{ return  MulDivU32(val, 240, 256); }
 	static sdist_t  ToMachine_3_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 256, 240); }
+
+	// functions: 1 rotation(6400Steps) = 1mm
+
+	static mm1000_t ToMm1000_1_6400(axis_t /* axis */, sdist_t val)								{ return  RoundMulDivU32(val, 40, 256); }
+	static sdist_t  ToMachine_1_6400(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 256, 40); }
 };
 
 ////////////////////////////////////////////////////////
