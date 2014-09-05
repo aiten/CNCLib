@@ -52,7 +52,7 @@ void CMyControl::Init()
 
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penUp.max, CHPGLParser::_state.penUp.acc, CHPGLParser::_state.penUp.dec);
 
-#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__SAM3X8E__)
+#if defined(__AVR_ARCH__) || defined(__SAM3X8E__)
 	for (register unsigned char i=0;i<NUM_AXIS*2;i++)
 	{
 		CStepper::GetInstance()->UseReference(i,false);  

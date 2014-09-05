@@ -28,7 +28,7 @@
 
 ////////////////////////////////////////////////////////
 
-#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega328P__)
+#if defined(__AVR_ARCH__)
 
 ISR(TIMER0_COMPB_vect)
 {

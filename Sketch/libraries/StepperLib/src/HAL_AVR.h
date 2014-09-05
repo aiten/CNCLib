@@ -23,7 +23,7 @@
 // AVR 8bit
 ////////////////////////////////////////////////////////
 
-#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega328P__)
+#if defined(__AVR_ARCH__)
 
 #define pgm_read_ptr pgm_read_word
 

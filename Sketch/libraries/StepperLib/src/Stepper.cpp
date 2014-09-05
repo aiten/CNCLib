@@ -1093,8 +1093,6 @@ inline void CStepper::StepOut()
 	// calculate all axes and set PINS paralell - DRV 8225 requires 1.9us * 2 per step => sequential is to slow 
 
 	register DirCountAll_t dir_count;	// do not use DirCount_t => AVR do not use registers for struct
-	unsigned char axescount[NUM_AXIS];
-	unsigned char directionUp = 0;
 
 	{
 		const SStepBuffer* stepbuffer = &_steps.Head();
@@ -1107,7 +1105,10 @@ inline void CStepper::StepOut()
 #endif
 	// AVR: div with 256 is faster than 16 (loop shift)
 
-	unsigned char bytedircount=0;
+	stepperstatic_avr unsigned char axescount[NUM_AXIS];
+	unsigned char directionUp = 0;
+
+	unsigned char bytedircount = 0;
 	bool countit = true;
 	if (((DirCount_t*) &dir_count)->byte.byteInfo.nocount != 0)
 		countit = false;

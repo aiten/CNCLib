@@ -181,8 +181,16 @@ typedef unsigned long steprate_t;		// tpye for speed (Hz), Steps/sec
 #define EnumAsByte(a) a
 #define debugvirtula virtual
 #define stepperstatic 
+#define stepperstatic_avr 
 
 #else
+
+#if defined(__AVR_ARCH__)
+#define stepperstatic_avr static
+#else
+#define stepperstatic_avr 
+#endif
+
 
 #define stepperstatic static
 #define stepperstatic_

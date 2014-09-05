@@ -44,7 +44,7 @@ typedef uint32_t pin_t;
 #define ALWAYSINLINE_AVR
 
 
-#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega328P__)
+#elif defined(__AVR_ARCH__)
 
 #define ALWAYSINLINE __attribute__((__always_inline__)) 
 #define ALWAYSINLINE_AVR __attribute__((__always_inline__)) 
