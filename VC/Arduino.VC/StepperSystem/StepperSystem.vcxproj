@@ -40,6 +40,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_AVR.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Msvc.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\LinearLookUp.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\MessageStepperLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\RingBuffer.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.h" />
