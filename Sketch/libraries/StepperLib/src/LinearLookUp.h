@@ -31,7 +31,7 @@ public:
 		TOutput	output;
 	};
 
-	static TOutput LinearApproximation(SLookupTable* pTable, TInput input, unsigned char i)
+	static TOutput LinearInterpolation(SLookupTable* pTable, TInput input, unsigned char i)
 	{
 		TInput   distinput   = input - pTable[i].input;
 		TInput   diffinput   = pTable[i+1].input-pTable[i].input;
@@ -74,7 +74,7 @@ public:
 							return pTable[c].output; 
 						}
 						// linear approximation betwwen c-1 and c
-						return LinearApproximation(pTable,input,c-1);
+						return LinearInterpolation(pTable, input, c - 1);
 					}
 				}
 				else 
@@ -88,7 +88,7 @@ public:
 							return pTable[c].output;
 						}
 						// linear approximation betwwen c and c+1
-						return LinearApproximation(pTable,input,c);
+						return LinearInterpolation(pTable, input, c);
 					}
 				}
 			}
