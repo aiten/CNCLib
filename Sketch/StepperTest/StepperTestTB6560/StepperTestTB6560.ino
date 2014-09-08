@@ -11,32 +11,6 @@ CStepperTB6560 Stepper;
 
 //////////////////////////////////////////////////////////////////////
 
-void SetDefaultValues(steprate_t systemspeed)
-{
-  // Tested with Proxxon 1/16(3200Steps/rotation)
-  
-  // MaxSpeed   28081Hz
-  // Acc/Dec    350
-  // JeakSpeed  1000
-
-  #define MAXHZ 28081
-  #define ACC   350
-  #define DEC   350
-  #define JERK  1000
-
-  steprate_t jerk =  MulDivU32(JERK,systemspeed,MAXHZ);
-  steprate_t acc  =  MulDivU32(ACC,_ulsqrt_round(100000l*systemspeed),MAXHZ*100); // ACC*sqrt(float(systemspeed)/MAXHZ);
-  steprate_t dec  =  MulDivU32(ACC,_ulsqrt_round(100000*systemspeed),MAXHZ*100); // DEC*sqrt(float(systemspeed)/MAXHZ);
-
-  Stepper.SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, acc, dec);
-  Stepper.SetJerkSpeed(X_AXIS, jerk);
-}
-
-
-//////////////////////////////////////////////////////////////////////
-
-
-
 void setup()
 {
   StepperSerial.begin(115200);
@@ -49,9 +23,7 @@ void setup()
   Stepper.SetStepMode(0,CStepper::HalfStep);
   Stepper.SetStepMode(1,CStepper::HalfStep);
 
-SetDefaultValues(DEFSPEED);
-
-  Stepper.SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, 350, 350);
+  Stepper.SetUsual(DEFSPEED);
 
   Stepper.SetLimitMax(0, 695000);
   Stepper.SetLimitMax(1, 40000);
@@ -69,9 +41,6 @@ SetDefaultValues(DEFSPEED);
 
 #endif
 
-  Stepper.SetJerkSpeed(X_AXIS, 1000);
-  Stepper.SetJerkSpeed(1, 400);
-  Stepper.SetJerkSpeed(2, 400);
 }
 
 //////////////////////////////////////////////////////////////////////

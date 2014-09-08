@@ -34,8 +34,8 @@ public:
 	static TOutput LinearInterpolation(SLookupTable* pTable, TInput input, unsigned char i)
 	{
 		TInput   distinput   = input - pTable[i].input;
-		TInput   diffinput   = pTable[i+1].input-pTable[i].input;
-		TOutput  diffoutput  = pTable[i+1].output-pTable[i].output;
+		TInput   diffinput   = pTable[i+1].input  - pTable[i].input;
+		TOutput  diffoutput  = pTable[i+1].output - pTable[i].output;
 
 		//return pTable[i].output + ( distinput / diffinput  ) * diffoutput; => OK if TInput is float
 		return pTable[i].output + ( distinput * diffoutput )  / diffinput;

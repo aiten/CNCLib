@@ -22,7 +22,7 @@ void setup()
   Stepper.SetStepMode(0,CStepper::HalfStep);
   Stepper.SetStepMode(1,CStepper::HalfStep);
 
-  Stepper.SetDefaultMaxSpeed(410, 62 , 62);
+  Stepper.SetUsual(410);
 
   Stepper.SetLimitMax(0, 6950);
   Stepper.SetLimitMax(1, 4000);
@@ -40,9 +40,6 @@ void setup()
 
 #endif
 
-  Stepper.SetJerkSpeed(0, 62);
-  Stepper.SetJerkSpeed(1, 62);
-  Stepper.SetJerkSpeed(2, 62);
 }
 
 //////////////////////////////////////////////////////////////////////

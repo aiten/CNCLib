@@ -31,7 +31,8 @@ void setup()
   pinMode(12,INPUT_PULLUP);
 //  pinMode(13,INPUT_PULLUP);
 
-  Stepper.SetDefaultMaxSpeed(5000, 100 , 150);
+  Stepper.SetUsual(5000);
+  
   Stepper.SetLimitMax(0, 6950);
   Stepper.SetLimitMax(1, 4000);
   Stepper.SetLimitMax(2, 4000);
@@ -48,9 +49,6 @@ void setup()
 
 #endif
 
-  Stepper.SetJerkSpeed(0, 400);
-  Stepper.SetJerkSpeed(1, 400);
-  Stepper.SetJerkSpeed(2, 400);
 }
 
 //////////////////////////////////////////////////////////////////////

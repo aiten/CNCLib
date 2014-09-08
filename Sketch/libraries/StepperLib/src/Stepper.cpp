@@ -58,7 +58,6 @@ void CStepper::InitMemVar()
 	for (i = 0; i < NUM_AXIS; i++)	_limitMin[i] = 0;
 
 	for (i = 0; i < NUM_AXIS; i++)	_limitMax[i] = 0xffff;
-	for (i = 0; i < NUM_AXIS; i++)	_maxJerkSpeed[i] = 100;
 	for (i = 0; i < NUM_AXIS; i++)	_stepMode[i] = HalfStep;
 
 	_timerRunning = false;
@@ -81,12 +80,40 @@ void CStepper::InitMemVar()
 	_useReference[2] = true;
 	_useReference[4] = true;
 
-	// SetDefaultMaxSpeed(2500,100,150); => call to pure virtual
+	SetUsual(28000);
 
 #ifdef _MSC_VER
 	MSCInfo = "";
 #endif
 
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::SetUsual(steprate_t vMax)
+{
+	// with ProxonMF70
+	// maxSteprate ca. 28000
+	// acc & dec = 350
+	// JerkSpeed = 1000
+
+	const steprate_t defspeed = 28000;
+	const steprate_t defacc   = 350;
+	const steprate_t defdec   = 380;
+	const steprate_t defjerk  = 1000;
+
+	steprate_t jerk = MulDivU32(vMax, defjerk, defspeed); 
+	unsigned long sqrt = _ulsqrt_round(vMax * 10000l / defspeed);
+
+	steprate_t acc  = steprate_t(sqrt * defacc / 100l);  
+	steprate_t dec  = steprate_t(sqrt * defdec / 100l);  
+
+	// acc and dec must not be y 62 => this is to slow
+	if (dec < 62) dec = 62;
+	if (acc < 62) acc = 62;
+
+	SetDefaultMaxSpeed(vMax,acc,dec);
+	for (axis_t i = 0; i < NUM_AXIS; i++) { SetJerkSpeed(i,jerk); }
 }
 
 ////////////////////////////////////////////////////////
