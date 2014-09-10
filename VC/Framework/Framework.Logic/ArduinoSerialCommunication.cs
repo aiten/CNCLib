@@ -194,7 +194,14 @@ namespace Framework.Logic
 
             if (_serialPort != null)
             {
-                _serialPort.Close();
+				try
+				{
+					_serialPort.Close();
+				}
+				catch (IOException)
+				{
+					// ignore exception
+				}
                 _serialPort.Dispose();
             }
             _serialPort = null;

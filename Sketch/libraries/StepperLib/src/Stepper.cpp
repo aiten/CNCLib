@@ -838,10 +838,13 @@ void CStepper::OnIdle(unsigned long idletime)
 	CallEvent(OnIdleEvent, 0);
 	if (idletime > TIMEOUTSETIDLE)
 	{
-		if (GetEnable(X_AXIS) != _idleLevel)
+		for (unsigned char x = 0;x<NUM_AXIS;x++)
 		{
-			SetEnableAll(_idleLevel);
-			CallEvent(OnDisableEvent, 0);
+			if (GetEnable(x) != _idleLevel)
+			{
+				SetEnableAll(_idleLevel);
+				CallEvent(OnDisableEvent, 0);
+			}
 		}
 	}
 }

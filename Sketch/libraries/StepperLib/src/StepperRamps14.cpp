@@ -125,6 +125,7 @@ void CStepperRamps14::Step(const unsigned char steps[NUM_AXIS], unsigned char di
 		if (steps[Y_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_Y_STEP_PIN, RAMPS14_PINOFF); have = true; }
 		if (steps[Z_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_Z_STEP_PIN, RAMPS14_PINOFF); have = true; }
 		if (steps[E0_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_E0_STEP_PIN, RAMPS14_PINOFF); have = true; }
+		if (steps[E1_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_E1_STEP_PIN, RAMPS14_PINOFF); have = true; }
 
 		NOPREQUIRED_1();
 
