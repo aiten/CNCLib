@@ -196,10 +196,10 @@ void CStepperSMC800::SetEnable(axis_t axis, unsigned char level)
 {
 	if (axis<SMC800_NUM_AXIS)
 	{
-		if (level > 60)      _level[axis] = Level100;
-		else if (level > 20) _level[axis] = Level60;
-		else if (level > 0)  _level[axis] = Level20;
-		else				 _level[axis] = Level0;
+		if (level > Level60)		_level[axis] = Level100;
+		else if (level > Level20)	_level[axis] = Level60;
+		else if (level > LevelOff)	_level[axis] = Level20;
+		else						_level[axis] = Level0;
 		SetPhase(axis);
 	}
 }

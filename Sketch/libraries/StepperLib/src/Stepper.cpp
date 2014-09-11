@@ -73,7 +73,7 @@ void CStepper::InitMemVar()
 	_event = NULL;
 	_eventparam = NULL;
 
-	_idleLevel = 0;
+	_idleLevel = LevelOff;
 
 	memset(_useReference, 0, sizeof(_useReference));
 	_useReference[0] = true;
@@ -129,7 +129,7 @@ void CStepper::Init()
 	_timerOnIdle = millis();
 	SetIdleTimer();
 
-	SetEnableAll(0);
+	SetEnableAll(LevelOff);
 }
 
 ////////////////////////////////////////////////////////
@@ -137,7 +137,7 @@ void CStepper::Init()
 void CStepper::Remove()
 {
 	RemoveTimer();
-	SetEnableAll(0);
+	SetEnableAll(LevelOff);
 }
 
 ////////////////////////////////////////////////////////
@@ -858,7 +858,7 @@ void CStepper::OnStart()
 	{
 		CCriticalRegion crit;
 
-		SetEnableAll(100);
+		SetEnableAll(LevelMax);
 		Step(false);
 	}
 }

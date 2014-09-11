@@ -148,7 +148,7 @@ void CStepperRamps14::Step(const unsigned char steps[NUM_AXIS], unsigned char di
 void CStepperRamps14::SetEnable(axis_t axis, unsigned char level)
 {
 
-#define SETLEVEL(pin) if (level != 0)	HALFastdigitalWrite(pin,RAMPS14_PINOFF);	else	HALFastdigitalWrite(pin,RAMPS14_PINON);
+#define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,RAMPS14_PINOFF);	else	HALFastdigitalWrite(pin,RAMPS14_PINON);
 	switch (axis)
 	{
 #pragma warning( disable : 4127 )
@@ -169,11 +169,11 @@ unsigned char CStepperRamps14::GetEnable(axis_t axis)
 	switch (axis)
 	{
 #pragma warning( disable : 4127 )
-		case X_AXIS:  return HALFastdigitalRead(RAMPS14_X_ENABLE_PIN) == RAMPS14_PINON ? 0 : 100;
-		case Y_AXIS:  return HALFastdigitalRead(RAMPS14_Y_ENABLE_PIN) == RAMPS14_PINON ? 0 : 100;
-		case Z_AXIS:  return HALFastdigitalRead(RAMPS14_Z_ENABLE_PIN) == RAMPS14_PINON ? 0 : 100;
-		case E0_AXIS: return HALFastdigitalRead(RAMPS14_E0_ENABLE_PIN) == RAMPS14_PINON ? 0 : 100;
-		case E1_AXIS: return HALFastdigitalRead(RAMPS14_E1_ENABLE_PIN) == RAMPS14_PINON ? 0 : 100;
+		case X_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPS14_X_ENABLE_PIN) == RAMPS14_PINON);
+		case Y_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPS14_Y_ENABLE_PIN) == RAMPS14_PINON);
+		case Z_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPS14_Z_ENABLE_PIN) == RAMPS14_PINON);
+		case E0_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPS14_E0_ENABLE_PIN) == RAMPS14_PINON);
+		case E1_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPS14_E1_ENABLE_PIN) == RAMPS14_PINON);
 #pragma warning( default : 4127 )
 	}
 	return 0;

@@ -46,7 +46,7 @@ U8GLIB_ST7920_128X64_1X u8g(CAT(BOARDNAME,_ST7920_CLK_PIN), CAT(BOARDNAME,_ST792
 
 ////////////////////////////////////////////////////////////
 
-#if defined(__SAM3X8E__)
+#if LCD_NUMAXIS > 5
 
 #define DEFAULTFONT u8g_font_6x10
 #define CharHeight  9		// char height
@@ -323,7 +323,7 @@ bool CMyLcd::DrawLoopDebug(bool setup)
 
 	char tmp[16];
 
-	for (unsigned char i = 0; i < NUM_AXIS; i++)
+	for (unsigned char i = 0; i < LCD_NUMAXIS; i++)
 	{
 		u8g.setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
 
@@ -359,7 +359,7 @@ bool CMyLcd::DrawLoopPosAbs(bool setup)
 	u8g.setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); u8g.print(F("Absolut  Current"));
 	char tmp[16];
 
-	for (unsigned char i = 0; i < NUM_AXIS; i++)
+	for (unsigned char i = 0; i < LCD_NUMAXIS; i++)
 	{
 		udist_t cur = CStepper::GetInstance()->GetCurrentPosition(i);
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
@@ -445,7 +445,7 @@ bool CMyLcd::DrawLoopPreset(bool setup)
 
 	char tmp[16];
 
-	for (unsigned char i = 0; i < NUM_AXIS; i++)
+	for (unsigned char i = 0; i < LCD_NUMAXIS; i++)
 	{
 		u8g.setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
 		tmp[0] = 0; u8g.print(AddAxisName(tmp,i));
@@ -690,7 +690,7 @@ void CMyLcd::MenuButtonPressMoveNextAxis(unsigned short dir)
 {
 	signed char dist = dir == 1 ? 1 : -1;
 	unsigned char idx = _currentMenuIdx;
-	MenuButtonPressSetMove((_currentMenuAxis + dist + NUM_AXIS) % NUM_AXIS);
+	MenuButtonPressSetMove((_currentMenuAxis + dist + LCD_NUMAXIS) % LCD_NUMAXIS);
 	_button.SetPageIdx(idx);
 	DrawLoop();
 }
@@ -921,11 +921,15 @@ static const char _mEnd[] PROGMEM		= "End";
 const CMyLcd::SMenuDef CMyLcd::_mainMenu[] PROGMEM =
 {
 	{ _mMoveX, &CMyLcd::MenuButtonPressSetMove, X_AXIS },
+#if LCD_NUMAXIS > 1
 	{ _mMoveY, &CMyLcd::MenuButtonPressSetMove, Y_AXIS },
+#elif LCD_NUMAXIS > 2
 	{ _mMoveZ, &CMyLcd::MenuButtonPressSetMove, Z_AXIS },
+#elif LCD_NUMAXIS > 3
 	{ _mMoveA, &CMyLcd::MenuButtonPressSetMove, A_AXIS },
+#elif LCD_NUMAXIS > 4
 	{ _mMoveB, &CMyLcd::MenuButtonPressSetMove, B_AXIS },
-#if NUM_AXIS > 5
+#elif LCD_NUMAXIS > 5
 	{ _mMoveC, &CMyLcd::MenuButtonPressSetMove, C_AXIS },
 #endif
 	{ _mSD, &CMyLcd::MenuButtonPressSetSD },

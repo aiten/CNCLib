@@ -82,6 +82,12 @@ public:
 		OnWaitEvent
 	};
 
+	enum ELevel
+	{	
+		LevelMax=255,
+		LevelOff = 0
+	};
+
 	typedef bool(*StepperEvent)(CStepper*stepper, void* param, EnumAsByte(EStepperEvent) eventtype, unsigned char addinfo);
 	typedef bool(*TestContinueMove)(void* param);
 
@@ -540,10 +546,11 @@ protected:
 	virtual void  StepEnd() {};
 #endif
 
-//	virtual void  Step(unsigned char steps[NUM_AXIS], bool directionUp[NUM_AXIS])=0;
 	virtual void  Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)=0;
 	virtual void  SetEnable(axis_t axis, unsigned char level) = 0;
 	virtual unsigned char GetEnable(axis_t axis) = 0;
+
+	static unsigned char ConvertLevel(bool enable)				{ return enable ? (unsigned char)(LevelMax) : (unsigned char)(LevelOff); }
 
 private:
 

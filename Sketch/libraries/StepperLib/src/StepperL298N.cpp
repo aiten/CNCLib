@@ -118,8 +118,8 @@ void CStepperL298N::SetEnable(axis_t axis, unsigned char level)
 {
 	if (IsUseEN1(axis))
 	{
-		CHAL::digitalWrite(_pinenable[axis][0],level > 0 ? HIGH : LOW);
-		if (IsUseEN2(axis)) CHAL::digitalWrite(_pinenable[axis][1],level > 0 ? HIGH : LOW);
+		CHAL::digitalWrite(_pinenable[axis][0], level > LevelOff ? HIGH : LOW);
+		if (IsUseEN2(axis)) CHAL::digitalWrite(_pinenable[axis][1], level > LevelOff ? HIGH : LOW);
 	}
 	else
 	{
@@ -137,18 +137,17 @@ void CStepperL298N::SetEnable(axis_t axis, unsigned char level)
 unsigned char CStepperL298N::GetEnable(axis_t axis)
 {
 	if (IsUseEN1(axis))
-		return CHAL::digitalRead(_pinenable[axis][0]) == LOW ? 0 : 100;
+		return ConvertLevel(CHAL::digitalRead(_pinenable[axis][0]) == LOW);
 
 	// no enable PIN => with 4 PIN test if one PIN is set
 
-	if (Is2Pin(axis))	return 100;		// 2PIN and no enable => can't be turned off
+	if (Is2Pin(axis))	return LevelMax;		// 2PIN and no enable => can't be turned off
 
-	return (
+	return ConvertLevel(
 		CHAL::digitalRead(_pin[axis][0]) == LOW &&
 		CHAL::digitalRead(_pin[axis][1]) == LOW &&
 		CHAL::digitalRead(_pin[axis][2]) == LOW &&
-		CHAL::digitalRead(_pin[axis][3]) == LOW)
-		? 0 : 100;
+		CHAL::digitalRead(_pin[axis][3]) == LOW);
 }
 
 ////////////////////////////////////////////////////////

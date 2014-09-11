@@ -120,7 +120,7 @@ void CStepperTB6560::Step(const unsigned char steps[NUM_AXIS], unsigned char dir
 void CStepperTB6560::SetEnable(axis_t axis, unsigned char level)
 {
 
-#define SETLEVEL(pin) if (level != 0)	HALFastdigitalWrite(pin,TB6560_PINOFF);	else	HALFastdigitalWrite(pin,TB6560_PINON);
+#define SETLEVEL(pin) if (level != EnableOff)	HALFastdigitalWrite(pin,TB6560_PINOFF);	else	HALFastdigitalWrite(pin,TB6560_PINON);
 	switch (axis)
 	{
 #pragma warning( disable : 4127 )
@@ -141,11 +141,11 @@ unsigned char CStepperTB6560::GetEnable(axis_t axis)
 	switch (axis)
 	{
 #pragma warning( disable : 4127 )
-		case X_AXIS:  return HALFastdigitalRead(TB6560_X_ENABLE_PIN) == TB6560_PINON ? 0 : 100;
-//		case Y_AXIS:  return HALFastdigitalRead(TB6560_Y_ENABLE_PIN) == TB6560_PINON ? 0 : 100;
-//		case Z_AXIS:  return HALFastdigitalRead(TB6560_Z_ENABLE_PIN) == TB6560_PINON ? 0 : 100;
-//		case E0_AXIS: return HALFastdigitalRead(TB6560_E0_ENABLE_PIN) == TB6560_PINON ? 0 : 100;
-//		case E1_AXIS: return HALFastdigitalRead(TB6560_E1_ENABLE_PIN) == TB6560_PINON ? 0 : 100;
+		case X_AXIS:  return ConvertLevel(HALFastdigitalRead(TB6560_X_ENABLE_PIN) == TB6560_PINON);
+//		case Y_AXIS:  return ConvertLevel(HALFastdigitalRead(TB6560_Y_ENABLE_PIN) == TB6560_PINON);
+//		case Z_AXIS:  return ConvertLevel(HALFastdigitalRead(TB6560_Z_ENABLE_PIN) == TB6560_PINON);
+//		case E0_AXIS: return ConvertLevel(HALFastdigitalRead(TB6560_E0_ENABLE_PIN) == TB6560_PINON);
+//		case E1_AXIS: return ConvertLevel(HALFastdigitalRead(TB6560_E1_ENABLE_PIN) == TB6560_PINON);
 #pragma warning( default : 4127 )
 	}
 	return 0;
