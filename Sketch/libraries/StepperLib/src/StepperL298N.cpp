@@ -89,8 +89,6 @@ void CStepperL298N::InitMemVar()
 {
 	register unsigned char i;
 	for (i = 0; i < NUM_AXIS; i++)	_stepIdx[i] = 0;
-
-	_idleLevel = 0;
 }
 
 ////////////////////////////////////////////////////////
