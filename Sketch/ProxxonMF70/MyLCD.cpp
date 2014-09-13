@@ -292,10 +292,18 @@ bool CMyLcd::DrawLoopSetupDefault()
 
 void CMyLcd::DrawLoopDefaultHead()
 {
+#ifdef USE_RAMPS14
 #if defined(__SAM3X8E__)
-	u8g.drawStr(ToCol(1), ToRow(0), F("Proxxon MF 70 - due"));
+	u8g.drawStr(ToCol(0), ToRow(0), F("Proxxon MF70 Ramps14S"));
 #else
-	u8g.drawStr(ToCol(0), ToRow(0), F("Proxxon MF 70 - mega"));
+	u8g.drawStr(ToCol(0), ToRow(0), F("Proxxon MF70 Ramps14M"));
+#endif
+#else
+#if defined(__SAM3X8E__)
+	u8g.drawStr(ToCol(0), ToRow(0), F("Proxxon MF70 RampsFDS"));
+#else
+	u8g.drawStr(ToCol(0), ToRow(0), F("Proxxon MF70 RampsFDM"));
+#endif
 #endif
 }
 
@@ -923,14 +931,18 @@ const CMyLcd::SMenuDef CMyLcd::_mainMenu[] PROGMEM =
 	{ _mMoveX, &CMyLcd::MenuButtonPressSetMove, X_AXIS },
 #if LCD_NUMAXIS > 1
 	{ _mMoveY, &CMyLcd::MenuButtonPressSetMove, Y_AXIS },
-#elif LCD_NUMAXIS > 2
+#if LCD_NUMAXIS > 2
 	{ _mMoveZ, &CMyLcd::MenuButtonPressSetMove, Z_AXIS },
-#elif LCD_NUMAXIS > 3
+#if LCD_NUMAXIS > 3
 	{ _mMoveA, &CMyLcd::MenuButtonPressSetMove, A_AXIS },
-#elif LCD_NUMAXIS > 4
+#if LCD_NUMAXIS > 4
 	{ _mMoveB, &CMyLcd::MenuButtonPressSetMove, B_AXIS },
-#elif LCD_NUMAXIS > 5
+#if LCD_NUMAXIS > 5
 	{ _mMoveC, &CMyLcd::MenuButtonPressSetMove, C_AXIS },
+#endif 
+#endif
+#endif
+#endif
 #endif
 	{ _mSD, &CMyLcd::MenuButtonPressSetSD },
 	{ _mExtra, &CMyLcd::MenuButtonPressSetExtra },

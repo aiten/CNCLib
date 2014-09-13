@@ -228,14 +228,17 @@ static bool IsG54OffsetParam(param_t paramNo, axis_t&axis)				{ return IsParam(p
 // 5420-5428 - Current Position including offsets in current program units (X Y Z A B C U V W)
 static bool IsCurrentPosParam(param_t paramNo, axis_t&axis)				{ return IsParam(paramNo, PARAMSTART_CURRENTPOS, axis); }
 
-
 // customized extension
 static bool IsCurrentAbsPosParam(param_t paramNo, axis_t&axis)			{ return IsParam(paramNo, PARAMSTART_CURRENTABSPOS, axis); }
 static bool IsBacklashParam(param_t paramNo, axis_t&axis)				{ return IsParam(paramNo, PARAMSTART_BACKLASH, axis); }
 static bool IsBacklashFeedrateParam(param_t paramNo)					{ return IsParam(paramNo, PARAMSTART_BACKLASH_FEEDRATE); }
+static bool IsMaxParam(param_t paramNo, axis_t&axis)					{ return IsParam(paramNo, PARAMSTART_MAX, axis); }
+static bool IsMinParam(param_t paramNo, axis_t&axis)					{ return IsParam(paramNo, PARAMSTART_MIN, axis); }
+static bool IsAccParam(param_t paramNo, axis_t&axis)					{ return IsParam(paramNo, PARAMSTART_ACC, axis); }
+static bool IsDecParam(param_t paramNo, axis_t&axis)					{ return IsParam(paramNo, PARAMSTART_DEC, axis); }
+static bool IsJerkParam(param_t paramNo, axis_t&axis)					{ return IsParam(paramNo, PARAMSTART_JERK, axis); }
 
 static bool IsControllerFanParam(param_t paramNo)						{ return IsParam(paramNo, PARAMSTART_CONTROLLERFAN); }
-
 static bool IsRapidMoveFeedRate(param_t paramNo)						{ return IsParam(paramNo, PARAMSTART_RAPIDMOVEFEED); }
 
 
@@ -251,16 +254,22 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo)
 		mm1000_t pos = CStepper::GetInstance()->GetLimitMin(axis);
 		if (CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(axis, false)))	// max refmove
 			pos = CStepper::GetInstance()->GetLimitMax(axis);
-		return ToInch(GetRelativePosition(CMotionControl::ToMm1000(axis, pos), axis));
+		return GetParamAsPosition(pos,axis);
 	}
 
-	if (IsG92OffsetParam(paramNo,axis))			return ToInch(_modalstate.G92Pospreset[axis]);
-	if (IsG54OffsetParam(paramNo,axis))			return ToInch(_modalstate.G54Pospreset[axis]);
-	if (IsCurrentPosParam(paramNo,axis))		return ToInch(GetRelativePosition(axis));
+	if (IsG92OffsetParam(paramNo,axis))			return GetParamAsPosition(_modalstate.G92Pospreset[axis],axis);
+	if (IsG54OffsetParam(paramNo,axis))			return GetParamAsPosition(_modalstate.G54Pospreset[axis],axis);
+	if (IsCurrentPosParam(paramNo,axis))		return GetParamAsPosition(GetRelativePosition(axis),axis);
 
 	// customized extension
-	if (IsCurrentAbsPosParam(paramNo,axis))		return ToInch(CMotionControl::GetPosition(axis));
-	if (IsBacklashParam(paramNo,axis))			return ToInch(CStepper::GetInstance()->GetBacklash(axis));
+	if (IsCurrentAbsPosParam(paramNo,axis))		return GetParamAsPosition(CMotionControl::GetPosition(axis),axis);
+	if (IsBacklashParam(paramNo,axis))			return GetParamAsPosition(CStepper::GetInstance()->GetBacklash(axis),axis);
+
+	if (IsMaxParam(paramNo, axis))				return GetParamAsPosition(CStepper::GetInstance()->GetLimitMax(axis),axis);
+	if (IsMinParam(paramNo, axis))				return GetParamAsPosition(CStepper::GetInstance()->GetLimitMin(axis),axis);
+	if (IsAccParam(paramNo, axis))				return CStepper::GetInstance()->GetAcc(axis);
+	if (IsDecParam(paramNo, axis))				return CStepper::GetInstance()->GetDec(axis);
+	if (IsJerkParam(paramNo, axis))				return CStepper::GetInstance()->GetJerkSpeed(axis);
 
 	Error(MESSAGE_GCODE_ParameterNotFound);
 	return 0;
@@ -279,26 +288,16 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 		axis_t axis;
 		mm1000_t mm1000 = CMotionControl::FromDouble(exprpars.Answer);
 
-		if (IsModifyParam(paramNo))
-		{
-			_modalstate.Parameter[paramNo - 1] = mm1000;
-		}
-		else if (IsBacklashParam(paramNo,axis))
-		{
-			CStepper::GetInstance()->SetBacklash(axis,(mdist_t) CMotionControl::ToMachine(axis, mm1000));
-		}
-		else if (IsBacklashFeedrateParam(paramNo))
-		{
-			CStepper::GetInstance()->SetBacklash((steprate_t) CMotionControl::ToMachine(0, mm1000*60));
-		}
-		else if (IsControllerFanParam(paramNo))
-		{
-			CControl::GetInstance()->IOControl(CControl::ControllerFan,(unsigned short)exprpars.Answer);
-		}
-		else if (IsRapidMoveFeedRate(paramNo))
-		{
-			SetG0FeedRate(-exprpars.Answer*1000);
-		}
+		if (IsModifyParam(paramNo))				{	_modalstate.Parameter[paramNo - 1] = mm1000;	}
+		else if (IsBacklashParam(paramNo,axis))	{	CStepper::GetInstance()->SetBacklash(axis,GetParamAsMaschine(mm1000, axis));	}
+		else if (IsBacklashFeedrateParam(paramNo)){	CStepper::GetInstance()->SetBacklash((steprate_t) CMotionControl::ToMachine(0, mm1000*60));		}
+		else if (IsControllerFanParam(paramNo))	{	CControl::GetInstance()->IOControl(CControl::ControllerFan,(unsigned short)exprpars.Answer);	}
+		else if (IsRapidMoveFeedRate(paramNo))	{	SetG0FeedRate((feedrate_t) (-exprpars.Answer*1000));	}
+		else if (IsMaxParam(paramNo,axis))		{	CStepper::GetInstance()->SetLimitMax(axis,GetParamAsMaschine(mm1000, axis));		}
+		else if (IsMinParam(paramNo,axis))		{	CStepper::GetInstance()->SetLimitMin(axis,GetParamAsMaschine(mm1000, axis));		}
+		else if (IsAccParam(paramNo,axis))		{	CStepper::GetInstance()->SetAcc(axis,(steprate_t) mm1000);	}
+		else if (IsDecParam(paramNo,axis))		{	CStepper::GetInstance()->SetDec(axis,(steprate_t) mm1000);	}
+		else if (IsJerkParam(paramNo,axis))		{	CStepper::GetInstance()->SetJerkSpeed(axis,(steprate_t) mm1000);	}
 		else
 		{
 			Error(MESSAGE_GCODE_UnspportedParameterNumber);	return;
@@ -324,7 +323,7 @@ mm1000_t CGCodeParser::ParseCoordinate()
 	if (_modalstate.UnitisMm)
 		return GetInt32Scale(COORD_MIN_MM, COORD_MAX_MM, COORD_SCALE_MM, COORD_MAXSCALE);
 
-	return MulDivI32(GetInt32Scale(COORD_MIN_INCH, COORD_MAX_INCH, COORD_SCALE_INCH, COORD_MAXSCALE), 254, 100);
+	return FromInch(GetInt32Scale(COORD_MIN_INCH, COORD_MAX_INCH, COORD_SCALE_INCH, COORD_MAXSCALE));
 };
 
 ////////////////////////////////////////////////////////////
@@ -358,6 +357,16 @@ mm1000_t CGCodeParser::ToInch(mm1000_t mm100)
 		return mm100;
 
 	return MulDivI32(mm100, 254, 100);
+}
+
+////////////////////////////////////////////////////////////
+
+mm1000_t CGCodeParser::FromInch(mm1000_t mm100)
+{
+	if (_modalstate.UnitisMm)
+		return mm100;
+
+	return MulDivI32(mm100, 100, 254);
 }
 
 ////////////////////////////////////////////////////////////

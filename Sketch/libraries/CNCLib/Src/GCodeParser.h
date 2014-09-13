@@ -39,12 +39,19 @@ typedef unsigned short param_t;
 #define PARAMSTART_CURRENTPOS	5420		// 5420-5428 - Current Position including offsets in current program units (X Y Z A B C U V W)
 
 // extent
-#define PARAMSTART_CURRENTABSPOS 5430	// Current Absolut maschine position in current program units (X Y Z A B C U V W)
-#define PARAMSTART_BACKLASH		5450			// Backlash in current units(e.g. mm) (X Y Z A B C U V W)
-#define PARAMSTART_BACKLASH_FEEDRATE 5469	// Feedrate for backlash (0 if disabled)
+#define PARAMSTART_CURRENTABSPOS	6010	// Current Absolut maschine position in current program units (X Y Z A B C U V W)
+#define PARAMSTART_BACKLASH			6031	// Backlash in current units(e.g. mm) (X Y Z A B C U V W)
+#define PARAMSTART_BACKLASH_FEEDRATE 6049	// Feedrate for backlash (0 if disabled)
 
-#define PARAMSTART_CONTROLLERFAN 5470		// Controllerfan if not idle (0 if disabled, 255 max)
-#define PARAMSTART_RAPIDMOVEFEED 5471		// RapidMove Feedrate
+
+#define PARAMSTART_MAX				6051	// Acc (X Y Z A B C U V W)
+#define PARAMSTART_MIN				6071	// Acc (X Y Z A B C U V W)
+#define PARAMSTART_ACC				6091	// Acc (X Y Z A B C U V W)
+#define PARAMSTART_DEC				6111	// Dec (X Y Z A B C U V W)
+#define PARAMSTART_JERK				6131	// Jerk (X Y Z A B C U V W)
+
+#define PARAMSTART_CONTROLLERFAN	6900	// Controllerfan if not idle (0 if disabled, 255 max)
+#define PARAMSTART_RAPIDMOVEFEED	6901	// RapidMove Feedrate
 
 // g73 retraction
 #define G73RETRACTION			200			// mm1000_t => 0.2mm
@@ -263,6 +270,9 @@ protected:
 	mm1000_t GetParamValue(param_t paramNo);
 	void SetParamValue(param_t parmNo);
 
+	mm1000_t GetParamAsPosition(mm1000_t posInMaschine,axis_t axis)	{ return ToInch(CMotionControl::ToMm1000(axis, posInMaschine)); }
+	mm1000_t GetParamAsMaschine(mm1000_t posInmm1000,axis_t axis)	{ return FromInch(CMotionControl::ToMachine(axis, posInmm1000)); }
+
 	unsigned long GetUint32OrParam(unsigned long max);
 	unsigned long GetUint32OrParam()						{ return GetUint32OrParam(0xffffffffl); };
 	unsigned short GetUint16OrParam()						{ return (unsigned short)GetUint32OrParam(65535); };
@@ -271,6 +281,7 @@ protected:
 	mm1000_t GetRelativePosition(mm1000_t pos, axis_t axis)	{ return pos - GetG92PosPreset(axis) - GetG54PosPreset(axis); }
 	mm1000_t GetRelativePosition(axis_t axis)				{ return GetRelativePosition(CMotionControl::GetPosition(axis), axis); }
 	mm1000_t ToInch(mm1000_t mm100);
+	mm1000_t FromInch(mm1000_t mm100);
 
 	bool CheckAxisSpecified(axis_t axis, unsigned char& axes);
 	axis_t CharToAxis(char axis);
