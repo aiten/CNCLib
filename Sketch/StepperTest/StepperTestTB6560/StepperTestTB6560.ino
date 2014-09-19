@@ -1,5 +1,5 @@
 #include <StepperLib.h>
-#include "StepperTB6560.h"
+#include <StepperTB6560.h>
 
 #if !defined(__AVR_ATmega328P__)
 //#error Only Works with Arduino:Duemilanove

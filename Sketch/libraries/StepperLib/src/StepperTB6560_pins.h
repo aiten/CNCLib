@@ -35,14 +35,14 @@
 #define TB6560_X_MIN_PIN		
 #define TB6560_X_MAX_PIN		
 
-#define TB6560_Y_STEP_PIN		
-#define TB6560_Y_DIR_PIN		
-#define TB6560_Y_ENABLE_PIN		
+#define TB6560_Y_STEP_PIN		5
+#define TB6560_Y_DIR_PIN		6
+#define TB6560_Y_ENABLE_PIN		7
 #define TB6560_Y_MIN_PIN		
 #define TB6560_Y_MAX_PIN		
 
-#define TB6560_Z_STEP_PIN		
-#define TB6560_Z_DIR_PIN		
-#define TB6560_Z_ENABLE_PIN		
+#define TB6560_Z_STEP_PIN		8
+#define TB6560_Z_DIR_PIN		9
+#define TB6560_Z_ENABLE_PIN		10
 #define TB6560_Z_MIN_PIN		
 #define TB6560_Z_MAX_PIN		
