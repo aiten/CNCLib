@@ -135,7 +135,8 @@ public:
 	bool CanQueueMovement()	 const								{ return !_movements._queue.IsFull(); }
 	unsigned char QueuedMovements()	 const						{ return _movements._queue.Count(); }
 
-	unsigned char GetEnableTimeout(axis_t axis) const			{ return 0; }
+	unsigned char GetEnableTimeout(axis_t axis) const			{ return _timeOutEnable[axis]; }
+	void SetEnableTimeout(axis_t axis, unsigned char sec) 		{ _timeOutEnable[axis] = sec; }
 
 #ifdef USESLIP
 	void SetSlip(int dist[NUM_AXIS]);
@@ -192,7 +193,7 @@ public:
 
 	unsigned long GetTotalSteps() const							{ return _totalSteps; }
 	unsigned int GetTimerISRBuys() const						{ return _timerISRBusy; }
-	unsigned long IdleTime() const								{ return _timerOnIdle; }
+	unsigned long IdleTime() const								{ return _timerStartOrOnIdle; }
 
 	void AddEvent(StepperEvent event, void* eventparam, StepperEvent& oldevent, void*& oldeventparam);
 
@@ -292,15 +293,20 @@ protected:
 	mdist_t _backlash[NUM_AXIS];								// backlash of each axis (signed mdist_t/2)
 
 	EnumAsByte(EStepMode) _stepMode[NUM_AXIS];					// fullstep, half, ...
+	unsigned char _timeOutEnable[NUM_AXIS];						// enabletimeout in sec if no step (0.. disable, always enabled)
 
-	unsigned long _timerOnIdle;									// timervalue if library goes to Idle
+	unsigned long _timerStartOrOnIdle;							// timervalue if library start move or goes to Idle
+	unsigned long _timerLastCheckEnable;						// timervalue if library start move or goes to Idle
+
 	unsigned char _idleLevel;									// level if idle (0..100)
 	axisArray_t	  _lastdirection;								// for backlash
 
 	const __FlashStringHelper * _error;
 
-	StepperEvent	_event;									// event to function
+	StepperEvent	_event;										// event to function
 	void*			_eventparam;								// event to funktion-parameter
+
+	unsigned char _timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
 
 #ifdef USESLIP
 	unsigned int _slipSum[NUM_AXIS];
@@ -549,7 +555,7 @@ protected:
 #endif
 
 	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) = 0;
-	virtual void  SetEnable(axis_t axis, unsigned char level) = 0;
+	virtual void  SetEnable(axis_t axis, unsigned char level, bool force) = 0;
 	virtual unsigned char GetEnable(axis_t axis) = 0;
 
 	static unsigned char ConvertLevel(bool enable)				{ return enable ? (unsigned char)(LevelMax) : (unsigned char)(LevelOff); }

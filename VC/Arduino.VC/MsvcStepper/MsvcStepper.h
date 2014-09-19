@@ -55,7 +55,7 @@ protected:
 	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp);
 	virtual void  Step(bool isr);
 
-	virtual void  SetEnable(axis_t axis, unsigned char level)	{ _level[axis] = level; };
+	virtual void  SetEnable(axis_t axis, unsigned char level, bool /* force */)	{ _level[axis] = level; };
 	virtual unsigned char GetEnable(axis_t axis)				{ return _level[axis]; }
 
 private:

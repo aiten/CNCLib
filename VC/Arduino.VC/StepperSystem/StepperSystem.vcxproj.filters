@@ -162,6 +162,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\LinearLookUp.h">
       <Filter>StepperLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">
@@ -228,6 +231,9 @@
       <Filter>StepperLib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.cpp">
+      <Filter>StepperLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560.cpp">
       <Filter>StepperLib</Filter>
     </ClCompile>
   </ItemGroup>

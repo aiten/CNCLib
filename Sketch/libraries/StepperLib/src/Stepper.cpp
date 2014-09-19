@@ -59,6 +59,8 @@ void CStepper::InitMemVar()
 
 	for (i = 0; i < NUM_AXIS; i++)	_limitMax[i] = 0xffff;
 	for (i = 0; i < NUM_AXIS; i++)	_stepMode[i] = HalfStep;
+	for (i = 0; i < NUM_AXIS; i++)	_timeOutEnable[i] = 0;
+//	for (i = 0; i < NUM_AXIS; i++)	_timeOutEnable[i] = 1;
 
 	_timerRunning = false;
 	_waitFinishMove = false;
@@ -126,8 +128,7 @@ void CStepper::Init()
 	CHAL::InitBackground(HandleBackground);
 #endif
 
-	_timerOnIdle = millis();
-	SetIdleTimer();
+	GoIdle();
 
 	SetEnableAll(LevelOff);
 }
@@ -262,24 +263,27 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 	if (!_timerRunning)
 	{
+		_timerLastCheckEnable =
+		_timerStartOrOnIdle = millis();
+		for (axis_t i = 0; i<NUM_AXIS; i++)
+		{
+			_timeEnable[i] = _timeOutEnable[i];
+			if (GetEnableTimeout(i) == 0)					// enabletimeout == 0 => always enabled, otherwise done in CalcNextSteps
+				SetEnable(i, CStepper::LevelMax,true);
+		}
+
 		_movements._queue.Head().CalcNextSteps(false);
 		if (_movements._queue.Head().IsFinished())
 		{
 			// empty move => startup failed
 			_movements._queue.Dequeue();
+			GoIdle();
 		}
 		else
 		{
 			OnStart();
-			{
-				CCriticalRegion crit;
-				for (axis_t i = 0;; i++)
-				{
-					if (GetEnableTimeout(i) == 0)			// enabletimeout == 0 => always enabled
-						SetEnable(i, CStepper::LevelMax);
-				}
-				Step(false);
-			}
+			CCriticalRegion crit;
+			Step(false);
 		}
 	}
 
@@ -1067,9 +1071,6 @@ void CStepper::AbortMove()
 {
 	CCriticalRegion critical;
 
-	if (_timerRunning)
-		SetIdleTimer();
-
 	// sub all pending steps to _totalsteps
 
 	unsigned long steps = _steps.Count();
@@ -1091,7 +1092,7 @@ void CStepper::AbortMove()
 
 	memcpy(_calculatedpos, _current, sizeof(_calculatedpos));
 
-	_timerOnIdle = millis();
+	GoIdle();
 }
 
 ////////////////////////////////////////////////////////
@@ -1249,6 +1250,30 @@ void CStepper::FillStepBuffer()
 			_movements._queue.Dequeue();
 		}
 	}
+
+	// check if turn off stepper
+
+	unsigned char diff_sec = (unsigned char) ((millis() - _timerLastCheckEnable) / 1024);		// div 1024 is faster as 1000
+		
+	if (diff_sec > 0)
+	{
+		_timerLastCheckEnable = millis();
+
+		for (axis_t i = 0;i<NUM_AXIS; i++)
+		{
+			if (_timeEnable[i] != 0)
+			{
+				if (_timeEnable[i] < diff_sec) _timeEnable[i] = diff_sec;	// may overrun
+				_timeEnable[i] -= diff_sec;
+
+				if (_timeEnable[i] == 0 && GetEnable(i) != _idleLevel)
+				{
+					CCriticalRegion crit;
+					SetEnable(i,_idleLevel,true);
+				}
+			}
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////
@@ -1267,7 +1292,7 @@ void CStepper::Background()
 void CStepper::GoIdle()
 {
 	// start idle timer
-	_timerOnIdle = millis();
+	_timerStartOrOnIdle = millis();
 	SetIdleTimer();
 	OnIdle(0);
 }
@@ -1277,7 +1302,7 @@ void CStepper::GoIdle()
 void CStepper::ContinueIdle()
 {
 	SetIdleTimer();
-	OnIdle(millis() - _timerOnIdle);
+	OnIdle(millis() - _timerStartOrOnIdle);
 }
 
 ////////////////////////////////////////////////////////
@@ -1340,29 +1365,37 @@ CStepper* CStepper::SMovement::_pStepper;
 
 bool CStepper::SMovement::CalcNextSteps(bool continues)
 {
+	register axis_t i;
 	// return false if buffer full and nothing calculated.
 	do
 	{
 		if (_state == StateReady)
 		{
 			_pStepper->_movementstate.Init(_timerStart, _steps, GetMaxStepMultiplier());
-{
-	CCriticalRegion crit;
-	//_pStepper->SetEnableAll(LevelMax);
-	register axis_t i;
-
-	for (i = 0;; i++)
-	{
-		if (_distance_[i] != 0 && _pStepper->GetEnable(i) != CStepper::LevelMax)
-			_pStepper->SetEnable(i, CStepper::LevelMax);
-	}
-}
+			{
+				for (i = 0;i<NUM_AXIS; i++)
+				{
+					if (_distance_[i] != 0)
+					{
+						_pStepper->_timeEnable[i] = 0;
+						CCriticalRegion crit;
+						if(_pStepper->GetEnable(i) != CStepper::LevelMax)
+							_pStepper->SetEnable(i, CStepper::LevelMax,false);
+					}
+				}
+			}
 		}
 		const register mdist_t n = _pStepper->_movementstate._n;
 		register unsigned char count = _pStepper->_movementstate._count;
 
 		if (_steps <= n)
 		{
+			for (i=0;i<NUM_AXIS; i++)
+			{
+				if (_distance_[i] != 0)
+					_pStepper->_timeEnable[i] = _pStepper->_timeOutEnable[i];
+			}
+
 			_state = StateDone;
 			return true;
 		}
@@ -1382,7 +1415,6 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			}
 			else
 			{
-				register axis_t i;
 				register DirCount_t stepcount; stepcount.all = 0;
 				register DirCount_t mask; mask.all = 15;
 
@@ -1521,7 +1553,7 @@ void  CStepper::SetEnableAll(unsigned char level)
 {
 	for (register axis_t i = 0; i < NUM_AXIS; ++i)
 	{
-		SetEnable(i, level);
+		SetEnable(i, level, true);
 	}
 }
 

@@ -68,9 +68,14 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetJerkSpeed(A_AXIS, SPEEDFACTOR*1000);
 	CStepper::GetInstance()->SetJerkSpeed(B_AXIS, SPEEDFACTOR*1000);
 
+	CStepper::GetInstance()->SetEnableTimeout(A_AXIS, 2);
+	CStepper::GetInstance()->SetEnableTimeout(B_AXIS, 2);
+
 #if NUM_AXIS > 5
 	CStepper::GetInstance()->SetLimitMax(C_AXIS, CMotionControl::ToMachine(B_AXIS,360000));
 	CStepper::GetInstance()->SetJerkSpeed(C_AXIS, SPEEDFACTOR*1000);
+
+	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
 #endif
 
 	for (register unsigned char i = 0; i < NUM_AXIS * 2; i++)

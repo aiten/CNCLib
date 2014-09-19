@@ -145,7 +145,7 @@ void CStepperRamps14::Step(const unsigned char steps[NUM_AXIS], axisArray_t dire
 
 ////////////////////////////////////////////////////////
 
-void CStepperRamps14::SetEnable(axis_t axis, unsigned char level)
+void CStepperRamps14::SetEnable(axis_t axis, unsigned char level, bool /* force */)
 {
 
 #define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,RAMPS14_PINOFF);	else	HALFastdigitalWrite(pin,RAMPS14_PINON);

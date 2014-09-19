@@ -192,7 +192,7 @@ void  CStepperSMC800::Step(const unsigned char steps[NUM_AXIS], axisArray_t dire
 
 ////////////////////////////////////////////////////////
 
-void CStepperSMC800::SetEnable(axis_t axis, unsigned char level)
+void CStepperSMC800::SetEnable(axis_t axis, unsigned char level, bool force )
 {
 	if (axis<SMC800_NUM_AXIS)
 	{
@@ -200,7 +200,8 @@ void CStepperSMC800::SetEnable(axis_t axis, unsigned char level)
 		else if (level > Level20)	_level[axis] = Level60;
 		else if (level > LevelOff)	_level[axis] = Level20;
 		else						_level[axis] = Level0;
-		SetPhase(axis);
+		
+		if (force) SetPhase(axis);
 	}
 }
 

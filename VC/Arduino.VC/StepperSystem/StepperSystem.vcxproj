@@ -51,6 +51,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRampsFD.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRampsFD_pins.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperSMC800.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\UtilitiesStepperLib.h" />
     <ClInclude Include="..\Include\arduino.h" />
     <ClInclude Include="..\Include\HardwareSerial.h" />
@@ -81,6 +82,7 @@
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRamps14.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRampsFD.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperSMC800.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\UtilitiesStepperLib.cpp" />
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp" />
   </ItemGroup>

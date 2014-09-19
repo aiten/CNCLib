@@ -167,7 +167,7 @@ void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], axisArray_t dire
 
 ////////////////////////////////////////////////////////
 
-void CStepperRampsFD::SetEnable(axis_t axis, unsigned char level)
+void CStepperRampsFD::SetEnable(axis_t axis, unsigned char level, bool /* force */)
 {
 
 #define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,RAMPSFD_PINOFF);	else	HALFastdigitalWrite(pin,RAMPSFD_PINON);

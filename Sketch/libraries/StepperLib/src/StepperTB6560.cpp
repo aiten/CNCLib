@@ -116,7 +116,7 @@ void CStepperTB6560::Step(const unsigned char steps[NUM_AXIS], unsigned char dir
 
 ////////////////////////////////////////////////////////
 
-void CStepperTB6560::SetEnable(axis_t axis, unsigned char level)
+void CStepperTB6560::SetEnable(axis_t axis, unsigned char level, bool /* force */)
 {
 
 #define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,TB6560_PINOFF);	else	HALFastdigitalWrite(pin,TB6560_PINON);

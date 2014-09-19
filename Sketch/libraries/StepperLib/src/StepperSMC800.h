@@ -60,7 +60,7 @@ public:
 protected:
 
 	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp);
-	virtual void  SetEnable(axis_t axis, unsigned char level);
+	virtual void  SetEnable(axis_t axis, unsigned char level, bool force);
 	virtual unsigned char GetEnable(axis_t axis);
 
 	virtual void MoveAwayFromReference(axis_t axis, sdist_t diff, steprate_t vMax);

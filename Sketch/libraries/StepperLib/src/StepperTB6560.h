@@ -36,7 +36,7 @@ public:
 
 protected:
 
-	virtual void  SetEnable(axis_t axis, unsigned char level);
+	virtual void  SetEnable(axis_t axis, unsigned char level, bool force);
 	virtual unsigned char GetEnable(axis_t axis);
 	virtual void  Step(const unsigned char cnt[NUM_AXIS], unsigned char directionUp);
 

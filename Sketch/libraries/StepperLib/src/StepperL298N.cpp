@@ -112,7 +112,7 @@ void  CStepperL298N::Step(const unsigned char steps[NUM_AXIS], axisArray_t direc
 
 ////////////////////////////////////////////////////////
 
-void CStepperL298N::SetEnable(axis_t axis, unsigned char level)
+void CStepperL298N::SetEnable(axis_t axis, unsigned char level, bool /* force */)
 {
 	if (IsUseEN1(axis))
 	{
