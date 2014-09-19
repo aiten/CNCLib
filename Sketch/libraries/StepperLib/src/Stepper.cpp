@@ -185,9 +185,9 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 	mdist_t steps = 0;
 
-	unsigned char directionmask = 0;
-	unsigned char direction = 0;
-	unsigned char mask = 1;
+	axisArray_t directionmask = 0;
+	axisArray_t direction = 0;
+	axisArray_t mask = 1;
 
 	for (unsigned char i = 0; i < NUM_AXIS; i++)
 	{
@@ -215,7 +215,7 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 			mdist_t backlashdist[NUM_AXIS] = { 0 };
 
 			mdist_t backlashsteps = 0;
-			char mask = 1;
+			mask = 1;
 			for (unsigned char i = 0; i < NUM_AXIS; i++)
 			{
 				if ((_lastdirection&directionmask&mask) != (direction&mask) && dist[i] && _backlash[i])
@@ -271,6 +271,15 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 		else
 		{
 			OnStart();
+			{
+				CCriticalRegion crit;
+				for (axis_t i = 0;; i++)
+				{
+					if (GetEnableTimeout(i) == 0)			// enabletimeout == 0 => always enabled
+						SetEnable(i, CStepper::LevelMax);
+				}
+				Step(false);
+			}
 		}
 	}
 
@@ -854,13 +863,6 @@ void CStepper::OnIdle(unsigned long idletime)
 void CStepper::OnStart()
 {
 	CallEvent(OnStartEvent, 0);
-
-	{
-		CCriticalRegion crit;
-
-		SetEnableAll(LevelMax);
-		Step(false);
-	}
 }
 
 ////////////////////////////////////////////////////////
@@ -1136,7 +1138,7 @@ inline void CStepper::StepOut()
 	// AVR: div with 256 is faster than 16 (loop shift)
 
 	stepperstatic_avr unsigned char axescount[NUM_AXIS];
-	unsigned char directionUp = 0;
+	axisArray_t directionUp = 0;
 
 	unsigned char bytedircount = 0;
 	bool countit = true;
@@ -1344,8 +1346,18 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 		if (_state == StateReady)
 		{
 			_pStepper->_movementstate.Init(_timerStart, _steps, GetMaxStepMultiplier());
-		}
+{
+	CCriticalRegion crit;
+	//_pStepper->SetEnableAll(LevelMax);
+	register axis_t i;
 
+	for (i = 0;; i++)
+	{
+		if (_distance_[i] != 0 && _pStepper->GetEnable(i) != CStepper::LevelMax)
+			_pStepper->SetEnable(i, CStepper::LevelMax);
+	}
+}
+		}
 		const register mdist_t n = _pStepper->_movementstate._n;
 		register unsigned char count = _pStepper->_movementstate._count;
 

@@ -51,8 +51,8 @@ public:
 protected:
 
 	virtual void  StepBegin(const SStepBuffer* step);
-//	virtual void  Step(unsigned char steps[NUM_AXIS],bool directionUp[NUM_AXIS]);
-	virtual void  Step(const unsigned char steps[NUM_AXIS],unsigned char directionUp);
+//	virtual void  Step(unsigned char steps[NUM_AXIS],bool axisArray_t[NUM_AXIS]);
+	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp);
 	virtual void  Step(bool isr);
 
 	virtual void  SetEnable(axis_t axis, unsigned char level)	{ _level[axis] = level; };

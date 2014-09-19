@@ -93,7 +93,7 @@ void CStepperL298N::InitMemVar()
 
 ////////////////////////////////////////////////////////
 
-void  CStepperL298N::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
+void  CStepperL298N::Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp)
 {
 	unsigned char mask=1;
 	for (axis_t axis=0;axis < NUM_AXIS;axis++)

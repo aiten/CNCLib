@@ -173,7 +173,7 @@ void CStepperSMC800::Remove()
 
 ////////////////////////////////////////////////////////
 
-void  CStepperSMC800::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
+void  CStepperSMC800::Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp)
 {
 	unsigned char mask = 1;
 	for (axis_t axis = 0; axis < NUM_AXIS; axis++)

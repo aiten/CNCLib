@@ -135,6 +135,8 @@ public:
 	bool CanQueueMovement()	 const								{ return !_movements._queue.IsFull(); }
 	unsigned char QueuedMovements()	 const						{ return _movements._queue.Count(); }
 
+	unsigned char GetEnableTimeout(axis_t axis) const			{ return 0; }
+
 #ifdef USESLIP
 	void SetSlip(int dist[NUM_AXIS]);
 #endif
@@ -181,7 +183,7 @@ public:
 	udist_t GetLimitMin(axis_t axis) const						{ return _limitMin[axis]; }
 
 	mdist_t GetBacklash(axis_t axis) const						{ return _backlash[axis]; }
-	unsigned char GetLastDirection() const						{ return _lastdirection; }		// check for backlash
+	axisArray_t GetLastDirection() const						{ return _lastdirection; }		// check for backlash
 
 	steprate_t GetDefaultVmax() const							{ return TimerToSpeed(_timerMaxDefault); }
 	steprate_t GetAcc(axis_t axis) const						{ return TimerToSpeed(_timerAcc[axis]); }
@@ -293,7 +295,7 @@ protected:
 
 	unsigned long _timerOnIdle;									// timervalue if library goes to Idle
 	unsigned char _idleLevel;									// level if idle (0..100)
-	unsigned char _lastdirection;								// for backlash
+	axisArray_t	  _lastdirection;								// for backlash
 
 	const __FlashStringHelper * _error;
 
@@ -546,7 +548,7 @@ protected:
 	virtual void  StepEnd() {};
 #endif
 
-	virtual void  Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)=0;
+	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) = 0;
 	virtual void  SetEnable(axis_t axis, unsigned char level) = 0;
 	virtual unsigned char GetEnable(axis_t axis) = 0;
 

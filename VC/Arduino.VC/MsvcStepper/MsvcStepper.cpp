@@ -174,7 +174,7 @@ void  CStepper::Step(axis_t axis , bool  directionUp , unsigned char count )
 */
 ////////////////////////////////////////////////////////////
 
-void CMsvcStepper::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
+void CMsvcStepper::Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp)
 {
 	for (axis_t axis=0 ; axis< NUM_AXIS; axis++)
 	{

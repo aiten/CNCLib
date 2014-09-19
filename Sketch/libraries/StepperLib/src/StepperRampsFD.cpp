@@ -106,7 +106,7 @@ void CStepperRampsFD::Init()
 
 ////////////////////////////////////////////////////////
 
-void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
+void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp)
 {
 	// The timing requirements for minimum pulse durations on the STEP pin are different for the two drivers. 
 	// With the DRV8825, the high and low STEP pulses must each be at least 1.9 us; 

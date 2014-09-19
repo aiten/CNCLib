@@ -199,6 +199,10 @@ typedef unsigned long steprate_t;		// tpye for speed (Hz), Steps/sec
 
 #endif
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+typedef unsigned char axisArray_t;			// on bit per axis
+
 #if NUM_AXIS > 3
 typedef unsigned long DirCountAll_t;		// 4 bit for eache axis (0..7) count, 8 dirup, see DirCountAll_t
 #define DirCountBytes 4
