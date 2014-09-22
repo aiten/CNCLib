@@ -112,21 +112,30 @@ void  CStepperL298N::Step(const unsigned char steps[NUM_AXIS], axisArray_t direc
 
 ////////////////////////////////////////////////////////
 
-void CStepperL298N::SetEnable(axis_t axis, unsigned char level, bool /* force */)
+void CStepperL298N::SetEnable(axis_t axis, unsigned char level, bool  force)
 {
+	if (Is2Pin(axis))	return;			// 2PIN and no enable => can't be turned off
+
 	if (IsUseEN1(axis))
 	{
-		CHAL::digitalWrite(_pinenable[axis][0], level > LevelOff ? HIGH : LOW);
-		if (IsUseEN2(axis)) CHAL::digitalWrite(_pinenable[axis][1], level > LevelOff ? HIGH : LOW);
+		CHAL::digitalWrite(_pinenable[axis][0], level != LevelOff ? HIGH : LOW);
+		if (IsUseEN2(axis)) CHAL::digitalWrite(_pinenable[axis][1], level != LevelOff ? HIGH : LOW);
 	}
 	else
 	{
-		// 4 PIN => set all to off
+		if (level == LevelOff)
+		{
+			// 4 PIN => set all to off
 
-		CHAL::digitalWrite(_pin[axis][0], LOW);
-		CHAL::digitalWrite(_pin[axis][1], LOW);
-		CHAL::digitalWrite(_pin[axis][2], LOW);
-		CHAL::digitalWrite(_pin[axis][3], LOW);
+			CHAL::digitalWrite(_pin[axis][0], LOW);
+			CHAL::digitalWrite(_pin[axis][1], LOW);
+			CHAL::digitalWrite(_pin[axis][2], LOW);
+			CHAL::digitalWrite(_pin[axis][3], LOW);
+		}
+		else if (force)
+		{
+			SetPhase(axis);
+		}
 	}
 }
 
@@ -134,18 +143,18 @@ void CStepperL298N::SetEnable(axis_t axis, unsigned char level, bool /* force */
 
 unsigned char CStepperL298N::GetEnable(axis_t axis)
 {
+	if (Is2Pin(axis))	return LevelMax;		// 2PIN and no enable => can't be turned off
+
 	if (IsUseEN1(axis))
 		return ConvertLevel(CHAL::digitalRead(_pinenable[axis][0]) == LOW);
 
 	// no enable PIN => with 4 PIN test if one PIN is set
 
-	if (Is2Pin(axis))	return LevelMax;		// 2PIN and no enable => can't be turned off
-
 	return ConvertLevel(
-		CHAL::digitalRead(_pin[axis][0]) == LOW &&
-		CHAL::digitalRead(_pin[axis][1]) == LOW &&
-		CHAL::digitalRead(_pin[axis][2]) == LOW &&
-		CHAL::digitalRead(_pin[axis][3]) == LOW);
+		CHAL::digitalRead(_pin[axis][0]) != LOW ||
+		CHAL::digitalRead(_pin[axis][1]) != LOW ||
+		CHAL::digitalRead(_pin[axis][2]) != LOW ||
+		CHAL::digitalRead(_pin[axis][3]) != LOW);
 }
 
 ////////////////////////////////////////////////////////

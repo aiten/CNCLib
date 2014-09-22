@@ -25,9 +25,13 @@ void setup()
 
   Stepper.SetUsual(DEFSPEED);
 
-  Stepper.SetLimitMax(0, 695000);
-  Stepper.SetLimitMax(1, 40000);
-  Stepper.SetLimitMax(2, 40000);
+  Stepper.SetLimitMax(0, 100000);
+  Stepper.SetLimitMax(1, 100000);
+  Stepper.SetLimitMax(2, 100000);
+  
+  Stepper.SetEnableTimeout(0, 1);
+  Stepper.SetEnableTimeout(1, 1);
+  Stepper.SetEnableTimeout(2, 1);
 
   int dist2 = Stepper.GetLimitMax(2) - Stepper.GetLimitMin(2);
   int dist0 = Stepper.GetLimitMax(0) - Stepper.GetLimitMin(0);
@@ -64,7 +68,7 @@ static void Test1()
 {
   Serial.println(F("Test 1"));
   
-  sdist_t count[NUM_AXIS] = { 0 };
+  sdist_t count[NUM_AXIS] = { 0,0,0 };
 
   struct MV
   {
@@ -82,18 +86,23 @@ static void Test1()
     { 0 }
   };
 
-  for (register unsigned char i=0;mv[i].dist != 0; i++)
+  for (axis_t axis = 0;axis<3;axis++)
   {
-    sdist_t    dist = mv[i].dist;
-    steprate_t rate = RoundMulDivUInt(mv[i].rate,DEFSPEED,50000);
-    Stepper.CStepper::MoveRel(X_AXIS, dist, rate); count[X_AXIS] -= dist;
+    for (register unsigned char i=0;mv[i].dist != 0; i++)
+    {
+      sdist_t    dist = mv[i].dist;
+      steprate_t rate = RoundMulDivUInt(mv[i].rate,DEFSPEED,50000);
+      Stepper.CStepper::MoveRel(axis, dist, rate); count[axis] -= dist;
+    }
+  
+    WaitBusy();
   }
-
-  WaitBusy();
 
   Stepper.MoveRel(count,DEFSPEED);
 
   Serial.println(Stepper.GetPosition(X_AXIS));
+  Serial.println(Stepper.GetPosition(Y_AXIS));
+  Serial.println(Stepper.GetPosition(Z_AXIS));
 
   WaitBusy();
 }

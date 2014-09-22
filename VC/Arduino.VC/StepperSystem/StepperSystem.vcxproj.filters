@@ -165,6 +165,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560.h">
       <Filter>StepperLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560_pins.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">

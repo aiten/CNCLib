@@ -52,6 +52,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRampsFD_pins.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperSMC800.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560_pins.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\UtilitiesStepperLib.h" />
     <ClInclude Include="..\Include\arduino.h" />
     <ClInclude Include="..\Include\HardwareSerial.h" />

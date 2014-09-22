@@ -13,14 +13,17 @@ void setup()
   StepperSerial.begin(115200);
   StepperSerial.println(F("StepperTestL298N is starting ... ("__DATE__", "__TIME__")"));
 
-  Stepper.SetEnablePin(X_AXIS,10,11);
-  Stepper.SetEnablePin(Y_AXIS,12,13);
+ // Stepper.SetEnablePin(X_AXIS,10,11);
+ // Stepper.SetEnablePin(Y_AXIS,12,13);
   Stepper.Init();
   pinMode(13, OUTPUT);
 
 //  Stepper.SetStepMode(0,CStepper::FullStep);
   Stepper.SetStepMode(0,CStepper::HalfStep);
   Stepper.SetStepMode(1,CStepper::HalfStep);
+
+  Stepper.SetEnableTimeout(0, 1);
+  Stepper.SetEnableTimeout(1, 1);
 
   Stepper.SetUsual(410);
 
