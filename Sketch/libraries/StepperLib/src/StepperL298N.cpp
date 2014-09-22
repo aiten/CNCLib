@@ -146,7 +146,7 @@ unsigned char CStepperL298N::GetEnable(axis_t axis)
 	if (Is2Pin(axis))	return LevelMax;		// 2PIN and no enable => can't be turned off
 
 	if (IsUseEN1(axis))
-		return ConvertLevel(CHAL::digitalRead(_pinenable[axis][0]) == LOW);
+		return ConvertLevel(CHAL::digitalRead(_pinenable[axis][0]) != LOW);
 
 	// no enable PIN => with 4 PIN test if one PIN is set
 
