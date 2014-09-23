@@ -38,6 +38,8 @@ protected:
 
 	static pin_t _pin[NUM_AXIS][4];
 	static pin_t _pinenable[NUM_AXIS][2];
+	static pin_t _pinRef[NUM_AXIS*2];
+	static unsigned char _referenceOn;
 
 protected:
 
@@ -47,13 +49,14 @@ protected:
 
 public:
 
-	virtual bool IsAnyReference()									{ return IsReference(0); };
-	virtual bool IsReference(unsigned char /* referenceid */)		{ return 0; }
+	virtual bool IsAnyReference();
+	virtual bool IsReference(unsigned char referenceid);
 
 	// Set before Init()
 	void SetPin(axis_t axis, pin_t in1, pin_t in2, pin_t in3, pin_t in4) { _pin[axis][0] = in1;  _pin[axis][1] = in2; _pin[axis][2] = in3; _pin[axis][3] = in4; }
 	void SetPin(axis_t axis, pin_t in1, pin_t in2)					{ _pin[axis][0] = in1;  _pin[axis][1] = in2; _pin[axis][2] = 0; _pin[axis][3] = 0; }
 	void SetEnablePin(axis_t axis, pin_t en1, pin_t en2)			{ _pinenable[axis][0] = en1;  _pinenable[axis][1] = en2; }
+	void SetRefPin(axis_t axis, pin_t refmin, pin_t refmax)			{ _pinRef[ToReferenceId(axis, true)] = refmin;  _pinRef[ToReferenceId(axis, false)] = refmax; }
 
 private:
 

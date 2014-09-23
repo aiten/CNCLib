@@ -1780,6 +1780,23 @@ bool CStepper::MoveReference(axis_t axis, unsigned char referenceid, bool toMin,
 
 ////////////////////////////////////////////////////////
 
+bool  CStepper::IsAnyReference()
+{
+	// slow version of IsAnyReference => override and do not call base
+
+	for (axis_t axis = 0; axis < NUM_AXIS; axis++)
+	{
+		unsigned char referenceidmin = ToReferenceId(axis, true);
+		unsigned char referenceidmax = ToReferenceId(axis, false);
+		if ((_useReference[referenceidmin] && IsReference(referenceidmin)) || (_useReference[referenceidmax] && IsReference(referenceidmax)))
+			return true;
+	}
+	return false;
+}
+
+
+////////////////////////////////////////////////////////
+
 void CStepper::MoveAbs(const udist_t d[NUM_AXIS], steprate_t vMax)
 {
 	udist_t dist[NUM_AXIS];

@@ -32,14 +32,17 @@ static unsigned char _L298Nhalfstep4Pin[8] = { 10, 8, 9, 1, 5, 4, 6, 2 };
  // aAbB => a => !a=A 
  static unsigned char _L298Nfullstep2Pin[4] = { 3, 2, 0, 1 };
 
-////////////////////////////////////////////////////////
-
-CStepperL298N::CStepperL298N()
+ ////////////////////////////////////////////////////////
+ 
+ CStepperL298N::CStepperL298N()
 {
 	InitMemVar();
 }
 
 ////////////////////////////////////////////////////////
+
+ // reference: difference between microswitch (on=LOW) and optical (on=>HIGH) 
+ unsigned char CStepperL298N::_referenceOn = LOW;
 
 pin_t CStepperL298N::_pin[NUM_AXIS][4] =
 {
@@ -53,6 +56,11 @@ pin_t CStepperL298N::_pinenable[NUM_AXIS][2] =
 	{ 0, 0 },		// 0 ... not used
 	{ 0, 0 },
 	{}
+};
+
+pin_t CStepperL298N::_pinRef[NUM_AXIS*2] =
+{
+	0				// 0 .. not used
 };
 
 ////////////////////////////////////////////////////////
@@ -78,6 +86,9 @@ void CStepperL298N::Init(void)
 				CHAL::pinMode(_pinenable[i][0], OUTPUT);
 				if (IsUseEN2(i)) CHAL::pinMode(_pinenable[i][1], OUTPUT);
 			}
+
+			if (ToReferenceId(i, true) != 0)  CHAL::pinMode(_pinenable[i][1], _referenceOn==LOW ? INPUT_PULLUP : INPUT);
+			if (ToReferenceId(i, false) != 0) CHAL::pinMode(_pinenable[i][1], _referenceOn==LOW ? INPUT_PULLUP : INPUT);
 		}
 	}
 
@@ -114,27 +125,32 @@ void  CStepperL298N::Step(const unsigned char steps[NUM_AXIS], axisArray_t direc
 
 void CStepperL298N::SetEnable(axis_t axis, unsigned char level, bool  force)
 {
-	if (Is2Pin(axis))	return;			// 2PIN and no enable => can't be turned off
-
-	if (IsUseEN1(axis))
+	if (IsActive(axis))
 	{
-		CHAL::digitalWrite(_pinenable[axis][0], level != LevelOff ? HIGH : LOW);
-		if (IsUseEN2(axis)) CHAL::digitalWrite(_pinenable[axis][1], level != LevelOff ? HIGH : LOW);
-	}
-	else
-	{
-		if (level == LevelOff)
+		if (IsUseEN1(axis))
 		{
-			// 4 PIN => set all to off
-
-			CHAL::digitalWrite(_pin[axis][0], LOW);
-			CHAL::digitalWrite(_pin[axis][1], LOW);
-			CHAL::digitalWrite(_pin[axis][2], LOW);
-			CHAL::digitalWrite(_pin[axis][3], LOW);
+			CHAL::digitalWrite(_pinenable[axis][0], level != LevelOff ? HIGH : LOW);
+			if (IsUseEN2(axis)) CHAL::digitalWrite(_pinenable[axis][1], level != LevelOff ? HIGH : LOW);
 		}
-		else if (force)
+		else if (Is2Pin(axis))
 		{
-			SetPhase(axis);
+			// 2PIN and no enable => can't be turned off
+		}
+		else
+		{
+			if (level == LevelOff)
+			{
+				// 4 PIN => set all to off
+
+				CHAL::digitalWrite(_pin[axis][0], LOW);
+				CHAL::digitalWrite(_pin[axis][1], LOW);
+				CHAL::digitalWrite(_pin[axis][2], LOW);
+				CHAL::digitalWrite(_pin[axis][3], LOW);
+			}
+			else if (force)
+			{
+				SetPhase(axis);
+			}
 		}
 	}
 }
@@ -143,10 +159,15 @@ void CStepperL298N::SetEnable(axis_t axis, unsigned char level, bool  force)
 
 unsigned char CStepperL298N::GetEnable(axis_t axis)
 {
-	if (Is2Pin(axis))	return LevelMax;		// 2PIN and no enable => can't be turned off
+	if (!IsActive(axis)) return LevelOff;
 
 	if (IsUseEN1(axis))
-		return ConvertLevel(CHAL::digitalRead(_pinenable[axis][0]) != LOW);
+	{
+		return ConvertLevel(CHAL::digitalRead(_pinenable[axis][0]) != LOW && 
+							(IsUseEN2(axis) ? CHAL::digitalRead(_pinenable[axis][1]) != LOW : true));
+	}
+
+	if (Is2Pin(axis))	return LevelMax;		// 2PIN and no enable => can't be turned off
 
 	// no enable PIN => with 4 PIN test if one PIN is set
 
@@ -189,4 +210,25 @@ void CStepperL298N::SetPhase(axis_t axis)
 	}
 }
 
+////////////////////////////////////////////////////////
 
+bool  CStepperL298N::IsReference(unsigned char referenceid)
+{
+	if (_pinRef[referenceid] != 0)
+		return CHAL::digitalRead(_pinRef[referenceid]) == _referenceOn;
+
+	return false;
+}
+
+////////////////////////////////////////////////////////
+
+bool  CStepperL298N::IsAnyReference()
+{
+	for (axis_t axis = 0; axis < NUM_AXIS; axis++)
+	{
+		if ((_useReference[axis * 2] && _pinRef[axis * 2]         && CHAL::digitalRead(_pinRef[axis * 2]) == _referenceOn) ||
+			(_useReference[axis * 2 + 1] && _pinRef[axis * 2 + 1] && CHAL::digitalRead(_pinRef[axis * 2 + 1]) == _referenceOn))
+			return true;
+	}
+	return false;
+}

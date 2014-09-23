@@ -38,3 +38,4 @@ public:
 static int u8g_font_unifont;
 static int u8g_font_unifontr;
 static int u8g_font_6x12;
+static int u8g_font_6x10;
