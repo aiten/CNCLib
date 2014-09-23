@@ -629,12 +629,16 @@ void CGCodeParser::ToolSelectCommand()
 	toolnr_t tool = GetUInt16();
 	if (IsError()) return;
 
+#ifndef REDUCED_SIZE
+
 	if (!CGCodeTools::GetInstance()->IsValidTool(tool))
 	{
 		Info(MESSAGE_GCODE_NoValidTool);
 	}
 
 	_modalstate.ToolSelected = tool;
+
+#endif
 }
 
 void CGCodeParser::SpindleSpeedCommand()
@@ -1217,11 +1221,13 @@ void CGCodeParser::G43Command()
 		toolnr_t tool = GetUint16OrParam();
 		if (IsError()) return;
 
+#ifndef REDUCED_SIZE
 		if (!CGCodeTools::GetInstance()->IsValidTool(tool))
 		{
 			Error(MESSAGE_GCODE_NoValidTool); return;
 		}
 		_modalstate.ToolHeigtCompensation = CGCodeTools::GetInstance()->GetHeight(tool);
+#endif
 	}
 	else
 	{
