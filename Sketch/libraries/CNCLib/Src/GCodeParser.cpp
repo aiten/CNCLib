@@ -247,6 +247,8 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo)
 	if (IsModifyParam(paramNo))
 		return _modalstate.Parameter[paramNo - 1];
 
+#ifndef REDUCED_SIZE
+		
 	axis_t axis;
 
 	if (IsG28HomeParam(paramNo,axis))
@@ -271,6 +273,8 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo)
 	if (IsDecParam(paramNo, axis))				return CStepper::GetInstance()->GetDec(axis);
 	if (IsJerkParam(paramNo, axis))				return CStepper::GetInstance()->GetJerkSpeed(axis);
 
+#endif	
+	
 	Error(MESSAGE_GCODE_ParameterNotFound);
 	return 0;
 }
@@ -279,6 +283,7 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo)
 
 void CGCodeParser::SetParamValue(param_t paramNo)
 {
+#ifndef REDUCED_SIZE
 	CGCodeExpressionParser exprpars(this);
 	exprpars.Parse();
 	if (exprpars.IsError())
@@ -289,6 +294,8 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 		mm1000_t mm1000 = CMotionControl::FromDouble(exprpars.Answer);
 
 		if (IsModifyParam(paramNo))				{	_modalstate.Parameter[paramNo - 1] = mm1000;	}
+
+	
 		else if (IsBacklashParam(paramNo,axis))	{	CStepper::GetInstance()->SetBacklash(axis,GetParamAsMaschine(mm1000, axis));	}
 		else if (IsBacklashFeedrateParam(paramNo)){	CStepper::GetInstance()->SetBacklash((steprate_t) CMotionControl::ToMachine(0, mm1000*60));		}
 		else if (IsControllerFanParam(paramNo))	{	CControl::GetInstance()->IOControl(CControl::ControllerFan,(unsigned short)exprpars.Answer);	}
@@ -298,6 +305,7 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 		else if (IsAccParam(paramNo,axis))		{	CStepper::GetInstance()->SetAcc(axis,(steprate_t) mm1000);	}
 		else if (IsDecParam(paramNo,axis))		{	CStepper::GetInstance()->SetDec(axis,(steprate_t) mm1000);	}
 		else if (IsJerkParam(paramNo,axis))		{	CStepper::GetInstance()->SetJerkSpeed(axis,(steprate_t) mm1000);	}
+
 		else
 		{
 			Error(MESSAGE_GCODE_UnspportedParameterNumber);	return;
@@ -306,6 +314,11 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 		// rest of line only comment allowed!
 		ExpectEndOfCommand();
 	}
+#else
+
+	Error(MESSAGE_GCODE_UnspportedParameterNumber);	return;
+
+#endif
 }
 
 ////////////////////////////////////////////////////////////

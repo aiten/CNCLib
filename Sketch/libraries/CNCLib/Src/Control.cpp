@@ -49,9 +49,13 @@ void CControl::Init()
 	CStepper::GetInstance()->Init();
 	CStepper::GetInstance()->AddEvent(MyStepperEvent, this, _oldStepperEvent, _oldStepperEventParam);
 
+#ifndef REDUCED_SIZE
+	
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->Init();
 
+#endif
+		
 	CHAL::pinMode(BLINK_LED, OUTPUT);
 
 	CHAL::InitTimer0(HandleInterrupt);
@@ -98,10 +102,13 @@ void CControl::Continue()
 
 ////////////////////////////////////////////////////////////
 
+
 void CControl::Idle(unsigned int idletime)
 {
+#ifndef REDUCED_SIZE
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->Idle(idletime);
+#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -369,8 +376,12 @@ void CControl::TimerInterrupt()
 {
 	CHAL::EnableInterrupts();	// enable irq for timer1 (Stepper)
 
+#ifndef REDUCED_SIZE
+
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->TimerInterrupt();
+
+#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -381,8 +392,10 @@ void CControl::Delay(unsigned long ms)
 
 	while (expected_end > millis())
 	{
+#ifndef REDUCED_SIZE
 		if (CLcd::GetInstance())
 			CLcd::GetInstance()->Idle(0);
+#endif
 	}
 }
 
@@ -390,6 +403,7 @@ void CControl::Delay(unsigned long ms)
 
 bool CControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, unsigned char addinfo)
 {
+#ifndef REDUCED_SIZE
 	switch (eventtype)
 	{
 		case CStepper::OnWaitEvent:
@@ -398,6 +412,6 @@ bool CControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEve
 				CLcd::GetInstance()->DrawRequest(false, CLcd::DrawStepperPos);
 			break;
 	}
-
+#endif
 	return _oldStepperEvent ? _oldStepperEvent(stepper, _oldStepperEventParam, eventtype, addinfo) : true;
 }
