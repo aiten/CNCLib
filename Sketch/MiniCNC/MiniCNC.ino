@@ -26,8 +26,8 @@
 // => see Configuration_ProxxonMF70.h
 
 //CStepperL298N Stepper;
-CStepperSMC800 Stepper;
-//CStepperTB6560 Stepper;
+//CStepperSMC800 Stepper;
+CStepperTB6560 Stepper;
 
 ////////////////////////////////////////////////////////////
 

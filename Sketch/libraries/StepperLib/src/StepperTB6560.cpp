@@ -65,11 +65,11 @@ void CStepperTB6560::Init()
 */
 #pragma warning( disable : 4127 )
 
-	HALFastdigitalWrite(TB6560_X_STEP_PIN, TB6560_PINON);
-	HALFastdigitalWrite(TB6560_Y_STEP_PIN, TB6560_PINON);
-	HALFastdigitalWrite(TB6560_Z_STEP_PIN, TB6560_PINON);
-//	HALFastdigitalWrite(TB6560_A_STEP_PIN, TB6560_PINON);
-//	HALFastdigitalWrite(TB6560_B_STEP_PIN, TB6560_PINON);
+	HALFastdigitalWrite(TB6560_X_STEP_PIN, TB6560_PIN_STEP_ON);
+	HALFastdigitalWrite(TB6560_Y_STEP_PIN, TB6560_PIN_STEP_ON);
+	HALFastdigitalWrite(TB6560_Z_STEP_PIN, TB6560_PIN_STEP_ON);
+//	HALFastdigitalWrite(TB6560_A_STEP_PIN, TB6560_PIN_STEP_ON);
+//	HALFastdigitalWrite(TB6560_B_STEP_PIN, TB6560_PIN_STEP_ON);
 
 #pragma warning( default : 4127 )
 
@@ -81,7 +81,7 @@ void CStepperTB6560::Init()
 
 void CStepperTB6560::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
 {
-#define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,TB6560_PINOFF); else HALFastdigitalWriteNC(dirpin,TB6560_PINON);
+#define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,TB6560_PIN_DIR_OFF); else HALFastdigitalWriteNC(dirpin,TB6560_PIN_DIR_ON);
 
 	SETDIR(X_AXIS, TB6560_X_DIR_PIN);
 	SETDIR(Y_AXIS, TB6560_Y_DIR_PIN);
@@ -92,19 +92,19 @@ void CStepperTB6560::Step(const unsigned char steps[NUM_AXIS], unsigned char dir
 	for (unsigned char cnt=0;;cnt++)
 	{
 		register bool have=false;
-		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_X_STEP_PIN,TB6560_PINON); have = true; }
-		if (steps[Y_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_Y_STEP_PIN,TB6560_PINON); have = true; }
-		if (steps[Z_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_Z_STEP_PIN,TB6560_PINON); have = true; }
-//		if (steps[A_AXIS] > cnt) { HALFastdigitalWriteNC(TB6560_A_STEP_PIN,TB6560_PINON); have = true; }
-//		if (steps[B_AXIS] > cnt) { HALFastdigitalWriteNC(TB6560_B_STEP_PIN,TB6560_PINON); have = true; }
+		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_X_STEP_PIN,TB6560_PIN_STEP_ON); have = true; }
+		if (steps[Y_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_Y_STEP_PIN,TB6560_PIN_STEP_ON); have = true; }
+		if (steps[Z_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_Z_STEP_PIN,TB6560_PIN_STEP_ON); have = true; }
+//		if (steps[A_AXIS] > cnt) { HALFastdigitalWriteNC(TB6560_A_STEP_PIN,TB6560_PIN_STEP_ON); have = true; }
+//		if (steps[B_AXIS] > cnt) { HALFastdigitalWriteNC(TB6560_B_STEP_PIN,TB6560_PIN_STEP_ON); have = true; }
 
 		CHAL::delayMicroseconds(7);
 
-		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_X_STEP_PIN,TB6560_PINOFF); }
-		if (steps[Y_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_Y_STEP_PIN,TB6560_PINOFF);  }
-		if (steps[Z_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_Z_STEP_PIN,TB6560_PINOFF);  }
-//		if (steps[A_AXIS] > cnt) { HALFastdigitalWriteNC(TB6560_A_STEP_PIN,TB6560_PINOFF); }
-//		if (steps[B_AXIS] > cnt) { HALFastdigitalWriteNC(TB6560_B_STEP_PIN,TB6560_PINOFF); }
+		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_X_STEP_PIN,TB6560_PIN_STEP_OFF); }
+		if (steps[Y_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_Y_STEP_PIN,TB6560_PIN_STEP_OFF);  }
+		if (steps[Z_AXIS] > cnt)  { HALFastdigitalWriteNC(TB6560_Z_STEP_PIN,TB6560_PIN_STEP_OFF);  }
+//		if (steps[A_AXIS] > cnt) { HALFastdigitalWriteNC(TB6560_A_STEP_PIN,TB6560_PIN_STEP_OFF); }
+//		if (steps[B_AXIS] > cnt) { HALFastdigitalWriteNC(TB6560_B_STEP_PIN,TB6560_PIN_STEP_OFF); }
 
 		if (!have) break;
 
@@ -119,7 +119,7 @@ void CStepperTB6560::Step(const unsigned char steps[NUM_AXIS], unsigned char dir
 void CStepperTB6560::SetEnable(axis_t axis, unsigned char level, bool /* force */)
 {
 
-#define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,TB6560_PINON);	else	HALFastdigitalWrite(pin,TB6560_PINOFF);
+#define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,TB6560_PIN_ENABLE_ON);	else	HALFastdigitalWrite(pin,TB6560_PIN_ENABLE_OFF);
 	switch (axis)
 	{
 #pragma warning( disable : 4127 )
@@ -140,11 +140,11 @@ unsigned char CStepperTB6560::GetEnable(axis_t axis)
 	switch (axis)
 	{
 #pragma warning( disable : 4127 )
-		case X_AXIS:  return ConvertLevel(HALFastdigitalRead(TB6560_X_ENABLE_PIN) == TB6560_PINON);
-		case Y_AXIS:  return ConvertLevel(HALFastdigitalRead(TB6560_Y_ENABLE_PIN) == TB6560_PINON);
-		case Z_AXIS:  return ConvertLevel(HALFastdigitalRead(TB6560_Z_ENABLE_PIN) == TB6560_PINON);
-//		case A_AXIS: return ConvertLevel(HALFastdigitalRead(TB6560_A_ENABLE_PIN) == TB6560_PINON);
-//		case B_AXIS: return ConvertLevel(HALFastdigitalRead(TB6560_B_ENABLE_PIN) == TB6560_PINNF);
+		case X_AXIS:  return ConvertLevel(HALFastdigitalRead(TB6560_X_ENABLE_PIN) == TB6560_PIN_ENABLE_ON);
+		case Y_AXIS:  return ConvertLevel(HALFastdigitalRead(TB6560_Y_ENABLE_PIN) == TB6560_PIN_ENABLE_ON);
+		case Z_AXIS:  return ConvertLevel(HALFastdigitalRead(TB6560_Z_ENABLE_PIN) == TB6560_PIN_ENABLE_ON);
+//		case A_AXIS: return ConvertLevel(HALFastdigitalRead(TB6560_A_ENABLE_PIN) == TB6560_PIN_ENABLE_ON);
+//		case B_AXIS: return ConvertLevel(HALFastdigitalRead(TB6560_B_ENABLE_PIN) == TB6560_PIN_ENABLE_ON);
 #pragma warning( default : 4127 )
 	}
 	return 0;

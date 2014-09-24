@@ -73,11 +73,11 @@ void CStepperRamps14::Init()
 
 #pragma warning( disable : 4127 )
 
-	HALFastdigitalWrite(RAMPS14_X_STEP_PIN, RAMPS14_PINON);
-	HALFastdigitalWrite(RAMPS14_Y_STEP_PIN, RAMPS14_PINON);
-	HALFastdigitalWrite(RAMPS14_Z_STEP_PIN, RAMPS14_PINON);
-	HALFastdigitalWrite(RAMPS14_E0_STEP_PIN, RAMPS14_PINON);
-	HALFastdigitalWrite(RAMPS14_E1_STEP_PIN, RAMPS14_PINON);
+	HALFastdigitalWrite(RAMPS14_X_STEP_PIN, RAMPS14_PIN_STEP_ON);
+	HALFastdigitalWrite(RAMPS14_Y_STEP_PIN, RAMPS14_PIN_STEP_ON);
+	HALFastdigitalWrite(RAMPS14_Z_STEP_PIN, RAMPS14_PIN_STEP_ON);
+	HALFastdigitalWrite(RAMPS14_E0_STEP_PIN, RAMPS14_PIN_STEP_ON);
+	HALFastdigitalWrite(RAMPS14_E1_STEP_PIN, RAMPS14_PIN_STEP_ON);
 
 #pragma warning( default : 4127 )
 
@@ -110,7 +110,7 @@ void CStepperRamps14::Step(const unsigned char steps[NUM_AXIS], axisArray_t dire
 
 #endif
 
-#define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,RAMPS14_PINOFF); else HALFastdigitalWriteNC(dirpin,RAMPS14_PINON);
+#define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,RAMPS14_PIN_DIR_OFF); else HALFastdigitalWriteNC(dirpin,RAMPS14_PIN_DIR_ON);
 
 	SETDIR(X_AXIS, RAMPS14_X_DIR_PIN);
 	SETDIR(Y_AXIS, RAMPS14_Y_DIR_PIN);
@@ -121,19 +121,19 @@ void CStepperRamps14::Step(const unsigned char steps[NUM_AXIS], axisArray_t dire
 	for (unsigned char cnt=0;;cnt++)
 	{
 		register bool have=false;
-		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_X_STEP_PIN, RAMPS14_PINOFF); have = true; }
-		if (steps[Y_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_Y_STEP_PIN, RAMPS14_PINOFF); have = true; }
-		if (steps[Z_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_Z_STEP_PIN, RAMPS14_PINOFF); have = true; }
-		if (steps[E0_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_E0_STEP_PIN, RAMPS14_PINOFF); have = true; }
-		if (steps[E1_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_E1_STEP_PIN, RAMPS14_PINOFF); have = true; }
+		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_X_STEP_PIN, RAMPS14_PIN_STEP_OFF); have = true; }
+		if (steps[Y_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_Y_STEP_PIN, RAMPS14_PIN_STEP_OFF); have = true; }
+		if (steps[Z_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_Z_STEP_PIN, RAMPS14_PIN_STEP_OFF); have = true; }
+		if (steps[E0_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_E0_STEP_PIN, RAMPS14_PIN_STEP_OFF); have = true; }
+		if (steps[E1_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_E1_STEP_PIN, RAMPS14_PIN_STEP_OFF); have = true; }
 
 		NOPREQUIRED_1();
 
-		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_X_STEP_PIN, RAMPS14_PINON); }
-		if (steps[Y_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_Y_STEP_PIN, RAMPS14_PINON); }
-		if (steps[Z_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_Z_STEP_PIN, RAMPS14_PINON); }
-		if (steps[E0_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_E0_STEP_PIN, RAMPS14_PINON); }
-		if (steps[E1_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_E1_STEP_PIN, RAMPS14_PINON); }
+		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_X_STEP_PIN, RAMPS14_PIN_STEP_ON); }
+		if (steps[Y_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_Y_STEP_PIN, RAMPS14_PIN_STEP_ON); }
+		if (steps[Z_AXIS] > cnt)  { HALFastdigitalWriteNC(RAMPS14_Z_STEP_PIN, RAMPS14_PIN_STEP_ON); }
+		if (steps[E0_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_E0_STEP_PIN, RAMPS14_PIN_STEP_ON); }
+		if (steps[E1_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_E1_STEP_PIN, RAMPS14_PIN_STEP_ON); }
 
 		if (!have) break;
 
@@ -148,7 +148,7 @@ void CStepperRamps14::Step(const unsigned char steps[NUM_AXIS], axisArray_t dire
 void CStepperRamps14::SetEnable(axis_t axis, unsigned char level, bool /* force */)
 {
 
-#define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,RAMPS14_PINOFF);	else	HALFastdigitalWrite(pin,RAMPS14_PINON);
+#define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,RAMPS14_PIN_ENABLE_OFF);	else	HALFastdigitalWrite(pin,RAMPS14_PIN_ENABLE_ON);
 	switch (axis)
 	{
 #pragma warning( disable : 4127 )
@@ -169,11 +169,11 @@ unsigned char CStepperRamps14::GetEnable(axis_t axis)
 	switch (axis)
 	{
 #pragma warning( disable : 4127 )
-		case X_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPS14_X_ENABLE_PIN) == RAMPS14_PINOFF);
-		case Y_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPS14_Y_ENABLE_PIN) == RAMPS14_PINOFF);
-		case Z_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPS14_Z_ENABLE_PIN) == RAMPS14_PINOFF);
-		case E0_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPS14_E0_ENABLE_PIN) == RAMPS14_PINOFF);
-		case E1_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPS14_E1_ENABLE_PIN) == RAMPS14_PINOFF);
+		case X_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPS14_X_ENABLE_PIN) == RAMPS14_PIN_ENABLE_OFF);
+		case Y_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPS14_Y_ENABLE_PIN) == RAMPS14_PIN_ENABLE_OFF);
+		case Z_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPS14_Z_ENABLE_PIN) == RAMPS14_PIN_ENABLE_OFF);
+		case E0_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPS14_E0_ENABLE_PIN) == RAMPS14_PIN_ENABLE_OFF);
+		case E1_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPS14_E1_ENABLE_PIN) == RAMPS14_PIN_ENABLE_OFF);
 #pragma warning( default : 4127 )
 	}
 	return 0;

@@ -7,7 +7,10 @@
 
 CStepperTB6560 Stepper;
 
-#define DEFSPEED steprate_t(25500)  // tested by try and errror
+//#define DEFSPEED steprate_t(25500)  // tested by try and errror
+#define DEFSPEED steprate_t(15500)  // tested by try and errror
+
+#define TESTAXIS 1
 
 //////////////////////////////////////////////////////////////////////
 
@@ -59,7 +62,7 @@ static void WaitBusy()
   }
   Stepper.WaitBusy();
 
-  delay(1200);
+  delay(1500);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -86,7 +89,7 @@ static void Test1()
     { 0 }
   };
 
-  for (axis_t axis = 0;axis<3;axis++)
+  for (axis_t axis = 0;axis<TESTAXIS;axis++)
   {
     for (register unsigned char i=0;mv[i].dist != 0; i++)
     {

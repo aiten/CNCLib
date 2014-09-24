@@ -21,8 +21,15 @@
 
 ////////////////////////////////////////////////////////
 
-#define RAMPSFD_PINOFF 0
-#define RAMPSFD_PINON 1
+#define RAMPSFD_PIN_STEP_OFF 0
+#define RAMPSFD_PIN_STEP_ON 1
+
+#define RAMPSFD_PIN_ENABLE_OFF 0
+#define RAMPSFD_PIN_ENABLE_ON 1
+
+#define RAMPSFD_PIN_DIR_OFF 0
+#define RAMPSFD_PIN_DIR_ON 1
+
 
 ////////////////////////////////////////////////////////
 
