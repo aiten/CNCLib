@@ -220,12 +220,12 @@ steprate_t CMotionControl::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate_t f
 	}
 	else
 	{
-
 		mm1000_t maxdist = 0;
 		mm1000_t sum = 0;
+		mm1000_t sumOverRun = 0;
 		bool useOverrun = false;
 
-		for (register axis_t x = 0; x < NUM_AXIS && !useOverrun; x++)
+		for (register axis_t x = 0; x < NUM_AXIS; x++)
 		{
 			mm1000_t dist = GetPosition(x);
 			dist = to[x] > dist ? (to[x] - dist) : (dist - to[x]);
@@ -238,16 +238,17 @@ steprate_t CMotionControl::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate_t f
 					maxdist = dist;
 				}
 
-				if (dist > 0xffff)
-					useOverrun = true;
+				if (dist > 0xffff) useOverrun = true;
 				else
 				{
 					mm1000_t oldsum = sum;
 					sum += dist*dist;
-					useOverrun = oldsum > sum;
+					useOverrun |= oldsum > sum;
 				}
+				sumOverRun += (dist / AvoidOverrun)*(dist / AvoidOverrun);
 			}
 		}
+/*
 		if (useOverrun)
 		{
 			maxdist = 0;
@@ -269,10 +270,10 @@ steprate_t CMotionControl::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate_t f
 				}
 			}
 		}
-
+*/
 		if (maxdist > 0)
 		{
-			sum = _ulsqrt_round(sum);
+			sum = _ulsqrt_round(useOverrun ? sumOverRun : sum);
 			// remark: maxdist < sum
 			if (!useOverrun && maxdist > 1024)		// avoid overrun: feedrate * maxdist
 			{
