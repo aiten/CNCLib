@@ -82,7 +82,9 @@ void CStepper::InitMemVar()
 	_useReference[2] = true;
 	_useReference[4] = true;
 
-	SetUsual(28000);
+//	SetUsual(28000);
+	SetDefaultMaxSpeed(28000, 350, 380);
+	for (axis_t i = 0; i < NUM_AXIS; i++) { SetJerkSpeed(i, 1000); }
 
 #ifdef _MSC_VER
 	MSCInfo = "";

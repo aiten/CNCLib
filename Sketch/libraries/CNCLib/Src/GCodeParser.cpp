@@ -115,8 +115,11 @@ char CGCodeParser::SkipSpacesOrComment()
 		case '(':	
 		{
 			char*start = (char*)_reader->GetBuffer();
-			bool isMsg=TryToken(start,F("(MSG,"), false, true);
-			SkipCommentNested(); 
+#ifndef REDUCED_SIZE
+			bool isMsg = TryToken(start, F("(MSG,"), false, true);
+#endif
+			SkipCommentNested();
+#ifndef REDUCED_SIZE
 			if (isMsg)
 			{
 				start += 5;
@@ -124,6 +127,7 @@ char CGCodeParser::SkipSpacesOrComment()
 					StepperSerial.print(*(start++));
 				StepperSerial.println();
 			}
+#endif
 			break;
 		}
 		case '*':
@@ -137,6 +141,8 @@ char CGCodeParser::SkipSpacesOrComment()
 
 param_t CGCodeParser::ParseParamNo()
 {
+#ifndef REDUCED_SIZE
+
 	if (_reader->SkipSpacesToUpper() == '<')		// named parameter
 	{
 		_reader->GetNextChar();
@@ -179,6 +185,8 @@ param_t CGCodeParser::ParseParamNo()
 		Error(MESSAGE_GCODE_ParameterDoesntExist);
 		return 0;
 	}
+
+#endif
 
 	if (IsUInt(_reader->GetChar()))
 	{
@@ -426,6 +434,8 @@ void CGCodeParser::Delay(unsigned long ms)
 
 mm1000_t CGCodeParser::GetG54PosPreset(axis_t axis)
 {
+#ifndef REDUCED_SIZE
+
 	switch (_modlessstate.ZeroPresetIdx)
 	{
 		//		default:
@@ -468,6 +478,7 @@ mm1000_t CGCodeParser::GetG54PosPreset(axis_t axis)
 			break;
 
 	}
+#endif
 
 	// no preset
 	return 0;
@@ -522,12 +533,14 @@ void CGCodeParser::Parse()
 				SpindleSpeedCommand();
 				break;
 			}
+#ifndef REDUCED_SIZE
 			case 'T':		// tool select
 			{
 				_reader->GetNextChar();
 				ToolSelectCommand();
 				break;
 			}
+#endif
 			case '#':
 			{
 				if (!IsUInt(_reader->GetNextChar()))
@@ -577,8 +590,10 @@ bool CGCodeParser::GCommand(unsigned char gcode)
 		case 1:		G0001Command(false); return true;
 		case 2:		G0203Command(true); return true;
 		case 3:		G0203Command(false); return true;
-		case 10:	G10Command(); return true;
 		case 4:		G04Command(); return true;
+#ifndef REDUCED_SIZE
+		case 10:	G10Command(); return true;
+#endif
 		case 17:	G171819Command(X_AXIS, Y_AXIS, Z_AXIS); return true;
 		case 18:	G171819Command(Z_AXIS, X_AXIS, Y_AXIS); return true;
 		case 19:	G171819Command(Y_AXIS, Z_AXIS, X_AXIS); return true;
@@ -588,27 +603,39 @@ bool CGCodeParser::GCommand(unsigned char gcode)
 		case 31:	G31Command(); return true;
 		case 53:	G53Command(); return true;
 		case 40:	G40Command(); return true;
+#ifndef REDUCED_SIZE
 		case 41:	G41Command(); return true;
 		case 42:	G42Command(); return true;
 		case 43:	G43Command(); return true;
+#endif
+#ifndef REDUCED_SIZE
 		case 52:	InfoNotImplemented(); return true;
+#endif
+#ifndef REDUCED_SIZE
 		case 54:	G5xCommand(1); return true;
 		case 55:	G5xCommand(2); return true;
 		case 56:	G5xCommand(3); return true;
 		case 57:	G5xCommand(4); return true;
 		case 58:	G5xCommand(5); return true;
 		case 59:	G5xCommand(6); return true;
+#endif
 		case 61:	G61Command(); return true;
 		case 64:	G64Command(); return true;
+#ifndef REDUCED_SIZE
 		case 73:	G73Command(); return true;
 		case 81:	G81Command(); return true;
 		case 82:	G82Command(); return true;
 		case 83:	G83Command(); return true;
+#endif
 		case 90:	G90Command(); return true;
+#ifndef REDUCED_SIZE
 		case 91:	G91Command(); return true;
+#endif
 		case 92:	G92Command(); return true;
+#ifndef REDUCED_SIZE
 		case 98:	G98Command(); return true;
 		case 99:	G99Command();  return true;
+#endif
 	}
 	return false;
 }
@@ -619,17 +646,21 @@ bool CGCodeParser::MCommand(unsigned char mcode)
 {
 	switch (mcode)
 	{
+#ifndef REDUCED_SIZE
 		case 0:	M00Command(); return true;
 		case 1:	M01Command(); return true;
 		case 2:	M02Command(); return true;
+#endif
 		case 3:	M03Command(); return true;
 		case 4:	M04Command(); return true;
 		case 5: M05Command(); return true;
+#ifndef REDUCED_SIZE
 		case 6: M06Command(); return true;
 		case 7: M07Command(); return true;
 		case 8: M08Command(); return true;
 		case 9: M09Command(); return true;
 		case 110:M110Command(); return true;
+#endif
 	}
 	return false;
 }
@@ -642,16 +673,12 @@ void CGCodeParser::ToolSelectCommand()
 	toolnr_t tool = GetUInt16();
 	if (IsError()) return;
 
-#ifndef REDUCED_SIZE
-
 	if (!CGCodeTools::GetInstance()->IsValidTool(tool))
 	{
 		Info(MESSAGE_GCODE_NoValidTool);
 	}
 
 	_modalstate.ToolSelected = tool;
-
-#endif
 }
 
 void CGCodeParser::SpindleSpeedCommand()
@@ -712,6 +739,7 @@ axis_t CGCodeParser::CharToAxis(char axis)
 		case 'X': return X_AXIS;
 		case 'Y': return Y_AXIS;
 		case 'Z': return Z_AXIS;
+#ifndef REDUCED_SIZE
 		case 'A': return A_AXIS;
 		case 'B': return B_AXIS;
 		case 'C': return C_AXIS;
@@ -719,6 +747,7 @@ axis_t CGCodeParser::CharToAxis(char axis)
 		case 'V': return V_AXIS;
 		case 'W': return W_AXIS;
 		case 'E': return B_AXIS;		// for 3dprinter
+#endif
 		default: return 255;
 	}
 }
@@ -925,10 +954,12 @@ bool CGCodeParser::LastCommand()
 		case SModalState::LastG01: G0001Command(false); break;
 		case SModalState::LastG02: G0203Command(true); break;
 		case SModalState::LastG03: G0203Command(true);  break;
+#ifndef REDUCED_SIZE
 		case SModalState::LastG73: G73Command();  break;
 		case SModalState::LastG81: G81Command();  break;
 		case SModalState::LastG82: G82Command(); break;
 		case SModalState::LastG83: G83Command(); break;
+#endif
 	}
 
 	if (old == _reader->GetBuffer())
@@ -1234,13 +1265,11 @@ void CGCodeParser::G43Command()
 		toolnr_t tool = GetUint16OrParam();
 		if (IsError()) return;
 
-#ifndef REDUCED_SIZE
 		if (!CGCodeTools::GetInstance()->IsValidTool(tool))
 		{
 			Error(MESSAGE_GCODE_NoValidTool); return;
 		}
 		_modalstate.ToolHeigtCompensation = CGCodeTools::GetInstance()->GetHeight(tool);
-#endif
 	}
 	else
 	{

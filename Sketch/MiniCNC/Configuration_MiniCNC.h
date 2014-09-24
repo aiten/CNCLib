@@ -57,5 +57,5 @@
 
 #include <MessageCNCLib.h>
 
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps 1.4 is starting ... ("__DATE__", "__TIME__")")
+#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC("__DATE__")")
 
