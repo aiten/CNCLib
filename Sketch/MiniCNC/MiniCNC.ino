@@ -1,3 +1,4 @@
+
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -24,7 +25,9 @@
 ////////////////////////////////////////////////////////////
 // => see Configuration_ProxxonMF70.h
 
-CStepperL298N Stepper;
+//CStepperL298N Stepper;
+CStepperSMC800 Stepper;
+//CStepperTB6560 Stepper;
 
 ////////////////////////////////////////////////////////////
 

@@ -78,9 +78,6 @@ void CStepper::InitMemVar()
 	_idleLevel = LevelOff;
 
 	memset(_useReference, 0, sizeof(_useReference));
-	_useReference[0] = true;
-	_useReference[2] = true;
-	_useReference[4] = true;
 
 //	SetUsual(28000);
 	SetDefaultMaxSpeed(28000, 350, 380);

@@ -25,6 +25,19 @@
 #define MESSAGE_INFO								F("Info: ")
 #define MESSAGE_WARNING								F("Warning: ")
 
+#ifdef REDUCED_SIZE
+
+#define MESSAGE_STEPPER_EmptyMoveSkipped			F("I1")
+#define MESSAGE_STEPPER_Backlash					F("I2")
+#define MESSAGE_STEPPER_IsAnyReference				F("I3")
+#define MESSAGE_STEPPER_RangeLimit					F("E1")
+#define MESSAGE_STEPPER_IsReferenceIsOn				F("E2")
+#define MESSAGE_STEPPER_MoveReferenceFailed			F("I4")
+
+#define MESSAGE_STEPPER_MoveAwayFromReference		F("I5")
+
+#else
+
 #define MESSAGE_STEPPER_EmptyMoveSkipped			F("EmptyMove skipped")
 #define MESSAGE_STEPPER_Backlash					F("Backlash")
 #define MESSAGE_STEPPER_IsAnyReference				F("IsAnyReference")
@@ -33,3 +46,5 @@
 #define MESSAGE_STEPPER_MoveReferenceFailed			F("MoveReference failed")
 
 #define MESSAGE_STEPPER_MoveAwayFromReference		F("Move away from reference")
+
+#endif

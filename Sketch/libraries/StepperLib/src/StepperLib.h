@@ -21,6 +21,7 @@
 #include "StepperRamps14.h"
 #include "StepperRampsFD.h"
 #include "StepperL298N.h"
+#include "StepperTB6560.h"
 #include "UtilitiesStepperLib.h"
 
 

@@ -26,17 +26,8 @@
 
 ////////////////////////////////////////////////////////
 
-#define SPEEDFACTOR 1
-#define SPEEDFACTOR_SQT 1
 #define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
-#define CONTROLLERFAN_FAN_PIN	12
-
-////////////////////////////////////////////////////////
-
-#define COOLANT_PIN	13
-
-#define COOLANT_ON  LOW
-#define COOLANT_OFF HIGH
+#define CONTROLLERFAN_FAN_PIN	10
 
 ////////////////////////////////////////////////////////
 
@@ -47,8 +38,7 @@
 
 ////////////////////////////////////////////////////////
 
-#define PROBE1_PIN	63
-#define PROBE2_PIN	64
+#define PROBE1_PIN	12
 
 #define PROBE_ON  LOW
 #define PROBE_OFF HIGH
@@ -57,5 +47,5 @@
 
 #include <MessageCNCLib.h>
 
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC("__DATE__")")
+#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC:"__DATE__)
 

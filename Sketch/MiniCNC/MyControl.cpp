@@ -48,24 +48,15 @@ void CMyControl::Init()
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
 	//  CStepper::GetInstance()->SetMaxSpeed(20000);
-	CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350*SPEEDFACTOR_SQT), steprate_t(350*SPEEDFACTOR_SQT));
+	//CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350*SPEEDFACTOR_SQT), steprate_t(350*SPEEDFACTOR_SQT));
 
 	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControl::ToMachine(X_AXIS,130000));
 	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,45000));
 	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,81000));
 
-	CStepper::GetInstance()->SetJerkSpeed(X_AXIS, SPEEDFACTOR*1000);
-	CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, SPEEDFACTOR*1000);
-	CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, SPEEDFACTOR*1000);
-
-	for (register unsigned char i = 0; i < NUM_AXIS * 2; i++)
-	{
-		CStepper::GetInstance()->UseReference(i, false);
-	}
-
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, false), true);
+	//CStepper::GetInstance()->SetJerkSpeed(X_AXIS, SPEEDFACTOR*1000);
+	//CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, SPEEDFACTOR*1000);
+	//CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, SPEEDFACTOR*1000);
 
 	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
 
@@ -127,7 +118,7 @@ void CMyControl::Initialized()
 void CMyControl::GoToReference()
 {
 	super::GoToReference();
-
+return;
 	GoToReference(Z_AXIS);
 	GoToReference(Y_AXIS);
 	GoToReference(X_AXIS);
@@ -137,23 +128,8 @@ void CMyControl::GoToReference()
 
 void CMyControl::GoToReference(axis_t axis)
 {
-#if defined(__SAM3X8E__)
-	if (axis == Z_AXIS)
-		CStepper::GetInstance()->SetPosition(axis, CStepper::GetInstance()->GetLimitMax(axis));
-	else
-		CStepper::GetInstance()->SetPosition(axis, 0);
-#else
-	if (axis == Z_AXIS)
-	{
-		// goto max
-		CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, false), false, STEPRATE_REFMOVE);
-	}
-	else
-	{
-		// goto min
-		CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, true), true, STEPRATE_REFMOVE);
-	}
-#endif
+	// goto min/max
+	CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, axis == Z_AXIS), axis == Z_AXIS, STEPRATE_REFMOVE);
 }
 
 ////////////////////////////////////////////////////////////

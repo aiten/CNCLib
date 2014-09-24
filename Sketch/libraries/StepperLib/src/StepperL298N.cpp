@@ -48,13 +48,16 @@ pin_t CStepperL298N::_pin[NUM_AXIS][4] =
 {
 	{ 2, 3, 4, 5 },
 	{ 6, 7, 8, 9 },
-	{}
+#if defined(__AVR_ATmega328P__)
+	{ 14, 15, 16, 17 }			// A0-A3
+#else
+	{ 54, 55, 56, 57 }			// A0-A3
+#endif
 };
 
 pin_t CStepperL298N::_pinenable[NUM_AXIS][2] =
 {
 	{ 0, 0 },		// 0 ... not used
-	{ 0, 0 },
 	{}
 };
 

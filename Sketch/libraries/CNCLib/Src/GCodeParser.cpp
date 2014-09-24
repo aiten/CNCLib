@@ -186,12 +186,12 @@ param_t CGCodeParser::ParseParamNo()
 		return 0;
 	}
 
-#endif
-
 	if (IsUInt(_reader->GetChar()))
 	{
 		return GetUInt16();
 	}
+
+#endif
 
 	Error(MESSAGE_GCODE_NoValidVaribaleName);;
 	return 0;
@@ -335,11 +335,15 @@ mm1000_t CGCodeParser::ParseCoordinate()
 {
 	_reader->SkipSpaces();
 
+#ifndef REDUCED_SIZE
+
 	if (_reader->GetChar() == '#')
 	{
 		_reader->GetNextChar();
 		return (mm1000_t)ParseParameter();
 	}
+
+#endif
 
 	if (_modalstate.UnitisMm)
 		return GetInt32Scale(COORD_MIN_MM, COORD_MAX_MM, COORD_SCALE_MM, COORD_MAXSCALE);
@@ -527,13 +531,13 @@ void CGCodeParser::Parse()
 				}
 				break;
 			}
+#ifndef REDUCED_SIZE
 			case 'S':		// spindle speed
 			{
 				_reader->GetNextChar();
 				SpindleSpeedCommand();
 				break;
 			}
-#ifndef REDUCED_SIZE
 			case 'T':		// tool select
 			{
 				_reader->GetNextChar();
@@ -602,34 +606,28 @@ bool CGCodeParser::GCommand(unsigned char gcode)
 		case 28:	G28Command(); return true;
 		case 31:	G31Command(); return true;
 		case 53:	G53Command(); return true;
-		case 40:	G40Command(); return true;
 #ifndef REDUCED_SIZE
+		case 40:	G40Command(); return true;
 		case 41:	G41Command(); return true;
 		case 42:	G42Command(); return true;
 		case 43:	G43Command(); return true;
-#endif
-#ifndef REDUCED_SIZE
 		case 52:	InfoNotImplemented(); return true;
-#endif
-#ifndef REDUCED_SIZE
 		case 54:	G5xCommand(1); return true;
 		case 55:	G5xCommand(2); return true;
 		case 56:	G5xCommand(3); return true;
 		case 57:	G5xCommand(4); return true;
 		case 58:	G5xCommand(5); return true;
 		case 59:	G5xCommand(6); return true;
-#endif
 		case 61:	G61Command(); return true;
 		case 64:	G64Command(); return true;
-#ifndef REDUCED_SIZE
 		case 73:	G73Command(); return true;
 		case 81:	G81Command(); return true;
 		case 82:	G82Command(); return true;
 		case 83:	G83Command(); return true;
 #endif
 		case 90:	G90Command(); return true;
-#ifndef REDUCED_SIZE
 		case 91:	G91Command(); return true;
+#ifndef REDUCED_SIZE
 #endif
 		case 92:	G92Command(); return true;
 #ifndef REDUCED_SIZE

@@ -73,6 +73,20 @@ public:
 	// mm1000_t => 2^31 = 2147483648 = 2147483.648 mm = 2147.483648m 
 	//
 	//
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// 
+	// 200 / 2-Stepper (halfstep) => 400 / rotation
+
+	// functions: 1 rotation(400Steps) = 1mm
+
+	static mm1000_t ToMm1000_1_400(axis_t /* axis */, sdist_t val)								{ return  RoundMulDivU32(val, 40, 16); }
+	static sdist_t  ToMachine_1_400(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 16, 40); }
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// 
+	// 200 / 16-Stepper => 3200 / rotation
+
 	// functions: 1 rotation(3200Steps) = 1mm
 
 	static mm1000_t ToMm1000_1_3200(axis_t /* axis */, sdist_t val)								{ return  RoundMulDivU32(val, 80, 256); }
@@ -100,6 +114,11 @@ public:
 
 	static mm1000_t ToMm1000_3_3200(axis_t /* axis */, sdist_t val)								{ return  MulDivU32(val, 240, 256); }
 	static sdist_t  ToMachine_3_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 256, 240); }
+
+	
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// 
+	// 200 / 32-Stepper => 6400 / rotation
 
 	// functions: 1 rotation(6400Steps) = 1mm
 
