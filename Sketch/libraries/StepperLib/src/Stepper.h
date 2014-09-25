@@ -102,50 +102,50 @@ public:
 	virtual void Init();
 	virtual void Remove();
 
-	bool IsError()												{ return _error != NULL; };
-	const __FlashStringHelper * GetError()						{ return _error; }
-	void ClearError()											{ _error = NULL; }
+	bool IsError()												{ return _pod._error != NULL; };
+	const __FlashStringHelper * GetError()						{ return _pod._error; }
+	void ClearError()											{ _pod._error = NULL; }
 
-	void SetMaxSpeed(axis_t axis, steprate_t vMax)				{ _timerMax[axis] = SpeedToTimer(vMax); }
-	void SetAcc(axis_t axis, steprate_t v0Acc)					{ _timerAcc[axis] = SpeedToTimer(v0Acc); }
-	void SetDec(axis_t axis, steprate_t v0Dec)					{ _timerDec[axis] = SpeedToTimer(v0Dec); }
+	void SetMaxSpeed(axis_t axis, steprate_t vMax)				{ _pod._timerMax[axis] = SpeedToTimer(vMax); }
+	void SetAcc(axis_t axis, steprate_t v0Acc)					{ _pod._timerAcc[axis] = SpeedToTimer(v0Acc); }
+	void SetDec(axis_t axis, steprate_t v0Dec)					{ _pod._timerDec[axis] = SpeedToTimer(v0Dec); }
 	void SetAccDec(axis_t axis, steprate_t v0Acc, steprate_t v0Dec) { SetAcc(axis, v0Acc); SetDec(axis, v0Dec); }
 
-	void SetDefaultMaxSpeed(steprate_t vMax)					{ _timerMaxDefault = SpeedToTimer(vMax); }
+	void SetDefaultMaxSpeed(steprate_t vMax)					{ _pod._timerMaxDefault = SpeedToTimer(vMax); }
 	void SetDefaultMaxSpeed(steprate_t vMax, steprate_t v0Acc, steprate_t v0Dec)				{ SetDefaultMaxSpeed(vMax); for (axis_t i = 0; i < NUM_AXIS; i++) { SetAcc(i, v0Acc); SetDec(i, v0Dec); } }
 	void SetDefaultMaxSpeed(steprate_t vMax, axis_t axis, steprate_t v0Acc, steprate_t v0Dec)	{ SetDefaultMaxSpeed(vMax); SetAccDec(axis, v0Acc, v0Dec); }
 
 	void SetUsual(steprate_t vMax);
 
-	void SetJerkSpeed(axis_t axis, steprate_t vMaxJerk)			{ _maxJerkSpeed[axis] = vMaxJerk; }
-	void SetStepMode(axis_t axis, EnumAsByte(EStepMode) stepMode){ _stepMode[axis] = stepMode; };
+	void SetJerkSpeed(axis_t axis, steprate_t vMaxJerk)			{ _pod._maxJerkSpeed[axis] = vMaxJerk; }
+	void SetStepMode(axis_t axis, EnumAsByte(EStepMode) stepMode){ _pod._stepMode[axis] = stepMode; };
 
-	void SetWaitFinishMove(bool wait)                           { _waitFinishMove = wait; };
-	bool IsWaitFinishMove() const								{ return _waitFinishMove; }
+	void SetWaitFinishMove(bool wait)                           { _pod._waitFinishMove = wait; };
+	bool IsWaitFinishMove() const								{ return _pod._waitFinishMove; }
 
-	void SetCheckForReference(bool check)                       { _checkReference = check; };
-	bool IsCheckForReference()  const							{ return _checkReference; }
+	void SetCheckForReference(bool check)                       { _pod._checkReference = check; };
+	bool IsCheckForReference()  const							{ return _pod._checkReference; }
 
-	void SetBacklash(steprate_t speed)			                { _timerbacklash = SpeedToTimer(speed); };
-	bool IsSetBacklash()  const									{ return ((timer_t)-1) != _timerbacklash; }
+	void SetBacklash(steprate_t speed)			                { _pod._timerbacklash = SpeedToTimer(speed); };
+	bool IsSetBacklash()  const									{ return ((timer_t)-1) != _pod._timerbacklash; }
 
-	bool IsBusy()  const										{ return _timerRunning; };
+	bool IsBusy()  const										{ return _pod._timerRunning; };
 	void WaitBusy();
 
 	bool CanQueueMovement()	 const								{ return !_movements._queue.IsFull(); }
 	unsigned char QueuedMovements()	 const						{ return _movements._queue.Count(); }
 
-	unsigned char GetEnableTimeout(axis_t axis) const			{ return _timeOutEnable[axis]; }
-	void SetEnableTimeout(axis_t axis, unsigned char sec) 		{ _timeOutEnable[axis] = sec; }
+	unsigned char GetEnableTimeout(axis_t axis) const			{ return _pod._timeOutEnable[axis]; }
+	void SetEnableTimeout(axis_t axis, unsigned char sec) 		{ _pod._timeOutEnable[axis] = sec; }
 
 #ifdef USESLIP
 	void SetSlip(int dist[NUM_AXIS]);
 #endif
 
-	void SetLimitMax(axis_t axis, udist_t limit)				{ _limitMax[axis] = limit; };
-	void SetLimitMin(axis_t axis, udist_t limit)				{ _limitMin[axis] = limit; };
+	void SetLimitMax(axis_t axis, udist_t limit)				{ _pod._limitMax[axis] = limit; };
+	void SetLimitMin(axis_t axis, udist_t limit)				{ _pod._limitMin[axis] = limit; };
 
-	void SetBacklash(axis_t axis, mdist_t dist)					{ _backlash[axis] = dist; }
+	void SetBacklash(axis_t axis, mdist_t dist)					{ _pod._backlash[axis] = dist; }
 
 	//////////////////////////////
 	// shortcut
@@ -155,8 +155,8 @@ public:
 	bool IsEmergencyStop()										{ return _emergencyStop; }
 	void EmergencyStopResurrect();
 
-	void UseReference(unsigned char referneceid, bool use)		{ _useReference[referneceid] = use; }
-	bool IsUseReference(unsigned char referneceid)				{ return _useReference[referneceid]; }
+	void UseReference(unsigned char referneceid, bool use)		{ _pod._useReference[referneceid] = use; }
+	bool IsUseReference(unsigned char referneceid)				{ return _pod._useReference[referneceid]; }
 	debugvirtula bool MoveReference(axis_t axis, unsigned char referenceid, bool toMin, steprate_t vMax, sdist_t maxdist = 0, sdist_t distToRef = 0, sdist_t distIfRefIsOn = 0);
 	void SetPosition(axis_t axis, udist_t pos);
 
@@ -173,27 +173,27 @@ public:
 
 	//////////////////////////////
 
-	const udist_t* GetPositions() const							{ return _calculatedpos; }
-	void GetPositions(udist_t pos[NUM_AXIS]) const				{ memcpy(pos, _calculatedpos, sizeof(_calculatedpos)); }
-	udist_t GetPosition(axis_t axis) const						{ return _calculatedpos[axis]; }
+	const udist_t* GetPositions() const							{ return _pod._calculatedpos; }
+	void GetPositions(udist_t pos[NUM_AXIS]) const				{ memcpy(pos, _pod._calculatedpos, sizeof(_pod._calculatedpos)); }
+	udist_t GetPosition(axis_t axis) const						{ return _pod._calculatedpos[axis]; }
 
-	void GetCurrentPositions(udist_t pos[NUM_AXIS]) const		{ CCriticalRegion crit; memcpy(pos, _current, sizeof(_current)); }
-	udist_t GetCurrentPosition(axis_t axis) const				{ CCriticalRegion crit; return (*((volatile udist_t*)&_current[axis])); }
+	void GetCurrentPositions(udist_t pos[NUM_AXIS]) const		{ CCriticalRegion crit; memcpy(pos, _pod._current, sizeof(_pod._current)); }
+	udist_t GetCurrentPosition(axis_t axis) const				{ CCriticalRegion crit; return (*((volatile udist_t*)&_pod._current[axis])); }
 
-	udist_t GetLimitMax(axis_t axis) const						{ return _limitMax[axis]; }
-	udist_t GetLimitMin(axis_t axis) const						{ return _limitMin[axis]; }
+	udist_t GetLimitMax(axis_t axis) const						{ return _pod._limitMax[axis]; }
+	udist_t GetLimitMin(axis_t axis) const						{ return _pod._limitMin[axis]; }
 
-	mdist_t GetBacklash(axis_t axis) const						{ return _backlash[axis]; }
-	axisArray_t GetLastDirection() const						{ return _lastdirection; }		// check for backlash
+	mdist_t GetBacklash(axis_t axis) const						{ return _pod._backlash[axis]; }
+	axisArray_t GetLastDirection() const						{ return _pod._lastdirection; }		// check for backlash
 
-	steprate_t GetDefaultVmax() const							{ return TimerToSpeed(_timerMaxDefault); }
-	steprate_t GetAcc(axis_t axis) const						{ return TimerToSpeed(_timerAcc[axis]); }
-	steprate_t GetDec(axis_t axis) const						{ return TimerToSpeed(_timerDec[axis]); }
-	steprate_t GetJerkSpeed(axis_t axis) const					{ return _maxJerkSpeed[axis]; }
+	steprate_t GetDefaultVmax() const							{ return TimerToSpeed(_pod._timerMaxDefault); }
+	steprate_t GetAcc(axis_t axis) const						{ return TimerToSpeed(_pod._timerAcc[axis]); }
+	steprate_t GetDec(axis_t axis) const						{ return TimerToSpeed(_pod._timerDec[axis]); }
+	steprate_t GetJerkSpeed(axis_t axis) const					{ return _pod._maxJerkSpeed[axis]; }
 
-	unsigned long GetTotalSteps() const							{ return _totalSteps; }
-	unsigned int GetTimerISRBuys() const						{ return _timerISRBusy; }
-	unsigned long IdleTime() const								{ return _timerStartOrOnIdle; }
+	unsigned long GetTotalSteps() const							{ return _pod._totalSteps; }
+	unsigned int GetTimerISRBuys() const						{ return _pod._timerISRBusy; }
+	unsigned long IdleTime() const								{ return _pod._timerStartOrOnIdle; }
 
 	void AddEvent(StepperEvent event, void* eventparam, StepperEvent& oldevent, void*& oldeventparam);
 
@@ -253,7 +253,7 @@ protected:
 
 	static unsigned char GetStepMultiplier(timer_t timermax);
 
-	void CallEvent(EnumAsByte(EStepperEvent) eventtype, unsigned char addinfo)			{ if (_event) _event(this, _eventparam, eventtype, addinfo); }
+	void CallEvent(EnumAsByte(EStepperEvent) eventtype, unsigned char addinfo)			{ if (_pod._event) _pod._event(this, _pod._eventparam, eventtype, addinfo); }
 
 protected:
 
@@ -263,55 +263,58 @@ protected:
 
 	static bool		_emergencyStop;
 
-	volatile bool	_timerRunning;
-	bool			_checkReference;							// check for "IsReference" in ISR (while normal move)
+	struct POD														// POD .. Plane Old Daty Type => no Constructor => init with default value = 0
+	{
+		volatile bool	_timerRunning;
+		bool			_checkReference;							// check for "IsReference" in ISR (while normal move)
 
-	bool			_waitFinishMove;
-	bool			_limitCheck;
+		bool			_waitFinishMove;
+		bool			_limitCheck;
 
-	timer_t			_timerbacklash;								// -1 or 0 for temporary enable/disable backlash without setting _backlash to 0
+		timer_t			_timerbacklash;								// -1 or 0 for temporary enable/disable backlash without setting _backlash to 0
 
-	unsigned long  _totalSteps;									// total steps since start
+		unsigned long  _totalSteps;									// total steps since start
 
-	unsigned int _timerISRBusy;									// ISR while in ISR
-	timer_t _timerMaxDefault;									// timervalue of vMax (if vMax = 0)
+		unsigned int _timerISRBusy;									// ISR while in ISR
+		timer_t _timerMaxDefault;									// timervalue of vMax (if vMax = 0)
 
-	udist_t _current[NUM_AXIS];									// update in ISR
-	udist_t _calculatedpos[NUM_AXIS];							// calculated in advanced (use movement queue)
+		udist_t _current[NUM_AXIS];									// update in ISR
+		udist_t _calculatedpos[NUM_AXIS];							// calculated in advanced (use movement queue)
 
-	bool _useReference[NUM_AXIS * 2];							// each axis min and max - used in ISR
+		bool _useReference[NUM_AXIS * 2];							// each axis min and max - used in ISR
 
-	steprate_t _maxJerkSpeed[NUM_AXIS];							// immediate change of speed without ramp (in junction)
+		steprate_t _maxJerkSpeed[NUM_AXIS];							// immediate change of speed without ramp (in junction)
 
-	timer_t _timerMax[NUM_AXIS];								// maximum speed of axis
-	timer_t _timerAcc[NUM_AXIS];								// acc timer start
-	timer_t _timerDec[NUM_AXIS];								// dec timer start
+		timer_t _timerMax[NUM_AXIS];								// maximum speed of axis
+		timer_t _timerAcc[NUM_AXIS];								// acc timer start
+		timer_t _timerDec[NUM_AXIS];								// dec timer start
 
-	udist_t _limitMin[NUM_AXIS];
-	udist_t _limitMax[NUM_AXIS];
+		udist_t _limitMin[NUM_AXIS];
+		udist_t _limitMax[NUM_AXIS];
 
-	mdist_t _backlash[NUM_AXIS];								// backlash of each axis (signed mdist_t/2)
+		mdist_t _backlash[NUM_AXIS];								// backlash of each axis (signed mdist_t/2)
 
-	EnumAsByte(EStepMode) _stepMode[NUM_AXIS];					// fullstep, half, ...
-	unsigned char _timeOutEnable[NUM_AXIS];						// enabletimeout in sec if no step (0.. disable, always enabled)
+		EnumAsByte(EStepMode) _stepMode[NUM_AXIS];					// fullstep, half, ...
+		unsigned char _timeOutEnable[NUM_AXIS];						// enabletimeout in sec if no step (0.. disable, always enabled)
 
-	unsigned long _timerStartOrOnIdle;							// timervalue if library start move or goes to Idle
-	unsigned long _timerLastCheckEnable;						// timervalue if library start move or goes to Idle
+		unsigned long _timerStartOrOnIdle;							// timervalue if library start move or goes to Idle
+		unsigned long _timerLastCheckEnable;						// timervalue if library start move or goes to Idle
 
-	unsigned char _idleLevel;									// level if idle (0..100)
-	axisArray_t	  _lastdirection;								// for backlash
+		unsigned char _idleLevel;									// level if idle (0..100)
+		axisArray_t	  _lastdirection;								// for backlash
 
-	const __FlashStringHelper * _error;
+		const __FlashStringHelper * _error;
 
-	StepperEvent	_event;										// event to function
-	void*			_eventparam;								// event to funktion-parameter
+		StepperEvent	_event;										// event to function
+		void*			_eventparam;								// event to funktion-parameter
 
-	unsigned char _timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
+		unsigned char _timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
 
 #ifdef USESLIP
-	unsigned int _slipSum[NUM_AXIS];
-	int _slip[NUM_AXIS];
+		unsigned int _slipSum[NUM_AXIS];
+		int _slip[NUM_AXIS];
 #endif
+	} _pod;
 
 	/////////////////////////////////////////////////////////////////////
 	// internal ringbuffer for steps (after calculating acc and dec)
@@ -378,11 +381,11 @@ protected:
 
 		stepperstatic CStepper* _pStepper;						// give access to stepper (not static if multiinstance)  
 
-		timer_t GetUpTimerAcc()									{ return _pStepper->_timerAcc[_upAxis]; }
-		timer_t GetUpTimerDec()									{ return _pStepper->_timerDec[_upAxis]; }
+		timer_t GetUpTimerAcc()									{ return _pStepper->_pod._timerAcc[_upAxis]; }
+		timer_t GetUpTimerDec()									{ return _pStepper->_pod._timerDec[_upAxis]; }
 
-		timer_t GetDownTimerAcc()								{ return _pStepper->_timerAcc[_downAxis]; }
-		timer_t GetDownTimerDec()								{ return _pStepper->_timerDec[_downAxis]; }
+		timer_t GetDownTimerAcc()								{ return _pStepper->_pod._timerAcc[_downAxis]; }
+		timer_t GetDownTimerDec()								{ return _pStepper->_pod._timerDec[_downAxis]; }
 
 		timer_t GetUpTimer(bool acc)							{ return acc ? GetUpTimerAcc() : GetUpTimerDec(); }
 		timer_t GetDownTimer(bool acc)							{ return acc ? GetDownTimerAcc() : GetDownTimerDec(); }
@@ -520,7 +523,7 @@ protected:
 	virtual void OnWarning(const __FlashStringHelper * warning);
 	virtual void OnInfo(const __FlashStringHelper * info);
 
-	void Error(const __FlashStringHelper * error)				{ _error = error; OnError(error); }
+	void Error(const __FlashStringHelper * error)				{ _pod._error = error; OnError(error); }
 	void Info(const __FlashStringHelper * info)					{ OnInfo(info); }
 	void Warning(const __FlashStringHelper * warning)			{ OnWarning(warning); }
 

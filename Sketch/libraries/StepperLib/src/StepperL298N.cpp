@@ -191,7 +191,7 @@ void CStepperL298N::SetPhase(axis_t axis)
 
 		if (Is4Pin(axis))
 		{
-			if (_stepMode[axis] == FullStep)
+			if (_pod._stepMode[axis] == FullStep)
 			{
 				bitmask = _L298Nfullstep4Pin[_stepIdx[axis] & 0x3];
 			}
@@ -229,8 +229,8 @@ bool  CStepperL298N::IsAnyReference()
 {
 	for (axis_t axis = 0; axis < NUM_AXIS; axis++)
 	{
-		if ((_useReference[axis * 2] && _pinRef[axis * 2]         && CHAL::digitalRead(_pinRef[axis * 2]) == _referenceOn) ||
-			(_useReference[axis * 2 + 1] && _pinRef[axis * 2 + 1] && CHAL::digitalRead(_pinRef[axis * 2 + 1]) == _referenceOn))
+		if ((_pod._useReference[axis * 2] && _pinRef[axis * 2] && CHAL::digitalRead(_pinRef[axis * 2]) == _referenceOn) ||
+			(_pod._useReference[axis * 2 + 1] && _pinRef[axis * 2 + 1] && CHAL::digitalRead(_pinRef[axis * 2 + 1]) == _referenceOn))
 			return true;
 	}
 	return false;

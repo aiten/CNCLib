@@ -232,12 +232,12 @@ bool  CStepperRampsFD::IsReference(unsigned char referenceid)
 bool  CStepperRampsFD::IsAnyReference()
 {
 	return	
-		(_useReference[0] && HALFastdigitalRead(RAMPSFD_X_MIN_PIN) == RAMPSFD_REF_ON) ||
-		(_useReference[1] && HALFastdigitalRead(RAMPSFD_X_MAX_PIN) == RAMPSFD_REF_ON) ||
-		(_useReference[2] && HALFastdigitalRead(RAMPSFD_Y_MIN_PIN) == RAMPSFD_REF_ON) ||
-		(_useReference[3] && HALFastdigitalRead(RAMPSFD_Y_MAX_PIN) == RAMPSFD_REF_ON) ||
-		(_useReference[4] && HALFastdigitalRead(RAMPSFD_Z_MIN_PIN) == RAMPSFD_REF_ON) ||
-		(_useReference[5] && HALFastdigitalRead(RAMPSFD_Z_MAX_PIN) == RAMPSFD_REF_ON);
+		(_pod._useReference[0] && HALFastdigitalRead(RAMPSFD_X_MIN_PIN) == RAMPSFD_REF_ON) ||
+		(_pod._useReference[1] && HALFastdigitalRead(RAMPSFD_X_MAX_PIN) == RAMPSFD_REF_ON) ||
+		(_pod._useReference[2] && HALFastdigitalRead(RAMPSFD_Y_MIN_PIN) == RAMPSFD_REF_ON) ||
+		(_pod._useReference[3] && HALFastdigitalRead(RAMPSFD_Y_MAX_PIN) == RAMPSFD_REF_ON) ||
+		(_pod._useReference[4] && HALFastdigitalRead(RAMPSFD_Z_MIN_PIN) == RAMPSFD_REF_ON) ||
+		(_pod._useReference[5] && HALFastdigitalRead(RAMPSFD_Z_MAX_PIN) == RAMPSFD_REF_ON);
 }
 
 ////////////////////////////////////////////////////////
