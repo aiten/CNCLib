@@ -21,14 +21,15 @@
 
 ////////////////////////////////////////////////////////
 
-#define TB6560_PIN_ENABLE_OFF 1
-#define TB6560_PIN_ENABLE_ON 0
+#define TB6560_PIN_DIR_OFF 0
+#define TB6560_PIN_DIR_ON 1
 
 #define TB6560_PIN_STEP_OFF 0
 #define TB6560_PIN_STEP_ON 1
 
-#define TB6560_PIN_DIR_OFF 0
-#define TB6560_PIN_DIR_ON 1
+// Enable: HIGH Active?
+#define TB6560_PIN_ENABLE_OFF 1
+#define TB6560_PIN_ENABLE_ON 0
 
 ////////////////////////////////////////////////////////
 

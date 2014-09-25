@@ -81,6 +81,8 @@ void CStepperTB6560::Init()
 
 void CStepperTB6560::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
 {
+// Step:   LOW to HIGH
+
 #define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,TB6560_PIN_DIR_OFF); else HALFastdigitalWriteNC(dirpin,TB6560_PIN_DIR_ON);
 
 	SETDIR(X_AXIS, TB6560_X_DIR_PIN);

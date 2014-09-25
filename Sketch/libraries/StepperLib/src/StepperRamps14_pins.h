@@ -27,8 +27,9 @@
 #define RAMPS14_PIN_DIR_OFF 0
 #define RAMPS14_PIN_DIR_ON 1
 
-#define RAMPS14_PIN_ENABLE_OFF 0
-#define RAMPS14_PIN_ENABLE_ON 1
+// Enable: LOW Active
+#define RAMPS14_PIN_ENABLE_OFF 1
+#define RAMPS14_PIN_ENABLE_ON 0
 
 ////////////////////////////////////////////////////////
 

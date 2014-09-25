@@ -1199,7 +1199,7 @@ void CStepper::StartBackground()
 
 	if (_backgroundactive)
 	{
-		_timerISRBusy++;
+		_pod._timerISRBusy++;
 	}
 	else
 	{

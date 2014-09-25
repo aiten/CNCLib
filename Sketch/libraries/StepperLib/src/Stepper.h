@@ -231,8 +231,6 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-	void InitMemVar();
-
 	timer_t GetTimer(mdist_t steps, timer_t timerstart);										// calc "speed" after steps with constant a (from v0 = 0)
 	timer_t GetTimerAccelerating(mdist_t steps, timer_t timerv0, timer_t timerstart);			// calc "speed" after steps accelerating with constant a 
 	timer_t GetTimerDecelerating(mdist_t steps, timer_t timer, timer_t timerstart);			// calc "speed" after steps decelerating with constant a 
@@ -564,6 +562,8 @@ protected:
 	static unsigned char ConvertLevel(bool enable)				{ return enable ? (unsigned char)(LevelMax) : (unsigned char)(LevelOff); }
 
 private:
+
+	void InitMemVar();
 
 	////////////////////////////////////////////////////////
 	// HAL

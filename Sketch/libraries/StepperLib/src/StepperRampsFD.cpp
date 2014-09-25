@@ -33,13 +33,6 @@
 
 CStepperRampsFD::CStepperRampsFD()
 {
-	InitMemVar();
-}
-
-////////////////////////////////////////////////////////
-
-void CStepperRampsFD::InitMemVar()
-{
 }
 
 ////////////////////////////////////////////////////////
@@ -100,7 +93,6 @@ void CStepperRampsFD::Init()
 	CHAL::pinMode(RAMPSFD_FET5D12_PIN, OUTPUT); HALFastdigitalWrite(RAMPSFD_FET5D12_PIN,0);
 	CHAL::pinMode(RAMPSFD_FET6D2_PIN,  OUTPUT); HALFastdigitalWrite(RAMPSFD_FET6D2_PIN,0);
 	
-	InitMemVar();
 	super::Init();
 }
 
@@ -111,6 +103,8 @@ void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], axisArray_t dire
 	// The timing requirements for minimum pulse durations on the STEP pin are different for the two drivers. 
 	// With the DRV8825, the high and low STEP pulses must each be at least 1.9 us; 
 	// they can be as short as 1 us when using the A4988.
+
+	// Step:   LOW to HIGH
 
 #if defined(USE_A4998)
 
@@ -170,7 +164,7 @@ void CStepperRampsFD::Step(const unsigned char steps[NUM_AXIS], axisArray_t dire
 void CStepperRampsFD::SetEnable(axis_t axis, unsigned char level, bool /* force */)
 {
 
-#define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,RAMPSFD_PIN_ENABLE_OFF);	else	HALFastdigitalWrite(pin,RAMPSFD_PIN_ENABLE_ON);
+#define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,RAMPSFD_PIN_ENABLE_ON);	else	HALFastdigitalWrite(pin,RAMPSFD_PIN_ENABLE_OFF);
 	switch (axis)
 	{
 #pragma warning( disable : 4127 )
@@ -192,12 +186,12 @@ unsigned char CStepperRampsFD::GetEnable(axis_t axis)
 	switch (axis)
 	{
 #pragma warning( disable : 4127 )
-		case X_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPSFD_X_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_OFF);
-		case Y_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPSFD_Y_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_OFF);
-		case Z_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPSFD_Z_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_OFF);
-		case E0_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPSFD_E0_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_OFF);
-		case E1_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPSFD_E1_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_OFF);
-		case E2_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPSFD_E2_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_OFF);
+		case X_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPSFD_X_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_ON);
+		case Y_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPSFD_Y_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_ON);
+		case Z_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPSFD_Z_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_ON);
+		case E0_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPSFD_E0_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_ON);
+		case E1_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPSFD_E1_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_ON);
+		case E2_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPSFD_E2_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_ON);
 #pragma warning( default : 4127 )
 	}
 	return 0;
