@@ -168,6 +168,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560_pins.h">
       <Filter>StepperLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeParserBase.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">
@@ -238,6 +241,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560.cpp">
       <Filter>StepperLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeParserBase.cpp">
+      <Filter>CNCLib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -23,6 +23,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ExpressionParser.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeExpressionParser.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeParser.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeParserBase.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeTools.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\HelpParser.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\LCD.h" />
@@ -68,6 +69,7 @@
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\ExpressionParser.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeExpressionParser.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeParser.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeParserBase.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeTools.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\HelpParser.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\LCD.cpp" />

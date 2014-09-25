@@ -25,7 +25,7 @@
 
 #include <CNCLib.h>
 
-#include <GCodeParser.h>
+#include <GCodeParserBase.h>
 #include "MyControl.h"
 
 ////////////////////////////////////////////////////////////
@@ -64,7 +64,7 @@ void CMyControl::Init()
 	_controllerfan.Init();
 
 	CProbeControl::Init();
-	CGCodeParser::Init();
+	CGCodeParserBase::Init();
 }
 
 ////////////////////////////////////////////////////////////
@@ -136,7 +136,7 @@ void CMyControl::GoToReference(axis_t axis)
 
 bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 {
-	CGCodeParser gcode(reader,output);
+	CGCodeParserBase gcode(reader,output);
 	return ParseAndPrintResult(&gcode,output);
 }
 

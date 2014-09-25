@@ -56,7 +56,7 @@ protected:
 
 	virtual void Parse() = 0;
 	virtual bool InitParse()								{ return true; };		// begin parsing of a command (override for prechecks), return true to continue
-	virtual void CleanupParse()								{};						// called after calle to Parse()
+	virtual void CleanupParse()								{};						// called after call to Parse()
 
 	bool CheckError();
 	virtual char SkipSpacesOrComment()						{ return _reader->SkipSpaces(); }
