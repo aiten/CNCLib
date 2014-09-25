@@ -65,6 +65,9 @@ void CMyControl::Init()
 
 	CProbeControl::Init();
 	CGCodeParserBase::Init();
+
+	CGCodeParserBase::SetG0FeedRate(STEPRATETOFEEDRATE(20000));
+	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(10000));
 }
 
 ////////////////////////////////////////////////////////////
