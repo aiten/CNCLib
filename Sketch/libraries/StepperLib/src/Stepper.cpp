@@ -58,7 +58,7 @@ void CStepper::InitMemVar()
 //POD	for (i = 0; i < NUM_AXIS; i++)	_pod._backlash[i] = 0;
 //POD	for (i = 0; i < NUM_AXIS; i++)	_pod._limitMin[i] = 0;
 
-	for (i = 0; i < NUM_AXIS; i++)	_pod._limitMax[i] = 0xffffffff;
+	for (i = 0; i < NUM_AXIS; i++)	_pod._limitMax[i] = 0x00ffffff;	
 	for (i = 0; i < NUM_AXIS; i++)	_pod._stepMode[i] = HalfStep;
 //POD	for (i = 0; i < NUM_AXIS; i++)	_pod._timeOutEnable[i] = 0;
 
