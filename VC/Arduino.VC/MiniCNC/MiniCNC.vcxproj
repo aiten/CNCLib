@@ -83,6 +83,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC.h" />
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\ControllerFanControl.h" />
     <ClInclude Include="..\..\..\Sketch\MiniCNC\MyControl.h" />
     <ClInclude Include="..\..\..\Sketch\MiniCNC\ProbeControl.h" />
     <ClInclude Include="stdafx.h" />

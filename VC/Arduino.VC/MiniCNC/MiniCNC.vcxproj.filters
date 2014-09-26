@@ -25,6 +25,9 @@
     <ClInclude Include="..\..\..\Sketch\MiniCNC\ProbeControl.h">
       <Filter>MiniCNC</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\ControllerFanControl.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
