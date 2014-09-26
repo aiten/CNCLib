@@ -79,7 +79,10 @@ public:
 		OnStartEvent,
 		OnIdleEvent,
 		OnDisableEvent,					// Disable stepper if inactive
-		OnWaitEvent
+		OnWaitEvent,
+		OnErrorEvent,
+		OnWarningEvent,
+		OnInfoEvent
 	};
 
 	enum ELevel
@@ -88,7 +91,7 @@ public:
 		LevelOff = 0
 	};
 
-	typedef bool(*StepperEvent)(CStepper*stepper, void* param, EnumAsByte(EStepperEvent) eventtype, unsigned char addinfo);
+	typedef bool(*StepperEvent)(CStepper*stepper, void* param, EnumAsByte(EStepperEvent) eventtype, void* addinfo);
 	typedef bool(*TestContinueMove)(void* param);
 
 	/////////////////////
@@ -100,7 +103,6 @@ protected:
 public:
 
 	virtual void Init();
-	virtual void Remove();
 
 	bool IsError()												{ return _pod._error != NULL; };
 	const __FlashStringHelper * GetError()						{ return _pod._error; }
@@ -251,7 +253,7 @@ protected:
 
 	static unsigned char GetStepMultiplier(timer_t timermax);
 
-	void CallEvent(EnumAsByte(EStepperEvent) eventtype, unsigned char addinfo)			{ if (_pod._event) _pod._event(this, _pod._eventparam, eventtype, addinfo); }
+	void CallEvent(EnumAsByte(EStepperEvent) eventtype, void* addinfo)			{ if (_pod._event) _pod._event(this, _pod._eventparam, eventtype, addinfo); }
 
 protected:
 
@@ -513,21 +515,19 @@ public:
 
 protected:
 
-	virtual void OnIdle(unsigned long idletime);				// called in ISR
-	virtual void OnWait(EnumAsByte(EWaitType) wait);			// wait for finish move or movementqueue full
-	virtual void OnStart();										// startup of movement
+	debugvirtula void OnIdle(unsigned long idletime);				// called in ISR
+	debugvirtula void OnWait(EnumAsByte(EWaitType) wait);			// wait for finish move or movementqueue full
+	debugvirtula void OnStart();										// startup of movement
 
-	virtual void OnError(const __FlashStringHelper * error);
-	virtual void OnWarning(const __FlashStringHelper * warning);
-	virtual void OnInfo(const __FlashStringHelper * info);
+	debugvirtula void OnError(const __FlashStringHelper * error);
+	debugvirtula void OnWarning(const __FlashStringHelper * warning);
+	debugvirtula void OnInfo(const __FlashStringHelper * info);
 
 	void Error(const __FlashStringHelper * error)				{ _pod._error = error; OnError(error); }
 	void Info(const __FlashStringHelper * info)					{ OnInfo(info); }
 	void Warning(const __FlashStringHelper * warning)			{ OnWarning(warning); }
 
 public:
-
-	void  SetEnableAll(unsigned char level);	// range 0-100
 
 	unsigned char ToReferenceId(axis_t axis, bool minRef)		{ return axis * 2 + (minRef ? 0 : 1); }
 
@@ -545,6 +545,12 @@ public:
 
 	void Dump(unsigned char options);							// options ==> EDumpOptions with bits
 
+	void SetEnableAll(unsigned char level);				// level 0-255
+	virtual void SetEnable(axis_t axis, unsigned char level, bool force) = 0;
+	virtual unsigned char GetEnable(axis_t axis) = 0;
+
+	static unsigned char ConvertLevel(bool enable)				{ return enable ? (unsigned char)(LevelMax) : (unsigned char)(LevelOff); }
+
 protected:
 
 	bool  MoveAwayFromReference(axis_t axis, unsigned char referenceid, sdist_t dist, steprate_t vMax);
@@ -556,10 +562,6 @@ protected:
 #endif
 
 	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) = 0;
-	virtual void  SetEnable(axis_t axis, unsigned char level, bool force) = 0;
-	virtual unsigned char GetEnable(axis_t axis) = 0;
-
-	static unsigned char ConvertLevel(bool enable)				{ return enable ? (unsigned char)(LevelMax) : (unsigned char)(LevelOff); }
 
 private:
 

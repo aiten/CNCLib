@@ -59,6 +59,13 @@ namespace Proxxon.Wpf.ViewModels
             set { SetProperty(ref _resetOnConnect,value); }
 		}
 
+		public int BufferSize
+		{
+			get { return Com.ArduinoBuffersize; }
+			set { int buffersize = Com.ArduinoBuffersize; SetProperty(ref buffersize, value); Com.ArduinoBuffersize = buffersize; }
+		}
+
+
         #endregion
 
         #region Operations

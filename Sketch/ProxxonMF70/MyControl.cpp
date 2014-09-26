@@ -248,7 +248,7 @@ void CMyControl::ReadAndExecuteCommand()
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, unsigned char addinfo)
+bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
 {
 	switch (eventtype)
 	{

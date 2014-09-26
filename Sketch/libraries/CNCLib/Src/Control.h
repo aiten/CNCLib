@@ -101,7 +101,7 @@ protected:
 
 	bool ParseAndPrintResult(CParser* parser, Stream* output);
 
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, unsigned char addinfo);
+	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
 
 	bool IsResurrectCommand(const char*buffer)					{ return buffer[0] == '!' && buffer[1] == '!' && buffer[2] == '!' && buffer[3] == 0; }
 
@@ -127,7 +127,7 @@ private:
 
 	static void HandleInterrupt()								{ GetInstance()->TimerInterrupt(); }
 
-	static bool MyStepperEvent(CStepper*stepper, void* param, EnumAsByte(CStepper::EStepperEvent) eventtype, unsigned char addinfo) { return ((CControl*)param)->OnStepperEvent(stepper, eventtype, addinfo); }
+	static bool MyStepperEvent(CStepper*stepper, void* param, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) { return ((CControl*)param)->OnStepperEvent(stepper, eventtype, addinfo); }
 
 	CStreamReader		_reader;
 

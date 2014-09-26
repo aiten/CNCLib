@@ -56,7 +56,7 @@ protected:
 
 	virtual void ReadAndExecuteCommand();
 
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, unsigned char addinfo);
+	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
 
 private:
 

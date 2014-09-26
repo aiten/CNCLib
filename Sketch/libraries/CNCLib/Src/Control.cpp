@@ -401,14 +401,14 @@ void CControl::Delay(unsigned long ms)
 
 ////////////////////////////////////////////////////////////
 
-bool CControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, unsigned char addinfo)
+bool CControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
 {
 #ifndef REDUCED_SIZE
 	switch (eventtype)
 	{
 		case CStepper::OnWaitEvent:
 
-			if (CStepper::WaitTimeCritical > (CStepper::EWaitType) addinfo && CLcd::GetInstance())
+			if (CStepper::WaitTimeCritical > (CStepper::EWaitType) (unsigned int) addinfo && CLcd::GetInstance())
 				CLcd::GetInstance()->DrawRequest(false, CLcd::DrawStepperPos);
 			break;
 	}

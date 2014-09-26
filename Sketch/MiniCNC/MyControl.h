@@ -54,7 +54,7 @@ protected:
 	virtual void GoToReference();
 	virtual void GoToReference(axis_t axis);
 
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, unsigned char addinfo);
+	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
 
 private:
 

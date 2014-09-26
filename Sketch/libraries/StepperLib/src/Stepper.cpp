@@ -132,14 +132,6 @@ void CStepper::Init()
 
 ////////////////////////////////////////////////////////
 
-void CStepper::Remove()
-{
-	RemoveTimer();
-	SetEnableAll(LevelOff);
-}
-
-////////////////////////////////////////////////////////
-
 void CStepper::AddEvent(StepperEvent event, void* eventparam, StepperEvent& oldevent, void*& oldeventparam)
 {
 	oldevent = _pod._event;
@@ -871,19 +863,21 @@ void CStepper::OnStart()
 
 void CStepper::OnWait(EnumAsByte(EWaitType) wait)
 {
-	CallEvent(OnWaitEvent, (unsigned char) wait);
+	CallEvent(OnWaitEvent, (void*) wait);
 }
 
 ////////////////////////////////////////////////////////
 
-void CStepper::OnError(const __FlashStringHelper * /* error */)
+void CStepper::OnError(const __FlashStringHelper * error)
 {
+	CallEvent(OnErrorEvent, (void*)error);
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepper::OnWarning(const __FlashStringHelper * warning)
 {
+	CallEvent(OnWarningEvent, (void*) warning);
 	StepperSerial.print(MESSAGE_WARNING);
 	StepperSerial.println(warning);
 }
@@ -892,6 +886,7 @@ void CStepper::OnWarning(const __FlashStringHelper * warning)
 
 void CStepper::OnInfo(const __FlashStringHelper * info)
 {
+	CallEvent(OnInfoEvent, (void*)info);
 	StepperSerial.print((MESSAGE_INFO));
 	StepperSerial.println(info);
 }

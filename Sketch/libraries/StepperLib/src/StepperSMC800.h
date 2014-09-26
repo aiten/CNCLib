@@ -37,7 +37,7 @@ public:
 
 	CStepperSMC800();
 	virtual void Init();
-	virtual void Remove();
+	void Remove();
 
 protected:
 

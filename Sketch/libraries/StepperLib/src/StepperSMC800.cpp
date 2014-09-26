@@ -167,8 +167,6 @@ void CStepperSMC800::Remove()
 
 	CHAL::pinMode(SMC800_REFININ, INPUT);
 	CHAL::pinMode(SMC800_STROBEPIN, INPUT);
-
-	super::Remove();
 }
 
 ////////////////////////////////////////////////////////
