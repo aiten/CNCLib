@@ -617,6 +617,19 @@ void CGCodeParserBase::G0203Command(bool isG02)
 
 ////////////////////////////////////////////////////////////
 
+unsigned long CGCodeParserBase::GetDweel()
+{
+	const char*current = _reader->GetBuffer();
+	unsigned long dweelms = GetUint32OrParam();
+	if (_reader->GetChar() == '.')
+	{
+		// this is "sec" and not "ms"
+		_reader->ResetBuffer(current);
+		dweelms = GetInt32Scale(0,1000000,3,255);
+	}
+	return dweelms;
+}
+
 void CGCodeParserBase::G04Command()
 {
 	unsigned long dweelms = 0;
@@ -624,14 +637,7 @@ void CGCodeParserBase::G04Command()
 	if (_reader->SkipSpacesToUpper() == 'P')
 	{
 		_reader->GetNextChar();
-		const char*current = _reader->GetBuffer();
-		dweelms = GetUint32OrParam();
-		if (_reader->GetChar() == '.')
-		{
-			// this is "sec" and not "ms"
-			_reader->ResetBuffer(current);
-			dweelms = GetInt32Scale(0,1000,3,255);
-		}
+		dweelms = GetDweel();
 	}
 
 	if (ExpectEndOfCommand())		{ return; }

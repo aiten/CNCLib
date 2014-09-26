@@ -217,6 +217,8 @@ protected:
 
 	void InfoNotImplemented()					{ Info(MESSAGE_GCODE_NotImplemented); }
 
+	unsigned long GetDweel();
+
 private:
 
 	void GetIJK(axis_t axis, SAxisMove& move, mm1000_t offset[2]);

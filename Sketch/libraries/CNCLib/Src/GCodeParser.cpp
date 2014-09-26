@@ -468,7 +468,7 @@ void CGCodeParser::GetP81(SAxisMove& move)
 	move.bitfield.bit.P = true;
 
 	_reader->GetNextChar();
-	_modalstate.G8xP = GetUint32OrParam();
+	_modalstate.G8xP = GetDweel();
 }
 
 ////////////////////////////////////////////////////////////
