@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////////////
 
 #define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
-#define CONTROLLERFAN_FAN_PIN	10
+#define CONTROLLERFAN_FAN_PIN	13 // 10
 
 ////////////////////////////////////////////////////////
 
