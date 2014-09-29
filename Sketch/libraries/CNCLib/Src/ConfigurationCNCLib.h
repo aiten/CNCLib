@@ -23,6 +23,12 @@
 #include <StepperLib.h>
 #include "MessageCNCLib.h"
 
+#ifdef REDUCED_SIZE
+
+#define _NO_LCD
+
+#endif
+
 ////////////////////////////////////////////////////////
 
 typedef float expr_t;			// type for expression parser

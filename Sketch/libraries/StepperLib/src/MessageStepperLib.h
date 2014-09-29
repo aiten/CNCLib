@@ -25,7 +25,7 @@
 #define MESSAGE_INFO								F("Info: ")
 #define MESSAGE_WARNING								F("Warning: ")
 
-#ifdef REDUCED_SIZE
+#ifdef _NO_LONG_MESSAGE
 
 #define MESSAGE_STEPPER_EmptyMoveSkipped			F("I1")
 #define MESSAGE_STEPPER_Backlash					F("I2")

@@ -372,7 +372,7 @@ protected:
 		mdist_t _nDownOffset;									// offset of n rampe calculation(dec)
 
 		timer_t _timerRun;
-		timer_t _timerStart;										// start ramp with speed (tinmerValue)
+		timer_t _timerStart;									// start ramp with speed (tinmerValue)
 		timer_t _timerStop;										// stop  ramp with speed (timerValue)
 
 		timer_t _timerEndPossible;								// timer possible at end of last movement

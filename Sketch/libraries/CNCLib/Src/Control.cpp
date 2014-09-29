@@ -49,7 +49,7 @@ void CControl::Init()
 	CStepper::GetInstance()->Init();
 	CStepper::GetInstance()->AddEvent(MyStepperEvent, this, _oldStepperEvent, _oldStepperEventParam);
 
-#ifndef REDUCED_SIZE
+#ifndef _NO_LCD
 	
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->Init();
@@ -105,7 +105,7 @@ void CControl::Continue()
 
 void CControl::Idle(unsigned int idletime)
 {
-#ifndef REDUCED_SIZE
+#ifndef _NO_LCD
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->Idle(idletime);
 #endif
@@ -376,7 +376,7 @@ void CControl::TimerInterrupt()
 {
 	CHAL::EnableInterrupts();	// enable irq for timer1 (Stepper)
 
-#ifndef REDUCED_SIZE
+#ifndef _NO_LCD
 
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->TimerInterrupt();
@@ -392,7 +392,7 @@ void CControl::Delay(unsigned long ms)
 
 	while (expected_end > millis())
 	{
-#ifndef REDUCED_SIZE
+#ifndef _NO_LCD
 		if (CLcd::GetInstance())
 			CLcd::GetInstance()->Idle(0);
 #endif
@@ -403,7 +403,7 @@ void CControl::Delay(unsigned long ms)
 
 bool CControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
 {
-#ifndef REDUCED_SIZE
+#ifndef _NO_LCD
 	switch (eventtype)
 	{
 		case CStepper::OnWaitEvent:

@@ -20,7 +20,7 @@
 
 ////////////////////////////////////////////////////////
 
-#ifdef REDUCED_SIZE
+#ifdef _NO_LONG_MESSAGE
 
 #define MESSAGE_CONTROL_KILLED						F("K1")
 #define MESSAGE_CONTROL_FLUSHBUFFER					F("FB")

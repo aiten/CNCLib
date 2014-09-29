@@ -1950,7 +1950,7 @@ steprate_t CStepper::TimerToSpeed(timer_t timer) const
 
 void CStepper::Dump(unsigned char options)
 {
-#ifndef REDUCED_SIZE
+#ifndef _NO_DUMP
 	unsigned char i;
 
 	if (options&DumpPos)
@@ -2013,7 +2013,7 @@ void CStepper::Dump(unsigned char options)
 
 void CStepper::SMovement::Dump(unsigned char idx, unsigned char options)
 {
-#ifndef REDUCED_SIZE
+#ifndef _NO_DUMP
 
 	DumpType<unsigned char>(F("Idx"), idx, false);
 	if (idx == 0)
@@ -2054,7 +2054,7 @@ void CStepper::SMovement::Dump(unsigned char idx, unsigned char options)
 
 void CStepper::SMovementState::Dump(unsigned char /* options */)
 {
-#ifndef REDUCED_SIZE
+#ifndef _NO_DUMP
 	DumpType<mdist_t>(F("n"), _n, false);
 	DumpType<timer_t>(F("t"), _timer, false);
 	DumpType<timer_t>(F("r"), _rest, false);

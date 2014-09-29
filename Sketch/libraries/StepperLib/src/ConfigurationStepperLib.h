@@ -23,6 +23,13 @@
 
 ////////////////////////////////////////////////////////
 
+//#define _NO_LONG_MESSAGE
+//#define _NO_DUMP
+
+////////////////////////////////////////////////////////
+
+
+
 #define X_AXIS 0
 #define Y_AXIS 1
 #define Z_AXIS 2
@@ -88,9 +95,11 @@ typedef unsigned long udist_t;	// tpye of stepper coord system (unsigned)
 #define MOVEMENTBUFFERSIZE	8
 
 #undef NUM_AXIS
-#define NUM_AXIS 3
+#define NUM_AXIS 4
 
 #define REDUCED_SIZE
+#define _NO_LONG_MESSAGE
+#define _NO_DUMP
 
 ////////////////////////////////////////////////////////
 
