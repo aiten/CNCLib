@@ -60,10 +60,16 @@ void CMyControl::Init()
 
 	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
 
-//	_spindel.Init();
-//	_controllerfan.Init();
+#if SPINDEL_PIN != -1
+	_spindel.Init();
+#endif
+#if CONTROLLERFAN_FAN_PIN != -1
+	_controllerfan.Init();
+#endif
 
-//	CProbeControl::Init();
+#if PROBE1_PIN != -1
+	CProbeControl::Init();
+#endif
 	CGCodeParserBase::Init();
 
 	CGCodeParserBase::SetG0FeedRate(STEPRATETOFEEDRATE(20000));
