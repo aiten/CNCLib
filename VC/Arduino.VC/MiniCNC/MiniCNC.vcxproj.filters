@@ -28,6 +28,15 @@
     <ClInclude Include="..\..\..\Sketch\MiniCNC\ControllerFanControl.h">
       <Filter>MiniCNC</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_L298N.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_SMC800.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_TB6560.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

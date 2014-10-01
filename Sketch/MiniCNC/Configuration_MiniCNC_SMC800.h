@@ -21,49 +21,27 @@
 
 ////////////////////////////////////////////////////////
 
-#include <Control.h>
-#include <OnOffIOControl.h>
-#include <Analog8IOControl.h>
-#include <Analog8InvertIOControl.h>
-
-#include "ProbeControl.h"
+#define CMyStepper CStepperSMC800
+#define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
+#define ConversionToMachine CMotionControl::ToMachine_1_3200
 
 ////////////////////////////////////////////////////////
 
-class CMyControl : public CControl
-{
-private:
-
-	typedef CControl super;
-
-public:
-
-	CMyControl()				 { }
-
-	virtual void Kill();
-
-	virtual void IOControl(unsigned char tool, unsigned short level);
-	virtual unsigned short IOControl(unsigned char tool);
-
-protected:
-
-	virtual void Init();
-	virtual void Initialized();
-	virtual bool Parse(CStreamReader* reader, Stream* output);
-
-	virtual void GoToReference();
-	virtual void GoToReference(axis_t axis);
-
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
-
-private:
-
-	COnOffIOControl<SPINDEL_PIN, SPINDEL_ON, SPINDEL_OFF> _spindel;
-
-	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
-
-};
+#define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
+#define CONTROLLERFAN_FAN_PIN	13 // 10
 
 ////////////////////////////////////////////////////////
 
-extern CMyControl Control;
+#define SPINDEL_PIN	11
+
+#define SPINDEL_ON  LOW
+#define SPINDEL_OFF HIGH
+
+////////////////////////////////////////////////////////
+
+#define PROBE1_PIN	12
+
+#define PROBE_ON  LOW
+#define PROBE_OFF HIGH
+
+////////////////////////////////////////////////////////

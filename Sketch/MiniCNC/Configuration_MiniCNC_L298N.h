@@ -21,49 +21,31 @@
 
 ////////////////////////////////////////////////////////
 
-#include <Control.h>
-#include <OnOffIOControl.h>
-#include <Analog8IOControl.h>
-#include <Analog8InvertIOControl.h>
+#define CMyStepper CStepperL298N
+#define ConversionToMm1000 ToMm1000_L298N
+#define ConversionToMachine ToMachine_L298N
 
-#include "ProbeControl.h"
-
-////////////////////////////////////////////////////////
-
-class CMyControl : public CControl
-{
-private:
-
-	typedef CControl super;
-
-public:
-
-	CMyControl()				 { }
-
-	virtual void Kill();
-
-	virtual void IOControl(unsigned char tool, unsigned short level);
-	virtual unsigned short IOControl(unsigned char tool);
-
-protected:
-
-	virtual void Init();
-	virtual void Initialized();
-	virtual bool Parse(CStreamReader* reader, Stream* output);
-
-	virtual void GoToReference();
-	virtual void GoToReference(axis_t axis);
-
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
-
-private:
-
-	COnOffIOControl<SPINDEL_PIN, SPINDEL_ON, SPINDEL_OFF> _spindel;
-
-	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
-
-};
+// 50 steps/rot
+inline mm1000_t ToMm1000_L298N(axis_t /* axis */, sdist_t val)				{ return  RoundMulDivU32(val, 80, 4); }
+inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val)			{ return  MulDivU32(val, 4, 80); }
 
 ////////////////////////////////////////////////////////
 
-extern CMyControl Control;
+#define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
+#define CONTROLLERFAN_FAN_PIN	13 // 10
+
+////////////////////////////////////////////////////////
+
+#define SPINDEL_PIN	-1
+
+#define SPINDEL_ON  LOW
+#define SPINDEL_OFF HIGH
+
+////////////////////////////////////////////////////////
+
+#define PROBE1_PIN	-1
+
+#define PROBE_ON  LOW
+#define PROBE_OFF HIGH
+
+////////////////////////////////////////////////////////
