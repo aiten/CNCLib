@@ -24,9 +24,9 @@
 #include <Control.h>
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
-#include <Analog8InvertIOControl.h>
+#include <ReadPinIOControl.h>
 
-#include "ProbeControl.h"
+#include "Configuration_MiniCNC.h"
 
 ////////////////////////////////////////////////////////
 
@@ -59,9 +59,8 @@ protected:
 private:
 
 	COnOffIOControl<SPINDEL_PIN, SPINDEL_ON, SPINDEL_OFF> _spindel;
-
 	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
-
+	CReadPinIOControl<PROBE1_PIN, PROBE_ON> _probe;
 };
 
 ////////////////////////////////////////////////////////

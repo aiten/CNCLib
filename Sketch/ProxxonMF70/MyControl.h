@@ -25,8 +25,11 @@
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
 #include <Analog8InvertIOControl.h>
+#include <ReadPinIOControl.h>
 
-#include "ProbeControl.h"
+////////////////////////////////////////////////////////
+
+#include "Configuration_ProxxonMF70.h"
 
 ////////////////////////////////////////////////////////
 
@@ -62,6 +65,7 @@ private:
 
 	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
 	COnOffIOControl<SPINDEL_PIN, SPINDEL_ON, SPINDEL_OFF> _spindel;
+	CReadPinIOControl<PROBE1_PIN, PROBE_ON> _probe;
 
 #if defined(USE_RAMPSFD)
 

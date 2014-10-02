@@ -348,9 +348,8 @@ bool CMyLcd::DrawLoopDebug(bool setup)
 		u8g.print((CStepper::GetInstance()->GetLastDirection()&(1 << i)) ? '+' : '-');
 	}
 
-	CProbeControl prob;
 	u8g.setPrintPos(ToCol(20), ToRow(0 + 1) + PosLineOffset);
-	u8g.print(prob.IsOn() ? '1' : '0');
+	u8g.print(Control.IOControl(CMyControl::Probe) ? '1' : '0');
 
 	u8g.setPrintPos(ToCol(19), ToRow(0 + 2) + PosLineOffset);
 	u8g.print(CSDist::ToString(CStepper::GetInstance()->QueuedMovements(), tmp, 2));

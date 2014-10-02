@@ -22,12 +22,6 @@
     <ClInclude Include="..\..\..\Sketch\MiniCNC\MyControl.h">
       <Filter>MiniCNC</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\ProbeControl.h">
-      <Filter>MiniCNC</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\ControllerFanControl.h">
-      <Filter>MiniCNC</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_L298N.h">
       <Filter>MiniCNC</Filter>
     </ClInclude>

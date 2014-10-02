@@ -68,7 +68,7 @@ void CMyControl::Init()
 #endif
 
 #if PROBE1_PIN != -1
-	CProbeControl::Init();
+	_probe::Init();
 #endif
 	CGCodeParserBase::Init();
 
@@ -97,7 +97,7 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 {
 	switch (tool)
 	{
-		case Probe:			{ CProbeControl probe;	return probe.IsOn(); }
+		case Probe:			{ return _probe.IsOn(); }
 		case Spindel:		{ return _spindel.IsOn(); }
 		case ControllerFan:	{ return _controllerfan.Level; }
 	}

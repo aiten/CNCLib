@@ -93,7 +93,7 @@ void CMyControl::Init()
 	_spindel.Init();
 	_controllerfan.Init();
 
-	CProbeControl::Init();
+	_probe.Init();
 	CGCode3DParser::Init();
 
 	StepperSerial.print(MESSAGE_MYCONTROL_InitializingSDCard);
@@ -133,7 +133,7 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 {
 	switch (tool)
 	{
-		case Probe:			{ CProbeControl probe;	return probe.IsOn(); }
+		case Probe:			{ return _probe.IsOn(); }
 		case Spindel:		{ return _spindel.IsOn(); }
 		case Coolant:		{ return _coolant.IsOn(); }
 		case ControllerFan:	{ return _controllerfan.Level; }

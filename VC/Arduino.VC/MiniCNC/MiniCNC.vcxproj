@@ -86,9 +86,7 @@
     <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_L298N.h" />
     <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_SMC800.h" />
     <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_TB6560.h" />
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\ControllerFanControl.h" />
     <ClInclude Include="..\..\..\Sketch\MiniCNC\MyControl.h" />
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\ProbeControl.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
