@@ -28,8 +28,6 @@
 
 ////////////////////////////////////////////////////////
 
-
-
 #define X_AXIS 0
 #define Y_AXIS 1
 #define Z_AXIS 2
@@ -106,9 +104,6 @@ typedef unsigned long udist_t;	// tpye of stepper coord system (unsigned)
 #elif defined(__SAM3X8E__)
 
 // usual with Ramps FD
-
-//#undef StepperSerial
-//#define StepperSerial SerialUSB
 
 #define use32bit
 #undef use16bit
