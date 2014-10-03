@@ -195,16 +195,8 @@ void CMyControl::GoToReference(axis_t axis)
 	else
 		CStepper::GetInstance()->SetPosition(axis, 0);
 #else
-	if (axis == Z_AXIS)
-	{
-		// goto max
-		CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, false), false, STEPRATE_REFMOVE);
-	}
-	else
-	{
-		// goto min
-		CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, true), true, STEPRATE_REFMOVE);
-	}
+	bool toMax = axis == Z_AXIS;
+	CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMax), toMax, STEPRATE_REFMOVE);
 #endif
 }
 
