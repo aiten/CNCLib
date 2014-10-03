@@ -75,7 +75,7 @@ void CMyControl::Init()
 	CGCodeParserBase::SetG0FeedRate(STEPRATETOFEEDRATE(20000));
 	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(10000));
 
-	CStepper::GetInstance()->SetDefaultMaxSpeed(500);
+	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED,CNC_ACC,CNC_DEC);
 }
 
 ////////////////////////////////////////////////////////////
