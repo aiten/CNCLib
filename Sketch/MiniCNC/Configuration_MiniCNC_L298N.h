@@ -25,9 +25,13 @@
 #define ConversionToMm1000 ToMm1000_L298N
 #define ConversionToMachine ToMachine_L298N
 
-// 50 steps/rot
-inline mm1000_t ToMm1000_L298N(axis_t /* axis */, sdist_t val)				{ return  RoundMulDivU32(val, 80, 4); }
-inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val)			{ return  MulDivU32(val, 4, 80); }
+#define CNC_MAXSPEED 500
+#define CNC_ACC  65
+#define CNC_DEC  75
+
+// ?? steps/rot
+inline mm1000_t ToMm1000_L298N(axis_t /* axis */, sdist_t val)				{ return  RoundMulDivU32(val, 125, 6); }
+inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val)			{ return  MulDivU32(val, 6, 125); }
 
 ////////////////////////////////////////////////////////
 
