@@ -27,6 +27,12 @@
 
 ////////////////////////////////////////////////////////
 
+#define CNC_MAXSPEED 20000
+#define CNC_ACC  400
+#define CNC_DEC  450
+
+////////////////////////////////////////////////////////
+
 #define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
 #define CONTROLLERFAN_FAN_PIN	13 // 10
 

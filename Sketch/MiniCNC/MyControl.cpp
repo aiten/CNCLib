@@ -68,7 +68,7 @@ void CMyControl::Init()
 #endif
 
 #if PROBE1_PIN != -1
-	_probe::Init();
+	_probe.Init();
 #endif
 	CGCodeParserBase::Init();
 

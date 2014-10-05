@@ -22,8 +22,14 @@
 ////////////////////////////////////////////////////////
 
 #define CMyStepper CStepperSMC800
-#define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
-#define ConversionToMachine CMotionControl::ToMachine_1_3200
+#define ConversionToMm1000 CMotionControl::ToMm1000_1_400
+#define ConversionToMachine CMotionControl::ToMachine_1_400
+
+////////////////////////////////////////////////////////
+
+#define CNC_MAXSPEED 3000
+#define CNC_ACC  150
+#define CNC_DEC  250
 
 ////////////////////////////////////////////////////////
 
