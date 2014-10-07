@@ -204,10 +204,10 @@ typedef unsigned long steprate_t;		// tpye for speed (Hz), Steps/sec
 typedef unsigned char axisArray_t;			// on bit per axis
 
 #if NUM_AXIS > 3
-typedef unsigned long DirCountAll_t;		// 4 bit for eache axis (0..7) count, 8 dirup, see DirCountAll_t
+typedef unsigned long DirCount_t;			// 4 bit for eache axis (0..7) count, 8 dirup, see DirCountAll_t
 #define DirCountBytes 4
 #else
-typedef unsigned short DirCountAll_t;		// 4 bit for eache axis (0..7) count, 8 dirup 
+typedef unsigned short DirCount_t;			// 4 bit for eache axis (0..7) count, 8 dirup 
 #define DirCountBytes 2
 #endif
 
@@ -241,11 +241,13 @@ struct DirCountByte_t
 	DirCountInfoByte_t byteInfo;
 };
 
+/*
 union DirCount_t
 {
 	DirCountByte_t		byte;
 	DirCountAll_t		all;
 };
+*/
 
 ////////////////////////////////////////////////////////
 

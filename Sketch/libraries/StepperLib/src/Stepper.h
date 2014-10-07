@@ -55,14 +55,18 @@ public:
 
 	enum EState
 	{
-		StateIdle = 0,											// invalid (init state)
-		StateReady = 1,											// ready for travel (not executing)
-		StateUpAcc = 2,											// in start phase accelerate
-		StateUpDec = 3,											// in start phase decelerate to vmax
-		StateRun = 4,												// running (no acc and dec)
-		StateDownDec = 5,											// in stop phase decelerate
-		StateDownAcc = 6,											// in stop phase accelerate
-		StateDone = 7												// finished
+		StateIdle = 0,												// invalid (init state)
+		StateReadyMove = 1,											// ready for travel (not executing)
+		StateReadyWait = 2,											// ready for none "travel" move (wait move) (not executing)
+		StateProcessingStart = 16,									// Processing states start here
+		StateUpAcc = 16,											// in start phase accelerate
+		StateUpDec = 17,											// in start phase decelerate to vmax
+		StateRun = 18,												// running (no acc and dec)
+		StateDownDec = 19,											// in stop phase decelerate
+		StateDownAcc = 20,											// in stop phase accelerate
+		StateWait = 32,												// executing wait (do no step)
+		StateProcessingEnd = 63,									// Processing states end here
+		StateDone = 64												// finished
 	};
 
 	enum EWaitType
@@ -170,6 +174,7 @@ public:
 
 	void MoveAbsEx(steprate_t vMax, unsigned short axis, udist_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
 	void MoveRelEx(steprate_t vMax, unsigned short axis, sdist_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
+	void Wait(unsigned int sec100);
 
 	bool MoveUntil(TestContinueMove testcontinue, void*param);
 
@@ -204,6 +209,11 @@ public:
 private:
 
 	void QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], steprate_t vMax);
+	void QueueWait(const mdist_t dist, steprate_t vMax);
+
+	void StartTimer();
+	void WaitCanQueue();
+
 	long CalcNextPos(udist_t current, udist_t dist, bool directionUp)
 	{
 		if (directionUp) return (sdist_t)current + (sdist_t)dist;
@@ -225,6 +235,7 @@ protected:
 protected:
 
 	void QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], steprate_t vMax);
+	void QueueWait();
 
 	debugvirtula void Step(bool isr);
 
@@ -391,18 +402,20 @@ protected:
 		timer_t GetDownTimer(bool acc)							{ return acc ? GetDownTimerAcc() : GetDownTimerDec(); }
 
 		mdist_t GetDistance(axis_t axis);
-		unsigned char GetStepMultiplier(axis_t axis)			{ return (_dirCount.all >> (axis * 4)) % 8; }
-		bool GetDirectionUp(axis_t axis)						{ return ((_dirCount.all >> (axis * 4)) & 8) != 0; }
+		unsigned char GetStepMultiplier(axis_t axis)			{ return (_dirCount >> (axis * 4)) % 8; }
+		bool GetDirectionUp(axis_t axis)						{ return ((_dirCount >> (axis * 4)) & 8) != 0; }
 		unsigned char GetMaxStepMultiplier();
 
 	public:
 
 		EnumAsByte(EState) GetState()							{ return _state; }
 		bool IsActive()											{ return _state > StateIdle && _state < StateDone; }		// Move to process or processing
-		bool IsFinished()										{ return _state == StateDone; }							// Move finished 
-		bool IsProcessing()										{ return _state > StateReady && _state < StateDone; }		// Move is currently processed (in acc,run or dec)
+		bool IsFinished()										{ return _state == StateDone; }								// Move finished 
+		bool IsProcessing()										{ return _state >= StateProcessingStart && _state <= StateProcessingEnd; }		// Move is currently processed (in acc,run or dec)
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
+		void InitWait(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, timer_t timer);
+
 		bool CalcNextSteps(bool continues);
 
 		void RampH2T(/* SMovement*mvPrev,  */ SMovement*mvNext);
