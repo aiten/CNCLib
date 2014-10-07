@@ -414,7 +414,7 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 	if (_timerRun > _timerStop)
 		_timerStop = _timerRun;
 
-	_state = StateReady;
+	_state = StateReadyMove;
 
 	_timerJunctionToPrev = (timer_t)-1;	// force optimization
 
@@ -1358,32 +1358,83 @@ CStepper* CStepper::SMovement::_pStepper;
 
 bool CStepper::SMovement::CalcNextSteps(bool continues)
 {
+	return IsStateWaiting() ? CalcNextStepsWait(continues) : CalcNextStepsMove(continues);
+}
+
+bool CStepper::SMovement::CalcNextStepsWait(bool continues)
+{
 	register axis_t i;
 	// return false if buffer full and nothing calculated.
 	do
 	{
-		if (_state == StateReady)
+		if (_state == StateReadyMove)
 		{
+			_pStepper->_movementstate.Init(_timerStart, _steps, 1);
+		}
+
+		if (_steps <= _pStepper->_movementstate._n)
+		{
+			// End of move 
+			_state = StateDone;
+			return true;
+		}
+
+		if (_pStepper->_steps.IsFull())
+		{
+			// cannot add to queue
+			return false;
+		}
+
+		register DirCount_t stepcount; stepcount.all = 0;
+		_pStepper->_steps.NextTail().Init(stepcount);
+
+		_pStepper->_movementstate._sumTimer +=
+			_pStepper->_steps.NextTail().Timer = _pStepper->_movementstate._timer;
+
+		_pStepper->_movementstate._n++;
+
+		_pStepper->_steps.Enqueue();
+
+	} while (continues);
+
+	return true;
+}
+
+////////////////////////////////////////////////////////
+
+bool CStepper::SMovement::CalcNextStepsMove(bool continues)
+{
+	register axis_t i;
+	// return false if buffer full and nothing calculated.
+	do
+	{
+		if (_state == StateReadyMove)
+		{
+			// Startup of move
+
 			_pStepper->_movementstate.Init(_timerStart, _steps, GetMaxStepMultiplier());
 			{
-				for (i = 0;i<NUM_AXIS; i++)
+				for (register axis_t i = 0; i<NUM_AXIS; i++)
 				{
 					if (_distance_[i] != 0)
 					{
 						_pStepper->_pod._timeEnable[i] = 0;
 						CCriticalRegion crit;
-						if(_pStepper->GetEnable(i) != CStepper::LevelMax)
-							_pStepper->SetEnable(i, CStepper::LevelMax,false);
+						if (_pStepper->GetEnable(i) != CStepper::LevelMax)
+							_pStepper->SetEnable(i, CStepper::LevelMax, false);
 					}
 				}
 			}
 		}
+
 		const register mdist_t n = _pStepper->_movementstate._n;
 		register unsigned char count = _pStepper->_movementstate._count;
 
 		if (_steps <= n)
 		{
-			for (i=0;i<NUM_AXIS; i++)
+			// End of move 
+
+			for (register axis_t i = 0; i<NUM_AXIS; i++)
 			{
 				if (_distance_[i] != 0)
 					_pStepper->_pod._timeEnable[i] = _pStepper->_pod._timeOutEnable[i];
@@ -1437,7 +1488,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 		////////////////////////////////////
 		// calc new timer
 
-		if (_state == StateReady)
+		if (_state == StateReadyMove)
 		{
 			if (_pStepper->_movementstate._timer == _timerRun)
 				_state = StateRun;

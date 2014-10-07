@@ -90,7 +90,7 @@ public:
 			penDown.acc = 500;
 			penDown.dec = 500;
 
-			penUp.max = 30000;
+			penUp.max = 25000;
 			penUp.acc = 1000;
 			penUp.dec = 1000;
 
