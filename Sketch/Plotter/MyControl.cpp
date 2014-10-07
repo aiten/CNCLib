@@ -86,18 +86,8 @@ void CMyControl::GoToReference()
 void CMyControl::GoToReference(axis_t axis)
 {
 #define FEEDRATE_REFMOVE  CStepper::GetInstance()->GetDefaultVmax() / 4  
-/*
-	if (axis == Z_AXIS)
-	{
-		// goto max
-		CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, false), false, FEEDRATE_REFMOVE);
-	}
-	else
-*/
-	{
-		// goto min
-		CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, true), true, FEEDRATE_REFMOVE);
-	}
+        bool toMin = true; // axis != Z_AXIS;
+        CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMin), toMin, FEEDRATE_REFMOVE);
 }
 
 ////////////////////////////////////////////////////////////

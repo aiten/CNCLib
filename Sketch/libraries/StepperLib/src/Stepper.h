@@ -55,14 +55,18 @@ public:
 
 	enum EState
 	{
-		StateIdle = 0,											// invalid (init state)
-		StateReady = 1,											// ready for travel (not executing)
-		StateUpAcc = 2,											// in start phase accelerate
-		StateUpDec = 3,											// in start phase decelerate to vmax
-		StateRun = 4,												// running (no acc and dec)
-		StateDownDec = 5,											// in stop phase decelerate
-		StateDownAcc = 6,											// in stop phase accelerate
-		StateDone = 7												// finished
+		StateIdle = 0,												// invalid (init state)
+		StateReadyMove = 1,											// ready for travel (not executing)
+		StateReadyWait = 2,											// ready for none "travel" move (wait move) (not executing)
+		StateProcessingStart = 16,									// Processing states start here
+		StateUpAcc = 16,											// in start phase accelerate
+		StateUpDec = 17,											// in start phase decelerate to vmax
+		StateRun = 18,												// running (no acc and dec)
+		StateDownDec = 19,											// in stop phase decelerate
+		StateDownAcc = 20,											// in stop phase accelerate
+		StateWait = 32,												// executing wait (do no step)
+		StateProcessingEnd = 63,									// Processing states end here
+		StateDone = 64												// finished
 	};
 
 	enum EWaitType
@@ -399,8 +403,8 @@ protected:
 
 		EnumAsByte(EState) GetState()							{ return _state; }
 		bool IsActive()											{ return _state > StateIdle && _state < StateDone; }		// Move to process or processing
-		bool IsFinished()										{ return _state == StateDone; }							// Move finished 
-		bool IsProcessing()										{ return _state > StateReady && _state < StateDone; }		// Move is currently processed (in acc,run or dec)
+		bool IsFinished()										{ return _state == StateDone; }								// Move finished 
+		bool IsProcessing()										{ return _state >= StateProcessingStart && _state <= StateProcessingEnd; }		// Move is currently processed (in acc,run or dec)
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
 		bool CalcNextSteps(bool continues);

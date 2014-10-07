@@ -414,7 +414,7 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 	if (_timerRun > _timerStop)
 		_timerStop = _timerRun;
 
-	_state = StateReady;
+	_state = StateReadyMove;
 
 	_timerJunctionToPrev = (timer_t)-1;	// force optimization
 
@@ -1362,7 +1362,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 	// return false if buffer full and nothing calculated.
 	do
 	{
-		if (_state == StateReady)
+		if (_state == StateReadyMove)
 		{
 			_pStepper->_movementstate.Init(_timerStart, _steps, GetMaxStepMultiplier());
 			{
@@ -1378,6 +1378,11 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 				}
 			}
 		}
+		else if (_state == StateReadyWait)
+		{
+			_pStepper->_movementstate.Init(_timerStart, _steps, 1);
+		}
+
 		const register mdist_t n = _pStepper->_movementstate._n;
 		register unsigned char count = _pStepper->_movementstate._count;
 
@@ -1437,7 +1442,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 		////////////////////////////////////
 		// calc new timer
 
-		if (_state == StateReady)
+		if (_state == StateReadyMove)
 		{
 			if (_pStepper->_movementstate._timer == _timerRun)
 				_state = StateRun;
@@ -1459,6 +1464,10 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 					_pStepper->_movementstate._timer = (timer_t)MulDivU32(_pStepper->_movementstate._timer, mul, div);
 				}
 			}
+		}
+		else if (_state == StateReadyWait)
+		{
+			_state = StateWait;
 		}
 		else
 		{
