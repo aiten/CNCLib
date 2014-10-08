@@ -174,6 +174,7 @@ public:
 
 	void MoveAbsEx(steprate_t vMax, unsigned short axis, udist_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
 	void MoveRelEx(steprate_t vMax, unsigned short axis, sdist_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
+	void Wait(unsigned int sec100);
 
 	bool MoveUntil(TestContinueMove testcontinue, void*param);
 
@@ -208,6 +209,11 @@ public:
 private:
 
 	void QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], steprate_t vMax);
+	void QueueWait(const mdist_t dist, steprate_t vMax);
+
+	void StartTimer();
+	void WaitCanQueue();
+
 	long CalcNextPos(udist_t current, udist_t dist, bool directionUp)
 	{
 		if (directionUp) return (sdist_t)current + (sdist_t)dist;
@@ -229,6 +235,7 @@ protected:
 protected:
 
 	void QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], steprate_t vMax);
+	void QueueWait();
 
 	debugvirtula void Step(bool isr);
 
@@ -395,8 +402,8 @@ protected:
 		timer_t GetDownTimer(bool acc)							{ return acc ? GetDownTimerAcc() : GetDownTimerDec(); }
 
 		mdist_t GetDistance(axis_t axis);
-		unsigned char GetStepMultiplier(axis_t axis)			{ return (_dirCount.all >> (axis * 4)) % 8; }
-		bool GetDirectionUp(axis_t axis)						{ return ((_dirCount.all >> (axis * 4)) & 8) != 0; }
+		unsigned char GetStepMultiplier(axis_t axis)			{ return (_dirCount >> (axis * 4)) % 8; }
+		bool GetDirectionUp(axis_t axis)						{ return ((_dirCount >> (axis * 4)) & 8) != 0; }
 		unsigned char GetMaxStepMultiplier();
 
 	public:
@@ -407,6 +414,8 @@ protected:
 		bool IsProcessing()										{ return _state >= StateProcessingStart && _state <= StateProcessingEnd; }		// Move is currently processed (in acc,run or dec)
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
+		void InitWait(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, timer_t timer);
+
 		bool CalcNextSteps(bool continues);
 
 		void RampH2T(/* SMovement*mvPrev,  */ SMovement*mvNext);

@@ -222,10 +222,7 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 				// need backlash
 				Info(MESSAGE_STEPPER_Backlash);
 
-				while (_movements._queue.IsFull())
-				{
-					OnWait(MovementQueueFull);
-				}
+				WaitCanQueue();
 
 				_movements._queue.NextTail().InitMove(this, _movements._queue.SaveTail(), backlashsteps, backlashdist, directionUp, _pod._timerbacklash);
 				_movements._queue.NextTail().SetBacklash();
@@ -240,16 +237,46 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 	// wait until free movement buffer
 
-	while (_movements._queue.IsFull())
-	{
-		OnWait(MovementQueueFull);
-	}
+	WaitCanQueue();
 
 	_movements._queue.NextTail().InitMove(this, _movements._queue.SaveTail(), steps, dist, directionUp, timerMax);
 	_movements._queue.Enqueue();
 
 	OptimizeMovementQueue(false);
 
+	StartTimer();
+
+	if (IsWaitFinishMove())
+	{
+		WaitBusy();
+	}
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::QueueWait(const mdist_t dist, timer_t timerMax)
+{
+	WaitCanQueue();
+	_movements._queue.NextTail().InitWait(this, _movements._queue.SaveTail(), dist, timerMax);
+	_movements._queue.Enqueue();
+
+	StartTimer();
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::WaitCanQueue()
+{
+	while (_movements._queue.IsFull())
+	{
+		OnWait(MovementQueueFull);
+	}
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::StartTimer()
+{
 	if (!_pod._timerRunning)
 	{
 		_pod._timerLastCheckEnable =
@@ -258,7 +285,7 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 		{
 			_pod._timeEnable[i] = _pod._timeOutEnable[i];
 			if (GetEnableTimeout(i) == 0)					// enabletimeout == 0 => always enabled, otherwise done in CalcNextSteps
-				SetEnable(i, CStepper::LevelMax,true);
+				SetEnable(i, CStepper::LevelMax, true);
 		}
 
 		_movements._queue.Head().CalcNextSteps(false);
@@ -275,11 +302,6 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 			Step(false);
 		}
 	}
-
-	if (IsWaitFinishMove())
-	{
-		WaitBusy();
-	}
 }
 
 ////////////////////////////////////////////////////////
@@ -288,11 +310,13 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 {
 	register axis_t i;
 
-	//memset(this, 0, sizeof(SMovement));
-	*this = SMovement();		//POD
+	//*this = SMovement();		=> is no POD
+	//memset(this, 0, sizeof(SMovement));	==> do not init => set all members
 
 	_pStepper = pStepper;
 	_timerMax = timerMax;
+
+	_backlash = false;
 
 	_steps = steps;
 	memcpy(_distance_, dist, sizeof(_distance_));
@@ -319,8 +343,8 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 	// calculate StepMultiplier and adjust distance
 
 	unsigned char maxMultiplier = CStepper::GetStepMultiplier(_timerMax);
-	_lastStepDirCount.all = 0;
-	_dirCount.all = 0;
+	_lastStepDirCount = 0;
+	_dirCount = 0;
 
 	if (maxMultiplier > 1)
 	{
@@ -369,15 +393,15 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 				}
 			}
 
-			_lastStepDirCount.all *= 16;
-			_lastStepDirCount.all += axisdiff;
-			_dirCount.all *= 16;
-			_dirCount.all += multiplier;
+			_lastStepDirCount *= 16;
+			_lastStepDirCount += axisdiff;
+			_dirCount *= 16;
+			_dirCount += multiplier;
 
 			if (directionUp[i])
 			{
-				_lastStepDirCount.all += 8;
-				_dirCount.all += 8;
+				_lastStepDirCount += 8;
+				_dirCount += 8;
 			}
 
 			if (i == 0)
@@ -388,10 +412,10 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 	{
 		for (i = NUM_AXIS - 1;; i--)
 		{
-			_dirCount.all *= 16;
-			_dirCount.all += 1;
+			_dirCount *= 16;
+			_dirCount += 1;
 			if (directionUp[i])
-				_dirCount.all += 8;
+				_dirCount += 8;
 
 			if (i == 0)
 				break;
@@ -433,6 +457,21 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 
 ////////////////////////////////////////////////////////
 
+void CStepper::SMovement::InitWait(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, timer_t timer)
+{
+	//POD => ?? *this = SMovement();		
+	memset(this, 0, sizeof(SMovement));	// init with 0
+
+	_pStepper = pStepper;
+	_steps = steps;
+	_timerStart = timer;
+
+	_state = StateReadyWait;
+
+}
+
+////////////////////////////////////////////////////////
+
 mdist_t CStepper::SMovement::GetDistance(axis_t axis)
 {
 	if (_distance_[axis])
@@ -451,16 +490,16 @@ mdist_t CStepper::SMovement::GetDistance(axis_t axis)
 
 unsigned char CStepper::SMovement::GetMaxStepMultiplier()
 {
-	register DirCount_t count; count.all = _dirCount.all;
+	register DirCount_t count = _dirCount;
 	register unsigned char maxmultiplier = 0;
 
 	for (register unsigned char i = 0;; i++)
 	{
-		maxmultiplier = max(maxmultiplier, ((unsigned char)count.all) % 8);
+		maxmultiplier = max(maxmultiplier, ((unsigned char)count) % 8);
 		if (i == NUM_AXIS - 1)
 			break;
 
-		count.all /= 16;
+		count /= 16;
 	}
 	return maxmultiplier;
 
@@ -1118,12 +1157,12 @@ inline void CStepper::StepOut()
 	 
 	// calculate all axes and set PINS paralell - DRV 8225 requires 1.9us * 2 per step => sequential is to slow 
 
-	register DirCountAll_t dir_count;	// do not use DirCount_t => AVR do not use registers for struct
+	register DirCount_t dir_count;
 
 	{
 		const SStepBuffer* stepbuffer = &_steps.Head();
 		StartTimer(stepbuffer->Timer - TIMEROVERHEAD);
-		dir_count = stepbuffer->DirStepCount.all;
+		dir_count = stepbuffer->DirStepCount;
 	}
 
 #ifdef _MSC_VER
@@ -1136,7 +1175,7 @@ inline void CStepper::StepOut()
 
 	unsigned char bytedircount = 0;
 	bool countit = true;
-	if (((DirCount_t*) &dir_count)->byte.byteInfo.nocount != 0)
+	if (((DirCountByte_t*)&dir_count)->byte.byteInfo.nocount != 0)
 		countit = false;
 
 	for (register unsigned char i = 0;; i++)
@@ -1362,25 +1401,23 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 	// return false if buffer full and nothing calculated.
 	do
 	{
-		if (_state == StateReadyMove)
+		if (_state == StateReadyMove || _state == StateReadyWait)
 		{
-			_pStepper->_movementstate.Init(_timerStart, _steps, GetMaxStepMultiplier());
+			// Startup of move
+
+			_pStepper->_movementstate.Init(_timerStart, _steps, _state == StateReadyMove ? GetMaxStepMultiplier() : 1);
 			{
-				for (i = 0;i<NUM_AXIS; i++)
+				for (register axis_t i = 0; i<NUM_AXIS; i++)
 				{
 					if (_distance_[i] != 0)
 					{
 						_pStepper->_pod._timeEnable[i] = 0;
 						CCriticalRegion crit;
-						if(_pStepper->GetEnable(i) != CStepper::LevelMax)
-							_pStepper->SetEnable(i, CStepper::LevelMax,false);
+						if (_pStepper->GetEnable(i) != CStepper::LevelMax)
+							_pStepper->SetEnable(i, CStepper::LevelMax, false);
 					}
 				}
 			}
-		}
-		else if (_state == StateReadyWait)
-		{
-			_pStepper->_movementstate.Init(_timerStart, _steps, 1);
 		}
 
 		const register mdist_t n = _pStepper->_movementstate._n;
@@ -1388,7 +1425,9 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 		if (_steps <= n)
 		{
-			for (i=0;i<NUM_AXIS; i++)
+			// End of move 
+
+			for (register axis_t i = 0; i<NUM_AXIS; i++)
 			{
 				if (_distance_[i] != 0)
 					_pStepper->_pod._timeEnable[i] = _pStepper->_pod._timeOutEnable[i];
@@ -1413,12 +1452,15 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			}
 			else
 			{
-				register DirCount_t stepcount; stepcount.all = 0;
-				register DirCount_t mask; mask.all = 15;
+				register DirCount_t stepcount = 0;
+				register DirCount_t mask = 15;
 
 				if (_backlash)
 				{
-					stepcount.byte.byteInfo.nocount = 1;
+					// ((DirCountByte_t*)&stepcount)->byteInfo.nocount = 1;	=> this force stepcount to be not in register
+					DirCountByte_t x = DirCountByte_t(); //POD
+					x.byte.byteInfo.nocount = 1;
+					stepcount += x.all; 
 				}
 
 				for (i = 0;; i++)
@@ -1429,11 +1471,11 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 					if (_pStepper->_movementstate._add[i] >= _steps || _pStepper->_movementstate._add[i] < oldadd)
 					{
 						_pStepper->_movementstate._add[i] -= _steps;
-						stepcount.all += mask.all&_dirCount.all;
+						stepcount += mask&_dirCount;
 					}
 					if (i == NUM_AXIS - 1)
 						break;
-					mask.all *= 16;
+					mask *= 16;
 				}
 				_pStepper->_steps.NextTail().Init(stepcount);
 			}
@@ -1465,7 +1507,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 				}
 			}
 		}
-		else if (_state == StateReadyWait)
+		else if (_state == StateReadyWait || _state == StateWait)
 		{
 			_state = StateWait;
 		}
@@ -1796,6 +1838,12 @@ bool  CStepper::IsAnyReference()
 	return false;
 }
 
+////////////////////////////////////////////////////////
+
+void CStepper::Wait(unsigned int sec100)
+{
+	QueueWait(100,128);
+}
 
 ////////////////////////////////////////////////////////
 
@@ -2032,8 +2080,8 @@ void CStepper::SMovement::Dump(unsigned char idx, unsigned char options)
 	DumpType<udist_t>(F("Steps"), _steps, false);
 	DumpType<udist_t>(F("State"), _state, false);
 
-	DumpType<DirCountAll_t>(F("DirCount"), _dirCount.all, false);
-	DumpType<DirCountAll_t>(F("LastDirCount"), _lastStepDirCount.all, false);
+	DumpType<DirCount_t>(F("DirCount"), _dirCount, false);
+	DumpType<DirCount_t>(F("LastDirCount"), _lastStepDirCount, false);
 	DumpArray<mdist_t, NUM_AXIS>(F("Dist"), _distance_, false);
 	DumpType<mdist_t>(F("UpSteps"), _upSteps, false);
 	DumpType<mdist_t>(F("DownSteps"), _downSteps, false);

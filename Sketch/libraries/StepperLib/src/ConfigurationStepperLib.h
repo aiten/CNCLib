@@ -204,10 +204,10 @@ typedef unsigned long steprate_t;		// tpye for speed (Hz), Steps/sec
 typedef unsigned char axisArray_t;			// on bit per axis
 
 #if NUM_AXIS > 3
-typedef unsigned long DirCountAll_t;		// 4 bit for eache axis (0..7) count, 8 dirup, see DirCountAll_t
+typedef unsigned long DirCount_t;			// 4 bit for eache axis (0..7) count, 8 dirup, see DirCountAll_t
 #define DirCountBytes 4
 #else
-typedef unsigned short DirCountAll_t;		// 4 bit for eache axis (0..7) count, 8 dirup 
+typedef unsigned short DirCount_t;			// 4 bit for eache axis (0..7) count, 8 dirup 
 #define DirCountBytes 2
 #endif
 
@@ -215,36 +215,33 @@ typedef unsigned short DirCountAll_t;		// 4 bit for eache axis (0..7) count, 8 d
 #error "NUM_AXIS must be < 8"				// because of last dirCount_t used for info 
 #endif
 
-struct DirCountStepByte_t
-{
-	unsigned char count1 : 3;
-	unsigned char dirUp1 : 1;
-
-	unsigned char count2 : 3;
-	unsigned char dirUp2 : 1;
-};
-
-struct DirCountInfoByte_t
-{
-	unsigned char count1 : 3;
-	unsigned char dirUp1 : 1;
-
-	unsigned char nocount : 1;		// do not count step (e.g. move for backlash
-	unsigned char unused1 : 1;
-	unsigned char unused2 : 1;
-	unsigned char unused3 : 1;
-};
-
 struct DirCountByte_t
 {
-	DirCountStepByte_t byte[DirCountBytes - 1];
-	DirCountInfoByte_t byteInfo;
-};
+	union
+	{
+		struct 
+		{
+			struct DirCountStepByte_t
+			{
+				unsigned char count1 : 3;
+				unsigned char dirUp1 : 1;
 
-union DirCount_t
-{
-	DirCountByte_t		byte;
-	DirCountAll_t		all;
+				unsigned char count2 : 3;
+				unsigned char dirUp2 : 1;
+			} byte[DirCountBytes - 1];
+			struct DirCountInfoByte_t
+			{
+				unsigned char count1 : 3;
+				unsigned char dirUp1 : 1;
+
+				unsigned char nocount : 1;		// do not count step (e.g. move for backlash
+				unsigned char unused1 : 1;
+				unsigned char unused2 : 1;
+				unsigned char unused3 : 1;
+			} byteInfo;
+		} byte;
+		DirCount_t all;
+	};
 };
 
 ////////////////////////////////////////////////////////

@@ -153,7 +153,7 @@ void CMsvcStepper::StepBegin(const SStepBuffer* stepbuffer)
 {
 	_TimerEvents[_eventIdx].Steps = stepbuffer->_steps;
 	_TimerEvents[_eventIdx].Count = stepbuffer->_count;
-	int multiplier = stepbuffer->DirStepCount.all;
+	int multiplier = stepbuffer->DirStepCount;
 	for (int i = 0; i < NUM_AXIS; i++)
 	{
 		_TimerEvents[_eventIdx].Axis[i].MoveAxis = 0;
