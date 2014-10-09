@@ -257,7 +257,7 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 void CStepper::QueueWait(const mdist_t dist, timer_t timerMax)
 {
 	WaitCanQueue();
-	_movements._queue.NextTail().InitWait(this, _movements._queue.SaveTail(), dist, timerMax);
+	_movements._queue.NextTail().InitWait(this, dist, timerMax);
 	_movements._queue.Enqueue();
 
 	StartTimer();
@@ -457,7 +457,7 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 
 ////////////////////////////////////////////////////////
 
-void CStepper::SMovement::InitWait(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, timer_t timer)
+void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t timer)
 {
 	//POD => ?? *this = SMovement();		
 	memset(this, 0, sizeof(SMovement));	// init with 0
@@ -1842,7 +1842,7 @@ bool  CStepper::IsAnyReference()
 
 void CStepper::Wait(unsigned int sec100)
 {
-	QueueWait(100,128);
+	QueueWait(sec100, WAITTIMER1VALUE);
 }
 
 ////////////////////////////////////////////////////////

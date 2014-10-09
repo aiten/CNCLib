@@ -54,6 +54,8 @@ typedef unsigned long udist_t;	// tpye of stepper coord system (unsigned)
 #define IDLETIMER1VALUE		TIMER1VALUE(10)			// Idle timer value (stepper timer not moving)
 #define TIMEOUTSETIDLE		1000					// set level after 1000ms
 
+#define WAITTIMER1VALUE		TIMER1VALUE(100)		// Idle timer value for "no step" movement
+
 #define MAXSPEED			(65535)					// see range for mdist_t
 #define MAXINTERRUPTSPEED	(65535/7)				// maximal possible interrupt rate
 #define TIMER1VALUEMAXSPEED	TIMER1VALUE(MAXSPEED)

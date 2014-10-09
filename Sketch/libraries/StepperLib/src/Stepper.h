@@ -414,7 +414,7 @@ protected:
 		bool IsProcessing()										{ return _state >= StateProcessingStart && _state <= StateProcessingEnd; }		// Move is currently processed (in acc,run or dec)
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
-		void InitWait(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, timer_t timer);
+		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer);
 
 		bool CalcNextSteps(bool continues);
 
