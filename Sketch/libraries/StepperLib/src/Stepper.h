@@ -55,18 +55,23 @@ public:
 
 	enum EState
 	{
-		StateIdle = 0,												// invalid (init state)
-		StateReadyMove = 1,											// ready for travel (not executing)
-		StateReadyWait = 2,											// ready for none "travel" move (wait move) (not executing)
-		StateProcessingStart = 16,									// Processing states start here
-		StateUpAcc = 16,											// in start phase accelerate
-		StateUpDec = 17,											// in start phase decelerate to vmax
-		StateRun = 18,												// running (no acc and dec)
-		StateDownDec = 19,											// in stop phase decelerate
-		StateDownAcc = 20,											// in stop phase accelerate
-		StateWait = 32,												// executing wait (do no step)
-		StateProcessingEnd = 63,									// Processing states end here
-		StateDone = 64												// finished
+		StateReadyMove = 10,										// ready for travel (not executing)
+		StateUpAcc = 11,											// in start phase accelerate
+		StateUpDec = 12,											// in start phase decelerate to vmax
+		StateRun = 13,												// running (no acc and dec)
+		StateDownDec = 14,											// in stop phase decelerate
+		StateDownAcc = 15,											// in stop phase accelerate
+
+		StateReadyWait = 20,										// ready for none "travel" move (wait move) (not executing)
+		StateWait = 21,												// executing wait (do no step)
+
+		StateDone = 0,												// finished
+
+		StateActiveMoveStart = StateReadyMove,						// Active Move (not wait) Start
+		StateActiveMoveEnd = StateDownAcc,							// Active Move (not wait) End
+
+		StateProcessingMoveStart = StateUpAcc,						// Processing states start here
+		StateProcessingMoveEnd = StateDownAcc,						// Processing states end here
 	};
 
 	enum EWaitType
@@ -409,9 +414,9 @@ protected:
 	public:
 
 		EnumAsByte(EState) GetState()							{ return _state; }
-		bool IsActive()											{ return _state > StateIdle && _state < StateDone; }		// Move to process or processing
-		bool IsFinished()										{ return _state == StateDone; }								// Move finished 
-		bool IsProcessing()										{ return _state >= StateProcessingStart && _state <= StateProcessingEnd; }		// Move is currently processed (in acc,run or dec)
+		bool IsActiveMove()										{ return _state >= StateActiveMoveStart && _state <= StateActiveMoveEnd; }			// Ready from Move or moving
+		bool IsFinished()										{ return _state == StateDone; }														// Move finished 
+		bool IsProcessingMove()									{ return _state >= StateProcessingMoveStart && _state <= StateProcessingMoveEnd; }	// Move is currently processed (in acc,run or dec)
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
 		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer);

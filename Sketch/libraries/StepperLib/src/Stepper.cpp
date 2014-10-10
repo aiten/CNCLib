@@ -310,7 +310,6 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 {
 	register axis_t i;
 
-	//*this = SMovement();		=> is no POD
 	//memset(this, 0, sizeof(SMovement));	==> do not init => set all members
 
 	_pStepper = pStepper;
@@ -459,7 +458,7 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 
 void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t timer)
 {
-	//POD => ?? *this = SMovement();		
+	//this is no POD because of methode's => *this = SMovement();		
 	memset(this, 0, sizeof(SMovement));	// init with 0
 
 	_pStepper = pStepper;
@@ -467,7 +466,6 @@ void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t tim
 	_timerStart = timer;
 
 	_state = StateReadyWait;
-
 }
 
 ////////////////////////////////////////////////////////
@@ -542,10 +540,8 @@ void CStepper::SMovement::RampRun()
 
 		if (subUp > _upSteps || (toMany - subUp) > _downSteps)
 		{
-#ifdef _MSC_VER
-#endif
 			subUp = _upSteps;
-			// return false;
+			// return false;	=> do not return in case of error, assume "valid" values!
 		}
 
 		_upSteps -= subUp;
@@ -553,10 +549,8 @@ void CStepper::SMovement::RampRun()
 
 		if (_downSteps > _steps)
 		{
-#ifdef _MSC_VER
-#endif
 			_downSteps = _steps;
-			// return false;
+			// return false;	=> do not return in case of error, assume "valid" values!
 		}
 
 		_downStartAt = _steps - _downSteps;
@@ -565,9 +559,9 @@ void CStepper::SMovement::RampRun()
 
 ////////////////////////////////////////////////////////
 
-void CStepper::SMovement::RampH2T(/* SMovement* mvPrev */ SMovement*mvNext)
+void CStepper::SMovement::RampH2T(SMovement*mvNext)
 {
-	if (!IsActive()) return;					// Move became inactive by ISR
+	if (!IsActiveMove()) return;					// Move became inactive by ISR
 
 	RampUp(_timerJunctionToPrev);
 
@@ -622,7 +616,6 @@ void CStepper::SMovement::RampUp(timer_t timerJunction)
 {
 	//	Recalc RampUp even if currently running => calc can increase ramp lenght
 
-
 	timer_t timerAccDec = GetUpTimerAcc();
 	_upSteps = CStepper::GetAccSteps(_timerRun, timerAccDec);
 
@@ -655,9 +648,9 @@ void CStepper::SMovement::RampUp(timer_t timerJunction)
 
 void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvNext)
 {
-	if (!IsActive()) return;					// Move became inactive by ISR
+	if (!IsActiveMove()) return;				// Move became inactive by ISR or "WaitState"
 
-	if (mvPrev == NULL || IsProcessing())		// no prev or processing (can be if the ISR has switchted to the next move)
+	if (mvPrev == NULL || IsProcessingMove())	// no prev or processing (can be if the ISR has switchted to the next move)
 	{
 		// first "now" executing move
 		// do not change _timerrun
@@ -674,7 +667,7 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 
 		CCriticalRegion crit; // prev operation may take long, in the meantime the ISR has finished a move
 
-		if (IsProcessing())
+		if (IsProcessingMove())
 		{
 			// first "now" executing move
 
@@ -709,7 +702,7 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 
 bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvNext)
 {
-	if (!IsActive()) return true;					// Move became inactive by ISR
+	if (!IsActiveMove()) return true;					// Move became inactive by ISR or "wait" move
 
 	if (mvNext == NULL)
 	{
@@ -723,7 +716,7 @@ bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvN
 		_pStepper->_movements._timerStartPossible = _pStepper->GetTimerAccelerating(_steps, _pStepper->_movements._timerStartPossible, GetDownTimerDec());
 	}
 
-	if (IsProcessing())
+	if (IsProcessingMove())
 		return true;					// stop optimizing here - maybe not reached head but ISR has switched to next move
 
 	if (mvPrev != NULL)
@@ -859,18 +852,19 @@ void CStepper::OptimizeMovementQueue(bool /* force */)
 
 	////////////////////////////////////
 	// calculate junction (max) speed!
+	// and calculate trapezoid ramp (as soon as possible)
 
+	SMovement* pLast = NULL;
+	SMovement* pPrev = NULL;
 	for (idx = idxnochange; _movements._queue.H2TTest(idx); idx = _movements._queue.H2TInc(idx))
 	{
-		_movements._queue.Buffer[idx].AdjustJunktionSpeedH2T(_movements._queue.GetPrev(idx), _movements._queue.GetNext(idx));
+		pLast = &_movements._queue.Buffer[idx];
+		pLast->AdjustJunktionSpeedH2T(pPrev, _movements._queue.GetNext(idx));
+		if (pPrev) pPrev->RampH2T(pLast);
+		pPrev = pLast;
 	}
+	if (pLast) pLast->RampH2T(NULL);
 
-	////////////////////////////////////
-	// calcualte trapezoid ramp
-	for (idx = idxnochange; _movements._queue.H2TTest(idx); idx = _movements._queue.H2TInc(idx))
-	{
-		_movements._queue.Buffer[idx].RampH2T(/* _movements._queue.GetPrev(idx), */ _movements._queue.GetNext(idx));
-	}
 }
 
 ////////////////////////////////////////////////////////
@@ -1109,10 +1103,10 @@ void CStepper::AbortMove()
 
 	for (unsigned char idx = _movements._queue.T2HInit(); _movements._queue.T2HTest(idx); idx = _movements._queue.T2HInc(idx))
 	{
-		if (_movements._queue.Buffer[idx].IsActive())
+		if (_movements._queue.Buffer[idx].IsActiveMove())
 		{
 			steps += _movements._queue.Buffer[idx]._steps;
-			if (_movements._queue.Buffer[idx].IsProcessing())
+			if (_movements._queue.Buffer[idx].IsProcessingMove())
 				steps -= _movementstate._n;
 		}
 	}
