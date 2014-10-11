@@ -81,6 +81,8 @@ void CStepper::InitMemVar()
 	SetDefaultMaxSpeed(28000, 350, 380);
 	for (axis_t i = 0; i < NUM_AXIS; i++) { SetJerkSpeed(i, 1000); }
 
+	for (i = 0; i<MOVEMENTBUFFERSIZE; i++) _movements._queue.Buffer[i]._state= StateDone;
+
 #ifdef _MSC_VER
 	MSCInfo = "";
 #endif
@@ -441,14 +443,15 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 
 	_timerJunctionToPrev = (timer_t)-1;	// force optimization
 
-	if (mvPrev)
+	bool prevIsMove = mvPrev && mvPrev->IsActiveMove();
+	if (prevIsMove)
 		CalcMaxJunktionSpeed(mvPrev);
 
 	RampUp(_timerStart);
 	RampDown(_timerStop);
 	RampRun();
 
-	if (mvPrev == NULL)
+	if (!prevIsMove)
 		_timerEndPossible = _pStepper->GetTimer(_steps, GetUpTimerAcc());
 
 	//pStepper->Dump(DumpAll);
@@ -721,6 +724,9 @@ bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvN
 
 	if (mvPrev != NULL)
 	{
+		if (!mvPrev->IsActiveMove())
+			return true;				// waitstate => no optimize
+
 		_timerRun = _timerMax;
 
 		// prev element available, calculate junction speed

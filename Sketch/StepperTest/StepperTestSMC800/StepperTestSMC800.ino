@@ -1,4 +1,5 @@
 #include <StepperLib.h>
+#include "StepperTest.h"
 
 #if !defined(__AVR_ATmega328P__)
 //#error Only Works with Arduino:Duemilanove
@@ -8,6 +9,11 @@
 
 #define PENUPPOS 30
 #define PENDOWNPOS 0
+
+#define DEFSPEED steprate_t(3000)  // tested by try and errror
+
+#define TESTAXIS 3
+
 
 CStepperSMC800 Stepper;
 
@@ -31,11 +37,11 @@ void setup()
   pinMode(12,INPUT_PULLUP);
 //  pinMode(13,INPUT_PULLUP);
 
-  Stepper.SetUsual(5000);
+  Stepper.SetUsual(3000);
   
-  Stepper.SetLimitMax(0, 6950);
-  Stepper.SetLimitMax(1, 4000);
-  Stepper.SetLimitMax(2, 4000);
+  Stepper.SetLimitMax(0, 100000);
+  Stepper.SetLimitMax(1, 100000);
+  Stepper.SetLimitMax(2, 100000);
 
   int dist2 = Stepper.GetLimitMax(2) - Stepper.GetLimitMin(2);
   int dist0 = Stepper.GetLimitMax(0) - Stepper.GetLimitMin(0);
@@ -82,37 +88,59 @@ static void Test1()
 {
   Serial.println(F("Test 1"));
   
-  int count = 0;
-  Stepper.CStepper::MoveRel(0, 300, 1000); count += 300;
-  Stepper.CStepper::MoveRel(0, 800, 2000); count += 800;
-  Stepper.CStepper::MoveRel(0, 1500, 3000); count += 1500;
-  Stepper.CStepper::MoveRel(0, 3500, 5000); count += 3500;
-  Stepper.CStepper::MoveRel(0, 300, 500); count += 300;
-  Stepper.CStepper::MoveRel(0, 550, 2000); count += 550;
-  WaitBusy();
+  CStepperTest::SMove mv[] = 
+  {
+    {  3000,   10000 },
+    {  8000,   20000 },
+    { 15000,   30000 },
+    { 25000,   50000 },
+    {  3000,    5000 },
+    {  5500,   20000 },
+    {  0,      100 },
+    {  5500,   20000 },
+    {  0,      1 },
+    {  1500,   50000 },
+    {  1500,   50000 },
+    {  1500,   50000 },
+    {  0,      1 },
+    {  1500,   50000 },
+    {  1500,   50000 },
+    {  1500,   50000 },
+    {  0,      1 },
+    {  1500,   50000 },
+    {  1500,   50000 },
+    {  1500,   50000 },
+    {  0,      1 },
+    {  1500,   50000 },
+    {  1500,   50000 },
+    {  1500,   50000 },
+    {  0,      1 },
+    {  1500,   50000 },
+    {  1500,   50000 },
+    {  1500,   50000 },
+    { 0, 0 }
+  };
 
-  int count1 = 0;
-  Stepper.CStepper::MoveRel(1, 300, 1000); count1 += 300;
-  Stepper.CStepper::MoveRel(1, 800, 2000); count1 += 800;
-  Stepper.CStepper::MoveRel(1, 800, 3000); count1 += 800;
-  Stepper.CStepper::MoveRel(1, 1400, 5000); count1 += 1400;
-  Stepper.CStepper::MoveRel(1, 300, 500); count1 += 300;
-  Stepper.CStepper::MoveRel(1, 400, 2000); count1 += 400;
-  WaitBusy();
+  if (true)
+  {
+    Stepper.SetUsual(6000);
+    Stepper.SetDefaultMaxSpeed(15000);
+    CStepperTest teststepper(mv,steprate_t(15000),60000);
+    teststepper.TestAxis(Y_AXIS);
+    WaitBusy();
+    teststepper.Home();
+  }
 
-  int count2 = 0;
-  Stepper.CStepper::MoveRel(2, 300, 1000); count2 += 300;
-  Stepper.CStepper::MoveRel(2, 800, 2000); count2 += 800;
-  Stepper.CStepper::MoveRel(2, 800, 3000); count2 += 800;
-  Stepper.CStepper::MoveRel(2, 1400, 5000); count2 += 1400;
-  Stepper.CStepper::MoveRel(2, 300, 500); count2 += 300;
-  Stepper.CStepper::MoveRel(2, 400, 2000); count2 += 400;
-  WaitBusy();
-
-  Stepper.CStepper::MoveRel(0, -count, 5000);
-  Stepper.CStepper::MoveRel(1, -count1, 5000);
-  Stepper.CStepper::MoveRel(2, -count2, 5000);
-  WaitBusy();
+  if (false)
+  {
+    CStepperTest teststepper(mv,DEFSPEED,4000);
+    for (axis_t axis = 0;axis<TESTAXIS;axis++)
+    {
+      teststepper.TestAxis(axis);
+      WaitBusy();
+    }
+    teststepper.Home();
+  }
 }
 
 //////////////////////////////////////////////////////////////////////
