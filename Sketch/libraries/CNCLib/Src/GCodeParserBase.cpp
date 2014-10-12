@@ -223,10 +223,17 @@ bool CGCodeParserBase::ParseLineNumber(bool setlinenumber)
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParserBase::Delay(unsigned long ms)
+void CGCodeParserBase::Wait(unsigned long ms)
+{
+	CStepper::GetInstance()->Wait(ms/10);
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParserBase::Sync()
 {
 	CStepper::GetInstance()->WaitBusy();
-	CControl::GetInstance()->Delay(ms);
+	CControl::GetInstance()->Delay(0);
 }
 
 ////////////////////////////////////////////////////////////
@@ -545,7 +552,7 @@ void CGCodeParserBase::G0001Command(bool isG00)
 		CMotionControl::MoveAbs(move.newpos, isG00 ? _modalstate.G0FeedRate : _modalstate.G1FeedRate);
 		if (!_modalstate.ConstantVelocity)
 		{
-			Delay(0);
+			Wait(0);
 		}
 	}
 }
@@ -611,7 +618,7 @@ void CGCodeParserBase::G0203Command(bool isG02)
 
 	if (!_modalstate.ConstantVelocity)
 	{
-		Delay(0);
+		Wait(0);
 	}
 }
 
@@ -642,7 +649,7 @@ void CGCodeParserBase::G04Command()
 
 	if (ExpectEndOfCommand())		{ return; }
 
-	Delay(dweelms);
+	Wait(dweelms);
 }
 
 ////////////////////////////////////////////////////////////
@@ -781,7 +788,7 @@ void CGCodeParserBase::G92Command()
 
 void CGCodeParserBase::M03Command()
 {
-	Delay(0);
+	Sync();
 	CControl::GetInstance()->IOControl(CControl::Spindel, _modalstate.SpindleSpeed);
 	//spindel on CW
 }
@@ -790,7 +797,7 @@ void CGCodeParserBase::M03Command()
 
 void CGCodeParserBase::M04Command()
 {
-	Delay(0);
+	Sync();
 	CControl::GetInstance()->IOControl(CControl::Spindel, -((short) _modalstate.SpindleSpeed));
 	//spindel on CCW
 }
@@ -800,7 +807,7 @@ void CGCodeParserBase::M04Command()
 void CGCodeParserBase::M05Command()
 {
 	//spindel off
-	Delay(0);
+	Sync();
 	CControl::GetInstance()->IOControl(CControl::Spindel, 0);
 }
 

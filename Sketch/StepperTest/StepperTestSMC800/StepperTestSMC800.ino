@@ -16,6 +16,7 @@
 
 
 CStepperSMC800 Stepper;
+//CStepperL298N Stepper;
 
 //////////////////////////////////////////////////////////////////////
 
@@ -88,7 +89,7 @@ static void Test1()
 {
   Serial.println(F("Test 1"));
   
-  CStepperTest::SMove mv[] = 
+  static CStepperTest::SMove mv[] = 
   {
     {  3000,   10000 },
     {  8000,   20000 },
@@ -121,7 +122,7 @@ static void Test1()
     { 0, 0 }
   };
 
-  if (true)
+  if (false)
   {
     Stepper.SetUsual(6000);
     Stepper.SetDefaultMaxSpeed(15000);
@@ -131,7 +132,7 @@ static void Test1()
     teststepper.Home();
   }
 
-  if (false)
+  if (true)
   {
     CStepperTest teststepper(mv,DEFSPEED,4000);
     for (axis_t axis = 0;axis<TESTAXIS;axis++)

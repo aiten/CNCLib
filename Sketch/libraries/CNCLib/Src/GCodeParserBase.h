@@ -179,7 +179,8 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-	void Delay(unsigned long ms);
+	void Sync();											// WaitBusy, sync movement with realtime
+	void Wait(unsigned long ms);							// add "wait" in movement queue
 	void SkipCommentNested();
 
 	virtual unsigned long ParseParameter();

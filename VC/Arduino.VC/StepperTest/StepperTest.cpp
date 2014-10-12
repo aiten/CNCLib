@@ -456,6 +456,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		Stepper.InitTest();
 		Stepper.SetDefaultMaxSpeed(5000, 100 , 150);
 		Stepper.CStepper::MoveRel(0,2500,5000);
+		Stepper.CStepper::Wait(0);
 		Stepper.CStepper::MoveRel(0,100,3000);
 		Stepper.CStepper::MoveRel(0,75,2500);
 		Stepper.CStepper::MoveRel(0,50,2000);

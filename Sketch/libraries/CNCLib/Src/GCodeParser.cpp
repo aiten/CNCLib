@@ -740,7 +740,7 @@ void CGCodeParser::G8xCommand(SAxisMove& move, bool useP, bool useQ, bool useMin
 				// 3.a. Step: Wait
 				if (useP &&  _modalstate.G8xP != 0)
 				{
-					Delay(_modalstate.G8xP);
+					Wait(_modalstate.G8xP);
 				}
 
 				// 4. Step: Goto init Z or R (fast) see G98
@@ -808,13 +808,13 @@ void CGCodeParser::G83Command()
 
 void CGCodeParser::M00Command()
 {
-	Delay(0);
+	Sync();
 	CControl::GetInstance()->Pause();
 }
 
 void CGCodeParser::M01Command()
 {
-	Delay(0);
+	Sync();
 	CControl::GetInstance()->Pause();
 }
 
@@ -834,7 +834,7 @@ void CGCodeParser::M06Command()
 void CGCodeParser::M07Command()
 {
 	//coolant on
-	Delay(0);
+	Sync();
 	CControl::GetInstance()->IOControl(CControl::Coolant, 1);
 }
 
@@ -843,7 +843,7 @@ void CGCodeParser::M07Command()
 void CGCodeParser::M08Command()
 {
 	//coolant on (flood)
-	Delay(0);
+	Sync();
 	CControl::GetInstance()->IOControl(CControl::Coolant, 2);
 }
 
@@ -852,7 +852,7 @@ void CGCodeParser::M08Command()
 void CGCodeParser::M09Command()
 {
 	//coolant off
-	Delay(0);
+	Sync();
 	CControl::GetInstance()->IOControl(CControl::Coolant, 0);
 }
 

@@ -547,6 +547,8 @@ void CStepper::SMovement::RampRun()
 			// return false;	=> do not return in case of error, assume "valid" values!
 		}
 
+CCriticalRegion creg;
+
 		_upSteps -= subUp;
 		_downSteps -= toMany - subUp;
 
@@ -647,6 +649,28 @@ void CStepper::SMovement::RampUp(timer_t timerJunction)
 }
 
 ////////////////////////////////////////////////////////
+
+void CStepper::SMovement::AdjustJunktionSpeedProcessing()
+{
+#pragma message("TODO: _timerEndPossible depends on Movementstate and position (time to finish move)")
+
+	if(false)
+	{
+		if (IsDecMove())
+			_timerEndPossible = _timerStop;
+		else
+			_timerEndPossible = max(_timerEndPossible, _timerRun);
+	}
+	else
+	{
+		if (IsAccMove())
+			_timerEndPossible = max(_timerEndPossible, _timerRun);
+		else
+			_timerEndPossible = _timerStop;
+	}
+}
+
+////////////////////////////////////////////////////////
 // drill down the junction speed if speed at junction point is not possible
 
 void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvNext)
@@ -657,12 +681,8 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 	{
 		// first "now" executing move
 		// do not change _timerrun
-#pragma message("TODO: _timerEndPossible depends on Movementstate")
 
-		if (_state <= StateRun)
-			_timerEndPossible = max(_timerEndPossible, _timerRun);
-		else
-			_timerEndPossible = _timerStop;
+		AdjustJunktionSpeedProcessing();
 	}
 	else
 	{
@@ -673,13 +693,7 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 		if (IsProcessingMove())
 		{
 			// first "now" executing move
-
-#pragma message("TODO: _timerEndPossible depends on Movementstate")
-
-			if (_state <= StateRun)
-				_timerEndPossible = max(_timerEndPossible, _timerRun);
-			else
-				_timerEndPossible = _timerStop;
+			AdjustJunktionSpeedProcessing();
 		}
 		else
 		{
@@ -725,7 +739,10 @@ bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvN
 	if (mvPrev != NULL)
 	{
 		if (!mvPrev->IsActiveMove())
-			return true;				// waitstate => no optimize
+			return true;				// waitstate => no optimize, break here
+
+		if (mvPrev->IsDecMove())
+			return true;				// cant be optimized any more, break here
 
 		_timerRun = _timerMax;
 
