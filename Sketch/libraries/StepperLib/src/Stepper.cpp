@@ -44,37 +44,22 @@ void CStepper::InitMemVar()
 {
 	register axis_t i;
 
-	_pod = POD();
+	_pod = POD();		//POD init object with 0
 
 	// look to ASM => more for() are faster an smaller
-//POD	for (i = 0; i < NUM_AXIS; i++)	_pod._current[i] = 0;
-//POD	for (i = 0; i < NUM_AXIS; i++)	_pod._calculatedpos[i] = 0;
-//POD	for (i = 0; i < NUM_AXIS; i++)	_pod._timerMax[i] = 0;
 
 #if USESLIP  
 	for (i=0;i<NUM_AXIS;i++)	_SlipSum[i]=0;
 	for (i=0;i<NUM_AXIS;i++)	_Slip[i]=0;
 #endif
-//POD	for (i = 0; i < NUM_AXIS; i++)	_pod._backlash[i] = 0;
-//POD	for (i = 0; i < NUM_AXIS; i++)	_pod._limitMin[i] = 0;
 
 	for (i = 0; i < NUM_AXIS; i++)	_pod._limitMax[i] = 0x00ffffff;	
 	for (i = 0; i < NUM_AXIS; i++)	_pod._stepMode[i] = HalfStep;
-//POD	for (i = 0; i < NUM_AXIS; i++)	_pod._timeOutEnable[i] = 0;
 
-//POD	_pod._timerRunning = false;
-//POD	_pod._waitFinishMove = false;
 	_pod._checkReference = true;
 	_pod._timerbacklash = (timer_t)-1;
 
 	_pod._limitCheck = true;
-//POD	_pod._totalSteps = 0;
-//POD	_pod._timerISRBusy = 0;
-//POD	_pod._lastdirection = 0;
-
-//POD	_pod._event = NULL;
-//POD	_pod._eventparam = NULL;
-
 	_pod._idleLevel = LevelOff;
 
 //	SetUsual(28000);
@@ -170,7 +155,6 @@ void CStepper::StopTimer()
 
 void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax)
 {
-
 	//DumpArray<mdist_t,NUM_AXIS>(F("QueueMove"),dist,false);
 	//DumpArray<bool,NUM_AXIS>(F("Dir"),directionUp,false);
 	//DumpType<timer_t>(F("tm"),timerMax,true);
@@ -547,7 +531,7 @@ void CStepper::SMovement::RampRun()
 			// return false;	=> do not return in case of error, assume "valid" values!
 		}
 
-CCriticalRegion creg;
+		CCriticalRegion creg;
 
 		_upSteps -= subUp;
 		_downSteps -= toMany - subUp;
@@ -650,24 +634,34 @@ void CStepper::SMovement::RampUp(timer_t timerJunction)
 
 ////////////////////////////////////////////////////////
 
-void CStepper::SMovement::AdjustJunktionSpeedProcessing()
+bool CStepper::SMovement::CheckForProcessing()
 {
-#pragma message("TODO: _timerEndPossible depends on Movementstate and position (time to finish move)")
+	if (!IsProcessingMove()) return true;
 
-	if(false)
+	register bool setmax;
+
+	if (IsDownMove())		
 	{
-		if (IsDecMove())
-			_timerEndPossible = _timerStop;
-		else
-			_timerEndPossible = max(_timerEndPossible, _timerRun);
+		setmax = false;
+	}
+	else if(IsUpMove())
+	{
+		setmax = true;
 	}
 	else
 	{
-		if (IsAccMove())
-			_timerEndPossible = max(_timerEndPossible, _timerRun);
-		else
-			_timerEndPossible = _timerStop;
+		// run state
+		// allow only if current step << downstart of resulting ramp-Trapezoid
+		// assume: 1/4 finished
+		setmax = _pStepper->_movementstate._n < _steps / 4;
 	}
+
+	if (setmax)
+		_timerEndPossible = max(_timerEndPossible, _timerRun);
+	else
+		_timerEndPossible = _timerStop;
+
+	return false;
 }
 
 ////////////////////////////////////////////////////////
@@ -677,12 +671,10 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 {
 	if (!IsActiveMove()) return;				// Move became inactive by ISR or "WaitState"
 
-	if (mvPrev == NULL || IsProcessingMove())	// no prev or processing (can be if the ISR has switchted to the next move)
+	if (mvPrev == NULL || !CheckForProcessing())	// no prev or processing (can be if the ISR has switchted to the next move)
 	{
 		// first "now" executing move
 		// do not change _timerrun
-
-		AdjustJunktionSpeedProcessing();
 	}
 	else
 	{
@@ -690,12 +682,7 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 
 		CCriticalRegion crit; // prev operation may take long, in the meantime the ISR has finished a move
 
-		if (IsProcessingMove())
-		{
-			// first "now" executing move
-			AdjustJunktionSpeedProcessing();
-		}
-		else
+		if (CheckForProcessing())
 		{
 			if (_timerEndPossible > _timerMax)
 			{
@@ -741,7 +728,7 @@ bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvN
 		if (!mvPrev->IsActiveMove())
 			return true;				// waitstate => no optimize, break here
 
-		if (mvPrev->IsDecMove())
+		if (mvPrev->IsDownMove())
 			return true;				// cant be optimized any more, break here
 
 		_timerRun = _timerMax;

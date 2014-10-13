@@ -411,15 +411,15 @@ protected:
 		bool GetDirectionUp(axis_t axis)						{ return ((_dirCount >> (axis * 4)) & 8) != 0; }
 		unsigned char GetMaxStepMultiplier();
 
-		void AdjustJunktionSpeedProcessing();
+		bool CheckForProcessing();
 
 	public:
 
 		EnumAsByte(EState) GetState()							{ return _state; }
 		bool IsActiveMove()										{ return _state >= StateActiveMoveStart && _state <= StateActiveMoveEnd; }			// Ready from Move or moving
 		bool IsProcessingMove()									{ return _state >= StateProcessingMoveStart && _state <= StateProcessingMoveEnd; }	// Move is currently processed (in acc,run or dec)
-		bool IsAccMove()										{ return _state < StateRun && _state >= StateProcessingMoveStart; }					// Move in ramp acc state
-		bool IsDecMove()										{ return _state > StateRun && _state <= StateProcessingMoveEnd; }					// Move in ramp dec state
+		bool IsUpMove()											{ return _state < StateRun && _state >= StateProcessingMoveStart; }					// Move in ramp acc state
+		bool IsDownMove()										{ return _state > StateRun && _state <= StateProcessingMoveEnd; }					// Move in ramp dec state
 		bool IsFinished()										{ return _state == StateDone; }														// Move finished 
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
