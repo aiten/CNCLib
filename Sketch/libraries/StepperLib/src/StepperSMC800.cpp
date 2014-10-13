@@ -195,7 +195,9 @@ void CStepperSMC800::SetEnable(axis_t axis, unsigned char level, bool force )
 	if (axis<SMC800_NUM_AXIS)
 	{
 		if (level > Level60)		_level[axis] = Level100;
+#ifndef REDUCED_SIZE
 		else if (level > Level20)	_level[axis] = Level60;
+#endif
 		else if (level > LevelOff)	_level[axis] = Level20;
 		else						_level[axis] = Level0;
 		
@@ -227,7 +229,9 @@ void CStepperSMC800::SetPhase(axis_t axis)
 			{
 				default:
 				case Level100:   OutSMC800Cmd(pgm_read_byte(&sbm800fullstep100[stepidx]) + addIO);      break;
+#ifndef REDUCED_SIZE
 				case Level60:    OutSMC800Cmd(pgm_read_byte(&sbm800fullstep60[stepidx]) + addIO);       break;
+#endif
 				case Level20:    OutSMC800Cmd(pgm_read_byte(&sbm800fullstep20[stepidx]) + addIO);       break;
 				case Level0:     OutSMC800Cmd(pgm_read_byte(&sbm800fullstep0[stepidx]) + addIO);        break;
 			}
@@ -239,7 +243,9 @@ void CStepperSMC800::SetPhase(axis_t axis)
 			{
 				default:
 				case Level100:    OutSMC800Cmd(pgm_read_byte(&sbm800halfstep100[stepidx]) + addIO);    break;
+#ifndef REDUCED_SIZE
 				case Level60:     OutSMC800Cmd(pgm_read_byte(&sbm800halfstep60[stepidx]) + addIO);     break;
+#endif
 				case Level20:     OutSMC800Cmd(pgm_read_byte(&sbm800halfstep20[stepidx]) + addIO);     break;
 				case Level0:      OutSMC800Cmd(pgm_read_byte(&sbm800halfstep0[stepidx]) + addIO);      break;
 			}

@@ -553,16 +553,7 @@ void CStepper::SMovement::RampH2T(SMovement*mvNext)
 	if (!IsActiveMove()) return;					// Move became inactive by ISR
 
 	RampUp(_timerJunctionToPrev);
-
-	if (mvNext)
-	{
-		RampDown(mvNext->_timerJunctionToPrev);
-	}
-	else if (mvNext == NULL)
-	{
-		RampDown(GetDownTimerDec());
-	}
-
+	RampDown(mvNext ? mvNext->_timerJunctionToPrev : GetDownTimerDec());
 	RampRun();
 }
 
@@ -570,6 +561,9 @@ void CStepper::SMovement::RampH2T(SMovement*mvNext)
 
 void CStepper::SMovement::RampDown(timer_t timerJunction)
 {
+//	if (IsDownMove()) return;					// cannot calc if already started
+	if (!CanModifyProcessing())  return;		// cannot calc if already started
+
 	timer_t timerAccDec = GetDownTimerDec();
 	if (timerJunction >= timerAccDec)
 	{
@@ -603,6 +597,8 @@ void CStepper::SMovement::RampDown(timer_t timerJunction)
 
 void CStepper::SMovement::RampUp(timer_t timerJunction)
 {
+	if (!IsReadyForMove()) return;	// cannot calc if already started
+
 	//	Recalc RampUp even if currently running => calc can increase ramp lenght
 
 	timer_t timerAccDec = GetUpTimerAcc();
@@ -634,29 +630,30 @@ void CStepper::SMovement::RampUp(timer_t timerJunction)
 
 ////////////////////////////////////////////////////////
 
+bool CStepper::SMovement::CanModifyProcessing() const
+{
+	if (!IsProcessingMove()) return true;
+
+	if (IsDownMove())		
+	{
+		return false;
+	}
+	else if(IsUpMove())
+	{
+		return true;
+	}
+
+	// run state
+	// allow only if current step << downstart of resulting ramp-Trapezoid
+	// assume: 1/x finished
+	return _steps > 255 && _pStepper->_movementstate._n < _steps / 4;
+}
+
 bool CStepper::SMovement::CheckForProcessing()
 {
 	if (!IsProcessingMove()) return true;
 
-	register bool setmax;
-
-	if (IsDownMove())		
-	{
-		setmax = false;
-	}
-	else if(IsUpMove())
-	{
-		setmax = true;
-	}
-	else
-	{
-		// run state
-		// allow only if current step << downstart of resulting ramp-Trapezoid
-		// assume: 1/4 finished
-		setmax = _pStepper->_movementstate._n < _steps / 4;
-	}
-
-	if (setmax)
+	if (CanModifyProcessing())
 		_timerEndPossible = max(_timerEndPossible, _timerRun);
 	else
 		_timerEndPossible = _timerStop;
@@ -725,13 +722,13 @@ bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvN
 
 	if (mvPrev != NULL)
 	{
+		_timerRun = _timerMax;
+
 		if (!mvPrev->IsActiveMove())
 			return true;				// waitstate => no optimize, break here
 
 		if (mvPrev->IsDownMove())
 			return true;				// cant be optimized any more, break here
-
-		_timerRun = _timerMax;
 
 		// prev element available, calculate junction speed
 		timer_t junctiontoPrev = max(_timerMaxJunction, _pStepper->_movements._timerStartPossible);

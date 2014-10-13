@@ -415,16 +415,18 @@ protected:
 
 	public:
 
-		EnumAsByte(EState) GetState()							{ return _state; }
-		bool IsActiveMove()										{ return _state >= StateActiveMoveStart && _state <= StateActiveMoveEnd; }			// Ready from Move or moving
-		bool IsProcessingMove()									{ return _state >= StateProcessingMoveStart && _state <= StateProcessingMoveEnd; }	// Move is currently processed (in acc,run or dec)
-		bool IsUpMove()											{ return _state < StateRun && _state >= StateProcessingMoveStart; }					// Move in ramp acc state
-		bool IsDownMove()										{ return _state > StateRun && _state <= StateProcessingMoveEnd; }					// Move in ramp dec state
-		bool IsFinished()										{ return _state == StateDone; }														// Move finished 
+		EnumAsByte(EState) GetState() const						{ return _state; }
+		bool IsActiveMove() const								{ return _state >= StateActiveMoveStart && _state <= StateActiveMoveEnd; }			// Ready from Move or moving
+		bool IsReadyForMove() const								{ return _state == StateReadyMove; }												// Ready for move but not started
+		bool IsProcessingMove() const							{ return _state >= StateProcessingMoveStart && _state <= StateProcessingMoveEnd; }	// Move is currently processed (in acc,run or dec)
+		bool IsUpMove() const									{ return _state < StateRun && _state >= StateProcessingMoveStart; }					// Move in ramp acc state
+		bool IsDownMove() const									{ return _state > StateRun && _state <= StateProcessingMoveEnd; }					// Move in ramp dec state
+		bool IsFinished() const									{ return _state == StateDone; }														// Move finished 
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
 		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer);
 
+		bool CanModifyProcessing() const;
 		bool CalcNextSteps(bool continues);
 
 		void RampH2T(/* SMovement*mvPrev,  */ SMovement*mvNext);
