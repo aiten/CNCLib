@@ -411,7 +411,21 @@ protected:
 		bool GetDirectionUp(axis_t axis)						{ return ((_dirCount >> (axis * 4)) & 8) != 0; }
 		unsigned char GetMaxStepMultiplier();
 
-		bool CheckForProcessing();
+		bool CanModify() const;									// can modify movement (ramp)
+
+		void SetEndPossibleProcessing();
+
+		bool CalcNextSteps(bool continues);
+
+		void Ramp(SMovement*mvNext);
+		void RampUp(timer_t timerJunction);
+		void RampDown(timer_t timerJunction);
+		void RampRun();
+
+		void CalcMaxJunktionSpeed(SMovement*mvNext);
+
+		bool AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvNext);
+		void AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvNext);
 
 	public:
 
@@ -425,19 +439,6 @@ protected:
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
 		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer);
-
-		bool CanModifyProcessing() const;
-		bool CalcNextSteps(bool continues);
-
-		void RampH2T(/* SMovement*mvPrev,  */ SMovement*mvNext);
-		void RampDown(timer_t timerJunction);
-		void RampUp(timer_t timerJunction);
-		void RampRun();
-
-		void CalcMaxJunktionSpeed(SMovement*mvNext);
-
-		bool AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvNext);
-		void AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvNext);
 
 		void SetBacklash()										{ _backlash = true; }
 

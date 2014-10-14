@@ -548,22 +548,24 @@ void CStepper::SMovement::RampRun()
 
 ////////////////////////////////////////////////////////
 
-void CStepper::SMovement::RampH2T(SMovement*mvNext)
+void CStepper::SMovement::Ramp(SMovement*mvNext)
 {
 	if (!IsActiveMove()) return;					// Move became inactive by ISR
 
-	RampUp(_timerJunctionToPrev);
-	RampDown(mvNext ? mvNext->_timerJunctionToPrev : GetDownTimerDec());
-	RampRun();
+	if (IsReadyForMove())							// must not be started!
+		RampUp(_timerJunctionToPrev);
+
+	if (CanModify())
+	{
+		RampDown(mvNext ? mvNext->_timerJunctionToPrev : GetDownTimerDec());
+		RampRun();
+	}
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepper::SMovement::RampDown(timer_t timerJunction)
 {
-//	if (IsDownMove()) return;					// cannot calc if already started
-	if (!CanModifyProcessing())  return;		// cannot calc if already started
-
 	timer_t timerAccDec = GetDownTimerDec();
 	if (timerJunction >= timerAccDec)
 	{
@@ -597,10 +599,6 @@ void CStepper::SMovement::RampDown(timer_t timerJunction)
 
 void CStepper::SMovement::RampUp(timer_t timerJunction)
 {
-	if (!IsReadyForMove()) return;	// cannot calc if already started
-
-	//	Recalc RampUp even if currently running => calc can increase ramp lenght
-
 	timer_t timerAccDec = GetUpTimerAcc();
 	_upSteps = CStepper::GetAccSteps(_timerRun, timerAccDec);
 
@@ -630,9 +628,11 @@ void CStepper::SMovement::RampUp(timer_t timerJunction)
 
 ////////////////////////////////////////////////////////
 
-bool CStepper::SMovement::CanModifyProcessing() const
+bool CStepper::SMovement::CanModify() const
 {
-	if (!IsProcessingMove()) return true;
+	if (!IsActiveMove())	return false;	// only "moves" can be modified
+
+	if (IsReadyForMove())	return true;	// not started move => modify is OK
 
 	if (IsDownMove())		
 	{
@@ -649,16 +649,12 @@ bool CStepper::SMovement::CanModifyProcessing() const
 	return _steps > 255 && _pStepper->_movementstate._n < _steps / 4;
 }
 
-bool CStepper::SMovement::CheckForProcessing()
+void CStepper::SMovement::SetEndPossibleProcessing()
 {
-	if (!IsProcessingMove()) return true;
-
-	if (CanModifyProcessing())
+	if (CanModify())
 		_timerEndPossible = max(_timerEndPossible, _timerRun);
 	else
 		_timerEndPossible = _timerStop;
-
-	return false;
 }
 
 ////////////////////////////////////////////////////////
@@ -668,10 +664,12 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 {
 	if (!IsActiveMove()) return;				// Move became inactive by ISR or "WaitState"
 
-	if (mvPrev == NULL || !CheckForProcessing())	// no prev or processing (can be if the ISR has switchted to the next move)
+	if (mvPrev == NULL || IsProcessingMove())	// no prev or processing (can be if the ISR has switchted to the next move)
 	{
 		// first "now" executing move
 		// do not change _timerrun
+
+		SetEndPossibleProcessing();
 	}
 	else
 	{
@@ -679,8 +677,10 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 
 		CCriticalRegion crit; // prev operation may take long, in the meantime the ISR has finished a move
 
-		if (CheckForProcessing())
+		if (!IsProcessingMove())
 		{
+			SetEndPossibleProcessing();
+
 			if (_timerEndPossible > _timerMax)
 			{
 				// not faster as required
@@ -695,6 +695,13 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 		mvNext->_timerJunctionToPrev = max(mvNext->_timerMaxJunction, max(_timerEndPossible, mvNext->_timerJunctionToPrev));
 		_timerEndPossible = mvNext->_timerJunctionToPrev;
 	}
+	else
+	{
+		Ramp(NULL);
+	}
+
+	if (mvPrev != NULL)
+		mvPrev->Ramp(this);
 }
 
 ////////////////////////////////////////////////////////
@@ -861,17 +868,10 @@ void CStepper::OptimizeMovementQueue(bool /* force */)
 	// calculate junction (max) speed!
 	// and calculate trapezoid ramp (as soon as possible)
 
-	SMovement* pLast = NULL;
-	SMovement* pPrev = NULL;
 	for (idx = idxnochange; _movements._queue.H2TTest(idx); idx = _movements._queue.H2TInc(idx))
 	{
-		pLast = &_movements._queue.Buffer[idx];
-		pLast->AdjustJunktionSpeedH2T(pPrev, _movements._queue.GetNext(idx));
-		if (pPrev) pPrev->RampH2T(pLast);
-		pPrev = pLast;
+		_movements._queue.Buffer[idx].AdjustJunktionSpeedH2T(_movements._queue.GetPrev(idx), _movements._queue.GetNext(idx));
 	}
-	if (pLast) pLast->RampH2T(NULL);
-
 }
 
 ////////////////////////////////////////////////////////
