@@ -66,7 +66,7 @@ void CStepper::InitMemVar()
 	SetDefaultMaxSpeed(28000, 350, 380);
 	for (axis_t i = 0; i < NUM_AXIS; i++) { SetJerkSpeed(i, 1000); }
 
-	for (i = 0; i<MOVEMENTBUFFERSIZE; i++) _movements._queue.Buffer[i]._state= StateDone;
+	for (i = 0; i<MOVEMENTBUFFERSIZE; i++) _movements._queue.Buffer[i]._state= SMovement::StateDone;
 
 #ifdef _MSC_VER
 	MSCInfo = "";
@@ -274,7 +274,7 @@ void CStepper::StartTimer()
 				SetEnable(i, CStepper::LevelMax, true);
 		}
 
-		_movements._queue.Head().CalcNextSteps(false);
+		_movementstate.CalcNextSteps(false,&_movements._queue.Head());
 		if (_movements._queue.Head().IsFinished())
 		{
 			// empty move => startup failed
@@ -413,15 +413,15 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 	_upAxis = 0;
 	_downAxis = 0;
 
-	_timerStart = GetUpTimerAcc();
-	_timerStop = GetUpTimerDec();
+	_ramp._timerStart = GetUpTimerAcc();
+	_ramp._timerStop = GetUpTimerDec();
 	_timerRun = _timerMax;
 
-	if (_timerRun > _timerStart)
-		_timerStart = _timerRun;
+	if (_timerRun > _ramp._timerStart)
+		_ramp._timerStart = _timerRun;
 
-	if (_timerRun > _timerStop)
-		_timerStop = _timerRun;
+	if (_timerRun > _ramp._timerStop)
+		_ramp._timerStop = _timerRun;
 
 	_state = StateReadyMove;
 
@@ -431,9 +431,9 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 	if (prevIsMove)
 		CalcMaxJunktionSpeed(mvPrev);
 
-	RampUp(_timerStart);
-	RampDown(_timerStop);
-	RampRun();
+	_ramp.RampUp(this,_timerRun, _ramp._timerStart);
+	_ramp.RampDown(this,_ramp._timerStop);
+	_ramp.RampRun(this);
 
 	if (!prevIsMove)
 		_timerEndPossible = _pStepper->GetTimer(_steps, GetUpTimerAcc());
@@ -450,7 +450,7 @@ void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t tim
 
 	_pStepper = pStepper;
 	_steps = steps;
-	_timerStart = timer;
+	_ramp._timerStart = timer;
 
 	_state = StateReadyWait;
 }
@@ -492,114 +492,10 @@ unsigned char CStepper::SMovement::GetMaxStepMultiplier()
 
 ////////////////////////////////////////////////////////
 
-void CStepper::SMovement::RampRun()
+void CStepper::SMovement::SRamp::RampUp(SMovement* pMovement, timer_t timerRun, timer_t timerJunction)
 {
-	if (_upSteps > _steps || _steps - _upSteps < _downSteps)
-	{
-		// we cant reach vmax for this movement, cut plateau.
-		// leave relation between up and down squared => constant a
-		mdist_t toMany = _downSteps + _upSteps - _steps;
-		mdist_t subUp;
-
-		if (_downSteps == 0)
-		{
-			subUp = toMany;
-		}
-		else if (_upSteps == 0)
-		{
-			subUp = 0;
-		}
-		else
-		{
-			timer_t upTimer = GetUpTimer(_timerStart > _timerRun);
-			timer_t downTimer = GetUpTimer(_timerStop < _timerRun);
-
-			unsigned long sqUp = (unsigned long)(upTimer)* (unsigned long)(upTimer);
-			unsigned long sqDown = (unsigned long)(downTimer)* (unsigned long)(downTimer);
-
-			sqUp /= 0x1000;		// may overrun => divide by 0x1000
-			sqDown /= 0x1000;
-
-			unsigned long sum = sqUp + sqDown;
-
-			subUp = mdist_t(RoundMulDivU32(toMany, sqUp, sum));	// round
-		}
-
-		if (subUp > _upSteps || (toMany - subUp) > _downSteps)
-		{
-			subUp = _upSteps;
-			// return false;	=> do not return in case of error, assume "valid" values!
-		}
-
-		CCriticalRegion creg;
-
-		_upSteps -= subUp;
-		_downSteps -= toMany - subUp;
-
-		if (_downSteps > _steps)
-		{
-			_downSteps = _steps;
-			// return false;	=> do not return in case of error, assume "valid" values!
-		}
-
-		_downStartAt = _steps - _downSteps;
-	}
-}
-
-////////////////////////////////////////////////////////
-
-void CStepper::SMovement::Ramp(SMovement*mvNext)
-{
-	if (!IsActiveMove()) return;					// Move became inactive by ISR
-
-	if (IsReadyForMove())							// must not be started!
-		RampUp(_timerJunctionToPrev);
-
-	if (CanModify())
-	{
-		RampDown(mvNext ? mvNext->_timerJunctionToPrev : GetDownTimerDec());
-		RampRun();
-	}
-}
-
-////////////////////////////////////////////////////////
-
-void CStepper::SMovement::RampDown(timer_t timerJunction)
-{
-	timer_t timerAccDec = GetDownTimerDec();
-	if (timerJunction >= timerAccDec)
-	{
-		_timerStop = max(timerAccDec, _timerRun);	// to v=0
-		_downSteps = CStepper::GetDecSteps(_timerRun, timerAccDec);
-		_downStartAt = _steps - _downSteps;
-	}
-	else
-	{
-		_timerStop = timerJunction;
-
-		if (_timerStop >= _timerRun)							// dec while stop
-		{
-			// shift down phase with _nDownOffset steps
-			_nDownOffset = CStepper::GetDecSteps(_timerStop, timerAccDec);
-			_downSteps = CStepper::GetDecSteps(_timerRun, timerAccDec);
-			_downStartAt = _steps - _downSteps + _nDownOffset;
-		}
-		else
-		{
-			timerAccDec = GetDownTimerAcc();
-			_nDownOffset = CStepper::GetAccSteps(_timerStop, timerAccDec);
-			//_downStartAt = _steps - 2 - (_nDownOffset - CStepper::GetAccSteps(_timerRun,timerAccDec));
-			_downStartAt = _steps - (_nDownOffset - CStepper::GetAccSteps(_timerRun, timerAccDec));
-		}
-		_downSteps = _steps - _downStartAt;
-	}
-}
-
-////////////////////////////////////////////////////////
-
-void CStepper::SMovement::RampUp(timer_t timerJunction)
-{
-	timer_t timerAccDec = GetUpTimerAcc();
+	_timerRun = timerRun;
+	timer_t timerAccDec = pMovement->GetUpTimerAcc();
 	_upSteps = CStepper::GetAccSteps(_timerRun, timerAccDec);
 
 	if (timerJunction >= timerAccDec) // check from v0=0
@@ -619,7 +515,7 @@ void CStepper::SMovement::RampUp(timer_t timerJunction)
 		}
 		else
 		{
-			timerAccDec = GetUpTimerDec();
+			timerAccDec = pMovement->GetUpTimerDec();
 			_nUpOffset = GetDecSteps(_timerStart, timerAccDec);
 			_upSteps = _nUpOffset - GetDecSteps(_timerRun, timerAccDec);
 		}
@@ -628,17 +524,137 @@ void CStepper::SMovement::RampUp(timer_t timerJunction)
 
 ////////////////////////////////////////////////////////
 
+void CStepper::SMovement::SRamp::RampDown(SMovement* pMovement, timer_t timerJunction)
+{
+	mdist_t steps = pMovement->_steps;
+	timer_t timerAccDec = pMovement->GetDownTimerDec();
+	if (timerJunction >= timerAccDec)
+	{
+		_timerStop = max(timerAccDec, _timerRun);	// to v=0
+		_downSteps = CStepper::GetDecSteps(_timerRun, timerAccDec);
+		_downStartAt = steps - _downSteps;
+	}
+	else
+	{
+		_timerStop = timerJunction;
+
+		if (_timerStop >= _timerRun)							// dec while stop
+		{
+			// shift down phase with _nDownOffset steps
+			_nDownOffset = CStepper::GetDecSteps(_timerStop, timerAccDec);
+			_downSteps = CStepper::GetDecSteps(_timerRun, timerAccDec);
+			_downStartAt = steps - _downSteps + _nDownOffset;
+		}
+		else
+		{
+			timerAccDec = pMovement->GetDownTimerAcc();
+			_nDownOffset = CStepper::GetAccSteps(_timerStop, timerAccDec);
+			//_downStartAt = _steps - 2 - (_nDownOffset - CStepper::GetAccSteps(_timerRun,timerAccDec));
+			_downStartAt = steps - (_nDownOffset - CStepper::GetAccSteps(_timerRun, timerAccDec));
+		}
+		_downSteps = steps - _downStartAt;
+	}
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::SMovement::SRamp::RampRun(SMovement* pMovement)
+{
+	mdist_t steps = pMovement->_steps;
+
+	if (_upSteps > steps || steps - _upSteps < _downSteps)
+	{
+		// we cant reach vmax for this movement, cut plateau.
+		// leave relation between up and down squared => constant a
+		mdist_t toMany = _downSteps + _upSteps - steps;
+		mdist_t subUp;
+
+		if (_downSteps == 0)
+		{
+			subUp = toMany;
+		}
+		else if (_upSteps == 0)
+		{
+			subUp = 0;
+		}
+		else
+		{
+			timer_t upTimer = pMovement->GetUpTimer(_timerStart > _timerRun);
+			timer_t downTimer = pMovement->GetUpTimer(_timerStop < _timerRun);
+
+			unsigned long sqUp = (unsigned long)(upTimer)* (unsigned long)(upTimer);
+			unsigned long sqDown = (unsigned long)(downTimer)* (unsigned long)(downTimer);
+
+			sqUp /= 0x1000;		// may overrun => divide by 0x1000
+			sqDown /= 0x1000;
+
+			unsigned long sum = sqUp + sqDown;
+
+			subUp = mdist_t(RoundMulDivU32(toMany, sqUp, sum));	// round
+		}
+
+		if (subUp > _upSteps || (toMany - subUp) > _downSteps)
+		{
+			subUp = _upSteps;
+			// return false;	=> do not return in case of error, assume "valid" values!
+		}
+
+		_upSteps -= subUp;
+		_downSteps -= toMany - subUp;
+
+		if (_downSteps > steps)
+		{
+			_downSteps = steps;
+			// return false;	=> do not return in case of error, assume "valid" values!
+		}
+
+		_downStartAt = steps - _downSteps;
+	}
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::SMovement::Ramp(SMovement*mvNext)
+{
+	if (!IsActiveMove()) return;					// Move became inactive by ISR
+
+	if (IsReadyForMove())							// must not be started!
+	{
+		SRamp tmpramp = _ramp;
+		tmpramp.RampUp(this,_timerRun, _timerJunctionToPrev);
+		tmpramp.RampDown(this,mvNext ? mvNext->_timerJunctionToPrev : GetDownTimerDec());
+		tmpramp.RampRun(this);
+
+//		CCriticalRegion crit;
+
+		if (IsReadyForMove())						// still not started
+		{
+			_ramp = tmpramp;
+		}
+	}
+/*
+
+	if (CanModify())
+	{
+		RampDown(mvNext ? mvNext->_timerJunctionToPrev : GetDownTimerDec());
+		RampRun();
+	}
+*/
+}
+
+////////////////////////////////////////////////////////
+
 bool CStepper::SMovement::CanModify() const
 {
-	if (!IsActiveMove())	return false;	// only "moves" can be modified
+	if (!IsActiveMove())		return false;	// only "moves" can be modified
 
-	if (IsReadyForMove())	return true;	// not started move => modify is OK
+	if (!IsProcessingMove())	return true;	// not started move => modify is OK
 
-	if (IsDownMove())		
+	if (_pStepper->_movementstate.IsDownMove())		
 	{
 		return false;
 	}
-	else if(IsUpMove())
+	else if(_pStepper->_movementstate.IsUpMove())
 	{
 		return true;
 	}
@@ -654,7 +670,7 @@ void CStepper::SMovement::SetEndPossibleProcessing()
 	if (CanModify())
 		_timerEndPossible = max(_timerEndPossible, _timerRun);
 	else
-		_timerEndPossible = _timerStop;
+		_timerEndPossible = _ramp._timerStop;
 }
 
 ////////////////////////////////////////////////////////
@@ -734,7 +750,7 @@ bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvN
 		if (!mvPrev->IsActiveMove())
 			return true;				// waitstate => no optimize, break here
 
-		if (mvPrev->IsDownMove())
+		if (mvPrev->IsProcessingMove() && _pStepper->_movementstate.IsDownMove())
 			return true;				// cant be optimized any more, break here
 
 		// prev element available, calculate junction speed
@@ -1275,7 +1291,7 @@ void CStepper::FillStepBuffer()
 	// calculate next steps until buffer is full or nothing to do!
 	while (!_movements._queue.IsEmpty())
 	{
-		if (!_movements._queue.Head().CalcNextSteps(true))		// buffer full => wait (and leave ISR)
+		if (!_movementstate.CalcNextSteps(true,&_movements._queue.Head()))		// buffer full => wait (and leave ISR)
 			break;
 
 		if (_movements._queue.Head().IsFinished())
@@ -1393,36 +1409,65 @@ CStepper* CStepper::SMovement::_pStepper;
 
 #endif
 
+void CStepper::SMovementState::Init(SMovement* pMovement)
+{
+	mdist_t steps = pMovement->_steps;
+	_steps = steps;
+	_count = pMovement->_state == SMovement::StateReadyMove ? pMovement->GetMaxStepMultiplier() : 1;
+	
+	steps = (steps / _count) >> 1;
+	for (axis_t i = 0; i < NUM_AXIS; i++)
+		_add[i] = steps;
+	_n = 0;
+	_rest = 0;
+	_sumTimer = 0;
+	_timer = pMovement->_ramp._timerStart;
+
+	_downStartAt = pMovement->_ramp._downStartAt;
+	_nUpOffset = pMovement->_ramp._nUpOffset;
+	_nDownOffset = pMovement->_ramp._nDownOffset;
+	_timerRun = pMovement->_ramp._timerRun;
+	_timerStop = pMovement->_ramp._timerStop;
+
+	CStepper*pStepper = pMovement->_pStepper; 
+
+	for (register axis_t i = 0; i<NUM_AXIS; i++)
+	{
+		if (pMovement->_distance_[i] != 0)
+		{
+			pStepper->_pod._timeEnable[i] = 0;
+			CCriticalRegion crit;
+			if (pStepper->GetEnable(i) != CStepper::LevelMax)
+				pStepper->SetEnable(i, CStepper::LevelMax, false);
+		}
+	}
+}
+
 ////////////////////////////////////////////////////////
 // called in interrupt => must be "fast"
 
-bool CStepper::SMovement::CalcNextSteps(bool continues)
+bool CStepper::SMovementState::CalcNextSteps(bool continues, SMovement* pMovement)
 {
 	register axis_t i;
 	// return false if buffer full and nothing calculated.
 	do
 	{
-		if (_state == StateReadyMove || _state == StateReadyWait)
+		if (pMovement->_state == SMovement::StateReadyMove)
 		{
-			// Startup of move
-
-			_pStepper->_movementstate.Init(_timerStart, _steps, _state == StateReadyMove ? GetMaxStepMultiplier() : 1);
-			{
-				for (register axis_t i = 0; i<NUM_AXIS; i++)
-				{
-					if (_distance_[i] != 0)
-					{
-						_pStepper->_pod._timeEnable[i] = 0;
-						CCriticalRegion crit;
-						if (_pStepper->GetEnable(i) != CStepper::LevelMax)
-							_pStepper->SetEnable(i, CStepper::LevelMax, false);
-					}
-				}
-			}
+			pMovement->_state = SMovement::StateMove;
+			_state = StateReadyMove;
+			Init(pMovement);
+		}
+		else if (pMovement->_state == SMovement::StateReadyWait)
+		{
+			pMovement->_state = SMovement::StateWait;
+			_state = StateReadyWait;
+			Init(pMovement);
 		}
 
-		const register mdist_t n = _pStepper->_movementstate._n;
-		register unsigned char count = _pStepper->_movementstate._count;
+		const register mdist_t n = _n;
+		register unsigned char count = _count;
+		CStepper* pStepper = pMovement->_pStepper;
 
 		if (_steps <= n)
 		{
@@ -1430,15 +1475,16 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 			for (register axis_t i = 0; i<NUM_AXIS; i++)
 			{
-				if (_distance_[i] != 0)
-					_pStepper->_pod._timeEnable[i] = _pStepper->_pod._timeOutEnable[i];
+				if (pMovement->_distance_[i] != 0)
+					pStepper->_pod._timeEnable[i] = pStepper->_pod._timeOutEnable[i];
 			}
 
 			_state = StateDone;
+			pMovement->_state = SMovement::StateDone;
 			return true;
 		}
 
-		if (_pStepper->_steps.IsFull())
+		if (pStepper->_steps.IsFull())
 		{
 			// cannot add to queue
 			return false;
@@ -1448,7 +1494,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			if (count > 1 && _steps - n <= count)
 			{
 				// last step with multiplier
-				_pStepper->_steps.NextTail().Init(_lastStepDirCount);
+				pStepper->_steps.NextTail().Init(pMovement->_lastStepDirCount);
 				count = (unsigned char)(_steps - n);	// must fit in unsinged char
 			}
 			else
@@ -1456,7 +1502,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 				register DirCount_t stepcount = 0;
 				register DirCount_t mask = 15;
 
-				if (_backlash)
+				if (pMovement->_backlash)
 				{
 					// ((DirCountByte_t*)&stepcount)->byteInfo.nocount = 1;	=> this force stepcount to be not in register
 					DirCountByte_t x = DirCountByte_t(); //POD
@@ -1467,18 +1513,18 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 				for (i = 0;; i++)
 				{
 					// Check overflow!
-					mdist_t oldadd = _pStepper->_movementstate._add[i];
-					_pStepper->_movementstate._add[i] += _distance_[i];
-					if (_pStepper->_movementstate._add[i] >= _steps || _pStepper->_movementstate._add[i] < oldadd)
+					mdist_t oldadd = _add[i];
+					_add[i] += pMovement->_distance_[i];
+					if (_add[i] >= _steps || _add[i] < oldadd)
 					{
-						_pStepper->_movementstate._add[i] -= _steps;
-						stepcount += mask&_dirCount;
+						_add[i] -= _steps;
+						stepcount += mask&pMovement->_dirCount;
 					}
 					if (i == NUM_AXIS - 1)
 						break;
 					mask *= 16;
 				}
-				_pStepper->_steps.NextTail().Init(stepcount);
+				pStepper->_steps.NextTail().Init(stepcount);
 			}
 		}
 
@@ -1487,12 +1533,12 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 		if (_state == StateReadyMove)
 		{
-			if (_pStepper->_movementstate._timer == _timerRun)
+			if (_timer == _timerRun)
 				_state = StateRun;
 			else
 			{
-				_state = _pStepper->_movementstate._timer > _timerRun ? StateUpAcc : StateUpDec;
-				if (_pStepper->_movementstate._count > 1 && _nUpOffset == 0)
+				_state = _timer > _timerRun ? StateUpAcc : StateUpDec;
+				if (_count > 1 && _nUpOffset == 0)
 				{
 					static const unsigned short corrtab[][2] PROGMEM =
 					{
@@ -1502,9 +1548,9 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 						{ 307, 405 },
 						{ 289, 403 }
 					};
-					unsigned short mul = pgm_read_word(&corrtab[_pStepper->_movementstate._count - 2][0]);
-					unsigned short div = pgm_read_word(&corrtab[_pStepper->_movementstate._count - 2][1]);
-					_pStepper->_movementstate._timer = (timer_t)MulDivU32(_pStepper->_movementstate._timer, mul, div);
+					unsigned short mul = pgm_read_word(&corrtab[_count - 2][0]);
+					unsigned short div = pgm_read_word(&corrtab[_count - 2][1]);
+					_timer = (timer_t)MulDivU32(_timer, mul, div);
 				}
 			}
 		}
@@ -1518,8 +1564,8 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			{
 				if (n >= _downStartAt)
 				{
-					_pStepper->_movementstate._rest = 0;
-					_state = _timerStop > _pStepper->_movementstate._timer ? StateDownDec : StateDownAcc;
+					_rest = 0;
+					_state = _timerStop > _timer ? StateDownDec : StateDownAcc;
 				}
 			}
 
@@ -1532,7 +1578,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 					// In = ((2*In-1)+Rn-1) / (4*N + 1)		=> quot
 					// Rn = ((2*In-1)+Rn-1) % (4*N + 1)		=> remainer of division
 					// Cn = Cn-1 - In
-					if (_pStepper->_movementstate.CalcTimerAcc(_timerRun, n + _nUpOffset, count))
+					if (CalcTimerAcc(_timerRun, n + _nUpOffset, count))
 					{
 						_state = StateRun;
 					}
@@ -1540,7 +1586,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 				case StateUpDec:
 
-					if (_pStepper->_movementstate.CalcTimerDec(_timerRun, _nUpOffset - n, count))
+					if (CalcTimerDec(_timerRun, _nUpOffset - n, count))
 					{
 						_state = StateRun;
 					}
@@ -1553,40 +1599,40 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 					// In = ((2*In-1)+Rn-1) / (4*N - 1)		=> quot
 					// Rn = ((2*In-1)+Rn-1) % (4*N - 1)		=> remainer of division
 					// Cn = Cn-1 - In
-					_pStepper->_movementstate.CalcTimerDec(_timerStop, _steps - n + _nDownOffset, count);
+					CalcTimerDec(_timerStop, _steps - n + _nDownOffset, count);
 					break;
 
 				case StateDownAcc:
 
-					_pStepper->_movementstate.CalcTimerAcc(_timerStop, _nDownOffset - (_steps - n - 1), count);
+					CalcTimerAcc(_timerStop, _nDownOffset - (_steps - n - 1), count);
 					break;
 
 			}
 		}
 
-		_pStepper->_movementstate._sumTimer +=
-			_pStepper->_steps.NextTail().Timer = _pStepper->_movementstate._timer*count;
+		_sumTimer +=
+			pStepper->_steps.NextTail().Timer = _timer*count;
 
-		_pStepper->_movementstate._n = n + count;
-		if (count > _pStepper->_movementstate._n)
+		_n = n + count;
+		if (count > _n)
 		{
 			// overrun
-			_pStepper->_movementstate._n = _steps;
+			_n = _steps;
 		}
 
 #ifdef _MSC_VER
 		{
-			SStepBuffer& stepbuffer = _pStepper->_steps.NextTail();
-			memcpy(stepbuffer._distance, _distance_, sizeof(stepbuffer._distance));
+			SStepBuffer& stepbuffer = pStepper->_steps.NextTail();
+			memcpy(stepbuffer._distance, pMovement->_distance_, sizeof(stepbuffer._distance));
 			stepbuffer._steps = _steps;
-			stepbuffer._state = (EState)_state;
-			stepbuffer._n = _pStepper->_movementstate._n;
+			stepbuffer._state = pStepper->_movementstate._state;
+			stepbuffer._n = _n;
 			stepbuffer._count = count;
-			strcpy_s(stepbuffer.MSCInfo, MSCInfo);
+			strcpy_s(stepbuffer.MSCInfo, pMovement->MSCInfo);
 		}
 #endif
 
-		_pStepper->_steps.Enqueue();
+		pStepper->_steps.Enqueue();
 	} while (continues);
 
 	return true;
@@ -2084,16 +2130,16 @@ void CStepper::SMovement::Dump(unsigned char idx, unsigned char options)
 	DumpType<DirCount_t>(F("DirCount"), _dirCount, false);
 	DumpType<DirCount_t>(F("LastDirCount"), _lastStepDirCount, false);
 	DumpArray<mdist_t, NUM_AXIS>(F("Dist"), _distance_, false);
-	DumpType<mdist_t>(F("UpSteps"), _upSteps, false);
-	DumpType<mdist_t>(F("DownSteps"), _downSteps, false);
-	DumpType<mdist_t>(F("DownStartAt"), _downStartAt, false);
-	DumpType<mdist_t>(F("UpOffset"), _nUpOffset, false);
-	DumpType<mdist_t>(F("DownOffset"), _nDownOffset, false);
+	DumpType<mdist_t>(F("UpSteps"), _ramp._upSteps, false);
+	DumpType<mdist_t>(F("DownSteps"), _ramp._downSteps, false);
+	DumpType<mdist_t>(F("DownStartAt"), _ramp._downStartAt, false);
+	DumpType<mdist_t>(F("UpOffset"), _ramp._nUpOffset, false);
+	DumpType<mdist_t>(F("DownOffset"), _ramp._nDownOffset, false);
 
 	DumpType<timer_t>(F("tMax"), _timerMax, false);
-	DumpType<timer_t>(F("tRun"), _timerRun, false);
-	DumpType<timer_t>(F("tStart"), _timerStart, false);
-	DumpType<timer_t>(F("tStop"), _timerStop, false);
+	DumpType<timer_t>(F("tRun"), _ramp._timerRun, false);
+	DumpType<timer_t>(F("tStart"), _ramp._timerStart, false);
+	DumpType<timer_t>(F("tStop"), _ramp._timerStop, false);
 	DumpType<timer_t>(F("tEndPossible"), _timerEndPossible, false);
 	DumpType<timer_t>(F("tJunctionToPrev"), _timerJunctionToPrev, false);
 	DumpType<timer_t>(F("tMaxJunction"), _timerMaxJunction, false);

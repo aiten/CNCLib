@@ -53,27 +53,6 @@ public:
 		SixtyfourStep = 64
 	};
 
-	enum EState
-	{
-		StateReadyMove = 10,										// ready for travel (not executing)
-		StateUpAcc = 11,											// in start phase accelerate
-		StateUpDec = 12,											// in start phase decelerate to vmax
-		StateRun = 13,												// running (no acc and dec)
-		StateDownDec = 14,											// in stop phase decelerate
-		StateDownAcc = 15,											// in stop phase accelerate
-
-		StateReadyWait = 20,										// ready for none "travel" move (wait move) (not executing)
-		StateWait = 21,												// executing wait (do no step)
-
-		StateDone = 0,												// finished
-
-		StateActiveMoveStart = StateReadyMove,						// Active Move (not wait) Start
-		StateActiveMoveEnd = StateDownAcc,							// Active Move (not wait) End
-
-		StateProcessingMoveStart = StateUpAcc,						// Processing states start here
-		StateProcessingMoveEnd = StateDownAcc,						// Processing states end here
-	};
-
 	enum EWaitType
 	{
 		MovementQueueFull,
@@ -332,30 +311,7 @@ protected:
 #endif
 	} _pod;
 
-	/////////////////////////////////////////////////////////////////////
-	// internal ringbuffer for steps (after calculating acc and dec)
-
-	struct SStepBuffer
-	{
-	public:
-		DirCount_t DirStepCount;								// direction and count
-		timer_t	Timer;
-#ifdef _MSC_VER
-		mdist_t  _distance[NUM_AXIS];							// to calculate relative speed
-		mdist_t  _steps;
-		EState  _state;
-		mdist_t  _n;
-		unsigned char _count;
-		char MSCInfo[MOVEMENTINFOSIZE];
-#endif
-		void Init(DirCount_t dirCount)
-		{
-			Timer = 0;
-			DirStepCount = dirCount;
-		};
-	};
-
-	stepperstatic CRingBufferQueue<SStepBuffer, STEPBUFFERSIZE>	_steps;
+	struct SMovementState;
 
 	/////////////////////////////////////////////////////////////////////
 	// internal ringbuffer for movement optimization
@@ -365,9 +321,19 @@ protected:
 	protected:
 		friend class CStepper;
 
+		enum EMovementState
+		{
+			StateReadyMove = 1,									// ready for travel (not executing)
+			StateMove,											// executing move
+			StateReadyWait,										// ready for none "travel" move (wait move) (not executing)
+			StateWait,											// executing wait (do no step)
+
+			StateDone = 0,										// finished
+		};
+
 		mdist_t _steps;											// total movement steps (=distance)
 
-		EnumAsByte(EState) _state;								// emums are 16 bit in gcc => force byte
+		EnumAsByte(EMovementState) _state;						// emums are 16 bit in gcc => force byte
 		bool _backlash;											// move is backlash
 
 		mdist_t	_distance_[NUM_AXIS];							// distance adjusted wiht stepmultiplier => use GetDistance(axis)
@@ -376,20 +342,28 @@ protected:
 		DirCount_t _lastStepDirCount;
 
 		timer_t _timerMax;										// timer for max requested speed
+		timer_t _timerRun;										// copy of _ramp.
 
 		axis_t _upAxis;											// most acceleration/decelerating axis while "up" state
 		axis_t _downAxis;										// most acceleration/decelerating axis while "down" state
 
-		mdist_t _upSteps;										// steps needed for accelerating from v0
-		mdist_t _downSteps;										// steps needed for decelerating to v0
-		mdist_t _downStartAt;									// index of step to start with deceleration
+		struct SRamp
+		{
+			mdist_t _upSteps;										// steps needed for accelerating from v0
+			mdist_t _downSteps;										// steps needed for decelerating to v0
+			mdist_t _downStartAt;									// index of step to start with deceleration
 
-		mdist_t _nUpOffset;										// offset of n rampe calculation(acc) 
-		mdist_t _nDownOffset;									// offset of n rampe calculation(dec)
+			mdist_t _nUpOffset;										// offset of n rampe calculation(acc) 
+			mdist_t _nDownOffset;									// offset of n rampe calculation(dec)
 
-		timer_t _timerRun;
-		timer_t _timerStart;									// start ramp with speed (tinmerValue)
-		timer_t _timerStop;										// stop  ramp with speed (timerValue)
+			timer_t _timerRun;
+			timer_t _timerStart;									// start ramp with speed (tinmerValue)
+			timer_t _timerStop;										// stop  ramp with speed (timerValue)
+
+			void RampUp(SMovement* pMovement, timer_t timerRun, timer_t timerJunction);
+			void RampDown(SMovement* pMovement, timer_t timerJunction);
+			void RampRun(SMovement* pMovement);
+		} _ramp;
 
 		timer_t _timerEndPossible;								// timer possible at end of last movement
 		timer_t _timerJunctionToPrev;							// used to calculate junction speed, stored in "next" step
@@ -415,12 +389,10 @@ protected:
 
 		void SetEndPossibleProcessing();
 
-		bool CalcNextSteps(bool continues);
-
 		void Ramp(SMovement*mvNext);
-		void RampUp(timer_t timerJunction);
-		void RampDown(timer_t timerJunction);
-		void RampRun();
+//		void RampUp(timer_t timerJunction, struct SRamp* result);
+//		void RampDown(timer_t timerJunction, struct SRamp* result);
+//		void RampRun(struct SRamp* result);
 
 		void CalcMaxJunktionSpeed(SMovement*mvNext);
 
@@ -429,12 +401,9 @@ protected:
 
 	public:
 
-		EnumAsByte(EState) GetState() const						{ return _state; }
-		bool IsActiveMove() const								{ return _state >= StateActiveMoveStart && _state <= StateActiveMoveEnd; }			// Ready from Move or moving
+		bool IsActiveMove() const								{ return _state == StateReadyMove || _state == StateMove; }							// Ready from Move or moving
 		bool IsReadyForMove() const								{ return _state == StateReadyMove; }												// Ready for move but not started
-		bool IsProcessingMove() const							{ return _state >= StateProcessingMoveStart && _state <= StateProcessingMoveEnd; }	// Move is currently processed (in acc,run or dec)
-		bool IsUpMove() const									{ return _state < StateRun && _state >= StateProcessingMoveStart; }					// Move in ramp acc state
-		bool IsDownMove() const									{ return _state > StateRun && _state <= StateProcessingMoveEnd; }					// Move in ramp dec state
+		bool IsProcessingMove() const							{ return _state == StateMove; }														// Move is currently processed (in acc,run or dec)
 		bool IsFinished() const									{ return _state == StateDone; }														// Move finished 
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
@@ -463,30 +432,49 @@ protected:
 
 	struct SMovementState
 	{
+	protected:
+		friend class CStepper;
+
 		// state for calculating steps (moving)
 		// static for performance on arduino => only one instance allowed
+
+		enum EMovementState
+		{
+			StateReadyMove = 1,									// ready for travel (not executing)
+			StateReadyWait = 2,									// ready for none "travel" move (wait move) (not executing)
+
+			StateUpAcc = 11,									// in start phase accelerate
+			StateUpDec = 12,									// in start phase decelerate to vmax
+			StateRun = 13,										// running (no acc and dec)
+			StateDownDec = 14,									// in stop phase decelerate
+			StateDownAcc = 15,									// in stop phase accelerate
+
+			StateWait = 21,										// executing wait (do no step)
+
+			StateDone = 255,									// finished
+		};
 
 		mdist_t _n;				// step within movement (1-_steps)
 		timer_t _timer;			// current timer
 		timer_t _rest;			// rest of rampcalculation
+
 		unsigned char _count;	// increment of _n
-		unsigned char dummyalign;
+		EnumAsByte(EMovementState) _state;						// emums are 16 bit in gcc => force byte
+
+		mdist_t _steps;											// total movement steps (=distance), copy of movementstate
+		mdist_t _downStartAt;									// index of step to start with deceleration, copy of movementstate
+		mdist_t _nUpOffset;										// offset of n rampe calculation(acc), copy of movementstate
+		mdist_t _nDownOffset;									// offset of n rampe calculation(dec), copy of movementstate
+
+		timer_t _timerRun;										// copy of movementstate
+		timer_t _timerStop;										// stop  ramp with speed (timerValue), copy of movementstate
 
 		unsigned long _sumTimer;	// for debug
 
 		mdist_t _add[NUM_AXIS];
 
-		void Init(timer_t timer, mdist_t steps, unsigned char count)
-		{
-			steps = (steps / count) >> 1;
-			for (axis_t i = 0; i < NUM_AXIS; i++)
-				_add[i] = steps;
-			_n = 0;
-			_rest = 0;
-			_sumTimer = 0;
-			_timer = timer;
-			_count = count;
-		}
+		void Init(SMovement* pMovement);
+		bool CalcNextSteps(bool continues,SMovement* pMovement);
 
 		inline bool CalcTimerAcc(timer_t maxtimer, mdist_t n, unsigned char cnt)
 		{
@@ -525,10 +513,42 @@ protected:
 			return false;
 		}
 
+	public:
+
+		EnumAsByte(EMovementState) GetState() const				{ return _state; }
+		bool IsUpMove() const									{ return _state < StateRun; }					// Move in ramp acc state
+		bool IsDownMove() const									{ return _state > StateRun; }					// Move in ramp dec state
+		bool IsFinished() const									{ return _state == StateDone; }					// Move finished 
+
 		void Dump(unsigned char options);
 	};
 
 	stepperstatic SMovementState _movementstate;
+
+	/////////////////////////////////////////////////////////////////////
+	// internal ringbuffer for steps (after calculating acc and dec)
+
+	struct SStepBuffer
+	{
+	public:
+		DirCount_t DirStepCount;								// direction and count
+		timer_t	Timer;
+#ifdef _MSC_VER
+		mdist_t  _distance[NUM_AXIS];							// to calculate relative speed
+		mdist_t  _steps;
+		SMovementState::EMovementState  _state;
+		mdist_t  _n;
+		unsigned char _count;
+		char MSCInfo[MOVEMENTINFOSIZE];
+#endif
+		void Init(DirCount_t dirCount)
+		{
+			Timer = 0;
+			DirStepCount = dirCount;
+		};
+	};
+
+	stepperstatic CRingBufferQueue<SStepBuffer, STEPBUFFERSIZE>	_steps;
 
 public:
 

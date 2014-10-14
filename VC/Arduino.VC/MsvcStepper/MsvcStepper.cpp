@@ -63,9 +63,11 @@ void CMsvcStepper::OnWait(EnumAsByte(EWaitType) wait)
 		} dest = ToAcc;
 
 		SMovement& mv = _movements._queue.Head();
-		while (mv.GetState() <= CStepper::StateRun)
+		while (!mv.IsFinished())
 		{
 			DoISR();
+			if (_movementstate.IsDownMove())
+				break;
 		}
 	}
 }
