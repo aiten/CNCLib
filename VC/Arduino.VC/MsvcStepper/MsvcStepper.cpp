@@ -66,7 +66,7 @@ void CMsvcStepper::OnWait(EnumAsByte(EWaitType) wait)
 		while (!mv.IsFinished())
 		{
 			DoISR();
-			if (_movementstate.IsDownMove())
+			if (mv.IsDownMove())
 				break;
 		}
 	}

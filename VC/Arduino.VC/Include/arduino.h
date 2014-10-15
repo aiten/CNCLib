@@ -26,6 +26,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <conio.h>
+#include <io.h>
 #include <windows.h>
 #include "trace.h"
 
@@ -184,6 +185,7 @@ inline unsigned long millis() { return GetTickCount(); }
 //extern void Sleep(unsigned int ms);
 inline void delay(int ms) { Sleep(ms); }
 
+#define STDIO 0
 
 class Stream
 {
@@ -191,7 +193,9 @@ public:
 	Stream()
 	{
 		pIdle = NULL;
+		istty = _isatty(STDIO)!=0;
 	}
+	bool istty;
 
 	void print(char c)				{ printf("%c", c); };
 	void print(unsigned int ui)		{ printf("%u", ui); };
@@ -208,9 +212,35 @@ public:
 	void println(const char*s)		{ printf("%s\n", s); };
 
 	void begin(int i)				{ i; };
-	virtual int available()			{ if (_kbhit()) return true; if (pIdle) pIdle(); return false; }
-	virtual char read()				{ char ch = (char)_getch(); _putch(ch); return ch; }
+	virtual int available()			{ 
+										if (!istty)
+										{
+											if (feof(stdin) != 0)
+											{
+												istty = true;
+												return 0;
+											}
+										}
+										if (!istty || _kbhit())
+											return 1; 
+		
+										if (pIdle) pIdle(); 
+										return 0; 
+									}
+	virtual char read()				{
+										char ch;
+										if (istty)
+										{
+											ch = (char)_getch();
+										}
+										else
+										{
+											ch = (char)_fgetchar();
+										}
 
+										_putch(ch);
+										return ch;
+									}
 	void(*pIdle)();
 
 private:

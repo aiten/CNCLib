@@ -39,19 +39,6 @@ public:
 	virtual void Init();
 	void Remove();
 
-protected:
-
-#define LevelToProcent(a) (a*100/255)
-#define ProcentToLevel(a) (a*255/100)
-
-	enum ELevel
-	{
-		Level0  = LevelOff,
-		Level20 = ProcentToLevel(20),
-		Level60 = ProcentToLevel(60),
-		Level100 = LevelMax
-	};
-
 public:
 
 	virtual bool IsAnyReference()							{ return IsReference(0); };
