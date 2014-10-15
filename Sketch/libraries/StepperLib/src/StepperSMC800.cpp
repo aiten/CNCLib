@@ -105,9 +105,9 @@ void CStepperSMC800::InitMemVar()
 {
 	register unsigned char i;
 	for (i = 0; i < SMC800_NUM_AXIS; i++)	_stepIdx[i] = 0;
-	for (i = 0; i < SMC800_NUM_AXIS; i++)	_level[i] = Level0;
+	for (i = 0; i < SMC800_NUM_AXIS; i++)	_level[i] = LevelOff;
 
-	_pod._idleLevel = Level20;
+	_pod._idleLevel = Level20P;
 }
 
 ////////////////////////////////////////////////////////
@@ -194,12 +194,12 @@ void CStepperSMC800::SetEnable(axis_t axis, unsigned char level, bool force )
 {
 	if (axis<SMC800_NUM_AXIS)
 	{
-		if (level > Level60)		_level[axis] = Level100;
+		if (level > Level60P)		_level[axis] = LevelMax;
 #ifndef REDUCED_SIZE
-		else if (level > Level20)	_level[axis] = Level60;
+		else if (level > Level20P)	_level[axis] = Level60P;
 #endif
-		else if (level > LevelOff)	_level[axis] = Level20;
-		else						_level[axis] = Level0;
+		else if (level > LevelOff)	_level[axis] = Level20P;
+		else						_level[axis] = LevelOff;
 		
 		if (force) SetPhase(axis);
 	}
@@ -228,12 +228,12 @@ void CStepperSMC800::SetPhase(axis_t axis)
 			switch (_level[axis])
 			{
 				default:
-				case Level100:   OutSMC800Cmd(pgm_read_byte(&sbm800fullstep100[stepidx]) + addIO);      break;
+				case LevelMax:   OutSMC800Cmd(pgm_read_byte(&sbm800fullstep100[stepidx]) + addIO);      break;
 #ifndef REDUCED_SIZE
-				case Level60:    OutSMC800Cmd(pgm_read_byte(&sbm800fullstep60[stepidx]) + addIO);       break;
+				case Level60P:   OutSMC800Cmd(pgm_read_byte(&sbm800fullstep60[stepidx]) + addIO);       break;
 #endif
-				case Level20:    OutSMC800Cmd(pgm_read_byte(&sbm800fullstep20[stepidx]) + addIO);       break;
-				case Level0:     OutSMC800Cmd(pgm_read_byte(&sbm800fullstep0[stepidx]) + addIO);        break;
+				case Level20P:   OutSMC800Cmd(pgm_read_byte(&sbm800fullstep20[stepidx]) + addIO);       break;
+				case LevelOff:   OutSMC800Cmd(pgm_read_byte(&sbm800fullstep0[stepidx]) + addIO);        break;
 			}
 		}
 		else
@@ -242,12 +242,12 @@ void CStepperSMC800::SetPhase(axis_t axis)
 			switch (_level[axis])
 			{
 				default:
-				case Level100:    OutSMC800Cmd(pgm_read_byte(&sbm800halfstep100[stepidx]) + addIO);    break;
+				case LevelMax:    OutSMC800Cmd(pgm_read_byte(&sbm800halfstep100[stepidx]) + addIO);    break;
 #ifndef REDUCED_SIZE
-				case Level60:     OutSMC800Cmd(pgm_read_byte(&sbm800halfstep60[stepidx]) + addIO);     break;
+				case Level60P:    OutSMC800Cmd(pgm_read_byte(&sbm800halfstep60[stepidx]) + addIO);     break;
 #endif
-				case Level20:     OutSMC800Cmd(pgm_read_byte(&sbm800halfstep20[stepidx]) + addIO);     break;
-				case Level0:      OutSMC800Cmd(pgm_read_byte(&sbm800halfstep0[stepidx]) + addIO);      break;
+				case Level20P:    OutSMC800Cmd(pgm_read_byte(&sbm800halfstep20[stepidx]) + addIO);     break;
+				case LevelOff:    OutSMC800Cmd(pgm_read_byte(&sbm800halfstep0[stepidx]) + addIO);      break;
 			}
 		}
 	}

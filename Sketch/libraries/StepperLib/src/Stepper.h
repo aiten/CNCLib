@@ -73,9 +73,14 @@ public:
 		OnInfoEvent
 	};
 
+	#define LevelToProcent(a) (a*100/255)
+	#define ProcentToLevel(a) (a*255/100)
+
 	enum ELevel
 	{	
 		LevelMax=255,
+		Level20P = ProcentToLevel(20),
+		Level60P = ProcentToLevel(60),
 		LevelOff = 0
 	};
 
@@ -324,9 +329,15 @@ protected:
 		enum EMovementState
 		{
 			StateReadyMove = 1,									// ready for travel (not executing)
-			StateMove,											// executing move
-			StateReadyWait,										// ready for none "travel" move (wait move) (not executing)
-			StateWait,											// executing wait (do no step)
+			StateReadyWait = 2,									// ready for none "travel" move (wait move) (not executing)
+
+			StateUpAcc = 11,									// in start phase accelerate
+			StateUpDec = 12,									// in start phase decelerate to vmax
+			StateRun = 13,										// running (no acc and dec)
+			StateDownDec = 14,									// in stop phase decelerate
+			StateDownAcc = 15,									// in stop phase accelerate
+
+			StateWait = 21,										// executing wait (do no step)
 
 			StateDone = 0,										// finished
 		};
@@ -342,23 +353,23 @@ protected:
 		DirCount_t _lastStepDirCount;
 
 		timer_t _timerMax;										// timer for max requested speed
-		timer_t _timerRun;										// copy of _ramp.
+		timer_t _timerRun;										// copy of _ramp. => modify during rampcalc
 
 		axis_t _upAxis;											// most acceleration/decelerating axis while "up" state
 		axis_t _downAxis;										// most acceleration/decelerating axis while "down" state
 
-		struct SRamp
+		struct SRamp											// only modify in CCRiticalRegion
 		{
-			mdist_t _upSteps;										// steps needed for accelerating from v0
-			mdist_t _downSteps;										// steps needed for decelerating to v0
-			mdist_t _downStartAt;									// index of step to start with deceleration
+			mdist_t _upSteps;									// steps needed for accelerating from v0
+			mdist_t _downSteps;									// steps needed for decelerating to v0
+			mdist_t _downStartAt;								// index of step to start with deceleration
 
-			mdist_t _nUpOffset;										// offset of n rampe calculation(acc) 
-			mdist_t _nDownOffset;									// offset of n rampe calculation(dec)
+			mdist_t _nUpOffset;									// offset of n rampe calculation(acc) 
+			mdist_t _nDownOffset;								// offset of n rampe calculation(dec)
 
 			timer_t _timerRun;
-			timer_t _timerStart;									// start ramp with speed (tinmerValue)
-			timer_t _timerStop;										// stop  ramp with speed (timerValue)
+			timer_t _timerStart;								// start ramp with speed (tinmerValue)
+			timer_t _timerStop;									// stop  ramp with speed (timerValue)
 
 			void RampUp(SMovement* pMovement, timer_t timerRun, timer_t timerJunction);
 			void RampDown(SMovement* pMovement, timer_t timerJunction);
@@ -390,21 +401,22 @@ protected:
 		void SetEndPossibleProcessing();
 
 		void Ramp(SMovement*mvNext);
-//		void RampUp(timer_t timerJunction, struct SRamp* result);
-//		void RampDown(timer_t timerJunction, struct SRamp* result);
-//		void RampRun(struct SRamp* result);
 
 		void CalcMaxJunktionSpeed(SMovement*mvNext);
 
 		bool AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvNext);
 		void AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvNext);
 
+		bool CalcNextSteps(bool continues);
+
 	public:
 
-		bool IsActiveMove() const								{ return _state == StateReadyMove || _state == StateMove; }							// Ready from Move or moving
-		bool IsReadyForMove() const								{ return _state == StateReadyMove; }												// Ready for move but not started
-		bool IsProcessingMove() const							{ return _state == StateMove; }														// Move is currently processed (in acc,run or dec)
-		bool IsFinished() const									{ return _state == StateDone; }														// Move finished 
+		bool IsActiveMove() const								{ return IsReadyForMove() || IsProcessingMove(); }			// Ready from move or moving
+		bool IsReadyForMove() const								{ return _state == StateReadyMove; }						// Ready for move but not started
+		bool IsProcessingMove() const							{ return _state >= StateUpAcc || _state <= StateDownAcc; }	// Move is currently processed (in acc,run or dec)
+		bool IsUpMove() const									{ return IsProcessingMove() && _state < StateRun; }			// Move in ramp acc state
+		bool IsDownMove() const									{ return IsProcessingMove() && _state > StateRun; }			// Move in ramp dec state
+		bool IsFinished() const									{ return _state == StateDone; }								// Move finished 
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
 		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer);
@@ -414,7 +426,7 @@ protected:
 		void Dump(unsigned char queueidx, unsigned char options);
 
 #ifdef _MSC_VER
-		char MSCInfo[MOVEMENTINFOSIZE];
+		char _mvMSCInfo[MOVEMENTINFOSIZE];
 #endif
 
 	};
@@ -438,43 +450,18 @@ protected:
 		// state for calculating steps (moving)
 		// static for performance on arduino => only one instance allowed
 
-		enum EMovementState
-		{
-			StateReadyMove = 1,									// ready for travel (not executing)
-			StateReadyWait = 2,									// ready for none "travel" move (wait move) (not executing)
-
-			StateUpAcc = 11,									// in start phase accelerate
-			StateUpDec = 12,									// in start phase decelerate to vmax
-			StateRun = 13,										// running (no acc and dec)
-			StateDownDec = 14,									// in stop phase decelerate
-			StateDownAcc = 15,									// in stop phase accelerate
-
-			StateWait = 21,										// executing wait (do no step)
-
-			StateDone = 255,									// finished
-		};
-
 		mdist_t _n;				// step within movement (1-_steps)
 		timer_t _timer;			// current timer
 		timer_t _rest;			// rest of rampcalculation
 
 		unsigned char _count;	// increment of _n
-		EnumAsByte(EMovementState) _state;						// emums are 16 bit in gcc => force byte
-
-		mdist_t _steps;											// total movement steps (=distance), copy of movementstate
-		mdist_t _downStartAt;									// index of step to start with deceleration, copy of movementstate
-		mdist_t _nUpOffset;										// offset of n rampe calculation(acc), copy of movementstate
-		mdist_t _nDownOffset;									// offset of n rampe calculation(dec), copy of movementstate
-
-		timer_t _timerRun;										// copy of movementstate
-		timer_t _timerStop;										// stop  ramp with speed (timerValue), copy of movementstate
+		char _dummyalign;
 
 		unsigned long _sumTimer;	// for debug
 
 		mdist_t _add[NUM_AXIS];
 
 		void Init(SMovement* pMovement);
-		bool CalcNextSteps(bool continues,SMovement* pMovement);
 
 		inline bool CalcTimerAcc(timer_t maxtimer, mdist_t n, unsigned char cnt)
 		{
@@ -515,11 +502,6 @@ protected:
 
 	public:
 
-		EnumAsByte(EMovementState) GetState() const				{ return _state; }
-		bool IsUpMove() const									{ return _state < StateRun; }					// Move in ramp acc state
-		bool IsDownMove() const									{ return _state > StateRun; }					// Move in ramp dec state
-		bool IsFinished() const									{ return _state == StateDone; }					// Move finished 
-
 		void Dump(unsigned char options);
 	};
 
@@ -536,10 +518,10 @@ protected:
 #ifdef _MSC_VER
 		mdist_t  _distance[NUM_AXIS];							// to calculate relative speed
 		mdist_t  _steps;
-		SMovementState::EMovementState  _state;
+		SMovement::EMovementState  _state;
 		mdist_t  _n;
 		unsigned char _count;
-		char MSCInfo[MOVEMENTINFOSIZE];
+		char _spMSCInfo[MOVEMENTINFOSIZE];
 #endif
 		void Init(DirCount_t dirCount)
 		{

@@ -66,7 +66,7 @@ void CMsvcStepper::OnWait(EnumAsByte(EWaitType) wait)
 		while (!mv.IsFinished())
 		{
 			DoISR();
-			if (_movementstate.IsDownMove())
+			if (mv.IsDownMove())
 				break;
 		}
 	}
@@ -163,7 +163,7 @@ void CMsvcStepper::StepBegin(const SStepBuffer* stepbuffer)
 		_TimerEvents[_eventIdx].Axis[i].Multiplier = multiplier % 8;
 		multiplier = multiplier / 16;
 	}
-	strcpy_s(_TimerEvents[_eventIdx].MSCInfo, stepbuffer->MSCInfo);
+	strcpy_s(_TimerEvents[_eventIdx].MSCInfo, stepbuffer->_spMSCInfo);
 
 }
 
@@ -180,7 +180,7 @@ void CMsvcStepper::Step(const unsigned char steps[NUM_AXIS], axisArray_t directi
 {
 	for (axis_t axis=0 ; axis< NUM_AXIS; axis++)
 	{
-		_TimerEvents[_eventIdx].Axis[axis].MoveAxis = directionUp && ((1<<axis))!=0 ? steps[axis] : -steps[axis];
+		_TimerEvents[_eventIdx].Axis[axis].MoveAxis = (directionUp & ((1<<axis)))!=0 ? steps[axis] : -steps[axis];
 	}
 
 	_TotalSteps++;
