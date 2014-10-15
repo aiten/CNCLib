@@ -25,9 +25,11 @@
 #include <memory.h>
 
 #include "..\..\..\sketch\libraries\StepperLib\src\StepperLib.h"
-#include "..\..\..\sketch\libraries\CNCLib\src\HelpParser.h"
+#include "..\..\..\sketch\libraries\CNCLib\src\MessageCNCLib.h"
+#include "..\..\..\sketch\libraries\CNCLib\src\GCodeParserBase.h"
 
 #define _STORETIMEVALUES	1000000
+#define NUM_AXIS_MVC		5
 
 class CMsvcStepper : public CStepper
 {
@@ -98,7 +100,7 @@ private:
 			int Multiplier;
 			int MoveAxis;
 			int Distance;
-		} Axis[NUM_AXIS];
+		} Axis[NUM_AXIS_MVC];
 		char MSCInfo[MOVEMENTINFOSIZE];
 	};
 
@@ -115,10 +117,10 @@ private:
 	STimerEvent* _TimerEvents;
 	int _oldCacheSize;
 
-	int	_sumtime[NUM_AXIS];
-	int _count[NUM_AXIS];
-	int _total[NUM_AXIS];
-	char _speed[NUM_AXIS][20];
+	int	_sumtime[NUM_AXIS_MVC];
+	int _count[NUM_AXIS_MVC];
+	int _total[NUM_AXIS_MVC];
+	char _speed[NUM_AXIS_MVC][20];
 	long long _totaltime;
 	int _lasttimer;
 

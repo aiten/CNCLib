@@ -130,11 +130,14 @@ typedef unsigned long long uint64_t;
 //#undef use16bit
 //#define use32bit
 
-#define STEPBUFFERSIZE		16
-#define MOVEMENTBUFFERSIZE	32
+#define STEPBUFFERSIZE		16		// size 2^x but not 256
+#define MOVEMENTBUFFERSIZE	8
+//#define STEPBUFFERSIZE		16
+//#define MOVEMENTBUFFERSIZE	32
 
 //#undef NUM_AXIS
-#define NUM_AXIS 5
+#define NUM_AXIS 3
+//#define NUM_AXIS 5
 
 #undef REFERENCESTABLETIME
 #define REFERENCESTABLETIME	0

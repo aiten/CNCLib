@@ -255,6 +255,12 @@ private:
 	void M110Command();
 
 	/////////////////
+
+#ifdef _MSC_VER
+public:
+	static bool _exit;
+#endif
+
 };
 
 ////////////////////////////////////////////////////////

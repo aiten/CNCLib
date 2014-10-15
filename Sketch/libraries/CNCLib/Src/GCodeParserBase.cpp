@@ -26,6 +26,13 @@
 #include "MotionControl.h"
 
 #include "GCodeParserBase.h"
+////////////////////////////////////////////////////////////
+
+#ifdef _MSC_VER
+
+bool CGCodeParserBase::_exit = false;
+
+#endif
 
 ////////////////////////////////////////////////////////
 
@@ -288,6 +295,9 @@ void CGCodeParserBase::Parse()
 			}
 
 			default:
+#ifdef _MSC_VER
+			if (IsToken(F("X"), true, false)) { _exit = true; return; }
+#endif
 				if (!Command(ch))
 				{
 					if (!LastCommand())

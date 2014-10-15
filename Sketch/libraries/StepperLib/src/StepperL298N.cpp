@@ -55,7 +55,9 @@ pin_t CStepperL298N::_pin[NUM_AXIS][4] =
 #endif
 #else
 	{ 54, 55, 56, 57 },			// A0-A3
+#if NUM_AXIS > 3
 	{ 58, 59, 60, 61 }			// A4-A5
+#endif
 #endif
 };
 

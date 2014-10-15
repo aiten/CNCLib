@@ -435,8 +435,7 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 	_ramp.RampDown(this,_ramp._timerStop);
 	_ramp.RampRun(this);
 
-	if (!prevIsMove)
-		_timerEndPossible = _pStepper->GetTimer(_steps, GetUpTimerAcc());
+	_timerEndPossible = prevIsMove ? 0 : _pStepper->GetTimer(_steps, GetUpTimerAcc());
 
 	//pStepper->Dump(DumpAll);
 }
@@ -625,7 +624,7 @@ void CStepper::SMovement::Ramp(SMovement*mvNext)
 		tmpramp.RampDown(this,mvNext ? mvNext->_timerJunctionToPrev : GetDownTimerDec());
 		tmpramp.RampRun(this);
 
-//		CCriticalRegion crit;
+		CCriticalRegion crit;
 
 		if (IsReadyForMove())						// still not started
 		{
@@ -643,7 +642,7 @@ void CStepper::SMovement::Ramp(SMovement*mvNext)
 }
 
 ////////////////////////////////////////////////////////
-
+/*
 bool CStepper::SMovement::CanModify() const
 {
 	if (!IsActiveMove())		return false;	// only "moves" can be modified
@@ -672,7 +671,7 @@ void CStepper::SMovement::SetEndPossibleProcessing()
 	else
 		_timerEndPossible = _ramp._timerStop;
 }
-
+*/
 ////////////////////////////////////////////////////////
 // drill down the junction speed if speed at junction point is not possible
 
@@ -685,7 +684,13 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 		// first "now" executing move
 		// do not change _timerrun
 
-		SetEndPossibleProcessing();
+		_timerEndPossible = _ramp._timerStop;
+/*
+		if (CanModify())
+			_timerEndPossible = max(_timerEndPossible, _timerRun);
+		else
+			_timerEndPossible = _ramp._timerStop;
+*/
 	}
 	else
 	{
@@ -693,9 +698,13 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 
 		CCriticalRegion crit; // prev operation may take long, in the meantime the ISR has finished a move
 
-		if (!IsProcessingMove())
+		if (IsProcessingMove())
 		{
-			SetEndPossibleProcessing();
+			_timerEndPossible = _ramp._timerStop;
+		}
+		else
+		{
+			_timerEndPossible = max(_timerEndPossible, _timerRun);
 
 			if (_timerEndPossible > _timerMax)
 			{
@@ -1520,11 +1529,11 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 		if (_state == StateReadyMove)
 		{
-			if (pState->_timer == _timerRun)
+			if (pState->_timer == _ramp._timerRun)
 				_state = StateRun;
 			else
 			{
-				_state = pState->_timer > _timerRun ? StateUpAcc : StateUpDec;
+				_state = pState->_timer > _ramp._timerRun ? StateUpAcc : StateUpDec;
 				if (pState->_count > 1 && _ramp._nUpOffset == 0)
 				{
 					static const unsigned short corrtab[][2] PROGMEM =

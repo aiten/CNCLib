@@ -37,7 +37,7 @@ int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 {
 	setup();
 
-	while (!CHelpParser::_exit)
+	while (!CGCodeParserBase::_exit)
 	{
 		loop();
 	}
@@ -49,7 +49,7 @@ void setup()
 {     
 	MyStepper.DelayOptimization = false;
 	MyStepper.UseSpeedSign = true;
-	MyStepper.CacheSize = 100000;
+	MyStepper.CacheSize = 50000;
 	MyStepper.InitTest("MiniCNC.csv");
 	  Serial.pIdle = Idle;
 }

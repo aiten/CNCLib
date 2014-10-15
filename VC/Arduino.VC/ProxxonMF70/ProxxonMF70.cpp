@@ -42,7 +42,7 @@ int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 {
 	setup();
 
-	while (!CHelpParser::_exit)
+	while (!CGCodeParserBase::_exit)
 	{
 		loop();
 	}

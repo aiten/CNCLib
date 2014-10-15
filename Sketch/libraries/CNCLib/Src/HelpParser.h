@@ -47,12 +47,6 @@ protected:
 	bool SetSpeed();
 
 	bool CheckEOC();
-
-#ifdef _MSC_VER
-public:
-	static bool _exit;
-#endif
-
 };
 
 ////////////////////////////////////////////////////////

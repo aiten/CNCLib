@@ -29,23 +29,11 @@
 
 ////////////////////////////////////////////////////////////
 
-#ifdef _MSC_VER
-
-bool CHelpParser::_exit = false;
-
-#endif
-
-////////////////////////////////////////////////////////////
-
 void CHelpParser::Parse()
 {
 	unsigned char i;
 
 	_reader->SkipSpaces();
-
-#ifdef _MSC_VER
-	if (IsToken(F("X"), true, false)) { _exit = true; return; }
-#endif
 
 	if (IsToken(F("s"), true, false)) { SetSpeed(); return; }
 

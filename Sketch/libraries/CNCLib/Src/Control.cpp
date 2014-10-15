@@ -25,7 +25,7 @@
 #include "Lcd.h"
 
 #ifdef _MSC_VER
-#include "HelpParser.h"
+#include "GCodeParserBase.h"
 #endif
 
 ////////////////////////////////////////////////////////////
@@ -282,7 +282,7 @@ void CControl::Run()
 	Initialized();
 
 #ifdef _MSC_VER
-	while (!CHelpParser::_exit)
+	while (!CGCodeParserBase::_exit)
 #else
 	while (true)
 #endif
