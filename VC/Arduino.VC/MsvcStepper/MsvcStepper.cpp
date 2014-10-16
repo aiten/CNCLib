@@ -164,14 +164,13 @@ void CMsvcStepper::StepBegin(const SStepBuffer* stepbuffer)
 		multiplier = multiplier / 16;
 	}
 	strcpy_s(_TimerEvents[_eventIdx].MSCInfo, stepbuffer->_spMSCInfo);
-
 }
 
 ////////////////////////////////////////////////////////////
 /*
 void  CStepper::Step(axis_t axis , bool  directionUp , unsigned char count )
 {
-	// CStepper:: is abstract => for call of base clase in deried class!
+	// CStepper:: is abstract => for call of base class in derived class!
 }
 */
 ////////////////////////////////////////////////////////////

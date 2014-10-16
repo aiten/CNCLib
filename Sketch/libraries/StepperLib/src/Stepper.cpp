@@ -701,11 +701,15 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 		if (IsProcessingMove())
 		{
 			_timerEndPossible = _ramp._timerStop;
+		/*
+			if (CanModify())
+			_timerEndPossible = max(_timerEndPossible, _timerRun);
+			else
+			_timerEndPossible = _ramp._timerStop;
+		*/
 		}
 		else
 		{
-			_timerEndPossible = max(_timerEndPossible, _timerRun);
-
 			if (_timerEndPossible > _timerMax)
 			{
 				// not faster as required
@@ -720,13 +724,8 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 		mvNext->_timerJunctionToPrev = max(mvNext->_timerMaxJunction, max(_timerEndPossible, mvNext->_timerJunctionToPrev));
 		_timerEndPossible = mvNext->_timerJunctionToPrev;
 	}
-	else
-	{
-		Ramp(NULL);
-	}
-
-	if (mvPrev != NULL)
-		mvPrev->Ramp(this);
+	
+	Ramp(mvNext);
 }
 
 ////////////////////////////////////////////////////////
