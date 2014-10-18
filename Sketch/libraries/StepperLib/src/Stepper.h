@@ -400,7 +400,7 @@ protected:
 
 		void SetEndPossibleProcessing();
 
-		void Ramp(SMovement*mvNext);
+		bool Ramp(SMovement*mvNext);
 
 		void CalcMaxJunktionSpeed(SMovement*mvNext);
 

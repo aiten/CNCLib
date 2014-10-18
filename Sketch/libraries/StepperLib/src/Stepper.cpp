@@ -493,9 +493,17 @@ unsigned char CStepper::SMovement::GetMaxStepMultiplier()
 
 void CStepper::SMovement::SRamp::RampUp(SMovement* pMovement, timer_t timerRun, timer_t timerJunction)
 {
+//	while (timerRun > 20000)
+//		Serial.println(F("ok 1"));
+
+	while (timerJunction > 20000)
+	{
+		Serial.print(F("ok"));
+//		Serial.println(timerJunction);
+	}
+
 	_timerRun = timerRun;
 	timer_t timerAccDec = pMovement->GetUpTimerAcc();
-	_upSteps = CStepper::GetAccSteps(_timerRun, timerAccDec);
 
 	if (timerJunction >= timerAccDec) // check from v0=0
 	{
@@ -514,6 +522,7 @@ void CStepper::SMovement::SRamp::RampUp(SMovement* pMovement, timer_t timerRun, 
 		}
 		else
 		{
+			_upSteps = CStepper::GetAccSteps(_timerRun, timerAccDec);
 			timerAccDec = pMovement->GetUpTimerDec();
 			_nUpOffset = GetDecSteps(_timerStart, timerAccDec);
 			_upSteps = _nUpOffset - GetDecSteps(_timerRun, timerAccDec);
@@ -525,6 +534,9 @@ void CStepper::SMovement::SRamp::RampUp(SMovement* pMovement, timer_t timerRun, 
 
 void CStepper::SMovement::SRamp::RampDown(SMovement* pMovement, timer_t timerJunction)
 {
+//	while (timerJunction > 20000)
+//		Serial.println(F("ok 2"));
+
 	mdist_t steps = pMovement->_steps;
 	timer_t timerAccDec = pMovement->GetDownTimerDec();
 	if (timerJunction >= timerAccDec)
@@ -613,9 +625,9 @@ void CStepper::SMovement::SRamp::RampRun(SMovement* pMovement)
 
 ////////////////////////////////////////////////////////
 
-void CStepper::SMovement::Ramp(SMovement*mvNext)
+bool CStepper::SMovement::Ramp(SMovement*mvNext)
 {
-	if (!IsActiveMove()) return;					// Move became inactive by ISR
+	//if (!IsActiveMove()) return false;				// Move became inactive by ISR
 
 	if (IsReadyForMove())							// must not be started!
 	{
@@ -629,8 +641,10 @@ void CStepper::SMovement::Ramp(SMovement*mvNext)
 		if (IsReadyForMove())						// still not started
 		{
 			_ramp = tmpramp;
+			return true;
 		}
 	}
+	return false;
 /*
 
 	if (CanModify())
@@ -718,14 +732,21 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 		}
 	}
 
+	timer_t oldtimerJunctionToPrev;
 	if (mvNext != NULL)
 	{
 		// next element available, calculate junction speed
+		oldtimerJunctionToPrev = mvNext->_timerJunctionToPrev;
 		mvNext->_timerJunctionToPrev = max(mvNext->_timerMaxJunction, max(_timerEndPossible, mvNext->_timerJunctionToPrev));
 		_timerEndPossible = mvNext->_timerJunctionToPrev;
 	}
 	
-	Ramp(mvNext);
+	if (!Ramp(mvNext))
+	{
+		// modify of ramp failed => do not modify _timerEndPossible
+		_timerEndPossible = _ramp._timerStop;
+		if (mvNext != NULL) mvNext->_timerJunctionToPrev = oldtimerJunctionToPrev;
+	}
 }
 
 ////////////////////////////////////////////////////////

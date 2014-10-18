@@ -24,12 +24,15 @@ namespace SpeedChart
 	{
 		public MainWindow()
 		{
+			_directory = System.IO.Path.GetTempPath();
+			_filename = _directory + @"ProxxonMF70.csv";
 			InitializeComponent();
 		}
 
 		TimeSampleList _list = new TimeSampleList();
-		string _filename = @"P:\Arduino\Src\VC\Arduino.VC\ProxxonMF70\ProxxonMF70.csv";
-		int _fileNo=1;
+		string _filename;
+		string _directory;
+		int _fileNo = 1;
 
 		private void LoadSamples_Click(object sender, RoutedEventArgs e)
 		{
@@ -113,6 +116,7 @@ namespace SpeedChart
 		{
 			// Configure open file dialog box
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+			dlg.InitialDirectory = _directory;
 			//dlg.FileName = "Document"; // Default file name
 			//dlg.DefaultExt = ".txt"; // Default file extension
 			//dlg.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
@@ -126,6 +130,7 @@ namespace SpeedChart
 				// Open document
 				_filename = dlg.FileName;
 				_fileNo = 1;
+				_directory = System.IO.Path.GetDirectoryName(_filename) + @"\";
 				LoadFile();
 			}
 		}
