@@ -431,8 +431,8 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 	if (prevIsMove)
 		CalcMaxJunktionSpeed(mvPrev);
 
-	_ramp.RampUp(this,_timerRun, _ramp._timerStart);
-	_ramp.RampDown(this,_ramp._timerStop);
+	_ramp.RampUp(this,_timerRun, -1);
+	_ramp.RampDown(this, -1);
 	_ramp.RampRun(this);
 
 	_timerEndPossible = prevIsMove ? 0 : _pStepper->GetTimer(_steps, GetUpTimerAcc());
@@ -493,15 +493,6 @@ unsigned char CStepper::SMovement::GetMaxStepMultiplier()
 
 void CStepper::SMovement::SRamp::RampUp(SMovement* pMovement, timer_t timerRun, timer_t timerJunction)
 {
-//	while (timerRun > 20000)
-//		Serial.println(F("ok 1"));
-
-	while (timerJunction > 20000)
-	{
-		Serial.print(F("ok"));
-//		Serial.println(timerJunction);
-	}
-
 	_timerRun = timerRun;
 	timer_t timerAccDec = pMovement->GetUpTimerAcc();
 
@@ -534,9 +525,6 @@ void CStepper::SMovement::SRamp::RampUp(SMovement* pMovement, timer_t timerRun, 
 
 void CStepper::SMovement::SRamp::RampDown(SMovement* pMovement, timer_t timerJunction)
 {
-//	while (timerJunction > 20000)
-//		Serial.println(F("ok 2"));
-
 	mdist_t steps = pMovement->_steps;
 	timer_t timerAccDec = pMovement->GetDownTimerDec();
 	if (timerJunction >= timerAccDec)
@@ -708,35 +696,18 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 	}
 	else
 	{
-		_timerEndPossible = _pStepper->GetTimerAccelerating(_steps, mvPrev->_timerEndPossible, GetUpTimerAcc());
+		_timerEndPossible = _pStepper->GetTimerAccelerating(_steps, mvPrev->IsProcessingMove() ? mvPrev->_ramp._timerStop : mvPrev->_timerEndPossible, GetUpTimerAcc());
 
-		CCriticalRegion crit; // prev operation may take long, in the meantime the ISR has finished a move
-
-		if (IsProcessingMove())
+		if (_timerEndPossible > _timerMax)
 		{
-			_timerEndPossible = _ramp._timerStop;
-		/*
-			if (CanModify())
-			_timerEndPossible = max(_timerEndPossible, _timerRun);
-			else
-			_timerEndPossible = _ramp._timerStop;
-		*/
-		}
-		else
-		{
-			if (_timerEndPossible > _timerMax)
-			{
-				// not faster as required
-				_timerRun = max(_timerEndPossible, _timerRun);
-			}
+			// not faster as required
+			_timerRun = max(_timerEndPossible, _timerRun);
 		}
 	}
 
-	timer_t oldtimerJunctionToPrev;
 	if (mvNext != NULL)
 	{
 		// next element available, calculate junction speed
-		oldtimerJunctionToPrev = mvNext->_timerJunctionToPrev;
 		mvNext->_timerJunctionToPrev = max(mvNext->_timerMaxJunction, max(_timerEndPossible, mvNext->_timerJunctionToPrev));
 		_timerEndPossible = mvNext->_timerJunctionToPrev;
 	}
@@ -745,7 +716,7 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 	{
 		// modify of ramp failed => do not modify _timerEndPossible
 		_timerEndPossible = _ramp._timerStop;
-		if (mvNext != NULL) mvNext->_timerJunctionToPrev = oldtimerJunctionToPrev;
+		if (mvNext != NULL) mvNext->_timerJunctionToPrev = _ramp._timerStop;
 	}
 }
 

@@ -106,8 +106,11 @@ namespace Framework.Logic
 			ErrorIsReply = false;		// each command must end with ok
 
 			ResetOnConnect = false;
-            ArduinoBuffersize = 64;	
-        }
+            ArduinoBuffersize = 64;
+
+			WriteEventTimeout = 25;
+			WriteEventTimeout = 100;
+		}
 
         #endregion 
 
@@ -138,6 +141,7 @@ namespace Framework.Logic
         public int MaxCommandHistoryCount { get; set; }
 
         public int ArduinoBuffersize { get; set; }
+		public int WriteEventTimeout { get; set; }
 
         #endregion
 
@@ -344,13 +348,14 @@ namespace Framework.Logic
 
 			 string commandtext = cmd.CommandText;
 
-			 while (commandtext.Length > 63)
+			 while (commandtext.Length > ArduinoBuffersize-1)
 			 {
 				 // give "control" class the chance to read from arduino to control buffer
 
-				 string first50 = commandtext.Substring(0, 50);
-				 commandtext = commandtext.Substring(50);
-				 _serialPort.Write(first50);
+				 int firstSize = ArduinoBuffersize * 2 / 3;
+				 string firstX = commandtext.Substring(0, firstSize);
+				 commandtext = commandtext.Substring(firstSize);
+				 _serialPort.Write(firstX);
 				 Thread.Sleep(250);
 			 }
 
@@ -421,12 +426,12 @@ Console.WriteLine(cmd.CommandText);
 						var eventarg = new ArduinoSerialCommunicationEventArgs(null, nextcmd);
 						OnWaitForSend(eventarg);
 						if (Abort || eventarg.Abort) return;
-						_autoEvent.WaitOne(100);
+						_autoEvent.WaitOne(WriteEventTimeout);
 					}
 				}
 				else
 				{
-					_autoEvent.WaitOne(100);
+					_autoEvent.WaitOne(WriteEventTimeout);
 				}
             }
         }
@@ -469,7 +474,7 @@ Console.WriteLine(cmd.CommandText);
 
                     message = message.Trim();
 
-Console.Write(message); if (cmd != null) { Console.Write("=>"); Console.Write(cmd.CommandText); } Console.WriteLine();
+//Console.Write(message); if (cmd != null) { Console.Write("=>"); Console.Write(cmd.CommandText); } Console.WriteLine();
 
 					if (cmd != null)
 					{
