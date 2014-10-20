@@ -615,8 +615,6 @@ void CStepper::SMovement::SRamp::RampRun(SMovement* pMovement)
 
 bool CStepper::SMovement::Ramp(SMovement*mvNext)
 {
-	//if (!IsActiveMove()) return false;				// Move became inactive by ISR
-
 	if (IsReadyForMove())							// must not be started!
 	{
 		SRamp tmpramp = _ramp;
@@ -633,47 +631,8 @@ bool CStepper::SMovement::Ramp(SMovement*mvNext)
 		}
 	}
 	return false;
-/*
-
-	if (CanModify())
-	{
-		RampDown(mvNext ? mvNext->_timerJunctionToPrev : GetDownTimerDec());
-		RampRun();
-	}
-*/
 }
 
-////////////////////////////////////////////////////////
-/*
-bool CStepper::SMovement::CanModify() const
-{
-	if (!IsActiveMove())		return false;	// only "moves" can be modified
-
-	if (!IsProcessingMove())	return true;	// not started move => modify is OK
-
-	if (IsDownMove())		
-	{
-		return false;
-	}
-	else if(IsUpMove())
-	{
-		return true;
-	}
-
-	// run state
-	// allow only if current step << downstart of resulting ramp-Trapezoid
-	// assume: 1/x finished
-	return _steps > 255 && _pStepper->_movementstate._n < _steps / 4;
-}
-
-void CStepper::SMovement::SetEndPossibleProcessing()
-{
-	if (CanModify())
-		_timerEndPossible = max(_timerEndPossible, _timerRun);
-	else
-		_timerEndPossible = _ramp._timerStop;
-}
-*/
 ////////////////////////////////////////////////////////
 // drill down the junction speed if speed at junction point is not possible
 
@@ -687,12 +646,6 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 		// do not change _timerrun
 
 		_timerEndPossible = _ramp._timerStop;
-/*
-		if (CanModify())
-			_timerEndPossible = max(_timerEndPossible, _timerRun);
-		else
-			_timerEndPossible = _ramp._timerStop;
-*/
 	}
 	else
 	{
@@ -749,10 +702,10 @@ bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvN
 
 		if (!mvPrev->IsActiveMove())
 			return true;				// waitstate => no optimize, break here
-
+/*
 		if (mvPrev->IsProcessingMove() && mvPrev->IsDownMove())
 			return true;				// cant be optimized any more, break here
-
+*/
 		// prev element available, calculate junction speed
 		timer_t junctiontoPrev = max(_timerMaxJunction, _pStepper->_movements._timerStartPossible);
 		if (junctiontoPrev == _timerJunctionToPrev)
