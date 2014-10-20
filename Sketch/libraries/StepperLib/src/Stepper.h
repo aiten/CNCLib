@@ -187,8 +187,10 @@ public:
 	steprate_t GetDec(axis_t axis) const						{ return TimerToSpeed(_pod._timerDec[axis]); }
 	steprate_t GetJerkSpeed(axis_t axis) const					{ return _pod._maxJerkSpeed[axis]; }
 
+#ifndef REDUCED_SIZE
 	unsigned long GetTotalSteps() const							{ return _pod._totalSteps; }
 	unsigned int GetTimerISRBuys() const						{ return _pod._timerISRBusy; }
+#endif
 	unsigned long IdleTime() const								{ return _pod._timerStartOrOnIdle; }
 
 	void AddEvent(StepperEvent event, void* eventparam, StepperEvent& oldevent, void*& oldeventparam);
@@ -273,9 +275,11 @@ protected:
 
 		timer_t			_timerbacklash;								// -1 or 0 for temporary enable/disable backlash without setting _backlash to 0
 
+#ifndef REDUCED_SIZE
 		unsigned long  _totalSteps;									// total steps since start
-
 		unsigned int _timerISRBusy;									// ISR while in ISR
+#endif
+
 		timer_t _timerMaxDefault;									// timervalue of vMax (if vMax = 0)
 
 		udist_t _current[NUM_AXIS];									// update in ISR
@@ -415,6 +419,8 @@ protected:
 		bool IsReadyForMove() const								{ return _state == StateReadyMove; }						// Ready for move but not started
 		bool IsProcessingMove() const							{ return _state >= StateUpAcc && _state <= StateDownAcc; }	// Move is currently processed (in acc,run or dec)
 		bool IsUpMove() const									{ return IsProcessingMove() && _state < StateRun; }			// Move in ramp acc state
+		bool IsRunMove() const									{ return _state == StateRun; }								// Move in ramp run state
+		bool IsRunOrDownMove() const							{ return IsProcessingMove() && _state >= StateRun; }		// Move in ramp run state
 		bool IsDownMove() const									{ return IsProcessingMove() && _state > StateRun; }			// Move in ramp dec state
 		bool IsFinished() const									{ return _state == StateDone; }								// Move finished 
 

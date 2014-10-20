@@ -84,8 +84,12 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 {
 	switch (tool)
 	{
+#if SPINDEL_PIN != -1
 		case Spindel:			_spindel.On(level);	return;
+#endif
+#if CONTROLLERFAN_FAN_PIN != -1
 		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
+#endif
 	}
 	
 	super::IOControl(tool, level);
@@ -97,7 +101,7 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 {
 	switch (tool)
 	{
-		case Probe:			{ return _probe.IsOn(); }
+		case Probe:		{ return _probe.IsOn(); }
 		case Spindel:		{ return _spindel.IsOn(); }
 		case ControllerFan:	{ return _controllerfan.Level; }
 	}

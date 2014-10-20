@@ -615,7 +615,7 @@ void CStepper::SMovement::SRamp::RampRun(SMovement* pMovement)
 
 bool CStepper::SMovement::Ramp(SMovement*mvNext)
 {
-	if (IsReadyForMove())							// must not be started!
+	if (!IsDownMove())
 	{
 		SRamp tmpramp = _ramp;
 		tmpramp.RampUp(this,_timerRun, _timerJunctionToPrev);
@@ -624,7 +624,9 @@ bool CStepper::SMovement::Ramp(SMovement*mvNext)
 
 		CCriticalRegion crit;
 
-		if (IsReadyForMove())						// still not started
+		if (IsReadyForMove() ||
+			(IsUpMove()  && _pStepper->_movementstate._n <  tmpramp._upSteps) ||		// in acc
+		    (IsRunMove() && _pStepper->_movementstate._n <  tmpramp._downStartAt))		// in run
 		{
 			_ramp = tmpramp;
 			return true;
@@ -638,14 +640,15 @@ bool CStepper::SMovement::Ramp(SMovement*mvNext)
 
 void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvNext)
 {
-	if (!IsActiveMove()) return;				// Move became inactive by ISR or "WaitState"
+	if (!IsActiveMove()) return;						// Move became inactive by ISR or "WaitState"
 
-	if (mvPrev == NULL || IsProcessingMove())	// no prev or processing (can be if the ISR has switchted to the next move)
+	if (mvPrev == NULL || IsRunOrDownMove())			// no prev or processing (can be if the ISR has switchted to the next move)
 	{
 		// first "now" executing move
-		// do not change _timerrun
-
-		_timerEndPossible = _ramp._timerStop;
+		if (IsRunMove())
+			_timerEndPossible = _ramp._timerRun;
+		else
+			_timerEndPossible = _ramp._timerStop;
 	}
 	else
 	{
@@ -692,9 +695,6 @@ bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvN
 		// assume _timerStartPossible (of next move) at end
 		_pStepper->_movements._timerStartPossible = _pStepper->GetTimerAccelerating(_steps, _pStepper->_movements._timerStartPossible, GetDownTimerDec());
 	}
-
-	if (IsProcessingMove())
-		return true;					// stop optimizing here - maybe not reached head but ISR has switched to next move
 
 	if (mvPrev != NULL)
 	{
@@ -1073,21 +1073,24 @@ void CStepper::AbortMove()
 {
 	CCriticalRegion critical;
 
-	// sub all pending steps to _totalsteps
+#ifndef REDUCED_SIZE
 
-	unsigned long steps = _steps.Count();
+	// sub all pending steps to _totalsteps
 
 	for (unsigned char idx = _movements._queue.T2HInit(); _movements._queue.T2HTest(idx); idx = _movements._queue.T2HInc(idx))
 	{
-		if (_movements._queue.Buffer[idx].IsActiveMove())
+		SMovement& mv=_movements._queue.Buffer[idx];
+		if (mv.IsActiveMove())
 		{
-			steps += _movements._queue.Buffer[idx]._steps;
-			if (_movements._queue.Buffer[idx].IsProcessingMove())
-				steps -= _movementstate._n;
+			_pod._totalSteps -= mv._steps;
+			if (mv.IsProcessingMove())
+				_pod._totalSteps += _movementstate._n;
 		}
 	}
 
-	_pod._totalSteps -= steps;
+	_pod._totalSteps -= _steps.Count();
+
+#endif
 
 	_steps.Clear();
 	_movements._queue.Clear();
@@ -1219,7 +1222,9 @@ void CStepper::StartBackground()
 	if (reentercount != 1)
 	{
 		// other ISR is calculating!
+#ifndef REDUCED_SIZE
 		_pod._timerISRBusy++;
+#endif
 		reentercount--;
 		return;
 	}
@@ -1654,7 +1659,9 @@ void CStepper::QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool direct
 			steps = dist[i];
 	}
 
+#ifndef REDUCED_SIZE
 	_pod._totalSteps += steps;
+#endif
 
 	unsigned short movecount = 1;
 	udist_t pos[NUM_AXIS] = { 0 };

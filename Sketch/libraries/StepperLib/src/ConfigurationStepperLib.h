@@ -92,11 +92,11 @@ typedef unsigned long udist_t;	// tpye of stepper coord system (unsigned)
 #define use16bit
 
 #define STEPBUFFERSIZE		16		// size 2^x but not 256
-#define MOVEMENTBUFFERSIZE	16
+#define MOVEMENTBUFFERSIZE	8
 
 #undef NUM_AXIS
-#define NUM_AXIS 3
-//#define NUM_AXIS 4
+//#define NUM_AXIS 3
+#define NUM_AXIS 4
 
 #define REDUCED_SIZE
 #define _NO_LONG_MESSAGE
