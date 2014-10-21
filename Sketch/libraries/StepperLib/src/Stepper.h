@@ -419,6 +419,7 @@ protected:
 		bool IsReadyForMove() const								{ return _state == StateReadyMove; }						// Ready for move but not started
 		bool IsProcessingMove() const							{ return _state >= StateUpAcc && _state <= StateDownAcc; }	// Move is currently processed (in acc,run or dec)
 		bool IsUpMove() const									{ return IsProcessingMove() && _state < StateRun; }			// Move in ramp acc state
+		bool IsRunOrUpMove() const								{ return IsProcessingMove() && _state <= StateRun; }		// Move in ramp run state
 		bool IsRunMove() const									{ return _state == StateRun; }								// Move in ramp run state
 		bool IsRunOrDownMove() const							{ return IsProcessingMove() && _state >= StateRun; }		// Move in ramp run state
 		bool IsDownMove() const									{ return IsProcessingMove() && _state > StateRun; }			// Move in ramp dec state

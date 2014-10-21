@@ -110,9 +110,6 @@ namespace Framework.Logic
 
 			ResetOnConnect = false;
             ArduinoBuffersize = 64;
-
-			WriteEventTimeout = 100;
-			WriteEventTimeout = 10;
 		}
 
         #endregion 
@@ -144,7 +141,6 @@ namespace Framework.Logic
         public int MaxCommandHistoryCount { get; set; }
 
         public int ArduinoBuffersize { get; set; }
-		public int WriteEventTimeout { get; set; }
 
         #endregion
 
@@ -196,7 +192,12 @@ namespace Framework.Logic
             _readThread = null;
 
 			if (_writeThread != null)
-				_writeThread.Join();
+			{
+				while (!_writeThread.Join(100))
+				{
+					_autoEvent.Set();
+				}
+			}
 			_writeThread = null;
 
             if (_serialPort != null)
@@ -322,7 +323,7 @@ namespace Framework.Logic
             lock (_pendingCommands)
             {
 				if (_pendingCommands.Count==0)
-					_autoEvent.Set();			// start now!
+					_autoEvent.Set();			// start Async task now!
 
                 Command c = new Command() { CommandText = cmd };
                 _pendingCommands.Add(c);
@@ -362,7 +363,6 @@ namespace Framework.Logic
 				 Thread.Sleep(250);
 			 }
 
-			 _autoEvent.Reset();
 			 _serialPort.WriteLine(commandtext);
 
 Console.WriteLine(cmd.CommandText);
@@ -379,8 +379,10 @@ Console.WriteLine(cmd.CommandText);
                 Command cmd = null; ;
                 lock (_pendingCommands)
                 {
-                    if (_pendingCommands.Count > 0)
-                        cmd = _pendingCommands[0];
+					if (_pendingCommands.Count > 0)
+					{
+						cmd = _pendingCommands[0];
+					}
                 }
 
 				if (cmd == null) break;
@@ -401,7 +403,7 @@ Console.WriteLine(cmd.CommandText);
                 int queuedcmdlenght = 0;
                 lock(_pendingCommands)
                 {
-                    foreach (Command cmd in _pendingCommands)
+					foreach (Command cmd in _pendingCommands)
                     {
                         if (cmd.SentTime == new DateTime())
                         {
@@ -429,12 +431,19 @@ Console.WriteLine(cmd.CommandText);
 						var eventarg = new ArduinoSerialCommunicationEventArgs(null, nextcmd);
 						OnWaitForSend(eventarg);
 						if (Abort || eventarg.Abort) return;
-						_autoEvent.WaitOne(WriteEventTimeout);
+
+						lock (_pendingCommands)
+						{
+							if (_pendingCommands.Count > 0 && _pendingCommands[0].SentTime != new DateTime())
+								_autoEvent.Reset();			// expect an answer
+						}
+
+						_autoEvent.WaitOne(50);
 					}
 				}
 				else
 				{
-					_autoEvent.WaitOne(WriteEventTimeout);
+					_autoEvent.WaitOne(250);		// no command in queue => wait => CreateCommand(...) will set Autoevent
 				}
             }
         }
@@ -523,9 +532,9 @@ Console.WriteLine(cmd.CommandText);
                         lock (_pendingCommands)
                         {
                             _pendingCommands.RemoveAt(0);
-                        }
+							_autoEvent.Set();
+						}
                     }
-					_autoEvent.Set();
                 }
             }
         }

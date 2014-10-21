@@ -54,6 +54,10 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,45000));
 	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,81000));
 
+#ifdef NUM_AXIS > 3
+	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControl::ToMachine(A_AXIS,300000));
+#endif
+
 	//CStepper::GetInstance()->SetJerkSpeed(X_AXIS, SPEEDFACTOR*1000);
 	//CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, SPEEDFACTOR*1000);
 	//CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, SPEEDFACTOR*1000);

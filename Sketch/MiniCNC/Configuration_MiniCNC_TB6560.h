@@ -27,9 +27,9 @@
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED 20000
-#define CNC_ACC  400
-#define CNC_DEC  450
+#define CNC_MAXSPEED 14000
+#define CNC_ACC  350
+#define CNC_DEC  400
 
 ////////////////////////////////////////////////////////
 

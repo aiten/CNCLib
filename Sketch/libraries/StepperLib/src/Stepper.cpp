@@ -645,7 +645,7 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 	if (mvPrev == NULL || IsRunOrDownMove())			// no prev or processing (can be if the ISR has switchted to the next move)
 	{
 		// first "now" executing move
-		if (IsRunMove())
+		if (IsRunOrUpMove())
 			_timerEndPossible = _ramp._timerRun;
 		else
 			_timerEndPossible = _ramp._timerStop;
@@ -702,10 +702,7 @@ bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvN
 
 		if (!mvPrev->IsActiveMove())
 			return true;				// waitstate => no optimize, break here
-/*
-		if (mvPrev->IsProcessingMove() && mvPrev->IsDownMove())
-			return true;				// cant be optimized any more, break here
-*/
+
 		// prev element available, calculate junction speed
 		timer_t junctiontoPrev = max(_timerMaxJunction, _pStepper->_movements._timerStartPossible);
 		if (junctiontoPrev == _timerJunctionToPrev)
