@@ -44,6 +44,7 @@ inline void CHAL::EnableInterrupts()	{	sei(); }
 inline void CHAL::delayMicroseconds0250() {  }
 inline void CHAL::delayMicroseconds0312() {  }
 inline void CHAL::delayMicroseconds0500() {  }
+inline void CHAL::delayMicroseconds(unsigned int) {}
 
 inline irqflags_t CHAL::GetSREG()				{ return SREG; }
 inline void CHAL::SetSREG(irqflags_t a)			{ SREG=a; }

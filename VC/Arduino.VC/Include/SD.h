@@ -103,6 +103,12 @@ public:
 class MyFile : public MyDirFile
 {
 public:
+
+	MyFile()
+	{
+		_f = NULL;
+	}
+
 	FILE* _f;
 
 	virtual bool IsFile() { return true; };
@@ -116,8 +122,11 @@ public:
 		else
 		{
 			fopen_s(&_f, _OSfilename, "w");
-			fclose(_f);
-			fopen_s(&_f, _OSfilename, "r+");
+			if (_f != NULL)
+			{
+				fclose(_f);
+				fopen_s(&_f, _OSfilename, "r+");
+			}
 		}
 	}
 };

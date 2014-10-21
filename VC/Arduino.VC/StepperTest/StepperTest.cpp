@@ -495,7 +495,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			char cmd[16];
 			int x,y;
 //			int cnt=fscanf(f,"%2s%i%i;",&cmd,&x,&y);
-			int cnt=fscanf(f,"%2s %i,%i;",&cmd,&x,&y);
+			int cnt=fscanf(f,"%2s %i,%i;",cmd,&x,&y);
 
 			if (cmd[0]!=';')
 				line++;

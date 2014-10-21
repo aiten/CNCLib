@@ -228,7 +228,7 @@ void CControl::ReadAndExecuteCommand(Stream* stream, Stream* output, bool filest
 			}
 
 			_bufferidx++;
-			if (_bufferidx > sizeof(_buffer))
+			if (_bufferidx >= sizeof(_buffer))
 			{
 				if (output)
 				{

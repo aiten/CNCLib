@@ -234,7 +234,7 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 		if (IsModifyParam(paramNo))				{	_modalstate.Parameter[paramNo - 1] = mm1000;	}
 
 	
-		else if (IsBacklashParam(paramNo,axis))	{	CStepper::GetInstance()->SetBacklash(axis,GetParamAsMaschine(mm1000, axis));	}
+		else if (IsBacklashParam(paramNo,axis))	{	CStepper::GetInstance()->SetBacklash(axis,(mdist_t) GetParamAsMaschine(mm1000, axis));	}
 		else if (IsBacklashFeedrateParam(paramNo)){	CStepper::GetInstance()->SetBacklash((steprate_t) CMotionControl::ToMachine(0, mm1000*60));		}
 		else if (IsControllerFanParam(paramNo))	{	CControl::GetInstance()->IOControl(CControl::ControllerFan,(unsigned short)exprpars.Answer);	}
 		else if (IsRapidMoveFeedRate(paramNo))	{	SetG0FeedRate((feedrate_t) (-exprpars.Answer*1000));	}

@@ -62,7 +62,7 @@ void CStepper::InitMemVar()
 	_pod._limitCheck = true;
 	_pod._idleLevel = LevelOff;
 
-//	SetUsual(28000);
+//	SetUsual(28000);	=> reduce size => hard coded
 	SetDefaultMaxSpeed(28000, 350, 380);
 	for (axis_t i = 0; i < NUM_AXIS; i++) { SetJerkSpeed(i, 1000); }
 
@@ -88,7 +88,7 @@ void CStepper::SetUsual(steprate_t vMax)
 	const steprate_t defdec   = 380;
 	const steprate_t defjerk  = 1000;
 
-	steprate_t jerk = MulDivU32(vMax, defjerk, defspeed); 
+	steprate_t jerk = (steprate_t)MulDivU32(vMax, defjerk, defspeed);
 	unsigned long sqrt = _ulsqrt_round(vMax * 10000l / defspeed);
 
 	steprate_t acc  = steprate_t(sqrt * defacc / 100l);  
@@ -431,8 +431,8 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 	if (prevIsMove)
 		CalcMaxJunktionSpeed(mvPrev);
 
-	_ramp.RampUp(this,_timerRun, -1);
-	_ramp.RampDown(this, -1);
+	_ramp.RampUp(this, _timerRun, (timer_t)-1);
+	_ramp.RampDown(this, (timer_t)-1);
 	_ramp.RampRun(this);
 
 	_timerEndPossible = prevIsMove ? 0 : _pStepper->GetTimer(_steps, GetUpTimerAcc());
@@ -1088,8 +1088,6 @@ void CStepper::AbortMove()
 		}
 	}
 
-	_pod._totalSteps -= _steps.Count();
-
 #endif
 
 	_steps.Clear();
@@ -1128,7 +1126,7 @@ inline void CStepper::StepOut()
 	// called in interrupt => must be "fast"
 	// "Out" the Step to the stepper 
 	 
-	// calculate all axes and set PINS paralell - DRV 8225 requires 1.9us * 2 per step => sequential is to slow 
+	// calculate all axes and set PINS parallel - DRV 8225 requires 1.9us * 2 per step => sequential is to slow 
 
 	register DirCount_t dir_count;
 
@@ -1167,7 +1165,6 @@ inline void CStepper::StepOut()
 		bytedircount = dir_count&15;
 		dir_count /= 16;
 #endif
-
 
 		axescount[i] = bytedircount & 7;
 		directionUp /=2;
@@ -1350,7 +1347,6 @@ void CStepper::Step(bool isr)
 		return;
 	}
 
-	//////////////////////////////////////////////
 	// calculate next step 
 
 	StartBackground();
@@ -1366,6 +1362,8 @@ CStepper::SMovements CStepper::_movements;
 CStepper* CStepper::SMovement::_pStepper;
 
 #endif
+
+////////////////////////////////////////////////////////
 
 void CStepper::SMovementState::Init(SMovement* pMovement)
 {
@@ -1392,6 +1390,47 @@ void CStepper::SMovementState::Init(SMovement* pMovement)
 				pStepper->SetEnable(i, CStepper::LevelMax, false);
 		}
 	}
+}
+
+////////////////////////////////////////////////////////
+
+bool CStepper::SMovementState::CalcTimerAcc(timer_t maxtimer, mdist_t n, unsigned char cnt)
+{
+	if (maxtimer < _timer)
+	{
+		mudiv_t udivremainer = mudiv(_timer*(2 * cnt) + _rest, n * 4 + 2 - cnt);
+		_rest = udivremainer.rem;
+		_timer = _timer - udivremainer.quot;
+		if (maxtimer >= _timer)
+		{
+			_timer = maxtimer;
+			return true;
+		}
+	}
+	return false;
+}
+
+////////////////////////////////////////////////////////
+
+bool CStepper::SMovementState::CalcTimerDec(timer_t mintimer, mdist_t n, unsigned char cnt)
+{
+	if (mintimer > _timer)
+	{
+		if (n <= 1)
+		{
+			_timer = mintimer;
+			return true;
+		}
+		mudiv_t udivremainer = mudiv(_timer*(2 * cnt) + _rest, n * 4 - 1 - cnt);
+		_rest = udivremainer.rem;
+		_timer = _timer + udivremainer.quot;
+		if (mintimer <= _timer)
+		{
+			_timer = mintimer;
+			return true;
+		}
+	}
+	return false;
 }
 
 ////////////////////////////////////////////////////////

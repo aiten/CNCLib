@@ -469,42 +469,8 @@ protected:
 
 		void Init(SMovement* pMovement);
 
-		inline bool CalcTimerAcc(timer_t maxtimer, mdist_t n, unsigned char cnt)
-		{
-			if (maxtimer < _timer)
-			{
-				mudiv_t udivremainer = mudiv(_timer*(2 * cnt) + _rest, n * 4 + 2 - cnt);
-				_rest = udivremainer.rem;
-				_timer = _timer - udivremainer.quot;
-				if (maxtimer >= _timer)
-				{
-					_timer = maxtimer;
-					return true;
-				}
-			}
-			return false;
-		}
-
-		inline bool CalcTimerDec(timer_t mintimer, mdist_t n, unsigned char cnt)
-		{
-			if (mintimer > _timer)
-			{
-				if (n <= 1)
-				{
-					_timer = mintimer;
-					return true;
-				}
-				mudiv_t udivremainer = mudiv(_timer*(2 * cnt) + _rest, n * 4 - 1 - cnt);
-				_rest = udivremainer.rem;
-				_timer = _timer + udivremainer.quot;
-				if (mintimer <= _timer)
-				{
-					_timer = mintimer;
-					return true;
-				}
-			}
-			return false;
-		}
+		bool CalcTimerAcc(timer_t maxtimer, mdist_t n, unsigned char cnt);
+		bool CalcTimerDec(timer_t mintimer, mdist_t n, unsigned char cnt);
 
 	public:
 
