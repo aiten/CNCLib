@@ -429,13 +429,20 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 
 	bool prevIsMove = mvPrev && mvPrev->IsActiveMove();
 	if (prevIsMove)
+	{
 		CalcMaxJunktionSpeed(mvPrev);
+		_timerEndPossible = (timer_t)-1;
+	}
+	else
+	{
+//		_timerMaxJunction = (timer_t)-1;
+		_timerEndPossible = _pStepper->GetTimer(_steps, GetUpTimerAcc());
+	}
 
 	_ramp.RampUp(this, _timerRun, (timer_t)-1);
 	_ramp.RampDown(this, (timer_t)-1);
 	_ramp.RampRun(this);
 
-	_timerEndPossible = prevIsMove ? 0 : _pStepper->GetTimer(_steps, GetUpTimerAcc());
 
 	//pStepper->Dump(DumpAll);
 }
@@ -450,6 +457,9 @@ void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t tim
 	_pStepper = pStepper;
 	_steps = steps;
 	_ramp._timerStart = timer;
+	_timerEndPossible = (timer_t) -1;		
+//	_timerMaxJunction = (timer_t) -1;
+	_timerJunctionToPrev = (timer_t)-1;
 
 	_state = StateReadyWait;
 }

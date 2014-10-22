@@ -359,7 +359,7 @@ protected:
 		timer_t _timerMax;										// timer for max requested speed
 		timer_t _timerRun;										// copy of _ramp. => modify during rampcalc
 
-		axis_t _upAxis;											// most acceleration/decelerating axis while "up" state
+x		axis_t _upAxis;											// most acceleration/decelerating axis while "up" state
 		axis_t _downAxis;										// most acceleration/decelerating axis while "down" state
 
 		struct SRamp											// only modify in CCRiticalRegion
@@ -415,6 +415,7 @@ protected:
 
 	public:
 
+		bool IsActiveWait() const								{ return _state == StateReadyWait || _state == StateWait; }	// Ready from wait or waiting
 		bool IsActiveMove() const								{ return IsReadyForMove() || IsProcessingMove(); }			// Ready from move or moving
 		bool IsReadyForMove() const								{ return _state == StateReadyMove; }						// Ready for move but not started
 		bool IsProcessingMove() const							{ return _state >= StateUpAcc && _state <= StateDownAcc; }	// Move is currently processed (in acc,run or dec)
