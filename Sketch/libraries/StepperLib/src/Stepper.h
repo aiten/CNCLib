@@ -359,8 +359,8 @@ protected:
 		timer_t _timerMax;										// timer for max requested speed
 		timer_t _timerRun;										// copy of _ramp. => modify during rampcalc
 
-x		axis_t _upAxis;											// most acceleration/decelerating axis while "up" state
-		axis_t _downAxis;										// most acceleration/decelerating axis while "down" state
+		timer_t _timerAcc;										// timer for calc of acceleration while "up" state - depend on axis
+		timer_t _timerDec;										// timer for calc of decelerating while "down" state - depend on axis
 
 		struct SRamp											// only modify in CCRiticalRegion
 		{
@@ -386,11 +386,11 @@ x		axis_t _upAxis;											// most acceleration/decelerating axis while "up" s
 
 		stepperstatic CStepper* _pStepper;						// give access to stepper (not static if multiinstance)  
 
-		timer_t GetUpTimerAcc()									{ return _pStepper->_pod._timerAcc[_upAxis]; }
-		timer_t GetUpTimerDec()									{ return _pStepper->_pod._timerDec[_upAxis]; }
+		timer_t GetUpTimerAcc()									{ return _timerAcc; }
+		timer_t GetUpTimerDec()									{ return _timerDec; }
 
-		timer_t GetDownTimerAcc()								{ return _pStepper->_pod._timerAcc[_downAxis]; }
-		timer_t GetDownTimerDec()								{ return _pStepper->_pod._timerDec[_downAxis]; }
+		timer_t GetDownTimerAcc()								{ return _timerAcc; }
+		timer_t GetDownTimerDec()								{ return _timerDec; }
 
 		timer_t GetUpTimer(bool acc)							{ return acc ? GetUpTimerAcc() : GetUpTimerDec(); }
 		timer_t GetDownTimer(bool acc)							{ return acc ? GetDownTimerAcc() : GetDownTimerDec(); }

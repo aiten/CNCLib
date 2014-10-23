@@ -410,8 +410,8 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 
 #pragma message ("TODO: get acc/dec axis")
 
-	_upAxis = 0;
-	_downAxis = 0;
+	_timerAcc = pStepper->_pod._timerAcc[0];
+	_timerDec = pStepper->_pod._timerDec[0];
 
 	_ramp._timerStart = GetUpTimerAcc();
 	_ramp._timerStop = GetUpTimerDec();
@@ -542,6 +542,7 @@ void CStepper::SMovement::SRamp::RampDown(SMovement* pMovement, timer_t timerJun
 		_timerStop = max(timerAccDec, _timerRun);	// to v=0
 		_downSteps = CStepper::GetDecSteps(_timerRun, timerAccDec);
 		_downStartAt = steps - _downSteps;
+		_nDownOffset = 0;
 	}
 	else
 	{
@@ -2139,8 +2140,8 @@ void CStepper::SMovement::Dump(unsigned char idx, unsigned char options)
 
 	if (options&DumpDetails)
 	{
-		DumpType<axis_t>(F("UpAxis"), _upAxis, false);
-		DumpType<axis_t>(F("DownAxis"), _downAxis, false);
+		DumpType<timer_t>(F("TimerAcc"), _timerAcc, false);
+		DumpType<timer_t>(F("TimerDec"), _timerDec, false);
 	}
 
 	StepperSerial.println();
