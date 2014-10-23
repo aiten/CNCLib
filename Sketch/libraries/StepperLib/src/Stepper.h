@@ -234,7 +234,7 @@ private:
 	void GoIdle();
 	void ContinueIdle();
 
-	void CallEvent(EnumAsByte(EStepperEvent) eventtype, void* addinfo)			{ _pod._event.Call(this, eventtype, addinfo); }
+	void CallEvent(EnumAsByte(EStepperEvent) eventtype, void* addinfo)			{ _event.Call(this, eventtype, addinfo); }
 
 protected:
 
@@ -324,8 +324,6 @@ protected:
 
 		const __FlashStringHelper * _error;
 
-		SEvent			_event;
-
 		unsigned char _timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
 
 #ifdef USESLIP
@@ -333,6 +331,8 @@ protected:
 		int _slip[NUM_AXIS];
 #endif
 	} _pod;
+
+	SEvent			_event;											// no POS => Constructor
 
 	struct SMovementState;
 
@@ -365,10 +365,10 @@ protected:
 		EnumAsByte(EMovementState) _state;						// emums are 16 bit in gcc => force byte
 		bool _backlash;											// move is backlash
 
-		mdist_t	_distance_[NUM_AXIS];							// distance adjusted wiht stepmultiplier => use GetDistance(axis)
-
 		DirCount_t _dirCount;
 		DirCount_t _lastStepDirCount;
+
+		mdist_t	_distance_[NUM_AXIS];							// distance adjusted wiht stepmultiplier => use GetDistance(axis)
 
 		struct SRamp											// only modify in CCRiticalRegion
 		{
@@ -442,8 +442,6 @@ protected:
 		bool CalcNextSteps(bool continues);
 
 	public:
-
-		static bool IsActiveMove(SMovement*pMv)					{ return pMv && pMv->IsActiveMove(); }
 
 		bool IsActiveWait() const								{ return _state == StateReadyWait || _state == StateWait; }	// Ready from wait or waiting
 		bool IsActiveMove() const								{ return IsReadyForMove() || IsProcessingMove(); }			// Ready from move or moving

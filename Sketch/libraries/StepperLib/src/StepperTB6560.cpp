@@ -24,7 +24,6 @@
 
 CStepperTB6560::CStepperTB6560()
 {
-	InitMemVar();
 }
 
 ////////////////////////////////////////////////////////
@@ -37,6 +36,8 @@ void CStepperTB6560::InitMemVar()
 
 void CStepperTB6560::Init()
 {
+	InitMemVar();
+
 	CHAL::pinMode(TB6560_X_STEP_PIN, OUTPUT);
 	CHAL::pinMode(TB6560_X_DIR_PIN, OUTPUT);
 	CHAL::pinMode(TB6560_X_ENABLE_PIN, OUTPUT);
@@ -73,7 +74,6 @@ void CStepperTB6560::Init()
 
 #pragma warning( default : 4127 )
 
-	InitMemVar();
 	super::Init();
 }
 

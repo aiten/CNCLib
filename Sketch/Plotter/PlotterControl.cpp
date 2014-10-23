@@ -82,7 +82,7 @@ void CPlotter::PenUp()
 		CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penUp.max,X_AXIS, CHPGLParser::_state.penUp.acc, CHPGLParser::_state.penUp.dec);
 		CStepper::GetInstance()->SetAccDec(Y_AXIS, CHPGLParser::_state.penUp.acc, CHPGLParser::_state.penUp.dec);
 
-CStepper::GetInstance()->SetAccDec(X_AXIS, 200, 150);
+		//CStepper::GetInstance()->SetAccDec(X_AXIS, 200, 400);
 
 	}
 }
@@ -104,6 +104,8 @@ void CPlotter::PenDown()
 #endif
 		CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penDown.max,X_AXIS, CHPGLParser::_state.penDown.acc, CHPGLParser::_state.penDown.dec);
 		CStepper::GetInstance()->SetAccDec(Y_AXIS, CHPGLParser::_state.penDown.acc, CHPGLParser::_state.penDown.dec);
+
+CStepper::GetInstance()->SetAccDec(X_AXIS, 200, 200);
 	}
 }
 

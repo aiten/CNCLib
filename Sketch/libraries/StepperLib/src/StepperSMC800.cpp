@@ -68,7 +68,6 @@ static const unsigned char stepperadd[SMC800_NUM_AXIS] PROGMEM = { StepperX, Ste
 
 CStepperSMC800::CStepperSMC800()
 {
-	InitMemVar();
 }
 
 ////////////////////////////////////////////////////////
@@ -114,6 +113,8 @@ void CStepperSMC800::InitMemVar()
 
 void CStepperSMC800::Init()
 {
+	InitMemVar();
+
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 
 	DDRL = 0xff;
@@ -139,7 +140,6 @@ void CStepperSMC800::Init()
 	CHAL::pinMode(SMC800_REFININ, INPUT_PULLUP);
 
 	super::Init();
-	InitMemVar();
 }
 
 ////////////////////////////////////////////////////////

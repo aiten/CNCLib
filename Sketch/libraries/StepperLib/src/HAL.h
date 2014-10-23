@@ -39,16 +39,22 @@
 
 typedef uint32_t pin_t;
 
-#define ALWAYSINLINE	__attribute__((__always_inline__)) 
-#define ALWAYSINLINE_SAM __attribute__((__always_inline__)) 
+#define ALWAYSINLINE		__attribute__((__always_inline__)) 
+#define ALWAYSINLINE_SAM	__attribute__((__always_inline__)) 
 #define ALWAYSINLINE_AVR
+#define NEVER_INLINE		__attribute__((__noinline__))
+#define NEVER_INLINE_AVR	__attribute__((__noinline__))
+#define NEVER_INLINE_SAM
 
 
 #elif defined(__AVR_ARCH__)
 
-#define ALWAYSINLINE __attribute__((__always_inline__)) 
-#define ALWAYSINLINE_AVR __attribute__((__always_inline__)) 
+#define ALWAYSINLINE		__attribute__((__always_inline__)) 
+#define ALWAYSINLINE_AVR	__attribute__((__always_inline__)) 
 #define ALWAYSINLINE_SAM
+#define NEVER_INLINE		__attribute__((__noinline__))
+#define NEVER_INLINE_AVR	__attribute__((__noinline__))
+#define NEVER_INLINE_SAM
 
 #define irqflags_t unsigned char
 typedef uint8_t pin_t;
@@ -57,6 +63,9 @@ typedef uint8_t pin_t;
 
 #define ALWAYSINLINE
 #define ALWAYSINLINE_AVR
+#define NEVER_INLINE
+#define NEVER_INLINE_AVR
+#define NEVER_INLINE_SAM
 
 #define irqflags_t unsigned char
 typedef uint8_t pin_t;

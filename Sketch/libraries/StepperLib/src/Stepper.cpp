@@ -30,7 +30,6 @@
 
 CStepper::CStepper()
 {
-	InitMemVar();
 }
 
 ////////////////////////////////////////////////////////
@@ -121,9 +120,9 @@ void CStepper::Init()
 
 void CStepper::AddEvent(StepperEvent event, void* eventparam, SEvent& oldevent)
 {
-	oldevent = _pod._event;
-	_pod._event._event = event;
-	_pod._event._eventParam = eventparam;
+	oldevent = _event;
+	_event._event = event;
+	_event._eventParam = eventparam;
 }
 
 ////////////////////////////////////////////////////////
@@ -295,7 +294,7 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 {
 	register axis_t i;
 
-	//memset(this, 0, sizeof(SMovement));	==> do not init => set all members
+	// memset(this, 0, sizeof(SMovement)); => set al memvars!!!
 	
 	_pStepper = pStepper;
 	_pod._move._timerMax = timerMax;
@@ -313,12 +312,13 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 
 	for (i = 0; i < NUM_AXIS; i++)
 	{
-		if (dist[i])
+		mdist_t d = dist[i];
+		if (d)
 		{
-			unsigned long axistimer = MulDivU32(_pod._move._timerMax, _steps, dist[i]);
+			unsigned long axistimer = MulDivU32(_pod._move._timerMax, _steps, d);
 			if (axistimer < (unsigned long)pStepper->_pod._timerMax[i])
 			{
-				timerMax = (timer_t)MulDivU32(pStepper->_pod._timerMax[i], dist[i], _steps);
+				timerMax = (timer_t)MulDivU32(pStepper->_pod._timerMax[i], d, _steps);
 				_pod._move._timerMax = max(timerMax, _pod._move._timerMax);
 			}
 		}
@@ -326,25 +326,19 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 
 	// and acc/dec values
 
-	for (i = 0; i < NUM_AXIS; i++)
-	{
-		if (dist[i] == _steps)
-		{
-			_pod._move._timerAcc = pStepper->_pod._timerAcc[i];
-			_pod._move._timerDec = pStepper->_pod._timerDec[i];
-			break;
-		}
-	}
+	_pod._move._timerAcc = 0;
+	_pod._move._timerDec = 0;
 
 	for (i = 0; i < NUM_AXIS; i++)
 	{
-		if (dist[i]  && dist[i] != _steps)
+		mdist_t d = dist[i];
+		if (d)
 		{
-			timer_t accdec = MulDivU32(pStepper->_pod._timerAcc[i], dist[i], _steps);
+			timer_t accdec = MulDivU32(pStepper->_pod._timerAcc[i], d, _steps);
 			if (accdec > _pod._move._timerAcc)
 				_pod._move._timerAcc = accdec;
 
-			accdec = MulDivU32(pStepper->_pod._timerDec[i], dist[i], _steps);
+			accdec = MulDivU32(pStepper->_pod._timerDec[i], d, _steps);
 			if (accdec > _pod._move._timerDec)
 				_pod._move._timerDec = accdec;
 		}
@@ -447,7 +441,7 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 
 	_pod._move._timerJunctionToPrev = (timer_t)-1;	// force optimization
 
-	bool prevIsMove = IsActiveMove(mvPrev);
+	bool prevIsMove = mvPrev && mvPrev->IsActiveMove();
 	if (prevIsMove)
 	{
 		CalcMaxJunktionSpeed(mvPrev);
@@ -761,7 +755,7 @@ void CStepper::SMovement::CalcMaxJunktionSpeed(SMovement*mvPrev)
 
 #ifdef _MSC_VER
 	assert(IsActiveMove());
-	assert(IsActiveMove(mvPrev));
+	assert(mvPrev==NULL || mvPrev->IsActiveMove());
 #endif
 
 	// .1 => prev

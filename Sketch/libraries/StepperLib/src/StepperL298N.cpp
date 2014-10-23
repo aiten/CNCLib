@@ -36,7 +36,6 @@ static const unsigned char _L298Nfullstep2Pin[4] PROGMEM = { 3, 2, 0, 1 };
  
  CStepperL298N::CStepperL298N()
 {
-	InitMemVar();
 }
 
 ////////////////////////////////////////////////////////
@@ -81,6 +80,8 @@ pin_t CStepperL298N::_pinRef[NUM_AXIS*2] =
 
 void CStepperL298N::Init(void)
 {
+	InitMemVar();
+
 	register unsigned char i;
 
 	for (i = 0; i < NUM_AXIS; i++)
