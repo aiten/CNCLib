@@ -47,7 +47,7 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetLimitMax(2, 8000);   // 100*8
 
 	CStepper::GetInstance()->SetJerkSpeed(0, 1000);  // 500 * 8?
-	CStepper::GetInstance()->SetJerkSpeed(1, 1000);
+	CStepper::GetInstance()->SetJerkSpeed(1, 2000);
 	CStepper::GetInstance()->SetJerkSpeed(2, 1000);
 
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penUp.max, CHPGLParser::_state.penUp.acc, CHPGLParser::_state.penUp.dec);
@@ -62,7 +62,15 @@ void CMyControl::Init()
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true),true);  
 	CStepper::GetInstance()->UseReference(EMERGENCY_ENDSTOP,true);    // not stop
 #endif    
+
+	static CStepper::SEvent old;
+	CStepper::GetInstance()->AddEvent([](CStepper*stepper, void* param, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) 
+        { 
+			return old.Call(stepper, eventtype, addinfo);
+		}, this, old);
 }
+
+////////////////////////////////////////////////////////////
 
 void CMyControl::Initialized()
 {

@@ -29,6 +29,7 @@
 #include <io.h>
 #include <windows.h>
 #include "trace.h"
+#include <assert.h>
 
 #define OUTPUT 1
 #define INPUT_PULLUP 1

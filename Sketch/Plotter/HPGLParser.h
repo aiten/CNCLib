@@ -87,12 +87,13 @@ public:
 			HPOffsetY = 0;
 
 			penDown.max = 8000;
-			penDown.acc = 400;
-			penDown.dec = 450;
+//			penDown.max = 4000;
+			penDown.acc = 450;
+			penDown.dec = 500;
 
 			penUp.max = 25000;
-			penUp.acc = 400;
-			penUp.dec = 450;
+			penUp.acc = 600;
+			penUp.dec = 650;
 
 			movePenUp.max = 4000;
 			movePenUp.acc = 400;

@@ -38,8 +38,6 @@ CControl::CControl()
 {
 	_bufferidx = 0;
 	_pause = false;
-
-	_oldStepperEvent = NULL;
 }
 
 ////////////////////////////////////////////////////////////
@@ -47,7 +45,7 @@ CControl::CControl()
 void CControl::Init()
 {
 	CStepper::GetInstance()->Init();
-	CStepper::GetInstance()->AddEvent(MyStepperEvent, this, _oldStepperEvent, _oldStepperEventParam);
+	CStepper::GetInstance()->AddEvent(MyStepperEvent, this, _oldStepperEvent);
 
 #ifndef _NO_LCD
 	
@@ -413,5 +411,5 @@ bool CControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEve
 			break;
 	}
 #endif
-	return _oldStepperEvent ? _oldStepperEvent(stepper, _oldStepperEventParam, eventtype, addinfo) : true;
+	return _oldStepperEvent.Call(stepper, eventtype, addinfo);
 }

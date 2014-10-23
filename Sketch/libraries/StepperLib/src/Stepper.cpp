@@ -119,12 +119,11 @@ void CStepper::Init()
 
 ////////////////////////////////////////////////////////
 
-void CStepper::AddEvent(StepperEvent event, void* eventparam, StepperEvent& oldevent, void*& oldeventparam)
+void CStepper::AddEvent(StepperEvent event, void* eventparam, SEvent& oldevent)
 {
 	oldevent = _pod._event;
-	oldeventparam = oldeventparam;
-	_pod._event = event;
-	_pod._eventparam = eventparam;
+	_pod._event._event = event;
+	_pod._event._eventParam = eventparam;
 }
 
 ////////////////////////////////////////////////////////
@@ -240,10 +239,10 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 ////////////////////////////////////////////////////////
 
-void CStepper::QueueWait(const mdist_t dist, timer_t timerMax)
+void CStepper::QueueWait(const mdist_t dist, timer_t timerMax, SMovementParam* param)
 {
 	WaitCanQueue();
-	_movements._queue.NextTail().InitWait(this, dist, timerMax);
+	_movements._queue.NextTail().InitWait(this, dist, timerMax, param);
 	_movements._queue.Enqueue();
 
 	StartTimer();
@@ -297,9 +296,9 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 	register axis_t i;
 
 	//memset(this, 0, sizeof(SMovement));	==> do not init => set all members
-
+	
 	_pStepper = pStepper;
-	_timerMax = timerMax;
+	_pod._move._timerMax = timerMax;
 
 	_backlash = false;
 
@@ -316,18 +315,44 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 	{
 		if (dist[i])
 		{
-			unsigned long axistimer = MulDivU32(_timerMax, _steps, dist[i]);
+			unsigned long axistimer = MulDivU32(_pod._move._timerMax, _steps, dist[i]);
 			if (axistimer < (unsigned long)pStepper->_pod._timerMax[i])
 			{
 				timerMax = (timer_t)MulDivU32(pStepper->_pod._timerMax[i], dist[i], _steps);
-				_timerMax = max(timerMax, _timerMax);
+				_pod._move._timerMax = max(timerMax, _pod._move._timerMax);
 			}
+		}
+	}
+
+	// and acc/dec values
+
+	for (i = 0; i < NUM_AXIS; i++)
+	{
+		if (dist[i] == _steps)
+		{
+			_pod._move._timerAcc = pStepper->_pod._timerAcc[i];
+			_pod._move._timerDec = pStepper->_pod._timerDec[i];
+			break;
+		}
+	}
+
+	for (i = 0; i < NUM_AXIS; i++)
+	{
+		if (dist[i]  && dist[i] != _steps)
+		{
+			timer_t accdec = MulDivU32(pStepper->_pod._timerAcc[i], dist[i], _steps);
+			if (accdec > _pod._move._timerAcc)
+				_pod._move._timerAcc = accdec;
+
+			accdec = MulDivU32(pStepper->_pod._timerDec[i], dist[i], _steps);
+			if (accdec > _pod._move._timerDec)
+				_pod._move._timerDec = accdec;
 		}
 	}
 
 	// calculate StepMultiplier and adjust distance
 
-	unsigned char maxMultiplier = CStepper::GetStepMultiplier(_timerMax);
+	unsigned char maxMultiplier = CStepper::GetStepMultiplier(_pod._move._timerMax);
 	_lastStepDirCount = 0;
 	_dirCount = 0;
 
@@ -408,60 +433,55 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 		_lastStepDirCount = _dirCount;
 	}
 
-#pragma message ("TODO: get acc/dec axis")
+	_pod._move._ramp._timerStart = GetUpTimerAcc();
+	_pod._move._ramp._timerStop = GetUpTimerDec();
+	_pod._move._timerRun = _pod._move._timerMax;
 
-	_timerAcc = pStepper->_pod._timerAcc[0];
-	_timerDec = pStepper->_pod._timerDec[0];
+	if (_pod._move._timerRun > _pod._move._ramp._timerStart)
+		_pod._move._ramp._timerStart = _pod._move._timerRun;
 
-	_ramp._timerStart = GetUpTimerAcc();
-	_ramp._timerStop = GetUpTimerDec();
-	_timerRun = _timerMax;
-
-	if (_timerRun > _ramp._timerStart)
-		_ramp._timerStart = _timerRun;
-
-	if (_timerRun > _ramp._timerStop)
-		_ramp._timerStop = _timerRun;
+	if (_pod._move._timerRun > _pod._move._ramp._timerStop)
+		_pod._move._ramp._timerStop = _pod._move._timerRun;
 
 	_state = StateReadyMove;
 
-	_timerJunctionToPrev = (timer_t)-1;	// force optimization
+	_pod._move._timerJunctionToPrev = (timer_t)-1;	// force optimization
 
-	bool prevIsMove = mvPrev && mvPrev->IsActiveMove();
+	bool prevIsMove = IsActiveMove(mvPrev);
 	if (prevIsMove)
 	{
 		CalcMaxJunktionSpeed(mvPrev);
-		_timerEndPossible = (timer_t)-1;
+		_pod._move._timerEndPossible = (timer_t)-1;
 	}
 	else
 	{
-//		_timerMaxJunction = (timer_t)-1;
-		_timerEndPossible = _pStepper->GetTimer(_steps, GetUpTimerAcc());
+		_pod._move._timerEndPossible = _pStepper->GetTimer(_steps, GetUpTimerAcc());
 	}
 
-	_ramp.RampUp(this, _timerRun, (timer_t)-1);
-	_ramp.RampDown(this, (timer_t)-1);
-	_ramp.RampRun(this);
-
+	_pod._move._ramp.RampUp(this, _pod._move._timerRun, (timer_t)-1);
+	_pod._move._ramp.RampDown(this, (timer_t)-1);
+	_pod._move._ramp.RampRun(this);
 
 	//pStepper->Dump(DumpAll);
 }
 
 ////////////////////////////////////////////////////////
 
-void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t timer)
+void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, SMovementParam* param)
 {
 	//this is no POD because of methode's => *this = SMovement();		
 	memset(this, 0, sizeof(SMovement));	// init with 0
 
 	_pStepper = pStepper;
 	_steps = steps;
-	_ramp._timerStart = timer;
-	_timerEndPossible = (timer_t) -1;		
-//	_timerMaxJunction = (timer_t) -1;
-	_timerJunctionToPrev = (timer_t)-1;
+	_pod._wait._timer = timer;
+//	_timerEndPossible = (timer_t) -1;		
+//	_pod._move._timerJunctionToPrev = (timer_t)-1;
 
 	_state = StateReadyWait;
+
+	if (param!=NULL)
+		_pod._wait._param = *param;
 }
 
 ////////////////////////////////////////////////////////
@@ -626,11 +646,15 @@ void CStepper::SMovement::SRamp::RampRun(SMovement* pMovement)
 
 bool CStepper::SMovement::Ramp(SMovement*mvNext)
 {
+#ifdef _MSC_VER
+	assert(IsActiveMove());
+	assert(mvNext == NULL || mvNext->IsActiveMove());
+#endif
 	if (!IsDownMove())
 	{
-		SRamp tmpramp = _ramp;
-		tmpramp.RampUp(this,_timerRun, _timerJunctionToPrev);
-		tmpramp.RampDown(this,mvNext ? mvNext->_timerJunctionToPrev : GetDownTimerDec());
+		SRamp tmpramp = _pod._move._ramp;
+		tmpramp.RampUp(this, _pod._move._timerRun, _pod._move._timerJunctionToPrev);
+		tmpramp.RampDown(this,mvNext ? mvNext->_pod._move._timerJunctionToPrev : GetDownTimerDec());
 		tmpramp.RampRun(this);
 
 		CCriticalRegion crit;
@@ -639,7 +663,7 @@ bool CStepper::SMovement::Ramp(SMovement*mvNext)
 			(IsUpMove()  && _pStepper->_movementstate._n <  tmpramp._upSteps) ||		// in acc
 		    (IsRunMove() && _pStepper->_movementstate._n <  tmpramp._downStartAt))		// in run
 		{
-			_ramp = tmpramp;
+			_pod._move._ramp = tmpramp;
 			return true;
 		}
 	}
@@ -657,33 +681,36 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 	{
 		// first "now" executing move
 		if (IsRunOrUpMove())
-			_timerEndPossible = _ramp._timerRun;
+			_pod._move._timerEndPossible = _pod._move._ramp._timerRun;
 		else
-			_timerEndPossible = _ramp._timerStop;
+			_pod._move._timerEndPossible = _pod._move._ramp._timerStop;
 	}
 	else
 	{
-		_timerEndPossible = _pStepper->GetTimerAccelerating(_steps, mvPrev->IsProcessingMove() ? mvPrev->_ramp._timerStop : mvPrev->_timerEndPossible, GetUpTimerAcc());
+		_pod._move._timerEndPossible = _pStepper->GetTimerAccelerating(_steps, mvPrev->IsActiveMove() ? (mvPrev->IsProcessingMove() ? mvPrev->_pod._move._ramp._timerStop : mvPrev->_pod._move._timerEndPossible) : -1, GetUpTimerAcc());
 
-		if (_timerEndPossible > _timerMax)
+		if (_pod._move._timerEndPossible > _pod._move._timerMax)
 		{
 			// not faster as required
-			_timerRun = max(_timerEndPossible, _timerRun);
+			_pod._move._timerRun = max(_pod._move._timerEndPossible, _pod._move._timerRun);
 		}
 	}
 
 	if (mvNext != NULL)
 	{
+#ifdef _MSC_VER
+		assert(mvNext->IsActiveMove());
+#endif
 		// next element available, calculate junction speed
-		mvNext->_timerJunctionToPrev = max(mvNext->_timerMaxJunction, max(_timerEndPossible, mvNext->_timerJunctionToPrev));
-		_timerEndPossible = mvNext->_timerJunctionToPrev;
+		mvNext->_pod._move._timerJunctionToPrev = max(mvNext->_pod._move._timerMaxJunction, max(_pod._move._timerEndPossible, mvNext->_pod._move._timerJunctionToPrev));
+		_pod._move._timerEndPossible = mvNext->_pod._move._timerJunctionToPrev;
 	}
 	
 	if (!Ramp(mvNext))
 	{
-		// modify of ramp failed => do not modify _timerEndPossible
-		_timerEndPossible = _ramp._timerStop;
-		if (mvNext != NULL) mvNext->_timerJunctionToPrev = _ramp._timerStop;
+		// modify of ramp failed => do not modify _pod._move._timerEndPossible
+		_pod._move._timerEndPossible = _pod._move._ramp._timerStop;
+		if (mvNext != NULL) mvNext->_pod._move._timerJunctionToPrev = _pod._move._ramp._timerStop;
 	}
 }
 
@@ -709,18 +736,18 @@ bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvN
 
 	if (mvPrev != NULL)
 	{
-		_timerRun = _timerMax;
+		_pod._move._timerRun = _pod._move._timerMax;
 
 		if (!mvPrev->IsActiveMove())
 			return true;				// waitstate => no optimize, break here
 
 		// prev element available, calculate junction speed
-		timer_t junctiontoPrev = max(_timerMaxJunction, _pStepper->_movements._timerStartPossible);
-		if (junctiontoPrev == _timerJunctionToPrev)
+		timer_t junctiontoPrev = max(_pod._move._timerMaxJunction, _pStepper->_movements._timerStartPossible);
+		if (junctiontoPrev == _pod._move._timerJunctionToPrev)
 			return true;					// nothing changed (prev movementes do not change)
 
-		_timerJunctionToPrev = junctiontoPrev;
-		_pStepper->_movements._timerStartPossible = _timerJunctionToPrev;
+		_pod._move._timerJunctionToPrev = junctiontoPrev;
+		_pStepper->_movements._timerStartPossible = _pod._move._timerJunctionToPrev;
 	}
 
 	return false;
@@ -731,11 +758,17 @@ bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvN
 
 void CStepper::SMovement::CalcMaxJunktionSpeed(SMovement*mvPrev)
 {
+
+#ifdef _MSC_VER
+	assert(IsActiveMove());
+	assert(IsActiveMove(mvPrev));
+#endif
+
 	// .1 => prev
 	// .2 => next(this)
 
 	// default => fastest move (no jerk)
-	_timerMaxJunction = min(mvPrev->_timerMax, _timerMax);
+	_pod._move._timerMaxJunction = min(mvPrev->_pod._move._timerMax, _pod._move._timerMax);
 	timer_t timerMaxJunction;
 	timer_t timerMaxJunctionAcc = mvPrev->GetUpTimerAcc();
 
@@ -748,12 +781,12 @@ void CStepper::SMovement::CalcMaxJunktionSpeed(SMovement*mvPrev)
 	{
 		if (s1 == mvPrev->GetDistance(mainaxis) && s2 == GetDistance(mainaxis) && mvPrev->GetDirectionUp(mainaxis) == GetDirectionUp(mainaxis))
 		{
-			_timerMaxJunction = (long(mvPrev->_timerMax) + long(_timerMax)) / 2;
+			_pod._move._timerMaxJunction = (long(mvPrev->_pod._move._timerMax) + long(_pod._move._timerMax)) / 2;
 			break;
 		}
 	}
 
-	timer_t timerMaxJunction_ = _timerMaxJunction;
+	timer_t timerMaxJunction_ = _pod._move._timerMaxJunction;
 	/*
 		printf("H: s1=%i s2=%i\n", (int)s1, (int)s2);
 		for (int ii = 0; ii < NUM_AXIS; ii++)
@@ -764,7 +797,7 @@ void CStepper::SMovement::CalcMaxJunktionSpeed(SMovement*mvPrev)
 
 		if (mainaxis >= NUM_AXIS)
 		{
-		//_timerMaxJunction = (long(mvPrev->_timerMax) + long(_timerMax)) / 2;
+		//_pod._move._timerMaxJunction = (long(mvPrev->_timerMax) + long(_timerMax)) / 2;
 		//return;
 		}
 		*/
@@ -775,8 +808,8 @@ void CStepper::SMovement::CalcMaxJunktionSpeed(SMovement*mvPrev)
 			mdist_t d1 = mvPrev->GetDistance(i);
 			mdist_t d2 = GetDistance(i);
 
-			steprate_t v1 = _pStepper->TimerToSpeed(mvPrev->_timerMax);
-			steprate_t v2 = _pStepper->TimerToSpeed(_timerMax);
+			steprate_t v1 = _pStepper->TimerToSpeed(mvPrev->_pod._move._timerMax);
+			steprate_t v2 = _pStepper->TimerToSpeed(_pod._move._timerMax);
 
 			if (d1 != s1) v1 = steprate_t(RoundMulDivUInt(v1, d1, s1));
 			if (d2 != s2) v2 = steprate_t(RoundMulDivUInt(v2, d2, s2));
@@ -793,7 +826,7 @@ void CStepper::SMovement::CalcMaxJunktionSpeed(SMovement*mvPrev)
 				{
 					// reduce total speed by ratio maxJerk <=> current jerk
 					timerMaxJunction = _pStepper->SpeedToTimer(RoundMulDivUInt(_pStepper->TimerToSpeed(timerMaxJunction_), _pStepper->_pod._maxJerkSpeed[i], steprate_t(vdiff)));
-					_timerMaxJunction = max(_timerMaxJunction, min(timerMaxJunction, timerMaxJunctionAcc));
+					_pod._move._timerMaxJunction = max(_pod._move._timerMaxJunction, min(timerMaxJunction, timerMaxJunctionAcc));
 				}
 			}
 			else
@@ -803,7 +836,7 @@ void CStepper::SMovement::CalcMaxJunktionSpeed(SMovement*mvPrev)
 
 				if (mainaxis >= NUM_AXIS)
 				{
-					_timerMaxJunction = timerMaxJunctionAcc;	//Stop and go
+					_pod._move._timerMaxJunction = timerMaxJunctionAcc;	//Stop and go
 				}
 				else
 				{
@@ -811,7 +844,7 @@ void CStepper::SMovement::CalcMaxJunktionSpeed(SMovement*mvPrev)
 					{
 						// reduce total speed by ratio maxJerk <=> current jerk
 						timerMaxJunction = _pStepper->SpeedToTimer(RoundMulDivUInt(_pStepper->TimerToSpeed(timerMaxJunction_), _pStepper->_pod._maxJerkSpeed[i], steprate_t(vdiff)));
-						_timerMaxJunction = max(_timerMaxJunction, min(timerMaxJunction, timerMaxJunctionAcc));
+						_pod._move._timerMaxJunction = max(_pod._move._timerMaxJunction, min(timerMaxJunction, timerMaxJunctionAcc));
 					}
 				}
 			}
@@ -1376,7 +1409,17 @@ CStepper* CStepper::SMovement::_pStepper;
 void CStepper::SMovementState::Init(SMovement* pMovement)
 {
 	mdist_t steps = pMovement->_steps;
-	_count = pMovement->_state == SMovement::StateReadyMove ? pMovement->GetMaxStepMultiplier() : 1;
+
+	if (pMovement->_state == SMovement::StateReadyMove)
+	{
+		_count = pMovement->GetMaxStepMultiplier();
+		_timer = pMovement->_pod._move._ramp._timerStart;
+	}
+	else
+	{
+		_count = 1;
+		_timer = pMovement->_pod._wait._timer;
+	}
 	
 	steps = (steps / _count) >> 1;
 	for (axis_t i = 0; i < NUM_AXIS; i++)
@@ -1384,7 +1427,7 @@ void CStepper::SMovementState::Init(SMovement* pMovement)
 	_n = 0;
 	_rest = 0;
 	_sumTimer = 0;
-	_timer = pMovement->_ramp._timerStart;
+	_timer = pMovement->_pod._move._ramp._timerStart;
 
 	CStepper*pStepper = pMovement->_pStepper; 
 
@@ -1525,12 +1568,12 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 		if (_state == StateReadyMove)
 		{
-			if (pState->_timer == _ramp._timerRun)
+			if (pState->_timer == _pod._move._ramp._timerRun)
 				_state = StateRun;
 			else
 			{
-				_state = pState->_timer > _ramp._timerRun ? StateUpAcc : StateUpDec;
-				if (pState->_count > 1 && _ramp._nUpOffset == 0)
+				_state = pState->_timer > _pod._move._ramp._timerRun ? StateUpAcc : StateUpDec;
+				if (pState->_count > 1 && _pod._move._ramp._nUpOffset == 0)
 				{
 					static const unsigned short corrtab[][2] PROGMEM =
 					{
@@ -1554,10 +1597,10 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 		{
 			if (_state <= StateRun)
 			{
-				if (n >= _ramp._downStartAt)
+				if (n >= _pod._move._ramp._downStartAt)
 				{
 					pState->_rest = 0;
-					_state = _ramp._timerStop > pState->_timer ? StateDownDec : StateDownAcc;
+					_state = _pod._move._ramp._timerStop > pState->_timer ? StateDownDec : StateDownAcc;
 				}
 			}
 
@@ -1570,7 +1613,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 					// In = ((2*In-1)+Rn-1) / (4*N + 1)		=> quot
 					// Rn = ((2*In-1)+Rn-1) % (4*N + 1)		=> remainer of division
 					// Cn = Cn-1 - In
-					if (pState->CalcTimerAcc(_ramp._timerRun, n + _ramp._nUpOffset, count))
+					if (pState->CalcTimerAcc(_pod._move._ramp._timerRun, n + _pod._move._ramp._nUpOffset, count))
 					{
 						_state = StateRun;
 					}
@@ -1578,7 +1621,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 				case StateUpDec:
 
-					if (pState->CalcTimerDec(_ramp._timerRun, _ramp._nUpOffset - n, count))
+					if (pState->CalcTimerDec(_pod._move._ramp._timerRun, _pod._move._ramp._nUpOffset - n, count))
 					{
 						_state = StateRun;
 					}
@@ -1591,12 +1634,12 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 					// In = ((2*In-1)+Rn-1) / (4*N - 1)		=> quot
 					// Rn = ((2*In-1)+Rn-1) % (4*N - 1)		=> remainer of division
 					// Cn = Cn-1 - In
-					pState->CalcTimerDec(_ramp._timerStop, _steps - n + _ramp._nDownOffset, count);
+					pState->CalcTimerDec(_pod._move._ramp._timerStop, _steps - n + _pod._move._ramp._nDownOffset, count);
 					break;
 
 				case StateDownAcc:
 
-					pState->CalcTimerAcc(_ramp._timerStop, _ramp._nDownOffset - (_steps - n - 1), count);
+					pState->CalcTimerAcc(_pod._move._ramp._timerStop, _pod._move._ramp._nDownOffset - (_steps - n - 1), count);
 					break;
 
 			}
@@ -1881,9 +1924,9 @@ bool  CStepper::IsAnyReference()
 
 ////////////////////////////////////////////////////////
 
-void CStepper::Wait(unsigned int sec100)
+void CStepper::Wait(unsigned int sec100, SMovementParam* param)
 {
-	QueueWait(sec100, WAITTIMER1VALUE);
+	QueueWait(sec100, WAITTIMER1VALUE, param);
 }
 
 ////////////////////////////////////////////////////////
@@ -2124,24 +2167,24 @@ void CStepper::SMovement::Dump(unsigned char idx, unsigned char options)
 	DumpType<DirCount_t>(F("DirCount"), _dirCount, false);
 	DumpType<DirCount_t>(F("LastDirCount"), _lastStepDirCount, false);
 	DumpArray<mdist_t, NUM_AXIS>(F("Dist"), _distance_, false);
-	DumpType<mdist_t>(F("UpSteps"), _ramp._upSteps, false);
-	DumpType<mdist_t>(F("DownSteps"), _ramp._downSteps, false);
-	DumpType<mdist_t>(F("DownStartAt"), _ramp._downStartAt, false);
-	DumpType<mdist_t>(F("UpOffset"), _ramp._nUpOffset, false);
-	DumpType<mdist_t>(F("DownOffset"), _ramp._nDownOffset, false);
+	DumpType<mdist_t>(F("UpSteps"), _pod._move._ramp._upSteps, false);
+	DumpType<mdist_t>(F("DownSteps"), _pod._move._ramp._downSteps, false);
+	DumpType<mdist_t>(F("DownStartAt"), _pod._move._ramp._downStartAt, false);
+	DumpType<mdist_t>(F("UpOffset"), _pod._move._ramp._nUpOffset, false);
+	DumpType<mdist_t>(F("DownOffset"), _pod._move._ramp._nDownOffset, false);
 
-	DumpType<timer_t>(F("tMax"), _timerMax, false);
-	DumpType<timer_t>(F("tRun"), _ramp._timerRun, false);
-	DumpType<timer_t>(F("tStart"), _ramp._timerStart, false);
-	DumpType<timer_t>(F("tStop"), _ramp._timerStop, false);
-	DumpType<timer_t>(F("tEndPossible"), _timerEndPossible, false);
-	DumpType<timer_t>(F("tJunctionToPrev"), _timerJunctionToPrev, false);
-	DumpType<timer_t>(F("tMaxJunction"), _timerMaxJunction, false);
+	DumpType<timer_t>(F("tMax"), _pod._move._timerMax, false);
+	DumpType<timer_t>(F("tRun"), _pod._move._ramp._timerRun, false);
+	DumpType<timer_t>(F("tStart"), _pod._move._ramp._timerStart, false);
+	DumpType<timer_t>(F("tStop"), _pod._move._ramp._timerStop, false);
+	DumpType<timer_t>(F("tEndPossible"), _pod._move._timerEndPossible, false);
+	DumpType<timer_t>(F("tJunctionToPrev"), _pod._move._timerJunctionToPrev, false);
+	DumpType<timer_t>(F("tMaxJunction"), _pod._move._timerMaxJunction, false);
 
 	if (options&DumpDetails)
 	{
-		DumpType<timer_t>(F("TimerAcc"), _timerAcc, false);
-		DumpType<timer_t>(F("TimerDec"), _timerDec, false);
+		DumpType<timer_t>(F("TimerAcc"), _pod._move._timerAcc, false);
+		DumpType<timer_t>(F("TimerDec"), _pod._move._timerDec, false);
 	}
 
 	StepperSerial.println();

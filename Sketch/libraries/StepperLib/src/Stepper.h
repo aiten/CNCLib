@@ -86,6 +86,21 @@ public:
 
 	typedef bool(*StepperEvent)(CStepper*stepper, void* param, EnumAsByte(EStepperEvent) eventtype, void* addinfo);
 	typedef bool(*TestContinueMove)(void* param);
+	typedef void(*MovementEvent)(void* param);
+
+	struct SMovementParam
+	{
+		MovementEvent _event;
+		void*		  _eventParam;
+	};
+
+	struct SEvent 
+	{
+		SEvent()																					{ _event = NULL;  _eventParam = NULL; }
+		StepperEvent  _event;
+		void*		  _eventParam;
+		bool Call(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)	{ if (_event) return _event(stepper, _eventParam, eventtype, addinfo); return true; }
+	};
 
 	/////////////////////
 
@@ -163,7 +178,7 @@ public:
 
 	void MoveAbsEx(steprate_t vMax, unsigned short axis, udist_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
 	void MoveRelEx(steprate_t vMax, unsigned short axis, sdist_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
-	void Wait(unsigned int sec100);
+	void Wait(unsigned int sec100, SMovementParam* param=NULL);
 
 	bool MoveUntil(TestContinueMove testcontinue, void*param);
 
@@ -193,14 +208,14 @@ public:
 #endif
 	unsigned long IdleTime() const								{ return _pod._timerStartOrOnIdle; }
 
-	void AddEvent(StepperEvent event, void* eventparam, StepperEvent& oldevent, void*& oldeventparam);
+	void AddEvent(StepperEvent event, void* eventparam, SEvent&old );
 
 	////////////////////////////////////////////////////////
 
 private:
 
 	void QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], steprate_t vMax);
-	void QueueWait(const mdist_t dist, steprate_t vMax);
+	void QueueWait(const mdist_t dist, steprate_t vMax, SMovementParam* param);
 
 	void StartTimer();
 	void WaitCanQueue();
@@ -218,6 +233,8 @@ private:
 
 	void GoIdle();
 	void ContinueIdle();
+
+	void CallEvent(EnumAsByte(EStepperEvent) eventtype, void* addinfo)			{ _pod._event.Call(this, eventtype, addinfo); }
 
 protected:
 
@@ -254,8 +271,6 @@ protected:
 	steprate_t TimerToSpeed(timer_t timer) const;
 
 	static unsigned char GetStepMultiplier(timer_t timermax);
-
-	void CallEvent(EnumAsByte(EStepperEvent) eventtype, void* addinfo)			{ if (_pod._event) _pod._event(this, _pod._eventparam, eventtype, addinfo); }
 
 protected:
 
@@ -309,8 +324,7 @@ protected:
 
 		const __FlashStringHelper * _error;
 
-		StepperEvent	_event;										// event to function
-		void*			_eventparam;								// event to funktion-parameter
+		SEvent			_event;
 
 		unsigned char _timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
 
@@ -356,14 +370,12 @@ protected:
 		DirCount_t _dirCount;
 		DirCount_t _lastStepDirCount;
 
-		timer_t _timerMax;										// timer for max requested speed
-		timer_t _timerRun;										// copy of _ramp. => modify during rampcalc
-
-		timer_t _timerAcc;										// timer for calc of acceleration while "up" state - depend on axis
-		timer_t _timerDec;										// timer for calc of decelerating while "down" state - depend on axis
-
 		struct SRamp											// only modify in CCRiticalRegion
 		{
+			timer_t _timerStart;								// start ramp with speed (tinmerValue)
+			timer_t _timerRun;
+			timer_t _timerStop;									// stop  ramp with speed (timerValue)
+
 			mdist_t _upSteps;									// steps needed for accelerating from v0
 			mdist_t _downSteps;									// steps needed for decelerating to v0
 			mdist_t _downStartAt;								// index of step to start with deceleration
@@ -371,26 +383,42 @@ protected:
 			mdist_t _nUpOffset;									// offset of n rampe calculation(acc) 
 			mdist_t _nDownOffset;								// offset of n rampe calculation(dec)
 
-			timer_t _timerRun;
-			timer_t _timerStart;								// start ramp with speed (tinmerValue)
-			timer_t _timerStop;									// stop  ramp with speed (timerValue)
-
 			void RampUp(SMovement* pMovement, timer_t timerRun, timer_t timerJunction);
 			void RampDown(SMovement* pMovement, timer_t timerJunction);
 			void RampRun(SMovement* pMovement);
-		} _ramp;
+		};
 
-		timer_t _timerEndPossible;								// timer possible at end of last movement
-		timer_t _timerJunctionToPrev;							// used to calculate junction speed, stored in "next" step
-		timer_t _timerMaxJunction;								// max possible junction speed, stored in "next" step
+		union
+		{
+			struct SMove
+			{
+				timer_t _timerMax;										// timer for max requested speed
+				timer_t _timerRun;										// copy of _ramp. => modify during rampcalc
+
+				timer_t _timerEndPossible;								// timer possible at end of last movement
+				timer_t _timerJunctionToPrev;							// used to calculate junction speed, stored in "next" step
+				timer_t _timerMaxJunction;								// max possible junction speed, stored in "next" step
+
+				struct SRamp _ramp;										// only modify in CCRiticalRegion
+
+				timer_t _timerAcc;										// timer for calc of acceleration while "up" state - depend on axis
+				timer_t _timerDec;										// timer for calc of decelerating while "down" state - depend on axis
+			} _move;
+
+			struct SWait
+			{
+				timer_t _timer;
+				SMovementParam _param;
+			} _wait;
+		} _pod;
 
 		stepperstatic CStepper* _pStepper;						// give access to stepper (not static if multiinstance)  
 
-		timer_t GetUpTimerAcc()									{ return _timerAcc; }
-		timer_t GetUpTimerDec()									{ return _timerDec; }
+		timer_t GetUpTimerAcc()									{ return _pod._move._timerAcc; }
+		timer_t GetUpTimerDec()									{ return _pod._move._timerDec; }
 
-		timer_t GetDownTimerAcc()								{ return _timerAcc; }
-		timer_t GetDownTimerDec()								{ return _timerDec; }
+		timer_t GetDownTimerAcc()								{ return _pod._move._timerAcc; }
+		timer_t GetDownTimerDec()								{ return _pod._move._timerDec; }
 
 		timer_t GetUpTimer(bool acc)							{ return acc ? GetUpTimerAcc() : GetUpTimerDec(); }
 		timer_t GetDownTimer(bool acc)							{ return acc ? GetDownTimerAcc() : GetDownTimerDec(); }
@@ -415,6 +443,8 @@ protected:
 
 	public:
 
+		static bool IsActiveMove(SMovement*pMv)					{ return pMv && pMv->IsActiveMove(); }
+
 		bool IsActiveWait() const								{ return _state == StateReadyWait || _state == StateWait; }	// Ready from wait or waiting
 		bool IsActiveMove() const								{ return IsReadyForMove() || IsProcessingMove(); }			// Ready from move or moving
 		bool IsReadyForMove() const								{ return _state == StateReadyMove; }						// Ready for move but not started
@@ -427,7 +457,7 @@ protected:
 		bool IsFinished() const									{ return _state == StateDone; }								// Move finished 
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
-		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer);
+		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, SMovementParam* param);
 
 		void SetBacklash()										{ _backlash = true; }
 

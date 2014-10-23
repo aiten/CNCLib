@@ -117,8 +117,7 @@ private:
 	unsigned long	_lasttime;									// time last char received
 	unsigned long	_timeBlink;									// time to change blink state
 
-	CStepper::StepperEvent	_oldStepperEvent;
-	void*					_oldStepperEventParam;
+	CStepper::SEvent _oldStepperEvent;
 
 	bool			_pause;										// see gcode m01 & m02
 	bool			_printFromSDFile;
