@@ -30,6 +30,7 @@
 
 CStepper::CStepper()
 {
+	_num_axis = NUM_AXIS;
 }
 
 ////////////////////////////////////////////////////////
@@ -240,6 +241,9 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 void CStepper::QueueWait(const mdist_t dist, timer_t timerMax, SMovementParam* param)
 {
+#ifdef _MSC_VER
+	assert(dist>1);
+#endif
 	WaitCanQueue();
 	_movements._queue.NextTail().InitWait(this, dist, timerMax, param);
 	_movements._queue.Enqueue();
@@ -263,12 +267,12 @@ void CStepper::StartTimer()
 {
 	if (!_pod._timerRunning)
 	{
-		_pod._timerLastCheckEnable =
-			_pod._timerStartOrOnIdle = millis();
+		_pod._timerLastCheckEnable = _pod._timerStartOrOnIdle = millis();
+
 		for (axis_t i = 0; i<NUM_AXIS; i++)
 		{
 			_pod._timeEnable[i] = _pod._timeOutEnable[i];
-			if (GetEnableTimeout(i) == 0)					// enabletimeout == 0 => always enabled, otherwise done in CalcNextSteps
+			if (_pod._timeEnable[i] == 0 && GetEnable(i)!=CStepper::LevelMax)					// enabletimeout == 0 => always enabled, otherwise done in CalcNextSteps
 				SetEnable(i, CStepper::LevelMax, true);
 		}
 
@@ -882,15 +886,15 @@ void CStepper::OptimizeMovementQueue(bool /* force */)
 
 void CStepper::OnIdle(unsigned long idletime)
 {
-	CallEvent(OnIdleEvent, 0);
+	CallEvent(OnIdleEvent);
 	if (idletime > TIMEOUTSETIDLE)
 	{
-		for (unsigned char x = 0;x<NUM_AXIS;x++)
+		for (unsigned char x = 0; x < _num_axis; x++)
 		{
 			if (GetEnable(x) != _pod._idleLevel)
 			{
 				SetEnableAll(_pod._idleLevel);
-				CallEvent(OnDisableEvent, 0);
+				CallEvent(OnDisableEvent);
 			}
 		}
 	}
@@ -900,7 +904,7 @@ void CStepper::OnIdle(unsigned long idletime)
 
 void CStepper::OnStart()
 {
-	CallEvent(OnStartEvent, 0);
+	CallEvent(OnStartEvent);
 }
 
 ////////////////////////////////////////////////////////
@@ -1292,11 +1296,12 @@ void CStepper::FillStepBuffer()
 
 	// check if turn off stepper
 
-	unsigned char diff_sec = (unsigned char)((millis() - _pod._timerLastCheckEnable) / 1024);		// div 1024 is faster as 1000
+	unsigned long ms = millis();
+	unsigned char diff_sec = (unsigned char)((ms - _pod._timerLastCheckEnable) / 1024);		// div 1024 is faster as 1000
 		
 	if (diff_sec > 0)
 	{
-		_pod._timerLastCheckEnable = millis();
+		_pod._timerLastCheckEnable = ms;
 
 		for (axis_t i = 0;i<NUM_AXIS; i++)
 		{
@@ -1423,7 +1428,6 @@ void CStepper::SMovementState::Init(SMovement* pMovement)
 	_n = 0;
 	_rest = 0;
 	_sumTimer = 0;
-	_timer = pMovement->_pod._move._ramp._timerStart;
 }
 
 ////////////////////////////////////////////////////////
@@ -1530,7 +1534,6 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			}
 
 			_state = StateDone;
-			_state = SMovement::StateDone;
 			return true;
 		}
 		

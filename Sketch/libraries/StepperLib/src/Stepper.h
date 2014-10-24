@@ -234,7 +234,7 @@ private:
 	void GoIdle();
 	void ContinueIdle();
 
-	void CallEvent(EnumAsByte(EStepperEvent) eventtype, void* addinfo)			{ _event.Call(this, eventtype, addinfo); }
+	void CallEvent(EnumAsByte(EStepperEvent) eventtype, void* addinfo=0)	{ _event.Call(this, eventtype, addinfo); }
 
 protected:
 
@@ -313,26 +313,28 @@ protected:
 
 		mdist_t _backlash[NUM_AXIS];								// backlash of each axis (signed mdist_t/2)
 
-		EnumAsByte(EStepMode) _stepMode[NUM_AXIS];					// fullstep, half, ...
-		unsigned char _timeOutEnable[NUM_AXIS];						// enabletimeout in sec if no step (0.. disable, always enabled)
-
 		unsigned long _timerStartOrOnIdle;							// timervalue if library start move or goes to Idle
-		unsigned long _timerLastCheckEnable;						// timervalue if library start move or goes to Idle
+		unsigned long _timerLastCheckEnable;						// timervalue
 
 		unsigned char _idleLevel;									// level if idle (0..100)
 		axisArray_t	  _lastdirection;								// for backlash
 
 		const __FlashStringHelper * _error;
 
+		unsigned char _timeOutEnable[NUM_AXIS];						// enabletimeout in sec if no step (0.. disable, always enabled)
 		unsigned char _timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
+
+		EnumAsByte(EStepMode) _stepMode[NUM_AXIS];					// fullstep, half, ...
 
 #ifdef USESLIP
 		unsigned int _slipSum[NUM_AXIS];
 		int _slip[NUM_AXIS];
 #endif
+
 	} _pod;
 
-	SEvent			_event;											// no POS => Constructor
+	SEvent		_event ALIGN_WORD;									// no POS => Constructor
+	axis_t		_num_axis;											// actual axis (3 e.g. SMC800)
 
 	struct SMovementState;
 
@@ -552,13 +554,13 @@ protected:
 	debugvirtula void OnWarning(const __FlashStringHelper * warning);
 	debugvirtula void OnInfo(const __FlashStringHelper * info);
 
-	void Error(const __FlashStringHelper * error)				{ _pod._error = error; OnError(error); }
-	void Info(const __FlashStringHelper * info)					{ OnInfo(info); }
-	void Warning(const __FlashStringHelper * warning)			{ OnWarning(warning); }
+	void Error(const __FlashStringHelper * error)						{ _pod._error = error; OnError(error); }
+	void Info(const __FlashStringHelper * info)							{ OnInfo(info); }
+	void Warning(const __FlashStringHelper * warning)					{ OnWarning(warning); }
 
 public:
 
-	unsigned char ToReferenceId(axis_t axis, bool minRef)		{ return axis * 2 + (minRef ? 0 : 1); }
+	unsigned char ToReferenceId(axis_t axis, bool minRef)				{ return axis * 2 + (minRef ? 0 : 1); }
 
 	virtual bool  IsAnyReference() = 0;
 	virtual bool  IsReference(unsigned char referenceid) = 0;

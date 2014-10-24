@@ -68,6 +68,7 @@ static const unsigned char stepperadd[SMC800_NUM_AXIS] PROGMEM = { StepperX, Ste
 
 CStepperSMC800::CStepperSMC800()
 {
+	_num_axis=SMC800_NUM_AXIS;
 }
 
 ////////////////////////////////////////////////////////

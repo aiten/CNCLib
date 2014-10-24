@@ -391,7 +391,7 @@ Console.WriteLine(cmd.CommandText);
                 OnCommandWaitReply(eventarg);
                 if (Abort || eventarg.Abort) return;
 
-				_autoEvent.WaitOne(100);
+				_autoEvent.WaitOne(10);
             }
 		}
 
@@ -438,12 +438,12 @@ Console.WriteLine(cmd.CommandText);
 								_autoEvent.Reset();			// expect an answer
 						}
 
-						_autoEvent.WaitOne(50);
+						_autoEvent.WaitOne(10);
 					}
 				}
 				else
 				{
-					_autoEvent.WaitOne(250);		// no command in queue => wait => CreateCommand(...) will set Autoevent
+					_autoEvent.WaitOne(100);		// no command in queue => wait => CreateCommand(...) will set Autoevent
 				}
             }
         }

@@ -115,7 +115,7 @@ unsigned long CMyLcd::Splash()
 
 void CMyLcd::Draw(EDrawType /* draw */)
 {
-	DrawPos(2, 0, CStepper::GetInstance()->GetCurrentPosition(X_AXIS));
+  	DrawPos(2, 0, CStepper::GetInstance()->GetCurrentPosition(X_AXIS));
 	DrawPos(2, 1, CStepper::GetInstance()->GetCurrentPosition(Y_AXIS));
 	DrawES(17, 0, CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true)));
 	DrawES(18, 0, CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true)));

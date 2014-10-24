@@ -62,12 +62,6 @@ void CMyControl::Init()
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true),true);  
 	CStepper::GetInstance()->UseReference(EMERGENCY_ENDSTOP,true);    // not stop
 #endif    
-
-	static CStepper::SEvent old;
-	CStepper::GetInstance()->AddEvent([](CStepper*stepper, void* param, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) 
-        { 
-			return old.Call(stepper, eventtype, addinfo);
-		}, this, old);
 }
 
 ////////////////////////////////////////////////////////////
@@ -75,6 +69,10 @@ void CMyControl::Init()
 void CMyControl::Initialized()
 {
 	super::Initialized();
+
+//	CStepper::GetInstance()->Wait(1);
+//	CStepper::GetInstance()->MoveAbs(Z_AXIS, 200);
+
 	GoToReference();
 }
 

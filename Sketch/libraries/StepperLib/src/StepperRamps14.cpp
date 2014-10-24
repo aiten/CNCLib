@@ -32,6 +32,7 @@
 
 CStepperRamps14::CStepperRamps14()
 {
+	_num_axis = 5;
 }
 
 ////////////////////////////////////////////////////////
@@ -141,7 +142,6 @@ void CStepperRamps14::Step(const unsigned char steps[NUM_AXIS], axisArray_t dire
 
 void CStepperRamps14::SetEnable(axis_t axis, unsigned char level, bool /* force */)
 {
-
 #define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,RAMPS14_PIN_ENABLE_ON);	else	HALFastdigitalWrite(pin,RAMPS14_PIN_ENABLE_OFF);
 	switch (axis)
 	{
@@ -170,7 +170,7 @@ unsigned char CStepperRamps14::GetEnable(axis_t axis)
 		case E1_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPS14_E1_ENABLE_PIN) == RAMPS14_PIN_ENABLE_ON);
 #pragma warning( default : 4127 )
 	}
-	return 0;
+	return LevelOff;
 }
 
 ////////////////////////////////////////////////////////

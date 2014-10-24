@@ -45,6 +45,7 @@ typedef uint32_t pin_t;
 #define NEVER_INLINE		__attribute__((__noinline__))
 #define NEVER_INLINE_AVR	__attribute__((__noinline__))
 #define NEVER_INLINE_SAM
+#define ALIGN_WORD			__attribute__((aligned (4)))
 
 
 #elif defined(__AVR_ARCH__)
@@ -55,6 +56,7 @@ typedef uint32_t pin_t;
 #define NEVER_INLINE		__attribute__((__noinline__))
 #define NEVER_INLINE_AVR	__attribute__((__noinline__))
 #define NEVER_INLINE_SAM
+#define ALIGN_WORD			__attribute__((aligned (2)))
 
 #define irqflags_t unsigned char
 typedef uint8_t pin_t;
@@ -66,6 +68,7 @@ typedef uint8_t pin_t;
 #define NEVER_INLINE
 #define NEVER_INLINE_AVR
 #define NEVER_INLINE_SAM
+#define ALIGN_WORD
 
 #define irqflags_t unsigned char
 typedef uint8_t pin_t;
