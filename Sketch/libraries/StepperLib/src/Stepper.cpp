@@ -1302,8 +1302,10 @@ void CStepper::FillStepBuffer()
 		{
 			if (_pod._timeEnable[i] != 0)
 			{
-				if (_pod._timeEnable[i] < diff_sec) _pod._timeEnable[i] = diff_sec;	// may overrun
-				_pod._timeEnable[i] -= diff_sec;
+				if (_pod._timeEnable[i] < diff_sec) // may overrun
+					_pod._timeEnable[i] = 0;	
+				else
+					_pod._timeEnable[i] -= diff_sec;
 
 				if (_pod._timeEnable[i] == 0 && GetEnable(i) != _pod._idleLevel)
 				{
@@ -1422,25 +1424,18 @@ void CStepper::SMovementState::Init(SMovement* pMovement)
 	_rest = 0;
 	_sumTimer = 0;
 	_timer = pMovement->_pod._move._ramp._timerStart;
-
-	CStepper*pStepper = pMovement->_pStepper; 
-
-	for (register axis_t i = 0; i<NUM_AXIS; i++)
-	{
-		if (pMovement->_distance_[i] != 0)
-		{
-			pStepper->_pod._timeEnable[i] = 0;
-			CCriticalRegion crit;
-			if (pStepper->GetEnable(i) != CStepper::LevelMax)
-				pStepper->SetEnable(i, CStepper::LevelMax, false);
-		}
-	}
 }
 
 ////////////////////////////////////////////////////////
 
 bool CStepper::SMovementState::CalcTimerAcc(timer_t maxtimer, mdist_t n, unsigned char cnt)
 {
+	// use for float: Cn = Cn-1 - 2*Cn-1 / (4*N + 1)
+	// use for INTEGER:
+	// In = ((2*In-1)+Rn-1) / (4*N + 1)		=> quot
+	// Rn = ((2*In-1)+Rn-1) % (4*N + 1)		=> remainer of division
+	// Cn = Cn-1 - In
+
 	if (maxtimer < _timer)
 	{
 		mudiv_t udivremainer = mudiv(_timer*(2 * cnt) + _rest, n * 4 + 2 - cnt);
@@ -1459,6 +1454,12 @@ bool CStepper::SMovementState::CalcTimerAcc(timer_t maxtimer, mdist_t n, unsigne
 
 bool CStepper::SMovementState::CalcTimerDec(timer_t mintimer, mdist_t n, unsigned char cnt)
 {
+	// use for float: Cn = Cn-1 + 2*Cn-1 / (4*N - 1)
+	// use for INTEGER:
+	// In = ((2*In-1)+Rn-1) / (4*N - 1)		=> quot
+	// Rn = ((2*In-1)+Rn-1) % (4*N - 1)		=> remainer of division
+	// Cn = Cn-1 - In
+
 	if (mintimer > _timer)
 	{
 		if (n <= 1)
@@ -1483,16 +1484,36 @@ bool CStepper::SMovementState::CalcTimerDec(timer_t mintimer, mdist_t n, unsigne
 
 bool CStepper::SMovement::CalcNextSteps(bool continues)
 {
-	register axis_t i;
 	// return false if buffer full and nothing calculated.
+
+	register axis_t i;
 	do
 	{
 		CStepper* pStepper = _pStepper;
 		SMovementState* pState = &pStepper->_movementstate;
 
+		if (pStepper->_steps.IsFull())
+		{
+			// cannot add to queue
+			return false;
+		}
+
 		if (_state == SMovement::StateReadyMove || _state == SMovement::StateReadyWait)
 		{
+			// Start of move/wait
+
 			pState->Init(this);
+
+			for (i = 0; i<NUM_AXIS; i++)
+			{
+				if (_distance_[i] != 0)
+				{
+					pStepper->_pod._timeEnable[i] = 0;
+					CCriticalRegion crit;
+					if (pStepper->GetEnable(i) != CStepper::LevelMax)
+						pStepper->SetEnable(i, CStepper::LevelMax, false);
+				}
+			}
 		}
 
 		register mdist_t n = pState->_n;
@@ -1500,9 +1521,9 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 		if (_steps <= n)
 		{
-			// End of move 
+			// End of move/wait
 
-			for (register axis_t i = 0; i<NUM_AXIS; i++)
+			for (i = 0; i<NUM_AXIS; i++)
 			{
 				if (_distance_[i] != 0)
 					pStepper->_pod._timeEnable[i] = pStepper->_pod._timeOutEnable[i];
@@ -1512,14 +1533,10 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			_state = SMovement::StateDone;
 			return true;
 		}
-
-		if (pStepper->_steps.IsFull())
+		
 		{
-			// cannot add to queue
-			return false;
-		}
+			// calculate step for step-buffer
 
-		{
 			if (count > 1 && _steps - n <= count)
 			{
 				// last step with multiplier
@@ -1602,11 +1619,6 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			{
 				case StateUpAcc:
 
-					// use for float: Cn = Cn-1 - 2*Cn-1 / (4*N + 1)
-					// use for INTEGER:
-					// In = ((2*In-1)+Rn-1) / (4*N + 1)		=> quot
-					// Rn = ((2*In-1)+Rn-1) % (4*N + 1)		=> remainer of division
-					// Cn = Cn-1 - In
 					if (pState->CalcTimerAcc(_pod._move._ramp._timerRun, n + _pod._move._ramp._nUpOffset, count))
 					{
 						_state = StateRun;
@@ -1623,11 +1635,6 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 				case StateDownDec:
 
-					// use for float: Cn = Cn-1 + 2*Cn-1 / (4*N - 1)
-					// use for INTEGER:
-					// In = ((2*In-1)+Rn-1) / (4*N - 1)		=> quot
-					// Rn = ((2*In-1)+Rn-1) % (4*N - 1)		=> remainer of division
-					// Cn = Cn-1 - In
 					pState->CalcTimerDec(_pod._move._ramp._timerStop, _steps - n + _pod._move._ramp._nDownOffset, count);
 					break;
 
