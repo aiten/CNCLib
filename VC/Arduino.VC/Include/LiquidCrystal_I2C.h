@@ -33,5 +33,8 @@ public:
 	void begin(int, int){};
 	void setCursor(int, int) {};
 	void print(const char*) {};
+	void print(char) {};
 	void print(unsigned char) {};
+	void print(short) {};
+	void print(unsigned long) {};
 };

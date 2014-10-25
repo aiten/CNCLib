@@ -122,6 +122,9 @@ void CMyLcd::Draw(EDrawType /* draw */)
 	DrawES(19, 0, CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true)));
 	DrawPen(4, 2);
 
+	lcd.setCursor(0,3);
+	lcd.print(CStepper::GetInstance()->GetTotalSteps());
+
         unsigned char queued = CStepper::GetInstance()->QueuedMovements();
     	lcd.setCursor(18, 3);
         if (queued<10)

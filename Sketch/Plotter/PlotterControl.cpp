@@ -71,18 +71,17 @@ void CPlotter::PenUp()
 	_isDelayPen = false;
 	if (_isPenDown)
 	{
-//		CStepper::GetInstance()->Wait(2);
+		CStepper::GetInstance()->Wait(1);
 		CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.movePenUp.max,Z_AXIS, CHPGLParser::_state.movePenUp.acc, CHPGLParser::_state.movePenUp.dec);
 		_isPenDown = false;
 		CStepper::GetInstance()->MoveAbs(Z_AXIS, CHPGLParser::_state.penUpPos);
 #ifdef __USE_LCD__
-//		Lcd.DrawRequest(true,CLcd::DrawAll);
+		// Lcd.DrawRequest(true,CLcd::DrawAll); => delay off movementbuffer
 #endif
 		CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penUp.max,X_AXIS, CHPGLParser::_state.penUp.acc, CHPGLParser::_state.penUp.dec);
 		CStepper::GetInstance()->SetAccDec(Y_AXIS, CHPGLParser::_state.penUp.acc, CHPGLParser::_state.penUp.dec);
 
-		//CStepper::GetInstance()->SetAccDec(X_AXIS, 200, 400);
-
+CStepper::GetInstance()->SetAccDec(X_AXIS, 200, 200);
 	}
 }
 
@@ -93,18 +92,16 @@ void CPlotter::PenDown()
 	_isDelayPen = false;
 	if (!_isPenDown)
 	{
-//CStepper::GetInstance()->Wait(1);
 		CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.movePenDown.max,Z_AXIS, CHPGLParser::_state.movePenDown.acc, CHPGLParser::_state.movePenDown.dec);
 		_isPenDown = true;
 		CStepper::GetInstance()->MoveAbs(Z_AXIS, CHPGLParser::_state.penDownPos);
-//		CStepper::GetInstance()->Wait(2);
+		CStepper::GetInstance()->Wait(1);
 #ifdef __USE_LCD__
-//		Lcd.DrawRequest(true,CLcd::DrawAll);
+		// Lcd.DrawRequest(true,CLcd::DrawAll); => delay off movementbuffer
+		Lcd.DrawRequest(true,CLcd::DrawAll);
 #endif
 		CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penDown.max,X_AXIS, CHPGLParser::_state.penDown.acc, CHPGLParser::_state.penDown.dec);
 		CStepper::GetInstance()->SetAccDec(Y_AXIS, CHPGLParser::_state.penDown.acc, CHPGLParser::_state.penDown.dec);
-
-CStepper::GetInstance()->SetAccDec(X_AXIS, 200, 200);
 	}
 }
 

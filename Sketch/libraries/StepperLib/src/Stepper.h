@@ -217,8 +217,9 @@ private:
 	void QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], steprate_t vMax);
 	void QueueWait(const mdist_t dist, steprate_t vMax, SMovementParam* param);
 
-	void StartTimer();
+	void EnqueuAndStartTimer(bool waitfinish);
 	void WaitCanQueue();
+	bool StartMovement();
 
 	long CalcNextPos(udist_t current, udist_t dist, bool directionUp)
 	{

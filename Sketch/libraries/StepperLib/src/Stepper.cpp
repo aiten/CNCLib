@@ -211,7 +211,8 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 				_movements._queue.NextTail().InitMove(this, _movements._queue.SaveTail(), backlashsteps, backlashdist, directionUp, _pod._timerbacklash);
 				_movements._queue.NextTail().SetBacklash();
-				_movements._queue.Enqueue();
+			
+				EnqueuAndStartTimer(false);
 			}
 		}
 	}
@@ -225,30 +226,18 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 	WaitCanQueue();
 
 	_movements._queue.NextTail().InitMove(this, _movements._queue.SaveTail(), steps, dist, directionUp, timerMax);
-	_movements._queue.Enqueue();
 
-	OptimizeMovementQueue(false);
-
-	StartTimer();
-
-	if (IsWaitFinishMove())
-	{
-		WaitBusy();
-	}
+	EnqueuAndStartTimer(true);
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepper::QueueWait(const mdist_t dist, timer_t timerMax, SMovementParam* param)
 {
-#ifdef _MSC_VER
-	assert(dist>1);
-#endif
 	WaitCanQueue();
 	_movements._queue.NextTail().InitWait(this, dist, timerMax, param);
-	_movements._queue.Enqueue();
 
-	StartTimer();
+	EnqueuAndStartTimer(true);
 }
 
 ////////////////////////////////////////////////////////
@@ -263,9 +252,35 @@ void CStepper::WaitCanQueue()
 
 ////////////////////////////////////////////////////////
 
-void CStepper::StartTimer()
+bool CStepper::StartMovement()
 {
-	if (!_pod._timerRunning)
+	_movements._queue.Head().CalcNextSteps(false);
+	if (_movements._queue.Head().IsFinished())
+	{
+		_movements._queue.Dequeue();
+		return false;
+	}
+	return true;
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::EnqueuAndStartTimer(bool waitfinish)
+{
+	_movements._queue.Enqueue();
+
+	OptimizeMovementQueue(false);
+
+	if (_pod._timerRunning)
+	{
+		// situation: wait for last interrupt, need recalc next step for stepbuffer
+		CCriticalRegion crit;
+		if (_movements._queue.Count()==1 && _steps.IsEmpty())
+		{
+			StartMovement();
+		}
+	}
+	else
 	{
 		_pod._timerLastCheckEnable = _pod._timerStartOrOnIdle = millis();
 
@@ -273,22 +288,26 @@ void CStepper::StartTimer()
 		{
 			_pod._timeEnable[i] = _pod._timeOutEnable[i];
 			if (_pod._timeEnable[i] == 0 && GetEnable(i)!=CStepper::LevelMax)					// enabletimeout == 0 => always enabled, otherwise done in CalcNextSteps
+//			if (_pod._timeEnable[i] == 0)
 				SetEnable(i, CStepper::LevelMax, true);
 		}
 
-		_movements._queue.Head().CalcNextSteps(false);
-		if (_movements._queue.Head().IsFinished())
-		{
-			// empty move => startup failed
-			_movements._queue.Dequeue();
-			GoIdle();
-		}
-		else
+		if (StartMovement())
 		{
 			OnStart();
 			CCriticalRegion crit;
 			Step(false);
 		}
+		else
+		{
+			// empty move => startup failed
+			GoIdle();
+		}
+	}
+
+	if (waitfinish && IsWaitFinishMove())
+	{
+		WaitBusy();
 	}
 }
 
