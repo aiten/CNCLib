@@ -21,43 +21,29 @@
 
 ////////////////////////////////////////////////////////
 
-#include <Control.h>
-#include <Analog8IOControl.h>
-
-#include "Configuration_Plotter.h"
-
-////////////////////////////////////////////////////////
-
-class CMyControl : public CControl
-{
-private:
-
-	typedef CControl super;
-
-public:
-
-	void MyInit() { return Init(); }
-
-	virtual void IOControl(unsigned char tool, unsigned short level);
-	virtual unsigned short IOControl(unsigned char tool);
-
-protected:
-
-	virtual void Init();
-	virtual void Initialized();
-	virtual bool Parse(CStreamReader* reader, Stream* output);
-	virtual void Idle(unsigned int idletime);
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
-
-	virtual void GoToReference();
-	virtual void GoToReference(axis_t axis);
-
-private:
-
-	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
-
-};
+//#define STEPPERTYPE 1		// CStepperL298N
+//#define STEPPERTYPE 2		// CStepperSMC800
+//#define STEPPERTYPE 3		// CStepperTB6560
+#define STEPPERTYPE 4		// CStepperRamps14
 
 ////////////////////////////////////////////////////////
 
-extern CMyControl Control;
+#if STEPPERTYPE==1
+
+#include "Configuration_Plotter_L298N.h"
+
+#elif STEPPERTYPE==2
+
+#include "Configuration_Plotter_SMC800.h"
+
+#elif STEPPERTYPE==3
+
+#include "Configuration_Plotter_TB6560.h"
+
+#elif STEPPERTYPE==4
+
+#include "Configuration_Plotter_Ramps14.h"
+
+#endif
+
+////////////////////////////////////////////////////////

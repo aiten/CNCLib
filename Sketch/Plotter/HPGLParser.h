@@ -37,8 +37,8 @@ public:
 
 	virtual void Parse();
 
-	sdist_t HPGLToPlotterCordX(sdist_t xx);
-	sdist_t HPGLToPlotterCordY(sdist_t yy);
+	static sdist_t HPGLToPlotterCordX(sdist_t xx);
+	static sdist_t HPGLToPlotterCordY(sdist_t yy);
 
 	static void Init()											{ super::Init(); _state.Init(); }
 

@@ -21,43 +21,15 @@
 
 ////////////////////////////////////////////////////////
 
-#include <Control.h>
-#include <Analog8IOControl.h>
-
-#include "Configuration_Plotter.h"
+#include <StepperRamps14_pins.h>
 
 ////////////////////////////////////////////////////////
 
-class CMyControl : public CControl
-{
-private:
-
-	typedef CControl super;
-
-public:
-
-	void MyInit() { return Init(); }
-
-	virtual void IOControl(unsigned char tool, unsigned short level);
-	virtual unsigned short IOControl(unsigned char tool);
-
-protected:
-
-	virtual void Init();
-	virtual void Initialized();
-	virtual bool Parse(CStreamReader* reader, Stream* output);
-	virtual void Idle(unsigned int idletime);
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
-
-	virtual void GoToReference();
-	virtual void GoToReference(axis_t axis);
-
-private:
-
-	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
-
-};
+#define CMyStepper CStepperRamps14
 
 ////////////////////////////////////////////////////////
 
-extern CMyControl Control;
+#define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
+#define CONTROLLERFAN_FAN_PIN	RAMPS14_FET2D9_PIN
+
+////////////////////////////////////////////////////////

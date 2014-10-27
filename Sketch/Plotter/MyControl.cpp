@@ -42,8 +42,8 @@ void CMyControl::Init()
 
 	CHPGLParser::Init();
 
-	CStepper::GetInstance()->SetLimitMax(0, 55600);  // 6950*8
-	CStepper::GetInstance()->SetLimitMax(1, 32000);  // 4000*8
+	CStepper::GetInstance()->SetLimitMax(0, CHPGLParser::HPGLToPlotterCordY(20800));
+	CStepper::GetInstance()->SetLimitMax(1, CHPGLParser::HPGLToPlotterCordY(11800));
 	CStepper::GetInstance()->SetLimitMax(2, 8000);   // 100*8
 
 	CStepper::GetInstance()->SetJerkSpeed(0, 1000);  // 500 * 8?
@@ -51,6 +51,8 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetJerkSpeed(2, 1000);
 
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penUp.max, CHPGLParser::_state.penUp.acc, CHPGLParser::_state.penUp.dec);
+
+	_controllerfan.Init();
 
 #if defined(__AVR_ARCH__) || defined(__SAM3X8E__)
 	for (register unsigned char i=0;i<NUM_AXIS*2;i++)
@@ -94,6 +96,54 @@ void CMyControl::GoToReference(axis_t axis)
 #define FEEDRATE_REFMOVE  CStepper::GetInstance()->GetDefaultVmax() / 4  
         bool toMin = true; // axis != Z_AXIS;
         CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMin), toMin, FEEDRATE_REFMOVE);
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::IOControl(unsigned char tool, unsigned short level)
+{
+	switch (tool)
+	{
+#if CONTROLLERFAN_FAN_PIN != -1
+		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
+#endif
+	}
+	
+	super::IOControl(tool, level);
+}
+
+////////////////////////////////////////////////////////////
+
+unsigned short CMyControl::IOControl(unsigned char tool)
+{
+	switch (tool)
+	{
+		case ControllerFan:	{ return _controllerfan.Level; }
+	}
+
+	return super::IOControl(tool);
+}
+
+////////////////////////////////////////////////////////////
+
+bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
+{
+#if CONTROLLERFAN_FAN_PIN != -1
+	switch (eventtype)
+	{
+		case CStepper::OnStartEvent:
+			_controllerfan.On();
+			break;
+		case CStepper::OnIdleEvent:
+			if (millis()-CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME)
+			{
+				_controllerfan.Off();
+			}
+			break;
+	}
+#endif
+
+	return super::OnStepperEvent(stepper, eventtype, addinfo);
 }
 
 ////////////////////////////////////////////////////////////

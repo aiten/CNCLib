@@ -23,7 +23,6 @@
 #include "GCodeParser.h"
 
 ////////////////////////////////////////////////////////////
-// => see Configuration_ProxxonMF70.h
 
 CMyStepper Stepper;
 

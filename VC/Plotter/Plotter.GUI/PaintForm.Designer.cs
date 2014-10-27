@@ -372,8 +372,8 @@
 			this._plotterCtrl.SelectedLinesize = 1;
 			this._plotterCtrl.SelectedShape = -1;
 			this._plotterCtrl.Size = new System.Drawing.Size(687, 422);
-			this._plotterCtrl.SizeXHPGL = 20850;
-			this._plotterCtrl.SizeYHPGL = 12000;
+			this._plotterCtrl.SizeXHPGL = 20800;
+			this._plotterCtrl.SizeYHPGL = 11800;
 			this._plotterCtrl.TabIndex = 1;
 			this._plotterCtrl.ShapeCreating += new Plotter.GUI.PlotterUserControl.ShapeEventHandler(this._plotterCtrl_ShapeCreating);
 			this._plotterCtrl.ShapeCreated += new Plotter.GUI.PlotterUserControl.ShapeEventHandler(this._plotterCtrl_ShapeCreated);

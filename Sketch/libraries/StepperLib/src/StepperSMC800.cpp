@@ -265,18 +265,15 @@ bool  CStepperSMC800::IsReference(unsigned char /*referenceid*/)
 
 void CStepperSMC800::MoveAwayFromReference(axis_t /* axis */, sdist_t dist, steprate_t vMax)
 {
-/*
+#ifndef REDUCED_SIZE
 	MoveRelEx(vMax, X_AXIS, min(dist, (sdist_t)GetLimitMax(X_AXIS) / 2), 
 					Y_AXIS, min(dist, (sdist_t)GetLimitMax(Y_AXIS) / 2), 
 					Z_AXIS, min(dist, (sdist_t)GetLimitMax(Z_AXIS) / 2), 
 					-1);
-	MoveRelEx(vMax, X_AXIS, min(dist, (sdist_t)GetLimitMax(X_AXIS)), 
-					Y_AXIS, min(dist, (sdist_t)GetLimitMax(Y_AXIS)), 
-					Z_AXIS, min(dist, (sdist_t)GetLimitMax(Z_AXIS)), 
-					-1);
-*/
+#else
 	MoveRelEx(vMax, X_AXIS, min(dist, 256), 
 					Y_AXIS, min(dist, 256), 
 					Z_AXIS, min(dist, 256), 
 					-1);
+#endif
 }

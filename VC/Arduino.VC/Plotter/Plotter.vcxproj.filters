@@ -37,6 +37,12 @@
     <ClInclude Include="..\..\..\sketch\Plotter\PlotterControl.h">
       <Filter>Plotter</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\Plotter\Configuration_Plotter.h">
+      <Filter>Plotter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\Plotter\Configuration_Plotter_Ramps14.h">
+      <Filter>Plotter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
