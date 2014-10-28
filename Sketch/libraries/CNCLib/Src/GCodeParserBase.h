@@ -26,7 +26,8 @@
 
 ////////////////////////////////////////////////////////
 
-#define FEEDRATE_MIN_ALLOWED	STEPRATETOFEEDRATE(100)		// use VMAX => min is 100Steps/Sec because of CStepper
+//#define FEEDRATE_MIN_ALLOWED	STEPRATETOFEEDRATE(100)		// use VMAX => min is 100Steps/Sec because of CStepper
+#define FEEDRATE_MIN_ALLOWED	STEPRATETOFEEDRATE(1)		// use VMAX => min is 1Steps/Sec because of CStepper
 #define FEEDRATE_MAX_ALLOWED	feedrate_t(500000)			// 500mm/min is STEPRATETOFEEDRATE(26667) with 3200Steps/rotation(16Steps) 
 
 #define FEEDRATE_MAX_G0			feedrate_t(526518)		// VMAXTOFEEDRATE(((SPEED_MULTIPLIER_4)-5))

@@ -169,7 +169,7 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 			_controllerfan.On();
 			break;
 		case CStepper::OnIdleEvent:
-			if (millis()-CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME)
+			if (millis()-stepper->IdleTime() > CONTROLLERFAN_ONTIME)
 			{
 				_controllerfan.Off();
 			}

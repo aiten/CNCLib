@@ -152,7 +152,7 @@ void CStepper::StopTimer()
 
 ////////////////////////////////////////////////////////
 
-void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax)
+void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax, unsigned char stepmult)
 {
 	//DumpArray<mdist_t,NUM_AXIS>(F("QueueMove"),dist,false);
 	//DumpArray<bool,NUM_AXIS>(F("Dir"),directionUp,false);
@@ -174,7 +174,7 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 			if (steps < dist[i])
 				steps = dist[i];
 		}
-		mask *= 2;
+			mask *= 2;
 	}
 
 	if (steps == 0)				// nothing to do
@@ -182,6 +182,8 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 		Info(MESSAGE_STEPPER_EmptyMoveSkipped);
 		return;
 	}
+
+	steps *= stepmult;
 
 	if (IsSetBacklash())
 	{
@@ -492,8 +494,6 @@ void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t tim
 	_pStepper = pStepper;
 	_steps = steps;
 	_pod._wait._timer = timer;
-//	_timerEndPossible = (timer_t) -1;		
-//	_pod._move._timerJunctionToPrev = (timer_t)-1;
 
 	_state = StateReadyWait;
 
@@ -533,7 +533,6 @@ unsigned char CStepper::SMovement::GetMaxStepMultiplier()
 		count /= 16;
 	}
 	return maxmultiplier;
-
 }
 
 ////////////////////////////////////////////////////////
@@ -1759,7 +1758,16 @@ void CStepper::QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool direct
 		_pod._calculatedpos[i] = CalcNextPos(_pod._calculatedpos[i], dist[i], directionUp[i]);
 	}
 
+	unsigned char stepmul=1;
+
 	timer_t timerMax = vMax == 0 ? _pod._timerMaxDefault : SpeedToTimer(vMax);
+
+	while (timerMax == (timer_t) -1)
+	{
+		stepmul++;
+		timerMax = SpeedToTimer(vMax*stepmul);
+	}
+
 	if (timerMax < _pod._timerMaxDefault)
 		timerMax = _pod._timerMaxDefault;
 
@@ -1779,6 +1787,8 @@ void CStepper::QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool direct
 	unsigned short movecount = 1;
 	udist_t pos[NUM_AXIS] = { 0 };
 
+	steps *= stepmul;
+
 	if (steps > MAXSTEPSPERMOVE)
 	{
 		movecount = (unsigned short)(steps / MAXSTEPSPERMOVE);
@@ -1795,7 +1805,7 @@ void CStepper::QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool direct
 			pos[i] = newxtpos;
 		}
 
-		QueueMove(d, directionUp, timerMax);
+		QueueMove(d, directionUp, timerMax, stepmul);
 		if (IsError()) return;
 	}
 
@@ -1804,7 +1814,7 @@ void CStepper::QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool direct
 		d[i] = (mdist_t)(dist[i] - pos[i]);
 	}
 
-	QueueMove(d, directionUp, timerMax);
+	QueueMove(d, directionUp, timerMax, stepmul);
 }
 
 ////////////////////////////////////////////////////////
@@ -1899,7 +1909,6 @@ bool CStepper::MoveReference(axis_t axis, unsigned char referenceid, bool toMin,
 
 	if (!MoveAwayFromReference(axis, referenceid, distIfRefIsOn, vMax))
 	{
-		Info(MESSAGE_STEPPER_MoveReferenceFailed);
 		Error(MESSAGE_STEPPER_MoveReferenceFailed);
 		return false;
 	}
@@ -1921,10 +1930,7 @@ bool CStepper::MoveReference(axis_t axis, unsigned char referenceid, bool toMin,
 		WaitBusy();
 	}
 
-	if (toMin)
-		SetPosition(axis, GetLimitMin(axis));
-	else
-		SetPosition(axis, GetLimitMax(axis));
+	SetPosition(axis, toMin ? GetLimitMin(axis) : GetLimitMax(axis));
 
 	return ret;
 }

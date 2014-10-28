@@ -214,8 +214,8 @@ public:
 
 private:
 
-	void QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], steprate_t vMax);
-	void QueueWait(const mdist_t dist, steprate_t vMax, SMovementParam* param);
+	void QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax, unsigned char stepmult);
+	void QueueWait(const mdist_t dist, timer_t timerMax, SMovementParam* param);
 
 	void EnqueuAndStartTimer(bool waitfinish);
 	void WaitCanQueue();

@@ -174,18 +174,17 @@ void CStepperSMC800::Remove()
 
 void  CStepperSMC800::Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp)
 {
-	unsigned char mask = 1;
 	for (axis_t axis = 0; axis < NUM_AXIS; axis++)
 	{
 		if (steps[axis])
 		{
-			if (directionUp&mask)
+			if (directionUp&1)
 				_stepIdx[axis] += steps[axis];
 			else
 				_stepIdx[axis] -= steps[axis];
 			SetPhase(axis);
 		}
-		mask *= 2;
+		directionUp /= 2;
 	}
 }
 
@@ -271,9 +270,9 @@ void CStepperSMC800::MoveAwayFromReference(axis_t /* axis */, sdist_t dist, step
 					Z_AXIS, min(dist, (sdist_t)GetLimitMax(Z_AXIS) / 2), 
 					-1);
 #else
-	MoveRelEx(vMax, X_AXIS, min(dist, 256), 
-					Y_AXIS, min(dist, 256), 
-					Z_AXIS, min(dist, 256), 
+	MoveRelEx(vMax, X_AXIS, min((mdist_t) dist, 256), 
+					Y_AXIS, min((mdist_t) dist, 256), 
+					Z_AXIS, min((mdist_t) dist, 256), 
 					-1);
 #endif
 }

@@ -121,18 +121,17 @@ void CStepperL298N::InitMemVar()
 
 void  CStepperL298N::Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp)
 {
-	unsigned char mask=1;
 	for (axis_t axis=0;axis < NUM_AXIS;axis++)
 	{
 		if (steps[axis])
 		{
-			if (directionUp&mask)
+			if (directionUp&1)
 				_stepIdx[axis] += steps[axis];
 			else
 				_stepIdx[axis] -= steps[axis];
 			SetPhase(axis);
 		}
-		mask *= 2;
+		directionUp /= 2;
 	}
 }
 
