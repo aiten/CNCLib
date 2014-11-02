@@ -179,7 +179,9 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 	if (steps == 0)				// nothing to do
 	{
+#ifndef REDUCED_SIZE
 		Info(MESSAGE_STEPPER_EmptyMoveSkipped);
+#endif
 		return;
 	}
 
@@ -207,8 +209,9 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 			if (backlashsteps)
 			{
 				// need backlash
+#ifndef REDUCED_SIZE
 				Info(MESSAGE_STEPPER_Backlash);
-
+#endif
 				WaitCanQueue();
 
 				_movements._queue.NextTail().InitMove(this, _movements._queue.SaveTail(), backlashsteps, backlashdist, directionUp, _pod._timerbacklash);

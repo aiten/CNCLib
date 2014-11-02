@@ -28,7 +28,7 @@
 #include <MotionControl.h>
 
 #include "GCode3DParser.h"
-#include "MessageCNCExLib.h"
+#include "MessageCNCLibEx.h"
 #include <Control.h>
 
 ////////////////////////////////////////////////////////////

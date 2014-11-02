@@ -141,9 +141,6 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\ConfigurationCNCLibEx.h">
       <Filter>CNCLibEx</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\MessageCNCExLib.h">
-      <Filter>CNCLibEx</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Analog8InvertIOControl.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
@@ -170,6 +167,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeParserBase.h">
       <Filter>CNCLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\Control3D.h">
+      <Filter>CNCLibEx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\MessageCNCLibEx.h">
+      <Filter>CNCLibEx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +247,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeParserBase.cpp">
       <Filter>CNCLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\Control3D.cpp">
+      <Filter>CNCLibEx</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

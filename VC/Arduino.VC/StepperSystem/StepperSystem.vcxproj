@@ -13,8 +13,9 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\CNCLibEx.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\ConfigurationCNCLibEx.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\Control3D.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\GCode3DParser.h" />
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\MessageCNCExLib.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\MessageCNCLibEx.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Analog8InvertIOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Analog8IOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\CNCLib.h" />
@@ -64,6 +65,7 @@
     <ClInclude Include="..\MsvcStepper\MsvcStepper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\Control3D.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\GCode3DParser.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\Control.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\ExpressionParser.cpp" />

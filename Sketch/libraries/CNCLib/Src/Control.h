@@ -65,8 +65,8 @@ public:
 
 	//////////////////////////////////////////
 
-	virtual void GoToReference() {};							// Goto Refernce during Initialisation
-	virtual void GoToReference(axis_t axis) { axis; };
+	virtual void GoToReference();										// Goto Refernce during Initialisation
+	virtual void GoToReference(axis_t axis);
 
 	//////////////////////////////////////////
 
@@ -91,7 +91,7 @@ protected:
 	virtual void Init();
 	virtual void Initialized();									// called if Init() is done
 
-	virtual bool Parse(CStreamReader* reader, Stream* output) = 0;// abstract: specify Parser
+	virtual bool Parse(CStreamReader* reader, Stream* output)=0;// abstract: specify Parser
 	virtual bool Command(char* xbuffer, Stream* output);		// execute Command (call parser)
 	virtual void Idle(unsigned int idletime);					// called after TIMEOUTCALLIDEL in idle state
 	virtual bool IsEndOfCommandChar(char ch);					// override default End of command char, default \n \r
@@ -130,6 +130,7 @@ private:
 
 	CStreamReader		_reader;
 
+	void PrintError(Stream* output)								{ output->print(MESSAGE_ERROR); }
 };
 
 ////////////////////////////////////////////////////////

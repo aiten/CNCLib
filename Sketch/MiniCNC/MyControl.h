@@ -48,11 +48,10 @@ public:
 protected:
 
 	virtual void Init();
-	virtual void Initialized();
-	virtual bool Parse(CStreamReader* reader, Stream* output);
+
+	virtual bool Parse(CStreamReader* reader, Stream* output);// abstract: specify Parser
 
 	virtual void GoToReference();
-	virtual void GoToReference(axis_t axis);
 
 	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
 

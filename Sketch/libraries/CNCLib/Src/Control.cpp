@@ -24,9 +24,7 @@
 #include "Control.h"
 #include "Lcd.h"
 
-#ifdef _MSC_VER
 #include "GCodeParserBase.h"
-#endif
 
 ////////////////////////////////////////////////////////////
 
@@ -65,6 +63,24 @@ void CControl::Init()
 void CControl::Initialized()
 {
 	StepperSerial.println(MESSAGE_OK);
+	GoToReference();
+}
+
+////////////////////////////////////////////////////////////
+
+void CControl::GoToReference()
+{
+	GoToReference(Z_AXIS);
+	GoToReference(Y_AXIS);
+	GoToReference(X_AXIS);
+}
+
+////////////////////////////////////////////////////////////
+
+void CControl::GoToReference(axis_t axis)
+{
+	// goto min/max
+	CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, axis != Z_AXIS), axis != Z_AXIS, STEPRATE_REFMOVE);
 }
 
 ////////////////////////////////////////////////////////////
@@ -129,7 +145,7 @@ bool CControl::ParseAndPrintResult(CParser *parser, Stream* output)
 	{
 		if (output) 
 		{
-			output->print(MESSAGE_ERROR);
+			PrintError(output);
 			output->print(parser->GetError());
 			output->print(MESSAGE_CONTROL_RESULTS);
 			output->println(_buffer);
@@ -175,7 +191,7 @@ bool CControl::Command(char* buffer, Stream* output)
 		}
 		if (output)
 		{
-			output->print(MESSAGE_ERROR); output->println(MESSAGE_CONTROL_KILLED);
+			PrintError(output); output->println(MESSAGE_CONTROL_KILLED);
 		}
 		return false;
 	}
@@ -212,9 +228,9 @@ void CControl::ReadAndExecuteCommand(Stream* stream, Stream* output, bool filest
 	{
 		while (stream->available() > 0)
 		{
-			_buffer[_bufferidx] = stream->read();
+			char ch = _buffer[_bufferidx] = stream->read();
 
-			if (IsEndOfCommandChar(_buffer[_bufferidx]))
+			if (IsEndOfCommandChar(ch))
 			{
 				_buffer[_bufferidx] = 0;			// remove from buffer 
 				Command(_buffer, output);
@@ -230,7 +246,7 @@ void CControl::ReadAndExecuteCommand(Stream* stream, Stream* output, bool filest
 			{
 				if (output)
 				{
-					output->print(MESSAGE_ERROR); output->println(MESSAGE_CONTROL_FLUSHBUFFER);
+					PrintError(output); output->println(MESSAGE_CONTROL_FLUSHBUFFER);
 				}
 				_bufferidx = 0;
 			}

@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
-#include <Control.h>
+#include <Control3D.h>
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
 #include <Analog8InvertIOControl.h>
@@ -33,11 +33,11 @@
 
 ////////////////////////////////////////////////////////
 
-class CMyControl : public CControl
+class CMyControl : public CControl3D
 {
 private:
 
-	typedef CControl super;
+	typedef CControl3D super;
 
 public:
 
@@ -52,12 +52,8 @@ protected:
 
 	virtual void Init();
 	virtual void Initialized();
-	virtual bool Parse(CStreamReader* reader, Stream* output);
 
-	virtual void GoToReference();
 	virtual void GoToReference(axis_t axis);
-
-	virtual void ReadAndExecuteCommand();
 
 	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
 

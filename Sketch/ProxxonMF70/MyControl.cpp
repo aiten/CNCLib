@@ -94,23 +94,8 @@ void CMyControl::Init()
 	_controllerfan.Init();
 
 	_probe.Init();
-	CGCode3DParser::Init();
 
-	StepperSerial.print(MESSAGE_MYCONTROL_InitializingSDCard);
-
-	ClearPrintFromSD ();
-
-	CHAL::pinMode(SD_ENABLE_PIN, OUTPUT);
-	CHAL::digitalWrite(SD_ENABLE_PIN, HIGH);
-
-	if (!SD.begin(SD_ENABLE_PIN))
-	{
-		StepperSerial.println(MESSAGE_MYCONTROL_initializationFailed);
-	}
-    else
-    {
-    	StepperSerial.println(MESSAGE_MYCONTROL_initializationDone);
-    }
+	InitSD(SD_ENABLE_PIN);
 }
 
 ////////////////////////////////////////////////////////////
@@ -156,33 +141,7 @@ void CMyControl::Kill()
 void CMyControl::Initialized()
 {
 	super::Initialized();
-
-	GoToReference();
-
-	CGCode3DParser::GetExecutingFile() = SD.open("startup.nc", FILE_READ);
-
-	if (CGCode3DParser::GetExecutingFile())
-	{
-		StepperSerial.println(MESSAGE_MYCONTROL_ExecutingStartupNc);
-		StartPrintFromSD();
-	}
-	else
-	{
-		StepperSerial.println(MESSAGE_MYCONTROL_NoStartupNcFoundOnSD);
-	}
-	
 	_controllerfan.Level=128;
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyControl::GoToReference()
-{
-	super::GoToReference();
-
-	GoToReference(Z_AXIS);
-	GoToReference(Y_AXIS);
-	GoToReference(X_AXIS);
 }
 
 ////////////////////////////////////////////////////////////
@@ -195,47 +154,8 @@ void CMyControl::GoToReference(axis_t axis)
 	else
 		CStepper::GetInstance()->SetPosition(axis, 0);
 #else
-	bool toMin = axis != Z_AXIS;
-	CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMin), toMin, STEPRATE_REFMOVE);
+	super::GoToReference(axis);
 #endif
-}
-
-////////////////////////////////////////////////////////////
-
-bool CMyControl::Parse(CStreamReader* reader, Stream* output)
-{
-	CGCode3DParser gcode(reader,output);
-	return ParseAndPrintResult(&gcode,output);
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyControl::ReadAndExecuteCommand()
-{
-	super::ReadAndExecuteCommand();
-
-	File file = CGCode3DParser::GetExecutingFile();
-	if (PrintFromSDRunnding() && file)
-	{
-		if (IsKilled())
-		{
-			ClearPrintFromSD();
-			file.close();
-		}
-		else
-		{
-			CGCode3DParser::SetExecutingFilePosition(file.position());
-
-			FileReadAndExecuteCommand(&file,NULL);			// one line!!! Output goes to NULL
-
-			if (file.available() == 0)
-			{
-				ClearPrintFromSD();
-				file.close();
-				StepperSerial.println(MESSAGE_MYCONTROL_ExecutingStartupNcDone);
-			}
-		}
-	}
 }
 
 ////////////////////////////////////////////////////////////

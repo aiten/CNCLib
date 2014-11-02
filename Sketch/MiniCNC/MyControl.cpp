@@ -47,22 +47,17 @@ void CMyControl::Init()
 	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,35));  
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
-	//  CStepper::GetInstance()->SetMaxSpeed(20000);
-	//CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350*SPEEDFACTOR_SQT), steprate_t(350*SPEEDFACTOR_SQT));
-
 	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControl::ToMachine(X_AXIS,130000));
 	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,45000));
 	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,81000));
 
-#ifdef NUM_AXIS > 3
+#if NUM_AXIS > 3
 	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControl::ToMachine(A_AXIS,300000));
 #endif
 
 	//CStepper::GetInstance()->SetJerkSpeed(X_AXIS, SPEEDFACTOR*1000);
 	//CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, SPEEDFACTOR*1000);
 	//CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, SPEEDFACTOR*1000);
-
-	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
 
 #if SPINDEL_PIN != -1
 	_spindel.Init();
@@ -105,9 +100,15 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 {
 	switch (tool)
 	{
-		case Probe:		{ return _probe.IsOn(); }
+#if PROBE1_PIN != -1
+		case Probe:			{ return _probe.IsOn(); }
+#endif
+#if SPINDEL_PIN != -1
 		case Spindel:		{ return _spindel.IsOn(); }
+#endif
+#if CONTROLLERFAN_FAN_PIN != -1
 		case ControllerFan:	{ return _controllerfan.Level; }
+#endif
 	}
 
 	return super::IOControl(tool);
@@ -118,37 +119,17 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 void CMyControl::Kill()
 {
 	super::Kill();
+#if SPINDEL_PIN != -1
 	_spindel.On(0);
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyControl::Initialized()
-{
-	super::Initialized();
-
-	GoToReference();
-
-	_controllerfan.Level=128;
+#endif
 }
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::GoToReference()
 {
-	super::GoToReference();
-return;
-	GoToReference(Z_AXIS);
-	GoToReference(Y_AXIS);
-	GoToReference(X_AXIS);
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyControl::GoToReference(axis_t axis)
-{
-	// goto min/max
-	CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, axis == Z_AXIS), axis == Z_AXIS, STEPRATE_REFMOVE);
+	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
+//	super::GoToReference();
 }
 
 ////////////////////////////////////////////////////////////
@@ -163,6 +144,7 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 
 bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
 {
+#if CONTROLLERFAN_FAN_PIN != -1
 	switch (eventtype)
 	{
 		case CStepper::OnStartEvent:
@@ -175,6 +157,7 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 			}
 			break;
 	}
+#endif
 
 	return super::OnStepperEvent(stepper, eventtype, addinfo);
 }
