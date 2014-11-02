@@ -51,6 +51,4 @@ public:
 
 private:
 
-  void InitMemVar();
-
 };
