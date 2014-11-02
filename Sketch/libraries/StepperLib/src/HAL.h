@@ -24,6 +24,25 @@
 #include <arduino.h>
 #include "ConfigurationStepperLib.h"
 
+//////////////////////////////////////////
+
+#ifdef _MSC_VER
+
+#else
+
+#define strcpy_s strcpy
+#define strncpy_s strncpy
+
+#define _itoa(a,b,c) itoa(a,b,c)
+#define _ltoa(a,b,c) ltoa(a,b,c)
+
+#ifndef CRITICAL_SECTION_START
+#define CRITICAL_SECTION_START  irqflags_t _sreg = SREG; cli();
+#define CRITICAL_SECTION_END    SREG = _sreg;
+#endif //CRITICAL_SECTION_START
+
+#endif
+
 ////////////////////////////////////////////////////////
 
 #define TIMER0VALUE(freq)	((timer_t)((unsigned long)TIMER0FREQUENCE/(unsigned long)freq))

@@ -22,7 +22,7 @@
 #include "ConfigurationStepperLib.h"
 #include "HAL.h"
 #include "RingBuffer.h"
-#include "UtilitiesStepperLib.h"
+#include "Singleton.h"
 
 ////////////////////////////////////////////////////////
 //
@@ -50,7 +50,8 @@ public:
 		EighthStep = 8,
 		SixteenStep = 16,
 		ThirtytwoStep = 32,
-		SixtyfourStep = 64
+		SixtyfourStep = 64,
+		OneHundredTwentyEighttep = 128
 	};
 
 	enum EWaitType
@@ -66,7 +67,7 @@ public:
 	{
 		OnStartEvent,
 		OnIdleEvent,
-		OnDisableEvent,					// Disable stepper if inactive
+		OnDisableEvent,											// Disable stepper if inactive
 		OnWaitEvent,
 		OnErrorEvent,
 		OnWarningEvent,
@@ -82,6 +83,15 @@ public:
 		Level20P = ProcentToLevel(20),
 		Level60P = ProcentToLevel(60),
 		LevelOff = 0
+	};
+
+	enum EDumpOptions		// use bit
+	{
+		DumpAll			= 0xff,
+		DumpPos			= 1,
+		DumpState		= 2,
+		DumpMovements	= 8,
+		DumpDetails		= 128									// detail of each option
 	};
 
 	typedef bool(*StepperEvent)(CStepper*stepper, void* param, EnumAsByte(EStepperEvent) eventtype, void* addinfo);
@@ -157,9 +167,6 @@ public:
 
 	void SetBacklash(axis_t axis, mdist_t dist)					{ _pod._backlash[axis] = dist; }
 
-	//////////////////////////////
-	// shortcut
-
 	void AbortMove();											// Abort all pendinge/current moves, no dec ramp
 	void EmergencyStop()										{ _emergencyStop = true; AbortMove(); }
 	bool IsEmergencyStop()										{ return _emergencyStop; }
@@ -169,6 +176,8 @@ public:
 	bool IsUseReference(unsigned char referneceid)				{ return _pod._useReference[referneceid]; }
 	debugvirtula bool MoveReference(axis_t axis, unsigned char referenceid, bool toMin, steprate_t vMax, sdist_t maxdist = 0, sdist_t distToRef = 0, sdist_t distIfRefIsOn = 0);
 	void SetPosition(axis_t axis, udist_t pos);
+
+	//////////////////////////////
 
 	void MoveAbs(const udist_t d[NUM_AXIS], steprate_t vMax = 0);
 	void MoveRel(const sdist_t d[NUM_AXIS], steprate_t vMax = 0);
@@ -210,6 +219,19 @@ public:
 
 	void AddEvent(StepperEvent event, void* eventparam, SEvent&old );
 
+	unsigned char ToReferenceId(axis_t axis, bool minRef)		{ return axis * 2 + (minRef ? 0 : 1); }
+
+	virtual bool  IsAnyReference() = 0;
+	virtual bool  IsReference(unsigned char referenceid) = 0;
+
+	void SetEnableAll(unsigned char level);				// level 0-255
+	virtual void SetEnable(axis_t axis, unsigned char level, bool force) = 0;
+	virtual unsigned char GetEnable(axis_t axis) = 0;
+
+	static unsigned char ConvertLevel(bool enable)				{ return enable ? (unsigned char)(LevelMax) : (unsigned char)(LevelOff); }
+
+	void Dump(unsigned char options);							// options ==> EDumpOptions with bits
+
 	////////////////////////////////////////////////////////
 
 private:
@@ -218,7 +240,7 @@ private:
 	void QueueWait(const mdist_t dist, timer_t timerMax, SMovementParam* param);
 
 	void EnqueuAndStartTimer(bool waitfinish);
-	void WaitCanQueue();
+	void WaitUntilCanQueue();
 	bool StartMovement();
 
 	long CalcNextPos(udist_t current, udist_t dist, bool directionUp)
@@ -241,15 +263,11 @@ protected:
 
 	bool MoveUntil(unsigned char referenceId, bool referencevalue, unsigned short stabletime);
 
-protected:
-
 	void QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], steprate_t vMax);
 	void QueueWait();
 
 	debugvirtula void Step(bool isr);
-
 	debugvirtula void OptimizeMovementQueue(bool force);
-
 
 	////////////////////////////////////////////////////////
 
@@ -292,38 +310,38 @@ protected:
 		timer_t			_timerbacklash;								// -1 or 0 for temporary enable/disable backlash without setting _backlash to 0
 
 #ifndef REDUCED_SIZE
-		unsigned long  _totalSteps;									// total steps since start
-		unsigned int _timerISRBusy;									// ISR while in ISR
+		unsigned long	_totalSteps;								// total steps since start
+		unsigned int	_timerISRBusy;								// ISR while in ISR
 #endif
 
-		timer_t _timerMaxDefault;									// timervalue of vMax (if vMax = 0)
+		timer_t			_timerMaxDefault;							// timervalue of vMax (if vMax = 0)
 
-		udist_t _current[NUM_AXIS];									// update in ISR
-		udist_t _calculatedpos[NUM_AXIS];							// calculated in advanced (use movement queue)
+		udist_t			_current[NUM_AXIS];							// update in ISR
+		udist_t			_calculatedpos[NUM_AXIS];					// calculated in advanced (use movement queue)
 
-		bool _useReference[NUM_AXIS * 2];							// each axis min and max - used in ISR
+		bool			_useReference[NUM_AXIS * 2];				// each axis min and max - used in ISR
 
-		steprate_t _maxJerkSpeed[NUM_AXIS];							// immediate change of speed without ramp (in junction)
+		steprate_t		_maxJerkSpeed[NUM_AXIS];					// immediate change of speed without ramp (in junction)
 
-		timer_t _timerMax[NUM_AXIS];								// maximum speed of axis
-		timer_t _timerAcc[NUM_AXIS];								// acc timer start
-		timer_t _timerDec[NUM_AXIS];								// dec timer start
+		timer_t			_timerMax[NUM_AXIS];						// maximum speed of axis
+		timer_t			_timerAcc[NUM_AXIS];						// acc timer start
+		timer_t			_timerDec[NUM_AXIS];						// dec timer start
 
-		udist_t _limitMin[NUM_AXIS];
-		udist_t _limitMax[NUM_AXIS];
+		udist_t			_limitMin[NUM_AXIS];
+		udist_t			_limitMax[NUM_AXIS];
 
-		mdist_t _backlash[NUM_AXIS];								// backlash of each axis (signed mdist_t/2)
+		mdist_t			_backlash[NUM_AXIS];						// backlash of each axis (signed mdist_t/2)
 
-		unsigned long _timerStartOrOnIdle;							// timervalue if library start move or goes to Idle
-		unsigned long _timerLastCheckEnable;						// timervalue
+		unsigned long	_timerStartOrOnIdle;						// timervalue if library start move or goes to Idle
+		unsigned long	_timerLastCheckEnable;						// timervalue
 
-		unsigned char _idleLevel;									// level if idle (0..100)
-		axisArray_t	  _lastdirection;								// for backlash
+		unsigned char	_idleLevel;									// level if idle (0..100)
+		axisArray_t		_lastdirection;								// for backlash
 
 		const __FlashStringHelper * _error;
 
-		unsigned char _timeOutEnable[NUM_AXIS];						// enabletimeout in sec if no step (0.. disable, always enabled)
-		unsigned char _timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
+		unsigned char	_timeOutEnable[NUM_AXIS];					// enabletimeout in sec if no step (0.. disable, always enabled)
+		unsigned char	_timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
 
 		EnumAsByte(EStepMode) _stepMode[NUM_AXIS];					// fullstep, half, ...
 
@@ -349,29 +367,29 @@ protected:
 
 		enum EMovementState
 		{
-			StateReadyMove = 1,									// ready for travel (not executing)
-			StateReadyWait = 2,									// ready for none "travel" move (wait move) (not executing)
+			StateReadyMove	= 1,								// ready for travel (not executing)
+			StateReadyWait	= 2,								// ready for none "travel" move (wait move) (not executing)
 
-			StateUpAcc = 11,									// in start phase accelerate
-			StateUpDec = 12,									// in start phase decelerate to vmax
-			StateRun = 13,										// running (no acc and dec)
-			StateDownDec = 14,									// in stop phase decelerate
-			StateDownAcc = 15,									// in stop phase accelerate
+			StateUpAcc		= 11,								// in start phase accelerate
+			StateUpDec		= 12,								// in start phase decelerate to vmax
+			StateRun		= 13,								// running (no acc and dec)
+			StateDownDec	= 14,								// in stop phase decelerate
+			StateDownAcc	= 15,								// in stop phase accelerate
 
-			StateWait = 21,										// executing wait (do no step)
+			StateWait		= 21,								// executing wait (do no step)
 
-			StateDone = 0,										// finished
+			StateDone		= 0,								// finished
 		};
 
-		mdist_t _steps;											// total movement steps (=distance)
+		mdist_t		_steps;										// total movement steps (=distance)
 
 		EnumAsByte(EMovementState) _state;						// emums are 16 bit in gcc => force byte
-		bool _backlash;											// move is backlash
+		bool		_backlash;									// move is backlash
 
-		DirCount_t _dirCount;
-		DirCount_t _lastStepDirCount;
+		DirCount_t	_dirCount;
+		DirCount_t	_lastStepDirCount;
 
-		mdist_t	_distance_[NUM_AXIS];							// distance adjusted wiht stepmultiplier => use GetDistance(axis)
+		mdist_t		_distance_[NUM_AXIS];						// distance adjusted wiht stepmultiplier => use GetDistance(axis)
 
 		struct SRamp											// only modify in CCRiticalRegion
 		{
@@ -518,19 +536,19 @@ protected:
 	struct SStepBuffer
 	{
 	public:
-		DirCount_t DirStepCount;								// direction and count
-		timer_t	Timer;
+		DirCount_t		DirStepCount;								// direction and count
+		timer_t			Timer;
 #ifdef _MSC_VER
-		mdist_t  _distance[NUM_AXIS];							// to calculate relative speed
-		mdist_t  _steps;
+		mdist_t			_distance[NUM_AXIS];						// to calculate relative speed
+		mdist_t			_steps;
 		SMovement::EMovementState  _state;
-		mdist_t  _n;
-		unsigned char _count;
+		mdist_t			_n;
+		unsigned char	_count;
 		char _spMSCInfo[MOVEMENTINFOSIZE];
 #endif
 		void Init(DirCount_t dirCount)
 		{
-			Timer = 0;
+			Timer		 = 0;
 			DirStepCount = dirCount;
 		};
 	};
@@ -549,7 +567,7 @@ protected:
 
 	debugvirtula void OnIdle(unsigned long idletime);				// called in ISR
 	debugvirtula void OnWait(EnumAsByte(EWaitType) wait);			// wait for finish move or movementqueue full
-	debugvirtula void OnStart();										// startup of movement
+	debugvirtula void OnStart();									// startup of movement
 
 	debugvirtula void OnError(const __FlashStringHelper * error);
 	debugvirtula void OnWarning(const __FlashStringHelper * warning);
@@ -558,30 +576,6 @@ protected:
 	void Error(const __FlashStringHelper * error)						{ _pod._error = error; OnError(error); }
 	void Info(const __FlashStringHelper * info)							{ OnInfo(info); }
 	void Warning(const __FlashStringHelper * warning)					{ OnWarning(warning); }
-
-public:
-
-	unsigned char ToReferenceId(axis_t axis, bool minRef)				{ return axis * 2 + (minRef ? 0 : 1); }
-
-	virtual bool  IsAnyReference() = 0;
-	virtual bool  IsReference(unsigned char referenceid) = 0;
-
-	enum EDumpOptions		// use bit
-	{
-		DumpAll = 0xff,
-		DumpPos = 1,
-		DumpState = 2,
-		DumpMovements = 8,
-		DumpDetails = 128											// detail of each option
-	};
-
-	void Dump(unsigned char options);							// options ==> EDumpOptions with bits
-
-	void SetEnableAll(unsigned char level);				// level 0-255
-	virtual void SetEnable(axis_t axis, unsigned char level, bool force) = 0;
-	virtual unsigned char GetEnable(axis_t axis) = 0;
-
-	static unsigned char ConvertLevel(bool enable)				{ return enable ? (unsigned char)(LevelMax) : (unsigned char)(LevelOff); }
 
 protected:
 

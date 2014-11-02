@@ -19,31 +19,29 @@
 
 #pragma once
 
-////////////////////////////////////////////////////////
+//////////////////////////////////////////
 
-#define STEPPERTYPE 1		// CStepperL298N
-//#define STEPPERTYPE 2		// CStepperSMC800
-//#define STEPPERTYPE 3		// CStepperTB6560
+template <class T>
+class CPushValue
+{
+private:
 
-////////////////////////////////////////////////////////
+	T* _Value;
+	T  _oldValue;
 
-#if STEPPERTYPE==1
+public:
 
-#include "Configuration_MiniCNC_L298N.h"
+	CPushValue(T* remember, T newValue)
+	{
+		_Value = remember;
+		_oldValue = *remember;
+		*remember = newValue;
+	}
 
-#elif STEPPERTYPE==2
+	~CPushValue()
+	{
+		*_Value = _oldValue;
+	}
+};
 
-#include "Configuration_MiniCNC_SMC800.h"
-
-#elif STEPPERTYPE==3
-
-#include "Configuration_MiniCNC_TB6560.h"
-
-#endif
-
-////////////////////////////////////////////////////////
-
-#include <MessageCNCLib.h>
-
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC:"__DATE__)
-
+//////////////////////////////////////////

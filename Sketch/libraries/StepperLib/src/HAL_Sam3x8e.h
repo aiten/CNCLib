@@ -53,7 +53,17 @@
 #define TIMER5FREQUENCE		(F_CPU/TIMER5PRESCALE)
 #define TIMER5PRESCALE      2			
 
-#define TIMEROVERHEAD		1			// decrease Timervalue for ISR overhead before set new timer
+#define MAXINTERRUPTSPEED	(65535/7)		// maximal possible interrupt rate => steprate_t
+
+#define SPEED_MULTIPLIER_1	0
+#define SPEED_MULTIPLIER_2	(MAXINTERRUPTSPEED*1)
+#define SPEED_MULTIPLIER_3	(MAXINTERRUPTSPEED*2)
+#define SPEED_MULTIPLIER_4	(MAXINTERRUPTSPEED*3)
+#define SPEED_MULTIPLIER_5	(MAXINTERRUPTSPEED*4)
+#define SPEED_MULTIPLIER_6	(MAXINTERRUPTSPEED*5)
+#define SPEED_MULTIPLIER_7	(MAXINTERRUPTSPEED*6)
+
+#define TIMEROVERHEAD		1				// decrease Timervalue for ISR overhead before set new timer
 
 inline void CHAL::DisableInterrupts()		{	cpu_irq_disable(); }
 inline void CHAL::EnableInterrupts()		{	cpu_irq_enable(); }

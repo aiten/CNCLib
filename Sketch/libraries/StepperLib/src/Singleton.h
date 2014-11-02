@@ -19,31 +19,22 @@
 
 #pragma once
 
-////////////////////////////////////////////////////////
+//////////////////////////////////////////
 
-#define STEPPERTYPE 1		// CStepperL298N
-//#define STEPPERTYPE 2		// CStepperSMC800
-//#define STEPPERTYPE 3		// CStepperTB6560
+template <class T>
+class CSingleton
+{
+private:
+	static T* _instance;
 
-////////////////////////////////////////////////////////
+public:
 
-#if STEPPERTYPE==1
+	CSingleton()
+	{
+		_instance = (T*) this;
+	}
 
-#include "Configuration_MiniCNC_L298N.h"
+	static T* GetInstance()	{ return _instance; }
+};
 
-#elif STEPPERTYPE==2
-
-#include "Configuration_MiniCNC_SMC800.h"
-
-#elif STEPPERTYPE==3
-
-#include "Configuration_MiniCNC_TB6560.h"
-
-#endif
-
-////////////////////////////////////////////////////////
-
-#include <MessageCNCLib.h>
-
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC:"__DATE__)
-
+//////////////////////////////////////////

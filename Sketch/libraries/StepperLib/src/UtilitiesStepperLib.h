@@ -25,68 +25,6 @@
 
 //////////////////////////////////////////
 
-#ifdef _MSC_VER
-
-#else
-
-#define strcpy_s strcpy
-#define strncpy_s strncpy
-
-#define _itoa(a,b,c) itoa(a,b,c)
-#define _ltoa(a,b,c) ltoa(a,b,c)
-
-#ifndef CRITICAL_SECTION_START
-#define CRITICAL_SECTION_START  irqflags_t _sreg = SREG; cli();
-#define CRITICAL_SECTION_END    SREG = _sreg;
-#endif //CRITICAL_SECTION_START
-
-#endif
-
-//////////////////////////////////////////
-
-template <class T>
-class CSingleton
-{
-private:
-	static T* _instance;
-
-public:
-
-	CSingleton()
-	{
-		_instance = (T*) this;
-	}
-
-	static T* GetInstance()	{ return _instance; }
-};
-
-//////////////////////////////////////////
-
-template <class T>
-class CRememberOld
-{
-private:
-
-	T* _Value;
-	T  _oldValue;
-
-public:
-
-	CRememberOld(T* remember, T newValue)
-	{
-		_Value = remember;
-		_oldValue = *remember;
-		*remember = newValue;
-	}
-
-	~CRememberOld()
-	{
-		*_Value = _oldValue;
-	}
-};
-
-//////////////////////////////////////////
-
 extern unsigned char ToPrecisionU10(unsigned long);
 extern unsigned char ToPrecisionU10(unsigned short);
 extern unsigned char ToPrecisionS10(long v);

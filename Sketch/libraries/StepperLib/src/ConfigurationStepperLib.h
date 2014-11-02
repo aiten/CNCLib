@@ -56,17 +56,7 @@ typedef unsigned long udist_t;	// tpye of stepper coord system (unsigned)
 
 #define WAITTIMER1VALUE		TIMER1VALUE(100)		// Idle timer value for "no step" movement
 
-#define MAXSPEED			(65535)					// see range for mdist_t
-#define MAXINTERRUPTSPEED	(65535/7)				// maximal possible interrupt rate
 #define TIMER1VALUEMAXSPEED	TIMER1VALUE(MAXSPEED)
-
-#define SPEED_MULTIPLIER_1			0
-#define SPEED_MULTIPLIER_2			(MAXINTERRUPTSPEED*1)
-#define SPEED_MULTIPLIER_3			(MAXINTERRUPTSPEED*2)
-#define SPEED_MULTIPLIER_4			(MAXINTERRUPTSPEED*3)
-#define SPEED_MULTIPLIER_5			(MAXINTERRUPTSPEED*4)
-#define SPEED_MULTIPLIER_6			(MAXINTERRUPTSPEED*5)
-#define SPEED_MULTIPLIER_7			(MAXINTERRUPTSPEED*6)
 
 ////////////////////////////////////////////////////////
 
@@ -86,7 +76,7 @@ typedef unsigned long udist_t;	// tpye of stepper coord system (unsigned)
 
 #elif defined(__AVR_ATmega328P__)
 
-// usual with SMC800
+// usual with SMC800, L298N or TB6560
 
 #undef use32bit
 #define use16bit
@@ -94,8 +84,6 @@ typedef unsigned long udist_t;	// tpye of stepper coord system (unsigned)
 #define STEPBUFFERSIZE		16		// size 2^x but not 256
 #define MOVEMENTBUFFERSIZE	8
 
-#undef NUM_AXIS
-//#define NUM_AXIS 3
 #define NUM_AXIS 4
 
 #define REDUCED_SIZE
@@ -132,12 +120,8 @@ typedef unsigned long long uint64_t;
 
 #define STEPBUFFERSIZE		16		// size 2^x but not 256
 #define MOVEMENTBUFFERSIZE	8
-//#define STEPBUFFERSIZE		16
-//#define MOVEMENTBUFFERSIZE	32
 
-//#undef NUM_AXIS
 #define NUM_AXIS 3
-//#define NUM_AXIS 5
 
 #undef REFERENCESTABLETIME
 #define REFERENCESTABLETIME	0
@@ -159,6 +143,8 @@ ToDo;
 #define MAXSTEPSPERMOVE		0xffff			// split in moves
 #define MAXACCDECSTEPS		(0x10000/4 -10)	// max stepps for acc and dec ramp ( otherwise overrun)
 
+#define MAXSPEED			(65535)			// see range for steprate_t
+
 typedef unsigned short timer_t;			// timer tpye (16bit)
 typedef unsigned short mdist_t;			// tpye for one movement (16bit)
 typedef unsigned short steprate_t;		// tpye for speed (Hz), Steps/sec
@@ -166,10 +152,14 @@ typedef unsigned short steprate_t;		// tpye for speed (Hz), Steps/sec
 #define mudiv	udiv
 #define mudiv_t	udiv_t
 
+////////////////////////////////////////////////////////
+
 #elif defined(use32bit)
 
 #define MAXSTEPSPERMOVE		0xffffffff	// split in Moves
 #define MAXACCDECSTEPS		0x1000000
+
+#define MAXSPEED			(128000)	// limit steprate_t
 
 typedef unsigned long timer_t;			// timer tpye (32bit)
 typedef unsigned long mdist_t;			// tpye for one movement (32bit)
@@ -240,7 +230,7 @@ struct DirCountByte_t
 				unsigned char count1 : 3;
 				unsigned char dirUp1 : 1;
 
-				unsigned char nocount : 1;		// do not count step (e.g. move for backlash
+				unsigned char nocount : 1;		// do not count step (e.g. move for backlash)
 				unsigned char unused1 : 1;
 				unsigned char unused2 : 1;
 				unsigned char unused3 : 1;

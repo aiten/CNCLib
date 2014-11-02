@@ -44,7 +44,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\LinearLookUp.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\MessageStepperLib.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\PushValue.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\RingBuffer.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Singleton.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperL298N.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperLib.h" />

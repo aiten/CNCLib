@@ -24,6 +24,7 @@
 #include <ctype.h>
 
 #include "Stepper.h"
+#include "PushValue.h"
 #include "UtilitiesStepperLib.h"
 
 ////////////////////////////////////////////////////////
@@ -212,7 +213,7 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 #ifndef REDUCED_SIZE
 				Info(MESSAGE_STEPPER_Backlash);
 #endif
-				WaitCanQueue();
+				WaitUntilCanQueue();
 
 				_movements._queue.NextTail().InitMove(this, _movements._queue.SaveTail(), backlashsteps, backlashdist, directionUp, _pod._timerbacklash);
 				_movements._queue.NextTail().SetBacklash();
@@ -228,7 +229,7 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 	// wait until free movement buffer
 
-	WaitCanQueue();
+	WaitUntilCanQueue();
 
 	_movements._queue.NextTail().InitMove(this, _movements._queue.SaveTail(), steps, dist, directionUp, timerMax);
 
@@ -239,7 +240,7 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 void CStepper::QueueWait(const mdist_t dist, timer_t timerMax, SMovementParam* param)
 {
-	WaitCanQueue();
+	WaitUntilCanQueue();
 	_movements._queue.NextTail().InitWait(this, dist, timerMax, param);
 
 	EnqueuAndStartTimer(true);
@@ -247,7 +248,7 @@ void CStepper::QueueWait(const mdist_t dist, timer_t timerMax, SMovementParam* p
 
 ////////////////////////////////////////////////////////
 
-void CStepper::WaitCanQueue()
+void CStepper::WaitUntilCanQueue()
 {
 	while (_movements._queue.IsFull())
 	{
@@ -966,7 +967,7 @@ void CStepper::WaitBusy()
 {
 	while (IsBusy())
 	{
-		// wait until finish alle movements
+		// wait until finish all movements
 		OnWait(WaitBusyCall);
 	}
 }
@@ -1869,7 +1870,7 @@ bool CStepper::MoveAwayFromReference(axis_t axis, unsigned char referenceid, sdi
 	if (IsReference(referenceid))
 	{
 		Info(MESSAGE_STEPPER_IsReferenceIsOn);
-		CRememberOld<bool> OldCheckForReference(&_pod._checkReference, false);
+		CPushValue<bool> OldCheckForReference(&_pod._checkReference, false);
 		MoveAwayFromReference(axis, dist, vMax);
 
 		if (!MoveUntil(referenceid, false, REFERENCESTABLETIME))
@@ -1887,10 +1888,10 @@ bool CStepper::MoveReference(axis_t axis, unsigned char referenceid, bool toMin,
 
 	bool ret = false;
 
-	CRememberOld<bool> OldLimitCheck(&_pod._limitCheck, false);
-	CRememberOld<bool> OldWaitFinishMove(&_pod._waitFinishMove, false);
-	CRememberOld<bool> OldCheckForReference(&_pod._checkReference, false);
-	CRememberOld<timer_t> OldBacklashenabled(&_pod._timerbacklash, ((timer_t)-1));
+	CPushValue<bool> OldLimitCheck(&_pod._limitCheck, false);
+	CPushValue<bool> OldWaitFinishMove(&_pod._waitFinishMove, false);
+	CPushValue<bool> OldCheckForReference(&_pod._checkReference, false);
+	CPushValue<timer_t> OldBacklashenabled(&_pod._timerbacklash, ((timer_t)-1));
 
 	if (vMax == 0)			vMax = TimerToSpeed(_pod._timerMaxDefault);
 	if (maxdist == 0)		maxdist = ((GetLimitMax(axis) - GetLimitMin(axis))*11)/10;	// add 10%

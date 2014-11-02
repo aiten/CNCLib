@@ -36,6 +36,16 @@
 #define TIMER4FREQUENCE		62500L
 #define TIMER5FREQUENCE		62500L
 
+#define MAXINTERRUPTSPEED	(65535/7)		// maximal possible interrupt rate => steprate_t
+
+#define SPEED_MULTIPLIER_1	0
+#define SPEED_MULTIPLIER_2	(MAXINTERRUPTSPEED*1)
+#define SPEED_MULTIPLIER_3	(MAXINTERRUPTSPEED*2)
+#define SPEED_MULTIPLIER_4	(MAXINTERRUPTSPEED*3)
+#define SPEED_MULTIPLIER_5	(MAXINTERRUPTSPEED*4)
+#define SPEED_MULTIPLIER_6	(MAXINTERRUPTSPEED*5)
+#define SPEED_MULTIPLIER_7	(MAXINTERRUPTSPEED*6)
+
 #define TIMEROVERHEAD		(0)				// decrease Timervalue for ISR overhead before set new timer
 
 inline void CHAL::DisableInterrupts()	{	cli(); }
