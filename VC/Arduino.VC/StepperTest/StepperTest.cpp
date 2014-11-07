@@ -467,7 +467,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		Stepper.EndTest("TR24_Wait.csv");
 	}
 
-	if (true || alltests)
+	if (false || alltests)
 	{
 		Stepper.InitTest();
 		Stepper.SetDefaultMaxSpeed(5000, 100 , 150);
@@ -475,6 +475,15 @@ int _tmain(int argc, _TCHAR* argv[])
 		Stepper.CStepper::MoveRel(0,1,2);
 		Stepper.CStepper::MoveRel(0,100,3);
 		Stepper.EndTest("TR25_VerySlow.csv");
+	}
+
+	if (true || alltests)
+	{
+		Stepper.InitTest();
+		Stepper.SetDefaultMaxSpeed(5000, 100, 150);
+		Stepper.CStepper::MoveRel(0, 2500, 1000);
+		Stepper.CStepper::StopMove();
+		Stepper.EndTest("TR25_StopMove.csv");
 	}
 
 

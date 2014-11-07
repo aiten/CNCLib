@@ -1130,6 +1130,43 @@ mdist_t CStepper::GetSteps(timer_t timer1, timer_t timer2, timer_t timerstart, t
 
 ////////////////////////////////////////////////////////
 
+#ifndef REDUCED_SIZE
+
+void CStepper::StopMove()
+{
+	if (_movements._queue.Count() > 0)
+	{
+		if (_movements._queue.Count() == 1)
+		{
+			SMovement& mv = _movements._queue.Head();
+
+			if (mv.IsActiveWait())
+			{
+				CCriticalRegion critical;
+				_movementstate._n = mv._steps;
+			}
+			else
+			{
+				// do nothing if move is about to finish
+				if (mv.IsDownMove())
+					return;
+
+				CCriticalRegion critical;
+				// start downramp now
+
+				mdist_t cutDist = mv._pod._move._ramp._downStartAt - _movementstate._n;
+
+				mv._steps -= cutDist;
+				mv._pod._move._ramp._downStartAt = _movementstate._n;
+			}
+		}
+	}
+}
+
+#endif
+
+////////////////////////////////////////////////////////
+
 void CStepper::AbortMove()
 {
 	CCriticalRegion critical;

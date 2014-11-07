@@ -167,7 +167,8 @@ public:
 
 	void SetBacklash(axis_t axis, mdist_t dist)					{ _pod._backlash[axis] = dist; }
 
-	void AbortMove();											// Abort all pendinge/current moves, no dec ramp
+	void StopMove();											// Stop all pendinge/current moves, WITH dec ramp
+	void AbortMove();											// Abort all pendinge/current moves, NO dec ramp
 	void EmergencyStop()										{ _emergencyStop = true; AbortMove(); }
 	bool IsEmergencyStop()										{ return _emergencyStop; }
 	void EmergencyStopResurrect();
