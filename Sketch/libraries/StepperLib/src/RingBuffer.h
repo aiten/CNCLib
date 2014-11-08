@@ -56,11 +56,17 @@ public:
 		_empty = false;
 	}
 
-
 	void RemoveTail()
 	{
 		CCriticalRegion crit;
 		_nexttail = PrevIndex(_nexttail);
+		_empty = _head == _nexttail;
+	}
+
+	void RemoveTail(unsigned char tail)
+	{
+		CCriticalRegion crit;
+		_nexttail = NextIndex(tail);
 		_empty = _head == _nexttail;
 	}
 

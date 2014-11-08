@@ -490,6 +490,34 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 
 ////////////////////////////////////////////////////////
 
+void CStepper::SMovement::InitStop(SMovement* mvPrev, timer_t timer, timer_t dectimer)
+{
+	// must be a copy off current (executing) move
+	*this = *mvPrev;
+
+	mvPrev->_steps = _pStepper->_movementstate._n;		// stop now
+
+	_pod._move._timerDec = dectimer;
+
+	mdist_t downstpes = CStepper::GetDecSteps(timer, dectimer);
+
+	for (unsigned char i=0;i<NUM_AXIS;i++)
+	{
+		_distance_[i] = RoundMulDivUInt(_distance_[i],downstpes,_steps);
+	}
+
+	_state = SMovement::StateReadyMove;
+
+	_steps = downstpes;
+
+	_pod._move._ramp._timerRun   = timer;
+
+	_pod._move._ramp.RampUp(this,timer, timer);
+	_pod._move._ramp.RampDown(this,(timer_t) -1);
+}
+
+////////////////////////////////////////////////////////
+
 void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, SMovementParam* param)
 {
 	//this is no POD because of methode's => *this = SMovement();		
@@ -1130,40 +1158,45 @@ mdist_t CStepper::GetSteps(timer_t timer1, timer_t timer2, timer_t timerstart, t
 
 ////////////////////////////////////////////////////////
 
-#ifndef REDUCED_SIZE
-
-void CStepper::StopMove()
+void CStepper::StopMove(steprate_t v0Dec)
 {
 	if (_movements._queue.Count() > 0)
 	{
-		if (_movements._queue.Count() == 1)
-		{
-			SMovement& mv = _movements._queue.Head();
+		SMovement& mv = _movements._queue.Head();
 
-			if (mv.IsActiveWait())
+		if (mv.IsActiveWait())
+		{
+			CCriticalRegion critical;
+			_movementstate._n = mv._steps;
+		}
+		else
+		{
+			timer_t dectimer = v0Dec!=0 ? SpeedToTimer(v0Dec) : mv.GetDownTimerDec();
+
 			{
 				CCriticalRegion critical;
-				_movementstate._n = mv._steps;
-			}
-			else
-			{
+
 				// do nothing if move is about to finish
 				if (mv.IsDownMove())
 					return;
 
-				CCriticalRegion critical;
+				// remove all not executed moves and create a new one for dec
 				// start downramp now
 
-				mdist_t cutDist = mv._pod._move._ramp._downStartAt - _movementstate._n;
+				SubTotalSteps();
 
-				mv._steps -= cutDist;
-				mv._pod._move._ramp._downStartAt = _movementstate._n;
+				_movements._queue.RemoveTail(_movements._queue.GetHeadPos());
+
+				_movements._queue.NextTail().InitStop(&mv, _movementstate._timer,dectimer);
+
+				_movements._queue.Enqueue();
 			}
+
+			WaitBusy();
+			memcpy(_pod._calculatedpos, _pod._current, sizeof(_pod._calculatedpos));
 		}
 	}
 }
-
-#endif
 
 ////////////////////////////////////////////////////////
 
@@ -1171,6 +1204,20 @@ void CStepper::AbortMove()
 {
 	CCriticalRegion critical;
 
+	SubTotalSteps();
+
+	_steps.Clear();
+	_movements._queue.Clear();
+
+	memcpy(_pod._calculatedpos, _pod._current, sizeof(_pod._calculatedpos));
+
+	GoIdle();
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::SubTotalSteps()
+{
 #ifndef REDUCED_SIZE
 
 	// sub all pending steps to _totalsteps
@@ -1187,13 +1234,6 @@ void CStepper::AbortMove()
 	}
 
 #endif
-
-	_steps.Clear();
-	_movements._queue.Clear();
-
-	memcpy(_pod._calculatedpos, _pod._current, sizeof(_pod._calculatedpos));
-
-	GoIdle();
 }
 
 ////////////////////////////////////////////////////////

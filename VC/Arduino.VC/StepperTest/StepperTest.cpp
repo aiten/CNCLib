@@ -481,8 +481,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		Stepper.InitTest();
 		Stepper.SetDefaultMaxSpeed(5000, 100, 150);
-		Stepper.CStepper::MoveRel(0, 2500, 1000);
-		Stepper.CStepper::StopMove();
+		Stepper.MoveRelEx(47000, 0, 2500, 1, 1000, 2 ,500, -1);
+		Stepper.MoveRelEx(47000, 0, 2500, 1, -1000, 2 ,500, -1);
+		Stepper.CStepper::StopMove(75);
 		Stepper.EndTest("TR25_StopMove.csv");
 	}
 

@@ -167,7 +167,7 @@ public:
 
 	void SetBacklash(axis_t axis, mdist_t dist)					{ _pod._backlash[axis] = dist; }
 
-	void StopMove();											// Stop all pendinge/current moves, WITH dec ramp
+	void StopMove(steprate_t v0Dec=0);							// Stop all pendinge/current moves, WITH dec ramp
 	void AbortMove();											// Abort all pendinge/current moves, NO dec ramp
 	void EmergencyStop()										{ _emergencyStop = true; AbortMove(); }
 	bool IsEmergencyStop()										{ return _emergencyStop; }
@@ -259,6 +259,8 @@ private:
 	void ContinueIdle();
 
 	void CallEvent(EnumAsByte(EStepperEvent) eventtype, void* addinfo=0)	{ _event.Call(this, eventtype, addinfo); }
+
+	void SubTotalSteps();
 
 protected:
 
@@ -478,6 +480,8 @@ protected:
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
 		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, SMovementParam* param);
+
+		void InitStop(SMovement* mvPrev, timer_t timer, timer_t dectimer);
 
 		void SetBacklash()										{ _backlash = true; }
 
