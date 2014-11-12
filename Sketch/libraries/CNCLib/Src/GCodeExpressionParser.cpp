@@ -22,7 +22,7 @@
 #include <arduino.h>
 
 #include "CNCLib.h"
-#include "MotionControl.h"
+#include "MotionControlBase.h"
 
 #include "GCodeExpressionParser.h"
 
@@ -84,7 +84,7 @@ bool CGCodeExpressionParser::EvalVariable(const char* var_name, expr_t& answer)
 	if (var_name[0] == '#')
 	{
 		// assigned in ReadIdent
-		answer = CMotionControl::ToDouble(_gcodeparser->GetParamValue((param_t) _state._number));
+		answer = CMotionControlBase::GetInstance()->ToDouble(_gcodeparser->GetParamValue((param_t)_state._number));
 		return true;
 	}
 	return super::EvalVariable(var_name, answer);

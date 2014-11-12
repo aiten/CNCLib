@@ -170,7 +170,7 @@ protected:
 		{
 			axes = 0; bitfield.all = 0;
 			if (getcurrentPosition)
-				CMotionControl::GetPositions(newpos);
+				CMotionControlBase::GetInstance()->GetPositions(newpos);
 			else
 			{
 				for (register unsigned char i = 0; i < NUM_AXIS; i++) newpos[i] = 0;
@@ -193,7 +193,7 @@ protected:
 	unsigned char GetUint8OrParam()							{ return (unsigned char)GetUint32OrParam(255); };
 
 	mm1000_t GetRelativePosition(mm1000_t pos, axis_t axis)	{ return pos - CalcAllPreset(axis); }
-	mm1000_t GetRelativePosition(axis_t axis)				{ return GetRelativePosition(CMotionControl::GetPosition(axis), axis); }
+	mm1000_t GetRelativePosition(axis_t axis)				{ return GetRelativePosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis); }
 	mm1000_t ToInch(mm1000_t mm100);
 	mm1000_t FromInch(mm1000_t mm100);
 

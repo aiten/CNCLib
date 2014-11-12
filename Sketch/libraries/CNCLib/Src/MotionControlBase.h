@@ -30,37 +30,48 @@
 
 ////////////////////////////////////////////////////////
 
-#define STEPRATETOFEEDRATE(a) (CMotionControl::ToMm1000(0,a*60l))
-#define FEEDRATETOSTEPRATE(a) (CMotionControl::ToMachine(0,a/60l))
+#define STEPRATETOFEEDRATE(a) (CMotionControlBase::GetInstance()->ToMm1000(0,a*60l))
+#define FEEDRATETOSTEPRATE(a) (CMotionControlBase::GetInstance()->ToMachine(0,a/60l))
 
 typedef mm1000_t(*ToMm1000_t) (axis_t axis, sdist_t val);
 typedef sdist_t(*ToMachine_t) (axis_t axis, mm1000_t val);
 
-class CMotionControl
+////////////////////////////////////////////////////////
+
+class CMotionControlBase : public CSingleton<CMotionControlBase>
 {
 private:
 
 	static ToMm1000_t _ToMm1000;
 	static ToMachine_t _ToMachine;
 
+	mm1000_t	_current[NUM_AXIS];
+
+	static void ToMachine(const mm1000_t mm1000[NUM_AXIS], udist_t machine[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { machine[x] = _ToMachine(x, mm1000[x]); } };
+	static void ToMm1000(const udist_t machine[NUM_AXIS], mm1000_t mm1000[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { mm1000[x] = _ToMm1000(x, machine[x]); } };
+
+public: 
+
+	// virtual for projection
+
+	virtual void PositionFromStepper();
+	virtual void TransformPosition(const mm1000_t from[NUM_AXIS], mm1000_t to[NUM_AXIS]);
+
 public:
 
-	static void Arc(const mm1000_t to[NUM_AXIS], mm1000_t offset0, mm1000_t offset1, axis_t  axis_0, axis_t axis_1, bool isclockwise, feedrate_t feedrate);
-	static void MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrate);
+	void Arc(const mm1000_t to[NUM_AXIS], mm1000_t offset0, mm1000_t offset1, axis_t  axis_0, axis_t axis_1, bool isclockwise, feedrate_t feedrate);
+	virtual void MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrate);
 
-	static void GetPositions(mm1000_t current[NUM_AXIS]);
-	static mm1000_t GetPosition(axis_t axis)													{ return _ToMm1000(axis, CStepper::GetInstance()->GetPosition(axis)); }
+	void GetPositions(mm1000_t current[NUM_AXIS]);
+	mm1000_t GetPosition(axis_t axis);
 
-	static steprate_t GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate_t feedrate);
+	virtual steprate_t GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate_t feedrate);
 
 	static expr_t ToDouble(const mm1000_t mm1000)												{ return (expr_t)(mm1000 / 1000.0); }
 	static mm1000_t FromDouble(expr_t dbl)														{ return (mm1000_t)(dbl * 1000); }
 
 	static mm1000_t ToMm1000(axis_t axis, sdist_t val)											{ return _ToMm1000(axis,val);  }
 	static sdist_t ToMachine(axis_t axis, mm1000_t val)											{ return _ToMachine(axis, val); }
-
-	static void ToMachine(const mm1000_t mm1000[NUM_AXIS], udist_t machine[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { machine[x] = _ToMachine(x, mm1000[x]); } };
-	static void ToMm1000(const udist_t machine[NUM_AXIS], mm1000_t mm1000[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { mm1000[x] = _ToMm1000(x, machine[x]); } };
 
 	static void InitConversion(ToMm1000_t toMm1000, ToMachine_t toMachine)						{ _ToMm1000 = toMm1000; _ToMachine = toMachine; }
 

@@ -173,11 +173,11 @@ protected:
 	mm1000_t GetParamValue(param_t paramNo);
 	void SetParamValue(param_t parmNo);
 
-	mm1000_t GetParamAsPosition(mm1000_t posInMaschine,axis_t axis)	{ return ToInch(CMotionControl::ToMm1000(axis, posInMaschine)); }
-	mm1000_t GetParamAsMaschine(mm1000_t posInmm1000,axis_t axis)	{ return FromInch(CMotionControl::ToMachine(axis, posInmm1000)); }
+	mm1000_t GetParamAsPosition(mm1000_t posInMaschine, axis_t axis)	{ return ToInch(CMotionControlBase::GetInstance()->ToMm1000(axis, posInMaschine)); }
+	mm1000_t GetParamAsMaschine(mm1000_t posInmm1000, axis_t axis)		{ return FromInch(CMotionControlBase::GetInstance()->ToMachine(axis, posInmm1000)); }
 
-	mm1000_t GetRelativePosition(mm1000_t pos, axis_t axis)	{ return pos - GetG92PosPreset(axis) - GetG54PosPreset(axis); }
-	mm1000_t GetRelativePosition(axis_t axis)				{ return GetRelativePosition(CMotionControl::GetPosition(axis), axis); }
+	mm1000_t GetRelativePosition(mm1000_t pos, axis_t axis)				{ return pos - GetG92PosPreset(axis) - GetG54PosPreset(axis); }
+	mm1000_t GetRelativePosition(axis_t axis)							{ return GetRelativePosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis); }
 
 	unsigned char GetSubCode();
 

@@ -24,7 +24,7 @@
 #include <ctype.h>
 
 #include "CNCLib.h"
-#include "MotionControl.h"
+#include "MotionControlBase.h"
 
 #ifdef _MSC_VER
 #include "Control.h"
@@ -32,20 +32,74 @@
 
 /////////////////////////////////////////////////////////
 
-ToMm1000_t CMotionControl::_ToMm1000 = ToMm1000_1_3200;
-ToMachine_t CMotionControl::_ToMachine = ToMachine_1_3200;
+ToMm1000_t CMotionControlBase::_ToMm1000 = ToMm1000_1_3200;
+ToMachine_t CMotionControlBase::_ToMachine = ToMachine_1_3200;
 
 /////////////////////////////////////////////////////////
 
-void CMotionControl::MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrate)
+template<> CMotionControlBase* CSingleton<CMotionControlBase>::_instance = NULL;
+
+/////////////////////////////////////////////////////////
+
+void CMotionControlBase::GetPositions(mm1000_t current[NUM_AXIS])
 {
+	memcpy(current, _current, sizeof(_current));
+	/*
+	udist_t* pos = (udist_t*)current;
+	CStepper::GetInstance()->GetPositions(pos);
+
+	ToMm1000(pos, current);
+	*/
+}
+
+/////////////////////////////////////////////////////////
+
+mm1000_t CMotionControlBase::GetPosition(axis_t axis)
+{
+	return _current[axis];
+	/*
+	mm1000_t cur[NUM_AXIS];
+	GetPositions(cur);
+	return cur[axis];
+	*/
+}
+/////////////////////////////////////////////////////////
+
+void CMotionControlBase::PositionFromStepper()
+{
+	ToMm1000(CStepper::GetInstance()->GetPositions(), _current);
+}
+
+/////////////////////////////////////////////////////////
+
+void CMotionControlBase::TransformPosition(const mm1000_t from[NUM_AXIS], mm1000_t to[NUM_AXIS])
+{
+	memcpy(to, from, sizeof(_current));
+}
+
+/////////////////////////////////////////////////////////
+
+void CMotionControlBase::MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrate)
+{
+	// the ONLY methode to move!!!!!
+	// do not call Stepper direct
+
 #ifdef _MSC_VER
 	CStepper::GetInstance()->MSCInfo = CControl::GetInstance()->GetBuffer();
 #endif
 
+	memcpy(_current, to, sizeof(_current));
+
+	mm1000_t	to_proj[NUM_AXIS];
+
+	TransformPosition(to, to_proj);
+
+
 	udist_t to_m[NUM_AXIS];
-	ToMachine(to, to_m);
-	CStepper::GetInstance()->MoveAbs(to_m, GetFeedRate(to, feedrate));
+	ToMachine(to_proj, to_m);
+	CStepper::GetInstance()->MoveAbs(to_m, GetFeedRate(to_proj, feedrate));
+
+	memcpy(_current, to, sizeof(_current));
 }
 
 /////////////////////////////////////////////////////////
@@ -77,7 +131,7 @@ cos O near 1 - O2 / 2 at about 0.664 radians(38Grad).
 
 #define ARCCORRECTION	( 10.0 * M_PI / 180.0)		// every 10grad
 
-void CMotionControl::Arc(const mm1000_t to[NUM_AXIS], mm1000_t offset0, mm1000_t offset1, axis_t  axis_0, axis_t axis_1, bool isclockwise, feedrate_t feedrate)
+void CMotionControlBase::Arc(const mm1000_t to[NUM_AXIS], mm1000_t offset0, mm1000_t offset1, axis_t  axis_0, axis_t axis_1, bool isclockwise, feedrate_t feedrate)
 {
 	// start from current position!
 
@@ -137,10 +191,10 @@ void CMotionControl::Arc(const mm1000_t to[NUM_AXIS], mm1000_t offset0, mm1000_t
 	//
 	// segments for full circle => (CONST_K * r * M_PI * b + CONST_D)		(r in mm, b ...2?)
 
-	unsigned short segments = (unsigned short) abs(floor((CMotionControl::ToDouble((const mm1000_t) (2 * SEGMENTS_K*M_PI))*radius + SEGMENTS_D) * angular_travel / (2.0*M_PI)));
+	unsigned short segments = (unsigned short) abs(floor((ToDouble((const mm1000_t) (2 * SEGMENTS_K*M_PI))*radius + SEGMENTS_D) * angular_travel / (2.0*M_PI)));
 
 #if defined(_MSC_VER)
-	double segments_full = CMotionControl::ToDouble((const mm1000_t)(2 * SEGMENTS_K*M_PI))*radius + SEGMENTS_D;
+	double segments_full = ToDouble((const mm1000_t)(2 * SEGMENTS_K*M_PI))*radius + SEGMENTS_D;
 	segments_full;
 	Trace("Gx command with\tr=%f\tfull_segments=%f\tangular=%f\tangularG=%f\tsegments=%i\n", radius, segments_full, angular_travel, angular_travel/M_PI*180, segments);
 #endif
@@ -205,7 +259,7 @@ void CMotionControl::Arc(const mm1000_t to[NUM_AXIS], mm1000_t offset0, mm1000_t
 
 /////////////////////////////////////////////////////////
 
-steprate_t CMotionControl::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate_t feedrate)
+steprate_t CMotionControlBase::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate_t feedrate)
 {
 	// feedrate < 0 => no arc correction (allowable max for all axis)
 	// from current position
@@ -267,14 +321,4 @@ steprate_t CMotionControl::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate_t f
 	return steprate ? steprate : 1;
 }
 
-/////////////////////////////////////////////////////////
 
-void CMotionControl::GetPositions(mm1000_t current[NUM_AXIS])
-{
-	udist_t* pos = (udist_t*)current;
-	CStepper::GetInstance()->GetPositions(pos);
-
-	ToMm1000(pos, current);
-}
-
-/////////////////////////////////////////////////////////

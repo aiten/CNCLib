@@ -108,9 +108,6 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MessageCNCLib.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControl.h">
-      <Filter>CNCLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Parser.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
@@ -180,6 +177,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\PushValue.h">
       <Filter>StepperLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControlBase.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">
@@ -224,9 +224,6 @@
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\LCD.cpp">
       <Filter>CNCLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControl.cpp">
-      <Filter>CNCLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\Parser.cpp">
       <Filter>CNCLib</Filter>
     </ClCompile>
@@ -256,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\Control3D.cpp">
       <Filter>CNCLibEx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControlBase.cpp">
+      <Filter>CNCLib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

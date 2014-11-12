@@ -339,7 +339,7 @@ bool CMyLcd::DrawLoopDebug(bool setup)
 
 		u8g.print(CSDist::ToString(pos, tmp, 6));
 		u8g.print(F(" "));
-		u8g.print(CMm1000::ToString(CMotionControl::ToMm1000(i, pos), tmp, 6, 2));
+		u8g.print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, pos), tmp, 6, 2));
 		u8g.print(F(" "));
 
 		u8g.print(CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(i, true)) ? '1' : '0');
@@ -373,9 +373,9 @@ bool CMyLcd::DrawLoopPosAbs(bool setup)
 
 		u8g.setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
 		tmp[0] = 0; u8g.print(AddAxisName(tmp,i));
-		u8g.print(CMm1000::ToString(CMotionControl::ToMm1000(i, cur), tmp, 7, 2));
+		u8g.print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, cur), tmp, 7, 2));
 		u8g.print(F(" "));
-		u8g.print(CMm1000::ToString(CMotionControl::ToMm1000(i, cur) - psall, tmp, 7, 2));
+		u8g.print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, cur) - psall, tmp, 7, 2));
 	}
 
 	return true;

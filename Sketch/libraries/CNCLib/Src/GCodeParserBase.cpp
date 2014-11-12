@@ -23,7 +23,7 @@
 #include <StepperLib.h>
 
 #include "Control.h"
-#include "MotionControl.h"
+#include "MotionControlBase.h"
 
 #include "GCodeParserBase.h"
 ////////////////////////////////////////////////////////////
@@ -519,7 +519,7 @@ void CGCodeParserBase::GetG92Axis(axis_t axis, unsigned char& axes)
 
 	_reader->GetNextChar();
 	_modalstate.G92Pospreset[axis] = 0;	// clear this => can use CalcAllPreset
-	_modalstate.G92Pospreset[axis] = ParseCoordinate() + CMotionControl::GetPosition(axis) - CalcAllPreset(axis);
+	_modalstate.G92Pospreset[axis] = ParseCoordinate() + CMotionControlBase::GetInstance()->GetPosition(axis) - CalcAllPreset(axis);
 }
 
 ////////////////////////////////////////////////////////////
@@ -559,7 +559,7 @@ void CGCodeParserBase::G0001Command(bool isG00)
 
 	if (move.axes)
 	{
-		CMotionControl::MoveAbs(move.newpos, isG00 ? _modalstate.G0FeedRate : _modalstate.G1FeedRate);
+		CMotionControlBase::GetInstance()->MoveAbs(move.newpos, isG00 ? _modalstate.G0FeedRate : _modalstate.G1FeedRate);
 		if (!_modalstate.ConstantVelocity)
 		{
 			Wait(0);
@@ -596,8 +596,8 @@ void CGCodeParserBase::G0203Command(bool isG02)
 	if (move.bitfield.bit.R)
 	{
 		// Calculate the change in position along each selected axis
-		float x = (float)(move.newpos[_modalstate.Plane_axis_0] - CMotionControl::GetPosition(_modalstate.Plane_axis_0));
-		float y = (float)(move.newpos[_modalstate.Plane_axis_1] - CMotionControl::GetPosition(_modalstate.Plane_axis_1));
+		float x = (float)(move.newpos[_modalstate.Plane_axis_0] - CMotionControlBase::GetInstance()->GetPosition(_modalstate.Plane_axis_0));
+		float y = (float)(move.newpos[_modalstate.Plane_axis_1] - CMotionControlBase::GetInstance()->GetPosition(_modalstate.Plane_axis_1));
 		float r = (float)radius;
 
 		if (x == 0.0 && y == 0.0)						{ Error(MESSAGE_GCODE_360withRandMissingAxes); return; }
@@ -624,7 +624,7 @@ void CGCodeParserBase::G0203Command(bool isG02)
 		offset[1] = mm1000_t(0.5*(y + (x*h_x2_div_d)));
 	}
 
-	CMotionControl::Arc(move.newpos, offset[0], offset[1], _modalstate.Plane_axis_0, _modalstate.Plane_axis_1, isG02, _modalstate.G1FeedRate);
+	CMotionControlBase::GetInstance()->Arc(move.newpos, offset[0], offset[1], _modalstate.Plane_axis_0, _modalstate.Plane_axis_1, isG02, _modalstate.G1FeedRate);
 
 	if (!_modalstate.ConstantVelocity)
 	{
@@ -749,7 +749,7 @@ void CGCodeParserBase::G31Command()
 			return;
 		}
 
-		CMotionControl::MoveAbs(move.newpos, _modalstate.G1FeedRate);
+		CMotionControlBase::GetInstance()->MoveAbs(move.newpos, _modalstate.G1FeedRate);
 
 		if (!CStepper::GetInstance()->MoveUntil(G31TestProbe, NULL))
 		{

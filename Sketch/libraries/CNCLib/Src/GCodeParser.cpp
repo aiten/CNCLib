@@ -24,7 +24,7 @@
 
 #include "Control.h"
 #include "HelpParser.h"
-#include "MotionControl.h"
+#include "MotionControlBase.h"
 #include "ExpressionParser.h"
 
 #include "GCodeParser.h"
@@ -205,7 +205,7 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo)
 	if (IsCurrentPosParam(paramNo,axis))		return GetParamAsPosition(GetRelativePosition(axis),axis);
 
 	// customized extension
-	if (IsCurrentAbsPosParam(paramNo,axis))		return GetParamAsPosition(CMotionControl::GetPosition(axis),axis);
+	if (IsCurrentAbsPosParam(paramNo, axis))	return GetParamAsPosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis);
 	if (IsBacklashParam(paramNo,axis))			return GetParamAsPosition(CStepper::GetInstance()->GetBacklash(axis),axis);
 
 	if (IsMaxParam(paramNo, axis))				return GetParamAsPosition(CStepper::GetInstance()->GetLimitMax(axis),axis);
@@ -229,13 +229,13 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 	else
 	{
 		axis_t axis;
-		mm1000_t mm1000 = CMotionControl::FromDouble(exprpars.Answer);
+		mm1000_t mm1000 = CMotionControlBase::GetInstance()->FromDouble(exprpars.Answer);
 
 		if (IsModifyParam(paramNo))				{	_modalstate.Parameter[paramNo - 1] = mm1000;	}
 
 	
 		else if (IsBacklashParam(paramNo,axis))	{	CStepper::GetInstance()->SetBacklash(axis,(mdist_t) GetParamAsMaschine(mm1000, axis));	}
-		else if (IsBacklashFeedrateParam(paramNo)){	CStepper::GetInstance()->SetBacklash((steprate_t) CMotionControl::ToMachine(0, mm1000*60));		}
+		else if (IsBacklashFeedrateParam(paramNo)){ CStepper::GetInstance()->SetBacklash((steprate_t)CMotionControlBase::GetInstance()->ToMachine(0, mm1000 * 60)); }
 		else if (IsControllerFanParam(paramNo))	{	CControl::GetInstance()->IOControl(CControl::ControllerFan,(unsigned short)exprpars.Answer);	}
 		else if (IsRapidMoveFeedRate(paramNo))	{	SetG0FeedRate((feedrate_t) (-exprpars.Answer*1000));	}
 		else if (IsMaxParam(paramNo,axis))		{	CStepper::GetInstance()->SetLimitMax(axis,GetParamAsMaschine(mm1000, axis));		}
@@ -278,32 +278,32 @@ mm1000_t CGCodeParser::GetG54PosPreset(axis_t axis)
 			//G55
 			// Z always negativ
 		case 2:
-			if (axis == Z_AXIS) return CMotionControl::ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis));
+			if (axis == Z_AXIS) return CMotionControlBase::GetInstance()->ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis));
 			break;
 
 			//G56
 			// Y,Z always negativ
 		case 3:
-			if (axis == Y_AXIS || axis == Z_AXIS) return CMotionControl::ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis));
+			if (axis == Y_AXIS || axis == Z_AXIS) return CMotionControlBase::GetInstance()->ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis));
 			break;
 
 			//G57
 			// X,Y,Z always negativ
 		case 4:
-			if (axis == X_AXIS || axis == Y_AXIS || axis == Z_AXIS) return CMotionControl::ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis));
+			if (axis == X_AXIS || axis == Y_AXIS || axis == Z_AXIS) return CMotionControlBase::GetInstance()->ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis));
 			break;
 
 			//G58
 			// X/2,Y/2, Z always negativ
 		case 5:
-			if (axis == X_AXIS || axis == Y_AXIS) return CMotionControl::ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis) - (CStepper::GetInstance()->GetLimitMax(axis) - CStepper::GetInstance()->GetLimitMin(axis)) / 2);
-			if (axis == Z_AXIS) return CMotionControl::ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis));
+			if (axis == X_AXIS || axis == Y_AXIS) return CMotionControlBase::GetInstance()->ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis) - (CStepper::GetInstance()->GetLimitMax(axis) - CStepper::GetInstance()->GetLimitMin(axis)) / 2);
+			if (axis == Z_AXIS) return CMotionControlBase::GetInstance()->ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis));
 			break;
 
 			//G59
 			// X/2,Y/2
 		case 6:
-			if (axis == X_AXIS || axis == Y_AXIS) return CMotionControl::ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis) - (CStepper::GetInstance()->GetLimitMax(axis) - CStepper::GetInstance()->GetLimitMin(axis)) / 2);
+			if (axis == X_AXIS || axis == Y_AXIS) return CMotionControlBase::GetInstance()->ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis) - (CStepper::GetInstance()->GetLimitMax(axis) - CStepper::GetInstance()->GetLimitMin(axis)) / 2);
 			break;
 
 	}
@@ -453,7 +453,7 @@ void CGCodeParser::GetR81(SAxisMove& move)
 	move.bitfield.bit.R = true;
 
 	_reader->GetNextChar();
-	_modalstate.G8xR = ParseCoordinate(super::_modalstate.Plane_axis_2, CMotionControl::GetPosition(super::_modalstate.Plane_axis_2), super::_modalstate.IsAbsolut ? AbsolutWithZeroShiftPosition : RelativPosition);
+	_modalstate.G8xR = ParseCoordinate(super::_modalstate.Plane_axis_2, CMotionControlBase::GetInstance()->GetPosition(super::_modalstate.Plane_axis_2), super::_modalstate.IsAbsolut ? AbsolutWithZeroShiftPosition : RelativPosition);
 }
 
 ////////////////////////////////////////////////////////////
@@ -662,7 +662,7 @@ void CGCodeParser::G8xCommand(SAxisMove& move, bool useP, bool useQ, bool useMin
 		}
 
 		mm1000_t pos[NUM_AXIS];
-		CMotionControl::GetPositions(pos);
+		CMotionControlBase::GetInstance()->GetPositions(pos);
 
 		mm1000_t origPlane2 = pos[super::_modalstate.Plane_axis_2];
 
@@ -686,8 +686,8 @@ void CGCodeParser::G8xCommand(SAxisMove& move, bool useP, bool useQ, bool useMin
 				pos[super::_modalstate.Plane_axis_1] = move.newpos[super::_modalstate.Plane_axis_1];
 				if (!super::_modalstate.IsAbsolut)
 				{
-					move.newpos[super::_modalstate.Plane_axis_0] -= CMotionControl::GetPosition(super::_modalstate.Plane_axis_0);
-					move.newpos[super::_modalstate.Plane_axis_1] -= CMotionControl::GetPosition(super::_modalstate.Plane_axis_1);
+					move.newpos[super::_modalstate.Plane_axis_0] -= CMotionControlBase::GetInstance()->GetPosition(super::_modalstate.Plane_axis_0);
+					move.newpos[super::_modalstate.Plane_axis_1] -= CMotionControlBase::GetInstance()->GetPosition(super::_modalstate.Plane_axis_1);
 				}
 			}
 			else
@@ -696,12 +696,12 @@ void CGCodeParser::G8xCommand(SAxisMove& move, bool useP, bool useQ, bool useMin
 				pos[super::_modalstate.Plane_axis_1] += move.newpos[super::_modalstate.Plane_axis_1];
 			}
 
-			CMotionControl::MoveAbs(pos, super::_modalstate.G0FeedRate);
+			CMotionControlBase::GetInstance()->MoveAbs(pos, super::_modalstate.G0FeedRate);
 			if (CheckError()) { return; }
 
 			// 2. Step: GoTo z(R) (fast)
 			pos[super::_modalstate.Plane_axis_2] = _modalstate.G8xR;
-			CMotionControl::MoveAbs(pos, super::_modalstate.G0FeedRate);
+			CMotionControlBase::GetInstance()->MoveAbs(pos, super::_modalstate.G0FeedRate);
 			if (CheckError()) { return; }
 
 			mm1000_t nextPlan2 = _modalstate.G8xR;
@@ -734,7 +734,7 @@ void CGCodeParser::G8xCommand(SAxisMove& move, bool useP, bool useQ, bool useMin
 
 				// 3. Step: Goto Z (with feedrate)
 				pos[super::_modalstate.Plane_axis_2] = nextPlan2;
-				CMotionControl::MoveAbs(pos, super::_modalstate.G1FeedRate);
+				CMotionControlBase::GetInstance()->MoveAbs(pos, super::_modalstate.G1FeedRate);
 				if (CheckError()) { return; }
 
 				// 3.a. Step: Wait
@@ -757,7 +757,7 @@ void CGCodeParser::G8xCommand(SAxisMove& move, bool useP, bool useQ, bool useMin
 					pos[super::_modalstate.Plane_axis_2] = _modalstate.G8xR;
 				}
 
-				CMotionControl::MoveAbs(pos, super::_modalstate.G0FeedRate);
+				CMotionControlBase::GetInstance()->MoveAbs(pos, super::_modalstate.G0FeedRate);
 				if (CheckError()) { return; }
 			}
 		}

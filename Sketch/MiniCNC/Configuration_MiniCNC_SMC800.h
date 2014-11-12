@@ -22,8 +22,8 @@
 ////////////////////////////////////////////////////////
 
 #define CMyStepper CStepperSMC800
-#define ConversionToMm1000 CMotionControl::ToMm1000_1_400
-#define ConversionToMachine CMotionControl::ToMachine_1_400
+#define ConversionToMm1000 CMotionControlBase::ToMm1000_1_400
+#define ConversionToMachine CMotionControlBase::ToMachine_1_400
 
 ////////////////////////////////////////////////////////
 

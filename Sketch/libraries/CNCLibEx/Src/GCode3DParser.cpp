@@ -25,7 +25,7 @@
 #include <arduino.h>
 
 #include <HelpParser.h>
-#include <MotionControl.h>
+#include <MotionControlBase.h>
 
 #include "GCode3DParser.h"
 #include "MessageCNCLibEx.h"
@@ -370,7 +370,7 @@ void CGCode3DParser::PrintPosition()
 	{
 		if (i != 0)
 			StepperSerial.print(MESSAGE_PARSER3D_COLON);
-		StepperSerial.print(CMm1000::ToString(CMotionControl::ToMm1000(i, CStepper::GetInstance()->GetPosition(i)),tmp,3));
+		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, CStepper::GetInstance()->GetPosition(i)), tmp, 3));
 	}
 }
 

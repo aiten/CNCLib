@@ -23,7 +23,7 @@
 
 #include "ConfigurationCNCLib.h"
 #include "UtilitiesCNCLib.h"
-#include "MotionControl.h"
+#include "MotionControlBase.h"
 
 ////////////////////////////////////////////////////////
 

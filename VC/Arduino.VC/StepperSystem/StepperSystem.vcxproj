@@ -29,7 +29,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\HelpParser.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\LCD.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MessageCNCLib.h" />
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControl.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControlBase.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\OnOffIOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Parser.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ReadPinIOControl.h" />
@@ -77,7 +77,7 @@
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeTools.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\HelpParser.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\LCD.cpp" />
-    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControl.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControlBase.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\Parser.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\StreamReader.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\UtilitiesCNCLib.cpp" />
