@@ -48,7 +48,7 @@ public:
 	const char*	GetBuffer()					{ return _buffer; }
 	void ResetBuffer(const char* buffer)	{ _buffer = buffer; }
 
-	static char Toupper(char ch)			{ return (char)toupper(ch); }
+	static char Toupper(char ch)			{ return IsLowerAZ(ch) ? ch + 'A' - 'a' : ch; }
 	static bool IsEOC(char ch)				{ return ch == 0 || ch == ';'; }			// is EndOfCommand
 
 	static bool IsSpace(char ch)			{ return ch == ' ' || ch == '\t'; }
@@ -56,10 +56,12 @@ public:
 
 	static bool IsMinus(char ch)			{ return ch == '-'; }
 	static bool IsDot(char ch)				{ return ch == '.'; }
-	static bool IsDigit(char ch)			{ return isdigit(ch) != 0; }
+	static bool IsDigit(char ch)			{ return ch>='0'&&ch<='9'; }
 	static bool IsDigitDot(char ch)			{ return IsDigit(ch) || IsDot(ch); }
 
-	static bool IsAlpha(char ch)			{ ch = Toupper(ch); return ch == '_' || (ch >= 'A' && ch <= 'Z'); }
+	static bool IsAlpha(char ch)			{ ch = Toupper(ch); return ch == '_' || IsUpperAZ(ch); }
+	static bool IsLowerAZ(char ch)			{ return ch >= 'a' && ch <= 'z'; }
+	static bool IsUpperAZ(char ch)			{ return ch >= 'A' && ch <= 'Z'; }
 
 	void Error(const __FlashStringHelper * error)		{ _error = error; MoveToEnd(); }
 

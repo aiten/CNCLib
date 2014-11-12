@@ -44,12 +44,6 @@ template<> CMotionControlBase* CSingleton<CMotionControlBase>::_instance = NULL;
 void CMotionControlBase::GetPositions(mm1000_t current[NUM_AXIS])
 {
 	memcpy(current, _current, sizeof(_current));
-	/*
-	udist_t* pos = (udist_t*)current;
-	CStepper::GetInstance()->GetPositions(pos);
-
-	ToMm1000(pos, current);
-	*/
 }
 
 /////////////////////////////////////////////////////////
@@ -57,12 +51,8 @@ void CMotionControlBase::GetPositions(mm1000_t current[NUM_AXIS])
 mm1000_t CMotionControlBase::GetPosition(axis_t axis)
 {
 	return _current[axis];
-	/*
-	mm1000_t cur[NUM_AXIS];
-	GetPositions(cur);
-	return cur[axis];
-	*/
 }
+
 /////////////////////////////////////////////////////////
 
 void CMotionControlBase::PositionFromStepper()
@@ -91,15 +81,12 @@ void CMotionControlBase::MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrat
 	memcpy(_current, to, sizeof(_current));
 
 	mm1000_t	to_proj[NUM_AXIS];
-
+	
 	TransformPosition(to, to_proj);
-
-
 	udist_t to_m[NUM_AXIS];
 	ToMachine(to_proj, to_m);
-	CStepper::GetInstance()->MoveAbs(to_m, GetFeedRate(to_proj, feedrate));
 
-	memcpy(_current, to, sizeof(_current));
+	CStepper::GetInstance()->MoveAbs(to_m, GetFeedRate(to_proj, feedrate));
 }
 
 /////////////////////////////////////////////////////////

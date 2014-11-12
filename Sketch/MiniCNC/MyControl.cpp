@@ -32,6 +32,8 @@
 
 CMyControl Control;
 
+CMotionControlBase MotionControl;
+
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Init()

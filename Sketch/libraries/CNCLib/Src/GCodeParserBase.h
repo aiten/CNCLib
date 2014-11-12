@@ -166,7 +166,7 @@ protected:
 
 		unsigned char GetIJK() { return bitfield.all & 7; }
 
-		SAxisMove(bool getcurrentPosition)
+		SAxisMove(bool getcurrentPosition) 
 		{
 			axes = 0; bitfield.all = 0;
 			if (getcurrentPosition)

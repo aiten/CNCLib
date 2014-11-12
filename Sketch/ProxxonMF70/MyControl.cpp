@@ -38,6 +38,8 @@
 CMyControl Control;
 CGCodeTools GCodeTools;
 
+CMotionControlBase MotionControl;
+
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Init()
