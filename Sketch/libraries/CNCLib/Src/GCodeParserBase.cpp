@@ -702,6 +702,7 @@ void CGCodeParserBase::G28Command()
 			}
 		}
 	}
+	CMotionControlBase::GetInstance()->SetPositionFromMachine();
 }
 
 ////////////////////////////////////////////////////////////

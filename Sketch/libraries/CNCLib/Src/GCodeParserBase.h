@@ -23,6 +23,7 @@
 
 #include "Parser.h"
 #include "GCodeTools.h"
+#include "MotionControlBase.h"
 
 ////////////////////////////////////////////////////////
 

@@ -38,7 +38,7 @@
 CMyControl Control;
 CGCodeTools GCodeTools;
 
-CMotionControlBase MotionControl;
+CMotionControl MotionControl;
 
 ////////////////////////////////////////////////////////////
 

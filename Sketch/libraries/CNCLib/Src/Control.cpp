@@ -64,7 +64,7 @@ void CControl::Initialized()
 {
 	StepperSerial.println(MESSAGE_OK);
 	GoToReference();
-	CMotionControlBase::GetInstance()->PositionFromStepper();
+	CMotionControlBase::GetInstance()->SetPositionFromMachine();
 }
 
 ////////////////////////////////////////////////////////////
@@ -82,7 +82,6 @@ void CControl::GoToReference(axis_t axis)
 {
 	// goto min/max
 	CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, axis != Z_AXIS), axis != Z_AXIS, STEPRATE_REFMOVE);
-	CMotionControlBase::GetInstance()->PositionFromStepper();
 }
 
 ////////////////////////////////////////////////////////////
@@ -91,7 +90,7 @@ void CControl::Kill()
 {
 	// may be in ISR context, do not print anything
 	CStepper::GetInstance()->EmergencyStop();
-	CMotionControlBase::GetInstance()->PositionFromStepper();
+	CMotionControlBase::GetInstance()->SetPositionFromMachine();
 }
 
 ////////////////////////////////////////////////////////

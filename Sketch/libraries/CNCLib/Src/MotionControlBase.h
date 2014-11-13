@@ -38,26 +38,46 @@ typedef sdist_t(*ToMachine_t) (axis_t axis, mm1000_t val);
 
 ////////////////////////////////////////////////////////
 
+// machine-pos									=> physical steps off stepper		(of CStepper class)
+// machine-mm1000, standardized-machinepos 		=> mm100_t off stepper				(CStepper pso converted in mm1000)
+// logical-pos			 						=> rotated or transformed position	(CMotionControlBase same as above)
+
+////////////////////////////////////////////////////////
+
 class CMotionControlBase : public CSingleton<CMotionControlBase>
 {
+	////////////////////////////////////////
+	// converting machine-pos to machine-mm1000
+
 private:
 
 	static ToMm1000_t _ToMm1000;
 	static ToMachine_t _ToMachine;
 
-	mm1000_t	_current[NUM_AXIS];
+public:
+
+	static void InitConversion(ToMm1000_t toMm1000, ToMachine_t toMachine)						{ _ToMm1000 = toMm1000; _ToMachine = toMachine; }
+
+	static mm1000_t ToMm1000(axis_t axis, sdist_t val)											{ return _ToMm1000(axis,val);  }
+	static sdist_t ToMachine(axis_t axis, mm1000_t val)											{ return _ToMachine(axis, val); }
 
 	static void ToMachine(const mm1000_t mm1000[NUM_AXIS], udist_t machine[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { machine[x] = _ToMachine(x, mm1000[x]); } };
 	static void ToMm1000(const udist_t machine[NUM_AXIS], mm1000_t mm1000[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { mm1000[x] = _ToMm1000(x, machine[x]); } };
 
-public: 
+	////////////////////////////////////////
+	// converting maschine-mm1000 to logical-pos
 
-	// virtual for projection
+	virtual void TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
+	virtual void TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
 
-	virtual void PositionFromStepper();
-	virtual void TransformPosition(const mm1000_t from[NUM_AXIS], mm1000_t to[NUM_AXIS]);
+	mm1000_t	_current[NUM_AXIS];
 
 public:
+
+	void SetPositionFromMachine();
+
+	////////////////////////////////////////
+	// all positions are logical-pos
 
 	void Arc(const mm1000_t to[NUM_AXIS], mm1000_t offset0, mm1000_t offset1, axis_t  axis_0, axis_t axis_1, bool isclockwise, feedrate_t feedrate);
 	void MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrate);
@@ -67,13 +87,10 @@ public:
 
 	steprate_t GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate_t feedrate);
 
+	////////////////////////////////////////
+
 	static expr_t ToDouble(const mm1000_t mm1000)												{ return (expr_t)(mm1000 / 1000.0); }
 	static mm1000_t FromDouble(expr_t dbl)														{ return (mm1000_t)(dbl * 1000); }
-
-	static mm1000_t ToMm1000(axis_t axis, sdist_t val)											{ return _ToMm1000(axis,val);  }
-	static sdist_t ToMachine(axis_t axis, mm1000_t val)											{ return _ToMachine(axis, val); }
-
-	static void InitConversion(ToMm1000_t toMm1000, ToMachine_t toMachine)						{ _ToMm1000 = toMm1000; _ToMachine = toMachine; }
 
 	/////////////////////////////////////////////////////////
 	// Samples for converting functions
@@ -138,7 +155,3 @@ public:
 };
 
 ////////////////////////////////////////////////////////
-
-
-
-

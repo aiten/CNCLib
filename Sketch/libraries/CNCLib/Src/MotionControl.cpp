@@ -17,12 +17,28 @@
 */
 ////////////////////////////////////////////////////////
 
-#include <StepperLib.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include "ConfigurationCNCLib.h"
+#include <arduino.h>
+#include <ctype.h>
+
+#include "CNCLib.h"
 #include "MotionControl.h"
-#include "UtilitiesCNCLib.h"
-#include "Parser.h"
-#include "Control.h"
 
+/////////////////////////////////////////////////////////
+
+void CMotionControl::TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
+{
+	ToMm1000(src,dest);
+}
+
+/////////////////////////////////////////////////////////
+
+void CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
+{
+	memcpy(dest, src, sizeof(_current));
+}
+
+/////////////////////////////////////////////////////////
 

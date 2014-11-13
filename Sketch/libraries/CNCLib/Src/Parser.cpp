@@ -254,10 +254,10 @@ bool CParser::TryToken(const char* buffer, const __FlashStringHelper* b, bool ex
 
 	switch (c)
 	{
-		case '\001':	if (!isdigit(*buffer)) return false;
+		case '\001':	if (!CStreamReader::IsDigit(*buffer)) return false;
 			c = 0;
 			break;
-		case '\002':	if (*buffer != 0 && !CStreamReader::IsSpace(*buffer) && isdigit(*buffer)) return false;
+		case '\002':	if (*buffer != 0 && !CStreamReader::IsSpace(*buffer) && CStreamReader::IsDigit(*buffer)) return false;
 			c = 0;
 			break;
 		case '\003':	if (*buffer != 0) return false;

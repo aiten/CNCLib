@@ -368,14 +368,20 @@ bool CMyLcd::DrawLoopPosAbs(bool setup)
 
 	for (unsigned char i = 0; i < LCD_NUMAXIS; i++)
 	{
-		udist_t cur = CStepper::GetInstance()->GetCurrentPosition(i);
+//		udist_t cur = CStepper::GetInstance()->GetCurrentPosition(i);
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
 
 		u8g.setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
 		tmp[0] = 0; u8g.print(AddAxisName(tmp,i));
+
+		u8g.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i), tmp, 7, 2));
+		u8g.print(F(" "));
+		u8g.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i) - psall, tmp, 7, 2));
+/*
 		u8g.print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, cur), tmp, 7, 2));
 		u8g.print(F(" "));
 		u8g.print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, cur) - psall, tmp, 7, 2));
+*/
 	}
 
 	return true;

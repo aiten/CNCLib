@@ -370,7 +370,7 @@ void CGCode3DParser::PrintPosition()
 	{
 		if (i != 0)
 			StepperSerial.print(MESSAGE_PARSER3D_COLON);
-		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, CStepper::GetInstance()->GetPosition(i)), tmp, 3));
+		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i), tmp, 3));
 	}
 }
 
@@ -445,7 +445,7 @@ bool CGCode3DParser::GetFileName(char*buffer)
 			}
 			*(buffer++) = ch;
 		}
-		else if (isdigit(ch) || isalpha(ch) || ch == '/' || ch == '_' || ch == '~')
+		else if (CStreamReader::IsDigit(ch) || CStreamReader::IsAlpha(ch) || ch == '/' || ch == '_' || ch == '~')
 		{
 			*(buffer++) = ch;
 			length++;

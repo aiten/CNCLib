@@ -21,50 +21,28 @@
 
 ////////////////////////////////////////////////////////
 
-#include "ConfigurationCNCLib.h"
-#include "UtilitiesCNCLib.h"
+#include "MotionControlBase.h"
 
 ////////////////////////////////////////////////////////
 
-typedef unsigned short toolnr_t;
-#define NOTOOLINDEX 255
-
-////////////////////////////////////////////////////////
-// 
-// Tools library
-//
-class CGCodeTools : public CSingleton<CGCodeTools>
+class CMotionControl : public CMotionControlBase
 {
+private:
+
+	typedef CMotionControlBase super;
 
 public:
 
-	enum EToolType
-	{
-		EndMill,
-		BullNose,
-		BallNose,
-		Vcutter,
-		Drill,
-		Lathe
-	};
+	////////////////////////////////////////
+	// converting maschine mm1000 to logical position
 
-	struct STools
-	{
-		toolnr_t ToolNr;
-		EnumAsByte(EToolType) ToolType;
-		mm1000_t Radius;
-		mm1000_t Height;
-	};
-
-	bool IsValidTool(toolnr_t tool)		{ return GetToolIndex(tool) != NOTOOLINDEX; }
-
-	mm1000_t GetRadius(toolnr_t tool);
-	mm1000_t GetHeight(toolnr_t tool);
-
-private:
-
-	unsigned char GetToolIndex(toolnr_t tool);
-
-	static const STools _tools[] PROGMEM;
+	virtual void TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
+	virtual void TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
 
 };
+
+////////////////////////////////////////////////////////
+
+
+
+
