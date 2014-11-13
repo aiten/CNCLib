@@ -28,6 +28,14 @@
 
 /////////////////////////////////////////////////////////
 
+CMotionControl::CMotionControl()
+{
+	_sinXY = sin(0.523598776);
+	_cosXY = cos(0.523598776);
+}
+
+/////////////////////////////////////////////////////////
+
 void CMotionControl::TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
 	ToMm1000(src,dest);
@@ -38,6 +46,8 @@ void CMotionControl::TransformMachinePosition(const udist_t src[NUM_AXIS], mm100
 void CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
 	memcpy(dest, src, sizeof(_current));
+	dest[X_AXIS] = src[X_AXIS]*_cosXY - src[Y_AXIS]*_sinXY;
+	dest[Y_AXIS] = src[X_AXIS]*_sinXY + src[Y_AXIS]*_cosXY;
 }
 
 /////////////////////////////////////////////////////////
