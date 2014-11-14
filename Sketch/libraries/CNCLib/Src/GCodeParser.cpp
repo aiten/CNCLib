@@ -25,6 +25,7 @@
 #include "Control.h"
 #include "HelpParser.h"
 #include "MotionControlBase.h"
+#include "MotionControl.h"
 #include "ExpressionParser.h"
 
 #include "GCodeParser.h"
@@ -380,7 +381,8 @@ bool CGCodeParser::GCommand(unsigned char gcode)
 		case 57:	G5xCommand(4); return true;
 		case 58:	G5xCommand(5); return true;
 		case 59:	G5xCommand(6); return true;
-		case 73:	G73Command(); return true;
+		case 68:	G68Command(); return true;
+		case 69:	G69Command(); return true;
 		case 81:	G81Command(); return true;
 		case 82:	G82Command(); return true;
 		case 83:	G83Command(); return true;
@@ -607,6 +609,48 @@ void CGCodeParser::G43Command()
 	{
 		_modalstate.ToolHeigtCompensation = 0;
 	}
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::G68Command()
+{
+	G69Command();		// undo
+
+	SAxisMove move(true);
+	mm1000_t radius;
+
+	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
+	{
+		axis_t axis;
+		if ((axis = CharToAxis(ch)) < NUM_AXIS)				GetAxis(axis, move, super::_modalstate.IsAbsolut ? AbsolutWithZeroShiftPosition : RelativPosition);
+		else if (ch == 'R')									GetRadius(move, radius);
+		else break;
+
+		if (CheckError()) { return; }
+	}
+
+	if (!move.bitfield.bit.R)					{ Error(MESSAGE_GCODE_IJKandRspecified); return; }
+
+	((CMotionControl*) (CMotionControlBase::GetInstance()))->SetRotate(super::_modalstate.Plane_axis_2, radius/1000.0/180*M_PI);
+
+	for (unsigned char axis = 0; axis < NUM_AXIS; axis++)
+	{
+		if (IsBitSet(move.axes, axis))
+		{
+			((CMotionControl*) (CMotionControlBase::GetInstance()))->SetOffset(axis, move.newpos[axis]);
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::G69Command()
+{
+	((CMotionControl*) (CMotionControlBase::GetInstance()))->SetRotate(X_AXIS, 0.0);
+	((CMotionControl*) (CMotionControlBase::GetInstance()))->SetRotate(Y_AXIS, 0.0);
+	((CMotionControl*) (CMotionControlBase::GetInstance()))->SetRotate(Z_AXIS, 0.0);
+	((CMotionControl*) (CMotionControlBase::GetInstance()))->ClearOffset();
 }
 
 ////////////////////////////////////////////////////////////

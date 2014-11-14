@@ -222,10 +222,11 @@ protected:
 
 	unsigned long GetDweel();
 
+	void GetRadius(SAxisMove& move, mm1000_t& radius);
+
 private:
 
 	void GetIJK(axis_t axis, SAxisMove& move, mm1000_t offset[2]);
-	void GetRadius(SAxisMove& move, mm1000_t& radius);
 
 	void GetG92Axis(axis_t axis, unsigned char& count);
 

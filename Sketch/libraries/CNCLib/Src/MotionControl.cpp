@@ -30,8 +30,21 @@
 
 CMotionControl::CMotionControl()
 {
-	_sinXY = sin(0.523598776);
-	_cosXY = cos(0.523598776);
+	for (register unsigned char i=0;i<3;i++) _rotateEnabled[i] = false;
+	ClearOffset();
+}
+
+/////////////////////////////////////////////////////////
+
+void CMotionControl::SetRotate(axis_t axis, double rad)
+{
+	_rotateEnabled[axis] = rad!=0.0;
+
+	if (_rotateEnabled[axis])
+	{
+		_rotate[axis]._sin = sin(rad);
+		_rotate[axis]._cos = cos(rad);
+	}
 }
 
 /////////////////////////////////////////////////////////
@@ -43,11 +56,35 @@ void CMotionControl::TransformMachinePosition(const udist_t src[NUM_AXIS], mm100
 
 /////////////////////////////////////////////////////////
 
+inline void CMotionControl::Rotate(const CMotionControl::SRotate&rotate, mm1000_t& x, mm1000_t& y, mm1000_t ofsx, mm1000_t ofsy)
+{
+	float fx = x-ofsx;
+	float fy = y-ofsy;
+	mm1000_t tmp =  ((mm1000_t) fx*rotate._cos - fy*rotate._sin)+ofsx;
+	y =				((mm1000_t) fx*rotate._sin + fy*rotate._cos)+ofsy;
+	x = tmp;
+}
+
+/////////////////////////////////////////////////////////
+
 void CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
 	memcpy(dest, src, sizeof(_current));
-	dest[X_AXIS] = src[X_AXIS]*_cosXY - src[Y_AXIS]*_sinXY;
-	dest[Y_AXIS] = src[X_AXIS]*_sinXY + src[Y_AXIS]*_cosXY;
+
+	if (_rotateEnabled[Z_AXIS])
+	{
+		Rotate(_rotate[Z_AXIS],dest[X_AXIS],dest[Y_AXIS],_rotateOffset[X_AXIS],_rotateOffset[Y_AXIS]);
+	}
+
+	if (_rotateEnabled[Y_AXIS])
+	{
+		Rotate(_rotate[Y_AXIS],dest[Z_AXIS],dest[X_AXIS],_rotateOffset[Z_AXIS],_rotateOffset[X_AXIS]);
+	}
+
+	if (_rotateEnabled[X_AXIS])
+	{
+		Rotate(_rotate[X_AXIS],dest[Y_AXIS],dest[Z_AXIS],_rotateOffset[Y_AXIS],_rotateOffset[Z_AXIS]);
+	}
 }
 
 /////////////////////////////////////////////////////////

@@ -195,6 +195,8 @@ private:
 	void G43Command();		// Tool Height Compensation 
 	void G49Command()							{ _modalstate.ToolHeigtCompensation = 0; }
 	void G53Command();
+	void G68Command();
+	void G69Command();
 	void G5xCommand(unsigned char idx);
 	void G8xCommand(SAxisMove& move, bool useP, bool useQ, bool useMinQ);
 	void G73Command();		// High-speed Peck Drilling for Shallow Holes
