@@ -43,6 +43,8 @@ public:
 	char GetNextChar()						{ return *(++_buffer); }					// skip current and move to next
 	char GetNextCharToUpper()				{ return Toupper(GetNextChar()); }			// skip current and move to next
 
+	bool IsNextChar(const char ch)			{ if (ch!=GetChar()) return false; GetNextChar(); return true; }
+
 	void MoveToEnd()						{ while (*_buffer) _buffer++; }				// move to "no more char in stream"
 
 	const char*	GetBuffer()					{ return _buffer; }

@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -54,7 +54,7 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, 81000));
 
 #if NUM_AXIS > 3
-	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS,300000));
+	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS,360000));
 #endif
 
 	//CStepper::GetInstance()->SetJerkSpeed(X_AXIS, SPEEDFACTOR*1000);

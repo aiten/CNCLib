@@ -185,6 +185,8 @@ protected:
 	void Wait(unsigned long ms);							// add "wait" in movement queue
 	void SkipCommentNested();
 
+	void ConstantVelocity();
+
 	virtual unsigned long ParseParameter();
 	mm1000_t ParseCoordinate();
 

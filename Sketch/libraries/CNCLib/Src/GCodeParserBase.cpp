@@ -230,6 +230,16 @@ bool CGCodeParserBase::ParseLineNumber(bool setlinenumber)
 
 ////////////////////////////////////////////////////////////
 
+void CGCodeParserBase::ConstantVelocity()
+{
+	if (!_modalstate.ConstantVelocity)
+	{
+		Wait(0);
+	}
+}
+
+////////////////////////////////////////////////////////////
+
 void CGCodeParserBase::Wait(unsigned long ms)
 {
 	CStepper::GetInstance()->Wait(ms/10);
@@ -560,10 +570,7 @@ void CGCodeParserBase::G0001Command(bool isG00)
 	if (move.axes)
 	{
 		CMotionControlBase::GetInstance()->MoveAbs(move.newpos, isG00 ? _modalstate.G0FeedRate : _modalstate.G1FeedRate);
-		if (!_modalstate.ConstantVelocity)
-		{
-			Wait(0);
-		}
+		ConstantVelocity();
 	}
 }
 
@@ -625,11 +632,7 @@ void CGCodeParserBase::G0203Command(bool isG02)
 	}
 
 	CMotionControlBase::GetInstance()->Arc(move.newpos, offset[0], offset[1], _modalstate.Plane_axis_0, _modalstate.Plane_axis_1, isG02, _modalstate.G1FeedRate);
-
-	if (!_modalstate.ConstantVelocity)
-	{
-		Wait(0);
-	}
+	ConstantVelocity();
 }
 
 ////////////////////////////////////////////////////////////
@@ -646,6 +649,8 @@ unsigned long CGCodeParserBase::GetDweel()
 	}
 	return dweelms;
 }
+
+////////////////////////////////////////////////////////////
 
 void CGCodeParserBase::G04Command()
 {

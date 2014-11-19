@@ -32,8 +32,8 @@
 
 /////////////////////////////////////////////////////////
 
-ToMm1000_t CMotionControlBase::_ToMm1000 = ToMm1000_1_3200;
-ToMachine_t CMotionControlBase::_ToMachine = ToMachine_1_3200;
+ToMm1000_t CMotionControlBase::_ToMm1000;
+ToMachine_t CMotionControlBase::_ToMachine;
 
 /////////////////////////////////////////////////////////
 
@@ -86,9 +86,9 @@ void CMotionControlBase::MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrat
 #endif
 
 	mm1000_t	to_proj[NUM_AXIS];
-	
+	udist_t		to_m[NUM_AXIS];
+
 	TransformPosition(to, to_proj);
-	udist_t to_m[NUM_AXIS];
 	ToMachine(to_proj, to_m);
 
 	CStepper::GetInstance()->MoveAbs(to_m, GetFeedRate(to_proj, feedrate));
@@ -315,5 +315,3 @@ steprate_t CMotionControlBase::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate
 	steprate_t steprate = (steprate_t)_ToMachine(maxdistaxis, feedrate / 60);
 	return steprate ? steprate : 1;
 }
-
-
