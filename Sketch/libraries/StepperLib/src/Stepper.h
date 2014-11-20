@@ -23,6 +23,7 @@
 #include "HAL.h"
 #include "RingBuffer.h"
 #include "Singleton.h"
+#include "Message.h"
 
 ////////////////////////////////////////////////////////
 //
