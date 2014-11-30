@@ -108,6 +108,7 @@ namespace Framework.Logic
             MaxCommandHistoryCount = int.MaxValue;
 			ErrorIsReply = false;		// each command must end with ok
 
+			CommandToUpper = false;
 			ResetOnConnect = false;
             ArduinoBuffersize = 64;
 		}
@@ -132,6 +133,9 @@ namespace Framework.Logic
 		public String OkTag { get; set; }
         public String ErrorTag { get; set; }
         public String InfoTag { get; set; }
+
+		public bool CommandToUpper { get; set; }
+
 
 		public bool ErrorIsReply { get; set; }
 
@@ -317,6 +321,9 @@ namespace Framework.Logic
         {
             if (string.IsNullOrEmpty(cmd))
                 return null;
+
+			if (CommandToUpper)
+				cmd = cmd.ToUpper();
 
 			cmd = cmd.Replace('\t', ' ');
 

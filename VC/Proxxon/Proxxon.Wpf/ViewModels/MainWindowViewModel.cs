@@ -32,6 +32,13 @@ namespace Proxxon.Wpf.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
+		public MainWindowViewModel()
+		{
+			BaudRate = 115200;
+			ComPort = "com4";
+			CommandToUpper = false;
+			ResetOnConnect = false;
+		}
         #region Properties
 
 		private Framework.Logic.ArduinoSerialCommunication Com
@@ -59,6 +66,20 @@ namespace Proxxon.Wpf.ViewModels
             set { SetProperty(ref _resetOnConnect,value); }
 		}
 
+		private uint _baudRate;
+		public uint BaudRate
+		{
+			get { return _baudRate; }
+			set { SetProperty(ref _baudRate, value); }
+		}
+
+		private bool _commandToUpper;
+		public bool CommandToUpper
+		{
+			get { return _commandToUpper; }
+			set { SetProperty(ref _commandToUpper, value); }
+		}
+
 		public int BufferSize
 		{
 			get { return Com.ArduinoBuffersize; }
@@ -75,6 +96,8 @@ namespace Proxxon.Wpf.ViewModels
 			try
 			{
 				Com.ResetOnConnect = ResetOnConnect;
+				Com.CommandToUpper = CommandToUpper;
+				Com.BaudRate = (int) BaudRate;
 				Com.Connect(ComPort);
 			}
 			catch(Exception e)

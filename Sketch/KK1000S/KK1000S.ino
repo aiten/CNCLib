@@ -1,4 +1,3 @@
-////////////////////////////////////////////////////////
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -15,23 +14,38 @@
   GNU General Public License for more details.
   http://www.gnu.org/licenses/
 */
-////////////////////////////////////////////////////////
 
-#include "StepperSMC800.h"
-#include "StepperRamps14.h"
-#include "StepperRampsFD.h"
-#include "StepperL298N.h"
-#include "StepperTB6560.h"
-#include "StepperMash6050S.h"
-#include "UtilitiesStepperLib.h"
+#include <StepperLib.h>
+#include <CNCLib.h>
+#include <CNCLibEx.h>
+
+#include <SPI.h>
+#include <SD.h>
+
+#include "MyControl.h"
+#include "GCodeParser.h"
+
+#include <U8glib.h>
 
 
-#if defined(__AVR_ARCH__)
+////////////////////////////////////////////////////////////
+// => see Configuration_ProxxonMF70.h
 
-#define CStepperRamps CStepperRamps14
+CStepperMash6050S Stepper;
 
-#elif defined(__SAM3X8E__)
+////////////////////////////////////////////////////////////
 
-#define CStepperRamps CStepperRampsFD
+void setup()
+{
+	StepperSerial.begin(115200);
+}
 
-#endif
+////////////////////////////////////////////////////////////
+
+void loop()
+{
+  Control.Run();
+}
+
+////////////////////////////////////////////////////////////
+

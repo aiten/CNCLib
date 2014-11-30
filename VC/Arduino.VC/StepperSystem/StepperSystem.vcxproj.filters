@@ -183,6 +183,12 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControl.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperMash6050S.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperMash6050S_pins.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">
@@ -262,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControl.cpp">
       <Filter>CNCLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperMash6050S.cpp">
+      <Filter>StepperLib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
