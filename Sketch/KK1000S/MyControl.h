@@ -63,14 +63,7 @@ private:
 	COnOffIOControl<SPINDEL_PIN, SPINDEL_ON, SPINDEL_OFF> _spindel;
 	CReadPinIOControl<PROBE1_PIN, PROBE_ON> _probe;
 
-#if defined(USE_RAMPSFD)
-
-	CAnalog8InvertIOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
-
-#else
 	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
-#endif
-
 };
 
 ////////////////////////////////////////////////////////

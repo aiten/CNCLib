@@ -24,8 +24,10 @@
 #include <StepperMash6050S_pins.h>
 #define BOARDNAME MASH6050S 
 
-#define ConversionToMm1000 CMotionControlBase::ToMm1000_1_3200
-#define ConversionToMachine CMotionControlBase::ToMachine_1_3200
+// PIN AS Ramps 1.4 
+
+#define ConversionToMm1000 CMotionControlBase::ToMm1000_5_3200
+#define ConversionToMachine CMotionControlBase::ToMachine_5_3200
 
 ////////////////////////////////////////////////////////
 
@@ -64,45 +66,22 @@
 #define LCD_GROW 64
 #define LCD_GCOL 128
 
-#if defined (USE_RAMPS14)
-#define LCD_NUMAXIS	5
-#elif defined (USE_RAMPSFD)
-#define LCD_NUMAXIS	6
-#else
 #define LCD_NUMAXIS	3
-#endif
 
 #define ROTARY_ENC           CAT(BOARDNAME,_LCD_ROTARY_ENC)
 #define ROTARY_ENC_ON		 CAT(BOARDNAME,_LCD_ROTARY_ENC_ON)
 
-#if defined(__SAM3X8E__) && defined (USE_RAMPS14)
-
-#define SD_ENABLE_PIN	 	 52
-#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN2)
-#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN1)
-#define ROTARY_ENC           CAT(BOARDNAME,_LCD_ROTARY_ENC)
-
-#else
-
 #define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN1)
 #define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN2)
 #define SD_ENABLE_PIN		 CAT(BOARDNAME,_SDSS_PIN)
-
-#endif
 
 ////////////////////////////////////////////////////////
 
 #include <MessageCNCLibEx.h>
 
 #if defined(__SAM3X8E__)
-#if defined(USE_RAMPS14)
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("KK1000S(HA) Ramps 1.4 due is starting ... ("__DATE__", "__TIME__")")
-#else if defined(USE_RAMPSFD)
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("KK1000S(HA) Ramps FD due is starting ... ("__DATE__", "__TIME__")")
-#endif
-#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("KK1000S(HA) Ramps 1.4 mega is starting ... ("__DATE__", "__TIME__")")
+#define MESSAGE_MYCONTROL_Proxxon_Starting					F("KK1000S(HA) due is starting ... ("__DATE__", "__TIME__")")
 #else
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("KK1000S(HA) Ramps 1.4 is starting ... ("__DATE__", "__TIME__")")
+#define MESSAGE_MYCONTROL_Proxxon_Starting					F("KK1000S(HA) Mega is starting ... ("__DATE__", "__TIME__")")
 #endif
 

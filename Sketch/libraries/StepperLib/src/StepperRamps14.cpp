@@ -39,6 +39,8 @@ CStepperRamps14::CStepperRamps14()
 
 void CStepperRamps14::Init()
 {
+	super::Init();
+
 	CHAL::pinMode(RAMPS14_X_STEP_PIN, OUTPUT);
 	CHAL::pinMode(RAMPS14_X_DIR_PIN, OUTPUT);
 	CHAL::pinMode(RAMPS14_X_ENABLE_PIN, OUTPUT);
@@ -74,8 +76,6 @@ void CStepperRamps14::Init()
 	HALFastdigitalWrite(RAMPS14_E1_STEP_PIN, RAMPS14_PIN_STEP_ON);
 
 #pragma warning( default : 4127 )
-
-	super::Init();
 }
 
 ////////////////////////////////////////////////////////

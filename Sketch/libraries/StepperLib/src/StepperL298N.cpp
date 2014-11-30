@@ -79,7 +79,9 @@ pin_t CStepperL298N::_pinRef[NUM_AXIS*2] =
 ////////////////////////////////////////////////////////
 
 void CStepperL298N::Init(void)
-{
+{	
+	super::Init();
+
 	InitMemVar();
 
 	register unsigned char i;
@@ -106,8 +108,6 @@ void CStepperL298N::Init(void)
 			if (ToReferenceId(i, false) != 0) CHAL::pinMode(_pinenable[i][1], _referenceOn==LOW ? INPUT_PULLUP : INPUT);
 		}
 	}
-
-	super::Init();
 }
 ////////////////////////////////////////////////////////
 

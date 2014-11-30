@@ -31,6 +31,10 @@ CStepperMash6050S::CStepperMash6050S()
 
 void CStepperMash6050S::Init()
 {
+	super::Init();
+
+	_pod._idleLevel = LevelMax;		// no Idle
+
 	CHAL::pinMode(MASH6050S_X_STEP_PIN, OUTPUT);
 	CHAL::pinMode(MASH6050S_X_DIR_PIN, OUTPUT);
 	CHAL::pinMode(MASH6050S_X_MIN_PIN, INPUT_PULLUP);
@@ -55,16 +59,15 @@ void CStepperMash6050S::Init()
 	HALFastdigitalWrite(MASH6050S_C_STEP_PIN, MASH6050S_PIN_STEP_ON);
 
 #pragma warning( default : 4127 )
-
-	super::Init();
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepperMash6050S::Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp)
 {
-
 // Step:   LOW to HIGH
+// PULS must be at least 1ms
+// DIRCHANGE must be at least 5ms
 
 #if defined(__SAM3X8E__)
 
@@ -73,12 +76,14 @@ void CStepperMash6050S::Step(const unsigned char steps[NUM_AXIS], axisArray_t di
 
 #else //AVR
 
-#define NOPREQUIRED_1()	CHAL::delayMicroseconds0312();
-#define NOPREQUIRED_2()	CHAL::delayMicroseconds0500();
+#define NOPREQUIRED_1()	CHAL::delayMicroseconds(1);
+#define NOPREQUIRED_2()	CHAL::delayMicroseconds(1);
 
 #endif
 
 #define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,MASH6050S_PIN_DIR_OFF); else HALFastdigitalWriteNC(dirpin,MASH6050S_PIN_DIR_ON);
+
+#pragma message ("TODO: wait 5ms on dirchange")
 
 	SETDIR(X_AXIS, MASH6050S_X_DIR_PIN);
 	SETDIR(Y_AXIS, MASH6050S_Y_DIR_PIN);
@@ -94,7 +99,6 @@ void CStepperMash6050S::Step(const unsigned char steps[NUM_AXIS], axisArray_t di
 		if (steps[A_AXIS] > cnt)  { HALFastdigitalWriteNC(MASH6050S_C_STEP_PIN, MASH6050S_PIN_STEP_OFF); have = true; }
 
 		NOPREQUIRED_1();
-		CHAL::delayMicroseconds(1);
 
 		if (steps[X_AXIS] > cnt)  { HALFastdigitalWriteNC(MASH6050S_X_STEP_PIN, MASH6050S_PIN_STEP_ON); }
 		if (steps[Y_AXIS] > cnt)  { HALFastdigitalWriteNC(MASH6050S_Y_STEP_PIN, MASH6050S_PIN_STEP_ON); }

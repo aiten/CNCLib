@@ -31,7 +31,7 @@
 
 #include <GCode3DParser.h>
 #include "MyControl.h"
-//#include "MyLcd.h"
+#include "MyLcd.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -50,7 +50,7 @@ void CMyControl::Init()
 
 	super::Init();
 
-	//CStepper::GetInstance()->SetBacklash(SPEEDFACTOR*5000);
+	//CStepper::GetInstance()->SetBacklash(5000);
 	CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 20));
 	CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 35));
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));

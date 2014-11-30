@@ -114,6 +114,8 @@ void CStepperSMC800::InitMemVar()
 
 void CStepperSMC800::Init()
 {
+	super::Init();
+
 	InitMemVar();
 
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
@@ -139,8 +141,6 @@ void CStepperSMC800::Init()
 	HALFastdigitalWrite(SMC800_STROBEPIN, 1);
 
 	CHAL::pinMode(SMC800_REFININ, INPUT_PULLUP);
-
-	super::Init();
 }
 
 ////////////////////////////////////////////////////////

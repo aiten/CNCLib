@@ -40,6 +40,8 @@ CStepperRampsFD::CStepperRampsFD()
 
 void CStepperRampsFD::Init()
 {
+	super::Init();
+
 	CHAL::pinMode(RAMPSFD_X_STEP_PIN, OUTPUT);
 	CHAL::pinMode(RAMPSFD_X_DIR_PIN, OUTPUT);
 	CHAL::pinMode(RAMPSFD_X_ENABLE_PIN, OUTPUT);
@@ -93,8 +95,6 @@ void CStepperRampsFD::Init()
 
 	CHAL::pinMode(RAMPSFD_FET5D12_PIN, OUTPUT); HALFastdigitalWrite(RAMPSFD_FET5D12_PIN,0);
 	CHAL::pinMode(RAMPSFD_FET6D2_PIN,  OUTPUT); HALFastdigitalWrite(RAMPSFD_FET6D2_PIN,0);
-	
-	super::Init();
 }
 
 ////////////////////////////////////////////////////////
