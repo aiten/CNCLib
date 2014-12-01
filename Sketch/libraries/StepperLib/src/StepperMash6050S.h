@@ -54,4 +54,6 @@ protected:
 	////////////////////////////////////////////////////////
 
 private:
+
+	axisArray_t		_lastStepDirection;				// for backlash
 };

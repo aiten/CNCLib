@@ -25,6 +25,7 @@
 CStepperMash6050S::CStepperMash6050S()
 {
 	_num_axis = 4;
+	_lastStepDirection=0;
 }
 
 ////////////////////////////////////////////////////////
@@ -83,12 +84,16 @@ void CStepperMash6050S::Step(const unsigned char steps[NUM_AXIS], axisArray_t di
 
 #define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,MASH6050S_PIN_DIR_OFF); else HALFastdigitalWriteNC(dirpin,MASH6050S_PIN_DIR_ON);
 
-#pragma message ("TODO: wait 5ms on dirchange")
-
 	SETDIR(X_AXIS, MASH6050S_X_DIR_PIN);
 	SETDIR(Y_AXIS, MASH6050S_Y_DIR_PIN);
 	SETDIR(Z_AXIS, MASH6050S_Z_DIR_PIN);
 	SETDIR(A_AXIS, MASH6050S_C_DIR_PIN);
+
+	if (_lastStepDirection != directionUp)
+	{
+		CHAL::delayMicroseconds(5);
+		_lastStepDirection = directionUp;
+	}
 
 	for (unsigned char cnt=0;;cnt++)
 	{
