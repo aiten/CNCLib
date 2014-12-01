@@ -58,9 +58,9 @@ void CMyControl::Init()
 	//  CStepper::GetInstance()->SetMaxSpeed(20000);
 	CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350), steprate_t(350));
 
-	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 130000));
-	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 45000));
-	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, 81000));
+	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 830000));
+	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 500000));
+	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, 60000));
 	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS, 360000));		// grad
 	CStepper::GetInstance()->SetLimitMax(B_AXIS, CMotionControlBase::GetInstance()->ToMachine(B_AXIS, 360000));
 
@@ -79,6 +79,9 @@ void CMyControl::Init()
 
 	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
 #endif
+
+	CGCodeParserBase::SetG0FeedRate(STEPRATETOFEEDRATE(30000));
+	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(30000));
 
 	for (register unsigned char i = 0; i < NUM_AXIS * 2; i++)
 	{
@@ -150,8 +153,14 @@ void CMyControl::Initialized()
 
 void CMyControl::GoToReference(axis_t axis)
 {
-//#if defined(__SAM3X8E__)
-#if 1
+  if (axis == Z_AXIS)
+  {
+	super::GoToReference(axis);
+        return;
+  }
+  
+#//#if defined(__SAM3X8E__)
+#if 0
 	if (axis == Z_AXIS)
 		CStepper::GetInstance()->SetPosition(axis, CStepper::GetInstance()->GetLimitMax(axis));
 	else

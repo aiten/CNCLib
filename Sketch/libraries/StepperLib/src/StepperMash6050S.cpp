@@ -83,9 +83,10 @@ void CStepperMash6050S::Step(const unsigned char steps[NUM_AXIS], axisArray_t di
 #endif
 
 #define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,MASH6050S_PIN_DIR_OFF); else HALFastdigitalWriteNC(dirpin,MASH6050S_PIN_DIR_ON);
+#define SETDIRREF(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,MASH6050S_PIN_DIR_ON);  else HALFastdigitalWriteNC(dirpin,MASH6050S_PIN_DIR_OFF);
 
-	SETDIR(X_AXIS, MASH6050S_X_DIR_PIN);
-	SETDIR(Y_AXIS, MASH6050S_Y_DIR_PIN);
+	SETDIRREF(X_AXIS, MASH6050S_X_DIR_PIN);
+	SETDIRREF(Y_AXIS, MASH6050S_Y_DIR_PIN);
 	SETDIR(Z_AXIS, MASH6050S_Z_DIR_PIN);
 	SETDIR(A_AXIS, MASH6050S_C_DIR_PIN);
 
