@@ -299,15 +299,32 @@ steprate_t CMotionControlBase::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate
 		}
 		if (maxdist > 0)
 		{
-			sum = _ulsqrt_round(useOverrun ? sumOverRun : sum);
-			// remark: maxdist < sum
-			if (!useOverrun && maxdist > 1024)		// avoid overrun: feedrate * maxdist
+			if (useOverrun)
 			{
-				maxdist /= 256;
+				maxdist = maxdist / AvoidOverrun;
+				sum = _ulsqrt_round(sumOverRun);
+			}
+			else
+			{
+				sum = _ulsqrt_round(sum);
+			}
+
+			// avoid overrun: feedrate * maxdist
+			if (ToPrecisionS2(feedrate) + ToPrecisionS2(maxdist) > 30)
+			{
+				// remark: maxdist < sum
+				if (maxdist > 1024)
+				{
+					maxdist /= 256;
+				}
+				else
+				{
+					feedrate /= 256;
+				}
 				sum /= 256;
 			}
 			if (sum)
-				feedrate = RoundMulDivU32(feedrate, useOverrun ? (maxdist / AvoidOverrun) : maxdist, sum);
+				feedrate = RoundMulDivU32(feedrate, maxdist, sum);
 		}
 	}
 

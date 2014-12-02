@@ -80,8 +80,10 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
 #endif
 
-	CGCodeParserBase::SetG0FeedRate(STEPRATETOFEEDRATE(30000));
-	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(30000));
+	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(30000));
+//	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(30000));
+	CGCodeParserBase::SetG1FeedRate(feedrate_t(100000));
+	CGCodeParserBase::SetG1MaxFeedRate(STEPRATETOFEEDRATE(30000));
 
 	for (register unsigned char i = 0; i < NUM_AXIS * 2; i++)
 	{

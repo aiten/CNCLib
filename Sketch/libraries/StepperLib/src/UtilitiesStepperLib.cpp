@@ -84,6 +84,12 @@ unsigned char ToPrecisionU2(unsigned long v)
 	return i;
 }
 
+unsigned char ToPrecisionS2(long v)
+{
+	if (v < 0) return ToPrecisionU2((unsigned long)-v);
+	return ToPrecisionU2((unsigned long)v);
+}
+
 ////////////////////////////////////////////////////////
 
 unsigned long _ulsqrt_round(unsigned long val)

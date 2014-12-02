@@ -31,6 +31,7 @@ extern unsigned char ToPrecisionS10(long v);
 
 extern unsigned char ToPrecisionU2(unsigned long);
 extern unsigned char ToPrecisionU2(unsigned short);
+extern unsigned char ToPrecisionS2(long);
 
 ////////////////////////////////////////////////////////
 

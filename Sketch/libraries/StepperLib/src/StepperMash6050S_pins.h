@@ -36,7 +36,7 @@
 
 #define MASH6050S_X_STEP_PIN		54		// AD0
 #define MASH6050S_X_DIR_PIN			55		// AD1
-#define MASH6050S_X_MIN_PIN			3		// D2
+#define MASH6050S_X_MIN_PIN			3		// D3
 
 #define MASH6050S_Y_STEP_PIN		60		// AD6
 #define MASH6050S_Y_DIR_PIN			61		// AD7

@@ -27,14 +27,13 @@
 
 ////////////////////////////////////////////////////////
 
-//#define FEEDRATE_MIN_ALLOWED	STEPRATETOFEEDRATE(100)		// use VMAX => min is 100Steps/Sec because of CStepper
 #define FEEDRATE_MIN_ALLOWED	STEPRATETOFEEDRATE(1)		// use VMAX => min is 1Steps/Sec because of CStepper
-#define FEEDRATE_MAX_ALLOWED	feedrate_t(500000)			// 500mm/min is STEPRATETOFEEDRATE(26667) with 3200Steps/rotation(16Steps) 
+#define FEEDRATE_MAX_ALLOWED	feedrate_t(9999999)			// 
 
-#define FEEDRATE_MAX_G0			feedrate_t(526518)		// VMAXTOFEEDRATE(((SPEED_MULTIPLIER_4)-5))
+#define FEEDRATE_DEFAULT_G0		-feedrate_t(526518)			// VMAXTOFEEDRATE(((SPEED_MULTIPLIER_4)-5))
+#define FEEDRATE_DEFAULT_G1		feedrate_t(100000)			// 100mm/min
 
-#define FEEDRATE_DEFAULT_G0		-FEEDRATE_MAX_G0
-#define FEEDRATE_DEFAULT_G1		feedrate_t(100000)						// 100mm/min
+#define FEEDRATE_DEFAULT_MAX_G1	feedrate_t(500000)			// 500mm/min is STEPRATETOFEEDRATE(26667) with 3200Steps/rotation(16Steps) 
 
 #define STEPRATE_REFMOVE		steprate_t(FEEDRATETOSTEPRATE(300000))	// 300*3.2/60 = 16000 Steps/sec with 3200Steps/rotation(16Steps) 
 
@@ -52,6 +51,7 @@ public:
 
 	static void SetG0FeedRate(feedrate_t feedrate)			{ _modalstate.G0FeedRate = feedrate; }
 	static void SetG1FeedRate(feedrate_t feedrate)			{ _modalstate.G1FeedRate = feedrate; }
+	static void SetG1MaxFeedRate(feedrate_t feedrate)		{ _modalstate.G1MaxFeedRate = feedrate; }
 	static mm1000_t GetG92PosPreset(axis_t axis)			{ return _modalstate.G92Pospreset[axis]; }
 
 	static void Init()										{ super::Init(); _modalstate.Init();  _modlessstate.Init(); }
@@ -100,6 +100,8 @@ protected:
 		feedrate_t		G0FeedRate;
 		feedrate_t		G1FeedRate;
 
+		feedrate_t		G1MaxFeedRate;
+
 		short			SpindleSpeed;			// > 0 CW, < 0 CCW
 
 		mm1000_t		G92Pospreset[NUM_AXIS];
@@ -117,6 +119,7 @@ protected:
 			SpindleSpeed = 1000;
 			G0FeedRate = FEEDRATE_DEFAULT_G0;
 			G1FeedRate = FEEDRATE_DEFAULT_G1;
+			G1MaxFeedRate = FEEDRATE_DEFAULT_MAX_G1;
 			IsAbsolut = true;
 			Plane_axis_0 = X_AXIS;
 			Plane_axis_1 = Y_AXIS;

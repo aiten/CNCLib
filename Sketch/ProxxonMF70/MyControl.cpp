@@ -58,6 +58,10 @@ void CMyControl::Init()
 	//  CStepper::GetInstance()->SetMaxSpeed(20000);
 	CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350*SPEEDFACTOR_SQT), steprate_t(350*SPEEDFACTOR_SQT));
 
+	CGCodeParserBase::SetG0FeedRate(-feedrate_t(526518));					// feedrate_t(526518) => VMAXTOFEEDRATE(((SPEED_MULTIPLIER_4)-5))
+	CGCodeParserBase::SetG1FeedRate(feedrate_t(100000));
+	CGCodeParserBase::SetG1MaxFeedRate(feedrate_t(500000));
+
 	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 130000));
 	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 45000));
 	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, 81000));
