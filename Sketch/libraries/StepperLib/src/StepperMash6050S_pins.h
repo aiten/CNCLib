@@ -29,10 +29,12 @@
 
 ////////////////////////////////////////////////////////
 
-// only available on Arduino Mega / due
-
 #define MASH6050S_REF_ON			0
 #define MASH6050S_REF_OFF			1
+
+#if defined(__AVR_ATmega2560__) || defined(__SAM3X8E__)
+
+////////////////////////////////////////////////////////
 
 #define MASH6050S_X_STEP_PIN		54		// AD0
 #define MASH6050S_X_DIR_PIN			55		// AD1
@@ -52,8 +54,35 @@
 
 #define MASH6050S_SDPOWER			-1
 #define MASH6050S_SDSS_PIN			53		// D53
-#define MASH6050S_LED_PIN			13		// D13
 
+#elif defined(__AVR_ATmega328P__) || defined (_MSC_VER)
+
+#define MASH6050S_X_STEP_PIN		14		//AD0	
+#define MASH6050S_X_DIR_PIN			15	
+#define MASH6050S_X_MIN_PIN			2	
+
+#define MASH6050S_Y_STEP_PIN		16	
+#define MASH6050S_Y_DIR_PIN			17	
+#define MASH6050S_Y_MIN_PIN			3	
+
+#define MASH6050S_Z_STEP_PIN		18	
+#define MASH6050S_Z_DIR_PIN			19	
+#define MASH6050S_Z_MAX_PIN			4	
+
+#define MASH6050S_C_STEP_PIN		11	
+#define MASH6050S_C_DIR_PIN			12	
+#define MASH6050S_C_MIN_PIN			5	
+
+#define MASH6050S_SDPOWER			-1
+#define MASH6050S_SDSS_PIN			10		
+
+#else
+
+
+
+#endif
+
+#define MASH6050S_LED_PIN			13		// D13
 #define MASH6050S_PS_ON_PIN			12		// D12
 
 #define MASH6050S_FET1D8_PIN		8		// D8 FET1

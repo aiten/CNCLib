@@ -42,11 +42,7 @@ unsigned char ToPrecisionU10(unsigned short v)
 
 unsigned char ToPrecisionU10(unsigned long v)
 {
-	if (v < 1)   return 0;
-	if (v < 10)  return 1;
-	if (v < 100) return 2;
-	if (v < 1000) return 3;
-	if (v < 10000) return 4;
+	if (v < 10000) return ToPrecisionU10((unsigned short) v);
 	if (v < 100000) return 5;
 	if (v < 1000000) return 6;
 	if (v < 10000000) return 7;
@@ -92,7 +88,7 @@ unsigned char ToPrecisionS2(long v)
 
 ////////////////////////////////////////////////////////
 
-unsigned long _ulsqrt_round(unsigned long val)
+unsigned long _ulsqrt_round(unsigned long val, bool round)
 {
 	unsigned long temp, g, b, bshft;
 	g = 0;
@@ -120,7 +116,7 @@ unsigned long _ulsqrt_round(unsigned long val)
 		val -= temp;
 	}
 
-	if (val > g)
+	if (round && val > g)
 		g++;
 
 	return g;
@@ -128,33 +124,14 @@ unsigned long _ulsqrt_round(unsigned long val)
 
 ////////////////////////////////////////////////////////
 
+unsigned long _ulsqrt_round(unsigned long val)
+{
+	return _ulsqrt_round(val, true);
+}
+
+////////////////////////////////////////////////////////
+
 unsigned long _ulsqrt(unsigned long val)
 {
-	unsigned long temp, g, b, bshft;
-	g = 0;
-	b = 0x8000;
-	bshft = 15;
-	unsigned char i;
-	for (i = 0; i < 15; i++)
-	{
-		temp = g;
-		temp = temp + (b >> 1);
-		temp = temp << (bshft + 1);
-		if (val >= temp)
-		{
-			g += b;
-			val -= temp;
-		}
-		bshft--;
-		b = b >> 1;
-	}
-	temp = (g << 1);
-	temp = temp | 1;
-	if (val >= temp)
-	{
-		g += b;
-		val -= temp;
-	}
-
-	return g;
+	return _ulsqrt_round(val, false);
 }

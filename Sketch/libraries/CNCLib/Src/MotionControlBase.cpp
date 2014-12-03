@@ -310,7 +310,7 @@ steprate_t CMotionControlBase::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate
 			}
 
 			// avoid overrun: feedrate * maxdist
-			if (ToPrecisionS2(feedrate) + ToPrecisionS2(maxdist) > 30)
+			if (ToPrecisionU2((unsigned long)feedrate) + ToPrecisionU2((unsigned long)maxdist) > 30)
 			{
 				// remark: maxdist < sum
 				if (maxdist > 1024)
