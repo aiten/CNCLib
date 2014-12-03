@@ -37,7 +37,6 @@ public:
 	virtual void Run();				// run Controller => do not return
 	virtual void Kill();			// stop everyting => Emergency Stop
 	virtual void Resurrect();		// Call after Kill to restart again
-	virtual bool IsKill() = 0;		// check for kill
 
 	bool IsKilled()												{ return CStepper::GetInstance()->IsEmergencyStop(); }
 
@@ -99,6 +98,8 @@ protected:
 	virtual void ReadAndExecuteCommand();						// read and execute commands from other source e.g. SD.File
 
 	virtual void TimerInterrupt();								// called from timer (timer0 on AVR) 
+
+	virtual bool IsKill() = 0;		// check for kill
 
 	bool ParseAndPrintResult(CParser* parser, Stream* output);
 

@@ -44,7 +44,6 @@ public:
 	CMyControl()				 { }
 
 	virtual void Kill();
-	virtual bool IsKill();
 
 	virtual void IOControl(unsigned char tool, unsigned short level);
 	virtual unsigned short IOControl(unsigned char tool);
@@ -53,6 +52,8 @@ protected:
 
 	virtual void Init();
 	virtual void Initialized();
+
+	virtual bool IsKill();
 
 	virtual void GoToReference(axis_t axis);
 
@@ -63,6 +64,7 @@ private:
 	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
 	COnOffIOControl<SPINDEL_PIN, SPINDEL_ON, SPINDEL_OFF> _spindel;
 	CReadPinIOControl<PROBE1_PIN, PROBE_ON> _probe;
+	CReadPinIOControl<CAT(BOARDNAME,_LCD_KILL_PIN),CAT(BOARDNAME,_LCD_KILL_PIN_ON)> _kill;
 
 	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
 };

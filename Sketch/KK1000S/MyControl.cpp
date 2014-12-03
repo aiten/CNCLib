@@ -100,6 +100,7 @@ void CMyControl::Init()
 	_controllerfan.Init();
 
 	_probe.Init();
+	_kill.Init();
 
 	InitSD(SD_ENABLE_PIN);
 }
@@ -146,7 +147,7 @@ void CMyControl::Kill()
 
 bool CMyControl::IsKill()
 {
-	return CHAL::digitalRead(CAT(BOARDNAME, _LCD_KILL_PIN)) == CAT(BOARDNAME, _LCD_KILL_PIN_ON);
+	return _kill.IsOn();
 }
 
 ////////////////////////////////////////////////////////////

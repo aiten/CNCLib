@@ -41,7 +41,6 @@ public:
 	CMyControl()				 { }
 
 	virtual void Kill();
-	virtual bool IsKill();
 
 	virtual void IOControl(unsigned char tool, unsigned short level);
 	virtual unsigned short IOControl(unsigned char tool);
@@ -50,7 +49,9 @@ protected:
 
 	virtual void Init();
 
-	virtual bool Parse(CStreamReader* reader, Stream* output);// abstract: specify Parser
+	virtual bool IsKill();
+
+	virtual bool Parse(CStreamReader* reader, Stream* output);
 
 	virtual void GoToReference();
 

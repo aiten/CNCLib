@@ -179,11 +179,6 @@ void CMyLcd::TimerInterrupt()
 {
 	super::TimerInterrupt();
 
-	if (CHAL::digitalRead(CAT(BOARDNAME,_LCD_KILL_PIN)) == CAT(BOARDNAME,_LCD_KILL_PIN_ON))
-	{
-		Control.Kill();
-	}
-
 	switch (_button.Tick(HALFastdigitalRead(ROTARY_EN1), HALFastdigitalRead(ROTARY_EN2)))
 	{
 		case CRotaryButton<rotarypos_t, ROTARY_ACCURACY>::Overrun:

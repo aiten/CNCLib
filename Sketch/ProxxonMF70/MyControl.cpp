@@ -100,6 +100,7 @@ void CMyControl::Init()
 	_controllerfan.Init();
 
 	_probe.Init();
+	_kill.Init();
 
 	InitSD(SD_ENABLE_PIN);
 }
@@ -140,6 +141,13 @@ void CMyControl::Kill()
 	super::Kill();
 	_spindel.On(0);
 	_coolant.On(0);
+}
+
+////////////////////////////////////////////////////////////
+
+bool CMyControl::IsKill()
+{
+	return _kill.IsOn();
 }
 
 ////////////////////////////////////////////////////////////

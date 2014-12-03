@@ -23,6 +23,7 @@
 
 #include <Control.h>
 #include <Analog8IOControl.h>
+#include <ReadPinIOControl.h>
 
 #include "Configuration_Plotter.h"
 
@@ -56,6 +57,7 @@ protected:
 private:
 
 	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
+	CReadPinIOControl<RAMPS14_KILL_PIN,RAMPS14_LCD_KILL_PIN_ON> _kill;
 
 };
 

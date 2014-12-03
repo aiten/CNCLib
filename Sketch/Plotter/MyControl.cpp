@@ -53,6 +53,7 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penUp.max, CHPGLParser::_state.penUp.acc, CHPGLParser::_state.penUp.dec);
 
 	_controllerfan.Init();
+	_kill.Init();
 
 #if defined(__AVR_ARCH__) || defined(__SAM3X8E__)
 	for (register unsigned char i=0;i<NUM_AXIS*2;i++)
@@ -96,6 +97,13 @@ void CMyControl::GoToReference(axis_t axis)
 #define FEEDRATE_REFMOVE  CStepper::GetInstance()->GetDefaultVmax() / 4  
         bool toMin = true; // axis != Z_AXIS;
         CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMin), toMin, FEEDRATE_REFMOVE);
+}
+
+////////////////////////////////////////////////////////////
+
+bool CMyControl::IsKill()
+{
+	return _kill.IsOn();
 }
 
 ////////////////////////////////////////////////////////////
