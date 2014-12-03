@@ -126,6 +126,11 @@ void CMyControl::Kill()
 #endif
 }
 
+bool CMyControl::IsKill()
+{
+	return false;
+}
+
 ////////////////////////////////////////////////////////////
 
 void CMyControl::GoToReference()

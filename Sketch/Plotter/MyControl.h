@@ -40,6 +40,7 @@ public:
 
 	virtual void IOControl(unsigned char tool, unsigned short level);
 	virtual unsigned short IOControl(unsigned char tool);
+	virtual bool IsKill();
 
 protected:
 

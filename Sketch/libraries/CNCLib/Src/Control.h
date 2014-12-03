@@ -37,6 +37,7 @@ public:
 	virtual void Run();				// run Controller => do not return
 	virtual void Kill();			// stop everyting => Emergency Stop
 	virtual void Resurrect();		// Call after Kill to restart again
+	virtual bool IsKill() = 0;		// check for kill
 
 	bool IsKilled()												{ return CStepper::GetInstance()->IsEmergencyStop(); }
 

@@ -179,7 +179,7 @@ void CMyLcd::TimerInterrupt()
 {
 	super::TimerInterrupt();
 
-	if (false && CHAL::digitalRead(CAT(BOARDNAME,_LCD_KILL_PIN)) == CAT(BOARDNAME,_LCD_KILL_PIN_ON))
+	if (CHAL::digitalRead(CAT(BOARDNAME,_LCD_KILL_PIN)) == CAT(BOARDNAME,_LCD_KILL_PIN_ON))
 	{
 		Control.Kill();
 	}

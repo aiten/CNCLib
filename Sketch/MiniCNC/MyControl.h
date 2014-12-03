@@ -41,6 +41,7 @@ public:
 	CMyControl()				 { }
 
 	virtual void Kill();
+	virtual bool IsKill();
 
 	virtual void IOControl(unsigned char tool, unsigned short level);
 	virtual unsigned short IOControl(unsigned char tool);

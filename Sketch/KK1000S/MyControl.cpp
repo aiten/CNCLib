@@ -81,7 +81,6 @@ void CMyControl::Init()
 #endif
 
 	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(30000));
-//	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(30000));
 	CGCodeParserBase::SetG1FeedRate(feedrate_t(100000));
 	CGCodeParserBase::SetG1MaxFeedRate(STEPRATETOFEEDRATE(30000));
 
@@ -145,6 +144,13 @@ void CMyControl::Kill()
 
 ////////////////////////////////////////////////////////////
 
+bool CMyControl::IsKill()
+{
+	return CHAL::digitalRead(CAT(BOARDNAME, _LCD_KILL_PIN)) == CAT(BOARDNAME, _LCD_KILL_PIN_ON);
+}
+
+////////////////////////////////////////////////////////////
+
 void CMyControl::Initialized()
 {
 	super::Initialized();
@@ -155,14 +161,7 @@ void CMyControl::Initialized()
 
 void CMyControl::GoToReference(axis_t axis)
 {
-  if (axis == Z_AXIS)
-  {
-	super::GoToReference(axis);
-        return;
-  }
-  
-#//#if defined(__SAM3X8E__)
-#if 0
+#if defined(__SAM3X8E__)
 	if (axis == Z_AXIS)
 		CStepper::GetInstance()->SetPosition(axis, CStepper::GetInstance()->GetLimitMax(axis));
 	else
