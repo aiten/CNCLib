@@ -90,6 +90,8 @@ void CStepperMash6050S::Step(const unsigned char steps[NUM_AXIS], axisArray_t di
 	SETDIR(Z_AXIS, MASH6050S_Z_DIR_PIN);
 	SETDIR(A_AXIS, MASH6050S_C_DIR_PIN);
 
+#undef SETDIR
+
 	if (_lastStepDirection != directionUp)
 	{
 		CHAL::delayMicroseconds(5);
@@ -115,8 +117,6 @@ void CStepperMash6050S::Step(const unsigned char steps[NUM_AXIS], axisArray_t di
 
 		NOPREQUIRED_2();
 	}
-
-#undef SETDIR
 }
 
 ////////////////////////////////////////////////////////

@@ -175,6 +175,7 @@ private:
 	void MenuButtonPressExtraBack(unsigned short);
 
 	void MenuButtonPressSetMove(unsigned short axis);
+	void MenuButtonPressSetRotate(unsigned short);
 	void MenuButtonPressSetSD(unsigned short);
 	void MenuButtonPressSetExtra(unsigned short);
 

@@ -80,9 +80,12 @@ private:
 	void SetRotaryFocusMainPage();
 	void SetRotaryFocusMenuPage();
 
+	struct SMenuItemDef;
+	struct SMenuDef;
+
 	typedef bool(CMyLcd::*DrawFunction)(bool setup);
 	typedef void(CMyLcd::*ButtonFunction)();
-	typedef void(CMyLcd::*MenuButtonFunction)(unsigned short param);
+	typedef void(CMyLcd::*MenuButtonFunction)(const struct SMenuItemDef*);
 
 	void DrawLoop(DrawFunction drawfnc)						{ _curretDraw = drawfnc; DrawLoop(); }
 	void DrawLoop();
@@ -93,12 +96,58 @@ private:
 		ButtonFunction buttonpress;
 	};
 
+	typedef const void* menuparam_t;
+
+	struct SMenuItemDef
+	{
+	public:
+		const char* _text;
+		MenuButtonFunction _buttonpress;
+		menuparam_t _param1;
+		menuparam_t _param2;
+	public:
+		const __FlashStringHelper* GetText() const			{ return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
+		MenuButtonFunction GetButtonPress()const;
+		menuparam_t GetParam1()	const						{ return (menuparam_t)pgm_read_word(&this->_param1); }
+		menuparam_t GetParam2()	const						{ return (menuparam_t)pgm_read_word(&this->_param2); }
+	};
+
 	struct SMenuDef
 	{
-		const char* text;
-		MenuButtonFunction buttonpress;
-		unsigned short param;
+	public:
+		const char* _text;
+//		menuparam_t _param1;
+//		menuparam_t _param2;
+		const struct SMenuItemDef* _items;
+
+		unsigned char GetItemCount() const 
+		{
+			const struct SMenuItemDef* items = GetItems();
+			for (unsigned char x = 0;; x++)
+			{
+				if (items[x].GetText() == NULL) return x;
+			}
+		}
+
+		unsigned char FindMenuIdx(CMyLcd::MenuButtonFunction f, unsigned short param, unsigned char valueIffail) const
+		{
+			const struct SMenuItemDef* items = GetItems();
+			for (unsigned char x = 0; items[x].GetText() != NULL; x++)
+			{
+				if (items[x].GetButtonPress() == f && items[x].GetParam1() == (menuparam_t)param)
+					return x;
+			}
+
+			return valueIffail;
+		}
+
+	public:
+		const __FlashStringHelper* GetText() const		{ return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
+		const struct SMenuItemDef* GetItems() const		{ return (const struct SMenuItemDef*)pgm_read_word(&this->_items); }
+//		menuparam_t GetMenuParam1()	const				{ return (menuparam_t)pgm_read_word(&this->param1); }
+//		menuparam_t GetMenuParam2()	const				{ return (menuparam_t)pgm_read_word(&this->param2); }
 	};
+
 
 	EnumAsByte(ERotaryFocus) _rotaryFocus;
 	EnumAsByte(EPage)		_currentpage;
@@ -106,8 +155,8 @@ private:
 	unsigned char			_currentMenuOffset;
 	axis_t					_currentMenuAxis;
 
-	const SMenuDef*			_currentMenu;
-	const __FlashStringHelper* _currentMenuName;
+	const SMenuDef*				_currentMenu;
+	const __FlashStringHelper*	_currentMenuName;
 
 	bool _expectButtonOff;
 
@@ -148,35 +197,38 @@ private:
 
 	unsigned char GetMenuIdx();
 	unsigned char GetMenuCount();
-	const __FlashStringHelper* GetMenuText(unsigned char idx);
-	MenuButtonFunction GetMenuFnc(unsigned char idx);
-	unsigned short GetMenuParam(unsigned char idx)				{ return (unsigned short)pgm_read_word(&_currentMenu[idx].param); }
-
-	unsigned char FindMenuIdx(MenuButtonFunction f, unsigned short param, unsigned char valueIffail);
 
 	char* AddAxisName(char*buffer, axis_t axis);
 
-	void MenuButtonPressG92Clear(unsigned short)				{ SendCommand(F("g92")); Beep(); }
-	void MenuButtonPressEnd(unsigned short param);
+	void MenuButtonPressG92Clear(const struct SMenuItemDef*)				{ SendCommand(F("g92")); Beep(); }
+	void MenuButtonPressEnd(const struct SMenuItemDef*);
 
-	void MenuButtonPressHome(unsigned short);
-	void MenuButtonPressProbe(unsigned short);
-	void MenuButtonPressSpindle(unsigned short);
-	void MenuButtonPressCoolant(unsigned short);
+	void MenuButtonPressHomeA(axis_t axis);
+	void MenuButtonPressHome(const struct SMenuItemDef*);
+	void MenuButtonPressProbe(const struct SMenuItemDef*);
+	void MenuButtonPressSpindle(const struct SMenuItemDef*);
+	void MenuButtonPressCoolant(const struct SMenuItemDef*);
 
-	void MenuButtonPressMoveNextAxis(unsigned short);
-	void MenuButtonPressMoveG92(unsigned short);
-	void MenuButtonPressMove(unsigned short movetype);
-	void MenuButtonPressMoveBack(unsigned short);
+	void MenuButtonPressMoveNextAxis(const struct SMenuItemDef*);
+	void MenuButtonPressMoveG92(const struct SMenuItemDef*);
+	void MenuButtonPressMove(const struct SMenuItemDef*);
+	void MenuButtonPressMoveBack(const struct SMenuItemDef*);
 
-	void MenuButtonPressSDInit(unsigned short)				{ SendCommand(F("m21")); Beep(); }
-	void MenuButtonPressSDBack(unsigned short);
+	void MenuButtonPressRotate(const struct SMenuItemDef*);
+	void MenuButtonPressRotateBack(const struct SMenuItemDef*);
 
-	void MenuButtonPressExtraBack(unsigned short);
+	void MenuButtonPressSDInit(const struct SMenuItemDef*)				{ SendCommand(F("m21")); Beep(); }
+	void MenuButtonPressSDBack(const struct SMenuItemDef*);
 
-	void MenuButtonPressSetMove(unsigned short axis);
-	void MenuButtonPressSetSD(unsigned short);
-	void MenuButtonPressSetExtra(unsigned short);
+	void MenuButtonPressSetMenu(const struct SMenuItemDef*);
+
+	void MenuButtonPressExtraBack(const struct SMenuItemDef*);
+
+	void MenuButtonPressSetMoveA(axis_t axis);
+	void MenuButtonPressSetMove(const struct SMenuItemDef*);
+	void MenuButtonPressSetRotate(const struct SMenuItemDef*);
+	void MenuButtonPressSetSD(const struct SMenuItemDef*);
+	void MenuButtonPressSetExtra(const struct SMenuItemDef*);
 
 	enum EMoveType
 	{
@@ -191,13 +243,21 @@ private:
 		MoveHome
 	};
 
-	void SetMenu(const SMenuDef* pMenu,const __FlashStringHelper* name)			{ _currentMenu = pMenu; _currentMenuName = name; _currentMenuIdx = 0; _currentMenuOffset = 0; };
-	void SetMainMenu()															{ SetMenu(_mainMenu,F("Main")); }
+	void SetMenu(const SMenuDef* pMenu,const __FlashStringHelper* name)				{ _currentMenu = pMenu; _currentMenuName = name; _currentMenuIdx = 0; _currentMenuOffset = 0; };
+	void SetMenu(const SMenuDef* pMenu)												{ SetMenu(pMenu, pMenu->GetText()); };
+	void SetMainMenu()																{ SetMenu(&_mainMenu); }
 
-	static const SMenuDef _mainMenu[] PROGMEM;
-	static const SMenuDef _moveMenu[] PROGMEM;
-	static const SMenuDef _SDMenu[] PROGMEM;
-	static const SMenuDef _extraMenu[] PROGMEM;
+	static const SMenuDef _mainMenu PROGMEM;
+	static const SMenuDef _moveMenu PROGMEM;
+	static const SMenuDef _rotateMenu PROGMEM;
+	static const SMenuDef _SDMenu PROGMEM;
+	static const SMenuDef _extraMenu PROGMEM;
+
+	static const SMenuItemDef _mainMenuItems[] PROGMEM;
+	static const SMenuItemDef _moveMenuItems[] PROGMEM;
+	static const SMenuItemDef _rotateMenuItems[] PROGMEM;
+	static const SMenuItemDef _SDMenuItems[] PROGMEM;
+	static const SMenuItemDef _extraMenuItems[] PROGMEM;
 
 #if defined(__AVR_ARCH__)
 
@@ -206,7 +266,6 @@ private:
         static DrawFunction GetDrawFunction_P(const void* adr);
 
 #endif
-
 };
 
 ////////////////////////////////////////////////////////
