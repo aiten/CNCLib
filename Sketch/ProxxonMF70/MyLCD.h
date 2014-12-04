@@ -141,6 +141,18 @@ private:
 			return valueIffail;
 		}
 
+		unsigned char FindMenuIdx(const void*param, bool (*check)(const struct SMenuItemDef*, const void*param)) const
+		{
+			const struct SMenuItemDef* item = &GetItems()[0];
+			for (unsigned char x = 0; item->GetText() != NULL; x++,item++)
+			{
+				if (check(item,param)) return x;
+			}
+
+			return 0;
+		}
+
+
 	public:
 		const __FlashStringHelper* GetText() const		{ return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
 		const struct SMenuItemDef* GetItems() const		{ return (const struct SMenuItemDef*)pgm_read_word(&this->_items); }
@@ -196,7 +208,6 @@ private:
 	// Menu Page
 
 	unsigned char GetMenuIdx();
-	unsigned char GetMenuCount();
 
 	char* AddAxisName(char*buffer, axis_t axis);
 
@@ -214,11 +225,10 @@ private:
 	void MenuButtonPressMove(const struct SMenuItemDef*);
 	void MenuButtonPressMoveBack(const struct SMenuItemDef*);
 
-	void MenuButtonPressRotate(const struct SMenuItemDef*);
-	void MenuButtonPressRotateBack(const struct SMenuItemDef*);
-
 	void MenuButtonPressSDInit(const struct SMenuItemDef*)				{ SendCommand(F("m21")); Beep(); }
 	void MenuButtonPressSDBack(const struct SMenuItemDef*);
+
+	void MenuButtonPressRotate(const struct SMenuItemDef*);
 
 	void MenuButtonPressSetMenu(const struct SMenuItemDef*);
 
@@ -226,7 +236,6 @@ private:
 
 	void MenuButtonPressSetMoveA(axis_t axis);
 	void MenuButtonPressSetMove(const struct SMenuItemDef*);
-	void MenuButtonPressSetRotate(const struct SMenuItemDef*);
 	void MenuButtonPressSetSD(const struct SMenuItemDef*);
 	void MenuButtonPressSetExtra(const struct SMenuItemDef*);
 

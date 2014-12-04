@@ -556,18 +556,11 @@ CMyLcd::MenuButtonFunction CMyLcd::SMenuItemDef::GetButtonPress() const
 
 ////////////////////////////////////////////////////////////
 
-unsigned char CMyLcd::GetMenuCount()
-{
-	return _currentMenu->GetItemCount();
-}
-
-////////////////////////////////////////////////////////////
-
 unsigned char CMyLcd::GetMenuIdx()
 {
 	if (_rotaryFocus == RotaryMenuPage)
 	{
-		unsigned char menu = _button.GetPageIdx(GetMenuCount());
+		unsigned char menu = _button.GetPageIdx(_currentMenu->GetItemCount());
 		if (menu != _currentMenuIdx)
 		{
 			_currentMenuIdx = menu;
@@ -610,6 +603,21 @@ void CMyLcd::MenuButtonPressEnd(const struct SMenuItemDef*)
 
 void CMyLcd::MenuButtonPressSetMenu(const struct SMenuItemDef*def)
 {
+	const struct SMenuDef* newMenu = (const struct SMenuDef*) def->GetParam1();
+	const struct SMenuDef* posMenu = (const struct SMenuDef*) def->GetParam2();
+	SetMenu(newMenu);
+
+	if (posMenu!=NULL)
+	{
+		_currentMenuIdx = newMenu->FindMenuIdx(posMenu, [] (const SMenuItemDef* def, const void*param)
+		{
+			return def->GetParam1() == param;
+		});
+	}
+
+	SetRotaryFocusMenuPage();
+	DrawLoop();
+	Beep();
 }
 
 ////////////////////////////////////////////////////////////
@@ -617,7 +625,6 @@ void CMyLcd::MenuButtonPressSetMenu(const struct SMenuItemDef*def)
 void CMyLcd::MenuButtonPressSetMoveA(axis_t axis)
 {
 	const __FlashStringHelper* axisName[] PROGMEM = { F("Move X"), F("Move Y"), F("Move Z"), F("Move A"), F("Move B"), F("Move C") };
-
 
 	_currentMenuAxis = axis;
 	SetMenu(&_moveMenu, axisName[axis]);
@@ -629,17 +636,7 @@ void CMyLcd::MenuButtonPressSetMoveA(axis_t axis)
 
 void CMyLcd::MenuButtonPressSetMove(const struct SMenuItemDef*def)
 {
-	MenuButtonPressSetMoveA((axis_t)def->GetParam1());
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyLcd::MenuButtonPressSetRotate(const struct SMenuItemDef*)
-{
-	SetMenu(&_rotateMenu);
-	SetRotaryFocusMenuPage();
-	DrawLoop();
-	Beep();
+	MenuButtonPressSetMoveA((axis_t) (unsigned int) def->GetParam1());
 }
 
 ////////////////////////////////////////////////////////////
@@ -668,16 +665,6 @@ void CMyLcd::MenuButtonPressMoveBack(const struct SMenuItemDef*)
 {
 	SetMainMenu();
 	_currentMenuIdx = _currentMenu->FindMenuIdx(&CMyLcd::MenuButtonPressSetMove,_currentMenuAxis,0);
-	SetRotaryFocusMenuPage();
-	Beep();
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyLcd::MenuButtonPressRotateBack(const struct SMenuItemDef*)
-{
-	SetMainMenu();
-	_currentMenuIdx = _currentMenu->FindMenuIdx(&CMyLcd::MenuButtonPressSetRotate, 0, 0);
 	SetRotaryFocusMenuPage();
 	Beep();
 }
@@ -719,7 +706,7 @@ void CMyLcd::MenuButtonPressMoveNextAxis(const struct SMenuItemDef*def)
 
 void CMyLcd::MenuButtonPressMove(const struct SMenuItemDef*def)
 {
-	unsigned char dist = (unsigned char)def->GetParam1();
+	unsigned char dist = (unsigned char)(unsigned int)def->GetParam1();
 
 	if (dist == MoveHome) { MenuButtonPressHomeA(_currentMenuAxis); return; }
 
@@ -749,30 +736,6 @@ void CMyLcd::MenuButtonPressMove(const struct SMenuItemDef*def)
 
 void CMyLcd::MenuButtonPressRotate(const struct SMenuItemDef*)
 {
-/*
-	if (dist == MoveHome) { MenuButtonPressHome(_currentMenuAxis); return; }
-
-	char tmp[24];
-
-	strcpy_P(tmp, PSTR("g91 g0 "));
-	AddAxisName(tmp, _currentMenuAxis);
-
-	switch (dist)
-	{
-		case MoveP10:	strcat_P(tmp, PSTR("10")); break;
-		case MoveP1:	strcat_P(tmp, PSTR("1")); break;
-		case MoveP01:	strcat_P(tmp, PSTR("0.1")); break;
-		case MoveP001:	strcat_P(tmp, PSTR("0.01")); break;
-		case MoveM001:	strcat_P(tmp, PSTR("-0.01")); break;
-		case MoveM01:	strcat_P(tmp, PSTR("-0.1")); break;
-		case MoveM1:	strcat_P(tmp, PSTR("-1")); break;
-		case MoveM10:	strcat_P(tmp, PSTR("-10")); break;
-	}
-
-	strcat_P(tmp, PSTR(" g90"));
-
-	SendCommand(tmp);
-*/
 }
 
 ////////////////////////////////////////////////////////////
@@ -791,7 +754,7 @@ void CMyLcd::MenuButtonPressProbe(const struct SMenuItemDef*)
 
 void CMyLcd::MenuButtonPressHome(const struct SMenuItemDef*def)
 {
-	MenuButtonPressHomeA((axis_t)def->GetParam1());
+	MenuButtonPressHomeA((axis_t)(unsigned int)def->GetParam1());
 }
 
 void CMyLcd::MenuButtonPressHomeA(axis_t axis)
@@ -847,7 +810,7 @@ void CMyLcd::MenuButtonPressCoolant(const struct SMenuItemDef*)
 
 void CMyLcd::SetRotaryFocusMenuPage()
 {
-	_button.SetPageIdx(_currentMenuIdx); _button.SetMinMax(0, GetMenuCount() - 1, false);
+	_button.SetPageIdx(_currentMenuIdx); _button.SetMinMax(0, _currentMenu->GetItemCount() - 1, false);
 	_rotaryFocus = RotaryMenuPage;
 }
 
@@ -860,12 +823,11 @@ void CMyLcd::ButtonPressMenuPage()
 		case RotaryMainPage:	SetRotaryFocusMenuPage(); Beep();  break;
 		case RotaryMenuPage:
 		{
-			unsigned char idx = GetMenuIdx();
-			const struct SMenuItemDef* items = _currentMenu->GetItems();
-			MenuButtonFunction fnc = items->GetButtonPress();
+			const struct SMenuItemDef* item = &_currentMenu->GetItems()[GetMenuIdx()];
+			MenuButtonFunction fnc = item->GetButtonPress();
 			if (fnc != NULL)
 			{
-				(this->*fnc)(&items[idx]);
+				(this->*fnc)(item);
 			}
 			else
 			{
@@ -890,7 +852,7 @@ bool CMyLcd::DrawLoopMenu(bool setup)
 	unsigned char x = 255;
 	const unsigned char printFirstLine = 1;
 	const unsigned char printLastLine = (TotalRows - 1);
-	const unsigned char menuEntries = GetMenuCount();
+	const unsigned char menuEntries = _currentMenu->GetItemCount();
 
 	if (_rotaryFocus == RotaryMenuPage)
 	{
@@ -960,8 +922,6 @@ bool CMyLcd::DrawLoopMenu(bool setup)
 
 ////////////////////////////////////////////////////////////
 
-#define MenuText(a,b)  static const char a[] PROGMEM = b;
-
 static const char _mFastMoveX[] PROGMEM	= "Move               >";
 static const char _mMoveX[] PROGMEM		= "Move X             >";
 static const char _mMoveY[] PROGMEM		= "Move Y             >";
@@ -980,13 +940,13 @@ const CMyLcd::SMenuItemDef CMyLcd::_mainMenuItems[] PROGMEM =
 {
 	{ _mMoveX, &CMyLcd::MenuButtonPressSetMove, (menuparam_t) X_AXIS },
 #if LCD_NUMAXIS > 1
-	{ _mMoveY, &CMyLcd::MenuButtonPressSetMove, (menuparam_t)Y_AXIS },
+	{ _mMoveY, &CMyLcd::MenuButtonPressSetMove, (menuparam_t) Y_AXIS },
 #if LCD_NUMAXIS > 2
-	{ _mMoveZ, &CMyLcd::MenuButtonPressSetMove, (menuparam_t)Z_AXIS },
+	{ _mMoveZ, &CMyLcd::MenuButtonPressSetMove, (menuparam_t) Z_AXIS },
 #if LCD_NUMAXIS > 3
-	{ _mMoveA, &CMyLcd::MenuButtonPressSetMove, (menuparam_t)A_AXIS },
+	{ _mMoveA, &CMyLcd::MenuButtonPressSetMove, (menuparam_t) A_AXIS },
 #if LCD_NUMAXIS > 4
-	{ _mMoveB, &CMyLcd::MenuButtonPressSetMove, (menuparam_t)B_AXIS },
+	{ _mMoveB, &CMyLcd::MenuButtonPressSetMove, (menuparam_t) B_AXIS },
 #if LCD_NUMAXIS > 5
 	{ _mMoveC, &CMyLcd::MenuButtonPressSetMove, (menuparam_t) C_AXIS },
 #endif 
@@ -994,7 +954,7 @@ const CMyLcd::SMenuItemDef CMyLcd::_mainMenuItems[] PROGMEM =
 #endif
 #endif
 #endif
-	{ _mRotate, &CMyLcd::MenuButtonPressSetRotate },
+	{ _mRotate, &CMyLcd::MenuButtonPressSetMenu, &_rotateMenu },
 	{ _mSD, &CMyLcd::MenuButtonPressSetSD },
 	{ _mExtra, &CMyLcd::MenuButtonPressSetExtra },
 	{ _mEnd, &CMyLcd::MenuButtonPressEnd },
