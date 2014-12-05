@@ -116,9 +116,9 @@ private:
 	{
 	public:
 		const char* _text;
-//		menuparam_t _param1;
-//		menuparam_t _param2;
 		const struct SMenuItemDef* _items;
+		menuparam_t _param1;
+		//		menuparam_t _param2;
 
 		unsigned char GetItemCount() const 
 		{
@@ -156,19 +156,22 @@ private:
 	public:
 		const __FlashStringHelper* GetText() const		{ return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
 		const struct SMenuItemDef* GetItems() const		{ return (const struct SMenuItemDef*)pgm_read_word(&this->_items); }
-//		menuparam_t GetMenuParam1()	const				{ return (menuparam_t)pgm_read_word(&this->param1); }
-//		menuparam_t GetMenuParam2()	const				{ return (menuparam_t)pgm_read_word(&this->param2); }
+		menuparam_t GetMenuParam1()	const				{ return (menuparam_t)pgm_read_word(&this->_param1); }
+//		menuparam_t GetMenuParam2()	const				{ return (menuparam_t)pgm_read_word(&this->_param2); }
 	};
 
 
 	EnumAsByte(ERotaryFocus) _rotaryFocus;
-	EnumAsByte(EPage)		_currentpage;
-	unsigned char			_currentMenuIdx;
-	unsigned char			_currentMenuOffset;
-	axis_t					_currentMenuAxis;
 
-	const SMenuDef*				_currentMenu;
-	const __FlashStringHelper*	_currentMenuName;
+	EnumAsByte(EPage)		_currentpage;
+
+		unsigned char			_currentMenuIdx;
+		unsigned char			_currentMenuOffset;
+		axis_t					_currentMenuAxis;
+
+		const SMenuDef*				_currentMenu;
+		const __FlashStringHelper*	_currentMenuName;
+
 
 	bool _expectButtonOff;
 
@@ -222,22 +225,18 @@ private:
 
 	void MenuButtonPressMoveNextAxis(const struct SMenuItemDef*);
 	void MenuButtonPressMoveG92(const struct SMenuItemDef*);
+
 	void MenuButtonPressMove(const struct SMenuItemDef*);
 	void MenuButtonPressMoveBack(const struct SMenuItemDef*);
 
 	void MenuButtonPressSDInit(const struct SMenuItemDef*)				{ SendCommand(F("m21")); Beep(); }
-	void MenuButtonPressSDBack(const struct SMenuItemDef*);
 
 	void MenuButtonPressRotate(const struct SMenuItemDef*);
 
 	void MenuButtonPressSetMenu(const struct SMenuItemDef*);
 
-	void MenuButtonPressExtraBack(const struct SMenuItemDef*);
-
 	void MenuButtonPressSetMoveA(axis_t axis);
 	void MenuButtonPressSetMove(const struct SMenuItemDef*);
-	void MenuButtonPressSetSD(const struct SMenuItemDef*);
-	void MenuButtonPressSetExtra(const struct SMenuItemDef*);
 
 	enum EMoveType
 	{
@@ -257,7 +256,12 @@ private:
 	void SetMainMenu()																{ SetMenu(&_mainMenu); }
 
 	static const SMenuDef _mainMenu PROGMEM;
-	static const SMenuDef _moveMenu PROGMEM;
+	static const SMenuDef _moveXMenu PROGMEM;
+	static const SMenuDef _moveYMenu PROGMEM;
+	static const SMenuDef _moveZMenu PROGMEM;
+	static const SMenuDef _moveAMenu PROGMEM;
+	static const SMenuDef _moveBMenu PROGMEM;
+	static const SMenuDef _moveCMenu PROGMEM;
 	static const SMenuDef _rotateMenu PROGMEM;
 	static const SMenuDef _SDMenu PROGMEM;
 	static const SMenuDef _extraMenu PROGMEM;
