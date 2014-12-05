@@ -158,6 +158,8 @@ public:
 	unsigned char GetEnableTimeout(axis_t axis) const			{ return _pod._timeOutEnable[axis]; }
 	void SetEnableTimeout(axis_t axis, unsigned char sec) 		{ _pod._timeOutEnable[axis] = sec; }
 
+	void SetDirection(axisArray_t direction)					{ _pod._invertdirection = direction; }
+
 #ifdef USESLIP
 	void SetSlip(int dist[NUM_AXIS]);
 #endif
@@ -339,7 +341,10 @@ protected:
 		unsigned long	_timerLastCheckEnable;						// timervalue
 
 		unsigned char	_idleLevel;									// level if idle (0..100)
+		unsigned char	dummy;
+
 		axisArray_t		_lastdirection;								// for backlash
+		axisArray_t		_invertdirection;							// invert direction
 
 		const __FlashStringHelper * _error;
 

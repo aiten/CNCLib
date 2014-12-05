@@ -25,6 +25,9 @@
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\Configuration_ProxxonMF70.h">
       <Filter>ProxxonMF70</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\ProxxonMF70\MyMenu.h">
+      <Filter>ProxxonMF70</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -37,6 +40,9 @@
       <Filter>ProxxonMF70</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\ProxxonMF70\MyLCD.cpp">
+      <Filter>ProxxonMF70</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\ProxxonMF70\MyMenu.cpp">
       <Filter>ProxxonMF70</Filter>
     </ClCompile>
   </ItemGroup>

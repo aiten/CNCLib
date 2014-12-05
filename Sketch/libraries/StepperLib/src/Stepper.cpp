@@ -1324,7 +1324,7 @@ inline void CStepper::StepOut()
 			break;
 	}
 
-	Step(axescount,directionUp);
+	Step(axescount,directionUp^_pod._invertdirection);
 
 	_steps.Dequeue();
 }

@@ -129,18 +129,6 @@ private:
 			}
 		}
 
-		unsigned char FindMenuIdx(CMyLcd::MenuButtonFunction f, unsigned short param, unsigned char valueIffail) const
-		{
-			const struct SMenuItemDef* items = GetItems();
-			for (unsigned char x = 0; items[x].GetText() != NULL; x++)
-			{
-				if (items[x].GetButtonPress() == f && items[x].GetParam1() == (menuparam_t)param)
-					return x;
-			}
-
-			return valueIffail;
-		}
-
 		unsigned char FindMenuIdx(const void*param, bool (*check)(const struct SMenuItemDef*, const void*param)) const
 		{
 			const struct SMenuItemDef* item = &GetItems()[0];
@@ -156,7 +144,7 @@ private:
 	public:
 		const __FlashStringHelper* GetText() const		{ return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
 		const struct SMenuItemDef* GetItems() const		{ return (const struct SMenuItemDef*)pgm_read_word(&this->_items); }
-		menuparam_t GetMenuParam1()	const				{ return (menuparam_t)pgm_read_word(&this->_param1); }
+		menuparam_t GetParam1()	const					{ return (menuparam_t)pgm_read_word(&this->_param1); }
 //		menuparam_t GetMenuParam2()	const				{ return (menuparam_t)pgm_read_word(&this->_param2); }
 	};
 
@@ -167,7 +155,7 @@ private:
 
 		unsigned char			_currentMenuIdx;
 		unsigned char			_currentMenuOffset;
-		axis_t					_currentMenuAxis;
+//		axis_t					_currentMenuAxis;
 
 		const SMenuDef*				_currentMenu;
 		const __FlashStringHelper*	_currentMenuName;
@@ -214,7 +202,6 @@ private:
 
 	char* AddAxisName(char*buffer, axis_t axis);
 
-	void MenuButtonPressG92Clear(const struct SMenuItemDef*)				{ SendCommand(F("g92")); Beep(); }
 	void MenuButtonPressEnd(const struct SMenuItemDef*);
 
 	void MenuButtonPressHomeA(axis_t axis);
@@ -229,14 +216,10 @@ private:
 	void MenuButtonPressMove(const struct SMenuItemDef*);
 	void MenuButtonPressMoveBack(const struct SMenuItemDef*);
 
-	void MenuButtonPressSDInit(const struct SMenuItemDef*)				{ SendCommand(F("m21")); Beep(); }
-
 	void MenuButtonPressRotate(const struct SMenuItemDef*);
 
 	void MenuButtonPressSetMenu(const struct SMenuItemDef*);
-
-	void MenuButtonPressSetMoveA(axis_t axis);
-	void MenuButtonPressSetMove(const struct SMenuItemDef*);
+	void MenuButtonPressSetCommand(const struct SMenuItemDef*def)		{ SendCommand((const __FlashStringHelper*) def->GetParam1()); Beep(); }
 
 	enum EMoveType
 	{
