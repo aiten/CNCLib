@@ -50,14 +50,10 @@ public:
 	typedef bool(CMyLcd::*DrawFunction)(bool setup);
 	typedef void(CMyLcd::*ButtonFunction)();
 
-	void DrawLoop(DrawFunction drawfnc)						{ _curretDraw = drawfnc; DrawLoop(); }
-	void DrawLoop();
+	////////////////////////////////////////////////////////
 
-	struct SPageDef
-	{
-		DrawFunction draw;
-		ButtonFunction buttonpress;
-	};
+public:
+	// for menu
 
 	void SetDefaultPage();
 
@@ -66,7 +62,22 @@ public:
 
 	void Beep();
 
+	void MenuChanged()
+	{
+		SetRotaryFocusMenuPage();
+		DrawLoop();
+		Beep();
+	}
+
+	////////////////////////////////////////////////////////
+
 protected:
+
+	struct SPageDef
+	{
+		DrawFunction draw;
+		ButtonFunction buttonpress;
+	};
 
 	typedef signed char rotarypos_t;
 
@@ -95,13 +106,13 @@ protected:
 	virtual unsigned long Splash();
 	virtual void FirstDraw();
 
-	bool _expectButtonOff;
+	DrawFunction _curretDraw;
 
+	bool _expectButtonOff;
 	EnumAsByte(ERotaryFocus) _rotaryFocus;
 
 	EnumAsByte(EPage)		_currentpage;
 
-	DrawFunction _curretDraw;
 
 	CRotaryButton<rotarypos_t, ROTARY_ACCURACY> _button;
 
@@ -110,17 +121,6 @@ protected:
 	void SetMenuPage();
 
 	void ButtonPress();
-
-public:
-
-	void MenuChanged()
-	{
-		SetRotaryFocusMenuPage();
-		DrawLoop();
-		Beep();
-	}
-
-private:
 
 	void SetRotaryFocusMainPage();
 	void SetRotaryFocusMenuPage();
@@ -131,6 +131,9 @@ private:
 	void ButtonPressPause();
 	void ButtonPressMenuPage();
 	void ButtonPressShowMenu();
+
+	void DrawLoop(DrawFunction drawfnc)						{ _curretDraw = drawfnc; DrawLoop(); }
+	void DrawLoop();
 
 	bool DrawLoopSplash(bool setup);
 	bool DrawLoopDebug(bool setup);	
@@ -150,8 +153,6 @@ private:
 
 
 public:
-	static char* AddAxisName(char*buffer, axis_t axis);
-
 
 #if defined(__AVR_ARCH__)
 

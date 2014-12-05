@@ -54,3 +54,5 @@ public:
 };
 
 //////////////////////////////////////////
+
+char* AddAxisName(char*buffer, axis_t axis);

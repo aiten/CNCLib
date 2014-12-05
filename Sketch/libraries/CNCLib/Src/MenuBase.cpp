@@ -76,6 +76,48 @@ bool CMenuBase::Select()
 
 ////////////////////////////////////////////////////////////
 
+void CMenuBase::AdjustPositionAndOffset(menupos_t firstline, menupos_t lastline)
+{
+	menupos_t x = GetPosition();
+	const menupos_t menuEntries = GetMenuDef()->GetItemCount();
+
+	if (x == 0)
+	{
+		SetOffset(0);				// first menuitem selected => move to first line
+	}
+	else if (x - 1 < GetOffset())
+	{
+		SubOffset(GetOffset() - (x - 1));
+	}
+
+	if (menuEntries >= lastline)
+	{
+		if (x == menuEntries - 1)
+		{
+			AddOffset(x + firstline - GetOffset() - lastline);	// last menuitem selected => move to last line
+		}
+		else if (((x + 1) + firstline - GetOffset()) > lastline)
+		{
+			AddOffset((x + 1) + firstline - GetOffset() - lastline);
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+unsigned char CMenuBase::ToPrintLine(menupos_t firstline, menupos_t lastline, menupos_t i)
+{
+	// return 255 if not to print
+
+	unsigned char printtorow = i + firstline - GetOffset();	// may overrun => no need to check for minus
+	if (printtorow >= firstline && printtorow <= lastline)
+		return printtorow;
+
+	return 255;
+}
+
+////////////////////////////////////////////////////////////
+
 bool CMenuBase::SendCommand(const __FlashStringHelper* cmd)
 {
 	return CControl::GetInstance()->PostCommand(cmd,NULL);
@@ -86,26 +128,6 @@ bool CMenuBase::SendCommand(const __FlashStringHelper* cmd)
 bool CMenuBase::SendCommand(char* cmd)
 {
 	return CControl::GetInstance()->PostCommand(cmd,NULL);
-}
-
-////////////////////////////////////////////////////////////
-
-char* CMenuBase::AddAxisName(char*buffer, axis_t axis)
-{
-	const char* axisname=NULL;
-	switch (axis)
-	{
-		case X_AXIS:	axisname = PSTR("X"); break;
-		case Y_AXIS:	axisname = PSTR("Y"); break;
-		case Z_AXIS:	axisname = PSTR("Z"); break;
-		case A_AXIS:	axisname = PSTR("A"); break;
-		case B_AXIS:	axisname = PSTR("B"); break;
-		case C_AXIS:	axisname = PSTR("C"); break;
-	}
-	if (axisname)
-		strcat_P(buffer, axisname);
-	
-	return buffer;
 }
 
 ////////////////////////////////////////////////////////////

@@ -88,6 +88,11 @@ public:
 		//		menuparam_t GetMenuParam2()	const				{ return (menuparam_t)pgm_read_word(&this->_param2); }
 	};
 
+protected:
+
+	static bool SendCommand(const __FlashStringHelper* cmd);
+	static bool SendCommand(char* cmd);
+
 public:
 
 	menupos_t GetPosition() { return _position; }
@@ -97,6 +102,9 @@ public:
 	void SetOffset(menupos_t offset) { _offset = offset; }
 	void AddOffset(menupos_t offset) { _offset += offset; }
 	void SubOffset(menupos_t offset) { _offset -= offset; }
+
+	void AdjustPositionAndOffset(menupos_t firstline, menupos_t lastline);
+	unsigned char ToPrintLine (menupos_t firstline, menupos_t lastline, menupos_t i);		// return 255 if not to print
 
 	const SMenuDef*GetMenuDef()						{ return _current; }
 
@@ -110,12 +118,7 @@ private:
 	menupos_t			_offset;
 	const SMenuDef*		_current;
 
-	static bool SendCommand(const __FlashStringHelper* cmd);
-	static bool SendCommand(char* cmd);
-
 public:
-
-	char* AddAxisName(char*buffer, axis_t axis);
 
 	void MenuButtonPressSetMenu(const SMenuItemDef*);
 	void MenuButtonPressSetCommand(const SMenuItemDef*def)			{ SendCommand((const __FlashStringHelper*)def->GetParam1()); Beep(); }

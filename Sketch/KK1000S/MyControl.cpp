@@ -50,7 +50,7 @@ void CMyControl::Init()
 
 	super::Init();
 
-	CStepper::GetInstance()->SetDirection(1<<X_AXIS + 1<<Y_AXIS);
+	CStepper::GetInstance()->SetDirection((1<<X_AXIS) + (1<<Y_AXIS));
 
 	//CStepper::GetInstance()->SetBacklash(5000);
 	CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 20));

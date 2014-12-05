@@ -66,9 +66,6 @@ protected:
 
 	void MenuButtonPressSetCommand(const SMenuItemDef*def)		{ SendCommand((const __FlashStringHelper*) def->GetParam1()); }
 
-	bool SendCommand(const __FlashStringHelper*);
-	bool SendCommand(char*);
-
 	enum EMoveType
 	{
 		MoveP10,

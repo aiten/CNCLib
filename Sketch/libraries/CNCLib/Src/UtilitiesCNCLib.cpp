@@ -169,3 +169,23 @@ char* CSDist::ToString(sdist_t v, char*tmp, unsigned char precision)
 
 	return tmp;
 }
+
+////////////////////////////////////////////////////////////
+
+char* AddAxisName(char*buffer, axis_t axis)
+{
+	const char* axisname=NULL;
+	switch (axis)
+	{
+		case X_AXIS:	axisname = PSTR("X"); break;
+		case Y_AXIS:	axisname = PSTR("Y"); break;
+		case Z_AXIS:	axisname = PSTR("Z"); break;
+		case A_AXIS:	axisname = PSTR("A"); break;
+		case B_AXIS:	axisname = PSTR("B"); break;
+		case C_AXIS:	axisname = PSTR("C"); break;
+	}
+	if (axisname)
+		strcat_P(buffer, axisname);
+	
+	return buffer;
+}

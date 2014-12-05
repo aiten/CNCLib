@@ -549,26 +549,6 @@ unsigned char CMyLcd::GetMenuIdx()
 
 ////////////////////////////////////////////////////////////
 
-char* CMyLcd::AddAxisName(char*buffer, axis_t axis)
-{
-	const char* axisname=NULL;
-	switch (axis)
-	{
-		case X_AXIS:	axisname = PSTR("X"); break;
-		case Y_AXIS:	axisname = PSTR("Y"); break;
-		case Z_AXIS:	axisname = PSTR("Z"); break;
-		case A_AXIS:	axisname = PSTR("A"); break;
-		case B_AXIS:	axisname = PSTR("B"); break;
-		case C_AXIS:	axisname = PSTR("C"); break;
-	}
-	if (axisname)
-		strcat_P(buffer, axisname);
-	
-	return buffer;
-}
-
-////////////////////////////////////////////////////////////
-
 void CMyLcd::SetRotaryFocusMenuPage()
 {
 	_button.SetPageIdx(_menu.GetPosition()); _button.SetMinMax(0, _menu.GetMenuDef()->GetItemCount() - 1, false);
@@ -584,7 +564,6 @@ void CMyLcd::ButtonPressMenuPage()
 		case RotaryMainPage:	SetRotaryFocusMenuPage(); Beep();  break;
 		case RotaryMenuPage:
 		{
-			_menu.SetPosition(GetMenuIdx());
 			if (!_menu.Select())
 			{
 				Beep(); Beep();
@@ -612,35 +591,16 @@ bool CMyLcd::DrawLoopMenu(bool setup)
 
 	if (_rotaryFocus == RotaryMenuPage)
 	{
-		x = GetMenuIdx();
-
-		if (x == 0)
-		{
-			_menu.SetOffset(0);				// first menuitem selected => move to first line
-		}
-		else if (x - 1 < _menu.GetOffset())
-		{
-			_menu.SubOffset(_menu.GetOffset() - (x - 1));
-		}
-
-		if (menuEntries >= printLastLine)
-		{
-			if (x == menuEntries - 1)
-			{
-				_menu.AddOffset(x + printFirstLine - _menu.GetOffset() - printLastLine);	// last menuitem selected => move to last line
-			}
-			else if (((x + 1) + printFirstLine - _menu.GetOffset()) > printLastLine)
-			{
-				_menu.AddOffset((x + 1) + printFirstLine - _menu.GetOffset() - printLastLine);
-			}
-		}
+		x = GetMenuIdx();													// get and set menupositions
+		_menu.AdjustPositionAndOffset(printFirstLine,printLastLine);
 	}
+
 	unsigned char i;
 
 	for (i = 0; i < menuEntries; i++)
 	{
-		unsigned char printtorow = i + printFirstLine - _menu.GetOffset();	// may overrun => no need to check for minus
-		if (printtorow >= printFirstLine && printtorow <= printLastLine)
+		unsigned char printtorow = _menu.ToPrintLine(printFirstLine,printLastLine,i);
+		if (printtorow != 255)
 		{
 			u8g.setPrintPos(ToCol(0), ToRow(printtorow) + PosLineOffset);
 			if (i == x && _rotaryFocus == RotaryMenuPage)
