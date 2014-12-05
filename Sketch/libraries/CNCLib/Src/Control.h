@@ -24,6 +24,7 @@
 #include "ConfigurationCNCLib.h"
 #include "Parser.h"
 #include "Lcd.h"
+#include "MenuBase.h"
 
 ////////////////////////////////////////////////////////
 // Control: read from USB (or File) and pass string to the Parser

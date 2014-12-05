@@ -27,6 +27,7 @@
 
 #include <LCD.h>
 #include <RotaryButton.h>
+#include "MyMenu.h"
 
 #define ROTARY_ACCURACY	4
 
@@ -45,6 +46,25 @@ public:
 	virtual void Init();
 	virtual void Idle(unsigned int idletime);
 	virtual void TimerInterrupt();
+
+	typedef bool(CMyLcd::*DrawFunction)(bool setup);
+	typedef void(CMyLcd::*ButtonFunction)();
+
+	void DrawLoop(DrawFunction drawfnc)						{ _curretDraw = drawfnc; DrawLoop(); }
+	void DrawLoop();
+
+	struct SPageDef
+	{
+		DrawFunction draw;
+		ButtonFunction buttonpress;
+	};
+
+	void SetDefaultPage();
+
+	static bool SendCommand(const __FlashStringHelper* cmd);
+	static bool SendCommand(char* cmd);
+
+	void Beep();
 
 protected:
 
@@ -75,93 +95,11 @@ protected:
 	virtual unsigned long Splash();
 	virtual void FirstDraw();
 
-private:
-
-	void SetRotaryFocusMainPage();
-	void SetRotaryFocusMenuPage();
-
-	struct SMenuItemDef;
-	struct SMenuDef;
-
-	typedef bool(CMyLcd::*DrawFunction)(bool setup);
-	typedef void(CMyLcd::*ButtonFunction)();
-	typedef void(CMyLcd::*MenuButtonFunction)(const struct SMenuItemDef*);
-
-	void DrawLoop(DrawFunction drawfnc)						{ _curretDraw = drawfnc; DrawLoop(); }
-	void DrawLoop();
-
-	struct SPageDef
-	{
-		DrawFunction draw;
-		ButtonFunction buttonpress;
-	};
-
-	typedef const void* menuparam_t;
-
-	struct SMenuItemDef
-	{
-	public:
-		const char* _text;
-		MenuButtonFunction _buttonpress;
-		menuparam_t _param1;
-		menuparam_t _param2;
-	public:
-		const __FlashStringHelper* GetText() const			{ return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
-		MenuButtonFunction GetButtonPress()const;
-		menuparam_t GetParam1()	const						{ return (menuparam_t)pgm_read_word(&this->_param1); }
-		menuparam_t GetParam2()	const						{ return (menuparam_t)pgm_read_word(&this->_param2); }
-	};
-
-	struct SMenuDef
-	{
-	public:
-		const char* _text;
-		const struct SMenuItemDef* _items;
-		menuparam_t _param1;
-		//		menuparam_t _param2;
-
-		unsigned char GetItemCount() const 
-		{
-			const struct SMenuItemDef* items = GetItems();
-			for (unsigned char x = 0;; x++)
-			{
-				if (items[x].GetText() == NULL) return x;
-			}
-		}
-
-		unsigned char FindMenuIdx(const void*param, bool (*check)(const struct SMenuItemDef*, const void*param)) const
-		{
-			const struct SMenuItemDef* item = &GetItems()[0];
-			for (unsigned char x = 0; item->GetText() != NULL; x++,item++)
-			{
-				if (check(item,param)) return x;
-			}
-
-			return 0;
-		}
-
-
-	public:
-		const __FlashStringHelper* GetText() const		{ return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
-		const struct SMenuItemDef* GetItems() const		{ return (const struct SMenuItemDef*)pgm_read_word(&this->_items); }
-		menuparam_t GetParam1()	const					{ return (menuparam_t)pgm_read_word(&this->_param1); }
-//		menuparam_t GetMenuParam2()	const				{ return (menuparam_t)pgm_read_word(&this->_param2); }
-	};
-
+	bool _expectButtonOff;
 
 	EnumAsByte(ERotaryFocus) _rotaryFocus;
 
 	EnumAsByte(EPage)		_currentpage;
-
-		unsigned char			_currentMenuIdx;
-		unsigned char			_currentMenuOffset;
-//		axis_t					_currentMenuAxis;
-
-		const SMenuDef*				_currentMenu;
-		const __FlashStringHelper*	_currentMenuName;
-
-
-	bool _expectButtonOff;
 
 	DrawFunction _curretDraw;
 
@@ -169,15 +107,25 @@ private:
 
 	static const SPageDef _pagedef[];
 
-	void SetDefaultPage();
 	void SetMenuPage();
 
-	void Beep();
-	static bool SendCommand(const __FlashStringHelper* cmd);
-	static bool SendCommand(char* cmd);
-
-
 	void ButtonPress();
+
+public:
+
+	void MenuChanged()
+	{
+		SetRotaryFocusMenuPage();
+		DrawLoop();
+		Beep();
+	}
+
+private:
+
+	void SetRotaryFocusMainPage();
+	void SetRotaryFocusMenuPage();
+
+	CMyMenu _menu;
 
 	void ButtonPressStartSDPage();
 	void ButtonPressPause();
@@ -200,65 +148,14 @@ private:
 
 	unsigned char GetMenuIdx();
 
-	char* AddAxisName(char*buffer, axis_t axis);
 
-	void MenuButtonPressEnd(const struct SMenuItemDef*);
+public:
+	static char* AddAxisName(char*buffer, axis_t axis);
 
-	void MenuButtonPressHomeA(axis_t axis);
-	void MenuButtonPressHome(const struct SMenuItemDef*);
-	void MenuButtonPressProbe(const struct SMenuItemDef*);
-	void MenuButtonPressSpindle(const struct SMenuItemDef*);
-	void MenuButtonPressCoolant(const struct SMenuItemDef*);
-
-	void MenuButtonPressMoveNextAxis(const struct SMenuItemDef*);
-	void MenuButtonPressMoveG92(const struct SMenuItemDef*);
-
-	void MenuButtonPressMove(const struct SMenuItemDef*);
-	void MenuButtonPressMoveBack(const struct SMenuItemDef*);
-
-	void MenuButtonPressRotate(const struct SMenuItemDef*);
-
-	void MenuButtonPressSetMenu(const struct SMenuItemDef*);
-	void MenuButtonPressSetCommand(const struct SMenuItemDef*def)		{ SendCommand((const __FlashStringHelper*) def->GetParam1()); Beep(); }
-
-	enum EMoveType
-	{
-		MoveP10,
-		MoveP1,
-		MoveP01,
-		MoveP001,
-		MoveM10,
-		MoveM1,
-		MoveM01,
-		MoveM001,
-		MoveHome
-	};
-
-	void SetMenu(const SMenuDef* pMenu,const __FlashStringHelper* name)				{ _currentMenu = pMenu; _currentMenuName = name; _currentMenuIdx = 0; _currentMenuOffset = 0; };
-	void SetMenu(const SMenuDef* pMenu)												{ SetMenu(pMenu, pMenu->GetText()); };
-	void SetMainMenu()																{ SetMenu(&_mainMenu); }
-
-	static const SMenuDef _mainMenu PROGMEM;
-	static const SMenuDef _moveXMenu PROGMEM;
-	static const SMenuDef _moveYMenu PROGMEM;
-	static const SMenuDef _moveZMenu PROGMEM;
-	static const SMenuDef _moveAMenu PROGMEM;
-	static const SMenuDef _moveBMenu PROGMEM;
-	static const SMenuDef _moveCMenu PROGMEM;
-	static const SMenuDef _rotateMenu PROGMEM;
-	static const SMenuDef _SDMenu PROGMEM;
-	static const SMenuDef _extraMenu PROGMEM;
-
-	static const SMenuItemDef _mainMenuItems[] PROGMEM;
-	static const SMenuItemDef _moveMenuItems[] PROGMEM;
-	static const SMenuItemDef _rotateMenuItems[] PROGMEM;
-	static const SMenuItemDef _SDMenuItems[] PROGMEM;
-	static const SMenuItemDef _extraMenuItems[] PROGMEM;
 
 #if defined(__AVR_ARCH__)
 
         static ButtonFunction GetButtonPress_P(const void* adr);
-        static MenuButtonFunction GetMenuButtonPress_P(const void* adr);
         static DrawFunction GetDrawFunction_P(const void* adr);
 
 #endif

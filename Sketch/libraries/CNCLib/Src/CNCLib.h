@@ -24,5 +24,3 @@
 #include "UtilitiesCNCLib.h"
 #include "Parser.h"
 #include "Control.h"
-
-
