@@ -44,6 +44,13 @@ namespace GCode.GUI
 		public PaintForm()
         {
             InitializeComponent();
+
+            _plotterCtrl.SizeX = 130.000m;
+            _plotterCtrl.SizeY = 45.000m;
+
+            _plotterCtrl.SizeX = 800.000m;
+            _plotterCtrl.SizeY = 500.000m;
+
 			new GCode.Logic.Commands.CommandFactory();
         }
 

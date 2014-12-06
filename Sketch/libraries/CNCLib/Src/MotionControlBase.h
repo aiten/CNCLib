@@ -86,6 +86,7 @@ public:
 	mm1000_t GetPosition(axis_t axis);
 
 	steprate_t GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate_t feedrate);
+	static steprate_t FeedRateToStepRate(axis_t axis, feedrate_t feedrate);
 
 	////////////////////////////////////////
 

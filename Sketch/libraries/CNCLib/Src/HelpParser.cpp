@@ -252,7 +252,7 @@ bool CHelpParser::MyGoToReference(axis_t axis)
 		return true;
 
 	if (CheckEOC())
-		CControl::GetInstance()->GoToReference(axis);
+		CControl::GetInstance()->GoToReference(axis,0);
 
 	return true;
 }

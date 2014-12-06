@@ -67,7 +67,7 @@ public:
 	//////////////////////////////////////////
 
 	virtual void GoToReference();										// Goto Refernce during Initialisation
-	virtual void GoToReference(axis_t axis);
+	virtual void GoToReference(axis_t axis,steprate_t steprate);
 
 	//////////////////////////////////////////
 

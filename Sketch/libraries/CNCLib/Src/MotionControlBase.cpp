@@ -263,11 +263,7 @@ steprate_t CMotionControlBase::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate
 
 	axis_t   maxdistaxis = 0;
 
-	if (feedrate < 0)
-	{
-		feedrate = -feedrate;
-	}
-	else
+	if (feedrate >= 0)
 	{
 		mm1000_t maxdist = 0;
 		mm1000_t sum = 0;
@@ -328,7 +324,15 @@ steprate_t CMotionControlBase::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate
 		}
 	}
 
+	return FeedRateToStepRate(maxdistaxis, feedrate);
+}
+
+/////////////////////////////////////////////////////////
+
+steprate_t CMotionControlBase::FeedRateToStepRate(axis_t axis, feedrate_t feedrate)	
+{
 	// 60 because of min=>sec (feedrate in mm1000/min)
-	steprate_t steprate = (steprate_t)_ToMachine(maxdistaxis, feedrate / 60);
-	return steprate ? steprate : 1;
+	if (feedrate < 0) feedrate = -feedrate;
+	steprate_t steprate = (steprate_t)_ToMachine(axis, feedrate / 60); 
+	return steprate ? steprate : 1; 
 }

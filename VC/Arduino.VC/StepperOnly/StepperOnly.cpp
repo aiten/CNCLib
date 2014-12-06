@@ -98,7 +98,7 @@ void loop()
 }
 
 
-void GoToReference(axis_t axis)
+void GoToReference(axis_t axis, steprate_t steprate)
 {
 	Stepper.MoveReference(axis, Stepper.ToReferenceId(axis, true), true, Stepper.GetDefaultVmax() / 4,0,0,0);
 }
@@ -107,7 +107,7 @@ void GoToReference(axis_t axis)
 
 void GoToReference()
 {
-	GoToReference(Z_AXIS);
-	GoToReference(Y_AXIS);
-	GoToReference(X_AXIS);
+	GoToReference(Z_AXIS, 0);
+	GoToReference(Y_AXIS, 0);
+	GoToReference(X_AXIS, 0);
 }

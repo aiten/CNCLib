@@ -35,8 +35,6 @@
 
 #define FEEDRATE_DEFAULT_MAX_G1	feedrate_t(500000)			// 500mm/min is STEPRATETOFEEDRATE(26667) with 3200Steps/rotation(16Steps) 
 
-#define STEPRATE_REFMOVE		steprate_t(FEEDRATETOSTEPRATE(300000))	// 300*3.2/60 = 16000 Steps/sec with 3200Steps/rotation(16Steps) 
-
 ////////////////////////////////////////////////////////
 
 class CGCodeParserBase : public CParser
@@ -101,6 +99,7 @@ protected:
 		feedrate_t		G1FeedRate;
 
 		feedrate_t		G1MaxFeedRate;
+		feedrate_t		RefFeedRate;
 
 		short			SpindleSpeed;			// > 0 CW, < 0 CCW
 

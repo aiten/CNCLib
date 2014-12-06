@@ -55,7 +55,7 @@ protected:
 
 	virtual bool IsKill();
 
-	virtual void GoToReference(axis_t axis);
+	virtual void GoToReference(axis_t axis, steprate_t steprate);
 
 	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
 

@@ -703,7 +703,7 @@ void CGCodeParserBase::G28Command()
 		{
 			if (IsBitSet(move.axes, axis))
 			{
-				CControl::GetInstance()->GoToReference(axis);
+				CControl::GetInstance()->GoToReference(axis,0);
 			}
 		}
 	}
