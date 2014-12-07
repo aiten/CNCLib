@@ -24,6 +24,8 @@
                     <RowDefinition Height="20"></RowDefinition>
                     <RowDefinition Height="20"></RowDefinition>
                     <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="12" ></ColumnDefinition>
@@ -42,85 +44,89 @@
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="PosX" Text="{Binding XPos, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Right" IsReadOnly="True"/>
                 <Button Command="{Binding SendXRefMoveCommand}" Grid.Row="1" Grid.Column="1" Content="X ref"/>
-                <Button Command="{Binding SendXPlus10Command}" Grid.Row="3" Grid.Column="1" Content="X +10"/>
-                <Button Command="{Binding SendXPlus1Command}" Grid.Row="4" Grid.Column="1" Content="X +1"/>
-                <Button Command="{Binding SendXPlus01Command}" Grid.Row="5" Grid.Column="1" Content="X +0.1"/>
-                <Button Command="{Binding SendXPlus001Command}" Grid.Row="6" Grid.Column="1" Content="X +0.01"/>
-                <Button Command="{Binding SendXMinus001Command}" Grid.Row="7" Grid.Column="1" Content="X -0.01"/>
-                <Button Command="{Binding SendXMinus01Command}" Grid.Row="8" Grid.Column="1" Content="X -0.1"/>
-                <Button Command="{Binding SendXMinus1Command}" Grid.Row="9" Grid.Column="1" Content="X -1"/>
-                <Button Command="{Binding SendXMinus10Command}" Grid.Row="10" Grid.Column="1" Content="X -10"/>
-                <TextBox x:Name="PositionX" Text="{Binding XParam, UpdateSourceTrigger=PropertyChanged}" Grid.Row="11" Grid.Column="1"/>
-                <Button Command="{Binding SendXG92Command}" Grid.Row="12" Grid.Column="1" Content="X G92"/>
-                <Button Command="{Binding SendXG31Command}" Grid.Row="13" Grid.Column="1" Content="X G31"/>
+                <Button Command="{Binding SendXPlus100Command}" Grid.Row="3" Grid.Column="1" Content="X +100"/>
+                <Button Command="{Binding SendXPlus10Command}" Grid.Row="4" Grid.Column="1" Content="X +10"/>
+                <Button Command="{Binding SendXPlus1Command}" Grid.Row="5" Grid.Column="1" Content="X +1"/>
+                <Button Command="{Binding SendXPlus01Command}" Grid.Row="6" Grid.Column="1" Content="X +0.1"/>
+                <Button Command="{Binding SendXPlus001Command}" Grid.Row="7" Grid.Column="1" Content="X +0.01"/>
+                <Button Command="{Binding SendXMinus001Command}" Grid.Row="8" Grid.Column="1" Content="X -0.01"/>
+                <Button Command="{Binding SendXMinus01Command}" Grid.Row="9" Grid.Column="1" Content="X -0.1"/>
+                <Button Command="{Binding SendXMinus1Command}" Grid.Row="10" Grid.Column="1" Content="X -1"/>
+                <Button Command="{Binding SendXMinus10Command}" Grid.Row="11" Grid.Column="1" Content="X -10"/>
+                <Button Command="{Binding SendXMinus100Command}" Grid.Row="12" Grid.Column="1" Content="X -100"/>
+                <TextBox x:Name="PositionX" Text="{Binding XParam, UpdateSourceTrigger=PropertyChanged}" Grid.Row="13" Grid.Column="1"/>
+                <Button Command="{Binding SendXG92Command}" Grid.Row="14" Grid.Column="1" Content="X G92"/>
+                <Button Command="{Binding SendXG31Command}" Grid.Row="15" Grid.Column="1" Content="X G31"/>
 
                 <TextBox x:Name="PosY" Text="{Binding YPos, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" Grid.Row="0" Grid.Column="3" HorizontalContentAlignment="Right" IsReadOnly="True"/>
                 <Button Command="{Binding SendYRefMoveCommand}" Grid.Row="1" Grid.Column="3" Content="Y ref"/>
-                <Button Command="{Binding SendYPlus10Command}" Grid.Row="3" Grid.Column="3" Content="Y +10"/>
-                <Button Command="{Binding SendYPlus1Command}" Grid.Row="4" Grid.Column="3" Content="Y +1"/>
-                <Button Command="{Binding SendYPlus01Command}" Grid.Row="5" Grid.Column="3" Content="Y +0.1"/>
-                <Button Command="{Binding SendYPlus001Command}" Grid.Row="6" Grid.Column="3" Content="Y +0.01"/>
-                <Button Command="{Binding SendYMinus001Command}" Grid.Row="7" Grid.Column="3" Content="Y -0.01"/>
-                <Button Command="{Binding SendYMinus01Command}" Grid.Row="8" Grid.Column="3" Content="Y -0.1"/>
-                <Button Command="{Binding SendYMinus1Command}" Grid.Row="9" Grid.Column="3" Content="Y -1"/>
-                <Button Command="{Binding SendYMinus10Command}" Grid.Row="10" Grid.Column="3" Content="Y -10"/>
-                <TextBox x:Name="PositionY" Text="{Binding YParam, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="11" Grid.Column="3"/>
-                <Button Command="{Binding SendYG92Command}" Grid.Row="12" Grid.Column="3" Content="Y G92"/>
-                <Button Command="{Binding SendYG31Command}" Grid.Row="13" Grid.Column="3" Content="Y G31"/>
+                <Button Command="{Binding SendYPlus100Command}" Grid.Row="3" Grid.Column="3" Content="Y +100"/>
+                <Button Command="{Binding SendYPlus10Command}" Grid.Row="4" Grid.Column="3" Content="Y +10"/>
+                <Button Command="{Binding SendYPlus1Command}" Grid.Row="5" Grid.Column="3" Content="Y +1"/>
+                <Button Command="{Binding SendYPlus01Command}" Grid.Row="6" Grid.Column="3" Content="Y +0.1"/>
+                <Button Command="{Binding SendYPlus001Command}" Grid.Row="7" Grid.Column="3" Content="Y +0.01"/>
+                <Button Command="{Binding SendYMinus001Command}" Grid.Row="8" Grid.Column="3" Content="Y -0.01"/>
+                <Button Command="{Binding SendYMinus01Command}" Grid.Row="9" Grid.Column="3" Content="Y -0.1"/>
+                <Button Command="{Binding SendYMinus1Command}" Grid.Row="10" Grid.Column="3" Content="Y -1"/>
+                <Button Command="{Binding SendYMinus10Command}" Grid.Row="11" Grid.Column="3" Content="Y -10"/>
+                <Button Command="{Binding SendYMinus100Command}" Grid.Row="12" Grid.Column="3" Content="Y -100"/>
+                <TextBox x:Name="PositionY" Text="{Binding YParam, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="13" Grid.Column="3"/>
+                <Button Command="{Binding SendYG92Command}" Grid.Row="14" Grid.Column="3" Content="Y G92"/>
+                <Button Command="{Binding SendYG31Command}" Grid.Row="15" Grid.Column="3" Content="Y G31"/>
 
                 <TextBox x:Name="PosZ" Text="{Binding ZPos, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" Grid.Row="0" Grid.Column="5" HorizontalContentAlignment="Right" IsReadOnly="True"/>
                 <Button Command="{Binding SendZRefMoveCommand}" Grid.Row="1" Grid.Column="5" Content="Z ref"/>
-                <Button Command="{Binding SendZPlus10Command}" Grid.Row="3" Grid.Column="5" Content="Z +10"/>
-                <Button Command="{Binding SendZPlus1Command}" Grid.Row="4" Grid.Column="5" Content="Z +1"/>
-                <Button Command="{Binding SendZPlus01Command}" Grid.Row="5" Grid.Column="5" Content="Z +0.1"/>
-                <Button Command="{Binding SendZPlus001Command}" Grid.Row="6" Grid.Column="5" Content="Z +0.01"/>
-                <Button Command="{Binding SendZMinus001Command}" Grid.Row="7" Grid.Column="5" Content="Z -0.01"/>
-                <Button Command="{Binding SendZMinus01Command}" Grid.Row="8" Grid.Column="5" Content="Z -0.1"/>
-                <Button Command="{Binding SendZMinus1Command}" Grid.Row="9" Grid.Column="5" Content="Z -1"/>
-                <Button Command="{Binding SendZMinus10Command}" Grid.Row="10" Grid.Column="5" Content="Z -10"/>
-                <TextBox x:Name="PositionZ" Text="{Binding ZParam, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="11" Grid.Column="5"/>
-                <Button Command="{Binding SendZG92Command}" Grid.Row="12" Grid.Column="5" Content="Z G92"/>
-                <Button Command="{Binding SendZG31Command}" Grid.Row="13" Grid.Column="5" Content="Z G31"/>
+                <Button Command="{Binding SendZPlus10Command}" Grid.Row="4" Grid.Column="5" Content="Z +10"/>
+                <Button Command="{Binding SendZPlus1Command}" Grid.Row="5" Grid.Column="5" Content="Z +1"/>
+                <Button Command="{Binding SendZPlus01Command}" Grid.Row="6" Grid.Column="5" Content="Z +0.1"/>
+                <Button Command="{Binding SendZPlus001Command}" Grid.Row="7" Grid.Column="5" Content="Z +0.01"/>
+                <Button Command="{Binding SendZMinus001Command}" Grid.Row="8" Grid.Column="5" Content="Z -0.01"/>
+                <Button Command="{Binding SendZMinus01Command}" Grid.Row="9" Grid.Column="5" Content="Z -0.1"/>
+                <Button Command="{Binding SendZMinus1Command}" Grid.Row="10" Grid.Column="5" Content="Z -1"/>
+                <Button Command="{Binding SendZMinus10Command}" Grid.Row="11" Grid.Column="5" Content="Z -10"/>
+                <TextBox x:Name="PositionZ" Text="{Binding ZParam, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="13" Grid.Column="5"/>
+                <Button Command="{Binding SendZG92Command}" Grid.Row="14" Grid.Column="5" Content="Z G92"/>
+                <Button Command="{Binding SendZG31Command}" Grid.Row="15" Grid.Column="5" Content="Z G31"/>
 
                 <TextBox x:Name="PosA" Text="{Binding APos, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" Grid.Row="0" Grid.Column="7" HorizontalContentAlignment="Right" IsReadOnly="True"/>
                 <Button Command="{Binding SendARefMoveCommand}" Grid.Row="1" Grid.Column="7" Content="A ref"/>
-                <Button Command="{Binding SendAPlus10Command}" Grid.Row="3" Grid.Column="7" Content="A +10"/>
-                <Button Command="{Binding SendAPlus1Command}" Grid.Row="4" Grid.Column="7" Content="A +1"/>
-                <Button Command="{Binding SendAPlus01Command}" Grid.Row="5" Grid.Column="7" Content="A +0.1"/>
-                <Button Command="{Binding SendAPlus001Command}" Grid.Row="6" Grid.Column="7" Content="A +0.01"/>
-                <Button Command="{Binding SendAMinus001Command}" Grid.Row="7" Grid.Column="7" Content="A -0.01"/>
-                <Button Command="{Binding SendAMinus01Command}" Grid.Row="8" Grid.Column="7" Content="A -0.1"/>
-                <Button Command="{Binding SendAMinus1Command}" Grid.Row="9" Grid.Column="7" Content="A -1"/>
-                <Button Command="{Binding SendAMinus10Command}" Grid.Row="10" Grid.Column="7" Content="A -10"/>
-                <TextBox x:Name="PositionA"  Text="{Binding AParam, UpdateSourceTrigger=PropertyChanged}" Grid.Row="11" Grid.Column="7"/>
-                <Button Command="{Binding SendAG92Command}" Grid.Row="12" Grid.Column="7" Content="A G92"/>
-                <TextBox x:Name="ProbeSize" Text="{Binding ProbeSize, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="13" Grid.Column="7"/>
+                <Button Command="{Binding SendAPlus10Command}" Grid.Row="4" Grid.Column="7" Content="A +10"/>
+                <Button Command="{Binding SendAPlus1Command}" Grid.Row="5" Grid.Column="7" Content="A +1"/>
+                <Button Command="{Binding SendAPlus01Command}" Grid.Row="6" Grid.Column="7" Content="A +0.1"/>
+                <Button Command="{Binding SendAPlus001Command}" Grid.Row="7" Grid.Column="7" Content="A +0.01"/>
+                <Button Command="{Binding SendAMinus001Command}" Grid.Row="8" Grid.Column="7" Content="A -0.01"/>
+                <Button Command="{Binding SendAMinus01Command}" Grid.Row="9" Grid.Column="7" Content="A -0.1"/>
+                <Button Command="{Binding SendAMinus1Command}" Grid.Row="10" Grid.Column="7" Content="A -1"/>
+                <Button Command="{Binding SendAMinus10Command}" Grid.Row="11" Grid.Column="7" Content="A -10"/>
+                <TextBox x:Name="PositionA"  Text="{Binding AParam, UpdateSourceTrigger=PropertyChanged}" Grid.Row="13" Grid.Column="7"/>
+                <Button Command="{Binding SendAG92Command}" Grid.Row="14" Grid.Column="7" Content="A G92"/>
+                <TextBox x:Name="ProbeSize" Text="{Binding ProbeSize, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="15" Grid.Column="7"/>
 
                 <TextBox x:Name="PosB" Text="{Binding BPos, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" Grid.Row="0" Grid.Column="9" HorizontalContentAlignment="Right" IsReadOnly="True"/>
                 <Button Command="{Binding SendBRefMoveCommand}" Grid.Row="1" Grid.Column="9" Content="B ref"/>
-                <Button Command="{Binding SendBPlus10Command}" Grid.Row="3" Grid.Column="9" Content="B +10"/>
-                <Button Command="{Binding SendBPlus1Command}" Grid.Row="4" Grid.Column="9" Content="B +1"/>
-                <Button Command="{Binding SendBPlus01Command}" Grid.Row="5" Grid.Column="9" Content="B +0.1"/>
-                <Button Command="{Binding SendBPlus001Command}" Grid.Row="6" Grid.Column="9" Content="B +0.01"/>
-                <Button Command="{Binding SendBMinus001Command}" Grid.Row="7" Grid.Column="9" Content="B -0.01"/>
-                <Button Command="{Binding SendBMinus01Command}" Grid.Row="8" Grid.Column="9" Content="B -0.1"/>
-                <Button Command="{Binding SendBMinus1Command}" Grid.Row="9" Grid.Column="9" Content="B -1"/>
-                <Button Command="{Binding SendBMinus10Command}" Grid.Row="10" Grid.Column="9" Content="B -10"/>
-                <TextBox x:Name="PositionB"  Text="{Binding BParam, UpdateSourceTrigger=PropertyChanged}" Grid.Row="11" Grid.Column="9"/>
-                <Button Command="{Binding SendBG92Command}" Grid.Row="12" Grid.Column="9" Content="B G92"/>
+                <Button Command="{Binding SendBPlus10Command}" Grid.Row="4" Grid.Column="9" Content="B +10"/>
+                <Button Command="{Binding SendBPlus1Command}" Grid.Row="5" Grid.Column="9" Content="B +1"/>
+                <Button Command="{Binding SendBPlus01Command}" Grid.Row="6" Grid.Column="9" Content="B +0.1"/>
+                <Button Command="{Binding SendBPlus001Command}" Grid.Row="7" Grid.Column="9" Content="B +0.01"/>
+                <Button Command="{Binding SendBMinus001Command}" Grid.Row="8" Grid.Column="9" Content="B -0.01"/>
+                <Button Command="{Binding SendBMinus01Command}" Grid.Row="9" Grid.Column="9" Content="B -0.1"/>
+                <Button Command="{Binding SendBMinus1Command}" Grid.Row="10" Grid.Column="9" Content="B -1"/>
+                <Button Command="{Binding SendBMinus10Command}" Grid.Row="11" Grid.Column="9" Content="B -10"/>
+                <TextBox x:Name="PositionB"  Text="{Binding BParam, UpdateSourceTrigger=PropertyChanged}" Grid.Row="13" Grid.Column="9"/>
+                <Button Command="{Binding SendBG92Command}" Grid.Row="14" Grid.Column="9" Content="B G92"/>
 
                 <TextBox x:Name="PosC" Text="{Binding CPos, UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" Grid.Row="0" Grid.Column="11" HorizontalContentAlignment="Right" IsReadOnly="True"/>
                 <Button Command="{Binding SendCRefMoveCommand}" Grid.Row="1" Grid.Column="11" Content="C ref"/>
-                <Button Command="{Binding SendCPlus10Command}" Grid.Row="3" Grid.Column="11" Content="C +10"/>
-                <Button Command="{Binding SendCPlus1Command}" Grid.Row="4" Grid.Column="11" Content="C +1"/>
-                <Button Command="{Binding SendCPlus01Command}" Grid.Row="5" Grid.Column="11" Content="C +0.1"/>
-                <Button Command="{Binding SendCPlus001Command}" Grid.Row="6" Grid.Column="11" Content="C +0.01"/>
-                <Button Command="{Binding SendCMinus001Command}" Grid.Row="7" Grid.Column="11" Content="C -0.01"/>
-                <Button Command="{Binding SendCMinus01Command}" Grid.Row="8" Grid.Column="11" Content="C -0.1"/>
-                <Button Command="{Binding SendCMinus1Command}" Grid.Row="9" Grid.Column="11" Content="C -1"/>
-                <Button Command="{Binding SendCMinus10Command}" Grid.Row="10" Grid.Column="11" Content="C -10"/>
-                <TextBox x:Name="PositionC"  Text="{Binding CParam, UpdateSourceTrigger=PropertyChanged}" Grid.Row="11" Grid.Column="11"/>
-                <Button Command="{Binding SendCG92Command}" Grid.Row="12" Grid.Column="11" Content="C G92"/>
+                <Button Command="{Binding SendCPlus10Command}" Grid.Row="4" Grid.Column="11" Content="C +10"/>
+                <Button Command="{Binding SendCPlus1Command}" Grid.Row="5" Grid.Column="11" Content="C +1"/>
+                <Button Command="{Binding SendCPlus01Command}" Grid.Row="6" Grid.Column="11" Content="C +0.1"/>
+                <Button Command="{Binding SendCPlus001Command}" Grid.Row="7" Grid.Column="11" Content="C +0.01"/>
+                <Button Command="{Binding SendCMinus001Command}" Grid.Row="8" Grid.Column="11" Content="C -0.01"/>
+                <Button Command="{Binding SendCMinus01Command}" Grid.Row="9" Grid.Column="11" Content="C -0.1"/>
+                <Button Command="{Binding SendCMinus1Command}" Grid.Row="10" Grid.Column="11" Content="C -1"/>
+                <Button Command="{Binding SendCMinus10Command}" Grid.Row="11" Grid.Column="11" Content="C -10"/>
+                <TextBox x:Name="PositionC"  Text="{Binding CParam, UpdateSourceTrigger=PropertyChanged}" Grid.Row="13" Grid.Column="11"/>
+                <Button Command="{Binding SendCG92Command}" Grid.Row="14" Grid.Column="11" Content="C G92"/>
 
 
             </Grid>

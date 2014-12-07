@@ -236,12 +236,14 @@ namespace Proxxon.Wpf.ViewModels
 
 		#region X
 
-		public void SendXPlus10()		{ SendMoveCommand("X10"); }
+        public void SendXPlus100()      { SendMoveCommand("X100"); }
+        public void SendXPlus10()       { SendMoveCommand("X10"); }
 		public void SendXPlus1()		{ SendMoveCommand("X1"); }
 		public void SendXPlus01()		{ SendMoveCommand("X0.1"); }
 		public void SendXPlus001()		{ SendMoveCommand("X0.01"); }
-		public void SendXMinus10()		{ SendMoveCommand("X-10"); }
-		public void SendXMinus1()		{ SendMoveCommand("X-1"); }
+		public void SendXMinus100()		{ SendMoveCommand("X-100"); }
+        public void SendXMinus10()      { SendMoveCommand("X-10"); }
+        public void SendXMinus1()       { SendMoveCommand("X-1"); }
 		public void SendXMinus01()		{ SendMoveCommand("X-0.1"); }
 		public void SendXMinus001()		{ SendMoveCommand("X-0.01"); }
 		public void SendXRefMove()		{ AsyncRunCommand(() => { Com.SendCommand("g28 X0"); }); }
@@ -252,11 +254,13 @@ namespace Proxxon.Wpf.ViewModels
 
 		#region Y
 
-		public void SendYPlus10()		{ SendMoveCommand("Y10"); }
+        public void SendYPlus100()       { SendMoveCommand("Y100"); }
+        public void SendYPlus10()       { SendMoveCommand("Y10"); }
 		public void SendYPlus1()		{ SendMoveCommand("Y1"); }
 		public void SendYPlus01()		{ SendMoveCommand("Y0.1"); }
 		public void SendYPlus001()		{ SendMoveCommand("Y0.01"); }
-		public void SendYMinus10()		{ SendMoveCommand("Y-10"); }
+        public void SendYMinus100()     { SendMoveCommand("Y-100"); }
+        public void SendYMinus10()      { SendMoveCommand("Y-10"); }
 		public void SendYMinus1()		{ SendMoveCommand("Y-1"); }
 		public void SendYMinus01()		{ SendMoveCommand("Y-0.1"); }
 		public void SendYMinus001()		{ SendMoveCommand("Y-0.01"); }
@@ -521,12 +525,14 @@ namespace Proxxon.Wpf.ViewModels
 
 		#region X
 
-		public ICommand SendXPlus10Command	{ get { return new DelegateCommand(SendXPlus10, CanSendCommand); } }
+        public ICommand SendXPlus100Command { get { return new DelegateCommand(SendXPlus100, CanSendCommand); } }
+        public ICommand SendXPlus10Command { get { return new DelegateCommand(SendXPlus10, CanSendCommand); } }
 		public ICommand SendXPlus1Command	{ get { return new DelegateCommand(SendXPlus1, CanSendCommand); } }
 		public ICommand SendXPlus01Command	{ get { return new DelegateCommand(SendXPlus01, CanSendCommand); } }
 		public ICommand SendXPlus001Command { get { return new DelegateCommand(SendXPlus001, CanSendCommand); } }
-		public ICommand SendXMinus10Command { get { return new DelegateCommand(SendXMinus10, CanSendCommand); } }
-		public ICommand SendXMinus1Command	{ get { return new DelegateCommand(SendXMinus1, CanSendCommand); } }
+		public ICommand SendXMinus100Command { get { return new DelegateCommand(SendXMinus100, CanSendCommand); } }
+        public ICommand SendXMinus10Command { get { return new DelegateCommand(SendXMinus10, CanSendCommand); } }
+        public ICommand SendXMinus1Command { get { return new DelegateCommand(SendXMinus1, CanSendCommand); } }
 		public ICommand SendXMinus01Command { get { return new DelegateCommand(SendXMinus01, CanSendCommand); } }
 		public ICommand SendXMinus001Command { get { return new DelegateCommand(SendXMinus001, CanSendCommand); } }
 		public ICommand SendXRefMoveCommand	{ get { return new DelegateCommand(SendXRefMove, CanSendCommand); } }
@@ -537,11 +543,13 @@ namespace Proxxon.Wpf.ViewModels
 
 		#region Y
 
-		public ICommand SendYPlus10Command { get { return new DelegateCommand(SendYPlus10, CanSendCommand); } }
+        public ICommand SendYPlus100Command { get { return new DelegateCommand(SendYPlus100, CanSendCommand); } }
+        public ICommand SendYPlus10Command { get { return new DelegateCommand(SendYPlus10, CanSendCommand); } }
 		public ICommand SendYPlus1Command { get { return new DelegateCommand(SendYPlus1, CanSendCommand); } }
 		public ICommand SendYPlus01Command { get { return new DelegateCommand(SendYPlus01, CanSendCommand); } }
 		public ICommand SendYPlus001Command { get { return new DelegateCommand(SendYPlus001, CanSendCommand); } }
-		public ICommand SendYMinus10Command { get { return new DelegateCommand(SendYMinus10, CanSendCommand); } }
+        public ICommand SendYMinus100Command { get { return new DelegateCommand(SendYMinus100, CanSendCommand); } }
+        public ICommand SendYMinus10Command { get { return new DelegateCommand(SendYMinus10, CanSendCommand); } }
 		public ICommand SendYMinus1Command { get { return new DelegateCommand(SendYMinus1, CanSendCommand); } }
 		public ICommand SendYMinus01Command { get { return new DelegateCommand(SendYMinus01, CanSendCommand); } }
 		public ICommand SendYMinus001Command { get { return new DelegateCommand(SendYMinus001, CanSendCommand); } }

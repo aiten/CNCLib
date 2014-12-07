@@ -37,7 +37,7 @@ namespace Framework.Logic
         public ArduinoSerialCommunicationEventArgs(string info, ArduinoSerialCommunication.Command cmd)
         {
             Command = cmd;
-            if (string.IsNullOrEmpty(info))
+            if (cmd != null && string.IsNullOrEmpty(info))
                 this.Info = cmd.CommandText;
             else
                 this.Info = info;
