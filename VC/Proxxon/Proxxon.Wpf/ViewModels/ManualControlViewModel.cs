@@ -70,14 +70,29 @@ namespace Proxxon.Wpf.ViewModels
         public string DirectCommand
         {
             get { return _directCommand; }
-            set { SetProperty(ref _directCommand, value);  }
+			set { SetProperty(ref _directCommand, value); }
         }
+
+		private void AddDirectCommandHistory(string cmd)
+		{
+			if (_directCommandHistory == null) _directCommandHistory = new ObservableCollection<string>();
+			_directCommandHistory.Add(cmd);
+			DirectCommandHistory = _directCommandHistory;
+		}
+
+		private ObservableCollection<string> _directCommandHistory;
+		public ObservableCollection<string> DirectCommandHistory
+		{
+			get { return _directCommandHistory; }
+			set { AssignProperty(ref _directCommandHistory, value); }
+		}
+
 
         #endregion
 
 		#region XYZName
 
-		private string _XParam;
+		private string _XParam="0";
 		public decimal XParamDec { get { return decimal.Parse(XParam); } }
 		public string XParam
 		{
@@ -92,7 +107,7 @@ namespace Proxxon.Wpf.ViewModels
 			private set { SetProperty(ref _XPos, value); }
 		}
 
-		private string _YParam;
+		private string _YParam="0";
 		public decimal YParamDec { get { return decimal.Parse(YParam); } }
 		public string YParam
 		{
@@ -106,7 +121,7 @@ namespace Proxxon.Wpf.ViewModels
 			private set { SetProperty(ref _YPos, value); }
 		}
 
-		private string _ZParam;
+		private string _ZParam = "0";
 		public decimal ZParamDec { get { return decimal.Parse(ZParam); } }
 		public string ZParam
 		{
@@ -119,7 +134,7 @@ namespace Proxxon.Wpf.ViewModels
 			get { return _ZPos; }
 			private set { SetProperty(ref _ZPos, value); }
 		}
-		private string _AParam;
+		private string _AParam = "0";
 		public decimal AParamDec { get { return decimal.Parse(AParam); } }
 		public string AParam
 		{
@@ -132,7 +147,7 @@ namespace Proxxon.Wpf.ViewModels
 			get { return _APos; }
 			private set { SetProperty(ref _APos, value); }
 		}
-		private string _BParam;
+		private string _BParam = "0";
 		public decimal BParamDec { get { return decimal.Parse(BParam); } }
 		public string BParam
 		{
@@ -145,7 +160,7 @@ namespace Proxxon.Wpf.ViewModels
 			get { return _BPos; }
 			private set { SetProperty(ref _BPos, value); }
 		}
-		private string _CParam;
+		private string _CParam = "0";
 		public decimal CParamDec { get { return decimal.Parse(CParam); } }
 		public string CParam
 		{
@@ -272,10 +287,12 @@ namespace Proxxon.Wpf.ViewModels
 
 		#region Z
 
+		public void SendZPlus100()		{ SendMoveCommand("Z100"); }
 		public void SendZPlus10()		{ SendMoveCommand("Z10"); }
 		public void SendZPlus1()		{ SendMoveCommand("Z1"); }
 		public void SendZPlus01()		{ SendMoveCommand("Z0.1"); }
 		public void SendZPlus001()		{ SendMoveCommand("Z0.01"); }
+		public void SendZMinus100()		{ SendMoveCommand("Z-100"); }
 		public void SendZMinus10()		{ SendMoveCommand("Z-10"); }
 		public void SendZMinus1()		{ SendMoveCommand("Z-1"); }
 		public void SendZMinus01()		{ SendMoveCommand("Z-0.1"); }
@@ -289,10 +306,12 @@ namespace Proxxon.Wpf.ViewModels
 
 		#region A
 
+		public void SendAPlus100()		{ SendMoveCommand("A100"); }
 		public void SendAPlus10()		{ SendMoveCommand("A10"); }
 		public void SendAPlus1()		{ SendMoveCommand("A1"); }
 		public void SendAPlus01()		{ SendMoveCommand("A0.1"); }
 		public void SendAPlus001()		{ SendMoveCommand("A0.01"); }
+		public void SendAMinus100()		{ SendMoveCommand("A-100"); }
 		public void SendAMinus10()		{ SendMoveCommand("A-10"); }
 		public void SendAMinus1()		{ SendMoveCommand("A-1"); }
 		public void SendAMinus01()		{ SendMoveCommand("A-0.1"); }
@@ -303,11 +322,12 @@ namespace Proxxon.Wpf.ViewModels
 		#endregion
 
 		#region B
-
+		public void SendBPlus100()		{ SendMoveCommand("B100"); }
 		public void SendBPlus10()		{ SendMoveCommand("B10"); }
 		public void SendBPlus1()		{ SendMoveCommand("B1"); }
 		public void SendBPlus01()		{ SendMoveCommand("B0.1"); }
 		public void SendBPlus001()		{ SendMoveCommand("B0.01"); }
+		public void SendBMinus100()		{ SendMoveCommand("B-100"); }
 		public void SendBMinus10()		{ SendMoveCommand("B-10"); }
 		public void SendBMinus1()		{ SendMoveCommand("B-1"); }
 		public void SendBMinus01()		{ SendMoveCommand("B-0.1"); }
@@ -318,11 +338,12 @@ namespace Proxxon.Wpf.ViewModels
 		#endregion
 
 		#region C
-
+		public void SendCPlus100()		{ SendMoveCommand("C100"); }
 		public void SendCPlus10()		{ SendMoveCommand("C10"); }
 		public void SendCPlus1()		{ SendMoveCommand("C1"); }
 		public void SendCPlus01()		{ SendMoveCommand("C0.1"); }
 		public void SendCPlus001()		{ SendMoveCommand("C0.01"); }
+		public void SendCMinus100()		{ SendMoveCommand("C-100"); }
 		public void SendCMinus10()		{ SendMoveCommand("C-10"); }
 		public void SendCMinus1()		{ SendMoveCommand("C-1"); }
 		public void SendCMinus01()		{ SendMoveCommand("C-0.1"); }
@@ -334,9 +355,16 @@ namespace Proxxon.Wpf.ViewModels
 
 		#endregion
 
+		#region Rotation
+
+		public void SendG69()							{ AsyncRunCommand(() => { Com.SendCommand("g69"); }); }
+		public void SendG68X0Y0R90()					{ AsyncRunCommand(() => { Com.SendCommand("g68 x0y0r90"); }); }
+
+		#endregion
+
 		public void SendInfo()							{ AsyncRunCommand(() => { Com.SendCommand("?"); });  }
         public void SendAbort()							{ AsyncRunCommand(() => { Com.SendCommand("!"); });  }
-        public void SendDirect()						{ AsyncRunCommand(() => { Com.SendCommand(DirectCommand); }); }
+		public void SendDirect()						{ AsyncRunCommand(() => { Com.SendCommand(DirectCommand); }); AddDirectCommandHistory(DirectCommand); }
 		public void SendFileDirect()					{ AsyncRunCommand(() => { Com.SendFile(FileName); }); }
 		public void SendProxxonCommand(string command)	{ AsyncRunCommand(() => { Com.SendCommand(command); }); }
 		public void SendM20File()						{ AsyncRunCommand(() => { Com.SendCommand("m20"); }); }
@@ -561,10 +589,12 @@ namespace Proxxon.Wpf.ViewModels
 
 		#region Z
 
+		public ICommand SendZPlus100Command { get { return new DelegateCommand(SendZPlus100, CanSendCommand); } }
 		public ICommand SendZPlus10Command { get { return new DelegateCommand(SendZPlus10, CanSendCommand); } }
 		public ICommand SendZPlus1Command { get { return new DelegateCommand(SendZPlus1, CanSendCommand); } }
 		public ICommand SendZPlus01Command { get { return new DelegateCommand(SendZPlus01, CanSendCommand); } }
 		public ICommand SendZPlus001Command { get { return new DelegateCommand(SendZPlus001, CanSendCommand); } }
+		public ICommand SendZMinus100Command { get { return new DelegateCommand(SendZMinus100, CanSendCommand); } }
 		public ICommand SendZMinus10Command { get { return new DelegateCommand(SendZMinus10, CanSendCommand); } }
 		public ICommand SendZMinus1Command { get { return new DelegateCommand(SendZMinus1, CanSendCommand); } }
 		public ICommand SendZMinus01Command { get { return new DelegateCommand(SendZMinus01, CanSendCommand); } }
@@ -578,10 +608,12 @@ namespace Proxxon.Wpf.ViewModels
 
 		#region A
 
+		public ICommand SendAPlus100Command { get { return new DelegateCommand(SendAPlus100, CanSendCommand); } }
 		public ICommand SendAPlus10Command { get { return new DelegateCommand(SendAPlus10, CanSendCommand); } }
 		public ICommand SendAPlus1Command { get { return new DelegateCommand(SendAPlus1, CanSendCommand); } }
 		public ICommand SendAPlus01Command { get { return new DelegateCommand(SendAPlus01, CanSendCommand); } }
 		public ICommand SendAPlus001Command { get { return new DelegateCommand(SendAPlus001, CanSendCommand); } }
+		public ICommand SendAMinus100Command { get { return new DelegateCommand(SendAMinus100, CanSendCommand); } }
 		public ICommand SendAMinus10Command { get { return new DelegateCommand(SendAMinus10, CanSendCommand); } }
 		public ICommand SendAMinus1Command { get { return new DelegateCommand(SendAMinus1, CanSendCommand); } }
 		public ICommand SendAMinus01Command { get { return new DelegateCommand(SendAMinus01, CanSendCommand); } }
@@ -593,10 +625,12 @@ namespace Proxxon.Wpf.ViewModels
 
 		#region B
 
+		public ICommand SendBPlus100Command { get { return new DelegateCommand(SendBPlus100, CanSendCommand); } }
 		public ICommand SendBPlus10Command { get { return new DelegateCommand(SendBPlus10, CanSendCommand); } }
 		public ICommand SendBPlus1Command { get { return new DelegateCommand(SendBPlus1, CanSendCommand); } }
 		public ICommand SendBPlus01Command { get { return new DelegateCommand(SendBPlus01, CanSendCommand); } }
 		public ICommand SendBPlus001Command { get { return new DelegateCommand(SendBPlus001, CanSendCommand); } }
+		public ICommand SendBMinus100Command { get { return new DelegateCommand(SendBMinus100, CanSendCommand); } }
 		public ICommand SendBMinus10Command { get { return new DelegateCommand(SendBMinus10, CanSendCommand); } }
 		public ICommand SendBMinus1Command { get { return new DelegateCommand(SendBMinus1, CanSendCommand); } }
 		public ICommand SendBMinus01Command { get { return new DelegateCommand(SendBMinus01, CanSendCommand); } }
@@ -607,10 +641,12 @@ namespace Proxxon.Wpf.ViewModels
 
 		#region C
 
+		public ICommand SendCPlus100Command { get { return new DelegateCommand(SendCPlus100, CanSendCommand); } }
 		public ICommand SendCPlus10Command { get { return new DelegateCommand(SendCPlus10, CanSendCommand); } }
 		public ICommand SendCPlus1Command { get { return new DelegateCommand(SendCPlus1, CanSendCommand); } }
 		public ICommand SendCPlus01Command { get { return new DelegateCommand(SendCPlus01, CanSendCommand); } }
 		public ICommand SendCPlus001Command { get { return new DelegateCommand(SendCPlus001, CanSendCommand); } }
+		public ICommand SendCMinus100Command { get { return new DelegateCommand(SendCMinus100, CanSendCommand); } }
 		public ICommand SendCMinus10Command { get { return new DelegateCommand(SendCMinus10, CanSendCommand); } }
 		public ICommand SendCMinus1Command { get { return new DelegateCommand(SendCMinus1, CanSendCommand); } }
 		public ICommand SendCMinus01Command { get { return new DelegateCommand(SendCMinus01, CanSendCommand); } }
@@ -622,9 +658,16 @@ namespace Proxxon.Wpf.ViewModels
 
 		#endregion
 
-		public ICommand SendDirectCommand { get { return new DelegateCommand(SendDirect, CanSendDirectCommand); } }
-		public ICommand SendFileDirectCommand { get { return new DelegateCommand(SendFileDirect, CanSendFileNameCommand); } }
-		public ICommand RefreshHistoryCommand { get { return new DelegateCommand(RefreshCommandHistory, CanSendCommand); } }
+		#region Rotation
+
+		public ICommand SendG69Command { get { return new DelegateCommand(SendG69, CanSendCommand); } }
+		public ICommand SendG68X0Y0R90Command { get { return new DelegateCommand(SendG68X0Y0R90, CanSendCommand); } }
+
+		#endregion
+
+		public ICommand SendDirectCommand		{ get { return new DelegateCommand(SendDirect, CanSendDirectCommand); } }
+		public ICommand SendFileDirectCommand	{ get { return new DelegateCommand(SendFileDirect, CanSendFileNameCommand); } }
+		public ICommand RefreshHistoryCommand	{ get { return new DelegateCommand(RefreshCommandHistory, CanSendCommand); } }
         public ICommand ClearHistoryCommand		{ get { return new DelegateCommand(ClearCommandHistory, CanSendCommand); } }
         public ICommand SendInfoCommand			{ get { return new DelegateCommand(SendInfo, CanSendCommand); } }
         public ICommand SendAbortCommand		{ get { return new DelegateCommand(SendAbort, CanSendCommand); } }
