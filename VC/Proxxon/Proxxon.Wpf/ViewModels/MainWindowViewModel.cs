@@ -26,16 +26,17 @@ using System.Collections.ObjectModel;
 using Framework.Wpf.ViewModels;
 using Framework.Wpf.Helpers;
 using System.Windows;
-using Proxxon.Wpf.Models;
+using Proxxon.Wpf;
+using Framework.Tools;
 
 
 namespace Proxxon.Wpf.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-		public MainWindowViewModel()
+        public MainWindowViewModel()
 		{
-			var machines = new ObservableCollection<Machine>(new Machine[] { 
+            var machines = new ObservableCollection<Models.Machine>(new Models.Machine[] { 
 				new Models.Machine()
 				{
 					Name = "Proxxon",
@@ -64,6 +65,7 @@ namespace Proxxon.Wpf.ViewModels
 
 			ResetOnConnect = false;
 		}
+ 
         #region Properties
 
 		private Framework.Logic.ArduinoSerialCommunication Com
@@ -73,11 +75,12 @@ namespace Proxxon.Wpf.ViewModels
 
 		#region Current Machine
 
-		public Machine Machine
+        public Models.Machine Machine
 		{
-			get { return _currentMachine; }
-			set { 
-					AssignProperty(ref _currentMachine, value);
+            get { return _selectedMachine; }
+			set {
+                    _selectedMachine = value;
+                    AssignProperty(ref _currentMachine, value.CloneProperties());
 
 					OnPropertyChanged(() => ComPort);
 					OnPropertyChanged(() => BaudRate);
@@ -86,13 +89,14 @@ namespace Proxxon.Wpf.ViewModels
 					OnPropertyChanged(() => SizeY);
 					OnPropertyChanged(() => SizeZ);
 					OnPropertyChanged(() => BufferSize);
- 
-			}
+ 			}
 		}
 
 		Models.Machine _currentMachine;
-		private ObservableCollection<Machine> _machines;
-		public ObservableCollection<Machine> Machines
+        Models.Machine _selectedMachine;
+
+        private ObservableCollection<Models.Machine> _machines;
+        public ObservableCollection<Models.Machine> Machines
 		{
 			get { return _machines; }
 			set { AssignProperty(ref _machines, value); }
@@ -107,50 +111,50 @@ namespace Proxxon.Wpf.ViewModels
         public string ComPort
         {
 			get { return string.IsNullOrEmpty(_currentMachine.ComPort) ? "com4" : _currentMachine.ComPort; }
-			set { SetProperty(_currentMachine.ComPort, value); }
+            set { SetProperty(() => _currentMachine.ComPort == value, () => _currentMachine.ComPort = value); }
         }
 
 		public uint BaudRate
 		{
 			get { return _currentMachine.BaudRate; }
-			set { SetProperty(_currentMachine.BaudRate, value); }
+            set { SetProperty(() => _currentMachine.BaudRate == value, () => _currentMachine.BaudRate = value); }
 		}
 
 		public bool CommandToUpper
 		{
 			get { return _currentMachine.CommandToUpper; }
-			set { SetProperty(_currentMachine.CommandToUpper, value); }
+			set { SetProperty(() => _currentMachine.CommandToUpper == value, () => _currentMachine.CommandToUpper = value); }
 		}
 
 		public int BufferSize
 		{
 			get { return _currentMachine.BufferSize; }
-			set { int buffersize = Com.ArduinoBuffersize; SetProperty( buffersize, value); Com.ArduinoBuffersize = _currentMachine.BufferSize = buffersize; }
+			set { int buffersize = Com.ArduinoBuffersize; SetProperty(ref  buffersize, value); Com.ArduinoBuffersize = _currentMachine.BufferSize = buffersize; }
 		}
 
 		public decimal SizeX
 		{
 			get { return _currentMachine.SizeX; }
-			set { SetProperty(_currentMachine.SizeX, value); }
+			set { SetProperty(() => _currentMachine.SizeX == value, () => _currentMachine.SizeX = value); }
 		}
 		public decimal SizeY
 		{
 			get { return _currentMachine.SizeY; }
-			set { SetProperty(_currentMachine.SizeY, value); }
+			set { SetProperty(() => _currentMachine.SizeY == value, () => _currentMachine.SizeY = value); }
 		}
 		public decimal SizeZ
 		{
 			get { return _currentMachine.SizeZ; }
-			set { SetProperty(_currentMachine.SizeZ, value); }
+            set { SetProperty(() => _currentMachine.SizeZ == value, () => _currentMachine.SizeZ = value); }
 		}
 
 		#endregion
 
-		private bool _resetOnConnect;
+		private bool _resetOnConnect=true;
 		public bool ResetOnConnect
 		{
 			get { return _resetOnConnect; }
-			set { SetProperty(_resetOnConnect, value); }
+			set { SetProperty(ref _resetOnConnect, value); }
 		}
 
         #endregion
@@ -190,6 +194,7 @@ namespace Proxxon.Wpf.ViewModels
 
 		public void SaveMachine()
 		{
+            _selectedMachine.CopyProperties(_currentMachine); 
 		}
 		public bool CanSaveMachine()
 		{
@@ -201,7 +206,6 @@ namespace Proxxon.Wpf.ViewModels
         #region Commands
 
 		public ICommand SaveMachineCommand { get { return new DelegateCommand(SaveMachine, CanSaveMachine); } }
-
 		public ICommand ConnectCommand { get { return new DelegateCommand(Connect, CanConnect); } }
 		public ICommand DisConnectCommand	{ get { return new DelegateCommand(DisConnect, CanDisConnect); } }
 

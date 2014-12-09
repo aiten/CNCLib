@@ -24,18 +24,7 @@ namespace Proxxon.Wpf
         {
             InitializeComponent();
         }
-/*
-        private void Button_ConnectClick(object sender, RoutedEventArgs e)
-        {
-            if (Com.IsConnected)
-            {
-            }
-            else 
-            {
-                Com.Connect("com1");
-            }
-        }
-*/
+
 		private void Button_PaintClick(object sender, RoutedEventArgs e)
 		{
 			using (GCode.GUI.PaintForm form = new GCode.GUI.PaintForm())
@@ -44,7 +33,7 @@ namespace Proxxon.Wpf
 			}
 		}
 
-			private void Button_ManualControlClick(object sender, RoutedEventArgs e)
+		private void Button_ManualControlClick(object sender, RoutedEventArgs e)
         {
 			
 			new ManualControl().ShowDialog();

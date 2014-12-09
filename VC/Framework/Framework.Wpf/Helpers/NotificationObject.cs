@@ -28,15 +28,30 @@ namespace Framework.Wpf.Helpers
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		// Set Property if value is different
-		protected bool SetProperty<T>(T storage, T value, [CallerMemberName] String propertyName = null) where T : IComparable
+		protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null) where T : IComparable
 		{
 			if (object.Equals(storage, value)) return false;	// ref equal
 			if (storage != null && storage.CompareTo(value) == 0) return false;	// logical equal
 
-			storage = value;
-			this.OnPropertyChanged(propertyName);
+            OnPropertyChanging(propertyName);
+            storage = value;
+			OnPropertyChanged(propertyName);
 			return true;
 		}
+
+        protected bool SetProperty(Func<bool> equal, Action action,  [CallerMemberName] string propertyName = null)
+        {
+            if (equal())
+            {
+                return false;
+            }
+
+            OnPropertyChanging(propertyName);
+            action();
+            OnPropertyChanged(propertyName);
+
+            return true;
+        }
 
 		// AssignProperty, value may be the same
 		protected bool AssignProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null)
@@ -45,6 +60,9 @@ namespace Framework.Wpf.Helpers
 			this.OnPropertyChanged(propertyName);
 			return true;
 		}
+        protected virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
+        {
+        }
 
 		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{

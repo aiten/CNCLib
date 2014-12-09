@@ -2,16 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Proxxon.Wpf.ViewModels"
-        xmlns:conv="clr-namespace:Proxxon.Wpf.Converters"        
         Title="MainWindow" Height="372" Width="380" Closing="Window_Closing">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
-    <Window.Resources>
-        <!-- You can implement your own BooleanToVisibilityConverter but there is one already implemented. So the next line creates an instance of the BooleanToVisibilityConverter that you will be able to reference with the specified key -->
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <conv:InvertBoolConverter x:Key="invertBoolConverter" />
-    </Window.Resources>
     <StackPanel Margin="10">
         <StackPanel Margin="0,0,0,10">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
@@ -20,11 +14,12 @@
                 <Button Command="{Binding SaveMachineCommand}" Content="Save"  />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <CheckBox Content="Reset on Connect" IsChecked="{Binding ResetOnConnect}" VerticalAlignment="Center"     />
-                <Button Command="{Binding ConnectCommand}" Content="Connect"  />
+                <CheckBox Content="Reset on Connect" IsChecked="{Binding ResetOnConnect}" VerticalAlignment="Center" Margin="0,0,10,0"     />
+                <Button Command="{Binding ConnectCommand}" Content="Connect" Margin="0,0,5,0" Width="100"  />
                 <Button Command="{Binding DisConnectCommand}" Content="DisConnect" />
             </StackPanel>
         </StackPanel>
+        
         <TabControl Margin="0,0,0,10" >
             <TabItem Header="Setup">
                 <StackPanel >
@@ -60,8 +55,8 @@
             </TabItem>
         </TabControl>
         <StackPanel Orientation="Horizontal">
-            <Button Click="Button_ManualControlClick" Content="Manual Control" IsEnabled="{Binding Connected}"  />
-            <Button Click="Button_PaintClick" Content="Paint" IsEnabled="{Binding Connected}"  />
+            <Button Click="Button_ManualControlClick" Content="Manual Control" IsEnabled="{Binding Connected}" Margin="0,0,10,0"  />
+            <Button Click="Button_PaintClick" Content="Paint" IsEnabled="{Binding Connected}" Width="100"  />
         </StackPanel>
     </StackPanel>
 </Window>
