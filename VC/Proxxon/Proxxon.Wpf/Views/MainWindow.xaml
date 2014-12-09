@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Proxxon.Wpf.ViewModels"
         xmlns:conv="clr-namespace:Proxxon.Wpf.Converters"        
-        Title="MainWindow" Height="278.696" Width="289.131" Closing="Window_Closing">
+        Title="MainWindow" Height="372" Width="380" Closing="Window_Closing">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -13,42 +13,55 @@
         <conv:InvertBoolConverter x:Key="invertBoolConverter" />
     </Window.Resources>
     <StackPanel Margin="10">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" MinHeight="30"></RowDefinition>
-                <RowDefinition Height="Auto" MinHeight="30"></RowDefinition>
-                <RowDefinition Height="Auto" MinHeight="30"></RowDefinition>
-                <RowDefinition Height="Auto" MinHeight="30"></RowDefinition>
-                <RowDefinition Height="Auto" MinHeight="30"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"></ColumnDefinition>
-                <ColumnDefinition Width="100*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Content="COM-Port"/>
-            <Label Grid.Column="0" Grid.Row="1" Content="Reset"/>
-            <Label Grid.Column="0" Grid.Row="2" Content="ToUpper"/>
-            <Label Grid.Column="0" Grid.Row="3" Content="Buffersize"/>
-            <Label Grid.Column="0" Grid.Row="4" Content="BaudRate"/>
-            <TextBox Text="{Binding ComPort}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" />
-            <CheckBox Content="Reset" IsChecked="{Binding ResetOnConnect}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"  />
-            <CheckBox Content="ToUpper" IsChecked="{Binding CommandToUpper}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"  />
-            <TextBox Text="{Binding BufferSize }" Grid.Column="1" Grid.Row="3"  VerticalAlignment="Center" />
-            <TextBox Text="{Binding BaudRate }" Grid.Column="1" Grid.Row="4"  VerticalAlignment="Center" />
-        </Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" MinHeight="30"></RowDefinition>
-                <RowDefinition Height="Auto" MinHeight="30"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"></ColumnDefinition>
-                <ColumnDefinition Width="100"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Button Command="{Binding Path=ConnectCommand}" Grid.Column="0" Grid.Row="0" Content="Connect" />
-            <Button Command="{Binding Path=DisConnectCommand}" Grid.Column="0" Grid.Row="1" Content="DisConnect"  />
-            <Button Click="Button_ManualControlClick" Grid.Column="1" Grid.Row="0" Content="Manual Control" IsEnabled="{Binding Path=Connected}" RenderTransformOrigin="2.985,2.839" />
-            <Button Click="Button_PaintClick" Grid.Column="1" Grid.Row="1" Content="Paint" IsEnabled="{Binding Path=Connected}" />
-        </Grid>
+        <StackPanel Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <Label Content="Maschine:" Width="65" Margin="0,0,5,0" />
+                <ComboBox SelectedItem="{Binding Machine}" ItemsSource="{Binding Machines}"  Width="100" Margin="0,0,5,0" DisplayMemberPath="Name" />
+                <Button Command="{Binding SaveMachineCommand}" Content="Save"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Content="Reset on Connect" IsChecked="{Binding ResetOnConnect}" VerticalAlignment="Center"     />
+                <Button Command="{Binding ConnectCommand}" Content="Connect"  />
+                <Button Command="{Binding DisConnectCommand}" Content="DisConnect" />
+            </StackPanel>
+        </StackPanel>
+        <TabControl Margin="0,0,0,10" >
+            <TabItem Header="Setup">
+                <StackPanel >
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="COM-Port" Width="150"/>
+                        <TextBox Text="{Binding ComPort}" VerticalAlignment="Center" Width="100"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="ToUpper" Width="150" />
+                        <CheckBox Content="ToUpper" IsChecked="{Binding CommandToUpper}" VerticalAlignment="Center"    />
+                    </StackPanel>
+                    <StackPanel  Orientation="Horizontal">
+                        <Label Content="Buffersize" Width="150"/>
+                        <TextBox Text="{Binding BufferSize}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="BaudRate" Width="150" />
+                        <TextBox Text="{Binding BaudRate}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Size X" Width="150" />
+                        <TextBox Text="{Binding SizeX}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Size Y" Width="150" />
+                        <TextBox Text="{Binding SizeY}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Size Z" Width="150" />
+                        <TextBox Text="{Binding SizeZ}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        <StackPanel Orientation="Horizontal">
+            <Button Click="Button_ManualControlClick" Content="Manual Control" IsEnabled="{Binding Connected}"  />
+            <Button Click="Button_PaintClick" Content="Paint" IsEnabled="{Binding Connected}"  />
+        </StackPanel>
     </StackPanel>
 </Window>

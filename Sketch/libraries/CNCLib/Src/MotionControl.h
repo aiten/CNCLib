@@ -36,7 +36,7 @@ public:
 	CMotionControl();
 
 	////////////////////////////////////////
-	// converting maschine mm1000 to logical position
+	// converting machine mm1000 to logical position
 
 	virtual void TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
 	virtual void TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);

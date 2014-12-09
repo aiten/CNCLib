@@ -65,7 +65,7 @@ public:
 	static void ToMm1000(const udist_t machine[NUM_AXIS], mm1000_t mm1000[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { mm1000[x] = _ToMm1000(x, machine[x]); } };
 
 	////////////////////////////////////////
-	// converting maschine-mm1000 to logical-pos
+	// converting machine-mm1000 to logical-pos
 
 	virtual void TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
 	virtual void TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);

@@ -39,7 +39,7 @@ typedef unsigned short param_t;
 #define PARAMSTART_CURRENTPOS	5420		// 5420-5428 - Current Position including offsets in current program units (X Y Z A B C U V W)
 
 // extent
-#define PARAMSTART_CURRENTABSPOS	6010	// Current Absolut maschine position in current program units (X Y Z A B C U V W)
+#define PARAMSTART_CURRENTABSPOS	6010	// Current Absolut machine position in current program units (X Y Z A B C U V W)
 #define PARAMSTART_BACKLASH			6031	// Backlash in current units(e.g. mm) (X Y Z A B C U V W)
 #define PARAMSTART_BACKLASH_FEEDRATE 6049	// Feedrate for backlash (0 if disabled)
 
@@ -173,8 +173,8 @@ protected:
 	mm1000_t GetParamValue(param_t paramNo);
 	void SetParamValue(param_t parmNo);
 
-	mm1000_t GetParamAsPosition(mm1000_t posInMaschine, axis_t axis)	{ return ToInch(CMotionControlBase::GetInstance()->ToMm1000(axis, posInMaschine)); }
-	mm1000_t GetParamAsMaschine(mm1000_t posInmm1000, axis_t axis)		{ return FromInch(CMotionControlBase::GetInstance()->ToMachine(axis, posInmm1000)); }
+	mm1000_t GetParamAsPosition(mm1000_t posInMachine, axis_t axis)	{ return ToInch(CMotionControlBase::GetInstance()->ToMm1000(axis, posInMachine)); }
+	mm1000_t GetParamAsMachine(mm1000_t posInmm1000, axis_t axis)		{ return FromInch(CMotionControlBase::GetInstance()->ToMachine(axis, posInmm1000)); }
 
 	mm1000_t GetRelativePosition(mm1000_t pos, axis_t axis)				{ return pos - GetG92PosPreset(axis) - GetG54PosPreset(axis); }
 	mm1000_t GetRelativePosition(axis_t axis)							{ return GetRelativePosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis); }

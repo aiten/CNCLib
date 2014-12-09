@@ -58,6 +58,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\InvertBoolConverter.cs" />
+    <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\RoboterCommand.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ManualControlViewModel.cs" />

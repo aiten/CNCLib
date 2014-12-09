@@ -235,12 +235,12 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 		if (IsModifyParam(paramNo))				{	_modalstate.Parameter[paramNo - 1] = mm1000;	}
 
 	
-		else if (IsBacklashParam(paramNo,axis))	{	CStepper::GetInstance()->SetBacklash(axis,(mdist_t) GetParamAsMaschine(mm1000, axis));	}
+		else if (IsBacklashParam(paramNo,axis))	{	CStepper::GetInstance()->SetBacklash(axis,(mdist_t) GetParamAsMachine(mm1000, axis));	}
 		else if (IsBacklashFeedrateParam(paramNo)){ CStepper::GetInstance()->SetBacklash((steprate_t)CMotionControlBase::GetInstance()->ToMachine(0, mm1000 * 60)); }
 		else if (IsControllerFanParam(paramNo))	{	CControl::GetInstance()->IOControl(CControl::ControllerFan,(unsigned short)exprpars.Answer);	}
 		else if (IsRapidMoveFeedRate(paramNo))	{	SetG0FeedRate((feedrate_t) (-exprpars.Answer*1000));	}
-		else if (IsMaxParam(paramNo,axis))		{	CStepper::GetInstance()->SetLimitMax(axis,GetParamAsMaschine(mm1000, axis));		}
-		else if (IsMinParam(paramNo,axis))		{	CStepper::GetInstance()->SetLimitMin(axis,GetParamAsMaschine(mm1000, axis));		}
+		else if (IsMaxParam(paramNo,axis))		{	CStepper::GetInstance()->SetLimitMax(axis,GetParamAsMachine(mm1000, axis));		}
+		else if (IsMinParam(paramNo,axis))		{	CStepper::GetInstance()->SetLimitMin(axis,GetParamAsMachine(mm1000, axis));		}
 		else if (IsAccParam(paramNo,axis))		{	CStepper::GetInstance()->SetAcc(axis,(steprate_t) mm1000);	}
 		else if (IsDecParam(paramNo,axis))		{	CStepper::GetInstance()->SetDec(axis,(steprate_t) mm1000);	}
 		else if (IsJerkParam(paramNo,axis))		{	CStepper::GetInstance()->SetJerkSpeed(axis,(steprate_t) mm1000);	}

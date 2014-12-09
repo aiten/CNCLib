@@ -36,7 +36,7 @@ bool CGCodeParserBase::_exit = false;
 
 ////////////////////////////////////////////////////////
 
-#define MASCHINE_SCALE		3		// 1/1000mm
+#define MACHINE_SCALE		3		// 1/1000mm
 
 #define COORD_SCALE_MM		3
 #define COORD_MIN_MM		-999999l

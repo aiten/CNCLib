@@ -59,7 +59,7 @@ namespace Proxxon.Wpf.ViewModels
 		public string SDFileName
         {
 			get { return _SDFileName; }
-            set { SetProperty(ref _SDFileName, value);  }
+            set { SetProperty(_SDFileName, value);  }
         }
 
         #endregion
@@ -70,7 +70,7 @@ namespace Proxxon.Wpf.ViewModels
         public string DirectCommand
         {
             get { return _directCommand; }
-			set { SetProperty(ref _directCommand, value); }
+			set { SetProperty(_directCommand, value); }
         }
 
 		private void AddDirectCommandHistory(string cmd)
@@ -97,14 +97,14 @@ namespace Proxxon.Wpf.ViewModels
 		public string XParam
 		{
 			get { return _XParam; }
-            set { SetProperty(ref _XParam, value);  }
+            set { SetProperty(_XParam, value);  }
 		}
 
 		private string _XPos;
 		public string XPos
 		{
 			get { return _XPos; }
-			private set { SetProperty(ref _XPos, value); }
+			private set { SetProperty(_XPos, value); }
 		}
 
 		private string _YParam="0";
@@ -112,13 +112,13 @@ namespace Proxxon.Wpf.ViewModels
 		public string YParam
 		{
 			get { return _YParam; }
-            set { SetProperty(ref _YParam, value);  }
+            set { SetProperty(_YParam, value);  }
 		}
 		private string _YPos;
 		public string YPos
 		{
 			get { return _YPos; }
-			private set { SetProperty(ref _YPos, value); }
+			private set { SetProperty(_YPos, value); }
 		}
 
 		private string _ZParam = "0";
@@ -126,52 +126,52 @@ namespace Proxxon.Wpf.ViewModels
 		public string ZParam
 		{
 			get { return _ZParam; }
-            set { SetProperty(ref _ZParam, value);  }
+            set { SetProperty(_ZParam, value);  }
 		}
 		private string _ZPos;
 		public string ZPos
 		{
 			get { return _ZPos; }
-			private set { SetProperty(ref _ZPos, value); }
+			private set { SetProperty(_ZPos, value); }
 		}
 		private string _AParam = "0";
 		public decimal AParamDec { get { return decimal.Parse(AParam); } }
 		public string AParam
 		{
 			get { return _AParam; }
-            set { SetProperty(ref _AParam, value);  }
+            set { SetProperty(_AParam, value);  }
 		}
 		private string _APos;
 		public string APos
 		{
 			get { return _APos; }
-			private set { SetProperty(ref _APos, value); }
+			private set { SetProperty(_APos, value); }
 		}
 		private string _BParam = "0";
 		public decimal BParamDec { get { return decimal.Parse(BParam); } }
 		public string BParam
 		{
 			get { return _BParam; }
-            set { SetProperty(ref _BParam, value);  }
+            set { SetProperty(_BParam, value);  }
 		}
 		private string _BPos;
 		public string BPos
 		{
 			get { return _BPos; }
-			private set { SetProperty(ref _BPos, value); }
+			private set { SetProperty(_BPos, value); }
 		}
 		private string _CParam = "0";
 		public decimal CParamDec { get { return decimal.Parse(CParam); } }
 		public string CParam
 		{
 			get { return _CParam; }
-            set { SetProperty(ref _CParam, value);  }
+            set { SetProperty(_CParam, value);  }
 		}
 		private string _CPos;
 		public string CPos
 		{
 			get { return _CPos; }
-			private set { SetProperty(ref _CPos, value); }
+			private set { SetProperty(_CPos, value); }
 		}
 
 		#endregion
@@ -182,7 +182,7 @@ namespace Proxxon.Wpf.ViewModels
 		public decimal ProbeSize
 		{
 			get { return _ProbeSize; }
-            set { SetProperty(ref _ProbeSize, value);  }
+            set { SetProperty(_ProbeSize, value);  }
 		}
 
 		#endregion
@@ -193,7 +193,7 @@ namespace Proxxon.Wpf.ViewModels
 		public string FileName
 		{
 			get { return _fileName; }
-            set { SetProperty(ref _fileName, value);  }
+            set { SetProperty(_fileName, value);  }
 		}
 
 		#endregion

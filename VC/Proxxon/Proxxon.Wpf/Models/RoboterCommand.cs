@@ -37,7 +37,7 @@ namespace Proxxon.Wpf.Models
         public string CommandText
         {
             get { return _commandText; }
-            set { SetProperty(ref _commandText, value);  }
+            set { SetProperty(_commandText, value);  }
         }
 
         #endregion
@@ -48,7 +48,7 @@ namespace Proxxon.Wpf.Models
         public DateTime CommandDate
         {
             get { return _commandDate; }
-            set { SetProperty(ref _commandDate, value);  }
+            set { SetProperty(_commandDate, value);  }
         }
 
         #endregion
@@ -59,7 +59,7 @@ namespace Proxxon.Wpf.Models
         public string Result
         {
             get { return _result; }
-            set { SetProperty(ref _result, value);  }
+            set { SetProperty(_result, value);  }
         }
 
         #endregion
