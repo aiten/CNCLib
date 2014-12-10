@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandStream.cs" />
-    <Compile Include="ObjectMapper.cs" />
+    <Compile Include="ObjectConverter.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpaceCoordinate.cs" />

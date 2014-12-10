@@ -24,6 +24,8 @@ namespace Proxxon.Wpf.Models
 {
 	public class Machine 
 	{
+        public int MachineID { get; set; }
+
 		public string ComPort { get; set; }
 		public uint BaudRate { get; set; }
 

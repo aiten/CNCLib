@@ -38,48 +38,20 @@ namespace Proxxon.Wpf.ViewModels
     {
         public MainWindowViewModel()
 		{
-			var m =  new MachineControler().GetMachines();
-
-            var machines = new ObservableCollection<Models.Machine>(); 
-
-			foreach(Proxxon.Logic.DTO.Machine dm in m)
-			{
-				Models.Machine x = new Models.Machine();
-				ObjectMapper.MyCopyProperties(x, dm);
-				machines.Add(x);
-			}
-/*
-            var machines = new ObservableCollection<Models.Machine>(new Models.Machine[] { 
-				new Models.Machine()
-				{
-					Name = "Proxxon",
-					ComPort = "com4",
-					BaudRate = 115200,
-					SizeX = 130m,
-					SizeY = 45m,
-					SizeZ = 81m,
-					BufferSize = 63,
-					CommandToUpper = false
-				},
-				new Models.Machine()
-				{
-					Name = "KK1000S",
-					ComPort = "com11",
-					BaudRate = 115200,
-					SizeX = 830m,
-					SizeY = 500m,
-					SizeZ = 100m,
-					BufferSize = 63,
-					CommandToUpper = false
-				}});
-
- */
-
-			Machines = machines;
-			Machine = Machines[0];
+            LoadMachines();
 
 			ResetOnConnect = false;
 		}
+
+        private void LoadMachines()
+        {
+            var machines = new ObservableCollection<Models.Machine>();
+
+            machines.AddCloneProperties(new MachineControler().GetMachines());
+
+            Machines = machines;
+            Machine = Machines[0];
+        }
  
         #region Properties
 
@@ -107,15 +79,18 @@ namespace Proxxon.Wpf.ViewModels
 					OnPropertyChanged(() => BufferSize);
 */			
 					AssignProperty(() => 
-					{
+                    {
+                        if (value == null)
+                            _currentMachine = new Models.Machine();
+                        else
 							_currentMachine = value.CloneProperties();
-							OnPropertyChanged(() => ComPort);
-							OnPropertyChanged(() => BaudRate);
-							OnPropertyChanged(() => CommandToUpper);
-							OnPropertyChanged(() => SizeX);
-							OnPropertyChanged(() => SizeY);
-							OnPropertyChanged(() => SizeZ);
-							OnPropertyChanged(() => BufferSize);
+						OnPropertyChanged(() => ComPort);
+						OnPropertyChanged(() => BaudRate);
+						OnPropertyChanged(() => CommandToUpper);
+						OnPropertyChanged(() => SizeX);
+						OnPropertyChanged(() => SizeY);
+						OnPropertyChanged(() => SizeZ);
+						OnPropertyChanged(() => BufferSize);
 					}
 				);
 			}
@@ -223,7 +198,9 @@ namespace Proxxon.Wpf.ViewModels
 
 		public void SaveMachine()
 		{
-            _selectedMachine.CopyProperties(_currentMachine); 
+            _selectedMachine.CopyProperties(_currentMachine);
+            new MachineControler().Update(_selectedMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>());
+            LoadMachines();
 		}
 		public bool CanSaveMachine()
 		{

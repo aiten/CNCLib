@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Proxxon.Repository;
 using Framework.Tools;
+using System.Data.Entity;
 
 namespace Proxxon.Logic
 {
@@ -13,18 +14,19 @@ namespace Proxxon.Logic
     {
 		private const string _connectionString = @"Data Source=c:\tmp\Database.sdf";
 		private ProxxonRepository _repository;
+        private ProxxonContext _context;
 
 		private void Init()
 		{
 			AppDomain.CurrentDomain.SetData("DataDirectory", @"c:\tmp");
-
+/*
 			using (var context = new ProxxonContext(_connectionString))
 			{
 				System.Data.Entity.Database.SetInitializer<ProxxonContext>(new ProxxonInitializer());
 				context.Database.Initialize(true);
 			}        
-
-			_repository = new ProxxonRepository(new ProxxonContext(_connectionString));
+*/
+			_repository = new ProxxonRepository(_context=new ProxxonContext(_connectionString));
 		}
 
 		public DTO.Machine[] GetMachines()
@@ -34,14 +36,24 @@ namespace Proxxon.Logic
 
 			List<DTO.Machine> l = new List<DTO.Machine>();
 
-			foreach (Proxxon.Repository.Entities.Machine dm in machines)
-			{
-				var x = new DTO.Machine();
-				ObjectMapper.MyCopyProperties(x, dm);
-				l.Add(x);
-			}
+            l.AddCloneProperties(machines);
+
+            //foreach (Proxxon.Repository.Entities.Machine dm in machines)
+            //{
+            //    var x = new DTO.Machine();
+            //    ObjectConverter.CopyProperties(x, dm);
+            //    l.Add(x);
+            //}
 
 			return l.ToArray();
 		}
+
+        public void Update(DTO.Machine m)
+        {
+            Init();
+
+            _context.Entry(m.NewCloneProperties<Proxxon.Repository.Entities.Machine, DTO.Machine>()).State = EntityState.Modified; 
+            _context.SaveChanges(); 
+        }
     }
 }
