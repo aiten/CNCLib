@@ -66,7 +66,7 @@
     <Compile Include="ProxxonRepository.cs" />
     <Compile Include="IProxxonRepository.cs" />
     <Compile Include="IQueryBuilder.cs" />
-    <Compile Include="Mappings\BookMapping.cs" />
+    <Compile Include="Mappings\MachineMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryBuilder.cs" />
   </ItemGroup>
