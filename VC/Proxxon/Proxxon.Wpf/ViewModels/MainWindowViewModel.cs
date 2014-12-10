@@ -28,6 +28,8 @@ using Framework.Wpf.Helpers;
 using System.Windows;
 using Proxxon.Wpf;
 using Framework.Tools;
+using System.Linq.Expressions;
+using Proxxon.Logic;
 
 
 namespace Proxxon.Wpf.ViewModels
@@ -36,6 +38,17 @@ namespace Proxxon.Wpf.ViewModels
     {
         public MainWindowViewModel()
 		{
+			var m =  new MachineControler().GetMachines();
+
+            var machines = new ObservableCollection<Models.Machine>(); 
+
+			foreach(Proxxon.Logic.DTO.Machine dm in m)
+			{
+				Models.Machine x = new Models.Machine();
+				ObjectMapper.MyCopyProperties(x, dm);
+				machines.Add(x);
+			}
+/*
             var machines = new ObservableCollection<Models.Machine>(new Models.Machine[] { 
 				new Models.Machine()
 				{
@@ -60,6 +73,8 @@ namespace Proxxon.Wpf.ViewModels
 					CommandToUpper = false
 				}});
 
+ */
+
 			Machines = machines;
 			Machine = Machines[0];
 
@@ -80,6 +95,7 @@ namespace Proxxon.Wpf.ViewModels
             get { return _selectedMachine; }
 			set {
                     _selectedMachine = value;
+/*
                     AssignProperty(ref _currentMachine, value.CloneProperties());
 
 					OnPropertyChanged(() => ComPort);
@@ -89,7 +105,20 @@ namespace Proxxon.Wpf.ViewModels
 					OnPropertyChanged(() => SizeY);
 					OnPropertyChanged(() => SizeZ);
 					OnPropertyChanged(() => BufferSize);
- 			}
+*/			
+					AssignProperty(() => 
+					{
+							_currentMachine = value.CloneProperties();
+							OnPropertyChanged(() => ComPort);
+							OnPropertyChanged(() => BaudRate);
+							OnPropertyChanged(() => CommandToUpper);
+							OnPropertyChanged(() => SizeX);
+							OnPropertyChanged(() => SizeY);
+							OnPropertyChanged(() => SizeZ);
+							OnPropertyChanged(() => BufferSize);
+					}
+				);
+			}
 		}
 
 		Models.Machine _currentMachine;

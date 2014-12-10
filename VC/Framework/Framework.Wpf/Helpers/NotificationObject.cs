@@ -33,7 +33,8 @@ namespace Framework.Wpf.Helpers
 			if (object.Equals(storage, value)) return false;	// ref equal
 			if (storage != null && storage.CompareTo(value) == 0) return false;	// logical equal
 
-            OnPropertyChanging(propertyName);
+			//OnProperty(() => storage = value,propertyName);
+			OnPropertyChanging(propertyName);
             storage = value;
 			OnPropertyChanged(propertyName);
 			return true;
@@ -46,21 +47,34 @@ namespace Framework.Wpf.Helpers
                 return false;
             }
 
-            OnPropertyChanging(propertyName);
-            action();
-            OnPropertyChanged(propertyName);
+			OnProperty(action, propertyName);
 
-            return true;
+			return true;
         }
+
+		protected void OnProperty(Action action, [CallerMemberName] string propertyName = null)
+		{
+			OnPropertyChanging(propertyName);
+			action();
+			OnPropertyChanged(propertyName);
+		}
 
 		// AssignProperty, value may be the same
 		protected bool AssignProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null)
 		{
+			OnPropertyChanging(propertyName);
 			storage = value;
-			this.OnPropertyChanged(propertyName);
+			OnPropertyChanged(propertyName);
 			return true;
 		}
-        protected virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
+
+		protected bool AssignProperty(Action action, [CallerMemberName] string propertyName = null)
+		{
+			OnProperty(action, propertyName);
+			return true;
+		}
+
+		protected virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
         {
         }
 

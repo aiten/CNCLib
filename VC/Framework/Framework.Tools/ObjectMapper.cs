@@ -34,7 +34,34 @@ namespace Framework.Tools
             return newobj;
         }
 
-        private static void MyCopyProperties(object dest, object src)
+		public static void MyCopyProperties(object dest, object src)
+		{
+			Type t_dest = dest.GetType();
+			Type t_src  = src.GetType();
+
+			PropertyInfo[] properties = t_dest.GetProperties();
+
+			foreach (PropertyInfo pd in properties)
+			{
+				if (pd.CanWrite)
+				{
+					PropertyInfo ps = t_src.GetProperty(pd.Name);
+
+					if (ps != null)
+					{
+						pd.SetValue(dest, ps.GetValue(src, null), null);
+					}
+				}
+			}
+		/*
+			foreach (PropertyDescriptor item in TypeDescriptor.GetProperties(src))
+			{
+				item.SetValue(dest, item.GetValue(src));
+			}
+		 */
+		}
+
+        public static void CopyProperties(object dest, object src)
         {
             foreach (PropertyDescriptor item in TypeDescriptor.GetProperties(src))
             {
@@ -43,7 +70,7 @@ namespace Framework.Tools
         }
         public static void CopyProperties<T>(this T dest, T src )
         {
-            MyCopyProperties(dest, src);
+			CopyProperties((object)dest, (object)src);
         }
     }
 }
