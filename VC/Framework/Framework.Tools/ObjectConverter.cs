@@ -78,7 +78,9 @@ namespace Framework.Tools
 
         #endregion
 
-        public static void AddCloneProperties<TDest, TSrc>(this IList<TDest> destlist, TSrc srclist)
+		#region array/list
+
+		public static void AddCloneProperties<TDest, TSrc>(this IList<TDest> destlist, TSrc srclist)
             where TSrc : IEnumerable
             where TDest : new()
         {
@@ -110,6 +112,8 @@ namespace Framework.Tools
             result.ToArray().CopyTo(array, 0);
 
             return (TDest[])array;
-        }
-    }
+		}
+
+		#endregion
+	}
 }
