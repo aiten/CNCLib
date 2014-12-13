@@ -225,6 +225,7 @@
                         <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                             <Button Command="{Binding SendG69Command}" Content="G69 - Clear" MinWidth="100" Margin="0,0,5,0" />
                             <Button Command="{Binding SendG68X0Y0R90Command}" Content="G68:X0Y0R90" MinWidth="100" Margin="0,0,5,0" />
+                            <Button Command="{Binding SendG68X0Y0R270Command}" Content="G68:X0Y0R270" MinWidth="100" Margin="0,0,5,0" />
 
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">

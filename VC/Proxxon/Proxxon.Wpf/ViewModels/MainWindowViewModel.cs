@@ -118,7 +118,7 @@ namespace Proxxon.Wpf.ViewModels
             set { SetProperty(() => _currentMachine.ComPort == value, () => _currentMachine.ComPort = value); }
         }
 
-		public uint BaudRate
+		public int BaudRate
 		{
 			get { return _currentMachine.BaudRate; }
             set { SetProperty(() => _currentMachine.BaudRate == value, () => _currentMachine.BaudRate = value); }

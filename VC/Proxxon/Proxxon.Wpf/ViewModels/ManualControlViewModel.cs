@@ -359,8 +359,9 @@ namespace Proxxon.Wpf.ViewModels
 
 		public void SendG69()							{ AsyncRunCommand(() => { Com.SendCommand("g69"); }); }
 		public void SendG68X0Y0R90()					{ AsyncRunCommand(() => { Com.SendCommand("g68 x0y0r90"); }); }
-
-		#endregion
+        public void SendG68X0Y0R270()                   { AsyncRunCommand(() => { Com.SendCommand("g68 x0y0r270"); }); }
+        
+        #endregion
 
 		public void SendInfo()							{ AsyncRunCommand(() => { Com.SendCommand("?"); });  }
         public void SendAbort()							{ AsyncRunCommand(() => { Com.SendCommand("!"); });  }
@@ -662,6 +663,7 @@ namespace Proxxon.Wpf.ViewModels
 
 		public ICommand SendG69Command { get { return new DelegateCommand(SendG69, CanSendCommand); } }
 		public ICommand SendG68X0Y0R90Command { get { return new DelegateCommand(SendG68X0Y0R90, CanSendCommand); } }
+        public ICommand SendG68X0Y0R270Command { get { return new DelegateCommand(SendG68X0Y0R270, CanSendCommand); } }
 
 		#endregion
 
