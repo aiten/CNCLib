@@ -85,12 +85,14 @@
     <ClInclude Include="..\..\..\Sketch\KK1000S\Configuration_KK1000S.h" />
     <ClInclude Include="..\..\..\Sketch\KK1000S\MyControl.h" />
     <ClInclude Include="..\..\..\Sketch\KK1000S\MyLCD.h" />
+    <ClInclude Include="..\..\..\Sketch\KK1000S\MyMenu.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sketch\KK1000S\MyControl.cpp" />
     <ClCompile Include="..\..\..\Sketch\KK1000S\MyLCD.cpp" />
+    <ClCompile Include="..\..\..\Sketch\KK1000S\MyMenu.cpp" />
     <ClCompile Include="KK1000S.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

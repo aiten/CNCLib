@@ -82,6 +82,14 @@
 
 #endif
 
+////////////////////////////////////////////////////////
+
+#define MASH6050S_KILL_PIN	20
+#define MASH6050S_KILL_PIN_ON  HIGH	// Pressed
+#define MASH6050S_KILL_PIN_OFF LOW
+
+////////////////////////////////////////////////////////
+
 #define MASH6050S_LED_PIN			13		// D13
 #define MASH6050S_PS_ON_PIN			12		// D12
 
@@ -150,8 +158,8 @@
 // LCD
 
 #define MASH6050S_LCD_ROTARY_ENC		MASH6050S_AUX4_10		// Dreh Encoder auf Ramps 1.4 - Press button
-#define MASH6050S_LCD_ROTARY_EN1		MASH6050S_AUX4_12		// Dreh Encoder auf Ramps 1.4
-#define MASH6050S_LCD_ROTARY_EN2		MASH6050S_AUX4_11		// Dreh Encoder auf Ramps 1.4
+#define MASH6050S_LCD_ROTARY_EN1		MASH6050S_AUX4_11		// Dreh Encoder auf Ramps 1.4
+#define MASH6050S_LCD_ROTARY_EN2		MASH6050S_AUX4_12		// Dreh Encoder auf Ramps 1.4
 
 #define MASH6050S_LCD_ROTARY_ENC_ON	LOW		// Pressed
 #define MASH6050S_LCD_ROTARY_ENC_OFF	HIGH
@@ -159,8 +167,8 @@
 #define MASH6050S_LCD_BEEPER			MASH6050S_AUX4_9		// Summer auf Ramps 1.4
 #define MASH6050S_LCD_KILL_PIN			MASH6050S_AUX4_7		// Stoptaste auf Ramps 1.4
 
-#define MASH6050S_LCD_KILL_PIN_ON  HIGH	// Pressed
-#define MASH6050S_LCD_KILL_PIN_OFF LOW
+#define MASH6050S_LCD_KILL_PIN_ON  LOW	// Pressed
+#define MASH6050S_LCD_KILL_PIN_OFF HIGH
 
 #define MASH6050S_LCD_PINS_RS			MASH6050S_AUX4_18 
 #define MASH6050S_LCD_PINS_ENABLE		MASH6050S_AUX4_17

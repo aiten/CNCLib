@@ -44,7 +44,7 @@ CMotionControl MotionControl;
 
 void CMyControl::Init()
 {
-	StepperSerial.println(MESSAGE_MYCONTROL_Proxxon_Starting);
+	StepperSerial.println(MESSAGE_MYCONTROL_Starting);
 
 	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
@@ -102,6 +102,7 @@ void CMyControl::Init()
 	_controllerfan.Init();
 
 	_probe.Init();
+	_killLcd.Init();
 	_kill.Init();
 
 	InitSD(SD_ENABLE_PIN);
@@ -149,7 +150,8 @@ void CMyControl::Kill()
 
 bool CMyControl::IsKill()
 {
-	return _kill.IsOn();
+	return _killLcd.IsOn();
+	return _kill.IsOn() || _killLcd.IsOn();
 }
 
 ////////////////////////////////////////////////////////////

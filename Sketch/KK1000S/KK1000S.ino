@@ -29,7 +29,7 @@
 
 
 ////////////////////////////////////////////////////////////
-// => see Configuration_ProxxonMF70.h
+// => see Configuration_XX.h
 
 CStepperMash6050S Stepper;
 
