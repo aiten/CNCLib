@@ -364,7 +364,7 @@ namespace Proxxon.Wpf.ViewModels
         #endregion
 
 		public void SendInfo()							{ AsyncRunCommand(() => { Com.SendCommand("?"); });  }
-        public void SendAbort()							{ AsyncRunCommand(() => { Com.SendCommand("!"); });  }
+        public void SendAbort()                         { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumAfterAbort(); Com.SendCommand("!"); }); }
 		public void SendDirect()						{ AsyncRunCommand(() => { Com.SendCommand(DirectCommand); }); AddDirectCommandHistory(DirectCommand); }
 		public void SendFileDirect()					{ AsyncRunCommand(() => { Com.SendFile(FileName); }); }
 		public void SendProxxonCommand(string command)	{ AsyncRunCommand(() => { Com.SendCommand(command); }); }

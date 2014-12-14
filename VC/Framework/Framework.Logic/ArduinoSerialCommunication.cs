@@ -219,7 +219,7 @@ namespace Framework.Logic
             _serialPort = null;
         }
 
-        public void AbortCommand()
+        public void AbortCommands()
         {
 			lock (_pendingCommands)
 			{
@@ -251,6 +251,20 @@ namespace Framework.Logic
         public void Dispose()
         {
             Disconnect();
+        }
+
+        public void ResumAfterAbort()
+        {
+            if (!Abort) return;
+
+            while (true)
+            {
+                lock (_pendingCommands)
+                {
+                    if (_pendingCommands.Count == 0) break;
+                }
+            }
+            Abort = false;
         }
 
         #endregion

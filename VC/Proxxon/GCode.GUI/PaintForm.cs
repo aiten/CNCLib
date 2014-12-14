@@ -113,7 +113,7 @@ namespace GCode.GUI
 
 		private void _abort_Click(object sender, EventArgs e)
 		{
-			Com.AbortCommand();
+			Com.AbortCommands();
 		}
 
 		private void _sendTo_Click(object sender, EventArgs e)

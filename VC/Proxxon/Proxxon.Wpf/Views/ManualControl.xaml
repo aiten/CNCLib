@@ -2,11 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Proxxon.Wpf.ViewModels"
-        Title="ManualControl" Width="830" Height="950" SizeToContent="Height" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
+        Title="ManualControl" Width="830" Height="634" SizeToContent="Height" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
     <Window.DataContext>
         <vm:ManualControlViewModel />
     </Window.DataContext>
-    <DockPanel>
+    <DockPanel ScrollViewer.VerticalScrollBarVisibility="Auto">
         <StackPanel DockPanel.Dock="Left" Margin="10" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <TextBox x:Name="PosX1" Text="{Binding XPos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
@@ -98,10 +98,11 @@
                 </TextBox>-->
                 <ComboBox Text="{Binding DirectCommand, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding DirectCommandHistory}" Height="26" Width="200" VerticalContentAlignment="Center" VerticalAlignment="Center" IsEditable="True" Margin="0,0,5,0">
                     <ComboBox.InputBindings>
-                        <KeyBinding Command="{Binding Path=SendDirectCommand}" Key="Enter" />
+                        <KeyBinding Command="{Binding SendDirectCommand}" Key="Enter" />
                     </ComboBox.InputBindings>
                 </ComboBox>
                 <Button Command="{Binding SendDirectCommand}" Content="Send Command" Height="26" Width="100"/>
+                <TextBox Height="23" Text="(c) by HA" Width="Auto" Margin="200,0,0,0" />
             </StackPanel>
             <TabControl  Margin="0,0,0,10">
                 <TabItem Header="Extras">
@@ -109,15 +110,10 @@
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
                             <Button Command="{Binding SendM03SpindelOnCommand}" Content="Spindel On"/>
                             <Button Command="{Binding SendM05SpindelOffCommand}" Content="Spindel Off" />
-                            <Button Command="{Binding SendM07CoolandOnCommand}" Content="Cooland On"/>
-                            <Button Command="{Binding SendM09CoolandOffCommand}" Content="Cooland Off" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
-
-                            <Button Command="{Binding ClearHistoryCommand}" Content="Clear" />
-                            <Button Command="{Binding RefreshHistoryCommand}" Content="Refresh" />
-                            <Button Command="{Binding SendInfoCommand}" Content="Info"  VerticalAlignment="Top"/>
-                            <Button Command="{Binding SendAbortCommand}" Content="Abort" />
+                            <Button Command="{Binding SendM07CoolandOnCommand}" Content="Cooland On"/>
+                            <Button Command="{Binding SendM09CoolandOffCommand}" Content="Cooland Off" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="100">
                             <Button Command="{Binding SendZHomeCommand}" Content="Z Home" />
@@ -139,22 +135,24 @@
                 <TabItem Header="SD" >
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
-                            <Button Command="{Binding SendFileDirectCommand}" Content="Send File" />
                             <Button Command="{Binding SendM24FileCommand}" Content="M24 - Start"  />
                             <Button Command="{Binding SendM28FileCommand}" Content="M28 - Copy"  />
                             <Button Command="{Binding SendM30FileCommand}" Content="M30 - Del"  />
                             <Button Command="{Binding SendM20FileCommand}" Content="M20 - Dir" />
                         </StackPanel>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="SDFile" MinWidth="100" />
-                                <TextBox x:Name="SDFileName2"  Text="{Binding SDFileName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" MinWidth="200" VerticalContentAlignment="Center"  />
-                            </StackPanel>
+                        <StackPanel Margin="0,0,5,0">
                             <StackPanel  Orientation="Horizontal">
                                 <Label Content="File" MinWidth="100"/>
                                 <TextBox x:Name="FileName2"  Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" MinWidth="200" VerticalContentAlignment="Center"   />
                                 <Button Content="?"   x:Name="BrowseFileOpenDialog2" Click="BrowseFileOpenDialog_Click"  Width="20" />
                             </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="SDFile" MinWidth="100" />
+                                <TextBox x:Name="SDFileName2"  Text="{Binding SDFileName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" MinWidth="200" VerticalContentAlignment="Center"  />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
+                            <Button Command="{Binding SendFileDirectCommand}" Content="Send File" />
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
@@ -169,10 +167,6 @@
                             <Button Command="{Binding SendG57Command}" Content="G57" Width="90" Margin="0,0,5,0" />
                             <Button Command="{Binding SendG58Command}" Content="G58" Width="90" Margin="0,0,5,0" />
                             <Button Command="{Binding SendG59Command}" Content="G59" Width="90" Margin="0,0,5,0" />
-
-                        </StackPanel>
-                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                            <Button Command="{Binding SendG92Command}" Content="G92" MinWidth="100" Margin="0,0,5,0" />
 
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
@@ -197,9 +191,13 @@
                                 <TextBox x:Name="PositionB"  Text="{Binding BParam, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
                                 <Button Command="{Binding SendBG92Command}" Content="B G92" />
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" MinWidth="100">
+                            <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,10,0">
                                 <TextBox x:Name="PositionC"  Text="{Binding CParam, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
                                 <Button Command="{Binding SendCG92Command}" Content="C G92" />
+                            </StackPanel>
+                            <StackPanel Margin="0,10,0,0">
+                                <Button Command="{Binding SendG92Command}" Content="G92" MinWidth="100" Margin="0" />
+
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
@@ -258,18 +256,26 @@
                     </StackPanel>
                 </TabItem>
             </TabControl>
+            <StackPanel Orientation="Vertical">
 
-            <DataGrid  Margin="0,0,0,10"
-                DockPanel.Dock="Top" ItemsSource="{Binding ProxxonCommandCollection}" MinHeight="200" 
-                AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserAddRows="False" IsReadOnly="True" MaxHeight="400" >
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+
+                    <Button Command="{Binding ClearHistoryCommand}" Content="Clear" Width="100" Margin="0,0,5,0" />
+                    <Button Command="{Binding RefreshHistoryCommand}" Content="Refresh" Width="100" Margin="0,0,5,0" />
+                    <Button Command="{Binding SendInfoCommand}" Content="Info"  VerticalAlignment="Top" Width="100" Margin="0,0,5,0"/>
+                    <Button Command="{Binding SendAbortCommand}" Content="Abort" Width="100" />
+                </StackPanel>
+
+            </StackPanel>
+            <DataGrid ItemsSource="{Binding ProxxonCommandCollection}" MinHeight="200" DockPanel.Dock="Top"
+            	AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" 
+            	ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserAddRows="False" IsReadOnly="True" MaxHeight="500" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding CommandDate}" MinWidth="150" IsReadOnly="True" Header="Date" />
                     <DataGridTextColumn Binding="{Binding CommandText}" Header="CommandText" MinWidth="200" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding Result}"  MinWidth="350" IsReadOnly="True" Header="Result" />
                 </DataGrid.Columns>
             </DataGrid>
-            <TextBox Height="23" Text="(c) by HA" Width="Auto" />
         </StackPanel>
     </DockPanel>
 </Window>
