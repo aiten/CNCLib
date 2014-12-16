@@ -67,7 +67,7 @@ void CMyMenu::MenuButtonPressMoveBack(const SMenuItemDef*)
 	SetMainMenu();
 	SetPosition(GetMenuDef()->FindMenuIdx(oldMenu, [] (const SMenuItemDef* def, const void*param) -> bool
 	{
-		return def->GetParam1() == param && def->GetButtonPress() == &CMyMenu::MenuButtonPressSetMenu;
+		return def->GetParam1() == param && def->GetButtonPress() == &super::MenuButtonPressSetMenu;
 	}));
 
 	Changed();

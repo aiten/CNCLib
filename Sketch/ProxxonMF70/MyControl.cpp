@@ -100,7 +100,7 @@ void CMyControl::Init()
 	_controllerfan.Init();
 
 	_probe.Init();
-	_kill.Init();
+	_killLcd.Init();
 
 	InitSD(SD_ENABLE_PIN);
 }
@@ -147,7 +147,7 @@ void CMyControl::Kill()
 
 bool CMyControl::IsKill()
 {
-	return _kill.IsOn();
+	return _killLcd.IsOn();
 }
 
 ////////////////////////////////////////////////////////////

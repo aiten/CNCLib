@@ -120,7 +120,7 @@ void CStepperMash6050S::Step(const unsigned char steps[NUM_AXIS], axisArray_t di
 
 ////////////////////////////////////////////////////////
 
-void CStepperMash6050S::SetEnable(axis_t /* axis */, unsigned char level, bool /* force */)
+void CStepperMash6050S::SetEnable(axis_t /* axis */, unsigned char /* level */, bool /* force */)
 {
 }
 
