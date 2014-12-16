@@ -118,7 +118,7 @@ void CMyMenu::MenuButtonPressMove(const SMenuItemDef*def)
 
 	strcat_P(tmp, PSTR(" g90"));
 
-	SendCommand(tmp);
+	CControl::GetInstance()->PostCommand(tmp);
 }
 
 ////////////////////////////////////////////////////////////
@@ -131,11 +131,11 @@ void CMyMenu::MenuButtonPressRotate(const SMenuItemDef*)
 
 void CMyMenu::MenuButtonPressProbe(const SMenuItemDef*)
 {
-	if (SendCommand(F("g91 g31 Z-10 F100 g90")))
+	if (CControl::GetInstance()->PostCommand(F("g91 g31 Z-10 F100 g90")))
 	{
-		SendCommand(F("g92 Z-25"));
+		CControl::GetInstance()->PostCommand(F("g92 Z-25"));
 		GetLcd()->SetDefaultPage();
-		SendCommand(F("g91 Z3 g90"));
+		CControl::GetInstance()->PostCommand(F("g91 Z3 g90"));
 	}
 }
 
@@ -158,7 +158,7 @@ void CMyMenu::MenuButtonPressHomeA(axis_t axis)
 		case Z_AXIS: strcat_P(tmp, PSTR("#5163")); break;
 		default: strcat_P(tmp, PSTR("0")); break;
 	}
-	SendCommand(tmp);
+	CControl::GetInstance()->PostCommand(tmp);
 };
 
 ////////////////////////////////////////////////////////////
@@ -173,7 +173,7 @@ void CMyMenu::MenuButtonPressMoveG92(const SMenuItemDef*)
 	AddAxisName(tmp, axis);
 	strcat_P(tmp, PSTR("0"));
 
-	SendCommand(tmp);
+	CControl::GetInstance()->PostCommand(tmp);
 	GetLcd()->Beep();
 }
 
@@ -182,9 +182,9 @@ void CMyMenu::MenuButtonPressMoveG92(const SMenuItemDef*)
 void CMyMenu::MenuButtonPressSpindle(const SMenuItemDef*)
 {
 	if (Control.IOControl(CMyControl::Spindel)!=0)
-		SendCommand(F("m5"));
+		CControl::GetInstance()->PostCommand(F("m5"));
 	else
-		SendCommand(F("m3"));
+		CControl::GetInstance()->PostCommand(F("m3"));
 }
 
 ////////////////////////////////////////////////////////////
@@ -192,9 +192,9 @@ void CMyMenu::MenuButtonPressSpindle(const SMenuItemDef*)
 void CMyMenu::MenuButtonPressCoolant(const SMenuItemDef*)
 {
 	if (Control.IOControl(CMyControl::Coolant)!=0)
-		SendCommand(F("m9"));
+		CControl::GetInstance()->PostCommand(F("m9"));
 	else
-		SendCommand(F("m7"));
+		CControl::GetInstance()->PostCommand(F("m7"));
 }
 
 ////////////////////////////////////////////////////////////

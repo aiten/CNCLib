@@ -31,33 +31,25 @@
 
 ////////////////////////////////////////////////////////////
 
-
 CMenuBase::MenuFunction CMenuBase::SMenuItemDef::GetButtonPress() const
 {
 #if defined(__AVR_ARCH__)
-	return GetMenuButtonPress_P(&this->_buttonpress);
-#else
-	return _buttonpress;
-#endif
-}
 
-////////////////////////////////////////////////////////////
-#if defined(__AVR_ARCH__)
-
-
-CMenuBase::MenuFunction CMenuBase::GetMenuButtonPress_P(const void* adr)
-{
 	struct ButtonFunctionWrapper
 	{
 		MenuFunction fnc;
 	}x;
 
-	memcpy_P(&x, adr, sizeof(ButtonFunctionWrapper));
+	memcpy_P(&x, &this->_buttonpress, sizeof(ButtonFunctionWrapper));
 
 	return x.fnc;
-}
+
+#else
+
+	return _buttonpress;
 
 #endif
+}
 
 ////////////////////////////////////////////////////////////
 
@@ -76,7 +68,7 @@ bool CMenuBase::Select()
 
 ////////////////////////////////////////////////////////////
 
-void CMenuBase::AdjustPositionAndOffset(menupos_t firstline, menupos_t lastline)
+void CMenuBase::AdjustOffset(menupos_t firstline, menupos_t lastline)
 {
 	menupos_t x = GetPosition();
 	const menupos_t menuEntries = GetMenuDef()->GetItemCount();
@@ -118,16 +110,10 @@ unsigned char CMenuBase::ToPrintLine(menupos_t firstline, menupos_t lastline, me
 
 ////////////////////////////////////////////////////////////
 
-bool CMenuBase::SendCommand(const __FlashStringHelper* cmd)
-{
-	return CControl::GetInstance()->PostCommand(cmd,NULL);
-}
-
-////////////////////////////////////////////////////////////
-
-bool CMenuBase::SendCommand(char* cmd)
-{
-	return CControl::GetInstance()->PostCommand(cmd,NULL);
+void CMenuBase::MenuButtonPressSetCommand(const SMenuItemDef*def)
+{ 
+	CControl::GetInstance()->PostCommand((const __FlashStringHelper*)def->GetParam1()); 
+	Beep();
 }
 
 ////////////////////////////////////////////////////////////

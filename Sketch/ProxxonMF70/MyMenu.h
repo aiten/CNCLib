@@ -64,8 +64,6 @@ protected:
 
 	void MenuButtonPressRotate(const SMenuItemDef*);
 
-	void MenuButtonPressSetCommand(const SMenuItemDef*def)		{ SendCommand((const __FlashStringHelper*) def->GetParam1()); }
-
 	enum EMoveType
 	{
 		MoveP10,

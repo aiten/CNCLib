@@ -45,6 +45,8 @@ public:
 	virtual void Idle(unsigned int idletime);
 	virtual void TimerInterrupt();
 
+	////////////////////////////////////////////////////////////
+
 protected:
 
 	virtual void FirstDraw() = 0;								// e.g. clear screen - called after splash timeout

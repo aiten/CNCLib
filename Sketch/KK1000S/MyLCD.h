@@ -57,9 +57,6 @@ public:
 
 	void SetDefaultPage();
 
-	static bool SendCommand(const __FlashStringHelper* cmd);
-	static bool SendCommand(char* cmd);
-
 	void Beep();
 
 	void MenuChanged()

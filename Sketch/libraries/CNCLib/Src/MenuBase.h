@@ -29,7 +29,7 @@ private:
 
 public:
 
-	CMenuBase()												{ SetMenu(NULL); }
+	CMenuBase()														{ SetMenu(NULL); }
 
 	struct SMenuItemDef;
 	struct SMenuDef;
@@ -46,10 +46,10 @@ public:
 		menuparam_t _param1;
 		menuparam_t _param2;
 	public:
-		const __FlashStringHelper* GetText() const			{ return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
+		const __FlashStringHelper* GetText() const					{ return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
 		MenuFunction GetButtonPress()const;
-		menuparam_t GetParam1()	const						{ return (menuparam_t)pgm_read_word(&this->_param1); }
-		menuparam_t GetParam2()	const						{ return (menuparam_t)pgm_read_word(&this->_param2); }
+		menuparam_t GetParam1()	const								{ return (menuparam_t)pgm_read_word(&this->_param1); }
+		menuparam_t GetParam2()	const								{ return (menuparam_t)pgm_read_word(&this->_param2); }
 	};
 
 	struct SMenuDef
@@ -82,31 +82,26 @@ public:
 
 
 	public:
-		const __FlashStringHelper* GetText() const		{ return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
-		const SMenuItemDef* GetItems() const			{ return (const SMenuItemDef*)pgm_read_word(&this->_items); }
-		menuparam_t GetParam1()	const					{ return (menuparam_t)pgm_read_word(&this->_param1); }
-		//		menuparam_t GetMenuParam2()	const				{ return (menuparam_t)pgm_read_word(&this->_param2); }
+		const __FlashStringHelper* GetText() const					{ return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
+		const SMenuItemDef* GetItems() const						{ return (const SMenuItemDef*)pgm_read_word(&this->_items); }
+		menuparam_t GetParam1()	const								{ return (menuparam_t)pgm_read_word(&this->_param1); }
+		//		menuparam_t GetMenuParam2()	const					{ return (menuparam_t)pgm_read_word(&this->_param2); }
 	};
-
-protected:
-
-	static bool SendCommand(const __FlashStringHelper* cmd);
-	static bool SendCommand(char* cmd);
 
 public:
 
-	menupos_t GetPosition() { return _position; }
-	void SetPosition(menupos_t position) { _position = position; }
+	menupos_t GetPosition()											{ return _position; }
+	void SetPosition(menupos_t position)							{ _position = position; }
 
-	menupos_t GetOffset() { return _offset; }
-	void SetOffset(menupos_t offset) { _offset = offset; }
-	void AddOffset(menupos_t offset) { _offset += offset; }
-	void SubOffset(menupos_t offset) { _offset -= offset; }
+	menupos_t GetOffset()											{ return _offset; }
+	void SetOffset(menupos_t offset)								{ _offset = offset; }
+	void AddOffset(menupos_t offset)								{ _offset += offset; }
+	void SubOffset(menupos_t offset)								{ _offset -= offset; }
 
-	void AdjustPositionAndOffset(menupos_t firstline, menupos_t lastline);
-	unsigned char ToPrintLine (menupos_t firstline, menupos_t lastline, menupos_t i);		// return 255 if not to print
+	void AdjustOffset(menupos_t firstline, menupos_t lastline);
+	unsigned char ToPrintLine(menupos_t firstline, menupos_t lastline, menupos_t i);		// return 255 if not to print
 
-	const SMenuDef*GetMenuDef()						{ return _current; }
+	const SMenuDef*GetMenuDef()										{ return _current; }
 
 	bool Select();
 	virtual void Changed()=0;
@@ -114,22 +109,17 @@ public:
 
 private:
 
-	menupos_t			_position;
-	menupos_t			_offset;
+	menupos_t			_position;									// current selected menu
+	menupos_t			_offset;									// start of menuitem to draw  
 	const SMenuDef*		_current;
 
 public:
 
 	void MenuButtonPressSetMenu(const SMenuItemDef*);
-	void MenuButtonPressSetCommand(const SMenuItemDef*def)			{ SendCommand((const __FlashStringHelper*)def->GetParam1()); Beep(); }
+	void MenuButtonPressSetCommand(const SMenuItemDef*def);
 
 	void SetMenu(const SMenuDef* pMenu)								{ _current = pMenu; _position = 0; _offset = 0; };
 
-#if defined(__AVR_ARCH__)
-
-	static MenuFunction GetMenuButtonPress_P(const void* adr);
-
-#endif
 };
 
 ////////////////////////////////////////////////////////

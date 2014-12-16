@@ -407,21 +407,6 @@ void CMyLcd::Draw(EDrawType /* draw */)
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::SendCommand(const __FlashStringHelper* cmd)
-{
-	return Control.PostCommand(cmd,NULL);
-}
-
-////////////////////////////////////////////////////////////
-
-bool CMyLcd::SendCommand(char* cmd)
-{
-	return Control.PostCommand(cmd,NULL);
-}
-
-
-////////////////////////////////////////////////////////////
-
 void CMyLcd::ButtonPressShowMenu()
 {
 	SetMenuPage();
@@ -461,11 +446,11 @@ bool CMyLcd::DrawLoopPreset(bool setup)
 
 void CMyLcd::ButtonPressStartSDPage()
 {
-	SendCommand(F("m21"));									// Init SD
+	CControl::GetInstance()->PostCommand(F("m21"));									// Init SD
 
-	if (SendCommand(F("m23 proxxon.nc")))
+	if (CControl::GetInstance()->PostCommand(F("m23 proxxon.nc")))
 	{
-		SendCommand(F("m24"));
+		CControl::GetInstance()->PostCommand(F("m24"));
 	}
 
 	Beep();
@@ -592,7 +577,7 @@ bool CMyLcd::DrawLoopMenu(bool setup)
 	if (_rotaryFocus == RotaryMenuPage)
 	{
 		x = GetMenuIdx();													// get and set menupositions
-		_menu.AdjustPositionAndOffset(printFirstLine,printLastLine);
+		_menu.AdjustOffset(printFirstLine,printLastLine);
 	}
 
 	unsigned char i;
