@@ -83,7 +83,7 @@ public:
 
 	public:
 		const __FlashStringHelper* GetText() const					{ return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
-		const SMenuItemDef* GetItems() const						{ return (const SMenuItemDef*)pgm_read_word(&this->_items); }
+		const SMenuItemDef* GetItems() const						{ return (const SMenuItemDef*)pgm_read_ptr(&this->_items); }
 		menuparam_t GetParam1()	const								{ return (menuparam_t)pgm_read_word(&this->_param1); }
 		//		menuparam_t GetMenuParam2()	const					{ return (menuparam_t)pgm_read_word(&this->_param2); }
 	};
