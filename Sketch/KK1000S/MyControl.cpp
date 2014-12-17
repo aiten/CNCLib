@@ -77,7 +77,7 @@ void CMyControl::Init()
 
 #if NUM_AXIS > 5
 	CStepper::GetInstance()->SetLimitMax(C_AXIS, CMotionControl::ToMachine(B_AXIS,360000));
-	CStepper::GetInstance()->SetJerkSpeed(C_AXIS, SPEEDFACTOR*1000);
+	CStepper::GetInstance()->SetJerkSpeed(C_AXIS, 1000);
 
 	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
 #endif
