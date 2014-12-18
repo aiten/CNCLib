@@ -49,7 +49,6 @@ protected:
 	virtual void Beep();
 
 	void MenuButtonPressEnd(const SMenuItemDef*);
-
 	void MenuButtonPressMoveNextAxis(const SMenuItemDef*);
 
 	static const SMenuDef _mainMenu PROGMEM;

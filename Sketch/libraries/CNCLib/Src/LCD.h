@@ -21,17 +21,15 @@
 
 ////////////////////////////////////////////////////////
 
-#include "Stepper.h"
+#include <StepperLib.h>
 
 ////////////////////////////////////////////////////////
 
-class CLcd
+class CLcd : public CSingleton<CLcd>
 {
 public:
 
-	CLcd()														{ _nextdrawtime = 0; _splash = false; _lcd = this; }
-
-	static CLcd* GetInstance()									{ return _lcd; }
+	CLcd()														{ _nextdrawtime = 0; _splash = false; }
 
 	enum EDrawType
 	{
@@ -55,10 +53,6 @@ protected:
 	virtual unsigned long Splash() = 0;							// return time to display
 
 	bool IsSplash()												{ return _splash; };
-
-protected:
-
-	static CLcd* _lcd;
 
 private:
 

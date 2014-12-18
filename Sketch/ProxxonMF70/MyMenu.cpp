@@ -192,12 +192,12 @@ static const char _mG92Clear[] PROGMEM  = "G92 Clear";
 
 const CMyMenu::SMenuItemDef CMyMenu::_extraMenuItems[] PROGMEM =
 {
-	{ _mG92Clear, &CMenuBase::MenuButtonPressSetCommand, (menuparam_t) _g92 },
-	{ _mHomeZ, (MenuFunction)&CMyMenu::MenuButtonPressHome, (menuparam_t)Z_AXIS },
-	{ _mProbeZ,(MenuFunction) &CMyMenu::MenuButtonPressProbe, (menuparam_t)Z_AXIS },
-	{ _mSpindle, (MenuFunction)&CMyMenu::MenuButtonPressSpindle },
-	{ _mCoolant, (MenuFunction)&CMyMenu::MenuButtonPressCoolant },
-	{ _mBack, &CMenuBase::MenuButtonPressMenuBack, &_mainMenu },
+	{ _mG92Clear,&CMenuBase::MenuButtonPressSetCommand, (menuparam_t) _g92 },
+	{ _mHomeZ,   &CMenuBase::MenuButtonPressHome, (menuparam_t)Z_AXIS },
+	{ _mProbeZ,	 &CMenuBase::MenuButtonPressProbe, (menuparam_t)Z_AXIS },
+	{ _mSpindle, &CMenuBase::MenuButtonPressSpindle },
+	{ _mCoolant, &CMenuBase::MenuButtonPressCoolant },
+	{ _mBack,	 &CMenuBase::MenuButtonPressMenuBack, &_mainMenu },
 	{ NULL, 0 }
 };
 
