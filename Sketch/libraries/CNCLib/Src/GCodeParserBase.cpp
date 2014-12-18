@@ -762,6 +762,7 @@ void CGCodeParserBase::G31Command()
 			Error(MESSAGE_GCODE_ProbeFailed);
 			return;
 		}
+		CMotionControlBase::GetInstance()->SetPositionFromMachine();
 	}
 }
 
