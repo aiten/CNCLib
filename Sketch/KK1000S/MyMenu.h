@@ -50,34 +50,7 @@ protected:
 
 	void MenuButtonPressEnd(const SMenuItemDef*);
 
-	void MenuButtonPressHomeA(axis_t axis);
-	void MenuButtonPressHome(const SMenuItemDef*);
-	void MenuButtonPressProbe(const SMenuItemDef*);
-	void MenuButtonPressSpindle(const SMenuItemDef*);
-	void MenuButtonPressCoolant(const SMenuItemDef*);
-
 	void MenuButtonPressMoveNextAxis(const SMenuItemDef*);
-	void MenuButtonPressMoveG92(const SMenuItemDef*);
-
-	void MenuButtonPressMove(const SMenuItemDef*);
-	void MenuButtonPressMoveBack(const SMenuItemDef*);
-
-	void MenuButtonPressRotate(const SMenuItemDef*);
-
-	enum EMoveType
-	{
-		MoveP100,
-		MoveP10,
-		MoveP1,
-		MoveP01,
-		MoveP001,
-		MoveM100,
-		MoveM10,
-		MoveM1,
-		MoveM01,
-		MoveM001,
-		MoveHome
-	};
 
 	static const SMenuDef _mainMenu PROGMEM;
 	static const SMenuDef _moveXMenu PROGMEM;

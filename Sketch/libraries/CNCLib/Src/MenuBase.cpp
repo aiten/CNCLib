@@ -28,6 +28,7 @@
 
 #include "Control.h"
 #include "MenuBase.h"
+#include "UtilitiesCNCLib.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -70,27 +71,27 @@ bool CMenuBase::Select()
 
 void CMenuBase::AdjustOffset(menupos_t firstline, menupos_t lastline)
 {
-	menupos_t x = GetPosition();
+	menupos_t pos = GetPosition();
 	const menupos_t menuEntries = GetMenuDef()->GetItemCount();
 
-	if (x == 0)
+	if (pos == 0)
 	{
 		SetOffset(0);				// first menuitem selected => move to first line
 	}
-	else if (x - 1 < GetOffset())
+	else if (pos - 1 < GetOffset())
 	{
-		SubOffset(GetOffset() - (x - 1));
+		SubOffset(GetOffset() - (pos - 1));
 	}
 
 	if (menuEntries >= lastline)
 	{
-		if (x == menuEntries - 1)
+		if (pos == menuEntries - 1)
 		{
-			AddOffset(x + firstline - GetOffset() - lastline);	// last menuitem selected => move to last line
+			AddOffset(pos + firstline - GetOffset() - lastline);	// last menuitem selected => move to last line
 		}
-		else if (((x + 1) + firstline - GetOffset()) > lastline)
+		else if (((pos + 1) + firstline - GetOffset()) > lastline)
 		{
-			AddOffset((x + 1) + firstline - GetOffset() - lastline);
+			AddOffset((pos + 1) + firstline - GetOffset() - lastline);
 		}
 	}
 }
@@ -126,9 +127,11 @@ void CMenuBase::MenuButtonPressSetMenu(const SMenuItemDef*def)
 
 	if (posMenu!=NULL)
 	{
-		_position = newMenu->FindMenuIdx(posMenu, [] (const SMenuItemDef* def, const void*param) -> bool
+		// param2 != NULL => find index
+		_position = newMenu->FindMenuIdx(def, [](const SMenuItemDef* def, const void*param) -> bool
 		{
-			return def->GetParam1() == param;
+			return	def->GetButtonPress() == &CMenuBase::MenuButtonPressSetMenu &&			// must be setMenu
+					def->GetParam1() == ((const SMenuItemDef*)param)->GetParam2();			// param1 or new menu ust be param2 of "Back from"
 		});
 	}
 
@@ -136,3 +139,128 @@ void CMenuBase::MenuButtonPressSetMenu(const SMenuItemDef*def)
 }
 
 ////////////////////////////////////////////////////////////
+
+void CMenuBase::MenuButtonPressMenuBack(const SMenuItemDef* def)
+{
+	const SMenuDef* newMenu = (const SMenuDef*)def->GetParam1();
+	const struct SMenuDef* oldMenu = GetMenuDef();
+	
+	SetMenu(newMenu);
+
+	SetPosition(GetMenuDef()->FindMenuIdx(oldMenu, [](const SMenuItemDef* def, const void*oldMenu) -> bool
+	{
+		return def->GetParam1() == oldMenu && def->GetButtonPress() == &CMenuBase::MenuButtonPressSetMenu;
+	}));
+
+	Changed();
+}
+
+
+////////////////////////////////////////////////////////////
+
+void CMenuBase::MenuButtonPressMove(const SMenuItemDef*def)
+{
+	axis_t axis = (axis_t)(unsigned int)GetMenuDef()->GetParam1();
+	unsigned char dist = (unsigned char)(unsigned int)def->GetParam1();
+
+	if (dist == MoveHome) { MenuButtonPressHomeA(axis); return; }
+
+	char tmp[24];
+
+	strcpy_P(tmp, PSTR("g91 g0 "));
+	AddAxisName(tmp, axis);
+
+	switch (dist)
+	{
+		case MoveP100:	strcat_P(tmp, PSTR("100")); break;
+		case MoveP10:	strcat_P(tmp, PSTR("10")); break;
+		case MoveP1:	strcat_P(tmp, PSTR("1")); break;
+		case MoveP01:	strcat_P(tmp, PSTR("0.1")); break;
+		case MoveP001:	strcat_P(tmp, PSTR("0.01")); break;
+		case MoveM001:	strcat_P(tmp, PSTR("-0.01")); break;
+		case MoveM01:	strcat_P(tmp, PSTR("-0.1")); break;
+		case MoveM1:	strcat_P(tmp, PSTR("-1")); break;
+		case MoveM10:	strcat_P(tmp, PSTR("-10")); break;
+		case MoveM100:  strcat_P(tmp, PSTR("-100")); break;
+	}
+
+	strcat_P(tmp, PSTR(" g90"));
+
+	CControl::GetInstance()->PostCommand(tmp);
+}
+
+////////////////////////////////////////////////////////////
+
+void CMenuBase::MenuButtonPressRotate(const SMenuItemDef*)
+{
+}
+
+////////////////////////////////////////////////////////////
+
+void CMenuBase::MenuButtonPressProbe(const SMenuItemDef*)
+{
+	if (CControl::GetInstance()->PostCommand(F("g91 g31 Z-10 F100 g90")))
+	{
+		CControl::GetInstance()->PostCommand(F("g92 Z-25"));
+		//GetLcd()->SetDefaultPage();
+		CControl::GetInstance()->PostCommand(F("g91 Z3 g90"));
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+void CMenuBase::MenuButtonPressHome(const SMenuItemDef*def)
+{
+	MenuButtonPressHomeA((axis_t)(unsigned int)def->GetParam1());
+}
+
+void CMenuBase::MenuButtonPressHomeA(axis_t axis)
+{
+	char tmp[16];
+
+	strcpy_P(tmp, PSTR("g53 g0"));
+	AddAxisName(tmp, axis);
+
+	switch (axis)
+	{
+		case Z_AXIS: strcat_P(tmp, PSTR("#5163")); break;
+		default: strcat_P(tmp, PSTR("0")); break;
+	}
+	CControl::GetInstance()->PostCommand(tmp);
+};
+
+////////////////////////////////////////////////////////////
+
+void CMenuBase::MenuButtonPressMoveG92(const SMenuItemDef*)
+{
+	char tmp[24];
+
+	axis_t axis = (axis_t)(unsigned int)GetMenuDef()->GetParam1();
+
+	strcpy_P(tmp, PSTR("g92 "));
+	AddAxisName(tmp, axis);
+	strcat_P(tmp, PSTR("0"));
+
+	CControl::GetInstance()->PostCommand(tmp);
+	Beep();
+}
+
+////////////////////////////////////////////////////////////
+
+void CMenuBase::MenuButtonPressSpindle(const SMenuItemDef*)
+{
+	if (CControl::GetInstance()->IOControl(CControl::Spindel) != 0)
+		CControl::GetInstance()->PostCommand(F("m5"));
+	else
+		CControl::GetInstance()->PostCommand(F("m3"));
+}
+
+////////////////////////////////////////////////////////////
+
+void CMenuBase::MenuButtonPressCoolant(const SMenuItemDef*)
+{
+	if (CControl::GetInstance()->IOControl(CControl::Coolant) != 0)
+		CControl::GetInstance()->PostCommand(F("m9"));
+	else
+		CControl::GetInstance()->PostCommand(F("m7"));
+}

@@ -27,14 +27,10 @@
 #include <arduino.h>
 
 #include <CNCLib.h>
-#include <CNCLibEx.h>
 
 #include "MyLcd.h"
 #include "MyMenu.h"
 #include "MyControl.h"
-#include "RotaryButton.h"
-#include "GCodeParser.h"
-#include "GCode3DParser.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -56,21 +52,7 @@ void CMyMenu::MenuButtonPressEnd(const SMenuItemDef*)
 {
 	SetMainMenu();
 	GetLcd()->SetDefaultPage();
-	GetLcd()->Beep();
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyMenu::MenuButtonPressMoveBack(const SMenuItemDef*)
-{
-	const struct SMenuDef* oldMenu = GetMenuDef();
-	SetMainMenu();
-	SetPosition(GetMenuDef()->FindMenuIdx(oldMenu, [] (const SMenuItemDef* def, const void*param) -> bool
-	{
-		return def->GetParam1() == param && def->GetButtonPress() == &super::MenuButtonPressSetMenu;
-	}));
-
-	Changed();
+	Beep();
 }
 
 ////////////////////////////////////////////////////////////
@@ -92,121 +74,11 @@ void CMyMenu::MenuButtonPressMoveNextAxis(const SMenuItemDef*def)
 
 ////////////////////////////////////////////////////////////
 
-void CMyMenu::MenuButtonPressMove(const SMenuItemDef*def)
-{
-	axis_t axis = (axis_t) (unsigned int) GetMenuDef()->GetParam1();
-	unsigned char dist = (unsigned char)(unsigned int)def->GetParam1();
-
-	if (dist == MoveHome) { MenuButtonPressHomeA(axis); return; }
-
-	char tmp[24];
-
-	strcpy_P(tmp, PSTR("g91 g0 "));
-	AddAxisName(tmp, axis);
-
-	switch (dist)
-	{
-		case MoveP100:	strcat_P(tmp, PSTR("100")); break;
-		case MoveP10:	strcat_P(tmp, PSTR("10")); break;
-		case MoveP1:	strcat_P(tmp, PSTR("1")); break;
-		case MoveP01:	strcat_P(tmp, PSTR("0.1")); break;
-		case MoveP001:	strcat_P(tmp, PSTR("0.01")); break;
-		case MoveM001:	strcat_P(tmp, PSTR("-0.01")); break;
-		case MoveM01:	strcat_P(tmp, PSTR("-0.1")); break;
-		case MoveM1:	strcat_P(tmp, PSTR("-1")); break;
-		case MoveM10:	strcat_P(tmp, PSTR("-10")); break;
-		case MoveM100:  strcat_P(tmp, PSTR("-100")); break;
-	}
-
-	strcat_P(tmp, PSTR(" g90"));
-
-	CControl::GetInstance()->PostCommand(tmp);
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyMenu::MenuButtonPressRotate(const SMenuItemDef*)
-{
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyMenu::MenuButtonPressProbe(const SMenuItemDef*)
-{
-	if (CControl::GetInstance()->PostCommand(F("g91 g31 Z-10 F100 g90")))
-	{
-		CControl::GetInstance()->PostCommand(F("g92 Z-25"));
-		GetLcd()->SetDefaultPage();
-		CControl::GetInstance()->PostCommand(F("g91 Z3 g90"));
-	}
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyMenu::MenuButtonPressHome(const SMenuItemDef*def)
-{
-	MenuButtonPressHomeA((axis_t)(unsigned int)def->GetParam1());
-}
-
-void CMyMenu::MenuButtonPressHomeA(axis_t axis)
-{
-	char tmp[16];
-
-	strcpy_P(tmp, PSTR("g53 g0"));
-	AddAxisName(tmp, axis);
-
-	switch (axis)
-	{
-		case Z_AXIS: strcat_P(tmp, PSTR("#5163")); break;
-		default: strcat_P(tmp, PSTR("0")); break;
-	}
-	CControl::GetInstance()->PostCommand(tmp);
-};
-
-////////////////////////////////////////////////////////////
-
-void CMyMenu::MenuButtonPressMoveG92(const SMenuItemDef*)
-{
-	char tmp[24];
-
-	axis_t axis = (axis_t) (unsigned int) GetMenuDef()->GetParam1();
-
-	strcpy_P(tmp, PSTR("g92 "));
-	AddAxisName(tmp, axis);
-	strcat_P(tmp, PSTR("0"));
-
-	CControl::GetInstance()->PostCommand(tmp);
-	GetLcd()->Beep();
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyMenu::MenuButtonPressSpindle(const SMenuItemDef*)
-{
-	if (Control.IOControl(CMyControl::Spindel)!=0)
-		CControl::GetInstance()->PostCommand(F("m5"));
-	else
-		CControl::GetInstance()->PostCommand(F("m3"));
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyMenu::MenuButtonPressCoolant(const SMenuItemDef*)
-{
-	if (Control.IOControl(CMyControl::Coolant)!=0)
-		CControl::GetInstance()->PostCommand(F("m9"));
-	else
-		CControl::GetInstance()->PostCommand(F("m7"));
-}
-
-////////////////////////////////////////////////////////////
-
 static const char _g92[] PROGMEM		= "g92";
 static const char _m21[] PROGMEM		= "m21";
 
 ////////////////////////////////////////////////////////////
 // Main Menu
-
 
 static const char _mMoveX[] PROGMEM		= "Move X             >";
 static const char _mMoveY[] PROGMEM		= "Move Y             >";
@@ -267,19 +139,19 @@ const CMyMenu::SMenuItemDef CMyMenu::_moveMenuItems[] PROGMEM =
 {
 	{ _mNextAxis, (MenuFunction) &CMyMenu::MenuButtonPressMoveNextAxis, (menuparam_t)1 },
 	{ _mPrevAxis, (MenuFunction) &CMyMenu::MenuButtonPressMoveNextAxis, (menuparam_t)-1 },
-	{ _mP100, (MenuFunction) &CMyMenu::MenuButtonPressMove, (menuparam_t)MoveP100 },
-	{ _mP10, (MenuFunction) &CMyMenu::MenuButtonPressMove, (menuparam_t)MoveP10 },
-	{ _mP1, (MenuFunction) &CMyMenu::MenuButtonPressMove, (menuparam_t)MoveP1 },
-	{ _mP01, (MenuFunction) &CMyMenu::MenuButtonPressMove, (menuparam_t)MoveP01 },
-	{ _mP001, (MenuFunction) &CMyMenu::MenuButtonPressMove, (menuparam_t)MoveP001 },
-	{ _mM001, (MenuFunction) &CMyMenu::MenuButtonPressMove, (menuparam_t)MoveM001 },
-	{ _mM01, (MenuFunction) &CMyMenu::MenuButtonPressMove, (menuparam_t)MoveM01 },
-	{ _mM1, (MenuFunction) &CMyMenu::MenuButtonPressMove, (menuparam_t)MoveM1 },
-	{ _mM10, (MenuFunction) &CMyMenu::MenuButtonPressMove, (menuparam_t)MoveM10 },
-	{ _mM100, (MenuFunction) &CMyMenu::MenuButtonPressMove, (menuparam_t)MoveM100 },
-	{ _mHome, (MenuFunction) &CMyMenu::MenuButtonPressMove, (menuparam_t)MoveHome },
-	{ _mG92, (MenuFunction) &CMyMenu::MenuButtonPressMoveG92 },
-	{ _mBack, (MenuFunction) &CMyMenu::MenuButtonPressMoveBack },
+	{ _mP100, 	&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveP100 },
+	{ _mP10,	&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveP10 },
+	{ _mP1,		&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveP1 },
+	{ _mP01,	&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveP01 },
+	{ _mP001,	&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveP001 },
+	{ _mM001,	&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveM001 },
+	{ _mM01,	&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveM01 },
+	{ _mM1,		&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveM1 },
+	{ _mM10,	&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveM10 },
+	{ _mM100, 	&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveM100 },
+	{ _mHome,	&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveHome },
+	{ _mG92,	&CMenuBase::MenuButtonPressMoveG92 },
+	{ _mBack,   &CMenuBase::MenuButtonPressMenuBack, &_mainMenu },
 	{ NULL, 0 }
 };
 
@@ -293,11 +165,11 @@ static const char _mRZ[] PROGMEM = "Shift Z";
 
 const CMyMenu::SMenuItemDef CMyMenu::_rotateMenuItems[] PROGMEM =
 {
-	{ _mR0, (MenuFunction)  &CMyMenu::MenuButtonPressRotate, (menuparam_t) -1 },
-	{ _mRX, (MenuFunction) &CMyMenu::MenuButtonPressRotate, (menuparam_t)X_AXIS },
-	{ _mRY, (MenuFunction) &CMyMenu::MenuButtonPressRotate, (menuparam_t)Y_AXIS },
-	{ _mRZ, (MenuFunction) &CMyMenu::MenuButtonPressRotate, (menuparam_t)Z_AXIS },
-	{ _mBack, &CMenuBase::MenuButtonPressSetMenu, &_mainMenu, &_rotateMenu },
+	{ _mR0,   &CMenuBase::MenuButtonPressRotate, (menuparam_t)-1 },
+	{ _mRX,   &CMenuBase::MenuButtonPressRotate, (menuparam_t)X_AXIS },
+	{ _mRY,   &CMenuBase::MenuButtonPressRotate, (menuparam_t)Y_AXIS },
+	{ _mRZ,   &CMenuBase::MenuButtonPressRotate, (menuparam_t)Z_AXIS },
+	{ _mBack, &CMenuBase::MenuButtonPressMenuBack, &_mainMenu },
 	{ NULL, 0 }
 };
 
@@ -309,7 +181,7 @@ static const char _mSDInit[] PROGMEM = "Init Card";
 const CMyMenu::SMenuItemDef CMyMenu::_SDMenuItems[] PROGMEM =
 {
 	{ _mSDInit, &CMenuBase::MenuButtonPressSetCommand, (menuparam_t) _m21 },
-	{ _mBack, &CMenuBase::MenuButtonPressSetMenu, &_mainMenu, &_SDMenu },
+	{ _mBack, &CMenuBase::MenuButtonPressMenuBack, &_mainMenu },
 	{ NULL, 0 }
 };
 
@@ -324,12 +196,12 @@ static const char _mG92Clear[] PROGMEM  = "G92 Clear";
 
 const CMyMenu::SMenuItemDef CMyMenu::_extraMenuItems[] PROGMEM =
 {
-	{ _mG92Clear, &CMenuBase::MenuButtonPressSetCommand, (menuparam_t) _g92 },
-	{ _mHomeZ, (MenuFunction)&CMyMenu::MenuButtonPressHome, (menuparam_t)Z_AXIS },
-	{ _mProbeZ,(MenuFunction) &CMyMenu::MenuButtonPressProbe, (menuparam_t)Z_AXIS },
-	{ _mSpindle, (MenuFunction)&CMyMenu::MenuButtonPressSpindle },
-	{ _mCoolant, (MenuFunction)&CMyMenu::MenuButtonPressCoolant },
-	{ _mBack, &CMenuBase::MenuButtonPressSetMenu, &_mainMenu, &_extraMenu },
+	{ _mG92Clear,&CMenuBase::MenuButtonPressSetCommand, (menuparam_t) _g92 },
+	{ _mHomeZ,   &CMenuBase::MenuButtonPressHome, (menuparam_t)Z_AXIS },
+	{ _mProbeZ,	 &CMenuBase::MenuButtonPressProbe, (menuparam_t)Z_AXIS },
+	{ _mSpindle, &CMenuBase::MenuButtonPressSpindle },
+	{ _mCoolant, &CMenuBase::MenuButtonPressCoolant },
+	{ _mBack,	 &CMenuBase::MenuButtonPressMenuBack, &_mainMenu },
 	{ NULL, 0 }
 };
 
