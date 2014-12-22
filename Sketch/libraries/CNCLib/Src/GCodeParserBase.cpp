@@ -760,7 +760,7 @@ void CGCodeParserBase::G31Command()
 		if (!CStepper::GetInstance()->MoveUntil(G31TestProbe, NULL))
 		{
 			Error(MESSAGE_GCODE_ProbeFailed);
-			return;
+			// no return => must set position again
 		}
 		CMotionControlBase::GetInstance()->SetPositionFromMachine();
 	}

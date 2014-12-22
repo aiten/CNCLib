@@ -678,8 +678,8 @@ namespace Proxxon.Wpf.ViewModels
 		public ICommand SendM07CoolandOnCommand { get { return new DelegateCommand(SendM07CoolandOn, CanSendCommand); } }
 		public ICommand SendM09CoolandOffCommand { get { return new DelegateCommand(SendM09CoolandOff, CanSendCommand); } }
 		public ICommand SendM20FileCommand { get { return new DelegateCommand(SendM20File, CanSendCommand); } }
-		public ICommand SendM24FileCommand { get { return new DelegateCommand(SendM24File, CanSendFileNameAndSDFileNameCommand); } }
-		public ICommand SendM28FileCommand { get { return new DelegateCommand(SendM28File, CanSendFileNameCommand); } }
+		public ICommand SendM24FileCommand { get { return new DelegateCommand(SendM24File, CanSendSDFileNameCommand); } }
+		public ICommand SendM28FileCommand { get { return new DelegateCommand(SendM28File, CanSendFileNameAndSDFileNameCommand); } }
 		public ICommand SendM30FileCommand { get { return new DelegateCommand(SendM30File, CanSendSDFileNameCommand); } }
 		public ICommand SendM114Command { get { return new DelegateCommand(SendM114PrintPos, CanSendCommand); } }
 		public ICommand SendG53Command { get { return new DelegateCommand(SendG53, CanSendCommand); } }

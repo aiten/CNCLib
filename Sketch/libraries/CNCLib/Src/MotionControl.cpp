@@ -52,6 +52,8 @@ void CMotionControl::SetRotate(axis_t axis, double rad)
 void CMotionControl::TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
 	ToMm1000(src,dest);
+
+	// todo:=> rotate and offset!
 }
 
 /////////////////////////////////////////////////////////
@@ -60,9 +62,8 @@ inline void CMotionControl::Rotate(const CMotionControl::SRotate&rotate, mm1000_
 {
 	float fx = x-ofsx;
 	float fy = y-ofsy;
-	mm1000_t tmp =  ((mm1000_t) fx*rotate._cos - fy*rotate._sin)+ofsx;
-	y =				((mm1000_t) fx*rotate._sin + fy*rotate._cos)+ofsy;
-	x = tmp;
+	x = ((mm1000_t) fx*rotate._cos - fy*rotate._sin)+ofsx;
+	y =	((mm1000_t) fx*rotate._sin + fy*rotate._cos)+ofsy;
 }
 
 /////////////////////////////////////////////////////////
