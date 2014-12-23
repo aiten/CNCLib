@@ -59,6 +59,7 @@ private:
 	bool _rotateEnabled[3];
 
 	static void Rotate(const SRotate&rotate, mm1000_t& ax1, mm1000_t& ax2, mm1000_t ofs1, mm1000_t ofs2) ALWAYSINLINE;
+	static void RotateInvert(const SRotate&rotate, mm1000_t& ax1, mm1000_t& ax2, mm1000_t ofs1, mm1000_t ofs2) ALWAYSINLINE;
 };
 
 ////////////////////////////////////////////////////////

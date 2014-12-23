@@ -51,19 +51,44 @@ void CMotionControl::SetRotate(axis_t axis, double rad)
 
 void CMotionControl::TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
-	ToMm1000(src,dest);
+	ToMm1000(src, dest);
 
-	// todo:=> rotate and offset!
+	if (_rotateEnabled[Z_AXIS])
+	{
+		RotateInvert(_rotate[Z_AXIS], dest[X_AXIS], dest[Y_AXIS], _rotateOffset[X_AXIS], _rotateOffset[Y_AXIS]);
+	}
+
+	if (_rotateEnabled[Y_AXIS])
+	{
+		RotateInvert(_rotate[Y_AXIS], dest[Z_AXIS], dest[X_AXIS], _rotateOffset[Z_AXIS], _rotateOffset[X_AXIS]);
+	}
+
+	if (_rotateEnabled[X_AXIS])
+	{
+		RotateInvert(_rotate[X_AXIS], dest[Y_AXIS], dest[Z_AXIS], _rotateOffset[Y_AXIS], _rotateOffset[Z_AXIS]);
+	}
 }
 
 /////////////////////////////////////////////////////////
 
 inline void CMotionControl::Rotate(const CMotionControl::SRotate&rotate, mm1000_t& x, mm1000_t& y, mm1000_t ofsx, mm1000_t ofsy)
 {
-	float fx = x-ofsx;
-	float fy = y-ofsy;
-	x = ((mm1000_t) fx*rotate._cos - fy*rotate._sin)+ofsx;
-	y =	((mm1000_t) fx*rotate._sin + fy*rotate._cos)+ofsy;
+	// rotate with positive angle
+	float fx = x - ofsx;
+	float fy = y - ofsy;
+	x = (mm1000_t)(fx*rotate._cos - fy*rotate._sin) + ofsx;
+	y = (mm1000_t)(fy*rotate._cos + fx*rotate._sin) + ofsy;
+}
+
+/////////////////////////////////////////////////////////
+
+inline void CMotionControl::RotateInvert(const CMotionControl::SRotate&rotate, mm1000_t& x, mm1000_t& y, mm1000_t ofsx, mm1000_t ofsy)
+{
+	// rotate with negative angle (e.g. from 30 to -30)
+	float fx = x - ofsx;
+	float fy = y - ofsy;
+	x = (mm1000_t)(fx*rotate._cos + fy*rotate._sin) + ofsx;
+	y = (mm1000_t)(fy*rotate._cos - fx*rotate._sin) + ofsy;
 }
 
 /////////////////////////////////////////////////////////

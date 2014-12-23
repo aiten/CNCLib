@@ -215,6 +215,8 @@ private:
 	void M09Command();		// coolant off
 
 	/////////////////
+
+	void SetPositionAfterG68G69()				{ CMotionControlBase::GetInstance()->SetPositionFromMachine(); }
 };
 
 ////////////////////////////////////////////////////////

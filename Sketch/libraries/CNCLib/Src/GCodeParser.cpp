@@ -641,6 +641,8 @@ void CGCodeParser::G68Command()
 			((CMotionControl*) (CMotionControlBase::GetInstance()))->SetOffset(axis, move.newpos[axis]);
 		}
 	}
+
+	SetPositionAfterG68G69();
 }
 
 ////////////////////////////////////////////////////////////
@@ -651,6 +653,8 @@ void CGCodeParser::G69Command()
 	((CMotionControl*) (CMotionControlBase::GetInstance()))->SetRotate(Y_AXIS, 0.0);
 	((CMotionControl*) (CMotionControlBase::GetInstance()))->SetRotate(Z_AXIS, 0.0);
 	((CMotionControl*) (CMotionControlBase::GetInstance()))->ClearOffset();
+
+	SetPositionAfterG68G69();
 }
 
 ////////////////////////////////////////////////////////////
