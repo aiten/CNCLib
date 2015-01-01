@@ -55,7 +55,8 @@
 
 ////////////////////////////////////////////////////////
 
-#define PROBE1_PIN	CAT(BOARDNAME,_AUX2_7)	// Ramps 1.4 D44 
+#define PROBE1_PIN	CAT(BOARDNAME,_C_MIN_PIN)	// Ref of C 
+//#define PROBE1_PIN	CAT(BOARDNAME,_AUX2_7)	// Ramps 1.4 D44 
 #define PROBE2_PIN	CAT(BOARDNAME,_AUX2_5)	// Ramps 1.4 A10 
 
 #define PROBE_ON  LOW
