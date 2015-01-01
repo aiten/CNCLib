@@ -132,15 +132,18 @@ void CMyLcd::SetMenuPage()
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::Beep()
+void CMyLcd::Beep(unsigned char freq, unsigned char durationin100Sec)
 {
-	for (int8_t i = 0; i < 10; i++)
+	unsigned long endmillis = millis() + durationin100Sec * 10l;
+
+	do
 	{
 		HALFastdigitalWrite(CAT(BOARDNAME,_LCD_BEEPER), HIGH);
-		delay(3);
+		delay(freq);
 		HALFastdigitalWrite(CAT(BOARDNAME,_LCD_BEEPER), LOW);
-		delay(3);
+		delay(freq);
 	}
+	while (millis() < endmillis);
 }
 
 ////////////////////////////////////////////////////////////
@@ -259,7 +262,7 @@ void CMyLcd::ButtonPress()
 unsigned long CMyLcd::Splash()
 {
 	DrawLoop(&CMyLcd::DrawLoopSplash);
-	Beep();
+	OKBeep();
 	return 3000;
 }
 
@@ -438,14 +441,14 @@ bool CMyLcd::DrawLoopPreset(bool setup)
 
 void CMyLcd::ButtonPressStartSDPage()
 {
-	CControl::GetInstance()->PostCommand(F("m21"));									// Init SD
+	PostCommand(F("m21"));									// Init SD
 
-	if (CControl::GetInstance()->PostCommand(F("m23 kk1000s.nc")))
+	if (PostCommand(F("m23 kk1000s.nc")))
 	{
-		CControl::GetInstance()->PostCommand(F("m24"));
+		PostCommand(F("m24"));
 	}
 
-	Beep();
+	OKBeep();
 }
 
 ////////////////////////////////////////////////////////////
@@ -470,7 +473,7 @@ void CMyLcd::ButtonPressPause()
 	else
 		Control.Pause();
 
-	Beep();
+	OKBeep();
 }
 
 ////////////////////////////////////////////////////////////
@@ -538,12 +541,12 @@ void CMyLcd::ButtonPressMenuPage()
 {
 	switch (_rotaryFocus)
 	{
-		case RotaryMainPage:	SetRotaryFocusMenuPage(); Beep();  break;
+		case RotaryMainPage:	SetRotaryFocusMenuPage(); OKBeep();  break;
 		case RotaryMenuPage:
 		{
 			if (!_menu.Select())
 			{
-				Beep(); Beep();
+				ErrorBeep();
 			}
 
 			break;

@@ -113,8 +113,7 @@ unsigned char CMenuBase::ToPrintLine(menupos_t firstline, menupos_t lastline, me
 
 void CMenuBase::MenuButtonPressSetCommand(const SMenuItemDef*def)
 { 
-	CControl::GetInstance()->PostCommand((const __FlashStringHelper*)def->GetParam1()); 
-	Beep();
+	PostCommand((const __FlashStringHelper*)def->GetParam1()); 
 }
 
 ////////////////////////////////////////////////////////////
@@ -155,7 +154,6 @@ void CMenuBase::MenuButtonPressMenuBack(const SMenuItemDef* def)
 	Changed();
 }
 
-
 ////////////////////////////////////////////////////////////
 
 void CMenuBase::MenuButtonPressMove(const SMenuItemDef*def)
@@ -186,7 +184,7 @@ void CMenuBase::MenuButtonPressMove(const SMenuItemDef*def)
 
 	strcat_P(tmp, PSTR(" g90"));
 
-	CControl::GetInstance()->PostCommand(tmp);
+	PostCommand(tmp);
 }
 
 ////////////////////////////////////////////////////////////
@@ -199,11 +197,11 @@ void CMenuBase::MenuButtonPressRotate(const SMenuItemDef*)
 
 void CMenuBase::MenuButtonPressProbe(const SMenuItemDef*)
 {
-	if (CControl::GetInstance()->PostCommand(F("g91 g31 Z-10 F100 g90")))
+	if (PostCommand(F("g91 g31 Z-10 F100 g90")))
 	{
-		CControl::GetInstance()->PostCommand(F("g92 Z-25"));
+		PostCommand(F("g92 Z-25"));
 		//GetLcd()->SetDefaultPage();
-		CControl::GetInstance()->PostCommand(F("g91 Z3 g90"));
+		PostCommand(F("g91 Z3 g90"));
 	}
 }
 
@@ -226,7 +224,7 @@ void CMenuBase::MenuButtonPressHomeA(axis_t axis)
 		case Z_AXIS: strcat_P(tmp, PSTR("#5163")); break;
 		default: strcat_P(tmp, PSTR("0")); break;
 	}
-	CControl::GetInstance()->PostCommand(tmp);
+	PostCommand(tmp);
 };
 
 ////////////////////////////////////////////////////////////
@@ -241,8 +239,7 @@ void CMenuBase::MenuButtonPressMoveG92(const SMenuItemDef*)
 	AddAxisName(tmp, axis);
 	strcat_P(tmp, PSTR("0"));
 
-	CControl::GetInstance()->PostCommand(tmp);
-	Beep();
+	PostCommand(tmp);
 }
 
 ////////////////////////////////////////////////////////////
@@ -250,9 +247,9 @@ void CMenuBase::MenuButtonPressMoveG92(const SMenuItemDef*)
 void CMenuBase::MenuButtonPressSpindle(const SMenuItemDef*)
 {
 	if (CControl::GetInstance()->IOControl(CControl::Spindel) != 0)
-		CControl::GetInstance()->PostCommand(F("m5"));
+		PostCommand(F("m5"));
 	else
-		CControl::GetInstance()->PostCommand(F("m3"));
+		PostCommand(F("m3"));
 }
 
 ////////////////////////////////////////////////////////////
@@ -260,7 +257,7 @@ void CMenuBase::MenuButtonPressSpindle(const SMenuItemDef*)
 void CMenuBase::MenuButtonPressCoolant(const SMenuItemDef*)
 {
 	if (CControl::GetInstance()->IOControl(CControl::Coolant) != 0)
-		CControl::GetInstance()->PostCommand(F("m9"));
+		PostCommand(F("m9"));
 	else
-		CControl::GetInstance()->PostCommand(F("m7"));
+		PostCommand(F("m7"));
 }

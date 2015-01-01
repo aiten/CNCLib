@@ -54,6 +54,16 @@ protected:
 
 	bool IsSplash()												{ return _splash; };
 
+public:
+
+	virtual void Beep(unsigned char freq, unsigned char durationin100Sec)=0;
+	void OKBeep()												{ Beep(3,10); }
+	void ErrorBeep()											{ Beep(3,5); delay(50); Beep(3,5);delay(50);Beep(3,5);delay(50);Beep(3,5);}
+//	void ErrorBeep()											{ Beep(3,5); Beep(1,5); Beep(3,5);Beep(1,5);Beep(3,5);Beep(1,5);Beep(3,5);}
+
+	bool PostCommand(const __FlashStringHelper* cmd, Stream* output=NULL);
+	bool PostCommand(char* cmd, Stream* output=NULL);
+
 private:
 
 	unsigned long _nextdrawtime;

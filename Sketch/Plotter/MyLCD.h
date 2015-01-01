@@ -49,6 +49,8 @@ public:
 	virtual void Init();
 	virtual void TimerInterrupt();
 
+	virtual void Beep(unsigned char freq, unsigned char durationin100Sec)		{ };
+
 protected:
 
 	virtual void Draw(EDrawType draw);

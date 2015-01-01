@@ -46,7 +46,6 @@ public:
 protected:
 
 	virtual void Changed();
-	virtual void Beep();
 
 	void MenuButtonPressEnd(const SMenuItemDef*);
 	void MenuButtonPressMoveNextAxis(const SMenuItemDef*);

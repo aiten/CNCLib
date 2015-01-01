@@ -70,3 +70,28 @@ void CLcd::DrawRequest(bool forcedraw, EDrawType draw)
 		_nextdrawtime = millis() + 333;
 	}
 }
+
+////////////////////////////////////////////////////////////
+
+bool CLcd::PostCommand(const __FlashStringHelper* cmd, Stream* output)
+{
+	if (!CControl::GetInstance()->PostCommand(cmd,output))
+	{
+		ErrorBeep();
+		return false;
+	}
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+
+bool CLcd::PostCommand(char* cmd, Stream* output)
+{
+	if (!CControl::GetInstance()->PostCommand(cmd,output))
+	{
+		ErrorBeep();
+		return false;
+	}
+	return true;
+}
+

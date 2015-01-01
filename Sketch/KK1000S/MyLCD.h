@@ -57,13 +57,13 @@ public:
 
 	void SetDefaultPage();
 
-	void Beep();
+	virtual void Beep(unsigned char freq, unsigned char durationin100Sec);
 
 	void MenuChanged()
 	{
 		SetRotaryFocusMenuPage();
 		DrawLoop();
-		Beep();
+		OKBeep();
 	}
 
 	////////////////////////////////////////////////////////

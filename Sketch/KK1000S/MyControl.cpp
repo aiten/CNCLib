@@ -63,17 +63,22 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 800000));
 	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 500000));
 	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, 100000));
+//MSCV has only 3 axis!
+#if NUM_AXIS > 3
 	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS, 360000));		// grad
 	CStepper::GetInstance()->SetLimitMax(B_AXIS, CMotionControlBase::GetInstance()->ToMachine(B_AXIS, 360000));
+#endif
 
 	CStepper::GetInstance()->SetJerkSpeed(X_AXIS, 1000);
 	CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, 1000);
 	CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, 1000);
+#if NUM_AXIS > 3
 	CStepper::GetInstance()->SetJerkSpeed(A_AXIS, 1000);
 	CStepper::GetInstance()->SetJerkSpeed(B_AXIS, 1000);
 
 	CStepper::GetInstance()->SetEnableTimeout(A_AXIS, 2);
 	CStepper::GetInstance()->SetEnableTimeout(B_AXIS, 2);
+#endif
 
 #if NUM_AXIS > 5
 	CStepper::GetInstance()->SetLimitMax(C_AXIS, CMotionControl::ToMachine(B_AXIS,360000));

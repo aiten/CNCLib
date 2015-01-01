@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include "LCD.h"
+
 ////////////////////////////////////////////////////////
 
 class CMenuBase
@@ -100,9 +102,19 @@ public:
 
 	bool Select();
 	virtual void Changed()=0;
-	virtual void Beep()=0;
+
+	void Beep(unsigned char freq, unsigned char durationin100Sec)	{ return CLcd::GetInstance()->Beep(freq,durationin100Sec); };
+	void OKBeep()													{ return CLcd::GetInstance()->OKBeep(); };
+	void ErrorBeep()												{ return CLcd::GetInstance()->ErrorBeep(); };
 
 protected:
+
+	//////////////////////////////////////////
+
+	bool PostCommand(const __FlashStringHelper* cmd, Stream* output=NULL)	{ return CLcd::GetInstance()->PostCommand(cmd,output); }
+	bool PostCommand(char* cmd, Stream* output=NULL)						{ return CLcd::GetInstance()->PostCommand(cmd,output); }
+
+	//////////////////////////////////////////
 
 	void SetOffset(menupos_t offset)								{ _offset = offset; }
 	void AddOffset(menupos_t offset)								{ _offset += offset; }
