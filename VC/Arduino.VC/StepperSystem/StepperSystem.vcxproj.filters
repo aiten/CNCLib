@@ -281,5 +281,8 @@
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\MenuBase.cpp">
       <Filter>CNCLib</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\Beep.cpp">
+      <Filter>CNCLib</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

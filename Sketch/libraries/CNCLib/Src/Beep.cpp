@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -15,25 +15,38 @@
   GNU General Public License for more details.
   http://www.gnu.org/licenses/
 */
+////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
+#include <stdlib.h>
+#include <string.h>
 
-namespace GCode.GUI
+#include <arduino.h>
+#include <ctype.h>
+
+#include "Beep.h"
+
+////////////////////////////////////////////////////////
+
+const SPlayTone SPlayTone::PlayOK[] PROGMEM =
 {
-    static class Program
-    {
-        /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
-        }
-    }
-}
+	{ ToneA6, 10 },
+	{ ToneEnd }
+};
+
+const SPlayTone SPlayTone::PlayError[] PROGMEM
+{
+	{ ToneA6, 20 },
+	{ ToneA7, 20 },
+	{ ToneA6, 20 },
+	{ ToneA7, 20 },
+	{ ToneEnd }
+};
+
+const SPlayTone SPlayTone::PlayInfo[] PROGMEM
+{
+	{ ToneA5, 20 },
+	{ ToneA6, 20 },
+	{ ToneA7, 20 },
+	{ ToneEnd }
+};
+

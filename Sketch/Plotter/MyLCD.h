@@ -49,7 +49,7 @@ public:
 	virtual void Init();
 	virtual void TimerInterrupt();
 
-	virtual void Beep(ETone, unsigned char )		{ };
+	virtual void Beep(const SPlayTone*)		{ };
 
 protected:
 

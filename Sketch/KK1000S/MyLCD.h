@@ -58,7 +58,7 @@ public:
 
 	void SetDefaultPage();
 
-	virtual void Beep(ETone freq, unsigned char durationin100Sec);
+	virtual void Beep(const SPlayTone*);
 
 	void MenuChanged()
 	{

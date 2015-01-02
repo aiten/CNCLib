@@ -29,6 +29,9 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
+#define pgm_read_int pgm_read_dword
+#define pgm_read_uint pgm_read_dword
+
 #define TIMER0FREQUENCE		62500L
 #define TIMER1FREQUENCE		2000000L
 #define TIMER2FREQUENCE		62500L

@@ -57,9 +57,9 @@ protected:
 
 public:
 
-	virtual void Beep(ETone freq, unsigned char durationin100Sec)=0;
-	void OKBeep()												{ Beep(ToneA4, 10); }
-	void ErrorBeep()											{ for (unsigned char i = 0; i < 4; i++) { Beep(ToneA4, 5); delay(50); }; }
+	virtual void Beep(const SPlayTone*)=0;
+	void OKBeep()												{ Beep(SPlayTone::PlayOK); }
+	void ErrorBeep()											{ Beep(SPlayTone::PlayError); }
 
 	bool PostCommand(const __FlashStringHelper* cmd, Stream* output=NULL);
 	bool PostCommand(char* cmd, Stream* output=NULL);

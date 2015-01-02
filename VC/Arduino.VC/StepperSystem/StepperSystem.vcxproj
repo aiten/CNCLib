@@ -74,6 +74,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\Control3D.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\GCode3DParser.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\Beep.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\Control.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\ExpressionParser.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeExpressionParser.cpp" />

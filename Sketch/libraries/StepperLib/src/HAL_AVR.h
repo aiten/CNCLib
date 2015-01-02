@@ -26,6 +26,8 @@
 #if defined(__AVR_ARCH__)
 
 #define pgm_read_ptr pgm_read_word
+#define pgm_read_int pgm_read_word
+#define pgm_read_uint pgm_read_word
 
 #define TIMER0PRESCALE      64
 #define TIMER0FREQUENCE		(F_CPU/TIMER0PRESCALE)

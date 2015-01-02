@@ -56,12 +56,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Load\LoadOptionForm.Designer.cs" />
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="PaintForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,12 +68,8 @@
     <Compile Include="GCodeUserControl.Designer.cs">
       <DependentUpon>GCodeUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Load\LoadOptionForm.resx" />
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="PaintForm.resx">
       <DependentUpon>PaintForm.cs</DependentUpon>
     </EmbeddedResource>

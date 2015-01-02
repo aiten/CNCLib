@@ -25,14 +25,25 @@
 
 ////////////////////////////////////////////////////////
 
-#define FreqToTone(a) ((unsigned int) ((a*10)+0.5))
+#define FreqToTone(a) ((unsigned int) ((a*10.0)+0.5))
 
 enum ETone
 {
-//	ToneC8	= FreqToTone(4186.01),
-//	ToneB7	= FreqToTone(3951.07),
-//	ToneBb7 = FreqToTone(3729.31),
-//	ToneA7	= FreqToTone(3520),
+//	ToneB8	= FreqToTone(7902),
+//	ToneBb8 = FreqToTone(7459),	
+//	ToneA8	= FreqToTone(7040),
+//	ToneAb8 = FreqToTone(6645),
+	ToneG8	= FreqToTone(6272),
+	ToneGb8 = FreqToTone(5920),
+	ToneF8	= FreqToTone(5588),
+	ToneE8	= FreqToTone(5274),
+	ToneEb8 = FreqToTone(4978),
+	ToneD8	= FreqToTone(4699),
+	ToneDb8 = FreqToTone(4435),
+	ToneC8	= FreqToTone(4186.01),
+	ToneB7	= FreqToTone(3951.07),
+	ToneBb7 = FreqToTone(3729.31),
+	ToneA7	= FreqToTone(3520),
 	ToneAb7 = FreqToTone(3322.44),
 	ToneG7	= FreqToTone(3135.96),
 	ToneGb7 = FreqToTone(2959.96),
@@ -116,13 +127,20 @@ enum ETone
 	ToneC1	= FreqToTone(32.7032),
 	ToneB0	= FreqToTone(30.8677),
 	ToneBb0 = FreqToTone(29.1352),
-	ToneA0	= FreqToTone(27.5)
+	ToneA0	= FreqToTone(27.5),
+
+	ToneNo	= 1,
+	ToneEnd	= 0
 };
 
 struct SPlayTone
 {
 	enum ETone Tone;					// 0 => end
 	unsigned char Durationin100Sec;
+
+	static const SPlayTone PlayOK[] PROGMEM;
+	static const SPlayTone PlayError[] PROGMEM;
+	static const SPlayTone PlayInfo[] PROGMEM;
 };
 
 ////////////////////////////////////////////////////////
@@ -131,12 +149,6 @@ template <unsigned char PIN>
 class CBeep
 {
 public:
-
-	CBeep(enum ETone freq = ToneA4)
-	{
-		_durationin100Sec = 10;
-		_freq = freq;
-	}
 
 	static void Init()
 	{
@@ -147,37 +159,32 @@ public:
 	static void Beep(ETone freq, unsigned char durationin100Sec)
 	{
 		unsigned long endmillis = millis() + durationin100Sec * 10l;
-		unsigned int tonePause = 10 * 1000000l / freq / 2;
+		unsigned int tonePause = ( 10l * 1000000l / 2l) / (unsigned int) freq;
 
 		do
 		{
-			CHAL::digitalWrite(PIN, HIGH);
-			CHAL::delayMicroseconds(tonePause);
-			CHAL::digitalWrite(PIN, LOW);
-			CHAL::delayMicroseconds(tonePause);
+			if (freq!=ToneNo)
+			{
+				CHAL::digitalWrite(PIN, HIGH);
+				CHAL::delayMicroseconds(tonePause);
+				CHAL::digitalWrite(PIN, LOW);
+				CHAL::delayMicroseconds(tonePause);
+			}
 		} while (millis() < endmillis);
 	}
 
 	static void Play(const SPlayTone* list)
 	{
-		ETone freq = (ETone)pgm_read_ptr(&list->Tone);
+		ETone freq = (ETone)pgm_read_int(&list->Tone);
 		while (freq != 0)
 		{
 			Beep(freq, pgm_read_byte(&list->Durationin100Sec));
 			list++;
-			freq = (ETone)pgm_read_ptr(&list->Tone);
+			freq = (ETone)pgm_read_int(&list->Tone);
 		}
 	}
 
-	void Beep(unsigned char durationin100Sec = 0)
-	{
-		Beep(_freq, durationin100Sec ?  durationin100Sec : _durationin100Sec);
-	}
-
 private:
-
-	unsigned char _durationin100Sec;
-	ETone		  _freq;
 
 };
 

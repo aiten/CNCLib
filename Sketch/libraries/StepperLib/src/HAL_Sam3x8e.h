@@ -28,6 +28,8 @@
 #include <itoa.h>
 
 #define pgm_read_ptr pgm_read_dword
+#define pgm_read_int pgm_read_dword
+#define pgm_read_uint pgm_read_dword
 
 #define TIMER0FREQUENCE		TIMER3FREQUENCE
 #define TIMER0PRESCALE      TIMER3PRESCALE		
