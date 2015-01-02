@@ -363,7 +363,7 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 		mdist_t d = dist[i];
 		if (d)
 		{
-			timer_t accdec = MulDivU32(pStepper->_pod._timerAcc[i], d, _steps);
+			timer_t accdec = (timer_t) MulDivU32(pStepper->_pod._timerAcc[i], d, _steps);
 			if (accdec > _pod._move._timerAcc)
 				_pod._move._timerAcc = accdec;
 

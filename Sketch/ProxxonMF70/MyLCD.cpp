@@ -29,6 +29,8 @@
 #include <CNCLib.h>
 #include <CNCLibEx.h>
 
+#include <Beep.h>
+
 #include "MyLcd.h"
 #include "MyControl.h"
 #include "RotaryButton.h"
@@ -97,8 +99,7 @@ PROGMEM const CMyLcd::SPageDef CMyLcd::_pagedef[] =
 
 void CMyLcd::Init()
 {
-	CHAL::pinMode(CAT(BOARDNAME,_LCD_BEEPER), OUTPUT);
-	HALFastdigitalWrite(CAT(BOARDNAME,_LCD_BEEPER), LOW);
+	CBeep<(CAT(BOARDNAME, _LCD_BEEPER))>::Init();
 
 	super::Init();
 
@@ -132,18 +133,9 @@ void CMyLcd::SetMenuPage()
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::Beep(unsigned char freq, unsigned char durationin100Sec)
+void CMyLcd::Beep(ETone freq, unsigned char durationin100Sec)
 {
-	unsigned long endmillis = millis() + durationin100Sec * 10l;
-
-	do
-	{
-		HALFastdigitalWrite(CAT(BOARDNAME,_LCD_BEEPER), HIGH);
-		delay(freq);
-		HALFastdigitalWrite(CAT(BOARDNAME,_LCD_BEEPER), LOW);
-		delay(freq);
-	}
-	while (millis() < endmillis);
+	CBeep<CAT(BOARDNAME, _LCD_BEEPER)>::Beep(freq, durationin100Sec);
 }
 
 ////////////////////////////////////////////////////////////

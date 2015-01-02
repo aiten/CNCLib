@@ -74,8 +74,8 @@ void CMotionControl::TransformMachinePosition(const udist_t src[NUM_AXIS], mm100
 inline void CMotionControl::Rotate(const CMotionControl::SRotate&rotate, mm1000_t& x, mm1000_t& y, mm1000_t ofsx, mm1000_t ofsy)
 {
 	// rotate with positive angle
-	float fx = x - ofsx;
-	float fy = y - ofsy;
+	float fx = (float) (x - ofsx);
+	float fy = (float) (y - ofsy);
 	x = (mm1000_t)(fx*rotate._cos - fy*rotate._sin) + ofsx;
 	y = (mm1000_t)(fy*rotate._cos + fx*rotate._sin) + ofsy;
 }
@@ -85,8 +85,8 @@ inline void CMotionControl::Rotate(const CMotionControl::SRotate&rotate, mm1000_
 inline void CMotionControl::RotateInvert(const CMotionControl::SRotate&rotate, mm1000_t& x, mm1000_t& y, mm1000_t ofsx, mm1000_t ofsy)
 {
 	// rotate with negative angle (e.g. from 30 to -30)
-	float fx = x - ofsx;
-	float fy = y - ofsy;
+	float fx = (float)(x - ofsx);
+	float fy = (float)(y - ofsy);
 	x = (mm1000_t)(fx*rotate._cos + fy*rotate._sin) + ofsx;
 	y = (mm1000_t)(fy*rotate._cos - fx*rotate._sin) + ofsy;
 }

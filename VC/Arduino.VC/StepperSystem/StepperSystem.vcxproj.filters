@@ -192,6 +192,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MenuBase.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Beep.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">

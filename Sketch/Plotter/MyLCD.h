@@ -49,7 +49,7 @@ public:
 	virtual void Init();
 	virtual void TimerInterrupt();
 
-	virtual void Beep(unsigned char freq, unsigned char durationin100Sec)		{ };
+	virtual void Beep(ETone, unsigned char )		{ };
 
 protected:
 

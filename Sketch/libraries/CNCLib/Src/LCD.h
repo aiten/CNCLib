@@ -22,6 +22,7 @@
 ////////////////////////////////////////////////////////
 
 #include <StepperLib.h>
+#include <Beep.h>
 
 ////////////////////////////////////////////////////////
 
@@ -56,10 +57,9 @@ protected:
 
 public:
 
-	virtual void Beep(unsigned char freq, unsigned char durationin100Sec)=0;
-	void OKBeep()												{ Beep(3,10); }
-	void ErrorBeep()											{ Beep(3,5); delay(50); Beep(3,5);delay(50);Beep(3,5);delay(50);Beep(3,5);}
-//	void ErrorBeep()											{ Beep(3,5); Beep(1,5); Beep(3,5);Beep(1,5);Beep(3,5);Beep(1,5);Beep(3,5);}
+	virtual void Beep(ETone freq, unsigned char durationin100Sec)=0;
+	void OKBeep()												{ Beep(ToneA4, 10); }
+	void ErrorBeep()											{ for (unsigned char i = 0; i < 4; i++) { Beep(ToneA4, 5); delay(50); }; }
 
 	bool PostCommand(const __FlashStringHelper* cmd, Stream* output=NULL);
 	bool PostCommand(char* cmd, Stream* output=NULL);

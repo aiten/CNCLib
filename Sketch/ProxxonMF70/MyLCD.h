@@ -27,6 +27,8 @@
 
 #include <LCD.h>
 #include <RotaryButton.h>
+#include <Beep.h>
+
 #include "MyMenu.h"
 
 #define ROTARY_ACCURACY	4
@@ -57,7 +59,7 @@ public:
 
 	void SetDefaultPage();
 
-	virtual void Beep(unsigned char freq, unsigned char durationin100Sec);
+	virtual void Beep(ETone freq, unsigned char durationin100Sec);
 
 	void MenuChanged()
 	{

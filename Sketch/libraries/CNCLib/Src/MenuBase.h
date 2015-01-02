@@ -103,7 +103,7 @@ public:
 	bool Select();
 	virtual void Changed()=0;
 
-	void Beep(unsigned char freq, unsigned char durationin100Sec)	{ return CLcd::GetInstance()->Beep(freq,durationin100Sec); };
+	void Beep(ETone freq, unsigned char durationin100Sec)	{ return CLcd::GetInstance()->Beep(freq,durationin100Sec); };
 	void OKBeep()													{ return CLcd::GetInstance()->OKBeep(); };
 	void ErrorBeep()												{ return CLcd::GetInstance()->ErrorBeep(); };
 
