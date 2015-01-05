@@ -49,6 +49,7 @@ protected:
 
 	void MenuButtonPressEnd(const SMenuItemDef*);
 	void MenuButtonPressMoveNextAxis(const SMenuItemDef*);
+	void MenuButtonPressFuerElise(const SMenuItemDef*);
 
 	static const SMenuDef _mainMenu PROGMEM;
 	static const SMenuDef _moveXMenu PROGMEM;
