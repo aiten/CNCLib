@@ -136,6 +136,7 @@ void CMyLcd::SetMenuPage()
 void CMyLcd::Beep(const SPlayTone* play)
 {
 	CBeep<CAT(BOARDNAME, _LCD_BEEPER)>::Play(play);
+        // CBeep<CAT(BOARDNAME, _LCD_BEEPER)>::Beep(ToneA4,16);
 }
 
 ////////////////////////////////////////////////////////////

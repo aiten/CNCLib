@@ -25,14 +25,15 @@
 
 ////////////////////////////////////////////////////////
 
-#define FreqToTone(a) ((unsigned int) ((a*10.0)+0.5))
+//#define FreqToTone(a) ((unsigned int) ((a*10.0)+0.5))
+#define FreqToTone(a) ((unsigned int) ((1000000/2/a)+0.5))
 
 enum ETone
 {
-//	ToneB8	= FreqToTone(7902),
-//	ToneBb8 = FreqToTone(7459),	
-//	ToneA8	= FreqToTone(7040),
-//	ToneAb8 = FreqToTone(6645),
+	ToneB8	= FreqToTone(7902),
+	ToneBb8 = FreqToTone(7459),	
+	ToneA8	= FreqToTone(7040),
+	ToneAb8 = FreqToTone(6645),
 	ToneG8	= FreqToTone(6272),
 	ToneGb8 = FreqToTone(5920),
 	ToneF8	= FreqToTone(5588),
@@ -159,7 +160,8 @@ public:
 	static void Beep(ETone freq, unsigned char durationin100Sec)
 	{
 		unsigned long endmillis = millis() + durationin100Sec * 10l;
-		unsigned int tonePause = ( 10l * 1000000l / 2l) / (unsigned int) freq;
+//		unsigned int tonePause = ( 10l * 1000000l / 2l) / (unsigned int) freq;
+		unsigned int tonePause = (unsigned int)freq;
 
 		do
 		{
