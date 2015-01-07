@@ -67,6 +67,13 @@ void CMyMenu::MenuButtonPressMoveNextAxis(const SMenuItemDef*def)
 
 ////////////////////////////////////////////////////////////
 
+void CMyMenu::MenuButtonPressFuerElise(const SMenuItemDef*def)
+{
+	CLcd::GetInstance()->Beep(SPlayTone::PlayInfo);
+}
+
+////////////////////////////////////////////////////////////
+
 static const char _g92[] PROGMEM		= "g92";
 static const char _m21[] PROGMEM		= "m21";
 
@@ -186,6 +193,7 @@ static const char _mCoolant[] PROGMEM	= "Coolant On/Off";
 static const char _mHomeZ[] PROGMEM		= "Home Z";
 static const char _mProbeZ[] PROGMEM	= "Probe Z";
 static const char _mG92Clear[] PROGMEM  = "G92 Clear";
+static const char _mFuerElise[] PROGMEM  = "Fuer Elise";
 
 const CMyMenu::SMenuItemDef CMyMenu::_extraMenuItems[] PROGMEM =
 {
@@ -194,6 +202,7 @@ const CMyMenu::SMenuItemDef CMyMenu::_extraMenuItems[] PROGMEM =
 	{ _mProbeZ,	 &CMenuBase::MenuButtonPressProbe, (menuparam_t)Z_AXIS },
 	{ _mSpindle, &CMenuBase::MenuButtonPressSpindle },
 	{ _mCoolant, &CMenuBase::MenuButtonPressCoolant },
+	{ _mFuerElise, (MenuFunction) &CMyMenu::MenuButtonPressFuerElise },
 	{ _mBack,	 &CMenuBase::MenuButtonPressMenuBack, &_mainMenu },
 	{ NULL, 0 }
 };
