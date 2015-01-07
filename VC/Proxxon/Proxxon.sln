@@ -13,9 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Wpf", "..\Framewo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxxon.Wpf", "Proxxon.Wpf\Proxxon.Wpf.csproj", "{60555245-D32E-4A94-AB0E-CB2A6693A9BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCode.Logic", "GCode.Logic\GCode.Logic.csproj", "{F9C446F4-6365-4189-95C5-009EF0160882}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxxon.GCode", "Proxxon.GCode\Proxxon.GCode.csproj", "{F9C446F4-6365-4189-95C5-009EF0160882}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCode.GUI", "GCode.GUI\GCode.GUI.csproj", "{55108499-FAC2-4F19-B88E-9E240CCCBD60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxxon.GUI", "Proxxon.GUI\Proxxon.GUI.csproj", "{55108499-FAC2-4F19-B88E-9E240CCCBD60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxxon.Repository", "Proxxon.Repository\Proxxon.Repository.csproj", "{D689CD99-A022-4F38-8AE1-A269C82A729C}"
 EndProject

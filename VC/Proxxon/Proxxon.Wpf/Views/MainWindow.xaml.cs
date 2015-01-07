@@ -27,7 +27,7 @@ namespace Proxxon.Wpf
 
 		private void Button_PaintClick(object sender, RoutedEventArgs e)
 		{
-			using (GCode.GUI.PaintForm form = new GCode.GUI.PaintForm())
+			using (Proxxon.GUI.PaintForm form = new Proxxon.GUI.PaintForm())
 			{
 				form.ShowDialog();
 			}

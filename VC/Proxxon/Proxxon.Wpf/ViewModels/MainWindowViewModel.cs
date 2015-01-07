@@ -30,6 +30,7 @@ using Proxxon.Wpf;
 using Framework.Tools;
 using System.Linq.Expressions;
 using Proxxon.Logic;
+using Proxxon.GCode;
 
 
 namespace Proxxon.Wpf.ViewModels
@@ -173,6 +174,9 @@ namespace Proxxon.Wpf.ViewModels
 				Com.CommandToUpper = CommandToUpper;
 				Com.BaudRate = (int) BaudRate;
 				Com.Connect(ComPort);
+                Settings.Instance.SizeX = SizeX;
+                Settings.Instance.SizeY = SizeY;
+                Settings.Instance.SizeZ = SizeZ;
 			}
 			catch(Exception e)
 			{
