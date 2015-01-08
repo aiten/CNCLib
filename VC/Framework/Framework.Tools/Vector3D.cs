@@ -16,18 +16,18 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proxxon.GCode.Commands
+namespace Framework.Tools
 {
-	public interface IOutputCommand
+	public class Vector3D
 	{
-		void DrawLine(Command cmd, object param, Command.MoveType movetype, Point3D ptFrom, Point3D ptTo);
-		void DrawEllipse(Command cmd, object param, Command.MoveType movetype, Point3D ptFrom, int xradius, int yradius);
+		public Point3D From { get; set; }
+
+		public Point3D To { get; set; }
 	}
 }

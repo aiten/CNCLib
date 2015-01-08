@@ -37,7 +37,7 @@ namespace Proxxon.GCode.Commands
 		#endregion
 
 		#region GCode
-		public override string[] GetGCodeCommands(SpaceCoordinate startfrom)
+		public override string[] GetGCodeCommands(Point3D startfrom)
 		{
 			string[] ret = new string[] 
             {

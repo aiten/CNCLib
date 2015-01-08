@@ -68,18 +68,8 @@ namespace Proxxon.Wpf.ViewModels
             get { return _selectedMachine; }
 			set {
                     _selectedMachine = value;
-/*
-                    AssignProperty(ref _currentMachine, value.CloneProperties());
 
-					OnPropertyChanged(() => ComPort);
-					OnPropertyChanged(() => BaudRate);
-					OnPropertyChanged(() => CommandToUpper);
-					OnPropertyChanged(() => SizeX);
-					OnPropertyChanged(() => SizeY);
-					OnPropertyChanged(() => SizeZ);
-					OnPropertyChanged(() => BufferSize);
-*/			
-					AssignProperty(() => 
+				AssignProperty(() => 
                     {
                         if (value == null)
                             _currentMachine = new Models.Machine();
@@ -92,6 +82,9 @@ namespace Proxxon.Wpf.ViewModels
 						OnPropertyChanged(() => SizeY);
 						OnPropertyChanged(() => SizeZ);
 						OnPropertyChanged(() => BufferSize);
+						Settings.Instance.SizeX = SizeX;
+						Settings.Instance.SizeY = SizeY;
+						Settings.Instance.SizeZ = SizeZ;
 					}
 				);
 			}
@@ -140,17 +133,17 @@ namespace Proxxon.Wpf.ViewModels
 		public decimal SizeX
 		{
 			get { return _currentMachine.SizeX; }
-			set { SetProperty(() => _currentMachine.SizeX == value, () => _currentMachine.SizeX = value); }
+			set { Settings.Instance.SizeX = value;  SetProperty(() => _currentMachine.SizeX == value, () => _currentMachine.SizeX = value); }
 		}
 		public decimal SizeY
 		{
 			get { return _currentMachine.SizeY; }
-			set { SetProperty(() => _currentMachine.SizeY == value, () => _currentMachine.SizeY = value); }
+			set { Settings.Instance.SizeY = value; SetProperty(() => _currentMachine.SizeY == value, () => _currentMachine.SizeY = value); }
 		}
 		public decimal SizeZ
 		{
 			get { return _currentMachine.SizeZ; }
-            set { SetProperty(() => _currentMachine.SizeZ == value, () => _currentMachine.SizeZ = value); }
+			set { Settings.Instance.SizeZ = value; SetProperty(() => _currentMachine.SizeZ == value, () => _currentMachine.SizeZ = value); }
 		}
 
 		#endregion
@@ -174,9 +167,6 @@ namespace Proxxon.Wpf.ViewModels
 				Com.CommandToUpper = CommandToUpper;
 				Com.BaudRate = (int) BaudRate;
 				Com.Connect(ComPort);
-                Settings.Instance.SizeX = SizeX;
-                Settings.Instance.SizeY = SizeY;
-                Settings.Instance.SizeZ = SizeZ;
 			}
 			catch(Exception e)
 			{

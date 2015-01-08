@@ -43,7 +43,7 @@ namespace Proxxon.GCode.Commands
 			Movetype = MoveType.NoMove;
         }
 
-		private SpaceCoordinate _CalculatedEndPosition;
+		private Point3D _CalculatedEndPosition;
 		protected List<Variable> _variables = new List<Variable>();
 
 		#endregion
@@ -53,14 +53,14 @@ namespace Proxxon.GCode.Commands
 		public Command NextCommand { get; set; }
 		public Command PrevCommand { get; set; }
 
-        public SpaceCoordinate CalculatedStartPosition 
+        public Point3D CalculatedStartPosition 
 		{
 			get
 			{
-				return PrevCommand == null ? new SpaceCoordinate() : PrevCommand.CalculatedEndPosition;
+				return PrevCommand == null ? new Point3D() : PrevCommand.CalculatedEndPosition;
 			}
 		}
-		public SpaceCoordinate CalculatedEndPosition
+		public Point3D CalculatedEndPosition
 		{
 			get
 			{
@@ -132,7 +132,7 @@ namespace Proxxon.GCode.Commands
 
 		public string GCodeAdd { get; set; }
 
-		protected string GCodeHelper(SpaceCoordinate current)
+		protected string GCodeHelper(Point3D current)
         {
 			String cmd = Code;
 			if (!string.IsNullOrEmpty(SubCode))
@@ -153,7 +153,7 @@ namespace Proxxon.GCode.Commands
 			return cmd;
         }
 
-		public virtual string[] GetGCodeCommands(SpaceCoordinate startfrom)
+		public virtual string[] GetGCodeCommands(Point3D startfrom)
 		{
 			string[] ret = new string[] 
             {
@@ -170,7 +170,7 @@ namespace Proxxon.GCode.Commands
 		{
 			if (PositionValid)
 			{
-				SpaceCoordinate sc = new SpaceCoordinate();
+				Point3D sc = new Point3D();
 				decimal val;
 
 				if (TryGetVariable('X', out val)) sc.X = val;
@@ -184,7 +184,7 @@ namespace Proxxon.GCode.Commands
 			}
 			else
 			{
-				_CalculatedEndPosition = (PrevCommand == null) ? new SpaceCoordinate() : PrevCommand._CalculatedEndPosition;
+				_CalculatedEndPosition = (PrevCommand == null) ? new Point3D() : PrevCommand._CalculatedEndPosition;
 			}
 		}			
 
@@ -216,7 +216,7 @@ namespace Proxxon.GCode.Commands
 
 		public virtual bool ReadFrom(CommandStream stream)
 		{
-			SpaceCoordinate ep = new SpaceCoordinate();
+			Point3D ep = new Point3D();
 
 			if (stream.NextChar == '.')
 			{

@@ -34,11 +34,11 @@ namespace Proxxon.GCode.Load
         CommandStream _stream;
         bool _IsPenUp;
 		bool _lastIsPenUp;
-		SpaceCoordinate _last=new SpaceCoordinate();
+		Point3D _last=new Point3D();
         int _color;
 
-		SpaceCoordinate _minpt;
-		SpaceCoordinate _maxpt;
+		Point3D _minpt;
+		Point3D _maxpt;
 
 		decimal _penDownZ = -0.5m;
 		decimal _penUpZ = 1m;
@@ -47,9 +47,9 @@ namespace Proxxon.GCode.Load
 
 		private void InitLoad()
 		{
-			_last = new SpaceCoordinate();
-			_minpt = new SpaceCoordinate() { X = int.MaxValue, Y = int.MaxValue };
-			_maxpt = new SpaceCoordinate() { X = int.MinValue, Y = int.MinValue };
+			_last = new Point3D();
+			_minpt = new Point3D() { X = int.MaxValue, Y = int.MaxValue };
+			_maxpt = new Point3D() { X = int.MinValue, Y = int.MinValue };
 			_stream = new CommandStream();
 			_IsPenUp = true;
 			_lastIsPenUp = false;
@@ -148,7 +148,7 @@ namespace Proxxon.GCode.Load
 
                     while (_stream.IsInt())
                     {
-                        SpaceCoordinate pt = GetSpaceCoordiante(cmdidx == 3);
+                        Point3D pt = GetSpaceCoordiante(cmdidx == 3);
                         if (cmdidx == 3)  // move rel
                         {
                             pt.X += _last.X;
@@ -203,9 +203,9 @@ namespace Proxxon.GCode.Load
             return true;
         }
 
-        private SpaceCoordinate GetSpaceCoordiante(bool isRelativPoint)
+        private Point3D GetSpaceCoordiante(bool isRelativPoint)
         {
-			SpaceCoordinate pt = new SpaceCoordinate();
+			Point3D pt = new Point3D();
             pt.X = _stream.GetInt() / 40m;
 			_stream.IsCommand(",") ;
 			pt.Y = _stream.GetInt() / 40m;
@@ -224,7 +224,7 @@ namespace Proxxon.GCode.Load
             Adjust(ref pt, isRelativPoint);
             return pt;
         }
-		private void AdjustOrig(ref SpaceCoordinate pt)
+		private void AdjustOrig(ref Point3D pt)
 		{
 			if (LoadOptions.SwapXY)
 			{
@@ -234,7 +234,7 @@ namespace Proxxon.GCode.Load
 			}
 		}
 
-        private void Adjust(ref SpaceCoordinate pt,bool isRelativPoint)
+        private void Adjust(ref Point3D pt,bool isRelativPoint)
         {
             if (!isRelativPoint)
             {
