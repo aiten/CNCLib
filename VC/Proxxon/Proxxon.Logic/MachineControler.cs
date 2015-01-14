@@ -48,6 +48,14 @@ namespace Proxxon.Logic
 			return l.ToArray();
 		}
 
+        public DTO.Machine GetMachine(int id)
+        {
+            Init();
+            var machines = _repository.Query<Proxxon.Repository.Entities.Machine>().Where((m) => m.MachineID == id).FirstOrDefault();
+
+            return ObjectConverter.NewCloneProperties<DTO.Machine, Proxxon.Repository.Entities.Machine>(machines);
+        }
+
         public void Update(DTO.Machine m)
         {
             Init();

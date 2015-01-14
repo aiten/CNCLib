@@ -79,8 +79,12 @@
     <Compile Include="Converters\InvertBoolConverter.cs" />
     <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\RoboterCommand.cs" />
+    <Compile Include="ViewModels\MachineViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ManualControlViewModel.cs" />
+    <Compile Include="Views\MachineView.xaml.cs">
+      <DependentUpon>MachineView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -98,6 +102,10 @@
     <Page Include="Resources\StylesResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MachineView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 
 namespace Proxxon.Repository.Context
 {
-    public class ProxxonInitializer : DropCreateDatabaseAlways<ProxxonContext>
+    
+//    public class ProxxonInitializer : DropCreateDatabaseAlways<ProxxonContext>
+    public class ProxxonInitializer : CreateDatabaseIfNotExists<ProxxonContext>
     {
         protected override void Seed(ProxxonContext context)
         {
 
 			context.Machines.AddRange(new List<Machine>
             {
-                new Machine{ Name="Proxxon", ComPort = "com4",  SizeX = 130m, SizeY=45m, SizeZ=81m, BaudRate=115200, BufferSize=63, CommandToUpper=false },
-                new Machine{ Name="KK100S",  ComPort = "com11", SizeX = 830m, SizeY=500m, SizeZ=100m, BaudRate=115200, BufferSize=63, CommandToUpper=false},
+                new Machine{ Name="Proxxon", ComPort = "com4",  SizeX = 130m, SizeY=45m, SizeZ=81m, BaudRate=115200, BufferSize=63, CommandToUpper=false, Default=false },
+                new Machine{ Name="KK100S",  ComPort = "com11", SizeX = 830m, SizeY=500m, SizeZ=100m, BaudRate=115200, BufferSize=63, CommandToUpper=false, Default=true},
             });
 /*
             context.Publishers.AddRange(new List<Publisher> { 

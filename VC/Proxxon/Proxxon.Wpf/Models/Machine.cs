@@ -38,5 +38,7 @@ namespace Proxxon.Wpf.Models
 		public int BufferSize { get; set; }
 
 		public bool CommandToUpper { get; set; }
+
+        public bool Default { get; set; }
 	}
 }

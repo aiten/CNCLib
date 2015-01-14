@@ -1,0 +1,60 @@
+﻿<Window x:Class="Proxxon.Wpf.MachineView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Proxxon.Wpf.ViewModels"
+        Title="Machine" Height="390" Width="380" Closing="Window_Closing">
+    <Window.DataContext>
+        <vm:MachineViewModel />
+    </Window.DataContext>
+    <StackPanel Margin="10,10,10,33">
+        <StackPanel Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <Button Command="{Binding SaveMachineCommand}" Content="Save"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"/>
+        </StackPanel>
+        
+        <TabControl Margin="0,0,0,10" >
+            <TabItem Header="Setup">
+                <StackPanel >
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Name" Width="150"/>
+                        <TextBox Text="{Binding MachineName}" VerticalAlignment="Center" Width="100"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="COM-Port" Width="150"/>
+                        <TextBox Text="{Binding ComPort}" VerticalAlignment="Center" Width="100"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="ToUpper" Width="150" />
+                        <CheckBox Content="ToUpper" IsChecked="{Binding CommandToUpper}" VerticalAlignment="Center"    />
+                    </StackPanel>
+                    <StackPanel  Orientation="Horizontal">
+                        <Label Content="Buffersize" Width="150"/>
+                        <TextBox Text="{Binding BufferSize}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="BaudRate" Width="150" />
+                        <TextBox Text="{Binding BaudRate}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Size X" Width="150" />
+                        <TextBox Text="{Binding SizeX}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Size Y" Width="150" />
+                        <TextBox Text="{Binding SizeY}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Size Z" Width="150" />
+                        <TextBox Text="{Binding SizeZ}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Default" Width="150" />
+                        <CheckBox Content="Default" IsChecked="{Binding Default}" VerticalAlignment="Center"    />
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</Window>

@@ -17,5 +17,6 @@ namespace Proxxon.Logic.DTO
 		public decimal SizeZ { get; set; }
 		public int BufferSize { get; set; }
 		public bool CommandToUpper { get; set; }
+        public bool Default { get; set; }
 	}
 }
