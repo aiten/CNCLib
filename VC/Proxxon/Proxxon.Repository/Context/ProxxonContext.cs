@@ -27,7 +27,18 @@ namespace Proxxon.Repository.Context
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Configurations.Add(new MachineMapping()); 
+            modelBuilder.Configurations.Add(new MachineMapping());
+
+            modelBuilder.Entity<Machine>().Property((m) => m.Name).
+                IsRequired().
+                HasMaxLength(64);
+
+            modelBuilder.Entity<Machine>().Property((m) => m.ComPort).
+                IsRequired().
+                HasMaxLength(32);
+
+            modelBuilder.Entity<Machine>().Property((m) => m.Default).IsRequired();
+            
             base.OnModelCreating(modelBuilder);
         }
 

@@ -17,10 +17,12 @@
 */
 
 using Framework.Wpf.Helpers;
+using System.Windows;
 
 namespace Framework.Wpf.ViewModels
 {
     public class BaseViewModel : NotificationObject
     {
+        public Window ViewWindow { get; set; }
     }
 }

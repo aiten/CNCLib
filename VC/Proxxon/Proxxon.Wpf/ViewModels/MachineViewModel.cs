@@ -45,7 +45,22 @@ namespace Proxxon.Wpf.ViewModels
         public void LoadMachine(int machineID)
         {
             AddNewMachine = machineID <= 0;
-            if (!AddNewMachine)
+            if (AddNewMachine)
+            {
+                _currentMachine = new Models.Machine()
+                {
+                    Name = "New",
+                    ComPort = "comX",
+                    SizeX = 130m,
+                    SizeY = 45m,
+                    SizeZ = 81m,
+                    BaudRate = 115200,
+                    BufferSize = 63,
+                    CommandToUpper = false,
+                    Default = false
+                };
+            }
+            else
             {
                 _currentMachine = ObjectConverter.NewCloneProperties<Models.Machine, Proxxon.Logic.DTO.Machine>(new MachineControler().GetMachine(machineID));
             }
@@ -73,7 +88,7 @@ namespace Proxxon.Wpf.ViewModels
 
         public string ComPort
         {
-			get { return string.IsNullOrEmpty(_currentMachine.ComPort) ? "com4" : _currentMachine.ComPort; }
+			get { return _currentMachine.ComPort; }
             set { SetProperty(() => _currentMachine.ComPort == value, () => _currentMachine.ComPort = value); }
         }
 
@@ -135,6 +150,7 @@ namespace Proxxon.Wpf.ViewModels
                 new MachineControler().Update(_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>());
             }
             LoadMachine(id);
+            ViewWindow.Close();
         }
 		public bool CanSaveMachine()
 		{
@@ -144,9 +160,17 @@ namespace Proxxon.Wpf.ViewModels
         public void DeleteMachine()
         {
             new MachineControler().Delete(_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>());
-            ;
+            ViewWindow.Close();
         }
         public bool CanDeleteMachine()
+        {
+            return !AddNewMachine;
+        }
+        public void AddMachine()
+        {
+            LoadMachine(-1);
+        }
+        public bool CanAddMachine()
         {
             return !AddNewMachine;
         }
@@ -157,6 +181,7 @@ namespace Proxxon.Wpf.ViewModels
 
 		public ICommand SaveMachineCommand { get { return new DelegateCommand(SaveMachine, CanSaveMachine); } }
         public ICommand DeleteMachineCommand { get { return new DelegateCommand(DeleteMachine, CanDeleteMachine); } }
+        public ICommand AddMachineCommand { get { return new DelegateCommand(AddMachine, CanAddMachine); } }
 
         #endregion
     }
