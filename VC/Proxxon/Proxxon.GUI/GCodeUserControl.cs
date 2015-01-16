@@ -2,7 +2,7 @@
 /*
   This file is part of CNCLib - A library for stepper motors.
 
-  Copyright (c) 2013-2014 Herbert Aitenbichler
+  Copyright (c) 2013-2015 Herbert Aitenbichler
 
   CNCLib is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Proxxon.GUI
 		public GCoderUserControlEventArgs()
 		{
 		}
-		public SpaceCoordinate GCodePosition { get; set; }
+		public Point3D GCodePosition { get; set; }
 	}
 
 	#endregion
@@ -130,17 +130,17 @@ namespace Proxxon.GUI
 			return SizeY - (yy + OffsetY);
 		}
 
-		SpaceCoordinate FromClient(Point pt)
+		Point3D FromClient(Point pt)
 		{
 			// with e.g.  867
 			// max pt.X = 686 , pt.x can be 0
-			return new SpaceCoordinate(
+			return new Point3D(
 							AdjustX(Tools.MulDiv(SizeX, pt.X, ClientSize.Width - 1, 3)),
 							AdjustY(Tools.MulDiv(SizeY, pt.Y, ClientSize.Height - 1, 3)),
 							0);
 		}
 
-		Point ToClient(SpaceCoordinate pt)
+		Point ToClient(Point3D pt)
 		{
 			decimal ptx = pt.X.HasValue ? pt.X.Value : 0;
 			decimal pty = pt.Y.HasValue ? pt.Y.Value : 0;
@@ -154,7 +154,7 @@ namespace Proxxon.GUI
 		#region Drag/Drop
 
 		private bool _isdragging = false;
-		private SpaceCoordinate _mouseDown;
+		private Point3D _mouseDown;
 		private decimal _mouseDownOffsetX;
 		private decimal _mouseDownOffsetY;
 
@@ -179,7 +179,7 @@ namespace Proxxon.GUI
 
 			if (_isdragging)
 			{
-				SpaceCoordinate c = FromClient(e.Location);
+				Point3D c = FromClient(e.Location);
 				decimal newX = _mouseDownOffsetX - (c.X.Value - _mouseDown.X.Value);
 				decimal newY = _mouseDownOffsetY + (c.Y.Value - _mouseDown.Y.Value);
 				_offsetX = newX; _offsetY = newY;
@@ -225,7 +225,7 @@ namespace Proxxon.GUI
 		Pen _falseLine  = new Pen(Color.Black, 1);
 		Pen _NoMove		= new Pen(Color.Blue, 1);
 
-		public void DrawLine(Command cmd, object param, Command.MoveType movetype, SpaceCoordinate ptFrom, SpaceCoordinate ptTo)
+		public void DrawLine(Command cmd, object param, Command.MoveType movetype, Point3D ptFrom, Point3D ptTo)
 		{
 			PaintEventArgs e = (PaintEventArgs) param;
 
@@ -242,7 +242,7 @@ namespace Proxxon.GUI
 				e.Graphics.DrawLine(GetPen(movetype), from, to);
 			}
 		}
-		public void DrawEllipse(Command cmd, object param, Command.MoveType movetype, SpaceCoordinate ptFrom, int xradius, int yradius)
+		public void DrawEllipse(Command cmd, object param, Command.MoveType movetype, Point3D ptFrom, int xradius, int yradius)
 		{
 			PaintEventArgs e = (PaintEventArgs)param;
 			Point from = ToClient(ptFrom);

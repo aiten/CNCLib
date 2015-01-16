@@ -20,8 +20,8 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Button Click="Button_ManualControlClick" Content="Manual Control" IsEnabled="{Binding Connected}" Margin="0,0,10,0"  />
-            <Button Click="Button_PaintClick" Content="Paint" IsEnabled="{Binding Connected}" Width="100"  />
+            <Button Click="Button_ManualControlClick" Content="Manual Control" Margin="0,0,10,0"  />
+            <Button Click="Button_PaintClick" Content="Paint" Width="100"  />
         </StackPanel>
     </StackPanel>
 </Window>

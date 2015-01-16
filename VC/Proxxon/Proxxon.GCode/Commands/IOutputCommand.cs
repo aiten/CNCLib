@@ -2,7 +2,7 @@
 /*
   This file is part of CNCLib - A library for stepper motors.
 
-  Copyright (c) 2013-2014 Herbert Aitenbichler
+  Copyright (c) 2013-2015 Herbert Aitenbichler
 
   CNCLib is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ namespace Proxxon.GCode.Commands
 {
 	public interface IOutputCommand
 	{
-		void DrawLine(Command cmd, object param, Command.MoveType movetype, SpaceCoordinate ptFrom, SpaceCoordinate ptTo);
-		void DrawEllipse(Command cmd, object param, Command.MoveType movetype, SpaceCoordinate ptFrom, int xradius, int yradius);
+		void DrawLine(Command cmd, object param, Command.MoveType movetype, Point3D ptFrom, Point3D ptTo);
+		void DrawEllipse(Command cmd, object param, Command.MoveType movetype, Point3D ptFrom, int xradius, int yradius);
 	}
 }

@@ -20,36 +20,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Framework.Tools;
+using System.Threading.Tasks;
 
-namespace Proxxon.GCode.Commands
+namespace Framework.Tools
 {
-	[IsGCommand("#")]
-	class SetParameterCommand : Command
-    {
-		#region crt + factory
+	public class Vector3D
+	{
+		public Point3D From { get; set; }
 
-		public SetParameterCommand()
-		{
-			Code = "#";
-		}
-
-		#endregion
-
-		#region GCode
-		public override string[] GetGCodeCommands(Point3D startfrom)
-		{
-			string[] ret = new string[] 
-            {
-                GCodeAdd
-            };
-			return ret;
-		}
-
-		#endregion
-
-		#region Draw
-
-		#endregion
+		public Point3D To { get; set; }
 	}
 }
