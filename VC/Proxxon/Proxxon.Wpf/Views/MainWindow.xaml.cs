@@ -25,20 +25,6 @@ namespace Proxxon.Wpf
             InitializeComponent();
         }
 
-		private void Button_PaintClick(object sender, RoutedEventArgs e)
-		{
-			using (Proxxon.GUI.PaintForm form = new Proxxon.GUI.PaintForm())
-			{
-				form.ShowDialog();
-			}
-		}
-
-		private void Button_ManualControlClick(object sender, RoutedEventArgs e)
-        {
-			
-			new ManualControl().ShowDialog();
-		}
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
 			Framework.Tools.Singleton<Framework.Logic.ArduinoSerialCommunication>.Free();

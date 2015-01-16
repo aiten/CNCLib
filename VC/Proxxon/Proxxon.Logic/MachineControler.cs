@@ -10,58 +10,42 @@ using System.Data.Entity;
 
 namespace Proxxon.Logic
 {
-    public class MachineControler
+    public class MachineControler : ControlerBase
     {
-		private const string _connectionString = @"Data Source=c:\tmp\Database.sdf";
-		private ProxxonRepository _repository;
-        private ProxxonContext _context;
-
-		private void Init()
-		{
-			AppDomain.CurrentDomain.SetData("DataDirectory", @"c:\tmp");
-/*
-			using (var context = new ProxxonContext(_connectionString))
-			{
-				System.Data.Entity.Database.SetInitializer<ProxxonContext>(new ProxxonInitializer());
-				context.Database.Initialize(true);
-			}        
-*/
-			_repository = new ProxxonRepository(_context=new ProxxonContext(_connectionString));
-		}
-
 		public DTO.Machine[] GetMachines()
 		{
-			Init();
-			var machines = _repository.Query<Proxxon.Repository.Entities.Machine>().ToList();
+			var machines = Repository.Query<Proxxon.Repository.Entities.Machine>().ToList();
 
 			List<DTO.Machine> l = new List<DTO.Machine>();
 
             l.AddCloneProperties(machines);
-
-            //foreach (Proxxon.Repository.Entities.Machine dm in machines)
-            //{
-            //    var x = new DTO.Machine();
-            //    ObjectConverter.CopyProperties(x, dm);
-            //    l.Add(x);
-            //}
 
 			return l.ToArray();
 		}
 
         public DTO.Machine GetMachine(int id)
         {
-            Init();
-            var machines = _repository.Query<Proxxon.Repository.Entities.Machine>().Where((m) => m.MachineID == id).FirstOrDefault();
+            var machines = Repository.Query<Proxxon.Repository.Entities.Machine>().Where((m) => m.MachineID == id).FirstOrDefault();
 
             return ObjectConverter.NewCloneProperties<DTO.Machine, Proxxon.Repository.Entities.Machine>(machines);
         }
 
         public void Update(DTO.Machine m)
         {
-            Init();
-
-            _context.Entry(m.NewCloneProperties<Proxxon.Repository.Entities.Machine, DTO.Machine>()).State = EntityState.Modified; 
-            _context.SaveChanges(); 
+           Context.Entry(m.NewCloneProperties<Proxxon.Repository.Entities.Machine, DTO.Machine>()).State = EntityState.Modified;
+           Context.SaveChanges(); 
+        }
+        public int Add(DTO.Machine m)
+        {
+            var entity = m.NewCloneProperties<Proxxon.Repository.Entities.Machine, DTO.Machine>();
+            Context.Entry(entity).State = EntityState.Added;
+            Context.SaveChanges();
+            return entity.MachineID;
+        }
+        public void Delete(DTO.Machine m)
+        {
+            Context.Entry(m.NewCloneProperties<Proxxon.Repository.Entities.Machine, DTO.Machine>()).State = EntityState.Deleted;
+            Context.SaveChanges();
         }
     }
 }

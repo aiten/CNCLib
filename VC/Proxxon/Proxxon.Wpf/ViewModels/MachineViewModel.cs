@@ -39,11 +39,17 @@ namespace Proxxon.Wpf.ViewModels
     {
         public MachineViewModel()
 		{
+            AddNewMachine = false;
 		}
 
-        public void LoadMachine(Models.Machine machine)
+        public void LoadMachine(int machineID)
         {
-            _currentMachine = ObjectConverter.NewCloneProperties<Models.Machine, Proxxon.Logic.DTO.Machine>(new MachineControler().GetMachine(machine.MachineID));
+            AddNewMachine = machineID <= 0;
+            if (!AddNewMachine)
+            {
+                _currentMachine = ObjectConverter.NewCloneProperties<Models.Machine, Proxxon.Logic.DTO.Machine>(new MachineControler().GetMachine(machineID));
+            }
+
             OnPropertyChanged(() => MachineName);
             OnPropertyChanged(() => ComPort);
             OnPropertyChanged(() => BaudRate);
@@ -112,23 +118,45 @@ namespace Proxxon.Wpf.ViewModels
 
 		#endregion
 
+        public bool AddNewMachine { get; set; }
+        
         #region Operations
 
 		public void SaveMachine()
 		{
-            new MachineControler().Update(_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>());
-            LoadMachine(_currentMachine);
-		}
+            int id;
+            if (AddNewMachine)
+            {
+                id = new MachineControler().Add(_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>());
+            }
+            else
+            {
+                id = _currentMachine.MachineID;
+                new MachineControler().Update(_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>());
+            }
+            LoadMachine(id);
+        }
 		public bool CanSaveMachine()
 		{
 			return true;
 		}
+
+        public void DeleteMachine()
+        {
+            new MachineControler().Delete(_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>());
+            ;
+        }
+        public bool CanDeleteMachine()
+        {
+            return !AddNewMachine;
+        }
 
         #endregion
 
         #region Commands
 
 		public ICommand SaveMachineCommand { get { return new DelegateCommand(SaveMachine, CanSaveMachine); } }
+        public ICommand DeleteMachineCommand { get { return new DelegateCommand(DeleteMachine, CanDeleteMachine); } }
 
         #endregion
     }

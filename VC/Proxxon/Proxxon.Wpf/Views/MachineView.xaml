@@ -10,6 +10,7 @@
         <StackPanel Margin="0,0,0,10">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <Button Command="{Binding SaveMachineCommand}" Content="Save"  />
+                <Button Command="{Binding DeleteMachineCommand}" Content="Delete" Margin="10,0,0,0"  />
             </StackPanel>
             <StackPanel Orientation="Horizontal"/>
         </StackPanel>

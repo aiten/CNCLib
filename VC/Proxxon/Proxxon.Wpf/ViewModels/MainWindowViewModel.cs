@@ -39,12 +39,11 @@ namespace Proxxon.Wpf.ViewModels
     {
         public MainWindowViewModel()
 		{
-            LoadMachines();
-
+            LoadMachines(-1);
 			ResetOnConnect = false;
 		}
 
-        private void LoadMachines()
+        private void LoadMachines(int defaultmachineid)
         {
             var machines = new ObservableCollection<Models.Machine>();
 
@@ -52,9 +51,14 @@ namespace Proxxon.Wpf.ViewModels
 
             Machines = machines;
 
-            var defaultmachine = machines.First((m) => m.Default);
+            var defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultmachineid);
+
             if (defaultmachine == null)
+                defaultmachine = machines.FirstOrDefault((m) => m.Default);
+
+            if (defaultmachine == null && machines.Count > 0)
                 defaultmachine = machines[0];
+            
             Machine = defaultmachine;
         }
  
@@ -71,51 +75,10 @@ namespace Proxxon.Wpf.ViewModels
 		{
             get { return _selectedMachine; }
 			set {
-<<<<<<< .mine
                     AssignProperty(ref _selectedMachine, value);
                     if (value!=null)
                         SetGlobal();
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
-                    _selectedMachine = value;
-
-				AssignProperty(() => 
-                    {
-                        if (value == null)
-                            _currentMachine = new Models.Machine();
-                        else
-							_currentMachine = value.CloneProperties();
-						OnPropertyChanged(() => ComPort);
-						OnPropertyChanged(() => BaudRate);
-						OnPropertyChanged(() => CommandToUpper);
-						OnPropertyChanged(() => SizeX);
-						OnPropertyChanged(() => SizeY);
-						OnPropertyChanged(() => SizeZ);
-						OnPropertyChanged(() => BufferSize);
-						Settings.Instance.SizeX = SizeX;
-						Settings.Instance.SizeY = SizeY;
-						Settings.Instance.SizeZ = SizeZ;
-					}
-				);
-			}
->>>>>>> .theirs
 		}
 
         Models.Machine _selectedMachine;
@@ -129,93 +92,9 @@ namespace Proxxon.Wpf.ViewModels
 
         public bool Connected
         {
-            //get { return true; }
             get { return Com.IsConnected; }
         }
 
-<<<<<<< .mine
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
-        public string ComPort
-        {
-			get { return string.IsNullOrEmpty(_currentMachine.ComPort) ? "com4" : _currentMachine.ComPort; }
-            set { SetProperty(() => _currentMachine.ComPort == value, () => _currentMachine.ComPort = value); }
-        }
-
-		public int BaudRate
-		{
-			get { return _currentMachine.BaudRate; }
-            set { SetProperty(() => _currentMachine.BaudRate == value, () => _currentMachine.BaudRate = value); }
-		}
-
-		public bool CommandToUpper
-		{
-			get { return _currentMachine.CommandToUpper; }
-			set { SetProperty(() => _currentMachine.CommandToUpper == value, () => _currentMachine.CommandToUpper = value); }
-		}
-
-		public int BufferSize
-		{
-			get { return _currentMachine.BufferSize; }
-			set { int buffersize = Com.ArduinoBuffersize; SetProperty(ref  buffersize, value); Com.ArduinoBuffersize = _currentMachine.BufferSize = buffersize; }
-		}
-
-		public decimal SizeX
-		{
-			get { return _currentMachine.SizeX; }
-			set { Settings.Instance.SizeX = value;  SetProperty(() => _currentMachine.SizeX == value, () => _currentMachine.SizeX = value); }
-		}
-		public decimal SizeY
-		{
-			get { return _currentMachine.SizeY; }
-			set { Settings.Instance.SizeY = value; SetProperty(() => _currentMachine.SizeY == value, () => _currentMachine.SizeY = value); }
-		}
-		public decimal SizeZ
-		{
-			get { return _currentMachine.SizeZ; }
-			set { Settings.Instance.SizeZ = value; SetProperty(() => _currentMachine.SizeZ == value, () => _currentMachine.SizeZ = value); }
-		}
-
->>>>>>> .theirs
 		#endregion
 
 		private bool _resetOnConnect=true;
@@ -234,17 +113,10 @@ namespace Proxxon.Wpf.ViewModels
 			try
 			{
 				Com.ResetOnConnect = ResetOnConnect;
-<<<<<<< .mine
                 Com.CommandToUpper = Machine.CommandToUpper;
                 Com.BaudRate = (int)Machine.BaudRate;
                 Com.Connect(Machine.ComPort);
                 SetGlobal();
-=======
-				Com.CommandToUpper = CommandToUpper;
-				Com.BaudRate = (int) BaudRate;
-				Com.Connect(ComPort);
-
->>>>>>> .theirs
 			}
 			catch(Exception e)
 			{
@@ -264,7 +136,7 @@ namespace Proxxon.Wpf.ViewModels
 
 		public bool CanConnect()
         {
-            return !Connected;
+            return !Connected && Machine != null;
         }
 
 		public void DisConnect()
@@ -282,12 +154,36 @@ namespace Proxxon.Wpf.ViewModels
             var dlg = new MachineView();
 
             var vm = dlg.DataContext as MachineViewModel;
-            vm.LoadMachine(Machine);
+            var mID = Machine!=null ? Machine.MachineID : -1; 
+            vm.LoadMachine(mID);
             dlg.ShowDialog();
 
-            LoadMachines();
+            LoadMachines(mID);
         }
         public bool CanSetupMachine()
+        {
+            return true;
+        }
+
+        public void ShowManualControl()
+        {
+			new ManualControl().ShowDialog();
+        }
+
+        public bool CanShowManualControl()
+        {
+            return true;
+        }
+
+        public void ShowPaint()
+        {
+            using (Proxxon.GUI.PaintForm form = new Proxxon.GUI.PaintForm())
+            {
+                form.ShowDialog();
+            }
+        }
+
+        public bool CanShowPaint()
         {
             return true;
         }
@@ -299,6 +195,8 @@ namespace Proxxon.Wpf.ViewModels
         public ICommand SetupMachineCommand { get { return new DelegateCommand(SetupMachine, CanSetupMachine); } }
  		public ICommand ConnectCommand { get { return new DelegateCommand(Connect, CanConnect); } }
 		public ICommand DisConnectCommand	{ get { return new DelegateCommand(DisConnect, CanDisConnect); } }
+		public ICommand ManualControlCommand	{ get { return new DelegateCommand(ShowManualControl, CanShowManualControl); } }
+        public ICommand PaintCommand { get { return new DelegateCommand(ShowPaint, CanShowPaint); } }
 
         #endregion
     }

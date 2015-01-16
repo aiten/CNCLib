@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\Machine.cs" />
+    <Compile Include="ControlerBase.cs" />
     <Compile Include="MachineControler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
