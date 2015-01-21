@@ -103,7 +103,7 @@ void CMotionControlBase::MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrat
 //	Part of Grbl
 
 // Arc with axis_0 and axis_1
-// all other linea
+// all other linear
 // calculate Segments with f = k * x + d (x... radius, f ... segments)
 
 #define SEGMENTS_K	4.0
@@ -194,58 +194,59 @@ void CMotionControlBase::Arc(const mm1000_t to[NUM_AXIS], mm1000_t offset0, mm10
 	Trace("Gx command with\tr=%f\tfull_segments=%f\tangular=%f\tangularG=%f\tsegments=%i\n", radius, segments_full, angular_travel, angular_travel/M_PI*180, segments);
 #endif
 
-	if (segments == 0) segments = 1;
-
-	float theta_per_segment = angular_travel / segments;
-
-	signed char arc_correction = (signed char) (ARCCORRECTION / theta_per_segment);
-	if (arc_correction < 0) arc_correction = -arc_correction;
-
-	// Vector rotation matrix values
-	float cos_T = float(1.0 - 0.5*theta_per_segment*theta_per_segment);
-	float sin_T = theta_per_segment;
-
-	float sin_Ti;
-	float cos_Ti;
-	float r_axisi;
-	unsigned short i;
-	unsigned char count = 0;
-
-	for (i = 1; i < segments; i++)
+	if (segments > 1)
 	{
-		if (count < arc_correction)
-		{
-			// Apply vector rotation matrix 
-			r_axisi = r_axis0*sin_T + r_axis1*cos_T;
-			r_axis0 = r_axis0*cos_T - r_axis1*sin_T;
-			r_axis1 = r_axisi;
-			count++;
-		}
-		else
-		{
-			// Arc correction to radius vector. Computed only every N_ARC_CORRECTION increments.
-			// Compute exact location by applying transformation matrix from initial radius vector(=-offset).
-			cos_Ti = cos(i*theta_per_segment);
-			sin_Ti = sin(i*theta_per_segment);
-			r_axis0 = -offset0 * cos_Ti + offset1 * sin_Ti;
-			r_axis1 = -offset0 * sin_Ti - offset1 * cos_Ti;
-			count = 0;
-		}
+		float theta_per_segment = angular_travel / segments;
 
-		// Update arc_target location
+		signed char arc_correction = (signed char)(ARCCORRECTION / theta_per_segment);
+		if (arc_correction < 0) arc_correction = -arc_correction;
 
-		current[axis_0] = (mm1000_t)(center_axis0 + r_axis0);
-		current[axis_1] = (mm1000_t)(center_axis1 + r_axis1);
+		// Vector rotation matrix values
+		float cos_T = float(1.0 - 0.5*theta_per_segment*theta_per_segment);
+		float sin_T = theta_per_segment;
 
-		for (axis_t x = 0; x < NUM_AXIS; x++)
+		float sin_Ti;
+		float cos_Ti;
+		float r_axisi;
+		unsigned short i;
+		unsigned char count = 0;
+
+		for (i = 1; i < segments; i++)
 		{
-			if (dist_linear[x])
+			if (count < arc_correction)
 			{
-				current[x] = to[x] - RoundMulDivI32(dist_linear[x], segments - i, segments);
+				// Apply vector rotation matrix 
+				r_axisi = r_axis0*sin_T + r_axis1*cos_T;
+				r_axis0 = r_axis0*cos_T - r_axis1*sin_T;
+				r_axis1 = r_axisi;
+				count++;
 			}
-		}
+			else
+			{
+				// Arc correction to radius vector. Computed only every N_ARC_CORRECTION increments.
+				// Compute exact location by applying transformation matrix from initial radius vector(=-offset).
+				cos_Ti = cos(i*theta_per_segment);
+				sin_Ti = sin(i*theta_per_segment);
+				r_axis0 = -offset0 * cos_Ti + offset1 * sin_Ti;
+				r_axis1 = -offset0 * sin_Ti - offset1 * cos_Ti;
+				count = 0;
+			}
 
-		MoveAbs(current, feedrate);
+			// Update arc_target location
+
+			current[axis_0] = (mm1000_t)(center_axis0 + r_axis0);
+			current[axis_1] = (mm1000_t)(center_axis1 + r_axis1);
+
+			for (axis_t x = 0; x < NUM_AXIS; x++)
+			{
+				if (dist_linear[x])
+				{
+					current[x] = to[x] - RoundMulDivI32(dist_linear[x], segments - i, segments);
+				}
+			}
+
+			MoveAbs(current, feedrate);
+		}
 	}
 
 	// Ensure last segment arrives at target location.
