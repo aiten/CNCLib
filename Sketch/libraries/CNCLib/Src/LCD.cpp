@@ -41,7 +41,7 @@ void CLcd::Init()
 
 ////////////////////////////////////////////////////////////
 
-void CLcd::Idle(unsigned int /* idletime */)
+void CLcd::Poll()
 {
 	DrawRequest(true, CLcd::DrawAll);
 }

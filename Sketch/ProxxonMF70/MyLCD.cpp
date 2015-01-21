@@ -186,9 +186,9 @@ void CMyLcd::TimerInterrupt()
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::Idle(unsigned int idletime)
+void CMyLcd::Poll()
 {
-	super::Idle(idletime);
+	super::Poll();
 
 	if (_expectButtonOff)
 	{

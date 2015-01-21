@@ -46,7 +46,7 @@ public:
 	CMyLcd()												{ _curretDraw = NULL; _expectButtonOff = false; _rotaryFocus = RotaryMainPage; }
 
 	virtual void Init();
-	virtual void Idle(unsigned int idletime);
+	virtual void Poll();
 	virtual void TimerInterrupt();
 
 	typedef bool(CMyLcd::*DrawFunction)(bool setup);

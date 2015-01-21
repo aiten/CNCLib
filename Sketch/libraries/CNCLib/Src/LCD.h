@@ -41,7 +41,7 @@ public:
 	virtual void Init();
 	virtual void DrawRequest(bool forcedraw, EDrawType draw);
 
-	virtual void Idle(unsigned int idletime);
+	virtual void Poll();
 	virtual void TimerInterrupt();
 
 	////////////////////////////////////////////////////////////

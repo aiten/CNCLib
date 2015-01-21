@@ -95,6 +95,7 @@ protected:
 	virtual bool Parse(CStreamReader* reader, Stream* output)=0;// abstract: specify Parser
 	virtual bool Command(char* xbuffer, Stream* output);		// execute Command (call parser)
 	virtual void Idle(unsigned int idletime);					// called after TIMEOUTCALLIDEL in idle state
+	virtual void Poll();										// call in Idle and at least e.g. 100ms (not in interrupt)
 	virtual bool IsEndOfCommandChar(char ch);					// override default End of command char, default \n \r
 	virtual void ReadAndExecuteCommand();						// read and execute commands from other source e.g. SD.File
 
@@ -112,13 +113,14 @@ private:
 
 	void ReadAndExecuteCommand(Stream* stream, Stream* output, bool filestream);	// read command until "IsEndOfCommandChar" and execute command (Serial or SD.File)
 
-	void CheckIdle();											// check idle time and call Idle every 100ms
+	void CheckIdlePoll();										// check idle time and call Idle every 100ms
 
 
 	int				_bufferidx;									// read Buffer index
 
 	unsigned long	_lasttime;									// time last char received
 	unsigned long	_timeBlink;									// time to change blink state
+	unsigned long	_timePoll;									// time call poll next
 
 	CStepper::SEvent _oldStepperEvent;
 

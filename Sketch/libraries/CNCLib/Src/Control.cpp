@@ -120,12 +120,17 @@ void CControl::Continue()
 
 ////////////////////////////////////////////////////////////
 
-
 void CControl::Idle(unsigned int idletime)
+{
+}
+
+////////////////////////////////////////////////////////////
+
+void CControl::Poll()
 {
 #ifndef _NO_LCD
 	if (CLcd::GetInstance())
-		CLcd::GetInstance()->Idle(idletime);
+		CLcd::GetInstance()->Poll();
 #endif
 }
 
@@ -294,7 +299,7 @@ void CControl::FileReadAndExecuteCommand(Stream* stream, Stream* output)
 void CControl::Run()
 {
 	_bufferidx = 0;
-	_lasttime = _timeBlink = 0;
+	_lasttime = _timeBlink = _timePoll = 0;
 
 	Init();
 	Initialized();
@@ -308,10 +313,10 @@ void CControl::Run()
 		while (SerialReadAndExecuteCommand())
 		{
 			// wait until serial command processed
-			CheckIdle();
+			CheckIdlePoll();
 		}
 
-		CheckIdle();
+		CheckIdlePoll();
 
 		ReadAndExecuteCommand();
 	}
@@ -319,13 +324,20 @@ void CControl::Run()
 
 ////////////////////////////////////////////////////////////
 
-void CControl::CheckIdle()
+void CControl::CheckIdlePoll()
 {
 	unsigned long time = millis();
 
 	if (_lasttime + TIMEOUTCALLIDEL < time)
 	{
 		Idle(time - _lasttime);
+		Poll();
+		_timePoll = time;
+	}
+	else if(_timePoll + TIMEOUTCALLPOLL < time)
+	{
+		Poll();
+		_timePoll = time;
 	}
 
 	if (_timeBlink < time)
@@ -417,7 +429,7 @@ void CControl::Delay(unsigned long ms)
 	{
 #ifndef _NO_LCD
 		if (CLcd::GetInstance())
-			CLcd::GetInstance()->Idle(0);
+			CLcd::GetInstance()->Poll();
 #endif
 	}
 }
