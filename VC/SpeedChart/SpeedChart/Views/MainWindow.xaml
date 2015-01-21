@@ -36,11 +36,11 @@
             <Button Content="-" Grid.Column="2" Command="{Binding LoadPrevCommand}"/>
             <Label Content="{Binding FileNo}"  Grid.Column="3"/>
             <Button Content="+" Grid.Column="4" Command="{Binding LoadNextCommand}"/>
-            <Button Content="ZoomOut" Grid.Column="5" Click="ZoomOut_Click"/>
-            <Button Content="ZoomIn" Grid.Column="6" Click="ZoomIn_Click"/>
-            <Button Content="X+" Grid.Column="7" Click="XP_Click"/>
-            <Button Content="X-" Grid.Column="8" Click="XM_Click"/>
-            <Label Content="x" x:Name="_pos" Grid.Column="9"/>
+            <Button Content="ZoomOut" Grid.Column="5" Command="{Binding ZoomOutCommand}"/>
+            <Button Content="ZoomIn" Grid.Column="6" Command="{Binding ZoomInCommand}"/>
+            <Button Content="X+" Grid.Column="7" Command="{Binding XOfsPlusCommand}"/>
+            <Button Content="X-" Grid.Column="8" Command="{Binding XOfsMinusCommand}"/>
+            <Label Content="{Binding Content}" Grid.Column="9"/>
         </Grid>
         <local:SpeedChartControl x:Name="_chart" Grid.Row="1" Grid.Column="0"/>
 

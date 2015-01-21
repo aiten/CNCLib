@@ -22,6 +22,8 @@ namespace SpeedChart.ViewModels
         int _fileNo = 1;
         bool _loaded = false;
 
+        string _content;
+
         public MainWindowViewModel()
         {
             _directory = System.IO.Path.GetTempPath();
@@ -34,6 +36,7 @@ namespace SpeedChart.ViewModels
         {
             private readonly Action _command;
             private readonly Func<bool> _canExecute;
+
             public event EventHandler CanExecuteChanged
             {
                 add { CommandManager.RequerySuggested += value; }
@@ -47,8 +50,8 @@ namespace SpeedChart.ViewModels
                 _canExecute = canExecute;
                 _command = command;
             }
-
-            public void Execute(object parameter)
+            
+            public async void Execute(object parameter)
             {
                 _command();
             }
@@ -58,6 +61,7 @@ namespace SpeedChart.ViewModels
                 return _canExecute == null || _canExecute();
             }
         }
+
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -79,10 +83,17 @@ namespace SpeedChart.ViewModels
             get { return _fileNo; }
             set { _fileNo = value; OnPropertyChanged(); }
         }
+        public string Content
+        {
+            get { return _content ; }
+            set { _content = value; OnPropertyChanged(); }
+        }
 
         #endregion
 
         #region Operations
+
+        #region LoadFile
 
         public void Browse()
         {
@@ -184,6 +195,69 @@ namespace SpeedChart.ViewModels
             return _loaded &&  File.Exists(GetFilename(FileNo - 1));
         }
 
+        #endregion 
+
+        #region Zoom/Offset
+
+        public void ZoomIn()
+        {
+            if (CanZoomIn())
+            {
+                ViewWindow.SpeedChart.ScaleX = ViewWindow.SpeedChart.ScaleX * 1.1;
+                ViewWindow.SpeedChart.ScaleY = ViewWindow.SpeedChart.ScaleY * 1.1;
+                ViewWindow.SpeedChart.InvalidateVisual();
+            }
+        }
+
+        public bool CanZoomIn()
+        {
+            return true;
+        }
+
+        public void ZoomOut()
+        {
+            if (CanZoomOut())
+            {
+                ViewWindow.SpeedChart.ScaleX = ViewWindow.SpeedChart.ScaleX / 1.1;
+                ViewWindow.SpeedChart.ScaleY = ViewWindow.SpeedChart.ScaleY / 1.1;
+                ViewWindow.SpeedChart.InvalidateVisual();
+            }
+        }
+
+        public bool CanZoomOut()
+        {
+            return true;
+        }
+
+       public void XOfsPlus()
+        {
+            if (CanXOfsPlus())
+            {
+                ViewWindow.SpeedChart.OffsetX += 0.1 * ViewWindow.SpeedChart.ScaleX;
+                ViewWindow.SpeedChart.InvalidateVisual();
+            }
+        }
+
+        public bool CanXOfsPlus()
+        {
+            return true;
+        }
+        public void XOfsMinus()
+        {
+            if (CanXOfsMinus())
+            {
+                ViewWindow.SpeedChart.OffsetX -= 0.1 * ViewWindow.SpeedChart.ScaleX;
+                ViewWindow.SpeedChart.InvalidateVisual();
+            }
+        }
+
+        public bool CanXOfsMinus()
+        {
+            return true;
+        }
+
+        #endregion
+
         #endregion
 
         #region Commands
@@ -192,6 +266,10 @@ namespace SpeedChart.ViewModels
         public ICommand LoadCommand { get { return new DelegateCommand(Load, CanLoad); } }
         public ICommand LoadNextCommand { get { return new DelegateCommand(LoadNextFile, CanLoadNextFile); } }
         public ICommand LoadPrevCommand { get { return new DelegateCommand(LoadPrevFile, CanLoadPrevFile); } }
+        public ICommand ZoomInCommand { get { return new DelegateCommand(ZoomIn, CanZoomIn); } }
+        public ICommand ZoomOutCommand { get { return new DelegateCommand(ZoomOut, CanZoomOut); } }
+        public ICommand XOfsPlusCommand { get { return new DelegateCommand(XOfsPlus, CanXOfsPlus); } }
+        public ICommand XOfsMinusCommand { get { return new DelegateCommand(XOfsMinus, CanXOfsMinus); } }
 
         #endregion
     }
