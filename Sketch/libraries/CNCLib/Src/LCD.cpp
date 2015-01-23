@@ -36,14 +36,14 @@ void CLcd::Init()
 	_nextdrawtime = Splash() + millis();
 	_splash = true;
 
-	DrawRequest(true, CLcd::DrawAll);		//first draw doesnt return fast! call at init time
+	DrawRequest(CLcd::DrawForceAll);		//first draw doesnt return fast! call at init time
 }
 
 ////////////////////////////////////////////////////////////
 
 void CLcd::Poll()
 {
-	DrawRequest(true, CLcd::DrawAll);
+	DrawRequest(CLcd::DrawForceAll);
 }
 
 ////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ void CLcd::TimerInterrupt()
 
 ////////////////////////////////////////////////////////////
 
-void CLcd::DrawRequest(bool forcedraw, EDrawType draw)
+void CLcd::DrawRequest(EDrawType draw)
 {
 	if (_splash)
 	{
@@ -64,7 +64,7 @@ void CLcd::DrawRequest(bool forcedraw, EDrawType draw)
 		FirstDraw();
 	}
 
-	if (forcedraw || _nextdrawtime < millis())
+	if (draw==DrawForceAll || _nextdrawtime < millis())
 	{
 		Draw(draw);
 		_nextdrawtime = millis() + 333;

@@ -120,7 +120,7 @@ void CControl::Continue()
 
 ////////////////////////////////////////////////////////////
 
-void CControl::Idle(unsigned int idletime)
+void CControl::Idle(unsigned int /*idletime*/)
 {
 }
 
@@ -138,15 +138,46 @@ void CControl::Poll()
 
 bool CControl::ParseAndPrintResult(CParser *parser, Stream* output)
 {
-// send OK pre Parse => give PC time to send next
+	bool ret = true;
+
 #define SENDOKIMMEDIATELY
 #undef SENDOKIMMEDIATELY
 
 #ifdef SENDOKIMMEDIATELY 
-	if (output) output->println(MESSAGE_OK);
-#endif
+	///////////////////////////////////////////////////////////////////////////
+	// send OK pre Parse => give PC time to send next
 
-	bool ret = true;
+	if (output) output->println(MESSAGE_OK);
+
+	parser->ParseCommand();
+
+	if (parser->GetError() != NULL)
+	{
+		if (output)
+		{
+			PrintError(output);
+			output->print(parser->GetError());
+			output->print(MESSAGE_CONTROL_RESULTS);
+			output->println(_buffer);
+		}
+		ret = false;
+	}
+
+	if (parser->GetOkMessage() != NULL)
+	{
+		if (output)
+		{
+			output->print(MESSAGE_OK);
+			output->print(F(" "));
+		}
+		parser->GetOkMessage()();
+		if (output) output->println();
+	}
+
+#else
+
+	///////////////////////////////////////////////////////////////////////////
+	// send OK after Parse
 
 	parser->ParseCommand();
 
@@ -162,26 +193,18 @@ bool CControl::ParseAndPrintResult(CParser *parser, Stream* output)
 		ret = false;
 	}
 
-#ifndef SENDOKIMMEDIATELY 
 	if (output) output->print(MESSAGE_OK);
-#endif
 	if (parser->GetOkMessage() != NULL)
 	{
 		if (output)
 		{
-#ifdef SENDOKIMMEDIATELY 
-			output->print(MESSAGE_OK);
-#endif
 			output->print(F(" "));
 		}
 		parser->GetOkMessage()();
-#ifdef SENDOKIMMEDIATELY 
-		if (output) output->println();
-#endif
 	}
 
-#ifndef SENDOKIMMEDIATELY 
 	if (output) output->println();
+
 #endif
 
 	return ret;
@@ -313,10 +336,10 @@ void CControl::Run()
 		while (SerialReadAndExecuteCommand())
 		{
 			// wait until serial command processed
-			CheckIdlePoll();
+			CheckIdlePoll(true);
 		}
 
-		CheckIdlePoll();
+		CheckIdlePoll(true);
 
 		ReadAndExecuteCommand();
 	}
@@ -324,11 +347,11 @@ void CControl::Run()
 
 ////////////////////////////////////////////////////////////
 
-void CControl::CheckIdlePoll()
+void CControl::CheckIdlePoll(bool isidle)
 {
 	unsigned long time = millis();
 
-	if (_lasttime + TIMEOUTCALLIDEL < time)
+	if (isidle && _lasttime + TIMEOUTCALLIDEL < time)
 	{
 		Idle(time - _lasttime);
 		Poll();
@@ -438,15 +461,15 @@ void CControl::Delay(unsigned long ms)
 
 bool CControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
 {
-#ifndef _NO_LCD
 	switch (eventtype)
 	{
 		case CStepper::OnWaitEvent:
 
-			if (CStepper::WaitTimeCritical > (CStepper::EWaitType) (unsigned int) addinfo && CLcd::GetInstance())
-				CLcd::GetInstance()->DrawRequest(false, CLcd::DrawStepperPos);
+			if (CStepper::WaitTimeCritical > (CStepper::EWaitType) (unsigned int)addinfo)
+			{
+				CheckIdlePoll(false);
+			}
 			break;
 	}
-#endif
 	return _oldStepperEvent.Call(stepper, eventtype, addinfo);
 }

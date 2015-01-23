@@ -113,7 +113,7 @@ private:
 
 	void ReadAndExecuteCommand(Stream* stream, Stream* output, bool filestream);	// read command until "IsEndOfCommandChar" and execute command (Serial or SD.File)
 
-	void CheckIdlePoll();										// check idle time and call Idle every 100ms
+	void CheckIdlePoll(bool isidle);							// check idle time and call Idle every 100ms
 
 
 	int				_bufferidx;									// read Buffer index

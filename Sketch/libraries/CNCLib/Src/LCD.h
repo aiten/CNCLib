@@ -34,12 +34,13 @@ public:
 
 	enum EDrawType
 	{
+		DrawForceAll,
 		DrawAll,
 		DrawStepperPos
 	};
 
 	virtual void Init();
-	virtual void DrawRequest(bool forcedraw, EDrawType draw);
+	virtual void DrawRequest(EDrawType draw);
 
 	virtual void Poll();
 	virtual void TimerInterrupt();

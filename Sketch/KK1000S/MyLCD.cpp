@@ -29,6 +29,8 @@
 #include <CNCLib.h>
 #include <CNCLibEx.h>
 
+#include <Beep.h>
+
 #include "MyLcd.h"
 #include "MyControl.h"
 #include "RotaryButton.h"
@@ -179,6 +181,11 @@ void CMyLcd::TimerInterrupt()
 		case CRotaryButton<rotarypos_t, ROTARY_ACCURACY>::Underflow:
 			break;
 	}
+	if (_expectButtonOff)
+	{
+		if (HALFastdigitalRead(ROTARY_ENC) != ROTARY_ENC_ON)
+			_expectButtonOff = false;
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -187,12 +194,7 @@ void CMyLcd::Poll()
 {
 	super::Poll();
 
-	if (_expectButtonOff)
-	{
-		if (HALFastdigitalRead(ROTARY_ENC) != ROTARY_ENC_ON)
-			_expectButtonOff = false;
-	}
-	else if (HALFastdigitalRead(ROTARY_ENC) == ROTARY_ENC_ON)
+	if (!_expectButtonOff && HALFastdigitalRead(ROTARY_ENC) == ROTARY_ENC_ON)
 	{
 		_expectButtonOff = true;
 		ButtonPress();

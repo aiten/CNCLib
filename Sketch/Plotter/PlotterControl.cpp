@@ -98,7 +98,7 @@ void CPlotter::PenDown()
 		CStepper::GetInstance()->Wait(1);
 #ifdef __USE_LCD__
 		// Lcd.DrawRequest(true,CLcd::DrawAll); => delay off movementbuffer
-		Lcd.DrawRequest(true,CLcd::DrawAll);
+		Lcd.DrawRequest(CLcd::DrawForceAll);
 #endif
 		CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penDown.max,X_AXIS, CHPGLParser::_state.penDown.acc, CHPGLParser::_state.penDown.dec);
 		CStepper::GetInstance()->SetAccDec(Y_AXIS, CHPGLParser::_state.penDown.acc, CHPGLParser::_state.penDown.dec);
