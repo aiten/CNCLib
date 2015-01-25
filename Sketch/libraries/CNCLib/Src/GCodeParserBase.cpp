@@ -342,6 +342,8 @@ bool CGCodeParserBase::GCommand(unsigned char gcode)
 		case 21:	G21Command();  return true;
 		case 28:	G28Command(); return true;
 		case 31:	G31Command(); return true;
+		case 61:	G61Command(); return true;
+		case 64:	G64Command(); return true;
 		case 90:	G90Command(); return true;
 		case 91:	G91Command(); return true;
 		case 92:	G92Command(); return true;
