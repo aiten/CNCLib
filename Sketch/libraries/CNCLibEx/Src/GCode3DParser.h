@@ -25,6 +25,13 @@
 #include <SPI.h>
 #include <SD.h>
 
+////////////////////////////////////////////////////////////
+
+#define MAXPATHNAME	128
+#define MAXFILENAME	8
+#define MAXEXTNAME	3
+#define MAXFILEEXTNAME	(MAXFILENAME+1+MAXEXTNAME)
+
 ////////////////////////////////////////////////////////
 //
 // GCode Parser for 3d printer extensions
@@ -41,6 +48,9 @@ public:
 
 	static File& GetExecutingFile()								{ return _state._file; }
 	static void  SetExecutingFilePosition(unsigned long pos)	{ _state._printfilepos = pos; }
+
+	static unsigned long GetExecutingFilePosition()				{ return _state._printfilepos; }
+	static unsigned long GetExecutingFileSize()					{ return _state._printfilesize; }
 
 	static void Init()											{ super::Init(); _state.Init(); }
 
@@ -60,16 +70,19 @@ private:
 
 	struct GCodeState
 	{
-		bool				_isM28;						// SD write mode
-		File				_file;
 		unsigned long		_printfilepos;
 		unsigned long		_printfilesize;
+		File				_file;
+
+		bool				_isM28;						// SD write mode
+		char				_filename[MAXFILEEXTNAME + 1];
 
 		void Init()
 		{
 			_printfilesize = 0;
 			_printfilepos = 0;
 			_isM28 = false;
+			_filename[0] = 0;
 		}
 	};
 

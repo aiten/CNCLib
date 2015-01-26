@@ -33,10 +33,6 @@
 
 ////////////////////////////////////////////////////////////
 
-#define MAXPATHNAME	128
-
-////////////////////////////////////////////////////////////
-
 struct CGCode3DParser::GCodeState CGCode3DParser::_state;
 
 ////////////////////////////////////////////////////////////
@@ -450,8 +446,8 @@ bool CGCode3DParser::GetFileName(char*buffer)
 			*(buffer++) = ch;
 			length++;
 
-			if ((dotidx == 0 && length > 8) ||
-				(dotidx == 1 && length > 3))
+			if ((dotidx == 0 && length > MAXFILENAME) ||
+				(dotidx == 1 && length > MAXEXTNAME))
 			{
 				Error(MESSAGE_PARSER3D_ILLEGAL_FILENAME);
 				return false;

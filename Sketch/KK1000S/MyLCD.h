@@ -85,7 +85,7 @@ protected:
 		DebugPage = 1,
 		AbsPage = 2,
 		PresetPage = 3,
-		StartSDPage = 4,
+		SDPage = 4,
 		PausePage = 5,
 		ErrorPage = 6,
 		MenuPage = 7,
