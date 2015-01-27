@@ -83,6 +83,7 @@ public:
 	//////////////////////////////////////////
 
 	const char* GetBuffer()				{ return _buffer; }
+	virtual bool IsEndOfCommandChar(char ch);					// override default End of command char, default \n \r
 
 protected:
 
@@ -96,7 +97,6 @@ protected:
 	virtual bool Command(char* xbuffer, Stream* output);		// execute Command (call parser)
 	virtual void Idle(unsigned int idletime);					// called after TIMEOUTCALLIDEL in idle state
 	virtual void Poll();										// call in Idle and at least e.g. 100ms (not in interrupt)
-	virtual bool IsEndOfCommandChar(char ch);					// override default End of command char, default \n \r
 	virtual void ReadAndExecuteCommand();						// read and execute commands from other source e.g. SD.File
 
 	virtual void TimerInterrupt();								// called from timer (timer0 on AVR) 

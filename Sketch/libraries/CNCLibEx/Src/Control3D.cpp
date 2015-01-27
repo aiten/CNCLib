@@ -17,6 +17,10 @@
 */
 ////////////////////////////////////////////////////////
 
+#define _CRT_SECURE_NO_WARNINGS
+
+////////////////////////////////////////////////////////////
+
 #include <stdio.h>
 #include <stdio.h>
 #include <string.h>
@@ -46,8 +50,10 @@ void CControl3D::Init()
 void CControl3D::Initialized()
 {
 	super::Initialized();
+	char tmp[8 + 3 + 1];
+	strcpy_P(tmp, F("startup.nc"));
 
-	CGCode3DParser::GetExecutingFile() = SD.open("startup.nc", FILE_READ);
+	CGCode3DParser::GetExecutingFile() = SD.open(tmp, FILE_READ);
 
 	if (CGCode3DParser::GetExecutingFile())
 	{

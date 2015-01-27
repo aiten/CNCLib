@@ -118,10 +118,10 @@ public:
 	virtual void open(int mode)
 	{
 		if (mode == FILE_READ)
-			fopen_s(&_f, _OSfilename, "r");
+			fopen_s(&_f, _OSfilename, "rb");
 		else
 		{
-			fopen_s(&_f, _OSfilename, "w");
+			fopen_s(&_f, _OSfilename, "wb");
 			if (_f != NULL)
 			{
 				fclose(_f);

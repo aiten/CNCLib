@@ -33,10 +33,6 @@
 
 ////////////////////////////////////////////////////////////
 
-#define MAXPATHNAME	128
-
-////////////////////////////////////////////////////////////
-
 struct CGCode3DParser::GCodeState CGCode3DParser::_state;
 
 ////////////////////////////////////////////////////////////
@@ -212,6 +208,7 @@ void CGCode3DParser::M23Command()
 		return;
 	}
 
+	strcpy(_state._printfilename, filename);		//8.3
 	_state._printfilepos = 0;
 	_state._printfilesize = GetExecutingFile().size();
 
@@ -257,6 +254,42 @@ void CGCode3DParser::M26Command()
 		if (IsError()) return;
 
 		GetExecutingFile().seek(_state._printfilepos);
+	}
+	else if (_reader->GetCharToUpper() == 'L')
+	{
+		_reader->GetNextChar();
+		unsigned long lineNr = GetUInt32();
+		if (IsError()) return;
+
+		if (lineNr < 1)
+		{
+			Error(MESSAGE_PARSER3D_LINE_SEEK_ERROR);
+			return;
+		}
+
+		GetExecutingFile().seek(0);
+		unsigned long filepos = 0;
+
+		for (unsigned long line = 1; line < lineNr; line++)
+		{
+			while (true)
+			{
+				if (GetExecutingFile().available() == 0)
+				{
+					Error(MESSAGE_PARSER3D_LINE_SEEK_ERROR);
+					return;
+				}
+
+				filepos++;
+				char ch = GetExecutingFile().read();
+				if (CControl::GetInstance()->IsEndOfCommandChar(ch))
+				{
+					break;
+				}
+			}
+		}
+
+		GetExecutingFile().seek(filepos);
 	}
 }
 ////////////////////////////////////////////////////////////
@@ -450,8 +483,8 @@ bool CGCode3DParser::GetFileName(char*buffer)
 			*(buffer++) = ch;
 			length++;
 
-			if ((dotidx == 0 && length > 8) ||
-				(dotidx == 1 && length > 3))
+			if ((dotidx == 0 && length > MAXFILENAME) ||
+				(dotidx == 1 && length > MAXEXTNAME))
 			{
 				Error(MESSAGE_PARSER3D_ILLEGAL_FILENAME);
 				return false;
