@@ -51,7 +51,7 @@ void CControl3D::Initialized()
 {
 	super::Initialized();
 	char tmp[8 + 3 + 1];
-	strcpy_P(tmp, F("startup.nc"));
+	strcpy_P(tmp, PSTR("startup.nc"));
 
 	CGCode3DParser::GetExecutingFile() = SD.open(tmp, FILE_READ);
 

@@ -282,14 +282,16 @@ void CGCode3DParser::M26Command()
 
 				filepos++;
 				char ch = GetExecutingFile().read();
-				if (CControl::GetInstance()->IsEndOfCommandChar(ch))
+
+				if (ch=='\n')
+//				if (CControl::GetInstance()->IsEndOfCommandChar(ch))	=> ignore '\r' => do not count \r\n as 2 lines
 				{
 					break;
 				}
 			}
 		}
 
-		GetExecutingFile().seek(filepos);
+		_state._printfilepos = filepos;
 	}
 }
 ////////////////////////////////////////////////////////////
