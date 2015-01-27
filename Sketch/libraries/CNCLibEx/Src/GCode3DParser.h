@@ -51,6 +51,7 @@ public:
 
 	static unsigned long GetExecutingFilePosition()				{ return _state._printfilepos; }
 	static unsigned long GetExecutingFileSize()					{ return _state._printfilesize; }
+	static const char* GetExecutingFileName()					{ return _state._printfilename; }
 
 	static void Init()											{ super::Init(); _state.Init(); }
 
@@ -75,14 +76,14 @@ private:
 		File				_file;
 
 		bool				_isM28;						// SD write mode
-		char				_filename[MAXFILEEXTNAME + 1];
+		char				_printfilename[MAXFILEEXTNAME + 1];
 
 		void Init()
 		{
 			_printfilesize = 0;
 			_printfilepos = 0;
 			_isM28 = false;
-			_filename[0] = 0;
+			_printfilename[0] = 0;
 		}
 	};
 

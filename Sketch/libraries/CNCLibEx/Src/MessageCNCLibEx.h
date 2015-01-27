@@ -29,6 +29,7 @@
 #define MESSAGE_PARSER3D_SIZE F(" Size: ")
 #define MESSAGE_PARSER3D_FILE_SELECTED F("File selected")
 #define MESSAGE_PARSER3D_NO_FILE_SELECTED F("No file selected for execution or running")
+#define MESSAGE_PARSER3D_LINE_SEEK_ERROR F("cannot seek to line")
 #define MESSAGE_PARSER3D_SD_PRINTING_BYTE F("SD printing byte ")
 #define MESSAGE_PARSER3D_SLASH PSTR("/")
 #define MESSAGE_PARSER3D_NOT_SD_PRINTING F("Not SD printing")
