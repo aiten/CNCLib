@@ -26,8 +26,14 @@
 
 ////////////////////////////////////////////////////////
 
+class CControl;
+
+////////////////////////////////////////////////////////
+
 class CLcd : public CSingleton<CLcd>
 {
+	friend CControl;
+
 public:
 
 	CLcd()														{ _nextdrawtime = 0; _splash = false; }
@@ -42,12 +48,15 @@ public:
 	virtual void Init();
 	virtual void DrawRequest(EDrawType draw);
 
-	virtual void Poll();
-	virtual void TimerInterrupt();
-
 	////////////////////////////////////////////////////////////
 
 protected:
+
+	virtual void Poll();
+	virtual void TimerInterrupt();
+
+	virtual void Command(char* cmd);
+
 
 	virtual void FirstDraw() = 0;								// e.g. clear screen - called after splash timeout
 	virtual void Draw(EDrawType draw) = 0;

@@ -49,7 +49,13 @@ public:
 		_empty = false;
 	}
 
-	void Enqueue(unsigned char cnt)
+	void Enqueue(T value)
+	{
+		Buffer[GetNextTailPos()] = value;
+		Enqueue();
+	}
+
+	void EnqueueCount(unsigned char cnt)
 	{
 		CCriticalRegion crit;
 		_nexttail = NextIndex(_nexttail, cnt);

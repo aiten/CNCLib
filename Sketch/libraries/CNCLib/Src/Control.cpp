@@ -214,6 +214,13 @@ bool CControl::ParseAndPrintResult(CParser *parser, Stream* output)
 
 bool CControl::Command(char* buffer, Stream* output)
 {
+#ifndef _NO_LCD
+
+	if (CLcd::GetInstance())
+		CLcd::GetInstance()->Command(buffer);
+
+#endif
+
 	if (IsKilled())
 	{
 		if (IsResurrectCommand(buffer))		// restart with "!!!"
