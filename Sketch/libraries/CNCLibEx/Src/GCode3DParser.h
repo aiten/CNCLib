@@ -48,13 +48,13 @@ public:
 
 	static File& GetExecutingFile()								{ return _state._file; }
 
-	static unsigned long GetExecutingFilePosition()				{ return _state._printfilepos; }
-	static unsigned long GetExecutingFileLine()					{ return _state._printfileline; }
-	static unsigned long GetExecutingFileSize()					{ return _state._printfilesize; }
+	static unsigned long GetExecutingFilePosition()				{ return _state._printFilePos; }
+	static unsigned long GetExecutingFileLine()					{ return _state._printFileLine; }
+	static unsigned long GetExecutingFileSize()					{ return _state._printFileSize; }
 	static const char* GetExecutingFileName()					{ return _state._printfilename; }
 
-	static void  SetExecutingFilePosition(unsigned long pos, unsigned long line)	
-																{ _state._printfilepos = pos; _state._printfileline = line; }
+	static void  SetExecutingFilePosition(unsigned long pos)	{ _state._printFilePos = pos; }
+	static void  SetExecutingFileLine(unsigned long line)		{ _state._printFileLine = line; }
 
 	static void Init()											{ super::Init(); _state.Init(); }
 
@@ -74,9 +74,9 @@ private:
 
 	struct GCodeState
 	{
-		unsigned long		_printfilepos;
-		unsigned long		_printfileline;
-		unsigned long		_printfilesize;
+		unsigned long		_printFilePos;
+		unsigned long		_printFileLine;
+		unsigned long		_printFileSize;
 		File				_file;
 
 		bool				_isM28;						// SD write mode
@@ -84,9 +84,9 @@ private:
 
 		void Init()
 		{
-			_printfilesize = 0;
-			_printfilepos = 0;
-			_printfileline = 0;
+			_printFileSize = 0;
+			_printFilePos = 0;
+			_printFileLine = 0;
 			_isM28 = false;
 			_printfilename[0] = 0;
 		}

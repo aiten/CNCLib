@@ -111,8 +111,6 @@ void CControl3D::ReadAndExecuteCommand()
 		}
 		else
 		{
-			CGCode3DParser::SetExecutingFilePosition(file.position(), CGCode3DParser::GetExecutingFileLine()+1);
-
 			FileReadAndExecuteCommand(&file,NULL);			// one line!!! Output goes to NULL
 
 			if (file.available() == 0)
@@ -120,6 +118,11 @@ void CControl3D::ReadAndExecuteCommand()
 				ClearPrintFromSD();
 				file.close();
 				StepperSerial.println(MESSAGE_CONTROL3D_ExecutingStartupNcDone);
+			}
+			else
+			{
+				CGCode3DParser::SetExecutingFilePosition(file.position());
+				CGCode3DParser::SetExecutingFileLine(CGCode3DParser::GetExecutingFileLine() + 1);
 			}
 		}
 	}

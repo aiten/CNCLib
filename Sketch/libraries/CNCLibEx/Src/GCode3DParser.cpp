@@ -209,13 +209,13 @@ void CGCode3DParser::M23Command()
 	}
 
 	strcpy(_state._printfilename, filename);		//8.3
-	_state._printfilepos = 0;
-	_state._printfilesize = GetExecutingFile().size();
+	_state._printFilePos = 0;
+	_state._printFileSize = GetExecutingFile().size();
 
 	StepperSerial.print(MESSAGE_PARSER3D_FILE_OPENED);
 	StepperSerial.print(filename);
 	StepperSerial.print(MESSAGE_PARSER3D_SIZE);
-	StepperSerial.println(_state._printfilesize);
+	StepperSerial.println(_state._printFileSize);
 
 	StepperSerial.println(MESSAGE_PARSER3D_FILE_SELECTED);
 }
@@ -250,9 +250,11 @@ void CGCode3DParser::M26Command()
 	if (_reader->SkipSpacesToUpper() == 'S')
 	{
 		_reader->GetNextChar();
-		_state._printfilepos = GetUInt32();
-		_state._printfileline = 0;					// TO DO => count line 
+		_state._printFilePos = GetUInt32();
+		_state._printFileLine = 0;					// TO DO => count line 
 		if (IsError()) return;
+
+		GetExecutingFile().seek(_state._printFilePos);
 	}
 	else if (_reader->GetCharToUpper() == 'L')
 	{
@@ -267,11 +269,12 @@ void CGCode3DParser::M26Command()
 		}
 
 		GetExecutingFile().seek(0);
-		unsigned long filepos = 0;
 
 		for (unsigned long line = 1; line < lineNr; line++)
 		{
-			while (true)
+			// read line until \n
+			char ch;
+			do
 			{
 				if (GetExecutingFile().available() == 0)
 				{
@@ -279,22 +282,14 @@ void CGCode3DParser::M26Command()
 					return;
 				}
 
-				filepos++;
-				char ch = GetExecutingFile().read();
-
-//				if (CControl::GetInstance()->IsEndOfCommandChar(ch))	=> ignore '\r' => do not count \r\n as 2 lines
-				if (ch == '\n')
-				{
-					break;
-				}
-			}
+				ch = GetExecutingFile().read();
+			} 
+			while (ch != '\n');
 		}
 		
-		_state._printfileline = lineNr;
-		_state._printfilepos = filepos;
+		_state._printFileLine = lineNr;
+		_state._printFilePos = GetExecutingFile().position();
 	}
-
-	GetExecutingFile().seek(_state._printfilepos);
 }
 ////////////////////////////////////////////////////////////
 
@@ -303,11 +298,11 @@ void CGCode3DParser::M27Command()
 	if (GetExecutingFile())
 	{
 		StepperSerial.print(MESSAGE_PARSER3D_SD_PRINTING_BYTE);
-		StepperSerial.print(_state._printfilepos);
+		StepperSerial.print(_state._printFilePos);
 		StepperSerial.print(MESSAGE_PARSER3D_COLON);
-		StepperSerial.print(_state._printfilesize);
+		StepperSerial.print(_state._printFileSize);
 		StepperSerial.print(MESSAGE_PARSER3D_SD_PRINTING_LINE);
-		StepperSerial.println(_state._printfileline);
+		StepperSerial.println(_state._printFileLine);
 	}
 	else
 	{
