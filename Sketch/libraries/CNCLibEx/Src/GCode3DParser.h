@@ -47,11 +47,14 @@ public:
 	CGCode3DParser(CStreamReader* reader,Stream* output) : super(reader,output)		{  }
 
 	static File& GetExecutingFile()								{ return _state._file; }
-	static void  SetExecutingFilePosition(unsigned long pos)	{ _state._printfilepos = pos; }
 
 	static unsigned long GetExecutingFilePosition()				{ return _state._printfilepos; }
+	static unsigned long GetExecutingFileLine()					{ return _state._printfileline; }
 	static unsigned long GetExecutingFileSize()					{ return _state._printfilesize; }
 	static const char* GetExecutingFileName()					{ return _state._printfilename; }
+
+	static void  SetExecutingFilePosition(unsigned long pos, unsigned long line)	
+																{ _state._printfilepos = pos; _state._printfileline = line; }
 
 	static void Init()											{ super::Init(); _state.Init(); }
 
@@ -72,6 +75,7 @@ private:
 	struct GCodeState
 	{
 		unsigned long		_printfilepos;
+		unsigned long		_printfileline;
 		unsigned long		_printfilesize;
 		File				_file;
 
@@ -82,6 +86,7 @@ private:
 		{
 			_printfilesize = 0;
 			_printfilepos = 0;
+			_printfileline = 0;
 			_isM28 = false;
 			_printfilename[0] = 0;
 		}

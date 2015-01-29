@@ -251,9 +251,8 @@ void CGCode3DParser::M26Command()
 	{
 		_reader->GetNextChar();
 		_state._printfilepos = GetUInt32();
+		_state._printfileline = 0;					// TO DO => count line 
 		if (IsError()) return;
-
-		GetExecutingFile().seek(_state._printfilepos);
 	}
 	else if (_reader->GetCharToUpper() == 'L')
 	{
@@ -283,16 +282,19 @@ void CGCode3DParser::M26Command()
 				filepos++;
 				char ch = GetExecutingFile().read();
 
-				if (ch=='\n')
 //				if (CControl::GetInstance()->IsEndOfCommandChar(ch))	=> ignore '\r' => do not count \r\n as 2 lines
+				if (ch == '\n')
 				{
 					break;
 				}
 			}
 		}
-
+		
+		_state._printfileline = lineNr;
 		_state._printfilepos = filepos;
 	}
+
+	GetExecutingFile().seek(_state._printfilepos);
 }
 ////////////////////////////////////////////////////////////
 
@@ -303,7 +305,9 @@ void CGCode3DParser::M27Command()
 		StepperSerial.print(MESSAGE_PARSER3D_SD_PRINTING_BYTE);
 		StepperSerial.print(_state._printfilepos);
 		StepperSerial.print(MESSAGE_PARSER3D_COLON);
-		StepperSerial.println(_state._printfilesize);
+		StepperSerial.print(_state._printfilesize);
+		StepperSerial.print(MESSAGE_PARSER3D_SD_PRINTING_LINE);
+		StepperSerial.println(_state._printfileline);
 	}
 	else
 	{

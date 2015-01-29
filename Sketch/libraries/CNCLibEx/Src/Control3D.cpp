@@ -111,7 +111,7 @@ void CControl3D::ReadAndExecuteCommand()
 		}
 		else
 		{
-			CGCode3DParser::SetExecutingFilePosition(file.position());
+			CGCode3DParser::SetExecutingFilePosition(file.position(), CGCode3DParser::GetExecutingFileLine()+1);
 
 			FileReadAndExecuteCommand(&file,NULL);			// one line!!! Output goes to NULL
 
