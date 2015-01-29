@@ -149,9 +149,9 @@ protected:
 	bool DrawLoopPosAbs(bool setup);
 	bool DrawLoopPreset(bool setup);
 	bool DrawLoopStartSD(bool setup);
-	bool DrawLoopCommandHis(bool setup);
-	bool DrawLoopPause(bool setup);
+	bool DrawLoopPause(bool setup);	
 	bool DrawLoopError(bool setup);
+	bool DrawLoopCommandHis(bool setup);
 	bool DrawLoopMenu(bool setup);
 
 	bool DrawLoopSetupDefault();

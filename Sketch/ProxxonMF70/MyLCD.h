@@ -33,6 +33,8 @@
 
 #define ROTARY_ACCURACY	4
 
+#define MAXCHARPERLINE  21
+
 ////////////////////////////////////////////////////////
 
 class CMyLcd : public CLcd
@@ -46,11 +48,15 @@ public:
 	CMyLcd()												{ _curretDraw = NULL; _expectButtonOff = false; _rotaryFocus = RotaryMainPage; }
 
 	virtual void Init();
-	virtual void Poll();
-	virtual void TimerInterrupt();
 
 	typedef bool(CMyLcd::*DrawFunction)(bool setup);
 	typedef void(CMyLcd::*ButtonFunction)();
+
+protected:
+
+	virtual void Poll();
+	virtual void TimerInterrupt();
+	virtual void Command(char* cmd);
 
 	////////////////////////////////////////////////////////
 
@@ -86,10 +92,11 @@ protected:
 		DebugPage = 1,
 		AbsPage = 2,
 		PresetPage = 3,
-		StartSDPage = 4,
+		SDPage = 4,
 		PausePage = 5,
 		ErrorPage = 6,
-		MenuPage = 7,
+		CommandHisPage = 7,
+		MenuPage = 8,
 		PageCount
 	};
 
@@ -105,6 +112,8 @@ protected:
 	virtual unsigned long Splash();
 	virtual void FirstDraw();
 
+	void QueueCommandHistory(char ch);
+
 	DrawFunction _curretDraw;
 
 	bool _expectButtonOff;
@@ -114,6 +123,8 @@ protected:
 
 
 	CRotaryButton<rotarypos_t, ROTARY_ACCURACY> _button;
+	CRingBufferQueue<char, 128> _commandHis;
+
 
 	static const SPageDef _pagedef[];
 
@@ -141,6 +152,7 @@ protected:
 	bool DrawLoopStartSD(bool setup);
 	bool DrawLoopPause(bool setup);	
 	bool DrawLoopError(bool setup);
+        bool DrawLoopCommandHis(bool setup);
 	bool DrawLoopMenu(bool setup);
 
 	bool DrawLoopSetupDefault();

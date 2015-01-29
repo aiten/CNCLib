@@ -210,6 +210,7 @@ void CGCode3DParser::M23Command()
 
 	strcpy(_state._printfilename, filename);		//8.3
 	_state._printFilePos = 0;
+	_state._printFileLine = 1;
 	_state._printFileSize = GetExecutingFile().size();
 
 	StepperSerial.print(MESSAGE_PARSER3D_FILE_OPENED);
@@ -251,7 +252,7 @@ void CGCode3DParser::M26Command()
 	{
 		_reader->GetNextChar();
 		_state._printFilePos = GetUInt32();
-		_state._printFileLine = 0;					// TO DO => count line 
+		_state._printFileLine = 1;					// TO DO => count line 
 		if (IsError()) return;
 
 		GetExecutingFile().seek(_state._printFilePos);

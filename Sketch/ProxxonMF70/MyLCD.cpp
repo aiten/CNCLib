@@ -92,6 +92,7 @@ PROGMEM const CMyLcd::SPageDef CMyLcd::_pagedef[] =
 	{ &CMyLcd::DrawLoopStartSD, &CMyLcd::ButtonPressStartSDPage },
 	{ &CMyLcd::DrawLoopPause, &CMyLcd::ButtonPressPause },
 	{ &CMyLcd::DrawLoopError, &CMyLcd::ButtonPressShowMenu },
+	{ &CMyLcd::DrawLoopCommandHis, &CMyLcd::ButtonPressShowMenu },
 	{ &CMyLcd::DrawLoopMenu, &CMyLcd::ButtonPressMenuPage }
 };
 
@@ -201,6 +202,40 @@ void CMyLcd::Poll()
 		ButtonPress();
 	}
 }
+
+////////////////////////////////////////////////////////////
+
+void CMyLcd::Command(char* buffer)
+{
+	super::Command(buffer);
+
+	if (*buffer)
+	{
+		for (unsigned char commandlenght = 0; *buffer && commandlenght < MAXCHARPERLINE; commandlenght++)
+		{
+			QueueCommandHistory(*(buffer++));
+		}
+		QueueCommandHistory(0);
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyLcd::QueueCommandHistory(char ch)
+{
+	if (_commandHis.IsFull())
+	{
+		// dequeue last command
+		do
+		{
+			_commandHis.Dequeue();
+		} 
+		while (!_commandHis.IsEmpty() && _commandHis.Head() != 0);
+	}
+	_commandHis.Enqueue(ch);
+
+}
+
 
 ////////////////////////////////////////////////////////////
 
@@ -459,8 +494,13 @@ bool CMyLcd::DrawLoopStartSD(bool setup)
 	if (setup)	return DrawLoopSetupDefault();
 	DrawLoopDefaultHead();
 
-	u8g.drawStr(ToCol(3), ToRow(2), F("Press to start"));
-	u8g.drawStr(ToCol(0), ToRow(3), F("\"proxxon.nc\" from SD"));
+	char tmp[16];
+
+	if (CGCode3DParser::GetExecutingFile())
+  	    u8g.drawStr(ToCol(3), ToRow(2), F("Press to start"));
+	u8g.setPrintPos(ToCol(0), ToRow(3) + PosLineOffset); u8g.print(F("File: ")); u8g.print(CGCode3DParser::GetExecutingFileName());
+	u8g.setPrintPos(ToCol(0), ToRow(4) + PosLineOffset); u8g.print(F("At:   ")); u8g.print(CSDist::ToString(CGCode3DParser::GetExecutingFilePosition(), tmp, 8));
+	u8g.setPrintPos(ToCol(0), ToRow(5) + PosLineOffset); u8g.print(F("Line: ")); u8g.print(CSDist::ToString(CGCode3DParser::GetExecutingFileLine(), tmp, 8));
 
 	return true;
 }
@@ -508,6 +548,36 @@ bool CMyLcd::DrawLoopError(bool setup)
 
 	if (errors == 0)
 		u8g.drawStr(ToCol(0), ToRow(2), F("no errors"));
+
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+
+bool CMyLcd::DrawLoopCommandHis(bool setup)
+{
+	if (setup)	return DrawLoopSetupDefault();
+	DrawLoopDefaultHead();
+
+	char tmp[MAXCHARPERLINE+1];
+	unsigned char commandpos = _commandHis.T2HInit();	// idx of \0 of last command
+
+	for (unsigned char i = 0; i < LCD_NUMAXIS; i++)
+	{
+		u8g.setPrintPos(ToCol(0), ToRow(LCD_NUMAXIS - i) + PosLineOffset);
+
+		unsigned char idx = MAXCHARPERLINE;
+		tmp[idx] = 0;
+
+		if (_commandHis.T2HTest(commandpos))
+		{
+			for (commandpos = _commandHis.T2HInc(commandpos); _commandHis.T2HTest(commandpos) && _commandHis.Buffer[commandpos] != 0;commandpos = _commandHis.T2HInc(commandpos))
+			{
+				tmp[--idx] = _commandHis.Buffer[commandpos];
+			}
+			u8g.print(&tmp[idx]);
+		}
+	}
 
 	return true;
 }
