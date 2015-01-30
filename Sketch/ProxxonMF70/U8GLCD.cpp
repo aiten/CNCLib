@@ -29,10 +29,9 @@
 #include <CNCLib.h>
 #include <CNCLibEx.h>
 
+#include "U8GLCD.h"
 #include <Beep.h>
 
-#include "MyLcd.h"
-#include "MyControl.h"
 #include "RotaryButton.h"
 #include "GCodeParser.h"
 #include "GCode3DParser.h"
@@ -42,10 +41,6 @@
 //
 // used full graphic controller for Ramps 1.4
 //
-////////////////////////////////////////////////////////////
-
-U8GLIB_ST7920_128X64_1X u8g(CAT(BOARDNAME,_ST7920_CLK_PIN), CAT(BOARDNAME,_ST7920_DAT_PIN), CAT(BOARDNAME,_ST7920_CS_PIN));	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
-
 ////////////////////////////////////////////////////////////
 
 #if LCD_NUMAXIS > 5
@@ -79,26 +74,7 @@ static unsigned char ToCol(unsigned char col) { return (col)*(CharWidth); }
 
 ////////////////////////////////////////////////////////////
 
-CMyLcd Lcd;
-
-////////////////////////////////////////////////////////////
-
-PROGMEM const CMyLcd::SPageDef CMyLcd::_pagedef[] =
-{
-	{ &CMyLcd::DrawLoopSplash, &CMyLcd::ButtonPressShowMenu },
-	{ &CMyLcd::DrawLoopDebug, &CMyLcd::ButtonPressShowMenu },
-	{ &CMyLcd::DrawLoopPosAbs, &CMyLcd::ButtonPressShowMenu },
-	{ &CMyLcd::DrawLoopPreset, &CMyLcd::ButtonPressShowMenu },
-	{ &CMyLcd::DrawLoopStartSD, &CMyLcd::ButtonPressStartSDPage },
-	{ &CMyLcd::DrawLoopPause, &CMyLcd::ButtonPressPause },
-	{ &CMyLcd::DrawLoopError, &CMyLcd::ButtonPressShowMenu },
-	{ &CMyLcd::DrawLoopCommandHis, &CMyLcd::ButtonPressShowMenu },
-	{ &CMyLcd::DrawLoopMenu, &CMyLcd::ButtonPressMenuPage }
-};
-
-////////////////////////////////////////////////////////////
-
-void CMyLcd::Init()
+void CU8GLcd::Init()
 {
 	CBeep<(CAT(BOARDNAME, _LCD_BEEPER))>::Init();
 
@@ -112,13 +88,13 @@ void CMyLcd::Init()
 
 	_button.Tick(HALFastdigitalRead(ROTARY_EN1), HALFastdigitalRead(ROTARY_EN2));
 
-	_menu.SetMainMenu();
+	GetMenu().SetMainMenu();
 	SetDefaultPage();
 }
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::SetDefaultPage()
+void CU8GLcd::SetDefaultPage()
 {
 	_currentpage = AbsPage;
 	SetRotaryFocusMainPage();
@@ -126,7 +102,7 @@ void CMyLcd::SetDefaultPage()
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::SetMenuPage()
+void CU8GLcd::SetMenuPage()
 {
 	_currentpage = MenuPage;
 	SetRotaryFocusMenuPage();
@@ -134,17 +110,18 @@ void CMyLcd::SetMenuPage()
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::Beep(const SPlayTone* play)
+void CU8GLcd::Beep(const SPlayTone* play)
 {
 	CBeep<CAT(BOARDNAME, _LCD_BEEPER)>::Play(play);
+        // CBeep<CAT(BOARDNAME, _LCD_BEEPER)>::Beep(ToneA4,16);
 }
 
 ////////////////////////////////////////////////////////////
-
+/*
 #ifdef _MSC_VER
-CMyLcd::EPage CMyLcd::GetPage()
+CU8GLcd::EPage CU8GLcd::GetPage()
 #else
-EnumAsByte(CMyLcd::EPage) CMyLcd::GetPage()
+EnumAsByte(CU8GLcd::EPage) CU8GLcd::GetPage()
 #endif
 {
 	if (_rotaryFocus == RotaryMainPage)
@@ -160,10 +137,10 @@ EnumAsByte(CMyLcd::EPage) CMyLcd::GetPage()
 
 	return _currentpage;
 }
-
+*/
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::SetRotaryFocusMainPage()
+void CU8GLcd::SetRotaryFocusMainPage()
 {
 	_button.SetPageIdx((rotarypos_t) _currentpage); _button.SetMinMax(0, PageCount - 1, true);
 	_rotaryFocus = RotaryMainPage;
@@ -171,7 +148,7 @@ void CMyLcd::SetRotaryFocusMainPage()
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::TimerInterrupt()
+void CU8GLcd::TimerInterrupt()
 {
 	super::TimerInterrupt();
 
@@ -191,7 +168,7 @@ void CMyLcd::TimerInterrupt()
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::Poll()
+void CU8GLcd::Poll()
 {
 	super::Poll();
 
@@ -204,7 +181,7 @@ void CMyLcd::Poll()
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::Command(char* buffer)
+void CU8GLcd::Command(char* buffer)
 {
 	super::Command(buffer);
 
@@ -220,7 +197,7 @@ void CMyLcd::Command(char* buffer)
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::QueueCommandHistory(char ch)
+void CU8GLcd::QueueCommandHistory(char ch)
 {
 	if (_commandHis.IsFull())
 	{
@@ -240,7 +217,7 @@ void CMyLcd::QueueCommandHistory(char ch)
 
 #if defined(__AVR_ARCH__)
 
-CMyLcd::ButtonFunction CMyLcd::GetButtonPress_P(const void* adr)
+CU8GLcd::ButtonFunction CMyLcd::GetButtonPress_P(const void* adr)
 {
 	struct ButtonFunctionWrapper
 	{
@@ -252,7 +229,7 @@ CMyLcd::ButtonFunction CMyLcd::GetButtonPress_P(const void* adr)
 	return x.fnc;
 }
 
-CMyLcd::DrawFunction CMyLcd::GetDrawFunction_P(const void* adr)
+CU8GLcd::DrawFunction CMyLcd::GetDrawFunction_P(const void* adr)
 {
 	struct DrawFunctionWrapper
 	{
@@ -269,7 +246,7 @@ CMyLcd::DrawFunction CMyLcd::GetDrawFunction_P(const void* adr)
 ////////////////////////////////////////////////////////////
 
 
-void CMyLcd::ButtonPress()
+void CU8GLcd::ButtonPress()
 {
 #if defined(__AVR_ARCH__)
 	ButtonFunction fnc = GetButtonPress_P(&_pagedef[GetPage()].buttonpress);
@@ -286,89 +263,97 @@ void CMyLcd::ButtonPress()
 
 ////////////////////////////////////////////////////////////
 
-unsigned long CMyLcd::Splash()
+unsigned long CU8GLcd::Splash()
 {
-	DrawLoop(&CMyLcd::DrawLoopSplash);
+	DrawLoop(&CU8GLcd::DrawLoopSplash);
 	OKBeep();
 	return 3000;
 }
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::DrawLoopSetupDefault()
+bool CU8GLcd::DrawLoopSetupDefault()
 {
-	u8g.setFont(DEFAULTFONT);
+	GetU8G().setFont(DEFAULTFONT);
 	return true;
 }
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::DrawLoopDefaultHead()
+void CU8GLcd::DrawLoopDefaultHead()
 {
+#ifdef USE_RAMPS14
 #if defined(__SAM3X8E__)
-	u8g.drawStr(ToCol(4), ToRow(0), F("KK1000S Due"));
+	GetU8G().drawStr(ToCol(0), ToRow(0), F("Proxxon MF70 Ramps14S"));
 #else
-	u8g.drawStr(ToCol(4), ToRow(0), F("KK1000S Mega"));
+	GetU8G().drawStr(ToCol(0), ToRow(0), F("Proxxon MF70 Ramps14M"));
+#endif
+#else
+#if defined(__SAM3X8E__)
+	GetU8G().drawStr(ToCol(0), ToRow(0), F("Proxxon MF70 RampsFDS"));
+#else
+	GetU8G().drawStr(ToCol(0), ToRow(0), F("Proxxon MF70 RampsFDM"));
+#endif
 #endif
 }
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::DrawLoopSplash(bool setup)
+bool CU8GLcd::DrawLoopSplash(bool setup)
 {
 	if (setup)	return DrawLoopSetupDefault();
 	DrawLoopDefaultHead();
 
-	u8g.drawStr(ToCol(TotalCols / 2 - 1), ToRow(2), F("by"));
-	u8g.drawStr(ToCol(3), ToRow(3), F("H. Aitenbichler"));
-	u8g.drawStr(ToCol(5), ToRow(5), F(__DATE__));
+	GetU8G().drawStr(ToCol(TotalCols / 2 - 1), ToRow(2), F("by"));
+	GetU8G().drawStr(ToCol(3), ToRow(3), F("H. Aitenbichler"));
+	GetU8G().drawStr(ToCol(5), ToRow(5), F(__DATE__));
 
 	return true;
 }
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::DrawLoopDebug(bool setup)
+bool CU8GLcd::DrawLoopDebug(bool setup)
 {
 	if (setup)	return DrawLoopSetupDefault();
 
-	u8g.drawStr(ToCol(0), ToRow(0) + HeadLineOffset, F("Debug"));
+	GetU8G().drawStr(ToCol(0), ToRow(0) + HeadLineOffset, F("Debug"));
 
 	char tmp[16];
 
 	for (unsigned char i = 0; i < LCD_NUMAXIS; i++)
 	{
-		u8g.setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
 
 		udist_t pos = CStepper::GetInstance()->GetCurrentPosition(i);
 
-		u8g.print(CSDist::ToString(pos, tmp, 6));
-		u8g.print(F(" "));
-		u8g.print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, pos), tmp, 6, 2));
-		u8g.print(F(" "));
+		GetU8G().print(CSDist::ToString(pos, tmp, 6));
+		GetU8G().print(F(" "));
+		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, pos), tmp, 6, 2));
+		GetU8G().print(F(" "));
 
-		u8g.print(CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(i, true)) ? '1' : '0');
-		u8g.print(CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(i, false)) ? '1' : '0');
+		GetU8G().print(CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(i, true)) ? '1' : '0');
+		GetU8G().print(CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(i, false)) ? '1' : '0');
 
-		u8g.print((CStepper::GetInstance()->GetLastDirection()&(1 << i)) ? '+' : '-');
+		GetU8G().print((CStepper::GetInstance()->GetLastDirection()&(1 << i)) ? '+' : '-');
 	}
 
-	u8g.setPrintPos(ToCol(20), ToRow(0 + 1) + PosLineOffset);
-	u8g.print(Control.IOControl(CMyControl::Probe) ? '1' : '0');
+	GetU8G().setPrintPos(ToCol(20), ToRow(0 + 1) + PosLineOffset);
+	GetU8G().print(CControl::GetInstance()->IOControl(CControl::Probe) ? '1' : '0');
 
-	u8g.setPrintPos(ToCol(19), ToRow(0 + 2) + PosLineOffset);
-	u8g.print(CSDist::ToString(CStepper::GetInstance()->QueuedMovements(), tmp, 2));
+	GetU8G().setPrintPos(ToCol(19), ToRow(0 + 2) + PosLineOffset);
+	GetU8G().print(CSDist::ToString(CStepper::GetInstance()->QueuedMovements(), tmp, 2));
 
 	return true;
 }
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::DrawLoopPosAbs(bool setup)
+bool CU8GLcd::DrawLoopPosAbs(bool setup)
 {
 	if (setup)	return DrawLoopSetupDefault();
 
-	u8g.setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); u8g.print(F("Absolut  Current"));
+	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); GetU8G().print(F("Absolut  Current"));
 	char tmp[16];
 
 	for (unsigned char i = 0; i < LCD_NUMAXIS; i++)
@@ -376,16 +361,16 @@ bool CMyLcd::DrawLoopPosAbs(bool setup)
 //		udist_t cur = CStepper::GetInstance()->GetCurrentPosition(i);
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
 
-		u8g.setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-		tmp[0] = 0; u8g.print(AddAxisName(tmp,i));
+		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		tmp[0] = 0; GetU8G().print(AddAxisName(tmp,i));
 
-		u8g.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i), tmp, 7, 2));
-		u8g.print(F(" "));
-		u8g.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i) - psall, tmp, 7, 2));
+		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i), tmp, 7, 2));
+		GetU8G().print(F(" "));
+		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i) - psall, tmp, 7, 2));
 /*
-		u8g.print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, cur), tmp, 7, 2));
-		u8g.print(F(" "));
-		u8g.print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, cur) - psall, tmp, 7, 2));
+		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, cur), tmp, 7, 2));
+		GetU8G().print(F(" "));
+		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, cur) - psall, tmp, 7, 2));
 */
 	}
 
@@ -393,30 +378,30 @@ bool CMyLcd::DrawLoopPosAbs(bool setup)
 }
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::DrawLoop()
+void CU8GLcd::DrawLoop()
 {
 	if (_curretDraw && (this->*_curretDraw)(true))
 	{
-		u8g.firstPage();
+		GetU8G().firstPage();
 		do
 		{
 			if (_curretDraw && !(this->*_curretDraw)(false))
 				break;
-		} while (u8g.nextPage());
+		} while (GetU8G().nextPage());
 	}
 }
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::FirstDraw()
+void CU8GLcd::FirstDraw()
 {
-	DrawLoop(&CMyLcd::DrawLoopDebug);
+	DrawLoop(&CU8GLcd::DrawLoopDebug);
 }
 
 ////////////////////////////////////////////////////////////
 
 
-unsigned long CMyLcd::Draw(EDrawType /* draw */)
+unsigned long CU8GLcd::Draw(EDrawType /* draw */)
 {
 #if defined(__AVR_ARCH__)
 	DrawFunction fnc = GetDrawFunction_P(&_pagedef[GetPage()].draw);
@@ -431,14 +416,14 @@ unsigned long CMyLcd::Draw(EDrawType /* draw */)
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::ButtonPressShowMenu()
+void CU8GLcd::ButtonPressShowMenu()
 {
 	SetMenuPage();
 }
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::DrawLoopPreset(bool setup)
+bool CU8GLcd::DrawLoopPreset(bool setup)
 {
 	if (setup)	return DrawLoopSetupDefault();
 
@@ -446,33 +431,33 @@ bool CMyLcd::DrawLoopPreset(bool setup)
 
 	const __FlashStringHelper* zeroShiftName[] PROGMEM = { F("G53"), F("G54"), F("G55"), F("G56"), F("G57"), F("G58"), F("G59") };
 
-	u8g.setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset);  u8g.print(F("Preset: ")); u8g.print(zeroShiftName[CGCodeParser::GetZeroPresetIdx()]); u8g.print(F(" G92 Height"));
+	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset);  GetU8G().print(F("Preset: ")); GetU8G().print(zeroShiftName[CGCodeParser::GetZeroPresetIdx()]); GetU8G().print(F(" G92 Height"));
 
 	char tmp[16];
 
 	for (unsigned char i = 0; i < LCD_NUMAXIS; i++)
 	{
-		u8g.setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-		tmp[0] = 0; u8g.print(AddAxisName(tmp,i));
+		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		tmp[0] = 0; GetU8G().print(AddAxisName(tmp,i));
 		ps = CGCodeParser::GetG54PosPreset(i);
-		u8g.print(CMm1000::ToString(ps, tmp, 7, 2));
+		GetU8G().print(CMm1000::ToString(ps, tmp, 7, 2));
 
 		ps = CGCodeParser::GetG92PosPreset(i);
-		u8g.print(CMm1000::ToString(ps, tmp, 7, 2));
+		GetU8G().print(CMm1000::ToString(ps, tmp, 7, 2));
 
 		ps = CGCodeParser::GetToolHeightPosPreset(i);
-		u8g.print(CMm1000::ToString(ps, tmp, 6, 2));
+		GetU8G().print(CMm1000::ToString(ps, tmp, 6, 2));
 	}
 	return true;
 }
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::ButtonPressStartSDPage()
+void CU8GLcd::ButtonPressStartSDPage()
 {
 	PostCommand(F("m21"));									// Init SD
 
-	if (PostCommand(F("m23 kk1000s.nc")))
+	if (PostCommand(F("m23 proxxon.nc")))
 	{
 		PostCommand(F("m24"));
 	}
@@ -482,47 +467,52 @@ void CMyLcd::ButtonPressStartSDPage()
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::DrawLoopStartSD(bool setup)
+bool CU8GLcd::DrawLoopStartSD(bool setup)
 {
 	if (setup)	return DrawLoopSetupDefault();
 	DrawLoopDefaultHead();
 
-	u8g.drawStr(ToCol(3), ToRow(2), F("Press to start"));
-	u8g.drawStr(ToCol(0), ToRow(3), F("\"kk1000s.nc\" from SD"));
+	char tmp[16];
+
+	if (CGCode3DParser::GetExecutingFile())
+  	    GetU8G().drawStr(ToCol(3), ToRow(2), F("Press to start"));
+	GetU8G().setPrintPos(ToCol(0), ToRow(3) + PosLineOffset); GetU8G().print(F("File: ")); GetU8G().print(CGCode3DParser::GetExecutingFileName());
+	GetU8G().setPrintPos(ToCol(0), ToRow(4) + PosLineOffset); GetU8G().print(F("At:   ")); GetU8G().print(CSDist::ToString(CGCode3DParser::GetExecutingFilePosition(), tmp, 8));
+	GetU8G().setPrintPos(ToCol(0), ToRow(5) + PosLineOffset); GetU8G().print(F("Line: ")); GetU8G().print(CSDist::ToString(CGCode3DParser::GetExecutingFileLine(), tmp, 8));
 
 	return true;
 }
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::ButtonPressPause()
+void CU8GLcd::ButtonPressPause()
 {
-	if (Control.IsPause())
-		Control.Continue();
+	if (CControl::GetInstance()->IsPause())
+		CControl::GetInstance()->Continue();
 	else
-		Control.Pause();
+		CControl::GetInstance()->Pause();
 
 	OKBeep();
 }
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::DrawLoopPause(bool setup)
+bool CU8GLcd::DrawLoopPause(bool setup)
 {
 	if (setup)	return DrawLoopSetupDefault();
 	DrawLoopDefaultHead();
 
-	if (Control.IsPause())
-		u8g.drawStr(ToCol(2), ToRow(2), F("Press to continue"));
+	if (CControl::GetInstance()->IsPause())
+		GetU8G().drawStr(ToCol(2), ToRow(2), F("Press to continue"));
 	else
-		u8g.drawStr(ToCol(3), ToRow(2), F("Press to pause"));
+		GetU8G().drawStr(ToCol(3), ToRow(2), F("Press to pause"));
 
 	return true;
 }
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::DrawLoopError(bool setup)
+bool CU8GLcd::DrawLoopError(bool setup)
 {
 	if (setup)	return DrawLoopSetupDefault();
 	DrawLoopDefaultHead();
@@ -530,19 +520,19 @@ bool CMyLcd::DrawLoopError(bool setup)
 	unsigned char errors = 0;
 
 	if (CStepper::GetInstance()->GetError())
-		u8g.drawStr(ToCol(0), ToRow(++errors + 1), CStepper::GetInstance()->GetError());
-	if (Control.IsKilled())
-		u8g.drawStr(ToCol(0), ToRow(++errors + 1), F("emergency stop"));
+		GetU8G().drawStr(ToCol(0), ToRow(++errors + 1), CStepper::GetInstance()->GetError());
+	if (CControl::GetInstance()->IsKilled())
+		GetU8G().drawStr(ToCol(0), ToRow(++errors + 1), F("emergency stop"));
 
 	if (errors == 0)
-		u8g.drawStr(ToCol(0), ToRow(2), F("no errors"));
+		GetU8G().drawStr(ToCol(0), ToRow(2), F("no errors"));
 
 	return true;
 }
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::DrawLoopCommandHis(bool setup)
+bool CU8GLcd::DrawLoopCommandHis(bool setup)
 {
 	if (setup)	return DrawLoopSetupDefault();
 	DrawLoopDefaultHead();
@@ -552,7 +542,7 @@ bool CMyLcd::DrawLoopCommandHis(bool setup)
 
 	for (unsigned char i = 0; i < LCD_NUMAXIS; i++)
 	{
-		u8g.setPrintPos(ToCol(0), ToRow(LCD_NUMAXIS - (i + 1)) + PosLineOffset);
+		GetU8G().setPrintPos(ToCol(0), ToRow(LCD_NUMAXIS - i) + PosLineOffset);
 
 		unsigned char idx = MAXCHARPERLINE;
 		tmp[idx] = 0;
@@ -563,7 +553,7 @@ bool CMyLcd::DrawLoopCommandHis(bool setup)
 			{
 				tmp[--idx] = _commandHis.Buffer[commandpos];
 			}
-			u8g.print(&tmp[idx]);
+			GetU8G().print(&tmp[idx]);
 		}
 	}
 
@@ -572,38 +562,38 @@ bool CMyLcd::DrawLoopCommandHis(bool setup)
 
 ////////////////////////////////////////////////////////////
 
-unsigned char CMyLcd::GetMenuIdx()
+unsigned char CU8GLcd::GetMenuIdx()
 {
 	if (_rotaryFocus == RotaryMenuPage)
 	{
-		unsigned char menu = _button.GetPageIdx(_menu.GetMenuDef()->GetItemCount());
-		if (menu != _menu.GetPosition())
+		unsigned char menu = _button.GetPageIdx(GetMenu().GetMenuDef()->GetItemCount());
+		if (menu != GetMenu().GetPosition())
 		{
-			_menu.SetPosition(menu);
+			GetMenu().SetPosition(menu);
 		}
 	}
 
-	return _menu.GetPosition();
+	return GetMenu().GetPosition();
 }
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::SetRotaryFocusMenuPage()
+void CU8GLcd::SetRotaryFocusMenuPage()
 {
-	_button.SetPageIdx(_menu.GetPosition()); _button.SetMinMax(0, _menu.GetMenuDef()->GetItemCount() - 1, false);
+	_button.SetPageIdx(GetMenu().GetPosition()); _button.SetMinMax(0, GetMenu().GetMenuDef()->GetItemCount() - 1, false);
 	_rotaryFocus = RotaryMenuPage;
 }
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::ButtonPressMenuPage()
+void CU8GLcd::ButtonPressMenuPage()
 {
 	switch (_rotaryFocus)
 	{
 		case RotaryMainPage:	SetRotaryFocusMenuPage(); OKBeep();  break;
 		case RotaryMenuPage:
 		{
-			if (!_menu.Select())
+			if (!GetMenu().Select())
 			{
 				ErrorBeep();
 			}
@@ -615,40 +605,40 @@ void CMyLcd::ButtonPressMenuPage()
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::DrawLoopMenu(bool setup)
+bool CU8GLcd::DrawLoopMenu(bool setup)
 {
 	if (setup)	return DrawLoopSetupDefault();
 
-	u8g.setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset);
-	u8g.print(F("Menu: "));
-	u8g.print(_menu.GetMenuDef()->GetText());
+	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset);
+	GetU8G().print(F("Menu: "));
+	GetU8G().print(GetMenu().GetMenuDef()->GetText());
 
 	unsigned char x = 255;
 	const unsigned char printFirstLine = 1;
 	const unsigned char printLastLine = (TotalRows - 1);
-	const unsigned char menuEntries = _menu.GetMenuDef()->GetItemCount();
+	const unsigned char menuEntries = GetMenu().GetMenuDef()->GetItemCount();
 
 	if (_rotaryFocus == RotaryMenuPage)
 	{
 		x = GetMenuIdx();													// get and set menupositions
-		_menu.AdjustOffset(printFirstLine,printLastLine);
+		GetMenu().AdjustOffset(printFirstLine, printLastLine);
 	}
 
 	unsigned char i;
 
 	for (i = 0; i < menuEntries; i++)
 	{
-		unsigned char printtorow = _menu.ToPrintLine(printFirstLine,printLastLine,i);
+		unsigned char printtorow = GetMenu().ToPrintLine(printFirstLine, printLastLine, i);
 		if (printtorow != 255)
 		{
-			u8g.setPrintPos(ToCol(0), ToRow(printtorow) + PosLineOffset);
+			GetU8G().setPrintPos(ToCol(0), ToRow(printtorow) + PosLineOffset);
 			if (i == x && _rotaryFocus == RotaryMenuPage)
-				u8g.print(F(">"));
+				GetU8G().print(F(">"));
 			else
-				u8g.print(F(" "));
+				GetU8G().print(F(" "));
 
 
-			u8g.print(_menu.GetMenuDef()->GetItems()[i].GetText());
+			GetU8G().print(GetMenu().GetMenuDef()->GetItems()[i].GetText());
 		}
 	}
 

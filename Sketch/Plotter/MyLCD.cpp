@@ -113,7 +113,7 @@ unsigned long CMyLcd::Splash()
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::Draw(EDrawType /* draw */)
+unsigned long CMyLcd::Draw(EDrawType /* draw */)
 {
   	DrawPos(2, 0, CStepper::GetInstance()->GetCurrentPosition(X_AXIS));
 	DrawPos(2, 1, CStepper::GetInstance()->GetCurrentPosition(Y_AXIS));
@@ -125,11 +125,13 @@ void CMyLcd::Draw(EDrawType /* draw */)
 	lcd.setCursor(0,3);
 	lcd.print(CStepper::GetInstance()->GetTotalSteps());
 
-        unsigned char queued = CStepper::GetInstance()->QueuedMovements();
-    	lcd.setCursor(18, 3);
-        if (queued<10)
-          lcd.print(' ');
-        lcd.print((short) queued);
+    unsigned char queued = CStepper::GetInstance()->QueuedMovements();
+    lcd.setCursor(18, 3);
+    if (queued<10)
+        lcd.print(' ');
+    lcd.print((short) queued);
+
+	return 333;
 }
 
 ////////////////////////////////////////////////////////////

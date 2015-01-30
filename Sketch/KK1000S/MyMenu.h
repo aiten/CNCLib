@@ -41,7 +41,7 @@ public:
 
 	static CMyLcd* GetLcd()												{ return ((CMyLcd*) CLcd::GetInstance()); }
 
-	void SetMainMenu()													{ SetMenu(&_mainMenu); }
+	CMyMenu()															{ _main = &_mainMenu; }
 
 protected:
 

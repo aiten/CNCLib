@@ -21,23 +21,20 @@
 
 ////////////////////////////////////////////////////////
 
-#include "Configuration_KK1000S.h"
+#include "Configuration_ProxxonMF70.h"
 
 ////////////////////////////////////////////////////////
 
 #include <LCD.h>
 #include <RotaryButton.h>
 #include <Beep.h>
-#include "MyLCD.h"
-#include "MyMenu.h"
 
 #define ROTARY_ACCURACY	4
-
-#define MAXCHARPERLINE  16
+#define MAXCHARPERLINE  21
 
 ////////////////////////////////////////////////////////
 
-class CMyLcd : public CLcd
+class CU8GLcd : public CLcd
 {
 private:
 
@@ -45,12 +42,12 @@ private:
 
 public:
 
-	CMyLcd()												{ _curretDraw = NULL; _expectButtonOff = false; _rotaryFocus = RotaryMainPage; }
+	CU8GLcd()												{ _curretDraw = NULL; _expectButtonOff = false; _rotaryFocus = RotaryMainPage; }
 
 	virtual void Init();
 
-	typedef bool(CMyLcd::*DrawFunction)(bool setup);
-	typedef void(CMyLcd::*ButtonFunction)();
+	typedef bool(CU8GLcd::*DrawFunction)(bool setup);
+	typedef void(CU8GLcd::*ButtonFunction)();
 
 protected:
 
@@ -59,6 +56,11 @@ protected:
 	virtual void Command(char* cmd);
 
 	////////////////////////////////////////////////////////
+
+protected:
+
+	virtual class U8GLIB& GetU8G() = 0;
+	virtual class CMenuBase& GetMenu() = 0;
 
 public:
 	// for menu
@@ -135,8 +137,6 @@ protected:
 	void SetRotaryFocusMainPage();
 	void SetRotaryFocusMenuPage();
 
-	CMyMenu _menu;
-
 	void ButtonPressStartSDPage();
 	void ButtonPressPause();
 	void ButtonPressMenuPage();
@@ -152,7 +152,7 @@ protected:
 	bool DrawLoopStartSD(bool setup);
 	bool DrawLoopPause(bool setup);	
 	bool DrawLoopError(bool setup);
-	bool DrawLoopCommandHis(bool setup);
+    bool DrawLoopCommandHis(bool setup);
 	bool DrawLoopMenu(bool setup);
 
 	bool DrawLoopSetupDefault();
@@ -174,5 +174,3 @@ public:
 };
 
 ////////////////////////////////////////////////////////
-
-extern CMyLcd Lcd;

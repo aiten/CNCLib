@@ -425,7 +425,7 @@ void CMyLcd::FirstDraw()
 ////////////////////////////////////////////////////////////
 
 
-void CMyLcd::Draw(EDrawType /* draw */)
+unsigned long CMyLcd::Draw(EDrawType /* draw */)
 {
 #if defined(__AVR_ARCH__)
 	DrawFunction fnc = GetDrawFunction_P(&_pagedef[GetPage()].draw);
@@ -434,6 +434,8 @@ void CMyLcd::Draw(EDrawType /* draw */)
 #endif
 
 	DrawLoop(fnc);
+
+	return 333;
 }
 
 ////////////////////////////////////////////////////////////

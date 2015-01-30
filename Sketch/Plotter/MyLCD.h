@@ -53,7 +53,7 @@ public:
 
 protected:
 
-	virtual void Draw(EDrawType draw);
+	virtual unsigned long Draw(EDrawType draw);
 	virtual unsigned long Splash();
 	virtual void FirstDraw();
 

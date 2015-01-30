@@ -72,8 +72,7 @@ void CLcd::DrawRequest(EDrawType draw)
 
 	if (draw==DrawForceAll || _nextdrawtime < millis())
 	{
-		Draw(draw);
-		_nextdrawtime = millis() + 333;
+		_nextdrawtime = Draw(draw) + millis();
 	}
 }
 

@@ -41,8 +41,7 @@ public:
 	enum EDrawType
 	{
 		DrawForceAll,
-		DrawAll,
-		DrawStepperPos
+		DrawAll
 	};
 
 	virtual void Init();
@@ -59,7 +58,7 @@ protected:
 
 
 	virtual void FirstDraw() = 0;								// e.g. clear screen - called after splash timeout
-	virtual void Draw(EDrawType draw) = 0;
+	virtual unsigned long Draw(EDrawType draw) = 0;				// return => timeout for next draw
 
 	virtual unsigned long Splash() = 0;							// return time to display
 

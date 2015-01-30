@@ -19,10 +19,9 @@
 
 #pragma once
 
-class U8GLIB_ST7920_128X64_1X // : public Stream
+class U8GLIB // : public Stream
 {
 public:
-	U8GLIB_ST7920_128X64_1X(int, int, int) {};
 	void firstPage() {};
 	bool nextPage() { return false; }
 	void drawStr(int, int, const char*) {}
@@ -33,6 +32,12 @@ public:
 
 	void print(const char*)			{ };
 	void println(const char*)		{ };
+};
+
+class U8GLIB_ST7920_128X64_1X : public U8GLIB
+{
+public:
+	U8GLIB_ST7920_128X64_1X(int, int, int) {};
 };
 
 static int u8g_font_unifont;

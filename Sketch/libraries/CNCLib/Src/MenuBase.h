@@ -99,6 +99,9 @@ public:
 	unsigned char ToPrintLine(menupos_t firstline, menupos_t lastline, menupos_t i);		// return 255 if not to print
 
 	const SMenuDef*GetMenuDef()										{ return _current; }
+	const SMenuDef*GetMainMenuDef()									{ return _main; }
+
+	void SetMainMenu()												{ SetMenu(_main); }
 
 	bool Select();
 	virtual void Changed()=0;
@@ -118,6 +121,8 @@ protected:
 	void SetOffset(menupos_t offset)								{ _offset = offset; }
 	void AddOffset(menupos_t offset)								{ _offset += offset; }
 	void SubOffset(menupos_t offset)								{ _offset -= offset; }
+
+	const SMenuDef*		_main=NULL;
 
 private:
 
