@@ -36,18 +36,30 @@ class CLcd : public CSingleton<CLcd>
 
 public:
 
-	CLcd()														{ _nextdrawtime = 0; _splash = false; }
+	CLcd()														{  }
 
 	enum EDrawType
 	{
-		DrawForceAll,
-		DrawAll
+		DrawFirst,			// draw after splash
+		DrawForceAll,		// draw now
+		DrawAll				// draw with timeout
 	};
 
 	virtual void Init();
 	virtual void DrawRequest(EDrawType draw);
 
+	void Invalidate();		// draw with next timeout
+
 	////////////////////////////////////////////////////////////
+
+	static void InvalidateLcd()
+	{
+#ifndef _NO_LCD
+	
+		if (CLcd::GetInstance())
+			CLcd::GetInstance()->Invalidate();
+#endif
+	}
 
 protected:
 
@@ -56,8 +68,6 @@ protected:
 
 	virtual void Command(char* cmd);
 
-
-	virtual void FirstDraw() = 0;								// e.g. clear screen - called after splash timeout
 	virtual unsigned long Draw(EDrawType draw) = 0;				// return => timeout for next draw
 
 	virtual unsigned long Splash() = 0;							// return time to display
@@ -75,9 +85,10 @@ public:
 
 private:
 
-	unsigned long _nextdrawtime;
+	unsigned long _nextdrawtime=0;
 
-	bool _splash;
+	bool _splash=false;
+	bool _invalidate=false;
 };
 
 ////////////////////////////////////////////////////////

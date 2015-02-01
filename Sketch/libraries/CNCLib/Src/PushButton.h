@@ -21,39 +21,53 @@
 
 ////////////////////////////////////////////////////////
 
-#include "Configuration_ProxxonMF70.h"
-
-////////////////////////////////////////////////////////
-
-#include <U8GLCD.h>
-#include "MyMenu.h"
-
-////////////////////////////////////////////////////////
-
-class CMyLcd : public CU8GLcd
+class CPushButton
 {
-private:
-
-	typedef CU8GLcd super;
-
 public:
 
-	virtual void Init();
-	virtual void Beep(const SPlayTone*);
+	CPushButton()
+	{
+	}
+
+	void SetPin(unsigned char pin, unsigned char onValue)		
+	{ 
+		_pin=pin; 
+		_onvalue = onValue; 
+		CHAL::pinMode(_pin, INPUT_PULLUP);
+	}
+
+	bool CheckOn()
+	{
+		unsigned char value = CHAL::digitalRead(_pin);
+
+		if (_expectButtonOff)
+		{
+			if (value != _onvalue)
+				_expectButtonOff = false;
+			return false;
+		}
+
+		return value == _onvalue;
+	}
+
+	bool IsOn()
+	{
+		// check and set state 
+		// button must be released and pressed to get "true" again.
+
+		if (CheckOn())
+		{
+			_expectButtonOff = true;
+			return true;
+		}
+		return false;
+	}
 
 protected:
 
-	virtual class U8GLIB& GetU8G();
-	virtual class CMenuBase& GetMenu()	{ return _menu; }
-
-	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type,void *data);
-
-private:
-
-	CMyMenu _menu;
-
+	unsigned char	_pin = 0;
+	unsigned char	_onvalue = 0;
+	bool			_expectButtonOff = false;
 };
 
 ////////////////////////////////////////////////////////
-
-extern CMyLcd Lcd;

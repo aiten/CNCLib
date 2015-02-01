@@ -672,6 +672,8 @@ void CGCodeParser::G5xCommand(unsigned char idx)
 
 	_modlessstate.ZeroPresetIdx =
 		_modalstate.ZeroPresetIdx = idx;
+
+	CLcd::InvalidateLcd(); 
 }
 
 ////////////////////////////////////////////////////////////

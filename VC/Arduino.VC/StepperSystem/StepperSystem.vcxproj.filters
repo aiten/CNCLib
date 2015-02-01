@@ -195,6 +195,13 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Beep.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\PushButton.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\U8GLCD.h">
+      <Filter>CNCLibEx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MenuBaseText.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">
@@ -283,6 +290,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\Beep.cpp">
       <Filter>CNCLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\U8GLCD.cpp">
+      <Filter>CNCLibEx</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

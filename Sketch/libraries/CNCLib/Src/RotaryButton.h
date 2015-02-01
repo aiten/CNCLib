@@ -37,6 +37,9 @@ public:
 		_minpos  = 0;
 		_maxpos     = 127/ACCURACY;
 		_overrunpos = false;
+
+		_pin1 =		0;
+		_pin2 =		0;
 	}
 
 	enum ERotaryEvent
@@ -47,7 +50,11 @@ public:
 		Overrun,
 		Underflow,
 	};
-	
+
+	EnumAsByte(ERotaryEvent) Tick()
+	{
+		return Tick(CHAL::digitalRead(_pin1), CHAL::digitalRead(_pin2));
+	}
 
 	EnumAsByte(ERotaryEvent) Tick(unsigned char pinAValue, unsigned char pinBValue)
 	{
@@ -128,17 +135,28 @@ public:
 	void SetPageIdx(rotarypage_t page)							{ SetPos(page); }
 	rotarypage_t GetPageIdx(rotarypage_t pages)					{ rang_t rpage = GetPos()%pages; if (rpage < 0) rpage = pages+rpage; return (rotarypage_t) rpage; }
 
+	void SetPin(unsigned char pin1,unsigned char pin2)
+	{	
+			_pin1=pin1; 
+			_pin2=pin2; 
+			CHAL::pinMode(_pin1, INPUT_PULLUP);
+			CHAL::pinMode(_pin2, INPUT_PULLUP);
+	}
+
 protected:
 
 	volatile rang_t  _pos;
 	rang_t			_minpos;
 	rang_t			_maxpos;
-	bool			_overrunpos;
 
+	bool			_overrunpos;
 	bool 			_lastchangedA;
+
 	unsigned char 	_lastPinValue;
 	signed char 	_lastadd;
 
+	unsigned char	_pin1;
+	unsigned char	_pin2;
 };
 
 ////////////////////////////////////////////////////////

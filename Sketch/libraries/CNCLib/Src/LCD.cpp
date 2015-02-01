@@ -43,7 +43,14 @@ void CLcd::Init()
 
 void CLcd::Poll()
 {
-	DrawRequest(CLcd::DrawForceAll);
+	DrawRequest(CLcd::DrawAll);
+}
+
+////////////////////////////////////////////////////////////
+
+void CLcd::Invalidate()
+{
+	_invalidate = true;
 }
 
 ////////////////////////////////////////////////////////////
@@ -67,11 +74,12 @@ void CLcd::DrawRequest(EDrawType draw)
 		if (_nextdrawtime > millis()) return;
 		// splash timeout;
 		_splash = false;
-		FirstDraw();
+		Draw(DrawFirst);
 	}
 
-	if (draw==DrawForceAll || _nextdrawtime < millis())
+	if (_invalidate || draw==DrawForceAll || _nextdrawtime < millis())
 	{
+		_invalidate = false;
 		_nextdrawtime = Draw(draw) + millis();
 	}
 }

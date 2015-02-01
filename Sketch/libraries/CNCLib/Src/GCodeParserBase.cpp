@@ -801,6 +801,8 @@ void CGCodeParserBase::G92Command()
 	{
 		for (axes = 0; axes < NUM_AXIS; axes++) _modalstate.G92Pospreset[axes] = 0;
 	}
+
+	CLcd::InvalidateLcd(); 
 }
 
 ////////////////////////////////////////////////////////////
