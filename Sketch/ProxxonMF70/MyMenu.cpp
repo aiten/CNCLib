@@ -93,7 +93,7 @@ const CMyMenu::SMenuItemDef CMyMenu::_mainMenuItems[] PROGMEM =
 #if LCD_NUMAXIS > 4
 	{ _mMoveB, &CMenuBase::MenuButtonPressSetMenu, (menuparam_t) &_moveBMenu },
 #if LCD_NUMAXIS > 5
-	{ _mMoveC, &CMenuBase::MenuButtonPressSetMove, (menuparam_t) &_moveCMenu },
+	{ _mMoveC, &CMenuBase::MenuButtonPressSetMenu, (menuparam_t) &_moveCMenu },
 #endif 
 #endif
 #endif

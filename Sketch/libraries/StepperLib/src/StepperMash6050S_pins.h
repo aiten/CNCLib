@@ -53,8 +53,11 @@
 #define MASH6050S_C_MIN_PIN			18		// D18
 
 #define MASH6050S_SDPOWER			-1
+#if defined(__SAM3X8E__)
+#define MASH6050S_SDSS_PIN			4		// D4
+#else
 #define MASH6050S_SDSS_PIN			53		// D53
-
+#endif
 #elif defined(__AVR_ATmega328P__) || defined (_MSC_VER)
 
 #define MASH6050S_X_STEP_PIN		14		//AD0	
