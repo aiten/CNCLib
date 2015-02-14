@@ -428,8 +428,9 @@ bool CU8GLcd::DrawLoopStartSD(EnumAsByte(EDrawLoopType) type,void *data)
 
 	char tmp[16];
 
-	if (CGCode3DParser::GetExecutingFile())
+	if (!CGCode3DParser::GetExecutingFile())
   	    GetU8G().drawStr(ToCol(3), ToRow(2), F("Press to start"));
+
 	GetU8G().setPrintPos(ToCol(0), ToRow(3) + PosLineOffset); GetU8G().print(F("File: ")); GetU8G().print(CGCode3DParser::GetExecutingFileName());
 	GetU8G().setPrintPos(ToCol(0), ToRow(4) + PosLineOffset); GetU8G().print(F("At:   ")); GetU8G().print(CSDist::ToString(CGCode3DParser::GetExecutingFilePosition(), tmp, 8));
 	GetU8G().setPrintPos(ToCol(0), ToRow(5) + PosLineOffset); GetU8G().print(F("Line: ")); GetU8G().print(CSDist::ToString(CGCode3DParser::GetExecutingFileLine(), tmp, 8));
