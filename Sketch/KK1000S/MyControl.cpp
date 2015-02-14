@@ -171,7 +171,7 @@ void CMyControl::Initialized()
 
 void CMyControl::GoToReference(axis_t axis, steprate_t steprate)
 {
-#if defined(__SAM3X8E__)
+#if defined(XXXXX__SAM3X8E__)
 	if (axis == Z_AXIS)
 		CStepper::GetInstance()->SetPosition(axis, CStepper::GetInstance()->GetLimitMax(axis));
 	else

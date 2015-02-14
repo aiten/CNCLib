@@ -72,9 +72,13 @@ PROGMEM const CU8GLcd::SPageDef CU8GLcd::_pagedef[] =
 
 void CMyLcd::Init()
 {
-	super::Init();
+#if  defined(USE_RAMPS14)
+	_lcd_numaxis=5;
+#endif
 
 	CBeep<(CAT(BOARDNAME, _LCD_BEEPER))>::Init();
+	
+	super::Init();
 
 	_rotarybutton.SetPin(ROTARY_EN1,ROTARY_EN2);
 	_rotarypushbutton.SetPin(ROTARY_ENC,ROTARY_ENC_ON);

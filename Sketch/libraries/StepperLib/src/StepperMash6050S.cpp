@@ -59,6 +59,11 @@ void CStepperMash6050S::Init()
 	HALFastdigitalWrite(MASH6050S_Z_STEP_PIN, MASH6050S_PIN_STEP_ON);
 	HALFastdigitalWrite(MASH6050S_C_STEP_PIN, MASH6050S_PIN_STEP_ON);
 
+	HALFastdigitalWrite(MASH6050S_X_DIR_PIN,MASH6050S_PIN_DIR_OFF);
+	HALFastdigitalWrite(MASH6050S_Y_DIR_PIN,MASH6050S_PIN_DIR_OFF);
+	HALFastdigitalWrite(MASH6050S_Z_DIR_PIN,MASH6050S_PIN_DIR_OFF);
+	HALFastdigitalWrite(MASH6050S_C_DIR_PIN,MASH6050S_PIN_DIR_OFF);
+
 #pragma warning( default : 4127 )
 }
 
@@ -72,8 +77,8 @@ void CStepperMash6050S::Step(const unsigned char steps[NUM_AXIS], axisArray_t di
 
 #if defined(__SAM3X8E__)
 
-#define NOPREQUIRED_1()	CHAL::delayMicroseconds(1);
-#define NOPREQUIRED_2()	CHAL::delayMicroseconds(1);
+#define NOPREQUIRED_1()	CHAL::delayMicroseconds(2);
+#define NOPREQUIRED_2()	CHAL::delayMicroseconds(2);
 
 #else //AVR
 

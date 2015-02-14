@@ -28,8 +28,8 @@ public:
 
 	void Init()
 	{
-		On(0);
 		CHAL::pinMode(PIN, OUTPUT);
+		On(0);
 	}
 
 	void On(unsigned short level)
