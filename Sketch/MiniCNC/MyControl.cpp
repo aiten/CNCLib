@@ -86,10 +86,10 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 	switch (tool)
 	{
 #if SPINDEL_PIN != -1
-		case Spindel:			_spindel.On(level);	return;
+		case Spindel:			_spindel.Set(level>0);	return;
 #endif
 #if CONTROLLERFAN_FAN_PIN != -1
-		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
+		case ControllerFan:		_controllerfan.Set(level>0);	return;
 #endif
 	}
 	
@@ -109,7 +109,7 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 		case Spindel:		{ return _spindel.IsOn(); }
 #endif
 #if CONTROLLERFAN_FAN_PIN != -1
-		case ControllerFan:	{ return _controllerfan.Level; }
+		case ControllerFan:	{ return _controllerfan.IsOn(); }
 #endif
 	}
 
@@ -122,7 +122,7 @@ void CMyControl::Kill()
 {
 	super::Kill();
 #if SPINDEL_PIN != -1
-	_spindel.On(0);
+	_spindel.Set(false);
 #endif
 }
 
@@ -155,12 +155,12 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 	switch (eventtype)
 	{
 		case CStepper::OnStartEvent:
-			_controllerfan.On();
+			_controllerfan.Set(true);
 			break;
 		case CStepper::OnIdleEvent:
 			if (millis()-stepper->IdleTime() > CONTROLLERFAN_ONTIME)
 			{
-				_controllerfan.Off();
+				_controllerfan.Set(false);
 			}
 			break;
 	}

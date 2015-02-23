@@ -119,8 +119,8 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 {
 	switch (tool)
 	{
-		case Spindel:			_spindel.On(level);	return;
-		case Coolant:			_coolant.On(level); return;
+		case Spindel:			_spindel.Set(level>0);	return;
+		case Coolant:			_coolant.Set(level>0); return;
 		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
 	}
 	
@@ -147,8 +147,8 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 void CMyControl::Kill()
 {
 	super::Kill();
-	_spindel.On(0);
-	_coolant.On(0);
+	_spindel.Set(false);
+	_coolant.Set(false);
 }
 
 ////////////////////////////////////////////////////////////
