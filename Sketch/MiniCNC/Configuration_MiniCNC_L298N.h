@@ -56,3 +56,8 @@ inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val)			{ return  Rou
 #define PROBE_OFF HIGH
 
 ////////////////////////////////////////////////////////
+
+#define KILL_PIN	-1
+
+#define KILL_ON  LOW
+#define KILL_OFF HIGH

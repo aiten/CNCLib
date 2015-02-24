@@ -54,3 +54,8 @@
 #define PROBE_OFF HIGH
 
 ////////////////////////////////////////////////////////
+
+#define KILL_PIN	-1
+
+#define KILL_ON  LOW
+#define KILL_OFF HIGH

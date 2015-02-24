@@ -61,6 +61,10 @@ void CMyControl::Init()
 	//CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, SPEEDFACTOR*1000);
 	//CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, SPEEDFACTOR*1000);
 
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, false), true);
+
 #if SPINDEL_PIN != -1
 	_spindel.Init();
 #endif
@@ -71,6 +75,11 @@ void CMyControl::Init()
 #if PROBE1_PIN != -1
 	_probe.Init();
 #endif
+
+#if KILL_PIN != -1
+	_kill.Init();
+#endif
+
 	CGCodeParserBase::Init();
 
 	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(20000));
@@ -128,7 +137,11 @@ void CMyControl::Kill()
 
 bool CMyControl::IsKill()
 {
+#if KILL_PIN != -1
+	return _kill.IsOn();
+#else
 	return false;
+#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -136,7 +149,10 @@ bool CMyControl::IsKill()
 void CMyControl::GoToReference()
 {
 	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
-//	super::GoToReference();
+
+	// force linking to see size used in sketch
+	if (_controllerfan.IsOn())
+		super::GoToReference();
 }
 
 ////////////////////////////////////////////////////////////
