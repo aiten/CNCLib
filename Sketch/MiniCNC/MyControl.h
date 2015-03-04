@@ -40,22 +40,22 @@ public:
 
 	CMyControl()				 { }
 
-	virtual void Kill();
+	virtual void Kill() override;
 
-	virtual void IOControl(unsigned char tool, unsigned short level);
-	virtual unsigned short IOControl(unsigned char tool);
+	virtual void IOControl(unsigned char tool, unsigned short level) override;
+	virtual unsigned short IOControl(unsigned char tool) override;
 
 protected:
 
-	virtual void Init();
+	virtual void Init() override;
 
-	virtual bool IsKill();
+	virtual bool IsKill() override;
 
-	virtual bool Parse(CStreamReader* reader, Stream* output);
+	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 
-	virtual void GoToReference();
+	virtual void GoToReference() override;
 
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
+	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
 
 private:
 

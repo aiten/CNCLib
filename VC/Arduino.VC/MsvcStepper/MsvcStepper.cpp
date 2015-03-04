@@ -143,10 +143,10 @@ void CMsvcStepper::StopTimer()
 
 ////////////////////////////////////////////////////////////
 
-void CMsvcStepper::Step(bool isr)
+void CMsvcStepper::StepRequest(bool isr)
 {
 	_refMovestart++;
-	__super::Step(isr);
+	__super::StepRequest(isr);
 }
 
 ////////////////////////////////////////////////////////////

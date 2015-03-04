@@ -38,8 +38,8 @@ public:
 	////////////////////////////////////////
 	// converting machine mm1000 to logical position
 
-	virtual void TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
-	virtual void TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
+	virtual void TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]) override;
+	virtual void TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]) override;
 
 	void SetRotate(axis_t axis, double rad);
 	void SetOffset(axis_t axis, mm1000_t ofs)	{ _rotateOffset[axis] = ofs; }

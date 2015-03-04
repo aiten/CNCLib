@@ -58,16 +58,16 @@ protected:
 
 	// overrides to exend parser
 
-	virtual void Parse();
-	virtual bool InitParse();
-	virtual void CleanupParse();
+	virtual void Parse() override;
+	virtual bool InitParse() override;
+	virtual void CleanupParse() override;
 
 	virtual bool GCommand(unsigned char gcode);		// check for GCode extension => return true if command is parsed, false to do default
 	virtual bool MCommand(unsigned char mcode);
 	virtual bool Command(unsigned char ch);
 
 	virtual bool ParseLineNumber(bool setlinenumber);	// line number is ignored! => ret is error
-	virtual char SkipSpacesOrComment();
+	virtual char SkipSpacesOrComment() override;
 
 	virtual mm1000_t CalcAllPreset(axis_t axis);
 	virtual void CommentMessage(char* )					{ };

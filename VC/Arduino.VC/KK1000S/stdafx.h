@@ -5,6 +5,10 @@
 
 #pragma once
 
+#pragma warning(disable:4820)
+
+#pragma warning(disable:4365)
+
 #define _CRT_SECURE_NO_WARNINGS
 #define _AFX_SECURE_NO_WARNINGS 
 

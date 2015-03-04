@@ -38,27 +38,26 @@ public:
 
 	CMsvcStepper();
 
-	virtual void OnIdle(unsigned long idletime);
-	virtual void OnStart();
-	virtual void OnWait(EnumAsByte(EWaitType) wait);
+	virtual void OnIdle(unsigned long idletime) override;
+	virtual void OnStart() override;
+	virtual void OnWait(EnumAsByte(EWaitType) wait) override;
 
-	virtual void Init();
+	virtual void Init() override;
 
-	virtual bool  IsReference(unsigned char referenceId);
-	virtual bool  IsAnyReference() { return IsReference(0); };
+	virtual bool  IsReference(unsigned char referenceId) override;
+	virtual bool  IsAnyReference() override { return IsReference(0); };
 
 	void MoveRel3(sdist_t dX, sdist_t dY, sdist_t dZ, steprate_t vMax = 0)	{ MoveRelEx(vMax, X_AXIS, dX, Y_AXIS, dY, Z_AXIS, dZ, -1); }
 	void MoveAbs3(udist_t X, udist_t Y, udist_t Z, steprate_t vMax = 0)		{ MoveAbsEx(vMax, X_AXIS, X, Y_AXIS, Y, Z_AXIS, Z, -1); }
 
 protected:
 
-	virtual void  StepBegin(const SStepBuffer* step);
-//	virtual void  Step(unsigned char steps[NUM_AXIS],bool axisArray_t[NUM_AXIS]);
-	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp);
-	virtual void  Step(bool isr);
+	virtual void  StepBegin(const SStepBuffer* step) override;
+	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) override;
+	virtual void  StepRequest(bool isr) override;
 
-	virtual void  SetEnable(axis_t axis, unsigned char level, bool /* force */)	{ _level[axis] = level; };
-	virtual unsigned char GetEnable(axis_t axis)				{ return _level[axis]; }
+	virtual void  SetEnable(axis_t axis, unsigned char level, bool /* force */) override { _level[axis] = level; };
+	virtual unsigned char GetEnable(axis_t axis) override		{ return _level[axis]; }
 
 private:
 
@@ -66,12 +65,12 @@ private:
 
 public:
 
-	virtual void StartTimer(timer_t timerB);		// 0 => set idle timer (==Timer not running)
-	virtual void SetIdleTimer();					// set idle Timer
-	virtual void StopTimer();					// to cancel all timer
+	virtual void StartTimer(timer_t timerB) override;		// 0 => set idle timer (==Timer not running)
+	virtual void SetIdleTimer() override;					// set idle Timer
+	virtual void StopTimer() override;					// to cancel all timer
 
-	virtual void OptimizeMovementQueue(bool force);
-	virtual bool MoveReference(axis_t axis, unsigned char referenceid, bool toMin, steprate_t vMax, sdist_t maxdist, sdist_t distToRef, sdist_t distIfRefIsOn);
+	virtual void OptimizeMovementQueue(bool force)  override;
+	virtual bool MoveReference(axis_t axis, unsigned char referenceid, bool toMin, steprate_t vMax, sdist_t maxdist, sdist_t distToRef, sdist_t distIfRefIsOn)  override;
 
 	// Test extensions
 

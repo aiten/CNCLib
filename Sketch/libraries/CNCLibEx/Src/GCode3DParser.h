@@ -62,10 +62,10 @@ protected:
 
 	// overrides to exend parser
 
-	virtual bool InitParse();						// begin parsing of a command (override for prechecks)
-	virtual bool GCommand(unsigned char gcode);
-	virtual bool MCommand(unsigned char mcode);
-	virtual bool Command(unsigned char ch);
+	virtual bool InitParse() override;						// begin parsing of a command (override for prechecks)
+	virtual bool GCommand(unsigned char gcode) override;
+	virtual bool MCommand(unsigned char mcode) override;
+	virtual bool Command(unsigned char ch) override;
 
 private:
 

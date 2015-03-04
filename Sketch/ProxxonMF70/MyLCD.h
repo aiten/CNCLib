@@ -38,15 +38,15 @@ private:
 
 public:
 
-	virtual void Init();
-	virtual void Beep(const SPlayTone*);
+	virtual void Init() override;
+	virtual void Beep(const SPlayTone*) override;
 
 protected:
 
-	virtual class U8GLIB& GetU8G();
-	virtual class CMenuBase& GetMenu()	{ return _menu; }
+	virtual class U8GLIB& GetU8G() override;
+	virtual class CMenuBase& GetMenu() override	{ return _menu; }
 
-	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type,void *data);
+	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type, void *data) override;
 
 private:
 

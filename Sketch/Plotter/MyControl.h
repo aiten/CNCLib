@@ -39,20 +39,20 @@ public:
 
 	void MyInit() { return Init(); }
 
-	virtual void IOControl(unsigned char tool, unsigned short level);
-	virtual unsigned short IOControl(unsigned char tool);
-	virtual bool IsKill();
+	virtual void IOControl(unsigned char tool, unsigned short level) override;
+	virtual unsigned short IOControl(unsigned char tool) override;
+	virtual bool IsKill() override;
 
 protected:
 
-	virtual void Init();
-	virtual void Initialized();
-	virtual bool Parse(CStreamReader* reader, Stream* output);
-	virtual void Idle(unsigned int idletime);
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
+	virtual void Init() override;
+	virtual void Initialized() override;
+	virtual bool Parse(CStreamReader* reader, Stream* output) override;
+	virtual void Idle(unsigned int idletime) override;
+	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
 
-	virtual void GoToReference();
-	virtual void GoToReference(axis_t axis, steprate_t steprate);
+	virtual void GoToReference() override;
+	virtual void GoToReference(axis_t axis, steprate_t steprate) override;
 
 private:
 

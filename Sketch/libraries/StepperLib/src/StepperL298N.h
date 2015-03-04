@@ -43,14 +43,14 @@ protected:
 
 protected:
 
-	virtual void  SetEnable(axis_t axis, unsigned char level, bool force);
-	virtual unsigned char GetEnable(axis_t axis);
-	virtual void  Step(const unsigned char cnt[NUM_AXIS], axisArray_t directionUp);
+	virtual void  SetEnable(axis_t axis, unsigned char level, bool force) override;
+	virtual unsigned char GetEnable(axis_t axis) override;
+	virtual void  Step(const unsigned char cnt[NUM_AXIS], axisArray_t directionUp) override;
 
 public:
 
-	virtual bool IsAnyReference();
-	virtual bool IsReference(unsigned char referenceid);
+	virtual bool IsAnyReference() override;
+	virtual bool IsReference(unsigned char referenceid) override;
 
 	// Set before Init()
 	void SetPin(axis_t axis, pin_t in1, pin_t in2, pin_t in3, pin_t in4) { _pin[axis][0] = in1;  _pin[axis][1] = in2; _pin[axis][2] = in3; _pin[axis][3] = in4; }
