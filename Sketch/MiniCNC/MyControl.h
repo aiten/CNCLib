@@ -60,7 +60,7 @@ protected:
 private:
 
 	COnOffIOControl<SPINDEL_PIN, SPINDEL_ON, SPINDEL_OFF> _spindel;
-	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
+	COnOffIOControl<CONTROLLERFAN_FAN_PIN, CONTROLLERFAN_ON, CONTROLLERFAN_OFF> _controllerfan;
 	CReadPinIOControl<PROBE1_PIN, PROBE_ON> _probe;
 };
 

@@ -372,7 +372,7 @@ void CControl::CheckIdlePoll(bool isidle)
 
 	if (_timeBlink < time)
 	{
-		HALFastdigitalWrite(BLINK_LED, digitalRead(BLINK_LED) == HIGH ? LOW : HIGH);
+		HALFastdigitalWrite(BLINK_LED, CHAL::digitalRead(BLINK_LED) == HIGH ? LOW : HIGH);
 		_timeBlink = time + TIMEOUTBLINK;
 	}
 }

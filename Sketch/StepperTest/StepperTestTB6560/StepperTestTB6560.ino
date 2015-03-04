@@ -20,7 +20,7 @@ void setup()
   StepperSerial.println(F("StepperTestL298N is starting ... ("__DATE__", "__TIME__")"));
 
   Stepper.Init();
-  pinMode(13, OUTPUT);
+  CHAL::pinMode(13, OUTPUT);
 
 //  Stepper.SetStepMode(0,CStepper::FullStep);
   Stepper.SetStepMode(0,CStepper::HalfStep);

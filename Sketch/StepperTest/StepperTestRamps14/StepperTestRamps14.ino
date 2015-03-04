@@ -53,7 +53,7 @@ void setup()
 	StepperSerial.println(F("StepperTestRamps14 is starting ... ("__DATE__", "__TIME__")"));
 
 	Stepper.Init();
-	pinMode(13, OUTPUT);
+	CHAL::pinMode(13, OUTPUT);
 
 	Stepper.SetDefaultMaxSpeed(15000, 500 , 600);
 	

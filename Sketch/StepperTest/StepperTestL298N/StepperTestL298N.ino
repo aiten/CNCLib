@@ -16,7 +16,7 @@ void setup()
  // Stepper.SetEnablePin(X_AXIS,10,11);
  // Stepper.SetEnablePin(Y_AXIS,12,13);
   Stepper.Init();
-  pinMode(13, OUTPUT);
+  CHAL::pinMode(13, OUTPUT);
 
 //  Stepper.SetStepMode(0,CStepper::FullStep);
   Stepper.SetStepMode(0,CStepper::HalfStep);

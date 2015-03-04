@@ -29,15 +29,12 @@ public:
 	void Init()
 	{
 		CHAL::pinMode(PIN, OUTPUT);
-		On(0);
+		Set(false);
 	}
 
-	void On(unsigned short level)
+	void Set(bool val)
 	{
-		if (level)
-			CHAL::digitalWrite(PIN, ONVALUE);
-		else
-			CHAL::digitalWrite(PIN, OFFVALUE);
+		CHAL::digitalWrite(PIN, val ? ONVALUE : OFFVALUE);
 	}
 
 	bool IsOn()

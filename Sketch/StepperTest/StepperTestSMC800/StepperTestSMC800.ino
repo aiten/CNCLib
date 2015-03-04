@@ -26,16 +26,16 @@ void setup()
   StepperSerial.println(F("StepperTestSMC800 is starting ... ("__DATE__", "__TIME__")"));
 
   Stepper.Init();
-  pinMode(13, OUTPUT);
+  CHAL::pinMode(13, OUTPUT);
 
-  pinMode(A0,INPUT_PULLUP);
-  pinMode(A1,INPUT_PULLUP);
-  pinMode(A2,INPUT_PULLUP);
-  pinMode(A3,INPUT_PULLUP);
-  pinMode(A4,INPUT_PULLUP);
-  pinMode(A5,INPUT_PULLUP);
+  CHAL::pinMode(A0,INPUT_PULLUP);
+  CHAL::pinMode(A1,INPUT_PULLUP);
+  CHAL::pinMode(A2,INPUT_PULLUP);
+  CHAL::pinMode(A3,INPUT_PULLUP);
+  CHAL::pinMode(A4,INPUT_PULLUP);
+  CHAL::pinMode(A5,INPUT_PULLUP);
 
-  pinMode(12,INPUT_PULLUP);
+  CHAL::pinMode(12,INPUT_PULLUP);
 //  pinMode(13,INPUT_PULLUP);
 
   Stepper.SetUsual(3000);
