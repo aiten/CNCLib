@@ -36,21 +36,21 @@ private:
 public:
 
 	CStepperSMC800();
-	virtual void Init();
+	virtual void Init() override;
 	void Remove();
 
 public:
 
-	virtual bool IsAnyReference()							{ return IsReference(0); };
-	virtual bool IsReference(unsigned char referenceid);
+	virtual bool IsAnyReference() override							{ return IsReference(0); };
+	virtual bool IsReference(unsigned char referenceid) override;
 
 protected:
 
-	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp);
-	virtual void  SetEnable(axis_t axis, unsigned char level, bool force);
-	virtual unsigned char GetEnable(axis_t axis);
+	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) override;
+	virtual void  SetEnable(axis_t axis, unsigned char level, bool force) override;
+	virtual unsigned char GetEnable(axis_t axis) override;
 
-	virtual void MoveAwayFromReference(axis_t axis, sdist_t diff, steprate_t vMax);
+	virtual void MoveAwayFromReference(axis_t axis, sdist_t diff, steprate_t vMax) override;
 
 	////////////////////////////////////////////////////////
 

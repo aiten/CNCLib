@@ -85,19 +85,19 @@ protected:
 
 	// overrides to exend parser
 
-	virtual bool InitParse();
-	virtual void CleanupParse();
+	virtual bool InitParse() override;
+	virtual void CleanupParse() override;
 
-	virtual bool GCommand(unsigned char gcode);		// check for GCode extension => return true if command is parsed, false to do default
-	virtual bool MCommand(unsigned char mcode);
+	virtual bool GCommand(unsigned char gcode) override;	// check for GCode extension => return true if command is parsed, false to do default
+	virtual bool MCommand(unsigned char mcode) override;
 	virtual bool SetParamCommand(param_t pramNo);
-	virtual bool Command(unsigned char ch);
+	virtual bool Command(unsigned char ch) override;
 
 	void ToolSelectCommand();
 	void SpindleSpeedCommand();
 
-	virtual void CommentMessage(char*);
-	virtual mm1000_t CalcAllPreset(axis_t axis);
+	virtual void CommentMessage(char*) override;
+	virtual mm1000_t CalcAllPreset(axis_t axis) override;
 
 protected:
 
@@ -167,7 +167,7 @@ protected:
 
 	bool CutterRadiosIsOn()								    { if (_modalstate.CutterRadiusCompensation) { Info(MESSAGE_GCODE_G41G43AreNotAllowedWithThisCommand); return true; } else return false; }
 
-	virtual unsigned long ParseParameter();
+	virtual unsigned long ParseParameter() override;
 	param_t ParseParamNo();
 
 	mm1000_t GetParamValue(param_t paramNo);

@@ -46,16 +46,16 @@ private:
 
 public:
 
-	virtual void Init();
-	virtual void TimerInterrupt();
+	virtual void Init() override;
+	virtual void TimerInterrupt() override;
 
-	virtual void Beep(const SPlayTone*)		{ };
+	virtual void Beep(const SPlayTone*)	 override	{ };
 
 protected:
 
-	virtual unsigned long Draw(EDrawType draw);
-	virtual unsigned long Splash();
-	virtual void FirstDraw();
+	virtual unsigned long Draw(EDrawType draw) override;
+	virtual unsigned long Splash() override;
+	void FirstDraw();
 
 private:
 

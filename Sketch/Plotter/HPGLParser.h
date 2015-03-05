@@ -35,7 +35,7 @@ public:
 
 	CHPGLParser(CStreamReader* reader,Stream* output) : CParser(reader,output)	{ };
 
-	virtual void Parse();
+	virtual void Parse() override;
 
 	static sdist_t HPGLToPlotterCordX(sdist_t xx);
 	static sdist_t HPGLToPlotterCordY(sdist_t yy);

@@ -19,13 +19,13 @@ public:
 
 protected:
 
-	virtual void Init();
-	virtual void Initialized();
-	virtual bool Parse(CStreamReader* reader, Stream* output);
+	virtual void Init() override;
+	virtual void Initialized() override;
+	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 
 	void InitSD(unsigned char sdEnablePin);
 
-	virtual void ReadAndExecuteCommand();
+	virtual void ReadAndExecuteCommand() override;
 
 private:
 

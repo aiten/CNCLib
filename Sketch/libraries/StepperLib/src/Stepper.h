@@ -271,7 +271,7 @@ protected:
 	void QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], steprate_t vMax);
 	void QueueWait();
 
-	debugvirtula void Step(bool isr);
+	debugvirtula void StepRequest(bool isr);
 	debugvirtula void OptimizeMovementQueue(bool force);
 
 	////////////////////////////////////////////////////////
@@ -593,7 +593,7 @@ protected:
 	virtual void MoveAwayFromReference(axis_t axis, sdist_t dist, steprate_t vMax)							{ MoveRel(axis, dist, vMax); };
 
 #ifdef _MSC_VER
-	virtual void  StepBegin(const SStepBuffer* step) { step; };
+	virtual void  StepBegin(const SStepBuffer* /* step */) {  };
 	virtual void  StepEnd() {};
 #endif
 
@@ -615,7 +615,7 @@ protected:
 	debugvirtula void SetIdleTimer();
 	debugvirtula void StopTimer();
 
-	static void HandleInterrupt()								{ GetInstance()->Step(true); }
+	static void HandleInterrupt()								{ GetInstance()->StepRequest(true); }
 	static void HandleBackground()								{ GetInstance()->Background(); }
 
 	//////////////////////////////////////////

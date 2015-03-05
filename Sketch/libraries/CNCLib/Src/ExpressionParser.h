@@ -39,7 +39,7 @@ public:
 
 	CExpressionParser(CStreamReader* reader, Stream* output) : super(reader,output)	{ _LeftParenthesis = '('; _RightParenthesis = ')'; };
 
-	virtual void Parse();
+	virtual void Parse() override;
 
 	expr_t			Answer;
 

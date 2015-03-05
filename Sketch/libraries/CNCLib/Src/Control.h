@@ -61,8 +61,8 @@ public:
 		Probe				// Probe for tool lenght
 	};
 
-	virtual void IOControl(unsigned char tool, unsigned short level)	{ tool;level;};
-	virtual unsigned short IOControl(unsigned char tool)				{ tool; return 0; };
+	virtual void IOControl(unsigned char /* tool */, unsigned short /*level */)	{ };
+	virtual unsigned short IOControl(unsigned char /* tool */)				{ return 0; };
 
 	//////////////////////////////////////////
 

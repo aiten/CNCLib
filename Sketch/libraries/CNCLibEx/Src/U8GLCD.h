@@ -31,7 +31,7 @@
 #define LCD_GROW 64
 #define LCD_GCOL 128
 
-#define LCD_NUMAXIS	NUM_AXIS
+//#define LCD_NUMAXIS	NUM_AXIS
 
 ////////////////////////////////////////////////////////
 
@@ -72,7 +72,7 @@ public:
 
 	CU8GLcd()												{  }
 
-	virtual void Init();
+	virtual void Init() override;
 
 	enum EDrawLoopType
 	{
@@ -87,9 +87,9 @@ public:
 
 protected:
 
-	virtual void Poll();
-	virtual void TimerInterrupt();
-	virtual void Command(char* cmd);
+	virtual void Poll() override;
+	virtual void TimerInterrupt() override;
+	virtual void Command(char* cmd) override;
 
 	////////////////////////////////////////////////////////
 
@@ -138,8 +138,8 @@ protected:
 
 	unsigned char GetPage();
 
-	virtual unsigned long Draw(EDrawType draw);
-	virtual unsigned long Splash();
+	virtual unsigned long Draw(EDrawType draw) override;
+	virtual unsigned long Splash() override;
 
 	void QueueCommandHistory(char ch);
 
@@ -185,7 +185,7 @@ protected:
 	CRotaryButton<rotarypos_t, ROTARY_ACCURACY> _rotarybutton;
 	CPushButton									_rotarypushbutton;
 
-	unsigned char				_lcd_numaxis=LCD_NUMAXIS;
+	unsigned char				_lcd_numaxis = NUM_AXIS;
 
 	static unsigned char ToRow(unsigned char row) { return  (row + 1)*(CharHeight); }
 	static unsigned char ToCol(unsigned char col) { return (col)*(CharWidth); }

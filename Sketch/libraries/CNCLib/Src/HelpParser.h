@@ -36,7 +36,7 @@ public:
 
 protected:
 
-	virtual void Parse();
+	virtual void Parse() override;
 
 	bool MoveRel();
 	bool MoveRel(axis_t axis);

@@ -43,21 +43,21 @@ public:
 
 	CMyControl()				 { }
 
-	virtual void Kill();
+	virtual void Kill() override;
 
-	virtual void IOControl(unsigned char tool, unsigned short level);
-	virtual unsigned short IOControl(unsigned char tool);
+	virtual void IOControl(unsigned char tool, unsigned short level) override;
+	virtual unsigned short IOControl(unsigned char tool) override;
 
 protected:
 
-	virtual void Init();
-	virtual void Initialized();
+	virtual void Init() override;
+	virtual void Initialized() override;
 
-	virtual bool IsKill();
+	virtual bool IsKill() override;
 
-	virtual void GoToReference(axis_t axis, steprate_t steprate);
+	virtual void GoToReference(axis_t axis, steprate_t steprate) override;
 
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
+	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
 
 private:
 

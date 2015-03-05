@@ -302,7 +302,7 @@ void CStepper::EnqueuAndStartTimer(bool waitfinish)
 		{
 			OnStart();
 			CCriticalRegion crit;
-			Step(false);
+			StepRequest(false);
 		}
 		else
 		{
@@ -1452,7 +1452,7 @@ void CStepper::ContinueIdle()
 
 ////////////////////////////////////////////////////////
 
-void CStepper::Step(bool isr)
+void CStepper::StepRequest(bool isr)
 {
 	// called in interrupt => must be "fast"
 	// first send commands to stepper driver

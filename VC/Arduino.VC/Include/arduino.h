@@ -72,7 +72,7 @@ typedef char int8_t;
 
 inline void analogWrite(short, short)	{};
 inline void digitalWrite(short, short)	{};
-inline unsigned char digitalRead(short pin) { pin; return LOW; };
+inline unsigned char digitalRead(short /*pin*/) { return LOW; };
 inline void pinMode(short, short)		{};
 static unsigned char PORTA;
 static unsigned char PORTB;
@@ -212,8 +212,8 @@ public:
 	void println(unsigned long ul)	{ printf("%u\n", ul); };
 	void println(const char*s)		{ printf("%s\n", s); };
 
-	void begin(int i)				{ i; };
-	virtual int available()			{ 
+	void begin(int )				{ };
+	virtual int available()	 		{
 										if (!istty)
 										{
 											if (feof(stdin) != 0)
