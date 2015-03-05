@@ -160,7 +160,7 @@ void CMyControl::Initialized()
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::GoToReference(axis_t axis, steprate_t steprate)
+void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */)
 {
 #if defined(__SAM3X8E__)
 	if (axis == Z_AXIS)

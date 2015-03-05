@@ -147,26 +147,24 @@ unsigned char CStepperTB6560::GetEnable(axis_t axis)
 
 ////////////////////////////////////////////////////////
 
-bool  CStepperTB6560::IsReference(unsigned char referenceid)
+bool  CStepperTB6560::IsReference(unsigned char /* referenceid */)
 {
+/*
 	switch (referenceid)
 	{
-/*
 		case 0: return HALFastdigitalRead(TB6560_X_MIN_PIN) == TB6560_REF_ON;
 		case 1: return HALFastdigitalRead(TB6560_X_MAX_PIN) == TB6560_REF_ON;
 		case 2: return HALFastdigitalRead(TB6560_Y_MIN_PIN) == TB6560_REF_ON;
 		case 3: return HALFastdigitalRead(TB6560_Y_MAX_PIN) == TB6560_REF_ON;
 		case 4: return HALFastdigitalRead(TB6560_Z_MIN_PIN) == TB6560_REF_ON;
 		case 5: return HALFastdigitalRead(TB6560_Z_MAX_PIN) == TB6560_REF_ON;
-*/
-/* No reference for A & B
-		case 6: return HALFastdigitalRead(TB6560_A_MIN_PIN)==TB6560_REF_ON;
-		case 7: return HALFastdigitalRead(TB6560_A_MAX_PIN)==TB6560_REF_ON;
-		case 8: return HALFastdigitalRead(TB6560_B_MIN_PIN)==TB6560_REF_ON;
-		case 9: return HALFastdigitalRead(TB6560_B_MAX_PIN)==TB6560_REF_ON;
-*/
-
+// No reference for A & B
+//		case 6: return HALFastdigitalRead(TB6560_A_MIN_PIN)==TB6560_REF_ON;
+//		case 7: return HALFastdigitalRead(TB6560_A_MAX_PIN)==TB6560_REF_ON;
+//		case 8: return HALFastdigitalRead(TB6560_B_MIN_PIN)==TB6560_REF_ON;
+//		case 9: return HALFastdigitalRead(TB6560_B_MAX_PIN)==TB6560_REF_ON;
 	}
+*/
 	return false;
 }
 

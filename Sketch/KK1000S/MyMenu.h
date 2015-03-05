@@ -45,7 +45,7 @@ public:
 
 protected:
 
-	virtual void Changed();
+	virtual void Changed() override;
 
 	void MenuButtonPressEnd(const SMenuItemDef*);
 	void MenuButtonPressMoveNextAxis(const SMenuItemDef*);

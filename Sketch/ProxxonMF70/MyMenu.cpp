@@ -68,7 +68,7 @@ void CMyMenu::MenuButtonPressMoveNextAxis(const SMenuItemDef*def)
 
 ////////////////////////////////////////////////////////////
 
-void CMyMenu::MenuButtonPressFuerElise(const SMenuItemDef*def)
+void CMyMenu::MenuButtonPressFuerElise(const SMenuItemDef* /* def */)
 {
 	CLcd::GetInstance()->Beep(SPlayTone::PlayInfo);
 }

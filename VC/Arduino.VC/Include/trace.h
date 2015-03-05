@@ -32,8 +32,8 @@ inline void Trace(const char* format, ...)
 	Trace 
 
 #else
-inline void Trace(0);
-inline void TraceEx(0);
+inline void Trace(const char* , ...) {};
+inline void TraceEx(const char* , ...) {};
 #endif
 
 

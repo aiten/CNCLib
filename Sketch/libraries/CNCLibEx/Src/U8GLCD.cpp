@@ -265,7 +265,7 @@ unsigned long CU8GLcd::Splash()
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type,void *data)
+bool CU8GLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type,void * /* data */)
 {
 	switch (type)
 	{

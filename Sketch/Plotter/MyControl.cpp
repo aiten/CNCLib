@@ -92,7 +92,7 @@ void CMyControl::GoToReference()
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::GoToReference(axis_t axis, steprate_t steprate)
+void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */)
 {
 #define FEEDRATE_REFMOVE  CStepper::GetInstance()->GetDefaultVmax() / 4  
         bool toMin = true; // axis != Z_AXIS;

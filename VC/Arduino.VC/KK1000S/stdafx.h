@@ -6,8 +6,10 @@
 #pragma once
 
 #pragma warning(disable:4820)
-
 #pragma warning(disable:4365)
+
+#pragma warning(default:4263)
+#pragma warning(default:4264)
 
 #define _CRT_SECURE_NO_WARNINGS
 #define _AFX_SECURE_NO_WARNINGS 

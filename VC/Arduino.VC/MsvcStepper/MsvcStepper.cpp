@@ -263,7 +263,7 @@ void CMsvcStepper::WriteTestResults(const char* filename)
 	char fname[_MAX_PATH];
 	fname[0]=0;
 	
-	if(true)
+//	if(true)
 	{
 		char tempPath[_MAX_PATH];
 		::GetTempPathA(_MAX_PATH, tempPath); 

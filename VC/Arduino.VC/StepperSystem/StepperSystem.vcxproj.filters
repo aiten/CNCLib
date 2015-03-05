@@ -201,7 +201,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\U8GLCD.h">
       <Filter>CNCLibEx</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MenuBaseText.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MenuBaseText.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">
