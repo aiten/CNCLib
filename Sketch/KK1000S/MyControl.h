@@ -26,6 +26,7 @@
 #include <Analog8IOControl.h>
 #include <Analog8InvertIOControl.h>
 #include <ReadPinIOControl.h>
+#include <ReadPinIOTriggerControl.h>
 
 ////////////////////////////////////////////////////////
 
@@ -65,7 +66,8 @@ private:
 	COnOffIOControl<SPINDEL_PIN, SPINDEL_ON, SPINDEL_OFF> _spindel;
 	CReadPinIOControl<PROBE1_PIN, PROBE_ON> _probe;
 	CReadPinIOControl<CAT(BOARDNAME,_LCD_KILL_PIN),CAT(BOARDNAME,_LCD_KILL_PIN_ON)> _killLcd;
-	CReadPinIOControl<MASH6050S_KILL_PIN,MASH6050S_KILL_PIN_ON> _kill;
+//	CReadPinIOControl<MASH6050S_KILL_PIN,MASH6050S_KILL_PIN_ON> _kill;
+	CReadPinIOTriggerControl<MASH6050S_KILL_PIN,MASH6050S_KILL_PIN_ON,200> _kill;
 
 	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
 };

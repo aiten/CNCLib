@@ -39,6 +39,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Parser.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\PushButton.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ReadPinIOControl.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ReadPinIOTriggerControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\RotaryButton.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\StreamReader.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\UtilitiesCNCLib.h" />

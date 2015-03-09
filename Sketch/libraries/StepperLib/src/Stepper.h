@@ -126,6 +126,11 @@ public:
 	const __FlashStringHelper * GetError()						{ return _pod._error; }
 	void ClearError()											{ _pod._error = NULL; }
 
+	bool IsFatalError()											{ return _pod._fatalerror != NULL; };
+	const __FlashStringHelper * GetFatalError()					{ return _pod._fatalerror; }
+	void ClearFatalError()										{ _pod._fatalerror = NULL; }
+
+
 	void SetMaxSpeed(axis_t axis, steprate_t vMax)				{ _pod._timerMax[axis] = SpeedToTimer(vMax); }
 	void SetAcc(axis_t axis, steprate_t v0Acc)					{ _pod._timerAcc[axis] = SpeedToTimer(v0Acc); }
 	void SetDec(axis_t axis, steprate_t v0Dec)					{ _pod._timerDec[axis] = SpeedToTimer(v0Dec); }
@@ -347,6 +352,7 @@ protected:
 		axisArray_t		_invertdirection;							// invert direction
 
 		const __FlashStringHelper * _error;
+		const __FlashStringHelper * _fatalerror;
 
 		unsigned char	_timeOutEnable[NUM_AXIS];					// enabletimeout in sec if no step (0.. disable, always enabled)
 		unsigned char	_timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
@@ -583,6 +589,7 @@ protected:
 	debugvirtula void OnWarning(const __FlashStringHelper * warning);
 	debugvirtula void OnInfo(const __FlashStringHelper * info);
 
+	void FatalError(const __FlashStringHelper * error)					{ _pod._fatalerror = error; }
 	void Error(const __FlashStringHelper * error)						{ _pod._error = error; OnError(error); }
 	void Info(const __FlashStringHelper * info)							{ OnInfo(info); }
 	void Warning(const __FlashStringHelper * warning)					{ OnWarning(warning); }

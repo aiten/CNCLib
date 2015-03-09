@@ -149,6 +149,7 @@ public:
 	void MenuButtonPressMoveG92(const SMenuItemDef*);
 	void MenuButtonPressMove(const SMenuItemDef*);					// param1 : enum EMoveType, TODO=>String
 	void MenuButtonPressRotate(const SMenuItemDef*);
+	void MenuButtonPressResurrect(const SMenuItemDef*);
 
 	enum EMoveType
 	{

@@ -261,3 +261,18 @@ void CMenuBase::MenuButtonPressCoolant(const SMenuItemDef*)
 	else
 		PostCommand(F("m7"));
 }
+
+////////////////////////////////////////////////////////////
+
+void CMenuBase::MenuButtonPressResurrect(const SMenuItemDef*)
+{
+	if (CControl::GetInstance()->IsKilled())
+	{
+		CControl::GetInstance()->Resurrect();
+		CLcd::GetInstance()->OKBeep();
+	}
+	else
+	{
+		CLcd::GetInstance()->ErrorBeep();
+	}
+}

@@ -1242,6 +1242,7 @@ void CStepper::EmergencyStopResurrect()
 {
 	AbortMove();		// make sure nothing is running
 	_emergencyStop = false;
+	_pod._fatalerror = NULL;
 }
 
 ////////////////////////////////////////////////////////
@@ -1483,8 +1484,8 @@ void CStepper::StepRequest(bool isr)
 
 	if ((_pod._checkReference && IsAnyReference()))
 	{
-		Error(MESSAGE_STEPPER_IsAnyReference);
-		SetIdleTimer();
+		FatalError(MESSAGE_STEPPER_IsAnyReference);
+		EmergencyStop();
 		return;
 	}
 

@@ -100,6 +100,7 @@ void CControl::Kill()
 void CControl::Resurrect()
 {
 	CStepper::GetInstance()->EmergencyStopResurrect();
+	CMotionControlBase::GetInstance()->SetPositionFromMachine();
 	_bufferidx = 0;
 	StepperSerial.println(MESSAGE_OK);
 }
