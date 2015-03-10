@@ -106,9 +106,9 @@ void CMyControl::Init()
 	_spindel.Init();
 	_controllerfan.Init();
 
-	_probe.Init();
+	_probe.Init(MASH6050S_INPUTPINMODE);
 	_killLcd.Init();
-	_kill.Init();
+	_kill.Init(MASH6050S_INPUTPINMODE);
 
 	InitSD(SD_ENABLE_PIN);
 }

@@ -70,7 +70,7 @@ typedef  const char* PGM_P;
 typedef unsigned char uint8_t;
 typedef char int8_t;
 
-inline void analogWrite(short, short)	{};
+inline void analogWrite(short, int)	{};
 inline void digitalWrite(short, short)	{};
 inline unsigned char digitalRead(short /*pin*/) { return LOW; };
 inline void pinMode(short, short)		{};

@@ -21,20 +21,36 @@
 
 ////////////////////////////////////////////////////////
 
-template <unsigned char PIN, unsigned char ONVALUE>
-class CReadPinIOControl
+template <unsigned char PIN, unsigned char ONVALUE, unsigned long STABLETIME>
+class CReadPinIOTriggerControl
 {
 public:
 
-	static void Init()
+	static void Init(unsigned char inputmode = INPUT_PULLUP)
 	{
-		CHAL::pinMode(PIN, INPUT_PULLUP);
+		CHAL::pinMode(PIN, inputmode);
 	}
 
 	bool IsOn()
 	{
-		return CHAL::digitalRead(PIN) == ONVALUE;
+		if (CHAL::digitalRead(PIN) == ONVALUE)
+		{
+			unsigned long now = millis();
+
+			if (_timeOn == 0)	// first on
+			{
+				_timeOn = now;
+			}
+			
+			return (now - _timeOn >= STABLETIME);
+		}
+
+		_timeOn = 0;
+		return false;
 	}
+private:
+
+	unsigned long _timeOn = 0;
 };
 
 ////////////////////////////////////////////////////////

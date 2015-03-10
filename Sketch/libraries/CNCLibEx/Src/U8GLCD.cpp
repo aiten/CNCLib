@@ -76,6 +76,7 @@ void CU8GLcd::SetDefaultPage()
 void CU8GLcd::SetMenuPage()
 {
 	_currentpage = GetPageCount()-1;	// TODO: last is default menu
+	GetMenu().SetMainMenu();
 	SetRotaryFocusMenuPage();
 }
 
@@ -127,7 +128,7 @@ void CU8GLcd::TimerInterrupt()
 
 void CU8GLcd::Poll()
 {
-	GetPage();		// force invalidate if page change
+	GetPage();		// force invalidate if page changed
 
 	super::Poll();
 

@@ -104,6 +104,11 @@ inline void CHAL::pinMode(unsigned char pin, unsigned char mode)
 	::pinMode(pin,mode); 
 }
 
+inline void CHAL::analogWrite(unsigned char pin, int val)			
+{
+	::analogWrite(pin, val);
+}
+
 ////////////////////////////////////////////////////////
 
 inline void CHAL::delayMicroseconds(unsigned int usec)

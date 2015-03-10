@@ -17,8 +17,6 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\GCode3DParser.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\MessageCNCLibEx.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\U8GLCD.h" />
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Analog8InvertIOControl.h" />
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Analog8IOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Beep.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\CNCLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigurationCNCLib.h" />
@@ -38,11 +36,11 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\OnOffIOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Parser.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\PushButton.h" />
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ReadPinIOControl.h" />
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ReadPinIOTriggerControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\RotaryButton.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\StreamReader.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\UtilitiesCNCLib.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8InvertIOControl.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8IOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ConfigurationStepperLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\fastio.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL.h" />
@@ -52,6 +50,8 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\LinearLookUp.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\MessageStepperLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\PushValue.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ReadPinIOControl.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ReadPinIOTriggerControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\RingBuffer.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Singleton.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.h" />

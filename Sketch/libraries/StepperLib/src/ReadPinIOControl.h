@@ -21,36 +21,20 @@
 
 ////////////////////////////////////////////////////////
 
-template <unsigned char PIN>
-class CAnalog8IOControl
+template <unsigned char PIN, unsigned char ONVALUE>
+class CReadPinIOControl
 {
 public:
 
-	unsigned char Level;    // use like a property
-
-	void Init()
+	static void Init(unsigned char inputmode = INPUT_PULLUP)
 	{
-		On(255);
-		Level = 255;
+		CHAL::pinMode(PIN, inputmode);
 	}
 
-	void On()
+	static bool IsOn()
 	{
-		On(Level);
+		return CHAL::digitalRead(PIN) == ONVALUE;
 	}
-
-	void Off()
-	{
-		On(0);
-	}
-
-private:
-
-	void On(unsigned char level)
-	{
-		analogWrite(PIN, level);
-	}
-
 };
 
 ////////////////////////////////////////////////////////

@@ -48,7 +48,7 @@ private:
 
 	void On(unsigned char level)
 	{
-		analogWrite(PIN, 255-level);
+		CHAL::analogWrite(PIN, 255 - level);
 	}
 
 };

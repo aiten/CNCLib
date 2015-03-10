@@ -178,6 +178,7 @@ public:
 	static void digitalWrite(unsigned char pin, unsigned char lowOrHigh);
 	static unsigned char digitalRead(unsigned char pin);
 
+	static void analogWrite(unsigned char pin, int val);
 };
 
 //////////////////////////////////////////

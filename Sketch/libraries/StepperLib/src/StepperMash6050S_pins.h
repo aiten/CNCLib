@@ -36,6 +36,16 @@
 
 ////////////////////////////////////////////////////////
 
+#if defined(__AVR_ATmega2560__)
+
+#define MASH6050S_INPUTPINMODE		INPUT_PULLUP		
+
+#else
+
+#define MASH6050S_INPUTPINMODE		INPUT			// use of 4050N for level transformation
+
+#endif
+
 #define MASH6050S_X_STEP_PIN		54		// AD0
 #define MASH6050S_X_DIR_PIN			55		// AD1
 #define MASH6050S_X_MIN_PIN			3		// D3
@@ -59,6 +69,8 @@
 #define MASH6050S_SDSS_PIN			53		// D53
 #endif
 #elif defined(__AVR_ATmega328P__) || defined (_MSC_VER)
+
+#define MASH6050S_INPUTPINMODE		INPUT_PULLUP		
 
 #define MASH6050S_X_STEP_PIN		14		//AD0	
 #define MASH6050S_X_DIR_PIN			15	

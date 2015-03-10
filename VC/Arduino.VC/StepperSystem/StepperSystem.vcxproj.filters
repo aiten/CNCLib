@@ -129,17 +129,8 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\OnOffIOControl.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Analog8IOControl.h">
-      <Filter>CNCLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ReadPinIOControl.h">
-      <Filter>CNCLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\ConfigurationCNCLibEx.h">
       <Filter>CNCLibEx</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Analog8InvertIOControl.h">
-      <Filter>CNCLib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperL298N.h">
       <Filter>StepperLib</Filter>
@@ -204,8 +195,17 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MenuBaseText.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ReadPinIOTriggerControl.h">
-      <Filter>CNCLib</Filter>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8InvertIOControl.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8IOControl.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ReadPinIOControl.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ReadPinIOTriggerControl.h">
+      <Filter>StepperLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

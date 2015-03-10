@@ -21,36 +21,36 @@
 
 ////////////////////////////////////////////////////////
 
-template <unsigned char PIN, unsigned char ONVALUE, unsigned long STABLETIME>
-class CReadPinIOTriggerControl
+template <unsigned char PIN>
+class CAnalog8IOControl
 {
 public:
 
-	static void Init()
+	unsigned char Level;    // use like a property
+
+	void Init()
 	{
-		CHAL::pinMode(PIN, INPUT_PULLUP);
+		On(255);
+		Level = 255;
 	}
 
-	bool IsOn()
+	void On()
 	{
-		if (CHAL::digitalRead(PIN) == ONVALUE)
-		{
-			unsigned long now = millis();
-
-			if (_timeOn == 0)	// first on
-			{
-				_timeOn = now;
-			}
-			
-			return (now - _timeOn >= STABLETIME);
-		}
-
-		_timeOn = 0;
-		return false;
+		On(Level);
 	}
+
+	void Off()
+	{
+		On(0);
+	}
+
 private:
 
-	unsigned long _timeOn = 0;
+	void On(unsigned char level)
+	{
+		CHAL::analogWrite(PIN, level);
+	}
+
 };
 
 ////////////////////////////////////////////////////////

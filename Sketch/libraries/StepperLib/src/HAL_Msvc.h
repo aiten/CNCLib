@@ -108,6 +108,11 @@ inline unsigned char CHAL::digitalRead(uint8_t pin)
 	return ::digitalRead(pin);
 }
 
+inline void CHAL::analogWrite(unsigned char pin, int val)
+{
+	::analogWrite(pin, val);
+}
+
 inline void CHAL::pinMode(unsigned char pin, unsigned char mode)			
 { 
 	::pinMode(pin,mode); 
