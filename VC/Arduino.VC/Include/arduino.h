@@ -214,6 +214,9 @@ public:
 
 	void begin(int )				{ };
 	virtual int available()	 		{
+										if  (_last)
+											return 1;
+
 										if (!_istty)
 										{
 											if (feof(stdin) != 0)
@@ -229,16 +232,23 @@ public:
 										return 0; 
 									}
 	virtual char read()				{
-										char ch;
-										if (_istty)
+										char ch=_last;
+										if (ch)
 										{
-											ch = (char)_getch();
-											if (ch == '\r')
-												ch = '\n';
+											_last = 0;
 										}
 										else
 										{
-											ch = (char)_fgetchar();
+											if (_istty)
+											{
+												ch = (char)_getch();
+												if (ch == '\r')
+													_last = '\n';
+											}
+											else
+											{
+												ch = (char)_fgetchar();
+											}
 										}
 
 										_putch(ch);
@@ -249,6 +259,7 @@ private:
 
 	bool _istty;
 	void(*_pIdle)() = NULL;
+	char _last=0;
 
 };
 

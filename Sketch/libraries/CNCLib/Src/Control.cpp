@@ -101,6 +101,14 @@ void CControl::Resurrect()
 {
 	CStepper::GetInstance()->EmergencyStopResurrect();
 	CMotionControlBase::GetInstance()->SetPositionFromMachine();
+
+#ifndef _NO_LCD
+	
+	if (CLcd::GetInstance())
+		CLcd::GetInstance()->ClearDiagnostic();
+
+#endif
+
 	_bufferidx = 0;
 	StepperSerial.println(MESSAGE_OK);
 }
@@ -242,10 +250,18 @@ bool CControl::Command(char* buffer, Stream* output)
 	
 	_reader.Init(buffer);
 
-	while (_reader.GetChar())
+	if (_reader.GetChar())
 	{
-		if (!Parse(&_reader,output))
-			ret = false;
+		while (_reader.GetChar())
+		{
+			if (!Parse(&_reader,output))
+				ret = false;
+		}
+	}
+	else if (output)
+	{
+		// send OK on empty line (command)
+		output->println(MESSAGE_OK);
 	}
 	
 	return ret;

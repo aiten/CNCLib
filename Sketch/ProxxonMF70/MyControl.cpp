@@ -147,7 +147,12 @@ void CMyControl::Kill()
 
 bool CMyControl::IsKill()
 {
-	return _killLcd.IsOn();
+	if (_killLcd.IsOn())
+	{
+		Lcd.Diagnostic(F("LCD E-Stop"));
+		return true;
+	}
+	return false;
 }
 
 ////////////////////////////////////////////////////////////

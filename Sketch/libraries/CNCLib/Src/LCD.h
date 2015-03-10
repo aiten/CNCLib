@@ -89,6 +89,20 @@ private:
 
 	bool _splash=false;
 	bool _invalidate=false;
+
+public:
+
+	void Diagnostic(const __FlashStringHelper * diag)			{ _diagnostics = diag; }
+
+	bool IsDiagnostic()											{ return _diagnostics != NULL; };
+	const __FlashStringHelper * GetDiagnostic()					{ return _diagnostics; }
+	void ClearDiagnostic()										{ _diagnostics = NULL; }
+
+private:
+
+	const __FlashStringHelper * _diagnostics=NULL;
+
+
 };
 
 ////////////////////////////////////////////////////////

@@ -156,7 +156,18 @@ void CMyControl::Kill()
 bool CMyControl::IsKill()
 {
 //	return _killLcd.IsOn();
-	return _kill.IsOn() || _killLcd.IsOn();
+	if (_kill.IsOn())
+	{
+		Lcd.Diagnostic(F("KK1000S E-Stop"));
+		return true;
+	} 
+	else if (_killLcd.IsOn())
+	{
+		Lcd.Diagnostic(F("LCD E-Stop"));
+		return true;
+	}
+	
+	return false;
 }
 
 ////////////////////////////////////////////////////////////

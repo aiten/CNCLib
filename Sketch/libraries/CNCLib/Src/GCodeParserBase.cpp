@@ -269,6 +269,7 @@ void CGCodeParserBase::Parse()
 		unsigned char ch = _reader->GetCharToUpper();
 		switch (ch)
 		{
+			case '\r':
 			case '\t':
 			case ' ':
 			case '(':

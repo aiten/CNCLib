@@ -53,7 +53,7 @@ public:
 	static char Toupper(char ch)			{ return IsLowerAZ(ch) ? ch + 'A' - 'a' : ch; }
 	static bool IsEOC(char ch)				{ return ch == 0 || ch == ';'; }			// is EndOfCommand
 
-	static bool IsSpace(char ch)			{ return ch == ' ' || ch == '\t'; }
+	static bool IsSpace(char ch)			{ return ch == ' ' || ch == '\t' || ch == '\r'; }
 	static bool IsSpaceOrEnd(char ch)		{ return ch == 0 || IsSpace(ch); }
 
 	static bool IsMinus(char ch)			{ return ch == '-'; }
