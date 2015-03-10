@@ -56,7 +56,7 @@ void setup()
 	MyStepper.UseSpeedSign = true;
 	MyStepper.CacheSize = 100000;
 	MyStepper.InitTest("KK1000S.csv");
-	  Serial.pIdle = Idle;
+	Serial.SetIdle(Idle);
 }
 
 void loop() 

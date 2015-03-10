@@ -492,7 +492,7 @@ bool CGCode3DParser::GetFileName(char*buffer)
 				return false;
 			}
 		}
-		else if (ch == 0 || ch == ' ' || ch == '\t')
+		else if (CStreamReader::IsSpaceOrEnd(ch))
 		{
 			break;
 		}

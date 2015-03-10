@@ -53,7 +53,7 @@ void setup()
 	MyStepper.UseSpeedSign = true;
 	MyStepper.CacheSize = 50000;
 	MyStepper.InitTest("Plotter.csv");
-	Serial.pIdle = Idle;
+	Serial.SetIdle(Idle);
 }
 
 void loop() 

@@ -83,7 +83,7 @@ public:
 	//////////////////////////////////////////
 
 	const char* GetBuffer()				{ return _buffer; }
-	virtual bool IsEndOfCommandChar(char ch);					// override default End of command char, default \n \r
+	virtual bool IsEndOfCommandChar(char ch);					// override default End of command char, default \n
 
 protected:
 

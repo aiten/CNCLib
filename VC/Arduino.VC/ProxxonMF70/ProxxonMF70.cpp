@@ -50,13 +50,13 @@ int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 	MyStepper.EndTest();
 }
 
-void setup() 
-{     
+void setup()
+{
 	MyStepper.DelayOptimization = false;
 	MyStepper.UseSpeedSign = true;
 	MyStepper.CacheSize = 100000;
 	MyStepper.InitTest("ProxxonMF70.csv");
-	  Serial.pIdle = Idle;
+	Serial.SetIdle(Idle);
 }
 
 void loop() 

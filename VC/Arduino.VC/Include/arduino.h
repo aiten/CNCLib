@@ -193,10 +193,10 @@ class Stream
 public:
 	Stream()
 	{
-		pIdle = NULL;
-		istty = _isatty(STDIO)!=0;
+		_istty = _isatty(STDIO)!=0;
 	}
-	bool istty;
+
+	void SetIdle(void(*pIdle)())	{ _pIdle = pIdle;  }
 
 	void print(char c)				{ printf("%c", c); };
 	void print(unsigned int ui)		{ printf("%u", ui); };
@@ -214,25 +214,27 @@ public:
 
 	void begin(int )				{ };
 	virtual int available()	 		{
-										if (!istty)
+										if (!_istty)
 										{
 											if (feof(stdin) != 0)
 											{
-												istty = true;
+												_istty = true;
 												return 0;
 											}
 										}
-										if (!istty || _kbhit())
+										if (!_istty || _kbhit())
 											return 1; 
 		
-										if (pIdle) pIdle(); 
+										if (_pIdle) _pIdle(); 
 										return 0; 
 									}
 	virtual char read()				{
 										char ch;
-										if (istty)
+										if (_istty)
 										{
 											ch = (char)_getch();
+											if (ch == '\r')
+												ch = '\n';
 										}
 										else
 										{
@@ -242,9 +244,11 @@ public:
 										_putch(ch);
 										return ch;
 									}
-	void(*pIdle)();
 
 private:
+
+	bool _istty;
+	void(*_pIdle)() = NULL;
 
 };
 

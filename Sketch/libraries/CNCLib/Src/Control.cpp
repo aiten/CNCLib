@@ -255,7 +255,8 @@ bool CControl::Command(char* buffer, Stream* output)
 
 bool CControl::IsEndOfCommandChar(char ch)
 {
-	return ch == '\n' || ch == '\r' || ch == -1;
+	//return ch == '\n' || ch == '\r' || ch == -1;
+	return ch == '\n' || ch == -1;
 }
 
 ////////////////////////////////////////////////////////////
