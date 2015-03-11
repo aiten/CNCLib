@@ -29,7 +29,7 @@
 
 #include "GCode3DParser.h"
 #include "MessageCNCLibEx.h"
-#include <Control.h>
+#include <Control3D.h>
 
 ////////////////////////////////////////////////////////////
 
@@ -179,12 +179,7 @@ void CGCode3DParser::PrintSDFileListRecurse(File& dir, unsigned char depth, unsi
 
 void CGCode3DParser::M21Command()
 {
-	if (!SD.begin(53))
-	{
-		StepperSerial.println(MESSAGE_PARSER3D_INITIALIZATION_FAILED);
-		return;
-	}
-	StepperSerial.println(MESSAGE_PARSER3D_INITIALIZATION_DONE);
+	((CControl3D*)CControl::GetInstance())->ReInitSD();
 }
 
 ////////////////////////////////////////////////////////////

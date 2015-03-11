@@ -77,14 +77,22 @@ void CControl3D::InitSD(unsigned char sdEnablePin)
 	CHAL::pinMode(sdEnablePin, OUTPUT);
 	CHAL::digitalWrite(sdEnablePin, HIGH);
 
-	if (!SD.begin(sdEnablePin))
+	_sdEnablePin = sdEnablePin;
+	ReInitSD();
+}
+
+////////////////////////////////////////////////////////////
+
+void CControl3D::ReInitSD()
+{
+	if (!SD.begin(_sdEnablePin))
 	{
 		StepperSerial.println(MESSAGE_CONTROL3D_initializationFailed);
 	}
-    else
-    {
-    	StepperSerial.println(MESSAGE_CONTROL3D_initializationDone);
-    }
+	else
+	{
+		StepperSerial.println(MESSAGE_CONTROL3D_initializationDone);
+	}
 }
 
 ////////////////////////////////////////////////////////////

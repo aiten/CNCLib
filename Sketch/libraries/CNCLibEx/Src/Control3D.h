@@ -27,8 +27,13 @@ protected:
 
 	virtual void ReadAndExecuteCommand() override;
 
+public:
+
+	void ReInitSD();
+
 private:
 
+	unsigned char _sdEnablePin;
 };
 
 ////////////////////////////////////////////////////////
