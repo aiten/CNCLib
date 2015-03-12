@@ -45,7 +45,7 @@ void CControl::Init()
 	CStepper::GetInstance()->Init();
 	CStepper::GetInstance()->AddEvent(MyStepperEvent, this, _oldStepperEvent);
 
-#ifndef _NO_LCD
+#ifdef _USE_LCD
 	
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->Init();
@@ -102,7 +102,7 @@ void CControl::Resurrect()
 	CStepper::GetInstance()->EmergencyStopResurrect();
 	CMotionControlBase::GetInstance()->SetPositionFromMachine();
 
-#ifndef _NO_LCD
+#ifdef _USE_LCD
 	
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->ClearDiagnostic();
@@ -137,7 +137,7 @@ void CControl::Idle(unsigned int /*idletime*/)
 
 void CControl::Poll()
 {
-#ifndef _NO_LCD
+#ifdef _USE_LCD
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->Poll();
 #endif
@@ -223,7 +223,7 @@ bool CControl::ParseAndPrintResult(CParser *parser, Stream* output)
 
 bool CControl::Command(char* buffer, Stream* output)
 {
-#ifndef _NO_LCD
+#ifdef _USE_LCD
 
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->Command(buffer);
@@ -459,7 +459,7 @@ void CControl::TimerInterrupt()
 		Kill();
 	}
 
-#ifndef _NO_LCD
+#ifdef _USE_LCD
 
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->TimerInterrupt();
@@ -475,7 +475,7 @@ void CControl::Delay(unsigned long ms)
 
 	while (expected_end > millis())
 	{
-#ifndef _NO_LCD
+#ifdef _USE_LCD
 		if (CLcd::GetInstance())
 			CLcd::GetInstance()->Poll();
 #endif

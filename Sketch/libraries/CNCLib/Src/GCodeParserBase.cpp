@@ -26,6 +26,7 @@
 #include "MotionControlBase.h"
 
 #include "GCodeParserBase.h"
+
 ////////////////////////////////////////////////////////////
 
 #ifdef _MSC_VER
@@ -307,7 +308,7 @@ void CGCodeParserBase::Parse()
 
 			default:
 #ifdef _MSC_VER
-			if (IsToken(F("X"), true, false)) { _exit = true; return; }
+				if (IsToken(F("X"), true, false)) { _exit = true; return; }
 #endif
 				if (!Command(ch))
 				{
@@ -665,7 +666,7 @@ void CGCodeParserBase::G04Command()
 		dweelms = GetDweel();
 	}
 
-	if (ExpectEndOfCommand())		{ return; }
+	if (!ExpectEndOfCommand())		{ return; }
 
 	Wait(dweelms);
 }
@@ -694,7 +695,7 @@ void CGCodeParserBase::G28Command()
 		if (CheckError()) { return; }
 	}
 
-	if (ExpectEndOfCommand())		{ return; }
+	if (!ExpectEndOfCommand())		{ return; }
 
 	if (move.axes == 0)
 	{
@@ -847,7 +848,7 @@ void CGCodeParserBase::M110Command()
 		linenumber = GetUInt32();
 	}
 
-	if (ExpectEndOfCommand())		{ return; }
+	if (!ExpectEndOfCommand())		{ return; }
 
 	_modalstate.Linenumber = linenumber;
 }

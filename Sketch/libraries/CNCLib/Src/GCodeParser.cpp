@@ -428,6 +428,8 @@ void CGCodeParser::ToolSelectCommand()
 	_modalstate.ToolSelected = tool;
 }
 
+////////////////////////////////////////////////////////////
+
 void CGCodeParser::SpindleSpeedCommand()
 {
 	_reader->SkipSpaces();
@@ -565,13 +567,13 @@ void CGCodeParser::G10Command()
 
 void CGCodeParser::G41Command()
 {
-	/*
+/*
 		if (_reader->SkipSpacesToUpper() == 'D')
 		{
-		_reader->GetNextChar();
-		GetUint16OrParam();			// ignore it
+			_reader->GetNextChar();
+			GetUint16OrParam();			// ignore it
 		}
-		*/
+*/
 	ErrorNotImplemented();
 }
 
@@ -579,13 +581,13 @@ void CGCodeParser::G41Command()
 
 void CGCodeParser::G42Command()
 {
-	/*
+/*
 	if (_reader->SkipSpacesToUpper() == 'D')
 	{
-	_reader->GetNextChar();
-	GetUint16OrParam();			// ignore it
+		_reader->GetNextChar();
+		GetUint16OrParam();			// ignore it
 	}
-	*/
+*/
 	ErrorNotImplemented();
 }
 

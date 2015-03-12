@@ -25,7 +25,11 @@
 
 #ifdef REDUCED_SIZE
 
-#define _NO_LCD
+#undef _USE_LCD
+
+#else
+
+#define _USE_LCD
 
 #endif
 

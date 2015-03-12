@@ -62,13 +62,16 @@ bool CParser::CheckError()
 
 bool CParser::ExpectEndOfCommand()
 {
-	if (IsError()) return true;
+	// return true => not char left on input => OK
+	// return false  => error or still char available
+
+	if (IsError()) return false;
 
 	if (_reader->IsEOC(SkipSpacesOrComment()))
-		return false;
+		return true;
 
 	Error(MESSAGE_PARSER_EndOfCommandExpected);
-	return true;
+	return false;
 }
 
 ////////////////////////////////////////////////////////////

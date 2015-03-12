@@ -96,12 +96,12 @@ protected:
 	virtual bool Parse(CStreamReader* reader, Stream* output)=0;// abstract: specify Parser
 	virtual bool Command(char* xbuffer, Stream* output);		// execute Command (call parser)
 	virtual void Idle(unsigned int idletime);					// called after TIMEOUTCALLIDEL in idle state
-	virtual void Poll();										// call in Idle and at least e.g. 100ms (not in interrupt)
+	virtual void Poll();										// call in Idle and at least e.g. 100ms (not in interrupt), see CheckIdlePoll
 	virtual void ReadAndExecuteCommand();						// read and execute commands from other source e.g. SD.File
 
 	virtual void TimerInterrupt();								// called from timer (timer0 on AVR) 
 
-	virtual bool IsKill() = 0;		// check for kill
+	virtual bool IsKill() = 0;									// check for kill
 
 	bool ParseAndPrintResult(CParser* parser, Stream* output);
 

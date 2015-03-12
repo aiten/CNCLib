@@ -54,7 +54,7 @@ public:
 
 	static void InvalidateLcd()
 	{
-#ifndef _NO_LCD
+#ifdef _USE_LCD
 	
 		if (CLcd::GetInstance())
 			CLcd::GetInstance()->Invalidate();

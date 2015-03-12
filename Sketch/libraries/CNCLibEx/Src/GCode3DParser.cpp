@@ -373,7 +373,7 @@ void CGCode3DParser::M111Command()
 		debuglevel = GetUInt8();
 	}
 
-	if (ExpectEndOfCommand())		{ return; }
+	if (!ExpectEndOfCommand())		{ return; }
 }
 
 

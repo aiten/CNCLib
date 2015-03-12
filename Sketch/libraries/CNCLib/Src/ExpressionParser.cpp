@@ -52,6 +52,8 @@ void CExpressionParser::Parse()
 	}
 }
 
+////////////////////////////////////////////////////////////
+
 void CExpressionParser::GetNextToken()
 {
 	_state._detailtoken = NothingSy;
@@ -449,8 +451,7 @@ expr_t CExpressionParser::EvalFunction(EnumAsByte(ETokenType) operatorSy, const 
 {
 	switch (operatorSy)
 	{
-
-		// arithmetic
+			// arithmetic
 		case AbsSy:  return abs(value);
 		case ExpSy:  return exp(value);
 		case SignSy:  return Sign(value);
