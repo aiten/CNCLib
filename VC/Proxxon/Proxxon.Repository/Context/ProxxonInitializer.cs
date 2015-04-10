@@ -14,12 +14,51 @@ namespace Proxxon.Repository.Context
     {
         protected override void Seed(ProxxonContext context)
         {
+			var proxxon = new Machine
+			{
+				Name = "Proxxon",
+				ComPort = "com4",
+				SizeX = 130m,
+				SizeY = 45m,
+				SizeZ = 81m,
+				BaudRate = 115200,
+				BufferSize = 63,
+				CommandToUpper = false,
+				Default = false,
+				ProbeSizeZ = 25m
+			};
 
-			context.Machines.AddRange(new List<Machine>
+			var kk1000s = new Machine
+			{
+				Name = "KK1000S",
+				ComPort = "com11",
+				SizeX = 830m,
+				SizeY = 500m,
+				SizeZ = 100m,
+				BaudRate = 115200,
+				BufferSize = 63,
+				CommandToUpper = false,
+				Default = true,
+				ProbeSizeZ = 25m
+			};
+
+ 			var machines = new List<Machine>
             {
-                new Machine{ Name="Proxxon", ComPort = "com4",  SizeX = 130m, SizeY=45m, SizeZ=81m, BaudRate=115200, BufferSize=63, CommandToUpper=false, Default=false },
-                new Machine{ Name="KK100S",  ComPort = "com11", SizeX = 830m, SizeY=500m, SizeZ=100m, BaudRate=115200, BufferSize=63, CommandToUpper=false, Default=true},
-            });
+				proxxon,
+				kk1000s
+            };
+
+			context.Machines.AddRange(machines);
+
+			var machinecommands = new List<MachineCommand>
+            {
+                new MachineCommand{ Machine=proxxon, CommandString ="m20" },
+                new MachineCommand{ Machine=machines[0], CommandString ="m21" },
+                new MachineCommand{ Machine=kk1000s, CommandString ="m201" },
+                new MachineCommand{ Machine=machines[1], CommandString ="m211" }
+			};
+
+			context.MachineCommands.AddRange(machinecommands);
 /*
             context.Publishers.AddRange(new List<Publisher> { 
                 new Publisher { Name="Puffin"},

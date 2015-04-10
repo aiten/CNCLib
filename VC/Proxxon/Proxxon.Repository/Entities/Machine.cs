@@ -18,5 +18,10 @@ namespace Proxxon.Repository.Entities
 		public int BufferSize { get; set; }
 		public bool CommandToUpper { get; set; }
         public bool Default { get; set; }
+		public decimal ProbeSizeX { get; set; }
+		public decimal ProbeSizeY { get; set; }
+		public decimal ProbeSizeZ { get; set; }
+
+		public ICollection<MachineCommand> MachineCommands { get; set; }
 	}
 }

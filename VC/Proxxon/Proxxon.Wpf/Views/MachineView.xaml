@@ -1,8 +1,9 @@
-﻿<Window x:Class="Proxxon.Wpf.MachineView"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Proxxon.Wpf.ViewModels"
-        Title="Machine" Height="390" Width="380">
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Proxxon.Wpf.MachineView"
+        Title="Machine" Height="470" Width="380">
     <Window.DataContext>
         <vm:MachineViewModel />
     </Window.DataContext>
@@ -15,7 +16,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal"/>
         </StackPanel>
-        
+
         <TabControl Margin="0,0,0,10" >
             <TabItem Header="Setup">
                 <StackPanel >
@@ -55,7 +56,28 @@
                         <Label Content="Default" Width="150" />
                         <CheckBox Content="Default" IsChecked="{Binding Default}" VerticalAlignment="Center"    />
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Probe Size X" Width="150" />
+                        <TextBox Text="{Binding ProbeSizeX}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Probe Size Y" Width="150" />
+                        <TextBox Text="{Binding ProbeSizeY}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Probe Size Z" Width="150" />
+                        <TextBox Text="{Binding ProbeSizeZ}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
                 </StackPanel>
+            </TabItem>
+            <TabItem Header="Commands" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="55">
+                <DataGrid MinHeight="200" ItemsSource="{Binding MachineCommands}"
+                	AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                	ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserAddRows="True" IsReadOnly="False" MaxHeight="500"  >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding CommandString}" Header="Command" MinWidth="200" IsReadOnly="False"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
         </TabControl>
     </StackPanel>

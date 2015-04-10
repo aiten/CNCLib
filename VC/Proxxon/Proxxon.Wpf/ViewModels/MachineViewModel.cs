@@ -45,6 +45,7 @@ namespace Proxxon.Wpf.ViewModels
         public void LoadMachine(int machineID)
         {
             AddNewMachine = machineID <= 0;
+			MachineCommands.Clear();
             if (AddNewMachine)
             {
                 _currentMachine = new Models.Machine()
@@ -57,13 +58,16 @@ namespace Proxxon.Wpf.ViewModels
                     BaudRate = 115200,
                     BufferSize = 63,
                     CommandToUpper = false,
-                    Default = false
+                    Default = false,
+					ProbeSizeZ = 25
                 };
             }
             else
             {
                 _currentMachine = ObjectConverter.NewCloneProperties<Models.Machine, Proxxon.Logic.DTO.Machine>(new MachineControler().GetMachine(machineID));
-            }
+				MachineCommands.AddCloneProperties(new MachineControler().GetMachineCommands(machineID));
+
+			}
 
             OnPropertyChanged(() => MachineName);
             OnPropertyChanged(() => ComPort);
@@ -74,7 +78,10 @@ namespace Proxxon.Wpf.ViewModels
             OnPropertyChanged(() => SizeZ);
             OnPropertyChanged(() => BufferSize);
             OnPropertyChanged(() => Default);
-        }
+			OnPropertyChanged(() => ProbeSizeX);
+			OnPropertyChanged(() => ProbeSizeY);
+			OnPropertyChanged(() => ProbeSizeZ);
+		}
  
         #region Properties
 
@@ -131,6 +138,32 @@ namespace Proxxon.Wpf.ViewModels
             set { SetProperty(() => _currentMachine.Default == value, () => _currentMachine.Default = value); }
         }
 
+		public decimal ProbeSizeX
+		{
+			get { return _currentMachine.ProbeSizeX; }
+			set { SetProperty(() => _currentMachine.ProbeSizeX == value, () => _currentMachine.ProbeSizeX = value); }
+		}
+		public decimal ProbeSizeY
+		{
+			get { return _currentMachine.ProbeSizeY; }
+			set { SetProperty(() => _currentMachine.ProbeSizeY == value, () => _currentMachine.ProbeSizeY = value); }
+		}
+		public decimal ProbeSizeZ
+		{
+			get { return _currentMachine.ProbeSizeZ; }
+			set { SetProperty(() => _currentMachine.ProbeSizeZ == value, () => _currentMachine.ProbeSizeZ = value); }
+		}
+
+		private ObservableCollection<Models.MachineCommand> _MachineCommands = new ObservableCollection<Models.MachineCommand>();
+
+		public ObservableCollection<Models.MachineCommand> MachineCommands
+		{
+			get
+			{
+				return _MachineCommands;
+			}
+		}
+
 		#endregion
 
         public bool AddNewMachine { get; set; }
@@ -149,7 +182,7 @@ namespace Proxxon.Wpf.ViewModels
                 id = _currentMachine.MachineID;
                 new MachineControler().Update(_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>());
             }
-            LoadMachine(id);
+			LoadMachine(id);
             ViewWindow.Close();
         }
 		public bool CanSaveMachine()

@@ -3,6 +3,7 @@ using Proxxon.Repository.Mappings;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,8 +23,7 @@ namespace Proxxon.Repository.Context
         }
 
         public DbSet<Machine> Machines { get; set; }
-//  public DbSet<Book> Books { get; set; }
-//	public DbSet<Publisher> Publishers { get; set; }
+		public DbSet<MachineCommand> MachineCommands { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -38,8 +38,16 @@ namespace Proxxon.Repository.Context
                 HasMaxLength(32);
 
             modelBuilder.Entity<Machine>().Property((m) => m.Default).IsRequired();
-            
+
+			modelBuilder.Entity<MachineCommand>().Property((m) => m.CommandString).
+				IsRequired().
+				HasMaxLength(64);
+
+ 			
+			modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+           
             base.OnModelCreating(modelBuilder);
+
         }
 
         private void Configure()

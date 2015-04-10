@@ -15,18 +15,14 @@ namespace Proxxon.Logic
 		public DTO.Machine[] GetMachines()
 		{
 			var machines = Repository.Query<Proxxon.Repository.Entities.Machine>().ToList();
-
 			List<DTO.Machine> l = new List<DTO.Machine>();
-
             l.AddCloneProperties(machines);
-
 			return l.ToArray();
 		}
 
         public DTO.Machine GetMachine(int id)
         {
             var machines = Repository.Query<Proxxon.Repository.Entities.Machine>().Where((m) => m.MachineID == id).FirstOrDefault();
-
             return ObjectConverter.NewCloneProperties<DTO.Machine, Proxxon.Repository.Entities.Machine>(machines);
         }
 
@@ -47,5 +43,13 @@ namespace Proxxon.Logic
             Context.Entry(m.NewCloneProperties<Proxxon.Repository.Entities.Machine, DTO.Machine>()).State = EntityState.Deleted;
             Context.SaveChanges();
         }
+
+		public DTO.MachineCommand[] GetMachineCommands(int machineID)
+		{
+			var machineCommands = Repository.Query<Proxxon.Repository.Entities.MachineCommand>().Where(c => c.MachineID == machineID).ToList();
+			List<DTO.MachineCommand> l = new List<DTO.MachineCommand>();
+			l.AddCloneProperties(machineCommands);
+			return l.ToArray();
+		}
     }
 }
