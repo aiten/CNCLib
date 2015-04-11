@@ -10,17 +10,17 @@ namespace Proxxon.Repository
 {
     public class ProxxonRepository : IProxxonRepository
     {
-        private bool disposed = false;
-        private DbContext context;
+        private bool _disposed = false;
+        private DbContext _context;
 
         public ProxxonRepository(DbContext context)
         {
-            this.context = context;
+            this._context = context;
         }
 
         public IQueryBuilder<T> Query<T>() where T : class
         {
-            return new QueryBuilder<T>(this.context);
+            return new QueryBuilder<T>(this._context);
         }
 
         public void Dispose()
@@ -31,16 +31,16 @@ namespace Proxxon.Repository
 
         public void Dispose(bool disposing)
         {
-            if(this.disposed)               
+            if(this._disposed)               
                 return;
 
             if(disposing)
             {
-                this.context.Dispose();
+                this._context.Dispose();
             }
 
-            this.disposed = true;
-            this.context = null;
+            this._disposed = true;
+            this._context = null;
         }
     }
 }

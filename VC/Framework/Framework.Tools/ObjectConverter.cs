@@ -93,7 +93,7 @@ namespace Framework.Tools
         }
 
 
-        public static TDest[] CloneProperties<TDest, TSrc>(this TSrc srclist) where TSrc : IEnumerable   where TDest : new()
+        public static TDest[] CloneProperties<TDest, TSrc>(this TSrc[] srclist) where TDest : new()
         {
             List<TDest> result = new List<TDest>();
 
@@ -107,7 +107,7 @@ namespace Framework.Tools
 
             Type t = new TDest().GetType();
 
-            Type tarray = t.GetType().Assembly.GetType(t.FullName + "[]");
+            Type tarray = t.Assembly.GetType(t.FullName + "[]");
             System.Array array = (System.Array)Activator.CreateInstance(tarray, result.Count);
             result.ToArray().CopyTo(array, 0);
 

@@ -10,73 +10,73 @@ namespace Proxxon.Repository
 {
     public class QueryBuilder<T> : IQueryBuilder<T> where T : class
     {
-        private DbContext context;
-        private IQueryable<T> query;
+        private DbContext _context;
+        private IQueryable<T> _query;
 
         public QueryBuilder(DbContext context)
         {
-            this.context = context;
-            this.query = this.context.Set<T>();
+            this._context = context;
+            this._query = this._context.Set<T>();
         }
 
         public IQueryBuilder<T> Where(Expression<Func<T, bool>> predicate)
         {
-            this.query = this.query.Where(predicate);
+            this._query = this._query.Where(predicate);
             return this;
         }
 
         public IQueryBuilder<T> Include(Expression<Func<T, object>> path)
         {
-            this.query = this.query.Include(path);
+            this._query = this._query.Include(path);
             return this;
         }
 
         public IQueryBuilder<T> OrderBy(Expression<Func<T, object>> path)
         {
-            this.query = this.query.OrderBy(path);
+            this._query = this._query.OrderBy(path);
             return this;
         }
 
         public IQueryBuilder<T> OrderByDescending(Expression<Func<T, object>> path)
         {
-            this.query = this.query.OrderByDescending(path);
+            this._query = this._query.OrderByDescending(path);
             return this;
         }
         
         public IQueryBuilder<T> Page(int page, int pageSize)
         {
-            this.query = this.query.Skip(page * pageSize).Take(pageSize);
+            this._query = this._query.Skip(page * pageSize).Take(pageSize);
             return this;
         }
 
         public T FirstOrDefault()
         {
-            return this.query.FirstOrDefault<T>();
+            return this._query.FirstOrDefault<T>();
         }
 
         public Task<T> FirstOrDefaultAsync()
         {
-            return this.query.FirstOrDefaultAsync();
+            return this._query.FirstOrDefaultAsync();
         }
 
         public List<T> ToList()
         {
-            return this.query.ToList();
+            return this._query.ToList();
         }
 
         public Task<List<T>> ToListAsync()
         {
-            return this.query.ToListAsync();
+            return this._query.ToListAsync();
         }
 
         public int Count()
         {
-            return this.query.Count();
+            return this._query.Count();
         }
 
         public Task<int> CountAsync()
         {
-            return this.query.CountAsync();
+            return this._query.CountAsync();
         }
     }
 }

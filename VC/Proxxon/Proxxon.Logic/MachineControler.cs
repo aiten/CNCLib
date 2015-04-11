@@ -51,5 +51,62 @@ namespace Proxxon.Logic
 			l.AddCloneProperties(machineCommands);
 			return l.ToArray();
 		}
+
+		public void StoreMachine(DTO.Machine m, DTO.MachineCommand[] mc)
+		{
+			using (System.Data.Entity.DbContextTransaction dbTran = Context.Database.BeginTransaction())
+			{
+				try
+				{
+					var existingmachines = Repository.Query<Proxxon.Repository.Entities.Machine>().Where((mm) => mm.MachineID == m.MachineID).FirstOrDefault();
+
+					if (existingmachines == default(Proxxon.Repository.Entities.Machine))
+					{
+						Context.Entry(m.NewCloneProperties<Proxxon.Repository.Entities.Machine, DTO.Machine>()).State = EntityState.Added;
+					}
+					else
+					{
+						ObjectConverter.CopyProperties(existingmachines,m);
+					}
+
+					var existingmachineCommands = Repository.Query<Proxxon.Repository.Entities.MachineCommand>().Where(c => c.MachineID == m.MachineID).ToList();
+					var machineCommands = mc.CloneProperties<Proxxon.Repository.Entities.MachineCommand,Proxxon.Logic.DTO.MachineCommand>();
+
+					foreach (Proxxon.Repository.Entities.MachineCommand existing_mc in existingmachineCommands)
+					{
+						var foundmc = machineCommands.FirstOrDefault(x => x.MachineCommandID == existing_mc.MachineCommandID);
+						if (foundmc == default(Proxxon.Repository.Entities.MachineCommand))
+						{
+							Context.Entry(existing_mc).State = EntityState.Deleted;
+						}
+						else
+						{
+							ObjectConverter.CopyProperties(existingmachines, m);
+						}
+					}
+
+					foreach (Proxxon.Repository.Entities.MachineCommand this_mc in machineCommands)
+					{
+						var foundmc = existingmachineCommands.FirstOrDefault(x => x.MachineCommandID == this_mc.MachineCommandID);
+						if (foundmc == default(Proxxon.Repository.Entities.MachineCommand))
+						{
+							Context.Entry(this_mc).State = EntityState.Added;
+						}
+					}
+					
+					//saves all above operations within one transaction
+					Context.SaveChanges();
+
+					//commit transaction
+					dbTran.Commit();
+				}
+				catch (Exception ex)
+				{
+					dbTran.Rollback();
+				}
+
+			}
+		}
+
     }
 }
