@@ -187,12 +187,13 @@ namespace Proxxon.Wpf.ViewModels
 
 		public void SaveMachine()
 		{
+            int id;
+
 var m = _currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>();
 m.MachineCommands = MachineCommands.ToArray().CloneProperties<Proxxon.Logic.DTO.MachineCommand, Models.MachineCommand>().ToList();
 
-new MachineControler().StoreMachine(m);
-
-            int id;
+id = new MachineControler().StoreMachine(m);
+/*
             if (AddNewMachine)
             {
                 id = new MachineControler().Add(_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>());
@@ -202,7 +203,7 @@ new MachineControler().StoreMachine(m);
                 id = _currentMachine.MachineID;
                 new MachineControler().Update(_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>());
             }
-
+*/
 //			new MachineControler().StoreMachine(
 //				_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>(),
 //				MachineCommands.ToArray().CloneProperties<Proxxon.Logic.DTO.MachineCommand, Models.MachineCommand>()

@@ -52,24 +52,32 @@ namespace Proxxon.Logic
 			return l.ToArray();
 		}
 
-		public void StoreMachine(DTO.Machine m)
+		public int StoreMachine(DTO.Machine m)
 		{
+			int id = m.MachineID;
 			using (System.Data.Entity.DbContextTransaction dbTran = Context.Database.BeginTransaction())
 			{
 				try
 				{
-					var existingmachines = Repository.Query<Proxxon.Repository.Entities.Machine>().Where((mm) => mm.MachineID == m.MachineID).FirstOrDefault();
+					var existingmachines = Repository.Query<Proxxon.Repository.Entities.Machine>().Where((mm) => mm.MachineID == id).FirstOrDefault();
 
 					if (existingmachines == default(Proxxon.Repository.Entities.Machine))
 					{
-						Context.Entry(m.NewCloneProperties<Proxxon.Repository.Entities.Machine, DTO.Machine>()).State = EntityState.Added;
+						existingmachines = m.NewCloneProperties<Proxxon.Repository.Entities.Machine, DTO.Machine>();
+						Context.Entry(existingmachines).State = EntityState.Added;
+						Context.SaveChanges();
+						id = existingmachines.MachineID;
+						foreach (DTO.MachineCommand mc in m.MachineCommands)
+						{
+							mc.MachineID = id;
+						}
 					}
 					else
 					{
 						ObjectConverter.CopyProperties(existingmachines,m);
 					}
 
-					var existingmachineCommands = Repository.Query<Proxxon.Repository.Entities.MachineCommand>().Where(c => c.MachineID == m.MachineID).ToList();
+					var existingmachineCommands = Repository.Query<Proxxon.Repository.Entities.MachineCommand>().Where(c => c.MachineID == id).ToList();
 					var machineCommands = m.MachineCommands.ToArray().CloneProperties<Proxxon.Repository.Entities.MachineCommand, Proxxon.Logic.DTO.MachineCommand>();
 
 					foreach (Proxxon.Repository.Entities.MachineCommand existing_mc in existingmachineCommands)
@@ -103,7 +111,10 @@ namespace Proxxon.Logic
 				catch (Exception ex)
 				{
 					dbTran.Rollback();
+					throw;
 				}
+
+				return id;
 
 			}
 		}
