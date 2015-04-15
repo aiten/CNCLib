@@ -22,5 +22,7 @@ namespace Proxxon.Logic.DTO
 		public decimal ProbeSizeY { get; set; }
 		public decimal ProbeSizeZ { get; set; }
 
+		public List<MachineCommand> MachineCommands { get; set; }
+
 	}
 }

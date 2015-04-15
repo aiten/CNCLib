@@ -56,7 +56,7 @@ namespace Framework.Tools
 				{
 					PropertyInfo ps = t_src.GetProperty(pd.Name);
 
-					if (ps != null)
+					if (ps != null && ps.PropertyType == pd.PropertyType)
 					{
 						pd.SetValue(dest, ps.GetValue(src, null), null);
 					}

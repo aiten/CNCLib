@@ -67,7 +67,7 @@ namespace Proxxon.Wpf.ViewModels
                 _currentMachine = ObjectConverter.NewCloneProperties<Models.Machine, Proxxon.Logic.DTO.Machine>(new MachineControler().GetMachine(machineID));
 				MachineCommands.AddCloneProperties(new MachineControler().GetMachineCommands(machineID));
 //MachineCommands.Add(new Models.MachineCommand() { MachineID = machineID, CommandString = "Neu" });
-MachineCommands.RemoveAt(MachineCommands.Count-1);
+//MachineCommands.RemoveAt(MachineCommands.Count-1);
 			}
 
             OnPropertyChanged(() => MachineName);
@@ -155,12 +155,26 @@ MachineCommands.RemoveAt(MachineCommands.Count-1);
 			set { SetProperty(() => _currentMachine.ProbeSizeZ == value, () => _currentMachine.ProbeSizeZ = value); }
 		}
 
-		private ObservableCollection<Models.MachineCommand> _MachineCommands = new ObservableCollection<Models.MachineCommand>();
+		private ObservableCollection<Models.MachineCommand> _MachineCommands;
 
 		public ObservableCollection<Models.MachineCommand> MachineCommands
 		{
 			get
 			{
+				if (_MachineCommands==null)
+				{
+					_MachineCommands = new ObservableCollection<Models.MachineCommand>();
+					_MachineCommands.CollectionChanged += ((sender, e) =>
+							{
+								if (e.NewItems != null)
+								{
+									foreach (Models.MachineCommand item in e.NewItems)
+									{
+										item.MachineID = _currentMachine.MachineID;
+									}
+								}
+							});
+				}
 				return _MachineCommands;
 			}
 		}
@@ -173,10 +187,10 @@ MachineCommands.RemoveAt(MachineCommands.Count-1);
 
 		public void SaveMachine()
 		{
-new MachineControler().StoreMachine(
-	_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>(),
-	MachineCommands.ToArray().CloneProperties<Proxxon.Logic.DTO.MachineCommand, Models.MachineCommand>()
-	);
+var m = _currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>();
+m.MachineCommands = MachineCommands.ToArray().CloneProperties<Proxxon.Logic.DTO.MachineCommand, Models.MachineCommand>().ToList();
+
+new MachineControler().StoreMachine(m);
 
             int id;
             if (AddNewMachine)
@@ -189,10 +203,10 @@ new MachineControler().StoreMachine(
                 new MachineControler().Update(_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>());
             }
 
-			new MachineControler().StoreMachine(
-				_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>(),
-				MachineCommands.ToArray().CloneProperties<Proxxon.Logic.DTO.MachineCommand, Models.MachineCommand>()
-				);
+//			new MachineControler().StoreMachine(
+//				_currentMachine.NewCloneProperties<Proxxon.Logic.DTO.Machine, Models.Machine>(),
+//				MachineCommands.ToArray().CloneProperties<Proxxon.Logic.DTO.MachineCommand, Models.MachineCommand>()
+//				);
 
 			LoadMachine(id);
             ViewWindow.Close();

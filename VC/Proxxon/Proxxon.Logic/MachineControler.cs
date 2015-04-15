@@ -52,7 +52,7 @@ namespace Proxxon.Logic
 			return l.ToArray();
 		}
 
-		public void StoreMachine(DTO.Machine m, DTO.MachineCommand[] mc)
+		public void StoreMachine(DTO.Machine m)
 		{
 			using (System.Data.Entity.DbContextTransaction dbTran = Context.Database.BeginTransaction())
 			{
@@ -70,7 +70,7 @@ namespace Proxxon.Logic
 					}
 
 					var existingmachineCommands = Repository.Query<Proxxon.Repository.Entities.MachineCommand>().Where(c => c.MachineID == m.MachineID).ToList();
-					var machineCommands = mc.CloneProperties<Proxxon.Repository.Entities.MachineCommand,Proxxon.Logic.DTO.MachineCommand>();
+					var machineCommands = m.MachineCommands.ToArray().CloneProperties<Proxxon.Repository.Entities.MachineCommand, Proxxon.Logic.DTO.MachineCommand>();
 
 					foreach (Proxxon.Repository.Entities.MachineCommand existing_mc in existingmachineCommands)
 					{
