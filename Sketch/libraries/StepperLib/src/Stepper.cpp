@@ -1638,7 +1638,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 		}
 		
 		{
-			// calculate step for step-buffer
+			// calculate f for step-buffer
 
 			if (count > 1 && _steps - n <= count)
 			{

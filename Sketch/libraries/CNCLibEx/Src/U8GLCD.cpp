@@ -349,7 +349,6 @@ bool CU8GLcd::DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,void *data)
 
 	for (unsigned char i = 0; i < _lcd_numaxis; i++)
 	{
-//		udist_t cur = CStepper::GetInstance()->GetCurrentPosition(i);
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
 
 		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
@@ -358,16 +357,41 @@ bool CU8GLcd::DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,void *data)
 		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i), tmp, 7, 2));
 		GetU8G().print(F(" "));
 		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i) - psall, tmp, 7, 2));
-/*
-		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, cur), tmp, 7, 2));
-		GetU8G().print(F(" "));
-		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, cur) - psall, tmp, 7, 2));
-*/
 	}
 
 	return true;
 }
 ////////////////////////////////////////////////////////////
+
+bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, void *data)
+{
+	if (type == DrawLoopHeader)	return true;
+	if (type != DrawLoopDraw)		return DrawLoopDefault(type, data);
+
+	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); GetU8G().print(F("Absolut# Current"));
+	char tmp[16];
+
+	for (unsigned char i = 0; i < _lcd_numaxis; i++)
+	{
+		udist_t pos = CStepper::GetInstance()->GetCurrentPosition(i);
+		mm1000_t psall = CGCodeParser::GetAllPreset(i);
+
+		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		tmp[0] = 0; GetU8G().print(AddAxisName(tmp, i));
+
+
+		GetU8G().print(CSDist::ToString(pos, tmp, 6));
+
+		GetU8G().print(F(" "));
+		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, pos), tmp, 6, 2));
+		GetU8G().print(F(" "));
+		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, pos) - psall, tmp, 6, 2));
+	}
+
+	return true;
+}
+////////////////////////////////////////////////////////////
+
 
 void CU8GLcd::ButtonPressShowMenu()
 {
