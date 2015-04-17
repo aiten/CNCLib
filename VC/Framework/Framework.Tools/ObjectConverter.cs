@@ -64,16 +64,15 @@ namespace Framework.Tools
 			}
 		}
 
-        public static void CopyPropertiesSameType(object dest, object src)
+        public static void CopyValueTypeProperties<T>(this T dest, T src )
         {
-            foreach (PropertyDescriptor item in TypeDescriptor.GetProperties(src))
-            {
-                item.SetValue(dest, item.GetValue(src));
-            }
-        }
-        public static void CopyProperties<T>(this T dest, T src )
-        {
-            CopyPropertiesSameType((object)dest, (object)src);
+			foreach (PropertyDescriptor item in TypeDescriptor.GetProperties(src))
+			{
+				if (!item.IsReadOnly && (item.PropertyType == typeof(string) || item.PropertyType.IsValueType))
+				{
+					item.SetValue(dest, item.GetValue(src));
+				}
+			}
         }
 
         #endregion

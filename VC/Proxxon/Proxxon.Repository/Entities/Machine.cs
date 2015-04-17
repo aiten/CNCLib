@@ -22,6 +22,6 @@ namespace Proxxon.Repository.Entities
 		public decimal ProbeSizeY { get; set; }
 		public decimal ProbeSizeZ { get; set; }
 
-		public ICollection<MachineCommand> MachineCommands { get; set; }
+		public virtual ICollection<MachineCommand> MachineCommands { get; set; }
 	}
 }

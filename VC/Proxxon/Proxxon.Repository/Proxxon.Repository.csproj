@@ -35,15 +35,15 @@
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.2\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.3\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -63,21 +63,21 @@
     <Compile Include="Context\ProxxonInitializer.cs" />
     <Compile Include="Entities\MachineCommand.cs" />
     <Compile Include="Entities\Machine.cs" />
-    <Compile Include="ProxxonRepository.cs" />
-    <Compile Include="IProxxonRepository.cs" />
-    <Compile Include="IQueryBuilder.cs" />
+    <Compile Include="MachineRepository.cs" />
     <Compile Include="Mappings\MachineMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Framework.EF\Framework.EF.csproj">
+      <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
+      <Name>Framework.EF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
       <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>
       <Name>Framework.Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
