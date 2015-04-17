@@ -4,15 +4,13 @@ using Proxxon.Repository.Context;
 using Proxxon.Repository;
 using Proxxon.Repository.Entities;
 using System.Threading.Tasks;
+using Framework.EF;
 
 namespace Proxxon.Tests
 {
     [TestClass]
     public class RepositoryTests
     {
-        private const string _connectionString = @"Data Source=c:\tmp\Database.sdf";
-        private ProxxonRepository _repository;
-
         public TestContext TestContext { get; set; }
 
         [ClassInitialize]
@@ -21,25 +19,27 @@ namespace Proxxon.Tests
             //drop and recreate the test Db everytime the tests are run. 
             AppDomain.CurrentDomain.SetData("DataDirectory", testContext.TestDeploymentDir);
 
-            using(var context = new ProxxonContext(_connectionString))
+            using(var uow = new UnitOfWork<ProxxonContext>())
             {
 				System.Data.Entity.Database.SetInitializer<ProxxonContext>(new ProxxonInitializer());
-                context.Database.Initialize(true);        
+				uow.Context.Database.Initialize(true);        
             }        
         }
 
         [TestInitialize]
         public void Init()
         {
-			this._repository = new ProxxonRepository(new ProxxonContext(_connectionString));
         }
 
         [TestMethod]
         public void QueryAuthorsToListReturnsAllAuthors()
         {
-            var machines = _repository.Query<Machine>().ToList();
+			using (IUnitOfWork uow = new UnitOfWork<ProxxonContext>())
+			{
+				var machines = uow.Query<Machine>().ToList();
 
-			Assert.AreEqual(4, machines.Count);
+				Assert.AreEqual(4, machines.Count);
+			}
         }
 /*
         [TestMethod]

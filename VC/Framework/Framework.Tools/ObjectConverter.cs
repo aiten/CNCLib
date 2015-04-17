@@ -68,7 +68,10 @@ namespace Framework.Tools
         {
             foreach (PropertyDescriptor item in TypeDescriptor.GetProperties(src))
             {
-                item.SetValue(dest, item.GetValue(src));
+				if (!item.PropertyType.IsGenericType)
+				{
+					item.SetValue(dest, item.GetValue(src));
+				}
             }
         }
         public static void CopyProperties<T>(this T dest, T src )

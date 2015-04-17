@@ -53,10 +53,10 @@ namespace Proxxon.Repository.Context
         private void Configure()
         {
             System.Data.Entity.Database.SetInitializer<ProxxonContext>(new ProxxonInitializer());
-            this.Configuration.LazyLoadingEnabled = false;
-            this.Configuration.ProxyCreationEnabled = false;
-            this.Configuration.AutoDetectChangesEnabled = true;
-            this.Configuration.ValidateOnSaveEnabled = true; 
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
+            Configuration.AutoDetectChangesEnabled = true;
+            Configuration.ValidateOnSaveEnabled = true; 
         }
     }
 }
