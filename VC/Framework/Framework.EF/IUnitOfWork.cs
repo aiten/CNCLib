@@ -10,10 +10,22 @@ namespace Framework.EF
 {
 	public interface IUnitOfWork : IDisposable
     {
-		DbContext Context { get; }
+        void MarkDirty(object entity);
+		void MarkNew(object entity);
+		void MarkDeleted(object entity);
 
 		IQueryBuilder<T> Query<T>() where T : class;
 
 		void Save();
+
+		// Transaction
+
+		void BeginTransaction();
+		void CommitTransaction();
+		void RollbackTransaction();
+
+		// Global
+
+		void InitializeDatabase();
     }
 }

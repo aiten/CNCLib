@@ -128,11 +128,10 @@ namespace Proxxon.Wpf.ViewModels
 
         private void SetGlobal()
         {
-            Settings.Instance.SizeX = Machine.SizeX;
-            Settings.Instance.SizeY = Machine.SizeY;
-            Settings.Instance.SizeZ = Machine.SizeZ;
+			ObjectConverter.CopyProperties(Settings.Instance, Machine);
             Com.ArduinoBuffersize = Machine.BufferSize;
-        }
+			Global.Instance.Machine = new MachineControler().GetMachine(Machine.MachineID);
+		}
 
 		public bool CanConnect()
         {

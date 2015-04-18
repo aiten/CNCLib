@@ -12,7 +12,7 @@ namespace Framework.EF
 	{
 		private DbContext _context;
 
-		public DbContext Context 
+		private DbContext Context 
 		{
 			  get 
 			  {
@@ -25,6 +25,21 @@ namespace Framework.EF
 		IQueryBuilder<To> IUnitOfWork.Query<To>()
 		{
 			return new QueryBuilder<To>(Context);
+		}
+
+		public void MarkDirty(object entity)
+		{
+			Context.Entry(entity).State = EntityState.Modified;
+		}
+
+		public void MarkNew(object entity)
+		{
+			Context.Entry(entity).State = EntityState.Added;
+		}
+
+		public void MarkDeleted(object entity)
+		{
+			Context.Entry(entity).State = EntityState.Deleted;
 		}
 
 		public void Save()
@@ -47,11 +62,50 @@ namespace Framework.EF
 
 			if (disposing)
 			{
+				if (InTransaction)
+					RollbackTransaction();
+
 				_context.Dispose();
 			}
 
 			_disposed = true;
 			_context = null;
 		}
+
+
+		#region Transaction
+
+		private System.Data.Entity.DbContextTransaction _dbTran;
+
+		public bool InTransaction { get { return _dbTran != null; } }
+
+		public void BeginTransaction()
+		{
+			if (InTransaction) throw new ArgumentException();
+			_dbTran = Context.Database.BeginTransaction();
+		}
+
+		public void CommitTransaction()
+		{
+			if (InTransaction==false) throw new ArgumentException();
+			_dbTran.Commit();
+			_dbTran = null;
+		}
+
+		public void RollbackTransaction()
+		{
+			if (InTransaction==false) throw new ArgumentException();
+			_dbTran.Rollback();
+			_dbTran = null;
+		}
+
+
+		#endregion
+
+		public void InitializeDatabase()
+		{
+			Context.Database.Initialize(true);        
+		}
+
 	}
 }

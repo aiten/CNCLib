@@ -78,7 +78,7 @@ void CHelpParser::Parse()
 		if (IsToken(F("i!"), true, false)) { if (CheckEOC())	::GoToReference();	return; }
 		*/
 	if (IsToken(F("i!"), true, false)) { if (CheckEOC())	CControl::GetInstance()->GoToReference();	return; }
-	if (IsToken(F("!"), true, false))	{ if (CheckEOC()) { CStepper::GetInstance()->AbortMove(); } return; }
+	if (IsToken(F("!"), true, false))	{ if (CheckEOC()) { CControl::GetInstance()->Kill(); } return; }
 	if (IsToken(F("?"), true, false))	{ if (CheckEOC()) { CStepper::GetInstance()->Dump(CStepper::DumpAll); }	return; }
 
 #ifndef REDUCED_SIZE

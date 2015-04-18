@@ -19,10 +19,10 @@ namespace Proxxon.Tests
             //drop and recreate the test Db everytime the tests are run. 
             AppDomain.CurrentDomain.SetData("DataDirectory", testContext.TestDeploymentDir);
 
-            using(var uow = new UnitOfWork<ProxxonContext>())
+			using (var uow = UnitOfWorkFactory.Create())
             {
 				System.Data.Entity.Database.SetInitializer<ProxxonContext>(new ProxxonInitializer());
-				uow.Context.Database.Initialize(true);        
+				uow.InitializeDatabase();        
             }        
         }
 
@@ -32,135 +32,55 @@ namespace Proxxon.Tests
         }
 
         [TestMethod]
-        public void QueryAuthorsToListReturnsAllAuthors()
+        public void QueryAllMachines()
         {
-			using (IUnitOfWork uow = new UnitOfWork<ProxxonContext>())
-			{
-				var machines = uow.Query<Machine>().ToList();
+			MachineRepository rep = new MachineRepository();
 
-				Assert.AreEqual(4, machines.Count);
-			}
-        }
-/*
-        [TestMethod]
-        public async Task QueryAuthorsToListAsyncReturnsAllAuthors()
-        {
-            var authors = await repository.Query<Author>().ToListAsync();
+			var machines = rep.GetMachines();
+			Assert.AreEqual(2, machines.Length);
+	    }
 
-            Assert.AreEqual(4, authors.Count);
-        }
+		[TestMethod]
+		public void QueryOneMachines()
+		{
+			MachineRepository rep = new MachineRepository();
 
-        [TestMethod]
-        public void FilteredQueryAuthorsToListReturnsSomeAuthors()
-        {
-            var authors = repository.Query<Author>().Where(a => a.Name != "Orwell").ToList();
+			var machines = rep.GetMachine(1);
+			Assert.AreEqual(1, machines.MachineID);
+		}
 
-            Assert.AreEqual(3, authors.Count);
-        }
+		[TestMethod]
+		public void AddOneMachines()
+		{
+			MachineRepository rep = new MachineRepository();
 
-        [TestMethod]
-        public async Task FilteredQueryAuthorsToListAsyncReturnsSomeAuthors()
-        {
-            var authors = await repository.Query<Author>().Where(a => a.Name != "Orwell").ToListAsync();
+			var machine = new Machine()
+				{
+					ComPort				= "com47",
+					Axis				= 2,
+					BaudRate			= 6500,
+					Name				= "Test",
+					SizeX				= 1m,
+					SizeY				= 1m,
+					SizeZ				= 1m,
+					SizeA				= 1m,
+					SizeB				= 1m,
+					SizeC				= 1m,
+					BufferSize			= 63,
+					CommandToUpper    = true,
+					Default			  = false,
+					ProbeSizeX		  = 1m,
+					ProbeSizeY		  = 1m,
+					ProbeSizeZ		  = 1m,
+					ProbeDistUp		  = 1m,
+					ProbeDist		  = 1m,
+					ProbeFeed		  = 1m
+				};
 
-            Assert.AreEqual(3, authors.Count);
-        }
+			int id = rep.StoreMachine(machine);
 
-        [TestMethod]
-        public void UnfilteredFirstOrDefaultResultNotNull()
-        {
-            var author = repository.Query<Author>().FirstOrDefault();
+			Assert.AreEqual(3, id);
+		}
 
-            Assert.IsNotNull(author);
-        }
-
-        [TestMethod]
-        public async Task UnfilteredFirstOrDefaultAsyncResultNotNull()
-        {
-            var author = await repository.Query<Author>().FirstOrDefaultAsync();
-
-            Assert.IsNotNull(author);
-        }
-
-        [TestMethod]
-        public void FilteredFirstOrDefaultResultIsCorrect()
-        {
-            var author = repository.Query<Author>().Where(a => a.Name == "Orwell").FirstOrDefault();
-
-            Assert.AreEqual("Orwell", author.Name);
-        }
-
-        [TestMethod]
-        public async Task FilteredFirstOrDefaultAsyncResultIsCorrect()
-        {
-            var author = await repository.Query<Author>().Where(a => a.Name == "Orwell").FirstOrDefaultAsync();
-
-            Assert.AreEqual("Orwell", author.Name);
-        }
-
-        [TestMethod]
-        public void WithoutIncludePublisherNavPropIsNotLoaded()
-        {
-            var book = repository.Query<Book>().Where(b => b.Title == "The Wasp Factory").FirstOrDefault();
-
-            Assert.IsNull(book.Publisher);
-        }
-
-        [TestMethod]
-        public void WithIncludePublisherNavPropIsLoaded()
-        {
-            var book = repository.Query<Book>().Where(b => b.Title == "The Wasp Factory").Include(b => b.Publisher).FirstOrDefault();
-
-            Assert.IsNotNull(book.Publisher);
-        }
-
-        [TestMethod]
-        public void WithoutIncludeAuthorsNavColIsNotLoaded()
-        {
-            var book = repository.Query<Book>().Where(b => b.Title == "The Wasp Factory").FirstOrDefault();
-
-            Assert.AreEqual(0,book.Authors.Count);
-        }
-
-        [TestMethod]
-        public void WithIncludeAuthorsNavColIsLoaded()
-        {
-            var book = repository.Query<Book>().Where(b => b.Title == "The Wasp Factory").Include(b => b.Authors).FirstOrDefault();
-
-            Assert.AreEqual(1,book.Authors.Count);
-        }
-
-        [TestMethod]
-        public void AuthorsOrderByNameIsOrderedAZ()
-        {
-            var authors = repository.Query<Author>().OrderBy(b => b.Name).ToList();
-
-            Assert.IsTrue(authors[0].Name == "Banks" & authors[1].Name == "Gibson" & authors[2].Name == "Orwell" & authors[3].Name == "Stirling");
-        }
-
-        [TestMethod]
-        public void AuthorsOrderByDescendingNameIsOrderedZA()
-        {
-            var authors = repository.Query<Author>().OrderByDescending(b => b.Name).ToList();
-
-            Assert.IsTrue(authors[3].Name == "Banks" & authors[2].Name == "Gibson" & authors[1].Name == "Orwell" & authors[0].Name == "Stirling");
-        }
-
-        [TestMethod]
-        public void AuthorsPagingWorksPage1()
-        {
-            var authors = repository.Query<Author>().OrderBy(b => b.Name).Page(0,2).ToList();
-
-            Assert.IsTrue(authors.Count == 2 & authors[0].Name == "Banks" & authors[1].Name == "Gibson");
-        }
-
-        [TestMethod]
-        public void AuthorsPagingWorksPage2()
-        {
-            var authors = repository.Query<Author>().OrderBy(b => b.Name).Page(1, 2).ToList();
-
-            Assert.IsTrue(authors.Count == 2 & authors[0].Name == "Orwell" & authors[1].Name == "Stirling");
-        }
- */
 	}
 }

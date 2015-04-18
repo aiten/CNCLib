@@ -66,6 +66,7 @@
     <Compile Include="MachineRepository.cs" />
     <Compile Include="Mappings\MachineMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitOfWorkFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.EF\Framework.EF.csproj">

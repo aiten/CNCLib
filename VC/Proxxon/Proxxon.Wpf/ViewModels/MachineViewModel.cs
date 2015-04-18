@@ -52,14 +52,21 @@ namespace Proxxon.Wpf.ViewModels
                 {
                     Name = "New",
                     ComPort = "comX",
-                    SizeX = 130m,
+					Axis = 3,
+					SizeX = 130m,
                     SizeY = 45m,
                     SizeZ = 81m,
-                    BaudRate = 115200,
+					SizeA = 360m,
+					SizeB = 360m,
+					SizeC = 360m,
+					BaudRate = 115200,
                     BufferSize = 63,
                     CommandToUpper = false,
                     Default = false,
-					ProbeSizeZ = 25
+					ProbeSizeZ = 25,
+					ProbeDist = 10m,
+					ProbeDistUp = 3m,
+					ProbeFeed = 100m
                 };
             }
             else
@@ -72,16 +79,23 @@ namespace Proxxon.Wpf.ViewModels
 
             OnPropertyChanged(() => MachineName);
             OnPropertyChanged(() => ComPort);
-            OnPropertyChanged(() => BaudRate);
+			OnPropertyChanged(() => Axis);
+			OnPropertyChanged(() => BaudRate);
             OnPropertyChanged(() => CommandToUpper);
             OnPropertyChanged(() => SizeX);
             OnPropertyChanged(() => SizeY);
             OnPropertyChanged(() => SizeZ);
-            OnPropertyChanged(() => BufferSize);
+			OnPropertyChanged(() => SizeA);
+			OnPropertyChanged(() => SizeB);
+			OnPropertyChanged(() => SizeC);
+			OnPropertyChanged(() => BufferSize);
             OnPropertyChanged(() => Default);
 			OnPropertyChanged(() => ProbeSizeX);
 			OnPropertyChanged(() => ProbeSizeY);
 			OnPropertyChanged(() => ProbeSizeZ);
+			OnPropertyChanged(() => ProbeDist);
+			OnPropertyChanged(() => ProbeDistUp);
+			OnPropertyChanged(() => ProbeFeed);
 		}
  
         #region Properties
@@ -104,6 +118,11 @@ namespace Proxxon.Wpf.ViewModels
 		{
 			get { return _currentMachine.BaudRate; }
             set { SetProperty(() => _currentMachine.BaudRate == value, () => _currentMachine.BaudRate = value); }
+		}
+		public int Axis
+		{
+			get { return _currentMachine.Axis; }
+			set { SetProperty(() => _currentMachine.Axis == value, () => _currentMachine.Axis = value); }
 		}
 
 		public bool CommandToUpper
@@ -133,7 +152,22 @@ namespace Proxxon.Wpf.ViewModels
 			get { return _currentMachine.SizeZ; }
             set { SetProperty(() => _currentMachine.SizeZ == value, () => _currentMachine.SizeZ = value); }
 		}
-        public bool Default
+		public decimal SizeA
+		{
+			get { return _currentMachine.SizeZ; }
+			set { SetProperty(() => _currentMachine.SizeA == value, () => _currentMachine.SizeA = value); }
+		}
+		public decimal SizeB
+		{
+			get { return _currentMachine.SizeB; }
+			set { SetProperty(() => _currentMachine.SizeB == value, () => _currentMachine.SizeB = value); }
+		}
+		public decimal SizeC
+		{
+			get { return _currentMachine.SizeC; }
+			set { SetProperty(() => _currentMachine.SizeC == value, () => _currentMachine.SizeC = value); }
+		}
+		public bool Default
         {
             get { return _currentMachine.Default; }
             set { SetProperty(() => _currentMachine.Default == value, () => _currentMachine.Default = value); }
@@ -153,6 +187,21 @@ namespace Proxxon.Wpf.ViewModels
 		{
 			get { return _currentMachine.ProbeSizeZ; }
 			set { SetProperty(() => _currentMachine.ProbeSizeZ == value, () => _currentMachine.ProbeSizeZ = value); }
+		}
+		public decimal ProbeDistUp
+		{
+			get { return _currentMachine.ProbeDistUp; }
+			set { SetProperty(() => _currentMachine.ProbeDistUp == value, () => _currentMachine.ProbeDistUp = value); }
+		}
+		public decimal ProbeDist
+		{
+			get { return _currentMachine.ProbeDist; }
+			set { SetProperty(() => _currentMachine.ProbeDist == value, () => _currentMachine.ProbeDist = value); }
+		}
+		public decimal ProbeFeed
+		{
+			get { return _currentMachine.ProbeFeed; }
+			set { SetProperty(() => _currentMachine.ProbeFeed == value, () => _currentMachine.ProbeFeed = value); }
 		}
 
 		private ObservableCollection<Models.MachineCommand> _MachineCommands;

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Framework.Tools;
-using System.Data.Entity;
 using Framework.EF;
 using Proxxon.Repository;
 using Proxxon.Repository.Context;

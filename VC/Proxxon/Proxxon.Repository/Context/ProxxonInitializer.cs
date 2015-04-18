@@ -18,28 +18,42 @@ namespace Proxxon.Repository.Context
 			{
 				Name = "Proxxon",
 				ComPort = "com4",
+				Axis = 5,
 				SizeX = 130m,
 				SizeY = 45m,
 				SizeZ = 81m,
+				SizeA = 360m,
+				SizeB = 360m,
+				SizeC = 360m,
 				BaudRate = 115200,
 				BufferSize = 63,
 				CommandToUpper = false,
 				Default = false,
-				ProbeSizeZ = 25m
+				ProbeSizeZ = 25m,
+				ProbeDist = 10m,
+				ProbeDistUp = 3m,
+				ProbeFeed = 100m
 			};
 
 			var kk1000s = new Machine
 			{
 				Name = "KK1000S",
 				ComPort = "com11",
+				Axis = 3,
 				SizeX = 830m,
 				SizeY = 500m,
 				SizeZ = 100m,
+				SizeA = 360m,
+				SizeB = 360m,
+				SizeC = 360m,
 				BaudRate = 115200,
 				BufferSize = 63,
 				CommandToUpper = false,
 				Default = true,
-				ProbeSizeZ = 25m
+				ProbeSizeZ = 25m,
+				ProbeDist = 10m,
+				ProbeDistUp = 3m,
+				ProbeFeed = 100m
 			};
 
  			var machines = new List<Machine>

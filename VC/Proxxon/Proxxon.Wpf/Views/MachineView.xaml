@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Proxxon.Wpf.ViewModels"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Proxxon.Wpf.MachineView"
-        Title="Machine" Height="470" Width="380">
+        Title="Machine" Height="500" Width="380">
     <Window.DataContext>
         <vm:MachineViewModel />
     </Window.DataContext>
@@ -23,6 +23,10 @@
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Name" Width="150"/>
                         <TextBox Text="{Binding MachineName}" VerticalAlignment="Center" Width="100"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Axis" Width="150"/>
+                        <TextBox Text="{Binding Axis}" VerticalAlignment="Center" Width="100"  />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="COM-Port" Width="150"/>
@@ -56,6 +60,10 @@
                         <Label Content="Default" Width="150" />
                         <CheckBox Content="Default" IsChecked="{Binding Default}" VerticalAlignment="Center"    />
                     </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Probe" Margin="-2,-2,-2,0">
+                <StackPanel >
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Probe Size X" Width="150" />
                         <TextBox Text="{Binding ProbeSizeX}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
@@ -67,6 +75,18 @@
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Probe Size Z" Width="150" />
                         <TextBox Text="{Binding ProbeSizeZ}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Probe Dist" Width="150" />
+                        <TextBox Text="{Binding ProbeDist}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Probe Dist Up" Width="150" />
+                        <TextBox Text="{Binding ProbeDistUp}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Probe Feed" Width="150" />
+                        <TextBox Text="{Binding ProbeFeed}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
                     </StackPanel>
                 </StackPanel>
             </TabItem>

@@ -37,7 +37,13 @@ namespace Proxxon.Repository.Context
                 IsRequired().
                 HasMaxLength(32);
 
-            modelBuilder.Entity<Machine>().Property((m) => m.Default).IsRequired();
+			modelBuilder.Entity<Machine>().Property((m) => m.Axis).IsRequired();
+			
+			modelBuilder.Entity<Machine>().Property((m) => m.Default).IsRequired();
+
+			modelBuilder.Entity<Machine>().Property((m) => m.SizeX).IsRequired();
+			modelBuilder.Entity<Machine>().Property((m) => m.SizeY).IsRequired();
+			modelBuilder.Entity<Machine>().Property((m) => m.SizeZ).IsRequired();
 
 			modelBuilder.Entity<MachineCommand>().Property((m) => m.CommandString).
 				IsRequired().
