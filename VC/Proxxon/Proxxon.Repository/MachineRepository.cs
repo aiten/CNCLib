@@ -33,8 +33,22 @@ namespace Proxxon.Repository
         {
 			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
 			{
-				uow.MarkDeleted(m);
-				uow.Save();
+				try
+				{
+					uow.BeginTransaction();
+
+					m.MachineCommands = null;
+					uow.MarkDeleted(m);
+					uow.ExecuteSqlCommand("delete from MachineCommand where MachineID = " + m.MachineID);
+					uow.Save();
+
+					uow.CommitTransaction();
+				}
+				catch (Exception)
+				{
+					uow.RollbackTransaction();
+					throw;
+				}
 			}
         }
 
@@ -59,62 +73,63 @@ namespace Proxxon.Repository
 					uow.BeginTransaction();
 
 					var machineInDb = uow.Query<Entities.Machine>().Where((m) => m.MachineID == id).Include((d) => d.MachineCommands).FirstOrDefault();
+					var machineCommands = machine.MachineCommands ?? new List<Entities.MachineCommand>();
 
 					if (machineInDb == default(Entities.Machine))
 					{
+						// add new
+
 						machineInDb = machine;
 						uow.MarkNew(machineInDb);
-						uow.Save();
+						uow.Save();						// this will save the Commands as well
 						id = machineInDb.MachineID;
-
-						if (machine.MachineCommands != null)
-						{
-							foreach (Entities.MachineCommand mc in machine.MachineCommands)
-							{
-								mc.MachineID = id;
-							}
-						}
 					}
 					else
 					{
+						// syn with existing
+
 						machineInDb.CopyValueTypeProperties(machine);
-					}
 
-					// search und update machinecommands (add and delete)
+						// search und update machinecommands (add and delete)
 
-					// 1. Delete from DB (in DB) and update
-					List<Entities.MachineCommand> delete = new List<Entities.MachineCommand>();
-
-					foreach (Entities.MachineCommand commandInDb in  machineInDb.MachineCommands)
-					{
-						var command = machine.MachineCommands.FirstOrDefault(x => x.MachineCommandID == commandInDb.MachineCommandID);
-						if (command == default(Entities.MachineCommand))
+						if (machineInDb.MachineCommands != null)
 						{
-							delete.Add(commandInDb);
+							// 1. Delete from DB (in DB) and update
+							List<Entities.MachineCommand> delete = new List<Entities.MachineCommand>();
+
+							foreach (Entities.MachineCommand commandInDb in machineInDb.MachineCommands)
+							{
+								var command = machineCommands.FirstOrDefault(x => x.MachineCommandID == commandInDb.MachineCommandID);
+								if (command == default(Entities.MachineCommand))
+								{
+									delete.Add(commandInDb);
+								}
+								else
+								{
+									commandInDb.CopyValueTypeProperties(command);
+								}
+							}
+
+							foreach (var del in delete)
+							{
+								uow.MarkDeleted(del);
+							}
 						}
-						else
+
+						// 2. Add To DB
+
+						foreach (Entities.MachineCommand machineCommand in machineCommands)
 						{
-							commandInDb.CopyValueTypeProperties(command);
+							var command = machineInDb.MachineCommands.FirstOrDefault(x => machineCommand.MachineCommandID > 0 && x.MachineCommandID == machineCommand.MachineCommandID);
+							if (command == default(Entities.MachineCommand))
+							{
+								uow.MarkNew(machineCommand);
+							}
 						}
+
+						uow.Save();
 					}
 
-					foreach (var del in delete)
-					{
-						uow.MarkDeleted(del);
-					}
-
-					// 2. Add To DB
-
-					foreach (Entities.MachineCommand machineCommand in machine.MachineCommands)
-					{
-						var command = machineInDb.MachineCommands.FirstOrDefault(x => x.MachineCommandID == machineCommand.MachineCommandID);
-						if (command == default(Entities.MachineCommand))
-						{
-							uow.MarkNew(machineCommand);
-						}
-					}
-
-					uow.Save();
 					uow.CommitTransaction();
 				}
 				catch (Exception ex)

@@ -18,6 +18,11 @@ namespace Framework.EF
 
 		void Save();
 
+		// SQL Commands
+
+		int ExecuteSqlCommand(string sql);
+		int ExecuteSqlCommand(string sql, params object[] parameters);
+
 		// Transaction
 
 		void BeginTransaction();
