@@ -29,7 +29,10 @@ namespace Proxxon.Repository.Context
         {
             modelBuilder.Configurations.Add(new MachineMapping());
 
-            modelBuilder.Entity<Machine>().Property((m) => m.Name).
+			modelBuilder.Entity<Machine>()
+				.HasKey(m => m.MachineID);
+			
+			modelBuilder.Entity<Machine>().Property((m) => m.Name).
                 IsRequired().
                 HasMaxLength(64);
 
@@ -44,6 +47,10 @@ namespace Proxxon.Repository.Context
 			modelBuilder.Entity<Machine>().Property((m) => m.SizeX).IsRequired();
 			modelBuilder.Entity<Machine>().Property((m) => m.SizeY).IsRequired();
 			modelBuilder.Entity<Machine>().Property((m) => m.SizeZ).IsRequired();
+
+
+			modelBuilder.Entity<MachineCommand>()
+				.HasKey(mc => mc.MachineCommandID);
 
 			modelBuilder.Entity<MachineCommand>().Property((m) => m.CommandString).
 				IsRequired().

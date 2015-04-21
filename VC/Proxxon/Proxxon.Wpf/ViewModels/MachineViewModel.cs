@@ -154,7 +154,7 @@ namespace Proxxon.Wpf.ViewModels
 		}
 		public decimal SizeA
 		{
-			get { return _currentMachine.SizeZ; }
+			get { return _currentMachine.SizeA; }
 			set { SetProperty(() => _currentMachine.SizeA == value, () => _currentMachine.SizeA = value); }
 		}
 		public decimal SizeB
