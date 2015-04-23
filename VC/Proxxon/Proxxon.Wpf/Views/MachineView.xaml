@@ -57,6 +57,18 @@
                         <TextBox Text="{Binding SizeZ}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
+                        <Label Content="Size A" Width="150" />
+                        <TextBox Text="{Binding SizeA}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Size B" Width="150" />
+                        <TextBox Text="{Binding SizeB}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Size C" Width="150" />
+                        <TextBox Text="{Binding SizeC}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
                         <Label Content="Default" Width="150" />
                         <CheckBox Content="Default" IsChecked="{Binding Default}" VerticalAlignment="Center"    />
                     </StackPanel>

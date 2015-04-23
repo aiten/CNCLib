@@ -47,6 +47,16 @@ namespace Framework.EF
 			Context.SaveChanges();
 		}
 
+		public int ExecuteSqlCommand(string sql)
+		{
+			return Context.Database.ExecuteSqlCommand(sql);
+		}
+
+		public int ExecuteSqlCommand(string sql, params object[] parameters)
+		{
+			return Context.Database.ExecuteSqlCommand(sql, parameters);
+		}
+
 		bool _disposed; 
 
 		public void Dispose()
