@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="iRobot">
+      <UniqueIdentifier>{8bd08f54-b62d-4a9c-b0bd-4d7a50e5854c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\iRobot\MyControl.h">
+      <Filter>iRobot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\iRobot\Configuration_iRobot.h">
+      <Filter>iRobot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\iRobot\StepperServo.h">
+      <Filter>iRobot</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="iRobot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\iRobot\MyControl.cpp">
+      <Filter>iRobot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\iRobot\StepperServo.cpp">
+      <Filter>iRobot</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Sketch\iRobot\iRobot.ino">
+      <Filter>iRobot</Filter>
+    </None>
+  </ItemGroup>
+</Project>

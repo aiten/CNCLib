@@ -21,29 +21,38 @@
 
 ////////////////////////////////////////////////////////
 
-#define STEPPERTYPE 1		// CStepperL298N
-//#define STEPPERTYPE 2		// CStepperSMC800
-//#define STEPPERTYPE 3		// CStepperTB6560
+#include "Stepper.h"
+#include <Servo.h>
 
 ////////////////////////////////////////////////////////
 
-#if STEPPERTYPE==1
+class CStepperServo : public CStepper
+{
+private:
+	typedef CStepper super;
+public:
 
-#include "Configuration_MiniCNC_L298N.h"
+	CStepperServo();
+	virtual void Init() override;
 
-#elif STEPPERTYPE==2
+        void SetServo();   
 
-#include "Configuration_MiniCNC_SMC800.h"
+protected:
 
-#elif STEPPERTYPE==3
+	virtual void  SetEnable(axis_t axis, unsigned char level, bool force) override;
+	virtual unsigned char GetEnable(axis_t axis) override;
+	virtual void  Step(const unsigned char cnt[NUM_AXIS], unsigned char directionUp) override;
 
-#include "Configuration_MiniCNC_TB6560.h"
+public:
 
-#endif
+	virtual bool IsReference(unsigned char referenceid) override;
+	virtual bool IsAnyReference() override;
+
+    protected:
 
 ////////////////////////////////////////////////////////
 
-#include <MessageCNCLib.h>
+private:
 
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC:"__DATE__)
-
+  Servo _servo[NUM_AXIS];
+};

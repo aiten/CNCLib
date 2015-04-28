@@ -21,29 +21,26 @@
 
 ////////////////////////////////////////////////////////
 
-#define STEPPERTYPE 1		// CStepperL298N
-//#define STEPPERTYPE 2		// CStepperSMC800
-//#define STEPPERTYPE 3		// CStepperTB6560
+#define CMyStepper CStepperServo
+#define ConversionToMm1000 CMotionControlBase::ToMm1000_1_400
+#define ConversionToMachine CMotionControlBase::ToMachine_1_400
 
 ////////////////////////////////////////////////////////
 
-#if STEPPERTYPE==1
+#define CNC_MAXSPEED 15000
+#define CNC_ACC  200
+#define CNC_DEC  250
 
-#include "Configuration_MiniCNC_L298N.h"
+////////////////////////////////////////////////////////
 
-#elif STEPPERTYPE==2
+#define KILL_PIN	-1
 
-#include "Configuration_MiniCNC_SMC800.h"
-
-#elif STEPPERTYPE==3
-
-#include "Configuration_MiniCNC_TB6560.h"
-
-#endif
+#define KILL_ON  LOW
+#define KILL_OFF HIGH
 
 ////////////////////////////////////////////////////////
 
 #include <MessageCNCLib.h>
 
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC:"__DATE__)
+#define MESSAGE_MYCONTROL_iRobot_Starting					F("iRobotCNC:"__DATE__)
 

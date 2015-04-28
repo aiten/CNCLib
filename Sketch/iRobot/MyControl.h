@@ -21,29 +21,47 @@
 
 ////////////////////////////////////////////////////////
 
-#define STEPPERTYPE 1		// CStepperL298N
-//#define STEPPERTYPE 2		// CStepperSMC800
-//#define STEPPERTYPE 3		// CStepperTB6560
+#include <Control.h>
+#include <OnOffIOControl.h>
+#include <Analog8IOControl.h>
+#include <ReadPinIOControl.h>
+
+#include "Configuration_iRobot.h"
 
 ////////////////////////////////////////////////////////
 
-#if STEPPERTYPE==1
+class CMyControl : public CControl
+{
+private:
 
-#include "Configuration_MiniCNC_L298N.h"
+	typedef CControl super;
 
-#elif STEPPERTYPE==2
+public:
 
-#include "Configuration_MiniCNC_SMC800.h"
+	CMyControl()				 { }
 
-#elif STEPPERTYPE==3
+//	virtual void Kill() override;
 
-#include "Configuration_MiniCNC_TB6560.h"
+//	virtual void IOControl(unsigned char tool, unsigned short level) override;
+//	virtual unsigned short IOControl(unsigned char tool) override;
 
-#endif
+protected:
+
+	virtual void Init() override;
+
+	virtual bool IsKill() override;
+
+	virtual bool Parse(CStreamReader* reader, Stream* output) override;
+
+	virtual void GoToReference() override;
+
+	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
+
+private:
+
+	CReadPinIOControl<KILL_PIN, KILL_ON> _kill;
+};
 
 ////////////////////////////////////////////////////////
 
-#include <MessageCNCLib.h>
-
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC:"__DATE__)
-
+extern CMyControl Control;
