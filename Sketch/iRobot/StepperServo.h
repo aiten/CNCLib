@@ -55,4 +55,6 @@ public:
 private:
 
   Servo _servo[NUM_AXIS];
+
+  udist_t _lastPos[NUM_AXIS];
 };

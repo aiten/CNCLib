@@ -34,10 +34,247 @@ using System.Globalization;
 namespace Proxxon.Wpf.ViewModels
 {
     public class ManualControlViewModel : BaseViewModel
-    {
-        #region Properties
+	{
+		public ManualControlViewModel()
+		{
+			_AxisX = new AxisViewModel(this)
+			{
+				AxisName = "X",
+				AxisIndex = 0,
+				Size = Global.Instance.Machine.SizeX,
+				ProbeSize = Global.Instance.Machine.ProbeSizeX
+			};
+			_AxisY = new AxisViewModel(this)
+			{
+				AxisName = "Y",
+				AxisIndex = 1,
+				Size = Global.Instance.Machine.SizeY,
+				ProbeSize = Global.Instance.Machine.ProbeSizeY
+			};
+			_AxisZ = new AxisViewModel(this)
+			{
+				AxisName = "Z",
+				AxisIndex = 2,
+				HomeIsMax = true,
+				Size = Global.Instance.Machine.SizeZ,
+				ProbeSize = Global.Instance.Machine.ProbeSizeZ
+			};
+			_AxisA = new AxisViewModel(this)
+			{
+				AxisName = "A",
+				AxisIndex = 3,
+				Size = Global.Instance.Machine.SizeA,
+				ProbeSize = 0m
+			};
+			_AxisB = new AxisViewModel(this)
+			{
+				AxisName = "B",
+				AxisIndex = 4,
+				Size = Global.Instance.Machine.SizeB,
+				ProbeSize = 0m
+			};
+			_AxisC = new AxisViewModel(this)
+			{
+				AxisName = "C",
+				AxisIndex = 5,
+				Size = Global.Instance.Machine.SizeC,
+				ProbeSize = 0m
+			};
+			_CommandHistory = new CommandHistoryViewModel(this) { };
+		}
 
-		const string _commandHistoryFile = @"c:\tmp\Command.txt";
+		#region AxisVM
+
+		public class AxisViewModel : BaseViewModel
+		{
+			public ManualControlViewModel Vm { get; private set; }
+			public AxisViewModel(ManualControlViewModel vm)
+			{
+				Vm = vm;
+			}
+			public Framework.Logic.ArduinoSerialCommunication Com
+			{
+				get { return Framework.Tools.Singleton<Framework.Logic.ArduinoSerialCommunication>.Instance; }
+			}
+
+			#region Properties
+
+			public string AxisName { get; set; }
+			public int AxisIndex { get; set; }
+			public decimal Size { get; set; }
+			public decimal ProbeSize { get; set; }
+			public bool HomeIsMax { get; set; }
+
+			private string _param = "0";
+			public decimal ParamDec { get { return decimal.Parse(Param); } }
+			public string Param
+			{
+				get { return _param; }
+				set { SetProperty(ref _param, value); }
+			}
+
+			private string _pos = "";
+			public string Pos
+			{
+				get { return _pos; }
+				set { SetProperty(ref _pos, value); }
+			}
+			public bool Enabled { get { return Global.Instance.Machine.Axis >= AxisIndex && Size > 0m; } }
+
+			#endregion
+
+			#region Commands / CanCommands
+			private void SendMoveCommand(string dist) { Vm.AsyncRunCommand(() => { Com.SendCommand("g91 g0" + AxisName + dist + " g90"); }); }
+
+			private void SendProbeCommand(string axisname, decimal probesize)
+			{
+				Vm.AsyncRunCommand(() =>
+				{
+					string probdist = Global.Instance.Machine.ProbeDist.ToString(CultureInfo.InvariantCulture);
+					string probdistup = Global.Instance.Machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
+					string probfeed = Global.Instance.Machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
+
+					Com.SendCommand("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90");
+					if ((Com.CommandHistory.Last().ReplyType & ArduinoSerialCommunication.EReplyType.ReplyError) == 0)
+					{
+						Com.SendCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
+						Com.SendCommand("g91 g0" + axisname + probdistup + " g90");
+					}
+				});
+			}
+
+			public void SendRefMove() { Vm.AsyncRunCommand(() => { Com.SendCommand("g28 " + AxisName + "0"); }); }
+			public void SendG92() { Vm.AsyncRunCommand(() => { Com.SendCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); }); }
+			public void SendG31() { SendProbeCommand(AxisName, ProbeSize); }
+			public void SendHome() 
+			{ 
+				Vm.AsyncRunCommand(() => 
+				{ 
+					if (HomeIsMax) 
+						Com.SendCommand("g53 g0"+ AxisName+"#" + (5161+AxisIndex).ToString()); 
+					else
+						Com.SendCommand("g53 g0" + AxisName + "0");
+				}); 
+			}
+
+			public bool CanSendCommand()
+			{
+				return Vm.CanSendCommand() && Enabled;
+			}
+
+			#endregion
+
+			#region ICommands
+
+			public ICommand SendPlus100Command { get { return new DelegateCommand(() => SendMoveCommand("100"), () => CanSendCommand() && Size >= 100.0m); } }
+			public ICommand SendPlus10Command { get { return new DelegateCommand(() => SendMoveCommand("10"), () => CanSendCommand() && Size >= 10.0m); } }
+			public ICommand SendPlus1Command { get { return new DelegateCommand(() => SendMoveCommand("1"), () => CanSendCommand() && Size >= 1.0m); } }
+			public ICommand SendPlus01Command { get { return new DelegateCommand(() => SendMoveCommand("0.1"), () => CanSendCommand() && Size >= 0.1m); } }
+			public ICommand SendPlus001Command { get { return new DelegateCommand(() => SendMoveCommand("0.01"), () => CanSendCommand() && Size >= 0.01m); } }
+			public ICommand SendMinus100Command { get { return new DelegateCommand(() => SendMoveCommand("-100"), () => CanSendCommand() && Size >= 100.0m); } }
+			public ICommand SendMinus10Command { get { return new DelegateCommand(() => SendMoveCommand("-10"), () => CanSendCommand() && Size >= 10.0m); } }
+			public ICommand SendMinus1Command { get { return new DelegateCommand(() => SendMoveCommand("-1"), () => CanSendCommand() && Size >= 1.0m); } }
+			public ICommand SendMinus01Command { get { return new DelegateCommand(() => SendMoveCommand("-0.1"), () => CanSendCommand() && Size >= 0.1m); } }
+			public ICommand SendMinus001Command { get { return new DelegateCommand(() => SendMoveCommand("-0.01"), () => CanSendCommand() && Size >= 0.01m); } }
+			public ICommand SendRefMoveCommand { get { return new DelegateCommand(SendRefMove, CanSendCommand); } }
+			public ICommand SendG92Command { get { return new DelegateCommand(SendG92,  () => { decimal dummy; return CanSendCommand() && decimal.TryParse(Param,out dummy); }); } }
+			public ICommand SendG31Command { get { return new DelegateCommand(SendG31, CanSendCommand); } }
+			public ICommand SendHomeCommand { get { return new DelegateCommand(SendHome, CanSendCommand); } }
+
+			#endregion
+		}
+
+		private AxisViewModel _AxisX;
+		public AxisViewModel AxisX { get { return _AxisX; } }
+
+		private AxisViewModel _AxisY;
+		public AxisViewModel AxisY { get { return _AxisY; } }
+
+		private AxisViewModel _AxisZ;
+		public AxisViewModel AxisZ { get { return _AxisZ; } }
+
+		private AxisViewModel _AxisA;
+		public AxisViewModel AxisA { get { return _AxisA; } }
+
+		private AxisViewModel _AxisB;
+
+		public AxisViewModel AxisB { get { return _AxisB; } }
+		
+		private AxisViewModel _AxisC;
+		public AxisViewModel AxisC { get { return _AxisC; } }
+
+		#endregion
+
+		#region CommandHistoryVM
+
+		public class CommandHistoryViewModel : BaseViewModel
+		{
+			public ManualControlViewModel Vm { get; private set; }
+			public CommandHistoryViewModel(ManualControlViewModel vm)
+			{
+				Vm = vm;
+			}
+			public Framework.Logic.ArduinoSerialCommunication Com
+			{
+				get { return Framework.Tools.Singleton<Framework.Logic.ArduinoSerialCommunication>.Instance; }
+			}
+
+			public const string CommandHistoryFile = @"c:\tmp\Command.txt";
+
+			#region ProxxonCommandCollection
+
+			private ObservableCollection<ProxxonCommand> _ProxxonCommandCollection;
+			public ObservableCollection<ProxxonCommand> ProxxonCommandCollection
+			{
+				get { return _ProxxonCommandCollection; }
+				set { AssignProperty(ref _ProxxonCommandCollection, value); }
+			}
+
+			#endregion
+
+			#region Commands / CanCommands
+
+			public void RefreshAfterCommand()
+			{
+				RefreshCommandHistory();
+			}
+
+			public void RefreshCommandHistory()
+			{
+				lock (this)
+				{
+					var results = new ObservableCollection<ProxxonCommand>();
+
+					foreach (ArduinoSerialCommunication.Command rc in Com.CommandHistory)
+					{
+						results.Add(new ProxxonCommand() { CommandDate = rc.SentTime, CommandText = rc.CommandText, Result = rc.ResultText });
+
+					}
+					ProxxonCommandCollection = results;
+				}
+			}
+			public void ClearCommandHistory()
+			{
+				Com.ClearCommandHistory();
+				RefreshCommandHistory();
+			}
+
+			#endregion
+
+			#region ICommand
+
+			public ICommand RefreshHistoryCommand { get { return new DelegateCommand(RefreshCommandHistory, Vm.CanSendCommand); } }
+			public ICommand ClearHistoryCommand { get { return new DelegateCommand(ClearCommandHistory, Vm.CanSendCommand); } }
+
+			#endregion
+		}
+
+		private CommandHistoryViewModel _CommandHistory;
+		public CommandHistoryViewModel CommandHistory { get { return _CommandHistory; } }
+
+		#endregion
+
+		#region Properties
 
 		public Framework.Logic.ArduinoSerialCommunication Com
         {
@@ -85,90 +322,6 @@ namespace Proxxon.Wpf.ViewModels
 
         #endregion
 
-		#region XYZName
-
-		private string _XParam="0";
-		public decimal XParamDec { get { return decimal.Parse(XParam); } }
-		public string XParam
-		{
-			get { return _XParam; }
-            set { SetProperty(ref _XParam, value);  }
-		}
-
-		private string _XPos;
-		public string XPos
-		{
-			get { return _XPos; }
-			private set { SetProperty(ref _XPos, value); }
-		}
-
-		private string _YParam="0";
-		public decimal YParamDec { get { return decimal.Parse(YParam); } }
-		public string YParam
-		{
-			get { return _YParam; }
-            set { SetProperty(ref _YParam, value);  }
-		}
-		private string _YPos;
-		public string YPos
-		{
-			get { return _YPos; }
-			private set { SetProperty(ref _YPos, value); }
-		}
-
-		private string _ZParam = "0";
-		public decimal ZParamDec { get { return decimal.Parse(ZParam); } }
-		public string ZParam
-		{
-			get { return _ZParam; }
-            set { SetProperty(ref _ZParam, value);  }
-		}
-		private string _ZPos;
-		public string ZPos
-		{
-			get { return _ZPos; }
-			private set { SetProperty(ref _ZPos, value); }
-		}
-		private string _AParam = "0";
-		public decimal AParamDec { get { return decimal.Parse(AParam); } }
-		public string AParam
-		{
-			get { return _AParam; }
-            set { SetProperty(ref _AParam, value);  }
-		}
-		private string _APos;
-		public string APos
-		{
-			get { return _APos; }
-			private set { SetProperty(ref _APos, value); }
-		}
-		private string _BParam = "0";
-		public decimal BParamDec { get { return decimal.Parse(BParam); } }
-		public string BParam
-		{
-			get { return _BParam; }
-            set { SetProperty(ref _BParam, value);  }
-		}
-		private string _BPos;
-		public string BPos
-		{
-			get { return _BPos; }
-			private set { SetProperty(ref _BPos, value); }
-		}
-		private string _CParam = "0";
-		public decimal CParamDec { get { return decimal.Parse(CParam); } }
-		public string CParam
-		{
-			get { return _CParam; }
-            set { SetProperty(ref _CParam, value);  }
-		}
-		private string _CPos;
-		public string CPos
-		{
-			get { return _CPos; }
-			private set { SetProperty(ref _CPos, value); }
-		}
-
 		#endregion
 
 		#region FileName
@@ -182,173 +335,26 @@ namespace Proxxon.Wpf.ViewModels
 
 		#endregion
 
-        #region ProxxonCommandCollection
-
-        private ObservableCollection<ProxxonCommand> _ProxxonCommandCollection;
-        public ObservableCollection<ProxxonCommand> ProxxonCommandCollection
-        {
-            get { return _ProxxonCommandCollection; }
-			set { AssignProperty(ref _ProxxonCommandCollection, value); }
-        }
-
-        #endregion
-
-		public bool EnableX { get { return Global.Instance.Machine.Axis >= 1 && Global.Instance.Machine.SizeX > 0m; } }
-		public bool EnableY { get { return Global.Instance.Machine.Axis >= 2 && Global.Instance.Machine.SizeY > 0m; } }
-		public bool EnableZ { get { return Global.Instance.Machine.Axis >= 3 && Global.Instance.Machine.SizeZ > 0m; } }
-		public bool EnableA { get { return Global.Instance.Machine.Axis >= 4 && Global.Instance.Machine.SizeA > 0m; } }
-		public bool EnableB { get { return Global.Instance.Machine.Axis >= 5 && Global.Instance.Machine.SizeB > 0m; } }
-		public bool EnableC { get { return Global.Instance.Machine.Axis >= 6 && Global.Instance.Machine.SizeC > 0m; } }
-
-		#endregion
-
 		#region Operations
 
-		delegate void ExecuteCommands();
+		protected delegate void ExecuteCommands();
 
-		void AsyncRunCommand(ExecuteCommands todo)
+		protected void AsyncRunCommand(ExecuteCommands todo)
 		{
 			new Thread(() =>
 			{
 				try
 				{
 					todo();
-					Com.WriteCommandHistory(_commandHistoryFile);
+					Com.WriteCommandHistory(CommandHistoryViewModel.CommandHistoryFile);
 				}
 				finally
 				{
-					RefreshAfterCommand();
+					CommandHistory.RefreshAfterCommand();
 				}
 			}
 			).Start();
 		}
-
-		#region XYZ Operations
-
-		private void SendMoveCommand(string axisvalue)	{	AsyncRunCommand(() => { Com.SendCommand("g91 g0" + axisvalue + " g90"); });	}
-
-		private void SendProbeCommand(string axisname, decimal probesize) 
-		{	
-			AsyncRunCommand(() => 
-			{ 
-				string probdist = Global.Instance.Machine.ProbeDist.ToString(CultureInfo.InvariantCulture);
-				string probdistup = Global.Instance.Machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
-				string probfeed = Global.Instance.Machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
-
-				Com.SendCommand("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90"); 
-				if ((Com.CommandHistory.Last().ReplyType & ArduinoSerialCommunication.EReplyType.ReplyError) == 0)
-				{
-					Com.SendCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
-					Com.SendCommand("g91 g0" + axisname + probdistup + " g90");
-				}
-			}); 
-		}
-
-		#region X
-
-        public void SendXPlus100()      { SendMoveCommand("X100"); }
-        public void SendXPlus10()       { SendMoveCommand("X10"); }
-		public void SendXPlus1()		{ SendMoveCommand("X1"); }
-		public void SendXPlus01()		{ SendMoveCommand("X0.1"); }
-		public void SendXPlus001()		{ SendMoveCommand("X0.01"); }
-		public void SendXMinus100()		{ SendMoveCommand("X-100"); }
-        public void SendXMinus10()      { SendMoveCommand("X-10"); }
-        public void SendXMinus1()       { SendMoveCommand("X-1"); }
-		public void SendXMinus01()		{ SendMoveCommand("X-0.1"); }
-		public void SendXMinus001()		{ SendMoveCommand("X-0.01"); }
-		public void SendXRefMove()		{ AsyncRunCommand(() => { Com.SendCommand("g28 X0"); }); }
-		public void SendXG92()			{ AsyncRunCommand(() => { Com.SendCommand("g92 X" + XParamDec.ToString(CultureInfo.InvariantCulture)); }); }
-		public void SendXG31()			{ SendProbeCommand("X", Global.Instance.Machine.ProbeSizeX); }
-
-		#endregion
-
-		#region Y
-
-        public void SendYPlus100()       { SendMoveCommand("Y100"); }
-        public void SendYPlus10()       { SendMoveCommand("Y10"); }
-		public void SendYPlus1()		{ SendMoveCommand("Y1"); }
-		public void SendYPlus01()		{ SendMoveCommand("Y0.1"); }
-		public void SendYPlus001()		{ SendMoveCommand("Y0.01"); }
-        public void SendYMinus100()     { SendMoveCommand("Y-100"); }
-        public void SendYMinus10()      { SendMoveCommand("Y-10"); }
-		public void SendYMinus1()		{ SendMoveCommand("Y-1"); }
-		public void SendYMinus01()		{ SendMoveCommand("Y-0.1"); }
-		public void SendYMinus001()		{ SendMoveCommand("Y-0.01"); }
-		public void SendYRefMove()		{ AsyncRunCommand(() => { Com.SendCommand("g28 Y0"); }); }
-		public void SendYG92()			{ AsyncRunCommand(() => { Com.SendCommand("g92 Y" + YParamDec.ToString(CultureInfo.InvariantCulture)); }); }
-		public void SendYG31()			{ SendProbeCommand("Y", Global.Instance.Machine.ProbeSizeY); }
-
-		#endregion
-
-		#region Z
-
-		public void SendZPlus100()		{ SendMoveCommand("Z100"); }
-		public void SendZPlus10()		{ SendMoveCommand("Z10"); }
-		public void SendZPlus1()		{ SendMoveCommand("Z1"); }
-		public void SendZPlus01()		{ SendMoveCommand("Z0.1"); }
-		public void SendZPlus001()		{ SendMoveCommand("Z0.01"); }
-		public void SendZMinus100()		{ SendMoveCommand("Z-100"); }
-		public void SendZMinus10()		{ SendMoveCommand("Z-10"); }
-		public void SendZMinus1()		{ SendMoveCommand("Z-1"); }
-		public void SendZMinus01()		{ SendMoveCommand("Z-0.1"); }
-		public void SendZMinus001()		{ SendMoveCommand("Z-0.01"); }
-		public void SendZRefMove()		{ AsyncRunCommand(() => { Com.SendCommand("g28 Z0"); }); }
-		public void SendZG92()			{ AsyncRunCommand(() => { Com.SendCommand("g92 Z" + ZParamDec.ToString(CultureInfo.InvariantCulture)); }); }
-		public void SendZG31()			{ SendProbeCommand("Z", Global.Instance.Machine.ProbeSizeZ); }
-		public void SendZHome()			{ AsyncRunCommand(() => { Com.SendCommand("g53 g0z#5163"); }); }
-
-		#endregion
-
-		#region A
-
-		public void SendAPlus100()		{ SendMoveCommand("A100"); }
-		public void SendAPlus10()		{ SendMoveCommand("A10"); }
-		public void SendAPlus1()		{ SendMoveCommand("A1"); }
-		public void SendAPlus01()		{ SendMoveCommand("A0.1"); }
-		public void SendAPlus001()		{ SendMoveCommand("A0.01"); }
-		public void SendAMinus100()		{ SendMoveCommand("A-100"); }
-		public void SendAMinus10()		{ SendMoveCommand("A-10"); }
-		public void SendAMinus1()		{ SendMoveCommand("A-1"); }
-		public void SendAMinus01()		{ SendMoveCommand("A-0.1"); }
-		public void SendAMinus001()		{ SendMoveCommand("A-0.01"); }
-		public void SendARefMove()		{ AsyncRunCommand(() => { Com.SendCommand("g28 A0"); }); }
-		public void SendAG92()			{ AsyncRunCommand(() => { Com.SendCommand("g92 A" + AParamDec.ToString(CultureInfo.InvariantCulture)); }); }
-
-		#endregion
-
-		#region B
-		public void SendBPlus100()		{ SendMoveCommand("B100"); }
-		public void SendBPlus10()		{ SendMoveCommand("B10"); }
-		public void SendBPlus1()		{ SendMoveCommand("B1"); }
-		public void SendBPlus01()		{ SendMoveCommand("B0.1"); }
-		public void SendBPlus001()		{ SendMoveCommand("B0.01"); }
-		public void SendBMinus100()		{ SendMoveCommand("B-100"); }
-		public void SendBMinus10()		{ SendMoveCommand("B-10"); }
-		public void SendBMinus1()		{ SendMoveCommand("B-1"); }
-		public void SendBMinus01()		{ SendMoveCommand("B-0.1"); }
-		public void SendBMinus001()		{ SendMoveCommand("B-0.01"); }
-		public void SendBRefMove()		{ AsyncRunCommand(() => { Com.SendCommand("g28 B0"); }); }
-		public void SendBG92()			{ AsyncRunCommand(() => { Com.SendCommand("g92 B" + BParamDec.ToString(CultureInfo.InvariantCulture)); }); }
-
-		#endregion
-
-		#region C
-		public void SendCPlus100()		{ SendMoveCommand("C100"); }
-		public void SendCPlus10()		{ SendMoveCommand("C10"); }
-		public void SendCPlus1()		{ SendMoveCommand("C1"); }
-		public void SendCPlus01()		{ SendMoveCommand("C0.1"); }
-		public void SendCPlus001()		{ SendMoveCommand("C0.01"); }
-		public void SendCMinus100()		{ SendMoveCommand("C-100"); }
-		public void SendCMinus10()		{ SendMoveCommand("C-10"); }
-		public void SendCMinus1()		{ SendMoveCommand("C-1"); }
-		public void SendCMinus01()		{ SendMoveCommand("C-0.1"); }
-		public void SendCMinus001()		{ SendMoveCommand("C-0.01"); }
-		public void SendCRefMove()		{ AsyncRunCommand(() => { Com.SendCommand("g28 C0"); }); }
-		public void SendCG92()			{ AsyncRunCommand(() => { Com.SendCommand("g92 C" + CParamDec.ToString(CultureInfo.InvariantCulture)); }); }
-
-		#endregion
-
-		#endregion
 
 		#region Rotation
 
@@ -437,12 +443,12 @@ namespace Proxxon.Wpf.ViewModels
 					message = message.Replace("ok","");
 					message = message.Replace(" ","");
 					string[] positions = message.Split(':');
-					if (positions.Length >= 1) XPos = positions[0];
-					if (positions.Length >= 2) YPos = positions[1];
-					if (positions.Length >= 3) ZPos = positions[2];
-					if (positions.Length >= 4) APos = positions[3];
-					if (positions.Length >= 5) BPos = positions[4];
-					if (positions.Length >= 6) CPos = positions[5];
+					if (positions.Length >= 1) AxisX.Pos = positions[0];
+					if (positions.Length >= 2) AxisY.Pos = positions[1];
+					if (positions.Length >= 3) AxisZ.Pos = positions[2];
+					if (positions.Length >= 4) AxisA.Pos = positions[3];
+					if (positions.Length >= 5) AxisB.Pos = positions[4];
+					if (positions.Length >= 6) AxisC.Pos = positions[5];
 				}
 			});
 		}
@@ -456,65 +462,12 @@ namespace Proxxon.Wpf.ViewModels
 		public void SendG59() { AsyncRunCommand(() => { Com.SendCommand("g59"); }); }
 		public void SendG92() { AsyncRunCommand(() => { Com.SendCommand("g92"); }); }
 
-		#region CommandHistory
-
-		public void RefreshAfterCommand()
-        {
-            RefreshCommandHistory();
-        }
-
-        public void RefreshCommandHistory()
-        {
-			lock (this)
-			{
-				var results = new ObservableCollection<ProxxonCommand>();
-
-				foreach (ArduinoSerialCommunication.Command rc in Com.CommandHistory)
-				{
-					results.Add(new ProxxonCommand() { CommandDate = rc.SentTime, CommandText = rc.CommandText, Result = rc.ResultText });
-
-				}
-				ProxxonCommandCollection = results;
-			}
-        }
-        public void ClearCommandHistory()
-        {
-            Com.ClearCommandHistory();
-            RefreshCommandHistory();
-        }
-
-		#endregion
-
 		#region CanCommand
 
 		public bool CanSendCommand()
         {
             return Connected;
         }
-		public bool CanSendCommandX()
-		{
-			return CanSendCommand() && EnableX;
-		}
-		public bool CanSendCommandY()
-		{
-			return CanSendCommand() && EnableY;
-		}
-		public bool CanSendCommandZ()
-		{
-			return CanSendCommand() && EnableZ;
-		}
-		public bool CanSendCommandA()
-		{
-			return CanSendCommand() && EnableA;
-		}
-		public bool CanSendCommandB()
-		{
-			return CanSendCommand() && EnableB;
-		}
-		public bool CanSendCommandC()
-		{
-			return CanSendCommand() && EnableC;
-		}
 
 		public bool CanSendFileNameCommand()
 		{
@@ -533,151 +486,11 @@ namespace Proxxon.Wpf.ViewModels
 			return Connected && !string.IsNullOrEmpty(DirectCommand);
 		}
 
-		public bool CanSendCommandXDecimal()
-		{
-			decimal dummy;
-			return CanSendCommandX() && decimal.TryParse(XParam,out dummy);
-		}
-		public bool CanSendCommandYDecimal()
-		{
-			decimal dummy;
-			return CanSendCommandY() && decimal.TryParse(YParam, out dummy);
-		}
-		public bool CanSendCommandZDecimal()
-		{
-			decimal dummy;
-			return CanSendCommandZ() && decimal.TryParse(ZParam, out dummy);
-		}
-		public bool CanSendCommandADecimal()
-		{
-			decimal dummy;
-			return CanSendCommandA() && decimal.TryParse(AParam, out dummy);
-		}
-		public bool CanSendCommandBDecimal()
-		{
-			decimal dummy;
-			return CanSendCommandB() && decimal.TryParse(BParam, out dummy);
-		}
-		public bool CanSendCommandCDecimal()
-		{
-			decimal dummy;
-			return CanSendCommandC() && decimal.TryParse(CParam, out dummy);
-		}
-
 		#endregion
 
 		#endregion
 
 		#region Commands
-
-		#region XYZ Commands
-
-		#region X
-
-		public ICommand SendXPlus100Command { get { return new DelegateCommand(SendXPlus100, () => CanSendCommandX() && Global.Instance.Machine.SizeX >= 100.0m); } }
-        public ICommand SendXPlus10Command { get { return new DelegateCommand(SendXPlus10, CanSendCommandX); } }
-		public ICommand SendXPlus1Command	{ get { return new DelegateCommand(SendXPlus1, CanSendCommandX); } }
-		public ICommand SendXPlus01Command	{ get { return new DelegateCommand(SendXPlus01, CanSendCommandX); } }
-		public ICommand SendXPlus001Command { get { return new DelegateCommand(SendXPlus001, CanSendCommandX); } }
-		public ICommand SendXMinus100Command { get { return new DelegateCommand(SendXMinus100, () => CanSendCommandX() && Global.Instance.Machine.SizeX >= 100.0m); } }
-        public ICommand SendXMinus10Command { get { return new DelegateCommand(SendXMinus10, CanSendCommandX); } }
-        public ICommand SendXMinus1Command { get { return new DelegateCommand(SendXMinus1, CanSendCommandX); } }
-		public ICommand SendXMinus01Command { get { return new DelegateCommand(SendXMinus01, CanSendCommandX); } }
-		public ICommand SendXMinus001Command { get { return new DelegateCommand(SendXMinus001, CanSendCommandX); } }
-		public ICommand SendXRefMoveCommand	{ get { return new DelegateCommand(SendXRefMove, CanSendCommandX); } }
-		public ICommand SendXG92Command		{ get { return new DelegateCommand(SendXG92, CanSendCommandXDecimal); } }
-		public ICommand SendXG31Command		{ get { return new DelegateCommand(SendXG31, CanSendCommandX); } }
-
-		#endregion
-
-		#region Y
-
-		public ICommand SendYPlus100Command { get { return new DelegateCommand(SendYPlus100, () => CanSendCommandY() && Global.Instance.Machine.SizeY >= 100.0m); } }
-        public ICommand SendYPlus10Command { get { return new DelegateCommand(SendYPlus10, CanSendCommandY); } }
-		public ICommand SendYPlus1Command { get { return new DelegateCommand(SendYPlus1, CanSendCommandY); } }
-		public ICommand SendYPlus01Command { get { return new DelegateCommand(SendYPlus01, CanSendCommandY); } }
-		public ICommand SendYPlus001Command { get { return new DelegateCommand(SendYPlus001, CanSendCommandY); } }
-		public ICommand SendYMinus100Command { get { return new DelegateCommand(SendYMinus100, () => CanSendCommandY() && Global.Instance.Machine.SizeY >= 100.0m); } }
-        public ICommand SendYMinus10Command { get { return new DelegateCommand(SendYMinus10, CanSendCommandY); } }
-		public ICommand SendYMinus1Command { get { return new DelegateCommand(SendYMinus1, CanSendCommandY); } }
-		public ICommand SendYMinus01Command { get { return new DelegateCommand(SendYMinus01, CanSendCommandY); } }
-		public ICommand SendYMinus001Command { get { return new DelegateCommand(SendYMinus001, CanSendCommandY); } }
-		public ICommand SendYRefMoveCommand { get { return new DelegateCommand(SendYRefMove, CanSendCommandY); } }
-		public ICommand SendYG92Command { get { return new DelegateCommand(SendYG92, CanSendCommandYDecimal); } }
-		public ICommand SendYG31Command { get { return new DelegateCommand(SendYG31, CanSendCommandY); } }
-
-		#endregion
-
-		#region Z
-
-		public ICommand SendZPlus100Command { get { return new DelegateCommand(SendZPlus100, () => CanSendCommandZ() && Global.Instance.Machine.SizeZ >= 100.0m); } }
-		public ICommand SendZPlus10Command { get { return new DelegateCommand(SendZPlus10, CanSendCommandZ); } }
-		public ICommand SendZPlus1Command { get { return new DelegateCommand(SendZPlus1, CanSendCommandZ); } }
-		public ICommand SendZPlus01Command { get { return new DelegateCommand(SendZPlus01, CanSendCommandZ); } }
-		public ICommand SendZPlus001Command { get { return new DelegateCommand(SendZPlus001, CanSendCommandZ); } }
-		public ICommand SendZMinus100Command { get { return new DelegateCommand(SendZMinus100, () => CanSendCommandZ() && Global.Instance.Machine.SizeZ >= 100.0m); } }
-		public ICommand SendZMinus10Command { get { return new DelegateCommand(SendZMinus10, CanSendCommandZ); } }
-		public ICommand SendZMinus1Command { get { return new DelegateCommand(SendZMinus1, CanSendCommandZ); } }
-		public ICommand SendZMinus01Command { get { return new DelegateCommand(SendZMinus01, CanSendCommandZ); } }
-		public ICommand SendZMinus001Command { get { return new DelegateCommand(SendZMinus001, CanSendCommandZ); } }
-		public ICommand SendZRefMoveCommand { get { return new DelegateCommand(SendZRefMove, CanSendCommandZ); } }
-		public ICommand SendZG92Command { get { return new DelegateCommand(SendZG92, CanSendCommandZDecimal); } }
-		public ICommand SendZG31Command { get { return new DelegateCommand(SendZG31, CanSendCommandZ); } }
-		public ICommand SendZHomeCommand { get { return new DelegateCommand(SendZHome, CanSendCommandZ); } }
-
-		#endregion
-
-		#region A
-
-		public ICommand SendAPlus100Command { get { return new DelegateCommand(SendAPlus100, CanSendCommandA); } }
-		public ICommand SendAPlus10Command { get { return new DelegateCommand(SendAPlus10, CanSendCommandA); } }
-		public ICommand SendAPlus1Command { get { return new DelegateCommand(SendAPlus1, CanSendCommandA); } }
-		public ICommand SendAPlus01Command { get { return new DelegateCommand(SendAPlus01, CanSendCommandA); } }
-		public ICommand SendAPlus001Command { get { return new DelegateCommand(SendAPlus001, CanSendCommandA); } }
-		public ICommand SendAMinus100Command { get { return new DelegateCommand(SendAMinus100, CanSendCommandA); } }
-		public ICommand SendAMinus10Command { get { return new DelegateCommand(SendAMinus10, CanSendCommandA); } }
-		public ICommand SendAMinus1Command { get { return new DelegateCommand(SendAMinus1, CanSendCommandA); } }
-		public ICommand SendAMinus01Command { get { return new DelegateCommand(SendAMinus01, CanSendCommandA); } }
-		public ICommand SendAMinus001Command { get { return new DelegateCommand(SendAMinus001, CanSendCommandA); } }
-		public ICommand SendARefMoveCommand { get { return new DelegateCommand(SendARefMove, CanSendCommandA); } }
-		public ICommand SendAG92Command { get { return new DelegateCommand(SendAG92, CanSendCommandADecimal); } }
-
-		#endregion
-
-		#region B
-
-		public ICommand SendBPlus100Command { get { return new DelegateCommand(SendBPlus100, CanSendCommandB); } }
-		public ICommand SendBPlus10Command { get { return new DelegateCommand(SendBPlus10, CanSendCommandB); } }
-		public ICommand SendBPlus1Command { get { return new DelegateCommand(SendBPlus1, CanSendCommandB); } }
-		public ICommand SendBPlus01Command { get { return new DelegateCommand(SendBPlus01, CanSendCommandB); } }
-		public ICommand SendBPlus001Command { get { return new DelegateCommand(SendBPlus001, CanSendCommandB); } }
-		public ICommand SendBMinus100Command { get { return new DelegateCommand(SendBMinus100, CanSendCommandB); } }
-		public ICommand SendBMinus10Command { get { return new DelegateCommand(SendBMinus10, CanSendCommandB); } }
-		public ICommand SendBMinus1Command { get { return new DelegateCommand(SendBMinus1, CanSendCommandB); } }
-		public ICommand SendBMinus01Command { get { return new DelegateCommand(SendBMinus01, CanSendCommandB); } }
-		public ICommand SendBMinus001Command { get { return new DelegateCommand(SendBMinus001, CanSendCommandB); } }
-		public ICommand SendBRefMoveCommand { get { return new DelegateCommand(SendBRefMove, CanSendCommandB); } }
-		public ICommand SendBG92Command { get { return new DelegateCommand(SendBG92, CanSendCommandBDecimal); } }
-		#endregion
-
-		#region C
-
-		public ICommand SendCPlus100Command { get { return new DelegateCommand(SendCPlus100, CanSendCommandC); } }
-		public ICommand SendCPlus10Command { get { return new DelegateCommand(SendCPlus10, CanSendCommandC); } }
-		public ICommand SendCPlus1Command { get { return new DelegateCommand(SendCPlus1, CanSendCommandC); } }
-		public ICommand SendCPlus01Command { get { return new DelegateCommand(SendCPlus01, CanSendCommandC); } }
-		public ICommand SendCPlus001Command { get { return new DelegateCommand(SendCPlus001, CanSendCommandC); } }
-		public ICommand SendCMinus100Command { get { return new DelegateCommand(SendCMinus100, CanSendCommandC); } }
-		public ICommand SendCMinus10Command { get { return new DelegateCommand(SendCMinus10, CanSendCommandC); } }
-		public ICommand SendCMinus1Command { get { return new DelegateCommand(SendCMinus1, CanSendCommandC); } }
-		public ICommand SendCMinus01Command { get { return new DelegateCommand(SendCMinus01, CanSendCommandC); } }
-		public ICommand SendCMinus001Command { get { return new DelegateCommand(SendCMinus001, CanSendCommandC); } }
-		public ICommand SendCRefMoveCommand { get { return new DelegateCommand(SendCRefMove, CanSendCommandC); } }
-		public ICommand SendCG92Command { get { return new DelegateCommand(SendCG92, CanSendCommandCDecimal); } }
-
-		#endregion
-
-		#endregion
 
 		#region Rotation
 
@@ -689,8 +502,6 @@ namespace Proxxon.Wpf.ViewModels
 
 		public ICommand SendDirectCommand		{ get { return new DelegateCommand(SendDirect, CanSendDirectCommand); } }
 		public ICommand SendFileDirectCommand	{ get { return new DelegateCommand(SendFileDirect, CanSendFileNameCommand); } }
-		public ICommand RefreshHistoryCommand	{ get { return new DelegateCommand(RefreshCommandHistory, CanSendCommand); } }
-        public ICommand ClearHistoryCommand		{ get { return new DelegateCommand(ClearCommandHistory, CanSendCommand); } }
         public ICommand SendInfoCommand			{ get { return new DelegateCommand(SendInfo, CanSendCommand); } }
         public ICommand SendAbortCommand		{ get { return new DelegateCommand(SendAbort, CanSendCommand); } }
 		public ICommand SendM03SpindelOnCommand { get { return new DelegateCommand(SendM03SpindelOn, CanSendCommand); } }

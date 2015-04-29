@@ -32,29 +32,34 @@ void CStepperServo::Init()
 {	
 	super::Init();
 
-  _pod._idleLevel = LevelMax;		// no Idle
+	_pod._idleLevel = LevelMax;		// no Idle
 
-  _servo[0].attach(6);
-  _servo[1].attach(7);
-  _servo[2].attach(8);
-  _servo[3].attach(9);
+	_servo[0].attach(6);
+	_servo[1].attach(7);
+	_servo[2].attach(8);
+	_servo[3].attach(9);
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepperServo::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
 {
-  SetServo();
+	SetServo();
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepperServo::SetServo()
 {
-  		for (axis_t i = 0; i<NUM_AXIS; i++)
+	for (axis_t i = 0; i<NUM_AXIS; i++)
+	{
+		udist_t pos = 420+MIN_PULSE_WIDTH+GetCurrentPosition(i);
+		if (pos != _lastPos[i])
 		{
-			_servo[i].writeMicroseconds(420+MIN_PULSE_WIDTH+GetCurrentPosition(i));
-                } 
+			_servo[i].writeMicroseconds(pos);
+			_lastPos[i] = pos;
+		}
+	} 
 }
 
 ////////////////////////////////////////////////////////
