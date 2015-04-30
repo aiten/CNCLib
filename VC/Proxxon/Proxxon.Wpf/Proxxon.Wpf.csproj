@@ -64,8 +64,17 @@
     <Compile Include="Models\MachineCommand.cs" />
     <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\RoboterCommand.cs" />
+    <Compile Include="ViewModels\IManualControlViewModel.cs" />
     <Compile Include="ViewModels\MachineViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\ManualControl\AxisViewModel.cs" />
+    <Compile Include="ViewModels\ManualControl\CommandHistoryViewModel.cs" />
+    <Compile Include="ViewModels\ManualControl\RotateViewModel.cs" />
+    <Compile Include="ViewModels\ManualControl\ToolViewModel.cs" />
+    <Compile Include="ViewModels\ManualControl\ShiftViewModel.cs" />
+    <Compile Include="ViewModels\ManualControl\DirectCommandViewModel.cs" />
+    <Compile Include="ViewModels\ManualControl\SDViewModel.cs" />
+    <Compile Include="ViewModels\ManualControl\DetailViewModel.cs" />
     <Compile Include="ViewModels\ManualControlViewModel.cs" />
     <Compile Include="Views\MachineView.xaml.cs">
       <DependentUpon>MachineView.xaml</DependentUpon>

@@ -166,7 +166,7 @@ namespace Proxxon.Wpf.ViewModels
 
         public void ShowManualControl()
         {
-			new ManualControl().ShowDialog();
+			new Proxxon.Wpf.ManualControl().ShowDialog();
         }
 
         public bool CanShowManualControl()

@@ -278,9 +278,26 @@ namespace Framework.Logic
 
         #endregion
 
-        #region Send Command(s)
+		#region SendCommandAndRead
 
-        public void SendCommand(string line)
+		public string SendCommandAndRead(string line)
+		{
+			string message = null;
+			var checkresponse = new ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
+			{
+				message = e.Info;
+			});
+			ReplyOK += checkresponse;
+			SendCommand(line);
+			ReplyOK -= checkresponse;
+			return message;
+		}
+
+		#endregion
+
+		#region Send Command(s)
+
+		public void SendCommand(string line)
         {
             AsyncSendCommand(line);
             WaitUntilNoPendingCommands();
