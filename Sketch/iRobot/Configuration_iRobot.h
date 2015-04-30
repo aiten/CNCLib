@@ -22,8 +22,8 @@
 ////////////////////////////////////////////////////////
 
 #define CMyStepper CStepperServo
-#define ConversionToMm1000 CMotionControlBase::ToMm1000_1_400
-#define ConversionToMachine CMotionControlBase::ToMachine_1_400
+#define ConversionToMm1000 CMotionControlBase::ToMm1000_1_1000
+#define ConversionToMachine CMotionControlBase::ToMachine_1_1000
 
 ////////////////////////////////////////////////////////
 

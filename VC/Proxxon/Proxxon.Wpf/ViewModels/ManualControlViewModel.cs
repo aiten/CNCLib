@@ -87,14 +87,21 @@ namespace Proxxon.Wpf.ViewModels
 
 			_directCommand = new DirectCommandViewModel(this) { };
 
+			_shift = new ShiftViewModel(this) { };
+
+			_tool = new ToolViewModel(this) { };
+
+			_rotate = new RotateViewModel(this) { };
 		}
+
+		public delegate void ExecuteCommands();
 
 		public class DetailViewModel : BaseViewModel
 		{
-			public ManualControlViewModel Vm { get; private set; }
+			public ManualControlViewModel VmX { get; private set; }
 			public DetailViewModel(ManualControlViewModel vm)
 			{
-				Vm = vm;
+				VmX = vm;
 			}
 			public Framework.Logic.ArduinoSerialCommunication Com
 			{
@@ -103,6 +110,10 @@ namespace Proxxon.Wpf.ViewModels
 			public bool Connected
 			{
 				get { return Com.IsConnected; }
+			}
+			protected void AsyncRunCommand(ExecuteCommands todo)
+			{
+				VmX.AsyncRunCommand(todo);
 			}
 
 			#region Command/CanCommand
@@ -150,11 +161,11 @@ namespace Proxxon.Wpf.ViewModels
 			#endregion
 
 			#region Commands / CanCommands
-			private void SendMoveCommand(string dist) { Vm.AsyncRunCommand(() => { Com.SendCommand("g91 g0" + AxisName + dist + " g90"); }); }
+			private void SendMoveCommand(string dist) { AsyncRunCommand(() => { Com.SendCommand("g91 g0" + AxisName + dist + " g90"); }); }
 
 			private void SendProbeCommand(string axisname, decimal probesize)
 			{
-				Vm.AsyncRunCommand(() =>
+				AsyncRunCommand(() =>
 				{
 					string probdist = Global.Instance.Machine.ProbeDist.ToString(CultureInfo.InvariantCulture);
 					string probdistup = Global.Instance.Machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
@@ -169,12 +180,12 @@ namespace Proxxon.Wpf.ViewModels
 				});
 			}
 
-			public void SendRefMove() { Vm.AsyncRunCommand(() => { Com.SendCommand("g28 " + AxisName + "0"); }); }
-			public void SendG92() { Vm.AsyncRunCommand(() => { Com.SendCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); }); }
+			public void SendRefMove() { AsyncRunCommand(() => { Com.SendCommand("g28 " + AxisName + "0"); }); }
+			public void SendG92() { AsyncRunCommand(() => { Com.SendCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); }); }
 			public void SendG31() { SendProbeCommand(AxisName, ProbeSize); }
 			public void SendHome() 
 			{ 
-				Vm.AsyncRunCommand(() => 
+				AsyncRunCommand(() => 
 				{ 
 					if (HomeIsMax) 
 						Com.SendCommand("g53 g0"+ AxisName+"#" + (5161+AxisIndex).ToString()); 
@@ -223,7 +234,6 @@ namespace Proxxon.Wpf.ViewModels
 		public AxisViewModel AxisA { get { return _AxisA; } }
 
 		private AxisViewModel _AxisB;
-
 		public AxisViewModel AxisB { get { return _AxisB; } }
 		
 		private AxisViewModel _AxisC;
@@ -241,7 +251,7 @@ namespace Proxxon.Wpf.ViewModels
 
 			public const string CommandHistoryFile = @"c:\tmp\Command.txt";
 
-			#region ProxxonCommandCollection
+			#region Properties
 
 			private ObservableCollection<ProxxonCommand> _ProxxonCommandCollection;
 			public ObservableCollection<ProxxonCommand> ProxxonCommandCollection
@@ -321,11 +331,11 @@ namespace Proxxon.Wpf.ViewModels
 			#endregion
 
 			#region Commands / CanCommands
-			public void SendM20File() { Vm.AsyncRunCommand(() => { Com.SendCommand("m20"); }); }
+			public void SendM20File() { AsyncRunCommand(() => { Com.SendCommand("m20"); }); }
 			public void SendM24File() { SendM24File(SDFileName); }
 			public void SendM24File(string filename)
 			{
-				Vm.AsyncRunCommand(() =>
+				AsyncRunCommand(() =>
 				{
 					Com.SendCommand("m23 " + filename);
 					Com.SendCommand("m24");
@@ -335,7 +345,7 @@ namespace Proxxon.Wpf.ViewModels
 			public void SendM28File() { SendM28File(FileName, SDFileName); }
 			public void SendM28File(string filename, string sDFileName)
 			{
-				Vm.AsyncRunCommand(() =>
+				AsyncRunCommand(() =>
 				{
 					using (StreamReader sr = new StreamReader(filename))
 					{
@@ -369,12 +379,45 @@ namespace Proxxon.Wpf.ViewModels
 			public void SendM30File() { SendM30File(SDFileName); }
 			public void SendM30File(string filename)
 			{
-				Vm.AsyncRunCommand(() =>
+				AsyncRunCommand(() =>
 				{
 					Com.SendCommand("m30 " + filename);
 				});
 			}
-			public void SendFileDirect() { Vm.AsyncRunCommand(() => { Com.SendFile(FileName); }); }
+			public void SendFileDirect() { AsyncRunCommand(() => { Com.SendFile(FileName); }); }
+
+			public void AddToFile()
+			{
+				AsyncRunCommand(() =>
+				{
+					string message = null;
+					var checkresponse = new Framework.Logic.ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
+					{
+						message = e.Info;
+					});
+					Com.ReplyOK += checkresponse;
+					Com.SendCommand("m114");
+					Com.ReplyOK -= checkresponse;
+					if (!string.IsNullOrEmpty(message))
+					{
+						message = message.Replace("ok", "");
+						message = message.Replace(" ", "");
+						string[] positions = message.Split(':');
+
+						using (StreamWriter sw = new StreamWriter(FileName, true))
+						{
+							sw.Write("g1");
+							if (positions.Length >= 1) sw.Write("X"+positions[0]);
+							if (positions.Length >= 2) sw.Write("Y"+positions[1]);
+							if (positions.Length >= 3) sw.Write("Z"+positions[2]);
+							if (positions.Length >= 4) sw.Write("A"+positions[3]);
+							if (positions.Length >= 5) sw.Write("B"+positions[4]);
+							if (positions.Length >= 6) sw.Write("C"+positions[5]);
+							sw.WriteLine();
+						}
+					}
+				});
+			}
 
 			public bool CanSendFileNameCommand()
 			{
@@ -398,6 +441,7 @@ namespace Proxxon.Wpf.ViewModels
 			public ICommand SendM28FileCommand { get { return new DelegateCommand(SendM28File, CanSendFileNameAndSDFileNameCommand); } }
 			public ICommand SendM30FileCommand { get { return new DelegateCommand(SendM30File, CanSendSDFileNameCommand); } }
 			public ICommand SendFileDirectCommand { get { return new DelegateCommand(SendFileDirect, CanSendFileNameCommand); } }
+			public ICommand AddToFileCommand { get { return new DelegateCommand(AddToFile, CanSendFileNameCommand); } }
 
 			#endregion
 		}
@@ -446,7 +490,7 @@ namespace Proxxon.Wpf.ViewModels
 
 			#region Commands / CanCommands
 
-			public void SendDirect() { Vm.AsyncRunCommand(() => { Com.SendCommand(DirectCommand); }); AddDirectCommandHistory(DirectCommand); }
+			public void SendDirect() { AsyncRunCommand(() => { Com.SendCommand(DirectCommand); }); AddDirectCommandHistory(DirectCommand); }
 			public bool CanSendDirectCommand()
 			{
 				return Connected && !string.IsNullOrEmpty(DirectCommand);
@@ -465,6 +509,156 @@ namespace Proxxon.Wpf.ViewModels
 
 		#endregion
 
+		#region ShiftVM
+
+		public class ShiftViewModel : DetailViewModel
+		{
+			public ShiftViewModel(ManualControlViewModel vm)
+				: base(vm)
+			{
+			}
+
+			#region Properties
+
+
+			#endregion
+
+			#region Commands / CanCommands
+
+			public void SendG53() { AsyncRunCommand(() => { Com.SendCommand("g53"); }); }
+			public void SendG54() { AsyncRunCommand(() => { Com.SendCommand("g54"); }); }
+			public void SendG55() { AsyncRunCommand(() => { Com.SendCommand("g55"); }); }
+			public void SendG56() { AsyncRunCommand(() => { Com.SendCommand("g56"); }); }
+			public void SendG57() { AsyncRunCommand(() => { Com.SendCommand("g57"); }); }
+			public void SendG58() { AsyncRunCommand(() => { Com.SendCommand("g58"); }); }
+			public void SendG59() { AsyncRunCommand(() => { Com.SendCommand("g59"); }); }
+			public void SendG92() { AsyncRunCommand(() => { Com.SendCommand("g92"); }); }
+			
+
+			#endregion
+
+			#region ICommand
+			public ICommand SendG53Command { get { return new DelegateCommand(SendG53, CanSend); } }
+			public ICommand SendG54Command { get { return new DelegateCommand(SendG54, CanSend); } }
+			public ICommand SendG55Command { get { return new DelegateCommand(SendG55, CanSend); } }
+			public ICommand SendG56Command { get { return new DelegateCommand(SendG56, CanSend); } }
+			public ICommand SendG57Command { get { return new DelegateCommand(SendG57, CanSend); } }
+			public ICommand SendG58Command { get { return new DelegateCommand(SendG58, CanSend); } }
+			public ICommand SendG59Command { get { return new DelegateCommand(SendG59, CanSend); } }
+			public ICommand SendG92Command { get { return new DelegateCommand(SendG92, CanSend); } }
+
+			#endregion
+		}
+
+		private ShiftViewModel _shift;
+		public ShiftViewModel Shift { get { return _shift; } }
+
+		#endregion
+
+		#region ToolVM
+
+		public class ToolViewModel : DetailViewModel
+		{
+			public ToolViewModel(ManualControlViewModel vm)
+				: base(vm)
+			{
+			}
+
+			#region Properties
+
+
+			#endregion
+
+			#region Commands / CanCommands
+
+			public void SendInfo() { AsyncRunCommand(() => { Com.SendCommand("?"); }); }
+			public void SendAbort() { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumAfterAbort(); Com.SendCommand("!"); }); }
+			public void SendProxxonCommand(string command) { AsyncRunCommand(() => { Com.SendCommand(command); }); }
+			public void SendM03SpindelOn() { AsyncRunCommand(() => { Com.SendCommand("m3"); }); }
+			public void SendM05SpindelOff() { AsyncRunCommand(() => { Com.SendCommand("m5"); }); }
+			public void SendM07CoolandOn() { AsyncRunCommand(() => { Com.SendCommand("m7"); }); }
+			public void SendM09CoolandOff() { AsyncRunCommand(() => { Com.SendCommand("m9"); }); }
+			public void SendM114PrintPos()
+			{
+				AsyncRunCommand(() =>
+				{
+					string message = null;
+					var checkresponse = new Framework.Logic.ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
+					{
+						message = e.Info;
+					});
+					Com.ReplyOK += checkresponse;
+					Com.SendCommand("m114");
+					Com.ReplyOK -= checkresponse;
+					if (!string.IsNullOrEmpty(message))
+					{
+						message = message.Replace("ok", "");
+						message = message.Replace(" ", "");
+						string[] positions = message.Split(':');
+						if (positions.Length >= 1) VmX.AxisX.Pos = positions[0];
+						if (positions.Length >= 2) VmX.AxisY.Pos = positions[1];
+						if (positions.Length >= 3) VmX.AxisZ.Pos = positions[2];
+						if (positions.Length >= 4) VmX.AxisA.Pos = positions[3];
+						if (positions.Length >= 5) VmX.AxisB.Pos = positions[4];
+						if (positions.Length >= 6) VmX.AxisC.Pos = positions[5];
+					}
+				});
+			}
+
+
+			#endregion
+
+			#region ICommand
+			public ICommand SendInfoCommand { get { return new DelegateCommand(SendInfo, CanSend); } }
+			public ICommand SendAbortCommand { get { return new DelegateCommand(SendAbort, CanSend); } }
+			public ICommand SendM03SpindelOnCommand { get { return new DelegateCommand(SendM03SpindelOn, CanSend); } }
+			public ICommand SendM05SpindelOffCommand { get { return new DelegateCommand(SendM05SpindelOff, CanSend); } }
+			public ICommand SendM07CoolandOnCommand { get { return new DelegateCommand(SendM07CoolandOn, CanSend); } }
+			public ICommand SendM09CoolandOffCommand { get { return new DelegateCommand(SendM09CoolandOff, CanSend); } }
+			public ICommand SendM114Command { get { return new DelegateCommand(SendM114PrintPos, CanSend); } }
+
+			#endregion
+		}
+
+		private ToolViewModel _tool;
+		public ToolViewModel Tool { get { return _tool; } }
+
+		#endregion
+
+		#region RotateVM
+
+		public class RotateViewModel : DetailViewModel
+		{
+			public RotateViewModel(ManualControlViewModel vm)
+				: base(vm)
+			{
+			}
+
+			#region Properties
+
+
+			#endregion
+
+			#region Commands / CanCommands
+
+			public void SendG69()							{ AsyncRunCommand(() => { Com.SendCommand("g69"); }); }
+			public void SendG68X0Y0R90()					{ AsyncRunCommand(() => { Com.SendCommand("g68 x0y0r90"); }); }
+			public void SendG68X0Y0R270()                   { AsyncRunCommand(() => { Com.SendCommand("g68 x0y0r270"); }); }
+
+			#endregion
+
+			#region ICommand
+			public ICommand SendG69Command { get { return new DelegateCommand(SendG69, CanSend); } }
+			public ICommand SendG68X0Y0R90Command { get { return new DelegateCommand(SendG68X0Y0R90, CanSend); } }
+			public ICommand SendG68X0Y0R270Command { get { return new DelegateCommand(SendG68X0Y0R270, CanSend); } }
+
+			#endregion
+		}
+
+		private RotateViewModel _rotate;
+		public RotateViewModel Rotate { get { return _rotate; } }
+
+		#endregion
 
 		#region Properties
 
@@ -481,8 +675,6 @@ namespace Proxxon.Wpf.ViewModels
 		#endregion
 
 		#region Operations
-
-		protected delegate void ExecuteCommands();
 
 		protected void AsyncRunCommand(ExecuteCommands todo)
 		{
@@ -501,95 +693,6 @@ namespace Proxxon.Wpf.ViewModels
 			).Start();
 		}
 
-		#region Rotation
-
-		public void SendG69()							{ AsyncRunCommand(() => { Com.SendCommand("g69"); }); }
-		public void SendG68X0Y0R90()					{ AsyncRunCommand(() => { Com.SendCommand("g68 x0y0r90"); }); }
-        public void SendG68X0Y0R270()                   { AsyncRunCommand(() => { Com.SendCommand("g68 x0y0r270"); }); }
-        
-        #endregion
-
-		public void SendInfo()							{ AsyncRunCommand(() => { Com.SendCommand("?"); });  }
-        public void SendAbort()                         { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumAfterAbort(); Com.SendCommand("!"); }); }
-		public void SendProxxonCommand(string command)	{ AsyncRunCommand(() => { Com.SendCommand(command); }); }
-		public void SendM03SpindelOn()	{ AsyncRunCommand(() => { Com.SendCommand("m3"); }); }
-		public void SendM05SpindelOff() { AsyncRunCommand(() => { Com.SendCommand("m5"); }); }
-		public void SendM07CoolandOn()	{ AsyncRunCommand(() => { Com.SendCommand("m7"); }); }
-		public void SendM09CoolandOff() { AsyncRunCommand(() => { Com.SendCommand("m9"); }); }
-		public void SendM114PrintPos()	
-		{
-			AsyncRunCommand(() => 
-			{
-				string message=null;
-				var checkresponse = new Framework.Logic.ArduinoSerialCommunication.CommandEventHandler((obj, e) => 
-				{
-					message = e.Info;
-				});
-				Com.ReplyOK += checkresponse;
-				Com.SendCommand("m114");
-				Com.ReplyOK -= checkresponse;
-				if (!string.IsNullOrEmpty(message))
-				{
-					message = message.Replace("ok","");
-					message = message.Replace(" ","");
-					string[] positions = message.Split(':');
-					if (positions.Length >= 1) AxisX.Pos = positions[0];
-					if (positions.Length >= 2) AxisY.Pos = positions[1];
-					if (positions.Length >= 3) AxisZ.Pos = positions[2];
-					if (positions.Length >= 4) AxisA.Pos = positions[3];
-					if (positions.Length >= 5) AxisB.Pos = positions[4];
-					if (positions.Length >= 6) AxisC.Pos = positions[5];
-				}
-			});
-		}
-
-		public void SendG53() { AsyncRunCommand(() => { Com.SendCommand("g53"); }); }
-		public void SendG54() { AsyncRunCommand(() => { Com.SendCommand("g54"); }); }
-		public void SendG55() { AsyncRunCommand(() => { Com.SendCommand("g55"); }); }
-		public void SendG56() { AsyncRunCommand(() => { Com.SendCommand("g56"); }); }
-		public void SendG57() { AsyncRunCommand(() => { Com.SendCommand("g57"); }); }
-		public void SendG58() { AsyncRunCommand(() => { Com.SendCommand("g58"); }); }
-		public void SendG59() { AsyncRunCommand(() => { Com.SendCommand("g59"); }); }
-		public void SendG92() { AsyncRunCommand(() => { Com.SendCommand("g92"); }); }
-
-		#region CanCommand
-
-		public bool CanSendCommand()
-        {
-            return Connected;
-        }
-
-
 		#endregion
-
-		#endregion
-
-		#region Commands
-
-		#region Rotation
-
-		public ICommand SendG69Command { get { return new DelegateCommand(SendG69, CanSendCommand); } }
-		public ICommand SendG68X0Y0R90Command { get { return new DelegateCommand(SendG68X0Y0R90, CanSendCommand); } }
-        public ICommand SendG68X0Y0R270Command { get { return new DelegateCommand(SendG68X0Y0R270, CanSendCommand); } }
-
-		#endregion
-
-        public ICommand SendInfoCommand			{ get { return new DelegateCommand(SendInfo, CanSendCommand); } }
-        public ICommand SendAbortCommand		{ get { return new DelegateCommand(SendAbort, CanSendCommand); } }
-		public ICommand SendM03SpindelOnCommand { get { return new DelegateCommand(SendM03SpindelOn, CanSendCommand); } }
-		public ICommand SendM05SpindelOffCommand { get { return new DelegateCommand(SendM05SpindelOff, CanSendCommand); } }
-		public ICommand SendM07CoolandOnCommand { get { return new DelegateCommand(SendM07CoolandOn, CanSendCommand); } }
-		public ICommand SendM09CoolandOffCommand { get { return new DelegateCommand(SendM09CoolandOff, CanSendCommand); } }
-		public ICommand SendM114Command { get { return new DelegateCommand(SendM114PrintPos, CanSendCommand); } }
-		public ICommand SendG53Command { get { return new DelegateCommand(SendG53, CanSendCommand); } }
-		public ICommand SendG54Command { get { return new DelegateCommand(SendG54, CanSendCommand); } }
-		public ICommand SendG55Command { get { return new DelegateCommand(SendG55, CanSendCommand); } }
-		public ICommand SendG56Command { get { return new DelegateCommand(SendG56, CanSendCommand); } }
-		public ICommand SendG57Command { get { return new DelegateCommand(SendG57, CanSendCommand); } }
-		public ICommand SendG58Command { get { return new DelegateCommand(SendG58, CanSendCommand); } }
-		public ICommand SendG59Command { get { return new DelegateCommand(SendG59, CanSendCommand); } }
-		public ICommand SendG92Command			{ get { return new DelegateCommand(SendG92, CanSendCommand); } }
-
-        #endregion
-    }
+	}
 }

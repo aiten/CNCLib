@@ -111,6 +111,11 @@ public:
 	static mm1000_t ToMm1000_1_100(axis_t /* axis */, sdist_t val)								{ return  RoundMulDivU32(val, 10, 1); }
 	static sdist_t  ToMachine_1_100(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 1, 10); }
 
+	// one Step = 0.001mm => 1000/rot
+	static mm1000_t ToMm1000_1_1000(axis_t /* axis */, sdist_t val)								{ return val; } //{ return  RoundMulDivU32(val, 1, 1); }
+	static sdist_t  ToMachine_1_1000(axis_t /* axis */, mm1000_t val)							{ return val; } //{ return  MulDivU32(val, 1, 1); }
+
+
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// 
 	// 200 / 2-Stepper (halfstep) => 400 / rotation

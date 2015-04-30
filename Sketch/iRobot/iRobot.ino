@@ -18,7 +18,8 @@
 
 #include <SPI.h>
 #include <SD.h>
-#include <Servo.h>
+//#include <Servo.h>
+#include <Adafruit_TiCoServo.h>
 #include <U8glib.h>
 
 #include <StepperLib.h>

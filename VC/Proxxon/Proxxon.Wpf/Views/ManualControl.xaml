@@ -15,7 +15,7 @@
                 <TextBox Text="{Binding AxisA.Pos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
                 <TextBox Text="{Binding AxisB.Pos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
                 <TextBox Text="{Binding AxisC.Pos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
-                <Button Command="{Binding SendM114Command}" Content="M114 - Pos"  MinWidth="100"/>
+                <Button Command="{Binding Tool.SendM114Command}" Content="M114 - Pos"  MinWidth="100"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0">
@@ -108,12 +108,12 @@
                 <TabItem Header="Extras">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
-                            <Button Command="{Binding SendM03SpindelOnCommand}" Content="Spindel On"/>
-                            <Button Command="{Binding SendM05SpindelOffCommand}" Content="Spindel Off" />
+                            <Button Command="{Binding Tool.SendM03SpindelOnCommand}" Content="Spindel On"/>
+                            <Button Command="{Binding Tool.SendM05SpindelOffCommand}" Content="Spindel Off" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
-                            <Button Command="{Binding SendM07CoolandOnCommand}" Content="Cooland On"/>
-                            <Button Command="{Binding SendM09CoolandOffCommand}" Content="Cooland Off" />
+                            <Button Command="{Binding Tool.SendM07CoolandOnCommand}" Content="Cooland On"/>
+                            <Button Command="{Binding Tool.SendM09CoolandOffCommand}" Content="Cooland Off" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="100">
                             <Button Command="{Binding AxisZ.SendHomeCommand}" Content="Z Home" />
@@ -153,6 +153,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
                             <Button Command="{Binding SD.SendFileDirectCommand}" Content="Send File" />
+                            <Button Command="{Binding SD.AddToFileCommand}" Content="Add To File" Margin="0,40,0,0" />
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
@@ -160,13 +161,13 @@
                     <StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <Button Command="{Binding SendG53Command}" Content="G53" Width="90" Margin="0,0,5,0" />
-                            <Button Command="{Binding SendG54Command}" Content="G54" Width="90" Margin="0,0,5,0" />
-                            <Button Command="{Binding SendG55Command}" Content="G55" Width="90" Margin="0,0,5,0" />
-                            <Button Command="{Binding SendG56Command}" Content="G56" Width="90" Margin="0,0,5,0" />
-                            <Button Command="{Binding SendG57Command}" Content="G57" Width="90" Margin="0,0,5,0" />
-                            <Button Command="{Binding SendG58Command}" Content="G58" Width="90" Margin="0,0,5,0" />
-                            <Button Command="{Binding SendG59Command}" Content="G59" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG53Command}" Content="G53" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG54Command}" Content="G54" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG55Command}" Content="G55" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG56Command}" Content="G56" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG57Command}" Content="G57" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG58Command}" Content="G58" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG59Command}" Content="G59" Width="90" Margin="0,0,5,0" />
 
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
@@ -196,7 +197,7 @@
                                 <Button Command="{Binding AxisC.SendG92Command}" Content="C G92" />
                             </StackPanel>
                             <StackPanel Margin="0,10,0,0">
-                                <Button Command="{Binding SendG92Command}" Content="G92" MinWidth="100" Margin="0" />
+                                <Button Command="{Binding Shift.SendG92Command}" Content="G92" MinWidth="100" Margin="0" />
 
                             </StackPanel>
                         </StackPanel>
@@ -218,9 +219,9 @@
                 <TabItem Header="Rotate" >
                     <StackPanel>
                         <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                            <Button Command="{Binding SendG69Command}" Content="G69 - Clear" MinWidth="100" Margin="0,0,5,0" />
-                            <Button Command="{Binding SendG68X0Y0R90Command}" Content="G68:X0Y0R90" MinWidth="100" Margin="0,0,5,0" />
-                            <Button Command="{Binding SendG68X0Y0R270Command}" Content="G68:X0Y0R270" MinWidth="100" Margin="0,0,5,0" />
+                            <Button Command="{Binding Rotate.SendG69Command}" Content="G69 - Clear" MinWidth="100" Margin="0,0,5,0" />
+                            <Button Command="{Binding Rotate.SendG68X0Y0R90Command}" Content="G68:X0Y0R90" MinWidth="100" Margin="0,0,5,0" />
+                            <Button Command="{Binding Rotate.SendG68X0Y0R270Command}" Content="G68:X0Y0R270" MinWidth="100" Margin="0,0,5,0" />
 
                         </StackPanel>
                     </StackPanel>
@@ -232,8 +233,8 @@
 
                     <Button Command="{Binding CommandHistory.ClearHistoryCommand}" Content="Clear" Width="100" Margin="0,0,5,0" />
                     <Button Command="{Binding CommandHistory.RefreshHistoryCommand}" Content="Refresh" Width="100" Margin="0,0,5,0" />
-                    <Button Command="{Binding SendInfoCommand}" Content="Info"  VerticalAlignment="Top" Width="100" Margin="0,0,5,0"/>
-                    <Button Command="{Binding SendAbortCommand}" Content="Abort" Width="100" />
+                    <Button Command="{Binding Tool.SendInfoCommand}" Content="Info"  VerticalAlignment="Top" Width="100" Margin="0,0,5,0"/>
+                    <Button Command="{Binding Tool.SendAbortCommand}" Content="Abort" Width="100" />
                 </StackPanel>
 
             </StackPanel>
