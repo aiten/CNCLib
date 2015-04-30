@@ -54,7 +54,7 @@ namespace Proxxon.Wpf
 				// Open document
 				string filename = dlg.FileName;
 				var vm = DataContext as ManualControlViewModel;
-				if (vm != null) vm.FileName = filename;
+				if (vm != null) vm.SD.FileName = filename;
 			}
 		}
 

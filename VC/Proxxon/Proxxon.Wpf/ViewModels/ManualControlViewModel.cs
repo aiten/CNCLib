@@ -80,21 +80,47 @@ namespace Proxxon.Wpf.ViewModels
 				Size = Global.Instance.Machine.SizeC,
 				ProbeSize = 0m
 			};
+	
 			_CommandHistory = new CommandHistoryViewModel(this) { };
+
+			_sd = new SDViewModel(this) { };
+
+			_directCommand = new DirectCommandViewModel(this) { };
+
 		}
 
-		#region AxisVM
-
-		public class AxisViewModel : BaseViewModel
+		public class DetailViewModel : BaseViewModel
 		{
 			public ManualControlViewModel Vm { get; private set; }
-			public AxisViewModel(ManualControlViewModel vm)
+			public DetailViewModel(ManualControlViewModel vm)
 			{
 				Vm = vm;
 			}
 			public Framework.Logic.ArduinoSerialCommunication Com
 			{
 				get { return Framework.Tools.Singleton<Framework.Logic.ArduinoSerialCommunication>.Instance; }
+			}
+			public bool Connected
+			{
+				get { return Com.IsConnected; }
+			}
+
+			#region Command/CanCommand
+
+			public bool CanSend()
+			{
+				return Connected;
+			}
+
+			#endregion
+		}
+
+		#region AxisVM
+
+		public class AxisViewModel : DetailViewModel
+		{
+			public AxisViewModel(ManualControlViewModel vm) : base(vm)
+			{
 			}
 
 			#region Properties
@@ -159,7 +185,7 @@ namespace Proxxon.Wpf.ViewModels
 
 			public bool CanSendCommand()
 			{
-				return Vm.CanSendCommand() && Enabled;
+				return CanSend() && Enabled;
 			}
 
 			#endregion
@@ -207,16 +233,10 @@ namespace Proxxon.Wpf.ViewModels
 
 		#region CommandHistoryVM
 
-		public class CommandHistoryViewModel : BaseViewModel
+		public class CommandHistoryViewModel : DetailViewModel
 		{
-			public ManualControlViewModel Vm { get; private set; }
-			public CommandHistoryViewModel(ManualControlViewModel vm)
+			public CommandHistoryViewModel(ManualControlViewModel vm) : base(vm)
 			{
-				Vm = vm;
-			}
-			public Framework.Logic.ArduinoSerialCommunication Com
-			{
-				get { return Framework.Tools.Singleton<Framework.Logic.ArduinoSerialCommunication>.Instance; }
 			}
 
 			public const string CommandHistoryFile = @"c:\tmp\Command.txt";
@@ -263,8 +283,8 @@ namespace Proxxon.Wpf.ViewModels
 
 			#region ICommand
 
-			public ICommand RefreshHistoryCommand { get { return new DelegateCommand(RefreshCommandHistory, Vm.CanSendCommand); } }
-			public ICommand ClearHistoryCommand { get { return new DelegateCommand(ClearCommandHistory, Vm.CanSendCommand); } }
+			public ICommand RefreshHistoryCommand { get { return new DelegateCommand(RefreshCommandHistory, CanSend); } }
+			public ICommand ClearHistoryCommand { get { return new DelegateCommand(ClearCommandHistory, CanSend); } }
 
 			#endregion
 		}
@@ -273,6 +293,178 @@ namespace Proxxon.Wpf.ViewModels
 		public CommandHistoryViewModel CommandHistory { get { return _CommandHistory; } }
 
 		#endregion
+
+		#region SD_VM
+
+		public class SDViewModel : DetailViewModel
+		{
+			public SDViewModel(ManualControlViewModel vm) : base(vm)
+			{
+			}
+
+			#region Properties
+
+			private string _fileName = @"c:\tmp\test.GCode";
+			public string FileName
+			{
+				get { return _fileName; }
+				set { SetProperty(ref _fileName, value); }
+			}
+
+			private string _SDFileName = @"auto0.g";
+			public string SDFileName
+			{
+				get { return _SDFileName; }
+				set { SetProperty(ref _SDFileName, value); }
+			}
+
+			#endregion
+
+			#region Commands / CanCommands
+			public void SendM20File() { Vm.AsyncRunCommand(() => { Com.SendCommand("m20"); }); }
+			public void SendM24File() { SendM24File(SDFileName); }
+			public void SendM24File(string filename)
+			{
+				Vm.AsyncRunCommand(() =>
+				{
+					Com.SendCommand("m23 " + filename);
+					Com.SendCommand("m24");
+				});
+			}
+
+			public void SendM28File() { SendM28File(FileName, SDFileName); }
+			public void SendM28File(string filename, string sDFileName)
+			{
+				Vm.AsyncRunCommand(() =>
+				{
+					using (StreamReader sr = new StreamReader(filename))
+					{
+						bool savefileinresponse = false;
+						var checkresponse = new Framework.Logic.ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
+						{
+							savefileinresponse = e.Info.Contains(sDFileName);
+						});
+						Com.ReplyUnknown += checkresponse;
+						Com.SendCommand("m28 " + sDFileName);
+						Com.ReplyUnknown -= checkresponse;
+						if (savefileinresponse)
+						{
+							string line;
+							while ((line = sr.ReadLine()) != null)
+							{
+								Com.SendCommand(line);
+							}
+							bool filesavednresponse = false;
+							checkresponse = new Framework.Logic.ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
+							{
+								filesavednresponse = e.Info.Contains("Done");
+							});
+							Com.ReplyUnknown += checkresponse;
+							Com.SendCommand("m29");
+							Com.ReplyUnknown -= checkresponse;
+						}
+					}
+				});
+			}
+			public void SendM30File() { SendM30File(SDFileName); }
+			public void SendM30File(string filename)
+			{
+				Vm.AsyncRunCommand(() =>
+				{
+					Com.SendCommand("m30 " + filename);
+				});
+			}
+			public void SendFileDirect() { Vm.AsyncRunCommand(() => { Com.SendFile(FileName); }); }
+
+			public bool CanSendFileNameCommand()
+			{
+				return Connected && File.Exists(FileName);
+			}
+			public bool CanSendSDFileNameCommand()
+			{
+				return Connected && !string.IsNullOrEmpty(SDFileName);
+			}
+			public bool CanSendFileNameAndSDFileNameCommand()
+			{
+				return Connected && CanSendSDFileNameCommand() && CanSendFileNameCommand();
+			}
+
+
+			#endregion
+
+			#region ICommand
+			public ICommand SendM20FileCommand { get { return new DelegateCommand(SendM20File, CanSend); } }
+			public ICommand SendM24FileCommand { get { return new DelegateCommand(SendM24File, CanSendSDFileNameCommand); } }
+			public ICommand SendM28FileCommand { get { return new DelegateCommand(SendM28File, CanSendFileNameAndSDFileNameCommand); } }
+			public ICommand SendM30FileCommand { get { return new DelegateCommand(SendM30File, CanSendSDFileNameCommand); } }
+			public ICommand SendFileDirectCommand { get { return new DelegateCommand(SendFileDirect, CanSendFileNameCommand); } }
+
+			#endregion
+		}
+
+		private SDViewModel _sd;
+		public SDViewModel SD { get { return _sd; } }
+
+		#endregion
+
+		#region DirectCommandVM
+
+		public class DirectCommandViewModel : DetailViewModel
+		{
+			public DirectCommandViewModel(ManualControlViewModel vm) : base(vm)
+			{
+			}
+
+			#region Properties
+
+			#endregion
+
+			#region DirectCommand
+
+			private string _directCommand;
+			public string DirectCommand
+			{
+				get { return _directCommand; }
+				set { SetProperty(ref _directCommand, value); }
+			}
+
+			private void AddDirectCommandHistory(string cmd)
+			{
+				if (_directCommandHistory == null) _directCommandHistory = new ObservableCollection<string>();
+				_directCommandHistory.Add(cmd);
+				DirectCommandHistory = _directCommandHistory;
+			}
+
+			private ObservableCollection<string> _directCommandHistory;
+			public ObservableCollection<string> DirectCommandHistory
+			{
+				get { return _directCommandHistory; }
+				set { AssignProperty(ref _directCommandHistory, value); }
+			}
+
+			#endregion
+
+			#region Commands / CanCommands
+
+			public void SendDirect() { Vm.AsyncRunCommand(() => { Com.SendCommand(DirectCommand); }); AddDirectCommandHistory(DirectCommand); }
+			public bool CanSendDirectCommand()
+			{
+				return Connected && !string.IsNullOrEmpty(DirectCommand);
+			}
+
+			#endregion
+
+			#region ICommand
+			public ICommand SendDirectCommand { get { return new DelegateCommand(SendDirect, CanSendDirectCommand); } }
+
+			#endregion
+		}
+
+		private DirectCommandViewModel _directCommand;
+		public DirectCommandViewModel DirectCommand { get { return _directCommand; } }
+
+		#endregion
+
 
 		#region Properties
 
@@ -285,53 +477,6 @@ namespace Proxxon.Wpf.ViewModels
         {
             get { return Com.IsConnected; }
         }
-
-        #region SDFileName
-
-		private string _SDFileName = @"auto0.g";
-		public string SDFileName
-        {
-			get { return _SDFileName; }
-            set { SetProperty(ref _SDFileName, value);  }
-        }
-
-        #endregion
-
-		#region DirectCommand
-
-		private string _directCommand;
-        public string DirectCommand
-        {
-            get { return _directCommand; }
-			set { SetProperty(ref _directCommand, value); }
-        }
-
-		private void AddDirectCommandHistory(string cmd)
-		{
-			if (_directCommandHistory == null) _directCommandHistory = new ObservableCollection<string>();
-			_directCommandHistory.Add(cmd);
-			DirectCommandHistory = _directCommandHistory;
-		}
-
-		private ObservableCollection<string> _directCommandHistory;
-		public ObservableCollection<string> DirectCommandHistory
-		{
-			get { return _directCommandHistory; }
-			set { AssignProperty(ref _directCommandHistory, value); }
-		}
-
-        #endregion
-
-		#endregion
-
-		#region FileName
-
-		private string _fileName = @"c:\tmp\test.GCode";
-		public string FileName
-		{
-			get { return _fileName; }
-            set { SetProperty(ref _fileName, value);  }
-		}
 
 		#endregion
 
@@ -366,62 +511,7 @@ namespace Proxxon.Wpf.ViewModels
 
 		public void SendInfo()							{ AsyncRunCommand(() => { Com.SendCommand("?"); });  }
         public void SendAbort()                         { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumAfterAbort(); Com.SendCommand("!"); }); }
-		public void SendDirect()						{ AsyncRunCommand(() => { Com.SendCommand(DirectCommand); }); AddDirectCommandHistory(DirectCommand); }
-		public void SendFileDirect()					{ AsyncRunCommand(() => { Com.SendFile(FileName); }); }
 		public void SendProxxonCommand(string command)	{ AsyncRunCommand(() => { Com.SendCommand(command); }); }
-		public void SendM20File()						{ AsyncRunCommand(() => { Com.SendCommand("m20"); }); }
-		public void SendM24File()						{ SendM24File(SDFileName);		}
-		public void SendM24File(string filename)
-		{
-			AsyncRunCommand(() =>
-			{
-				Com.SendCommand("m23 " + filename);
-				Com.SendCommand("m24");
-			});
-		}
-
-		public void SendM28File()						{	SendM28File(FileName,SDFileName);	}
-		public void SendM28File(string filename, string sDFileName)
-		{
-			AsyncRunCommand(() => 
-			{
-				using (StreamReader sr = new StreamReader(filename))
-				{ 
-					bool savefileinresponse = false;
-					var checkresponse = new Framework.Logic.ArduinoSerialCommunication.CommandEventHandler((obj, e) => 
-					{
-						savefileinresponse = e.Info.Contains(sDFileName);
-					});
-					Com.ReplyUnknown += checkresponse;
-					Com.SendCommand("m28 " + sDFileName);
-					Com.ReplyUnknown -= checkresponse;
-					if (savefileinresponse)
-					{
-						string line;
-						while ((line = sr.ReadLine()) != null)
-						{
-							Com.SendCommand(line);
-						}
-						bool filesavednresponse = false;
-						checkresponse = new Framework.Logic.ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
-						{
-							filesavednresponse = e.Info.Contains("Done");
-						});
-						Com.ReplyUnknown += checkresponse;
-						Com.SendCommand("m29");
-						Com.ReplyUnknown -= checkresponse;
-					}
-				}
-			});
-		}
-		public void SendM30File() { SendM30File(SDFileName); }
-		public void SendM30File(string filename)
-		{
-			AsyncRunCommand(() =>
-			{
-				Com.SendCommand("m30 " + filename);
-			});
-		}
 		public void SendM03SpindelOn()	{ AsyncRunCommand(() => { Com.SendCommand("m3"); }); }
 		public void SendM05SpindelOff() { AsyncRunCommand(() => { Com.SendCommand("m5"); }); }
 		public void SendM07CoolandOn()	{ AsyncRunCommand(() => { Com.SendCommand("m7"); }); }
@@ -469,22 +559,6 @@ namespace Proxxon.Wpf.ViewModels
             return Connected;
         }
 
-		public bool CanSendFileNameCommand()
-		{
-			return Connected && File.Exists(FileName);
-		}
-		public bool CanSendSDFileNameCommand()
-		{
-			return Connected && !string.IsNullOrEmpty(SDFileName);
-		}
-		public bool CanSendFileNameAndSDFileNameCommand()
-		{
-			return Connected && CanSendSDFileNameCommand() && CanSendFileNameCommand();
-		}
-		public bool CanSendDirectCommand()
-		{
-			return Connected && !string.IsNullOrEmpty(DirectCommand);
-		}
 
 		#endregion
 
@@ -500,18 +574,12 @@ namespace Proxxon.Wpf.ViewModels
 
 		#endregion
 
-		public ICommand SendDirectCommand		{ get { return new DelegateCommand(SendDirect, CanSendDirectCommand); } }
-		public ICommand SendFileDirectCommand	{ get { return new DelegateCommand(SendFileDirect, CanSendFileNameCommand); } }
         public ICommand SendInfoCommand			{ get { return new DelegateCommand(SendInfo, CanSendCommand); } }
         public ICommand SendAbortCommand		{ get { return new DelegateCommand(SendAbort, CanSendCommand); } }
 		public ICommand SendM03SpindelOnCommand { get { return new DelegateCommand(SendM03SpindelOn, CanSendCommand); } }
 		public ICommand SendM05SpindelOffCommand { get { return new DelegateCommand(SendM05SpindelOff, CanSendCommand); } }
 		public ICommand SendM07CoolandOnCommand { get { return new DelegateCommand(SendM07CoolandOn, CanSendCommand); } }
 		public ICommand SendM09CoolandOffCommand { get { return new DelegateCommand(SendM09CoolandOff, CanSendCommand); } }
-		public ICommand SendM20FileCommand { get { return new DelegateCommand(SendM20File, CanSendCommand); } }
-		public ICommand SendM24FileCommand { get { return new DelegateCommand(SendM24File, CanSendSDFileNameCommand); } }
-		public ICommand SendM28FileCommand { get { return new DelegateCommand(SendM28File, CanSendFileNameAndSDFileNameCommand); } }
-		public ICommand SendM30FileCommand { get { return new DelegateCommand(SendM30File, CanSendSDFileNameCommand); } }
 		public ICommand SendM114Command { get { return new DelegateCommand(SendM114PrintPos, CanSendCommand); } }
 		public ICommand SendG53Command { get { return new DelegateCommand(SendG53, CanSendCommand); } }
 		public ICommand SendG54Command { get { return new DelegateCommand(SendG54, CanSendCommand); } }

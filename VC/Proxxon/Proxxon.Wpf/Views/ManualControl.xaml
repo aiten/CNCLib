@@ -96,12 +96,12 @@
                 <!--<TextBox Text="{Binding DirectCommand, UpdateSourceTrigger=PropertyChanged}" Height="26" Width="241" VerticalContentAlignment="Center" VerticalAlignment="Center">
                         <TextBox.InputBindings><KeyBinding Command="{Binding Path=SendDirectCommand}" Key="Enter" /></TextBox.InputBindings>
                 </TextBox>-->
-                <ComboBox Text="{Binding DirectCommand, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding DirectCommandHistory}" Height="26" Width="200" VerticalContentAlignment="Center" VerticalAlignment="Center" IsEditable="True" Margin="0,0,5,0">
+                <ComboBox Text="{Binding DirectCommand.DirectCommand, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding DirectCommand.DirectCommandHistory}" Height="26" Width="200" VerticalContentAlignment="Center" VerticalAlignment="Center" IsEditable="True" Margin="0,0,5,0">
                     <ComboBox.InputBindings>
-                        <KeyBinding Command="{Binding SendDirectCommand}" Key="Enter" />
+                        <KeyBinding Command="{Binding DirectCommand.SendDirectCommand}" Key="Enter" />
                     </ComboBox.InputBindings>
                 </ComboBox>
-                <Button Command="{Binding SendDirectCommand}" Content="Send Command" Height="26" Width="100"/>
+                <Button Command="{Binding DirectCommand.SendDirectCommand}" Content="Send Command" Height="26" Width="100"/>
                 <TextBox Height="23" Text="(c) by HA" Width="Auto" Margin="200,0,0,0" />
             </StackPanel>
             <TabControl  Margin="0,0,0,10">
@@ -135,24 +135,24 @@
                 <TabItem Header="SD" >
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
-                            <Button Command="{Binding SendM24FileCommand}" Content="M24 - Start"  />
-                            <Button Command="{Binding SendM28FileCommand}" Content="M28 - Copy"  />
-                            <Button Command="{Binding SendM30FileCommand}" Content="M30 - Del"  />
-                            <Button Command="{Binding SendM20FileCommand}" Content="M20 - Dir" />
+                            <Button Command="{Binding SD.SendM24FileCommand}" Content="M24 - Start"  />
+                            <Button Command="{Binding SD.SendM28FileCommand}" Content="M28 - Copy"  />
+                            <Button Command="{Binding SD.SendM30FileCommand}" Content="M30 - Del"  />
+                            <Button Command="{Binding SD.SendM20FileCommand}" Content="M20 - Dir" />
                         </StackPanel>
                         <StackPanel Margin="0,0,5,0">
                             <StackPanel  Orientation="Horizontal">
                                 <Label Content="File" MinWidth="100"/>
-                                <TextBox x:Name="FileName2"  Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" MinWidth="200" VerticalContentAlignment="Center"   />
+                                <TextBox x:Name="FileName2"  Text="{Binding SD.FileName, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" MinWidth="200" VerticalContentAlignment="Center"   />
                                 <Button Content="?"   x:Name="BrowseFileOpenDialog2" Click="BrowseFileOpenDialog_Click"  Width="20" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="SDFile" MinWidth="100" />
-                                <TextBox x:Name="SDFileName2"  Text="{Binding SDFileName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" MinWidth="200" VerticalContentAlignment="Center"  />
+                                <TextBox x:Name="SDFileName2"  Text="{Binding SD.SDFileName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" MinWidth="200" VerticalContentAlignment="Center"  />
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
-                            <Button Command="{Binding SendFileDirectCommand}" Content="Send File" />
+                            <Button Command="{Binding SD.SendFileDirectCommand}" Content="Send File" />
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
