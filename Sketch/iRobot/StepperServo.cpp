@@ -34,7 +34,7 @@ void CStepperServo::Init()
 
 	_pod._idleLevel = LevelMax;		// no Idle
 
-	_servo[0].attach(5);
+	_servo[0].attach(5);                    // do not change, see Adafruit_TiCoServo for available pins
 	_servo[1].attach(6);
 	_servo[2].attach(7);
 	_servo[3].attach(8);
@@ -68,6 +68,7 @@ void CStepperServo::SetServo()
 void CStepperServo::SetEnable(axis_t axis, unsigned char level, bool /* force */)
 {
 }
+
 ////////////////////////////////////////////////////////
 
 unsigned char CStepperServo::GetEnable(axis_t axis)

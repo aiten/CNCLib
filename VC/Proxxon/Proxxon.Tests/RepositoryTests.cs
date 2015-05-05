@@ -236,7 +236,6 @@ namespace Proxxon.Tests
 				SizeC = 1m,
 				BufferSize = 63,
 				CommandToUpper = true,
-				Default = false,
 				ProbeSizeX = 1m,
 				ProbeSizeY = 1m,
 				ProbeSizeZ = 1m,

@@ -43,8 +43,7 @@ namespace Proxxon.Wpf.Models
 
 		public bool CommandToUpper { get; set; }
 
-        public bool Default { get; set; }
-		public decimal ProbeSizeX { get; set; }
+ 		public decimal ProbeSizeX { get; set; }
 		public decimal ProbeSizeY { get; set; }
 		public decimal ProbeSizeZ { get; set; }
 		public decimal ProbeDistUp { get; set; }

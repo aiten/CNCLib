@@ -46,5 +46,24 @@ namespace Proxxon.Logic
 
 			return new MachineRepository().StoreMachine(me);
 		}
-    }
+
+		#region Default machine
+
+		public int GetDetaultMachine()
+		{
+			var config = new ConfigurationRepository().Get("Environment","DefaultMachineID");
+
+			if (config == default(Proxxon.Repository.Entities.Configuration))
+				return -1;
+
+			return int.Parse(config.Value);
+		}
+		public void SetDetaultMachine(int defulatMachineID)
+		{
+			new ConfigurationRepository().Save(new Repository.Entities.Configuration() { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defulatMachineID.ToString() } );
+		}
+
+
+		#endregion
+	}
 }

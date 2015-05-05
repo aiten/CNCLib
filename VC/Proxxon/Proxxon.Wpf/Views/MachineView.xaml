@@ -68,10 +68,6 @@
                         <Label Content="Size C" Width="150" />
                         <TextBox Text="{Binding SizeC}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Default" Width="150" />
-                        <CheckBox Content="Default" IsChecked="{Binding Default}" VerticalAlignment="Center"    />
-                    </StackPanel>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Probe" Margin="-2,-2,-2,0">

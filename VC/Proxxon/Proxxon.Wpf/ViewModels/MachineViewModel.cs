@@ -62,7 +62,6 @@ namespace Proxxon.Wpf.ViewModels
 					BaudRate = 115200,
                     BufferSize = 63,
                     CommandToUpper = false,
-                    Default = false,
 					ProbeSizeZ = 25,
 					ProbeDist = 10m,
 					ProbeDistUp = 3m,
@@ -89,7 +88,6 @@ namespace Proxxon.Wpf.ViewModels
 			OnPropertyChanged(() => SizeB);
 			OnPropertyChanged(() => SizeC);
 			OnPropertyChanged(() => BufferSize);
-            OnPropertyChanged(() => Default);
 			OnPropertyChanged(() => ProbeSizeX);
 			OnPropertyChanged(() => ProbeSizeY);
 			OnPropertyChanged(() => ProbeSizeZ);
@@ -167,12 +165,6 @@ namespace Proxxon.Wpf.ViewModels
 			get { return _currentMachine.SizeC; }
 			set { SetProperty(() => _currentMachine.SizeC == value, () => _currentMachine.SizeC = value); }
 		}
-		public bool Default
-        {
-            get { return _currentMachine.Default; }
-            set { SetProperty(() => _currentMachine.Default == value, () => _currentMachine.Default = value); }
-        }
-
 		public decimal ProbeSizeX
 		{
 			get { return _currentMachine.ProbeSizeX; }

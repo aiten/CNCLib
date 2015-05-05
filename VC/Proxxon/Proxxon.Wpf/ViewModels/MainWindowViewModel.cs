@@ -48,13 +48,14 @@ namespace Proxxon.Wpf.ViewModels
             var machines = new ObservableCollection<Models.Machine>();
 
             machines.AddCloneProperties(new MachineControler().GetMachines());
-
-            Machines = machines;
+			int defaultM = new MachineControler().GetDetaultMachine();			
+			
+			Machines = machines;
 
             var defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultmachineid);
 
             if (defaultmachine == null)
-                defaultmachine = machines.FirstOrDefault((m) => m.Default);
+				defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultM);
 
             if (defaultmachine == null && machines.Count > 0)
                 defaultmachine = machines[0];
@@ -159,7 +160,13 @@ namespace Proxxon.Wpf.ViewModels
 
             LoadMachines(mID);
         }
-        public bool CanSetupMachine()
+
+	   public void SetDefaultMachine()
+	   {
+		   new MachineControler().SetDetaultMachine(Machine.MachineID);
+	   }
+
+		public bool CanSetupMachine()
         {
             return true;
         }
@@ -196,6 +203,7 @@ namespace Proxxon.Wpf.ViewModels
 		public ICommand DisConnectCommand	{ get { return new DelegateCommand(DisConnect, CanDisConnect); } }
 		public ICommand ManualControlCommand	{ get { return new DelegateCommand(ShowManualControl, CanShowManualControl); } }
         public ICommand PaintCommand { get { return new DelegateCommand(ShowPaint, CanShowPaint); } }
+		public ICommand SetDefaultMachineCommand { get { return new DelegateCommand(SetDefaultMachine, CanSetupMachine); } }
 
         #endregion
     }

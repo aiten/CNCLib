@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\Configuration.cs" />
     <Compile Include="DTO\MachineCommand.cs" />
     <Compile Include="DTO\Machine.cs" />
     <Compile Include="MachineControler.cs" />

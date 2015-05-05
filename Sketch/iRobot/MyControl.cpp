@@ -117,11 +117,7 @@ void CMyControl::GoToReference()
   CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS)/2);
   CStepper::GetInstance()->SetPosition(A_AXIS, CStepper::GetInstance()->GetLimitMax(A_AXIS)/2);
 
-((CStepperServo*)CStepper::GetInstance())->SetServo();
-
-	// force linking to see size used in sketch
-//	if (_controllerfan.IsOn())
-//		super::GoToReference();
+  ((CStepperServo*)CStepper::GetInstance())->SetServo();
 }
 
 ////////////////////////////////////////////////////////////
