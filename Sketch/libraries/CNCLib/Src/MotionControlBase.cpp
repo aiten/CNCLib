@@ -57,12 +57,12 @@ mm1000_t CMotionControlBase::GetPosition(axis_t axis)
 
 void CMotionControlBase::SetPositionFromMachine()
 {
-	TransformMachinePosition(CStepper::GetInstance()->GetPositions(), _current);
+	TransformFromMachinePosition(CStepper::GetInstance()->GetPositions(), _current);
 }
 
 /////////////////////////////////////////////////////////
 
-void CMotionControlBase::TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
+void CMotionControlBase::TransformFromMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
 	ToMm1000(src,dest);
 }
@@ -71,7 +71,6 @@ void CMotionControlBase::TransformMachinePosition(const udist_t src[NUM_AXIS], m
 
 void CMotionControlBase::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
-	memcpy(dest, src, sizeof(_current));
 }
 
 /////////////////////////////////////////////////////////
@@ -87,6 +86,8 @@ void CMotionControlBase::MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrat
 
 	mm1000_t	to_proj[NUM_AXIS];
 	udist_t		to_m[NUM_AXIS];
+
+	memcpy(to_proj, to, sizeof(_current));
 
 	TransformPosition(to, to_proj);
 	ToMachine(to_proj, to_m);

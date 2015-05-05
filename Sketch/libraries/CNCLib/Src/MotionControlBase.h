@@ -25,8 +25,10 @@
 
 ////////////////////////////////////////////////////////
 
-
 // Convert between logical and physical "steps"
+//
+// Cartesian coordinate system
+// Use ToMachine, ToMm100 to convert between same aligned machine and logical cartesian coordinate system
 
 ////////////////////////////////////////////////////////
 
@@ -64,10 +66,10 @@ public:
 	static void ToMachine(const mm1000_t mm1000[NUM_AXIS], udist_t machine[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { machine[x] = _ToMachine(x, mm1000[x]); } };
 	static void ToMm1000(const udist_t machine[NUM_AXIS], mm1000_t mm1000[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { mm1000[x] = _ToMm1000(x, machine[x]); } };
 
-	////////////////////////////////////////
-	// converting machine-mm1000 to logical-pos
 
-	virtual void TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
+protected:
+
+	virtual void TransformFromMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
 	virtual void TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
 
 	mm1000_t	_current[NUM_AXIS];

@@ -21,28 +21,19 @@
 
 ////////////////////////////////////////////////////////
 
-// Cartesian coordinate system, same as CMotionControlBase
-// CMotionControl supports rotation
+#include <MotionControl.h>
 
 ////////////////////////////////////////////////////////
 
-#include "MotionControlBase.h"
-
-////////////////////////////////////////////////////////
-
-class CMotionControl : public CMotionControlBase
+class CMyMotionControl : public CMotionControl
 {
 private:
 
-	typedef CMotionControlBase super;
+	typedef CMotionControl super;
 
 public:
 
-	CMotionControl();
-
-	void SetRotate(axis_t axis, double rad);
-	void SetOffset(axis_t axis, mm1000_t ofs)	{ _rotateOffset[axis] = ofs; }
-	void ClearOffset()							{ for (register unsigned char i=0;i<3;i++) _rotateOffset[i] = 0; }
+	CMyMotionControl();
 
 protected:
 
@@ -51,19 +42,9 @@ protected:
 
 private:
 
-	struct SRotate
-	{
-		float _sin;
-		float _cos;
-	};
+	static void ToAngle(mm1000_t x, mm1000_t y, mm1000_t z, float& angle1, float& angle2, float& angle3);
+	static void FromAngle(float angle1, float angle2, float angle3, mm1000_t& x, mm1000_t& y, mm1000_t& z);
 
-	SRotate  _rotate[3];
-	mm1000_t _rotateOffset[3];
-
-	bool _rotateEnabled[3];
-
-	static void Rotate(const SRotate&rotate, mm1000_t& ax1, mm1000_t& ax2, mm1000_t ofs1, mm1000_t ofs2) ALWAYSINLINE;
-	static void RotateInvert(const SRotate&rotate, mm1000_t& ax1, mm1000_t& ax2, mm1000_t ofs1, mm1000_t ofs2) ALWAYSINLINE;
 };
 
 ////////////////////////////////////////////////////////
