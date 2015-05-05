@@ -30,12 +30,13 @@
 #include <GCode3DParser.h>
 #include "StepperServo.h"
 #include "MyControl.h"
+#include "MyMotionControl.h"
 
 ////////////////////////////////////////////////////////////
 
 CMyControl Control;
 
-CMotionControlBase MotionControl;
+CMyMotionControl MotionControl;
 
 ////////////////////////////////////////////////////////////
 

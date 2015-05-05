@@ -49,9 +49,9 @@ void CMotionControl::SetRotate(axis_t axis, double rad)
 
 /////////////////////////////////////////////////////////
 
-void CMotionControl::TransformMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
+void CMotionControl::TransformFromMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
-	ToMm1000(src, dest);
+	super::TransformFromMachinePosition(src, dest);
 
 	if (_rotateEnabled[Z_AXIS])
 	{
@@ -95,7 +95,7 @@ inline void CMotionControl::RotateInvert(const CMotionControl::SRotate&rotate, m
 
 void CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
-	memcpy(dest, src, sizeof(_current));
+	super::TransformPosition(src,dest);
 
 	if (_rotateEnabled[Z_AXIS])
 	{
