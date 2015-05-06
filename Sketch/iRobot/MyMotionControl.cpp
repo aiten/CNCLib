@@ -28,13 +28,14 @@
 
 /////////////////////////////////////////////////////////
 
-#define A 152000.0	//  140.0;	// second segment
-#define B 140000.0	//  152.0;	// first segment
+#define A 140000.0	//  140.0;	// second segment
+#define B 152000.0	//  152.0;	// first segment
 #define H 105000.0	//  105.0   // height start first segement
 #define E 30000.0		//  30.0	// 3. segment
 
-#define ANGLE1ADD (M_PI/2.0)
-#define ANGLE2ADD (0.0)
+#define ANGLE1ADD (30*M_PI/180.0)
+//#define ANGLE1ADD (M_PI/2.0)
+#define ANGLE2ADD (10*M_PI/180.0)
 #define ANGLE3ADD (M_PI/2.0)
 
 /////////////////////////////////////////////////////////
@@ -57,14 +58,14 @@ CMyMotionControl::CMyMotionControl()
 
 /////////////////////////////////////////////////////////
 
-inline float FromMs(mm1000_t ms)
+inline float FromMs(mm1000_t ms,axis_t axis)
 {
 	return ms / (1.0 / M_PI*2.0*1000.0);
 }
 
 /////////////////////////////////////////////////////////
 
-inline mm1000_t ToMs(float angle)
+inline mm1000_t ToMs(float angle,axis_t axis)
 {
 
 	// 1000 => 90 (1024 => 90)
@@ -79,21 +80,23 @@ void CMyMotionControl::TransformFromMachinePosition(const udist_t src[NUM_AXIS],
 {
 	super::TransformFromMachinePosition(src,dest);
 
-	FromAngle(FromMs(dest[0]), FromMs(dest[1]), FromMs(dest[2]), dest[0], dest[1], dest[2]);
+	FromAngle(FromMs(dest[0],X_AXIS), FromMs(dest[1],Y_AXIS), FromMs(dest[2],Z_AXIS), dest[0], dest[1], dest[2]);
 }
 
 /////////////////////////////////////////////////////////
 
 bool CMyMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
+//      return super::TransformPosition(src, dest);
+      
 	float angle1, angle2, angle3;
 	
 	if (!super::TransformPosition(src, dest) || !ToAngle(dest[0], dest[1], dest[2], angle1, angle2, angle3))
 		return false;
 
-	dest[0] = ToMs(angle1);
-	dest[1] = ToMs(angle2);
-	dest[2] = ToMs(angle3);
+	dest[0] = ToMs(angle1,X_AXIS);
+	dest[1] = ToMs(angle2,Y_AXIS);
+	dest[2] = ToMs(angle3,Z_AXIS);
 
 	return true;
 }
