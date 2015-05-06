@@ -69,8 +69,9 @@ void CMotionControlBase::TransformFromMachinePosition(const udist_t src[NUM_AXIS
 
 /////////////////////////////////////////////////////////
 
-void CMotionControlBase::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
+bool CMotionControlBase::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
+	return true;
 }
 
 /////////////////////////////////////////////////////////

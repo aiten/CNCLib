@@ -38,12 +38,14 @@ public:
 protected:
 
 	virtual void TransformFromMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]) override;
-	virtual void TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]) override;
+	virtual bool TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]) override;
 
 private:
 
-	static void ToAngle(mm1000_t x, mm1000_t y, mm1000_t z, float& angle1, float& angle2, float& angle3);
-	static void FromAngle(float angle1, float angle2, float angle3, mm1000_t& x, mm1000_t& y, mm1000_t& z);
+	static bool ToAngle(mm1000_t x, mm1000_t y, mm1000_t z, float& angle1, float& angle2, float& angle3);
+	static bool FromAngle(float angle1, float angle2, float angle3, mm1000_t& x, mm1000_t& y, mm1000_t& z);
+
+	bool Test(mm1000_t dest1, mm1000_t dest2, mm1000_t dest3);
 
 };
 

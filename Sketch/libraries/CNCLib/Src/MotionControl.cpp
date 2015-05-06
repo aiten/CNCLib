@@ -93,9 +93,10 @@ inline void CMotionControl::RotateInvert(const CMotionControl::SRotate&rotate, m
 
 /////////////////////////////////////////////////////////
 
-void CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
+bool CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
-	super::TransformPosition(src,dest);
+	if (!super::TransformPosition(src, dest))
+		return false;
 
 	if (_rotateEnabled[Z_AXIS])
 	{
@@ -111,6 +112,8 @@ void CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t de
 	{
 		Rotate(_rotate[X_AXIS],dest[Y_AXIS],dest[Z_AXIS],_rotateOffset[Y_AXIS],_rotateOffset[Z_AXIS]);
 	}
+
+	return true;
 }
 
 /////////////////////////////////////////////////////////
