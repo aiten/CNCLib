@@ -48,11 +48,10 @@ void CMyControl::Init()
 
 	super::Init();
 
-	CStepper::GetInstance()->SetLimitMax(X_AXIS, MAX_PULSE_WIDTH-MIN_PULSE_WIDTH);  // ms
-	CStepper::GetInstance()->SetLimitMax(Y_AXIS, MAX_PULSE_WIDTH-MIN_PULSE_WIDTH);
-	CStepper::GetInstance()->SetLimitMax(Z_AXIS, MAX_PULSE_WIDTH-MIN_PULSE_WIDTH);
-	CStepper::GetInstance()->SetLimitMax(A_AXIS, MAX_PULSE_WIDTH-MIN_PULSE_WIDTH);
-
+	CStepper::GetInstance()->SetLimitMax(X_AXIS, STEPPERRANGE);  // ms
+	CStepper::GetInstance()->SetLimitMax(Y_AXIS, STEPPERRANGE);
+	CStepper::GetInstance()->SetLimitMax(Z_AXIS, STEPPERRANGE);
+	CStepper::GetInstance()->SetLimitMax(A_AXIS, STEPPERRANGE);
 
 	//CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
 	//CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);

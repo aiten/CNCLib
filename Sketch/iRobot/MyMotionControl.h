@@ -45,7 +45,7 @@ private:
 	static bool ToAngle(mm1000_t x, mm1000_t y, mm1000_t z, float& angle1, float& angle2, float& angle3);
 	static bool FromAngle(float angle1, float angle2, float angle3, mm1000_t& x, mm1000_t& y, mm1000_t& z);
 
-	bool Test(mm1000_t dest1, mm1000_t dest2, mm1000_t dest3);
+	bool Test(mm1000_t dest1, mm1000_t dest2, mm1000_t dest3,bool printOK);
 
 };
 

@@ -54,14 +54,14 @@ void CStepperServo::SetServo()
 	for (axis_t i = 0; i<NUM_AXIS; i++)
 	{
 		udist_t pos;
-                if (i==Y_AXIS)
-                {
-		  pos = MAX_PULSE_WIDTH-GetCurrentPosition(i);
-                }
-                else
-                {
-		  pos = MIN_PULSE_WIDTH+GetCurrentPosition(i);
-                }
+		if (i==Y_AXIS)
+		{
+			pos = (DEFAULT_PULSE_WIDTH + STEPPERRANGE / 2) - GetCurrentPosition(i);
+		}
+		else
+		{
+			pos = (DEFAULT_PULSE_WIDTH - STEPPERRANGE /2 ) + GetCurrentPosition(i);
+		}
 		if (pos != _lastPos[i])
 		{
 			_servo[i].write(pos);

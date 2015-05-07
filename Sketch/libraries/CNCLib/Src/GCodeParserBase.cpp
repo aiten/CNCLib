@@ -71,6 +71,7 @@ bool CGCodeParserBase::InitParse()
 		return false;
 
 	CStepper::GetInstance()->ClearError();
+	CMotionControlBase::GetInstance()->ClearError();
 
 	_modlessstate.Init();
 	return true;				// continue

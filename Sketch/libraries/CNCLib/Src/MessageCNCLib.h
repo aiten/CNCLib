@@ -92,6 +92,5 @@
 #define MESSAGE_PARSER_OverrunOfNumber				StepperMessage("3B","overrun of number")
 #define MESSAGE_PARSER_ValueLessThanMin				StepperMessage("3C","value less than min")
 
-
 ////////////////////////////////////////////////////////
 

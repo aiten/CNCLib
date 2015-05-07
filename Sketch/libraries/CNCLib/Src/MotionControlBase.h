@@ -51,11 +51,6 @@ class CMotionControlBase : public CSingleton<CMotionControlBase>
 	////////////////////////////////////////
 	// converting machine-pos to machine-mm1000
 
-private:
-
-	static ToMm1000_t _ToMm1000;
-	static ToMachine_t _ToMachine;
-
 public:
 
 	static void InitConversion(ToMm1000_t toMm1000, ToMachine_t toMachine)						{ _ToMm1000 = toMm1000; _ToMachine = toMachine; }
@@ -66,6 +61,9 @@ public:
 	static void ToMachine(const mm1000_t mm1000[NUM_AXIS], udist_t machine[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { machine[x] = _ToMachine(x, mm1000[x]); } };
 	static void ToMm1000(const udist_t machine[NUM_AXIS], mm1000_t mm1000[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { mm1000[x] = _ToMm1000(x, machine[x]); } };
 
+	bool IsError()											{ return _error != NULL; };
+	const __FlashStringHelper * GetError()					{ return _error; }
+	void ClearError()										{ _error = NULL; }
 
 protected:
 
@@ -73,6 +71,14 @@ protected:
 	virtual bool TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
 
 	mm1000_t	_current[NUM_AXIS];
+
+	void Error(const __FlashStringHelper * error)			{ _error = error; }
+
+private:
+
+	static ToMm1000_t _ToMm1000;
+	static ToMachine_t _ToMachine;
+	const __FlashStringHelper *		_error=NULL;
 
 public:
 

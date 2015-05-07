@@ -27,6 +27,9 @@
 
 #define Servo Adafruit_TiCoServo
 
+#define STEPPERRANGE 1800							// MAX_PULSE_WIDTH - MIN_PULSE_WIDTH
+#define CENTERPOSOPPSET ((2000-STEPPERRANGE)/2)		
+
 ////////////////////////////////////////////////////////
 
 class CStepperServo : public CStepper

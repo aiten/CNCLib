@@ -25,6 +25,7 @@
 #include "ConfigurationCNCLib.h"
 #include "Parser.h"
 #include "Stepper.h"
+#include "MotionControlBase.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -53,6 +54,11 @@ bool CParser::CheckError()
 	if (CStepper::GetInstance()->IsError())
 	{
 		_error = CStepper::GetInstance()->GetError();
+		return true;
+	}
+	if (CMotionControlBase::GetInstance()->IsError())
+	{
+		_error = CMotionControlBase::GetInstance()->GetError();
 		return true;
 	}
 	return false;
