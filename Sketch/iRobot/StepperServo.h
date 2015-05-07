@@ -29,6 +29,7 @@
 
 #define STEPPERRANGE 1800							// MAX_PULSE_WIDTH - MIN_PULSE_WIDTH
 #define CENTERPOSOPPSET ((2000-STEPPERRANGE)/2)		
+#define DEFAULT_PULSE_WIDTH 1500
 
 ////////////////////////////////////////////////////////
 

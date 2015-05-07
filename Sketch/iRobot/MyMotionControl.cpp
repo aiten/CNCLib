@@ -35,27 +35,10 @@
 #define H 105000.0	//  105.0   // height start first segement
 #define E 30000.0		//  30.0	// 3. segment
 
-#ifdef _MSC_VER
-
-#define ANGLE1ADD (90*M_PI/180.0)
-//#define ANGLE1ADD (M_PI/2.0)
-#define ANGLE2ADD (00*M_PI/180.0)
-#define ANGLE3ADD (M_PI/2.0)
-
-#else
-
-#define ANGLE1ADD (30*M_PI/180.0)
-//#define ANGLE1ADD (M_PI/2.0)
-#define ANGLE2ADD (10*M_PI/180.0)
-#define ANGLE3ADD (M_PI/2.0)
-
-#endif
-
 /////////////////////////////////////////////////////////
 
 CMyMotionControl::CMyMotionControl()
 {
-	return;
 #ifdef _MSC_VER
 
 	Test(200000, 0, H, true);
@@ -109,7 +92,7 @@ inline float FromMs(mm1000_t ms,axis_t axis)
 
 inline mm1000_t ToMs(float angle,axis_t axis)
 {
-	return (mm1000_t)(angle * (1.0 / M_PI*2.0*1000.0));
+	return (mm1000_t)(angle * (1.0 / M_PI*2.0*1000.0)) + CENTERPOSOPPSET;
 }
 
 /////////////////////////////////////////////////////////
@@ -130,8 +113,6 @@ inline bool IsFloatOK(float val)
 
 bool CMyMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
-//      return super::TransformPosition(src, dest);
-      
 	float angle1, angle2, angle3;
 	
 	if (!super::TransformPosition(src, dest))
@@ -167,9 +148,9 @@ bool CMyMotionControl::ToAngle(mm1000_t ix, mm1000_t iy, mm1000_t iz, float& ang
 	float alpha  = acos((B*B + c2 - A*A) / (2.0*B*c));
 	float gamma  = acos((A*A + B*B - c2) / (2.0*A*B));
 
-	angle1 = (alpha + alpha1) + ANGLE1ADD;
-	angle2 = gamma + ANGLE2ADD;;
-	angle3 = atan(y / x) + ANGLE3ADD;;
+	angle1 = (alpha + alpha1);
+	angle2 = gamma;
+	angle3 = atan(y / x);
 
 	if (!IsFloatOK(angle1))	return false;
 	if (!IsFloatOK(angle2))	return false;
@@ -182,16 +163,16 @@ bool CMyMotionControl::ToAngle(mm1000_t ix, mm1000_t iy, mm1000_t iz, float& ang
 
 bool CMyMotionControl::FromAngle(float angle1, float angle2, float angle3, mm1000_t& x, mm1000_t& y, mm1000_t& z)
 {
-	float c2 = (A*A + B*B - 2.0 * A * B * cos(angle2 - ANGLE2ADD));
+	float c2 = (A*A + B*B - 2.0 * A * B * cos(angle2));
 	float c = sqrt(c2);
 	
 	float alpha = acos((c2 + B*B - A*A) / (2.0*B*c));
-	float alpha1 = angle1 - ANGLE1ADD - alpha;
+	float alpha1 = angle1 - alpha;
 
 	float s = cos(alpha1) * c + E;
 
-	x = cos(angle3 - ANGLE3ADD) * s;
-	y = sin(angle3 - ANGLE3ADD) * s;
+	x = cos(angle3) * s;
+	y = sin(angle3) * s;
 
 	z = H + sin(alpha1)*c;
 
