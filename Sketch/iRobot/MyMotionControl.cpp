@@ -35,11 +35,31 @@
 #define H 105000.0	//  105.0   // height start first segement
 #define E 30000.0		//  30.0	// 3. segment
 
+// c		=> tryangle A/B/C
+// s		=> diagonale x/y 
+// alpha	=> angle of triangle
+// alpha1	=> angle horizontal and c
+
+// segment 2 moves paralell to surface if angle 1 is chaged (
+
+#define SEGMENT2PARALLEL	true
+
+
+// pos 1.500ms => 80 Grad (from xy pane)
+#define CENTERPOSANGLE1	78
+#define ANGLE1OFFSET ((M_PI/2)-(CENTERPOSANGLE1*M_PI/180))
+
+// pos 1.500ms => 20 Grad (between A and B)
+#define CENTERPOSANGLE2	20
+#define ANGLE2OFFSET ((M_PI/2)-(CENTERPOSANGLE2*M_PI/180))
+#define ANGLE1TOANGLE2 (M_PI/2)
+
+
 /////////////////////////////////////////////////////////
 
 CMyMotionControl::CMyMotionControl()
 {
-#ifdef _MSC_VER
+#ifdef _MSC_VER_X
 
 	Test(200000, 0, H, true);
 	Test(200000, 100000, H, true);
@@ -92,7 +112,7 @@ inline float FromMs(mm1000_t ms,axis_t axis)
 
 inline mm1000_t ToMs(float angle,axis_t axis)
 {
-	return (mm1000_t)(angle * (1.0 / M_PI*2.0*1000.0)) + CENTERPOSOPPSET;
+	return (mm1000_t)(angle * (1.0 / M_PI*2.0*1000.0)) - CENTERPOSOPPSET;
 }
 
 /////////////////////////////////////////////////////////
@@ -101,7 +121,20 @@ void CMyMotionControl::TransformFromMachinePosition(const udist_t src[NUM_AXIS],
 {
 	super::TransformFromMachinePosition(src,dest);
 
-	FromAngle(FromMs(dest[0],X_AXIS), FromMs(dest[1],Y_AXIS), FromMs(dest[2],Z_AXIS), dest[0], dest[1], dest[2]);
+	float angle1 = FromMs(dest[0],X_AXIS);
+	float angle2 = FromMs(dest[1],Y_AXIS);
+	float angle3 = FromMs(dest[2],Z_AXIS);
+
+	angle1 -= ANGLE1OFFSET;
+	angle2 -= ANGLE2OFFSET;
+	angle3 -= M_PI/2;
+
+	if (SEGMENT2PARALLEL)
+	{
+		angle2 -= (angle1-ANGLE1TOANGLE2);
+	}
+
+	FromAngle(angle1, angle2, angle3, dest[0], dest[1], dest[2]);
 }
 
 /////////////////////////////////////////////////////////
@@ -123,6 +156,15 @@ bool CMyMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t 
 		Error(F("TransformPosition: geometry"));
 		return false;
 	}
+
+	if (SEGMENT2PARALLEL)
+	{
+		angle2 += (angle1-ANGLE1TOANGLE2);
+	}
+
+	angle1 += ANGLE1OFFSET;
+	angle2 += ANGLE2OFFSET;
+	angle3 += M_PI/2;
 
 	dest[0] = ToMs(angle1,X_AXIS);
 	dest[1] = ToMs(angle2,Y_AXIS);
@@ -177,6 +219,48 @@ bool CMyMotionControl::FromAngle(float angle1, float angle2, float angle3, mm100
 	z = H + sin(alpha1)*c;
 
 	return true;
+}
+
+/////////////////////////////////////////////////////////
+
+inline int ToRADRound(float a)   
+{ 
+	int ia = a*180.0 / M_PI + 0.5;
+	return ia; 
+}
+
+void CMyMotionControl::PrintInfo()
+{
+	float angle1, angle2, angle3;
+
+	
+	if (!ToAngle(_current[0], _current[1], _current[2], angle1, angle2, angle3))
+	{
+		Error(F("TransformPosition: geometry"));
+	}
+
+	char tmp[16];
+
+	StepperSerial.print(ToRADRound(angle1)); StepperSerial.print(F(":"));
+	StepperSerial.print(ToRADRound(angle2)); StepperSerial.print(F(":"));
+	StepperSerial.print(ToRADRound(angle3)); StepperSerial.print(F("=>"));
+
+	if (SEGMENT2PARALLEL)
+	{
+		angle2 += (angle1-ANGLE1TOANGLE2);
+	}
+
+	angle1 += ANGLE1OFFSET;
+	angle2 += ANGLE2OFFSET;
+	angle3 += M_PI/2;
+
+	StepperSerial.print(ToRADRound(angle1)); StepperSerial.print(F(":"));
+	StepperSerial.print(ToRADRound(angle2)); StepperSerial.print(F(":"));
+	StepperSerial.print(ToRADRound(angle3)); StepperSerial.print(F("=>"));
+
+	StepperSerial.print(CMm1000::ToString(ToMs(angle1,X_AXIS), tmp, 3)); StepperSerial.print(F(":"));
+	StepperSerial.print(CMm1000::ToString(ToMs(angle2,Y_AXIS), tmp, 3)); StepperSerial.print(F(":"));
+	StepperSerial.print(CMm1000::ToString(ToMs(angle3,Z_AXIS), tmp, 3));
 }
 
 

@@ -27,10 +27,10 @@
 
 #include <GCodeParserBase.h>
 #include <GCodeParser.h>
-#include <GCode3DParser.h>
 #include "StepperServo.h"
 #include "MyControl.h"
 #include "MyMotionControl.h"
+#include "MyParser.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -124,7 +124,7 @@ void CMyControl::GoToReference()
 
 bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 {
-	CGCode3DParser gcode(reader,output);
+	CMyParser gcode(reader,output);
 	return ParseAndPrintResult(&gcode,output);
 }
 

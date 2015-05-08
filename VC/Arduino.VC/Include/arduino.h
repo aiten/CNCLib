@@ -204,6 +204,7 @@ public:
 	void print(long l)				{ printf("%i", l); };
 	void print(unsigned long ul)	{ printf("%u", ul); };
 	void print(const char*s)		{ printf("%s", s); };
+	void print(float f)				{ printf("%f", f); };
 
 	void println()					{ printf("\n"); };
 	void println(unsigned int ui)	{ printf("%u\n", ui); };

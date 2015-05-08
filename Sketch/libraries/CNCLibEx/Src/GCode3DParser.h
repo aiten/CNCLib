@@ -121,6 +121,8 @@ private:
 	/////////////////
 	// OK Message
 
+protected:
+
 	static void PrintPosition();
 	static void PrintVersion();
 };

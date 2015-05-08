@@ -28,6 +28,9 @@
     <ClInclude Include="..\..\..\Sketch\iRobot\MyMotionControl.h">
       <Filter>iRobot</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\iRobot\MyParser.h">
+      <Filter>iRobot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -43,6 +46,9 @@
       <Filter>iRobot</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\iRobot\MyMotionControl.cpp">
+      <Filter>iRobot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\iRobot\MyParser.cpp">
       <Filter>iRobot</Filter>
     </ClCompile>
   </ItemGroup>
