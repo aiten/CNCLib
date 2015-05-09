@@ -39,43 +39,13 @@ bool CMyParser::MCommand(unsigned char mcode)
 	switch (mcode)
 	{
 		case 116: _OkMessage = PrintInfo; return true;
+		case 117: M117Command(); return true;
+		case 118: M118Command(); return true;
 	}
 
 	return false;
 }
 
-////////////////////////////////////////////////////////////
-/*
-bool CGCode3DParser::Command(unsigned char ch)
-{
-	if (super::Command(ch))
-		return true;
-
-	switch (ch)
-	{
-		case '!':
-		case '-':
-		case '?':
-		case '$': CommandEscape(); return true;
-	}
-
-	return false;
-}
-
-////////////////////////////////////////////////////////////
-
-void CGCode3DParser::CommandEscape()
-{
-	if (_reader->GetChar() == '$')
-		_reader->GetNextChar();
-
-	CHelpParser mycommand(GetReader(),GetOutput());
-	mycommand.ParseCommand();
-
-	if (mycommand.IsError()) Error(mycommand.GetError());
-	_OkMessage = mycommand.GetOkMessage();
-}
-*/
 ////////////////////////////////////////////////////////////
 
 void CMyParser::PrintInfo()
@@ -83,4 +53,49 @@ void CMyParser::PrintInfo()
 //	PrintPosition();
 	((CMyMotionControl*) CMotionControlBase::GetInstance())->PrintInfo();
 }
+
+////////////////////////////////////////////////////////////
+
+void CMyParser::M117Command()
+{
+	SAxisMove move(false);
+
+	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
+	{
+		axis_t axis;
+		if ((axis = CharToAxis(ch)) < NUM_AXIS) GetAxis(axis, move, AbsolutWithZeroShiftPosition);
+		else break;
+
+		if (CheckError()) { return; }
+	}
+
+	if (move.axes)
+	{
+		CMyMotionControl* pMC = (CMyMotionControl*) CMotionControlBase::GetInstance();
+		pMC->MoveAngle(move.newpos);
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyParser::M118Command()
+{
+	SAxisMove move(false);
+
+	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
+	{
+		axis_t axis;
+		if ((axis = CharToAxis(ch)) < NUM_AXIS) GetAxis(axis, move, AbsolutWithZeroShiftPosition);
+		else break;
+
+		if (CheckError()) { return; }
+	}
+
+	if (move.axes)
+	{
+		CMyMotionControl* pMC = (CMyMotionControl*) CMotionControlBase::GetInstance();
+		pMC->MoveAngleLog(move.newpos);
+	}
+}
+
 

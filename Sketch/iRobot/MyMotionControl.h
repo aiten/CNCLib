@@ -37,6 +37,9 @@ public:
 
 	void PrintInfo();
 
+	void MoveAngle(const mm1000_t dest[NUM_AXIS]);
+	void MoveAngleLog(const mm1000_t dest[NUM_AXIS]);
+
 protected:
 
 	virtual void TransformFromMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]) override;

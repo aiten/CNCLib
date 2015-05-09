@@ -52,6 +52,9 @@ public:
 	static void SetG1MaxFeedRate(feedrate_t feedrate)		{ _modalstate.G1MaxFeedRate = feedrate; }
 	static mm1000_t GetG92PosPreset(axis_t axis)			{ return _modalstate.G92Pospreset[axis]; }
 
+	static feedrate_t GetG0FeedRate()						{ return _modalstate.G0FeedRate; }
+	static feedrate_t GetG1FeedRate()						{ return _modalstate.G1FeedRate; }
+
 	static void Init()										{ super::Init(); _modalstate.Init();  _modlessstate.Init(); }
 
 protected:

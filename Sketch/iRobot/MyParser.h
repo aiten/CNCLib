@@ -50,7 +50,8 @@ private:
 
 	////////////////////////////////////////////////////////
 
-	void M114Command();
+	void M117Command();
+	void M118Command();
 
 	static void PrintInfo();
 };
