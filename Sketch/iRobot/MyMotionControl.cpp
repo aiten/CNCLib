@@ -51,15 +51,17 @@
 #define SEGMENT2PARALLEL	true
 
 
-// pos 1.500ms => 80 Grad (from xy pane)
-#define CENTERPOSANGLE1	69
-#define ANGLE1OFFSET ((M_PI/2)-(CENTERPOSANGLE1*M_PI/180))
+// pos 1.300ms => 55 Grad (from xy pane)
 
-// pos 1.500ms => 20 Grad (between A and B)
-#define CENTERPOSANGLE2	20
-#define ANGLE2OFFSET ((M_PI/2)-(CENTERPOSANGLE2*M_PI/180))
+#define DEFAULTANGLE (CENTER_LIMIT / MsForPI * M_PI)
+#define ANGLE1OFFSET (DEFAULTANGLE - (55*M_PI/180))
+
+// pos 1.300ms => 80 Grad (between A and B)
+//#define ANGLE2OFFSET (DEFAULTANGLE - (80*M_PI/180))
+#define ANGLE2OFFSET (DEFAULTANGLE - ((80-55+20)*M_PI/180))
 #define ANGLE1TOANGLE2 (M_PI/2)
 
+#define ANGLE3OFFSET DEFAULTANGLE
 
 /////////////////////////////////////////////////////////
 
@@ -115,14 +117,15 @@ CMyMotionControl::CMyMotionControl()
 
 inline float FromMs(mm1000_t ms,axis_t axis)
 {
-	return (ms + CENTERPOSOPPSET) / (1.0 / M_PI*2.0*1000.0);
+	return ms / MsForPI * M_PI;
 }
 
 /////////////////////////////////////////////////////////
 
 inline mm1000_t ToMs(float angle,axis_t axis)
 {
-	return (mm1000_t)(angle * (1.0 / M_PI*2.0*1000.0)) - CENTERPOSOPPSET;
+	float msforpi=MsForPI;
+	return (mm1000_t)(angle * MsForPI / M_PI);
 }
 
 /////////////////////////////////////////////////////////
@@ -137,7 +140,7 @@ void CMyMotionControl::TransformFromMachinePosition(const udist_t src[NUM_AXIS],
 
 	angle1 -= ANGLE1OFFSET;
 	angle2 -= ANGLE2OFFSET;
-	angle3 -= M_PI/2;
+	angle3 -= ANGLE3OFFSET;
 
 	if (SEGMENT2PARALLEL)
 	{
@@ -174,7 +177,7 @@ bool CMyMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t 
 
 	angle1 += ANGLE1OFFSET;
 	angle2 += ANGLE2OFFSET;
-	angle3 += M_PI/2;
+	angle3 += ANGLE3OFFSET;
 
 	dest[0] = ToMs(angle1,X_AXIS);
 	dest[1] = ToMs(angle2,Y_AXIS);
@@ -246,6 +249,52 @@ inline float ToAngleRAD(mm1000_t angle)
 
 /////////////////////////////////////////////////////////
 
+void CMyMotionControl::MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrate)
+{
+	unsigned short movecount = 1;
+	mm1000_t nextto[NUM_AXIS];
+	mm1000_t totaldist[NUM_AXIS];
+
+	mm1000_t maxdist=0;
+	mm1000_t splitdist=10000;
+
+	axis_t i;
+
+	for (i = 0; i < NUM_AXIS; i++)
+	{
+		mm1000_t dist=to[i]-_current[i];
+		totaldist[i] = dist;
+		if (dist<0) dist = -dist;
+
+		if (dist >  maxdist)
+			maxdist = dist;
+	}
+
+
+	if (maxdist > splitdist)
+	{
+		movecount = maxdist / splitdist;
+		if ((maxdist % splitdist) != 0)
+			movecount++;
+	}
+
+	for (unsigned short j = movecount-1; j > 0; j--)
+	{
+		for (i = 0; i < NUM_AXIS; i++)
+		{
+			mm1000_t newxtpos = RoundMulDivI32(totaldist[i], j, movecount);
+			nextto[i] = to[i] - newxtpos;
+		}
+
+		super::MoveAbs(nextto,feedrate);
+		if (IsError()) return;
+	}
+
+	super::MoveAbs(to,feedrate);
+}
+
+/////////////////////////////////////////////////////////
+
 void CMyMotionControl::MoveAngle(const mm1000_t dest[NUM_AXIS])
 {
 	udist_t		to[NUM_AXIS] = { 0 };
@@ -274,7 +323,7 @@ void CMyMotionControl::MoveAngleLog(const mm1000_t dest[NUM_AXIS])
 
 	angle1 -= ANGLE1OFFSET;
 	angle2 -= ANGLE2OFFSET;
-	angle3 -= M_PI/2;
+	angle3 -= ANGLE3OFFSET;
 
 	if (SEGMENT2PARALLEL)
 	{
@@ -318,7 +367,7 @@ void CMyMotionControl::PrintInfo()
 
 	angle1 += ANGLE1OFFSET;
 	angle2 += ANGLE2OFFSET;
-	angle3 += M_PI/2;
+	angle3 += ANGLE3OFFSET;
 
 	StepperSerial.print(ToGRADRound(angle1)); StepperSerial.print(F(":"));
 	StepperSerial.print(ToGRADRound(angle2)); StepperSerial.print(F(":"));

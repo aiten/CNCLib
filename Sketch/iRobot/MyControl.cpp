@@ -48,10 +48,15 @@ void CMyControl::Init()
 
 	super::Init();
 
-	CStepper::GetInstance()->SetLimitMax(X_AXIS, STEPPERRANGE);  // ms
-	CStepper::GetInstance()->SetLimitMax(Y_AXIS, STEPPERRANGE);
-	CStepper::GetInstance()->SetLimitMax(Z_AXIS, STEPPERRANGE);
-	CStepper::GetInstance()->SetLimitMax(A_AXIS, STEPPERRANGE);
+	CStepper::GetInstance()->SetLimitMin(X_AXIS, MIN_LIMIT);  // ms
+	CStepper::GetInstance()->SetLimitMin(Y_AXIS, MIN_LIMIT);
+	CStepper::GetInstance()->SetLimitMin(Z_AXIS, MIN_LIMIT);
+	CStepper::GetInstance()->SetLimitMin(A_AXIS, MIN_LIMIT);
+
+	CStepper::GetInstance()->SetLimitMax(X_AXIS, MAX_LIMIT);  // ms
+	CStepper::GetInstance()->SetLimitMax(Y_AXIS, MAX_LIMIT);
+	CStepper::GetInstance()->SetLimitMax(Z_AXIS, MAX_LIMIT);
+	CStepper::GetInstance()->SetLimitMax(A_AXIS, MAX_LIMIT);
 
 	//CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
 	//CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
@@ -112,10 +117,10 @@ bool CMyControl::IsKill()
 
 void CMyControl::GoToReference()
 {
-  CStepper::GetInstance()->SetPosition(X_AXIS, CStepper::GetInstance()->GetLimitMax(X_AXIS)/2);
-  CStepper::GetInstance()->SetPosition(Y_AXIS, CStepper::GetInstance()->GetLimitMax(Y_AXIS)/2);
-  CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS)/2);
-  CStepper::GetInstance()->SetPosition(A_AXIS, CStepper::GetInstance()->GetLimitMax(A_AXIS)/2);
+  CStepper::GetInstance()->SetPosition(X_AXIS, INIT_PULS1);
+  CStepper::GetInstance()->SetPosition(Y_AXIS, INIT_PULS2);
+  CStepper::GetInstance()->SetPosition(Z_AXIS, INIT_PULS3);
+  CStepper::GetInstance()->SetPosition(A_AXIS, CENTER_LIMIT);
 
   ((CStepperServo*)CStepper::GetInstance())->SetServo();
 }
