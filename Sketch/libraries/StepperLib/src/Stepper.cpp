@@ -63,6 +63,8 @@ void CStepper::InitMemVar()
 	_pod._limitCheck = true;
 	_pod._idleLevel = LevelOff;
 
+	_pod._speedoverride = 128;
+
 //	SetUsual(28000);	=> reduce size => hard coded
 	SetDefaultMaxSpeed(28000, 350, 380);
 	for (axis_t i = 0; i < NUM_AXIS; i++) { SetJerkSpeed(i, 1000); }

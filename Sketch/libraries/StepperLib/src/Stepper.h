@@ -85,6 +85,13 @@ public:
 		LevelOff = 0
 	};
 
+	enum ESpeedOverride
+	{
+		SpeedOverrideMax = 255,
+		SpeedOverride100P = 128,
+		SpeedOverrideMin = 1
+	};
+
 	enum EDumpOptions		// use bit
 	{
 		DumpAll			= 0xff,
@@ -139,6 +146,9 @@ public:
 	void SetDefaultMaxSpeed(steprate_t vMax)					{ _pod._timerMaxDefault = SpeedToTimer(vMax); }
 	void SetDefaultMaxSpeed(steprate_t vMax, steprate_t v0Acc, steprate_t v0Dec)				{ SetDefaultMaxSpeed(vMax); for (axis_t i = 0; i < NUM_AXIS; i++) { SetAcc(i, v0Acc); SetDec(i, v0Dec); } }
 	void SetDefaultMaxSpeed(steprate_t vMax, axis_t axis, steprate_t v0Acc, steprate_t v0Dec)	{ SetDefaultMaxSpeed(vMax); SetAccDec(axis, v0Acc, v0Dec); }
+
+	void SetSpeedOverride(unsigned char speed)					{ _pod._speedoverride = speed;  }
+	unsigned char GetSpeedOverride()							{ return _pod._speedoverride; }
 
 	void SetUsual(steprate_t vMax);
 
@@ -346,7 +356,7 @@ protected:
 		unsigned long	_timerLastCheckEnable;						// timervalue
 
 		unsigned char	_idleLevel;									// level if idle (0..100)
-		unsigned char	dummy;
+		volatile unsigned char	_speedoverride;						// Speed override, 128 => 100% (change in irq possible)
 
 		axisArray_t		_lastdirection;								// for backlash
 		axisArray_t		_invertdirection;							// invert direction
