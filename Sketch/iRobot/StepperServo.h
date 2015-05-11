@@ -27,19 +27,26 @@
 
 #define Servo Adafruit_TiCoServo
 
-//#define DEFAULT_PULSE_WIDTH			1500
 #define MG995_MIN_PULSE_WIDTH       600 
 #define MG995_MAX_PULSE_WIDTH		2000
 #define MG995_MAX_PULSE_DIFF		(MG995_MAX_PULSE_WIDTH-MG995_MIN_PULSE_WIDTH)
 #define MG995_MAX_ROTATION			M_PI
-#define MG955_MsForPI				((MG995_MAX_PULSE_DIFF*M_PI/MG995_MAX_ROTATION))
+#define MG995_MsForPI				((MG995_MAX_PULSE_DIFF*M_PI/MG995_MAX_ROTATION))
 #define MG995_CENTER				(MG995_MIN_PULSE_WIDTH+(MG995_MAX_PULSE_WIDTH-MG995_MIN_PULSE_WIDTH)/2)
+
+// Servo Pins => do not change because of hardware PWM of Adafruit_TiCoServo
+#define MG995_SERVO1_PIN			5
+#define MG995_SERVO2_PIN			6
+#define MG995_SERVO3_PIN			7
+#define MG995_SERVO4_PIN			8
+
+////////////////////////////////////////////////////////
 
 #define CENTER_LIMIT				MG995_CENTER
 #define MIN_LIMIT					MG995_MIN_PULSE_WIDTH
 #define MAX_LIMIT					MG995_MAX_PULSE_WIDTH
 #define MAX_ROTATION				MG995_MAX_ROTATION
-#define MsForPI						MG955_MsForPI
+#define MsForPI						MG995_MsForPI
 
 #define INIT_PULS1					CENTER_LIMIT
 #define INIT_PULS2					CENTER_LIMIT

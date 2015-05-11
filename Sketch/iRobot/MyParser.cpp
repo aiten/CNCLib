@@ -56,20 +56,27 @@ void CMyParser::PrintInfo()
 
 ////////////////////////////////////////////////////////////
 
-void CMyParser::M117Command()
+bool CMyParser::GetAxisAbs(SAxisMove& move)
 {
-	SAxisMove move(false);
-
 	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
 	{
 		axis_t axis;
 		if ((axis = CharToAxis(ch)) < NUM_AXIS) GetAxis(axis, move, AbsolutWithZeroShiftPosition);
 		else break;
 
-		if (CheckError()) { return; }
+		if (CheckError()) { return false; }
 	}
 
-	if (move.axes)
+	return move.axes != 0;
+}
+
+////////////////////////////////////////////////////////
+
+void CMyParser::M117Command()
+{
+	SAxisMove move(false);
+
+	if (GetAxisAbs(move))
 	{
 		CMyMotionControl* pMC = (CMyMotionControl*) CMotionControlBase::GetInstance();
 		pMC->MoveAngle(move.newpos);
@@ -82,20 +89,9 @@ void CMyParser::M118Command()
 {
 	SAxisMove move(false);
 
-	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
-	{
-		axis_t axis;
-		if ((axis = CharToAxis(ch)) < NUM_AXIS) GetAxis(axis, move, AbsolutWithZeroShiftPosition);
-		else break;
-
-		if (CheckError()) { return; }
-	}
-
-	if (move.axes)
+	if (GetAxisAbs(move))
 	{
 		CMyMotionControl* pMC = (CMyMotionControl*) CMotionControlBase::GetInstance();
 		pMC->MoveAngleLog(move.newpos);
 	}
 }
-
-

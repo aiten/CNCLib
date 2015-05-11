@@ -58,11 +58,6 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetLimitMax(Z_AXIS, MAX_LIMIT);
 	CStepper::GetInstance()->SetLimitMax(A_AXIS, MAX_LIMIT);
 
-	//CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
-	//CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
-	//CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, false), true);
-	//CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, false), true);
-
 #if KILL_PIN != -1
 	_kill.Init();
 #endif

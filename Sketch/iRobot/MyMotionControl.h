@@ -48,11 +48,17 @@ protected:
 
 private:
 
-	static bool ToAngle(mm1000_t x, mm1000_t y, mm1000_t z, float& angle1, float& angle2, float& angle3);
-	static bool FromAngle(float angle1, float angle2, float angle3, mm1000_t& x, mm1000_t& y, mm1000_t& z);
+//	static bool ToAngle(mm1000_t x, mm1000_t y, mm1000_t z, float& angle1, float& angle2, float& angle3);
+//	static bool FromAngle(float angle1, float angle2, float angle3, mm1000_t& x, mm1000_t& y, mm1000_t& z);
 
+	static bool ToAngle(const mm1000_t pos[NUM_AXIS], float angle[NUM_AXIS]);
+	static bool FromAngle(const float angle[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
+
+	static void AdjustToAngle(float angle[NUM_AXIS]);
+	static void AdjustFromAngle(float angle[NUM_AXIS]);
+
+	void Test();
 	bool Test(mm1000_t dest1, mm1000_t dest2, mm1000_t dest3,bool printOK);
-
 };
 
 ////////////////////////////////////////////////////////

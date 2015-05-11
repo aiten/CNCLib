@@ -54,6 +54,8 @@ private:
 	void M118Command();
 
 	static void PrintInfo();
+
+	bool GetAxisAbs(SAxisMove& move);
 };
 
 ////////////////////////////////////////////////////////
