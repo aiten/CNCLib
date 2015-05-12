@@ -110,6 +110,8 @@ private:
 
 	void M111Command();		// Set debug level
 
+	void M220Command();		// Set Speed override
+
 	void CommandEscape();
 
 	bool GetFileName(char*buffer);

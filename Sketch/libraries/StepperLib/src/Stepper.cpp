@@ -1750,8 +1750,22 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 			}
 		}
+		
+		timer_t t = pState->_timer*count;
 
-		pState->_sumTimer += pStepper->_steps.NextTail().Timer = pState->_timer*count;
+#ifndef REDUCED_SIZE
+		if (pStepper->GetSpeedOverride()!=CStepper::SpeedOverride100P)
+		{
+			// slower => increase timer
+			unsigned long tl = RoundMulDivU32(t, CStepper::SpeedOverride100P, _pStepper->GetSpeedOverride());
+			if (tl >= TIMER1MAX)	    t = TIMER1MAX;		// to slow
+			else if (tl < TIMER1MIN)    t = TIMER1MIN;		// to fast
+			else						t = (timer_t) tl;
+		}
+#endif
+
+		pStepper->_steps.NextTail().Timer = t;
+		pState->_sumTimer += t;
 
 		n += count;
 		if (count > n)

@@ -94,6 +94,7 @@ bool CGCode3DParser::MCommand(unsigned char mcode)
 		case 111: M111Command(); return true;
 		case 114: _OkMessage = PrintPosition; return true;
 		case 115: _OkMessage = PrintVersion; return true;
+		case 220: M220Command(); return true;
 	}
 
 	return false;
@@ -376,6 +377,27 @@ void CGCode3DParser::M111Command()
 	if (!ExpectEndOfCommand())		{ return; }
 }
 
+////////////////////////////////////////////////////////////
+
+void CGCode3DParser::M220Command()
+{
+	// set speed override
+
+	if (_reader->SkipSpacesToUpper() == 'S')
+	{
+		_reader->GetNextChar();
+		unsigned int speedInP = GetUInt8();
+		if (IsError()) return;
+		CStepper::GetInstance()->SetSpeedOverride((unsigned char)(speedInP * CStepper::SpeedOverride100P / 100));
+	}
+	else
+	{
+		Error(MESSAGE_GCODE_SExpected); 
+		return; 
+	}
+
+	if (!ExpectEndOfCommand())		{ return; }
+}
 
 ////////////////////////////////////////////////////////////
 

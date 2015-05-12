@@ -43,6 +43,9 @@
 #define TIMER1PRESCALE      2			
 #endif
 
+#define TIMER1MIN			4
+#define TIMER1MAX			0xffffffffl
+
 #define TIMER2FREQUENCE		(F_CPU/TIMER2PRESCALE)
 #define TIMER2PRESCALE      2			
 

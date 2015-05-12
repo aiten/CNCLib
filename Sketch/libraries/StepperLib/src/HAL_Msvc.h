@@ -39,6 +39,9 @@
 #define TIMER4FREQUENCE		62500L
 #define TIMER5FREQUENCE		62500L
 
+#define TIMER1MIN			40
+#define TIMER1MAX			0xffff
+
 #define MAXINTERRUPTSPEED	(65535/7)		// maximal possible interrupt rate => steprate_t
 
 #define SPEED_MULTIPLIER_1	0

@@ -147,8 +147,10 @@ public:
 	void SetDefaultMaxSpeed(steprate_t vMax, steprate_t v0Acc, steprate_t v0Dec)				{ SetDefaultMaxSpeed(vMax); for (axis_t i = 0; i < NUM_AXIS; i++) { SetAcc(i, v0Acc); SetDec(i, v0Dec); } }
 	void SetDefaultMaxSpeed(steprate_t vMax, axis_t axis, steprate_t v0Acc, steprate_t v0Dec)	{ SetDefaultMaxSpeed(vMax); SetAccDec(axis, v0Acc, v0Dec); }
 
-	void SetSpeedOverride(unsigned char speed)					{ _pod._speedoverride = speed;  }
+#ifndef REDUCED_SIZE
+	void SetSpeedOverride(unsigned char speed)					{ _pod._speedoverride = speed; }
 	unsigned char GetSpeedOverride()							{ return _pod._speedoverride; }
+#endif
 
 	void SetUsual(steprate_t vMax);
 
