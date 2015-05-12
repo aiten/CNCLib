@@ -128,12 +128,13 @@ protected:
 
 	static const SPageDef _pagedef[];
 
-	typedef signed char rotarypos_t;
+	typedef signed int rotarypos_t;
 
 	enum ERotaryFocus
 	{
 		RotaryMainPage,
-		RotaryMenuPage
+		RotaryMenuPage,
+		RotarySlider
 	};
 
 	unsigned char GetPage();
@@ -159,11 +160,13 @@ protected:
 	void ButtonPressPause();
 	void ButtonPressMenuPage();
 	void ButtonPressShowMenu();
+	void ButtonPressSpeedOverride();
 
 	bool DrawLoopSplash(EnumAsByte(EDrawLoopType) type,void *data);
 	bool DrawLoopDebug(EnumAsByte(EDrawLoopType) type,void *data);	
 	bool DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,void *data);
 	bool DrawLoopPos(EnumAsByte(EDrawLoopType) type, void *data);
+	bool DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, void *data);
 	bool DrawLoopPreset(EnumAsByte(EDrawLoopType) type, void *data);
 	bool DrawLoopStartSD(EnumAsByte(EDrawLoopType) type,void *data);
 	bool DrawLoopPause(EnumAsByte(EDrawLoopType) type,void *data);	

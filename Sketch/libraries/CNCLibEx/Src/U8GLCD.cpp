@@ -334,6 +334,9 @@ bool CU8GLcd::DrawLoopDebug(EnumAsByte(EDrawLoopType) type,void *data)
 	GetU8G().setPrintPos(ToCol(19), ToRow(0 + 2) + PosLineOffset);
 	GetU8G().print(CSDist::ToString(CStepper::GetInstance()->QueuedMovements(), tmp, 2));
 
+	GetU8G().setPrintPos(ToCol(18), ToRow(4) + PosLineOffset);
+	GetU8G().print(CSDist::ToString(RoundMulDivU8(CStepper::GetInstance()->GetSpeedOverride(),100,CStepper::SpeedOverride100P), tmp, 3));
+
 	return true;
 }
 
@@ -361,6 +364,7 @@ bool CU8GLcd::DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,void *data)
 
 	return true;
 }
+
 ////////////////////////////////////////////////////////////
 
 bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, void *data)
@@ -386,8 +390,50 @@ bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, void *data)
 
 	return true;
 }
+
 ////////////////////////////////////////////////////////////
 
+bool CU8GLcd::DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, void *data)
+{
+	if (type == DrawLoopHeader)			return true;
+	if (type==DrawLoopQueryTimerout && _rotaryFocus == RotarySlider)	{ *((unsigned long*)data) = 333; return true; }
+	if (type != DrawLoopDraw)			return DrawLoopDefault(type, data);
+
+	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); GetU8G().print(F("Speed Override"));
+	char tmp[16];
+
+	GetU8G().setPrintPos(ToCol(8), ToRow(2 + 1) + PosLineOffset);
+
+	if (_rotaryFocus == RotarySlider)
+	{
+		unsigned char speedInP = _rotarybutton.GetPageIdx(101);
+		CStepper::GetInstance()->SetSpeedOverride(RoundMulDivU8(speedInP,CStepper::SpeedOverride100P,100));
+		GetU8G().print('>');
+	}
+
+	GetU8G().print(CSDist::ToString(RoundMulDivU8(CStepper::GetInstance()->GetSpeedOverride(),100,CStepper::SpeedOverride100P), tmp, 3));
+
+	if (_rotaryFocus == RotarySlider)
+		GetU8G().print('<');
+
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+
+void CU8GLcd::ButtonPressSpeedOverride()
+{
+	if (_rotaryFocus == RotarySlider)	SetRotaryFocusMainPage();
+	else 
+	{
+		_rotarybutton.SetMinMax(1, 100, false);
+		_rotarybutton.SetPageIdx((rotarypos_t) RoundMulDivU8(CStepper::GetInstance()->GetSpeedOverride(),100,CStepper::SpeedOverride100P)); 
+		_rotaryFocus = RotarySlider;
+		OKBeep();
+	}
+}
+
+////////////////////////////////////////////////////////////
 
 void CU8GLcd::ButtonPressShowMenu()
 {

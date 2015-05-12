@@ -388,7 +388,7 @@ void CGCode3DParser::M220Command()
 		_reader->GetNextChar();
 		unsigned int speedInP = GetUInt8();
 		if (IsError()) return;
-		CStepper::GetInstance()->SetSpeedOverride((unsigned char)(speedInP * CStepper::SpeedOverride100P / 100));
+		CStepper::GetInstance()->SetSpeedOverride(RoundMulDivU8(speedInP,CStepper::SpeedOverride100P,100));
 	}
 	else
 	{
