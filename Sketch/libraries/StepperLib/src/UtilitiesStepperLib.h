@@ -49,7 +49,7 @@ inline unsigned int RoundMulDivUInt(unsigned int v, unsigned int m, unsigned int
 
 inline unsigned char RoundMulDivU8(unsigned char v, unsigned char m, unsigned char d)
 {
-	return ((unsigned int) v * m + d / 2) / d;
+	return (unsigned char) (((unsigned int)v * m + d / 2) / d);
 }
 
 inline unsigned long RoundMulDivU32(unsigned long v, unsigned long m, unsigned long d)

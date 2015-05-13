@@ -386,9 +386,9 @@ void CGCode3DParser::M220Command()
 	if (_reader->SkipSpacesToUpper() == 'S')
 	{
 		_reader->GetNextChar();
-		unsigned int speedInP = GetUInt8();
+		unsigned char speedInP = GetUInt8();
 		if (IsError()) return;
-		CStepper::GetInstance()->SetSpeedOverride(RoundMulDivU8(speedInP,CStepper::SpeedOverride100P,100));
+		CStepper::GetInstance()->SetSpeedOverride(CStepper::PToSpeedOverride(speedInP));
 	}
 	else
 	{

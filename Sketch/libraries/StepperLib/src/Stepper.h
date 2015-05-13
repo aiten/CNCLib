@@ -23,6 +23,7 @@
 #include "HAL.h"
 #include "RingBuffer.h"
 #include "Singleton.h"
+#include "UtilitiesStepperLib.h"
 
 ////////////////////////////////////////////////////////
 //
@@ -148,8 +149,13 @@ public:
 	void SetDefaultMaxSpeed(steprate_t vMax, axis_t axis, steprate_t v0Acc, steprate_t v0Dec)	{ SetDefaultMaxSpeed(vMax); SetAccDec(axis, v0Acc, v0Dec); }
 
 #ifndef REDUCED_SIZE
-	void SetSpeedOverride(unsigned char speed)					{ _pod._speedoverride = speed; }
-	unsigned char GetSpeedOverride()							{ return _pod._speedoverride; }
+
+	void SetSpeedOverride(EnumAsByte(ESpeedOverride) speed)		{ _pod._speedoverride = speed; }
+	EnumAsByte(ESpeedOverride) GetSpeedOverride()				{ return _pod._speedoverride; }
+
+	static unsigned char SpeedOverrideToP(EnumAsByte(ESpeedOverride) speed)	  {	return RoundMulDivU8((unsigned char) speed, 100, SpeedOverride100P);	}
+	static  EnumAsByte(ESpeedOverride) PToSpeedOverride(unsigned char speedP) { return (EnumAsByte(ESpeedOverride)) RoundMulDivU8(speedP, SpeedOverride100P, 100);	}
+
 #endif
 
 	void SetUsual(steprate_t vMax);
@@ -358,7 +364,7 @@ protected:
 		unsigned long	_timerLastCheckEnable;						// timervalue
 
 		unsigned char	_idleLevel;									// level if idle (0..100)
-		volatile unsigned char	_speedoverride;						// Speed override, 128 => 100% (change in irq possible)
+		volatile EnumAsByte(ESpeedOverride)	_speedoverride;			// Speed override, 128 => 100% (change in irq possible)
 
 		axisArray_t		_lastdirection;								// for backlash
 		axisArray_t		_invertdirection;							// invert direction

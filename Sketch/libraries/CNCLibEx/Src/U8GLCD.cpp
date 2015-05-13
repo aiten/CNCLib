@@ -21,6 +21,10 @@
 
 ////////////////////////////////////////////////////////////
 
+#define SPEEDOVERIDESTEPSIZE	5
+
+////////////////////////////////////////////////////////////
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -335,7 +339,7 @@ bool CU8GLcd::DrawLoopDebug(EnumAsByte(EDrawLoopType) type,void *data)
 	GetU8G().print(CSDist::ToString(CStepper::GetInstance()->QueuedMovements(), tmp, 2));
 
 	GetU8G().setPrintPos(ToCol(18), ToRow(4) + PosLineOffset);
-	GetU8G().print(CSDist::ToString(RoundMulDivU8(CStepper::GetInstance()->GetSpeedOverride(),100,CStepper::SpeedOverride100P), tmp, 3));
+	GetU8G().print(CSDist::ToString(CStepper::SpeedOverrideToP(CStepper::GetInstance()->GetSpeedOverride()), tmp, 3));
 
 	return true;
 }
@@ -406,12 +410,12 @@ bool CU8GLcd::DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, void *data)
 
 	if (_rotaryFocus == RotarySlider)
 	{
-		unsigned char speedInP = _rotarybutton.GetPageIdx(101);
-		CStepper::GetInstance()->SetSpeedOverride(RoundMulDivU8(speedInP,CStepper::SpeedOverride100P,100));
+		unsigned char speedInP = _rotarybutton.GetPageIdx(101 / SPEEDOVERIDESTEPSIZE) * SPEEDOVERIDESTEPSIZE;
+		CStepper::GetInstance()->SetSpeedOverride(CStepper::PToSpeedOverride(speedInP));
 		GetU8G().print('>');
 	}
 
-	GetU8G().print(CSDist::ToString(RoundMulDivU8(CStepper::GetInstance()->GetSpeedOverride(),100,CStepper::SpeedOverride100P), tmp, 3));
+	GetU8G().print(CSDist::ToString(CStepper::SpeedOverrideToP(CStepper::GetInstance()->GetSpeedOverride()), tmp, 3));
 
 	if (_rotaryFocus == RotarySlider)
 		GetU8G().print('<');
@@ -426,8 +430,8 @@ void CU8GLcd::ButtonPressSpeedOverride()
 	if (_rotaryFocus == RotarySlider)	SetRotaryFocusMainPage();
 	else 
 	{
-		_rotarybutton.SetMinMax(1, 100, false);
-		_rotarybutton.SetPageIdx((rotarypos_t) RoundMulDivU8(CStepper::GetInstance()->GetSpeedOverride(),100,CStepper::SpeedOverride100P)); 
+		_rotarybutton.SetMinMax(1, 100 / SPEEDOVERIDESTEPSIZE, false);
+		_rotarybutton.SetPageIdx((rotarypos_t)CStepper::SpeedOverrideToP(CStepper::GetInstance()->GetSpeedOverride()) / SPEEDOVERIDESTEPSIZE);
 		_rotaryFocus = RotarySlider;
 		OKBeep();
 	}

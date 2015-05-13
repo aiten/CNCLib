@@ -95,7 +95,7 @@ inline bool IsFloatOK(float val)
 
 inline int ToGRADRound(float a)
 {
-	return a*180.0 / M_PI + 0.5;
+	return (int) (a*180.0 / M_PI + 0.5);
 }
 
 /////////////////////////////////////////////////////////
@@ -173,9 +173,9 @@ bool CMyMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t 
 
 bool CMyMotionControl::ToAngle(const mm1000_t pos[NUM_AXIS], float angle[NUM_AXIS])
 {
-	float y = pos[0];
-	float x = pos[1];
-	float z = pos[2];
+	float y = (float) pos[0];
+	float x = (float) pos[1];
+	float z = (float) pos[2];
 
 	float s = sqrt(x*x + y*y);
 
@@ -209,10 +209,10 @@ bool CMyMotionControl::FromAngle(const float angle[NUM_AXIS], mm1000_t dest[NUM_
 
 	float s = cos(alpha1) * c + E;
 
-	dest[0] = cos(angle[2]) * s;
-	dest[1] = sin(angle[2]) * s;
+	dest[0] = (mm1000_t) (cos(angle[2]) * s);
+	dest[1] = (mm1000_t) (sin(angle[2]) * s);
 
-	dest[2] = H + sin(alpha1)*c;
+	dest[2] = (mm1000_t) (H + sin(alpha1)*c);
 
 	return true;
 }

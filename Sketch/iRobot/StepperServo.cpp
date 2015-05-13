@@ -42,7 +42,7 @@ void CStepperServo::Init()
 
 ////////////////////////////////////////////////////////
 
-void CStepperServo::Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp)
+void CStepperServo::Step(const unsigned char /* steps */[NUM_AXIS], unsigned char /* directionUp */)
 {
 	SetServo();
 }
@@ -72,13 +72,13 @@ void CStepperServo::SetServo()
 
 ////////////////////////////////////////////////////////
 
-void CStepperServo::SetEnable(axis_t axis, unsigned char level, bool /* force */)
+void CStepperServo::SetEnable(axis_t /* axis */, unsigned char /* level */, bool /* force */)
 {
 }
 
 ////////////////////////////////////////////////////////
 
-unsigned char CStepperServo::GetEnable(axis_t axis)
+unsigned char CStepperServo::GetEnable(axis_t /* axis */)
 {
 	return LevelMax;
 }
