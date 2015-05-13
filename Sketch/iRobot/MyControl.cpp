@@ -62,8 +62,6 @@ void CMyControl::Init()
 	_kill.Init();
 #endif
 
-	CGCodeParserBase::Init();
-
 	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(30000));
 	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(10000));
 

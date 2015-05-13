@@ -397,6 +397,11 @@ bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, void *data)
 
 ////////////////////////////////////////////////////////////
 
+inline unsigned char ToPageIdx(unsigned char idx)
+{
+	return idx / SPEEDOVERIDESTEPSIZE;
+}
+
 bool CU8GLcd::DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, void *data)
 {
 	if (type == DrawLoopHeader)			return true;
@@ -410,7 +415,7 @@ bool CU8GLcd::DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, void *data)
 
 	if (_rotaryFocus == RotarySlider)
 	{
-		unsigned char speedInP = _rotarybutton.GetPageIdx(101 / SPEEDOVERIDESTEPSIZE) * SPEEDOVERIDESTEPSIZE;
+		unsigned char speedInP = _rotarybutton.GetPageIdx(ToPageIdx(100)+1) * SPEEDOVERIDESTEPSIZE;
 		CStepper::GetInstance()->SetSpeedOverride(CStepper::PToSpeedOverride(speedInP));
 		GetU8G().print('>');
 	}
@@ -427,11 +432,15 @@ bool CU8GLcd::DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, void *data)
 
 void CU8GLcd::ButtonPressSpeedOverride()
 {
-	if (_rotaryFocus == RotarySlider)	SetRotaryFocusMainPage();
+	if (_rotaryFocus == RotarySlider)	
+	{
+		SetRotaryFocusMainPage();
+		OKBeep();
+	}
 	else 
 	{
-		_rotarybutton.SetMinMax(1, 100 / SPEEDOVERIDESTEPSIZE, false);
-		_rotarybutton.SetPageIdx((rotarypos_t)CStepper::SpeedOverrideToP(CStepper::GetInstance()->GetSpeedOverride()) / SPEEDOVERIDESTEPSIZE);
+		_rotarybutton.SetMinMax(1, ToPageIdx(100), false);
+		_rotarybutton.SetPageIdx((rotarypos_t)ToPageIdx(CStepper::SpeedOverrideToP(CStepper::GetInstance()->GetSpeedOverride())));
 		_rotaryFocus = RotarySlider;
 		OKBeep();
 	}

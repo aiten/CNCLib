@@ -173,8 +173,8 @@ bool CMyMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t 
 
 bool CMyMotionControl::ToAngle(const mm1000_t pos[NUM_AXIS], float angle[NUM_AXIS])
 {
-	float y = (float) pos[0];
-	float x = (float) pos[1];
+	float x = (float) pos[0];
+	float y = (float) pos[1];
 	float z = (float) pos[2];
 
 	float s = sqrt(x*x + y*y);
