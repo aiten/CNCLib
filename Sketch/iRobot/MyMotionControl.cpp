@@ -188,7 +188,20 @@ bool CMyMotionControl::ToAngle(const mm1000_t pos[NUM_AXIS], float angle[NUM_AXI
 
 	angle[0] = (alpha + alpha1);
 	angle[1] = gamma;
-	angle[2] = x == 0 ? 0 : atan(y / x);
+	if (x==0.0)
+	{
+		angle[2] = y>0.0 ? (M_PI/2.0) : -(M_PI/2.0);
+	}
+	else
+	{
+		angle[2] = atan(y / x);
+	}
+	if (x<0.0) 
+	{
+		angle[2] = M_PI + angle[2];
+		if (angle[2] >= M_PI)
+			angle[2] -= 2.0 * M_PI;
+	}
 
 	if (!IsFloatOK(angle[0]))	return false;
 	if (!IsFloatOK(angle[1]))	return false;
@@ -340,6 +353,15 @@ void CMyMotionControl::PrintInfo()
 void CMyMotionControl::Test()
 {
 #ifdef _MSC_VER
+
+	Test(1, 200, H, true);		// max dist
+	Test(0, 200, H, true);		// max dist
+	Test(-1, 200, H, true);		// max dist
+
+	Test(1, -200, H, true);		// max dist
+	Test(0, -200, H, true);		// max dist
+	Test(-1, -200, H, true);		// max dist
+
 
 	Test(SEGMENT1 + SEGMENT2 + SEGMENT3, 0, H, true);		// max dist
 	Test(SEGMENT2 + SEGMENT3, 0, SEGMENT1 + H, true);		// max height

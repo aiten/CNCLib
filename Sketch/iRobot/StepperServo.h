@@ -48,8 +48,8 @@
 #define MAX_ROTATION				MG995_MAX_ROTATION
 #define MsForPI						MG995_MsForPI
 
-#define INIT_PULS1					CENTER_LIMIT
-#define INIT_PULS2					CENTER_LIMIT
+#define INIT_PULS1					1740
+#define INIT_PULS2					1230
 #define INIT_PULS3					CENTER_LIMIT
 
 ////////////////////////////////////////////////////////
