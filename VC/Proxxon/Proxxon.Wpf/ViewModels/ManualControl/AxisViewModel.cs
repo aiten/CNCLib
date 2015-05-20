@@ -59,7 +59,7 @@ namespace Proxxon.Wpf.ViewModels.ManualControl
 			get { return _pos; }
 			set { SetProperty(ref _pos, value); }
 		}
-		public bool Enabled { get { return Global.Instance.Machine.Axis >= AxisIndex && Size > 0m; } }
+		public bool Enabled { get { return Global.Instance.Machine.Axis > AxisIndex && Size > 0m; } }
 
 		#endregion
 
