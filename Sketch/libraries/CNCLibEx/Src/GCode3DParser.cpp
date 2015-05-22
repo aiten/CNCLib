@@ -92,7 +92,7 @@ bool CGCode3DParser::MCommand(unsigned char mcode)
 		case 29: M29Command(); return true;
 		case 30: M30Command(); return true;
 		case 111: M111Command(); return true;
-		case 114: _OkMessage = PrintPosition; return true;
+		case 114: M114Command(); return true;
 		case 115: _OkMessage = PrintVersion; return true;
 		case 220: M220Command(); return true;
 	}
@@ -379,6 +379,24 @@ void CGCode3DParser::M111Command()
 
 ////////////////////////////////////////////////////////////
 
+void CGCode3DParser::M114Command()
+{
+	unsigned char postype = 0;
+
+	if (_reader->SkipSpacesToUpper() == 'S')
+	{
+		_reader->GetNextChar();
+		postype = GetUInt8();
+	}
+
+	_OkMessage = postype == 1 ? PrintRelPosition : PrintAbsPosition;
+
+	if (!ExpectEndOfCommand())		{ return; }
+}
+
+
+////////////////////////////////////////////////////////////
+
 void CGCode3DParser::M220Command()
 {
 	// set speed override
@@ -415,7 +433,7 @@ void CGCode3DParser::CommandEscape()
 
 ////////////////////////////////////////////////////////////
 
-void CGCode3DParser::PrintPosition()
+void CGCode3DParser::PrintAbsPosition()
 {
 	char tmp[16];
 	for (unsigned char i = 0; i < NUM_AXIS; i++)
@@ -423,6 +441,18 @@ void CGCode3DParser::PrintPosition()
 		if (i != 0)
 			StepperSerial.print(MESSAGE_PARSER3D_COLON);
 		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i), tmp, 3));
+	}
+}
+
+void CGCode3DParser::PrintRelPosition()
+{
+	char tmp[16];
+	for (unsigned char i = 0; i < NUM_AXIS; i++)
+	{
+		if (i != 0)
+			StepperSerial.print(MESSAGE_PARSER3D_COLON);
+		
+		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i) - CGCodeParser::GetAllPreset(i), tmp, 3));
 	}
 }
 

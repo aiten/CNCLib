@@ -109,6 +109,7 @@ private:
 	void M30Command();		// Delete file on SD
 
 	void M111Command();		// Set debug level
+	void M114Command();		// Report Position
 
 	void M220Command();		// Set Speed override
 
@@ -125,7 +126,8 @@ private:
 
 protected:
 
-	static void PrintPosition();
+	static void PrintAbsPosition();
+	static void PrintRelPosition();
 	static void PrintVersion();
 };
 
