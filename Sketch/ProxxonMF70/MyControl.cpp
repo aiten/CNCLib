@@ -114,6 +114,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 		case Spindel:			_spindel.Set(level>0);	return;
 		case Coolant:			_coolant.Set(level>0); return;
 		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
+//		case Vacuum:			break;
 	}
 	
 	super::IOControl(tool, level);
@@ -129,6 +130,7 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 		case Spindel:		{ return _spindel.IsOn(); }
 		case Coolant:		{ return _coolant.IsOn(); }
 		case ControllerFan:	{ return _controllerfan.Level; }
+//		case Vacuum:		break;
 	}
 
 	return super::IOControl(tool);

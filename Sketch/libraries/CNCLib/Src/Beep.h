@@ -218,7 +218,7 @@ public:
 		} while (millis() < endmillis);
 	}
 
-	static void Play(const SPlayTone* list)
+	static void PlayPGM(const SPlayTone* list)
 	{
 		ETone freq = (ETone)pgm_read_int(&list->Tone);
 		while (freq != 0)
@@ -228,6 +228,16 @@ public:
 			freq = (ETone)pgm_read_int(&list->Tone);
 		}
 	}
+
+	static void Play(const SPlayTone* list)
+	{
+		while (list->Tone != 0)
+		{
+			Beep(list->Tone, list->Duration);
+			list++;
+		}
+	}
+
 
 private:
 

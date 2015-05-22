@@ -8,7 +8,7 @@
     </Window.DataContext>
     <DockPanel ScrollViewer.VerticalScrollBarVisibility="Auto">
         <StackPanel DockPanel.Dock="Left" Margin="10" HorizontalAlignment="Stretch">
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal">
                 <TextBox Text="{Binding AxisX.Pos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
                 <TextBox Text="{Binding AxisY.Pos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
                 <TextBox Text="{Binding AxisZ.Pos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
@@ -16,6 +16,14 @@
                 <TextBox Text="{Binding AxisB.Pos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
                 <TextBox Text="{Binding AxisC.Pos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
                 <Button Command="{Binding Tool.SendM114Command}" Content="M114 - Pos"  MinWidth="100"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBox Text="{Binding AxisX.RelPos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
+                <TextBox Text="{Binding AxisY.RelPos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
+                <TextBox Text="{Binding AxisZ.RelPos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
+                <TextBox Text="{Binding AxisA.RelPos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
+                <TextBox Text="{Binding AxisB.RelPos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
+                <TextBox Text="{Binding AxisC.RelPos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0">

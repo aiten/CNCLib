@@ -394,7 +394,7 @@ bool CGCodeParser::GCommand(unsigned char gcode)
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParser::MCommand(unsigned char mcode)
+bool CGCodeParser::MCommand(mcode_t mcode)
 {
 	if (super::MCommand(mcode))
 		return true;
@@ -408,6 +408,8 @@ bool CGCodeParser::MCommand(unsigned char mcode)
 		case 7: M07Command(); return true;
 		case 8: M08Command(); return true;
 		case 9: M09Command(); return true;
+		case 10: M10Command(); return true;
+		case 11: M11Command(); return true;
 	}
 	return false;
 }
@@ -906,6 +908,24 @@ void CGCodeParser::M09Command()
 	//coolant off
 	Sync();
 	CControl::GetInstance()->IOControl(CControl::Coolant, 0);
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::M10Command()
+{
+	//vacuum on
+	Sync();
+	CControl::GetInstance()->IOControl(CControl::Vacuum, 1);
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::M11Command()
+{
+	//vacuum off
+	Sync();
+	CControl::GetInstance()->IOControl(CControl::Vacuum, 0);
 }
 
 ////////////////////////////////////////////////////////////

@@ -56,6 +56,7 @@ public:
 		Spindel,
 		Coolant,
 		ControllerFan,
+		Vacuum,
 
 		// input
 		Probe				// Probe for tool lenght

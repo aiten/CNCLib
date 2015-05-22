@@ -76,9 +76,9 @@ protected:
 
 public:
 
-	virtual void Beep(const SPlayTone*)=0;
-	void OKBeep()												{ Beep(SPlayTone::PlayOK); }
-	void ErrorBeep()											{ Beep(SPlayTone::PlayError); }
+	virtual void Beep(const SPlayTone*, bool fromProgmem)=0;
+	void OKBeep()												{ Beep(SPlayTone::PlayOK,true); }
+	void ErrorBeep()											{ Beep(SPlayTone::PlayError,true); }
 
 	bool PostCommand(const __FlashStringHelper* cmd, Stream* output=NULL);
 	bool PostCommand(char* cmd, Stream* output=NULL);

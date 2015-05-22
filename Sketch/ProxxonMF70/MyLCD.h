@@ -39,7 +39,7 @@ private:
 public:
 
 	virtual void Init() override;
-	virtual void Beep(const SPlayTone*) override;
+	virtual void Beep(const SPlayTone*,bool) override;
 
 protected:
 

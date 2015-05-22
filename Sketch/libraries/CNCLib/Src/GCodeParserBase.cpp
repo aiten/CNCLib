@@ -288,7 +288,7 @@ void CGCodeParserBase::Parse()
 				{
 					Error(MESSAGE_GCODE_CommandExpected);		return;
 				}
-				if (!GCommand(GetUInt8()))
+				if (!GCommand(GetGCode()))
 				{
 					Error(MESSAGE_GCODE_UnsupportedGCommand);	return;
 				}
@@ -300,7 +300,7 @@ void CGCodeParserBase::Parse()
 				{
 					Error(MESSAGE_GCODE_MCodeExpected);		return;
 				}
-				if (!MCommand(GetUInt8()))
+				if (!MCommand(GetMCode()))
 				{
 					Info(MESSAGE_GCODE_UnspportedMCodeIgnored); return;
 				}
@@ -356,7 +356,7 @@ bool CGCodeParserBase::GCommand(unsigned char gcode)
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParserBase::MCommand(unsigned char mcode)
+bool CGCodeParserBase::MCommand(mcode_t mcode)
 {
 	switch (mcode)
 	{

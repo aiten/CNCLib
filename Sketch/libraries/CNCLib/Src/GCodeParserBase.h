@@ -27,6 +27,17 @@
 
 ////////////////////////////////////////////////////////
 
+#ifdef REDUCED_SIZE
+typedef unsigned char mcode_t;
+#else
+typedef unsigned int mcode_t ;
+#endif
+
+typedef unsigned char gcode_t;
+
+////////////////////////////////////////////////////////
+
+
 #define FEEDRATE_MIN_ALLOWED	STEPRATETOFEEDRATE(1)		// use VMAX => min is 1Steps/Sec because of CStepper
 #define FEEDRATE_MAX_ALLOWED	feedrate_t(9999999)			// 
 
@@ -65,8 +76,8 @@ protected:
 	virtual bool InitParse() override;
 	virtual void CleanupParse() override;
 
-	virtual bool GCommand(unsigned char gcode);		// check for GCode extension => return true if command is parsed, false to do default
-	virtual bool MCommand(unsigned char mcode);
+	virtual bool GCommand(gcode_t gcode);		// check for GCode extension => return true if command is parsed, false to do default
+	virtual bool MCommand(mcode_t mcode);
 	virtual bool Command(unsigned char ch);
 
 	virtual bool ParseLineNumber(bool setlinenumber);	// line number is ignored! => ret is error
@@ -265,6 +276,18 @@ private:
 	void M110Command();
 
 	/////////////////
+
+#ifdef REDUCED_SIZE
+	mcode_t GetMCode()							{ return GetUint8(); }
+#else
+	mcode_t GetMCode()							{ return GetUInt16(); }
+#endif
+
+	gcode_t GetGCode()							{ return GetUInt8(); }
+
+	/////////////////
+
+
 
 #ifdef _MSC_VER
 public:

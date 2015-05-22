@@ -59,6 +59,13 @@ namespace Proxxon.Wpf.ViewModels.ManualControl
 			get { return _pos; }
 			set { SetProperty(ref _pos, value); }
 		}
+		private string _relPos = "";
+		public string RelPos
+		{
+			get { return _relPos; }
+			set { SetProperty(ref _relPos, value); }
+		}
+
 		public bool Enabled { get { return Global.Instance.Machine.Axis > AxisIndex && Size > 0m; } }
 
 		#endregion

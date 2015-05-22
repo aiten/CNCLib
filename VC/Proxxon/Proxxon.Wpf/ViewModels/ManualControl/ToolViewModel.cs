@@ -64,7 +64,16 @@ namespace Proxxon.Wpf.ViewModels.ManualControl
 				{
 					message = message.Replace("ok", "");
 					message = message.Replace(" ", "");
-					SetPositions(message.Split(':'));
+					SetPositions(message.Split(':'),0);
+				}
+
+				message = Com.SendCommandAndRead("m114 s1");
+
+				if (!string.IsNullOrEmpty(message))
+				{
+					message = message.Replace("ok", "");
+					message = message.Replace(" ", "");
+					SetPositions(message.Split(':'),1);
 				}
 			});
 		}

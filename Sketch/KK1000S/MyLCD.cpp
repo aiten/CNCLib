@@ -88,9 +88,16 @@ void CMyLcd::Init()
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::Beep(const SPlayTone* play)
+void CMyLcd::Beep(const SPlayTone* play,bool fromProgMem)
 {
-	CBeep<CAT(BOARDNAME, _LCD_BEEPER)>::Play(play);
+	if (fromProgMem)
+	{
+		CBeep<CAT(BOARDNAME, _LCD_BEEPER)>::PlayPGM(play);
+	}
+	else
+	{
+		CBeep<CAT(BOARDNAME, _LCD_BEEPER)>::Play(play);
+	}
 }
 
 ////////////////////////////////////////////////////////////

@@ -31,7 +31,7 @@
 
 ////////////////////////////////////////////////////////////
 
-bool CMyParser::MCommand(unsigned char mcode)
+bool CMyParser::MCommand(mcode_t mcode)
 {
 	if (super::MCommand(mcode))
 		return true;

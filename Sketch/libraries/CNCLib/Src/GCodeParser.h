@@ -88,8 +88,8 @@ protected:
 	virtual bool InitParse() override;
 	virtual void CleanupParse() override;
 
-	virtual bool GCommand(unsigned char gcode) override;	// check for GCode extension => return true if command is parsed, false to do default
-	virtual bool MCommand(unsigned char mcode) override;
+	virtual bool GCommand(gcode_t gcode) override;	// check for GCode extension => return true if command is parsed, false to do default
+	virtual bool MCommand(mcode_t mcode) override;
 	virtual bool SetParamCommand(param_t pramNo);
 	virtual bool Command(unsigned char ch) override;
 
@@ -213,6 +213,8 @@ private:
 	void M07Command();		// coolant on
 	void M08Command();		// Coolant on (flood)
 	void M09Command();		// coolant off
+	void M10Command();		// vacuum on
+	void M11Command();		// vacuum off
 
 	/////////////////
 

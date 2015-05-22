@@ -52,9 +52,9 @@ namespace Proxxon.Wpf.ViewModels.ManualControl
 		{
 			Vm.AsyncRunCommand(todo);
 		}
-		protected void SetPositions(string[] positions)
+		protected void SetPositions(string[] positions, int positionIdx)
 		{
-			Vm.SetPositions(positions);
+			Vm.SetPositions(positions, positionIdx);
 		}
 
 		#region Command/CanCommand

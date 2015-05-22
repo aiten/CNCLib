@@ -63,7 +63,7 @@ bool CGCode3DParser::InitParse()
 
 ////////////////////////////////////////////////////////////
 
-bool CGCode3DParser::GCommand(unsigned char gcode)
+bool CGCode3DParser::GCommand(gcode_t gcode)
 {
 	if (super::GCommand(gcode))
 		return true;
@@ -73,7 +73,7 @@ bool CGCode3DParser::GCommand(unsigned char gcode)
 
 ////////////////////////////////////////////////////////////
 
-bool CGCode3DParser::MCommand(unsigned char mcode)
+bool CGCode3DParser::MCommand(mcode_t mcode)
 {
 	if (super::MCommand(mcode))
 		return true;
@@ -95,6 +95,7 @@ bool CGCode3DParser::MCommand(unsigned char mcode)
 		case 114: M114Command(); return true;
 		case 115: _OkMessage = PrintVersion; return true;
 		case 220: M220Command(); return true;
+		case 300: M300Command(); return true;
 	}
 
 	return false;
@@ -415,6 +416,48 @@ void CGCode3DParser::M220Command()
 	}
 
 	if (!ExpectEndOfCommand())		{ return; }
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCode3DParser::M300Command()
+{
+	SPlayTone tone[2];
+	const SPlayTone* mytone=tone;
+	bool fromprogmem = false;
+
+	tone[0].Tone = ToneA4;
+	tone[0].Duration = MilliSecToDuration(500); 
+
+	tone[1].Tone = ToneEnd;
+
+	if (_reader->SkipSpacesToUpper() == 'S')
+	{
+		_reader->GetNextChar();
+		unsigned int freq = GetUInt16();
+		tone[0].Tone = (ETone) FreqToTone(freq);
+		if (IsError()) return;
+
+		switch (freq)
+		{
+			case 1: mytone = SPlayTone::PlayOK; fromprogmem = true; break;
+			case 2: mytone = SPlayTone::PlayError; fromprogmem = true; break;
+			case 3: mytone = SPlayTone::PlayInfo; fromprogmem = true; break;
+		}
+	}
+	if (!fromprogmem && _reader->SkipSpacesToUpper() == 'P')
+	{
+		_reader->GetNextChar();
+		tone[0].Duration = MilliSecToDuration(GetUInt16());
+		if (IsError()) return;
+	}
+
+	if (!ExpectEndOfCommand())		{ return; }
+
+	if (CLcd::GetInstance())
+	{
+		CLcd::GetInstance()->Beep(mytone,fromprogmem);
+	}
 }
 
 ////////////////////////////////////////////////////////////

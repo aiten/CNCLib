@@ -9,6 +9,6 @@ namespace Proxxon.Wpf.ViewModels
 	public interface IManualControlViewModel
 	{
 		void AsyncRunCommand(Action todo);
-		void SetPositions(string[] positions);
+		void SetPositions(string[] positions, int positionIdx);
 	}
 }

@@ -63,8 +63,8 @@ protected:
 	// overrides to exend parser
 
 	virtual bool InitParse() override;						// begin parsing of a command (override for prechecks)
-	virtual bool GCommand(unsigned char gcode) override;
-	virtual bool MCommand(unsigned char mcode) override;
+	virtual bool GCommand(gcode_t gcode) override;
+	virtual bool MCommand(mcode_t mcode) override;
 	virtual bool Command(unsigned char ch) override;
 
 private:
@@ -112,6 +112,7 @@ private:
 	void M114Command();		// Report Position
 
 	void M220Command();		// Set Speed override
+	void M300Command();		// Play Song
 
 	void CommandEscape();
 
