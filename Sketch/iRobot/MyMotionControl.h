@@ -57,8 +57,14 @@ private:
 	static void AdjustToAngle(float angle[NUM_AXIS]);
 	static void AdjustFromAngle(float angle[NUM_AXIS]);
 
-	void Test();
+#ifdef _MSC_VER
+
+public:
+
+	virtual void UnitTest() override;
 	bool Test(mm1000_t dest1, mm1000_t dest2, mm1000_t dest3,bool printOK);
+
+#endif
 };
 
 ////////////////////////////////////////////////////////

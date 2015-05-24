@@ -46,6 +46,7 @@ void CMyControl::Init()
 {
 	StepperSerial.println(MESSAGE_MYCONTROL_Proxxon_Starting);
 
+	CMotionControlBase::GetInstance()->Init();
 	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
 	super::Init();

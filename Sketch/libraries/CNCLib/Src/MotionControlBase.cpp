@@ -41,6 +41,15 @@ template<> CMotionControlBase* CSingleton<CMotionControlBase>::_instance = NULL;
 
 /////////////////////////////////////////////////////////
 
+void CMotionControlBase::Init()
+{
+#ifdef _MSC_VER
+
+	UnitTest();
+
+#endif
+}
+
 void CMotionControlBase::GetPositions(mm1000_t current[NUM_AXIS])
 {
 	memcpy(current, _current, sizeof(_current));

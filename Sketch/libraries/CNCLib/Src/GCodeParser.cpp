@@ -634,15 +634,16 @@ void CGCodeParser::G68Command()
 	G69Command();		// undo
 
 	SAxisMove move(true);
-	mm1000_t radius;
-	mm1000_t offset[3] = { 0, 0 };
+	mm1000_t r;
+	mm1000_t offset[3] = { 0, 0, 0 };
+	mm1000_t vect[3] = { 0, 0, 0 };
 
 	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
 	{
 		axis_t axis;
 		if ((axis = CharToAxis(ch)) < NUM_AXIS)				GetAxis(axis, move, super::_modalstate.IsAbsolut ? AbsolutWithZeroShiftPosition : RelativPosition);
-		else if ((axis = CharToAxisOffset(ch)) < 3)			GetG68IJK(axis, move, offset);
-		else if (ch == 'R')									GetRadius(move, radius);
+		else if ((axis = CharToAxisOffset(ch)) < 3)			GetG68IJK(axis, move, vect);
+		else if (ch == 'R')									GetRadius(move, r);
 		else break;
 
 		if (CheckError()) { return; }
@@ -650,31 +651,28 @@ void CGCodeParser::G68Command()
 
 	if (!move.bitfield.bit.R)					{ Error(MESSAGE_GCODE_MissingR); return; }
 
-	float rot = CMm1000::DegreeToRAD(radius);
+	float rad = CMm1000::DegreeToRAD(r);
 
 	if (move.GetIJK())
 	{
 		//3D
-		float xrot = 0;
-		float yrot = 0;
-		float zrot = 0;
-		((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate(X_AXIS, xrot);
-		((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate(Y_AXIS, yrot);
-		((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate(Z_AXIS, zrot);
+		// see vect with GetG67IJK
 	}
 	else
 	{
 		//2D
-		((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate(super::_modalstate.Plane_axis_2,rot);
+		vect[super::_modalstate.Plane_axis_2] = 1000;
 	}
 
 	for (unsigned char axis = 0; axis < NUM_AXIS; axis++)
 	{
 		if (IsBitSet(move.axes, axis))
 		{
-			((CMotionControl*)(CMotionControlBase::GetInstance()))->SetOffset(axis, move.newpos[axis]);
+			offset[axis] = move.newpos[axis];
 		}
 	}
+
+	((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate(rad,vect,offset);
 
 	SetPositionAfterG68G69();
 }
@@ -683,12 +681,11 @@ void CGCodeParser::G68Command()
 
 void CGCodeParser::G69Command()
 {
-	((CMotionControl*) (CMotionControlBase::GetInstance()))->SetRotate(X_AXIS, 0.0);
-	((CMotionControl*) (CMotionControlBase::GetInstance()))->SetRotate(Y_AXIS, 0.0);
-	((CMotionControl*) (CMotionControlBase::GetInstance()))->SetRotate(Z_AXIS, 0.0);
-	((CMotionControl*) (CMotionControlBase::GetInstance()))->ClearOffset();
-
-	SetPositionAfterG68G69();
+	if (((CMotionControl*) (CMotionControlBase::GetInstance()))->IsRotate())
+	{
+		((CMotionControl*) (CMotionControlBase::GetInstance()))->ClearRotate();
+		SetPositionAfterG68G69();
+	}
 }
 
 ////////////////////////////////////////////////////////////

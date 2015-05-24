@@ -40,9 +40,9 @@ public:
 
 	CMotionControl();
 
-	void SetRotate(axis_t axis, double rad);
-	void SetOffset(axis_t axis, mm1000_t ofs)	{ _rotateOffset[axis] = ofs; }
-	void ClearOffset()							{ for (register unsigned char i=0;i<3;i++) _rotateOffset[i] = 0; }
+	void SetRotate(float rad, const mm1000_t vect[NUM_AXIS], const mm1000_t ofs[NUM_AXIS]);
+	void ClearRotate()												{ _rotateType = NoRotate; }
+	bool IsRotate()													{ return _rotateType != NoRotate; }
 
 protected:
 
@@ -51,19 +51,37 @@ protected:
 
 private:
 
-	struct SRotate
+	float _angle;
+	mm1000_t _vect[3];
+
+	struct SRotate3D			// Performance Array for matrix
 	{
-		float _sin;
-		float _cos;
+		float _vect[3][3];
+		void Set(float rad, const mm1000_t vect[NUM_AXIS]);
+
+		void Rotate(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
 	};
 
-	SRotate  _rotate[3];
+	SRotate3D  _rotate3D;
 	mm1000_t _rotateOffset[3];
 
-	bool _rotateEnabled[3];
+	enum ERotateType
+	{
+		NoRotate=0,
+		Rotate,
+		RotateInvert
+	};
 
-	static void Rotate(const SRotate&rotate, mm1000_t& ax1, mm1000_t& ax2, mm1000_t ofs1, mm1000_t ofs2) ALWAYSINLINE;
-	static void RotateInvert(const SRotate&rotate, mm1000_t& ax1, mm1000_t& ax2, mm1000_t ofs1, mm1000_t ofs2) ALWAYSINLINE;
+	EnumAsByte(ERotateType) _rotateType=NoRotate;
+
+#ifdef _MSC_VER
+
+public:
+
+	virtual void UnitTest() override;
+	bool Test(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXIS],mm1000_t dest[NUM_AXIS], mm1000_t vect[NUM_AXIS], float angle, bool pintOK);
+
+#endif
 };
 
 ////////////////////////////////////////////////////////

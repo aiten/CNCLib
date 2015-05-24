@@ -67,7 +67,6 @@
 
 CMyMotionControl::CMyMotionControl()
 {
-	Test();
 }
 
 /////////////////////////////////////////////////////////
@@ -350,7 +349,7 @@ void CMyMotionControl::PrintInfo()
 
 /////////////////////////////////////////////////////////
 
-void CMyMotionControl::Test()
+void CMyMotionControl::UnitTest()
 {
 #ifdef _MSC_VER
 

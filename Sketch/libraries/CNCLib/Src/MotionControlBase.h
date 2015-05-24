@@ -53,6 +53,7 @@ class CMotionControlBase : public CSingleton<CMotionControlBase>
 
 public:
 
+	void Init();
 	static void InitConversion(ToMm1000_t toMm1000, ToMachine_t toMachine)						{ _ToMm1000 = toMm1000; _ToMachine = toMachine; }
 
 	static mm1000_t ToMm1000(axis_t axis, sdist_t val)											{ return _ToMm1000(axis,val);  }
@@ -83,6 +84,14 @@ private:
 public:
 
 	void SetPositionFromMachine();
+
+public:
+
+#ifdef _MSC_VER
+
+	virtual void UnitTest() {};
+
+#endif
 
 	////////////////////////////////////////
 	// all positions are logical-pos
