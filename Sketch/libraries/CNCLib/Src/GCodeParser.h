@@ -180,6 +180,8 @@ protected:
 	mm1000_t GetRelativePosition(axis_t axis)							{ return GetRelativePosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis); }
 
 	unsigned char GetSubCode();
+	
+	void GetG68IJK(axis_t axis, SAxisMove& move, mm1000_t offset[3]);
 
 private:
 

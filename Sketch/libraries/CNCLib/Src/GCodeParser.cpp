@@ -617,32 +617,62 @@ void CGCodeParser::G43Command()
 
 ////////////////////////////////////////////////////////////
 
+void CGCodeParser::GetG68IJK(axis_t axis, SAxisMove& move, mm1000_t offset[3])
+{
+	if (!CheckAxisSpecified(axis, move.bitfield.all))
+		return;
+
+	_reader->GetNextChar();
+
+	offset[axis] = ParseCoordinate();
+}
+
+////////////////////////////////////////////////////////////
+
 void CGCodeParser::G68Command()
 {
 	G69Command();		// undo
 
 	SAxisMove move(true);
 	mm1000_t radius;
+	mm1000_t offset[3] = { 0, 0 };
 
 	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
 	{
 		axis_t axis;
 		if ((axis = CharToAxis(ch)) < NUM_AXIS)				GetAxis(axis, move, super::_modalstate.IsAbsolut ? AbsolutWithZeroShiftPosition : RelativPosition);
+		else if ((axis = CharToAxisOffset(ch)) < 3)			GetG68IJK(axis, move, offset);
 		else if (ch == 'R')									GetRadius(move, radius);
 		else break;
 
 		if (CheckError()) { return; }
 	}
 
-	if (!move.bitfield.bit.R)					{ Error(MESSAGE_GCODE_IJKandRspecified); return; }
+	if (!move.bitfield.bit.R)					{ Error(MESSAGE_GCODE_MissingR); return; }
 
-	((CMotionControl*) (CMotionControlBase::GetInstance()))->SetRotate(super::_modalstate.Plane_axis_2, radius/1000.0/180*M_PI);
+	float rot = CMm1000::DegreeToRAD(radius);
+
+	if (move.GetIJK())
+	{
+		//3D
+		float xrot = 0;
+		float yrot = 0;
+		float zrot = 0;
+		((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate(X_AXIS, xrot);
+		((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate(Y_AXIS, yrot);
+		((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate(Z_AXIS, zrot);
+	}
+	else
+	{
+		//2D
+		((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate(super::_modalstate.Plane_axis_2,rot);
+	}
 
 	for (unsigned char axis = 0; axis < NUM_AXIS; axis++)
 	{
 		if (IsBitSet(move.axes, axis))
 		{
-			((CMotionControl*) (CMotionControlBase::GetInstance()))->SetOffset(axis, move.newpos[axis]);
+			((CMotionControl*)(CMotionControlBase::GetInstance()))->SetOffset(axis, move.newpos[axis]);
 		}
 	}
 
