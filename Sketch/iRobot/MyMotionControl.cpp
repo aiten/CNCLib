@@ -221,10 +221,10 @@ bool CMyMotionControl::FromAngle(const float angle[NUM_AXIS], mm1000_t dest[NUM_
 
 	float s = cos(alpha1) * c + E;
 
-	dest[0] = (mm1000_t) (cos(angle[2]) * s);
-	dest[1] = (mm1000_t) (sin(angle[2]) * s);
+	dest[0] = (mm1000_t) lrint(cos(angle[2]) * s);
+	dest[1] = (mm1000_t) lrint(sin(angle[2]) * s);
 
-	dest[2] = (mm1000_t) (H + sin(alpha1)*c);
+	dest[2] = (mm1000_t) lrint(H + sin(alpha1)*c);
 
 	return true;
 }
@@ -349,10 +349,10 @@ void CMyMotionControl::PrintInfo()
 
 /////////////////////////////////////////////////////////
 
-void CMyMotionControl::UnitTest()
-{
 #ifdef _MSC_VER
 
+void CMyMotionControl::UnitTest()
+{
 	Test(1, 200, H, true);		// max dist
 	Test(0, 200, H, true);		// max dist
 	Test(-1, 200, H, true);		// max dist
@@ -403,10 +403,7 @@ void CMyMotionControl::UnitTest()
 	Test(200000, 0, 150000, true);
 	Test(200000, 50000, 150000, true);
 	Test(300000, 150000, 200000, true);
-#endif
 }
-
-#ifdef _MSC_VER
 
 inline float ToRAD(float a)   { return (a*180.0 / M_PI); }
 inline float ToMM(mm1000_t a) { return (a / 1000.0); }

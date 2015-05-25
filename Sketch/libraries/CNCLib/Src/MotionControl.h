@@ -44,6 +44,11 @@ public:
 	void ClearRotate()												{ _rotateType = NoRotate; }
 	bool IsRotate()													{ return _rotateType != NoRotate; }
 
+	void SetRotate2D(float alpha, float beta, float gamma, const mm1000_t ofs[NUM_AXIS]);
+	void SetRotate2D(axis_t axis, float rad);
+	void SetOffset2D(const mm1000_t ofs[NUM_AXIS]);
+	void ClearRotate2D()											{ _rotateEnabled2D=0; }
+
 protected:
 
 	virtual void TransformFromMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]) override;
@@ -74,12 +79,52 @@ private:
 
 	EnumAsByte(ERotateType) _rotateType=NoRotate;
 
+private:
+
+	struct SRotate
+	{
+		float _sin;
+		float _cos;
+
+		void Set(float rad)
+		{
+			_sin = sin(rad);
+			_cos = cos(rad);
+		}
+
+		void Rotate(mm1000_t& ax1, mm1000_t& ax2, mm1000_t ofs1, mm1000_t ofs2) const ALWAYSINLINE
+		{
+			// rotate with positive angle
+			float fx = (float) (ax1 - ofs1);
+			float fy = (float) (ax2 - ofs2);
+			ax1 = (mm1000_t)lrint(fx*_cos - fy*_sin) + ofs1;
+			ax2 = (mm1000_t)lrint(fy*_cos + fx*_sin) + ofs2;
+		}
+
+		void RotateInvert(mm1000_t& ax1, mm1000_t& ax2, mm1000_t ofs1, mm1000_t ofs2) const ALWAYSINLINE
+		{
+			// rotate with negative angle (e.g. from 30 to -30)
+			float fx = (float)(ax1 - ofs1);
+			float fy = (float)(ax2 - ofs2);
+			ax1 = (mm1000_t)(fx*_cos + fy*_sin) + ofs1;
+			ax2 = (mm1000_t)(fy*_cos - fx*_sin) + ofs2;
+		}
+	};
+
+	SRotate  _rotate2D[3];
+	mm1000_t _rotateOffset2D[3];
+
+	axisArray_t _rotateEnabled2D=0;
+
 #ifdef _MSC_VER
 
 public:
 
 	virtual void UnitTest() override;
-	bool Test(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXIS],mm1000_t dest[NUM_AXIS], mm1000_t vect[NUM_AXIS], float angle, bool pintOK);
+	bool Test3D(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXIS],mm1000_t dest[NUM_AXIS], mm1000_t vect[NUM_AXIS], float angle, bool pintOK);
+	bool Test2D(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXIS],mm1000_t dest[NUM_AXIS], float angle[NUM_AXIS], bool pintOK);
+
+	bool Test(const mm1000_t src[NUM_AXIS],const mm1000_t ofs[NUM_AXIS],mm1000_t dest[NUM_AXIS], bool printOK, std::function<void()> print);
 
 #endif
 };

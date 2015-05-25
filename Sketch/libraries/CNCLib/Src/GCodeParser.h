@@ -179,8 +179,6 @@ protected:
 	mm1000_t GetRelativePosition(mm1000_t pos, axis_t axis)				{ return pos - GetG92PosPreset(axis) - GetG54PosPreset(axis); }
 	mm1000_t GetRelativePosition(axis_t axis)							{ return GetRelativePosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis); }
 
-	unsigned char GetSubCode();
-	
 	void GetG68IJK(axis_t axis, SAxisMove& move, mm1000_t offset[3]);
 
 private:
@@ -198,6 +196,7 @@ private:
 	void G49Command()							{ _modalstate.ToolHeigtCompensation = 0; }
 	void G53Command();
 	void G68Command();
+	void G68ExtCommand(unsigned char subcode);
 	void G69Command();
 	void G5xCommand(unsigned char idx);
 	void G8xCommand(SAxisMove& move, bool useP, bool useQ, bool useMinQ);

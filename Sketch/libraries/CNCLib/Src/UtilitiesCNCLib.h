@@ -37,7 +37,7 @@ public:
 	char*ToString(char*tmp, unsigned char precision, unsigned char scale)	{ return ToString(_value, tmp, precision, scale); } // right aligned
 	char*ToString(char*tmp, unsigned char scale)							{ return ToString(_value, tmp, scale); }
 
-	static float DegreeToRAD(mm1000_t v)									{ return v / 1000.0 / 180 * M_PI; }
+	static float DegreeToRAD(mm1000_t v)									{ return (float) (v / 1000.0 / 180 * M_PI); }
 };
 
 ////////////////////////////////////////////////////////

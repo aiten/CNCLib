@@ -25,11 +25,13 @@
 
 #include "CNCLib.h"
 #include "MotionControl.h"
+#include "Matrix3x3.h"
 
 /////////////////////////////////////////////////////////
 
 CMotionControl::CMotionControl()
 {
+	SetOffset2D(NULL);
 }
 
 /////////////////////////////////////////////////////////
@@ -53,9 +55,64 @@ void CMotionControl::SetRotate(float rad, const mm1000_t vect[NUM_AXIS], const m
 
 /////////////////////////////////////////////////////////
 
+void CMotionControl::SetRotate2D(float alpha, float beta, float gamma, const mm1000_t ofs[NUM_AXIS])
+{
+	SetRotate2D(X_AXIS, alpha);
+	SetRotate2D(Y_AXIS, beta);
+	SetRotate2D(Z_AXIS, gamma);
+	SetOffset2D(ofs);
+}
+
+/////////////////////////////////////////////////////////
+
+void CMotionControl::SetRotate2D(axis_t axis, float rad)
+{
+	if (rad != 0.0)
+	{
+		BitSet(_rotateEnabled2D,axis);
+		_rotate2D[axis].Set(rad);
+	}
+	else
+	{
+		BitClear(_rotateEnabled2D,axis);
+	}
+}
+
+/////////////////////////////////////////////////////////
+
+void CMotionControl::SetOffset2D(const mm1000_t ofs[NUM_AXIS])
+{
+	if (ofs!=NULL)
+	{
+		memcpy(_rotateOffset2D,ofs,sizeof(_rotateOffset2D));
+	}
+	else
+	{
+		memset(_rotateOffset2D,0,sizeof(_rotateOffset2D));
+	}
+}
+
+
+/////////////////////////////////////////////////////////
+
 void CMotionControl::TransformFromMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
 	super::TransformFromMachinePosition(src, dest);
+
+	if (IsBitSet(_rotateEnabled2D,X_AXIS))
+	{
+		_rotate2D[X_AXIS].RotateInvert(dest[Y_AXIS], dest[Z_AXIS], _rotateOffset[Y_AXIS], _rotateOffset[Z_AXIS]);
+	}
+
+	if (IsBitSet(_rotateEnabled2D,Y_AXIS))
+	{
+		_rotate2D[Y_AXIS].RotateInvert(dest[Z_AXIS], dest[X_AXIS], _rotateOffset[Z_AXIS], _rotateOffset[X_AXIS]);
+	}
+
+	if (IsBitSet(_rotateEnabled2D,Z_AXIS))
+	{
+		_rotate2D[Z_AXIS].RotateInvert(dest[X_AXIS], dest[Y_AXIS], _rotateOffset[X_AXIS], _rotateOffset[Y_AXIS]);
+	}
 
 	if (_rotateType != NoRotate)
 	{
@@ -83,6 +140,21 @@ bool CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t de
 			_rotate3D.Set(_angle,_vect);
 		}
 		_rotate3D.Rotate(dest,_rotateOffset,dest);
+	}
+
+	if (IsBitSet(_rotateEnabled2D,Z_AXIS))
+	{
+		_rotate2D[Z_AXIS].Rotate(dest[X_AXIS],dest[Y_AXIS],_rotateOffset[X_AXIS],_rotateOffset[Y_AXIS]);
+	}
+
+	if (IsBitSet(_rotateEnabled2D,Y_AXIS))
+	{
+		_rotate2D[Y_AXIS].Rotate(dest[Z_AXIS],dest[X_AXIS],_rotateOffset[Z_AXIS],_rotateOffset[X_AXIS]);
+	}
+
+	if (IsBitSet(_rotateEnabled2D,X_AXIS))
+	{
+		_rotate2D[X_AXIS].Rotate(dest[Y_AXIS],dest[Z_AXIS],_rotateOffset[Y_AXIS],_rotateOffset[Z_AXIS]);
 	}
 
 	return true;
@@ -126,18 +198,33 @@ void CMotionControl::SRotate3D::Rotate(const mm1000_t src[NUM_AXIS], const mm100
 	float fy = (float) (src[1] - ofs[1]);
 	float fz = (float) (src[2] - ofs[2]);
 
-	dest[0] = (mm1000_t) (fx*_vect[0][0] + fy*_vect[0][1] + fz*_vect[0][2]) + ofs[0];
-	dest[1] = (mm1000_t) (fx*_vect[1][0] + fy*_vect[1][1] + fz*_vect[1][2]) + ofs[1];
-	dest[2] = (mm1000_t) (fx*_vect[2][0] + fy*_vect[2][1] + fz*_vect[2][2]) + ofs[2];
+
+	dest[0] = (mm1000_t) lrint(fx*_vect[0][0] + fy*_vect[0][1] + fz*_vect[0][2]) + ofs[0];
+	dest[1] = (mm1000_t) lrint(fx*_vect[1][0] + fy*_vect[1][1] + fz*_vect[1][2]) + ofs[1];
+	dest[2] = (mm1000_t) lrint(fx*_vect[2][0] + fy*_vect[2][1] + fz*_vect[2][2]) + ofs[2];
 }
 
 /////////////////////////////////////////////////////////
 
-void CMotionControl::UnitTest()
-{
 #ifdef _MSC_VER
 
+void CMotionControl::UnitTest()
+{
+	return;
+
 	InitConversion(ToMm1000_1_1000, ToMachine_1_1000);
+
+	// matrix test
+
+	float msrc[3][3] = { { 3 , 2 , 3 }, { 4, 5, 6}, { 7, 8, 9,} } ;
+	float mdest[3][3];
+	float mdest2[3][3];
+
+	CMatrix3x3<float>::Invert(msrc,mdest);
+	CMatrix3x3<float>::Invert(mdest,mdest2);
+
+
+	// 3d Test
 
 	mm1000_t ofs[3] = { 0,0,0 };
 
@@ -157,62 +244,97 @@ void CMotionControl::UnitTest()
 
 	mm1000_t vectXYZ[3] = { 100,100,100 };
 
-	float angle=M_PI/3;
-	//angle=0;
+	float angle=M_PI/4;
+	//angle=0.001;
 
-	Test(srcX,ofs,dest,vectX,angle,true);
-	Test(srcX,ofs,dest,vectY,angle,true);
-	Test(srcX,ofs,dest,vectZ,angle,true);
+	Test3D(srcX,ofs,dest,vectX,angle,true);
+	Test3D(srcX,ofs,dest,vectY,angle,true);
+	Test3D(srcX,ofs,dest,vectZ,angle,true);
 
-	Test(srcX,ofs,dest,vectXY,angle,true);
-	Test(srcX,ofs,dest,vectXZ,angle,true);
-	Test(srcX,ofs,dest,vectYZ,angle,true);
+	Test3D(srcX,ofs,dest,vectXY,angle,true);
+	Test3D(srcX,ofs,dest,vectXZ,angle,true);
+	Test3D(srcX,ofs,dest,vectYZ,angle,true);
 
-	Test(srcX,ofs,dest,vectXYZ,angle,true);
+	Test3D(srcX,ofs,dest,vectXYZ,angle,true);
 
-	Test(srcY,ofs,dest,vectX,angle,true);
-	Test(srcY,ofs,dest,vectY,angle,true);
-	Test(srcY,ofs,dest,vectZ,angle,true);
+	Test3D(srcY,ofs,dest,vectX,angle,true);
+	Test3D(srcY,ofs,dest,vectY,angle,true);
+	Test3D(srcY,ofs,dest,vectZ,angle,true);
 			
-	Test(srcY,ofs,dest,vectXY,angle,true);
-	Test(srcY,ofs,dest,vectXZ,angle,true);
-	Test(srcY,ofs,dest,vectYZ,angle,true);
+	Test3D(srcY,ofs,dest,vectXY,angle,true);
+	Test3D(srcY,ofs,dest,vectXZ,angle,true);
+	Test3D(srcY,ofs,dest,vectYZ,angle,true);
 			
-	Test(srcY,ofs,dest,vectXYZ,angle,true);
+	Test3D(srcY,ofs,dest,vectXYZ,angle,true);
 
-	Test(srcZ,ofs,dest,vectX,angle,true);
-	Test(srcZ,ofs,dest,vectY,angle,true);
-	Test(srcZ,ofs,dest,vectZ,angle,true);
+	Test3D(srcZ,ofs,dest,vectX,angle,true);
+	Test3D(srcZ,ofs,dest,vectY,angle,true);
+	Test3D(srcZ,ofs,dest,vectZ,angle,true);
 			
-	Test(srcZ,ofs,dest,vectXY,angle,true);
-	Test(srcZ,ofs,dest,vectXZ,angle,true);
-	Test(srcZ,ofs,dest,vectYZ,angle,true);
+	Test3D(srcZ,ofs,dest,vectXY,angle,true);
+	Test3D(srcZ,ofs,dest,vectXZ,angle,true);
+	Test3D(srcZ,ofs,dest,vectYZ,angle,true);
 			
-	Test(srcZ,ofs,dest,vectXYZ,angle,true);
+	Test3D(srcZ,ofs,dest,vectXYZ,angle,true);
 
-	Test(srcXY,ofs,dest,vectX,angle,true);
-	Test(srcXY,ofs,dest,vectY,angle,true);
-	Test(srcXY,ofs,dest,vectZ,angle,true);
+	Test3D(srcXY,ofs,dest,vectX,angle,true);
+	Test3D(srcXY,ofs,dest,vectY,angle,true);
+	Test3D(srcXY,ofs,dest,vectZ,angle,true);
 			
-	Test(srcXY,ofs,dest,vectXY,angle,true);
-	Test(srcXY,ofs,dest,vectXZ,angle,true);
-	Test(srcXY,ofs,dest,vectYZ,angle,true);
+	Test3D(srcXY,ofs,dest,vectXY,angle,true);
+	Test3D(srcXY,ofs,dest,vectXZ,angle,true);
+	Test3D(srcXY,ofs,dest,vectYZ,angle,true);
 			
-	Test(srcXY,ofs,dest,vectXYZ,angle,true);
-
+	Test3D(srcXY,ofs,dest,vectXYZ,angle,true);
 
 	ClearRotate();
-#endif
-}
 
-#ifdef _MSC_VER
+	// 2D Test
+
+	float angle2dX[3]={ angle,0,0 };
+	float angle2dY[3]={ 0,angle, 0 };
+	float angle2dZ[3]={ 0,0, angle };
+	float angle2d[3]={ angle,angle, angle };
+
+	Test2D(srcXY,ofs,dest,angle2dX,true);
+	Test2D(srcXY,ofs,dest,angle2dY,true);
+	Test2D(srcXY,ofs,dest,angle2dZ,true);
+
+	Test2D(srcXY,ofs,dest,angle2d,true);
+
+	//2d+3D
+
+	SetRotate(angle,vectXYZ,ofs);
+	Test2D(srcXY,ofs,dest,angle2d,true);
+
+	ClearRotate2D();
+	ClearRotate();
+}
 
 inline bool CompareMaxDiff(mm1000_t a, mm1000_t b, mm1000_t diff = 3) { return  (abs(a - b) >= diff); }
 
-bool CMotionControl::Test(const mm1000_t src[NUM_AXIS],const mm1000_t ofs[NUM_AXIS],mm1000_t dest[NUM_AXIS], mm1000_t vect[NUM_AXIS], float angle, bool printOK)
+bool CMotionControl::Test3D(const mm1000_t src[NUM_AXIS],const mm1000_t ofs[NUM_AXIS],mm1000_t dest[NUM_AXIS], mm1000_t vect[NUM_AXIS], float angle, bool printOK)
 {
 	SetRotate(angle,vect,ofs);
+	return Test(src,ofs,dest, printOK, [=] (void) -> void { 
+		DumpArray<mm1000_t, NUM_AXIS>(F("Vector"), vect, false);
+		DumpType<float>(F("Angle"), angle, false);
+	}	);
+}
 
+bool CMotionControl::Test2D(const mm1000_t src[NUM_AXIS],const mm1000_t ofs[NUM_AXIS],mm1000_t dest[NUM_AXIS], float angle[NUM_AXIS], bool printOK)
+{
+	SetOffset2D(ofs);
+	SetRotate2D(0,angle[0]);
+	SetRotate2D(1,angle[1]);
+	SetRotate2D(2,angle[2]);
+	return Test(src,ofs,dest, printOK, [angle] () -> void { 
+		DumpArray<float,NUM_AXIS>(F("Angle"), angle, false);
+	}	);
+}
+
+bool CMotionControl::Test(const mm1000_t src[NUM_AXIS],const mm1000_t ofs[NUM_AXIS],mm1000_t dest[NUM_AXIS], bool printOK, std::function<void()> print)
+{
 	udist_t	to_m[NUM_AXIS];
 	mm1000_t toorig[NUM_AXIS];
 
@@ -238,8 +360,7 @@ bool CMotionControl::Test(const mm1000_t src[NUM_AXIS],const mm1000_t ofs[NUM_AX
 	{
 		DumpArray<mm1000_t, NUM_AXIS>(F("Src"), src, false);
 		DumpArray<mm1000_t, NUM_AXIS>(F("Ofs"), ofs, false);
-		DumpArray<mm1000_t, NUM_AXIS>(F("Vector"), vect, false);
-		DumpType<float>(F("Angle"), angle, false);
+		print();
 		DumpArray<mm1000_t, NUM_AXIS>(F(" =>"), dest, false);
 		DumpArray<mm1000_t, NUM_AXIS>(F("Back"), toorig, false);
 

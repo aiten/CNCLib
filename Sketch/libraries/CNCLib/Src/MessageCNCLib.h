@@ -93,6 +93,7 @@
 #define MESSAGE_PARSER_ValueLessThanMin				StepperMessage("3C","value less than min")
 
 #define MESSAGE_GCODE_SExpected						StepperMessage("3D","S expected")
+#define MESSAGE_GCODE_IJKVECTORIS0					StepperMessage("3E","Vector IJK is 0")
 
 ////////////////////////////////////////////////////////
 

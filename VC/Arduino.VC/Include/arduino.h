@@ -31,6 +31,8 @@
 #include "trace.h"
 #include <assert.h>
 
+#include <functional>
+
 #define OUTPUT 1
 #define INPUT_PULLUP 1
 #define INPUT 2

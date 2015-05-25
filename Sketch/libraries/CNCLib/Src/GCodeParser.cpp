@@ -629,8 +629,72 @@ void CGCodeParser::GetG68IJK(axis_t axis, SAxisMove& move, mm1000_t offset[3])
 
 ////////////////////////////////////////////////////////////
 
+void CGCodeParser::G68ExtCommand(unsigned char subcode)
+{
+	// HA extension:
+	// SubCode == 10		=> with angle
+	// SubCode == 11		=> calculate angle
+
+	SAxisMove move(true);
+	mm1000_t offset[3] = { 0, 0, 0 };
+	mm1000_t vect[3] = { 0, 0, 0 };
+
+	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
+	{
+		axis_t axis;
+		if ((axis = CharToAxis(ch)) < NUM_AXIS)			GetAxis(axis, move, super::_modalstate.IsAbsolut ? AbsolutWithZeroShiftPosition : RelativPosition);
+		else if ((axis = CharToAxisOffset(ch)) < 3)		GetG68IJK(axis, move, vect);
+		else break;
+
+		if (CheckError()) { return; }
+	}
+
+	memcpy(offset, move.newpos,sizeof(offset));	// use current position!
+
+	if (move.axes)
+	{
+		((CMotionControl*)(CMotionControlBase::GetInstance()))->SetOffset2D(offset);
+	}
+	for (unsigned char axis = 0; axis < 3; axis++)
+	{
+		if (IsBitSet(move.GetIJK(), axis))
+		{
+			if (subcode == 11)
+			{
+				float pos1=(float) GetRelativePosition(axis);
+				float pos2;
+				float angle=0;
+				// calc angle
+				if (axis==X_AXIS)
+				{
+					pos2 = (float)GetRelativePosition(Y_AXIS);
+					angle = atan2(pos2,pos1);
+					((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate2D(Z_AXIS,angle);
+				}
+			}
+			else
+			{
+				// angle
+				((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate2D(axis,CMm1000::DegreeToRAD(vect[axis]));
+			}
+		}
+	}
+
+	SetPositionAfterG68G69();
+}
+
+////////////////////////////////////////////////////////////
+
 void CGCodeParser::G68Command()
 {
+	unsigned char subcode = GetSubCode();
+
+	if (subcode==10 || subcode==11)
+	{
+		G68ExtCommand(subcode);
+		return;
+	}
+		
 	G69Command();		// undo
 
 	SAxisMove move(true);
@@ -641,29 +705,18 @@ void CGCodeParser::G68Command()
 	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
 	{
 		axis_t axis;
-		if ((axis = CharToAxis(ch)) < NUM_AXIS)				GetAxis(axis, move, super::_modalstate.IsAbsolut ? AbsolutWithZeroShiftPosition : RelativPosition);
-		else if ((axis = CharToAxisOffset(ch)) < 3)			GetG68IJK(axis, move, vect);
-		else if (ch == 'R')									GetRadius(move, r);
+		if ((axis = CharToAxis(ch)) < NUM_AXIS)			GetAxis(axis, move, super::_modalstate.IsAbsolut ? AbsolutWithZeroShiftPosition : RelativPosition);
+		else if ((axis = CharToAxisOffset(ch)) < 3)		GetG68IJK(axis, move, vect);
+		else if (ch == 'R')								GetRadius(move, r);
 		else break;
 
 		if (CheckError()) { return; }
 	}
 
-	if (!move.bitfield.bit.R)					{ Error(MESSAGE_GCODE_MissingR); return; }
+	if (!move.bitfield.bit.R)			{ Error(MESSAGE_GCODE_MissingR); return; }
 
-	float rad = CMm1000::DegreeToRAD(r);
-
-	if (move.GetIJK())
-	{
-		//3D
-		// see vect with GetG67IJK
-	}
-	else
-	{
-		//2D
-		vect[super::_modalstate.Plane_axis_2] = 1000;
-	}
-
+	memcpy(offset, move.newpos,sizeof(offset));	// use current position!
+/*
 	for (unsigned char axis = 0; axis < NUM_AXIS; axis++)
 	{
 		if (IsBitSet(move.axes, axis))
@@ -671,8 +724,21 @@ void CGCodeParser::G68Command()
 			offset[axis] = move.newpos[axis];
 		}
 	}
+*/
 
-	((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate(rad,vect,offset);
+	if (move.GetIJK())
+	{
+		//3D
+		// see vect with GetG67IJK
+		if (vect[0] == 0 && vect[1] && vect[2])			{ Error(MESSAGE_GCODE_IJKVECTORIS0); return; }
+	}
+	else
+	{
+		//2D
+		vect[super::_modalstate.Plane_axis_2] = 1000;
+	}
+
+	((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate(CMm1000::DegreeToRAD(r),vect,offset);
 
 	SetPositionAfterG68G69();
 }
