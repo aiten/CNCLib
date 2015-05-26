@@ -47,6 +47,7 @@ public:
 	void SetRotate2D(float alpha, float beta, float gamma, const mm1000_t ofs[NUM_AXIS]);
 	void SetRotate2D(axis_t axis, float rad);
 	void SetOffset2D(const mm1000_t ofs[NUM_AXIS]);
+	mm1000_t GetOffset2D(axis_t axis)								{ return _rotateOffset2D[axis]; }
 	void ClearRotate2D()											{ _rotateEnabled2D=0; }
 
 protected:

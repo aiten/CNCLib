@@ -101,17 +101,17 @@ void CMotionControl::TransformFromMachinePosition(const udist_t src[NUM_AXIS], m
 
 	if (IsBitSet(_rotateEnabled2D,X_AXIS))
 	{
-		_rotate2D[X_AXIS].RotateInvert(dest[Y_AXIS], dest[Z_AXIS], _rotateOffset[Y_AXIS], _rotateOffset[Z_AXIS]);
+		_rotate2D[X_AXIS].RotateInvert(dest[Y_AXIS], dest[Z_AXIS], _rotateOffset2D[Y_AXIS], _rotateOffset2D[Z_AXIS]);
 	}
 
 	if (IsBitSet(_rotateEnabled2D,Y_AXIS))
 	{
-		_rotate2D[Y_AXIS].RotateInvert(dest[Z_AXIS], dest[X_AXIS], _rotateOffset[Z_AXIS], _rotateOffset[X_AXIS]);
+		_rotate2D[Y_AXIS].RotateInvert(dest[Z_AXIS], dest[X_AXIS], _rotateOffset2D[Z_AXIS], _rotateOffset2D[X_AXIS]);
 	}
 
 	if (IsBitSet(_rotateEnabled2D,Z_AXIS))
 	{
-		_rotate2D[Z_AXIS].RotateInvert(dest[X_AXIS], dest[Y_AXIS], _rotateOffset[X_AXIS], _rotateOffset[Y_AXIS]);
+		_rotate2D[Z_AXIS].RotateInvert(dest[X_AXIS], dest[Y_AXIS], _rotateOffset2D[X_AXIS], _rotateOffset2D[Y_AXIS]);
 	}
 
 	if (_rotateType != NoRotate)

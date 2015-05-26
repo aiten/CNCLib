@@ -651,7 +651,7 @@ void CGCodeParser::G68ExtCommand(unsigned char subcode)
 
 	memcpy(offset, move.newpos,sizeof(offset));	// use current position!
 
-	if (move.axes)
+	if (move.axes || move.GetIJK()==0)
 	{
 		((CMotionControl*)(CMotionControlBase::GetInstance()))->SetOffset2D(offset);
 	}
@@ -661,13 +661,13 @@ void CGCodeParser::G68ExtCommand(unsigned char subcode)
 		{
 			if (subcode == 11)
 			{
-				float pos1=(float) GetRelativePosition(axis);
+				float pos1=(float) (CMotionControlBase::GetInstance()->GetPosition(axis) - ((CMotionControl*) CMotionControlBase::GetInstance())->GetOffset2D(axis));
 				float pos2;
 				float angle=0;
 				// calc angle
 				if (axis==X_AXIS)
 				{
-					pos2 = (float)GetRelativePosition(Y_AXIS);
+					pos2 = (float)(CMotionControlBase::GetInstance()->GetPosition(Y_AXIS) -  ((CMotionControl*)CMotionControlBase::GetInstance())->GetOffset2D(Y_AXIS));
 					angle = atan2(pos2,pos1);
 					((CMotionControl*)(CMotionControlBase::GetInstance()))->SetRotate2D(Z_AXIS,angle);
 				}
