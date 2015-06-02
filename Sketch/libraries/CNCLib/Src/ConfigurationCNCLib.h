@@ -40,6 +40,8 @@ typedef float expr_t;			// type for expression parser
 typedef long mm1000_t;			// 1/1000 mm
 typedef long feedrate_t;		// mm_1000 / min
 
+#define NUM_AXISXYZ			3			// 3dimensions
+
 ////////////////////////////////////////////////////////
 //
 // Control

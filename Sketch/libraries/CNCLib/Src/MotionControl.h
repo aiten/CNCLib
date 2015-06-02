@@ -40,15 +40,17 @@ public:
 
 	CMotionControl();
 
-	void SetRotate(float rad, const mm1000_t vect[NUM_AXIS], const mm1000_t ofs[NUM_AXIS]);
+	void SetRotate(float rad, const mm1000_t vect[NUM_AXISXYZ], const mm1000_t ofs[NUM_AXISXYZ]);
 	void ClearRotate()												{ _rotateType = NoRotate; }
 	bool IsRotate()													{ return _rotateType != NoRotate; }
 
-	void SetRotate2D(float alpha, float beta, float gamma, const mm1000_t ofs[NUM_AXIS]);
+	void SetRotate2D(float alpha, float beta, float gamma, const mm1000_t ofs[NUM_AXISXYZ]);
 	void SetRotate2D(axis_t axis, float rad);
-	void SetOffset2D(const mm1000_t ofs[NUM_AXIS]);
+	void SetOffset2D(const mm1000_t ofs[NUM_AXISXYZ]);
 	mm1000_t GetOffset2D(axis_t axis)								{ return _rotateOffset2D[axis]; }
 	void ClearRotate2D()											{ _rotateEnabled2D=0; }
+
+	static CMotionControl* GetInstance()							{ return (CMotionControl*) CMotionControlBase::GetInstance(); } 
 
 protected:
 
@@ -58,18 +60,18 @@ protected:
 private:
 
 	float _angle;
-	mm1000_t _vect[3];
+	mm1000_t _vect[NUM_AXISXYZ];
 
 	struct SRotate3D			// Performance Array for matrix
 	{
-		float _vect[3][3];
-		void Set(float rad, const mm1000_t vect[NUM_AXIS]);
+		float _vect[NUM_AXISXYZ][NUM_AXISXYZ];
+		void Set(float rad, const mm1000_t vect[NUM_AXISXYZ]);
 
-		void Rotate(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
+		void Rotate(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXISXYZ], mm1000_t dest[NUM_AXIS]);
 	};
 
 	SRotate3D  _rotate3D;
-	mm1000_t _rotateOffset[3];
+	mm1000_t _rotateOffset[NUM_AXISXYZ];
 
 	enum ERotateType
 	{
@@ -112,8 +114,8 @@ private:
 		}
 	};
 
-	SRotate  _rotate2D[3];
-	mm1000_t _rotateOffset2D[3];
+	SRotate  _rotate2D[NUM_AXISXYZ];
+	mm1000_t _rotateOffset2D[NUM_AXISXYZ];
 
 	axisArray_t _rotateEnabled2D=0;
 
@@ -122,10 +124,10 @@ private:
 public:
 
 	virtual void UnitTest() override;
-	bool Test3D(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXIS],mm1000_t dest[NUM_AXIS], mm1000_t vect[NUM_AXIS], float angle, bool pintOK);
-	bool Test2D(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXIS],mm1000_t dest[NUM_AXIS], float angle[NUM_AXIS], bool pintOK);
+	bool Test3D(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXISXYZ],mm1000_t dest[NUM_AXIS], mm1000_t vect[NUM_AXISXYZ], float angle, bool pintOK);
+	bool Test2D(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXISXYZ],mm1000_t dest[NUM_AXIS], float angle[NUM_AXISXYZ], bool pintOK);
 
-	bool Test(const mm1000_t src[NUM_AXIS],const mm1000_t ofs[NUM_AXIS],mm1000_t dest[NUM_AXIS], bool printOK, std::function<void()> print);
+	bool Test(const mm1000_t src[NUM_AXIS],const mm1000_t ofs[NUM_AXISXYZ],mm1000_t dest[NUM_AXIS], bool printOK, std::function<void()> print);
 
 #endif
 };
