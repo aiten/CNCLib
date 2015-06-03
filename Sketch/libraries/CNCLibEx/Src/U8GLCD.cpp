@@ -397,6 +397,77 @@ bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, void *data)
 
 ////////////////////////////////////////////////////////////
 
+bool CU8GLcd::DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, void *data)
+{
+	if (type == DrawLoopHeader)	return true;
+	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 200000; return true; }
+	if (type != DrawLoopDraw)	return DrawLoopDefault(type, data);
+
+	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); GetU8G().print(F("Rotate 2D"));
+	char tmp[16];
+
+	for (unsigned char i = 0; i < NUM_AXISXYZ; i++)
+	{
+		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		tmp[0] = 0; GetU8G().print(AddAxisName(tmp, i));
+
+		mm1000_t ofs = CMotionControl::GetInstance()->GetOffset2D(i);
+		GetU8G().print(CMm1000::ToString(ofs, tmp, 7, 2));
+
+		if (CMotionControl::GetInstance()->IsEnabled2D(i))
+		{
+			mm1000_t rad = CMm1000::RadToMM100(CMotionControl::GetInstance()->GetAngle2D(i));
+
+			GetU8G().print(F(" "));
+			GetU8G().print(CMm1000::ToString(rad, tmp, 7, 2));
+		}
+	}
+
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+
+bool CU8GLcd::DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, void *data)
+{
+	if (type == DrawLoopHeader)	return true;
+	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 200000; return true; }
+	if (type != DrawLoopDraw)		return DrawLoopDefault(type, data);
+
+	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); GetU8G().print(F("Rotate 3D"));
+
+	if (CMotionControl::GetInstance()->IsRotate())
+	{
+		char tmp[16];
+	
+		for (unsigned char i = 0; i < NUM_AXISXYZ; i++)
+		{
+			mm1000_t ofs  = CMotionControl::GetInstance()->GetOffset(i);
+			mm1000_t vect = CMotionControl::GetInstance()->GetVector(i);
+
+			GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
+			tmp[0] = 0; GetU8G().print(AddAxisName(tmp, i));
+
+			GetU8G().print(CMm1000::ToString(ofs, tmp, 7, 2));
+			GetU8G().print(F(" "));
+			GetU8G().print(CMm1000::ToString(vect, tmp, 7, 2));
+		}
+
+		GetU8G().setPrintPos(ToCol(0), ToRow(NUM_AXISXYZ + 1) + PosLineOffset);
+		GetU8G().print(F("R"));
+		GetU8G().print(CMm1000::ToString(CMm1000::RadToMM100(CMotionControl::GetInstance()->GetAngle()), tmp, 7, 2));
+	}
+	else
+	{
+		GetU8G().setPrintPos(ToCol(6), ToRow(2 + 1) + PosLineOffset);
+		GetU8G().print(F("no rotation"));
+	}
+
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+
 inline unsigned char ToPageIdx(unsigned char idx)
 {
 	return idx / SPEEDOVERIDESTEPSIZE;

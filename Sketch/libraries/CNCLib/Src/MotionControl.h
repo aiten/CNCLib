@@ -43,11 +43,16 @@ public:
 	void SetRotate(float rad, const mm1000_t vect[NUM_AXISXYZ], const mm1000_t ofs[NUM_AXISXYZ]);
 	void ClearRotate()												{ _rotateType = NoRotate; }
 	bool IsRotate()													{ return _rotateType != NoRotate; }
+	mm1000_t GetOffset(axis_t axis)									{ return _rotateOffset[axis]; }
+	mm1000_t GetVector(axis_t axis)									{ return _vect[axis]; }
+	float GetAngle()												{ return _angle; }
 
 	void SetRotate2D(float alpha, float beta, float gamma, const mm1000_t ofs[NUM_AXISXYZ]);
 	void SetRotate2D(axis_t axis, float rad);
 	void SetOffset2D(const mm1000_t ofs[NUM_AXISXYZ]);
 	mm1000_t GetOffset2D(axis_t axis)								{ return _rotateOffset2D[axis]; }
+	float GetAngle2D(axis_t axis)									{ return _rotate2D[axis].GetAngle(); }
+	bool IsEnabled2D(axis_t axis)									{ return IsBitSet(_rotateEnabled2D,axis); }
 	void ClearRotate2D()											{ _rotateEnabled2D=0; }
 
 	static CMotionControl* GetInstance()							{ return (CMotionControl*) CMotionControlBase::GetInstance(); } 
@@ -88,12 +93,16 @@ private:
 	{
 		float _sin;
 		float _cos;
+		float _angle;
 
 		void Set(float rad)
 		{
+			_angle = rad;
 			_sin = sin(rad);
 			_cos = cos(rad);
 		}
+
+		float GetAngle()	{ return _angle; }
 
 		void Rotate(mm1000_t& ax1, mm1000_t& ax2, mm1000_t ofs1, mm1000_t ofs2) const ALWAYSINLINE
 		{

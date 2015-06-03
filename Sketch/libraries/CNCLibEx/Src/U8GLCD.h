@@ -166,6 +166,8 @@ protected:
 	bool DrawLoopDebug(EnumAsByte(EDrawLoopType) type,void *data);	
 	bool DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,void *data);
 	bool DrawLoopPos(EnumAsByte(EDrawLoopType) type, void *data);
+	bool DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, void *data);
+	bool DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, void *data);
 	bool DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, void *data);
 	bool DrawLoopPreset(EnumAsByte(EDrawLoopType) type, void *data);
 	bool DrawLoopStartSD(EnumAsByte(EDrawLoopType) type,void *data);

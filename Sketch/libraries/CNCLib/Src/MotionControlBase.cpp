@@ -67,6 +67,7 @@ mm1000_t CMotionControlBase::GetPosition(axis_t axis)
 void CMotionControlBase::SetPositionFromMachine()
 {
 	TransformFromMachinePosition(CStepper::GetInstance()->GetPositions(), _current);
+	CLcd::InvalidateLcd(); 
 }
 
 /////////////////////////////////////////////////////////

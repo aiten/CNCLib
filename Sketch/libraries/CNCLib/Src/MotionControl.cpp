@@ -145,17 +145,17 @@ bool CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t de
 
 	if (IsBitSet(_rotateEnabled2D,Z_AXIS))
 	{
-		_rotate2D[Z_AXIS].Rotate(dest[X_AXIS],dest[Y_AXIS],_rotateOffset[X_AXIS],_rotateOffset[Y_AXIS]);
+		_rotate2D[Z_AXIS].Rotate(dest[X_AXIS],dest[Y_AXIS],_rotateOffset2D[X_AXIS],_rotateOffset2D[Y_AXIS]);
 	}
 
 	if (IsBitSet(_rotateEnabled2D,Y_AXIS))
 	{
-		_rotate2D[Y_AXIS].Rotate(dest[Z_AXIS],dest[X_AXIS],_rotateOffset[Z_AXIS],_rotateOffset[X_AXIS]);
+		_rotate2D[Y_AXIS].Rotate(dest[Z_AXIS],dest[X_AXIS],_rotateOffset2D[Z_AXIS],_rotateOffset2D[X_AXIS]);
 	}
 
 	if (IsBitSet(_rotateEnabled2D,X_AXIS))
 	{
-		_rotate2D[X_AXIS].Rotate(dest[Y_AXIS],dest[Z_AXIS],_rotateOffset[Y_AXIS],_rotateOffset[Z_AXIS]);
+		_rotate2D[X_AXIS].Rotate(dest[Y_AXIS],dest[Z_AXIS],_rotateOffset2D[Y_AXIS],_rotateOffset2D[Z_AXIS]);
 	}
 
 	return true;
@@ -227,7 +227,7 @@ void CMotionControl::UnitTest()
 
 	// 3d Test
 
-	mm1000_t ofs[3] = { 0,0,0 };
+	mm1000_t ofs[3] = { 1000,2000,71000 };
 
 	mm1000_t srcX[3] = { 1000,0,0 };
 	mm1000_t srcY[3] = { 0,1000,0 };
