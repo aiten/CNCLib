@@ -64,6 +64,13 @@ mm1000_t CMotionControlBase::GetPosition(axis_t axis)
 
 /////////////////////////////////////////////////////////
 
+void CMotionControlBase::GetPosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
+{
+	TransformFromMachinePosition(src, dest);
+}
+
+/////////////////////////////////////////////////////////
+
 void CMotionControlBase::SetPositionFromMachine()
 {
 	TransformFromMachinePosition(CStepper::GetInstance()->GetPositions(), _current);
