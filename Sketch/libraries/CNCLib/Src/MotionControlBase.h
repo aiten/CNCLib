@@ -84,6 +84,7 @@ private:
 public:
 
 	void SetPositionFromMachine();
+	void GetPosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS]);
 
 public:
 
