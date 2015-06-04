@@ -60,5 +60,9 @@ public:
 		}
 */
 	}
+	void Invert(T dest[3][3]) const
+	{
+		Invert(_v,dest);
+	}
 };
 

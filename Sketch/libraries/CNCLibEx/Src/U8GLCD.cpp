@@ -392,9 +392,9 @@ bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, void *data)
 		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
 		tmp[0] = 0; GetU8G().print(AddAxisName(tmp, i));
 
-		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, dest[i]), tmp, 7, 2));
+		GetU8G().print(CMm1000::ToString(dest[i], tmp, 7, 2));
 		GetU8G().print(F(" "));
-		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, dest[i]) - psall, tmp, 7, 2));
+		GetU8G().print(CMm1000::ToString(dest[i] - psall, tmp, 7, 2));
 	}
 
 	return true;
