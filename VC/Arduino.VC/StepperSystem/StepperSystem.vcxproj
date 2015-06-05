@@ -29,6 +29,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\HelpParser.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\LCD.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Matrix3x3.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Matrix4x4.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MenuBase.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MenuBaseText.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MessageCNCLib.h" />

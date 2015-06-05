@@ -26,6 +26,7 @@
 #include "CNCLib.h"
 #include "MotionControl.h"
 #include "Matrix3x3.h"
+#include "Matrix4x4.h"
 
 /////////////////////////////////////////////////////////
 
@@ -224,6 +225,36 @@ void CMotionControl::UnitTest()
 	CMatrix3x3<float>::Invert(msrc,mdest);
 	CMatrix3x3<float>::Invert(mdest,mdest2);
 
+	float v1[3] = { 1.0, 2.0, 3.0 };
+	float v2[3];
+
+	CMatrix3x3<float>::Mul(mdest2,v1,v2);
+
+	// see: http://www.math.kit.edu/iag2/~globke/media/koordinaten.pdf
+	// see: http://de.wikipedia.org/wiki/Denavit-Hartenberg-Transformation
+
+	float theta = 15.0 * 180 / M_PI;		// phi ... einer Rotation \theta_n(Gelenkwinkel) um die z_{ n - 1 }-Achse, damit die x_{ n - 1 }-Achse parallel zu der x_n - Achse liegt
+	float alpha = 10.0 * 180 / M_PI;		// alpha ... einer Rotation \alpha_n (Verwindung) um die x_n-Achse, um die z_{n - 1}-Achse in die z_n-Achse zu überführen
+	float di = 10;							// d ... einer Translation d_n (Gelenkabstand) entlang der z_{n - 1}- Achse bis zu dem Punkt, wo sich z_{n - 1} und x_n schneiden
+	float ai = 5;							// a ... einer Translation a_n (Armelementlänge) entlang der x_n-Achse, um die Ursprünge der Koordinatensysteme in Deckung zu bringen
+
+	float A1[4][4] = 
+	{ 
+		{ cos(theta),	-sin(theta)*cos(alpha),		sin(theta)*sin(alpha),		ai*cos(theta) },
+		{ sin(theta),	cos(theta)*cos(alpha),		-cos(theta)*sin(alpha),		ai*sin(theta) },
+		{ 0,			sin(alpha),					cos(alpha),					di },
+		{ 0,			0,						0,						1	}
+	};
+
+	float A2[4][4];
+
+	CMatrix4x4<float>::InitDenavitHartenberg(A2,alpha,theta,ai,di);
+
+
+	float ps[4] = { 1, 2, 3, 1 };
+	float pd[4];
+
+	CMatrix4x4<float>::Mul(A1, ps, pd);
 
 	// 3d Test
 

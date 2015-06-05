@@ -210,6 +210,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Matrix3x3.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Matrix4x4.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">

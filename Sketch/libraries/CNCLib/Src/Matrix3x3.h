@@ -64,5 +64,12 @@ public:
 	{
 		Invert(_v,dest);
 	}
+
+	static void Mul(const T src[3][3], const T srcV[3], T dest[3])
+	{
+		dest[0] = src[0][0] * srcV[0] + src[0][1] * srcV[1] + src[0][2] * srcV[2];
+		dest[1] = src[1][0] * srcV[0] + src[1][1] * srcV[1] + src[1][2] * srcV[2];
+		dest[2] = src[2][0] * srcV[0] + src[2][1] * srcV[1] + src[2][2] * srcV[2];
+	}
 };
 
