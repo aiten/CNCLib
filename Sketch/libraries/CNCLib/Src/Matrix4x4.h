@@ -60,7 +60,7 @@ public:
 
 		dest[0][0] = costheta;	dest[0][1] = -sintheta;			dest[0][2] = 0;		dest[0][3] = 0;
 		dest[1][0] = sintheta;	dest[1][1] = costheta;			dest[1][2] = 0;		dest[1][3] = 0;
-		dest[2][0] = 0;			dest[2][1] = sinalpha;			dest[2][2] = 1;		dest[2][3] = 0;
+		dest[2][0] = 0;			dest[2][1] = 0;					dest[2][2] = 1;		dest[2][3] = 0;
 		dest[3][0] = 0;			dest[3][1] = 0;					dest[3][2] = 0;		dest[3][3] = 1;
 	}
 
@@ -96,7 +96,7 @@ public:
 
 		dest[0][0] = 1;			dest[0][1] = 0;				dest[0][2] = 0;				dest[0][3] = 0;
 		dest[1][0] = 0;			dest[1][1] = cosalpha;		dest[1][2] = -sinalpha;		dest[1][3] = 0;
-		dest[2][0] = 0;			dest[2][1] = sinalpha		dest[2][2] = cosalpha;		dest[2][3] = 0;
+		dest[2][0] = 0;			dest[2][1] = sinalpha;		dest[2][2] = cosalpha;		dest[2][3] = 0;
 		dest[3][0] = 0;			dest[3][1] = 0;				dest[3][2] = 0;				dest[3][3] = 1;
 	}
 };

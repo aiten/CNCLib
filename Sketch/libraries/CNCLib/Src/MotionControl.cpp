@@ -201,9 +201,9 @@ void CMotionControl::SRotate3D::Rotate(const mm1000_t src[NUM_AXIS], const mm100
 	float fz = (float) (src[2] - ofs[2]);
 
 
-	dest[0] = (mm1000_t) lrint(fx*_vect[0][0] + fy*_vect[0][1] + fz*_vect[0][2]) + ofs[0];
-	dest[1] = (mm1000_t) lrint(fx*_vect[1][0] + fy*_vect[1][1] + fz*_vect[1][2]) + ofs[1];
-	dest[2] = (mm1000_t) lrint(fx*_vect[2][0] + fy*_vect[2][1] + fz*_vect[2][2]) + ofs[2];
+	dest[0] = CMm1000::Convert(fx*_vect[0][0] + fy*_vect[0][1] + fz*_vect[0][2]) + ofs[0];
+	dest[1] = CMm1000::Convert(fx*_vect[1][0] + fy*_vect[1][1] + fz*_vect[1][2]) + ofs[1];
+	dest[2] = CMm1000::Convert(fx*_vect[2][0] + fy*_vect[2][1] + fz*_vect[2][2]) + ofs[2];
 }
 
 /////////////////////////////////////////////////////////

@@ -38,7 +38,9 @@ public:
 	char*ToString(char*tmp, unsigned char scale)							{ return ToString(_value, tmp, scale); }
 
 	static float DegreeToRAD(mm1000_t v)									{ return (float) (v / 1000.0 / 180 * M_PI); }
-	static mm1000_t RadToMM100(float v)										{ return v * 1000 * 180 / M_PI; }
+	static mm1000_t RadToMM100(float v)										{ return Convert(v * 1000 * 180 / M_PI); }
+
+	static mm1000_t Convert(float v)										{ return (mm1000_t) v; }	// do not use lrint => convert to double first
 };
 
 ////////////////////////////////////////////////////////

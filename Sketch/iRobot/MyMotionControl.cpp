@@ -221,10 +221,10 @@ bool CMyMotionControl::FromAngle(const float angle[NUM_AXIS], mm1000_t dest[NUM_
 
 	float s = cos(alpha1) * c + E;
 
-	dest[0] = (mm1000_t) lrint(cos(angle[2]) * s);
-	dest[1] = (mm1000_t) lrint(sin(angle[2]) * s);
+	dest[0] = CMm1000::Convert(cos(angle[2]) * s);
+	dest[1] = CMm1000::Convert(sin(angle[2]) * s);
 
-	dest[2] = (mm1000_t) lrint(H + sin(alpha1)*c);
+	dest[2] = CMm1000::Convert(H + sin(alpha1)*c);
 
 	return true;
 }

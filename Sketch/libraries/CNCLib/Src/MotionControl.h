@@ -27,6 +27,7 @@
 ////////////////////////////////////////////////////////
 
 #include "MotionControlBase.h"
+#include "UtilitiesCNCLib.h"
 
 ////////////////////////////////////////////////////////
 
@@ -109,8 +110,8 @@ private:
 			// rotate with positive angle
 			float fx = (float) (ax1 - ofs1);
 			float fy = (float) (ax2 - ofs2);
-			ax1 = (mm1000_t)lrint(fx*_cos - fy*_sin) + ofs1;
-			ax2 = (mm1000_t)lrint(fy*_cos + fx*_sin) + ofs2;
+			ax1 = CMm1000::Convert(fx*_cos - fy*_sin) + ofs1;
+			ax2 = CMm1000::Convert(fy*_cos + fx*_sin) + ofs2;
 		}
 
 		void RotateInvert(mm1000_t& ax1, mm1000_t& ax2, mm1000_t ofs1, mm1000_t ofs2) const ALWAYSINLINE
@@ -118,8 +119,8 @@ private:
 			// rotate with negative angle (e.g. from 30 to -30)
 			float fx = (float)(ax1 - ofs1);
 			float fy = (float)(ax2 - ofs2);
-			ax1 = (mm1000_t)(fx*_cos + fy*_sin) + ofs1;
-			ax2 = (mm1000_t)(fy*_cos - fx*_sin) + ofs2;
+			ax1 = CMm1000::Convert(fx*_cos + fy*_sin) + ofs1;
+			ax2 = CMm1000::Convert(fy*_cos - fx*_sin) + ofs2;
 		}
 	};
 
