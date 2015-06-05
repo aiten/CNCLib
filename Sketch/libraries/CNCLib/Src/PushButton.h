@@ -36,18 +36,35 @@ public:
 		CHAL::pinMode(_pin, INPUT_PULLUP);
 	}
 
-	bool CheckOn()
+	void Check()
 	{
-		unsigned char value = CHAL::digitalRead(_pin);
-
-		if (_expectButtonOff)
+		bool isOn = CHAL::digitalRead(_pin) == _onvalue;
+		switch (_state)
 		{
-			if (value != _onvalue)
-				_expectButtonOff = false;
-			return false;
-		}
+			case ButtonOff:
+				if (isOn)
+				{
+					_state = ButtonPressed;
+				}
+				break;
 
-		return value == _onvalue;
+			case ButtonPressed:
+				if (!isOn)
+				{
+					_state = ButtonPressedOff;
+				}
+				break;
+
+			case ButtonPressedOff:
+				break;
+
+			case ExpectButtonOff:
+				if (!isOn)
+				{
+					_state = ButtonOff;
+				}
+				break;
+		}
 	}
 
 	bool IsOn()
@@ -55,9 +72,16 @@ public:
 		// check and set state 
 		// button must be released and pressed to get "true" again.
 
-		if (CheckOn())
+		Check();
+
+		if (_state == ButtonPressed)
 		{
-			_expectButtonOff = true;
+			_state = ExpectButtonOff;
+			return true;
+		}
+		else if (_state == ButtonPressedOff)
+		{
+			_state = ButtonOff;
 			return true;
 		}
 		return false;
@@ -67,7 +91,17 @@ protected:
 
 	unsigned char	_pin = 0;
 	unsigned char	_onvalue = 0;
-	bool			_expectButtonOff = false;
+
+	enum EButtonState
+	{
+		ButtonOff = 0,			// button not pressed, not waiting
+		ButtonPressed,			// report pressed if IsOn is called, Button still pressed, wait for Button Off
+		ButtonPressedOff,		// Pressed an released but not reported
+		ExpectButtonOff			// reported on IsOn, wait for "Off"
+	};
+
+	EnumAsByte(EButtonState) _state = ButtonOff;
+
 };
 
 ////////////////////////////////////////////////////////

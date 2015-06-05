@@ -51,7 +51,9 @@ public:
 		dest[3][0] = 0;			dest[3][1] = 0;					 dest[3][2] = 0;				   dest[3][3] = 1.0;
 	}
 
-	static void InitDenavitHartenbergRot(T dest[4][4], float theta)
+	// einer Rotation \theta_n(Gelenkwinkel) um die z_{ n - 1 }-Achse, damit die x_{ n - 1 }-Achse parallel zu der x_n - Achse liegt
+	
+	static void InitDenavitHartenberg1Rot(T dest[4][4], float theta)
 	{
 		float costheta = cos(theta);
 		float sintheta = sin(theta);
@@ -62,5 +64,40 @@ public:
 		dest[3][0] = 0;			dest[3][1] = 0;					dest[3][2] = 0;		dest[3][3] = 1;
 	}
 
+
+	// einer Translation d_n(Gelenkabstand) entlang der z_{ n - 1 }-Achse bis zu dem Punkt, wo sich z_{ n - 1 } und x_n schneiden
+
+	static void InitDenavitHartenberg2Trans(T dest[4][4], float d)
+	{
+
+		dest[0][0] = 1;			dest[0][1] = 0;				dest[0][2] = 0;		dest[0][3] = 0;
+		dest[1][0] = 0;			dest[1][1] = 1;				dest[1][2] = 0;		dest[1][3] = 0;
+		dest[2][0] = 0;			dest[2][1] = 0;				dest[2][2] = 1;		dest[2][3] = d;
+		dest[3][0] = 0;			dest[3][1] = 0;				dest[3][2] = 0;		dest[3][3] = 1;
+	}
+
+	// einer Translation a_n(Armelementlänge) entlang der x_n - Achse, um die Ursprünge der Koordinatensysteme in Deckung zu bringen
+
+	static void InitDenavitHartenberg3Trans(T dest[4][4], float a)
+	{
+
+		dest[0][0] = 1;			dest[0][1] = 0;				dest[0][2] = 0;		dest[0][3] = a;
+		dest[1][0] = 0;			dest[1][1] = 1;				dest[1][2] = 0;		dest[1][3] = 0;
+		dest[2][0] = 0;			dest[2][1] = 0;				dest[2][2] = 1;		dest[2][3] = 0;
+		dest[3][0] = 0;			dest[3][1] = 0;				dest[3][2] = 0;		dest[3][3] = 1;
+	}
+
+	// einer Rotation \alpha_n(Verwindung) um die x_n - Achse, um die z_{ n - 1 }-Achse in die z_n - Achse zu überführen
+
+	static void InitDenavitHartenberg4Rot(T dest[4][4], float alpha)
+	{
+		float cosalpha = cos(alpha);
+		float sinalpha = sin(alpha);
+
+		dest[0][0] = 1;			dest[0][1] = 0;				dest[0][2] = 0;				dest[0][3] = 0;
+		dest[1][0] = 0;			dest[1][1] = cosalpha;		dest[1][2] = -sinalpha;		dest[1][3] = 0;
+		dest[2][0] = 0;			dest[2][1] = sinalpha		dest[2][2] = cosalpha;		dest[2][3] = 0;
+		dest[3][0] = 0;			dest[3][1] = 0;				dest[3][2] = 0;				dest[3][3] = 1;
+	}
 };
 

@@ -125,7 +125,7 @@ void CU8GLcd::TimerInterrupt()
 			break;
 	}
 
-	_rotarypushbutton.CheckOn();
+	_rotarypushbutton.Check();
 }
 
 ////////////////////////////////////////////////////////////
