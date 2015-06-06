@@ -165,6 +165,14 @@ public:
 		MoveM001,
 		MoveHome
 	};
+
+	enum ERotateType
+	{
+		RotateClear,
+		RotateOffset,
+		RotateSetYZ,
+		RotateSetX
+	};
 };
 
 ////////////////////////////////////////////////////////

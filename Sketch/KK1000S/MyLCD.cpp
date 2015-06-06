@@ -76,7 +76,7 @@ PROGMEM const CU8GLcd::SPageDef CU8GLcd::_pagedef[] =
 
 void CMyLcd::Init()
 {
-	_lcd_numaxis=3;
+	_lcd_numaxis = LCD_NUMAXIS;
 
 	CBeep<(CAT(BOARDNAME, _LCD_BEEPER))>::Init();
 	

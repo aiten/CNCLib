@@ -189,8 +189,17 @@ void CMenuBase::MenuButtonPressMove(const SMenuItemDef*def)
 
 ////////////////////////////////////////////////////////////
 
-void CMenuBase::MenuButtonPressRotate(const SMenuItemDef*)
+void CMenuBase::MenuButtonPressRotate(const SMenuItemDef*def)
 {
+	unsigned char req = (unsigned char)(unsigned int)def->GetParam1();
+
+	switch (req)
+	{
+		case RotateClear:		PostCommand(F("g68.10")); break;
+		case RotateOffset:		PostCommand(F("g68.11")); break;
+		case RotateSetYZ:		PostCommand(F("g68.13 j0k0")); break;
+		case RotateSetX:		PostCommand(F("g68.14 i0")); break;
+	}
 }
 
 ////////////////////////////////////////////////////////////

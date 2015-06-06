@@ -65,19 +65,20 @@ protected:
 
 private:
 
-	float _angle;
-	mm1000_t _vect[NUM_AXISXYZ];
+	float		_angle;
+	mm1000_t	_vect[NUM_AXISXYZ];
 
 	struct SRotate3D			// Performance Array for matrix
 	{
 		float _vect[NUM_AXISXYZ][NUM_AXISXYZ];
 		void Set(float rad, const mm1000_t vect[NUM_AXISXYZ]);
 
+		void Rotate(float&x, float&y, float&z);
 		void Rotate(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXISXYZ], mm1000_t dest[NUM_AXIS]);
 	};
 
-	SRotate3D  _rotate3D;
-	mm1000_t _rotateOffset[NUM_AXISXYZ];
+	SRotate3D	_rotate3D;
+	mm1000_t	_rotateOffset[NUM_AXISXYZ];
 
 	enum ERotateType
 	{
@@ -105,22 +106,22 @@ private:
 
 		float GetAngle()	{ return _angle; }
 
-		void Rotate(mm1000_t& ax1, mm1000_t& ax2, mm1000_t ofs1, mm1000_t ofs2) const ALWAYSINLINE
+		void Rotate(float& ax1, float& ax2) const ALWAYSINLINE
 		{
 			// rotate with positive angle
-			float fx = (float) (ax1 - ofs1);
-			float fy = (float) (ax2 - ofs2);
-			ax1 = CMm1000::Convert(fx*_cos - fy*_sin) + ofs1;
-			ax2 = CMm1000::Convert(fy*_cos + fx*_sin) + ofs2;
+			float fx = ax1;
+			float fy = ax2;
+			ax1 = fx*_cos - fy*_sin;
+			ax2 = fy*_cos + fx*_sin;
 		}
 
-		void RotateInvert(mm1000_t& ax1, mm1000_t& ax2, mm1000_t ofs1, mm1000_t ofs2) const ALWAYSINLINE
+		void RotateInvert(float& ax1, float& ax2) const ALWAYSINLINE
 		{
 			// rotate with negative angle (e.g. from 30 to -30)
-			float fx = (float)(ax1 - ofs1);
-			float fy = (float)(ax2 - ofs2);
-			ax1 = CMm1000::Convert(fx*_cos + fy*_sin) + ofs1;
-			ax2 = CMm1000::Convert(fy*_cos - fx*_sin) + ofs2;
+			float fx = ax1;
+			float fy = ax2;
+			ax1 = fx*_cos + fy*_sin;
+			ax2 = fy*_cos - fx*_sin;
 		}
 	};
 

@@ -19,13 +19,15 @@
 
 #pragma once
 
+typedef  unsigned char u8g_fntpgm_uint8_t;
+
 class U8GLIB // : public Stream
 {
 public:
 	void firstPage() {};
 	bool nextPage() { return false; }
 	void drawStr(int, int, const char*) {}
-	void setFont(int) {};
+	void setFont(const u8g_fntpgm_uint8_t *font) { font; };
 	void setPrintPos(int , int )	{ };
 
 	void print(const char)			{ };
@@ -40,7 +42,7 @@ public:
 	U8GLIB_ST7920_128X64_1X(int, int, int) {};
 };
 
-static int u8g_font_unifont;
-static int u8g_font_unifontr;
-static int u8g_font_6x12;
-static int u8g_font_6x10;
+static const u8g_fntpgm_uint8_t* u8g_font_unifont;
+static const u8g_fntpgm_uint8_t* u8g_font_unifontr;
+static const u8g_fntpgm_uint8_t* u8g_font_6x12;
+static const u8g_fntpgm_uint8_t* u8g_font_6x10;

@@ -100,20 +100,31 @@ void CMotionControl::SetOffset2D(const mm1000_t ofs[NUM_AXISXYZ])
 void CMotionControl::TransformFromMachinePosition(const udist_t src[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
 	super::TransformFromMachinePosition(src, dest);
-
-	if (IsBitSet(_rotateEnabled2D,X_AXIS))
+	
+	if (_rotateEnabled2D)
 	{
-		_rotate2D[X_AXIS].RotateInvert(dest[Y_AXIS], dest[Z_AXIS], _rotateOffset2D[Y_AXIS], _rotateOffset2D[Z_AXIS]);
-	}
+		float x = (float)(dest[X_AXIS] - _rotateOffset2D[X_AXIS]);
+		float y = (float)(dest[Y_AXIS] - _rotateOffset2D[Y_AXIS]);
+		float z = (float)(dest[Z_AXIS] - _rotateOffset2D[Z_AXIS]);
 
-	if (IsBitSet(_rotateEnabled2D,Y_AXIS))
-	{
-		_rotate2D[Y_AXIS].RotateInvert(dest[Z_AXIS], dest[X_AXIS], _rotateOffset2D[Z_AXIS], _rotateOffset2D[X_AXIS]);
-	}
+		if (IsBitSet(_rotateEnabled2D, X_AXIS))
+		{
+			_rotate2D[X_AXIS].RotateInvert(y, z);
+		}
 
-	if (IsBitSet(_rotateEnabled2D,Z_AXIS))
-	{
-		_rotate2D[Z_AXIS].RotateInvert(dest[X_AXIS], dest[Y_AXIS], _rotateOffset2D[X_AXIS], _rotateOffset2D[Y_AXIS]);
+		if (IsBitSet(_rotateEnabled2D, Y_AXIS))
+		{
+			_rotate2D[Y_AXIS].RotateInvert(z, x);
+		}
+
+		if (IsBitSet(_rotateEnabled2D, Z_AXIS))
+		{
+			_rotate2D[Z_AXIS].RotateInvert(x, y);
+		}
+
+		dest[X_AXIS] = CMm1000::Convert(x) + _rotateOffset2D[X_AXIS];
+		dest[Y_AXIS] = CMm1000::Convert(y) + _rotateOffset2D[Y_AXIS];
+		dest[Z_AXIS] = CMm1000::Convert(z) + _rotateOffset2D[Z_AXIS];
 	}
 
 	if (_rotateType != NoRotate)
@@ -141,22 +152,34 @@ bool CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t de
 			_rotateType = Rotate;
 			_rotate3D.Set(_angle,_vect);
 		}
-		_rotate3D.Rotate(dest,_rotateOffset,dest);
+		
+		_rotate3D.Rotate(dest, _rotateOffset, dest);
 	}
 
-	if (IsBitSet(_rotateEnabled2D,Z_AXIS))
+	if (_rotateEnabled2D)
 	{
-		_rotate2D[Z_AXIS].Rotate(dest[X_AXIS],dest[Y_AXIS],_rotateOffset2D[X_AXIS],_rotateOffset2D[Y_AXIS]);
-	}
+		float x = (float)(dest[X_AXIS] - _rotateOffset2D[X_AXIS]);
+		float y = (float)(dest[Y_AXIS] - _rotateOffset2D[Y_AXIS]);
+		float z = (float)(dest[Z_AXIS] - _rotateOffset2D[Z_AXIS]);
+		
+		if (IsBitSet(_rotateEnabled2D, Z_AXIS))
+		{
+			_rotate2D[Z_AXIS].Rotate(x, y);
+		}
 
-	if (IsBitSet(_rotateEnabled2D,Y_AXIS))
-	{
-		_rotate2D[Y_AXIS].Rotate(dest[Z_AXIS],dest[X_AXIS],_rotateOffset2D[Z_AXIS],_rotateOffset2D[X_AXIS]);
-	}
+		if (IsBitSet(_rotateEnabled2D, Y_AXIS))
+		{
+			_rotate2D[Y_AXIS].Rotate(z, x);
+		}
 
-	if (IsBitSet(_rotateEnabled2D,X_AXIS))
-	{
-		_rotate2D[X_AXIS].Rotate(dest[Y_AXIS],dest[Z_AXIS],_rotateOffset2D[Y_AXIS],_rotateOffset2D[Z_AXIS]);
+		if (IsBitSet(_rotateEnabled2D, X_AXIS))
+		{
+			_rotate2D[X_AXIS].Rotate(y, z);
+		}
+
+		dest[X_AXIS] = CMm1000::Convert(x) + _rotateOffset2D[X_AXIS];
+		dest[Y_AXIS] = CMm1000::Convert(y) + _rotateOffset2D[Y_AXIS];
+		dest[Z_AXIS] = CMm1000::Convert(z) + _rotateOffset2D[Z_AXIS];
 	}
 
 	return true;
@@ -193,17 +216,30 @@ void CMotionControl::SRotate3D::Set(float rad, const mm1000_t vect[NUM_AXISXYZ])
 
 /////////////////////////////////////////////////////////
 
+void CMotionControl::SRotate3D::Rotate(float&x, float&y, float&z)
+{
+	float fx = x;
+	float fy = y;
+	float fz = z;
+
+	x = fx*_vect[0][0] + fy*_vect[0][1] + fz*_vect[0][2];
+	y = fx*_vect[1][0] + fy*_vect[1][1] + fz*_vect[1][2];
+	z = fx*_vect[2][0] + fy*_vect[2][1] + fz*_vect[2][2];
+}
+
+/////////////////////////////////////////////////////////
+
 void CMotionControl::SRotate3D::Rotate(const mm1000_t src[NUM_AXIS], const mm1000_t ofs[NUM_AXISXYZ], mm1000_t dest[NUM_AXIS])
 {
-	// rotate with positive angle
-	float fx = (float) (src[0] - ofs[0]);
-	float fy = (float) (src[1] - ofs[1]);
-	float fz = (float) (src[2] - ofs[2]);
+	float x = (float)(src[X_AXIS] - ofs[X_AXIS]);
+	float y = (float)(src[Y_AXIS] - ofs[Y_AXIS]);
+	float z = (float)(src[Z_AXIS] - ofs[Z_AXIS]);
 
+	Rotate(x,y,z);
 
-	dest[0] = CMm1000::Convert(fx*_vect[0][0] + fy*_vect[0][1] + fz*_vect[0][2]) + ofs[0];
-	dest[1] = CMm1000::Convert(fx*_vect[1][0] + fy*_vect[1][1] + fz*_vect[1][2]) + ofs[1];
-	dest[2] = CMm1000::Convert(fx*_vect[2][0] + fy*_vect[2][1] + fz*_vect[2][2]) + ofs[2];
+	dest[X_AXIS] = CMm1000::Convert(x) + ofs[X_AXIS];
+	dest[Y_AXIS] = CMm1000::Convert(y) + ofs[Y_AXIS];
+	dest[Z_AXIS] = CMm1000::Convert(z) + ofs[Z_AXIS];
 }
 
 /////////////////////////////////////////////////////////

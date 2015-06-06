@@ -53,10 +53,10 @@ static const char _mG92[] PROGMEM			= "Zero Offset(G92)";
 ////////////////////////////////////////////////////////////
 // Rotate Menu
 
-static const char _mR0[] PROGMEM = "Rotation 0";
-static const char _mRX[] PROGMEM = "Shift X";
-static const char _mRY[] PROGMEM = "Shift Y";
-static const char _mRZ[] PROGMEM = "Shift Z";
+static const char _mRClr[] PROGMEM = "Rotation Clear";
+static const char _mR0[] PROGMEM   = "Rotation Center";
+static const char _mRX[] PROGMEM   = "Rotate YZ";
+static const char _mRYZ[] PROGMEM  = "Rotate X";
 
 ////////////////////////////////////////////////////////////
 // SD Menu

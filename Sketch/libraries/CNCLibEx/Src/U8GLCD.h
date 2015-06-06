@@ -21,6 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
+#include <U8glib.h>
 #include <LCD.h>
 #include <RotaryButton.h>
 #include <PushButton.h>
@@ -30,35 +31,6 @@
 
 #define LCD_GROW 64
 #define LCD_GCOL 128
-
-//#define LCD_NUMAXIS	NUM_AXIS
-
-////////////////////////////////////////////////////////
-
-#if LCD_NUMAXIS > 5
-
-#define DEFAULTFONT u8g_font_6x10
-#define CharHeight  9		// char height
-#define CharAHeight 7		// char A height
-#define CharWidth   6
-
-#define HeadLineOffset (-2)
-#define PosLineOffset  (0)
-
-#else
-
-#define DEFAULTFONT u8g_font_6x12
-#define CharHeight  10		// char height
-#define CharAHeight 7		// char A height
-#define CharWidth   6
-
-#define HeadLineOffset (-2)
-#define PosLineOffset  (1)
-
-#endif
-
-#define TotalRows (LCD_GROW / CharHeight)
-#define TotalCols (LCD_GCOL / CharWidth)
 
 ////////////////////////////////////////////////////////
 
@@ -70,7 +42,7 @@ private:
 
 public:
 
-	CU8GLcd()												{  }
+	CU8GLcd();
 
 	virtual void Init() override;
 
@@ -192,9 +164,16 @@ protected:
 	CPushButton									_rotarypushbutton;
 
 	unsigned char				_lcd_numaxis = NUM_AXIS;
+	unsigned char				_charHeight = 10;
+	unsigned char				_charWidth = 6;
+	const u8g_fntpgm_uint8_t*	_font = u8g_font_6x10;
 
-	static unsigned char ToRow(unsigned char row) { return  (row + 1)*(CharHeight); }
-	static unsigned char ToCol(unsigned char col) { return (col)*(CharWidth); }
+
+	unsigned char ToRow(unsigned char row) { return  (row + 1)*(_charHeight); }
+	unsigned char ToCol(unsigned char col) { return (col)*(_charWidth); }
+
+	unsigned char TotalRows() { return LCD_GROW / _charHeight; }
+	unsigned char TotalCols() { return LCD_GCOL / _charWidth; }
 
 #if defined(__AVR_ARCH__)
 

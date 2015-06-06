@@ -43,13 +43,30 @@
 #include "GCode3DParser.h"
 
 ////////////////////////////////////////////////////////////
+
+#define HeadLineOffset (-2)
+#define PosLineOffset  (_lcd_numaxis > 5 ? 0 : 1)
+
+////////////////////////////////////////////////////////////
 //
 // used full graphic controller for Ramps 1.4 or FD
 //
 ////////////////////////////////////////////////////////////
 
+CU8GLcd::CU8GLcd()
+{  
+}
+
+////////////////////////////////////////////////////////////
+
 void CU8GLcd::Init()
 {
+	if (_lcd_numaxis > 5)
+	{
+		_charHeight = 9;
+		_charWidth = 6;
+		_font = u8g_font_6x12;
+	}
 	super::Init();
 
 	GetMenu().SetMainMenu();
@@ -151,7 +168,8 @@ void CU8GLcd::Command(char* buffer)
 
 	if (*buffer)
 	{
-		for (unsigned char commandlenght = 0; *buffer && commandlenght < TotalCols; commandlenght++)
+		unsigned char totalcols = TotalCols();
+		for (unsigned char commandlenght = 0; *buffer && commandlenght < totalcols; commandlenght++)
 		{
 			QueueCommandHistory(*(buffer++));
 		}
@@ -277,7 +295,7 @@ bool CU8GLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type,void * /* data */)
 	{
 		case DrawLoopSetup:
 		{
-			GetU8G().setFont(DEFAULTFONT);
+			GetU8G().setFont(_font);
 			return true;
 		}
 /*		=> default is 1000
@@ -298,7 +316,7 @@ bool CU8GLcd::DrawLoopSplash(EnumAsByte(EDrawLoopType) type,void *data)
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 200000; return true; }
 	if (type!=DrawLoopDraw)	return DrawLoopDefault(type,data);
 
-	GetU8G().drawStr(ToCol(TotalCols / 2 - 1), ToRow(2), F("by"));
+	GetU8G().drawStr(ToCol(TotalCols() / 2 - 1), ToRow(2), F("by"));
 	GetU8G().drawStr(ToCol(3), ToRow(3), F("H. Aitenbichler"));
 	GetU8G().drawStr(ToCol(5), ToRow(5), F(__DATE__));
 
@@ -652,14 +670,16 @@ bool CU8GLcd::DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,void *data)
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 5000; return true; }
 	if (type!=DrawLoopDraw)		return DrawLoopDefault(type,data);
 
-	char tmp[TotalCols+1];
+	unsigned char totalCols = TotalCols();
+//	char tmp[totalCols + 1];
+	char tmp[40 + 1];
 	unsigned char commandpos = _commandHis.T2HInit();	// idx of \0 of last command
 
-	for (unsigned char i = 0; i < TotalRows - 1; i++)
+	for (unsigned char i = 0; i < totalCols - 1; i++)
 	{
-		GetU8G().setPrintPos(ToCol(0), ToRow(TotalRows - i - 1) + PosLineOffset);
+		GetU8G().setPrintPos(ToCol(0), ToRow(totalCols - i - 1) + PosLineOffset);
 
-		unsigned char idx = TotalCols;
+		unsigned char idx = totalCols;
 		tmp[idx] = 0;
 
 		if (_commandHis.T2HTest(commandpos))
@@ -732,7 +752,7 @@ bool CU8GLcd::DrawLoopMenu(EnumAsByte(EDrawLoopType) type,void *data)
 
 	unsigned char x = 255;
 	const unsigned char printFirstLine = 1;
-	const unsigned char printLastLine = (TotalRows - 1);
+	const unsigned char printLastLine = (TotalRows()- 1);
 	const unsigned char menuEntries = GetMenu().GetMenuDef()->GetItemCount();
 
 	if (_rotaryFocus == RotaryMenuPage)

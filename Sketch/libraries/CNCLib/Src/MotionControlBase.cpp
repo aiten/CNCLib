@@ -113,8 +113,14 @@ void CMotionControlBase::MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrat
 
 		CStepper::GetInstance()->MoveAbs(to_m, GetFeedRate(to_proj, feedrate));
 
-		if (!CStepper::GetInstance()->IsError())
+		if (CStepper::GetInstance()->IsError())
+		{
+			SetPositionFromMachine();
+		}
+		else
+		{
 			memcpy(_current, to, sizeof(_current));
+		}
 	}
 }
 

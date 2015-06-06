@@ -132,10 +132,10 @@ const CMyMenu::SMenuItemDef CMyMenu::_moveMenuItems[] PROGMEM =
 
 const CMyMenu::SMenuItemDef CMyMenu::_rotateMenuItems[] PROGMEM =
 {
-	{ _mR0,   &CMenuBase::MenuButtonPressRotate, (menuparam_t)-1 },
-	{ _mRX,   &CMenuBase::MenuButtonPressRotate, (menuparam_t)X_AXIS },
-	{ _mRY,   &CMenuBase::MenuButtonPressRotate, (menuparam_t)Y_AXIS },
-	{ _mRZ,   &CMenuBase::MenuButtonPressRotate, (menuparam_t)Z_AXIS },
+	{ _mRClr, &CMenuBase::MenuButtonPressRotate, (menuparam_t)RotateClear },
+	{ _mR0,   &CMenuBase::MenuButtonPressRotate, (menuparam_t)RotateOffset },
+	{ _mRYZ,  &CMenuBase::MenuButtonPressRotate, (menuparam_t)RotateSetYZ },
+	{ _mRX,   &CMenuBase::MenuButtonPressRotate, (menuparam_t)RotateSetX },
 	{ _mBack, &CMenuBase::MenuButtonPressMenuBack, &_mainMenu },
 	{ NULL, 0 }
 };
