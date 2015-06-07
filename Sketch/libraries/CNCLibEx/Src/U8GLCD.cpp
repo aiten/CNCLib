@@ -671,15 +671,16 @@ bool CU8GLcd::DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,void *data)
 	if (type!=DrawLoopDraw)		return DrawLoopDefault(type,data);
 
 	unsigned char totalCols = TotalCols();
-//	char tmp[totalCols + 1];
+	unsigned char totalRows = TotalRows();
+	//	char tmp[totalCols + 1];
 	char tmp[40 + 1];
 	unsigned char commandpos = _commandHis.T2HInit();	// idx of \0 of last command
 
-	for (unsigned char i = 0; i < totalCols - 1; i++)
+	for (unsigned char i = 0; i < totalRows - 1; i++)
 	{
-		GetU8G().setPrintPos(ToCol(0), ToRow(totalCols - i - 1) + PosLineOffset);
+		GetU8G().setPrintPos(ToCol(0), ToRow(totalRows - i - 1) + PosLineOffset);
 
-		unsigned char idx = totalCols;
+		unsigned char idx = totalRows;
 		tmp[idx] = 0;
 
 		if (_commandHis.T2HTest(commandpos))
