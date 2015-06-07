@@ -107,20 +107,19 @@ void CMotionControl::TransformFromMachinePosition(const udist_t src[NUM_AXIS], m
 		float y = (float)(dest[Y_AXIS] - _rotateOffset2D[Y_AXIS]);
 		float z = (float)(dest[Z_AXIS] - _rotateOffset2D[Z_AXIS]);
 
+		if (IsBitSet(_rotateEnabled2D, Z_AXIS))
+		{
+			_rotate2D[Z_AXIS].RotateInvert(x, y);
+		}
+		if (IsBitSet(_rotateEnabled2D, Y_AXIS))
+		{
+			_rotate2D[Y_AXIS].RotateInvert(z, x);
+		}
 		if (IsBitSet(_rotateEnabled2D, X_AXIS))
 		{
 			_rotate2D[X_AXIS].RotateInvert(y, z);
 		}
 
-		if (IsBitSet(_rotateEnabled2D, Y_AXIS))
-		{
-			_rotate2D[Y_AXIS].RotateInvert(z, x);
-		}
-
-		if (IsBitSet(_rotateEnabled2D, Z_AXIS))
-		{
-			_rotate2D[Z_AXIS].RotateInvert(x, y);
-		}
 
 		dest[X_AXIS] = CMm1000::Convert(x) + _rotateOffset2D[X_AXIS];
 		dest[Y_AXIS] = CMm1000::Convert(y) + _rotateOffset2D[Y_AXIS];
@@ -162,19 +161,17 @@ bool CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t de
 		float y = (float)(dest[Y_AXIS] - _rotateOffset2D[Y_AXIS]);
 		float z = (float)(dest[Z_AXIS] - _rotateOffset2D[Z_AXIS]);
 		
-		if (IsBitSet(_rotateEnabled2D, Z_AXIS))
+		if (IsBitSet(_rotateEnabled2D, X_AXIS))
 		{
-			_rotate2D[Z_AXIS].Rotate(x, y);
+			_rotate2D[X_AXIS].Rotate(y, z);
 		}
-
 		if (IsBitSet(_rotateEnabled2D, Y_AXIS))
 		{
 			_rotate2D[Y_AXIS].Rotate(z, x);
 		}
-
-		if (IsBitSet(_rotateEnabled2D, X_AXIS))
+		if (IsBitSet(_rotateEnabled2D, Z_AXIS))
 		{
-			_rotate2D[X_AXIS].Rotate(y, z);
+			_rotate2D[Z_AXIS].Rotate(x, y);
 		}
 
 		dest[X_AXIS] = CMm1000::Convert(x) + _rotateOffset2D[X_AXIS];
@@ -248,7 +245,7 @@ void CMotionControl::SRotate3D::Rotate(const mm1000_t src[NUM_AXIS], const mm100
 
 void CMotionControl::UnitTest()
 {
-	//return;
+	return;
 
 	InitConversion(ToMm1000_1_1000, ToMachine_1_1000);
 
