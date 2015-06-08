@@ -680,7 +680,7 @@ bool CU8GLcd::DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,void *data)
 	{
 		GetU8G().setPrintPos(ToCol(0), ToRow(totalRows - i - 1) + PosLineOffset);
 
-		unsigned char idx = totalRows;
+		unsigned char idx = totalCols;
 		tmp[idx] = 0;
 
 		if (_commandHis.T2HTest(commandpos))
