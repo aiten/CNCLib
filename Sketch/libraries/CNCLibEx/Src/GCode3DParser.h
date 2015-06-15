@@ -116,6 +116,8 @@ private:
 
 	void CommandEscape();
 
+	void CNCLibExCommandExtensions();
+
 	bool GetFileName(char*buffer);
 	bool CheckSD();
 	bool DeleteSDFile(char*buffer, bool errorifnotexists);

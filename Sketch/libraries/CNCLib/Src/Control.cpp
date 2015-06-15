@@ -232,11 +232,13 @@ bool CControl::Command(char* buffer, Stream* output)
 
 	if (IsKilled())
 	{
+#ifndef REDUCED_SIZE
 		if (IsResurrectCommand(buffer))		// restart with "!!!"
 		{
 			Resurrect();
 			return true;
 		}
+#endif
 		if (output)
 		{
 			PrintError(output); output->println(MESSAGE_CONTROL_KILLED);

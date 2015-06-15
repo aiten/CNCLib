@@ -278,7 +278,7 @@ private:
 	/////////////////
 
 #ifdef REDUCED_SIZE
-	mcode_t GetMCode()							{ return GetUint8(); }
+	mcode_t GetMCode()							{ return GetUInt8(); }
 #else
 	mcode_t GetMCode()							{ return GetUInt16(); }
 #endif

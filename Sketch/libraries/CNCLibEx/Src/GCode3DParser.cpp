@@ -24,8 +24,10 @@
 #include <stdlib.h>
 #include <arduino.h>
 
-#include <HelpParser.h>
-#include <MotionControlBase.h>
+#include <CNCLib.h>
+#include <CNCLibEx.h>
+
+#include <MotionControl.h>
 
 #include "GCode3DParser.h"
 #include "MessageCNCLibEx.h"
@@ -466,12 +468,40 @@ void CGCode3DParser::CommandEscape()
 {
 	if (_reader->GetChar() == '$')
 		_reader->GetNextChar();
+	
+	CNCLibExCommandExtensions();
+}
 
-	CHelpParser mycommand(GetReader(),GetOutput());
-	mycommand.ParseCommand();
+////////////////////////////////////////////////////////////
 
-	if (mycommand.IsError()) Error(mycommand.GetError());
-	_OkMessage = mycommand.GetOkMessage();
+void CGCode3DParser::CNCLibExCommandExtensions()
+{
+	char ch = _reader->SkipSpaces();
+
+	switch (ch)
+	{
+		case '?':
+		{ 
+			_reader->GetNextChar();
+			if (!ExpectEndOfCommand())		{ return; }
+
+			CStepper::GetInstance()->Dump(CStepper::DumpAll); 
+			break;
+		}
+		case '!':
+		{ 
+			_reader->GetNextChar();
+			if (_reader->IsEOC(SkipSpacesOrComment()))
+			{
+				CControl::GetInstance()->Kill();
+			}
+			else
+			{
+			}
+
+			break;
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////

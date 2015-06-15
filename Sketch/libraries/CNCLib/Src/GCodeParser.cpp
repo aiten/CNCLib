@@ -23,7 +23,6 @@
 #include <StepperLib.h>
 
 #include "Control.h"
-#include "HelpParser.h"
 #include "MotionControlBase.h"
 #include "MotionControl.h"
 #include "ExpressionParser.h"
