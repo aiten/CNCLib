@@ -811,6 +811,7 @@ void CGCodeParser::G68ExtXXCommand(axis_t rotaxis)
 		pos2 = (float)(move.newpos[axis2] -  CMotionControl::GetInstance()->GetOffset2D(axis2) - vect[axis3]) ;
 		angle = atan2(pos2,pos1);
 		CMotionControl::GetInstance()->SetRotate2D(axis3,angle);
+		pos1 = hypotf(pos1,pos2);	// correction for 2nd rotation axis
 	}
 	if (IsBitSet(move.GetIJK(),axis2))
 	{

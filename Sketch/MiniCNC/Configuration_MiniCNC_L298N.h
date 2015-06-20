@@ -25,7 +25,7 @@
 #define ConversionToMm1000 ToMm1000_L298N
 #define ConversionToMachine ToMachine_L298N
 
-#define CNC_MAXSPEED 500
+#define CNC_MAXSPEED 375
 #define CNC_ACC  65
 #define CNC_DEC  75
 
