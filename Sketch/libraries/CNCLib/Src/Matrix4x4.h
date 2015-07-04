@@ -21,21 +21,81 @@
 
 //////////////////////////////////////////
 
+#define MATRIX4X4SIZEX	4
+#define MATRIX4X4SIZEY	4
+
+
 template <class T>
 class CMatrix4x4
 {
 private:
 	
-	T _v[4][4];
+	T _v[MATRIX4X4SIZEX][MATRIX4X4SIZEY];
 
 public:
 
-	static void Mul(const T src[4][4], const T srcV[4], T dest[4])
+	CMatrix4x4<T>(const CMatrix4x4<T>& src)
+	{
+		memcpy(_v, src._v, sizeof(_v));
+	}
+	CMatrix4x4<T>()
+	{
+	}
+	CMatrix4x4<T>(const T dest[MATRIX4X4SIZEX][MATRIX4X4SIZEY])
+	{
+		memcpy(_v, dest, sizeof(_v));
+	}
+
+	static void Zero(T dest[MATRIX4X4SIZEX][MATRIX4X4SIZEY])
+	{
+		memset(dest, 0, sizeof(T)*MATRIX4X4SIZEX*MATRIX4X4SIZEY);
+	}
+	void Zero()
+	{
+		Zero(_v);
+	}
+
+	static void Mul(const T src[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T srcV[MATRIX4X4SIZEX], T dest[MATRIX4X4SIZEX])
 	{
 		dest[0] = src[0][0] * srcV[0] + src[0][1] * srcV[1] + src[0][2] * srcV[2] + src[0][3] * srcV[3];
 		dest[1] = src[1][0] * srcV[0] + src[1][1] * srcV[1] + src[1][2] * srcV[2] + src[1][3] * srcV[3];
 		dest[2] = src[2][0] * srcV[0] + src[2][1] * srcV[1] + src[2][2] * srcV[2] + src[2][3] * srcV[3];
 		dest[3] = src[3][0] * srcV[0] + src[3][1] * srcV[1] + src[3][2] * srcV[2] + src[3][3] * srcV[3];
+	}
+
+	void Mul(const T srcV[MATRIX4X4SIZEX], T destV[MATRIX4X4SIZEX]) const
+	{
+		Mul(_v, srcV, destV);
+	}
+
+	static void Mul(const T src1[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T src2[MATRIX4X4SIZEX][MATRIX4X4SIZEY], T dest[MATRIX4X4SIZEX][MATRIX4X4SIZEY])
+	{
+		Zero(dest);
+		for (unsigned char i = 0; i < MATRIX4X4SIZEX; i++)
+			for (unsigned char k = 0; k < MATRIX4X4SIZEY; k++)
+				for (unsigned char j = 0; j < MATRIX4X4SIZEX; j++)		// col/rows of src1/src2
+				{
+					dest[i][k] = dest[i][k] + src1[i][j] * src2[j][k];
+				}
+	}
+
+	CMatrix4x4<T>& operator*=(const CMatrix4x4<T>& rhs)
+	{
+		CMatrix4x4<T> src2(*this);
+		Mul(rhs._v, src2._v, _v);
+		return *this;
+	}
+
+	T Get(unsigned char x, unsigned char y) const
+	{
+		return _v[x][y];
+	}
+
+	friend CMatrix4x4<T> operator*(const CMatrix4x4<T>& lhs,const CMatrix4x4<T>& rhs)
+	{
+		CMatrix4x4<T> dest;
+		Mul(lhs._v, rhs._v, dest._v);
+		return dest;
 	}
 
 	static void InitDenavitHartenberg(T dest[4][4], float alpha, float theta, float a, float d)
@@ -51,6 +111,12 @@ public:
 		dest[3][0] = 0;			dest[3][1] = 0;					 dest[3][2] = 0;				   dest[3][3] = 1.0;
 	}
 
+	CMatrix4x4<T>& InitDenavitHartenberg(float alpha, float theta, float a, float d)
+	{
+		InitDenavitHartenberg(_v, alpha,  theta,  a,  d):
+		return *this;
+	}
+
 	// einer Rotation \theta_n(Gelenkwinkel) um die z_{ n - 1 }-Achse, damit die x_{ n - 1 }-Achse parallel zu der x_n - Achse liegt
 	
 	static void InitDenavitHartenberg1Rot(T dest[4][4], float theta)
@@ -64,6 +130,11 @@ public:
 		dest[3][0] = 0;			dest[3][1] = 0;					dest[3][2] = 0;		dest[3][3] = 1;
 	}
 
+	CMatrix4x4<T>& InitDenavitHartenberg1Rot(float theta)
+	{
+		InitDenavitHartenberg1Rot(_v, theta);
+		return *this;
+	}
 
 	// einer Translation d_n(Gelenkabstand) entlang der z_{ n - 1 }-Achse bis zu dem Punkt, wo sich z_{ n - 1 } und x_n schneiden
 
@@ -76,6 +147,12 @@ public:
 		dest[3][0] = 0;			dest[3][1] = 0;				dest[3][2] = 0;		dest[3][3] = 1;
 	}
 
+	CMatrix4x4<T>& InitDenavitHartenberg2Trans(float d)
+	{
+		InitDenavitHartenberg2Trans(_v, d);
+		return *this;
+	}
+
 	// einer Translation a_n(Armelementlänge) entlang der x_n - Achse, um die Ursprünge der Koordinatensysteme in Deckung zu bringen
 
 	static void InitDenavitHartenberg3Trans(T dest[4][4], float a)
@@ -85,6 +162,12 @@ public:
 		dest[1][0] = 0;			dest[1][1] = 1;				dest[1][2] = 0;		dest[1][3] = 0;
 		dest[2][0] = 0;			dest[2][1] = 0;				dest[2][2] = 1;		dest[2][3] = 0;
 		dest[3][0] = 0;			dest[3][1] = 0;				dest[3][2] = 0;		dest[3][3] = 1;
+	}
+
+	CMatrix4x4<T>& InitDenavitHartenberg3Trans(float a)
+	{
+		InitDenavitHartenberg3Trans(_v, a);
+		return *this;
 	}
 
 	// einer Rotation \alpha_n(Verwindung) um die x_n - Achse, um die z_{ n - 1 }-Achse in die z_n - Achse zu überführen
@@ -99,5 +182,12 @@ public:
 		dest[2][0] = 0;			dest[2][1] = sinalpha;		dest[2][2] = cosalpha;		dest[2][3] = 0;
 		dest[3][0] = 0;			dest[3][1] = 0;				dest[3][2] = 0;				dest[3][3] = 1;
 	}
+
+	CMatrix4x4<T>& InitDenavitHartenberg4Rot(float a)
+	{
+		InitDenavitHartenberg4Rot(_v, a);
+		return *this;
+	}
+
 };
 
