@@ -74,11 +74,6 @@ void CMyMenu::MenuButtonPressFuerElise(const SMenuItemDef* /* def */)
 }
 
 ////////////////////////////////////////////////////////////
-
-static const char _g92[] PROGMEM		= "g92";
-static const char _m21[] PROGMEM		= "m21";
-
-////////////////////////////////////////////////////////////
 // Main Menu
 
 const CMyMenu::SMenuItemDef CMyMenu::_mainMenuItems[] PROGMEM =

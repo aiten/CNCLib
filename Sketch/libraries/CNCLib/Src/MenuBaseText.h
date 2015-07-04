@@ -89,3 +89,9 @@ static const char _mmSD[] PROGMEM		= "SD Card";
 static const char _mmExtra[] PROGMEM	= "Extra";
 
 ////////////////////////////////////////////////////////////
+// Commands
+
+static const char _g92[] PROGMEM = "g92";
+static const char _m21[] PROGMEM = "m21";
+
+////////////////////////////////////////////////////////////

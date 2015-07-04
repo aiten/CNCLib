@@ -186,9 +186,9 @@ bool CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t de
 
 void CMotionControl::SRotate3D::Set(float rad, const mm1000_t vect[NUM_AXISXYZ])
 {
-	float n1=vect[0];
-	float n2=-vect[1];		// Y_AXIS 
-	float n3=vect[2];
+	float n1 = (float) vect[0];
+	float n2 = (float) -vect[1];		// Y_AXIS 
+	float n3 = (float) vect[2];
 
 	float vectorlenght = sqrt(n1*n1 + n2*n2 + n3*n3);
 	n1 = n1 / vectorlenght;
@@ -266,10 +266,10 @@ void CMotionControl::UnitTest()
 	// see: http://www.math.kit.edu/iag2/~globke/media/koordinaten.pdf
 	// see: http://de.wikipedia.org/wiki/Denavit-Hartenberg-Transformation
 
-	float theta = 15.0 * 180 / M_PI;		// phi ... einer Rotation \theta_n(Gelenkwinkel) um die z_{ n - 1 }-Achse, damit die x_{ n - 1 }-Achse parallel zu der x_n - Achse liegt
-	float alpha = 10.0 * 180 / M_PI;		// alpha ... einer Rotation \alpha_n (Verwindung) um die x_n-Achse, um die z_{n - 1}-Achse in die z_n-Achse zu überführen
-	float di = 10;							// d ... einer Translation d_n (Gelenkabstand) entlang der z_{n - 1}- Achse bis zu dem Punkt, wo sich z_{n - 1} und x_n schneiden
-	float ai = 5;							// a ... einer Translation a_n (Armelementlänge) entlang der x_n-Achse, um die Ursprünge der Koordinatensysteme in Deckung zu bringen
+	float theta = (float)(15.0 * 180 / M_PI);	// phi ... einer Rotation \theta_n(Gelenkwinkel) um die z_{ n - 1 }-Achse, damit die x_{ n - 1 }-Achse parallel zu der x_n - Achse liegt
+	float alpha = (float)(10.0 * 180 / M_PI);	// alpha ... einer Rotation \alpha_n (Verwindung) um die x_n-Achse, um die z_{n - 1}-Achse in die z_n-Achse zu überführen
+	float di = 10;								// d ... einer Translation d_n (Gelenkabstand) entlang der z_{n - 1}- Achse bis zu dem Punkt, wo sich z_{n - 1} und x_n schneiden
+	float ai = 5;								// a ... einer Translation a_n (Armelementlänge) entlang der x_n-Achse, um die Ursprünge der Koordinatensysteme in Deckung zu bringen
 
 	float A1[4][4] = 
 	{ 
@@ -309,7 +309,7 @@ void CMotionControl::UnitTest()
 
 	mm1000_t vectXYZ[3] = { 100,100,100 };
 
-	float angle=M_PI/6;
+	float angle=(float)(M_PI/6);
 	//angle=0.001;
 
 	Test3D(srcX,ofs,dest,vectX,angle,true);
