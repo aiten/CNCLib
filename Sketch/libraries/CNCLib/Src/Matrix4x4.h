@@ -55,6 +55,39 @@ public:
 		Zero(_v);
 	}
 
+	static bool Compare(const T src1[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T src2[MATRIX4X4SIZEX][MATRIX4X4SIZEY])
+	{
+		for (unsigned char i = 0; i < MATRIX4X4SIZEX; i++)
+			for (unsigned char k = 0; k < MATRIX4X4SIZEY; k++)
+				if (src1[i][k] != src2[i][k])
+					return false;
+		return true;
+	}
+
+	static bool IsEqual(T s1, T s2)
+	{
+
+	}
+
+	static bool Compare(const T src1[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T src2[MATRIX4X4SIZEX][MATRIX4X4SIZEY], T epsilon)
+	{
+		for (unsigned char i = 0; i < MATRIX4X4SIZEX; i++)
+			for (unsigned char k = 0; k < MATRIX4X4SIZEY; k++)
+				if (src1[i][k] != src2[i][k])
+					return false;
+		return true;
+	}
+
+	bool operator==(const CMatrix4x4<T>& cmp) const
+	{
+		return Compare(this->_v, cmp._v);
+	}
+
+	bool operator!=(const CMatrix4x4<T>& cmp) const
+	{
+		return !Compare(this->_v, cmp._v);
+	}
+
 	static void Mul(const T src[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T srcV[MATRIX4X4SIZEX], T dest[MATRIX4X4SIZEX])
 	{
 		dest[0] = src[0][0] * srcV[0] + src[0][1] * srcV[1] + src[0][2] * srcV[2] + src[0][3] * srcV[3];
@@ -91,12 +124,34 @@ public:
 		return _v[x][y];
 	}
 
-	friend CMatrix4x4<T> operator*(const CMatrix4x4<T>& lhs,const CMatrix4x4<T>& rhs)
+	void Set(unsigned char x, unsigned char y, T value)
+	{
+		_v[x][y] = value;
+	}
+
+	friend CMatrix4x4<T> operator*(const CMatrix4x4<T>& lhs, const CMatrix4x4<T>& rhs)
 	{
 		CMatrix4x4<T> dest;
 		Mul(lhs._v, rhs._v, dest._v);
 		return dest;
 	}
+
+	static void InitDenavitHartenbergNOP(T dest[4][4])
+	{
+		Zero(dest);
+
+		dest[0][0] = 1.0;
+		dest[1][1] = 1.0;
+		dest[2][2] = 1.0;
+		dest[3][3] = 1.0;
+	}
+
+	CMatrix4x4<T>& InitDenavitHartenbergNOP()
+	{
+		InitDenavitHartenbergNOP(_v);
+		return *this;
+	}
+
 
 	static void InitDenavitHartenberg(T dest[4][4], float alpha, float theta, float a, float d)
 	{

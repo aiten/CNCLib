@@ -26,30 +26,75 @@
 #include "..\..\..\sketch\libraries\CNCLib\src\Matrix4x4.h"
 
 
-
-
 int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 {
-
-	//Test Mul
-
 	float t[4][4] = { { 1.0, 2.0, 3.0, 4.0 }, { 5.0, 6.0, 7.0, 8.0 }, { 9.0, 10.0, 11.0, 12.0 }, { 13.0, 14.0, 15.0, 16.0 } };
 
-	CMatrix4x4<float> T1(t);
-	CMatrix4x4<float> T2(t);
+	//////////////////////////////////////////
+	//Test Compare
+	{
+		CMatrix4x4<float> T1(t);
+		CMatrix4x4<float> T2(t);
 
-	CMatrix4x4<float> T3 = T1*T2;
-
-	float r[4][4] = { { 90.0, 100.0, 110.0, 120.0 }, { 202.0, 228.0, 254.0, 280.0 }, { 314.0, 356.0, 398.0, 440.0 }, { 426.0, 484.0, 542.0, 600.0 } };
-
-	for (int i = 0; i < 4;i++)
-		for (int j = 0; j < 4; j++)
+		if (T1 == T2)
 		{
-			if (T3.Get(i, j) != r[i][j])
+			if (T1 != T2)
 			{
-				printf("Error Mul\n");
+				printf("Error Compare\n");
 			}
 		}
+		else
+		{
+			printf("Error Compare\n");
+		}
+
+		T1.Set(3, 3, 1.2345);
+
+		if (T1 == T2)
+		{
+			printf("Error Compare\n");
+		}
+		else
+		{
+		}
+	}
+
+	//////////////////////////////////////////
+	//Test Mul
+	{
+		CMatrix4x4<float> T1(t);
+		CMatrix4x4<float> T2(t);
+
+		CMatrix4x4<float> T3 = T1*T2;
+
+		float r[4][4] = { { 90.0, 100.0, 110.0, 120.0 }, { 202.0, 228.0, 254.0, 280.0 }, { 314.0, 356.0, 398.0, 440.0 }, { 426.0, 484.0, 542.0, 600.0 } };
+
+		CMatrix4x4<float> T4(r);
+
+		if (T3 != T4)
+		{
+			printf("Error Mul\n");
+		}
+	}
+
+	//////////////////////////////////////////
+	{
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg1Rot(M_PI/5);
+		CMatrix4x4<float> T2; T2.InitDenavitHartenberg1Rot(-M_PI/5);
+
+		CMatrix4x4<float> T3 = T1*T2;
+		CMatrix4x4<float> T4 = T4.InitDenavitHartenbergNOP();
+
+
+		if (T3 == T4)
+		{
+			printf("Error InitDenavitHartenberg1Rot\n");
+		}
+
+	}
+	//////////////////////////////////////////
+
+
 
 	CMatrix4x4<float> A1;
 	CMatrix4x4<float> A2;
