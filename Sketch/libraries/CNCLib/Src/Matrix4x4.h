@@ -64,20 +64,6 @@ public:
 		return true;
 	}
 
-	static bool IsEqual(T s1, T s2)
-	{
-
-	}
-
-	static bool Compare(const T src1[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T src2[MATRIX4X4SIZEX][MATRIX4X4SIZEY], T epsilon)
-	{
-		for (unsigned char i = 0; i < MATRIX4X4SIZEX; i++)
-			for (unsigned char k = 0; k < MATRIX4X4SIZEY; k++)
-				if (src1[i][k] != src2[i][k])
-					return false;
-		return true;
-	}
-
 	bool operator==(const CMatrix4x4<T>& cmp) const
 	{
 		return Compare(this->_v, cmp._v);
@@ -86,6 +72,25 @@ public:
 	bool operator!=(const CMatrix4x4<T>& cmp) const
 	{
 		return !Compare(this->_v, cmp._v);
+	}
+
+	static bool IsEqual(const T f1, const T f2, const T epsilon)
+	{
+		return fabs(f1 - f2) <= epsilon;
+	}
+
+	static bool Compare(const T src1[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T src2[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T epsilon)
+	{
+		for (unsigned char i = 0; i < MATRIX4X4SIZEX; i++)
+			for (unsigned char k = 0; k < MATRIX4X4SIZEY; k++)
+				if (!IsEqual(src1[i][k], src2[i][k], epsilon))
+					return false;
+		return true;
+	}
+
+	bool IsEqual(const CMatrix4x4<T>& cmp, T epsilon) const
+	{
+		return Compare(this->_v, cmp._v, epsilon);
 	}
 
 	static void Mul(const T src[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T srcV[MATRIX4X4SIZEX], T dest[MATRIX4X4SIZEX])
@@ -152,6 +157,7 @@ public:
 		return *this;
 	}
 
+	// rot1*trans2*trans3*rot4
 
 	static void InitDenavitHartenberg(T dest[4][4], float alpha, float theta, float a, float d)
 	{
@@ -168,7 +174,26 @@ public:
 
 	CMatrix4x4<T>& InitDenavitHartenberg(float alpha, float theta, float a, float d)
 	{
-		InitDenavitHartenberg(_v, alpha,  theta,  a,  d):
+		InitDenavitHartenberg(_v, alpha, theta, a, d);
+		return *this;
+	}
+
+	static void InitDenavitHartenbergInverse(T dest[4][4], float alpha, float theta, float a, float d)
+	{
+		float costheta = cos(theta);
+		float sintheta = sin(theta);
+		float cosalpha = cos(alpha);
+		float sinalpha = sin(alpha);
+
+		dest[0][0] = costheta;				dest[0][1] = sintheta;			 dest[0][2] = 0;		dest[0][3] = -a;
+		dest[1][0] = -sintheta*cosalpha;	dest[1][1] = costheta*cosalpha;  dest[1][2] = sinalpha; dest[1][3] = -d*sinalpha;
+		dest[2][0] = sintheta*sinalpha;		dest[2][1] = -costheta*sinalpha; dest[2][2] = cosalpha;	dest[2][3] = -d*cosalpha;
+		dest[3][0] = 0;						dest[3][1] = 0;					 dest[3][2] = 0;		dest[3][3] = 1.0;
+	}
+
+	CMatrix4x4<T>& InitDenavitHartenbergInverse(float alpha, float theta, float a, float d)
+	{
+		InitDenavitHartenbergInverse(_v, alpha, theta, a, d);
 		return *this;
 	}
 
@@ -195,7 +220,6 @@ public:
 
 	static void InitDenavitHartenberg2Trans(T dest[4][4], float d)
 	{
-
 		dest[0][0] = 1;			dest[0][1] = 0;				dest[0][2] = 0;		dest[0][3] = 0;
 		dest[1][0] = 0;			dest[1][1] = 1;				dest[1][2] = 0;		dest[1][3] = 0;
 		dest[2][0] = 0;			dest[2][1] = 0;				dest[2][2] = 1;		dest[2][3] = d;
@@ -212,7 +236,6 @@ public:
 
 	static void InitDenavitHartenberg3Trans(T dest[4][4], float a)
 	{
-
 		dest[0][0] = 1;			dest[0][1] = 0;				dest[0][2] = 0;		dest[0][3] = a;
 		dest[1][0] = 0;			dest[1][1] = 1;				dest[1][2] = 0;		dest[1][3] = 0;
 		dest[2][0] = 0;			dest[2][1] = 0;				dest[2][2] = 1;		dest[2][3] = 0;
@@ -243,6 +266,5 @@ public:
 		InitDenavitHartenberg4Rot(_v, a);
 		return *this;
 	}
-
 };
 

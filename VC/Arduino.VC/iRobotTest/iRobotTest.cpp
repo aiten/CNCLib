@@ -24,7 +24,29 @@
 #include "TestTools.h"
 
 #include "..\..\..\sketch\libraries\CNCLib\src\Matrix4x4.h"
+#include "DenavitHartenberg.h"
 
+////////////////////////////////////////////////////////////////////////////////////////
+
+bool CompareMatrix(CMatrix4x4<float>& m, float in1[][4], float out1[][4], unsigned char size)
+{
+	for (unsigned char i = 0; i < size; i++)
+	{
+		float v2[4];
+		m.Mul(in1[i], v2);
+
+		for (unsigned char n = 0; n < 4; n++)
+		{
+			if (!CMatrix4x4<float>::IsEqual(out1[i][n], v2[n], 0.00001))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
 
 int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 {
@@ -79,63 +101,214 @@ int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 
 	//////////////////////////////////////////
 	{
-		CMatrix4x4<float> T1; T1.InitDenavitHartenberg1Rot(M_PI/5);
-		CMatrix4x4<float> T2; T2.InitDenavitHartenberg1Rot(-M_PI/5);
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg1Rot(M_PI/4);
+		CMatrix4x4<float> T2; T2.InitDenavitHartenberg1Rot(-M_PI/4);
 
 		CMatrix4x4<float> T3 = T1*T2;
 		CMatrix4x4<float> T4 = T4.InitDenavitHartenbergNOP();
 
 
-		if (T3 == T4)
+		if (!T3.IsEqual(T4,0.0000001))
 		{
 			printf("Error InitDenavitHartenberg1Rot\n");
 		}
-
 	}
+
+	//////////////////////////////////////////
+	{
+		const float angle = M_PI / 5;
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg1Rot(angle);
+
+		float in1[][4] = { 
+				{ 1, 0, 0, 1 },
+				{ 0, 1, 0, 1 }, 
+				{ 0, 0, 1, 1 },
+				{ 1, 1, 0, 1 }
+		};
+		float out1[][4] = {
+				{ cos(angle), sin(angle), 0, 1 },
+				{ -sin(angle), cos(angle), 0, 1 },
+				{ 0, 0, 1, 1 },
+				{ cos(angle) - sin(angle), cos(angle) + sin(angle), 0, 1 }
+		};
+
+		if (!CompareMatrix(T1, in1, out1, sizeof(in1) / sizeof(float[4])))
+		{
+			printf("Error InitDenavitHartenberg1Rot#2\n");
+		}
+	}
+
 	//////////////////////////////////////////
 
+	{
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg2Trans(M_PI / 4);
+		CMatrix4x4<float> T2; T2.InitDenavitHartenberg2Trans(-M_PI / 4);
+
+		CMatrix4x4<float> T3 = T1*T2;
+		CMatrix4x4<float> T4 = T4.InitDenavitHartenbergNOP();
 
 
-	CMatrix4x4<float> A1;
-	CMatrix4x4<float> A2;
-	CMatrix4x4<float> A3;
-	CMatrix4x4<float> A4;
-	CMatrix4x4<float> A5;
-	CMatrix4x4<float> A6;
-	CMatrix4x4<float> A7;
-	CMatrix4x4<float> A8;
-	CMatrix4x4<float> AX;
+		if (!T3.IsEqual(T4, 0.0000001))
+		{
+			printf("Error InitDenavitHartenberg2Trans\n");
+		}
+	}
 
-	float servo1 = 1;
-	float servo2 = 1;
-	float servo3 = 1;
+	//////////////////////////////////////////
+	{
+		const float d = M_PI / 5;
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg2Trans(d);
+
+		float in1[][4] = {
+			{ 1, 0, 0, 1 },
+			{ 0, 1, 0, 1 },
+			{ 0, 0, 1, 1 },
+			{ 1, 1, 0, 1 }
+		};
+		float out1[][4] = {
+			{ 1, 0, d, 1 },
+			{ 0, 1, d, 1 },
+			{ 0, 0, 1+d, 1 },
+			{ 1, 1, 0+d, 1 }
+		};
+
+		if (!CompareMatrix(T1, in1, out1, sizeof(in1) / sizeof(float[4])))
+		{
+			printf("Error InitDenavitHartenberg2Trans#2\n");
+		}
+	}
+
+	//////////////////////////////////////////
+
+	{
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg3Trans(M_PI / 4);
+		CMatrix4x4<float> T2; T2.InitDenavitHartenberg3Trans(-M_PI / 4);
+
+		CMatrix4x4<float> T3 = T1*T2;
+		CMatrix4x4<float> T4 = T4.InitDenavitHartenbergNOP();
 
 
-	AX = A1.InitDenavitHartenberg1Rot(servo1);
-	AX *= A2.InitDenavitHartenberg2Trans(55);
-	AX *= A3.InitDenavitHartenberg4Rot(servo2);
-	AX *= A4.InitDenavitHartenberg2Trans(140);
-	AX *= A5.InitDenavitHartenberg4Rot(servo3-servo2);
-	AX *= A6.InitDenavitHartenberg2Trans(152);
-	AX *= A7.InitDenavitHartenberg4Rot(servo3);		// auf 180
-	AX *= A8.InitDenavitHartenberg2Trans(30);
+		if (!T3.IsEqual(T4, 0.0000001))
+		{
+			printf("Error InitDenavitHartenberg3Trans\n");
+		}
+	}
 
-	AX =
-		A8.InitDenavitHartenberg2Trans(30)*
-		A7.InitDenavitHartenberg4Rot(servo3)*
-		A6.InitDenavitHartenberg2Trans(152)*
-		A5.InitDenavitHartenberg4Rot(servo3 - servo2)*
-		A4.InitDenavitHartenberg2Trans(140)*
-		A3.InitDenavitHartenberg4Rot(servo2)*
-		A2.InitDenavitHartenberg2Trans(55)*
-		A1.InitDenavitHartenberg1Rot(servo1);
-		
-		
+	//////////////////////////////////////////
+	{
+		const float a = M_PI / 5;
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg3Trans(a);
 
-	float v[4] = { 100, 100, 100, 0 };
-	float d[4];
+		float in1[][4] = {
+			{ 1, 0, 0, 1 },
+			{ 0, 1, 0, 1 },
+			{ 0, 0, 1, 1 },
+			{ 1, 1, 0, 1 }
+		};
+		float out1[][4] = {
+			{ 1+a, 0, 0, 1 },
+			{ 0+a, 1, 0, 1 },
+			{ 0+a, 0, 1, 1 },
+			{ 1+a, 1, 0, 1 }
+		};
 
-	AX.Mul(v, d);
-	
+		if (!CompareMatrix(T1, in1, out1, sizeof(in1) / sizeof(float[4])))
+		{
+			printf("Error InitDenavitHartenberg3Trans#2\n");
+		}
+	}
 
+	//////////////////////////////////////////
+
+	{
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg4Rot(M_PI / 4);
+		CMatrix4x4<float> T2; T2.InitDenavitHartenberg4Rot(-M_PI / 4);
+
+		CMatrix4x4<float> T3 = T1*T2;
+		CMatrix4x4<float> T4 = T4.InitDenavitHartenbergNOP();
+
+
+		if (!T3.IsEqual(T4, 0.0000001))
+		{
+			printf("Error InitDenavitHartenberg4Rot\n");
+		}
+	}
+
+	//////////////////////////////////////////
+	{
+		const float angle = M_PI / 5;
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg4Rot(angle);
+
+		float in1[][4] = {
+			{ 1, 0, 0, 1 },
+			{ 0, 1, 0, 1 },
+			{ 0, 0, 1, 1 },
+			{ 1, 1, 1, 1 }
+		};
+		float out1[][4] = {
+			{ 1, 0, 0, 1 },
+			{ 0, cos(angle), sin(angle), 1 },
+			{ 0, -sin(angle), cos(angle), 1 },
+			{ 1, cos(angle) - sin(angle), cos(angle) + sin(angle), 1 }
+		};
+
+		if (!CompareMatrix(T1, in1, out1, sizeof(in1) / sizeof(float[4])))
+		{
+			printf("Error InitDenavitHartenberg4Rot#2\n");
+		}
+	}
+
+	//////////////////////////////////////////
+
+	{
+		float alpha = M_PI / 5;
+		float theta = M_PI / 6;
+		float a = 1.123456;
+		float d = 4.321;
+
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg(alpha,theta,a,d);
+		CMatrix4x4<float> T2; T2.InitDenavitHartenbergInverse(alpha, theta, a, d);
+
+		CMatrix4x4<float> T3 = T1*T2;
+		CMatrix4x4<float> T4 = T4.InitDenavitHartenbergNOP();
+
+
+		if (!T3.IsEqual(T4, 0.00001))
+		{
+			printf("Error InitDenavitHartenberg\n");
+		}
+	}
+
+	//////////////////////////////////////////
+
+	{
+		float alpha = M_PI / 5;
+		float theta = M_PI / 6;
+		float a = 1.123456;
+		float d = 4.321;
+
+		CMatrix4x4<float> T10; T10.InitDenavitHartenberg(alpha, theta, a, d);
+
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg1Rot(theta);
+		CMatrix4x4<float> T2; T2.InitDenavitHartenberg2Trans(d);
+		CMatrix4x4<float> T3; T3.InitDenavitHartenberg3Trans(a);
+		CMatrix4x4<float> T4; T4.InitDenavitHartenberg4Rot(alpha);
+
+		CMatrix4x4<float> T5 = T1*T2*T3*T4;
+
+		if (!T5.IsEqual(T10, 0.00001))
+		{
+			printf("Error InitDenavitHartenberg sequenze\n");
+		}
+	}
+
+	//////////////////////////////////////////
+	{
+		CDenavitHartenberg dh;
+
+		float out[3];
+
+		dh.ToPosition(out);
+
+	}
 }
