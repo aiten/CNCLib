@@ -351,15 +351,20 @@ void CMyMotionControl::PrintInfo()
 
 #ifdef _MSC_VER
 
+mm1000_t ToMM(float mm)
+{
+	return mm * 1000;
+}
+
 void CMyMotionControl::UnitTest()
 {
-	Test(1, 200, H, true);		// max dist
-	Test(0, 200, H, true);		// max dist
-	Test(-1, 200, H, true);		// max dist
+	Test(1000, 200000, H, true);		// max dist
+	Test(0, 200000, H, true);		// max dist
+	Test(-1000, 200000, H, true);		// max dist
 
-	Test(1, -200, H, true);		// max dist
-	Test(0, -200, H, true);		// max dist
-	Test(-1, -200, H, true);		// max dist
+	Test(1000, -200000, H, true);		// max dist
+	Test(0, -200000, H, true);		// max dist
+	Test(-1000, -200000, H, true);		// max dist
 
 
 	Test(SEGMENT1 + SEGMENT2 + SEGMENT3, 0, H, true);		// max dist

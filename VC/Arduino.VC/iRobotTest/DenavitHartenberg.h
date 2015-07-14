@@ -1,5 +1,7 @@
 #pragma once
 
+#include "..\..\..\sketch\libraries\CNCLib\src\Matrix4x4.h"
+
 class CDenavitHartenberg
 {
 public:
@@ -7,7 +9,13 @@ public:
 	~CDenavitHartenberg();
 
 
-	void ToPosition(float[3]);
+	void ToPosition(float in[NUM_AXIS], float out[3]);
+
+
+
+private:
+
+	void TestConvert(CMatrix4x4<float>&m, float inout[4], bool out=false);
 
 };
 

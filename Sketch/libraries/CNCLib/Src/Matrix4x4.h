@@ -120,7 +120,7 @@ public:
 	CMatrix4x4<T>& operator*=(const CMatrix4x4<T>& rhs)
 	{
 		CMatrix4x4<T> src2(*this);
-		Mul(rhs._v, src2._v, _v);
+		Mul( src2._v, rhs._v,  _v);
 		return *this;
 	}
 
@@ -159,7 +159,7 @@ public:
 
 	// rot1*trans2*trans3*rot4
 
-	static void InitDenavitHartenberg(T dest[4][4], float alpha, float theta, float a, float d)
+	static void InitDenavitHartenberg(T dest[4][4], float a, float alpha,  float d, float theta)
 	{
 		float costheta = cos(theta);
 		float sintheta = sin(theta);
@@ -172,13 +172,13 @@ public:
 		dest[3][0] = 0;			dest[3][1] = 0;					 dest[3][2] = 0;				   dest[3][3] = 1.0;
 	}
 
-	CMatrix4x4<T>& InitDenavitHartenberg(float alpha, float theta, float a, float d)
+	CMatrix4x4<T>& InitDenavitHartenberg(float a, float alpha, float d, float theta)
 	{
-		InitDenavitHartenberg(_v, alpha, theta, a, d);
+		InitDenavitHartenberg(_v, a, alpha, d, theta);
 		return *this;
 	}
 
-	static void InitDenavitHartenbergInverse(T dest[4][4], float alpha, float theta, float a, float d)
+	static void InitDenavitHartenbergInverse(T dest[4][4], float a, float alpha, float d, float theta)
 	{
 		float costheta = cos(theta);
 		float sintheta = sin(theta);
@@ -191,9 +191,9 @@ public:
 		dest[3][0] = 0;						dest[3][1] = 0;					 dest[3][2] = 0;		dest[3][3] = 1.0;
 	}
 
-	CMatrix4x4<T>& InitDenavitHartenbergInverse(float alpha, float theta, float a, float d)
+	CMatrix4x4<T>& InitDenavitHartenbergInverse(float a, float alpha, float d, float theta)
 	{
-		InitDenavitHartenbergInverse(_v, alpha, theta, a, d);
+		InitDenavitHartenbergInverse(_v, a, alpha, d, theta);
 		return *this;
 	}
 
@@ -266,5 +266,6 @@ public:
 		InitDenavitHartenberg4Rot(_v, a);
 		return *this;
 	}
+
 };
 

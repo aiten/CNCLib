@@ -17,7 +17,7 @@ CDenavitHartenberg::~CDenavitHartenberg()
 {
 }
 
-void CDenavitHartenberg::ToPosition(float to[3])
+void CDenavitHartenberg::ToPosition(float in[NUM_AXIS], float out[3])
 {
 	CMatrix4x4<float> A1;
 	CMatrix4x4<float> A2;
@@ -28,36 +28,56 @@ void CDenavitHartenberg::ToPosition(float to[3])
 	CMatrix4x4<float> A7;
 	CMatrix4x4<float> A8;
 	CMatrix4x4<float> AX;
+	AX.Zero();
 
-	float servo1 = 1;
-	float servo2 = 1;
-	float servo3 = 1;
 
-	AX = A1.InitDenavitHartenberg1Rot(servo1);
-	AX *= A2.InitDenavitHartenberg2Trans(55);
-	AX *= A3.InitDenavitHartenberg4Rot(servo2);
-	AX *= A4.InitDenavitHartenberg2Trans(140);
-	AX *= A5.InitDenavitHartenberg4Rot(servo3 - servo2);
-	AX *= A6.InitDenavitHartenberg2Trans(152);
-	AX *= A7.InitDenavitHartenberg4Rot(servo3);		// auf 180
-	AX *= A8.InitDenavitHartenberg2Trans(30);
+	float servo1 = M_PI / 2 - in[0];
+	float servo2 = in[1];
+	float servo3 = in[2];
 
-	AX =
-		A8.InitDenavitHartenberg2Trans(30)*
-		A7.InitDenavitHartenberg4Rot(servo3)*
-		A6.InitDenavitHartenberg2Trans(152)*
-		A5.InitDenavitHartenberg4Rot(servo3 - servo2)*
-		A4.InitDenavitHartenberg2Trans(140)*
-		A3.InitDenavitHartenberg4Rot(servo2)*
-		A2.InitDenavitHartenberg2Trans(55)*
-		A1.InitDenavitHartenberg1Rot(servo1);
+	servo1 = 45 * (M_PI / 180.0);		// from xy0 pane
+	servo2 = -M_PI/2; // 20 * (M_PI / -180.0) + M_PI / 2 - servo1;
+	servo3 = 0;
 
+	servo1 = 1.00801647;
+	servo2 = 1.24050128;
+	servo3 = 1.56579638;
+	// out => 1,200,105
+
+
+	float pos2 = -servo2 + M_PI - servo1;
+	float pos4 = M_PI + (M_PI - servo1 - servo2);
 
 
 	float v[4] = { 0, 0, 0, 1 };
+
+	AX = A1.InitDenavitHartenberg(0, M_PI / 2, 55, servo3);
+	TestConvert(AX, v);
+	AX *= A2.InitDenavitHartenberg(140, 0, 0, servo1);
+	TestConvert(AX,v);
+	AX *= A3.InitDenavitHartenberg(152,0,0, pos2);
+	TestConvert(AX, v);
+	AX *= A3.InitDenavitHartenberg(30, 0, 0, pos4);
+	TestConvert(AX, v);
+
 	float d[4];
 
 	AX.Mul(v, d);
 
-	memcpy(to, d, sizeof(float) * 3);
+	memcpy(out, d, sizeof(float) * 3);
+}
+
+#define FORMAT_MM "%.0f:%.0f:%.0f"
+#define FORMAT_GRAD "%.0f:%.0f:%.0f"
+
+void CDenavitHartenberg::TestConvert(CMatrix4x4<float>&m, float inout[4], bool out)
+{
+	float d[4];
+
+	m.Mul(inout, d);
+	
+	if (out)
+		memcpy(inout, d, sizeof(d));
+
+	printf(FORMAT_MM"\n", d[0], d[1], d[2]);
 }
