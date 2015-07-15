@@ -210,9 +210,27 @@ public:
 		dest[3][0] = 0;			dest[3][1] = 0;					dest[3][2] = 0;		dest[3][3] = 1;
 	}
 
+
 	CMatrix4x4<T>& InitDenavitHartenberg1Rot(float theta)
 	{
 		InitDenavitHartenberg1Rot(_v, theta);
+		return *this;
+	}
+
+	static void InitDenavitHartenberg1Rot3Trans(T dest[4][4], float a, float theta)
+	{
+		float costheta = cos(theta);
+		float sintheta = sin(theta);
+
+		dest[0][0] = costheta;	dest[0][1] = -sintheta;			dest[0][2] = 0;		dest[0][3] = a*costheta;
+		dest[1][0] = sintheta;	dest[1][1] = costheta;			dest[1][2] = 0;		dest[1][3] = a*sintheta;
+		dest[2][0] = 0;			dest[2][1] = 0;					dest[2][2] = 1;		dest[2][3] = 0;
+		dest[3][0] = 0;			dest[3][1] = 0;					dest[3][2] = 0;		dest[3][3] = 1;
+	}
+
+	CMatrix4x4<T>& InitDenavitHartenberg1Rot3Trans(float a, float theta)
+	{
+		InitDenavitHartenberg1Rot3Trans(_v, a, theta);
 		return *this;
 	}
 

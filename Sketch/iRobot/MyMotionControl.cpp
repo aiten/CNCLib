@@ -452,9 +452,17 @@ bool CMyMotionControl::Test(mm1000_t src1, mm1000_t src2, mm1000_t src3, bool pr
 
 	if (printOK || isError)
 	{
-		printf(FORMAT_MM" => ", ToMM(src1), ToMM(src2), ToMM(src3));
-		printf(FORMAT_GRAD" = > ", ToRAD(angle[0]), ToRAD(angle[1]), ToRAD(angle[2]));
-		printf(FORMAT_MM, ToMM(dest[0]), ToMM(dest[1]), ToMM(dest[2]));
+		if (false)
+		{
+			printf(FORMAT_MM" => ", ToMM(src1), ToMM(src2), ToMM(src3));
+			printf(FORMAT_GRAD" = > ", ToRAD(angle[0]), ToRAD(angle[1]), ToRAD(angle[2]));
+			printf(FORMAT_MM, ToMM(dest[0]), ToMM(dest[1]), ToMM(dest[2]));
+		}
+		else
+		{
+			printf("{{ %f, %f, %f },\t", ToMM(src1), ToMM(src2), ToMM(src3));
+			printf("{ %f, %f, %f }},", (angle[0]), (angle[1]), (angle[2]));
+		}
 
 		if (isError)
 			printf(" ERROR");

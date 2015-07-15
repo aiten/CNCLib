@@ -11,9 +11,12 @@ public:
 
 	void ToPosition(float in[NUM_AXIS], float out[3]);
 
+protected:
 
+	 void InitMatrix(CMatrix4x4<float>&m, float in[NUM_AXIS]);
 
 private:
+
 
 	void TestConvert(CMatrix4x4<float>&m, float inout[4], bool out=false);
 
