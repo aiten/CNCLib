@@ -69,14 +69,17 @@ void CDenavitHartenberg::ToPosition(float in[NUM_AXIS], float out[3])
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS])
+void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],float epsilon)
 {
+	float angle = M_PI / 2 + M_PI / 4;
+	float minangles[] = { 0, 0, 0 };
+	float maxnangles[] = { angle, angle, angle };
 
 	for (unsigned char i = 0; i < 100; i++)
 	{
 		for (unsigned char j = 0; j < 3; j++)
 		{
-			if (SearchMin(posxyz, angles, j, 0, M_PI / 2 + M_PI/4) < 0.01)
+			if (SearchMin(posxyz, angles, j, minangles[j], maxnangles[j],epsilon) < epsilon)
 				return;
 		}
 	}
@@ -84,7 +87,7 @@ void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS])
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float CDenavitHartenberg::SearchMin(float pos[3], float inout[NUM_AXIS], unsigned char idx, float min, float max)
+float CDenavitHartenberg::SearchMin(float pos[3], float inout[NUM_AXIS], unsigned char idx, float min, float max, float epsilon)
 {
 	if (max < min)
 	{
@@ -108,16 +111,17 @@ float CDenavitHartenberg::SearchMin(float pos[3], float inout[NUM_AXIS], unsigne
 	while (inout[idx] >= min && inout[idx] <= max)
 	{
 		inout[idx] += dist;
-		float diff = CalcDist(pos, inout);
+		diff = CalcDist(pos, inout);
 
 		//printf("%f:%f:%f => %f\n", inout[0], inout[1], inout[2], diff);
 
-		if (diff < 0.001) break;
+		if (diff < epsilon) 
+			break;
 
 		if (diff > oldiff)
 		{
 			dist = -dist / 2;
-			if (fabs(dist) < 0.0000001)
+			if (inout[idx] == inout[idx] + dist)
 				break;
 		}
 		oldiff = diff;
