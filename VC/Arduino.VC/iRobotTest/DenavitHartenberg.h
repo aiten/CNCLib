@@ -18,10 +18,16 @@ protected:
 
 private:
 
+	struct SSearchDef
+	{
+		float min;
+		float max;
+		float dist;
+	};
 
 	void TestConvert(CMatrix4x4<float>&m, float inout[4], bool out=false);
 
-	float SearchMin(float pos[3], float inout[NUM_AXIS], unsigned char idx, float min, float max, float epsilon);
+	float SearchMin(float pos[3], float inout[NUM_AXIS], unsigned char idx, struct SSearchDef def[NUM_AXIS] , float epsilon);
 
 	float CalcDist(float pos[3], float in[NUM_AXIS]);
 
