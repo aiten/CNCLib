@@ -80,11 +80,11 @@ void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],fl
 		{ 0, angle, angle / 10 }
 	};
 
-	for (unsigned char i = 0; i < 1000; i++)
+	for (unsigned char i = 0; i < 100; i++)
 	{
 		for (unsigned char j = 0; j < 3; j++)
 		{
-			if (SearchMin(posxyz, angles, j, search,epsilon) < epsilon)
+			if (SearchMin(posxyz, angles, j, search[j],epsilon) < epsilon)
 				return;
 		}
 	}
@@ -92,31 +92,31 @@ void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],fl
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float CDenavitHartenberg::SearchMin(float pos[3], float inout[NUM_AXIS], unsigned char idx, SSearchDef def[NUM_AXIS], float epsilon)
+float CDenavitHartenberg::SearchMin(float pos[3], float inout[NUM_AXIS], unsigned char idx, SSearchDef& def, float epsilon)
 {
-	inout[idx] = def[idx].min;
-
-	float dist = (def[idx].max - def[idx].min) / 10;
+	float opdpos = inout[idx];
+//	inout[idx] = def[idx].min;
+	float dist = def.dist; //  (def[idx].max - def[idx].min) / 10;
+	
 	float oldiff = CalcDist(pos, inout);
 	float diff = oldiff;
+	unsigned short count = 0;
 
 	while (true)
 	{
 		float oldpos = inout[idx];
 		float newpos = oldpos + dist;
 
-		if (oldpos == newpos)		// dist < FLT_EPSILON
+		if (oldpos == newpos || count > 25)		// dist < FLT_EPSILON
 			break;
 
-		if (newpos > def[idx].max)
+		if (newpos > def.max)
 		{
-			if (oldpos == def[idx].max) break;
-			newpos = def[idx].max;
+			newpos = def.max;
 		}
-		else if (newpos < def[idx].min)
+		else if (newpos < def.min)
 		{
-			if (oldpos == def[idx].min) break;
-			newpos = def[idx].min;
+			newpos = def.min;
 		}
 
 		inout[idx] = newpos;
@@ -132,9 +132,22 @@ float CDenavitHartenberg::SearchMin(float pos[3], float inout[NUM_AXIS], unsigne
 		{
 			inout[idx] = oldpos;
 			dist = -dist / 2;
+			count++;
+		}
+		else if (newpos == def.max)
+		{
+			dist = -dist / 2;
+			count++;
+		}
+		else if (newpos == def.min)
+		{
+			dist = -dist / 2;
+			count++;
 		}
 		oldiff = diff;
 	}
+
+	def.changetoprev = opdpos - inout[idx];
 	return diff;
 }
 

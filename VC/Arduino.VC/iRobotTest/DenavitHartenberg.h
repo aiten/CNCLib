@@ -23,11 +23,12 @@ private:
 		float min;
 		float max;
 		float dist;
+		float changetoprev;
 	};
 
 	void TestConvert(CMatrix4x4<float>&m, float inout[4], bool out=false);
 
-	float SearchMin(float pos[3], float inout[NUM_AXIS], unsigned char idx, struct SSearchDef def[NUM_AXIS] , float epsilon);
+	float SearchMin(float pos[3], float inout[NUM_AXIS], unsigned char idx, struct SSearchDef& def , float epsilon);
 
 	float CalcDist(float pos[3], float in[NUM_AXIS]);
 
