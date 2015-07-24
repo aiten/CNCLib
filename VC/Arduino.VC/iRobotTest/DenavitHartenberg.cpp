@@ -77,26 +77,126 @@ void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],fl
 	{
 		{ 0 , angle, angle/10 },
 		{ 0, angle, angle / 10 },
-		{ 0, angle, angle / 10 }
+		{ -angle, angle, angle / 10 }
 	};
 
-	for (unsigned char i = 0; i < 100; i++)
+	for (unsigned char j = 0; j < 3; j++)
+		angles[j] = (search[j].max - search[j].min) / 2 + search[j].min;
+
+	if (true)
 	{
-		for (unsigned char j = 0; j < 3; j++)
+		unsigned int count = 0;
+		unsigned char i=0;
+		float diff=FLT_MAX;
+
+		for (count=0;count<10000;count++)
 		{
-			if (SearchMin(posxyz, angles, j, search[j],epsilon) < epsilon)
-				return;
+			diff = SearchStep(posxyz, angles, i, diff, search[i]);
+			
+			if (diff < epsilon)
+				break;
+#define TEST_U
+#ifdef TEST
+			printf("%i:\t%08f:\t", count,diff);
+			for (unsigned char j = 0; j < NUM_AXIS; j++)
+				printf("%08f%s", angles[j], j < NUM_AXIS-1 ? ":" : "\t");
+			for (unsigned char j = 0; j < NUM_AXIS; j++)
+				printf("%08f%s", search[j].dist, j < NUM_AXIS - 1 ? ":" : "\n");
+#endif
+			i++;
+			if (i >= NUM_AXIS)
+				i = 0;
 		}
+
+//		for (i = 0; i < NUM_AXIS; i++)
+//			printf("dist:%f ", search[i].dist);
+//		printf("max:%i\n", count);
 	}
+	else
+	{
+		unsigned char i;
+		for (i = 0; i < 200; i++)
+		{
+			for (unsigned char j = 0; j < 3; j++)
+			{
+				if (SearchMinOld(posxyz, angles, j, search[j], epsilon) < epsilon)
+				{
+					printf("max:%i\n", (unsigned int)i);
+					return;
+				}
+			}
+		}
+		printf("max:%i\n",(unsigned int )i);
+
+	}
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float CDenavitHartenberg::SearchMin(float pos[3], float inout[NUM_AXIS], unsigned char idx, SSearchDef& def, float epsilon)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+float CDenavitHartenberg::SearchStep(float pos[3], float inout[NUM_AXIS], unsigned char idx, float diff, SSearchDef& def)
+{
+	float oldiff = diff;
+
+	float oldpos = inout[idx];
+	float newpos = oldpos + def.dist;
+
+	if (newpos > def.max)
+	{
+		newpos = def.max;
+	}
+	else if (newpos < def.min)
+	{
+		newpos = def.min;
+	}
+	else if (oldpos == newpos)
+	{
+		return oldiff;
+	}
+
+	inout[idx] = newpos;
+
+	diff = CalcDist(pos, inout);
+
+	if (diff > oldiff)
+	{
+		inout[idx] = oldpos;
+		if (fabs(def.dist) < 0.01)
+			def.dist = def.dist / -1.01;
+		else
+			def.dist = def.dist / -2;
+		return oldiff;
+	}
+	else if (diff == oldiff)
+	{
+		if (oldpos == newpos)
+			def.dist = def.dist / -2.0;
+		return diff;
+	}
+	else if (newpos >= def.max)
+	{
+		def.dist = def.dist / -2.0;
+		return diff;
+	}
+	else if (newpos <= def.min)
+	{
+		def.dist = def.dist / -2.0;
+		return diff;
+	}
+
+	return diff;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+float CDenavitHartenberg::SearchMinOld(float pos[3], float inout[NUM_AXIS], unsigned char idx, SSearchDef& def, float epsilon)
 {
 	float opdpos = inout[idx];
-//	inout[idx] = def[idx].min;
-	float dist = def.dist; //  (def[idx].max - def[idx].min) / 10;
+	float dist = def.dist;
 	
 	float oldiff = CalcDist(pos, inout);
 	float diff = oldiff;
@@ -122,8 +222,6 @@ float CDenavitHartenberg::SearchMin(float pos[3], float inout[NUM_AXIS], unsigne
 		inout[idx] = newpos;
 
 		diff = CalcDist(pos, inout);
-
-		//printf("%f:%f:%f => %f\n", inout[0], inout[1], inout[2], diff);
 
 		if (diff < epsilon) 
 			break;

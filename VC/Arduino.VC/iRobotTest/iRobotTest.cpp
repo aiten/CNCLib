@@ -466,7 +466,10 @@ int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 
 		STest values[] = {
 
-			{ { 320.000000, 0.000000, 105.000000 }, { 0.122047, 2.907177, 0.000000 }, allowdiff },
+
+			{ { 182.000000, 0.000000, 245.000000 }, { 1.5707963, 1.5707963, 0.000000 }, allowdiff },
+			{ { 0.000000, -200.000000, 105.000000 }, { 1.008028, 1.240480, -1.570796 }, allowdiff },
+//			{ { 320.000000, 0.000000, 105.000000 }, { 0.122047, 2.907177, 0.000000 }, allowdiff },
 			{ { 322.000000, 0.000000, 105.000000 }, { 0.000000, 3.1415926, 0.000000 }, allowdiff },
 
 			{ { 1.000000, 200.000000, 105.000000 }, { 1.008016, 1.240501, 1.565796 }, allowdiff },
@@ -517,8 +520,9 @@ int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 		for (STest* v = values; v->posxyz[0] != -1234; v++)
 		{
 			bool print = false;
+			bool printprint = false;
 
-			float out[3] = { 1, 1, 1 };
+			float out[3] = { 0, 0, 0 };
 			dh.FromPosition(v->posxyz, out,0.001);
 
 			for (unsigned char n = 0; n < 3; n++)
@@ -530,6 +534,7 @@ int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 					
 					printf("%f=>%f(%f)\t", out[n], v->angles[n], out[n] - v->angles[n]);
 					print = true;
+					printprint = true;
 				}
 			}
 
@@ -550,11 +555,14 @@ int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 
 					printf("%f=>%f(%f)\t", posxyz[n], v->posxyz[n], posxyz[n] - v->posxyz[n]);
 					print = true;
-
+					printprint = true;
 				}
 			}
 
 			if (print)
+				printf("\n");
+
+			if (printprint)
 				printf("\n");
 		}
 	}
