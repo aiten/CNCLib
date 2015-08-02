@@ -22,7 +22,6 @@
 ////////////////////////////////////////////////////////
 
 #include "Stepper.h"
-//#include <Servo.h>
 #include <Adafruit_TiCoServo.h>
 
 #define Servo Adafruit_TiCoServo
@@ -63,7 +62,7 @@ public:
 	CStepperServo();
 	virtual void Init() override;
 
-        void SetServo();   
+	void SetServo();   
 
 protected:
 
@@ -82,7 +81,7 @@ public:
 
 private:
 
-  Servo _servo[NUM_AXIS];
+  Servo		_servo[NUM_AXIS];
+  udist_t	_lastPos[NUM_AXIS];
 
-  udist_t _lastPos[NUM_AXIS];
 };
