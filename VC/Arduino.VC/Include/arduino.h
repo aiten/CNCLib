@@ -69,8 +69,8 @@ inline char pgm_read_byte(const char* p) { return *p; }
 typedef  const char* PGM_P;
 
 
-typedef unsigned char uint8_t;
-typedef char int8_t;
+typedef unsigned char	uint8_t;
+typedef signed char		int8_t;
 
 inline void analogWrite(short, int)	{};
 inline void digitalWrite(short, short)	{};
