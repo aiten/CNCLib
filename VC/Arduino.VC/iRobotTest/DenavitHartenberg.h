@@ -34,5 +34,10 @@ private:
 
 	float SearchStep(float pos[3], float inout[NUM_AXIS], unsigned char idx, float diff, struct SSearchDef& def);
 
+
+#define MAXSIZE 4
+
+	bool Jacobi(double a[][MAXSIZE], double b[], int n, int maxiter, double tol, double x[]);
+
 };
 

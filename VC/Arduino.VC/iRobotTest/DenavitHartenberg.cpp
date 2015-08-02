@@ -83,7 +83,7 @@ void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],fl
 	for (unsigned char j = 0; j < 3; j++)
 		angles[j] = (search[j].max - search[j].min) / 2 + search[j].min;
 
-	if (true)
+	if (false)
 	{
 		unsigned int count = 0;
 		unsigned char i=0;
@@ -112,7 +112,15 @@ void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],fl
 //			printf("dist:%f ", search[i].dist);
 //		printf("max:%i\n", count);
 	}
-	else
+	else if (true)
+	{
+		float v[4] = { 0, 0, 0, 1 };
+		CMatrix4x4<float> A;
+
+		InitMatrix(A, in);
+
+	}
+	else if (false)
 	{
 		unsigned char i;
 		for (i = 0; i < 200; i++)
@@ -281,4 +289,49 @@ void CDenavitHartenberg::TestConvert(CMatrix4x4<float>&m, float inout[4], bool o
 		memcpy(inout, d, sizeof(d));
 
 	//printf(FORMAT_MM"\n", d[0], d[1], d[2]);
+}
+
+/*
+
+n = no of equations
+a[n]n] = coefficient matrix
+b[n] = right hand side vector
+
+x[n] - solution vector
+
+
+*/
+
+bool CDenavitHartenberg::Jacobi(double a[][MAXSIZE], double b[], int n, int maxiter, double tol, double x[])
+{
+	int numiter = 0;
+	bool tolexceeded = true;
+	int i, j;
+	double xold[MAXSIZE];
+	double sum;
+
+	for (i = 0; i < n; i++)
+		x[i] = b[i] / a[i][i];
+
+	while (tolexceeded && numiter < maxiter)
+	{
+		for (i = 0; i < n; ++i)
+			xold[i] = x[i];
+
+		for (i = 0; i < n; ++i)
+		{
+			sum = b[i];
+			for (j = 0; j < n; ++j)
+				if (i != j)
+					sum -= a[i][j] * xold[j];
+
+			x[i] = sum / a[i][i];
+		}
+		tolexceeded = false;
+		for (i = 0; i < n; i++)
+			if (fabs(x[i] - xold[i]) > fabs(xold[i] * tol))
+				tolexceeded = true;
+		++numiter;
+	}
+	return tolexceeded;
 }
