@@ -83,7 +83,7 @@ void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],fl
 	for (unsigned char j = 0; j < 3; j++)
 		angles[j] = (search[j].max - search[j].min) / 2 + search[j].min;
 
-	if (false)
+	if (true)
 	{
 		unsigned int count = 0;
 		unsigned char i=0;
@@ -117,7 +117,7 @@ void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],fl
 		float v[4] = { 0, 0, 0, 1 };
 		CMatrix4x4<float> A;
 
-		InitMatrix(A, in);
+		//InitMatrix(A, in);
 
 	}
 	else if (false)
