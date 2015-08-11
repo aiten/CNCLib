@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Proxxon.GUI</RootNamespace>
     <AssemblyName>Proxxon.GUI</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -62,9 +62,7 @@
     <Compile Include="PaintForm.Designer.cs">
       <DependentUpon>PaintForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GCodeUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="GCodeUserControl.cs" />
     <Compile Include="GCodeUserControl.Designer.cs">
       <DependentUpon>GCodeUserControl.cs</DependentUpon>
     </Compile>
