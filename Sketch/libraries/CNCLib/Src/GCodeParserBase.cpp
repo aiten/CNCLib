@@ -752,6 +752,8 @@ void CGCodeParserBase::G31Command()
 		Error(MESSAGE_GCODE_ProbeOnlyForXYZ);
 		return;
 	}
+	
+	Sync();
 
 	{
 		if (!G31TestProbe(NULL))
