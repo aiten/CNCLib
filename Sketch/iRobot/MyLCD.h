@@ -21,43 +21,39 @@
 
 ////////////////////////////////////////////////////////
 
-#define CMyStepper CStepperServo
-#define ConversionToMm1000 CMotionControlBase::ToMm1000_1_1000
-#define ConversionToMachine CMotionControlBase::ToMachine_1_1000
+#include "Configuration_iRobot.h"
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED 15000
-#define CNC_ACC  200
-#define CNC_DEC  250
+#include <U8GLCD.h>
+#include "MyMenu.h"
 
 ////////////////////////////////////////////////////////
 
-#define LCD_KILL_PIN  41
+class CMyLcd : public CU8GLcd
+{
+private:
 
-#define KILL_ON  LOW
-#define KILL_OFF HIGH
+	typedef CU8GLcd super;
+
+public:
+
+	virtual void Init() override;
+	virtual void Beep(const SPlayTone*,bool) override;
+
+protected:
+
+	virtual class U8GLIB& GetU8G() override;
+	virtual class CMenuBase& GetMenu() override	{ return _menu; }
+
+	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type, void *data) override;
+
+private:
+
+	CMyMenu _menu;
+
+};
 
 ////////////////////////////////////////////////////////
 
-#define LCD_GROW 64
-#define LCD_GCOL 128
-
-#define LCD_BEEPER 37
-
-#define LCD_NUMAXIS	6
-
-#define ROTARY_ENC           35
-#define ROTARY_ENC_ON		 LOW
-
-#define ROTARY_EN1           31
-#define ROTARY_EN2           33
-
-#define SD_ENABLE_PIN		 53
-
-////////////////////////////////////////////////////////
-
-#include <MessageCNCLib.h>
-
-#define MESSAGE_MYCONTROL_iRobot_Starting					F("iRobotCNC:"__DATE__)
-
+extern CMyLcd Lcd;

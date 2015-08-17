@@ -491,12 +491,13 @@ Console.WriteLine(cmd.CommandText);
             while (_continue)
             {
                 string message=null;
-                try
-                {
-                    message = _serialPort.ReadLine();
-                }
-                catch (TimeoutException) { }
-                catch (InvalidOperationException) { }
+				try
+				{
+					message = _serialPort.ReadLine();
+				}
+				catch (TimeoutException) { }
+				catch (InvalidOperationException) { }
+				catch (IOException) { }
 /*
 				string message="";
 				while (_continue)

@@ -40,7 +40,7 @@ public:
 
 	CMyControl()				 { }
 
-//	virtual void Kill() override;
+	virtual void Kill() override;
 
 //	virtual void IOControl(unsigned char tool, unsigned short level) override;
 //	virtual unsigned short IOControl(unsigned char tool) override;
@@ -59,7 +59,7 @@ protected:
 
 private:
 
-	CReadPinIOControl<KILL_PIN, KILL_ON> _kill;
+	CReadPinIOControl<LCD_KILL_PIN,KILL_ON> _killLcd;
 };
 
 ////////////////////////////////////////////////////////

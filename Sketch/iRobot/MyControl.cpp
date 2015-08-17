@@ -23,7 +23,11 @@
 #include <stdlib.h>
 #include <arduino.h>
 
+#include <SPI.h>
+#include <SD.h>
+
 #include <CNCLib.h>
+#include <CNCLibEx.h>
 
 #include <GCodeParserBase.h>
 #include <GCodeParser.h>
@@ -31,10 +35,12 @@
 #include "MyControl.h"
 #include "MyMotionControl.h"
 #include "MyParser.h"
+#include "MyLcd.h"
 
 ////////////////////////////////////////////////////////////
 
 CMyControl Control;
+CGCodeTools GCodeTools;
 
 CMyMotionControl MotionControl;
 
@@ -59,14 +65,14 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetLimitMax(Z_AXIS, MAX_LIMIT);
 	CStepper::GetInstance()->SetLimitMax(A_AXIS, MAX_LIMIT);
 
-#if KILL_PIN != -1
-	_kill.Init();
-#endif
-
 	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(30000));
 	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(10000));
 
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED,CNC_ACC,CNC_DEC);
+	_killLcd.Init();
+
+  InitSD(SD_ENABLE_PIN);
+
 }
 
 ////////////////////////////////////////////////////////////
@@ -92,19 +98,21 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 }
 */
 ////////////////////////////////////////////////////////////
-/*
+
 void CMyControl::Kill()
 {
 	super::Kill();
 }
-*/
+
 bool CMyControl::IsKill()
 {
-#if KILL_PIN != -1
-	return _kill.IsOn();
-#else
+	if (_killLcd.IsOn())
+	{
+		Lcd.Diagnostic(F("LCD E-Stop"));
+		return true;
+	}
+
 	return false;
-#endif
 }
 
 ////////////////////////////////////////////////////////////
