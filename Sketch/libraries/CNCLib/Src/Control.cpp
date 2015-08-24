@@ -456,9 +456,12 @@ void CControl::TimerInterrupt()
 {
 	CHAL::EnableInterrupts();	// enable irq for timer1 (Stepper)
 
-	if (IsKill())
+	if (!CStepper::GetInstance()->IsEmergencyStop())
 	{
-		Kill();
+		if (IsKill())
+		{
+			Kill();
+		}
 	}
 
 #ifdef _USE_LCD
