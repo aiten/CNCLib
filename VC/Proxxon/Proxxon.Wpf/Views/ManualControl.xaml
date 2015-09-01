@@ -2,12 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Proxxon.Wpf.ViewModels"
-        Title="ManualControl" Width="830" Height="600" SizeToContent="Height" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
+        Title="ManualControl" Width="830" Height="550" SizeToContent="Height" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
     <Window.DataContext>
         <vm:ManualControlViewModel />
     </Window.DataContext>
     <DockPanel ScrollViewer.VerticalScrollBarVisibility="Auto">
-        <StackPanel DockPanel.Dock="Left" Margin="10" HorizontalAlignment="Stretch">
+        <StackPanel DockPanel.Dock="Top" Margin="10,5,10,0" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal">
                 <TextBox Text="{Binding AxisX.Pos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
                 <TextBox Text="{Binding AxisY.Pos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
@@ -17,7 +17,7 @@
                 <TextBox Text="{Binding AxisC.Pos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
                 <Button Command="{Binding Tool.SendM114Command}" Content="M114 - Pos"  MinWidth="100"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                 <TextBox Text="{Binding AxisX.RelPos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
                 <TextBox Text="{Binding AxisY.RelPos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
                 <TextBox Text="{Binding AxisZ.RelPos, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
@@ -99,7 +99,7 @@
                     <Button Command="{Binding AxisC.SendMinus100Command}" Content="C -100" />
                 </StackPanel>
             </StackPanel>
-            <StackPanel  Margin="0,0,0,10" Orientation="Horizontal">
+            <StackPanel  Margin="0,0,0,5" Orientation="Horizontal">
                 <Label Content="Command:" Height="26" Width="100" Margin="0,0,5,0"/>
                 <!--<TextBox Text="{Binding DirectCommand, UpdateSourceTrigger=PropertyChanged}" Height="26" Width="241" VerticalContentAlignment="Center" VerticalAlignment="Center">
                         <TextBox.InputBindings><KeyBinding Command="{Binding Path=SendDirectCommand}" Key="Enter" /></TextBox.InputBindings>
@@ -251,15 +251,15 @@
                 </StackPanel>
 
             </StackPanel>
-            <DataGrid ItemsSource="{Binding CommandHistory.ProxxonCommandCollection}" MinHeight="150" DockPanel.Dock="Top"
-            	AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" 
-            	ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserAddRows="False" IsReadOnly="True" MaxHeight="500" >
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding CommandDate}" MinWidth="150" IsReadOnly="True" Header="Date" />
-                    <DataGridTextColumn Binding="{Binding CommandText}" Header="CommandText" MinWidth="200" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Result}"  MinWidth="350" IsReadOnly="True" Header="Result" />
-                </DataGrid.Columns>
-            </DataGrid>
         </StackPanel>
+        <DataGrid ItemsSource="{Binding CommandHistory.ProxxonCommandCollection}" MinHeight="100" DockPanel.Dock="Top"
+        	AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" 
+        	ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserAddRows="False" IsReadOnly="True" Margin="10,0,10,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding CommandDate}" MinWidth="150" IsReadOnly="True" Header="Date" />
+                <DataGridTextColumn Binding="{Binding CommandText}" Header="CommandText" MinWidth="200" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Result}"  MinWidth="350" IsReadOnly="True" Header="Result" />
+            </DataGrid.Columns>
+        </DataGrid>
     </DockPanel>
 </Window>
