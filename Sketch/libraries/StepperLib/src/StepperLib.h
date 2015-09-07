@@ -17,12 +17,12 @@
 */
 ////////////////////////////////////////////////////////
 
-#include "StepperSMC800.h"
-#include "StepperRamps14.h"
-#include "StepperRampsFD.h"
-#include "StepperL298N.h"
-#include "StepperTB6560.h"
-#include "StepperMash6050S.h"
+#include "Steppers\StepperSMC800.h"
+#include "Steppers\StepperRamps14.h"
+#include "Steppers\StepperRampsFD.h"
+#include "Steppers\StepperL298N.h"
+#include "Steppers\StepperTB6560.h"
+#include "Steppers\StepperMash6050S.h"
 #include "UtilitiesStepperLib.h"
 
 

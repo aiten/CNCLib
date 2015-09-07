@@ -213,6 +213,12 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Matrix4x4.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperCNCShield.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperCNCShield_pins.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">
