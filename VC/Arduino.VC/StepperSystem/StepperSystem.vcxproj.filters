@@ -16,6 +16,9 @@
     <Filter Include="CNCLibEx">
       <UniqueIdentifier>{6f3a3e8a-55d3-4191-953e-10e6daec1150}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StepperLib\Steppers">
+      <UniqueIdentifier>{c09629bf-4921-451b-967c-611a6ef611fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\arduino.h">
@@ -58,21 +61,6 @@
       <Filter>StepperLib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperLib.h">
-      <Filter>StepperLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRamps14.h">
-      <Filter>StepperLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRamps14_pins.h">
-      <Filter>StepperLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRampsFD.h">
-      <Filter>StepperLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRampsFD_pins.h">
-      <Filter>StepperLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperSMC800.h">
       <Filter>StepperLib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\UtilitiesStepperLib.h">
@@ -132,9 +120,6 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\ConfigurationCNCLibEx.h">
       <Filter>CNCLibEx</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperL298N.h">
-      <Filter>StepperLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_AVR.h">
       <Filter>StepperLib</Filter>
     </ClInclude>
@@ -145,12 +130,6 @@
       <Filter>StepperLib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\LinearLookUp.h">
-      <Filter>StepperLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560.h">
-      <Filter>StepperLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560_pins.h">
       <Filter>StepperLib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeParserBase.h">
@@ -173,12 +152,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControl.h">
       <Filter>CNCLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperMash6050S.h">
-      <Filter>StepperLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperMash6050S_pins.h">
-      <Filter>StepperLib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\MenuBase.h">
       <Filter>CNCLib</Filter>
@@ -214,10 +187,46 @@
       <Filter>CNCLib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperCNCShield.h">
-      <Filter>StepperLib</Filter>
+      <Filter>StepperLib\Steppers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperCNCShield_pins.h">
-      <Filter>StepperLib</Filter>
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperTB6560.h">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperTB6560_pins.h">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperCNCShield.h">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperCNCShield_pins.h">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperL298N.h">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperMash6050S.h">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperMash6050S_pins.h">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperRamps14.h">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperRamps14_pins.h">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperRampsFD.h">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperRampsFD_pins.h">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperSMC800.h">
+      <Filter>StepperLib\Steppers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -228,15 +237,6 @@
       <Filter>StepperLib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.cpp">
-      <Filter>StepperLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRamps14.cpp">
-      <Filter>StepperLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperRampsFD.cpp">
-      <Filter>StepperLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperSMC800.cpp">
       <Filter>StepperLib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\UtilitiesStepperLib.cpp">
@@ -275,16 +275,10 @@
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\GCode3DParser.cpp">
       <Filter>CNCLibEx</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperL298N.cpp">
-      <Filter>StepperLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_AVR.cpp">
       <Filter>StepperLib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.cpp">
-      <Filter>StepperLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperTB6560.cpp">
       <Filter>StepperLib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeParserBase.cpp">
@@ -299,9 +293,6 @@
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControl.cpp">
       <Filter>CNCLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\StepperMash6050S.cpp">
-      <Filter>StepperLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\MenuBase.cpp">
       <Filter>CNCLib</Filter>
     </ClCompile>
@@ -310,6 +301,24 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\U8GLCD.cpp">
       <Filter>CNCLibEx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperTB6560.cpp">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperL298N.cpp">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperMash6050S.cpp">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperRamps14.cpp">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperRampsFD.cpp">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperSMC800.cpp">
+      <Filter>StepperLib\Steppers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

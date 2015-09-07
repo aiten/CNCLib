@@ -21,15 +21,33 @@
 
 ////////////////////////////////////////////////////////
 
-#include <Steppers/StepperRamps14_pins.h>
+#define CNCSHIELD_NUM_AXIS 3
 
 ////////////////////////////////////////////////////////
 
-#define CMyStepper CStepperRamps14
+#define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
+#define ConversionToMachine CMotionControl::ToMachine_1_3200
 
 ////////////////////////////////////////////////////////
 
-#define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
-#define CONTROLLERFAN_FAN_PIN	RAMPS14_FET2D9_PIN
+#define MAXSIZE_X_AXIS 130000 
+#define MAXSIZE_Y_AXIS 45000 
+#define MAXSIZE_Z_AXIS 81000 
+#define MAXSIZE_A_AXIS 360000 
 
 ////////////////////////////////////////////////////////
+
+#define CNC_MAXSPEED 14000
+#define CNC_ACC  350
+#define CNC_DEC  400
+
+#define CNCSHIELD_PROBE_PIN     58    // AD4
+#define CNCSHIELD_PROBE_ON      LOW
+#define CNCSHIELD_PROBE_OFF     HIGH
+
+////////////////////////////////////////////////////////
+
+#include <MessageCNCLib.h>
+
+#define MESSAGE_MYCONTROL_CNCShield_Starting					F("CNCShield:"__DATE__)
+

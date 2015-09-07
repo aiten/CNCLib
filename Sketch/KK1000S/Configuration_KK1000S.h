@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
-#include <StepperMash6050S_pins.h>
+#include <Steppers/StepperMash6050S_pins.h>
 #define BOARDNAME MASH6050S 
 
 // PIN AS Ramps 1.4 

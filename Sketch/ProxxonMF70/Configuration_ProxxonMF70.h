@@ -28,7 +28,7 @@
 
 #if defined(USE_RAMPS14)
 
-#include <StepperRamps14_pins.h>
+#include <Steppers/StepperRamps14_pins.h>
 #define BOARDNAME RAMPS14
 
 #define SPEEDFACTOR 1
