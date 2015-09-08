@@ -66,7 +66,7 @@ void CStepper::InitMemVar()
 
 //	SetUsual(28000);	=> reduce size => hard coded
 	SetDefaultMaxSpeed(28000, 350, 380);
-	for (axis_t i = 0; i < NUM_AXIS; i++) { SetJerkSpeed(i, 1000); }
+	for (i = 0; i < NUM_AXIS; i++) { SetJerkSpeed(i, 1000); }
 
 	for (i = 0; i<MOVEMENTBUFFERSIZE; i++) _movements._queue.Buffer[i]._state= SMovement::StateDone;
 
@@ -239,10 +239,10 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 ////////////////////////////////////////////////////////
 
-void CStepper::QueueWait(const mdist_t dist, timer_t timerMax, SMovementParam* param)
+void CStepper::QueueWait(const mdist_t dist, timer_t timerMax, bool checkhold, SMovementParam* param)
 {
 	WaitUntilCanQueue();
-	_movements._queue.NextTail().InitWait(this, dist, timerMax, param);
+	_movements._queue.NextTail().InitWait(this, dist, timerMax, checkhold, param);
 
 	EnqueuAndStartTimer(true);
 }
@@ -519,7 +519,7 @@ void CStepper::SMovement::InitStop(SMovement* mvPrev, timer_t timer, timer_t dec
 
 ////////////////////////////////////////////////////////
 
-void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, SMovementParam* param)
+void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkHold, SMovementParam* param)
 {
 	//this is no POD because of methode's => *this = SMovement();		
 	memset(this, 0, sizeof(SMovement));	// init with 0
@@ -527,6 +527,7 @@ void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t tim
 	_pStepper = pStepper;
 	_steps = steps;
 	_pod._wait._timer = timer;
+	_pod._wait._checkHold = checkHold;
 
 	_state = StateReadyWait;
 
@@ -1619,6 +1620,15 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 						pStepper->SetEnable(i, CStepper::LevelMax, false);
 				}
 			}
+
+			if (_state == SMovement::StateReadyWait && _pod._wait._checkHold)
+			{
+				// wait only if Stepper is "hold"
+				if (_pStepper->IsHold() == false)
+				{
+					pState->_n = _steps;
+				}
+			}
 		}
 
 		register mdist_t n = pState->_n;
@@ -1707,6 +1717,15 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 		else if (_state == StateReadyWait || _state == StateWait)
 		{
 			_state = StateWait;
+
+			if (_pod._wait._checkHold)
+			{
+				// wait only if Stepper is "hold"
+				if (_pStepper->IsHold() == false)	
+				{
+					n = _steps;
+				}
+			}
 		}
 		else
 		{
@@ -2052,7 +2071,7 @@ bool  CStepper::IsAnyReference()
 
 void CStepper::Wait(unsigned int sec100, SMovementParam* param)
 {
-	QueueWait(sec100, WAITTIMER1VALUE, param);
+	QueueWait(sec100, WAITTIMER1VALUE, false, param);
 }
 
 ////////////////////////////////////////////////////////

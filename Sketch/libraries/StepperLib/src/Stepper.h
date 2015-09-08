@@ -199,6 +199,7 @@ public:
 	void EmergencyStopResurrect();
 
 	bool IsHold()												{ return _pod._isHold; }
+	void SetHold(bool hold)										{ _pod._isHold = hold; }
 
 	void UseReference(unsigned char referneceid, bool use)		{ _pod._useReference[referneceid] = use; }
 	bool IsUseReference(unsigned char referneceid)				{ return _pod._useReference[referneceid]; }
@@ -265,7 +266,7 @@ public:
 private:
 
 	void QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax, unsigned char stepmult);
-	void QueueWait(const mdist_t dist, timer_t timerMax, SMovementParam* param);
+	void QueueWait(const mdist_t dist, timer_t timerMax, bool checkHold, SMovementParam* param);
 
 	void EnqueuAndStartTimer(bool waitfinish);
 	void WaitUntilCanQueue();
@@ -465,6 +466,7 @@ protected:
 			{
 				timer_t _timer;
 				SMovementParam _param;
+				bool _checkHold;									// wiat only if Stepper.Hold is set
 			} _wait;
 		} _pod;
 
@@ -511,7 +513,7 @@ protected:
 		bool IsFinished() const									{ return _state == StateDone; }								// Move finished 
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
-		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, SMovementParam* param);
+		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkHold, SMovementParam* param);
 
 		void InitStop(SMovement* mvPrev, timer_t timer, timer_t dectimer);
 
