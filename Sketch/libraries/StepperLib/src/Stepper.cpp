@@ -37,7 +37,6 @@ CStepper::CStepper()
 ////////////////////////////////////////////////////////
 
 template<> CStepper* CSingleton<CStepper>::_instance = NULL;
-bool CStepper::_emergencyStop = false;
 
 ////////////////////////////////////////////////////////
 
@@ -1243,7 +1242,7 @@ void CStepper::SubTotalSteps()
 void CStepper::EmergencyStopResurrect()
 {
 	AbortMove();		// make sure nothing is running
-	_emergencyStop = false;
+	_pod._emergencyStop = false;
 	_pod._fatalerror = NULL;
 }
 
@@ -1476,7 +1475,7 @@ void CStepper::StepRequest(bool isr)
 		return;
 	}
 
-	if (_emergencyStop)
+	if (_pod._emergencyStop)
 	{
 		AbortMove();
 		return;

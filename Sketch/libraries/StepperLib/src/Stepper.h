@@ -194,9 +194,11 @@ public:
 
 	void StopMove(steprate_t v0Dec=0);							// Stop all pendinge/current moves, WITH dec ramp
 	void AbortMove();											// Abort all pendinge/current moves, NO dec ramp
-	void EmergencyStop()										{ _emergencyStop = true; AbortMove(); }
-	bool IsEmergencyStop()										{ return _emergencyStop; }
+	void EmergencyStop()										{ _pod._emergencyStop = true; AbortMove(); }
+	bool IsEmergencyStop()										{ return _pod._emergencyStop; }
 	void EmergencyStopResurrect();
+
+	bool IsHold()												{ return _pod._isHold; }
 
 	void UseReference(unsigned char referneceid, bool use)		{ _pod._useReference[referneceid] = use; }
 	bool IsUseReference(unsigned char referneceid)				{ return _pod._useReference[referneceid]; }
@@ -325,12 +327,13 @@ protected:
 	// often accessed members first => is faster
 	// even size of struct and 2byte alignement
 
-	static bool		_emergencyStop;
-
 	struct POD														// POD .. Plane Old Daty Type => no Constructor => init with default value = 0
 	{
 		volatile bool	_timerRunning;
 		bool			_checkReference;							// check for "IsReference" in ISR (while normal move)
+
+		bool			_emergencyStop;
+		bool			_isHold;
 
 		bool			_waitFinishMove;
 		bool			_limitCheck;
