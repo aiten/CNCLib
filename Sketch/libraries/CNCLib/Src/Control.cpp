@@ -340,7 +340,7 @@ bool CControl::SerialReadAndExecuteCommand()
 
 void CControl::FileReadAndExecuteCommand(Stream* stream, Stream* output)
 {
-	if (!_pause)
+	if (!IsPause())
 		ReadAndExecuteCommand(stream, output, true);
 }
 

@@ -239,10 +239,10 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 ////////////////////////////////////////////////////////
 
-void CStepper::QueueWait(const mdist_t dist, timer_t timerMax, bool checkhold, SMovementParam* param)
+void CStepper::QueueWait(const mdist_t dist, timer_t timerMax, bool checkhold)
 {
 	WaitUntilCanQueue();
-	_movements._queue.NextTail().InitWait(this, dist, timerMax, checkhold, param);
+	_movements._queue.NextTail().InitWait(this, dist, timerMax, checkhold);
 
 	EnqueuAndStartTimer(true);
 }
@@ -519,7 +519,7 @@ void CStepper::SMovement::InitStop(SMovement* mvPrev, timer_t timer, timer_t dec
 
 ////////////////////////////////////////////////////////
 
-void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkHold, SMovementParam* param)
+void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkHold)
 {
 	//this is no POD because of methode's => *this = SMovement();		
 	memset(this, 0, sizeof(SMovement));	// init with 0
@@ -530,9 +530,6 @@ void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t tim
 	_pod._wait._checkHold = checkHold;
 
 	_state = StateReadyWait;
-
-	if (param!=NULL)
-		_pod._wait._param = *param;
 }
 
 ////////////////////////////////////////////////////////
@@ -2069,9 +2066,16 @@ bool  CStepper::IsAnyReference()
 
 ////////////////////////////////////////////////////////
 
-void CStepper::Wait(unsigned int sec100, SMovementParam* param)
+void CStepper::Wait(unsigned int sec100)
 {
-	QueueWait(sec100, WAITTIMER1VALUE, false, param);
+	QueueWait(sec100, WAITTIMER1VALUE, false);
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::WaitHold(unsigned int sec100)
+{
+	QueueWait(sec100, WAITTIMER1VALUE, true);
 }
 
 ////////////////////////////////////////////////////////

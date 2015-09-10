@@ -104,13 +104,6 @@ public:
 
 	typedef bool(*StepperEvent)(CStepper*stepper, void* param, EnumAsByte(EStepperEvent) eventtype, void* addinfo);
 	typedef bool(*TestContinueMove)(void* param);
-	typedef void(*MovementEvent)(void* param);
-
-	struct SMovementParam
-	{
-		MovementEvent _event;
-		void*		  _eventParam;
-	};
 
 	struct SEvent 
 	{
@@ -216,7 +209,8 @@ public:
 
 	void MoveAbsEx(steprate_t vMax, unsigned short axis, udist_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
 	void MoveRelEx(steprate_t vMax, unsigned short axis, sdist_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
-	void Wait(unsigned int sec100, SMovementParam* param=NULL);
+	void Wait(unsigned int sec100);
+	void WaitHold(unsigned int sec100);
 
 	bool MoveUntil(TestContinueMove testcontinue, void*param);
 
@@ -266,7 +260,7 @@ public:
 private:
 
 	void QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax, unsigned char stepmult);
-	void QueueWait(const mdist_t dist, timer_t timerMax, bool checkHold, SMovementParam* param);
+	void QueueWait(const mdist_t dist, timer_t timerMax, bool checkHold);
 
 	void EnqueuAndStartTimer(bool waitfinish);
 	void WaitUntilCanQueue();
@@ -465,7 +459,6 @@ protected:
 			struct SWait
 			{
 				timer_t _timer;
-				SMovementParam _param;
 				bool _checkHold;									// wiat only if Stepper.Hold is set
 			} _wait;
 		} _pod;
@@ -513,7 +506,7 @@ protected:
 		bool IsFinished() const									{ return _state == StateDone; }								// Move finished 
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
-		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkHold, SMovementParam* param);
+		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkHold);
 
 		void InitStop(SMovement* mvPrev, timer_t timer, timer_t dectimer);
 
