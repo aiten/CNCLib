@@ -5,6 +5,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{0c089c38-967e-4429-8b8f-02f255eff955}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -13,13 +16,43 @@
     <ClInclude Include="targetver.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Matrix4x4Test.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="RingBufferTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="StepperTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="TestClass.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="ToStringTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StepperTest.cpp">
+    <ClCompile Include="StepperTestMain.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix4x4Test.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="RingBufferTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="StepperTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="TestClass.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="ToStringTest.cpp">
+      <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

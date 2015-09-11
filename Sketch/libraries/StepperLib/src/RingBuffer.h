@@ -103,6 +103,28 @@ public:
 		return maxsize - Count();
 	}
 
+	T* InsertTail(unsigned char insertat)
+	{
+		if (IsInQueue(insertat))
+		{
+			for (unsigned char idx = T2HInit(); T2HTest(idx); idx = T2HInc(idx))
+			{
+				Buffer[NextIndex(idx)] = Buffer[idx];
+				if (insertat == idx)
+					break;
+			}
+		}
+		else
+		{
+			// add tail
+			insertat = GetNextTailPos();
+		}
+
+		Enqueue();
+		return &Buffer[insertat];
+	}
+
+
 	// next functions no check if empty or full
 
 	T& Head()                       { return Buffer[GetHeadPos()]; }
@@ -117,7 +139,8 @@ public:
 		idx = NextIndex(idx);
 		return idx != _nexttail && IsInQueue(idx) ? &Buffer[idx] : NULL;
 	}
-	T* GetPrev(unsigned char idx)	{
+	T* GetPrev(unsigned char idx)	
+	{
 		if (idx == _head) return NULL;
 		idx = PrevIndex(idx);
 		return IsInQueue(idx) ? &Buffer[idx] : NULL;
@@ -126,7 +149,8 @@ public:
 	unsigned char GetNextTailPos() const	{ return _nexttail; }
 	unsigned char GetTailPos() const		{ return PrevIndex(_nexttail); }
 
-	bool IsInQueue(unsigned char idx) const	{
+	bool IsInQueue(unsigned char idx) const	
+	{
 		if (_empty) return false;
 		if (_nexttail == _head) return true;
 		if (_nexttail > _head) return idx >= _head && idx < _nexttail;
@@ -164,7 +188,7 @@ public:
 
 	////////////////////////////////////////////////////////
 
-protected:
+public:
 
 	unsigned char NextIndex(unsigned char idx) const
 	{

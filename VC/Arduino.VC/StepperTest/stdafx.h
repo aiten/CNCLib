@@ -9,8 +9,11 @@
 
 #include "targetver.h"
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #include <stdio.h>
 #include <tchar.h>
+#include <string.h>
 
 
-// TODO: reference additional headers your program requires here
