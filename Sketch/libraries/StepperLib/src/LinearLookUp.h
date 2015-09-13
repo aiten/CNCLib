@@ -73,7 +73,7 @@ public:
 							// no approximation => input < first table entry 
 							return pTable[c].output; 
 						}
-						// linear approximation betwwen c-1 and c
+						// linear approximation between c-1 and c
 						return LinearInterpolation(pTable, input, c - 1);
 					}
 				}
@@ -87,7 +87,7 @@ public:
 							// no approximation => input > last table entry 
 							return pTable[c].output;
 						}
-						// linear approximation betwwen c and c+1
+						// linear approximation between c and c+1
 						return LinearInterpolation(pTable, input, c);
 					}
 				}

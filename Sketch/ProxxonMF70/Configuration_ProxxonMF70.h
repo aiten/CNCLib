@@ -38,7 +38,7 @@
 
 #else if  defined(USE_RAMPSFD)
 
-#include <StepperRampsFD_pins.h>
+#include <Steppers/StepperRampsFD_pins.h>
 #define BOARDNAME RAMPSFD
 
 #define SPEEDFACTOR 2

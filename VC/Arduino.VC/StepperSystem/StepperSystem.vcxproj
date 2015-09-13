@@ -57,8 +57,6 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\RingBuffer.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Singleton.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.h" />
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperCNCShield.h" />
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperCNCShield_pins.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperCNCShield.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperCNCShield_pins.h" />
@@ -109,7 +107,6 @@
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperRamps14.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperRampsFD.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperSMC800.cpp" />
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperTB6560.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\UtilitiesStepperLib.cpp" />
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp" />
   </ItemGroup>

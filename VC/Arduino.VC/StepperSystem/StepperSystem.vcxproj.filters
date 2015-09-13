@@ -186,12 +186,6 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Matrix4x4.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperCNCShield.h">
-      <Filter>StepperLib\Steppers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperCNCShield_pins.h">
-      <Filter>StepperLib\Steppers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperTB6560.h">
       <Filter>StepperLib\Steppers</Filter>
     </ClInclude>
@@ -301,9 +295,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\U8GLCD.cpp">
       <Filter>CNCLibEx</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperTB6560.cpp">
-      <Filter>StepperLib\Steppers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperL298N.cpp">
       <Filter>StepperLib\Steppers</Filter>

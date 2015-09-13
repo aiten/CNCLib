@@ -103,6 +103,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
         }
         return;
 #endif
+    case Coolant:     _coolant.Set(level>0); return;
 	}
 	
 	super::IOControl(tool, level);

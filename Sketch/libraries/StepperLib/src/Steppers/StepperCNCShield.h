@@ -44,6 +44,8 @@ public:
 		_num_axis = CNCSHIELD_NUM_AXIS;
 	}
 
+	////////////////////////////////////////////////////////
+
 	virtual void Init() override
 	{
 		super::Init();
@@ -77,27 +79,27 @@ public:
 
 protected:
 
+	////////////////////////////////////////////////////////
+
 	virtual void  SetEnable(axis_t axis, unsigned char level, bool force) override
 	{
-/*
+
 #define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,CNCSHIELD_PIN_ENABLE_ON);	else	HALFastdigitalWrite(pin,CNCSHIELD_PIN_ENABLE_OFF);
-		switch (axis)
-		{
-#pragma warning( disable : 4127 )
-			case X_AXIS:  SETLEVEL(CNCSHIELD_X_ENABLE_PIN); break;
-			case Y_AXIS:  SETLEVEL(CNCSHIELD_Y_ENABLE_PIN); break;
-			case Z_AXIS:  SETLEVEL(CNCSHIELD_Z_ENABLE_PIN); break;
-			case A_AXIS:  SETLEVEL(CNCSHIELD_E0_ENABLE_PIN); break;
-#pragma warning( default : 4127 )
-		}
+
+	SETLEVEL(CNCSHIELD_ENABLE_PIN);
+
 #undef SETLEVEL
-*/
+
 	}
+
+	////////////////////////////////////////////////////////
 
 	virtual unsigned char GetEnable(axis_t axis) override
 	{
 		return ConvertLevel(HALFastdigitalRead(CNCSHIELD_ENABLE_PIN) == CNCSHIELD_PIN_ENABLE_ON);
 	}
+
+	////////////////////////////////////////////////////////
 
 	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) override
 	{
@@ -162,6 +164,8 @@ protected:
 
 public:
 
+	////////////////////////////////////////////////////////
+
 	virtual bool IsReference(unsigned char referenceid) override
 	{
 		switch (referenceid)
@@ -172,6 +176,8 @@ public:
 		}
 		return false;
 	}
+
+	////////////////////////////////////////////////////////
 
 	virtual bool IsAnyReference() override
 	{
