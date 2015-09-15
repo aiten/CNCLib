@@ -31,7 +31,9 @@ public:
 		TOutput	output;
 	};
 
-	static TOutput LinearInterpolation(SLookupTable* pTable, TInput input, unsigned char i)
+	typedef unsigned char index_t;
+
+	static TOutput LinearInterpolation(SLookupTable* pTable, TInput input, index_t i)
 	{
 		TInput   distinput   = input - pTable[i].input;
 		TInput   diffinput   = pTable[i+1].input  - pTable[i].input;
@@ -41,14 +43,14 @@ public:
 		return pTable[i].output + ( distinput * diffoutput )  / diffinput;
 	}
 
-	static TOutput Lookup(SLookupTable* pTable, unsigned char tabelSize, TInput input)
+	static TOutput Lookup(SLookupTable* pTable, index_t tabelSize, TInput input)
 	{
 		// table must be sorted!!!!
 		// binary serach
 
-		int c;
-		int left = 0;
-		int right = tabelSize - 1;
+		index_t c;
+		index_t left = 0;
+		index_t right = tabelSize - 1;
 
 		if (tabelSize==0)	return TOutput(0);
 
@@ -65,28 +67,30 @@ public:
 			{
 				if (pTable[c].input > input)
 				{
+					if (c == 0)
+					{
+						// no approximation => input < first table entry 
+						return pTable[c].output;
+					}
+
 					right = c - 1;
 					if (left > right)
 					{
-						if (c==0)	
-						{ 
-							// no approximation => input < first table entry 
-							return pTable[c].output; 
-						}
 						// linear approximation between c-1 and c
 						return LinearInterpolation(pTable, input, c - 1);
 					}
 				}
 				else 
 				{
+					if (c == (tabelSize - 1))
+					{
+						// no approximation => input > last table entry 
+						return pTable[c].output;
+					}
+
 					left = c + 1;
 					if (left > right)
 					{
-						if (c==(tabelSize-1))	
-						{
-							// no approximation => input > last table entry 
-							return pTable[c].output;
-						}
 						// linear approximation between c and c+1
 						return LinearInterpolation(pTable, input, c);
 					}
@@ -95,7 +99,7 @@ public:
 		}
 	}
 
-	CLinearLookup(SLookupTable* pTable, unsigned char tabelSize) : _tabelSize(tabelSize), _pTable(pTable)
+	CLinearLookup(SLookupTable* pTable, index_t tabelSize) : _tabelSize(tabelSize), _pTable(pTable)
 	{
 	}
 

@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="LinearLookupTest.h" />
     <ClInclude Include="Matrix4x4Test.h" />
     <ClInclude Include="RingBufferTest.h" />
     <ClInclude Include="stdafx.h" />
@@ -92,6 +93,7 @@
     <ClInclude Include="ToStringTest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="LinearLookupTest.cpp" />
     <ClCompile Include="Matrix4x4Test.cpp" />
     <ClCompile Include="RingBufferTest.cpp" />
     <ClCompile Include="StepperTest.cpp" />

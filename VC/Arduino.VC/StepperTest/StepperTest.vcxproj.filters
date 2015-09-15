@@ -31,6 +31,9 @@
     <ClInclude Include="ToStringTest.h">
       <Filter>Tests</Filter>
     </ClInclude>
+    <ClInclude Include="LinearLookupTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -52,6 +55,9 @@
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="ToStringTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="LinearLookupTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>

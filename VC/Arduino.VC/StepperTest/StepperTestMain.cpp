@@ -23,6 +23,7 @@
 #include "ToStringTest.h"
 #include "Matrix4x4Test.h"
 #include "StepperTest.h"
+#include "LinearLookupTest.h"
 
 #pragma warning(disable: 4127)
 
@@ -42,6 +43,11 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	{
 		CMatrix4x4Test test;
+		test.RunTest();
+	}
+
+	{
+		CLinearLookupTest test;
 		test.RunTest();
 	}
 

@@ -59,6 +59,33 @@ public:
 		}
 	}
 
+	void Assert(float expect, float actual)
+	{
+		if (expect != actual)
+		{
+			printf("Assert failed, expected = %f, actual = %f\n", (float)expect, (float)actual);
+			CheckBreakOnAssert();
+		}
+	}
+
+	void Assert(float expect, float actual, float maxdiff)
+	{
+		if (fabs(expect - actual) > maxdiff)
+		{
+			printf("Assert failed, expected = %f, actual = %f\n", (float)expect, (float)actual);
+			CheckBreakOnAssert();
+		}
+	}
+
+	void Assert(double expect, double actual)
+	{
+		if (expect != actual)
+		{
+			printf("Assert failed, expected = %lf, actual = %lf\n", (double)expect, (double)actual);
+			CheckBreakOnAssert();
+		}
+	}
+
 	void Assert(const char* expect, const char* actual)
 	{
 		if (strcmp(expect,actual)!=0)
