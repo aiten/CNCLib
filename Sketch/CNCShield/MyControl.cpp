@@ -37,6 +37,8 @@ CMotionControlBase MotionControl;
 
 void CMyControl::Init()
 {
+  DisableBlinkLed();
+
 	StepperSerial.println(MESSAGE_MYCONTROL_CNCShield_Starting);
 
 	CMotionControlBase::GetInstance()->Init();

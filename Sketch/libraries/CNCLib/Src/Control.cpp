@@ -51,8 +51,9 @@ void CControl::Init()
 		CLcd::GetInstance()->Init();
 
 #endif
-		
-	CHAL::pinMode(BLINK_LED, OUTPUT);
+	
+	if (_timeBlink==0)
+		CHAL::pinMode(BLINK_LED, OUTPUT);
 
 	CHAL::InitTimer0(HandleInterrupt);
 	CHAL::StartTimer0(IDLETIMER0VALUE);

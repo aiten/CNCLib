@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Sketch\ProxxonMF70\ProxxonMF70.ino" />
+    <None Include="test.nc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

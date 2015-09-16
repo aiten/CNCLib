@@ -110,6 +110,8 @@ protected:
 
 	bool IsResurrectCommand(const char*buffer)					{ return buffer[0] == '!' && buffer[1] == '!' && buffer[2] == '!' && (buffer[3] == 0 || (buffer[3] == '\r' && buffer[4] == 0)); }
 
+	void DisableBlinkLed()										{ _timeBlink = 0xffffffff;  }
+
 private:
 
 	void ReadAndExecuteCommand(Stream* stream, Stream* output, bool filestream);	// read command until "IsEndOfCommandChar" and execute command (Serial or SD.File)
