@@ -431,10 +431,10 @@ void CStepperTest::RunTest()
 		Stepper.InitTest();
 		Stepper.SetDefaultMaxSpeed(5000, 100, 150);
 		Stepper.CStepper::MoveRel(0, 2500, 5000);
-		Stepper.CStepper::SetHold(true);
-		Stepper.CStepper::WaitHold(0);				// timeout 0 => no wait
+		Stepper.CStepper::SetWaitConditional(true);
+		Stepper.CStepper::WaitConditional(0);				// timeout 0 => no wait
 		Stepper.CStepper::MoveRel(0, 100, 3000);
-		Stepper.CStepper::WaitHold(100);
+		Stepper.CStepper::WaitConditional(100);
 		Stepper.CStepper::MoveRel(0, 5000, 3000);
 		Stepper.EndTest("TR25_WaitHold.csv");
 	}

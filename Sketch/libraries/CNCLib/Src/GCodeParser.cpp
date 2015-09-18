@@ -1036,14 +1036,14 @@ void CGCodeParser::M00Command()
 {
 	//Stop
 	Sync();
-	CControl::GetInstance()->Pause();
+	CControl::GetInstance()->StopProgram(false);
 }
 
 void CGCodeParser::M01Command()
 {
 	//Optional Stop
 	Sync();
-	CControl::GetInstance()->Pause();
+	CControl::GetInstance()->StopProgram(true);
 }
 
 void CGCodeParser::M02Command()

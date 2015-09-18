@@ -239,10 +239,10 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 ////////////////////////////////////////////////////////
 
-void CStepper::QueueWait(const mdist_t dist, timer_t timerMax, bool checkhold)
+void CStepper::QueueWait(const mdist_t dist, timer_t timerMax, bool checkWaitConditional)
 {
 	WaitUntilCanQueue();
-	_movements._queue.NextTail().InitWait(this, dist, timerMax, checkhold);
+	_movements._queue.NextTail().InitWait(this, dist, timerMax, checkWaitConditional);
 
 	EnqueuAndStartTimer(true);
 }
@@ -519,7 +519,7 @@ void CStepper::SMovement::InitStop(SMovement* mvPrev, timer_t timer, timer_t dec
 
 ////////////////////////////////////////////////////////
 
-void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkHold)
+void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkWaitConditional)
 {
 	//this is no POD because of methode's => *this = SMovement();		
 	memset(this, 0, sizeof(SMovement));	// init with 0
@@ -527,7 +527,7 @@ void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t tim
 	_pStepper = pStepper;
 	_steps = steps;
 	_pod._wait._timer = timer;
-	_pod._wait._checkHold = checkHold;
+	_pod._wait._checkWaitConditional = checkWaitConditional;
 
 	_state = StateReadyWait;
 }
@@ -1215,6 +1215,29 @@ void CStepper::AbortMove()
 
 ////////////////////////////////////////////////////////
 
+void CStepper::PauseMove()
+{
+	if (_pod._pause == false)
+	{
+		_pod._pause = true;
+		if (_movements._queue.Count() > 0)
+		{
+		}
+	}
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::ContinueMove()
+{
+	if (_pod._pause == true)
+	{
+		_pod._pause = false;
+	}
+}
+
+////////////////////////////////////////////////////////
+
 void CStepper::SubTotalSteps()
 {
 #ifndef REDUCED_SIZE
@@ -1618,10 +1641,10 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 				}
 			}
 
-			if (_state == SMovement::StateReadyWait && _pod._wait._checkHold)
+			if (_state == SMovement::StateReadyWait && _pod._wait._checkWaitConditional)
 			{
-				// wait only if Stepper is "hold"
-				if (_pStepper->IsHold() == false)
+				// wait only if Stepper is "checkWaitConditional"
+				if (_pStepper->IsWaitConditional() == false)
 				{
 					pState->_n = _steps;
 				}
@@ -1715,10 +1738,10 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 		{
 			_state = StateWait;
 
-			if (_pod._wait._checkHold)
+			if (_pod._wait._checkWaitConditional)
 			{
-				// wait only if Stepper is "hold"
-				if (_pStepper->IsHold() == false)	
+				// wait only if Stepper is "checkWaitConditional"
+				if (_pStepper->IsWaitConditional() == false)	
 				{
 					n = _steps;
 				}
@@ -2073,7 +2096,7 @@ void CStepper::Wait(unsigned int sec100)
 
 ////////////////////////////////////////////////////////
 
-void CStepper::WaitHold(unsigned int sec100)
+void CStepper::WaitConditional(unsigned int sec100)
 {
 	QueueWait(sec100, WAITTIMER1VALUE, true);
 }

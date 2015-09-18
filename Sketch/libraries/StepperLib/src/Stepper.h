@@ -185,14 +185,19 @@ public:
 
 	void SetBacklash(axis_t axis, mdist_t dist)					{ _pod._backlash[axis] = dist; }
 
-	void StopMove(steprate_t v0Dec=0);							// Stop all pendinge/current moves, WITH dec ramp
-	void AbortMove();											// Abort all pendinge/current moves, NO dec ramp
+	void StopMove(steprate_t v0Dec=0);							// Stop all pendinge/current moves, WITH dec ramp, clear buffer
+	void AbortMove();											// Abort all pendinge/current moves, NO dec ramp, clear buffer
+
+	void PauseMove();											// Finish current move but do not continue with next (WITH dec ramp)
+	void ContinueMove();										// continue after pause
+	bool IsPauseMove()											{ return _pod._pause;  }
+
 	void EmergencyStop()										{ _pod._emergencyStop = true; AbortMove(); }
 	bool IsEmergencyStop()										{ return _pod._emergencyStop; }
 	void EmergencyStopResurrect();
 
-	bool IsHold()												{ return _pod._isHold; }
-	void SetHold(bool hold)										{ _pod._isHold = hold; }
+	bool IsWaitConditional()									{ return _pod._isWaitConditional; }
+	void SetWaitConditional(bool conditionalwait)				{ _pod._isWaitConditional = conditionalwait; }
 
 	void UseReference(unsigned char referneceid, bool use)		{ _pod._useReference[referneceid] = use; }
 	bool IsUseReference(unsigned char referneceid)				{ return _pod._useReference[referneceid]; }
@@ -209,8 +214,8 @@ public:
 
 	void MoveAbsEx(steprate_t vMax, unsigned short axis, udist_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
 	void MoveRelEx(steprate_t vMax, unsigned short axis, sdist_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
-	void Wait(unsigned int sec100);
-	void WaitHold(unsigned int sec100);
+	void Wait(unsigned int sec100);							// unconditional wait
+	void WaitConditional(unsigned int sec100);				// conditional wait 
 
 	bool MoveUntil(TestContinueMove testcontinue, void*param);
 
@@ -260,7 +265,7 @@ public:
 private:
 
 	void QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax, unsigned char stepmult);
-	void QueueWait(const mdist_t dist, timer_t timerMax, bool checkHold);
+	void QueueWait(const mdist_t dist, timer_t timerMax, bool checkCondition);
 
 	void EnqueuAndStartTimer(bool waitfinish);
 	void WaitUntilCanQueue();
@@ -328,7 +333,7 @@ protected:
 		bool			_checkReference;							// check for "IsReference" in ISR (while normal move)
 
 		bool			_emergencyStop;
-		bool			_isHold;
+		bool			_isWaitConditional;							// wait on "Wait"
 
 		bool			_waitFinishMove;
 		bool			_limitCheck;
@@ -379,6 +384,9 @@ protected:
 		unsigned int _slipSum[NUM_AXIS];
 		int _slip[NUM_AXIS];
 #endif
+
+		bool		_pause;											// PauseMove is called
+		bool		_dummy;	
 
 	} _pod;
 
@@ -459,7 +467,7 @@ protected:
 			struct SWait
 			{
 				timer_t _timer;
-				bool _checkHold;									// wiat only if Stepper.Hold is set
+				bool _checkWaitConditional;								// wait only if Stepper.SetConditionalWait is set
 			} _wait;
 		} _pod;
 
@@ -506,7 +514,7 @@ protected:
 		bool IsFinished() const									{ return _state == StateDone; }								// Move finished 
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
-		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkHold);
+		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkWaitConditional);
 
 		void InitStop(SMovement* mvPrev, timer_t timer, timer_t dectimer);
 

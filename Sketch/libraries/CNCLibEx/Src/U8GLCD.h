@@ -129,7 +129,6 @@ protected:
 	void SetRotaryFocusMenuPage();
 
 	void ButtonPressStartSDPage();
-	void ButtonPressPause();
 	void ButtonPressMenuPage();
 	void ButtonPressShowMenu();
 	void ButtonPressSpeedOverride();
@@ -143,7 +142,6 @@ protected:
 	bool DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, void *data);
 	bool DrawLoopPreset(EnumAsByte(EDrawLoopType) type, void *data);
 	bool DrawLoopStartSD(EnumAsByte(EDrawLoopType) type,void *data);
-	bool DrawLoopPause(EnumAsByte(EDrawLoopType) type,void *data);	
 	bool DrawLoopError(EnumAsByte(EDrawLoopType) type,void *data);
     bool DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,void *data);
 	bool DrawLoopMenu(EnumAsByte(EDrawLoopType) type,void *data);

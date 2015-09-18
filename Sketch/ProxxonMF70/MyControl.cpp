@@ -101,7 +101,9 @@ void CMyControl::Init()
 	_controllerfan.Init();
 
 	_probe.Init();
-	_killLcd.Init();
+
+	_holdLcd.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
+//	_killLcd.Init();
 
 	InitSD(SD_ENABLE_PIN);
 }
@@ -150,12 +152,37 @@ void CMyControl::Kill()
 
 bool CMyControl::IsKill()
 {
+/*
 	if (_killLcd.IsOn())
 	{
 		Lcd.Diagnostic(F("LCD E-Stop"));
 		return true;
 	}
+*/
 	return false;
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::Poll()
+{
+	super::Poll();
+
+	if (_holdLcd.IsOn())
+	{
+		if (IsHold())
+			Resume();
+		else
+			Hold();
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::TimerInterrupt()
+{
+	_holdLcd.Check();
+	super::TimerInterrupt();
 }
 
 ////////////////////////////////////////////////////////////

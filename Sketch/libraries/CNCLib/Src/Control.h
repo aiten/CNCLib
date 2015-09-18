@@ -41,12 +41,16 @@ public:
 
 	bool IsKilled()												{ return CStepper::GetInstance()->IsEmergencyStop(); }
 
-	void Pause();					// pause for FileReadAndExecuteCommand
-	void Continue();				// continue from pause
+	void StopProgram(bool checkconditional);		// see m00 / m01
 
-	bool IsPause()												{ return _pause; }
+	void SetConditionalStop(bool stop);				// see m00 / m01
+	bool IsConditionalStop();
 
 	void Delay(unsigned long ms);	// delay with idle processing
+
+	void Hold();					// stop executing programm (with down-ramp), must not be called in timerinterrupt
+	void Resume();					// continue executing (start queue from stepper)
+	bool IsHold()												{ return CStepper::GetInstance()->IsPauseMove(); }
 
 	//////////////////////////////////////////
 
@@ -127,7 +131,7 @@ private:
 
 	CStepper::SEvent _oldStepperEvent;
 
-	bool			_pause;										// see gcode m01 & m02
+	bool			_dummy;										// see gcode m01 & m02
 	bool			_printFromSDFile;
 
 	char			_buffer[SERIALBUFFERSIZE];					// serial input buffer

@@ -35,7 +35,6 @@ template<> CControl* CSingleton<CControl>::_instance = NULL;
 CControl::CControl()
 {
 	_bufferidx = 0;
-	_pause = false;
 }
 
 ////////////////////////////////////////////////////////////
@@ -116,22 +115,31 @@ void CControl::Resurrect()
 
 ////////////////////////////////////////////////////////////
 
-void CControl::Pause()
+void CControl::StopProgram(bool checkconditional)
 {
-	_pause = true;
-}
-
-////////////////////////////////////////////////////////////
-
-void CControl::Continue()
-{
-	_pause = false;
+	if (checkconditional)
+	{
+	}
 }
 
 ////////////////////////////////////////////////////////////
 
 void CControl::Idle(unsigned int /*idletime*/)
 {
+}
+
+////////////////////////////////////////////////////////////
+
+void CControl::Hold()
+{
+	CStepper::GetInstance()->PauseMove();
+}
+
+////////////////////////////////////////////////////////////
+
+void CControl::Resume()
+{
+	CStepper::GetInstance()->ContinueMove();
 }
 
 ////////////////////////////////////////////////////////////
@@ -341,8 +349,7 @@ bool CControl::SerialReadAndExecuteCommand()
 
 void CControl::FileReadAndExecuteCommand(Stream* stream, Stream* output)
 {
-	if (!IsPause())
-		ReadAndExecuteCommand(stream, output, true);
+	ReadAndExecuteCommand(stream, output, true);
 }
 
 ////////////////////////////////////////////////////////////

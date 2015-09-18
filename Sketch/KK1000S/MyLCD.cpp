@@ -65,7 +65,6 @@ PROGMEM const CU8GLcd::SPageDef CU8GLcd::_pagedef[] =
 	{ &CU8GLcd::DrawLoopSpeedOverride,  &CU8GLcd::ButtonPressSpeedOverride },
 	{ &CU8GLcd::DrawLoopPreset, &CU8GLcd::ButtonPressShowMenu },
 	{ &CU8GLcd::DrawLoopStartSD,&CU8GLcd::ButtonPressStartSDPage },
-	{ &CU8GLcd::DrawLoopPause,	&CU8GLcd::ButtonPressPause },
 	{ &CU8GLcd::DrawLoopError,	&CU8GLcd::ButtonPressShowMenu },
 	{ &CU8GLcd::DrawLoopCommandHis, &CU8GLcd::ButtonPressShowMenu },
 	{ &CU8GLcd::DrawLoopMenu,	&CU8GLcd::ButtonPressMenuPage },

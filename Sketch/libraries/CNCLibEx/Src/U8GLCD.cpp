@@ -360,6 +360,9 @@ bool CU8GLcd::DrawLoopDebug(EnumAsByte(EDrawLoopType) type,void *data)
 	GetU8G().setPrintPos(ToCol(18), ToRow(4) + PosLineOffset);
 	GetU8G().print(CSDist::ToString(CStepper::SpeedOverrideToP(CStepper::GetInstance()->GetSpeedOverride()), tmp, 3));
 
+	GetU8G().setPrintPos(ToCol(20), ToRow(5) + PosLineOffset);
+	GetU8G().print(CControl::GetInstance()->IsHold() ? '1' : '0');
+
 	return true;
 }
 
@@ -609,32 +612,6 @@ bool CU8GLcd::DrawLoopStartSD(EnumAsByte(EDrawLoopType) type,void *data)
 	GetU8G().setPrintPos(ToCol(0), ToRow(3) + PosLineOffset); GetU8G().print(F("File: ")); GetU8G().print(CGCode3DParser::GetExecutingFileName());
 	GetU8G().setPrintPos(ToCol(0), ToRow(4) + PosLineOffset); GetU8G().print(F("At:   ")); GetU8G().print(CSDist::ToString(CGCode3DParser::GetExecutingFilePosition(), tmp, 8));
 	GetU8G().setPrintPos(ToCol(0), ToRow(5) + PosLineOffset); GetU8G().print(F("Line: ")); GetU8G().print(CSDist::ToString(CGCode3DParser::GetExecutingFileLine(), tmp, 8));
-
-	return true;
-}
-
-////////////////////////////////////////////////////////////
-
-void CU8GLcd::ButtonPressPause()
-{
-	if (CControl::GetInstance()->IsPause())
-		CControl::GetInstance()->Continue();
-	else
-		CControl::GetInstance()->Pause();
-
-	OKBeep();
-}
-
-////////////////////////////////////////////////////////////
-
-bool CU8GLcd::DrawLoopPause(EnumAsByte(EDrawLoopType) type,void *data)
-{
-	if (type!=DrawLoopDraw)		return DrawLoopDefault(type,data);
-
-	if (CControl::GetInstance()->IsPause())
-		GetU8G().drawStr(ToCol(2), ToRow(2), F("Press to continue"));
-	else
-		GetU8G().drawStr(ToCol(3), ToRow(2), F("Press to pause"));
 
 	return true;
 }
