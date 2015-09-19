@@ -100,10 +100,14 @@ void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */)
 }
 
 ////////////////////////////////////////////////////////////
-
-bool CMyControl::IsKill()
+bool CMyControl::IsButton(EnumAsByte(EIOButtons) button)
 {
-	return _kill.IsOn();
+	switch (button)
+	{
+		case KillButton:		return _kill.IsOn();
+	}
+
+	return false;
 }
 
 ////////////////////////////////////////////////////////////

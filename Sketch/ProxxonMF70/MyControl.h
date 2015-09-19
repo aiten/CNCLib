@@ -54,7 +54,7 @@ protected:
 	virtual void Init() override;
 	virtual void Initialized() override;
 
-	virtual bool IsKill() override;
+	virtual bool IsButton(EnumAsByte(EIOButtons) button) override;
 
 	virtual void Poll() override;
 	virtual void TimerInterrupt() override;

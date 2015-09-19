@@ -102,6 +102,7 @@ void CMyControl::Init()
 
 	_probe.Init();
 
+// LCD KILL is shared with E! (DIR)
 	_holdLcd.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
 //	_killLcd.Init();
 
@@ -150,15 +151,15 @@ void CMyControl::Kill()
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::IsKill()
+bool CMyControl::IsButton(EnumAsByte(EIOButtons) button)
 {
-/*
-	if (_killLcd.IsOn())
+	switch (button)
 	{
-		Lcd.Diagnostic(F("LCD E-Stop"));
-		return true;
+		default:	break;
+//		case KillButton:	
+		case HoldButton:		return _holdLcd.IsOn();
 	}
-*/
+
 	return false;
 }
 

@@ -41,7 +41,6 @@ public:
 
 	virtual void IOControl(unsigned char tool, unsigned short level) override;
 	virtual unsigned short IOControl(unsigned char tool) override;
-	virtual bool IsKill() override;
 
 protected:
 
@@ -50,6 +49,8 @@ protected:
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 	virtual void Idle(unsigned int idletime) override;
 	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
+
+	virtual bool IsButton(EnumAsByte(EIOButtons) button) override;
 
 	virtual void GoToReference() override;
 	virtual void GoToReference(axis_t axis, steprate_t steprate) override;

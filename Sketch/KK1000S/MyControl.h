@@ -27,6 +27,7 @@
 #include <Analog8InvertIOControl.h>
 #include <ReadPinIOControl.h>
 #include <ReadPinIOTriggerControl.h>
+#include <PushButton.h>
 
 ////////////////////////////////////////////////////////
 
@@ -54,20 +55,21 @@ protected:
 	virtual void Init() override;
 	virtual void Initialized() override;
 
-	virtual bool IsKill() override;
+	virtual bool IsButton(EnumAsByte(EIOButtons) button) override;
 
 	virtual void GoToReference(axis_t axis, steprate_t steprate) override;
 
 	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
+	void TimerInterrupt() override;
 
 private:
 
 	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
 	COnOffIOControl<SPINDEL_PIN, SPINDEL_ON, SPINDEL_OFF> _spindel;
 	CReadPinIOControl<PROBE1_PIN, PROBE_ON> _probe;
-	CReadPinIOControl<CAT(BOARDNAME,_LCD_KILL_PIN),CAT(BOARDNAME,_LCD_KILL_PIN_ON)> _killLcd;
 //	CReadPinIOControl<MASH6050S_KILL_PIN,MASH6050S_KILL_PIN_ON> _kill;
 	CReadPinIOTriggerControl<MASH6050S_KILL_PIN,MASH6050S_KILL_PIN_ON,200> _kill;
+	CPushButton _killLcd;
 
 	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
 };

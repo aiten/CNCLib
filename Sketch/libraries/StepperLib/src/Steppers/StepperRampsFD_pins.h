@@ -157,7 +157,7 @@
 #define RAMPSFD_LCD_ROTARY_ENC_OFF	HIGH
 
 #define RAMPSFD_LCD_BEEPER          RAMPSFD_AUX4_9		// Summer auf Ramps FD
-#define RAMPSFD_LCD_KILL_PIN        RAMPSFD_AUX4_7		// Stoptaste auf Ramps FD (LCD)
+#define RAMPSFD_LCD_KILL_PIN        RAMPSFD_AUX4_7		// Stoptaste auf Ramps FD (LCD) => shared with E1
 //#define RAMPSFD_LCD_KILL_PIN        RAMPSFD_ESTOP_PIN	// hard link
 
 #define RAMPSFD_LCD_KILL_PIN_ON		LOW	// Pressed

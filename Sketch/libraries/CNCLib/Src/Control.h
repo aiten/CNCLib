@@ -66,8 +66,18 @@ public:
 		Probe				// Probe for tool lenght
 	};
 
+
 	virtual void IOControl(unsigned char /* tool */, unsigned short /*level */)	{ };
 	virtual unsigned short IOControl(unsigned char /* tool */)				{ return 0; };
+
+	//////////////////////////////////////////
+
+	enum EIOButtons
+	{
+		KillButton,
+		HoldButton,
+		ResumeButton
+	};
 
 	//////////////////////////////////////////
 
@@ -106,7 +116,7 @@ protected:
 
 	virtual void TimerInterrupt();								// called from timer (timer0 on AVR) 
 
-	virtual bool IsKill() = 0;									// check for kill
+	virtual bool IsButton(EnumAsByte(EIOButtons) button) = 0;
 
 	bool ParseAndPrintResult(CParser* parser, Stream* output);
 

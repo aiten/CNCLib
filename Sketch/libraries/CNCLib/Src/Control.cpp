@@ -146,6 +146,21 @@ void CControl::Resume()
 
 void CControl::Poll()
 {
+	if (!IsKilled())
+	{
+		if (IsHold())
+		{
+			if (IsButton(ResumeButton))
+			{
+				Resume();
+			}
+		}
+		else if (IsButton(HoldButton))
+		{
+			Hold();
+		}
+	}
+
 #ifdef _USE_LCD
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->Poll();
@@ -464,9 +479,9 @@ void CControl::TimerInterrupt()
 {
 	CHAL::EnableInterrupts();	// enable irq for timer1 (Stepper)
 
-	if (!CStepper::GetInstance()->IsEmergencyStop())
+	if (!IsKilled())
 	{
-		if (IsKill())
+		if (IsButton(KillButton))
 		{
 			Kill();
 		}

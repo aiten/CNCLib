@@ -78,6 +78,9 @@ void CMyControl::Init()
 	_kill.Init();
   _coolant.Init();
 
+  _hold.SetPin(CNCSHIELD_RESUME_PIN);
+  _resume.SetPin(CNCSHIELD_HOLD_PIN);
+
 	CGCodeParserBase::Init();
 
 	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(20000));
@@ -140,9 +143,27 @@ void CMyControl::Kill()
   _coolant.Set(false);
 }
 
-bool CMyControl::IsKill()
+////////////////////////////////////////////////////////////
+
+void CMyControl::TimerInterrupt()
 {
-	return _kill.IsOn();
+  super::TimerInterrupt();
+  _hold.Check();
+  _resume.Check();
+}
+
+////////////////////////////////////////////////////////////
+
+bool CMyControl::IsButton(EnumAsByte(EIOButtons) button)
+{
+  switch (button)
+  {
+    default:  break;
+    case KillButton:   return _kill.IsOn();
+    //case HoldButton:    return _holdLcd.IsOn();
+  }
+
+  return false;
 }
 
 ////////////////////////////////////////////////////////////

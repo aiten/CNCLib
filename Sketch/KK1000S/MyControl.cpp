@@ -108,8 +108,9 @@ void CMyControl::Init()
 	_controllerfan.Init();
 
 	_probe.Init(MASH6050S_INPUTPINMODE);
-	_killLcd.Init();
 	_kill.Init(MASH6050S_INPUTPINMODE);
+
+	_killLcd.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
 
 	InitSD(SD_ENABLE_PIN);
 }
@@ -154,21 +155,39 @@ void CMyControl::Kill()
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::IsKill()
+bool CMyControl::IsButton(EnumAsByte(EIOButtons) button)
 {
-//	return _killLcd.IsOn();
-	if (_kill.IsOn())
+	switch (button)
 	{
-		Lcd.Diagnostic(F("KK1000S E-Stop"));
-		return true;
-	} 
-	else if (_killLcd.IsOn())
-	{
-		Lcd.Diagnostic(F("LCD E-Stop"));
-		return true;
+		case KillButton:   
+			if (_kill.IsOn())
+			{
+				Lcd.Diagnostic(F("KK1000S E-Stop"));
+				return true;
+			}
+			return false;
+
+		case HoldButton:    
+			if (_killLcd.IsOn())
+			{
+				Lcd.Diagnostic(F("LCD Hold"));
+				return true;
+			}
+			return false;
+
+		case ResumeButton:
+			return _killLcd.IsOn();
 	}
-	
+
 	return false;
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::TimerInterrupt()
+{
+	super::TimerInterrupt();
+	_killLcd.Check();
 }
 
 ////////////////////////////////////////////////////////////

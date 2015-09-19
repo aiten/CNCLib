@@ -136,13 +136,19 @@ void CMyControl::Kill()
 #endif
 }
 
-bool CMyControl::IsKill()
+////////////////////////////////////////////////////////////
+
+bool CMyControl::IsButton(EnumAsByte(EIOButtons) button)
 {
+	switch (button)
+	{
+		default:	break;
 #if KILL_PIN != -1
-	return _kill.IsOn();
-#else
-	return false;
+		case KillButton:		return _kill.IsOn();
 #endif
+	}
+
+	return false;
 }
 
 ////////////////////////////////////////////////////////////

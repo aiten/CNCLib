@@ -25,6 +25,7 @@
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
 #include <ReadPinIOControl.h>
+#include <PushButtonLow.h>
 
 #include "Configuration_CNCShield.h"
 
@@ -50,8 +51,9 @@ public:
 protected:
 
 	virtual void Init() override;
+  virtual void TimerInterrupt() override;
 
-	virtual bool IsKill() override;
+  bool IsButton(EnumAsByte(EIOButtons) button) override;
 
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 
@@ -70,6 +72,8 @@ private:
 	CReadPinIOControl<CNCSHIELD_PROBE_PIN, CNCSHIELD_PROBE_ON> _probe;
 #endif
 	CReadPinIOControl<CNCSHIELD_ABORT_PIN, CNCSHIELD_ABORT_ON> _kill;
+  CPushButtonLow _hold;
+  CPushButtonLow _resume;
 };
 
 ////////////////////////////////////////////////////////
