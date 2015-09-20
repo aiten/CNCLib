@@ -22,8 +22,8 @@
 ////////////////////////////////////////////////////////
 
 //#define STEPPERTYPE 1		// CStepperL298N
-//#define STEPPERTYPE 2		// CStepperSMC800
-#define STEPPERTYPE 3		// CStepperTB6560
+#define STEPPERTYPE 2		// CStepperSMC800
+//#define STEPPERTYPE 3		// CStepperTB6560
 
 ////////////////////////////////////////////////////////
 

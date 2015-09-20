@@ -63,7 +63,8 @@ public:
 		Vacuum,
 
 		// input
-		Probe				// Probe for tool lenght
+		Probe,				// Probe for tool lenght
+		ProgramStop			// see M01
 	};
 
 
@@ -74,9 +75,9 @@ public:
 
 	enum EIOButtons
 	{
-		KillButton,
-		HoldButton,
-		ResumeButton
+		KillButton,			// reset button
+		HoldButton,			// stop executing (with RAMP)
+		ResumeButton		// continue after Hold
 	};
 
 	//////////////////////////////////////////

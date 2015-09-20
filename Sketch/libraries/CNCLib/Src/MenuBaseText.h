@@ -73,6 +73,8 @@ static const char _mProbeZ[] PROGMEM	= "Probe Z";
 static const char _mG92Clear[] PROGMEM  = "G92 Clear";
 static const char _mFuerElise[] PROGMEM = "Fuer Elise";
 static const char _mResurrect[] PROGMEM = "Resurrect";
+static const char _mHold[] PROGMEM		= "Hold";
+static const char _mResume[] PROGMEM	= "Resume";
 
 ////////////////////////////////////////////////////////////
 // Main Menu

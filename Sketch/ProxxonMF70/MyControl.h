@@ -56,7 +56,6 @@ protected:
 
 	virtual bool IsButton(EnumAsByte(EIOButtons) button) override;
 
-	virtual void Poll() override;
 	virtual void TimerInterrupt() override;
 
 	virtual void GoToReference(axis_t axis, steprate_t steprate) override;
@@ -68,8 +67,7 @@ private:
 	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
 	COnOffIOControl<SPINDEL_PIN, SPINDEL_ON, SPINDEL_OFF> _spindel;
 	CReadPinIOControl<PROBE1_PIN, PROBE_ON> _probe;
-//	CReadPinIOControl<CAT(BOARDNAME,_LCD_KILL_PIN),CAT(BOARDNAME,_LCD_KILL_PIN_ON)> _killLcd;
-	CPushButton _holdLcd;
+	CPushButton _holdKillLcd;
 
 #if defined(USE_RAMPSFD)
 

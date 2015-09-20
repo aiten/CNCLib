@@ -634,6 +634,9 @@ bool CU8GLcd::DrawLoopError(EnumAsByte(EDrawLoopType) type,void *data)
 	if (CControl::GetInstance()->IsKilled())
 		GetU8G().drawStr(ToCol(0), ToRow(++errors + 1), F("emergency stop"));
 
+	if (CControl::GetInstance()->IsHold())
+		GetU8G().drawStr(ToCol(0), ToRow(++errors + 1), F("hold"));
+
 	if (errors == 0)
 		GetU8G().drawStr(ToCol(0), ToRow(2), F("no errors"));
 

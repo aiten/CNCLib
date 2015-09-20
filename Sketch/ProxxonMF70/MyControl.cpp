@@ -102,9 +102,8 @@ void CMyControl::Init()
 
 	_probe.Init();
 
-// LCD KILL is shared with E! (DIR)
-	_holdLcd.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
-//	_killLcd.Init();
+// LCD KILL is shared with E1 (RampsFD) (DIR)
+	_holdKillLcd.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
 
 	InitSD(SD_ENABLE_PIN);
 }
@@ -156,8 +155,8 @@ bool CMyControl::IsButton(EnumAsByte(EIOButtons) button)
 	switch (button)
 	{
 		default:	break;
-//		case KillButton:	
-		case HoldButton:		return _holdLcd.IsOn();
+		case KillButton:		return _holdKillLcd.IsOn();
+//		case HoldButton:		return _holdKillLcd.IsOn();
 	}
 
 	return false;
@@ -165,25 +164,10 @@ bool CMyControl::IsButton(EnumAsByte(EIOButtons) button)
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::Poll()
-{
-	super::Poll();
-
-	if (_holdLcd.IsOn())
-	{
-		if (IsHold())
-			Resume();
-		else
-			Hold();
-	}
-}
-
-////////////////////////////////////////////////////////////
-
 void CMyControl::TimerInterrupt()
 {
-	_holdLcd.Check();
 	super::TimerInterrupt();
+	_holdKillLcd.Check();
 }
 
 ////////////////////////////////////////////////////////////

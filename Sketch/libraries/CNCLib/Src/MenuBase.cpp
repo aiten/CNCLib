@@ -285,3 +285,33 @@ void CMenuBase::MenuButtonPressResurrect(const SMenuItemDef*)
 		CLcd::GetInstance()->ErrorBeep();
 	}
 }
+
+////////////////////////////////////////////////////////////
+
+void CMenuBase::MenuButtonPressHold(const SMenuItemDef*)
+{
+	if (!CControl::GetInstance()->IsHold())
+	{
+		CControl::GetInstance()->Hold();
+		CLcd::GetInstance()->OKBeep();
+	}
+	else
+	{
+		CLcd::GetInstance()->ErrorBeep();
+	}
+}
+
+///////////////////////////////////////////////////////////
+
+void CMenuBase::MenuButtonPressResume(const SMenuItemDef*)
+{
+	if (CControl::GetInstance()->IsHold())
+	{
+		CControl::GetInstance()->Resume();
+		CLcd::GetInstance()->OKBeep();
+	}
+	else
+	{
+		CLcd::GetInstance()->ErrorBeep();
+	}
+}

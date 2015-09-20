@@ -1220,9 +1220,8 @@ void CStepper::PauseMove()
 	if (_pod._pause == false)
 	{
 		_pod._pause = true;
-		if (_movements._queue.Count() > 0)
-		{
-		}
+		QueueWait(0xffff, WAITTIMER1VALUE, true);
+		// TODO => Queue not at end => RAMP down
 	}
 }
 
@@ -1230,10 +1229,7 @@ void CStepper::PauseMove()
 
 void CStepper::ContinueMove()
 {
-	if (_pod._pause == true)
-	{
-		_pod._pause = false;
-	}
+	_pod._pause = false;
 }
 
 ////////////////////////////////////////////////////////
@@ -1644,7 +1640,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			if (_state == SMovement::StateReadyWait && _pod._wait._checkWaitConditional)
 			{
 				// wait only if Stepper is "checkWaitConditional"
-				if (_pStepper->IsWaitConditional() == false)
+				if (!_pStepper->IsPauseMove() && !_pStepper->IsWaitConditional())
 				{
 					pState->_n = _steps;
 				}
@@ -1741,7 +1737,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			if (_pod._wait._checkWaitConditional)
 			{
 				// wait only if Stepper is "checkWaitConditional"
-				if (_pStepper->IsWaitConditional() == false)	
+				if (!_pStepper->IsPauseMove() && !_pStepper->IsWaitConditional())
 				{
 					n = _steps;
 				}

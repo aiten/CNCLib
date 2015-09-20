@@ -383,15 +383,22 @@ void CControl::Run()
 	while (true)
 #endif
 	{
-		while (SerialReadAndExecuteCommand())
+		if (IsHold())
 		{
-			// wait until serial command processed
 			CheckIdlePoll(true);
 		}
+		else
+		{
+			while (SerialReadAndExecuteCommand())
+			{
+				// wait until serial command processed
+				CheckIdlePoll(true);
+			}
 
-		CheckIdlePoll(true);
+			CheckIdlePoll(true);
 
-		ReadAndExecuteCommand();
+			ReadAndExecuteCommand();
+		}
 	}
 }
 
