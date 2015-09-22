@@ -155,31 +155,33 @@ void CMyControl::Kill()
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::IsButton(EnumAsByte(EIOButtons) button)
+bool CMyControl::IsKill()
 {
-	switch (button)
+	if (_kill.IsOn())
 	{
-		case KillButton:   
-			if (_kill.IsOn())
-			{
-				Lcd.Diagnostic(F("KK1000S E-Stop"));
-				return true;
-			}
-			return false;
-
-		case HoldButton:    
-			if (_killLcd.IsOn())
-			{
-				Lcd.Diagnostic(F("LCD Hold"));
-				return true;
-			}
-			return false;
-
-		case ResumeButton:
-			return _killLcd.IsOn();
+		Lcd.Diagnostic(F("KK1000S E-Stop"));
+		return true;
 	}
-
 	return false;
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::Poll()
+{
+	super::Poll();
+
+	if (IsHold())
+	{
+		if (_killLcd.IsOn())
+		{
+			Hold();
+		}
+	} else if (_killLcd.IsOn())
+	{
+		Hold();
+		Lcd.Diagnostic(F("LCD Hold"));
+	}
 }
 
 ////////////////////////////////////////////////////////////

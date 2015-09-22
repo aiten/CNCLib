@@ -49,7 +49,7 @@ protected:
 
 	virtual void Init() override;
 
-	virtual bool IsButton(EnumAsByte(EIOButtons) button) override;
+	virtual bool IsKill() override;
 
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 

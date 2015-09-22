@@ -55,7 +55,8 @@ protected:
 	virtual void Init() override;
 	virtual void Initialized() override;
 
-	virtual bool IsButton(EnumAsByte(EIOButtons) button) override;
+	virtual bool IsKill() override;
+	virtual void Poll() override;
 
 	virtual void GoToReference(axis_t axis, steprate_t steprate) override;
 

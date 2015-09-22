@@ -150,16 +150,9 @@ void CMyControl::Kill()
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::IsButton(EnumAsByte(EIOButtons) button)
+bool CMyControl::IsKill()
 {
-	switch (button)
-	{
-		default:	break;
-		case KillButton:		return _holdKillLcd.IsOn();
-//		case HoldButton:		return _holdKillLcd.IsOn();
-	}
-
-	return false;
+	return _holdKillLcd.IsOn();
 }
 
 ////////////////////////////////////////////////////////////

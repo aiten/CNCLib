@@ -154,16 +154,25 @@ void CMyControl::TimerInterrupt()
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::IsButton(EnumAsByte(EIOButtons) button)
+bool CMyControl::IsKill()
 {
-  switch (button)
-  {
-    default:  break;
-    case KillButton:   return _kill.IsOn();
-    //case HoldButton:    return _holdLcd.IsOn();
-  }
+    return _kill.IsOn();
+}
 
-  return false;
+void CMyControl::Poll()
+{
+    super::Poll();
+
+    if (IsHold())
+    {
+        if (_resume.IsOn())
+        {
+            Hold();
+        }
+    } else if (_hold.IsOn())
+    {
+        Hold();
+    }
 }
 
 ////////////////////////////////////////////////////////////

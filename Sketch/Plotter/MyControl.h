@@ -50,7 +50,7 @@ protected:
 	virtual void Idle(unsigned int idletime) override;
 	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
 
-	virtual bool IsButton(EnumAsByte(EIOButtons) button) override;
+	virtual bool IsKill() override;
 
 	virtual void GoToReference() override;
 	virtual void GoToReference(axis_t axis, steprate_t steprate) override;

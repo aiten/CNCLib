@@ -106,19 +106,13 @@ void CMyControl::Kill()
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::IsButton(EnumAsByte(EIOButtons) button)
+bool CMyControl::IsKill()
 {
-	switch (button)
+	if (_killLcd.IsOn())
 	{
-		case KillButton:
-			if (_killLcd.IsOn())
-			{
-				Lcd.Diagnostic(F("LCD E-Stop"));
-				return true;
-			}
-			return false;
+		Lcd.Diagnostic(F("LCD E-Stop"));
+		return true;
 	}
-
 	return false;
 }
 

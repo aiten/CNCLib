@@ -117,9 +117,6 @@ void CControl::Resurrect()
 
 void CControl::StopProgram(bool checkconditional)
 {
-	if (checkconditional)
-	{
-	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -146,21 +143,6 @@ void CControl::Resume()
 
 void CControl::Poll()
 {
-	if (!IsKilled())
-	{
-		if (IsHold())
-		{
-			if (IsButton(ResumeButton))
-			{
-				Resume();
-			}
-		}
-		else if (IsButton(HoldButton))
-		{
-			Hold();
-		}
-	}
-
 #ifdef _USE_LCD
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->Poll();
@@ -488,7 +470,7 @@ void CControl::TimerInterrupt()
 
 	if (!IsKilled())
 	{
-		if (IsButton(KillButton))
+		if (IsKill())
 		{
 			Kill();
 		}

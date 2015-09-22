@@ -73,15 +73,6 @@ public:
 
 	//////////////////////////////////////////
 
-	enum EIOButtons
-	{
-		KillButton,			// reset button
-		HoldButton,			// stop executing (with RAMP)
-		ResumeButton		// continue after Hold
-	};
-
-	//////////////////////////////////////////
-
 	virtual void GoToReference();										// Goto Refernce during Initialisation
 	virtual void GoToReference(axis_t axis,steprate_t steprate);
 
@@ -117,7 +108,7 @@ protected:
 
 	virtual void TimerInterrupt();								// called from timer (timer0 on AVR) 
 
-	virtual bool IsButton(EnumAsByte(EIOButtons) button) = 0;
+	virtual bool IsKill() = 0;
 
 	bool ParseAndPrintResult(CParser* parser, Stream* output);
 

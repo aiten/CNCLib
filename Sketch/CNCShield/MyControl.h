@@ -53,7 +53,8 @@ protected:
 	virtual void Init() override;
   virtual void TimerInterrupt() override;
 
-  bool IsButton(EnumAsByte(EIOButtons) button) override;
+  bool IsKill() override;
+    virtual void AsyncButton() override;
 
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 
