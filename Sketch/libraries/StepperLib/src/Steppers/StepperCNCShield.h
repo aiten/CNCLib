@@ -160,6 +160,8 @@ protected:
 		}
 
 #undef SETDIR
+#undef NOPREQUIRED_1
+#undef NOPREQUIRED_2
 	}
 
 public:

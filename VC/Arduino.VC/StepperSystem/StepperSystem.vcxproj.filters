@@ -302,15 +302,6 @@
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperL298N.cpp">
       <Filter>StepperLib\Steppers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperMash6050S.cpp">
-      <Filter>StepperLib\Steppers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperRamps14.cpp">
-      <Filter>StepperLib\Steppers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperRampsFD.cpp">
-      <Filter>StepperLib\Steppers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperSMC800.cpp">
       <Filter>StepperLib\Steppers</Filter>
     </ClCompile>

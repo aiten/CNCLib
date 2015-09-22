@@ -104,9 +104,6 @@
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperL298N.cpp" />
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperMash6050S.cpp" />
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperRamps14.cpp" />
-    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperRampsFD.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperSMC800.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\UtilitiesStepperLib.cpp" />
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp" />
