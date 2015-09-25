@@ -54,13 +54,13 @@ protected:
   virtual void TimerInterrupt() override;
 
   bool IsKill() override;
-    virtual void AsyncButton() override;
+  virtual void Poll() override;
 
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 
   virtual void GoToReference(axis_t axis, steprate_t steprate) override;
 
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
+//	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
 
 private:
 

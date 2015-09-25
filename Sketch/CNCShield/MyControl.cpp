@@ -171,7 +171,7 @@ void CMyControl::Poll()
         }
     } else if (_hold.IsOn())
     {
-        Hold();
+       Hold();
     }
 }
 
@@ -179,7 +179,13 @@ void CMyControl::Poll()
 
 void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */)
 {
-  super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 300000));
+//  super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 300000));
+
+  CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
+
+  // force linking to see size used in sketch
+  if (IsHold())
+    super::GoToReference();
 }
 
 ////////////////////////////////////////////////////////////
@@ -191,8 +197,9 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 }
 
 ////////////////////////////////////////////////////////////
-
+/*
 bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
 {
 	return super::OnStepperEvent(stepper, eventtype, addinfo);
 }
+*/

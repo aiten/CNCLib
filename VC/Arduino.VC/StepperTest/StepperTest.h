@@ -20,11 +20,50 @@ http://www.gnu.org/licenses/
 #pragma once
 
 #include "TestClass.h"
+#include "..\MsvcStepper\MsvcStepper.h"
 
 class CStepperTest : public CTestClass
 {
+
 public:
 
 	virtual void RunTest() override;
+
+private:
+
+	CMsvcStepper Stepper;
+
+	void TestAcc5000Dec();
+	void TestAcc25000Dec();
+	void TestAccCutDec();
+	void TestAcc1000Acc1500Dec800Dec();
+	void TestAcc1000AccCutDec800();
+	void TestMergeRamp();
+	void TestAcc5000DecCutAcc4800Dec();
+	void TestUpDown();
+	void TestStepUp();
+	void TestSpeedUp();
+	void TestBreakDown();
+	void TestBreakDownPause();
+	void TestBreakDownDelay();
+	void TestJunctionSpeedSameDirection();
+	void TestJunctionSpeedDifferentDirection();
+	void TestJunctionYLessSpeed();
+	void TestCircle();
+	void TestX();
+	void TestLastMoveTo0();
+	void TestJerkSameDirection();
+	void TestJerkSameDifferentDirection();
+	void TestLongSlow();
+	void TestVeryFast();
+	void TestSetMaxAxixSpeed();
+	void TestDiffMultiplier();
+	void TestWait();
+	void TestVerySlow();
+	void TestStopMove();
+	void TestWaitHold();
+	void TestPause();
+
+	void TestFile();
 };
 

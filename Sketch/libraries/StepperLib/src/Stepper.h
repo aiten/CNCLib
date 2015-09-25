@@ -427,7 +427,7 @@ protected:
 		DirCount_t	_dirCount;
 		DirCount_t	_lastStepDirCount;
 
-		mdist_t		_distance_[NUM_AXIS];						// distance adjusted wiht stepmultiplier => use GetDistance(axis)
+		mdist_t		_distance_[NUM_AXIS];						// distance adjusted with stepmultiplier => use GetDistance(axis)
 
 		struct SRamp											// only modify in CCRiticalRegion
 		{
@@ -502,6 +502,8 @@ protected:
 
 	public:
 
+		mdist_t GetSteps()										{ return _steps; }
+
 		bool IsActiveWait() const								{ return _state == StateReadyWait || _state == StateWait; }	// Ready from wait or waiting
 		bool IsActiveMove() const								{ return IsReadyForMove() || IsProcessingMove(); }			// Ready from move or moving
 		bool IsReadyForMove() const								{ return _state == StateReadyMove; }						// Ready for move but not started
@@ -554,7 +556,9 @@ protected:
 		unsigned char _count;	// increment of _n
 		char _dummyalign;
 
+#ifndef REDUCED_SIZE
 		unsigned long _sumTimer;	// for debug
+#endif
 
 		mdist_t _add[NUM_AXIS];
 

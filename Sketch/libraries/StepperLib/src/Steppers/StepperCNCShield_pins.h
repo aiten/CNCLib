@@ -72,10 +72,14 @@
 
 #endif
 
-#define CNCSHIELD_ABORT_PIN			54		// AD0
-#define CNCSHIELD_HOLD_PIN			55		// AD1
-#define CNCSHIELD_RESUME_PIN		56		// AD2
-#define CNCSHIELD_COOLANT_PIN		57		// AD3
+#if defined(__AVR_ATmega328P__) || defined (_MSC_VER)
+
+#define CNCSHIELD_ABORT_PIN			14		// AD0
+#define CNCSHIELD_HOLD_PIN			15		// AD1
+#define CNCSHIELD_RESUME_PIN		16		// AD2
+#define CNCSHIELD_COOLANT_PIN		17		// AD3
+
+#endif
 
 #define CNCSHIELD_ABORT_ON			LOW
 #define CNCSHIELD_ABORT_OFF			HIGH

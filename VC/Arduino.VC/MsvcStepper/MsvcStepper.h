@@ -59,6 +59,27 @@ protected:
 	virtual void  SetEnable(axis_t axis, unsigned char level, bool /* force */) override { _level[axis] = level; };
 	virtual unsigned char GetEnable(axis_t axis) override		{ return _level[axis]; }
 
+public:
+	
+	// function for testing purpose (make public)
+
+	struct SMovementX
+	{
+		SMovement mv;
+	};
+
+	SMovementX GetMovement(unsigned char idxfromhead) 
+	{
+		SMovementX mv;
+		idxfromhead = _movements._queue.NextIndex(_movements._queue.GetHeadPos(), idxfromhead);
+		mv.mv = _movements._queue.Buffer[idxfromhead];
+		return mv;
+	}
+	unsigned char GetMovementCount()
+	{
+		return _movements._queue.Count();
+	}
+
 private:
 
 	unsigned char _level[NUM_AXIS];

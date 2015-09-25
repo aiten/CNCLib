@@ -1220,8 +1220,31 @@ void CStepper::PauseMove()
 	if (_pod._pause == false)
 	{
 		_pod._pause = true;
+
+#ifdef REDUCED_SIZE
+
+		// just queue a stop a end of queue
 		QueueWait(0xffff, WAITTIMER1VALUE, true);
-		// TODO => Queue not at end => RAMP down
+
+#else
+		// insert into queue
+
+		for (unsigned char idx= _movements._queue.H2TInit(); _movements._queue.H2TTest(idx); idx = _movements._queue.H2TInc(idx))
+		{
+			SMovement& mv = _movements._queue.Buffer[idx];
+			if (!mv.IsActiveMove() || mv._pod._move._ramp._timerStop >= mv.GetDownTimerDec())
+			{
+				// insert stop here
+				WaitUntilCanQueue();
+				_movements._queue.InsertTail(_movements._queue.NextIndex(idx))->InitWait(this, 0xffff, WAITTIMER1VALUE, true);
+				return;
+			}
+		}
+
+		QueueWait(0xffff, WAITTIMER1VALUE, true);
+
+#endif
+
 	}
 }
 
@@ -1545,7 +1568,9 @@ void CStepper::SMovementState::Init(SMovement* pMovement)
 		_add[i] = steps;
 	_n = 0;
 	_rest = 0;
+#ifndef REDUCED_SIZE
 	_sumTimer = 0;
+#endif
 }
 
 ////////////////////////////////////////////////////////
@@ -1796,10 +1821,11 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			else if (tl < TIMER1MIN)    t = TIMER1MIN;		// to fast
 			else						t = (timer_t) tl;
 		}
+
+		pState->_sumTimer += t;
 #endif
 
 		pStepper->_steps.NextTail().Timer = t;
-		pState->_sumTimer += t;
 
 		n += count;
 		if (count > n)

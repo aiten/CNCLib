@@ -220,6 +220,7 @@ void CMsvcStepper::InitTest(const char* filename)
 	_flushcount = 0;
 	_filename = filename;
 	SetDefaultMaxSpeed(5000, 100, 150);
+	ContinueMove();
 
 	_TotalSteps = 1;
 	_exportIdx = 1;
