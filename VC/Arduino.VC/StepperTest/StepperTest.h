@@ -33,6 +33,20 @@ private:
 
 	CMsvcStepper Stepper;
 
+	void WriteStepperTestMovement();
+
+	void AssertMove(mdist_t steps, CMsvcStepper::SMovementX mv)
+	{
+		Assert(true, mv.mv.IsActiveMove());
+		Assert(steps, mv.mv.GetSteps());
+	}
+
+	void AssertWait(mdist_t steps, CMsvcStepper::SMovementX mv)
+	{
+		Assert(true, mv.mv.IsActiveWait());
+		Assert(steps, mv.mv.GetSteps());
+	}
+
 	void TestAcc5000Dec();
 	void TestAcc25000Dec();
 	void TestAccCutDec();
@@ -62,7 +76,10 @@ private:
 	void TestVerySlow();
 	void TestStopMove();
 	void TestWaitHold();
-	void TestPause();
+	void TestPause1();
+	void TestPause2();
+	void TestPause3();
+	void TestPause4();
 
 	void TestFile();
 };

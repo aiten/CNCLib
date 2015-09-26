@@ -1221,30 +1221,48 @@ void CStepper::PauseMove()
 	{
 		_pod._pause = true;
 
-#ifdef REDUCED_SIZE
+#ifndef REDUCED_SIZE
 
-		// just queue a stop a end of queue
-		QueueWait(0xffff, WAITTIMER1VALUE, true);
-
-#else
-		// insert into queue
+		// insert into queue (where jerke speed to stop move will not exceed) 
 
 		for (unsigned char idx= _movements._queue.H2TInit(); _movements._queue.H2TTest(idx); idx = _movements._queue.H2TInc(idx))
 		{
 			SMovement& mv = _movements._queue.Buffer[idx];
-			if (!mv.IsActiveMove() || mv._pod._move._ramp._timerStop >= mv.GetDownTimerDec())
+
+			bool canInsertAfter = !mv.IsActiveMove();
+
+			if (!canInsertAfter)
 			{
-				// insert stop here
+				// check jerk speed to stop
+
+				steprate_t speedStop = TimerToSpeed(mv._pod._move._ramp._timerStop);
+				mdist_t s = mv.GetSteps();
+
+				canInsertAfter = true;
+
+				for (axis_t x = 0; canInsertAfter && x < NUM_AXIS;x++)
+				{
+					mdist_t d = mv.GetDistance(x);
+					steprate_t v = speedStop;
+
+					if (d != s) v = steprate_t(RoundMulDivUInt(v, d, s));
+
+					canInsertAfter = _pod._maxJerkSpeed[x] > v;
+				}
+			}
+
+			if (canInsertAfter)
+			{
 				WaitUntilCanQueue();
 				_movements._queue.InsertTail(_movements._queue.NextIndex(idx))->InitWait(this, 0xffff, WAITTIMER1VALUE, true);
 				return;
 			}
 		}
 
-		QueueWait(0xffff, WAITTIMER1VALUE, true);
-
 #endif
 
+		// just queue a stop at end of queue
+		QueueWait(0xffff, WAITTIMER1VALUE, true);
 	}
 }
 

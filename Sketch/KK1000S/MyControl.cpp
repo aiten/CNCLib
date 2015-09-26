@@ -175,7 +175,8 @@ void CMyControl::Poll()
 	{
 		if (_killLcd.IsOn())
 		{
-			Hold();
+			Resume();
+      Lcd.ClearDiagnostic();
 		}
 	} else if (_killLcd.IsOn())
 	{

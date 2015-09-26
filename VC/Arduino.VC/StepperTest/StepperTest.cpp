@@ -43,42 +43,43 @@ void CStepperTest::RunTest()
 	}
 	Stepper.SetWaitFinishMove(false);
 
-	bool alltests = false;
+	TestPause4();
 
-	if (false || alltests) 		TestAcc5000Dec();
-	if (false || alltests) 		TestAcc25000Dec();
-	if (false || alltests) 		TestAccCutDec();
-	if (false || alltests) 		TestAcc1000Acc1500Dec800Dec();
-	if (false || alltests) 		TestAcc1000AccCutDec800();
-	if (false || alltests) 		TestMergeRamp();
-	if (false || alltests) 		TestAcc5000DecCutAcc4800Dec();
-	if (false || alltests) 		TestUpDown();
-	if (false || alltests) 		TestStepUp();
-	if (false || alltests) 		TestSpeedUp();
-	if (false || alltests) 		TestBreakDown();
-	if (false || alltests) 		TestBreakDownPause();
-	if (false || alltests) 		TestBreakDownDelay();
-	if (false || alltests) 		TestJunctionSpeedSameDirection();
-	if (false || alltests) 		TestJunctionSpeedDifferentDirection();
-	if (false || alltests) 		TestJunctionYLessSpeed();
-	if (false || alltests) 		TestCircle();
-	if (false || alltests) 		TestX();
-	if (false || alltests) 		TestLastMoveTo0();
-	if (false || alltests) 		TestJerkSameDirection();
-	if (false || alltests) 		TestJerkSameDifferentDirection();
-	if (false || alltests) 		TestLongSlow();
-	if (false || alltests) 		TestVeryFast();
-	if (false || alltests) 		TestSetMaxAxixSpeed();
-	if (false || alltests) 		TestDiffMultiplier();
-	if (false || alltests) 		TestWait();
-	if (false || alltests) 		TestVerySlow();
-	if (false || alltests) 		TestStopMove();
-	if (false || alltests) 		TestWaitHold();
-	if (true  || alltests)		TestPause();
+	TestAcc5000Dec();
+	TestAcc25000Dec();
+	TestAccCutDec();
+	TestAcc1000Acc1500Dec800Dec();
+	TestAcc1000AccCutDec800();
+	TestMergeRamp();
+	TestAcc5000DecCutAcc4800Dec();
+	TestUpDown();
+	TestStepUp();
+	TestSpeedUp();
+	TestBreakDown();
+	TestBreakDownPause();
+	TestBreakDownDelay();
+	TestJunctionSpeedSameDirection();
+	TestJunctionSpeedDifferentDirection();
+	TestJunctionYLessSpeed();
+	TestCircle();
+	TestX();
+	TestLastMoveTo0();
+	TestJerkSameDirection();
+	TestJerkSameDifferentDirection();
+	TestLongSlow();
+	TestVeryFast();
+	TestSetMaxAxixSpeed();
+	TestDiffMultiplier();
+	TestWait();
+	TestVerySlow();
+	TestStopMove();
+	TestWaitHold();
+	TestPause1();
+	TestPause2();
+	TestPause3();
+	TestPause4();
 
-	if (false || alltests)		TestFile();
-
-
+	TestFile();
 }
 
 void CStepperTest::TestAcc5000Dec()
@@ -453,37 +454,85 @@ void CStepperTest::TestWaitHold()
 	Stepper.EndTest("TR25_WaitHold.csv");
 }
 
-void CStepperTest::TestPause()
+void CStepperTest::TestPause1()
 {
 	Stepper.InitTest();
-	Stepper.SetDefaultMaxSpeed(5000, 100, 150);
 
 	Stepper.CStepper::MoveRel(0, 2500, 5000);
-	Stepper.CStepper::MoveRel(0, -100, 3000);
+	Stepper.CStepper::MoveRel(0, -100, 3000);		// pause here
 	Stepper.CStepper::MoveRel(0, 5000, 3000);
 	Stepper.OptimizeMovementQueue(true);			// calc ramp
 	Stepper.CStepper::PauseMove();
-	Assert(4, Stepper.GetMovementCount());
-	Assert(true, Stepper.GetMovement(0).mv.IsActiveMove());  Assert(2500, Stepper.GetMovement(0).mv.GetSteps());
-	Assert(true, Stepper.GetMovement(1).mv.IsActiveWait());
-	Assert(true, Stepper.GetMovement(2).mv.IsActiveMove());	 Assert(100, Stepper.GetMovement(0).mv.GetSteps());
-	Assert(true, Stepper.GetMovement(3).mv.IsActiveMove());  Assert(5000, Stepper.GetMovement(0).mv.GetSteps());
-	Stepper.EndTest("TR26_TestPause#A.csv");
 
+	Assert(4, Stepper.GetMovementCount());
+	AssertMove(2500, Stepper.GetMovement(0));
+	AssertWait(65535, Stepper.GetMovement(1));
+	AssertMove(100, Stepper.GetMovement(2));
+	AssertMove(5000, Stepper.GetMovement(3));
+
+	Stepper.EndTest("TR26_TestPause#A.csv");
+}
+
+void CStepperTest::TestPause2()
+{
 	Stepper.InitTest();
+
 	Stepper.CStepper::MoveRel(0, 2500, 5000);
 	Stepper.CStepper::MoveRel(0, 1000, 3000);
-	Stepper.CStepper::MoveRel(0, -1500, 3000);
+	Stepper.CStepper::MoveRel(0, -1500, 3000);		// pause should be created here
+
 	Stepper.OptimizeMovementQueue(true);			// calc ramp
 	Stepper.CStepper::PauseMove();
+
 	Assert(4, Stepper.GetMovementCount());
-	Assert(true, Stepper.GetMovement(0).mv.IsActiveMove()); Assert(2500, Stepper.GetMovement(0).mv.GetSteps());
-	Assert(true, Stepper.GetMovement(1).mv.IsActiveMove()); Assert(1000, Stepper.GetMovement(0).mv.GetSteps());
-	Assert(true, Stepper.GetMovement(2).mv.IsActiveWait());
-	Assert(true, Stepper.GetMovement(3).mv.IsActiveMove()); Assert(1500, Stepper.GetMovement(0).mv.GetSteps());
+	AssertMove(2500, Stepper.GetMovement(0));
+	AssertMove(1000, Stepper.GetMovement(1));
+	AssertWait(65535, Stepper.GetMovement(2));
+	AssertMove(1500, Stepper.GetMovement(3));
+
 	Stepper.EndTest("TR26_TestPausea#B.csv");
+}
 
+void CStepperTest::TestPause3()
+{
+	Stepper.InitTest();
 
+	Stepper.MoveRel3(10000, 10000, 10000, 5000);
+	Stepper.MoveRel3(10000, -1000, 10000, 5000);		// jerk break => pause here
+	Stepper.MoveRel3(10000, 10000, 1000 , 5000);
+
+	Stepper.OptimizeMovementQueue(true);			// calc ramp
+	Stepper.CStepper::PauseMove();
+
+	WriteStepperTestMovement();
+
+	Assert(4, Stepper.GetMovementCount());
+	AssertMove(10000, Stepper.GetMovement(0));
+	AssertWait(65535, Stepper.GetMovement(1));
+	AssertMove(10000, Stepper.GetMovement(2));
+	AssertMove(10000, Stepper.GetMovement(3));
+
+	Stepper.EndTest("TR26_TestPausea#C.csv");
+}
+
+void CStepperTest::TestPause4()
+{
+	Stepper.InitTest();
+
+	Stepper.MoveRel3(10000, 10000, 10000, 5000);
+	Stepper.MoveRel3(10000, 9000,  10000, 5000);		
+	Stepper.MoveRel3(10000, -9000, 10000, 5000);		// jerk break => pause here
+
+	Stepper.OptimizeMovementQueue(true);			// calc ramp
+	Stepper.CStepper::PauseMove();
+
+	Assert(4, Stepper.GetMovementCount());
+	AssertMove(10000, Stepper.GetMovement(0));
+	AssertMove(10000, Stepper.GetMovement(1));
+	AssertWait(65535, Stepper.GetMovement(2));
+	AssertMove(10000, Stepper.GetMovement(3));
+
+	Stepper.EndTest("TR26_TestPausea#D.csv");
 }
 
 void CStepperTest::TestFile()
@@ -547,4 +596,31 @@ void CStepperTest::TestFile()
 	}
 	fclose(f);
 	Stepper.EndTest("TR99_File.csv");
+}
+
+void CStepperTest::WriteStepperTestMovement()
+{
+	FILE *f = fopen("c:\\tmp\\test.txt", "wt");
+
+	fprintf(f, "\tAssert(%i, Stepper.GetMovementCount());\n", (int)Stepper.GetMovementCount());
+	for (unsigned char i = 0; i < Stepper.GetMovementCount(); i++)
+	{
+		CMsvcStepper::SMovementX mv = Stepper.GetMovement(i);
+		if (mv.mv.IsActiveMove())
+		{
+			fprintf(f, "\tAssertMove(%i, Stepper.GetMovement(%i));\n", (int) mv.mv.GetSteps(), (int) i);
+		}
+		else
+		{
+			fprintf(f, "\tAssertWait(%i, Stepper.GetMovement(%i));\n", (int)mv.mv.GetSteps(), (int)i);
+		}
+	}
+/*
+	Assert(true, Stepper.GetMovement(0).mv.IsActiveMove());  Assert(2500, Stepper.GetMovement(0).mv.GetSteps());
+	Assert(true, Stepper.GetMovement(1).mv.IsActiveWait());
+	Assert(true, Stepper.GetMovement(2).mv.IsActiveMove());	 Assert(100, Stepper.GetMovement(0).mv.GetSteps());
+	Assert(true, Stepper.GetMovement(3).mv.IsActiveMove());  Assert(5000, Stepper.GetMovement(0).mv.GetSteps());
+*/
+
+	fclose(f);
 }
