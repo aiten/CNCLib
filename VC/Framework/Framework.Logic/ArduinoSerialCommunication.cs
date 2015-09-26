@@ -94,12 +94,13 @@ namespace Framework.Logic
         public event CommandEventHandler ReplyError;
         public event CommandEventHandler ReplyInfo;
         public event CommandEventHandler ReplyUnknown;
+		public event CommandEventHandler CommandQueueChanged;
 
-        #endregion
+		#endregion
 
-        #region ctr
+		#region ctr
 
-        public ArduinoSerialCommunication()
+		public ArduinoSerialCommunication()
         {
             BaudRate = 115200;
             OkTag = @"ok";
@@ -126,6 +127,11 @@ namespace Framework.Logic
             public DateTime ReplyReceivedTime { get; set; }
 
             public String ResultText { get; set; }
+		}
+
+		public int CommandsInQueue
+		{
+			get { return _pendingCommands.Count;  }
 		}
 
         public int BaudRate { get; set; }
@@ -177,14 +183,21 @@ namespace Framework.Logic
 				_serialPort.WriteLine("");
 			}
 
+			bool wasempty;
+
 			lock (_pendingCommands)
 			{
-				_pendingCommands.Clear();
+				wasempty = _pendingCommands.Count == 0;
+                _pendingCommands.Clear();
 			}
 			lock (_commands)
 			{
 				_commands.Clear();
 			}
+
+			if (!wasempty)
+				OnComandQueueCahnged(new ArduinoSerialCommunicationEventArgs(null, null));
+
 		}
         
         public void Disconnect()
@@ -221,11 +234,16 @@ namespace Framework.Logic
 
         public void AbortCommands()
         {
+			bool wasempty;
 			lock (_pendingCommands)
 			{
+				wasempty = _pendingCommands.Count == 0;
 				_pendingCommands.Clear();
 			}
-			
+
+			if (!wasempty)
+				OnComandQueueCahnged(new ArduinoSerialCommunicationEventArgs(null, null));
+
 			Abort = true;
         }
 
@@ -366,6 +384,7 @@ namespace Framework.Logic
                 Command c = new Command() { CommandText = cmd };
                 _pendingCommands.Add(c);
 
+				OnComandQueueCahnged(new ArduinoSerialCommunicationEventArgs(null, c));
                 return c;
             }
         }
@@ -573,8 +592,9 @@ Console.WriteLine(cmd.CommandText);
                             _pendingCommands.RemoveAt(0);
 							_autoEvent.Set();
 						}
-                    }
-                }
+						OnComandQueueCahnged(new ArduinoSerialCommunicationEventArgs(null, cmd));
+					}
+				}
             }
         }
 
@@ -662,11 +682,19 @@ Console.WriteLine(cmd.CommandText);
             }
         }
 
-        #endregion
+		protected virtual void OnComandQueueCahnged(ArduinoSerialCommunicationEventArgs info)
+		{
+			if (CommandQueueChanged != null)
+			{
+				CommandQueueChanged(this, info);
+			}
+		}
 
-        #region Command History 
+		#endregion
 
-        List<Command> _commands = new List<Command>();
+		#region Command History 
+
+		List<Command> _commands = new List<Command>();
         public List<Command> CommandHistory { get { return _commands; } }
 
         public void ClearCommandHistory() 

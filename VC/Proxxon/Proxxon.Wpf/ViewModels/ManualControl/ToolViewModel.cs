@@ -38,10 +38,24 @@ namespace Proxxon.Wpf.ViewModels.ManualControl
 		public ToolViewModel(IManualControlViewModel vm)
 			: base(vm)
 		{
+			Com.CommandQueueChanged += new ArduinoSerialCommunication.CommandEventHandler(CommandQueueChanged);
+		}
+		~ToolViewModel()
+		{
+			Com.CommandQueueChanged -= new ArduinoSerialCommunication.CommandEventHandler(CommandQueueChanged);
 		}
 
 		#region Properties
 
+		public int PendingCommandCount
+		{
+			get	{ return Com.CommandsInQueue; }
+		}
+
+		private void CommandQueueChanged(object sender, ArduinoSerialCommunicationEventArgs arg)
+		{
+			OnPropertyChanged(() => PendingCommandCount);
+		}
 
 		#endregion
 

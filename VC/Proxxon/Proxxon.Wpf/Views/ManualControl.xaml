@@ -246,8 +246,11 @@
 
                     <Button Command="{Binding CommandHistory.ClearHistoryCommand}" Content="Clear" Width="100" Margin="0,0,5,0" />
                     <Button Command="{Binding CommandHistory.RefreshHistoryCommand}" Content="Refresh" Width="100" Margin="0,0,5,0" />
-                    <Button Command="{Binding Tool.SendInfoCommand}" Content="Info"  VerticalAlignment="Top" Width="100" Margin="0,0,5,0"/>
+                    <Button Command="{Binding Tool.SendInfoCommand}" Content="Info"   Width="100" Margin="0,0,5,0"/>
                     <Button Command="{Binding Tool.SendAbortCommand}" Content="Abort" Width="100" />
+                    <Label  Content="Pending Commands:" />
+                    <TextBox Text="{Binding Tool.PendingCommandCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="100" VerticalContentAlignment="Center" Margin="0,0,5,0" />
+
                 </StackPanel>
 
             </StackPanel>
