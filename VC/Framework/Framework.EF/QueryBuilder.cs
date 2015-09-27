@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Framework.EF
 {
-    public class QueryBuilder<T> : IQueryBuilder<T> where T : class
+	public class QueryBuilder<T> : IQueryBuilder<T> where T : class
     {
         private DbContext _context;
         private IQueryable<T> _query;

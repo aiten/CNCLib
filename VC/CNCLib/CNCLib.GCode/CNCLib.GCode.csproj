@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F9C446F4-6365-4189-95C5-009EF0160882}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CNCLib.GCode</RootNamespace>
+    <AssemblyName>CNCLib.GCode</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandFactory.cs" />
+    <Compile Include="Commands\CommandList.cs" />
+    <Compile Include="Commands\G00Command.cs" />
+    <Compile Include="Commands\G01Command.cs" />
+    <Compile Include="Commands\DrillCommand.cs" />
+    <Compile Include="Commands\G73Command.cs" />
+    <Compile Include="Commands\G83Command.cs" />
+    <Compile Include="Commands\G82Command.cs" />
+    <Compile Include="Commands\G81Command.cs" />
+    <Compile Include="Commands\G02Command.cs" />
+    <Compile Include="Commands\G03Command.cs" />
+    <Compile Include="Commands\G04Command.cs" />
+    <Compile Include="Commands\G17Command.cs" />
+    <Compile Include="Commands\G18Command.cs" />
+    <Compile Include="Commands\G19Command.cs" />
+    <Compile Include="Commands\G20Command.cs" />
+    <Compile Include="Commands\IsGCommandAttribute.cs" />
+    <Compile Include="Commands\MxxCommand.cs" />
+    <Compile Include="Commands\SetParameterCommand.cs" />
+    <Compile Include="Commands\G21Command.cs" />
+    <Compile Include="Commands\G28Command.cs" />
+    <Compile Include="Commands\G90Command.cs" />
+    <Compile Include="Commands\G91Command.cs" />
+    <Compile Include="Commands\G92Command.cs" />
+    <Compile Include="Commands\GxxCommand.cs" />
+    <Compile Include="Load\LoadGCode.cs" />
+    <Compile Include="Load\LoadHPGL.cs" />
+    <Compile Include="Load\LoadInfo.cs" />
+    <Compile Include="Commands\IOutputCommand.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj">
+      <Project>{081814da-adc7-4b65-ae16-856c1b3d3ce8}</Project>
+      <Name>Framework.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
+      <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>
+      <Name>Framework.Tools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

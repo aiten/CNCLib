@@ -18,15 +18,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Threading;
-using System.IO.Ports;
 
 namespace Framework.Logic
 {
-    public class HPGLCommunication : ArduinoSerialCommunication
+	public class HPGLCommunication : ArduinoSerialCommunication
     {
 
         readonly int maxmessagelength = 128;

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("Proxxon.BL")]
+[assembly: AssemblyTitle("CNCLib.BL")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Proxxon.BL")]
+[assembly: AssemblyProduct("CNCLib.BL")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
