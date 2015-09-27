@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Framework.EF
 {
-    public interface IQueryBuilder<T> where T : class
+	public interface IQueryBuilder<T> where T : class
     {
         IQueryBuilder<T> Where(Expression<Func<T, bool>> predicate);
         IQueryBuilder<T> Include(Expression<Func<T, object>> path);

@@ -23,10 +23,6 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using System.IO.Ports;
-using System.Diagnostics;
-
-// TODO: _autoEvent only works in ping pong 
-//		 sending 2 commands will faile (Reset) => fast timeout
 
 namespace Framework.Logic
 {

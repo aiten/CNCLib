@@ -24,7 +24,6 @@ namespace Framework.Wpf.ViewModels
 {
     public class BaseViewModel : NotificationObject
 	{
-        public Window ViewWindow { get; set; }
-
+		public Action CloseAction { get; set; }
 	}
 }
