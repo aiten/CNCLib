@@ -171,7 +171,7 @@ namespace CNCLib.Wpf.ViewModels
             return true;
         }
 
-        public void ShowManualControl()
+		public void ShowManualControl()
         {
 			new CNCLib.Wpf.ManualControl().ShowDialog();
         }

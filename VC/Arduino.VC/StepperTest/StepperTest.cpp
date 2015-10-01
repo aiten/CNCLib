@@ -43,7 +43,7 @@ void CStepperTest::RunTest()
 	}
 	Stepper.SetWaitFinishMove(false);
 
-	TestPause4();
+	TestSpeedUp();
 
 	TestAcc5000Dec();
 	TestAcc25000Dec();
@@ -69,7 +69,8 @@ void CStepperTest::RunTest()
 	TestLongSlow();
 	TestVeryFast();
 	TestSetMaxAxixSpeed();
-	TestDiffMultiplier();
+	TestDiffMultiplierAbs();
+	TestDiffMultiplierLoop();
 	TestWait();
 	TestVerySlow();
 	TestStopMove();
@@ -98,7 +99,7 @@ void CStepperTest::TestAcc25000Dec()
 	Stepper.SetDefaultMaxSpeed(30000, 400, 550);
 	//		Stepper.MoveRel(0,65534,25000);
 	Stepper.MoveRel(0, 65535, 0);
-	Stepper.EndTest("TR01_Acc25000Dec.csv");
+	Stepper.EndTest("TR02_Acc25000Dec.csv");
 }
 
 void CStepperTest::TestAccCutDec()
@@ -107,7 +108,7 @@ void CStepperTest::TestAccCutDec()
 	Stepper.InitTest();
 	Stepper.SetDefaultMaxSpeed(5000, 100, 150);
 	Stepper.MoveRel(0, 50, 1000);
-	Stepper.EndTest("TR02_AccCutDec.csv");
+	Stepper.EndTest("TR03_AccCutDec.csv");
 }
 
 void CStepperTest::TestAcc1000Acc1500Dec800Dec()
@@ -118,7 +119,7 @@ void CStepperTest::TestAcc1000Acc1500Dec800Dec()
 	Stepper.MoveRel(0, 200, 1000);
 	Stepper.MoveRel(0, 300, 1500);
 	Stepper.MoveRel(0, 400, 800);
-	Stepper.EndTest("TR03_Acc1000Acc1500Dec800Dec.csv");
+	Stepper.EndTest("TR04_Acc1000Acc1500Dec800Dec.csv");
 }
 
 void CStepperTest::TestAcc1000AccCutDec800()
@@ -129,7 +130,7 @@ void CStepperTest::TestAcc1000AccCutDec800()
 	Stepper.MoveRel(0, 200, 1000);
 	Stepper.MoveRel(0, 100, 1500);
 	Stepper.MoveRel(0, 400, 800);
-	Stepper.EndTest("TR04_Acc1000AccCutDec800.csv");
+	Stepper.EndTest("TR05_Acc1000AccCutDec800.csv");
 }
 
 void CStepperTest::TestMergeRamp()
@@ -145,7 +146,7 @@ void CStepperTest::TestMergeRamp()
 	Stepper.CStepper::MoveRel(0, 450, 3000);
 	Stepper.CStepper::MoveRel(0, 350, 2000);
 	Stepper.CStepper::MoveRel(0, 150, 1000);
-	Stepper.EndTest("TR05_MergeRamp.csv");
+	Stepper.EndTest("TR06_MergeRamp.csv");
 }
 
 void CStepperTest::TestAcc5000DecCutAcc4800Dec()
@@ -155,7 +156,7 @@ void CStepperTest::TestAcc5000DecCutAcc4800Dec()
 	Stepper.CStepper::MoveRel(0, 3000, 5000);
 	Stepper.CStepper::MoveRel(0, 200, 2000);
 	Stepper.CStepper::MoveRel(0, 3000, 4800);
-	Stepper.EndTest("TR06_Acc5000DecCutAcc4800Dec.csv");
+	Stepper.EndTest("TR07_Acc5000DecCutAcc4800Dec.csv");
 }
 
 void CStepperTest::TestUpDown()
@@ -166,7 +167,7 @@ void CStepperTest::TestUpDown()
 	Stepper.CStepper::MoveRel(0, -1000, 1000);
 	Stepper.CStepper::MoveRel(0, 1000, 2000);
 	Stepper.CStepper::MoveRel(0, -1000, 2000);
-	Stepper.EndTest("TR07_UpDown.csv");
+	Stepper.EndTest("TR08_UpDown.csv");
 }
 
 void CStepperTest::TestStepUp()
@@ -179,26 +180,26 @@ void CStepperTest::TestStepUp()
 	Stepper.CStepper::MoveRel(0, 2500, 5000);
 	Stepper.CStepper::MoveRel(0, 300, 500);
 	Stepper.CStepper::MoveRel(0, 550, 5000);
-	Stepper.EndTest("TR08_StepUp.csv");
+	Stepper.EndTest("TR09_StepUp.csv");
 }
 
 void CStepperTest::TestSpeedUp()
 {
 	Stepper.InitTest();
 	Stepper.SetDefaultMaxSpeed(5000, 100, 150);
-	Stepper.MSCInfo = "MoveRel(0,100,3000)";
+	Stepper.MSCInfo = "1MoveRel(0,100,3000)";
 	Stepper.CStepper::MoveRel(0, 100, 3000);
-	Stepper.MSCInfo = "MoveRel(0,100,3000)";
+	Stepper.MSCInfo = "2MoveRel(0,100,3000)";
 	Stepper.CStepper::MoveRel(0, 100, 3000);
-	Stepper.MSCInfo = "MoveRel(0,100,3000)";
+	Stepper.MSCInfo = "3MoveRel(0,100,3000)";
 	Stepper.CStepper::MoveRel(0, 100, 3000);
-	Stepper.MSCInfo = "MoveRel(0,100,3000)";
+	Stepper.MSCInfo = "4MoveRel(0,100,3000)";
 	Stepper.CStepper::MoveRel(0, 100, 3000);
-	Stepper.MSCInfo = "MoveRel(0,100,3000)";
+	Stepper.MSCInfo = "5MoveRel(0,100,3000)";
 	Stepper.CStepper::MoveRel(0, 100, 3000);
-	Stepper.MSCInfo = "MoveRel(0,5000,3000)";
+	Stepper.MSCInfo = "6MoveRel(0,5000,3000)";
 	Stepper.CStepper::MoveRel(0, 5000, 3000);
-	Stepper.EndTest("TR09_SpeedUp.csv");
+	Stepper.EndTest("TR10_SpeedUp.csv");
 }
 
 
@@ -210,7 +211,7 @@ void CStepperTest::TestBreakDown()
 	Stepper.CStepper::MoveRel(0, 100, 3000);
 	Stepper.CStepper::MoveRel(0, 75, 2500);
 	Stepper.CStepper::MoveRel(0, 50, 2000);
-	Stepper.EndTest("TR10_BreakDown.csv");
+	Stepper.EndTest("TR11_BreakDown.csv");
 }
 
 void CStepperTest::TestBreakDownPause()
@@ -222,7 +223,7 @@ void CStepperTest::TestBreakDownPause()
 	Stepper.CStepper::MoveRel(0, 75, 2500);
 	Stepper.CStepper::MoveRel(0, 50, 2000);
 	Stepper.CStepper::MoveRel(0, 100, 300);
-	Stepper.EndTest("TR11_BreakDownPause.csv");
+	Stepper.EndTest("TR12_BreakDownPause.csv");
 }
 
 void CStepperTest::TestBreakDownDelay()
@@ -235,7 +236,7 @@ void CStepperTest::TestBreakDownDelay()
 	Stepper.CStepper::MoveRel(0, 50, 2000);
 	Stepper.CStepper::MoveRel(0, 100, 300);
 	Stepper.CStepper::MoveRel(0, 5000, 3000);
-	Stepper.EndTest("TR12_BreakDownDelay.csv");
+	Stepper.EndTest("TR13_BreakDownDelay.csv");
 }
 
 
@@ -247,7 +248,7 @@ void CStepperTest::TestJunctionSpeedSameDirection()
 	Stepper.MoveRel3(1000, 1000, 50, 3000);
 	Stepper.MoveRel3(0000, 1000, 50, 1000);
 	Stepper.MoveRel3(1000, 1000, 50, 1000);
-	Stepper.EndTest("TR13_JunctionSpeedSameDirection.csv");
+	Stepper.EndTest("TR14_JunctionSpeedSameDirection.csv");
 }
 
 void CStepperTest::TestJunctionSpeedDifferentDirection()
@@ -256,7 +257,7 @@ void CStepperTest::TestJunctionSpeedDifferentDirection()
 	Stepper.SetDefaultMaxSpeed(5000, 100, 150);
 	Stepper.MoveRel3(1000, 900, 50, 5000);
 	Stepper.MoveRel3(1000, -900, -50, 5000);
-	Stepper.EndTest("TR14_JunctionSpeedDifferentDirection.csv");
+	Stepper.EndTest("TR15_JunctionSpeedDifferentDirection.csv");
 }
 
 void CStepperTest::TestJunctionYLessSpeed()
@@ -265,13 +266,13 @@ void CStepperTest::TestJunctionYLessSpeed()
 	Stepper.SetDefaultMaxSpeed(5000, 100, 150);
 	Stepper.MoveRel3(1000, 100, 0, 5000);
 	Stepper.MoveRel3(1000, 900, 500, 5000);
-	Stepper.EndTest("TR15_JunctionYLessSpeed.csv");
+	Stepper.EndTest("TR16_JunctionYLessSpeed.csv");
 }
 
 
 void CStepperTest::TestCircle()
 {
-	Stepper.InitTest("TR16_Circle.csv");
+	Stepper.InitTest("TR17_Circle.csv");
 	Stepper.SetDefaultMaxSpeed(20000, 350, 350);
 	Stepper.SetJerkSpeed(X_AXIS, 1000);
 	Stepper.SetJerkSpeed(Y_AXIS, 1000);
@@ -297,7 +298,7 @@ void CStepperTest::TestX()
 	Stepper.CStepper::MoveRel(0, 3500, 5000); count += 3500;
 	Stepper.CStepper::MoveRel(0, 300, 500); count += 300;
 	Stepper.CStepper::MoveRel(0, 550, 5000); count += 550;
-	Stepper.EndTest("TR17_X.csv");
+	Stepper.EndTest("TR18_X.csv");
 }
 
 void CStepperTest::TestLastMoveTo0()
@@ -306,7 +307,7 @@ void CStepperTest::TestLastMoveTo0()
 	Stepper.SetDefaultMaxSpeed(5000, 100, 150);
 	Stepper.MoveRel3(4000, 0, 0, 5000);
 	Stepper.MoveRel3(100, 0, 0, 4000);
-	Stepper.EndTest("TR18_LastMoveTo0.csv");
+	Stepper.EndTest("TR19_LastMoveTo0.csv");
 }
 
 void CStepperTest::TestJerkSameDirection()
@@ -322,7 +323,7 @@ void CStepperTest::TestJerkSameDirection()
 	Stepper.MoveRel3(1000, 1000, 0, 2000);	// other direction OK TO
 	Stepper.MoveRel3(1000, 710, 0, 2000);	// -v580 => fail
 	Stepper.MoveRel3(1000, 1000, 0, 2000);	// other direction
-	Stepper.EndTest("TR19_JerkSameDirection.csv");
+	Stepper.EndTest("TR20_JerkSameDirection.csv");
 }
 
 void CStepperTest::TestJerkSameDifferentDirection()
@@ -341,7 +342,7 @@ void CStepperTest::TestJerkSameDifferentDirection()
 	Stepper.MoveRel3(1000, 100, 0, 2000);	// other direction OK TO
 
 
-	Stepper.EndTest("TR20_JerkSameDifferentDirection.csv");
+	Stepper.EndTest("TR21_JerkSameDifferentDirection.csv");
 }
 
 void CStepperTest::TestLongSlow()
@@ -350,7 +351,7 @@ void CStepperTest::TestLongSlow()
 	Stepper.InitTest();
 	Stepper.SetDefaultMaxSpeed(100, 200, 250);
 	Stepper.MoveRel(0, 10000, 0);
-	Stepper.EndTest("TR21_LongSlow.csv");
+	Stepper.EndTest("TR22_LongSlow.csv");
 }
 
 void CStepperTest::TestVeryFast()
@@ -361,7 +362,7 @@ void CStepperTest::TestVeryFast()
 	Stepper.MoveRelEx(32000, 0, 50000, -1);
 	Stepper.MoveRelEx(47000, 0, 100000, -1);
 	Stepper.MoveRelEx(65000, 0, 100000, -1);
-	Stepper.EndTest("TR22_VeryFast.csv");
+	Stepper.EndTest("TR23_VeryFast.csv");
 }
 
 void CStepperTest::TestSetMaxAxixSpeed()
@@ -370,33 +371,34 @@ void CStepperTest::TestSetMaxAxixSpeed()
 	Stepper.SetMaxSpeed(1, 500);
 	Stepper.SetMaxSpeed(2, 400);
 	Stepper.MoveRelEx(0, 0, 10000, 1, 9000, 2, 9500, -1);
-	Stepper.EndTest("TR23_SetMaxAxixSpeed.csv");
+	Stepper.EndTest("TR24_SetMaxAxixSpeed.csv");
 }
 
-void CStepperTest::TestDiffMultiplier()
+void CStepperTest::TestDiffMultiplierAbs()
 {
-	/*
 	Stepper.InitTest();
 	Stepper.SetDefaultMaxSpeed(65535, 400, 700);
-	Stepper.MoveRelEx(47000, 0, 65535, 1, 50000, 2 ,0, 3, 0, 4, 0,  -1);
-	Stepper.MoveRelEx(47000, 0, 65535, 1, 50000, 2 ,32000, 3, 22000, 4, 13000,  -1);
+	Stepper.MoveRelEx(47000, 0, 65535, 1, 50000, 2, 0, 3, 0, 4, 0, -1);
+	Stepper.MoveRelEx(47000, 0, 65535, 1, 50000, 2, 32000, 3, 22000, 4, 13000, -1);
 	Stepper.MoveRelEx(47000, 0, 65530, 1, 50002, 2, 32000, 3, 22001, 4, 13001, -1);
-	Stepper.EndTest("TR24_DiffMultiplier#1.csv");
-
+	Stepper.EndTest("TR25_DiffMultiplier#1.csv");
 
 	Stepper.InitTest();
 	Stepper.SetDefaultMaxSpeed(65535, 400, 700);
 	Stepper.MoveRelEx(47000, 0, 2, -1);
-	Stepper.EndTest("TR24_DiffMultiplier#2.csv");
-	*/
-	for (udist_t x = 0; x<1000; x++)
+	Stepper.EndTest("TR25_DiffMultiplier#2.csv");
+}
+
+void CStepperTest::TestDiffMultiplierLoop()
+{
+		for (udist_t x = 0; x<300; x++)
 		for (udist_t y = 0; y<x; y++)
 		{
 			Stepper.InitTest();
 			Stepper.SetDefaultMaxSpeed(65535, 400, 700);
 			Stepper.MoveRelEx(SPEED_MULTIPLIER_3 + 1, 0, x, 1, y, -1);
 			//Stepper.MoveRelEx(47000, 0, x, 1, y, -1);
-			Stepper.EndTest("TR24_DiffMultiplier#x.csv");
+			Stepper.EndTest("TR26_DiffMultiplier#x.csv");
 			if (Stepper.GetCurrentPosition(0) != x || Stepper.GetCurrentPosition(1) != y)
 			{
 				*((int *)NULL) = 1021312;	//Abort
@@ -418,7 +420,7 @@ void CStepperTest::TestWait()
 	Stepper.CStepper::MoveRel(0, 5000, 3000);
 	Stepper.CStepper::Wait(100);
 	Stepper.CStepper::MoveRel(0, 5000, 3000);
-	Stepper.EndTest("TR24_Wait.csv");
+	Stepper.EndTest("TR27_Wait.csv");
 }
 
 void CStepperTest::TestVerySlow()
@@ -428,7 +430,7 @@ void CStepperTest::TestVerySlow()
 	Stepper.CStepper::MoveRel(0, 2500, 1);
 	Stepper.CStepper::MoveRel(0, 1, 2);
 	Stepper.CStepper::MoveRel(0, 100, 3);
-	Stepper.EndTest("TR25_VerySlow.csv");
+	Stepper.EndTest("TR28_VerySlow.csv");
 }
 
 void CStepperTest::TestStopMove()
@@ -438,7 +440,7 @@ void CStepperTest::TestStopMove()
 	Stepper.MoveRelEx(47000, 0, 2500, 1, 1000, 2, 500, -1);
 	Stepper.MoveRelEx(47000, 0, 2500, 1, -1000, 2, 500, -1);
 	Stepper.CStepper::StopMove(75);
-	Stepper.EndTest("TR25_StopMove.csv");
+	Stepper.EndTest("TR29_StopMove.csv");
 }
 
 void CStepperTest::TestWaitHold()
@@ -451,7 +453,7 @@ void CStepperTest::TestWaitHold()
 	Stepper.CStepper::MoveRel(0, 100, 3000);
 	Stepper.CStepper::WaitConditional(100);
 	Stepper.CStepper::MoveRel(0, 5000, 3000);
-	Stepper.EndTest("TR25_WaitHold.csv");
+	Stepper.EndTest("TR30_WaitHold.csv");
 }
 
 void CStepperTest::TestPause1()
@@ -470,7 +472,7 @@ void CStepperTest::TestPause1()
 	AssertMove(100, Stepper.GetMovement(2));
 	AssertMove(5000, Stepper.GetMovement(3));
 
-	Stepper.EndTest("TR26_TestPause#A.csv");
+	Stepper.EndTest("TR31_TestPause#A.csv");
 }
 
 void CStepperTest::TestPause2()
@@ -490,7 +492,7 @@ void CStepperTest::TestPause2()
 	AssertWait(65535, Stepper.GetMovement(2));
 	AssertMove(1500, Stepper.GetMovement(3));
 
-	Stepper.EndTest("TR26_TestPausea#B.csv");
+	Stepper.EndTest("TR32_TestPausea#B.csv");
 }
 
 void CStepperTest::TestPause3()
@@ -512,7 +514,7 @@ void CStepperTest::TestPause3()
 	AssertMove(10000, Stepper.GetMovement(2));
 	AssertMove(10000, Stepper.GetMovement(3));
 
-	Stepper.EndTest("TR26_TestPausea#C.csv");
+	Stepper.EndTest("TR33_TestPausea#C.csv");
 }
 
 void CStepperTest::TestPause4()
@@ -532,7 +534,7 @@ void CStepperTest::TestPause4()
 	AssertWait(65535, Stepper.GetMovement(2));
 	AssertMove(10000, Stepper.GetMovement(3));
 
-	Stepper.EndTest("TR26_TestPausea#D.csv");
+	Stepper.EndTest("TR34_TestPausea#D.csv");
 }
 
 void CStepperTest::TestFile()

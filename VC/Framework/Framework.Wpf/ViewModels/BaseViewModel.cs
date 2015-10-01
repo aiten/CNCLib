@@ -25,5 +25,10 @@ namespace Framework.Wpf.ViewModels
     public class BaseViewModel : NotificationObject
 	{
 		public Action CloseAction { get; set; }
+
+		public virtual void Cleanup()
+		{
+
+		}
 	}
 }

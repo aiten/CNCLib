@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Framework.Wpf.ViewModels;
+using System.ComponentModel;
 
 namespace CNCLib.Wpf
 {

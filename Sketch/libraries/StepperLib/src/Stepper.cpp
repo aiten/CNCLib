@@ -728,7 +728,18 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 	{
 		// first "now" executing move
 		if (IsRunOrUpMove())
-			_pod._move._timerEndPossible = _pod._move._ramp._timerRun;
+		{
+			if (IsRunMove())
+			{
+				// Option(TODO): we could accelerate with "down" move, 
+				_pod._move._timerEndPossible = _pod._move._ramp._timerRun;
+			}
+			else
+			{
+				// just continue accelerate to the end of the move
+				_pod._move._timerEndPossible = _pStepper->GetTimerAccelerating(_steps, _pod._move._ramp._timerStart, GetUpTimerAcc());
+			}
+		}
 		else
 			_pod._move._timerEndPossible = _pod._move._ramp._timerStop;
 	}

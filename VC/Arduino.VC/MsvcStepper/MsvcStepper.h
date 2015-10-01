@@ -28,7 +28,7 @@
 #include "..\..\..\sketch\libraries\CNCLib\src\MessageCNCLib.h"
 #include "..\..\..\sketch\libraries\CNCLib\src\GCodeParserBase.h"
 
-#define _STORETIMEVALUES	1000000
+#define _STORETIMEVALUES	100000
 #define NUM_AXIS_MVC		5
 
 class CMsvcStepper : public CStepper

@@ -71,7 +71,8 @@ private:
 	void TestLongSlow();
 	void TestVeryFast();
 	void TestSetMaxAxixSpeed();
-	void TestDiffMultiplier();
+	void TestDiffMultiplierAbs();
+	void TestDiffMultiplierLoop();
 	void TestWait();
 	void TestVerySlow();
 	void TestStopMove();
