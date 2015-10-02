@@ -19,7 +19,6 @@ http://www.gnu.org/licenses/
 
 #pragma once
 
-
 class CTestClass
 {
 public:
@@ -29,6 +28,21 @@ public:
 	bool BreakOnAssert = true;
 
 	virtual void RunTest()=0;
+
+	static void Init(char*exename);
+
+protected:
+
+	static char TestResultOKDir[_MAX_PATH];
+	static char TestResultDir[_MAX_PATH];
+
+	char TestResultOKFile[_MAX_PATH];
+	char TestResultFile[_MAX_PATH];
+
+	char* GetResultFileName(const char*filename)		{ return AddFileName(TestResultFile, TestResultDir, filename); }
+	char* GetResultOkFileName(const char*filename)	{ return AddFileName(TestResultOKFile, TestResultOKDir, filename); };
+
+	static char* AddFileName(char*desc, const char* start, const char*filename);
 
 protected:
 
@@ -55,6 +69,15 @@ public:
 		if (expect != actual)
 		{
 			printf("Assert failed, expected = %i, actual = %i\n", (int)expect, (int)actual);
+			CheckBreakOnAssert();
+		}
+	}
+
+	void Assert(unsigned long expect, unsigned long actual)
+	{
+		if (expect != actual)
+		{
+			printf("Assert failed, expected = %ul, actual = %ul\n", (unsigned long)expect, (unsigned long)actual);
 			CheckBreakOnAssert();
 		}
 	}

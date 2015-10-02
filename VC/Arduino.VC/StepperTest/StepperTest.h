@@ -35,6 +35,7 @@ private:
 
 	void WriteStepperTestMovement();
 	void AssertFile(const char* filename);
+	void CreateTestFile(const char* filename);
 
 	void AssertMove(mdist_t steps, CMsvcStepper::SMovementX mv)
 	{

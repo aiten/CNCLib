@@ -20,13 +20,36 @@ http://www.gnu.org/licenses/
 #include "stdafx.h"
 #include "TestClass.h"
 
+char CTestClass::TestResultOKDir[_MAX_PATH] = {};
+char CTestClass::TestResultDir[_MAX_PATH] = {};
 
 
 CTestClass::CTestClass()
 {
+	TestResultOKFile[0] = 0;
+	TestResultFile[0] = 0;
 }
 
 
 CTestClass::~CTestClass()
 {
+}
+
+void CTestClass::Init(char*exename)
+{
+	::GetTempPathA(_MAX_PATH, TestResultDir);
+
+	strcpy(TestResultOKDir, exename);
+	*(strrchr(TestResultOKDir, '\\') + 0) = 0;
+	*(strrchr(TestResultOKDir, '\\') + 1) = 0;
+	strcat(TestResultOKDir, "TestResult\\");
+}
+
+char* CTestClass::AddFileName(char*dest, const char* start, const char*filename)
+{
+	strcpy(dest, start);
+	strcat(dest, "Test_");
+	strcat(dest, filename);
+
+	return dest;
 }

@@ -15,5 +15,9 @@
 #include <stdio.h>
 #include <tchar.h>
 #include <string.h>
+#include <memory.h>
+
+#include "..\MsvcStepper\MsvcStepper.h"
+
 
 
