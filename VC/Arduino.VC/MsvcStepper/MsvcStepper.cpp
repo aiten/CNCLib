@@ -241,6 +241,8 @@ void CMsvcStepper::InitTest(const char* filename)
 
 	MSCInfo = "";
 
+	SetWaitConditional(false);
+
 	InitCache();
 }
 

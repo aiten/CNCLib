@@ -43,6 +43,8 @@ void CStepperTest::RunTest()
 	}
 	Stepper.SetWaitFinishMove(false);
 
+	TestPause4();
+
 	TestAcc5000Dec();
 	TestAcc25000Dec();
 	TestAccCutDec();
