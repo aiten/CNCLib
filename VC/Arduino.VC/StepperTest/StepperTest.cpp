@@ -21,6 +21,7 @@ http://www.gnu.org/licenses/
 #include "StepperTest.h"
 #include "TestTools.h"
 
+#define CREATETESTFILE false
 
 CSerial Serial;
 
@@ -42,8 +43,6 @@ void CStepperTest::RunTest()
 		Stepper.SetLimitMax(x, 0x100000);
 	}
 	Stepper.SetWaitFinishMove(false);
-
-	TestPause4();
 
 	TestAcc5000Dec();
 	TestAcc25000Dec();
@@ -637,7 +636,7 @@ void CStepperTest::AssertFile(const char* filename)
 	const char* pathname_src  = GetResultFileName(filename);
 	const char* pathname_dest = GetResultOkFileName(filename);
 
-	if (true)		// create Test result file as OK
+	if (CREATETESTFILE)		// create Test result file as OK
 	{
 		Stepper.EndTest(pathname_dest);
 		return;
