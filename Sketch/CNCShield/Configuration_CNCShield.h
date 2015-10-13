@@ -25,8 +25,13 @@
 
 ////////////////////////////////////////////////////////
 
-#define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
-#define ConversionToMachine CMotionControl::ToMachine_1_3200
+//m8
+#define ConversionToMm1000 CMotionControl::ToMm1000_1d25_3200
+#define ConversionToMachine CMotionControl::ToMachine_1d25_3200
+
+//m6
+//#define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
+//#define ConversionToMachine CMotionControl::ToMachine_1_3200
 
 ////////////////////////////////////////////////////////
 

@@ -145,6 +145,15 @@ public:
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// 
+	// 200 / 8-Stepper => 1600 / rotation
+
+	// functions: 1 rotation(1600Steps) = 1mm
+
+	static mm1000_t ToMm1000_1_1600(axis_t /* axis */, sdist_t val)								{ return  RoundMulDivU32(val, 160, 256); }
+	static sdist_t  ToMachine_1_1600(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 256, 160); }
+
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// 
 	// 200 / 16-Stepper => 3200 / rotation
 
 	// functions: 1 rotation(3200Steps) = 1mm

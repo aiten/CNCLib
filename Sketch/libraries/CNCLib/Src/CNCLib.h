@@ -22,5 +22,5 @@
 #include "ConfigurationCNCLib.h"
 #include "MotionControl.h"
 #include "UtilitiesCNCLib.h"
-#include "Parser.h"
 #include "Control.h"
+#include "Parser.h"

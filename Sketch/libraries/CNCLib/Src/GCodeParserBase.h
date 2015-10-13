@@ -24,6 +24,7 @@
 #include "Parser.h"
 #include "GCodeTools.h"
 #include "MotionControlBase.h"
+#include "Control.h"
 
 ////////////////////////////////////////////////////////
 
@@ -243,6 +244,7 @@ protected:
 	void GetRadius(SAxisMove& move, mm1000_t& radius);
 
 	void CallIOControl(unsigned char io, unsigned short value);
+	void SpindleSpeedCommand();
 
 private:
 
@@ -272,12 +274,10 @@ private:
 	void G91Command();
 	void G92Command();
 
-	void M03Command();		// spindle on CW
-	void M04Command();		// spindle on CCW
-	void M05Command();		// spindle off
-	void M07Command();		// coolant on
-	void M09Command();		// coolant off
-	void M110Command();
+	void M0304Command(bool m3);					// spindle on CW/CCW
+	void M05Command()							{ CallIOControl(CControl::Spindel, 0); } //spindel off
+	void M07Command()							{ CallIOControl(CControl::Coolant, CControl::CoolantOn); } // coolant on
+	void M09Command()							{ CallIOControl(CControl::Coolant, CControl::CoolantOff); } // coolant off
 
 	/////////////////
 

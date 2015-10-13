@@ -30,10 +30,6 @@
 #include "GCodeParser.h"
 #include "GCodeExpressionParser.h"
 
-////////////////////////////////////////////////////////
-
-#define MAXSPINDEL_SPEED	0x7fff
-
 ////////////////////////////////////////////////////////////
 
 struct CGCodeParser::SModalState CGCodeParser::_modalstate;
@@ -407,6 +403,7 @@ bool CGCodeParser::MCommand(mcode_t mcode)
 		case 8: M08Command(); return true;
 		case 10: M10Command(); return true;
 		case 11: M11Command(); return true;
+		case 110: M110Command(); return true;
 	}
 	return false;
 }
@@ -425,23 +422,6 @@ void CGCodeParser::ToolSelectCommand()
 	}
 
 	_modalstate.ToolSelected = tool;
-}
-
-////////////////////////////////////////////////////////////
-
-void CGCodeParser::SpindleSpeedCommand()
-{
-	_reader->SkipSpaces();
-	unsigned short speed = GetUInt16();
-	if (IsError()) return;
-
-	if (speed > MAXSPINDEL_SPEED)
-	{
-		Info(MESSAGE_GCODE_SpindleSpeedExceeded);
-		speed = MAXSPINDEL_SPEED;
-	}
-
-	super::_modalstate.SpindleSpeed = speed;
 }
 
 ////////////////////////////////////////////////////////////
@@ -1077,6 +1057,25 @@ void CGCodeParser::M11Command()
 {
 	//vacuum off
 	CallIOControl(CControl::Vacuum, CControl::VacuumOff);
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::M110Command()
+{
+	// set linenumber
+
+	unsigned long linenumber = 0;
+
+	if (_reader->SkipSpacesToUpper() == 'N')
+	{
+		_reader->GetNextChar();
+		linenumber = GetUInt32();
+	}
+
+	if (!ExpectEndOfCommand()) { return; }
+
+	super::_modalstate.Linenumber = linenumber;
 }
 
 ////////////////////////////////////////////////////////////
