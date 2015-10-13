@@ -78,8 +78,8 @@ void CMyControl::Init()
 	_kill.Init();
   _coolant.Init();
 
-  _hold.SetPin(CNCSHIELD_RESUME_PIN);
-  _resume.SetPin(CNCSHIELD_HOLD_PIN);
+  _hold.SetPin(CNCSHIELD_HOLD_PIN);
+  _resume.SetPin(CNCSHIELD_RESUME_PIN);
 
 	CGCodeParserBase::Init();
 
