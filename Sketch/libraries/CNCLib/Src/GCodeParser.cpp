@@ -404,9 +404,7 @@ bool CGCodeParser::MCommand(mcode_t mcode)
 		case 1:	M01Command(); return true;
 		case 2:	M02Command(); return true;
 		case 6: M06Command(); return true;
-		case 7: M07Command(); return true;
 		case 8: M08Command(); return true;
-		case 9: M09Command(); return true;
 		case 10: M10Command(); return true;
 		case 11: M11Command(); return true;
 	}
@@ -1059,29 +1057,10 @@ void CGCodeParser::M06Command()
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParser::M07Command()
-{
-	//coolant on
-	Sync();
-	CControl::GetInstance()->IOControl(CControl::Coolant, 1);
-}
-
-////////////////////////////////////////////////////////////
-
 void CGCodeParser::M08Command()
 {
 	//coolant on (flood)
-	Sync();
-	CControl::GetInstance()->IOControl(CControl::Coolant, 2);
-}
-
-////////////////////////////////////////////////////////////
-
-void CGCodeParser::M09Command()
-{
-	//coolant off
-	Sync();
-	CControl::GetInstance()->IOControl(CControl::Coolant, 0);
+	CallIOControl(CControl::Coolant, CControl::CoolantFlood);
 }
 
 ////////////////////////////////////////////////////////////
@@ -1089,8 +1068,7 @@ void CGCodeParser::M09Command()
 void CGCodeParser::M10Command()
 {
 	//vacuum on
-	Sync();
-	CControl::GetInstance()->IOControl(CControl::Vacuum, 1);
+	CallIOControl(CControl::Vacuum, CControl::VacuumOn);
 }
 
 ////////////////////////////////////////////////////////////
@@ -1098,8 +1076,7 @@ void CGCodeParser::M10Command()
 void CGCodeParser::M11Command()
 {
 	//vacuum off
-	Sync();
-	CControl::GetInstance()->IOControl(CControl::Vacuum, 0);
+	CallIOControl(CControl::Vacuum, CControl::VacuumOff);
 }
 
 ////////////////////////////////////////////////////////////

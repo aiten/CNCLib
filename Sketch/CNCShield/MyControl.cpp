@@ -167,7 +167,7 @@ void CMyControl::Poll()
     {
         if (_resume.IsOn())
         {
-            Hold();
+            Resume();
         }
     } else if (_hold.IsOn())
     {

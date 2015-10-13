@@ -363,6 +363,8 @@ bool CGCodeParserBase::MCommand(mcode_t mcode)
 		case 3:	M03Command(); return true;
 		case 4:	M04Command(); return true;
 		case 5: M05Command(); return true;
+		case 7: M07Command(); return true;
+		case 9: M09Command(); return true;
 	}
 	return false;
 }
@@ -812,10 +814,15 @@ void CGCodeParserBase::G92Command()
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParserBase::M03Command()
+void CGCodeParserBase::CallIOControl(unsigned char io, unsigned short value)
 {
 	Sync();
-	CControl::GetInstance()->IOControl(CControl::Spindel, _modalstate.SpindleSpeed);
+	CControl::GetInstance()->IOControl(io, value);
+}
+
+void CGCodeParserBase::M03Command()
+{
+	CallIOControl(CControl::Spindel, _modalstate.SpindleSpeed);
 	//spindel on CW
 }
 
@@ -823,8 +830,7 @@ void CGCodeParserBase::M03Command()
 
 void CGCodeParserBase::M04Command()
 {
-	Sync();
-	CControl::GetInstance()->IOControl(CControl::Spindel, -((short) _modalstate.SpindleSpeed));
+	CallIOControl(CControl::Spindel, -((short)_modalstate.SpindleSpeed));
 	//spindel on CCW
 }
 
@@ -833,8 +839,21 @@ void CGCodeParserBase::M04Command()
 void CGCodeParserBase::M05Command()
 {
 	//spindel off
-	Sync();
-	CControl::GetInstance()->IOControl(CControl::Spindel, 0);
+	CallIOControl(CControl::Spindel, 0);
+}
+
+void CGCodeParserBase::M07Command()
+{
+	//coolant on
+	CallIOControl(CControl::Coolant, CControl::CoolantOn);
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParserBase::M09Command()
+{
+	//coolant off
+	CallIOControl(CControl::Coolant, CControl::CoolantOff);
 }
 
 ////////////////////////////////////////////////////////////

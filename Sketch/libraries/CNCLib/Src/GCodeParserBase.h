@@ -242,6 +242,8 @@ protected:
 
 	void GetRadius(SAxisMove& move, mm1000_t& radius);
 
+	void CallIOControl(unsigned char io, unsigned short value);
+
 private:
 
 	void GetIJK(axis_t axis, SAxisMove& move, mm1000_t offset[2]);
@@ -273,6 +275,8 @@ private:
 	void M03Command();		// spindle on CW
 	void M04Command();		// spindle on CCW
 	void M05Command();		// spindle off
+	void M07Command();		// coolant on
+	void M09Command();		// coolant off
 	void M110Command();
 
 	/////////////////
