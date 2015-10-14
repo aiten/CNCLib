@@ -28,10 +28,16 @@ public:
 
 	unsigned char Level;    // use like a property
 
-	void Init()
+	void Init(unsigned char level=0)
 	{
-		On(255);
+		On(level);
+		Level = level;
+	}
+
+	void OnMax()
+	{
 		Level = 255;
+		On(Level);
 	}
 
 	void On()
@@ -44,13 +50,20 @@ public:
 		On(0);
 	}
 
+	bool IsOn()
+	{
+		return _lastlevel != 0;
+	}
+
 private:
+
+	unsigned char _lastlevel;
 
 	void On(unsigned char level)
 	{
+		_lastlevel = level;
 		CHAL::analogWrite(PIN, level);
 	}
-
 };
 
 ////////////////////////////////////////////////////////

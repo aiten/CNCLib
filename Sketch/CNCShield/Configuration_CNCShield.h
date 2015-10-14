@@ -42,6 +42,11 @@
 
 ////////////////////////////////////////////////////////
 
+#undef ANALOGSPINDELSPEED
+#define MAXSPINDLESPEED 25000		// analog 255
+
+////////////////////////////////////////////////////////
+
 #define CNC_MAXSPEED 14000
 #define CNC_ACC  350
 #define CNC_DEC  400

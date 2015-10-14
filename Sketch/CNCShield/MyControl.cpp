@@ -37,7 +37,7 @@ CMotionControlBase MotionControl;
 
 void CMyControl::Init()
 {
-  DisableBlinkLed();
+	DisableBlinkLed();
 
 	StepperSerial.println(MESSAGE_MYCONTROL_CNCShield_Starting);
 
@@ -76,10 +76,10 @@ void CMyControl::Init()
 #endif
 
 	_kill.Init();
-  _coolant.Init();
+	_coolant.Init();
 
-  _hold.SetPin(CNCSHIELD_HOLD_PIN);
-  _resume.SetPin(CNCSHIELD_RESUME_PIN);
+	_hold.SetPin(CNCSHIELD_HOLD_PIN);
+	_resume.SetPin(CNCSHIELD_RESUME_PIN);
 
 	CGCodeParserBase::Init();
 
@@ -97,18 +97,22 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 	{
 #ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
 		case Spindel:			
-        if (level != 0)
-        {
-		      _spindel.Set(true);
-          _spindelDir.Set(((short)level)>0);
-        }
-        else
-        {
-          _spindel.Set(false);
-        }
-        return;
+			if (level != 0)
+			{
+#ifdef ANALOGSPINDELSPEED
+				_spindel.On(MulDivU32(abs(level),255, MAXSPINDLESPEED));
+#else        
+        _spindel.On();
 #endif
-    case Coolant:     _coolant.Set(level>0); return;
+				_spindelDir.Set(((short)level)>0);
+			}
+			else
+			{
+			  _spindel.Off();
+			}
+			return;
+#endif
+	    case Coolant:     _coolant.Set(level>0); return;
 	}
 	
 	super::IOControl(tool, level);
@@ -138,54 +142,55 @@ void CMyControl::Kill()
 {
 	super::Kill();
 #ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
-	_spindel.Set(false);
+	_spindel.Off();
 #endif
-  _coolant.Set(false);
+	_coolant.Set(false);
 }
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::TimerInterrupt()
 {
-  super::TimerInterrupt();
-  _hold.Check();
-  _resume.Check();
+	super::TimerInterrupt();
+	_hold.Check();
+	_resume.Check();
 }
 
 ////////////////////////////////////////////////////////////
 
 bool CMyControl::IsKill()
 {
-    return _kill.IsOn();
+	return _kill.IsOn();
 }
 
 void CMyControl::Poll()
 {
-    super::Poll();
+	super::Poll();
 
-    if (IsHold())
-    {
-        if (_resume.IsOn())
-        {
-            Resume();
-        }
-    } else if (_hold.IsOn())
-    {
-       Hold();
-    }
+	if (IsHold())
+	{
+		if (_resume.IsOn())
+		{
+			Resume();
+		}
+	} 
+	else if (_hold.IsOn())
+	{
+		Hold();
+	}
 }
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */)
 {
-//  super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 300000));
+	//  super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 300000));
 
-  CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
+	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
 
-  // force linking to see size used in sketch
-  if (IsHold())
-    super::GoToReference();
+	// force linking to see size used in sketch
+	if (IsHold())
+		super::GoToReference();
 }
 
 ////////////////////////////////////////////////////////////

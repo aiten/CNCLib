@@ -21,37 +21,40 @@
 
 ////////////////////////////////////////////////////////
 
-template <unsigned char PIN, unsigned char ONVALUE, unsigned char OFFVALUE>
-class COnOffIOControl
+template <unsigned char PIN>
+class CAnalog8IORememberControl
 {
+private:
+
+	unsigned char _lastlevel;
+
 public:
 
-	void Init()
+	void Init(unsigned char level=0)
 	{
-		CHAL::pinMode(PIN, OUTPUT);
-		Set(false);
+		On(level);
 	}
 
-	void Set(bool val)
+	void OnMax()
 	{
-		CHAL::digitalWrite(PIN, val ? ONVALUE : OFFVALUE);
+		On(255);
 	}
 
 	void Off()
 	{
-		Set(false);
+		On(0);
 	}
-
-	void On()
-	{
-		Set(true);
-	}
-
+	
 	bool IsOn()
-	{
-		return CHAL::digitalRead(PIN) == ONVALUE;
+	{ 
+		return _lastlevel != 0;
 	}
 
+	void On(unsigned char level)
+	{
+		_lastlevel = level;
+		CHAL::analogWrite(PIN, level);
+	}
 };
 
 ////////////////////////////////////////////////////////

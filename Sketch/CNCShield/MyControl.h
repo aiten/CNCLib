@@ -23,7 +23,7 @@
 
 #include <Control.h>
 #include <OnOffIOControl.h>
-#include <Analog8IOControl.h>
+#include <Analog8IORememberControl.h>
 #include <ReadPinIOControl.h>
 #include <PushButtonLow.h>
 
@@ -51,30 +51,30 @@ public:
 protected:
 
 	virtual void Init() override;
-  virtual void TimerInterrupt() override;
+	virtual void TimerInterrupt() override;
 
-  bool IsKill() override;
-  virtual void Poll() override;
-
+	bool IsKill() override;
+	virtual void Poll() override;
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
-
-  virtual void GoToReference(axis_t axis, steprate_t steprate) override;
-
-//	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
+	virtual void GoToReference(axis_t axis, steprate_t steprate) override;
 
 private:
 
 #ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
-	COnOffIOControl<CNCSHIELD_SPINDEL_ENABLE_PIN, CNCSHIELD_SPINDEL_ON,       CNCSHIELD_SPINDEL_OFF> _spindel;
-  COnOffIOControl<CNCSHIELD_SPINDEL_DIR_PIN,    CNCSHIELD_SPINDEL_DIR_CLW,  CNCSHIELD_SPINDEL_DIR_CCLW> _spindelDir;
+	#ifdef ANALOGSPINDELSPEED
+		CAnalog8IORememberControl<CNCSHIELD_SPINDEL_ENABLE_PIN> _spindel;
+	#else
+		COnOffIOControl<CNCSHIELD_SPINDEL_ENABLE_PIN, CNCSHIELD_SPINDEL_DIGITAL_ON,       CNCSHIELD_SPINDEL_DIGITAL_OFF> _spindel;
+	#endif
+	COnOffIOControl<CNCSHIELD_SPINDEL_DIR_PIN,    CNCSHIELD_SPINDEL_DIR_CLW,  CNCSHIELD_SPINDEL_DIR_CCLW> _spindelDir;
 #endif  
-  COnOffIOControl<CNCSHIELD_COOLANT_PIN, CNCSHIELD_COOLANT_ON, CNCSHIELD_COOLANT_OFF> _coolant;
+	COnOffIOControl<CNCSHIELD_COOLANT_PIN, CNCSHIELD_COOLANT_ON, CNCSHIELD_COOLANT_OFF> _coolant;
 #ifdef CNCSHIELD_PROBE_PIN
 	CReadPinIOControl<CNCSHIELD_PROBE_PIN, CNCSHIELD_PROBE_ON> _probe;
 #endif
 	CReadPinIOControl<CNCSHIELD_ABORT_PIN, CNCSHIELD_ABORT_ON> _kill;
-  CPushButtonLow _hold;
-  CPushButtonLow _resume;
+	CPushButtonLow _hold;
+	CPushButtonLow _resume;
 };
 
 ////////////////////////////////////////////////////////

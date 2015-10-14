@@ -81,7 +81,7 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-	virtual void  SetEnable(axis_t axis, unsigned char level, bool force) override
+	virtual void  SetEnable(axis_t /* axis */, unsigned char level, bool /* force */) override
 	{
 
 #define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,CNCSHIELD_PIN_ENABLE_ON);	else	HALFastdigitalWrite(pin,CNCSHIELD_PIN_ENABLE_OFF);
@@ -94,7 +94,7 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-	virtual unsigned char GetEnable(axis_t axis) override
+	virtual unsigned char GetEnable(axis_t /* axis */) override
 	{
 		return ConvertLevel(HALFastdigitalRead(CNCSHIELD_ENABLE_PIN) == CNCSHIELD_PIN_ENABLE_ON);
 	}

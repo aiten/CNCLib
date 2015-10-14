@@ -44,6 +44,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\UtilitiesCNCLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8InvertIOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8IOControl.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8IORememberControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ConfigurationStepperLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\fastio.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL.h" />

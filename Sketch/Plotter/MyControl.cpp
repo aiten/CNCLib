@@ -52,7 +52,7 @@ void CMyControl::Init()
 
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penUp.max, CHPGLParser::_state.penUp.acc, CHPGLParser::_state.penUp.dec);
 
-	_controllerfan.Init();
+	_controllerfan.Init(255);
 	_kill.Init();
 
 #if defined(__AVR_ARCH__) || defined(__SAM3X8E__)
