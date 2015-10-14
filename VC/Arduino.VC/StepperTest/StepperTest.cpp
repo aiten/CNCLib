@@ -24,6 +24,8 @@ http://www.gnu.org/licenses/
 
 CSerial Serial;
 
+bool overrideTestOK = false;
+
 int FromMM(double mm)
 {
 	return (int)(mm * 3200);
@@ -42,6 +44,8 @@ void CStepperTest::RunTest()
 		Stepper.SetLimitMax(x, 0x100000);
 	}
 	Stepper.SetWaitFinishMove(false);
+
+	//TestPause4();
 
 	TestAcc5000Dec();
 	TestAcc25000Dec();
@@ -635,7 +639,7 @@ void CStepperTest::AssertFile(const char* filename)
 	const char* pathname_src  = GetResultFileName(filename);
 	const char* pathname_dest = GetResultOkFileName(filename);
 
-	if (true)		// create Test result file as OK
+	if (overrideTestOK)		// create Test result file as OK
 	{
 		Stepper.EndTest(pathname_dest);
 		return;
