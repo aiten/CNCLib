@@ -21,7 +21,6 @@ http://www.gnu.org/licenses/
 #include "StepperTest.h"
 #include "TestTools.h"
 
-
 CSerial Serial;
 
 bool overrideTestOK = false;
@@ -44,8 +43,6 @@ void CStepperTest::RunTest()
 		Stepper.SetLimitMax(x, 0x100000);
 	}
 	Stepper.SetWaitFinishMove(false);
-
-	//TestPause4();
 
 	TestAcc5000Dec();
 	TestAcc25000Dec();

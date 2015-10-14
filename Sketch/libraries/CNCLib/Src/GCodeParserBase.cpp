@@ -37,6 +37,10 @@ bool CGCodeParserBase::_exit = false;
 
 ////////////////////////////////////////////////////////
 
+#define MAXSPINDEL_SPEED	0x7fff
+
+////////////////////////////////////////////////////////
+
 #define MACHINE_SCALE		3		// 1/1000mm
 
 #define COORD_SCALE_MM		3
@@ -360,9 +364,15 @@ bool CGCodeParserBase::MCommand(mcode_t mcode)
 {
 	switch (mcode)
 	{
-		case 3:	M03Command(); return true;
-		case 4:	M04Command(); return true;
+		case 3:	M0304Command(true); return true;
+		case 4:	M0304Command(false); return true;
+//		case 5:	; return true;
+		case 7:	CallIOControl(CControl::Coolant, CControl::CoolantOn); return true;
+		case 9:	CallIOControl(CControl::Coolant, CControl::CoolantOff); return true;
+
 		case 5: M05Command(); return true;
+//		case 7: M07Command(); return true;
+//		case 9: M09Command(); return true;
 	}
 	return false;
 }
@@ -667,7 +677,9 @@ void CGCodeParserBase::G04Command()
 		dweelms = GetDweel();
 	}
 
+#ifndef REDUCED_SIZE
 	if (!ExpectEndOfCommand())		{ return; }
+#endif
 
 	Wait(dweelms);
 }
@@ -812,48 +824,38 @@ void CGCodeParserBase::G92Command()
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParserBase::M03Command()
+void CGCodeParserBase::SpindleSpeedCommand()
 {
-	Sync();
-	CControl::GetInstance()->IOControl(CControl::Spindel, _modalstate.SpindleSpeed);
-	//spindel on CW
+	_reader->SkipSpaces();
+	short speed = (short) GetUint32OrParam(MAXSPINDEL_SPEED);
+
+#ifndef REDUCED_SIZE
+	if (IsError()) return;
+#endif
+
+	_modalstate.SpindleSpeed = speed;
 }
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParserBase::M04Command()
+void CGCodeParserBase::CallIOControl(unsigned char io, unsigned short value)
 {
 	Sync();
-	CControl::GetInstance()->IOControl(CControl::Spindel, -((short) _modalstate.SpindleSpeed));
-	//spindel on CCW
+	CControl::GetInstance()->IOControl(io, value);
 }
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParserBase::M05Command()
+void CGCodeParserBase::M0304Command(bool m3)
 {
-	//spindel off
-	Sync();
-	CControl::GetInstance()->IOControl(CControl::Spindel, 0);
-}
-
-////////////////////////////////////////////////////////////
-
-void CGCodeParserBase::M110Command()
-{
-	// set linenumber
-
-	unsigned long linenumber = 0;
-
-	if (_reader->SkipSpacesToUpper() == 'N')
+	char ch = _reader->SkipSpacesToUpper();
+	if (ch == 'S')
 	{
 		_reader->GetNextChar();
-		linenumber = GetUInt32();
+		SpindleSpeedCommand();
 	}
 
-	if (!ExpectEndOfCommand())		{ return; }
-
-	_modalstate.Linenumber = linenumber;
+	CallIOControl(CControl::Spindel, m3 ? _modalstate.SpindleSpeed : -_modalstate.SpindleSpeed);
 }
 
 ////////////////////////////////////////////////////////////

@@ -21,12 +21,17 @@
 
 ////////////////////////////////////////////////////////
 
-#define CNCSHIELD_NUM_AXIS 3
+#define CNCSHIELD_NUM_AXIS 4
 
 ////////////////////////////////////////////////////////
 
-#define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
-#define ConversionToMachine CMotionControl::ToMachine_1_3200
+//m8
+#define ConversionToMm1000 CMotionControl::ToMm1000_1d25_3200
+#define ConversionToMachine CMotionControl::ToMachine_1d25_3200
+
+//m6
+//#define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
+//#define ConversionToMachine CMotionControl::ToMachine_1_3200
 
 ////////////////////////////////////////////////////////
 
@@ -41,7 +46,12 @@
 #define CNC_ACC  350
 #define CNC_DEC  400
 
-#define CNCSHIELD_PROBE_PIN     58    // AD4
+#if defined(__AVR_ATmega328P__) || defined (_MSC_VER)
+#define CNCSHIELD_PROBE_PIN     18    // AD4 (Mega => 58)
+#else
+#define CNCSHIELD_PROBE_PIN     58    // AD4 (Mega => 58)
+#endif
+
 #define CNCSHIELD_PROBE_ON      LOW
 #define CNCSHIELD_PROBE_OFF     HIGH
 

@@ -94,7 +94,6 @@ protected:
 	virtual bool Command(unsigned char ch) override;
 
 	void ToolSelectCommand();
-	void SpindleSpeedCommand();
 
 	virtual void CommentMessage(char*) override;
 	virtual mm1000_t CalcAllPreset(axis_t axis) override;
@@ -215,11 +214,10 @@ private:
 	void M01Command();		// Optional stop
 	void M02Command();		// End of program
 	void M06Command();		// Automatic tool change => not supported
-	void M07Command();		// coolant on
 	void M08Command();		// Coolant on (flood)
-	void M09Command();		// coolant off
 	void M10Command();		// vacuum on
 	void M11Command();		// vacuum off
+	void M110Command();
 
 	/////////////////
 

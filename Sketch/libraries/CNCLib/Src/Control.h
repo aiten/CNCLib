@@ -67,6 +67,18 @@ public:
 		ProgramStop			// see M01
 	};
 
+	enum ECoolantState
+	{
+		CoolantOff = 0,
+		CoolantOn = 1,
+		CoolantFlood = 2
+	};
+
+	enum EVacuumState
+	{
+		VacuumOff = 0,
+		VacuumOn = 1
+	};
 
 	virtual void IOControl(unsigned char /* tool */, unsigned short /*level */)	{ };
 	virtual unsigned short IOControl(unsigned char /* tool */)				{ return 0; };

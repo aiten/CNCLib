@@ -62,7 +62,7 @@ public:
 
 		CHAL::pinMode(CNCSHIELD_Z_STEP_PIN, OUTPUT);
 		CHAL::pinMode(CNCSHIELD_Z_DIR_PIN, OUTPUT);
-		CHAL::pinMode(CNCSHIELD_Z_MIN_PIN, INPUT_PULLUP);
+		CHAL::pinMode(CNCSHIELD_Z_MAX_PIN, INPUT_PULLUP);
 
 		HALFastdigitalWrite(CNCSHIELD_X_STEP_PIN, CNCSHIELD_PIN_STEP_ON);
 		HALFastdigitalWrite(CNCSHIELD_Y_STEP_PIN, CNCSHIELD_PIN_STEP_ON);
@@ -170,11 +170,15 @@ public:
 
 	virtual bool IsReference(unsigned char referenceid) override
 	{
+		// min and max is the same pin
 		switch (referenceid)
 		{
-			case 0: return HALFastdigitalRead(CNCSHIELD_X_MIN_PIN) == CNCSHIELD_REF_ON;
-			case 2: return HALFastdigitalRead(CNCSHIELD_Y_MIN_PIN) == CNCSHIELD_REF_ON;
-			case 4: return HALFastdigitalRead(CNCSHIELD_Z_MIN_PIN) == CNCSHIELD_REF_ON;
+			case 0:
+			case 1: return HALFastdigitalRead(CNCSHIELD_X_MIN_PIN) == CNCSHIELD_REF_ON;
+			case 2:
+			case 3: return HALFastdigitalRead(CNCSHIELD_Y_MIN_PIN) == CNCSHIELD_REF_ON;
+			case 4:
+			case 5: return HALFastdigitalRead(CNCSHIELD_Z_MIN_PIN) == CNCSHIELD_REF_ON;
 		}
 		return false;
 	}
@@ -183,10 +187,11 @@ public:
 
 	virtual bool IsAnyReference() override
 	{
+		// min and max is the same pin
 		return
-			(_pod._useReference[0] && HALFastdigitalRead(CNCSHIELD_X_MIN_PIN) == CNCSHIELD_REF_ON) ||
-			(_pod._useReference[2] && HALFastdigitalRead(CNCSHIELD_Y_MIN_PIN) == CNCSHIELD_REF_ON) ||
-			(_pod._useReference[4] && HALFastdigitalRead(CNCSHIELD_Z_MIN_PIN) == CNCSHIELD_REF_ON);
+			((_pod._useReference[0] || _pod._useReference[1]) && HALFastdigitalRead(CNCSHIELD_X_MIN_PIN) == CNCSHIELD_REF_ON) ||
+			((_pod._useReference[2] || _pod._useReference[3]) && HALFastdigitalRead(CNCSHIELD_Y_MIN_PIN) == CNCSHIELD_REF_ON) ||
+			((_pod._useReference[4] || _pod._useReference[5]) && HALFastdigitalRead(CNCSHIELD_Z_MIN_PIN) == CNCSHIELD_REF_ON);
 	}
 
 protected:

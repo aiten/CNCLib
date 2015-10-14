@@ -17,10 +17,50 @@
 */
 ////////////////////////////////////////////////////////
 
-#include <StepperLib.h>
+#include "stdafx.h"
+#include <math.h>
 
-#include "ConfigurationCNCLib.h"
-#include "MotionControl.h"
-#include "UtilitiesCNCLib.h"
-#include "Control.h"
-#include "Parser.h"
+#include "..\MsvcStepper\MsvcStepper.h"
+#include "TestTools.h"
+#include "..\..\..\sketch\CNCShield\MyControl.h"
+
+CSerial Serial;
+
+static void setup();
+static void loop();
+static void Idle();
+
+CMsvcStepper MyStepper;
+class CStepper& Stepper = MyStepper;
+
+int _tmain(int /* argc */, _TCHAR* /* argv */ [])
+{
+	setup();
+
+	while (!CGCodeParserBase::_exit)
+	{
+		loop();
+	}
+
+	MyStepper.EndTest();
+}
+
+void setup() 
+{     
+	MyStepper.DelayOptimization = false;
+	MyStepper.UseSpeedSign = true;
+	MyStepper.CacheSize = 50000;
+	MyStepper.InitTest("CNCShield.csv");
+	Serial.SetIdle(Idle);
+}
+
+void loop() 
+{
+  Control.Run();
+}
+
+static void Idle()
+{
+	if (MyStepper.IsBusy())
+		MyStepper.DoISR();
+}
