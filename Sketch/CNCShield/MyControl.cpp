@@ -184,13 +184,21 @@ void CMyControl::Poll()
 
 void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */)
 {
-	//  super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 300000));
+#ifdef GOTOREFERENCEATBOOT
+
+	super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 300000));
+
+#else
+
+#pragma message "for test purpose only, not gotoReference at boot"
 
 	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
 
 	// force linking to see size used in sketch
 	if (IsHold())
 		super::GoToReference();
+
+#endif
 }
 
 ////////////////////////////////////////////////////////////

@@ -38,12 +38,16 @@
 #define MAXSIZE_X_AXIS 130000 
 #define MAXSIZE_Y_AXIS 45000 
 #define MAXSIZE_Z_AXIS 81000 
-#define MAXSIZE_A_AXIS 360000 
+#define MAXSIZE_A_AXIS 50000 
 
 ////////////////////////////////////////////////////////
 
 #undef ANALOGSPINDELSPEED
 #define MAXSPINDLESPEED 25000		// analog 255
+
+////////////////////////////////////////////////////////
+
+#define GOTOREFERENCEATBOOT
 
 ////////////////////////////////////////////////////////
 
