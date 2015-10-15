@@ -100,7 +100,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 			if (level != 0)
 			{
 #ifdef ANALOGSPINDELSPEED
-				_spindel.On(MulDivU32(abs(level),255, MAXSPINDLESPEED));
+				_spindel.OnLevel((unsigned char) MulDivU32(abs(level),255, MAXSPINDLESPEED));
 #else        
         _spindel.On();
 #endif

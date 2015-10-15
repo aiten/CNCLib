@@ -23,7 +23,7 @@
 
 #include <Control.h>
 #include <OnOffIOControl.h>
-#include <Analog8IORememberControl.h>
+#include <Analog8IOControl.h>
 #include <ReadPinIOControl.h>
 #include <PushButtonLow.h>
 
@@ -62,7 +62,7 @@ private:
 
 #ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
 	#ifdef ANALOGSPINDELSPEED
-		CAnalog8IORememberControl<CNCSHIELD_SPINDEL_ENABLE_PIN> _spindel;
+		CAnalog8IOControl<CNCSHIELD_SPINDEL_ENABLE_PIN> _spindel;
 	#else
 		COnOffIOControl<CNCSHIELD_SPINDEL_ENABLE_PIN, CNCSHIELD_SPINDEL_DIGITAL_ON,       CNCSHIELD_SPINDEL_DIGITAL_OFF> _spindel;
 	#endif

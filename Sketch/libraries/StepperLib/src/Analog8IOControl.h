@@ -26,26 +26,30 @@ class CAnalog8IOControl
 {
 public:
 
-	unsigned char Level;    // use like a property
+	unsigned char Level;					// use like a property
 
-	void Init(unsigned char level=0)
+	void Init(unsigned char level=0)		// init and set default value
 	{
-		On(level);
+		OnLevel(level);
+	}
+
+	void OnLevel(unsigned char level)		// Set level and turn on
+	{
 		Level = level;
+		On(level);
 	}
 
-	void OnMax()
+	void OnMax()							// turn on at max level
 	{
-		Level = 255;
+		OnLevel(255);
+	}
+
+	void On()								// turn on at specivied level (see Level property)
+	{
 		On(Level);
 	}
 
-	void On()
-	{
-		On(Level);
-	}
-
-	void Off()
+	void Off()								// turn off, use On() to switch on at same value
 	{
 		On(0);
 	}
