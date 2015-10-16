@@ -27,6 +27,10 @@ namespace CNCLib.Logic.DTO
 		public decimal ProbeDistUp { get; set; }
 		public decimal ProbeDist { get; set; }
 		public decimal ProbeFeed { get; set; }
+		public bool SDSupport { get; set; }
+		public bool Spindle { get; set; }
+		public bool Coolant { get; set; }
+		public bool Rotate { get; set; }
 
 		public List<MachineCommand> MachineCommands { get; set; }
 

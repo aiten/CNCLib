@@ -138,6 +138,10 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 				}
 			});
 		}
+		public bool CanSendSDCommand()
+		{
+			return CanSend() && Global.Instance.Machine.SDSupport;
+        }
 
 		public bool CanSendFileNameCommand()
 		{
@@ -145,18 +149,18 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		}
 		public bool CanSendSDFileNameCommand()
 		{
-			return Connected && !string.IsNullOrEmpty(SDFileName);
+			return CanSendSDCommand() && !string.IsNullOrEmpty(SDFileName);
 		}
 		public bool CanSendFileNameAndSDFileNameCommand()
 		{
-			return Connected && CanSendSDFileNameCommand() && CanSendFileNameCommand();
+			return CanSendSDCommand() && CanSendSDFileNameCommand() && CanSendFileNameCommand();
 		}
 
 
 		#endregion
 
 		#region ICommand
-		public ICommand SendM20FileCommand { get { return new DelegateCommand(SendM20File, CanSend); } }
+		public ICommand SendM20FileCommand { get { return new DelegateCommand(SendM20File, CanSendSDCommand); } }
 		public ICommand SendM24FileCommand { get { return new DelegateCommand(SendM24File, CanSendSDFileNameCommand); } }
 		public ICommand SendM28FileCommand { get { return new DelegateCommand(SendM28File, CanSendFileNameAndSDFileNameCommand); } }
 		public ICommand SendM30FileCommand { get { return new DelegateCommand(SendM30File, CanSendSDFileNameCommand); } }

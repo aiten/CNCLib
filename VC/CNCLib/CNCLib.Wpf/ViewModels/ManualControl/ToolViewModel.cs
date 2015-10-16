@@ -55,6 +55,14 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region Commands / CanCommands
+		public bool CanSendSpindle()
+		{
+			return CanSend() && Global.Instance.Machine.Spindle;
+		}
+		public bool CanSendCoolant()
+		{
+			return CanSend() && Global.Instance.Machine.Coolant;
+		}
 
 		public void SendInfo() { AsyncRunCommand(() => { Com.SendCommand("?"); }); }
 		public void SendAbort() { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumAfterAbort(); Com.SendCommand("!"); }); }
@@ -96,10 +104,10 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ICommand SendAbortCommand { get { return new DelegateCommand(SendAbort, CanSend); } }
 		public ICommand SendResurrectCommand { get { return new DelegateCommand(SendResurrect, CanSend); } }
 		public ICommand SendClearQueue { get { return new DelegateCommand(ClearQueue, CanSend); } }
-		public ICommand SendM03SpindelOnCommand { get { return new DelegateCommand(SendM03SpindelOn, CanSend); } }
-		public ICommand SendM05SpindelOffCommand { get { return new DelegateCommand(SendM05SpindelOff, CanSend); } }
-		public ICommand SendM07CoolandOnCommand { get { return new DelegateCommand(SendM07CoolandOn, CanSend); } }
-		public ICommand SendM09CoolandOffCommand { get { return new DelegateCommand(SendM09CoolandOff, CanSend); } }
+		public ICommand SendM03SpindelOnCommand { get { return new DelegateCommand(SendM03SpindelOn, CanSendSpindle); } }
+		public ICommand SendM05SpindelOffCommand { get { return new DelegateCommand(SendM05SpindelOff, CanSendSpindle); } }
+		public ICommand SendM07CoolandOnCommand { get { return new DelegateCommand(SendM07CoolandOn, CanSendCoolant); } }
+		public ICommand SendM09CoolandOffCommand { get { return new DelegateCommand(SendM09CoolandOff, CanSendCoolant); } }
 		public ICommand SendM114Command { get { return new DelegateCommand(SendM114PrintPos, CanSend); } }
 
 		#endregion

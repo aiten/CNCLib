@@ -16,7 +16,7 @@ namespace CNCLib.Repository.Context
         {
 			var CNCLib = new Machine
 			{
-				Name = "CNCLib",
+				Name = "Proxxon MF70",
 				ComPort = "com4",
 				Axis = 5,
 				SizeX = 130m,
@@ -31,7 +31,11 @@ namespace CNCLib.Repository.Context
 				ProbeSizeZ = 25m,
 				ProbeDist = 10m,
 				ProbeDistUp = 3m,
-				ProbeFeed = 100m
+				ProbeFeed = 100m,
+				SDSupport = true,
+				Spindle = true,
+				Coolant = true,
+				Rotate = true
 			};
 
 			var kk1000s = new Machine
@@ -51,7 +55,11 @@ namespace CNCLib.Repository.Context
 				ProbeSizeZ = 25m,
 				ProbeDist = 10m,
 				ProbeDistUp = 3m,
-				ProbeFeed = 100m
+				ProbeFeed = 100m,
+                SDSupport = true,
+				Spindle = true,
+				Coolant = true,
+                Rotate = true
 			};
 
  			var machines = new List<Machine>

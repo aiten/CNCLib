@@ -50,5 +50,9 @@ namespace CNCLib.Wpf.Models
 		public decimal ProbeDist { get; set; }
 		public decimal ProbeFeed { get; set; }
 
+		public bool SDSupport { get; set; }
+		public bool Spindle { get; set; }
+		public bool Coolant { get; set; }
+		public bool Rotate { get; set; }
 	}
 }

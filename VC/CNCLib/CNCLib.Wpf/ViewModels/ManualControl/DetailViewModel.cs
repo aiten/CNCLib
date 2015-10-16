@@ -46,6 +46,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		}
 		public bool Connected
 		{
+			//get { return true; }
 			get { return Com.IsConnected; }
 		}
 		protected void AsyncRunCommand(Action todo)

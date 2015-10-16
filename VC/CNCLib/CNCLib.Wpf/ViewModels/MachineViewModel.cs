@@ -61,7 +61,11 @@ namespace CNCLib.Wpf.ViewModels
 					ProbeSizeZ = 25,
 					ProbeDist = 10m,
 					ProbeDistUp = 3m,
-					ProbeFeed = 100m
+					ProbeFeed = 100m,
+					SDSupport = true,
+					Spindle = true,
+					Coolant = true,				
+					Rotate = true	
                 };
             }
             else
@@ -90,9 +94,13 @@ namespace CNCLib.Wpf.ViewModels
 			OnPropertyChanged(() => ProbeDist);
 			OnPropertyChanged(() => ProbeDistUp);
 			OnPropertyChanged(() => ProbeFeed);
+			OnPropertyChanged(() => SDSupport);
+			OnPropertyChanged(() => Spindle);
+			OnPropertyChanged(() => Coolant);
+			OnPropertyChanged(() => Rotate);
 		}
- 
-        #region Properties
+
+		#region Properties
 
 		Models.Machine _currentMachine = new Models.Machine();
 
@@ -190,6 +198,26 @@ namespace CNCLib.Wpf.ViewModels
 		{
 			get { return _currentMachine.ProbeFeed; }
 			set { SetProperty(() => _currentMachine.ProbeFeed == value, () => _currentMachine.ProbeFeed = value); }
+		}
+		public bool SDSupport
+		{
+			get { return _currentMachine.SDSupport; }
+			set { SetProperty(() => _currentMachine.SDSupport == value, () => _currentMachine.SDSupport = value); }
+		}
+		public bool Spindle
+		{
+			get { return _currentMachine.Spindle; }
+			set { SetProperty(() => _currentMachine.Spindle == value, () => _currentMachine.Spindle = value); }
+		}
+		public bool Coolant
+		{
+			get { return _currentMachine.Coolant; }
+			set { SetProperty(() => _currentMachine.Coolant == value, () => _currentMachine.Coolant = value); }
+		}
+		public bool Rotate
+		{
+			get { return _currentMachine.Rotate; }
+			set { SetProperty(() => _currentMachine.Rotate == value, () => _currentMachine.Rotate = value); }
 		}
 
 		private ObservableCollection<Models.MachineCommand> _MachineCommands;

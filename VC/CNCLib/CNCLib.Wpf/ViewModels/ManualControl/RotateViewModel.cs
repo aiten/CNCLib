@@ -47,6 +47,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region Commands / CanCommands
 
+		public bool CanSendRotate()
+		{
+			return CanSend() && Global.Instance.Machine.Rotate;
+		}
+
 		public void SendG69()							{ AsyncRunCommand(() => { Com.SendCommand("g69"); }); }
 		public void SendG68X0Y0R90()					{ AsyncRunCommand(() => { Com.SendCommand("g68 x0y0r90"); }); }
 		public void SendG68X0Y0R270()                   { AsyncRunCommand(() => { Com.SendCommand("g68 x0y0r270"); }); }
@@ -58,14 +63,14 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region ICommand
-		public ICommand SendG69Command			{ get { return new DelegateCommand(SendG69, CanSend); } }
-		public ICommand SendG68X0Y0R90Command	{ get { return new DelegateCommand(SendG68X0Y0R90, CanSend); } }
-		public ICommand SendG68X0Y0R270Command	{ get { return new DelegateCommand(SendG68X0Y0R270, CanSend); } }
+		public ICommand SendG69Command			{ get { return new DelegateCommand(SendG69, CanSendRotate); } }
+		public ICommand SendG68X0Y0R90Command	{ get { return new DelegateCommand(SendG68X0Y0R90, CanSendRotate); } }
+		public ICommand SendG68X0Y0R270Command	{ get { return new DelegateCommand(SendG68X0Y0R270, CanSendRotate); } }
 
-		public ICommand SendG6810Command		{ get { return new DelegateCommand(SendG6810, CanSend); } }
-		public ICommand SendG6811Command		{ get { return new DelegateCommand(SendG6811, CanSend); } }
-		public ICommand SendG6813Command		{ get { return new DelegateCommand(SendG6813, CanSend); } }
-		public ICommand SendG6814Command		{ get { return new DelegateCommand(SendG6814, CanSend); } }
+		public ICommand SendG6810Command		{ get { return new DelegateCommand(SendG6810, CanSendRotate); } }
+		public ICommand SendG6811Command		{ get { return new DelegateCommand(SendG6811, CanSendRotate); } }
+		public ICommand SendG6813Command		{ get { return new DelegateCommand(SendG6813, CanSendRotate); } }
+		public ICommand SendG6814Command		{ get { return new DelegateCommand(SendG6814, CanSendRotate); } }
 
 
 		#endregion

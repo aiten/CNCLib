@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="CNCLib.Wpf.MachineView"
-        Title="Machine" Height="500" Width="380">
+        Title="Machine" Height="576.056" Width="380">
     <Window.DataContext>
         <vm:MachineViewModel />
     </Window.DataContext>
-    <StackPanel Margin="10,10,10,33">
+    <StackPanel Margin="10,10,10,16">
         <StackPanel Margin="0,0,0,10">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <Button Command="{Binding SaveMachineCommand}" Content="Save"  />
@@ -17,7 +17,7 @@
             <StackPanel Orientation="Horizontal"/>
         </StackPanel>
 
-        <TabControl Margin="0,0,0,10" >
+        <TabControl Margin="0,0,0,10" Height="449" >
             <TabItem Header="Setup">
                 <StackPanel >
                     <StackPanel Orientation="Horizontal">
@@ -67,6 +67,22 @@
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Size C" Width="150" />
                         <TextBox Text="{Binding SizeC}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="SDSupport" Width="150" />
+                        <CheckBox Content="SDSupport" IsChecked="{Binding SDSupport}" VerticalAlignment="Center"    />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Spindle" Width="150" />
+                        <CheckBox Content="Spindle" IsChecked="{Binding Spindle}" VerticalAlignment="Center"    />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Coolant" Width="150" />
+                        <CheckBox Content="Coolant" IsChecked="{Binding Coolant}" VerticalAlignment="Center"    />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Rotate" Width="150" />
+                        <CheckBox Content="Rotate" IsChecked="{Binding Rotate}" VerticalAlignment="Center"    />
                     </StackPanel>
                 </StackPanel>
             </TabItem>
