@@ -37,6 +37,16 @@ public:
 		CHAL::digitalWrite(PIN, val ? ONVALUE : OFFVALUE);
 	}
 
+	void Off()
+	{
+		Set(false);
+	}
+
+	void On()
+	{
+		Set(true);
+	}
+
 	bool IsOn()
 	{
 		return CHAL::digitalRead(PIN) == ONVALUE;

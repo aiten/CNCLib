@@ -26,31 +26,48 @@ class CAnalog8IOControl
 {
 public:
 
-	unsigned char Level;    // use like a property
+	unsigned char Level;					// use like a property
 
-	void Init()
+	void Init(unsigned char level=0)		// init and set default value
 	{
-		On(255);
-		Level = 255;
+		OnLevel(level);
 	}
 
-	void On()
+	void OnLevel(unsigned char level)		// Set level and turn on
+	{
+		Level = level;
+		On(level);
+	}
+
+	void OnMax()							// turn on at max level
+	{
+		OnLevel(255);
+	}
+
+	void On()								// turn on at specivied level (see Level property)
 	{
 		On(Level);
 	}
 
-	void Off()
+	void Off()								// turn off, use On() to switch on at same value
 	{
 		On(0);
 	}
 
+	bool IsOn()
+	{
+		return _lastlevel != 0;
+	}
+
 private:
+
+	unsigned char _lastlevel;
 
 	void On(unsigned char level)
 	{
+		_lastlevel = level;
 		CHAL::analogWrite(PIN, level);
 	}
-
 };
 
 ////////////////////////////////////////////////////////

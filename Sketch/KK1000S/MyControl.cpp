@@ -105,7 +105,7 @@ void CMyControl::Init()
 
 	_coolant.Init();
 	_spindel.Init();
-	_controllerfan.Init();
+	_controllerfan.Init(255);
 
 	_probe.Init(MASH6050S_INPUTPINMODE);
 	_kill.Init(MASH6050S_INPUTPINMODE);
