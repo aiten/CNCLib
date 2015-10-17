@@ -17,7 +17,8 @@ namespace CNCLib.Repository
 		{
 			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
 			{
-				return uow.Query<Entities.Machine>().ToList().ToArray();
+				return uow.Query<Entities.Machine>().
+					ToList().ToArray();
 			}
 		}
 
@@ -25,7 +26,11 @@ namespace CNCLib.Repository
         {
 			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
 			{
-				return uow.Query<Entities.Machine>().Where((m) => m.MachineID == id).Include((d) => d.MachineCommands).FirstOrDefault();
+				return uow.Query<Entities.Machine>().
+					Where((m) => m.MachineID == id).
+					Include((d) => d.MachineCommands).
+					Include((d) => d.MachineInitCommands).
+					FirstOrDefault();
 			}
         }
 
@@ -38,8 +43,10 @@ namespace CNCLib.Repository
 					uow.BeginTransaction();
 
 					m.MachineCommands = null;
+					m.MachineInitCommands = null;
 					uow.MarkDeleted(m);
 					uow.ExecuteSqlCommand("delete from MachineCommand where MachineID = " + m.MachineID);
+					uow.ExecuteSqlCommand("delete from MachineInitCommand where MachineID = " + m.MachineID);
 					uow.Save();
 
 					uow.CommitTransaction();
@@ -56,7 +63,19 @@ namespace CNCLib.Repository
 		{
 			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
 			{
-				return uow.Query<CNCLib.Repository.Entities.MachineCommand>().Where(c => c.MachineID == machineID).ToList().ToArray();
+				return uow.Query<CNCLib.Repository.Entities.MachineCommand>().
+					Where(c => c.MachineID == machineID).
+					ToList().ToArray();
+			}
+		}
+
+		public Entities.MachineInitCommand[] GetMachineInitCommands(int machineID)
+		{
+			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
+			{
+				return uow.Query<CNCLib.Repository.Entities.MachineInitCommand>().
+					Where(c => c.MachineID == machineID).
+					ToList().ToArray();
 			}
 		}
 
@@ -72,8 +91,13 @@ namespace CNCLib.Repository
 				{
 					uow.BeginTransaction();
 
-					var machineInDb = uow.Query<Entities.Machine>().Where((m) => m.MachineID == id).Include((d) => d.MachineCommands).FirstOrDefault();
+					var machineInDb = uow.Query<Entities.Machine>().
+						Where((m) => m.MachineID == id).
+						Include((d) => d.MachineCommands).
+						Include((d) => d.MachineInitCommands).
+						FirstOrDefault();
 					var machineCommands = machine.MachineCommands ?? new List<Entities.MachineCommand>();
+					var machineInitCommands = machine.MachineInitCommands ?? new List<Entities.MachineInitCommand>();
 
 					if (machineInDb == default(Entities.Machine))
 					{
@@ -92,40 +116,15 @@ namespace CNCLib.Repository
 
 						// search und update machinecommands (add and delete)
 
-						if (machineInDb.MachineCommands != null)
-						{
-							// 1. Delete from DB (in DB) and update
-							List<Entities.MachineCommand> delete = new List<Entities.MachineCommand>();
+						EFTools.Sync<Entities.MachineCommand>(uow, 
+							machineInDb.MachineCommands, 
+							machineCommands, 
+							(x, y) => x.MachineCommandID > 0 && x.MachineCommandID == y.MachineCommandID);
 
-							foreach (Entities.MachineCommand commandInDb in machineInDb.MachineCommands)
-							{
-								var command = machineCommands.FirstOrDefault(x => x.MachineCommandID == commandInDb.MachineCommandID);
-								if (command == default(Entities.MachineCommand))
-								{
-									delete.Add(commandInDb);
-								}
-								else
-								{
-									commandInDb.CopyValueTypeProperties(command);
-								}
-							}
-
-							foreach (var del in delete)
-							{
-								uow.MarkDeleted(del);
-							}
-						}
-
-						// 2. Add To DB
-
-						foreach (Entities.MachineCommand machineCommand in machineCommands)
-						{
-							var command = machineInDb.MachineCommands.FirstOrDefault(x => machineCommand.MachineCommandID > 0 && x.MachineCommandID == machineCommand.MachineCommandID);
-							if (command == default(Entities.MachineCommand))
-							{
-								uow.MarkNew(machineCommand);
-							}
-						}
+						EFTools.Sync<Entities.MachineInitCommand>(uow,
+							machineInDb.MachineInitCommands,
+							machineInitCommands,
+							(x, y) => x.MachineInitCommandID > 0 && x.MachineInitCommandID == y.MachineInitCommandID);
 
 						uow.Save();
 					}

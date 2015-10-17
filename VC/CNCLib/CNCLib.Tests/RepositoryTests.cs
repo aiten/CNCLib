@@ -90,9 +90,10 @@ namespace CNCLib.Tests
 
 			var machineread = repread.GetMachine(id);
 
-			Assert.AreEqual(0,machineread.MachineCommands.Count);
+			Assert.AreEqual(0, machineread.MachineCommands.Count);
+			Assert.AreEqual(0, machineread.MachineInitCommands.Count);
 
-			CompareMachine(machine, machineread,0);
+			CompareMachine(machine, machineread);
 		}
 
 		[TestMethod]
@@ -111,7 +112,32 @@ namespace CNCLib.Tests
 
 			var machineread = repread.GetMachine(id);
 
-			CompareMachine(machine, machineread,count);
+			Assert.AreEqual(count, machineread.MachineCommands.Count);
+			Assert.AreEqual(0, machineread.MachineInitCommands.Count);
+
+			CompareMachine(machine, machineread);
+		}
+
+		[TestMethod]
+		public void AddOneMachineWithInitCommandsAndRead()
+		{
+			MachineRepository repwrite = new MachineRepository();
+
+			var machine = CreateMachine("AddOneMachineWithInitCommandsAndRead");
+			int count = AddMachinInitCommands(machine);
+
+			int id = repwrite.StoreMachine(machine);
+
+			Assert.AreNotEqual(0, id);
+
+			MachineRepository repread = new MachineRepository();
+
+			var machineread = repread.GetMachine(id);
+
+			Assert.AreEqual(0, machineread.MachineCommands.Count);
+			Assert.AreEqual(count, machineread.MachineInitCommands.Count);
+
+			CompareMachine(machine, machineread);
 		}
 
 
@@ -136,7 +162,7 @@ namespace CNCLib.Tests
 
 			Assert.AreEqual(0, machineread.MachineCommands.Count);
 
-			CompareMachine(machine, machineread,0);
+			CompareMachine(machine, machineread);
 		}
 
 		[TestMethod]
@@ -161,7 +187,7 @@ namespace CNCLib.Tests
 
 			Assert.AreEqual(count, machineread.MachineCommands.Count);
 
-			CompareMachine(machine, machineread,count);
+			CompareMachine(machine, machineread);
 		}
 
 		[TestMethod]
@@ -177,8 +203,8 @@ namespace CNCLib.Tests
 			Assert.AreNotEqual(0, id);
 
 			machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
-			machine.MachineCommands.Add(new MachineCommand() { CommandString = "New#1", MachineID = id });
-			machine.MachineCommands.Add(new MachineCommand() { CommandString = "New#2", MachineID = id });
+			machine.MachineCommands.Add(new MachineCommand() { CommandName = "Name#1", CommandString = "New#1", MachineID = id });
+			machine.MachineCommands.Add(new MachineCommand() { CommandName = "Name#2", CommandString = "New#2", MachineID = id });
 			machine.MachineCommands.Remove(machine.MachineCommands.Single(m => m.CommandString == "Test1"));
 			machine.MachineCommands.Single(m => m.CommandString == "Test2").CommandString = "Test2.Changed";
 
@@ -192,7 +218,7 @@ namespace CNCLib.Tests
 
 			Assert.AreEqual(newcount, machineread.MachineCommands.Count);
 
-			CompareMachine(machine, machineread, newcount);
+			CompareMachine(machine, machineread);
 		}
 
 		[TestMethod]
@@ -250,21 +276,33 @@ namespace CNCLib.Tests
 		{
 			int count = 2;
 			machine.MachineCommands = new List<MachineCommand>();
-			machine.MachineCommands.Add(new MachineCommand() { CommandString = "Test1" });
-			machine.MachineCommands.Add(new MachineCommand() { CommandString = "Test2" });
+			machine.MachineCommands.Add(new MachineCommand() { CommandName = "Name1", CommandString = "Test1" });
+			machine.MachineCommands.Add(new MachineCommand() { CommandName = "Name1", CommandString = "Test2" });
+			return count;
+		}
+		private static int AddMachinInitCommands(Machine machine)
+		{
+			int count = 2;
+			machine.MachineInitCommands = new List<MachineInitCommand>();
+			machine.MachineInitCommands.Add(new MachineInitCommand() { SeqNo = 0, CommandString = "Test1" });
+			machine.MachineInitCommands.Add(new MachineInitCommand() { SeqNo = 1, CommandString = "Test2" });
 			return count;
 		}
 
-		private static void CompareMachine(Machine machine, Machine machineread, int expectcount)
+		private static void CompareMachine(Machine machine, Machine machineread)
 		{
 			Assert.AreEqual(true, machineread.CompareProperties(machine));
-			Assert.AreEqual(expectcount, machineread.MachineCommands.Count);
+            Assert.AreEqual(machine.MachineCommands == null ? 0 : machine.MachineCommands.Count, machineread.MachineCommands.Count);
+			Assert.AreEqual(machine.MachineInitCommands == null ? 0 : machine.MachineInitCommands.Count, machineread.MachineInitCommands.Count);
 
 			foreach (MachineCommand mc in machineread.MachineCommands)
 			{
 				Assert.AreEqual(true, mc.CompareProperties(machine.MachineCommands.Single(m => m.MachineCommandID == mc.MachineCommandID)));
 			}
+			foreach (MachineInitCommand mc in machineread.MachineInitCommands)
+			{
+				Assert.AreEqual(true, mc.CompareProperties(machine.MachineInitCommands.Single(m => m.MachineInitCommandID == mc.MachineInitCommandID)));
+			}
 		}
-
 	}
 }

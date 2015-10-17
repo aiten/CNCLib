@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Converters\InvertBoolConverter.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="Models\MachineInitCommand.cs" />
     <Compile Include="Models\MachineCommand.cs" />
     <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\RoboterCommand.cs" />

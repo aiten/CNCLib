@@ -119,7 +119,18 @@
                 	AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" 
                 	ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserAddRows="True" IsReadOnly="False" MaxHeight="500"  >
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding CommandString}" Header="Command" MinWidth="200" IsReadOnly="False"/>
+                        <DataGridTextColumn Binding="{Binding CommandName}" Header="Description" MinWidth="150" IsReadOnly="False"/>
+                        <DataGridTextColumn Binding="{Binding CommandString}" Header="Command" MinWidth="150" IsReadOnly="False"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Init-Commands" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="55">
+                <DataGrid MinHeight="200" ItemsSource="{Binding MachineInitCommands}"
+                	AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                	ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserAddRows="True" IsReadOnly="False" MaxHeight="500"  >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding SeqNo}" Header="SeqNo" MinWidth="150" IsReadOnly="False"/>
+                        <DataGridTextColumn Binding="{Binding CommandString}" Header="Command" MinWidth="150" IsReadOnly="False"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

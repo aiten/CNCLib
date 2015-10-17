@@ -38,11 +38,19 @@ namespace CNCLib.Logic
 			l.AddCloneProperties(machines);
 			return l.ToArray();
 		}
+		public DTO.MachineInitCommand[] GetMachineInitCommands(int machineID)
+		{
+			var machines = new MachineRepository().GetMachineInitCommands(machineID);
+			List<DTO.MachineInitCommand> l = new List<DTO.MachineInitCommand>();
+			l.AddCloneProperties(machines);
+			return l.ToArray();
+		}
 
 		public int StoreMachine(DTO.Machine m)
 		{
 			var me = m.NewCloneProperties<CNCLib.Repository.Entities.Machine, DTO.Machine>();
 			me.MachineCommands = m.MachineCommands.ToArray().CloneProperties<CNCLib.Repository.Entities.MachineCommand, CNCLib.Logic.DTO.MachineCommand>();
+			me.MachineInitCommands = m.MachineInitCommands.ToArray().CloneProperties<CNCLib.Repository.Entities.MachineInitCommand, CNCLib.Logic.DTO.MachineInitCommand>();
 
 			return new MachineRepository().StoreMachine(me);
 		}

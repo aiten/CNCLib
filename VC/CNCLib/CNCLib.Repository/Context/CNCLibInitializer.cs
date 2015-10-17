@@ -72,10 +72,10 @@ namespace CNCLib.Repository.Context
 
 			var machinecommands = new List<MachineCommand>
             {
-                new MachineCommand{ Machine=CNCLib, CommandString ="m20" },
-                new MachineCommand{ Machine=machines[0], CommandString ="m21" },
-                new MachineCommand{ Machine=kk1000s, CommandString ="m201" },
-                new MachineCommand{ Machine=machines[1], CommandString ="m211" }
+                new MachineCommand{ Machine=CNCLib, CommandName = "SD Dir", CommandString ="m20" },
+                new MachineCommand{ Machine=machines[0], CommandName = "Test", CommandString ="m21" },
+                new MachineCommand{ Machine=kk1000s, CommandName = "SD Dir", CommandString ="m20" },
+                new MachineCommand{ Machine=machines[1], CommandName = "Test", CommandString ="m211" }
 			};
 
 			context.MachineCommands.AddRange(machinecommands);

@@ -24,6 +24,7 @@ namespace CNCLib.Repository.Context
 
         public DbSet<Machine> Machines { get; set; }
 		public DbSet<MachineCommand> MachineCommands { get; set; }
+		public DbSet<MachineInitCommand> MachineInitCommands { get; set; }
 		public DbSet<Configuration> Configurations { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -57,7 +58,19 @@ namespace CNCLib.Repository.Context
 			modelBuilder.Entity<MachineCommand>().Property((m) => m.CommandString).
 				IsRequired().
 				HasMaxLength(64);
-		
+			modelBuilder.Entity<MachineCommand>().Property((m) => m.CommandName).
+				IsRequired().
+				HasMaxLength(64);
+
+			// MachineInitCommand -------------------------------------
+
+			modelBuilder.Entity<MachineInitCommand>()
+				.HasKey(mc => mc.MachineInitCommandID);
+
+			modelBuilder.Entity<MachineInitCommand>().Property((m) => m.CommandString).
+				IsRequired().
+				HasMaxLength(64);
+
 			// Configuration -------------------------------------
 
 			modelBuilder.Entity<Configuration>()

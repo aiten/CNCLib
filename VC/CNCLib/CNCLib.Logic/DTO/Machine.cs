@@ -33,6 +33,7 @@ namespace CNCLib.Logic.DTO
 		public bool Rotate { get; set; }
 
 		public List<MachineCommand> MachineCommands { get; set; }
+		public List<MachineInitCommand> MachineInitCommands { get; set; }
 
 	}
 }

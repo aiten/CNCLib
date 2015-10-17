@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Repository.Entities
 {
-	public class MachineCommand
+	public class MachineInitCommand
 	{
-		public int MachineCommandID { get; set; }
-		public string CommandName { get; set; }
+		public int MachineInitCommandID { get; set; }
+		public int SeqNo { get; set; }
 		public string CommandString { get; set; }
 		public int MachineID { get; set; }
 		public virtual Machine Machine { get; set; }

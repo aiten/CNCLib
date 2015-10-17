@@ -64,6 +64,7 @@
     <Compile Include="Entities\Configuration.cs" />
     <Compile Include="Entities\MachineCommand.cs" />
     <Compile Include="Entities\Machine.cs" />
+    <Compile Include="Entities\MachineInitCommand.cs" />
     <Compile Include="MachineRepository.cs" />
     <Compile Include="ConfigurationRepository.cs" />
     <Compile Include="Mappings\MachineMapping.cs" />

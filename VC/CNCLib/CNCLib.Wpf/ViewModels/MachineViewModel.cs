@@ -72,11 +72,10 @@ namespace CNCLib.Wpf.ViewModels
             {
                 _currentMachine = ObjectConverter.NewCloneProperties<Models.Machine, CNCLib.Logic.DTO.Machine>(new MachineControler().GetMachine(machineID));
 				MachineCommands.AddCloneProperties(new MachineControler().GetMachineCommands(machineID));
-//MachineCommands.Add(new Models.MachineCommand() { MachineID = machineID, CommandString = "Neu" });
-//MachineCommands.RemoveAt(MachineCommands.Count-1);
+				MachineInitCommands.AddCloneProperties(new MachineControler().GetMachineInitCommands(machineID));
 			}
 
-            OnPropertyChanged(() => MachineName);
+			OnPropertyChanged(() => MachineName);
             OnPropertyChanged(() => ComPort);
 			OnPropertyChanged(() => Axis);
 			OnPropertyChanged(() => BaudRate);
@@ -244,9 +243,32 @@ namespace CNCLib.Wpf.ViewModels
 			}
 		}
 
+		private ObservableCollection<Models.MachineInitCommand> _MachineInitCommands;
+
+		public ObservableCollection<Models.MachineInitCommand> MachineInitCommands
+		{
+			get
+			{
+				if (_MachineInitCommands == null)
+				{
+					_MachineInitCommands = new ObservableCollection<Models.MachineInitCommand>();
+					_MachineInitCommands.CollectionChanged += ((sender, e) =>
+					{
+						if (e.NewItems != null)
+						{
+							foreach (Models.MachineInitCommand item in e.NewItems)
+							{
+								item.MachineID = _currentMachine.MachineID;
+							}
+						}
+					});
+				}
+				return _MachineInitCommands;
+			}
+		}
 		#endregion
 
-        public bool AddNewMachine { get; set; }
+		public bool AddNewMachine { get; set; }
         
         #region Operations
 
@@ -254,25 +276,11 @@ namespace CNCLib.Wpf.ViewModels
 		{
             int id;
 
-var m = _currentMachine.NewCloneProperties<CNCLib.Logic.DTO.Machine, Models.Machine>();
-m.MachineCommands = MachineCommands.ToArray().CloneProperties<CNCLib.Logic.DTO.MachineCommand, Models.MachineCommand>().ToList();
+			var m = _currentMachine.NewCloneProperties<CNCLib.Logic.DTO.Machine, Models.Machine>();
+			m.MachineCommands = MachineCommands.ToArray().CloneProperties<CNCLib.Logic.DTO.MachineCommand, Models.MachineCommand>().ToList();
+			m.MachineInitCommands = MachineInitCommands.ToArray().CloneProperties<CNCLib.Logic.DTO.MachineInitCommand, Models.MachineInitCommand>().ToList();
 
-id = new MachineControler().StoreMachine(m);
-/*
-            if (AddNewMachine)
-            {
-                id = new MachineControler().Add(_currentMachine.NewCloneProperties<CNCLib.Logic.DTO.Machine, Models.Machine>());
-            }
-            else
-            {
-                id = _currentMachine.MachineID;
-                new MachineControler().Update(_currentMachine.NewCloneProperties<CNCLib.Logic.DTO.Machine, Models.Machine>());
-            }
-*/
-//			new MachineControler().StoreMachine(
-//				_currentMachine.NewCloneProperties<CNCLib.Logic.DTO.Machine, Models.Machine>(),
-//				MachineCommands.ToArray().CloneProperties<CNCLib.Logic.DTO.MachineCommand, Models.MachineCommand>()
-//				);
+			id = new MachineControler().StoreMachine(m);
 
 			LoadMachine(id);
             CloseAction();

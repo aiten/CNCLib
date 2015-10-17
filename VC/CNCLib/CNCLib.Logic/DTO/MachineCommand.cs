@@ -9,6 +9,7 @@ namespace CNCLib.Logic.DTO
 	public class MachineCommand
 	{
 		public int MachineCommandID { get; set; }
+		public string CommandName { get; set; }
 		public string CommandString { get; set; }
 		public int MachineID { get; set; }
 		public virtual Machine Machine { get; set; }
