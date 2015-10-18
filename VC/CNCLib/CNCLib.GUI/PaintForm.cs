@@ -42,14 +42,18 @@ namespace CNCLib.GUI
 		#region Crt
 
 		public PaintForm()
-        {
-            InitializeComponent();
-
-            _plotterCtrl.SizeX = Settings.Instance.SizeX;
-            _plotterCtrl.SizeY = Settings.Instance.SizeY;
+		{
+			InitializeComponent();
+			SetMachineSize();
 
 			new CNCLib.GCode.Commands.CommandFactory();
-        }
+		}
+
+		public void SetMachineSize()
+		{
+			_plotterCtrl.SizeX = Settings.Instance.SizeX;
+			_plotterCtrl.SizeY = Settings.Instance.SizeY;
+		}
 
 		#endregion
 

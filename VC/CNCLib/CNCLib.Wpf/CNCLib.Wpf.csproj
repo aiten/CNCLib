@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,9 +55,11 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\InvertBoolConverter.cs" />
@@ -64,7 +67,7 @@
     <Compile Include="Models\MachineInitCommand.cs" />
     <Compile Include="Models\MachineCommand.cs" />
     <Compile Include="Models\Machine.cs" />
-    <Compile Include="Models\RoboterCommand.cs" />
+    <Compile Include="Models\SentCNCCommand.cs" />
     <Compile Include="ViewModels\IManualControlViewModel.cs" />
     <Compile Include="ViewModels\MachineViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -77,11 +80,24 @@
     <Compile Include="ViewModels\ManualControl\SDViewModel.cs" />
     <Compile Include="ViewModels\ManualControl\DetailViewModel.cs" />
     <Compile Include="ViewModels\ManualControlViewModel.cs" />
+    <Compile Include="ViewModels\SetupWindowViewModel.cs" />
     <Compile Include="Views\MachineView.xaml.cs">
       <DependentUpon>MachineView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ManualControlPage.xaml.cs">
+      <DependentUpon>ManualControlPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PaintPage.xaml.cs">
+      <DependentUpon>PaintPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SetupPage.xaml.cs">
+      <DependentUpon>SetupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SetupWindow.xaml.cs">
+      <DependentUpon>SetupWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ManualControl.xaml.cs">
       <DependentUpon>ManualControl.xaml</DependentUpon>
@@ -103,6 +119,22 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ManualControlPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PaintPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SetupPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SetupWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

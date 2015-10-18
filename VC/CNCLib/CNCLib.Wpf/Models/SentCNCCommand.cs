@@ -23,10 +23,10 @@ using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.Models
 {
-    public class CNCLibCommand : NotificationObject
+    public class SentCNCCommand : NotificationObject
     {
         #region Ctor
-        public CNCLibCommand()
+        public SentCNCCommand()
         {
          }
         #endregion

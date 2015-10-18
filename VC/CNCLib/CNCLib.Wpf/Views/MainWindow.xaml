@@ -1,28 +1,31 @@
-﻿<Window x:Class="CNCLib.Wpf.MainWindow"
+﻿<Window x:Class="CNCLib.Wpf.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"
-        Title="CNCLib" Height="150" Width="380" Closing="Window_Closing">
-    <Window.DataContext>
-        <vm:MainWindowViewModel />
-    </Window.DataContext>
-    <StackPanel Margin="10,10,10,0">
-        <StackPanel Margin="0,0,0,10">
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <Label Content="Machine:" Width="65" Margin="0,0,5,0" />
-                <ComboBox SelectedItem="{Binding Machine}" ItemsSource="{Binding Machines}"  Width="100" Margin="0,0,5,0" DisplayMemberPath="Name" />
-                <Button Command="{Binding SetupMachineCommand}" Content="Setup"  Margin="0,0,5,0"/>
-                <Button Command="{Binding SetDefaultMachineCommand}" Content="Set As Default"   />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <CheckBox Content="Reset on Connect" IsChecked="{Binding ResetOnConnect}" VerticalAlignment="Center" Margin="0,0,10,0"     />
-                <Button Command="{Binding ConnectCommand}" Content="Connect" Margin="0,0,5,0" Width="100"  />
-                <Button Command="{Binding DisConnectCommand}" Content="DisConnect" />
-            </StackPanel>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Button Command="{Binding ManualControlCommand}" Content="Manual Control" Margin="0,0,10,0"  />
-            <Button Command="{Binding PaintCommand}" Content="Paint" Width="100"  />
-        </StackPanel>
-    </StackPanel>
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:cwf="clr-namespace:CNCLib.GUI;assembly=CNCLib.GUI"      
+        xmlns:local="clr-namespace:CNCLib.Wpf.Views"
+        mc:Ignorable="d"
+        Title="CNCLib" Height="750" Width="1000">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Setup">
+                <Frame
+                    Source="/CNCLib.Wpf;component/Views/SetupPage.xaml"
+                />
+            </TabItem>
+            <TabItem Header="Manual Control">
+                <Frame
+                    Source="/CNCLib.Wpf;component/Views/ManualControlPage.xaml"
+                />
+            </TabItem>
+            <TabItem Header="Paint">
+                <Frame
+                    Source="/CNCLib.Wpf;component/Views/PaintPage.xaml"
+                />
+            </TabItem>
+
+        </TabControl>
+    </Grid>
 </Window>

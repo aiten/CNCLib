@@ -1,11 +1,11 @@
-﻿<Window x:Class="CNCLib.Wpf.ManualControl"
+﻿<Page x:Class="CNCLib.Wpf.ManualControlPage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"
-        Title="ManualControl" Width="830" Height="550" SizeToContent="Height" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
-    <Window.DataContext>
+        Title="ManualControlPage" Width="830" MinHeight="550">
+    <Page.DataContext>
         <vm:ManualControlViewModel />
-    </Window.DataContext>
+    </Page.DataContext>
     <DockPanel ScrollViewer.VerticalScrollBarVisibility="Auto">
         <StackPanel DockPanel.Dock="Top" Margin="10,5,10,0" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal">
@@ -267,4 +267,4 @@
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
-</Window>
+</Page>

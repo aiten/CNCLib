@@ -44,11 +44,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region Properties
 
-		private ObservableCollection<CNCLibCommand> _CNCLibCommandCollection;
-		public ObservableCollection<CNCLibCommand> CNCLibCommandCollection
+		private ObservableCollection<SentCNCCommand> _commandHistoryCollection;
+		public ObservableCollection<SentCNCCommand> CommandHistoryCollection
 		{
-			get { return _CNCLibCommandCollection; }
-			set { AssignProperty(ref _CNCLibCommandCollection, value); }
+			get { return _commandHistoryCollection; }
+			set { AssignProperty(ref _commandHistoryCollection, value); }
 		}
 
 		#endregion
@@ -64,14 +64,14 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			lock (this)
 			{
-				var results = new ObservableCollection<CNCLibCommand>();
+				var results = new ObservableCollection<SentCNCCommand>();
 
 				foreach (ArduinoSerialCommunication.Command rc in Com.CommandHistory)
 				{
-					results.Add(new CNCLibCommand() { CommandDate = rc.SentTime, CommandText = rc.CommandText, Result = rc.ResultText });
+					results.Add(new SentCNCCommand() { CommandDate = rc.SentTime, CommandText = rc.CommandText, Result = rc.ResultText });
 
 				}
-				CNCLibCommandCollection = results;
+				CommandHistoryCollection = results;
 			}
 		}
 		public void ClearCommandHistory()
