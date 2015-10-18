@@ -96,12 +96,6 @@
     <Compile Include="Views\SetupPage.xaml.cs">
       <DependentUpon>SetupPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SetupWindow.xaml.cs">
-      <DependentUpon>SetupWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ManualControl.xaml.cs">
-      <DependentUpon>ManualControl.xaml</DependentUpon>
-    </Compile>
     <Page Include="Resources\IconsResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -134,16 +128,8 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SetupWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
     <Compile Include="Helpers\RandomHelper.cs" />
-    <Page Include="Views\ManualControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

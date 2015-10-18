@@ -171,24 +171,6 @@ namespace CNCLib.Wpf.ViewModels
             return true;
         }
 
-		public void ShowManualControl()
-        {
-			new CNCLib.Wpf.ManualControl().ShowDialog();
-        }
-
-        public bool CanShowManualControl()
-        {
-            return true;
-        }
-
-        public void ShowPaint()
-        {
-            using (CNCLib.GUI.PaintForm form = new CNCLib.GUI.PaintForm())
-            {
-                form.ShowDialog();
-            }
-        }
-
         public bool CanShowPaint()
         {
             return true;
@@ -201,8 +183,6 @@ namespace CNCLib.Wpf.ViewModels
         public ICommand SetupMachineCommand { get { return new DelegateCommand(SetupMachine, CanSetupMachine); } }
  		public ICommand ConnectCommand { get { return new DelegateCommand(Connect, CanConnect); } }
 		public ICommand DisConnectCommand	{ get { return new DelegateCommand(DisConnect, CanDisConnect); } }
-		public ICommand ManualControlCommand	{ get { return new DelegateCommand(ShowManualControl, CanShowManualControl); } }
-        public ICommand PaintCommand { get { return new DelegateCommand(ShowPaint, CanShowPaint); } }
 		public ICommand SetDefaultMachineCommand { get { return new DelegateCommand(SetDefaultMachine, CanSetupMachine); } }
 
         #endregion
