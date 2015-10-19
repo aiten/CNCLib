@@ -23,5 +23,15 @@ namespace CNCLib.Wpf.Views
 		{
 			InitializeComponent();
 		}
+		private Framework.Logic.ArduinoSerialCommunication Com
+		{
+			get { return Framework.Tools.Singleton<Framework.Logic.ArduinoSerialCommunication>.Instance; }
+		}
+
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (Com.IsConnected)
+				Com.Disconnect();
+        }
 	}
 }
