@@ -31,7 +31,7 @@ using Framework.Tools;
 using System.Linq.Expressions;
 using CNCLib.Logic;
 using CNCLib.GCode;
-
+using System.Threading;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -105,11 +105,18 @@ namespace CNCLib.Wpf.ViewModels
 			set { SetProperty(ref _resetOnConnect, value); }
 		}
 
-        #endregion
+		private bool _sendInitCommands = true;
+		public bool SendInitCommands
+		{
+			get { return _sendInitCommands; }
+			set { SetProperty(ref _sendInitCommands, value); }
+		}
 
-        #region Operations
+		#endregion
 
-        public void Connect()
+		#region Operations
+
+		public void Connect()
         {
 			try
 			{
@@ -118,6 +125,24 @@ namespace CNCLib.Wpf.ViewModels
                 Com.BaudRate = (int)Machine.BaudRate;
                 Com.Connect(Machine.ComPort);
                 SetGlobal();
+
+				if (SendInitCommands && Machine != null)
+				{
+			        var initCommands = new MachineControler().GetMachineInitCommands(Machine.MachineID);
+
+					if (initCommands.Length > 0)
+					{
+						if (ResetOnConnect)
+						{
+							Com.SendCommand("");
+						}
+
+						foreach (var initcmd in initCommands.OrderBy(cmd => cmd.SeqNo))
+						{
+							Com.SendCommand(initcmd.CommandString);
+						}
+					}
+				}
 			}
 			catch(Exception e)
 			{
