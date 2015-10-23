@@ -145,7 +145,9 @@ public:
 	static T Convert(float v) { return (T)v; }										// do not use lrint => convert to double first
 
 	static float DegreeToRAD(T v)	{ return (float)(v / (SCALEMASK * 180.0 / M_PI)); }
-	static T RadToMM100(float v)	{ return Convert((float)(v * SCALEMASK * 180 / M_PI)); }
+	static T FromRAD(float v)		{ return Convert((float)(v * SCALEMASK * 180 / M_PI)); }
+
+	static float ConvertToFloat(T v) { return float(v) / SCALEMASK; }
 };
 
 //////////////////////////////////////////

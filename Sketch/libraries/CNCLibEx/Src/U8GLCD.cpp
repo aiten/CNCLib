@@ -267,18 +267,13 @@ CU8GLcd::DrawFunction CU8GLcd::GetDrawFunction(const void* adr)
 
 ////////////////////////////////////////////////////////////
 
-void CU8GLcd::DrawPos(mm1000_t pos)
+char* CU8GLcd::DrawPos(mm1000_t pos, char*tmp,  unsigned char precision)
 {
-	char tmp[16];
-
 	if (CGCodeParserBase::IsMm1000())
 	{
-		GetU8G().print(CMm1000::ToString(pos, tmp, 7, 2));
+		return CMm1000::ToString(pos, tmp, precision, 2);
 	}
-	else
-	{
-		GetU8G().print(CInch100000::ToString(pos, tmp, 7, 4));
-	}
+	return CInch100000::ToString(pos, tmp, precision, 4);
 }
 								
 ////////////////////////////////////////////////////////////
@@ -358,7 +353,7 @@ bool CU8GLcd::DrawLoopDebug(EnumAsByte(EDrawLoopType) type,void *data)
 
 		GetU8G().print(CSDist::ToString(pos, tmp, 6));
 		GetU8G().print(F(" "));
-		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->ToMm1000(i, pos), tmp, 6, 2));
+		GetU8G().print(DrawPos(CMotionControlBase::GetInstance()->ToMm1000(i, pos),tmp,6));
 		GetU8G().print(F(" "));
 
 		GetU8G().print(CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(i, true)) ? '1' : '0');
@@ -399,9 +394,9 @@ bool CU8GLcd::DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,void *data)
 		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
 		tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp,i));
 
-		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i), tmp, 7, 2));
+		GetU8G().print(DrawPos(CMotionControlBase::GetInstance()->GetPosition(i),tmp,7));
 		GetU8G().print(F(" "));
-		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i) - psall, tmp, 7, 2));
+		GetU8G().print(DrawPos(CMotionControlBase::GetInstance()->GetPosition(i) - psall,tmp,7));
 	}
 
 	return true;
@@ -430,9 +425,9 @@ bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, void *data)
 		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
 		tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp, i));
 
-		GetU8G().print(CMm1000::ToString(dest[i], tmp, 7, 2));
+		GetU8G().print(DrawPos(dest[i],tmp,7));
 		GetU8G().print(F(" "));
-		GetU8G().print(CMm1000::ToString(dest[i] - psall, tmp, 7, 2));
+		GetU8G().print(DrawPos(dest[i] - psall,tmp,7));
 	}
 
 	return true;
@@ -455,14 +450,14 @@ bool CU8GLcd::DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, void *data)
 		tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp, i));
 
 		mm1000_t ofs = CMotionControl::GetInstance()->GetOffset2D(i);
-		GetU8G().print(CMm1000::ToString(ofs, tmp, 7, 2));
+		GetU8G().print(DrawPos(ofs,tmp,7));
 
 		if (CMotionControl::GetInstance()->IsEnabled2D(i))
 		{
-			mm1000_t rad = CMm1000::RadToMM100(CMotionControl::GetInstance()->GetAngle2D(i));
+			mm1000_t rad = CMm1000::FromRAD(CMotionControl::GetInstance()->GetAngle2D(i));
 
 			GetU8G().print(F(" "));
-			GetU8G().print(CMm1000::ToString(rad, tmp, 7, 2));
+			GetU8G().print(CMm1000::ToString(rad,tmp,7,2));
 		}
 	}
 
@@ -491,14 +486,14 @@ bool CU8GLcd::DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, void *data)
 			GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
 			tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp, i));
 
-			GetU8G().print(CMm1000::ToString(ofs, tmp, 7, 2));
+			GetU8G().print(DrawPos(ofs,tmp,7));
 			GetU8G().print(F(" "));
-			GetU8G().print(CMm1000::ToString(vect, tmp, 7, 2));
+			GetU8G().print(DrawPos(vect,tmp,7));
 		}
 
 		GetU8G().setPrintPos(ToCol(0), ToRow(NUM_AXISXYZ + 1) + PosLineOffset);
 		GetU8G().print(F("R"));
-		GetU8G().print(CMm1000::ToString(CMm1000::RadToMM100(CMotionControl::GetInstance()->GetAngle()), tmp, 7, 2));
+		GetU8G().print(CMm1000::ToString(CMm1000::FromRAD(CMotionControl::GetInstance()->GetAngle()), tmp, 7, 2));
 	}
 	else
 	{
@@ -588,13 +583,13 @@ bool CU8GLcd::DrawLoopPreset(EnumAsByte(EDrawLoopType) type,void *data)
 		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
 		tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp,i));
 		ps = CGCodeParser::GetG54PosPreset(i);
-		GetU8G().print(CMm1000::ToString(ps, tmp, 7, 2));
+		GetU8G().print(DrawPos(ps,tmp,7));
 
 		ps = CGCodeParser::GetG92PosPreset(i);
-		GetU8G().print(CMm1000::ToString(ps, tmp, 7, 2));
+		GetU8G().print(DrawPos(ps,tmp,7));
 
 		ps = CGCodeParser::GetToolHeightPosPreset(i);
-		GetU8G().print(CMm1000::ToString(ps, tmp, 6, 2));
+		GetU8G().print(DrawPos(ps, tmp, 6));
 	}
 	return true;
 }
