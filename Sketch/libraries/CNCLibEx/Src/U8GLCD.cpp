@@ -273,7 +273,7 @@ char* CU8GLcd::DrawPos(mm1000_t pos, char*tmp,  unsigned char precision)
 	{
 		return CMm1000::ToString(pos, tmp, precision, 2);
 	}
-	return CInch100000::ToString(pos, tmp, precision, 4);
+	return CInch100000::ToString(MulDivI32(pos, 1000, 254), tmp, precision, 4);
 }
 								
 ////////////////////////////////////////////////////////////
