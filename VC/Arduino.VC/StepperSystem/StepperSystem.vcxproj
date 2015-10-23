@@ -41,7 +41,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\PushButtonLow.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\RotaryButton.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\StreamReader.h" />
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\UtilitiesCNCLib.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\DecimalAsInt.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8InvertIOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8IOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ConfigurationStepperLib.h" />
@@ -98,7 +98,7 @@
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\MotionControlBase.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\Parser.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\StreamReader.cpp" />
-    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\UtilitiesCNCLib.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\DecimalAsInt.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_AVR.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.cpp" />

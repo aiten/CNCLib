@@ -190,7 +190,7 @@ void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */)
 
 #else
 
-#pragma message "for test purpose only, not gotoReference at boot"
+#pragma message ("for test purpose only, not gotoReference at boot")
 
 	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
 

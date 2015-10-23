@@ -27,6 +27,7 @@
 #include "..\..\..\sketch\libraries\StepperLib\src\StepperLib.h"
 #include "..\..\..\sketch\libraries\CNCLib\src\MessageCNCLib.h"
 #include "..\..\..\sketch\libraries\CNCLib\src\GCodeParserBase.h"
+#include "..\..\..\sketch\libraries\CNCLib\src\DecimalAsInt.h"
 
 #define _STORETIMEVALUES	100000
 #define NUM_AXIS_MVC		5

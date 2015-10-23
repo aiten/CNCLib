@@ -67,6 +67,8 @@ public:
 	static feedrate_t GetG0FeedRate()						{ return _modalstate.G0FeedRate; }
 	static feedrate_t GetG1FeedRate()						{ return _modalstate.G1FeedRate; }
 
+	static bool IsMm1000()									{ return _modalstate.UnitisMm; }
+
 	static void Init()										{ super::Init(); _modalstate.Init();  _modlessstate.Init(); }
 
 protected:

@@ -29,6 +29,7 @@
 
 #include "GCodeParser.h"
 #include "GCodeExpressionParser.h"
+#include "DecimalAsInt.h"
 
 ////////////////////////////////////////////////////////////
 

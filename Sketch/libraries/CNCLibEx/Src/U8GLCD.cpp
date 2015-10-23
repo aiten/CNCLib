@@ -267,6 +267,22 @@ CU8GLcd::DrawFunction CU8GLcd::GetDrawFunction(const void* adr)
 
 ////////////////////////////////////////////////////////////
 
+void CU8GLcd::DrawPos(mm1000_t pos)
+{
+	char tmp[16];
+
+	if (CGCodeParserBase::IsMm1000())
+	{
+		GetU8G().print(CMm1000::ToString(pos, tmp, 7, 2));
+	}
+	else
+	{
+		GetU8G().print(CInch100000::ToString(pos, tmp, 7, 4));
+	}
+}
+								
+////////////////////////////////////////////////////////////
+
 void CU8GLcd::ButtonPress()
 {
 	ButtonFunction fnc = GetButtonPress(&_pagedef[GetPage()].buttonpress);
@@ -381,7 +397,7 @@ bool CU8GLcd::DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,void *data)
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
 
 		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-		tmp[0] = 0; GetU8G().print(AddAxisName(tmp,i));
+		tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp,i));
 
 		GetU8G().print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i), tmp, 7, 2));
 		GetU8G().print(F(" "));
@@ -412,7 +428,7 @@ bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, void *data)
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
 
 		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-		tmp[0] = 0; GetU8G().print(AddAxisName(tmp, i));
+		tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp, i));
 
 		GetU8G().print(CMm1000::ToString(dest[i], tmp, 7, 2));
 		GetU8G().print(F(" "));
@@ -436,7 +452,7 @@ bool CU8GLcd::DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, void *data)
 	for (unsigned char i = 0; i < NUM_AXISXYZ; i++)
 	{
 		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-		tmp[0] = 0; GetU8G().print(AddAxisName(tmp, i));
+		tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp, i));
 
 		mm1000_t ofs = CMotionControl::GetInstance()->GetOffset2D(i);
 		GetU8G().print(CMm1000::ToString(ofs, tmp, 7, 2));
@@ -473,7 +489,7 @@ bool CU8GLcd::DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, void *data)
 			mm1000_t vect = CMotionControl::GetInstance()->GetVector(i);
 
 			GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-			tmp[0] = 0; GetU8G().print(AddAxisName(tmp, i));
+			tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp, i));
 
 			GetU8G().print(CMm1000::ToString(ofs, tmp, 7, 2));
 			GetU8G().print(F(" "));
@@ -570,7 +586,7 @@ bool CU8GLcd::DrawLoopPreset(EnumAsByte(EDrawLoopType) type,void *data)
 	for (unsigned char i = 0; i < _lcd_numaxis; i++)
 	{
 		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-		tmp[0] = 0; GetU8G().print(AddAxisName(tmp,i));
+		tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp,i));
 		ps = CGCodeParser::GetG54PosPreset(i);
 		GetU8G().print(CMm1000::ToString(ps, tmp, 7, 2));
 

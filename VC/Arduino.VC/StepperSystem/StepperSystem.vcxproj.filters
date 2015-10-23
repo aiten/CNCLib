@@ -105,9 +105,6 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\StreamReader.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\UtilitiesCNCLib.h">
-      <Filter>CNCLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\CNCLibEx.h">
       <Filter>CNCLibEx</Filter>
     </ClInclude>
@@ -225,6 +222,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\PushButtonLow.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\DecimalAsInt.h">
+      <Filter>CNCLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">
@@ -266,9 +266,6 @@
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\StreamReader.cpp">
       <Filter>CNCLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\UtilitiesCNCLib.cpp">
-      <Filter>CNCLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\GCode3DParser.cpp">
       <Filter>CNCLibEx</Filter>
     </ClCompile>
@@ -304,6 +301,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperSMC800.cpp">
       <Filter>StepperLib\Steppers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\DecimalAsInt.cpp">
+      <Filter>CNCLib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

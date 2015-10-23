@@ -9,7 +9,13 @@
         mc:Ignorable="d"
         Title="CNCLib" Height="750" Width="1000" Closing="Window_Closing">
     <Grid>
-        <TabControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+            
+            <TabControl Grid.Row="0" Grid.RowSpan="2">
             <TabItem Header="Setup">
                 <Frame
                     Source="/CNCLib.Wpf;component/Views/SetupPage.xaml"
@@ -27,5 +33,6 @@
             </TabItem>
 
         </TabControl>
+        <TextBlock Grid.Row="2" Text="Statusleiste" />
     </Grid>
 </Window>

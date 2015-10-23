@@ -164,6 +164,7 @@ protected:
 	unsigned char				_lcd_numaxis = NUM_AXIS;
 	unsigned char				_charHeight = 10;
 	unsigned char				_charWidth = 6;
+
 	const u8g_fntpgm_uint8_t*	_font = u8g_font_6x10;
 
 
@@ -172,6 +173,8 @@ protected:
 
 	unsigned char TotalRows() { return LCD_GROW / _charHeight; }
 	unsigned char TotalCols() { return LCD_GCOL / _charWidth; }
+
+	void DrawPos(mm1000_t pos);		// draw mm100 or inch
 
 #if defined(__AVR_ARCH__)
 

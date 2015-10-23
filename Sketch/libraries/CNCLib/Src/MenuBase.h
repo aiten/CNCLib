@@ -88,6 +88,8 @@ public:
 		menuparam_t GetParam2()	const								{ return (menuparam_t)pgm_read_ptr(&this->_param2); }
 	};
 
+	static char* AddAxisName(char*buffer, axis_t axis);
+
 public:
 
 	menupos_t GetPosition()											{ return _position; }
