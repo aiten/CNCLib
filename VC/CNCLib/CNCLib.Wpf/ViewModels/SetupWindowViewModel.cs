@@ -193,12 +193,12 @@ namespace CNCLib.Wpf.ViewModels
 
 		public bool CanSetupMachine()
         {
-            return true;
+            return !Connected;
         }
 
         public bool CanShowPaint()
         {
-            return true;
+            return Connected;
         }
 
         #endregion

@@ -42,36 +42,12 @@ namespace CNCLib.Wpf.ViewModels
 		}
  
         #region Properties
-
-		private Framework.Logic.ArduinoSerialCommunication Com
-        {
-			get { return Framework.Tools.Singleton<Framework.Logic.ArduinoSerialCommunication>.Instance; }
-        }
-
-		#region Current Machine
-
-        public bool Connected
-        {
-            get { return Com.IsConnected; }
-        }
-
-		#endregion
-
         #endregion
 
         #region Operations
-
         #endregion
 
         #region Commands
-/*
-        public ICommand SetupMachineCommand { get { return new DelegateCommand(SetupMachine, CanSetupMachine); } }
- 		public ICommand ConnectCommand { get { return new DelegateCommand(Connect, CanConnect); } }
-		public ICommand DisConnectCommand	{ get { return new DelegateCommand(DisConnect, CanDisConnect); } }
-		public ICommand ManualControlCommand	{ get { return new DelegateCommand(ShowManualControl, CanShowManualControl); } }
-        public ICommand PaintCommand { get { return new DelegateCommand(ShowPaint, CanShowPaint); } }
-		public ICommand SetDefaultMachineCommand { get { return new DelegateCommand(SetDefaultMachine, CanSetupMachine); } }
-*/
         #endregion
     }
 }

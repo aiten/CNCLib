@@ -76,13 +76,13 @@
 			this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this._headerPanel.Location = new System.Drawing.Point(0, 0);
 			this._headerPanel.Name = "_headerPanel";
-			this._headerPanel.Size = new System.Drawing.Size(687, 89);
+			this._headerPanel.Size = new System.Drawing.Size(687, 59);
 			this._headerPanel.TabIndex = 0;
 			// 
 			// _abort
 			// 
 			this._abort.Enabled = false;
-			this._abort.Location = new System.Drawing.Point(6, 59);
+			this._abort.Location = new System.Drawing.Point(85, 6);
 			this._abort.Name = "_abort";
 			this._abort.Size = new System.Drawing.Size(75, 23);
 			this._abort.TabIndex = 22;
@@ -254,9 +254,9 @@
 			// 
 			this._mainPanel.Controls.Add(this._plotterCtrl);
 			this._mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._mainPanel.Location = new System.Drawing.Point(0, 89);
+			this._mainPanel.Location = new System.Drawing.Point(0, 59);
 			this._mainPanel.Name = "_mainPanel";
-			this._mainPanel.Size = new System.Drawing.Size(687, 421);
+			this._mainPanel.Size = new System.Drawing.Size(687, 451);
 			this._mainPanel.TabIndex = 2;
 			// 
 			// _plotterCtrl
@@ -279,7 +279,17 @@
 			this._plotterCtrl.SelectedColor = System.Drawing.Color.Black;
 			this._plotterCtrl.SelectedCommand = -1;
 			this._plotterCtrl.SelectedLinesize = 1;
-			this._plotterCtrl.Size = new System.Drawing.Size(687, 421);
+			this._plotterCtrl.Size = new System.Drawing.Size(687, 451);
+			this._plotterCtrl.SizeX = new decimal(new int[] {
+            130000,
+            0,
+            0,
+            196608});
+			this._plotterCtrl.SizeY = new decimal(new int[] {
+            45000,
+            0,
+            0,
+            196608});
 			this._plotterCtrl.TabIndex = 1;
 			this._plotterCtrl.Zoom = new decimal(new int[] {
             1,
