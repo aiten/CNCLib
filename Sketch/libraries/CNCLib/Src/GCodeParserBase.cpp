@@ -47,9 +47,9 @@ bool CGCodeParserBase::_exit = false;
 #define COORD_MIN_MM		-999999l
 #define COORD_MAX_MM		999999l
 
-#define COORD_SCALE_INCH	4
-#define COORD_MIN_INCH		-99999l
-#define COORD_MAX_INCH		99999l
+#define COORD_SCALE_INCH	5
+#define COORD_MIN_INCH		-9999999l
+#define COORD_MAX_INCH		9999999l
 
 #define COORD_MAXSCALE		255			// dont care about max scale => always round and skip
 
@@ -148,6 +148,8 @@ mm1000_t CGCodeParserBase::ParseCoordinate()
 	if (_modalstate.UnitisMm)
 		return GetInt32Scale(COORD_MIN_MM, COORD_MAX_MM, COORD_SCALE_MM, COORD_MAXSCALE);
 
+	// read with 5 scale!!! this is not mm1000
+
 	return FromInch(GetInt32Scale(COORD_MIN_INCH, COORD_MAX_INCH, COORD_SCALE_INCH, COORD_MAXSCALE));
 };
 
@@ -189,17 +191,20 @@ mm1000_t CGCodeParserBase::ToInch(mm1000_t mm100)
 	if (_modalstate.UnitisMm)
 		return mm100;
 
-	return MulDivI32(mm100, 254, 100);
+	return MulDivI32(mm100, 1000, 254);
 }
 
 ////////////////////////////////////////////////////////////
 
-mm1000_t CGCodeParserBase::FromInch(mm1000_t mm100)
+mm1000_t CGCodeParserBase::FromInch(long inchOrMm)
 {
 	if (_modalstate.UnitisMm)
-		return mm100;
+		return inchOrMm;
 
-	return MulDivI32(mm100, 100, 254);
+	// mm are is CDecimalAsInt with scale 3
+	// inch is scale 5
+
+	return MulDivI32(inchOrMm, 254, 1000);
 }
 
 ////////////////////////////////////////////////////////////

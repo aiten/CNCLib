@@ -217,7 +217,7 @@ protected:
 	mm1000_t GetRelativePosition(mm1000_t pos, axis_t axis)	{ return pos - CalcAllPreset(axis); }
 	mm1000_t GetRelativePosition(axis_t axis)				{ return GetRelativePosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis); }
 	mm1000_t ToInch(mm1000_t mm100);
-	mm1000_t FromInch(mm1000_t mm100);
+	mm1000_t FromInch(long inchOrMm);
 
 	bool CheckAxisSpecified(axis_t axis, unsigned char& axes);
 	axis_t CharToAxis(char axis);
