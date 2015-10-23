@@ -110,12 +110,12 @@ protected:
 				for (x = scale; x > SCALE; x--)
 					tmp[precision--] = '0';
 
-				udiv_t sud;
-				sud.quot = (unsigned short)ud.rem;
+				ldiv_t sud;
+				sud.quot = ud.rem;
 
 				for (x = SCALE; x > 0; x--)
 				{
-					sud = udiv(sud.quot, 10);
+					sud = ldiv(sud.quot, 10);
 					if (x <= scale)
 						tmp[precision--] = '0' + (unsigned char)sud.rem;
 				}

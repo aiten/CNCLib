@@ -74,4 +74,15 @@ void CToStringTest::RunTest()
 	Assert("      -12",		CMm1000::ToString(-12345, tmp, 9, 0));
 	Assert("2147483.647",	CMm1000::ToString(LONG_MAX, tmp, 11, 3));
 	Assert("-2147483.648",	CMm1000::ToString(LONG_MIN, tmp, 12, 3));
+	Assert("        1",		CMm1000::ToString(500, tmp, 9, 0));
+	Assert("        1",		CMm1000::ToString(501, tmp, 9, 0));
+	Assert("        1",		CMm1000::ToString(999, tmp, 9, 0));
+
+	Assert("      0.0",		CInch100000::ToString(0, tmp, 9, 1));
+	Assert(" 0.000000",		CInch100000::ToString(0, tmp, 9, 6));
+	Assert(" 1.000000",		CInch100000::ToString(100000, tmp, 9, 6));
+	Assert("   0.6667",		CInch100000::ToString(66666, tmp, 9, 4));
+	Assert("  0.98765",		CInch100000::ToString(98765, tmp, 9, 5));
+	Assert(" -0.98765",		CInch100000::ToString(-98765, tmp, 9, 5));
+
 }
