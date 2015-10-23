@@ -182,10 +182,17 @@ static bool IsControllerFanParam(param_t paramNo)						{ return IsParam(paramNo,
 static bool IsRapidMoveFeedRate(param_t paramNo)						{ return IsParam(paramNo, PARAMSTART_RAPIDMOVEFEED); }
 
 
-mm1000_t CGCodeParser::GetParamValue(param_t paramNo)
+unit_t CGCodeParser::GetParamValue(param_t paramNo)
 {
+	// return mm1000 or inch depending on global setting
+	// _modalstate.UnitisMm
+
 	if (IsModifyParam(paramNo))
-		return _modalstate.Parameter[paramNo - 1];
+	{
+		// param are stored as mm1000 (SCALE=3), if we have inch (SCALE=5) we have to adjust
+		if(IsMm1000()) return _modalstate.Parameter[paramNo - 1];
+		return _modalstate.Parameter[paramNo - 1] * 100l;
+	}
 
 	axis_t axis;
 

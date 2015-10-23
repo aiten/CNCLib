@@ -152,7 +152,7 @@ public:
 
 //////////////////////////////////////////
 
-class CMm1000 : public CDecimaAsInt<mm1000_t,3,1000>
+class CMm1000 : public CDecimaAsInt<mm1000_t,SCALE_MM,1000>
 {
 private:
 
@@ -170,7 +170,7 @@ public:
 
 //////////////////////////////////////////
 
-class CInch100000 : public CDecimaAsInt<inch100000_t,5, 100000>
+class CInch100000 : public CDecimaAsInt<inch100000_t,SCALE_INCH, 100000>
 {
 private:
 

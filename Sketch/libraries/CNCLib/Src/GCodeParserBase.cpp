@@ -43,11 +43,11 @@ bool CGCodeParserBase::_exit = false;
 
 #define MACHINE_SCALE		3		// 1/1000mm
 
-#define COORD_SCALE_MM		3
+#define COORD_SCALE_MM		SCALE_MM
 #define COORD_MIN_MM		-999999l
 #define COORD_MAX_MM		999999l
 
-#define COORD_SCALE_INCH	5
+#define COORD_SCALE_INCH	SCALE_INCH
 #define COORD_MIN_INCH		-9999999l
 #define COORD_MAX_INCH		9999999l
 
@@ -142,7 +142,7 @@ mm1000_t CGCodeParserBase::ParseCoordinate()
 	if (_reader->GetChar() == '#')
 	{
 		_reader->GetNextChar();
-		return (mm1000_t)ParseParameter();
+		return FromInch(ParseParameter());
 	}
 
 	if (_modalstate.UnitisMm)
@@ -186,7 +186,7 @@ unsigned long CGCodeParserBase::GetUint32OrParam(unsigned long max)
 
 ////////////////////////////////////////////////////////////
 
-mm1000_t CGCodeParserBase::ToInch(mm1000_t mm100)
+unit_t CGCodeParserBase::ToInch(mm1000_t mm100)
 {
 	if (_modalstate.UnitisMm)
 		return mm100;
@@ -196,7 +196,7 @@ mm1000_t CGCodeParserBase::ToInch(mm1000_t mm100)
 
 ////////////////////////////////////////////////////////////
 
-mm1000_t CGCodeParserBase::FromInch(long inchOrMm)
+mm1000_t CGCodeParserBase::FromInch(unit_t inchOrMm)
 {
 	if (_modalstate.UnitisMm)
 		return inchOrMm;
