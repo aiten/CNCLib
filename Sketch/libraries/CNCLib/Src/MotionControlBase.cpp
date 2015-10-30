@@ -213,10 +213,10 @@ void CMotionControlBase::Arc(const mm1000_t to[NUM_AXIS], mm1000_t offset0, mm10
 	//
 	// segments for full circle => (CONST_K * r * M_PI * b + CONST_D)		(r in mm, b ...2?)
 
-	unsigned short segments = (unsigned short) abs(floor((ToDouble((const mm1000_t) (2 * SEGMENTS_K*M_PI))*radius + SEGMENTS_D) * angular_travel / (2.0*M_PI)));
+	unsigned short segments = (unsigned short) abs(floor((CMm1000::ConvertTo((const mm1000_t) (2 * SEGMENTS_K*M_PI))*radius + SEGMENTS_D) * angular_travel / (2.0*M_PI)));
 
 #if defined(_MSC_VER)
-	double segments_full = ToDouble((const mm1000_t)(2 * SEGMENTS_K*M_PI))*radius + SEGMENTS_D;
+	double segments_full = CMm1000::ConvertTo((const mm1000_t)(2 * SEGMENTS_K*M_PI))*radius + SEGMENTS_D;
 	segments_full;
 	Trace("Gx command with\tr=%f\tfull_segments=%f\tangular=%f\tangularG=%f\tsegments=%i\n", radius, segments_full, angular_travel, angular_travel/M_PI*180, segments);
 #endif

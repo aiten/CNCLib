@@ -135,7 +135,7 @@ char CGCodeParserBase::SkipSpacesOrComment()
 
 ////////////////////////////////////////////////////////////
 
-mm1000_t CGCodeParserBase::ParseCoordinate(axis_t axis)
+mm1000_t CGCodeParserBase::ParseCoordinateAxis(axis_t axis)
 {
 	return ParseCoordinate(IsBitSet(CGCodeParserBase::_modalstate.UnitConvert, axis));
 }
@@ -146,23 +146,29 @@ mm1000_t CGCodeParserBase::ParseCoordinate(bool convertUnits)
 {
 	_reader->SkipSpaces();
 
+	bool convertToInch = convertUnits && !_modalstate.UnitisMm;
+
 	if (_reader->GetChar() == '#')
 	{
 		_reader->GetNextChar();
-		return FromInch(ParseParameter());
+		return ParseParameter(convertToInch); // do not convert if already mm1000
+	}
+	
+	if (convertToInch)
+	{
+		// mm are is CDecimalAsInt with scale 3
+		// inch is scale 5
+
+		//	return MulDivI32(GetInt32Scale(COORD_MIN_INCH, COORD_MAX_INCH, COORD_SCALE_INCH, COORD_MAXSCALE), 254, 1000);
+		return MulDivI32(GetInt32Scale(COORD_MIN_INCH, COORD_MAX_INCH, COORD_SCALE_INCH, COORD_MAXSCALE), 127, 500);
 	}
 
-	if (!convertUnits || _modalstate.UnitisMm)
-		return GetInt32Scale(COORD_MIN_MM, COORD_MAX_MM, COORD_SCALE_MM, COORD_MAXSCALE);
-
-	// read with 5 scale!!! this is not mm1000
-
-	return FromInch(GetInt32Scale(COORD_MIN_INCH, COORD_MAX_INCH, COORD_SCALE_INCH, COORD_MAXSCALE));
+	return GetInt32Scale(COORD_MIN_MM, COORD_MAX_MM, COORD_SCALE_MM, COORD_MAXSCALE);
 };
 
 ////////////////////////////////////////////////////////////
 
-unsigned long CGCodeParserBase::ParseParameter()
+mm1000_t CGCodeParserBase::ParseParameter(bool)
 {
 	Error(MESSAGE_GCODE_ParameterNotFound);
 	return 0;
@@ -176,7 +182,7 @@ unsigned long CGCodeParserBase::GetUint32OrParam(unsigned long max)
 	if (_reader->GetChar() == '#')
 	{
 		_reader->GetNextChar();
-		param = ParseParameter();
+		param = ParseParameter(false);
 	}
 	else
 	{
@@ -189,29 +195,6 @@ unsigned long CGCodeParserBase::GetUint32OrParam(unsigned long max)
 		return 0;
 	}
 	return param;
-}
-
-////////////////////////////////////////////////////////////
-
-unit_t CGCodeParserBase::ToInch(mm1000_t mm100)
-{
-	if (_modalstate.UnitisMm)
-		return mm100;
-
-	return MulDivI32(mm100, 1000, 254);
-}
-
-////////////////////////////////////////////////////////////
-
-mm1000_t CGCodeParserBase::FromInch(unit_t inchOrMm)
-{
-	if (_modalstate.UnitisMm)
-		return inchOrMm;
-
-	// mm are is CDecimalAsInt with scale 3
-	// inch is scale 5
-
-	return MulDivI32(inchOrMm, 254, 1000);
 }
 
 ////////////////////////////////////////////////////////////
@@ -393,7 +376,7 @@ bool CGCodeParserBase::MCommand(mcode_t mcode)
 
 mm1000_t CGCodeParserBase::ParseCoordinate(axis_t axis, mm1000_t relpos, EnumAsByte(EAxisPosType) posType)
 {
-	mm1000_t mm = ParseCoordinate(axis);
+	mm1000_t mm = ParseCoordinateAxis(axis);
 	switch (posType)
 	{
 		default:
@@ -495,9 +478,9 @@ void CGCodeParserBase::GetIJK(axis_t axis, SAxisMove& move, mm1000_t offset[2])
 	_reader->GetNextChar();
 
 	if (axis == _modalstate.Plane_axis_0)
-		offset[0] = ParseCoordinate(axis);
+		offset[0] = ParseCoordinateAxis(axis);
 	else if (axis == _modalstate.Plane_axis_1)
-		offset[1] = ParseCoordinate(axis);
+		offset[1] = ParseCoordinateAxis(axis);
 	else
 	{
 		Error(MESSAGE_GCODE_AxisOffsetMustNotBeSpecified);
@@ -516,7 +499,7 @@ void CGCodeParserBase::GetRadius(SAxisMove& move, mm1000_t& radius)
 	move.bitfield.bit.R = true;
 
 	_reader->GetNextChar();
-	radius = ParseCoordinate(_modalstate.Plane_axis_0);
+	radius = ParseCoordinateAxis(_modalstate.Plane_axis_0);
 }
 
 ////////////////////////////////////////////////////////////
@@ -538,7 +521,10 @@ void CGCodeParserBase::GetFeedrate(SAxisMove& move)
 	// feedrate is 1/1000mm/min (scale 3) 
 
 	if (!_modalstate.UnitisMm)
-		feedrate = MulDivI32(feedrate, 254, 10);
+	{
+//		feedrate = MulDivI32(feedrate, 254, 10);
+		feedrate = MulDivI32(feedrate, 127, 5);
+	}
 
 	if (CheckError()) { return; }
 
@@ -557,7 +543,7 @@ void CGCodeParserBase::GetG92Axis(axis_t axis, unsigned char& axes)
 
 	_reader->GetNextChar();
 	_modalstate.G92Pospreset[axis] = 0;	// clear this => can use CalcAllPreset
-	_modalstate.G92Pospreset[axis] = ParseCoordinate(axis) + CMotionControlBase::GetInstance()->GetPosition(axis) - CalcAllPreset(axis);
+	_modalstate.G92Pospreset[axis] = ParseCoordinateAxis(axis) + CMotionControlBase::GetInstance()->GetPosition(axis) - CalcAllPreset(axis);
 }
 
 ////////////////////////////////////////////////////////////

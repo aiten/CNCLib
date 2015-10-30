@@ -106,11 +106,6 @@ public:
 	steprate_t GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate_t feedrate);
 	static steprate_t FeedRateToStepRate(axis_t axis, feedrate_t feedrate);
 
-	////////////////////////////////////////
-
-	static expr_t ToDouble(const mm1000_t mm1000)												{ return (expr_t)(mm1000 / 1000.0); }
-	static mm1000_t FromDouble(expr_t dbl)														{ return (mm1000_t)(dbl * 1000); }
-
 	/////////////////////////////////////////////////////////
 	// Samples for converting functions
 	//

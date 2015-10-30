@@ -84,7 +84,7 @@ bool CGCodeExpressionParser::EvalVariable(const char* var_name, expr_t& answer)
 	if (var_name[0] == '#')
 	{
 		// assigned in ReadIdent
-		answer = CMotionControlBase::GetInstance()->ToDouble(_gcodeparser->GetParamValue((param_t)_state._number));
+		answer = CMm1000::ConvertTo(_gcodeparser->GetParamValue((param_t)_state._number, false));
 		return true;
 	}
 	return super::EvalVariable(var_name, answer);

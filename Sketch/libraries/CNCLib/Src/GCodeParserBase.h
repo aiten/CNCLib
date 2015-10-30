@@ -68,6 +68,7 @@ public:
 	static feedrate_t GetG1FeedRate()						{ return _modalstate.G1FeedRate; }
 
 	static bool IsMm1000()									{ return _modalstate.UnitisMm; }
+	static bool IsInch(axis_t axis)							{ return !IsMm1000() && IsBitSet(_modalstate.UnitConvert,axis);}		
 
 	static void Init()										{ super::Init(); _modalstate.Init();  _modlessstate.Init(); }
 
@@ -207,9 +208,9 @@ protected:
 
 	void ConstantVelocity();
 
-	virtual unsigned long ParseParameter();
+	virtual mm1000_t ParseParameter(bool convertToInch);
 	mm1000_t ParseCoordinate(bool convertUnits);
-	mm1000_t ParseCoordinate(axis_t axis);
+	mm1000_t ParseCoordinateAxis(axis_t axis);
 
 	unsigned long GetUint32OrParam(unsigned long max);
 	unsigned long GetUint32OrParam()						{ return GetUint32OrParam(0xffffffffl); };
@@ -218,8 +219,6 @@ protected:
 
 	mm1000_t GetRelativePosition(mm1000_t pos, axis_t axis)	{ return pos - CalcAllPreset(axis); }
 	mm1000_t GetRelativePosition(axis_t axis)				{ return GetRelativePosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis); }
-	mm1000_t ToInch(mm1000_t mm100);
-	mm1000_t FromInch(long inchOrMm);
 
 	bool CheckAxisSpecified(axis_t axis, unsigned char& axes);
 	axis_t CharToAxis(char axis);

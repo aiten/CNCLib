@@ -128,7 +128,7 @@ protected:
 		mm1000_t		G54Pospreset[NUM_AXIS];
 		mm1000_t		ToolHeigtCompensation;
 
-		unit_t			Parameter[NUM_PARAMETER];	// DecimalAsInt with SCALE = 3 or 5 (see global setting)
+		float			Parameter[NUM_PARAMETER];	// this is a expression, mm or inch
 
 		void Init()	
 		{
@@ -166,14 +166,14 @@ protected:
 
 	bool CutterRadiosIsOn()								    { if (_modalstate.CutterRadiusCompensation) { Info(MESSAGE_GCODE_G41G43AreNotAllowedWithThisCommand); return true; } else return false; }
 
-	virtual unsigned long ParseParameter() override;
+	virtual mm1000_t ParseParameter(bool convertToInch) override;
 	param_t ParseParamNo();
 
-	unit_t GetParamValue(param_t paramNo);
+	mm1000_t GetParamValue(param_t paramNo, bool convertToInch);
 	void SetParamValue(param_t parmNo);
 
-	unit_t GetParamAsPosition(mm1000_t posInMachine, axis_t axis)		{ return ToInch(CMotionControlBase::GetInstance()->ToMm1000(axis, posInMachine)); }
-	mm1000_t GetParamAsMachine(mm1000_t posInmm1000, axis_t axis)		{ return FromInch(CMotionControlBase::GetInstance()->ToMachine(axis, posInmm1000)); }
+	static mm1000_t GetParamAsPosition(mm1000_t posInMachine, axis_t axis)		{ return CMotionControlBase::GetInstance()->ToMm1000(axis, posInMachine); }
+	static mm1000_t GetParamAsMachine(mm1000_t posInmm1000, axis_t axis)		{ return CMotionControlBase::GetInstance()->ToMachine(axis, posInmm1000); }
 
 	mm1000_t GetRelativePosition(mm1000_t pos, axis_t axis)				{ return pos - GetG92PosPreset(axis) - GetG54PosPreset(axis); }
 	mm1000_t GetRelativePosition(axis_t axis)							{ return GetRelativePosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis); }
@@ -186,6 +186,7 @@ private:
 	void GetP81(SAxisMove& move);
 	void GetQ81(SAxisMove& move);
 	void GetL81(SAxisMove& move, unsigned char& l);
+	void GetAngleR(SAxisMove& move, mm1000_t& angle);		// get angle (with R Parameter)
 
 	void G10Command();
 	void G40Command()							{ _modalstate.CutterRadiusCompensation = SModalState::CutterRadiusOff; }

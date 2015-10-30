@@ -131,11 +131,11 @@ param_t CGCodeParser::ParseParamNo()
 
 ////////////////////////////////////////////////////////////
 
-unsigned long CGCodeParser::ParseParameter()
+mm1000_t CGCodeParser::ParseParameter(bool convertToInch)
 {
 	param_t paramNo = ParseParamNo();
 	if (paramNo)
-		return GetParamValue(paramNo);
+		return GetParamValue(paramNo, convertToInch);
 
 	Error(MESSAGE_GCODE_ParameterNotFound);
 	return 0;
@@ -182,16 +182,14 @@ static bool IsControllerFanParam(param_t paramNo)						{ return IsParam(paramNo,
 static bool IsRapidMoveFeedRate(param_t paramNo)						{ return IsParam(paramNo, PARAMSTART_RAPIDMOVEFEED); }
 
 
-unit_t CGCodeParser::GetParamValue(param_t paramNo)
+mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 {
-	// return mm1000 or inch depending on global setting
-	// _modalstate.UnitisMm
-
 	if (IsModifyParam(paramNo))
 	{
-		// param are stored as mm1000 (SCALE=3), if we have inch (SCALE=5) we have to adjust
-		if(IsMm1000()) return _modalstate.Parameter[paramNo - 1];
-		return _modalstate.Parameter[paramNo - 1] * 100l;
+		if (convertUnits)
+			return CMm1000::ConvertFrom(25.4*_modalstate.Parameter[paramNo - 1]);
+
+		return CMm1000::ConvertFrom(_modalstate.Parameter[paramNo - 1]);
 	}
 
 	axis_t axis;
@@ -233,15 +231,13 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 	else
 	{
 		axis_t axis;
-		mm1000_t mm1000 = CMotionControlBase::GetInstance()->FromDouble(exprpars.Answer);
+		mm1000_t mm1000 = CMm1000::ConvertFrom(exprpars.Answer);
 
-		if (IsModifyParam(paramNo))				{	_modalstate.Parameter[paramNo - 1] = mm1000;	}
-
-	
+		if (IsModifyParam(paramNo))				{ _modalstate.Parameter[paramNo - 1] = exprpars.Answer; }
 		else if (IsBacklashParam(paramNo,axis))	{	CStepper::GetInstance()->SetBacklash(axis,(mdist_t) GetParamAsMachine(mm1000, axis));	}
 		else if (IsBacklashFeedrateParam(paramNo)){ CStepper::GetInstance()->SetBacklash((steprate_t)CMotionControlBase::GetInstance()->ToMachine(0, mm1000 * 60)); }
 		else if (IsControllerFanParam(paramNo))	{	CControl::GetInstance()->IOControl(CControl::ControllerFan,(unsigned short)exprpars.Answer);	}
-		else if (IsRapidMoveFeedRate(paramNo))	{	SetG0FeedRate((feedrate_t) (-exprpars.Answer*1000));	}
+		else if (IsRapidMoveFeedRate(paramNo))	{	SetG0FeedRate(-CFeedrate1000::ConvertFrom(exprpars.Answer));	}
 		else if (IsMaxParam(paramNo,axis))		{	CStepper::GetInstance()->SetLimitMax(axis,GetParamAsMachine(mm1000, axis));		}
 		else if (IsMinParam(paramNo,axis))		{	CStepper::GetInstance()->SetLimitMin(axis,GetParamAsMachine(mm1000, axis));		}
 		else if (IsAccParam(paramNo,axis))		{	CStepper::GetInstance()->SetAcc(axis,(steprate_t) mm1000);	}
@@ -609,9 +605,23 @@ void CGCodeParser::GetG68IJK(axis_t axis, SAxisMove& move, mm1000_t offset[NUM_A
 
 	_reader->GetNextChar();
 
-	offset[axis] = ParseCoordinate(axis);
+	offset[axis] = ParseCoordinateAxis(axis);
 }
 
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::GetAngleR(SAxisMove& move, mm1000_t& angle)
+{
+	if (move.bitfield.bit.R)
+	{
+		Error(MESSAGE_GCODE_RalreadySpecified);
+		return;
+	}
+	move.bitfield.bit.R = true;
+
+	_reader->GetNextChar();
+	angle = ParseCoordinate(false);
+}
 ////////////////////////////////////////////////////////////
 
 void CGCodeParser::G68Command()
@@ -652,7 +662,7 @@ void CGCodeParser::G68CommandDefault()
 		axis_t axis;
 		if ((axis = CharToAxis(ch)) < NUM_AXISXYZ)				GetAxis(axis, move, super::_modalstate.IsAbsolut ? AbsolutWithZeroShiftPosition : RelativPosition);
 		else if ((axis = CharToAxisOffset(ch)) < NUM_AXISXYZ)	GetG68IJK(axis, move, vect);
-		else if (ch == 'R')										GetRadius(move, r);
+		else if (ch == 'R')										GetAngleR(move, r);
 		else break;
 
 		if (CheckError()) { return; }

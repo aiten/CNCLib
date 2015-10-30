@@ -142,12 +142,13 @@ protected:
 
 public:
 
-	static T Convert(float v) { return (T)v; }										// do not use lrint => convert to double first
+	static T Cast(expr_t v) { return (T)v; }										// do not use lrint => convert to double first
 
 	static float DegreeToRAD(T v)	{ return (float)(v / (SCALEMASK * 180.0 / M_PI)); }
-	static T FromRAD(float v)		{ return Convert((float)(v * SCALEMASK * 180 / M_PI)); }
+	static T FromRAD(float v)		{ return Cast((float)(v * SCALEMASK * 180 / M_PI)); }
 
-	static float ConvertToFloat(T v) { return float(v) / SCALEMASK; }
+	static expr_t ConvertTo(T v)	{ return expr_t(v) / SCALEMASK; }
+	static T ConvertFrom(expr_t v)	{ return T(v * SCALEMASK); }
 };
 
 //////////////////////////////////////////
@@ -190,6 +191,23 @@ public:
 	char*ToString(char*tmp, unsigned char scale)							{ return ToString(_value, tmp, scale); }
 };
 
+//////////////////////////////////////////
+
+class CFeedrate1000 : public CDecimaAsInt<mm1000_t, SCALE_FEEDRATE, 1000>
+{
+private:
+
+	typedef CDecimaAsInt super;
+
+public:
+
+//	static char* ToString(mm1000_t v, char*tmp, unsigned char precision, unsigned char scale);	// right aligned
+//	static char* ToString(mm1000_t v, char*tmp, unsigned char scale) { return SkipSpaces(ToString(v, tmp, 11, scale)); };
+
+//	char*ToString(char*tmp, unsigned char precision, unsigned char scale) { return ToString(_value, tmp, precision, scale); } // right aligned
+//	char*ToString(char*tmp, unsigned char scale) { return ToString(_value, tmp, scale); }
+
+};
 
 ////////////////////////////////////////////////////////
 

@@ -174,7 +174,7 @@ protected:
 	unsigned char TotalRows() { return LCD_GROW / _charHeight; }
 	unsigned char TotalCols() { return LCD_GCOL / _charWidth; }
 
-	static char* DrawPos(mm1000_t pos, char *tmp, unsigned char precision);		// draw mm100 or inch
+	static char* DrawPos(axis_t axis, mm1000_t pos, char *tmp, unsigned char precision);		// draw mm100 or inch
 
 #if defined(__AVR_ARCH__)
 

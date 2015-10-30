@@ -268,13 +268,15 @@ void CMsvcStepper::WriteTestResults(const char* filename)
 	bool append = (_flushcount++) != 0;
 	char fname[_MAX_PATH] = { 0 };
 	fname[0]=0;
-	
+
+/*
 	if(false)
 	{
 		char tempPath[_MAX_PATH];
 		::GetTempPathA(_MAX_PATH, tempPath); 
 		strcat(fname,tempPath);
 	}
+*/
 	strcat(fname,filename);
 
 	if (append)

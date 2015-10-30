@@ -121,9 +121,9 @@ void CMotionControl::TransformFromMachinePosition(const udist_t src[NUM_AXIS], m
 		}
 
 
-		dest[X_AXIS] = CMm1000::Convert(x) + _rotateOffset2D[X_AXIS];
-		dest[Y_AXIS] = CMm1000::Convert(y) + _rotateOffset2D[Y_AXIS];
-		dest[Z_AXIS] = CMm1000::Convert(z) + _rotateOffset2D[Z_AXIS];
+		dest[X_AXIS] = CMm1000::Cast(x) + _rotateOffset2D[X_AXIS];
+		dest[Y_AXIS] = CMm1000::Cast(y) + _rotateOffset2D[Y_AXIS];
+		dest[Z_AXIS] = CMm1000::Cast(z) + _rotateOffset2D[Z_AXIS];
 	}
 
 	if (_rotateType != NoRotate)
@@ -174,9 +174,9 @@ bool CMotionControl::TransformPosition(const mm1000_t src[NUM_AXIS], mm1000_t de
 			_rotate2D[Z_AXIS].Rotate(x, y);
 		}
 
-		dest[X_AXIS] = CMm1000::Convert(x) + _rotateOffset2D[X_AXIS];
-		dest[Y_AXIS] = CMm1000::Convert(y) + _rotateOffset2D[Y_AXIS];
-		dest[Z_AXIS] = CMm1000::Convert(z) + _rotateOffset2D[Z_AXIS];
+		dest[X_AXIS] = CMm1000::Cast(x) + _rotateOffset2D[X_AXIS];
+		dest[Y_AXIS] = CMm1000::Cast(y) + _rotateOffset2D[Y_AXIS];
+		dest[Z_AXIS] = CMm1000::Cast(z) + _rotateOffset2D[Z_AXIS];
 	}
 
 	return true;
@@ -234,9 +234,9 @@ void CMotionControl::SRotate3D::Rotate(const mm1000_t src[NUM_AXIS], const mm100
 
 	Rotate(x,y,z);
 
-	dest[X_AXIS] = CMm1000::Convert(x) + ofs[X_AXIS];
-	dest[Y_AXIS] = CMm1000::Convert(y) + ofs[Y_AXIS];
-	dest[Z_AXIS] = CMm1000::Convert(z) + ofs[Z_AXIS];
+	dest[X_AXIS] = CMm1000::Cast(x) + ofs[X_AXIS];
+	dest[Y_AXIS] = CMm1000::Cast(y) + ofs[Y_AXIS];
+	dest[Z_AXIS] = CMm1000::Cast(z) + ofs[Z_AXIS];
 }
 
 /////////////////////////////////////////////////////////
