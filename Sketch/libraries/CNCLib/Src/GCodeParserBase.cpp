@@ -135,7 +135,14 @@ char CGCodeParserBase::SkipSpacesOrComment()
 
 ////////////////////////////////////////////////////////////
 
-mm1000_t CGCodeParserBase::ParseCoordinate()
+mm1000_t CGCodeParserBase::ParseCoordinate(axis_t axis)
+{
+	return ParseCoordinate(IsBitSet(CGCodeParserBase::_modalstate.UnitConvert, axis));
+}
+
+////////////////////////////////////////////////////////////
+
+mm1000_t CGCodeParserBase::ParseCoordinate(bool convertUnits)
 {
 	_reader->SkipSpaces();
 
@@ -145,7 +152,7 @@ mm1000_t CGCodeParserBase::ParseCoordinate()
 		return FromInch(ParseParameter());
 	}
 
-	if (_modalstate.UnitisMm)
+	if (!convertUnits || _modalstate.UnitisMm)
 		return GetInt32Scale(COORD_MIN_MM, COORD_MAX_MM, COORD_SCALE_MM, COORD_MAXSCALE);
 
 	// read with 5 scale!!! this is not mm1000
@@ -386,13 +393,14 @@ bool CGCodeParserBase::MCommand(mcode_t mcode)
 
 mm1000_t CGCodeParserBase::ParseCoordinate(axis_t axis, mm1000_t relpos, EnumAsByte(EAxisPosType) posType)
 {
+	mm1000_t mm = ParseCoordinate(axis);
 	switch (posType)
 	{
-		case AbsolutWithZeroShiftPosition:	return ParseCoordinate() + CalcAllPreset(axis);
-		case AbsolutPosition:				return ParseCoordinate(); break;
-		case RelativPosition:				return relpos + ParseCoordinate();;
+		default:
+		case AbsolutWithZeroShiftPosition:	return mm + CalcAllPreset(axis);
+		case AbsolutPosition:				return mm; 
+		case RelativPosition:				return relpos + mm;
 	}
-	return 0;
 }
 
 ////////////////////////////////////////////////////////////
@@ -487,9 +495,9 @@ void CGCodeParserBase::GetIJK(axis_t axis, SAxisMove& move, mm1000_t offset[2])
 	_reader->GetNextChar();
 
 	if (axis == _modalstate.Plane_axis_0)
-		offset[0] = ParseCoordinate();
+		offset[0] = ParseCoordinate(axis);
 	else if (axis == _modalstate.Plane_axis_1)
-		offset[1] = ParseCoordinate();
+		offset[1] = ParseCoordinate(axis);
 	else
 	{
 		Error(MESSAGE_GCODE_AxisOffsetMustNotBeSpecified);
@@ -508,7 +516,7 @@ void CGCodeParserBase::GetRadius(SAxisMove& move, mm1000_t& radius)
 	move.bitfield.bit.R = true;
 
 	_reader->GetNextChar();
-	radius = ParseCoordinate();
+	radius = ParseCoordinate(_modalstate.Plane_axis_0);
 }
 
 ////////////////////////////////////////////////////////////
@@ -549,7 +557,7 @@ void CGCodeParserBase::GetG92Axis(axis_t axis, unsigned char& axes)
 
 	_reader->GetNextChar();
 	_modalstate.G92Pospreset[axis] = 0;	// clear this => can use CalcAllPreset
-	_modalstate.G92Pospreset[axis] = ParseCoordinate() + CMotionControlBase::GetInstance()->GetPosition(axis) - CalcAllPreset(axis);
+	_modalstate.G92Pospreset[axis] = ParseCoordinate(axis) + CMotionControlBase::GetInstance()->GetPosition(axis) - CalcAllPreset(axis);
 }
 
 ////////////////////////////////////////////////////////////

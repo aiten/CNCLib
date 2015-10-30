@@ -104,7 +104,7 @@ protected:
 		unsigned char	Plane_axis_1;			// y 
 
 		unsigned char	Plane_axis_2;			// z
-		unsigned char	EvenAlign;			
+		unsigned char	UnitConvert;			// bit array convert between inch and mm (a b c is Grad) 			
 
 		bool			UnitisMm;				// g20,g21
 		bool			FeedRatePerUnit;		//feedrate per Unit(mm,inch) per min, or per revolution /g94/95
@@ -140,6 +140,7 @@ protected:
 			Plane_axis_0 = X_AXIS;
 			Plane_axis_1 = Y_AXIS;
 			Plane_axis_2 = Z_AXIS;
+			UnitConvert = 1+2+4 + 64+128;				// inch to mm 
 //POD		for (register unsigned char i = 0; i < NUM_AXIS; i++) G92Pospreset[i] = 0;
 		}
 	};
@@ -207,7 +208,8 @@ protected:
 	void ConstantVelocity();
 
 	virtual unsigned long ParseParameter();
-	mm1000_t ParseCoordinate();
+	mm1000_t ParseCoordinate(bool convertUnits);
+	mm1000_t ParseCoordinate(axis_t axis);
 
 	unsigned long GetUint32OrParam(unsigned long max);
 	unsigned long GetUint32OrParam()						{ return GetUint32OrParam(0xffffffffl); };

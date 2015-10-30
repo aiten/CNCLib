@@ -609,7 +609,7 @@ void CGCodeParser::GetG68IJK(axis_t axis, SAxisMove& move, mm1000_t offset[NUM_A
 
 	_reader->GetNextChar();
 
-	offset[axis] = ParseCoordinate();
+	offset[axis] = ParseCoordinate(axis);
 }
 
 ////////////////////////////////////////////////////////////
