@@ -40,7 +40,7 @@ namespace CNCLib.Logic
 		}
 		public DTO.MachineInitCommand[] GetMachineInitCommands(int machineID)
 		{
-			var machines = new MachineRepository().GetMachineInitCommands(machineID);
+			var machines = new MachineRepository().GetMachineInitCommands(machineID).OrderBy((c) => c.SeqNo);
 			List<DTO.MachineInitCommand> l = new List<DTO.MachineInitCommand>();
 			l.AddCloneProperties(machines);
 			return l.ToArray();
