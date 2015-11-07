@@ -68,5 +68,5 @@
 
 #include <MessageCNCLib.h>
 
-#define MESSAGE_MYCONTROL_CNCShield_Starting					F("CNCShield:"__DATE__)
+#define MESSAGE_MYCONTROL_CNCShield_Starting					F("CNCShield:" __DATE__ )
 

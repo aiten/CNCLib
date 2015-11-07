@@ -45,5 +45,5 @@
 
 #include <MessageCNCLib.h>
 
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC:"__DATE__)
+#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC:" __DATE__ )
 

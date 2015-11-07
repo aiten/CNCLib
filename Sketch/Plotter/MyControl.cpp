@@ -34,7 +34,7 @@ void CMyControl::Init()
 {
 	super::Init();
 
-	StepperSerial.println(F("Plotter(HA) is starting ... ("__DATE__", "__TIME__")"));
+	StepperSerial.println(F("Plotter(HA) is starting ... (" __DATE__ ", " __TIME__ ")"));
 
 #ifdef __USE_LCD__
 	Lcd.Init();

@@ -59,8 +59,8 @@
 
 #if CNCSHIELD_NUM_AXIS > 3
 
-#define CNCSHIELD_A_STEP_PIN		12		// Optional
-#define CNCSHIELD_A_DIR_PIN			13		// Optional
+#define CNCSHIELD_A_STEP_PIN		12	
+#define CNCSHIELD_A_DIR_PIN			13	
 
 #else
 
@@ -78,10 +78,11 @@
 
 #if defined(__AVR_ATmega328P__) || defined (_MSC_VER)
 
-#define CNCSHIELD_ABORT_PIN			14		// AD0
-#define CNCSHIELD_HOLD_PIN			15		// AD1
-#define CNCSHIELD_RESUME_PIN		16		// AD2
-#define CNCSHIELD_COOLANT_PIN		17		// AD3
+// 14=>AD0
+#define CNCSHIELD_ABORT_PIN			14
+#define CNCSHIELD_HOLD_PIN			15
+#define CNCSHIELD_RESUME_PIN		16
+#define CNCSHIELD_COOLANT_PIN		17
 
 #endif
 

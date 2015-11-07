@@ -38,41 +38,42 @@
 #define RAMPS14_REF_ON	0
 #define RAMPS14_REF_OFF	1
 
-#define RAMPS14_X_STEP_PIN			54		// AD0
-#define RAMPS14_X_DIR_PIN			55		// AD1
-#define RAMPS14_X_ENABLE_PIN		38		// D38
-#define RAMPS14_X_MIN_PIN			3		// D2
-#define RAMPS14_X_MAX_PIN			2		// D3
+// 54 => AD0
+#define RAMPS14_X_STEP_PIN			54
+#define RAMPS14_X_DIR_PIN			55
+#define RAMPS14_X_ENABLE_PIN		38
+#define RAMPS14_X_MIN_PIN			3
+#define RAMPS14_X_MAX_PIN			2
 
-#define RAMPS14_Y_STEP_PIN			60		// AD6
-#define RAMPS14_Y_DIR_PIN			61		// AD7
-#define RAMPS14_Y_ENABLE_PIN		56		// AD2
-#define RAMPS14_Y_MIN_PIN			14		// D14
-#define RAMPS14_Y_MAX_PIN			15		// D15
+#define RAMPS14_Y_STEP_PIN			60
+#define RAMPS14_Y_DIR_PIN			61
+#define RAMPS14_Y_ENABLE_PIN		56
+#define RAMPS14_Y_MIN_PIN			14
+#define RAMPS14_Y_MAX_PIN			15
 
-#define RAMPS14_Z_STEP_PIN			46		// D46
-#define RAMPS14_Z_DIR_PIN			48		// D48
-#define RAMPS14_Z_ENABLE_PIN		62		// AD8
-#define RAMPS14_Z_MIN_PIN			18		// D18
-#define RAMPS14_Z_MAX_PIN			19		// D19
+#define RAMPS14_Z_STEP_PIN			46
+#define RAMPS14_Z_DIR_PIN			48
+#define RAMPS14_Z_ENABLE_PIN		62
+#define RAMPS14_Z_MIN_PIN			18
+#define RAMPS14_Z_MAX_PIN			19
 
-#define RAMPS14_Z2_STEP_PIN			36		// D36
-#define RAMPS14_Z2_DIR_PIN			34		// D34
-#define RAMPS14_Z2_ENABLE_PIN		30		// D30
+#define RAMPS14_Z2_STEP_PIN			36
+#define RAMPS14_Z2_DIR_PIN			34
+#define RAMPS14_Z2_ENABLE_PIN		30
 
-#define RAMPS14_E0_STEP_PIN			26		// D26
-#define RAMPS14_E0_DIR_PIN			28		// D28
-#define RAMPS14_E0_ENABLE_PIN		24		// D24
+#define RAMPS14_E0_STEP_PIN			26
+#define RAMPS14_E0_DIR_PIN			28
+#define RAMPS14_E0_ENABLE_PIN		24
 
-#define RAMPS14_E1_STEP_PIN			36		// D36
-#define RAMPS14_E1_DIR_PIN			34		// D34
-#define RAMPS14_E1_ENABLE_PIN		30		// D30
+#define RAMPS14_E1_STEP_PIN			36
+#define RAMPS14_E1_DIR_PIN			34
+#define RAMPS14_E1_ENABLE_PIN		30
 
 #define RAMPS14_SDPOWER				-1
-#define RAMPS14_SDSS_PIN			53		// D53
-#define RAMPS14_LED_PIN				13		// D13
+#define RAMPS14_SDSS_PIN			53
+#define RAMPS14_LED_PIN				13
 
-#define RAMPS14_PS_ON_PIN			12		// D12
+#define RAMPS14_PS_ON_PIN			12
 
 #define RAMPS14_FET1D8_PIN			8		// D8 FET1
 #define RAMPS14_FET2D9_PIN			9		// D9 FET2

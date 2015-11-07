@@ -104,7 +104,7 @@ unsigned long CMyLcd::Splash()
 	lcd.setCursor(0, 2);
 	lcd.print(F("Herbert Aitenbichler"));
 	lcd.setCursor(0, 3);
-	lcd.print(F(__DATE__","__TIME__));
+	lcd.print(F( __DATE__ "," __TIME__ ));
 
 	delay(100);
 

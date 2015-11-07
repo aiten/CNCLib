@@ -29,7 +29,7 @@
 #else
 
 //#define StepperMessage(a,b) b
-#define StepperMessage(a,b) F(a":"b)
+#define StepperMessage(a,b) F(a ":" b)
 #define StepperMessageOr(a,b)	F(b)
 #define StepperMessageOne(a)	F(a)
 

@@ -46,33 +46,34 @@
 
 #endif
 
-#define MASH6050S_X_STEP_PIN		54		// AD0
-#define MASH6050S_X_DIR_PIN			55		// AD1
-#define MASH6050S_X_MIN_PIN			3		// D3
+// 54 => AD0 
+#define MASH6050S_X_STEP_PIN		54
+#define MASH6050S_X_DIR_PIN			55
+#define MASH6050S_X_MIN_PIN			3
 
-#define MASH6050S_Y_STEP_PIN		60		// AD6
-#define MASH6050S_Y_DIR_PIN			61		// AD7
-#define MASH6050S_Y_MIN_PIN			14		// D14
+#define MASH6050S_Y_STEP_PIN		60
+#define MASH6050S_Y_DIR_PIN			61
+#define MASH6050S_Y_MIN_PIN			14
 
-#define MASH6050S_Z_STEP_PIN		46		// D46
-#define MASH6050S_Z_DIR_PIN			48		// D48
-#define MASH6050S_Z_MAX_PIN			19		// D19
+#define MASH6050S_Z_STEP_PIN		46
+#define MASH6050S_Z_DIR_PIN			48
+#define MASH6050S_Z_MAX_PIN			19
 
-#define MASH6050S_C_STEP_PIN		26		// D26
-#define MASH6050S_C_DIR_PIN			28		// D28
-#define MASH6050S_C_MIN_PIN			18		// D18
+#define MASH6050S_C_STEP_PIN		26
+#define MASH6050S_C_DIR_PIN			28
+#define MASH6050S_C_MIN_PIN			18
 
 #define MASH6050S_SDPOWER			-1
 #if defined(__SAM3X8E__)
-#define MASH6050S_SDSS_PIN			4		// D4
+#define MASH6050S_SDSS_PIN			4
 #else
-#define MASH6050S_SDSS_PIN			53		// D53
+#define MASH6050S_SDSS_PIN			53
 #endif
 #elif defined(__AVR_ATmega328P__) || defined (_MSC_VER)
 
 #define MASH6050S_INPUTPINMODE		INPUT_PULLUP		
 
-#define MASH6050S_X_STEP_PIN		14		//AD0	
+#define MASH6050S_X_STEP_PIN		14
 #define MASH6050S_X_DIR_PIN			15	
 #define MASH6050S_X_MIN_PIN			2	
 
