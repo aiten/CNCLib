@@ -44,9 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArduinoSerialCommunicationEventArgs.cs" />
     <Compile Include="HPGLCommunication.cs" />
     <Compile Include="ArduinoSerialCommunication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TraceStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

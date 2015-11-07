@@ -21,6 +21,7 @@ using System.Windows.Input;
 using Framework.Wpf.Helpers;
 using Framework.Logic;
 using System.Globalization;
+using CNCLib.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
@@ -30,10 +31,10 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region Properties
 
-		public string AxisName { get; set; }
 		public int AxisIndex { get; set; }
-		public decimal Size { get; set; }
-		public decimal ProbeSize { get; set; }
+		public string AxisName { get { return Global.Instance.Machine.GetAxisName(AxisIndex); } }
+		public decimal Size { get { return Global.Instance.Machine.GetSize(AxisIndex); }  }
+		public decimal ProbeSize { get { return Global.Instance.Machine.GetProbeSize(AxisIndex); } }
 		public bool HomeIsMax { get; set; }
 
 		private string _param = "0";

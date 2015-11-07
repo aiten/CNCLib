@@ -96,6 +96,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 				}
 			});
 		}
+		public void WritePending() { AsyncRunCommand(() => { Com.WritePendingCommandsToFile(System.IO.Path.GetTempPath() + "PendingCommands.nc"); }); }
 
 		#endregion
 
@@ -109,6 +110,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ICommand SendM07CoolandOnCommand { get { return new DelegateCommand(SendM07CoolandOn, CanSendCoolant); } }
 		public ICommand SendM09CoolandOffCommand { get { return new DelegateCommand(SendM09CoolandOff, CanSendCoolant); } }
 		public ICommand SendM114Command { get { return new DelegateCommand(SendM114PrintPos, CanSend); } }
+		public ICommand WritePendingCommands { get { return new DelegateCommand(WritePending, CanSend); } }
 
 		#endregion
 	}

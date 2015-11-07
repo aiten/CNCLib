@@ -251,7 +251,8 @@
                     <Button Command="{Binding Tool.SendResurrectCommand}" Content="Resurrect" Width="100" />
                     <Label  Content="Pending Commands:" />
                     <TextBox Text="{Binding Tool.PendingCommandCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center" Margin="0,0,5,0" />
-                    <Button Command="{Binding Tool.SendClearQueue}" Content="Clear Queue" Width="100" />
+                    <Button Command="{Binding Tool.SendClearQueue}" Content="Clear Queue" Width="60" />
+                    <Button Command="{Binding Tool.WritePendingCommands}" Content="WritePending" Width="60" />
 
                 </StackPanel>
 

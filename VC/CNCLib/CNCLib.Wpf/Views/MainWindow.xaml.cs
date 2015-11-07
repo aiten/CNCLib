@@ -22,6 +22,8 @@ namespace CNCLib.Wpf.Views
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			Com.Trace.EnableTrace(System.IO.Path.GetTempPath() + @"CNCLibTrace.txt");
 		}
 		private Framework.Logic.ArduinoSerialCommunication Com
 		{
@@ -32,6 +34,8 @@ namespace CNCLib.Wpf.Views
 		{
 			if (Com.IsConnected)
 				Com.Disconnect();
+
+			Com.Trace.CloseTrace();
         }
 	}
 }

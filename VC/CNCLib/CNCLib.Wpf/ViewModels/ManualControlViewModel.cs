@@ -31,46 +31,28 @@ namespace CNCLib.Wpf.ViewModels
 		{
 			AxisX = new AxisViewModel(this)
 			{
-				AxisName = "X",
-				AxisIndex = 0,
-				Size = Global.Instance.Machine.SizeX,
-				ProbeSize = Global.Instance.Machine.ProbeSizeX
+				AxisIndex = 0
 			};
 			AxisY = new AxisViewModel(this)
 			{
-				AxisName = "Y",
-				AxisIndex = 1,
-				Size = Global.Instance.Machine.SizeY,
-				ProbeSize = Global.Instance.Machine.ProbeSizeY
+				AxisIndex = 1
 			};
 			AxisZ = new AxisViewModel(this)
 			{
-				AxisName = "Z",
 				AxisIndex = 2,
-				HomeIsMax = true,
-				Size = Global.Instance.Machine.SizeZ,
-				ProbeSize = Global.Instance.Machine.ProbeSizeZ
+				HomeIsMax = true
 			};
 			AxisA = new AxisViewModel(this)
 			{
-				AxisName = "A",
-				AxisIndex = 3,
-				Size = Global.Instance.Machine.SizeA,
-				ProbeSize = 0m
+				AxisIndex = 3
 			};
 			AxisB = new AxisViewModel(this)
 			{
-				AxisName = "B",
-				AxisIndex = 4,
-				Size = Global.Instance.Machine.SizeB,
-				ProbeSize = 0m
+				AxisIndex = 4
 			};
 			AxisC = new AxisViewModel(this)
 			{
-				AxisName = "C",
-				AxisIndex = 5,
-				Size = Global.Instance.Machine.SizeC,
-				ProbeSize = 0m
+				AxisIndex = 5
 			};
 	
 			CommandHistory = new CommandHistoryViewModel(this) { };
