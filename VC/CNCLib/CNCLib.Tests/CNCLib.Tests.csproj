@@ -47,6 +47,10 @@
     <Reference Include="EntityFramework.SqlServerCompact">
       <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.3\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
     </Reference>
+    <Reference Include="NSubstitute, Version=1.9.2.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\NSubstitute.1.9.2.0\lib\net45\NSubstitute.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
@@ -67,7 +71,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="RepositoryTests.cs" />
+    <Compile Include="Logic\LogicTests.cs" />
+    <Compile Include="Repository\ConfigurationRepositoryTests.cs" />
+    <Compile Include="Repository\RepositoryTests.cs" />
+    <Compile Include="Repository\MachineRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>
@@ -79,6 +86,18 @@
     <ProjectReference Include="..\..\Framework\Framework.EF\Framework.EF.csproj">
       <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
       <Name>Framework.EF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj">
+      <Project>{081814da-adc7-4b65-ae16-856c1b3d3ce8}</Project>
+      <Name>Framework.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
+      <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>
+      <Name>Framework.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Logic\CNCLib.Logic.csproj">
+      <Project>{36b9838b-493f-4bac-a8d3-35298c4ffdc7}</Project>
+      <Name>CNCLib.Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Repository\CNCLib.Repository.csproj">
       <Project>{d689cd99-a022-4f38-8ae1-a269c82a729c}</Project>

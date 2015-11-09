@@ -116,6 +116,5 @@ namespace Framework.EF
 		{
 			Context.Database.Initialize(true);        
 		}
-
 	}
 }

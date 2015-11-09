@@ -40,7 +40,7 @@ namespace CNCLib.GCode.Commands
 			Movetype = MoveType.NoMove;
         }
 
-		private Point3D _CalculatedEndPosition;
+		private Point3D _calculatedEndPosition;
 		protected List<Variable> _variables = new List<Variable>();
 
 		#endregion
@@ -61,7 +61,7 @@ namespace CNCLib.GCode.Commands
 		{
 			get
 			{
-				return _CalculatedEndPosition;
+				return _calculatedEndPosition;
 			}
 		}			
 
@@ -177,11 +177,11 @@ namespace CNCLib.GCode.Commands
 				{
 					sc.AssignMissing(PrevCommand.CalculatedEndPosition);
 				}
-				_CalculatedEndPosition = sc;;
+				_calculatedEndPosition = sc;;
 			}
 			else
 			{
-				_CalculatedEndPosition = (PrevCommand == null) ? new Point3D() : PrevCommand._CalculatedEndPosition;
+				_calculatedEndPosition = (PrevCommand == null) ? new Point3D() : PrevCommand._calculatedEndPosition;
 			}
 		}			
 

@@ -35,9 +35,9 @@
 
 ////////////////////////////////////////////////////////
 
-#define MAXSIZE_X_AXIS 130000 
-#define MAXSIZE_Y_AXIS 45000 
-#define MAXSIZE_Z_AXIS 81000 
+#define MAXSIZE_X_AXIS 200000 
+#define MAXSIZE_Y_AXIS 200000 
+#define MAXSIZE_Z_AXIS 100000 
 #define MAXSIZE_A_AXIS 50000 
 
 ////////////////////////////////////////////////////////

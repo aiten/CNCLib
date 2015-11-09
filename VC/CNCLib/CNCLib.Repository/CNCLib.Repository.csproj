@@ -69,6 +69,8 @@
     <Compile Include="ConfigurationRepository.cs" />
     <Compile Include="Mappings\MachineMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryInterface\IConfigurationRepository.cs" />
+    <Compile Include="RepositoryInterface\IMachineRepository.cs" />
     <Compile Include="UnitOfWorkFactory.cs" />
   </ItemGroup>
   <ItemGroup>

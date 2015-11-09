@@ -23,6 +23,7 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using System.IO.Ports;
+using Framework.Tools;
 
 namespace Framework.Logic
 {

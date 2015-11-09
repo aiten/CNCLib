@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Framework.Tools
+namespace CNCLib.GCode
 {
 	public class Vector3D
 	{

@@ -13,7 +13,10 @@ namespace CNCLib.Repository.Entities
 		public string Type { get; set; }
 		public string Value { get; set; }
 
-		public void SetValue(string group, string name, object value)
+		public Configuration()
+		{
+		}
+		public Configuration(string group, string name, object value)
 		{
 			Name = name;
 			Group = group;

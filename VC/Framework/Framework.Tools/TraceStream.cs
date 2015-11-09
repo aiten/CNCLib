@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Framework.Logic
+namespace Framework.Tools
 {
 	public class TraceStream : IDisposable
 	{
