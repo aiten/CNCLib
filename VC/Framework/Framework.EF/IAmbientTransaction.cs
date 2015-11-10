@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CNCLib.Logic
+namespace Framework.EF
 {
-	public class ControlerBase
+	public interface IAmbientTransaction, IDisposable
 	{
-		static public Framework.Tools.IFactory RepositoryFactory { get; set; }
+		void Commit();
+		void Rollback();
 	}
 }

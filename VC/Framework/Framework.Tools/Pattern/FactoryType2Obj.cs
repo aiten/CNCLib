@@ -17,18 +17,31 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Framework.Tools.Pattern;
 
-namespace Framework.Tools
+namespace Framework.Tools.Pattern
 {
-    public static class Tools
-    {
-        public static int MulDivRound32(int val, int mul, int div)
-        {
-            return (val * mul + div / 2) / div;
-        }
-        public static decimal MulDiv(decimal val, decimal mul, decimal div,int decimals)
-        {
-            return Math.Round((val * mul) / div,decimals);
-        }
-    }
+	public class FactoryType2Obj : IFactory
+	{
+		public TInterface Create<TInterface>() where TInterface : IDisposable
+		{
+			IDisposable to;
+			if (_type2objmapping.TryGetValue(typeof(TInterface),out to) == false)
+			{
+				throw new ArgumentException("Invalid InterfaceType, not mapped");
+			}
+			return (TInterface) to;
+		}
+
+		private Dictionary<Type, IDisposable> _type2objmapping = new Dictionary<Type, IDisposable>();
+
+		public void Register(Type from, IDisposable to)
+		{
+			_type2objmapping[from] = to;
+		}
+	}
 }

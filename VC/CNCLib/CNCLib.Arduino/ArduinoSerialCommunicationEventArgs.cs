@@ -20,32 +20,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
-using System.Threading;
-using System.IO.Ports;
-using Framework.Logic;
+using System.Threading.Tasks;
 
-namespace Plotter.Logic
+namespace CNCLib.Arduino
 {
-    public class Communication : Framework.Logic.HPGLCommunication
-    {
-        public Communication()
-        {
-        }
+	public class ArduinoSerialCommunicationEventArgs : EventArgs
+	{
+		public ArduinoSerialCommunicationEventArgs(string info, ArduinoSerialCommunication.Command cmd)
+		{
+			Command = cmd;
+			if (cmd != null && string.IsNullOrEmpty(info))
+				this.Info = cmd.CommandText;
+			else
+				this.Info = info;
+			Continue = false;
+			Abort = false;
+		}
 
-        public void SendFile(string filename,bool singleStep)
-        {
-            using (StreamReader sr = new StreamReader(filename))
-            {
-                Abort = false;
-                String line;
-                List<String> lines = new List<string>();
-                while ((line = sr.ReadLine()) != null && !Abort)
-                {
-                    lines.Add(line);
-                }          
-                SendCommands(lines.ToArray());
-            }
-        }
-    }
+		public bool Continue { get; set; }
+		public bool Abort { get; set; }
+		public string Result { get; set; }
+
+		public readonly string Info;
+
+		public ArduinoSerialCommunication.Command Command { get; private set; }
+	}
 }

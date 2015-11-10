@@ -28,7 +28,6 @@ using Framework.Wpf.Helpers;
 using CNCLib.Wpf.Models;
 using System.Threading;
 using System.IO;
-using Framework.Logic;
 using System.Globalization;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl

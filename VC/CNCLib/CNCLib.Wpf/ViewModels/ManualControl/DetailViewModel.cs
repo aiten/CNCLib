@@ -28,7 +28,6 @@ using Framework.Wpf.Helpers;
 using CNCLib.Wpf.Models;
 using System.Threading;
 using System.IO;
-using Framework.Logic;
 using System.Globalization;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
@@ -40,9 +39,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			Vm = vm;
 		}
-		public Framework.Logic.ArduinoSerialCommunication Com
+		public CNCLib.Arduino.ArduinoSerialCommunication Com
 		{
-			get { return Framework.Tools.Singleton<Framework.Logic.ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<CNCLib.Arduino.ArduinoSerialCommunication>.Instance; }
 		}
 		public bool Connected
 		{

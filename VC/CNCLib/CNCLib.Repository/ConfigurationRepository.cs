@@ -1,17 +1,36 @@
-﻿using CNCLib.Repository.Context;
+﻿////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2015 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using CNCLib.Repository.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CNCLib.Repository;
+using CNCLib.Repository.Interface;
 using Framework.Tools;
 using System.Data.Entity;
 using Framework.EF;
 
 namespace CNCLib.Repository
 {
-    public class ConfigurationRepository : RepositoryInterface.IConfigurationRepository
+    public class ConfigurationRepository : RepositoryBase, IConfigurationRepository
 	{
 		public Entities.Configuration Get(string group, string  name)
         {
@@ -72,7 +91,7 @@ namespace CNCLib.Repository
 
 					uow.CommitTransaction();
 				}
-				catch (Exception ex)
+				catch (Exception /* ex */)
 				{
 					uow.RollbackTransaction();
 					throw;

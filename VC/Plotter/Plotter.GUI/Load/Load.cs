@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using CNCLib.GCode;
 using Framework.Tools;
 using Plotter.GUI.Shapes;
 using System;
@@ -53,24 +54,22 @@ namespace Plotter.GUI.Load
 
         CommandStream _stream;
         bool _IsPenUp;
-		bool _lastIsPenUp;
-		SpaceCoordinate _last=new SpaceCoordinate();
+		Point3D _last =new Point3D();
         Color _color;
 
-		SpaceCoordinate _minpt;
-		SpaceCoordinate _maxpt;
+		Point3D _minpt;
+		Point3D _maxpt;
 
 
         public LoadInfo LoadOptions  { get; set; }
 
 		private void InitLoad()
 		{
-			_last = new SpaceCoordinate();
-			_minpt = new SpaceCoordinate() { X = int.MaxValue, Y = int.MaxValue };
-			_maxpt = new SpaceCoordinate() { X = int.MinValue, Y = int.MinValue };
+			_last = new Point3D();
+			_minpt = new Point3D() { X = int.MaxValue, Y = int.MaxValue };
+			_maxpt = new Point3D() { X = int.MinValue, Y = int.MinValue };
 			_stream = new CommandStream();
 			_IsPenUp = true;
-			_lastIsPenUp = false;
 			_color = Color.Black;
 		}
 
@@ -153,7 +152,7 @@ namespace Plotter.GUI.Load
 
                     while (_stream.IsInt())
                     {
-                        SpaceCoordinate pt = GetSpaceCoordiante(cmdidx == 3);
+						Point3D pt = GetSpaceCoordiante(cmdidx == 3);
                         if (cmdidx == 3)  // move rel
                         {
                             pt.X += _last.X;
@@ -205,9 +204,9 @@ namespace Plotter.GUI.Load
             return true;
         }
 
-        private SpaceCoordinate GetSpaceCoordiante(bool isRelativPoint)
+        private Point3D GetSpaceCoordiante(bool isRelativPoint)
         {
-			SpaceCoordinate pt = new SpaceCoordinate();
+			Point3D pt = new Point3D();
             pt.X = _stream.GetInt();
 			_stream.IsCommand(",") ;
 			pt.Y = _stream.GetInt();
@@ -226,7 +225,7 @@ namespace Plotter.GUI.Load
             Adjust(ref pt, isRelativPoint);
             return pt;
         }
-		private void AdjustOrig(ref SpaceCoordinate pt)
+		private void AdjustOrig(ref Point3D pt)
 		{
 			if (LoadOptions.SwapXY)
 			{
@@ -236,7 +235,7 @@ namespace Plotter.GUI.Load
 			}
 		}
 
-        private void Adjust(ref SpaceCoordinate pt,bool isRelativPoint)
+        private void Adjust(ref Point3D pt,bool isRelativPoint)
         {
             if (!isRelativPoint)
             {

@@ -28,7 +28,7 @@ using System.Windows.Forms;
 using CNCLib.GCode;
 using Framework.Tools;
 using CNCLib.GCode.Commands;
-using Framework.Logic;
+using CNCLib.Arduino;
 
 namespace CNCLib.GUI
 {
@@ -111,7 +111,7 @@ namespace CNCLib.GUI
 
 		private ArduinoSerialCommunication Com
 		{
-			get { return Framework.Tools.Singleton<ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<ArduinoSerialCommunication>.Instance; }
 		}
 
 		#endregion

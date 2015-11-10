@@ -65,9 +65,9 @@ namespace CNCLib.Wpf.ViewModels
  
         #region Properties
 
-		private Framework.Logic.ArduinoSerialCommunication Com
+		private CNCLib.Arduino.ArduinoSerialCommunication Com
         {
-			get { return Framework.Tools.Singleton<Framework.Logic.ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<CNCLib.Arduino.ArduinoSerialCommunication>.Instance; }
         }
 
 		#region Current Machine

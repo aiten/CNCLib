@@ -19,7 +19,6 @@
 using Framework.Tools;
 using Plotter.GUI.Load;
 using Plotter.GUI.Shapes;
-using Plotter.Logic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,6 +30,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CNCLib.Arduino;
 
 namespace Plotter.GUI
 {
@@ -43,9 +43,9 @@ namespace Plotter.GUI
         {
             InitializeComponent();
         }
-        private Communication Com
+        private HPGLCommunication Com
         {
-            get { return Framework.Tools.Singleton<Communication>.Instance; }
+            get { return Framework.Tools.Pattern.Singleton<HPGLCommunication>.Instance; }
         }
 
 		#endregion
@@ -112,7 +112,7 @@ namespace Plotter.GUI
 
 		private void _abort_Click(object sender, EventArgs e)
 		{
-			Com.AbortCommand();
+			Com.AbortCommands();
 		}
 
         private void _paintAgain_Click(object sender, EventArgs e)

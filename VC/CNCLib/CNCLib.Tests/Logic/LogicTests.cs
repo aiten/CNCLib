@@ -1,38 +1,72 @@
-﻿using System;
+﻿////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2015 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CNCLib.Repository.Context;
 using CNCLib.Repository;
 using CNCLib.Repository.Entities;
-using CNCLib.Repository.RepositoryInterface;
+using CNCLib.Repository.Interface;
 using CNCLib.Logic;
-using System.Threading.Tasks;
 using Framework.EF;
+using Framework.Logic;
 using System.Collections.Generic;
 using System.Linq;
 using NSubstitute;
-using Framework.Tools;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Tests.Logic
 {
 	[TestClass]
 	public class LogicTests
 	{
-/*
-		[ClassInitialize]
-		public static void ClassInit(TestContext testContext)
+		/*
+				[ClassInitialize]
+				public static void ClassInit(TestContext testContext)
+				{
+				}
+
+				[TestInitialize]
+				public void Init()
+				{
+				}
+		*/
+
+		private FactoryType2Obj CreateMock()
 		{
+			var mockfactory = new FactoryType2Obj();
+			ControlerBase.RepositoryFactory = mockfactory;
+			return mockfactory;
+        }
+
+		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
+        {
+			var mockfactory = CreateMock();
+			TInterface rep = Substitute.For<TInterface>();
+			mockfactory.Register(typeof(TInterface), rep);
+			return rep;
 		}
 
-		[TestInitialize]
-		public void Init()
-		{
-		}
-*/
+
 		[TestMethod]
 		public void GetMachines()
 		{
-			var rep = Substitute.For< IMachineRepository>();
-			Factory<IMachineRepository>.Register(rep);
+			var rep = CreateMock<IMachineRepository>();
 
 			var machineEntity = new Machine[] { new Machine() { MachineID = 1, Name = "Maxi", BufferSize = 115200 } };
 			rep.GetMachines().Returns(machineEntity);
@@ -41,6 +75,9 @@ namespace CNCLib.Tests.Logic
 
 			var machines = ctrl.GetMachines();
 			Assert.AreEqual(true, machines.Length == 1);
+			Assert.AreEqual(1, machines[0].MachineID);
+			Assert.AreEqual("Maxi", machines[0].Name);
+			Assert.AreEqual(115200, machines[0].BufferSize);
 		}
 
 		[TestMethod]

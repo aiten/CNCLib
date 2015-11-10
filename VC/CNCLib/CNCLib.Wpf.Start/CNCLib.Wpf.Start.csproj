@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -81,6 +81,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CNCLibAssemblyInfo.cs">
+      <Link>Properties\CNCLibAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -112,6 +115,10 @@
     <ProjectReference Include="..\..\Framework\Framework.EF\Framework.EF.csproj">
       <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
       <Name>Framework.EF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj">
+      <Project>{081814da-adc7-4b65-ae16-856c1b3d3ce8}</Project>
+      <Name>Framework.Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
       <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>

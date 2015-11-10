@@ -25,11 +25,10 @@ namespace Framework.Tools
     {
         string _line;
         int _idx;
-        bool _lastError;
         char _endCommandChar = ';';
         string _spaceChar = " \t";
 
-        public string Line			{ set { _line = value; _idx = 0; _lastError = false; } get { return _line.Substring(_idx); } }
+        public string Line			{ set { _line = value; _idx = 0; } get { return _line.Substring(_idx); } }
 
         public char NextChar		{ get { return  IsEOF() ? ((char) 0) : _line[_idx];  } }
 		public char NextCharToUpper { get { return char.ToUpper(NextChar); } }

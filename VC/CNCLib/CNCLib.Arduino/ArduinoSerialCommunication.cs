@@ -25,9 +25,9 @@ using System.Threading;
 using System.IO.Ports;
 using Framework.Tools;
 
-namespace Framework.Logic
+namespace CNCLib.Arduino
 {
-    public class ArduinoSerialCommunication : IDisposable
+	public class ArduinoSerialCommunication : IDisposable
     {
         #region Private Members
 
@@ -718,7 +718,7 @@ namespace Framework.Logic
 			{
 				using (StreamWriter sr = new StreamWriter(filename))
 				{
-                    foreach (Framework.Logic.ArduinoSerialCommunication.Command cmds in CommandHistory)
+                    foreach (ArduinoSerialCommunication.Command cmds in CommandHistory)
 					{
 						sr.Write(cmds.SentTime); sr.Write(":");
 						sr.Write(cmds.CommandText); sr.Write(" => ");

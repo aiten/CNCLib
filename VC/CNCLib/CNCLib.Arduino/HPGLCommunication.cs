@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Framework.Logic
+namespace CNCLib.Arduino
 {
 	public class HPGLCommunication : ArduinoSerialCommunication
     {

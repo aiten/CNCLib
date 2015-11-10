@@ -25,9 +25,9 @@ namespace CNCLib.Wpf.Views
 
 			Com.Trace.EnableTrace(System.IO.Path.GetTempPath() + @"CNCLibTrace.txt");
 		}
-		private Framework.Logic.ArduinoSerialCommunication Com
+		private CNCLib.Arduino.ArduinoSerialCommunication Com
 		{
-			get { return Framework.Tools.Singleton<Framework.Logic.ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<CNCLib.Arduino.ArduinoSerialCommunication>.Instance; }
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

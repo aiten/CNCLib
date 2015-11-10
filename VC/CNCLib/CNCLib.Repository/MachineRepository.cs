@@ -1,4 +1,22 @@
-﻿using CNCLib.Repository.Context;
+﻿////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2015 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using CNCLib.Repository.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +26,11 @@ using CNCLib.Repository;
 using Framework.Tools;
 using System.Data.Entity;
 using Framework.EF;
+using CNCLib.Repository.Interface;
 
 namespace CNCLib.Repository
 {
-    public class MachineRepository : RepositoryInterface.IMachineRepository
+    public class MachineRepository : RepositoryBase, IMachineRepository
 	{
 		public Entities.Machine[] GetMachines()
 		{
@@ -116,12 +135,12 @@ namespace CNCLib.Repository
 
 						// search und update machinecommands (add and delete)
 
-						EFTools.Sync<Entities.MachineCommand>(uow, 
+						Sync<Entities.MachineCommand>(uow, 
 							machineInDb.MachineCommands, 
 							machineCommands, 
 							(x, y) => x.MachineCommandID > 0 && x.MachineCommandID == y.MachineCommandID);
 
-						EFTools.Sync<Entities.MachineInitCommand>(uow,
+						Sync<Entities.MachineInitCommand>(uow,
 							machineInDb.MachineInitCommands,
 							machineInitCommands,
 							(x, y) => x.MachineInitCommandID > 0 && x.MachineInitCommandID == y.MachineInitCommandID);
@@ -131,7 +150,7 @@ namespace CNCLib.Repository
 
 					uow.CommitTransaction();
 				}
-				catch (Exception ex)
+				catch (Exception /*ex */)
 				{
 					uow.RollbackTransaction();
 					throw;

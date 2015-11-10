@@ -19,7 +19,7 @@
 using System;
 using System.Windows.Input;
 using Framework.Wpf.Helpers;
-using Framework.Logic;
+using CNCLib.Arduino;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {

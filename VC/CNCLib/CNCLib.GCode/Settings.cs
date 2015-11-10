@@ -17,7 +17,7 @@
 */
 
 using System;
-using Framework.Tools;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.GCode
 {
@@ -30,19 +30,8 @@ namespace CNCLib.GCode
             SizeZ = 81.0m;
         }
 
-		public int MachineID { get; set; }
-		public string ComPort { get; set; }
-		public int BaudRate { get; set; }
-		public string Name { get; set; }
 		public decimal SizeX { get; set; }
 		public decimal SizeY { get; set; }
 		public decimal SizeZ { get; set; }
-		public int BufferSize { get; set; }
-		public bool CommandToUpper { get; set; }
-		public bool Default { get; set; }
-		public decimal ProbeSizeX { get; set; }
-		public decimal ProbeSizeY { get; set; }
-		public decimal ProbeSizeZ { get; set; }
-
     }
 }

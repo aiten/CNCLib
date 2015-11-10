@@ -1,13 +1,30 @@
-﻿using System;
+﻿////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2015 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Framework.Tools;
-using Framework.EF;
+using Framework.Logic;
+using CNCLib.Repository.Interface;
 using CNCLib.Repository;
-using CNCLib.Repository.Context;
-using CNCLib.Repository.RepositoryInterface;
 
 namespace CNCLib.Logic
 {
@@ -29,7 +46,7 @@ namespace CNCLib.Logic
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
 				var machine = rep.GetMachine(id);
-				return ObjectConverter.NewCloneProperties<DTO.Machine, CNCLib.Repository.Entities.Machine>(machine);
+				return ObjectConverter.NewCloneProperties<DTO.Machine, Repository.Entities.Machine>(machine);
 			}
         }
 
@@ -37,7 +54,7 @@ namespace CNCLib.Logic
         {
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
-				rep.Delete(m.NewCloneProperties<CNCLib.Repository.Entities.Machine, DTO.Machine>());
+				rep.Delete(m.NewCloneProperties<Repository.Entities.Machine, DTO.Machine>());
 			}
         }
 
@@ -66,9 +83,9 @@ namespace CNCLib.Logic
 		{
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
-				var me = m.NewCloneProperties<CNCLib.Repository.Entities.Machine, DTO.Machine>();
-				me.MachineCommands = m.MachineCommands.ToArray().CloneProperties<CNCLib.Repository.Entities.MachineCommand, CNCLib.Logic.DTO.MachineCommand>();
-				me.MachineInitCommands = m.MachineInitCommands.ToArray().CloneProperties<CNCLib.Repository.Entities.MachineInitCommand, CNCLib.Logic.DTO.MachineInitCommand>();
+				var me = m.NewCloneProperties<Repository.Entities.Machine, DTO.Machine>();
+				me.MachineCommands = m.MachineCommands.ToArray().CloneProperties<Repository.Entities.MachineCommand, DTO.MachineCommand>();
+				me.MachineInitCommands = m.MachineInitCommands.ToArray().CloneProperties<Repository.Entities.MachineInitCommand, DTO.MachineInitCommand>();
 
 				return rep.StoreMachine(me);
 			}
@@ -82,7 +99,7 @@ namespace CNCLib.Logic
 			{
 				var config = rep.Get("Environment", "DefaultMachineID");
 
-				if (config == default(CNCLib.Repository.Entities.Configuration))
+				if (config == default(Repository.Entities.Configuration))
 					return -1;
 
 				return int.Parse(config.Value);

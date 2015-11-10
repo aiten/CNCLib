@@ -25,10 +25,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Plotter.Logic;
 using Plotter.GUI.Shapes;
 using Framework.Tools;
 using System.Threading;
+using CNCLib.Arduino;
 
 namespace Plotter.GUI
 {
@@ -53,8 +53,8 @@ namespace Plotter.GUI
 
         public PlotterUserControl()
         {
-            SizeXHPGL = Tools.MulDivRound32(55600,29,77);
-            SizeYHPGL = Tools.MulDivRound32(32000,29,77);
+            SizeXHPGL = MulDivRound32(55600,29,77);
+            SizeYHPGL = MulDivRound32(32000,29,77);
 
             _shapefactory.RegisterShape("Rectangle", new Plotter.GUI.Shapes.Rectangle());
             _shapefactory.RegisterShape("Line", new Line());
@@ -124,9 +124,9 @@ namespace Plotter.GUI
         Shapes.ShapeFactory _shapefactory = new Shapes.ShapeFactory();
         ShapeList _shapelist = new ShapeList();
 
-        private Communication Com
+        private HPGLCommunication Com
         {
-            get { return Framework.Tools.Singleton<Communication>.Instance; }
+            get { return Framework.Tools.Pattern.Singleton<HPGLCommunication>.Instance; }
         }
 
         #endregion
@@ -147,14 +147,22 @@ namespace Plotter.GUI
         {
             // with e.g.  867
             // max pt.X = 686 , pt.x can be 0
-            return new Point(AdjustHPGLCordX(Tools.MulDivRound32(SizeXHPGL,pt.X,ClientSize.Width-1)), AdjustHPGLCordY(Tools.MulDivRound32(SizeYHPGL,pt.Y,ClientSize.Height-1)));
+            return new Point(AdjustHPGLCordX(MulDivRound32(SizeXHPGL,pt.X,ClientSize.Width-1)), AdjustHPGLCordY(MulDivRound32(SizeYHPGL,pt.Y,ClientSize.Height-1)));
         }
+		public decimal MulDiv(decimal val, decimal mul, decimal div, int decimals)
+		{
+			return Math.Round((val * mul) / div, decimals);
+		}
+		public static int MulDivRound32(int val, int mul, int div)
+		{
+			return (val * mul + div / 2) / div;
+		}
 
-        Point HPGLToClient(Point pt)
+		Point HPGLToClient(Point pt)
         {
             int x = pt.X;
             int y = SizeYHPGL - (pt.Y);
-            return new Point(Tools.MulDivRound32(x, ClientSize.Width, SizeXHPGL), Tools.MulDivRound32(y, ClientSize.Height, SizeYHPGL));
+            return new Point(MulDivRound32(x, ClientSize.Width, SizeXHPGL), MulDivRound32(y, ClientSize.Height, SizeYHPGL));
         }
 
         #endregion

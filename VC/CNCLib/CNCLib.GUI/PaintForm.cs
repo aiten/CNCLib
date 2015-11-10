@@ -32,7 +32,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using CNCLib.GUI.Load;
-using Framework.Logic;
+using CNCLib.Arduino;
 
 namespace CNCLib.GUI
 {
@@ -61,7 +61,7 @@ namespace CNCLib.GUI
 
 		private ArduinoSerialCommunication Com
         {
-			get { return Framework.Tools.Singleton<ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<ArduinoSerialCommunication>.Instance; }
         }
 
 		#endregion

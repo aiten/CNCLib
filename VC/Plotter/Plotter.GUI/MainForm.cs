@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Plotter.Logic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,14 +25,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CNCLib.Arduino;
 
 namespace Plotter.GUI
 {
     public partial class MainForm : Form
     {
-        private Communication Com
+        private HPGLCommunication Com
         {
-            get { return Framework.Tools.Singleton<Communication>.Instance; }
+            get { return Framework.Tools.Pattern.Singleton<HPGLCommunication>.Instance; }
         }
 
         public MainForm()
@@ -45,12 +45,12 @@ namespace Plotter.GUI
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Framework.Tools.Singleton<Communication>.Free();
+            Framework.Tools.Pattern.Singleton<HPGLCommunication>.Free();
         }
 
         private void UpdateButtons()
         {
-            if (Framework.Tools.Singleton<Communication>.Allocated && Com.IsConnected)
+            if (Framework.Tools.Pattern.Singleton<HPGLCommunication>.Allocated && Com.IsConnected)
             {
                 _paint.Enabled = true;
             }
@@ -64,7 +64,7 @@ namespace Plotter.GUI
         {
             if (Com.IsConnected)
             {
-                Framework.Tools.Singleton<Communication>.Free();
+                Framework.Tools.Pattern.Singleton<HPGLCommunication>.Free();
             }
             else 
             {
