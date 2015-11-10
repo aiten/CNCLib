@@ -13,8 +13,6 @@ namespace CNCLib.Repository
 {
     public class ConfigurationRepository : RepositoryInterface.IConfigurationRepository
 	{
-		public static bool _forcebinding = Factory<RepositoryInterface.IConfigurationRepository>.Register(typeof(ConfigurationRepository));
-
 		public Entities.Configuration Get(string group, string  name)
         {
 			using (IUnitOfWork uow = UnitOfWorkFactory.Create())

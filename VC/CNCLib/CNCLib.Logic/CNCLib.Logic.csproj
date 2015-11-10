@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlerBase.cs" />
     <Compile Include="DTO\Configuration.cs" />
     <Compile Include="DTO\MachineInitCommand.cs" />
     <Compile Include="DTO\MachineCommand.cs" />

@@ -6,34 +6,28 @@ using System.Threading.Tasks;
 
 namespace Framework.Tools
 {
-	public class Factory<T> where T : IDisposable
+	public class Factory : IFactory
 	{
-		public static T Create()
+		public TInterface Create<TInterface>() where TInterface : IDisposable
 		{
-			if (_t == null)
+			Type to;
+			if (_typemapping.TryGetValue(typeof(TInterface),out to) == false)
 			{
-				return (T)Activator.CreateInstance(_create); 
+				throw new ArgumentException("Invalid InterfaceType, not mapped");
 			}
-
-			return _t;
+			return (TInterface)Activator.CreateInstance(to);
 		}
 
-		private static T _t = default(T);
+		private Dictionary<Type, Type> _typemapping = new Dictionary<Type, Type>();
 
-		private static Type _create;
-
-		public static void Register(T x)
+		public void Register(Type from, Type to)
 		{
-			_t = x;
-		}
-
-		public static bool Register(Type create)
-		{
-			if (create.GetInterface(typeof(T).Name) == null)
+			Type fromtest;
+			if (_typemapping.TryGetValue(from, out fromtest) == true)
+			{
 				throw new ArgumentException();
-
-			_create = create;
-			return true;
-        }
+			}
+			_typemapping[from] = to;
+		}
 	}
 }

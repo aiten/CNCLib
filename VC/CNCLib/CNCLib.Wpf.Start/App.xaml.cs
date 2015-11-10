@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CNCLib.Logic;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,14 @@ namespace CNCLib.Wpf.Start
 	/// </summary>
 	public partial class App : Application
 	{
+		private void AppStartup(object sender, StartupEventArgs e)
+		{
+			var factory = new Framework.Tools.Factory();
+
+			factory.Register(typeof(CNCLib.Repository.RepositoryInterface.IConfigurationRepository),typeof(CNCLib.Repository.ConfigurationRepository));
+			factory.Register(typeof(CNCLib.Repository.RepositoryInterface.IMachineRepository), typeof(CNCLib.Repository.MachineRepository));
+
+			ControlerBase.RepositoryFactory = factory;
+		}
 	}
 }

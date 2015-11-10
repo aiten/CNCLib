@@ -13,12 +13,6 @@ namespace CNCLib.Repository
 {
     public class MachineRepository : RepositoryInterface.IMachineRepository
 	{
-		public static bool _forcebinding = Factory<RepositoryInterface.IMachineRepository>.Register(typeof(MachineRepository));
-
-		public MachineRepository()
-		{
-		}
-
 		public Entities.Machine[] GetMachines()
 		{
 			using (IUnitOfWork uow = UnitOfWorkFactory.Create())

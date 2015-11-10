@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IFactory.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="ObjectConverter.cs" />
     <Compile Include="TraceStream.cs" />

@@ -24,7 +24,7 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
         public void GetEmptyConfiguration()
         {
-			using (var rep = Factory<IConfigurationRepository>.Create())
+			using (var rep = RepositoryFactory.Create<IConfigurationRepository>())
 			{
 				var entity = rep.Get("Test","Test");
 				Assert.AreEqual(null, entity);

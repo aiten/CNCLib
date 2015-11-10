@@ -17,13 +17,18 @@ namespace CNCLib.Tests.Repository
 	{
 		public TestContext TestContext { get; set; }
 		static bool _init = false;
+		static protected Framework.Tools.IFactory RepositoryFactory { get; set; }
 
 		[ClassInitialize]
 		public static void ClassInit(TestContext testContext)
 		{
 
-			MachineRepository._forcebinding = true;
-			ConfigurationRepository._forcebinding = true;
+			var factory = new Framework.Tools.Factory();
+
+			factory.Register(typeof(CNCLib.Repository.RepositoryInterface.IConfigurationRepository), typeof(CNCLib.Repository.ConfigurationRepository));
+			factory.Register(typeof(CNCLib.Repository.RepositoryInterface.IMachineRepository), typeof(CNCLib.Repository.MachineRepository));
+
+			RepositoryFactory = factory;
 
 			if (_init == false)
 			{
