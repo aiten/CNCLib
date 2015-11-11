@@ -23,7 +23,10 @@ using System.Linq;
 using System.Windows;
 using Framework.Logic;
 using CNCLib.Repository;
-using CNCLib.Repository.Interface;
+using CNCLib.Repository.Interfaces;
+using CNCLib.Logic;
+using CNCLib.Logic.Interfaces;
+using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.Start
 {
@@ -34,12 +37,18 @@ namespace CNCLib.Wpf.Start
 	{
 		private void AppStartup(object sender, StartupEventArgs e)
 		{
-			var factory = new Framework.Tools.Pattern.FactoryType2Type();
+			var repositoryfactory = new Framework.Tools.Pattern.FactoryType2Type();
 
-			factory.Register(typeof(IConfigurationRepository),typeof(ConfigurationRepository));
-			factory.Register(typeof(IMachineRepository), typeof(MachineRepository));
+			repositoryfactory.Register(typeof(IConfigurationRepository),typeof(ConfigurationRepository));
+			repositoryfactory.Register(typeof(IMachineRepository), typeof(MachineRepository));
 
-			ControlerBase.RepositoryFactory = factory;
+			ControlerBase.RepositoryFactory = repositoryfactory;
+
+			var logicfactory = new Framework.Tools.Pattern.FactoryType2Type();
+
+			logicfactory.Register(typeof(IMachineControler), typeof(MachineControler));
+
+			BaseViewModel.LogicFactory = logicfactory;
 		}
 	}
 }

@@ -61,6 +61,7 @@
     <Compile Include="DTO\MachineInitCommand.cs" />
     <Compile Include="DTO\MachineCommand.cs" />
     <Compile Include="DTO\Machine.cs" />
+    <Compile Include="Interfaces\IMachineControler.cs" />
     <Compile Include="MachineControler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

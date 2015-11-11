@@ -72,8 +72,8 @@
     <Compile Include="ConfigurationRepository.cs" />
     <Compile Include="Mappings\MachineMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interface\IConfigurationRepository.cs" />
-    <Compile Include="Interface\IMachineRepository.cs" />
+    <Compile Include="Interfaces\IConfigurationRepository.cs" />
+    <Compile Include="Interfaces\IMachineRepository.cs" />
     <Compile Include="UnitOfWorkFactory.cs" />
   </ItemGroup>
   <ItemGroup>

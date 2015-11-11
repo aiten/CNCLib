@@ -32,6 +32,7 @@ using System.Linq.Expressions;
 using CNCLib.Logic;
 using CNCLib.GCode;
 using System.Threading;
+using CNCLib.Logic.Interfaces;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -47,21 +48,24 @@ namespace CNCLib.Wpf.ViewModels
         {
             var machines = new ObservableCollection<Models.Machine>();
 
-            machines.AddCloneProperties(new MachineControler().GetMachines());
-			int defaultM = new MachineControler().GetDetaultMachine();			
-			
-			Machines = machines;
+			using (var controler = LogicFactory.Create<IMachineControler>())
+			{
+				machines.AddCloneProperties(controler.GetMachines());
+				int defaultM = controler.GetDetaultMachine();
 
-            var defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultmachineid);
+				Machines = machines;
 
-            if (defaultmachine == null)
-				defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultM);
+				var defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultmachineid);
 
-            if (defaultmachine == null && machines.Count > 0)
-                defaultmachine = machines[0];
-            
-            Machine = defaultmachine;
-        }
+				if (defaultmachine == null)
+					defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultM);
+
+				if (defaultmachine == null && machines.Count > 0)
+					defaultmachine = machines[0];
+
+				Machine = defaultmachine;
+			}
+		}
  
         #region Properties
 
@@ -128,18 +132,21 @@ namespace CNCLib.Wpf.ViewModels
 
 				if (SendInitCommands && Machine != null)
 				{
-			        var initCommands = new MachineControler().GetMachineInitCommands(Machine.MachineID);
-
-					if (initCommands.Length > 0)
+					using (var controler = LogicFactory.Create<IMachineControler>())
 					{
-						if (ResetOnConnect)
-						{
-							Com.SendCommand("");
-						}
+						var initCommands = controler.GetMachineInitCommands(Machine.MachineID);
 
-						foreach (var initcmd in initCommands.OrderBy(cmd => cmd.SeqNo))
+						if (initCommands.Length > 0)
 						{
-							Com.SendCommand(initcmd.CommandString);
+							if (ResetOnConnect)
+							{
+								Com.SendCommand("");
+							}
+
+							foreach (var initcmd in initCommands.OrderBy(cmd => cmd.SeqNo))
+							{
+								Com.SendCommand(initcmd.CommandString);
+							}
 						}
 					}
 				}
@@ -156,7 +163,11 @@ namespace CNCLib.Wpf.ViewModels
         {
 			ObjectConverter.CopyProperties(Settings.Instance, Machine);
             Com.ArduinoBuffersize = Machine.BufferSize;
-			Global.Instance.Machine = new MachineControler().GetMachine(Machine.MachineID);
+
+			using (var controler = LogicFactory.Create<IMachineControler>())
+			{
+				Global.Instance.Machine = controler.GetMachine(Machine.MachineID);
+			}
 		}
 
 		public bool CanConnect()
@@ -188,7 +199,10 @@ namespace CNCLib.Wpf.ViewModels
 
 	   public void SetDefaultMachine()
 	   {
-		   new MachineControler().SetDetaultMachine(Machine.MachineID);
+			using (var controler = LogicFactory.Create<IMachineControler>())
+			{
+				controler.SetDetaultMachine(Machine.MachineID);
+			}
 	   }
 
 		public bool CanSetupMachine()

@@ -24,6 +24,7 @@ using Framework.Wpf.ViewModels;
 using Framework.Wpf.Helpers;
 using Framework.Tools;
 using CNCLib.Logic;
+using CNCLib.Logic.Interfaces;
 
 
 namespace CNCLib.Wpf.ViewModels
@@ -42,7 +43,8 @@ namespace CNCLib.Wpf.ViewModels
         {
             AddNewMachine = machineID <= 0;
 			MachineCommands.Clear();
-            if (AddNewMachine)
+			MachineInitCommands.Clear();
+			if (AddNewMachine)
             {
                 _currentMachine = new Models.Machine()
                 {
@@ -70,9 +72,12 @@ namespace CNCLib.Wpf.ViewModels
             }
             else
             {
-                _currentMachine = ObjectConverter.NewCloneProperties<Models.Machine, CNCLib.Logic.DTO.Machine>(new MachineControler().GetMachine(machineID));
-				MachineCommands.AddCloneProperties(new MachineControler().GetMachineCommands(machineID));
-				MachineInitCommands.AddCloneProperties(new MachineControler().GetMachineInitCommands(machineID));
+				using (var controler = LogicFactory.Create<IMachineControler>())
+				{
+					_currentMachine = ObjectConverter.NewCloneProperties<Models.Machine, CNCLib.Logic.DTO.Machine>(controler.GetMachine(machineID));
+					MachineCommands.AddCloneProperties(controler.GetMachineCommands(machineID));
+					MachineInitCommands.AddCloneProperties(controler.GetMachineInitCommands(machineID));
+				}
 			}
 
 			OnPropertyChanged(() => MachineName);
@@ -280,7 +285,10 @@ namespace CNCLib.Wpf.ViewModels
 			m.MachineCommands = MachineCommands.ToArray().CloneProperties<CNCLib.Logic.DTO.MachineCommand, Models.MachineCommand>().ToList();
 			m.MachineInitCommands = MachineInitCommands.ToArray().CloneProperties<CNCLib.Logic.DTO.MachineInitCommand, Models.MachineInitCommand>().ToList();
 
-			id = new MachineControler().StoreMachine(m);
+			using (var controler = LogicFactory.Create<IMachineControler>())
+			{
+				id = controler.StoreMachine(m);
+			}
 
 			LoadMachine(id);
             CloseAction();
@@ -292,7 +300,10 @@ namespace CNCLib.Wpf.ViewModels
 
         public void DeleteMachine()
         {
-            new MachineControler().Delete(_currentMachine.NewCloneProperties<CNCLib.Logic.DTO.Machine, Models.Machine>());
+			using (var controler = LogicFactory.Create<IMachineControler>())
+			{
+				controler.Delete(_currentMachine.NewCloneProperties<CNCLib.Logic.DTO.Machine, Models.Machine>());
+			}
 			CloseAction();
 		}
 		public bool CanDeleteMachine()

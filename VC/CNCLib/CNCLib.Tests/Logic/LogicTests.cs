@@ -21,7 +21,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CNCLib.Repository.Context;
 using CNCLib.Repository;
 using CNCLib.Repository.Entities;
-using CNCLib.Repository.Interface;
+using CNCLib.Repository.Interfaces;
 using CNCLib.Logic;
 using Framework.EF;
 using Framework.Logic;

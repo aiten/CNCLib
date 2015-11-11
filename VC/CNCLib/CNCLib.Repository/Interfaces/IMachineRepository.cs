@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CNCLib.Repository.Interface
+namespace CNCLib.Repository.Interfaces
 {
 	public interface IMachineRepository: IDisposable
 	{

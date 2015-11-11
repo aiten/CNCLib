@@ -23,7 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CNCLib.Repository;
-using CNCLib.Repository.Interface;
+using CNCLib.Repository.Interfaces;
 using Framework.Tools;
 using System.Data.Entity;
 using Framework.EF;

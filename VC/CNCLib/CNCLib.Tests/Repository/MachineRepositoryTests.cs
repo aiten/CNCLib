@@ -26,7 +26,7 @@ using Framework.EF;
 using System.Collections.Generic;
 using System.Linq;
 using Framework.Tools;
-using CNCLib.Repository.Interface;
+using CNCLib.Repository.Interfaces;
 
 namespace CNCLib.Tests.Repository
 {

@@ -22,7 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CNCLib.Repository.Interface
+namespace CNCLib.Repository.Interfaces
 {
 	public interface IConfigurationRepository : IDisposable
 	{

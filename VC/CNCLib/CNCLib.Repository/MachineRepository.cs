@@ -26,7 +26,7 @@ using CNCLib.Repository;
 using Framework.Tools;
 using System.Data.Entity;
 using Framework.EF;
-using CNCLib.Repository.Interface;
+using CNCLib.Repository.Interfaces;
 
 namespace CNCLib.Repository
 {
