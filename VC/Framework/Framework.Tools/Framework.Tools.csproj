@@ -34,6 +34,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +45,9 @@
     <Compile Include="..\FrameworkAssemblyInfo.cs">
       <Link>Properties\FrameworkAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CommandStream.cs" />
+    <Compile Include="Drawing\Point3D.cs" />
+    <Compile Include="Drawing\Vector3D.cs" />
     <Compile Include="Pattern\IFactory.cs" />
     <Compile Include="Pattern\FactoryType2Type.cs" />
     <Compile Include="ObjectConverter.cs" />

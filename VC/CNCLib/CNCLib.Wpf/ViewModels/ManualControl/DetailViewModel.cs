@@ -39,9 +39,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			Vm = vm;
 		}
-		public CNCLib.Arduino.ArduinoSerialCommunication Com
+		public Framework.Arduino.ArduinoSerialCommunication Com
 		{
-			get { return Framework.Tools.Pattern.Singleton<CNCLib.Arduino.ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
 		}
 		public bool Connected
 		{

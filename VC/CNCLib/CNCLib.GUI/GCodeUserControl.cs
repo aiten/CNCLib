@@ -26,9 +26,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CNCLib.GCode;
-using Framework.Tools;
+using Framework.Tools.Drawing;
 using CNCLib.GCode.Commands;
-using CNCLib.Arduino;
+using Framework.Arduino;
 
 namespace CNCLib.GUI
 {

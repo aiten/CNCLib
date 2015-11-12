@@ -30,7 +30,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CNCLib.Arduino;
+using Framework.Arduino;
 
 namespace Plotter.GUI
 {

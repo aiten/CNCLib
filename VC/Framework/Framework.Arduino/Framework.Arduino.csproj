@@ -7,8 +7,8 @@
     <ProjectGuid>{77F5A48D-E908-4A95-A09E-771E8BE8817B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CNCLib.Arduino</RootNamespace>
-    <AssemblyName>CNCLib.Arduino</AssemblyName>
+    <RootNamespace>Framework.Arduino</RootNamespace>
+    <AssemblyName>Framework.Arduino</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -41,8 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CNCLibAssemblyInfo.cs">
-      <Link>Properties\CNCLibAssemblyInfo.cs</Link>
+    <Compile Include="..\FrameworkAssemblyInfo.cs">
+      <Link>Properties\FrameworkAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ArduinoSerialCommunication.cs" />
     <Compile Include="ArduinoSerialCommunicationEventArgs.cs" />

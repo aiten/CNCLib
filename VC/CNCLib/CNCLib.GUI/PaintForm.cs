@@ -32,7 +32,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using CNCLib.GUI.Load;
-using CNCLib.Arduino;
+using Framework.Arduino;
 
 namespace CNCLib.GUI
 {

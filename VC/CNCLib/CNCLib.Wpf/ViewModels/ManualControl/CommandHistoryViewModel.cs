@@ -20,7 +20,7 @@ using System;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using Framework.Wpf.Helpers;
-using CNCLib.Arduino;
+using Framework.Arduino;
 using CNCLib.Wpf.Models;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl

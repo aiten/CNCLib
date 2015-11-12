@@ -21,6 +21,7 @@ using CNCLib.GCode.Commands;
 using System;
 using System.Globalization;
 using System.IO;
+using Framework.Tools.Drawing;
 
 namespace CNCLib.GCode.Load
 {

@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Framework.Tools;
+using Framework.Tools.Drawing;
 
 namespace CNCLib.GCode.Commands
 {

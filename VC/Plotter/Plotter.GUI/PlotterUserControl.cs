@@ -28,7 +28,7 @@ using System.Windows.Forms;
 using Plotter.GUI.Shapes;
 using Framework.Tools;
 using System.Threading;
-using CNCLib.Arduino;
+using Framework.Arduino;
 
 namespace Plotter.GUI
 {

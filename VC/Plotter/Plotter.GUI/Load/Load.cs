@@ -16,8 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.GCode;
+//using CNCLib.GCode;
 using Framework.Tools;
+using Framework.Tools.Drawing;
 using Plotter.GUI.Shapes;
 using System;
 using System.Collections.Generic;

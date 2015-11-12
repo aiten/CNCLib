@@ -5,15 +5,9 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plotter.GUI", "Plotter.GUI\Plotter.GUI.csproj", "{55108499-FAC2-4F19-B88E-9E240CCCBD60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Logic", "..\Framework\Framework.Logic\Framework.Logic.csproj", "{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Tools", "..\Framework\Framework.Tools\Framework.Tools.csproj", "{580E882D-3267-43F2-8A73-6737CAC731C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Wpf", "..\Framework\Framework.Wpf\Framework.Wpf.csproj", "{8568383E-054D-4882-8D6A-B956684CFAAE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Arduino", "..\CNCLib\CNCLib.Arduino\CNCLib.Arduino.csproj", "{77F5A48D-E908-4A95-A09E-771E8BE8817B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.GCode", "..\CNCLib\CNCLib.GCode\CNCLib.GCode.csproj", "{787D02D6-723F-407E-8C02-E1F507DA4176}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Arduino", "..\Framework\Framework.Arduino\Framework.Arduino.csproj", "{77F5A48D-E908-4A95-A09E-771E8BE8817B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,18 +37,6 @@ Global
 		{55108499-FAC2-4F19-B88E-9E240CCCBD60}.Release|Win32.Build.0 = Release|Any CPU
 		{55108499-FAC2-4F19-B88E-9E240CCCBD60}.Release|x86.ActiveCfg = Release|Any CPU
 		{55108499-FAC2-4F19-B88E-9E240CCCBD60}.Release|x86.Build.0 = Release|Any CPU
-		{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}.Release|Win32.ActiveCfg = Release|Any CPU
-		{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}.Release|x86.ActiveCfg = Release|Any CPU
 		{580E882D-3267-43F2-8A73-6737CAC731C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{580E882D-3267-43F2-8A73-6737CAC731C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{580E882D-3267-43F2-8A73-6737CAC731C2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -67,18 +49,6 @@ Global
 		{580E882D-3267-43F2-8A73-6737CAC731C2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{580E882D-3267-43F2-8A73-6737CAC731C2}.Release|Win32.ActiveCfg = Release|Any CPU
 		{580E882D-3267-43F2-8A73-6737CAC731C2}.Release|x86.ActiveCfg = Release|Any CPU
-		{8568383E-054D-4882-8D6A-B956684CFAAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8568383E-054D-4882-8D6A-B956684CFAAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8568383E-054D-4882-8D6A-B956684CFAAE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{8568383E-054D-4882-8D6A-B956684CFAAE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{8568383E-054D-4882-8D6A-B956684CFAAE}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{8568383E-054D-4882-8D6A-B956684CFAAE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8568383E-054D-4882-8D6A-B956684CFAAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8568383E-054D-4882-8D6A-B956684CFAAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8568383E-054D-4882-8D6A-B956684CFAAE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{8568383E-054D-4882-8D6A-B956684CFAAE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{8568383E-054D-4882-8D6A-B956684CFAAE}.Release|Win32.ActiveCfg = Release|Any CPU
-		{8568383E-054D-4882-8D6A-B956684CFAAE}.Release|x86.ActiveCfg = Release|Any CPU
 		{77F5A48D-E908-4A95-A09E-771E8BE8817B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{77F5A48D-E908-4A95-A09E-771E8BE8817B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77F5A48D-E908-4A95-A09E-771E8BE8817B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -95,22 +65,6 @@ Global
 		{77F5A48D-E908-4A95-A09E-771E8BE8817B}.Release|Win32.Build.0 = Release|Any CPU
 		{77F5A48D-E908-4A95-A09E-771E8BE8817B}.Release|x86.ActiveCfg = Release|Any CPU
 		{77F5A48D-E908-4A95-A09E-771E8BE8817B}.Release|x86.Build.0 = Release|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Debug|Win32.Build.0 = Debug|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Debug|x86.Build.0 = Debug|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Release|Any CPU.Build.0 = Release|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Release|Win32.ActiveCfg = Release|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Release|Win32.Build.0 = Release|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Release|x86.ActiveCfg = Release|Any CPU
-		{787D02D6-723F-407E-8C02-E1F507DA4176}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

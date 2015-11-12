@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-namespace CNCLib.GCode
+namespace Framework.Tools.Drawing
 {
 	public class Point3D
 	{

@@ -25,7 +25,7 @@ using System.Threading;
 using System.IO.Ports;
 using Framework.Tools;
 
-namespace CNCLib.Arduino
+namespace Framework.Arduino
 {
 	public class ArduinoSerialCommunication : IDisposable
     {

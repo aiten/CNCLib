@@ -109,9 +109,9 @@
       <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>
       <Name>Framework.Tools</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Arduino\CNCLib.Arduino.csproj">
+    <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj">
       <Project>{77f5a48d-e908-4a95-a09e-771e8be8817b}</Project>
-      <Name>CNCLib.Arduino</Name>
+      <Name>Framework.Arduino</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj">
       <Project>{f9c446f4-6365-4189-95c5-009ef0160882}</Project>

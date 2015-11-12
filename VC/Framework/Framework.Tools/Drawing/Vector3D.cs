@@ -17,32 +17,13 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CNCLib.Arduino
+namespace Framework.Tools.Drawing
 {
-	public class ArduinoSerialCommunicationEventArgs : EventArgs
+	public class Vector3D
 	{
-		public ArduinoSerialCommunicationEventArgs(string info, ArduinoSerialCommunication.Command cmd)
-		{
-			Command = cmd;
-			if (cmd != null && string.IsNullOrEmpty(info))
-				this.Info = cmd.CommandText;
-			else
-				this.Info = info;
-			Continue = false;
-			Abort = false;
-		}
+		public Point3D From { get; set; }
 
-		public bool Continue { get; set; }
-		public bool Abort { get; set; }
-		public string Result { get; set; }
-
-		public readonly string Info;
-
-		public ArduinoSerialCommunication.Command Command { get; private set; }
+		public Point3D To { get; set; }
 	}
 }
