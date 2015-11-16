@@ -54,17 +54,14 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		public void RefreshCommandHistory()
 		{
-			lock (this)
+			var results = new ObservableCollection<SentCNCCommand>();
+
+			foreach (ArduinoSerialCommunication.Command rc in Com.CommandHistoryCopy)
 			{
-				var results = new ObservableCollection<SentCNCCommand>();
+				results.Add(new SentCNCCommand() { CommandDate = rc.SentTime, CommandText = rc.CommandText, Result = rc.ResultText });
 
-				foreach (ArduinoSerialCommunication.Command rc in Com.CommandHistory)
-				{
-					results.Add(new SentCNCCommand() { CommandDate = rc.SentTime, CommandText = rc.CommandText, Result = rc.ResultText });
-
-				}
-				CommandHistoryCollection = results;
 			}
+			CommandHistoryCollection = results;
 		}
 		public void ClearCommandHistory()
 		{

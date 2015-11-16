@@ -702,11 +702,22 @@ namespace Framework.Arduino
 		#region Command History 
 
 		List<Command> _commands = new List<Command>();
-        public List<Command> CommandHistory { get { return _commands; } }
+        public List<Command> CommandHistoryCopy { get { lock (_commands) { return new List<Command>(_commands); } } }
 
-        public void ClearCommandHistory() 
+		public Command LastCommand
 		{
-			lock (this)
+			get
+			{
+				lock (_commands)
+				{
+					return _commands.Last();
+				}
+			}
+		}
+
+		public void ClearCommandHistory() 
+		{
+			lock (_commands)
 			{
 				_commands.Clear();
 			}
@@ -714,11 +725,11 @@ namespace Framework.Arduino
 
 		public void WriteCommandHistory(string filename)
 		{
-			lock (this)
+			lock (_commands)
 			{
 				using (StreamWriter sr = new StreamWriter(filename))
 				{
-                    foreach (ArduinoSerialCommunication.Command cmds in CommandHistory)
+                    foreach (ArduinoSerialCommunication.Command cmds in _commands)
 					{
 						sr.Write(cmds.SentTime); sr.Write(":");
 						sr.Write(cmds.CommandText); sr.Write(" => ");

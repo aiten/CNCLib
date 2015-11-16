@@ -74,7 +74,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 				string probfeed = Global.Instance.Machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
 
 				Com.SendCommand("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90");
-				if ((Com.CommandHistory.Last().ReplyType & ArduinoSerialCommunication.EReplyType.ReplyError) == 0)
+				if ((Com.LastCommand.ReplyType & ArduinoSerialCommunication.EReplyType.ReplyError) == 0)
 				{
 					Com.SendCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
 					Com.SendCommand("g91 g0" + axisname + probdistup + " g90");
