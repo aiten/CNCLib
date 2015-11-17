@@ -26,6 +26,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Framework.Arduino;
+using System.IO;
 
 namespace Plotter.GUI
 {
@@ -40,7 +41,9 @@ namespace Plotter.GUI
         {
             InitializeComponent();
             _com.SelectedItem = "COM3";
-            UpdateButtons();
+			SizeX = 520;
+			SizeY = 295;
+			UpdateButtons();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -60,7 +63,18 @@ namespace Plotter.GUI
             }
         }
 
-        private void _connect_Click(object sender, EventArgs e)
+		public int SizeX
+		{
+			get { return (int) UInt32.Parse(_sizeX.Text); }
+			set { _sizeX.Text = value.ToString(); }
+		}
+		public int SizeY
+		{
+			get { return (int)UInt32.Parse(_sizeY.Text); }
+			set { _sizeY.Text = value.ToString(); }
+		}
+
+		private void _connect_Click(object sender, EventArgs e)
         {
             if (Com.IsConnected)
             {
@@ -68,17 +82,30 @@ namespace Plotter.GUI
             }
             else 
             {
-                Com.Connect(_com.SelectedItem.ToString());
+				try
+				{
+					Com.Connect(_com.SelectedItem.ToString());
+				}
+				catch (IOException x)
+				{
+					MessageBox.Show("Connecting to arduino failed: " + x.Message);
+				}
             }
             UpdateButtons();
         }
 
         private void _paint_Click(object sender, EventArgs e)
         {
-            using (PaintForm form = new PaintForm())
-            {
-                form.ShowDialog();
-            }
+			UInt32 dummy;
+			if (UInt32.TryParse(_sizeX.Text, out dummy) && UInt32.TryParse(_sizeX.Text, out dummy))
+			{
+				using (PaintForm form = new PaintForm())
+				{
+					form.SizeXHPGL = SizeX * 40;
+					form.SizeYHPGL = SizeY * 40;
+					form.ShowDialog();
+				}
+			}
         }
     }
 }

@@ -53,8 +53,8 @@ namespace Plotter.GUI
 
         public PlotterUserControl()
         {
-            SizeXHPGL = MulDivRound32(55600,29,77);
-            SizeYHPGL = MulDivRound32(32000,29,77);
+//            SizeXHPGL = MulDivRound32(55600,29,77);
+//            SizeYHPGL = MulDivRound32(32000,29,77);
 
             _shapefactory.RegisterShape("Rectangle", new Plotter.GUI.Shapes.Rectangle());
             _shapefactory.RegisterShape("Line", new Line());

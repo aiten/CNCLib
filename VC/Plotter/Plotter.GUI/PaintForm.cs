@@ -48,6 +48,9 @@ namespace Plotter.GUI
             get { return Framework.Tools.Pattern.Singleton<HPGLCommunication>.Instance; }
         }
 
+		public int SizeXHPGL { get { return _plotterCtrl.SizeXHPGL; } set { _plotterCtrl.SizeXHPGL = value;  } }
+		public int SizeYHPGL { get { return _plotterCtrl.SizeYHPGL; } set { _plotterCtrl.SizeYHPGL = value; } }
+
 		#endregion
 
 		#region Communication
@@ -196,9 +199,20 @@ namespace Plotter.GUI
 
 		#region Load/Save
 
+		static string _fileNameSave = @"c:\tmp\testc.hpgl";
+
 		private void _save_Click(object sender, EventArgs e)
         {
-            using (StreamWriter sw = new StreamWriter(@"c:\tmp\testc.hpgl"))
+			using (SaveFileDialog form = new SaveFileDialog())
+			{
+				form.FileName = _fileNameSave;
+				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				{
+					_fileNameSave = form.FileName;
+				}
+			}
+
+			using (StreamWriter sw = new StreamWriter(_fileNameSave))
             {
                 foreach (Shape r in _plotterCtrl.Shapes)
                 {

@@ -27,6 +27,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Plotter.GUI.Load
 {
@@ -76,6 +77,24 @@ namespace Plotter.GUI.Load
 
         public void LoadHPGL(List<Shape> shapes)
 		{
+			try
+			{
+				using (StreamReader sr = new StreamReader(LoadOptions.FileName))
+				{
+
+				}
+			}
+			catch (IOException e)
+			{
+				MessageBox.Show("cannot load from file");
+				return;
+			}
+			catch (ArgumentException e)
+			{
+				MessageBox.Show("cannot load from file");
+				return;
+			}
+
 			InitLoad();
 
 			if (LoadOptions.AutoScale)
@@ -86,12 +105,13 @@ namespace Plotter.GUI.Load
 					while ((line = sr.ReadLine()) != null)
 					{
 						_stream.Line = line;
-						if (!Command(shapes,true))
+						if (!Command(shapes, true))
 						{
 							break;
 						}
 					}
 				}
+
 				LoadOptions.OfsX = -(_minpt.X.Value - LoadOptions.AutoScaleBorderDistX);
 				LoadOptions.OfsY = -(_minpt.Y.Value - LoadOptions.AutoScaleBorderDistY);
 				decimal sizex = _maxpt.X.Value - _minpt.X.Value + 2 * LoadOptions.AutoScaleBorderDistX;
