@@ -107,7 +107,7 @@ namespace Framework.Tools
         }
 
 
-        public static TDest[] CloneProperties<TDest, TSrc>(this TSrc[] srclist) where TDest : new()
+        public static TDest[] CloneProperties<TDest, TSrc>(this IEnumerable<TSrc> srclist) where TDest : new()
         {
             List<TDest> result = new List<TDest>();
 

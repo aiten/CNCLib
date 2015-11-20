@@ -37,6 +37,8 @@ namespace CNCLib.Repository
 			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
 			{
 				return uow.Query<Entities.Machine>().
+					Include((d) => d.MachineCommands).
+					Include((d) => d.MachineInitCommands).
 					ToList().ToArray();
 			}
 		}

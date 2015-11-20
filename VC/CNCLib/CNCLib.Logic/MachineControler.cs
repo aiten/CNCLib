@@ -47,7 +47,10 @@ namespace CNCLib.Logic
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
 				var machine = rep.GetMachine(id);
-				return ObjectConverter.NewCloneProperties<DTO.Machine, Repository.Entities.Machine>(machine);
+				var dto = ObjectConverter.NewCloneProperties<DTO.Machine, Repository.Entities.Machine>(machine);
+				dto.MachineCommands = ObjectConverter.CloneProperties<DTO.MachineCommand, Repository.Entities.MachineCommand>(machine.MachineCommands);
+				dto.MachineInitCommands = ObjectConverter.CloneProperties<DTO.MachineInitCommand, Repository.Entities.MachineInitCommand>(machine.MachineInitCommands);
+				return dto;
 			}
         }
 
