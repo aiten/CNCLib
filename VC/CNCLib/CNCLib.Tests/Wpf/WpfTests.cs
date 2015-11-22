@@ -68,6 +68,15 @@ namespace CNCLib.Tests.Wpf
 		{
 			var rep = CreateMock<IMachineControler>();
 
+			var machinecommand = new MachineCommand[]
+				{ new MachineCommand() { MachineID = 1, CommandName = "Test1", CommandString = "G20",MachineCommandID =10 },
+				  new MachineCommand() { MachineID = 1, CommandName = "Test2", CommandString = "G21",MachineCommandID =11 }
+				};
+			var machineinitcommand = new MachineInitCommand[]
+				{ new MachineInitCommand() { MachineID = 1, SeqNo = 1, CommandString = "G20",MachineInitCommandID =20 },
+				  new MachineInitCommand() { MachineID = 1, SeqNo = 2, CommandString = "G21",MachineInitCommandID =21 }
+				};
+
 			var machineEntity = new Machine() {
 				MachineID = 1,
 				Name = "Maxi",
@@ -84,27 +93,19 @@ namespace CNCLib.Tests.Wpf
 				BufferSize = 63,
 				ProbeSizeX = 0,
 				ProbeSizeY = 0,
-				ProbeSizeZ=25,
-				ProbeDist=3,
-				ProbeDistUp=10,
-				ProbeFeed=300,
-				SDSupport=true,
+				ProbeSizeZ = 25,
+				ProbeDist = 3,
+				ProbeDistUp = 10,
+				ProbeFeed = 300,
+				SDSupport = true,
 				Spindle = true,
 				Coolant = true,
-				Rotate = true
+				Rotate = true,
+				MachineCommands = machinecommand,
+				MachineInitCommands = machineinitcommand
 			};
-			var machinecommand = new MachineCommand[] 
-				{ new MachineCommand() { MachineID = 1, CommandName = "Test1", CommandString = "G20",MachineCommandID =10 },
-                  new MachineCommand() { MachineID = 1, CommandName = "Test2", CommandString = "G21",MachineCommandID =11 }
-				};
-			var machineinitcommand = new MachineInitCommand[]
-				{ new MachineInitCommand() { MachineID = 1, SeqNo = 1, CommandString = "G20",MachineInitCommandID =20 },
-				  new MachineInitCommand() { MachineID = 1, SeqNo = 2, CommandString = "G21",MachineInitCommandID =21 }
-				};
 
 			rep.GetMachine(1).Returns(machineEntity);
-			rep.GetMachineCommands(1).Returns(machinecommand);
-			rep.GetMachineInitCommands(1).Returns(machineinitcommand);
 
 			MachineViewModel mv = new MachineViewModel();
 			mv.LoadMachine(1);

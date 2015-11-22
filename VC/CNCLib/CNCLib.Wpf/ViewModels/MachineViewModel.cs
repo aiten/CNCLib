@@ -25,6 +25,7 @@ using Framework.Wpf.Helpers;
 using Framework.Tools;
 using CNCLib.Logic;
 using CNCLib.Logic.Interfaces;
+using CNCLib.Wpf.Models;
 
 
 namespace CNCLib.Wpf.ViewModels
@@ -74,9 +75,10 @@ namespace CNCLib.Wpf.ViewModels
             {
 				using (var controler = LogicFactory.Create<IMachineControler>())
 				{
-					_currentMachine = ObjectConverter.NewCloneProperties<Models.Machine, CNCLib.Logic.DTO.Machine>(controler.GetMachine(machineID));
-					MachineCommands.AddCloneProperties(controler.GetMachineCommands(machineID));
-					MachineInitCommands.AddCloneProperties(controler.GetMachineInitCommands(machineID));
+					var dto = controler.GetMachine(machineID);
+                    _currentMachine = dto.Convert();
+					MachineCommands.AddCloneProperties(dto.MachineCommands);
+					MachineInitCommands.AddCloneProperties(dto.MachineInitCommands);
 				}
 			}
 
@@ -282,8 +284,8 @@ namespace CNCLib.Wpf.ViewModels
             int id;
 
 			var m = _currentMachine.NewCloneProperties<CNCLib.Logic.DTO.Machine, Models.Machine>();
-			m.MachineCommands = MachineCommands.ToArray().CloneProperties<CNCLib.Logic.DTO.MachineCommand, Models.MachineCommand>().ToList();
-			m.MachineInitCommands = MachineInitCommands.ToArray().CloneProperties<CNCLib.Logic.DTO.MachineInitCommand, Models.MachineInitCommand>().ToList();
+			m.MachineCommands = MachineCommands.CloneAsList<CNCLib.Logic.DTO.MachineCommand, Models.MachineCommand>().ToList();
+			m.MachineInitCommands = MachineInitCommands.CloneAsList<CNCLib.Logic.DTO.MachineInitCommand, Models.MachineInitCommand>().ToList();
 
 			using (var controler = LogicFactory.Create<IMachineControler>())
 			{

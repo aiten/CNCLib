@@ -73,7 +73,7 @@ namespace CNCLib.Tests.Logic
 
 			MachineControler ctrl = new MachineControler();
 
-			var machines = ctrl.GetMachines();
+			var machines = ctrl.GetMachines().ToArray();
 			Assert.AreEqual(true, machines.Length == 1);
 			Assert.AreEqual(1, machines[0].MachineID);
 			Assert.AreEqual("Maxi", machines[0].Name);

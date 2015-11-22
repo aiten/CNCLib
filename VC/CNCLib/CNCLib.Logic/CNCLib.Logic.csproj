@@ -63,6 +63,7 @@
     <Compile Include="DTO\Machine.cs" />
     <Compile Include="Interfaces\IMachineControler.cs" />
     <Compile Include="MachineControler.cs" />
+    <Compile Include="Converter\Converter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

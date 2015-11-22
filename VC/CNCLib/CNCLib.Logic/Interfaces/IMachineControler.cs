@@ -9,11 +9,11 @@ namespace CNCLib.Logic.Interfaces
 {
 	public interface IMachineControler : IDisposable
 	{
-		DTO.Machine[] GetMachines();
+		IEnumerable<DTO.Machine> GetMachines();
 		DTO.Machine GetMachine(int id);
 		void Delete(DTO.Machine m);
-		DTO.MachineCommand[] GetMachineCommands(int machineID);
-		DTO.MachineInitCommand[] GetMachineInitCommands(int machineID);
+//		DTO.MachineCommand[] GetMachineCommands(int machineID);
+//		DTO.MachineInitCommand[] GetMachineInitCommands(int machineID);
 
 		int StoreMachine(DTO.Machine m);
 		int GetDetaultMachine();
