@@ -50,12 +50,22 @@ namespace CNCLib.Tests.Repository
 	    }
 
 		[TestMethod]
-		public void QueryOneMachines()
+		public void QueryOneMachineFound()
 		{
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
 				var machines = rep.GetMachine(1);
 				Assert.AreEqual(1, machines.MachineID);
+			}
+		}
+
+		[TestMethod]
+		public void QueryOneMachineNotFound()
+		{
+			using (var rep = RepositoryFactory.Create<IMachineRepository>())
+			{
+				var machines = rep.GetMachine(1000);
+				Assert.IsNull(machines);
 			}
 		}
 

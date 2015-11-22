@@ -29,12 +29,13 @@ using NSubstitute;
 using Framework.Tools.Pattern;
 using Framework.Wpf.ViewModels;
 using CNCLib.Wpf.ViewModels;
+using CNCLib;
 using CNCLib.Logic.DTO;
 
 namespace CNCLib.Tests.Wpf
 {
 	[TestClass]
-	public class WpfTests
+	public class MachineViewModelTests
 	{
 		/*
 				[ClassInitialize]
@@ -64,23 +65,58 @@ namespace CNCLib.Tests.Wpf
 		}
 
 		[TestMethod]
-		public void GetMachines()
+		public void GetMachine()
 		{
 			var rep = CreateMock<IMachineControler>();
 
-			var machinecommand = new MachineCommand[] 
-				{ new MachineCommand() { MachineID = 1, CommandName = "Test1", CommandString = "G20",MachineCommandID =10 },
-                  new MachineCommand() { MachineID = 1, CommandName = "Test2", CommandString = "G21",MachineCommandID =11 }
-				};
-			var machineinitcommand = new MachineInitCommand[]
-				{ new MachineInitCommand() { MachineID = 1, SeqNo = 1, CommandString = "G20",MachineInitCommandID =20 },
-				  new MachineInitCommand() { MachineID = 1, SeqNo = 2, CommandString = "G21",MachineInitCommandID =21 }
-				};
+			Machine machine = CreateMachine(1);
+			rep.GetMachine(1).Returns(machine);
 
-			var machineEntity = new Machine()
+			MachineViewModel mv = new MachineViewModel();
+			mv.LoadMachine(1);
+
+			Assert.AreEqual(false, mv.AddNewMachine);
+			Assert.AreEqual(machine.Name, mv.MachineName);
+
+			Assert.AreEqual(machine.MachineCommands.Count(), mv.MachineCommands.Count);
+			Assert.AreEqual(machine.MachineInitCommands.Count(), mv.MachineInitCommands.Count);
+		}
+
+		[TestMethod]
+		public void GetMachineAddNew()
+		{
+			var rep = CreateMock<IMachineControler>();
+
+			Machine machine1 = CreateMachine(1);
+			rep.GetMachine(1).Returns(machine1);
+
+			Machine machinedef = CreateMachine(0);
+			rep.DefaultMachine().Returns(machinedef);
+
+			MachineViewModel mv = new MachineViewModel();
+			mv.LoadMachine(-1);
+
+			Assert.AreEqual(true, mv.AddNewMachine);
+			Assert.AreEqual(machinedef.Name, mv.MachineName);
+
+			Assert.AreEqual(machinedef.MachineCommands.Count(), mv.MachineCommands.Count);
+			Assert.AreEqual(machinedef.MachineInitCommands.Count(), mv.MachineInitCommands.Count);
+		}
+
+		private Machine CreateMachine(int machineid)
+		{
+            MachineCommand[] machinecommand = new MachineCommand[]
+				{ new MachineCommand() { MachineID = machineid, CommandName = "Test1", CommandString = "G20",MachineCommandID = machineid*10 + 0  },
+				  new MachineCommand() { MachineID = machineid, CommandName = "Test2", CommandString = "G21",MachineCommandID = machineid*10 + 1 }
+				};
+			MachineInitCommand[] machineinitcommand = new MachineInitCommand[]
+				{ new MachineInitCommand() { MachineID = machineid, SeqNo = 1, CommandString = "G20",MachineInitCommandID = machineid*20 },
+				  new MachineInitCommand() { MachineID = 1, SeqNo = 2, CommandString = "G21",MachineInitCommandID =machineid*20 + 1 }
+				};
+			var machine = new Machine()
 			{
-				MachineID = 1,
-				Name = "Maxi",
+				MachineID = machineid,
+				Name = "Maxi" + machineid.ToString(),
 				ComPort = "Com7",
 				Axis = 3,
 				BaudRate = 115200,
@@ -104,17 +140,9 @@ namespace CNCLib.Tests.Wpf
 				Rotate = true,
 				MachineCommands = machinecommand,
 				MachineInitCommands = machineinitcommand
-				};
+			};
 
-			rep.GetMachine(1).Returns(machineEntity);
-
-			MachineViewModel mv = new MachineViewModel();
-			mv.LoadMachine(1);
-
-			Assert.AreEqual(machineEntity.Name, mv.MachineName);
-
-			Assert.AreEqual(machinecommand.Length, mv.MachineCommands.Count);
-			Assert.AreEqual(machineinitcommand.Length, mv.MachineInitCommands.Count);
-		}
+			return machine;
+        }
 	}
 }

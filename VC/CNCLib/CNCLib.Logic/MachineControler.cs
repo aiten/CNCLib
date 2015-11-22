@@ -51,12 +51,44 @@ namespace CNCLib.Logic
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
 				var machine = rep.GetMachine(id);
+				if (machine == null)
+					return null;
+
 				var dto = machine.Convert();
 				return dto;
 			}
         }
+		public DTO.Machine DefaultMachine()
+		{
+			var dto = new DTO.Machine()
+			{
+				Name = "New",
+				ComPort = "comX",
+				Axis = 3,
+				SizeX = 130m,
+				SizeY = 45m,
+				SizeZ = 81m,
+				SizeA = 360m,
+				SizeB = 360m,
+				SizeC = 360m,
+				BaudRate = 115200,
+				BufferSize = 63,
+				CommandToUpper = false,
+				ProbeSizeZ = 25,
+				ProbeDist = 10m,
+				ProbeDistUp = 3m,
+				ProbeFeed = 100m,
+				SDSupport = true,
+				Spindle = true,
+				Coolant = true,
+				Rotate = true,
+				MachineCommands = new DTO.MachineCommand[0],
+				MachineInitCommands = new DTO.MachineInitCommand[0]
+			};
+            return dto;
+		}
 
-        public void Delete(DTO.Machine m)
+		public void Delete(DTO.Machine m)
         {
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{

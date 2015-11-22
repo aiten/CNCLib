@@ -33,7 +33,7 @@ using Framework.Tools.Pattern;
 namespace CNCLib.Tests.Logic
 {
 	[TestClass]
-	public class LogicTests
+	public class MachineControlerTests
 	{
 		/*
 				[ClassInitialize]
@@ -62,6 +62,19 @@ namespace CNCLib.Tests.Logic
 			return rep;
 		}
 
+		[TestMethod]
+		public void GetMachinesNone()
+		{
+			var rep = CreateMock<IMachineRepository>();
+
+			var machineEntity = new Machine[0];
+			rep.GetMachines().Returns(machineEntity);
+
+			MachineControler ctrl = new MachineControler();
+
+			var machines = ctrl.GetMachines().ToArray();
+			Assert.AreEqual(true, machines.Length == 0);
+		}
 
 		[TestMethod]
 		public void GetMachinesOne()
@@ -78,6 +91,10 @@ namespace CNCLib.Tests.Logic
 			Assert.AreEqual(1, machines[0].MachineID);
 			Assert.AreEqual("Maxi", machines[0].Name);
 			Assert.AreEqual(115200, machines[0].BufferSize);
+			Assert.IsNotNull(machines[0].MachineCommands);
+			Assert.IsNotNull(machines[0].MachineInitCommands);
+			Assert.AreEqual(0, machines[0].MachineCommands.Count());
+			Assert.AreEqual(0, machines[0].MachineInitCommands.Count());
 		}
 
 		[TestMethod]
@@ -103,11 +120,59 @@ namespace CNCLib.Tests.Logic
 			Assert.AreEqual(115200, machines[0].BufferSize);
 			Assert.AreEqual(1, machines[1].MachineCommands.Count());
 			Assert.AreEqual(1, machines[1].MachineInitCommands.Count());
+			Assert.AreEqual(0, machines[0].MachineCommands.Count());
+			Assert.AreEqual(0, machines[0].MachineInitCommands.Count());
+			Assert.AreEqual("Test", machines[1].MachineCommands.First().CommandName);
+			Assert.AreEqual("f", machines[1].MachineCommands.First().CommandString);
+			Assert.AreEqual(0, machines[1].MachineInitCommands.First().SeqNo);
+			Assert.AreEqual("f", machines[1].MachineInitCommands.First().CommandString);
 		}
 
 		[TestMethod]
-		public void QueryOneMachines()
+		public void QueryOneMachinesFound()
 		{
+			var rep = CreateMock<IMachineRepository>();
+
+			var machineEntity1 = new Machine() { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] } ;
+			var machineEntity2 = new Machine() { MachineID = 2, Name = "Mini", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+			rep.GetMachine(1).Returns(machineEntity1);
+			rep.GetMachine(2).Returns(machineEntity2);
+
+			MachineControler ctrl = new MachineControler();
+
+			var machine = ctrl.GetMachine(1);
+			Assert.AreEqual(machineEntity1.Name, machine.Name);
+			Assert.AreEqual(machineEntity1.MachineID, machine.MachineID);
+			Assert.IsNotNull(machine.MachineCommands);
+			Assert.IsNotNull(machine.MachineInitCommands);
+			Assert.AreEqual(0, machine.MachineCommands.Count());
+			Assert.AreEqual(0, machine.MachineInitCommands.Count());
+		}
+
+		[TestMethod]
+		public void QueryOneMachinesNotFound()
+		{
+			var rep = CreateMock<IMachineRepository>();
+
+			var machineEntity1 = new Machine() { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+			var machineEntity2 = new Machine() { MachineID = 2, Name = "Mini", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+			rep.GetMachine(1).Returns(machineEntity1);
+			rep.GetMachine(2).Returns(machineEntity2);
+
+			MachineControler ctrl = new MachineControler();
+
+			var machine = ctrl.GetMachine(3);
+			Assert.IsNull(machine);
+		}
+
+		[TestMethod]
+		public void GetDefaultMachine()
+		{
+			MachineControler ctrl = new MachineControler();
+
+			var machine = ctrl.DefaultMachine();
+			Assert.IsNotNull(machine);
+			Assert.AreEqual("New", machine.Name);
 		}
 	}
 }

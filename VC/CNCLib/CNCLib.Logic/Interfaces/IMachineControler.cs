@@ -11,8 +11,8 @@ namespace CNCLib.Logic.Interfaces
 	{
 		IEnumerable<DTO.Machine> GetMachines();
 		DTO.Machine GetMachine(int id);
+		DTO.Machine DefaultMachine();
 		void Delete(DTO.Machine m);
-
 		int StoreMachine(DTO.Machine m);
 		int GetDetaultMachine();
 		void SetDetaultMachine(int defaultMachineID);

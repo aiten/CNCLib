@@ -42,41 +42,21 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void LoadMachine(int machineID)
         {
-            AddNewMachine = machineID <= 0;
-			if (AddNewMachine)
-            {
-                _currentMachine = new Models.Machine()
-                {
-                    Name = "New",
-                    ComPort = "comX",
-					Axis = 3,
-					SizeX = 130m,
-                    SizeY = 45m,
-                    SizeZ = 81m,
-					SizeA = 360m,
-					SizeB = 360m,
-					SizeC = 360m,
-					BaudRate = 115200,
-                    BufferSize = 63,
-                    CommandToUpper = false,
-					ProbeSizeZ = 25,
-					ProbeDist = 10m,
-					ProbeDistUp = 3m,
-					ProbeFeed = 100m,
-					SDSupport = true,
-					Spindle = true,
-					Coolant = true,				
-					Rotate = true	
-                };
-            }
-            else
-            {
-				using (var controler = LogicFactory.Create<IMachineControler>())
+			Logic.DTO.Machine dto;
+			using (var controler = LogicFactory.Create<IMachineControler>())
+			{
+				AddNewMachine = machineID <= 0;
+				if (AddNewMachine)
 				{
-					var dto = controler.GetMachine(machineID);
-					_currentMachine = dto.Convert(); 
+					dto = controler.DefaultMachine();
+				}
+				else
+				{
+					dto = controler.GetMachine(machineID);
 				}
 			}
+
+			_currentMachine = dto.Convert(); 
 
 			OnPropertyChanged(() => MachineName);
             OnPropertyChanged(() => ComPort);
