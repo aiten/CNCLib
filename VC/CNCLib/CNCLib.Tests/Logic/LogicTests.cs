@@ -64,20 +64,45 @@ namespace CNCLib.Tests.Logic
 
 
 		[TestMethod]
-		public void GetMachines()
+		public void GetMachinesOne()
 		{
 			var rep = CreateMock<IMachineRepository>();
 
-			var machineEntity = new Machine[] { new Machine() { MachineID = 1, Name = "Maxi", BufferSize = 115200 } };
+			var machineEntity = new Machine[] { new Machine() { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] } };
 			rep.GetMachines().Returns(machineEntity);
 
 			MachineControler ctrl = new MachineControler();
 
-			var machines = ctrl.GetMachines();
+			var machines = ctrl.GetMachines().ToArray();
 			Assert.AreEqual(true, machines.Length == 1);
 			Assert.AreEqual(1, machines[0].MachineID);
 			Assert.AreEqual("Maxi", machines[0].Name);
 			Assert.AreEqual(115200, machines[0].BufferSize);
+		}
+
+		[TestMethod]
+		public void GetMachinesMany()
+		{
+			var rep = CreateMock<IMachineRepository>();
+
+			var machineEntity = new Machine[]
+			{ new Machine() { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] },
+			  new Machine() { MachineID = 2, Name = "Maxi", BufferSize = 115200,
+								MachineCommands = new MachineCommand[] { new MachineCommand() { MachineID =2,MachineCommandID=1,CommandName="Test",CommandString="f"  } },
+								MachineInitCommands = new MachineInitCommand[] { new MachineInitCommand() { MachineID =2,MachineInitCommandID=1,SeqNo=0,CommandString="f"  } } }
+			};
+
+			rep.GetMachines().Returns(machineEntity);
+
+			MachineControler ctrl = new MachineControler();
+
+			var machines = ctrl.GetMachines().ToArray();
+			Assert.AreEqual(true, machines.Length == 2);
+			Assert.AreEqual(1, machines[0].MachineID);
+			Assert.AreEqual("Maxi", machines[0].Name);
+			Assert.AreEqual(115200, machines[0].BufferSize);
+			Assert.AreEqual(1, machines[1].MachineCommands.Count());
+			Assert.AreEqual(1, machines[1].MachineInitCommands.Count());
 		}
 
 		[TestMethod]

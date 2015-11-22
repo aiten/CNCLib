@@ -26,19 +26,23 @@ using Framework.Logic;
 using CNCLib.Repository.Interfaces;
 using CNCLib.Repository;
 using CNCLib.Repository.Entities;
+using CNCLib.Logic.Converter;
 
 namespace CNCLib.Logic
 {
     public class MachineControler : ControlerBase, Interfaces.IMachineControler
 	{
-		public DTO.Machine[] GetMachines()
+		public IEnumerable<DTO.Machine> GetMachines()
 		{
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
 				var machines = rep.GetMachines();
 				List<DTO.Machine> l = new List<DTO.Machine>();
-				l.AddCloneProperties(machines);
-				return l.ToArray();
+				foreach (var m in machines)
+				{
+					l.Add(m.Convert());
+				}
+				return l;
 			}
 		}
 
@@ -47,7 +51,8 @@ namespace CNCLib.Logic
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
 				var machine = rep.GetMachine(id);
-				return ObjectConverter.NewCloneProperties<DTO.Machine, Repository.Entities.Machine>(machine);
+				var dto = machine.Convert();
+				return dto;
 			}
         }
 
@@ -63,10 +68,7 @@ namespace CNCLib.Logic
 		{
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
-				var me = m.NewCloneProperties<Repository.Entities.Machine, DTO.Machine>();
-				me.MachineCommands = m.MachineCommands.ToArray().CloneProperties<Repository.Entities.MachineCommand, DTO.MachineCommand>();
-				me.MachineInitCommands = m.MachineInitCommands.ToArray().CloneProperties<Repository.Entities.MachineInitCommand, DTO.MachineInitCommand>();
-
+				var me = m.Convert();
 				return rep.StoreMachine(me);
 			}
 		}

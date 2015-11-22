@@ -196,21 +196,32 @@ namespace CNCLib.GUI
 			});
         }
 
-        private void _save_Click(object sender, EventArgs e)
-        {
-            using (StreamWriter sw = new StreamWriter(@"c:\tmp\test.GCode"))
-            {
+		static string _fileNameSave = @"c:\tmp\testc.GCode";
+
+		private void _save_Click(object sender, EventArgs e)
+		{
+			using (SaveFileDialog form = new SaveFileDialog())
+			{
+				form.FileName = _fileNameSave;
+				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				{
+					_fileNameSave = form.FileName;
+				}
+			}
+
+			using (StreamWriter sw = new StreamWriter(_fileNameSave))
+			{
 				Command last = null;
 				foreach (Command r in _plotterCtrl.Commands)
-                {
+				{
 					string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
-                    if (cmds != null)
-                    {
-                        foreach (String str in cmds)
-                        {
-                            sw.WriteLine(str);
-                        }
-                    }
+					if (cmds != null)
+					{
+						foreach (String str in cmds)
+						{
+							sw.WriteLine(str);
+						}
+					}
 					last = r;
 				}
 			}

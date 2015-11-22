@@ -104,7 +104,7 @@ namespace CNCLib.Tests.Wpf
 				Rotate = true,
 				MachineCommands = machinecommand,
 				MachineInitCommands = machineinitcommand
-			};
+				};
 
 			rep.GetMachine(1).Returns(machineEntity);
 

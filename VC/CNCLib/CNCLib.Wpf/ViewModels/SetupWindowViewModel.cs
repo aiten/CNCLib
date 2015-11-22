@@ -33,6 +33,7 @@ using CNCLib.Logic;
 using CNCLib.GCode;
 using System.Threading;
 using CNCLib.Logic.Interfaces;
+using CNCLib.Wpf.Models;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -50,7 +51,10 @@ namespace CNCLib.Wpf.ViewModels
 
 			using (var controler = LogicFactory.Create<IMachineControler>())
 			{
-				machines.AddCloneProperties(controler.GetMachines());
+				foreach(var m in controler.GetMachines())
+				{
+					machines.Add(Converter.Convert(m));
+				}
 				int defaultM = controler.GetDetaultMachine();
 
 				Machines = machines;

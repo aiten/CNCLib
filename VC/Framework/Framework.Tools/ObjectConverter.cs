@@ -28,19 +28,18 @@ namespace Framework.Tools
     {
         #region Simple
 
-        public static object CloneProperties(object o)
+        public static object CloneProperties(object src)
         {
-            Type t = o.GetType();
+            Type t = src.GetType();
             PropertyInfo[] properties = t.GetProperties();
 
-            Object p = t.InvokeMember("", System.Reflection.BindingFlags.CreateInstance,
-                null, o, null);
+            Object p = t.InvokeMember("", System.Reflection.BindingFlags.CreateInstance,null, src, null);
 
             foreach (PropertyInfo pi in properties)
             {
                 if (pi.CanWrite)
                 {
-                    pi.SetValue(p, pi.GetValue(o, null), null);
+                    pi.SetValue(p, pi.GetValue(src, null), null);
                 }
             }
 
@@ -107,17 +106,16 @@ namespace Framework.Tools
         }
 
 
-        public static TDest[] CloneProperties<TDest, TSrc>(this TSrc[] srclist) where TDest : new()
+		public static List<TDest> CloneAsList<TDest, TSrc>(this IEnumerable<TSrc> srclist) where TDest : new()
+		{
+			List<TDest> result = new List<TDest>();
+			result.AddCloneProperties<TDest, IEnumerable<TSrc>>(srclist);
+			return result;
+		}
+
+		public static TDest[] CloneAsArray<TDest, TSrc>(this IEnumerable<TSrc> srclist) where TDest : new()
         {
-            List<TDest> result = new List<TDest>();
-
-            foreach (TSrc src in srclist)
-            {
-                TDest dest = new TDest();
-                CopyProperties((object)dest, (object)src);
-                result.Add(dest);
-
-            }
+            List<TDest> result = srclist.CloneAsList<TDest, TSrc>();
 
             Type t = new TDest().GetType();
 

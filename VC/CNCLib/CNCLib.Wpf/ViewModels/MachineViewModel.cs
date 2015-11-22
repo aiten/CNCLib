@@ -25,6 +25,7 @@ using Framework.Wpf.Helpers;
 using Framework.Tools;
 using CNCLib.Logic;
 using CNCLib.Logic.Interfaces;
+using CNCLib.Wpf.Models;
 
 
 namespace CNCLib.Wpf.ViewModels
@@ -42,8 +43,6 @@ namespace CNCLib.Wpf.ViewModels
 		public void LoadMachine(int machineID)
         {
             AddNewMachine = machineID <= 0;
-			MachineCommands.Clear();
-			MachineInitCommands.Clear();
 			if (AddNewMachine)
             {
                 _currentMachine = new Models.Machine()
@@ -75,9 +74,7 @@ namespace CNCLib.Wpf.ViewModels
 				using (var controler = LogicFactory.Create<IMachineControler>())
 				{
 					var dto = controler.GetMachine(machineID);
-                    _currentMachine = ObjectConverter.NewCloneProperties<Models.Machine, CNCLib.Logic.DTO.Machine>(dto);
-					_currentMachine.MachineCommands.CloneProperties(dto.MachineCommands);
-					_currentMachine.MachineInitCommands.CloneProperties(dto.MachineInitCommands);
+					_currentMachine = dto.Convert(); 
 				}
 			}
 
@@ -103,6 +100,9 @@ namespace CNCLib.Wpf.ViewModels
 			OnPropertyChanged(() => Spindle);
 			OnPropertyChanged(() => Coolant);
 			OnPropertyChanged(() => Rotate);
+
+			OnPropertyChanged(() => MachineCommands);
+			OnPropertyChanged(() => MachineInitCommands);
 		}
 
 		#region Properties
@@ -226,9 +226,9 @@ namespace CNCLib.Wpf.ViewModels
 		}
 
 		public ObservableCollection<Models.MachineCommand> MachineCommands
-        {
+		{
 			get { return _currentMachine.MachineCommands; }
-		}
+				}
 
 
 		public ObservableCollection<Models.MachineInitCommand> MachineInitCommands
@@ -246,9 +246,7 @@ namespace CNCLib.Wpf.ViewModels
 		{
             int id;
 
-			var m = _currentMachine.NewCloneProperties<CNCLib.Logic.DTO.Machine, Models.Machine>();
-			m.MachineCommands = MachineCommands.ToArray().CloneProperties<CNCLib.Logic.DTO.MachineCommand, Models.MachineCommand>().ToList();
-			m.MachineInitCommands = MachineInitCommands.ToArray().CloneProperties<CNCLib.Logic.DTO.MachineInitCommand, Models.MachineInitCommand>().ToList();
+			var m = _currentMachine.Convert();
 
 			using (var controler = LogicFactory.Create<IMachineControler>())
 			{
