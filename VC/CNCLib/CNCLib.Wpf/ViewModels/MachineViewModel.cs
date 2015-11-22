@@ -74,9 +74,10 @@ namespace CNCLib.Wpf.ViewModels
             {
 				using (var controler = LogicFactory.Create<IMachineControler>())
 				{
-					_currentMachine = ObjectConverter.NewCloneProperties<Models.Machine, CNCLib.Logic.DTO.Machine>(controler.GetMachine(machineID));
-					MachineCommands.AddCloneProperties(controler.GetMachineCommands(machineID));
-					MachineInitCommands.AddCloneProperties(controler.GetMachineInitCommands(machineID));
+					var dto = controler.GetMachine(machineID);
+                    _currentMachine = ObjectConverter.NewCloneProperties<Models.Machine, CNCLib.Logic.DTO.Machine>(dto);
+					_currentMachine.MachineCommands.CloneProperties(dto.MachineCommands);
+					_currentMachine.MachineInitCommands.CloneProperties(dto.MachineInitCommands);
 				}
 			}
 
@@ -224,53 +225,17 @@ namespace CNCLib.Wpf.ViewModels
 			set { SetProperty(() => _currentMachine.Rotate == value, () => _currentMachine.Rotate = value); }
 		}
 
-		private ObservableCollection<Models.MachineCommand> _MachineCommands;
-
 		public ObservableCollection<Models.MachineCommand> MachineCommands
-		{
-			get
-			{
-				if (_MachineCommands==null)
-				{
-					_MachineCommands = new ObservableCollection<Models.MachineCommand>();
-					_MachineCommands.CollectionChanged += ((sender, e) =>
-							{
-								if (e.NewItems != null)
-								{
-									foreach (Models.MachineCommand item in e.NewItems)
-									{
-										item.MachineID = _currentMachine.MachineID;
-									}
-								}
-							});
-				}
-				return _MachineCommands;
-			}
+        {
+			get { return _currentMachine.MachineCommands; }
 		}
 
-		private ObservableCollection<Models.MachineInitCommand> _MachineInitCommands;
 
 		public ObservableCollection<Models.MachineInitCommand> MachineInitCommands
 		{
-			get
-			{
-				if (_MachineInitCommands == null)
-				{
-					_MachineInitCommands = new ObservableCollection<Models.MachineInitCommand>();
-					_MachineInitCommands.CollectionChanged += ((sender, e) =>
-					{
-						if (e.NewItems != null)
-						{
-							foreach (Models.MachineInitCommand item in e.NewItems)
-							{
-								item.MachineID = _currentMachine.MachineID;
-							}
-						}
-					});
-				}
-				return _MachineInitCommands;
-			}
+			get { return _currentMachine.MachineInitCommands; }
 		}
+
 		#endregion
 
 		public bool AddNewMachine { get; set; }

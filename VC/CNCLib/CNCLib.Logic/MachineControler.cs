@@ -59,27 +59,6 @@ namespace CNCLib.Logic
 			}
         }
 
-		public DTO.MachineCommand[] GetMachineCommands(int machineID)
-		{
-			using (var rep = RepositoryFactory.Create<IMachineRepository>())
-			{
-				var machines = rep.GetMachineCommands(machineID);
-				List<DTO.MachineCommand> l = new List<DTO.MachineCommand>();
-				l.AddCloneProperties(machines);
-				return l.ToArray();
-			}
-		}
-		public DTO.MachineInitCommand[] GetMachineInitCommands(int machineID)
-		{
-			using (var rep = RepositoryFactory.Create<IMachineRepository>())
-			{
-				var machines = rep.GetMachineInitCommands(machineID).OrderBy((c) => c.SeqNo);
-				List<DTO.MachineInitCommand> l = new List<DTO.MachineInitCommand>();
-				l.AddCloneProperties(machines);
-				return l.ToArray();
-			}
-		}
-
 		public int StoreMachine(DTO.Machine m)
 		{
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())

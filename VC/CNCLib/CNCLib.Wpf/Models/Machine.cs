@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace CNCLib.Wpf.Models
@@ -54,5 +55,53 @@ namespace CNCLib.Wpf.Models
 		public bool Spindle { get; set; }
 		public bool Coolant { get; set; }
 		public bool Rotate { get; set; }
+
+		private ObservableCollection<Models.MachineCommand> _MachineCommands;
+
+		public ObservableCollection<Models.MachineCommand> MachineCommands
+		{
+			get
+			{
+				if (_MachineCommands == null)
+				{
+					_MachineCommands = new ObservableCollection<Models.MachineCommand>();
+					_MachineCommands.CollectionChanged += ((sender, e) =>
+					{
+						if (e.NewItems != null)
+						{
+							foreach (Models.MachineCommand item in e.NewItems)
+							{
+								item.MachineID = MachineID;
+							}
+						}
+					});
+				}
+				return _MachineCommands;
+			}
+		}
+
+		private ObservableCollection<Models.MachineInitCommand> _MachineInitCommands;
+
+		public ObservableCollection<Models.MachineInitCommand> MachineInitCommands
+		{
+			get
+			{
+				if (_MachineInitCommands == null)
+				{
+					_MachineInitCommands = new ObservableCollection<Models.MachineInitCommand>();
+					_MachineInitCommands.CollectionChanged += ((sender, e) =>
+					{
+						if (e.NewItems != null)
+						{
+							foreach (Models.MachineInitCommand item in e.NewItems)
+							{
+								item.MachineID = MachineID;
+							}
+						}
+					});
+				}
+				return _MachineInitCommands;
+			}
+		}
 	}
 }

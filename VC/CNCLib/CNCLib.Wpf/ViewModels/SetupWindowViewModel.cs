@@ -132,21 +132,18 @@ namespace CNCLib.Wpf.ViewModels
 
 				if (SendInitCommands && Machine != null)
 				{
-					using (var controler = LogicFactory.Create<IMachineControler>())
+					var initCommands = Machine.MachineInitCommands;
+
+					if (initCommands.Count() > 0)
 					{
-						var initCommands = controler.GetMachineInitCommands(Machine.MachineID);
-
-						if (initCommands.Length > 0)
+						if (ResetOnConnect)
 						{
-							if (ResetOnConnect)
-							{
-								Com.SendCommand("");
-							}
+							Com.SendCommand("");
+						}
 
-							foreach (var initcmd in initCommands.OrderBy(cmd => cmd.SeqNo))
-							{
-								Com.SendCommand(initcmd.CommandString);
-							}
+						foreach (var initcmd in initCommands.OrderBy(cmd => cmd.SeqNo))
+						{
+							Com.SendCommand(initcmd.CommandString);
 						}
 					}
 				}

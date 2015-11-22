@@ -50,8 +50,8 @@ namespace CNCLib.Logic.DTO
 		public bool Coolant { get; set; }
 		public bool Rotate { get; set; }
 
-		public List<MachineCommand> MachineCommands { get; set; }
-		public List<MachineInitCommand> MachineInitCommands { get; set; }
+		public IEnumerable<MachineCommand> MachineCommands { get; set; }
+		public IEnumerable<MachineInitCommand> MachineInitCommands { get; set; }
 
 	}
 }
