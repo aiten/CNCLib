@@ -279,8 +279,6 @@ private:
 
 	void M0304Command(bool m3);					// spindle on CW/CCW
 	void M05Command()							{ CallIOControl(CControl::Spindel, 0); } //spindel off
-	void M07Command()							{ CallIOControl(CControl::Coolant, CControl::CoolantOn); } // coolant on
-	void M09Command()							{ CallIOControl(CControl::Coolant, CControl::CoolantOff); } // coolant off
 
 	/////////////////
 

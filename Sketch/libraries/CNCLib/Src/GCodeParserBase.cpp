@@ -365,9 +365,10 @@ bool CGCodeParserBase::MCommand(mcode_t mcode)
 		case 7:	CallIOControl(CControl::Coolant, CControl::CoolantOn); return true;
 		case 9:	CallIOControl(CControl::Coolant, CControl::CoolantOff); return true;
 
+		case 106:	CallIOControl(CControl::Laser, CControl::LaserOn); return true;
+		case 107:	CallIOControl(CControl::Laser, CControl::LaserOff); return true;
+
 		case 5: M05Command(); return true;
-//		case 7: M07Command(); return true;
-//		case 9: M09Command(); return true;
 	}
 	return false;
 }
