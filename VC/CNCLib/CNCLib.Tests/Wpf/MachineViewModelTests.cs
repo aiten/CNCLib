@@ -80,6 +80,29 @@ namespace CNCLib.Tests.Wpf
 
 			Assert.AreEqual(machine.MachineCommands.Count(), mv.MachineCommands.Count);
 			Assert.AreEqual(machine.MachineInitCommands.Count(), mv.MachineInitCommands.Count);
+
+			Assert.AreEqual(machine.Name,mv.MachineName);
+			Assert.AreEqual(machine.ComPort,mv.ComPort);
+			Assert.AreEqual(machine.Axis,mv.Axis);
+			Assert.AreEqual(machine.BaudRate,mv.BaudRate);;
+			Assert.AreEqual(machine.CommandToUpper, mv.CommandToUpper);
+			Assert.AreEqual(machine.SizeX	 ,mv.SizeX);
+			Assert.AreEqual(machine.SizeY	 ,mv.SizeY);
+			Assert.AreEqual(machine.SizeZ	 ,mv.SizeZ);
+			Assert.AreEqual(machine.SizeA	 ,mv.SizeA);
+			Assert.AreEqual(machine.SizeB	 ,mv.SizeB);
+			Assert.AreEqual(machine.SizeC	 ,mv.SizeC);
+			Assert.AreEqual(machine.BufferSize,mv.BufferSize);
+			Assert.AreEqual(machine.ProbeSizeX,mv.ProbeSizeX);
+			Assert.AreEqual(machine.ProbeSizeY,mv.ProbeSizeY);
+			Assert.AreEqual(machine.ProbeSizeZ,mv.ProbeSizeZ);
+			Assert.AreEqual(machine.ProbeDist,mv.ProbeDist);
+			Assert.AreEqual(machine.ProbeDistUp,mv.ProbeDistUp);
+			Assert.AreEqual(machine.ProbeFeed,mv.ProbeFeed);
+			Assert.AreEqual(machine.SDSupport,mv.SDSupport);
+			Assert.AreEqual(machine.Spindle,mv.Spindle);
+			Assert.AreEqual(machine.Coolant,mv.Coolant);
+			Assert.AreEqual(machine.Rotate,mv.Rotate);
 		}
 
 		[TestMethod]
