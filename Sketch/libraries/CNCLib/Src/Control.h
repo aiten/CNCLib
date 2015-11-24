@@ -61,6 +61,7 @@ public:
 		Coolant,
 		ControllerFan,
 		Vacuum,
+		Laser,
 
 		// input
 		Probe,				// Probe for tool lenght
@@ -78,6 +79,12 @@ public:
 	{
 		VacuumOff = 0,
 		VacuumOn = 1
+	};
+
+	enum ELasertate
+	{
+		LaserOff = 0,
+		LaserOn = 1
 	};
 
 	virtual void IOControl(unsigned char /* tool */, unsigned short /*level */)	{ };
