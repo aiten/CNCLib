@@ -25,7 +25,7 @@
 
 #if defined(__AVR_ARCH__)
 
-#define pgm_read_ptr pgm_read_word
+//#define pgm_read_ptr pgm_read_word
 #define pgm_read_int pgm_read_word
 #define pgm_read_uint pgm_read_word
 
@@ -41,7 +41,7 @@
 #define TIMER2PRESCALE      1024
 #define TIMER2FREQUENCE		(F_CPU/TIMER2PRESCALE)
 
-#ifndef defined(__AVR_ATmega328P__)
+#ifndef __AVR_ATmega328P__
 
 #define TIMER3PRESCALE      1024
 #define TIMER3FREQUENCE		(F_CPU/TIMER3PRESCALE)
@@ -98,7 +98,7 @@ inline void  CHAL::InitTimer0(HALEvent evt)
 
 ////////////////////////////////////////////////////////
 
-inline void CHAL::StartTimer0(timer_t timer)
+inline void CHAL::StartTimer0(timer_t)
 {
 	// shared with millis => set only interrup mask!
 	TIMSK0 |= (1<<OCIE0B);  

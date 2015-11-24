@@ -1,4 +1,5 @@
 #include <StepperLib.h>
+#include <Steppers/StepperSMC800.h>
 #include "StepperTest.h"
 
 #if !defined(__AVR_ATmega328P__)
@@ -23,7 +24,7 @@ CStepperSMC800 Stepper;
 void setup()
 {
   StepperSerial.begin(115200);
-  StepperSerial.println(F("StepperTestSMC800 is starting ... ("__DATE__", "__TIME__")"));
+  StepperSerial.println(F("StepperTestSMC800 is starting ... (" __DATE__ ", " __TIME__ ")"));
 
   Stepper.Init();
   CHAL::pinMode(13, OUTPUT);
@@ -60,7 +61,7 @@ void setup()
 
 //////////////////////////////////////////////////////////////////////
 
-static void WaitBusy()
+void WaitBusy()
 {
   while (false && Stepper.IsBusy())
   {
@@ -73,19 +74,19 @@ static void WaitBusy()
   delay(1000);
 }
 
-static void MoveRel3(sdist_t dX, sdist_t dY, sdist_t dZ, steprate_t vMax = 0)
+void MoveRel3(sdist_t dX, sdist_t dY, sdist_t dZ, steprate_t vMax = 0)
 {
   Stepper.MoveRelEx(vMax, X_AXIS, dX, Y_AXIS, dY, Z_AXIS, dZ, -1);
 }
 
-static void MoveAbs3(udist_t X, udist_t Y, udist_t Z, steprate_t vMax = 0)
+void MoveAbs3(udist_t X, udist_t Y, udist_t Z, steprate_t vMax = 0)
 {
   Stepper.MoveAbsEx(vMax, X_AXIS, X, Y_AXIS, Y, Z_AXIS, Z, -1);
 }
 
 //////////////////////////////////////////////////////////////////////
 
-static void Test1()
+void Test1()
 {
   Serial.println(F("Test 1"));
   
@@ -146,8 +147,8 @@ static void Test1()
 
 //////////////////////////////////////////////////////////////////////
 
-static bool _isPenDown = true;
-static void PenUp()
+bool _isPenDown = true;
+void PenUp()
 {
   if (_isPenDown)
   {
@@ -164,7 +165,7 @@ static void PenUp()
   }
 }
 
-static void PenDown()
+void PenDown()
 {
   if (!_isPenDown)
   {
@@ -184,7 +185,7 @@ static void PenDown()
 //////////////////////////////////////////////////////////////////////
 // Test HPGL Move
 
-static void Test3()
+void Test3()
 {
   Serial.println(F("Test 3"));
 
@@ -240,7 +241,7 @@ static void Test3()
 
 //////////////////////////////////////////////////////////////////////
 
-static void Test4()
+void Test4()
 {
   Serial.println(F("Test 4"));
   

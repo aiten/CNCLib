@@ -111,7 +111,7 @@ protected:
 
 private:
 
-	static const char unsigned ConvertChar(const char ch, bool ignorecase)	{ return ignorecase ? CStreamReader::Toupper(ch) : ch; }
+	static char unsigned ConvertChar(const char ch, bool ignorecase)	{ return ignorecase ? CStreamReader::Toupper(ch) : ch; }
 
 	bool TryToken(const char* buffer, const __FlashStringHelper * b, bool expectdel, bool ignorecase, const char*&nextchar);		// scan, but do not remove it
 

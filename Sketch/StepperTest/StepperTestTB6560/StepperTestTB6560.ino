@@ -1,5 +1,6 @@
 #include <StepperLib.h>
-#include <StepperTB6560.h>
+#include <Steppers/StepperTB6560_pins.h>
+#include <Steppers/StepperTB6560.h>
 
 #if !defined(__AVR_ATmega328P__)
 //#error Only Works with Arduino:Duemilanove
@@ -17,7 +18,7 @@ CStepperTB6560 Stepper;
 void setup()
 {
   StepperSerial.begin(115200);
-  StepperSerial.println(F("StepperTestL298N is starting ... ("__DATE__", "__TIME__")"));
+  StepperSerial.println(F("StepperTestL298N is starting ... (" __DATE__ ", " __TIME__ ")"));
 
   Stepper.Init();
   CHAL::pinMode(13, OUTPUT);
@@ -52,7 +53,7 @@ void setup()
 
 //////////////////////////////////////////////////////////////////////
 
-static void WaitBusy()
+void WaitBusy()
 {
   while (false && Stepper.IsBusy())
   {
@@ -67,7 +68,7 @@ static void WaitBusy()
 
 //////////////////////////////////////////////////////////////////////
 
-static void Test1()
+void Test1()
 {
   Serial.println(F("Test 1"));
   
@@ -112,7 +113,7 @@ static void Test1()
 
 //////////////////////////////////////////////////////////////////////
 
-static void Test2()
+void Test2()
 {
   Serial.println(F("Test 2"));
 

@@ -27,6 +27,10 @@
 
 ////////////////////////////////////////////////////////
 
+#ifndef _MSC_VER
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 const SPlayTone SPlayTone::PlayOK[] PROGMEM =
 {
 	{ ToneA6, MilliSecToDuration(100) },

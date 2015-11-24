@@ -31,8 +31,6 @@
 
 void CHelpParser::Parse()
 {
-	unsigned char i;
-
 	_reader->SkipSpaces();
 
 	if (IsToken(F("s"), true, false)) { SetSpeed(); return; }
@@ -82,6 +80,9 @@ void CHelpParser::Parse()
 	if (IsToken(F("?"), true, false))	{ if (CheckEOC()) { CStepper::GetInstance()->Dump(CStepper::DumpAll); }	return; }
 
 #ifndef REDUCED_SIZE
+	
+	unsigned char i;
+
 	if (IsToken(F("-"), true, false))
 	{
 		if (CheckEOC())

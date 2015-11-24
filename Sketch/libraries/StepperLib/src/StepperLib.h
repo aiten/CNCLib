@@ -17,21 +17,12 @@
 */
 ////////////////////////////////////////////////////////
 
-#include "Steppers\StepperSMC800.h"
-#include "Steppers\StepperRamps14.h"
-#include "Steppers\StepperRampsFD.h"
-#include "Steppers\StepperL298N.h"
-#include "Steppers\StepperTB6560.h"
-#include "Steppers\StepperMash6050S.h"
+#include "Stepper.h"
+
+//#include "Steppers\StepperSMC800.h"
+//#include "Steppers\StepperRamps14.h"
+//#include "Steppers\StepperRampsFD.h"
+//#include "Steppers\StepperL298N.h"
+//#include "Steppers\StepperTB6560.h"
+//#include "Steppers\StepperMash6050S.h"
 #include "UtilitiesStepperLib.h"
-
-
-#if defined(__AVR_ARCH__)
-
-#define CStepperRamps CStepperRamps14
-
-#elif defined(__SAM3X8E__)
-
-#define CStepperRamps CStepperRampsFD
-
-#endif

@@ -29,6 +29,7 @@
 
 #include "Configuration_CNCShield.h"
 
+#include <Steppers/StepperCNCShield_pins.h>
 #include <Steppers/StepperCNCShield.h>
 
 ////////////////////////////////////////////////////////

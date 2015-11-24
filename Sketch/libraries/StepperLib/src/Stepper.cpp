@@ -971,7 +971,7 @@ void CStepper::OnStart()
 
 void CStepper::OnWait(EnumAsByte(EWaitType) wait)
 {
-	CallEvent(OnWaitEvent, (void*) wait);
+	CallEvent(OnWaitEvent, (void*) (unsigned int) wait);
 }
 
 ////////////////////////////////////////////////////////
@@ -1337,7 +1337,7 @@ inline void CStepper::StepOut()
 	 
 	// calculate all axes and set PINS parallel - DRV 8225 requires 1.9us * 2 per step => sequential is to slow 
 
-	register DirCount_t dir_count;
+	DirCount_t dir_count;
 
 	{
 		const SStepBuffer* stepbuffer = &_steps.Head();
@@ -2217,7 +2217,7 @@ void CStepper::MoveAbsEx(steprate_t vMax, unsigned short axis, udist_t d, ...)
 	va_list arglist;
 	va_start(arglist, d);
 
-	while (axis >= 0 && axis < NUM_AXIS)
+	while (axis < NUM_AXIS)
 	{
 		D[axis] = d;
 
@@ -2245,7 +2245,7 @@ void CStepper::MoveRelEx(steprate_t vMax, unsigned short axis, sdist_t d, ...)
 	va_list arglist;
 	va_start(arglist, d);
 
-	while (axis >= 0 && axis < NUM_AXIS)
+	while (axis < NUM_AXIS)
 	{
 		dist[axis] = d;
 

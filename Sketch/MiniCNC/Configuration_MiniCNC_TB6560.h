@@ -21,6 +21,11 @@
 
 ////////////////////////////////////////////////////////
 
+#include <Steppers/StepperTB6560_pins.h>
+#include <Steppers/StepperTB6560.h>
+
+////////////////////////////////////////////////////////
+
 #define CMyStepper CStepperTB6560
 #define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
 #define ConversionToMachine CMotionControl::ToMachine_1_3200

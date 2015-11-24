@@ -1,4 +1,6 @@
 #include <StepperLib.h>
+#include <Steppers/StepperRampsFD_pins.h>
+#include <Steppers/StepperRampsFD.h>
 
 #if !defined(__SAM3X8E__)
 #error Only Works with Arduino:due
@@ -10,7 +12,7 @@ CStepperRampsFD Stepper;
 
 //////////////////////////////////////////////////////////////////////////
 
-static void Test1()
+void Test1()
 {
 	for (register unsigned char i = 0;i< NUM_AXIS;i++)
 	{
@@ -32,7 +34,7 @@ static void Test1()
 void setup()
 {
 	Serial.begin(115200);
-	StepperSerial.println(F("StepperTestRamps14 is starting ... ("__DATE__", "__TIME__")"));
+	StepperSerial.println(F("StepperTestRamps14 is starting ... (" __DATE__ ", " __TIME__ ")"));
 
 	Stepper.Init();
 	pinMode(13, OUTPUT);

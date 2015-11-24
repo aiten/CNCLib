@@ -22,7 +22,7 @@
 ////////////////////////////////////////////////////////
 
 #include "Stepper.h"
-#include "StepperTB6560_Pins.h"
+//#include "StepperTB6560_Pins.h"
 
 ////////////////////////////////////////////////////////
 
@@ -69,7 +69,9 @@ public:
 		CHAL::pinMode(TB6560_B_DIR_PIN, OUTPUT);
 		CHAL::pinMode(TB6560_B_ENABLE_PIN, OUTPUT);
 		*/
+#ifdef _MSC_VER
 #pragma warning( disable : 4127 )
+#endif
 
 		HALFastdigitalWrite(TB6560_X_STEP_PIN, TB6560_PIN_STEP_ON);
 		HALFastdigitalWrite(TB6560_Y_STEP_PIN, TB6560_PIN_STEP_ON);
@@ -77,8 +79,9 @@ public:
 		//	HALFastdigitalWrite(TB6560_A_STEP_PIN, TB6560_PIN_STEP_ON);
 		//	HALFastdigitalWrite(TB6560_B_STEP_PIN, TB6560_PIN_STEP_ON);
 
+#ifdef _MSC_VER
 #pragma warning( default : 4127 )
-
+#endif
 
 	}
 
@@ -92,13 +95,17 @@ protected:
 #define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,TB6560_PIN_ENABLE_ON);	else	HALFastdigitalWrite(pin,TB6560_PIN_ENABLE_OFF);
 		switch (axis)
 		{
+#ifdef _MSC_VER
 #pragma warning( disable : 4127 )
+#endif
 			case X_AXIS:  SETLEVEL(TB6560_X_ENABLE_PIN); break;
 			case Y_AXIS:  SETLEVEL(TB6560_Y_ENABLE_PIN); break;
 			case Z_AXIS:  SETLEVEL(TB6560_Z_ENABLE_PIN); break;
 				//		case A_AXIS: SETLEVEL(TB6560_A_ENABLE_PIN); break;
 				//		case B_AXIS: SETLEVEL(TB6560_B_ENABLE_PIN); break;
+#ifdef _MSC_VER
 #pragma warning( default : 4127 )
+#endif
 		}
 #undef SETLEVEL
 
@@ -110,13 +117,17 @@ protected:
 	{
 		switch (axis)
 		{
+#ifdef _MSC_VER
 #pragma warning( disable : 4127 )
+#endif
 			case X_AXIS:  return ConvertLevel(HALFastdigitalRead(TB6560_X_ENABLE_PIN) == TB6560_PIN_ENABLE_ON);
 			case Y_AXIS:  return ConvertLevel(HALFastdigitalRead(TB6560_Y_ENABLE_PIN) == TB6560_PIN_ENABLE_ON);
 			case Z_AXIS:  return ConvertLevel(HALFastdigitalRead(TB6560_Z_ENABLE_PIN) == TB6560_PIN_ENABLE_ON);
 				//		case A_AXIS: return ConvertLevel(HALFastdigitalRead(TB6560_A_ENABLE_PIN) == TB6560_PIN_ENABLE_ON);
 				//		case B_AXIS: return ConvertLevel(HALFastdigitalRead(TB6560_B_ENABLE_PIN) == TB6560_PIN_ENABLE_ON);
+#ifdef _MSC_VER
 #pragma warning( default : 4127 )
+#endif
 		}
 		return 0;
 	}

@@ -21,14 +21,15 @@
 
 ////////////////////////////////////////////////////////
 
-#define USE_RAMPS14
-//#define USE_RAMPSFD
+//#define USE_RAMPS14
+#define USE_RAMPSFD
 
 ////////////////////////////////////////////////////////
 
 #if defined(USE_RAMPS14)
 
 #include <Steppers/StepperRamps14_pins.h>
+#include <Steppers/StepperRamps14.h>
 #define BOARDNAME RAMPS14
 
 #define SPEEDFACTOR 1
@@ -36,9 +37,10 @@
 #define ConversionToMm1000 CMotionControlBase::ToMm1000_1_3200
 #define ConversionToMachine CMotionControlBase::ToMachine_1_3200
 
-#else if  defined(USE_RAMPSFD)
+#elif  defined(USE_RAMPSFD)
 
 #include <Steppers/StepperRampsFD_pins.h>
+#include <Steppers/StepperRampsFD.h>
 #define BOARDNAME RAMPSFD
 
 #define SPEEDFACTOR 2
