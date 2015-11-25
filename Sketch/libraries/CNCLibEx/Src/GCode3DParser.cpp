@@ -148,7 +148,9 @@ void CGCode3DParser::M20Command()
 
 void CGCode3DParser::PrintSDFileListRecurse(File& dir, unsigned char depth, unsigned short&count, char* filenamebuffer, char seperatorchar)
 {
+#ifdef _MSC_VER
 #pragma warning (suppress: 4127)
+#endif
 	while (true)
 	{
 		File entry = dir.openNextFile();

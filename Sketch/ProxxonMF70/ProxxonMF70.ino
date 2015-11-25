@@ -35,7 +35,7 @@
 
 CStepperRamps14 Stepper;
 
-#else if  defined(USE_RAMPSFD)
+#elif  defined(USE_RAMPSFD)
 
 CStepperRampsFD Stepper;
 

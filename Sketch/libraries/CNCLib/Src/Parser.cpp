@@ -232,7 +232,7 @@ bool CParser::TryToken(const char* buffer, const __FlashStringHelper* b, bool ex
 
 bool CParser::TryToken(const char* buffer, const __FlashStringHelper* b, bool ignorecase)
 {
-	const char PROGMEM *p = (const char PROGMEM *)b;
+	const char* p = (const char*) b;
 
 	//const char* tmp = _reader->GetBuffer();
 	char c = pgm_read_byte(p);
@@ -250,7 +250,7 @@ bool CParser::TryToken(const char* buffer, const __FlashStringHelper* b, bool ig
 
 bool CParser::TryToken(const char* buffer, const __FlashStringHelper* b, bool expectdel, bool ignorecase, const char*&nextchar)
 {
-	const char PROGMEM *p = (const char PROGMEM *)b;
+	const char* p = (const char*) b;
 
 	//const char* tmp = _reader->GetBuffer();
 	char c = pgm_read_byte(p);

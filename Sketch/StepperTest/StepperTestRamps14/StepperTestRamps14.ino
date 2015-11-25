@@ -1,4 +1,6 @@
 #include <StepperLib.h>
+#include <Steppers/StepperRamps14_pins.h>
+#include <Steppers/StepperRamps14.h>
 
 #if !defined(__AVR_ATmega2560__)
 #error Only Works with Arduino:mega2560
@@ -10,11 +12,11 @@ CStepperRamps14 Stepper;
 
 //////////////////////////////////////////////////////////////////////////
 
-static void DrawAll() {};
+void DrawAll() {};
 
 //////////////////////////////////////////////////////////////////////////
 
-static void WaitBusy()
+void WaitBusy()
 {
 	while (true && Stepper.IsBusy())
 	{
@@ -28,7 +30,7 @@ static void WaitBusy()
 
 //////////////////////////////////////////////////////////////////////////
 
-static void Test1()
+void Test1()
 {
 	for (register unsigned char i = 0;i< NUM_AXIS;i++)
 	{
@@ -50,7 +52,7 @@ static void Test1()
 void setup()
 {
 	StepperSerial.begin(115200);
-	StepperSerial.println(F("StepperTestRamps14 is starting ... ("__DATE__", "__TIME__")"));
+	StepperSerial.println(F("StepperTestRamps14 is starting ... (" __DATE__ ", " __TIME__ ")"));
 
 	Stepper.Init();
 	CHAL::pinMode(13, OUTPUT);

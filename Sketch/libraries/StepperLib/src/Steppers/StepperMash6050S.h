@@ -22,7 +22,6 @@
 ////////////////////////////////////////////////////////
 
 #include "Stepper.h"
-#include "StepperMash6050S_Pins.h"
 
 ////////////////////////////////////////////////////////
 
@@ -68,7 +67,9 @@ public:
 		CHAL::pinMode(MASH6050S_C_DIR_PIN, OUTPUT);
 		CHAL::pinMode(MASH6050S_C_MIN_PIN, MASH6050S_INPUTPINMODE);
 
+#ifdef _MSC_VER
 #pragma warning( disable : 4127 )
+#endif
 
 		HALFastdigitalWrite(MASH6050S_X_STEP_PIN, MASH6050S_PIN_STEP_ON);
 		HALFastdigitalWrite(MASH6050S_Y_STEP_PIN, MASH6050S_PIN_STEP_ON);
@@ -80,7 +81,9 @@ public:
 		HALFastdigitalWrite(MASH6050S_Z_DIR_PIN, MASH6050S_PIN_DIR_OFF);
 		HALFastdigitalWrite(MASH6050S_C_DIR_PIN, MASH6050S_PIN_DIR_OFF);
 
+#ifdef _MSC_VER
 #pragma warning( default : 4127 )
+#endif
 	}
 
 protected:

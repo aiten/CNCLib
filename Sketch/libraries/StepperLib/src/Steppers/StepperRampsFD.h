@@ -29,8 +29,6 @@
 
 // only available on Arduino Mega or due
 
-#include "StepperRampsFD_Pins.h"
-
 ////////////////////////////////////////////////////////
 
 #define E0_AXIS A_AXIS
@@ -94,7 +92,9 @@ public:
 		//  CHAL::pinMode(E2_MIN_PIN,	INPUT_PULLUP);         
 		//  CHAL::pinMode(E2_MAX_PIN,	INPUT_PULLUP);         
 
+#ifdef _MSC_VER
 #pragma warning( disable : 4127 )
+#endif
 
 		HALFastdigitalWrite(RAMPSFD_X_STEP_PIN, RAMPSFD_PIN_STEP_ON);
 		HALFastdigitalWrite(RAMPSFD_Y_STEP_PIN, RAMPSFD_PIN_STEP_ON);
@@ -103,7 +103,9 @@ public:
 		HALFastdigitalWrite(RAMPSFD_E1_STEP_PIN, RAMPSFD_PIN_STEP_ON);
 		HALFastdigitalWrite(RAMPSFD_E2_STEP_PIN, RAMPSFD_PIN_STEP_ON);
 
+#ifdef _MSC_VER
 #pragma warning( default : 4127 )
+#endif
 
 		// init some outputs!
 
@@ -122,14 +124,18 @@ protected:
 #define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,RAMPSFD_PIN_ENABLE_ON);	else	HALFastdigitalWrite(pin,RAMPSFD_PIN_ENABLE_OFF);
 		switch (axis)
 		{
+#ifdef _MSC_VER
 #pragma warning( disable : 4127 )
+#endif
 			case X_AXIS:  SETLEVEL(RAMPSFD_X_ENABLE_PIN); break;
 			case Y_AXIS:  SETLEVEL(RAMPSFD_Y_ENABLE_PIN); break;
 			case Z_AXIS:  SETLEVEL(RAMPSFD_Z_ENABLE_PIN); break;
 			case E0_AXIS: SETLEVEL(RAMPSFD_E0_ENABLE_PIN); break;
 			case E1_AXIS: SETLEVEL(RAMPSFD_E1_ENABLE_PIN); break;
 			case E2_AXIS: SETLEVEL(RAMPSFD_E2_ENABLE_PIN); break;
+#ifdef _MSC_VER
 #pragma warning( default : 4127 )
+#endif
 		}
 #undef SETLEVEL
 #undef NOPREQUIRED_1
@@ -142,14 +148,18 @@ protected:
 	{
 		switch (axis)
 		{
+#ifdef _MSC_VER
 #pragma warning( disable : 4127 )
+#endif
 			case X_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPSFD_X_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_ON);
 			case Y_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPSFD_Y_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_ON);
 			case Z_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPSFD_Z_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_ON);
 			case E0_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPSFD_E0_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_ON);
 			case E1_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPSFD_E1_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_ON);
 			case E2_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPSFD_E2_ENABLE_PIN) == RAMPSFD_PIN_ENABLE_ON);
+#ifdef _MSC_VER
 #pragma warning( default : 4127 )
+#endif
 		}
 		return 0;
 	}

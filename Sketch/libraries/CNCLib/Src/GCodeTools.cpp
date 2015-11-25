@@ -30,6 +30,9 @@ template<> CGCodeTools* CSingleton<CGCodeTools>::_instance=NULL;
 
 ////////////////////////////////////////////////////////
 
+#ifndef _MSC_VER
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
 
 const CGCodeTools::STools CGCodeTools::_tools[] PROGMEM =
 {

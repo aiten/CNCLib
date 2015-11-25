@@ -54,7 +54,7 @@ protected:
 	virtual bool IsIdentStart(char ch)									{ return CStreamReader::IsAlpha(ch); }	// start of function or variable
 	
 	virtual bool EvalVariable(const char* var_name, expr_t& answer);
-	virtual void AssignVariable(const char* var_name, expr_t value)		{ var_name; value; };
+	virtual void AssignVariable(const char* /*var_name*/, expr_t /*value*/)		{ };
 
 	enum ETokenType
 	{

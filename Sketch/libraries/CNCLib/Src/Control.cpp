@@ -115,7 +115,7 @@ void CControl::Resurrect()
 
 ////////////////////////////////////////////////////////////
 
-void CControl::StopProgram(bool checkconditional)
+void CControl::StopProgram(bool /*checkconditional*/)
 {
 }
 

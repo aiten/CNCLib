@@ -29,8 +29,6 @@
 
 // only available on Arduino Mega or due
 
-#include "StepperRamps14_Pins.h"
-
 ////////////////////////////////////////////////////////
 
 #define E0_AXIS A_AXIS
@@ -88,7 +86,9 @@ public:
 		CHAL::pinMode(RAMPS14_E1_DIR_PIN, OUTPUT);
 		CHAL::pinMode(RAMPS14_E1_ENABLE_PIN, OUTPUT);
 
+#ifdef _MSC_VER
 #pragma warning( disable : 4127 )
+#endif
 
 		HALFastdigitalWrite(RAMPS14_X_STEP_PIN, RAMPS14_PIN_STEP_ON);
 		HALFastdigitalWrite(RAMPS14_Y_STEP_PIN, RAMPS14_PIN_STEP_ON);
@@ -96,7 +96,9 @@ public:
 		HALFastdigitalWrite(RAMPS14_E0_STEP_PIN, RAMPS14_PIN_STEP_ON);
 		HALFastdigitalWrite(RAMPS14_E1_STEP_PIN, RAMPS14_PIN_STEP_ON);
 
+#ifdef _MSC_VER
 #pragma warning( default : 4127 )
+#endif
 	}
 
 	////////////////////////////////////////////////////////
@@ -108,13 +110,17 @@ protected:
 #define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,RAMPS14_PIN_ENABLE_ON);	else	HALFastdigitalWrite(pin,RAMPS14_PIN_ENABLE_OFF);
 		switch (axis)
 		{
+#ifdef _MSC_VER
 #pragma warning( disable : 4127 )
+#endif
 			case X_AXIS:  SETLEVEL(RAMPS14_X_ENABLE_PIN); break;
 			case Y_AXIS:  SETLEVEL(RAMPS14_Y_ENABLE_PIN); break;
 			case Z_AXIS:  SETLEVEL(RAMPS14_Z_ENABLE_PIN); break;
 			case E0_AXIS: SETLEVEL(RAMPS14_E0_ENABLE_PIN); break;
 			case E1_AXIS: SETLEVEL(RAMPS14_E1_ENABLE_PIN); break;
+#ifdef _MSC_VER
 #pragma warning( default : 4127 )
+#endif
 		}
 #undef SETLEVEL
 	}
@@ -125,13 +131,17 @@ protected:
 	{
 		switch (axis)
 		{
+#ifdef _MSC_VER
 #pragma warning( disable : 4127 )
+#endif
 			case X_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPS14_X_ENABLE_PIN) == RAMPS14_PIN_ENABLE_ON);
 			case Y_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPS14_Y_ENABLE_PIN) == RAMPS14_PIN_ENABLE_ON);
 			case Z_AXIS:  return ConvertLevel(HALFastdigitalRead(RAMPS14_Z_ENABLE_PIN) == RAMPS14_PIN_ENABLE_ON);
 			case E0_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPS14_E0_ENABLE_PIN) == RAMPS14_PIN_ENABLE_ON);
 			case E1_AXIS: return ConvertLevel(HALFastdigitalRead(RAMPS14_E1_ENABLE_PIN) == RAMPS14_PIN_ENABLE_ON);
+#ifdef _MSC_VER
 #pragma warning( default : 4127 )
+#endif
 		}
 		return LevelOff;
 	}

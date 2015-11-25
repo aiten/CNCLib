@@ -76,6 +76,10 @@ void CMyMenu::MenuButtonPressFuerElise(const SMenuItemDef* /* def */)
 ////////////////////////////////////////////////////////////
 // Main Menu
 
+#ifndef _MSC_VER
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 const CMyMenu::SMenuItemDef CMyMenu::_mainMenuItems[] PROGMEM =
 {
 	{ _mMoveX, &CMenuBase::MenuButtonPressSetMenu, (menuparam_t) &_moveXMenu },

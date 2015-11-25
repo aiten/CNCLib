@@ -1,4 +1,5 @@
 #include <StepperLib.h>
+#include <Steppers/StepperL298N.h>
 
 #if !defined(__AVR_ATmega328P__)
 //#error Only Works with Arduino:__AVR_ATmega328P__
@@ -11,7 +12,7 @@ CStepperL298N Stepper;
 void setup()
 {
   StepperSerial.begin(115200);
-  StepperSerial.println(F("StepperTestL298N is starting ... ("__DATE__", "__TIME__")"));
+  StepperSerial.println(F("StepperTestL298N is starting ... (" __DATE__ ", " __TIME__ ")"));
 
  // Stepper.SetEnablePin(X_AXIS,10,11);
  // Stepper.SetEnablePin(Y_AXIS,12,13);
@@ -47,7 +48,7 @@ void setup()
 
 //////////////////////////////////////////////////////////////////////
 
-static void WaitBusy()
+void WaitBusy()
 {
   while (false && Stepper.IsBusy())
   {
@@ -62,7 +63,7 @@ static void WaitBusy()
 
 //////////////////////////////////////////////////////////////////////
 
-static void Test1()
+void Test1()
 {
   Serial.println(F("Test 1"));
   
@@ -97,7 +98,7 @@ static void Test1()
 
 //////////////////////////////////////////////////////////////////////
 
-static void Test2()
+void Test2()
 {
   Serial.println(F("Test 2"));
 

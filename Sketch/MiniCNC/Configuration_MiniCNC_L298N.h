@@ -21,6 +21,10 @@
 
 ////////////////////////////////////////////////////////
 
+#include <Steppers/StepperL298N.h>
+
+////////////////////////////////////////////////////////
+
 #define CMyStepper CStepperL298N
 #define ConversionToMm1000 ToMm1000_L298N
 #define ConversionToMachine ToMachine_L298N
