@@ -111,6 +111,7 @@ public:
 	//
 	// Remark: use fix div and multiplier 2^x => compiler will generate faster inline function 
 	//		   256 (as div and mul) => compiler will generate faster inline function 
+	//		   if MulDiv is not able with 256 use float => this is faster
 	//
 	// mm1000_t => 2^31 = 2147483648 = 2147483.648 mm = 2147.483648m 
 	//
