@@ -130,7 +130,7 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 #ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
 		case Spindel:		{ return _spindel.IsOn(); }
 #endif
-    case Coolant:   { return _coolant.IsOn(); }
+	    case Coolant:   { return _coolant.IsOn(); }
 	}
 
 	return super::IOControl(tool);
@@ -196,7 +196,7 @@ void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */)
 
 	// force linking to see size used in sketch
 	if (IsHold())
-		super::GoToReference();
+		super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 300000));
 
 #endif
 }

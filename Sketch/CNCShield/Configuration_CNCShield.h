@@ -30,14 +30,15 @@
 //#define ConversionToMachine CMotionControl::ToMachine_1d25_3200
 
 //m6
-#define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
-#define ConversionToMachine CMotionControl::ToMachine_1_3200
+//#define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
+//#define ConversionToMachine CMotionControl::ToMachine_1_3200
 
 //float
-//inline mm1000_t ToMm1000_float(axis_t /* axis */, sdist_t val)               { return  (mm1000_t) (val * (80.0/256.0)); }
-//inline sdist_t  ToMachine_float(axis_t /* axis */, mm1000_t val)             { return  (sdist_t) (val * (256.0/80.0)); }
-//#define ConversionToMm1000 ToMm1000_float
-//#define ConversionToMachine ToMm1000_float
+#define STEPSPERMM 3200.0
+inline mm1000_t ToMm1000_float(axis_t /* axis */, sdist_t val)               { return  (mm1000_t) (val * (1000.0/ STEPSPERMM)); }
+inline sdist_t  ToMachine_float(axis_t /* axis */, mm1000_t val)             { return  (sdist_t) (val * (STEPSPERMM / 1000.0)); }
+#define ConversionToMm1000 ToMm1000_float
+#define ConversionToMachine ToMm1000_float
 
 ////////////////////////////////////////////////////////
 
@@ -75,4 +76,5 @@
 #include <MessageCNCLib.h>
 
 #define MESSAGE_MYCONTROL_CNCShield_Starting					F("CNCShield:" __DATE__ )
+
 
