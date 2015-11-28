@@ -151,11 +151,24 @@ bool CMyControl::IsKill()
 
 void CMyControl::GoToReference()
 {
+#ifdef GOTOREFERENCEATBOOT
+
+	steprate_t steprate = CMotionControlBase::FeedRateToStepRate(X_AXIS, 300000);
+	super::GoToReference(Z_AXIS, steprate, false);
+	super::GoToReference(Y_AXIS, steprate, true);
+	super::GoToReference(X_AXIS, steprate, true);
+
+#else
+
+#pragma message ("for test purpose only, not gotoReference at boot")
+
 	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
 
 	// force linking to see size used in sketch
-	if (_controllerfan.IsOn())
-		super::GoToReference();
+	if (IsHold())
+		super::GoToReference(X_AXIS, CMotionControlBase::FeedRateToStepRate(X_AXIS, 300000), true);
+
+#endif
 }
 
 ////////////////////////////////////////////////////////////

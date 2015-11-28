@@ -25,42 +25,58 @@
 
 ////////////////////////////////////////////////////////
 
-//m8
-//#define ConversionToMm1000 CMotionControl::ToMm1000_1d25_3200
-//#define ConversionToMachine CMotionControl::ToMachine_1d25_3200
-
-//m6
-//#define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
-//#define ConversionToMachine CMotionControl::ToMachine_1_3200
-
-//float
-#define STEPSPERMM 3200.0
-inline mm1000_t ToMm1000_float(axis_t /* axis */, sdist_t val)               { return  (mm1000_t) (val * (1000.0/ STEPSPERMM)); }
-inline sdist_t  ToMachine_float(axis_t /* axis */, mm1000_t val)             { return  (sdist_t) (val * (STEPSPERMM / 1000.0)); }
-#define ConversionToMm1000 ToMm1000_float
-#define ConversionToMachine ToMm1000_float
+#define X_STEPSPERMM 3200.0
+#define Y_STEPSPERMM 3200.0
+#define Z_STEPSPERMM 3200.0
+#define A_STEPSPERMM 3200.0
 
 ////////////////////////////////////////////////////////
 
-#define MAXSIZE_X_AXIS 200000 
-#define MAXSIZE_Y_AXIS 200000 
-#define MAXSIZE_Z_AXIS 100000 
-#define MAXSIZE_A_AXIS 50000 
+#define X_MAXSIZE 200000				// in mm1000_t
+#define Y_MAXSIZE 200000 
+#define Z_MAXSIZE 100000 
+#define A_MAXSIZE 50000 
+
+////////////////////////////////////////////////////////
+
+#define X_USEREFERENCE_MIN	
+//#define X_USEREFERENCE_MAX
+
+#define Y_USEREFERENCE_MIN	
+//#define Y_USEREFERENCE_MAX
+
+//#define Z_USEREFERENCE_MIN	
+#define Z_USEREFERENCE_MAX
+
+//#define A_USEREFERENCE_MIN	
+//#define A_USEREFERENCE_MAX
+
+#define REFMOVE_1_AXIS	Z_AXIS
+#define REFMOVE_2_AXIS	Y_AXIS
+#define REFMOVE_3_AXIS	X_AXIS
+//#define REFMOVE_3_AXIS	A_AXIS
+
+////////////////////////////////////////////////////////
+
+#define GO_DEFAULT_STEPRATE		20000	// steps/sec
+#define G1_DEFAULT_STEPRATE		10000	// steps/sec
 
 ////////////////////////////////////////////////////////
 
 #undef ANALOGSPINDELSPEED
-#define MAXSPINDLESPEED 25000		// analog 255
+#define MAXSPINDLESPEED 25000			// analog 255
 
 ////////////////////////////////////////////////////////
 
-//#define GOTOREFERENCEATBOOT
+#define NOGOTOREFERENCEATBOOT
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED 14000
+#define CNC_MAXSPEED 14000				// steps/sec
 #define CNC_ACC  350
 #define CNC_DEC  400
+
+////////////////////////////////////////////////////////
 
 #if defined(__AVR_ATmega328P__) || defined (_MSC_VER)
 #define CNCSHIELD_PROBE_PIN     18    // AD4 (Mega => 58)

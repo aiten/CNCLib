@@ -92,8 +92,8 @@ public:
 
 	//////////////////////////////////////////
 
-	virtual void GoToReference();										// Goto Refernce during Initialisation
-	virtual void GoToReference(axis_t axis,steprate_t steprate);
+	virtual void GoToReference()=0;								// Goto Refernce during Initialisation
+	virtual void GoToReference(axis_t axis,steprate_t steprate, bool toMinRef);
 
 	//////////////////////////////////////////
 

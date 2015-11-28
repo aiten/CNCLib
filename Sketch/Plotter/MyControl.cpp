@@ -56,14 +56,14 @@ void CMyControl::Init()
 	_kill.Init();
 
 #if defined(__AVR_ARCH__) || defined(__SAM3X8E__)
-	for (register unsigned char i=0;i<NUM_AXIS*2;i++)
+	for (register unsigned char i = 0; i < NUM_AXIS * 2; i++)
 	{
-		CStepper::GetInstance()->UseReference(i,false);  
+		CStepper::GetInstance()->UseReference(i, false);
 	}
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true),true);  
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true),true);  
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true),true);  
-	CStepper::GetInstance()->UseReference(EMERGENCY_ENDSTOP,true);    // not stop
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true), true);
+	CStepper::GetInstance()->UseReference(EMERGENCY_ENDSTOP, true);    // not stop
 #endif    
 }
 
@@ -73,8 +73,8 @@ void CMyControl::Initialized()
 {
 	super::Initialized();
 
-//	CStepper::GetInstance()->Wait(1);
-//	CStepper::GetInstance()->MoveAbs(Z_AXIS, 200);
+	//	CStepper::GetInstance()->Wait(1);
+	//	CStepper::GetInstance()->MoveAbs(Z_AXIS, 200);
 
 	GoToReference();
 }
@@ -83,20 +83,17 @@ void CMyControl::Initialized()
 
 void CMyControl::GoToReference()
 {
-	super::GoToReference();
-
-	GoToReference(Z_AXIS, 0);
-	GoToReference(Y_AXIS, 0);
-	GoToReference(X_AXIS, 0);
+	GoToReference(Z_AXIS, 0, true);
+	GoToReference(Y_AXIS, 0, true);
+	GoToReference(X_AXIS, 0, true);
 }
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */)
+void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
 {
 #define FEEDRATE_REFMOVE  CStepper::GetInstance()->GetDefaultVmax() / 4  
-        bool toMin = true; // axis != Z_AXIS;
-        CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMin), toMin, FEEDRATE_REFMOVE);
+	CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, FEEDRATE_REFMOVE);
 }
 
 ////////////////////////////////////////////////////////////
@@ -116,7 +113,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
 #endif
 	}
-	
+
 	super::IOControl(tool, level);
 }
 
@@ -126,7 +123,7 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 {
 	switch (tool)
 	{
-		case ControllerFan:	{ return _controllerfan.Level; }
+		case ControllerFan: { return _controllerfan.Level; }
 	}
 
 	return super::IOControl(tool);
@@ -143,7 +140,7 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 			_controllerfan.On();
 			break;
 		case CStepper::OnIdleEvent:
-			if (millis()-stepper->IdleTime() > CONTROLLERFAN_ONTIME)
+			if (millis() - stepper->IdleTime() > CONTROLLERFAN_ONTIME)
 			{
 				_controllerfan.Off();
 			}
@@ -166,8 +163,8 @@ void CMyControl::Idle(unsigned int idletime)
 
 bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 {
-	CHPGLParser hpgl(reader,output);
-	return ParseAndPrintResult(&hpgl,output);
+	CHPGLParser hpgl(reader, output);
+	return ParseAndPrintResult(&hpgl, output);
 }
 
 ////////////////////////////////////////////////////////////

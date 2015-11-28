@@ -57,7 +57,7 @@ protected:
 	bool IsKill() override;
 	virtual void Poll() override;
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
-	virtual void GoToReference(axis_t axis, steprate_t steprate) override;
+	virtual void GoToReference() override;
 
 private:
 

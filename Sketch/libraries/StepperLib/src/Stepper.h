@@ -247,7 +247,7 @@ public:
 
 	void AddEvent(StepperEvent event, void* eventparam, SEvent&old );
 
-	unsigned char ToReferenceId(axis_t axis, bool minRef)		{ return axis * 2 + (minRef ? 0 : 1); }
+	unsigned char ToReferenceId(axis_t axis, bool minRef) const	{ return axis * 2 + (minRef ? 0 : 1); }
 
 	virtual bool  IsAnyReference() = 0;
 	virtual bool  IsReference(unsigned char referenceid) = 0;

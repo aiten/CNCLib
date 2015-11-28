@@ -58,7 +58,8 @@ protected:
 	virtual bool IsKill() override;
 	virtual void Poll() override;
 
-	virtual void GoToReference(axis_t axis, steprate_t steprate) override;
+	virtual void GoToReference() override;
+	virtual void GoToReference(axis_t axis, steprate_t steprate, bool toMinRef) override;
 
 	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
 	void TimerInterrupt() override;

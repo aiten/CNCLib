@@ -39,9 +39,6 @@ inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val)			{ return  Rou
 
 ////////////////////////////////////////////////////////
 
-#define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
-#define CONTROLLERFAN_FAN_PIN	13 // 10
-
 #define CONTROLLERFAN_ON  LOW
 #define CONTROLLERFAN_OFF HIGH
 
@@ -57,6 +54,9 @@ inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val)			{ return  Rou
 #define PROBE1_PIN	-1
 
 #define PROBE_ON  LOW
+#define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
+#define CONTROLLERFAN_FAN_PIN	13 // 10
+
 #define PROBE_OFF HIGH
 
 ////////////////////////////////////////////////////////

@@ -173,15 +173,24 @@ void CMyControl::Initialized()
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */)
+void CMyControl::GoToReference()
+{
+	super::GoToReference(Z_AXIS, 0, false);
+	super::GoToReference(Y_AXIS, 0, true);
+	super::GoToReference(X_AXIS, 0, true);
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
 {
 #if defined(__SAM3X8E__)
-	if (axis == Z_AXIS)
-		CStepper::GetInstance()->SetPosition(axis, CStepper::GetInstance()->GetLimitMax(axis));
-	else
+	if (toMinRef)
 		CStepper::GetInstance()->SetPosition(axis, 0);
+	else
+		CStepper::GetInstance()->SetPosition(axis, CStepper::GetInstance()->GetLimitMax(axis));
 #else
-	super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 300000));
+	super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 300000),toMinRef);
 #endif
 }
 

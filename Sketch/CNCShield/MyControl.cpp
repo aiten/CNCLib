@@ -42,7 +42,30 @@ void CMyControl::Init()
 	StepperSerial.println(MESSAGE_MYCONTROL_CNCShield_Starting);
 
 	CMotionControlBase::GetInstance()->Init();
-	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
+	CMotionControlBase::GetInstance()->InitConversion(
+		[](axis_t axis, sdist_t val)
+	{
+		switch (axis)
+		{
+			default:
+//          case X_AXIS: return  CMotionControl::ToMm1000_1_3200(axis,val);
+			case X_AXIS: return  (mm1000_t)(val * (1000.0 / X_STEPSPERMM));
+			case Y_AXIS: return  (mm1000_t)(val * (1000.0 / Y_STEPSPERMM));
+			case Z_AXIS: return  (mm1000_t)(val * (1000.0 / Z_STEPSPERMM));
+			case A_AXIS: return  (mm1000_t)(val * (1000.0 / A_STEPSPERMM));
+		}
+	},
+		[](axis_t axis, mm1000_t val)
+	{
+		switch (axis)
+		{
+			default:
+			case X_AXIS: return  (mm1000_t)(val * (X_STEPSPERMM / 1000.0));
+			case Y_AXIS: return  (mm1000_t)(val * (Y_STEPSPERMM / 1000.0));
+			case Z_AXIS: return  (mm1000_t)(val * (Z_STEPSPERMM / 1000.0));
+			case A_AXIS: return  (mm1000_t)(val * (A_STEPSPERMM / 1000.0));
+		}
+	});
 
 	super::Init();
 
@@ -51,21 +74,48 @@ void CMyControl::Init()
 	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,35));  
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
-	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, MAXSIZE_X_AXIS));
-	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, MAXSIZE_Y_AXIS));
-	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, MAXSIZE_Z_AXIS));
+	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, X_MAXSIZE));
+	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, Y_MAXSIZE));
+#if CNCSHIELD_NUM_AXIS > 2
+	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, Z_MAXSIZE));
+#endif
 
 #if CNCSHIELD_NUM_AXIS > 3
-	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS,MAXSIZE_A_AXIS));
+	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS, A_MAXSIZE));
 #endif
 
 	//CStepper::GetInstance()->SetJerkSpeed(X_AXIS, SPEEDFACTOR*1000);
 	//CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, SPEEDFACTOR*1000);
 	//CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, SPEEDFACTOR*1000);
 
+#ifdef X_USEREFERENCE_MIN
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
+#endif
+#ifdef X_USEREFERENCE_MAX
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, false), true);
+#endif
+
+#ifdef Y_USEREFERENCE_MIN
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
+#endif
+#ifdef Y_USEREFERENCE_MAX
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, false), true);
+#endif
+
+#ifdef Z_USEREFERENCE_MIN
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true), true);
+#endif
+#ifdef Z_USEREFERENCE_MAX
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, false), true);
+#endif
+
+#ifdef A_USEREFERENCE_MIN
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, true), true);
+#endif
+#ifdef A_USEREFERENCE_MAX
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, false), true);
+#endif
+
 
 #ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
 	_spindel.Init();
@@ -83,10 +133,10 @@ void CMyControl::Init()
 
 	CGCodeParserBase::Init();
 
-	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(20000));
-	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(10000));
+	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE));
+	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE));
 
-	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED,CNC_ACC,CNC_DEC);
+	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED, CNC_ACC, CNC_DEC);
 }
 
 ////////////////////////////////////////////////////////////
@@ -182,13 +232,9 @@ void CMyControl::Poll()
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */)
+void CMyControl::GoToReference()
 {
-#ifdef GOTOREFERENCEATBOOT
-
-	super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 300000));
-
-#else
+#ifdef NOGOTOREFERENCEATBOOT
 
 #pragma message ("for test purpose only, not gotoReference at boot")
 
@@ -196,7 +242,24 @@ void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */)
 
 	// force linking to see size used in sketch
 	if (IsHold())
-		super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 300000));
+		super::GoToReference(X_AXIS, CMotionControlBase::FeedRateToStepRate(X_AXIS, 300000), true);
+
+#else
+
+	steprate_t steprate = CMotionControlBase::FeedRateToStepRate(X_AXIS, 300000);
+
+#ifdef REFMOVE_1_AXIS
+	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_1_AXIS, true)));
+#endif
+#ifdef REFMOVE_2_AXIS
+	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_2_AXIS, true)));
+#endif
+#ifdef REFMOVE_3_AXIS
+	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_3_AXIS, true)));
+#endif
+#ifdef REFMOVE_4_AXIS
+	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_4_AXIS, true)));
+#endif
 
 #endif
 }
