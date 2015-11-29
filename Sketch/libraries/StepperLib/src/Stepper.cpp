@@ -2077,7 +2077,12 @@ bool CStepper::MoveReference(axis_t axis, unsigned char referenceid, bool toMin,
 	CPushValue<timer_t> OldBacklashenabled(&_pod._timerbacklash, ((timer_t)-1));
 
 	if (vMax == 0)			vMax = TimerToSpeed(_pod._timerMaxDefault);
-	if (maxdist == 0)		maxdist = ((GetLimitMax(axis) - GetLimitMin(axis))*11)/10;	// add 10%
+#ifdef use16bit
+	if (maxdist == 0)		maxdist = min(GetLimitMax(axis) - GetLimitMin(axis) , 0xfffel* MOVEMENTBUFFERSIZE);	// do not queue
+#else
+	if (maxdist == 0)		maxdist = ((GetLimitMax(axis) - GetLimitMin(axis)) * 11) / 10);	// add 10%
+#endif
+
 	if (distToRef == 0)		distToRef = 0;
 	if (distIfRefIsOn == 0)	distIfRefIsOn = maxdist / 8;
 

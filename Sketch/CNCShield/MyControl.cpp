@@ -39,35 +39,12 @@ void CMyControl::Init()
 {
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();
-#endif  
+#endif
 
 	StepperSerial.println(MESSAGE_MYCONTROL_CNCShield_Starting);
 
 	CMotionControlBase::GetInstance()->Init();
-	CMotionControlBase::GetInstance()->InitConversion(
-		[](axis_t axis, sdist_t val)
-	{
-		switch (axis)
-		{
-			default:
-//          case X_AXIS: return  CMotionControl::ToMm1000_1_3200(axis,val);
-			case X_AXIS: return  (mm1000_t)(val * (1000.0 / X_STEPSPERMM));
-			case Y_AXIS: return  (mm1000_t)(val * (1000.0 / Y_STEPSPERMM));
-			case Z_AXIS: return  (mm1000_t)(val * (1000.0 / Z_STEPSPERMM));
-			case A_AXIS: return  (mm1000_t)(val * (1000.0 / A_STEPSPERMM));
-		}
-	},
-		[](axis_t axis, mm1000_t val)
-	{
-		switch (axis)
-		{
-			default:
-			case X_AXIS: return  (mm1000_t)(val * (X_STEPSPERMM / 1000.0));
-			case Y_AXIS: return  (mm1000_t)(val * (Y_STEPSPERMM / 1000.0));
-			case Z_AXIS: return  (mm1000_t)(val * (Z_STEPSPERMM / 1000.0));
-			case A_AXIS: return  (mm1000_t)(val * (A_STEPSPERMM / 1000.0));
-		}
-	});
+	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
 	super::Init();
 
@@ -169,9 +146,11 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 #ifdef SPINDEL_ANALOGSPEED
 				_spindel.OnLevel((unsigned char) MulDivU32(abs(level),255, SPINDEL_MAXSPEED));
 #else        
-        _spindel.On();
+				_spindel.On();
 #endif
+#ifdef SPINDEL_DIR_PIN
 				_spindelDir.Set(((short)level)>0);
+#endif
 			}
 			else
 			{
@@ -296,13 +275,13 @@ void CMyControl::GoToReference()
 	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_1_AXIS, true)));
 #endif
 #ifdef REFMOVE_2_AXIS
-	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_2_AXIS, true)));
+	super::GoToReference(REFMOVE_2_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_2_AXIS, true)));
 #endif
 #ifdef REFMOVE_3_AXIS
-	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_3_AXIS, true)));
+	super::GoToReference(REFMOVE_3_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_3_AXIS, true)));
 #endif
 #ifdef REFMOVE_4_AXIS
-	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_4_AXIS, true)));
+	super::GoToReference(REFMOVE_4_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_4_AXIS, true)));
 #endif
 
 #endif
@@ -334,5 +313,6 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 			break;
 	}
 #endif
+
 	return super::OnStepperEvent(stepper, eventtype, addinfo);
 }

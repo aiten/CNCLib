@@ -35,6 +35,12 @@ CMotionControlBase MotionControl;
 
 ////////////////////////////////////////////////////////////
 
+#ifndef MYNUM_AXIS
+#error Please define MYNUM_AXIS
+#endif
+
+////////////////////////////////////////////////////////////
+
 void CMyControl::Init()
 {
 #ifdef DISABLELEDBLINK
@@ -274,13 +280,13 @@ void CMyControl::GoToReference()
 	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_1_AXIS, true)));
 #endif
 #ifdef REFMOVE_2_AXIS
-	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_2_AXIS, true)));
+	super::GoToReference(REFMOVE_2_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_2_AXIS, true)));
 #endif
 #ifdef REFMOVE_3_AXIS
-	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_3_AXIS, true)));
+	super::GoToReference(REFMOVE_3_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_3_AXIS, true)));
 #endif
 #ifdef REFMOVE_4_AXIS
-	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_4_AXIS, true)));
+	super::GoToReference(REFMOVE_4_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_4_AXIS, true)));
 #endif
 
 #endif

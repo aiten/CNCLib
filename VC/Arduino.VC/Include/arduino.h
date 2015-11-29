@@ -186,7 +186,7 @@ inline  const void* pgm_read_ptr(const void* p)  { return *((void **) p); }
 inline unsigned long millis() { return GetTickCount(); }
 
 //extern void Sleep(unsigned int ms);
-inline void delay(int ms) { Sleep(ms); }
+inline void delay(unsigned long ms) { Sleep(ms); }
 
 #define STDIO 0
 
@@ -203,16 +203,16 @@ public:
 	void print(char c)				{ printf("%c", c); };
 	void print(unsigned int ui)		{ printf("%u", ui); };
 	void print(int i)				{ printf("%i", i); };
-	void print(long l)				{ printf("%i", l); };
-	void print(unsigned long ul)	{ printf("%u", ul); };
+	void print(long l)				{ printf("%li", l); };
+	void print(unsigned long ul)	{ printf("%lu", ul); };
 	void print(const char*s)		{ printf("%s", s); };
 	void print(float f)				{ printf("%f", f); };
 
 	void println()					{ printf("\n"); };
 	void println(unsigned int ui)	{ printf("%u\n", ui); };
 	void println(int i)				{ printf("%i\n", i); };
-	void println(long l)				{ printf("%i\n", l); };
-	void println(unsigned long ul)	{ printf("%u\n", ul); };
+	void println(long l)			{ printf("%li\n", l); };
+	void println(unsigned long ul)	{ printf("%lu\n", ul); };
 	void println(const char*s)		{ printf("%s\n", s); };
 
 	void begin(int )				{ };
@@ -260,9 +260,9 @@ public:
 
 private:
 
-	bool _istty;
 	void(*_pIdle)() = NULL;
 	char _last=0;
+	bool _istty;
 
 };
 

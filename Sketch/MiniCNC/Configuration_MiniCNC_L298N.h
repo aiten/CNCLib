@@ -31,6 +31,10 @@
 
 ////////////////////////////////////////////////////////
 
+#define MYNUM_AXIS  4
+
+////////////////////////////////////////////////////////
+
 #define X_STEPSPERMM 48.0
 #define Y_STEPSPERMM 48.0
 #define Z_STEPSPERMM 48.0
@@ -66,6 +70,10 @@ inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val) { return  Round
 #define REFMOVE_2_AXIS  Y_AXIS
 #define REFMOVE_3_AXIS  X_AXIS
 //#define REFMOVE_3_AXIS  A_AXIS
+
+////////////////////////////////////////////////////////
+
+#define NOGOTOREFERENCEATBOOT
 
 ////////////////////////////////////////////////////////
 
