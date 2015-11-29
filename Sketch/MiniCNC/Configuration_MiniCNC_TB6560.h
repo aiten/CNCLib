@@ -32,6 +32,45 @@
 
 ////////////////////////////////////////////////////////
 
+#define X_STEPSPERMM 3200.0
+#define Y_STEPSPERMM 3200.0
+#define Z_STEPSPERMM 3200.0
+#define A_STEPSPERMM 3200.0
+
+////////////////////////////////////////////////////////
+
+#define X_MAXSIZE 200000        // in mm1000_t
+#define Y_MAXSIZE 200000 
+#define Z_MAXSIZE 100000 
+#define A_MAXSIZE 50000 
+
+////////////////////////////////////////////////////////
+
+#define X_USEREFERENCE_MIN  
+//#define X_USEREFERENCE_MAX
+
+#define Y_USEREFERENCE_MIN  
+//#define Y_USEREFERENCE_MAX
+
+//#define Z_USEREFERENCE_MIN  
+#define Z_USEREFERENCE_MAX
+
+//#define A_USEREFERENCE_MIN  
+//#define A_USEREFERENCE_MAX
+
+#define REFMOVE_1_AXIS  Z_AXIS
+#define REFMOVE_2_AXIS  Y_AXIS
+#define REFMOVE_3_AXIS  X_AXIS
+//#define REFMOVE_3_AXIS  A_AXIS
+
+////////////////////////////////////////////////////////
+
+#define GO_DEFAULT_STEPRATE   20000 // steps/sec
+#define G1_DEFAULT_STEPRATE   10000 // steps/sec
+
+
+////////////////////////////////////////////////////////
+
 #define CNC_MAXSPEED 14000
 #define CNC_ACC  350
 #define CNC_DEC  400
@@ -41,26 +80,26 @@
 #define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
 #define CONTROLLERFAN_FAN_PIN	14 // AD0
 
-#define CONTROLLERFAN_ON  HIGH
-#define CONTROLLERFAN_OFF LOW
+#define CONTROLLERFAN_DIGITAL_ON  HIGH
+#define CONTROLLERFAN_DIGITAL_OFF LOW
 
 ////////////////////////////////////////////////////////
 
-#define SPINDEL_PIN	11
+#define SPINDEL_ENABLE_PIN	11
 
-#define SPINDEL_ON  LOW
-#define SPINDEL_OFF HIGH
+#define SPINDEL_DIGITAL_ON  LOW
+#define SPINDEL_DIGITAL_OFF HIGH
 
 ////////////////////////////////////////////////////////
 
-#define PROBE1_PIN	12
+#define PROBE_PIN	12
 
 #define PROBE_ON  LOW
 #define PROBE_OFF HIGH
 
 ////////////////////////////////////////////////////////
 
-#define KILL_PIN	-1
+#undef KILL_PIN
 
 #define KILL_ON  LOW
 #define KILL_OFF HIGH

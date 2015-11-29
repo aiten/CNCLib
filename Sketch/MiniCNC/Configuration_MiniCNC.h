@@ -23,7 +23,8 @@
 
 //#define STEPPERTYPE 1		// CStepperL298N
 //#define STEPPERTYPE 2		// CStepperSMC800
-#define STEPPERTYPE 3		// CStepperTB6560
+//#define STEPPERTYPE 3		// CStepperTB6560
+#define STEPPERTYPE 4		// CStepperCNCShield
 
 ////////////////////////////////////////////////////////
 
@@ -38,6 +39,10 @@
 #elif STEPPERTYPE==3
 
 #include "Configuration_MiniCNC_TB6560.h"
+
+#elif STEPPERTYPE==4
+
+#include "Configuration_MiniCNC_CNCShield.h"
 
 #endif
 

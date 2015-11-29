@@ -31,13 +31,15 @@
 ////////////////////////////////////////////////////////////
 
 CMyControl Control;
-
 CMotionControlBase MotionControl;
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Init()
 {
+#ifdef DISABLELEDBLINK
+	DisableBlinkLed();
+#endif
 	StepperSerial.println(MESSAGE_MYCONTROL_Proxxon_Starting);
 
 	CMotionControlBase::GetInstance()->Init();
@@ -50,43 +52,84 @@ void CMyControl::Init()
 	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,35));  
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
-	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 130000));
-	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 45000));
-	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, 81000));
+	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, X_MAXSIZE));
+	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, Y_MAXSIZE));
+#if MYNUM_AXIS > 2
+	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, Z_MAXSIZE));
+#endif
 
-#if NUM_AXIS > 3
-	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS,360000));
+#if MYNUM_AXIS > 3
+	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS, A_MAXSIZE));
 #endif
 
 	//CStepper::GetInstance()->SetJerkSpeed(X_AXIS, SPEEDFACTOR*1000);
 	//CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, SPEEDFACTOR*1000);
 	//CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, SPEEDFACTOR*1000);
 
+#ifdef X_USEREFERENCE_MIN
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, false), true);
+#endif
+#ifdef X_USEREFERENCE_MAX
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, false), true);
+#endif
 
-#if SPINDEL_PIN != -1
+#ifdef Y_USEREFERENCE_MIN
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
+#endif
+#ifdef Y_USEREFERENCE_MAX
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, false), true);
+#endif
+
+#ifdef Z_USEREFERENCE_MIN
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true), true);
+#endif
+#ifdef Z_USEREFERENCE_MAX
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, false), true);
+#endif
+
+#ifdef A_USEREFERENCE_MIN
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, true), true);
+#endif
+#ifdef A_USEREFERENCE_MAX
+	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, false), true);
+#endif
+
+#ifdef CONTROLLERFAN_FAN_PIN
+	#ifdef CONTROLLERFAN_ANALOGSPEED
+		_controllerfan.Init(128);
+	#else
+		_controllerfan.Init();
+	#endif
+#endif
+
+#ifdef SPINDEL_ENABLE_PIN
 	_spindel.Init();
 #endif
-#if CONTROLLERFAN_FAN_PIN != -1
-	_controllerfan.Init();
-#endif
 
-#if PROBE1_PIN != -1
+#ifdef PROBE_PIN
 	_probe.Init();
 #endif
 
-#if KILL_PIN != -1
+#ifdef KILL_PIN
 	_kill.Init();
 #endif
 
+#ifdef COOLANT_PIN
+	_coolant.Init();
+#endif
+
+#if defined(HOLD_PIN) && defined(RESUME_PIN)
+	_hold.SetPin(HOLD_PIN);
+	_resume.SetPin(RESUME_PIN);
+#endif
+
+
 	CGCodeParserBase::Init();
 
-	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(20000));
-	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(10000));
+	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE));
+	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE));
 
-	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED,CNC_ACC,CNC_DEC);
+	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED, CNC_ACC, CNC_DEC);
 }
 
 ////////////////////////////////////////////////////////////
@@ -95,11 +138,32 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 {
 	switch (tool)
 	{
-#if SPINDEL_PIN != -1
-		case Spindel:			_spindel.Set(level>0);	return;
+#ifdef SPINDEL_ENABLE_PIN
+		case Spindel:			
+			if (level != 0)
+			{
+#ifdef SPINDEL_ANALOGSPEED
+				_spindel.OnLevel((unsigned char) MulDivU32(abs(level),255, SPINDEL_MAXSPEED));
+#else        
+				_spindel.On();
 #endif
-#if CONTROLLERFAN_FAN_PIN != -1
+#ifdef SPINDEL_DIR_PIN
+				_spindelDir.Set(((short)level)>0);
+#endif
+			}
+			else
+			{
+			  _spindel.Off();
+			}
+			return;
+#endif
+#ifdef COOLANT_PIN
+	    case Coolant:     _coolant.Set(level>0); return;
+#endif
+#if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
 		case ControllerFan:		_controllerfan.Set(level>0);	return;
+#elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
+		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
 #endif
 	}
 	
@@ -112,15 +176,20 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 {
 	switch (tool)
 	{
-#if PROBE1_PIN != -1
+#ifdef PROBE_PIN
 		case Probe:			{ return _probe.IsOn(); }
 #endif
-#if SPINDEL_PIN != -1
+#ifdef SPINDEL_ENABLE_PIN
 		case Spindel:		{ return _spindel.IsOn(); }
 #endif
-#if CONTROLLERFAN_FAN_PIN != -1
-		case ControllerFan:	{ return _controllerfan.IsOn(); }
+#ifdef COOLANT_PIN
+		case Coolant:		{ return _coolant.IsOn(); }
 #endif
+#if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
+		case ControllerFan: { return _controllerfan.IsOn(); }
+#elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
+		case ControllerFan: { return _controllerfan.Level; }
+#endif	
 	}
 
 	return super::IOControl(tool);
@@ -131,8 +200,24 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 void CMyControl::Kill()
 {
 	super::Kill();
-#if SPINDEL_PIN != -1
-	_spindel.Set(false);
+#ifdef SPINDEL_ENABLE_PIN
+	_spindel.Off();
+#endif
+#ifdef COOLANT_PIN
+	_coolant.Set(false);
+#endif
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::TimerInterrupt()
+{
+	super::TimerInterrupt();
+#ifdef HOLD_PIN
+	_hold.Check();
+#endif
+#ifdef RESUME_PIN
+	_resume.Check();
 #endif
 }
 
@@ -140,10 +225,30 @@ void CMyControl::Kill()
 
 bool CMyControl::IsKill()
 {
-#if KILL_PIN != -1
+#ifdef KILL_PIN
 	return _kill.IsOn();
 #else
 	return false;
+#endif
+}
+
+void CMyControl::Poll()
+{
+	super::Poll();
+
+#if defined(HOLD_PIN) && defined(RESUME_PIN)
+
+	if (IsHold())
+	{
+		if (_resume.IsOn())
+		{
+			Resume();
+		}
+	} 
+	else if (_hold.IsOn())
+	{
+		Hold();
+	}
 #endif
 }
 
@@ -151,14 +256,7 @@ bool CMyControl::IsKill()
 
 void CMyControl::GoToReference()
 {
-#ifdef GOTOREFERENCEATBOOT
-
-	steprate_t steprate = CMotionControlBase::FeedRateToStepRate(X_AXIS, 300000);
-	super::GoToReference(Z_AXIS, steprate, false);
-	super::GoToReference(Y_AXIS, steprate, true);
-	super::GoToReference(X_AXIS, steprate, true);
-
-#else
+#ifdef NOGOTOREFERENCEATBOOT
 
 #pragma message ("for test purpose only, not gotoReference at boot")
 
@@ -167,6 +265,23 @@ void CMyControl::GoToReference()
 	// force linking to see size used in sketch
 	if (IsHold())
 		super::GoToReference(X_AXIS, CMotionControlBase::FeedRateToStepRate(X_AXIS, 300000), true);
+
+#else
+
+	steprate_t steprate = CMotionControlBase::FeedRateToStepRate(X_AXIS, 300000);
+
+#ifdef REFMOVE_1_AXIS
+	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_1_AXIS, true)));
+#endif
+#ifdef REFMOVE_2_AXIS
+	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_2_AXIS, true)));
+#endif
+#ifdef REFMOVE_3_AXIS
+	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_3_AXIS, true)));
+#endif
+#ifdef REFMOVE_4_AXIS
+	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_4_AXIS, true)));
+#endif
 
 #endif
 }
@@ -183,16 +298,16 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 
 bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
 {
-#if CONTROLLERFAN_FAN_PIN != -1
+#ifdef CONTROLLERFAN_FAN_PIN
 	switch (eventtype)
 	{
 		case CStepper::OnStartEvent:
-			_controllerfan.Set(true);
+			_controllerfan.On();
 			break;
 		case CStepper::OnIdleEvent:
-			if (millis()-stepper->IdleTime() > CONTROLLERFAN_ONTIME)
+			if (millis() - stepper->IdleTime() > CONTROLLERFAN_ONTIME)
 			{
-				_controllerfan.Set(false);
+				_controllerfan.Off();
 			}
 			break;
 	}

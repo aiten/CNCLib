@@ -29,39 +29,66 @@
 #define ConversionToMm1000 ToMm1000_L298N
 #define ConversionToMachine ToMachine_L298N
 
+////////////////////////////////////////////////////////
+
+#define X_STEPSPERMM 48.0
+#define Y_STEPSPERMM 48.0
+#define Z_STEPSPERMM 48.0
+#define A_STEPSPERMM 48.0
+
+// 48 steps/rot
+inline mm1000_t ToMm1000_L298N(axis_t /* axis */, sdist_t val) { return  RoundMulDivU32(val, 125, 6); }
+inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val) { return  RoundMulDivU32(val, 6, 125); }
+
+
+////////////////////////////////////////////////////////
+
+#define X_MAXSIZE 200000        // in mm1000_t
+#define Y_MAXSIZE 200000 
+#define Z_MAXSIZE 100000 
+#define A_MAXSIZE 50000 
+
+////////////////////////////////////////////////////////
+
+#define X_USEREFERENCE_MIN  
+//#define X_USEREFERENCE_MAX
+
+#define Y_USEREFERENCE_MIN  
+//#define Y_USEREFERENCE_MAX
+
+//#define Z_USEREFERENCE_MIN  
+#define Z_USEREFERENCE_MAX
+
+//#define A_USEREFERENCE_MIN  
+//#define A_USEREFERENCE_MAX
+
+#define REFMOVE_1_AXIS  Z_AXIS
+#define REFMOVE_2_AXIS  Y_AXIS
+#define REFMOVE_3_AXIS  X_AXIS
+//#define REFMOVE_3_AXIS  A_AXIS
+
+////////////////////////////////////////////////////////
+
+#define GO_DEFAULT_STEPRATE   20000 // steps/sec
+#define G1_DEFAULT_STEPRATE   10000 // steps/sec
+
 #define CNC_MAXSPEED 375
 #define CNC_ACC  65
 #define CNC_DEC  75
 
-// 48 steps/rot
-inline mm1000_t ToMm1000_L298N(axis_t /* axis */, sdist_t val)				{ return  RoundMulDivU32(val, 125, 6); }
-inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val)			{ return  RoundMulDivU32(val, 6, 125); }
+////////////////////////////////////////////////////////
+
+#undef CONTROLLERFAN_PIN
 
 ////////////////////////////////////////////////////////
 
-#define CONTROLLERFAN_ON  LOW
-#define CONTROLLERFAN_OFF HIGH
+#undef SPINDEL_PIN
 
 ////////////////////////////////////////////////////////
 
-#define SPINDEL_PIN	-1
-
-#define SPINDEL_ON  LOW
-#define SPINDEL_OFF HIGH
+#undef PROBE_PIN
 
 ////////////////////////////////////////////////////////
 
-#define PROBE1_PIN	-1
+#undef KILL_PIN
 
-#define PROBE_ON  LOW
-#define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
-#define CONTROLLERFAN_FAN_PIN	13 // 10
-
-#define PROBE_OFF HIGH
-
-////////////////////////////////////////////////////////
-
-#define KILL_PIN	-1
-
-#define KILL_ON  LOW
-#define KILL_OFF HIGH

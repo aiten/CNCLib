@@ -37,7 +37,9 @@ CMotionControlBase MotionControl;
 
 void CMyControl::Init()
 {
+#ifdef DISABLELEDBLINK
 	DisableBlinkLed();
+#endif  
 
 	StepperSerial.println(MESSAGE_MYCONTROL_CNCShield_Starting);
 
@@ -76,11 +78,11 @@ void CMyControl::Init()
 
 	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, X_MAXSIZE));
 	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, Y_MAXSIZE));
-#if CNCSHIELD_NUM_AXIS > 2
+#if MYNUM_AXIS > 2
 	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, Z_MAXSIZE));
 #endif
 
-#if CNCSHIELD_NUM_AXIS > 3
+#if MYNUM_AXIS > 3
 	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS, A_MAXSIZE));
 #endif
 
@@ -116,20 +118,35 @@ void CMyControl::Init()
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, false), true);
 #endif
 
+#ifdef CONTROLLERFAN_FAN_PIN
+	#ifdef CONTROLLERFAN_ANALOGSPEED
+		_controllerfan.Init(128);
+	#else
+		_controllerfan.Init();
+	#endif
+#endif
 
-#ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
+#ifdef SPINDEL_ENABLE_PIN
 	_spindel.Init();
 #endif
 
-#ifdef CNCSHIELD_PROBE_PIN
+#ifdef PROBE_PIN
 	_probe.Init();
 #endif
 
+#ifdef KILL_PIN
 	_kill.Init();
-	_coolant.Init();
+#endif
 
-	_hold.SetPin(CNCSHIELD_HOLD_PIN);
-	_resume.SetPin(CNCSHIELD_RESUME_PIN);
+#ifdef COOLANT_PIN
+	_coolant.Init();
+#endif
+
+#if defined(HOLD_PIN) && defined(RESUME_PIN)
+	_hold.SetPin(HOLD_PIN);
+	_resume.SetPin(RESUME_PIN);
+#endif
+
 
 	CGCodeParserBase::Init();
 
@@ -145,12 +162,12 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 {
 	switch (tool)
 	{
-#ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
+#ifdef SPINDEL_ENABLE_PIN
 		case Spindel:			
 			if (level != 0)
 			{
-#ifdef ANALOGSPINDELSPEED
-				_spindel.OnLevel((unsigned char) MulDivU32(abs(level),255, MAXSPINDLESPEED));
+#ifdef SPINDEL_ANALOGSPEED
+				_spindel.OnLevel((unsigned char) MulDivU32(abs(level),255, SPINDEL_MAXSPEED));
 #else        
         _spindel.On();
 #endif
@@ -162,7 +179,14 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 			}
 			return;
 #endif
+#ifdef COOLANT_PIN
 	    case Coolant:     _coolant.Set(level>0); return;
+#endif
+#if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
+		case ControllerFan:		_controllerfan.Set(level>0);	return;
+#elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
+		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
+#endif
 	}
 	
 	super::IOControl(tool, level);
@@ -174,13 +198,20 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 {
 	switch (tool)
 	{
-#ifdef CNCSHIELD_PROBE_PIN
+#ifdef PROBE_PIN
 		case Probe:			{ return _probe.IsOn(); }
 #endif
-#ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
+#ifdef SPINDEL_ENABLE_PIN
 		case Spindel:		{ return _spindel.IsOn(); }
 #endif
-	    case Coolant:   { return _coolant.IsOn(); }
+#ifdef COOLANT_PIN
+		case Coolant:		{ return _coolant.IsOn(); }
+#endif
+#if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
+		case ControllerFan: { return _controllerfan.IsOn(); }
+#elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
+		case ControllerFan: { return _controllerfan.Level; }
+#endif	
 	}
 
 	return super::IOControl(tool);
@@ -191,10 +222,12 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 void CMyControl::Kill()
 {
 	super::Kill();
-#ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
+#ifdef SPINDEL_ENABLE_PIN
 	_spindel.Off();
 #endif
+#ifdef COOLANT_PIN
 	_coolant.Set(false);
+#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -202,20 +235,30 @@ void CMyControl::Kill()
 void CMyControl::TimerInterrupt()
 {
 	super::TimerInterrupt();
+#ifdef HOLD_PIN
 	_hold.Check();
+#endif
+#ifdef RESUME_PIN
 	_resume.Check();
+#endif
 }
 
 ////////////////////////////////////////////////////////////
 
 bool CMyControl::IsKill()
 {
+#ifdef KILL_PIN
 	return _kill.IsOn();
+#else
+	return false;
+#endif
 }
 
 void CMyControl::Poll()
 {
 	super::Poll();
+
+#if defined(HOLD_PIN) && defined(RESUME_PIN)
 
 	if (IsHold())
 	{
@@ -228,6 +271,7 @@ void CMyControl::Poll()
 	{
 		Hold();
 	}
+#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -273,9 +317,22 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 }
 
 ////////////////////////////////////////////////////////////
-/*
+
 bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
 {
+#ifdef CONTROLLERFAN_FAN_PIN
+	switch (eventtype)
+	{
+		case CStepper::OnStartEvent:
+			_controllerfan.On();
+			break;
+		case CStepper::OnIdleEvent:
+			if (millis() - stepper->IdleTime() > CONTROLLERFAN_ONTIME)
+			{
+				_controllerfan.Off();
+			}
+			break;
+	}
+#endif
 	return super::OnStepperEvent(stepper, eventtype, addinfo);
 }
-*/

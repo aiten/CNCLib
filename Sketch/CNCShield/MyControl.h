@@ -29,9 +29,6 @@
 
 #include "Configuration_CNCShield.h"
 
-#include <Steppers/StepperCNCShield_pins.h>
-#include <Steppers/StepperCNCShield.h>
-
 ////////////////////////////////////////////////////////
 
 class CMyControl : public CControl
@@ -59,23 +56,43 @@ protected:
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 	virtual void GoToReference() override;
 
+	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
+
 private:
 
-#ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
-	#ifdef ANALOGSPINDELSPEED
-		CAnalog8IOControl<CNCSHIELD_SPINDEL_ENABLE_PIN> _spindel;
+#ifdef SPINDEL_ENABLE_PIN
+	#ifdef SPINDEL_ANALOGSPEED
+		CAnalog8IOControl<SPINDEL_ENABLE_PIN> _spindel;
 	#else
-		COnOffIOControl<CNCSHIELD_SPINDEL_ENABLE_PIN, CNCSHIELD_SPINDEL_DIGITAL_ON,       CNCSHIELD_SPINDEL_DIGITAL_OFF> _spindel;
+		COnOffIOControl<SPINDEL_ENABLE_PIN, SPINDEL_DIGITAL_ON, SPINDEL_DIGITAL_OFF> _spindel;
 	#endif
-	COnOffIOControl<CNCSHIELD_SPINDEL_DIR_PIN,    CNCSHIELD_SPINDEL_DIR_CLW,  CNCSHIELD_SPINDEL_DIR_CCLW> _spindelDir;
+	COnOffIOControl<SPINDEL_DIR_PIN, SPINDEL_DIR_CLW, SPINDEL_DIR_CCLW> _spindelDir;
 #endif  
-	COnOffIOControl<CNCSHIELD_COOLANT_PIN, CNCSHIELD_COOLANT_ON, CNCSHIELD_COOLANT_OFF> _coolant;
-#ifdef CNCSHIELD_PROBE_PIN
-	CReadPinIOControl<CNCSHIELD_PROBE_PIN, CNCSHIELD_PROBE_ON> _probe;
+#ifdef COOLANT_PIN
+	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
 #endif
-	CReadPinIOControl<CNCSHIELD_ABORT_PIN, CNCSHIELD_ABORT_ON> _kill;
+#ifdef PROBE_PIN
+	CReadPinIOControl<PROBE_PIN, PROBE_ON> _probe;
+#endif
+#ifdef KILL_PIN
+	CReadPinIOControl<KILL_PIN, KILL_PIN_ON> _kill;
+#endif
+#if defined(HOLD_PIN) && defined(RESUME_PIN)
 	CPushButtonLow _hold;
 	CPushButtonLow _resume;
+#endif
+#ifdef CONTROLLERFAN_FAN_PIN
+	#ifdef CONTROLLERFAN_ANALOGSPEED
+		#if defined(USE_RAMPSFD)
+			CAnalog8InvertIOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
+		#else
+			CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
+		#endif
+	#else
+		COnOffIOControl<CONTROLLERFAN_FAN_PIN, CONTROLLERFAN_DIGITAL_ON, CONTROLLERFAN_DIGITAL_OFF> _controllerfan;
+	#endif
+#endif
+
 };
 
 ////////////////////////////////////////////////////////

@@ -25,6 +25,7 @@
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
 #include <ReadPinIOControl.h>
+#include <PushButtonLow.h>
 
 #include "Configuration_MiniCNC.h"
 
@@ -48,23 +49,55 @@ public:
 protected:
 
 	virtual void Init() override;
+	virtual void TimerInterrupt() override;
 
-	virtual bool IsKill() override;
-
+	bool IsKill() override;
+	virtual void Poll() override;
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
-
 	virtual void GoToReference() override;
 
 	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
 
 private:
 
-	COnOffIOControl<SPINDEL_PIN, SPINDEL_ON, SPINDEL_OFF> _spindel;
-	COnOffIOControl<CONTROLLERFAN_FAN_PIN, CONTROLLERFAN_ON, CONTROLLERFAN_OFF> _controllerfan;
-	CReadPinIOControl<PROBE1_PIN, PROBE_ON> _probe;
-	CReadPinIOControl<KILL_PIN, KILL_ON> _kill;
+#ifdef SPINDEL_ENABLE_PIN
+	#ifdef SPINDEL_ANALOGSPEED
+		CAnalog8IOControl<SPINDEL_ENABLE_PIN> _spindel;
+	#else
+		COnOffIOControl<SPINDEL_ENABLE_PIN, SPINDEL_DIGITAL_ON, SPINDEL_DIGITAL_OFF> _spindel;
+	#endif
+	#ifdef SPINDEL_DIR_PIN
+		COnOffIOControl<SPINDEL_DIR_PIN, SPINDEL_DIR_CLW, SPINDEL_DIR_CCLW> _spindelDir;
+	#endif
+#endif  
+#ifdef COOLANT_PIN
+	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
+#endif
+#ifdef PROBE_PIN
+	CReadPinIOControl<PROBE_PIN, PROBE_ON> _probe;
+#endif
+#ifdef KILL_PIN
+	CReadPinIOControl<KILL_PIN, KILL_PIN_ON> _kill;
+#endif
+#if defined(HOLD_PIN) && defined(RESUME_PIN)
+	CPushButtonLow _hold;
+	CPushButtonLow _resume;
+#endif
+#ifdef CONTROLLERFAN_FAN_PIN
+	#ifdef CONTROLLERFAN_ANALOGSPEED
+		#if defined(USE_RAMPSFD)
+			CAnalog8InvertIOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
+		#else
+			CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
+		#endif
+	#else
+		COnOffIOControl<CONTROLLERFAN_FAN_PIN, CONTROLLERFAN_DIGITAL_ON, CONTROLLERFAN_DIGITAL_OFF> _controllerfan;
+	#endif
+#endif
+
 };
 
 ////////////////////////////////////////////////////////
 
 extern CMyControl Control;
+

@@ -31,6 +31,9 @@
     <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_TB6560.h">
       <Filter>MiniCNC</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_CNCShield.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
