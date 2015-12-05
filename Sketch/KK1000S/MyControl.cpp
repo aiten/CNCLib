@@ -54,11 +54,10 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetDirection((1<<X_AXIS) + (1<<Y_AXIS));
 
 	//CStepper::GetInstance()->SetBacklash(5000);
-	CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 20));
-	CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 35));
+	//CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 20));
+	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 35));
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
-	//  CStepper::GetInstance()->SetMaxSpeed(20000);
 	CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350), steprate_t(350));
 
 	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 800000));
@@ -124,6 +123,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 		case Spindel:			_spindel.Set(level>0);	return;
 		case Coolant:			_coolant.Set(level>0); return;
 		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
+		case Vacuum:			break;
 	}
 	
 	super::IOControl(tool, level);
@@ -139,6 +139,7 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 		case Spindel:		{ return _spindel.IsOn(); }
 		case Coolant:		{ return _coolant.IsOn(); }
 		case ControllerFan:	{ return _controllerfan.Level; }
+		case Vacuum:		break;
 	}
 
 	return super::IOControl(tool);
@@ -205,24 +206,19 @@ void CMyControl::Initialized()
 
 void CMyControl::GoToReference()
 {
-	super::GoToReference(Z_AXIS, 0, false);
-	super::GoToReference(Y_AXIS, 0, true);
-	super::GoToReference(X_AXIS, 0, true);
+	GoToReference(Z_AXIS, 0, false);
+	GoToReference(Y_AXIS, 0, true);
+	GoToReference(X_AXIS, 0, true);
 }
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
+bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
 {
-#if defined(XXXXX__SAM3X8E__)
-	if (axis == Z_AXIS)
-		CStepper::GetInstance()->SetPosition(axis, CStepper::GetInstance()->GetLimitMax(axis));
-	else
-		CStepper::GetInstance()->SetPosition(axis, 0);
-#else
-	super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis,1000000), toMinRef);
-	super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 200000), toMinRef);
-#endif
+	if (!super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis,1000000), toMinRef))
+		return false;
+
+	return super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 200000), toMinRef);
 }
 
 ////////////////////////////////////////////////////////////

@@ -2069,8 +2069,6 @@ bool CStepper::MoveReference(axis_t axis, unsigned char referenceid, bool toMin,
 {
 	WaitBusy();
 
-	bool ret = false;
-
 	CPushValue<bool> OldLimitCheck(&_pod._limitCheck, false);
 	CPushValue<bool> OldWaitFinishMove(&_pod._waitFinishMove, false);
 	CPushValue<bool> OldCheckForReference(&_pod._checkReference, false);
@@ -2080,7 +2078,7 @@ bool CStepper::MoveReference(axis_t axis, unsigned char referenceid, bool toMin,
 #ifdef use16bit
 	if (maxdist == 0)		maxdist = min(GetLimitMax(axis) - GetLimitMin(axis) , 0xfffel* MOVEMENTBUFFERSIZE);	// do not queue
 #else
-	if (maxdist == 0)		maxdist = ((GetLimitMax(axis) - GetLimitMin(axis)) * 11) / 10);	// add 10%
+	if (maxdist == 0)		maxdist = ((GetLimitMax(axis) - GetLimitMin(axis)) * 11) / 10;	// add 10%
 #endif
 
 	if (distToRef == 0)		distToRef = 0;
@@ -2099,29 +2097,34 @@ bool CStepper::MoveReference(axis_t axis, unsigned char referenceid, bool toMin,
 		maxdist = -maxdist;
 	}
 
-	if (!MoveAwayFromReference(axis, referenceid, distIfRefIsOn, vMax))
+	bool ret = false;
+
+	if (MoveAwayFromReference(axis, referenceid, distIfRefIsOn, vMax))
+	{
+		// move to reference
+		MoveRel(axis, maxdist, vMax);
+		if (MoveUntil(referenceid, true, REFERENCESTABLETIME))
+		{
+			// ref reached => move away
+			MoveRel(axis, distIfRefIsOn, vMax);
+			if (MoveUntil(referenceid, false, REFERENCESTABLETIME))
+			{
+				// move distToRef from change
+				if (distToRef)
+				{
+					MoveRel(axis, distToRef, vMax);
+					WaitBusy();
+				}
+				ret = true;
+			}
+		}
+	}
+	else
 	{
 		Error(MESSAGE_STEPPER_MoveReferenceFailed);
-		return false;
 	}
 
-	// move to reference
-	MoveRel(axis, maxdist, vMax);
-	if (!MoveUntil(referenceid, true, REFERENCESTABLETIME))
-		return false;
-
-	// ref reached => move away
-	MoveRel(axis, distIfRefIsOn, vMax);
-	if (!MoveUntil(referenceid, false, REFERENCESTABLETIME))
-		return false;
-
-	// move distToRef from change
-	if (distToRef)
-	{
-		MoveRel(axis, distToRef, vMax);
-		WaitBusy();
-	}
-
+	// calling this methode always sets position, independent of the result!!!!
 	SetPosition(axis, toMin ? GetLimitMin(axis) : GetLimitMax(axis));
 
 	return ret;

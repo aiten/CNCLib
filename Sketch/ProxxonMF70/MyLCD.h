@@ -39,14 +39,14 @@ private:
 public:
 
 	virtual void Init() override;
-	virtual void Beep(const SPlayTone*,bool) override;
+	virtual void Beep(const SPlayTone*, bool) override;
 
 protected:
 
 	virtual class U8GLIB& GetU8G() override;
 	virtual class CMenuBase& GetMenu() override	{ return _menu; }
 
-	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type, void *data) override;
+	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type,void *data) override;
 
 private:
 

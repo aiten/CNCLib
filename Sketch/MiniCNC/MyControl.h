@@ -49,12 +49,15 @@ public:
 protected:
 
 	virtual void Init() override;
+	virtual void Initialized() override;
+
 	virtual void TimerInterrupt() override;
 
 	bool IsKill() override;
 	virtual void Poll() override;
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 	virtual void GoToReference() override;
+	virtual bool GoToReference(axis_t axis, steprate_t steprate, bool toMinRef) override;
 
 	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
 

@@ -151,6 +151,10 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 #define GO_DEFAULT_STEPRATE		20000	// steps/sec
 #define G1_DEFAULT_STEPRATE		10000	// steps/sec
 
+#define STEPRATERATE_REFMOVE	GO_DEFAULT_STEPRATE
+
+#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
+
 ////////////////////////////////////////////////////////
 
 #undef NOGOTOREFERENCEATBOOT
@@ -160,7 +164,6 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 #define CNC_MAXSPEED 14000				// steps/sec
 #define CNC_ACC  350
 #define CNC_DEC  400
-
 
 ////////////////////////////////////////////////////////
 

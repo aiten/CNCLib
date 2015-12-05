@@ -42,11 +42,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iRobot", "iRobot\iRobot.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iRobotTest", "iRobotTest\iRobotTest.vcxproj", "{755B74E6-6405-4BA4-AF8E-3C0439E011F0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CNCShield", "CNCShield\CNCShield.vcxproj", "{3C37856B-DC88-4711-BEE8-C4063038A488}"
-	ProjectSection(ProjectDependencies) = postProject
-		{65F3EA50-71B8-4573-8D35-786D97FDFA91} = {65F3EA50-71B8-4573-8D35-786D97FDFA91}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -187,20 +182,6 @@ Global
 		{755B74E6-6405-4BA4-AF8E-3C0439E011F0}.Release|Win32.ActiveCfg = Release|Win32
 		{755B74E6-6405-4BA4-AF8E-3C0439E011F0}.Release|Win32.Build.0 = Release|Win32
 		{755B74E6-6405-4BA4-AF8E-3C0439E011F0}.Release|x64.ActiveCfg = Release|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Debug|ARM.ActiveCfg = Debug|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Debug|Win32.ActiveCfg = Debug|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Debug|Win32.Build.0 = Debug|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Debug|x64.ActiveCfg = Debug|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Release|Any CPU.ActiveCfg = Release|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Release|ARM.ActiveCfg = Release|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Release|Win32.ActiveCfg = Release|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Release|Win32.Build.0 = Release|Win32
-		{3C37856B-DC88-4711-BEE8-C4063038A488}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

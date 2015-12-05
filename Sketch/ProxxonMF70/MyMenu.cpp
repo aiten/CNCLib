@@ -176,8 +176,8 @@ const CMyMenu::SMenuDef CMyMenu::_moveZMenu PROGMEM = { _mmMoveZ, _moveMenuItems
 const CMyMenu::SMenuDef CMyMenu::_moveAMenu PROGMEM = { _mmMoveA, _moveMenuItems, (menuparam_t)A_AXIS };
 const CMyMenu::SMenuDef CMyMenu::_moveBMenu PROGMEM = { _mmMoveB, _moveMenuItems, (menuparam_t)B_AXIS };
 const CMyMenu::SMenuDef CMyMenu::_moveCMenu PROGMEM = { _mmMoveC, _moveMenuItems, (menuparam_t)C_AXIS };
-const CMyMenu::SMenuDef CMyMenu::_rotateMenu PROGMEM= { _mmRotate, _rotateMenuItems };
-const CMyMenu::SMenuDef CMyMenu::_SDMenu PROGMEM	= { _mmSD, _SDMenuItems };
+const CMyMenu::SMenuDef CMyMenu::_rotateMenu PROGMEM = { _mmRotate, _rotateMenuItems };
+const CMyMenu::SMenuDef CMyMenu::_SDMenu PROGMEM	  = { _mmSD, _SDMenuItems };
 const CMyMenu::SMenuDef CMyMenu::_extraMenu PROGMEM = { _mmExtra, _extraMenuItems };
 
 ////////////////////////////////////////////////////////////

@@ -69,12 +69,12 @@ void CControl::Initialized()
 
 ////////////////////////////////////////////////////////////
 
-void CControl::GoToReference(axis_t axis, steprate_t steprate, bool toMinRef)
+bool CControl::GoToReference(axis_t axis, steprate_t steprate, bool toMinRef)
 {
 	if (steprate == 0)
 		steprate = CStepper::GetInstance()->GetDefaultVmax();
 	// goto min/max
-	CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, steprate);
+	return CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, steprate);
 }
 
 ////////////////////////////////////////////////////////////

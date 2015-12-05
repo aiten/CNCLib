@@ -1,4 +1,4 @@
- ////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -43,15 +43,21 @@ CMotionControlBase MotionControl;
 
 void CMyControl::Init()
 {
+
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();
 #endif
+
 	StepperSerial.println(MESSAGE_MYCONTROL_Proxxon_Starting);
 
 	CMotionControlBase::GetInstance()->Init();
 	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
 	super::Init();
+
+#ifdef SETDIRECTION
+	CStepper::GetInstance()->SetDirection((1 << X_AXIS) + (1 << Y_AXIS));
+#endif
 
 	//CStepper::GetInstance()->SetBacklash(SPEEDFACTOR*5000);
 	//CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControl::ToMachine(X_AXIS,20));  
@@ -60,6 +66,7 @@ void CMyControl::Init()
 
 	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, X_MAXSIZE));
 	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, Y_MAXSIZE));
+
 #if MYNUM_AXIS > 2
 	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, Z_MAXSIZE));
 #endif
@@ -67,10 +74,6 @@ void CMyControl::Init()
 #if MYNUM_AXIS > 3
 	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS, A_MAXSIZE));
 #endif
-
-	//CStepper::GetInstance()->SetJerkSpeed(X_AXIS, SPEEDFACTOR*1000);
-	//CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, SPEEDFACTOR*1000);
-	//CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, SPEEDFACTOR*1000);
 
 #ifdef X_USEREFERENCE_MIN
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
@@ -128,7 +131,6 @@ void CMyControl::Init()
 	_hold.SetPin(HOLD_PIN);
 	_resume.SetPin(RESUME_PIN);
 #endif
-
 
 	CGCodeParserBase::Init();
 
@@ -216,6 +218,17 @@ void CMyControl::Kill()
 
 ////////////////////////////////////////////////////////////
 
+bool CMyControl::IsKill()
+{
+#ifdef KILL_PIN
+	return _kill.IsOn();
+#else
+	return false;
+#endif
+}
+
+////////////////////////////////////////////////////////////
+
 void CMyControl::TimerInterrupt()
 {
 	super::TimerInterrupt();
@@ -229,14 +242,15 @@ void CMyControl::TimerInterrupt()
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::IsKill()
+void CMyControl::Initialized()
 {
-#ifdef KILL_PIN
-	return _kill.IsOn();
-#else
-	return false;
+	super::Initialized();
+#if defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
+	_controllerfan.Level=128;
 #endif
 }
+
+////////////////////////////////////////////////////////////
 
 void CMyControl::Poll()
 {
@@ -274,22 +288,27 @@ void CMyControl::GoToReference()
 
 #else
 
-	steprate_t steprate = CMotionControlBase::FeedRateToStepRate(X_AXIS, 300000);
-
 #ifdef REFMOVE_1_AXIS
-	super::GoToReference(REFMOVE_1_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_1_AXIS, true)));
+	GoToReference(REFMOVE_1_AXIS, 0, CStepper::GetInstance()->IsUseReference(REFMOVE_1_AXIS, true));
 #endif
 #ifdef REFMOVE_2_AXIS
-	super::GoToReference(REFMOVE_2_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_2_AXIS, true)));
+	GoToReference(REFMOVE_2_AXIS, 0, CStepper::GetInstance()->IsUseReference(REFMOVE_2_AXIS, true));
 #endif
 #ifdef REFMOVE_3_AXIS
-	super::GoToReference(REFMOVE_3_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_3_AXIS, true)));
+	GoToReference(REFMOVE_3_AXIS, 0, CStepper::GetInstance()->IsUseReference(REFMOVE_3_AXIS, true));
 #endif
 #ifdef REFMOVE_4_AXIS
-	super::GoToReference(REFMOVE_4_AXIS, steprate, CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(REFMOVE_4_AXIS, true)));
+	GoToReference(REFMOVE_4_AXIS, 0, CStepper::GetInstance()->IsUseReference(REFMOVE_4_AXIS, true));
 #endif
 
 #endif
+}
+
+////////////////////////////////////////////////////////////
+
+bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
+{
+	return super::GoToReference(axis, STEPRATERATE_REFMOVE, toMinRef);
 }
 
 ////////////////////////////////////////////////////////////
@@ -311,7 +330,7 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 			_controllerfan.On();
 			break;
 		case CStepper::OnIdleEvent:
-			if (millis() - stepper->IdleTime() > CONTROLLERFAN_ONTIME)
+			if (millis()-stepper->IdleTime() > CONTROLLERFAN_ONTIME)
 			{
 				_controllerfan.Off();
 			}

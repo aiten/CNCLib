@@ -90,10 +90,10 @@ void CMyControl::GoToReference()
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
+bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
 {
 #define FEEDRATE_REFMOVE  CStepper::GetInstance()->GetDefaultVmax() / 4  
-	CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, FEEDRATE_REFMOVE);
+	return CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, FEEDRATE_REFMOVE);
 }
 
 ////////////////////////////////////////////////////////////

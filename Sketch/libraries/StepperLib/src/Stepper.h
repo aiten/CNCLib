@@ -201,6 +201,8 @@ public:
 
 	void UseReference(unsigned char referneceid, bool use)		{ _pod._useReference[referneceid] = use; }
 	bool IsUseReference(unsigned char referneceid)				{ return _pod._useReference[referneceid]; }
+	bool IsUseReference(axis_t axis, bool toMin)				{ return IsUseReference(ToReferenceId(axis, toMin)); }
+
 	debugvirtula bool MoveReference(axis_t axis, unsigned char referenceid, bool toMin, steprate_t vMax, sdist_t maxdist = 0, sdist_t distToRef = 0, sdist_t distIfRefIsOn = 0);
 	void SetPosition(axis_t axis, udist_t pos);
 
@@ -247,7 +249,7 @@ public:
 
 	void AddEvent(StepperEvent event, void* eventparam, SEvent&old );
 
-	unsigned char ToReferenceId(axis_t axis, bool minRef) const	{ return axis * 2 + (minRef ? 0 : 1); }
+	static unsigned char ToReferenceId(axis_t axis, bool minRef) { return axis * 2 + (minRef ? 0 : 1); }
 
 	virtual bool  IsAnyReference() = 0;
 	virtual bool  IsReference(unsigned char referenceid) = 0;

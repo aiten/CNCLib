@@ -39,9 +39,9 @@ private:
 
 public:
 
-	static CMyLcd* GetLcd() { return ((CMyLcd*) CLcd::GetInstance()); }
+	static CMyLcd* GetLcd()												{ return ((CMyLcd*) CLcd::GetInstance()); }
 
-	CMyMenu()				{ _main = &_mainMenu;  }
+	CMyMenu()															{ _main = &_mainMenu; }
 
 protected:
 

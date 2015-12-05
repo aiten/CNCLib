@@ -3,3 +3,4 @@
 *.sdf
 Debug/
 ipch/
+.vs/
