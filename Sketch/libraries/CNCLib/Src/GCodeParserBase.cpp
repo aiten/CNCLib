@@ -301,7 +301,8 @@ void CGCodeParserBase::Parse()
 				}
 				if (!MCommand(GetMCode()))
 				{
-					Info(MESSAGE_GCODE_UnspportedMCodeIgnored); return;
+					Error(MESSAGE_GCODE_UnspportedMCodeIgnored);	return;
+					// Info(MESSAGE_GCODE_UnspportedMCodeIgnored);
 				}
 				break;
 			}
