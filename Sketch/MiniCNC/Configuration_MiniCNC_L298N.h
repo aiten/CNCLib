@@ -80,6 +80,8 @@ inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val) { return  Round
 #define GO_DEFAULT_STEPRATE   20000 // steps/sec
 #define G1_DEFAULT_STEPRATE   10000 // steps/sec
 
+#define STEPRATERATE_REFMOVE  GO_DEFAULT_STEPRATE
+
 #define CNC_MAXSPEED 375
 #define CNC_ACC  65
 #define CNC_DEC  75

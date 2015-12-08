@@ -71,6 +71,12 @@
 #define GO_DEFAULT_STEPRATE   20000 // steps/sec
 #define G1_DEFAULT_STEPRATE   10000 // steps/sec
 
+#define STEPRATERATE_REFMOVE  GO_DEFAULT_STEPRATE
+
+////////////////////////////////////////////////////////
+
+#define NOGOTOREFERENCEATBOOT
+
 ////////////////////////////////////////////////////////
 
 #define CNC_MAXSPEED 3000
