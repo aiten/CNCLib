@@ -28,6 +28,22 @@
 
 #define CMyStepper CStepperRamps14
 
+#define X_MAXSIZE	520000		//520mm
+#define Y_MAXSIZE	295000		//295mm
+#define Z_MAXSIZE	3000		//3mm
+
+#define MAXSTEPRATE	25000
+
+#define PENUP_FEEDRATE		-STEPRATETOFEEDRATE(25000);
+#define PENDOWN_FEEDRATE	STEPRATETOFEEDRATE(8000);
+
+
+#define POS_Z_PENUP			0
+#define POS_Z_PENDOWN		2260
+
+#define MOVEPENUP_FEEDRATE		-STEPRATETOFEEDRATE(4000)
+#define MOVEPENDOWN_FEEDRATE	STEPRATETOFEEDRATE(3000)
+
 ////////////////////////////////////////////////////////
 
 #define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec

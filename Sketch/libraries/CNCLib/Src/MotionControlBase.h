@@ -107,6 +107,12 @@ public:
 	static steprate_t FeedRateToStepRate(axis_t axis, feedrate_t feedrate);
 
 	/////////////////////////////////////////////////////////
+	// some helper function to move (all result in MoveAbs(...)
+
+	void MoveAbsEx(feedrate_t feedrate, unsigned short axis, mm1000_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
+	void MoveRelEx(feedrate_t feedrate, unsigned short axis, mm1000_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
+
+	/////////////////////////////////////////////////////////
 	// Samples for converting functions
 	//
 	// Remark: use fix div and multiplier 2^x => compiler will generate faster inline function 

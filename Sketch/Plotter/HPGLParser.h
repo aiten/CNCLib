@@ -37,55 +37,40 @@ public:
 
 	virtual void Parse() override;
 
-	static sdist_t HPGLToPlotterCordX(sdist_t xx);
-	static sdist_t HPGLToPlotterCordY(sdist_t yy);
+	static mm1000_t HPGLToMM1000X(long xx);
+	static mm1000_t HPGLToMM1000Y(long yy);
 
 	static void Init()											{ super::Init(); _state.Init(); }
 
 	struct SState
 	{
 		bool HPGLIsAbsolut;
-		long HPMul;
-		long HPDiv;
 		int HPOffsetX;
 		int HPOffsetY;
 
+		feedrate_t FeedRate;
+		feedrate_t FeedRateUp;
+		feedrate_t FeedRateDown;
+
 		// Plotter
 
-		unsigned int penUpPos;
-		unsigned int penDownPos;
 		unsigned int penUpTimeOut;
-
-		struct SSPEED
-		{
-			unsigned int  max;
-			unsigned int  acc;
-			unsigned int  dec;
-		};
-
-		struct SSPEED penDown;
-		struct SSPEED penUp;
-
-		struct SSPEED movePenUp;
-		struct SSPEED movePenDown;
 
 		void Init()
 		{
-#define X_AXIS_ENDSTOP 0
-#define Y_AXIS_ENDSTOP 2
-#define Z_AXIS_ENDSTOP 4
-#define EMERGENCY_ENDSTOP 5
-
 			HPGLIsAbsolut = 1;
+
+			FeedRateUp   = PENUP_FEEDRATE;
+			FeedRateDown = PENDOWN_FEEDRATE;
 
 			// => unit is 0,025mm(40units/mm), 6950*8(55600)steps are ca. 523,5 mm => 20940;
 
-			HPMul = 77;
-			HPDiv = 29;
+//			HPMul = 77;
+//			HPDiv = 29;
 
 			HPOffsetX = 0;
 			HPOffsetY = 0;
-
+/*
 			penDown.max = 8000;
 //			penDown.max = 4000;
 			penDown.acc = 450;
@@ -102,28 +87,7 @@ public:
 			movePenDown.max = 4000;
 			movePenDown.acc = 400;
 			movePenDown.dec = 450;
-
-/*
-
-			penDown.max = 8000;
-			penDown.acc = 500;
-			penDown.dec = 500;
-
-			penUp.max = 25000;
-			penUp.acc = 1000;
-			penUp.dec = 1000;
-
-			movePenUp.max = 4000;
-			movePenUp.acc = 400;
-			movePenUp.dec = 450;
-
-			movePenDown.max = 4000;
-			movePenDown.acc = 400;
-			movePenDown.dec = 450;
 */
-			penUpPos = 00;
-			penDownPos = 30 * 8;
-
 			penUpTimeOut = 1000;
 		}
 	};

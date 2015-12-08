@@ -25,9 +25,9 @@
 #include <CNCLib.h>
 #include <HelpParser.h>
 
+#include "MyControl.h"
 #include "HPGLParser.h"
 #include "PlotterControl.h"
-#include "MyControl.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -45,16 +45,20 @@ CHPGLParser::SState CHPGLParser::_state;
 
 ////////////////////////////////////////////////////////////
 
-sdist_t CHPGLParser::HPGLToPlotterCordX(sdist_t xx)
+mm1000_t CHPGLParser::HPGLToMM1000X(long xx)
 {
-	return RoundMulDivI32(xx + _state.HPOffsetX, _state.HPMul, _state.HPDiv);
+	// HPGL unit is 1/40 mm => 0.025mm
+
+	return (xx + _state.HPOffsetX) * 25;
+	// return RoundMulDivI32(xx + _state.HPOffsetX, _state.HPMul, _state.HPDiv);
 }
 
 ////////////////////////////////////////////////////////////
 
-sdist_t CHPGLParser::HPGLToPlotterCordY(sdist_t yy)
+mm1000_t CHPGLParser::HPGLToMM1000Y(long yy)
 {
-	return RoundMulDivI32(yy + _state.HPOffsetY, _state.HPMul, _state.HPDiv);
+	return (yy + _state.HPOffsetY) * 25;
+	//return RoundMulDivI32(yy + _state.HPOffsetY, _state.HPMul, _state.HPDiv);
 }
 
 ////////////////////////////////////////////////////////////
@@ -99,8 +103,8 @@ void CHPGLParser::PenMoveCommand(unsigned char cmdidx)
 
 	switch (cmdidx)
 	{
-		case PU:	Plotter.DelayPenUp();		break;
-		case PD:	Plotter.PenDown();			break;
+		case PU:	Plotter.DelayPenUp();		_state.FeedRate = _state.FeedRateUp; break;
+		case PD:	Plotter.PenDown();			_state.FeedRate = _state.FeedRateDown; break;
 		case PA:	_state.HPGLIsAbsolut = 1;	break;
 		case PR:	_state.HPGLIsAbsolut = 0;	break;
 	}
@@ -112,7 +116,7 @@ void CHPGLParser::PenMoveCommand(unsigned char cmdidx)
 
 	while (IsInt(_reader->GetChar()))
 	{
-		sdist_t x = GetSDist();
+		long xIn = GetInt32();
 
 		//all blank or colon
 
@@ -131,19 +135,19 @@ void CHPGLParser::PenMoveCommand(unsigned char cmdidx)
 			return;
 		}
 
-		sdist_t y = GetSDist();
+		long yIn = GetInt32();
 
 		if (_reader->IsError())	goto ERROR_MISSINGARGUMENT;
 
-		x = HPGLToPlotterCordX(x);
-		y = HPGLToPlotterCordY(y);
+		mm1000_t x = HPGLToMM1000X(xIn);
+		mm1000_t y = HPGLToMM1000Y(yIn);
 
 		if (_state.HPGLIsAbsolut)
 		{
-			if (x != (sdist_t)CStepper::GetInstance()->GetPosition(X_AXIS) || y != (sdist_t)CStepper::GetInstance()->GetPosition(Y_AXIS))
+			if (x != CMotionControlBase::GetInstance()->GetPosition(X_AXIS) || y != CMotionControlBase::GetInstance()->GetPosition(Y_AXIS))
 			{
 				Plotter.DelayPenNow();
-				CStepper::GetInstance()->MoveAbsEx(0, X_AXIS, x, Y_AXIS, y, -1);
+				CMotionControlBase::GetInstance()->MoveAbsEx(_state.FeedRate , X_AXIS, x, Y_AXIS, y, -1);
 			}
 		}
 		else
@@ -151,7 +155,7 @@ void CHPGLParser::PenMoveCommand(unsigned char cmdidx)
 			if (x != 0 || y != 0)
 			{
 				Plotter.DelayPenNow();
-				CStepper::GetInstance()->MoveRelEx(0,X_AXIS,x, Y_AXIS, y, -1);
+				CMotionControlBase::GetInstance()->MoveRelEx(_state.FeedRate,X_AXIS,x, Y_AXIS, y, -1);
 			}
 		}
 		if (_reader->SkipSpaces() != ',')

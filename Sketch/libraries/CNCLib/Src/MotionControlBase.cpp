@@ -364,3 +364,62 @@ steprate_t CMotionControlBase::FeedRateToStepRate(axis_t axis, feedrate_t feedra
 	steprate_t steprate = (steprate_t)_ToMachine(axis, feedrate / 60); 
 	return steprate ? steprate : 1; 
 }
+
+////////////////////////////////////////////////////////
+// repeat axis and d until axis not in 0 .. NUM_AXIS
+
+void CMotionControlBase::MoveAbsEx(feedrate_t feedrate, unsigned short axis, mm1000_t d, ...)
+{
+	mm1000_t dest[NUM_AXIS];
+	GetPositions(dest);
+
+	va_list arglist;
+	va_start(arglist, d);
+
+	while (axis < NUM_AXIS)
+	{
+		dest[axis] = d;								// replace current position
+
+#ifdef _MSC_VER
+		axis = va_arg(arglist, unsigned short);
+		d = va_arg(arglist, mm1000_t);
+#else
+		axis = va_arg(arglist, unsigned int);		// only "int" supported on arduino
+		d = va_arg(arglist, unsigned long);
+#endif
+	}
+
+	va_end(arglist);
+
+	MoveAbs(dest, feedrate);
+}
+
+////////////////////////////////////////////////////////
+// repeat axis and d until axis not in 0 .. NUM_AXIS
+
+void CMotionControlBase::MoveRelEx(feedrate_t feedrate, unsigned short axis, mm1000_t d, ...)
+{
+	mm1000_t dest[NUM_AXIS];
+	GetPositions(dest);
+
+	va_list arglist;
+	va_start(arglist, d);
+
+	while (axis < NUM_AXIS)
+	{
+		dest[axis] += d;							// add to current postition
+
+#ifdef _MSC_VER
+		axis = va_arg(arglist, unsigned short);
+		d = va_arg(arglist, mm1000_t);
+#else
+		axis = va_arg(arglist, unsigned int);		// only "int" supported on arduino
+		d = va_arg(arglist, unsigned long);
+#endif
+	}
+
+	va_end(arglist);
+
+	MoveAbs(dest, feedrate);
+}
+

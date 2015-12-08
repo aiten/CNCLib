@@ -2233,7 +2233,7 @@ void CStepper::MoveAbsEx(steprate_t vMax, unsigned short axis, udist_t d, ...)
 		axis = va_arg(arglist, unsigned short);
 		d = va_arg(arglist, udist_t);
 #else
-		axis = va_arg(arglist, unsigned int);		// only "int" supported on arduion
+		axis = va_arg(arglist, unsigned int);		// only "int" supported on arduino
 		d    = va_arg(arglist, unsigned long);	
 #endif
 	}
@@ -2261,7 +2261,7 @@ void CStepper::MoveRelEx(steprate_t vMax, unsigned short axis, sdist_t d, ...)
 		axis = va_arg(arglist, unsigned short);
 		d = va_arg(arglist, sdist_t);
 #else
-		axis = va_arg(arglist, unsigned int);		// only "int" supported on arduion
+		axis = va_arg(arglist, unsigned int);		// only "int" supported on arduino
 		d    = va_arg(arglist, unsigned long);	
 #endif
 	}

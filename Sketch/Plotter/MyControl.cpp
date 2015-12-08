@@ -35,27 +35,30 @@ CMotionControl MotionControl;
 void CMyControl::Init()
 {
   CMotionControlBase::GetInstance()->Init();
-  CMotionControlBase::GetInstance()->InitConversion(CMotionControlBase::ToMm1000_1_3200, CMotionControlBase::ToMachine_1_3200);
+  CMotionControlBase::GetInstance()->InitConversion(
+	  [] (axis_t axis, sdist_t val)  { return (mm1000_t) (val*(1.0/(77.0 / 29.0 / 25.0))); },
+	  [] (axis_t axis, mm1000_t val) { return (sdist_t)  (val*(77.0 / 29.0 / 25.0)); }
+	  );
 
 #ifdef __USE_LCD__
- Lcd.Init();
+	Lcd.Init();
 #endif
 
 	StepperSerial.println(F("Plotter(HA) is starting ... (" __DATE__ ", " __TIME__ ")"));
 
-  super::Init();
+	super::Init();
 
 	CHPGLParser::Init();
 
-	CStepper::GetInstance()->SetLimitMax(0, CHPGLParser::HPGLToPlotterCordY(20800));
-	CStepper::GetInstance()->SetLimitMax(1, CHPGLParser::HPGLToPlotterCordY(11800));
-	CStepper::GetInstance()->SetLimitMax(2, 8000);   // 100*8
+	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, X_MAXSIZE));
+	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, Y_MAXSIZE));
+	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, Z_MAXSIZE));
 
 	CStepper::GetInstance()->SetJerkSpeed(0, 1000);  // 500 * 8?
 	CStepper::GetInstance()->SetJerkSpeed(1, 2000);
 	CStepper::GetInstance()->SetJerkSpeed(2, 1000);
 
-	CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penUp.max, CHPGLParser::_state.penUp.acc, CHPGLParser::_state.penUp.dec);
+	CStepper::GetInstance()->SetDefaultMaxSpeed(MAXSTEPRATE, 400, 450);
   
 	_controllerfan.Init(255);
 	_kill.Init();
@@ -76,7 +79,6 @@ void CMyControl::Init()
 
 void CMyControl::GoToReference()
 {
-  //return;
 	GoToReference(Z_AXIS, 0, true);
 	GoToReference(Y_AXIS, 0, true);
 	GoToReference(X_AXIS, 0, true);
@@ -87,7 +89,7 @@ void CMyControl::GoToReference()
 bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
 {
 #define FEEDRATE_REFMOVE  CStepper::GetInstance()->GetDefaultVmax() / 4  
-	return CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, FEEDRATE_REFMOVE);
+	return super::GoToReference(axis, FEEDRATE_REFMOVE, toMinRef);
 }
 
 ////////////////////////////////////////////////////////////

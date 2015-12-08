@@ -28,6 +28,7 @@
 #include <CNCLib.h>
 #include <LiquidCrystal_I2C.h>
 
+#include "MyControl.h"
 #include "MyLCD.h"
 
 #ifdef __USE_LCD__
@@ -115,8 +116,8 @@ unsigned long CMyLcd::Splash()
 
 unsigned long CMyLcd::Draw(EDrawType /* draw */)
 {
-  	DrawPos(2, 0, CStepper::GetInstance()->GetCurrentPosition(X_AXIS));
-	DrawPos(2, 1, CStepper::GetInstance()->GetCurrentPosition(Y_AXIS));
+  	DrawPos(2, 0, CMotionControlBase::GetInstance()->GetPosition(X_AXIS));
+	DrawPos(2, 1, CMotionControlBase::GetInstance()->GetPosition(Y_AXIS));
 	DrawES(17, 0, CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true)));
 	DrawES(18, 0, CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true)));
 	DrawES(19, 0, CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true)));
@@ -136,31 +137,14 @@ unsigned long CMyLcd::Draw(EDrawType /* draw */)
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::DrawPos(unsigned char col, unsigned char row, unsigned long pos)
+void CMyLcd::DrawPos(unsigned char col, unsigned char row, mm1000_t pos)
 {
 	lcd.setCursor(col, row);
 
 	char tmp[16];
 
-	// draw in mm
+	CMm1000::ToString(pos, tmp, 6, 2);
 
-	unsigned long hpglunits = RoundMulDivI32(pos, CHPGLParser::_state.HPDiv, CHPGLParser::_state.HPMul);
-
-	unsigned short mm = (unsigned short) (hpglunits / 40);
-	if (mm >= 1000)
-		mm = 999;
-	unsigned short mm100 = (hpglunits % 40) * 5 / 2;
-	_itoa(mm, tmp, 10);
-	int len = strlen(tmp);
-	tmp[len++] = '.';
-	if (mm100 < 10)
-		tmp[len++] = '0';
-	_itoa(mm100, tmp + len, 10);
-
-	if (mm < 10)
-		lcd.print(F("  "));
-	else if (mm < 100)
-		lcd.print(F(" "));
 	lcd.print(tmp);
 }
 
