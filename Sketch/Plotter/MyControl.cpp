@@ -28,17 +28,22 @@
 #include "HPGLParser.h"
 #include "PlotterControl.h"
 
+CMotionControl MotionControl;
+
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Init()
 {
-	super::Init();
+  CMotionControlBase::GetInstance()->Init();
+  CMotionControlBase::GetInstance()->InitConversion(CMotionControlBase::ToMm1000_1_3200, CMotionControlBase::ToMachine_1_3200);
+
+#ifdef __USE_LCD__
+ Lcd.Init();
+#endif
 
 	StepperSerial.println(F("Plotter(HA) is starting ... (" __DATE__ ", " __TIME__ ")"));
 
-#ifdef __USE_LCD__
-	Lcd.Init();
-#endif
+  super::Init();
 
 	CHPGLParser::Init();
 
@@ -51,7 +56,7 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetJerkSpeed(2, 1000);
 
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CHPGLParser::_state.penUp.max, CHPGLParser::_state.penUp.acc, CHPGLParser::_state.penUp.dec);
-
+  
 	_controllerfan.Init(255);
 	_kill.Init();
 
@@ -69,20 +74,9 @@ void CMyControl::Init()
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::Initialized()
-{
-	super::Initialized();
-
-	//	CStepper::GetInstance()->Wait(1);
-	//	CStepper::GetInstance()->MoveAbs(Z_AXIS, 200);
-
-	GoToReference();
-}
-
-////////////////////////////////////////////////////////////
-
 void CMyControl::GoToReference()
 {
+  //return;
 	GoToReference(Z_AXIS, 0, true);
 	GoToReference(Y_AXIS, 0, true);
 	GoToReference(X_AXIS, 0, true);
