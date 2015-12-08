@@ -116,6 +116,13 @@ unsigned long CMyLcd::Splash()
 
 unsigned long CMyLcd::Draw(EDrawType /* draw */)
 {
+  static bool firstdraw = true;
+
+  if (firstdraw)
+  {
+    FirstDraw();
+    firstdraw=false;
+  }
   	DrawPos(2, 0, CMotionControlBase::GetInstance()->GetPosition(X_AXIS));
 	DrawPos(2, 1, CMotionControlBase::GetInstance()->GetPosition(Y_AXIS));
 	DrawES(17, 0, CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true)));

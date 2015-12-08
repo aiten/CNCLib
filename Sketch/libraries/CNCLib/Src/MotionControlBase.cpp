@@ -297,6 +297,7 @@ steprate_t CMotionControlBase::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate
 		mm1000_t sum = 0;
 		mm1000_t sumOverRun = 0;
 		bool useOverrun = false;
+		unsigned char axiscount = 0;
 
 		for (register axis_t x = 0; x < NUM_AXIS; x++)
 		{
@@ -305,13 +306,17 @@ steprate_t CMotionControlBase::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate
 
 			if (dist != 0)
 			{
+				axiscount++;
 				if (dist > maxdist)
 				{
 					maxdistaxis = x;
 					maxdist = dist;
 				}
 
-				if (dist > 0xffff) useOverrun = true;
+				if (dist > 0xffff)
+				{
+					useOverrun = true;
+				}
 				else
 				{
 					mm1000_t oldsum = sum;
@@ -321,7 +326,7 @@ steprate_t CMotionControlBase::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate
 				sumOverRun += (dist / AvoidOverrun)*(dist / AvoidOverrun);
 			}
 		}
-		if (maxdist > 0)
+		if (axiscount > 1)   //  && maxdist > 0)
 		{
 			if (useOverrun)
 			{
@@ -333,22 +338,19 @@ steprate_t CMotionControlBase::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate
 				sum = _ulsqrt_round(sum);
 			}
 
-			// avoid overrun: feedrate * maxdist
-			if (ToPrecisionU2((unsigned long)feedrate) + ToPrecisionU2((unsigned long)maxdist) > 30)
+			if (maxdist != sum && sum != 0)
 			{
-				// remark: maxdist < sum
-				if (maxdist > 1024)
+				// avoid overrun: feedrate * maxdist
+				if (ToPrecisionU2((unsigned long)feedrate) + ToPrecisionU2((unsigned long)maxdist) > 30)
 				{
-					maxdist /= 256;
+					// use float to avoid overruns
+					feedrate = feedrate_t(float(feedrate) * float(maxdist) / float(sum));
 				}
 				else
 				{
-					feedrate /= 256;
+					feedrate = RoundMulDivU32(feedrate, maxdist, sum);
 				}
-				sum /= 256;
 			}
-			if (sum)
-				feedrate = RoundMulDivU32(feedrate, maxdist, sum);
 		}
 	}
 

@@ -24,6 +24,7 @@
 #include "Matrix4x4Test.h"
 #include "StepperTest.h"
 #include "LinearLookupTest.h"
+#include "MotionControlTest.h"
 
 #pragma warning(disable: 4127)
 
@@ -32,6 +33,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	argc; argv;
 
 	CTestClass::Init(argv[0]);
+
+	{
+		CMotionControlTest test;
+		test.RunTest();
+	}
 
 	{
 		CRingBufferTest test;

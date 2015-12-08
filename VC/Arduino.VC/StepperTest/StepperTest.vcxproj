@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClInclude Include="LinearLookupTest.h" />
     <ClInclude Include="Matrix4x4Test.h" />
+    <ClInclude Include="MotionControlTest.h" />
     <ClInclude Include="RingBufferTest.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StepperTest.h" />
@@ -96,6 +97,7 @@
   <ItemGroup>
     <ClCompile Include="LinearLookupTest.cpp" />
     <ClCompile Include="Matrix4x4Test.cpp" />
+    <ClCompile Include="MotionControlTest.cpp" />
     <ClCompile Include="RingBufferTest.cpp" />
     <ClCompile Include="StepperTest.cpp" />
     <ClCompile Include="StepperTestMain.cpp" />

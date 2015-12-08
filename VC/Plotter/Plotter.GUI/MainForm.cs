@@ -40,7 +40,7 @@ namespace Plotter.GUI
         public MainForm()
         {
             InitializeComponent();
-            _com.SelectedItem = "COM3";
+            _com.SelectedItem = "COM6";
 			SizeX = 520;
 			SizeY = 295;
 			UpdateButtons();
