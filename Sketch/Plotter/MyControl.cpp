@@ -35,10 +35,7 @@ CMotionControl MotionControl;
 void CMyControl::Init()
 {
   CMotionControlBase::GetInstance()->Init();
-  CMotionControlBase::GetInstance()->InitConversion(
-	  [] (axis_t axis, sdist_t val)  { return (mm1000_t) (val*(1.0/(77.0 / 29.0 / 25.0))); },
-	  [] (axis_t axis, mm1000_t val) { return (sdist_t)  (val*(77.0 / 29.0 / 25.0)); }
-	  );
+  CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
 #ifdef __USE_LCD__
 	Lcd.Init();
