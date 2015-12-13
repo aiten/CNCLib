@@ -44,9 +44,11 @@ public:
 
 	struct SState
 	{
-		bool HPGLIsAbsolut;
-		int HPOffsetX;
-		int HPOffsetY;
+		bool _HPGLIsAbsolut;
+		bool dummy;
+
+		int _HPOffsetX;
+		int _HPOffsetY;
 
 		feedrate_t FeedRate;
 		feedrate_t FeedRateUp;
@@ -54,41 +56,19 @@ public:
 
 		// Plotter
 
-		unsigned int penUpTimeOut;
+		unsigned int _penUpTimeOut;
 
 		void Init()
 		{
-			HPGLIsAbsolut = 1;
+			_HPGLIsAbsolut = true;
 
 			FeedRateUp   = PENUP_FEEDRATE;
 			FeedRateDown = PENDOWN_FEEDRATE;
 
-			// => unit is 0,025mm(40units/mm), 6950*8(55600)steps are ca. 523,5 mm => 20940;
+			_HPOffsetX = 0;
+			_HPOffsetY = 0;
 
-//			HPMul = 77;
-//			HPDiv = 29;
-
-			HPOffsetX = 0;
-			HPOffsetY = 0;
-/*
-			penDown.max = 8000;
-//			penDown.max = 4000;
-			penDown.acc = 450;
-			penDown.dec = 500;
-
-			penUp.max = 25000;
-			penUp.acc = 600;
-			penUp.dec = 650;
-
-			movePenUp.max = 4000;
-			movePenUp.acc = 400;
-			movePenUp.dec = 450;
-
-			movePenDown.max = 4000;
-			movePenDown.acc = 400;
-			movePenDown.dec = 450;
-*/
-			penUpTimeOut = 1000;
+			_penUpTimeOut = 1000;
 		}
 	};
 

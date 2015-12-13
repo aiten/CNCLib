@@ -61,10 +61,6 @@ void CMyControl::Init()
 	_kill.Init();
 
 #if defined(__AVR_ARCH__) || defined(__SAM3X8E__)
-	for (register unsigned char i = 0; i < NUM_AXIS * 2; i++)
-	{
-		CStepper::GetInstance()->UseReference(i, false);
-	}
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true), true);
@@ -85,7 +81,6 @@ void CMyControl::GoToReference()
 
 bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
 {
-#define FEEDRATE_REFMOVE  CStepper::GetInstance()->GetDefaultVmax() / 4  
 	return super::GoToReference(axis, FEEDRATE_REFMOVE, toMinRef);
 }
 
@@ -102,7 +97,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 {
 	switch (tool)
 	{
-#if CONTROLLERFAN_FAN_PIN != -1
+#ifdef CONTROLLERFAN_FAN_PIN
 		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
 #endif
 	}
@@ -116,7 +111,9 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 {
 	switch (tool)
 	{
+#ifdef CONTROLLERFAN_FAN_PIN
 		case ControllerFan: { return _controllerfan.Level; }
+#endif
 	}
 
 	return super::IOControl(tool);
@@ -126,7 +123,7 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 
 bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
 {
-#if CONTROLLERFAN_FAN_PIN != -1
+#ifdef CONTROLLERFAN_FAN_PIN
 	switch (eventtype)
 	{
 		case CStepper::OnStartEvent:

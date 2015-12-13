@@ -49,7 +49,7 @@ mm1000_t CHPGLParser::HPGLToMM1000X(long xx)
 {
 	// HPGL unit is 1/40 mm => 0.025mm
 
-	return (xx + _state.HPOffsetX) * 25;
+	return (xx + _state._HPOffsetX) * 25;
 	// return RoundMulDivI32(xx + _state.HPOffsetX, _state.HPMul, _state.HPDiv);
 }
 
@@ -57,7 +57,7 @@ mm1000_t CHPGLParser::HPGLToMM1000X(long xx)
 
 mm1000_t CHPGLParser::HPGLToMM1000Y(long yy)
 {
-	return (yy + _state.HPOffsetY) * 25;
+	return (yy + _state._HPOffsetY) * 25;
 	//return RoundMulDivI32(yy + _state.HPOffsetY, _state.HPMul, _state.HPDiv);
 }
 
@@ -105,8 +105,8 @@ void CHPGLParser::PenMoveCommand(unsigned char cmdidx)
 	{
 		case PU:	Plotter.DelayPenUp();		_state.FeedRate = _state.FeedRateUp; break;
 		case PD:	Plotter.PenDown();			_state.FeedRate = _state.FeedRateDown; break;
-		case PA:	_state.HPGLIsAbsolut = 1;	break;
-		case PR:	_state.HPGLIsAbsolut = 0;	break;
+		case PA:	_state._HPGLIsAbsolut = true;	break;
+		case PR:	_state._HPGLIsAbsolut = false;	break;
 	}
 
 	if (IsToken(F("PD"), false, false))											{ PenMoveCommand(PD);	return; }
@@ -142,7 +142,7 @@ void CHPGLParser::PenMoveCommand(unsigned char cmdidx)
 		mm1000_t x = HPGLToMM1000X(xIn);
 		mm1000_t y = HPGLToMM1000Y(yIn);
 
-		if (_state.HPGLIsAbsolut)
+		if (_state._HPGLIsAbsolut)
 		{
 			if (x != CMotionControlBase::GetInstance()->GetPosition(X_AXIS) || y != CMotionControlBase::GetInstance()->GetPosition(Y_AXIS))
 			{
