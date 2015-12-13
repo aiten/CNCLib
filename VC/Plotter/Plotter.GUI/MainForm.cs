@@ -44,9 +44,11 @@ namespace Plotter.GUI
 			SizeX = 520;
 			SizeY = 295;
 			UpdateButtons();
-        }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+			Com.Trace.EnableTrace(System.IO.Path.GetTempPath() + @"Plotter.txt");
+		}
+
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Framework.Tools.Pattern.Singleton<HPGLCommunication>.Free();
         }
@@ -79,12 +81,14 @@ namespace Plotter.GUI
             if (Com.IsConnected)
             {
                 Framework.Tools.Pattern.Singleton<HPGLCommunication>.Free();
-            }
-            else 
+				_connect.Text = "Connect";
+			}
+			else 
             {
 				try
 				{
 					Com.Connect(_com.SelectedItem.ToString());
+					_connect.Text = "Disconnect";
 				}
 				catch (IOException x)
 				{
