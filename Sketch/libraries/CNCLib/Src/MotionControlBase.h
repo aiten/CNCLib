@@ -161,7 +161,7 @@ public:
 	// functions: 1 rotation(3200Steps) = 1mm
 
 	static mm1000_t ToMm1000_1_3200(axis_t /* axis */, sdist_t val)								{ return  RoundMulDivU32(val, 80, 256); }
-	static sdist_t  ToMachine_1_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 256, 80); }
+	static sdist_t  ToMachine_1_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 16, 5); }
 	
 	static mm1000_t ToMm1000Inch_1_3200(axis_t /* axis */, sdist_t val)							{ return  MulDivU32(val, 25, 2032); }
 	static sdist_t  ToMachineInch_1_3200(axis_t /* axis */, mm1000_t val)						{ return  MulDivU32(val, 2032, 25); }
@@ -169,32 +169,32 @@ public:
 	// functions: 1 rotation = 1.25mm
 
 	static mm1000_t ToMm1000_1d25_3200(axis_t /* axis */, sdist_t val)							{ return  MulDivU32(val, 100, 256); }
-	static sdist_t  ToMachine_1d25_3200(axis_t /* axis */, mm1000_t val)						{ return  MulDivU32(val, 256, 100); }
+	static sdist_t  ToMachine_1d25_3200(axis_t /* axis */, mm1000_t val)						{ return  MulDivU32(val, 64, 25); }
 
 	// functions: 1 rotation = 1.5mm
 
 	static mm1000_t ToMm1000_1d5_3200(axis_t /* axis */, sdist_t val)							{ return  MulDivU32(val, 120, 256); }
-	static sdist_t  ToMachine_1d5_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 256, 120); }
+	static sdist_t  ToMachine_1d5_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 32, 15); }
 
 	// functions: 1 rotation = 2mm
 
 	static mm1000_t ToMm1000_2_3200(axis_t /* axis */, sdist_t val)								{ return  MulDivU32(val, 160, 256); }
-	static sdist_t  ToMachine_2_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 256, 160); }
+	static sdist_t  ToMachine_2_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 8, 5); }
 
 	// functions: 1 rotation = 3mm
 
 	static mm1000_t ToMm1000_3_3200(axis_t /* axis */, sdist_t val)								{ return  MulDivU32(val, 240, 256); }
-	static sdist_t  ToMachine_3_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 256, 240); }
+	static sdist_t  ToMachine_3_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 16, 15); }
 
 	// functions: 1 rotation = 4mm
 
 	static mm1000_t ToMm1000_4_3200(axis_t /* axis */, sdist_t val)								{ return  MulDivU32(val, 320, 256); }
-	static sdist_t  ToMachine_4_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 256, 320); }
+	static sdist_t  ToMachine_4_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 4, 5); }
 
 	// functions: 1 rotation = 5mm
 
 	static mm1000_t ToMm1000_5_3200(axis_t /* axis */, sdist_t val)								{ return  MulDivU32(val, 400, 256); }
-	static sdist_t  ToMachine_5_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 256, 400); }
+	static sdist_t  ToMachine_5_3200(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 16, 25); }
 
 	
 	////////////////////////////////////////////////////////////////////////////////////////////
@@ -204,12 +204,12 @@ public:
 	// functions: 1 rotation(6400Steps) = 1mm
 
 	static mm1000_t ToMm1000_1_6400(axis_t /* axis */, sdist_t val)								{ return  RoundMulDivU32(val, 40, 256); }
-	static sdist_t  ToMachine_1_6400(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 256, 40); }
+	static sdist_t  ToMachine_1_6400(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 16, 25); }
 
 	// functions: 1 rotation(6400Steps) = 5mm
 
 	static mm1000_t ToMm1000_5_6400(axis_t /* axis */, sdist_t val)								{ return  RoundMulDivU32(val, 200, 256); }
-	static sdist_t  ToMachine_5_6400(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 256, 200); }
+	static sdist_t  ToMachine_5_6400(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 32, 25); }
 
 };
 

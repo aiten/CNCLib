@@ -5,6 +5,8 @@ typedef long sdist_t;
 //typedef mm1000_t(*ToMm1000_t) (axis_t axis, sdist_t val);
 typedef sdist_t(*ToMachine_t) (axis_t axis, mm1000_t val);
 
+#define Serial SerialUSB
+
 void setup() 
 {
   Serial.begin(115200);

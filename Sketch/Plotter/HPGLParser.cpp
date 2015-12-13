@@ -48,9 +48,7 @@ CHPGLParser::SState CHPGLParser::_state;
 mm1000_t CHPGLParser::HPGLToMM1000X(long xx)
 {
 	// HPGL unit is 1/40 mm => 0.025mm
-
 	return (xx + _state._HPOffsetX) * 25;
-	// return RoundMulDivI32(xx + _state.HPOffsetX, _state.HPMul, _state.HPDiv);
 }
 
 ////////////////////////////////////////////////////////////
@@ -58,7 +56,6 @@ mm1000_t CHPGLParser::HPGLToMM1000X(long xx)
 mm1000_t CHPGLParser::HPGLToMM1000Y(long yy)
 {
 	return (yy + _state._HPOffsetY) * 25;
-	//return RoundMulDivI32(yy + _state.HPOffsetY, _state.HPMul, _state.HPDiv);
 }
 
 ////////////////////////////////////////////////////////////
