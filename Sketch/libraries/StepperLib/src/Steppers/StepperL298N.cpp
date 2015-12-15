@@ -115,6 +115,7 @@ void CStepperL298N::InitMemVar()
 {
 	register unsigned char i;
 	for (i = 0; i < NUM_AXIS; i++)	_stepIdx[i] = 0;
+	for (i = 0; i < NUM_AXIS; i++)	_fullStepMode[i] = false;
 }
 
 ////////////////////////////////////////////////////////
@@ -202,7 +203,7 @@ void CStepperL298N::SetPhase(axis_t axis)
 
 		if (Is4Pin(axis))
 		{
-			if (_pod._stepMode[axis] == FullStep)
+			if (_fullStepMode[axis])
 			{
 				bitmask = pgm_read_byte(&_L298Nfullstep4Pin[_stepIdx[axis] & 0x3]);
 			}

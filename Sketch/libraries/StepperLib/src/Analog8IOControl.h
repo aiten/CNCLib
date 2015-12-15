@@ -30,13 +30,14 @@ public:
 
 	void Init(unsigned char level=0)		// init and set default value
 	{
-		OnLevel(level);
+		SetLevel(level);
+		Level = level;
 	}
 
-	void OnLevel(unsigned char level)		// Set level and turn on
+	void On(unsigned char level)			// Set level and turn on
 	{
 		Level = level;
-		On(level);
+		SetLevel(level);
 	}
 
 	void OnMax()							// turn on at max level
@@ -44,14 +45,14 @@ public:
 		OnLevel(255);
 	}
 
-	void On()								// turn on at specivied level (see Level property)
+	void On()								// turn on at specified level (see Level property)
 	{
-		On(Level);
+		SetLevel(Level);
 	}
 
 	void Off()								// turn off, use On() to switch on at same value
 	{
-		On(0);
+		SetLevel(0);
 	}
 
 	bool IsOn()
@@ -63,7 +64,7 @@ private:
 
 	unsigned char _lastlevel;
 
-	void On(unsigned char level)
+	void SetLevel(unsigned char level)
 	{
 		_lastlevel = level;
 		CHAL::analogWrite(PIN, level);

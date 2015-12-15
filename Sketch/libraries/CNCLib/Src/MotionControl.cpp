@@ -245,7 +245,7 @@ void CMotionControl::SRotate3D::Rotate(const mm1000_t src[NUM_AXIS], const mm100
 
 void CMotionControl::UnitTest()
 {
-	return;
+#ifdef DO_UNITTEST
 
 	InitConversion(ToMm1000_1_1000, ToMachine_1_1000);
 
@@ -374,6 +374,8 @@ void CMotionControl::UnitTest()
 
 	ClearRotate2D();
 	ClearRotate();
+
+#endif
 }
 
 inline bool CompareMaxDiff(mm1000_t a, mm1000_t b, mm1000_t diff = 3) { return  (abs(a - b) >= diff); }

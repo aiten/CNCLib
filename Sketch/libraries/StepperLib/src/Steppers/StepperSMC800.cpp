@@ -106,6 +106,7 @@ void CStepperSMC800::InitMemVar()
 	register unsigned char i;
 	for (i = 0; i < SMC800_NUM_AXIS; i++)	_stepIdx[i] = 0;
 	for (i = 0; i < SMC800_NUM_AXIS; i++)	_level[i] = LevelOff;
+	for (i = 0; i < NUM_AXIS; i++)			_fullStepMode[i] = false;
 
 	_pod._idleLevel = Level20P;
 }
@@ -222,7 +223,7 @@ void CStepperSMC800::SetPhase(axis_t axis)
 		register unsigned char addIO = pgm_read_byte(&stepperadd[axis]);
 		register unsigned char stepidx = _stepIdx[axis];
 
-		if (_pod._stepMode[axis] == FullStep)
+		if (_fullStepMode[axis])
 		{
 			stepidx = stepidx & 0x3;
 			switch (_level[axis])

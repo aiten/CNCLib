@@ -43,18 +43,6 @@ class CStepper : public CSingleton<CStepper>
 public:
 	/////////////////////
 
-	enum EStepMode
-	{
-		FullStep = 1,
-		HalfStep = 2,
-		QuarterStep = 4,
-		EighthStep = 8,
-		SixteenStep = 16,
-		ThirtytwoStep = 32,
-		SixtyfourStep = 64,
-		OneHundredTwentyEighttep = 128
-	};
-
 	enum EWaitType
 	{
 		MovementQueueFull,
@@ -154,8 +142,7 @@ public:
 	void SetUsual(steprate_t vMax);
 
 	void SetJerkSpeed(axis_t axis, steprate_t vMaxJerk)			{ _pod._maxJerkSpeed[axis] = vMaxJerk; }
-	void SetStepMode(axis_t axis, EnumAsByte(EStepMode) stepMode){ _pod._stepMode[axis] = stepMode; };
-
+	
 	void SetWaitFinishMove(bool wait)                           { _pod._waitFinishMove = wait; };
 	bool IsWaitFinishMove() const								{ return _pod._waitFinishMove; }
 
@@ -296,7 +283,6 @@ protected:
 	bool MoveUntil(unsigned char referenceId, bool referencevalue, unsigned short stabletime);
 
 	void QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], steprate_t vMax);
-	void QueueWait();
 
 	debugvirtula void StepRequest(bool isr);
 	debugvirtula void OptimizeMovementQueue(bool force);
@@ -379,8 +365,6 @@ protected:
 
 		unsigned char	_timeOutEnable[NUM_AXIS];					// enabletimeout in sec if no step (0.. disable, always enabled)
 		unsigned char	_timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
-
-		EnumAsByte(EStepMode) _stepMode[NUM_AXIS];					// fullstep, half, ...
 
 #ifdef USESLIP
 		unsigned int _slipSum[NUM_AXIS];
@@ -488,10 +472,6 @@ protected:
 		unsigned char GetStepMultiplier(axis_t axis)			{ return (_dirCount >> (axis * 4)) % 8; }
 		bool GetDirectionUp(axis_t axis)						{ return ((_dirCount >> (axis * 4)) & 8) != 0; }
 		unsigned char GetMaxStepMultiplier();
-
-		bool CanModify() const;									// can modify movement (ramp)
-
-		void SetEndPossibleProcessing();
 
 		bool Ramp(SMovement*mvNext);
 

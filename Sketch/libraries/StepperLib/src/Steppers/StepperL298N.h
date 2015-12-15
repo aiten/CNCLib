@@ -58,6 +58,8 @@ public:
 	void SetEnablePin(axis_t axis, pin_t en1, pin_t en2)			{ _pinenable[axis][0] = en1;  _pinenable[axis][1] = en2; }
 	void SetRefPin(axis_t axis, pin_t refmin, pin_t refmax)			{ _pinRef[ToReferenceId(axis, true)] = refmin;  _pinRef[ToReferenceId(axis, false)] = refmax; }
 
+	void SetFullStepMode(axis_t axis, bool fullstepMode)			{ _fullStepMode[axis] = fullstepMode; };
+
 private:
 
 	bool IsActive(axis_t axis)										{ return _pin[axis][0] != 0; }
@@ -68,6 +70,7 @@ private:
 	bool IsUseEN2(axis_t axis)										{ return _pinenable[axis][1] != 0; }
 
 	unsigned char _stepIdx[NUM_AXIS];
+	bool _fullStepMode[NUM_AXIS];
 
 	void InitMemVar();
 
