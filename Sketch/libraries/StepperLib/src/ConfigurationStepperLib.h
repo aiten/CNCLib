@@ -51,7 +51,7 @@ typedef unsigned long udist_t;	// tpye of stepper coord system (unsigned)
 
 #define REFERENCESTABLETIME	2			// time in ms for reference must not change (in Reference move) => signal bounce
 
-#define IDLETIMER1VALUE		TIMER1VALUE(10)			// Idle timer value (stepper timer not moving)
+#define IDLETIMER1VALUE		TIMER1VALUE(31)			// Idle timer value (stepper timer not moving), must fit into 16 bit
 #define TIMEOUTSETIDLE		1000					// set level after 1000ms
 
 #define WAITTIMER1VALUE		TIMER1VALUE(100)		// Idle timer value for "no step" movement

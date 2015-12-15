@@ -371,12 +371,10 @@ void CGCode3DParser::M111Command()
 {
 	// set debug level
 
-	unsigned char debuglevel = 0;
-
 	if (_reader->SkipSpacesToUpper() == 'S')
 	{
 		_reader->GetNextChar();
-		debuglevel = GetUInt8();
+		_state._debuglevel = GetUInt8();
 	}
 
 	if (!ExpectEndOfCommand())		{ return; }

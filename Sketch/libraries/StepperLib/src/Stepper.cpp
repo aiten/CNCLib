@@ -367,7 +367,7 @@ void CStepper::SMovement::InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t
 			if (accdec > _pod._move._timerAcc)
 				_pod._move._timerAcc = accdec;
 
-			accdec = MulDivU32(pStepper->_pod._timerDec[i], d, _steps);
+			accdec = (timer_t) MulDivU32(pStepper->_pod._timerDec[i], d, _steps);
 			if (accdec > _pod._move._timerDec)
 				_pod._move._timerDec = accdec;
 		}
@@ -503,7 +503,7 @@ void CStepper::SMovement::InitStop(SMovement* mvPrev, timer_t timer, timer_t dec
 
 	for (unsigned char i=0;i<NUM_AXIS;i++)
 	{
-		_distance_[i] = RoundMulDivUInt(_distance_[i],downstpes,_steps);
+		_distance_[i] = (mdist_t) RoundMulDivUInt(_distance_[i],downstpes,_steps);
 	}
 
 	_state = SMovement::StateReadyMove;
@@ -882,7 +882,7 @@ void CStepper::SMovement::CalcMaxJunktionSpeed(SMovement*mvPrev)
 				if (vdiff > long(_pStepper->_pod._maxJerkSpeed[i]))
 				{
 					// reduce total speed by ratio maxJerk <=> current jerk
-					timerMaxJunction = _pStepper->SpeedToTimer(RoundMulDivUInt(_pStepper->TimerToSpeed(timerMaxJunction_), _pStepper->_pod._maxJerkSpeed[i], steprate_t(vdiff)));
+					timerMaxJunction = _pStepper->SpeedToTimer(steprate_t(RoundMulDivUInt(_pStepper->TimerToSpeed(timerMaxJunction_), _pStepper->_pod._maxJerkSpeed[i], steprate_t(vdiff))));
 					_pod._move._timerMaxJunction = max(_pod._move._timerMaxJunction, min(timerMaxJunction, timerMaxJunctionAcc));
 				}
 			}
@@ -900,7 +900,7 @@ void CStepper::SMovement::CalcMaxJunktionSpeed(SMovement*mvPrev)
 					if (vdiff > long(_pStepper->_pod._maxJerkSpeed[i]))
 					{
 						// reduce total speed by ratio maxJerk <=> current jerk
-						timerMaxJunction = _pStepper->SpeedToTimer(RoundMulDivUInt(_pStepper->TimerToSpeed(timerMaxJunction_), _pStepper->_pod._maxJerkSpeed[i], steprate_t(vdiff)));
+						timerMaxJunction = _pStepper->SpeedToTimer(steprate_t(RoundMulDivUInt(_pStepper->TimerToSpeed(timerMaxJunction_), _pStepper->_pod._maxJerkSpeed[i], steprate_t(vdiff))));
 						_pod._move._timerMaxJunction = max(_pod._move._timerMaxJunction, min(timerMaxJunction, timerMaxJunctionAcc));
 					}
 				}
@@ -2149,14 +2149,14 @@ bool  CStepper::IsAnyReference()
 
 void CStepper::Wait(unsigned int sec100)
 {
-	QueueWait(sec100, WAITTIMER1VALUE, false);
+	QueueWait(mdist_t(sec100), WAITTIMER1VALUE, false);
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepper::WaitConditional(unsigned int sec100)
 {
-	QueueWait(sec100, WAITTIMER1VALUE, true);
+	QueueWait(mdist_t(sec100), WAITTIMER1VALUE, true);
 }
 
 ////////////////////////////////////////////////////////

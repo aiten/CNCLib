@@ -80,6 +80,7 @@ private:
 		File				_file;
 
 		bool				_isM28;						// SD write mode
+		unsigned char		_debuglevel;
 		char				_printfilename[MAXFILEEXTNAME + 1];
 
 		void Init()
@@ -88,6 +89,7 @@ private:
 			_printFilePos = 0;
 			_printFileLine = 0;
 			_isM28 = false;
+			_debuglevel = 0;
 			_printfilename[0] = 0;
 		}
 	};

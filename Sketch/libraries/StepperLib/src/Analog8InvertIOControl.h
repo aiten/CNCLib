@@ -42,7 +42,7 @@ public:
 
 	void OnMax()							// turn on at max level
 	{
-		OnLevel(255);
+		SetLevel(255);
 	}
 
 	void On()								// turn on at specified level (see Level property)

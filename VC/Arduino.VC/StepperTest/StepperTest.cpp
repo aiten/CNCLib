@@ -281,9 +281,9 @@ void CStepperTest::TestCircle()
 	Stepper.SetJerkSpeed(A_AXIS, 1000);
 	Stepper.SetJerkSpeed(B_AXIS, 1000);
 	double r_mm = 40.0;
-	int r = FromMM(r_mm);
-	int x = r;
-	int y = r;
+	mdist_t r = (mdist_t)FromMM(r_mm);
+	mdist_t x = r;
+	mdist_t y = r;
 	int n = (int)(2.0 * r_mm * M_PI * 3 + 72); // 2 * r * 3 * 3 + 72;			// 2*r*PI*3 + 72) => r must be mm;
 	Polygon(Stepper, x, y, r, n, 0, 10000);
 	Stepper.EndTest();
