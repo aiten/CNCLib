@@ -2321,7 +2321,9 @@ steprate_t CStepper::TimerToSpeed(timer_t timer) const
 
 void CStepper::Dump(unsigned char options)
 {
-#ifndef _NO_DUMP
+#ifdef _NO_DUMP
+	(void) options;
+#else
 	unsigned char i;
 
 	if (options&DumpPos)
@@ -2384,8 +2386,9 @@ void CStepper::Dump(unsigned char options)
 
 void CStepper::SMovement::Dump(unsigned char idx, unsigned char options)
 {
-#ifndef _NO_DUMP
-
+#ifdef _NO_DUMP
+	(void) idx; (void) options;
+#else
 	DumpType<unsigned char>(F("Idx"), idx, false);
 	if (idx == 0)
 	{
