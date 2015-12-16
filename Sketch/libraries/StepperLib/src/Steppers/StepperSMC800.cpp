@@ -21,6 +21,12 @@
 
 ////////////////////////////////////////////////////////
 
+// not implemented on due
+
+#if !defined(__SAM3X8E__)
+
+////////////////////////////////////////////////////////
+
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 
 #define SMC800_REFININ 40
@@ -31,11 +37,6 @@
 #define SMC800_REFININ 11
 #define SMC800_STROBEPIN 10
 // use SMC800 Byte 2-9
-
-#elif defined(__SAM3X8E__)
-
-#define SMC800_REFININ 11
-#define SMC800_STROBEPIN 10
 
 #else
 ToDo;
@@ -80,10 +81,6 @@ void CStepperSMC800::OutSMC800Cmd(const unsigned char val)
 
 	PORTL = val;
 
-#elif defined(__SAM3X8E__)
-
-#pragma message ("TODO: due")
-
 #elif defined(__AVR_ATmega328P__)
 
 	PORTD = (PORTD & 3) + (val << 2);
@@ -123,10 +120,6 @@ void CStepperSMC800::Init()
 
 	DDRL = 0xff;
 
-#elif defined(__SAM3X8E__)
-
-#pragma message ("TODO: due")
-
 #elif defined(__AVR_ATmega328P__)
 
 	DDRD = (DDRD & 3) + 0b11111100;
@@ -151,10 +144,6 @@ void CStepperSMC800::Remove()
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 
 	DDRL = 0x0;
-
-#elif defined(__SAM3X8E__)
-
-#pragma message ("TODO: due")
 
 #elif defined(__AVR_ATmega328P__)
 
@@ -277,3 +266,5 @@ void CStepperSMC800::MoveAwayFromReference(axis_t /* axis */, sdist_t dist, step
 					-1);
 #endif
 }
+
+#endif

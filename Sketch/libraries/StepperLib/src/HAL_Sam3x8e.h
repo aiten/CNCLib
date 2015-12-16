@@ -89,25 +89,25 @@ inline int digitalReadDirect(int pin){
   return !!(g_APinDescription[pin].pPort -> PIO_PDSR & g_APinDescription[pin].ulPin);
 }
 */
-inline unsigned char CHAL::digitalRead(uint8_t pin)
+inline unsigned char CHAL::digitalRead(pin_t pin)
 {
   return (g_APinDescription[pin].pPort -> PIO_PDSR & g_APinDescription[pin].ulPin) ? HIGH : LOW;
 //	return ::digitalReadDirect(pin);
 }
 
-inline void CHAL::digitalWrite(uint8_t pin, uint8_t val)
+inline void CHAL::digitalWrite(pin_t pin, uint8_t val)
 {
   if(val) g_APinDescription[pin].pPort -> PIO_SODR = g_APinDescription[pin].ulPin;
   else    g_APinDescription[pin].pPort -> PIO_CODR = g_APinDescription[pin].ulPin;
   //	digitalWriteDirect(pin,lowOrHigh);
 }
 
-inline void CHAL::pinMode(unsigned char pin, unsigned char mode)			
+inline void CHAL::pinMode(pin_t pin, unsigned char mode)
 { 
 	::pinMode(pin,mode); 
 }
 
-inline void CHAL::analogWrite(unsigned char pin, int val)			
+inline void CHAL::analogWrite8(pin_t pin, uint8_t val)
 {
 	::analogWrite(pin, val);
 }

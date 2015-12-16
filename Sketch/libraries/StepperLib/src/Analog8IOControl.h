@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
-template <unsigned char PIN>
+template <pin_t PIN>
 class CAnalog8IOControl
 {
 public:
@@ -67,7 +67,7 @@ private:
 	void SetLevel(unsigned char level)
 	{
 		_lastlevel = level;
-		CHAL::analogWrite(PIN, level);
+		CHAL::analogWrite8(PIN, level);
 	}
 };
 

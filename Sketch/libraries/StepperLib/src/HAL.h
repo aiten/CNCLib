@@ -173,12 +173,12 @@ public:
 	static inline irqflags_t GetSREG() ALWAYSINLINE;
 	static inline void SetSREG(irqflags_t) ALWAYSINLINE;
 
-	static inline void pinMode(unsigned char pin, unsigned char mode);
+	static inline void pinMode(pin_t pin, unsigned char mode);
 
-	static void digitalWrite(unsigned char pin, unsigned char lowOrHigh);
-	static unsigned char digitalRead(unsigned char pin);
+	static void digitalWrite(pin_t pin, unsigned char lowOrHigh);
+	static unsigned char digitalRead(pin_t pin);
 
-	static void analogWrite(unsigned char pin, int val);
+	static void analogWrite8(pin_t pin, uint8_t val);
 };
 
 //////////////////////////////////////////

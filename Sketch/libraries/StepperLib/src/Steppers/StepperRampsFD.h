@@ -174,7 +174,7 @@ protected:
 
 		// Step:   LOW to HIGH
 
-#if defined(USE_A4998)
+#if defined(RAMPSFD_USE_A4998)
 
 #define NOPREQUIRED_1()
 #define NOPREQUIRED_2()

@@ -27,9 +27,6 @@
 
 #define CNCSHIELD_ENDSTOPCOUNT 3
 
-#undef  USE_A4998
-#define USE_DRV8825
-
 ////////////////////////////////////////////////////////
 
 class CStepperCNCShield : public CStepper
@@ -108,7 +105,7 @@ protected:
 
 		// Step:   LOW to HIGH
 
-#if defined(USE_A4998)
+#if defined(CNCLIB_USE_A4998)
 
 #define NOPREQUIRED_1()
 #define NOPREQUIRED_2()

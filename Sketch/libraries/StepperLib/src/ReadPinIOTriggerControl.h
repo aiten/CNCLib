@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
-template <unsigned char PIN, unsigned char ONVALUE, unsigned long STABLETIME>
+template <pin_t PIN, unsigned char ONVALUE, unsigned long STABLETIME>
 class CReadPinIOTriggerControl
 {
 public:

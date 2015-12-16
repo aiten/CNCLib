@@ -29,7 +29,7 @@ public:
 	{
 	}
 
-	void SetPin(unsigned char pin, unsigned char onValue)		
+	void SetPin(pin_t pin, unsigned char onValue)		
 	{ 
 		_pin=pin; 
 		_onvalue = onValue; 
@@ -89,7 +89,7 @@ public:
 
 protected:
 
-	unsigned char	_pin = 0;
+	pin_t			_pin = 0;
 	unsigned char	_onvalue = 0;
 
 	enum EButtonState

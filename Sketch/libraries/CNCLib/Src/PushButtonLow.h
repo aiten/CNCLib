@@ -34,7 +34,7 @@ public:
 	{
 	}
 
-	void SetPin(unsigned char pin)		
+	void SetPin(pin_t pin)		
 	{ 
 		_pin=pin; 
 		CHAL::pinMode(_pin, INPUT_PULLUP);
@@ -93,7 +93,7 @@ public:
 
 protected:
 
-	unsigned char	_pin = 0;
+	pin_t	_pin = 0;
 
 	enum EButtonState
 	{

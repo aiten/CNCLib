@@ -101,22 +101,22 @@ inline void CHAL::StopTimer5()				{}
 #define HALFastdigitalWrite(a,b) CHAL::digitalWrite(a,b)
 #define HALFastdigitalWriteNC(a,b) CHAL::digitalWrite(a,b)
 
-inline void CHAL::digitalWrite(uint8_t pin, uint8_t lowOrHigh)
+inline void CHAL::digitalWrite(pin_t pin, uint8_t lowOrHigh)
 {
 	::digitalWrite(pin,lowOrHigh);
 }
 
-inline unsigned char CHAL::digitalRead(uint8_t pin)
+inline unsigned char CHAL::digitalRead(pin_t pin)
 {
 	return ::digitalRead(pin);
 }
 
-inline void CHAL::analogWrite(unsigned char pin, int val)
+inline void CHAL::analogWrite8(pin_t pin, uint8_t val)
 {
 	::analogWrite(pin, val);
 }
 
-inline void CHAL::pinMode(unsigned char pin, unsigned char mode)			
+inline void CHAL::pinMode(pin_t pin, unsigned char mode)
 { 
 	::pinMode(pin,mode); 
 }

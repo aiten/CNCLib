@@ -64,7 +64,7 @@ ISR(TIMER5_OVF_vect)
 
 #endif
 
-void CHAL::digitalWrite(uint8_t pin, uint8_t val)
+void CHAL::digitalWrite(pin_t pin, uint8_t val)
 {
 //	uint8_t timer = digitalPinToTimer(pin);
 	uint8_t bit = digitalPinToBitMask(pin);
@@ -91,7 +91,7 @@ void CHAL::digitalWrite(uint8_t pin, uint8_t val)
 	SREG = oldSREG;
 }
 
-unsigned char CHAL::digitalRead(uint8_t pin)
+unsigned char CHAL::digitalRead(pin_t pin)
 {
 //	uint8_t timer = digitalPinToTimer(pin);
 	uint8_t bit = digitalPinToBitMask(pin);

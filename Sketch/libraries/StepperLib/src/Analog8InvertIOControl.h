@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
-template <unsigned char PIN>
+template <pin_t PIN>
 class CAnalog8InvertIOControl
 {
 public:
@@ -67,7 +67,7 @@ private:
 	void SetLevel(unsigned char level)
 	{
 		_lastlevel = level;
-		CHAL::analogWrite(PIN, 255 - level);
+		CHAL::analogWrite8(PIN, 255 - level);
 	}
 };
 

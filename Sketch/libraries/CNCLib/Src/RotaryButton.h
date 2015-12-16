@@ -135,7 +135,7 @@ public:
 	void SetPageIdx(rotarypage_t page)							{ SetPos(page); }
 	rotarypage_t GetPageIdx(rotarypage_t pages)					{ rang_t rpage = GetPos()%pages; if (rpage < 0) rpage = pages+rpage; return (rotarypage_t) rpage; }
 
-	void SetPin(unsigned char pin1,unsigned char pin2)
+	void SetPin(pin_t pin1, pin_t pin2)
 	{	
 			_pin1=pin1; 
 			_pin2=pin2; 
@@ -155,8 +155,8 @@ protected:
 	unsigned char 	_lastPinValue;
 	signed char 	_lastadd;
 
-	unsigned char	_pin1;
-	unsigned char	_pin2;
+	pin_t			_pin1;
+	pin_t			_pin2;
 };
 
 ////////////////////////////////////////////////////////

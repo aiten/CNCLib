@@ -36,9 +36,6 @@
 
 #define RAMPS14_ENDSTOPCOUNT 6
 
-#undef  USE_A4998
-#define USE_DRV8825
-
 ////////////////////////////////////////////////////////
 
 class CStepperRamps14 : public CStepper
@@ -156,7 +153,7 @@ protected:
 
 		// Step:   LOW to HIGH
 
-#if defined(USE_A4998)
+#if defined(RAMPS14_USE_A4998)
 
 #define NOPREQUIRED_1()
 #define NOPREQUIRED_2()

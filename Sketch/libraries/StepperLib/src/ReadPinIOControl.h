@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
-template <unsigned char PIN, unsigned char ONVALUE>
+template <pin_t PIN, unsigned char ONVALUE>
 class CReadPinIOControl
 {
 public:
