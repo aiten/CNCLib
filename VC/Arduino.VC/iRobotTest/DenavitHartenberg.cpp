@@ -30,17 +30,17 @@ void CDenavitHartenberg::InitMatrix(CMatrix4x4<float>& m, float in[NUM_AXIS])
 	float servo3 = in[2];
 
 	float pos1 = servo1;
-	float pos2 = (M_PI)+servo2;
+	float pos2 = float((M_PI)+servo2);
 	float pos3 = servo3;
 
-	float pos4 = M_PI + (M_PI - pos1 - pos2);
+	float pos4 = float(M_PI + (M_PI - pos1 - pos2));
 
 	float l0 = 105;
 	float l1 = 140;
 	float l2 = 152;
 	float l3 = 30;
 
-	m.InitDenavitHartenberg(0, M_PI / 2, l0, pos3);
+	m.InitDenavitHartenberg(0, float(M_PI_2), l0, pos3);
 	//TestConvert(AX, v);
 	m *= A.InitDenavitHartenberg1Rot3Trans(l1, pos1);
 	//TestConvert(AX, v);
@@ -71,7 +71,7 @@ void CDenavitHartenberg::ToPosition(float in[NUM_AXIS], float out[3])
 
 void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],float epsilon)
 {
-	float angle = M_PI + 0.1;
+	float angle = float(M_PI + 0.1);
 
 	SSearchDef search[] =
 	{
@@ -173,7 +173,7 @@ float CDenavitHartenberg::SearchStep(float pos[3], float inout[NUM_AXIS], unsign
 	{
 		inout[idx] = oldpos;
 		if (fabs(def.dist) < 0.01)
-			def.dist = def.dist / -1.01;
+			def.dist = def.dist / -1.01f;
 		else
 			def.dist = def.dist / -2;
 		return oldiff;
@@ -181,17 +181,17 @@ float CDenavitHartenberg::SearchStep(float pos[3], float inout[NUM_AXIS], unsign
 	else if (diff == oldiff)
 	{
 		if (oldpos == newpos)
-			def.dist = def.dist / -2.0;
+			def.dist = def.dist / -2.0f;
 		return diff;
 	}
 	else if (newpos >= def.max)
 	{
-		def.dist = def.dist / -2.0;
+		def.dist = def.dist / -2.0f;
 		return diff;
 	}
 	else if (newpos <= def.min)
 	{
-		def.dist = def.dist / -2.0;
+		def.dist = def.dist / -2.0f;
 		return diff;
 	}
 

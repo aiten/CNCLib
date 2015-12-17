@@ -33,14 +33,19 @@
 
 #define SEGMENTCOUNT 3
 
-#define SEGMENT1	140000.0
-#define SEGMENT2	152000.0
-#define SEGMENT3	30000.0
+#define SEGMENT1	140000.0f
+#define SEGMENT2	152000.0f
+#define SEGMENT3	30000.0f
 
 #define A SEGMENT2
 #define B SEGMENT1
-#define H 105000.0	//  105.0   // height start first segement
+#define H 105000.0f	//  105.0   // height start first segement
 #define E SEGMENT3	
+
+#define Amm mm1000_t(A)
+#define Bmm mm1000_t(B)
+#define Hmm mm1000_t(H)
+#define Emm mm1000_t(E)
 
 // c		=> tryangle A/B/C
 // s		=> diagonale x/y 
@@ -52,16 +57,18 @@
 #define SEGMENT2PARALLEL
 
 // pos 1.300ms => 55 Grad (from xy pane)
-#define DEFAULTANGLE (CENTER_LIMIT / MsForPI * M_PI)
-#define ANGLE1OFFSET (DEFAULTANGLE - (55*M_PI/180))
+#define DEFAULTANGLE float(CENTER_LIMIT / MsForPI * MY_PI)
+#define ANGLE1OFFSET float(DEFAULTANGLE - (55*M_PI/180))
 
 // pos 1.300ms => 80 Grad (between A and B)
-#define ANGLE1TOANGLE2 (M_PI/2)
-#define ANGLE2OFFSET ((DEFAULTANGLE - ((80-55+20)*M_PI/180)) - ANGLE1TOANGLE2)
+#define ANGLE1TOANGLE2 float(M_PI/2)
+#define ANGLE2OFFSET float((DEFAULTANGLE - ((80-55+20)*M_PI/180)) - ANGLE1TOANGLE2)
 
 #define ANGLE3OFFSET DEFAULTANGLE
 
 #define SPLITMOVEDIST	10000
+
+#define MY_PI	float(M_PI)
 
 /////////////////////////////////////////////////////////
 
@@ -73,14 +80,14 @@ CMyMotionControl::CMyMotionControl()
 
 inline float FromMs(mm1000_t ms,axis_t /* axis */)
 {
-	return ms / MsForPI * M_PI;
+	return float(ms / MsForPI * MY_PI);
 }
 
 /////////////////////////////////////////////////////////
 
 inline mm1000_t ToMs(float angle,axis_t /* axis */)
 {
-	return (mm1000_t)(angle * MsForPI / M_PI);
+	return (mm1000_t)(angle * MsForPI / MY_PI);
 }
 
 /////////////////////////////////////////////////////////
@@ -94,14 +101,14 @@ inline bool IsFloatOK(float val)
 
 inline int ToGRADRound(float a)
 {
-	return (int) (a*180.0 / M_PI + 0.5);
+	return (int) (a*180.0 / MY_PI + 0.5);
 }
 
 /////////////////////////////////////////////////////////
 
 inline float ToAngleRAD(mm1000_t angle)
 {
-	return angle / 1000.0 / 180.0 * M_PI;
+	return float(angle / 1000.0 / 180.0 * MY_PI);
 }
 
 /////////////////////////////////////////////////////////
@@ -181,15 +188,15 @@ bool CMyMotionControl::ToAngle(const mm1000_t pos[NUM_AXIS], float angle[NUM_AXI
 	float c2 = (s - E)*(s - E) + (z - H)*(z - H);
 	float c = sqrt(c2);										// triangle for first and second segment
 
-	float alpha1 = (s - E) == 0.0 ? 0.0 : atan((z - H) / (s - E));	// "base" angle of c
-	float alpha = acos((B*B + c2 - A*A) / (2.0*B*c));
-	float gamma = acos((A*A + B*B - c2) / (2.0*A*B));
+	float alpha1 = (s - E) == 0.0 ? 0.0f : atanf((z - H) / (s - E));	// "base" angle of c
+	float alpha = acosf((B*B + c2 - A*A) / (2.0f*B*c));
+	float gamma = acosf((A*A + B*B - c2) / (2.0f*A*B));
 
 	angle[0] = (alpha + alpha1);
 	angle[1] = gamma;
 	if (x==0.0)
 	{
-		angle[2] = y>0.0 ? (M_PI/2.0) : -(M_PI/2.0);
+		angle[2] = y>0.0 ? float(MY_PI/2.0) : - float(MY_PI/2.0);
 	}
 	else
 	{
@@ -197,9 +204,9 @@ bool CMyMotionControl::ToAngle(const mm1000_t pos[NUM_AXIS], float angle[NUM_AXI
 	}
 	if (x<0.0) 
 	{
-		angle[2] = M_PI + angle[2];
-		if (angle[2] >= M_PI)
-			angle[2] -= 2.0 * M_PI;
+		angle[2] = MY_PI + angle[2];
+		if (angle[2] >= MY_PI)
+			angle[2] -= 2.0 * MY_PI;
 	}
 
 	if (!IsFloatOK(angle[0]))	return false;
@@ -213,18 +220,18 @@ bool CMyMotionControl::ToAngle(const mm1000_t pos[NUM_AXIS], float angle[NUM_AXI
 
 bool CMyMotionControl::FromAngle(const float angle[NUM_AXIS], mm1000_t dest[NUM_AXIS])
 {
-	float c2 = (A*A + B*B - 2.0 * A * B * cos(angle[1]));
-	float c = sqrt(c2);
+	float c2 = (A*A + B*B - 2.0f * A * B * cosf(angle[1]));
+	float c = sqrtf(c2);
 
-	float alpha = acos((c2 + B*B - A*A) / (2.0*B*c));
+	float alpha = acosf((c2 + B*B - A*A) / (2.0f*B*c));
 	float alpha1 = angle[0] - alpha;
 
-	float s = cos(alpha1) * c + E;
+	float s = cosf(alpha1) * c + E;
 
-	dest[0] = CMm1000::Cast(cos(angle[2]) * s);
-	dest[1] = CMm1000::Cast(sin(angle[2]) * s);
+	dest[0] = CMm1000::Cast(cosf(angle[2]) * s);
+	dest[1] = CMm1000::Cast(sinf(angle[2]) * s);
 
-	dest[2] = CMm1000::Cast(H + sin(alpha1)*c);
+	dest[2] = CMm1000::Cast(H + sinf(alpha1)*c);
 
 	return true;
 }
@@ -254,7 +261,7 @@ void CMyMotionControl::MoveAbs(const mm1000_t to[NUM_AXIS], feedrate_t feedrate)
 
 	if (maxdist > splitdist)
 	{
-		movecount = maxdist / splitdist;
+		movecount = (unsigned short)(maxdist / splitdist);
 		if ((maxdist % splitdist) != 0)
 			movecount++;
 	}
@@ -353,28 +360,28 @@ void CMyMotionControl::PrintInfo()
 
 mm1000_t ToMM(float mm)
 {
-	return mm * 1000;
+	return mm1000_t(mm * 1000);
 }
 
 void CMyMotionControl::UnitTest()
 {
-	Test(1000, 200000, H, true);		// max dist
-	Test(0, 200000, H, true);		// max dist
-	Test(-1000, 200000, H, true);		// max dist
+	Test(1000, 200000, Hmm, true);		// max dist
+	Test(0, 200000, Hmm, true);		// max dist
+	Test(-1000, 200000, Hmm, true);		// max dist
 
-	Test(1000, -200000, H, true);		// max dist
-	Test(0, -200000, H, true);		// max dist
-	Test(-1000, -200000, H, true);		// max dist
+	Test(1000, -200000, Hmm, true);		// max dist
+	Test(0, -200000, Hmm, true);		// max dist
+	Test(-1000, -200000, Hmm, true);		// max dist
 
 
-	Test(SEGMENT1 + SEGMENT2 + SEGMENT3, 0, H, true);		// max dist
-	Test(SEGMENT2 + SEGMENT3, 0, SEGMENT1 + H, true);		// max height
+	Test(mm1000_t(SEGMENT1 + SEGMENT2 + SEGMENT3), 0, Hmm, true);		// max dist
+	Test(mm1000_t(SEGMENT2 + SEGMENT3), 0, mm1000_t(SEGMENT1) + Hmm, true);		// max height
 
-	Test(SEGMENT2 + SEGMENT3, 0, SEGMENT1 + H, true);		// max height
+	Test(mm1000_t(SEGMENT2 + SEGMENT3), 0, mm1000_t(SEGMENT1) + Hmm, true);		// max height
 
-	Test(200000, 0, H, true);
-	Test(200000, 100000, H, true);
-	Test(100000, 100000, H, true);
+	Test(200000, 0, Hmm, true);
+	Test(200000, 100000, Hmm, true);
+	Test(100000, 100000, Hmm, true);
 
 	// test for H = 105
 
@@ -386,7 +393,7 @@ void CMyMotionControl::UnitTest()
 	{
 		for (x = 0; x <= A + B + E + 1000; x += step)
 		{
-			Test(x, 0, H, true);
+			Test(x, 0, Hmm, true);
 		}
 	}
 
@@ -410,8 +417,8 @@ void CMyMotionControl::UnitTest()
 	Test(300000, 150000, 200000, true);
 }
 
-inline float ToRAD(float a)   { return (a*180.0 / M_PI); }
-inline float ToMM(mm1000_t a) { return (a / 1000.0); }
+inline float ToRAD(float a)   { return (a*180.0f / MY_PI); }
+inline float ToMM(mm1000_t a) { return (a / 1000.0f); }
 inline bool CompareMaxDiff(mm1000_t a, mm1000_t b, mm1000_t diff = 10) { return  (abs(a - b) >= diff); }
 
 #define FORMAT_MM "%.0f:%.0f:%.0f"

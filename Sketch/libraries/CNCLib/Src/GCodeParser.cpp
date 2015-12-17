@@ -187,7 +187,7 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 	if (IsModifyParam(paramNo))
 	{
 		if (convertUnits)
-			return CMm1000::ConvertFrom(25.4*_modalstate.Parameter[paramNo - 1]);
+			return CMm1000::ConvertFrom(25.4f*_modalstate.Parameter[paramNo - 1]);
 
 		return CMm1000::ConvertFrom(_modalstate.Parameter[paramNo - 1]);
 	}

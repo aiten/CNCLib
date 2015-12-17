@@ -29,7 +29,7 @@ bool CMatrix4x4Test::CompareMatrix(CMatrix4x4<float>& m, float in1[][4], float o
 
 		for (unsigned char n = 0; n < 4; n++)
 		{
-			if (!CMatrix4x4<float>::IsEqual(out1[i][n], v2[n], 0.00001))
+			if (!CMatrix4x4<float>::IsEqual(out1[i][n], v2[n], 0.00001f))
 			{
 				return false;
 			}
@@ -64,7 +64,7 @@ void CMatrix4x4Test::RunTest()
 			Assert("Error Compare\n");
 		}
 
-		T1.Set(3, 3, 1.2345);
+		T1.Set(3, 3, 1.2345f);
 
 		if (T1 == T2)
 		{
@@ -111,14 +111,14 @@ void CMatrix4x4Test::RunTest()
 
 	//////////////////////////////////////////
 	{
-		CMatrix4x4<float> T1; T1.InitDenavitHartenberg1Rot(M_PI / 4);
-		CMatrix4x4<float> T2; T2.InitDenavitHartenberg1Rot(-M_PI / 4);
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg1Rot(float(M_PI_4));
+		CMatrix4x4<float> T2; T2.InitDenavitHartenberg1Rot(-float(M_PI_4));
 
 		CMatrix4x4<float> T3 = T1*T2;
 		CMatrix4x4<float> T4 = T4.InitDenavitHartenbergNOP();
 
 
-		if (!T3.IsEqual(T4, 0.0000001))
+		if (!T3.IsEqual(T4, 0.0000001f))
 		{
 			Assert("Error InitDenavitHartenberg1Rot\n");
 		}
@@ -126,7 +126,7 @@ void CMatrix4x4Test::RunTest()
 
 	//////////////////////////////////////////
 	{
-		const float angle = M_PI / 5;
+		const float angle = float(M_PI / 5);
 		CMatrix4x4<float> T1; T1.InitDenavitHartenberg1Rot(angle);
 
 		float in1[][4] = {
@@ -151,14 +151,14 @@ void CMatrix4x4Test::RunTest()
 	//////////////////////////////////////////
 
 	{
-		CMatrix4x4<float> T1; T1.InitDenavitHartenberg2Trans(M_PI / 4);
-		CMatrix4x4<float> T2; T2.InitDenavitHartenberg2Trans(-M_PI / 4);
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg2Trans(float(M_PI_4));
+		CMatrix4x4<float> T2; T2.InitDenavitHartenberg2Trans(-float(M_PI_4));
 
 		CMatrix4x4<float> T3 = T1*T2;
 		CMatrix4x4<float> T4 = T4.InitDenavitHartenbergNOP();
 
 
-		if (!T3.IsEqual(T4, 0.0000001))
+		if (!T3.IsEqual(T4, 0.0000001f))
 		{
 			Assert("Error InitDenavitHartenberg2Trans\n");
 		}
@@ -166,7 +166,7 @@ void CMatrix4x4Test::RunTest()
 
 	//////////////////////////////////////////
 	{
-		const float d = M_PI / 5;
+		const float d = float(M_PI / 5);
 		CMatrix4x4<float> T1; T1.InitDenavitHartenberg2Trans(d);
 
 		float in1[][4] = {
@@ -191,14 +191,14 @@ void CMatrix4x4Test::RunTest()
 	//////////////////////////////////////////
 
 	{
-		CMatrix4x4<float> T1; T1.InitDenavitHartenberg3Trans(M_PI / 4);
-		CMatrix4x4<float> T2; T2.InitDenavitHartenberg3Trans(-M_PI / 4);
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg3Trans(float(M_PI_4));
+		CMatrix4x4<float> T2; T2.InitDenavitHartenberg3Trans(-float(M_PI_4));
 
 		CMatrix4x4<float> T3 = T1*T2;
 		CMatrix4x4<float> T4 = T4.InitDenavitHartenbergNOP();
 
 
-		if (!T3.IsEqual(T4, 0.0000001))
+		if (!T3.IsEqual(T4, 0.0000001f))
 		{
 			Assert("Error InitDenavitHartenberg3Trans\n");
 		}
@@ -206,7 +206,7 @@ void CMatrix4x4Test::RunTest()
 
 	//////////////////////////////////////////
 	{
-		const float a = M_PI / 5;
+		const float a = float(M_PI / 5);
 		CMatrix4x4<float> T1; T1.InitDenavitHartenberg3Trans(a);
 
 		float in1[][4] = {
@@ -231,14 +231,14 @@ void CMatrix4x4Test::RunTest()
 	//////////////////////////////////////////
 
 	{
-		CMatrix4x4<float> T1; T1.InitDenavitHartenberg4Rot(M_PI / 4);
-		CMatrix4x4<float> T2; T2.InitDenavitHartenberg4Rot(-M_PI / 4);
+		CMatrix4x4<float> T1; T1.InitDenavitHartenberg4Rot(float(M_PI_4));
+		CMatrix4x4<float> T2; T2.InitDenavitHartenberg4Rot(-float(M_PI_4));
 
 		CMatrix4x4<float> T3 = T1*T2;
 		CMatrix4x4<float> T4 = T4.InitDenavitHartenbergNOP();
 
 
-		if (!T3.IsEqual(T4, 0.0000001))
+		if (!T3.IsEqual(T4, 0.0000001f))
 		{
 			Assert("Error InitDenavitHartenberg4Rot\n");
 		}
@@ -246,7 +246,7 @@ void CMatrix4x4Test::RunTest()
 
 	//////////////////////////////////////////
 	{
-		const float angle = M_PI / 5;
+		const float angle = float(M_PI / 5);
 		CMatrix4x4<float> T1; T1.InitDenavitHartenberg4Rot(angle);
 
 		float in1[][4] = {
@@ -271,10 +271,10 @@ void CMatrix4x4Test::RunTest()
 	//////////////////////////////////////////
 
 	{
-		float alpha = M_PI / 5;
-		float theta = M_PI / 6;
-		float a = 1.123456;
-		float d = 4.321;
+		float alpha = float(M_PI / 5);
+		float theta = float(M_PI / 6);
+		float a = 1.123456f;
+		float d = 4.321f;
 
 		CMatrix4x4<float> T1; T1.InitDenavitHartenberg(a, alpha, theta, d);
 		CMatrix4x4<float> T2; T2.InitDenavitHartenbergInverse(a, alpha, theta, d);
@@ -283,7 +283,7 @@ void CMatrix4x4Test::RunTest()
 		CMatrix4x4<float> T4 = T4.InitDenavitHartenbergNOP();
 
 
-		if (!T3.IsEqual(T4, 0.00001))
+		if (!T3.IsEqual(T4, 0.00001f))
 		{
 			Assert("Error InitDenavitHartenberg\n");
 		}
@@ -292,10 +292,10 @@ void CMatrix4x4Test::RunTest()
 	//////////////////////////////////////////
 
 	{
-		float alpha = M_PI / 5;
-		float theta = M_PI / 6;
-		float a = 1.123456;
-		float d = 4.321;
+		float alpha = float(M_PI / 5);
+		float theta = float(M_PI / 6);
+		float a = 1.123456f;
+		float d = 4.321f;
 
 		CMatrix4x4<float> T10; T10.InitDenavitHartenberg(a, alpha, d, theta);
 
@@ -306,7 +306,7 @@ void CMatrix4x4Test::RunTest()
 
 		CMatrix4x4<float> T5 = T1*T2*T3*T4;
 
-		if (!T5.IsEqual(T10, 0.00001))
+		if (!T5.IsEqual(T10, 0.00001f))
 		{
 			Assert("Error InitDenavitHartenberg sequenze\n");
 		}
@@ -315,24 +315,24 @@ void CMatrix4x4Test::RunTest()
 	//////////////////////////////////////////
 
 	{
-		float alpha = M_PI / 2;
+		float alpha = float(M_PI_2);
 		float v[4] = { 1, 1, 1, 1 };
 
 
 		CMatrix4x4<float> T10; T10.InitDenavitHartenberg(0, alpha, 0, 0);
 		CMatrix4x4<float> T4; T4.InitDenavitHartenberg4Rot(alpha);
 
-		if (!T4.IsEqual(T10, 0.00001))
+		if (!T4.IsEqual(T10, 0.00001f))
 		{
 			Assert("Error InitDenavitHartenberg alpha\n");
 		}
 
 		T10.Mul(v, out);
 
-		if (!CMatrix4x4<float>::IsEqual(out[0], 1, 0.001) ||
-			!CMatrix4x4<float>::IsEqual(out[1], -1, 0.001) ||
-			!CMatrix4x4<float>::IsEqual(out[2], 1, 0.001) ||
-			!CMatrix4x4<float>::IsEqual(out[3], 1, 0.001))
+		if (!CMatrix4x4<float>::IsEqual(out[0], 1, 0.001f) ||
+			!CMatrix4x4<float>::IsEqual(out[1], -1, 0.001f) ||
+			!CMatrix4x4<float>::IsEqual(out[2], 1, 0.001f) ||
+			!CMatrix4x4<float>::IsEqual(out[3], 1, 0.001f))
 		{
 			Assert("Error InitDenavitHartenberg rotate a\n");
 		}

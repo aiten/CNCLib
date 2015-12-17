@@ -64,7 +64,7 @@ void CLinearLookupTest::RunTest()
 
 	Assert(float(0.1 - (0.09 * 1 / 10)), lf.Lookup(11));
 	Assert(float(0.1 - (0.09 * 5 / 10)), lf.Lookup(15));
-	Assert(float(0.1 - (0.09 * 9 / 10)), lf.Lookup(19), 0.001);
+	Assert(float(0.1 - (0.09 * 9 / 10)), lf.Lookup(19), 0.001f);
 
 	// test max size (255)
 
