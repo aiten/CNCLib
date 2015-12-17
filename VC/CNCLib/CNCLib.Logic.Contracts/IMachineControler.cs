@@ -18,15 +18,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Framework.Tools.Pattern;
 
-namespace CNCLib.Wpf
+namespace CNCLib.Logic.Contracts
 {
-	public class Global : Singleton<Global>
+	public interface IMachineControler : IDisposable
 	{
-		public CNCLib.Logic.Contracts.DTO.Machine Machine { get; set; }
+		IEnumerable<DTO.Machine> GetMachines();
+		DTO.Machine GetMachine(int id);
+		DTO.Machine DefaultMachine();
+		void Delete(DTO.Machine m);
+		int StoreMachine(DTO.Machine m);
+		int GetDetaultMachine();
+		void SetDetaultMachine(int defaultMachineID);
 	}
 }

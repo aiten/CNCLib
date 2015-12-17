@@ -22,14 +22,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CNCLib.Logic.DTO
+namespace CNCLib.Repository.Contracts.Entities
 {
 	public class Machine
 	{
 		public int MachineID { get; set; }
 		public string ComPort { get; set; }
-		public int BaudRate { get; set; }
 		public int Axis { get; set; }
+		public int BaudRate { get; set; }
 		public string Name { get; set; }
 		public decimal SizeX { get; set; }
 		public decimal SizeY { get; set; }
@@ -50,8 +50,7 @@ namespace CNCLib.Logic.DTO
 		public bool Coolant { get; set; }
 		public bool Rotate { get; set; }
 
-		public IEnumerable<MachineCommand> MachineCommands { get; set; }
-		public IEnumerable<MachineInitCommand> MachineInitCommands { get; set; }
-
+		public virtual ICollection<MachineCommand> MachineCommands { get; set; }
+		public virtual ICollection<MachineInitCommand> MachineInitCommands { get; set; }
 	}
 }

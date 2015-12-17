@@ -103,9 +103,17 @@
       <Project>{8568383e-054d-4882-8d6a-b956684cfaae}</Project>
       <Name>Framework.Wpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">
+      <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>
+      <Name>CNCLib.Logic.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic\CNCLib.Logic.csproj">
       <Project>{36b9838b-493f-4bac-a8d3-35298c4ffdc7}</Project>
       <Name>CNCLib.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj">
+      <Project>{0ecc8284-505b-43cc-9df9-ac5d5eef786a}</Project>
+      <Name>CNCLib.Repository.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Repository\CNCLib.Repository.csproj">
       <Project>{d689cd99-a022-4f38-8ae1-a269c82a729c}</Project>

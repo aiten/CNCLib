@@ -21,9 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using CNCLib.Repository;
-using CNCLib.Repository.Interfaces;
+using CNCLib.Repository.Contracts;
 using Framework.Tools;
 using System.Data.Entity;
 using Framework.EF;
@@ -32,15 +30,15 @@ namespace CNCLib.Repository
 {
     public class ConfigurationRepository : RepositoryBase, IConfigurationRepository
 	{
-		public Entities.Configuration Get(string group, string  name)
+		public Contracts.Entities.Configuration Get(string group, string  name)
         {
 			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
 			{
-				return uow.Query<Entities.Configuration>().Where((c) => c.Group == group && c.Name == name).FirstOrDefault();
+				return uow.Query<Contracts.Entities.Configuration>().Where((c) => c.Group == group && c.Name == name).FirstOrDefault();
 			}
         }
 
-		public void Delete(Entities.Configuration configuration)
+		public void Delete(Contracts.Entities.Configuration configuration)
         {
 			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
 			{
@@ -62,7 +60,7 @@ namespace CNCLib.Repository
         }
 
 
-		public void Save(Entities.Configuration configuration)
+		public void Save(Contracts.Entities.Configuration configuration)
 		{
 			// search und update machine
 
@@ -72,9 +70,9 @@ namespace CNCLib.Repository
 				{
 					uow.BeginTransaction();
 
-					var cInDb = uow.Query<Entities.Configuration>().Where((c) => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefault();
+					var cInDb = uow.Query<Contracts.Entities.Configuration>().Where((c) => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefault();
 
-					if (cInDb == default(Entities.Configuration))
+					if (cInDb == default(Contracts.Entities.Configuration))
 					{
 						// add new
 

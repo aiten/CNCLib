@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Repository.Entities;
+using CNCLib.Repository.Contracts.Entities;
 using CNCLib.Repository.Mappings;
 using System;
 using System.Collections.Generic;

@@ -22,7 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CNCLib.Logic.DTO
+namespace CNCLib.Repository.Contracts.Entities
 {
 	public class MachineCommand
 	{

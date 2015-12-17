@@ -91,10 +91,10 @@
 
 ////////////////////////////////////////////////////////
 
-#define X_STEPSPERMM 3200.0
-#define Y_STEPSPERMM 3200.0
-#define Z_STEPSPERMM 3200.0
-#define A_STEPSPERMM 3200.0
+#define X_STEPSPERMM (3200.0/5)
+#define Y_STEPSPERMM (3200.0/5)
+#define Z_STEPSPERMM (3200.0/5)
+#define A_STEPSPERMM (3200.0/5)
 
 inline mm1000_t CNCShieldToMm1000(axis_t axis, sdist_t val)
 {

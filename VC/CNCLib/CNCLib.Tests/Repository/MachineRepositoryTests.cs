@@ -20,13 +20,13 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CNCLib.Repository.Context;
 using CNCLib.Repository;
-using CNCLib.Repository.Entities;
+using CNCLib.Repository.Contracts.Entities;
 using System.Threading.Tasks;
 using Framework.EF;
 using System.Collections.Generic;
 using System.Linq;
 using Framework.Tools;
-using CNCLib.Repository.Interfaces;
+using CNCLib.Repository.Contracts;
 
 namespace CNCLib.Tests.Repository
 {

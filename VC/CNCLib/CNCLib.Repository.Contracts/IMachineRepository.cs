@@ -19,28 +19,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CNCLib.Repository.Entities
+namespace CNCLib.Repository.Contracts
 {
-	public class Configuration
+	public interface IMachineRepository: IDisposable
 	{
-		public string Group { get; set; }
-		public string Name { get; set; }
-		public string Type { get; set; }
-		public string Value { get; set; }
-
-		public Configuration()
-		{
-		}
-		public Configuration(string group, string name, object value)
-		{
-			Name = name;
-			Group = group;
-			Value = value.ToString();
-
-			Type = value.GetType().ToString();
-		}
+		Entities.Machine[] GetMachines();
+		Entities.Machine GetMachine(int id);
+		void Delete(Entities.Machine m);
+		Entities.MachineCommand[] GetMachineCommands(int machineID);
+		Entities.MachineInitCommand[] GetMachineInitCommands(int machineID);
+		int StoreMachine(Entities.Machine machine);
 	}
 }

@@ -23,9 +23,9 @@ using System.Linq;
 using System.Windows;
 using Framework.Logic;
 using CNCLib.Repository;
-using CNCLib.Repository.Interfaces;
+using CNCLib.Repository.Contracts;
 using CNCLib.Logic;
-using CNCLib.Logic.Interfaces;
+using CNCLib.Logic.Contracts;
 using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.Start

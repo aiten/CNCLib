@@ -20,24 +20,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Framework.Tools;
 using Framework.Logic;
-using CNCLib.Repository.Interfaces;
-using CNCLib.Repository;
-using CNCLib.Repository.Entities;
+using CNCLib.Repository.Contracts;
 using CNCLib.Logic.Converter;
+using CNCLib.Logic.Contracts;
+using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.Logic
 {
-    public class MachineControler : ControlerBase, Interfaces.IMachineControler
+    public class MachineControler : ControlerBase, IMachineControler
 	{
-		public IEnumerable<DTO.Machine> GetMachines()
+		public IEnumerable<Machine> GetMachines()
 		{
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
 				var machines = rep.GetMachines();
-				List<DTO.Machine> l = new List<DTO.Machine>();
+				List<Machine> l = new List<Machine>();
 				foreach (var m in machines)
 				{
 					l.Add(m.Convert());
@@ -46,7 +45,7 @@ namespace CNCLib.Logic
 			}
 		}
 
-        public DTO.Machine GetMachine(int id)
+        public Machine GetMachine(int id)
         {
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
@@ -58,9 +57,9 @@ namespace CNCLib.Logic
 				return dto;
 			}
         }
-		public DTO.Machine DefaultMachine()
+		public Machine DefaultMachine()
 		{
-			var dto = new DTO.Machine()
+			var dto = new Machine()
 			{
 				Name = "New",
 				ComPort = "comX",
@@ -82,21 +81,21 @@ namespace CNCLib.Logic
 				Spindle = true,
 				Coolant = true,
 				Rotate = true,
-				MachineCommands = new DTO.MachineCommand[0],
-				MachineInitCommands = new DTO.MachineInitCommand[0]
+				MachineCommands = new MachineCommand[0],
+				MachineInitCommands = new MachineInitCommand[0]
 			};
             return dto;
 		}
 
-		public void Delete(DTO.Machine m)
+		public void Delete(Machine m)
         {
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
-				rep.Delete(m.NewCloneProperties<Repository.Entities.Machine, DTO.Machine>());
+				rep.Delete(m.NewCloneProperties<Repository.Contracts.Entities.Machine, Machine>());
 			}
         }
 
-		public int StoreMachine(DTO.Machine m)
+		public int StoreMachine(Machine m)
 		{
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
@@ -113,7 +112,7 @@ namespace CNCLib.Logic
 			{
 				var config = rep.Get("Environment", "DefaultMachineID");
 
-				if (config == default(Repository.Entities.Configuration))
+				if (config == default(Repository.Contracts.Entities.Configuration))
 					return -1;
 
 				return int.Parse(config.Value);
@@ -123,7 +122,7 @@ namespace CNCLib.Logic
 		{
 			using (var rep = RepositoryFactory.Create<IConfigurationRepository>())
 			{
-				rep.Save(new Repository.Entities.Configuration() { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
+				rep.Save(new Repository.Contracts.Entities.Configuration() { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
 			}
 		}
 

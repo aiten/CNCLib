@@ -22,12 +22,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CNCLib.Repository.Interfaces
+namespace CNCLib.Logic.Contracts.DTO
 {
-	public interface IConfigurationRepository : IDisposable
+	public class MachineInitCommand
 	{
-		Entities.Configuration Get(string group, string name);
-		void Delete(Entities.Configuration configuration);
-		void Save(Entities.Configuration configuration);
+		public int MachineInitCommandID { get; set; }
+		public int SeqNo { get; set; }
+		public string CommandString { get; set; }
+		public int MachineID { get; set; }
+		public virtual Machine Machine { get; set; }
 	}
 }

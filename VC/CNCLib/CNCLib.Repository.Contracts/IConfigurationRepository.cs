@@ -22,13 +22,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CNCLib.Logic.DTO
+namespace CNCLib.Repository.Contracts
 {
-	public class Configuration
+	public interface IConfigurationRepository : IDisposable
 	{
-		public string Group { get; set; }
-		public string Name { get; set; }
-		public string Type { get; set; }
-		public string Value { get; set; }
+		Entities.Configuration Get(string group, string name);
+		void Delete(Entities.Configuration configuration);
+		void Save(Entities.Configuration configuration);
 	}
 }

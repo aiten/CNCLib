@@ -31,9 +31,8 @@ using Framework.Tools;
 using System.Linq.Expressions;
 using CNCLib.Logic;
 using CNCLib.GCode;
-using System.Threading;
-using CNCLib.Logic.Interfaces;
 using CNCLib.Wpf.Models;
+using CNCLib.Logic.Contracts;
 
 namespace CNCLib.Wpf.ViewModels
 {

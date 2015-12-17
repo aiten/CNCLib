@@ -18,7 +18,7 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CNCLib.Logic.Interfaces;
+using CNCLib.Logic.Contracts;
 using CNCLib.Logic;
 using Framework.EF;
 using Framework.Wpf;
@@ -30,7 +30,7 @@ using Framework.Tools.Pattern;
 using Framework.Wpf.ViewModels;
 using CNCLib.Wpf.ViewModels;
 using CNCLib;
-using CNCLib.Logic.DTO;
+using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.Tests.Wpf
 {

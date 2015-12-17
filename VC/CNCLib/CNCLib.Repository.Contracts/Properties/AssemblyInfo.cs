@@ -16,20 +16,16 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
-namespace CNCLib.Repository.Entities
-{
-	public class MachineInitCommand
-	{
-		public int MachineInitCommandID { get; set; }
-		public int SeqNo { get; set; }
-		public string CommandString { get; set; }
-		public int MachineID { get; set; }
-		public virtual Machine Machine { get; set; }
-	}
-}
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+[assembly: AssemblyTitle("CNCLib.Repository.Contracts")]
+[assembly: AssemblyProduct("CNCLib.Repository.Contracts")]
+
+// The following GUID is for the ID of the typelib if this project is exposed to COM
+[assembly: Guid("0ecc8284-505b-43cc-9df9-ac5d5eef786a")]
+
