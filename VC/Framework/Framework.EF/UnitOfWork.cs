@@ -17,6 +17,7 @@
 */
 
 using Framework.EF;
+using Framework.Tools.Pattern;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -28,21 +29,16 @@ namespace Framework.EF
 {
 	public class UnitOfWork<T> : IUnitOfWork where T : DbContext, new()
 	{
-		private DbContext _context;
+		private T _context;
 
-		private DbContext Context 
+		public T Context
 		{
-			  get 
-			  {
-				  if (_context == null)
-					  _context = new T();
-					return _context;
-			  }
-		}
-
-		IQueryBuilder<To> IUnitOfWork.Query<To>()
-		{
-			return new QueryBuilder<To>(Context);
+			get
+			{
+				if (_context == null)
+					_context = new T();
+				return _context;
+			}
 		}
 
 		public void MarkDirty(object entity)

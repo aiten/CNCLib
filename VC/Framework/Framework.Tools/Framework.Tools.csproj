@@ -52,6 +52,7 @@
     <Compile Include="Pattern\FactoryType2Type.cs" />
     <Compile Include="ObjectConverter.cs" />
     <Compile Include="Pattern\FactoryType2Obj.cs" />
+    <Compile Include="Pattern\IUnitOfWork.cs" />
     <Compile Include="TraceStream.cs" />
     <Compile Include="Pattern\Singleton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

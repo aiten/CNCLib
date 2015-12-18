@@ -18,11 +18,10 @@
 
 using Framework.EF;
 using CNCLib.Repository.Context;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
@@ -31,6 +30,11 @@ namespace CNCLib.Repository
 		static public IUnitOfWork Create()
 		{
 			return new UnitOfWork<CNCLibContext>();
+		}
+
+		static public UnitOfWork<CNCLibContext> CreateAndCast()
+		{
+			return (UnitOfWork<CNCLibContext>)Create();
 		}
 	}
 }

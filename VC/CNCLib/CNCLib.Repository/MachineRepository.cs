@@ -27,6 +27,7 @@ using Framework.Tools;
 using System.Data.Entity;
 using Framework.EF;
 using CNCLib.Repository.Contracts;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
@@ -34,20 +35,20 @@ namespace CNCLib.Repository
 	{
 		public Contracts.Entities.Machine[] GetMachines()
 		{
-			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
+			using (var uow = UnitOfWorkFactory.CreateAndCast())
 			{
-				return uow.Query<Contracts.Entities.Machine>().
+				return uow.Context.Machines.
 					Include((d) => d.MachineCommands).
 					Include((d) => d.MachineInitCommands).
-					ToList().ToArray();
+					ToArray();
 			}
 		}
 
 		public Contracts.Entities.Machine GetMachine(int id)
         {
-			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
+			using (var uow = UnitOfWorkFactory.CreateAndCast())
 			{
-				return uow.Query<Contracts.Entities.Machine>().
+				return uow.Context.Machines.
 					Where((m) => m.MachineID == id).
 					Include((d) => d.MachineCommands).
 					Include((d) => d.MachineInitCommands).
@@ -57,7 +58,7 @@ namespace CNCLib.Repository
 
 		public void Delete(Contracts.Entities.Machine m)
         {
-			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
+			using (var uow = UnitOfWorkFactory.CreateAndCast())
 			{
 				try
 				{
@@ -82,21 +83,21 @@ namespace CNCLib.Repository
 
 		public Contracts.Entities.MachineCommand[] GetMachineCommands(int machineID)
 		{
-			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
+			using (var uow = UnitOfWorkFactory.CreateAndCast())
 			{
-				return uow.Query<CNCLib.Repository.Contracts.Entities.MachineCommand>().
+				return uow.Context.MachineCommands.
 					Where(c => c.MachineID == machineID).
-					ToList().ToArray();
+					ToArray();
 			}
 		}
 
 		public Contracts.Entities.MachineInitCommand[] GetMachineInitCommands(int machineID)
 		{
-			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
+			using (var uow = UnitOfWorkFactory.CreateAndCast())
 			{
-				return uow.Query<CNCLib.Repository.Contracts.Entities.MachineInitCommand>().
+				return uow.Context.MachineInitCommands.
 					Where(c => c.MachineID == machineID).
-					ToList().ToArray();
+					ToArray();
 			}
 		}
 
@@ -104,7 +105,7 @@ namespace CNCLib.Repository
 		{
 			// search und update machine
 
-			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
+			using (var uow = UnitOfWorkFactory.CreateAndCast())
 			{
 				int id = machine.MachineID;
 
@@ -112,7 +113,7 @@ namespace CNCLib.Repository
 				{
 					uow.BeginTransaction();
 
-					var machineInDb = uow.Query<Contracts.Entities.Machine>().
+					var machineInDb = uow.Context.Machines.
 						Where((m) => m.MachineID == id).
 						Include((d) => d.MachineCommands).
 						Include((d) => d.MachineInitCommands).

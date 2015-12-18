@@ -25,6 +25,7 @@ using CNCLib.Repository.Contracts;
 using Framework.Tools;
 using System.Data.Entity;
 using Framework.EF;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
@@ -32,15 +33,15 @@ namespace CNCLib.Repository
 	{
 		public Contracts.Entities.Configuration Get(string group, string  name)
         {
-			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
+			using (var uow = UnitOfWorkFactory.CreateAndCast())
 			{
-				return uow.Query<Contracts.Entities.Configuration>().Where((c) => c.Group == group && c.Name == name).FirstOrDefault();
+				return uow.Context.Configurations.Where((c) => c.Group == group && c.Name == name).FirstOrDefault();
 			}
         }
 
 		public void Delete(Contracts.Entities.Configuration configuration)
         {
-			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
+			using (var uow = UnitOfWorkFactory.CreateAndCast())
 			{
 				try
 				{
@@ -64,13 +65,13 @@ namespace CNCLib.Repository
 		{
 			// search und update machine
 
-			using (IUnitOfWork uow = UnitOfWorkFactory.Create())
+			using (var uow = UnitOfWorkFactory.CreateAndCast())
 			{
 				try
 				{
 					uow.BeginTransaction();
 
-					var cInDb = uow.Query<Contracts.Entities.Configuration>().Where((c) => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefault();
+					var cInDb = uow.Context.Configurations.Where((c) => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefault();
 
 					if (cInDb == default(Contracts.Entities.Configuration))
 					{

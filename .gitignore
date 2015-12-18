@@ -1,5 +1,6 @@
 .svn
 *.suo
+*.bak
 *.sdf
 Debug/
 ipch/
