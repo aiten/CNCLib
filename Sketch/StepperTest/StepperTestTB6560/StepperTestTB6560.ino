@@ -23,10 +23,6 @@ void setup()
   Stepper.Init();
   CHAL::pinMode(13, OUTPUT);
 
-//  Stepper.SetStepMode(0,CStepper::FullStep);
-  Stepper.SetStepMode(0,CStepper::HalfStep);
-  Stepper.SetStepMode(1,CStepper::HalfStep);
-
   Stepper.SetUsual(DEFSPEED);
 
   Stepper.SetLimitMax(0, 100000);
@@ -37,11 +33,11 @@ void setup()
   Stepper.SetEnableTimeout(1, 1);
   Stepper.SetEnableTimeout(2, 1);
 
+#ifdef REFMOVE
+
   int dist2 = Stepper.GetLimitMax(2) - Stepper.GetLimitMin(2);
   int dist0 = Stepper.GetLimitMax(0) - Stepper.GetLimitMin(0);
   int dist1 = Stepper.GetLimitMax(1) - Stepper.GetLimitMin(1);
-
-#ifdef REFMOVE
 
   Stepper.MoveReference(2, -min(dist2, 10000), 10, 100, Stepper.ToReferenceId(2, true), Stepper.GetDefaultVmax() / 4);
   Stepper.MoveReference(0, -min(dist0, 10000), 12, 100, Stepper.ToReferenceId(0, true), Stepper.GetDefaultVmax() / 4);
