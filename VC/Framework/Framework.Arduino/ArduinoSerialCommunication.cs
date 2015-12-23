@@ -162,41 +162,45 @@ namespace Framework.Arduino
 		/// </summary>
         public void Disconnect()
         {
+            Disconnect(true);
+        }
+
+        private void Disconnect(bool join)
+        {
             Aborted = true;
             _continue = false;
 
-            if (_readThread != null)
+            if (join && _readThread != null)
                 _readThread.Join();
             _readThread = null;
 
-			if (_writeThread != null)
-			{
-				while (!_writeThread.Join(100))
-				{
-					_autoEvent.Set();
-				}
-			}
-			_writeThread = null;
+            if (join && _writeThread != null)
+            {
+                while (!_writeThread.Join(100))
+                {
+                    _autoEvent.Set();
+                }
+            }
+            _writeThread = null;
 
             if (_serialPort != null)
             {
-				try
-				{
-					_serialPort.Close();
-				}
-				catch (IOException)
-				{
-					// ignore exception
-				}
+                try
+                {
+                    _serialPort.Close();
+                }
+                catch (IOException)
+                {
+                    // ignore exception
+                }
                 _serialPort.Dispose();
             }
-            _serialPort = null;
         }
 
-		/// <summary>
-		/// Start "Abort", but leave communication opend. but do not send and command.
-		/// All pending commands are removed
-		/// </summary>
+        /// <summary>
+        /// Start "Abort", but leave communication opend. but do not send and command.
+        /// All pending commands are removed
+        /// </summary>
         public void AbortCommands()
         {
 			bool wasempty;
@@ -393,9 +397,9 @@ namespace Framework.Arduino
 
 		private  void SendCommand(Command cmd)
         {
-			// SendCommands is called in the async Write thread 
+            // SendCommands is called in the async Write thread 
 
-			ArduinoSerialCommunicationEventArgs eventarg = new ArduinoSerialCommunicationEventArgs(null,cmd);
+            ArduinoSerialCommunicationEventArgs eventarg = new ArduinoSerialCommunicationEventArgs(null,cmd);
 			OnCommandSending(eventarg);
 
 			if (eventarg.Abort || Aborted) return;
@@ -421,12 +425,29 @@ namespace Framework.Arduino
 				 string firstX = commandtext.Substring(0, firstSize);
 				 commandtext = commandtext.Substring(firstSize);
 				Trace.WriteTrace("Write",firstX);
-				_serialPort.Write(firstX);
-				Thread.Sleep(250);
+                try
+                {
+                    _serialPort.Write(firstX);
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteTraceFlush("Write-Exception", e.Message);
+                    throw e;
+                }
+                Thread.Sleep(250);
 			 }
 
 			Trace.WriteTrace("Write", commandtext + @"\n");
-			_serialPort.WriteLine(commandtext);
+
+            try
+            {
+                _serialPort.WriteLine(commandtext);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteTraceFlush("Write-Exception", e.Message);
+                throw e;
+            }
 
             eventarg = new ArduinoSerialCommunicationEventArgs(null,cmd);
 			OnCommandSent(eventarg);
@@ -530,32 +551,48 @@ namespace Framework.Arduino
 					message = _serialPort.ReadLine();
 				}
 				catch (TimeoutException) { }
-				catch (InvalidOperationException)
+				catch (InvalidOperationException e)
 				{
-					Trace.WriteTrace("Read","InvalidOperationException");
-				}
-				catch (IOException)
+					Trace.WriteTraceFlush("ReadInvalidOperationException", e.Message);
+                    Disconnect(false);
+                }
+				catch (IOException e)
 				{
-					Trace.WriteTrace("Read","IOException:");
+					Trace.WriteTraceFlush("ReadIOException", e.Message);
 				}
+                catch (Exception e)
+                {
+                    Trace.WriteTraceFlush("ReadException", e.Message);
+                }
 
-				if (!string.IsNullOrEmpty(message))
+                Command cmd = null;
+                lock (_pendingCommands)
+                {
+                    if (_pendingCommands.Count > 0)
+                        cmd = _pendingCommands[0];
+                }
+
+                if (string.IsNullOrEmpty(message))
+                {
+                    if (cmd==null)
+                    {
+                        // timeout and no queue
+                        Framework.Tools.WinAPIWrapper.AllowIdle();
+                    }
+                }
+                else
                 {
 					Trace.WriteTrace("Read",message.Replace("\n",@"\n").Replace("\r", @"\r").Replace("\t", @"\t"));
 
 					bool endcommand = false;
-                    Command cmd = null;
-                    lock(_pendingCommands)
-                    {
-                        if (_pendingCommands.Count  > 0)
-                            cmd = _pendingCommands[0];
-                    }
 
                     message = message.Trim();
 
 					if (cmd != null)
 					{
-						string result = cmd.ResultText;
+                        Framework.Tools.WinAPIWrapper.KeepAlive();
+
+                        string result = cmd.ResultText;
 						if (string.IsNullOrEmpty(result))
 							result = message;
 						else
@@ -563,7 +600,8 @@ namespace Framework.Arduino
 
 						cmd.ResultText = result;
 						cmd.ReplyReceivedTime = DateTime.Now;
-					}
+                    }
+
 
 					OnReplyReceived(new ArduinoSerialCommunicationEventArgs(message,cmd));
 
