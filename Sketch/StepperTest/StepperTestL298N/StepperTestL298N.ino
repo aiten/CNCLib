@@ -5,6 +5,8 @@
 //#error Only Works with Arduino:__AVR_ATmega328P__
 #endif
 
+#ifdef REFMOVE
+
 CStepperL298N Stepper;
 
 //////////////////////////////////////////////////////////////////////
@@ -19,9 +21,8 @@ void setup()
   Stepper.Init();
   CHAL::pinMode(13, OUTPUT);
 
-//  Stepper.SetStepMode(0,CStepper::FullStep);
-  Stepper.SetStepMode(0,CStepper::HalfStep);
-  Stepper.SetStepMode(1,CStepper::HalfStep);
+  Stepper.SetFullStepMode(0,false);
+  Stepper.SetFullStepMode(1,false);
 
   Stepper.SetEnableTimeout(0, 1);
   Stepper.SetEnableTimeout(1, 1);
@@ -32,11 +33,11 @@ void setup()
   Stepper.SetLimitMax(1, 4000);
   Stepper.SetLimitMax(2, 4000);
 
+#ifdef REFMOVE
+
   int dist2 = Stepper.GetLimitMax(2) - Stepper.GetLimitMin(2);
   int dist0 = Stepper.GetLimitMax(0) - Stepper.GetLimitMin(0);
   int dist1 = Stepper.GetLimitMax(1) - Stepper.GetLimitMin(1);
-
-#ifdef REFMOVE
 
   Stepper.MoveReference(2, -min(dist2, 10000), 10, 100, Stepper.ToReferenceId(2, true), Stepper.GetDefaultVmax() / 4);
   Stepper.MoveReference(0, -min(dist0, 10000), 12, 100, Stepper.ToReferenceId(0, true), Stepper.GetDefaultVmax() / 4);
