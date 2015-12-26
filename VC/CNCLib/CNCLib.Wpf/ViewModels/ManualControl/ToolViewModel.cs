@@ -65,9 +65,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		}
 
 		public void SendInfo() { AsyncRunCommand(() => { Com.SendCommand("?"); }); }
-		public void SendAbort() { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumAfterAbort(); Com.SendCommand("!"); }); }
-		public void SendResurrect() { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumAfterAbort(); Com.SendCommand("!!!"); }); }
-		public void ClearQueue() { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumAfterAbort(); }); }
+		public void SendAbort() { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.SendCommand("!"); }); }
+		public void SendResurrect() { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.SendCommand("!!!"); }); }
+		public void ClearQueue() { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); }); }
 		public void SendCNCLibCommand(string command) { AsyncRunCommand(() => { Com.SendCommand(command); }); }
 		public void SendM03SpindelOn() { AsyncRunCommand(() => { Com.SendCommand("m3"); }); }
 		public void SendM05SpindelOff() { AsyncRunCommand(() => { Com.SendCommand("m5"); }); }

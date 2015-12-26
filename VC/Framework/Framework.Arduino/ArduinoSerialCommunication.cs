@@ -219,7 +219,7 @@ namespace Framework.Arduino
 		/// <summary>
 		/// ResumeAfterAbort must be called after AbortCommands to continune. 
 		/// </summary>
-		public void ResumAfterAbort()
+		public void ResumeAfterAbort()
 		{
 			if (!Aborted) return;
 
@@ -431,7 +431,7 @@ namespace Framework.Arduino
                 }
                 catch (Exception e)
                 {
-                    Trace.WriteTraceFlush("Write-Exception", e.Message);
+                    Trace.WriteTraceFlush("WriteException", e.Message);
                     throw e;
                 }
                 Thread.Sleep(250);
@@ -445,7 +445,7 @@ namespace Framework.Arduino
             }
             catch (Exception e)
             {
-                Trace.WriteTraceFlush("Write-Exception", e.Message);
+                Trace.WriteTraceFlush("WriteException", e.Message);
                 throw e;
             }
 
