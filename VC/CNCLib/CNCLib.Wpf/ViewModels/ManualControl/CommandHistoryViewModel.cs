@@ -58,7 +58,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 			foreach (ArduinoSerialCommunication.Command rc in Com.CommandHistoryCopy)
 			{
-				results.Add(new SentCNCCommand() { CommandDate = rc.SentTime, CommandText = rc.CommandText, Result = rc.ResultText });
+				results.Add(new SentCNCCommand() { CommandDate = rc.SentTime.Value, CommandText = rc.CommandText, Result = rc.ResultText });
 
 			}
 			CommandHistoryCollection = results;

@@ -41,11 +41,11 @@ namespace Framework.Arduino
 		[Flags]
 		public enum EReplyType
 		{
-            NoReply=1,
-			ReplyOK=2,
-			ReplyError=4,
-			ReplyInfo=8,
-			ReplyUnkown=16
+            NoReply=0,              // no reply received (other options must not be set)
+			ReplyOK=1,
+			ReplyError=2,
+			ReplyInfo=4,
+			ReplyUnkown=8
 		};
 
 		List<Command> _pendingCommands = new List<Command>();
@@ -82,11 +82,11 @@ namespace Framework.Arduino
 
 		public class Command
 		{
-            public DateTime SentTime { get; set; }
+            public DateTime? SentTime { get; set; }
             public String CommandText { get; set; }
 
             public EReplyType ReplyType { get; set; }
-            public DateTime ReplyReceivedTime { get; set; }
+            public DateTime? ReplyReceivedTime { get; set; }
 
             public String ResultText { get; set; }
 		}
@@ -167,6 +167,7 @@ namespace Framework.Arduino
 
         private void Disconnect(bool join)
         {
+            Trace.WriteTraceFlush("Disconnecting",join.ToString());
             Aborted = true;
             _continue = false;
 
@@ -195,6 +196,7 @@ namespace Framework.Arduino
                 }
                 _serialPort.Dispose();
             }
+            Trace.WriteTraceFlush("Disconnected", join.ToString());
         }
 
         /// <summary>
@@ -443,10 +445,15 @@ namespace Framework.Arduino
             {
                 _serialPort.WriteLine(commandtext);
             }
+            catch (InvalidOperationException e)
+            {
+                Trace.WriteTraceFlush("WriteInvalidOperationException", e.Message);
+                Disconnect(false);
+            }
             catch (Exception e)
             {
                 Trace.WriteTraceFlush("WriteException", e.Message);
-                throw e;
+                Disconnect(false);
             }
 
             eventarg = new ArduinoSerialCommunicationEventArgs(null,cmd);
@@ -493,15 +500,15 @@ namespace Framework.Arduino
                 {
 					foreach (Command cmd in _pendingCommands)
                     {
-                        if (cmd.SentTime == new DateTime())
-                        {
-                            nextcmd = cmd;
-                            break;
-                        }
-                        else
+                        if (cmd.SentTime.HasValue)
                         {
                             queuedcmdlenght += cmd.CommandText.Length;
                             queuedcmdlenght += 2; // CRLF
+                        }
+                        else
+                        {
+                            nextcmd = cmd;
+                            break;
                         }
                     }
                 }
@@ -525,7 +532,7 @@ namespace Framework.Arduino
 
 						lock (_pendingCommands)
 						{
-							if (_pendingCommands.Count > 0 && _pendingCommands[0].SentTime != new DateTime())
+							if (_pendingCommands.Count > 0 && _pendingCommands[0].SentTime.HasValue)
 								_autoEvent.Reset();			// expect an answer
 						}
 

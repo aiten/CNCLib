@@ -22,8 +22,10 @@ namespace CNCLib.Wpf.Views
 		public MainWindow()
 		{
 			InitializeComponent();
-
-			Com.Trace.EnableTrace(System.IO.Path.GetTempPath() + @"CNCLibTrace.txt");
+            DateTime now = DateTime.Now;
+			Com.Trace.EnableTrace(string.Format(@"{0}CNCLibTrace_{1:D4}{2:D2}{3:D2}_{4:D2}{5:D2}{6:D2}.txt",
+                    System.IO.Path.GetTempPath(),
+                    now.Year,now.Month,now.Day,now.Hour,now.Minute,now.Second));
 		}
 		private Framework.Arduino.ArduinoSerialCommunication Com
 		{
