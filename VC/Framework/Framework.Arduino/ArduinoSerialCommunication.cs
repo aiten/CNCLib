@@ -251,7 +251,7 @@ namespace Framework.Arduino
 
             // Set the read/write timeouts
             _serialPort.ReadTimeout = 500;
-            _serialPort.WriteTimeout = 5000;
+            _serialPort.WriteTimeout = 500;
         }
 
 		public void Dispose()
@@ -401,65 +401,75 @@ namespace Framework.Arduino
         {
             // SendCommands is called in the async Write thread 
 
-            ArduinoSerialCommunicationEventArgs eventarg = new ArduinoSerialCommunicationEventArgs(null,cmd);
-			OnCommandSending(eventarg);
+            ArduinoSerialCommunicationEventArgs eventarg = new ArduinoSerialCommunicationEventArgs(null, cmd);
+            OnCommandSending(eventarg);
 
-			if (eventarg.Abort || Aborted) return;
+            if (eventarg.Abort || Aborted) return;
 
-			lock (_commands)
-			{
-				if (_commands.Count > MaxCommandHistoryCount)
-				{
-					_commands.RemoveAt(0);
-				}
-				_commands.Add(cmd);
-			}
-
-             cmd.SentTime = DateTime.Now;
-
-			 string commandtext = cmd.CommandText;
-
-			 while (commandtext.Length > ArduinoBuffersize-1)
-			 {
-				 // give "control" class the chance to read from arduino to control buffer
-
-				 int firstSize = ArduinoBuffersize * 2 / 3;
-				 string firstX = commandtext.Substring(0, firstSize);
-				 commandtext = commandtext.Substring(firstSize);
-				Trace.WriteTrace("Write",firstX);
-                try
+            lock (_commands)
+            {
+                if (_commands.Count > MaxCommandHistoryCount)
                 {
-                    _serialPort.Write(firstX);
+                    _commands.RemoveAt(0);
                 }
-                catch (Exception e)
-                {
-                    Trace.WriteTraceFlush("WriteException", e.Message);
-                    throw e;
-                }
-                Thread.Sleep(250);
-			 }
+                _commands.Add(cmd);
+            }
 
-			Trace.WriteTrace("Write", commandtext + @"\n");
+            string commandtext = cmd.CommandText;
 
+            while (commandtext.Length > ArduinoBuffersize - 1)
+            {
+                // give "control" class the chance to read from arduino to control buffer
+
+                int firstSize = ArduinoBuffersize * 2 / 3;
+                string firstX = commandtext.Substring(0, firstSize);
+                commandtext = commandtext.Substring(firstSize);
+
+                if (!WriteSerial(firstX))
+                    return;
+
+               Thread.Sleep(250);
+            }
+
+            if (WriteSerial(commandtext))
+            {
+                cmd.SentTime = DateTime.Now;
+                eventarg = new ArduinoSerialCommunicationEventArgs(null, cmd);
+                OnCommandSent(eventarg);
+            }
+        }
+
+        private bool WriteSerial(string commandtext)
+        {
+            Trace.WriteTrace("Write", commandtext + @"\n");
             try
             {
                 _serialPort.WriteLine(commandtext);
+                return true;
             }
             catch (InvalidOperationException e)
             {
-                Trace.WriteTraceFlush("WriteInvalidOperationException", e.Message);
+                Trace.WriteTraceFlush("WriteInvalidOperationException", commandtext + @"\n => " + e.Message);
                 Disconnect(false);
+            }
+            catch (IOException e)
+            {
+                Trace.WriteTraceFlush("WriteIOException", commandtext + @"\n => " + e.Message);
+                ErrorSerial();
             }
             catch (Exception e)
             {
-                Trace.WriteTraceFlush("WriteException", e.Message);
-                Disconnect(false);
+                Trace.WriteTraceFlush("WriteException", commandtext + @"\n => " + e.GetType().ToString() + @" " + e.Message);
             }
-
-            eventarg = new ArduinoSerialCommunicationEventArgs(null,cmd);
-			OnCommandSent(eventarg);
+            return false;
         }
 
+        private void ErrorSerial()
+        {
+            _serialPort.Close();
+            _serialPort.DtrEnable = false;
+            _serialPort.Open();
+        }
 
         private void WaitUntilNoPendingCommands()
 		{
@@ -548,28 +558,44 @@ namespace Framework.Arduino
 
         private void Read()
         {
-			// Aync read thread to read 8command) results from the arduino
+            // Aync read thread to read 8command) results from the arduino
+
+            var sb = new StringBuilder();
 
 			while (_continue)
             {
                 string message=null;
-				try
-				{
-					message = _serialPort.ReadLine();
+                char ch;
+                try
+                {
+                    ch = (char) _serialPort.ReadChar();
+                    if (ch == '\n')
+                    {
+                        message = sb.ToString();
+                        sb.Clear();
+                    }
+                    else
+                    {
+                        sb.Append(ch);
+                    }
+                    // have problem with :
+                    //					message = _serialPort.ReadLine();
 				}
 				catch (TimeoutException) { }
 				catch (InvalidOperationException e)
 				{
 					Trace.WriteTraceFlush("ReadInvalidOperationException", e.Message);
-                    Disconnect(false);
+                    Thread.Sleep(250);
                 }
-				catch (IOException e)
+                catch (IOException e)
 				{
 					Trace.WriteTraceFlush("ReadIOException", e.Message);
-				}
+                    Thread.Sleep(250);
+                }
                 catch (Exception e)
                 {
                     Trace.WriteTraceFlush("ReadException", e.Message);
+                    Thread.Sleep(250);
                 }
 
                 Command cmd = null;
