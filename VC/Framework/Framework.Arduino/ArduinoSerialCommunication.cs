@@ -251,7 +251,7 @@ namespace Framework.Arduino
 
             // Set the read/write timeouts
             _serialPort.ReadTimeout = 500;
-            _serialPort.WriteTimeout = 500;
+            _serialPort.WriteTimeout = 5000;
         }
 
 		public void Dispose()
