@@ -22,22 +22,35 @@ namespace CNCLib.GCode.Load
 {
 	public class LoadInfo
 	{
-		public LoadInfo() { SwapXY = false; ScaleX = 1; ScaleY = 1; OfsX = 0; OfsY = 0; AutoScale = true; AutoScaleKeepRatio = true; AutoScaleBorderDistX = 0.5m; AutoScaleBorderDistY = 0.5m; }
-
 		public String FileName { get; set; }
-		public bool SwapXY { get; set; }
-		public decimal ScaleX { get; set; }
+        public bool SwapXY { get; set; } = false;
+        public decimal ScaleX { get; set; } = 1;
 		public decimal ScaleY { get; set; }
-		public decimal OfsX { get; set; }
-		public decimal OfsY { get; set; }
+        public decimal OfsX { get; set; } = 0;
+        public decimal OfsY { get; set; } = 0;
 
-		public bool AutoScale { get; set; }
-		public bool AutoScaleKeepRatio { get; set; }
+        public bool AutoScale { get; set; } = true;
+        public bool AutoScaleKeepRatio { get; set; } = true;
 
-		public decimal AutoScaleSizeX { get; set; }
-		public decimal AutoScaleSizeY { get; set; }
+        public decimal AutoScaleSizeX { get; set; } = 0;
+        public decimal AutoScaleSizeY { get; set; } = 0;
 
-		public decimal AutoScaleBorderDistX { get; set; }
-		public decimal AutoScaleBorderDistY { get; set; }
-	}
+        public decimal AutoScaleBorderDistX { get; set; } = 0.5m;
+		public decimal AutoScaleBorderDistY { get; set; } = 0.5m;
+
+        public enum PenType
+        {
+            ZMove,
+            CommandString
+        };
+
+        public PenType PenMoveType { get; set; } = PenType.CommandString;
+
+        public bool PenPosInParameter { get; set; } = true;
+        public decimal PenPosUp { get; set; } = 1m;
+        public decimal PenPosDown { get; set; } = -0.5m;
+
+        public string PenDownCommandString { get; set; } = "m106";
+        public string PenUpCommandString { get; set; } = "m107";
+    }
 }

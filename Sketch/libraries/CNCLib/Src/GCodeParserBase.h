@@ -121,6 +121,9 @@ protected:
 
 		short			SpindleSpeed;			// > 0 CW, < 0 CCW
 
+		unsigned char	LaserPower;
+		unsigned char	Dummy;
+
 		mm1000_t		G92Pospreset[NUM_AXIS];
 
 		CGCodeParserBase::LastCommandCB LastCommand;
@@ -134,6 +137,7 @@ protected:
 			FeedRatePerUnit = true;
 			ConstantVelocity = true;
 			SpindleSpeed = 1000;
+			LaserPower = 255;
 			G0FeedRate = FEEDRATE_DEFAULT_G0;
 			G1FeedRate = FEEDRATE_DEFAULT_G1;
 			G1MaxFeedRate = FEEDRATE_DEFAULT_MAX_G1;
@@ -248,6 +252,7 @@ protected:
 
 	void CallIOControl(unsigned char io, unsigned short value);
 	void SpindleSpeedCommand();
+	void LaserPowerCommand();
 
 private:
 
@@ -279,6 +284,12 @@ private:
 
 	void M0304Command(bool m3);					// spindle on CW/CCW
 	void M05Command()							{ CallIOControl(CControl::Spindel, 0); } //spindel off
+
+	void M07Command()							{ CallIOControl(CControl::Coolant, CControl::CoolantOn); };
+	void M09Command()							{ CallIOControl(CControl::Coolant, CControl::CoolantOff); };
+
+	void M106Command();							// laser on command
+	void M107Command()							{ CallIOControl(CControl::Laser, 0); }	//laser off
 
 	/////////////////
 

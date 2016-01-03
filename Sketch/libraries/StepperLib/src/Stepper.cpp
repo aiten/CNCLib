@@ -2080,7 +2080,6 @@ bool CStepper::MoveReference(axis_t axis, unsigned char referenceid, bool toMin,
 	if (maxdist == 0)		maxdist = ((GetLimitMax(axis) - GetLimitMin(axis)) * 11) / 10;	// add 10%
 #endif
 
-	if (distToRef == 0)		distToRef = 0;
 	if (distIfRefIsOn == 0)	distIfRefIsOn = maxdist / 8;
 
 	// check diection of move (assume to min)

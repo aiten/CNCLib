@@ -36,9 +36,6 @@ namespace CNCLib.GCode.Load
 		Point3D _minpt;
 		Point3D _maxpt;
 
-		decimal _penDownZ = -0.5m;
-		decimal _penUpZ = 1m;
-
         public LoadInfo LoadOptions  { get; set; }
 
 		private void InitLoad()
@@ -78,7 +75,7 @@ namespace CNCLib.GCode.Load
 				LoadOptions.ScaleX = LoadOptions.AutoScaleSizeX / sizex;
 				LoadOptions.ScaleY = LoadOptions.AutoScaleSizeY / sizey;
 
-				if (LoadOptions.AutoScaleKeepRatio)
+				if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove && LoadOptions.AutoScaleKeepRatio)
 				{
 					LoadOptions.ScaleX =
 					LoadOptions.ScaleY = Math.Min(LoadOptions.ScaleX, LoadOptions.ScaleY);
@@ -91,9 +88,13 @@ namespace CNCLib.GCode.Load
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
             {
 				commands.AddCommand(new MxxCommand() { GCodeAdd = "m3" });
-				commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#1 = " + _penUpZ.ToString(CultureInfo.InvariantCulture) });
-				commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#2 = " + _penDownZ.ToString(CultureInfo.InvariantCulture) });
-				
+
+                if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove && LoadOptions.PenPosInParameter)
+                {
+                    commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#1 = " + LoadOptions.PenPosUp.ToString(CultureInfo.InvariantCulture) });
+                    commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#2 = " + LoadOptions.PenPosDown.ToString(CultureInfo.InvariantCulture) });
+                }
+                				
 				string line;
                 while ((line = sr.ReadLine()) != null)
                 {
@@ -107,9 +108,7 @@ namespace CNCLib.GCode.Load
 
 				if (!_lastIsPenUp)
 				{
-					Command r;
-					r = new G00Command();
-					r.AddVariableParam('Z', "1");
+                    Command r = LoadPenUp();
 					commands.AddCommand(r);
 				}
 
@@ -155,16 +154,14 @@ namespace CNCLib.GCode.Load
 						{
 							Command r;
 							if (_IsPenUp)
-							{
-								r = new G00Command();
-								r.AddVariableParam('Z', "1");
-							}
-							else
-							{
-								r = new G01Command();
-								r.AddVariableParam('Z', "2");
-							}
-							commands.AddCommand(r);
+                            {
+                                r = LoadPenUp();
+                            }
+                            else
+                            {
+                                r = LoadPenDown();
+                            }
+                            commands.AddCommand(r);
 							_lastIsPenUp = _IsPenUp;
 						}
 
@@ -197,6 +194,51 @@ namespace CNCLib.GCode.Load
             }
 
             return true;
+        }
+
+        private Command LoadPenDown()
+        {
+            Command r;
+            if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
+            {
+                r = new G01Command();
+                if (LoadOptions.PenPosInParameter)
+                {
+                    r.AddVariableParam('Z', "2");
+                }
+                else
+                {
+                    r.AddVariable('Z', LoadOptions.PenPosDown);
+                }
+            }
+            else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
+            {
+                r = new MxxCommand() { GCodeAdd = LoadOptions.PenDownCommandString };
+            }
+
+            return r;
+        }
+
+        private Command LoadPenUp()
+        {
+            Command r;
+            if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
+            {
+                r = new G00Command();
+                if (LoadOptions.PenPosInParameter)
+                {
+                    r.AddVariableParam('Z', "1");
+                }
+                else
+                {
+                    r.AddVariable('Z', LoadOptions.PenPosUp);
+                }
+            }
+            else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
+            {
+                r = new MxxCommand() { GCodeAdd = LoadOptions.PenUpCommandString };
+            }
+            return r;
         }
 
         private Point3D GetSpaceCoordiante(bool isRelativPoint)

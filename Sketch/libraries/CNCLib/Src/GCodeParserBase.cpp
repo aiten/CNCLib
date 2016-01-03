@@ -38,6 +38,7 @@ bool CGCodeParserBase::_exit = false;
 ////////////////////////////////////////////////////////
 
 #define MAXSPINDEL_SPEED	0x7fff
+#define MAXLASER_POWER		0xff
 
 ////////////////////////////////////////////////////////
 
@@ -360,16 +361,19 @@ bool CGCodeParserBase::MCommand(mcode_t mcode)
 {
 	switch (mcode)
 	{
-		case 3:	M0304Command(true); return true;
-		case 4:	M0304Command(false); return true;
-//		case 5:	; return true;
-		case 7:	CallIOControl(CControl::Coolant, CControl::CoolantOn); return true;
-		case 9:	CallIOControl(CControl::Coolant, CControl::CoolantOff); return true;
+		// Spindel
+		case 3:	M0304Command(true);		return true;
+		case 4:	M0304Command(false);	return true;
+		case 5: M05Command();			return true;
 
-		case 106:	CallIOControl(CControl::Laser, CControl::LaserOn); return true;
-		case 107:	CallIOControl(CControl::Laser, CControl::LaserOff); return true;
+		// coolant
+		case 7:	M07Command();		return true;
+		case 9:	M09Command();		return true;
 
-		case 5: M05Command(); return true;
+		// laser
+		case 106:	M106Command();	return true;
+		case 107:	M107Command();	return true;
+
 	}
 	return false;
 }
@@ -530,7 +534,9 @@ void CGCodeParserBase::GetFeedrate(SAxisMove& move)
 
 	if (CheckError()) { return; }
 
-	if (feedrate < FEEDRATE_MIN_ALLOWED)	  feedrate = FEEDRATE_MIN_ALLOWED;
+	feedrate_t minfeedrate = FEEDRATE_MIN_ALLOWED;
+
+	if (feedrate < minfeedrate)				  feedrate = minfeedrate;
 	if (feedrate > _modalstate.G1MaxFeedRate) feedrate = _modalstate.G1MaxFeedRate;
 
 	SetG1FeedRate(feedrate);
@@ -842,6 +848,20 @@ void CGCodeParserBase::SpindleSpeedCommand()
 
 ////////////////////////////////////////////////////////////
 
+void CGCodeParserBase::LaserPowerCommand()
+{
+	_reader->SkipSpaces();
+	unsigned char power = (unsigned char)GetUint32OrParam(MAXLASER_POWER);
+
+#ifndef REDUCED_SIZE
+	if (IsError()) return;
+#endif
+
+	_modalstate.LaserPower = power;
+}
+
+////////////////////////////////////////////////////////////
+
 void CGCodeParserBase::CallIOControl(unsigned char io, unsigned short value)
 {
 	Sync();
@@ -860,6 +880,20 @@ void CGCodeParserBase::M0304Command(bool m3)
 	}
 
 	CallIOControl(CControl::Spindel, m3 ? _modalstate.SpindleSpeed : -_modalstate.SpindleSpeed);
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParserBase::M106Command()
+{
+	char ch = _reader->SkipSpacesToUpper();
+	if (ch == 'S')
+	{
+		_reader->GetNextChar();
+		LaserPowerCommand();
+	}
+
+	CallIOControl(CControl::Laser, _modalstate.LaserPower);
 }
 
 ////////////////////////////////////////////////////////////
