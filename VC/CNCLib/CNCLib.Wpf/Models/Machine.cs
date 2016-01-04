@@ -54,7 +54,8 @@ namespace CNCLib.Wpf.Models
 		public bool SDSupport { get; set; }
 		public bool Spindle { get; set; }
 		public bool Coolant { get; set; }
-		public bool Rotate { get; set; }
+        public bool Laser { get; set; }
+        public bool Rotate { get; set; }
 
 		private ObservableCollection<Models.MachineCommand> _MachineCommands;
 

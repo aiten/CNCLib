@@ -79,7 +79,8 @@ namespace CNCLib.Wpf.ViewModels
 			OnPropertyChanged(() => SDSupport);
 			OnPropertyChanged(() => Spindle);
 			OnPropertyChanged(() => Coolant);
-			OnPropertyChanged(() => Rotate);
+            OnPropertyChanged(() => Laser);
+            OnPropertyChanged(() => Rotate);
 
 			OnPropertyChanged(() => MachineCommands);
 			OnPropertyChanged(() => MachineInitCommands);
@@ -199,7 +200,12 @@ namespace CNCLib.Wpf.ViewModels
 			get { return _currentMachine.Coolant; }
 			set { SetProperty(() => _currentMachine.Coolant == value, () => _currentMachine.Coolant = value); }
 		}
-		public bool Rotate
+        public bool Laser
+        {
+            get { return _currentMachine.Laser; }
+            set { SetProperty(() => _currentMachine.Laser == value, () => _currentMachine.Laser = value); }
+        }
+        public bool Rotate
 		{
 			get { return _currentMachine.Rotate; }
 			set { SetProperty(() => _currentMachine.Rotate == value, () => _currentMachine.Rotate = value); }

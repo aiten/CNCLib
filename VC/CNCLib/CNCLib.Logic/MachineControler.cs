@@ -81,7 +81,8 @@ namespace CNCLib.Logic
 				Spindle = true,
 				Coolant = true,
 				Rotate = true,
-				MachineCommands = new MachineCommand[0],
+                Laser = false,
+                MachineCommands = new MachineCommand[0],
 				MachineInitCommands = new MachineInitCommand[0]
 			};
             return dto;

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="CNCLib.Wpf.MachineView"
-        Title="Machine" Height="576.056" Width="380">
+        Title="Machine" Height="602.056" Width="380">
     <Window.DataContext>
         <vm:MachineViewModel />
     </Window.DataContext>
@@ -17,7 +17,7 @@
             <StackPanel Orientation="Horizontal"/>
         </StackPanel>
 
-        <TabControl Margin="0,0,0,10" Height="449" >
+        <TabControl Margin="0,0,0,10" Height="503" >
             <TabItem Header="Setup">
                 <StackPanel >
                     <StackPanel Orientation="Horizontal">
@@ -79,6 +79,10 @@
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Coolant" Width="150" />
                         <CheckBox Content="Coolant" IsChecked="{Binding Coolant}" VerticalAlignment="Center"    />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Laser" Width="150" />
+                        <CheckBox Content="Laser" IsChecked="{Binding Laser}" VerticalAlignment="Center"    />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Rotate" Width="150" />

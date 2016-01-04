@@ -48,7 +48,8 @@ namespace CNCLib.Repository.Contracts.Entities
 		public bool SDSupport { get; set; }
 		public bool Spindle { get; set; }
 		public bool Coolant { get; set; }
-		public bool Rotate { get; set; }
+        public bool Laser { get; set; }
+        public bool Rotate { get; set; }
 
 		public virtual ICollection<MachineCommand> MachineCommands { get; set; }
 		public virtual ICollection<MachineInitCommand> MachineInitCommands { get; set; }

@@ -53,8 +53,9 @@ namespace CNCLib.Repository.Context
 				SDSupport = true,
 				Spindle = true,
 				Coolant = true,
-				Rotate = true
-			};
+				Rotate = true,
+                Laser = false
+            };
 
 			var kk1000s = new Machine
 			{
@@ -77,13 +78,41 @@ namespace CNCLib.Repository.Context
                 SDSupport = true,
 				Spindle = true,
 				Coolant = true,
-                Rotate = true
-			};
+                Rotate = true,
+                Laser = false
+            };
 
- 			var machines = new List<Machine>
+            var laser = new Machine
+            {
+                Name = "Laser",
+                ComPort = "com13",
+                Axis = 2,
+                SizeX = 400m,
+                SizeY = 380m,
+                SizeZ = 100m,
+                SizeA = 360m,
+                SizeB = 360m,
+                SizeC = 360m,
+                BaudRate = 115200,
+                BufferSize = 63,
+                CommandToUpper = false,
+                ProbeSizeZ = 25m,
+                ProbeDist = 10m,
+                ProbeDistUp = 3m,
+                ProbeFeed = 100m,
+                SDSupport = false,
+                Spindle = false,
+                Coolant = false,
+                Rotate = false,
+                Laser = true
+            };
+
+
+            var machines = new List<Machine>
             {
 				CNCLib,
-				kk1000s
+				kk1000s,
+                laser
             };
 
 			context.Machines.AddRange(machines);
