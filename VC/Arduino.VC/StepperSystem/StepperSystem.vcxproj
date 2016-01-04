@@ -59,6 +59,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Singleton.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\StepperLib.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperA4998_drv8825.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperCNCShield.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperCNCShield_pins.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperL298N.h" />

@@ -225,6 +225,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\DecimalAsInt.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperA4998_drv8825.h">
+      <Filter>StepperLib\Steppers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">

@@ -58,7 +58,7 @@ public:
 
 		CHAL::pinMode(CNCSHIELD_Z_STEP_PIN, OUTPUT);
 		CHAL::pinMode(CNCSHIELD_Z_DIR_PIN, OUTPUT);
-		CHAL::pinMode(CNCSHIELD_Z_MAX_PIN, INPUT_PULLUP);
+		CHAL::pinMode(CNCSHIELD_Z_MIN_PIN, INPUT_PULLUP);
 
 		HALFastdigitalWrite(CNCSHIELD_X_STEP_PIN, CNCSHIELD_PIN_STEP_ON);
 		HALFastdigitalWrite(CNCSHIELD_Y_STEP_PIN, CNCSHIELD_PIN_STEP_ON);
@@ -79,13 +79,7 @@ protected:
 
 	virtual void  SetEnable(axis_t /* axis */, unsigned char level, bool /* force */) override
 	{
-
-#define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,CNCSHIELD_PIN_ENABLE_ON);	else	HALFastdigitalWrite(pin,CNCSHIELD_PIN_ENABLE_OFF);
-
-	SETLEVEL(CNCSHIELD_ENABLE_PIN);
-
-#undef SETLEVEL
-
+		if (level != LevelOff)	HALFastdigitalWrite(CNCSHIELD_ENABLE_PIN,CNCSHIELD_PIN_ENABLE_ON);	else	HALFastdigitalWrite(CNCSHIELD_ENABLE_PIN,CNCSHIELD_PIN_ENABLE_OFF);
 	}
 
 	////////////////////////////////////////////////////////
@@ -97,6 +91,15 @@ protected:
 
 	////////////////////////////////////////////////////////
 
+#if defined(CNCLIB_USE_A4998)
+#define USE_A4998
+#else
+#undef USE_A4998
+#endif
+#include "StepperA4998_DRV8825.h"
+
+	////////////////////////////////////////////////////////
+
 	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) override
 	{
 		// The timing requirements for minimum pulse durations on the STEP pin are different for the two drivers. 
@@ -105,30 +108,12 @@ protected:
 
 		// Step:   LOW to HIGH
 
-#if defined(CNCLIB_USE_A4998)
+		if ((directionUp&(1 << X_AXIS)) != 0) HALFastdigitalWriteNC(CNCSHIELD_X_DIR_PIN, CNCSHIELD_PIN_DIR_OFF); else HALFastdigitalWriteNC(CNCSHIELD_X_DIR_PIN, CNCSHIELD_PIN_DIR_ON);
+		if ((directionUp&(1 << Y_AXIS)) != 0) HALFastdigitalWriteNC(CNCSHIELD_Y_DIR_PIN, CNCSHIELD_PIN_DIR_OFF); else HALFastdigitalWriteNC(CNCSHIELD_Y_DIR_PIN, CNCSHIELD_PIN_DIR_ON);
+		if ((directionUp&(1 << Z_AXIS)) != 0) HALFastdigitalWriteNC(CNCSHIELD_Z_DIR_PIN, CNCSHIELD_PIN_DIR_OFF); else HALFastdigitalWriteNC(CNCSHIELD_Z_DIR_PIN, CNCSHIELD_PIN_DIR_ON);
 
-#define NOPREQUIRED_1()
-#define NOPREQUIRED_2()
-
-#elif defined(__SAM3X8E__)
-
-#define NOPREQUIRED_1()	CHAL::delayMicroseconds(1);
-#define NOPREQUIRED_2()	CHAL::delayMicroseconds(1);
-
-#else //AVR
-
-#define NOPREQUIRED_1()	CHAL::delayMicroseconds0312();
-#define NOPREQUIRED_2()	CHAL::delayMicroseconds0500();
-
-#endif
-
-#define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,CNCSHIELD_PIN_DIR_OFF); else HALFastdigitalWriteNC(dirpin,CNCSHIELD_PIN_DIR_ON);
-
-		SETDIR(X_AXIS, CNCSHIELD_X_DIR_PIN);
-		SETDIR(Y_AXIS, CNCSHIELD_Y_DIR_PIN);
-		SETDIR(Z_AXIS, CNCSHIELD_Z_DIR_PIN);
 #if CNCSHIELD_NUM_AXIS > 3
-		SETDIR(A_AXIS, CNCSHIELD_A_DIR_PIN);
+		if ((directionUp&(1 << A_AXIS)) != 0) HALFastdigitalWriteNC(CNCSHIELD_A_DIR_PIN, CNCSHIELD_PIN_DIR_OFF); else HALFastdigitalWriteNC(CNCSHIELD_A_DIR_PIN, CNCSHIELD_PIN_DIR_ON);
 #endif
 
 		for (unsigned char cnt = 0;; cnt++)
@@ -141,7 +126,7 @@ protected:
 			if (steps[A_AXIS] > cnt) { HALFastdigitalWriteNC(CNCSHIELD_A_STEP_PIN, CNCSHIELD_PIN_STEP_OFF); have = true; }
 #endif
 
-			NOPREQUIRED_1();
+			Delay1();
 
 			if (steps[X_AXIS] > cnt) { HALFastdigitalWriteNC(CNCSHIELD_X_STEP_PIN, CNCSHIELD_PIN_STEP_ON); }
 			if (steps[Y_AXIS] > cnt) { HALFastdigitalWriteNC(CNCSHIELD_Y_STEP_PIN, CNCSHIELD_PIN_STEP_ON); }
@@ -152,12 +137,8 @@ protected:
 
 			if (!have) break;
 
-			NOPREQUIRED_2();
+			Delay2();
 		}
-
-#undef SETDIR
-#undef NOPREQUIRED_1
-#undef NOPREQUIRED_2
 	}
 
 public:

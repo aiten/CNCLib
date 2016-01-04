@@ -104,22 +104,20 @@ protected:
 
 	virtual void  SetEnable(axis_t axis, unsigned char level, bool /* force */) override
 	{
-#define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,RAMPS14_PIN_ENABLE_ON);	else	HALFastdigitalWrite(pin,RAMPS14_PIN_ENABLE_OFF);
 		switch (axis)
 		{
 #ifdef _MSC_VER
 #pragma warning( disable : 4127 )
 #endif
-			case X_AXIS:  SETLEVEL(RAMPS14_X_ENABLE_PIN); break;
-			case Y_AXIS:  SETLEVEL(RAMPS14_Y_ENABLE_PIN); break;
-			case Z_AXIS:  SETLEVEL(RAMPS14_Z_ENABLE_PIN); break;
-			case E0_AXIS: SETLEVEL(RAMPS14_E0_ENABLE_PIN); break;
-			case E1_AXIS: SETLEVEL(RAMPS14_E1_ENABLE_PIN); break;
+			case X_AXIS:  if (level != LevelOff)	HALFastdigitalWrite(RAMPS14_X_ENABLE_PIN, RAMPS14_PIN_ENABLE_ON);	else	HALFastdigitalWrite(RAMPS14_X_ENABLE_PIN, RAMPS14_PIN_ENABLE_OFF); break;
+			case Y_AXIS:  if (level != LevelOff)	HALFastdigitalWrite(RAMPS14_Y_ENABLE_PIN, RAMPS14_PIN_ENABLE_ON);	else	HALFastdigitalWrite(RAMPS14_Y_ENABLE_PIN, RAMPS14_PIN_ENABLE_OFF); break;
+			case Z_AXIS:  if (level != LevelOff)	HALFastdigitalWrite(RAMPS14_Z_ENABLE_PIN, RAMPS14_PIN_ENABLE_ON);	else	HALFastdigitalWrite(RAMPS14_Z_ENABLE_PIN, RAMPS14_PIN_ENABLE_OFF); break;
+			case E0_AXIS: if (level != LevelOff)	HALFastdigitalWrite(RAMPS14_E0_ENABLE_PIN, RAMPS14_PIN_ENABLE_ON);	else	HALFastdigitalWrite(RAMPS14_E0_ENABLE_PIN, RAMPS14_PIN_ENABLE_OFF); break;
+			case E1_AXIS: if (level != LevelOff)	HALFastdigitalWrite(RAMPS14_E1_ENABLE_PIN, RAMPS14_PIN_ENABLE_ON);	else	HALFastdigitalWrite(RAMPS14_E1_ENABLE_PIN, RAMPS14_PIN_ENABLE_OFF); break;
 #ifdef _MSC_VER
 #pragma warning( default : 4127 )
 #endif
 		}
-#undef SETLEVEL
 	}
 
 	////////////////////////////////////////////////////////
@@ -145,6 +143,15 @@ protected:
 
 	////////////////////////////////////////////////////////
 
+	#if defined(RAMPS14_USE_A4998)
+		#define USE_A4998
+	#else
+		#undef USE_A4998
+	#endif
+	#include "StepperA4998_DRV8825.h"
+
+	////////////////////////////////////////////////////////
+	
 	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) override
 	{
 		// The timing requirements for minimum pulse durations on the STEP pin are different for the two drivers. 
@@ -153,30 +160,11 @@ protected:
 
 		// Step:   LOW to HIGH
 
-#if defined(RAMPS14_USE_A4998)
-
-#define NOPREQUIRED_1()
-#define NOPREQUIRED_2()
-
-#elif defined(__SAM3X8E__)
-
-#define NOPREQUIRED_1()	CHAL::delayMicroseconds(1);
-#define NOPREQUIRED_2()	CHAL::delayMicroseconds(1);
-
-#else //AVR
-
-#define NOPREQUIRED_1()	CHAL::delayMicroseconds0312();
-#define NOPREQUIRED_2()	CHAL::delayMicroseconds0500();
-
-#endif
-
-#define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,RAMPS14_PIN_DIR_OFF); else HALFastdigitalWriteNC(dirpin,RAMPS14_PIN_DIR_ON);
-
-		SETDIR(X_AXIS, RAMPS14_X_DIR_PIN);
-		SETDIR(Y_AXIS, RAMPS14_Y_DIR_PIN);
-		SETDIR(Z_AXIS, RAMPS14_Z_DIR_PIN);
-		SETDIR(E0_AXIS, RAMPS14_E0_DIR_PIN);
-		SETDIR(E1_AXIS, RAMPS14_E1_DIR_PIN);
+		if ((directionUp&(1 << X_AXIS)) != 0)  HALFastdigitalWriteNC(RAMPS14_X_DIR_PIN,  RAMPS14_PIN_DIR_OFF); else HALFastdigitalWriteNC(RAMPS14_X_DIR_PIN,  RAMPS14_PIN_DIR_ON);
+		if ((directionUp&(1 << Y_AXIS)) != 0)  HALFastdigitalWriteNC(RAMPS14_Y_DIR_PIN,  RAMPS14_PIN_DIR_OFF); else HALFastdigitalWriteNC(RAMPS14_Y_DIR_PIN,  RAMPS14_PIN_DIR_ON);
+		if ((directionUp&(1 << Z_AXIS)) != 0)  HALFastdigitalWriteNC(RAMPS14_Z_DIR_PIN,  RAMPS14_PIN_DIR_OFF); else HALFastdigitalWriteNC(RAMPS14_Z_DIR_PIN,  RAMPS14_PIN_DIR_ON);
+		if ((directionUp&(1 << E0_AXIS)) != 0) HALFastdigitalWriteNC(RAMPS14_E0_DIR_PIN, RAMPS14_PIN_DIR_OFF); else HALFastdigitalWriteNC(RAMPS14_E0_DIR_PIN, RAMPS14_PIN_DIR_ON);
+		if ((directionUp&(1 << E1_AXIS)) != 0) HALFastdigitalWriteNC(RAMPS14_E1_DIR_PIN, RAMPS14_PIN_DIR_OFF); else HALFastdigitalWriteNC(RAMPS14_E1_DIR_PIN, RAMPS14_PIN_DIR_ON);
 
 		for (unsigned char cnt = 0;; cnt++)
 		{
@@ -187,7 +175,7 @@ protected:
 			if (steps[E0_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_E0_STEP_PIN, RAMPS14_PIN_STEP_OFF); have = true; }
 			if (steps[E1_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_E1_STEP_PIN, RAMPS14_PIN_STEP_OFF); have = true; }
 
-			NOPREQUIRED_1();
+			Delay1();
 
 			if (steps[X_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_X_STEP_PIN, RAMPS14_PIN_STEP_ON); }
 			if (steps[Y_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_Y_STEP_PIN, RAMPS14_PIN_STEP_ON); }
@@ -197,13 +185,8 @@ protected:
 
 			if (!have) break;
 
-			NOPREQUIRED_2();
+			Delay2();
 		}
-
-#undef SETDIR
-#undef NOPREQUIRED_1
-#undef NOPREQUIRED_2
-
 	}
 
 public:

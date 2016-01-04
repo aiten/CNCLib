@@ -103,32 +103,30 @@ protected:
 
 	////////////////////////////////////////////////////////
 
+#if defined(__SAM3X8E__)
+
+static void Delay1() ALWAYSINLINE { CHAL::delayMicroseconds(2); }
+static void Delay2() ALWAYSINLINE { CHAL::delayMicroseconds(2); }
+
+#else //AVR
+
+static void Delay1() ALWAYSINLINE { CHAL::delayMicroseconds(1); }
+static void Delay2() ALWAYSINLINE { CHAL::delayMicroseconds(1); }
+
+#endif
+
+	////////////////////////////////////////////////////////
+
 	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) override
 	{
 		// Step:   LOW to HIGH
 		// PULS must be at least 1ms
 		// DIRCHANGE must be at least 5ms
 
-#if defined(__SAM3X8E__)
-
-#define NOPREQUIRED_1()	CHAL::delayMicroseconds(2);
-#define NOPREQUIRED_2()	CHAL::delayMicroseconds(2);
-
-#else //AVR
-
-#define NOPREQUIRED_1()	CHAL::delayMicroseconds(1);
-#define NOPREQUIRED_2()	CHAL::delayMicroseconds(1);
-
-#endif
-
-#define SETDIR(a,dirpin)		if ((directionUp&(1<<a)) != 0) HALFastdigitalWriteNC(dirpin,MASH6050S_PIN_DIR_OFF); else HALFastdigitalWriteNC(dirpin,MASH6050S_PIN_DIR_ON);
-
-		SETDIR(X_AXIS, MASH6050S_X_DIR_PIN);
-		SETDIR(Y_AXIS, MASH6050S_Y_DIR_PIN);
-		SETDIR(Z_AXIS, MASH6050S_Z_DIR_PIN);
-		SETDIR(A_AXIS, MASH6050S_C_DIR_PIN);
-
-#undef SETDIR
+		if ((directionUp&(1 << X_AXIS)) != 0) HALFastdigitalWriteNC(MASH6050S_X_DIR_PIN, MASH6050S_PIN_DIR_OFF); else HALFastdigitalWriteNC(MASH6050S_X_DIR_PIN, MASH6050S_PIN_DIR_ON);
+		if ((directionUp&(1 << Y_AXIS)) != 0) HALFastdigitalWriteNC(MASH6050S_Y_DIR_PIN, MASH6050S_PIN_DIR_OFF); else HALFastdigitalWriteNC(MASH6050S_Y_DIR_PIN, MASH6050S_PIN_DIR_ON);
+		if ((directionUp&(1 << Z_AXIS)) != 0) HALFastdigitalWriteNC(MASH6050S_Z_DIR_PIN, MASH6050S_PIN_DIR_OFF); else HALFastdigitalWriteNC(MASH6050S_Z_DIR_PIN, MASH6050S_PIN_DIR_ON);
+		if ((directionUp&(1 << A_AXIS)) != 0) HALFastdigitalWriteNC(MASH6050S_C_DIR_PIN, MASH6050S_PIN_DIR_OFF); else HALFastdigitalWriteNC(MASH6050S_C_DIR_PIN, MASH6050S_PIN_DIR_ON);
 
 		if (_lastStepDirection != directionUp)
 		{
@@ -144,7 +142,7 @@ protected:
 			if (steps[Z_AXIS] > cnt) { HALFastdigitalWriteNC(MASH6050S_Z_STEP_PIN, MASH6050S_PIN_STEP_OFF); have = true; }
 			if (steps[A_AXIS] > cnt) { HALFastdigitalWriteNC(MASH6050S_C_STEP_PIN, MASH6050S_PIN_STEP_OFF); have = true; }
 
-			NOPREQUIRED_1();
+			Delay1();
 
 			if (steps[X_AXIS] > cnt) { HALFastdigitalWriteNC(MASH6050S_X_STEP_PIN, MASH6050S_PIN_STEP_ON); }
 			if (steps[Y_AXIS] > cnt) { HALFastdigitalWriteNC(MASH6050S_Y_STEP_PIN, MASH6050S_PIN_STEP_ON); }
@@ -153,11 +151,8 @@ protected:
 
 			if (!have) break;
 
-			NOPREQUIRED_2();
+			Delay2();
 		}
-
-#undef NOPREQUIRED_1
-#undef NOPREQUIRED_2
 	}
 
 public:
