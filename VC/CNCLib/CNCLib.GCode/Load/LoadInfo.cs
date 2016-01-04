@@ -44,7 +44,7 @@ namespace CNCLib.GCode.Load
             CommandString
         };
 
-        public PenType PenMoveType { get; set; } = PenType.CommandString;
+        public PenType PenMoveType { get; set; } = PenType.ZMove;
 
         public bool PenPosInParameter { get; set; } = true;
         public decimal PenPosUp { get; set; } = 1m;

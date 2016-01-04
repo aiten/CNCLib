@@ -75,7 +75,7 @@ namespace CNCLib.GCode.Load
 				LoadOptions.ScaleX = LoadOptions.AutoScaleSizeX / sizex;
 				LoadOptions.ScaleY = LoadOptions.AutoScaleSizeY / sizey;
 
-				if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove && LoadOptions.AutoScaleKeepRatio)
+				if (LoadOptions.AutoScaleKeepRatio)
 				{
 					LoadOptions.ScaleX =
 					LoadOptions.ScaleY = Math.Min(LoadOptions.ScaleX, LoadOptions.ScaleY);
@@ -87,13 +87,16 @@ namespace CNCLib.GCode.Load
 
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
             {
-				commands.AddCommand(new MxxCommand() { GCodeAdd = "m3" });
+				if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
+				{
+					commands.AddCommand(new MxxCommand() { GCodeAdd = "m3" });
 
-                if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove && LoadOptions.PenPosInParameter)
-                {
-                    commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#1 = " + LoadOptions.PenPosUp.ToString(CultureInfo.InvariantCulture) });
-                    commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#2 = " + LoadOptions.PenPosDown.ToString(CultureInfo.InvariantCulture) });
-                }
+					if (LoadOptions.PenPosInParameter)
+					{
+						commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#1 = " + LoadOptions.PenPosUp.ToString(CultureInfo.InvariantCulture) });
+						commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#2 = " + LoadOptions.PenPosDown.ToString(CultureInfo.InvariantCulture) });
+					}
+				}
                 				
 				string line;
                 while ((line = sr.ReadLine()) != null)
@@ -112,7 +115,10 @@ namespace CNCLib.GCode.Load
 					commands.AddCommand(r);
 				}
 
-				commands.AddCommand(new MxxCommand() { GCodeAdd = "m5" } );
+				if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
+				{
+					commands.AddCommand(new MxxCommand() { GCodeAdd = "m5" });
+				}
             }
 			commands.UpdateCache();
         }
