@@ -33,8 +33,11 @@
 #include <Steppers/StepperCNCShield_pins.h>
 
 // change some pin definition here:
-//#undef CNCSHIELD_X_STEP_PIN
-//#define CNCSHIELD_X_STEP_PIN 2
+
+// use ZMinRef for analog laser PWM
+#undef CNCSHIELD_Z_MIN_PIN
+#undef CNCSHIELD_Z_MAX_PIN
+#define CNCSHIELD_Z_MIN_PIN 10
 
 #include <Steppers/StepperCNCShield.h>
 
@@ -75,10 +78,10 @@
 #define SPINDEL_MAXSPEED	25000			// analog 255
 #endif
 
-#define LASER_ENABLE_PIN  CNCSHIELD_SPINDEL_ENABLE_PIN
+#define LASER_ENABLE_PIN  11
 #define LASER_DIGITAL_ON  HIGH
 #define LASER_DIGITAL_OFF LOW
-#undef  LASER_ANALOG
+#define  LASER_ANALOG
 
 #undef USECONTROLERFAN
 #ifdef USECONTROLERFAN

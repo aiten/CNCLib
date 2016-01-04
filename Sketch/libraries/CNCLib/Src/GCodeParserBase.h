@@ -252,7 +252,6 @@ protected:
 
 	void CallIOControl(unsigned char io, unsigned short value);
 	void SpindleSpeedCommand();
-	void LaserPowerCommand();
 
 private:
 

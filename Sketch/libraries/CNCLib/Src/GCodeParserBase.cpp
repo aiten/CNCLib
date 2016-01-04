@@ -848,20 +848,6 @@ void CGCodeParserBase::SpindleSpeedCommand()
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParserBase::LaserPowerCommand()
-{
-	_reader->SkipSpaces();
-	unsigned char power = (unsigned char)GetUint32OrParam(MAXLASER_POWER);
-
-#ifndef REDUCED_SIZE
-	if (IsError()) return;
-#endif
-
-	_modalstate.LaserPower = power;
-}
-
-////////////////////////////////////////////////////////////
-
 void CGCodeParserBase::CallIOControl(unsigned char io, unsigned short value)
 {
 	Sync();
@@ -890,7 +876,14 @@ void CGCodeParserBase::M106Command()
 	if (ch == 'S')
 	{
 		_reader->GetNextChar();
-		LaserPowerCommand();
+		_reader->SkipSpaces();
+
+		unsigned char power = (unsigned char)GetUint32OrParam(MAXLASER_POWER);
+
+#ifndef REDUCED_SIZE
+		if (IsError()) return;
+#endif
+		_modalstate.LaserPower = power;
 	}
 
 	CallIOControl(CControl::Laser, _modalstate.LaserPower);
