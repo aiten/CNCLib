@@ -21,8 +21,7 @@
 #include <math.h>
 
 #include "..\MsvcStepper\MsvcStepper.h"
-#include "TestTools.h"
-#include "..\..\..\sketch\MiniCNC\MyControl.h"
+#include "..\..\..\sketch\Laser\MyControl.h"
 
 CSerial Serial;
 
@@ -50,7 +49,7 @@ void setup()
 	MyStepper.DelayOptimization = false;
 	MyStepper.UseSpeedSign = true;
 	MyStepper.CacheSize = 50000;
-	MyStepper.InitTest("MiniCNC.csv");
+	MyStepper.InitTest("LaserCNC.csv");
 	Serial.SetIdle(Idle);
 }
 

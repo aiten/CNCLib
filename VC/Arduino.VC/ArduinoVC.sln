@@ -43,6 +43,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iRobotTest", "iRobotTest\iRobotTest.vcxproj", "{755B74E6-6405-4BA4-AF8E-3C0439E011F0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Laser", "Laser\Laser.vcxproj", "{355BE445-AFED-4EC0-8934-11196FA8F795}"
+	ProjectSection(ProjectDependencies) = postProject
+		{65F3EA50-71B8-4573-8D35-786D97FDFA91} = {65F3EA50-71B8-4573-8D35-786D97FDFA91}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

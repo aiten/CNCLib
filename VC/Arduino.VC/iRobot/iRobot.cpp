@@ -22,7 +22,7 @@
 
 #include "..\MsvcStepper\MsvcStepper.h"
 #include "TestTools.h"
-#include "..\..\..\sketch\MiniCNC\MyControl.h"
+#include "..\..\..\sketch\iRobot\MyControl.h"
 #include <SPI.h>
 #include <SD.h>
 
@@ -53,7 +53,7 @@ void setup()
 	MyStepper.DelayOptimization = false;
 	MyStepper.UseSpeedSign = true;
 	MyStepper.CacheSize = 50000;
-	MyStepper.InitTest("MiniCNC.csv");
+	MyStepper.InitTest("iRobot.csv");
 	Serial.SetIdle(Idle);
 }
 

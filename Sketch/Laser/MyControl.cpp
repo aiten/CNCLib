@@ -153,7 +153,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
       if (level != 0)
       {
 #ifdef LASER_ANALOG
-        _laser.OnLevel((unsigned char) level);
+        _laser.On((unsigned char) level);
 #else        
         _laser.On();
 #endif
@@ -169,7 +169,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 			if (level != 0)
 			{
 #ifdef SPINDEL_ANALOGSPEED
-				_spindel.OnLevel((unsigned char) MulDivU32(abs(level),255, SPINDEL_MAXSPEED));
+				_spindel.On((unsigned char) MulDivU32(abs(level),255, SPINDEL_MAXSPEED));
 #else        
 				_spindel.On();
 #endif

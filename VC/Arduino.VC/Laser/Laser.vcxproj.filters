@@ -22,15 +22,6 @@
     <ClInclude Include="..\..\..\Sketch\Laser\MyControl.h">
       <Filter>Laser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\Laser\Configuration_Laser_L298N.h">
-      <Filter>Laser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\Laser\Configuration_Laser_SMC800.h">
-      <Filter>Laser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\Laser\Configuration_Laser_TB6560.h">
-      <Filter>Laser</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\Laser\Configuration_Laser_CNCShield.h">
       <Filter>Laser</Filter>
     </ClInclude>
