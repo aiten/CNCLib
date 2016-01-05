@@ -32,11 +32,6 @@
 
 ////////////////////////////////////////////////////////
 
-#define CAT(x, y) CAT_(x, y)
-#define CAT_(x, y) x ## y
-
-////////////////////////////////////////////////////////
-
 #define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
 #define CONTROLLERFAN_FAN_PIN	CAT(BOARDNAME,_FET2D9_PIN)
 
