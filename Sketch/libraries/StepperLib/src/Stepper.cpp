@@ -531,6 +531,17 @@ void CStepper::SMovement::InitWait(CStepper*pStepper, mdist_t steps, timer_t tim
 	_state = StateReadyWait;
 }
 
+void CStepper::SMovement::InitIoControl(CStepper*pStepper, unsigned char tool, unsigned short level)
+{
+	//this is no POD because of methode's => *this = SMovement();		
+	memset(this, 0, sizeof(SMovement));	// init with 0
+
+	_pStepper = pStepper;
+	_pod._io._tool = tool;
+	_pod._io._level = level;
+	_state = StateReadyIo;
+}
+
 ////////////////////////////////////////////////////////
 
 mdist_t CStepper::SMovement::GetDistance(axis_t axis)
@@ -1673,7 +1684,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			return false;
 		}
 
-		if (_state == SMovement::StateReadyMove || _state == SMovement::StateReadyWait)
+		if (_state == SMovement::StateReadyMove || _state == SMovement::StateReadyWait || _state == SMovement::StateReadyIo)
 		{
 			// Start of move/wait
 
@@ -1697,6 +1708,12 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 				{
 					pState->_n = _steps;
 				}
+			}
+			if (_state == SMovement::StateReadyIo)
+			{
+				_pStepper->CallEvent(OnIoEvent, (void*)&_pod._io);
+				// pState->_n = _steps; => done by Init()
+				// this will end move immediately
 			}
 		}
 
@@ -2156,6 +2173,16 @@ void CStepper::Wait(unsigned int sec100)
 void CStepper::WaitConditional(unsigned int sec100)
 {
 	QueueWait(mdist_t(sec100), WAITTIMER1VALUE, true);
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::IoControl(unsigned char tool, unsigned short level)
+{
+	WaitUntilCanQueue();
+	_movements._queue.NextTail().InitIoControl(this, tool,level);
+
+	EnqueuAndStartTimer(true);
 }
 
 ////////////////////////////////////////////////////////

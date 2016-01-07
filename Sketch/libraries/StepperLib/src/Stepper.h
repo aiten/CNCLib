@@ -60,7 +60,8 @@ public:
 		OnWaitEvent,
 		OnErrorEvent,
 		OnWarningEvent,
-		OnInfoEvent
+		OnInfoEvent,
+		OnIoEvent
 	};
 
 	#define LevelToProcent(a) (a*100/255)
@@ -99,6 +100,12 @@ public:
 		StepperEvent  _event;
 		void*		  _eventParam;
 		bool Call(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)	{ if (_event) return _event(stepper, _eventParam, eventtype, addinfo); return true; }
+	};
+
+	struct SIoControl
+	{
+		unsigned char _tool;
+		unsigned short _level;
 	};
 
 	/////////////////////
@@ -205,6 +212,7 @@ public:
 	void MoveRelEx(steprate_t vMax, unsigned short axis, sdist_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
 	void Wait(unsigned int sec100);							// unconditional wait
 	void WaitConditional(unsigned int sec100);				// conditional wait 
+	void IoControl(unsigned char tool, unsigned short level);
 
 	bool MoveUntil(TestContinueMove testcontinue, void*param);
 
@@ -393,6 +401,7 @@ protected:
 		{
 			StateReadyMove	= 1,								// ready for travel (not executing)
 			StateReadyWait	= 2,								// ready for none "travel" move (wait move) (not executing)
+			StateReadyIo	= 3,								// ready for none "travel" move (set io) (not executing)
 
 			StateUpAcc		= 11,								// in start phase accelerate
 			StateUpDec		= 12,								// in start phase decelerate to vmax
@@ -455,6 +464,9 @@ protected:
 				timer_t _timer;
 				bool _checkWaitConditional;								// wait only if Stepper.SetConditionalWait is set
 			} _wait;
+
+			struct SIoControl _io;
+
 		} _pod;
 
 		stepperstatic CStepper* _pStepper;						// give access to stepper (not static if multiinstance)  
@@ -486,6 +498,7 @@ protected:
 
 		mdist_t GetSteps()										{ return _steps; }
 
+		bool IsActiveIo() const									{ return _state == StateReadyIo; }							// Ready from Io
 		bool IsActiveWait() const								{ return _state == StateReadyWait || _state == StateWait; }	// Ready from wait or waiting
 		bool IsActiveMove() const								{ return IsReadyForMove() || IsProcessingMove(); }			// Ready from move or moving
 		bool IsReadyForMove() const								{ return _state == StateReadyMove; }						// Ready for move but not started
@@ -499,6 +512,7 @@ protected:
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
 		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkWaitConditional);
+		void InitIoControl(CStepper*pStepper, unsigned char tool, unsigned short level);
 
 		void InitStop(SMovement* mvPrev, timer_t timer, timer_t dectimer);
 

@@ -503,6 +503,11 @@ bool CControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEve
 				CheckIdlePoll(false);
 			}
 			break;
+
+		case CStepper::OnIoEvent:
+			
+			IOControl(((CStepper::SIoControl*) addinfo)->_tool, ((CStepper::SIoControl*) addinfo)->_level);
+			break;
 	}
 	return _oldStepperEvent.Call(stepper, eventtype, addinfo);
 }
