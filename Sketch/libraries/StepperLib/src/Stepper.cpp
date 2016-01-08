@@ -292,10 +292,13 @@ void CStepper::EnqueuAndStartTimer(bool waitfinish)
 
 		for (axis_t i = 0; i<NUM_AXIS; i++)
 		{
+			SetTimeoutAndEnable(i, _pod._timeOutEnable[i], CStepper::LevelMax, true);
+/*
 			_pod._timeEnable[i] = _pod._timeOutEnable[i];
 			if (_pod._timeEnable[i] == 0 && GetEnable(i)!=CStepper::LevelMax)					// enabletimeout == 0 => always enabled, otherwise done in CalcNextSteps
 //			if (_pod._timeEnable[i] == 0)
 				SetEnable(i, CStepper::LevelMax, true);
+*/
 		}
 
 		if (StartMovement())
@@ -1492,11 +1495,14 @@ void CStepper::FillStepBuffer()
 				else
 					_pod._timeEnable[i] -= diff_sec;
 
+				SetTimeoutAndEnable(i, _pod._timeEnable[i], _pod._idleLevel, true);
+/*
 				if (_pod._timeEnable[i] == 0 && GetEnable(i) != _pod._idleLevel)
 				{
 					CCriticalRegion crit;
 					SetEnable(i, _pod._idleLevel, true);
 				}
+*/
 			}
 		}
 	}
@@ -1666,6 +1672,21 @@ bool CStepper::SMovementState::CalcTimerDec(timer_t mintimer, mdist_t n, unsigne
 }
 
 ////////////////////////////////////////////////////////
+
+bool CStepper::SMovement::IsEndWait()
+{
+	if (_pod._wait._checkWaitConditional)
+	{
+		// wait only if Stepper is "checkWaitConditional"
+		if (!_pStepper->IsPauseMove() && !_pStepper->IsWaitConditional())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+////////////////////////////////////////////////////////
 // called in interrupt => must be "fast"
 
 bool CStepper::SMovement::CalcNextSteps(bool continues)
@@ -1678,7 +1699,8 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 		CStepper* pStepper = _pStepper;
 		SMovementState* pState = &pStepper->_movementstate;
 
-		if (pStepper->_steps.IsFull())
+		if (pStepper->_steps.IsFull() || ((_state == SMovement::StateReadyWait || _state == SMovement::StateReadyIo) && pStepper->_steps.Count() > SYNC_STEPBUFFERCOUNT) 
+		)
 		{
 			// cannot add to queue
 			return false;
@@ -1694,24 +1716,26 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			{
 				if (_distance_[i] != 0)
 				{
+					pStepper->SetTimeoutAndEnable(i,0, CStepper::LevelMax, false);
+/*
 					pStepper->_pod._timeEnable[i] = 0;
 					CCriticalRegion crit;
 					if (pStepper->GetEnable(i) != CStepper::LevelMax)
 						pStepper->SetEnable(i, CStepper::LevelMax, false);
+*/
 				}
 			}
 
-			if (_state == SMovement::StateReadyWait && _pod._wait._checkWaitConditional)
+			if (_state == SMovement::StateReadyWait)
 			{
-				// wait only if Stepper is "checkWaitConditional"
-				if (!_pStepper->IsPauseMove() && !_pStepper->IsWaitConditional())
-				{
+				_state = StateWait;
+
+				if (IsEndWait())
 					pState->_n = _steps;
-				}
 			}
 			if (_state == SMovement::StateReadyIo)
 			{
-				_pStepper->CallEvent(OnIoEvent, (void*)&_pod._io);
+				pStepper->CallEvent(OnIoEvent, (void*)&_pod._io);
 				// pState->_n = _steps; => done by Init()
 				// this will end move immediately
 			}
@@ -1722,7 +1746,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 		if (_steps <= n)
 		{
-			// End of move/wait
+			// End of move/wait/io
 
 			for (i = 0; i<NUM_AXIS; i++)
 			{
@@ -1800,17 +1824,11 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 				}
 			}
 		}
-		else if (_state == StateReadyWait || _state == StateWait)
+		else if (_state == StateWait)
 		{
-			_state = StateWait;
-
-			if (_pod._wait._checkWaitConditional)
+			if (IsEndWait())
 			{
-				// wait only if Stepper is "checkWaitConditional"
-				if (!_pStepper->IsPauseMove() && !_pStepper->IsWaitConditional())
-				{
-					n = _steps;
-				}
+				n = _steps;
 			}
 		}
 		else
@@ -1861,7 +1879,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 		if (pStepper->GetSpeedOverride()!=CStepper::SpeedOverride100P)
 		{
 			// slower => increase timer
-			unsigned long tl = RoundMulDivU32(t, CStepper::SpeedOverride100P, _pStepper->GetSpeedOverride());
+			unsigned long tl = RoundMulDivU32(t, CStepper::SpeedOverride100P, pStepper->GetSpeedOverride());
 			if (tl >= TIMER1MAX)	    t = TIMER1MAX;		// to slow
 			else if (tl < TIMER1MIN)    t = TIMER1MIN;		// to fast
 			else						t = (timer_t) tl;
@@ -2338,6 +2356,16 @@ timer_t CStepper::SpeedToTimer(steprate_t speed) const
 steprate_t CStepper::TimerToSpeed(timer_t timer) const
 {
 	return SpeedToTimer(timer);
+}
+
+////////////////////////////////////////////////////////
+
+void CStepper::SetTimeoutAndEnable(axis_t i, unsigned char timeout, unsigned char level, bool force)
+{
+	_pod._timeEnable[i] = timeout;
+	CCriticalRegion crit;
+	if (timeout==0 && GetEnable(i) != level)
+		SetEnable(i, level, force);
 }
 
 ////////////////////////////////////////////////////////

@@ -261,6 +261,8 @@ public:
 
 private:
 
+	void SetTimeoutAndEnable(axis_t i, unsigned char timeout, unsigned char level, bool force);
+
 	void QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax, unsigned char stepmult);
 	void QueueWait(const mdist_t dist, timer_t timerMax, bool checkCondition);
 
@@ -493,6 +495,10 @@ protected:
 		void AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvNext);
 
 		bool CalcNextSteps(bool continues);
+
+	private:
+
+		bool IsEndWait();
 
 	public:
 

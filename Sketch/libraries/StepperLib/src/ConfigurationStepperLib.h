@@ -60,6 +60,10 @@ typedef unsigned long udist_t;	// tpye of stepper coord system (unsigned)
 
 ////////////////////////////////////////////////////////
 
+#define SYNC_STEPBUFFERCOUNT		8		// allow only x element in step buffer when io or wait starts
+
+////////////////////////////////////////////////////////
+
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 
 // usual with Ramps1.4
