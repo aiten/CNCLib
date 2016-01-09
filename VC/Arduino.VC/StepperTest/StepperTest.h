@@ -83,6 +83,8 @@ private:
 	void TestPause2();
 	void TestPause3();
 	void TestPause4();
+	
+	void TestIo();
 
 	void TestFile();
 };

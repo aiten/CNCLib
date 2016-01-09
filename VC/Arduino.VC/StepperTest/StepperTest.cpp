@@ -77,6 +77,8 @@ void CStepperTest::RunTest()
 	TestPause3();
 	TestPause4();
 
+	TestIo();
+
 	// very long running!!!!
 	TestDiffMultiplierAbs();
 	TestDiffMultiplierLoop();
@@ -533,6 +535,43 @@ void CStepperTest::TestPause4()
 	AssertMove(10000, Stepper.GetMovement(3));
 
 	CreateTestFile("TestPausea4.csv");
+}
+
+void CStepperTest::TestIo()
+{
+	//Like Merge but with Io
+	Stepper.InitTest();
+	Stepper.SetDefaultMaxSpeed(5000, 100, 150);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::MoveRel(0, 150, 1000);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::MoveRel(0, 350, 2000);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::MoveRel(0, 450, 3000);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::MoveRel(0, 700, 4000);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::MoveRel(0, 950, 5000);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::MoveRel(0, 700, 4000);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::MoveRel(0, 450, 3000);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::MoveRel(0, 350, 2000);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::MoveRel(0, 150, 1000);
+	Stepper.CStepper::IoControl(0, 1);
+	Stepper.CStepper::IoControl(0, 1);
+	AssertFile("MergeRampWithIo.csv");
 }
 
 void CStepperTest::TestFile()

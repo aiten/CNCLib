@@ -215,7 +215,7 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 #endif
 				WaitUntilCanQueue();
 
-				_movements._queue.NextTail().InitMove(this, _movements._queue.SaveTail(), backlashsteps, backlashdist, directionUp, _pod._timerbacklash);
+				_movements._queue.NextTail().InitMove(this, GetPrevMovement(_movements._queue.GetNextTailPos()), backlashsteps, backlashdist, directionUp, _pod._timerbacklash);
 				_movements._queue.NextTail().SetBacklash();
 			
 				EnqueuAndStartTimer(false);
@@ -231,7 +231,7 @@ void CStepper::QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NU
 
 	WaitUntilCanQueue();
 
-	_movements._queue.NextTail().InitMove(this, _movements._queue.SaveTail(), steps, dist, directionUp, timerMax);
+	_movements._queue.NextTail().InitMove(this, GetPrevMovement(_movements._queue.GetNextTailPos()), steps, dist, directionUp, timerMax);
 
 	EnqueuAndStartTimer(true);
 }
@@ -735,7 +735,7 @@ bool CStepper::SMovement::Ramp(SMovement*mvNext)
 
 void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvNext)
 {
-	if (!IsActiveMove()) return;						// Move became inactive by ISR or "WaitState"
+	if (!IsActiveMove()) return;						// Move became inactive by ISR or "WaitState"/"IoControl"
 
 	if (mvPrev == NULL || IsRunOrDownMove())			// no prev or processing (can be if the ISR has switchted to the next move)
 	{
@@ -791,7 +791,7 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 
 bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvNext)
 {
-	if (!IsActiveMove()) return true;					// Move became inactive by ISR or "wait" move
+	if (!IsActiveMove()) return !IsActiveIo();				// Move became inactive by ISR or "wait" move or ignore "IOControl
 
 	if (mvNext == NULL)
 	{
@@ -925,6 +925,43 @@ void CStepper::SMovement::CalcMaxJunktionSpeed(SMovement*mvPrev)
 
 ////////////////////////////////////////////////////////
 
+CStepper::SMovement* CStepper::GetNextMovement(unsigned char idx)
+{
+	// get next movment which can be optimized (no IOControl)
+
+	if (_movements._queue.IsEmpty()) return NULL;
+	while (true)
+	{
+		idx = _movements._queue.H2TInc(idx);
+		if (!_movements._queue.H2TTest(idx))
+			return NULL;
+
+		if (!_movements._queue.Buffer[idx].IsActiveIo())
+			return &_movements._queue.Buffer[idx];
+	}
+	return _movements._queue.GetNext(idx);
+}
+
+////////////////////////////////////////////////////////
+
+CStepper::SMovement* CStepper::GetPrevMovement(unsigned char idx)
+{
+	// get previous movment which can be optimized (no IOControl)
+
+	if (_movements._queue.IsEmpty()) return NULL;
+	while (true)
+	{
+		idx = _movements._queue.T2HInc(idx);
+		if (!_movements._queue.T2HTest(idx))
+			return NULL;
+
+		if (!_movements._queue.Buffer[idx].IsActiveIo())
+			return &_movements._queue.Buffer[idx];
+	}
+}
+
+////////////////////////////////////////////////////////
+
 void CStepper::OptimizeMovementQueue(bool /* force */)
 {
 	if (_movements._queue.IsEmpty() || _movements._queue.Count() < 2)
@@ -938,7 +975,7 @@ void CStepper::OptimizeMovementQueue(bool /* force */)
 
 	for (idx = _movements._queue.T2HInit(); _movements._queue.T2HTest(idx); idx = _movements._queue.T2HInc(idx))
 	{
-		if (_movements._queue.Buffer[idx].AdjustJunktionSpeedT2H(_movements._queue.GetPrev(idx), _movements._queue.GetNext(idx)))
+		if (_movements._queue.Buffer[idx].AdjustJunktionSpeedT2H(GetPrevMovement(idx), GetNextMovement(idx)))
 		{
 			idxnochange = idx;
 			break;
@@ -951,7 +988,7 @@ void CStepper::OptimizeMovementQueue(bool /* force */)
 
 	for (idx = idxnochange; _movements._queue.H2TTest(idx); idx = _movements._queue.H2TInc(idx))
 	{
-		_movements._queue.Buffer[idx].AdjustJunktionSpeedH2T(_movements._queue.GetPrev(idx), _movements._queue.GetNext(idx));
+		_movements._queue.Buffer[idx].AdjustJunktionSpeedH2T(GetPrevMovement(idx), GetNextMovement(idx));
 	}
 }
 

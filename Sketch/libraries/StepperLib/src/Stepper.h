@@ -609,6 +609,12 @@ public:
 
 	//////////////////////////////////////////
 
+private:
+
+	SMovement* GetNextMovement(unsigned char idx);
+	SMovement* GetPrevMovement(unsigned char idx);
+
+
 protected:
 
 	debugvirtula void OnIdle(unsigned long idletime);				// called in ISR
