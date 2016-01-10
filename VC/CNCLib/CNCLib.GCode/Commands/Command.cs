@@ -66,7 +66,8 @@ namespace CNCLib.GCode.Commands
 			}
 		}			
 
-		public bool PositionValid { get; protected set; }
+        public bool UseWithoutPrefix { get; protected set; }
+        public bool PositionValid { get; protected set; }
 		public MoveType Movetype { get; protected set; }
 
 		public string SubCode { get; protected set;  }
@@ -119,14 +120,40 @@ namespace CNCLib.GCode.Commands
 
         #region Draw
 
-		public virtual void Draw(IOutputCommand output, object param)
-		{
-			output.DrawLine(this, param, Movetype, CalculatedStartPosition, CalculatedEndPosition);
-		}
-		
-		#endregion
+        public DrawType Convert(MoveType movetype, DrawState state)
+        {
+            if (movetype == MoveType.NoMove) return DrawType.NoDraw;
 
-		#region GCode
+            if (state.UseLaser)
+            {
+                if (state.LaserOn == false) return DrawType.NoDraw;
+
+                switch (movetype)
+                {
+                    case MoveType.Fast:   return DrawType.LaserFast;
+                    case MoveType.Normal: return DrawType.LaserNormal;
+                }
+            }
+
+            switch (movetype)
+            {
+                case MoveType.Fast: return DrawType.Fast;
+                case MoveType.Normal: return DrawType.Normal;
+            }
+
+            return DrawType.NoDraw;
+        }
+
+        public virtual void Draw(IOutputCommand output, DrawState state, object param)
+		{
+			output.DrawLine(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition);
+		}
+
+        #endregion
+
+        #region GCode
+
+        public virtual void SetCode(string code) { }     // allow genieric Gxx & Mxx to set code
 
 		public string GCodeAdd { get; set; }
 

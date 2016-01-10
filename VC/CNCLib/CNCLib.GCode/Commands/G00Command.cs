@@ -28,7 +28,8 @@ namespace CNCLib.GCode.Commands
 
 		public G00Command()
 		{
-			PositionValid = true;
+            UseWithoutPrefix = true;
+            PositionValid = true;
 			Movetype = MoveType.Fast;
 			Code = "G0";
 		}

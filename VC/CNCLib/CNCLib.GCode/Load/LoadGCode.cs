@@ -24,18 +24,18 @@ namespace CNCLib.GCode.Load
 {
     public class LoadGCode
     {
-		CommandList _commands;
-		CommandStream _stream = new CommandStream();
-		Commands.CommandFactory _commandfactory = new Commands.CommandFactory();
-		bool _wasg1;
+        CommandList _commands;
+        CommandStream _stream = new CommandStream();
+        Commands.CommandFactory _commandfactory = new Commands.CommandFactory();
+        Command _lastnoPrefixCommand;
 
-		public LoadInfo LoadOptions { get; set; }
+        public LoadInfo LoadOptions { get; set; }
 
-		public void Load(CommandList commands)
+        public void Load(CommandList commands)
         {
-			_commands = commands;
-			commands.Clear();
-			_wasg1 = true;
+            _commands = commands;
+            commands.Clear();
+            _lastnoPrefixCommand = null;
 
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
             {
@@ -45,89 +45,136 @@ namespace CNCLib.GCode.Load
                     _stream.Line = line;
                     if (!Command())
                     {
-						_commands.Clear();
+                        _commands.Clear();
                         break;
                     }
                 }
             }
-			commands.UpdateCache();
+            commands.UpdateCache();
         }
 
-		private bool Command()
+        private bool Command()
         {
-			if (_stream.NextCharToUpper == 'N')
-			{
-				_stream.Next();
-				while (char.IsDigit(_stream.NextChar))
-				{
-					_stream.Next();
-				}
-				_stream.SkipSpaces();
-			}
-
-			_stream.SkipSpaces();
-			Command cmd;
-
-			if (_stream.NextCharToUpper == 'G')
-			{
-				string cmdname = "G";
-				_stream.Next();
-				while (char.IsDigit(_stream.NextChar))
-				{
-					cmdname += _stream.NextChar;
-					_stream.Next();
-				}
-
-				cmd = _commandfactory.Create(cmdname);
-
-				if (cmd!=null)
-				{
-					if (cmd.GetType() == typeof(G01Command))
-					{
-						_wasg1 = true;
-					}
-					if (cmd.GetType() == typeof(G00Command))
-					{
-						_wasg1 = false;
-					}
-
-					_commands.AddCommand(cmd);
-					if (!cmd.ReadFrom(_stream))
-						return false;
-				}
-				else
-				{
-					cmd = _commandfactory.Create("GXX");
-					((GxxCommand) cmd).Code = cmdname;
-
-					_commands.AddCommand(cmd);
-					if (!cmd.ReadFrom(_stream))
-						return false;
-				}
+            if (_stream.NextCharToUpper == 'N')
+            {
+                _stream.Next();
+                while (char.IsDigit(_stream.NextChar))
+                {
+                    _stream.Next();
+                }
+                _stream.SkipSpaces();
             }
-			else if ("XYZABCF".IndexOf(_stream.NextCharToUpper) >= 0)
-			{
-				// g without prefix
 
-				cmd = _commandfactory.Create(_wasg1 ? "G01" : "G00");
+            _stream.SkipSpaces();
 
-				if (cmd != null)
-				{
-					_commands.AddCommand(cmd);
-					if (!cmd.ReadFrom(_stream))
-						return false;
-				}
-			}
-			else
-			{
-				cmd = _commandfactory.Create("GXX");
+            if (_stream.NextCharToUpper == 'G')
+            {
+                if (!ReadGCommand())
+                    return false;
+            }
+            else if ("XYZABCF".IndexOf(_stream.NextCharToUpper) >= 0)
+            {
+                if (_lastnoPrefixCommand == null || !ReadGNoPrefixCommand())
+                    return false;
+            }
+            else if (_stream.NextCharToUpper == 'M')
+            {
+                if (!ReadMCommand())
+                    return false;
+            }
+            else
+            {
+                if (!ReadOtherCommand())
+                    return false;
+            }
 
-				_commands.AddCommand(cmd);
-				if (!cmd.ReadFrom(_stream))
-					return false;
-			}
+            return true;
+        }
+
+
+        private bool AddGxxMxxCommand(Command cmd, string cmdname)
+        {
+            cmd.SetCode(cmdname);
+
+            _commands.AddCommand(cmd);
+            if (!cmd.ReadFrom(_stream))
+                return false;
+
+            return true;
+        }
+
+        private bool ReadGCommand()
+        {
+            _stream.Next();
+
+            string cmdname = "G" + _stream.ReadDigits();
+            _stream.SkipSpaces();
+
+            Command cmd = _commandfactory.Create(cmdname);
+
+            if (cmd != null)
+            {
+                if (cmd.UseWithoutPrefix)
+                    _lastnoPrefixCommand = cmd;
+
+                _commands.AddCommand(cmd);
+                if (!cmd.ReadFrom(_stream))
+                    return false;
+            }
+            else
+            {
+                if (!AddGxxMxxCommand(_commandfactory.Create("GXX"), cmdname))
+                    return false;
+            }
+
+            return true;
+        }
+        private bool ReadGNoPrefixCommand()
+        {
+            // g without prefix
+
+            Command cmd = _commandfactory.Create(_lastnoPrefixCommand.Code);
+
+            if (cmd != null)
+            {
+                _commands.AddCommand(cmd);
+                if (!cmd.ReadFrom(_stream))
+                    return false;
+            }
+            return true;
+        }
+
+        private bool ReadMCommand()
+        {
+            _stream.Next();
+            string cmdname = "M" + _stream.ReadDigits();
+            _stream.SkipSpaces();
+
+            Command cmd = _commandfactory.Create(cmdname);
+
+            if (cmd != null)
+            {
+                _commands.AddCommand(cmd);
+                if (!cmd.ReadFrom(_stream))
+                    return false;
+            }
+            else
+            {
+                if (!AddGxxMxxCommand(_commandfactory.Create("Mxx"), cmdname))
+                    return false;
+            }
+            return true;
+        }
+        private bool ReadOtherCommand()
+        {
+            Command cmd = _commandfactory.Create("GXX");
+
+            _commands.AddCommand(cmd);
+            if (!cmd.ReadFrom(_stream))
+                return false;
 
             return true;
         }
     }
 }
+

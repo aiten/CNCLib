@@ -27,9 +27,10 @@ namespace CNCLib.GCode.Commands
 
 		public G02Command()
 		{
-			PositionValid = true;
+            UseWithoutPrefix = true;
+            PositionValid = true;
 			Movetype = MoveType.Normal;
-			Code = "G02";
+			Code = "G2";
 		}
 
 		#endregion
@@ -40,9 +41,9 @@ namespace CNCLib.GCode.Commands
 
 		#region Draw
 
-		public override void Draw(IOutputCommand output, object param)
+		public override void Draw(IOutputCommand output, DrawState state, object param)
 		{
-			base.Draw(output, param);
+			base.Draw(output, state, param);
 /*
 
 			Rectangle rect;

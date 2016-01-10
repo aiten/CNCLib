@@ -20,31 +20,29 @@ using System;
 
 namespace CNCLib.GCode.Commands
 {
-    class DrillCommand : Command
+    [IsGCommand("M107")]
+    class M107Command : Command
     {
-		#region crt + factory
+        #region crt + factory
 
-		public DrillCommand()
-		{
-            UseWithoutPrefix = true;
-            PositionValid = true;
-			Movetype = MoveType.Fast;
-		}
-
-		#endregion
-
-		#region GCode
-
-		#endregion
-
-		#region Draw
-
-		public override void Draw(IOutputCommand output, DrawState state, object param)
-		{
-			base.Draw(output, state, param);
-			output.DrawEllipse(this, param, Convert(MoveType.Normal, state), CalculatedEndPosition, 10, 10);
+        public M107Command()
+        {
+            Code = "M107";
         }
 
-		#endregion
-	}
+        #endregion
+
+        #region GCode
+        #endregion
+
+        #region Draw
+        public override void Draw(IOutputCommand output, DrawState state, object param)
+        {
+            //base.Draw(output, state, param);
+
+            state.LaserOn = false;
+        }
+
+        #endregion
+    }
 }

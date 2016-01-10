@@ -27,7 +27,8 @@ namespace CNCLib.GCode.Commands
 
 		public G03Command()
 		{
-			PositionValid = true;
+            UseWithoutPrefix = true;
+            PositionValid = true;
 			Movetype = MoveType.Normal;
 			Code = "G3";
 		}
@@ -40,18 +41,18 @@ namespace CNCLib.GCode.Commands
 
 		#region Draw
 
-		public override void Draw(IOutputCommand output, object param)
+		public override void Draw(IOutputCommand output, DrawState state, object param)
 		{
-			base.Draw(output, param);
-			/*
+			base.Draw(output, state, param);
+            /*
 
 						Rectangle rect;
 						Point start = DrawStartPosition;
 						rect = new Rectangle(start, new Size(DrawEndPosition.X - start.X, DrawEndPosition.Y - start.Y));
 						e.Graphics.DrawEllipse(GetForgroundPen(paintstate), rect);
 			 */
-		}
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

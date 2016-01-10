@@ -29,6 +29,7 @@ using CNCLib.GCode;
 using Framework.Tools.Drawing;
 using CNCLib.GCode.Commands;
 using Framework.Arduino;
+using System.Drawing.Drawing2D;
 
 namespace CNCLib.GUI
 {
@@ -60,14 +61,16 @@ namespace CNCLib.GUI
 
 			SelectedCommand = -1;
 
-			InitializeComponent();
-		}
+            InitializeComponent();
 
-		#endregion
+            SetStyle(ControlStyles.DoubleBuffer, true);
+        }
 
-		#region Properties
+        #endregion
 
-		public decimal SizeX { get; set; }
+        #region Properties
+
+        public decimal SizeX { get; set; }
 		public decimal SizeY { get; set; }
 
 		public decimal Zoom { get { return _zoom; } set { _zoom = value; Invalidate(); } }
@@ -202,10 +205,48 @@ namespace CNCLib.GUI
 
 		private void PlotterUserControl_Paint(object sender, PaintEventArgs e)
 		{
-			_commands.Paint(this, e);
-		}
 
-		private Size _lastsize;
+//            Graphics g = this.CreateGraphics();
+//            g.Clear(this.BackColor);
+            //Create a Bitmap object with the size of the form
+            Bitmap curBitmap = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
+            //Create a temporary Graphics object from the bitmap
+            Graphics g1 = Graphics.FromImage(curBitmap);
+            g1.InterpolationMode = InterpolationMode.NearestNeighbor;
+            g1.SmoothingMode = SmoothingMode.None;
+            g1.PixelOffsetMode = PixelOffsetMode.None;
+            g1.CompositingQuality = CompositingQuality.HighSpeed;
+            g1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
+
+
+            //Draw lines on the temporary Graphics object
+
+            var ee = new PaintEventArgs(g1, new Rectangle());
+            _commands.Paint(this, ee);
+
+            //Call DrawImage of Graphics and draw bitmap
+            e.Graphics.DrawImage(curBitmap, 0, 0);
+            //Dispose of objects
+            g1.Dispose();
+            curBitmap.Dispose();
+//            g.Dispose();
+/*
+
+            SuspendLayout();
+
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            e.Graphics.SmoothingMode = SmoothingMode.None;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.None;
+            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
+
+            _commands.Paint(this, e);
+
+            ResumeLayout();
+ */
+       }
+
+        private Size _lastsize;
 		private void PlotterUserControl_Resize(object sender, EventArgs e)
 		{
 			if (_lastsize.Height != 0 && Size.Width > 0 && Size.Height > 0)
@@ -221,44 +262,51 @@ namespace CNCLib.GUI
 
 		#region IOutput 
 
-		Pen _normalLine = new Pen(Color.Black, 3);
-		Pen _falseLine  = new Pen(Color.Black, 1);
+		Pen _normalLine = new Pen(Color.Black, 2);
+		Pen _falseLine  = new Pen(Color.Green, 1);
 		Pen _NoMove		= new Pen(Color.Blue, 1);
+        Pen _lasernormalLine = new Pen(Color.Red, 2);
+        Pen _laserfalseLine = new Pen(Color.Orange, 1);
 
-		public void DrawLine(Command cmd, object param, Command.MoveType movetype, Point3D ptFrom, Point3D ptTo)
+        public void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo)
 		{
+            if (drawtype == DrawType.NoDraw) return;
+
 			PaintEventArgs e = (PaintEventArgs) param;
 
 			Point from = ToClient(ptFrom);
 			Point to   = ToClient(ptTo);
 
-
 			if (from.Equals(to))
 			{
-				e.Graphics.DrawEllipse(GetPen(movetype), from.X, from.Y, 4, 4);
+				e.Graphics.DrawEllipse(GetPen(drawtype), from.X, from.Y, 4, 4);
 			}
 			else
 			{
-				e.Graphics.DrawLine(GetPen(movetype), from, to);
+				e.Graphics.DrawLine(GetPen(drawtype), from, to);
 			}
 		}
-		public void DrawEllipse(Command cmd, object param, Command.MoveType movetype, Point3D ptFrom, int xradius, int yradius)
+		public void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptFrom, int xradius, int yradius)
 		{
+            if (drawtype == DrawType.NoDraw) return;
+
 			PaintEventArgs e = (PaintEventArgs)param;
 			Point from = ToClient(ptFrom);
-			e.Graphics.DrawEllipse(GetPen(movetype), from.X, from.Y, xradius, yradius);
+			e.Graphics.DrawEllipse(GetPen(drawtype), from.X, from.Y, xradius, yradius);
 		}
 
-		private Pen GetPen(Command.MoveType moveType)
+		private Pen GetPen(DrawType moveType)
 		{
 			switch (moveType)
 			{
 				default:
-				case Command.MoveType.NoMove: return _NoMove;
-				case Command.MoveType.Fast: return _falseLine;
-				case Command.MoveType.Normal: return _normalLine;
-			}
-		}
+				case DrawType.NoMove: return _NoMove;
+				case DrawType.Fast: return _falseLine;
+				case DrawType.Normal: return _normalLine;
+                case DrawType.LaserFast: return _laserfalseLine;
+                case DrawType.LaserNormal: return _lasernormalLine;
+            }
+        }
 
 		#endregion	
 

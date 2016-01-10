@@ -105,6 +105,18 @@ namespace Framework.Tools
  
             return -1;
         }
+
+        public string ReadDigits()
+        {
+            var str = new System.Text.StringBuilder();
+            while (char.IsDigit(NextChar))
+            {
+                str.Append(NextChar);
+                Next();
+            }
+            return str.ToString();
+        }
+
         public bool IsInt()
         {
             SkipSpaces();

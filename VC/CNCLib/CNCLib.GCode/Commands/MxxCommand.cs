@@ -20,29 +20,35 @@ using System;
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand("Mxx")]
-	class MxxCommand : Command
+    [IsGCommand("Mxx")]
+    class MxxCommand : Command
     {
-		#region crt + factory
+        #region crt + factory
 
-		public MxxCommand()
-		{
-			Code = "";
-		}
+        public MxxCommand()
+        {
+            Code = "";
+        }
 
-		#endregion
+        #endregion
 
-		#region GCode
-		new public string Code
-		{
-			get { return base.Code; }
-			set { base.Code = value; }
-		}
+        #region GCode
+        public override void SetCode(string code ) { Code = code;  }
 
-		#endregion
+        #endregion
 
-		#region Draw
+        #region Draw
+        public override void Draw(IOutputCommand output, DrawState state, object param)
+        {
+            //base.Draw(output, state, param);
 
-		#endregion
-	}
+            switch (Code.ToUpper())
+            {
+                case "M106": state.LaserOn = true; state.UseLaser = true;  break;
+                case "M107": state.LaserOn = false; break;
+            }
+        }
+
+        #endregion
+    }
 }

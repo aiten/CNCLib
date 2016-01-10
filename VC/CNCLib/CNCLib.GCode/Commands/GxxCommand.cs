@@ -32,18 +32,13 @@ namespace CNCLib.GCode.Commands
 
 		#endregion
 
-		new public string Code
-		{
-			get { return base.Code;  }
-			set { base.Code = value;  }
-		}
+        #region GCode
+        public override void SetCode(string code) { Code = code; }
 
-		#region GCode
+        #endregion
 
-		#endregion
+        #region Draw
 
-		#region Draw
-
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -20,9 +20,19 @@ using Framework.Tools.Drawing;
 
 namespace CNCLib.GCode.Commands
 {
-	public interface IOutputCommand
+    public enum DrawType
+    {
+        NoDraw,
+        NoMove,
+        Fast,            // Go
+        Normal,          // G1,G2
+        LaserFast,       // Go
+        LaserNormal      // G1,G2
+    }
+
+    public interface IOutputCommand
 	{
-		void DrawLine(Command cmd, object param, Command.MoveType movetype, Point3D ptFrom, Point3D ptTo);
-		void DrawEllipse(Command cmd, object param, Command.MoveType movetype, Point3D ptFrom, int xradius, int yradius);
+        void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo);
+		void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptFrom, int xradius, int yradius);
 	}
 }

@@ -26,7 +26,8 @@ namespace CNCLib.GCode.Commands
 		#region crt + factory
 		public G01Command()
 		{
-			PositionValid = true;
+            UseWithoutPrefix = true;
+            PositionValid = true;
 			Movetype = MoveType.Normal;
 			Code = "G1";
 		}

@@ -48,6 +48,7 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Commands\CommandList.cs" />
+    <Compile Include="Commands\DrawState.cs" />
     <Compile Include="Commands\G00Command.cs" />
     <Compile Include="Commands\G01Command.cs" />
     <Compile Include="Commands\DrillCommand.cs" />
@@ -63,6 +64,8 @@
     <Compile Include="Commands\G19Command.cs" />
     <Compile Include="Commands\G20Command.cs" />
     <Compile Include="Commands\IsGCommandAttribute.cs" />
+    <Compile Include="Commands\M107Command.cs" />
+    <Compile Include="Commands\M106Command.cs" />
     <Compile Include="Commands\MxxCommand.cs" />
     <Compile Include="Commands\SetParameterCommand.cs" />
     <Compile Include="Commands\G21Command.cs" />
