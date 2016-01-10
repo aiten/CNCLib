@@ -29,6 +29,7 @@ using Plotter.GUI.Shapes;
 using Framework.Tools;
 using System.Threading;
 using Framework.Arduino;
+using System.Drawing.Drawing2D;
 
 namespace Plotter.GUI
 {
@@ -70,12 +71,15 @@ namespace Plotter.GUI
             SelectedShape = -1;
 
             InitializeComponent();
+
+            SetStyle(ControlStyles.DoubleBuffer, true);
+
         }
 
         #endregion
 
         #region Properties
-		public bool ReadOnly { get; set; }
+        public bool ReadOnly { get; set; }
 
         public int SizeXHPGL { get; set; }
         public int SizeYHPGL { get; set; }
@@ -274,14 +278,32 @@ namespace Plotter.GUI
 
         private void PlotterUserControl_Paint(object sender, PaintEventArgs e)
         {
+            //Create a Bitmap object with the size of the form
+            Bitmap curBitmap = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
+            //Create a temporary Graphics object from the bitmap
+            Graphics g1 = Graphics.FromImage(curBitmap);
+            g1.InterpolationMode = InterpolationMode.NearestNeighbor;
+            g1.SmoothingMode = SmoothingMode.None;
+            g1.PixelOffsetMode = PixelOffsetMode.None;
+            g1.CompositingQuality = CompositingQuality.HighSpeed;
+            g1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
+
+            var ee = new PaintEventArgs(g1, new System.Drawing.Rectangle());
             Shape.PaintState paintstate = new Shape.PaintState();
             paintstate.ShapeIdx = 0;
             paintstate.SelectedIdx = SelectedShape;
             foreach (Shape r in _shapelist)
             {
-                r.Draw(e, paintstate);
+                r.Draw(ee, paintstate);
                 paintstate.ShapeIdx++;
             }
+
+            //Call DrawImage of Graphics and draw bitmap
+            e.Graphics.DrawImage(curBitmap, 0, 0);
+            //Dispose of objects
+            g1.Dispose();
+            curBitmap.Dispose();
+
         }
 
         private Size _lastsize;
