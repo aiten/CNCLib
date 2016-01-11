@@ -498,7 +498,7 @@ protected:
 
 	private:
 
-		bool IsEndWait();
+		bool IsEndWait() const;									// immediately end wait 
 
 	public:
 
@@ -515,6 +515,8 @@ protected:
 		bool IsRunOrDownMove() const							{ return IsProcessingMove() && _state >= StateRun; }		// Move in ramp run state
 		bool IsDownMove() const									{ return IsProcessingMove() && _state > StateRun; }			// Move in ramp dec state
 		bool IsFinished() const									{ return _state == StateDone; }								// Move finished 
+
+		bool IsSkipForOptimizing() const						{ return IsActiveIo();  }									// skip the entry when optimizing queue
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
 		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkWaitConditional);

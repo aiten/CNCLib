@@ -50,5 +50,5 @@
 
 #include <MessageCNCLib.h>
 
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("Laser:" __DATE__ )
+#define MESSAGE_MYCONTROL_Laser_Starting					F("Laser:" __DATE__ )
 

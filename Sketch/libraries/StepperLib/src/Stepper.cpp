@@ -791,7 +791,7 @@ void CStepper::SMovement::AdjustJunktionSpeedH2T(SMovement*mvPrev, SMovement*mvN
 
 bool CStepper::SMovement::AdjustJunktionSpeedT2H(SMovement*mvPrev, SMovement*mvNext)
 {
-	if (!IsActiveMove()) return !IsActiveIo();				// Move became inactive by ISR or "wait" move or ignore "IOControl
+	if (!IsActiveMove()) return !IsSkipForOptimizing();				// Move became inactive by ISR or "wait" move or ignore "IOControl
 
 	if (mvNext == NULL)
 	{
@@ -936,7 +936,7 @@ CStepper::SMovement* CStepper::GetNextMovement(unsigned char idx)
 		if (!_movements._queue.H2TTest(idx))
 			return NULL;
 
-		if (!_movements._queue.Buffer[idx].IsActiveIo())
+		if (!_movements._queue.Buffer[idx].IsSkipForOptimizing())
 			return &_movements._queue.Buffer[idx];
 	}
 	return _movements._queue.GetNext(idx);
@@ -1710,7 +1710,7 @@ bool CStepper::SMovementState::CalcTimerDec(timer_t mintimer, mdist_t n, unsigne
 
 ////////////////////////////////////////////////////////
 
-bool CStepper::SMovement::IsEndWait()
+bool CStepper::SMovement::IsEndWait() const
 {
 	if (_pod._wait._checkWaitConditional)
 	{
