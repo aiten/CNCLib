@@ -86,10 +86,13 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 					if (savefileinresponse)
 					{
 						string line;
-						while ((line = sr.ReadLine()) != null)
-						{
-							Com.SendCommand(line);
-						}
+                        List<String> lines = new List<string>();
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            lines.Add(line);
+                        }
+                        Com.SendCommands(lines.ToArray());
+	
 						bool filesavednresponse = false;
 						checkresponse = new Framework.Arduino.ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
 						{

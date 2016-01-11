@@ -39,9 +39,7 @@
 			this.Name = "GCodeUserControl";
 			this.Size = new System.Drawing.Size(419, 270);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotterUserControl_Paint);
-			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PlotterUserControl_MouseDown);
 			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PlotterUserControl_MouseMove);
-			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PlotterUserControl_MouseUp);
 			this.Resize += new System.EventHandler(this.PlotterUserControl_Resize);
 			this.ResumeLayout(false);
 

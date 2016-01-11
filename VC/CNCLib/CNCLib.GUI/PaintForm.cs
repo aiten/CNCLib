@@ -51,8 +51,8 @@ namespace CNCLib.GUI
 
 		public void SetMachineSize()
 		{
-			_plotterCtrl.SizeX = Settings.Instance.SizeX;
-			_plotterCtrl.SizeY = Settings.Instance.SizeY;
+			_gCodeCtrl.SizeX = Settings.Instance.SizeX;
+			_gCodeCtrl.SizeY = Settings.Instance.SizeY;
 		}
 
 		#endregion
@@ -101,21 +101,11 @@ namespace CNCLib.GUI
 		private void EnableComControls(bool enable)
 		{
 			_sendTo.Enabled = enable;
-			_home.Enabled = enable;
-			_paintfrom.Enabled = enable;
-			_paintSelected.Enabled = enable;
-			_abort.Enabled = !enable;
-			_paintfrom.Enabled = enable;
 		}
 
 		#endregion
 
 		#region Event
-
-		private void _abort_Click(object sender, EventArgs e)
-		{
-			Com.AbortCommands();
-		}
 
 		private void _sendTo_Click(object sender, EventArgs e)
         {
@@ -123,7 +113,7 @@ namespace CNCLib.GUI
 			{
 				List<String> commands = new List<string>();
 				Command last = null;
-				foreach (Command r in _plotterCtrl.Commands)
+				foreach (Command r in _gCodeCtrl.Commands)
 				{
 					string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
 					if (cmds != null)
@@ -135,67 +125,6 @@ namespace CNCLib.GUI
 				Com.SendCommands(commands.ToArray());
 			});
         }
-        private void _paintfrom_Click(object sender, EventArgs e)
-        {
-			AsyncRunCommand(() =>
-			{
-				List<String> commands = new List<string>();
-				int idx = 0;
-				int count = int.Parse(_paintcount.Text);
-				Command last = null;
-
-				foreach (Command r in _plotterCtrl.Commands)
-				{
-					if (_plotterCtrl.SelectedCommand <= idx && count > 0)
-					{
-						string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
-						if (cmds != null)
-						{
-							commands.AddRange(cmds);
-						}
-						count--;
-					}
-					idx++;
-					last = r;
-				}
-
-				Com.SendCommands(commands.ToArray());
-			});
-        }
-        private void _paintSelected_Click(object sender, EventArgs e)
-        {
-			AsyncRunCommand(() =>
-			{
-				List<String> commands = new List<string>();
-				int idx = 0;
-				Command last = null;
-				foreach (Command r in _plotterCtrl.Commands)
-				{
-					if (_plotterCtrl.SelectedCommand == idx)
-					{
-						string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
-						if (cmds != null)
-						{
-							commands.AddRange(cmds);
-						}
-					}
-					idx++;
-					last = r;
-				}
-
-				Com.SendCommands(commands.ToArray());
-				SetSelShape(_plotterCtrl.SelectedCommand + 1);
-			});
-        }
-
-        private void _home_Click(object sender, EventArgs e)
-        {
-			AsyncRunCommand(() =>
-			{
-				Com.SendCommand("g28");
-			});
-        }
-
 		static string _fileNameSave = @"c:\tmp\testc.GCode";
 
 		private void _save_Click(object sender, EventArgs e)
@@ -212,7 +141,7 @@ namespace CNCLib.GUI
 			using (StreamWriter sw = new StreamWriter(_fileNameSave))
 			{
 				Command last = null;
-				foreach (Command r in _plotterCtrl.Commands)
+				foreach (Command r in _gCodeCtrl.Commands)
 				{
 					string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
 					if (cmds != null)
@@ -233,8 +162,8 @@ namespace CNCLib.GUI
 
         private void _load_Click(object sender, EventArgs e)
         {
-			loadinfo.AutoScaleSizeX = _plotterCtrl.SizeX;
-			loadinfo.AutoScaleSizeY = _plotterCtrl.SizeY;
+			loadinfo.AutoScaleSizeX = _gCodeCtrl.SizeX;
+			loadinfo.AutoScaleSizeY = _gCodeCtrl.SizeY;
 
             using (LoadOptionForm form = new LoadOptionForm())
             {
@@ -247,7 +176,7 @@ namespace CNCLib.GUI
                     loadinfo = form.LoadInfo;
                     LoadHPGL load = new LoadHPGL();
                     load.LoadOptions = loadinfo;
-                    load.LoadHPLG(_plotterCtrl.Commands);
+                    load.LoadHPLG(_gCodeCtrl.Commands);
 					_redraw_Click(null, null);
                 }
 				else if (res == DialogResult.Yes)
@@ -257,7 +186,7 @@ namespace CNCLib.GUI
 					load.LoadOptions = loadinfo;
 					try
 					{
-						load.Load(_plotterCtrl.Commands);
+						load.Load(_gCodeCtrl.Commands);
 					}
 					catch (Exception ex)
 					{
@@ -268,48 +197,20 @@ namespace CNCLib.GUI
 			}
         }
 
-        private void SetSelShape(int idx)
-        {
-            if (idx >= 0 && idx < _plotterCtrl.Commands.Count)
-            {
-                _plotterCtrl.SelectedCommand = idx;
-                _selidxlbl.Text = idx.ToString();
-            }
-        }
-
-        private void _selPrev_Click(object sender, EventArgs e)
-        {
-            SetSelShape(_plotterCtrl.SelectedCommand-1);
-        }
-
-        private void _selNext_Click(object sender, EventArgs e)
-        {
-            SetSelShape(_plotterCtrl.SelectedCommand + 1);
-        }
-        private void _selFirst_Click(object sender, EventArgs e)
-        {
-            SetSelShape(0);
-        }
-
-        private void _selLast_Click(object sender, EventArgs e)
-        {
-            SetSelShape(_plotterCtrl.Commands.Count - 1);
-        }
-
 		private void _redraw_Click(object sender, EventArgs e)
 		{
 			decimal val;
 			if (decimal.TryParse(_zoom.Text, out val))
 			{
-				_plotterCtrl.Zoom = val;
+				_gCodeCtrl.Zoom = val;
 			}
 			if (decimal.TryParse(_offsetX.Text, out val))
 			{
-				_plotterCtrl.OffsetX = val;
+				_gCodeCtrl.OffsetX = val;
 			}
 			if (decimal.TryParse(_offsetY.Text, out val))
 			{
-				_plotterCtrl.OffsetY = val;
+				_gCodeCtrl.OffsetY = val;
 			}
 		}
 
@@ -322,5 +223,41 @@ namespace CNCLib.GUI
 		{
 			EnableComControls(Com.IsConnected);
 		}
+
+        private void _zoomOut_Click(object sender, EventArgs e)
+        {
+            _gCodeCtrl.Zoom = _gCodeCtrl.Zoom * 0.9m;
+            _zoom.Text = _gCodeCtrl.Zoom.ToString();
+        }
+
+        private void _zoomIn_Click(object sender, EventArgs e)
+        {
+            _gCodeCtrl.Zoom = _gCodeCtrl.Zoom / 0.9m;
+            _zoom.Text = _gCodeCtrl.Zoom.ToString();
+        }
+
+        private void _ofsXMin_Click(object sender, EventArgs e)
+        {
+            _gCodeCtrl.OffsetX = _gCodeCtrl.OffsetX - 10;
+            _offsetX.Text = _gCodeCtrl.OffsetX.ToString();
+        }
+
+        private void _ofsXPlus_Click(object sender, EventArgs e)
+        {
+            _gCodeCtrl.OffsetX = _gCodeCtrl.OffsetX + 10;
+            _offsetX.Text = _gCodeCtrl.OffsetX.ToString();
+        }
+
+        private void _ofsYMin_Click(object sender, EventArgs e)
+        {
+            _gCodeCtrl.OffsetY = _gCodeCtrl.OffsetY - 10;
+            _offsetY.Text = _gCodeCtrl.OffsetY.ToString();
+        }
+
+        private void _ofsYPlus_Click(object sender, EventArgs e)
+        {
+            _gCodeCtrl.OffsetY = _gCodeCtrl.OffsetY + 10;
+            _offsetY.Text = _gCodeCtrl.OffsetY.ToString();
+        }
     }
 }

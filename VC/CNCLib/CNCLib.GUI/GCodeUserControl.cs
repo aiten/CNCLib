@@ -56,11 +56,6 @@ namespace CNCLib.GUI
 			OffsetX = 0;
 			OffsetY = 0;
 
-			SelectedLinesize = 1;
-			SelectedColor = Color.Black;
-
-			SelectedCommand = -1;
-
             InitializeComponent();
 
             SetStyle(ControlStyles.DoubleBuffer, true);
@@ -79,24 +74,6 @@ namespace CNCLib.GUI
 
 		public CommandList Commands { get { return _commands; } }
 
-		public int SelectedLinesize { get; set; }
-
-		public Color SelectedColor { get; set; }
-
-		public int SelectedCommand
-		{
-			get { return _selectedCommand >= Commands.Count ? -1 : _selectedCommand; }
-			set
-			{
-				_selectedCommand = value;
-				if (_selectedCommand >= Commands.Count)
-					_selectedCommand = Commands.Count - 1;
-				if (_selectedCommand < -1)
-					_selectedCommand = -1;
-				Invalidate();
-			}
-		}
-
 		public delegate void GCodeEventHandler(object o, GCoderUserControlEventArgs info);
 
 		public event GCodeEventHandler GCodeMousePosition;
@@ -105,7 +82,6 @@ namespace CNCLib.GUI
 
 		#region private Members
 
-		int _selectedCommand = -1;
 		decimal _zoom = 1;
 		decimal _offsetX = 0;
 		decimal _offsetY = 0;
@@ -156,47 +132,12 @@ namespace CNCLib.GUI
 
 		#region Drag/Drop
 
-		private bool _isdragging = false;
-		private Point3D _mouseDown;
-		private decimal _mouseDownOffsetX;
-		private decimal _mouseDownOffsetY;
-
-		private void PlotterUserControl_MouseDown(object sender, MouseEventArgs e)
-		{
-			{
-				if (!_isdragging)
-				{
-					_mouseDown = FromClient(e.Location);
-					_mouseDownOffsetX = _offsetX;
-					_mouseDownOffsetY = _offsetY;
-				}
-				_isdragging = true;
-			}
-		}
 		private void PlotterUserControl_MouseMove(object sender, MouseEventArgs e)
 		{
 			if (GCodeMousePosition != null)
 			{
 				GCodeMousePosition(this, new GCoderUserControlEventArgs() { GCodePosition = FromClient(e.Location) });
 			}
-
-			if (_isdragging)
-			{
-				Point3D c = FromClient(e.Location);
-				decimal newX = _mouseDownOffsetX - (c.X.Value - _mouseDown.X.Value);
-				decimal newY = _mouseDownOffsetY + (c.Y.Value - _mouseDown.Y.Value);
-				_offsetX = newX; _offsetY = newY;
-				//RecalcClientCoord();
-			}
-		}
-
-		private void PlotterUserControl_MouseUp(object sender, MouseEventArgs e)
-		{
-			if (_isdragging)
-			{
-				Invalidate();
-			}
-			_isdragging = false;
 		}
 
 		#endregion
@@ -206,8 +147,6 @@ namespace CNCLib.GUI
 		private void PlotterUserControl_Paint(object sender, PaintEventArgs e)
 		{
 
-//            Graphics g = this.CreateGraphics();
-//            g.Clear(this.BackColor);
             //Create a Bitmap object with the size of the form
             Bitmap curBitmap = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
             //Create a temporary Graphics object from the bitmap
@@ -217,7 +156,6 @@ namespace CNCLib.GUI
             g1.PixelOffsetMode = PixelOffsetMode.None;
             g1.CompositingQuality = CompositingQuality.HighSpeed;
             g1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
-
 
             //Draw lines on the temporary Graphics object
 
@@ -229,21 +167,6 @@ namespace CNCLib.GUI
             //Dispose of objects
             g1.Dispose();
             curBitmap.Dispose();
-//            g.Dispose();
-/*
-
-            SuspendLayout();
-
-            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            e.Graphics.SmoothingMode = SmoothingMode.None;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.None;
-            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
-
-            _commands.Paint(this, e);
-
-            ResumeLayout();
- */
        }
 
         private Size _lastsize;
