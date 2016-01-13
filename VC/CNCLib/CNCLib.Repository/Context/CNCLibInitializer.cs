@@ -93,7 +93,7 @@ namespace CNCLib.Repository.Context
                 SizeA = 360m,
                 SizeB = 360m,
                 SizeC = 360m,
-                BaudRate = 115200,
+                BaudRate = 250000,
                 BufferSize = 63,
                 CommandToUpper = false,
                 ProbeSizeZ = 25m,

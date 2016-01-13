@@ -1,4 +1,4 @@
-
+﻿////////////////////////////////////////////////////////
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -16,30 +16,20 @@
   http://www.gnu.org/licenses/
 */
 
-#include <StepperLib.h>
-#include <CNCLib.h>
+using Framework.Tools.Drawing;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-#include "MyControl.h"
-#include "GCodeParser.h"
-
-////////////////////////////////////////////////////////////
-
-CMyStepper Stepper;
-
-////////////////////////////////////////////////////////////
-
-void setup()
+namespace CNCLib.GUI
 {
-	StepperSerial.begin(250000);
-//  StepperSerial.begin(115200);
+    public class GCoderUserControlEventArgs : EventArgs
+    {
+        public GCoderUserControlEventArgs()
+        {
+        }
+        public Point3D GCodePosition { get; set; }
+    }
 }
-
-////////////////////////////////////////////////////////////
-
-void loop()
-{
-  Control.Run();
-}
-
-////////////////////////////////////////////////////////////
-  

@@ -33,18 +33,6 @@ using System.Drawing.Drawing2D;
 
 namespace CNCLib.GUI
 {
-	#region EventArg
-
-	public class GCoderUserControlEventArgs : EventArgs
-	{
-		public GCoderUserControlEventArgs()
-		{
-		}
-		public Point3D GCodePosition { get; set; }
-	}
-
-	#endregion
-
 	public partial class GCodeUserControl : UserControl , IOutputCommand
 	{
 		#region crt
@@ -77,12 +65,13 @@ namespace CNCLib.GUI
 		public delegate void GCodeEventHandler(object o, GCoderUserControlEventArgs info);
 
 		public event GCodeEventHandler GCodeMousePosition;
+        public event GCodeEventHandler ZoomOffsetChanged;
 
-		#endregion
+        #endregion
 
-		#region private Members
+        #region private Members
 
-		decimal _zoom = 1;
+        decimal _zoom = 1;
 		decimal _offsetX = 0;
 		decimal _offsetY = 0;
 
@@ -114,8 +103,8 @@ namespace CNCLib.GUI
 			// with e.g.  867
 			// max pt.X = 686 , pt.x can be 0
 			return new Point3D(
-							AdjustX(Tools.MulDiv(SizeX, pt.X, ClientSize.Width - 1, 3)),
-							AdjustY(Tools.MulDiv(SizeY, pt.Y, ClientSize.Height - 1, 3)),
+							AdjustX(Tools.MulDiv(SizeX, pt.X, ClientSize.Width - 1, 3))/Zoom,
+							AdjustY(Tools.MulDiv(SizeY, pt.Y, ClientSize.Height - 1, 3) / Zoom),
 							0);
 		}
 
@@ -128,24 +117,84 @@ namespace CNCLib.GUI
 			return new Point((int)Tools.MulDiv(x, ClientSize.Width, SizeX, 0), (int)Tools.MulDiv(y, ClientSize.Height, SizeY, 0));
 		}
 
-		#endregion
+        #endregion
 
-		#region Drag/Drop
+        #region Drag/Drop
 
-		private void PlotterUserControl_MouseMove(object sender, MouseEventArgs e)
+        private bool _isdragging = false;
+        private Point3D _mouseDown;
+        private decimal _mouseDownOffsetX;
+        private decimal _mouseDownOffsetY;
+
+        private void PlotterUserControl_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+                _zoom *= 1.1m;
+            else
+                _zoom /= 1.1m;
+
+            OnZoomOffsetChanged();
+            Invalidate();
+        }
+
+        private void PlotterUserControl_MouseDown(object sender, MouseEventArgs e)
+        {
+            {
+                if (!_isdragging)
+                {
+                    _mouseDown = FromClient(e.Location);
+                    _mouseDownOffsetX = _offsetX;
+                    _mouseDownOffsetY = _offsetY;
+                }
+                _isdragging = true;
+            }
+        }
+
+        private void PlotterUserControl_MouseMove(object sender, MouseEventArgs e)
 		{
 			if (GCodeMousePosition != null)
 			{
 				GCodeMousePosition(this, new GCoderUserControlEventArgs() { GCodePosition = FromClient(e.Location) });
 			}
-		}
+            if (_isdragging)
+            {
+                _offsetX = _mouseDownOffsetX;
+                _offsetY = _mouseDownOffsetY;
+                Point3D c = FromClient(e.Location);
+                decimal newX = _mouseDownOffsetX - (c.X.Value - _mouseDown.X.Value);
+                decimal newY = _mouseDownOffsetY + (c.Y.Value - _mouseDown.Y.Value);
+                _offsetX = newX;
+                _offsetY = newY;
+                OnZoomOffsetChanged();
+            }
+        }
 
-		#endregion
+        private void PlotterUserControl_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (_isdragging)
+            {
+                Invalidate();
+                OnZoomOffsetChanged();
+            }
+            _isdragging = false;
+        }
 
-		#region private
+        private void OnZoomOffsetChanged()
+        {
+            if (ZoomOffsetChanged != null)
+            {
+                ZoomOffsetChanged(this, new GCoderUserControlEventArgs() );
+            }
+        }
 
-		private void PlotterUserControl_Paint(object sender, PaintEventArgs e)
+        #endregion
+
+        #region private
+
+        private void PlotterUserControl_Paint(object sender, PaintEventArgs e)
 		{
+            if (_normalLine == null)
+               _normalLine = new Pen(BackColor == Color.White ? Color.Black : Color.White, 2);
 
             //Create a Bitmap object with the size of the form
             Bitmap curBitmap = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
@@ -180,12 +229,12 @@ namespace CNCLib.GUI
 			Invalidate();
 		}
 
-		#endregion
+        #endregion
 
 
-		#region IOutput 
+        #region IOutput 
 
-		Pen _normalLine = new Pen(Color.Black, 2);
+        Pen _normalLine; // = new Pen(Color.White, 2);
 		Pen _falseLine  = new Pen(Color.Green, 1);
 		Pen _NoMove		= new Pen(Color.Blue, 1);
         Pen _lasernormalLine = new Pen(Color.Red, 2);

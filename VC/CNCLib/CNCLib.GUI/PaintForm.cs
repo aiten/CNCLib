@@ -259,5 +259,12 @@ namespace CNCLib.GUI
             _gCodeCtrl.OffsetY = _gCodeCtrl.OffsetY + 10;
             _offsetY.Text = _gCodeCtrl.OffsetY.ToString();
         }
+
+        private void _gCodeCtrl_ZoomOffsetChanged(object o, GCoderUserControlEventArgs info)
+        {
+            _offsetX.Text = _gCodeCtrl.OffsetX.ToString();
+            _offsetY.Text = _gCodeCtrl.OffsetY.ToString();
+            _zoom.Text = _gCodeCtrl.Zoom.ToString();
+        }
     }
 }

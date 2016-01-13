@@ -29,25 +29,25 @@
         private void InitializeComponent()
         {
             this._headerPanel = new System.Windows.Forms.Panel();
-            this._redraw = new System.Windows.Forms.Button();
-            this._offsetY = new System.Windows.Forms.TextBox();
             this._offsetX = new System.Windows.Forms.TextBox();
+            this._ofsXPlus = new System.Windows.Forms.Button();
+            this._ofsXMin = new System.Windows.Forms.Button();
+            this._offsetY = new System.Windows.Forms.TextBox();
+            this._ofsYPlus = new System.Windows.Forms.Button();
+            this._ofsYMin = new System.Windows.Forms.Button();
             this._zoom = new System.Windows.Forms.TextBox();
+            this._zoomIn = new System.Windows.Forms.Button();
+            this._zoomOut = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this._redraw = new System.Windows.Forms.Button();
             this._coord = new System.Windows.Forms.Label();
             this._load = new System.Windows.Forms.Button();
             this._save = new System.Windows.Forms.Button();
             this._sendTo = new System.Windows.Forms.Button();
             this._mainPanel = new System.Windows.Forms.Panel();
             this._gCodeCtrl = new CNCLib.GUI.GCodeUserControl();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this._zoomOut = new System.Windows.Forms.Button();
-            this._zoomIn = new System.Windows.Forms.Button();
-            this._ofsXPlus = new System.Windows.Forms.Button();
-            this._ofsXMin = new System.Windows.Forms.Button();
-            this._ofsYPlus = new System.Windows.Forms.Button();
-            this._ofsYMin = new System.Windows.Forms.Button();
             this._headerPanel.SuspendLayout();
             this._mainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -77,15 +77,33 @@
             this._headerPanel.Size = new System.Drawing.Size(687, 59);
             this._headerPanel.TabIndex = 0;
             // 
-            // _redraw
+            // _offsetX
             // 
-            this._redraw.Location = new System.Drawing.Point(498, 3);
-            this._redraw.Name = "_redraw";
-            this._redraw.Size = new System.Drawing.Size(75, 23);
-            this._redraw.TabIndex = 20;
-            this._redraw.Text = "Redraw";
-            this._redraw.UseVisualStyleBackColor = true;
-            this._redraw.Click += new System.EventHandler(this._redraw_Click);
+            this._offsetX.Location = new System.Drawing.Point(366, 8);
+            this._offsetX.Name = "_offsetX";
+            this._offsetX.Size = new System.Drawing.Size(42, 20);
+            this._offsetX.TabIndex = 20;
+            this._offsetX.Text = "0";
+            // 
+            // _ofsXPlus
+            // 
+            this._ofsXPlus.Location = new System.Drawing.Point(438, 7);
+            this._ofsXPlus.Name = "_ofsXPlus";
+            this._ofsXPlus.Size = new System.Drawing.Size(24, 20);
+            this._ofsXPlus.TabIndex = 28;
+            this._ofsXPlus.Text = "+";
+            this._ofsXPlus.UseVisualStyleBackColor = true;
+            this._ofsXPlus.Click += new System.EventHandler(this._ofsXPlus_Click);
+            // 
+            // _ofsXMin
+            // 
+            this._ofsXMin.Location = new System.Drawing.Point(412, 7);
+            this._ofsXMin.Name = "_ofsXMin";
+            this._ofsXMin.Size = new System.Drawing.Size(24, 20);
+            this._ofsXMin.TabIndex = 27;
+            this._ofsXMin.Text = "-";
+            this._ofsXMin.UseVisualStyleBackColor = true;
+            this._ofsXMin.Click += new System.EventHandler(this._ofsXMin_Click);
             // 
             // _offsetY
             // 
@@ -95,13 +113,25 @@
             this._offsetY.TabIndex = 21;
             this._offsetY.Text = "0";
             // 
-            // _offsetX
+            // _ofsYPlus
             // 
-            this._offsetX.Location = new System.Drawing.Point(366, 8);
-            this._offsetX.Name = "_offsetX";
-            this._offsetX.Size = new System.Drawing.Size(42, 20);
-            this._offsetX.TabIndex = 20;
-            this._offsetX.Text = "0";
+            this._ofsYPlus.Location = new System.Drawing.Point(438, 28);
+            this._ofsYPlus.Name = "_ofsYPlus";
+            this._ofsYPlus.Size = new System.Drawing.Size(24, 20);
+            this._ofsYPlus.TabIndex = 30;
+            this._ofsYPlus.Text = "+";
+            this._ofsYPlus.UseVisualStyleBackColor = true;
+            this._ofsYPlus.Click += new System.EventHandler(this._ofsYPlus_Click);
+            // 
+            // _ofsYMin
+            // 
+            this._ofsYMin.Location = new System.Drawing.Point(412, 28);
+            this._ofsYMin.Name = "_ofsYMin";
+            this._ofsYMin.Size = new System.Drawing.Size(24, 20);
+            this._ofsYMin.TabIndex = 29;
+            this._ofsYMin.Text = "-";
+            this._ofsYMin.UseVisualStyleBackColor = true;
+            this._ofsYMin.Click += new System.EventHandler(this._ofsYMin_Click);
             // 
             // _zoom
             // 
@@ -110,6 +140,63 @@
             this._zoom.Size = new System.Drawing.Size(42, 20);
             this._zoom.TabIndex = 19;
             this._zoom.Text = "1";
+            // 
+            // _zoomIn
+            // 
+            this._zoomIn.Location = new System.Drawing.Point(232, 7);
+            this._zoomIn.Name = "_zoomIn";
+            this._zoomIn.Size = new System.Drawing.Size(24, 20);
+            this._zoomIn.TabIndex = 26;
+            this._zoomIn.Text = "+";
+            this._zoomIn.UseVisualStyleBackColor = true;
+            this._zoomIn.Click += new System.EventHandler(this._zoomIn_Click);
+            // 
+            // _zoomOut
+            // 
+            this._zoomOut.Location = new System.Drawing.Point(207, 7);
+            this._zoomOut.Name = "_zoomOut";
+            this._zoomOut.Size = new System.Drawing.Size(24, 20);
+            this._zoomOut.TabIndex = 25;
+            this._zoomOut.Text = "-";
+            this._zoomOut.UseVisualStyleBackColor = true;
+            this._zoomOut.Click += new System.EventHandler(this._zoomOut_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(327, 32);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(33, 13);
+            this.label3.TabIndex = 24;
+            this.label3.Text = "Ofs Y";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(326, 11);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(33, 13);
+            this.label2.TabIndex = 23;
+            this.label2.Text = "Ofs X";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(125, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(34, 13);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "Zoom";
+            // 
+            // _redraw
+            // 
+            this._redraw.Location = new System.Drawing.Point(498, 3);
+            this._redraw.Name = "_redraw";
+            this._redraw.Size = new System.Drawing.Size(75, 23);
+            this._redraw.TabIndex = 20;
+            this._redraw.Text = "Redraw";
+            this._redraw.UseVisualStyleBackColor = true;
+            this._redraw.Click += new System.EventHandler(this._redraw_Click);
             // 
             // _coord
             // 
@@ -162,7 +249,7 @@
             // _gCodeCtrl
             // 
             this._gCodeCtrl.AutoScroll = true;
-            this._gCodeCtrl.BackColor = System.Drawing.Color.White;
+            this._gCodeCtrl.BackColor = System.Drawing.Color.Black;
             this._gCodeCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
             this._gCodeCtrl.Location = new System.Drawing.Point(0, 0);
             this._gCodeCtrl.Name = "_gCodeCtrl";
@@ -194,93 +281,7 @@
             0,
             0});
             this._gCodeCtrl.GCodeMousePosition += new CNCLib.GUI.GCodeUserControl.GCodeEventHandler(this._plotterCtrl_GCodeMousePosition);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(125, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(34, 13);
-            this.label1.TabIndex = 22;
-            this.label1.Text = "Zoom";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(326, 11);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(33, 13);
-            this.label2.TabIndex = 23;
-            this.label2.Text = "Ofs X";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(327, 32);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(33, 13);
-            this.label3.TabIndex = 24;
-            this.label3.Text = "Ofs Y";
-            // 
-            // _zoomOut
-            // 
-            this._zoomOut.Location = new System.Drawing.Point(207, 7);
-            this._zoomOut.Name = "_zoomOut";
-            this._zoomOut.Size = new System.Drawing.Size(24, 20);
-            this._zoomOut.TabIndex = 25;
-            this._zoomOut.Text = "-";
-            this._zoomOut.UseVisualStyleBackColor = true;
-            this._zoomOut.Click += new System.EventHandler(this._zoomOut_Click);
-            // 
-            // _zoomIn
-            // 
-            this._zoomIn.Location = new System.Drawing.Point(232, 7);
-            this._zoomIn.Name = "_zoomIn";
-            this._zoomIn.Size = new System.Drawing.Size(24, 20);
-            this._zoomIn.TabIndex = 26;
-            this._zoomIn.Text = "+";
-            this._zoomIn.UseVisualStyleBackColor = true;
-            this._zoomIn.Click += new System.EventHandler(this._zoomIn_Click);
-            // 
-            // _ofsXPlus
-            // 
-            this._ofsXPlus.Location = new System.Drawing.Point(438, 7);
-            this._ofsXPlus.Name = "_ofsXPlus";
-            this._ofsXPlus.Size = new System.Drawing.Size(24, 20);
-            this._ofsXPlus.TabIndex = 28;
-            this._ofsXPlus.Text = "+";
-            this._ofsXPlus.UseVisualStyleBackColor = true;
-            this._ofsXPlus.Click += new System.EventHandler(this._ofsXPlus_Click);
-            // 
-            // _ofsXMin
-            // 
-            this._ofsXMin.Location = new System.Drawing.Point(412, 7);
-            this._ofsXMin.Name = "_ofsXMin";
-            this._ofsXMin.Size = new System.Drawing.Size(24, 20);
-            this._ofsXMin.TabIndex = 27;
-            this._ofsXMin.Text = "-";
-            this._ofsXMin.UseVisualStyleBackColor = true;
-            this._ofsXMin.Click += new System.EventHandler(this._ofsXMin_Click);
-            // 
-            // _ofsYPlus
-            // 
-            this._ofsYPlus.Location = new System.Drawing.Point(438, 28);
-            this._ofsYPlus.Name = "_ofsYPlus";
-            this._ofsYPlus.Size = new System.Drawing.Size(24, 20);
-            this._ofsYPlus.TabIndex = 30;
-            this._ofsYPlus.Text = "+";
-            this._ofsYPlus.UseVisualStyleBackColor = true;
-            this._ofsYPlus.Click += new System.EventHandler(this._ofsYPlus_Click);
-            // 
-            // _ofsYMin
-            // 
-            this._ofsYMin.Location = new System.Drawing.Point(412, 28);
-            this._ofsYMin.Name = "_ofsYMin";
-            this._ofsYMin.Size = new System.Drawing.Size(24, 20);
-            this._ofsYMin.TabIndex = 29;
-            this._ofsYMin.Text = "-";
-            this._ofsYMin.UseVisualStyleBackColor = true;
-            this._ofsYMin.Click += new System.EventHandler(this._ofsYMin_Click);
+            this._gCodeCtrl.ZoomOffsetChanged += new CNCLib.GUI.GCodeUserControl.GCodeEventHandler(this._gCodeCtrl_ZoomOffsetChanged);
             // 
             // PaintForm
             // 
