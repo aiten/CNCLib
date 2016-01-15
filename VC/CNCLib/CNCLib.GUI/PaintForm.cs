@@ -216,7 +216,7 @@ namespace CNCLib.GUI
 
 		private void _plotterCtrl_GCodeMousePosition(object o, GCoderUserControlEventArgs info)
 		{
-			_coord.Text = info.GCodePosition.X.ToString() + " : " + info.GCodePosition.Y.ToString();
+			_coord.Text = decimal.Round(info.GCodePosition.X.Value,3).ToString() + " : " + decimal.Round(info.GCodePosition.Y.Value,3).ToString();
 		}
 
 		private void PaintForm_Load(object sender, EventArgs e)
@@ -266,5 +266,10 @@ namespace CNCLib.GUI
             _offsetY.Text = _gCodeCtrl.OffsetY.ToString();
             _zoom.Text = _gCodeCtrl.Zoom.ToString();
         }
-    }
+
+		private void colorComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			_gCodeCtrl.BackColor = _colorCB.Color;
+		}
+	}
 }

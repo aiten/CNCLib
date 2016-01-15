@@ -56,6 +56,9 @@
     <Compile Include="..\CNCLibAssemblyInfo.cs">
       <Link>Properties\CNCLibAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ColorCombobox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GCoderUserControlEventArgs.cs" />
     <Compile Include="Load\LoadOptionForm.cs">
       <SubType>Form</SubType>

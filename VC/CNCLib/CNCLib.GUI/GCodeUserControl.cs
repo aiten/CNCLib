@@ -280,7 +280,11 @@ namespace CNCLib.GUI
             }
         }
 
-		#endregion	
+		#endregion
 
+		private void GCodeUserControl_BackColorChanged(object sender, EventArgs e)
+		{
+			_normalLine = null;
+		}
 	}
 }
