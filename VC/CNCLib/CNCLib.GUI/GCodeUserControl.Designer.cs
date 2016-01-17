@@ -37,7 +37,6 @@
 			this.AutoScroll = true;
 			this.Name = "GCodeUserControl";
 			this.Size = new System.Drawing.Size(419, 270);
-			this.BackColorChanged += new System.EventHandler(this.GCodeUserControl_BackColorChanged);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotterUserControl_Paint);
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PlotterUserControl_MouseDown);
 			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PlotterUserControl_MouseMove);

@@ -39,28 +39,30 @@ namespace CNCLib.GUI
 
 		public GCodeUserControl()
 		{
-			SizeX = 130.000m;
-			SizeY = 45.000m;
-			OffsetX = 0;
-			OffsetY = 0;
-
             InitializeComponent();
 
             SetStyle(ControlStyles.DoubleBuffer, true);
+            InitPen();
         }
 
         #endregion
 
         #region Properties
 
-        public decimal SizeX { get; set; }
-		public decimal SizeY { get; set; }
+        public decimal SizeX { get { return _sizeX; } set { _sizeX = value; CalcRatio(); } }
+        public decimal SizeY { get { return _sizeY; } set { _sizeY = value; CalcRatio(); } }
 
-		public decimal Zoom { get { return _zoom; } set { _zoom = value; Invalidate(); } }
-		public decimal OffsetX { get { return _offsetX; } set { _offsetX = value; Invalidate(); } }
-		public decimal OffsetY { get { return _offsetY; } set { _offsetY = value; Invalidate(); } }
+        public bool KeepRatio { get { return _keepRatio; } set { _keepRatio = value; ReInitDraw(); } }
 
-		public CommandList Commands { get { return _commands; } }
+        public double Zoom { get { return _zoom; } set { _zoom = value; ReInitDraw(); } }
+		public decimal OffsetX { get { return _offsetX; } set { _offsetX = value; ReInitDraw(); } }
+		public decimal OffsetY { get { return _offsetY; } set { _offsetY = value; ReInitDraw(); } }
+        public double PenSize { get { return _penSize; } set { _penSize = value; ReInitDraw(); } }
+        public double LaserPenSize { get { return _laserPenSize; } set { _laserPenSize = value; ReInitDraw(); } }
+
+        public Color MachineColor { get { return _machineColor; } set { _machineColor = value; ReInitDraw(); } }
+
+        public CommandList Commands { get { return _commands; } }
 
 		public delegate void GCodeEventHandler(object o, GCoderUserControlEventArgs info);
 
@@ -71,11 +73,19 @@ namespace CNCLib.GUI
 
         #region private Members
 
-        decimal _zoom = 1;
-		decimal _offsetX = 0;
+        bool _keepRatio = true;
+        double  _zoom = 1;
+        decimal _sizeX = 130.000m;
+        decimal _sizeY = 45.000m;
+        decimal _offsetX = 0;
 		decimal _offsetY = 0;
+        double _penSize = 2;
+        double   _laserPenSize = 0.254;
+        double _ratioX = 1;
+        double _ratioY = 1;
+        Color _machineColor = Color.Black;
 
-		CommandList _commands = new CommandList();
+        CommandList _commands = new CommandList();
 
 		private ArduinoSerialCommunication Com
 		{
@@ -103,8 +113,8 @@ namespace CNCLib.GUI
 			// with e.g.  867
 			// max pt.X = 686 , pt.x can be 0
 			return new Point3D(
-							AdjustX(Tools.MulDiv(SizeX, pt.X, ClientSize.Width - 1, 3))/Zoom,
-							AdjustY(Tools.MulDiv(SizeY, pt.Y, ClientSize.Height - 1, 3) / Zoom),
+							AdjustX((decimal) Math.Round(pt.X / _ratioX / Zoom, 3)),
+                            AdjustY((decimal) Math.Round(pt.Y / _ratioY / Zoom, 3)),
 							0);
 		}
 
@@ -112,9 +122,9 @@ namespace CNCLib.GUI
 		{
 			decimal ptx = pt.X.HasValue ? pt.X.Value : 0;
 			decimal pty = pt.Y.HasValue ? pt.Y.Value : 0;
-			decimal x = (ptx - OffsetX) * Zoom;
-			decimal y = (SizeY - (pty + OffsetY)) * Zoom;
-			return new Point((int)Tools.MulDiv(x, ClientSize.Width, SizeX, 0), (int)Tools.MulDiv(y, ClientSize.Height, SizeY, 0));
+			double x = (double)(ptx - OffsetX) * Zoom;
+            double y = (double)(SizeY - (pty + OffsetY)) * Zoom;
+			return new Point((int) Math.Round(_ratioX * x, 0), (int)Math.Round(_ratioY*y));
 		}
 
         #endregion
@@ -129,9 +139,9 @@ namespace CNCLib.GUI
         private void PlotterUserControl_MouseWheel(object sender, MouseEventArgs e)
         {
             if (e.Delta > 0)
-                _zoom *= 1.1m;
+                _zoom *= 1.1;
             else
-                _zoom /= 1.1m;
+                _zoom /= 1.1;
 
             OnZoomOffsetChanged();
             Invalidate();
@@ -183,6 +193,7 @@ namespace CNCLib.GUI
         {
             if (ZoomOffsetChanged != null)
             {
+                InitPen();
                 ZoomOffsetChanged(this, new GCoderUserControlEventArgs() );
             }
         }
@@ -191,11 +202,24 @@ namespace CNCLib.GUI
 
         #region private
 
+        private void ReInitDraw()
+        {
+            InitPen();
+            Invalidate();
+        }
+        private void InitPen()
+        {
+            _normalLine = new Pen(MachineColor == Color.White ? Color.Black : Color.White, (float)_penSize);
+            _falseLine = new Pen(Color.Green, (float)(_penSize /2.0));
+            _NoMove = new Pen(Color.Blue, (float)(_penSize / 2.0));
+            //            _lasernormalLine = new Pen(Color.Red, _penSize);
+            _lasernormalLine = new Pen(Color.Red, ToClient(new Point3D(OffsetX+(decimal)LaserPenSize,0m,0m)).X);
+            _laserfalseLine = new Pen(Color.Orange, (float)(_penSize / 2.0));
+            _machineLine = new Pen(Color.LightBlue, 1);
+        }
+
         private void PlotterUserControl_Paint(object sender, PaintEventArgs e)
 		{
-            if (_normalLine == null)
-               _normalLine = new Pen(BackColor == Color.White ? Color.Black : Color.White, 2);
-
             //Create a Bitmap object with the size of the form
             Bitmap curBitmap = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
             //Create a temporary Graphics object from the bitmap
@@ -209,6 +233,14 @@ namespace CNCLib.GUI
             //Draw lines on the temporary Graphics object
 
             var ee = new PaintEventArgs(g1, new Rectangle());
+
+            Point from = ToClient(new Point3D(0, SizeY, 0));
+            Point to = ToClient(new Point3D(SizeX, 0, 0m));
+            Size sz = new Size(to.X - from.X, to.Y - from.Y);
+            Rectangle rc = new Rectangle(from, sz);
+
+            g1.FillRectangle(new SolidBrush(MachineColor), rc);
+
             _commands.Paint(this, ee);
 
             //Call DrawImage of Graphics and draw bitmap
@@ -216,6 +248,18 @@ namespace CNCLib.GUI
             //Dispose of objects
             g1.Dispose();
             curBitmap.Dispose();
+       }
+
+        private void CalcRatio()
+        {
+            _ratioX = ClientSize.Width / (double) SizeX;
+            _ratioY = ClientSize.Height / (double) SizeY;
+
+            if (KeepRatio)
+            {
+                if (_ratioX > _ratioY) _ratioX = _ratioY;
+                else if (_ratioX < _ratioY) _ratioY = _ratioX;
+            }
        }
 
         private Size _lastsize;
@@ -226,19 +270,20 @@ namespace CNCLib.GUI
 				//RecalcClientCoord();
 			}
 			_lastsize = Size;
-			Invalidate();
+            CalcRatio();
+            Invalidate();
 		}
 
         #endregion
 
-
         #region IOutput 
 
-        Pen _normalLine; // = new Pen(Color.White, 2);
-		Pen _falseLine  = new Pen(Color.Green, 1);
-		Pen _NoMove		= new Pen(Color.Blue, 1);
-        Pen _lasernormalLine = new Pen(Color.Red, 2);
-        Pen _laserfalseLine = new Pen(Color.Orange, 1);
+        Pen _normalLine;
+		Pen _falseLine;
+		Pen _NoMove;
+        Pen _lasernormalLine;
+        Pen _laserfalseLine;
+        Pen _machineLine;
 
         public void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo)
 		{
@@ -281,10 +326,5 @@ namespace CNCLib.GUI
         }
 
 		#endregion
-
-		private void GCodeUserControl_BackColorChanged(object sender, EventArgs e)
-		{
-			_normalLine = null;
-		}
 	}
 }

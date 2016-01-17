@@ -45,8 +45,10 @@ namespace CNCLib.GUI
 		{
 			InitializeComponent();
 			SetMachineSize();
+            ValuesFromControl();
 
-			new CNCLib.GCode.Commands.CommandFactory();
+
+            new CNCLib.GCode.Commands.CommandFactory();
 		}
 
 		public void SetMachineSize()
@@ -197,24 +199,41 @@ namespace CNCLib.GUI
 			}
         }
 
-		private void _redraw_Click(object sender, EventArgs e)
-		{
-			decimal val;
-			if (decimal.TryParse(_zoom.Text, out val))
-			{
-				_gCodeCtrl.Zoom = val;
-			}
-			if (decimal.TryParse(_offsetX.Text, out val))
-			{
-				_gCodeCtrl.OffsetX = val;
-			}
-			if (decimal.TryParse(_offsetY.Text, out val))
-			{
-				_gCodeCtrl.OffsetY = val;
-			}
-		}
+        private void ValuesFromControl()
+        {
+            _offsetX.Text = _gCodeCtrl.OffsetX.ToString();
+            _offsetY.Text = _gCodeCtrl.OffsetY.ToString();
+            _zoom.Text = _gCodeCtrl.Zoom.ToString();
+            _laserSize.Text = _gCodeCtrl.LaserPenSize.ToString();
+        }
 
-		private void _plotterCtrl_GCodeMousePosition(object o, GCoderUserControlEventArgs info)
+        private void ValuesToControl()
+        {
+            decimal valDec;
+            double valDbl;
+            if (double.TryParse(_zoom.Text, out valDbl))
+            {
+                _gCodeCtrl.Zoom = valDbl;
+            }
+            if (decimal.TryParse(_offsetX.Text, out valDec))
+            {
+                _gCodeCtrl.OffsetX = valDec;
+            }
+            if (decimal.TryParse(_offsetY.Text, out valDec))
+            {
+                _gCodeCtrl.OffsetY = valDec;
+            }
+            if (double.TryParse(_laserSize.Text, out valDbl))
+            {
+                _gCodeCtrl.LaserPenSize = valDbl;
+            }
+        }
+        private void _redraw_Click(object sender, EventArgs e)
+        {
+            ValuesToControl();
+        }
+
+        private void _plotterCtrl_GCodeMousePosition(object o, GCoderUserControlEventArgs info)
 		{
 			_coord.Text = decimal.Round(info.GCodePosition.X.Value,3).ToString() + " : " + decimal.Round(info.GCodePosition.Y.Value,3).ToString();
 		}
@@ -226,13 +245,13 @@ namespace CNCLib.GUI
 
         private void _zoomOut_Click(object sender, EventArgs e)
         {
-            _gCodeCtrl.Zoom = _gCodeCtrl.Zoom * 0.9m;
+            _gCodeCtrl.Zoom = _gCodeCtrl.Zoom * 0.9;
             _zoom.Text = _gCodeCtrl.Zoom.ToString();
         }
 
         private void _zoomIn_Click(object sender, EventArgs e)
         {
-            _gCodeCtrl.Zoom = _gCodeCtrl.Zoom / 0.9m;
+            _gCodeCtrl.Zoom = _gCodeCtrl.Zoom / 0.9;
             _zoom.Text = _gCodeCtrl.Zoom.ToString();
         }
 
@@ -262,14 +281,12 @@ namespace CNCLib.GUI
 
         private void _gCodeCtrl_ZoomOffsetChanged(object o, GCoderUserControlEventArgs info)
         {
-            _offsetX.Text = _gCodeCtrl.OffsetX.ToString();
-            _offsetY.Text = _gCodeCtrl.OffsetY.ToString();
-            _zoom.Text = _gCodeCtrl.Zoom.ToString();
+            ValuesFromControl();
         }
 
-		private void colorComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void colorComboBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			_gCodeCtrl.BackColor = _colorCB.Color;
+			_gCodeCtrl.MachineColor = _colorCB.Color;
 		}
 	}
 }
