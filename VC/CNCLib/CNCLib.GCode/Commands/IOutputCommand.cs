@@ -25,9 +25,9 @@ namespace CNCLib.GCode.Commands
         NoDraw,
         NoMove,
         Fast,            // Go
-        Normal,          // G1,G2
+        Cut,          // G1,G2
         LaserFast,       // Go
-        LaserNormal      // G1,G2
+        LaserCut      // G1,G2
     }
 
     public interface IOutputCommand

@@ -131,14 +131,14 @@ namespace CNCLib.GCode.Commands
                 switch (movetype)
                 {
                     case MoveType.Fast:   return DrawType.LaserFast;
-                    case MoveType.Normal: return DrawType.LaserNormal;
+                    case MoveType.Normal: return DrawType.LaserCut;
                 }
             }
 
             switch (movetype)
             {
                 case MoveType.Fast: return DrawType.Fast;
-                case MoveType.Normal: return DrawType.Normal;
+                case MoveType.Normal: return DrawType.Cut;
             }
 
             return DrawType.NoDraw;

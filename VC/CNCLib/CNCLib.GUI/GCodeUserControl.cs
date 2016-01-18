@@ -30,6 +30,7 @@ using Framework.Tools.Drawing;
 using CNCLib.GCode.Commands;
 using Framework.Arduino;
 using System.Drawing.Drawing2D;
+using System.Diagnostics;
 
 namespace CNCLib.GUI
 {
@@ -57,8 +58,8 @@ namespace CNCLib.GUI
         public double Zoom { get { return _zoom; } set { _zoom = value; ReInitDraw(); } }
 		public decimal OffsetX { get { return _offsetX; } set { _offsetX = value; ReInitDraw(); } }
 		public decimal OffsetY { get { return _offsetY; } set { _offsetY = value; ReInitDraw(); } }
-        public double PenSize { get { return _penSize; } set { _penSize = value; ReInitDraw(); } }
-        public double LaserPenSize { get { return _laserPenSize; } set { _laserPenSize = value; ReInitDraw(); } }
+        public double CutterSize { get { return _cutterSize; } set { _cutterSize = value; ReInitDraw(); } }
+        public double LaserSize { get { return _laserSize; } set { _laserSize = value; ReInitDraw(); } }
 
         public Color MachineColor { get { return _machineColor; } set { _machineColor = value; ReInitDraw(); } }
 
@@ -73,17 +74,17 @@ namespace CNCLib.GUI
 
         #region private Members
 
-        bool _keepRatio = true;
+        bool    _keepRatio = true;
         double  _zoom = 1;
         decimal _sizeX = 130.000m;
         decimal _sizeY = 45.000m;
         decimal _offsetX = 0;
 		decimal _offsetY = 0;
-        double _penSize = 2;
-        double   _laserPenSize = 0.254;
-        double _ratioX = 1;
-        double _ratioY = 1;
-        Color _machineColor = Color.Black;
+        double  _cutterSize = 0;
+        double  _laserSize = 0.254;
+        double  _ratioX = 1;
+        double  _ratioY = 1;
+        Color   _machineColor = Color.Black;
 
         CommandList _commands = new CommandList();
 
@@ -135,8 +136,9 @@ namespace CNCLib.GUI
         private Point3D _mouseDown;
         private decimal _mouseDownOffsetX;
         private decimal _mouseDownOffsetY;
+        private Stopwatch _sw = new Stopwatch();
 
-        private void PlotterUserControl_MouseWheel(object sender, MouseEventArgs e)
+        private void GCodeUserControl_MouseWheel(object sender, MouseEventArgs e)
         {
             if (e.Delta > 0)
                 _zoom *= 1.1;
@@ -147,7 +149,7 @@ namespace CNCLib.GUI
             Invalidate();
         }
 
-        private void PlotterUserControl_MouseDown(object sender, MouseEventArgs e)
+        private void GCodeUserControl_MouseDown(object sender, MouseEventArgs e)
         {
             {
                 if (!_isdragging)
@@ -155,12 +157,13 @@ namespace CNCLib.GUI
                     _mouseDown = FromClient(e.Location);
                     _mouseDownOffsetX = _offsetX;
                     _mouseDownOffsetY = _offsetY;
+                    _sw.Start();
                 }
                 _isdragging = true;
             }
         }
 
-        private void PlotterUserControl_MouseMove(object sender, MouseEventArgs e)
+        private void GCodeUserControl_MouseMove(object sender, MouseEventArgs e)
 		{
 			if (GCodeMousePosition != null)
 			{
@@ -176,10 +179,15 @@ namespace CNCLib.GUI
                 _offsetX = newX;
                 _offsetY = newY;
                 OnZoomOffsetChanged();
+                if (_sw.ElapsedMilliseconds > 300)
+                {
+                    _sw.Start();
+                    Invalidate();
+                }
             }
         }
 
-        private void PlotterUserControl_MouseUp(object sender, MouseEventArgs e)
+        private void GCodeUserControl_MouseUp(object sender, MouseEventArgs e)
         {
             if (_isdragging)
             {
@@ -209,12 +217,18 @@ namespace CNCLib.GUI
         }
         private void InitPen()
         {
-            _normalLine = new Pen(MachineColor == Color.White ? Color.Black : Color.White, (float)_penSize);
-            _falseLine = new Pen(Color.Green, (float)(_penSize /2.0));
-            _NoMove = new Pen(Color.Blue, (float)(_penSize / 2.0));
-            //            _lasernormalLine = new Pen(Color.Red, _penSize);
-            _lasernormalLine = new Pen(Color.Red, ToClient(new Point3D(OffsetX+(decimal)LaserPenSize,0m,0m)).X);
-            _laserfalseLine = new Pen(Color.Orange, (float)(_penSize / 2.0));
+            Color cutColor = MachineColor == Color.White ? Color.Black : Color.White;
+            float cutsize = CutterSize > 0 ? (float)ToClient(new Point3D(OffsetX + (decimal)CutterSize, 0m, 0m)).X : 2;
+            float fastSize = 0.5f;
+            _cutLine = new Pen(cutColor, cutsize);
+            _cutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+            _cutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+            _fastLine = new Pen(Color.Green, fastSize);
+            _NoMove = new Pen(Color.Blue, fastSize);
+            _laserCutLine = new Pen(Color.Red, ToClient(new Point3D(OffsetX+(decimal)LaserSize,0m,0m)).X);
+            _laserCutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+            _laserCutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+            _laserFastLine = new Pen(Color.Orange, (float)(fastSize / 2.0));
             _machineLine = new Pen(Color.LightBlue, 1);
         }
 
@@ -278,11 +292,11 @@ namespace CNCLib.GUI
 
         #region IOutput 
 
-        Pen _normalLine;
-		Pen _falseLine;
-		Pen _NoMove;
-        Pen _lasernormalLine;
-        Pen _laserfalseLine;
+        Pen _NoMove;
+        Pen _cutLine;
+		Pen _fastLine;
+        Pen _laserCutLine;
+        Pen _laserFastLine;
         Pen _machineLine;
 
         public void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo)
@@ -318,10 +332,10 @@ namespace CNCLib.GUI
 			{
 				default:
 				case DrawType.NoMove: return _NoMove;
-				case DrawType.Fast: return _falseLine;
-				case DrawType.Normal: return _normalLine;
-                case DrawType.LaserFast: return _laserfalseLine;
-                case DrawType.LaserNormal: return _lasernormalLine;
+				case DrawType.Fast: return _fastLine;
+				case DrawType.Cut: return _cutLine;
+                case DrawType.LaserFast: return _laserFastLine;
+                case DrawType.LaserCut: return _laserCutLine;
             }
         }
 

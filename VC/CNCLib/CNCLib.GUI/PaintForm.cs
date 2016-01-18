@@ -204,7 +204,8 @@ namespace CNCLib.GUI
             _offsetX.Text = _gCodeCtrl.OffsetX.ToString();
             _offsetY.Text = _gCodeCtrl.OffsetY.ToString();
             _zoom.Text = _gCodeCtrl.Zoom.ToString();
-            _laserSize.Text = _gCodeCtrl.LaserPenSize.ToString();
+            _cutterSize.Text = _gCodeCtrl.CutterSize.ToString();
+            _laserSize.Text = _gCodeCtrl.LaserSize.ToString();
         }
 
         private void ValuesToControl()
@@ -225,7 +226,11 @@ namespace CNCLib.GUI
             }
             if (double.TryParse(_laserSize.Text, out valDbl))
             {
-                _gCodeCtrl.LaserPenSize = valDbl;
+                _gCodeCtrl.LaserSize = valDbl;
+            }
+            if (double.TryParse(_cutterSize.Text, out valDbl))
+            {
+                _gCodeCtrl.CutterSize = valDbl;
             }
         }
         private void _redraw_Click(object sender, EventArgs e)

@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this._headerPanel = new System.Windows.Forms.Panel();
+            this._laserSize = new System.Windows.Forms.TextBox();
+            this._laserLbL = new System.Windows.Forms.Label();
+            this._cutterSize = new System.Windows.Forms.TextBox();
+            this._cutterLbl = new System.Windows.Forms.Label();
             this._colorCB = new CNCLib.GUI.ColorComboBox();
             this._offsetX = new System.Windows.Forms.TextBox();
             this._ofsXPlus = new System.Windows.Forms.Button();
@@ -39,9 +43,9 @@
             this._zoom = new System.Windows.Forms.TextBox();
             this._zoomIn = new System.Windows.Forms.Button();
             this._zoomOut = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this._ofsYLbl = new System.Windows.Forms.Label();
+            this._ofsXLbl = new System.Windows.Forms.Label();
+            this._zoomLbl = new System.Windows.Forms.Label();
             this._redraw = new System.Windows.Forms.Button();
             this._coord = new System.Windows.Forms.Label();
             this._load = new System.Windows.Forms.Button();
@@ -49,29 +53,29 @@
             this._sendTo = new System.Windows.Forms.Button();
             this._mainPanel = new System.Windows.Forms.Panel();
             this._gCodeCtrl = new CNCLib.GUI.GCodeUserControl();
-            this._laserSize = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this._headerPanel.SuspendLayout();
             this._mainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // _headerPanel
             // 
-            this._headerPanel.Controls.Add(this._laserSize);
-            this._headerPanel.Controls.Add(this.label4);
-            this._headerPanel.Controls.Add(this._colorCB);
-            this._headerPanel.Controls.Add(this._offsetX);
-            this._headerPanel.Controls.Add(this._ofsXPlus);
-            this._headerPanel.Controls.Add(this._ofsXMin);
-            this._headerPanel.Controls.Add(this._offsetY);
-            this._headerPanel.Controls.Add(this._ofsYPlus);
-            this._headerPanel.Controls.Add(this._ofsYMin);
+            this._headerPanel.Controls.Add(this._zoomLbl);
             this._headerPanel.Controls.Add(this._zoom);
             this._headerPanel.Controls.Add(this._zoomIn);
             this._headerPanel.Controls.Add(this._zoomOut);
-            this._headerPanel.Controls.Add(this.label3);
-            this._headerPanel.Controls.Add(this.label2);
-            this._headerPanel.Controls.Add(this.label1);
+            this._headerPanel.Controls.Add(this._colorCB);
+            this._headerPanel.Controls.Add(this._ofsXLbl);
+            this._headerPanel.Controls.Add(this._offsetX);
+            this._headerPanel.Controls.Add(this._ofsXPlus);
+            this._headerPanel.Controls.Add(this._ofsXMin);
+            this._headerPanel.Controls.Add(this._ofsYLbl);
+            this._headerPanel.Controls.Add(this._offsetY);
+            this._headerPanel.Controls.Add(this._ofsYPlus);
+            this._headerPanel.Controls.Add(this._ofsYMin);
+            this._headerPanel.Controls.Add(this._laserLbL);
+            this._headerPanel.Controls.Add(this._laserSize);
+            this._headerPanel.Controls.Add(this._cutterLbl);
+            this._headerPanel.Controls.Add(this._cutterSize);
             this._headerPanel.Controls.Add(this._redraw);
             this._headerPanel.Controls.Add(this._coord);
             this._headerPanel.Controls.Add(this._load);
@@ -80,8 +84,40 @@
             this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this._headerPanel.Location = new System.Drawing.Point(0, 0);
             this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(687, 59);
+            this._headerPanel.Size = new System.Drawing.Size(784, 59);
             this._headerPanel.TabIndex = 0;
+            // 
+            // _laserSize
+            // 
+            this._laserSize.Location = new System.Drawing.Point(453, 8);
+            this._laserSize.Name = "_laserSize";
+            this._laserSize.Size = new System.Drawing.Size(42, 20);
+            this._laserSize.TabIndex = 34;
+            // 
+            // _laserLbL
+            // 
+            this._laserLbL.AutoSize = true;
+            this._laserLbL.Location = new System.Drawing.Point(414, 12);
+            this._laserLbL.Name = "_laserLbL";
+            this._laserLbL.Size = new System.Drawing.Size(33, 13);
+            this._laserLbL.TabIndex = 35;
+            this._laserLbL.Text = "Laser";
+            // 
+            // _cutterSize
+            // 
+            this._cutterSize.Location = new System.Drawing.Point(453, 28);
+            this._cutterSize.Name = "_cutterSize";
+            this._cutterSize.Size = new System.Drawing.Size(42, 20);
+            this._cutterSize.TabIndex = 32;
+            // 
+            // _cutterLbl
+            // 
+            this._cutterLbl.AutoSize = true;
+            this._cutterLbl.Location = new System.Drawing.Point(414, 32);
+            this._cutterLbl.Name = "_cutterLbl";
+            this._cutterLbl.Size = new System.Drawing.Size(35, 13);
+            this._cutterLbl.TabIndex = 33;
+            this._cutterLbl.Text = "Cutter";
             // 
             // _colorCB
             // 
@@ -374,8 +410,290 @@
             "White",
             "WhiteSmoke",
             "Yellow",
+            "YellowGreen",
+            "Transparent",
+            "AliceBlue",
+            "AntiqueWhite",
+            "Aqua",
+            "Aquamarine",
+            "Azure",
+            "Beige",
+            "Bisque",
+            "Black",
+            "BlanchedAlmond",
+            "Blue",
+            "BlueViolet",
+            "Brown",
+            "BurlyWood",
+            "CadetBlue",
+            "Chartreuse",
+            "Chocolate",
+            "Coral",
+            "CornflowerBlue",
+            "Cornsilk",
+            "Crimson",
+            "Cyan",
+            "DarkBlue",
+            "DarkCyan",
+            "DarkGoldenrod",
+            "DarkGray",
+            "DarkGreen",
+            "DarkKhaki",
+            "DarkMagenta",
+            "DarkOliveGreen",
+            "DarkOrange",
+            "DarkOrchid",
+            "DarkRed",
+            "DarkSalmon",
+            "DarkSeaGreen",
+            "DarkSlateBlue",
+            "DarkSlateGray",
+            "DarkTurquoise",
+            "DarkViolet",
+            "DeepPink",
+            "DeepSkyBlue",
+            "DimGray",
+            "DodgerBlue",
+            "Firebrick",
+            "FloralWhite",
+            "ForestGreen",
+            "Fuchsia",
+            "Gainsboro",
+            "GhostWhite",
+            "Gold",
+            "Goldenrod",
+            "Gray",
+            "Green",
+            "GreenYellow",
+            "Honeydew",
+            "HotPink",
+            "IndianRed",
+            "Indigo",
+            "Ivory",
+            "Khaki",
+            "Lavender",
+            "LavenderBlush",
+            "LawnGreen",
+            "LemonChiffon",
+            "LightBlue",
+            "LightCoral",
+            "LightCyan",
+            "LightGoldenrodYellow",
+            "LightGreen",
+            "LightGray",
+            "LightPink",
+            "LightSalmon",
+            "LightSeaGreen",
+            "LightSkyBlue",
+            "LightSlateGray",
+            "LightSteelBlue",
+            "LightYellow",
+            "Lime",
+            "LimeGreen",
+            "Linen",
+            "Magenta",
+            "Maroon",
+            "MediumAquamarine",
+            "MediumBlue",
+            "MediumOrchid",
+            "MediumPurple",
+            "MediumSeaGreen",
+            "MediumSlateBlue",
+            "MediumSpringGreen",
+            "MediumTurquoise",
+            "MediumVioletRed",
+            "MidnightBlue",
+            "MintCream",
+            "MistyRose",
+            "Moccasin",
+            "NavajoWhite",
+            "Navy",
+            "OldLace",
+            "Olive",
+            "OliveDrab",
+            "Orange",
+            "OrangeRed",
+            "Orchid",
+            "PaleGoldenrod",
+            "PaleGreen",
+            "PaleTurquoise",
+            "PaleVioletRed",
+            "PapayaWhip",
+            "PeachPuff",
+            "Peru",
+            "Pink",
+            "Plum",
+            "PowderBlue",
+            "Purple",
+            "Red",
+            "RosyBrown",
+            "RoyalBlue",
+            "SaddleBrown",
+            "Salmon",
+            "SandyBrown",
+            "SeaGreen",
+            "SeaShell",
+            "Sienna",
+            "Silver",
+            "SkyBlue",
+            "SlateBlue",
+            "SlateGray",
+            "Snow",
+            "SpringGreen",
+            "SteelBlue",
+            "Tan",
+            "Teal",
+            "Thistle",
+            "Tomato",
+            "Turquoise",
+            "Violet",
+            "Wheat",
+            "White",
+            "WhiteSmoke",
+            "Yellow",
+            "YellowGreen",
+            "Transparent",
+            "AliceBlue",
+            "AntiqueWhite",
+            "Aqua",
+            "Aquamarine",
+            "Azure",
+            "Beige",
+            "Bisque",
+            "Black",
+            "BlanchedAlmond",
+            "Blue",
+            "BlueViolet",
+            "Brown",
+            "BurlyWood",
+            "CadetBlue",
+            "Chartreuse",
+            "Chocolate",
+            "Coral",
+            "CornflowerBlue",
+            "Cornsilk",
+            "Crimson",
+            "Cyan",
+            "DarkBlue",
+            "DarkCyan",
+            "DarkGoldenrod",
+            "DarkGray",
+            "DarkGreen",
+            "DarkKhaki",
+            "DarkMagenta",
+            "DarkOliveGreen",
+            "DarkOrange",
+            "DarkOrchid",
+            "DarkRed",
+            "DarkSalmon",
+            "DarkSeaGreen",
+            "DarkSlateBlue",
+            "DarkSlateGray",
+            "DarkTurquoise",
+            "DarkViolet",
+            "DeepPink",
+            "DeepSkyBlue",
+            "DimGray",
+            "DodgerBlue",
+            "Firebrick",
+            "FloralWhite",
+            "ForestGreen",
+            "Fuchsia",
+            "Gainsboro",
+            "GhostWhite",
+            "Gold",
+            "Goldenrod",
+            "Gray",
+            "Green",
+            "GreenYellow",
+            "Honeydew",
+            "HotPink",
+            "IndianRed",
+            "Indigo",
+            "Ivory",
+            "Khaki",
+            "Lavender",
+            "LavenderBlush",
+            "LawnGreen",
+            "LemonChiffon",
+            "LightBlue",
+            "LightCoral",
+            "LightCyan",
+            "LightGoldenrodYellow",
+            "LightGreen",
+            "LightGray",
+            "LightPink",
+            "LightSalmon",
+            "LightSeaGreen",
+            "LightSkyBlue",
+            "LightSlateGray",
+            "LightSteelBlue",
+            "LightYellow",
+            "Lime",
+            "LimeGreen",
+            "Linen",
+            "Magenta",
+            "Maroon",
+            "MediumAquamarine",
+            "MediumBlue",
+            "MediumOrchid",
+            "MediumPurple",
+            "MediumSeaGreen",
+            "MediumSlateBlue",
+            "MediumSpringGreen",
+            "MediumTurquoise",
+            "MediumVioletRed",
+            "MidnightBlue",
+            "MintCream",
+            "MistyRose",
+            "Moccasin",
+            "NavajoWhite",
+            "Navy",
+            "OldLace",
+            "Olive",
+            "OliveDrab",
+            "Orange",
+            "OrangeRed",
+            "Orchid",
+            "PaleGoldenrod",
+            "PaleGreen",
+            "PaleTurquoise",
+            "PaleVioletRed",
+            "PapayaWhip",
+            "PeachPuff",
+            "Peru",
+            "Pink",
+            "Plum",
+            "PowderBlue",
+            "Purple",
+            "Red",
+            "RosyBrown",
+            "RoyalBlue",
+            "SaddleBrown",
+            "Salmon",
+            "SandyBrown",
+            "SeaGreen",
+            "SeaShell",
+            "Sienna",
+            "Silver",
+            "SkyBlue",
+            "SlateBlue",
+            "SlateGray",
+            "Snow",
+            "SpringGreen",
+            "SteelBlue",
+            "Tan",
+            "Teal",
+            "Thistle",
+            "Tomato",
+            "Turquoise",
+            "Violet",
+            "Wheat",
+            "White",
+            "WhiteSmoke",
+            "Yellow",
             "YellowGreen"});
-            this._colorCB.Location = new System.Drawing.Point(164, 32);
+            this._colorCB.Location = new System.Drawing.Point(144, 29);
             this._colorCB.MaxDropDownItems = 20;
             this._colorCB.Name = "_colorCB";
             this._colorCB.Size = new System.Drawing.Size(134, 21);
@@ -384,16 +702,16 @@
             // 
             // _offsetX
             // 
-            this._offsetX.Location = new System.Drawing.Point(366, 8);
+            this._offsetX.Location = new System.Drawing.Point(329, 8);
             this._offsetX.Name = "_offsetX";
             this._offsetX.Size = new System.Drawing.Size(42, 20);
             this._offsetX.TabIndex = 20;
             // 
             // _ofsXPlus
             // 
-            this._ofsXPlus.Location = new System.Drawing.Point(438, 7);
+            this._ofsXPlus.Location = new System.Drawing.Point(389, 7);
             this._ofsXPlus.Name = "_ofsXPlus";
-            this._ofsXPlus.Size = new System.Drawing.Size(24, 20);
+            this._ofsXPlus.Size = new System.Drawing.Size(15, 20);
             this._ofsXPlus.TabIndex = 28;
             this._ofsXPlus.Text = "+";
             this._ofsXPlus.UseVisualStyleBackColor = true;
@@ -401,9 +719,9 @@
             // 
             // _ofsXMin
             // 
-            this._ofsXMin.Location = new System.Drawing.Point(412, 7);
+            this._ofsXMin.Location = new System.Drawing.Point(373, 7);
             this._ofsXMin.Name = "_ofsXMin";
-            this._ofsXMin.Size = new System.Drawing.Size(24, 20);
+            this._ofsXMin.Size = new System.Drawing.Size(15, 20);
             this._ofsXMin.TabIndex = 27;
             this._ofsXMin.Text = "-";
             this._ofsXMin.UseVisualStyleBackColor = true;
@@ -411,16 +729,16 @@
             // 
             // _offsetY
             // 
-            this._offsetY.Location = new System.Drawing.Point(366, 29);
+            this._offsetY.Location = new System.Drawing.Point(329, 28);
             this._offsetY.Name = "_offsetY";
             this._offsetY.Size = new System.Drawing.Size(42, 20);
             this._offsetY.TabIndex = 21;
             // 
             // _ofsYPlus
             // 
-            this._ofsYPlus.Location = new System.Drawing.Point(438, 28);
+            this._ofsYPlus.Location = new System.Drawing.Point(389, 28);
             this._ofsYPlus.Name = "_ofsYPlus";
-            this._ofsYPlus.Size = new System.Drawing.Size(24, 20);
+            this._ofsYPlus.Size = new System.Drawing.Size(15, 20);
             this._ofsYPlus.TabIndex = 30;
             this._ofsYPlus.Text = "+";
             this._ofsYPlus.UseVisualStyleBackColor = true;
@@ -428,9 +746,9 @@
             // 
             // _ofsYMin
             // 
-            this._ofsYMin.Location = new System.Drawing.Point(412, 28);
+            this._ofsYMin.Location = new System.Drawing.Point(373, 28);
             this._ofsYMin.Name = "_ofsYMin";
-            this._ofsYMin.Size = new System.Drawing.Size(24, 20);
+            this._ofsYMin.Size = new System.Drawing.Size(15, 20);
             this._ofsYMin.TabIndex = 29;
             this._ofsYMin.Text = "-";
             this._ofsYMin.UseVisualStyleBackColor = true;
@@ -438,16 +756,16 @@
             // 
             // _zoom
             // 
-            this._zoom.Location = new System.Drawing.Point(164, 7);
+            this._zoom.Location = new System.Drawing.Point(144, 7);
             this._zoom.Name = "_zoom";
             this._zoom.Size = new System.Drawing.Size(42, 20);
             this._zoom.TabIndex = 19;
             // 
             // _zoomIn
             // 
-            this._zoomIn.Location = new System.Drawing.Point(232, 7);
+            this._zoomIn.Location = new System.Drawing.Point(202, 7);
             this._zoomIn.Name = "_zoomIn";
-            this._zoomIn.Size = new System.Drawing.Size(24, 20);
+            this._zoomIn.Size = new System.Drawing.Size(15, 20);
             this._zoomIn.TabIndex = 26;
             this._zoomIn.Text = "+";
             this._zoomIn.UseVisualStyleBackColor = true;
@@ -455,46 +773,46 @@
             // 
             // _zoomOut
             // 
-            this._zoomOut.Location = new System.Drawing.Point(207, 7);
+            this._zoomOut.Location = new System.Drawing.Point(187, 7);
             this._zoomOut.Name = "_zoomOut";
-            this._zoomOut.Size = new System.Drawing.Size(24, 20);
+            this._zoomOut.Size = new System.Drawing.Size(15, 20);
             this._zoomOut.TabIndex = 25;
             this._zoomOut.Text = "-";
             this._zoomOut.UseVisualStyleBackColor = true;
             this._zoomOut.Click += new System.EventHandler(this._zoomOut_Click);
             // 
-            // label3
+            // _ofsYLbl
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(327, 32);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(33, 13);
-            this.label3.TabIndex = 24;
-            this.label3.Text = "Ofs Y";
+            this._ofsYLbl.AutoSize = true;
+            this._ofsYLbl.Location = new System.Drawing.Point(290, 32);
+            this._ofsYLbl.Name = "_ofsYLbl";
+            this._ofsYLbl.Size = new System.Drawing.Size(33, 13);
+            this._ofsYLbl.TabIndex = 24;
+            this._ofsYLbl.Text = "Ofs Y";
             // 
-            // label2
+            // _ofsXLbl
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(326, 11);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(33, 13);
-            this.label2.TabIndex = 23;
-            this.label2.Text = "Ofs X";
+            this._ofsXLbl.AutoSize = true;
+            this._ofsXLbl.Location = new System.Drawing.Point(289, 12);
+            this._ofsXLbl.Name = "_ofsXLbl";
+            this._ofsXLbl.Size = new System.Drawing.Size(33, 13);
+            this._ofsXLbl.TabIndex = 23;
+            this._ofsXLbl.Text = "Ofs X";
             // 
-            // label1
+            // _zoomLbl
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(125, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(34, 13);
-            this.label1.TabIndex = 22;
-            this.label1.Text = "Zoom";
+            this._zoomLbl.AutoSize = true;
+            this._zoomLbl.Location = new System.Drawing.Point(105, 11);
+            this._zoomLbl.Name = "_zoomLbl";
+            this._zoomLbl.Size = new System.Drawing.Size(34, 13);
+            this._zoomLbl.TabIndex = 22;
+            this._zoomLbl.Text = "Zoom";
             // 
             // _redraw
             // 
-            this._redraw.Location = new System.Drawing.Point(498, 3);
+            this._redraw.Location = new System.Drawing.Point(224, 5);
             this._redraw.Name = "_redraw";
-            this._redraw.Size = new System.Drawing.Size(75, 23);
+            this._redraw.Size = new System.Drawing.Size(54, 23);
             this._redraw.TabIndex = 20;
             this._redraw.Text = "Redraw";
             this._redraw.UseVisualStyleBackColor = true;
@@ -545,15 +863,16 @@
             this._mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._mainPanel.Location = new System.Drawing.Point(0, 59);
             this._mainPanel.Name = "_mainPanel";
-            this._mainPanel.Size = new System.Drawing.Size(687, 451);
+            this._mainPanel.Size = new System.Drawing.Size(784, 502);
             this._mainPanel.TabIndex = 2;
             // 
             // _gCodeCtrl
             // 
             this._gCodeCtrl.AutoScroll = true;
+            this._gCodeCtrl.CutterSize = 0D;
             this._gCodeCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
             this._gCodeCtrl.KeepRatio = true;
-            this._gCodeCtrl.LaserPenSize = 0.254D;
+            this._gCodeCtrl.LaserSize = 0.254D;
             this._gCodeCtrl.Location = new System.Drawing.Point(0, 0);
             this._gCodeCtrl.MachineColor = System.Drawing.Color.Black;
             this._gCodeCtrl.Name = "_gCodeCtrl";
@@ -567,8 +886,7 @@
             0,
             0,
             0});
-            this._gCodeCtrl.PenSize = 2D;
-            this._gCodeCtrl.Size = new System.Drawing.Size(687, 451);
+            this._gCodeCtrl.Size = new System.Drawing.Size(784, 502);
             this._gCodeCtrl.SizeX = new decimal(new int[] {
             130000,
             0,
@@ -584,27 +902,11 @@
             this._gCodeCtrl.GCodeMousePosition += new CNCLib.GUI.GCodeUserControl.GCodeEventHandler(this._plotterCtrl_GCodeMousePosition);
             this._gCodeCtrl.ZoomOffsetChanged += new CNCLib.GUI.GCodeUserControl.GCodeEventHandler(this._gCodeCtrl_ZoomOffsetChanged);
             // 
-            // _laserSize
-            // 
-            this._laserSize.Location = new System.Drawing.Point(531, 28);
-            this._laserSize.Name = "_laserSize";
-            this._laserSize.Size = new System.Drawing.Size(42, 20);
-            this._laserSize.TabIndex = 32;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(492, 31);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(33, 13);
-            this.label4.TabIndex = 33;
-            this.label4.Text = "Laser";
-            // 
             // PaintForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(687, 510);
+            this.ClientSize = new System.Drawing.Size(784, 561);
             this.Controls.Add(this._mainPanel);
             this.Controls.Add(this._headerPanel);
             this.Name = "PaintForm";
@@ -630,9 +932,9 @@
 		private System.Windows.Forms.Button _redraw;
 		private System.Windows.Forms.TextBox _offsetY;
 		private System.Windows.Forms.TextBox _offsetX;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label _ofsYLbl;
+        private System.Windows.Forms.Label _ofsXLbl;
+        private System.Windows.Forms.Label _zoomLbl;
         private System.Windows.Forms.Button _zoomOut;
         private System.Windows.Forms.Button _zoomIn;
         private System.Windows.Forms.Button _ofsXPlus;
@@ -640,7 +942,9 @@
         private System.Windows.Forms.Button _ofsYPlus;
         private System.Windows.Forms.Button _ofsYMin;
 		private ColorComboBox _colorCB;
+        private System.Windows.Forms.TextBox _cutterSize;
+        private System.Windows.Forms.Label _cutterLbl;
         private System.Windows.Forms.TextBox _laserSize;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label _laserLbL;
     }
 }
