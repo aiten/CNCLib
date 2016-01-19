@@ -22,20 +22,19 @@ using System.IO;
 
 namespace CNCLib.GCode.Load
 {
-    public class LoadGCode
+    public class LoadGCode : LoadBase
     {
         CommandList _commands;
         CommandStream _stream = new CommandStream();
-        Commands.CommandFactory _commandfactory = new Commands.CommandFactory();
         Command _lastnoPrefixCommand;
 
-        public LoadInfo LoadOptions { get; set; }
-
-        public void Load(CommandList commands)
+        public override void Load(CommandList commands)
         {
             _commands = commands;
             commands.Clear();
             _lastnoPrefixCommand = null;
+
+            AddFileHeader(commands);
 
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
             {
@@ -110,7 +109,7 @@ namespace CNCLib.GCode.Load
             string cmdname = "G" + _stream.ReadDigits();
             _stream.SkipSpaces();
 
-            Command cmd = _commandfactory.Create(cmdname);
+            Command cmd = CommandFactory.Create(cmdname);
 
             if (cmd != null)
             {
@@ -123,7 +122,7 @@ namespace CNCLib.GCode.Load
             }
             else
             {
-                if (!AddGxxMxxCommand(_commandfactory.Create("GXX"), cmdname))
+                if (!AddGxxMxxCommand(CommandFactory.Create("GXX"), cmdname))
                     return false;
             }
 
@@ -133,7 +132,7 @@ namespace CNCLib.GCode.Load
         {
             // g without prefix
 
-            Command cmd = _commandfactory.Create(_lastnoPrefixCommand.Code);
+            Command cmd = CommandFactory.Create(_lastnoPrefixCommand.Code);
 
             if (cmd != null)
             {
@@ -150,7 +149,7 @@ namespace CNCLib.GCode.Load
             string cmdname = "M" + _stream.ReadDigits();
             _stream.SkipSpaces();
 
-            Command cmd = _commandfactory.Create(cmdname);
+            Command cmd = CommandFactory.Create(cmdname);
 
             if (cmd != null)
             {
@@ -160,14 +159,14 @@ namespace CNCLib.GCode.Load
             }
             else
             {
-                if (!AddGxxMxxCommand(_commandfactory.Create("Mxx"), cmdname))
+                if (!AddGxxMxxCommand(CommandFactory.Create("MXX"), cmdname))
                     return false;
             }
             return true;
         }
         private bool ReadOtherCommand()
         {
-            Command cmd = _commandfactory.Create("GXX");
+            Command cmd = CommandFactory.Create("GXX");
 
             _commands.AddCommand(cmd);
             if (!cmd.ReadFrom(_stream))

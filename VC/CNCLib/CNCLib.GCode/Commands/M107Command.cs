@@ -40,7 +40,7 @@ namespace CNCLib.GCode.Commands
         {
             //base.Draw(output, state, param);
 
-            state.LaserOn = false;
+            state.LaserOn = false; state.UseLaser = true;
         }
 
         #endregion

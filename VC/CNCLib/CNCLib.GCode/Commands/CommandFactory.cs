@@ -34,17 +34,49 @@ namespace CNCLib.GCode.Commands
 
 		public void RegisterShape(String name, Type shape)
         {
+            if (name.Contains(" "))
+                throw new ArgumentException();
             _shapes.Add(name, shape);
         }
 
         public Command Create(string name)
         {
-			if (IsRegistered(name))
+            if (name.Contains(" "))
+            {
+                throw new ArgumentException();
+            }
+
+            if (IsRegistered(name))
 			{
 				Type shape = _shapes[name];
 				return (Command)Activator.CreateInstance(shape); ;
 			}
 			return null;
+        }
+        public Command CreateOrDefault(string name)
+        {
+            string commandname = char.ToUpper(name[0]) == 'M' ? "MXX" : "GXX";
+            int spaceidx = name.IndexOf(' ');
+            if (spaceidx >= 0)
+            {
+                string tmpcommandname = name.Substring(0, spaceidx);
+                if (IsRegistered(tmpcommandname))
+                {
+                    commandname = tmpcommandname;
+                    name = name.Substring(spaceidx + 1);
+                }
+            }
+            else if (IsRegistered(name))
+            {
+                commandname = name;
+                name = "";
+            }
+
+            Command r = Create(commandname);
+            if (name.Length > 0)
+                r.GCodeAdd = name;
+
+            return r;
         }
 
         public string[] GetKeys()

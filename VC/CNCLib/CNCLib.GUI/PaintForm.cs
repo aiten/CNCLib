@@ -172,31 +172,28 @@ namespace CNCLib.GUI
                 form.LoadInfo = loadinfo;
 
 				DialogResult res = form.ShowDialog();
+                LoadBase load; 
 
-				if (res == DialogResult.OK)
+                switch (res)
                 {
-                    loadinfo = form.LoadInfo;
-                    LoadHPGL load = new LoadHPGL();
-                    load.LoadOptions = loadinfo;
-                    load.LoadHPLG(_gCodeCtrl.Commands);
-					_redraw_Click(null, null);
+                    case DialogResult.OK:   load = new LoadHPGL(); break;
+                    case DialogResult.Yes:  load = new LoadGCode(); break;
+                    case DialogResult.No:   load = new LoadImage(); break;
+                    default: return;
                 }
-				else if (res == DialogResult.Yes)
+
+				loadinfo = form.LoadInfo;
+				load.LoadOptions = loadinfo;
+				try
 				{
-					loadinfo = form.LoadInfo;
-					LoadGCode load = new LoadGCode();
-					load.LoadOptions = loadinfo;
-					try
-					{
-						load.Load(_gCodeCtrl.Commands);
-					}
-					catch (Exception ex)
-					{
-						MessageBox.Show("Load Failed! " + ex.Message);
-					}
-					_redraw_Click(null, null);
+					load.Load(_gCodeCtrl.Commands);
 				}
-			}
+				catch (Exception ex)
+				{
+					MessageBox.Show("Load Failed! " + ex.Message);
+				}
+				_redraw_Click(null, null);
+            }
         }
 
         private void ValuesFromControl()
@@ -293,5 +290,39 @@ namespace CNCLib.GUI
 		{
 			_gCodeCtrl.MachineColor = _colorCB.Color;
 		}
-	}
+
+
+        private void CheckKeyPress(KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                ValuesToControl();
+                e.Handled = true;
+            }
+        }
+        private void _zoom_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            CheckKeyPress(e);
+        }
+
+        private void _offsetX_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            CheckKeyPress(e);
+        }
+
+        private void _offsetY_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            CheckKeyPress(e);
+        }
+
+        private void _laserSize_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            CheckKeyPress(e);
+        }
+
+        private void _cutterSize_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            CheckKeyPress(e);
+        }
+    }
 }

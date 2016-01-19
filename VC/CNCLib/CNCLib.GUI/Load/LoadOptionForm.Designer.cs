@@ -65,6 +65,9 @@
             this._laserOn = new System.Windows.Forms.TextBox();
             this._generateForLaser = new System.Windows.Forms.RadioButton();
             this._generalGroup = new System.Windows.Forms.GroupBox();
+            this._loadImage = new System.Windows.Forms.Button();
+            this._laserSize = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this._autoScaleGb.SuspendLayout();
             this._generateForEngrageGroup.SuspendLayout();
             this._generateForLaserGroup.SuspendLayout();
@@ -349,6 +352,8 @@
             // 
             // _generateForLaserGroup
             // 
+            this._generateForLaserGroup.Controls.Add(this.label5);
+            this._generateForLaserGroup.Controls.Add(this._laserSize);
             this._generateForLaserGroup.Controls.Add(this.label8);
             this._generateForLaserGroup.Controls.Add(this._laserOff);
             this._generateForLaserGroup.Controls.Add(this.label9);
@@ -418,11 +423,38 @@
             this._generalGroup.TabStop = false;
             this._generalGroup.Text = "Options";
             // 
+            // _loadImage
+            // 
+            this._loadImage.DialogResult = System.Windows.Forms.DialogResult.No;
+            this._loadImage.Location = new System.Drawing.Point(202, 286);
+            this._loadImage.Name = "_loadImage";
+            this._loadImage.Size = new System.Drawing.Size(84, 23);
+            this._loadImage.TabIndex = 22;
+            this._loadImage.Text = "Load Image";
+            this._loadImage.UseVisualStyleBackColor = true;
+            // 
+            // _laserSize
+            // 
+            this._laserSize.Location = new System.Drawing.Point(85, 68);
+            this._laserSize.Name = "_laserSize";
+            this._laserSize.Size = new System.Drawing.Size(69, 20);
+            this._laserSize.TabIndex = 17;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 71);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(56, 13);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Laser Size";
+            // 
             // LoadOptionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(552, 316);
+            this.Controls.Add(this._loadImage);
             this.Controls.Add(this.label7);
             this.Controls.Add(this._filename);
             this.Controls.Add(this._fileopen);
@@ -492,5 +524,8 @@
 		private System.Windows.Forms.RadioButton _generateForLaser;
 		private System.Windows.Forms.GroupBox _generalGroup;
 		private System.Windows.Forms.RadioButton _generateForEngrave;
-	}
+        private System.Windows.Forms.Button _loadImage;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox _laserSize;
+    }
 }

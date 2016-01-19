@@ -25,7 +25,7 @@ using Framework.Tools.Drawing;
 
 namespace CNCLib.GCode.Load
 {
-    public class LoadHPGL
+    public class LoadHPGL : LoadBase
     {
         CommandStream _stream;
         bool _IsPenUp;
@@ -35,8 +35,6 @@ namespace CNCLib.GCode.Load
 
 		Point3D _minpt;
 		Point3D _maxpt;
-
-        public LoadInfo LoadOptions  { get; set; }
 
 		private void InitLoad()
 		{
@@ -49,11 +47,13 @@ namespace CNCLib.GCode.Load
 			_color = 0;
 		}
 
-		public void LoadHPLG(CommandList commands)
+		public override void Load(CommandList commands)
         {
 			InitLoad();
 
-			if (LoadOptions.AutoScale)
+            AddFileHeader(commands);
+
+            if (LoadOptions.AutoScale)
 			{
 				using (StreamReader sr = new StreamReader(LoadOptions.FileName))
 				{
@@ -89,7 +89,7 @@ namespace CNCLib.GCode.Load
             {
 				if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
 				{
-					commands.AddCommand(new MxxCommand() { GCodeAdd = "m3" });
+                    commands.AddCommand(CommandFactory.CreateOrDefault("M3"));
 
 					if (LoadOptions.PenPosInParameter)
 					{
@@ -117,7 +117,7 @@ namespace CNCLib.GCode.Load
 
 				if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
 				{
-					commands.AddCommand(new MxxCommand() { GCodeAdd = "m5" });
+					commands.AddCommand(CommandFactory.CreateOrDefault("M5"));
 				}
             }
 			commands.UpdateCache();
@@ -219,7 +219,7 @@ namespace CNCLib.GCode.Load
             }
             else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
             {
-                r = new MxxCommand() { GCodeAdd = LoadOptions.PenDownCommandString };
+                r = CommandFactory.CreateOrDefault(LoadOptions.PenDownCommandString);
             }
 
             return r;
@@ -242,7 +242,7 @@ namespace CNCLib.GCode.Load
             }
             else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
             {
-                r = new MxxCommand() { GCodeAdd = LoadOptions.PenUpCommandString };
+                r = CommandFactory.CreateOrDefault(LoadOptions.PenUpCommandString);
             }
             return r;
         }

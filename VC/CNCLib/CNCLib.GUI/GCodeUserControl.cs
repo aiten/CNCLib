@@ -220,9 +220,16 @@ namespace CNCLib.GUI
             Color cutColor = MachineColor == Color.White ? Color.Black : Color.White;
             float cutsize = CutterSize > 0 ? (float)ToClient(new Point3D(OffsetX + (decimal)CutterSize, 0m, 0m)).X : 2;
             float fastSize = 0.5f;
+
             _cutLine = new Pen(cutColor, cutsize);
             _cutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
             _cutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+
+            _cutDot     = new Pen(Color.Blue, cutsize);
+            _cutEllipse = new Pen(Color.Cyan, cutsize);
+
+            _cut = new Pen[] { _cutLine, _cutDot, _cutEllipse };
+
             _fastLine = new Pen(Color.Green, fastSize);
             _NoMove = new Pen(Color.Blue, fastSize);
             _laserCutLine = new Pen(Color.Red, ToClient(new Point3D(OffsetX+(decimal)LaserSize,0m,0m)).X);
@@ -293,8 +300,11 @@ namespace CNCLib.GUI
         #region IOutput 
 
         Pen _NoMove;
+        Pen _cutEllipse;
         Pen _cutLine;
-		Pen _fastLine;
+        Pen _cutDot;
+        Pen[] _cut;
+        Pen _fastLine;
         Pen _laserCutLine;
         Pen _laserFastLine;
         Pen _machineLine;
@@ -310,11 +320,11 @@ namespace CNCLib.GUI
 
 			if (from.Equals(to))
 			{
-				e.Graphics.DrawEllipse(GetPen(drawtype), from.X, from.Y, 4, 4);
+				e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 4, 4);
 			}
 			else
 			{
-				e.Graphics.DrawLine(GetPen(drawtype), from, to);
+				e.Graphics.DrawLine(GetPen(drawtype, LineDrawType.Line), from, to);
 			}
 		}
 		public void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptFrom, int xradius, int yradius)
@@ -323,17 +333,24 @@ namespace CNCLib.GUI
 
 			PaintEventArgs e = (PaintEventArgs)param;
 			Point from = ToClient(ptFrom);
-			e.Graphics.DrawEllipse(GetPen(drawtype), from.X, from.Y, xradius, yradius);
+			e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X, from.Y, xradius, yradius);
 		}
 
-		private Pen GetPen(DrawType moveType)
+        enum LineDrawType
+        {
+            Line=0,
+            Dot=1,
+            Ellipse=2
+        };
+
+		private Pen GetPen(DrawType moveType, LineDrawType drawtype)
 		{
 			switch (moveType)
 			{
 				default:
 				case DrawType.NoMove: return _NoMove;
 				case DrawType.Fast: return _fastLine;
-				case DrawType.Cut: return _cutLine;
+				case DrawType.Cut: return _cut[(int) drawtype];
                 case DrawType.LaserFast: return _laserFastLine;
                 case DrawType.LaserCut: return _laserCutLine;
             }

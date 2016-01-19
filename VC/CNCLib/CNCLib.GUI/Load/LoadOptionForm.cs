@@ -62,8 +62,10 @@ namespace CNCLib.GUI.Load
 					PenPosInParameter = _engraveUseParameter.Checked,
 
 					PenDownCommandString = _laserOn.Text,
-					PenUpCommandString = _laserOff.Text
-				};
+					PenUpCommandString = _laserOff.Text,
+
+                    LaserSize = decimal.Parse(_laserSize.Text),
+                };
 			}
 			set
             {
@@ -90,7 +92,9 @@ namespace CNCLib.GUI.Load
 				_laserOn.Text = value.PenDownCommandString;
 				_laserOff.Text = value.PenUpCommandString;
 
-				SetEnableState();
+                _laserSize.Text = value.LaserSize.ToString();
+
+                SetEnableState();
 			}
         }
 
@@ -139,11 +143,6 @@ namespace CNCLib.GUI.Load
 		private void _autoScale_CheckedChanged(object sender, EventArgs e)
 		{
 			SetEnableState();
-		}
-
-		private void _loadGCode_Click(object sender, EventArgs e)
-		{
-
 		}
     }
 }
