@@ -65,7 +65,12 @@ namespace CNCLib.GCode.Load
                 if (b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format1bppIndexed)
                     throw new ArgumentException("Bitmap must be Format1bbp");
 
-                _laserOn = true;
+				commands.Add(new GxxCommand() { GCodeAdd = "; Image.Width="  + _sizeX.ToString() });
+				commands.Add(new GxxCommand() { GCodeAdd = "; Image.Height=" + _sizeY.ToString() });
+				commands.Add(new GxxCommand() { GCodeAdd = "; Image.HorizontalResolution(DPI)=" + b.HorizontalResolution.ToString() });
+				commands.Add(new GxxCommand() { GCodeAdd = "; Image.VerticalResolution(DPI)=" + b.VerticalResolution.ToString() });
+
+				_laserOn = true;
                 LaserOff();
                 int black = System.Drawing.Color.Black.ToArgb();
 
