@@ -55,13 +55,14 @@ namespace CNCLib.GUI
 		{
 			_gCodeCtrl.SizeX = Settings.Instance.SizeX;
 			_gCodeCtrl.SizeY = Settings.Instance.SizeY;
-		}
+            EnableComControls(Com.IsConnected);
+        }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-		private ArduinoSerialCommunication Com
+        private ArduinoSerialCommunication Com
         {
 			get { return Framework.Tools.Pattern.Singleton<ArduinoSerialCommunication>.Instance; }
         }

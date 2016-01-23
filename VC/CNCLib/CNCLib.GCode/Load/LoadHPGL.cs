@@ -32,6 +32,7 @@ namespace CNCLib.GCode.Load
 		bool _lastIsPenUp;
 		Point3D _last=new Point3D();
         int _color;
+        bool _needSpeed;
 
 		Point3D _minpt;
 		Point3D _maxpt;
@@ -85,6 +86,9 @@ namespace CNCLib.GCode.Load
 			InitLoad();
 			commands.Clear();
 
+            AddFileHeader(commands);
+            commands.Add(new GxxCommand() { GCodeAdd = "; File=" + LoadOptions.FileName });
+
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
             {
 				if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
@@ -97,8 +101,16 @@ namespace CNCLib.GCode.Load
 						commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#2 = " + LoadOptions.PenPosDown.ToString(CultureInfo.InvariantCulture) });
 					}
 				}
-                				
-				string line;
+
+                if (LoadOptions.PenMoveSpeed.HasValue)
+                {
+                    var setspeed = new G01Command();
+                    setspeed.AddVariable('F', LoadOptions.PenMoveSpeed.Value);
+                    commands.Add(setspeed);
+                }
+                _needSpeed = false;
+
+                string line;
                 while ((line = sr.ReadLine()) != null)
                 {
                     _stream.Line = line;
@@ -125,7 +137,7 @@ namespace CNCLib.GCode.Load
 
 		private bool Command(CommandList commands, bool analyse)
         {
-			string[] cmds = new string[] { "PU", "PD", "PA", "PR", "SP" };
+            string[] cmds = new string[] { "PU", "PD", "PA", "PR", "SP" };
             while (!_stream.IsEOF())
             {
                 int cmdidx = _stream.IsCommand(cmds);
@@ -186,7 +198,12 @@ namespace CNCLib.GCode.Load
 							}
 							r.AddVariable('X', pt.X.Value);
 							r.AddVariable('Y', pt.Y.Value);
-							commands.AddCommand(r);
+                            if (_needSpeed)
+                            {
+                                _needSpeed = false;
+                                r.AddVariable('F', LoadOptions.PenMoveSpeed.Value);
+                            }
+                            commands.AddCommand(r);
 						}
 
                         _stream.IsCommand(",");
@@ -215,6 +232,11 @@ namespace CNCLib.GCode.Load
                 else
                 {
                     r.AddVariable('Z', LoadOptions.PenPosDown);
+                }
+                if (LoadOptions.PenDownSpeed.HasValue)
+                {
+                    r.AddVariable('F', LoadOptions.PenDownSpeed.Value);
+                    _needSpeed = LoadOptions.PenMoveSpeed.HasValue;
                 }
             }
             else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)

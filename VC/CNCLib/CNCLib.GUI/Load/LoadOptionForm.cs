@@ -41,7 +41,7 @@ namespace CNCLib.GUI.Load
         {   
             get
 			{
-				return new LoadInfo()
+                var r = new LoadInfo()
 				{
 					FileName = _filename.Text,
 					OfsX = decimal.Parse(_ofsX.Text),
@@ -61,13 +61,27 @@ namespace CNCLib.GUI.Load
 					PenPosDown = decimal.Parse(_engraveZDown.Text),
 					PenPosInParameter = _engraveUseParameter.Checked,
 
-					PenDownCommandString = _laserOn.Text,
+                    PenDownCommandString = _laserOn.Text,
 					PenUpCommandString = _laserOff.Text,
 
                     LaserSize = decimal.Parse(_laserSize.Text),
+                    GrayThreshold  = Byte.Parse(_grayThreshold.Text),
                 };
-			}
-			set
+
+                if (string.IsNullOrEmpty(_penMoveSpeed.Text))
+                    r.PenMoveSpeed = null;
+                else
+                    r.PenMoveSpeed = decimal.Parse(_penMoveSpeed.Text);
+
+                if (string.IsNullOrEmpty(_penDownSpeed.Text))
+                    r.PenDownSpeed = null;
+                else
+                    r.PenDownSpeed = decimal.Parse(_penDownSpeed.Text);
+
+                return r;
+
+            }
+            set
             {
                 _filename.Text = value.FileName;
                 _ofsX.Text = value.OfsX.ToString();
@@ -89,10 +103,14 @@ namespace CNCLib.GUI.Load
 				_engraveZDown.Text = value.PenPosDown.ToString();
 				_engraveUseParameter.Checked = value.PenPosInParameter;
 
-				_laserOn.Text = value.PenDownCommandString;
+                _penMoveSpeed.Text = value.PenMoveSpeed.ToString();
+                _penDownSpeed.Text = value.PenDownSpeed.ToString();
+
+                _laserOn.Text = value.PenDownCommandString;
 				_laserOff.Text = value.PenUpCommandString;
 
                 _laserSize.Text = value.LaserSize.ToString();
+                _grayThreshold.Text = value.GrayThreshold.ToString();
 
                 SetEnableState();
 			}

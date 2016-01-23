@@ -59,6 +59,8 @@
             this._generateForEngrave = new System.Windows.Forms.RadioButton();
             this.label7 = new System.Windows.Forms.Label();
             this._generateForLaserGroup = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this._laserSize = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this._laserOff = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -66,8 +68,12 @@
             this._generateForLaser = new System.Windows.Forms.RadioButton();
             this._generalGroup = new System.Windows.Forms.GroupBox();
             this._loadImage = new System.Windows.Forms.Button();
-            this._laserSize = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this._grayThreshold = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this._penMoveSpeed = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this._penDownSpeed = new System.Windows.Forms.TextBox();
             this._autoScaleGb.SuspendLayout();
             this._generateForEngrageGroup.SuspendLayout();
             this._generateForLaserGroup.SuspendLayout();
@@ -138,12 +144,12 @@
             // 
             this._filename.Location = new System.Drawing.Point(56, 12);
             this._filename.Name = "_filename";
-            this._filename.Size = new System.Drawing.Size(446, 20);
+            this._filename.Size = new System.Drawing.Size(518, 20);
             this._filename.TabIndex = 0;
             // 
             // _fileopen
             // 
-            this._fileopen.Location = new System.Drawing.Point(508, 9);
+            this._fileopen.Location = new System.Drawing.Point(580, 9);
             this._fileopen.Name = "_fileopen";
             this._fileopen.Size = new System.Drawing.Size(31, 23);
             this._fileopen.TabIndex = 1;
@@ -154,17 +160,17 @@
             // _load
             // 
             this._load.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this._load.Location = new System.Drawing.Point(382, 286);
+            this._load.Location = new System.Drawing.Point(440, 281);
             this._load.Name = "_load";
             this._load.Size = new System.Drawing.Size(77, 23);
             this._load.TabIndex = 9;
-            this._load.Text = "Load";
+            this._load.Text = "Load HPGL";
             this._load.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(465, 286);
+            this.button1.Location = new System.Drawing.Point(523, 281);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
@@ -204,7 +210,7 @@
             this._autoScaleGb.Controls.Add(this.label3);
             this._autoScaleGb.Controls.Add(this._AutoScaleSizeY);
             this._autoScaleGb.Controls.Add(this._AutoScaleSizeX);
-            this._autoScaleGb.Location = new System.Drawing.Point(304, 44);
+            this._autoScaleGb.Location = new System.Drawing.Point(338, 44);
             this._autoScaleGb.Name = "_autoScaleGb";
             this._autoScaleGb.Size = new System.Drawing.Size(235, 96);
             this._autoScaleGb.TabIndex = 14;
@@ -258,7 +264,7 @@
             // _loadGCode
             // 
             this._loadGCode.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this._loadGCode.Location = new System.Drawing.Point(292, 286);
+            this._loadGCode.Location = new System.Drawing.Point(350, 281);
             this._loadGCode.Name = "_loadGCode";
             this._loadGCode.Size = new System.Drawing.Size(84, 23);
             this._loadGCode.TabIndex = 15;
@@ -365,6 +371,22 @@
             this._generateForLaserGroup.TabStop = false;
             this._generateForLaserGroup.Text = "Laser";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 71);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(56, 13);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Laser Size";
+            // 
+            // _laserSize
+            // 
+            this._laserSize.Location = new System.Drawing.Point(85, 68);
+            this._laserSize.Name = "_laserSize";
+            this._laserSize.Size = new System.Drawing.Size(69, 20);
+            this._laserSize.TabIndex = 17;
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -416,7 +438,7 @@
             this._generalGroup.Controls.Add(this.label2);
             this._generalGroup.Controls.Add(this._ofsY);
             this._generalGroup.Controls.Add(this._ofsX);
-            this._generalGroup.Location = new System.Drawing.Point(21, 44);
+            this._generalGroup.Location = new System.Drawing.Point(55, 44);
             this._generalGroup.Name = "_generalGroup";
             this._generalGroup.Size = new System.Drawing.Size(262, 96);
             this._generalGroup.TabIndex = 21;
@@ -426,35 +448,73 @@
             // _loadImage
             // 
             this._loadImage.DialogResult = System.Windows.Forms.DialogResult.No;
-            this._loadImage.Location = new System.Drawing.Point(202, 286);
+            this._loadImage.Location = new System.Drawing.Point(260, 281);
             this._loadImage.Name = "_loadImage";
             this._loadImage.Size = new System.Drawing.Size(84, 23);
             this._loadImage.TabIndex = 22;
             this._loadImage.Text = "Load Image";
             this._loadImage.UseVisualStyleBackColor = true;
             // 
-            // _laserSize
+            // label12
             // 
-            this._laserSize.Location = new System.Drawing.Point(85, 68);
-            this._laserSize.Name = "_laserSize";
-            this._laserSize.Size = new System.Drawing.Size(69, 20);
-            this._laserSize.TabIndex = 17;
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(474, 161);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(76, 13);
+            this.label12.TabIndex = 20;
+            this.label12.Text = "GrayThreshold";
             // 
-            // label5
+            // _grayThreshold
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 71);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(56, 13);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "Laser Size";
+            this._grayThreshold.Location = new System.Drawing.Point(565, 157);
+            this._grayThreshold.Name = "_grayThreshold";
+            this._grayThreshold.Size = new System.Drawing.Size(45, 20);
+            this._grayThreshold.TabIndex = 19;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(474, 187);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(90, 13);
+            this.label13.TabIndex = 24;
+            this.label13.Text = "Pen Move Speed";
+            // 
+            // _penMoveSpeed
+            // 
+            this._penMoveSpeed.Location = new System.Drawing.Point(565, 183);
+            this._penMoveSpeed.Name = "_penMoveSpeed";
+            this._penMoveSpeed.Size = new System.Drawing.Size(45, 20);
+            this._penMoveSpeed.TabIndex = 23;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(474, 211);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(90, 13);
+            this.label14.TabIndex = 26;
+            this.label14.Text = "Pen Dows Speed";
+            // 
+            // _penDownSpeed
+            // 
+            this._penDownSpeed.Location = new System.Drawing.Point(565, 207);
+            this._penDownSpeed.Name = "_penDownSpeed";
+            this._penDownSpeed.Size = new System.Drawing.Size(45, 20);
+            this._penDownSpeed.TabIndex = 25;
             // 
             // LoadOptionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(552, 316);
+            this.ClientSize = new System.Drawing.Size(623, 316);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this._penDownSpeed);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this._penMoveSpeed);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this._loadImage);
+            this.Controls.Add(this._grayThreshold);
             this.Controls.Add(this.label7);
             this.Controls.Add(this._filename);
             this.Controls.Add(this._fileopen);
@@ -527,5 +587,11 @@
         private System.Windows.Forms.Button _loadImage;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox _laserSize;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox _grayThreshold;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox _penMoveSpeed;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox _penDownSpeed;
     }
 }

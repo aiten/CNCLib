@@ -50,9 +50,13 @@ namespace CNCLib.GCode.Load
         public decimal PenPosUp { get; set; } = 1m;
         public decimal PenPosDown { get; set; } = -0.5m;
 
+        public decimal? PenMoveSpeed { get; set; } = 500m;
+        public decimal? PenDownSpeed { get; set; }
+
         public string PenDownCommandString { get; set; } = "M106";
         public string PenUpCommandString { get; set; } = "M107";
 
         public decimal LaserSize { get; set; } = 0.254m;
+        public Byte GrayThreshold { get; set; } = 127;
     }
 }

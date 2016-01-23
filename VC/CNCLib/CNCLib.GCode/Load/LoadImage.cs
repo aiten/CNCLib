@@ -55,8 +55,28 @@ namespace CNCLib.GCode.Load
             _shiftLaserOn  = SHIFT * (double) LoadOptions.LaserSize;
             _shiftLaserOff = -SHIFT * (double)LoadOptions.LaserSize;
 
-            using (System.Drawing.Bitmap b = new System.Drawing.Bitmap(LoadOptions.FileName))
+            using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(LoadOptions.FileName))
             {
+                System.Drawing.Bitmap b;
+                switch (bx.PixelFormat)
+                {
+                    case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
+                        b = bx;
+                        break;
+
+                    case System.Drawing.Imaging.PixelFormat.Format32bppArgb:
+                    case System.Drawing.Imaging.PixelFormat.Format32bppPArgb:
+                    case System.Drawing.Imaging.PixelFormat.Format32bppRgb:
+
+                        commands.Add(new GxxCommand() { GCodeAdd = "; Image Converted with FloydSteinbergDither" } );
+                        commands.Add(new GxxCommand() { GCodeAdd = "; GrayThreshold=" + LoadOptions.GrayThreshold.ToString() });
+                        b = new Framework.Tools.Drawing.FloydSteinbergDither() { Graythreshold = LoadOptions.GrayThreshold }.Process(bx);
+                        break;
+
+                    default:
+                        throw new ArgumentException("Bitmap.PixelFormat not supported");
+                }
+
                 _sizeX = b.Width;
                 _sizeY = b.Height;
                 _pixelSizeX = 25.4 / b.HorizontalResolution;
@@ -70,7 +90,16 @@ namespace CNCLib.GCode.Load
 				commands.Add(new GxxCommand() { GCodeAdd = "; Image.HorizontalResolution(DPI)=" + b.HorizontalResolution.ToString() });
 				commands.Add(new GxxCommand() { GCodeAdd = "; Image.VerticalResolution(DPI)=" + b.VerticalResolution.ToString() });
 
-				_laserOn = true;
+                commands.Add(new GxxCommand() { GCodeAdd = "; Speed=" + LoadOptions.PenMoveSpeed.ToString() });
+
+                if (LoadOptions.PenMoveSpeed.HasValue)
+                {
+                    var setspeed = new G01Command();
+                    setspeed.AddVariable('F', LoadOptions.PenMoveSpeed.Value);
+                    _commands.Add(setspeed);
+                }
+
+                _laserOn = true;
                 LaserOff();
                 int black = System.Drawing.Color.Black.ToArgb();
 
