@@ -320,7 +320,10 @@ namespace CNCLib.GUI
 
 			if (from.Equals(to))
 			{
-				e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 4, 4);
+				if (drawtype== DrawType.LaserCut)
+					e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 1, 1);
+				else
+					e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 4, 4);
 			}
 			else
 			{

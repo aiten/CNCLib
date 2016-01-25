@@ -146,22 +146,20 @@ namespace Framework.Tools.Drawing
 
 		private Bitmap WriteImage(byte[] rgbValues,Bitmap imageX)
 		{
-			Byte[] Bits = new Byte[_width * _height * _bytesPerPixel];
-			GCHandle BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
-			var b = new Bitmap(_width, _height, _width * _bytesPerPixel, imageX.PixelFormat, BitsHandle.AddrOfPinnedObject());
+			var bsrc = new Bitmap(_width, _height, imageX.PixelFormat);
 
+			Rectangle rect = new Rectangle(0, 0, _width, _height);
+			BitmapData bmpData = bsrc.LockBits(rect, ImageLockMode.WriteOnly, bsrc.PixelFormat);
+			IntPtr ptr = bmpData.Scan0;
 
-            Buffer.BlockCopy(rgbValues, 0, Bits, 0, rgbValues.Length);
+			int bytes = Math.Abs(bmpData.Stride) * _height;
+			System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
+			bsrc.UnlockBits(bmpData);
 
-			Bitmap result = new Bitmap(b);
-			BitsHandle.Free();
+			var bdest = bsrc.Clone(rect, PixelFormat.Format1bppIndexed);
+			bdest.SetResolution(imageX.HorizontalResolution, imageX.VerticalResolution);
 
-			var rectangle = new Rectangle(0, 0, _width, _height);
-
-            var b2 = result.Clone(rectangle, PixelFormat.Format1bppIndexed);
-            b2.SetResolution(imageX.HorizontalResolution, imageX.VerticalResolution);
-
-            return b2;
+			return bdest;
 		}
 	}
 

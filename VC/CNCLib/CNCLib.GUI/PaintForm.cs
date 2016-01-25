@@ -165,8 +165,11 @@ namespace CNCLib.GUI
 
         private void _load_Click(object sender, EventArgs e)
         {
-			loadinfo.AutoScaleSizeX = _gCodeCtrl.SizeX;
-			loadinfo.AutoScaleSizeY = _gCodeCtrl.SizeY;
+			if (loadinfo.AutoScaleSizeX == 0 || loadinfo.AutoScale == false)
+			{
+				loadinfo.AutoScaleSizeX = _gCodeCtrl.SizeX;
+				loadinfo.AutoScaleSizeY = _gCodeCtrl.SizeY;
+			}
 
             using (LoadOptionForm form = new LoadOptionForm())
             {

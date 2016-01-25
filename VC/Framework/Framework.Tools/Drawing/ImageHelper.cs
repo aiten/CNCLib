@@ -56,6 +56,8 @@ namespace Framework.Tools.Drawing
                 graphics.DrawImage(image, 0, 0, newWidth, newHeight);
             }
 
+			newImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
             return newImage;
         }
 
