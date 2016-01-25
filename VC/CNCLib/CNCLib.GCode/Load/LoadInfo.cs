@@ -25,11 +25,11 @@ namespace CNCLib.GCode.Load
 		public String FileName { get; set; }
         public bool SwapXY { get; set; } = false;
         public decimal ScaleX { get; set; } = 1;
-		public decimal ScaleY { get; set; }
+        public decimal ScaleY { get; set; } = 1;
         public decimal OfsX { get; set; } = 0;
         public decimal OfsY { get; set; } = 0;
 
-        public bool AutoScale { get; set; } = true;
+        public bool AutoScale { get; set; } = false;
         public bool AutoScaleKeepRatio { get; set; } = true;
 
         public decimal AutoScaleSizeX { get; set; } = 0;

@@ -67,10 +67,32 @@ namespace CNCLib.GCode.Load
                     case System.Drawing.Imaging.PixelFormat.Format32bppArgb:
                     case System.Drawing.Imaging.PixelFormat.Format32bppPArgb:
                     case System.Drawing.Imaging.PixelFormat.Format32bppRgb:
+                    case System.Drawing.Imaging.PixelFormat.Format24bppRgb:
 
                         commands.Add(new GxxCommand() { GCodeAdd = "; Image Converted with FloydSteinbergDither" } );
                         commands.Add(new GxxCommand() { GCodeAdd = "; GrayThreshold=" + LoadOptions.GrayThreshold.ToString() });
-                        b = new Framework.Tools.Drawing.FloydSteinbergDither() { Graythreshold = LoadOptions.GrayThreshold }.Process(bx);
+
+                        b = bx;
+
+                        decimal scaleX = LoadOptions.ScaleX;
+                        decimal scaleY = LoadOptions.ScaleY;
+
+                        if (LoadOptions.AutoScale)
+                        {
+                            double nowX = (double) b.Width;
+                            double nowY = (double) b.Height;
+                            double newX = ((double) LoadOptions.AutoScaleSizeX) * b.HorizontalResolution / 25.4;
+                            double newY = ((double)LoadOptions.AutoScaleSizeY) * b.VerticalResolution / 25.4;
+                            scaleX = (decimal) (newX / nowX);
+                            scaleY = (decimal)(newY / nowY);
+                        }
+
+                        if (scaleX != 1.0m)
+                        {
+                            b = Framework.Tools.Drawing.ImageHelper.ScaleTo(bx, (int) (b.Width * scaleX), (int) (b.Height * scaleY));
+                        }
+
+                        b = new Framework.Tools.Drawing.FloydSteinbergDither() { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
                         break;
 
                     default:
