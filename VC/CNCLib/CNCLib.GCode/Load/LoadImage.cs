@@ -73,15 +73,30 @@ namespace CNCLib.GCode.Load
 
                         decimal scaleX = LoadOptions.ScaleX;
                         decimal scaleY = LoadOptions.ScaleY;
+                        double dpiX; 
+                        double dpiY;
+
+                        if (LoadOptions.ImageDPIX.HasValue)
+                            dpiX = (double)LoadOptions.ImageDPIX.Value;
+                        else
+                            dpiX = b.HorizontalResolution;
+
+                        if (LoadOptions.ImageDPIY.HasValue)
+                            dpiY = (double)LoadOptions.ImageDPIX.Value;
+                        else
+                            dpiY = b.HorizontalResolution;
+
 
                         if (LoadOptions.AutoScale)
                         {
 							commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleX="+ LoadOptions.AutoScaleSizeX.ToString() });
 							commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleY=" + LoadOptions.AutoScaleSizeY.ToString() });
-							double nowX = (double) b.Width;
+                            commands.Add(new GxxCommand() { GCodeAdd = "; DPI_X=" + dpiX.ToString() });
+                            commands.Add(new GxxCommand() { GCodeAdd = "; DPI_Y=" + dpiY.ToString() });
+                            double nowX = (double) b.Width;
                             double nowY = (double) b.Height;
-                            double newX = ((double) LoadOptions.AutoScaleSizeX) * b.HorizontalResolution / 25.4;
-                            double newY = ((double) LoadOptions.AutoScaleSizeY) * b.VerticalResolution / 25.4;
+                            double newX = ((double) LoadOptions.AutoScaleSizeX) * dpiX / 25.4;
+                            double newY = ((double) LoadOptions.AutoScaleSizeY) * dpiY / 25.4;
                             scaleX = (decimal) (newX / nowX);
                             scaleY = (decimal)(newY / nowY);
 							LoadOptions.ScaleX = scaleX;
@@ -93,6 +108,7 @@ namespace CNCLib.GCode.Load
 							commands.Add(new GxxCommand() { GCodeAdd = "; ScaleX=" + scaleX.ToString() });
 							commands.Add(new GxxCommand() { GCodeAdd = "; ScaleY=" + scaleY.ToString() });
 							b = Framework.Tools.Drawing.ImageHelper.ScaleTo(bx, (int) (b.Width * scaleX), (int) (b.Height * scaleY));
+                            b.SetResolution((float) dpiX, (float)dpiY);
                         }
 
 						commands.Add(new GxxCommand() { GCodeAdd = "; Image Converted with FloydSteinbergDither" });

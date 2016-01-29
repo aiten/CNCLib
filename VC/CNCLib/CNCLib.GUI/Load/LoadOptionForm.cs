@@ -78,6 +78,16 @@ namespace CNCLib.GUI.Load
                 else
                     r.PenDownSpeed = decimal.Parse(_penDownSpeed.Text);
 
+                if (string.IsNullOrEmpty(_imageDPIX.Text))
+                    r.ImageDPIX = null;
+                else
+                    r.ImageDPIX = decimal.Parse(_imageDPIX.Text);
+
+                if (string.IsNullOrEmpty(_imageDPIY.Text))
+                    r.ImageDPIY = null;
+                else
+                    r.ImageDPIY = decimal.Parse(_imageDPIY.Text);
+
                 return r;
 
             }
@@ -111,6 +121,9 @@ namespace CNCLib.GUI.Load
 
                 _laserSize.Text = value.LaserSize.ToString();
                 _grayThreshold.Text = value.GrayThreshold.ToString();
+
+                _imageDPIX.Text = value.ImageDPIX.ToString();
+                _imageDPIY.Text = value.ImageDPIY.ToString();
 
                 SetEnableState();
 			}
@@ -162,5 +175,10 @@ namespace CNCLib.GUI.Load
 		{
 			SetEnableState();
 		}
+
+        private void _dpiXeqY_Click(object sender, EventArgs e)
+        {
+            _imageDPIY.Text = _imageDPIX.Text;
+        }
     }
 }

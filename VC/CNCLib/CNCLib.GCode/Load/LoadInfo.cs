@@ -58,5 +58,8 @@ namespace CNCLib.GCode.Load
 
         public decimal LaserSize { get; set; } = 0.254m;
         public Byte GrayThreshold { get; set; } = 127;
+
+        public decimal? ImageDPIX { get; set; }
+        public decimal? ImageDPIY { get; set; }
     }
 }

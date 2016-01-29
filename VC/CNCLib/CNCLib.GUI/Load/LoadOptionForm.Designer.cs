@@ -74,10 +74,18 @@
             this._penMoveSpeed = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this._penDownSpeed = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this._imageDPIX = new System.Windows.Forms.TextBox();
+            this._imageDPIY = new System.Windows.Forms.TextBox();
+            this._dpiXeqY = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this._autoScaleGb.SuspendLayout();
             this._generateForEngrageGroup.SuspendLayout();
             this._generateForLaserGroup.SuspendLayout();
             this._generalGroup.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label2
@@ -144,12 +152,12 @@
             // 
             this._filename.Location = new System.Drawing.Point(56, 12);
             this._filename.Name = "_filename";
-            this._filename.Size = new System.Drawing.Size(518, 20);
+            this._filename.Size = new System.Drawing.Size(465, 20);
             this._filename.TabIndex = 0;
             // 
             // _fileopen
             // 
-            this._fileopen.Location = new System.Drawing.Point(580, 9);
+            this._fileopen.Location = new System.Drawing.Point(527, 12);
             this._fileopen.Name = "_fileopen";
             this._fileopen.Size = new System.Drawing.Size(31, 23);
             this._fileopen.TabIndex = 1;
@@ -160,7 +168,7 @@
             // _load
             // 
             this._load.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this._load.Location = new System.Drawing.Point(440, 281);
+            this._load.Location = new System.Drawing.Point(385, 393);
             this._load.Name = "_load";
             this._load.Size = new System.Drawing.Size(77, 23);
             this._load.TabIndex = 9;
@@ -170,7 +178,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(523, 281);
+            this.button1.Location = new System.Drawing.Point(468, 393);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
@@ -202,17 +210,21 @@
             // 
             // _autoScaleGb
             // 
+            this._autoScaleGb.Controls.Add(this._dpiXeqY);
             this._autoScaleGb.Controls.Add(this._AutoScaleKeepRatio);
             this._autoScaleGb.Controls.Add(this.label4);
+            this._autoScaleGb.Controls.Add(this._imageDPIY);
             this._autoScaleGb.Controls.Add(this._AutoScaleBorderDistY);
+            this._autoScaleGb.Controls.Add(this.label15);
             this._autoScaleGb.Controls.Add(this._AutoScaleBorderDistX);
+            this._autoScaleGb.Controls.Add(this._imageDPIX);
             this._autoScaleGb.Controls.Add(this._autoScale);
             this._autoScaleGb.Controls.Add(this.label3);
             this._autoScaleGb.Controls.Add(this._AutoScaleSizeY);
             this._autoScaleGb.Controls.Add(this._AutoScaleSizeX);
-            this._autoScaleGb.Location = new System.Drawing.Point(338, 44);
+            this._autoScaleGb.Location = new System.Drawing.Point(302, 44);
             this._autoScaleGb.Name = "_autoScaleGb";
-            this._autoScaleGb.Size = new System.Drawing.Size(235, 96);
+            this._autoScaleGb.Size = new System.Drawing.Size(235, 124);
             this._autoScaleGb.TabIndex = 14;
             this._autoScaleGb.TabStop = false;
             this._autoScaleGb.Text = "AutoScale";
@@ -264,7 +276,7 @@
             // _loadGCode
             // 
             this._loadGCode.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this._loadGCode.Location = new System.Drawing.Point(350, 281);
+            this._loadGCode.Location = new System.Drawing.Point(295, 393);
             this._loadGCode.Name = "_loadGCode";
             this._loadGCode.Size = new System.Drawing.Size(84, 23);
             this._loadGCode.TabIndex = 15;
@@ -279,9 +291,9 @@
             this._generateForEngrageGroup.Controls.Add(this.label6);
             this._generateForEngrageGroup.Controls.Add(this._engraveZUp);
             this._generateForEngrageGroup.Controls.Add(this._engraveZDown);
-            this._generateForEngrageGroup.Location = new System.Drawing.Point(21, 177);
+            this._generateForEngrageGroup.Location = new System.Drawing.Point(15, 174);
             this._generateForEngrageGroup.Name = "_generateForEngrageGroup";
-            this._generateForEngrageGroup.Size = new System.Drawing.Size(246, 94);
+            this._generateForEngrageGroup.Size = new System.Drawing.Size(262, 94);
             this._generateForEngrageGroup.TabIndex = 18;
             this._generateForEngrageGroup.TabStop = false;
             this._generateForEngrageGroup.Text = "Engrave";
@@ -340,7 +352,7 @@
             // _generateForEngrave
             // 
             this._generateForEngrave.AutoSize = true;
-            this._generateForEngrave.Location = new System.Drawing.Point(28, 157);
+            this._generateForEngrave.Location = new System.Drawing.Point(45, 399);
             this._generateForEngrave.Name = "_generateForEngrave";
             this._generateForEngrave.Size = new System.Drawing.Size(126, 17);
             this._generateForEngrave.TabIndex = 3;
@@ -364,9 +376,9 @@
             this._generateForLaserGroup.Controls.Add(this._laserOff);
             this._generateForLaserGroup.Controls.Add(this.label9);
             this._generateForLaserGroup.Controls.Add(this._laserOn);
-            this._generateForLaserGroup.Location = new System.Drawing.Point(278, 177);
+            this._generateForLaserGroup.Location = new System.Drawing.Point(15, 274);
             this._generateForLaserGroup.Name = "_generateForLaserGroup";
-            this._generateForLaserGroup.Size = new System.Drawing.Size(180, 94);
+            this._generateForLaserGroup.Size = new System.Drawing.Size(262, 94);
             this._generateForLaserGroup.TabIndex = 19;
             this._generateForLaserGroup.TabStop = false;
             this._generateForLaserGroup.Text = "Laser";
@@ -422,7 +434,7 @@
             // _generateForLaser
             // 
             this._generateForLaser.AutoSize = true;
-            this._generateForLaser.Location = new System.Drawing.Point(278, 157);
+            this._generateForLaser.Location = new System.Drawing.Point(45, 377);
             this._generateForLaser.Name = "_generateForLaser";
             this._generateForLaser.Size = new System.Drawing.Size(109, 17);
             this._generateForLaser.TabIndex = 20;
@@ -438,9 +450,9 @@
             this._generalGroup.Controls.Add(this.label2);
             this._generalGroup.Controls.Add(this._ofsY);
             this._generalGroup.Controls.Add(this._ofsX);
-            this._generalGroup.Location = new System.Drawing.Point(55, 44);
+            this._generalGroup.Location = new System.Drawing.Point(15, 44);
             this._generalGroup.Name = "_generalGroup";
-            this._generalGroup.Size = new System.Drawing.Size(262, 96);
+            this._generalGroup.Size = new System.Drawing.Size(262, 123);
             this._generalGroup.TabIndex = 21;
             this._generalGroup.TabStop = false;
             this._generalGroup.Text = "Options";
@@ -448,7 +460,7 @@
             // _loadImage
             // 
             this._loadImage.DialogResult = System.Windows.Forms.DialogResult.No;
-            this._loadImage.Location = new System.Drawing.Point(260, 281);
+            this._loadImage.Location = new System.Drawing.Point(205, 393);
             this._loadImage.Name = "_loadImage";
             this._loadImage.Size = new System.Drawing.Size(84, 23);
             this._loadImage.TabIndex = 22;
@@ -458,7 +470,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(474, 161);
+            this.label12.Location = new System.Drawing.Point(30, 23);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(76, 13);
             this.label12.TabIndex = 20;
@@ -466,7 +478,7 @@
             // 
             // _grayThreshold
             // 
-            this._grayThreshold.Location = new System.Drawing.Point(565, 157);
+            this._grayThreshold.Location = new System.Drawing.Point(121, 19);
             this._grayThreshold.Name = "_grayThreshold";
             this._grayThreshold.Size = new System.Drawing.Size(45, 20);
             this._grayThreshold.TabIndex = 19;
@@ -474,15 +486,15 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(474, 187);
+            this.label13.Location = new System.Drawing.Point(16, 25);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(90, 13);
+            this.label13.Size = new System.Drawing.Size(121, 13);
             this.label13.TabIndex = 24;
-            this.label13.Text = "Pen Move Speed";
+            this.label13.Text = "Pen/Laser Move Speed";
             // 
             // _penMoveSpeed
             // 
-            this._penMoveSpeed.Location = new System.Drawing.Point(565, 183);
+            this._penMoveSpeed.Location = new System.Drawing.Point(153, 21);
             this._penMoveSpeed.Name = "_penMoveSpeed";
             this._penMoveSpeed.Size = new System.Drawing.Size(45, 20);
             this._penMoveSpeed.TabIndex = 23;
@@ -490,7 +502,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(474, 211);
+            this.label14.Location = new System.Drawing.Point(16, 49);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(90, 13);
             this.label14.TabIndex = 26;
@@ -498,23 +510,76 @@
             // 
             // _penDownSpeed
             // 
-            this._penDownSpeed.Location = new System.Drawing.Point(565, 207);
+            this._penDownSpeed.Location = new System.Drawing.Point(153, 45);
             this._penDownSpeed.Name = "_penDownSpeed";
             this._penDownSpeed.Size = new System.Drawing.Size(45, 20);
             this._penDownSpeed.TabIndex = 25;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(12, 93);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(57, 13);
+            this.label15.TabIndex = 28;
+            this.label15.Text = "Image DPI";
+            // 
+            // _imageDPIX
+            // 
+            this._imageDPIX.Location = new System.Drawing.Point(85, 88);
+            this._imageDPIX.Name = "_imageDPIX";
+            this._imageDPIX.Size = new System.Drawing.Size(45, 20);
+            this._imageDPIX.TabIndex = 27;
+            // 
+            // _imageDPIY
+            // 
+            this._imageDPIY.Location = new System.Drawing.Point(160, 88);
+            this._imageDPIY.Name = "_imageDPIY";
+            this._imageDPIY.Size = new System.Drawing.Size(45, 20);
+            this._imageDPIY.TabIndex = 29;
+            // 
+            // _dpiXeqY
+            // 
+            this._dpiXeqY.Location = new System.Drawing.Point(206, 87);
+            this._dpiXeqY.Name = "_dpiXeqY";
+            this._dpiXeqY.Size = new System.Drawing.Size(20, 23);
+            this._dpiXeqY.TabIndex = 31;
+            this._dpiXeqY.Text = "=";
+            this._dpiXeqY.UseVisualStyleBackColor = true;
+            this._dpiXeqY.Click += new System.EventHandler(this._dpiXeqY_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this._grayThreshold);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Location = new System.Drawing.Point(302, 273);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(235, 100);
+            this.groupBox1.TabIndex = 27;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Image";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this._penMoveSpeed);
+            this.groupBox2.Controls.Add(this.label13);
+            this.groupBox2.Controls.Add(this.label14);
+            this.groupBox2.Controls.Add(this._penDownSpeed);
+            this.groupBox2.Location = new System.Drawing.Point(302, 174);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(235, 93);
+            this.groupBox2.TabIndex = 28;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Engrave/Laser";
             // 
             // LoadOptionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(623, 316);
-            this.Controls.Add(this.label14);
-            this.Controls.Add(this._penDownSpeed);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this._penMoveSpeed);
-            this.Controls.Add(this.label12);
+            this.ClientSize = new System.Drawing.Size(572, 433);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this._loadImage);
-            this.Controls.Add(this._grayThreshold);
             this.Controls.Add(this.label7);
             this.Controls.Add(this._filename);
             this.Controls.Add(this._fileopen);
@@ -540,6 +605,10 @@
             this._generateForLaserGroup.PerformLayout();
             this._generalGroup.ResumeLayout(false);
             this._generalGroup.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -593,5 +662,11 @@
         private System.Windows.Forms.TextBox _penMoveSpeed;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox _penDownSpeed;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox _imageDPIX;
+        private System.Windows.Forms.TextBox _imageDPIY;
+        private System.Windows.Forms.Button _dpiXeqY;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
