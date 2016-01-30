@@ -202,7 +202,7 @@ namespace CNCLib.GCode.Load
         {
             if (!_laserOn)
             {
-                _commands.Add(CommandFactory.CreateOrDefault(LoadOptions.PenDownCommandString));
+                AddCommands(_commands, LoadOptions.PenDownCommandString);
                 _laserOn = true;
             }
         }
@@ -210,7 +210,7 @@ namespace CNCLib.GCode.Load
         {
             if (_laserOn)
             {
-                _commands.Add(CommandFactory.CreateOrDefault(LoadOptions.PenUpCommandString));
+                AddCommands(_commands, LoadOptions.PenUpCommandString);
                 _laserOn = false;
             }
         }

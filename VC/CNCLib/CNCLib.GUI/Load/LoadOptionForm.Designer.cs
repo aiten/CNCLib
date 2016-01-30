@@ -43,10 +43,14 @@
             this._AutoScaleSizeY = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this._autoScaleGb = new System.Windows.Forms.GroupBox();
+            this._dpiXeqY = new System.Windows.Forms.Button();
             this._AutoScaleKeepRatio = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
+            this._imageDPIY = new System.Windows.Forms.TextBox();
             this._AutoScaleBorderDistY = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this._AutoScaleBorderDistX = new System.Windows.Forms.TextBox();
+            this._imageDPIX = new System.Windows.Forms.TextBox();
             this._autoScale = new System.Windows.Forms.CheckBox();
             this._loadGCode = new System.Windows.Forms.Button();
             this._generateForEngrageGroup = new System.Windows.Forms.GroupBox();
@@ -74,10 +78,6 @@
             this._penMoveSpeed = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this._penDownSpeed = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this._imageDPIX = new System.Windows.Forms.TextBox();
-            this._imageDPIY = new System.Windows.Forms.TextBox();
-            this._dpiXeqY = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this._autoScaleGb.SuspendLayout();
@@ -229,6 +229,16 @@
             this._autoScaleGb.TabStop = false;
             this._autoScaleGb.Text = "AutoScale";
             // 
+            // _dpiXeqY
+            // 
+            this._dpiXeqY.Location = new System.Drawing.Point(206, 87);
+            this._dpiXeqY.Name = "_dpiXeqY";
+            this._dpiXeqY.Size = new System.Drawing.Size(20, 23);
+            this._dpiXeqY.TabIndex = 31;
+            this._dpiXeqY.Text = "=";
+            this._dpiXeqY.UseVisualStyleBackColor = true;
+            this._dpiXeqY.Click += new System.EventHandler(this._dpiXeqY_Click);
+            // 
             // _AutoScaleKeepRatio
             // 
             this._AutoScaleKeepRatio.AutoSize = true;
@@ -248,6 +258,13 @@
             this.label4.TabIndex = 16;
             this.label4.Text = "Dist";
             // 
+            // _imageDPIY
+            // 
+            this._imageDPIY.Location = new System.Drawing.Point(160, 88);
+            this._imageDPIY.Name = "_imageDPIY";
+            this._imageDPIY.Size = new System.Drawing.Size(45, 20);
+            this._imageDPIY.TabIndex = 29;
+            // 
             // _AutoScaleBorderDistY
             // 
             this._AutoScaleBorderDistY.Location = new System.Drawing.Point(160, 64);
@@ -255,12 +272,28 @@
             this._AutoScaleBorderDistY.Size = new System.Drawing.Size(59, 20);
             this._AutoScaleBorderDistY.TabIndex = 15;
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(12, 93);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(57, 13);
+            this.label15.TabIndex = 28;
+            this.label15.Text = "Image DPI";
+            // 
             // _AutoScaleBorderDistX
             // 
             this._AutoScaleBorderDistX.Location = new System.Drawing.Point(85, 64);
             this._AutoScaleBorderDistX.Name = "_AutoScaleBorderDistX";
             this._AutoScaleBorderDistX.Size = new System.Drawing.Size(69, 20);
             this._AutoScaleBorderDistX.TabIndex = 14;
+            // 
+            // _imageDPIX
+            // 
+            this._imageDPIX.Location = new System.Drawing.Point(85, 88);
+            this._imageDPIX.Name = "_imageDPIX";
+            this._imageDPIX.Size = new System.Drawing.Size(45, 20);
+            this._imageDPIX.TabIndex = 27;
             // 
             // _autoScale
             // 
@@ -412,7 +445,7 @@
             // 
             this._laserOff.Location = new System.Drawing.Point(85, 44);
             this._laserOff.Name = "_laserOff";
-            this._laserOff.Size = new System.Drawing.Size(69, 20);
+            this._laserOff.Size = new System.Drawing.Size(134, 20);
             this._laserOff.TabIndex = 14;
             // 
             // label9
@@ -428,7 +461,7 @@
             // 
             this._laserOn.Location = new System.Drawing.Point(85, 21);
             this._laserOn.Name = "_laserOn";
-            this._laserOn.Size = new System.Drawing.Size(69, 20);
+            this._laserOn.Size = new System.Drawing.Size(134, 20);
             this._laserOn.TabIndex = 11;
             // 
             // _generateForLaser
@@ -514,39 +547,6 @@
             this._penDownSpeed.Name = "_penDownSpeed";
             this._penDownSpeed.Size = new System.Drawing.Size(45, 20);
             this._penDownSpeed.TabIndex = 25;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(12, 93);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(57, 13);
-            this.label15.TabIndex = 28;
-            this.label15.Text = "Image DPI";
-            // 
-            // _imageDPIX
-            // 
-            this._imageDPIX.Location = new System.Drawing.Point(85, 88);
-            this._imageDPIX.Name = "_imageDPIX";
-            this._imageDPIX.Size = new System.Drawing.Size(45, 20);
-            this._imageDPIX.TabIndex = 27;
-            // 
-            // _imageDPIY
-            // 
-            this._imageDPIY.Location = new System.Drawing.Point(160, 88);
-            this._imageDPIY.Name = "_imageDPIY";
-            this._imageDPIY.Size = new System.Drawing.Size(45, 20);
-            this._imageDPIY.TabIndex = 29;
-            // 
-            // _dpiXeqY
-            // 
-            this._dpiXeqY.Location = new System.Drawing.Point(206, 87);
-            this._dpiXeqY.Name = "_dpiXeqY";
-            this._dpiXeqY.Size = new System.Drawing.Size(20, 23);
-            this._dpiXeqY.TabIndex = 31;
-            this._dpiXeqY.Text = "=";
-            this._dpiXeqY.UseVisualStyleBackColor = true;
-            this._dpiXeqY.Click += new System.EventHandler(this._dpiXeqY_Click);
             // 
             // groupBox1
             // 

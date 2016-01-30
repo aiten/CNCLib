@@ -34,7 +34,9 @@ namespace CNCLib.GCode.Load
         int _color;
         bool _needSpeed;
 
-		Point3D _minpt;
+        CommandList _commands;
+
+        Point3D _minpt;
 		Point3D _maxpt;
 
 		private void InitLoad()
@@ -50,7 +52,9 @@ namespace CNCLib.GCode.Load
 
 		public override void Load(CommandList commands)
         {
-			InitLoad();
+            _commands = commands;
+
+            InitLoad();
 
             AddFileHeader(commands);
 
@@ -93,7 +97,7 @@ namespace CNCLib.GCode.Load
             {
 				if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
 				{
-                    commands.AddCommand(CommandFactory.CreateOrDefault("M3"));
+                    AddCommands(commands, "M3");
 
 					if (LoadOptions.PenPosInParameter)
 					{
@@ -123,13 +127,12 @@ namespace CNCLib.GCode.Load
 
 				if (!_lastIsPenUp)
 				{
-                    Command r = LoadPenUp();
-					commands.AddCommand(r);
+                    LoadPenUp();
 				}
 
 				if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
 				{
-					commands.AddCommand(CommandFactory.CreateOrDefault("M5"));
+                    AddCommands(commands,"M5");
 				}
             }
 			commands.UpdateCache();
@@ -173,13 +176,12 @@ namespace CNCLib.GCode.Load
 							Command r;
 							if (_IsPenUp)
                             {
-                                r = LoadPenUp();
+                                LoadPenUp();
                             }
                             else
                             {
-                                r = LoadPenDown();
+                                LoadPenDown();
                             }
-                            commands.AddCommand(r);
 							_lastIsPenUp = _IsPenUp;
 						}
 
@@ -219,12 +221,11 @@ namespace CNCLib.GCode.Load
             return true;
         }
 
-        private Command LoadPenDown()
+        private void LoadPenDown()
         {
-            Command r;
             if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
             {
-                r = new G01Command();
+                var r = new G01Command();
                 if (LoadOptions.PenPosInParameter)
                 {
                     r.AddVariableParam('Z', "2");
@@ -238,21 +239,19 @@ namespace CNCLib.GCode.Load
                     r.AddVariable('F', LoadOptions.PenDownSpeed.Value);
                     _needSpeed = LoadOptions.PenMoveSpeed.HasValue;
                 }
+                _commands.AddCommand(r);
             }
             else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
             {
-                r = CommandFactory.CreateOrDefault(LoadOptions.PenDownCommandString);
+                AddCommands(_commands,LoadOptions.PenDownCommandString);
             }
-
-            return r;
         }
 
-        private Command LoadPenUp()
+        private void LoadPenUp()
         {
-            Command r;
             if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
             {
-                r = new G00Command();
+                var r = new G00Command();
                 if (LoadOptions.PenPosInParameter)
                 {
                     r.AddVariableParam('Z', "1");
@@ -261,12 +260,12 @@ namespace CNCLib.GCode.Load
                 {
                     r.AddVariable('Z', LoadOptions.PenPosUp);
                 }
+                _commands.AddCommand(r);
             }
             else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
             {
-                r = CommandFactory.CreateOrDefault(LoadOptions.PenUpCommandString);
+                AddCommands(_commands, LoadOptions.PenUpCommandString);
             }
-            return r;
         }
 
         private Point3D GetSpaceCoordiante(bool isRelativPoint)
