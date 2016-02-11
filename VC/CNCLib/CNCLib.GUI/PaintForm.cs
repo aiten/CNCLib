@@ -131,37 +131,42 @@ namespace CNCLib.GUI
 		static string _fileNameSave = @"c:\tmp\testc.GCode";
 
 		private void _save_Click(object sender, EventArgs e)
-		{
-			using (SaveFileDialog form = new SaveFileDialog())
-			{
-				form.FileName = _fileNameSave;
-				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-				{
-					_fileNameSave = form.FileName;
-				}
-			}
+        {
+            using (SaveFileDialog form = new SaveFileDialog())
+            {
+                form.FileName = _fileNameSave;
+                if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    _fileNameSave = form.FileName;
+                }
+            }
 
-			using (StreamWriter sw = new StreamWriter(_fileNameSave))
-			{
-				Command last = null;
-				foreach (Command r in _gCodeCtrl.Commands)
-				{
-					string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
-					if (cmds != null)
-					{
-						foreach (String str in cmds)
-						{
-							sw.WriteLine(str);
-						}
-					}
-					last = r;
-				}
-			}
+            SaveGCode(_fileNameSave);
         }
 
-		#endregion
+        private void SaveGCode(string filename)
+        {
+            using (StreamWriter sw = new StreamWriter(filename))
+            {
+                Command last = null;
+                foreach (Command r in _gCodeCtrl.Commands)
+                {
+                    string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
+                    if (cmds != null)
+                    {
+                        foreach (String str in cmds)
+                        {
+                            sw.WriteLine(str);
+                        }
+                    }
+                    last = r;
+                }
+            }
+        }
 
-		LoadInfo loadinfo = new LoadInfo();
+        #endregion
+
+        LoadInfo loadinfo = new LoadInfo();
 
         private void _load_Click(object sender, EventArgs e)
         {
@@ -191,6 +196,10 @@ namespace CNCLib.GUI
 				try
 				{
 					load.Load(_gCodeCtrl.Commands);
+                    if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
+                    {
+                        SaveGCode(loadinfo.GCodeWriteToFileName);
+                    }
 				}
 				catch (Exception ex)
 				{

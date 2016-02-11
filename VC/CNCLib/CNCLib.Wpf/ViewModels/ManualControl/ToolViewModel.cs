@@ -78,6 +78,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public void SendM07CoolandOn() { AsyncRunCommand(() => { Com.SendCommand("m7"); }); }
 		public void SendM09CoolandOff() { AsyncRunCommand(() => { Com.SendCommand("m9"); }); }
         public void SendM106LaserOn() { AsyncRunCommand(() => { Com.SendCommand("m106 s255"); }); }
+        public void SendM106LaserOnMin() { AsyncRunCommand(() => { Com.SendCommand("m106 s1"); }); }
         public void SendM107LaserOff() { AsyncRunCommand(() => { Com.SendCommand("m107"); }); }
         public void SendM114PrintPos()
 		{
@@ -116,6 +117,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ICommand SendM07CoolandOnCommand { get { return new DelegateCommand(SendM07CoolandOn, CanSendCoolant); } }
 		public ICommand SendM09CoolandOffCommand { get { return new DelegateCommand(SendM09CoolandOff, CanSendCoolant); } }
         public ICommand SendM106LaserOnCommand { get { return new DelegateCommand(SendM106LaserOn, CanSendLaser); } }
+        public ICommand SendM106LaserOnMinCommand { get { return new DelegateCommand(SendM106LaserOnMin, CanSendLaser); } }
         public ICommand SendM107LaserOffCommand { get { return new DelegateCommand(SendM107LaserOff, CanSendLaser); } }
         public ICommand SendM114Command { get { return new DelegateCommand(SendM114PrintPos, CanSend); } }
 		public ICommand WritePendingCommands { get { return new DelegateCommand(WritePending, CanSend); } }

@@ -23,6 +23,9 @@ namespace CNCLib.GCode.Load
 	public class LoadInfo
 	{
 		public String FileName { get; set; }
+
+        public String GCodeWriteToFileName { get; set; } = @"c:\tmp\test.gcode";
+
         public bool SwapXY { get; set; } = false;
         public decimal ScaleX { get; set; } = 1;
         public decimal ScaleY { get; set; } = 1;
@@ -57,6 +60,9 @@ namespace CNCLib.GCode.Load
         public string PenUpCommandString { get; set; } = "M107";
 
         public decimal LaserSize { get; set; } = 0.254m;
+
+        public String ImageWriteToFileName { get; set; } = @"c:\tmp\image.bmp";
+
         public Byte GrayThreshold { get; set; } = 127;
 
         public decimal? ImageDPIX { get; set; }

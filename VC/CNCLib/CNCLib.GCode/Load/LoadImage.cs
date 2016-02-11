@@ -50,10 +50,12 @@ namespace CNCLib.GCode.Load
             _shiftX = (double)LoadOptions.LaserSize / 2.0;
             _shiftY = (double)LoadOptions.LaserSize / 2.0;
 
-            const double SHIFT = Math.PI / 8.0;
+            //            const double SHIFT = Math.PI / 16.0;
+            //            const double SHIFT = Math.PI / 8.0;
+            const double SHIFT = 0;
 
-            _shiftLaserOn  = SHIFT * (double) LoadOptions.LaserSize;
-            _shiftLaserOff = -SHIFT * (double)LoadOptions.LaserSize;
+            _shiftLaserOn = -SHIFT * (double) LoadOptions.LaserSize;
+            _shiftLaserOff = SHIFT * (double)LoadOptions.LaserSize;
 
             using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(LoadOptions.FileName))
             {
@@ -129,6 +131,8 @@ namespace CNCLib.GCode.Load
                 if (b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format1bppIndexed)
                     throw new ArgumentException("Bitmap must be Format1bbp");
 
+                b.Save(LoadOptions.ImageWriteToFileName, System.Drawing.Imaging.ImageFormat.Bmp);
+
 				commands.Add(new GxxCommand() { GCodeAdd = "; Image.Width="  + _sizeX.ToString() });
 				commands.Add(new GxxCommand() { GCodeAdd = "; Image.Height=" + _sizeY.ToString() });
 				commands.Add(new GxxCommand() { GCodeAdd = "; Image.HorizontalResolution(DPI)=" + b.HorizontalResolution.ToString() });
@@ -146,13 +150,10 @@ namespace CNCLib.GCode.Load
                 _laserOn = true;
                 LaserOff();
                 int black = System.Drawing.Color.Black.ToArgb();
+                int lasty = -1;
 
                 for (int y = 0; y < _sizeY; y++)
                 {
-                    var homec = new G00Command();
-                    homec.AddVariable('X', (decimal) Math.Round(0 * _pixelSizeX + _shiftX, 2));
-                    homec.AddVariable('Y', (decimal) Math.Round((_sizeY-y-1) * _pixelSizeY + _shiftY, 2));
-                    _commands.Add(homec);
                     bool wasLaserOn = true;
                     bool lastLaserOn = false;
 
@@ -164,12 +165,14 @@ namespace CNCLib.GCode.Load
 
                         if (isLaserOn != wasLaserOn && x != 0)
                         {
-                            AddCommandX(x - 1,wasLaserOn);
+                            AddCommandX(x - 1,y, ref lasty, wasLaserOn);
                             wasLaserOn = isLaserOn;
                         }
                         else if (x==0)
                         {
                             wasLaserOn = isLaserOn;
+                            if (isLaserOn)
+                                AddCommandX(x, y, ref lasty, wasLaserOn);
                         }
                         lastLaserOn = isLaserOn;
 
@@ -179,7 +182,7 @@ namespace CNCLib.GCode.Load
                             LaserOff();
                     }
                     if (lastLaserOn)
-                        AddCommandX(_sizeX, wasLaserOn);
+                        AddCommandX(_sizeX, y, ref lasty, wasLaserOn);
 
                     LaserOff();
                 }
@@ -187,15 +190,26 @@ namespace CNCLib.GCode.Load
             commands.UpdateCache();
         }
 
-        private void AddCommandX(int x, bool laserOn)
+        private void AddCommandX(int x, int y, ref int lasty, bool laserOn)
         {
             // start laser a bit later but switch it off earlier
             double shift = 0;
             shift = laserOn ? _shiftLaserOff : _shiftLaserOn;
 
-            var c = new G01Command();
-            c.AddVariable('X', (decimal) Math.Round((x * _pixelSizeX) + _shiftX + shift, 2));
-            _commands.Add(c);
+            if (y != lasty)
+            {
+                var cy = new G00Command();
+                int x1 = x - 4; if (x1 < 0) x = 0;
+
+                cy.AddVariable('X', (decimal)Math.Round((x1 * _pixelSizeX) + _shiftX + shift, 2));
+                cy.AddVariable('Y', (decimal)Math.Round((_sizeY - y - 1) * _pixelSizeY + _shiftY, 2));
+                lasty = y;
+                _commands.Add(cy);
+            }
+
+            var cx = new G01Command();
+            cx.AddVariable('X', (decimal) Math.Round((x * _pixelSizeX) + _shiftX + shift, 2));
+            _commands.Add(cx);
         }
 
         private void LaserOn()

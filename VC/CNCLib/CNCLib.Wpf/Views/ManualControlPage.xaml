@@ -128,6 +128,7 @@
                             <Button Command="{Binding Tool.SendM107LaserOffCommand}" Content="Laser Off" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="100">
+                            <Button Command="{Binding Tool.SendM106LaserOnMinCommand}" Content="Laser On(min)"/>
                             <Button Command="{Binding AxisZ.SendHomeCommand}" Content="Z Home" />
                         </StackPanel>
                     </StackPanel>
