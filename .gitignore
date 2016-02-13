@@ -6,3 +6,5 @@ Debug/
 ipch/
 .vs/
 /VC/builds
+/VC/Arduino.VC/StepperTest/TestResult
+/VC/CNCLib/packages/NSubstitute.1.9.2.0

@@ -116,7 +116,8 @@ namespace CNCLib.GCode.Load
 						commands.Add(new GxxCommand() { GCodeAdd = "; Image Converted with FloydSteinbergDither" });
 						commands.Add(new GxxCommand() { GCodeAdd = "; GrayThreshold=" + LoadOptions.GrayThreshold.ToString() });
 
-						b = new Framework.Tools.Drawing.FloydSteinbergDither() { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
+//						b = new Framework.Tools.Drawing.FloydSteinbergDither() { Graythreshold = LoadOptions.GrayThreshold }.Process(b);//
+                        b = new Framework.Tools.Drawing.NewspapergDither() { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
                         break;
 
                     default:

@@ -46,6 +46,8 @@
       <Link>Properties\FrameworkAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CommandStream.cs" />
+    <Compile Include="Drawing\DitherBase.cs" />
+    <Compile Include="Drawing\NewspaperDither.cs" />
     <Compile Include="Drawing\FloydSteinbergDither.cs" />
     <Compile Include="Drawing\ImageHelper.cs" />
     <Compile Include="Drawing\Point3D.cs" />

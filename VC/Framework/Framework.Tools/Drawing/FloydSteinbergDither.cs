@@ -1,4 +1,22 @@
-﻿using System;
+﻿////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2015 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -9,157 +27,58 @@ using System.Threading.Tasks;
 
 namespace Framework.Tools.Drawing
 {
-    public class FloydSteinbergDither
+    public class FloydSteinbergDither : DitherBase
 	{
         #region private members
-
-        int _bytesPerPixel = 4;
-		int _height;
-		int _width;
-
-        int _AddForA = 3;
-        int _AddForR = 2;
-        int _AddForG = 1;
-        int _AddForB = 0;
 
         #endregion
 
         #region properties
 
-        public int Graythreshold { get; set; } = 127;
 
         #endregion
 
         #region public
 
-        public Bitmap Process(Bitmap imageX)
-        {
-            byte[] rgbValues = ReadImage(imageX);
-
-            ConvertImage(rgbValues);
-
-            return WriteImage(rgbValues,imageX);
-        }
 
         #endregion
 
         #region private helper
 
-        private static byte Saturation(int r)
-		{
-			if (r <= 0)
-				return 0;
-			else if (r > 255)
-				return (byte)255;
-			else
-				return (byte)(r);
-		}
-
-		private bool FindNearestColorGrayScale(Byte colorR, Byte colorG, Byte colorB)
-		{
-			return (0.2126 * colorR + 0.7152 * colorG + 0.0722 * colorB) >= Graythreshold;
-		}
-
-		private int ToByteIdx(int x,int y)
-		{
-			return (y * _width + x) * _bytesPerPixel;
-		}
-
-		private byte[] ReadImage(Bitmap imageX)
-		{
-			_height = imageX.Height;
-			_width = imageX.Width;
-
-			Rectangle rect = new Rectangle(0, 0, _width, _height);
-			BitmapData bmpData = imageX.LockBits(rect, ImageLockMode.ReadOnly, imageX.PixelFormat);
-			IntPtr ptr = bmpData.Scan0;
-			int bytes = Math.Abs(bmpData.Stride) * _height;
-			var rgbValues = new Byte[bytes];
-			System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
-			imageX.UnlockBits(bmpData);
-
-            switch (imageX.PixelFormat)
-            {
-                case PixelFormat.Format24bppRgb:
-                    _bytesPerPixel = 3;
-                    _AddForA = -1;
-                    break;
-            }
-
-
-            return rgbValues;
-		}
-
-		private void ConvertImage(byte[] rgbValues)
+		protected override void ConvertImage(byte[] rgbValues)
 		{
 			for (int y = 0; y < _height; y++)
 			{
 				for (int x = 0; x < _width; x++)
 				{
-					int idx = ToByteIdx(x, y);
-					Byte currentPixelR = rgbValues[idx + _AddForR];
-					Byte currentPixelG = rgbValues[idx + _AddForG];
-					Byte currentPixelB = rgbValues[idx + _AddForB];
+                    Color currentPixel = GetPixel(x, y, rgbValues);
 
-					Byte bestColorRGB = (Byte) (FindNearestColorGrayScale(currentPixelR, currentPixelG, currentPixelB) ? 255 : 0);
+					Byte bestColorRGB = (Byte) (FindNearestColorGrayScale(currentPixel.R, currentPixel.G, currentPixel.B) ? 255 : 0);
 
-                    if (_AddForA >= 0)
-					    rgbValues[idx + _AddForA] = 255;
-					rgbValues[idx + _AddForR] = bestColorRGB;
-					rgbValues[idx + _AddForG] = bestColorRGB;
-					rgbValues[idx + _AddForB] = bestColorRGB;
+                    SetPixel(x, y, rgbValues, bestColorRGB, bestColorRGB, bestColorRGB,255);
 
-					int errorR = (currentPixelR) - (bestColorRGB);
-					int errorG = (currentPixelG) - (bestColorRGB);
-					int errorB = (currentPixelB) - (bestColorRGB);
-					if (x + 1 < _width)
+					int errorR = (currentPixel.R) - (bestColorRGB);
+					int errorG = (currentPixel.G) - (bestColorRGB);
+					int errorB = (currentPixel.B) - (bestColorRGB);
+
+                    if (x + 1 < _width)
 					{
-						idx = ToByteIdx(x + 1, y + 0);
-						rgbValues[idx + _AddForR] = Saturation(rgbValues[idx + _AddForR] + ((errorR * 7) >> 4));
-						rgbValues[idx + _AddForG] = Saturation(rgbValues[idx + _AddForG] + ((errorG * 7) >> 4));
-						rgbValues[idx + _AddForB] = Saturation(rgbValues[idx + _AddForB] + ((errorB * 7) >> 4));
+                        AddPixel(x+1, y+0, rgbValues, (errorR * 7) >> 4, (errorG * 7) >> 4, (errorB * 7) >> 4, 255);
 					}
 					if (y + 1 < _height)
 					{
 						if (x - 1 > 0)
 						{
-							idx = ToByteIdx(x - 1, y + 1);
-							rgbValues[idx + _AddForR] = Saturation(rgbValues[idx + _AddForR] + ((errorR * 3) >> 4));
-							rgbValues[idx + _AddForG] = Saturation(rgbValues[idx + _AddForG] + ((errorG * 3) >> 4));
-							rgbValues[idx + _AddForB] = Saturation(rgbValues[idx + _AddForB] + ((errorB * 3) >> 4));
+                            AddPixel(x - 1, y + 1, rgbValues, (errorR * 3) >> 4, (errorG * 3) >> 4, (errorB * 3) >> 4, 255);
 						}
-						idx = ToByteIdx(x + 0, y + 1);
-						rgbValues[idx + _AddForR] = Saturation(rgbValues[idx + _AddForR] + ((errorR * 5) >> 4));
-						rgbValues[idx + _AddForG] = Saturation(rgbValues[idx + _AddForG] + ((errorG * 5) >> 4));
-						rgbValues[idx + _AddForB] = Saturation(rgbValues[idx + _AddForB] + ((errorB * 5) >> 4));
+                        AddPixel(x + 0, y + 1, rgbValues, (errorR * 5) >> 4, (errorG * 5) >> 4, (errorB * 5) >> 4, 255);
 						if (x + 1 < _width)
 						{
-							idx = ToByteIdx(x + 1, y + 1);
-							rgbValues[idx + _AddForR] = Saturation(rgbValues[idx + _AddForR] + ((errorR * 1) >> 4));
-							rgbValues[idx + _AddForG] = Saturation(rgbValues[idx + _AddForG] + ((errorG * 1) >> 4));
-							rgbValues[idx + _AddForB] = Saturation(rgbValues[idx + _AddForB] + ((errorB * 1) >> 4));
+                            AddPixel(x + 1, y + 1, rgbValues, (errorR * 1) >> 4, (errorG * 1) >> 4, (errorB * 1) >> 4, 255);
 						}
 					}
 				}
 			}
-		}
-
-		private Bitmap WriteImage(byte[] rgbValues,Bitmap imageX)
-		{
-			var bsrc = new Bitmap(_width, _height, imageX.PixelFormat);
-
-			Rectangle rect = new Rectangle(0, 0, _width, _height);
-			BitmapData bmpData = bsrc.LockBits(rect, ImageLockMode.WriteOnly, bsrc.PixelFormat);
-			IntPtr ptr = bmpData.Scan0;
-
-			int bytes = Math.Abs(bmpData.Stride) * _height;
-			System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
-			bsrc.UnlockBits(bmpData);
-
-			var bdest = bsrc.Clone(rect, PixelFormat.Format1bppIndexed);
-			bdest.SetResolution(imageX.HorizontalResolution, imageX.VerticalResolution);
-
-			return bdest;
 		}
 	}
 
