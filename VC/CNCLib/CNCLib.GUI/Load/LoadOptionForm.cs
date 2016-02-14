@@ -42,34 +42,37 @@ namespace CNCLib.GUI.Load
             get
 			{
                 var r = new LoadInfo()
-				{
-					FileName = _filename.Text,
-					OfsX = decimal.Parse(_ofsX.Text),
-					OfsY = decimal.Parse(_ofsY.Text),
-					ScaleX = decimal.Parse(_scaleX.Text),
-					ScaleY = decimal.Parse(_scaleY.Text),
-					SwapXY = _swapXY.Checked,
-					AutoScale = _autoScale.Checked,
-					AutoScaleBorderDistX = decimal.Parse(_AutoScaleBorderDistX.Text),
-					AutoScaleBorderDistY = decimal.Parse(_AutoScaleBorderDistY.Text),
-					AutoScaleSizeX = decimal.Parse(_AutoScaleSizeX.Text),
-					AutoScaleSizeY = decimal.Parse(_AutoScaleSizeY.Text),
-					AutoScaleKeepRatio = _AutoScaleKeepRatio.Checked,
-					PenMoveType = _generateForEngrave.Checked ? LoadInfo.PenType.ZMove : LoadInfo.PenType.CommandString,
+                {
+                    FileName = _filename.Text,
+                    OfsX = decimal.Parse(_ofsX.Text),
+                    OfsY = decimal.Parse(_ofsY.Text),
+                    ScaleX = decimal.Parse(_scaleX.Text),
+                    ScaleY = decimal.Parse(_scaleY.Text),
+                    SwapXY = _swapXY.Checked,
+                    AutoScale = _autoScale.Checked,
+                    AutoScaleBorderDistX = decimal.Parse(_AutoScaleBorderDistX.Text),
+                    AutoScaleBorderDistY = decimal.Parse(_AutoScaleBorderDistY.Text),
+                    AutoScaleSizeX = decimal.Parse(_AutoScaleSizeX.Text),
+                    AutoScaleSizeY = decimal.Parse(_AutoScaleSizeY.Text),
+                    AutoScaleKeepRatio = _AutoScaleKeepRatio.Checked,
+                    PenMoveType = _generateForEngrave.Checked ? LoadInfo.PenType.ZMove : LoadInfo.PenType.CommandString,
 
-					PenPosUp = decimal.Parse(_engraveZUp.Text),
-					PenPosDown = decimal.Parse(_engraveZDown.Text),
-					PenPosInParameter = _engraveUseParameter.Checked,
+                    PenPosUp = decimal.Parse(_engraveZUp.Text),
+                    PenPosDown = decimal.Parse(_engraveZDown.Text),
+                    PenPosInParameter = _engraveUseParameter.Checked,
 
                     PenDownCommandString = _laserOn.Text,
-					PenUpCommandString = _laserOff.Text,
+                    PenUpCommandString = _laserOff.Text,
 
                     LaserSize = decimal.Parse(_laserSize.Text),
-                    GrayThreshold  = Byte.Parse(_grayThreshold.Text),
+                    GrayThreshold = Byte.Parse(_grayThreshold.Text),
 
                     Dither = _floydSteinbergDither.Checked ? LoadInfo.DitherFilter.FloydSteinbergDither : LoadInfo.DitherFilter.NewspaperDither,
 
-                   NewspaperDitherSize = int.Parse(_newspaperDotSize.Text)
+                    NewspaperDitherSize = int.Parse(_newspaperDotSize.Text),
+
+                    ImageWriteToFileName = _saveImageToFilename.Text,
+                    GCodeWriteToFileName = _saveGCodeToFileName.Text
 
                 };
 
@@ -129,6 +132,9 @@ namespace CNCLib.GUI.Load
 
                 _imageDPIX.Text = value.ImageDPIX.ToString();
                 _imageDPIY.Text = value.ImageDPIY.ToString();
+
+                _saveImageToFilename.Text = value.ImageWriteToFileName;
+                _saveGCodeToFileName.Text = value.GCodeWriteToFileName;
 
                 _floydSteinbergDither.Checked = value.Dither == LoadInfo.DitherFilter.FloydSteinbergDither;
                 _newspaperDither.Checked = value.Dither == LoadInfo.DitherFilter.NewspaperDither;

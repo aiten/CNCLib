@@ -79,10 +79,14 @@
             this.label14 = new System.Windows.Forms.Label();
             this._penDownSpeed = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this._newspaperDotSize = new System.Windows.Forms.TextBox();
             this._floydSteinbergDither = new System.Windows.Forms.RadioButton();
             this._newspaperDither = new System.Windows.Forms.RadioButton();
-            this._newspaperDotSize = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this._saveImageToFilename = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this._saveGCodeToFileName = new System.Windows.Forms.TextBox();
             this._autoScaleGb.SuspendLayout();
             this._generateForEngrageGroup.SuspendLayout();
             this._generateForLaserGroup.SuspendLayout();
@@ -171,7 +175,7 @@
             // _load
             // 
             this._load.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this._load.Location = new System.Drawing.Point(385, 393);
+            this._load.Location = new System.Drawing.Point(378, 446);
             this._load.Name = "_load";
             this._load.Size = new System.Drawing.Size(77, 23);
             this._load.TabIndex = 9;
@@ -181,7 +185,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(468, 393);
+            this.button1.Location = new System.Drawing.Point(461, 446);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
@@ -225,7 +229,7 @@
             this._autoScaleGb.Controls.Add(this.label3);
             this._autoScaleGb.Controls.Add(this._AutoScaleSizeY);
             this._autoScaleGb.Controls.Add(this._AutoScaleSizeX);
-            this._autoScaleGb.Location = new System.Drawing.Point(302, 44);
+            this._autoScaleGb.Location = new System.Drawing.Point(302, 42);
             this._autoScaleGb.Name = "_autoScaleGb";
             this._autoScaleGb.Size = new System.Drawing.Size(235, 124);
             this._autoScaleGb.TabIndex = 14;
@@ -312,7 +316,7 @@
             // _loadGCode
             // 
             this._loadGCode.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this._loadGCode.Location = new System.Drawing.Point(295, 393);
+            this._loadGCode.Location = new System.Drawing.Point(288, 446);
             this._loadGCode.Name = "_loadGCode";
             this._loadGCode.Size = new System.Drawing.Size(84, 23);
             this._loadGCode.TabIndex = 15;
@@ -327,7 +331,7 @@
             this._generateForEngrageGroup.Controls.Add(this.label6);
             this._generateForEngrageGroup.Controls.Add(this._engraveZUp);
             this._generateForEngrageGroup.Controls.Add(this._engraveZDown);
-            this._generateForEngrageGroup.Location = new System.Drawing.Point(15, 174);
+            this._generateForEngrageGroup.Location = new System.Drawing.Point(15, 172);
             this._generateForEngrageGroup.Name = "_generateForEngrageGroup";
             this._generateForEngrageGroup.Size = new System.Drawing.Size(262, 94);
             this._generateForEngrageGroup.TabIndex = 18;
@@ -388,7 +392,7 @@
             // _generateForEngrave
             // 
             this._generateForEngrave.AutoSize = true;
-            this._generateForEngrave.Location = new System.Drawing.Point(45, 399);
+            this._generateForEngrave.Location = new System.Drawing.Point(38, 452);
             this._generateForEngrave.Name = "_generateForEngrave";
             this._generateForEngrave.Size = new System.Drawing.Size(126, 17);
             this._generateForEngrave.TabIndex = 3;
@@ -412,7 +416,7 @@
             this._generateForLaserGroup.Controls.Add(this._laserOff);
             this._generateForLaserGroup.Controls.Add(this.label9);
             this._generateForLaserGroup.Controls.Add(this._laserOn);
-            this._generateForLaserGroup.Location = new System.Drawing.Point(15, 274);
+            this._generateForLaserGroup.Location = new System.Drawing.Point(15, 272);
             this._generateForLaserGroup.Name = "_generateForLaserGroup";
             this._generateForLaserGroup.Size = new System.Drawing.Size(262, 94);
             this._generateForLaserGroup.TabIndex = 19;
@@ -470,7 +474,7 @@
             // _generateForLaser
             // 
             this._generateForLaser.AutoSize = true;
-            this._generateForLaser.Location = new System.Drawing.Point(45, 377);
+            this._generateForLaser.Location = new System.Drawing.Point(38, 426);
             this._generateForLaser.Name = "_generateForLaser";
             this._generateForLaser.Size = new System.Drawing.Size(109, 17);
             this._generateForLaser.TabIndex = 20;
@@ -486,7 +490,7 @@
             this._generalGroup.Controls.Add(this.label2);
             this._generalGroup.Controls.Add(this._ofsY);
             this._generalGroup.Controls.Add(this._ofsX);
-            this._generalGroup.Location = new System.Drawing.Point(15, 44);
+            this._generalGroup.Location = new System.Drawing.Point(15, 42);
             this._generalGroup.Name = "_generalGroup";
             this._generalGroup.Size = new System.Drawing.Size(262, 123);
             this._generalGroup.TabIndex = 21;
@@ -496,7 +500,7 @@
             // _loadImage
             // 
             this._loadImage.DialogResult = System.Windows.Forms.DialogResult.No;
-            this._loadImage.Location = new System.Drawing.Point(205, 393);
+            this._loadImage.Location = new System.Drawing.Point(198, 446);
             this._loadImage.Name = "_loadImage";
             this._loadImage.Size = new System.Drawing.Size(84, 23);
             this._loadImage.TabIndex = 22;
@@ -553,30 +557,26 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this._saveImageToFilename);
             this.groupBox1.Controls.Add(this._newspaperDotSize);
             this.groupBox1.Controls.Add(this._floydSteinbergDither);
             this.groupBox1.Controls.Add(this._newspaperDither);
             this.groupBox1.Controls.Add(this._grayThreshold);
             this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Location = new System.Drawing.Point(302, 273);
+            this.groupBox1.Location = new System.Drawing.Point(302, 271);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(235, 100);
+            this.groupBox1.Size = new System.Drawing.Size(235, 146);
             this.groupBox1.TabIndex = 27;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Image";
             // 
-            // groupBox2
+            // _newspaperDotSize
             // 
-            this.groupBox2.Controls.Add(this._penMoveSpeed);
-            this.groupBox2.Controls.Add(this.label13);
-            this.groupBox2.Controls.Add(this.label14);
-            this.groupBox2.Controls.Add(this._penDownSpeed);
-            this.groupBox2.Location = new System.Drawing.Point(302, 174);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(235, 93);
-            this.groupBox2.TabIndex = 28;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Engrave/Laser";
+            this._newspaperDotSize.Location = new System.Drawing.Point(127, 71);
+            this._newspaperDotSize.Name = "_newspaperDotSize";
+            this._newspaperDotSize.Size = new System.Drawing.Size(45, 20);
+            this._newspaperDotSize.TabIndex = 31;
             // 
             // _floydSteinbergDither
             // 
@@ -598,19 +598,59 @@
             this._newspaperDither.Text = "NewpaperDither";
             this._newspaperDither.UseVisualStyleBackColor = true;
             // 
-            // _newspaperDotSize
+            // groupBox2
             // 
-            this._newspaperDotSize.Location = new System.Drawing.Point(127, 71);
-            this._newspaperDotSize.Name = "_newspaperDotSize";
-            this._newspaperDotSize.Size = new System.Drawing.Size(45, 20);
-            this._newspaperDotSize.TabIndex = 31;
+            this.groupBox2.Controls.Add(this._penMoveSpeed);
+            this.groupBox2.Controls.Add(this.label13);
+            this.groupBox2.Controls.Add(this.label14);
+            this.groupBox2.Controls.Add(this._penDownSpeed);
+            this.groupBox2.Location = new System.Drawing.Point(302, 172);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(235, 93);
+            this.groupBox2.TabIndex = 28;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Engrave/Laser";
+            // 
+            // _saveImageToFilename
+            // 
+            this._saveImageToFilename.Location = new System.Drawing.Point(18, 120);
+            this._saveImageToFilename.Name = "_saveImageToFilename";
+            this._saveImageToFilename.Size = new System.Drawing.Size(198, 20);
+            this._saveImageToFilename.TabIndex = 29;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(16, 104);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(126, 13);
+            this.label16.TabIndex = 29;
+            this.label16.Text = "Save converted image to";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(12, 381);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(83, 13);
+            this.label17.TabIndex = 32;
+            this.label17.Text = "Save G-Code to";
+            // 
+            // _saveGCodeToFileName
+            // 
+            this._saveGCodeToFileName.Location = new System.Drawing.Point(15, 397);
+            this._saveGCodeToFileName.Name = "_saveGCodeToFileName";
+            this._saveGCodeToFileName.Size = new System.Drawing.Size(262, 20);
+            this._saveGCodeToFileName.TabIndex = 33;
             // 
             // LoadOptionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 433);
+            this.ClientSize = new System.Drawing.Size(572, 484);
+            this.Controls.Add(this.label17);
             this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this._saveGCodeToFileName);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this._loadImage);
             this.Controls.Add(this.label7);
@@ -704,5 +744,9 @@
         private System.Windows.Forms.RadioButton _floydSteinbergDither;
         private System.Windows.Forms.RadioButton _newspaperDither;
         private System.Windows.Forms.TextBox _newspaperDotSize;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox _saveImageToFilename;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox _saveGCodeToFileName;
     }
 }
