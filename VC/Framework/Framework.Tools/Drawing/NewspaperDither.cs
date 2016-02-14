@@ -35,7 +35,7 @@ namespace Framework.Tools.Drawing
 
         #region properties
 
-        public int DotSize { get; set; } = 3;
+        public int DotSize { get; set; } = 5;
 
         #endregion
 
@@ -46,30 +46,30 @@ namespace Framework.Tools.Drawing
 
         #region private helper
 
-        protected override void ConvertImage(byte[] rgbValues)
+        protected override void ConvertImage()
         {
-            base.ConvertImage(rgbValues);
+            base.ConvertImage();
 
             for (int y = 0; y < _height; y += DotSize)
             {
                 for (int x = 0; x < _width; x += DotSize)
                 {
-                    int count = CountBlack(x, y, rgbValues);
-                    FillBlack(x, y, rgbValues,count);
+                    int count = CountBlack(x, y);
+                    FillBlack(x, y, count);
                 }
             }
         }
 
-        private int CountBlack(int x, int y, byte[] rgbValues)
+        private int CountBlack(int x, int y)
         {
             int count = 0;
             for (int iy = 0; iy < DotSize; iy++)
             {
                 for (int ix = 0; ix < DotSize; ix++)
                 {
-                    if ((x + ix) < _width && (y + iy) < _height)
+                    if (IsPixel(x + ix,y + iy))
                     {
-                        Color currentPixel = GetPixel(x+ix, y+iy, rgbValues);
+                        Color currentPixel = GetPixel(x+ix, y+iy);
                         if (currentPixel.R == 0)
                             count++;
                     }
@@ -84,45 +84,38 @@ namespace Framework.Tools.Drawing
             public int y;
         };
 
-        Offsets[][] _offsets = new Offsets[][]
+        Offsets[] _offsets = new Offsets[]
         {
-            new Offsets[] {  new Offsets() { x=0, y=0 } },
-            new Offsets[] {  new Offsets() { x=-1, y=0 },  new Offsets() { x=0, y=1 }, new Offsets() { x = 1, y = 0 }, new Offsets() { x = 0, y = -1 } },
-            new Offsets[] {  new Offsets() { x=-1, y=1 },  new Offsets() { x=1, y=1 }, new Offsets() { x = -1, y = -1 }, new Offsets() { x = -1, y = 1 } }
+            new Offsets() { x =0, y=0 },
+            new Offsets() { x = -1, y = 0 },  new Offsets() { x = 0,  y = 1 }, new Offsets() { x = 1, y = 0 },  new Offsets() { x = 0,  y = -1 },
+            new Offsets() { x = -1, y = 1 },  new Offsets() { x = 1,  y = 1 }, new Offsets() { x = 1, y = -1 }, new Offsets() { x = -1,  y = -1 },
+
+            new Offsets() { x = -2, y = 0 },  new Offsets() { x = 0,  y = 2 }, new Offsets() { x = 2, y = 0 },    new Offsets() { x = 0,  y = -2 },
+            new Offsets() { x = -2, y = 1 },  new Offsets() { x = 1,  y = 2 }, new Offsets() { x = 2, y = -1 },   new Offsets() { x = -1, y = -2 },
+            new Offsets() { x = -1, y = 2 },  new Offsets() { x = 2,  y = 1 }, new Offsets() { x = 1, y = -2 },   new Offsets() { x = -2, y = -1 },
+            new Offsets() { x = -2, y = 2 },  new Offsets() { x = 2,  y = 2 }, new Offsets() { x = 2, y = -2 },   new Offsets() { x = -2, y = -2 }
         };
 
-        private void FillBlack(int x, int y, byte[] rgbValues, int count)
+        private void FillBlack(int x, int y, int count)
         {
             var black = new Color() { R = 0, G = 0, B = 0, A = 0 };
             var white = new Color() { R = 255, G = 255, B = 255, A = 255 };
 
-            int a = 0;
-            int b = 0; 
-
             for (int i=0;i<DotSize*DotSize;i++)
             {
-                int xx = x + DotSize / 2 + _offsets[a][b].x;
-                int yy = y + DotSize / 2 + _offsets[a][b].y;
+                int xx = x + DotSize / 2 + _offsets[i].x;
+                int yy = y + DotSize / 2 + _offsets[i].y;
 
-
-            }
-
-            for (int iy = 0; iy < DotSize; iy++)
-
-            {
-                for (int ix = 0; ix < DotSize; ix++)
+                if (IsPixel(xx, yy))
                 {
-                    if ((x + ix) < _width && (y + iy) < _height)
+                    if (count > 0)
                     {
-                        if (count > 0)
-                        {
-                            count--;
-                            SetPixel(x + ix, y + iy, rgbValues, black);
-                        }
-                        else
-                        {
-                            SetPixel(x + ix, y + iy, rgbValues, white);
-                        }
+                        count--;
+                        SetPixel(xx, yy, black);
+                    }
+                    else
+                    {
+                        SetPixel(xx, yy, white);
                     }
                 }
             }

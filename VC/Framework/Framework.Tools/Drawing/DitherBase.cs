@@ -34,6 +34,8 @@ namespace Framework.Tools.Drawing
         protected int _bytesPerPixel = 4;
         protected int _height;
         protected int _width;
+        protected int _scansize;
+        protected byte[] _rgbValues;
 
         int _AddForA = 3;
         int _AddForR = 2;
@@ -60,11 +62,11 @@ namespace Framework.Tools.Drawing
 
         public Bitmap Process(Bitmap image)
         {
-            byte[] rgbValues = ReadImage(image);
+            ReadImage(image);
 
-            ConvertImage(rgbValues);
+            ConvertImage();
 
-            return WriteImage(rgbValues,image);
+            return WriteImage(image);
         }
 
         #endregion
@@ -88,36 +90,41 @@ namespace Framework.Tools.Drawing
 
         protected int ToByteIdx(int x,int y)
 		{
-			return (y * _width + x) * _bytesPerPixel;
+            return y * _scansize + x * _bytesPerPixel;
 		}
 
-        protected Color GetPixel(int x, int y, byte[] rgbValues)
+        protected bool IsPixel(int x, int y)
+        {
+            return x < _width && y < _height;
+        }
+
+        protected Color GetPixel(int x, int y)
         {
             int idx = ToByteIdx(x,y);
-            return new Color() { R = rgbValues[idx + _AddForR], G = rgbValues[idx + _AddForG], B = rgbValues[idx + _AddForB], A = (_AddForA < 0) ? (Byte) 255 : rgbValues[idx + _AddForA] };
+            return new Color() { R = _rgbValues[idx + _AddForR], G = _rgbValues[idx + _AddForG], B = _rgbValues[idx + _AddForB], A = (_AddForA < 0) ? (Byte) 255 : _rgbValues[idx + _AddForA] };
         }
 
-        protected void SetPixel(int x, int y, byte[] rgbValues, Color color)
+        protected void SetPixel(int x, int y, Color color)
         {
             int idx = ToByteIdx(x, y);
-            rgbValues[idx + _AddForR] = color.R; 
-            rgbValues[idx + _AddForG] = color.G; 
-            rgbValues[idx + _AddForB] = color.B;
+            _rgbValues[idx + _AddForR] = color.R;
+            _rgbValues[idx + _AddForG] = color.G;
+            _rgbValues[idx + _AddForB] = color.B;
 
             if (_AddForA >= 0)
-                rgbValues[idx + _AddForA] = color.A;
+                _rgbValues[idx + _AddForA] = color.A;
         }
-        protected void SetPixel(int x, int y, byte[] rgbValues, int r, int g, int b, int a)
+        protected void SetPixel(int x, int y, int r, int g, int b, int a)
         {
-            SetPixel(x, y, rgbValues, new Color() { R = Saturation(r), G = Saturation(g), B = Saturation(b), A = Saturation(a) });
+            SetPixel(x, y, new Color() { R = Saturation(r), G = Saturation(g), B = Saturation(b), A = Saturation(a) });
         }
-        protected void AddPixel(int x, int y, byte[] rgbValues, int r, int g, int b, int a)
+        protected void AddPixel(int x, int y, int r, int g, int b, int a)
         {
-            Color pixel = GetPixel(x, y, rgbValues);
-            SetPixel(x, y, rgbValues, pixel.R+r, pixel.G+g, pixel.B+b, pixel.A+a);
+            Color pixel = GetPixel(x, y);
+            SetPixel(x, y, pixel.R+r, pixel.G+g, pixel.B+b, pixel.A+a);
         }
 
-        protected byte[] ReadImage(Bitmap imageX)
+        protected void ReadImage(Bitmap imageX)
 		{
 			_height = imageX.Height;
 			_width = imageX.Width;
@@ -125,7 +132,9 @@ namespace Framework.Tools.Drawing
 			Rectangle rect = new Rectangle(0, 0, _width, _height);
 			BitmapData bmpData = imageX.LockBits(rect, ImageLockMode.ReadOnly, imageX.PixelFormat);
 			IntPtr ptr = bmpData.Scan0;
-			int bytes = Math.Abs(bmpData.Stride) * _height;
+            _scansize = Math.Abs(bmpData.Stride);
+
+            int bytes = _scansize * _height;
 			var rgbValues = new Byte[bytes];
 			System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
 			imageX.UnlockBits(bmpData);
@@ -138,13 +147,12 @@ namespace Framework.Tools.Drawing
                     break;
             }
 
-
-            return rgbValues;
+            _rgbValues = rgbValues;
 		}
 
-        protected abstract void ConvertImage(byte[] rgbValues);
+        protected abstract void ConvertImage();
 
-        protected Bitmap WriteImage(byte[] rgbValues,Bitmap imageX)
+        protected Bitmap WriteImage(Bitmap imageX)
 		{
 			var bsrc = new Bitmap(_width, _height, imageX.PixelFormat);
 
@@ -153,7 +161,7 @@ namespace Framework.Tools.Drawing
 			IntPtr ptr = bmpData.Scan0;
 
 			int bytes = Math.Abs(bmpData.Stride) * _height;
-			System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
+			System.Runtime.InteropServices.Marshal.Copy(_rgbValues, 0, ptr, bytes);
 			bsrc.UnlockBits(bmpData);
 
 			var bdest = bsrc.Clone(rect, PixelFormat.Format1bppIndexed);

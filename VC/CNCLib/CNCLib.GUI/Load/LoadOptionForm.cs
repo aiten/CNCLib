@@ -66,6 +66,11 @@ namespace CNCLib.GUI.Load
 
                     LaserSize = decimal.Parse(_laserSize.Text),
                     GrayThreshold  = Byte.Parse(_grayThreshold.Text),
+
+                    Dither = _floydSteinbergDither.Checked ? LoadInfo.DitherFilter.FloydSteinbergDither : LoadInfo.DitherFilter.NewspaperDither,
+
+                   NewspaperDitherSize = int.Parse(_newspaperDotSize.Text)
+
                 };
 
                 if (string.IsNullOrEmpty(_penMoveSpeed.Text))
@@ -124,6 +129,11 @@ namespace CNCLib.GUI.Load
 
                 _imageDPIX.Text = value.ImageDPIX.ToString();
                 _imageDPIY.Text = value.ImageDPIY.ToString();
+
+                _floydSteinbergDither.Checked = value.Dither == LoadInfo.DitherFilter.FloydSteinbergDither;
+                _newspaperDither.Checked = value.Dither == LoadInfo.DitherFilter.NewspaperDither;
+
+                _newspaperDotSize.Text = value.NewspaperDitherSize.ToString();
 
                 SetEnableState();
 			}

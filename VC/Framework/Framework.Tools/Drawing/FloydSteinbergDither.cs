@@ -45,17 +45,17 @@ namespace Framework.Tools.Drawing
 
         #region private helper
 
-		protected override void ConvertImage(byte[] rgbValues)
+		protected override void ConvertImage()
 		{
 			for (int y = 0; y < _height; y++)
 			{
 				for (int x = 0; x < _width; x++)
 				{
-                    Color currentPixel = GetPixel(x, y, rgbValues);
+                    Color currentPixel = GetPixel(x, y);
 
 					Byte bestColorRGB = (Byte) (FindNearestColorGrayScale(currentPixel.R, currentPixel.G, currentPixel.B) ? 255 : 0);
 
-                    SetPixel(x, y, rgbValues, bestColorRGB, bestColorRGB, bestColorRGB,255);
+                    SetPixel(x, y, bestColorRGB, bestColorRGB, bestColorRGB,255);
 
 					int errorR = (currentPixel.R) - (bestColorRGB);
 					int errorG = (currentPixel.G) - (bestColorRGB);
@@ -63,18 +63,18 @@ namespace Framework.Tools.Drawing
 
                     if (x + 1 < _width)
 					{
-                        AddPixel(x+1, y+0, rgbValues, (errorR * 7) >> 4, (errorG * 7) >> 4, (errorB * 7) >> 4, 255);
+                        AddPixel(x+1, y+0, (errorR * 7) >> 4, (errorG * 7) >> 4, (errorB * 7) >> 4, 255);
 					}
 					if (y + 1 < _height)
 					{
 						if (x - 1 > 0)
 						{
-                            AddPixel(x - 1, y + 1, rgbValues, (errorR * 3) >> 4, (errorG * 3) >> 4, (errorB * 3) >> 4, 255);
+                            AddPixel(x - 1, y + 1, (errorR * 3) >> 4, (errorG * 3) >> 4, (errorB * 3) >> 4, 255);
 						}
-                        AddPixel(x + 0, y + 1, rgbValues, (errorR * 5) >> 4, (errorG * 5) >> 4, (errorB * 5) >> 4, 255);
+                        AddPixel(x + 0, y + 1, (errorR * 5) >> 4, (errorG * 5) >> 4, (errorB * 5) >> 4, 255);
 						if (x + 1 < _width)
 						{
-                            AddPixel(x + 1, y + 1, rgbValues, (errorR * 1) >> 4, (errorG * 1) >> 4, (errorB * 1) >> 4, 255);
+                            AddPixel(x + 1, y + 1, (errorR * 1) >> 4, (errorG * 1) >> 4, (errorB * 1) >> 4, 255);
 						}
 					}
 				}

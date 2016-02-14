@@ -80,6 +80,9 @@
             this._penDownSpeed = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this._floydSteinbergDither = new System.Windows.Forms.RadioButton();
+            this._newspaperDither = new System.Windows.Forms.RadioButton();
+            this._newspaperDotSize = new System.Windows.Forms.TextBox();
             this._autoScaleGb.SuspendLayout();
             this._generateForEngrageGroup.SuspendLayout();
             this._generateForLaserGroup.SuspendLayout();
@@ -550,6 +553,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this._newspaperDotSize);
+            this.groupBox1.Controls.Add(this._floydSteinbergDither);
+            this.groupBox1.Controls.Add(this._newspaperDither);
             this.groupBox1.Controls.Add(this._grayThreshold);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Location = new System.Drawing.Point(302, 273);
@@ -571,6 +577,33 @@
             this.groupBox2.TabIndex = 28;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Engrave/Laser";
+            // 
+            // _floydSteinbergDither
+            // 
+            this._floydSteinbergDither.AutoSize = true;
+            this._floydSteinbergDither.Location = new System.Drawing.Point(19, 49);
+            this._floydSteinbergDither.Name = "_floydSteinbergDither";
+            this._floydSteinbergDither.Size = new System.Drawing.Size(123, 17);
+            this._floydSteinbergDither.TabIndex = 30;
+            this._floydSteinbergDither.Text = "FloydSteinbergDither";
+            this._floydSteinbergDither.UseVisualStyleBackColor = true;
+            // 
+            // _newspaperDither
+            // 
+            this._newspaperDither.AutoSize = true;
+            this._newspaperDither.Location = new System.Drawing.Point(19, 71);
+            this._newspaperDither.Name = "_newspaperDither";
+            this._newspaperDither.Size = new System.Drawing.Size(102, 17);
+            this._newspaperDither.TabIndex = 29;
+            this._newspaperDither.Text = "NewpaperDither";
+            this._newspaperDither.UseVisualStyleBackColor = true;
+            // 
+            // _newspaperDotSize
+            // 
+            this._newspaperDotSize.Location = new System.Drawing.Point(127, 71);
+            this._newspaperDotSize.Name = "_newspaperDotSize";
+            this._newspaperDotSize.Size = new System.Drawing.Size(45, 20);
+            this._newspaperDotSize.TabIndex = 31;
             // 
             // LoadOptionForm
             // 
@@ -668,5 +701,8 @@
         private System.Windows.Forms.Button _dpiXeqY;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton _floydSteinbergDither;
+        private System.Windows.Forms.RadioButton _newspaperDither;
+        private System.Windows.Forms.TextBox _newspaperDotSize;
     }
 }

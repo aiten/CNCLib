@@ -67,5 +67,13 @@ namespace CNCLib.GCode.Load
 
         public decimal? ImageDPIX { get; set; }
         public decimal? ImageDPIY { get; set; }
+        public enum DitherFilter
+        {
+            FloydSteinbergDither,
+            NewspaperDither
+        };
+
+        public DitherFilter Dither { get; set; } = DitherFilter.FloydSteinbergDither;
+        public int NewspaperDitherSize { get; set; } = 5;
     }
 }
