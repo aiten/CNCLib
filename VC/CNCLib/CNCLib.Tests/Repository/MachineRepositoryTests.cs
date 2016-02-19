@@ -75,7 +75,7 @@ namespace CNCLib.Tests.Repository
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
 				var machine = CreateMachine("AddOneMachine");
-				int id = rep.StoreMachine(machine);
+				int id = rep.Store(machine);
 				Assert.AreNotEqual(0, id);
 			}
 		}
@@ -86,7 +86,7 @@ namespace CNCLib.Tests.Repository
 			{
 				var machine = CreateMachine("AddOneMachineWithCommands");
 				AddMachinCommands(machine);
-				int id = rep.StoreMachine(machine);
+				int id = rep.Store(machine);
 				Assert.AreNotEqual(0, id);
 			}
 		}
@@ -99,7 +99,7 @@ namespace CNCLib.Tests.Repository
 
 				var machine = CreateMachine("AddOneMachineAndRead");
 
-				int id = repwrite.StoreMachine(machine);
+				int id = repwrite.Store(machine);
 
 				Assert.AreNotEqual(0, id);
 
@@ -122,7 +122,7 @@ namespace CNCLib.Tests.Repository
 				var machine = CreateMachine("AddOneMachineWithCommandsAndRead");
 				int count = AddMachinCommands(machine);
 
-				int id = repwrite.StoreMachine(machine);
+				int id = repwrite.Store(machine);
 
 				Assert.AreNotEqual(0, id);
 
@@ -144,7 +144,7 @@ namespace CNCLib.Tests.Repository
 				var machine = CreateMachine("AddOneMachineWithInitCommandsAndRead");
 				int count = AddMachinInitCommands(machine);
 
-				int id = repwrite.StoreMachine(machine);
+				int id = repwrite.Store(machine);
 
 				Assert.AreNotEqual(0, id);
 
@@ -167,13 +167,13 @@ namespace CNCLib.Tests.Repository
 
 				var machine = CreateMachine("UpdateOneMachineAndRead");
 
-				int id = repwrite.StoreMachine(machine);
+				int id = repwrite.Store(machine);
 
 				Assert.AreNotEqual(0, id);
 
 				machine.Name = "UpdateOneMachineAndRead#2";
 
-				repwrite.StoreMachine(machine);
+				repwrite.Store(machine);
 
 				var machineread = repread.GetMachine(id);
 
@@ -192,13 +192,13 @@ namespace CNCLib.Tests.Repository
 				var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
 				int count = AddMachinCommands(machine);
 
-				int id = repwrite.StoreMachine(machine);
+				int id = repwrite.Store(machine);
 
 				Assert.AreNotEqual(0, id);
 
 				machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
 
-				repwrite.StoreMachine(machine);
+				repwrite.Store(machine);
 
 				var machineread = repread.GetMachine(id);
 
@@ -218,7 +218,7 @@ namespace CNCLib.Tests.Repository
 				var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
 				int count = AddMachinCommands(machine);
 
-				int id = repwrite.StoreMachine(machine);
+				int id = repwrite.Store(machine);
 
 				Assert.AreNotEqual(0, id);
 
@@ -230,7 +230,7 @@ namespace CNCLib.Tests.Repository
 
 				int newcount = count + 2 - 1;
 
-				repwrite.StoreMachine(machine);
+				repwrite.Store(machine);
 
 				var machineread = repread.GetMachine(id);
 
@@ -251,7 +251,7 @@ namespace CNCLib.Tests.Repository
 				var machine = CreateMachine("DeleteMachineWithCommandAndRead");
 				int count = AddMachinCommands(machine);
 
-				int id = repwrite.StoreMachine(machine);
+				int id = repwrite.Store(machine);
 
 				Assert.AreNotEqual(0, id);
 

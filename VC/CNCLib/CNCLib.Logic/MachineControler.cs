@@ -101,7 +101,7 @@ namespace CNCLib.Logic
 			using (var rep = RepositoryFactory.Create<IMachineRepository>())
 			{
 				var me = m.Convert();
-				return rep.StoreMachine(me);
+				return rep.Store(me);
 			}
 		}
 

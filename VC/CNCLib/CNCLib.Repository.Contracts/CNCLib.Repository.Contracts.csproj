@@ -43,11 +43,14 @@
     <Compile Include="..\CNCLibAssemblyInfo.cs">
       <Link>Properties\CNCLibAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Entities\ItemProperty.cs" />
+    <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\Configuration.cs" />
     <Compile Include="Entities\Machine.cs" />
     <Compile Include="Entities\MachineCommand.cs" />
     <Compile Include="Entities\MachineInitCommand.cs" />
     <Compile Include="IConfigurationRepository.cs" />
+    <Compile Include="IItemRepository.cs" />
     <Compile Include="IMachineRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

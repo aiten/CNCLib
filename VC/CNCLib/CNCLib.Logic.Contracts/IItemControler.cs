@@ -18,17 +18,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace CNCLib.Repository.Contracts
+namespace CNCLib.Logic.Contracts
 {
-	public interface IMachineRepository: IDisposable
+	public interface IItemControler : IDisposable
 	{
-		Entities.Machine[] GetMachines();
-		Entities.Machine GetMachine(int id);
-		void Delete(Entities.Machine m);
-		Entities.MachineCommand[] GetMachineCommands(int machineID);
-		Entities.MachineInitCommand[] GetMachineInitCommands(int machineID);
-		int Store(Entities.Machine machine);
-	}
+		IEnumerable<DTO.Item> GetAll();
+
+        object Create(int id);
+
+        int Add(string name, object value);
+        void Save(int id, string name, object value);
+        void Delete(int id);
+    }
 }

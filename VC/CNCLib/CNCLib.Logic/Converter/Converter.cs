@@ -43,5 +43,12 @@ namespace CNCLib.Logic.Converter
 			entity.MachineInitCommands = ObjectConverter.CloneAsList<Repository.Contracts.Entities.MachineInitCommand, MachineInitCommand>(from.MachineInitCommands);
 			return entity;
 		}
-	}
+
+        public static Item Convert(this Repository.Contracts.Entities.Item from)
+        {
+            var dto = ObjectConverter.NewCloneProperties<Item, Repository.Contracts.Entities.Item>(from);
+            return dto;
+        }
+
+    }
 }

@@ -44,8 +44,9 @@ namespace CNCLib.Tests.Repository
 
 			factory.Register(typeof(IConfigurationRepository), typeof(ConfigurationRepository));
 			factory.Register(typeof(IMachineRepository), typeof(MachineRepository));
+            factory.Register(typeof(IItemRepository), typeof(ItemRepository));
 
-			RepositoryFactory = factory;
+            RepositoryFactory = factory;
 
 			if (_init == false)
 			{

@@ -74,6 +74,9 @@
     <Compile Include="..\CNCLibAssemblyInfo.cs">
       <Link>Properties\CNCLibAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Logic\ItemControlerTestClass.cs" />
+    <Compile Include="Logic\ItemControlerTests.cs" />
+    <Compile Include="Repository\ItemRepositoryTests.cs" />
     <Compile Include="Wpf\MachineViewModelTests.cs" />
     <Compile Include="Logic\MachineControlerTests.cs" />
     <Compile Include="Repository\ConfigurationRepositoryTests.cs" />

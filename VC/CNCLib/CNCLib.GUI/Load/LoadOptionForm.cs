@@ -27,15 +27,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CNCLib.Logic.Contracts;
 
 namespace CNCLib.GUI.Load
 {
     public partial class LoadOptionForm : Form
     {
+        protected class LoadOptionDefinition
+        {
+            public CNCLib.Logic.Contracts.DTO.Item  Item { get; set; }
+            public override string ToString()
+            {
+                return Item.Name;
+            }
+        }
+
         public LoadOptionForm()
         {
             InitializeComponent();
+
+            ReadSettings();
         }
+
+        private void ReadSettings()
+        {
+            _settingName.Items.Clear();
+
+            using (var controler = LogicFactory.Create<IItemControler>())
+            {
+                var items = controler.GetAll();
+                foreach (var s in items)
+                {
+                    _settingName.Items.Add(new LoadOptionDefinition() { Item = s });
+                }
+            }
+        }
+
+        static public Framework.Tools.Pattern.IFactory LogicFactory { get; set; }
 
         public LoadInfo LoadInfo 
         {   
@@ -44,6 +72,7 @@ namespace CNCLib.GUI.Load
                 var r = new LoadInfo()
                 {
                     FileName = _filename.Text,
+                    SettingName  = _settingName.Text,
                     OfsX = decimal.Parse(_ofsX.Text),
                     OfsY = decimal.Parse(_ofsY.Text),
                     ScaleX = decimal.Parse(_scaleX.Text),
@@ -102,6 +131,7 @@ namespace CNCLib.GUI.Load
             set
             {
                 _filename.Text = value.FileName;
+                _settingName.Text = value.SettingName;
                 _ofsX.Text = value.OfsX.ToString();
                 _ofsY.Text = value.OfsY.ToString();
                 _scaleX.Text = value.ScaleX.ToString();
@@ -195,6 +225,96 @@ namespace CNCLib.GUI.Load
         private void _dpiXeqY_Click(object sender, EventArgs e)
         {
             _imageDPIY.Text = _imageDPIX.Text;
+        }
+
+        private void _settingName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_settingName.Focused && _settingName.SelectedItem != null)
+            {
+                LoadOptionDefinition item = (LoadOptionDefinition)_settingName.SelectedItem;
+
+                using (var controler = LogicFactory.Create<IItemControler>())
+                {
+                    object obj = controler.Create(item.Item.ItemID);
+                    if (obj != null && obj is LoadInfo)
+                    {
+                        LoadInfo = (LoadInfo)obj;
+                    }
+                }
+            }
+        }
+        private void _saveSettings_Click(object sender, EventArgs e)
+        {
+            LoadInfo obj;
+            try
+            {
+                obj = this.LoadInfo;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Get values failed: " + ex.Message);
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(obj.SettingName))
+            {
+                try
+                {
+                    using (var controler = LogicFactory.Create<IItemControler>())
+                    {
+                        if (_settingName.SelectedItem != null)
+                        {
+                            LoadOptionDefinition item = (LoadOptionDefinition)_settingName.SelectedItem;
+                            controler.Save(item.Item.ItemID, obj.SettingName, obj);
+                        }
+                        else
+                        {
+                            controler.Add(obj.SettingName, obj);
+                            ReadSettings();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Save Options failed: " + ex.Message);
+                }
+            }
+       }
+
+        private void _deleteSettings_Click(object sender, EventArgs e)
+        {
+            LoadInfo obj;
+            try
+            {
+                obj = this.LoadInfo;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Get values failed: " + ex.Message);
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(obj.SettingName))
+            {
+                try
+                {
+                    using (var controler = LogicFactory.Create<IItemControler>())
+                    {
+                        if (_settingName.SelectedItem != null)
+                        {
+                            LoadOptionDefinition item = (LoadOptionDefinition)_settingName.SelectedItem;
+                            controler.Delete(item.Item.ItemID);
+                            ReadSettings();
+                            _settingName.Text = "";
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Delete Options failed: " + ex.Message);
+                }
+            }
+
         }
     }
 }

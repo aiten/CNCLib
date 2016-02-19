@@ -79,14 +79,18 @@
             this.label14 = new System.Windows.Forms.Label();
             this._penDownSpeed = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this._saveImageToFilename = new System.Windows.Forms.TextBox();
             this._newspaperDotSize = new System.Windows.Forms.TextBox();
             this._floydSteinbergDither = new System.Windows.Forms.RadioButton();
             this._newspaperDither = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this._saveImageToFilename = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this._saveGCodeToFileName = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this._settingName = new System.Windows.Forms.ComboBox();
+            this._saveSettings = new System.Windows.Forms.Button();
+            this._deleteSettings = new System.Windows.Forms.Button();
             this._autoScaleGb.SuspendLayout();
             this._generateForEngrageGroup.SuspendLayout();
             this._generateForLaserGroup.SuspendLayout();
@@ -544,9 +548,9 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(16, 49);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(90, 13);
+            this.label14.Size = new System.Drawing.Size(91, 13);
             this.label14.TabIndex = 26;
-            this.label14.Text = "Pen Dows Speed";
+            this.label14.Text = "Pen Down Speed";
             // 
             // _penDownSpeed
             // 
@@ -570,6 +574,22 @@
             this.groupBox1.TabIndex = 27;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Image";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(16, 104);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(126, 13);
+            this.label16.TabIndex = 29;
+            this.label16.Text = "Save converted image to";
+            // 
+            // _saveImageToFilename
+            // 
+            this._saveImageToFilename.Location = new System.Drawing.Point(18, 120);
+            this._saveImageToFilename.Name = "_saveImageToFilename";
+            this._saveImageToFilename.Size = new System.Drawing.Size(198, 20);
+            this._saveImageToFilename.TabIndex = 29;
             // 
             // _newspaperDotSize
             // 
@@ -611,22 +631,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Engrave/Laser";
             // 
-            // _saveImageToFilename
-            // 
-            this._saveImageToFilename.Location = new System.Drawing.Point(18, 120);
-            this._saveImageToFilename.Name = "_saveImageToFilename";
-            this._saveImageToFilename.Size = new System.Drawing.Size(198, 20);
-            this._saveImageToFilename.TabIndex = 29;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(16, 104);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(126, 13);
-            this.label16.TabIndex = 29;
-            this.label16.Text = "Save converted image to";
-            // 
             // label17
             // 
             this.label17.AutoSize = true;
@@ -643,11 +647,53 @@
             this._saveGCodeToFileName.Size = new System.Drawing.Size(262, 20);
             this._saveGCodeToFileName.TabIndex = 33;
             // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(22, 496);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(85, 13);
+            this.label18.TabIndex = 27;
+            this.label18.Text = "Save Settings to";
+            // 
+            // _settingName
+            // 
+            this._settingName.FormattingEnabled = true;
+            this._settingName.Location = new System.Drawing.Point(130, 491);
+            this._settingName.Name = "_settingName";
+            this._settingName.Size = new System.Drawing.Size(166, 21);
+            this._settingName.TabIndex = 34;
+            this._settingName.SelectedIndexChanged += new System.EventHandler(this._settingName_SelectedIndexChanged);
+            // 
+            // _saveSettings
+            // 
+            this._saveSettings.Location = new System.Drawing.Point(302, 489);
+            this._saveSettings.Name = "_saveSettings";
+            this._saveSettings.Size = new System.Drawing.Size(77, 23);
+            this._saveSettings.TabIndex = 35;
+            this._saveSettings.Text = "Save";
+            this._saveSettings.UseVisualStyleBackColor = true;
+            this._saveSettings.Click += new System.EventHandler(this._saveSettings_Click);
+            // 
+            // _deleteSettings
+            // 
+            this._deleteSettings.Location = new System.Drawing.Point(385, 489);
+            this._deleteSettings.Name = "_deleteSettings";
+            this._deleteSettings.Size = new System.Drawing.Size(77, 23);
+            this._deleteSettings.TabIndex = 36;
+            this._deleteSettings.Text = "Delete";
+            this._deleteSettings.UseVisualStyleBackColor = true;
+            this._deleteSettings.Click += new System.EventHandler(this._deleteSettings_Click);
+            // 
             // LoadOptionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 484);
+            this.ClientSize = new System.Drawing.Size(580, 526);
+            this.Controls.Add(this._deleteSettings);
+            this.Controls.Add(this._saveSettings);
+            this.Controls.Add(this._settingName);
+            this.Controls.Add(this.label18);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this._saveGCodeToFileName);
@@ -748,5 +794,9 @@
         private System.Windows.Forms.TextBox _saveImageToFilename;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox _saveGCodeToFileName;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.ComboBox _settingName;
+        private System.Windows.Forms.Button _saveSettings;
+        private System.Windows.Forms.Button _deleteSettings;
     }
 }

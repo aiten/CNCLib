@@ -24,6 +24,8 @@ namespace CNCLib.GCode.Load
 	{
 		public String FileName { get; set; }
 
+        public String SettingName { get; set; }
+
         public String GCodeWriteToFileName { get; set; } = @"c:\tmp\test.gcode";
 
         public bool SwapXY { get; set; } = false;

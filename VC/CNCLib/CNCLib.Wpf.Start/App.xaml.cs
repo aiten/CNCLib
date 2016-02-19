@@ -41,14 +41,17 @@ namespace CNCLib.Wpf.Start
 
 			repositoryfactory.Register(typeof(IConfigurationRepository),typeof(ConfigurationRepository));
 			repositoryfactory.Register(typeof(IMachineRepository), typeof(MachineRepository));
+            repositoryfactory.Register(typeof(IItemRepository), typeof(ItemRepository));
 
-			ControlerBase.RepositoryFactory = repositoryfactory;
+            ControlerBase.RepositoryFactory = repositoryfactory;
 
 			var logicfactory = new Framework.Tools.Pattern.FactoryType2Type();
 
 			logicfactory.Register(typeof(IMachineControler), typeof(MachineControler));
+            logicfactory.Register(typeof(IItemControler), typeof(ItemControler));
 
-			BaseViewModel.LogicFactory = logicfactory;
+            CNCLib.GUI.Load.LoadOptionForm.LogicFactory = logicfactory;
+            BaseViewModel.LogicFactory = logicfactory;
 		}
 	}
 }

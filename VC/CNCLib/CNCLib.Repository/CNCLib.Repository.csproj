@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="Context\CNCLibContext.cs" />
     <Compile Include="Context\CNCLibInitializer.cs" />
+    <Compile Include="ItemRepository.cs" />
     <Compile Include="MachineRepository.cs" />
     <Compile Include="ConfigurationRepository.cs" />
     <Compile Include="Mappings\MachineMapping.cs" />

@@ -20,7 +20,9 @@ using CNCLib.Repository.Contracts.Entities;
 using CNCLib.Repository.Mappings;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
@@ -44,6 +46,8 @@ namespace CNCLib.Repository.Context
 		public DbSet<MachineCommand> MachineCommands { get; set; }
 		public DbSet<MachineInitCommand> MachineInitCommands { get; set; }
 		public DbSet<Configuration> Configurations { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<ItemProperty> ItemProperties { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -109,9 +113,30 @@ namespace CNCLib.Repository.Context
 			modelBuilder.Entity<Configuration>().Property((m) => m.Value).
 				HasMaxLength(4000);
 
-			// -------------------------------------
-			
-			modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            // Item -------------------------------------
+
+            modelBuilder.Entity<Item>()
+                .HasKey(m => m.ItemID)
+                .Property(e => e.Name)
+                    .HasColumnAnnotation(
+                        IndexAnnotation.AnnotationName,
+                        new IndexAnnotation(new IndexAttribute("IDX_UniqueName") { IsUnique = true } ));
+            modelBuilder.Entity<Item>().Property((m) => m.Name).
+                IsRequired().
+                HasMaxLength(64);
+            modelBuilder.Entity<Item>().Property((m) => m.ClassName).
+                IsRequired().
+                HasMaxLength(255);
+
+            // ItemProperty -------------------------------------
+
+            modelBuilder.Entity<ItemProperty>()
+                .HasKey(m => new { m.ItemID, m.Name });
+            modelBuilder.Entity<ItemProperty>().Property((m) => m.Name).
+                IsRequired().
+                HasMaxLength(255);
+
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
            
             base.OnModelCreating(modelBuilder);
 

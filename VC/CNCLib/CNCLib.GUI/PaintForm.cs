@@ -33,6 +33,7 @@ using System.Windows.Forms;
 using System.Threading;
 using CNCLib.GUI.Load;
 using Framework.Arduino;
+using CNCLib.Logic.Contracts;
 
 namespace CNCLib.GUI
 {
@@ -180,33 +181,33 @@ namespace CNCLib.GUI
             {
                 form.LoadInfo = loadinfo;
 
-				DialogResult res = form.ShowDialog();
-                LoadBase load; 
+                DialogResult res = form.ShowDialog();
+                LoadBase load;
 
                 switch (res)
                 {
-                    case DialogResult.OK:   load = new LoadHPGL(); break;
-                    case DialogResult.Yes:  load = new LoadGCode(); break;
-                    case DialogResult.No:   load = new LoadImage(); break;
+                    case DialogResult.OK: load = new LoadHPGL(); break;
+                    case DialogResult.Yes: load = new LoadGCode(); break;
+                    case DialogResult.No: load = new LoadImage(); break;
                     default: return;
                 }
 
-				loadinfo = form.LoadInfo;
-				load.LoadOptions = loadinfo;
-				try
-				{
-					load.Load(_gCodeCtrl.Commands);
+                loadinfo = form.LoadInfo;
+                load.LoadOptions = loadinfo;
+                try
+                {
+                    load.Load(_gCodeCtrl.Commands);
                     if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
                     {
                         SaveGCode(loadinfo.GCodeWriteToFileName);
                     }
-				}
-				catch (Exception ex)
-				{
-					MessageBox.Show("Load Failed! " + ex.Message);
-				}
-				_redraw_Click(null, null);
-            }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Load Failed! " + ex.Message);
+                }
+                _redraw_Click(null, null);
+               }
         }
 
         private void ValuesFromControl()

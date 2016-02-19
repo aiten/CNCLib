@@ -19,16 +19,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CNCLib.Repository.Contracts
+namespace CNCLib.Logic.Contracts.DTO
 {
-	public interface IMachineRepository: IDisposable
+	public class Item
 	{
-		Entities.Machine[] GetMachines();
-		Entities.Machine GetMachine(int id);
-		void Delete(Entities.Machine m);
-		Entities.MachineCommand[] GetMachineCommands(int machineID);
-		Entities.MachineInitCommand[] GetMachineInitCommands(int machineID);
-		int Store(Entities.Machine machine);
+		public int ItemID { get; set; }
+		public string Name { get; set; }
 	}
 }
