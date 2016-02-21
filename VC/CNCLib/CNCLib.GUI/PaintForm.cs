@@ -129,21 +129,6 @@ namespace CNCLib.GUI
 				Com.SendCommands(commands.ToArray());
 			});
         }
-		static string _fileNameSave = @"c:\tmp\testc.GCode";
-
-		private void _save_Click(object sender, EventArgs e)
-        {
-            using (SaveFileDialog form = new SaveFileDialog())
-            {
-                form.FileName = _fileNameSave;
-                if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    _fileNameSave = form.FileName;
-                }
-            }
-
-            SaveGCode(_fileNameSave);
-        }
 
         private void SaveGCode(string filename)
         {

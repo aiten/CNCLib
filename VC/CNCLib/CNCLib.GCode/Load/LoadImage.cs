@@ -39,13 +39,13 @@ namespace CNCLib.GCode.Load
         public override void Load(CommandList commands)
         {
             _commands = commands;
-            commands.Clear();
+            _commands.Clear();
 
-            AddFileHeader(commands);
-            commands.Add(new GxxCommand() { GCodeAdd = "; File=" + LoadOptions.FileName });
-            commands.Add(new GxxCommand() { GCodeAdd = "; LaserSize=" + LoadOptions.LaserSize.ToString() });
-            commands.Add(new GxxCommand() { GCodeAdd = "; LaserOnCommand=" + LoadOptions.PenDownCommandString });
-            commands.Add(new GxxCommand() { GCodeAdd = "; LaserOffCommand=" + LoadOptions.PenUpCommandString });
+            AddFileHeader(_commands);
+            _commands.Add(new GxxCommand() { GCodeAdd = "; File=" + LoadOptions.FileName });
+            _commands.Add(new GxxCommand() { GCodeAdd = "; LaserSize=" + LoadOptions.LaserSize.ToString() });
+            _commands.Add(new GxxCommand() { GCodeAdd = "; LaserOnCommand=" + LoadOptions.PenDownCommandString });
+            _commands.Add(new GxxCommand() { GCodeAdd = "; LaserOffCommand=" + LoadOptions.PenUpCommandString });
 
             _shiftX = (double)LoadOptions.LaserSize / 2.0;
             _shiftY = (double)LoadOptions.LaserSize / 2.0;
@@ -71,62 +71,7 @@ namespace CNCLib.GCode.Load
                     case System.Drawing.Imaging.PixelFormat.Format32bppRgb:
                     case System.Drawing.Imaging.PixelFormat.Format24bppRgb:
 
-                        b = bx;
-
-                        decimal scaleX = LoadOptions.ScaleX;
-                        decimal scaleY = LoadOptions.ScaleY;
-                        double dpiX; 
-                        double dpiY;
-
-                        if (LoadOptions.ImageDPIX.HasValue)
-                            dpiX = (double)LoadOptions.ImageDPIX.Value;
-                        else
-                            dpiX = b.HorizontalResolution;
-
-                        if (LoadOptions.ImageDPIY.HasValue)
-                            dpiY = (double)LoadOptions.ImageDPIX.Value;
-                        else
-                            dpiY = b.HorizontalResolution;
-
-
-                        if (LoadOptions.AutoScale)
-                        {
-							commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleX="+ LoadOptions.AutoScaleSizeX.ToString() });
-							commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleY=" + LoadOptions.AutoScaleSizeY.ToString() });
-                            commands.Add(new GxxCommand() { GCodeAdd = "; DPI_X=" + dpiX.ToString() });
-                            commands.Add(new GxxCommand() { GCodeAdd = "; DPI_Y=" + dpiY.ToString() });
-                            double nowX = (double) b.Width;
-                            double nowY = (double) b.Height;
-                            double newX = ((double) LoadOptions.AutoScaleSizeX) * dpiX / 25.4;
-                            double newY = ((double) LoadOptions.AutoScaleSizeY) * dpiY / 25.4;
-                            scaleX = (decimal) (newX / nowX);
-                            scaleY = (decimal)(newY / nowY);
-							LoadOptions.ScaleX = scaleX;
-							LoadOptions.ScaleY = scaleY;
-						}
-
-						if (scaleX != 1.0m)
-                        {
-							commands.Add(new GxxCommand() { GCodeAdd = "; ScaleX=" + scaleX.ToString() });
-							commands.Add(new GxxCommand() { GCodeAdd = "; ScaleY=" + scaleY.ToString() });
-							b = Framework.Tools.Drawing.ImageHelper.ScaleTo(bx, (int) (b.Width * scaleX), (int) (b.Height * scaleY));
-                            b.SetResolution((float) dpiX, (float)dpiY);
-                        }
-
-                        switch (LoadOptions.Dither)
-                        {
-                            case LoadInfo.DitherFilter.FloydSteinbergDither:
-                                commands.Add(new GxxCommand() { GCodeAdd = "; Image Converted with FloydSteinbergDither" });
-                                commands.Add(new GxxCommand() { GCodeAdd = "; GrayThreshold=" + LoadOptions.GrayThreshold.ToString() });
-                                b = new Framework.Tools.Drawing.FloydSteinbergDither() { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
-                                break;
-                            case LoadInfo.DitherFilter.NewspaperDither :
-                                commands.Add(new GxxCommand() { GCodeAdd = "; Image Converted with NewspaperDither" });
-                                commands.Add(new GxxCommand() { GCodeAdd = "; GrayThreshold=" + LoadOptions.GrayThreshold.ToString() });
-                                commands.Add(new GxxCommand() { GCodeAdd = "; Dithersize=" + LoadOptions.NewspaperDitherSize.ToString() });
-                                b = new Framework.Tools.Drawing.NewspapergDither() { Graythreshold = LoadOptions.GrayThreshold, DotSize = LoadOptions.NewspaperDitherSize }.Process(b);
-                                break;
-                        }
+                        b = ConvertImage(bx);
                         break;
 
                     default:
@@ -143,12 +88,12 @@ namespace CNCLib.GCode.Load
 
                 b.Save(LoadOptions.ImageWriteToFileName, System.Drawing.Imaging.ImageFormat.Bmp);
 
-				commands.Add(new GxxCommand() { GCodeAdd = "; Image.Width="  + _sizeX.ToString() });
-				commands.Add(new GxxCommand() { GCodeAdd = "; Image.Height=" + _sizeY.ToString() });
-				commands.Add(new GxxCommand() { GCodeAdd = "; Image.HorizontalResolution(DPI)=" + b.HorizontalResolution.ToString() });
-				commands.Add(new GxxCommand() { GCodeAdd = "; Image.VerticalResolution(DPI)=" + b.VerticalResolution.ToString() });
+                _commands.Add(new GxxCommand() { GCodeAdd = "; Image.Width=" + _sizeX.ToString() });
+                _commands.Add(new GxxCommand() { GCodeAdd = "; Image.Height=" + _sizeY.ToString() });
+                _commands.Add(new GxxCommand() { GCodeAdd = "; Image.HorizontalResolution(DPI)=" + b.HorizontalResolution.ToString() });
+                _commands.Add(new GxxCommand() { GCodeAdd = "; Image.VerticalResolution(DPI)=" + b.VerticalResolution.ToString() });
 
-                commands.Add(new GxxCommand() { GCodeAdd = "; Speed=" + LoadOptions.PenMoveSpeed.ToString() });
+                _commands.Add(new GxxCommand() { GCodeAdd = "; Speed=" + LoadOptions.PenMoveSpeed.ToString() });
 
                 if (LoadOptions.PenMoveSpeed.HasValue)
                 {
@@ -157,47 +102,113 @@ namespace CNCLib.GCode.Load
                     _commands.Add(setspeed);
                 }
 
-                _laserOn = true;
-                LaserOff();
-                int black = System.Drawing.Color.Black.ToArgb();
-                int lasty = -1;
-
-                for (int y = 0; y < _sizeY; y++)
-                {
-                    bool wasLaserOn = true;
-                    bool lastLaserOn = false;
-
-                    for (int x = 0; x < _sizeX; x++)
-                    {
-                        var col = b.GetPixel(x, y);
-
-                        bool isLaserOn = col.ToArgb() == black;
-
-                        if (isLaserOn != wasLaserOn && x != 0)
-                        {
-                            AddCommandX(x - 1,y, ref lasty, wasLaserOn);
-                            wasLaserOn = isLaserOn;
-                        }
-                        else if (x==0)
-                        {
-                            wasLaserOn = isLaserOn;
-                            if (isLaserOn)
-                                AddCommandX(x, y, ref lasty, wasLaserOn);
-                        }
-                        lastLaserOn = isLaserOn;
-
-                        if (isLaserOn)
-                            LaserOn();
-                        else
-                            LaserOff();
-                    }
-                    if (lastLaserOn)
-                        AddCommandX(_sizeX, y, ref lasty, wasLaserOn);
-
-                    LaserOff();
-                }
+                WriteGCode(b);
             }
-            commands.UpdateCache();
+            _commands.UpdateCache();
+        }
+
+        private System.Drawing.Bitmap ConvertImage(System.Drawing.Bitmap bx)
+        {
+            System.Drawing.Bitmap b = bx;
+            decimal scaleX = LoadOptions.ScaleX;
+            decimal scaleY = LoadOptions.ScaleY;
+            double dpiX;
+            double dpiY;
+
+            if (LoadOptions.ImageDPIX.HasValue)
+                dpiX = (double)LoadOptions.ImageDPIX.Value;
+            else
+                dpiX = b.HorizontalResolution;
+
+            if (LoadOptions.ImageDPIY.HasValue)
+                dpiY = (double)LoadOptions.ImageDPIX.Value;
+            else
+                dpiY = b.HorizontalResolution;
+
+
+            if (LoadOptions.AutoScale)
+            {
+                _commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleX=" + LoadOptions.AutoScaleSizeX.ToString() });
+                _commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleY=" + LoadOptions.AutoScaleSizeY.ToString() });
+                _commands.Add(new GxxCommand() { GCodeAdd = "; DPI_X=" + dpiX.ToString() });
+                _commands.Add(new GxxCommand() { GCodeAdd = "; DPI_Y=" + dpiY.ToString() });
+                double nowX = (double)b.Width;
+                double nowY = (double)b.Height;
+                double newX = ((double)LoadOptions.AutoScaleSizeX) * dpiX / 25.4;
+                double newY = ((double)LoadOptions.AutoScaleSizeY) * dpiY / 25.4;
+                scaleX = (decimal)(newX / nowX);
+                scaleY = (decimal)(newY / nowY);
+                LoadOptions.ScaleX = scaleX;
+                LoadOptions.ScaleY = scaleY;
+            }
+
+            if (scaleX != 1.0m)
+            {
+                _commands.Add(new GxxCommand() { GCodeAdd = "; ScaleX=" + scaleX.ToString() });
+                _commands.Add(new GxxCommand() { GCodeAdd = "; ScaleY=" + scaleY.ToString() });
+                b = Framework.Tools.Drawing.ImageHelper.ScaleTo(bx, (int)(b.Width * scaleX), (int)(b.Height * scaleY));
+                b.SetResolution((float)dpiX, (float)dpiY);
+            }
+
+            switch (LoadOptions.Dither)
+            {
+                case LoadInfo.DitherFilter.FloydSteinbergDither:
+                    _commands.Add(new GxxCommand() { GCodeAdd = "; Image Converted with FloydSteinbergDither" });
+                    _commands.Add(new GxxCommand() { GCodeAdd = "; GrayThreshold=" + LoadOptions.GrayThreshold.ToString() });
+                    b = new Framework.Tools.Drawing.FloydSteinbergDither() { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
+                    break;
+                case LoadInfo.DitherFilter.NewspaperDither:
+                    _commands.Add(new GxxCommand() { GCodeAdd = "; Image Converted with NewspaperDither" });
+                    _commands.Add(new GxxCommand() { GCodeAdd = "; GrayThreshold=" + LoadOptions.GrayThreshold.ToString() });
+                    _commands.Add(new GxxCommand() { GCodeAdd = "; Dithersize=" + LoadOptions.NewspaperDitherSize.ToString() });
+                    b = new Framework.Tools.Drawing.NewspapergDither() { Graythreshold = LoadOptions.GrayThreshold, DotSize = LoadOptions.NewspaperDitherSize }.Process(b);
+                    break;
+            }
+
+            return b;
+        }
+
+        private void WriteGCode(System.Drawing.Bitmap b)
+        {
+            _laserOn = true;
+            LaserOff();
+            int black = System.Drawing.Color.Black.ToArgb();
+            int lasty = -1;
+
+            for (int y = 0; y < _sizeY; y++)
+            {
+                bool wasLaserOn = true;
+                bool lastLaserOn = false;
+
+                for (int x = 0; x < _sizeX; x++)
+                {
+                    var col = b.GetPixel(x, y);
+
+                    bool isLaserOn = col.ToArgb() == black;
+
+                    if (isLaserOn != wasLaserOn && x != 0)
+                    {
+                        AddCommandX(x - 1, y, ref lasty, wasLaserOn);
+                        wasLaserOn = isLaserOn;
+                    }
+                    else if (x == 0)
+                    {
+                        wasLaserOn = isLaserOn;
+                        if (isLaserOn)
+                            AddCommandX(x, y, ref lasty, wasLaserOn);
+                    }
+                    lastLaserOn = isLaserOn;
+
+                    if (isLaserOn)
+                        LaserOn();
+                    else
+                        LaserOff();
+                }
+                if (lastLaserOn)
+                    AddCommandX(_sizeX, y, ref lasty, wasLaserOn);
+
+                LaserOff();
+            }
         }
 
         private void AddCommandX(int x, int y, ref int lasty, bool laserOn)
