@@ -49,7 +49,6 @@
             this._redraw = new System.Windows.Forms.Button();
             this._coord = new System.Windows.Forms.Label();
             this._load = new System.Windows.Forms.Button();
-            this._save = new System.Windows.Forms.Button();
             this._sendTo = new System.Windows.Forms.Button();
             this._mainPanel = new System.Windows.Forms.Panel();
             this._gCodeCtrl = new CNCLib.GUI.GCodeUserControl();
@@ -79,7 +78,6 @@
             this._headerPanel.Controls.Add(this._redraw);
             this._headerPanel.Controls.Add(this._coord);
             this._headerPanel.Controls.Add(this._load);
-            this._headerPanel.Controls.Add(this._save);
             this._headerPanel.Controls.Add(this._sendTo);
             this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this._headerPanel.Location = new System.Drawing.Point(0, 0);
@@ -133,6 +131,148 @@
             this._colorCB.DropDownWidth = 200;
             this._colorCB.FormattingEnabled = true;
             this._colorCB.IntegralHeight = false;
+            this._colorCB.Items.AddRange(new object[] {
+            "Black",
+            "Transparent",
+            "AliceBlue",
+            "AntiqueWhite",
+            "Aqua",
+            "Aquamarine",
+            "Azure",
+            "Beige",
+            "Bisque",
+            "BlanchedAlmond",
+            "Blue",
+            "BlueViolet",
+            "Brown",
+            "BurlyWood",
+            "CadetBlue",
+            "Chartreuse",
+            "Chocolate",
+            "Coral",
+            "CornflowerBlue",
+            "Cornsilk",
+            "Crimson",
+            "Cyan",
+            "DarkBlue",
+            "DarkCyan",
+            "DarkGoldenrod",
+            "DarkGray",
+            "DarkGreen",
+            "DarkKhaki",
+            "DarkMagenta",
+            "DarkOliveGreen",
+            "DarkOrange",
+            "DarkOrchid",
+            "DarkRed",
+            "DarkSalmon",
+            "DarkSeaGreen",
+            "DarkSlateBlue",
+            "DarkSlateGray",
+            "DarkTurquoise",
+            "DarkViolet",
+            "DeepPink",
+            "DeepSkyBlue",
+            "DimGray",
+            "DodgerBlue",
+            "Firebrick",
+            "FloralWhite",
+            "ForestGreen",
+            "Fuchsia",
+            "Gainsboro",
+            "GhostWhite",
+            "Gold",
+            "Goldenrod",
+            "Gray",
+            "Green",
+            "GreenYellow",
+            "Honeydew",
+            "HotPink",
+            "IndianRed",
+            "Indigo",
+            "Ivory",
+            "Khaki",
+            "Lavender",
+            "LavenderBlush",
+            "LawnGreen",
+            "LemonChiffon",
+            "LightBlue",
+            "LightCoral",
+            "LightCyan",
+            "LightGoldenrodYellow",
+            "LightGreen",
+            "LightGray",
+            "LightPink",
+            "LightSalmon",
+            "LightSeaGreen",
+            "LightSkyBlue",
+            "LightSlateGray",
+            "LightSteelBlue",
+            "LightYellow",
+            "Lime",
+            "LimeGreen",
+            "Linen",
+            "Magenta",
+            "Maroon",
+            "MediumAquamarine",
+            "MediumBlue",
+            "MediumOrchid",
+            "MediumPurple",
+            "MediumSeaGreen",
+            "MediumSlateBlue",
+            "MediumSpringGreen",
+            "MediumTurquoise",
+            "MediumVioletRed",
+            "MidnightBlue",
+            "MintCream",
+            "MistyRose",
+            "Moccasin",
+            "NavajoWhite",
+            "Navy",
+            "OldLace",
+            "Olive",
+            "OliveDrab",
+            "Orange",
+            "OrangeRed",
+            "Orchid",
+            "PaleGoldenrod",
+            "PaleGreen",
+            "PaleTurquoise",
+            "PaleVioletRed",
+            "PapayaWhip",
+            "PeachPuff",
+            "Peru",
+            "Pink",
+            "Plum",
+            "PowderBlue",
+            "Purple",
+            "Red",
+            "RosyBrown",
+            "RoyalBlue",
+            "SaddleBrown",
+            "Salmon",
+            "SandyBrown",
+            "SeaGreen",
+            "SeaShell",
+            "Sienna",
+            "Silver",
+            "SkyBlue",
+            "SlateBlue",
+            "SlateGray",
+            "Snow",
+            "SpringGreen",
+            "SteelBlue",
+            "Tan",
+            "Teal",
+            "Thistle",
+            "Tomato",
+            "Turquoise",
+            "Violet",
+            "Wheat",
+            "White",
+            "WhiteSmoke",
+            "Yellow",
+            "YellowGreen"});
             this._colorCB.Location = new System.Drawing.Point(144, 29);
             this._colorCB.MaxDropDownItems = 20;
             this._colorCB.Name = "_colorCB";
@@ -277,16 +417,6 @@
             this._load.UseVisualStyleBackColor = true;
             this._load.Click += new System.EventHandler(this._load_Click);
             // 
-            // _save
-            // 
-            this._save.Location = new System.Drawing.Point(600, 5);
-            this._save.Name = "_save";
-            this._save.Size = new System.Drawing.Size(84, 23);
-            this._save.TabIndex = 2;
-            this._save.Text = "Save GCode";
-            this._save.UseVisualStyleBackColor = true;
-            this._save.Click += new System.EventHandler(this._save_Click);
-            // 
             // _sendTo
             // 
             this._sendTo.Location = new System.Drawing.Point(6, 6);
@@ -365,7 +495,6 @@
         private System.Windows.Forms.Panel _headerPanel;
         private System.Windows.Forms.Panel _mainPanel;
 		private System.Windows.Forms.Button _sendTo;
-        private System.Windows.Forms.Button _save;
         private System.Windows.Forms.Button _load;
         private System.Windows.Forms.Label _coord;
 		private System.Windows.Forms.TextBox _zoom;

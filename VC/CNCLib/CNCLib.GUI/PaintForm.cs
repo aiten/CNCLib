@@ -174,6 +174,7 @@ namespace CNCLib.GUI
                     case DialogResult.OK: load = new LoadHPGL(); break;
                     case DialogResult.Yes: load = new LoadGCode(); break;
                     case DialogResult.No: load = new LoadImage(); break;
+                    case DialogResult.Retry: load = new LoadImageHole(); break;
                     default: return;
                 }
 
@@ -181,7 +182,9 @@ namespace CNCLib.GUI
                 load.LoadOptions = loadinfo;
                 try
                 {
-                    load.Load(_gCodeCtrl.Commands);
+                    load.Load();
+                    _gCodeCtrl.Commands.Clear();
+                    _gCodeCtrl.Commands.AddRange(load.Commands);
                     if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
                     {
                         SaveGCode(loadinfo.GCodeWriteToFileName);

@@ -24,17 +24,14 @@ namespace CNCLib.GCode.Load
 {
     public class LoadGCode : LoadBase
     {
-        CommandList _commands;
         CommandStream _stream = new CommandStream();
         Command _lastnoPrefixCommand;
 
-        public override void Load(CommandList commands)
+        public override void Load()
         {
-            _commands = commands;
-            commands.Clear();
             _lastnoPrefixCommand = null;
 
-            AddFileHeader(commands);
+            AddFileHeader();
 
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
             {
@@ -44,12 +41,12 @@ namespace CNCLib.GCode.Load
                     _stream.Line = line;
                     if (!Command())
                     {
-                        _commands.Clear();
+                        Commands.Clear();
                         break;
                     }
                 }
             }
-            commands.UpdateCache();
+            Commands.UpdateCache();
         }
 
         private bool Command()
@@ -95,7 +92,7 @@ namespace CNCLib.GCode.Load
         {
             cmd.SetCode(cmdname);
 
-            _commands.AddCommand(cmd);
+            Commands.AddCommand(cmd);
             if (!cmd.ReadFrom(_stream))
                 return false;
 
@@ -116,7 +113,7 @@ namespace CNCLib.GCode.Load
                 if (cmd.UseWithoutPrefix)
                     _lastnoPrefixCommand = cmd;
 
-                _commands.AddCommand(cmd);
+                Commands.AddCommand(cmd);
                 if (!cmd.ReadFrom(_stream))
                     return false;
             }
@@ -136,7 +133,7 @@ namespace CNCLib.GCode.Load
 
             if (cmd != null)
             {
-                _commands.AddCommand(cmd);
+                Commands.AddCommand(cmd);
                 if (!cmd.ReadFrom(_stream))
                     return false;
             }
@@ -153,7 +150,7 @@ namespace CNCLib.GCode.Load
 
             if (cmd != null)
             {
-                _commands.AddCommand(cmd);
+                Commands.AddCommand(cmd);
                 if (!cmd.ReadFrom(_stream))
                     return false;
             }
@@ -168,7 +165,7 @@ namespace CNCLib.GCode.Load
         {
             Command cmd = CommandFactory.Create("GXX");
 
-            _commands.AddCommand(cmd);
+            Commands.AddCommand(cmd);
             if (!cmd.ReadFrom(_stream))
                 return false;
 
