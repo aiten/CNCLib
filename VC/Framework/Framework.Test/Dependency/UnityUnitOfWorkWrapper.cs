@@ -16,15 +16,29 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Framework.Tools.Dependency;
+using Framework.EF;
+using Framework.Tools.Pattern;
 
-namespace Framework.Logic
+namespace Framework.Test.Dependency
 {
-	public class ControlerBase
-	{
-	}
+/*
+    public sealed class UnityUnitOfWorkWrapper : IUnitOfWorkWrapper
+    {
+        public IUnitOfWork GetInstance()
+        {
+            return Framework.Tools.Dependency.Dependency.Resolve<IUnitOfWork>();
+        }
+
+        public IUnitOfWork GetInstance(UnitOfWorkSettings setting)
+        {
+            return Framework.Tools.Dependency.Dependency.Resolve<IUnitOfWork>();
+        }
+
+        public T GetDAInstance<T>() where T : IBaseDA
+        {
+            return CL.Dependency.Dependency.Resolve<T>();
+        }
+    }
+    */
 }

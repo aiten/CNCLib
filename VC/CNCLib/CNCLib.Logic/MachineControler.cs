@@ -26,6 +26,7 @@ using CNCLib.Repository.Contracts;
 using CNCLib.Logic.Converter;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Logic
 {
@@ -33,7 +34,7 @@ namespace CNCLib.Logic
 	{
 		public IEnumerable<Machine> GetMachines()
 		{
-			using (var rep = RepositoryFactory.Create<IMachineRepository>())
+			using (var rep = Dependency.Resolve<IMachineRepository>())
 			{
 				var machines = rep.GetMachines();
 				List<Machine> l = new List<Machine>();
@@ -47,7 +48,7 @@ namespace CNCLib.Logic
 
         public Machine GetMachine(int id)
         {
-			using (var rep = RepositoryFactory.Create<IMachineRepository>())
+			using (var rep = Dependency.Resolve<IMachineRepository>())
 			{
 				var machine = rep.GetMachine(id);
 				if (machine == null)
@@ -90,7 +91,7 @@ namespace CNCLib.Logic
 
 		public void Delete(Machine m)
         {
-			using (var rep = RepositoryFactory.Create<IMachineRepository>())
+			using (var rep = Dependency.Resolve<IMachineRepository>())
 			{
 				rep.Delete(m.NewCloneProperties<Repository.Contracts.Entities.Machine, Machine>());
 			}
@@ -98,7 +99,7 @@ namespace CNCLib.Logic
 
 		public int StoreMachine(Machine m)
 		{
-			using (var rep = RepositoryFactory.Create<IMachineRepository>())
+			using (var rep = Dependency.Resolve<IMachineRepository>())
 			{
 				var me = m.Convert();
 				return rep.Store(me);
@@ -109,7 +110,7 @@ namespace CNCLib.Logic
 
 		public int GetDetaultMachine()
 		{
-			using (var rep = RepositoryFactory.Create<IConfigurationRepository>())
+			using (var rep = Dependency.Resolve<IConfigurationRepository>())
 			{
 				var config = rep.Get("Environment", "DefaultMachineID");
 
@@ -121,7 +122,7 @@ namespace CNCLib.Logic
 		}
 		public void SetDetaultMachine(int defaultMachineID)
 		{
-			using (var rep = RepositoryFactory.Create<IConfigurationRepository>())
+			using (var rep = Dependency.Resolve<IConfigurationRepository>())
 			{
 				rep.Save(new Repository.Contracts.Entities.Configuration() { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
 			}

@@ -26,7 +26,7 @@ using Framework.Tools;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Wpf.Models;
-
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -43,7 +43,7 @@ namespace CNCLib.Wpf.ViewModels
 		public void LoadMachine(int machineID)
         {
             CNCLib.Logic.Contracts.DTO.Machine dto;
-			using (var controler = LogicFactory.Create<IMachineControler>())
+			using (var controler = Dependency.Resolve<IMachineControler>())
 			{
 				AddNewMachine = machineID <= 0;
 				if (AddNewMachine)
@@ -234,7 +234,7 @@ namespace CNCLib.Wpf.ViewModels
 
 			var m = _currentMachine.Convert();
 
-			using (var controler = LogicFactory.Create<IMachineControler>())
+			using (var controler = Dependency.Resolve<IMachineControler>())
 			{
 				id = controler.StoreMachine(m);
 			}
@@ -249,7 +249,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public void DeleteMachine()
         {
-			using (var controler = LogicFactory.Create<IMachineControler>())
+			using (var controler = Dependency.Resolve<IMachineControler>())
 			{
 				controler.Delete(_currentMachine.NewCloneProperties<CNCLib.Logic.Contracts.DTO.Machine, Models.Machine>());
 			}

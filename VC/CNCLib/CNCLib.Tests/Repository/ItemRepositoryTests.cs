@@ -16,21 +16,16 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CNCLib.Repository.Context;
-using CNCLib.Repository;
 using CNCLib.Repository.Contracts.Entities;
-using System.Threading.Tasks;
-using Framework.EF;
 using System.Collections.Generic;
 using System.Linq;
-using Framework.Tools;
 using CNCLib.Repository.Contracts;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Tests.Repository
 {
-	[TestClass]
+    [TestClass]
 	public class ItemRepositoryTests : RepositoryTests
 	{
 		[ClassInitialize]
@@ -42,7 +37,7 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void QueryNotFound()
 		{
-			using (var rep = RepositoryFactory.Create<IItemRepository>())
+			using (var rep = Dependency.Resolve<IItemRepository>())
 			{
 				var item = rep.Get(1000);
 				Assert.IsNull(item);
@@ -52,7 +47,7 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void AddOne()
 		{
-			using (var rep = RepositoryFactory.Create<IItemRepository>())
+			using (var rep = Dependency.Resolve<IItemRepository>())
 			{
 				var item = CreateItem("AddOne");
 				int id = rep.Store(item);
@@ -62,7 +57,7 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void AddOneWithValues()
 		{
-			using (var rep = RepositoryFactory.Create<IItemRepository>())
+			using (var rep = Dependency.Resolve<IItemRepository>())
 			{
 				var item = CreateItem("AddOneWithValues");
                 AddItemProperties(item);
@@ -73,8 +68,8 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void AddOneAndRead()
 		{
-			using (var repwrite = RepositoryFactory.Create<IItemRepository>())
-			using (var repread = RepositoryFactory.Create<IItemRepository>())
+			using (var repwrite = Dependency.Resolve<IItemRepository>())
+			using (var repread = Dependency.Resolve<IItemRepository>())
 			{
 
 				var item = CreateItem("AddOneAndRead");
@@ -94,8 +89,8 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void AddOneWithValuesAndRead()
 		{
-			using (var repwrite = RepositoryFactory.Create<IItemRepository>())
-			using (var repread = RepositoryFactory.Create<IItemRepository>())
+			using (var repwrite = Dependency.Resolve<IItemRepository>())
+			using (var repread = Dependency.Resolve<IItemRepository>())
 			{
 
 				var item = CreateItem("AddOneMachineWithCommandsAndRead");
@@ -116,8 +111,8 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void UpdateOneAndRead()
 		{
-			using (var repwrite = RepositoryFactory.Create<IItemRepository>())
-			using (var repread = RepositoryFactory.Create<IItemRepository>())
+			using (var repwrite = Dependency.Resolve<IItemRepository>())
+			using (var repread = Dependency.Resolve<IItemRepository>())
 			{
 
 				var item = CreateItem("UpdateOneAndRead");
@@ -141,8 +136,8 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void UpdateOneNoCommandChangeAndRead()
 		{
-			using (var repwrite = RepositoryFactory.Create<IItemRepository>())
-			using (var repread = RepositoryFactory.Create<IItemRepository>())
+			using (var repwrite = Dependency.Resolve<IItemRepository>())
+			using (var repread = Dependency.Resolve<IItemRepository>())
 			{
 				var item = CreateItem("UpdateOneNoCommandChangeAndRead");
 				int count = AddItemProperties(item);
@@ -166,8 +161,8 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void UpdateOneValuesChangeAndRead()
 		{
-			using (var repwrite = RepositoryFactory.Create<IItemRepository>())
-			using (var repread = RepositoryFactory.Create<IItemRepository>())
+			using (var repwrite = Dependency.Resolve<IItemRepository>())
+			using (var repread = Dependency.Resolve<IItemRepository>())
 			{
 
 				var item = CreateItem("UpdateOneValuesChangeAndRead");
@@ -198,9 +193,9 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void DeleteWithProperties()
 		{
-			using (var repwrite = RepositoryFactory.Create<IItemRepository>())
-			using (var repread = RepositoryFactory.Create<IItemRepository>())
-			using (var repdelete = RepositoryFactory.Create<IItemRepository>())
+			using (var repwrite = Dependency.Resolve<IItemRepository>())
+			using (var repread = Dependency.Resolve<IItemRepository>())
+			using (var repdelete = Dependency.Resolve<IItemRepository>())
 			{
 
 				var item = CreateItem("DeleteWithProperties");

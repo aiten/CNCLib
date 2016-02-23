@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NSubstitute;
 using Framework.Tools.Pattern;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Tests.Logic
 {
@@ -46,20 +47,23 @@ namespace CNCLib.Tests.Logic
 				{
 				}
 		*/
-
+/*
 		private FactoryType2Obj CreateMock()
 		{
 			var mockfactory = new FactoryType2Obj();
 			ControlerBase.RepositoryFactory = mockfactory;
 			return mockfactory;
         }
-
+*/
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
-			var mockfactory = CreateMock();
+//			var mockfactory = CreateMock();
 			TInterface rep = Substitute.For<TInterface>();
-			mockfactory.Register(typeof(TInterface), rep);
-			return rep;
+//			mockfactory.Register(typeof(TInterface), rep);
+
+            Dependency.Container.RegisterInstance(rep);
+
+            return rep;
 		}
 
 		[TestMethod]

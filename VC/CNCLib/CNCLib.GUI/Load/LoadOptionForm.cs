@@ -28,6 +28,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CNCLib.Logic.Contracts;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.GUI.Load
 {
@@ -53,7 +54,7 @@ namespace CNCLib.GUI.Load
         {
             _settingName.Items.Clear();
 
-            using (var controler = LogicFactory.Create<IItemControler>())
+            using (var controler = Dependency.Resolve<IItemControler>())
             {
                 var items = controler.GetAll();
                 foreach (var s in items)
@@ -233,7 +234,7 @@ namespace CNCLib.GUI.Load
             {
                 LoadOptionDefinition item = (LoadOptionDefinition)_settingName.SelectedItem;
 
-                using (var controler = LogicFactory.Create<IItemControler>())
+                using (var controler = Dependency.Resolve<IItemControler>())
                 {
                     object obj = controler.Create(item.Item.ItemID);
                     if (obj != null && obj is LoadInfo)
@@ -260,7 +261,7 @@ namespace CNCLib.GUI.Load
             {
                 try
                 {
-                    using (var controler = LogicFactory.Create<IItemControler>())
+                    using (var controler = Dependency.Resolve<IItemControler>())
                     {
                         if (_settingName.SelectedItem != null)
                         {
@@ -298,7 +299,7 @@ namespace CNCLib.GUI.Load
             {
                 try
                 {
-                    using (var controler = LogicFactory.Create<IItemControler>())
+                    using (var controler = Dependency.Resolve<IItemControler>())
                     {
                         if (_settingName.SelectedItem != null)
                         {

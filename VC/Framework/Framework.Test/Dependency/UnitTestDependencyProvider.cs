@@ -17,14 +17,18 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Framework.Tools.Dependency;
 
-namespace Framework.Logic
+namespace Framework.Test.Dependency
 {
-	public class ControlerBase
-	{
-	}
+    public sealed class UnitTestDependencyProvider : IDependencyProvider
+    {
+        // (DAS) As soon as we want to support parallel unit tests, just replace this with a FlowLocalStorage storage.
+        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new MockingDependencyContainer());
+
+        public IDependencyContainer Container
+        {
+            get { return _dependencyContainer.Value; }
+        }
+    }
 }

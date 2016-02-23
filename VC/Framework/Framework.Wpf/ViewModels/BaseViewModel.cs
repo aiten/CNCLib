@@ -30,6 +30,5 @@ namespace Framework.Wpf.ViewModels
 		{
 
 		}
-		static public Framework.Tools.Pattern.IFactory LogicFactory { get; set; }
 	}
 }

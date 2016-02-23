@@ -28,6 +28,7 @@ using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using System.Reflection;
 using System.Globalization;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Logic
 {
@@ -35,7 +36,7 @@ namespace CNCLib.Logic
 	{
 		public IEnumerable<Item> GetAll()
 		{
-			using (var rep = RepositoryFactory.Create<IItemRepository>())
+			using (var rep = Dependency.Resolve<IItemRepository>())
 			{
 				var all = rep.Get();
 				List<Item> l = new List<Item>();
@@ -49,7 +50,7 @@ namespace CNCLib.Logic
 
         public object Create(int id)
         {
-            using (var rep = RepositoryFactory.Create<IItemRepository>())
+            using (var rep = Dependency.Resolve<IItemRepository>())
             {
                 var item = rep.Get(id);
 
@@ -197,7 +198,7 @@ namespace CNCLib.Logic
 
         public int Add(string name, object obj)
         {
-            using (var rep = RepositoryFactory.Create<IItemRepository>())
+            using (var rep = Dependency.Resolve<IItemRepository>())
             {
                 var list = GetProperties(0, obj);
 
@@ -214,7 +215,7 @@ namespace CNCLib.Logic
 
         public void Save(int id, string name, object obj)
         {
-            using (var rep = RepositoryFactory.Create<IItemRepository>())
+            using (var rep = Dependency.Resolve<IItemRepository>())
             {
                 var list = GetProperties(id, obj);
 
@@ -231,7 +232,7 @@ namespace CNCLib.Logic
 
         public void Delete(int id)
         {
-            using (var rep = RepositoryFactory.Create<IItemRepository>())
+            using (var rep = Dependency.Resolve<IItemRepository>())
             {
                 var item = rep.Get(id);
                 if (item!=null)

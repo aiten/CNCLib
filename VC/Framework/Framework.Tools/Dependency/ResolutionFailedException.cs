@@ -17,14 +17,26 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
-namespace Framework.Logic
+namespace Framework.Tools.Dependency
 {
-	public class ControlerBase
-	{
-	}
+    /// <summary>
+    /// Exception that signifies that a dependency could not be resolved. 
+    /// </summary>
+    [Serializable]
+    public sealed class ResolutionFailedException : Exception
+    {
+        public ResolutionFailedException(string msg) : base(msg)
+        {
+        }
+
+        public ResolutionFailedException(string msg, Exception inner) : base(msg, inner)
+        {
+        }
+
+        private ResolutionFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
 }

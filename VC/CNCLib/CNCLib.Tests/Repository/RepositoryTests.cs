@@ -27,27 +27,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Framework.Tools;
 using CNCLib.Repository.Contracts;
+using Framework.Test;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Tests.Repository
 {
 	[TestClass]
-	public class RepositoryTests
+	public class RepositoryTests : UnitTestBase
 	{
 		public TestContext TestContext { get; set; }
 		static bool _init = false;
-		static protected Framework.Tools.Pattern.IFactory RepositoryFactory { get; set; }
 
 		[ClassInitialize]
 		public static void ClassInit(TestContext testContext)
 		{
-			var factory = new Framework.Tools.Pattern.FactoryType2Type();
-
-			factory.Register(typeof(IConfigurationRepository), typeof(ConfigurationRepository));
-			factory.Register(typeof(IMachineRepository), typeof(MachineRepository));
-            factory.Register(typeof(IItemRepository), typeof(ItemRepository));
-
-            RepositoryFactory = factory;
-
 			if (_init == false)
 			{
 				//drop and recreate the test Db everytime the tests are run. 
@@ -55,16 +48,19 @@ namespace CNCLib.Tests.Repository
 
 				using (var uow = UnitOfWorkFactory.Create())
 				{
-					System.Data.Entity.Database.SetInitializer<CNCLibContext>(new CNCLibInitializer());
+					System.Data.Entity.Database.SetInitializer<CNCLibContext>(new CNCLibInitializerTest());
 					uow.InitializeDatabase();
-				}
-				_init = true;
+                }
+                _init = true;
 			}
 		}
 
 		[TestInitialize]
 		public void Init()
 		{
+            Dependency.Container.RegisterType<IConfigurationRepository, ConfigurationRepository>();
+            Dependency.Container.RegisterType<IMachineRepository, MachineRepository>();
+            Dependency.Container.RegisterType<IItemRepository, ItemRepository>();
 		}
 	}
 }

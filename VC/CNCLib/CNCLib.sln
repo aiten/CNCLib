@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Repository.Contracts
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Logic.Contracts", "CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj", "{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Test", "..\Framework\Framework.Test\Framework.Test.csproj", "{BBECB408-5426-4CE7-B7B6-970BDE436486}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBECB408-5426-4CE7-B7B6-970BDE436486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBECB408-5426-4CE7-B7B6-970BDE436486}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBECB408-5426-4CE7-B7B6-970BDE436486}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBECB408-5426-4CE7-B7B6-970BDE436486}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

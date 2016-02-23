@@ -17,14 +17,19 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Framework.Logic
+namespace Framework.Tools.Dependency
 {
-	public class ControlerBase
-	{
-	}
+    /// <summary>
+    /// Implementation of IDependencyProvider that returns a single instance of LiveDependencyContainer.
+    /// </summary>
+    public sealed class LiveDependencyProvider : IDependencyProvider
+    {
+        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new LiveDependencyContainer());
+
+        public IDependencyContainer Container
+        {
+            get { return _dependencyContainer.Value; }
+        }
+    }
 }

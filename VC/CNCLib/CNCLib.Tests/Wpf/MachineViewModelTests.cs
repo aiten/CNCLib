@@ -31,11 +31,13 @@ using Framework.Wpf.ViewModels;
 using CNCLib.Wpf.ViewModels;
 using CNCLib;
 using CNCLib.Logic.Contracts.DTO;
+using Framework.Tools.Dependency;
+using Framework.Test;
 
 namespace CNCLib.Tests.Wpf
 {
 	[TestClass]
-	public class MachineViewModelTests
+	public class MachineViewModelTests : UnitTestBase
 	{
 		/*
 				[ClassInitialize]
@@ -48,20 +50,23 @@ namespace CNCLib.Tests.Wpf
 				{
 				}
 		*/
-
+/*
 		private FactoryType2Obj CreateMock()
 		{
 			var mockfactory = new FactoryType2Obj();
 			BaseViewModel.LogicFactory = mockfactory;
 			return mockfactory;
         }
-
+*/
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
-			var mockfactory = CreateMock();
+//			var mockfactory = CreateMock();
 			TInterface rep = Substitute.For<TInterface>();
-			mockfactory.Register(typeof(TInterface), rep);
-			return rep;
+//			mockfactory.Register(typeof(TInterface), rep);
+
+            Dependency.Container.RegisterInstance(rep);
+
+            return rep;
 		}
 
 		[TestMethod]

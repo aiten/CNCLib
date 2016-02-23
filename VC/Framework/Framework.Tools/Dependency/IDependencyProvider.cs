@@ -16,15 +16,20 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Framework.Logic
+namespace Framework.Tools.Dependency
 {
-	public class ControlerBase
-	{
-	}
+    /// <summary>
+    /// Provides an IDependencyContainer implementation. 
+    /// </summary>
+    public interface IDependencyProvider
+    {
+        /// <summary>
+        /// Returns an instance of an IDependencyContainer. 
+        /// 
+        /// In live this is always a singleton for the whole application. 
+        /// In unit tests this may be a TaskLocal container wihch allows tests
+        /// to run parallel without interfering with each other.
+        /// </summary>
+        IDependencyContainer Container { get; }
+    }
 }

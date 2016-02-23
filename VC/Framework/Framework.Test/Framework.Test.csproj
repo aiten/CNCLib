@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{580E882D-3267-43F2-8A73-6737CAC731C2}</ProjectGuid>
+    <ProjectGuid>{BBECB408-5426-4CE7-B7B6-970BDE436486}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Framework.Tools</RootNamespace>
-    <AssemblyName>Framework.Tools</AssemblyName>
+    <RootNamespace>Framework.Test</RootNamespace>
+    <AssemblyName>Framework.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -47,49 +47,40 @@
       <HintPath>..\..\CNCLib\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="NSubstitute, Version=1.9.2.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
+      <HintPath>..\..\CNCLib\packages\NSubstitute.1.9.2.0\lib\net45\NSubstitute.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\FrameworkAssemblyInfo.cs">
-      <Link>Properties\FrameworkAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="CommandStream.cs" />
-    <Compile Include="Dependency\BaseDependencyContainer.cs" />
-    <Compile Include="Dependency\Dependency.cs" />
-    <Compile Include="Dependency\IDependencyContainer.cs" />
-    <Compile Include="Dependency\IDependencyProvider.cs" />
-    <Compile Include="Dependency\LiveDependencyContainer.cs" />
-    <Compile Include="Dependency\LiveDependencyProvider.cs" />
-    <Compile Include="Dependency\ResolutionFailedException.cs" />
-    <Compile Include="Drawing\DitherBase.cs" />
-    <Compile Include="Drawing\NewspaperDither.cs" />
-    <Compile Include="Drawing\FloydSteinbergDither.cs" />
-    <Compile Include="Drawing\ImageHelper.cs" />
-    <Compile Include="Drawing\Point3D.cs" />
-    <Compile Include="Drawing\Vector3D.cs" />
-    <Compile Include="Pattern\IFactory.cs" />
-    <Compile Include="Pattern\FactoryType2Type.cs" />
-    <Compile Include="ObjectConverter.cs" />
-    <Compile Include="Pattern\FactoryType2Obj.cs" />
-    <Compile Include="Pattern\IUnitOfWork.cs" />
-    <Compile Include="TraceStream.cs" />
-    <Compile Include="Pattern\Singleton.cs" />
+    <Compile Include="Dependency\MockingDependencyContainer.cs" />
+    <Compile Include="Dependency\UnitTestDependencyProvider.cs" />
+    <Compile Include="Dependency\UnityUnitOfWorkWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WinAPIWrapper.cs" />
+    <Compile Include="UnitTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <ProjectReference Include="..\Framework.EF\Framework.EF.csproj">
+      <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
+      <Name>Framework.EF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Framework.Tools\Framework.Tools.csproj">
+      <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>
+      <Name>Framework.Tools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

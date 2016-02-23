@@ -169,7 +169,6 @@ namespace CNCLib.GCode.Load
 
 						if (!analyse && _IsPenUp != _lastIsPenUp)
 						{
-							Command r;
 							if (_IsPenUp)
                             {
                                 LoadPenUp();

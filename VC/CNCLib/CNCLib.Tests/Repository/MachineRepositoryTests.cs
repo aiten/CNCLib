@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Framework.Tools;
 using CNCLib.Repository.Contracts;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Tests.Repository
 {
@@ -42,7 +43,7 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
         public void QueryAllMachines()
         {
-			using (var rep = RepositoryFactory.Create<IMachineRepository>())
+			using (var rep = Dependency.Resolve<IMachineRepository>())
 			{
 				var machines = rep.GetMachines();
 				Assert.AreEqual(true, machines.Length >= 2);
@@ -52,7 +53,7 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void QueryOneMachineFound()
 		{
-			using (var rep = RepositoryFactory.Create<IMachineRepository>())
+			using (var rep = Dependency.Resolve<IMachineRepository>())
 			{
 				var machines = rep.GetMachine(1);
 				Assert.AreEqual(1, machines.MachineID);
@@ -62,7 +63,7 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void QueryOneMachineNotFound()
 		{
-			using (var rep = RepositoryFactory.Create<IMachineRepository>())
+			using (var rep = Dependency.Resolve<IMachineRepository>())
 			{
 				var machines = rep.GetMachine(1000);
 				Assert.IsNull(machines);
@@ -72,7 +73,7 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void AddOneMachine()
 		{
-			using (var rep = RepositoryFactory.Create<IMachineRepository>())
+			using (var rep = Dependency.Resolve<IMachineRepository>())
 			{
 				var machine = CreateMachine("AddOneMachine");
 				int id = rep.Store(machine);
@@ -82,7 +83,7 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void AddOneMachineWithCommands()
 		{
-			using (var rep = RepositoryFactory.Create<IMachineRepository>())
+			using (var rep = Dependency.Resolve<IMachineRepository>())
 			{
 				var machine = CreateMachine("AddOneMachineWithCommands");
 				AddMachinCommands(machine);
@@ -93,8 +94,8 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void AddOneMachineAndRead()
 		{
-			using (var repwrite = RepositoryFactory.Create<IMachineRepository>())
-			using (var repread = RepositoryFactory.Create<IMachineRepository>())
+			using (var repwrite = Dependency.Resolve<IMachineRepository>())
+			using (var repread = Dependency.Resolve<IMachineRepository>())
 			{
 
 				var machine = CreateMachine("AddOneMachineAndRead");
@@ -115,8 +116,8 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void AddOneMachineWithCommandsAndRead()
 		{
-			using (var repwrite = RepositoryFactory.Create<IMachineRepository>())
-			using (var repread = RepositoryFactory.Create<IMachineRepository>())
+			using (var repwrite = Dependency.Resolve<IMachineRepository>())
+			using (var repread = Dependency.Resolve<IMachineRepository>())
 			{
 
 				var machine = CreateMachine("AddOneMachineWithCommandsAndRead");
@@ -138,8 +139,8 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void AddOneMachineWithInitCommandsAndRead()
 		{
-			using (var repwrite = RepositoryFactory.Create<IMachineRepository>())
-			using (var repread = RepositoryFactory.Create<IMachineRepository>())
+			using (var repwrite = Dependency.Resolve<IMachineRepository>())
+			using (var repread = Dependency.Resolve<IMachineRepository>())
 			{
 				var machine = CreateMachine("AddOneMachineWithInitCommandsAndRead");
 				int count = AddMachinInitCommands(machine);
@@ -161,8 +162,8 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void UpdateOneMachineAndRead()
 		{
-			using (var repwrite = RepositoryFactory.Create<IMachineRepository>())
-			using (var repread = RepositoryFactory.Create<IMachineRepository>())
+			using (var repwrite = Dependency.Resolve<IMachineRepository>())
+			using (var repread = Dependency.Resolve<IMachineRepository>())
 			{
 
 				var machine = CreateMachine("UpdateOneMachineAndRead");
@@ -186,8 +187,8 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void UpdateOneMachineNoCommandChangeAndRead()
 		{
-			using (var repwrite = RepositoryFactory.Create<IMachineRepository>())
-			using (var repread = RepositoryFactory.Create<IMachineRepository>())
+			using (var repwrite = Dependency.Resolve<IMachineRepository>())
+			using (var repread = Dependency.Resolve<IMachineRepository>())
 			{
 				var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
 				int count = AddMachinCommands(machine);
@@ -211,8 +212,8 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void UpdateOneMachineCommandChangeAndRead()
 		{
-			using (var repwrite = RepositoryFactory.Create<IMachineRepository>())
-			using (var repread = RepositoryFactory.Create<IMachineRepository>())
+			using (var repwrite = Dependency.Resolve<IMachineRepository>())
+			using (var repread = Dependency.Resolve<IMachineRepository>())
 			{
 
 				var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
@@ -243,9 +244,9 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void DeleteMachineWithCommandAndRead()
 		{
-			using (var repwrite = RepositoryFactory.Create<IMachineRepository>())
-			using (var repread = RepositoryFactory.Create<IMachineRepository>())
-			using (var repdelete = RepositoryFactory.Create<IMachineRepository>())
+			using (var repwrite = Dependency.Resolve<IMachineRepository>())
+			using (var repread = Dependency.Resolve<IMachineRepository>())
+			using (var repdelete = Dependency.Resolve<IMachineRepository>())
 			{
 
 				var machine = CreateMachine("DeleteMachineWithCommandAndRead");

@@ -33,6 +33,7 @@ using CNCLib.Logic;
 using CNCLib.GCode;
 using CNCLib.Wpf.Models;
 using CNCLib.Logic.Contracts;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -48,7 +49,7 @@ namespace CNCLib.Wpf.ViewModels
         {
             var machines = new ObservableCollection<Models.Machine>();
 
-			using (var controler = LogicFactory.Create<IMachineControler>())
+			using (var controler = Dependency.Resolve<IMachineControler>())
 			{
 				foreach(var m in controler.GetMachines())
 				{
@@ -164,7 +165,7 @@ namespace CNCLib.Wpf.ViewModels
 			ObjectConverter.CopyProperties(Settings.Instance, Machine);
             Com.ArduinoBuffersize = Machine.BufferSize;
 
-			using (var controler = LogicFactory.Create<IMachineControler>())
+			using (var controler = Dependency.Resolve<IMachineControler>())
 			{
 				Global.Instance.Machine = controler.GetMachine(Machine.MachineID);
 			}
@@ -199,7 +200,7 @@ namespace CNCLib.Wpf.ViewModels
 
 	   public void SetDefaultMachine()
 	   {
-			using (var controler = LogicFactory.Create<IMachineControler>())
+			using (var controler = Dependency.Resolve<IMachineControler>())
 			{
 				controler.SetDetaultMachine(Machine.MachineID);
 			}
