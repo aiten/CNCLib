@@ -29,6 +29,7 @@ using CNCLib.Logic.Contracts.DTO;
 using System.Reflection;
 using System.Globalization;
 using Framework.Tools.Dependency;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Logic
 {
@@ -36,7 +37,8 @@ namespace CNCLib.Logic
 	{
 		public IEnumerable<Item> GetAll()
 		{
-			using (var rep = Dependency.Resolve<IItemRepository>())
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
 			{
 				var all = rep.Get();
 				List<Item> l = new List<Item>();
@@ -50,7 +52,8 @@ namespace CNCLib.Logic
 
         public object Create(int id)
         {
-            using (var rep = Dependency.Resolve<IItemRepository>())
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
             {
                 var item = rep.Get(id);
 
@@ -198,7 +201,8 @@ namespace CNCLib.Logic
 
         public int Add(string name, object obj)
         {
-            using (var rep = Dependency.Resolve<IItemRepository>())
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
             {
                 var list = GetProperties(0, obj);
 
@@ -215,7 +219,8 @@ namespace CNCLib.Logic
 
         public void Save(int id, string name, object obj)
         {
-            using (var rep = Dependency.Resolve<IItemRepository>())
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
             {
                 var list = GetProperties(id, obj);
 
@@ -227,16 +232,19 @@ namespace CNCLib.Logic
                     ItemProperties = list.ToArray()
                 };
                 rep.Store(item);
+                uow.Save();
             }
         }
 
         public void Delete(int id)
         {
-            using (var rep = Dependency.Resolve<IItemRepository>())
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
             {
                 var item = rep.Get(id);
                 if (item!=null)
                     rep.Delete(item);
+                uow.Save();
             }
         }
 

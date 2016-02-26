@@ -17,18 +17,17 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository.Contracts
 {
-	public interface IMachineRepository: IDisposable
+	public interface IMachineRepository: IBaseRepository
 	{
 		Entities.Machine[] GetMachines();
 		Entities.Machine GetMachine(int id);
 		void Delete(Entities.Machine m);
 		Entities.MachineCommand[] GetMachineCommands(int machineID);
 		Entities.MachineInitCommand[] GetMachineInitCommands(int machineID);
-		int Store(Entities.Machine machine);
+		void Store(Entities.Machine machine);
 	}
 }

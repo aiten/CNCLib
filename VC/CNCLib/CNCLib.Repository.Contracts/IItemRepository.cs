@@ -17,16 +17,15 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository.Contracts
 {
-	public interface IItemRepository: IDisposable
+	public interface IItemRepository: IBaseRepository
 	{
 		Entities.Item[] Get();
 		Entities.Item Get(int id);
 		void Delete(Entities.Item o);
-		int Store(Entities.Item o);
+        void Store(Entities.Item o);
 	}
 }

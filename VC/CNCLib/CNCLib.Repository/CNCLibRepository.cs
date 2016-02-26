@@ -16,25 +16,23 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.EF;
 using CNCLib.Repository.Context;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using CNCLib.Repository;
+using Framework.Tools;
+using System.Data.Entity;
+using Framework.EF;
+using CNCLib.Repository.Contracts;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-	public static class UnitOfWorkFactory
+    public class CNCLibRepository : RepositoryBase
 	{
-		static public IUnitOfWork Create()
-		{
-			return new UnitOfWork<CNCLibContext>();
-		}
-
-		static public UnitOfWork<CNCLibContext> CreateAndCast()
-		{
-			return (UnitOfWork<CNCLibContext>)Create();
-		}
-	}
+        public CNCLibContext Context { get { return ((UnitOfWork<CNCLibContext>)Uow).Context; } }
+    }
 }

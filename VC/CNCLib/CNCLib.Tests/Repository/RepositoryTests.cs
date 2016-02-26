@@ -29,6 +29,8 @@ using Framework.Tools;
 using CNCLib.Repository.Contracts;
 using Framework.Test;
 using Framework.Tools.Dependency;
+using Framework.Tools.Pattern;
+using Framework.EF;
 
 namespace CNCLib.Tests.Repository
 {
@@ -46,10 +48,13 @@ namespace CNCLib.Tests.Repository
 				//drop and recreate the test Db everytime the tests are run. 
 				AppDomain.CurrentDomain.SetData("DataDirectory", testContext.TestDeploymentDir);
 
-				using (var uow = UnitOfWorkFactory.Create())
+				using (var uow = new UnitOfWork<CNCLibContext>())
 				{
+                    var x = uow.Context; // ref to get loaded
 					System.Data.Entity.Database.SetInitializer<CNCLibContext>(new CNCLibInitializerTest());
 					uow.InitializeDatabase();
+                    var o = uow.Context.Items.Where(i => i.ItemID == 0).FirstOrDefault();
+                    // force init
                 }
                 _init = true;
 			}
@@ -61,6 +66,7 @@ namespace CNCLib.Tests.Repository
             Dependency.Container.RegisterType<IConfigurationRepository, ConfigurationRepository>();
             Dependency.Container.RegisterType<IMachineRepository, MachineRepository>();
             Dependency.Container.RegisterType<IItemRepository, ItemRepository>();
-		}
-	}
+            Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+        }
+    }
 }

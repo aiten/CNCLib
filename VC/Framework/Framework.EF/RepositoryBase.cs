@@ -28,7 +28,9 @@ namespace Framework.EF
 {
 	public class RepositoryBase
 	{
-		static public void Sync<t>(IUnitOfWork uow, ICollection<t> inDb, ICollection<t> toDb, Func<t, t, bool> predicate) 
+        public IUnitOfWork Uow { get; set; }
+
+		public void Sync<t>(ICollection<t> inDb, ICollection<t> toDb, Func<t, t, bool> predicate) 
 		{
 			// 1. Delete from DB (in DB) and update
 			List<t> delete = new List<t>();
@@ -48,7 +50,7 @@ namespace Framework.EF
 
 			foreach (var del in delete)
 			{
-				uow.MarkDeleted(del);
+				Uow.MarkDeleted(del);
 			}
 
 			// 2. Add To DB
@@ -58,7 +60,7 @@ namespace Framework.EF
 				var entityInDb = inDb.FirstOrDefault(x => predicate(x, entityToDb));
 				if (entityInDb == null || predicate(entityToDb, entityInDb) == false)
 				{
-					uow.MarkNew(entityToDb);
+					Uow.MarkNew(entityToDb);
 				}
 			}
 		}

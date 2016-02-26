@@ -29,35 +29,16 @@ using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class ConfigurationRepository : RepositoryBase, IConfigurationRepository
+    public class ConfigurationRepository : CNCLibRepository, IConfigurationRepository
 	{
 		public Contracts.Entities.Configuration Get(string group, string  name)
         {
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
-			{
-				return uow.Context.Configurations.Where((c) => c.Group == group && c.Name == name).FirstOrDefault();
-			}
+			return Context.Configurations.Where((c) => c.Group == group && c.Name == name).FirstOrDefault();
         }
 
 		public void Delete(Contracts.Entities.Configuration configuration)
         {
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
-			{
-				try
-				{
-					uow.BeginTransaction();
-
-					uow.MarkDeleted(configuration);
-					uow.Save();
-
-					uow.CommitTransaction();
-				}
-				catch (Exception)
-				{
-					uow.RollbackTransaction();
-					throw;
-				}
-			}
+			Uow.MarkDeleted(configuration);
         }
 
 
@@ -65,36 +46,19 @@ namespace CNCLib.Repository
 		{
 			// search und update machine
 
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
+			var cInDb = Context.Configurations.Where((c) => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefault();
+
+			if (cInDb == default(Contracts.Entities.Configuration))
 			{
-				try
-				{
-					uow.BeginTransaction();
+				// add new
 
-					var cInDb = uow.Context.Configurations.Where((c) => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefault();
-
-					if (cInDb == default(Contracts.Entities.Configuration))
-					{
-						// add new
-
-						cInDb = configuration;
-						uow.MarkNew(cInDb);
-						uow.Save();
-					}
-					else
-					{
-						// syn with existing
-						cInDb.CopyValueTypeProperties(configuration);
-						uow.Save();
-					}
-
-					uow.CommitTransaction();
-				}
-				catch (Exception /* ex */)
-				{
-					uow.RollbackTransaction();
-					throw;
-				}
+				cInDb = configuration;
+				Uow.MarkNew(cInDb);
+			}
+			else
+			{
+				// syn with existing
+				cInDb.CopyValueTypeProperties(configuration);
 			}
 		}
 

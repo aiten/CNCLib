@@ -27,6 +27,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Framework.Tools;
 using CNCLib.Repository.Contracts;
+using Framework.Tools.Dependency;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Tests.Repository
 {
@@ -42,9 +44,10 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
         public void GetEmptyConfiguration()
         {
-			using (var rep = new ConfigurationRepository())
-			{
-				var entity = rep.Get("Test","Test");
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
+            {
+                var entity = rep.Get("Test","Test");
 				Assert.AreEqual(null, entity);
 			}
 	    }
@@ -52,33 +55,42 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void SaveConfiguration()
 		{
-			using (var rep = new ConfigurationRepository())
-			{
-				rep.Save(new Configuration("Test", "TestNew1", "Content"));
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
+            {
+                rep.Save(new Configuration("Test", "TestNew1", "Content"));
+                uow.Save();
 			}
 		}
 
-		[TestMethod]
-		public void SaveAndReadConfiguration()
-		{
-			using (var rep = new ConfigurationRepository())
-			{
-				rep.Save(new Configuration("Test", "TestNew2", "Content2"));
-				var read = rep.Get("Test", "TestNew2");
-				Assert.AreEqual("Content2", read.Value);
-			}
-		}
+        [TestMethod]
+        public void SaveAndReadConfiguration()
+        {
+            WriteConfiguration("Test", "TestNew2", "Content2");
 
-		[TestMethod]
+            using (var uowread = Dependency.Resolve<IUnitOfWork>())
+            using (var repread = Dependency.ResolveRepository<IConfigurationRepository>(uowread))
+            {
+                var read = repread.Get("Test", "TestNew2");
+                Assert.AreEqual("Content2", read.Value);
+            }
+        }
+
+
+        [TestMethod]
 		public void SaveAndReadAndDeleteConfiguration()
 		{
-			using (var rep = new ConfigurationRepository())
-			{
-				rep.Save(new Configuration("Test", "TestNew3", "Content2"));
+            WriteConfiguration("Test", "TestNew3", "Content3");
+
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
+            {
 				var read = rep.Get("Test", "TestNew3");
-				Assert.AreEqual("Content2", read.Value);
+				Assert.AreEqual("Content3", read.Value);
 
 				rep.Delete(read);
+
+                uow.Save();
 
 				var readagain = rep.Get("Test", "TestNew3");
 				Assert.AreEqual(null, readagain);
@@ -88,17 +100,25 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void SaveExistingConfiguration()
 		{
-			using (var rep = new ConfigurationRepository())
-			{
-				rep.Save(new Configuration("Test", "TestNew4", "Content4"));
-				var read = rep.Get("Test", "TestNew4");
-				Assert.AreEqual("Content4", read.Value);
+            WriteConfiguration("Test", "TestNew4", "Content4");
+            WriteConfiguration("Test", "TestNew4", "Content5");
 
-				rep.Save(new Configuration("Test", "TestNew4", "Content5"));
-
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
+            {
 				var readagain = rep.Get("Test", "TestNew4");
 				Assert.AreEqual("Content5", readagain.Value);
 			}
 		}
-	}
+
+        private static void WriteConfiguration(string module, string name, string content)
+        {
+            using (var uowwrite = Dependency.Resolve<IUnitOfWork>())
+            using (var repwrite = Dependency.ResolveRepository<IConfigurationRepository>(uowwrite))
+            {
+                repwrite.Save(new Configuration(module,name,content));
+                uowwrite.Save();
+            }
+        }
+    }
 }

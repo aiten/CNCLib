@@ -17,14 +17,11 @@
 */
 
 using System;
-using Framework.Tools.Pattern;
 
-namespace CNCLib.Repository.Contracts
+namespace Framework.Tools.Pattern
 {
-	public interface IConfigurationRepository : IBaseRepository
+	public interface IBaseRepository : IDisposable
     {
-		Entities.Configuration Get(string group, string name);
-		void Delete(Entities.Configuration configuration);
-		void Save(Entities.Configuration configuration);
-	}
+        IUnitOfWork Uow { get; set; }
+    }
 }

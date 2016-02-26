@@ -28,6 +28,7 @@ using System.Linq;
 using Framework.Tools;
 using CNCLib.Repository.Contracts;
 using Framework.Tools.Dependency;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Tests.Repository
 {
@@ -40,12 +41,13 @@ namespace CNCLib.Tests.Repository
 			RepositoryTests.ClassInit(testContext);
 		}
 
-		[TestMethod]
+        [TestMethod]
         public void QueryAllMachines()
         {
-			using (var rep = Dependency.Resolve<IMachineRepository>())
-			{
-				var machines = rep.GetMachines();
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                var machines = rep.GetMachines();
 				Assert.AreEqual(true, machines.Length >= 2);
 			}
 	    }
@@ -53,9 +55,10 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void QueryOneMachineFound()
 		{
-			using (var rep = Dependency.Resolve<IMachineRepository>())
-			{
-				var machines = rep.GetMachine(1);
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                var machines = rep.GetMachine(1);
 				Assert.AreEqual(1, machines.MachineID);
 			}
 		}
@@ -63,9 +66,10 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void QueryOneMachineNotFound()
 		{
-			using (var rep = Dependency.Resolve<IMachineRepository>())
-			{
-				var machines = rep.GetMachine(1000);
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                var machines = rep.GetMachine(1000);
 				Assert.IsNull(machines);
 			}
 		}
@@ -73,199 +77,195 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public void AddOneMachine()
 		{
-			using (var rep = Dependency.Resolve<IMachineRepository>())
-			{
-				var machine = CreateMachine("AddOneMachine");
-				int id = rep.Store(machine);
-				Assert.AreNotEqual(0, id);
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                var machine = CreateMachine("AddOneMachine");
+				rep.Store(machine);
+                uow.Save();
+				Assert.AreNotEqual(0, machine.MachineID);
 			}
 		}
 		[TestMethod]
 		public void AddOneMachineWithCommands()
 		{
-			using (var rep = Dependency.Resolve<IMachineRepository>())
-			{
-				var machine = CreateMachine("AddOneMachineWithCommands");
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                var machine = CreateMachine("AddOneMachineWithCommands");
 				AddMachinCommands(machine);
-				int id = rep.Store(machine);
-				Assert.AreNotEqual(0, id);
-			}
-		}
+                rep.Store(machine);
+                uow.Save();
+                Assert.AreNotEqual(0, machine.MachineID);
+            }
+        }
+
 		[TestMethod]
 		public void AddOneMachineAndRead()
-		{
-			using (var repwrite = Dependency.Resolve<IMachineRepository>())
-			using (var repread = Dependency.Resolve<IMachineRepository>())
-			{
+        {
+            var machine = CreateMachine("AddOneMachineAndRead");
+            int id = WriteMachine(machine);
 
-				var machine = CreateMachine("AddOneMachineAndRead");
+            var machineread = ReadMachine(id);
 
-				int id = repwrite.Store(machine);
+            Assert.AreEqual(0, machineread.MachineCommands.Count);
+            Assert.AreEqual(0, machineread.MachineInitCommands.Count);
 
-				Assert.AreNotEqual(0, id);
+            CompareMachine(machine, machineread);
+        }
 
-				var machineread = repread.GetMachine(id);
+       [TestMethod]
+       public void AddOneMachineWithCommandsAndRead()
+       {
+            var machine = CreateMachine("AddOneMachineWithCommandsAndRead");
+            int count = AddMachinCommands(machine);
+            int id = WriteMachine(machine);
 
-				Assert.AreEqual(0, machineread.MachineCommands.Count);
-				Assert.AreEqual(0, machineread.MachineInitCommands.Count);
+            var machineread = ReadMachine(id);
 
-				CompareMachine(machine, machineread);
-			}
-		}
+            Assert.AreEqual(count, machineread.MachineCommands.Count);
+            Assert.AreEqual(0, machineread.MachineInitCommands.Count);
 
-		[TestMethod]
-		public void AddOneMachineWithCommandsAndRead()
-		{
-			using (var repwrite = Dependency.Resolve<IMachineRepository>())
-			using (var repread = Dependency.Resolve<IMachineRepository>())
-			{
+            CompareMachine(machine, machineread);
+       }
 
-				var machine = CreateMachine("AddOneMachineWithCommandsAndRead");
-				int count = AddMachinCommands(machine);
+       [TestMethod]
+       public void AddOneMachineWithInitCommandsAndRead()
+       {
+            var machine = CreateMachine("AddOneMachineWithInitCommandsAndRead");
+            int count = AddMachinInitCommands(machine);
+            int id = WriteMachine(machine);
 
-				int id = repwrite.Store(machine);
+            var machineread = ReadMachine(id);
 
-				Assert.AreNotEqual(0, id);
+            Assert.AreEqual(0, machineread.MachineCommands.Count);
+            Assert.AreEqual(count, machineread.MachineInitCommands.Count);
 
-				var machineread = repread.GetMachine(id);
+            CompareMachine(machine, machineread);
+       }
 
-				Assert.AreEqual(count, machineread.MachineCommands.Count);
-				Assert.AreEqual(0, machineread.MachineInitCommands.Count);
+       [TestMethod]
+       public void UpdateOneMachineAndRead()
+       {
+            var machine = CreateMachine("UpdateOneMachineAndRead");
+            int id;
 
-				CompareMachine(machine, machineread);
-			}
-		}
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                rep.Store(machine);
+                uow.Save();
+                id = machine.MachineID;
+                Assert.AreNotEqual(0, id);
 
-		[TestMethod]
-		public void AddOneMachineWithInitCommandsAndRead()
-		{
-			using (var repwrite = Dependency.Resolve<IMachineRepository>())
-			using (var repread = Dependency.Resolve<IMachineRepository>())
-			{
-				var machine = CreateMachine("AddOneMachineWithInitCommandsAndRead");
-				int count = AddMachinInitCommands(machine);
+                machine.Name = "UpdateOneMachineAndRead#2";
 
-				int id = repwrite.Store(machine);
+                rep.Store(machine);
+                uow.Save();
+            }
 
-				Assert.AreNotEqual(0, id);
+            var machineread = ReadMachine(id);
+            Assert.AreEqual(0, machineread.MachineCommands.Count);
+            CompareMachine(machine, machineread);
+       }
 
-				var machineread = repread.GetMachine(id);
+       [TestMethod]
+       public void UpdateOneMachineNoCommandChangeAndRead()
+       {
+            var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
+            int count = AddMachinCommands(machine);
+            int id;
 
-				Assert.AreEqual(0, machineread.MachineCommands.Count);
-				Assert.AreEqual(count, machineread.MachineInitCommands.Count);
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                rep.Store(machine);
+                uow.Save();
+                id = machine.MachineID;
+                Assert.AreNotEqual(0, id);
 
-				CompareMachine(machine, machineread);
-			}
-		}
+                machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
+                rep.Store(machine);
+                uow.Save();
+            }
 
+            var machineread = ReadMachine(id);
+            Assert.AreEqual(count, machineread.MachineCommands.Count);
+            CompareMachine(machine, machineread);
+       }
 
-		[TestMethod]
-		public void UpdateOneMachineAndRead()
-		{
-			using (var repwrite = Dependency.Resolve<IMachineRepository>())
-			using (var repread = Dependency.Resolve<IMachineRepository>())
-			{
+       [TestMethod]
+       public void UpdateOneMachineCommandChangeAndRead()
+       {
+            var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
+            int count = AddMachinCommands(machine);
+            int id = WriteMachine(machine);
+            int newcount;
 
-				var machine = CreateMachine("UpdateOneMachineAndRead");
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
+                machine.MachineCommands.Add(new MachineCommand() { CommandName = "Name#1", CommandString = "New#1", MachineID = id });
+                machine.MachineCommands.Add(new MachineCommand() { CommandName = "Name#2", CommandString = "New#2", MachineID = id });
+                machine.MachineCommands.Remove(machine.MachineCommands.Single(m => m.CommandString == "Test1"));
+                machine.MachineCommands.Single(m => m.CommandString == "Test2").CommandString = "Test2.Changed";
 
-				int id = repwrite.Store(machine);
+                newcount = count + 2 - 1;
 
-				Assert.AreNotEqual(0, id);
+                rep.Store(machine);
+                uow.Save();
+            }
 
-				machine.Name = "UpdateOneMachineAndRead#2";
+            var machineread = ReadMachine(id);
+            Assert.AreEqual(newcount, machineread.MachineCommands.Count);
+            CompareMachine(machine, machineread);
+       }
 
-				repwrite.Store(machine);
+       [TestMethod]
+       public void DeleteMachineWithCommandAndRead()
+       {
+            var machine = CreateMachine("DeleteMachineWithCommandAndRead");
+            int count = AddMachinCommands(machine);
+            int id = WriteMachine(machine);
 
-				var machineread = repread.GetMachine(id);
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                rep.Delete(machine);
+                uow.Save();
 
-				Assert.AreEqual(0, machineread.MachineCommands.Count);
+                Assert.IsNull(rep.GetMachine(id));
+            }
+       }
 
-				CompareMachine(machine, machineread);
-			}
-		}
+        private static int WriteMachine(Machine machine)
+        {
+            int id;
 
-		[TestMethod]
-		public void UpdateOneMachineNoCommandChangeAndRead()
-		{
-			using (var repwrite = Dependency.Resolve<IMachineRepository>())
-			using (var repread = Dependency.Resolve<IMachineRepository>())
-			{
-				var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
-				int count = AddMachinCommands(machine);
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                rep.Store(machine);
+                uow.Save();
+                id = machine.MachineID;
+                Assert.AreNotEqual(0, id);
+            }
 
-				int id = repwrite.Store(machine);
+            return id;
+        }
 
-				Assert.AreNotEqual(0, id);
-
-				machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
-
-				repwrite.Store(machine);
-
-				var machineread = repread.GetMachine(id);
-
-				Assert.AreEqual(count, machineread.MachineCommands.Count);
-
-				CompareMachine(machine, machineread);
-			}
-		}
-
-		[TestMethod]
-		public void UpdateOneMachineCommandChangeAndRead()
-		{
-			using (var repwrite = Dependency.Resolve<IMachineRepository>())
-			using (var repread = Dependency.Resolve<IMachineRepository>())
-			{
-
-				var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
-				int count = AddMachinCommands(machine);
-
-				int id = repwrite.Store(machine);
-
-				Assert.AreNotEqual(0, id);
-
-				machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
-				machine.MachineCommands.Add(new MachineCommand() { CommandName = "Name#1", CommandString = "New#1", MachineID = id });
-				machine.MachineCommands.Add(new MachineCommand() { CommandName = "Name#2", CommandString = "New#2", MachineID = id });
-				machine.MachineCommands.Remove(machine.MachineCommands.Single(m => m.CommandString == "Test1"));
-				machine.MachineCommands.Single(m => m.CommandString == "Test2").CommandString = "Test2.Changed";
-
-				int newcount = count + 2 - 1;
-
-				repwrite.Store(machine);
-
-				var machineread = repread.GetMachine(id);
-
-				Assert.AreEqual(newcount, machineread.MachineCommands.Count);
-
-				CompareMachine(machine, machineread);
-			}
-		}
-
-		[TestMethod]
-		public void DeleteMachineWithCommandAndRead()
-		{
-			using (var repwrite = Dependency.Resolve<IMachineRepository>())
-			using (var repread = Dependency.Resolve<IMachineRepository>())
-			using (var repdelete = Dependency.Resolve<IMachineRepository>())
-			{
-
-				var machine = CreateMachine("DeleteMachineWithCommandAndRead");
-				int count = AddMachinCommands(machine);
-
-				int id = repwrite.Store(machine);
-
-				Assert.AreNotEqual(0, id);
-
-				repdelete.Delete(machine);
-
-				var machineread = repread.GetMachine(id);
-
-				//Assert.AreEqual(newcount, machineread.MachineCommands.Count);
-			}
-		}
+        private static Machine ReadMachine(int id)
+        {
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                return rep.GetMachine(id);
+            }
+        }
 
 
-		private static Machine CreateMachine(string name)
+        private static Machine CreateMachine(string name)
 		{
 			var machine = new Machine()
 			{

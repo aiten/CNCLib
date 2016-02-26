@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Tools.Pattern;
 using System;
 
 namespace Framework.Tools.Dependency
@@ -59,6 +60,13 @@ namespace Framework.Tools.Dependency
         public static TInterface Resolve<TInterface>()
         {
             return Container.Resolve<TInterface>();
+        }
+
+        public static TInterface ResolveRepository<TInterface>(IUnitOfWork uow)
+        {
+            var rep = Container.Resolve<TInterface>();
+            ((IBaseRepository)rep).Uow = uow;
+            return rep;
         }
     }
 }

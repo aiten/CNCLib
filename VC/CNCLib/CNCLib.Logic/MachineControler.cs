@@ -27,6 +27,7 @@ using CNCLib.Logic.Converter;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Logic
 {
@@ -34,7 +35,8 @@ namespace CNCLib.Logic
 	{
 		public IEnumerable<Machine> GetMachines()
 		{
-			using (var rep = Dependency.Resolve<IMachineRepository>())
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
 			{
 				var machines = rep.GetMachines();
 				List<Machine> l = new List<Machine>();
@@ -48,9 +50,10 @@ namespace CNCLib.Logic
 
         public Machine GetMachine(int id)
         {
-			using (var rep = Dependency.Resolve<IMachineRepository>())
-			{
-				var machine = rep.GetMachine(id);
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                var machine = rep.GetMachine(id);
 				if (machine == null)
 					return null;
 
@@ -91,18 +94,23 @@ namespace CNCLib.Logic
 
 		public void Delete(Machine m)
         {
-			using (var rep = Dependency.Resolve<IMachineRepository>())
-			{
-				rep.Delete(m.NewCloneProperties<Repository.Contracts.Entities.Machine, Machine>());
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                rep.Delete(m.NewCloneProperties<Repository.Contracts.Entities.Machine, Machine>());
+                uow.Save();
 			}
         }
 
 		public int StoreMachine(Machine m)
 		{
-			using (var rep = Dependency.Resolve<IMachineRepository>())
-			{
-				var me = m.Convert();
-				return rep.Store(me);
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            {
+                var me = m.Convert();
+				rep.Store(me);
+                uow.Save();
+                return me.MachineID;
 			}
 		}
 
@@ -110,7 +118,8 @@ namespace CNCLib.Logic
 
 		public int GetDetaultMachine()
 		{
-			using (var rep = Dependency.Resolve<IConfigurationRepository>())
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
 			{
 				var config = rep.Get("Environment", "DefaultMachineID");
 
@@ -122,11 +131,13 @@ namespace CNCLib.Logic
 		}
 		public void SetDetaultMachine(int defaultMachineID)
 		{
-			using (var rep = Dependency.Resolve<IConfigurationRepository>())
-			{
-				rep.Save(new Repository.Contracts.Entities.Configuration() { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
-			}
-		}
+            using (var uow = Dependency.Resolve<IUnitOfWork>())
+            using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
+            {
+                rep.Save(new Repository.Contracts.Entities.Configuration() { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
+                uow.Save();
+            }
+        }
 
 		#endregion
 

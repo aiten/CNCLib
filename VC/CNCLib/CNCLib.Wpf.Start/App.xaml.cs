@@ -28,6 +28,9 @@ using CNCLib.Logic;
 using CNCLib.Logic.Contracts;
 using Framework.Wpf.ViewModels;
 using Framework.Tools.Dependency;
+using Framework.Tools.Pattern;
+using Framework.EF;
+using CNCLib.Repository.Context;
 
 namespace CNCLib.Wpf.Start
 {
@@ -40,23 +43,7 @@ namespace CNCLib.Wpf.Start
 		{
             Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(typeof(CNCLib.Repository.MachineRepository).Assembly, typeof(CNCLib.Logic.MachineControler).Assembly);
-/*
-            var repositoryfactory = new Framework.Tools.Pattern.FactoryType2Type();
-
-			repositoryfactory.Register(typeof(IConfigurationRepository),typeof(ConfigurationRepository));
-			repositoryfactory.Register(typeof(IMachineRepository), typeof(MachineRepository));
-            repositoryfactory.Register(typeof(IItemRepository), typeof(ItemRepository));
-
-            ControlerBase.RepositoryFactory = repositoryfactory;
-
-			var logicfactory = new Framework.Tools.Pattern.FactoryType2Type();
-
-			logicfactory.Register(typeof(IMachineControler), typeof(MachineControler));
-            logicfactory.Register(typeof(IItemControler), typeof(ItemControler));
-
-            CNCLib.GUI.Load.LoadOptionForm.LogicFactory = logicfactory;
-            BaseViewModel.LogicFactory = logicfactory;
-*/
-		}
-	}
+            Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+        }
+    }
 }

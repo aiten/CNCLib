@@ -31,135 +31,86 @@ using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class MachineRepository : RepositoryBase, IMachineRepository
+    public class MachineRepository : CNCLibRepository, IMachineRepository
 	{
 		public Contracts.Entities.Machine[] GetMachines()
 		{
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
-			{
-				return uow.Context.Machines.
-					Include((d) => d.MachineCommands).
-					Include((d) => d.MachineInitCommands).
-					ToArray();
-			}
+            return Context.Machines.
+                Include((d) => d.MachineCommands).
+                Include((d) => d.MachineInitCommands).
+                ToArray();
 		}
 
 		public Contracts.Entities.Machine GetMachine(int id)
         {
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
-			{
-				return uow.Context.Machines.
-					Where((m) => m.MachineID == id).
-					Include((d) => d.MachineCommands).
-					Include((d) => d.MachineInitCommands).
-					FirstOrDefault();
-			}
+			return Context.Machines.
+				Where((m) => m.MachineID == id).
+				Include((d) => d.MachineCommands).
+				Include((d) => d.MachineInitCommands).
+				FirstOrDefault();
         }
 
 		public void Delete(Contracts.Entities.Machine m)
         {
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
-			{
-				try
-				{
-					uow.BeginTransaction();
-
-					m.MachineCommands = null;
-					m.MachineInitCommands = null;
-					uow.MarkDeleted(m);
-					uow.ExecuteSqlCommand("delete from MachineCommand where MachineID = " + m.MachineID);
-					uow.ExecuteSqlCommand("delete from MachineInitCommand where MachineID = " + m.MachineID);
-					uow.Save();
-
-					uow.CommitTransaction();
-				}
-				catch (Exception)
-				{
-					uow.RollbackTransaction();
-					throw;
-				}
-			}
+			m.MachineCommands = null;
+			m.MachineInitCommands = null;
+			Uow.MarkDeleted(m);
+			Uow.ExecuteSqlCommand("delete from MachineCommand where MachineID = " + m.MachineID);
+			Uow.ExecuteSqlCommand("delete from MachineInitCommand where MachineID = " + m.MachineID);
         }
 
 		public Contracts.Entities.MachineCommand[] GetMachineCommands(int machineID)
 		{
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
-			{
-				return uow.Context.MachineCommands.
-					Where(c => c.MachineID == machineID).
-					ToArray();
-			}
+			return Context.MachineCommands.
+				Where(c => c.MachineID == machineID).
+				ToArray();
 		}
 
 		public Contracts.Entities.MachineInitCommand[] GetMachineInitCommands(int machineID)
 		{
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
-			{
-				return uow.Context.MachineInitCommands.
-					Where(c => c.MachineID == machineID).
-					ToArray();
-			}
+			return Context.MachineInitCommands.
+				Where(c => c.MachineID == machineID).
+				ToArray();
 		}
 
-		public int Store(Contracts.Entities.Machine machine)
+		public void Store(Contracts.Entities.Machine machine)
 		{
 			// search und update machine
 
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
+			int id = machine.MachineID;
+
+			var machineInDb = Context.Machines.
+				Where((m) => m.MachineID == id).
+				Include((d) => d.MachineCommands).
+				Include((d) => d.MachineInitCommands).
+				FirstOrDefault();
+			var machineCommands = machine.MachineCommands ?? new List<Contracts.Entities.MachineCommand>();
+			var machineInitCommands = machine.MachineInitCommands ?? new List<Contracts.Entities.MachineInitCommand>();
+
+			if (machineInDb == default(Contracts.Entities.Machine))
 			{
-				int id = machine.MachineID;
+				// add new
 
-				try
-				{
-					uow.BeginTransaction();
+				Uow.MarkNew(machine);
+			}
+			else
+			{
+				// syn with existing
 
-					var machineInDb = uow.Context.Machines.
-						Where((m) => m.MachineID == id).
-						Include((d) => d.MachineCommands).
-						Include((d) => d.MachineInitCommands).
-						FirstOrDefault();
-					var machineCommands = machine.MachineCommands ?? new List<Contracts.Entities.MachineCommand>();
-					var machineInitCommands = machine.MachineInitCommands ?? new List<Contracts.Entities.MachineInitCommand>();
+				machineInDb.CopyValueTypeProperties(machine);
 
-					if (machineInDb == default(Contracts.Entities.Machine))
-					{
-						// add new
+				// search und update machinecommands (add and delete)
 
-						machineInDb = machine;
-						uow.MarkNew(machineInDb);
-						uow.Save();						// this will save the Commands as well
-						id = machineInDb.MachineID;
-					}
-					else
-					{
-						// syn with existing
+				Sync<Contracts.Entities.MachineCommand>(
+					machineInDb.MachineCommands, 
+					machineCommands, 
+					(x, y) => x.MachineCommandID > 0 && x.MachineCommandID == y.MachineCommandID);
 
-						machineInDb.CopyValueTypeProperties(machine);
+				Sync<Contracts.Entities.MachineInitCommand>(
+					machineInDb.MachineInitCommands,
+					machineInitCommands,
+					(x, y) => x.MachineInitCommandID > 0 && x.MachineInitCommandID == y.MachineInitCommandID);
 
-						// search und update machinecommands (add and delete)
-
-						Sync<Contracts.Entities.MachineCommand>(uow, 
-							machineInDb.MachineCommands, 
-							machineCommands, 
-							(x, y) => x.MachineCommandID > 0 && x.MachineCommandID == y.MachineCommandID);
-
-						Sync<Contracts.Entities.MachineInitCommand>(uow,
-							machineInDb.MachineInitCommands,
-							machineInitCommands,
-							(x, y) => x.MachineInitCommandID > 0 && x.MachineInitCommandID == y.MachineInitCommandID);
-
-						uow.Save();
-					}
-
-					uow.CommitTransaction();
-				}
-				catch (Exception /*ex */)
-				{
-					uow.RollbackTransaction();
-					throw;
-				}
-
-				return id;
 			}
 		}
 

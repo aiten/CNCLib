@@ -31,105 +31,60 @@ using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class ItemRepository : RepositoryBase, IItemRepository
+    public class ItemRepository : CNCLibRepository, IItemRepository
 	{
 		public Contracts.Entities.Item[] Get()
 		{
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
-			{
-				return uow.Context.Items.
-					Include((d) => d.ItemProperties).
-					ToArray();
-			}
+			return Context.Items.
+				Include((d) => d.ItemProperties).
+				ToArray();
 		}
 
 		public Contracts.Entities.Item Get(int id)
         {
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
-			{
-				return uow.Context.Items.
-					Where((m) => m.ItemID == id).
-					Include((d) => d.ItemProperties).
-					FirstOrDefault();
-			}
+			return Context.Items.
+				Where((m) => m.ItemID == id).
+				Include((d) => d.ItemProperties).
+				FirstOrDefault();
         }
 
 		public void Delete(Contracts.Entities.Item e)
         {
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
-			{
-				try
-				{
-					uow.BeginTransaction();
-
-					e.ItemProperties = null;
-					uow.MarkDeleted(e);
-					uow.ExecuteSqlCommand("delete from ItemProperty where ItemID = " + e.ItemID);
-					uow.Save();
-
-					uow.CommitTransaction();
-				}
-				catch (Exception ee)
-				{
-					uow.RollbackTransaction();
-					throw;
-				}
-			}
+			e.ItemProperties = null;
+			Uow.MarkDeleted(e);
+			Uow.ExecuteSqlCommand("delete from ItemProperty where ItemID = " + e.ItemID);
         }
 
-		public int Store(Contracts.Entities.Item item)
+		public void Store(Contracts.Entities.Item item)
 		{
 			// search und update machine
 
-			using (var uow = UnitOfWorkFactory.CreateAndCast())
+			int id = item.ItemID;
+
+			var itemInDb = Context.Items.
+				Where((m) => m.ItemID == id).
+				Include((d) => d.ItemProperties).
+				FirstOrDefault();
+
+            var optValues = item.ItemProperties ?? new List<Contracts.Entities.ItemProperty>();
+
+			if (itemInDb == default(Contracts.Entities.Item))
 			{
-				int id = item.ItemID;
+                // add new
+				Uow.MarkNew(item);
+			}
+			else
+			{
+                // syn with existing
 
-				try
-				{
-					uow.BeginTransaction();
+                itemInDb.CopyValueTypeProperties(item);
 
-					var itemInDb = uow.Context.Items.
-						Where((m) => m.ItemID == id).
-						Include((d) => d.ItemProperties).
-						FirstOrDefault();
+				// search und update machinecommands (add and delete)
 
-                    var optValues = item.ItemProperties ?? new List<Contracts.Entities.ItemProperty>();
-
-					if (itemInDb == default(Contracts.Entities.Item))
-					{
-                        // add new
-
-                        itemInDb = item;
-						uow.MarkNew(itemInDb);
-						uow.Save();		
-						id = itemInDb.ItemID;
-					}
-					else
-					{
-                        // syn with existing
-
-                        itemInDb.CopyValueTypeProperties(item);
-
-						// search und update machinecommands (add and delete)
-
-						Sync<Contracts.Entities.ItemProperty>(uow,
-                            itemInDb.ItemProperties,
-                            optValues, 
-							(x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
-
-						uow.Save();
-					}
-
-					uow.CommitTransaction();
-				}
-				catch (Exception /*ex */)
-				{
-					uow.RollbackTransaction();
-					throw;
-				}
-
-				return id;
+				Sync<Contracts.Entities.ItemProperty>(
+                    itemInDb.ItemProperties,
+                    optValues, 
+					(x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
 			}
 		}
 
