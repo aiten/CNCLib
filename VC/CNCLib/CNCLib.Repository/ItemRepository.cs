@@ -52,7 +52,7 @@ namespace CNCLib.Repository
         {
 			e.ItemProperties = null;
 			Uow.MarkDeleted(e);
-			Uow.ExecuteSqlCommand("delete from ItemProperty where ItemID = " + e.ItemID);
+			// Uow.ExecuteSqlCommand("delete from ItemProperty where ItemID = " + e.ItemID); => delete cascade
         }
 
 		public void Store(Contracts.Entities.Item item)

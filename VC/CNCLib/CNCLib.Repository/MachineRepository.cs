@@ -55,11 +55,11 @@ namespace CNCLib.Repository
 			m.MachineCommands = null;
 			m.MachineInitCommands = null;
 			Uow.MarkDeleted(m);
-			Uow.ExecuteSqlCommand("delete from MachineCommand where MachineID = " + m.MachineID);
-			Uow.ExecuteSqlCommand("delete from MachineInitCommand where MachineID = " + m.MachineID);
+            //Uow.ExecuteSqlCommand("delete from MachineCommand where MachineID = " + m.MachineID); => delete cascade
+            //Uow.ExecuteSqlCommand("delete from MachineInitCommand where MachineID = " + m.MachineID); => delete cascade
         }
 
-		public Contracts.Entities.MachineCommand[] GetMachineCommands(int machineID)
+        public Contracts.Entities.MachineCommand[] GetMachineCommands(int machineID)
 		{
 			return Context.MachineCommands.
 				Where(c => c.MachineID == machineID).

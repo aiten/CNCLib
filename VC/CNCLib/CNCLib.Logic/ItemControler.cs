@@ -213,6 +213,7 @@ namespace CNCLib.Logic
                     ItemProperties = list.ToArray()
                 };
                 rep.Store(item);
+                uow.Save();
                 return item.ItemID;
             }
         }

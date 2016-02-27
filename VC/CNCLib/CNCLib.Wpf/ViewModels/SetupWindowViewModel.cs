@@ -200,10 +200,13 @@ namespace CNCLib.Wpf.ViewModels
 
 	   public void SetDefaultMachine()
 	   {
-			using (var controler = Dependency.Resolve<IMachineControler>())
-			{
-				controler.SetDetaultMachine(Machine.MachineID);
-			}
+            if (Machine != null)
+            {
+                using (var controler = Dependency.Resolve<IMachineControler>())
+                {
+                    controler.SetDetaultMachine(Machine.MachineID);
+                }
+            }
 	   }
 
 		public bool CanSetupMachine()

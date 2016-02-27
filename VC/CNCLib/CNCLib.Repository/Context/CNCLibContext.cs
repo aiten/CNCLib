@@ -72,9 +72,9 @@ namespace CNCLib.Repository.Context
 			modelBuilder.Entity<Machine>().Property((m) => m.SizeY).IsRequired();
 			modelBuilder.Entity<Machine>().Property((m) => m.SizeZ).IsRequired();
 
-			// MachineCommand -------------------------------------
+            // MachineCommand -------------------------------------
 
-			modelBuilder.Entity<MachineCommand>()
+            modelBuilder.Entity<MachineCommand>()
 				.HasKey(mc => mc.MachineCommandID);
 
 			modelBuilder.Entity<MachineCommand>().Property((m) => m.CommandString).
@@ -93,9 +93,9 @@ namespace CNCLib.Repository.Context
 				IsRequired().
 				HasMaxLength(64);
 
-			// Configuration -------------------------------------
+            // Configuration -------------------------------------
 
-			modelBuilder.Entity<Configuration>()
+            modelBuilder.Entity<Configuration>()
 				.HasKey(m => new { m.Group, m.Name });
 
 			modelBuilder.Entity<Configuration>().Property((m) => m.Group).

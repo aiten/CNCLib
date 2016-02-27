@@ -110,7 +110,8 @@ namespace Framework.Arduino
 		public bool ErrorIsReply { get; set; }			= false;     // each command must end with ok
         public int MaxCommandHistoryCount { get; set; } = int.MaxValue;
 		public int ArduinoBuffersize { get; set; }		= 64;
-		public TraceStream Trace { get { return _trace; } }
+        public int ArduinoLineSize { get; set; } = 128;
+        public TraceStream Trace { get { return _trace; } }
 
 		#endregion
 
@@ -417,6 +418,11 @@ namespace Framework.Arduino
 
             string commandtext = cmd.CommandText;
 
+            const int crlf_size = 2;
+
+            if (commandtext.Length >= ArduinoLineSize + crlf_size) 
+                commandtext = commandtext.Substring(0, ArduinoLineSize - 1 - crlf_size);
+
             while (commandtext.Length > ArduinoBuffersize - 1)
             {
                 // give "control" class the chance to read from arduino to control buffer
@@ -431,7 +437,7 @@ namespace Framework.Arduino
                Thread.Sleep(250);
             }
 
-            if (WriteSerial(commandtext))
+            if (WriteLineSerial(commandtext))
             {
                 cmd.SentTime = DateTime.Now;
                 eventarg = new ArduinoSerialCommunicationEventArgs(null, cmd);
@@ -440,6 +446,31 @@ namespace Framework.Arduino
         }
 
         private bool WriteSerial(string commandtext)
+        {
+            Trace.WriteTrace("Write", commandtext);
+            try
+            {
+                _serialPort.Write(commandtext);
+                return true;
+            }
+            catch (InvalidOperationException e)
+            {
+                Trace.WriteTraceFlush("WriteInvalidOperationException", commandtext + @" => " + e.Message);
+                Disconnect(false);
+            }
+            catch (IOException e)
+            {
+                Trace.WriteTraceFlush("WriteIOException", commandtext + @" => " + e.Message);
+                ErrorSerial();
+            }
+            catch (Exception e)
+            {
+                Trace.WriteTraceFlush("WriteException", commandtext + @" => " + e.GetType().ToString() + @" " + e.Message);
+            }
+            return false;
+        }
+
+        private bool WriteLineSerial(string commandtext)
         {
             Trace.WriteTrace("Write", commandtext + @"\n");
             try

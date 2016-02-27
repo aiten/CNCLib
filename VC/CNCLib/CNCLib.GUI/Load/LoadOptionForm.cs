@@ -272,6 +272,16 @@ namespace CNCLib.GUI.Load
                         {
                             controler.Add(obj.SettingName, obj);
                             ReadSettings();
+                            int idx = 0;
+                            foreach (LoadOptionDefinition o in _settingName.Items)
+                            {
+                                if (o.Item.Name == obj.SettingName)
+                                {
+                                    _settingName.SelectedIndex = idx;
+                                    break;
+                                }
+                                idx++;
+                            }
                         }
                     }
                 }

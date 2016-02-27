@@ -267,7 +267,7 @@
         	AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" 
         	ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserAddRows="False" IsReadOnly="True" Margin="10,0,10,10">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding CommandDate}" MinWidth="150" IsReadOnly="True" Header="Date" />
+                <DataGridTextColumn Binding="{Binding CommandDate,StringFormat=\{0:yyyy.MM.dd HH:mm:ss.ff\}}" MinWidth="150" IsReadOnly="True" Header="Date" />
                 <DataGridTextColumn Binding="{Binding CommandText}" Header="CommandText" MinWidth="200" IsReadOnly="True"/>
                 <DataGridTextColumn Binding="{Binding Result}"  MinWidth="350" IsReadOnly="True" Header="Result" />
             </DataGrid.Columns>
