@@ -48,46 +48,64 @@ namespace CNCLib.GCode.Load
 			_color = 0;
 		}
 
-		public override void Load()
+        public override void Load()
         {
             InitLoad();
 
             AddFileHeader();
+            Commands.Add(new GxxCommand() { GCodeAdd = "; File=" + LoadOptions.FileName });
 
             if (LoadOptions.AutoScale)
-			{
-				using (StreamReader sr = new StreamReader(LoadOptions.FileName))
-				{
-					string line;
-					while ((line = sr.ReadLine()) != null)
-					{
-						_stream.Line = line;
-						if (!Command(true))
-						{
-							break;
-						}
-					}
-				}
-				LoadOptions.OfsX = -(_minpt.X.Value - LoadOptions.AutoScaleBorderDistX);
-				LoadOptions.OfsY = -(_minpt.Y.Value - LoadOptions.AutoScaleBorderDistY);
-				decimal sizex = _maxpt.X.Value - _minpt.X.Value + 2 * LoadOptions.AutoScaleBorderDistX;
-				decimal sizey = _maxpt.Y.Value - _minpt.Y.Value + 2 * LoadOptions.AutoScaleBorderDistY;
+            {
+                Commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleX=" + LoadOptions.AutoScaleSizeX.ToString() });
+                Commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleY=" + LoadOptions.AutoScaleSizeY.ToString() });
 
-				LoadOptions.ScaleX = LoadOptions.AutoScaleSizeX / sizex;
-				LoadOptions.ScaleY = LoadOptions.AutoScaleSizeY / sizey;
+                Commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleDistX=" + LoadOptions.AutoScaleBorderDistX.ToString() });
+                Commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleDistY=" + LoadOptions.AutoScaleBorderDistY.ToString() });
 
-				if (LoadOptions.AutoScaleKeepRatio)
-				{
-					LoadOptions.ScaleX =
-					LoadOptions.ScaleY = Math.Min(LoadOptions.ScaleX, LoadOptions.ScaleY);
-				}
-			}
+                using (StreamReader sr = new StreamReader(LoadOptions.FileName))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        _stream.Line = line;
+                        if (!Command(true))
+                        {
+                            break;
+                        }
+                    }
+                }
+                LoadOptions.OfsX = -(_minpt.X.Value - LoadOptions.AutoScaleBorderDistX);
+                LoadOptions.OfsY = -(_minpt.Y.Value - LoadOptions.AutoScaleBorderDistY);
+                decimal sizex = _maxpt.X.Value - _minpt.X.Value + 2 * LoadOptions.AutoScaleBorderDistX;
+                decimal sizey = _maxpt.Y.Value - _minpt.Y.Value + 2 * LoadOptions.AutoScaleBorderDistY;
 
-			InitLoad();
-			Commands.Clear();
+                LoadOptions.ScaleX = LoadOptions.AutoScaleSizeX / sizex;
+                LoadOptions.ScaleY = LoadOptions.AutoScaleSizeY / sizey;
 
-            AddFileHeader();
-            Commands.Add(new GxxCommand() { GCodeAdd = "; File=" + LoadOptions.FileName });
+                if (LoadOptions.AutoScaleKeepRatio)
+                {
+                    LoadOptions.ScaleX =
+                    LoadOptions.ScaleY = Math.Min(LoadOptions.ScaleX, LoadOptions.ScaleY);
+                }
+            }
+
+            Commands.Add(new GxxCommand() { GCodeAdd = "; PenMoveType=" + LoadOptions.PenMoveType.ToString() });
+
+            switch (LoadOptions.PenMoveType)
+            {
+                case LoadInfo.PenType.CommandString:
+                    Commands.Add(new GxxCommand() { GCodeAdd = "; LaserOnCommand=" + LoadOptions.PenDownCommandString });
+                    Commands.Add(new GxxCommand() { GCodeAdd = "; LaserOffCommand=" + LoadOptions.PenUpCommandString });
+                    break;
+                case LoadInfo.PenType.ZMove:
+                    Commands.Add(new GxxCommand() { GCodeAdd = "; PenDownSpeed=" + LoadOptions.PenDownSpeed });
+                    Commands.Add(new GxxCommand() { GCodeAdd = "; PenUpPos=" + LoadOptions.PenPosUp.ToString() });
+                    Commands.Add(new GxxCommand() { GCodeAdd = "; PenDownPos=" + LoadOptions.PenPosDown.ToString() });
+                    break;
+            }
+
+            Commands.Add(new GxxCommand() { GCodeAdd = "; Speed=" + LoadOptions.PenMoveSpeed.ToString() });
 
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
             {
