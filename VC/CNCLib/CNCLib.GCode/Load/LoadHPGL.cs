@@ -53,15 +53,15 @@ namespace CNCLib.GCode.Load
             InitLoad();
 
             AddFileHeader();
-            Commands.Add(new GxxCommand() { GCodeAdd = "; File=" + LoadOptions.FileName });
+            AddComment("File=" , LoadOptions.FileName );
 
             if (LoadOptions.AutoScale)
             {
-                Commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleX=" + LoadOptions.AutoScaleSizeX.ToString() });
-                Commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleY=" + LoadOptions.AutoScaleSizeY.ToString() });
+                AddComment("AutoScaleX=" , LoadOptions.AutoScaleSizeX );
+                AddComment("AutoScaleY=" , LoadOptions.AutoScaleSizeY );
 
-                Commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleDistX=" + LoadOptions.AutoScaleBorderDistX.ToString() });
-                Commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleDistY=" + LoadOptions.AutoScaleBorderDistY.ToString() });
+                AddComment("AutoScaleDistX=" , LoadOptions.AutoScaleBorderDistX );
+                AddComment("AutoScaleDistY=" , LoadOptions.AutoScaleBorderDistY );
 
                 using (StreamReader sr = new StreamReader(LoadOptions.FileName))
                 {
@@ -90,22 +90,22 @@ namespace CNCLib.GCode.Load
                 }
             }
 
-            Commands.Add(new GxxCommand() { GCodeAdd = "; PenMoveType=" + LoadOptions.PenMoveType.ToString() });
+            AddComment("PenMoveType=" , LoadOptions.PenMoveType.ToString() );
 
             switch (LoadOptions.PenMoveType)
             {
                 case LoadInfo.PenType.CommandString:
-                    Commands.Add(new GxxCommand() { GCodeAdd = "; LaserOnCommand=" + LoadOptions.PenDownCommandString });
-                    Commands.Add(new GxxCommand() { GCodeAdd = "; LaserOffCommand=" + LoadOptions.PenUpCommandString });
+                    AddComment("LaserOnCommand=" ,  LoadOptions.PenDownCommandString );
+                    AddComment("LaserOffCommand=" , LoadOptions.PenUpCommandString );
                     break;
                 case LoadInfo.PenType.ZMove:
-                    Commands.Add(new GxxCommand() { GCodeAdd = "; PenDownSpeed=" + LoadOptions.PenDownSpeed });
-                    Commands.Add(new GxxCommand() { GCodeAdd = "; PenUpPos=" + LoadOptions.PenPosUp.ToString() });
-                    Commands.Add(new GxxCommand() { GCodeAdd = "; PenDownPos=" + LoadOptions.PenPosDown.ToString() });
+                    AddComment("PenDownSpeed=" , LoadOptions.PenDownSpeed );
+                    AddComment("PenUpPos=" ,     LoadOptions.PenPosUp );
+                    AddComment("PenDownPos=" ,   LoadOptions.PenPosDown );
                     break;
             }
 
-            Commands.Add(new GxxCommand() { GCodeAdd = "; Speed=" + LoadOptions.PenMoveSpeed.ToString() });
+            AddComment("Speed=" , LoadOptions.PenMoveSpeed.ToString() );
 
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
             {
@@ -115,7 +115,7 @@ namespace CNCLib.GCode.Load
 
 					if (LoadOptions.PenPosInParameter)
 					{
-						Commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#1 = " + LoadOptions.PenPosUp.ToString(CultureInfo.InvariantCulture) });
+						Commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#1 = " + LoadOptions.PenPosUp.ToString(CultureInfo.InvariantCulture) } );
 						Commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#2 = " + LoadOptions.PenPosDown.ToString(CultureInfo.InvariantCulture) });
 					}
 				}

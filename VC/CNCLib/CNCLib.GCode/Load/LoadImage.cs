@@ -38,10 +38,11 @@ namespace CNCLib.GCode.Load
         public override void Load()
         {
             AddFileHeader();
-            Commands.Add(new GxxCommand() { GCodeAdd = "; File=" + LoadOptions.FileName });
-            Commands.Add(new GxxCommand() { GCodeAdd = "; LaserSize=" + LoadOptions.LaserSize.ToString() });
-            Commands.Add(new GxxCommand() { GCodeAdd = "; LaserOnCommand=" + LoadOptions.PenDownCommandString });
-            Commands.Add(new GxxCommand() { GCodeAdd = "; LaserOffCommand=" + LoadOptions.PenUpCommandString });
+
+            AddComment("File=" , LoadOptions.FileName );
+            AddComment("LaserSize=" , LoadOptions.LaserSize );
+            AddComment("LaserOnCommand=" , LoadOptions.PenDownCommandString );
+            AddComment("LaserOffCommand=" , LoadOptions.PenUpCommandString );
 
             _shiftX = (double)LoadOptions.LaserSize / 2.0;
             _shiftY = (double)LoadOptions.LaserSize / 2.0;
@@ -59,7 +60,10 @@ namespace CNCLib.GCode.Load
                 switch (bx.PixelFormat)
                 {
                     case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
-                        b = bx;
+                        if(LoadOptions.AutoScale)
+                            b = ConvertImage(bx);
+                        else
+                            b = bx;
                         break;
 
                     case System.Drawing.Imaging.PixelFormat.Format32bppArgb:
@@ -84,12 +88,12 @@ namespace CNCLib.GCode.Load
 
                 b.Save(LoadOptions.ImageWriteToFileName, System.Drawing.Imaging.ImageFormat.Bmp);
 
-                Commands.Add(new GxxCommand() { GCodeAdd = "; Image.Width=" + _sizeX.ToString() });
-                Commands.Add(new GxxCommand() { GCodeAdd = "; Image.Height=" + _sizeY.ToString() });
-                Commands.Add(new GxxCommand() { GCodeAdd = "; Image.HorizontalResolution(DPI)=" + b.HorizontalResolution.ToString() });
-                Commands.Add(new GxxCommand() { GCodeAdd = "; Image.VerticalResolution(DPI)=" + b.VerticalResolution.ToString() });
+                AddComment("Image.Width=" , _sizeX);
+                AddComment("Image.Height=" , _sizeY);
+                AddComment("Image.HorizontalResolution(DPI)=" , b.HorizontalResolution);
+                AddComment("Image.VerticalResolution(DPI)=" , b.VerticalResolution);
 
-                Commands.Add(new GxxCommand() { GCodeAdd = "; Speed=" + LoadOptions.PenMoveSpeed.ToString() });
+                AddComment("Speed=" , LoadOptions.PenMoveSpeed);
 
                 if (LoadOptions.PenMoveSpeed.HasValue)
                 {
@@ -124,10 +128,10 @@ namespace CNCLib.GCode.Load
 
             if (LoadOptions.AutoScale)
             {
-                Commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleX=" + LoadOptions.AutoScaleSizeX.ToString() });
-                Commands.Add(new GxxCommand() { GCodeAdd = "; AutoScaleY=" + LoadOptions.AutoScaleSizeY.ToString() });
-                Commands.Add(new GxxCommand() { GCodeAdd = "; DPI_X=" + dpiX.ToString() });
-                Commands.Add(new GxxCommand() { GCodeAdd = "; DPI_Y=" + dpiY.ToString() });
+                AddComment("AutoScaleX=" , LoadOptions.AutoScaleSizeX);
+                AddComment("AutoScaleY=" , LoadOptions.AutoScaleSizeY);
+                AddComment("DPI_X=" , dpiX);
+                AddComment("DPI_Y=" , dpiY);
                 double nowX = (double)b.Width;
                 double nowY = (double)b.Height;
                 double newX = ((double)LoadOptions.AutoScaleSizeX) * dpiX / 25.4;
@@ -140,8 +144,8 @@ namespace CNCLib.GCode.Load
 
             if (scaleX != 1.0m)
             {
-                Commands.Add(new GxxCommand() { GCodeAdd = "; ScaleX=" + scaleX.ToString() });
-                Commands.Add(new GxxCommand() { GCodeAdd = "; ScaleY=" + scaleY.ToString() });
+                AddComment("ScaleX=" , scaleX);
+                AddComment("ScaleY=" , scaleY);
                 b = Framework.Tools.Drawing.ImageHelper.ScaleTo(bx, (int)(b.Width * scaleX), (int)(b.Height * scaleY));
                 b.SetResolution((float)dpiX, (float)dpiY);
             }
@@ -149,14 +153,14 @@ namespace CNCLib.GCode.Load
             switch (LoadOptions.Dither)
             {
                 case LoadInfo.DitherFilter.FloydSteinbergDither:
-                    Commands.Add(new GxxCommand() { GCodeAdd = "; Image Converted with FloydSteinbergDither" });
-                    Commands.Add(new GxxCommand() { GCodeAdd = "; GrayThreshold=" + LoadOptions.GrayThreshold.ToString() });
+                    AddComment("Image Converted with FloydSteinbergDither");
+                    AddComment("GrayThreshold=" , LoadOptions.GrayThreshold);
                     b = new Framework.Tools.Drawing.FloydSteinbergDither() { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
                     break;
                 case LoadInfo.DitherFilter.NewspaperDither:
-                    Commands.Add(new GxxCommand() { GCodeAdd = "; Image Converted with NewspaperDither" });
-                    Commands.Add(new GxxCommand() { GCodeAdd = "; GrayThreshold=" + LoadOptions.GrayThreshold.ToString() });
-                    Commands.Add(new GxxCommand() { GCodeAdd = "; Dithersize=" + LoadOptions.NewspaperDitherSize.ToString() });
+                    AddComment("Image Converted with NewspaperDither" );
+                    AddComment("GrayThreshold=" , LoadOptions.GrayThreshold);
+                    AddComment("Dithersize=" , LoadOptions.NewspaperDitherSize);
                     b = new Framework.Tools.Drawing.NewspapergDither() { Graythreshold = LoadOptions.GrayThreshold, DotSize = LoadOptions.NewspaperDitherSize }.Process(b);
                     break;
             }

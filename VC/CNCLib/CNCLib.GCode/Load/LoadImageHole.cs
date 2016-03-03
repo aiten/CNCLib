@@ -35,10 +35,10 @@ namespace CNCLib.GCode.Load
         public override void Load()
         {
             AddFileHeader();
-            Commands.Add(new GxxCommand() { GCodeAdd = "; File=" + LoadOptions.FileName });
-            Commands.Add(new GxxCommand() { GCodeAdd = "; LaserSize=" + LoadOptions.LaserSize.ToString() });
-            Commands.Add(new GxxCommand() { GCodeAdd = "; LaserOnCommand=" + LoadOptions.PenDownCommandString });
-            Commands.Add(new GxxCommand() { GCodeAdd = "; LaserOffCommand=" + LoadOptions.PenUpCommandString });
+            AddComment("File=" , LoadOptions.FileName );
+            AddComment("LaserSize=" , LoadOptions.LaserSize);
+            AddComment("LaserOnCommand=" , LoadOptions.PenDownCommandString);
+            AddComment("LaserOffCommand=" , LoadOptions.PenUpCommandString);
 
             _shiftX = (double)LoadOptions.LaserSize / 2.0;
             _shiftY = (double)LoadOptions.LaserSize / 2.0;
@@ -71,12 +71,12 @@ namespace CNCLib.GCode.Load
                 _pixelSizeX = 25.4 / b.HorizontalResolution;
                 _pixelSizeY = 25.4 / b.VerticalResolution;
 
-                Commands.Add(new GxxCommand() { GCodeAdd = "; Image.Width=" + _sizeX.ToString() });
-                Commands.Add(new GxxCommand() { GCodeAdd = "; Image.Height=" + _sizeY.ToString() });
-                Commands.Add(new GxxCommand() { GCodeAdd = "; Image.HorizontalResolution(DPI)=" + b.HorizontalResolution.ToString() });
-                Commands.Add(new GxxCommand() { GCodeAdd = "; Image.VerticalResolution(DPI)=" + b.VerticalResolution.ToString() });
+                AddComment("Image.Width=" , _sizeX);
+                AddComment("Image.Height=" , _sizeY);
+                AddComment("Image.HorizontalResolution(DPI)=" , b.HorizontalResolution);
+                AddComment("Image.VerticalResolution(DPI)=" , b.VerticalResolution);
 
-                Commands.Add(new GxxCommand() { GCodeAdd = "; Speed=" + LoadOptions.PenMoveSpeed.ToString() });
+                AddComment("Speed=" , LoadOptions.PenMoveSpeed);
 
                 if (LoadOptions.PenMoveSpeed.HasValue)
                 {
