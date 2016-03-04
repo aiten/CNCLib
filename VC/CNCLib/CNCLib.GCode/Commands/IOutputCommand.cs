@@ -33,6 +33,7 @@ namespace CNCLib.GCode.Commands
     public interface IOutputCommand
 	{
         void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo);
-		void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptFrom, int xradius, int yradius);
+        void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D iIJ);
+        void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptFrom, int xradius, int yradius);
 	}
 }

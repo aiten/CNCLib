@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Drawing;
 
 namespace CNCLib.GCode.Commands
 {
@@ -33,25 +34,28 @@ namespace CNCLib.GCode.Commands
 			Code = "G2";
 		}
 
-		#endregion
+        #endregion
 
-		#region GCode
+        #region GCode
 
-		#endregion
+        #endregion
 
-		#region Draw
+        #region Draw
 
-		public override void Draw(IOutputCommand output, DrawState state, object param)
+        public override void Draw(IOutputCommand output, DrawState state, object param)
 		{
-			base.Draw(output, state, param);
-/*
+            decimal I, J;
+            if (!TryGetVariable('I', out I))
+            {
+                I = 0;
+            }
+            if (!TryGetVariable('J', out J))
+            {
+                J = 0;
+            }
 
-			Rectangle rect;
-			Point start = DrawStartPosition;
-			rect = new Rectangle(start, new Size(DrawEndPosition.X - start.X, DrawEndPosition.Y - start.Y));
-            e.Graphics.DrawEllipse(GetForgroundPen(paintstate), rect);
- */ 
-        }
+            output.DrawArc(this,param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition,new Framework.Tools.Drawing.Point3D() { X=I, Y=J});
+       }
 
 		#endregion
 	}

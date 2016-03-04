@@ -79,7 +79,6 @@
       <DependentUpon>GCodeUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools.cs" />
     <EmbeddedResource Include="Load\LoadOptionForm.resx">
       <DependentUpon>LoadOptionForm.cs</DependentUpon>
     </EmbeddedResource>

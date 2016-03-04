@@ -128,6 +128,17 @@ namespace CNCLib.GUI
 			return new Point((int) Math.Round(_ratioX * x, 0), (int)Math.Round(_ratioY*y));
 		}
 
+        int ToClientSizeX(double X)
+        {
+            double x = (double)(X) * Zoom;
+            return (int)Math.Round(_ratioX * x, 0);
+        }
+        int ToClientSizeY(double Y)
+        {
+            double y = (double)(Y) * Zoom;
+            return (int)Math.Round(_ratioY * y, 0);
+        }
+
         #endregion
 
         #region Drag/Drop
@@ -310,27 +321,37 @@ namespace CNCLib.GUI
         Pen _machineLine;
 
         public void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo)
-		{
+        {
             if (drawtype == DrawType.NoDraw) return;
 
-			PaintEventArgs e = (PaintEventArgs) param;
+            PaintEventArgs e = (PaintEventArgs)param;
 
-			Point from = ToClient(ptFrom);
-			Point to   = ToClient(ptTo);
+            Point from = ToClient(ptFrom);
+            Point to = ToClient(ptTo);
 
-			if (from.Equals(to))
-			{
-				if (drawtype== DrawType.LaserCut)
-					e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 1, 1);
-				else
-					e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 4, 4);
-			}
-			else
-			{
-				e.Graphics.DrawLine(GetPen(drawtype, LineDrawType.Line), from, to);
-			}
-		}
-		public void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptFrom, int xradius, int yradius)
+            if (PreDrawLineOrArc(param, drawtype, from, to))
+            {
+                e.Graphics.DrawLine(GetPen(drawtype, LineDrawType.Line), from, to);
+            }
+        }
+
+        private bool PreDrawLineOrArc(object param, DrawType drawtype, Point from, Point to)
+        {
+            PaintEventArgs e = (PaintEventArgs)param;
+
+            if (from.Equals(to))
+            {
+                if (drawtype == DrawType.LaserCut)
+                    e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 1, 1);
+                else
+                    e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 4, 4);
+
+                return false;
+            }
+            return true;
+        }
+
+        public void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptFrom, int xradius, int yradius)
 		{
             if (drawtype == DrawType.NoDraw) return;
 
@@ -338,6 +359,46 @@ namespace CNCLib.GUI
 			Point from = ToClient(ptFrom);
 			e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X, from.Y, xradius, yradius);
 		}
+        public void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D pIJ)
+        {
+            if (drawtype == DrawType.NoDraw) return;
+
+            PaintEventArgs e = (PaintEventArgs)param;
+
+            Point from = ToClient(ptFrom);
+            Point to = ToClient(ptTo);
+
+            if (PreDrawLineOrArc(param, drawtype, from, to))
+            {
+                /*
+                                double I = ToClientSizeX((double)pIJ.X.Value);
+                                double J = ToClientSizeY((double)pIJ.Y.Value);
+
+                                double cx = to.X + I;        //center = cx,cy
+                                double cy = to.Y - J;
+                                double arcW = I * 2;         // width arxW - note: multiplied by -1 to make num positive
+                                double arcH = J * 2;         // height arcH
+
+                                if (arcH < 0)
+                                {
+                                    cy -= arcH;
+                                    arcH = -arcH;
+                                }
+
+                                if (arcH > 0 && arcW > 0)
+                                {
+                                    double endAng = Math.Atan2(to.Y, to.X)*180/Math.PI;
+                                    double startAng = Math.Atan2(from.Y, from.X) * 180 / Math.PI;
+                                    //  popMatrix();
+                                    //arc(cx, cy, arcW, arcH, endAng, startAng); //draw resulting arc
+
+                                    e.Graphics.DrawArc(GetPen(drawtype, LineDrawType.Line), (float)cx, (float)cy, (float)arcW, (float)arcH, (float)startAng, (float)endAng);
+                                }
+                */
+
+                e.Graphics.DrawLine(GetPen(drawtype, LineDrawType.Line), from, to);
+            }
+        }
 
         enum LineDrawType
         {
