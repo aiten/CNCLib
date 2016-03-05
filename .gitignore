@@ -7,5 +7,4 @@ ipch/
 .vs/
 /VC/builds
 /VC/Arduino.VC/StepperTest/TestResult
-/VC/CNCLib/packages/NSubstitute.1.9.2.0
-/VC/CNCLib/packages/Unity.4.0.1/Unity.4.0.1.nupkg
+/VC/CNCLib/packages

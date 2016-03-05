@@ -121,21 +121,41 @@ namespace CNCLib.GUI
 
 		Point ToClient(Point3D pt)
 		{
-			decimal ptx = pt.X.HasValue ? pt.X.Value : 0;
-			decimal pty = pt.Y.HasValue ? pt.Y.Value : 0;
-			double x = (double)(ptx - OffsetX) * Zoom;
-            double y = (double)(SizeY - (pty + OffsetY)) * Zoom;
-			return new Point((int) Math.Round(_ratioX * x, 0), (int)Math.Round(_ratioY*y));
+			return new Point(
+                ToClientXInt((double) (pt.X??0)), 
+                ToClientYInt((double)(pt.Y ?? 0)));
 		}
+
+        double ToClientX(double val)
+        {
+            double x = (double)(val - (double) OffsetX) * Zoom;
+            return _ratioX * x;
+        }
+        double ToClientY(double val)
+        {
+            double y = (double)(((double) SizeY - (val + (double)OffsetY))) * Zoom;
+            return _ratioY * y;
+        }
+        int ToClientXInt(double val)
+        {
+            return (int)Math.Round(ToClientX(val), 0);
+        }
+        int ToClientYInt(double val)
+        {
+            return (int)Math.Round(ToClientY(val), 0);
+        }
+
+        const double SignX = 1.0;
+        const double SignY = -1.0;
 
         int ToClientSizeX(double X)
         {
-            double x = (double)(X) * Zoom;
+            double x = X * Zoom;
             return (int)Math.Round(_ratioX * x, 0);
         }
         int ToClientSizeY(double Y)
         {
-            double y = (double)(Y) * Zoom;
+            double y = Y * Zoom;
             return (int)Math.Round(_ratioY * y, 0);
         }
 
@@ -248,6 +268,8 @@ namespace CNCLib.GUI
             _laserCutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
             _laserFastLine = new Pen(Color.Orange, (float)(fastSize / 2.0));
             _machineLine = new Pen(Color.LightBlue, 1);
+
+            _helpLine = new Pen(Color.Yellow, 1);
         }
 
         private void PlotterUserControl_Paint(object sender, PaintEventArgs e)
@@ -319,6 +341,7 @@ namespace CNCLib.GUI
         Pen _laserCutLine;
         Pen _laserFastLine;
         Pen _machineLine;
+        Pen _helpLine;
 
         public void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo)
         {
@@ -359,7 +382,21 @@ namespace CNCLib.GUI
 			Point from = ToClient(ptFrom);
 			e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X, from.Y, xradius, yradius);
 		}
-        public void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D pIJ)
+
+        double ConvertRadToDeg(double rad)
+        {
+            double deg = -rad * 180.0 / Math.PI + 180.0;
+            while (deg < 0)
+                deg += 360;
+
+            while (deg > 360)
+                deg -= 360;
+
+            return deg;
+        }
+
+
+        public void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D pIJ, bool clockwise)
         {
             if (drawtype == DrawType.NoDraw) return;
 
@@ -370,33 +407,49 @@ namespace CNCLib.GUI
 
             if (PreDrawLineOrArc(param, drawtype, from, to))
             {
-                /*
-                                double I = ToClientSizeX((double)pIJ.X.Value);
-                                double J = ToClientSizeY((double)pIJ.Y.Value);
+                //e.Graphics.DrawLine(_helpLine, from, to);
 
-                                double cx = to.X + I;        //center = cx,cy
-                                double cy = to.Y - J;
-                                double arcW = I * 2;         // width arxW - note: multiplied by -1 to make num positive
-                                double arcH = J * 2;         // height arcH
+                double I = (double)pIJ.X.Value;
+                double J = (double)pIJ.Y.Value;
+                double R = Math.Sqrt(I * I + J * J);
 
-                                if (arcH < 0)
-                                {
-                                    cy -= arcH;
-                                    arcH = -arcH;
-                                }
+                double cx = (double)ptFrom.X.Value + I;
+                double cy = (double)ptFrom.Y.Value + J;
 
-                                if (arcH > 0 && arcW > 0)
-                                {
-                                    double endAng = Math.Atan2(to.Y, to.X)*180/Math.PI;
-                                    double startAng = Math.Atan2(from.Y, from.X) * 180 / Math.PI;
-                                    //  popMatrix();
-                                    //arc(cx, cy, arcW, arcH, endAng, startAng); //draw resulting arc
+                double startAng = ConvertRadToDeg(Math.Atan2(J, I));
+                double endAng = ConvertRadToDeg(Math.Atan2(cy - (double)ptTo.Y.Value, cx - (double)ptTo.X.Value));
+                double diffAng = (endAng - startAng);
+                if (startAng > endAng)
+                    diffAng += 360;
 
-                                    e.Graphics.DrawArc(GetPen(drawtype, LineDrawType.Line), (float)cx, (float)cy, (float)arcW, (float)arcH, (float)startAng, (float)endAng);
-                                }
-                */
+                if (clockwise == false)
+                {
+                    startAng = endAng;
+                    diffAng = 360 - diffAng;
+                    while (diffAng > 360)
+                        diffAng -= 360;
 
-                e.Graphics.DrawLine(GetPen(drawtype, LineDrawType.Line), from, to);
+                    while (diffAng < -360)
+                        diffAng += 360;
+                }
+
+                Point rcfrom = new Point(ToClientXInt(cx - R* SignX), ToClientYInt(cy - R* SignY));
+                int RR = ToClientSizeX(R * 2);
+                Rectangle rec = new Rectangle(rcfrom, new Size(RR,RR));
+
+                //e.Graphics.DrawRectangle(_helpLine, rec);
+
+                if (rec.Width > 0 && rec.Height > 0)
+                {
+                    try
+                    {
+                        e.Graphics.DrawArc(GetPen(drawtype, LineDrawType.Line), rec.X, rec.Y, rec.Width, rec.Height, (float)startAng, (float)diffAng);
+                    }
+                    catch (OutOfMemoryException)
+                    {
+                        // ignore this Exception
+                    }
+                }
             }
         }
 
