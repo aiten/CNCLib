@@ -25,7 +25,6 @@ namespace CNCLib.GCode.Load
 {
     public class LoadImage : LoadBase
     {
-        bool _laserOn = true;
         double _pixelSizeX = 1;
         double _pixelSizeY = 1;
         int _sizeX;
@@ -37,12 +36,10 @@ namespace CNCLib.GCode.Load
 
         public override void Load()
         {
-            AddFileHeader();
+            PreLoad();
 
-            AddComment("File=" , LoadOptions.FileName );
-            AddComment("LaserSize=" , LoadOptions.LaserSize );
-            AddComment("LaserOnCommand=" , LoadOptions.PenDownCommandString );
-            AddComment("LaserOffCommand=" , LoadOptions.PenUpCommandString );
+            AddComment("File" , LoadOptions.FileName );
+			AddCommentForLaser();
 
             _shiftX = (double)LoadOptions.LaserSize / 2.0;
             _shiftY = (double)LoadOptions.LaserSize / 2.0;
@@ -88,17 +85,17 @@ namespace CNCLib.GCode.Load
 
                 b.Save(LoadOptions.ImageWriteToFileName, System.Drawing.Imaging.ImageFormat.Bmp);
 
-                AddComment("Image.Width=" , _sizeX);
-                AddComment("Image.Height=" , _sizeY);
-                AddComment("Image.HorizontalResolution(DPI)=" , b.HorizontalResolution);
-                AddComment("Image.VerticalResolution(DPI)=" , b.VerticalResolution);
+                AddComment("Image.Width" , _sizeX);
+                AddComment("Image.Height" , _sizeY);
+                AddComment("Image.HorizontalResolution(DPI)" , b.HorizontalResolution);
+                AddComment("Image.VerticalResolution(DPI)" , b.VerticalResolution);
 
-                AddComment("Speed=" , LoadOptions.PenMoveSpeed);
+                AddComment("Speed" , LoadOptions.MoveSpeed);
 
-                if (LoadOptions.PenMoveSpeed.HasValue)
+                if (LoadOptions.MoveSpeed.HasValue)
                 {
                     var setspeed = new G01Command();
-                    setspeed.AddVariable('F', LoadOptions.PenMoveSpeed.Value);
+                    setspeed.AddVariable('F', LoadOptions.MoveSpeed.Value);
                     Commands.Add(setspeed);
                 }
 
@@ -128,10 +125,10 @@ namespace CNCLib.GCode.Load
 
             if (LoadOptions.AutoScale)
             {
-                AddComment("AutoScaleX=" , LoadOptions.AutoScaleSizeX);
-                AddComment("AutoScaleY=" , LoadOptions.AutoScaleSizeY);
-                AddComment("DPI_X=" , dpiX);
-                AddComment("DPI_Y=" , dpiY);
+                AddComment("AutoScaleX" , LoadOptions.AutoScaleSizeX);
+                AddComment("AutoScaleY" , LoadOptions.AutoScaleSizeY);
+                AddComment("DPI_X" , dpiX);
+                AddComment("DPI_Y" , dpiY);
                 double nowX = (double)b.Width;
                 double nowY = (double)b.Height;
                 double newX = ((double)LoadOptions.AutoScaleSizeX) * dpiX / 25.4;
@@ -144,8 +141,8 @@ namespace CNCLib.GCode.Load
 
             if (scaleX != 1.0m)
             {
-                AddComment("ScaleX=" , scaleX);
-                AddComment("ScaleY=" , scaleY);
+                AddComment("ScaleX" , scaleX);
+                AddComment("ScaleY" , scaleY);
                 b = Framework.Tools.Drawing.ImageHelper.ScaleTo(bx, (int)(b.Width * scaleX), (int)(b.Height * scaleY));
                 b.SetResolution((float)dpiX, (float)dpiY);
             }
@@ -154,13 +151,13 @@ namespace CNCLib.GCode.Load
             {
                 case LoadInfo.DitherFilter.FloydSteinbergDither:
                     AddComment("Image Converted with FloydSteinbergDither");
-                    AddComment("GrayThreshold=" , LoadOptions.GrayThreshold);
+                    AddComment("GrayThreshold" , LoadOptions.GrayThreshold);
                     b = new Framework.Tools.Drawing.FloydSteinbergDither() { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
                     break;
                 case LoadInfo.DitherFilter.NewspaperDither:
                     AddComment("Image Converted with NewspaperDither" );
-                    AddComment("GrayThreshold=" , LoadOptions.GrayThreshold);
-                    AddComment("Dithersize=" , LoadOptions.NewspaperDitherSize);
+                    AddComment("GrayThreshold" , LoadOptions.GrayThreshold);
+                    AddComment("Dithersize" , LoadOptions.NewspaperDitherSize);
                     b = new Framework.Tools.Drawing.NewspapergDither() { Graythreshold = LoadOptions.GrayThreshold, DotSize = LoadOptions.NewspaperDitherSize }.Process(b);
                     break;
             }
@@ -170,8 +167,7 @@ namespace CNCLib.GCode.Load
 
         private void WriteGCode(System.Drawing.Bitmap b)
         {
-            _laserOn = true;
-            LaserOff();
+            ForceLaserOff();
             int black = System.Drawing.Color.Black.ToArgb();
             int lasty = -1;
 
@@ -231,23 +227,6 @@ namespace CNCLib.GCode.Load
             var cx = new G01Command();
             cx.AddVariable('X', (decimal) Math.Round((x * _pixelSizeX) + _shiftX + shift, 2));
             Commands.Add(cx);
-        }
-
-        private void LaserOn()
-        {
-            if (!_laserOn)
-            {
-                AddCommands(LoadOptions.PenDownCommandString);
-                _laserOn = true;
-            }
-        }
-        private void LaserOff()
-        {
-            if (_laserOn)
-            {
-                AddCommands(LoadOptions.PenUpCommandString);
-                _laserOn = false;
-            }
         }
     }
 }

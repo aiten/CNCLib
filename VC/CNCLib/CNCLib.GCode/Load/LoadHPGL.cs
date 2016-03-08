@@ -37,75 +37,33 @@ namespace CNCLib.GCode.Load
         Point3D _minpt;
 		Point3D _maxpt;
 
-		private void InitLoad()
-		{
-			_last = new Point3D();
-			_minpt = new Point3D() { X = int.MaxValue, Y = int.MaxValue };
-			_maxpt = new Point3D() { X = int.MinValue, Y = int.MinValue };
-			_stream = new CommandStream();
-			_IsPenUp = true;
-			_lastIsPenUp = false;
-			_color = 0;
-		}
-
         public override void Load()
         {
             InitLoad();
 
-            AddFileHeader();
-            AddComment("File=" , LoadOptions.FileName );
+            PreLoad();
+            AddComment("File" , LoadOptions.FileName );
 
             if (LoadOptions.AutoScale)
-            {
-                AddComment("AutoScaleX=" , LoadOptions.AutoScaleSizeX );
-                AddComment("AutoScaleY=" , LoadOptions.AutoScaleSizeY );
+			{
+				AutoScale();
+			}
 
-                AddComment("AutoScaleDistX=" , LoadOptions.AutoScaleBorderDistX );
-                AddComment("AutoScaleDistY=" , LoadOptions.AutoScaleBorderDistY );
-
-                using (StreamReader sr = new StreamReader(LoadOptions.FileName))
-                {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        _stream.Line = line;
-                        if (!Command(true))
-                        {
-                            break;
-                        }
-                    }
-                }
-                LoadOptions.OfsX = -(_minpt.X.Value - LoadOptions.AutoScaleBorderDistX);
-                LoadOptions.OfsY = -(_minpt.Y.Value - LoadOptions.AutoScaleBorderDistY);
-                decimal sizex = _maxpt.X.Value - _minpt.X.Value + 2 * LoadOptions.AutoScaleBorderDistX;
-                decimal sizey = _maxpt.Y.Value - _minpt.Y.Value + 2 * LoadOptions.AutoScaleBorderDistY;
-
-                LoadOptions.ScaleX = LoadOptions.AutoScaleSizeX / sizex;
-                LoadOptions.ScaleY = LoadOptions.AutoScaleSizeY / sizey;
-
-                if (LoadOptions.AutoScaleKeepRatio)
-                {
-                    LoadOptions.ScaleX =
-                    LoadOptions.ScaleY = Math.Min(LoadOptions.ScaleX, LoadOptions.ScaleY);
-                }
-            }
-
-            AddComment("PenMoveType=" , LoadOptions.PenMoveType.ToString() );
+			AddComment("PenMoveType" , LoadOptions.PenMoveType.ToString() );
 
             switch (LoadOptions.PenMoveType)
             {
                 case LoadInfo.PenType.CommandString:
-                    AddComment("LaserOnCommand=" ,  LoadOptions.PenDownCommandString );
-                    AddComment("LaserOffCommand=" , LoadOptions.PenUpCommandString );
+					AddCommentForLaser();
                     break;
                 case LoadInfo.PenType.ZMove:
-                    AddComment("PenDownSpeed=" , LoadOptions.PenDownSpeed );
-                    AddComment("PenUpPos=" ,     LoadOptions.PenPosUp );
-                    AddComment("PenDownPos=" ,   LoadOptions.PenPosDown );
+                    AddComment("PenDownSpeed" , LoadOptions.EngraveDownSpeed );
+                    AddComment("PenUpPos" ,     LoadOptions.EngravePosUp );
+                    AddComment("PenDownPos" ,   LoadOptions.EngravePosDown );
                     break;
             }
 
-            AddComment("Speed=" , LoadOptions.PenMoveSpeed.ToString() );
+            AddComment("Speed" , LoadOptions.MoveSpeed.ToString() );
 
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
             {
@@ -113,17 +71,17 @@ namespace CNCLib.GCode.Load
 				{
                     AddCommands("M3");
 
-					if (LoadOptions.PenPosInParameter)
+					if (LoadOptions.EngravePosInParameter)
 					{
-						Commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#1 = " + LoadOptions.PenPosUp.ToString(CultureInfo.InvariantCulture) } );
-						Commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#2 = " + LoadOptions.PenPosDown.ToString(CultureInfo.InvariantCulture) });
+						Commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#1 = " + LoadOptions.EngravePosUp.ToString(CultureInfo.InvariantCulture) } );
+						Commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#2 = " + LoadOptions.EngravePosDown.ToString(CultureInfo.InvariantCulture) });
 					}
 				}
 
-                if (LoadOptions.PenMoveSpeed.HasValue)
+                if (LoadOptions.MoveSpeed.HasValue)
                 {
                     var setspeed = new G01Command();
-                    setspeed.AddVariable('F', LoadOptions.PenMoveSpeed.Value);
+                    setspeed.AddVariable('F', LoadOptions.MoveSpeed.Value);
                     Commands.Add(setspeed);
                 }
                 _needSpeed = false;
@@ -149,8 +107,54 @@ namespace CNCLib.GCode.Load
                     AddCommands("M5");
 				}
             }
-			Commands.UpdateCache();
+			PostLoad();
         }
+
+		private void InitLoad()
+		{
+			_last = new Point3D();
+			_minpt = new Point3D() { X = int.MaxValue, Y = int.MaxValue };
+			_maxpt = new Point3D() { X = int.MinValue, Y = int.MinValue };
+			_stream = new CommandStream();
+			_IsPenUp = true;
+			_lastIsPenUp = false;
+			_color = 0;
+		}
+
+		private void AutoScale()
+		{
+			AddComment("AutoScaleX", LoadOptions.AutoScaleSizeX);
+			AddComment("AutoScaleY", LoadOptions.AutoScaleSizeY);
+
+			AddComment("AutoScaleDistX", LoadOptions.AutoScaleBorderDistX);
+			AddComment("AutoScaleDistY", LoadOptions.AutoScaleBorderDistY);
+
+			using (StreamReader sr = new StreamReader(LoadOptions.FileName))
+			{
+				string line;
+				while ((line = sr.ReadLine()) != null)
+				{
+					_stream.Line = line;
+					if (!Command(true))
+					{
+						break;
+					}
+				}
+			}
+			LoadOptions.OfsX = -(_minpt.X.Value - LoadOptions.AutoScaleBorderDistX);
+			LoadOptions.OfsY = -(_minpt.Y.Value - LoadOptions.AutoScaleBorderDistY);
+			decimal sizex = _maxpt.X.Value - _minpt.X.Value + 2 * LoadOptions.AutoScaleBorderDistX;
+			decimal sizey = _maxpt.Y.Value - _minpt.Y.Value + 2 * LoadOptions.AutoScaleBorderDistY;
+
+			LoadOptions.ScaleX = LoadOptions.AutoScaleSizeX / sizex;
+			LoadOptions.ScaleY = LoadOptions.AutoScaleSizeY / sizey;
+
+			if (LoadOptions.AutoScaleKeepRatio)
+			{
+				LoadOptions.ScaleX =
+				LoadOptions.ScaleY = Math.Min(LoadOptions.ScaleX, LoadOptions.ScaleY);
+			}
+		}
 
 		private bool Command(bool analyse)
         {
@@ -216,7 +220,7 @@ namespace CNCLib.GCode.Load
                             if (_needSpeed)
                             {
                                 _needSpeed = false;
-                                r.AddVariable('F', LoadOptions.PenMoveSpeed.Value);
+                                r.AddVariable('F', LoadOptions.MoveSpeed.Value);
                             }
                             Commands.AddCommand(r);
 						}
@@ -239,45 +243,45 @@ namespace CNCLib.GCode.Load
             if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
             {
                 var r = new G01Command();
-                if (LoadOptions.PenPosInParameter)
+                if (LoadOptions.EngravePosInParameter)
                 {
                     r.AddVariableParam('Z', "2");
                 }
                 else
                 {
-                    r.AddVariable('Z', LoadOptions.PenPosDown);
+                    r.AddVariable('Z', LoadOptions.EngravePosDown);
                 }
-                if (LoadOptions.PenDownSpeed.HasValue)
+                if (LoadOptions.EngraveDownSpeed.HasValue)
                 {
-                    r.AddVariable('F', LoadOptions.PenDownSpeed.Value);
-                    _needSpeed = LoadOptions.PenMoveSpeed.HasValue;
+                    r.AddVariable('F', LoadOptions.EngraveDownSpeed.Value);
+                    _needSpeed = LoadOptions.MoveSpeed.HasValue;
                 }
                 Commands.AddCommand(r);
             }
             else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
             {
-                AddCommands(LoadOptions.PenDownCommandString);
-            }
-        }
+				LaserOn();
+			}
+		}
 
         private void LoadPenUp()
         {
             if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
             {
                 var r = new G00Command();
-                if (LoadOptions.PenPosInParameter)
+                if (LoadOptions.EngravePosInParameter)
                 {
                     r.AddVariableParam('Z', "1");
                 }
                 else
                 {
-                    r.AddVariable('Z', LoadOptions.PenPosUp);
+                    r.AddVariable('Z', LoadOptions.EngravePosUp);
                 }
                 Commands.AddCommand(r);
             }
             else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
             {
-                AddCommands(LoadOptions.PenUpCommandString);
+                LaserOff();
             }
         }
 
@@ -302,6 +306,7 @@ namespace CNCLib.GCode.Load
             Adjust(ref pt, isRelativPoint);
             return pt;
         }
+
 		private void AdjustOrig(ref Point3D pt)
 		{
 			if (LoadOptions.SwapXY)
@@ -325,6 +330,5 @@ namespace CNCLib.GCode.Load
             if (LoadOptions.ScaleY != 0)
 				pt.Y = Math.Round(pt.Y.Value * LoadOptions.ScaleY, 3);
         }
-
     }
 }

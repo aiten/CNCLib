@@ -29,9 +29,9 @@ namespace CNCLib.GCode.Load
 
         public override void Load()
         {
-            _lastnoPrefixCommand = null;
+			PreLoad();
 
-            AddFileHeader();
+			_lastnoPrefixCommand = null;
 
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
             {
@@ -46,8 +46,9 @@ namespace CNCLib.GCode.Load
                     }
                 }
             }
-            Commands.UpdateCache();
-        }
+
+			PostLoad();
+		}
 
         private bool Command()
         {
@@ -87,7 +88,6 @@ namespace CNCLib.GCode.Load
             return true;
         }
 
-
         private bool AddGxxMxxCommand(Command cmd, string cmdname)
         {
             cmd.SetCode(cmdname);
@@ -125,6 +125,7 @@ namespace CNCLib.GCode.Load
 
             return true;
         }
+
         private bool ReadGNoPrefixCommand()
         {
             // g without prefix
@@ -161,6 +162,7 @@ namespace CNCLib.GCode.Load
             }
             return true;
         }
+
         private bool ReadOtherCommand()
         {
             Command cmd = CommandFactory.Create("GXX");

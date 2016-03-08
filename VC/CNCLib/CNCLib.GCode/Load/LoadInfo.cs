@@ -28,13 +28,15 @@ namespace CNCLib.GCode.Load
 
         public String GCodeWriteToFileName { get; set; } = @"c:\tmp\test.gcode";
 
+		//HPGL
         public bool SwapXY { get; set; } = false;
         public decimal ScaleX { get; set; } = 1;
         public decimal ScaleY { get; set; } = 1;
         public decimal OfsX { get; set; } = 0;
         public decimal OfsY { get; set; } = 0;
 
-        public bool AutoScale { get; set; } = false;
+		//HPGL+IMG
+		public bool AutoScale { get; set; } = false;
         public bool AutoScaleKeepRatio { get; set; } = true;
 
         public decimal AutoScaleSizeX { get; set; } = 0;
@@ -51,18 +53,20 @@ namespace CNCLib.GCode.Load
 
         public PenType PenMoveType { get; set; } = PenType.ZMove;
 
-        public bool PenPosInParameter { get; set; } = true;
-        public decimal PenPosUp { get; set; } = 1m;
-        public decimal PenPosDown { get; set; } = -0.5m;
+        public bool EngravePosInParameter { get; set; } = true;
+        public decimal EngravePosUp { get; set; } = 1m;
+        public decimal EngravePosDown { get; set; } = -0.5m;
 
-        public decimal? PenMoveSpeed { get; set; } = 500m;
-        public decimal? PenDownSpeed { get; set; }
+        public decimal? MoveSpeed { get; set; } = 500m;
+        public decimal? EngraveDownSpeed { get; set; }
 
-        public string PenDownCommandString { get; set; } = "M106";
-        public string PenUpCommandString { get; set; } = "M107";
+		public string LaserFirstOnCommand { get; set; } = "M106 S255";
+		public string LaserOnCommand { get; set; } = "M106";
+        public string LaserOffCommand { get; set; } = "M107";
 
         public decimal LaserSize { get; set; } = 0.254m;
 
+		//IMG
         public String ImageWriteToFileName { get; set; } = @"c:\tmp\image.bmp";
 
         public Byte GrayThreshold { get; set; } = 127;

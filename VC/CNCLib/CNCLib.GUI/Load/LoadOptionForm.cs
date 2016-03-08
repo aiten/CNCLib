@@ -87,12 +87,13 @@ namespace CNCLib.GUI.Load
                     AutoScaleKeepRatio = _AutoScaleKeepRatio.Checked,
                     PenMoveType = _generateForEngrave.Checked ? LoadInfo.PenType.ZMove : LoadInfo.PenType.CommandString,
 
-                    PenPosUp = decimal.Parse(_engraveZUp.Text),
-                    PenPosDown = decimal.Parse(_engraveZDown.Text),
-                    PenPosInParameter = _engraveUseParameter.Checked,
+                    EngravePosUp = decimal.Parse(_engraveZUp.Text),
+                    EngravePosDown = decimal.Parse(_engraveZDown.Text),
+                    EngravePosInParameter = _engraveUseParameter.Checked,
 
-                    PenDownCommandString = _laserOn.Text,
-                    PenUpCommandString = _laserOff.Text,
+					LaserFirstOnCommand = _laserFirstOn.Text,
+					LaserOnCommand = _laserOn.Text,
+                    LaserOffCommand = _laserOff.Text,
 
                     LaserSize = decimal.Parse(_laserSize.Text),
                     GrayThreshold = Byte.Parse(_grayThreshold.Text),
@@ -107,14 +108,14 @@ namespace CNCLib.GUI.Load
                 };
 
                 if (string.IsNullOrEmpty(_penMoveSpeed.Text))
-                    r.PenMoveSpeed = null;
+                    r.MoveSpeed = null;
                 else
-                    r.PenMoveSpeed = decimal.Parse(_penMoveSpeed.Text);
+                    r.MoveSpeed = decimal.Parse(_penMoveSpeed.Text);
 
                 if (string.IsNullOrEmpty(_penDownSpeed.Text))
-                    r.PenDownSpeed = null;
+                    r.EngraveDownSpeed = null;
                 else
-                    r.PenDownSpeed = decimal.Parse(_penDownSpeed.Text);
+                    r.EngraveDownSpeed = decimal.Parse(_penDownSpeed.Text);
 
                 if (string.IsNullOrEmpty(_imageDPIX.Text))
                     r.ImageDPIX = null;
@@ -148,15 +149,16 @@ namespace CNCLib.GUI.Load
 				_generateForEngrave.Checked = value.PenMoveType == LoadInfo.PenType.ZMove;
 				_generateForLaser.Checked = value.PenMoveType == LoadInfo.PenType.CommandString;
 
-				_engraveZUp.Text = value.PenPosUp.ToString();
-				_engraveZDown.Text = value.PenPosDown.ToString();
-				_engraveUseParameter.Checked = value.PenPosInParameter;
+				_engraveZUp.Text = value.EngravePosUp.ToString();
+				_engraveZDown.Text = value.EngravePosDown.ToString();
+				_engraveUseParameter.Checked = value.EngravePosInParameter;
 
-                _penMoveSpeed.Text = value.PenMoveSpeed.ToString();
-                _penDownSpeed.Text = value.PenDownSpeed.ToString();
+                _penMoveSpeed.Text = value.MoveSpeed.ToString();
+                _penDownSpeed.Text = value.EngraveDownSpeed.ToString();
 
-                _laserOn.Text = value.PenDownCommandString;
-				_laserOff.Text = value.PenUpCommandString;
+				_laserFirstOn.Text = value.LaserFirstOnCommand;
+				_laserOn.Text = value.LaserOnCommand;
+				_laserOff.Text = value.LaserOffCommand;
 
                 _laserSize.Text = value.LaserSize.ToString();
                 _grayThreshold.Text = value.GrayThreshold.ToString();
@@ -325,7 +327,6 @@ namespace CNCLib.GUI.Load
                     MessageBox.Show("Delete Options failed: " + ex.Message);
                 }
             }
-
         }
-    }
+	}
 }

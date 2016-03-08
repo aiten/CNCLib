@@ -34,11 +34,9 @@ namespace CNCLib.GCode.Load
 
         public override void Load()
         {
-            AddFileHeader();
-            AddComment("File=" , LoadOptions.FileName );
-            AddComment("LaserSize=" , LoadOptions.LaserSize);
-            AddComment("LaserOnCommand=" , LoadOptions.PenDownCommandString);
-            AddComment("LaserOffCommand=" , LoadOptions.PenUpCommandString);
+            PreLoad();
+            AddComment("File" , LoadOptions.FileName );
+			AddCommentForLaser();
 
             _shiftX = (double)LoadOptions.LaserSize / 2.0;
             _shiftY = (double)LoadOptions.LaserSize / 2.0;
@@ -71,17 +69,17 @@ namespace CNCLib.GCode.Load
                 _pixelSizeX = 25.4 / b.HorizontalResolution;
                 _pixelSizeY = 25.4 / b.VerticalResolution;
 
-                AddComment("Image.Width=" , _sizeX);
-                AddComment("Image.Height=" , _sizeY);
-                AddComment("Image.HorizontalResolution(DPI)=" , b.HorizontalResolution);
-                AddComment("Image.VerticalResolution(DPI)=" , b.VerticalResolution);
+                AddComment("Image.Width" , _sizeX);
+                AddComment("Image.Height" , _sizeY);
+                AddComment("Image.HorizontalResolution(DPI)" , b.HorizontalResolution);
+                AddComment("Image.VerticalResolution(DPI)" , b.VerticalResolution);
 
-                AddComment("Speed=" , LoadOptions.PenMoveSpeed);
+                AddComment("Speed" , LoadOptions.MoveSpeed);
 
-                if (LoadOptions.PenMoveSpeed.HasValue)
+                if (LoadOptions.MoveSpeed.HasValue)
                 {
                     var setspeed = new G01Command();
-                    setspeed.AddVariable('F', LoadOptions.PenMoveSpeed.Value);
+                    setspeed.AddVariable('F', LoadOptions.MoveSpeed.Value);
                     Commands.Add(setspeed);
                 }
 
@@ -151,15 +149,6 @@ namespace CNCLib.GCode.Load
 
                 LaserOff();
             }
-        }
-
-        private void LaserOn()
-        {
-            AddCommands(LoadOptions.PenDownCommandString);
-        }
-        private void LaserOff()
-        {
-            AddCommands(LoadOptions.PenUpCommandString);
         }
     }
 }
