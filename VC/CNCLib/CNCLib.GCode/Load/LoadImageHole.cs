@@ -53,8 +53,6 @@ namespace CNCLib.GCode.Load
                         throw new ArgumentException("Bitmap.PixelFormat not supported");
                 }
 
-                AddComment("ImageConvert", LoadOptions.ImageInvert.ToString());
-
                 WriteGCode(b);
             }
             PostLoad();

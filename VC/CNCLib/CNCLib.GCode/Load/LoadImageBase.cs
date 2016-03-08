@@ -58,6 +58,8 @@ namespace CNCLib.GCode.Load
                 Commands.Add(setspeed);
             }
 
+            AddComment("ImageInvert", LoadOptions.ImageInvert.ToString());
+
             WriteGCode();
         }
 

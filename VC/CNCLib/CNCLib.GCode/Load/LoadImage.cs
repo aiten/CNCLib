@@ -110,6 +110,12 @@ namespace CNCLib.GCode.Load
 
                     bool isLaserOn = col.ToArgb() == black;
 
+                    if (LoadOptions.ImageInvert)
+                    {
+                        isLaserOn = !isLaserOn;
+                    }
+
+
                     if (isLaserOn != wasLaserOn && x != 0)
                     {
                         AddCommandX(x - 1, y, ref lasty, wasLaserOn);
