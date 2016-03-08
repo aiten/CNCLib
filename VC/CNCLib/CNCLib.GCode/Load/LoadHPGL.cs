@@ -27,22 +27,19 @@ namespace CNCLib.GCode.Load
 {
     public class LoadHPGL : LoadBase
     {
-        CommandStream _stream;
-        bool _IsPenUp;
-		bool _lastIsPenUp;
-		Point3D _last=new Point3D();
-        int _color;
-        bool _needSpeed;
+        CommandStream _stream = new CommandStream();
+        bool _IsPenUp = true;
+		bool _lastIsPenUp = false;
+        int _color = 0;
+        bool _needSpeed = false;
 
-        Point3D _minpt;
-		Point3D _maxpt;
+        Point3D _last = new Point3D();
+        Point3D _minpt = new Point3D() { X = int.MaxValue, Y = int.MaxValue };
+        Point3D _maxpt = new Point3D() { X = int.MinValue, Y = int.MinValue };
 
         public override void Load()
         {
-            InitLoad();
-
             PreLoad();
-            AddComment("File" , LoadOptions.FileName );
 
             if (LoadOptions.AutoScale)
 			{
@@ -84,7 +81,6 @@ namespace CNCLib.GCode.Load
                     setspeed.AddVariable('F', LoadOptions.MoveSpeed.Value);
                     Commands.Add(setspeed);
                 }
-                _needSpeed = false;
 
                 string line;
                 while ((line = sr.ReadLine()) != null)
@@ -109,17 +105,6 @@ namespace CNCLib.GCode.Load
             }
 			PostLoad();
         }
-
-		private void InitLoad()
-		{
-			_last = new Point3D();
-			_minpt = new Point3D() { X = int.MaxValue, Y = int.MaxValue };
-			_maxpt = new Point3D() { X = int.MinValue, Y = int.MinValue };
-			_stream = new CommandStream();
-			_IsPenUp = true;
-			_lastIsPenUp = false;
-			_color = 0;
-		}
 
 		private void AutoScale()
 		{

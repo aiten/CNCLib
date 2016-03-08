@@ -79,6 +79,8 @@ namespace CNCLib.GCode.Load
             NewspaperDither
         };
 
+        public bool ImageInvert { get; set; } = false;
+
         public DitherFilter Dither { get; set; } = DitherFilter.FloydSteinbergDither;
         public int NewspaperDitherSize { get; set; } = 5;
     }

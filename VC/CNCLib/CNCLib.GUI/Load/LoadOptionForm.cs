@@ -73,7 +73,7 @@ namespace CNCLib.GUI.Load
                 var r = new LoadInfo()
                 {
                     FileName = _filename.Text,
-                    SettingName  = _settingName.Text,
+                    SettingName = _settingName.Text,
                     OfsX = decimal.Parse(_ofsX.Text),
                     OfsY = decimal.Parse(_ofsY.Text),
                     ScaleX = decimal.Parse(_scaleX.Text),
@@ -91,8 +91,8 @@ namespace CNCLib.GUI.Load
                     EngravePosDown = decimal.Parse(_engraveZDown.Text),
                     EngravePosInParameter = _engraveUseParameter.Checked,
 
-					LaserFirstOnCommand = _laserFirstOn.Text,
-					LaserOnCommand = _laserOn.Text,
+                    LaserFirstOnCommand = _laserFirstOn.Text,
+                    LaserOnCommand = _laserOn.Text,
                     LaserOffCommand = _laserOff.Text,
 
                     LaserSize = decimal.Parse(_laserSize.Text),
@@ -101,6 +101,8 @@ namespace CNCLib.GUI.Load
                     Dither = _floydSteinbergDither.Checked ? LoadInfo.DitherFilter.FloydSteinbergDither : LoadInfo.DitherFilter.NewspaperDither,
 
                     NewspaperDitherSize = int.Parse(_newspaperDotSize.Text),
+
+                    ImageInvert = _imageInvert.Checked,
 
                     ImageWriteToFileName = _saveImageToFilename.Text,
                     GCodeWriteToFileName = _saveGCodeToFileName.Text
@@ -171,6 +173,8 @@ namespace CNCLib.GUI.Load
 
                 _floydSteinbergDither.Checked = value.Dither == LoadInfo.DitherFilter.FloydSteinbergDither;
                 _newspaperDither.Checked = value.Dither == LoadInfo.DitherFilter.NewspaperDither;
+
+                _imageInvert.Checked = value.ImageInvert;
 
                 _newspaperDotSize.Text = value.NewspaperDitherSize.ToString();
 

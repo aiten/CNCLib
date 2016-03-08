@@ -75,6 +75,7 @@
     <Compile Include="Commands\G92Command.cs" />
     <Compile Include="Commands\GxxCommand.cs" />
     <Compile Include="Load\LoadBase.cs" />
+    <Compile Include="Load\LoadImageBase.cs" />
     <Compile Include="Load\LoadImageHole.cs" />
     <Compile Include="Load\LoadImage.cs" />
     <Compile Include="Load\LoadGCode.cs" />
