@@ -30,7 +30,7 @@ namespace CNCLib.GCode.Load
         protected int SizeX { get; private set; }
         protected int SizeY { get; private set; }
         protected double ShiftX { get; private set; } = 0;
-        protected double SiftY { get; private set; } = 0;
+        protected double ShiftY { get; private set; } = 0;
         protected System.Drawing.Bitmap Bitmap { get; private set; }
 
         protected void WriteGCode(System.Drawing.Bitmap b)
@@ -42,7 +42,7 @@ namespace CNCLib.GCode.Load
             PixelSizeY = 25.4 / b.VerticalResolution;
 
             ShiftX = (double)LoadOptions.LaserSize / 2.0;
-            SiftY = (double)LoadOptions.LaserSize / 2.0;
+            ShiftY = (double)LoadOptions.LaserSize / 2.0;
 
             b.Save(LoadOptions.ImageWriteToFileName, System.Drawing.Imaging.ImageFormat.Bmp);
 
@@ -50,6 +50,7 @@ namespace CNCLib.GCode.Load
             AddComment("Image.Height", b.Width);
             AddComment("Image.HorizontalResolution(DPI)", b.HorizontalResolution);
             AddComment("Image.VerticalResolution(DPI)", b.VerticalResolution);
+            AddComment("ImageInvert", LoadOptions.ImageInvert.ToString());
 
             if (LoadOptions.MoveSpeed.HasValue)
             {
@@ -57,8 +58,6 @@ namespace CNCLib.GCode.Load
                 setspeed.AddVariable('F', LoadOptions.MoveSpeed.Value);
                 Commands.Add(setspeed);
             }
-
-            AddComment("ImageInvert", LoadOptions.ImageInvert.ToString());
 
             WriteGCode();
         }

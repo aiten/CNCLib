@@ -23,161 +23,344 @@ using System;
 
 namespace CNCLib.GCode.Load
 {
-	public class LoadImageHole : LoadImageBase
-	{
-		public enum EHoleType
-		{
-			Square,
-			Circle
-		};
+    public class LoadImageHole : LoadImageBase
+    {
+        public int ImageToDotSizeX { get { return LoadOptions.DotSizeX; } }
+        public int ImageToDotSizeY { get { return LoadOptions.DotSizeY; } }
 
-		public int ImageToDotSize { get; set; } = 3;
+        public double MinDiff { get; set; } = 0.2;
+        public bool UseYShift { get { return LoadOptions.UseYShift; } }
+        public bool RotateHeart { get { return LoadOptions.RotateHeart; } }
 
-		public EHoleType HoleType { get; set; } = EHoleType.Circle;
+        public LoadInfo.EHoleType HoleType { get { return LoadOptions.HoleType; } }
 
-		public override void Load()
-		{
-			PreLoad();
+        public double StartLaserDist { get { return (double)LoadOptions.LaserSize * 1.5; } }
 
-			AddCommentForLaser();
+        public override void Load()
+        {
+            PreLoad();
 
-			using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(LoadOptions.FileName))
-			{
-				System.Drawing.Bitmap b;
-				switch (bx.PixelFormat)
-				{
-					case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
-						b = ScaleImage(bx);
-						break;
+            AddCommentForLaser();
 
-					case System.Drawing.Imaging.PixelFormat.Format32bppArgb:
-					case System.Drawing.Imaging.PixelFormat.Format32bppPArgb:
-					case System.Drawing.Imaging.PixelFormat.Format32bppRgb:
-					case System.Drawing.Imaging.PixelFormat.Format24bppRgb:
-					case System.Drawing.Imaging.PixelFormat.Format8bppIndexed:
+            using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(LoadOptions.FileName))
+            {
+                System.Drawing.Bitmap b;
+                switch (bx.PixelFormat)
+                {
+                    case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
+                        b = ScaleImage(bx);
+                        break;
 
-						b = ScaleImage(bx);
-						break;
+                    case System.Drawing.Imaging.PixelFormat.Format32bppArgb:
+                    case System.Drawing.Imaging.PixelFormat.Format32bppPArgb:
+                    case System.Drawing.Imaging.PixelFormat.Format32bppRgb:
+                    case System.Drawing.Imaging.PixelFormat.Format24bppRgb:
+                    case System.Drawing.Imaging.PixelFormat.Format8bppIndexed:
 
-					default:
-						throw new ArgumentException("Bitmap.PixelFormat not supported");
-				}
+                        b = ScaleImage(bx);
+                        break;
 
-				WriteGCode(b);
-			}
-			PostLoad();
-		}
+                    default:
+                        throw new ArgumentException("Bitmap.PixelFormat not supported");
+                }
 
-		protected override void WriteGCode()
-		{
-			LaserOff();
-
-			double ydiff = ImageToDotSize / 2;
-			double xdiff = ImageToDotSize / 2;
-
-			for (int y = 0; y < SizeY; y += ImageToDotSize)
-			{
-				for (int x = 0; x < SizeX; x += ImageToDotSize)
-				{
-					int tox = ((x + ImageToDotSize) % SizeX) - x;
-					int toy = ((y + ImageToDotSize) % SizeY) - y;
-
-					int colorsum = 0;
-
-					for (int ix = 0; ix < tox; ix++)
-					{
-						for (int iy = 0; iy < toy; iy++)
-						{
-							var col = Bitmap.GetPixel(x, y);
-							colorsum += FindNearestColorGrayScale(col.R, col.G, col.B);
-						}
-					}
-                    AddCommandX(x + xdiff, y + ydiff, (Byte)(colorsum / (tox*toy)));
-				}
-				xdiff *= -1;
-
-				LaserOff();
+                WriteGCode(b);
             }
+            PostLoad();
         }
 
-        protected Byte FindNearestColorGrayScale(Byte colorR, Byte colorG, Byte colorB)
+        protected override void WriteGCode()
         {
-            return (Byte) (0.2126 * colorR + 0.7152 * colorG + 0.0722 * colorB);
-        }
+            LaserOff();
 
-        private void AddCommandX(double x, double y, Byte size )
-        {
-            const double minholesize = 0.25;
-
-            if (LoadOptions.ImageInvert)
+            for (int iy = 0; ; iy++)
             {
-                size = (Byte) (255 - size);
-            }
+                double yy = ToYPos(iy);
+                if (yy >= SizeY) break;
 
-//            double holesize = (int) ((((size + 12) / 24) * 24)*0.7);    // int => round
-//            double holesize = size*0.7;
-			double holesize = size * 1;
+                for (int ix = 0; ; ix++)
+                {
+                    double y = yy;
+                    double x = ToXPos(ix, iy, ref yy);
+                    if (x >= SizeX) break;
 
-			double hsizeX = (double) (holesize * PixelSizeX * ImageToDotSize / 256 / 2);
-            double hsizeY = (double) (holesize * PixelSizeY * ImageToDotSize / 256 / 2);
+                    if (x >= 0 && x + ImageToDotSizeX <= SizeX &&
+                        y >= 0 && y + ImageToDotSizeY <= SizeY)
+                    {
+                        // Rect (x1,y1, ImageToDotSizeX, ImageToDotSizeY)  is on printingarea
 
-            if (hsizeX > minholesize && hsizeY > minholesize)
-            {
-                double xx = (double)Math.Round(((double)(x + 0.5) * PixelSizeX ), 2);
-                double yy = (double)Math.Round(((double)(SizeY - y - 0.5) * PixelSizeY), 2);
+                        AddCommandX(x * PixelSizeX + ShiftX,
+                                    (SizeY * PixelSizeY) - (y * PixelSizeY + ShiftY),
+                                    GetDotSize(x, y),
+                                    HoleType, ix);
+                    }
 
-				switch(HoleType)
-				{
-					case EHoleType.Circle:
-					{
-						Command c = new G00Command();
-						c.AddVariable('X', (decimal)Math.Round(xx + hsizeX - 0.3 + ShiftX, 2));
-						c.AddVariable('Y', (decimal)Math.Round(yy + SiftY, 2));
-						Commands.Add(c);
-						LaserOn();
-						c = new G01Command();
-						c.AddVariable('X', (decimal)Math.Round(xx + hsizeX + ShiftX, 2));
-						Commands.Add(c);
-
-						c = new G03Command();
-						c.AddVariable('I', (decimal)Math.Round(-hsizeX, 2));
-						Commands.Add(c);
-						break;
-					}
-					default:
-					case EHoleType.Square:
-					{
-						Command c = new G00Command();
-						c.AddVariable('X', (decimal)Math.Round(xx - hsizeX + ShiftX, 2));
-						c.AddVariable('Y', (decimal)Math.Round(yy - hsizeY + SiftY, 2));
-						Commands.Add(c);
-						LaserOn();
-
-						c = new G01Command();
-						c.AddVariable('X', (decimal)Math.Round(xx + hsizeX + ShiftX, 2));
-						c.AddVariable('Y', (decimal)Math.Round(yy - hsizeY + SiftY, 2));
-						Commands.Add(c);
-
-						c = new G01Command();
-						c.AddVariable('X', (decimal)Math.Round(xx + hsizeX + ShiftX, 2));
-						c.AddVariable('Y', (decimal)Math.Round(yy + hsizeY + SiftY, 2));
-						Commands.Add(c);
-
-						c = new G01Command();
-						c.AddVariable('X', (decimal)Math.Round(xx - hsizeX + ShiftX, 2));
-						c.AddVariable('Y', (decimal)Math.Round(yy + hsizeY + SiftY, 2));
-						Commands.Add(c);
-
-						c = new G01Command();
-						c.AddVariable('X', (decimal)Math.Round(xx - hsizeX + ShiftX, 2));
-						c.AddVariable('Y', (decimal)Math.Round(yy - hsizeY + SiftY, 2));
-						Commands.Add(c);
-						break;
-					}
-				}
+                }
 
                 LaserOff();
             }
+        }
+
+        private double ToXPos(int ix, int iy, ref double y)
+        {
+            double xdiff = 0;
+
+            switch (HoleType)
+            {
+                case LoadInfo.EHoleType.Hexagon:
+                case LoadInfo.EHoleType.Square:
+                case LoadInfo.EHoleType.Heart:
+                case LoadInfo.EHoleType.Circle:
+                case LoadInfo.EHoleType.Diamond:
+                    if (iy % 2 == 0 && UseYShift)
+                        xdiff = ImageToDotSizeX / 2.0;
+                    break;
+            }
+
+            return (ix * ImageToDotSizeX + xdiff);
+        }
+        private double AdjustYPos(int ix, int iy, double y)
+        {
+            return 0;
+        }
+
+        private double ToYPos(int iy)
+        {
+            switch (HoleType)
+            {
+                case LoadInfo.EHoleType.Hexagon:
+                case LoadInfo.EHoleType.Circle:
+                    if (UseYShift)
+                        return (iy * ImageToDotSizeY * 0.86602540378443864676372317075294);
+                    break;
+
+                case LoadInfo.EHoleType.Diamond:
+                    if (UseYShift)
+                        return (iy * ImageToDotSizeY * 0.5);
+                    break;
+            }
+            return (iy * ImageToDotSizeY);
+        }
+
+        private Byte FindNearestColorGrayScale(Byte colorR, Byte colorG, Byte colorB)
+        {
+            return (Byte)(0.2126 * colorR + 0.7152 * colorG + 0.0722 * colorB);
+        }
+
+        private double GetDotSize(double x, double y)
+        {
+            int colorsum = 0;
+
+            for (int dx = 0; dx < ImageToDotSizeX; dx++)
+            {
+                for (int dy = 0; dy < ImageToDotSizeY; dy++)
+                {
+                    var col = Bitmap.GetPixel((int)(x + dx), (int)(y + dy));
+                    colorsum += FindNearestColorGrayScale(col.R, col.G, col.B);
+                }
+            }
+
+            return (colorsum / (ImageToDotSizeX * ImageToDotSizeY)) / 255.0;
+        }
+
+        private void AddCommandX(double x, double y, double size, LoadInfo.EHoleType holetype, int ix)
+        {
+            // x,y left,top corner
+            // size 0..1
+
+            double minholesize = (double)LoadOptions.LaserSize;
+
+            if (LoadOptions.ImageInvert)
+            {
+                size = 1.0 - size;
+            }
+
+            double pixelX = PixelSizeX * ImageToDotSizeX;
+            double pixelY = PixelSizeY * ImageToDotSizeY;
+            double scaleX = (pixelX - 2.0 * (double)LoadOptions.LaserSize - MinDiff) / pixelX;
+            double scaleY = (pixelY - 2.0 * (double)LoadOptions.LaserSize - MinDiff) / pixelY;
+
+            switch (HoleType)
+            {
+                case LoadInfo.EHoleType.Hexagon:
+                    size *= 1.0 / 0.86602540378443864676372317075294;
+                    break;
+                default:
+                    break;
+            }
+
+
+            double dotsizeX = size * PixelSizeX * ImageToDotSizeX * scaleX;
+            double dotsizeY = size * PixelSizeY * ImageToDotSizeY * scaleY;
+
+            double centerX = x + ImageToDotSizeX / 2.0;
+            double centerY = y - ImageToDotSizeY / 2.0;
+
+            if (dotsizeX > minholesize && dotsizeY > minholesize)
+            {
+                switch (holetype)
+                {
+                    case LoadInfo.EHoleType.Hexagon: CreateHexagon(centerX, centerY, dotsizeX / 2.0); break;
+                    case LoadInfo.EHoleType.Circle: CreateCircle(centerX, centerY, dotsizeX / 2.0); break;
+                    case LoadInfo.EHoleType.Square: CreateSquare(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0); break;
+                    case LoadInfo.EHoleType.Diamond: CreateDiamond(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0); break;
+                    case LoadInfo.EHoleType.Heart: CreateHeart(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0, RotateHeart && ix%2 == 0); break;
+                }
+
+                LaserOff();
+            }
+        }
+
+        private void CreateSquare(double x, double y, double hsizeX2, double hsizeY2)
+        {
+            Command c = new G00Command();
+            c.AddVariable('X', ToGCode(x - hsizeX2));
+            c.AddVariable('Y', ToGCode(y - hsizeY2));
+            Commands.Add(c);
+            LaserOn();
+
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x + hsizeX2));
+            c.AddVariable('Y', ToGCode(y - hsizeY2));
+            Commands.Add(c);
+
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x + hsizeX2));
+            c.AddVariable('Y', ToGCode(y + hsizeY2));
+            Commands.Add(c);
+
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x - hsizeX2));
+            c.AddVariable('Y', ToGCode(y + hsizeY2));
+            Commands.Add(c);
+
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x - hsizeX2));
+            c.AddVariable('Y', ToGCode(y - hsizeY2));
+            Commands.Add(c);
+        }
+
+        private void CreateDiamond(double x, double y, double hsizeX2, double hsizeY2)
+        {
+            Command c = new G00Command();
+            c.AddVariable('X', ToGCode(x - hsizeX2 + StartLaserDist));
+            c.AddVariable('Y', ToGCode(y));
+            Commands.Add(c);
+            LaserOn();
+
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x - hsizeX2));
+            c.AddVariable('Y', ToGCode(y));
+            Commands.Add(c);
+
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x));
+            c.AddVariable('Y', ToGCode(y - hsizeY2));
+            Commands.Add(c);
+
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x + hsizeX2));
+            c.AddVariable('Y', ToGCode(y));
+            Commands.Add(c);
+
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x));
+            c.AddVariable('Y', ToGCode(y + hsizeY2));
+            Commands.Add(c);
+
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x - hsizeX2));
+            c.AddVariable('Y', ToGCode(y));
+            Commands.Add(c);
+        }
+
+        private void CreateHexagon(double x, double y, double radius)
+        {
+            double rotateangel = Math.PI / 6.0;
+
+            double startx = x + radius * Math.Cos(rotateangel);
+            double starty = y + radius * Math.Sin(rotateangel);
+
+            Command c = new G00Command();
+            c.AddVariable('X', ToGCode(startx - StartLaserDist));
+            c.AddVariable('Y', ToGCode(starty - StartLaserDist / 2));
+            Commands.Add(c);
+            LaserOn();
+
+            //for (double rad = Math.PI / 3.0; rad < Math.PI * 2.0 + 0.1; rad += Math.PI / 3.0)
+            for (double rad = 0; rad < Math.PI * 2.0 + 0.1; rad += Math.PI / 3.0)
+            {
+                double radrotated = rad + Math.PI / 6.0;
+                c = new G01Command();
+                c.AddVariable('X', ToGCode(x + radius * Math.Cos(radrotated)));
+                c.AddVariable('Y', ToGCode(y + radius * Math.Sin(radrotated)));
+
+                Commands.Add(c);
+            }
+        }
+
+        private void CreateCircle(double x, double y, double radius)
+        {
+            Command c = new G00Command();
+            c.AddVariable('X', ToGCode(x + radius - StartLaserDist));
+            c.AddVariable('Y', ToGCode(y));
+            Commands.Add(c);
+            LaserOn();
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x + radius));
+            Commands.Add(c);
+
+            c = new G03Command();
+            c.AddVariable('I', ToGCode(-radius));
+            Commands.Add(c);
+        }
+
+        private void CreateHeart(double x, double y, double hsizeX2, double hsizeY2, bool mirror)
+        {
+            hsizeX2 *=0.9;
+            hsizeY2 = hsizeX2;
+            double mr = mirror ? -1.0 : 1.0;
+
+            Command c = new G00Command();
+            c.AddVariable('X', ToGCode(x));
+            c.AddVariable('Y', ToGCode(y + (hsizeY2 - StartLaserDist) * mr));
+            Commands.Add(c);
+            LaserOn();
+
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x));
+            c.AddVariable('Y', ToGCode(y + hsizeY2*mr));
+            Commands.Add(c);
+
+            if (mirror)
+                c = new G03Command();
+            else
+                 c= new G02Command();
+            c.AddVariable('X', ToGCode(x+ hsizeX2));
+            c.AddVariable('Y', ToGCode(y));
+            c.AddVariable('I', ToGCode( hsizeX2 / 2.0));
+            c.AddVariable('J', ToGCode(-hsizeY2 / 2.0 * mr));
+            Commands.Add(c);
+
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x));
+            c.AddVariable('Y', ToGCode(y-hsizeY2 * mr));
+            Commands.Add(c);
+
+            c = new G01Command();
+            c.AddVariable('X', ToGCode(x - hsizeX2));
+            c.AddVariable('Y', ToGCode(y));
+            Commands.Add(c);
+
+            if (mirror)
+                c = new G03Command();
+            else
+                c = new G02Command();
+            c.AddVariable('X', ToGCode(x));
+            c.AddVariable('Y', ToGCode(y + hsizeY2 * mr));
+            c.AddVariable('I', ToGCode(hsizeX2 / 2.0));
+            c.AddVariable('J', ToGCode(hsizeY2 / 2.0 * mr));
+            Commands.Add(c);
         }
     }
 }

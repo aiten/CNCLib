@@ -152,14 +152,14 @@ namespace CNCLib.GCode.Load
                 var cy = new G00Command();
                 int x1 = x - 4; if (x1 < 0) x = 0;
 
-                cy.AddVariable('X', (decimal)Math.Round((x1 * PixelSizeX) + ShiftX + shift, 2));
-                cy.AddVariable('Y', (decimal)Math.Round((SizeY - y - 1) * PixelSizeY + SiftY, 2));
+                cy.AddVariable('X', ToGCode((x1 * PixelSizeX) + ShiftX + shift));
+                cy.AddVariable('Y', ToGCode((SizeY - y - 1) * PixelSizeY + ShiftY));
                 lasty = y;
                 Commands.Add(cy);
             }
 
             var cx = new G01Command();
-            cx.AddVariable('X', (decimal) Math.Round((x * PixelSizeX) + ShiftX + shift, 2));
+            cx.AddVariable('X', ToGCode((x * PixelSizeX) + ShiftX + shift));
             Commands.Add(cx);
         }
     }

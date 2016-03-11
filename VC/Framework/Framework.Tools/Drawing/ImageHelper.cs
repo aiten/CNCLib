@@ -71,6 +71,7 @@ namespace Framework.Tools.Drawing
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
                 graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.Clear(Color.White);
                 graphics.DrawImage(image, 0, 0, newWidth, newHeight);
             }
 

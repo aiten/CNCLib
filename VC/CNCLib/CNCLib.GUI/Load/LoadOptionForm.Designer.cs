@@ -81,6 +81,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this._penDownSpeed = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this._imageInvert = new System.Windows.Forms.CheckBox();
             this.label16 = new System.Windows.Forms.Label();
             this._saveImageToFilename = new System.Windows.Forms.TextBox();
             this._newspaperDotSize = new System.Windows.Forms.TextBox();
@@ -94,13 +95,24 @@
             this._saveSettings = new System.Windows.Forms.Button();
             this._deleteSettings = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this._imageInvert = new System.Windows.Forms.CheckBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this._holeRotateHeart = new System.Windows.Forms.CheckBox();
+            this._holeYShift = new System.Windows.Forms.CheckBox();
+            this._holeHeart = new System.Windows.Forms.RadioButton();
+            this._holeDotSizeY = new System.Windows.Forms.TextBox();
+            this._holeDiamond = new System.Windows.Forms.RadioButton();
+            this._holeHexagon = new System.Windows.Forms.RadioButton();
+            this._holeSquare = new System.Windows.Forms.RadioButton();
+            this._holeCircle = new System.Windows.Forms.RadioButton();
+            this._holeDotSizeX = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
             this._autoScaleGb.SuspendLayout();
             this._generateForEngrageGroup.SuspendLayout();
             this._generateForLaserGroup.SuspendLayout();
             this._generalGroup.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label2
@@ -183,9 +195,9 @@
             // _load
             // 
             this._load.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this._load.Location = new System.Drawing.Point(378, 467);
+            this._load.Location = new System.Drawing.Point(239, 464);
             this._load.Name = "_load";
-            this._load.Size = new System.Drawing.Size(77, 23);
+            this._load.Size = new System.Drawing.Size(84, 23);
             this._load.TabIndex = 9;
             this._load.Text = "Load HPGL";
             this._load.UseVisualStyleBackColor = true;
@@ -193,9 +205,9 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(483, 510);
+            this.button1.Location = new System.Drawing.Point(715, 458);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(84, 23);
             this.button1.TabIndex = 10;
             this.button1.Text = "Cancel";
             this.button1.UseVisualStyleBackColor = true;
@@ -237,7 +249,7 @@
             this._autoScaleGb.Controls.Add(this.label3);
             this._autoScaleGb.Controls.Add(this._AutoScaleSizeY);
             this._autoScaleGb.Controls.Add(this._AutoScaleSizeX);
-            this._autoScaleGb.Location = new System.Drawing.Point(302, 42);
+            this._autoScaleGb.Location = new System.Drawing.Point(302, 77);
             this._autoScaleGb.Name = "_autoScaleGb";
             this._autoScaleGb.Size = new System.Drawing.Size(235, 124);
             this._autoScaleGb.TabIndex = 14;
@@ -324,7 +336,7 @@
             // _loadGCode
             // 
             this._loadGCode.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this._loadGCode.Location = new System.Drawing.Point(288, 467);
+            this._loadGCode.Location = new System.Drawing.Point(16, 464);
             this._loadGCode.Name = "_loadGCode";
             this._loadGCode.Size = new System.Drawing.Size(84, 23);
             this._loadGCode.TabIndex = 15;
@@ -339,7 +351,7 @@
             this._generateForEngrageGroup.Controls.Add(this.label6);
             this._generateForEngrageGroup.Controls.Add(this._engraveZUp);
             this._generateForEngrageGroup.Controls.Add(this._engraveZDown);
-            this._generateForEngrageGroup.Location = new System.Drawing.Point(15, 172);
+            this._generateForEngrageGroup.Location = new System.Drawing.Point(15, 207);
             this._generateForEngrageGroup.Name = "_generateForEngrageGroup";
             this._generateForEngrageGroup.Size = new System.Drawing.Size(262, 94);
             this._generateForEngrageGroup.TabIndex = 18;
@@ -400,7 +412,7 @@
             // _generateForEngrave
             // 
             this._generateForEngrave.AutoSize = true;
-            this._generateForEngrave.Location = new System.Drawing.Point(38, 473);
+            this._generateForEngrave.Location = new System.Drawing.Point(323, 353);
             this._generateForEngrave.Name = "_generateForEngrave";
             this._generateForEngrave.Size = new System.Drawing.Size(126, 17);
             this._generateForEngrave.TabIndex = 3;
@@ -426,7 +438,7 @@
             this._generateForLaserGroup.Controls.Add(this._laserOff);
             this._generateForLaserGroup.Controls.Add(this.label9);
             this._generateForLaserGroup.Controls.Add(this._laserOn);
-            this._generateForLaserGroup.Location = new System.Drawing.Point(15, 272);
+            this._generateForLaserGroup.Location = new System.Drawing.Point(15, 307);
             this._generateForLaserGroup.Name = "_generateForLaserGroup";
             this._generateForLaserGroup.Size = new System.Drawing.Size(262, 116);
             this._generateForLaserGroup.TabIndex = 19;
@@ -436,7 +448,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(11, 24);
+            this.label19.Location = new System.Drawing.Point(10, 24);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(72, 13);
             this.label19.TabIndex = 20;
@@ -452,7 +464,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 93);
+            this.label5.Location = new System.Drawing.Point(11, 93);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(56, 13);
             this.label5.TabIndex = 18;
@@ -468,7 +480,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(11, 70);
+            this.label8.Location = new System.Drawing.Point(10, 70);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(50, 13);
             this.label8.TabIndex = 16;
@@ -484,7 +496,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(11, 47);
+            this.label9.Location = new System.Drawing.Point(10, 47);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(50, 13);
             this.label9.TabIndex = 13;
@@ -500,7 +512,7 @@
             // _generateForLaser
             // 
             this._generateForLaser.AutoSize = true;
-            this._generateForLaser.Location = new System.Drawing.Point(38, 447);
+            this._generateForLaser.Location = new System.Drawing.Point(323, 327);
             this._generateForLaser.Name = "_generateForLaser";
             this._generateForLaser.Size = new System.Drawing.Size(109, 17);
             this._generateForLaser.TabIndex = 20;
@@ -516,7 +528,7 @@
             this._generalGroup.Controls.Add(this.label2);
             this._generalGroup.Controls.Add(this._ofsY);
             this._generalGroup.Controls.Add(this._ofsX);
-            this._generalGroup.Location = new System.Drawing.Point(15, 42);
+            this._generalGroup.Location = new System.Drawing.Point(15, 77);
             this._generalGroup.Name = "_generalGroup";
             this._generalGroup.Size = new System.Drawing.Size(262, 123);
             this._generalGroup.TabIndex = 21;
@@ -526,7 +538,7 @@
             // _loadImage
             // 
             this._loadImage.DialogResult = System.Windows.Forms.DialogResult.No;
-            this._loadImage.Location = new System.Drawing.Point(198, 467);
+            this._loadImage.Location = new System.Drawing.Point(338, 464);
             this._loadImage.Name = "_loadImage";
             this._loadImage.Size = new System.Drawing.Size(84, 23);
             this._loadImage.TabIndex = 22;
@@ -591,12 +603,22 @@
             this.groupBox1.Controls.Add(this._newspaperDither);
             this.groupBox1.Controls.Add(this._grayThreshold);
             this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Location = new System.Drawing.Point(302, 271);
+            this.groupBox1.Location = new System.Drawing.Point(564, 112);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(235, 178);
             this.groupBox1.TabIndex = 27;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Image";
+            // 
+            // _imageInvert
+            // 
+            this._imageInvert.AutoSize = true;
+            this._imageInvert.Location = new System.Drawing.Point(18, 100);
+            this._imageInvert.Name = "_imageInvert";
+            this._imageInvert.Size = new System.Drawing.Size(85, 17);
+            this._imageInvert.TabIndex = 9;
+            this._imageInvert.Text = "Invert Image";
+            this._imageInvert.UseVisualStyleBackColor = true;
             // 
             // label16
             // 
@@ -647,7 +669,7 @@
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Controls.Add(this._penDownSpeed);
-            this.groupBox2.Location = new System.Drawing.Point(302, 172);
+            this.groupBox2.Location = new System.Drawing.Point(302, 207);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(235, 93);
             this.groupBox2.TabIndex = 28;
@@ -657,7 +679,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(12, 398);
+            this.label17.Location = new System.Drawing.Point(15, 42);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(83, 13);
             this.label17.TabIndex = 32;
@@ -665,15 +687,15 @@
             // 
             // _saveGCodeToFileName
             // 
-            this._saveGCodeToFileName.Location = new System.Drawing.Point(15, 414);
+            this._saveGCodeToFileName.Location = new System.Drawing.Point(104, 39);
             this._saveGCodeToFileName.Name = "_saveGCodeToFileName";
-            this._saveGCodeToFileName.Size = new System.Drawing.Size(262, 20);
+            this._saveGCodeToFileName.Size = new System.Drawing.Size(417, 20);
             this._saveGCodeToFileName.TabIndex = 33;
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(22, 517);
+            this.label18.Location = new System.Drawing.Point(630, 15);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(85, 13);
             this.label18.TabIndex = 27;
@@ -682,7 +704,7 @@
             // _settingName
             // 
             this._settingName.FormattingEnabled = true;
-            this._settingName.Location = new System.Drawing.Point(130, 512);
+            this._settingName.Location = new System.Drawing.Point(633, 38);
             this._settingName.Name = "_settingName";
             this._settingName.Size = new System.Drawing.Size(166, 21);
             this._settingName.TabIndex = 34;
@@ -690,7 +712,7 @@
             // 
             // _saveSettings
             // 
-            this._saveSettings.Location = new System.Drawing.Point(302, 510);
+            this._saveSettings.Location = new System.Drawing.Point(633, 65);
             this._saveSettings.Name = "_saveSettings";
             this._saveSettings.Size = new System.Drawing.Size(77, 23);
             this._saveSettings.TabIndex = 35;
@@ -700,7 +722,7 @@
             // 
             // _deleteSettings
             // 
-            this._deleteSettings.Location = new System.Drawing.Point(385, 510);
+            this._deleteSettings.Location = new System.Drawing.Point(722, 65);
             this._deleteSettings.Name = "_deleteSettings";
             this._deleteSettings.Size = new System.Drawing.Size(77, 23);
             this._deleteSettings.TabIndex = 36;
@@ -711,28 +733,131 @@
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Retry;
-            this.button2.Location = new System.Drawing.Point(460, 467);
+            this.button2.Location = new System.Drawing.Point(438, 464);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(77, 23);
+            this.button2.Size = new System.Drawing.Size(84, 23);
             this.button2.TabIndex = 37;
             this.button2.Text = "Load Holes";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // _imageInvert
+            // groupBox3
             // 
-            this._imageInvert.AutoSize = true;
-            this._imageInvert.Location = new System.Drawing.Point(18, 100);
-            this._imageInvert.Name = "_imageInvert";
-            this._imageInvert.Size = new System.Drawing.Size(85, 17);
-            this._imageInvert.TabIndex = 9;
-            this._imageInvert.Text = "Invert Image";
-            this._imageInvert.UseVisualStyleBackColor = true;
+            this.groupBox3.Controls.Add(this._holeRotateHeart);
+            this.groupBox3.Controls.Add(this._holeYShift);
+            this.groupBox3.Controls.Add(this._holeHeart);
+            this.groupBox3.Controls.Add(this._holeDotSizeY);
+            this.groupBox3.Controls.Add(this._holeDiamond);
+            this.groupBox3.Controls.Add(this._holeHexagon);
+            this.groupBox3.Controls.Add(this._holeSquare);
+            this.groupBox3.Controls.Add(this._holeCircle);
+            this.groupBox3.Controls.Add(this._holeDotSizeX);
+            this.groupBox3.Controls.Add(this.label21);
+            this.groupBox3.Location = new System.Drawing.Point(564, 301);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(235, 140);
+            this.groupBox3.TabIndex = 32;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Image Hole";
+            // 
+            // _holeRotateHeart
+            // 
+            this._holeRotateHeart.AutoSize = true;
+            this._holeRotateHeart.Location = new System.Drawing.Point(161, 93);
+            this._holeRotateHeart.Name = "_holeRotateHeart";
+            this._holeRotateHeart.Size = new System.Drawing.Size(58, 17);
+            this._holeRotateHeart.TabIndex = 36;
+            this._holeRotateHeart.Text = "Rotate";
+            this._holeRotateHeart.UseVisualStyleBackColor = true;
+            // 
+            // _holeYShift
+            // 
+            this._holeYShift.AutoSize = true;
+            this._holeYShift.Location = new System.Drawing.Point(22, 48);
+            this._holeYShift.Name = "_holeYShift";
+            this._holeYShift.Size = new System.Drawing.Size(57, 17);
+            this._holeYShift.TabIndex = 32;
+            this._holeYShift.Text = "Y Shift";
+            this._holeYShift.UseVisualStyleBackColor = true;
+            // 
+            // _holeHeart
+            // 
+            this._holeHeart.AutoSize = true;
+            this._holeHeart.Location = new System.Drawing.Point(104, 92);
+            this._holeHeart.Name = "_holeHeart";
+            this._holeHeart.Size = new System.Drawing.Size(51, 17);
+            this._holeHeart.TabIndex = 35;
+            this._holeHeart.Text = "Heart";
+            this._holeHeart.UseVisualStyleBackColor = true;
+            // 
+            // _holeDotSizeY
+            // 
+            this._holeDotSizeY.Location = new System.Drawing.Point(137, 20);
+            this._holeDotSizeY.Name = "_holeDotSizeY";
+            this._holeDotSizeY.Size = new System.Drawing.Size(45, 20);
+            this._holeDotSizeY.TabIndex = 33;
+            // 
+            // _holeDiamond
+            // 
+            this._holeDiamond.AutoSize = true;
+            this._holeDiamond.Location = new System.Drawing.Point(104, 72);
+            this._holeDiamond.Name = "_holeDiamond";
+            this._holeDiamond.Size = new System.Drawing.Size(67, 17);
+            this._holeDiamond.TabIndex = 32;
+            this._holeDiamond.Text = "Diamond";
+            this._holeDiamond.UseVisualStyleBackColor = true;
+            // 
+            // _holeHexagon
+            // 
+            this._holeHexagon.AutoSize = true;
+            this._holeHexagon.Location = new System.Drawing.Point(19, 113);
+            this._holeHexagon.Name = "_holeHexagon";
+            this._holeHexagon.Size = new System.Drawing.Size(68, 17);
+            this._holeHexagon.TabIndex = 31;
+            this._holeHexagon.Text = "Hexagon";
+            this._holeHexagon.UseVisualStyleBackColor = true;
+            // 
+            // _holeSquare
+            // 
+            this._holeSquare.AutoSize = true;
+            this._holeSquare.Location = new System.Drawing.Point(19, 72);
+            this._holeSquare.Name = "_holeSquare";
+            this._holeSquare.Size = new System.Drawing.Size(59, 17);
+            this._holeSquare.TabIndex = 30;
+            this._holeSquare.Text = "Square";
+            this._holeSquare.UseVisualStyleBackColor = true;
+            // 
+            // _holeCircle
+            // 
+            this._holeCircle.AutoSize = true;
+            this._holeCircle.Location = new System.Drawing.Point(19, 92);
+            this._holeCircle.Name = "_holeCircle";
+            this._holeCircle.Size = new System.Drawing.Size(51, 17);
+            this._holeCircle.TabIndex = 29;
+            this._holeCircle.Text = "Circle";
+            this._holeCircle.UseVisualStyleBackColor = true;
+            // 
+            // _holeDotSizeX
+            // 
+            this._holeDotSizeX.Location = new System.Drawing.Point(87, 20);
+            this._holeDotSizeX.Name = "_holeDotSizeX";
+            this._holeDotSizeX.Size = new System.Drawing.Size(45, 20);
+            this._holeDotSizeX.TabIndex = 19;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(19, 23);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(63, 13);
+            this.label21.TabIndex = 20;
+            this.label21.Text = "DotSizeX/Y";
             // 
             // LoadOptionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 541);
+            this.ClientSize = new System.Drawing.Size(811, 499);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this._deleteSettings);
             this.Controls.Add(this._saveSettings);
@@ -772,6 +897,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -846,5 +973,16 @@
 		private System.Windows.Forms.Label label19;
 		private System.Windows.Forms.TextBox _laserFirstOn;
         private System.Windows.Forms.CheckBox _imageInvert;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox _holeDotSizeY;
+        private System.Windows.Forms.RadioButton _holeDiamond;
+        private System.Windows.Forms.RadioButton _holeHexagon;
+        private System.Windows.Forms.RadioButton _holeSquare;
+        private System.Windows.Forms.RadioButton _holeCircle;
+        private System.Windows.Forms.TextBox _holeDotSizeX;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.RadioButton _holeHeart;
+        private System.Windows.Forms.CheckBox _holeYShift;
+        private System.Windows.Forms.CheckBox _holeRotateHeart;
     }
 }

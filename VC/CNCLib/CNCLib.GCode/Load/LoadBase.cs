@@ -70,6 +70,10 @@ namespace CNCLib.GCode.Load
                 Commands.Add(r);
             }
         }
+        protected decimal ToGCode(double val)
+        {
+            return (decimal)Math.Round(val, 2);
+        }
 
         protected void AddComment(string propertyName)
         {

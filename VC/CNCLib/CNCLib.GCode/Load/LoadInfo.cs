@@ -83,5 +83,22 @@ namespace CNCLib.GCode.Load
 
         public DitherFilter Dither { get; set; } = DitherFilter.FloydSteinbergDither;
         public int NewspaperDitherSize { get; set; } = 5;
+
+        // Hole
+
+        public int DotSizeX { get; set; } = 1;
+        public int DotSizeY { get; set; } = 1;
+        public bool UseYShift { get; set; } = true;
+        public bool RotateHeart { get; set; } = false;
+
+        public enum EHoleType
+        {
+            Square,
+            Circle,
+            Hexagon,
+            Diamond,
+            Heart
+        };
+        public EHoleType HoleType { get; set; } = EHoleType.Hexagon;
     }
 }

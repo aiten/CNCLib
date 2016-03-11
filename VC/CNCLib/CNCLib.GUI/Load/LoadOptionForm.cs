@@ -105,8 +105,13 @@ namespace CNCLib.GUI.Load
                     ImageInvert = _imageInvert.Checked,
 
                     ImageWriteToFileName = _saveImageToFilename.Text,
-                    GCodeWriteToFileName = _saveGCodeToFileName.Text
+                    GCodeWriteToFileName = _saveGCodeToFileName.Text,
 
+                    DotSizeX = int.Parse(_holeDotSizeX.Text),
+                    DotSizeY = int.Parse(_holeDotSizeY.Text),
+
+                    UseYShift = _holeYShift.Checked,
+                    RotateHeart = _holeRotateHeart.Checked
                 };
 
                 if (string.IsNullOrEmpty(_penMoveSpeed.Text))
@@ -128,6 +133,12 @@ namespace CNCLib.GUI.Load
                     r.ImageDPIY = null;
                 else
                     r.ImageDPIY = decimal.Parse(_imageDPIY.Text);
+
+                if (_holeSquare.Checked)        r.HoleType = LoadInfo.EHoleType.Square;
+                else if (_holeCircle.Checked)   r.HoleType = LoadInfo.EHoleType.Circle;
+                else if (_holeHexagon.Checked)  r.HoleType = LoadInfo.EHoleType.Hexagon;
+                else if (_holeDiamond.Checked)  r.HoleType = LoadInfo.EHoleType.Diamond;
+                else if (_holeHeart.Checked)    r.HoleType = LoadInfo.EHoleType.Heart;
 
                 return r;
 
@@ -177,6 +188,22 @@ namespace CNCLib.GUI.Load
                 _imageInvert.Checked = value.ImageInvert;
 
                 _newspaperDotSize.Text = value.NewspaperDitherSize.ToString();
+
+
+                switch (value.HoleType)
+                {
+                    case LoadInfo.EHoleType.Square:  _holeSquare.Checked = true; break;
+                    case LoadInfo.EHoleType.Circle:  _holeCircle.Checked = true; break;
+                    case LoadInfo.EHoleType.Hexagon: _holeHexagon.Checked = true; break;
+                    case LoadInfo.EHoleType.Diamond: _holeDiamond.Checked = true; break;
+                    case LoadInfo.EHoleType.Heart:   _holeHeart.Checked = true; break;
+                }
+
+                _holeDotSizeX.Text = value.DotSizeX.ToString();
+                _holeDotSizeY.Text = value.DotSizeY.ToString();
+
+                _holeYShift.Checked = value.UseYShift;
+                _holeRotateHeart.Checked = value.RotateHeart;
 
                 SetEnableState();
 			}
