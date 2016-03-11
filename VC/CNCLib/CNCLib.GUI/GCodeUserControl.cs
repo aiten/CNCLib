@@ -405,50 +405,47 @@ namespace CNCLib.GUI
             Point from = ToClient(ptFrom);
             Point to = ToClient(ptTo);
 
-            if (PreDrawLineOrArc(param, drawtype, from, to))
+            //e.Graphics.DrawLine(_helpLine, from, to);
+
+            double I = (double)pIJ.X.Value;
+            double J = (double)pIJ.Y.Value;
+            double R = Math.Sqrt(I * I + J * J);
+
+            double cx = (double)ptFrom.X.Value + I;
+            double cy = (double)ptFrom.Y.Value + J;
+
+            double startAng = ConvertRadToDeg(Math.Atan2(J, I));
+            double endAng = ConvertRadToDeg(Math.Atan2(cy - (double)ptTo.Y.Value, cx - (double)ptTo.X.Value));
+            double diffAng = (endAng - startAng);
+            if (startAng > endAng)
+                diffAng += 360;
+
+            if (clockwise == false)
             {
-                //e.Graphics.DrawLine(_helpLine, from, to);
+                startAng = endAng;
+                diffAng = 360 - diffAng;
+                while (diffAng > 360)
+                    diffAng -= 360;
 
-                double I = (double)pIJ.X.Value;
-                double J = (double)pIJ.Y.Value;
-                double R = Math.Sqrt(I * I + J * J);
-
-                double cx = (double)ptFrom.X.Value + I;
-                double cy = (double)ptFrom.Y.Value + J;
-
-                double startAng = ConvertRadToDeg(Math.Atan2(J, I));
-                double endAng = ConvertRadToDeg(Math.Atan2(cy - (double)ptTo.Y.Value, cx - (double)ptTo.X.Value));
-                double diffAng = (endAng - startAng);
-                if (startAng > endAng)
+                while (diffAng < -360)
                     diffAng += 360;
+            }
 
-                if (clockwise == false)
+            Point rcfrom = new Point(ToClientXInt(cx - R* SignX), ToClientYInt(cy - R* SignY));
+            int RR = ToClientSizeX(R * 2);
+            Rectangle rec = new Rectangle(rcfrom, new Size(RR,RR));
+
+            //e.Graphics.DrawRectangle(_helpLine, rec);
+
+            if (rec.Width > 0 && rec.Height > 0)
+            {
+                try
                 {
-                    startAng = endAng;
-                    diffAng = 360 - diffAng;
-                    while (diffAng > 360)
-                        diffAng -= 360;
-
-                    while (diffAng < -360)
-                        diffAng += 360;
+                    e.Graphics.DrawArc(GetPen(drawtype, LineDrawType.Line), rec.X, rec.Y, rec.Width, rec.Height, (float)startAng, (float)diffAng);
                 }
-
-                Point rcfrom = new Point(ToClientXInt(cx - R* SignX), ToClientYInt(cy - R* SignY));
-                int RR = ToClientSizeX(R * 2);
-                Rectangle rec = new Rectangle(rcfrom, new Size(RR,RR));
-
-                //e.Graphics.DrawRectangle(_helpLine, rec);
-
-                if (rec.Width > 0 && rec.Height > 0)
+                catch (OutOfMemoryException)
                 {
-                    try
-                    {
-                        e.Graphics.DrawArc(GetPen(drawtype, LineDrawType.Line), rec.X, rec.Y, rec.Width, rec.Height, (float)startAng, (float)diffAng);
-                    }
-                    catch (OutOfMemoryException)
-                    {
-                        // ignore this Exception
-                    }
+                    // ignore this Exception
                 }
             }
         }
