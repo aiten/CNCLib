@@ -69,9 +69,9 @@ namespace Framework.Tools.Drawing
             using (Graphics graphics = Graphics.FromImage(newImage))
             {
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBilinear; // HighQualityBicubic;
                 graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.Clear(Color.White);
                 graphics.DrawImage(image, 0, 0, newWidth, newHeight);
             }
 

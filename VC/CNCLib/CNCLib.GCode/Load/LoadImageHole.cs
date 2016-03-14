@@ -34,7 +34,8 @@ namespace CNCLib.GCode.Load
 
         public LoadInfo.EHoleType HoleType { get { return LoadOptions.HoleType; } }
 
-        public double StartLaserDist { get { return (double)LoadOptions.LaserSize * 1.5; } }
+//        public double StartLaserDist { get { return (double)LoadOptions.LaserSize * 1.5; } }
+        public double StartLaserDist { get { return 0.15; } }
 
         public override void Load()
         {
@@ -142,14 +143,17 @@ namespace CNCLib.GCode.Load
             return (iy * ImageToDotSizeY);
         }
 
-        private Byte FindNearestColorGrayScale(Byte colorR, Byte colorG, Byte colorB)
+        private double FindNearestColorGrayScale(Byte colorR, Byte colorG, Byte colorB)
         {
-            return (Byte)(0.2126 * colorR + 0.7152 * colorG + 0.0722 * colorB);
+            // max value is 255
+            // 0.2126*255 + 0.7152*255 + 0.0722*255
+            return 0.2126 * colorR + 0.7152 * colorG + 0.0722 * colorB;
         }
 
         private double GetDotSize(double x, double y)
         {
-            int colorsum = 0;
+            // max value is 255
+            double colorsum = 0;
 
             for (int dx = 0; dx < ImageToDotSizeX; dx++)
             {
@@ -160,6 +164,7 @@ namespace CNCLib.GCode.Load
                 }
             }
 
+            // return 0..1
             return (colorsum / (ImageToDotSizeX * ImageToDotSizeY)) / 255.0;
         }
 
@@ -167,6 +172,8 @@ namespace CNCLib.GCode.Load
         {
             // x,y left,top corner
             // size 0..1
+
+            size = size * size;     // squared area 
 
             double minholesize = (double)LoadOptions.LaserSize;
 
@@ -196,23 +203,39 @@ namespace CNCLib.GCode.Load
             double centerX = x + ImageToDotSizeX / 2.0;
             double centerY = y - ImageToDotSizeY / 2.0;
 
-            if (dotsizeX > minholesize && dotsizeY > minholesize)
+            switch (holetype)
             {
-                switch (holetype)
-                {
-                    case LoadInfo.EHoleType.Hexagon: CreateHexagon(centerX, centerY, dotsizeX / 2.0); break;
-                    case LoadInfo.EHoleType.Circle: CreateCircle(centerX, centerY, dotsizeX / 2.0); break;
-                    case LoadInfo.EHoleType.Square: CreateSquare(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0); break;
-                    case LoadInfo.EHoleType.Diamond: CreateDiamond(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0); break;
-                    case LoadInfo.EHoleType.Heart: CreateHeart(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0, RotateHeart && ix%2 == 0); break;
-                }
-
-                LaserOff();
+                case LoadInfo.EHoleType.Hexagon: CreateHexagon(centerX, centerY, dotsizeX / 2.0); break;
+                case LoadInfo.EHoleType.Circle: CreateCircle(centerX, centerY, dotsizeX / 2.0); break;
+                case LoadInfo.EHoleType.Square: CreateSquare(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0); break;
+                case LoadInfo.EHoleType.Diamond: CreateDiamond(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0); break;
+                case LoadInfo.EHoleType.Heart: CreateHeart(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0, RotateHeart && ix%2 == 0); break;
             }
+
+            LaserOff();
+        }
+        private void CreateToSmallShape(double x, double y)
+        {
+            Command cc = new G00Command();
+            cc.AddVariable('X', ToGCode(x));
+            cc.AddVariable('Y', ToGCode(y));
+            Commands.Add(cc);
+            LaserOn();
+            cc = new G01Command();
+            cc.AddVariable('X', ToGCode(x));
+            cc.AddVariable('Y', ToGCode(y));
+            Commands.Add(cc);
         }
 
         private void CreateSquare(double x, double y, double hsizeX2, double hsizeY2)
         {
+            if (hsizeX2 < 0.000001) return;     // true black do nothing
+            if (hsizeX2 * 2 < (double)LoadOptions.LaserSize)
+            {
+                CreateToSmallShape(x, y);
+                return;
+            }
+
             Command c = new G00Command();
             c.AddVariable('X', ToGCode(x - hsizeX2));
             c.AddVariable('Y', ToGCode(y - hsizeY2));
@@ -242,6 +265,13 @@ namespace CNCLib.GCode.Load
 
         private void CreateDiamond(double x, double y, double hsizeX2, double hsizeY2)
         {
+            if (hsizeX2 < 0.000001) return;     // true black do nothing
+            if (hsizeX2 * 2 < (double)LoadOptions.LaserSize)
+            {
+                CreateToSmallShape(x, y);
+                return;
+            }
+
             Command c = new G00Command();
             c.AddVariable('X', ToGCode(x - hsizeX2 + StartLaserDist));
             c.AddVariable('Y', ToGCode(y));
@@ -276,6 +306,13 @@ namespace CNCLib.GCode.Load
 
         private void CreateHexagon(double x, double y, double radius)
         {
+            if (radius < 0.000001) return;     // true black do nothing
+            if (radius*2 < (double) LoadOptions.LaserSize)
+            {
+                CreateToSmallShape(x, y);
+                return;
+            }
+
             double rotateangel = Math.PI / 6.0;
 
             double startx = x + radius * Math.Cos(rotateangel);
@@ -301,6 +338,13 @@ namespace CNCLib.GCode.Load
 
         private void CreateCircle(double x, double y, double radius)
         {
+            if (radius < 0.000001) return;     // true black do nothing
+            if (radius * 2 < (double)LoadOptions.LaserSize)
+            {
+                CreateToSmallShape(x, y);
+                return;
+            }
+
             Command c = new G00Command();
             c.AddVariable('X', ToGCode(x + radius - StartLaserDist));
             c.AddVariable('Y', ToGCode(y));
@@ -317,7 +361,14 @@ namespace CNCLib.GCode.Load
 
         private void CreateHeart(double x, double y, double hsizeX2, double hsizeY2, bool mirror)
         {
-            hsizeX2 *=0.9;
+            if (hsizeX2 < 0.000001) return;     // true black do nothing
+            if (hsizeX2 * 2 < (double)LoadOptions.LaserSize)
+            {
+                CreateToSmallShape(x, y);
+                return;
+            }
+
+            hsizeX2 *= 0.9;
             hsizeY2 = hsizeX2;
             double mr = mirror ? -1.0 : 1.0;
 

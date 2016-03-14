@@ -48,6 +48,7 @@ namespace CNCLib.GUI
 			SetMachineSize();
             ValuesFromControl();
 
+            _laserColor.Color = _gCodeCtrl.LaserColor;
 
             new CNCLib.GCode.Commands.CommandFactory();
 		}
@@ -292,6 +293,10 @@ namespace CNCLib.GUI
 		{
 			_gCodeCtrl.MachineColor = _colorCB.Color;
 		}
+        private void _laserColor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _gCodeCtrl.LaserColor = _laserColor.Color;
+        }
 
 
         private void CheckKeyPress(KeyPressEventArgs e)

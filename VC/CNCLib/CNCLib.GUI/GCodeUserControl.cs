@@ -62,6 +62,7 @@ namespace CNCLib.GUI
         public double LaserSize { get { return _laserSize; } set { _laserSize = value; ReInitDraw(); } }
 
         public Color MachineColor { get { return _machineColor; } set { _machineColor = value; ReInitDraw(); } }
+        public Color LaserColor { get { return _laserColor; } set { _laserColor = value; ReInitDraw(); } }
 
         public CommandList Commands { get { return _commands; } }
 
@@ -85,6 +86,7 @@ namespace CNCLib.GUI
         double  _ratioX = 1;
         double  _ratioY = 1;
         Color   _machineColor = Color.Black;
+        Color   _laserColor = Color.Red;
 
         CommandList _commands = new CommandList();
 
@@ -263,7 +265,7 @@ namespace CNCLib.GUI
 
             _fastLine = new Pen(Color.Green, fastSize);
             _NoMove = new Pen(Color.Blue, fastSize);
-            _laserCutLine = new Pen(Color.Red, ToClient(new Point3D(OffsetX+(decimal)LaserSize,0m,0m)).X);
+            _laserCutLine = new Pen(LaserColor, ToClient(new Point3D(OffsetX+(decimal)LaserSize,0m,0m)).X);
             _laserCutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
             _laserCutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
             _laserFastLine = new Pen(Color.Orange, (float)(fastSize / 2.0));

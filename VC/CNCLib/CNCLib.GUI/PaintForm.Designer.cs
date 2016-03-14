@@ -52,12 +52,14 @@
             this._sendTo = new System.Windows.Forms.Button();
             this._mainPanel = new System.Windows.Forms.Panel();
             this._gCodeCtrl = new CNCLib.GUI.GCodeUserControl();
+            this._laserColor = new CNCLib.GUI.ColorComboBox();
             this._headerPanel.SuspendLayout();
             this._mainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // _headerPanel
             // 
+            this._headerPanel.Controls.Add(this._laserColor);
             this._headerPanel.Controls.Add(this._zoomLbl);
             this._headerPanel.Controls.Add(this._zoom);
             this._headerPanel.Controls.Add(this._zoomIn);
@@ -131,148 +133,6 @@
             this._colorCB.DropDownWidth = 200;
             this._colorCB.FormattingEnabled = true;
             this._colorCB.IntegralHeight = false;
-            this._colorCB.Items.AddRange(new object[] {
-            "Black",
-            "Transparent",
-            "AliceBlue",
-            "AntiqueWhite",
-            "Aqua",
-            "Aquamarine",
-            "Azure",
-            "Beige",
-            "Bisque",
-            "BlanchedAlmond",
-            "Blue",
-            "BlueViolet",
-            "Brown",
-            "BurlyWood",
-            "CadetBlue",
-            "Chartreuse",
-            "Chocolate",
-            "Coral",
-            "CornflowerBlue",
-            "Cornsilk",
-            "Crimson",
-            "Cyan",
-            "DarkBlue",
-            "DarkCyan",
-            "DarkGoldenrod",
-            "DarkGray",
-            "DarkGreen",
-            "DarkKhaki",
-            "DarkMagenta",
-            "DarkOliveGreen",
-            "DarkOrange",
-            "DarkOrchid",
-            "DarkRed",
-            "DarkSalmon",
-            "DarkSeaGreen",
-            "DarkSlateBlue",
-            "DarkSlateGray",
-            "DarkTurquoise",
-            "DarkViolet",
-            "DeepPink",
-            "DeepSkyBlue",
-            "DimGray",
-            "DodgerBlue",
-            "Firebrick",
-            "FloralWhite",
-            "ForestGreen",
-            "Fuchsia",
-            "Gainsboro",
-            "GhostWhite",
-            "Gold",
-            "Goldenrod",
-            "Gray",
-            "Green",
-            "GreenYellow",
-            "Honeydew",
-            "HotPink",
-            "IndianRed",
-            "Indigo",
-            "Ivory",
-            "Khaki",
-            "Lavender",
-            "LavenderBlush",
-            "LawnGreen",
-            "LemonChiffon",
-            "LightBlue",
-            "LightCoral",
-            "LightCyan",
-            "LightGoldenrodYellow",
-            "LightGreen",
-            "LightGray",
-            "LightPink",
-            "LightSalmon",
-            "LightSeaGreen",
-            "LightSkyBlue",
-            "LightSlateGray",
-            "LightSteelBlue",
-            "LightYellow",
-            "Lime",
-            "LimeGreen",
-            "Linen",
-            "Magenta",
-            "Maroon",
-            "MediumAquamarine",
-            "MediumBlue",
-            "MediumOrchid",
-            "MediumPurple",
-            "MediumSeaGreen",
-            "MediumSlateBlue",
-            "MediumSpringGreen",
-            "MediumTurquoise",
-            "MediumVioletRed",
-            "MidnightBlue",
-            "MintCream",
-            "MistyRose",
-            "Moccasin",
-            "NavajoWhite",
-            "Navy",
-            "OldLace",
-            "Olive",
-            "OliveDrab",
-            "Orange",
-            "OrangeRed",
-            "Orchid",
-            "PaleGoldenrod",
-            "PaleGreen",
-            "PaleTurquoise",
-            "PaleVioletRed",
-            "PapayaWhip",
-            "PeachPuff",
-            "Peru",
-            "Pink",
-            "Plum",
-            "PowderBlue",
-            "Purple",
-            "Red",
-            "RosyBrown",
-            "RoyalBlue",
-            "SaddleBrown",
-            "Salmon",
-            "SandyBrown",
-            "SeaGreen",
-            "SeaShell",
-            "Sienna",
-            "Silver",
-            "SkyBlue",
-            "SlateBlue",
-            "SlateGray",
-            "Snow",
-            "SpringGreen",
-            "SteelBlue",
-            "Tan",
-            "Teal",
-            "Thistle",
-            "Tomato",
-            "Turquoise",
-            "Violet",
-            "Wheat",
-            "White",
-            "WhiteSmoke",
-            "Yellow",
-            "YellowGreen"});
             this._colorCB.Location = new System.Drawing.Point(144, 29);
             this._colorCB.MaxDropDownItems = 20;
             this._colorCB.Name = "_colorCB";
@@ -409,7 +269,7 @@
             // 
             // _load
             // 
-            this._load.Location = new System.Drawing.Point(600, 29);
+            this._load.Location = new System.Drawing.Point(688, 32);
             this._load.Name = "_load";
             this._load.Size = new System.Drawing.Size(84, 23);
             this._load.TabIndex = 3;
@@ -472,6 +332,22 @@
             this._gCodeCtrl.GCodeMousePosition += new CNCLib.GUI.GCodeUserControl.GCodeEventHandler(this._plotterCtrl_GCodeMousePosition);
             this._gCodeCtrl.ZoomOffsetChanged += new CNCLib.GUI.GCodeUserControl.GCodeEventHandler(this._gCodeCtrl_ZoomOffsetChanged);
             // 
+            // _laserColor
+            // 
+            this._laserColor.Color = System.Drawing.Color.Black;
+            this._laserColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this._laserColor.DropDownHeight = 400;
+            this._laserColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this._laserColor.DropDownWidth = 200;
+            this._laserColor.FormattingEnabled = true;
+            this._laserColor.IntegralHeight = false;
+            this._laserColor.Location = new System.Drawing.Point(501, 9);
+            this._laserColor.MaxDropDownItems = 20;
+            this._laserColor.Name = "_laserColor";
+            this._laserColor.Size = new System.Drawing.Size(134, 21);
+            this._laserColor.TabIndex = 36;
+            this._laserColor.SelectedIndexChanged += new System.EventHandler(this._laserColor_SelectedIndexChanged);
+            // 
             // PaintForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -515,5 +391,6 @@
         private System.Windows.Forms.Label _cutterLbl;
         private System.Windows.Forms.TextBox _laserSize;
         private System.Windows.Forms.Label _laserLbL;
+        private ColorComboBox _laserColor;
     }
 }
