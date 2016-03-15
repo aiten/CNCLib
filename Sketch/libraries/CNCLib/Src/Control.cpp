@@ -52,7 +52,7 @@ void CControl::Init()
 #endif
 	
 	if (_timeBlink==0)
-		CHAL::pinMode(BLINK_LED, OUTPUT);
+		CHAL::pinModeOutput(BLINK_LED);
 
 	CHAL::InitTimer0(HandleInterrupt);
 	CHAL::StartTimer0(IDLETIMER0VALUE);

@@ -56,41 +56,41 @@ public:
 	{
 		super::Init();
 
-		CHAL::pinMode(RAMPSFD_X_STEP_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_X_DIR_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_X_ENABLE_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_X_MIN_PIN, INPUT_PULLUP);
-		CHAL::pinMode(RAMPSFD_X_MAX_PIN, INPUT_PULLUP);
+		CHAL::pinModeOutput(RAMPSFD_X_STEP_PIN);
+		CHAL::pinModeOutput(RAMPSFD_X_DIR_PIN);
+		CHAL::pinModeOutput(RAMPSFD_X_ENABLE_PIN);
+		CHAL::pinModeInputPullUp(RAMPSFD_X_MIN_PIN);
+		CHAL::pinModeInputPullUp(RAMPSFD_X_MAX_PIN);
 
-		CHAL::pinMode(RAMPSFD_Y_STEP_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_Y_DIR_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_Y_ENABLE_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_Y_MIN_PIN, INPUT_PULLUP);
-		CHAL::pinMode(RAMPSFD_Y_MAX_PIN, INPUT_PULLUP);
+		CHAL::pinModeOutput(RAMPSFD_Y_STEP_PIN);
+		CHAL::pinModeOutput(RAMPSFD_Y_DIR_PIN);
+		CHAL::pinModeOutput(RAMPSFD_Y_ENABLE_PIN);
+		CHAL::pinModeInputPullUp(RAMPSFD_Y_MIN_PIN);
+		CHAL::pinModeInputPullUp(RAMPSFD_Y_MAX_PIN);
 
-		CHAL::pinMode(RAMPSFD_Z_STEP_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_Z_DIR_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_Z_ENABLE_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_Z_MIN_PIN, INPUT_PULLUP);
-		CHAL::pinMode(RAMPSFD_Z_MAX_PIN, INPUT_PULLUP);
+		CHAL::pinModeOutput(RAMPSFD_Z_STEP_PIN);
+		CHAL::pinModeOutput(RAMPSFD_Z_DIR_PIN);
+		CHAL::pinModeOutput(RAMPSFD_Z_ENABLE_PIN);
+		CHAL::pinModeInputPullUp(RAMPSFD_Z_MIN_PIN);
+		CHAL::pinModeInputPullUp(RAMPSFD_Z_MAX_PIN);
 
-		CHAL::pinMode(RAMPSFD_E0_STEP_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_E0_DIR_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_E0_ENABLE_PIN, OUTPUT);
-		//  CHAL::pinMode(RAMPSFD_E0_MIN_PIN,	INPUT_PULLUP);         
-		//  CHAL::pinMode(RAMPSFD_E0_MAX_PIN,	INPUT_PULLUP);         
+		CHAL::pinModeOutput(RAMPSFD_E0_STEP_PIN);
+		CHAL::pinModeOutput(RAMPSFD_E0_DIR_PIN);
+		CHAL::pinModeOutput(RAMPSFD_E0_ENABLE_PIN);
+		//  CHAL::pinModeInputPullUp(RAMPSFD_E0_MIN_PIN);         
+		//  CHAL::pinModeInputPullUp(RAMPSFD_E0_MAX_PIN);         
 
-		CHAL::pinMode(RAMPSFD_E1_STEP_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_E1_DIR_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_E1_ENABLE_PIN, OUTPUT);
-		//  CHAL::pinMode(RAMPSFD_E1_MIN_PIN,	INPUT_PULLUP);         
-		//  CHAL::pinMode(RAMPSFD_E1_MAX_PIN,	INPUT_PULLUP);         
+		CHAL::pinModeOutput(RAMPSFD_E1_STEP_PIN);
+		CHAL::pinModeOutput(RAMPSFD_E1_DIR_PIN);
+		CHAL::pinModeOutput(RAMPSFD_E1_ENABLE_PIN);
+		//  CHAL::pinModeInputPullUp(RAMPSFD_E1_MIN_PIN);         
+		//  CHAL::pinModeInputPullUp(RAMPSFD_E1_MAX_PIN);         
 
-		CHAL::pinMode(RAMPSFD_E2_STEP_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_E2_DIR_PIN, OUTPUT);
-		CHAL::pinMode(RAMPSFD_E2_ENABLE_PIN, OUTPUT);
-		//  CHAL::pinMode(E2_MIN_PIN,	INPUT_PULLUP);         
-		//  CHAL::pinMode(E2_MAX_PIN,	INPUT_PULLUP);         
+		CHAL::pinModeOutput(RAMPSFD_E2_STEP_PIN);
+		CHAL::pinModeOutput(RAMPSFD_E2_DIR_PIN);
+		CHAL::pinModeOutput(RAMPSFD_E2_ENABLE_PIN);
+		//  CHAL::pinModeInputPullUp(E2_MIN_PIN);         
+		//  CHAL::pinModeInputPullUp(E2_MAX_PIN);         
 
 #ifdef _MSC_VER
 #pragma warning( disable : 4127 )
@@ -109,10 +109,10 @@ public:
 
 		// init some outputs!
 
-		CHAL::pinMode(RAMPSFD_ESTOP_PIN, INPUT_PULLUP);
+		CHAL::pinModeInputPullUp(RAMPSFD_ESTOP_PIN);
 
-		CHAL::pinMode(RAMPSFD_FET5D12_PIN, OUTPUT); HALFastdigitalWrite(RAMPSFD_FET5D12_PIN, 0);
-		CHAL::pinMode(RAMPSFD_FET6D2_PIN, OUTPUT); HALFastdigitalWrite(RAMPSFD_FET6D2_PIN, 0);
+		CHAL::pinModeOutput(RAMPSFD_FET5D12_PIN); HALFastdigitalWrite(RAMPSFD_FET5D12_PIN, 0);
+		CHAL::pinModeOutput(RAMPSFD_FET6D2_PIN);  HALFastdigitalWrite(RAMPSFD_FET6D2_PIN, 0);
 	}
 
 protected:

@@ -139,8 +139,8 @@ public:
 	{	
 			_pin1=pin1; 
 			_pin2=pin2; 
-			CHAL::pinMode(_pin1, INPUT_PULLUP);
-			CHAL::pinMode(_pin2, INPUT_PULLUP);
+			CHAL::pinModeInputPullUp(_pin1);
+			CHAL::pinModeInputPullUp(_pin2);
 	}
 
 protected:

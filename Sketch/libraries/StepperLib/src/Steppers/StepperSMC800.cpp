@@ -131,10 +131,10 @@ void CStepperSMC800::Init()
 	ToDo
 #endif
 
-	CHAL::pinMode(SMC800_STROBEPIN, OUTPUT);
+	CHAL::pinModeOutput(SMC800_STROBEPIN);
 	HALFastdigitalWrite(SMC800_STROBEPIN, 1);
 
-	CHAL::pinMode(SMC800_REFININ, INPUT_PULLUP);
+	CHAL::pinModeInputPullUp(SMC800_REFININ);
 }
 
 ////////////////////////////////////////////////////////

@@ -174,6 +174,9 @@ public:
 	static inline void SetSREG(irqflags_t) ALWAYSINLINE;
 
 	static inline void pinMode(pin_t pin, unsigned char mode);
+	static inline void pinModeInput(pin_t pin) NEVER_INLINE_AVR;
+	static inline void pinModeInputPullUp(pin_t pin) NEVER_INLINE_AVR;
+	static inline void pinModeOutput(pin_t pin) NEVER_INLINE_AVR;
 
 	static void digitalWrite(pin_t pin, unsigned char lowOrHigh);
 	static unsigned char digitalRead(pin_t pin);

@@ -284,13 +284,18 @@ inline void CHAL::StopTimer5()
 #define HALFastdigitalRead(a) READ(a)
 
 inline void CHAL::pinMode(pin_t pin, unsigned char mode)
-{ 
-	::pinMode(pin,mode); 
+{
+	::pinMode(pin, mode);
 }
 
-inline void CHAL::analogWrite8(pin_t pin, uint8_t val)
+void CHAL::pinModeOutput(pin_t pin)
+{ 
+	::pinMode(pin, OUTPUT);
+}
+
+void CHAL::pinModeInputPullUp(pin_t pin)
 {
-	::analogWrite(pin, val);
+	::pinMode(pin, INPUT_PULLUP);
 }
 
 #endif 

@@ -90,18 +90,18 @@ void CStepperL298N::Init(void)
 	{
 		if (IsActive(i))
 		{
-			CHAL::pinMode(_pin[i][0], OUTPUT);
-			CHAL::pinMode(_pin[i][1], OUTPUT);
+			CHAL::pinModeOutput(_pin[i][0]);
+			CHAL::pinModeOutput(_pin[i][1]);
 			if (Is4Pin(i))
 			{
-				CHAL::pinMode(_pin[i][2], OUTPUT);
-				CHAL::pinMode(_pin[i][3], OUTPUT);
+				CHAL::pinModeOutput(_pin[i][2]);
+				CHAL::pinModeOutput(_pin[i][3]);
 			}
 
 			if (IsUseEN1(i))
 			{
-				CHAL::pinMode(_pinenable[i][0], OUTPUT);
-				if (IsUseEN2(i)) CHAL::pinMode(_pinenable[i][1], OUTPUT);
+				CHAL::pinModeOutput(_pinenable[i][0]);
+				if (IsUseEN2(i)) CHAL::pinModeOutput(_pinenable[i][1]);
 			}
 
 			if (ToReferenceId(i, true) != 0)  CHAL::pinMode(_pinenable[i][1], _referenceOn==LOW ? INPUT_PULLUP : INPUT);

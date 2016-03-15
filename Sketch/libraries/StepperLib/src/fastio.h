@@ -933,10 +933,10 @@ pins
 #define	TXD					DIO1
 
 // SPI
-#define	SCK					DIO52
-#define	MISO				DIO50
-#define	MOSI				DIO51
-#define	SS					DIO53
+//#define	SCK					DIO52
+//#define	MISO				DIO50
+//#define	MOSI				DIO51
+//#define	SS					DIO53
 
 // TWI (I2C)
 #define	SCL					DIO21

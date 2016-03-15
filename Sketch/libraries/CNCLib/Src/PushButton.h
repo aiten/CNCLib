@@ -33,7 +33,7 @@ public:
 	{ 
 		_pin=pin; 
 		_onvalue = onValue; 
-		CHAL::pinMode(_pin, INPUT_PULLUP);
+		CHAL::pinModeInputPullUp(_pin);
 	}
 
 	void Check()

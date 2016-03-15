@@ -107,5 +107,91 @@ unsigned char CHAL::digitalRead(pin_t pin)
 	return LOW;
 }
 
-#endif 
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+
+void CHAL::analogWrite8(pin_t pin, uint8_t val)
+{
+	// do not care about size
+	::analogWrite(pin, val);
+}
+
+#else
+
+// care about size
+// => do not calle digitalwrite
+
+#define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
+#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
+
+static void turnOffPWM(uint8_t timer)
+{
+	switch (timer)
+	{
+		case TIMER0A:  cbi(TCCR0A, COM0A1);    break;
+		case TIMER0B:  cbi(TCCR0A, COM0B1);    break;
+		case TIMER1A:  cbi(TCCR1A, COM1A1);    break;
+		case TIMER1B:  cbi(TCCR1A, COM1B1);    break;
+	}
+}
+
+void CHAL::analogWrite8(pin_t pin, uint8_t val)
+{
+	pinModeOutput(pin);
+	if (val == 0 || val == 255)
+	{
+		turnOffPWM(digitalPinToTimer(pin));
+		digitalWrite(pin, val == 0 ? LOW : HIGH);
+	}
+	else
+	{
+		switch (digitalPinToTimer(pin))
+		{
+			// XXX fix needed for atmega8
+#if defined(TCCR0) && defined(COM00) && !defined(__AVR_ATmega8__)
+		case TIMER0A:
+			// connect pwm to pin on timer 0
+			sbi(TCCR0, COM00);
+			OCR0 = val; // set pwm duty
+			break;
+#endif
+
+#if defined(TCCR0A) && defined(COM0A1)
+		case TIMER0A:
+			// connect pwm to pin on timer 0, channel A
+			sbi(TCCR0A, COM0A1);
+			OCR0A = val; // set pwm duty
+			break;
+#endif
+
+#if defined(TCCR0A) && defined(COM0B1)
+		case TIMER0B:
+			// connect pwm to pin on timer 0, channel B
+			sbi(TCCR0A, COM0B1);
+			OCR0B = val; // set pwm duty
+			break;
+#endif
+
+#if defined(TCCR1A) && defined(COM1A1)
+		case TIMER1A:
+			// connect pwm to pin on timer 1, channel A
+			sbi(TCCR1A, COM1A1);
+			OCR1A = val; // set pwm duty
+			break;
+#endif
+
+#if defined(TCCR1A) && defined(COM1B1)
+		case TIMER1B:
+			// connect pwm to pin on timer 1, channel B
+			sbi(TCCR1A, COM1B1);
+			OCR1B = val; // set pwm duty
+			break;
+		}
+	}
+
+#endif
+
+}
+
+#endif		//not 2560
+#endif		// AVR
 

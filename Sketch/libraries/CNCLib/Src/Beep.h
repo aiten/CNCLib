@@ -197,7 +197,7 @@ public:
 
 	static void Init()
 	{
-		CHAL::pinMode(PIN, OUTPUT);
+		CHAL::pinModeOutput(PIN);
 		CHAL::digitalWrite(PIN, LOW);
 	}
 

@@ -43,31 +43,31 @@ public:
 	{
 		super::Init();
 
-		CHAL::pinMode(TB6560_X_STEP_PIN, OUTPUT);
-		CHAL::pinMode(TB6560_X_DIR_PIN, OUTPUT);
-		CHAL::pinMode(TB6560_X_ENABLE_PIN, OUTPUT);
-		//	CHAL::pinMode(TB6560_X_MIN_PIN, INPUT_PULLUP);
-		//	CHAL::pinMode(TB6560_X_MAX_PIN, INPUT_PULLUP);
+		CHAL::pinModeOutput(TB6560_X_STEP_PIN);
+		CHAL::pinModeOutput(TB6560_X_DIR_PIN);
+		CHAL::pinModeOutput(TB6560_X_ENABLE_PIN);
+		//	CHAL::pinModeInputPullUp(TB6560_X_MIN_PIN);
+		//	CHAL::pinModeInputPullUp(TB6560_X_MAX_PIN);
 
-		CHAL::pinMode(TB6560_Y_STEP_PIN, OUTPUT);
-		CHAL::pinMode(TB6560_Y_DIR_PIN, OUTPUT);
-		CHAL::pinMode(TB6560_Y_ENABLE_PIN, OUTPUT);
-		//	CHAL::pinMode(TB6560_Y_MIN_PIN, INPUT_PULLUP);
-		//	CHAL::pinMode(TB6560_Y_MAX_PIN, INPUT_PULLUP);
+		CHAL::pinModeOutput(TB6560_Y_STEP_PIN);
+		CHAL::pinModeOutput(TB6560_Y_DIR_PIN);
+		CHAL::pinModeOutput(TB6560_Y_ENABLE_PIN);
+		//	CHAL::pinModeInputPullUp(TB6560_Y_MIN_PIN);
+		//	CHAL::pinModeInputPullUp(TB6560_Y_MAX_PIN);
 
-		CHAL::pinMode(TB6560_Z_STEP_PIN, OUTPUT);
-		CHAL::pinMode(TB6560_Z_DIR_PIN, OUTPUT);
-		CHAL::pinMode(TB6560_Z_ENABLE_PIN, OUTPUT);
-		//	CHAL::pinMode(TB6560_Z_MIN_PIN, INPUT_PULLUP);
-		//	CHAL::pinMode(TB6560_Z_MAX_PIN, INPUT_PULLUP);
+		CHAL::pinModeOutput(TB6560_Z_STEP_PIN);
+		CHAL::pinModeOutput(TB6560_Z_DIR_PIN);
+		CHAL::pinModeOutput(TB6560_Z_ENABLE_PIN);
+		//	CHAL::pinModeInputPullUp(TB6560_Z_MIN_PIN);
+		//	CHAL::pinModeInputPullUp(TB6560_Z_MAX_PIN);
 		/*
-		CHAL::pinMode(TB6560_A_STEP_PIN, OUTPUT);
-		CHAL::pinMode(TB6560_A_DIR_PIN, OUTPUT);
-		CHAL::pinMode(TB6560_A_ENABLE_PIN, OUTPUT);
+		CHAL::pinModeOutput(TB6560_A_STEP_PIN);
+		CHAL::pinModeOutput(TB6560_A_DIR_PIN);
+		CHAL::pinModeOutput(TB6560_A_ENABLE_PIN);
 
-		CHAL::pinMode(TB6560_B_STEP_PIN, OUTPUT);
-		CHAL::pinMode(TB6560_B_DIR_PIN, OUTPUT);
-		CHAL::pinMode(TB6560_B_ENABLE_PIN, OUTPUT);
+		CHAL::pinModeOutput(TB6560_B_STEP_PIN);
+		CHAL::pinModeOutput(TB6560_B_DIR_PIN);
+		CHAL::pinModeOutput(TB6560_B_ENABLE_PIN);
 		*/
 #ifdef _MSC_VER
 #pragma warning( disable : 4127 )

@@ -28,7 +28,7 @@ public:
 
 	void Init()
 	{
-		CHAL::pinMode(PIN, OUTPUT);
+		CHAL::pinModeOutput(PIN);
 		Set(false);
 	}
 

@@ -37,7 +37,7 @@ public:
 	void SetPin(pin_t pin)		
 	{ 
 		_pin=pin; 
-		CHAL::pinMode(_pin, INPUT_PULLUP);
+		CHAL::pinModeInputPullUp(_pin);
 	}
 
 	void Check()

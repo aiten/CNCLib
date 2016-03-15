@@ -74,7 +74,7 @@ void CControl3D::InitSD(unsigned char sdEnablePin)
 
 	ClearPrintFromSD ();
 
-	CHAL::pinMode(sdEnablePin, OUTPUT);
+	CHAL::pinModeOutput(sdEnablePin);
 	CHAL::digitalWrite(sdEnablePin, HIGH);
 
 	_sdEnablePin = sdEnablePin;
