@@ -53,7 +53,10 @@ void CStepper::InitMemVar()
 	for (i=0;i<NUM_AXIS;i++)	_Slip[i]=0;
 #endif
 
-	for (i = 0; i < NUM_AXIS; i++)	_pod._limitMax[i] = 0x00ffffff;	
+#ifndef REDUCED_SIZE
+	// must be set in CMyControl
+	for (i = 0; i < NUM_AXIS; i++)	_pod._limitMax[i] = 0x00ffffff;
+#endif
 
 	_pod._checkReference = true;
 	_pod._timerbacklash = (timer_t)-1;
