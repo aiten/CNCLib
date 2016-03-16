@@ -118,7 +118,7 @@ void CHAL::analogWrite8(pin_t pin, uint8_t val)
 #else
 
 // care about size
-// => do not calle digitalwrite
+// => do not calle digitalwrite (use CHAL::digitalWrite)
 
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
 #define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
@@ -359,7 +359,6 @@ void CHAL::analogWrite8(pin_t pin, uint8_t val)
 #endif
 		}
 	}
-
 }
 
 #endif		//not 2560

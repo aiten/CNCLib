@@ -252,7 +252,9 @@ void CGCodeParserBase::Wait(unsigned long ms)
 void CGCodeParserBase::Sync()
 {
 	CStepper::GetInstance()->WaitBusy();
+#ifdef _USE_LCD
 	CControl::GetInstance()->Delay(0);
+#endif
 }
 
 ////////////////////////////////////////////////////////////
