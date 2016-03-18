@@ -16,22 +16,27 @@
   http://www.gnu.org/licenses/
 */
 
+using CNCLib.Repository.Contracts.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
+using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CNCLib.Logic.Contracts.DTO
+namespace CNCLib.Repository.Mappings
 {
-	public class MachineCommand
-	{
-		public int MachineCommandID { get; set; }
-		public string CommandName { get; set; }
-		public string CommandString { get; set; }
-		public int MachineID { get; set; }
-        public int? PosX{ get; set; }
-        public int? PosY { get; set; }
-        public virtual Machine Machine { get; set; }
-	}
+    public class ItemPropertyMapping : EntityTypeConfiguration<ItemProperty>
+    {
+        public ItemPropertyMapping()
+        {
+            HasKey(m => new { m.ItemID, m.Name });
+
+            Property((m) => m.Name).
+                IsRequired().
+                HasMaxLength(255);
+        }
+    }
 }

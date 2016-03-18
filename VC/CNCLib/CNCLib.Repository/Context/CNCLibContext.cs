@@ -51,93 +51,30 @@ namespace CNCLib.Repository.Context
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Configurations.Add(new MachineMapping());
-
-			// Machine -------------------------------------
-
-			modelBuilder.Entity<Machine>()
-				.HasKey(m => m.MachineID);
-			
-			modelBuilder.Entity<Machine>().Property((m) => m.Name).
-                IsRequired().
-                HasMaxLength(64);
-
-            modelBuilder.Entity<Machine>().Property((m) => m.ComPort).
-                IsRequired().
-                HasMaxLength(32);
-
-			modelBuilder.Entity<Machine>().Property((m) => m.Axis).IsRequired();
-			
-			modelBuilder.Entity<Machine>().Property((m) => m.SizeX).IsRequired();
-			modelBuilder.Entity<Machine>().Property((m) => m.SizeY).IsRequired();
-			modelBuilder.Entity<Machine>().Property((m) => m.SizeZ).IsRequired();
-
+            // Machine -------------------------------------
             // MachineCommand -------------------------------------
+            // MachineInitCommand -------------------------------------
 
-            modelBuilder.Entity<MachineCommand>()
-				.HasKey(mc => mc.MachineCommandID);
-
-			modelBuilder.Entity<MachineCommand>().Property((m) => m.CommandString).
-				IsRequired().
-				HasMaxLength(64);
-			modelBuilder.Entity<MachineCommand>().Property((m) => m.CommandName).
-				IsRequired().
-				HasMaxLength(64);
-
-			// MachineInitCommand -------------------------------------
-
-			modelBuilder.Entity<MachineInitCommand>()
-				.HasKey(mc => mc.MachineInitCommandID);
-
-			modelBuilder.Entity<MachineInitCommand>().Property((m) => m.CommandString).
-				IsRequired().
-				HasMaxLength(64);
+            modelBuilder.Configurations.Add(new MachineMapping());
+            modelBuilder.Configurations.Add(new MachineCommandMapping());
+            modelBuilder.Configurations.Add(new MachineInitCommandMapping());
 
             // Configuration -------------------------------------
 
-            modelBuilder.Entity<Configuration>()
-				.HasKey(m => new { m.Group, m.Name });
-
-			modelBuilder.Entity<Configuration>().Property((m) => m.Group).
-				IsRequired().
-				HasMaxLength(256);
-
-			modelBuilder.Entity<Configuration>().Property((m) => m.Name).
-				IsRequired().
-				HasMaxLength(256);
-
-			modelBuilder.Entity<Configuration>().Property((m) => m.Type).
-				IsRequired().
-				HasMaxLength(256);
-
-			modelBuilder.Entity<Configuration>().Property((m) => m.Value).
-				HasMaxLength(4000);
+            modelBuilder.Configurations.Add(new ConfigurationMapping());
 
             // Item -------------------------------------
-
-            modelBuilder.Entity<Item>()
-                .HasKey(m => m.ItemID)
-                .Property(e => e.Name)
-                    .HasColumnAnnotation(
-                        IndexAnnotation.AnnotationName,
-                        new IndexAnnotation(new IndexAttribute("IDX_UniqueName") { IsUnique = true } ));
-            modelBuilder.Entity<Item>().Property((m) => m.Name).
-                IsRequired().
-                HasMaxLength(64);
-            modelBuilder.Entity<Item>().Property((m) => m.ClassName).
-                IsRequired().
-                HasMaxLength(255);
-
             // ItemProperty -------------------------------------
 
-            modelBuilder.Entity<ItemProperty>()
-                .HasKey(m => new { m.ItemID, m.Name });
-            modelBuilder.Entity<ItemProperty>().Property((m) => m.Name).
-                IsRequired().
-                HasMaxLength(255);
+            modelBuilder.Configurations.Add(new ItemMapping());
+            modelBuilder.Configurations.Add(new ItemPropertyMapping());
+
+            // -------------------------------------
 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-           
+
+            // -------------------------------------
+
             base.OnModelCreating(modelBuilder);
 
         }

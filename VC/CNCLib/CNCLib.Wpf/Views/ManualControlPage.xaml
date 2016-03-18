@@ -98,6 +98,7 @@
                     <Button Command="{Binding AxisC.SendMinus10Command}" Content="C -10" />
                     <Button Command="{Binding AxisC.SendMinus100Command}" Content="C -100" />
                 </StackPanel>
+                <TextBox Height="23" Text="(c) by HA" Width="Auto" Margin="20" />
             </StackPanel>
             <StackPanel  Margin="0,0,0,5" Orientation="Horizontal">
                 <Label Content="Command:" Height="26" Width="100" Margin="0,0,5,0"/>
@@ -110,9 +111,65 @@
                     </ComboBox.InputBindings>
                 </ComboBox>
                 <Button Command="{Binding DirectCommand.SendDirectCommand}" Content="Send Command" Height="26" Width="100"/>
-                <TextBox Height="23" Text="(c) by HA" Width="Auto" Margin="200,0,0,0" />
+                <Label Content="File" Margin="10,0,0,0"/>
+                <TextBox x:Name="FileName2"  Text="{Binding SD.FileName, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" MinWidth="200" VerticalContentAlignment="Center"   />
+                <Button Content="?"   x:Name="BrowseFileOpenDialog2" Click="BrowseFileOpenDialog_Click"  Width="20" />
+                <Button Command="{Binding SD.SendFileDirectCommand}" Content="Send File" Width="100" Margin="5,0,0,0"/>
             </StackPanel>
             <TabControl  Margin="0,0,0,10">
+                <TabItem Header="Custom">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send00Command}" Content="{Binding Custom.Desc00}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send01Command}" Content="{Binding Custom.Desc01}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send02Command}" Content="{Binding Custom.Desc02}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send03Command}" Content="{Binding Custom.Desc03}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send04Command}" Content="{Binding Custom.Desc04}" Margin="0,0,2,1"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send10Command}" Content="{Binding Custom.Desc10}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send11Command}" Content="{Binding Custom.Desc11}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send12Command}" Content="{Binding Custom.Desc12}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send13Command}" Content="{Binding Custom.Desc13}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send14Command}" Content="{Binding Custom.Desc14}" Margin="0,0,2,1"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send20Command}" Content="{Binding Custom.Desc20}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send21Command}" Content="{Binding Custom.Desc21}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send22Command}" Content="{Binding Custom.Desc22}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send23Command}" Content="{Binding Custom.Desc23}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send24Command}" Content="{Binding Custom.Desc24}" Margin="0,0,2,1"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send30Command}" Content="{Binding Custom.Desc30}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send31Command}" Content="{Binding Custom.Desc31}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send32Command}" Content="{Binding Custom.Desc32}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send33Command}" Content="{Binding Custom.Desc33}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send34Command}" Content="{Binding Custom.Desc34}" Margin="0,0,2,1"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send40Command}" Content="{Binding Custom.Desc40}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send41Command}" Content="{Binding Custom.Desc41}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send42Command}" Content="{Binding Custom.Desc42}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send43Command}" Content="{Binding Custom.Desc43}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send44Command}" Content="{Binding Custom.Desc44}" Margin="0,0,2,1"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send50Command}" Content="{Binding Custom.Desc50}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send51Command}" Content="{Binding Custom.Desc51}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send52Command}" Content="{Binding Custom.Desc52}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send53Command}" Content="{Binding Custom.Desc53}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send54Command}" Content="{Binding Custom.Desc54}" Margin="0,0,2,1"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send60Command}" Content="{Binding Custom.Desc60}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send61Command}" Content="{Binding Custom.Desc61}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send62Command}" Content="{Binding Custom.Desc62}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send63Command}" Content="{Binding Custom.Desc63}" Margin="0,0,2,1"/>
+                            <Button Command="{Binding Custom.Send64Command}" Content="{Binding Custom.Desc64}" Margin="0,0,2,1"/>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
                 <TabItem Header="Extras">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
@@ -155,9 +212,6 @@
                         </StackPanel>
                         <StackPanel Margin="0,0,5,0">
                             <StackPanel  Orientation="Horizontal">
-                                <Label Content="File" MinWidth="100"/>
-                                <TextBox x:Name="FileName2"  Text="{Binding SD.FileName, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" MinWidth="200" VerticalContentAlignment="Center"   />
-                                <Button Content="?"   x:Name="BrowseFileOpenDialog2" Click="BrowseFileOpenDialog_Click"  Width="20" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="SDFile" MinWidth="100" />
@@ -165,7 +219,6 @@
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
-                            <Button Command="{Binding SD.SendFileDirectCommand}" Content="Send File" />
                             <Button Command="{Binding SD.AddToFileCommand}" Content="Add To File" Margin="0,40,0,0" />
                         </StackPanel>
                     </StackPanel>
@@ -173,16 +226,6 @@
                 <TabItem Header="ZeroShift" >
                     <StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <Button Command="{Binding Shift.SendG53Command}" Content="G53" Width="90" Margin="0,0,5,0" />
-                            <Button Command="{Binding Shift.SendG54Command}" Content="G54" Width="90" Margin="0,0,5,0" />
-                            <Button Command="{Binding Shift.SendG55Command}" Content="G55" Width="90" Margin="0,0,5,0" />
-                            <Button Command="{Binding Shift.SendG56Command}" Content="G56" Width="90" Margin="0,0,5,0" />
-                            <Button Command="{Binding Shift.SendG57Command}" Content="G57" Width="90" Margin="0,0,5,0" />
-                            <Button Command="{Binding Shift.SendG58Command}" Content="G58" Width="90" Margin="0,0,5,0" />
-                            <Button Command="{Binding Shift.SendG59Command}" Content="G59" Width="90" Margin="0,0,5,0" />
-
-                        </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
                             <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0">
@@ -226,6 +269,16 @@
                             </StackPanel>
                             <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"/>
                             <StackPanel Orientation="Vertical" MinWidth="100"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <Button Command="{Binding Shift.SendG53Command}" Content="G53" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG54Command}" Content="G54" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG55Command}" Content="G55" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG56Command}" Content="G56" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG57Command}" Content="G57" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG58Command}" Content="G58" Width="90" Margin="0,0,5,0" />
+                            <Button Command="{Binding Shift.SendG59Command}" Content="G59" Width="90" Margin="0,0,5,0" />
+
                         </StackPanel>
                     </StackPanel>
                 </TabItem>

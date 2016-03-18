@@ -123,8 +123,10 @@
                 	AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" 
                 	ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserAddRows="True" IsReadOnly="False" MaxHeight="500"  >
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding CommandName}" Header="Description" MinWidth="150" IsReadOnly="False"/>
-                        <DataGridTextColumn Binding="{Binding CommandString}" Header="Command" MinWidth="150" IsReadOnly="False"/>
+                        <DataGridTextColumn Binding="{Binding CommandName}" Header="Description" MinWidth="100" IsReadOnly="False"/>
+                        <DataGridTextColumn Binding="{Binding CommandString}" Header="Command" MinWidth="100" IsReadOnly="False"/>
+                        <DataGridTextColumn Binding="{Binding PosX}" Header="PosX" MinWidth="50" IsReadOnly="False"/>
+                        <DataGridTextColumn Binding="{Binding PosY}" Header="PosY" MinWidth="50" IsReadOnly="False"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

@@ -66,13 +66,15 @@ namespace CNCLib.Wpf.ViewModels
 			Tool = new ToolViewModel(this) { };
 
 			Rotate = new RotateViewModel(this) { };
-		}
 
-		#endregion
+            Custom = new CustomViewModel(this) { };
+        }
 
-		#region AxisVM
+        #endregion
 
-		public AxisViewModel AxisX { get; private set; }
+        #region AxisVM
+
+        public AxisViewModel AxisX { get; private set; }
 
 		public AxisViewModel AxisY { get; private set; }
 
@@ -122,11 +124,17 @@ namespace CNCLib.Wpf.ViewModels
 
 		public RotateViewModel Rotate { get; private set; }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region CustomVM
 
-		public Framework.Arduino.ArduinoSerialCommunication Com
+        public CustomViewModel Custom { get; private set; }
+
+        #endregion
+
+        #region Properties
+
+        public Framework.Arduino.ArduinoSerialCommunication Com
         {
 			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
         }

@@ -79,6 +79,7 @@
     <Compile Include="ViewModels\ManualControl\AxisViewModel.cs" />
     <Compile Include="ViewModels\ManualControl\CommandHistoryViewModel.cs" />
     <Compile Include="ViewModels\ManualControl\RotateViewModel.cs" />
+    <Compile Include="ViewModels\ManualControl\CustomViewModel.cs" />
     <Compile Include="ViewModels\ManualControl\ToolViewModel.cs" />
     <Compile Include="ViewModels\ManualControl\ShiftViewModel.cs" />
     <Compile Include="ViewModels\ManualControl\DirectCommandViewModel.cs" />

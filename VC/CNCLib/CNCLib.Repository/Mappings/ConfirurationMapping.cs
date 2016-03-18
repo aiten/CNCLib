@@ -19,6 +19,8 @@
 using CNCLib.Repository.Contracts.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
@@ -26,25 +28,26 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Repository.Mappings
 {
-    public class MachineMapping : EntityTypeConfiguration<Machine>
+    public class ConfigurationMapping : EntityTypeConfiguration<Configuration>
     {
-		public MachineMapping()
+        public ConfigurationMapping()
         {
-            HasKey(m => m.MachineID);
+            HasKey(m => new { m.Group, m.Name });
+
+            Property((m) => m.Group).
+                IsRequired().
+                HasMaxLength(256);
 
             Property((m) => m.Name).
                 IsRequired().
-                HasMaxLength(64);
+                HasMaxLength(256);
 
-            Property((m) => m.ComPort).
+            Property((m) => m.Type).
                 IsRequired().
-                HasMaxLength(32);
+                HasMaxLength(256);
 
-            Property((m) => m.Axis).IsRequired();
-
-            Property((m) => m.SizeX).IsRequired();
-            Property((m) => m.SizeY).IsRequired();
-            Property((m) => m.SizeZ).IsRequired();
+            Property((m) => m.Value).
+                HasMaxLength(4000);
         }
     }
 }

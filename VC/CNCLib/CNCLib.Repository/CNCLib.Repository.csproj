@@ -68,6 +68,11 @@
     <Compile Include="ItemRepository.cs" />
     <Compile Include="MachineRepository.cs" />
     <Compile Include="ConfigurationRepository.cs" />
+    <Compile Include="Mappings\ItemPropertyMapping.cs" />
+    <Compile Include="Mappings\ItemMapping.cs" />
+    <Compile Include="Mappings\ConfirurationMapping.cs" />
+    <Compile Include="Mappings\MachineInitCommandMapping.cs" />
+    <Compile Include="Mappings\MachineCommandMapping.cs" />
     <Compile Include="Mappings\MachineMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

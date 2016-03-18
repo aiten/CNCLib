@@ -125,40 +125,20 @@ namespace CNCLib.Repository.Context
             var machinecommands = new List<MachineCommand>
             {
                 new MachineCommand{ Machine=CNCLib, CommandName = "SD Dir", CommandString ="m20" },
-                new MachineCommand{ Machine=machines[0], CommandName = "Test", CommandString ="m21" },
                 new MachineCommand{ Machine=kk1000s, CommandName = "SD Dir", CommandString ="m20" },
-                new MachineCommand{ Machine=machines[1], CommandName = "Test", CommandString ="m211" }
+                new MachineCommand{ Machine=machines[0], CommandName = "Test", CommandString ="m21" },
+                new MachineCommand{ Machine=machines[1], CommandName = "Test", CommandString ="m211" },
+                //laser
+                new MachineCommand{ Machine=machines[2], CommandName = "Set XY = 0", CommandString =@"g92 x0\ng92 y0", PosX=0, PosY=0 },
+                new MachineCommand{ Machine=machines[2], CommandName = "Set X = 0", CommandString =@"g92 x0",       PosX=0, PosY=1 },
+                new MachineCommand{ Machine=machines[2], CommandName = "Set Y = 0", CommandString =@"g92 y0",       PosX=0, PosY=2 },
+                new MachineCommand{ Machine=machines[2], CommandName = "Laser Off", CommandString =@"m107",         PosX=1, PosY=0 },
+                new MachineCommand{ Machine=machines[2], CommandName = "Laser On", CommandString =@"m106",          PosX=1, PosY=1 },
+                new MachineCommand{ Machine=machines[2], CommandName = "Laser Min", CommandString =@"m106 s1",      PosX=1, PosY=2 },
+                new MachineCommand{ Machine=machines[2], CommandName = "Laser Max", CommandString =@"m106 s255",    PosX=1, PosY=3 }
             };
 
             context.MachineCommands.AddRange(machinecommands);
-            /*
-                        context.Publishers.AddRange(new List<Publisher> { 
-                            new Publisher { Name="Puffin"},
-                            new Publisher { Name="Frobisher"}
-                        });
-
-                        var TheWaspFactory = new Book
-                        {
-                            Title="The Wasp Factory",
-                            Publisher = context.Publishers.Local.Single(p => p.Name == "Puffin")
-                        };
-
-                        TheWaspFactory.Authors.Add(context.Authors.Local.Single(a => a.Name=="Banks"));
-
-                        var TheDifferenceEngine = new Book
-                        {
-                            Title = "The Difference Engine",
-                            Publisher = context.Publishers.Local.Single(p => p.Name == "Puffin")
-                        };
-
-                        TheDifferenceEngine.Authors.Add(context.Authors.Local.Single(a => a.Name == "Banks"));
-                        TheDifferenceEngine.Authors.Add(context.Authors.Local.Single(a => a.Name == "Stirling"));
-
-                        context.Books.AddRange(new List<Book> { 
-                            TheWaspFactory,
-                            TheDifferenceEngine
-                        });
-             */
         }
     }
 

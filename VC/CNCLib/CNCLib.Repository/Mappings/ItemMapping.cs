@@ -19,6 +19,8 @@
 using CNCLib.Repository.Contracts.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
@@ -26,25 +28,25 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Repository.Mappings
 {
-    public class MachineMapping : EntityTypeConfiguration<Machine>
+    public class ItemMapping : EntityTypeConfiguration<Item>
     {
-		public MachineMapping()
+        public ItemMapping()
         {
-            HasKey(m => m.MachineID);
+
+            HasKey(m => m.ItemID);
+
+            Property(e => e.Name)
+                    .HasColumnAnnotation(
+                        IndexAnnotation.AnnotationName,
+                        new IndexAnnotation(new IndexAttribute("IDX_UniqueName") { IsUnique = true }));
 
             Property((m) => m.Name).
                 IsRequired().
                 HasMaxLength(64);
 
-            Property((m) => m.ComPort).
+            Property((m) => m.ClassName).
                 IsRequired().
-                HasMaxLength(32);
-
-            Property((m) => m.Axis).IsRequired();
-
-            Property((m) => m.SizeX).IsRequired();
-            Property((m) => m.SizeY).IsRequired();
-            Property((m) => m.SizeZ).IsRequired();
+                HasMaxLength(255);
         }
     }
 }
