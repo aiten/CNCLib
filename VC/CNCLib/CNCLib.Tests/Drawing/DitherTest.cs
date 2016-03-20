@@ -119,8 +119,11 @@ namespace CNCLib.Tests.Drawing
             var b1 = new Bitmap(xsize, ysize, PixelFormat.Format32bppArgb);
 
             b1.SetPixel(50, 50, Color.FromArgb(255, 127, 127, 127));
+			b1.SetPixel(50, 51, Color.FromArgb(255, 127, 127, 127));
+			b1.SetPixel(50, 52, Color.FromArgb(255, 127, 127, 127));
+			b1.SetPixel(50, 53, Color.FromArgb(255, 127, 127, 127));
 
-            var b2 = dt.Process(b1);
+			var b2 = dt.Process(b1);
 
             for (int x = 0; x < xsize; x++)
             {
@@ -134,7 +137,7 @@ namespace CNCLib.Tests.Drawing
                         Assert.AreEqual(255, col.R);
                         Assert.AreEqual(255, col.R);
                         Assert.AreEqual(50, x);
-                        Assert.AreEqual(50, y);
+                        Assert.IsTrue(y==53 || y==51);
                     }
                     else
                     {

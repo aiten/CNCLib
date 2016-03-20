@@ -35,9 +35,9 @@ namespace Framework.Tools.Drawing
         protected int _height;
         protected int _width;
         protected int _scansize;
-        protected byte[] _rgbValues;
+        protected int[] _rgbValues;
 
-        int _AddForA = 3;
+		int _AddForA = 3;
         int _AddForR = 2;
         int _AddForG = 1;
         int _AddForB = 0;
@@ -46,15 +46,34 @@ namespace Framework.Tools.Drawing
 
         protected struct Color
         {
-            public Byte R;
-            public Byte G;
-            public Byte B;
-            public Byte A;
-        };
+            public int R;
+            public int G;
+            public int B;
+            public int A;
 
-        #region properties
+			public Color Saturation()
+			{
+				A = Saturation(A);
+				R = Saturation(R);
+				G = Saturation(G);
+				B = Saturation(B);
+				return this;
+			}
 
-        public int Graythreshold { get; set; } = 127;
+			public  static byte Saturation(int r)
+			{
+				if (r <= 0)
+					return 0;
+				else if (r > 255)
+					return (byte)255;
+				else
+					return (byte)(r);
+			}
+		};
+
+		#region properties
+
+		public int Graythreshold { get; set; } = 127;
 
         #endregion
 
@@ -73,19 +92,18 @@ namespace Framework.Tools.Drawing
 
         #region protected helper
 
-        protected static byte Saturation(int r)
+		protected int Luminance(Color col)
 		{
-			if (r <= 0)
-				return 0;
-			else if (r > 255)
-				return (byte)255;
-			else
-				return (byte)(r);
+			// o..255 if RGB is Byte
+			return (int) (0.2126 * col.R + 0.7152 * col.G + 0.0722 * col.B);
 		}
 
-        protected bool FindNearestColorGrayScale(Byte colorR, Byte colorG, Byte colorB)
+		protected Color FindNearestColorGrayScale(Color col)
 		{
-			return (0.2126 * colorR + 0.7152 * colorG + 0.0722 * colorB) >= Graythreshold;
+			if (Luminance(col) > Graythreshold)
+				return new Color() { R = 255, G = 255, B = 255, A = 255 };
+
+			return new Color() { R = 0, G = 0, B = 0, A = 255 };
 		}
 
         protected int ToByteIdx(int x,int y)
@@ -116,15 +134,24 @@ namespace Framework.Tools.Drawing
         }
         protected void SetPixel(int x, int y, int r, int g, int b, int a)
         {
-            SetPixel(x, y, new Color() { R = Saturation(r), G = Saturation(g), B = Saturation(b), A = Saturation(a) });
+            SetPixel(x, y, new Color() { R = r, G = g, B = b, A = a });
         }
         protected void AddPixel(int x, int y, int r, int g, int b, int a)
         {
             Color pixel = GetPixel(x, y);
             SetPixel(x, y, pixel.R+r, pixel.G+g, pixel.B+b, pixel.A+a);
         }
+		protected void AddPixelSaturation(int x, int y, int r, int g, int b, int a)
+		{
+			Color pixel = GetPixel(x, y);
+			SetPixel(x, y, 
+				Color.Saturation(pixel.R + r), 
+				Color.Saturation(pixel.G + g), 
+				Color.Saturation(pixel.B + b), 
+				Color.Saturation(pixel.A + a));
+		}
 
-        protected void ReadImage(Bitmap imageX)
+		protected void ReadImage(Bitmap imageX)
 		{
 			_height = imageX.Height;
 			_width = imageX.Width;
@@ -138,16 +165,18 @@ namespace Framework.Tools.Drawing
 			var rgbValues = new Byte[bytes];
 			System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
 			imageX.UnlockBits(bmpData);
+			_rgbValues = new int[bytes];
 
-            switch (imageX.PixelFormat)
+			for (int i = 0; i < bytes; i++)
+				_rgbValues[i] = rgbValues[i];
+
+			switch (imageX.PixelFormat)
             {
                 case PixelFormat.Format24bppRgb:
                     _bytesPerPixel = 3;
                     _AddForA = -1;
                     break;
             }
-
-            _rgbValues = rgbValues;
 		}
 
         protected abstract void ConvertImage();
@@ -160,8 +189,13 @@ namespace Framework.Tools.Drawing
 			BitmapData bmpData = bsrc.LockBits(rect, ImageLockMode.WriteOnly, bsrc.PixelFormat);
 			IntPtr ptr = bmpData.Scan0;
 
+			var rgbValues = new Byte[_rgbValues.Length];
+
+			for (int i = 0; i < _rgbValues.Length; i++)
+				rgbValues[i] = Color.Saturation(_rgbValues[i]);
+
 			int bytes = Math.Abs(bmpData.Stride) * _height;
-			System.Runtime.InteropServices.Marshal.Copy(_rgbValues, 0, ptr, bytes);
+			System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
 			bsrc.UnlockBits(bmpData);
 
 			var bdest = bsrc.Clone(rect, PixelFormat.Format1bppIndexed);

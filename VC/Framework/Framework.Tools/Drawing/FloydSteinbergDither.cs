@@ -52,29 +52,28 @@ namespace Framework.Tools.Drawing
 				for (int x = 0; x < _width; x++)
 				{
                     Color currentPixel = GetPixel(x, y);
+					currentPixel.Saturation();
+					Color bestColorRGB = FindNearestColorGrayScale(currentPixel);
+                    SetPixel(x, y, bestColorRGB);
 
-					Byte bestColorRGB = (Byte) (FindNearestColorGrayScale(currentPixel.R, currentPixel.G, currentPixel.B) ? 255 : 0);
-
-                    SetPixel(x, y, bestColorRGB, bestColorRGB, bestColorRGB,255);
-
-					int errorR = (currentPixel.R) - (bestColorRGB);
-					int errorG = (currentPixel.G) - (bestColorRGB);
-					int errorB = (currentPixel.B) - (bestColorRGB);
+					int errorR = (currentPixel.R) - (bestColorRGB.R);
+					int errorG = (currentPixel.G) - (bestColorRGB.G);
+					int errorB = (currentPixel.B) - (bestColorRGB.B);
 
                     if (x + 1 < _width)
 					{
-                        AddPixel(x+1, y+0, (errorR * 7) >> 4, (errorG * 7) >> 4, (errorB * 7) >> 4, 255);
+                        AddPixel(x+1, y+0, (errorR * 7) >> 4, (errorG * 7) >> 4, (errorB * 7) >> 4, 0);
 					}
 					if (y + 1 < _height)
 					{
 						if (x - 1 > 0)
 						{
-                            AddPixel(x - 1, y + 1, (errorR * 3) >> 4, (errorG * 3) >> 4, (errorB * 3) >> 4, 255);
+							AddPixel(x - 1, y + 1, (errorR * 3) >> 4, (errorG * 3) >> 4, (errorB * 3) >> 4, 0);
 						}
-                        AddPixel(x + 0, y + 1, (errorR * 5) >> 4, (errorG * 5) >> 4, (errorB * 5) >> 4, 255);
+						AddPixel(x + 0, y + 1, (errorR * 5) >> 4, (errorG * 5) >> 4, (errorB * 5) >> 4, 0);
 						if (x + 1 < _width)
 						{
-                            AddPixel(x + 1, y + 1, (errorR * 1) >> 4, (errorG * 1) >> 4, (errorB * 1) >> 4, 255);
+							AddPixel(x + 1, y + 1, (errorR * 1) >> 4, (errorG * 1) >> 4, (errorB * 1) >> 4, 0);
 						}
 					}
 				}
