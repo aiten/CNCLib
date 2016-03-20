@@ -26,8 +26,8 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Repository.Context
 {
-    
-//    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
+
+    //    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
     public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
     {
         protected override void Seed(CNCLibContext context)
@@ -37,7 +37,13 @@ namespace CNCLib.Repository.Context
 
         public static void CNCSeed(CNCLibContext context)
         {
-            var CNCLib = new Machine
+            MachineSeed(context);
+            ItemSeed(context);
+        }
+
+        private static void MachineSeed(CNCLibContext context)
+        {
+            var proxonMF70 = new Machine
             {
                 Name = "Proxxon MF70",
                 ComPort = "com4",
@@ -113,32 +119,98 @@ namespace CNCLib.Repository.Context
             };
 
 
-            var machines = new List<Machine>
+            var machines = new []
             {
-                CNCLib,
+                proxonMF70,
                 kk1000s,
                 laser
             };
 
             context.Machines.AddRange(machines);
 
-            var machinecommands = new List<MachineCommand>
+            var machinecommands = new []
             {
-                new MachineCommand{ Machine=CNCLib, CommandName = "SD Dir", CommandString ="m20" },
-                new MachineCommand{ Machine=kk1000s, CommandName = "SD Dir", CommandString ="m20" },
-                new MachineCommand{ Machine=machines[0], CommandName = "Test", CommandString ="m21" },
-                new MachineCommand{ Machine=machines[1], CommandName = "Test", CommandString ="m211" },
+                //kk1000s
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Set XY = 0",    CommandString =@"g92 x0\ng92 y0", PosX=0, PosY=0 },
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Set X = 0",    CommandString =@"g92 x0",    PosX=0, PosY=1 },
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Set Y = 0",    CommandString =@"g92 y0",    PosX=0, PosY=2 },
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Spindle On",   CommandString =@"m3",        PosX=1, PosY=0 },
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Spindle Off",  CommandString =@"m5",        PosX=1, PosY=1 },
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Coolant On",   CommandString =@"m7",        PosX=1, PosY=2 },
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Coolant Off",  CommandString =@"m7",        PosX=1, PosY=3 },
+
+                //kk1000s
+                new MachineCommand{ Machine=kk1000s, CommandName = "Set XY = 0",    CommandString =@"g92 x0\ng92 y0", PosX=0, PosY=0 },
+                new MachineCommand{ Machine=kk1000s, CommandName = "Set X = 0",    CommandString =@"g92 x0",    PosX=0, PosY=1 },
+                new MachineCommand{ Machine=kk1000s, CommandName = "Set Y = 0",    CommandString =@"g92 y0",    PosX=0, PosY=2 },
+                new MachineCommand{ Machine=kk1000s, CommandName = "Spindle On",   CommandString =@"m3",        PosX=1, PosY=0 },
+                new MachineCommand{ Machine=kk1000s, CommandName = "Spindle Off",  CommandString =@"m5",        PosX=1, PosY=1 },
+                new MachineCommand{ Machine=kk1000s, CommandName = "Coolant On",   CommandString =@"m7",        PosX=1, PosY=2 },
+                new MachineCommand{ Machine=kk1000s, CommandName = "Coolant Off",  CommandString =@"m7",        PosX=1, PosY=3 },
+
                 //laser
-                new MachineCommand{ Machine=machines[2], CommandName = "Set XY = 0", CommandString =@"g92 x0\ng92 y0", PosX=0, PosY=0 },
-                new MachineCommand{ Machine=machines[2], CommandName = "Set X = 0", CommandString =@"g92 x0",       PosX=0, PosY=1 },
-                new MachineCommand{ Machine=machines[2], CommandName = "Set Y = 0", CommandString =@"g92 y0",       PosX=0, PosY=2 },
-                new MachineCommand{ Machine=machines[2], CommandName = "Laser Off", CommandString =@"m107",         PosX=1, PosY=0 },
-                new MachineCommand{ Machine=machines[2], CommandName = "Laser On", CommandString =@"m106",          PosX=1, PosY=1 },
-                new MachineCommand{ Machine=machines[2], CommandName = "Laser Min", CommandString =@"m106 s1",      PosX=1, PosY=2 },
-                new MachineCommand{ Machine=machines[2], CommandName = "Laser Max", CommandString =@"m106 s255",    PosX=1, PosY=3 }
+                new MachineCommand{ Machine=laser, CommandName = "Set XY = 0",  CommandString =@"g92 x0\ng92 y0", PosX=0, PosY=0 },
+                new MachineCommand{ Machine=laser, CommandName = "Set X = 0",   CommandString =@"g92 x0",       PosX=0, PosY=1 },
+                new MachineCommand{ Machine=laser, CommandName = "Set Y = 0",   CommandString =@"g92 y0",       PosX=0, PosY=2 },
+                new MachineCommand{ Machine=laser, CommandName = "Laser Off",   CommandString =@"m107",         PosX=1, PosY=0 },
+                new MachineCommand{ Machine=laser, CommandName = "Laser On",    CommandString =@"m106",         PosX=1, PosY=1 },
+                new MachineCommand{ Machine=laser, CommandName = "Laser Min",   CommandString =@"m106 s1",      PosX=1, PosY=2 },
+                new MachineCommand{ Machine=laser, CommandName = "Laser Max",   CommandString =@"m106 s255",    PosX=1, PosY=3 }
             };
 
             context.MachineCommands.AddRange(machinecommands);
+        }
+        private static void ItemSeed(CNCLibContext context)
+        {
+            var cutItem = new Item
+            {
+                ClassName = @"CNCLib.GCode.Load.LoadInfo,CNCLib.GCode",
+                Name = @"cut laser 160mg"
+            };
+            var graveItem = new Item
+            {
+                ClassName = @"CNCLib.GCode.Load.LoadInfo,CNCLib.GCode",
+                Name = @"grave"
+            };
+            var graveIMGItem = new Item
+            {
+                ClassName = @"CNCLib.GCode.Load.LoadInfo,CNCLib.GCode",
+                Name = @"grave image"
+            };
+
+            var items = new[] { cutItem, graveItem, graveIMGItem };
+
+            context.Items.AddRange(items);
+
+            var itemproperties = new[]
+            {
+                //cut
+                new ItemProperty() { Item = cutItem, Name = @"SettingName",         Value=@"cut laser 160mg"    },
+                new ItemProperty() { Item = cutItem, Name = @"LaserFirstOnCommand", Value=@"M106 S255\ng4 P0.3"    },
+                new ItemProperty() { Item = cutItem, Name = @"LaserOnCommand",      Value=@"M106\ng4 P0.3"    },
+                new ItemProperty() { Item = cutItem, Name = @"PenMoveType",         Value=@"CommandString"    },
+                new ItemProperty() { Item = cutItem, Name = @"AutoScale",           Value=@"true"    },
+                new ItemProperty() { Item = cutItem, Name = @"AutoScaleSizeX",      Value=@"150"    },
+                new ItemProperty() { Item = cutItem, Name = @"AutoScaleSizeY",      Value=@"150"    },
+                new ItemProperty() { Item = cutItem, Name = @"MoveSpeed",           Value=@"450"    },
+
+                //grave
+                new ItemProperty() { Item = graveItem, Name = @"SettingName",         Value=@"grave"    },
+                new ItemProperty() { Item = graveItem, Name = @"PenMoveType",         Value=@"CommandString"    },
+                new ItemProperty() { Item = graveItem, Name = @"MoveSpeed",           Value=@"450"    },
+
+                //grave Image
+                new ItemProperty() { Item = graveIMGItem, Name = @"SettingName",         Value=@"grave image"    },
+                new ItemProperty() { Item = graveIMGItem, Name = @"PenMoveType",         Value=@"CommandString"    },
+                new ItemProperty() { Item = graveIMGItem, Name = @"MoveSpeed",           Value=@"450"    },
+                new ItemProperty() { Item = graveIMGItem, Name = @"AutoScale",           Value=@"true"    },
+                new ItemProperty() { Item = graveIMGItem, Name = @"ImageDPIX",           Value=@"66.7"    },
+                new ItemProperty() { Item = graveIMGItem, Name = @"ImageDPIY",           Value=@"66.7"    },
+                new ItemProperty() { Item = graveIMGItem, Name = @"AutoScaleSizeX",      Value=@"150"    },
+                new ItemProperty() { Item = graveIMGItem, Name = @"AutoScaleSizeY",      Value=@"150"    }
+            };
+
+            context.ItemProperties.AddRange(itemproperties);
         }
     }
 

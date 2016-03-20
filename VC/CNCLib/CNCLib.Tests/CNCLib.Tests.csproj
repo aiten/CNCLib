@@ -57,6 +57,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -74,6 +75,7 @@
     <Compile Include="..\CNCLibAssemblyInfo.cs">
       <Link>Properties\CNCLibAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Drawing\DitherTest.cs" />
     <Compile Include="Logic\ItemControlerTestClass.cs" />
     <Compile Include="Logic\ItemControlerTests.cs" />
     <Compile Include="Repository\ItemRepositoryTests.cs" />
