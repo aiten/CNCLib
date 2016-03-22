@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -47,37 +48,38 @@ namespace Framework.Tools.Drawing
 
 		protected override void ConvertImage()
 		{
-			for (int y = 0; y < _height; y++)
-			{
-				for (int x = 0; x < _width; x++)
-				{
+            for (int y = 0; y < _height; y++)
+            {
+                for (int x = 0; x < _width; x++)
+                {
                     Color currentPixel = GetPixel(x, y);
-					currentPixel.Saturation();
-					Color bestColorRGB = FindNearestColorGrayScale(currentPixel);
+                    currentPixel.Saturation();
+                    //Color bestColorRGB = FindNearestColorBW(currentPixel);
+                    Color bestColorRGB = FindNearestColorGrayScale(currentPixel);
                     SetPixel(x, y, bestColorRGB);
 
-					int errorR = (currentPixel.R) - (bestColorRGB.R);
-					int errorG = (currentPixel.G) - (bestColorRGB.G);
-					int errorB = (currentPixel.B) - (bestColorRGB.B);
+                    int errorR = (currentPixel.R) - (bestColorRGB.R);
+                    int errorG = (currentPixel.G) - (bestColorRGB.G);
+                    int errorB = (currentPixel.B) - (bestColorRGB.B);
 
                     if (x + 1 < _width)
-					{
-                        AddPixel(x+1, y+0, (errorR * 7) >> 4, (errorG * 7) >> 4, (errorB * 7) >> 4, 0);
-					}
-					if (y + 1 < _height)
-					{
-						if (x - 1 > 0)
-						{
-							AddPixel(x - 1, y + 1, (errorR * 3) >> 4, (errorG * 3) >> 4, (errorB * 3) >> 4, 0);
-						}
-						AddPixel(x + 0, y + 1, (errorR * 5) >> 4, (errorG * 5) >> 4, (errorB * 5) >> 4, 0);
-						if (x + 1 < _width)
-						{
-							AddPixel(x + 1, y + 1, (errorR * 1) >> 4, (errorG * 1) >> 4, (errorB * 1) >> 4, 0);
-						}
-					}
-				}
-			}
+                    {
+                        AddPixelSaturation(x + 1, y + 0, (errorR * 7) / 16, (errorG * 7) / 16, (errorB * 7) / 16, 0);
+                    }
+                    if (y + 1 < _height)
+                    {
+                        if (x - 1 >= 0)
+                        {
+                            AddPixelSaturation(x - 1, y + 1, (errorR * 3) / 16, (errorG * 3) / 16, (errorB * 3) / 16, 0);
+                        }
+                        AddPixelSaturation(x + 0, y + 1, (errorR * 5) / 16, (errorG * 5) / 16, (errorB * 5) / 16, 0);
+                        if (x + 1 < _width)
+                        {
+                            AddPixelSaturation(x + 1, y + 1, (errorR * 1) / 16, (errorG * 1) / 16, (errorB * 1) / 16, 0);
+                        }
+                    }
+                }
+            }
 		}
 	}
 

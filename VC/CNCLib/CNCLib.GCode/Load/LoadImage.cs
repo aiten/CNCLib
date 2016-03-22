@@ -62,8 +62,9 @@ namespace CNCLib.GCode.Load
                         throw new ArgumentException("Bitmap.PixelFormat not supported");
                 }
 
-                if (b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format1bppIndexed)
-                    throw new ArgumentException("Bitmap must be Format1bbp");
+                if (b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format1bppIndexed &&
+                    b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format4bppIndexed)
+                        throw new ArgumentException("Bitmap must be Format1bbp");
 
                 WriteGCode(b);
              }
