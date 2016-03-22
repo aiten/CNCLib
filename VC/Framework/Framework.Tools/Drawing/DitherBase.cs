@@ -97,6 +97,7 @@ namespace Framework.Tools.Drawing
             // o..255 if RGB is Byte
             return (int)(0.2126 * col.R + 0.7152 * col.G + 0.0722 * col.B);
         }
+
         protected Color FindNearestColorBW(Color col)
         {
             int drb = 255 - col.R;
@@ -198,11 +199,14 @@ namespace Framework.Tools.Drawing
 
         protected abstract void ConvertImage();
 
-        protected Bitmap WriteImage(Bitmap imageX)
-        {
-            return WriteImageFormat4bppIndexed(imageX);
+		protected Bitmap WriteImage(Bitmap imageX)
+		{
+			return WriteImageFormat4bppIndexed(imageX);
+		}
 
-            var bsrc = new Bitmap(_width, _height, imageX.PixelFormat);
+		protected Bitmap WriteImageSamePixelFormat(Bitmap imageX)
+		{ 
+			var bsrc = new Bitmap(_width, _height, imageX.PixelFormat);
 
             Rectangle rect = new Rectangle(0, 0, _width, _height);
             BitmapData bmpData = bsrc.LockBits(rect, ImageLockMode.WriteOnly, bsrc.PixelFormat);
