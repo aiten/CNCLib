@@ -79,6 +79,7 @@
     <Compile Include="ViewModels\IManualControlViewModel.cs" />
     <Compile Include="ViewModels\MachineViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\ManualControl\MoveViewModel.cs" />
     <Compile Include="ViewModels\ManualControl\AxisViewModel.cs" />
     <Compile Include="ViewModels\ManualControl\CommandHistoryViewModel.cs" />
     <Compile Include="ViewModels\ManualControl\RotateViewModel.cs" />

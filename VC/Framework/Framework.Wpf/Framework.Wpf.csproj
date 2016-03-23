@@ -49,6 +49,7 @@
     <Compile Include="..\FrameworkAssemblyInfo.cs">
       <Link>Properties\FrameworkAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Helpers\DelegateCommandWithParameter.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

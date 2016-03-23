@@ -54,8 +54,10 @@ namespace CNCLib.Wpf.ViewModels
 			{
 				AxisIndex = 5
 			};
-	
-			CommandHistory = new CommandHistoryViewModel(this) { };
+
+            Move = new MoveViewModel(this) { };
+
+            CommandHistory = new CommandHistoryViewModel(this) { };
 
 			SD = new SDViewModel(this) { };
 
@@ -86,11 +88,17 @@ namespace CNCLib.Wpf.ViewModels
 		
 		public AxisViewModel AxisC { get; private set; }
 
-		#endregion
+        #endregion
 
-		#region CommandHistoryVM
+        #region MoveVM
 
-		public CommandHistoryViewModel CommandHistory { get; private set; }
+        public MoveViewModel Move { get; private set; }
+
+        #endregion
+
+        #region CommandHistoryVM
+
+        public CommandHistoryViewModel CommandHistory { get; private set; }
 
 		#endregion
 

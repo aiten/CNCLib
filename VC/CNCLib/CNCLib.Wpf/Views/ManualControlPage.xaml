@@ -100,10 +100,10 @@
                     <Button Command="{Binding AxisC.SendMinus100Command}" Content="C -100" />
                 </StackPanel>
                 <ctrl:MoveUserControl 
-                    Left="{Binding AxisX.SendPlus100Command}" 
-                    Right="{Binding AxisX.SendMinus100Command}" 
-                    Up="{Binding AxisY.SendPlus100Command}" 
-                    Down="{Binding AxisY.SendMinus100Command}" 
+                    Right="{Binding Move.SendRightCommand}" 
+                    Left="{Binding Move.SendLeftCommand}" 
+                    Up="{Binding Move.SendUpCommand}" 
+                    Down="{Binding Move.SendDownCommand}" 
                     Height="75" Width="75" Margin="20"/>
                 <TextBox Height="23" Text="(c) by HA" Width="Auto" Margin="20" />
             </StackPanel>

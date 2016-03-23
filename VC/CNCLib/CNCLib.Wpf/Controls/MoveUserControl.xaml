@@ -18,9 +18,9 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TextBox Grid.Column="1" Grid.Row="1" Text="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
-        <Button Grid.Column="0" Grid.Row="1" Content="L" />
-        <Button Grid.Column="2" Grid.Row="1" Content="R" />
-        <Button Grid.Column="1" Grid.Row="0" Content="U" />
-        <Button Grid.Column="1" Grid.Row="2" Content="D" />
+        <Button x:Name="_left" Grid.Column="0" Grid.Row="1" Content="L" Click="_left_Click" />
+        <Button x:Name="_right" Grid.Column="2" Grid.Row="1" Content="R" Click="_right_Click" />
+        <Button x:Name="_up" Grid.Column="1" Grid.Row="0" Content="U" Click="_up_Click" />
+        <Button x:Name="_down" Grid.Column="1" Grid.Row="2" Content="D" Click="_down_Click" />
     </Grid>
 </UserControl>
