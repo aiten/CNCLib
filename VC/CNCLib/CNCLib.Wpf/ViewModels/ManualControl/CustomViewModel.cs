@@ -81,6 +81,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private CNCLib.Logic.Contracts.DTO.MachineCommand GetCmd(int x, int y)
         {
+			if (Global.Instance.Machine == null || Global.Instance.Machine.MachineCommands == null)
+				return null;
+
             return Global.Instance.Machine.MachineCommands.Where(m => m.PosX == x && m.PosY == y).FirstOrDefault();
         }
 

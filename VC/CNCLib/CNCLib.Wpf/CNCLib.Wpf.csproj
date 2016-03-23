@@ -65,6 +65,9 @@
     <Compile Include="..\CNCLibAssemblyInfo.cs">
       <Link>Properties\CNCLibAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Controls\MoveUserControl.xaml.cs">
+      <DependentUpon>MoveUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\InvertBoolConverter.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helpers\Extensions.cs" />
@@ -102,6 +105,10 @@
     <Compile Include="Views\SetupPage.xaml.cs">
       <DependentUpon>SetupPage.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\MoveUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\IconsResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
