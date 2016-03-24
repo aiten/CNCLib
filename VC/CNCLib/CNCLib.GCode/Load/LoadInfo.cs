@@ -64,7 +64,7 @@ namespace CNCLib.GCode.Load
 		public string LaserOnCommand { get; set; } = "M106";
         public string LaserOffCommand { get; set; } = "M107";
 
-        public decimal LaserSize { get; set; } = 0.254m;
+        public decimal LaserSize { get; set; } = 0.333m;
 
 		//IMG
         public String ImageWriteToFileName { get; set; } = @"c:\tmp\image.bmp";
