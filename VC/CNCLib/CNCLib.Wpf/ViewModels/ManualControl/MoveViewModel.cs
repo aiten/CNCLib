@@ -50,7 +50,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         public ICommand SendLeftCommand { get { return new DelegateCommand<double>((double dist) => SendMoveCommand(-dist, 'X'), CanSendCommand); } }
         public ICommand SendUpCommand { get { return new DelegateCommand<double>((double dist) => SendMoveCommand(dist, 'Y'), CanSendCommand); } }
         public ICommand SendDownCommand { get { return new DelegateCommand<double>((double dist) => SendMoveCommand(-dist, 'Y'), CanSendCommand); } }
+		public ICommand SendZUpCommand { get { return new DelegateCommand<double>((double dist) => SendMoveCommand(dist, 'Z'), CanSendCommand); } }
+		public ICommand SendZDownCommand { get { return new DelegateCommand<double>((double dist) => SendMoveCommand(-dist, 'Z'), CanSendCommand); } }
 
-        #endregion
-    }
+		#endregion
+	}
 }

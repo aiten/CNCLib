@@ -104,7 +104,9 @@
                     Left="{Binding Move.SendLeftCommand}" 
                     Up="{Binding Move.SendUpCommand}" 
                     Down="{Binding Move.SendDownCommand}" 
-                    Height="75" Width="75" Margin="20"/>
+                    ZUp="{Binding Move.SendZUpCommand}" 
+                    ZDown="{Binding Move.SendZDownCommand}" 
+                    Height="120" Width="140" Margin="20"/>
                 <TextBox Height="23" Text="(c) by HA" Width="Auto" Margin="20" />
             </StackPanel>
             <StackPanel  Margin="0,0,0,5" Orientation="Horizontal">

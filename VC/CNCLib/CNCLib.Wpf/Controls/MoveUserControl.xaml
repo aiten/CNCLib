@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CNCLib.Wpf.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid PreviewKeyDown="Grid_PreviewKeyDown">
+             d:DesignHeight="300" d:DesignWidth="400">
+    <Grid PreviewKeyDown="Grid_PreviewKeyDown" PreviewKeyUp="Grid_PreviewKeyUp">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -16,11 +16,14 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Column="1" Grid.Row="1" Text="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <TextBox x:Name="_dist" Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="_dist_TextChanged" />
         <Button x:Name="_left" Grid.Column="0" Grid.Row="1" Content="L" Click="_left_Click" />
         <Button x:Name="_right" Grid.Column="2" Grid.Row="1" Content="R" Click="_right_Click" />
         <Button x:Name="_up" Grid.Column="1" Grid.Row="0" Content="U" Click="_up_Click" />
         <Button x:Name="_down" Grid.Column="1" Grid.Row="2" Content="D" Click="_down_Click" />
+        <Button x:Name="_Zup" Grid.Column="3" Grid.Row="0" Content="Z-U" Click="_Zup_Click" />
+        <Button x:Name="_Zdown" Grid.Column="3" Grid.Row="2" Content="Z-D" Click="_Zdown_Click"  />
     </Grid>
 </UserControl>
