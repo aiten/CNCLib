@@ -110,6 +110,9 @@ namespace CNCLib.GUI.Load
                     DotSizeX = int.Parse(_holeDotSizeX.Text),
                     DotSizeY = int.Parse(_holeDotSizeY.Text),
 
+                    DotDistX = decimal.Parse(_holeDotDistX.Text),
+                    DotDistY = decimal.Parse(_holeDotDistY.Text),
+
                     UseYShift = _holeYShift.Checked,
                     RotateHeart = _holeRotateHeart.Checked
                 };
@@ -201,6 +204,9 @@ namespace CNCLib.GUI.Load
 
                 _holeDotSizeX.Text = value.DotSizeX.ToString();
                 _holeDotSizeY.Text = value.DotSizeY.ToString();
+
+                _holeDotDistX.Text = value.DotDistX.ToString();
+                _holeDotDistY.Text = value.DotDistY.ToString();
 
                 _holeYShift.Checked = value.UseYShift;
                 _holeRotateHeart.Checked = value.RotateHeart;
@@ -359,5 +365,15 @@ namespace CNCLib.GUI.Load
                 }
             }
         }
-	}
+
+        private void _holeDotSizeYEq_Click(object sender, EventArgs e)
+        {
+            _holeDotSizeY.Text = _holeDotSizeX.Text;
+        }
+
+        private void _holeDotDistYEq_Click(object sender, EventArgs e)
+        {
+            _holeDotDistY.Text = _holeDotDistX.Text;
+        }
+    }
 }

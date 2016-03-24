@@ -86,6 +86,8 @@ namespace CNCLib.GCode.Load
 
         // Hole
 
+        public decimal DotDistX { get; set; } = 0.333m;
+        public decimal DotDistY { get; set; } = 0.333m;
         public int DotSizeX { get; set; } = 1;
         public int DotSizeY { get; set; } = 1;
         public bool UseYShift { get; set; } = true;

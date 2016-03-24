@@ -96,6 +96,9 @@
             this._deleteSettings = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this._holeDotDistY = new System.Windows.Forms.TextBox();
+            this._holeDotDistX = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
             this._holeRotateHeart = new System.Windows.Forms.CheckBox();
             this._holeYShift = new System.Windows.Forms.CheckBox();
             this._holeHeart = new System.Windows.Forms.RadioButton();
@@ -106,6 +109,8 @@
             this._holeCircle = new System.Windows.Forms.RadioButton();
             this._holeDotSizeX = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
+            this._holeDotSizeYEq = new System.Windows.Forms.Button();
+            this._holeDotDistYEq = new System.Windows.Forms.Button();
             this._autoScaleGb.SuspendLayout();
             this._generateForEngrageGroup.SuspendLayout();
             this._generateForLaserGroup.SuspendLayout();
@@ -195,7 +200,7 @@
             // _load
             // 
             this._load.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this._load.Location = new System.Drawing.Point(239, 464);
+            this._load.Location = new System.Drawing.Point(239, 499);
             this._load.Name = "_load";
             this._load.Size = new System.Drawing.Size(84, 23);
             this._load.TabIndex = 9;
@@ -205,7 +210,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(715, 458);
+            this.button1.Location = new System.Drawing.Point(715, 493);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(84, 23);
             this.button1.TabIndex = 10;
@@ -336,7 +341,7 @@
             // _loadGCode
             // 
             this._loadGCode.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this._loadGCode.Location = new System.Drawing.Point(16, 464);
+            this._loadGCode.Location = new System.Drawing.Point(16, 499);
             this._loadGCode.Name = "_loadGCode";
             this._loadGCode.Size = new System.Drawing.Size(84, 23);
             this._loadGCode.TabIndex = 15;
@@ -538,7 +543,7 @@
             // _loadImage
             // 
             this._loadImage.DialogResult = System.Windows.Forms.DialogResult.No;
-            this._loadImage.Location = new System.Drawing.Point(338, 464);
+            this._loadImage.Location = new System.Drawing.Point(338, 499);
             this._loadImage.Name = "_loadImage";
             this._loadImage.Size = new System.Drawing.Size(84, 23);
             this._loadImage.TabIndex = 22;
@@ -733,7 +738,7 @@
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Retry;
-            this.button2.Location = new System.Drawing.Point(438, 464);
+            this.button2.Location = new System.Drawing.Point(438, 499);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(84, 23);
             this.button2.TabIndex = 37;
@@ -742,6 +747,11 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this._holeDotDistYEq);
+            this.groupBox3.Controls.Add(this._holeDotSizeYEq);
+            this.groupBox3.Controls.Add(this._holeDotDistY);
+            this.groupBox3.Controls.Add(this._holeDotDistX);
+            this.groupBox3.Controls.Add(this.label20);
             this.groupBox3.Controls.Add(this._holeRotateHeart);
             this.groupBox3.Controls.Add(this._holeYShift);
             this.groupBox3.Controls.Add(this._holeHeart);
@@ -754,15 +764,38 @@
             this.groupBox3.Controls.Add(this.label21);
             this.groupBox3.Location = new System.Drawing.Point(564, 301);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(235, 140);
+            this.groupBox3.Size = new System.Drawing.Size(235, 186);
             this.groupBox3.TabIndex = 32;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Image Hole";
             // 
+            // _holeDotDistY
+            // 
+            this._holeDotDistY.Location = new System.Drawing.Point(136, 46);
+            this._holeDotDistY.Name = "_holeDotDistY";
+            this._holeDotDistY.Size = new System.Drawing.Size(45, 20);
+            this._holeDotDistY.TabIndex = 39;
+            // 
+            // _holeDotDistX
+            // 
+            this._holeDotDistX.Location = new System.Drawing.Point(87, 46);
+            this._holeDotDistX.Name = "_holeDotDistX";
+            this._holeDotDistX.Size = new System.Drawing.Size(45, 20);
+            this._holeDotDistX.TabIndex = 37;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(19, 49);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(61, 13);
+            this.label20.TabIndex = 38;
+            this.label20.Text = "DotDistX/Y";
+            // 
             // _holeRotateHeart
             // 
             this._holeRotateHeart.AutoSize = true;
-            this._holeRotateHeart.Location = new System.Drawing.Point(161, 93);
+            this._holeRotateHeart.Location = new System.Drawing.Point(161, 125);
             this._holeRotateHeart.Name = "_holeRotateHeart";
             this._holeRotateHeart.Size = new System.Drawing.Size(58, 17);
             this._holeRotateHeart.TabIndex = 36;
@@ -772,7 +805,7 @@
             // _holeYShift
             // 
             this._holeYShift.AutoSize = true;
-            this._holeYShift.Location = new System.Drawing.Point(22, 48);
+            this._holeYShift.Location = new System.Drawing.Point(22, 80);
             this._holeYShift.Name = "_holeYShift";
             this._holeYShift.Size = new System.Drawing.Size(57, 17);
             this._holeYShift.TabIndex = 32;
@@ -782,7 +815,7 @@
             // _holeHeart
             // 
             this._holeHeart.AutoSize = true;
-            this._holeHeart.Location = new System.Drawing.Point(104, 92);
+            this._holeHeart.Location = new System.Drawing.Point(104, 124);
             this._holeHeart.Name = "_holeHeart";
             this._holeHeart.Size = new System.Drawing.Size(51, 17);
             this._holeHeart.TabIndex = 35;
@@ -799,7 +832,7 @@
             // _holeDiamond
             // 
             this._holeDiamond.AutoSize = true;
-            this._holeDiamond.Location = new System.Drawing.Point(104, 72);
+            this._holeDiamond.Location = new System.Drawing.Point(104, 104);
             this._holeDiamond.Name = "_holeDiamond";
             this._holeDiamond.Size = new System.Drawing.Size(67, 17);
             this._holeDiamond.TabIndex = 32;
@@ -809,7 +842,7 @@
             // _holeHexagon
             // 
             this._holeHexagon.AutoSize = true;
-            this._holeHexagon.Location = new System.Drawing.Point(19, 113);
+            this._holeHexagon.Location = new System.Drawing.Point(19, 145);
             this._holeHexagon.Name = "_holeHexagon";
             this._holeHexagon.Size = new System.Drawing.Size(68, 17);
             this._holeHexagon.TabIndex = 31;
@@ -819,7 +852,7 @@
             // _holeSquare
             // 
             this._holeSquare.AutoSize = true;
-            this._holeSquare.Location = new System.Drawing.Point(19, 72);
+            this._holeSquare.Location = new System.Drawing.Point(19, 104);
             this._holeSquare.Name = "_holeSquare";
             this._holeSquare.Size = new System.Drawing.Size(59, 17);
             this._holeSquare.TabIndex = 30;
@@ -829,7 +862,7 @@
             // _holeCircle
             // 
             this._holeCircle.AutoSize = true;
-            this._holeCircle.Location = new System.Drawing.Point(19, 92);
+            this._holeCircle.Location = new System.Drawing.Point(19, 124);
             this._holeCircle.Name = "_holeCircle";
             this._holeCircle.Size = new System.Drawing.Size(51, 17);
             this._holeCircle.TabIndex = 29;
@@ -852,11 +885,31 @@
             this.label21.TabIndex = 20;
             this.label21.Text = "DotSizeX/Y";
             // 
+            // _holeDotSizeYEq
+            // 
+            this._holeDotSizeYEq.Location = new System.Drawing.Point(188, 20);
+            this._holeDotSizeYEq.Name = "_holeDotSizeYEq";
+            this._holeDotSizeYEq.Size = new System.Drawing.Size(20, 23);
+            this._holeDotSizeYEq.TabIndex = 32;
+            this._holeDotSizeYEq.Text = "=";
+            this._holeDotSizeYEq.UseVisualStyleBackColor = true;
+            this._holeDotSizeYEq.Click += new System.EventHandler(this._holeDotSizeYEq_Click);
+            // 
+            // _holeDotDistYEq
+            // 
+            this._holeDotDistYEq.Location = new System.Drawing.Point(187, 43);
+            this._holeDotDistYEq.Name = "_holeDotDistYEq";
+            this._holeDotDistYEq.Size = new System.Drawing.Size(20, 23);
+            this._holeDotDistYEq.TabIndex = 40;
+            this._holeDotDistYEq.Text = "=";
+            this._holeDotDistYEq.UseVisualStyleBackColor = true;
+            this._holeDotDistYEq.Click += new System.EventHandler(this._holeDotDistYEq_Click);
+            // 
             // LoadOptionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(811, 499);
+            this.ClientSize = new System.Drawing.Size(811, 534);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this._deleteSettings);
@@ -984,5 +1037,10 @@
         private System.Windows.Forms.RadioButton _holeHeart;
         private System.Windows.Forms.CheckBox _holeYShift;
         private System.Windows.Forms.CheckBox _holeRotateHeart;
+        private System.Windows.Forms.TextBox _holeDotDistY;
+        private System.Windows.Forms.TextBox _holeDotDistX;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Button _holeDotDistYEq;
+        private System.Windows.Forms.Button _holeDotSizeYEq;
     }
 }

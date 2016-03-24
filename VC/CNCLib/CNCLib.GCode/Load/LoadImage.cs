@@ -39,7 +39,7 @@ namespace CNCLib.GCode.Load
             const double SHIFT = 0;
 
             _shiftLaserOn = -SHIFT * (double) LoadOptions.LaserSize;
-            _shiftLaserOff = SHIFT * (double)LoadOptions.LaserSize;
+            _shiftLaserOff = SHIFT * (double) LoadOptions.LaserSize;
 
             using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(LoadOptions.FileName))
             {
@@ -92,7 +92,6 @@ namespace CNCLib.GCode.Load
 
             return b;
         }
-
  
         protected override void WriteGCode() 
         {

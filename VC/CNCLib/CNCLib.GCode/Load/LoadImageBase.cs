@@ -27,6 +27,9 @@ namespace CNCLib.GCode.Load
     {
         protected double PixelSizeX { get; private set; } = 1;
         protected double PixelSizeY { get; private set; } = 1;
+        virtual protected double PixelDistX { get { return 0; } }
+        virtual protected double PixelDistY { get { return 0; } }
+
         protected int SizeX { get; private set; }
         protected int SizeY { get; private set; }
         protected double ShiftX { get; private set; } = 0;
@@ -82,10 +85,24 @@ namespace CNCLib.GCode.Load
                 AddComment("AutoScaleY", LoadOptions.AutoScaleSizeY);
                 AddComment("DPI_X", dpiX);
                 AddComment("DPI_Y", dpiY);
+                double scaleDPIX = dpiX;
+                double scaleDPIY = dpiY;
+                if (PixelDistX > 0.0)
+                {
+                    double dotsize = 25.4 / scaleDPIX + PixelDistX;
+                    scaleDPIX = 25.4 / dotsize;
+                    AddComment("DPI_X(Dist)", scaleDPIX);
+                }
+                if (PixelDistY > 0.0)
+                {
+                    double dotsize = 25.4 / scaleDPIY + PixelDistY;
+                    scaleDPIY = 25.4 / dotsize;
+                    AddComment("DPI_Y(Dist)", scaleDPIY);
+                }
                 double nowX = (double)b.Width;
                 double nowY = (double)b.Height;
-                double newX = ((double)LoadOptions.AutoScaleSizeX) * dpiX / 25.4;
-                double newY = ((double)LoadOptions.AutoScaleSizeY) * dpiY / 25.4;
+                double newX = ((double)LoadOptions.AutoScaleSizeX) * scaleDPIX / 25.4;
+                double newY = ((double)LoadOptions.AutoScaleSizeY) * scaleDPIY / 25.4;
                 scaleX = (decimal)(newX / nowX);
                 scaleY = (decimal)(newY / nowY);
                 if (LoadOptions.AutoScaleKeepRatio)
@@ -106,7 +123,6 @@ namespace CNCLib.GCode.Load
 
             return b;
         }
-
     }
 }
 
