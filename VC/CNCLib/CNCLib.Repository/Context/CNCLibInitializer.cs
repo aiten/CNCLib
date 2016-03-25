@@ -71,7 +71,7 @@ namespace CNCLib.Repository.Context
             var kk1000s = new Machine
             {
                 Name = "KK1000S",
-                ComPort = "com11",
+                ComPort = "com5",
                 Axis = 3,
                 SizeX = 830m,
                 SizeY = 500m,
@@ -82,7 +82,7 @@ namespace CNCLib.Repository.Context
                 BaudRate = 115200,
                 BufferSize = 63,
                 CommandToUpper = false,
-                ProbeSizeZ = 25m,
+                ProbeSizeZ = 24.8m,
                 ProbeDist = 10m,
                 ProbeDistUp = 3m,
                 ProbeFeed = 100m,
@@ -130,23 +130,25 @@ namespace CNCLib.Repository.Context
 
             var machinecommands = new []
             {
-                //kk1000s
+                //ProxxonMF70
                 new MachineCommand{ Machine=proxonMF70, CommandName = "Set XY = 0",    CommandString =@"g92 x0\ng92 y0", PosX=0, PosY=0 },
                 new MachineCommand{ Machine=proxonMF70, CommandName = "Set X = 0",    CommandString =@"g92 x0",    PosX=0, PosY=1 },
                 new MachineCommand{ Machine=proxonMF70, CommandName = "Set Y = 0",    CommandString =@"g92 y0",    PosX=0, PosY=2 },
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Set Z = 0",    CommandString =@"g92 z0",    PosX=0, PosY=3 },
                 new MachineCommand{ Machine=proxonMF70, CommandName = "Spindle On",   CommandString =@"m3",        PosX=1, PosY=0 },
                 new MachineCommand{ Machine=proxonMF70, CommandName = "Spindle Off",  CommandString =@"m5",        PosX=1, PosY=1 },
                 new MachineCommand{ Machine=proxonMF70, CommandName = "Coolant On",   CommandString =@"m7",        PosX=1, PosY=2 },
-                new MachineCommand{ Machine=proxonMF70, CommandName = "Coolant Off",  CommandString =@"m7",        PosX=1, PosY=3 },
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Coolant Off",  CommandString =@"m9",        PosX=1, PosY=3 },
 
                 //kk1000s
                 new MachineCommand{ Machine=kk1000s, CommandName = "Set XY = 0",    CommandString =@"g92 x0\ng92 y0", PosX=0, PosY=0 },
                 new MachineCommand{ Machine=kk1000s, CommandName = "Set X = 0",    CommandString =@"g92 x0",    PosX=0, PosY=1 },
                 new MachineCommand{ Machine=kk1000s, CommandName = "Set Y = 0",    CommandString =@"g92 y0",    PosX=0, PosY=2 },
+                new MachineCommand{ Machine=kk1000s, CommandName = "Set Z = 0",    CommandString =@"g92 z0",    PosX=0, PosY=3 },
                 new MachineCommand{ Machine=kk1000s, CommandName = "Spindle On",   CommandString =@"m3",        PosX=1, PosY=0 },
                 new MachineCommand{ Machine=kk1000s, CommandName = "Spindle Off",  CommandString =@"m5",        PosX=1, PosY=1 },
                 new MachineCommand{ Machine=kk1000s, CommandName = "Coolant On",   CommandString =@"m7",        PosX=1, PosY=2 },
-                new MachineCommand{ Machine=kk1000s, CommandName = "Coolant Off",  CommandString =@"m7",        PosX=1, PosY=3 },
+                new MachineCommand{ Machine=kk1000s, CommandName = "Coolant Off",  CommandString =@"m9",        PosX=1, PosY=3 },
 
                 //laser
                 new MachineCommand{ Machine=laser, CommandName = "Set XY = 0",  CommandString =@"g92 x0\ng92 y0", PosX=0, PosY=0 },
@@ -167,6 +169,12 @@ namespace CNCLib.Repository.Context
                 ClassName = @"CNCLib.GCode.Load.LoadInfo,CNCLib.GCode",
                 Name = @"cut laser 160mg"
             };
+            var cutHoleItem = new Item
+            {
+                ClassName = @"CNCLib.GCode.Load.LoadInfo,CNCLib.GCode",
+                Name = @"cut laser hole 130mg black"
+            };
+
             var graveItem = new Item
             {
                 ClassName = @"CNCLib.GCode.Load.LoadInfo,CNCLib.GCode",
@@ -178,14 +186,14 @@ namespace CNCLib.Repository.Context
                 Name = @"grave image"
             };
 
-            var items = new[] { cutItem, graveItem, graveIMGItem };
+            var items = new[] { cutItem, cutHoleItem, graveItem, graveIMGItem,  };
 
             context.Items.AddRange(items);
 
             var itemproperties = new[]
             {
                 //cut
-                new ItemProperty() { Item = cutItem, Name = @"SettingName",         Value=@"cut laser 160mg"    },
+                new ItemProperty() { Item = cutItem, Name = @"SettingName",         Value=cutItem.Name    },
                 new ItemProperty() { Item = cutItem, Name = @"LaserFirstOnCommand", Value=@"M106 S255\ng4 P0.3"    },
                 new ItemProperty() { Item = cutItem, Name = @"LaserOnCommand",      Value=@"M106\ng4 P0.3"    },
                 new ItemProperty() { Item = cutItem, Name = @"PenMoveType",         Value=@"CommandString"    },
@@ -194,13 +202,28 @@ namespace CNCLib.Repository.Context
                 new ItemProperty() { Item = cutItem, Name = @"AutoScaleSizeY",      Value=@"150"    },
                 new ItemProperty() { Item = cutItem, Name = @"MoveSpeed",           Value=@"450"    },
 
+                //cut-image
+                new ItemProperty() { Item = cutHoleItem, Name = @"SettingName",         Value=cutHoleItem.Name    },
+                new ItemProperty() { Item = cutHoleItem, Name = @"LaserFirstOnCommand", Value=@"M106 S255\ng4 P0.25"    },
+                new ItemProperty() { Item = cutHoleItem, Name = @"LaserOnCommand",      Value=@"M106\ng4 P0.25"    },
+                new ItemProperty() { Item = cutHoleItem, Name = @"PenMoveType",         Value=@"CommandString"    },
+                new ItemProperty() { Item = cutHoleItem, Name = @"AutoScale",           Value=@"true"    },
+                new ItemProperty() { Item = cutHoleItem, Name = @"AutoScaleSizeX",      Value=@"200"    },
+                new ItemProperty() { Item = cutHoleItem, Name = @"AutoScaleSizeY",      Value=@"290"    },
+                new ItemProperty() { Item = cutHoleItem, Name = @"MoveSpeed",           Value=@"500"    },
+                new ItemProperty() { Item = cutHoleItem, Name = @"ImageDPIX",           Value=@"12"    },
+                new ItemProperty() { Item = cutHoleItem, Name = @"ImageDPIY",           Value=@"12"    },
+                new ItemProperty() { Item = cutHoleItem, Name = @"DotDistX",            Value=@"0.7"    },
+                new ItemProperty() { Item = cutHoleItem, Name = @"DotDistY",            Value=@"0.7"    },
+                new ItemProperty() { Item = cutHoleItem, Name = @"HoleType",            Value=@"Diamond"    },
+
                 //grave
-                new ItemProperty() { Item = graveItem, Name = @"SettingName",         Value=@"grave"    },
+                new ItemProperty() { Item = graveItem, Name = @"SettingName",         Value=graveItem.Name    },
                 new ItemProperty() { Item = graveItem, Name = @"PenMoveType",         Value=@"CommandString"    },
                 new ItemProperty() { Item = graveItem, Name = @"MoveSpeed",           Value=@"450"    },
 
                 //grave Image
-                new ItemProperty() { Item = graveIMGItem, Name = @"SettingName",         Value=@"grave image"    },
+                new ItemProperty() { Item = graveIMGItem, Name = @"SettingName",         Value=graveIMGItem.Name    },
                 new ItemProperty() { Item = graveIMGItem, Name = @"PenMoveType",         Value=@"CommandString"    },
                 new ItemProperty() { Item = graveIMGItem, Name = @"MoveSpeed",           Value=@"450"    },
                 new ItemProperty() { Item = graveIMGItem, Name = @"AutoScale",           Value=@"true"    },

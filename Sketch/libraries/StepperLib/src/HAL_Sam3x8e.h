@@ -112,6 +112,16 @@ inline void CHAL::analogWrite8(pin_t pin, uint8_t val)
 	::analogWrite(pin, val);
 }
 
+inline void CHAL::pinModeOutput(pin_t pin)
+{
+	::pinMode(pin, OUTPUT);
+}
+
+inline void CHAL::pinModeInputPullUp(pin_t pin)
+{
+	::pinMode(pin, INPUT_PULLUP);
+}
+
 ////////////////////////////////////////////////////////
 
 inline void CHAL::delayMicroseconds(unsigned int usec)
