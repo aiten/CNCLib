@@ -42,8 +42,16 @@ namespace CNCLib.Wpf.ViewModels
     {
         public SetupWindowViewModel()
 		{
-            LoadMachines(-1);
-			ResetOnConnect = false;
+			try
+			{
+				LoadMachines(-1);
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show("Cannot create/connect database in c:\\tmp\n\r"+e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				Application.Current.Shutdown();
+			}
+ 			ResetOnConnect = false;
 		}
 
         private void LoadMachines(int defaultmachineid)
