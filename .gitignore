@@ -8,3 +8,4 @@ ipch/
 /VC/builds
 /VC/Arduino.VC/StepperTest/TestResult
 /VC/CNCLib/packages
+/Sketch/libraries/grbl
