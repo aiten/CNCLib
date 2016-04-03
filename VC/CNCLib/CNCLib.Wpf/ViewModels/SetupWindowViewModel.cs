@@ -34,6 +34,7 @@ using CNCLib.GCode;
 using CNCLib.Wpf.Models;
 using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
+using CNCLib.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -78,7 +79,12 @@ namespace CNCLib.Wpf.ViewModels
 			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
         }
 
-		#region Current Machine
+        private Framework.Arduino.ArduinoSerialCommunication ComJoystick
+        {
+            get { return Framework.Tools.Pattern.Singleton<JoystickArduinoSerialCommunication>.Instance; }
+        }
+
+        #region Current Machine
 
         public Models.Machine Machine
 		{
@@ -104,9 +110,14 @@ namespace CNCLib.Wpf.ViewModels
             get { return Com.IsConnected; }
         }
 
-		#endregion
+        public bool ConnectedJoystick
+        {
+            get { return ComJoystick.IsConnected; }
+        }
 
-		private bool _resetOnConnect=true;
+        #endregion
+
+        private bool _resetOnConnect=true;
 		public bool ResetOnConnect
 		{
 			get { return _resetOnConnect; }
@@ -160,6 +171,24 @@ namespace CNCLib.Wpf.ViewModels
 			OnPropertyChanged(() => Connected);
 		}
 
+        public void ConnectJoystick()
+        {
+            try
+            {
+                ComJoystick.ResetOnConnect = true;
+                ComJoystick.CommandToUpper = false;
+                ComJoystick.BaudRate = (int)250000;
+                ComJoystick.Connect("com7");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            OnPropertyChanged(() => ConnectedJoystick);
+        }
+
+
         private void SetGlobal()
         {
 			ObjectConverter.CopyProperties(Settings.Instance, Machine);
@@ -186,7 +215,23 @@ namespace CNCLib.Wpf.ViewModels
 			return Connected;
 		}
 
-       public void SetupMachine()
+        public bool CanConnectJoystick()
+        {
+            return !ConnectedJoystick;
+        }
+
+        public void DisConnectJoystick()
+        {
+            ComJoystick.Disconnect();
+            OnPropertyChanged(() => ConnectedJoystick);
+        }
+        public bool CanDisConnectJoystick()
+        {
+            return ConnectedJoystick;
+        }
+
+
+        public void SetupMachine()
         {
             var dlg = new MachineView();
 
@@ -227,6 +272,8 @@ namespace CNCLib.Wpf.ViewModels
  		public ICommand ConnectCommand { get { return new DelegateCommand(Connect, CanConnect); } }
 		public ICommand DisConnectCommand	{ get { return new DelegateCommand(DisConnect, CanDisConnect); } }
 		public ICommand SetDefaultMachineCommand { get { return new DelegateCommand(SetDefaultMachine, CanSetupMachine); } }
+        public ICommand ConnectJoystickCommand { get { return new DelegateCommand(ConnectJoystick, CanConnectJoystick); } }
+        public ICommand DisConnectJoystickCommand { get { return new DelegateCommand(DisConnectJoystick, CanDisConnectJoystick); } }
 
         #endregion
     }

@@ -71,6 +71,7 @@
     <Compile Include="Converters\InvertBoolConverter.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\JoystickArduinoSerialCommunication.cs" />
     <Compile Include="Models\Converter.cs" />
     <Compile Include="Models\MachineInitCommand.cs" />
     <Compile Include="Models\MachineCommand.cs" />

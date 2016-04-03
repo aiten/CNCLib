@@ -31,13 +31,22 @@ namespace CNCLib.Wpf.Views
 		{
 			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
 		}
+        private Framework.Arduino.ArduinoSerialCommunication ComJoystick
+        {
+            get { return Framework.Tools.Pattern.Singleton<Wpf.Helpers.JoystickArduinoSerialCommunication>.Instance; }
+        }
 
-		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (Com.IsConnected)
 				Com.Disconnect();
 
 			Com.Trace.CloseTrace();
+
+            if (ComJoystick.IsConnected)
+                ComJoystick.Disconnect();
+
+            ComJoystick.Trace.CloseTrace();
         }
-	}
+    }
 }
