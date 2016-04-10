@@ -18,14 +18,20 @@
 
 ////////////////////////////////////////////////////////
 
-const int maxspeedfast = 3000;  //mmpermin
-const int maxspeedslow = 400;   //mmpermin
-
-const int intervall = 200;      // ms
+#define MAXSPEED1 3000
+#define MAXSPEED2 400
+#define INTERVALL 200
 
 #define XANALOGPIN  A0
 #define YANALOGPIN  A1
 #define PUSHPIN     8
+
+#define BUTTON1     7
+#define BUTTON2     6
+#define BUTTON3     5
+#define BUTTON4     4
+#define BUTTON5     3
+#define BUTTON6     2
 
 ////////////////////////////////////////////////////////
 
@@ -42,12 +48,30 @@ CReadAnalogIOControl<XANALOGPIN> X;
 CReadAnalogIOControl<YANALOGPIN> Y;
 CPushButton btn(PUSHPIN, LOW);
 
+CPushButton btn1(BUTTON1, LOW);
+CPushButton btn2(BUTTON2, LOW);
+CPushButton btn3(BUTTON3, LOW);
+CPushButton btn4(BUTTON4, LOW);
+CPushButton btn5(BUTTON5, LOW);
+CPushButton btn6(BUTTON6, LOW);
+
 const int maxanalog = 32;
 const int minanalog = 0;
 const int maxdist = (maxanalog - minanalog) / 2;
 int neutralanalog = (maxanalog - minanalog) / 2;
 
+int maxspeedfast = MAXSPEED1;  //mmpermin
+int maxspeedslow = MAXSPEED2;  //mmpermin
+
+int intervall = INTERVALL;      // ms
+
 bool speedfast = false;
+unsigned char laserpower = 255;
+
+char buffer[64];
+unsigned char bufferidx = 0;
+
+unsigned long timeNext = 0;
 
 ////////////////////////////////////////////////////////
 
@@ -101,7 +125,7 @@ unsigned int SpeedToDist(unsigned int mmPerMin, unsigned int ms)
 unsigned int ToSpeed(int diffX, int diffY)
 {
   // diffX, diffY 0..maxDist
-  
+
   if (diffX == 0 && diffY == 0)
     return 0;
 
@@ -114,9 +138,55 @@ unsigned int ToSpeed(int diffX, int diffY)
 
 ////////////////////////////////////////////////////////
 
+void InCommand(char*b)
+{
+  char*col = strchr(b,'=');
+  if (col!=NULL)
+  {
+    *col = 0;
+    col++;
+
+    int varidx = atoi(b);
+    int varvalue = atoi(col);
+
+    Serial.print(varidx);
+    Serial.print(F("="));
+    Serial.println(varvalue);
+
+    switch(varidx)
+    {
+      case 1: maxspeedfast = varvalue; break;
+      case 2: maxspeedslow = varvalue; break;
+      case 3: intervall    = varvalue; break;
+    }
+  }
+  
+  //Serial.println(b);
+}
+
+////////////////////////////////////////////////////////
+
 void loop()
 {
-  static unsigned long timeNext = 0;
+  if (Serial.available() > 0)
+  {
+    char ch = buffer[bufferidx] = Serial.read();
+
+    if (ch == '\n')
+    {
+      buffer[bufferidx] = 0;
+      InCommand(buffer);
+      bufferidx = 0;
+    }
+    else
+    {
+      bufferidx++;
+      if (bufferidx >= sizeof(buffer))
+      {
+        Serial.println(F("buffer overrun"));
+      }
+    }
+  }
 
   if (millis() > timeNext)
   {
@@ -136,11 +206,44 @@ void loop()
     }
   }
 
-  bool ison = btn.IsOn();
-
-  if (ison)
+  if (btn.IsOn())
   {
     speedfast  = !speedfast;
   }
+
+  if (btn1.IsOn())
+  {
+    laserpower = 255;
+    Serial.println(F("m107"));
+  }
+
+  if (btn2.IsOn())
+  {
+    laserpower = laserpower == 1 ? 255 : 1;
+    Serial.print(F("m106 s"));
+    Serial.println((int) laserpower);
+  }
+
+  if (btn3.IsOn())
+  {
+    Serial.println(F(";btn3"));
+  }
+
+  if (btn4.IsOn())
+  {
+    Serial.println(F(";btn4"));
+  }
+
+  if (btn5.IsOn())
+  {
+    Serial.println(F(";btn5"));
+  }
+
+  if (btn6.IsOn())
+  {
+    Serial.println(F("g92 x0y0"));
+  }
 }
+
+////////////////////////////////////////////////////////
 
