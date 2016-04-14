@@ -36,7 +36,12 @@ namespace CNCLib.Wpf.Helpers
         {
             base.OnReplyReceived(info);
 
-            AsyncRunCommand(() => Com.SendCommand(info.Info));
+            AsyncRunCommand(() =>
+			{
+				Com.SendCommand(info.Info);
+				//this.SendCommand(Com.LastCommand.ResultText);
+			})
+			;
         }
     }
 }

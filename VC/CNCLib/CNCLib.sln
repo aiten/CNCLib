@@ -39,6 +39,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Logic.Contracts", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Test", "..\Framework\Framework.Test\Framework.Test.csproj", "{BBECB408-5426-4CE7-B7B6-970BDE436486}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.WebAPI", "CNCLib.WebAPI\CNCLib.WebAPI.csproj", "{DA845EDE-FADC-455C-AEF7-D1844B258784}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.WebAPI.Tests", "CNCLib.WebAPI.Tests\CNCLib.WebAPI.Tests.csproj", "{6C724EC7-6A76-47D7-9F6D-887A15CCBB46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +109,14 @@ Global
 		{BBECB408-5426-4CE7-B7B6-970BDE436486}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBECB408-5426-4CE7-B7B6-970BDE436486}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBECB408-5426-4CE7-B7B6-970BDE436486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA845EDE-FADC-455C-AEF7-D1844B258784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA845EDE-FADC-455C-AEF7-D1844B258784}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA845EDE-FADC-455C-AEF7-D1844B258784}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA845EDE-FADC-455C-AEF7-D1844B258784}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C724EC7-6A76-47D7-9F6D-887A15CCBB46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C724EC7-6A76-47D7-9F6D-887A15CCBB46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C724EC7-6A76-47D7-9F6D-887A15CCBB46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C724EC7-6A76-47D7-9F6D-887A15CCBB46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
