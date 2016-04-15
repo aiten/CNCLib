@@ -3,9 +3,14 @@
 *.bak
 *.sdf
 Debug/
+Release/
 ipch/
 .vs/
 /VC/builds
 /VC/Arduino.VC/StepperTest/TestResult
 /VC/CNCLib/packages
 /Sketch/libraries/grbl
+
+/VC/Arduino.VC/Lib/StepperSystem.lib
+/VC/CNCLib/CNCLib.WebAPI/bin
+/VC/CNCLib/CNCLib.WebAPI/_bin_deployableAssemblies
