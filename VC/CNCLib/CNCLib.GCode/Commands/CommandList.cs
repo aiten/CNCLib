@@ -62,5 +62,26 @@ namespace CNCLib.GCode.Commands
 				cmd.Draw(output, drawstate, param);
 			}
 		}
+
+		public IEnumerable<string> ToStringList()
+		{
+			var list = new List<string>();
+
+			Command last = null;
+
+			foreach (Command r in this)
+			{
+				string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
+				if (cmds != null)
+				{
+					foreach (String str in cmds)
+					{
+						list.Add(str);
+					}
+				}
+				last = r;
+			}
+			return list;
+		}
 	}
 }

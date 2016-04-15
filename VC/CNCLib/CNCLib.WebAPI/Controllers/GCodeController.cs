@@ -27,25 +27,9 @@ namespace CNCLib.WebAPI.Controllers
 			var load = new LoadHPGL() { LoadOptions = opt };
 			load.Load();
 
-			var list = new List<string>();
-
-			Command last = null;
-
-			foreach (var r in load.Commands)
-			{
-				string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
-				if (cmds != null)
-				{
-					foreach (String str in cmds)
-					{
-						list.Add(str);
-					}
-				}
-				last = r;
-			}
-			return list;
+			return load.Commands.ToStringList();
 		}
-
+/*
 		// POST api/values
 		public void Post([FromBody]string value)
 		{
@@ -60,5 +44,6 @@ namespace CNCLib.WebAPI.Controllers
 		public void Delete(int id)
 		{
 		}
+*/
 	}
 }
