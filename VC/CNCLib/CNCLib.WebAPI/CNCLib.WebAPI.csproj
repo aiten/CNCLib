@@ -197,6 +197,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\GCodeController.cs" />
     <Compile Include="Controllers\MachineController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -278,6 +279,10 @@
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
       <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>
       <Name>Framework.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj">
+      <Project>{f9c446f4-6365-4189-95c5-009ef0160882}</Project>
+      <Name>CNCLib.GCode</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">
       <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>
