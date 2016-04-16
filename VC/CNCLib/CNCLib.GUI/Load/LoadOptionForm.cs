@@ -56,7 +56,7 @@ namespace CNCLib.GUI.Load
 
             using (var controler = Dependency.Resolve<IItemControler>())
             {
-                var items = controler.GetAll();
+                var items = controler.GetAll(new LoadInfo().GetType());
                 foreach (var s in items)
                 {
                     _settingName.Items.Add(new LoadOptionDefinition() { Item = s });

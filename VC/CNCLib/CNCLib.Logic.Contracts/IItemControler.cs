@@ -25,7 +25,9 @@ namespace CNCLib.Logic.Contracts
 	{
 		IEnumerable<DTO.Item> GetAll();
 
-        object Create(int id);
+		IEnumerable<DTO.Item> GetAll(Type t);
+
+		object Create(int id);
 
         int Add(string name, object value);
         void Save(int id, string name, object value);

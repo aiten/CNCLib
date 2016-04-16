@@ -40,6 +40,14 @@ namespace CNCLib.Repository
 				ToArray();
 		}
 
+		public Contracts.Entities.Item[] Get(string typeidstring)
+		{
+			return Context.Items.
+				Where((m) => m.ClassName == typeidstring).
+				Include((d) => d.ItemProperties).
+				ToArray();
+		}
+
 		public Contracts.Entities.Item Get(int id)
         {
 			return Context.Items.

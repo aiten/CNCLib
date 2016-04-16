@@ -35,6 +35,21 @@ namespace CNCLib.Logic
 {
     public class ItemControler : ControlerBase, IItemControler
 	{
+		public IEnumerable<Item> GetAll(Type t)
+		{
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+			{
+				var all = rep.Get(GetClassName(t));
+				List<Item> l = new List<Item>();
+				foreach (var o in all)
+				{
+					l.Add(o.Convert());
+				}
+				return l;
+			}
+		}
+
 		public IEnumerable<Item> GetAll()
 		{
             using (var uow = Dependency.Resolve<IUnitOfWork>())
@@ -209,7 +224,7 @@ namespace CNCLib.Logic
                 var item = new CNCLib.Repository.Contracts.Entities.Item()
                 {
                     Name = name,
-                    ClassName = obj.GetType().AssemblyQualifiedName,
+                    ClassName = GetClassName(obj.GetType()),
                     ItemProperties = list.ToArray()
                 };
                 rep.Store(item);
@@ -229,7 +244,7 @@ namespace CNCLib.Logic
                 {
                     ItemID = id,
                     Name = name,
-                    ClassName = obj.GetType().AssemblyQualifiedName,
+                    ClassName = GetClassName(obj.GetType()),
                     ItemProperties = list.ToArray()
                 };
                 rep.Store(item);
@@ -248,6 +263,12 @@ namespace CNCLib.Logic
                 uow.Save();
             }
         }
+
+		private static string GetClassName(Type t)
+		{
+			string[] names = t.AssemblyQualifiedName.Split(',');
+			return names[0].Trim() + "," + names[1].Trim();
+		}
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

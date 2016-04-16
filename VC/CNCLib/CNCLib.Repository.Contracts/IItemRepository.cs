@@ -23,6 +23,7 @@ namespace CNCLib.Repository.Contracts
 	public interface IItemRepository: IBaseRepository
 	{
 		Entities.Item[] Get();
+		Entities.Item[] Get(string typeidstring);
 		Entities.Item Get(int id);
 		void Delete(Entities.Item o);
         void Store(Entities.Item o);
