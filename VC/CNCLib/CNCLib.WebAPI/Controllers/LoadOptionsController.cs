@@ -19,9 +19,9 @@ namespace CNCLib.WebAPI.Controllers
 		// GET api/values
 		public IEnumerable<object> Get()
 		{
-			using (var controler = Dependency.Resolve<IItemControler>())
+			using (var controller = Dependency.Resolve<IItemController>())
 			{
-				return controler.GetAll();
+				return controller.GetAll();
 			}
 		}
 
@@ -30,9 +30,9 @@ namespace CNCLib.WebAPI.Controllers
 		{
 			try
 			{
-				using (var controler = Dependency.Resolve<IMachineControler>())
+				using (var controller = Dependency.Resolve<IMachineController>())
 				{
-					var x =  controler.GetMachine(id);
+					var x =  controller.GetMachine(id);
 					return "x";
 				}
 			}
@@ -55,11 +55,11 @@ namespace CNCLib.WebAPI.Controllers
 		// DELETE api/values/5
 		public void Delete(int id)
 		{
-			using (var controler = Dependency.Resolve<IMachineControler>())
+			using (var controller = Dependency.Resolve<IMachineController>())
 			{
-				var machine = controler.GetMachine(id);
+				var machine = controller.GetMachine(id);
 				if (machine != null)
-					controler.Delete(machine);
+					controller.Delete(machine);
 			}
 		}
 	}

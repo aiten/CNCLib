@@ -54,9 +54,9 @@ namespace CNCLib.GUI.Load
         {
             _settingName.Items.Clear();
 
-            using (var controler = Dependency.Resolve<IItemControler>())
+            using (var controller = Dependency.Resolve<IItemController>())
             {
-                var items = controler.GetAll(new LoadInfo().GetType());
+                var items = controller.GetAll(new LoadInfo().GetType());
                 foreach (var s in items)
                 {
                     _settingName.Items.Add(new LoadOptionDefinition() { Item = s });
@@ -273,9 +273,9 @@ namespace CNCLib.GUI.Load
             {
                 LoadOptionDefinition item = (LoadOptionDefinition)_settingName.SelectedItem;
 
-                using (var controler = Dependency.Resolve<IItemControler>())
+                using (var controller = Dependency.Resolve<IItemController>())
                 {
-                    object obj = controler.Create(item.Item.ItemID);
+                    object obj = controller.Create(item.Item.ItemID);
                     if (obj != null && obj is LoadInfo)
                     {
                         LoadInfo = (LoadInfo)obj;
@@ -300,16 +300,16 @@ namespace CNCLib.GUI.Load
             {
                 try
                 {
-                    using (var controler = Dependency.Resolve<IItemControler>())
+                    using (var controller = Dependency.Resolve<IItemController>())
                     {
                         if (_settingName.SelectedItem != null)
                         {
                             LoadOptionDefinition item = (LoadOptionDefinition)_settingName.SelectedItem;
-                            controler.Save(item.Item.ItemID, obj.SettingName, obj);
+                            controller.Save(item.Item.ItemID, obj.SettingName, obj);
                         }
                         else
                         {
-                            controler.Add(obj.SettingName, obj);
+                            controller.Add(obj.SettingName, obj);
                             ReadSettings();
                             int idx = 0;
                             foreach (LoadOptionDefinition o in _settingName.Items)
@@ -348,12 +348,12 @@ namespace CNCLib.GUI.Load
             {
                 try
                 {
-                    using (var controler = Dependency.Resolve<IItemControler>())
+                    using (var controller = Dependency.Resolve<IItemController>())
                     {
                         if (_settingName.SelectedItem != null)
                         {
                             LoadOptionDefinition item = (LoadOptionDefinition)_settingName.SelectedItem;
-                            controler.Delete(item.Item.ItemID);
+                            controller.Delete(item.Item.ItemID);
                             ReadSettings();
                             _settingName.Text = "";
                         }

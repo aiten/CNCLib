@@ -69,11 +69,11 @@
       <Link>Properties\CNCLibAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Drawing\DitherTest.cs" />
-    <Compile Include="Logic\ItemControlerTestClass.cs" />
-    <Compile Include="Logic\ItemControlerTests.cs" />
+    <Compile Include="Logic\ItemControllerTestClass.cs" />
+    <Compile Include="Logic\ItemControllerTests.cs" />
     <Compile Include="Repository\ItemRepositoryTests.cs" />
     <Compile Include="Wpf\MachineViewModelTests.cs" />
-    <Compile Include="Logic\MachineControlerTests.cs" />
+    <Compile Include="Logic\MachineControllerTests.cs" />
     <Compile Include="Repository\ConfigurationRepositoryTests.cs" />
     <Compile Include="Repository\RepositoryTests.cs" />
     <Compile Include="Repository\MachineRepositoryTests.cs" />

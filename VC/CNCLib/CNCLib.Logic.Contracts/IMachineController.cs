@@ -21,16 +21,15 @@ using System.Collections.Generic;
 
 namespace CNCLib.Logic.Contracts
 {
-	public interface IItemControler : IDisposable
+	public interface IMachineController : IDisposable
 	{
-		IEnumerable<DTO.Item> GetAll();
-
-		IEnumerable<DTO.Item> GetAll(Type t);
-
-		object Create(int id);
-
-        int Add(string name, object value);
-        void Save(int id, string name, object value);
-        void Delete(int id);
-    }
+		IEnumerable<DTO.Machine> GetMachines();
+		DTO.Machine GetMachine(int id);
+		DTO.Machine DefaultMachine();
+		void Delete(DTO.Machine m);
+		int StoreMachine(DTO.Machine m);
+		int AddMachine(DTO.Machine m);
+		int GetDetaultMachine();
+		void SetDetaultMachine(int defaultMachineID);
+	}
 }

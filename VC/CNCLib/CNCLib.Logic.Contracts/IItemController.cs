@@ -18,13 +18,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Framework.Logic
+namespace CNCLib.Logic.Contracts
 {
-	public class ControlerBase
+	public interface IItemController : IDisposable
 	{
-	}
+		IEnumerable<DTO.Item> GetAll();
+
+		IEnumerable<DTO.Item> GetAll(Type t);
+
+		object Create(int id);
+
+        int Add(string name, object value);
+        void Save(int id, string name, object value);
+        void Delete(int id);
+    }
 }

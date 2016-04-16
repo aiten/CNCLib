@@ -58,13 +58,13 @@ namespace CNCLib.Wpf.ViewModels
         {
             var machines = new ObservableCollection<Models.Machine>();
 
-			using (var controler = Dependency.Resolve<IMachineControler>())
+			using (var controller = Dependency.Resolve<IMachineController>())
 			{
-				foreach(var m in controler.GetMachines())
+				foreach(var m in controller.GetMachines())
 				{
 					machines.Add(Converter.Convert(m));
 				}
-				int defaultM = controler.GetDetaultMachine();
+				int defaultM = controller.GetDetaultMachine();
 
 				Machines = machines;
 
@@ -202,9 +202,9 @@ namespace CNCLib.Wpf.ViewModels
 			ObjectConverter.CopyProperties(Settings.Instance, Machine);
             Com.ArduinoBuffersize = Machine.BufferSize;
 
-			using (var controler = Dependency.Resolve<IMachineControler>())
+			using (var controller = Dependency.Resolve<IMachineController>())
 			{
-				Global.Instance.Machine = controler.GetMachine(Machine.MachineID);
+				Global.Instance.Machine = controller.GetMachine(Machine.MachineID);
 			}
 		}
 
@@ -255,9 +255,9 @@ namespace CNCLib.Wpf.ViewModels
 	   {
             if (Machine != null)
             {
-                using (var controler = Dependency.Resolve<IMachineControler>())
+                using (var controller = Dependency.Resolve<IMachineController>())
                 {
-                    controler.SetDetaultMachine(Machine.MachineID);
+                    controller.SetDetaultMachine(Machine.MachineID);
                 }
             }
 	   }

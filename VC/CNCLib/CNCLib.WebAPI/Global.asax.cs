@@ -18,7 +18,7 @@ namespace CNCLib.WebAPI
 		protected void Application_Start()
 		{
 			Dependency.Initialize(new LiveDependencyProvider());
-			Dependency.Container.RegisterTypesIncludingInternals(typeof(CNCLib.Repository.MachineRepository).Assembly, typeof(CNCLib.Logic.MachineControler).Assembly);
+			Dependency.Container.RegisterTypesIncludingInternals(typeof(CNCLib.Repository.MachineRepository).Assembly, typeof(CNCLib.Logic.MachineController).Assembly);
 			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
 			AreaRegistration.RegisterAllAreas();

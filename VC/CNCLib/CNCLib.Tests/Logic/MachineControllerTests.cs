@@ -34,7 +34,7 @@ using Framework.Tools.Dependency;
 namespace CNCLib.Tests.Logic
 {
 	[TestClass]
-	public class MachineControlerTests
+	public class MachineControllerTests
 	{
 		/*
 				[ClassInitialize]
@@ -51,7 +51,7 @@ namespace CNCLib.Tests.Logic
 		private FactoryType2Obj CreateMock()
 		{
 			var mockfactory = new FactoryType2Obj();
-			ControlerBase.RepositoryFactory = mockfactory;
+			ControllerBase.RepositoryFactory = mockfactory;
 			return mockfactory;
         }
 */
@@ -74,7 +74,7 @@ namespace CNCLib.Tests.Logic
 			var machineEntity = new Machine[0];
 			rep.GetMachines().Returns(machineEntity);
 
-			MachineControler ctrl = new MachineControler();
+			MachineController ctrl = new MachineController();
 
 			var machines = ctrl.GetMachines().ToArray();
 			Assert.AreEqual(true, machines.Length == 0);
@@ -88,7 +88,7 @@ namespace CNCLib.Tests.Logic
 			var machineEntity = new Machine[] { new Machine() { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] } };
 			rep.GetMachines().Returns(machineEntity);
 
-			MachineControler ctrl = new MachineControler();
+			MachineController ctrl = new MachineController();
 
 			var machines = ctrl.GetMachines().ToArray();
 			Assert.AreEqual(true, machines.Length == 1);
@@ -115,7 +115,7 @@ namespace CNCLib.Tests.Logic
 
 			rep.GetMachines().Returns(machineEntity);
 
-			MachineControler ctrl = new MachineControler();
+			MachineController ctrl = new MachineController();
 
 			var machines = ctrl.GetMachines().ToArray();
 			Assert.AreEqual(true, machines.Length == 2);
@@ -142,7 +142,7 @@ namespace CNCLib.Tests.Logic
 			rep.GetMachine(1).Returns(machineEntity1);
 			rep.GetMachine(2).Returns(machineEntity2);
 
-			MachineControler ctrl = new MachineControler();
+			MachineController ctrl = new MachineController();
 
 			var machine = ctrl.GetMachine(1);
 			Assert.AreEqual(machineEntity1.Name, machine.Name);
@@ -163,7 +163,7 @@ namespace CNCLib.Tests.Logic
 			rep.GetMachine(1).Returns(machineEntity1);
 			rep.GetMachine(2).Returns(machineEntity2);
 
-			MachineControler ctrl = new MachineControler();
+			MachineController ctrl = new MachineController();
 
 			var machine = ctrl.GetMachine(3);
 			Assert.IsNull(machine);
@@ -172,7 +172,7 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public void GetDefaultMachine()
 		{
-			MachineControler ctrl = new MachineControler();
+			MachineController ctrl = new MachineController();
 
 			var machine = ctrl.DefaultMachine();
 			Assert.IsNotNull(machine);

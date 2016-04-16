@@ -15,39 +15,76 @@ namespace CNCLib.WebAPI.Controllers
 		// GET api/values
 		public IEnumerable<Machine> Get()
 		{
-			using (var controler = Dependency.Resolve<IMachineControler>())
+			using (var controller = Dependency.Resolve<IMachineController>())
 			{
-				return controler.GetMachines();
+				return controller.GetMachines();
 			}
 		}
 
 		// GET api/values/5
 		public Machine Get(int id)
 		{
-			using (var controler = Dependency.Resolve<IMachineControler>())
+			using (var controller = Dependency.Resolve<IMachineController>())
 			{
-				return controler.GetMachine(id);
+				return controller.GetMachine(id);
 			}
 		}
 
-		// POST api/values
-		public void Post([FromBody]string value)
+		// POST api/values == Create
+		public IHttpActionResult Post([FromBody]Machine value)
 		{
+			try
+			{
+				if (value == null)
+				{
+					return BadRequest("Body object missing");
+				}
+				else
+				{
+					using (var controller = Dependency.Resolve<IMachineController>())
+					{
+						int machineid = controller.AddMachine(value);
+						return CreatedAtRoute("DefaultApi", new { id = machineid }, value);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
 		}
 
 		// PUT api/values/5
-		public void Put(int id, [FromBody]string value)
+		public void Put(int id, [FromBody]Machine value)
 		{
+			try
+			{
+				if (value == null)
+				{
+					Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Could not read machine from body");
+				}
+				else
+				{
+					using (var controller = Dependency.Resolve<IMachineController>())
+					{
+						int machineid = controller.StoreMachine(value);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+			}
 		}
 
 		// DELETE api/values/5
 		public void Delete(int id)
 		{
-			using (var controler = Dependency.Resolve<IMachineControler>())
+			using (var controller = Dependency.Resolve<IMachineController>())
 			{
-				var machine = controler.GetMachine(id);
+				var machine = controller.GetMachine(id);
 				if (machine != null)
-					controler.Delete(machine);
+					controller.Delete(machine);
 			}
 		}
 	}

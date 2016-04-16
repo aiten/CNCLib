@@ -33,7 +33,7 @@ using Framework.Tools.Pattern;
 
 namespace CNCLib.Logic
 {
-    public class ItemControler : ControlerBase, IItemControler
+    public class ItemController : ControllerBase, IItemController
 	{
 		public IEnumerable<Item> GetAll(Type t)
 		{
@@ -290,7 +290,7 @@ namespace CNCLib.Logic
 		}
 
 		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-		// ~MachineControler() {
+		// ~MachineController() {
 		//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
 		//   Dispose(false);
 		// }

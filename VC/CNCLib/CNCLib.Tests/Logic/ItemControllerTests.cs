@@ -35,7 +35,7 @@ using Framework.Tools.Dependency;
 namespace CNCLib.Tests.Logic
 {
 	[TestClass]
-	public class ItemControlerTests : UnitTestBase
+	public class ItemControllerTests : UnitTestBase
     {
 		/*
 				[ClassInitialize]
@@ -52,7 +52,7 @@ namespace CNCLib.Tests.Logic
 		private FactoryType2Obj CreateMock()
 		{
 			var mockfactory = new FactoryType2Obj();
-			ControlerBase.RepositoryFactory = mockfactory;
+			ControlLerBase.RepositoryFactory = mockfactory;
 			return mockfactory;
         }
 */
@@ -75,7 +75,7 @@ namespace CNCLib.Tests.Logic
 			var itemEntity = new Item[0];
 			rep.Get().Returns(itemEntity);
 
-			ItemControler ctrl = new ItemControler();
+			ItemController ctrl = new ItemController();
 
 			var all = ctrl.GetAll().ToArray();
 			Assert.AreEqual(true, all.Length == 0);
@@ -90,12 +90,12 @@ namespace CNCLib.Tests.Logic
 
             rep.Get(1).Returns(itemEntity);
 
-            ItemControler ctrl = new ItemControler();
+            ItemController ctrl = new ItemController();
 
             var item = ctrl.Create(1);
             Assert.IsNotNull(item);
 
-            ItemControlerTestClass item2 = (ItemControlerTestClass)item;
+            ItemControllerTestClass item2 = (ItemControllerTestClass)item;
 
             Assert.AreEqual("Hallo", item2.StringProperty);
             Assert.AreEqual(1, item2.IntProperty);
@@ -112,7 +112,7 @@ namespace CNCLib.Tests.Logic
             {
                 ItemID = 1,
                 Name = "Hallo",
-                ClassName = typeof(ItemControlerTestClass).AssemblyQualifiedName,
+                ClassName = typeof(ItemControllerTestClass).AssemblyQualifiedName,
                 ItemProperties = new[]
                             {
                                 new ItemProperty{ ItemID = 1, Name = "StringProperty", Value = "Hallo" },
@@ -133,7 +133,7 @@ namespace CNCLib.Tests.Logic
 
             Item itemEntity = CreateItem();
 
-            ItemControlerTestClass obj = new ItemControlerTestClass()
+            ItemControllerTestClass obj = new ItemControllerTestClass()
             {
                 StringProperty = "Hallo",
                 IntProperty = 1,
@@ -143,7 +143,7 @@ namespace CNCLib.Tests.Logic
                 DecimalNullProperty = 9.876m
             };
 
-            ItemControler ctrl = new ItemControler();
+            ItemController ctrl = new ItemController();
 
             var id = ctrl.Add("Hallo", obj);
 
@@ -165,7 +165,7 @@ namespace CNCLib.Tests.Logic
             Item itemEntity = CreateItem();
             rep.Get(1).Returns(itemEntity);
 
-            ItemControler ctrl = new ItemControler();
+            ItemController ctrl = new ItemController();
 
             //act
 
@@ -183,7 +183,7 @@ namespace CNCLib.Tests.Logic
 
             var rep = CreateMock<IItemRepository>();
 
-            ItemControler ctrl = new ItemControler();
+            ItemController ctrl = new ItemController();
 
             //act
 

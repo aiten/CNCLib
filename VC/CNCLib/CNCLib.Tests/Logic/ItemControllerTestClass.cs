@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Tests.Logic
 {
-    public class ItemControlerTestClass
+    public class ItemControllerTestClass
     {
         public int IntProperty { get; set; }
         public string StringProperty { get; set; }

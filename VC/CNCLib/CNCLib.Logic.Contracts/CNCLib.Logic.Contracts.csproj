@@ -48,8 +48,8 @@
     <Compile Include="DTO\Machine.cs" />
     <Compile Include="DTO\MachineCommand.cs" />
     <Compile Include="DTO\MachineInitCommand.cs" />
-    <Compile Include="IItemControler.cs" />
-    <Compile Include="IMachineControler.cs" />
+    <Compile Include="IItemController.cs" />
+    <Compile Include="IMachineController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

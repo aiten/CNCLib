@@ -49,8 +49,8 @@
     <Compile Include="..\CNCLibAssemblyInfo.cs">
       <Link>Properties\CNCLibAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ItemControler.cs" />
-    <Compile Include="MachineControler.cs" />
+    <Compile Include="ItemController.cs" />
+    <Compile Include="MachineController.cs" />
     <Compile Include="Converter\Converter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

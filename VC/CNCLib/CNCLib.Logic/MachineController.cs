@@ -31,7 +31,7 @@ using Framework.Tools.Pattern;
 
 namespace CNCLib.Logic
 {
-    public class MachineControler : ControlerBase, IMachineControler
+    public class MachineController : ControllerBase, IMachineController
 	{
 		public IEnumerable<Machine> GetMachines()
 		{
@@ -102,6 +102,21 @@ namespace CNCLib.Logic
 			}
         }
 
+		public int AddMachine(Machine m)
+		{
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+			{
+				var me = m.Convert();
+				me.MachineID = 0;
+				foreach (var mc in me.MachineInitCommands) mc.MachineID = 0;
+				foreach (var mi in me.MachineInitCommands) mi.MachineID = 0;
+				rep.Store(me);
+				uow.Save();
+				return me.MachineID;
+			}
+		}
+
 		public int StoreMachine(Machine m)
 		{
             using (var uow = Dependency.Resolve<IUnitOfWork>())
@@ -161,7 +176,7 @@ namespace CNCLib.Logic
 		}
 
 		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-		// ~MachineControler() {
+		// ~MachineController() {
 		//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
 		//   Dispose(false);
 		// }

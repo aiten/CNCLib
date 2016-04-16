@@ -72,7 +72,7 @@ namespace CNCLib.Tests.Wpf
 		[TestMethod]
 		public void GetMachine()
 		{
-			var rep = CreateMock<IMachineControler>();
+			var rep = CreateMock<IMachineController>();
 
 			Machine machine = CreateMachine(1);
 			rep.GetMachine(1).Returns(machine);
@@ -113,7 +113,7 @@ namespace CNCLib.Tests.Wpf
 		[TestMethod]
 		public void GetMachineAddNew()
 		{
-			var rep = CreateMock<IMachineControler>();
+			var rep = CreateMock<IMachineController>();
 
 			Machine machine1 = CreateMachine(1);
 			rep.GetMachine(1).Returns(machine1);
