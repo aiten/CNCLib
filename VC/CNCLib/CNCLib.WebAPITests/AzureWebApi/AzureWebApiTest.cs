@@ -16,22 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CNCLib.Tests.Logic
+using Framework.Test;
+
+namespace CNCLib.WebAPITests.AzureWebApi
 {
-    public class ItemControllerTestClass
+    public class AzureWebApiTest : UnitTestBase
     {
-        public int IntProperty { get; set; }
-        public string StringProperty { get; set; }
-        public double DoubleProperty { get; set; }
-        public decimal DecimalProperty { get; set; }
-        public int? IntNullProperty { get; set; }
-        public double? DoubleNullProperty { get; set; }
-        public decimal? DecimalNullProperty { get; set; }
+        public static readonly string AzureUrl = @"http://cnclib.azurewebsites.net";
     }
 }

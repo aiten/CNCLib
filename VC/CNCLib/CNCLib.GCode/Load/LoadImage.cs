@@ -47,6 +47,7 @@ namespace CNCLib.GCode.Load
                 switch (bx.PixelFormat)
                 {
                     case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
+                    case System.Drawing.Imaging.PixelFormat.Format4bppIndexed:
                         b = ScaleImage(bx);
                         break;
 
