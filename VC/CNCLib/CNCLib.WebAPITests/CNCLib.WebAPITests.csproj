@@ -61,6 +61,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AzureWebApi\AzureWebApiTest.cs" />
+    <Compile Include="AzureWebApi\GCodeWebApiTest.cs" />
     <Compile Include="AzureWebApi\MachineWebApiTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -68,6 +69,10 @@
     <ProjectReference Include="..\..\Framework\Framework.Test\Framework.Test.csproj">
       <Project>{bbecb408-5426-4ce7-b7b6-970bde436486}</Project>
       <Name>Framework.Test</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj">
+      <Project>{F9C446F4-6365-4189-95C5-009EF0160882}</Project>
+      <Name>CNCLib.GCode</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">
       <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>

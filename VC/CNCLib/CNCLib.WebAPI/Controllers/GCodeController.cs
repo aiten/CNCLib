@@ -5,6 +5,7 @@ using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -14,36 +15,29 @@ namespace CNCLib.WebAPI.Controllers
 {
 	public class GCodeController : ApiController
 	{
-		// GET api/values
-		public IEnumerable<string> Get()
+		public IEnumerable<string> Post([FromBody] LoadInfo input)
 		{
-			return new String[] { "todo" };
-		}
+			string filename = Path.GetFileName(input.FileName);
+			string tmpfile = Path.GetTempPath() + filename;
+			input.FileName = tmpfile;
+			input.ImageWriteToFileName = null;
 
-		// GET api/values/5
-		public IEnumerable<string> Get(int id)
-		{
-			LoadInfo opt = new LoadInfo { FileName = @"c:\data\heikes-mietzi.hpgl" };
-			var load = new LoadHPGL() { LoadOptions = opt };
-			load.Load();
+			try
+			{
+				File.WriteAllBytes(tmpfile, input.FileContent);
 
-			return load.Commands.ToStringList();
-		}
-/*
-		// POST api/values
-		public void Post([FromBody]string value)
-		{
-		}
+				LoadBase load=LoadBase.Create(input);
 
-		// PUT api/values/5
-		public void Put(int id, [FromBody]string value)
-		{
+				if (load == null)
+					return null;
+				
+				load.Load();
+				return load.Commands.ToStringList();
+			}
+			finally
+			{
+				File.Delete(tmpfile);
+			}
 		}
-
-		// DELETE api/values/5
-		public void Delete(int id)
-		{
-		}
-*/
 	}
 }

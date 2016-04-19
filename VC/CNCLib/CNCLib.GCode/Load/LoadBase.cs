@@ -40,6 +40,26 @@ namespace CNCLib.GCode.Load
 
 		#endregion
 
+		#region Factory
+
+		static public LoadBase Create(LoadInfo info)
+		{
+			LoadBase load = null;
+			switch (info.LoadType)
+			{
+				case LoadInfo.ELoadType.GCode:		load = new LoadGCode(); break;
+				case LoadInfo.ELoadType.HPGL:		load = new LoadHPGL(); break;
+				case LoadInfo.ELoadType.Image:		load = new LoadImage(); break;
+				case LoadInfo.ELoadType.ImageHole:	load = new LoadImageHole(); break;
+				default: return null;
+			}
+			load.LoadOptions = info;
+
+			return load;
+		}
+
+		#endregion
+
 		#region Load
 
 		public abstract void Load();

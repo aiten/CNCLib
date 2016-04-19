@@ -30,6 +30,6 @@ namespace CNCLib.Logic.Contracts.DTO
 		public int SeqNo { get; set; }
 		public string CommandString { get; set; }
 		public int MachineID { get; set; }
-		public virtual Machine Machine { get; set; }
+		// public virtual Machine Machine { get; set; }
 	}
 }

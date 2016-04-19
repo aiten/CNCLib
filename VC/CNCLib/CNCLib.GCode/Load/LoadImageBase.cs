@@ -47,7 +47,8 @@ namespace CNCLib.GCode.Load
             ShiftX = (double)LoadOptions.LaserSize / 2.0;
             ShiftY = (double)LoadOptions.LaserSize / 2.0;
 
-            b.Save(LoadOptions.ImageWriteToFileName, System.Drawing.Imaging.ImageFormat.Bmp);
+			if (!string.IsNullOrEmpty(LoadOptions.ImageWriteToFileName))
+				b.Save(LoadOptions.ImageWriteToFileName, System.Drawing.Imaging.ImageFormat.Bmp);
 
             AddComment("Image.Width", b.Width);
             AddComment("Image.Height", b.Width);

@@ -22,9 +22,20 @@ namespace CNCLib.GCode.Load
 {
 	public class LoadInfo
 	{
-		public String FileName { get; set; }
+		public enum ELoadType
+		{
+			GCode,
+			HPGL,
+			Image,
+			ImageHole
 
-        public String SettingName { get; set; }
+		};
+		public ELoadType LoadType { get; set; }
+
+		public String FileName { get; set; }
+		public Byte[] FileContent { get; set; }
+
+		public String SettingName { get; set; }
 
         public String GCodeWriteToFileName { get; set; } = @"c:\tmp\test.gcode";
 

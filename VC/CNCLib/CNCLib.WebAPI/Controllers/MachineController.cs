@@ -63,6 +63,10 @@ namespace CNCLib.WebAPI.Controllers
 				{
 					Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Could not read machine from body");
 				}
+				else if (id != value.MachineID)
+				{
+					Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Missmatch between id and machineID");
+				}
 				else
 				{
 					using (var controller = Dependency.Resolve<IMachineController>())
