@@ -43,6 +43,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.WebAPI", "CNCLib.Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.WebAPITests", "CNCLib.WebAPITests\CNCLib.WebAPITests.csproj", "{6D3326B2-794C-48FD-B351-483D721BD0F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Web", "CNCLib.Web\CNCLib.Web.csproj", "{05CBD6D1-DCA8-4507-91DD-66B78ED1F01F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{CEB14D54-F5E6-4001-BDB3-4FBA632A7778}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A7A23498-5B70-4D17-A723-0CE3E0FB2096}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1 = PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{6FD6A784-F8DD-4B9A-B91C-4D1E767F0B65}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Templates\CNCLibWeb.json = PublishScripts\Templates\CNCLibWeb.json
+		PublishScripts\Templates\CNCLibWeb.param.dev.json = PublishScripts\Templates\CNCLibWeb.param.dev.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,8 +132,16 @@ Global
 		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05CBD6D1-DCA8-4507-91DD-66B78ED1F01F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05CBD6D1-DCA8-4507-91DD-66B78ED1F01F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05CBD6D1-DCA8-4507-91DD-66B78ED1F01F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05CBD6D1-DCA8-4507-91DD-66B78ED1F01F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A7A23498-5B70-4D17-A723-0CE3E0FB2096} = {CEB14D54-F5E6-4001-BDB3-4FBA632A7778}
+		{6FD6A784-F8DD-4B9A-B91C-4D1E767F0B65} = {CEB14D54-F5E6-4001-BDB3-4FBA632A7778}
 	EndGlobalSection
 EndGlobal
