@@ -43,8 +43,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.WebAPI", "CNCLib.Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.WebAPITests", "CNCLib.WebAPITests\CNCLib.WebAPITests.csproj", "{6D3326B2-794C-48FD-B351-483D721BD0F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Web", "CNCLib.Web\CNCLib.Web.csproj", "{05CBD6D1-DCA8-4507-91DD-66B78ED1F01F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{CEB14D54-F5E6-4001-BDB3-4FBA632A7778}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A7A23498-5B70-4D17-A723-0CE3E0FB2096}"
@@ -57,6 +55,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 		PublishScripts\Templates\CNCLibWeb.json = PublishScripts\Templates\CNCLibWeb.json
 		PublishScripts\Templates\CNCLibWeb.param.dev.json = PublishScripts\Templates\CNCLibWeb.param.dev.json
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Web", "CNCLib.Web\CNCLib.Web.csproj", "{4FB51503-4356-40F3-A1A1-DB1F2A8AF475}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -132,10 +132,10 @@ Global
 		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05CBD6D1-DCA8-4507-91DD-66B78ED1F01F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05CBD6D1-DCA8-4507-91DD-66B78ED1F01F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05CBD6D1-DCA8-4507-91DD-66B78ED1F01F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05CBD6D1-DCA8-4507-91DD-66B78ED1F01F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FB51503-4356-40F3-A1A1-DB1F2A8AF475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FB51503-4356-40F3-A1A1-DB1F2A8AF475}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FB51503-4356-40F3-A1A1-DB1F2A8AF475}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FB51503-4356-40F3-A1A1-DB1F2A8AF475}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

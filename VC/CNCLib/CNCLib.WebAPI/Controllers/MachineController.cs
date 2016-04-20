@@ -88,8 +88,14 @@ namespace CNCLib.WebAPI.Controllers
 			using (var controller = Dependency.Resolve<IMachineController>())
 			{
 				var machine = controller.GetMachine(id);
-				if (machine != null)
+				if (machine == null)
+				{
+					Request.CreateErrorResponse(HttpStatusCode.NotFound,"id " + id + " not found");
+				}
+				else
+				{
 					controller.Delete(machine);
+				}
 			}
 		}
 	}
