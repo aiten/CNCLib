@@ -27,7 +27,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using CNCLib.Logic.Contracts.DTO;
 
-namespace CNCLib.WebAPITests.AzureWebApi
+namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
     [TestClass]
     public class MachineWebApiTest : AzureWebApiTest

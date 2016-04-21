@@ -14,3 +14,5 @@ ipch/
 /VC/Arduino.VC/Lib/StepperSystem.lib
 /VC/CNCLib/CNCLib.WebAPI/bin
 /VC/CNCLib/CNCLib.WebAPI/_bin_deployableAssemblies
+/VC/CNCLib/CNCLib.Web.WebForm/bin
+*.user

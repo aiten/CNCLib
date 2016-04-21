@@ -19,7 +19,7 @@
 
 using Framework.Test;
 
-namespace CNCLib.WebAPITests.AzureWebApi
+namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
     public class AzureWebApiTest : UnitTestBase
     {

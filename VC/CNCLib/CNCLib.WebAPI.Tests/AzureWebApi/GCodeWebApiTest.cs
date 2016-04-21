@@ -29,7 +29,7 @@ using System.Net.Http.Headers;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.GCode.Load;
 
-namespace CNCLib.WebAPITests.AzureWebApi
+namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
     [TestClass]
     public class GCodeWebApiTest : AzureWebApiTest
