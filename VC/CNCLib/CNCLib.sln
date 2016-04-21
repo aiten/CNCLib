@@ -56,7 +56,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 		PublishScripts\Templates\CNCLibWeb.param.dev.json = PublishScripts\Templates\CNCLibWeb.param.dev.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Web", "CNCLib.Web\CNCLib.Web.csproj", "{4FB51503-4356-40F3-A1A1-DB1F2A8AF475}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Web.WebForm", "CNCLib.Web\CNCLib.Web.WebForm.csproj", "{4FB51503-4356-40F3-A1A1-DB1F2A8AF475}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
