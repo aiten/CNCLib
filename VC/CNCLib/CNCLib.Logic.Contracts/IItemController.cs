@@ -23,6 +23,8 @@ namespace CNCLib.Logic.Contracts
 {
 	public interface IItemController : IDisposable
 	{
+		DTO.Item Get(int id);
+
 		IEnumerable<DTO.Item> GetAll();
 
 		IEnumerable<DTO.Item> GetAll(Type t);

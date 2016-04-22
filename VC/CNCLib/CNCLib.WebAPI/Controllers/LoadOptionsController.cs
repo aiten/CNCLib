@@ -17,49 +17,104 @@ namespace CNCLib.WebAPI.Controllers
 	public class LoadOptionsController : ApiController
 	{
 		// GET api/values
-		public IEnumerable<object> Get()
+		public IEnumerable<LoadInfo> Get()
 		{
 			using (var controller = Dependency.Resolve<IItemController>())
 			{
-				return controller.GetAll();
+				var list = new List<LoadInfo>();
+				foreach (Item item in controller.GetAll(typeof(LoadInfo)))
+				{
+					list.Add((LoadInfo)controller.Create(item.ItemID));
+				}
+				return list;
 			}
 		}
 
 		// GET api/values/5
-		public string Get(int id)
+		public LoadInfo Get(int id)
 		{
 			try
 			{
-				using (var controller = Dependency.Resolve<IMachineController>())
+				using (var controller = Dependency.Resolve<IItemController>())
 				{
-					var x =  controller.GetMachine(id);
-					return "x";
+					object obj = controller.Create(id);
+					if (obj != null || obj is LoadInfo)
+					{
+						return (LoadInfo)obj;
+					}
+					return null;
 				}
 			}
 			catch (Exception e)
 			{
-				return e.Message + e.InnerException.ToString();
+				Request.CreateErrorResponse(HttpStatusCode.NotFound, e.Message);
+				return null;
 			}
 		}
 
 		// POST api/values
-		public void Post([FromBody]string value)
+		public IHttpActionResult Post([FromBody]LoadInfo value)
 		{
+			try
+			{
+				if (value == null)
+				{
+					return BadRequest("Body object missing");
+				}
+				else
+				{
+					using (var controller = Dependency.Resolve<IItemController>())
+					{
+						int newid = controller.Add(value.SettingName,value);
+						return CreatedAtRoute("DefaultApi", new
+						{
+							id = newid
+						}, value);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
 		}
-
 		// PUT api/values/5
-		public void Put(int id, [FromBody]string value)
+		public void Put(int id, [FromBody]LoadInfo value)
 		{
+			try
+			{
+				if (value == null)
+				{
+					Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Body object missing");
+				}
+				else
+				{
+					using (var controller = Dependency.Resolve<IItemController>())
+					{
+						controller.Save(id,value.SettingName,value);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+			}
 		}
 
 		// DELETE api/values/5
 		public void Delete(int id)
 		{
-			using (var controller = Dependency.Resolve<IMachineController>())
+			using (var controller = Dependency.Resolve<IItemController>())
 			{
-				var machine = controller.GetMachine(id);
-				if (machine != null)
-					controller.Delete(machine);
+				var item = controller.Get(id);
+				if (item == null)
+				{
+					Request.CreateErrorResponse(HttpStatusCode.NotFound, "id " + id + " not found");
+				}
+				else
+				{
+					controller.Delete(id);
+				}
 			}
 		}
 	}

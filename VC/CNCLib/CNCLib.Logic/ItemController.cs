@@ -35,6 +35,20 @@ namespace CNCLib.Logic
 {
     public class ItemController : ControllerBase, IItemController
 	{
+		public Item Get(int id)
+		{
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+			{
+				var item = rep.Get(id);
+				if (item == null)
+					return null;
+
+				var dto = item.Convert();
+				return dto;
+			}
+		}
+
 		public IEnumerable<Item> GetAll(Type t)
 		{
 			using (var uow = Dependency.Resolve<IUnitOfWork>())
@@ -136,8 +150,13 @@ namespace CNCLib.Logic
                         {
                             pi.SetValue(obj, Enum.Parse(pi.PropertyType,ip.Value));
                         }
-                        else
-                        {
+						else if (pi.PropertyType == typeof(Byte[]))
+						{					
+							// skip
+							//throw new NotImplementedException();
+						}
+						else
+						{
                             throw new NotImplementedException();
                         }
                     }
@@ -157,13 +176,19 @@ namespace CNCLib.Logic
                 if (pi.CanWrite && pi.CanRead)
                 {
                     string value = null;
-                    if (pi.PropertyType == typeof(string) ||
-                        pi.PropertyType == typeof(int) ||
-                        pi.PropertyType == typeof(Byte))
+                    if (pi.PropertyType == typeof(string))
                     {
-                        value = pi.GetValue(obj).ToString();
+						object str = pi.GetValue(obj);
+						if (str!=null)
+							value =  (string) str;
                     }
-                    else if (pi.PropertyType == typeof(bool))
+					else if (
+						pi.PropertyType == typeof(int) ||
+						pi.PropertyType == typeof(Byte))
+					{
+						value = pi.GetValue(obj).ToString();
+					}
+					else if (pi.PropertyType == typeof(bool))
                     {
                         value = (bool) pi.GetValue(obj) ? "true" : "false";
                     }
@@ -201,6 +226,11 @@ namespace CNCLib.Logic
                     {
                         value = pi.GetValue(obj).ToString();
                     }
+					else if (pi.PropertyType == typeof(Byte[]))
+					{
+						value = null; // skip
+						//throw new NotImplementedException();
+					}
                     else
                     {
                         throw new NotImplementedException();

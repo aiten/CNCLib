@@ -16,3 +16,4 @@ ipch/
 /VC/CNCLib/CNCLib.WebAPI/_bin_deployableAssemblies
 /VC/CNCLib/CNCLib.Web.WebForm/bin
 *.user
+/VC/CNCLib/CNCLib.Web/bin
