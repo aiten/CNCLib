@@ -30,7 +30,7 @@ namespace CNCLib.GCode.Load
 			ImageHole
 
 		};
-		public ELoadType LoadType { get; set; }
+		public ELoadType LoadType { get; set; } = ELoadType.GCode;
 
 		public String FileName { get; set; }
 		public Byte[] FileContent { get; set; }

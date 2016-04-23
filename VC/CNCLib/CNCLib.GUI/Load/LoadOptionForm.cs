@@ -72,7 +72,7 @@ namespace CNCLib.GUI.Load
 			{
                 var r = new LoadInfo()
                 {
-                    FileName = _filename.Text,
+					FileName = _filename.Text,
                     SettingName = _settingName.Text,
                     OfsX = decimal.Parse(_ofsX.Text),
                     OfsY = decimal.Parse(_ofsY.Text),
@@ -117,7 +117,12 @@ namespace CNCLib.GUI.Load
                     RotateHeart = _holeRotateHeart.Checked
                 };
 
-                if (string.IsNullOrEmpty(_penMoveSpeed.Text))
+				if (_loadGCode.Checked) r.LoadType = LoadInfo.ELoadType.GCode;
+				else if (_loadHTML.Checked) r.LoadType = LoadInfo.ELoadType.HPGL;
+				else if (_loadImage.Checked) r.LoadType = LoadInfo.ELoadType.Image;
+				else if (_loadimageHole.Checked) r.LoadType = LoadInfo.ELoadType.ImageHole;
+
+				if (string.IsNullOrEmpty(_penMoveSpeed.Text))
                     r.MoveSpeed = null;
                 else
                     r.MoveSpeed = decimal.Parse(_penMoveSpeed.Text);
@@ -148,7 +153,15 @@ namespace CNCLib.GUI.Load
             }
             set
             {
-                _filename.Text = value.FileName;
+				switch (value.LoadType)
+				{
+					case LoadInfo.ELoadType.GCode: _loadGCode.Checked = true; break;
+					case LoadInfo.ELoadType.HPGL: _loadHTML.Checked = true; break;
+					case LoadInfo.ELoadType.Image: _loadImage.Checked = true; break;
+					case LoadInfo.ELoadType.ImageHole: _loadimageHole.Checked = true; break;
+				}
+
+				_filename.Text = value.FileName;
                 _settingName.Text = value.SettingName;
                 _ofsX.Text = value.OfsX.ToString();
                 _ofsY.Text = value.OfsY.ToString();

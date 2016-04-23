@@ -163,40 +163,33 @@ namespace CNCLib.GUI
 				loadinfo.AutoScaleSizeY = _gCodeCtrl.SizeY;
 			}
 
-            using (LoadOptionForm form = new LoadOptionForm())
-            {
-                form.LoadInfo = loadinfo;
+			using (LoadOptionForm form = new LoadOptionForm())
+			{
+				form.LoadInfo = loadinfo;
 
-                DialogResult res = form.ShowDialog();
-                LoadBase load;
+				if (form.ShowDialog() == DialogResult.OK)
+				{
+					LoadBase load = LoadBase.Create(form.LoadInfo);
 
-                switch (res)
-                {
-                    case DialogResult.OK: load = new LoadHPGL(); break;
-                    case DialogResult.Yes: load = new LoadGCode(); break;
-                    case DialogResult.No: load = new LoadImage(); break;
-                    case DialogResult.Retry: load = new LoadImageHole(); break;
-                    default: return;
-                }
-
-                loadinfo = form.LoadInfo;
-                load.LoadOptions = loadinfo;
-                try
-                {
-                    load.Load();
-                    _gCodeCtrl.Commands.Clear();
-                    _gCodeCtrl.Commands.AddRange(load.Commands);
-                    if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
-                    {
-                        SaveGCode(loadinfo.GCodeWriteToFileName);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Load Failed! " + ex.Message);
-                }
-                _redraw_Click(null, null);
-               }
+					loadinfo = form.LoadInfo;
+					load.LoadOptions = loadinfo;
+					try
+					{
+						load.Load();
+						_gCodeCtrl.Commands.Clear();
+						_gCodeCtrl.Commands.AddRange(load.Commands);
+						if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
+						{
+							SaveGCode(loadinfo.GCodeWriteToFileName);
+						}
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show("Load Failed! " + ex.Message);
+					}
+					_redraw_Click(null, null);
+				}
+			}
         }
 
         private void ValuesFromControl()

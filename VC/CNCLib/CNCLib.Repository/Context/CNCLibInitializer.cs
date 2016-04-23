@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 namespace CNCLib.Repository.Context
 {
 
-    //    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
+//    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
     public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
     {
         protected override void Seed(CNCLibContext context)
@@ -201,6 +201,7 @@ namespace CNCLib.Repository.Context
                 new ItemProperty() { Item = cutItem, Name = @"AutoScaleSizeX",      Value=@"150"    },
                 new ItemProperty() { Item = cutItem, Name = @"AutoScaleSizeY",      Value=@"150"    },
                 new ItemProperty() { Item = cutItem, Name = @"MoveSpeed",           Value=@"450"    },
+				new ItemProperty() { Item = cutItem, Name = @"LoadType",            Value=@"HPGL"    },
 
                 //cut-image
                 new ItemProperty() { Item = cutHoleItem, Name = @"SettingName",         Value=cutHoleItem.Name    },
@@ -216,11 +217,13 @@ namespace CNCLib.Repository.Context
                 new ItemProperty() { Item = cutHoleItem, Name = @"DotDistX",            Value=@"0.7"    },
                 new ItemProperty() { Item = cutHoleItem, Name = @"DotDistY",            Value=@"0.7"    },
                 new ItemProperty() { Item = cutHoleItem, Name = @"HoleType",            Value=@"Diamond"    },
+				new ItemProperty() { Item = cutHoleItem, Name = @"LoadType",            Value=@"ImageHole"    },
 
                 //grave
                 new ItemProperty() { Item = graveItem, Name = @"SettingName",         Value=graveItem.Name    },
                 new ItemProperty() { Item = graveItem, Name = @"PenMoveType",         Value=@"CommandString"    },
                 new ItemProperty() { Item = graveItem, Name = @"MoveSpeed",           Value=@"450"    },
+				new ItemProperty() { Item = graveItem, Name = @"LoadType",            Value=@"HPGL"    },
 
                 //grave Image
                 new ItemProperty() { Item = graveIMGItem, Name = @"SettingName",         Value=graveIMGItem.Name    },
@@ -230,8 +233,9 @@ namespace CNCLib.Repository.Context
                 new ItemProperty() { Item = graveIMGItem, Name = @"ImageDPIX",           Value=@"66.7"    },
                 new ItemProperty() { Item = graveIMGItem, Name = @"ImageDPIY",           Value=@"66.7"    },
                 new ItemProperty() { Item = graveIMGItem, Name = @"AutoScaleSizeX",      Value=@"150"    },
-                new ItemProperty() { Item = graveIMGItem, Name = @"AutoScaleSizeY",      Value=@"150"    }
-            };
+                new ItemProperty() { Item = graveIMGItem, Name = @"AutoScaleSizeY",      Value=@"150"    },
+				new ItemProperty() { Item = graveIMGItem, Name = @"LoadType",            Value=@"Image"    }
+			};
 
             context.ItemProperties.AddRange(itemproperties);
         }

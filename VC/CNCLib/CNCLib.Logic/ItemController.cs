@@ -94,71 +94,74 @@ namespace CNCLib.Logic
                     PropertyInfo pi = t.GetProperty(ip.Name);
                     if (pi != null && pi.CanWrite)
                     {
-                        if (pi.PropertyType == typeof(string))
-                        {
-                            pi.SetValue(obj, ip.Value);
-                        }
-                        else if (pi.PropertyType == typeof(int))
-                        {
-                            pi.SetValue(obj, int.Parse(ip.Value));
-                        }
-                        else if (pi.PropertyType == typeof(Byte))
-                        {
-                            pi.SetValue(obj, Byte.Parse(ip.Value));
-                        }
-                        else if (pi.PropertyType == typeof(bool))
-                        {
-                            pi.SetValue(obj, ip.Value == "true");
-                        }
-                        else if (pi.PropertyType == typeof(decimal))
-                        {
-                            pi.SetValue(obj, decimal.Parse(ip.Value, CultureInfo.InvariantCulture));
-                        }
-                        else if (pi.PropertyType == typeof(float))
-                        {
-                            pi.SetValue(obj, double.Parse(ip.Value,  CultureInfo.InvariantCulture));
-                        }
-                        else if (pi.PropertyType == typeof(double))
-                        {
-                            pi.SetValue(obj, double.Parse(ip.Value, CultureInfo.InvariantCulture));
-                        }
-                        else if (pi.PropertyType == typeof(int?))
-                        {
-                            int? val = null;
-                            if (!string.IsNullOrEmpty(ip.Value))
-                                val = int.Parse(ip.Value);
+						if (pi.PropertyType == typeof(string))
+						{
+							pi.SetValue(obj, ip.Value);
+						}
+						else if (pi.PropertyType == typeof(int))
+						{
+							pi.SetValue(obj, int.Parse(ip.Value));
+						}
+						else if (pi.PropertyType == typeof(Byte))
+						{
+							pi.SetValue(obj, Byte.Parse(ip.Value));
+						}
+						else if (pi.PropertyType == typeof(bool))
+						{
+							pi.SetValue(obj, ip.Value == "true");
+						}
+						else if (pi.PropertyType == typeof(decimal))
+						{
+							pi.SetValue(obj, decimal.Parse(ip.Value, CultureInfo.InvariantCulture));
+						}
+						else if (pi.PropertyType == typeof(float))
+						{
+							pi.SetValue(obj, double.Parse(ip.Value, CultureInfo.InvariantCulture));
+						}
+						else if (pi.PropertyType == typeof(double))
+						{
+							pi.SetValue(obj, double.Parse(ip.Value, CultureInfo.InvariantCulture));
+						}
+						else if (pi.PropertyType == typeof(int?))
+						{
+							int? val = null;
+							if (!string.IsNullOrEmpty(ip.Value))
+								val = int.Parse(ip.Value);
 
-                            pi.SetValue(obj, val);
-                        }
-                        else if (pi.PropertyType == typeof(decimal?))
-                        {
-                            decimal? val = null;
-                            if (!string.IsNullOrEmpty(ip.Value))
-                                val = decimal.Parse(ip.Value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+							pi.SetValue(obj, val);
+						}
+						else if (pi.PropertyType == typeof(decimal?))
+						{
+							decimal? val = null;
+							if (!string.IsNullOrEmpty(ip.Value))
+								val = decimal.Parse(ip.Value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
 
-                            pi.SetValue(obj, val);
-                        }
-                        else if (pi.PropertyType == typeof(double?))
-                        {
-                            double? val = null;
-                            if (!string.IsNullOrEmpty(ip.Value))
-                                val = double.Parse(ip.Value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+							pi.SetValue(obj, val);
+						}
+						else if (pi.PropertyType == typeof(double?))
+						{
+							double? val = null;
+							if (!string.IsNullOrEmpty(ip.Value))
+								val = double.Parse(ip.Value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
 
-                            pi.SetValue(obj, val);
-                        }
-                        else if (pi.PropertyType.IsEnum)
-                        {
-                            pi.SetValue(obj, Enum.Parse(pi.PropertyType,ip.Value));
-                        }
+							pi.SetValue(obj, val);
+						}
+						else if (pi.PropertyType.IsEnum)
+						{
+							pi.SetValue(obj, Enum.Parse(pi.PropertyType, ip.Value));
+						}
 						else if (pi.PropertyType == typeof(Byte[]))
-						{					
-							// skip
-							//throw new NotImplementedException();
+						{
+							if (!string.IsNullOrEmpty(ip.Value))
+							{
+								Byte[] bytes = Convert.FromBase64String(ip.Value);
+								pi.SetValue(obj, bytes);
+							}
 						}
 						else
 						{
-                            throw new NotImplementedException();
-                        }
+							throw new NotImplementedException();
+						}
                     }
                 }
                 return obj;
@@ -228,8 +231,9 @@ namespace CNCLib.Logic
                     }
 					else if (pi.PropertyType == typeof(Byte[]))
 					{
-						value = null; // skip
-						//throw new NotImplementedException();
+						Byte[] bytes = (Byte[]) pi.GetValue(obj);
+						if (bytes != null)
+							value = Convert.ToBase64String(bytes);
 					}
                     else
                     {
