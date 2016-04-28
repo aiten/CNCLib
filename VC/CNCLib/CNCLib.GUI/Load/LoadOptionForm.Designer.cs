@@ -126,7 +126,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(50, 131);
+			this.label2.Location = new System.Drawing.Point(23, 122);
 			this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(45, 25);
@@ -135,26 +135,26 @@
 			// 
 			// _ofsX
 			// 
-			this._ofsX.Location = new System.Drawing.Point(126, 123);
-			this._ofsX.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._ofsX.Location = new System.Drawing.Point(126, 118);
+			this._ofsX.Margin = new System.Windows.Forms.Padding(6);
 			this._ofsX.Name = "_ofsX";
-			this._ofsX.Size = new System.Drawing.Size(194, 31);
+			this._ofsX.Size = new System.Drawing.Size(163, 31);
 			this._ofsX.TabIndex = 7;
 			this._ofsX.Text = "0";
 			// 
 			// _ofsY
 			// 
-			this._ofsY.Location = new System.Drawing.Point(336, 117);
-			this._ofsY.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._ofsY.Location = new System.Drawing.Point(296, 117);
+			this._ofsY.Margin = new System.Windows.Forms.Padding(6);
 			this._ofsY.Name = "_ofsY";
-			this._ofsY.Size = new System.Drawing.Size(166, 31);
+			this._ofsY.Size = new System.Drawing.Size(163, 31);
 			this._ofsY.TabIndex = 8;
 			this._ofsY.Text = "0";
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(50, 87);
+			this.label1.Location = new System.Drawing.Point(23, 87);
 			this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(66, 25);
@@ -164,18 +164,18 @@
 			// _scaleX
 			// 
 			this._scaleX.Location = new System.Drawing.Point(126, 79);
-			this._scaleX.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._scaleX.Margin = new System.Windows.Forms.Padding(6);
 			this._scaleX.Name = "_scaleX";
-			this._scaleX.Size = new System.Drawing.Size(194, 31);
+			this._scaleX.Size = new System.Drawing.Size(163, 31);
 			this._scaleX.TabIndex = 4;
 			this._scaleX.Text = "1";
 			// 
 			// _scaleY
 			// 
-			this._scaleY.Location = new System.Drawing.Point(336, 77);
-			this._scaleY.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._scaleY.Location = new System.Drawing.Point(296, 77);
+			this._scaleY.Margin = new System.Windows.Forms.Padding(6);
 			this._scaleY.Name = "_scaleY";
-			this._scaleY.Size = new System.Drawing.Size(166, 31);
+			this._scaleY.Size = new System.Drawing.Size(163, 31);
 			this._scaleY.TabIndex = 5;
 			this._scaleY.Text = "1";
 			// 
@@ -183,7 +183,7 @@
 			// 
 			this._swapXY.AutoSize = true;
 			this._swapXY.Location = new System.Drawing.Point(126, 37);
-			this._swapXY.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._swapXY.Margin = new System.Windows.Forms.Padding(6);
 			this._swapXY.Name = "_swapXY";
 			this._swapXY.Size = new System.Drawing.Size(132, 29);
 			this._swapXY.TabIndex = 2;
@@ -193,15 +193,15 @@
 			// _filename
 			// 
 			this._filename.Location = new System.Drawing.Point(112, 15);
-			this._filename.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._filename.Margin = new System.Windows.Forms.Padding(6);
 			this._filename.Name = "_filename";
-			this._filename.Size = new System.Drawing.Size(926, 31);
+			this._filename.Size = new System.Drawing.Size(835, 31);
 			this._filename.TabIndex = 0;
 			// 
 			// _fileopen
 			// 
-			this._fileopen.Location = new System.Drawing.Point(1050, 10);
-			this._fileopen.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._fileopen.Location = new System.Drawing.Point(959, 10);
+			this._fileopen.Margin = new System.Windows.Forms.Padding(6);
 			this._fileopen.Name = "_fileopen";
 			this._fileopen.Size = new System.Drawing.Size(62, 44);
 			this._fileopen.TabIndex = 1;
@@ -212,8 +212,8 @@
 			// _load
 			// 
 			this._load.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this._load.Location = new System.Drawing.Point(252, 125);
-			this._load.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._load.Location = new System.Drawing.Point(307, 58);
+			this._load.Margin = new System.Windows.Forms.Padding(6);
 			this._load.Name = "_load";
 			this._load.Size = new System.Drawing.Size(168, 44);
 			this._load.TabIndex = 9;
@@ -223,8 +223,8 @@
 			// _cancel
 			// 
 			this._cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this._cancel.Location = new System.Drawing.Point(1430, 948);
-			this._cancel.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._cancel.Location = new System.Drawing.Point(307, 114);
+			this._cancel.Margin = new System.Windows.Forms.Padding(6);
 			this._cancel.Name = "_cancel";
 			this._cancel.Size = new System.Drawing.Size(168, 44);
 			this._cancel.TabIndex = 10;
@@ -234,7 +234,7 @@
 			// _AutoScaleSizeX
 			// 
 			this._AutoScaleSizeX.Location = new System.Drawing.Point(170, 79);
-			this._AutoScaleSizeX.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._AutoScaleSizeX.Margin = new System.Windows.Forms.Padding(6);
 			this._AutoScaleSizeX.Name = "_AutoScaleSizeX";
 			this._AutoScaleSizeX.Size = new System.Drawing.Size(134, 31);
 			this._AutoScaleSizeX.TabIndex = 11;
@@ -242,7 +242,7 @@
 			// _AutoScaleSizeY
 			// 
 			this._AutoScaleSizeY.Location = new System.Drawing.Point(320, 79);
-			this._AutoScaleSizeY.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._AutoScaleSizeY.Margin = new System.Windows.Forms.Padding(6);
 			this._AutoScaleSizeY.Name = "_AutoScaleSizeY";
 			this._AutoScaleSizeY.Size = new System.Drawing.Size(114, 31);
 			this._AutoScaleSizeY.TabIndex = 12;
@@ -250,7 +250,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(22, 87);
+			this.label3.Location = new System.Drawing.Point(23, 87);
 			this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(97, 25);
@@ -271,10 +271,10 @@
 			this._autoScaleGb.Controls.Add(this.label3);
 			this._autoScaleGb.Controls.Add(this._AutoScaleSizeY);
 			this._autoScaleGb.Controls.Add(this._AutoScaleSizeX);
-			this._autoScaleGb.Location = new System.Drawing.Point(604, 148);
-			this._autoScaleGb.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._autoScaleGb.Location = new System.Drawing.Point(35, 125);
+			this._autoScaleGb.Margin = new System.Windows.Forms.Padding(6);
 			this._autoScaleGb.Name = "_autoScaleGb";
-			this._autoScaleGb.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._autoScaleGb.Padding = new System.Windows.Forms.Padding(6);
 			this._autoScaleGb.Size = new System.Drawing.Size(470, 238);
 			this._autoScaleGb.TabIndex = 14;
 			this._autoScaleGb.TabStop = false;
@@ -283,7 +283,7 @@
 			// _dpiXeqY
 			// 
 			this._dpiXeqY.Location = new System.Drawing.Point(412, 167);
-			this._dpiXeqY.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._dpiXeqY.Margin = new System.Windows.Forms.Padding(6);
 			this._dpiXeqY.Name = "_dpiXeqY";
 			this._dpiXeqY.Size = new System.Drawing.Size(40, 44);
 			this._dpiXeqY.TabIndex = 31;
@@ -295,7 +295,7 @@
 			// 
 			this._AutoScaleKeepRatio.AutoSize = true;
 			this._AutoScaleKeepRatio.Location = new System.Drawing.Point(282, 35);
-			this._AutoScaleKeepRatio.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._AutoScaleKeepRatio.Margin = new System.Windows.Forms.Padding(6);
 			this._AutoScaleKeepRatio.Name = "_AutoScaleKeepRatio";
 			this._AutoScaleKeepRatio.Size = new System.Drawing.Size(150, 29);
 			this._AutoScaleKeepRatio.TabIndex = 17;
@@ -305,7 +305,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(22, 131);
+			this.label4.Location = new System.Drawing.Point(23, 131);
 			this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(49, 25);
@@ -315,7 +315,7 @@
 			// _imageDPIY
 			// 
 			this._imageDPIY.Location = new System.Drawing.Point(320, 169);
-			this._imageDPIY.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._imageDPIY.Margin = new System.Windows.Forms.Padding(6);
 			this._imageDPIY.Name = "_imageDPIY";
 			this._imageDPIY.Size = new System.Drawing.Size(86, 31);
 			this._imageDPIY.TabIndex = 29;
@@ -323,7 +323,7 @@
 			// _AutoScaleBorderDistY
 			// 
 			this._AutoScaleBorderDistY.Location = new System.Drawing.Point(320, 123);
-			this._AutoScaleBorderDistY.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._AutoScaleBorderDistY.Margin = new System.Windows.Forms.Padding(6);
 			this._AutoScaleBorderDistY.Name = "_AutoScaleBorderDistY";
 			this._AutoScaleBorderDistY.Size = new System.Drawing.Size(114, 31);
 			this._AutoScaleBorderDistY.TabIndex = 15;
@@ -331,7 +331,7 @@
 			// label15
 			// 
 			this.label15.AutoSize = true;
-			this.label15.Location = new System.Drawing.Point(24, 179);
+			this.label15.Location = new System.Drawing.Point(23, 179);
 			this.label15.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.label15.Name = "label15";
 			this.label15.Size = new System.Drawing.Size(110, 25);
@@ -341,7 +341,7 @@
 			// _AutoScaleBorderDistX
 			// 
 			this._AutoScaleBorderDistX.Location = new System.Drawing.Point(170, 123);
-			this._AutoScaleBorderDistX.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._AutoScaleBorderDistX.Margin = new System.Windows.Forms.Padding(6);
 			this._AutoScaleBorderDistX.Name = "_AutoScaleBorderDistX";
 			this._AutoScaleBorderDistX.Size = new System.Drawing.Size(134, 31);
 			this._AutoScaleBorderDistX.TabIndex = 14;
@@ -349,7 +349,7 @@
 			// _imageDPIX
 			// 
 			this._imageDPIX.Location = new System.Drawing.Point(170, 169);
-			this._imageDPIX.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._imageDPIX.Margin = new System.Windows.Forms.Padding(6);
 			this._imageDPIX.Name = "_imageDPIX";
 			this._imageDPIX.Size = new System.Drawing.Size(86, 31);
 			this._imageDPIX.TabIndex = 27;
@@ -358,7 +358,7 @@
 			// 
 			this._autoScale.AutoSize = true;
 			this._autoScale.Location = new System.Drawing.Point(36, 37);
-			this._autoScale.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._autoScale.Margin = new System.Windows.Forms.Padding(6);
 			this._autoScale.Name = "_autoScale";
 			this._autoScale.Size = new System.Drawing.Size(148, 29);
 			this._autoScale.TabIndex = 3;
@@ -374,11 +374,11 @@
 			this._generateForEngrageGroup.Controls.Add(this.label6);
 			this._generateForEngrageGroup.Controls.Add(this._engraveZUp);
 			this._generateForEngrageGroup.Controls.Add(this._engraveZDown);
-			this._generateForEngrageGroup.Location = new System.Drawing.Point(30, 398);
-			this._generateForEngrageGroup.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._generateForEngrageGroup.Location = new System.Drawing.Point(532, 192);
+			this._generateForEngrageGroup.Margin = new System.Windows.Forms.Padding(6);
 			this._generateForEngrageGroup.Name = "_generateForEngrageGroup";
-			this._generateForEngrageGroup.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-			this._generateForEngrageGroup.Size = new System.Drawing.Size(524, 181);
+			this._generateForEngrageGroup.Padding = new System.Windows.Forms.Padding(6);
+			this._generateForEngrageGroup.Size = new System.Drawing.Size(524, 171);
 			this._generateForEngrageGroup.TabIndex = 18;
 			this._generateForEngrageGroup.TabStop = false;
 			this._generateForEngrageGroup.Text = "Engrave";
@@ -387,7 +387,7 @@
 			// 
 			this._engraveUseParameter.AutoSize = true;
 			this._engraveUseParameter.Location = new System.Drawing.Point(170, 123);
-			this._engraveUseParameter.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._engraveUseParameter.Margin = new System.Windows.Forms.Padding(6);
 			this._engraveUseParameter.Name = "_engraveUseParameter";
 			this._engraveUseParameter.Size = new System.Drawing.Size(185, 29);
 			this._engraveUseParameter.TabIndex = 21;
@@ -427,7 +427,7 @@
 			// _engraveZUp
 			// 
 			this._engraveZUp.Location = new System.Drawing.Point(170, 63);
-			this._engraveZUp.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._engraveZUp.Margin = new System.Windows.Forms.Padding(6);
 			this._engraveZUp.Name = "_engraveZUp";
 			this._engraveZUp.Size = new System.Drawing.Size(134, 31);
 			this._engraveZUp.TabIndex = 11;
@@ -435,7 +435,7 @@
 			// _engraveZDown
 			// 
 			this._engraveZDown.Location = new System.Drawing.Point(320, 63);
-			this._engraveZDown.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._engraveZDown.Margin = new System.Windows.Forms.Padding(6);
 			this._engraveZDown.Name = "_engraveZDown";
 			this._engraveZDown.Size = new System.Drawing.Size(114, 31);
 			this._engraveZDown.TabIndex = 12;
@@ -443,8 +443,8 @@
 			// _generateForEngrave
 			// 
 			this._generateForEngrave.AutoSize = true;
-			this._generateForEngrave.Location = new System.Drawing.Point(646, 679);
-			this._generateForEngrave.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._generateForEngrave.Location = new System.Drawing.Point(532, 140);
+			this._generateForEngrave.Margin = new System.Windows.Forms.Padding(6);
 			this._generateForEngrave.Name = "_generateForEngrave";
 			this._generateForEngrave.Size = new System.Drawing.Size(247, 29);
 			this._generateForEngrave.TabIndex = 3;
@@ -471,10 +471,10 @@
 			this._generateForLaserGroup.Controls.Add(this._laserOff);
 			this._generateForLaserGroup.Controls.Add(this.label9);
 			this._generateForLaserGroup.Controls.Add(this._laserOn);
-			this._generateForLaserGroup.Location = new System.Drawing.Point(30, 590);
-			this._generateForLaserGroup.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._generateForLaserGroup.Location = new System.Drawing.Point(532, 438);
+			this._generateForLaserGroup.Margin = new System.Windows.Forms.Padding(6);
 			this._generateForLaserGroup.Name = "_generateForLaserGroup";
-			this._generateForLaserGroup.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._generateForLaserGroup.Padding = new System.Windows.Forms.Padding(6);
 			this._generateForLaserGroup.Size = new System.Drawing.Size(524, 223);
 			this._generateForLaserGroup.TabIndex = 19;
 			this._generateForLaserGroup.TabStop = false;
@@ -493,7 +493,7 @@
 			// _laserFirstOn
 			// 
 			this._laserFirstOn.Location = new System.Drawing.Point(170, 38);
-			this._laserFirstOn.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._laserFirstOn.Margin = new System.Windows.Forms.Padding(6);
 			this._laserFirstOn.Name = "_laserFirstOn";
 			this._laserFirstOn.Size = new System.Drawing.Size(332, 31);
 			this._laserFirstOn.TabIndex = 19;
@@ -511,7 +511,7 @@
 			// _laserSize
 			// 
 			this._laserSize.Location = new System.Drawing.Point(170, 173);
-			this._laserSize.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._laserSize.Margin = new System.Windows.Forms.Padding(6);
 			this._laserSize.Name = "_laserSize";
 			this._laserSize.Size = new System.Drawing.Size(134, 31);
 			this._laserSize.TabIndex = 17;
@@ -529,7 +529,7 @@
 			// _laserOff
 			// 
 			this._laserOff.Location = new System.Drawing.Point(170, 127);
-			this._laserOff.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._laserOff.Margin = new System.Windows.Forms.Padding(6);
 			this._laserOff.Name = "_laserOff";
 			this._laserOff.Size = new System.Drawing.Size(332, 31);
 			this._laserOff.TabIndex = 14;
@@ -547,7 +547,7 @@
 			// _laserOn
 			// 
 			this._laserOn.Location = new System.Drawing.Point(170, 83);
-			this._laserOn.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._laserOn.Margin = new System.Windows.Forms.Padding(6);
 			this._laserOn.Name = "_laserOn";
 			this._laserOn.Size = new System.Drawing.Size(332, 31);
 			this._laserOn.TabIndex = 11;
@@ -555,8 +555,8 @@
 			// _generateForLaser
 			// 
 			this._generateForLaser.AutoSize = true;
-			this._generateForLaser.Location = new System.Drawing.Point(646, 629);
-			this._generateForLaser.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._generateForLaser.Location = new System.Drawing.Point(532, 394);
+			this._generateForLaser.Margin = new System.Windows.Forms.Padding(6);
 			this._generateForLaser.Name = "_generateForLaser";
 			this._generateForLaser.Size = new System.Drawing.Size(216, 29);
 			this._generateForLaser.TabIndex = 20;
@@ -572,11 +572,11 @@
 			this._generalGroup.Controls.Add(this.label2);
 			this._generalGroup.Controls.Add(this._ofsY);
 			this._generalGroup.Controls.Add(this._ofsX);
-			this._generalGroup.Location = new System.Drawing.Point(30, 148);
-			this._generalGroup.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._generalGroup.Location = new System.Drawing.Point(30, 375);
+			this._generalGroup.Margin = new System.Windows.Forms.Padding(6);
 			this._generalGroup.Name = "_generalGroup";
-			this._generalGroup.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-			this._generalGroup.Size = new System.Drawing.Size(524, 237);
+			this._generalGroup.Padding = new System.Windows.Forms.Padding(6);
+			this._generalGroup.Size = new System.Drawing.Size(475, 169);
 			this._generalGroup.TabIndex = 21;
 			this._generalGroup.TabStop = false;
 			this._generalGroup.Text = "Options";
@@ -594,7 +594,7 @@
 			// _grayThreshold
 			// 
 			this._grayThreshold.Location = new System.Drawing.Point(242, 37);
-			this._grayThreshold.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._grayThreshold.Margin = new System.Windows.Forms.Padding(6);
 			this._grayThreshold.Name = "_grayThreshold";
 			this._grayThreshold.Size = new System.Drawing.Size(86, 31);
 			this._grayThreshold.TabIndex = 19;
@@ -612,7 +612,7 @@
 			// _penMoveSpeed
 			// 
 			this._penMoveSpeed.Location = new System.Drawing.Point(306, 40);
-			this._penMoveSpeed.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._penMoveSpeed.Margin = new System.Windows.Forms.Padding(6);
 			this._penMoveSpeed.Name = "_penMoveSpeed";
 			this._penMoveSpeed.Size = new System.Drawing.Size(86, 31);
 			this._penMoveSpeed.TabIndex = 23;
@@ -630,7 +630,7 @@
 			// _penDownSpeed
 			// 
 			this._penDownSpeed.Location = new System.Drawing.Point(306, 87);
-			this._penDownSpeed.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._penDownSpeed.Margin = new System.Windows.Forms.Padding(6);
 			this._penDownSpeed.Name = "_penDownSpeed";
 			this._penDownSpeed.Size = new System.Drawing.Size(86, 31);
 			this._penDownSpeed.TabIndex = 25;
@@ -645,10 +645,10 @@
 			this._imageG.Controls.Add(this._newspaperDither);
 			this._imageG.Controls.Add(this._grayThreshold);
 			this._imageG.Controls.Add(this.label12);
-			this._imageG.Location = new System.Drawing.Point(1128, 215);
-			this._imageG.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._imageG.Location = new System.Drawing.Point(1087, 140);
+			this._imageG.Margin = new System.Windows.Forms.Padding(6);
 			this._imageG.Name = "_imageG";
-			this._imageG.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._imageG.Padding = new System.Windows.Forms.Padding(6);
 			this._imageG.Size = new System.Drawing.Size(470, 342);
 			this._imageG.TabIndex = 27;
 			this._imageG.TabStop = false;
@@ -658,7 +658,7 @@
 			// 
 			this._imageInvert.AutoSize = true;
 			this._imageInvert.Location = new System.Drawing.Point(36, 192);
-			this._imageInvert.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._imageInvert.Margin = new System.Windows.Forms.Padding(6);
 			this._imageInvert.Name = "_imageInvert";
 			this._imageInvert.Size = new System.Drawing.Size(161, 29);
 			this._imageInvert.TabIndex = 9;
@@ -678,7 +678,7 @@
 			// _saveImageToFilename
 			// 
 			this._saveImageToFilename.Location = new System.Drawing.Point(36, 283);
-			this._saveImageToFilename.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._saveImageToFilename.Margin = new System.Windows.Forms.Padding(6);
 			this._saveImageToFilename.Name = "_saveImageToFilename";
 			this._saveImageToFilename.Size = new System.Drawing.Size(412, 31);
 			this._saveImageToFilename.TabIndex = 29;
@@ -686,7 +686,7 @@
 			// _newspaperDotSize
 			// 
 			this._newspaperDotSize.Location = new System.Drawing.Point(254, 137);
-			this._newspaperDotSize.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._newspaperDotSize.Margin = new System.Windows.Forms.Padding(6);
 			this._newspaperDotSize.Name = "_newspaperDotSize";
 			this._newspaperDotSize.Size = new System.Drawing.Size(86, 31);
 			this._newspaperDotSize.TabIndex = 31;
@@ -695,7 +695,7 @@
 			// 
 			this._floydSteinbergDither.AutoSize = true;
 			this._floydSteinbergDither.Location = new System.Drawing.Point(38, 94);
-			this._floydSteinbergDither.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._floydSteinbergDither.Margin = new System.Windows.Forms.Padding(6);
 			this._floydSteinbergDither.Name = "_floydSteinbergDither";
 			this._floydSteinbergDither.Size = new System.Drawing.Size(245, 29);
 			this._floydSteinbergDither.TabIndex = 30;
@@ -706,7 +706,7 @@
 			// 
 			this._newspaperDither.AutoSize = true;
 			this._newspaperDither.Location = new System.Drawing.Point(38, 137);
-			this._newspaperDither.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._newspaperDither.Margin = new System.Windows.Forms.Padding(6);
 			this._newspaperDither.Name = "_newspaperDither";
 			this._newspaperDither.Size = new System.Drawing.Size(197, 29);
 			this._newspaperDither.TabIndex = 29;
@@ -719,11 +719,11 @@
 			this._laserGraveG.Controls.Add(this.label13);
 			this._laserGraveG.Controls.Add(this.label14);
 			this._laserGraveG.Controls.Add(this._penDownSpeed);
-			this._laserGraveG.Location = new System.Drawing.Point(604, 398);
-			this._laserGraveG.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._laserGraveG.Location = new System.Drawing.Point(532, 681);
+			this._laserGraveG.Margin = new System.Windows.Forms.Padding(6);
 			this._laserGraveG.Name = "_laserGraveG";
-			this._laserGraveG.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-			this._laserGraveG.Size = new System.Drawing.Size(470, 179);
+			this._laserGraveG.Padding = new System.Windows.Forms.Padding(6);
+			this._laserGraveG.Size = new System.Drawing.Size(524, 148);
 			this._laserGraveG.TabIndex = 28;
 			this._laserGraveG.TabStop = false;
 			this._laserGraveG.Text = "Engrave/Laser";
@@ -731,7 +731,7 @@
 			// label17
 			// 
 			this.label17.AutoSize = true;
-			this.label17.Location = new System.Drawing.Point(30, 81);
+			this.label17.Location = new System.Drawing.Point(30, 65);
 			this.label17.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.label17.Name = "label17";
 			this.label17.Size = new System.Drawing.Size(165, 25);
@@ -740,16 +740,16 @@
 			// 
 			// _saveGCodeToFileName
 			// 
-			this._saveGCodeToFileName.Location = new System.Drawing.Point(208, 75);
-			this._saveGCodeToFileName.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._saveGCodeToFileName.Location = new System.Drawing.Point(208, 62);
+			this._saveGCodeToFileName.Margin = new System.Windows.Forms.Padding(6);
 			this._saveGCodeToFileName.Name = "_saveGCodeToFileName";
-			this._saveGCodeToFileName.Size = new System.Drawing.Size(830, 31);
+			this._saveGCodeToFileName.Size = new System.Drawing.Size(739, 31);
 			this._saveGCodeToFileName.TabIndex = 33;
 			// 
 			// label18
 			// 
 			this.label18.AutoSize = true;
-			this.label18.Location = new System.Drawing.Point(1260, 29);
+			this.label18.Location = new System.Drawing.Point(1060, 20);
 			this.label18.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.label18.Name = "label18";
 			this.label18.Size = new System.Drawing.Size(169, 25);
@@ -759,17 +759,17 @@
 			// _settingName
 			// 
 			this._settingName.FormattingEnabled = true;
-			this._settingName.Location = new System.Drawing.Point(1266, 73);
-			this._settingName.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._settingName.Location = new System.Drawing.Point(1230, 18);
+			this._settingName.Margin = new System.Windows.Forms.Padding(6);
 			this._settingName.Name = "_settingName";
-			this._settingName.Size = new System.Drawing.Size(328, 33);
+			this._settingName.Size = new System.Drawing.Size(359, 33);
 			this._settingName.TabIndex = 34;
 			this._settingName.SelectedIndexChanged += new System.EventHandler(this._settingName_SelectedIndexChanged);
 			// 
 			// _saveSettings
 			// 
-			this._saveSettings.Location = new System.Drawing.Point(1266, 125);
-			this._saveSettings.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._saveSettings.Location = new System.Drawing.Point(1259, 55);
+			this._saveSettings.Margin = new System.Windows.Forms.Padding(6);
 			this._saveSettings.Name = "_saveSettings";
 			this._saveSettings.Size = new System.Drawing.Size(154, 44);
 			this._saveSettings.TabIndex = 35;
@@ -779,8 +779,8 @@
 			// 
 			// _deleteSettings
 			// 
-			this._deleteSettings.Location = new System.Drawing.Point(1440, 125);
-			this._deleteSettings.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._deleteSettings.Location = new System.Drawing.Point(1424, 55);
+			this._deleteSettings.Margin = new System.Windows.Forms.Padding(6);
 			this._deleteSettings.Name = "_deleteSettings";
 			this._deleteSettings.Size = new System.Drawing.Size(154, 44);
 			this._deleteSettings.TabIndex = 36;
@@ -805,10 +805,10 @@
 			this._imageHoleG.Controls.Add(this._holeCircle);
 			this._imageHoleG.Controls.Add(this._holeDotSizeX);
 			this._imageHoleG.Controls.Add(this.label21);
-			this._imageHoleG.Location = new System.Drawing.Point(1128, 579);
-			this._imageHoleG.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._imageHoleG.Location = new System.Drawing.Point(1087, 493);
+			this._imageHoleG.Margin = new System.Windows.Forms.Padding(6);
 			this._imageHoleG.Name = "_imageHoleG";
-			this._imageHoleG.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._imageHoleG.Padding = new System.Windows.Forms.Padding(6);
 			this._imageHoleG.Size = new System.Drawing.Size(470, 358);
 			this._imageHoleG.TabIndex = 32;
 			this._imageHoleG.TabStop = false;
@@ -817,7 +817,7 @@
 			// _holeDotDistYEq
 			// 
 			this._holeDotDistYEq.Location = new System.Drawing.Point(374, 83);
-			this._holeDotDistYEq.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeDotDistYEq.Margin = new System.Windows.Forms.Padding(6);
 			this._holeDotDistYEq.Name = "_holeDotDistYEq";
 			this._holeDotDistYEq.Size = new System.Drawing.Size(40, 44);
 			this._holeDotDistYEq.TabIndex = 40;
@@ -828,7 +828,7 @@
 			// _holeDotSizeYEq
 			// 
 			this._holeDotSizeYEq.Location = new System.Drawing.Point(376, 38);
-			this._holeDotSizeYEq.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeDotSizeYEq.Margin = new System.Windows.Forms.Padding(6);
 			this._holeDotSizeYEq.Name = "_holeDotSizeYEq";
 			this._holeDotSizeYEq.Size = new System.Drawing.Size(40, 44);
 			this._holeDotSizeYEq.TabIndex = 32;
@@ -839,7 +839,7 @@
 			// _holeDotDistY
 			// 
 			this._holeDotDistY.Location = new System.Drawing.Point(272, 88);
-			this._holeDotDistY.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeDotDistY.Margin = new System.Windows.Forms.Padding(6);
 			this._holeDotDistY.Name = "_holeDotDistY";
 			this._holeDotDistY.Size = new System.Drawing.Size(86, 31);
 			this._holeDotDistY.TabIndex = 39;
@@ -847,7 +847,7 @@
 			// _holeDotDistX
 			// 
 			this._holeDotDistX.Location = new System.Drawing.Point(174, 88);
-			this._holeDotDistX.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeDotDistX.Margin = new System.Windows.Forms.Padding(6);
 			this._holeDotDistX.Name = "_holeDotDistX";
 			this._holeDotDistX.Size = new System.Drawing.Size(86, 31);
 			this._holeDotDistX.TabIndex = 37;
@@ -866,7 +866,7 @@
 			// 
 			this._holeRotateHeart.AutoSize = true;
 			this._holeRotateHeart.Location = new System.Drawing.Point(322, 240);
-			this._holeRotateHeart.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeRotateHeart.Margin = new System.Windows.Forms.Padding(6);
 			this._holeRotateHeart.Name = "_holeRotateHeart";
 			this._holeRotateHeart.Size = new System.Drawing.Size(107, 29);
 			this._holeRotateHeart.TabIndex = 36;
@@ -877,7 +877,7 @@
 			// 
 			this._holeYShift.AutoSize = true;
 			this._holeYShift.Location = new System.Drawing.Point(44, 154);
-			this._holeYShift.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeYShift.Margin = new System.Windows.Forms.Padding(6);
 			this._holeYShift.Name = "_holeYShift";
 			this._holeYShift.Size = new System.Drawing.Size(108, 29);
 			this._holeYShift.TabIndex = 32;
@@ -888,7 +888,7 @@
 			// 
 			this._holeHeart.AutoSize = true;
 			this._holeHeart.Location = new System.Drawing.Point(208, 238);
-			this._holeHeart.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeHeart.Margin = new System.Windows.Forms.Padding(6);
 			this._holeHeart.Name = "_holeHeart";
 			this._holeHeart.Size = new System.Drawing.Size(95, 29);
 			this._holeHeart.TabIndex = 35;
@@ -898,7 +898,7 @@
 			// _holeDotSizeY
 			// 
 			this._holeDotSizeY.Location = new System.Drawing.Point(274, 38);
-			this._holeDotSizeY.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeDotSizeY.Margin = new System.Windows.Forms.Padding(6);
 			this._holeDotSizeY.Name = "_holeDotSizeY";
 			this._holeDotSizeY.Size = new System.Drawing.Size(86, 31);
 			this._holeDotSizeY.TabIndex = 33;
@@ -907,7 +907,7 @@
 			// 
 			this._holeDiamond.AutoSize = true;
 			this._holeDiamond.Location = new System.Drawing.Point(208, 200);
-			this._holeDiamond.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeDiamond.Margin = new System.Windows.Forms.Padding(6);
 			this._holeDiamond.Name = "_holeDiamond";
 			this._holeDiamond.Size = new System.Drawing.Size(128, 29);
 			this._holeDiamond.TabIndex = 32;
@@ -918,7 +918,7 @@
 			// 
 			this._holeHexagon.AutoSize = true;
 			this._holeHexagon.Location = new System.Drawing.Point(38, 279);
-			this._holeHexagon.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeHexagon.Margin = new System.Windows.Forms.Padding(6);
 			this._holeHexagon.Name = "_holeHexagon";
 			this._holeHexagon.Size = new System.Drawing.Size(129, 29);
 			this._holeHexagon.TabIndex = 31;
@@ -929,7 +929,7 @@
 			// 
 			this._holeSquare.AutoSize = true;
 			this._holeSquare.Location = new System.Drawing.Point(38, 200);
-			this._holeSquare.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeSquare.Margin = new System.Windows.Forms.Padding(6);
 			this._holeSquare.Name = "_holeSquare";
 			this._holeSquare.Size = new System.Drawing.Size(112, 29);
 			this._holeSquare.TabIndex = 30;
@@ -940,7 +940,7 @@
 			// 
 			this._holeCircle.AutoSize = true;
 			this._holeCircle.Location = new System.Drawing.Point(38, 238);
-			this._holeCircle.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeCircle.Margin = new System.Windows.Forms.Padding(6);
 			this._holeCircle.Name = "_holeCircle";
 			this._holeCircle.Size = new System.Drawing.Size(98, 29);
 			this._holeCircle.TabIndex = 29;
@@ -950,7 +950,7 @@
 			// _holeDotSizeX
 			// 
 			this._holeDotSizeX.Location = new System.Drawing.Point(174, 38);
-			this._holeDotSizeX.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._holeDotSizeX.Margin = new System.Windows.Forms.Padding(6);
 			this._holeDotSizeX.Name = "_holeDotSizeX";
 			this._holeDotSizeX.Size = new System.Drawing.Size(86, 31);
 			this._holeDotSizeX.TabIndex = 19;
@@ -968,7 +968,7 @@
 			// _loadGCode
 			// 
 			this._loadGCode.AutoSize = true;
-			this._loadGCode.Location = new System.Drawing.Point(21, 21);
+			this._loadGCode.Location = new System.Drawing.Point(18, 15);
 			this._loadGCode.Margin = new System.Windows.Forms.Padding(6);
 			this._loadGCode.Name = "_loadGCode";
 			this._loadGCode.Size = new System.Drawing.Size(164, 29);
@@ -979,7 +979,7 @@
 			// _loadHTML
 			// 
 			this._loadHTML.AutoSize = true;
-			this._loadHTML.Location = new System.Drawing.Point(21, 59);
+			this._loadHTML.Location = new System.Drawing.Point(18, 53);
 			this._loadHTML.Margin = new System.Windows.Forms.Padding(6);
 			this._loadHTML.Name = "_loadHTML";
 			this._loadHTML.Size = new System.Drawing.Size(155, 29);
@@ -990,7 +990,7 @@
 			// _loadImage
 			// 
 			this._loadImage.AutoSize = true;
-			this._loadImage.Location = new System.Drawing.Point(21, 96);
+			this._loadImage.Location = new System.Drawing.Point(18, 94);
 			this._loadImage.Margin = new System.Windows.Forms.Padding(6);
 			this._loadImage.Name = "_loadImage";
 			this._loadImage.Size = new System.Drawing.Size(155, 29);
@@ -1001,7 +1001,7 @@
 			// _loadimageHole
 			// 
 			this._loadimageHole.AutoSize = true;
-			this._loadimageHole.Location = new System.Drawing.Point(21, 133);
+			this._loadimageHole.Location = new System.Drawing.Point(18, 135);
 			this._loadimageHole.Margin = new System.Windows.Forms.Padding(6);
 			this._loadimageHole.Name = "_loadimageHole";
 			this._loadimageHole.Size = new System.Drawing.Size(219, 29);
@@ -1016,16 +1016,17 @@
 			this._loadpanel.Controls.Add(this._loadHTML);
 			this._loadpanel.Controls.Add(this._loadGCode);
 			this._loadpanel.Controls.Add(this._load);
-			this._loadpanel.Location = new System.Drawing.Point(35, 819);
+			this._loadpanel.Controls.Add(this._cancel);
+			this._loadpanel.Location = new System.Drawing.Point(30, 646);
 			this._loadpanel.Name = "_loadpanel";
-			this._loadpanel.Size = new System.Drawing.Size(435, 188);
+			this._loadpanel.Size = new System.Drawing.Size(495, 177);
 			this._loadpanel.TabIndex = 42;
 			// 
 			// LoadOptionForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1622, 1027);
+			this.ClientSize = new System.Drawing.Size(1604, 853);
 			this.Controls.Add(this.label7);
 			this.Controls.Add(this._filename);
 			this.Controls.Add(this._fileopen);
@@ -1045,8 +1046,7 @@
 			this.Controls.Add(this._generateForEngrageGroup);
 			this.Controls.Add(this._imageHoleG);
 			this.Controls.Add(this._loadpanel);
-			this.Controls.Add(this._cancel);
-			this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.Margin = new System.Windows.Forms.Padding(6);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "LoadOptionForm";

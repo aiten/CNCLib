@@ -388,5 +388,5 @@ namespace CNCLib.GUI.Load
         {
             _holeDotDistY.Text = _holeDotDistX.Text;
         }
-    }
+	}
 }
