@@ -42,15 +42,8 @@ namespace CNCLib.Wpf.ViewModels
     {
         public SetupWindowViewModel()
 		{
-			try
-			{
-				LoadMachines(-1);
-			}
-			catch (Exception e)
-			{
-				MessageBox.Show("Cannot create/connect database in c:\\tmp\n\r"+e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				Application.Current.Shutdown();
-			}
+			LoadMachines(-1);
+			LoadJoystick();
  			ResetOnConnect = false;
 		}
 
@@ -79,8 +72,23 @@ namespace CNCLib.Wpf.ViewModels
 				Machine = defaultmachine;
 			}
 		}
- 
-        #region Properties
+		private void LoadJoystick()
+		{
+			using (var controller = Dependency.Resolve<IItemController>())
+			{
+				var joystick = controller.GetAll(typeof(Models.Joystick));
+				if (joystick != null && joystick.Count() > 0)
+				{
+					Joystick = (Models.Joystick)controller.Create(joystick.First().ItemID);
+				}
+				else
+				{
+					Joystick = new Joystick() { ComPort = "com7", BaudRate = 250000 };
+				}
+			}
+		}
+
+		#region Properties
 
 		private Framework.Arduino.ArduinoSerialCommunication Com
         {
@@ -104,7 +112,9 @@ namespace CNCLib.Wpf.ViewModels
                 }
 		}
 
-        Models.Machine _selectedMachine;
+		public Joystick Joystick { get; set; }
+
+		Models.Machine _selectedMachine;
 
         private ObservableCollection<Models.Machine> _machines;
         public ObservableCollection<Models.Machine> Machines
@@ -185,8 +195,8 @@ namespace CNCLib.Wpf.ViewModels
             {
                 ComJoystick.ResetOnConnect = true;
                 ComJoystick.CommandToUpper = false;
-                ComJoystick.BaudRate = (int)250000;
-                ComJoystick.Connect("com7");
+                ComJoystick.BaudRate = Joystick.BaudRate;
+                ComJoystick.Connect(Joystick.ComPort);
             }
             catch (Exception e)
             {
@@ -251,7 +261,17 @@ namespace CNCLib.Wpf.ViewModels
             LoadMachines(mID);
         }
 
-	   public void SetDefaultMachine()
+		public void SetupJoystick()
+		{
+			var dlg = new JoystickView();
+
+			var vm = dlg.DataContext as JoystickView;
+			dlg.ShowDialog();
+
+			LoadJoystick();
+		}
+
+		public void SetDefaultMachine()
 	   {
             if (Machine != null)
             {
@@ -271,18 +291,23 @@ namespace CNCLib.Wpf.ViewModels
         {
             return Connected;
         }
+		public bool CanSetupJoystick()
+		{
+			return !ConnectedJoystick;
+		}
 
-        #endregion
+		#endregion
 
-        #region Commands
+		#region Commands
 
-        public ICommand SetupMachineCommand { get { return new DelegateCommand(SetupMachine, CanSetupMachine); } }
+		public ICommand SetupMachineCommand { get { return new DelegateCommand(SetupMachine, CanSetupMachine); } }
  		public ICommand ConnectCommand { get { return new DelegateCommand(Connect, CanConnect); } }
 		public ICommand DisConnectCommand	{ get { return new DelegateCommand(DisConnect, CanDisConnect); } }
 		public ICommand SetDefaultMachineCommand { get { return new DelegateCommand(SetDefaultMachine, CanSetupMachine); } }
         public ICommand ConnectJoystickCommand { get { return new DelegateCommand(ConnectJoystick, CanConnectJoystick); } }
         public ICommand DisConnectJoystickCommand { get { return new DelegateCommand(DisConnectJoystick, CanDisConnectJoystick); } }
+		public ICommand SetupJoystickCommand { get { return new DelegateCommand(SetupJoystick, CanSetupJoystick); } }
 
-        #endregion
-    }
+		#endregion
+	}
 }

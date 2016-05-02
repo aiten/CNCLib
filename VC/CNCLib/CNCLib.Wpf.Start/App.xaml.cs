@@ -44,6 +44,21 @@ namespace CNCLib.Wpf.Start
             Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(typeof(CNCLib.Repository.MachineRepository).Assembly, typeof(CNCLib.Logic.MachineController).Assembly);
             Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
-        }
-    }
+
+			// Open Database here
+			//
+			try
+			{
+				using (var controller = Dependency.Resolve<IMachineController>())
+				{
+					var dto = controller.GetMachine(-1);
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Cannot create/connect database in c:\\tmp\n\r" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				Application.Current.Shutdown();
+			}
+		}
+	}
 }

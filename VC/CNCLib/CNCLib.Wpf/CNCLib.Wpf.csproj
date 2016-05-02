@@ -73,11 +73,13 @@
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\JoystickArduinoSerialCommunication.cs" />
     <Compile Include="Models\Converter.cs" />
+    <Compile Include="Models\Joystick.cs" />
     <Compile Include="Models\MachineInitCommand.cs" />
     <Compile Include="Models\MachineCommand.cs" />
     <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\SentCNCCommand.cs" />
     <Compile Include="ViewModels\IManualControlViewModel.cs" />
+    <Compile Include="ViewModels\JoystickViewModel.cs" />
     <Compile Include="ViewModels\MachineViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ManualControl\MoveViewModel.cs" />
@@ -92,6 +94,9 @@
     <Compile Include="ViewModels\ManualControl\DetailViewModel.cs" />
     <Compile Include="ViewModels\ManualControlViewModel.cs" />
     <Compile Include="ViewModels\SetupWindowViewModel.cs" />
+    <Compile Include="Views\JoystickView.xaml.cs">
+      <DependentUpon>JoystickView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MachineView.xaml.cs">
       <DependentUpon>MachineView.xaml</DependentUpon>
     </Compile>
@@ -122,6 +127,10 @@
     <Page Include="Resources\StylesResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\JoystickView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MachineView.xaml">
       <Generator>MSBuild:Compile</Generator>
