@@ -27,6 +27,7 @@ using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Wpf.Models;
 using Framework.Tools.Dependency;
+using CNCLib.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -42,19 +43,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void LoadJoystick()
         {
-			ComPort = "com7";
-			BaudRate = 250000;
-			_id = -1;
-
-			using (var controller = Dependency.Resolve<IItemController>())
-			{
-				var joystick = controller.GetAll(typeof(Models.Joystick));
-				if (joystick != null && joystick.Count() > 0) 
-				{
-					_id = joystick.First().ItemID;
-					_currentJoystick = (Models.Joystick)controller.Create(_id);
-				}
-			}
+			_currentJoystick = JoystickHelper.Load(out _id);
 
 			OnPropertyChanged(() => ComPort);
 			OnPropertyChanged(() => BaudRate);
@@ -83,17 +72,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void SaveJoystick()
 		{
-			using (var controller = Dependency.Resolve<IItemController>())
-			{
-				if (_id >= 0)
-				{
-					controller.Save(_id,"Joystick", _currentJoystick);
-				}
-				else
-				{
-					_id = controller.Add("Joystick", _currentJoystick);
-				}
-			}
+			JoystickHelper.Save(_currentJoystick, ref _id);
 			CloseAction();
         }
 		public bool CanSaveJoystick()

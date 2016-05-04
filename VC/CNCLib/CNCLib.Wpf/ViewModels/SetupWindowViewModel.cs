@@ -74,18 +74,8 @@ namespace CNCLib.Wpf.ViewModels
 		}
 		private void LoadJoystick()
 		{
-			using (var controller = Dependency.Resolve<IItemController>())
-			{
-				var joystick = controller.GetAll(typeof(Models.Joystick));
-				if (joystick != null && joystick.Count() > 0)
-				{
-					Joystick = (Models.Joystick)controller.Create(joystick.First().ItemID);
-				}
-				else
-				{
-					Joystick = new Joystick() { ComPort = "com7", BaudRate = 250000 };
-				}
-			}
+			int dummyid;
+			Joystick = JoystickHelper.Load(out dummyid);
 		}
 
 		#region Properties
