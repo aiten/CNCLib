@@ -17,12 +17,11 @@
 */
 
 using Framework.Wpf.Helpers;
-using System.Windows;
 using System;
 
 namespace Framework.Wpf.ViewModels
 {
-    public class BaseViewModel : NotificationObject
+	public class BaseViewModel : NotificationObject
 	{
 		public Action CloseAction { get; set; }
 

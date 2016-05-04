@@ -16,10 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace CNCLib.Wpf.Models
 {

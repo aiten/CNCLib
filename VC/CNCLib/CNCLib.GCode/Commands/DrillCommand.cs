@@ -16,11 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 
 namespace CNCLib.GCode.Commands
 {
-    class DrillCommand : Command
+	class DrillCommand : Command
     {
 		#region crt + factory
 

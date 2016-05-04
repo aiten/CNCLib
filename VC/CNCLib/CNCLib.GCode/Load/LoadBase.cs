@@ -16,16 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools;
 using CNCLib.GCode.Commands;
-using System.IO;
 using System;
-using System.Runtime.CompilerServices;
 using System.Globalization;
 
 namespace CNCLib.GCode.Load
 {
-    public abstract class LoadBase
+	public abstract class LoadBase
     {
 		bool _laserWasOn = false;
 		bool _laserOn = true;

@@ -16,28 +16,20 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools;
 using CNCLib.GCode.Load;
 using CNCLib.GCode.Commands;
 using CNCLib.GCode;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using CNCLib.GUI.Load;
 using Framework.Arduino;
-using CNCLib.Logic.Contracts;
 
 namespace CNCLib.GUI
 {
-    public partial class PaintForm : Form
+	public partial class PaintForm : Form
 	{
 
 		#region Crt

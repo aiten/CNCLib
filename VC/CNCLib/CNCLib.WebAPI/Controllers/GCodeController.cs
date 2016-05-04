@@ -1,14 +1,6 @@
-﻿using CNCLib.GCode.Commands;
-using CNCLib.GCode.Load;
-using CNCLib.Logic.Contracts;
-using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools.Dependency;
-using System;
+﻿using CNCLib.GCode.Load;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace CNCLib.WebAPI.Controllers

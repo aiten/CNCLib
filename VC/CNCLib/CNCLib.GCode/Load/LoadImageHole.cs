@@ -16,14 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools;
 using CNCLib.GCode.Commands;
-using System.IO;
 using System;
 
 namespace CNCLib.GCode.Load
 {
-    public class LoadImageHole : LoadImageBase
+	public class LoadImageHole : LoadImageBase
     {
         public int ImageToDotSizeX { get { return LoadOptions.DotSizeX; } }
         public int ImageToDotSizeY { get { return LoadOptions.DotSizeY; } }

@@ -16,16 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CNCLib.Repository.Context;
-using CNCLib.Repository;
 using CNCLib.Repository.Contracts.Entities;
-using System.Threading.Tasks;
-using Framework.EF;
 using System.Collections.Generic;
 using System.Linq;
-using Framework.Tools;
 using CNCLib.Repository.Contracts;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;

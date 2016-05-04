@@ -16,20 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Repository.Context;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CNCLib.Repository.Contracts;
 using Framework.Tools;
-using System.Data.Entity;
-using Framework.EF;
-using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class ConfigurationRepository : CNCLibRepository, IConfigurationRepository
+	public class ConfigurationRepository : CNCLibRepository, IConfigurationRepository
 	{
 		public Contracts.Entities.Configuration Get(string group, string  name)
         {

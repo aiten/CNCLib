@@ -16,12 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.GCode
 {
-    public class Settings : Singleton<Settings>
+	public class Settings : Singleton<Settings>
     {
         public Settings()
         {

@@ -18,19 +18,12 @@
 
 using CNCLib.Repository.Contracts.Entities;
 using CNCLib.Repository.Mappings;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CNCLib.Repository.Context
 {
-    public class CNCLibContext : DbContext
+	public class CNCLibContext : DbContext
     {
         public CNCLibContext()
         {

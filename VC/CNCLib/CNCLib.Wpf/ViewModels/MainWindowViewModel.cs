@@ -16,26 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
 using Framework.Wpf.ViewModels;
-using Framework.Wpf.Helpers;
-using System.Windows;
-using CNCLib.Wpf;
-using Framework.Tools;
-using System.Linq.Expressions;
-using CNCLib.Logic;
-using CNCLib.GCode;
 
 
 namespace CNCLib.Wpf.ViewModels
 {
-    public class MainWindowViewModel : BaseViewModel
+	public class MainWindowViewModel : BaseViewModel
     {
         public MainWindowViewModel()
 		{

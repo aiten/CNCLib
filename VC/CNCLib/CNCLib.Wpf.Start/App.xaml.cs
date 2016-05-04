@@ -17,16 +17,8 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Windows;
-using Framework.Logic;
-using CNCLib.Repository;
-using CNCLib.Repository.Contracts;
-using CNCLib.Logic;
 using CNCLib.Logic.Contracts;
-using Framework.Wpf.ViewModels;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using Framework.EF;

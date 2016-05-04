@@ -18,18 +18,14 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Framework.Test;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
-    [TestClass]
+	[TestClass]
     public class MachineWebApiTest : AzureWebApiTest
     {
         private readonly string api = "/api/machine";

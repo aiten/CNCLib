@@ -18,8 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Framework.Tools;
 using Framework.Logic;
 using CNCLib.Repository.Contracts;
@@ -31,7 +29,7 @@ using Framework.Tools.Pattern;
 
 namespace CNCLib.Logic
 {
-    public class MachineController : ControllerBase, IMachineController
+	public class MachineController : ControllerBase, IMachineController
 	{
 		public IEnumerable<Machine> GetMachines()
 		{

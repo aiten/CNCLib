@@ -16,11 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 
 namespace CNCLib.GCode.Commands
 {
-    [IsGCommand("MXX")]
+	[IsGCommand("MXX")]
     class MxxCommand : Command
     {
         #region crt + factory

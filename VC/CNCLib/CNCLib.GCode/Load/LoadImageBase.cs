@@ -16,14 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools;
 using CNCLib.GCode.Commands;
-using System.IO;
 using System;
 
 namespace CNCLib.GCode.Load
 {
-    public abstract class LoadImageBase : LoadBase
+	public abstract class LoadImageBase : LoadBase
     {
         protected double PixelSizeX { get; private set; } = 1;
         protected double PixelSizeY { get; private set; } = 1;

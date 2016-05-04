@@ -16,23 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools;
 using CNCLib.GCode.Load;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
 
 namespace CNCLib.GUI.Load
 {
-    public partial class LoadOptionForm : Form
+	public partial class LoadOptionForm : Form
     {
         protected class LoadOptionDefinition
         {

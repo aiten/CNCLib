@@ -17,16 +17,14 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Framework.Tools.Drawing
 {
-    public class ImageHelper
+	public class ImageHelper
     {
         public static void Save(Bitmap image, int maxWidth, int maxHeight, int quality, string filePath)
         {

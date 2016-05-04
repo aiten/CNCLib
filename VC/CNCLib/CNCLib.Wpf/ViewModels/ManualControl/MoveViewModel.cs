@@ -16,12 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Linq;
 using System.Windows.Input;
 using Framework.Wpf.Helpers;
 using System.Globalization;
-using CNCLib.Wpf.Helpers;
-using Framework.Arduino;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {

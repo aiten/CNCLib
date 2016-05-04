@@ -1,13 +1,9 @@
 ﻿using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Repository.Context;
-using Framework.EF;
 using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;

@@ -18,14 +18,10 @@
 
 using Framework.Tools.Drawing;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CNCLib.GUI
 {
-    public class GCoderUserControlEventArgs : EventArgs
+	public class GCoderUserControlEventArgs : EventArgs
     {
         public GCoderUserControlEventArgs()
         {

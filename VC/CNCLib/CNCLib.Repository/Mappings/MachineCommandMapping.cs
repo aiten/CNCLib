@@ -17,18 +17,11 @@
 */
 
 using CNCLib.Repository.Contracts.Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CNCLib.Repository.Mappings
 {
-    public class MachineCommandMapping : EntityTypeConfiguration<MachineCommand>
+	public class MachineCommandMapping : EntityTypeConfiguration<MachineCommand>
     {
 		public MachineCommandMapping()
         {

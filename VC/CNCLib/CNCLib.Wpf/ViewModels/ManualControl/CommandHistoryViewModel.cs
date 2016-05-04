@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using Framework.Wpf.Helpers;

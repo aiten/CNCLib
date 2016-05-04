@@ -17,16 +17,14 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Framework.Tools;
 using Framework.Test.Dependency;
-using Framework.Tools.Dependency;
 
 namespace Framework.Test
 {
-    /// <summary>
-    /// Base class for *all* unit tests. 
-    /// </summary>
-    public abstract class UnitTestBase
+	/// <summary>
+	/// Base class for *all* unit tests. 
+	/// </summary>
+	public abstract class UnitTestBase
     {
         private static bool _globalInitialisationRun;
 

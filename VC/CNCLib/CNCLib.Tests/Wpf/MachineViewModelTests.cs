@@ -19,17 +19,9 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CNCLib.Logic.Contracts;
-using CNCLib.Logic;
-using Framework.EF;
-using Framework.Wpf;
-using Framework.Logic;
-using System.Collections.Generic;
 using System.Linq;
 using NSubstitute;
-using Framework.Tools.Pattern;
-using Framework.Wpf.ViewModels;
 using CNCLib.Wpf.ViewModels;
-using CNCLib;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
 using Framework.Test;

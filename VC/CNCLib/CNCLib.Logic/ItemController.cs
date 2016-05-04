@@ -18,9 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Framework.Tools;
 using Framework.Logic;
 using CNCLib.Repository.Contracts;
 using CNCLib.Logic.Converter;
@@ -33,7 +30,7 @@ using Framework.Tools.Pattern;
 
 namespace CNCLib.Logic
 {
-    public class ItemController : ControllerBase, IItemController
+	public class ItemController : ControllerBase, IItemController
 	{
 		public Item Get(int id)
 		{

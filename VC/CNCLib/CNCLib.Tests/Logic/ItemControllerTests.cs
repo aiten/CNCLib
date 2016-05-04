@@ -18,17 +18,11 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CNCLib.Repository.Context;
-using CNCLib.Repository;
 using CNCLib.Repository.Contracts.Entities;
 using CNCLib.Repository.Contracts;
 using CNCLib.Logic;
-using Framework.EF;
-using Framework.Logic;
-using System.Collections.Generic;
 using System.Linq;
 using NSubstitute;
-using Framework.Tools.Pattern;
 using Framework.Test;
 using Framework.Tools.Dependency;
 

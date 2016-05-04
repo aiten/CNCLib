@@ -16,11 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 
 namespace CNCLib.GCode.Commands
 {
-    [IsGCommand("M107")]
+	[IsGCommand("M107")]
     class M107Command : Command
     {
         #region crt + factory

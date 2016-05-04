@@ -16,29 +16,26 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools.Dependency;
-using Framework.EF;
-using Framework.Tools.Pattern;
 
 namespace Framework.Test.Dependency
 {
-/*
-    public sealed class UnityUnitOfWorkWrapper : IUnitOfWorkWrapper
-    {
-        public IUnitOfWork GetInstance()
-        {
-            return Framework.Tools.Dependency.Dependency.Resolve<IUnitOfWork>();
-        }
+	/*
+		public sealed class UnityUnitOfWorkWrapper : IUnitOfWorkWrapper
+		{
+			public IUnitOfWork GetInstance()
+			{
+				return Framework.Tools.Dependency.Dependency.Resolve<IUnitOfWork>();
+			}
 
-        public IUnitOfWork GetInstance(UnitOfWorkSettings setting)
-        {
-            return Framework.Tools.Dependency.Dependency.Resolve<IUnitOfWork>();
-        }
+			public IUnitOfWork GetInstance(UnitOfWorkSettings setting)
+			{
+				return Framework.Tools.Dependency.Dependency.Resolve<IUnitOfWork>();
+			}
 
-        public T GetDAInstance<T>() where T : IBaseDA
-        {
-            return CL.Dependency.Dependency.Resolve<T>();
-        }
-    }
-    */
+			public T GetDAInstance<T>() where T : IBaseDA
+			{
+				return CL.Dependency.Dependency.Resolve<T>();
+			}
+		}
+		*/
 }

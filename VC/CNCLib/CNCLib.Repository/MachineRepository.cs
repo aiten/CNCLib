@@ -16,22 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Repository.Context;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CNCLib.Repository;
 using Framework.Tools;
 using System.Data.Entity;
-using Framework.EF;
 using CNCLib.Repository.Contracts;
-using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class MachineRepository : CNCLibRepository, IMachineRepository
+	public class MachineRepository : CNCLibRepository, IMachineRepository
 	{
 		public Contracts.Entities.Machine[] GetMachines()
 		{

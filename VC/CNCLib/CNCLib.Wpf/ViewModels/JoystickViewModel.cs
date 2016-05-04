@@ -17,16 +17,9 @@
 */
 
 using System;
-using System.Linq;
 using System.Windows.Input;
-using System.Collections.ObjectModel;
 using Framework.Wpf.ViewModels;
 using Framework.Wpf.Helpers;
-using Framework.Tools;
-using CNCLib.Logic.Contracts;
-using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Wpf.Models;
-using Framework.Tools.Dependency;
 using CNCLib.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels

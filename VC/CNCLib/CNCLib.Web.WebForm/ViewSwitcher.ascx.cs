@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Routing;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using Microsoft.AspNet.FriendlyUrls.Resolvers;
 
 namespace CNCLib.Web
 {
-    public partial class ViewSwitcher : System.Web.UI.UserControl
+	public partial class ViewSwitcher : System.Web.UI.UserControl
     {
         protected string CurrentView { get; private set; }
 

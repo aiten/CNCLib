@@ -17,21 +17,11 @@
 */
 
 using CNCLib.Repository.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CNCLib.Repository;
-using Framework.Tools;
-using System.Data.Entity;
 using Framework.EF;
-using CNCLib.Repository.Contracts;
-using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class CNCLibRepository : RepositoryBase
+	public class CNCLibRepository : RepositoryBase
 	{
         public CNCLibContext Context { get { return ((UnitOfWork<CNCLibContext>)Uow).Context; } }
     }

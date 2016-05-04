@@ -17,13 +17,11 @@
 */
 
 using System;
-using System.Windows.Media;
-using CNCLib.Wpf.Helpers;
 using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.Models
 {
-    public class SentCNCCommand : NotificationObject
+	public class SentCNCCommand : NotificationObject
     {
         #region Ctor
         public SentCNCCommand()

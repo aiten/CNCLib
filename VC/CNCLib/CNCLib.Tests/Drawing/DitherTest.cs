@@ -1,16 +1,11 @@
 ﻿using Framework.Tools.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CNCLib.Tests.Drawing
 {
-    [TestClass]
+	[TestClass]
     public class DitherTest
     {
         public class DitherTestClass : DitherBase

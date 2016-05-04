@@ -16,19 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Collections.ObjectModel;
-using Framework.Wpf.ViewModels;
 using Framework.Wpf.Helpers;
-using CNCLib.Wpf.Models;
-using System.Threading;
-using System.IO;
-using System.Globalization;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {

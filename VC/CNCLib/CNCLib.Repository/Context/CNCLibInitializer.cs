@@ -17,18 +17,13 @@
 */
 
 using CNCLib.Repository.Contracts.Entities;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CNCLib.Repository.Context
 {
 
-//    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
-    public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
+	//    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
+	public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
     {
         protected override void Seed(CNCLibContext context)
         {

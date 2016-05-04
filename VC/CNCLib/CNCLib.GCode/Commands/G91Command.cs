@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 
 namespace CNCLib.GCode.Commands
 {

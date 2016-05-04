@@ -16,14 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools;
 using CNCLib.GCode.Commands;
-using System.IO;
 using System;
 
 namespace CNCLib.GCode.Load
 {
-    public class LoadImage : LoadImageBase
+	public class LoadImage : LoadImageBase
     {
         double _shiftLaserOn;
         double _shiftLaserOff;

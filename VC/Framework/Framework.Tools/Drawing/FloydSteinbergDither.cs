@@ -16,19 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.Tools.Drawing
 {
-    public class FloydSteinbergDither : DitherBase
+	public class FloydSteinbergDither : DitherBase
 	{
         #region private members
 
