@@ -22,15 +22,15 @@
                 <StackPanel >
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Name" Width="150"/>
-                        <TextBox Text="{Binding MachineName}" VerticalAlignment="Center" Width="100"  />
+                        <TextBox Text="{Binding MachineName}" VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Axis" Width="150"/>
-                        <TextBox Text="{Binding Axis}" VerticalAlignment="Center" Width="100"  />
+                        <TextBox Text="{Binding Axis}" VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="COM-Port" Width="150"/>
-                        <TextBox Text="{Binding ComPort}" VerticalAlignment="Center" Width="100"  />
+                        <TextBox Text="{Binding ComPort}" VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="ToUpper" Width="150" />

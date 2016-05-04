@@ -21,7 +21,7 @@
                     <StackPanel Orientation="Horizontal"/>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="COM-Port" Width="150"/>
-                        <TextBox Text="{Binding ComPort}" VerticalAlignment="Center" Width="100"  />
+                        <TextBox Text="{Binding ComPort}" VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"/>
                     <StackPanel Orientation="Horizontal">
