@@ -1,0 +1,208 @@
+﻿@model CNCLib.Logic.Contracts.DTO.Machine
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Machine</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ComPort)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ComPort)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BaudRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BaudRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Axis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Axis)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeX)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeX)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeY)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeY)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeZ)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeZ)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeB)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeB)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BufferSize)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BufferSize)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CommandToUpper)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CommandToUpper)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProbeSizeX)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProbeSizeX)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProbeSizeY)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProbeSizeY)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProbeSizeZ)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProbeSizeZ)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProbeDistUp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProbeDistUp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProbeDist)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProbeDist)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProbeFeed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProbeFeed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SDSupport)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SDSupport)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Spindle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Spindle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Coolant)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Coolant)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Laser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Laser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Rotate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Rotate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

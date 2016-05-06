@@ -1,0 +1,165 @@
+﻿@model IEnumerable<CNCLib.Logic.Contracts.DTO.Machine>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ComPort)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BaudRate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Axis)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SizeX)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SizeY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SizeZ)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SizeA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SizeB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SizeC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BufferSize)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CommandToUpper)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProbeSizeX)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProbeSizeY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProbeSizeZ)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProbeDistUp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProbeDist)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProbeFeed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SDSupport)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Spindle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Coolant)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Laser)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Rotate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ComPort)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BaudRate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Axis)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SizeX)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SizeY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SizeZ)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SizeA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SizeB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SizeC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BufferSize)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CommandToUpper)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProbeSizeX)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProbeSizeY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProbeSizeZ)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProbeDistUp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProbeDist)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProbeFeed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SDSupport)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Spindle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Coolant)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Laser)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rotate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.MachineID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.MachineID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.MachineID })
+        </td>
+    </tr>
+}
+
+</table>

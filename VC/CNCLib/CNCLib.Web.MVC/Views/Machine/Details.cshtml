@@ -1,0 +1,279 @@
+﻿@model CNCLib.Logic.Contracts.DTO.Machine
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Machine</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ComPort)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ComPort)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BaudRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BaudRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Axis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Axis)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeX)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeX)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeY)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeY)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeZ)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeZ)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeB)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeB)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BufferSize)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BufferSize)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CommandToUpper)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CommandToUpper)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProbeSizeX)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProbeSizeX)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProbeSizeY)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProbeSizeY)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProbeSizeZ)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProbeSizeZ)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProbeDistUp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProbeDistUp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProbeDist)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProbeDist)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProbeFeed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProbeFeed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SDSupport)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SDSupport)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Spindle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Spindle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Coolant)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Coolant)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Laser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Laser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Rotate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Rotate)
+        </dd>
+
+    </dl>
+</div>
+
+<h4>Machine-Init-Commands</h4>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MachineInitCommands.FirstOrDefault().SeqNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MachineInitCommands.FirstOrDefault().CommandString)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.MachineInitCommands)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SeqNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommandString)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.MachineID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.MachineID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.MachineID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<h4>Machine-Commands</h4>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MachineCommands.FirstOrDefault().CommandName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MachineCommands.FirstOrDefault().CommandString)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MachineCommands.FirstOrDefault().PosX)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MachineCommands.FirstOrDefault().PosY)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.MachineCommands)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommandName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommandString)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PosX)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PosY)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.MachineID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.MachineID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.MachineID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MachineID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -70,7 +70,6 @@ namespace CNCLib.WebAPI.Controllers
 				{
 					using (var controller = Dependency.Resolve<IMachineController>())
 					{
-						Machine indb = controller.GetMachine(id);
 						controller.StoreMachine(value);
 					}
 				}
