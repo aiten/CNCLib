@@ -267,6 +267,8 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Metadata\deploymentTemplates\apiappconfig.azureresource.json" />
     <Content Include="apiapp.json" />
+    <None Include="Properties\PublishProfiles\CNCLib - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\CNCLibAPI - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\CNCLibAPI - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CNCLibAPI.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />

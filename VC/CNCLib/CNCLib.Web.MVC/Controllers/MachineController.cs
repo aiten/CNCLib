@@ -17,16 +17,20 @@ namespace CNCLib.Web.MVC.Controllers
         private readonly string webserverurl = @"http://cnclibapi.azurewebsites.net";
 		private readonly string api = @"api/machine";
 
-		// GET: Machines
-		public async Task<ActionResult> Index()
+        private HttpClient CreateHttpClient()
         {
-			using (var client = new HttpClient())
-			{
-				client.BaseAddress = new Uri(webserverurl);
-				client.DefaultRequestHeaders.Accept.Clear();
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(webserverurl);
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            return client;
+       }
 
-				// New code:
+        // GET: Machines
+        public async Task<ActionResult> Index()
+        {
+			using (var client = CreateHttpClient())
+			{
 				HttpResponseMessage response = await client.GetAsync(api);
 				if (response.IsSuccessStatusCode)
 				{
@@ -40,13 +44,8 @@ namespace CNCLib.Web.MVC.Controllers
 
 		private async Task<Machine> GetMachine(int id)
 		{
-			using (var client = new HttpClient())
-			{
-				client.BaseAddress = new Uri(webserverurl);
-				client.DefaultRequestHeaders.Accept.Clear();
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-				// New code:
+            using (var client = CreateHttpClient())
+            {
 				HttpResponseMessage response = await client.GetAsync(api + "/" + id);
 				if (response.IsSuccessStatusCode)
 				{
@@ -73,11 +72,37 @@ namespace CNCLib.Web.MVC.Controllers
 			}
 			return HttpNotFound();
         }
-/*
+
         // GET: Machines/Create
         public ActionResult Create()
         {
-            return View();
+            var machine = new Machine()
+            {
+                Name = "New",
+                ComPort = "comX",
+                Axis = 3,
+                SizeX = 130m,
+                SizeY = 45m,
+                SizeZ = 81m,
+                SizeA = 360m,
+                SizeB = 360m,
+                SizeC = 360m,
+                BaudRate = 115200,
+                BufferSize = 63,
+                CommandToUpper = false,
+                ProbeSizeZ = 25,
+                ProbeDist = 10m,
+                ProbeDistUp = 3m,
+                ProbeFeed = 100m,
+                SDSupport = true,
+                Spindle = true,
+                Coolant = true,
+                Rotate = true,
+                Laser = false,
+                MachineCommands = new MachineCommand[0],
+                MachineInitCommands = new MachineInitCommand[0]
+            };
+            return View(machine);
         }
 
         // POST: Machines/Create
@@ -85,18 +110,26 @@ namespace CNCLib.Web.MVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "MachineID,ComPort,BaudRate,Axis,Name,SizeX,SizeY,SizeZ,SizeA,SizeB,SizeC,BufferSize,CommandToUpper,ProbeSizeX,ProbeSizeY,ProbeSizeZ,ProbeDistUp,ProbeDist,ProbeFeed,SDSupport,Spindle,Coolant,Laser,Rotate")] Machine machine)
+//        public async Task<ActionResult> Create([Bind(Include = "MachineID,ComPort,BaudRate,Axis,Name,SizeX,SizeY,SizeZ,SizeA,SizeB,SizeC,BufferSize,CommandToUpper,ProbeSizeX,ProbeSizeY,ProbeSizeZ,ProbeDistUp,ProbeDist,ProbeFeed,SDSupport,Spindle,Coolant,Laser,Rotate")] Machine machine)
+        public async Task<ActionResult> Create(Machine machine)
         {
             if (ModelState.IsValid)
             {
-                db.Machines.Add(machine);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                if (machine.MachineCommands == null) machine.MachineCommands = new MachineCommand[0];
+                if (machine.MachineInitCommands == null) machine.MachineInitCommands = new MachineInitCommand[0];
+
+                using (var client = CreateHttpClient())
+                {
+                    HttpResponseMessage response = await client.PostAsJsonAsync(api, machine);
+
+                    if (response.IsSuccessStatusCode)
+                        return RedirectToAction("Index");
+                }
             }
 
             return View(machine);
         }
-*/
+
         // GET: Machines/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
@@ -119,7 +152,6 @@ namespace CNCLib.Web.MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(Machine machine)
-
 //		public async Task<ActionResult> Edit([Bind(Include = "MachineID,ComPort,BaudRate,Axis,Name,SizeX,SizeY,SizeZ,SizeA,SizeB,SizeC,BufferSize,CommandToUpper,ProbeSizeX,ProbeSizeY,ProbeSizeZ,ProbeDistUp,ProbeDist,ProbeFeed,SDSupport,Spindle,Coolant,Laser,Rotate")] Machine machine)
 		{
 			if (ModelState.IsValid)
@@ -135,12 +167,8 @@ namespace CNCLib.Web.MVC.Controllers
 					{
 						machine.MachineInitCommands = machineindDB.MachineInitCommands;
 					}
-					using (var client = new HttpClient())
-					{
-						client.BaseAddress = new Uri(webserverurl);
-						client.DefaultRequestHeaders.Accept.Clear();
-						client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+                    using (var client = CreateHttpClient())
+                    {
 						var response = await client.PutAsJsonAsync(api + "/" + machine.MachineID, machine);
 
 						if (response.IsSuccessStatusCode)
@@ -152,7 +180,7 @@ namespace CNCLib.Web.MVC.Controllers
             }
             return View(machine);
         }
-/*
+
         // GET: Machines/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
@@ -160,12 +188,17 @@ namespace CNCLib.Web.MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Machine machine = await db.Machines.FindAsync(id);
-            if (machine == null)
+
+            using (var client = CreateHttpClient())
             {
+                HttpResponseMessage response = await client.DeleteAsync(api + "/" + id);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
                 return HttpNotFound();
             }
-            return View(machine);
         }
 
         // POST: Machines/Delete/5
@@ -173,12 +206,18 @@ namespace CNCLib.Web.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Machine machine = await db.Machines.FindAsync(id);
-            db.Machines.Remove(machine);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            using (var client = CreateHttpClient())
+            {
+                HttpResponseMessage response = await client.DeleteAsync(api + "/" + id);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+                return HttpNotFound();
+            }
         }
-*/
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
