@@ -19,7 +19,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Framework.Tools;
+using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 
 namespace Framework.EF

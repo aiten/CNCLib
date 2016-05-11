@@ -1,4 +1,22 @@
-﻿using CNCLib.GCode.Load;
+﻿////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2016 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
@@ -53,9 +71,9 @@ namespace CNCLib.WebAPI.Controllers
 		{
 			try
 			{
-				if (value == null)
+				if (!ModelState.IsValid || value == null)
 				{
-					return BadRequest("Body object missing");
+					return BadRequest(ModelState);
 				}
 				else
 				{
@@ -75,25 +93,26 @@ namespace CNCLib.WebAPI.Controllers
 			}
 		}
 		// PUT api/values/5
-		public void Put(int id, [FromBody]LoadInfo value)
+		public IHttpActionResult Put(int id, [FromBody]LoadInfo value)
 		{
 			try
 			{
-				if (value == null)
+				if (!ModelState.IsValid || value == null)
 				{
-					Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Body object missing");
+					return BadRequest(ModelState);
 				}
 				else
 				{
 					using (var controller = Dependency.Resolve<IItemController>())
 					{
 						controller.Save(id,value.SettingName,value);
+						return CreatedAtRoute("DefaultApi", new { id = id }, value);
 					}
 				}
 			}
 			catch (Exception ex)
 			{
-				Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+				return BadRequest(ex.Message);
 			}
 		}
 

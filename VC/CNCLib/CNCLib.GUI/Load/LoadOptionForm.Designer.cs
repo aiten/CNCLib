@@ -809,7 +809,7 @@
 			this._imageHoleG.Margin = new System.Windows.Forms.Padding(6);
 			this._imageHoleG.Name = "_imageHoleG";
 			this._imageHoleG.Padding = new System.Windows.Forms.Padding(6);
-			this._imageHoleG.Size = new System.Drawing.Size(470, 358);
+			this._imageHoleG.Size = new System.Drawing.Size(470, 336);
 			this._imageHoleG.TabIndex = 32;
 			this._imageHoleG.TabStop = false;
 			this._imageHoleG.Text = "Image Hole";

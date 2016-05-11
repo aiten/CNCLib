@@ -23,6 +23,8 @@ using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using Framework.EF;
 using CNCLib.Repository.Context;
+using AutoMapper;
+using Framework.Tools.Mapper;
 
 namespace CNCLib.Wpf.Start
 {
@@ -36,6 +38,33 @@ namespace CNCLib.Wpf.Start
             Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(typeof(CNCLib.Repository.MachineRepository).Assembly, typeof(CNCLib.Logic.MachineController).Assembly);
             Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+
+			var config = new MapperConfiguration(cfg =>
+				{
+					cfg.CreateMap<CNCLib.Repository.Contracts.Entities.Machine, CNCLib.Logic.Contracts.DTO.Machine>();
+					cfg.CreateMap<CNCLib.Repository.Contracts.Entities.MachineInitCommand, CNCLib.Logic.Contracts.DTO.MachineInitCommand>();
+					cfg.CreateMap<CNCLib.Repository.Contracts.Entities.MachineCommand, CNCLib.Logic.Contracts.DTO.MachineCommand>();
+
+					cfg.CreateMap<CNCLib.Logic.Contracts.DTO.Machine, CNCLib.Repository.Contracts.Entities.Machine>();
+					cfg.CreateMap<CNCLib.Logic.Contracts.DTO.MachineInitCommand, CNCLib.Repository.Contracts.Entities.MachineInitCommand>();
+					cfg.CreateMap<CNCLib.Logic.Contracts.DTO.MachineCommand, CNCLib.Repository.Contracts.Entities.MachineCommand>();
+
+					cfg.CreateMap<CNCLib.Repository.Contracts.Entities.Item, CNCLib.Logic.Contracts.DTO.Item>();
+
+					cfg.CreateMap<CNCLib.Wpf.Models.Machine, CNCLib.Logic.Contracts.DTO.Machine>();
+					cfg.CreateMap<CNCLib.Wpf.Models.MachineInitCommand, CNCLib.Logic.Contracts.DTO.MachineInitCommand>();
+					cfg.CreateMap<CNCLib.Wpf.Models.MachineCommand, CNCLib.Logic.Contracts.DTO.MachineCommand>();
+
+					cfg.CreateMap<CNCLib.Logic.Contracts.DTO.Machine, CNCLib.Wpf.Models.Machine>();
+					cfg.CreateMap<CNCLib.Logic.Contracts.DTO.MachineInitCommand, CNCLib.Wpf.Models.MachineInitCommand>();
+					cfg.CreateMap<CNCLib.Logic.Contracts.DTO.MachineCommand, CNCLib.Wpf.Models.MachineCommand>();
+
+				});
+
+			var mapper = config.CreateMapper();
+
+			Dependency.Container.RegisterInstance<IMapper>(mapper);
+
 
 			// Open Database here
 			//

@@ -1,4 +1,22 @@
-﻿using CNCLib.Logic.Contracts;
+﻿////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2016 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
 using System;
@@ -34,9 +52,9 @@ namespace CNCLib.WebAPI.Controllers
 		{
 			try
 			{
-				if (value == null)
+				if (!ModelState.IsValid || value==null)
 				{
-					return BadRequest("Body object missing");
+					return BadRequest(ModelState);
 				}
 				else
 				{
@@ -54,29 +72,31 @@ namespace CNCLib.WebAPI.Controllers
 		}
 
 		// PUT api/values/5
-		public void Put(int id, [FromBody]Machine value)
+		public IHttpActionResult Put(int id, [FromBody]Machine value)
 		{
 			try
 			{
-				if (value == null)
+				if (!ModelState.IsValid || value == null)
 				{
-					Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Could not read machine from body");
+					return BadRequest(ModelState);
 				}
 				else if (id != value.MachineID)
 				{
-					Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Missmatch between id and machineID");
+					return BadRequest("Missmatch between id and machineID");
 				}
 				else
 				{
 					using (var controller = Dependency.Resolve<IMachineController>())
 					{
 						controller.StoreMachine(value);
+						int machineid = value.MachineID;
+						return CreatedAtRoute("DefaultApi", new { id = machineid }, value);
 					}
 				}
 			}
 			catch (Exception ex)
 			{
-				Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+				return BadRequest(ex.Message);
 			}
 		}
 

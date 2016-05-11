@@ -193,7 +193,9 @@ namespace CNCLib.Wpf.ViewModels
 
         private void SetGlobal()
         {
-			ObjectConverter.CopyProperties(Settings.Instance, Machine);
+			Settings.Instance.SizeX = Machine.SizeX;
+			Settings.Instance.SizeY = Machine.SizeY;
+			Settings.Instance.SizeZ = Machine.SizeZ;
             Com.ArduinoBuffersize = Machine.BufferSize;
 
 			using (var controller = Dependency.Resolve<IMachineController>())

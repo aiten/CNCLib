@@ -17,7 +17,9 @@
 */
 
 using System.Linq;
+using AutoMapper;
 using Framework.Tools;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Wpf.Models
 {
@@ -25,21 +27,14 @@ namespace CNCLib.Wpf.Models
 	{
 		public static Logic.Contracts.DTO.Machine Convert(this Machine from)
 		{
-			var dto =	ObjectConverter.NewCloneProperties<Logic.Contracts.DTO.Machine, Machine>(from);
-			dto.MachineCommands = from.MachineCommands.CloneAsList<CNCLib.Logic.Contracts.DTO.MachineCommand, Models.MachineCommand>();
-			dto.MachineInitCommands = from.MachineInitCommands.CloneAsList<CNCLib.Logic.Contracts.DTO.MachineInitCommand, Models.MachineInitCommand>();
-			return dto;
+			var map = Dependency.Resolve<IMapper>();
+			return map.Map<Logic.Contracts.DTO.Machine>(from);
 		}
 
 		public static Machine Convert(this Logic.Contracts.DTO.Machine from)
 		{
-			var model = ObjectConverter.NewCloneProperties<Machine, Logic.Contracts.DTO.Machine>(from);
-			model.MachineCommands.Count();  //force init
-			model.MachineInitCommands.Count();
-
-			model.MachineCommands.AddCloneProperties(from.MachineCommands);
-			model.MachineInitCommands.AddCloneProperties(from.MachineInitCommands);
-			return model;
+			var map = Dependency.Resolve<IMapper>();
+			return map.Map<Machine>(from);
 		}
 	}
 }
