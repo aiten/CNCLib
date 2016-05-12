@@ -75,8 +75,6 @@
     <Compile Include="Drawing\ImageHelper.cs" />
     <Compile Include="Drawing\Point3D.cs" />
     <Compile Include="Drawing\Vector3D.cs" />
-    <Compile Include="Mapper\IAutoMapper.cs" />
-    <Compile Include="ObjectConverter.cs" />
     <Compile Include="Pattern\IFactory.cs" />
     <Compile Include="Pattern\FactoryType2Type.cs" />
     <Compile Include="Pattern\FactoryType2Obj.cs" />

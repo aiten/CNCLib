@@ -30,7 +30,7 @@ namespace CNCLib.Web.MVC.Tests.Controllers
 			ViewResult result = controller.About() as ViewResult;
 
 			// Assert
-			Assert.AreEqual("Your application description page.", result.ViewBag.Message);
+			Assert.AreEqual("About CNCLib", result.ViewBag.Message);
 		}
 
 		[TestMethod]

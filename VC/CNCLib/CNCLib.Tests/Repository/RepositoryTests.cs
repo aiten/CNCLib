@@ -23,14 +23,13 @@ using CNCLib.Repository;
 using Framework.EF;
 using System.Linq;
 using CNCLib.Repository.Contracts;
-using Framework.Test;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Tests.Repository
 {
 	[TestClass]
-	public class RepositoryTests : UnitTestBase
+	public class RepositoryTests : CNCUnitTest
 	{
 		public TestContext TestContext { get; set; }
 		static bool _init = false;

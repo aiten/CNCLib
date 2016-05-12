@@ -16,33 +16,19 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
+using AutoMapper;
 
-namespace Framework.Tools.Pattern
+namespace CNCLib.Logic
 {
-	public interface IUnitOfWork : IDisposable
-    {
-        void MarkDirty(object entity);
-		void MarkNew(object entity);
-		void MarkDeleted(object entity);
-		void SetValue(object entity, object values);
+	public sealed class LogicAutoMapperProfile : Profile
+	{
+		protected override void Configure()
+		{
+			CreateMap<CNCLib.Repository.Contracts.Entities.Machine, CNCLib.Logic.Contracts.DTO.Machine>().ReverseMap();
+			CreateMap<CNCLib.Repository.Contracts.Entities.MachineInitCommand, CNCLib.Logic.Contracts.DTO.MachineInitCommand>().ReverseMap();
+			CreateMap<CNCLib.Repository.Contracts.Entities.MachineCommand, CNCLib.Logic.Contracts.DTO.MachineCommand>().ReverseMap();
 
-
-		void Save();
-
-		// SQL Commands
-
-		int ExecuteSqlCommand(string sql);
-		int ExecuteSqlCommand(string sql, params object[] parameters);
-
-		// Transaction
-
-		void BeginTransaction();
-		void CommitTransaction();
-		void RollbackTransaction();
-
-		// Global
-
-		void InitializeDatabase();
-    }
+			CreateMap<CNCLib.Repository.Contracts.Entities.Item, CNCLib.Logic.Contracts.DTO.Item>();
+		}
+	}
 }

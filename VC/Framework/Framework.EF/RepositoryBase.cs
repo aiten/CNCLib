@@ -40,7 +40,7 @@ namespace Framework.EF
                 var entityToDb = toDb.FirstOrDefault(x => predicate(x, entityInDb));
 				if (entityToDb != null && predicate(entityToDb, entityInDb))
 				{
-					entityInDb.CopyValueTypeProperties(entityToDb);
+					Uow.SetValue(entityInDb,entityToDb);
 				}
 				else
 				{

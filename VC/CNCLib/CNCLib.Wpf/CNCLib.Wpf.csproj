@@ -77,6 +77,7 @@
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\JoystickArduinoSerialCommunication.cs" />
     <Compile Include="Helpers\JoystickHelper.cs" />
+    <Compile Include="WpfAutoMapperProfile.cs" />
     <Compile Include="Models\Converter.cs" />
     <Compile Include="Models\Joystick.cs" />
     <Compile Include="Models\MachineInitCommand.cs" />

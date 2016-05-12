@@ -249,7 +249,7 @@ namespace CNCLib.Wpf.ViewModels
         {
 			using (var controller = Dependency.Resolve<IMachineController>())
 			{
-				controller.Delete(_currentMachine.NewCloneProperties<CNCLib.Logic.Contracts.DTO.Machine, Models.Machine>());
+				controller.Delete(_currentMachine.Convert());
 			}
 			CloseAction();
 		}

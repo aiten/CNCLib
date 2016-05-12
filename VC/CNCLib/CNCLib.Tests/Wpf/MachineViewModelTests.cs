@@ -24,12 +24,11 @@ using NSubstitute;
 using CNCLib.Wpf.ViewModels;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
-using Framework.Test;
 
 namespace CNCLib.Tests.Wpf
 {
 	[TestClass]
-	public class MachineViewModelTests : UnitTestBase
+	public class MachineViewModelTests : CNCUnitTest
 	{
 		/*
 				[ClassInitialize]

@@ -25,6 +25,5 @@ namespace Framework.Tools
         {
             SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
         }
-
     }
 }

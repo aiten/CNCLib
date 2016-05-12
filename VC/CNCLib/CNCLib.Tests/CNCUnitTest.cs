@@ -16,33 +16,29 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Framework.Test.Dependency;
+using Framework.Test;
+using AutoMapper;
+using CNCLib.Logic;
+using Framework.Tools.Dependency;
 
-namespace Framework.Tools.Pattern
+namespace CNCLib.Tests
 {
-	public interface IUnitOfWork : IDisposable
-    {
-        void MarkDirty(object entity);
-		void MarkNew(object entity);
-		void MarkDeleted(object entity);
-		void SetValue(object entity, object values);
+	public abstract class CNCUnitTest : UnitTestBase
+	{
+		protected override void InitializeCoreDependencies()
+		{
+			var config = new MapperConfiguration(cfg =>
+			{
+				cfg.AddProfile<LogicAutoMapperProfile>();
+				cfg.AddProfile<WpfAutoMapperProfile>();
+			});
+			config.AssertConfigurationIsValid();
 
+			var mapper = config.CreateMapper();
 
-		void Save();
-
-		// SQL Commands
-
-		int ExecuteSqlCommand(string sql);
-		int ExecuteSqlCommand(string sql, params object[] parameters);
-
-		// Transaction
-
-		void BeginTransaction();
-		void CommitTransaction();
-		void RollbackTransaction();
-
-		// Global
-
-		void InitializeDatabase();
-    }
+			Dependency.Container.RegisterInstance<IMapper>(mapper);
+		}
+	}
 }

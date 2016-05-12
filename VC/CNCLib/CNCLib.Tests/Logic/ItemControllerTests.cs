@@ -23,39 +23,16 @@ using CNCLib.Repository.Contracts;
 using CNCLib.Logic;
 using System.Linq;
 using NSubstitute;
-using Framework.Test;
 using Framework.Tools.Dependency;
 
 namespace CNCLib.Tests.Logic
 {
 	[TestClass]
-	public class ItemControllerTests : UnitTestBase
-    {
-		/*
-				[ClassInitialize]
-				public static void ClassInit(TestContext testContext)
-				{
-				}
-
-				[TestInitialize]
-				public void Init()
-				{
-				}
-		*/
-/*
-		private FactoryType2Obj CreateMock()
-		{
-			var mockfactory = new FactoryType2Obj();
-			ControlLerBase.RepositoryFactory = mockfactory;
-			return mockfactory;
-        }
-*/
+	public class ItemControllerTests : CNCUnitTest
+	{
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
-//			var mockfactory = CreateMock();
 			TInterface rep = Substitute.For<TInterface>();
-//            mockfactory.Register(typeof(TInterface), rep);
-
             Dependency.Container.RegisterInstance(rep);
             return rep;
 		}

@@ -17,32 +17,17 @@
 */
 
 using System;
+using AutoMapper;
 
-namespace Framework.Tools.Pattern
+namespace CNCLib.Logic
 {
-	public interface IUnitOfWork : IDisposable
-    {
-        void MarkDirty(object entity);
-		void MarkNew(object entity);
-		void MarkDeleted(object entity);
-		void SetValue(object entity, object values);
-
-
-		void Save();
-
-		// SQL Commands
-
-		int ExecuteSqlCommand(string sql);
-		int ExecuteSqlCommand(string sql, params object[] parameters);
-
-		// Transaction
-
-		void BeginTransaction();
-		void CommitTransaction();
-		void RollbackTransaction();
-
-		// Global
-
-		void InitializeDatabase();
-    }
+	public sealed class WpfAutoMapperProfile : Profile
+	{
+		protected override void Configure()
+		{
+			CreateMap<CNCLib.Wpf.Models.Machine, CNCLib.Logic.Contracts.DTO.Machine>().ReverseMap();
+			CreateMap<CNCLib.Wpf.Models.MachineInitCommand, CNCLib.Logic.Contracts.DTO.MachineInitCommand>().ReverseMap();
+			CreateMap<CNCLib.Wpf.Models.MachineCommand, CNCLib.Logic.Contracts.DTO.MachineCommand>().ReverseMap();
+		}
+	}
 }

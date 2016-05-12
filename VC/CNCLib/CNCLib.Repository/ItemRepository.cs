@@ -78,7 +78,7 @@ namespace CNCLib.Repository
 			{
                 // syn with existing
 
-                itemInDb.CopyValueTypeProperties(item);
+                Uow.SetValue(itemInDb,item);
 
 				// search und update machinecommands (add and delete)
 

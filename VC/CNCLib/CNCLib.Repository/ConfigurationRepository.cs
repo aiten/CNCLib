@@ -51,7 +51,7 @@ namespace CNCLib.Repository
 			else
 			{
 				// syn with existing
-				cInDb.CopyValueTypeProperties(configuration);
+				Uow.SetValue(cInDb,configuration);
 			}
 		}
 

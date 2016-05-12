@@ -95,7 +95,7 @@ namespace CNCLib.Logic
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
-                rep.Delete(m.NewCloneProperties<Repository.Contracts.Entities.Machine, Machine>());
+                rep.Delete(m.Convert());
                 uow.Save();
 			}
         }

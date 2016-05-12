@@ -7,6 +7,7 @@ using Framework.Tools.Pattern;
 using Framework.EF;
 using CNCLib.Repository.Context;
 using AutoMapper;
+using CNCLib.Logic;
 
 namespace CNCLib.WebAPI
 {
@@ -20,13 +21,7 @@ namespace CNCLib.WebAPI
 
 			var config = new MapperConfiguration(cfg =>
 			{
-				cfg.CreateMap<CNCLib.Repository.Contracts.Entities.Machine, CNCLib.Logic.Contracts.DTO.Machine>();
-				cfg.CreateMap<CNCLib.Repository.Contracts.Entities.MachineInitCommand, CNCLib.Logic.Contracts.DTO.MachineInitCommand>();
-				cfg.CreateMap<CNCLib.Repository.Contracts.Entities.MachineCommand, CNCLib.Logic.Contracts.DTO.MachineCommand>();
-
-				cfg.CreateMap<CNCLib.Logic.Contracts.DTO.Machine, CNCLib.Repository.Contracts.Entities.Machine>();
-				cfg.CreateMap<CNCLib.Logic.Contracts.DTO.MachineInitCommand, CNCLib.Repository.Contracts.Entities.MachineInitCommand>();
-				cfg.CreateMap<CNCLib.Logic.Contracts.DTO.MachineCommand, CNCLib.Repository.Contracts.Entities.MachineCommand>();
+				cfg.AddProfile<LogicAutoMapperProfile>();
 			});
 
 			var mapper = config.CreateMapper();

@@ -40,16 +40,19 @@ namespace Framework.Test
             {
                 ReInitializeCoreDependencies();
             }
-        }
-        /// <summary>
-        /// Resets the dependency container.
-        /// </summary>
-        private static void ReInitializeCoreDependencies()
+			InitializeCoreDependencies();
+		}
+
+		protected virtual void InitializeCoreDependencies()
+		{
+		}
+
+		/// <summary>
+		/// Resets the dependency container.
+		/// </summary>
+		private static void ReInitializeCoreDependencies()
         {
             Framework.Tools.Dependency.Dependency.Container.ResetContainer();
-//            Framework.Tools.Dependency.Dependency.Container
-//                .RegisterType<IUnitOfWorkWrapper, UnityUnitOfWorkWrapper>()
-//                .RegisterType<IDataAccessComponentFactory, UnityDataAccessComponentFactory>();
         }
     }
 }

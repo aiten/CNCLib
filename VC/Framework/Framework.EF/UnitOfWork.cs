@@ -41,8 +41,14 @@ namespace Framework.EF
 			Context.Entry(entity).State = EntityState.Modified;
 		}
 
+		public void SetValue(object entity, object values)
+		{
+			Context.Entry(entity).CurrentValues.SetValues(values);
+		}
+
 		public void MarkNew(object entity)
 		{
+
 			Context.Entry(entity).State = EntityState.Added;
 		}
 
