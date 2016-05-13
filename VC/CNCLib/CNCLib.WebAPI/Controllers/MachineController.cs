@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace CNCLib.WebAPI.Controllers
 {
@@ -39,30 +40,33 @@ namespace CNCLib.WebAPI.Controllers
 		}
 
 		// GET api/values/5
-		public Machine Get(int id)
+		[ResponseType(typeof(Machine))]
+		public IHttpActionResult Get(int id)
 		{
 			using (var controller = Dependency.Resolve<IMachineController>())
 			{
-				return controller.GetMachine(id);
+				var m = controller.GetMachine(id);
+				if (m == null)
+				{
+					return NotFound();
+				}
+				return Ok(m);
 			}
 		}
 
 		// POST api/values == Create
 		public IHttpActionResult Post([FromBody]Machine value)
 		{
+			if (!ModelState.IsValid || value==null)
+			{
+				return BadRequest(ModelState);
+			}
 			try
 			{
-				if (!ModelState.IsValid || value==null)
+				using (var controller = Dependency.Resolve<IMachineController>())
 				{
-					return BadRequest(ModelState);
-				}
-				else
-				{
-					using (var controller = Dependency.Resolve<IMachineController>())
-					{
-						int machineid = controller.AddMachine(value);
-						return CreatedAtRoute("DefaultApi", new { id = machineid }, value);
-					}
+					int machineid = controller.AddMachine(value);
+					return CreatedAtRoute("DefaultApi", new { id = machineid }, value);
 				}
 			}
 			catch (Exception ex)
@@ -72,26 +76,26 @@ namespace CNCLib.WebAPI.Controllers
 		}
 
 		// PUT api/values/5
+		[ResponseType(typeof(void))]
 		public IHttpActionResult Put(int id, [FromBody]Machine value)
 		{
+			if (!ModelState.IsValid || value == null)
+			{
+				return BadRequest(ModelState);
+			}
+			if (id != value.MachineID)
+			{
+				return BadRequest("Missmatch between id and machineID");
+			}
+
 			try
 			{
-				if (!ModelState.IsValid || value == null)
+				using (var controller = Dependency.Resolve<IMachineController>())
 				{
-					return BadRequest(ModelState);
-				}
-				else if (id != value.MachineID)
-				{
-					return BadRequest("Missmatch between id and machineID");
-				}
-				else
-				{
-					using (var controller = Dependency.Resolve<IMachineController>())
-					{
-						controller.StoreMachine(value);
-						int machineid = value.MachineID;
-						return CreatedAtRoute("DefaultApi", new { id = machineid }, value);
-					}
+					controller.StoreMachine(value);
+					return StatusCode(HttpStatusCode.NoContent);
+//						int machineid = value.MachineID;
+//						return CreatedAtRoute("DefaultApi", new { id = machineid }, value);
 				}
 			}
 			catch (Exception ex)
@@ -101,19 +105,19 @@ namespace CNCLib.WebAPI.Controllers
 		}
 
 		// DELETE api/values/5
-		public void Delete(int id)
+		[ResponseType(typeof(Machine))]
+		public IHttpActionResult Delete(int id)
 		{
 			using (var controller = Dependency.Resolve<IMachineController>())
 			{
 				var machine = controller.GetMachine(id);
 				if (machine == null)
 				{
-					Request.CreateErrorResponse(HttpStatusCode.NotFound,"id " + id + " not found");
+					return NotFound();
 				}
-				else
-				{
-					controller.Delete(machine);
-				}
+
+				controller.Delete(machine);
+				return Ok(machine);
 			}
 		}
 	}
