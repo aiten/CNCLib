@@ -31,46 +31,31 @@ namespace CNCLib.WebAPI.Controllers
 
 	public class LoadInfoRest : IRest<LoadInfo>
 	{
-		private IItemController _controller = Dependency.Resolve<IItemController>();
+		private ILoadOptionsController _controller = Dependency.Resolve<ILoadOptionsController>();
 
 		public IEnumerable<LoadInfo> Get()
 		{
-			var list = new List<LoadInfo>();
-			foreach (Item item in _controller.GetAll(typeof(LoadInfo)))
-			{
-				LoadInfo li = (LoadInfo)_controller.Create(item.ItemID);
-				li.Id = item.ItemID;
-				list.Add(li);
-			}
-			return list;
+			return _controller.GetAll();
 		}
 
 		public LoadInfo Get(int id)
 		{
-			object obj = _controller.Create(id);
-			if (obj != null || obj is LoadInfo)
-			{
-				LoadInfo li = (LoadInfo)obj;
-				li.Id = id;
-				return (LoadInfo)obj;
-			}
-
-			return null;
+			return _controller.Get(id);
 		}
 
 		public int Add(LoadInfo value)
 		{
-			return _controller.Add(value.SettingName, value);
+			return _controller.Add(value);
 		}
 
 		public void Update(int id, LoadInfo value)
 		{
-			_controller.Save(id, value.SettingName, value);
+			_controller.Update(value);
 		}
 
 		public void Delete(int id, LoadInfo value)
 		{
-			_controller.Delete(id);
+			_controller.Delete(value);
 		}
 
 		public bool CompareId(int id, LoadInfo value)
