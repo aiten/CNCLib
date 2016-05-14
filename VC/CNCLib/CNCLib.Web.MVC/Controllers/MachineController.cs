@@ -41,8 +41,23 @@ namespace CNCLib.Web.MVC.Controllers
             return client;
        }
 
-        // GET: Machines
-        public async Task<ActionResult> Index()
+		private async Task<Machine> GetMachine(int id)
+		{
+			using (var client = CreateHttpClient())
+			{
+				HttpResponseMessage response = await client.GetAsync(api + "/" + id);
+				if (response.IsSuccessStatusCode)
+				{
+					Machine value = await response.Content.ReadAsAsync<Machine>();
+
+					return value;
+				}
+			}
+			return null;
+		}
+
+		// GET: Machines
+		public async Task<ActionResult> Index()
         {
 			using (var client = CreateHttpClient())
 			{
@@ -56,21 +71,6 @@ namespace CNCLib.Web.MVC.Controllers
 
 			return View();
         }
-
-		private async Task<Machine> GetMachine(int id)
-		{
-            using (var client = CreateHttpClient())
-            {
-				HttpResponseMessage response = await client.GetAsync(api + "/" + id);
-				if (response.IsSuccessStatusCode)
-				{
-					Machine machine = await response.Content.ReadAsAsync<Machine>();
-
-					return machine;
-				}
-			}
-			return null;
-		}
 
 		// GET: Machines/Details/5
 		public async Task<ActionResult> Details(int? id)

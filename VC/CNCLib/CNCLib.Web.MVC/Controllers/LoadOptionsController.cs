@@ -42,6 +42,21 @@ namespace CNCLib.Web.MVC.Controllers
 			return client;
 		}
 
+		private async Task<LoadInfo> Get(int id)
+		{
+			using (var client = CreateHttpClient())
+			{
+				HttpResponseMessage response = await client.GetAsync(api + "/" + id);
+				if (response.IsSuccessStatusCode)
+				{
+					LoadInfo value = await response.Content.ReadAsAsync<LoadInfo>();
+
+					return value;
+				}
+			}
+			return null;
+		}
+
 		// GET: LoadOptions
 		public async Task<ActionResult> Index()
 		{
@@ -57,101 +72,121 @@ namespace CNCLib.Web.MVC.Controllers
 
 			return View();
 		}
-		/*
-				// GET: LoadOptions/Details/5
-				public async Task<ActionResult> Details(int? id)
-				{
-					if (id == null)
-					{
-						return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-					}
-					LoadInfo loadInfo = await db.LoadInfoes.FindAsync(id);
-					if (loadInfo == null)
-					{
-						return HttpNotFound();
-					}
-					return View(loadInfo);
-				}
 
-				// GET: LoadOptions/Create
-				public ActionResult Create()
-				{
-					return View();
-				}
+		// GET: LoadOptions/Details/5
+		public async Task<ActionResult> Details(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			LoadInfo loadInfo = await Get(id.Value);
+			if (loadInfo == null)
+			{
+				return HttpNotFound();
+			}
+			return View(loadInfo);
+		}
 
-				// POST: LoadOptions/Create
-				// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-				// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-				[HttpPost]
-				[ValidateAntiForgeryToken]
-				public async Task<ActionResult> Create([Bind(Include = "Id,LoadType,FileName,FileContent,SettingName,GCodeWriteToFileName,SwapXY,ScaleX,ScaleY,OfsX,OfsY,AutoScale,AutoScaleKeepRatio,AutoScaleSizeX,AutoScaleSizeY,AutoScaleBorderDistX,AutoScaleBorderDistY,PenMoveType,EngravePosInParameter,EngravePosUp,EngravePosDown,MoveSpeed,EngraveDownSpeed,LaserFirstOnCommand,LaserOnCommand,LaserOffCommand,LaserSize,ImageWriteToFileName,GrayThreshold,ImageDPIX,ImageDPIY,ImageInvert,Dither,NewspaperDitherSize,DotDistX,DotDistY,DotSizeX,DotSizeY,UseYShift,RotateHeart,HoleType")] LoadInfo loadInfo)
+		// GET: LoadOptions/Create
+		public ActionResult Create()
+		{
+			return View(new LoadInfo());
+		}
+
+
+		// POST: LoadOptions/Create
+		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Create([Bind(Include = "Id,LoadType,FileName,FileContent,SettingName,GCodeWriteToFileName,SwapXY,ScaleX,ScaleY,OfsX,OfsY,AutoScale,AutoScaleKeepRatio,AutoScaleSizeX,AutoScaleSizeY,AutoScaleBorderDistX,AutoScaleBorderDistY,PenMoveType,EngravePosInParameter,EngravePosUp,EngravePosDown,MoveSpeed,EngraveDownSpeed,LaserFirstOnCommand,LaserOnCommand,LaserOffCommand,LaserSize,ImageWriteToFileName,GrayThreshold,ImageDPIX,ImageDPIY,ImageInvert,Dither,NewspaperDitherSize,DotDistX,DotDistY,DotSizeX,DotSizeY,UseYShift,RotateHeart,HoleType")] LoadInfo loadInfo)
+		{
+			if (ModelState.IsValid)
+			{
+				using (var client = CreateHttpClient())
 				{
-					if (ModelState.IsValid)
+					HttpResponseMessage response = await client.PostAsJsonAsync(api, loadInfo);
+
+					if (response.IsSuccessStatusCode)
+						return RedirectToAction("Index");
+				}
+			}
+
+			return View(loadInfo);
+		}
+
+		// GET: LoadOptions/Edit/5
+		public async Task<ActionResult> Edit(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			LoadInfo loadInfo = await Get(id.Value);
+			if (loadInfo == null)
+			{
+				return HttpNotFound();
+			}
+			return View(loadInfo);
+		}
+
+		// POST: LoadOptions/Edit/5
+		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Edit([Bind(Include = "Id,LoadType,FileName,FileContent,SettingName,GCodeWriteToFileName,SwapXY,ScaleX,ScaleY,OfsX,OfsY,AutoScale,AutoScaleKeepRatio,AutoScaleSizeX,AutoScaleSizeY,AutoScaleBorderDistX,AutoScaleBorderDistY,PenMoveType,EngravePosInParameter,EngravePosUp,EngravePosDown,MoveSpeed,EngraveDownSpeed,LaserFirstOnCommand,LaserOnCommand,LaserOffCommand,LaserSize,ImageWriteToFileName,GrayThreshold,ImageDPIX,ImageDPIY,ImageInvert,Dither,NewspaperDitherSize,DotDistX,DotDistY,DotSizeX,DotSizeY,UseYShift,RotateHeart,HoleType")] LoadInfo loadInfo)
+		{
+			if (ModelState.IsValid)
+			{
+				using (var client = CreateHttpClient())
+				{
+					var response = await client.PutAsJsonAsync(api + "/" + loadInfo.Id, loadInfo);
+
+					if (response.IsSuccessStatusCode)
 					{
-						db.LoadInfoes.Add(loadInfo);
-						await db.SaveChangesAsync();
 						return RedirectToAction("Index");
 					}
-
-					return View(loadInfo);
 				}
+			}
+			return View(loadInfo);
+		}
 
-				// GET: LoadOptions/Edit/5
-				public async Task<ActionResult> Edit(int? id)
-				{
-					if (id == null)
-					{
-						return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-					}
-					LoadInfo loadInfo = await db.LoadInfoes.FindAsync(id);
-					if (loadInfo == null)
-					{
-						return HttpNotFound();
-					}
-					return View(loadInfo);
-				}
+		// GET: LoadOptions/Delete/5
+		public async Task<ActionResult> Delete(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			using (var client = CreateHttpClient())
+			{
+				HttpResponseMessage response = await client.DeleteAsync(api + "/" + id);
 
-				// POST: LoadOptions/Edit/5
-				// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-				// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-				[HttpPost]
-				[ValidateAntiForgeryToken]
-				public async Task<ActionResult> Edit([Bind(Include = "Id,LoadType,FileName,FileContent,SettingName,GCodeWriteToFileName,SwapXY,ScaleX,ScaleY,OfsX,OfsY,AutoScale,AutoScaleKeepRatio,AutoScaleSizeX,AutoScaleSizeY,AutoScaleBorderDistX,AutoScaleBorderDistY,PenMoveType,EngravePosInParameter,EngravePosUp,EngravePosDown,MoveSpeed,EngraveDownSpeed,LaserFirstOnCommand,LaserOnCommand,LaserOffCommand,LaserSize,ImageWriteToFileName,GrayThreshold,ImageDPIX,ImageDPIY,ImageInvert,Dither,NewspaperDitherSize,DotDistX,DotDistY,DotSizeX,DotSizeY,UseYShift,RotateHeart,HoleType")] LoadInfo loadInfo)
+				if (response.IsSuccessStatusCode)
 				{
-					if (ModelState.IsValid)
-					{
-						db.Entry(loadInfo).State = EntityState.Modified;
-						await db.SaveChangesAsync();
-						return RedirectToAction("Index");
-					}
-					return View(loadInfo);
-				}
-
-				// GET: LoadOptions/Delete/5
-				public async Task<ActionResult> Delete(int? id)
-				{
-					if (id == null)
-					{
-						return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-					}
-					LoadInfo loadInfo = await db.LoadInfoes.FindAsync(id);
-					if (loadInfo == null)
-					{
-						return HttpNotFound();
-					}
-					return View(loadInfo);
-				}
-
-				// POST: LoadOptions/Delete/5
-				[HttpPost, ActionName("Delete")]
-				[ValidateAntiForgeryToken]
-				public async Task<ActionResult> DeleteConfirmed(int id)
-				{
-					LoadInfo loadInfo = await db.LoadInfoes.FindAsync(id);
-					db.LoadInfoes.Remove(loadInfo);
-					await db.SaveChangesAsync();
 					return RedirectToAction("Index");
 				}
-			*/
+				return HttpNotFound();
+			}
+		}
+
+		// POST: LoadOptions/Delete/5
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> DeleteConfirmed(int id)
+		{
+			using (var client = CreateHttpClient())
+			{
+				HttpResponseMessage response = await client.DeleteAsync(api + "/" + id);
+
+				if (response.IsSuccessStatusCode)
+				{
+					return RedirectToAction("Index");
+				}
+				return HttpNotFound();
+			}
+		}
 	}
 }
