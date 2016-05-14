@@ -22,6 +22,8 @@ namespace CNCLib.GCode.Load
 {
 	public class LoadInfo
 	{
+		public int Id { get; set; }
+
 		public enum ELoadType
 		{
 			GCode,

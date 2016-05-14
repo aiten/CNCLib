@@ -16,19 +16,108 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Collections.Generic;
 using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+using Framework.Web;
 
 namespace CNCLib.WebAPI.Controllers
 {
-	public class LoadOptionsController : ApiController
+	public class LoadOptionsController : RestController<LoadInfo>
+	{
+	}
+
+	public class LoadInfoRest : IRest<LoadInfo>
+	{
+		private IItemController _controller = Dependency.Resolve<IItemController>();
+
+		public IEnumerable<LoadInfo> Get()
+		{
+			var list = new List<LoadInfo>();
+			foreach (Item item in _controller.GetAll(typeof(LoadInfo)))
+			{
+				LoadInfo li = (LoadInfo)_controller.Create(item.ItemID);
+				li.Id = item.ItemID;
+				list.Add(li);
+			}
+			return list;
+		}
+
+		public LoadInfo Get(int id)
+		{
+			object obj = _controller.Create(id);
+			if (obj != null || obj is LoadInfo)
+			{
+				LoadInfo li = (LoadInfo)obj;
+				li.Id = id;
+				return (LoadInfo)obj;
+			}
+
+			return null;
+		}
+
+		public int Add(LoadInfo value)
+		{
+			return _controller.Add(value.SettingName, value);
+		}
+
+		public void Update(int id, LoadInfo value)
+		{
+			_controller.Save(id, value.SettingName, value);
+		}
+
+		public void Delete(int id, LoadInfo value)
+		{
+			_controller.Delete(id);
+		}
+
+		public bool CompareId(int id, LoadInfo value)
+		{
+			return true;
+		}
+
+		#region IDisposable Support
+		private bool disposedValue = false; // To detect redundant calls
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposedValue)
+			{
+				if (disposing)
+				{
+					_controller.Dispose();
+					_controller = null;
+				}
+
+				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+				// TODO: set large fields to null.
+
+				disposedValue = true;
+			}
+		}
+
+		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+		// ~MachineRest() {
+		//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+		//   Dispose(false);
+		// }
+
+		// This code added to correctly implement the disposable pattern.
+		public void Dispose()
+		{
+			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+			Dispose(true);
+			// TODO: uncomment the following line if the finalizer is overridden above.
+			// GC.SuppressFinalize(this);
+		}
+		#endregion
+
+	}
+
+/*
+	public class LoadOptions2Controller : ApiController
 	{
 		// GET api/values
 		public IEnumerable<LoadInfo> Get()
@@ -45,7 +134,8 @@ namespace CNCLib.WebAPI.Controllers
 		}
 
 		// GET api/values/5
-		public LoadInfo Get(int id)
+		[ResponseType(typeof(LoadInfo))]
+		public IHttpActionResult Get(int id)
 		{
 			try
 			{
@@ -54,37 +144,34 @@ namespace CNCLib.WebAPI.Controllers
 					object obj = controller.Create(id);
 					if (obj != null || obj is LoadInfo)
 					{
-						return (LoadInfo)obj;
+						return Ok((LoadInfo)obj);
 					}
-					return null;
+					return NotFound();
 				}
 			}
 			catch (Exception e)
 			{
-				Request.CreateErrorResponse(HttpStatusCode.NotFound, e.Message);
-				return null;
+				return BadRequest(e.Message);
 			}
 		}
 
 		// POST api/values
 		public IHttpActionResult Post([FromBody]LoadInfo value)
 		{
+			if (!ModelState.IsValid || value == null)
+			{
+				return BadRequest(ModelState);
+			}
+
 			try
 			{
-				if (!ModelState.IsValid || value == null)
+				using (var controller = Dependency.Resolve<IItemController>())
 				{
-					return BadRequest(ModelState);
-				}
-				else
-				{
-					using (var controller = Dependency.Resolve<IItemController>())
+					int newid = controller.Add(value.SettingName,value);
+					return CreatedAtRoute("DefaultApi", new
 					{
-						int newid = controller.Add(value.SettingName,value);
-						return CreatedAtRoute("DefaultApi", new
-						{
-							id = newid
-						}, value);
-					}
+						id = newid
+					}, value);
 				}
 			}
 			catch (Exception ex)
@@ -95,19 +182,17 @@ namespace CNCLib.WebAPI.Controllers
 		// PUT api/values/5
 		public IHttpActionResult Put(int id, [FromBody]LoadInfo value)
 		{
+			if (!ModelState.IsValid || value == null)
+			{
+				return BadRequest(ModelState);
+			}
+
 			try
 			{
-				if (!ModelState.IsValid || value == null)
+				using (var controller = Dependency.Resolve<IItemController>())
 				{
-					return BadRequest(ModelState);
-				}
-				else
-				{
-					using (var controller = Dependency.Resolve<IItemController>())
-					{
-						controller.Save(id,value.SettingName,value);
-						return CreatedAtRoute("DefaultApi", new { id = id }, value);
-					}
+					controller.Save(id,value.SettingName,value);
+					return CreatedAtRoute("DefaultApi", new { id = id }, value);
 				}
 			}
 			catch (Exception ex)
@@ -117,20 +202,21 @@ namespace CNCLib.WebAPI.Controllers
 		}
 
 		// DELETE api/values/5
-		public void Delete(int id)
+		[ResponseType(typeof(Machine))]
+		public IHttpActionResult Delete(int id)
 		{
 			using (var controller = Dependency.Resolve<IItemController>())
 			{
 				var item = controller.Get(id);
 				if (item == null)
 				{
-					Request.CreateErrorResponse(HttpStatusCode.NotFound, "id " + id + " not found");
+					return NotFound();
 				}
-				else
-				{
-					controller.Delete(id);
-				}
+				controller.Delete(id);
+
+				return Ok(item);
 			}
 		}
 	}
+	*/
 }

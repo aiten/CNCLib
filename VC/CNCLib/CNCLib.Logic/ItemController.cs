@@ -83,6 +83,9 @@ namespace CNCLib.Logic
             {
                 var item = rep.Get(id);
 
+				if (item == null)
+					return null;
+
                 Type t = Type.GetType(item.ClassName);
                 var obj = Activator.CreateInstance(t);
 

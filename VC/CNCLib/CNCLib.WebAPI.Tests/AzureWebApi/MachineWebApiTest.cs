@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using CNCLib.Logic.Contracts.DTO;
+using System.Net;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
@@ -101,7 +102,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                         // HTTPGET again3
                         HttpResponseMessage responseget3 = await client.GetAsync(newmachineUrl);
-                        Assert.AreEqual(true, responseget3.IsSuccessStatusCode);
+                        Assert.AreEqual(HttpStatusCode.NotFound, responseget3.StatusCode);
 
                         if (responseget2.IsSuccessStatusCode)
                         {

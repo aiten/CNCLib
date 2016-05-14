@@ -25,100 +25,83 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Framework.Web;
 
 namespace CNCLib.WebAPI.Controllers
 {
-	public class MachineController : ApiController
+	public class MachineController : RestController<Machine>
 	{
-		// GET api/values
+	}
+
+	public class MachineRest : IRest<Machine>
+	{
+		private IMachineController _controller = Dependency.Resolve<IMachineController>();
+
 		public IEnumerable<Machine> Get()
 		{
-			using (var controller = Dependency.Resolve<IMachineController>())
-			{
-				return controller.GetMachines();
-			}
+			return _controller.GetMachines();
 		}
 
-		// GET api/values/5
-		[ResponseType(typeof(Machine))]
-		public IHttpActionResult Get(int id)
+		public Machine Get(int id)
 		{
-			using (var controller = Dependency.Resolve<IMachineController>())
-			{
-				var m = controller.GetMachine(id);
-				if (m == null)
-				{
-					return NotFound();
-				}
-				return Ok(m);
-			}
+			return _controller.GetMachine(id);
 		}
 
-		// POST api/values == Create
-		public IHttpActionResult Post([FromBody]Machine value)
+		public int Add(Machine value)
 		{
-			if (!ModelState.IsValid || value==null)
-			{
-				return BadRequest(ModelState);
-			}
-			try
-			{
-				using (var controller = Dependency.Resolve<IMachineController>())
-				{
-					int machineid = controller.AddMachine(value);
-					return CreatedAtRoute("DefaultApi", new { id = machineid }, value);
-				}
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			return _controller.AddMachine(value);
 		}
 
-		// PUT api/values/5
-		[ResponseType(typeof(void))]
-		public IHttpActionResult Put(int id, [FromBody]Machine value)
+		public void Update(int id, Machine value)
 		{
-			if (!ModelState.IsValid || value == null)
-			{
-				return BadRequest(ModelState);
-			}
-			if (id != value.MachineID)
-			{
-				return BadRequest("Missmatch between id and machineID");
-			}
-
-			try
-			{
-				using (var controller = Dependency.Resolve<IMachineController>())
-				{
-					controller.StoreMachine(value);
-					return StatusCode(HttpStatusCode.NoContent);
-//						int machineid = value.MachineID;
-//						return CreatedAtRoute("DefaultApi", new { id = machineid }, value);
-				}
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
+			_controller.StoreMachine(value);
 		}
 
-		// DELETE api/values/5
-		[ResponseType(typeof(Machine))]
-		public IHttpActionResult Delete(int id)
+		public void Delete(int id, Machine value)
 		{
-			using (var controller = Dependency.Resolve<IMachineController>())
+			_controller.Delete(value);
+		}
+
+		public bool CompareId(int id, Machine value)
+		{
+			return id == value.MachineID;
+		}
+
+		#region IDisposable Support
+		private bool disposedValue = false; // To detect redundant calls
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposedValue)
 			{
-				var machine = controller.GetMachine(id);
-				if (machine == null)
+				if (disposing)
 				{
-					return NotFound();
+					_controller.Dispose();
+					_controller = null;
 				}
 
-				controller.Delete(machine);
-				return Ok(machine);
+				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+				// TODO: set large fields to null.
+
+				disposedValue = true;
 			}
 		}
+
+		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+		// ~MachineRest() {
+		//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+		//   Dispose(false);
+		// }
+
+		// This code added to correctly implement the disposable pattern.
+		public void Dispose()
+		{
+			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+			Dispose(true);
+			// TODO: uncomment the following line if the finalizer is overridden above.
+			// GC.SuppressFinalize(this);
+		}
+		#endregion
+
 	}
 }

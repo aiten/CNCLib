@@ -1,0 +1,267 @@
+﻿@model IEnumerable<CNCLib.GCode.Load.LoadInfo>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LoadType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FileContent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SettingName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GCodeWriteToFileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SwapXY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ScaleX)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ScaleY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OfsX)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OfsY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AutoScale)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AutoScaleKeepRatio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AutoScaleSizeX)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AutoScaleSizeY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AutoScaleBorderDistX)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AutoScaleBorderDistY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PenMoveType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EngravePosInParameter)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EngravePosUp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EngravePosDown)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MoveSpeed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EngraveDownSpeed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LaserFirstOnCommand)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LaserOnCommand)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LaserOffCommand)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LaserSize)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImageWriteToFileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GrayThreshold)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImageDPIX)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImageDPIY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImageInvert)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dither)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NewspaperDitherSize)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DotDistX)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DotDistY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DotSizeX)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DotSizeY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UseYShift)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RotateHeart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HoleType)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LoadType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FileName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FileContent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SettingName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GCodeWriteToFileName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SwapXY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ScaleX)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ScaleY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OfsX)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OfsY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AutoScale)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AutoScaleKeepRatio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AutoScaleSizeX)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AutoScaleSizeY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AutoScaleBorderDistX)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AutoScaleBorderDistY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PenMoveType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EngravePosInParameter)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EngravePosUp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EngravePosDown)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MoveSpeed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EngraveDownSpeed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LaserFirstOnCommand)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LaserOnCommand)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LaserOffCommand)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LaserSize)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ImageWriteToFileName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GrayThreshold)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ImageDPIX)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ImageDPIY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ImageInvert)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dither)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NewspaperDitherSize)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DotDistX)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DotDistY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DotSizeX)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DotSizeY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UseYShift)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RotateHeart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HoleType)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
