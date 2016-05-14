@@ -57,7 +57,7 @@ namespace CNCLib.Wpf.Start
 			{
 				using (var controller = Dependency.Resolve<IMachineController>())
 				{
-					var dto = controller.GetMachine(-1);
+					var dto = controller.Get(-1);
 				}
 			}
 			catch (Exception ex)

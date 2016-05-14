@@ -66,7 +66,7 @@ namespace CNCLib.Tests.Wpf
 			var rep = CreateMock<IMachineController>();
 
 			Machine machine = CreateMachine(1);
-			rep.GetMachine(1).Returns(machine);
+			rep.Get(1).Returns(machine);
 
 			MachineViewModel mv = new MachineViewModel();
 			mv.LoadMachine(1);
@@ -107,7 +107,7 @@ namespace CNCLib.Tests.Wpf
 			var rep = CreateMock<IMachineController>();
 
 			Machine machine1 = CreateMachine(1);
-			rep.GetMachine(1).Returns(machine1);
+			rep.Get(1).Returns(machine1);
 
 			Machine machinedef = CreateMachine(0);
 			rep.DefaultMachine().Returns(machinedef);

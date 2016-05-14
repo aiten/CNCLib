@@ -26,6 +26,9 @@ using System.Windows.Forms;
 using System.Threading;
 using CNCLib.GUI.Load;
 using Framework.Arduino;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace CNCLib.GUI
 {
@@ -147,7 +150,7 @@ namespace CNCLib.GUI
 
         LoadInfo loadinfo = new LoadInfo();
 
-        private void _load_Click(object sender, EventArgs e)
+        private async void _load_Click(object sender, EventArgs e)
         {
 			if (loadinfo.AutoScaleSizeX == 0 || loadinfo.AutoScale == false)
 			{
@@ -161,30 +164,74 @@ namespace CNCLib.GUI
 
 				if (form.ShowDialog() == DialogResult.OK)
 				{
-					LoadBase load = LoadBase.Create(form.LoadInfo);
-
 					loadinfo = form.LoadInfo;
-					load.LoadOptions = loadinfo;
-					try
-					{
-						load.Load();
-						_gCodeCtrl.Commands.Clear();
-						_gCodeCtrl.Commands.AddRange(load.Commands);
-						if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
-						{
-							SaveGCode(loadinfo.GCodeWriteToFileName);
-						}
-					}
-					catch (Exception ex)
-					{
-						MessageBox.Show("Load Failed! " + ex.Message);
-					}
+					if (_useAzure.Checked)
+						await LoadAzureAsync(form.LoadInfo);
+					else
+						LoadLocal(form.LoadInfo);
+
 					_redraw_Click(null, null);
 				}
 			}
         }
 
-        private void ValuesFromControl()
+		private void LoadLocal(LoadInfo info)
+		{
+			try
+			{
+				LoadBase load = LoadBase.Create(info);
+
+				load.LoadOptions = info;
+				load.Load();
+				_gCodeCtrl.Commands.Clear();
+				_gCodeCtrl.Commands.AddRange(load.Commands);
+				if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
+				{
+					SaveGCode(loadinfo.GCodeWriteToFileName);
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Load Failed! " + ex.Message);
+			}
+		}
+
+		private readonly string webserverurl = @"http://cnclibapi.azurewebsites.net";
+		private readonly string api = @"api/GCode";
+
+		private System.Net.Http.HttpClient CreateHttpClient()
+		{
+			var client = new HttpClient();
+			client.BaseAddress = new Uri(webserverurl);
+			client.DefaultRequestHeaders.Accept.Clear();
+			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+			return client;
+		}
+
+		private async Task LoadAzureAsync(LoadInfo info)
+		{
+			using (var client = CreateHttpClient())
+			{
+				info.FileContent = File.ReadAllBytes(info.FileName);
+
+				HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
+				string[] gcode = await response.Content.ReadAsAsync<string[]>();
+
+				if (response.IsSuccessStatusCode)
+				{
+					LoadGCode load= new LoadGCode();
+					load.Load(gcode);
+					_gCodeCtrl.Commands.Clear();
+					_gCodeCtrl.Commands.AddRange(load.Commands);
+					if (!string.IsNullOrEmpty(info.GCodeWriteToFileName))
+					{
+						SaveGCode(info.GCodeWriteToFileName);
+					}
+				}
+			}
+		}
+
+		private void ValuesFromControl()
         {
             _offsetX.Text = _gCodeCtrl.OffsetX.ToString();
             _offsetY.Text = _gCodeCtrl.OffsetY.ToString();

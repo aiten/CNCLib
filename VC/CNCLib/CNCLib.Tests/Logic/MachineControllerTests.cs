@@ -70,7 +70,7 @@ namespace CNCLib.Tests.Logic
 
 			MachineController ctrl = new MachineController();
 
-			var machines = ctrl.GetMachines().ToArray();
+			var machines = ctrl.GetAll().ToArray();
 			Assert.AreEqual(true, machines.Length == 0);
 		}
 
@@ -84,7 +84,7 @@ namespace CNCLib.Tests.Logic
 
 			MachineController ctrl = new MachineController();
 
-			var machines = ctrl.GetMachines().ToArray();
+			var machines = ctrl.GetAll().ToArray();
 			Assert.AreEqual(true, machines.Length == 1);
 			Assert.AreEqual(1, machines[0].MachineID);
 			Assert.AreEqual("Maxi", machines[0].Name);
@@ -111,7 +111,7 @@ namespace CNCLib.Tests.Logic
 
 			MachineController ctrl = new MachineController();
 
-			var machines = ctrl.GetMachines().ToArray();
+			var machines = ctrl.GetAll().ToArray();
 			Assert.AreEqual(true, machines.Length == 2);
 			Assert.AreEqual(1, machines[0].MachineID);
 			Assert.AreEqual("Maxi", machines[0].Name);
@@ -138,7 +138,7 @@ namespace CNCLib.Tests.Logic
 
 			MachineController ctrl = new MachineController();
 
-			var machine = ctrl.GetMachine(1);
+			var machine = ctrl.Get(1);
 			Assert.AreEqual(machineEntity1.Name, machine.Name);
 			Assert.AreEqual(machineEntity1.MachineID, machine.MachineID);
 			Assert.IsNotNull(machine.MachineCommands);
@@ -159,7 +159,7 @@ namespace CNCLib.Tests.Logic
 
 			MachineController ctrl = new MachineController();
 
-			var machine = ctrl.GetMachine(3);
+			var machine = ctrl.Get(3);
 			Assert.IsNull(machine);
 		}
 

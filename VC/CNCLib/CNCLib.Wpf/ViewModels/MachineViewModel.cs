@@ -50,7 +50,7 @@ namespace CNCLib.Wpf.ViewModels
 				}
 				else
 				{
-					dto = controller.GetMachine(machineID);
+					dto = controller.Get(machineID);
 				}
 			}
 
@@ -234,7 +234,7 @@ namespace CNCLib.Wpf.ViewModels
 
 			using (var controller = Dependency.Resolve<IMachineController>())
 			{
-				id = controller.StoreMachine(m);
+				id = controller.Update(m);
 			}
 
 			LoadMachine(id);

@@ -2,7 +2,7 @@ select @@version;
 
 select * from __MigrationHistory;
 
-#exit;
+--#exit;
 
 
 drop table Configuration;

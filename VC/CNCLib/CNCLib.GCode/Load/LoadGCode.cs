@@ -50,7 +50,25 @@ namespace CNCLib.GCode.Load
 			PostLoad();
 		}
 
-        private bool Command()
+		public void Load(string[] lines)
+		{
+			_lastnoPrefixCommand = null;
+
+			foreach(var line in lines)
+			{
+				_stream.Line = line;
+				if (!Command())
+				{
+					Commands.Clear();
+					break;
+				}
+			}
+
+			PostLoad();
+
+		}
+
+		private bool Command()
         {
             if (_stream.NextCharToUpper == 'N')
             {

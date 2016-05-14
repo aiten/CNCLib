@@ -18,17 +18,13 @@
 
 using System;
 using System.Collections.Generic;
+using Framework.Logic.Contracts;
 
 namespace CNCLib.Logic.Contracts
 {
-	public interface IMachineController : IDisposable
+	public interface IMachineController : IDisposable, IRestController<DTO.Machine>
 	{
-		IEnumerable<DTO.Machine> GetMachines();
-		DTO.Machine GetMachine(int id);
 		DTO.Machine DefaultMachine();
-		void Delete(DTO.Machine m);
-		int StoreMachine(DTO.Machine m);
-		int AddMachine(DTO.Machine m);
 		int GetDetaultMachine();
 		void SetDetaultMachine(int defaultMachineID);
 	}

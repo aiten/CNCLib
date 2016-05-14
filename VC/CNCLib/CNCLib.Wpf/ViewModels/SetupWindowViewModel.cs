@@ -47,7 +47,7 @@ namespace CNCLib.Wpf.ViewModels
 
 			using (var controller = Dependency.Resolve<IMachineController>())
 			{
-				foreach(var m in controller.GetMachines())
+				foreach(var m in controller.GetAll())
 				{
 					machines.Add(Converter.Convert(m));
 				}
@@ -200,7 +200,7 @@ namespace CNCLib.Wpf.ViewModels
 
 			using (var controller = Dependency.Resolve<IMachineController>())
 			{
-				Global.Instance.Machine = controller.GetMachine(Machine.MachineID);
+				Global.Instance.Machine = controller.Get(Machine.MachineID);
 			}
 		}
 

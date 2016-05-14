@@ -39,22 +39,22 @@ namespace CNCLib.WebAPI.Controllers
 
 		public IEnumerable<Machine> Get()
 		{
-			return _controller.GetMachines();
+			return _controller.GetAll();
 		}
 
 		public Machine Get(int id)
 		{
-			return _controller.GetMachine(id);
+			return _controller.Get(id);
 		}
 
 		public int Add(Machine value)
 		{
-			return _controller.AddMachine(value);
+			return _controller.Add(value);
 		}
 
 		public void Update(int id, Machine value)
 		{
-			_controller.StoreMachine(value);
+			_controller.Update(value);
 		}
 
 		public void Delete(int id, Machine value)

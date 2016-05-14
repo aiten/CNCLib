@@ -31,7 +31,7 @@ namespace CNCLib.Logic
 {
 	public class MachineController : ControllerBase, IMachineController
 	{
-		public IEnumerable<Machine> GetMachines()
+		public IEnumerable<Machine> GetAll()
 		{
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
@@ -46,7 +46,7 @@ namespace CNCLib.Logic
 			}
 		}
 
-        public Machine GetMachine(int id)
+        public Machine Get(int id)
         {
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
@@ -100,7 +100,7 @@ namespace CNCLib.Logic
 			}
         }
 
-		public int AddMachine(Machine m)
+		public int Add(Machine m)
 		{
 			using (var uow = Dependency.Resolve<IUnitOfWork>())
 			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
@@ -115,7 +115,7 @@ namespace CNCLib.Logic
 			}
 		}
 
-		public int StoreMachine(Machine m)
+		public int Update(Machine m)
 		{
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))

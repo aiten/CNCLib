@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}</ProjectGuid>
+    <ProjectGuid>{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CNCLib.Logic.Contracts</RootNamespace>
-    <AssemblyName>CNCLib.Logic.Contracts</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>Framework.Logic.Contracts</RootNamespace>
+    <AssemblyName>Framework.Logic.Contracts</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,23 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CNCLibAssemblyInfo.cs">
-      <Link>Properties\CNCLibAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="DTO\Configuration.cs" />
-    <Compile Include="DTO\Item.cs" />
-    <Compile Include="DTO\Machine.cs" />
-    <Compile Include="DTO\MachineCommand.cs" />
-    <Compile Include="DTO\MachineInitCommand.cs" />
-    <Compile Include="IItemController.cs" />
-    <Compile Include="IMachineController.cs" />
+    <Compile Include="IRestController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj">
-      <Project>{e598aaa4-fe51-46bd-b852-4a9eeb21a5c5}</Project>
-      <Name>Framework.Logic.Contracts</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
