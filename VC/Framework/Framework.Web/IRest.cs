@@ -31,7 +31,6 @@ namespace Framework.Web
 		int Add(T value);
 		void Update(int id, T value);
 		void Delete(int id, T value);
-
 		bool CompareId(int id, T value);
 	}
 }

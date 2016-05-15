@@ -76,12 +76,12 @@ namespace CNCLib.GCode.Load
 
             switch (LoadOptions.Dither)
             {
-                case LoadInfo.DitherFilter.FloydSteinbergDither:
+                case LoadOptions.DitherFilter.FloydSteinbergDither:
                     AddComment("Image Converted with FloydSteinbergDither");
                     AddComment("GrayThreshold", LoadOptions.GrayThreshold);
                     b = new Framework.Tools.Drawing.FloydSteinbergDither() { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
                     break;
-                case LoadInfo.DitherFilter.NewspaperDither:
+                case LoadOptions.DitherFilter.NewspaperDither:
                     AddComment("Image Converted with NewspaperDither");
                     AddComment("GrayThreshold", LoadOptions.GrayThreshold);
                     AddComment("Dithersize", LoadOptions.NewspaperDitherSize);

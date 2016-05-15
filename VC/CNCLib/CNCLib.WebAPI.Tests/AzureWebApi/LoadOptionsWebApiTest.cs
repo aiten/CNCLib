@@ -47,7 +47,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                 if (response.IsSuccessStatusCode)
                 {
-                    LoadInfo l = await response.Content.ReadAsAsync<LoadInfo>();
+                    LoadOptions l = await response.Content.ReadAsAsync<LoadOptions>();
 
                     Assert.AreEqual(true,l.AutoScale);
                 }
@@ -63,7 +63,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var m = new LoadInfo() { SettingName = "Settingname" };
+                var m = new LoadOptions() { SettingName = "Settingname" };
 
                 HttpResponseMessage response = await client.PostAsJsonAsync(api, m);
                 Assert.AreEqual(true, response.IsSuccessStatusCode);
@@ -78,7 +78,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                     if (responseget.IsSuccessStatusCode)
                     {
-						LoadInfo mget = await responseget.Content.ReadAsAsync<LoadInfo>();
+						LoadOptions mget = await responseget.Content.ReadAsAsync<LoadOptions>();
 
                         Assert.AreEqual("Settingname", mget.SettingName);
 
@@ -92,7 +92,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                         if (responseget2.IsSuccessStatusCode)
                         {
-							LoadInfo mget2 = await responseget2.Content.ReadAsAsync<LoadInfo>();
+							LoadOptions mget2 = await responseget2.Content.ReadAsAsync<LoadOptions>();
 
                             Assert.AreEqual("ComHA", mget2.SettingName);
                         }

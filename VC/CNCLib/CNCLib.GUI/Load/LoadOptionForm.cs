@@ -28,10 +28,10 @@ namespace CNCLib.GUI.Load
     {
         protected class LoadOptionDefinition
         {
-            public CNCLib.Logic.Contracts.DTO.Item  Item { get; set; }
+            public LoadOptions  Item { get; set; }
             public override string ToString()
             {
-                return Item.Name;
+                return Item.SettingName;
             }
         }
 
@@ -46,9 +46,9 @@ namespace CNCLib.GUI.Load
         {
             _settingName.Items.Clear();
 
-            using (var controller = Dependency.Resolve<IItemController>())
+            using (var controller = Dependency.Resolve<ILoadOptionsController>())
             {
-                var items = controller.GetAll(new LoadInfo().GetType());
+                var items = controller.GetAll();
                 foreach (var s in items)
                 {
                     _settingName.Items.Add(new LoadOptionDefinition() { Item = s });
@@ -58,11 +58,11 @@ namespace CNCLib.GUI.Load
 
         static public Framework.Tools.Pattern.IFactory LogicFactory { get; set; }
 
-        public LoadInfo LoadInfo 
+        public LoadOptions LoadInfo 
         {   
             get
 			{
-                var r = new LoadInfo()
+                var r = new LoadOptions()
                 {
 					FileName = _filename.Text,
                     SettingName = _settingName.Text,
@@ -77,7 +77,7 @@ namespace CNCLib.GUI.Load
                     AutoScaleSizeX = decimal.Parse(_AutoScaleSizeX.Text),
                     AutoScaleSizeY = decimal.Parse(_AutoScaleSizeY.Text),
                     AutoScaleKeepRatio = _AutoScaleKeepRatio.Checked,
-                    PenMoveType = _generateForEngrave.Checked ? LoadInfo.PenType.ZMove : LoadInfo.PenType.CommandString,
+                    PenMoveType = _generateForEngrave.Checked ? LoadOptions.PenType.ZMove : LoadOptions.PenType.CommandString,
 
                     EngravePosUp = decimal.Parse(_engraveZUp.Text),
                     EngravePosDown = decimal.Parse(_engraveZDown.Text),
@@ -90,7 +90,7 @@ namespace CNCLib.GUI.Load
                     LaserSize = decimal.Parse(_laserSize.Text),
                     GrayThreshold = Byte.Parse(_grayThreshold.Text),
 
-                    Dither = _floydSteinbergDither.Checked ? LoadInfo.DitherFilter.FloydSteinbergDither : LoadInfo.DitherFilter.NewspaperDither,
+                    Dither = _floydSteinbergDither.Checked ? LoadOptions.DitherFilter.FloydSteinbergDither : LoadOptions.DitherFilter.NewspaperDither,
 
                     NewspaperDitherSize = int.Parse(_newspaperDotSize.Text),
 
@@ -109,10 +109,10 @@ namespace CNCLib.GUI.Load
                     RotateHeart = _holeRotateHeart.Checked
                 };
 
-				if (_loadGCode.Checked) r.LoadType = LoadInfo.ELoadType.GCode;
-				else if (_loadHTML.Checked) r.LoadType = LoadInfo.ELoadType.HPGL;
-				else if (_loadImage.Checked) r.LoadType = LoadInfo.ELoadType.Image;
-				else if (_loadimageHole.Checked) r.LoadType = LoadInfo.ELoadType.ImageHole;
+				if (_loadGCode.Checked) r.LoadType = LoadOptions.ELoadType.GCode;
+				else if (_loadHTML.Checked) r.LoadType = LoadOptions.ELoadType.HPGL;
+				else if (_loadImage.Checked) r.LoadType = LoadOptions.ELoadType.Image;
+				else if (_loadimageHole.Checked) r.LoadType = LoadOptions.ELoadType.ImageHole;
 
 				if (string.IsNullOrEmpty(_penMoveSpeed.Text))
                     r.MoveSpeed = null;
@@ -134,11 +134,11 @@ namespace CNCLib.GUI.Load
                 else
                     r.ImageDPIY = decimal.Parse(_imageDPIY.Text);
 
-                if (_holeSquare.Checked)        r.HoleType = LoadInfo.EHoleType.Square;
-                else if (_holeCircle.Checked)   r.HoleType = LoadInfo.EHoleType.Circle;
-                else if (_holeHexagon.Checked)  r.HoleType = LoadInfo.EHoleType.Hexagon;
-                else if (_holeDiamond.Checked)  r.HoleType = LoadInfo.EHoleType.Diamond;
-                else if (_holeHeart.Checked)    r.HoleType = LoadInfo.EHoleType.Heart;
+                if (_holeSquare.Checked)        r.HoleType = LoadOptions.EHoleType.Square;
+                else if (_holeCircle.Checked)   r.HoleType = LoadOptions.EHoleType.Circle;
+                else if (_holeHexagon.Checked)  r.HoleType = LoadOptions.EHoleType.Hexagon;
+                else if (_holeDiamond.Checked)  r.HoleType = LoadOptions.EHoleType.Diamond;
+                else if (_holeHeart.Checked)    r.HoleType = LoadOptions.EHoleType.Heart;
 
                 return r;
 
@@ -147,10 +147,10 @@ namespace CNCLib.GUI.Load
             {
 				switch (value.LoadType)
 				{
-					case LoadInfo.ELoadType.GCode: _loadGCode.Checked = true; break;
-					case LoadInfo.ELoadType.HPGL: _loadHTML.Checked = true; break;
-					case LoadInfo.ELoadType.Image: _loadImage.Checked = true; break;
-					case LoadInfo.ELoadType.ImageHole: _loadimageHole.Checked = true; break;
+					case LoadOptions.ELoadType.GCode: _loadGCode.Checked = true; break;
+					case LoadOptions.ELoadType.HPGL: _loadHTML.Checked = true; break;
+					case LoadOptions.ELoadType.Image: _loadImage.Checked = true; break;
+					case LoadOptions.ELoadType.ImageHole: _loadimageHole.Checked = true; break;
 				}
 
 				_filename.Text = value.FileName;
@@ -167,8 +167,8 @@ namespace CNCLib.GUI.Load
 				_AutoScaleSizeY.Text = value.AutoScaleSizeY.ToString();
 				_AutoScaleKeepRatio.Checked = value.AutoScaleKeepRatio;
 
-				_generateForEngrave.Checked = value.PenMoveType == LoadInfo.PenType.ZMove;
-				_generateForLaser.Checked = value.PenMoveType == LoadInfo.PenType.CommandString;
+				_generateForEngrave.Checked = value.PenMoveType == LoadOptions.PenType.ZMove;
+				_generateForLaser.Checked = value.PenMoveType == LoadOptions.PenType.CommandString;
 
 				_engraveZUp.Text = value.EngravePosUp.ToString();
 				_engraveZDown.Text = value.EngravePosDown.ToString();
@@ -190,8 +190,8 @@ namespace CNCLib.GUI.Load
                 _saveImageToFilename.Text = value.ImageWriteToFileName;
                 _saveGCodeToFileName.Text = value.GCodeWriteToFileName;
 
-                _floydSteinbergDither.Checked = value.Dither == LoadInfo.DitherFilter.FloydSteinbergDither;
-                _newspaperDither.Checked = value.Dither == LoadInfo.DitherFilter.NewspaperDither;
+                _floydSteinbergDither.Checked = value.Dither == LoadOptions.DitherFilter.FloydSteinbergDither;
+                _newspaperDither.Checked = value.Dither == LoadOptions.DitherFilter.NewspaperDither;
 
                 _imageInvert.Checked = value.ImageInvert;
 
@@ -200,11 +200,11 @@ namespace CNCLib.GUI.Load
 
                 switch (value.HoleType)
                 {
-                    case LoadInfo.EHoleType.Square:  _holeSquare.Checked = true; break;
-                    case LoadInfo.EHoleType.Circle:  _holeCircle.Checked = true; break;
-                    case LoadInfo.EHoleType.Hexagon: _holeHexagon.Checked = true; break;
-                    case LoadInfo.EHoleType.Diamond: _holeDiamond.Checked = true; break;
-                    case LoadInfo.EHoleType.Heart:   _holeHeart.Checked = true; break;
+                    case LoadOptions.EHoleType.Square:  _holeSquare.Checked = true; break;
+                    case LoadOptions.EHoleType.Circle:  _holeCircle.Checked = true; break;
+                    case LoadOptions.EHoleType.Hexagon: _holeHexagon.Checked = true; break;
+                    case LoadOptions.EHoleType.Diamond: _holeDiamond.Checked = true; break;
+                    case LoadOptions.EHoleType.Heart:   _holeHeart.Checked = true; break;
                 }
 
                 _holeDotSizeX.Text = value.DotSizeX.ToString();
@@ -277,20 +277,12 @@ namespace CNCLib.GUI.Load
             if (_settingName.Focused && _settingName.SelectedItem != null)
             {
                 LoadOptionDefinition item = (LoadOptionDefinition)_settingName.SelectedItem;
-
-                using (var controller = Dependency.Resolve<IItemController>())
-                {
-                    object obj = controller.Create(item.Item.ItemID);
-                    if (obj != null && obj is LoadInfo)
-                    {
-                        LoadInfo = (LoadInfo)obj;
-                    }
-                }
+				LoadInfo = item.Item;
             }
         }
         private void _saveSettings_Click(object sender, EventArgs e)
         {
-            LoadInfo obj;
+            LoadOptions obj;
             try
             {
                 obj = this.LoadInfo;
@@ -305,21 +297,22 @@ namespace CNCLib.GUI.Load
             {
                 try
                 {
-                    using (var controller = Dependency.Resolve<IItemController>())
+                    using (var controller = Dependency.Resolve<ILoadOptionsController>())
                     {
                         if (_settingName.SelectedItem != null)
                         {
                             LoadOptionDefinition item = (LoadOptionDefinition)_settingName.SelectedItem;
-                            controller.Save(item.Item.ItemID, obj.SettingName, obj);
+							obj.Id = item.Item.Id;
+							controller.Update(obj);
                         }
                         else
                         {
-                            controller.Add(obj.SettingName, obj);
+                            int id = controller.Add(obj);
                             ReadSettings();
                             int idx = 0;
                             foreach (LoadOptionDefinition o in _settingName.Items)
                             {
-                                if (o.Item.Name == obj.SettingName)
+                                if (o.Item.Id == id)
                                 {
                                     _settingName.SelectedIndex = idx;
                                     break;
@@ -338,7 +331,7 @@ namespace CNCLib.GUI.Load
 
         private void _deleteSettings_Click(object sender, EventArgs e)
         {
-            LoadInfo obj;
+            LoadOptions obj;
             try
             {
                 obj = this.LoadInfo;
@@ -353,12 +346,12 @@ namespace CNCLib.GUI.Load
             {
                 try
                 {
-                    using (var controller = Dependency.Resolve<IItemController>())
+                    using (var controller = Dependency.Resolve<ILoadOptionsController>())
                     {
                         if (_settingName.SelectedItem != null)
                         {
                             LoadOptionDefinition item = (LoadOptionDefinition)_settingName.SelectedItem;
-                            controller.Delete(item.Item.ItemID);
+                            controller.Delete(item.Item);
                             ReadSettings();
                             _settingName.Text = "";
                         }

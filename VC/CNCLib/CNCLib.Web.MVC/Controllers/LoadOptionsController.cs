@@ -42,14 +42,14 @@ namespace CNCLib.Web.MVC.Controllers
 			return client;
 		}
 
-		private async Task<LoadInfo> Get(int id)
+		private async Task<LoadOptions> Get(int id)
 		{
 			using (var client = CreateHttpClient())
 			{
 				HttpResponseMessage response = await client.GetAsync(api + "/" + id);
 				if (response.IsSuccessStatusCode)
 				{
-					LoadInfo value = await response.Content.ReadAsAsync<LoadInfo>();
+					LoadOptions value = await response.Content.ReadAsAsync<LoadOptions>();
 
 					return value;
 				}
@@ -65,7 +65,7 @@ namespace CNCLib.Web.MVC.Controllers
 				HttpResponseMessage response = await client.GetAsync(api);
 				if (response.IsSuccessStatusCode)
 				{
-					IEnumerable<LoadInfo> infos = await response.Content.ReadAsAsync<IEnumerable<LoadInfo>>();
+					IEnumerable<LoadOptions> infos = await response.Content.ReadAsAsync<IEnumerable<LoadOptions>>();
 					return View(infos);
 				}
 			}
@@ -80,7 +80,7 @@ namespace CNCLib.Web.MVC.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			LoadInfo loadInfo = await Get(id.Value);
+			LoadOptions loadInfo = await Get(id.Value);
 			if (loadInfo == null)
 			{
 				return HttpNotFound();
@@ -91,7 +91,7 @@ namespace CNCLib.Web.MVC.Controllers
 		// GET: LoadOptions/Create
 		public ActionResult Create()
 		{
-			return View(new LoadInfo());
+			return View(new LoadOptions());
 		}
 
 
@@ -100,7 +100,7 @@ namespace CNCLib.Web.MVC.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Create([Bind(Include = "Id,LoadType,FileName,FileContent,SettingName,GCodeWriteToFileName,SwapXY,ScaleX,ScaleY,OfsX,OfsY,AutoScale,AutoScaleKeepRatio,AutoScaleSizeX,AutoScaleSizeY,AutoScaleBorderDistX,AutoScaleBorderDistY,PenMoveType,EngravePosInParameter,EngravePosUp,EngravePosDown,MoveSpeed,EngraveDownSpeed,LaserFirstOnCommand,LaserOnCommand,LaserOffCommand,LaserSize,ImageWriteToFileName,GrayThreshold,ImageDPIX,ImageDPIY,ImageInvert,Dither,NewspaperDitherSize,DotDistX,DotDistY,DotSizeX,DotSizeY,UseYShift,RotateHeart,HoleType")] LoadInfo loadInfo)
+		public async Task<ActionResult> Create([Bind(Include = "Id,LoadType,FileName,FileContent,SettingName,GCodeWriteToFileName,SwapXY,ScaleX,ScaleY,OfsX,OfsY,AutoScale,AutoScaleKeepRatio,AutoScaleSizeX,AutoScaleSizeY,AutoScaleBorderDistX,AutoScaleBorderDistY,PenMoveType,EngravePosInParameter,EngravePosUp,EngravePosDown,MoveSpeed,EngraveDownSpeed,LaserFirstOnCommand,LaserOnCommand,LaserOffCommand,LaserSize,ImageWriteToFileName,GrayThreshold,ImageDPIX,ImageDPIY,ImageInvert,Dither,NewspaperDitherSize,DotDistX,DotDistY,DotSizeX,DotSizeY,UseYShift,RotateHeart,HoleType")] LoadOptions loadInfo)
 		{
 			if (ModelState.IsValid)
 			{
@@ -123,7 +123,7 @@ namespace CNCLib.Web.MVC.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			LoadInfo loadInfo = await Get(id.Value);
+			LoadOptions loadInfo = await Get(id.Value);
 			if (loadInfo == null)
 			{
 				return HttpNotFound();
@@ -136,7 +136,7 @@ namespace CNCLib.Web.MVC.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Edit([Bind(Include = "Id,LoadType,FileName,FileContent,SettingName,GCodeWriteToFileName,SwapXY,ScaleX,ScaleY,OfsX,OfsY,AutoScale,AutoScaleKeepRatio,AutoScaleSizeX,AutoScaleSizeY,AutoScaleBorderDistX,AutoScaleBorderDistY,PenMoveType,EngravePosInParameter,EngravePosUp,EngravePosDown,MoveSpeed,EngraveDownSpeed,LaserFirstOnCommand,LaserOnCommand,LaserOffCommand,LaserSize,ImageWriteToFileName,GrayThreshold,ImageDPIX,ImageDPIY,ImageInvert,Dither,NewspaperDitherSize,DotDistX,DotDistY,DotSizeX,DotSizeY,UseYShift,RotateHeart,HoleType")] LoadInfo loadInfo)
+		public async Task<ActionResult> Edit([Bind(Include = "Id,LoadType,FileName,FileContent,SettingName,GCodeWriteToFileName,SwapXY,ScaleX,ScaleY,OfsX,OfsY,AutoScale,AutoScaleKeepRatio,AutoScaleSizeX,AutoScaleSizeY,AutoScaleBorderDistX,AutoScaleBorderDistY,PenMoveType,EngravePosInParameter,EngravePosUp,EngravePosDown,MoveSpeed,EngraveDownSpeed,LaserFirstOnCommand,LaserOnCommand,LaserOffCommand,LaserSize,ImageWriteToFileName,GrayThreshold,ImageDPIX,ImageDPIY,ImageInvert,Dither,NewspaperDitherSize,DotDistX,DotDistY,DotSizeX,DotSizeY,UseYShift,RotateHeart,HoleType")] LoadOptions loadInfo)
 		{
 			if (ModelState.IsValid)
 			{

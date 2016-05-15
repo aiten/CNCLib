@@ -20,7 +20,7 @@ using System;
 
 namespace CNCLib.GCode.Load
 {
-	public class LoadInfo
+	public class LoadOptions
 	{
 		public int Id { get; set; }
 

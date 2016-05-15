@@ -80,7 +80,7 @@
     <Compile Include="Load\LoadImage.cs" />
     <Compile Include="Load\LoadGCode.cs" />
     <Compile Include="Load\LoadHPGL.cs" />
-    <Compile Include="Load\LoadInfo.cs" />
+    <Compile Include="Load\LoadOptions.cs" />
     <Compile Include="Commands\IOutputCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />

@@ -148,7 +148,7 @@ namespace CNCLib.GUI
 
         #endregion
 
-        LoadInfo loadinfo = new LoadInfo();
+        LoadOptions loadinfo = new LoadOptions();
 
         private async void _load_Click(object sender, EventArgs e)
         {
@@ -175,7 +175,7 @@ namespace CNCLib.GUI
 			}
         }
 
-		private void LoadLocal(LoadInfo info)
+		private void LoadLocal(LoadOptions info)
 		{
 			try
 			{
@@ -208,7 +208,7 @@ namespace CNCLib.GUI
 			return client;
 		}
 
-		private async Task LoadAzureAsync(LoadInfo info)
+		private async Task LoadAzureAsync(LoadOptions info)
 		{
 			using (var client = CreateHttpClient())
 			{

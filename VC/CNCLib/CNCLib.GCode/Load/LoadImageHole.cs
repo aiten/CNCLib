@@ -34,7 +34,7 @@ namespace CNCLib.GCode.Load
         public bool UseYShift { get { return LoadOptions.UseYShift; } }
         public bool RotateHeart { get { return LoadOptions.RotateHeart; } }
 
-        public LoadInfo.EHoleType HoleType { get { return LoadOptions.HoleType; } }
+        public LoadOptions.EHoleType HoleType { get { return LoadOptions.HoleType; } }
 
         public double StartLaserDist { get { return 0.15; } }
 
@@ -113,11 +113,11 @@ namespace CNCLib.GCode.Load
 
             switch (HoleType)
             {
-                case LoadInfo.EHoleType.Hexagon:
-                case LoadInfo.EHoleType.Square:
-                case LoadInfo.EHoleType.Heart:
-                case LoadInfo.EHoleType.Circle:
-                case LoadInfo.EHoleType.Diamond:
+                case LoadOptions.EHoleType.Hexagon:
+                case LoadOptions.EHoleType.Square:
+                case LoadOptions.EHoleType.Heart:
+                case LoadOptions.EHoleType.Circle:
+                case LoadOptions.EHoleType.Diamond:
                     if (iy % 2 == 0 && UseYShift)
                         xdiff = ImageToDotSizeX / 2.0;
                     break;
@@ -135,13 +135,13 @@ namespace CNCLib.GCode.Load
             double ypos = iy * ImageToDotSizeY;
             switch (HoleType)
             {
-                case LoadInfo.EHoleType.Hexagon:
-                case LoadInfo.EHoleType.Circle:
+                case LoadOptions.EHoleType.Hexagon:
+                case LoadOptions.EHoleType.Circle:
                     if (UseYShift)
                         return (ypos * 0.86602540378443864676372317075294);
                     break;
 
-                case LoadInfo.EHoleType.Diamond:
+                case LoadOptions.EHoleType.Diamond:
                     if (UseYShift)
                         return (ypos * 0.5);
                     break;
@@ -174,7 +174,7 @@ namespace CNCLib.GCode.Load
             return (colorsum / (ImageToDotSizeX * ImageToDotSizeY)) / 255.0;
         }
 
-        private void AddCommandX(double x, double y, double size, LoadInfo.EHoleType holetype, int ix)
+        private void AddCommandX(double x, double y, double size, LoadOptions.EHoleType holetype, int ix)
         {
             // x,y left,top corner
             // size 0..1
@@ -195,7 +195,7 @@ namespace CNCLib.GCode.Load
 
             switch (HoleType)
             {
-                case LoadInfo.EHoleType.Hexagon:
+                case LoadOptions.EHoleType.Hexagon:
                     size *= 1.0 / 0.86602540378443864676372317075294;
                     break;
                 default:
@@ -211,11 +211,11 @@ namespace CNCLib.GCode.Load
 
             switch (holetype)
             {
-                case LoadInfo.EHoleType.Hexagon: CreateHexagon(centerX, centerY, dotsizeX / 2.0); break;
-                case LoadInfo.EHoleType.Circle: CreateCircle(centerX, centerY, dotsizeX / 2.0); break;
-                case LoadInfo.EHoleType.Square: CreateSquare(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0); break;
-                case LoadInfo.EHoleType.Diamond: CreateDiamond(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0); break;
-                case LoadInfo.EHoleType.Heart: CreateHeart(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0, RotateHeart && ix%2 == 0); break;
+                case LoadOptions.EHoleType.Hexagon: CreateHexagon(centerX, centerY, dotsizeX / 2.0); break;
+                case LoadOptions.EHoleType.Circle: CreateCircle(centerX, centerY, dotsizeX / 2.0); break;
+                case LoadOptions.EHoleType.Square: CreateSquare(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0); break;
+                case LoadOptions.EHoleType.Diamond: CreateDiamond(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0); break;
+                case LoadOptions.EHoleType.Heart: CreateHeart(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0, RotateHeart && ix%2 == 0); break;
             }
 
             LaserOff();

@@ -22,7 +22,7 @@ using Framework.Logic.Contracts;
 
 namespace CNCLib.Logic.Contracts
 {
-	public interface ILoadOptionsController : IDisposable, IRestController<GCode.Load.LoadInfo>
+	public interface ILoadOptionsController : IDisposable, IRestController<GCode.Load.LoadOptions>
 	{
 	}
 }

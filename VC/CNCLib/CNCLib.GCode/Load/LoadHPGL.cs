@@ -50,10 +50,10 @@ namespace CNCLib.GCode.Load
 
             switch (LoadOptions.PenMoveType)
             {
-                case LoadInfo.PenType.CommandString:
+                case LoadOptions.PenType.CommandString:
 					AddCommentForLaser();
                     break;
-                case LoadInfo.PenType.ZMove:
+                case LoadOptions.PenType.ZMove:
                     AddComment("PenDownSpeed" , LoadOptions.EngraveDownSpeed );
                     AddComment("PenUpPos" ,     LoadOptions.EngravePosUp );
                     AddComment("PenDownPos" ,   LoadOptions.EngravePosDown );
@@ -64,7 +64,7 @@ namespace CNCLib.GCode.Load
 
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
             {
-				if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
+				if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
 				{
                     AddCommands("M3");
 
@@ -98,7 +98,7 @@ namespace CNCLib.GCode.Load
                     LoadPenUp();
 				}
 
-				if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
+				if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
 				{
                     AddCommands("M5");
 				}
@@ -225,7 +225,7 @@ namespace CNCLib.GCode.Load
 
         private void LoadPenDown()
         {
-            if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
+            if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
             {
                 var r = new G01Command();
                 if (LoadOptions.EngravePosInParameter)
@@ -251,7 +251,7 @@ namespace CNCLib.GCode.Load
 
         private void LoadPenUp()
         {
-            if (LoadOptions.PenMoveType == LoadInfo.PenType.ZMove)
+            if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
             {
                 var r = new G00Command();
                 if (LoadOptions.EngravePosInParameter)

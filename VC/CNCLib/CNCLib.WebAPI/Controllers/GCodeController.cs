@@ -25,7 +25,7 @@ namespace CNCLib.WebAPI.Controllers
 {
 	public class GCodeController : ApiController
 	{
-		public IEnumerable<string> Post([FromBody] LoadInfo input)
+		public IEnumerable<string> Post([FromBody] LoadOptions input)
 		{
 			string filename = Path.GetFileName(input.FileName);
 			string tmpfile = Path.GetTempPath() + filename;

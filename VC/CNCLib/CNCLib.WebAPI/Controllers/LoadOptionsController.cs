@@ -25,40 +25,40 @@ using Framework.Web;
 
 namespace CNCLib.WebAPI.Controllers
 {
-	public class LoadOptionsController : RestController<LoadInfo>
+	public class LoadOptionsController : RestController<LoadOptions>
 	{
 	}
 
-	public class LoadInfoRest : IRest<LoadInfo>
+	public class LoadInfoRest : IRest<LoadOptions>
 	{
 		private ILoadOptionsController _controller = Dependency.Resolve<ILoadOptionsController>();
 
-		public IEnumerable<LoadInfo> Get()
+		public IEnumerable<LoadOptions> Get()
 		{
 			return _controller.GetAll();
 		}
 
-		public LoadInfo Get(int id)
+		public LoadOptions Get(int id)
 		{
 			return _controller.Get(id);
 		}
 
-		public int Add(LoadInfo value)
+		public int Add(LoadOptions value)
 		{
 			return _controller.Add(value);
 		}
 
-		public void Update(int id, LoadInfo value)
+		public void Update(int id, LoadOptions value)
 		{
 			_controller.Update(value);
 		}
 
-		public void Delete(int id, LoadInfo value)
+		public void Delete(int id, LoadOptions value)
 		{
 			_controller.Delete(value);
 		}
 
-		public bool CompareId(int id, LoadInfo value)
+		public bool CompareId(int id, LoadOptions value)
 		{
 			return true;
 		}

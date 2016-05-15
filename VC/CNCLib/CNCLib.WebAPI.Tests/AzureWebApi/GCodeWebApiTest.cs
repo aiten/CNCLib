@@ -40,7 +40,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				LoadInfo info = new LoadInfo() { LoadType = LoadInfo.ELoadType.HPGL };
+				LoadOptions info = new LoadOptions() { LoadType = LoadOptions.ELoadType.HPGL };
 
 				info.FileName = @"c:\data\heikes-mietzi.hpgl";
 				info.FileContent = File.ReadAllBytes(info.FileName);
@@ -63,14 +63,14 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 				client.DefaultRequestHeaders.Accept.Clear();
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				LoadInfo info = new LoadInfo()
+				LoadOptions info = new LoadOptions()
 				{
-					LoadType = LoadInfo.ELoadType.Image,
+					LoadType = LoadOptions.ELoadType.Image,
 					AutoScale = true,
 					AutoScaleSizeX = 100,
 					AutoScaleSizeY = 100,
 					MoveSpeed = 450,
-					PenMoveType = LoadInfo.PenType.CommandString,
+					PenMoveType = LoadOptions.PenType.CommandString,
 					ImageDPIX = 66.7m,
 					ImageDPIY = 66.7m
 				};

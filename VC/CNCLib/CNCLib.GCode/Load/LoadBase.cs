@@ -33,21 +33,21 @@ namespace CNCLib.GCode.Load
 
         public CommandList Commands { get; protected set; } = new CommandList();
 
-        public LoadInfo LoadOptions { get; set; }
+        public LoadOptions LoadOptions { get; set; }
 
 		#endregion
 
 		#region Factory
 
-		static public LoadBase Create(LoadInfo info)
+		static public LoadBase Create(LoadOptions info)
 		{
 			LoadBase load = null;
 			switch (info.LoadType)
 			{
-				case LoadInfo.ELoadType.GCode:		load = new LoadGCode(); break;
-				case LoadInfo.ELoadType.HPGL:		load = new LoadHPGL(); break;
-				case LoadInfo.ELoadType.Image:		load = new LoadImage(); break;
-				case LoadInfo.ELoadType.ImageHole:	load = new LoadImageHole(); break;
+				case LoadOptions.ELoadType.GCode:		load = new LoadGCode(); break;
+				case LoadOptions.ELoadType.HPGL:		load = new LoadHPGL(); break;
+				case LoadOptions.ELoadType.Image:		load = new LoadImage(); break;
+				case LoadOptions.ELoadType.ImageHole:	load = new LoadImageHole(); break;
 				default: return null;
 			}
 			load.LoadOptions = info;

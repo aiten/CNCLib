@@ -32,14 +32,14 @@ namespace CNCLib.Logic
 {
 	public class LoadOptionsController : ControllerBase, ILoadOptionsController
 	{
-		public IEnumerable<LoadInfo> GetAll()
+		public IEnumerable<LoadOptions> GetAll()
 		{
 			using (var controller = Dependency.Resolve<IItemController>())
 			{
-				var list = new List<LoadInfo>();
-				foreach (Item item in controller.GetAll(typeof(LoadInfo)))
+				var list = new List<LoadOptions>();
+				foreach (Item item in controller.GetAll(typeof(LoadOptions)))
 				{
-					LoadInfo li = (LoadInfo)controller.Create(item.ItemID);
+					LoadOptions li = (LoadOptions)controller.Create(item.ItemID);
 					li.Id = item.ItemID;
 					list.Add(li);
 				}
@@ -47,23 +47,23 @@ namespace CNCLib.Logic
 			}
 		}
 
-		public LoadInfo Get(int id)
+		public LoadOptions Get(int id)
 		{
 			using (var controller = Dependency.Resolve<IItemController>())
 			{
 				object obj = controller.Create(id);
-				if (obj != null || obj is LoadInfo)
+				if (obj != null || obj is LoadOptions)
 				{
-					LoadInfo li = (LoadInfo)obj;
+					LoadOptions li = (LoadOptions)obj;
 					li.Id = id;
-					return (LoadInfo)obj;
+					return (LoadOptions)obj;
 				}
 
 				return null;
 			}
 		}
 
-		public void Delete(LoadInfo m)
+		public void Delete(LoadOptions m)
         {
 			using (var controller = Dependency.Resolve<IItemController>())
 			{
@@ -71,7 +71,7 @@ namespace CNCLib.Logic
 			}
         }
 
-		public int Add(LoadInfo m)
+		public int Add(LoadOptions m)
 		{
 			using (var controller = Dependency.Resolve<IItemController>())
 			{
@@ -79,7 +79,7 @@ namespace CNCLib.Logic
 			}
 		}
 
-		public int Update(LoadInfo m)
+		public int Update(LoadOptions m)
 		{
 			using (var controller = Dependency.Resolve<IItemController>())
 			{
