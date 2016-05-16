@@ -22,7 +22,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using CNCLib.GCode.Load;
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.WebAPI.Models;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
@@ -79,6 +80,45 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 				info.FileContent = File.ReadAllBytes(info.FileName);
 
 				HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
+				response.EnsureSuccessStatusCode();
+
+				string[] gcode = await response.Content.ReadAsAsync<string[]>();
+
+				Assert.IsNotNull(gcode);
+			}
+		}
+
+		[TestMethod]
+		public async Task PutImageWithStoredOptions()
+		{
+			using (var client = new HttpClient())
+			{
+				client.BaseAddress = new Uri(AzureUrl);
+				client.DefaultRequestHeaders.Accept.Clear();
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+				/*
+								LoadOptions info = new LoadOptions()
+								{
+									LoadType = LoadOptions.ELoadType.Image,
+									AutoScale = true,
+									AutoScaleSizeX = 100,
+									AutoScaleSizeY = 100,
+									MoveSpeed = 450,
+									PenMoveType = LoadOptions.PenType.CommandString,
+									ImageDPIX = 66.7m,
+									ImageDPIY = 66.7m
+								};
+				*/
+
+				var input = new CreateGCode()
+				{
+					LoadOptionsId = 1,
+					FileName = @"c:\data\Wendelin_Ait110.png"
+				};
+
+				input.FileContent = File.ReadAllBytes(input.FileName);
+
+				HttpResponseMessage response = await client.PutAsJsonAsync(api, input);
 				response.EnsureSuccessStatusCode();
 
 				string[] gcode = await response.Content.ReadAsAsync<string[]>();

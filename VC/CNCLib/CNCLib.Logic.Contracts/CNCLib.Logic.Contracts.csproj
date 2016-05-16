@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="DTO\Configuration.cs" />
     <Compile Include="DTO\Item.cs" />
+    <Compile Include="DTO\LoadOptions.cs" />
     <Compile Include="DTO\Machine.cs" />
     <Compile Include="DTO\MachineCommand.cs" />
     <Compile Include="DTO\MachineInitCommand.cs" />
@@ -58,10 +59,6 @@
     <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj">
       <Project>{e598aaa4-fe51-46bd-b852-4a9eeb21a5c5}</Project>
       <Name>Framework.Logic.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj">
-      <Project>{f9c446f4-6365-4189-95c5-009ef0160882}</Project>
-      <Name>CNCLib.GCode</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

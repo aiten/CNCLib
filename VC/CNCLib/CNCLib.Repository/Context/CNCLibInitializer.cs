@@ -161,23 +161,23 @@ namespace CNCLib.Repository.Context
         {
             var cutItem = new Item
             {
-                ClassName = @"CNCLib.GCode.Load.LoadOptions,CNCLib.GCode",
+                ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts",
                 Name = @"cut laser 160mg"
             };
             var cutHoleItem = new Item
             {
-                ClassName = @"CNCLib.GCode.Load.LoadOptions,CNCLib.GCode",
+                ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts",
                 Name = @"cut laser hole 130mg black"
             };
 
             var graveItem = new Item
             {
-                ClassName = @"CNCLib.GCode.Load.LoadOptions,CNCLib.GCode",
+                ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts",
                 Name = @"grave"
             };
             var graveIMGItem = new Item
             {
-                ClassName = @"CNCLib.GCode.Load.LoadOptions,CNCLib.GCode",
+                ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts",
                 Name = @"grave image"
             };
 

@@ -22,7 +22,6 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.GCode.Load;
 using System.Net;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi

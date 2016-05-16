@@ -40,7 +40,7 @@ namespace CNCLib.WebAPI
 			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
 			Dependency.Container.RegisterType<IRest< CNCLib.Logic.Contracts.DTO.Machine>, MachineRest>();
-			Dependency.Container.RegisterType<IRest<CNCLib.GCode.Load.LoadOptions>, LoadInfoRest>();
+			Dependency.Container.RegisterType<IRest<CNCLib.Logic.Contracts.DTO.LoadOptions>, LoadInfoRest>();
 
 			var config = new MapperConfiguration(cfg =>
 			{

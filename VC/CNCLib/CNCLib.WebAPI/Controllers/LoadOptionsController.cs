@@ -17,7 +17,6 @@
 */
 
 using System.Collections.Generic;
-using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;

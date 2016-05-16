@@ -18,7 +18,7 @@
 
 using System;
 
-namespace CNCLib.GCode.Load
+namespace CNCLib.Logic.Contracts.DTO
 {
 	public class LoadOptions
 	{

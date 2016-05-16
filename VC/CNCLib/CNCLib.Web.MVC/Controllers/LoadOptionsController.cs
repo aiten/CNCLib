@@ -25,6 +25,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using CNCLib.GCode.Load;
+using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.Web.MVC.Controllers
 {

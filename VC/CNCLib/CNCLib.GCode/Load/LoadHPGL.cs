@@ -16,16 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools;
-using CNCLib.GCode.Commands;
 using System;
 using System.Globalization;
 using System.IO;
+using CNCLib.GCode.Commands;
+using CNCLib.Logic.Contracts.DTO;
+using Framework.Tools;
 using Framework.Tools.Drawing;
 
 namespace CNCLib.GCode.Load
 {
-    public class LoadHPGL : LoadBase
+	public class LoadHPGL : LoadBase
     {
         CommandStream _stream = new CommandStream();
         bool _IsPenUp = true;

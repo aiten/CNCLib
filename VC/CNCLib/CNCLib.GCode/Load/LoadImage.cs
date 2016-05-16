@@ -16,8 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.GCode.Commands;
 using System;
+using CNCLib.GCode.Commands;
+using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.GCode.Load
 {

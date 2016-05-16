@@ -21,6 +21,7 @@ using System;
 using System.Windows.Forms;
 using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
+using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.GUI.Load
 {
