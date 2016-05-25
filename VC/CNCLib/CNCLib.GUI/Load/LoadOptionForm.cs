@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
 using CNCLib.Logic.Contracts.DTO;
+using CNCLib.ServiceProxy;
 
 namespace CNCLib.GUI.Load
 {
@@ -47,7 +48,7 @@ namespace CNCLib.GUI.Load
         {
             _settingName.Items.Clear();
 
-            using (var controller = Dependency.Resolve<ILoadOptionsController>())
+            using (var controller = Dependency.Resolve<ILoadOptionsService>())
             {
                 var items = controller.GetAll();
                 foreach (var s in items)
@@ -298,7 +299,7 @@ namespace CNCLib.GUI.Load
             {
                 try
                 {
-                    using (var controller = Dependency.Resolve<ILoadOptionsController>())
+                    using (var controller = Dependency.Resolve<ILoadOptionsService>())
                     {
                         if (_settingName.SelectedItem != null)
                         {
@@ -347,7 +348,7 @@ namespace CNCLib.GUI.Load
             {
                 try
                 {
-                    using (var controller = Dependency.Resolve<ILoadOptionsController>())
+                    using (var controller = Dependency.Resolve<ILoadOptionsService>())
                     {
                         if (_settingName.SelectedItem != null)
                         {

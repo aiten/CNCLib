@@ -66,6 +66,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Logic.Contracts",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Logic.Contracts.DTO", "CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.ServiceProxy", "CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj", "{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.ServiceProxy.Logic", "CNCLib.ServiceProxy.Logic\CNCLib.ServiceProxy.Logic.csproj", "{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -160,6 +164,14 @@ Global
 		{53FDF483-4A15-4069-8B21-E553D58BA742}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53FDF483-4A15-4069-8B21-E553D58BA742}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53FDF483-4A15-4069-8B21-E553D58BA742}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

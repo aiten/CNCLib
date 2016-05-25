@@ -152,6 +152,10 @@
       <Project>{36b9838b-493f-4bac-a8d3-35298c4ffdc7}</Project>
       <Name>CNCLib.Logic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
+      <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
+      <Name>CNCLib.ServiceProxy</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

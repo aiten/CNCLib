@@ -20,6 +20,7 @@ using System.Linq;
 using CNCLib.Wpf.Models;
 using Framework.Tools.Dependency;
 using CNCLib.Logic.Contracts;
+using CNCLib.ServiceProxy;
 
 namespace CNCLib.Wpf.Helpers
 {
@@ -27,7 +28,7 @@ namespace CNCLib.Wpf.Helpers
 	{
 		internal static Joystick Load(out int id)
 		{
-			using (var controller = Dependency.Resolve<IItemController>())
+			using (var controller = Dependency.Resolve<IItemService>())
 			{
 				var joystick = controller.GetAll(typeof(Models.Joystick));
 				if (joystick != null && joystick.Count() > 0)
@@ -44,7 +45,7 @@ namespace CNCLib.Wpf.Helpers
 
 		internal static void Save(Joystick joystick, ref int id)
 		{
-			using (var controller = Dependency.Resolve<IItemController>())
+			using (var controller = Dependency.Resolve<IItemService>())
 			{
 				if (id >= 0)
 				{

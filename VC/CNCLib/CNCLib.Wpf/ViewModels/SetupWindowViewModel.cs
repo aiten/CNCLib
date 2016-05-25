@@ -27,6 +27,7 @@ using Framework.Tools;
 using CNCLib.GCode;
 using CNCLib.Wpf.Models;
 using CNCLib.Logic.Contracts;
+using CNCLib.ServiceProxy;
 using Framework.Tools.Dependency;
 using CNCLib.Wpf.Helpers;
 
@@ -45,7 +46,7 @@ namespace CNCLib.Wpf.ViewModels
         {
             var machines = new ObservableCollection<Models.Machine>();
 
-			using (var controller = Dependency.Resolve<IMachineController>())
+			using (var controller = Dependency.Resolve<IMachineService>())
 			{
 				foreach(var m in controller.GetAll())
 				{
@@ -198,7 +199,7 @@ namespace CNCLib.Wpf.ViewModels
 			Settings.Instance.SizeZ = Machine.SizeZ;
             Com.ArduinoBuffersize = Machine.BufferSize;
 
-			using (var controller = Dependency.Resolve<IMachineController>())
+			using (var controller = Dependency.Resolve<IMachineService>())
 			{
 				Global.Instance.Machine = controller.Get(Machine.MachineID);
 			}
@@ -261,7 +262,7 @@ namespace CNCLib.Wpf.ViewModels
 	   {
             if (Machine != null)
             {
-                using (var controller = Dependency.Resolve<IMachineController>())
+                using (var controller = Dependency.Resolve<IMachineService>())
                 {
                     controller.SetDetaultMachine(Machine.MachineID);
                 }

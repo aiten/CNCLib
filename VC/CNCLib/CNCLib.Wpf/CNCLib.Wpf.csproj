@@ -224,6 +224,10 @@
       <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>
       <Name>CNCLib.Logic.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
+      <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
+      <Name>CNCLib.ServiceProxy</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

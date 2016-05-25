@@ -36,8 +36,11 @@ namespace CNCLib.Wpf.Start
 		private void AppStartup(object sender, StartupEventArgs e)
 		{
             Dependency.Initialize(new LiveDependencyProvider());
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(CNCLib.Repository.MachineRepository).Assembly, typeof(CNCLib.Logic.MachineController).Assembly);
-            Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+            Dependency.Container.RegisterTypesIncludingInternals(
+				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
+				typeof(CNCLib.Repository.MachineRepository).Assembly, 
+				typeof(CNCLib.Logic.MachineController).Assembly);
+			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
 			var config = new MapperConfiguration(cfg =>
 				{

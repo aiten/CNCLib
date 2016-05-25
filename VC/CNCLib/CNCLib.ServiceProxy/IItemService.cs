@@ -16,16 +16,24 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
+using CNCLib.Logic.Contracts.DTO;
 
-namespace Framework.Logic.Contracts
+namespace CNCLib.ServiceProxy
 {
-	public interface IRestController<T>
+	public interface IItemService : IDisposable
 	{
-		T Get(int id);
-		IEnumerable<T> GetAll();
-		int Add(T value);
-		int Update(T value);
-		void Delete(T value);
-	}
+		Item Get(int id);
+
+		IEnumerable<Item> GetAll();
+
+		IEnumerable<Item> GetAll(Type t);
+
+		object Create(int id);
+
+        int Add(string name, object value);
+        void Save(int id, string name, object value);
+        void Delete(int id);
+    }
 }
