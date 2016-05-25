@@ -144,10 +144,6 @@
       <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
       <Name>CNCLib.Logic.Contracts.DTO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">
-      <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>
-      <Name>CNCLib.Logic.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic\CNCLib.Logic.csproj">
       <Project>{36b9838b-493f-4bac-a8d3-35298c4ffdc7}</Project>
       <Name>CNCLib.Logic</Name>

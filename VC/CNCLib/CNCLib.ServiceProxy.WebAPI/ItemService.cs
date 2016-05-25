@@ -16,59 +16,50 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Logic.Contracts;
-using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools.Dependency;
+
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Description;
-using Framework.Web;
-using CNCLib.ServiceProxy;
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contracts;
+using Framework.Tools.Dependency;
 
-namespace CNCLib.WebAPI.Controllers
+namespace CNCLib.ServiceProxy.WebAPI
 {
-	public class MachineController : RestController<Machine>
+	public class ItemService : IItemService
 	{
-	}
+		private IItemController _controller = Dependency.Resolve<IItemController>();
 
-	public class MachineRest : IRest<Machine>
-	{
-		private IMachineService _service = Dependency.Resolve<IMachineService>();
-
-		public IEnumerable<Machine> Get()
+		public int Add(string name, object value)
 		{
-			return _service.GetAll();
+			return _controller.Add(name, value);
 		}
 
-		public Machine Get(int id)
+		public void Delete(int id)
 		{
-			if (id == -1)
-				return _service.DefaultMachine();
-
-			return _service.Get(id);
+			_controller.Delete(id);
 		}
 
-		public int Add(Machine value)
+		public Item Get(int id)
 		{
-			return _service.Add(value);
+			return _controller.Get(id);
 		}
 
-		public void Update(int id, Machine value)
+		public IEnumerable<Item> GetAll()
 		{
-			_service.Update(value);
+			return _controller.GetAll();
+		}
+		public IEnumerable<Item> GetAll(Type t)
+		{
+			return _controller.GetAll(t);
 		}
 
-		public void Delete(int id, Machine value)
+		public void Save(int id, string name, object value)
 		{
-			_service.Delete(value);
+			_controller.Save(id,name,value);
 		}
-
-		public bool CompareId(int id, Machine value)
+		public object Create(int id)
 		{
-			return id == value.MachineID;
+			return _controller.Create(id);
 		}
 
 		#region IDisposable Support
@@ -80,8 +71,8 @@ namespace CNCLib.WebAPI.Controllers
 			{
 				if (disposing)
 				{
-					_service.Dispose();
-					_service = null;
+					_controller.Dispose();
+					_controller = null;
 				}
 
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
@@ -105,6 +96,7 @@ namespace CNCLib.WebAPI.Controllers
 			// TODO: uncomment the following line if the finalizer is overridden above.
 			// GC.SuppressFinalize(this);
 		}
+
 		#endregion
 
 	}

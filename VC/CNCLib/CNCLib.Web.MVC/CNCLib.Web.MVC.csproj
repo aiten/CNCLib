@@ -259,6 +259,18 @@
       <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>
       <Name>CNCLib.Logic.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CNCLib.ServiceProxy.Logic\CNCLib.ServiceProxy.Logic.csproj">
+      <Project>{f6696f23-9dcc-4d9a-9418-e7d1fed7eabd}</Project>
+      <Name>CNCLib.ServiceProxy.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.ServiceProxy.WebAPI\CNCLib.ServiceProxy.WebAPI.csproj">
+      <Project>{6487301a-6889-412c-92ec-899aad61a9a5}</Project>
+      <Name>CNCLib.ServiceProxy.WebAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
+      <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
+      <Name>CNCLib.ServiceProxy</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

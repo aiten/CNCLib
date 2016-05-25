@@ -22,6 +22,7 @@ using System.Web.Http;
 using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
+using CNCLib.ServiceProxy;
 using CNCLib.WebAPI.Models;
 using Framework.Tools.Dependency;
 
@@ -58,9 +59,9 @@ namespace CNCLib.WebAPI.Controllers
 //		[ActionName("CreateGCode")]
 		public IEnumerable<string> Put([FromBody] CreateGCode input)
 		{
-			using (var controller = Dependency.Resolve<ILoadOptionsController>())
+			using (var service = Dependency.Resolve<ILoadOptionsService>())
 			{
-				LoadOptions opt = controller.Get(input.LoadOptionsId);
+				LoadOptions opt = service.Get(input.LoadOptionsId);
 				string filename = Path.GetFileName(input.FileName);
 				string tmpfile = Path.GetTempPath() + filename;
 

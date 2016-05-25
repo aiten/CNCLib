@@ -19,6 +19,7 @@
 using System.Collections.Generic;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
+using CNCLib.ServiceProxy;
 using Framework.Tools.Dependency;
 using Framework.Web;
 
@@ -30,31 +31,31 @@ namespace CNCLib.WebAPI.Controllers
 
 	public class LoadInfoRest : IRest<LoadOptions>
 	{
-		private ILoadOptionsController _controller = Dependency.Resolve<ILoadOptionsController>();
+		private ILoadOptionsService _service = Dependency.Resolve<ILoadOptionsService>();
 
 		public IEnumerable<LoadOptions> Get()
 		{
-			return _controller.GetAll();
+			return _service.GetAll();
 		}
 
 		public LoadOptions Get(int id)
 		{
-			return _controller.Get(id);
+			return _service.Get(id);
 		}
 
 		public int Add(LoadOptions value)
 		{
-			return _controller.Add(value);
+			return _service.Add(value);
 		}
 
 		public void Update(int id, LoadOptions value)
 		{
-			_controller.Update(value);
+			_service.Update(value);
 		}
 
 		public void Delete(int id, LoadOptions value)
 		{
-			_controller.Delete(value);
+			_service.Delete(value);
 		}
 
 		public bool CompareId(int id, LoadOptions value)
@@ -71,8 +72,8 @@ namespace CNCLib.WebAPI.Controllers
 			{
 				if (disposing)
 				{
-					_controller.Dispose();
-					_controller = null;
+					_service.Dispose();
+					_service = null;
 				}
 
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

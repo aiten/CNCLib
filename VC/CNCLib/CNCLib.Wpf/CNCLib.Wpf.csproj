@@ -220,10 +220,6 @@
       <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
       <Name>CNCLib.Logic.Contracts.DTO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">
-      <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>
-      <Name>CNCLib.Logic.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
       <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
       <Name>CNCLib.ServiceProxy</Name>
