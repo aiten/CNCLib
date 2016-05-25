@@ -160,6 +160,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Properties\CNCLibAssemblyInfo.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoadOptionsController.cs" />
     <Compile Include="Controllers\MachineController.cs" />

@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CNCLibAssemblyInfo.cs">
+      <Link>Properties\CNCLibAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="IItemService.cs" />
     <Compile Include="ILoadOptionsService.cs" />
     <Compile Include="IMachineService.cs" />

@@ -57,6 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CNCLibAssemblyInfo.cs">
+      <Link>Properties\CNCLibAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ItemService.cs" />
     <Compile Include="LoadOptionsService.cs" />
     <Compile Include="MachineService.cs" />
