@@ -251,6 +251,10 @@
       <Project>{f9c446f4-6365-4189-95c5-009ef0160882}</Project>
       <Name>CNCLib.GCode</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
+      <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
+      <Name>CNCLib.Logic.Contracts.DTO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">
       <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>
       <Name>CNCLib.Logic.Contracts</Name>

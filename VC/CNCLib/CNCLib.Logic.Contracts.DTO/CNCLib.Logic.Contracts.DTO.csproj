@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}</ProjectGuid>
+    <ProjectGuid>{53FDF483-4A15-4069-8B21-E553D58BA742}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CNCLib.Logic.Contracts</RootNamespace>
-    <AssemblyName>CNCLib.Logic.Contracts</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>CNCLib.Logic.Contracts.DTO</RootNamespace>
+    <AssemblyName>CNCLib.Logic.Contracts.DTO</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,23 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CNCLibAssemblyInfo.cs">
-      <Link>Properties\CNCLibAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="IItemController.cs" />
-    <Compile Include="ILoadOptionsController.cs" />
-    <Compile Include="IMachineController.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="LoadOptions.cs" />
+    <Compile Include="Machine.cs" />
+    <Compile Include="MachineCommand.cs" />
+    <Compile Include="MachineInitCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj">
-      <Project>{e598aaa4-fe51-46bd-b852-4a9eeb21a5c5}</Project>
-      <Name>Framework.Logic.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
-      <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
-      <Name>CNCLib.Logic.Contracts.DTO</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

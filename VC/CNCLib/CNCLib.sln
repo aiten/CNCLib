@@ -64,6 +64,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Web", "..\Framewo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Logic.Contracts", "..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj", "{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Logic.Contracts.DTO", "CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -154,6 +156,10 @@ Global
 		{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53FDF483-4A15-4069-8B21-E553D58BA742}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53FDF483-4A15-4069-8B21-E553D58BA742}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53FDF483-4A15-4069-8B21-E553D58BA742}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53FDF483-4A15-4069-8B21-E553D58BA742}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
