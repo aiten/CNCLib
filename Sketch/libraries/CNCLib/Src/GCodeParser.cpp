@@ -354,6 +354,11 @@ bool CGCodeParser::Command(unsigned char ch)
 			}
 			return true;
 		}
+
+		case '!':
+		case '-':
+		case '?':
+		case '$': CommandEscape(); return true;
 	}
 	return false;
 }
@@ -408,6 +413,9 @@ bool CGCodeParser::MCommand(mcode_t mcode)
 		case 10: M10Command(); return true;
 		case 11: M11Command(); return true;
 		case 110: M110Command(); return true;
+		case 111: M111Command(); return true;
+		case 114: M114Command(); return true;
+		case 220: M220Command(); return true;
 	}
 	return false;
 }
@@ -1095,5 +1103,127 @@ void CGCodeParser::M110Command()
 
 	super::_modalstate.Linenumber = linenumber;
 }
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::M111Command()
+{
+	// set debug level
+
+	if (_reader->SkipSpacesToUpper() == 'S')
+	{
+		_reader->GetNextChar();
+		_modalstate._debuglevel = GetUInt8();
+	}
+
+	if (!ExpectEndOfCommand()) { return; }
+}
 
 ////////////////////////////////////////////////////////////
+
+void CGCodeParser::M114Command()
+{
+	unsigned char postype = 0;
+
+	if (_reader->SkipSpacesToUpper() == 'S')
+	{
+		_reader->GetNextChar();
+		postype = GetUInt8();
+	}
+
+	_OkMessage = postype == 1 ? PrintRelPosition : PrintAbsPosition;
+
+	if (!ExpectEndOfCommand()) { return; }
+}
+
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::M220Command()
+{
+	// set speed override
+
+	if (_reader->SkipSpacesToUpper() == 'S')
+	{
+		_reader->GetNextChar();
+		unsigned char speedInP = GetUInt8();
+		if (IsError()) return;
+		CStepper::GetInstance()->SetSpeedOverride(CStepper::PToSpeedOverride(speedInP));
+	}
+	else
+	{
+		Error(MESSAGE_GCODE_SExpected);
+		return;
+	}
+
+	if (!ExpectEndOfCommand()) { return; }
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::CommandEscape()
+{
+	if (_reader->GetChar() == '$')
+		_reader->GetNextChar();
+
+	CNCLibCommandExtensions();
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::CNCLibCommandExtensions()
+{
+	char ch = _reader->SkipSpaces();
+
+	switch (ch)
+	{
+		case '?':
+		{
+			_reader->GetNextChar();
+			if (!ExpectEndOfCommand()) { return; }
+
+			CStepper::GetInstance()->Dump(CStepper::DumpAll);
+			break;
+		}
+		case '!':
+		{
+			_reader->GetNextChar();
+			if (_reader->IsEOC(SkipSpacesOrComment()))
+			{
+				CControl::GetInstance()->Kill();
+			}
+			else
+			{
+			}
+
+			break;
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::PrintAbsPosition()
+{
+	char tmp[16];
+	for (unsigned char i = 0; i < NUM_AXIS; i++)
+	{
+		if (i != 0)
+			StepperSerial.print(MESSAGE_PARSER_COLON);
+		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i), tmp, 3));
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::PrintRelPosition()
+{
+	char tmp[16];
+	for (unsigned char i = 0; i < NUM_AXIS; i++)
+	{
+		if (i != 0)
+			StepperSerial.print(MESSAGE_PARSER_COLON);
+
+		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i) - CGCodeParser::GetAllPreset(i), tmp, 3));
+	}
+}
+

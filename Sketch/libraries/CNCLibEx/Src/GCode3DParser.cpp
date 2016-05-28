@@ -93,10 +93,7 @@ bool CGCode3DParser::MCommand(mcode_t mcode)
 		case 28: M28Command(); return true;
 		case 29: M29Command(); return true;
 		case 30: M30Command(); return true;
-		case 111: M111Command(); return true;
-		case 114: M114Command(); return true;
 		case 115: _OkMessage = PrintVersion; return true;
-		case 220: M220Command(); return true;
 		case 300: M300Command(); return true;
 	}
 
@@ -109,14 +106,6 @@ bool CGCode3DParser::Command(unsigned char ch)
 {
 	if (super::Command(ch))
 		return true;
-
-	switch (ch)
-	{
-		case '!':
-		case '-':
-		case '?':
-		case '$': CommandEscape(); return true;
-	}
 
 	return false;
 }
@@ -301,7 +290,7 @@ void CGCode3DParser::M27Command()
 	{
 		StepperSerial.print(MESSAGE_PARSER3D_SD_PRINTING_BYTE);
 		StepperSerial.print(_state._printFilePos);
-		StepperSerial.print(MESSAGE_PARSER3D_COLON);
+		StepperSerial.print(MESSAGE_PARSER_COLON);
 		StepperSerial.print(_state._printFileSize);
 		StepperSerial.print(MESSAGE_PARSER3D_SD_PRINTING_LINE);
 		StepperSerial.println(_state._printFileLine);
@@ -365,60 +354,6 @@ void CGCode3DParser::M30Command()
 	}
 }
 
-////////////////////////////////////////////////////////////
-
-void CGCode3DParser::M111Command()
-{
-	// set debug level
-
-	if (_reader->SkipSpacesToUpper() == 'S')
-	{
-		_reader->GetNextChar();
-		_state._debuglevel = GetUInt8();
-	}
-
-	if (!ExpectEndOfCommand())		{ return; }
-}
-
-////////////////////////////////////////////////////////////
-
-void CGCode3DParser::M114Command()
-{
-	unsigned char postype = 0;
-
-	if (_reader->SkipSpacesToUpper() == 'S')
-	{
-		_reader->GetNextChar();
-		postype = GetUInt8();
-	}
-
-	_OkMessage = postype == 1 ? PrintRelPosition : PrintAbsPosition;
-
-	if (!ExpectEndOfCommand())		{ return; }
-}
-
-
-////////////////////////////////////////////////////////////
-
-void CGCode3DParser::M220Command()
-{
-	// set speed override
-
-	if (_reader->SkipSpacesToUpper() == 'S')
-	{
-		_reader->GetNextChar();
-		unsigned char speedInP = GetUInt8();
-		if (IsError()) return;
-		CStepper::GetInstance()->SetSpeedOverride(CStepper::PToSpeedOverride(speedInP));
-	}
-	else
-	{
-		Error(MESSAGE_GCODE_SExpected); 
-		return; 
-	}
-
-	if (!ExpectEndOfCommand())		{ return; }
-}
 
 ////////////////////////////////////////////////////////////
 
@@ -460,78 +395,6 @@ void CGCode3DParser::M300Command()
 	{
 		CLcd::GetInstance()->Beep(mytone,fromprogmem);
 	}
-}
-
-////////////////////////////////////////////////////////////
-
-void CGCode3DParser::CommandEscape()
-{
-	if (_reader->GetChar() == '$')
-		_reader->GetNextChar();
-	
-	CNCLibExCommandExtensions();
-}
-
-////////////////////////////////////////////////////////////
-
-void CGCode3DParser::CNCLibExCommandExtensions()
-{
-	char ch = _reader->SkipSpaces();
-
-	switch (ch)
-	{
-		case '?':
-		{ 
-			_reader->GetNextChar();
-			if (!ExpectEndOfCommand())		{ return; }
-
-			CStepper::GetInstance()->Dump(CStepper::DumpAll); 
-			break;
-		}
-		case '!':
-		{ 
-			_reader->GetNextChar();
-			if (_reader->IsEOC(SkipSpacesOrComment()))
-			{
-				CControl::GetInstance()->Kill();
-			}
-			else
-			{
-			}
-
-			break;
-		}
-	}
-}
-
-////////////////////////////////////////////////////////////
-
-void CGCode3DParser::PrintAbsPosition()
-{
-	char tmp[16];
-	for (unsigned char i = 0; i < NUM_AXIS; i++)
-	{
-		if (i != 0)
-			StepperSerial.print(MESSAGE_PARSER3D_COLON);
-		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i), tmp, 3));
-	}
-}
-
-void CGCode3DParser::PrintRelPosition()
-{
-	char tmp[16];
-	for (unsigned char i = 0; i < NUM_AXIS; i++)
-	{
-		if (i != 0)
-			StepperSerial.print(MESSAGE_PARSER3D_COLON);
-		
-		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i) - CGCodeParser::GetAllPreset(i), tmp, 3));
-	}
-}
-
-void CGCode3DParser::PrintVersion()
-{
-	StepperSerial.print(MESSAGE_PARSER3D_VERSION);
 }
 
 ////////////////////////////////////////////////////////////
@@ -625,4 +488,11 @@ bool CGCode3DParser::GetFileName(char*buffer)
 	}
 	*(buffer++) = 0;
 	return true;
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCode3DParser::PrintVersion()
+{
+	StepperSerial.print(MESSAGE_PARSER3D_VERSION);
 }

@@ -118,6 +118,9 @@ protected:
 		unsigned char	ZeroPresetIdx;				// 0:g53-, 1:G54-
 		bool			IsG98;						// G98 or G99	( Return To R or return to init Z) 
 
+		unsigned char	_debuglevel;
+		unsigned char	dummy;
+
 		toolnr_t		ToolSelected;
 
 		mm1000_t		G8xQ;
@@ -138,6 +141,7 @@ protected:
 			CutterRadiusCompensation = CutterRadiusOff;
 			ToolSelected = 1;
 			IsG98 = true;
+//POD		_debuglevel = 0;
 //POD		for (register unsigned char i = 0; i < NUM_AXIS; i++) G54Pospreset[i] = 0;
 //POD		for (register unsigned char i = 0; i < NUM_PARAMETER; i++) Parameter[i] = 0;
 //POD		ToolHeigtCompensation = 0;
@@ -219,8 +223,23 @@ private:
 	void M10Command();		// vacuum on
 	void M11Command();		// vacuum off
 	void M110Command();
+	void M111Command();		// Set debug level
+	void M114Command();		// Report Position
+
+	void M220Command();		// Set Speed override
 
 	/////////////////
+
+	void CommandEscape();
+
+	void CNCLibCommandExtensions();
+	/////////////////
+	// OK Message
+
+protected:
+
+	static void PrintAbsPosition();
+	static void PrintRelPosition();
 
 	void SetPositionAfterG68G69()				{ CMotionControlBase::GetInstance()->SetPositionFromMachine(); }
 };

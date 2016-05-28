@@ -136,15 +136,11 @@ public:
 	void SetDefaultMaxSpeed(steprate_t vMax, steprate_t v0Acc, steprate_t v0Dec)				{ SetDefaultMaxSpeed(vMax); for (axis_t i = 0; i < NUM_AXIS; i++) { SetAcc(i, v0Acc); SetDec(i, v0Dec); } }
 	void SetDefaultMaxSpeed(steprate_t vMax, axis_t axis, steprate_t v0Acc, steprate_t v0Dec)	{ SetDefaultMaxSpeed(vMax); SetAccDec(axis, v0Acc, v0Dec); }
 
-#ifndef REDUCED_SIZE
-
 	void SetSpeedOverride(EnumAsByte(ESpeedOverride) speed)		{ _pod._speedoverride = speed; }
 	EnumAsByte(ESpeedOverride) GetSpeedOverride()				{ return _pod._speedoverride; }
 
 	static unsigned char SpeedOverrideToP(EnumAsByte(ESpeedOverride) speed)	  {	return RoundMulDivU8((unsigned char) speed, 100, SpeedOverride100P);	}
-	static  EnumAsByte(ESpeedOverride) PToSpeedOverride(unsigned char speedP) { return (EnumAsByte(ESpeedOverride)) RoundMulDivU8(speedP, SpeedOverride100P, 100);	}
-
-#endif
+	static  EnumAsByte(ESpeedOverride) PToSpeedOverride(unsigned char speedP) { return (EnumAsByte(ESpeedOverride)) RoundMulDivU8(speedP, SpeedOverride100P, 100); }
 
 	void SetUsual(steprate_t vMax);
 

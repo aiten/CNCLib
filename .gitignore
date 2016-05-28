@@ -25,3 +25,4 @@ PublishProfiles/
 /VC/CNCLib/CNCLib.Logic/bin
 /VC/CNCLib/PublishScripts
 /VC/Arduino.VC/ArduinoVC.VC.db
+*.opendb

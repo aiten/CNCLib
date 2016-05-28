@@ -80,7 +80,6 @@ private:
 		File				_file;
 
 		bool				_isM28;						// SD write mode
-		unsigned char		_debuglevel;
 		char				_printfilename[MAXFILEEXTNAME + 1];
 
 		void Init()
@@ -89,7 +88,6 @@ private:
 			_printFilePos = 0;
 			_printFileLine = 0;
 			_isM28 = false;
-			_debuglevel = 0;
 			_printfilename[0] = 0;
 		}
 	};
@@ -110,15 +108,7 @@ private:
 	void M29Command();		// Stop write to SD file
 	void M30Command();		// Delete file on SD
 
-	void M111Command();		// Set debug level
-	void M114Command();		// Report Position
-
-	void M220Command();		// Set Speed override
 	void M300Command();		// Play Song
-
-	void CommandEscape();
-
-	void CNCLibExCommandExtensions();
 
 	bool GetFileName(char*buffer);
 	bool CheckSD();
@@ -126,14 +116,10 @@ private:
 
 	static void PrintSDFileListRecurse(class File& dir, unsigned char depth, unsigned short&count, char* filenamebuffer, char seperatorchar);
 
-	/////////////////
-	// OK Message
-
 protected:
 
-	static void PrintAbsPosition();
-	static void PrintRelPosition();
 	static void PrintVersion();
+
 };
 
 ////////////////////////////////////////////////////////
