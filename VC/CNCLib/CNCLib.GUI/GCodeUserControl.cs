@@ -369,13 +369,13 @@ namespace CNCLib.GUI
             return true;
         }
 
-        public void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptFrom, int xradius, int yradius)
+        public void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptCenter, int xradius, int yradius)
 		{
             if (drawtype == DrawType.NoDraw) return;
 
 			PaintEventArgs e = (PaintEventArgs)param;
-			Point from = ToClient(ptFrom);
-			e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X, from.Y, xradius, yradius);
+			Point from = ToClient(ptCenter);
+			e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X- xradius/2, from.Y-yradius/2, xradius, yradius);
 		}
 
         double ConvertRadToDeg(double rad)

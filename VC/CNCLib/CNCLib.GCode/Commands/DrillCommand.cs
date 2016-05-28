@@ -17,6 +17,8 @@
 */
 
 
+using Framework.Tools.Drawing;
+
 namespace CNCLib.GCode.Commands
 {
 	class DrillCommand : Command
@@ -40,8 +42,10 @@ namespace CNCLib.GCode.Commands
 
 		public override void Draw(IOutputCommand output, DrawState state, object param)
 		{
+			int radius = 10;
 			base.Draw(output, state, param);
-			output.DrawEllipse(this, param, Convert(MoveType.Normal, state), CalculatedEndPosition, 10, 10);
+			Point3D ptFrom = CalculatedEndPosition;
+			output.DrawEllipse(this, param, Convert(MoveType.Normal, state), ptFrom, radius, radius);
         }
 
 		#endregion
