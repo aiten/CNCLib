@@ -227,6 +227,8 @@ private:
 	void M114Command();		// Report Position
 
 	void M220Command();		// Set Speed override
+	void M300Command();		// Play Song
+
 
 	/////////////////
 

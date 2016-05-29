@@ -305,7 +305,6 @@ void CGCodeParserBase::Parse()
 				if (!MCommand(GetMCode()))
 				{
 					Error(MESSAGE_GCODE_UnspportedMCodeIgnored);	return;
-					// Info(MESSAGE_GCODE_UnspportedMCodeIgnored);
 				}
 				break;
 			}
@@ -853,8 +852,6 @@ void CGCodeParserBase::SpindleSpeedCommand()
 void CGCodeParserBase::CallIOControl(unsigned char io, unsigned short value)
 {
 	CStepper::GetInstance()->IoControl(io, value);
-//	Sync();
-//	CControl::GetInstance()->IOControl(io, value);
 }
 
 ////////////////////////////////////////////////////////////

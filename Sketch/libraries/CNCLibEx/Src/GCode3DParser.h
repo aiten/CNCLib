@@ -108,8 +108,6 @@ private:
 	void M29Command();		// Stop write to SD file
 	void M30Command();		// Delete file on SD
 
-	void M300Command();		// Play Song
-
 	bool GetFileName(char*buffer);
 	bool CheckSD();
 	bool DeleteSDFile(char*buffer, bool errorifnotexists);
