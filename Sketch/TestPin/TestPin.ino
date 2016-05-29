@@ -26,7 +26,7 @@ Serial.begin(115200);
 pinMode(12,OUTPUT);
 pinMode(13,OUTPUT);
 
-Serial.begin(115200);
+Serial.begin(250000);
 }
 
 int pin9=false;

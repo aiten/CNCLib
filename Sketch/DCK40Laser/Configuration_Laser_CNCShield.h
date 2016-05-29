@@ -39,6 +39,12 @@
 #undef CNCSHIELD_Z_MAX_PIN
 #define CNCSHIELD_Z_MIN_PIN 10
 
+#undef CNCSHIELD_REF_ON
+#undef CNCSHIELD_REF_OFF
+
+#define CNCSHIELD_REF_ON      1
+#define CNCSHIELD_REF_OFF     0
+
 #include <Steppers/StepperCNCShield.h>
 
 ////////////////////////////////////////////////////////
@@ -100,15 +106,14 @@
 
 ////////////////////////////////////////////////////////
 
-// GT2 with 15Tooth => 30mm
-
 #define TOOTH 20
 #define TOOTHSIZE 2
+#define STEPROTATION 6400.0
 
-#define X_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
-#define Y_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
-#define Z_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
-#define A_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
+#define X_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
+#define Y_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
+#define Z_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
+#define A_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
 
 inline mm1000_t CNCShieldToMm1000(axis_t axis, sdist_t val)
 {
@@ -146,8 +151,8 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 #define X_USEREFERENCE_MIN	
 //#define X_USEREFERENCE_MAX
 
-#define Y_USEREFERENCE_MIN	
-//#define Y_USEREFERENCE_MAX
+//#define Y_USEREFERENCE_MIN	
+#define Y_USEREFERENCE_MAX
 
 //#define Z_USEREFERENCE_MIN	
 #define Z_USEREFERENCE_MAX
@@ -164,9 +169,9 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED 27000        // steps/sec
-#define CNC_ACC  350
-#define CNC_DEC  400
+#define CNC_MAXSPEED 55000        // steps/sec
+#define CNC_ACC  700
+#define CNC_DEC  800
 
 ////////////////////////////////////////////////////////
 
@@ -181,7 +186,7 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 ////////////////////////////////////////////////////////
 
 #undef NOGOTOREFERENCEATBOOT
-#define NOGOTOREFERENCEATBOOT
+//#define NOGOTOREFERENCEATBOOT
 
 ////////////////////////////////////////////////////////
 
