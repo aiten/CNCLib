@@ -27,7 +27,7 @@
 #include <ReadPinIOControl.h>
 #include <PushButtonLow.h>
 
-#include "Configuration_Laser.h"
+#include "Configuration_DCK40Laser.h"
 
 ////////////////////////////////////////////////////////
 
@@ -63,11 +63,8 @@ protected:
 
 private:
 
-#ifdef LASER_ANALOG
-    CAnalog8IOControl<LASER_ENABLE_PIN> _laser;
-#else
-    COnOffIOControl<LASER_ENABLE_PIN, LASER_DIGITAL_ON, LASER_DIGITAL_OFF> _laser;
-#endif
+    CAnalog8IOControl<LASER_ENABLE_PIN> _laserPWM;
+    COnOffIOControl<LASER_ENABLE_PIN, LASER_DIGITAL_ON, LASER_DIGITAL_OFF> _laserOnOff;
 
 #ifdef SPINDEL_ENABLE_PIN
 	#ifdef SPINDEL_ANALOGSPEED

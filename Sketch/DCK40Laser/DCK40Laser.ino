@@ -31,7 +31,6 @@ CMyStepper Stepper;
 void setup()
 {
 	StepperSerial.begin(250000);
-//  StepperSerial.begin(115200);
 }
 
 ////////////////////////////////////////////////////////////

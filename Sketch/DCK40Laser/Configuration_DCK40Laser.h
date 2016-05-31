@@ -21,28 +21,13 @@
 
 ////////////////////////////////////////////////////////
 
-//#define STEPPERTYPE 1		// CStepperL298N
-//#define STEPPERTYPE 2		// CStepperSMC800
-//#define STEPPERTYPE 3		// CStepperTB6560
 #define STEPPERTYPE 4		// CStepperCNCShield
 
 ////////////////////////////////////////////////////////
 
-#if STEPPERTYPE==1
+#if STEPPERTYPE==4
 
-#include "Configuration_Laser_L298N.h"
-
-#elif STEPPERTYPE==2
-
-#include "Configuration_Laser_SMC800.h"
-
-#elif STEPPERTYPE==3
-
-#include "Configuration_Laser_TB6560.h"
-
-#elif STEPPERTYPE==4
-
-#include "Configuration_Laser_CNCShield.h"
+#include "Configuration_DCK40Laser_CNCShield.h"
 
 #endif
 
@@ -50,5 +35,5 @@
 
 #include <MessageCNCLib.h>
 
-#define MESSAGE_MYCONTROL_Laser_Starting					F("Laser:" __DATE__ )
+#define MESSAGE_MYCONTROL_Laser_Starting					F("DC-K40 Laser:" __DATE__ )
 

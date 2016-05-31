@@ -26,3 +26,4 @@ PublishProfiles/
 /VC/CNCLib/PublishScripts
 /VC/Arduino.VC/ArduinoVC.VC.db
 *.opendb
+/VC/Arduino.VC/Lib/StepperSystem.pdb

@@ -141,8 +141,8 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 
 ////////////////////////////////////////////////////////
 
-#define X_MAXSIZE 300000				// in mm1000_t
-#define Y_MAXSIZE 200000 
+#define X_MAXSIZE 320000				// in mm1000_t
+#define Y_MAXSIZE 220000 
 #define Z_MAXSIZE 100000 
 #define A_MAXSIZE 50000 
 

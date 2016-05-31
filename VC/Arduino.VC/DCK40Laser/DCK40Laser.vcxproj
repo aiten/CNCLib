@@ -85,8 +85,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_Laser.h" />
-    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_Laser_CNCShield.h" />
+    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_DCK40Laser.h" />
+    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_DCK40Laser_CNCShield.h" />
     <ClInclude Include="..\..\..\Sketch\DCK40Laser\MyControl.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

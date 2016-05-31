@@ -112,7 +112,7 @@ void CMyControl::Init()
 	#endif
 #endif
 
-  _laser.Init();
+  _laserPWM.Init();
 
 #ifdef SPINDEL_ENABLE_PIN
 	_spindel.Init();
@@ -153,15 +153,12 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
     case Laser:
       if (level != 0)
       {
-#ifdef LASER_ANALOG
-        _laser.On((unsigned char) level);
-#else        
-        _laser.On();
-#endif
+        _laserPWM.On((unsigned char) level);
+        _laserOnOff.On();
       }
       else
       {
-        _laser.Off();
+		  _laserOnOff.Off();
       }
       return;
 
@@ -203,7 +200,7 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 {
 	switch (tool)
 	{
-    case Laser:   { return _laser.IsOn(); }
+		case Laser:			{ return _laserPWM.IsOn(); }
 
 #ifdef PROBE_PIN
 		case Probe:			{ return _probe.IsOn(); }
@@ -233,7 +230,7 @@ void CMyControl::Kill()
 {
 	super::Kill();
 
-  _laser.Off();
+  _laserOnOff.Off();
   
 #ifdef SPINDEL_ENABLE_PIN
 	_spindel.Off();

@@ -19,10 +19,10 @@
     <ClInclude Include="..\..\..\Sketch\DCK40Laser\MyControl.h">
       <Filter>DCK40Laser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_Laser.h">
+    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_DCK40Laser.h">
       <Filter>DCK40Laser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_Laser_CNCShield.h">
+    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_DCK40Laser_CNCShield.h">
       <Filter>DCK40Laser</Filter>
     </ClInclude>
   </ItemGroup>
