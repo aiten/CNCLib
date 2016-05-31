@@ -114,6 +114,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>HAStepper</RootNamespace>
     <ProjectName>StepperSystem</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -141,11 +142,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)..\..\Sketch\libraries\CNCLibEx\Src;$(SolutionDir)..\..\Sketch\libraries\CNCLib\Src;$(SolutionDir)..\..\Sketch\libraries\StepperLib\Src;$(SolutionDir)Include;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)\Lib\</OutDir>
+    <IntDir>$(ProjectDir)$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)..\..\Sketch\libraries\CNCLibEx\Src;$(SolutionDir)..\..\Sketch\libraries\CNCLib\Src;$(SolutionDir)..\..\Sketch\libraries\StepperLib\Src;$(SolutionDir)Include;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)\Lib\</OutDir>
+    <IntDir>$(ProjectDir)$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -162,11 +165,7 @@
     </Link>
     <Lib />
     <Lib />
-    <PostBuildEvent>
-      <Command>@echo off
-echo Copying $(OutDir)$(TargetName)$(TargetExt) as $(SolutionDir)Lib\$(TargetName)$(TargetExt)
-copy /Y $(OutDir)$(TargetName)$(TargetExt) $(SolutionDir)Lib\$(TargetName)$(TargetExt)</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
