@@ -306,6 +306,13 @@ void CControl::ReadAndExecuteCommand(Stream* stream, Stream* output, bool filest
 				}
 				_bufferidx = 0;
 			}
+/*
+			if (ch == '\x18')
+			{
+				StepperSerial.println(MESSAGE_CTRLX);
+				_bufferidx = 0;
+			}
+*/
 		}
 
 		if (filestream)						// e.g. SD card => execute last line without "EndOfLine"

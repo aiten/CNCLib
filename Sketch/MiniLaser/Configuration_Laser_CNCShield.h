@@ -118,19 +118,9 @@
 
 ////////////////////////////////////////////////////////
 
-// GT2 with 15Tooth => 30mm
-/*
-#define TOOTH 15
-#define TOOTHSIZE 2
-
-#define X_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
-#define Y_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
-#define Z_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
-#define A_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
-*/
-
-// 2.9mm/rot
-// 12 steps/rot
+// 3 mm/rot
+// 20 steps/rot
+// * 16 => 1/16 step
 
 #define X_STEPSPERMM (20.0/3*16)
 #define Y_STEPSPERMM (20.0/3*16)
@@ -163,8 +153,8 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 
 ////////////////////////////////////////////////////////
 
-#define X_MAXSIZE 38000				// in mm1000_t
-#define Y_MAXSIZE 38000 
+#define X_MAXSIZE 36000				// in mm1000_t
+#define Y_MAXSIZE 36000 
 #define Z_MAXSIZE 10000 
 #define A_MAXSIZE 50000 
 
@@ -198,12 +188,13 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 ////////////////////////////////////////////////////////
 
 #define GO_DEFAULT_STEPRATE		CNC_MAXSPEED	// steps/sec
-#define G1_DEFAULT_STEPRATE		10000	// steps/sec
+#define G1_DEFAULT_STEPRATE		10000			// steps/sec
 #define G1_DEFAULT_MAXSTEPRATE	CNC_MAXSPEED	// steps/sec
 
 #define STEPRATERATE_REFMOVE	4000
 
-#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
+#undef SETDIRECTION
+//#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
 
 ////////////////////////////////////////////////////////
 

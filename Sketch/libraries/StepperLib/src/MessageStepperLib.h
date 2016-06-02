@@ -35,6 +35,7 @@
 
 #endif
 
+#define MESSAGE_CTRLX								StepperMessageOne("Grbl 0.9j ['$' for help]")
 #define MESSAGE_OK									StepperMessageOne("ok")
 #define MESSAGE_ERROR								StepperMessageOne("Error:")
 #define MESSAGE_INFO								StepperMessageOne("Info:")

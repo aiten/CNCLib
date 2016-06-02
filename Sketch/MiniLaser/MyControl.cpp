@@ -48,7 +48,8 @@ void CMyControl::Init()
 	DisableBlinkLed();
 #endif
 
-	StepperSerial.println(MESSAGE_MYCONTROL_Laser_Starting);
+  StepperSerial.println(MESSAGE_MYCONTROL_Laser_Starting);
+//	StepperSerial.println(MESSAGE_CTRLX);
 
 	CMotionControlBase::GetInstance()->Init();
 	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);

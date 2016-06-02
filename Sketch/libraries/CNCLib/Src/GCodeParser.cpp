@@ -416,7 +416,9 @@ bool CGCodeParser::MCommand(mcode_t mcode)
 		case 111: M111Command(); return true;
 		case 114: M114Command(); return true;
 		case 220: M220Command(); return true;
+#ifndef REDUCED_SIZE
 		case 300: M300Command(); return true;
+#endif
 	}
 	return false;
 }
