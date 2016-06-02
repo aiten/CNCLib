@@ -45,7 +45,10 @@ namespace CNCLib.ServiceProxy.WebAPI
 		}
 		public int Add(Machine value)
 		{
-			return Task.Run(() => AddAsync(value)).Result;
+			var task = AddAsync(value);
+			return task.ConfigureAwait(false).GetAwaiter().GetResult();
+
+			//return Task.Run(() => AddAsync(value)).Result;
 		}
 
 		public async Task<Machine> DefaultMachineAsync()
