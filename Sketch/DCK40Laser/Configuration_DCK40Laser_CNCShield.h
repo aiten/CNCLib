@@ -73,11 +73,19 @@
 #define COOLANT_OFF		CNCSHIELD_COOLANT_OFF
 #endif
 
-#define LASER_ENABLE_PIN  11
-#define LASER_DIGITAL_ON  HIGH
-#define LASER_DIGITAL_OFF LOW
-#define  LASER_ANALOG
+<<<<<<< .mine
 
+
+
+
+
+=======
+#define LASER_PWM_PIN  11
+#define LASER_ENABLE_PIN  CNCSHIELD_SPINDEL_ENABLE_PIN
+#define LASER_ENABLE_ON  LOW
+#define LASER_ENABLE_OFF HIGH
+
+>>>>>>> .theirs
 #undef USECONTROLERFAN
 #ifdef USECONTROLERFAN
 #define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec

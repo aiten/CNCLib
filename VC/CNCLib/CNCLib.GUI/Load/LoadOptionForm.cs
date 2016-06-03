@@ -112,7 +112,7 @@ namespace CNCLib.GUI.Load
                 };
 
 				if (_loadGCode.Checked) r.LoadType = LoadOptions.ELoadType.GCode;
-				else if (_loadHTML.Checked) r.LoadType = LoadOptions.ELoadType.HPGL;
+				else if (_loadHPGL.Checked) r.LoadType = LoadOptions.ELoadType.HPGL;
 				else if (_loadImage.Checked) r.LoadType = LoadOptions.ELoadType.Image;
 				else if (_loadimageHole.Checked) r.LoadType = LoadOptions.ELoadType.ImageHole;
 
@@ -150,7 +150,7 @@ namespace CNCLib.GUI.Load
 				switch (value.LoadType)
 				{
 					case LoadOptions.ELoadType.GCode: _loadGCode.Checked = true; break;
-					case LoadOptions.ELoadType.HPGL: _loadHTML.Checked = true; break;
+					case LoadOptions.ELoadType.HPGL: _loadHPGL.Checked = true; break;
 					case LoadOptions.ELoadType.Image: _loadImage.Checked = true; break;
 					case LoadOptions.ELoadType.ImageHole: _loadimageHole.Checked = true; break;
 				}

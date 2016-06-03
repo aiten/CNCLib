@@ -166,10 +166,14 @@ namespace CNCLib.GUI
 				if (form.ShowDialog() == DialogResult.OK)
 				{
 					loadinfo = form.LoadInfo;
-					if (_useAzure.Checked)
-						await LoadAzureAsync(form.LoadInfo);
-					else
-						LoadLocal(form.LoadInfo);
+                    if (_useAzure.Checked)
+                    {
+                        _load.Enabled = false;
+                        await LoadAzureAsync(form.LoadInfo);
+                        _load.Enabled = true;
+                    }
+                    else
+                        LoadLocal(form.LoadInfo);
 
 					_redraw_Click(null, null);
 				}

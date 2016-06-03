@@ -118,8 +118,8 @@ namespace CNCLib.Repository.Context
                 Name = "MinLaser",
                 ComPort = "com3",
                 Axis = 2,
-                SizeX = 38m,
-                SizeY = 38m,
+                SizeX = 36m,
+                SizeY = 36m,
                 SizeZ = 1m,
                 SizeA = 360m,
                 SizeB = 360m,
@@ -214,7 +214,7 @@ namespace CNCLib.Repository.Context
                 new MachineCommand{ Machine=minilaser, CommandName = "Laser On",    CommandString =@"m106",         PosX=1, PosY=1 },
                 new MachineCommand{ Machine=minilaser, CommandName = "Laser Min",   CommandString =@"m106 s1",      PosX=1, PosY=2 },
                 new MachineCommand{ Machine=minilaser, CommandName = "Laser Max",   CommandString =@"m106 s255",    PosX=1, PosY=3 },
-                new MachineCommand{ Machine=minilaser, CommandName = "Sqare",       CommandString =@"m106 s2\ng0x0y0\ng0x38\ng0y38\ng0x0\ng0y0m107",    PosX=3, PosY=0 },
+                new MachineCommand{ Machine=minilaser, CommandName = "Sqare",       CommandString =@"m106 s2\ng0x0y0\ng0x36\ng0y36\ng0x0\ng0y0m107",    PosX=3, PosY=0 },
 
                 //laser
                 new MachineCommand{ Machine=dck40laser, CommandName = "Set XY = 0",  CommandString =@"g92 x0\ng92 y0", PosX=0, PosY=0 },
@@ -224,17 +224,18 @@ namespace CNCLib.Repository.Context
                 new MachineCommand{ Machine=dck40laser, CommandName = "Laser On",    CommandString =@"m106",         PosX=1, PosY=1 },
                 new MachineCommand{ Machine=dck40laser, CommandName = "Laser Min",   CommandString =@"m106 s1",      PosX=1, PosY=2 },
                 new MachineCommand{ Machine=dck40laser, CommandName = "Laser Max",   CommandString =@"m106 s255",    PosX=1, PosY=3 },
-
             };
 
             var machineinitcommands = new[]
             {
-                new MachineInitCommand { Machine = minilaser, SeqNo=0, CommandString = @"g1 x0",  },
-                new MachineInitCommand { Machine = minilaser, SeqNo=1, CommandString = @"g1 x38"  },
-                new MachineInitCommand { Machine = minilaser, SeqNo=2, CommandString = @"g1 x0"  },
-                new MachineInitCommand { Machine = minilaser, SeqNo=0, CommandString = @"g1 y0",  },
-                new MachineInitCommand { Machine = minilaser, SeqNo=1, CommandString = @"g1 y38"  },
-                new MachineInitCommand { Machine = minilaser, SeqNo=2, CommandString = @"g1 y0"  }
+                new MachineInitCommand { Machine = minilaser, SeqNo=0, CommandString = @"g0 x2"  },
+                new MachineInitCommand { Machine = minilaser, SeqNo=1, CommandString = @"g28 x0"  },
+                new MachineInitCommand { Machine = minilaser, SeqNo=2, CommandString = @"g0 x36"  },
+                new MachineInitCommand { Machine = minilaser, SeqNo=3, CommandString = @"g0 x0"  },
+                new MachineInitCommand { Machine = minilaser, SeqNo=4, CommandString = @"g0 y2"  },
+                new MachineInitCommand { Machine = minilaser, SeqNo=5, CommandString = @"g28 y0",  },
+                new MachineInitCommand { Machine = minilaser, SeqNo=6, CommandString = @"g0 y36"  },
+                new MachineInitCommand { Machine = minilaser, SeqNo=7, CommandString = @"g0 y0"  }
             };
 
             context.MachineCommands.AddRange(machinecommands);

@@ -730,8 +730,11 @@ void CGCodeParserBase::G28Command()
 			{
 				bool usmin = CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(axis, true));
 				bool usmax = CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(axis, false));
-				if (usmin|| usmax)
-					CControl::GetInstance()->GoToReference(axis,0, usmin);
+				if (usmin || usmax)
+					CControl::GetInstance()->GoToReference(axis, 0, usmin);
+				else
+//					CStepper::GetInstance()->SetPosition(axis, move.newpos[axis]);
+					CStepper::GetInstance()->SetPosition(axis, 0);
 			}
 		}
 	}

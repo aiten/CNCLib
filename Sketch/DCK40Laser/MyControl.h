@@ -63,10 +63,14 @@ protected:
 
 private:
 
-    CAnalog8IOControl<LASER_ENABLE_PIN> _laserPWM;
-    COnOffIOControl<LASER_ENABLE_PIN, LASER_DIGITAL_ON, LASER_DIGITAL_OFF> _laserOnOff;
+    CAnalog8IOControl<LASER_PWM_PIN> _laserPWM;
+    COnOffIOControl<LASER_ENABLE_PIN, LASER_ENABLE_ON, LASER_ENABLE_OFF> _laserOnOff;
 
+<<<<<<< .mine
 
+=======
+
+>>>>>>> .theirs
 #ifdef COOLANT_PIN
 	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
 #endif
