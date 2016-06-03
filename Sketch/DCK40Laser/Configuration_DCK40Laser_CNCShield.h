@@ -49,57 +49,25 @@
 
 ////////////////////////////////////////////////////////
 
-#ifdef CNCSHIELD_ABORT_PIN
 #define KILL_PIN		CNCSHIELD_ABORT_PIN
 #define KILL_PIN_ON		CNCSHIELD_ABORT_ON
-#endif
 
-#ifdef CNCSHIELD_HOLD_PIN
 #define HOLD_PIN CNCSHIELD_HOLD_PIN
-#endif
-
-#ifdef CNCSHIELD_RESUME_PIN
 #define RESUME_PIN CNCSHIELD_RESUME_PIN
-#endif
 
-#ifdef CNCSHIELD_PROBE_PIN
-#define PROBE_PIN		CNCSHIELD_PROBE_PIN
-#define PROBE_ON		CNCSHIELD_PROBE_ON
-#endif
-
-#ifdef CNCSHIELD_COOLANT_PIN
-#define COOLANT_PIN		CNCSHIELD_COOLANT_PIN
-#define COOLANT_ON		CNCSHIELD_COOLANT_ON
-#define COOLANT_OFF		CNCSHIELD_COOLANT_OFF
-#endif
-
-<<<<<<< .mine
-
-
-
-
-
-=======
 #define LASER_PWM_PIN  11
 #define LASER_ENABLE_PIN  CNCSHIELD_SPINDEL_ENABLE_PIN
 #define LASER_ENABLE_ON  LOW
 #define LASER_ENABLE_OFF HIGH
 
->>>>>>> .theirs
-#undef USECONTROLERFAN
-#ifdef USECONTROLERFAN
-#define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
-#define CONTROLLERFAN_FAN_PIN	14 // 10
+#define LASERWATER_PIN	CNCSHIELD_A4_PIN
+#define LASERWATER_ON  HIGH
+#define LASERWATER_OFF LOW
+#define LASERWATER_ONTIME	10000			// switch off if idle for 10 Sec
 
-#define CONTROLLERFAN_DIGITAL_ON  HIGH
-#define CONTROLLERFAN_DIGITAL_OFF LOW
-#undef  CONTROLLERFAN_ANALOGSPEED
-#define CONTROLLERFAN_ANALOGSPEEDINVERT
-#endif
-
-////////////////////////////////////////////////////////
-
-#define DISABLELEDBLINK
+#define LASERVACUUM_PIN	CNCSHIELD_A5_PIN
+#define LASERVACUUM_ON  HIGH
+#define LASERVACUUM_OFF LOW
 
 ////////////////////////////////////////////////////////
 
@@ -145,23 +113,6 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 
 ////////////////////////////////////////////////////////
 
-#define X_USEREFERENCE_MIN	
-//#define X_USEREFERENCE_MAX
-
-//#define Y_USEREFERENCE_MIN	
-#define Y_USEREFERENCE_MAX
-
-//#define Z_USEREFERENCE_MIN	
-#define Z_USEREFERENCE_MAX
-
-//#define A_USEREFERENCE_MIN	
-//#define A_USEREFERENCE_MAX
-
-//#define REFMOVE_1_AXIS	Z_AXIS
-#define REFMOVE_2_AXIS	Y_AXIS
-#define REFMOVE_3_AXIS	X_AXIS
-//#define REFMOVE_3_AXIS	A_AXIS
-
 #define MOVEAWAYFROMREF_STEPS 100
 
 ////////////////////////////////////////////////////////
@@ -176,9 +127,10 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 #define G1_DEFAULT_STEPRATE		10000	// steps/sec
 #define G1_DEFAULT_MAXSTEPRATE	CNC_MAXSPEED	// steps/sec
 
-#define STEPRATERATE_REFMOVE	4000
+#define STEPRATERATE_REFMOVE	5000
 
-#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
+#undef SETDIRECTION
+//#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
 
 ////////////////////////////////////////////////////////
 

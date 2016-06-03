@@ -66,38 +66,13 @@ private:
     CAnalog8IOControl<LASER_PWM_PIN> _laserPWM;
     COnOffIOControl<LASER_ENABLE_PIN, LASER_ENABLE_ON, LASER_ENABLE_OFF> _laserOnOff;
 
-<<<<<<< .mine
-
-=======
-
->>>>>>> .theirs
-#ifdef COOLANT_PIN
-	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
-#endif
-#ifdef PROBE_PIN
-	CReadPinIOControl<PROBE_PIN, PROBE_ON> _probe;
-#endif
-
-#ifdef KILL_PIN
 	CReadPinIOControl<KILL_PIN, KILL_PIN_ON> _kill;
-#endif
-#if defined(HOLD_PIN) && defined(RESUME_PIN)
+
 	CPushButtonLow _hold;
 	CPushButtonLow _resume;
-#endif
 
-#ifdef CONTROLLERFAN_FAN_PIN
-	#ifdef CONTROLLERFAN_ANALOGSPEED
-		#if defined(CONTROLLERFAN_ANALOGSPEEDINVERT)
-			CAnalog8InvertIOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
-		#else
-			CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
-		#endif
-	#else
-		COnOffIOControl<CONTROLLERFAN_FAN_PIN, CONTROLLERFAN_DIGITAL_ON, CONTROLLERFAN_DIGITAL_OFF> _controllerfan;
-	#endif
-#endif
-
+	COnOffIOControl<LASERWATER_PIN, LASERWATER_ON, LASERWATER_OFF> _laserWater;
+	COnOffIOControl<LASERVACUUM_PIN, LASERVACUUM_ON, LASERVACUUM_OFF> _laserVacuum;
 };
 
 ////////////////////////////////////////////////////////

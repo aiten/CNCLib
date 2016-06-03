@@ -32,7 +32,7 @@
 ////////////////////////////////////////////////////////////
 
 CMyControl Control;
-CMotionControlBase MotionControl;
+CMotionControl MotionControl;
 
 ////////////////////////////////////////////////////////////
 
@@ -44,10 +44,7 @@ CMotionControlBase MotionControl;
 
 void CMyControl::Init()
 {
-
-#ifdef DISABLELEDBLINK
 	DisableBlinkLed();
-#endif
 
 	StepperSerial.println(MESSAGE_MYCONTROL_Laser_Starting);
 
@@ -56,81 +53,23 @@ void CMyControl::Init()
 
 	super::Init();
 
-#ifdef SETDIRECTION
-	CStepper::GetInstance()->SetDirection((1 << X_AXIS) + (1 << Y_AXIS));
-#endif
-
-	//CStepper::GetInstance()->SetBacklash(SPEEDFACTOR*5000);
-	//CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControl::ToMachine(X_AXIS,20));  
-	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,35));  
-	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
-
 	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, X_MAXSIZE));
 	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, Y_MAXSIZE));
-
-#if MYNUM_AXIS > 2
 	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, Z_MAXSIZE));
-#endif
 
-#if MYNUM_AXIS > 3
-	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS, A_MAXSIZE));
-#endif
-
-#ifdef X_USEREFERENCE_MIN
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
-#endif
-#ifdef X_USEREFERENCE_MAX
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, false), true);
-#endif
-
-#ifdef Y_USEREFERENCE_MIN
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
-#endif
-#ifdef Y_USEREFERENCE_MAX
 	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, false), true);
-#endif
 
-#ifdef Z_USEREFERENCE_MIN
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true), true);
-#endif
-#ifdef Z_USEREFERENCE_MAX
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, false), true);
-#endif
+	_laserPWM.Init();
+	_laserOnOff.Init();
 
-#ifdef A_USEREFERENCE_MIN
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, true), true);
-#endif
-#ifdef A_USEREFERENCE_MAX
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, false), true);
-#endif
+	_laserWater.Init();
+	_laserVacuum.Init();
 
-#ifdef CONTROLLERFAN_FAN_PIN
-	#ifdef CONTROLLERFAN_ANALOGSPEED
-		_controllerfan.Init(128);
-	#else
-		_controllerfan.Init();
-	#endif
-#endif
-
-  _laserPWM.Init();
-  _laserOnOff.Init();
-
-#ifdef PROBE_PIN
-	_probe.Init();
-#endif
-
-#ifdef KILL_PIN
 	_kill.Init();
-#endif
 
-#ifdef COOLANT_PIN
-	_coolant.Init();
-#endif
-
-#if defined(HOLD_PIN) && defined(RESUME_PIN)
 	_hold.SetPin(HOLD_PIN);
 	_resume.SetPin(RESUME_PIN);
-#endif
 
 	CGCodeParserBase::Init();
 
@@ -147,28 +86,22 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 {
 	switch (tool)
 	{
-	case Laser:
-      if (level != 0)
-      {
-        _laserPWM.On((unsigned char) level);
-        _laserOnOff.On();
-      }
-      else
-      {
-		  _laserOnOff.Off();
-      }
-      return;
+		case Laser:
 
-#ifdef COOLANT_PIN
-	    case Coolant:     _coolant.Set(level>0); return;
-#endif
-#if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan:		_controllerfan.Set(level>0);	return;
-#elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
-#endif
+			if (level != 0)
+			{
+				_laserPWM.On((unsigned char)level);
+				_laserOnOff.On();
+			}
+			else
+			{
+				_laserOnOff.Off();
+			}
+			return;
+
+		case Vacuum:     _laserVacuum.Set(level > 0); return;
 	}
-	
+
 	super::IOControl(tool, level);
 }
 
@@ -178,21 +111,9 @@ unsigned short CMyControl::IOControl(unsigned char tool)
 {
 	switch (tool)
 	{
-		case Laser:			{ return _laserPWM.IsOn(); }
-
-#ifdef PROBE_PIN
-		case Probe:			{ return _probe.IsOn(); }
-#endif
-
-#ifdef COOLANT_PIN
-		case Coolant:		{ return _coolant.IsOn(); }
-#endif
-
-#if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan: { return _controllerfan.IsOn(); }
-#elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan: { return _controllerfan.Level; }
-#endif	
+		case Laser: { return _laserPWM.IsOn(); }
+		case Coolant: { return _laserWater.IsOn(); }
+		case Vacuum: { return _laserVacuum.IsOn(); }
 	}
 
 	return super::IOControl(tool);
@@ -204,22 +125,14 @@ void CMyControl::Kill()
 {
 	super::Kill();
 
-  _laserOnOff.Off();
-  
-#ifdef COOLANT_PIN
-	_coolant.Set(false);
-#endif
+	_laserOnOff.Off();
 }
 
 ////////////////////////////////////////////////////////////
 
 bool CMyControl::IsKill()
 {
-#ifdef KILL_PIN
 	return _kill.IsOn();
-#else
-	return false;
-#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -227,14 +140,9 @@ bool CMyControl::IsKill()
 void CMyControl::TimerInterrupt()
 {
 	super::TimerInterrupt();
-  
-#ifdef HOLD_PIN
-	_hold.Check();
-#endif
 
-#ifdef RESUME_PIN
+	_hold.Check();
 	_resume.Check();
-#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -242,10 +150,6 @@ void CMyControl::TimerInterrupt()
 void CMyControl::Initialized()
 {
 	super::Initialized();
- 
-#if defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
-	_controllerfan.Level=128;
-#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -254,20 +158,17 @@ void CMyControl::Poll()
 {
 	super::Poll();
 
-#if defined(HOLD_PIN) && defined(RESUME_PIN)
-
 	if (IsHold())
 	{
 		if (_resume.IsOn())
 		{
 			Resume();
 		}
-	} 
+	}
 	else if (_hold.IsOn())
 	{
 		Hold();
 	}
-#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -286,18 +187,8 @@ void CMyControl::GoToReference()
 
 #else
 
-#ifdef REFMOVE_1_AXIS
-	GoToReference(REFMOVE_1_AXIS, 0, CStepper::GetInstance()->IsUseReference(REFMOVE_1_AXIS, true));
-#endif
-#ifdef REFMOVE_2_AXIS
-	GoToReference(REFMOVE_2_AXIS, 0, CStepper::GetInstance()->IsUseReference(REFMOVE_2_AXIS, true));
-#endif
-#ifdef REFMOVE_3_AXIS
-	GoToReference(REFMOVE_3_AXIS, 0, CStepper::GetInstance()->IsUseReference(REFMOVE_3_AXIS, true));
-#endif
-#ifdef REFMOVE_4_AXIS
-	GoToReference(REFMOVE_4_AXIS, 0, CStepper::GetInstance()->IsUseReference(REFMOVE_4_AXIS, true));
-#endif
+	GoToReference(Y_AXIS, 0, CStepper::GetInstance()->IsUseReference(Y_AXIS, true));
+	GoToReference(X_AXIS, 0, CStepper::GetInstance()->IsUseReference(X_AXIS, true));
 
 #endif
 }
@@ -306,35 +197,33 @@ void CMyControl::GoToReference()
 
 bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
 {
-  return CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, STEPRATERATE_REFMOVE,0,MOVEAWAYFROMREF_STEPS);
+	return CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, STEPRATERATE_REFMOVE, 0, MOVEAWAYFROMREF_STEPS);
 }
 
 ////////////////////////////////////////////////////////////
 
 bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 {
-	CGCodeParser gcode(reader,output);
-	return ParseAndPrintResult(&gcode,output);
+	CGCodeParser gcode(reader, output);
+	return ParseAndPrintResult(&gcode, output);
 }
 
 ////////////////////////////////////////////////////////////
 
 bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
 {
-#ifdef CONTROLLERFAN_FAN_PIN
 	switch (eventtype)
 	{
 		case CStepper::OnStartEvent:
-			_controllerfan.On();
+			_laserWater.On();
 			break;
 		case CStepper::OnIdleEvent:
-			if (millis()-stepper->IdleTime() > CONTROLLERFAN_ONTIME)
+			if (millis() - stepper->IdleTime() > LASERWATER_ONTIME)
 			{
-				_controllerfan.Off();
+				_laserWater.Off();
 			}
 			break;
 	}
-#endif
 
 	return super::OnStepperEvent(stepper, eventtype, addinfo);
 }

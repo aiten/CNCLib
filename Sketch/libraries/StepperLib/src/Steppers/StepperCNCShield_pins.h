@@ -111,14 +111,14 @@
 #define CNCSHIELD_COOLANT_ON		LOW
 #define CNCSHIELD_COOLANT_OFF		HIGH
 
-
-//HA extension
-
 #if defined(__AVR_ATmega328P__) || defined (_MSC_VER)
-#define CNCSHIELD_PROBE_PIN     18    // AD4
+#define CNCSHIELD_A4_PIN     18    // AD4
+#define CNCSHIELD_A5_PIN     19    // AD5
 #else
-#define CNCSHIELD_PROBE_PIN     58    // AD4 (Mega => 58)
+#define CNCSHIELD_A4_PIN     58    // AD4 (Mega)
+#define CNCSHIELD_A5_PIN     59    // AD5 (Mega)
 #endif
 
+#define CNCSHIELD_PROBE_PIN     CNCSHIELD_A4_PIN
 #define CNCSHIELD_PROBE_ON      LOW
 #define CNCSHIELD_PROBE_OFF     HIGH
