@@ -66,16 +66,6 @@ private:
     CAnalog8IOControl<LASER_ENABLE_PIN> _laserPWM;
     COnOffIOControl<LASER_ENABLE_PIN, LASER_DIGITAL_ON, LASER_DIGITAL_OFF> _laserOnOff;
 
-#ifdef SPINDEL_ENABLE_PIN
-	#ifdef SPINDEL_ANALOGSPEED
-		CAnalog8IOControl<SPINDEL_ENABLE_PIN> _spindel;
-	#else
-		COnOffIOControl<SPINDEL_ENABLE_PIN, SPINDEL_DIGITAL_ON, SPINDEL_DIGITAL_OFF> _spindel;
-	#endif
-	#ifdef SPINDEL_DIR_PIN
-		COnOffIOControl<SPINDEL_DIR_PIN, SPINDEL_DIR_CLW, SPINDEL_DIR_CCLW> _spindelDir;
-	#endif
-#endif  
 
 #ifdef COOLANT_PIN
 	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
@@ -94,7 +84,7 @@ private:
 
 #ifdef CONTROLLERFAN_FAN_PIN
 	#ifdef CONTROLLERFAN_ANALOGSPEED
-		#if defined(USE_RAMPSFD)
+		#if defined(CONTROLLERFAN_ANALOGSPEEDINVERT)
 			CAnalog8InvertIOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
 		#else
 			CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;

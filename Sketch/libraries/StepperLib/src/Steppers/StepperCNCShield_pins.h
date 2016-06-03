@@ -89,6 +89,14 @@
 #define CNCSHIELD_RESUME_PIN		16
 #define CNCSHIELD_COOLANT_PIN		17
 
+#elif defined(__AVR_ATmega2560__)
+
+// 54=>AD0
+#define CNCSHIELD_ABORT_PIN			54
+#define CNCSHIELD_HOLD_PIN			55
+#define CNCSHIELD_RESUME_PIN		56
+#define CNCSHIELD_COOLANT_PIN		57
+
 #endif
 
 #define CNCSHIELD_ABORT_ON			LOW
@@ -107,7 +115,7 @@
 //HA extension
 
 #if defined(__AVR_ATmega328P__) || defined (_MSC_VER)
-#define CNCSHIELD_PROBE_PIN     18    // AD4 (Mega => 58)
+#define CNCSHIELD_PROBE_PIN     18    // AD4
 #else
 #define CNCSHIELD_PROBE_PIN     58    // AD4 (Mega => 58)
 #endif
