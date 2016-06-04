@@ -68,6 +68,8 @@ private:
 
 	CReadPinIOControl<KILL_PIN, KILL_PIN_ON> _kill;
 
+	CReadPinIOControl<LASERWATCHDOG_PIN, LASERWATCHDOG_ON> _laserWatchDog;
+
 	CPushButtonLow _hold;
 	CPushButtonLow _resume;
 

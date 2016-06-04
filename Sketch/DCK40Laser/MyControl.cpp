@@ -33,6 +33,7 @@
 
 CMyControl Control;
 CMotionControl MotionControl;
+#define CMyParser CGCodeParser
 
 ////////////////////////////////////////////////////////////
 
@@ -65,13 +66,16 @@ void CMyControl::Init()
 
 	_laserWater.Init();
 	_laserVacuum.Init();
+	
+	_laserVacuum.Set(true);
+	_laserWater.Set(true);
 
 	_kill.Init();
 
 	_hold.SetPin(HOLD_PIN);
 	_resume.SetPin(RESUME_PIN);
 
-	CGCodeParserBase::Init();
+	CMyParser::Init();
 
 	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE));
 	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE));
@@ -99,7 +103,9 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 			}
 			return;
 
-		case Vacuum:     _laserVacuum.Set(level > 0); return;
+		case Vacuum:  _laserVacuum.Set(level > 0); return;
+		// case Coolant: _laserWater.Set(level > 0); return; do not allow water turn off
+
 	}
 
 	super::IOControl(tool, level);
@@ -204,7 +210,7 @@ bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMi
 
 bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 {
-	CGCodeParser gcode(reader, output);
+	CMyParser gcode(reader, output);
 	return ParseAndPrintResult(&gcode, output);
 }
 
@@ -216,11 +222,16 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 	{
 		case CStepper::OnStartEvent:
 			_laserWater.On();
+			_laserVacuum.On();
 			break;
 		case CStepper::OnIdleEvent:
 			if (millis() - stepper->IdleTime() > LASERWATER_ONTIME)
 			{
 				_laserWater.Off();
+			}
+			if (millis() - stepper->IdleTime() > LASERVACUUM__ONTIME)
+			{
+				_laserVacuum.Off();
 			}
 			break;
 	}

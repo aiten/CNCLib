@@ -22,8 +22,6 @@
 ////////////////////////////////////////////////////////
 
 #define CMyStepper CStepperCNCShield
-#define ConversionToMm1000 CNCShieldToMm1000
-#define ConversionToMachine CNCShieldToMachine
 
 ////////////////////////////////////////////////////////
 
@@ -63,11 +61,15 @@
 #define LASERWATER_PIN	CNCSHIELD_A4_PIN
 #define LASERWATER_ON  HIGH
 #define LASERWATER_OFF LOW
-#define LASERWATER_ONTIME	10000			// switch off if idle for 10 Sec
+#define LASERWATER_ONTIME	1200000			// switch off if idle for 1200 => 20 min Sec
 
 #define LASERVACUUM_PIN	CNCSHIELD_A5_PIN
 #define LASERVACUUM_ON  HIGH
 #define LASERVACUUM_OFF LOW
+#define LASERVACUUM__ONTIME	60000			// switch off if idle for ?? Sec
+
+#define LASERWATCHDOG_PIN		CNCSHIELD_SPINDEL_DIR_PIN
+#define LASERWATCHDOG_ON		LOW
 
 ////////////////////////////////////////////////////////
 
@@ -79,37 +81,6 @@
 #define Y_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
 #define Z_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
 #define A_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
-
-inline mm1000_t CNCShieldToMm1000(axis_t axis, sdist_t val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (mm1000_t)(val * (1000.0 / X_STEPSPERMM));
-		case Y_AXIS: return  (mm1000_t)(val * (1000.0 / Y_STEPSPERMM));
-		case Z_AXIS: return  (mm1000_t)(val * (1000.0 / Z_STEPSPERMM));
-		case A_AXIS: return  (mm1000_t)(val * (1000.0 / A_STEPSPERMM));
-	}
-}
-
-inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (sdist_t)(val * (X_STEPSPERMM / 1000.0));
-		case Y_AXIS: return  (sdist_t)(val * (Y_STEPSPERMM / 1000.0));
-		case Z_AXIS: return  (sdist_t)(val * (Z_STEPSPERMM / 1000.0));
-		case A_AXIS: return  (sdist_t)(val * (A_STEPSPERMM / 1000.0));
-	}
-}
-
-////////////////////////////////////////////////////////
-
-#define X_MAXSIZE 320000				// in mm1000_t
-#define Y_MAXSIZE 220000 
-#define Z_MAXSIZE 100000 
-#define A_MAXSIZE 50000 
 
 ////////////////////////////////////////////////////////
 
@@ -131,11 +102,6 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 
 #undef SETDIRECTION
 //#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
-
-////////////////////////////////////////////////////////
-
-#undef NOGOTOREFERENCEATBOOT
-//#define NOGOTOREFERENCEATBOOT
 
 ////////////////////////////////////////////////////////
 
