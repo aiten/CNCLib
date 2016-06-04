@@ -78,5 +78,5 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 
 #include <MessageCNCLib.h>
 
-#define MESSAGE_MYCONTROL_Laser_Starting					F("DC-K40 Laser:" __DATE__ )
+#define MESSAGE_MYCONTROL_Laser_Starting					F("DC-K40 Laser: (" __DATE__ ", " __TIME__ ")")
 
