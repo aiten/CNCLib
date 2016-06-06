@@ -296,17 +296,12 @@ void CStepper::EnqueuAndStartTimer(bool waitfinish)
 		for (axis_t i = 0; i<NUM_AXIS; i++)
 		{
 			SetTimeoutAndEnable(i, _pod._timeOutEnable[i], CStepper::LevelMax, true);
-/*
-			_pod._timeEnable[i] = _pod._timeOutEnable[i];
-			if (_pod._timeEnable[i] == 0 && GetEnable(i)!=CStepper::LevelMax)					// enabletimeout == 0 => always enabled, otherwise done in CalcNextSteps
-//			if (_pod._timeEnable[i] == 0)
-				SetEnable(i, CStepper::LevelMax, true);
-*/
 		}
+
+		OnStart();
 
 		if (StartMovement())
 		{
-			OnStart();
 			CCriticalRegion crit;
 			StepRequest(false);
 		}

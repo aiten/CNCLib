@@ -54,7 +54,7 @@ public:
 
 	enum EStepperEvent
 	{
-		OnStartEvent,
+		OnStartEvent,											// Stepper, Io and Wait
 		OnIdleEvent,
 		OnDisableEvent,											// Disable stepper if inactive
 		OnWaitEvent,
