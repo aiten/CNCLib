@@ -18,6 +18,13 @@
 
 ////////////////////////////////////////////////////////
 
+#include <StepperLib.h>
+#include <CNCLib.h>
+
+#include <ReadAnalogIOControl.h>
+#include <ReadPinIOControl.h>
+#include <PushButton.h>
+
 #define MAXSPEED1 3000
 #define MAXSPEED2 400
 #define INTERVALL 200
@@ -34,15 +41,6 @@
 #define BUTTON6     2
 
 ////////////////////////////////////////////////////////
-
-#define CHAL
-typedef int pin_t;
-#define EnumAsByte(a) unsigned char
-#define pinModeInputPullUp(a) pinMode(a,INPUT_PULLUP)
-
-#include "ReadAnalogIOControl.h"
-#include "ReadPinIOControl.h"
-#include "PushButton.h"
 
 CReadAnalogIOControl<XANALOGPIN> X;
 CReadAnalogIOControl<YANALOGPIN> Y;

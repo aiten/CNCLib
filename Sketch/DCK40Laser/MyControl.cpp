@@ -67,9 +67,6 @@ void CMyControl::Init()
 	_laserWater.Init();
 	_laserVacuum.Init();
 	
-	_laserVacuum.Set(true);
-	_laserWater.Set(true);
-
 	_kill.Init();
 
 	_hold.SetPin(HOLD_PIN);

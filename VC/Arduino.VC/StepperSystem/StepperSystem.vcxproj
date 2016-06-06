@@ -53,6 +53,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\LinearLookUp.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\MessageStepperLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\PushValue.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ReadAnalogIOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ReadPinIOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ReadPinIOTriggerControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\RingBuffer.h" />

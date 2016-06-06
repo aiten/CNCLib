@@ -29,6 +29,11 @@ public:
 	{
 	}
 
+	CPushButton(pin_t pin, unsigned char onValue)
+	{
+		SetPin(pin, onValue);
+	}
+
 	void SetPin(pin_t pin, unsigned char onValue)		
 	{ 
 		_pin=pin; 

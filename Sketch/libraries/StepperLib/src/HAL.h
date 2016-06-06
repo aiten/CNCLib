@@ -182,6 +182,8 @@ public:
 	static unsigned char digitalRead(pin_t pin);
 
 	static void analogWrite8(pin_t pin, uint8_t val);
+
+	static unsigned short analogRead(pin_t pin);
 };
 
 //////////////////////////////////////////

@@ -228,6 +228,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperA4998_drv8825.h">
       <Filter>StepperLib\Steppers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\ReadAnalogIOControl.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">

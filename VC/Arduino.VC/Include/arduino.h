@@ -73,6 +73,7 @@ typedef unsigned char	uint8_t;
 typedef signed char		int8_t;
 
 inline void analogWrite(short, int)	{};
+inline int analogRead(short) { return 0; };
 inline void digitalWrite(short, short)	{};
 inline unsigned char digitalRead(short /*pin*/) { return LOW; };
 inline void pinMode(short, short)		{};

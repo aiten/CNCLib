@@ -27,6 +27,13 @@
 
 ////////////////////////////////////////////////////////
 
+unsigned short CHAL::analogRead(pin_t pin)
+{
+	return (unsigned short) ::analogRead(pin);
+}
+
+////////////////////////////////////////////////////////
+
 static void IgnoreIrq() {}
 
 CHAL::HALEvent CHAL::_TimerEvent0 = IgnoreIrq;
