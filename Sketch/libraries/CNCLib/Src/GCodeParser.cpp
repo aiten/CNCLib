@@ -116,6 +116,13 @@ param_t CGCodeParser::ParseParamNo()
 			}
 		}
 
+		const SParamInfo* param = FindParamInfoByText(start);
+
+		if (param != NULL)
+		{
+			return pgm_read_word(&param->_paramNo);
+		}
+
 		Error(MESSAGE_GCODE_ParameterDoesntExist);
 		return 0;
 	}
@@ -143,44 +150,12 @@ mm1000_t CGCodeParser::ParseParameter(bool convertToInch)
 
 ////////////////////////////////////////////////////////////
 
-static bool IsParam(param_t paramNo, param_t offset, axis_t&axis)
-{
-	if (paramNo < offset || paramNo >= offset+NUM_AXIS) return false;
-	axis = (axis_t) (paramNo-offset);
-	return true;
-}
-
-static bool IsParam(param_t paramNo, param_t offset)
-{
-	return paramNo == offset;
-}
-
 static bool IsModifyParam(param_t paramNo)								{ return paramNo >= 1 && paramNo <= NUM_PARAMETER; }
 
 // 5161-5169 - G28 Home for (X Y Z A B C U V W)
-static bool IsG28HomeParam(param_t paramNo, axis_t&axis)				{ return IsParam(paramNo, PARAMSTART_G28HOME, axis); }
-
-static bool IsG92OffsetParam(param_t paramNo, axis_t&axis)				{ return IsParam(paramNo, PARAMSTART_G92OFFSET, axis); }
-
 // 5221-5230 - Coordinate System 1, G54 (X Y Z A B C U V W R) - R denotes the XY rotation angle around the Z axis 
-static bool IsG54OffsetParam(param_t paramNo, unsigned char i, axis_t&axis)	{ return IsParam(paramNo, PARAMSTART_G54OFFSET+i*PARAMSTART_G54FF_OFFSET, axis); }
-
 // 5420-5428 - Current Position including offsets in current program units (X Y Z A B C U V W)
-static bool IsCurrentPosParam(param_t paramNo, axis_t&axis)				{ return IsParam(paramNo, PARAMSTART_CURRENTPOS, axis); }
-
 // customized extension
-static bool IsCurrentAbsPosParam(param_t paramNo, axis_t&axis)			{ return IsParam(paramNo, PARAMSTART_CURRENTABSPOS, axis); }
-static bool IsBacklashParam(param_t paramNo, axis_t&axis)				{ return IsParam(paramNo, PARAMSTART_BACKLASH, axis); }
-static bool IsBacklashFeedrateParam(param_t paramNo)					{ return IsParam(paramNo, PARAMSTART_BACKLASH_FEEDRATE); }
-static bool IsMaxParam(param_t paramNo, axis_t&axis)					{ return IsParam(paramNo, PARAMSTART_MAX, axis); }
-static bool IsMinParam(param_t paramNo, axis_t&axis)					{ return IsParam(paramNo, PARAMSTART_MIN, axis); }
-static bool IsAccParam(param_t paramNo, axis_t&axis)					{ return IsParam(paramNo, PARAMSTART_ACC, axis); }
-static bool IsDecParam(param_t paramNo, axis_t&axis)					{ return IsParam(paramNo, PARAMSTART_DEC, axis); }
-static bool IsJerkParam(param_t paramNo, axis_t&axis)					{ return IsParam(paramNo, PARAMSTART_JERK, axis); }
-
-static bool IsControllerFanParam(param_t paramNo)						{ return IsParam(paramNo, PARAMSTART_CONTROLLERFAN); }
-static bool IsRapidMoveFeedRate(param_t paramNo)						{ return IsParam(paramNo, PARAMSTART_RAPIDMOVEFEED); }
-
 
 mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 {
@@ -192,33 +167,45 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 		return CMm1000::ConvertFrom(_modalstate.Parameter[paramNo - 1]);
 	}
 
-	axis_t axis;
+	const SParamInfo*param = FindParamInfoByParamNo(paramNo);
 
-	if (IsG28HomeParam(paramNo,axis))
+	if (param != NULL)
 	{
-		mm1000_t pos = CStepper::GetInstance()->GetLimitMin(axis);
-		if (CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(axis, false)))	// max refmove
-			pos = CStepper::GetInstance()->GetLimitMax(axis);
-		return GetParamAsPosition(pos,axis);
+		axis_t axis = (axis_t) (paramNo - param->_paramNo);
+		switch (pgm_read_word(&param->_paramNo))
+		{
+			case PARAMSTART_G28HOME:
+			{
+				mm1000_t pos = CStepper::GetInstance()->GetLimitMin(axis);
+				if (CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(axis, false)))	// max refmove
+					pos = CStepper::GetInstance()->GetLimitMax(axis);
+				return GetParamAsPosition(pos, axis);
+			}
+			case PARAMSTART_G92OFFSET:			return GetParamAsPosition(super::_modalstate.G92Pospreset[axis], axis);
+			case PARAMSTART_CURRENTPOS:			return GetParamAsPosition(GetRelativePosition(axis), axis);
+			case PARAMSTART_CURRENTABSPOS:		return GetParamAsPosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis);
+			case PARAMSTART_BACKLASH:			return GetParamAsPosition(CStepper::GetInstance()->GetBacklash(axis), axis);
+			case PARAMSTART_MAX:				return GetParamAsPosition(CStepper::GetInstance()->GetLimitMax(axis), axis);
+			case PARAMSTART_MIN:				return GetParamAsPosition(CStepper::GetInstance()->GetLimitMin(axis), axis);
+			case PARAMSTART_ACC:				return CStepper::GetInstance()->GetAcc(axis);
+			case PARAMSTART_DEC:				return CStepper::GetInstance()->GetDec(axis);
+			case PARAMSTART_JERK:				return CStepper::GetInstance()->GetJerkSpeed(axis);
+
+			case PARAMSTART_G54OFFSET + 0 * PARAMSTART_G54FF_OFFSET:
+			case PARAMSTART_G54OFFSET + 1 * PARAMSTART_G54FF_OFFSET:
+			case PARAMSTART_G54OFFSET + 2 * PARAMSTART_G54FF_OFFSET:
+			case PARAMSTART_G54OFFSET + 3 * PARAMSTART_G54FF_OFFSET:
+			case PARAMSTART_G54OFFSET + 4 * PARAMSTART_G54FF_OFFSET:
+			case PARAMSTART_G54OFFSET + 5 * PARAMSTART_G54FF_OFFSET:
+			{
+				unsigned char idx = (unsigned char)((pgm_read_word(&param->_paramNo) - PARAMSTART_G54OFFSET) / PARAMSTART_G54FF_OFFSET);
+				if (idx < G54ARRAYSIZE)
+					return GetParamAsPosition(_modalstate.G54Pospreset[idx][axis], axis);
+				break;
+			}
+			case PARAMSTART_FEEDRATE:			return GetG1FeedRate();
+		}
 	}
-
-	if (IsG92OffsetParam(paramNo,axis))			return GetParamAsPosition(super::_modalstate.G92Pospreset[axis],axis);
-	for (unsigned char i = 0; i < G54ARRAYSIZE; i++)
-	{
-		if (IsG54OffsetParam(paramNo, i, axis))
-			return GetParamAsPosition(_modalstate.G54Pospreset[i][axis], axis);
-	}
-	if (IsCurrentPosParam(paramNo,axis))		return GetParamAsPosition(GetRelativePosition(axis),axis);
-
-	// customized extension
-	if (IsCurrentAbsPosParam(paramNo, axis))	return GetParamAsPosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis);
-	if (IsBacklashParam(paramNo,axis))			return GetParamAsPosition(CStepper::GetInstance()->GetBacklash(axis),axis);
-
-	if (IsMaxParam(paramNo, axis))				return GetParamAsPosition(CStepper::GetInstance()->GetLimitMax(axis),axis);
-	if (IsMinParam(paramNo, axis))				return GetParamAsPosition(CStepper::GetInstance()->GetLimitMin(axis),axis);
-	if (IsAccParam(paramNo, axis))				return CStepper::GetInstance()->GetAcc(axis);
-	if (IsDecParam(paramNo, axis))				return CStepper::GetInstance()->GetDec(axis);
-	if (IsJerkParam(paramNo, axis))				return CStepper::GetInstance()->GetJerkSpeed(axis);
 
 	Error(MESSAGE_GCODE_ParameterNotFound);
 	return 0;
@@ -234,20 +221,27 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 		Error(exprpars.GetError());
 	else
 	{
-		axis_t axis;
 		mm1000_t mm1000 = CMm1000::ConvertFrom(exprpars.Answer);
+		const SParamInfo*param = FindParamInfoByParamNo(paramNo);
 
 		if (IsModifyParam(paramNo))				{ _modalstate.Parameter[paramNo - 1] = exprpars.Answer; }
-		else if (IsBacklashParam(paramNo,axis))	{	CStepper::GetInstance()->SetBacklash(axis,(mdist_t) GetParamAsMachine(mm1000, axis));	}
-		else if (IsBacklashFeedrateParam(paramNo)){ CStepper::GetInstance()->SetBacklash((steprate_t)CMotionControlBase::GetInstance()->ToMachine(0, mm1000 * 60)); }
-		else if (IsControllerFanParam(paramNo))	{	CControl::GetInstance()->IOControl(CControl::ControllerFan,(unsigned short)exprpars.Answer);	}
-		else if (IsRapidMoveFeedRate(paramNo))	{	SetG0FeedRate(-CFeedrate1000::ConvertFrom(exprpars.Answer));	}
-		else if (IsMaxParam(paramNo,axis))		{	CStepper::GetInstance()->SetLimitMax(axis,GetParamAsMachine(mm1000, axis));		}
-		else if (IsMinParam(paramNo,axis))		{	CStepper::GetInstance()->SetLimitMin(axis,GetParamAsMachine(mm1000, axis));		}
-		else if (IsAccParam(paramNo,axis))		{	CStepper::GetInstance()->SetAcc(axis,(steprate_t) mm1000);	}
-		else if (IsDecParam(paramNo,axis))		{	CStepper::GetInstance()->SetDec(axis,(steprate_t) mm1000);	}
-		else if (IsJerkParam(paramNo,axis))		{	CStepper::GetInstance()->SetJerkSpeed(axis,(steprate_t) mm1000);	}
-
+		else if (param != NULL)
+		{
+			axis_t axis = (axis_t)(paramNo - param->_paramNo);
+			switch (pgm_read_word(&param->_paramNo))
+			{
+				case PARAMSTART_BACKLASH:			{ CStepper::GetInstance()->SetBacklash(axis, (mdist_t)GetParamAsMachine(mm1000, axis));	break;  }
+				case PARAMSTART_BACKLASH_FEEDRATE:	{ CStepper::GetInstance()->SetBacklash((steprate_t)CMotionControlBase::GetInstance()->ToMachine(0, mm1000 * 60)); break; }
+				case PARAMSTART_CONTROLLERFAN:		{ CControl::GetInstance()->IOControl(CControl::ControllerFan, (unsigned short)exprpars.Answer);	break;  }
+				case PARAMSTART_RAPIDMOVEFEED:		{ SetG0FeedRate(-CFeedrate1000::ConvertFrom(exprpars.Answer)); break;	}
+				case PARAMSTART_MAX:				{ CStepper::GetInstance()->SetLimitMax(axis, GetParamAsMachine(mm1000, axis));	break;	}
+				case PARAMSTART_MIN:				{ CStepper::GetInstance()->SetLimitMin(axis, GetParamAsMachine(mm1000, axis));	break;	}
+				case PARAMSTART_ACC:				{ CStepper::GetInstance()->SetAcc(axis, (steprate_t)mm1000); break;	}
+				case PARAMSTART_DEC:				{ CStepper::GetInstance()->SetDec(axis, (steprate_t)mm1000); break;	}
+				case PARAMSTART_JERK:				{ CStepper::GetInstance()->SetJerkSpeed(axis, (steprate_t)mm1000); break; }
+				default:							Error(MESSAGE_GCODE_UnspportedParameterNumber);	return;
+			}
+		}
 		else
 		{
 			Error(MESSAGE_GCODE_UnspportedParameterNumber);	return;
@@ -257,6 +251,74 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 		ExpectEndOfCommand();
 	}
 }
+////////////////////////////////////////////////////////////
+
+const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfo(const void*param, bool(*check)(const SParamInfo*, const void*param))
+{
+	const SParamInfo* item = &_paramdef[0];
+	while (item->_paramNo != 0)
+	{
+		if (check(item, param)) return item;
+		item++;
+	}
+
+	return NULL;
+}
+
+////////////////////////////////////////////////////////////
+
+const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfoByText(const char* text)
+{
+	return FindParamInfo(text, [](const SParamInfo* p, const void*x) -> bool
+	{
+		const __FlashStringHelper* text = p->GetText();
+		return text != NULL && strcmp_P((char*)x, (const char*) text) == 0;
+	});
+}
+
+////////////////////////////////////////////////////////////
+
+const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfoByParamNo(param_t paramNo)
+{
+	return FindParamInfo((const void*)paramNo, [](const SParamInfo* p, const void*x) -> bool
+	{
+		param_t pramamNo = (param_t)x;
+		return p->_paramNo == pramamNo ||	// exact same paramno
+			(p->_allowaxisofs && p->_paramNo <= pramamNo && p->_paramNo + NUM_AXIS > pramamNo);	// diff with axis
+	});
+}
+
+////////////////////////////////////////////////////////////
+
+static const char _feedrate[] PROGMEM = "_feedrate";
+//static const char _g28home[] PROGMEM = "_g92home";
+
+const CGCodeParser::SParamInfo CGCodeParser::_paramdef[] PROGMEM =
+{
+	{ PARAMSTART_G28HOME,	NULL,		true },
+	{ PARAMSTART_G92OFFSET,	NULL,		true },
+	{ PARAMSTART_CURRENTPOS,	NULL,	true },
+	{ PARAMSTART_CURRENTABSPOS,	NULL,	true },
+	{ PARAMSTART_BACKLASH,	NULL,		true },
+	{ PARAMSTART_BACKLASH_FEEDRATE,	NULL,	   false },
+	{ PARAMSTART_MAX,	NULL,			true },
+	{ PARAMSTART_MIN,	NULL,			true },
+	{ PARAMSTART_ACC,	NULL,			true },
+	{ PARAMSTART_DEC,	NULL,			true },
+	{ PARAMSTART_JERK,	NULL,			true },
+	{ PARAMSTART_CONTROLLERFAN,	NULL,	false },
+	{ PARAMSTART_RAPIDMOVEFEED,	NULL,	false },
+
+	{ PARAMSTART_G54OFFSET + 0 * PARAMSTART_G54FF_OFFSET,	NULL,	true },
+	{ PARAMSTART_G54OFFSET + 1 * PARAMSTART_G54FF_OFFSET,	NULL,	true },
+	{ PARAMSTART_G54OFFSET + 2 * PARAMSTART_G54FF_OFFSET,	NULL,	true },
+	{ PARAMSTART_G54OFFSET + 3 * PARAMSTART_G54FF_OFFSET,	NULL,	true },
+	{ PARAMSTART_G54OFFSET + 4 * PARAMSTART_G54FF_OFFSET,	NULL,	true },
+	{ PARAMSTART_G54OFFSET + 5 * PARAMSTART_G54FF_OFFSET,	NULL,	true },
+
+	{ PARAMSTART_FEEDRATE,	_feedrate, false },
+	{ 0,NULL,false }
+};
 
 ////////////////////////////////////////////////////////////
 
@@ -508,7 +570,7 @@ void CGCodeParser::G10Command()
 		case 2:
 		{
 			if (p == 0) { p = _modalstate.ZeroPresetIdx; }		// current
-			if (p > G54ARRAYSIZE-1)  { Error(MESSAGE_GCODE_UnsupportedCoordinateSystemUseG54Instead); return; }
+			if (p > G54ARRAYSIZE)  { Error(MESSAGE_GCODE_UnsupportedCoordinateSystemUseG54Instead); return; }
 
 			for (unsigned char axis = 0; axis < NUM_AXIS; axis++)
 			{
@@ -820,7 +882,7 @@ void CGCodeParser::G5xCommand(unsigned char idx)
 
 	if (CutterRadiosIsOn()) return;
 
-	if (G54ARRAYSIZE-1 < idx)
+	if (idx > G54ARRAYSIZE)
 	{
 		ErrorNotImplemented();
 		return;
@@ -1241,20 +1303,5 @@ void CGCodeParser::PrintRelPosition()
 
 		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i) - CGCodeParser::GetAllPreset(i), tmp, 3));
 	}
-}
-
-////////////////////////////////////////////////////////////
-
-static const char _home[] PROGMEM = "_home";
-
-const CGCodeParser::SParam CGCodeParser::_paramdef[] PROGMEM =
-{
-	{ PARAMSTART_G28HOME, _home, true },
-	{ 0 }
-};
-
-param_t CGCodeParser::GetParam(const char* text, axis_t& axis)
-{
-	return 0;
 }
 

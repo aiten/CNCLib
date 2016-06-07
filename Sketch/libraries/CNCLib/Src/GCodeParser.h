@@ -28,9 +28,20 @@
 
 typedef unsigned short param_t;
 
-#define NUM_PARAMETER	8
 #define NUM_MAXPARAMNAMELENGTH 16
-#define G54ARRAYSIZE			2			
+
+#if defined(__SAM3X8E__)
+
+#define NUM_PARAMETER	16
+#define G54ARRAYSIZE	6
+
+#else
+
+#define NUM_PARAMETER	8
+#define G54ARRAYSIZE	2
+
+#endif
+
 
 // see: http://linuxcnc.org/docs/html/gcode/overview.html#_numbered_parameters_a_id_sub_numbered_parameters_a
 
@@ -54,6 +65,12 @@ typedef unsigned short param_t;
 
 #define PARAMSTART_CONTROLLERFAN	6900	// Controllerfan if not idle (0 if disabled, 255 max)
 #define PARAMSTART_RAPIDMOVEFEED	6901	// RapidMove Feedrate
+
+// name, name to internal number
+
+#define PARAMSTART_INTERNAL			14000
+#define PARAMSTART_FEEDRATE			(PARAMSTART_INTERNAL+0)	// Feedrate
+
 
 // g73 retraction
 #define G73RETRACTION			200			// mm1000_t => 0.2mm
@@ -248,21 +265,25 @@ protected:
 	void SetPositionAfterG68G69()				{ CMotionControlBase::GetInstance()->SetPositionFromMachine(); }
 
 
-private:
+protected:
 
-	struct SParam
+	struct SParamInfo
 	{
 	public:
 		param_t _paramNo;		// base param adress
 		const char* _text;
-		bool	_axisallowed;
+		bool _allowaxisofs;
 	public:
+		//const char* GetText() const { return (const char*)pgm_read_ptr(&this->_text); }
 		const __FlashStringHelper* GetText() const { return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
+
 	};
 
-	static const struct SParam _paramdef[] PROGMEM;
+	static const struct SParamInfo _paramdef[] PROGMEM;
 
-	param_t GetParam(const char* text, axis_t& axis);
+	static const SParamInfo* FindParamInfo(const void*param, bool(*check)(const SParamInfo*, const void*param));
+	static const SParamInfo* FindParamInfoByText(const char* text);
+	static const SParamInfo* FindParamInfoByParamNo(param_t paramNo);
 };
 
 ////////////////////////////////////////////////////////

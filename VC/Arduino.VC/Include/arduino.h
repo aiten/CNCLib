@@ -61,6 +61,7 @@
 
 #define strcpy_P(a,b) strcpy(a,b)
 #define strcat_P(a,b) strcat(a,b)
+#define strcmp_P(a,b) strcmp(a,b)
 
 #define __FlashStringHelper char
 #define F(a) a
