@@ -163,7 +163,7 @@ static bool IsG28HomeParam(param_t paramNo, axis_t&axis)				{ return IsParam(par
 static bool IsG92OffsetParam(param_t paramNo, axis_t&axis)				{ return IsParam(paramNo, PARAMSTART_G92OFFSET, axis); }
 
 // 5221-5230 - Coordinate System 1, G54 (X Y Z A B C U V W R) - R denotes the XY rotation angle around the Z axis 
-static bool IsG54OffsetParam(param_t paramNo, axis_t&axis)				{ return IsParam(paramNo, PARAMSTART_G54OFFSET, axis); }
+static bool IsG54OffsetParam(param_t paramNo, unsigned char i, axis_t&axis)	{ return IsParam(paramNo, PARAMSTART_G54OFFSET+i*PARAMSTART_G54FF_OFFSET, axis); }
 
 // 5420-5428 - Current Position including offsets in current program units (X Y Z A B C U V W)
 static bool IsCurrentPosParam(param_t paramNo, axis_t&axis)				{ return IsParam(paramNo, PARAMSTART_CURRENTPOS, axis); }
@@ -203,7 +203,11 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 	}
 
 	if (IsG92OffsetParam(paramNo,axis))			return GetParamAsPosition(super::_modalstate.G92Pospreset[axis],axis);
-	if (IsG54OffsetParam(paramNo,axis))			return GetParamAsPosition(_modalstate.G54Pospreset[axis],axis);
+	for (unsigned char i = 0; i < G54ARRAYSIZE; i++)
+	{
+		if (IsG54OffsetParam(paramNo, i, axis))
+			return GetParamAsPosition(_modalstate.G54Pospreset[i][axis], axis);
+	}
 	if (IsCurrentPosParam(paramNo,axis))		return GetParamAsPosition(GetRelativePosition(axis),axis);
 
 	// customized extension
@@ -265,49 +269,10 @@ mm1000_t CGCodeParser::CalcAllPreset(axis_t axis)
 
 mm1000_t CGCodeParser::GetG54PosPreset(axis_t axis)
 {
-	switch (_modlessstate.ZeroPresetIdx)
+	if (_modlessstate.ZeroPresetIdx > 0)
 	{
-		//		default:
-		//		case 0: return 0;
-
-		//G54
-		case 1: return _modalstate.G54Pospreset[axis];
-
-
-			//predifined Positions:
-			//G55
-			// Z always negativ
-		case 2:
-			if (axis == Z_AXIS) return CMotionControlBase::GetInstance()->ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis));
-			break;
-
-			//G56
-			// Y,Z always negativ
-		case 3:
-			if (axis == Y_AXIS || axis == Z_AXIS) return CMotionControlBase::GetInstance()->ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis));
-			break;
-
-			//G57
-			// X,Y,Z always negativ
-		case 4:
-			if (axis == X_AXIS || axis == Y_AXIS || axis == Z_AXIS) return CMotionControlBase::GetInstance()->ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis));
-			break;
-
-			//G58
-			// X/2,Y/2, Z always negativ
-		case 5:
-			if (axis == X_AXIS || axis == Y_AXIS) return CMotionControlBase::GetInstance()->ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis) - (CStepper::GetInstance()->GetLimitMax(axis) - CStepper::GetInstance()->GetLimitMin(axis)) / 2);
-			if (axis == Z_AXIS) return CMotionControlBase::GetInstance()->ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis));
-			break;
-
-			//G59
-			// X/2,Y/2
-		case 6:
-			if (axis == X_AXIS || axis == Y_AXIS) return CMotionControlBase::GetInstance()->ToMm1000(axis, CStepper::GetInstance()->GetLimitMax(axis) - (CStepper::GetInstance()->GetLimitMax(axis) - CStepper::GetInstance()->GetLimitMin(axis)) / 2);
-			break;
-
+		return _modalstate.G54Pospreset[_modlessstate.ZeroPresetIdx - 1][axis];
 	}
-
 	// no preset
 	return 0;
 }
@@ -543,13 +508,13 @@ void CGCodeParser::G10Command()
 		case 2:
 		{
 			if (p == 0) { p = _modalstate.ZeroPresetIdx; }		// current
-			if (p > 1)  { Error(MESSAGE_GCODE_UnsupportedCoordinateSystemUseG54Instead); return; }
+			if (p > G54ARRAYSIZE-1)  { Error(MESSAGE_GCODE_UnsupportedCoordinateSystemUseG54Instead); return; }
 
 			for (unsigned char axis = 0; axis < NUM_AXIS; axis++)
 			{
 				if (IsBitSet(move.axes, axis))
 				{
-					_modalstate.G54Pospreset[axis] = move.newpos[axis];
+					_modalstate.G54Pospreset[p-1][axis] = move.newpos[axis];
 				}
 			}
 			break;
@@ -851,11 +816,17 @@ void CGCodeParser::G53Command()
 
 void CGCodeParser::G5xCommand(unsigned char idx)
 {
+	// G54 => idx = 1 => arraysize==1
+
 	if (CutterRadiosIsOn()) return;
 
-	_modlessstate.ZeroPresetIdx =
-		_modalstate.ZeroPresetIdx = idx;
+	if (G54ARRAYSIZE-1 < idx)
+	{
+		ErrorNotImplemented();
+		return;
+	}
 
+	_modlessstate.ZeroPresetIdx = _modalstate.ZeroPresetIdx = idx;
 	CLcd::InvalidateLcd(); 
 }
 
@@ -1270,5 +1241,20 @@ void CGCodeParser::PrintRelPosition()
 
 		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i) - CGCodeParser::GetAllPreset(i), tmp, 3));
 	}
+}
+
+////////////////////////////////////////////////////////////
+
+static const char _home[] PROGMEM = "_home";
+
+const CGCodeParser::SParam CGCodeParser::_paramdef[] PROGMEM =
+{
+	{ PARAMSTART_G28HOME, _home, true },
+	{ 0 }
+};
+
+param_t CGCodeParser::GetParam(const char* text, axis_t& axis)
+{
+	return 0;
 }
 

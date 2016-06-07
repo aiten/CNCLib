@@ -38,12 +38,7 @@ private:
 
 public:
 
-	CMyControl()				 { }
-
-	virtual void Kill() override;
-
-//	virtual void IOControl(unsigned char tool, unsigned short level) override;
-//	virtual unsigned short IOControl(unsigned char tool) override;
+	//	CMyControl()				 { }
 
 protected:
 
@@ -55,11 +50,9 @@ protected:
 
 	virtual void GoToReference() override;
 
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
-
 private:
 
-	CReadPinIOControl<LCD_KILL_PIN,KILL_ON> _killLcd;
+	CReadPinIOControl<LCD_KILL_PIN, KILL_ON> _killLcd;
 };
 
 ////////////////////////////////////////////////////////

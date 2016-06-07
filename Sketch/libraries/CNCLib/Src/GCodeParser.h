@@ -30,12 +30,14 @@ typedef unsigned short param_t;
 
 #define NUM_PARAMETER	8
 #define NUM_MAXPARAMNAMELENGTH 16
+#define G54ARRAYSIZE			2			
 
 // see: http://linuxcnc.org/docs/html/gcode/overview.html#_numbered_parameters_a_id_sub_numbered_parameters_a
 
 #define PARAMSTART_G28HOME		5161		// 5161-5169 - G28 Home for (X Y Z A B C U V W)
 #define PARAMSTART_G92OFFSET	5211		// 5211-5219 - G92 offset (X Y Z A B C U V W) 
 #define PARAMSTART_G54OFFSET	5221		// 5221-5230 - Coordinate System 1, G54 (X Y Z A B C U V W R) - R denotes the XY rotation angle around the Z axis 
+#define PARAMSTART_G54FF_OFFSET	  20		// 5241-5250 - Coordinate System 2, G55 (X Y Z A B C U V W R) - R denotes the XY rotation angle around the Z axis 
 #define PARAMSTART_CURRENTPOS	5420		// 5420-5428 - Current Position including offsets in current program units (X Y Z A B C U V W)
 
 // extent
@@ -71,7 +73,7 @@ public:
 
 	static mm1000_t GetG54PosPreset(axis_t axis);
 	static mm1000_t GetToolHeightPosPreset(axis_t axis)		{ return axis == super::_modalstate.Plane_axis_2 ? _modalstate.ToolHeigtCompensation : 0; }
-	static void SetG54PosPreset(axis_t axis, mm1000_t pos)	{ _modalstate.G54Pospreset[axis] = pos; }
+	static void SetG54PosPreset(axis_t axis, mm1000_t pos)	{ _modalstate.G54Pospreset[0][axis] = pos; }
 	static unsigned char GetZeroPresetIdx()					{ return _modalstate.ZeroPresetIdx; }
 	static void SetZeroPresetIdx(unsigned char idx)			{ _modalstate.ZeroPresetIdx = idx; }
 
@@ -128,7 +130,7 @@ protected:
 		mm1000_t		G8xR;
 		mm1000_t		G8xP;
 
-		mm1000_t		G54Pospreset[NUM_AXIS];
+		mm1000_t		G54Pospreset[G54ARRAYSIZE][NUM_AXIS];	// 54-59
 		mm1000_t		ToolHeigtCompensation;
 
 		float			Parameter[NUM_PARAMETER];	// this is a expression, mm or inch
@@ -244,6 +246,23 @@ protected:
 	static void PrintRelPosition();
 
 	void SetPositionAfterG68G69()				{ CMotionControlBase::GetInstance()->SetPositionFromMachine(); }
+
+
+private:
+
+	struct SParam
+	{
+	public:
+		param_t _paramNo;		// base param adress
+		const char* _text;
+		bool	_axisallowed;
+	public:
+		const __FlashStringHelper* GetText() const { return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
+	};
+
+	static const struct SParam _paramdef[] PROGMEM;
+
+	param_t GetParam(const char* text, axis_t& axis);
 };
 
 ////////////////////////////////////////////////////////

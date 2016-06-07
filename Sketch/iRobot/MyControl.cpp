@@ -71,37 +71,7 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED,CNC_ACC,CNC_DEC);
 	_killLcd.Init();
 
-  InitSD(SD_ENABLE_PIN);
-
-}
-
-////////////////////////////////////////////////////////////
-/*
-void CMyControl::IOControl(unsigned char tool, unsigned short level)
-{
-	switch (tool)
-	{
-	}
-	
-	super::IOControl(tool, level);
-}
-
-////////////////////////////////////////////////////////////
-
-unsigned short CMyControl::IOControl(unsigned char tool)
-{
-	switch (tool)
-	{
-	}
-
-	return super::IOControl(tool);
-}
-*/
-////////////////////////////////////////////////////////////
-
-void CMyControl::Kill()
-{
-	super::Kill();
+	InitSD(SD_ENABLE_PIN);
 }
 
 ////////////////////////////////////////////////////////////
@@ -137,8 +107,3 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 }
 
 ////////////////////////////////////////////////////////////
-
-bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
-{
-	return super::OnStepperEvent(stepper, eventtype, addinfo);
-}
