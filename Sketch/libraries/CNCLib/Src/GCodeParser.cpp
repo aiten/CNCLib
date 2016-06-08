@@ -79,17 +79,28 @@ param_t CGCodeParser::ParseParamNo()
 {
 	if (_reader->SkipSpacesToUpper() == '<')		// named parameter
 	{
+		// format: <_varname : axis >
+		// e.g.    <_home:x>
 		_reader->GetNextChar();
 		char ch = _reader->SkipSpacesToUpper();
 		const char* start = _reader->GetBuffer();
+		const char* colon = NULL;
 
 		if (!CStreamReader::IsAlpha(ch))
 		{
 			Error(MESSAGE_GCODE_VaribaleMustStartWithAlpha); return 0;
 		}
 
-		while (CStreamReader::IsAlpha(ch) || CStreamReader::IsDigit(ch))
+		while (CStreamReader::IsAlpha(ch) || CStreamReader::IsDigit(ch) || ch==':')
 		{
+			if (ch == ':')
+			{
+				if (colon != NULL)
+				{
+					Error(MESSAGE_GCODE_NoValidVaribaleName); return 0;
+				}
+				colon = _reader->GetBuffer();
+			}
 			ch = _reader->GetNextChar();
 		}
 		const char* end = _reader->GetBuffer();
@@ -105,22 +116,36 @@ param_t CGCodeParser::ParseParamNo()
 		_reader->GetNextChar();
 
 		CStreamReader::CSetTemporary terminate(end);
+		axis_t a=X_AXIS;
+
+		if (colon != NULL)
+		{
+			if (colon[2] != 0 || (a = CharToAxis(CStreamReader::Toupper(colon[1]))) >= NUM_AXIS)
+			{
+				Error(MESSAGE_GCODE_NoValidVaribaleName); return 0;
+			}
+		}
 
 		if (start[0] == '_')			// all system parameter start with _
 		{
 			// see: http://www.linuxcnc.org/docs/devel/html/gcode/overview.html#_predefined_named_parameters_a_id_sec_predefined_named_parameters_a
-			axis_t a;
 			if (start[2] == 0 && (a = CharToAxis(CStreamReader::Toupper(start[1]))) < NUM_AXIS)
 			{
 				return PARAMSTART_CURRENTPOS + a;
 			}
 		}
 
+		CStreamReader::CSetTemporary terminatecolon(colon ? colon : end);
+
 		const SParamInfo* param = FindParamInfoByText(start);
 
 		if (param != NULL)
 		{
-			return pgm_read_word(&param->_paramNo);
+			if (pgm_read_byte(&param->_allowaxisofs)==0 && colon != NULL)
+			{
+				Error(MESSAGE_GCODE_NoValidVaribaleName); return 0;
+			}
+			return pgm_read_word(&param->_paramNo) + a;
 		}
 
 		Error(MESSAGE_GCODE_ParameterDoesntExist);
@@ -291,30 +316,36 @@ const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfoByParamNo(param_t par
 ////////////////////////////////////////////////////////////
 
 static const char _feedrate[] PROGMEM = "_feedrate";
-//static const char _g28home[] PROGMEM = "_g92home";
+static const char _g28home[] PROGMEM = "_g92home";
+static const char _g54home[] PROGMEM = "_g54home";
+static const char _g55home[] PROGMEM = "_g55home";
+static const char _g56home[] PROGMEM = "_g56home";
+static const char _g57home[] PROGMEM = "_g57home";
+static const char _g58home[] PROGMEM = "_g58home";
+static const char _g59home[] PROGMEM = "_g59home";
 
 const CGCodeParser::SParamInfo CGCodeParser::_paramdef[] PROGMEM =
 {
-	{ PARAMSTART_G28HOME,	NULL,		true },
-	{ PARAMSTART_G92OFFSET,	NULL,		true },
-	{ PARAMSTART_CURRENTPOS,	NULL,	true },
-	{ PARAMSTART_CURRENTABSPOS,	NULL,	true },
-	{ PARAMSTART_BACKLASH,	NULL,		true },
-	{ PARAMSTART_BACKLASH_FEEDRATE,	NULL,	   false },
-	{ PARAMSTART_MAX,	NULL,			true },
-	{ PARAMSTART_MIN,	NULL,			true },
-	{ PARAMSTART_ACC,	NULL,			true },
-	{ PARAMSTART_DEC,	NULL,			true },
-	{ PARAMSTART_JERK,	NULL,			true },
-	{ PARAMSTART_CONTROLLERFAN,	NULL,	false },
-	{ PARAMSTART_RAPIDMOVEFEED,	NULL,	false },
+	{ PARAMSTART_G28HOME,	NULL,			true },
+	{ PARAMSTART_G92OFFSET,	_g28home,		true },
+	{ PARAMSTART_CURRENTPOS,	NULL,		true },
+	{ PARAMSTART_CURRENTABSPOS,	NULL,		true },
+	{ PARAMSTART_BACKLASH,	NULL,			true },
+	{ PARAMSTART_BACKLASH_FEEDRATE,	NULL,	false },
+	{ PARAMSTART_MAX,	NULL,				true },
+	{ PARAMSTART_MIN,	NULL,				true },
+	{ PARAMSTART_ACC,	NULL,				true },
+	{ PARAMSTART_DEC,	NULL,				true },
+	{ PARAMSTART_JERK,	NULL,				true },
+	{ PARAMSTART_CONTROLLERFAN,	NULL,		false },
+	{ PARAMSTART_RAPIDMOVEFEED,	NULL,		false },
 
-	{ PARAMSTART_G54OFFSET + 0 * PARAMSTART_G54FF_OFFSET,	NULL,	true },
-	{ PARAMSTART_G54OFFSET + 1 * PARAMSTART_G54FF_OFFSET,	NULL,	true },
-	{ PARAMSTART_G54OFFSET + 2 * PARAMSTART_G54FF_OFFSET,	NULL,	true },
-	{ PARAMSTART_G54OFFSET + 3 * PARAMSTART_G54FF_OFFSET,	NULL,	true },
-	{ PARAMSTART_G54OFFSET + 4 * PARAMSTART_G54FF_OFFSET,	NULL,	true },
-	{ PARAMSTART_G54OFFSET + 5 * PARAMSTART_G54FF_OFFSET,	NULL,	true },
+	{ PARAMSTART_G54OFFSET + 0 * PARAMSTART_G54FF_OFFSET,	_g54home,	true },
+	{ PARAMSTART_G54OFFSET + 1 * PARAMSTART_G54FF_OFFSET,	_g55home,	true },
+	{ PARAMSTART_G54OFFSET + 2 * PARAMSTART_G54FF_OFFSET,	_g56home,	true },
+	{ PARAMSTART_G54OFFSET + 3 * PARAMSTART_G54FF_OFFSET,	_g57home,	true },
+	{ PARAMSTART_G54OFFSET + 4 * PARAMSTART_G54FF_OFFSET,	_g58home,	true },
+	{ PARAMSTART_G54OFFSET + 5 * PARAMSTART_G54FF_OFFSET,	_g59home,	true },
 
 	{ PARAMSTART_FEEDRATE,	_feedrate, false },
 	{ 0,NULL,false }
