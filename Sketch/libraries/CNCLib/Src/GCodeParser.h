@@ -274,8 +274,8 @@ protected:
 		const char* _text;
 		bool _allowaxisofs;
 	public:
-		//const char* GetText() const { return (const char*)pgm_read_ptr(&this->_text); }
-		const __FlashStringHelper* GetText() const { return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
+		const char* GetText() const { return (const char*)pgm_read_ptr(&this->_text); }
+		//const __FlashStringHelper* GetText() const { return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
 
 	};
 

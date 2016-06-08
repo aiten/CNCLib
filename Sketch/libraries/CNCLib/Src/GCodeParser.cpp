@@ -271,8 +271,8 @@ const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfoByText(const char* te
 {
 	return FindParamInfo(text, [](const SParamInfo* p, const void*x) -> bool
 	{
-		const __FlashStringHelper* text = p->GetText();
-		return text != NULL && strcmp_P((char*)x, (const char*) text) == 0;
+		const char* text = p->GetText();
+		return text != NULL && strcasecmp_P((const char*)x, text) == 0;
 	});
 }
 
