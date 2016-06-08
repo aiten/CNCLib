@@ -27,3 +27,6 @@ PublishProfiles/
 /VC/Arduino.VC/ArduinoVC.VC.db
 *.opendb
 /VC/Arduino.VC/Lib/StepperSystem.pdb
+/Doc
+/VC/Arduino.VC/iRobot/Axis.xlsx
+/VC/Arduino.VC/DCK40Laser/DCK40Laser.csv

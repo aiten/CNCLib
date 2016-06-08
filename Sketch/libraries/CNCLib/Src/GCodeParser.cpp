@@ -141,11 +141,11 @@ param_t CGCodeParser::ParseParamNo()
 
 		if (param != NULL)
 		{
-			if (pgm_read_byte(&param->_allowaxisofs)==0 && colon != NULL)
+			if (param->GetAllowAxisOfs()==false && colon != NULL)
 			{
 				Error(MESSAGE_GCODE_NoValidVaribaleName); return 0;
 			}
-			return pgm_read_word(&param->_paramNo) + a;
+			return param->GetParamNo() + a;
 		}
 
 		Error(MESSAGE_GCODE_ParameterDoesntExist);
@@ -196,8 +196,8 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 
 	if (param != NULL)
 	{
-		axis_t axis = (axis_t) (paramNo - param->_paramNo);
-		switch (pgm_read_word(&param->_paramNo))
+		axis_t axis = (axis_t) (paramNo - param->GetParamNo());
+		switch (param->GetParamNo())
 		{
 			case PARAMSTART_G28HOME:
 			{
@@ -223,7 +223,7 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 			case PARAMSTART_G54OFFSET + 4 * PARAMSTART_G54FF_OFFSET:
 			case PARAMSTART_G54OFFSET + 5 * PARAMSTART_G54FF_OFFSET:
 			{
-				unsigned char idx = (unsigned char)((pgm_read_word(&param->_paramNo) - PARAMSTART_G54OFFSET) / PARAMSTART_G54FF_OFFSET);
+				unsigned char idx = (unsigned char)((param->GetParamNo() - PARAMSTART_G54OFFSET) / PARAMSTART_G54FF_OFFSET);
 				if (idx < G54ARRAYSIZE)
 					return GetParamAsPosition(_modalstate.G54Pospreset[idx][axis], axis);
 				break;
@@ -252,8 +252,8 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 		if (IsModifyParam(paramNo))				{ _modalstate.Parameter[paramNo - 1] = exprpars.Answer; }
 		else if (param != NULL)
 		{
-			axis_t axis = (axis_t)(paramNo - param->_paramNo);
-			switch (pgm_read_word(&param->_paramNo))
+			axis_t axis = (axis_t)(paramNo - param->GetParamNo());
+			switch (param->GetParamNo())
 			{
 				case PARAMSTART_BACKLASH:			{ CStepper::GetInstance()->SetBacklash(axis, (mdist_t)GetParamAsMachine(mm1000, axis));	break;  }
 				case PARAMSTART_BACKLASH_FEEDRATE:	{ CStepper::GetInstance()->SetBacklash((steprate_t)CMotionControlBase::GetInstance()->ToMachine(0, mm1000 * 60)); break; }
@@ -281,7 +281,7 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfo(const void*param, bool(*check)(const SParamInfo*, const void*param))
 {
 	const SParamInfo* item = &_paramdef[0];
-	while (item->_paramNo != 0)
+	while (item->GetParamNo() != 0)
 	{
 		if (check(item, param)) return item;
 		item++;
@@ -307,9 +307,9 @@ const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfoByParamNo(param_t par
 {
 	return FindParamInfo((const void*)paramNo, [](const SParamInfo* p, const void*x) -> bool
 	{
-		param_t pramamNo = (param_t)x;
-		return p->_paramNo == pramamNo ||	// exact same paramno
-			(p->_allowaxisofs && p->_paramNo <= pramamNo && p->_paramNo + NUM_AXIS > pramamNo);	// diff with axis
+		param_t findparamNo = (param_t)x;
+		return p->GetParamNo() == findparamNo ||	// exact same paramno
+			(p->GetAllowAxisOfs() && p->GetParamNo() <= findparamNo && p->GetParamNo() + NUM_AXIS > findparamNo);	// diff with axis
 	});
 }
 

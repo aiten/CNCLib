@@ -274,9 +274,10 @@ protected:
 		const char* _text;
 		bool _allowaxisofs;
 	public:
-		const char* GetText() const { return (const char*)pgm_read_ptr(&this->_text); }
-		//const __FlashStringHelper* GetText() const { return (const __FlashStringHelper*)pgm_read_ptr(&this->_text); }
-
+		//SParamInfo(param_t paramNo, const char* text, bool allowaxisofs):_paramNo(paramNo),_text(text),_allowaxisofs(allowaxisofs) {};
+		const char* GetText()   const { return (const char*)pgm_read_ptr(&this->_text); }
+		param_t GetParamNo()    const { return pgm_read_word(&this->_paramNo); }
+		bool GetAllowAxisOfs()  const { return pgm_read_byte(&this->_allowaxisofs) != 0; }
 	};
 
 	static const struct SParamInfo _paramdef[] PROGMEM;
