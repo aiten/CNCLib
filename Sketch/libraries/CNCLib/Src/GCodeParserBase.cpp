@@ -95,23 +95,28 @@ void CGCodeParserBase::CleanupParse()
 void CGCodeParserBase::SkipCommentNested()
 {
 	unsigned char cnt = 0;
+	char*start = (char*)_reader->GetBuffer();
 
 	for (char ch = _reader->GetChar(); ch; ch = _reader->GetNextChar())
 	{
 		switch (ch)
 		{
-			case 0:	Error(MESSAGE_GCODE_CommentNestingError);	return;
-			case ')': cnt--; break;
+			case ')': 
+			{
+				cnt--;
+				if (cnt == 0)
+				{
+					_reader->GetNextChar();
+					CommentMessage(start);
+					return;
+				}
+				break;
+			}
 			case '(': cnt++; break;
 		}
-
-		if (cnt == 0)
-		{
-			_reader->GetNextChar();
-			SkipSpacesOrComment();
-			return;
-		}
 	}
+//	Error(MESSAGE_GCODE_CommentNestingError);
+//	return false;
 }
 
 ////////////////////////////////////////////////////////////
@@ -120,13 +125,7 @@ char CGCodeParserBase::SkipSpacesOrComment()
 {
 	switch (_reader->SkipSpaces())
 	{
-		case '(':	
-		{
-			char*start = (char*)_reader->GetBuffer();
-			SkipCommentNested();
-			CommentMessage(start);
-			break;
-		}
+		case '(':	SkipCommentNested();	break;
 		case '*':
 		case ';':	SkipCommentSingleLine(); break;
 	}

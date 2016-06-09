@@ -71,6 +71,28 @@ void CGCodeParser::CommentMessage(char* start)
 			StepperSerial.print(*(start++));
 		StepperSerial.println();
 	}
+	else
+	{
+		//see: http://linuxcnc.org/docs/html/gcode/overview.html#gcode:print
+		isMsg = TryToken(start, F("(PRINT,"), false, true);
+		if (isMsg)
+		{
+			start += 7;
+			while (start + 1 < _reader->GetBuffer())
+			{
+				char ch = *(start++);
+				if (ch == '#')
+				{
+					StepperSerial.print(GetUint32OrParam());
+				}
+				else
+				{
+					StepperSerial.print(ch);
+				}
+			}
+			StepperSerial.println();
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////
