@@ -115,8 +115,10 @@ void CGCodeParserBase::SkipCommentNested()
 			case '(': cnt++; break;
 		}
 	}
-//	Error(MESSAGE_GCODE_CommentNestingError);
-//	return false;
+
+#ifndef REDUCED_SIZE
+	Error(MESSAGE_GCODE_CommentNestingError);
+#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -715,7 +717,9 @@ void CGCodeParserBase::G28Command()
 		if (CheckError()) { return; }
 	}
 
+#ifndef REDUCED_SIZE
 	if (!ExpectEndOfCommand())		{ return; }
+#endif
 
 	if (move.axes == 0)
 	{
@@ -732,8 +736,7 @@ void CGCodeParserBase::G28Command()
 				if (usmin || usmax)
 					CControl::GetInstance()->GoToReference(axis, 0, usmin);
 				else
-//					CStepper::GetInstance()->SetPosition(axis, move.newpos[axis]);
-					CStepper::GetInstance()->SetPosition(axis, 0);
+					CStepper::GetInstance()->SetPosition(axis, move.newpos[axis]);
 			}
 		}
 	}
