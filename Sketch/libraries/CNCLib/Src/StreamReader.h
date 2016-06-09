@@ -29,10 +29,10 @@ class CStreamReader
 public:
 
 	CStreamReader();
-	void Init(char* buffer)					{ _buffer = buffer; _error = NULL; }
+	void Init(char* buffer)					{ _buffer = buffer; _error = 0; }
 
-	bool IsError()							{ return _error != NULL; };
-	const __FlashStringHelper * GetError()	{ return _error; }
+	bool IsError()							{ return _error != 0; };
+	error_t GetError()						{ return _error; }
 
 	char SkipSpaces();
 	char SkipSpacesToUpper()				{ return Toupper(SkipSpaces()); }
@@ -65,10 +65,10 @@ public:
 	static bool IsLowerAZ(char ch)			{ return ch >= 'a' && ch <= 'z'; }
 	static bool IsUpperAZ(char ch)			{ return ch >= 'A' && ch <= 'Z'; }
 
-	void Error(const __FlashStringHelper * error)		{ _error = error; MoveToEnd(); }
+	void Error(error_t error)				{ _error = error; MoveToEnd(); }
 
 	const char* _buffer;
-	const __FlashStringHelper * _error;
+	error_t _error;
 
 	class CSetTemporary
 	{

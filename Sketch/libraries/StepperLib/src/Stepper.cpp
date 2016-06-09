@@ -1024,14 +1024,14 @@ void CStepper::OnWait(EnumAsByte(EWaitType) wait)
 
 ////////////////////////////////////////////////////////
 
-void CStepper::OnError(const __FlashStringHelper * error)
+void CStepper::OnError(error_t error)
 {
 	CallEvent(OnErrorEvent, (void*)error);
 }
 
 ////////////////////////////////////////////////////////
 
-void CStepper::OnWarning(const __FlashStringHelper * warning)
+void CStepper::OnWarning(error_t warning)
 {
 	CallEvent(OnWarningEvent, (void*) warning);
 	StepperSerial.print(MESSAGE_WARNING);
@@ -1040,7 +1040,7 @@ void CStepper::OnWarning(const __FlashStringHelper * warning)
 
 ////////////////////////////////////////////////////////
 
-void CStepper::OnInfo(const __FlashStringHelper * info)
+void CStepper::OnInfo(error_t info)
 {
 	CallEvent(OnInfoEvent, (void*)info);
 	StepperSerial.print((MESSAGE_INFO));
@@ -1360,7 +1360,7 @@ void CStepper::EmergencyStopResurrect()
 {
 	AbortMove();		// make sure nothing is running
 	_pod._emergencyStop = false;
-	_pod._fatalerror = NULL;
+	_pod._fatalerror = 0;
 }
 
 ////////////////////////////////////////////////////////
@@ -1965,7 +1965,7 @@ void  CStepper::SetEnableAll(unsigned char level)
 
 void CStepper::QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], steprate_t vMax)
 {
-	_pod._error = NULL;
+	_pod._error = 0;
 	register axis_t i;
 
 #if USESLIP

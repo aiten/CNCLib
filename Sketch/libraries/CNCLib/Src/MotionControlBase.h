@@ -62,9 +62,9 @@ public:
 	static void ToMachine(const mm1000_t mm1000[NUM_AXIS], udist_t machine[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { machine[x] = _ToMachine(x, mm1000[x]); } };
 	static void ToMm1000(const udist_t machine[NUM_AXIS], mm1000_t mm1000[NUM_AXIS])			{ for (axis_t x = 0; x < NUM_AXIS; x++) { mm1000[x] = _ToMm1000(x, machine[x]); } };
 
-	bool IsError()											{ return _error != NULL; };
-	const __FlashStringHelper * GetError()					{ return _error; }
-	void ClearError()										{ _error = NULL; }
+	bool IsError()											{ return _error != 0; };
+	error_t GetError()										{ return _error; }
+	void ClearError()										{ _error = 0; }
 
 protected:
 
@@ -73,13 +73,13 @@ protected:
 
 	mm1000_t	_current[NUM_AXIS];
 
-	void Error(const __FlashStringHelper * error)			{ _error = error; }
+	void Error(error_t error)			{ _error = error; }
 
 private:
 
 	static ToMm1000_t _ToMm1000;
 	static ToMachine_t _ToMachine;
-	const __FlashStringHelper *		_error=NULL;
+	error_t	_error=0;
 
 public:
 

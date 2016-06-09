@@ -157,7 +157,7 @@ bool CControl::ParseAndPrintResult(CParser *parser, Stream* output)
 
 	parser->ParseCommand();
 
-	if (parser->GetError() != NULL)
+	if (parser->IsError())
 	{
 		if (output)
 		{
@@ -187,7 +187,7 @@ bool CControl::ParseAndPrintResult(CParser *parser, Stream* output)
 
 	parser->ParseCommand();
 
-	if (parser->GetError() != NULL)
+	if (parser->IsError())
 	{
 		if (output) 
 		{

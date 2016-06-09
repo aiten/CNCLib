@@ -16,6 +16,8 @@
 */
 ////////////////////////////////////////////////////////
 
+#include <arduino.h>
+
 #pragma once
 
 //#define StepperSerial SerialUSB
@@ -44,6 +46,8 @@ typedef unsigned char axis_t;	// type for "axis"
 
 typedef signed   long sdist_t;	// tpye of stepper coord system (signed)
 typedef unsigned long udist_t;	// tpye of stepper coord system (unsigned)
+
+typedef const __FlashStringHelper * error_t;
 
 ////////////////////////////////////////////////////////
 //

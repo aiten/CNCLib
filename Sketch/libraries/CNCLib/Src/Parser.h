@@ -35,12 +35,12 @@ class CParser
 {
 public:
 
-	CParser(CStreamReader* reader,Stream* output)			{ _reader = reader; _output = output; _error = NULL; _OkMessage = NULL; };
+	CParser(CStreamReader* reader,Stream* output)			{ _reader = reader; _output = output; _error = 0; _OkMessage = NULL; };
 
 	void ParseCommand();
 
-	bool IsError()											{ return _error != NULL; };
-	const __FlashStringHelper * GetError()					{ return _error; }
+	bool IsError()											{ return _error != 0; };
+	error_t GetError()										{ return _error; }
 
 	typedef void(*PrintOKMessage)(void);
 	PrintOKMessage	GetOkMessage()							{ return _OkMessage; }
@@ -69,14 +69,14 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-	void ErrorAdd(const __FlashStringHelper * error)		{ if (!IsError()) Error(error); }
-	void Error(const __FlashStringHelper * error)			{ _error = error; _reader->MoveToEnd(); }
-	void Info(const __FlashStringHelper* s1)				{ if (_output) { _output->print(MESSAGE_INFO);  _output->println(s1); } }
-	void Warning(const __FlashStringHelper* s1)				{ if (_output) { _output->print(MESSAGE_WARNING);  _output->println(s1); } }
+	void ErrorAdd(error_t error)							{ if (!IsError()) Error(error); }
+	void Error(error_t error)								{ _error = error; _reader->MoveToEnd(); }
+	void Info(error_t s1)									{ if (_output) { _output->print(MESSAGE_INFO);  _output->println(s1); } }
+	void Warning(error_t s1)								{ if (_output) { _output->print(MESSAGE_WARNING);  _output->println(s1); } }
 
 	Stream*							_output;
 	CStreamReader*					_reader;
-	const __FlashStringHelper *		_error;
+	error_t							_error;
 	PrintOKMessage					_OkMessage;
 
 	long GetInt32Scale(long minvalue, long maxvalue, unsigned char scale, unsigned char maxscale);	// get "float" e.g. 1.234 => 1234 or 12 => 12000, limit with scale

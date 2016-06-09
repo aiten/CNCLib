@@ -118,13 +118,13 @@ public:
 
 	virtual void Init();
 
-	bool IsError()												{ return _pod._error != NULL; };
-	const __FlashStringHelper * GetError()						{ return _pod._error; }
-	void ClearError()											{ _pod._error = NULL; }
+	bool IsError()												{ return _pod._error != 0; };
+	error_t GetError()											{ return _pod._error; }
+	void ClearError()											{ _pod._error = 0; }
 
-	bool IsFatalError()											{ return _pod._fatalerror != NULL; };
-	const __FlashStringHelper * GetFatalError()					{ return _pod._fatalerror; }
-	void ClearFatalError()										{ _pod._fatalerror = NULL; }
+	bool IsFatalError()											{ return _pod._fatalerror != 0; };
+	error_t GetFatalError()										{ return _pod._fatalerror; }
+	void ClearFatalError()										{ _pod._fatalerror = 0; }
 
 
 	void SetMaxSpeed(axis_t axis, steprate_t vMax)				{ _pod._timerMax[axis] = SpeedToTimer(vMax); }
@@ -366,8 +366,8 @@ protected:
 		axisArray_t		_lastdirection;								// for backlash
 		axisArray_t		_invertdirection;							// invert direction
 
-		const __FlashStringHelper * _error;
-		const __FlashStringHelper * _fatalerror;
+		error_t			_error;
+		error_t			_fatalerror;
 
 		unsigned char	_timeOutEnable[NUM_AXIS];					// enabletimeout in sec if no step (0.. disable, always enabled)
 		unsigned char	_timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
@@ -619,14 +619,14 @@ protected:
 	debugvirtula void OnWait(EnumAsByte(EWaitType) wait);			// wait for finish move or movementqueue full
 	debugvirtula void OnStart();									// startup of movement
 
-	debugvirtula void OnError(const __FlashStringHelper * error);
-	debugvirtula void OnWarning(const __FlashStringHelper * warning);
-	debugvirtula void OnInfo(const __FlashStringHelper * info);
+	debugvirtula void OnError(error_t error);
+	debugvirtula void OnWarning(error_t warning);
+	debugvirtula void OnInfo(error_t info);
 
-	void FatalError(const __FlashStringHelper * error)					{ _pod._fatalerror = error; }
-	void Error(const __FlashStringHelper * error)						{ _pod._error = error; OnError(error); }
-	void Info(const __FlashStringHelper * info)							{ OnInfo(info); }
-	void Warning(const __FlashStringHelper * warning)					{ OnWarning(warning); }
+	void FatalError(error_t error)										{ _pod._fatalerror = error; }
+	void Error(error_t error)											{ _pod._error = error; OnError(error); }
+	void Info(error_t  info)											{ OnInfo(info); }
+	void Warning(error_t warning)										{ OnWarning(warning); }
 
 protected:
 

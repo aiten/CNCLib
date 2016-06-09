@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <arduino.h>
 
+#include "ConfigurationCNCLib.h"
 #include "StreamReader.h"
 
 ////////////////////////////////////////////////////////////
