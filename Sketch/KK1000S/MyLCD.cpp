@@ -103,7 +103,7 @@ void CMyLcd::Beep(const SPlayTone* play,bool fromProgMem)
 
 ////////////////////////////////////////////////////////////
 
-bool CMyLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type,void *data)
+bool CMyLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type,ptr_t data)
 {
 	if (type==DrawLoopHeader)
 	{

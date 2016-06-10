@@ -46,7 +46,7 @@ protected:
 	virtual class U8GLIB& GetU8G() override;
 	virtual class CMenuBase& GetMenu() override	{ return _menu; }
 
-	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type, void *data) override;
+	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type, ptr_t data) override;
 
 private:
 

@@ -216,21 +216,21 @@ unsigned long CU8GLcd::DrawLoop()
 
 	if (_curretDraw)
 	{
-		if ((this->*_curretDraw)(DrawLoopSetup,NULL))
+		if ((this->*_curretDraw)(DrawLoopSetup,0))
 		{
 			GetU8G().firstPage();
 			do
 			{
-				if (!(this->*_curretDraw)(DrawLoopHeader,NULL))
+				if (!(this->*_curretDraw)(DrawLoopHeader,0))
 					break;
 
-				if (!(this->*_curretDraw)(DrawLoopDraw,NULL))
+				if (!(this->*_curretDraw)(DrawLoopDraw,0))
 					break;
 			} 
 			while (GetU8G().nextPage());
 		}
 		
-		(this->*_curretDraw)(DrawLoopQueryTimerout,&timeout);
+		(this->*_curretDraw)(DrawLoopQueryTimerout,(ptr_t) &timeout);
 	}
 	return timeout;
 }
@@ -302,7 +302,7 @@ unsigned long CU8GLcd::Splash()
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type,void * /* data */)
+bool CU8GLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type, ptr_t /* data */)
 {
 	switch (type)
 	{
@@ -324,7 +324,7 @@ bool CU8GLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type,void * /* data */)
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopSplash(EnumAsByte(EDrawLoopType) type,void *data)
+bool CU8GLcd::DrawLoopSplash(EnumAsByte(EDrawLoopType) type, ptr_t data)
 {
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 200000; return true; }
 	if (type!=DrawLoopDraw)	return DrawLoopDefault(type,data);
@@ -338,7 +338,7 @@ bool CU8GLcd::DrawLoopSplash(EnumAsByte(EDrawLoopType) type,void *data)
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopDebug(EnumAsByte(EDrawLoopType) type,void *data)
+bool CU8GLcd::DrawLoopDebug(EnumAsByte(EDrawLoopType) type, ptr_t data)
 {
 	if (type==DrawLoopHeader)	return true;
 	if (type!=DrawLoopDraw)		return DrawLoopDefault(type,data);
@@ -381,7 +381,7 @@ bool CU8GLcd::DrawLoopDebug(EnumAsByte(EDrawLoopType) type,void *data)
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,void *data)
+bool CU8GLcd::DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type, ptr_t data)
 {
 	if (type==DrawLoopHeader)	return true;
 	if (type!=DrawLoopDraw)		return DrawLoopDefault(type,data);
@@ -406,7 +406,7 @@ bool CU8GLcd::DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,void *data)
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, void *data)
+bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, ptr_t data)
 {
 	if (type == DrawLoopHeader)	return true;
 	if (type != DrawLoopDraw)	return DrawLoopDefault(type, data);
@@ -437,7 +437,7 @@ bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, void *data)
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, void *data)
+bool CU8GLcd::DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, ptr_t data)
 {
 	if (type == DrawLoopHeader)	return true;
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 200000; return true; }
@@ -468,7 +468,7 @@ bool CU8GLcd::DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, void *data)
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, void *data)
+bool CU8GLcd::DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, ptr_t data)
 {
 	if (type == DrawLoopHeader)	return true;
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 200000; return true; }
@@ -513,7 +513,7 @@ inline unsigned char ToPageIdx(unsigned char idx)
 	return idx / SPEEDOVERIDESTEPSIZE;
 }
 
-bool CU8GLcd::DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, void *data)
+bool CU8GLcd::DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, ptr_t data)
 {
 	if (type == DrawLoopHeader)			return true;
 	if (type==DrawLoopQueryTimerout && _rotaryFocus == RotarySlider)	{ *((unsigned long*)data) = 333; return true; }
@@ -566,7 +566,7 @@ void CU8GLcd::ButtonPressShowMenu()
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopPreset(EnumAsByte(EDrawLoopType) type,void *data)
+bool CU8GLcd::DrawLoopPreset(EnumAsByte(EDrawLoopType) type, ptr_t data)
 {
 	if (type==DrawLoopHeader)			return true;
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 200000; return true; }
@@ -612,7 +612,7 @@ void CU8GLcd::ButtonPressStartSDPage()
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopStartSD(EnumAsByte(EDrawLoopType) type,void *data)
+bool CU8GLcd::DrawLoopStartSD(EnumAsByte(EDrawLoopType) type, ptr_t data)
 {
 	if (type!=DrawLoopDraw)		return DrawLoopDefault(type,data);
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 5000; return true; }
@@ -631,7 +631,7 @@ bool CU8GLcd::DrawLoopStartSD(EnumAsByte(EDrawLoopType) type,void *data)
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopError(EnumAsByte(EDrawLoopType) type,void *data)
+bool CU8GLcd::DrawLoopError(EnumAsByte(EDrawLoopType) type, ptr_t data)
 {
 	if (type!=DrawLoopDraw)		return DrawLoopDefault(type,data);
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 5000; return true; }
@@ -658,7 +658,7 @@ bool CU8GLcd::DrawLoopError(EnumAsByte(EDrawLoopType) type,void *data)
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,void *data)
+bool CU8GLcd::DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,ptr_t data)
 {
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 5000; return true; }
 	if (type!=DrawLoopDraw)		return DrawLoopDefault(type,data);
@@ -734,7 +734,7 @@ void CU8GLcd::ButtonPressMenuPage()
 
 ////////////////////////////////////////////////////////////
 
-bool CU8GLcd::DrawLoopMenu(EnumAsByte(EDrawLoopType) type,void *data)
+bool CU8GLcd::DrawLoopMenu(EnumAsByte(EDrawLoopType) type, ptr_t data)
 {
 	if (type==DrawLoopHeader)			return true;
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 333; return true; }

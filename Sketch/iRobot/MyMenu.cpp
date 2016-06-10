@@ -94,9 +94,9 @@ const CMyMenu::SMenuItemDef CMyMenu::_mainMenuItems[] PROGMEM =
 #endif
 #endif
 #endif
-	{ _mRotate, &CMenuBase::MenuButtonPressSetMenu, &_rotateMenu },
-	{ _mSD, &CMenuBase::MenuButtonPressSetMenu, &_SDMenu },
-	{ _mExtra, &CMenuBase::MenuButtonPressSetMenu, &_extraMenu },
+	{ _mRotate, &CMenuBase::MenuButtonPressSetMenu, (menuparam_t)&_rotateMenu },
+	{ _mSD, &CMenuBase::MenuButtonPressSetMenu, (menuparam_t)&_SDMenu },
+	{ _mExtra, &CMenuBase::MenuButtonPressSetMenu, (menuparam_t)&_extraMenu },
 	{ _mEnd, (MenuFunction) &CMyMenu::MenuButtonPressEnd },
 	{ NULL, 0 }
 };
@@ -118,7 +118,7 @@ const CMyMenu::SMenuItemDef CMyMenu::_moveMenuItems[] PROGMEM =
 	{ _mM10,	&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveM10 },
 	{ _mHome,	&CMenuBase::MenuButtonPressMove, (menuparam_t)MoveHome },
 	{ _mG92,	&CMenuBase::MenuButtonPressMoveG92 },
-	{ _mBack,   &CMenuBase::MenuButtonPressMenuBack, &_mainMenu },
+	{ _mBack,   &CMenuBase::MenuButtonPressMenuBack,(menuparam_t)&_mainMenu },
 	{ NULL, 0 }
 };
 
@@ -131,7 +131,7 @@ const CMyMenu::SMenuItemDef CMyMenu::_rotateMenuItems[] PROGMEM =
 	{ _mR0,   &CMenuBase::MenuButtonPressRotate, (menuparam_t)RotateOffset },
 	{ _mRYZ,  &CMenuBase::MenuButtonPressRotate, (menuparam_t)RotateSetYZ },
 	{ _mRX,   &CMenuBase::MenuButtonPressRotate, (menuparam_t)RotateSetX },
-	{ _mBack, &CMenuBase::MenuButtonPressMenuBack, &_mainMenu },
+	{ _mBack, &CMenuBase::MenuButtonPressMenuBack,(menuparam_t) &_mainMenu },
 	{ NULL, 0 }
 };
 
@@ -141,7 +141,7 @@ const CMyMenu::SMenuItemDef CMyMenu::_rotateMenuItems[] PROGMEM =
 const CMyMenu::SMenuItemDef CMyMenu::_SDMenuItems[] PROGMEM =
 {
 	{ _mSDInit, &CMenuBase::MenuButtonPressSetCommand, (menuparam_t) _m21 },
-	{ _mBack, &CMenuBase::MenuButtonPressMenuBack, &_mainMenu },
+	{ _mBack, &CMenuBase::MenuButtonPressMenuBack, (menuparam_t) &_mainMenu },
 	{ NULL, 0 }
 };
 
@@ -157,7 +157,7 @@ const CMyMenu::SMenuItemDef CMyMenu::_extraMenuItems[] PROGMEM =
 //	{ _mCoolant, &CMenuBase::MenuButtonPressCoolant },
 	{ _mFuerElise, (MenuFunction) &CMyMenu::MenuButtonPressFuerElise },
 	{ _mResurrect, (MenuFunction) &CMyMenu::MenuButtonPressResurrect },
-	{ _mBack,	 &CMenuBase::MenuButtonPressMenuBack, &_mainMenu },
+	{ _mBack,	 &CMenuBase::MenuButtonPressMenuBack, (menuparam_t) &_mainMenu },
 	{ NULL, 0 }
 };
 

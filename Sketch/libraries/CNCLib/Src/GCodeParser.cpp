@@ -304,7 +304,7 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 }
 ////////////////////////////////////////////////////////////
 
-const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfo(const void*param, bool(*check)(const SParamInfo*, const void*param))
+const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfo(ptr_t param, bool(*check)(const SParamInfo*, ptr_t param))
 {
 	const SParamInfo* item = &_paramdef[0];
 	while (item->GetParamNo() != 0)
@@ -320,7 +320,7 @@ const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfo(const void*param, bo
 
 const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfoByText(const char* text)
 {
-	return FindParamInfo(text, [](const SParamInfo* p, const void*x) -> bool
+	return FindParamInfo((ptr_t) text, [](const SParamInfo* p, ptr_t x) -> bool
 	{
 		const char* text = p->GetText();
 		return text != NULL && strcasecmp_P((const char*)x, text) == 0;
@@ -331,7 +331,7 @@ const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfoByText(const char* te
 
 const CGCodeParser::SParamInfo* CGCodeParser::FindParamInfoByParamNo(param_t paramNo)
 {
-	return FindParamInfo((const void*)paramNo, [](const SParamInfo* p, const void*x) -> bool
+	return FindParamInfo((ptr_t) paramNo, [](const SParamInfo* p, ptr_t x) -> bool
 	{
 		param_t findparamNo = (param_t)x;
 		return p->GetParamNo() == findparamNo ||	// exact same paramno

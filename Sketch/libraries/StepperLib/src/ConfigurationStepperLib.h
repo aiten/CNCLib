@@ -80,6 +80,8 @@ typedef const __FlashStringHelper * error_t;
 #define STEPBUFFERSIZE		128		// size 2^x but not 256
 #define MOVEMENTBUFFERSIZE	64
 
+typedef short ptr_t;					// size of a pointer
+
 ////////////////////////////////////////////////////////
 
 #elif defined(__AVR_ATmega328P__)
@@ -98,6 +100,8 @@ typedef const __FlashStringHelper * error_t;
 #define _NO_LONG_MESSAGE
 #define _NO_DUMP
 
+typedef short ptr_t;					// size of a pointer
+
 ////////////////////////////////////////////////////////
 
 #elif defined(__SAM3X8E__)
@@ -111,6 +115,8 @@ typedef const __FlashStringHelper * error_t;
 
 #define STEPBUFFERSIZE		128		// size 2^x but not 256
 #define MOVEMENTBUFFERSIZE	64
+
+typedef long ptr_t;					// size of a pointer
 
 ////////////////////////////////////////////////////////
 
@@ -135,6 +141,8 @@ typedef unsigned long long uint64_t;
 #define REFERENCESTABLETIME	0
 
 #define MOVEMENTINFOSIZE	128
+
+typedef long ptr_t;					// size of a pointer
 
 ////////////////////////////////////////////////////////
 

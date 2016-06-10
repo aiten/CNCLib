@@ -27,9 +27,9 @@
 
 #include <itoa.h>
 
-#define pgm_read_ptr pgm_read_dword
-#define pgm_read_int pgm_read_dword
-#define pgm_read_uint pgm_read_dword
+#undef pgm_read_ptr
+inline  const void* pgm_read_ptr(const void* p) { return *((void **)p); }
+inline  int pgm_read_int(const void* p) { return * ((const int*) p); }
 
 #define TIMER0FREQUENCE		TIMER3FREQUENCE
 #define TIMER0PRESCALE      TIMER3PRESCALE		
