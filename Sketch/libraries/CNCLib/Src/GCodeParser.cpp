@@ -78,18 +78,22 @@ void CGCodeParser::CommentMessage(char* start)
 		if (isMsg)
 		{
 			start += 7;
-			while (start + 1 < _reader->GetBuffer())
+			const char*current = _reader->GetBuffer();
+			while (start + 1 < current)
 			{
 				char ch = *(start++);
 				if (ch == '#')
 				{
+					_reader->ResetBuffer(start-1);
 					StepperSerial.print(GetUint32OrParam());
+					start = (char*) _reader->GetBuffer();
 				}
 				else
 				{
 					StepperSerial.print(ch);
 				}
 			}
+			_reader->ResetBuffer(current);
 			StepperSerial.println();
 		}
 	}
