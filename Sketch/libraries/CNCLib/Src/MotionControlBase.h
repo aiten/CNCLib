@@ -74,6 +74,7 @@ protected:
 	mm1000_t	_current[NUM_AXIS];
 
 	void Error(error_t error)			{ _error = error; }
+	void Error()						{ Error(MESSAGE_UNKNOWNERROR); }
 
 private:
 

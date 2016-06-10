@@ -26,12 +26,16 @@
 #define StepperMessageOr(a,b)	F(a)
 #define StepperMessageOne(a)	F(a)
 
+#define MESSAGE(a)
+
 #else
 
 //#define StepperMessage(a,b) b
 #define StepperMessage(a,b) F(a ":" b)
 #define StepperMessageOr(a,b)	F(b)
 #define StepperMessageOne(a)	F(a)
+
+#define MESSAGE(a) a
 
 #endif
 
@@ -40,6 +44,8 @@
 #define MESSAGE_ERROR								StepperMessageOne("Error:")
 #define MESSAGE_INFO								StepperMessageOne("Info:")
 #define MESSAGE_WARNING								StepperMessageOne("Warning:")
+
+#define MESSAGE_UNKNOWNERROR						StepperMessage("?","Unknown error")
 
 #define MESSAGE_STEPPER_EmptyMoveSkipped			StepperMessage("1","EmptyMove skipped")
 #define MESSAGE_STEPPER_Backlash					StepperMessage("2","Backlash")

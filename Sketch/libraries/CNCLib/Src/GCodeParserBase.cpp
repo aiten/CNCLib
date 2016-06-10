@@ -116,9 +116,7 @@ void CGCodeParserBase::SkipCommentNested()
 		}
 	}
 
-#ifndef REDUCED_SIZE
-	Error(MESSAGE_GCODE_CommentNestingError);
-#endif
+	Error(MESSAGE(MESSAGE_GCODE_CommentNestingError));
 }
 
 ////////////////////////////////////////////////////////////
@@ -172,7 +170,7 @@ mm1000_t CGCodeParserBase::ParseCoordinate(bool convertUnits)
 
 mm1000_t CGCodeParserBase::ParseParameter(bool)
 {
-	Error(MESSAGE_GCODE_ParameterNotFound);
+	Error(MESSAGE(MESSAGE_GCODE_ParameterNotFound));
 	return 0;
 }
 
@@ -193,7 +191,7 @@ unsigned long CGCodeParserBase::GetUint32OrParam(unsigned long max)
 
 	if (param > max)
 	{
-		Error(MESSAGE_GCODE_ValueGreaterThanMax);
+		Error(MESSAGE(MESSAGE_GCODE_ValueGreaterThanMax));
 		return 0;
 	}
 	return param;
@@ -219,7 +217,7 @@ bool CGCodeParserBase::ParseLineNumber(bool setlinenumber)
 	{
 		if (!IsUInt(_reader->GetNextChar()))
 		{
-			Error(MESSAGE_GCODE_LinenumberExpected);
+			Error(MESSAGE(MESSAGE_GCODE_LinenumberExpected));
 			return false;
 		}
 		long linenumber = GetInt32();
@@ -289,11 +287,11 @@ void CGCodeParserBase::Parse()
 			{
 				if (!IsUInt(_reader->GetNextChar()))
 				{
-					Error(MESSAGE_GCODE_CommandExpected);		return;
+					Error(MESSAGE(MESSAGE_GCODE_CommandExpected));		return;
 				}
 				if (!GCommand(GetGCode()))
 				{
-					Error(MESSAGE_GCODE_UnsupportedGCommand);	return;
+					Error(MESSAGE(MESSAGE_GCODE_UnsupportedGCommand));	return;
 				}
 				break;
 			}
@@ -301,11 +299,11 @@ void CGCodeParserBase::Parse()
 			{
 				if (!IsUInt(_reader->GetNextChar()))
 				{
-					Error(MESSAGE_GCODE_MCodeExpected);		return;
+					Error(MESSAGE(MESSAGE_GCODE_MCodeExpected));		return;
 				}
 				if (!MCommand(GetMCode()))
 				{
-					Error(MESSAGE_GCODE_UnspportedMCodeIgnored);	return;
+					Error(MESSAGE(MESSAGE_GCODE_UnspportedMCodeIgnored));	return;
 				}
 				break;
 			}
@@ -318,7 +316,7 @@ void CGCodeParserBase::Parse()
 				{
 					if (!LastCommand())
 					{
-						Error(MESSAGE_GCODE_IllegalCommand);
+						Error(MESSAGE(MESSAGE_GCODE_IllegalCommand));
 						return;
 					}
 				}
@@ -400,13 +398,13 @@ bool CGCodeParserBase::CheckAxisSpecified(axis_t axis, unsigned char& axes)
 {
 	if (axis >= NUM_AXIS)
 	{
-		Error(MESSAGE_GCODE_AxisNotSupported);
+		Error(MESSAGE(MESSAGE_GCODE_AxisNotSupported));
 		return false;
 	}
 
 	if (IsBitSet(axes, axis))
 	{
-		Error(MESSAGE_GCODE_AxisAlreadySpecified);
+		Error(MESSAGE(MESSAGE_GCODE_AxisAlreadySpecified));
 		return false;
 	}
 
@@ -454,7 +452,7 @@ void CGCodeParserBase::GetUint8(unsigned char& value, unsigned char&specified, u
 {
 	if (IsBitSet(specified, bit))
 	{
-		Error(MESSAGE_GCODE_ParameterSpecifiedMoreThanOnce);
+		Error(MESSAGE(MESSAGE_GCODE_ParameterSpecifiedMoreThanOnce));
 		return;
 	}
 
@@ -491,7 +489,7 @@ void CGCodeParserBase::GetIJK(axis_t axis, SAxisMove& move, mm1000_t offset[2])
 		offset[1] = ParseCoordinateAxis(axis);
 	else
 	{
-		Error(MESSAGE_GCODE_AxisOffsetMustNotBeSpecified);
+		Error(MESSAGE(MESSAGE_GCODE_AxisOffsetMustNotBeSpecified));
 	}
 }
 
@@ -501,7 +499,7 @@ void CGCodeParserBase::GetRadius(SAxisMove& move, mm1000_t& radius)
 {
 	if (move.bitfield.bit.R)
 	{
-		Error(MESSAGE_GCODE_RalreadySpecified);
+		Error(MESSAGE(MESSAGE_GCODE_RalreadySpecified));
 		return;
 	}
 	move.bitfield.bit.R = true;
@@ -518,7 +516,7 @@ void CGCodeParserBase::GetFeedrate(SAxisMove& move)
 
 	if (move.bitfield.bit.F)
 	{
-		Error(MESSAGE_GCODE_FalreadySpecified);
+		Error(MESSAGE(MESSAGE_GCODE_FalreadySpecified));
 		return;
 	}
 	move.bitfield.bit.F = true;
@@ -584,7 +582,7 @@ void CGCodeParserBase::G0001Command(bool isG00)
 	{
 		axis_t axis;
 		if ((axis = CharToAxis(ch)) < NUM_AXIS) GetAxis(axis, move, _modalstate.IsAbsolut ? AbsolutWithZeroShiftPosition : RelativPosition);
-		else if (ch == 'F' && isG00) { Error(MESSAGE_GCODE_FeedrateWithG0); return; }
+		else if (ch == 'F' && isG00) { Error(MESSAGE(MESSAGE_GCODE_FeedrateWithG0)); return; }
 		else if (ch == 'F' && !isG00) GetFeedrate(move);
 		else break;
 
@@ -620,8 +618,8 @@ void CGCodeParserBase::G0203Command(bool isG02)
 		if (CheckError()) { return; }
 	}
 
-	if (move.bitfield.bit.R && move.GetIJK())		{ Error(MESSAGE_GCODE_IJKandRspecified); return; }
-	if (!move.bitfield.bit.R && !move.GetIJK())		{ Error(MESSAGE_GCODE_MissingIKJorR); return; }
+	if (move.bitfield.bit.R && move.GetIJK())		{ Error(MESSAGE(MESSAGE_GCODE_IJKandRspecified)); return; }
+	if (!move.bitfield.bit.R && !move.GetIJK())		{ Error(MESSAGE(MESSAGE_GCODE_MissingIKJorR)); return; }
 	if (CheckError()) { return; }
 
 	if (move.bitfield.bit.R)
@@ -631,12 +629,12 @@ void CGCodeParserBase::G0203Command(bool isG02)
 		float y = (float)(move.newpos[_modalstate.Plane_axis_1] - CMotionControlBase::GetInstance()->GetPosition(_modalstate.Plane_axis_1));
 		float r = (float)radius;
 
-		if (x == 0.0 && y == 0.0)						{ Error(MESSAGE_GCODE_360withRandMissingAxes); return; }
+		if (x == 0.0 && y == 0.0)						{ Error(MESSAGE(MESSAGE_GCODE_360withRandMissingAxes)); return; }
 
 		// First, use h_x2_div_d to compute 4*h^2 to check if it is negative or r is smaller
 		// than d. If so, the sqrt of a negative number is complex and error out.
 		float h_x2_div_d = 4 * r*r - x*x - y*y;
-		if (h_x2_div_d < 0)								{ Error(MESSAGE_GCODE_STATUS_ARC_RADIUS_ERROR); return; }
+		if (h_x2_div_d < 0)								{ Error(MESSAGE(MESSAGE_GCODE_STATUS_ARC_RADIUS_ERROR)); return; }
 
 		// Finish computing h_x2_div_d.
 		h_x2_div_d = -sqrt(h_x2_div_d) / hypot(x, y); // == -(h * 2 / d)
@@ -771,13 +769,13 @@ void CGCodeParserBase::G31Command()
 
 	if (move.axes==0)
 	{
-		Error(MESSAGE_GCODE_NoAxesForProbe);
+		Error(MESSAGE(MESSAGE_GCODE_NoAxesForProbe));
 		return;
 	}
 
 	if ((move.axes&7) == 0)
 	{
-		Error(MESSAGE_GCODE_ProbeOnlyForXYZ);
+		Error(MESSAGE(MESSAGE_GCODE_ProbeOnlyForXYZ));
 		return;
 	}
 	
@@ -786,7 +784,7 @@ void CGCodeParserBase::G31Command()
 	{
 		if (!G31TestProbe(NULL))
 		{
-			Error(MESSAGE_GCODE_ProbeIOmustBeOff);
+			Error(MESSAGE(MESSAGE_GCODE_ProbeIOmustBeOff));
 			return;
 		}
 
@@ -794,7 +792,7 @@ void CGCodeParserBase::G31Command()
 
 		if (!CStepper::GetInstance()->MoveUntil(G31TestProbe, NULL))
 		{
-			Error(MESSAGE_GCODE_ProbeFailed);
+			Error(MESSAGE(MESSAGE_GCODE_ProbeFailed));
 			// no return => must set position again
 		}
 		CMotionControlBase::GetInstance()->SetPositionFromMachine();

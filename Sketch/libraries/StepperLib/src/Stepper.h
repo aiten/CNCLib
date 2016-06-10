@@ -628,6 +628,9 @@ protected:
 	void Info(error_t  info)											{ OnInfo(info); }
 	void Warning(error_t warning)										{ OnWarning(warning); }
 
+	void Error() NEVER_INLINE_AVR										{ Error(MESSAGE_UNKNOWNERROR); }
+	void FatalError()													{ FatalError(MESSAGE_UNKNOWNERROR); }
+
 protected:
 
 	bool  MoveAwayFromReference(axis_t axis, unsigned char referenceid, sdist_t dist, steprate_t vMax);

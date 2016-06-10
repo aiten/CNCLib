@@ -22,6 +22,8 @@
 ////////////////////////////////////////////////////////
 
 #include "StreamReader.h"
+#include <ConfigurationStepperLib.h>
+#include <MessageStepperLib.h>
 
 ////////////////////////////////////////////////////////
 
@@ -63,9 +65,10 @@ protected:
 	void SkipCommentSingleLine()							{ _reader->MoveToEnd(); };
 
 	bool ExpectEndOfCommand();
-	void ErrorNotImplemented()								{ Error(MESSAGE_PARSER_NotImplemented); }
-	void ErrorNotANumber()									{ Error(MESSAGE_PARSER_NotANumber); };
-	void ErrorNumberRange()									{ Error(MESSAGE_PARSER_OverrunOfNumber); };
+	void ErrorNotImplemented()								{ Error(MESSAGE(MESSAGE_PARSER_NotImplemented)); }
+	void ErrorNotANumber()									{ Error(MESSAGE(MESSAGE_PARSER_NotANumber)); };
+	void ErrorNumberRange()									{ Error(MESSAGE(MESSAGE_PARSER_OverrunOfNumber)); };
+	void Error()											{ Error(MESSAGE_UNKNOWNERROR); }
 
 	////////////////////////////////////////////////////////
 

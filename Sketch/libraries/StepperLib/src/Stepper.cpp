@@ -1605,7 +1605,7 @@ void CStepper::StepRequest(bool isr)
 
 	if ((_pod._checkReference && IsAnyReference()))
 	{
-		FatalError(MESSAGE_STEPPER_IsAnyReference);
+		FatalError(MESSAGE(MESSAGE_STEPPER_IsAnyReference));
 		EmergencyStop();
 		return;
 	}
@@ -1980,7 +1980,7 @@ void CStepper::QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool direct
 			// check limit
 			if (newC >(long) _pod._limitMax[i] || newC < (long)_pod._limitMin[i])
 			{
-				Error(MESSAGE_STEPPER_RangeLimit);
+				Error(MESSAGE(MESSAGE_STEPPER_RangeLimit));
 				//				StepperSerial.print(F("Error: range limit")); StepperSerial.print(_limitMin[i]); StepperSerial.print(F("<")); StepperSerial.print(newC);; StepperSerial.print(F("<")); StepperSerial.print(_limitMax[i]);
 				return;
 			}
@@ -2189,7 +2189,7 @@ bool CStepper::MoveReference(axis_t axis, unsigned char referenceid, bool toMin,
 	}
 	else
 	{
-		Error(MESSAGE_STEPPER_MoveReferenceFailed);
+		Error(MESSAGE(MESSAGE_STEPPER_MoveReferenceFailed));
 	}
 
 	// calling this methode always sets position, independent of the result!!!!

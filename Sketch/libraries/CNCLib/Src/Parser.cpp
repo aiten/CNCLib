@@ -76,7 +76,7 @@ bool CParser::ExpectEndOfCommand()
 	if (_reader->IsEOC(SkipSpacesOrComment()))
 		return true;
 
-	Error(MESSAGE_PARSER_EndOfCommandExpected);
+	Error(MESSAGE(MESSAGE_PARSER_EndOfCommandExpected));
 	return false;
 }
 
@@ -126,7 +126,7 @@ long CParser::GetInt32Scale(long minvalue, long maxvalue, unsigned char scale, u
 
 		if (!CStreamReader::IsDigit(ch))
 		{
-			Error(MESSAGE_PARSER_NotANumber_MissingScale);
+			Error(MESSAGE(MESSAGE_PARSER_NotANumber_MissingScale));
 			return 0;
 		}
 
@@ -153,7 +153,7 @@ long CParser::GetInt32Scale(long minvalue, long maxvalue, unsigned char scale, u
 
 	if (thisscale > maxscale)
 	{
-		Error(MESSAGE_PARSER_NotANumber_MaxScaleExceeded);
+		Error(MESSAGE( MESSAGE_PARSER_NotANumber_MaxScaleExceeded));
 		return 0;
 	}
 	else if (thisscale < scale)
@@ -166,9 +166,9 @@ long CParser::GetInt32Scale(long minvalue, long maxvalue, unsigned char scale, u
 		value = -(value);
 
 	if (value < minvalue)
-		Error(MESSAGE_PARSER_ValueLessThanMin);
+		Error(MESSAGE(MESSAGE_PARSER_ValueLessThanMin));
 	else if (value > maxvalue)
-		Error(MESSAGE_PARSER_ValueGreaterThanMax);
+		Error(MESSAGE(MESSAGE_PARSER_ValueGreaterThanMax));
 
 	return value;
 }
