@@ -1,4 +1,3 @@
-
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -22,23 +21,19 @@
 
 WaterFlow flow;
 
-unsigned long blinkTime;
-bool blinkOn=false;
-//#define BLINK_RATE 250
-#define BLINK_RATE random(5,20)
-#define BLINK_PIN 13
-
 #define WATERFLOW_PIN 2
 #define WATERTEMP_PIN A0
 
-#define WATCHDOG_PIN  12
+#define WATCHDOG_PIN  13
 #define WATCHDOG_ON  LOW
 #define WATCHDOG_OFF HIGH
-bool watchdogOn=false;
+bool watchdogOn = false;
 
 #define WATCHDOG_MINFLOW  50
-#define WATCHDOG_MINTEMP  10
-#define WATCHDOG_MAXTEMP  512
+#define WATCHDOG_MINTEMPON  10
+#define WATCHDOG_MINTEMPOFF 14
+#define WATCHDOG_MAXTEMPON  512
+#define WATCHDOG_MAXTEMPOFF 505
 
 #define TESTMODE
 
@@ -46,112 +41,149 @@ bool watchdogOn=false;
 
 void setup()
 {
-  pinMode(WATCHDOG_PIN, OUTPUT);
-  digitalWrite(WATCHDOG_PIN,WATCHDOG_OFF);
+	pinMode(WATCHDOG_PIN, OUTPUT);
+	digitalWrite(WATCHDOG_PIN, WATCHDOG_OFF);
 
 	Serial.begin(250000);
-  flow.Init(WATERFLOW_PIN);
+	flow.Init(WATERFLOW_PIN);
 
-  pinMode(BLINK_PIN, OUTPUT);
-  blinkTime=millis()+BLINK_RATE;
+#ifdef TESTMODE
+  TestWatchDogSetup();
+#endif
+}
+
+////////////////////////////////////////////////////////////
+
+bool IsWatchDogWaterFlowOn()
+{
+	unsigned int avgCount = flow.AvgCount(2000);
+
+	return avgCount < WATCHDOG_MINFLOW;
+}
+
+////////////////////////////////////////////////////////////
+
+bool IsWatchDogTempOn()
+{
+	float wtemp = ReadTemp();
+	static bool tempOn = false;
+
+	if (tempOn)
+		tempOn = wtemp < WATCHDOG_MINTEMPON || wtemp > WATCHDOG_MAXTEMPON;
+	else
+		tempOn = wtemp < WATCHDOG_MINTEMPOFF || wtemp > WATCHDOG_MAXTEMPOFF;
+
+	return wtemp;
 }
 
 ////////////////////////////////////////////////////////////
 
 bool IsWatchDogOn()
 {
-  // test water flow
+	// first test all 
+	// and ask all watchdogs
 
-  unsigned int avgCount = flow.AvgCount(2000);
+	bool isWaterFlowOn = IsWatchDogWaterFlowOn();
+	bool isWaterTempOn = IsWatchDogTempOn();
 
-  if (avgCount < WATCHDOG_MINFLOW)
-    return false;
+	// now test
 
-  // test tmperature
-
-  float wtemp = ReadTemp();
-
-  if (wtemp < WATCHDOG_MINTEMP || wtemp > WATCHDOG_MAXTEMP)
-    return false;
-
-    return true;
+	return isWaterFlowOn && isWaterTempOn;
 }
 
 ////////////////////////////////////////////////////////////
 
 float ReadTemp()
 {
-  const unsigned char maxcount=16;
-  int wtemp = 0;
-  for (int i=0;i<maxcount;i++)
-    wtemp += analogRead(WATERTEMP_PIN);
+	const unsigned char maxcount = 16;
+	int wtemp = 0;
+	for (int i = 0; i < maxcount; i++)
+		wtemp += analogRead(WATERTEMP_PIN);
 
-  return (float) wtemp  / maxcount;
+	return (float)wtemp / maxcount;
 }
 
 ////////////////////////////////////////////////////////////
 
 void WatchDogOn()
 {
-  digitalWrite(WATCHDOG_PIN,WATCHDOG_ON);
-  if (watchdogOn == false)
-  {
-    watchdogOn = true;
-    Serial.println(F("Watchdog ON"));
-  }
+	digitalWrite(WATCHDOG_PIN, WATCHDOG_ON);
+	if (watchdogOn == false)
+	{
+		watchdogOn = true;
+		Serial.println(F("Watchdog ON"));
+	}
 }
 
 ////////////////////////////////////////////////////////////
 
 void WatchDogOff()
 {
-    digitalWrite(WATCHDOG_PIN,WATCHDOG_OFF);
-    if (watchdogOn == true)
-    {
-      watchdogOn = false;
-      Serial.println(F("Watchdog OFF"));
-    }
+	digitalWrite(WATCHDOG_PIN, WATCHDOG_OFF);
+	if (watchdogOn == true)
+	{
+		watchdogOn = false;
+		Serial.println(F("Watchdog OFF"));
+	}
 }
 
 ////////////////////////////////////////////////////////////
 
 void loop()
 {
-  if (blinkTime<millis())
-  {
-    blinkTime += BLINK_RATE;
-    blinkOn = !blinkOn;
-    digitalWrite(BLINK_PIN,blinkOn ? HIGH : LOW);
-  }
+	if (IsWatchDogOn())
+	{
+		WatchDogOn();
+	}
+	else
+	{
+		WatchDogOff();
+	}
+#ifdef TESTMODE
+  TestWatchDogLoop();
+#endif
+}
 
-  if (IsWatchDogOn())
-  {
-    WatchDogOn();
-  }
-  else
-  {
-    WatchDogOff();
-  }
 
 #ifdef TESTMODE
 
-  static unsigned int lastAvgCount=0xffff;
-  unsigned int avgCount = flow.AvgCount(2000);
+unsigned long blinkTime;
+bool blinkOn = false;
+//#define BLINK_RATE 250
+#define BLINK_RATE random(5,20)
+#define BLINK_PIN 12
 
-  if (avgCount != lastAvgCount)
-  {
-    lastAvgCount = avgCount;
-    Serial.println(avgCount);
-  }
-
-  static float lastwtemp=0;
-  float wtemp = ReadTemp();
-  if (abs(wtemp-lastwtemp) > 1)
-  {
-    lastwtemp = wtemp;
-    Serial.println(wtemp);
-  }
-
-#endif
+void TestWatchDogSetup()
+{ 
+  pinMode(BLINK_PIN, OUTPUT);
+  blinkTime = millis() + BLINK_RATE;
 }
+
+void TestWatchDogLoop()
+{ 
+  if (blinkTime < millis())
+  {
+    blinkTime += BLINK_RATE;
+    blinkOn = !blinkOn;
+    digitalWrite(BLINK_PIN, blinkOn ? HIGH : LOW);
+  }
+
+	static unsigned int lastAvgCount = 0xffff;
+	unsigned int avgCount = flow.AvgCount(2000);
+
+	if (avgCount != lastAvgCount)
+	{
+		lastAvgCount = avgCount;
+		Serial.println(avgCount);
+	}
+
+	static float lastwtemp = 0;
+	float wtemp = ReadTemp();
+	if (abs(wtemp - lastwtemp) > 1)
+	{
+		lastwtemp = wtemp;
+		Serial.println(wtemp);
+	}
+}
+#endif
 

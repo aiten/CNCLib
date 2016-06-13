@@ -27,93 +27,93 @@ extern class WaterFlow flow;
 
 class WaterFlow
 {
-public:	
+public:
 	WaterFlow()
 	{
 	}
 
 	void Init(int pin)
 	{
-    _countIdx = SAMPELCOUNT-1;
-    _countTime[_countIdx] = millis();
-    Next();
-    
-    pinMode(pin, INPUT);
-    attachInterrupt(digitalPinToInterrupt(pin), StaticISRPin2Rising, RISING);
+		_countIdx = SAMPELCOUNT - 1;
+		_countTime[_countIdx] = millis();
+		Next();
+
+		pinMode(pin, INPUT);
+		attachInterrupt(digitalPinToInterrupt(pin), StaticISRPinRising, RISING);
 	}
 
-  unsigned int AvgCount(unsigned int timediff=1000)
-  {
-    TestSampleTime();
+	unsigned int AvgCount(unsigned int timediff = 1000)
+	{
+		TestSampleTime();
 
-    // no disable interrupts => cache
-    ;
-    unsigned char countIdx = _countIdx;
-    unsigned long sumtime = 0;
-    unsigned int  sumcount = 0;
-    
-    for (unsigned char diff = 1; diff < SAMPELCOUNT && sumtime < timediff; diff++)
-    {
-        unsigned char idx = PrevIndex(countIdx,diff);
+		// no disable interrupts => cache
 
-        sumtime  += _countTime[idx];
-        sumcount += _count[idx];
-    }
+		unsigned char countIdx = _countIdx;
+		unsigned long sumtime = 0;
+		unsigned int  sumcount = 0;
 
-    return ScaleCountToSec(sumcount,sumtime,timediff);
-  }
+		for (unsigned char diff = 1; diff < SAMPELCOUNT && sumtime < timediff; diff++)
+		{
+			unsigned char idx = PrevIndex(countIdx, diff);
+
+			sumtime += _countTime[idx];
+			sumcount += _count[idx];
+		}
+
+		return ScaleCount(sumcount, sumtime, timediff);
+	}
 
 private:
 
-  static unsigned int ScaleCountToSec(unsigned int count, unsigned long totaltime, unsigned long scaletotime)
-  {
-     return (unsigned long) count * scaletotime /  totaltime;
-  }
-  
-  static unsigned char NextIndex(unsigned char idx, unsigned char count)
-  {
-    return (unsigned char)((idx + count)) % (SAMPELCOUNT);
-  }
-
-  static unsigned char PrevIndex(unsigned char idx, unsigned char count)
-  {
-    return (idx >= count) ? idx - count : (SAMPELCOUNT)-(count - idx);
-  }
-
-  void TestSampleTime()
-  {
-    if (millis() > _countUntil)
-      Next();
-  }
-  
-	static void StaticISRPin2Rising()
+	static unsigned int ScaleCount(unsigned int count, unsigned long totaltime, unsigned long scaletotime)
 	{
-    flow.ISRPin2Rising();
+		return (unsigned long)count * scaletotime / totaltime;
 	}
 
-  void ISRPin2Rising()
-  {
-    TestSampleTime();
-    _count[_countIdx]++;
-  }
+	static unsigned char NextIndex(unsigned char idx, unsigned char count)
+	{
+		return (unsigned char)((idx + count)) % (SAMPELCOUNT);
+	}
 
-  void Next()
-  {
-    // prev
-    _countTime[_countIdx] = millis()-_countTime[_countIdx];
+	static unsigned char PrevIndex(unsigned char idx, unsigned char count)
+	{
+		return (idx >= count) ? idx - count : (SAMPELCOUNT)-(count - idx);
+	}
 
-    // set next
-    _countIdx = (_countIdx+1)%SAMPELCOUNT;
-    _count[_countIdx] = 0;
-    _countTime[_countIdx] = millis();
-    _countUntil = _countTime[_countIdx]+SAMPELTIME;
-  }
+	void TestSampleTime()
+	{
+		if (millis() > _countUntil)
+			Next();
+	}
+
+	static void StaticISRPinRising()
+	{
+		flow.ISRPinRising();
+	}
+
+	void ISRPinRising()
+	{
+		TestSampleTime();
+		_count[_countIdx]++;
+	}
+
+	void Next()
+	{
+		// prev
+		_countTime[_countIdx] = millis() - _countTime[_countIdx];
+
+		// set next
+		_countIdx = (_countIdx + 1) % SAMPELCOUNT;
+		_count[_countIdx] = 0;
+		_countTime[_countIdx] = millis();
+		_countUntil = _countTime[_countIdx] + SAMPELTIME;
+	}
 
 	unsigned long _countUntil;
 	volatile unsigned char _countIdx = 0;
 	volatile int _count[SAMPELCOUNT];
-  unsigned long _countTime[SAMPELCOUNT];
+	unsigned long _countTime[SAMPELCOUNT];
 };
 
 ////////////////////////////////////////////////////////////
- 
+
