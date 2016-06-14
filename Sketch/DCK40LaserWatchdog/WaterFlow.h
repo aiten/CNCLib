@@ -32,7 +32,7 @@ public:
 	{
 	}
 
-	void Init(int pin)
+	void Init(uint8_t pin)
 	{
 		_countIdx = SAMPELCOUNT - 1;
 		_countTime[_countIdx] = millis();

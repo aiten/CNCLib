@@ -16,18 +16,19 @@
 */
 
 #include "WaterFlow.h"
+#include "WatchDog.h"
 
 ////////////////////////////////////////////////////////////
 
 WaterFlow flow;
+WatchDog watchDog;
+
+
+#define WATCHDOG_PIN  13
+#define WATCHDOG_ON LOW
 
 #define WATERFLOW_PIN 2
 #define WATERTEMP_PIN A0
-
-#define WATCHDOG_PIN  13
-#define WATCHDOG_ON  LOW
-#define WATCHDOG_OFF HIGH
-bool watchdogOn = false;
 
 #define WATCHDOG_MINFLOW  50
 #define WATCHDOG_MINTEMPON  10
@@ -41,11 +42,11 @@ bool watchdogOn = false;
 
 void setup()
 {
-	pinMode(WATCHDOG_PIN, OUTPUT);
-	digitalWrite(WATCHDOG_PIN, WATCHDOG_OFF);
 
 	Serial.begin(250000);
+
 	flow.Init(WATERFLOW_PIN);
+  watchDog.Init(WATCHDOG_PIN,WATCHDOG_ON);
 
 #ifdef TESTMODE
   TestWatchDogSetup();
@@ -58,7 +59,7 @@ bool IsWatchDogWaterFlowOn()
 {
 	unsigned int avgCount = flow.AvgCount(2000);
 
-	return avgCount < WATCHDOG_MINFLOW;
+	return avgCount > WATCHDOG_MINFLOW;
 }
 
 ////////////////////////////////////////////////////////////
@@ -69,11 +70,11 @@ bool IsWatchDogTempOn()
 	static bool tempOn = false;
 
 	if (tempOn)
-		tempOn = wtemp < WATCHDOG_MINTEMPON || wtemp > WATCHDOG_MAXTEMPON;
+		tempOn = wtemp > WATCHDOG_MINTEMPON && wtemp < WATCHDOG_MAXTEMPON;
 	else
-		tempOn = wtemp < WATCHDOG_MINTEMPOFF || wtemp > WATCHDOG_MAXTEMPOFF;
+		tempOn = wtemp > WATCHDOG_MINTEMPOFF && wtemp < WATCHDOG_MAXTEMPOFF;
 
-	return wtemp;
+	return tempOn;
 }
 
 ////////////////////////////////////////////////////////////
@@ -105,40 +106,11 @@ float ReadTemp()
 
 ////////////////////////////////////////////////////////////
 
-void WatchDogOn()
-{
-	digitalWrite(WATCHDOG_PIN, WATCHDOG_ON);
-	if (watchdogOn == false)
-	{
-		watchdogOn = true;
-		Serial.println(F("Watchdog ON"));
-	}
-}
-
-////////////////////////////////////////////////////////////
-
-void WatchDogOff()
-{
-	digitalWrite(WATCHDOG_PIN, WATCHDOG_OFF);
-	if (watchdogOn == true)
-	{
-		watchdogOn = false;
-		Serial.println(F("Watchdog OFF"));
-	}
-}
-
-////////////////////////////////////////////////////////////
-
 void loop()
 {
-	if (IsWatchDogOn())
-	{
-		WatchDogOn();
-	}
-	else
-	{
-		WatchDogOff();
-	}
+  watchDog.OnOff(IsWatchDogOn());
+
+
 #ifdef TESTMODE
   TestWatchDogLoop();
 #endif
