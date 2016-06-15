@@ -42,15 +42,15 @@ public:
 public:
 
 	virtual bool IsAnyReference() override							{ return IsReference(0); };
-	virtual bool IsReference(unsigned char referenceid) override;
+	virtual bool IsReference(uint8_t referenceid) override;
 
 	void SetFullStepMode(axis_t axis, bool fullstepMode)			{ _fullStepMode[axis] = fullstepMode; };
 
 protected:
 
-	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) override;
-	virtual void  SetEnable(axis_t axis, unsigned char level, bool force) override;
-	virtual unsigned char GetEnable(axis_t axis) override;
+	virtual void  Step(const uint8_t steps[NUM_AXIS], axisArray_t directionUp) override;
+	virtual void  SetEnable(axis_t axis, uint8_t level, bool force) override;
+	virtual uint8_t GetEnable(axis_t axis) override;
 
 	virtual void MoveAwayFromReference(axis_t axis, sdist_t diff, steprate_t vMax) override;
 
@@ -60,10 +60,10 @@ private:
 
 	void InitMemVar();
 
-	unsigned char _stepIdx[SMC800_NUM_AXIS];
-	unsigned char _level[SMC800_NUM_AXIS];
+	uint8_t _stepIdx[SMC800_NUM_AXIS];
+	uint8_t _level[SMC800_NUM_AXIS];
 	bool		  _fullStepMode[NUM_AXIS];
 
 	void   SetPhase(axis_t axis);
-	static void OutSMC800Cmd(const unsigned char val);
+	static void OutSMC800Cmd(const uint8_t val);
 };

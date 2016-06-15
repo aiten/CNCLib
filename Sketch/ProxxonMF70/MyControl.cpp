@@ -86,7 +86,7 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
 #endif
 
-	for (register unsigned char i = 0; i < NUM_AXIS * 2; i++)
+	for (register uint8_t i = 0; i < NUM_AXIS * 2; i++)
 	{
 		CStepper::GetInstance()->UseReference(i, false);
 	}
@@ -111,13 +111,13 @@ void CMyControl::Init()
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::IOControl(unsigned char tool, unsigned short level)
+void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
 		case Spindel:			_spindel.Set(level>0);	return;
 		case Coolant:			_coolant.Set(level>0); return;
-		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
+		case ControllerFan:		_controllerfan.Level = (uint8_t)level;		return;
 		case Vacuum:			break;
 	}
 	
@@ -126,7 +126,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 
 ////////////////////////////////////////////////////////////
 
-unsigned short CMyControl::IOControl(unsigned char tool)
+unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{

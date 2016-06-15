@@ -42,7 +42,7 @@
 
 ////////////////////////////////////////////////////////
 
-typedef unsigned char axis_t;	// type for "axis"
+typedef uint8_t axis_t;	// type for "axis"
 
 typedef signed   long sdist_t;	// tpye of stepper coord system (signed)
 typedef unsigned long udist_t;	// tpye of stepper coord system (unsigned)
@@ -206,14 +206,14 @@ typedef unsigned long steprate_t;		// tpye for speed (Hz), Steps/sec
 
 #define stepperstatic static
 #define stepperstatic_
-#define EnumAsByte(a) unsigned char			// use a 8 bit enum (and not 16, see compiler output)
+#define EnumAsByte(a) uint8_t			// use a 8 bit enum (and not 16, see compiler output)
 #define debugvirtula						// only used in msvc for debugging - not used on AVR controller 
 
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
-typedef unsigned char axisArray_t;			// on bit per axis
+typedef uint8_t axisArray_t;			// on bit per axis
 
 #if NUM_AXIS > 3
 typedef unsigned long DirCount_t;			// 4 bit for eache axis (0..7) count, 8 dirup, see DirCountAll_t
@@ -235,21 +235,21 @@ struct DirCountByte_t
 		{
 			struct DirCountStepByte_t
 			{
-				unsigned char count1 : 3;
-				unsigned char dirUp1 : 1;
+				uint8_t count1 : 3;
+				uint8_t dirUp1 : 1;
 
-				unsigned char count2 : 3;
-				unsigned char dirUp2 : 1;
+				uint8_t count2 : 3;
+				uint8_t dirUp2 : 1;
 			} byte[DirCountBytes - 1];
 			struct DirCountInfoByte_t
 			{
-				unsigned char count1 : 3;
-				unsigned char dirUp1 : 1;
+				uint8_t count1 : 3;
+				uint8_t dirUp1 : 1;
 
-				unsigned char nocount : 1;		// do not count step (e.g. move for backlash)
-				unsigned char unused1 : 1;
-				unsigned char unused2 : 1;
-				unsigned char unused3 : 1;
+				uint8_t nocount : 1;		// do not count step (e.g. move for backlash)
+				uint8_t unused1 : 1;
+				uint8_t unused2 : 1;
+				uint8_t unused3 : 1;
 			} byteInfo;
 		} byte;
 		DirCount_t all;

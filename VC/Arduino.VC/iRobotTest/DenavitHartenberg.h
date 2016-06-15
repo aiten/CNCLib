@@ -28,11 +28,11 @@ private:
 
 	void TestConvert(CMatrix4x4<float>&m, float inout[4], bool out=false);
 
-	float SearchMinOld(float pos[3], float inout[NUM_AXIS], unsigned char idx, struct SSearchDef& def , float epsilon);
+	float SearchMinOld(float pos[3], float inout[NUM_AXIS], uint8_t idx, struct SSearchDef& def , float epsilon);
 
 	float CalcDist(float pos[3], float in[NUM_AXIS]);
 
-	float SearchStep(float pos[3], float inout[NUM_AXIS], unsigned char idx, float diff, struct SSearchDef& def);
+	float SearchStep(float pos[3], float inout[NUM_AXIS], uint8_t idx, float diff, struct SSearchDef& def);
 
 
 #define MAXSIZE 4

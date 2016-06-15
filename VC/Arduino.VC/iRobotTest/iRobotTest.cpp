@@ -121,7 +121,7 @@ int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 
 			bool print = false;
 
-			for (unsigned char n = 0; n < 3; n++)
+			for (uint8_t n = 0; n < 3; n++)
 			{
 				if (!CMatrix4x4<float>::IsEqual(out[n], v->posxyz[n], v->allowdiff))
 				{
@@ -208,7 +208,7 @@ int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 			float out[3] = { 0, 0, 0 };
 			dh.FromPosition(v->posxyz, out,float(0.001));
 
-			for (unsigned char n = 0; n < 3; n++)
+			for (uint8_t n = 0; n < 3; n++)
 			{
 				if (!CMatrix4x4<float>::IsEqual(out[n], v->angles[n], v->allowdiff))
 				{
@@ -229,7 +229,7 @@ int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 			float posxyz[3];
 			dh.ToPosition(out, posxyz);
 
-			for (unsigned char n = 0; n < 3; n++)
+			for (uint8_t n = 0; n < 3; n++)
 			{
 				if (!CMatrix4x4<float>::IsEqual(v->posxyz[n], posxyz[n], float(000.1)))
 				{

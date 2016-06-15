@@ -93,12 +93,12 @@ bool CMyControl::IsKill()
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::IOControl(unsigned char tool, unsigned short level)
+void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
 #ifdef CONTROLLERFAN_FAN_PIN
-		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
+		case ControllerFan:		_controllerfan.Level = (uint8_t)level;		return;
 #endif
 	}
 
@@ -107,7 +107,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 
 ////////////////////////////////////////////////////////////
 
-unsigned short CMyControl::IOControl(unsigned char tool)
+unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{

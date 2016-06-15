@@ -94,7 +94,7 @@ void CHPGLParser::InitCommand()
 
 ////////////////////////////////////////////////////////////
 
-void CHPGLParser::PenMoveCommand(unsigned char cmdidx)
+void CHPGLParser::PenMoveCommand(uint8_t cmdidx)
 {
 	Plotter.Resume();
 

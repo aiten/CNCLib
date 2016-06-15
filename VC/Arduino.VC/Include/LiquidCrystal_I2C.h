@@ -34,7 +34,7 @@ public:
 	void setCursor(int, int) {};
 	void print(const char*) {};
 	void print(char) {};
-	void print(unsigned char) {};
+	void print(uint8_t) {};
 	void print(short) {};
 	void print(unsigned long) {};
 };

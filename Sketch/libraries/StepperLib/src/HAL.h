@@ -77,7 +77,7 @@ typedef uint32_t pin_t;
 #define NEVER_INLINE_SAM
 #define ALIGN_WORD			__attribute__((aligned (2)))
 
-#define irqflags_t unsigned char
+#define irqflags_t uint8_t
 typedef uint8_t pin_t;
 
 #else
@@ -89,7 +89,7 @@ typedef uint8_t pin_t;
 #define NEVER_INLINE_SAM
 #define ALIGN_WORD
 
-#define irqflags_t unsigned char
+#define irqflags_t uint8_t
 typedef uint8_t pin_t;
 
 #endif
@@ -173,13 +173,13 @@ public:
 	static inline irqflags_t GetSREG() ALWAYSINLINE;
 	static inline void SetSREG(irqflags_t) ALWAYSINLINE;
 
-	static inline void pinMode(pin_t pin, unsigned char mode);
+	static inline void pinMode(pin_t pin, uint8_t mode);
 	static inline void pinModeInput(pin_t pin) NEVER_INLINE_AVR;
 	static inline void pinModeInputPullUp(pin_t pin) NEVER_INLINE_AVR;
 	static inline void pinModeOutput(pin_t pin) NEVER_INLINE_AVR;
 
-	static void digitalWrite(pin_t pin, unsigned char lowOrHigh);
-	static unsigned char digitalRead(pin_t pin);
+	static void digitalWrite(pin_t pin, uint8_t lowOrHigh);
+	static uint8_t digitalRead(pin_t pin);
 
 	static void analogWrite8(pin_t pin, uint8_t val);
 

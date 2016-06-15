@@ -29,7 +29,7 @@ public:
 
 	virtual void RunTest() override;
 
-	static bool CompareMatrix(CMatrix4x4<float>& m, float in1[][4], float out1[][4], unsigned char size);
+	static bool CompareMatrix(CMatrix4x4<float>& m, float in1[][4], float out1[][4], uint8_t size);
 
 };
 

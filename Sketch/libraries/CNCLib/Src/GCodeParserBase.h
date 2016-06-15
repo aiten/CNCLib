@@ -29,12 +29,12 @@
 ////////////////////////////////////////////////////////
 
 #ifdef REDUCED_SIZE
-typedef unsigned char mcode_t;
+typedef uint8_t mcode_t;
 #else
 typedef unsigned int mcode_t ;
 #endif
 
-typedef unsigned char gcode_t;
+typedef uint8_t gcode_t;
 
 ////////////////////////////////////////////////////////
 
@@ -82,7 +82,7 @@ protected:
 
 	virtual bool GCommand(gcode_t gcode);		// check for GCode extension => return true if command is parsed, false to do default
 	virtual bool MCommand(mcode_t mcode);
-	virtual bool Command(unsigned char ch);
+	virtual bool Command(char ch);
 
 	virtual bool ParseLineNumber(bool setlinenumber);	// line number is ignored! => ret is error
 	virtual char SkipSpacesOrComment() override;
@@ -101,11 +101,11 @@ protected:
 	{
 		long			Linenumber;
 
-		unsigned char	Plane_axis_0;			// x
-		unsigned char	Plane_axis_1;			// y 
+		uint8_t	Plane_axis_0;			// x
+		uint8_t	Plane_axis_1;			// y 
 
-		unsigned char	Plane_axis_2;			// z
-		unsigned char	UnitConvert;			// bit array convert between inch and mm (a b c is Grad) 			
+		uint8_t	Plane_axis_2;			// z
+		uint8_t	UnitConvert;			// bit array convert between inch and mm (a b c is Grad) 			
 
 		bool			UnitisMm;				// g20,g21
 		bool			FeedRatePerUnit;		//feedrate per Unit(mm,inch) per min, or per revolution /g94/95
@@ -121,8 +121,8 @@ protected:
 
 		short			SpindleSpeed;			// > 0 CW, < 0 CCW
 
-		unsigned char	LaserPower;
-		unsigned char	Dummy;
+		uint8_t	LaserPower;
+		uint8_t	Dummy;
 
 		mm1000_t		G92Pospreset[NUM_AXIS];
 
@@ -146,7 +146,7 @@ protected:
 			Plane_axis_1 = Y_AXIS;
 			Plane_axis_2 = Z_AXIS;
 			UnitConvert = 1+2+4 + 64+128;				// inch to mm 
-//POD		for (register unsigned char i = 0; i < NUM_AXIS; i++) G92Pospreset[i] = 0;
+//POD		for (register uint8_t i = 0; i < NUM_AXIS; i++) G92Pospreset[i] = 0;
 		}
 	};
 
@@ -157,7 +157,7 @@ protected:
 
 	struct SModlessState
 	{
-//		unsigned char	ZeroPresetIdx;				// 0:g53-, 1:G54-
+//		uint8_t	ZeroPresetIdx;				// 0:g53-, 1:G54-
 		void Init()
 		{
 			*this = SModlessState();		// POD .. Plane Old Daty Type => no Constructor => init with default value = 0
@@ -172,25 +172,25 @@ protected:
 
 	struct SAxisMove
 	{
-		unsigned char axes;		// plural, each bit for axis
+		uint8_t axes;		// plural, each bit for axis
 		union {
 			struct
 			{
-				unsigned char I : 1;			// must be bit 0	=> see getIJK();
-				unsigned char J : 1;			// must be bit 1
-				unsigned char K : 1;			// must be bit 2
-				unsigned char F : 1;
-				unsigned char R : 1;
-				unsigned char Q : 1;
-				unsigned char P : 1;
-				unsigned char L : 1;
+				uint8_t I : 1;			// must be bit 0	=> see getIJK();
+				uint8_t J : 1;			// must be bit 1
+				uint8_t K : 1;			// must be bit 2
+				uint8_t F : 1;
+				uint8_t R : 1;
+				uint8_t Q : 1;
+				uint8_t P : 1;
+				uint8_t L : 1;
 			} bit;
-			unsigned char all;
+			uint8_t all;
 		} bitfield;
 
 		mm1000_t newpos[NUM_AXIS];
 
-		unsigned char GetIJK() { return bitfield.all & 7; }
+		uint8_t GetIJK() { return bitfield.all & 7; }
 
 		SAxisMove(bool getcurrentPosition) 
 		{
@@ -199,7 +199,7 @@ protected:
 				CMotionControlBase::GetInstance()->GetPositions(newpos);
 			else
 			{
-				for (register unsigned char i = 0; i < NUM_AXIS; i++) newpos[i] = 0;
+				for (register uint8_t i = 0; i < NUM_AXIS; i++) newpos[i] = 0;
 			}
 		}
 	};
@@ -219,16 +219,16 @@ protected:
 	unsigned long GetUint32OrParam(unsigned long max);
 	unsigned long GetUint32OrParam()						{ return GetUint32OrParam(0xffffffffl); };
 	unsigned short GetUint16OrParam()						{ return (unsigned short)GetUint32OrParam(65535); };
-	unsigned char GetUint8OrParam()							{ return (unsigned char)GetUint32OrParam(255); };
+	uint8_t GetUint8OrParam()							{ return (uint8_t)GetUint32OrParam(255); };
 
 	mm1000_t GetRelativePosition(mm1000_t pos, axis_t axis)	{ return pos - CalcAllPreset(axis); }
 	mm1000_t GetRelativePosition(axis_t axis)				{ return GetRelativePosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis); }
 
-	bool CheckAxisSpecified(axis_t axis, unsigned char& axes);
+	bool CheckAxisSpecified(axis_t axis, uint8_t& axes);
 	axis_t CharToAxis(char axis);
 	axis_t CharToAxisOffset(char axis);
 
-	unsigned char GetSubCode();
+	uint8_t GetSubCode();
 
 	enum EAxisPosType
 	{
@@ -239,7 +239,7 @@ protected:
 
 	mm1000_t ParseCoordinate(axis_t axis, mm1000_t relpos, EnumAsByte(EAxisPosType) posType);
 
-	void GetUint8(unsigned char& value, unsigned char&specified, unsigned char bit);
+	void GetUint8(uint8_t& value, uint8_t&specified, uint8_t bit);
 
 	void GetFeedrate(SAxisMove& move);
 	void GetAxis(axis_t axis, SAxisMove& move, EnumAsByte(EAxisPosType) posType);
@@ -250,14 +250,14 @@ protected:
 
 	void GetRadius(SAxisMove& move, mm1000_t& radius);
 
-	void CallIOControl(unsigned char io, unsigned short value);
+	void CallIOControl(uint8_t io, unsigned short value);
 	void SpindleSpeedCommand();
 
 private:
 
 	void GetIJK(axis_t axis, SAxisMove& move, mm1000_t offset[2]);
 
-	void GetG92Axis(axis_t axis, unsigned char& count);
+	void GetG92Axis(axis_t axis, uint8_t& count);
 
 	static bool G31TestProbe(void*);
 

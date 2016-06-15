@@ -96,7 +96,7 @@ void CMsvcStepper::OnIdle(unsigned long idletime)
 
 ////////////////////////////////////////////////////////////
 
-bool CMsvcStepper::IsReference(unsigned char referenceid)
+bool CMsvcStepper::IsReference(uint8_t referenceid)
 {
 	if (!_isReferenceMove || referenceid != _isReferenceId) return false;
 
@@ -107,7 +107,7 @@ bool CMsvcStepper::IsReference(unsigned char referenceid)
 
 ////////////////////////////////////////////////////////////
 
-bool CMsvcStepper::MoveReference(axis_t axis, unsigned char referenceid, bool toMin, steprate_t vMax, sdist_t maxdist, sdist_t distToRef, sdist_t distIfRefIsOn)
+bool CMsvcStepper::MoveReference(axis_t axis, uint8_t referenceid, bool toMin, steprate_t vMax, sdist_t maxdist, sdist_t distToRef, sdist_t distIfRefIsOn)
 {
 	_referenceMoveSteps = 15;
 	_isReferenceMove = true;
@@ -168,14 +168,14 @@ void CMsvcStepper::StepBegin(const SStepBuffer* stepbuffer)
 
 ////////////////////////////////////////////////////////////
 /*
-void  CStepper::Step(axis_t axis , bool  directionUp , unsigned char count )
+void  CStepper::Step(axis_t axis , bool  directionUp , uint8_t count )
 {
 	// CStepper:: is abstract => for call of base class in derived class!
 }
 */
 ////////////////////////////////////////////////////////////
 
-void CMsvcStepper::Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp)
+void CMsvcStepper::Step(const uint8_t steps[NUM_AXIS], axisArray_t directionUp)
 {
 	for (axis_t axis=0 ; axis< NUM_AXIS; axis++)
 	{

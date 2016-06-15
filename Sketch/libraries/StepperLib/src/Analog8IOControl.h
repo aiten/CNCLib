@@ -26,15 +26,15 @@ class CAnalog8IOControl
 {
 public:
 
-	unsigned char Level;					// use like a property
+	uint8_t Level;					// use like a property
 
-	void Init(unsigned char level=0)		// init and set default value
+	void Init(uint8_t level=0)		// init and set default value
 	{
 		SetLevel(level);
 		Level = level;
 	}
 
-	void On(unsigned char level)			// Set level and turn on
+	void On(uint8_t level)			// Set level and turn on
 	{
 		Level = level;
 		SetLevel(level);
@@ -62,9 +62,9 @@ public:
 
 private:
 
-	unsigned char _lastlevel;
+	uint8_t _lastlevel;
 
-	void SetLevel(unsigned char level)
+	void SetLevel(uint8_t level)
 	{
 		_lastlevel = level;
 		CHAL::analogWrite8(PIN, level);

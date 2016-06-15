@@ -82,7 +82,7 @@ bool CParser::ExpectEndOfCommand()
 
 ////////////////////////////////////////////////////////////
 
-unsigned char CParser::GetUInt8()			{ return GetUInt<unsigned char>(); }
+uint8_t CParser::GetUInt8()			{ return GetUInt<uint8_t>(); }
 unsigned short CParser::GetUInt16()			{ return GetUInt<unsigned short>(); }
 unsigned long CParser::GetUInt32()			{ return GetUInt<unsigned long>(); }
 char CParser::GetInt8()						{ return GetInt<char>(); }
@@ -92,15 +92,15 @@ sdist_t CParser::GetSDist()					{ return GetInt<sdist_t>(); }
 
 ////////////////////////////////////////////////////////////
 
-long CParser::GetInt32Scale(long minvalue, long maxvalue, unsigned char scale, unsigned char maxscale)
+long CParser::GetInt32Scale(long minvalue, long maxvalue, uint8_t scale, uint8_t maxscale)
 {
 	// ignore digits between scale and maxscale (first digit after scale is used for round)
 	// 1.2345 with scale=3 and maxscale=5 is ok => return 1235 (calculated with scale - round)
 
 	bool negativ;
 	long value = 0;
-	unsigned char thisscale = 0;
-	unsigned char ch = _reader->GetChar();
+	uint8_t thisscale = 0;
+	uint8_t ch = _reader->GetChar();
 
 	if ((negativ = CStreamReader::IsMinus(ch))!=0)
 	{
@@ -177,7 +177,7 @@ long CParser::GetInt32Scale(long minvalue, long maxvalue, unsigned char scale, u
 
 expr_t CParser::GetDouble()
 {
-	unsigned char ch = _reader->GetChar();
+	uint8_t ch = _reader->GetChar();
 	char*start = (char*)_reader->GetBuffer();
 
 	while (CStreamReader::IsDigitDot(ch))

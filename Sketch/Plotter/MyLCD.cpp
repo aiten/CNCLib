@@ -133,7 +133,7 @@ unsigned long CMyLcd::Draw(EDrawType /* draw */)
 	lcd.setCursor(0,3);
 	lcd.print(CStepper::GetInstance()->GetTotalSteps());
 
-    unsigned char queued = CStepper::GetInstance()->QueuedMovements();
+    uint8_t queued = CStepper::GetInstance()->QueuedMovements();
     lcd.setCursor(18, 3);
     if (queued<10)
         lcd.print(' ');
@@ -144,7 +144,7 @@ unsigned long CMyLcd::Draw(EDrawType /* draw */)
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::DrawPos(unsigned char col, unsigned char row, mm1000_t pos)
+void CMyLcd::DrawPos(uint8_t col, uint8_t row, mm1000_t pos)
 {
 	lcd.setCursor(col, row);
 
@@ -157,7 +157,7 @@ void CMyLcd::DrawPos(unsigned char col, unsigned char row, mm1000_t pos)
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::DrawES(unsigned char col, unsigned char row, bool es)
+void CMyLcd::DrawES(uint8_t col, uint8_t row, bool es)
 {
 	lcd.setCursor(col, row);
 	lcd.print(es ? F("1") : F("0"));
@@ -165,7 +165,7 @@ void CMyLcd::DrawES(unsigned char col, unsigned char row, bool es)
 
 ////////////////////////////////////////////////////////////
 
-void CMyLcd::DrawPen(unsigned char col, unsigned char row)
+void CMyLcd::DrawPen(uint8_t col, uint8_t row)
 {
 	lcd.setCursor(col, row);
 	lcd.print(Plotter.GetPen());

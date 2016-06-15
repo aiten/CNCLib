@@ -77,14 +77,14 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-	virtual void  SetEnable(axis_t /* axis */, unsigned char level, bool /* force */) override
+	virtual void  SetEnable(axis_t /* axis */, uint8_t level, bool /* force */) override
 	{
 		if (level != LevelOff)	HALFastdigitalWrite(CNCSHIELD_ENABLE_PIN,CNCSHIELD_PIN_ENABLE_ON);	else	HALFastdigitalWrite(CNCSHIELD_ENABLE_PIN,CNCSHIELD_PIN_ENABLE_OFF);
 	}
 
 	////////////////////////////////////////////////////////
 
-	virtual unsigned char GetEnable(axis_t /* axis */) override
+	virtual uint8_t GetEnable(axis_t /* axis */) override
 	{
 		return ConvertLevel(HALFastdigitalRead(CNCSHIELD_ENABLE_PIN) == CNCSHIELD_PIN_ENABLE_ON);
 	}
@@ -100,7 +100,7 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) override
+	virtual void  Step(const uint8_t steps[NUM_AXIS], axisArray_t directionUp) override
 	{
 		// The timing requirements for minimum pulse durations on the STEP pin are different for the two drivers. 
 		// With the DRV8825, the high and low STEP pulses must each be at least 1.9 us; 
@@ -116,7 +116,7 @@ protected:
 		if ((directionUp&(1 << A_AXIS)) != 0) HALFastdigitalWriteNC(CNCSHIELD_A_DIR_PIN, CNCSHIELD_PIN_DIR_OFF); else HALFastdigitalWriteNC(CNCSHIELD_A_DIR_PIN, CNCSHIELD_PIN_DIR_ON);
 #endif
 
-		for (unsigned char cnt = 0;; cnt++)
+		for (uint8_t cnt = 0;; cnt++)
 		{
 			register bool have = false;
 			if (steps[X_AXIS] > cnt) { HALFastdigitalWriteNC(CNCSHIELD_X_STEP_PIN, CNCSHIELD_PIN_STEP_OFF); have = true; }
@@ -145,7 +145,7 @@ public:
 
 	////////////////////////////////////////////////////////
 
-	virtual bool IsReference(unsigned char referenceid) override
+	virtual bool IsReference(uint8_t referenceid) override
 	{
 		// min and max is the same pin
 		switch (referenceid)

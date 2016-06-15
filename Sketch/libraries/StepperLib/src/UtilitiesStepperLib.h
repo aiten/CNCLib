@@ -30,20 +30,20 @@
 
 //////////////////////////////////////////
 
-extern unsigned char ToPrecisionU10(unsigned long);
-extern unsigned char ToPrecisionU10(unsigned short);
-extern unsigned char ToPrecisionS10(long v);
+extern uint8_t ToPrecisionU10(unsigned long);
+extern uint8_t ToPrecisionU10(unsigned short);
+extern uint8_t ToPrecisionS10(long v);
 
-extern unsigned char ToPrecisionU2(unsigned long);
-extern unsigned char ToPrecisionU2(unsigned short);
-extern unsigned char ToPrecisionS2(long);
+extern uint8_t ToPrecisionU2(unsigned long);
+extern uint8_t ToPrecisionU2(unsigned short);
+extern uint8_t ToPrecisionS2(long);
 
 ////////////////////////////////////////////////////////
 
-template<class T> bool IsBitSet(T t, unsigned char bit)				{ return (t & (((T)1) << bit)) != 0; };
-template<class T> bool IsBitClear(T t, unsigned char bit)			{ return (t & (((T)1) << bit)) == 0; };
-template<class T> void BitSet(T& t, unsigned char bit)				{ t |= ((T)1) << bit; };
-template<class T> void BitClear(T& t, unsigned char bit)			{ t &= ~(((T)1) << bit); };
+template<class T> bool IsBitSet(T t, uint8_t bit)				{ return (t & (((T)1) << bit)) != 0; };
+template<class T> bool IsBitClear(T t, uint8_t bit)			{ return (t & (((T)1) << bit)) == 0; };
+template<class T> void BitSet(T& t, uint8_t bit)				{ t |= ((T)1) << bit; };
+template<class T> void BitClear(T& t, uint8_t bit)			{ t &= ~(((T)1) << bit); };
 
 ////////////////////////////////////////////////////////
 
@@ -52,9 +52,9 @@ inline unsigned int RoundMulDivUInt(unsigned int v, unsigned int m, unsigned int
 	return (unsigned int)(((unsigned long)(v)* (unsigned long)(m)+(unsigned long)(d / 2)) / d);
 }
 
-inline unsigned char RoundMulDivU8(unsigned char v, unsigned char m, unsigned char d)
+inline uint8_t RoundMulDivU8(uint8_t v, uint8_t m, uint8_t d)
 {
-	return (unsigned char) (((unsigned int)v * m + d / 2) / d);
+	return (uint8_t) (((unsigned int)v * m + d / 2) / d);
 }
 
 inline unsigned long RoundMulDivU32(unsigned long v, unsigned long m, unsigned long d)
@@ -113,7 +113,7 @@ extern udiv_t udiv(unsigned short __num, unsigned short __denom) __asm__("__udiv
 
 ////////////////////////////////////////////////////////
 
-template<typename T, unsigned char sz> void DumpArray(const __FlashStringHelper* head, const T pos[sz], bool newline)
+template<typename T, uint8_t sz> void DumpArray(const __FlashStringHelper* head, const T pos[sz], bool newline)
 {
 	if (head != NULL)
 	{
@@ -121,7 +121,7 @@ template<typename T, unsigned char sz> void DumpArray(const __FlashStringHelper*
 		StepperSerial.print(F("="));
 	}
 	StepperSerial.print(pos[0]);
-	for (unsigned char i = 1; i < sz; i++)
+	for (uint8_t i = 1; i < sz; i++)
 	{
 		StepperSerial.print(F(","));
 		StepperSerial.print(pos[i]);

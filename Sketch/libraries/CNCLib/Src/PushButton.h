@@ -29,12 +29,12 @@ public:
 	{
 	}
 
-	CPushButton(pin_t pin, unsigned char onValue)
+	CPushButton(pin_t pin, uint8_t onValue)
 	{
 		SetPin(pin, onValue);
 	}
 
-	void SetPin(pin_t pin, unsigned char onValue)		
+	void SetPin(pin_t pin, uint8_t onValue)		
 	{ 
 		_pin=pin; 
 		_onvalue = onValue; 
@@ -94,8 +94,8 @@ public:
 
 protected:
 
-	pin_t			_pin = 0;
-	unsigned char	_onvalue = 0;
+	pin_t	_pin = 0;
+	uint8_t	_onvalue = 0;
 
 	enum EButtonState
 	{

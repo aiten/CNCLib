@@ -57,8 +57,8 @@ public:
 
 	static bool Compare(const T src1[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T src2[MATRIX4X4SIZEX][MATRIX4X4SIZEY])
 	{
-		for (unsigned char i = 0; i < MATRIX4X4SIZEX; i++)
-			for (unsigned char k = 0; k < MATRIX4X4SIZEY; k++)
+		for (uint8_t i = 0; i < MATRIX4X4SIZEX; i++)
+			for (uint8_t k = 0; k < MATRIX4X4SIZEY; k++)
 				if (src1[i][k] != src2[i][k])
 					return false;
 		return true;
@@ -81,8 +81,8 @@ public:
 
 	static bool Compare(const T src1[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T src2[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T epsilon)
 	{
-		for (unsigned char i = 0; i < MATRIX4X4SIZEX; i++)
-			for (unsigned char k = 0; k < MATRIX4X4SIZEY; k++)
+		for (uint8_t i = 0; i < MATRIX4X4SIZEX; i++)
+			for (uint8_t k = 0; k < MATRIX4X4SIZEY; k++)
 				if (!IsEqual(src1[i][k], src2[i][k], epsilon))
 					return false;
 		return true;
@@ -109,9 +109,9 @@ public:
 	static void Mul(const T src1[MATRIX4X4SIZEX][MATRIX4X4SIZEY], const T src2[MATRIX4X4SIZEX][MATRIX4X4SIZEY], T dest[MATRIX4X4SIZEX][MATRIX4X4SIZEY])
 	{
 		Zero(dest);
-		for (unsigned char i = 0; i < MATRIX4X4SIZEX; i++)
-			for (unsigned char k = 0; k < MATRIX4X4SIZEY; k++)
-				for (unsigned char j = 0; j < MATRIX4X4SIZEX; j++)		// col/rows of src1/src2
+		for (uint8_t i = 0; i < MATRIX4X4SIZEX; i++)
+			for (uint8_t k = 0; k < MATRIX4X4SIZEY; k++)
+				for (uint8_t j = 0; j < MATRIX4X4SIZEX; j++)		// col/rows of src1/src2
 				{
 					dest[i][k] = dest[i][k] + src1[i][j] * src2[j][k];
 				}
@@ -124,12 +124,12 @@ public:
 		return *this;
 	}
 
-	T Get(unsigned char x, unsigned char y) const
+	T Get(uint8_t x, uint8_t y) const
 	{
 		return _v[x][y];
 	}
 
-	void Set(unsigned char x, unsigned char y, T value)
+	void Set(uint8_t x, uint8_t y, T value)
 	{
 		_v[x][y] = value;
 	}

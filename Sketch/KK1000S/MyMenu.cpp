@@ -53,7 +53,7 @@ void CMyMenu::MenuButtonPressEnd(const SMenuItemDef*)
 
 void CMyMenu::MenuButtonPressMoveNextAxis(const SMenuItemDef*def)
 {
-	unsigned char old = GetPosition();
+	uint8_t old = GetPosition();
 
 	axis_t axis = (axis_t) (unsigned int) GetMenuDef()->GetParam1();
 	axis = (axis + ((int) def->GetParam1()) + LCD_NUMAXIS) % LCD_NUMAXIS;

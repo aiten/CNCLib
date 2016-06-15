@@ -81,7 +81,7 @@ void CHelpParser::Parse()
 
 #ifndef REDUCED_SIZE
 	
-	unsigned char i;
+	uint8_t i;
 
 	if (IsToken(F("-"), true, false))
 	{
@@ -136,7 +136,7 @@ bool CHelpParser::MoveAbs()
 {
 	udist_t pos[NUM_AXIS] = { 0 };
 
-	for (unsigned char axis = 0; axis < NUM_AXIS; axis++)
+	for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
 	{
 		if (IsUInt(_reader->SkipSpaces()))
 		{
@@ -183,7 +183,7 @@ bool CHelpParser::MoveRel()
 {
 	sdist_t pos[NUM_AXIS] = { 0 };
 
-	for (unsigned char axis = 0; axis < NUM_AXIS; axis++)
+	for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
 	{
 		if (IsInt(_reader->SkipSpaces()))
 		{

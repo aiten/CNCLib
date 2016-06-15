@@ -39,18 +39,18 @@ protected:
 	static pin_t _pin[NUM_AXIS][4];
 	static pin_t _pinenable[NUM_AXIS][2];
 	static pin_t _pinRef[NUM_AXIS*2];
-	static unsigned char _referenceOn;
+	static uint8_t _referenceOn;
 
 protected:
 
-	virtual void  SetEnable(axis_t axis, unsigned char level, bool force) override;
-	virtual unsigned char GetEnable(axis_t axis) override;
-	virtual void  Step(const unsigned char cnt[NUM_AXIS], axisArray_t directionUp) override;
+	virtual void  SetEnable(axis_t axis, uint8_t level, bool force) override;
+	virtual uint8_t GetEnable(axis_t axis) override;
+	virtual void  Step(const uint8_t cnt[NUM_AXIS], axisArray_t directionUp) override;
 
 public:
 
 	virtual bool IsAnyReference() override;
-	virtual bool IsReference(unsigned char referenceid) override;
+	virtual bool IsReference(uint8_t referenceid) override;
 
 	// Set before Init()
 	void SetPin(axis_t axis, pin_t in1, pin_t in2, pin_t in3, pin_t in4) { _pin[axis][0] = in1;  _pin[axis][1] = in2; _pin[axis][2] = in3; _pin[axis][3] = in4; }
@@ -69,7 +69,7 @@ private:
 	bool IsUseEN1(axis_t axis)										{ return _pinenable[axis][0] != 0; }
 	bool IsUseEN2(axis_t axis)										{ return _pinenable[axis][1] != 0; }
 
-	unsigned char _stepIdx[NUM_AXIS];
+	uint8_t _stepIdx[NUM_AXIS];
 	bool _fullStepMode[NUM_AXIS];
 
 	void InitMemVar();

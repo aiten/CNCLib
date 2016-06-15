@@ -31,7 +31,7 @@
 
 ////////////////////////////////////////////////////////
 
-char* CMm1000::ToString(mm1000_t pos, char*tmp, unsigned char precision, unsigned char scale)
+char* CMm1000::ToString(mm1000_t pos, char*tmp, uint8_t precision, uint8_t scale)
 {
 	// right alligned with precision and scale  (+round to scale)
 	// call the base class only here to avoid multiple inlines of a big function
@@ -41,19 +41,19 @@ char* CMm1000::ToString(mm1000_t pos, char*tmp, unsigned char precision, unsigne
 
 ////////////////////////////////////////////////////////
 
-char* CInch100000::ToString(inch100000_t pos, char*tmp, unsigned char precision, unsigned char scale)
+char* CInch100000::ToString(inch100000_t pos, char*tmp, uint8_t precision, uint8_t scale)
 {
 	return super::ToString(pos, tmp, precision, scale);
 }
 
 ////////////////////////////////////////////////////////////
 
-char* CSDist::ToString(sdist_t v, char*tmp, unsigned char precision)
+char* CSDist::ToString(sdist_t v, char*tmp, uint8_t precision)
 {
 	// right aligned
 	tmp[precision] = 0;						// terminating 0
 
-	unsigned char x = ToPrecisionS10(v);
+	uint8_t x = ToPrecisionS10(v);
 	if (x == 0) x = 1;						// 0 => Precision = 0
 	if (v < 0) x++;							// add -
 

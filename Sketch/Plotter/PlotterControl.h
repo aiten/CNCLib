@@ -44,8 +44,8 @@ public:
 	};
 
 	bool IsPenDown()				{ return _isPenDown; }
-	unsigned char GetPen()			{ return _pen; }
-	void SetPen(unsigned char pen)	{ _pen=pen; }
+	uint8_t GetPen()			{ return _pen; }
+	void SetPen(uint8_t pen)	{ _pen=pen; }
 
 protected:
 
@@ -54,7 +54,7 @@ protected:
 	bool _isPenDown;
 	bool _isPenDownTimeout;
 
-	unsigned char _pen;
+	uint8_t _pen;
 };
 
 ////////////////////////////////////////////////////////

@@ -33,7 +33,7 @@ public:
 	struct SMenuItemDef;
 	struct SMenuDef;
 
-	typedef unsigned char menupos_t;
+	typedef uint8_t menupos_t;
 	typedef void(CMenuBase::*MenuFunction)(const SMenuItemDef*);
 	typedef ptr_t menuparam_t;
 
@@ -61,19 +61,19 @@ public:
 		menuparam_t _param1;
 		menuparam_t _param2;
 
-		unsigned char GetItemCount() const
+		uint8_t GetItemCount() const
 		{
 			const SMenuItemDef* items = GetItems();
-			for (unsigned char x = 0;; x++)
+			for (uint8_t x = 0;; x++)
 			{
 				if (items[x].GetText() == NULL) return x;
 			}
 		}
 
-		unsigned char FindMenuIdx(ptr_t param, bool(*check)(const SMenuItemDef*, ptr_t param)) const
+		uint8_t FindMenuIdx(ptr_t param, bool(*check)(const SMenuItemDef*, ptr_t param)) const
 		{
 			const SMenuItemDef* item = &GetItems()[0];
-			for (unsigned char x = 0; item->GetText() != NULL; x++, item++)
+			for (uint8_t x = 0; item->GetText() != NULL; x++, item++)
 			{
 				if (check(item, param)) return x;
 			}
@@ -98,7 +98,7 @@ public:
 	menupos_t GetOffset()											{ return _offset; }
 
 	void AdjustOffset(menupos_t firstline, menupos_t lastline);
-	unsigned char ToPrintLine(menupos_t firstline, menupos_t lastline, menupos_t i);		// return 255 if not to print
+	uint8_t ToPrintLine(menupos_t firstline, menupos_t lastline, menupos_t i);		// return 255 if not to print
 
 	const SMenuDef*GetMenuDef()										{ return _current; }
 	const SMenuDef*GetMainMenuDef()									{ return _main; }

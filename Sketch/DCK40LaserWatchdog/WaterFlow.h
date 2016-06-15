@@ -102,11 +102,12 @@ private:
 		// prev
 		_countTime[_countIdx] = millis() - _countTime[_countIdx];
 
-		// set next
-		_countIdx = (_countIdx + 1) % SAMPELCOUNT;
-		_count[_countIdx] = 0;
-		_countTime[_countIdx] = millis();
-		_countUntil = _countTime[_countIdx] + SAMPELTIME;
+		// set next (no cli => cache)
+		uint8_t idxnext = (_countIdx + 1) % SAMPELCOUNT;
+		_count[idxnext] = 0;
+		_countTime[idxnext] = millis();
+		_countUntil = _countTime[idxnext] + SAMPELTIME;
+		_countIdx = idxnext;
 	}
 
 	unsigned long _countUntil;

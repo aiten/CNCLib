@@ -42,7 +42,7 @@ void CStepperServo::Init()
 
 ////////////////////////////////////////////////////////
 
-void CStepperServo::Step(const unsigned char /* steps */[NUM_AXIS], unsigned char /* directionUp */)
+void CStepperServo::Step(const uint8_t /* steps */[NUM_AXIS], uint8_t /* directionUp */)
 {
 	SetServo();
 }
@@ -72,20 +72,20 @@ void CStepperServo::SetServo()
 
 ////////////////////////////////////////////////////////
 
-void CStepperServo::SetEnable(axis_t /* axis */, unsigned char /* level */, bool /* force */)
+void CStepperServo::SetEnable(axis_t /* axis */, uint8_t /* level */, bool /* force */)
 {
 }
 
 ////////////////////////////////////////////////////////
 
-unsigned char CStepperServo::GetEnable(axis_t /* axis */)
+uint8_t CStepperServo::GetEnable(axis_t /* axis */)
 {
 	return LevelMax;
 }
 
 ////////////////////////////////////////////////////////
 
-bool  CStepperServo::IsReference(unsigned char /* referenceid */)
+bool  CStepperServo::IsReference(uint8_t /* referenceid */)
 {
 	return false;
 }

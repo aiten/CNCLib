@@ -35,7 +35,7 @@
 class SDClass
 {
 public:
-	bool begin(unsigned char ) { return true; };
+	bool begin(uint8_t ) { return true; };
 
 	class File open(const char *filename, uint8_t mode = FILE_READ);
 

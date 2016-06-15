@@ -89,7 +89,7 @@ inline int digitalReadDirect(int pin){
   return !!(g_APinDescription[pin].pPort -> PIO_PDSR & g_APinDescription[pin].ulPin);
 }
 */
-inline unsigned char CHAL::digitalRead(pin_t pin)
+inline uint8_t CHAL::digitalRead(pin_t pin)
 {
   return (g_APinDescription[pin].pPort -> PIO_PDSR & g_APinDescription[pin].ulPin) ? HIGH : LOW;
 //	return ::digitalReadDirect(pin);
@@ -102,7 +102,7 @@ inline void CHAL::digitalWrite(pin_t pin, uint8_t val)
   //	digitalWriteDirect(pin,lowOrHigh);
 }
 
-inline void CHAL::pinMode(pin_t pin, unsigned char mode)
+inline void CHAL::pinMode(pin_t pin, uint8_t mode)
 { 
 	::pinMode(pin,mode); 
 }

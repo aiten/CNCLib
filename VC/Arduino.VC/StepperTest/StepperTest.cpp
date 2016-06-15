@@ -642,7 +642,7 @@ void CStepperTest::WriteStepperTestMovement()
 	FILE *f = fopen("c:\\tmp\\test.txt", "wt");
 
 	fprintf(f, "\tAssert(%i, Stepper.GetMovementCount());\n", (int)Stepper.GetMovementCount());
-	for (unsigned char i = 0; i < Stepper.GetMovementCount(); i++)
+	for (uint8_t i = 0; i < Stepper.GetMovementCount(); i++)
 	{
 		CMsvcStepper::SMovementX mv = Stepper.GetMovement(i);
 		if (mv.mv.IsActiveMove())

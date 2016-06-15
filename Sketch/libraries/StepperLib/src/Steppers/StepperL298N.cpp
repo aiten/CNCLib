@@ -22,15 +22,15 @@
 ////////////////////////////////////////////////////////
 
  // 1010 -> 1000 -> 1001 -> 0001 -> 0101 -> 0100 -> 0110 -> 0010
-static const unsigned char _L298Nhalfstep4Pin[8] PROGMEM = { 10, 8, 9, 1, 5, 4, 6, 2 };
+static const uint8_t _L298Nhalfstep4Pin[8] PROGMEM = { 10, 8, 9, 1, 5, 4, 6, 2 };
 
 // 1010 -> 1001 -> 0101 -> 0110
-static const unsigned char _L298Nfullstep4Pin[4] PROGMEM = { 10, 9, 5, 6 };
-// static unsigned char _L298Nfullstep4Pin[4] = { 1+2, 2+4, 4+8, 8+1 };
+static const uint8_t _L298Nfullstep4Pin[4] PROGMEM = { 10, 9, 5, 6 };
+// static uint8_t _L298Nfullstep4Pin[4] = { 1+2, 2+4, 4+8, 8+1 };
 
  // 1010 -> 1001 -> 0101 -> 0110
  // aAbB => a => !a=A 
-static const unsigned char _L298Nfullstep2Pin[4] PROGMEM = { 3, 2, 0, 1 };
+static const uint8_t _L298Nfullstep2Pin[4] PROGMEM = { 3, 2, 0, 1 };
 
  ////////////////////////////////////////////////////////
  
@@ -41,7 +41,7 @@ static const unsigned char _L298Nfullstep2Pin[4] PROGMEM = { 3, 2, 0, 1 };
 ////////////////////////////////////////////////////////
 
  // reference: difference between microswitch (on=LOW) and optical (on=>HIGH) 
- unsigned char CStepperL298N::_referenceOn = LOW;
+ uint8_t CStepperL298N::_referenceOn = LOW;
 
 pin_t CStepperL298N::_pin[NUM_AXIS][4] =
 {
@@ -84,7 +84,7 @@ void CStepperL298N::Init(void)
 
 	InitMemVar();
 
-	register unsigned char i;
+	register uint8_t i;
 
 	for (i = 0; i < NUM_AXIS; i++)
 	{
@@ -113,14 +113,14 @@ void CStepperL298N::Init(void)
 
 void CStepperL298N::InitMemVar()
 {
-	register unsigned char i;
+	register uint8_t i;
 	for (i = 0; i < NUM_AXIS; i++)	_stepIdx[i] = 0;
 	for (i = 0; i < NUM_AXIS; i++)	_fullStepMode[i] = false;
 }
 
 ////////////////////////////////////////////////////////
 
-void  CStepperL298N::Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp)
+void  CStepperL298N::Step(const uint8_t steps[NUM_AXIS], axisArray_t directionUp)
 {
 	for (axis_t axis=0;axis < NUM_AXIS;axis++)
 	{
@@ -138,7 +138,7 @@ void  CStepperL298N::Step(const unsigned char steps[NUM_AXIS], axisArray_t direc
 
 ////////////////////////////////////////////////////////
 
-void CStepperL298N::SetEnable(axis_t axis, unsigned char level, bool  force)
+void CStepperL298N::SetEnable(axis_t axis, uint8_t level, bool  force)
 {
 	if (IsActive(axis))
 	{
@@ -172,7 +172,7 @@ void CStepperL298N::SetEnable(axis_t axis, unsigned char level, bool  force)
 
 ////////////////////////////////////////////////////////
 
-unsigned char CStepperL298N::GetEnable(axis_t axis)
+uint8_t CStepperL298N::GetEnable(axis_t axis)
 {
 	if (!IsActive(axis)) return LevelOff;
 
@@ -199,7 +199,7 @@ void CStepperL298N::SetPhase(axis_t axis)
 {
 	if (IsActive(axis))
 	{
-		register unsigned char bitmask;
+		register uint8_t bitmask;
 
 		if (Is4Pin(axis))
 		{
@@ -227,7 +227,7 @@ void CStepperL298N::SetPhase(axis_t axis)
 
 ////////////////////////////////////////////////////////
 
-bool  CStepperL298N::IsReference(unsigned char referenceid)
+bool  CStepperL298N::IsReference(uint8_t referenceid)
 {
 	if (_pinRef[referenceid] != 0)
 		return CHAL::digitalRead(_pinRef[referenceid]) == _referenceOn;

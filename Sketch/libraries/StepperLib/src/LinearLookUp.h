@@ -31,7 +31,7 @@ public:
 		TOutput	output;
 	};
 
-	typedef unsigned char index_t;
+	typedef uint8_t index_t;
 
 	static TOutput LinearInterpolation(SLookupTable* pTable, TInput input, index_t i)
 	{
@@ -111,6 +111,6 @@ public:
 private:
 
 	SLookupTable* _pTable;
-	unsigned char _tabelSize;
+	uint8_t _tabelSize;
 
 };

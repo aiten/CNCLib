@@ -66,13 +66,13 @@ public:
 
 protected:
 
-	virtual void  SetEnable(axis_t axis, unsigned char level, bool force) override;
-	virtual unsigned char GetEnable(axis_t axis) override;
-	virtual void  Step(const unsigned char cnt[NUM_AXIS], unsigned char directionUp) override;
+	virtual void  SetEnable(axis_t axis, uint8_t level, bool force) override;
+	virtual uint8_t GetEnable(axis_t axis) override;
+	virtual void  Step(const uint8_t cnt[NUM_AXIS], uint8_t directionUp) override;
 
 public:
 
-	virtual bool IsReference(unsigned char referenceid) override;
+	virtual bool IsReference(uint8_t referenceid) override;
 	virtual bool IsAnyReference() override;
 
     protected:

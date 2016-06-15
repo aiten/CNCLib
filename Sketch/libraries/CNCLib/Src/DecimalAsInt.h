@@ -21,7 +21,7 @@
 
 //////////////////////////////////////////
 
-template <typename T, unsigned char SCALE, unsigned long SCALEMASK> class CDecimaAsInt
+template <typename T, uint8_t SCALE, unsigned long SCALEMASK> class CDecimaAsInt
 {
 protected:
 
@@ -36,7 +36,7 @@ protected:
 
 	// make a wrapper to the function to avoid inline => protected
 
-	static char* ToString(long pos, char*tmp, unsigned char precision, unsigned char scale)
+	static char* ToString(long pos, char*tmp, uint8_t precision, uint8_t scale)
 	{
 		bool isNegativ = pos < 0;
 
@@ -66,7 +66,7 @@ protected:
 			}
 		}
 
-		unsigned char x = ToPrecisionS10(pos);
+		uint8_t x = ToPrecisionS10(pos);
 		if (x < (SCALE + 1)) x = (SCALE + 1);	// 0..999 => 0.000
 		if (isNegativ) x++;
 
@@ -117,7 +117,7 @@ protected:
 				{
 					sud = ldiv(sud.quot, 10);
 					if (x <= scale)
-						tmp[precision--] = '0' + (unsigned char)sud.rem;
+						tmp[precision--] = '0' + (uint8_t)sud.rem;
 				}
 				tmp[precision--] = '.';
 			}
@@ -125,13 +125,13 @@ protected:
 			do
 			{
 				ud = ldiv(ud.quot, 10);
-				tmp[precision--] = '0' + (unsigned char)ud.rem;
+				tmp[precision--] = '0' + (uint8_t)ud.rem;
 			} while (ud.quot != 0);
 
 			if (isNegativ)
 				tmp[precision--] = '-';
 
-			while (precision != ((unsigned char)-1))
+			while (precision != ((uint8_t)-1))
 				tmp[precision--] = ' ';
 		}
 
@@ -161,11 +161,11 @@ private:
 
 public:
 
-	static char* ToString(mm1000_t v, char*tmp, unsigned char precision, unsigned char scale);	// right aligned
-	static char* ToString(mm1000_t v, char*tmp, unsigned char scale)		{ return SkipSpaces(ToString(v, tmp, 11, scale)); };
+	static char* ToString(mm1000_t v, char*tmp, uint8_t precision, uint8_t scale);	// right aligned
+	static char* ToString(mm1000_t v, char*tmp, uint8_t scale)		{ return SkipSpaces(ToString(v, tmp, 11, scale)); };
 
-	char*ToString(char*tmp, unsigned char precision, unsigned char scale)	{ return ToString(_value, tmp, precision, scale); } // right aligned
-	char*ToString(char*tmp, unsigned char scale)							{ return ToString(_value, tmp, scale); }
+	char*ToString(char*tmp, uint8_t precision, uint8_t scale)	{ return ToString(_value, tmp, precision, scale); } // right aligned
+	char*ToString(char*tmp, uint8_t scale)							{ return ToString(_value, tmp, scale); }
 
 };
 
@@ -183,12 +183,12 @@ private:
 
 public:
 
-	static char* ToString(inch100000_t v, char*tmp, unsigned char precision, unsigned char scale);	// right aligned
-	static char* ToString(inch100000_t v, char*tmp, unsigned char scale)	{ return SkipSpaces(ToString(v, tmp, 11, scale)); }
+	static char* ToString(inch100000_t v, char*tmp, uint8_t precision, uint8_t scale);	// right aligned
+	static char* ToString(inch100000_t v, char*tmp, uint8_t scale)	{ return SkipSpaces(ToString(v, tmp, 11, scale)); }
 	;
 
-	char*ToString(char*tmp, unsigned char precision, unsigned char scale)	{ return ToString(_value, tmp, precision, scale); } // right aligned
-	char*ToString(char*tmp, unsigned char scale)							{ return ToString(_value, tmp, scale); }
+	char*ToString(char*tmp, uint8_t precision, uint8_t scale)	{ return ToString(_value, tmp, precision, scale); } // right aligned
+	char*ToString(char*tmp, uint8_t scale)							{ return ToString(_value, tmp, scale); }
 };
 
 //////////////////////////////////////////
@@ -201,11 +201,11 @@ private:
 
 public:
 
-//	static char* ToString(mm1000_t v, char*tmp, unsigned char precision, unsigned char scale);	// right aligned
-//	static char* ToString(mm1000_t v, char*tmp, unsigned char scale) { return SkipSpaces(ToString(v, tmp, 11, scale)); };
+//	static char* ToString(mm1000_t v, char*tmp, uint8_t precision, uint8_t scale);	// right aligned
+//	static char* ToString(mm1000_t v, char*tmp, uint8_t scale) { return SkipSpaces(ToString(v, tmp, 11, scale)); };
 
-//	char*ToString(char*tmp, unsigned char precision, unsigned char scale) { return ToString(_value, tmp, precision, scale); } // right aligned
-//	char*ToString(char*tmp, unsigned char scale) { return ToString(_value, tmp, scale); }
+//	char*ToString(char*tmp, uint8_t precision, uint8_t scale) { return ToString(_value, tmp, precision, scale); } // right aligned
+//	char*ToString(char*tmp, uint8_t scale) { return ToString(_value, tmp, scale); }
 
 };
 
@@ -221,7 +221,7 @@ public:
 	CSDist()	{ _value = 0; }
 	CSDist(sdist_t v)	{ _value = v; }
 
-	static char* ToString(sdist_t v, char*tmp, unsigned char precision);		// right aligned
+	static char* ToString(sdist_t v, char*tmp, uint8_t precision);		// right aligned
 };
 
 //////////////////////////////////////////

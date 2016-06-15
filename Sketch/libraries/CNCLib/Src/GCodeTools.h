@@ -62,7 +62,7 @@ public:
 
 private:
 
-	unsigned char GetToolIndex(toolnr_t tool);
+	uint8_t GetToolIndex(toolnr_t tool);
 
 	static const STools _tools[] PROGMEM;
 

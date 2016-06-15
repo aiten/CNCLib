@@ -142,7 +142,7 @@ void CMyControl::Init()
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::IOControl(unsigned char tool, unsigned short level)
+void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
@@ -151,7 +151,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 			if (level != 0)
 			{
 #ifdef SPINDEL_ANALOGSPEED
-				_spindel.On((unsigned char) MulDivU32(abs(level),255, SPINDEL_MAXSPEED));
+				_spindel.On((uint8_t) MulDivU32(abs(level),255, SPINDEL_MAXSPEED));
 #else        
 				_spindel.On();
 #endif
@@ -171,7 +171,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 #if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
 		case ControllerFan:		_controllerfan.Set(level>0);	return;
 #elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan:		_controllerfan.Level = (unsigned char)level;		return;
+		case ControllerFan:		_controllerfan.Level = (uint8_t)level;		return;
 #endif
 	}
 	
@@ -180,7 +180,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 
 ////////////////////////////////////////////////////////////
 
-unsigned short CMyControl::IOControl(unsigned char tool)
+unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{

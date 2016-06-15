@@ -102,7 +102,7 @@ public:
 
 protected:
 
-	virtual void  SetEnable(axis_t axis, unsigned char level, bool /* force */) override
+	virtual void  SetEnable(axis_t axis, uint8_t level, bool /* force */) override
 	{
 		switch (axis)
 		{
@@ -122,7 +122,7 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-	virtual unsigned char GetEnable(axis_t axis) override
+	virtual uint8_t GetEnable(axis_t axis) override
 	{
 		switch (axis)
 		{
@@ -152,7 +152,7 @@ protected:
 
 	////////////////////////////////////////////////////////
 	
-	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) override
+	virtual void  Step(const uint8_t steps[NUM_AXIS], axisArray_t directionUp) override
 	{
 		// The timing requirements for minimum pulse durations on the STEP pin are different for the two drivers. 
 		// With the DRV8825, the high and low STEP pulses must each be at least 1.9 us; 
@@ -166,7 +166,7 @@ protected:
 		if ((directionUp&(1 << E0_AXIS)) != 0) HALFastdigitalWriteNC(RAMPS14_E0_DIR_PIN, RAMPS14_PIN_DIR_OFF); else HALFastdigitalWriteNC(RAMPS14_E0_DIR_PIN, RAMPS14_PIN_DIR_ON);
 		if ((directionUp&(1 << E1_AXIS)) != 0) HALFastdigitalWriteNC(RAMPS14_E1_DIR_PIN, RAMPS14_PIN_DIR_OFF); else HALFastdigitalWriteNC(RAMPS14_E1_DIR_PIN, RAMPS14_PIN_DIR_ON);
 
-		for (unsigned char cnt = 0;; cnt++)
+		for (uint8_t cnt = 0;; cnt++)
 		{
 			register bool have = false;
 			if (steps[X_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPS14_X_STEP_PIN, RAMPS14_PIN_STEP_OFF); have = true; }
@@ -193,7 +193,7 @@ public:
 
 	////////////////////////////////////////////////////////
 
-	virtual bool IsReference(unsigned char referenceid) override
+	virtual bool IsReference(uint8_t referenceid) override
 	{
 		switch (referenceid)
 		{

@@ -236,7 +236,7 @@ void CMotionControlBase::Arc(const mm1000_t to[NUM_AXIS], mm1000_t offset0, mm10
 		float cos_Ti;
 		float r_axisi;
 		unsigned short i;
-		unsigned char count = 0;
+		uint8_t count = 0;
 
 		for (i = 1; i < segments; i++)
 		{
@@ -297,7 +297,7 @@ steprate_t CMotionControlBase::GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate
 		mm1000_t sum = 0;
 		mm1000_t sumOverRun = 0;
 		bool useOverrun = false;
-		unsigned char axiscount = 0;
+		uint8_t axiscount = 0;
 
 		for (register axis_t x = 0; x < NUM_AXIS; x++)
 		{

@@ -68,7 +68,7 @@ void CControl3D::Initialized()
 
 ////////////////////////////////////////////////////////////
 
-void CControl3D::InitSD(unsigned char sdEnablePin)
+void CControl3D::InitSD(pin_t sdEnablePin)
 {
 	StepperSerial.print(MESSAGE_CONTROL3D_InitializingSDCard);
 

@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
-template <pin_t PIN, unsigned char ONVALUE, unsigned char OFFVALUE>
+template <pin_t PIN, uint8_t ONVALUE, uint8_t OFFVALUE>
 class COnOffIOControl
 {
 public:

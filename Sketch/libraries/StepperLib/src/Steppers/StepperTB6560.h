@@ -89,7 +89,7 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-	virtual void  SetEnable(axis_t axis, unsigned char level, bool /* force */) override
+	virtual void  SetEnable(axis_t axis, uint8_t level, bool /* force */) override
 	{
 
 #define SETLEVEL(pin) if (level != LevelOff)	HALFastdigitalWrite(pin,TB6560_PIN_ENABLE_ON);	else	HALFastdigitalWrite(pin,TB6560_PIN_ENABLE_OFF);
@@ -113,7 +113,7 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-	virtual unsigned char GetEnable(axis_t axis) override
+	virtual uint8_t GetEnable(axis_t axis) override
 	{
 		switch (axis)
 		{
@@ -134,7 +134,7 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-	virtual void  Step(const unsigned char steps[NUM_AXIS], unsigned char directionUp) override
+	virtual void  Step(const uint8_t steps[NUM_AXIS], uint8_t directionUp) override
 	{
 		// Step:   LOW to HIGH
 
@@ -146,7 +146,7 @@ protected:
 		//	SETDIR(A_AXIS,TB6560_A_DIR_PIN);
 		//	SETDIR(B_AXIS,TB6560_B_DIR_PIN);
 
-		for (unsigned char cnt = 0;; cnt++)
+		for (uint8_t cnt = 0;; cnt++)
 		{
 			register bool have = false;
 			if (steps[X_AXIS] > cnt) { HALFastdigitalWriteNC(TB6560_X_STEP_PIN, TB6560_PIN_STEP_ON); have = true; }
@@ -175,7 +175,7 @@ public:
 
 	////////////////////////////////////////////////////////
 
-	virtual bool IsReference(unsigned char /* referenceid */) override
+	virtual bool IsReference(uint8_t /* referenceid */) override
 	{
 		/*
 		switch (referenceid)

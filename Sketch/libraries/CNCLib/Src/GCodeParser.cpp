@@ -249,7 +249,7 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 			case PARAMSTART_G54OFFSET + 4 * PARAMSTART_G54FF_OFFSET:
 			case PARAMSTART_G54OFFSET + 5 * PARAMSTART_G54FF_OFFSET:
 			{
-				unsigned char idx = (unsigned char)((param->GetParamNo() - PARAMSTART_G54OFFSET) / PARAMSTART_G54FF_OFFSET);
+				uint8_t idx = (uint8_t)((param->GetParamNo() - PARAMSTART_G54OFFSET) / PARAMSTART_G54FF_OFFSET);
 				if (idx < G54ARRAYSIZE)
 					return GetParamAsPosition(_modalstate.G54Pospreset[idx][axis], axis);
 				break;
@@ -398,7 +398,7 @@ mm1000_t CGCodeParser::GetG54PosPreset(axis_t axis)
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParser::Command(unsigned char ch)
+bool CGCodeParser::Command(char ch)
 {
 	if (super::Command(ch))
 		return true;
@@ -449,7 +449,7 @@ bool CGCodeParser::Command(unsigned char ch)
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParser::GCommand(unsigned char gcode)
+bool CGCodeParser::GCommand(uint8_t gcode)
 {
 	if (super::GCommand(gcode))
 		return true;
@@ -555,7 +555,7 @@ void CGCodeParser::GetP81(SAxisMove& move)
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParser::GetL81(SAxisMove& move, unsigned char& l)
+void CGCodeParser::GetL81(SAxisMove& move, uint8_t& l)
 {
 	if (move.bitfield.bit.L)
 	{
@@ -572,7 +572,7 @@ void CGCodeParser::GetL81(SAxisMove& move, unsigned char& l)
 		Error(MESSAGE_GCODE_LmustBe1_255);
 		return;
 	}
-	l = (unsigned char)myL;
+	l = (uint8_t)myL;
 }
 
 ////////////////////////////////////////////////////////////
@@ -602,9 +602,9 @@ void CGCodeParser::GetQ81(SAxisMove& move)
 
 void CGCodeParser::G10Command()
 {
-	unsigned char specified = 0;
-	unsigned char l=0;
-	unsigned char p=0;
+	uint8_t specified = 0;
+	uint8_t l=0;
+	uint8_t p=0;
 	SAxisMove move(false);
 
 	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
@@ -629,7 +629,7 @@ void CGCodeParser::G10Command()
 			if (p == 0) { p = _modalstate.ZeroPresetIdx; }		// current
 			if (p > G54ARRAYSIZE)  { Error(MESSAGE_GCODE_UnsupportedCoordinateSystemUseG54Instead); return; }
 
-			for (unsigned char axis = 0; axis < NUM_AXIS; axis++)
+			for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
 			{
 				if (IsBitSet(move.axes, axis))
 				{
@@ -721,7 +721,7 @@ void CGCodeParser::GetAngleR(SAxisMove& move, mm1000_t& angle)
 
 void CGCodeParser::G68Command()
 {
-	unsigned char subcode = GetSubCode();
+	uint8_t subcode = GetSubCode();
 
 	switch (subcode)
 	{
@@ -767,7 +767,7 @@ void CGCodeParser::G68CommandDefault()
 
 	memcpy(offset, move.newpos,sizeof(offset));	// use current position!
 /*
-	for (unsigned char axis = 0; axis < NUM_AXIS; axis++)
+	for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
 	{
 		if (IsBitSet(move.axes, axis))
 		{
@@ -798,7 +798,7 @@ void CGCodeParser::G68Ext10Command()
 	// Clear (all and set to 0), no iJK, no xyz
 
 	mm1000_t offset[NUM_AXISXYZ] = { 0, 0, 0 };
-	for (unsigned char axis = 0; axis < NUM_AXISXYZ; axis++)
+	for (uint8_t axis = 0; axis < NUM_AXISXYZ; axis++)
 		CMotionControl::GetInstance()->SetRotate2D(axis,0.0);
 	CMotionControl::GetInstance()->SetOffset2D(offset);
 }
@@ -846,7 +846,7 @@ void CGCodeParser::G68Ext12Command()
 	if (move.axes)
 		CMotionControl::GetInstance()->SetOffset2D(move.newpos);
 
-	for (unsigned char axis = 0; axis < NUM_AXISXYZ; axis++)
+	for (uint8_t axis = 0; axis < NUM_AXISXYZ; axis++)
 	{
 		if (IsBitSet(move.GetIJK(), axis))
 		{
@@ -933,7 +933,7 @@ void CGCodeParser::G53Command()
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParser::G5xCommand(unsigned char idx)
+void CGCodeParser::G5xCommand(uint8_t idx)
 {
 	// G54 => idx = 1 => arraysize==1
 
@@ -955,7 +955,7 @@ void CGCodeParser::G8xCommand(SAxisMove& move, bool useP, bool useQ, bool useMin
 {
 	if (CutterRadiosIsOn()) return;
 
-	unsigned char l = 1;
+	uint8_t l = 1;
 
 	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
 	{
@@ -999,7 +999,7 @@ void CGCodeParser::G8xCommand(SAxisMove& move, bool useP, bool useQ, bool useMin
 			return;
 		}
 
-		for (unsigned char i = 0; i < l; i++)
+		for (uint8_t i = 0; i < l; i++)
 		{
 			// 1. Step: GoTo x:y (fast)
 			//          For rel move store relative distance in move.newpos
@@ -1215,7 +1215,7 @@ void CGCodeParser::M111Command()
 
 void CGCodeParser::M114Command()
 {
-	unsigned char postype = 0;
+	uint8_t postype = 0;
 
 	if (_reader->SkipSpacesToUpper() == 'S')
 	{
@@ -1238,7 +1238,7 @@ void CGCodeParser::M220Command()
 	if (_reader->SkipSpacesToUpper() == 'S')
 	{
 		_reader->GetNextChar();
-		unsigned char speedInP = GetUInt8();
+		uint8_t speedInP = GetUInt8();
 		if (IsError()) return;
 		CStepper::GetInstance()->SetSpeedOverride(CStepper::PToSpeedOverride(speedInP));
 	}
@@ -1340,7 +1340,7 @@ void CGCodeParser::CNCLibCommandExtensions()
 void CGCodeParser::PrintAbsPosition()
 {
 	char tmp[16];
-	for (unsigned char i = 0; i < NUM_AXIS; i++)
+	for (uint8_t i = 0; i < NUM_AXIS; i++)
 	{
 		if (i != 0)
 			StepperSerial.print(MESSAGE_PARSER_COLON);
@@ -1353,7 +1353,7 @@ void CGCodeParser::PrintAbsPosition()
 void CGCodeParser::PrintRelPosition()
 {
 	char tmp[16];
-	for (unsigned char i = 0; i < NUM_AXIS; i++)
+	for (uint8_t i = 0; i < NUM_AXIS; i++)
 	{
 		if (i != 0)
 			StepperSerial.print(MESSAGE_PARSER_COLON);

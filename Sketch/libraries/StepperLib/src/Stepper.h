@@ -104,7 +104,7 @@ public:
 
 	struct SIoControl
 	{
-		unsigned char _tool;
+		uint8_t _tool;
 		unsigned short _level;
 	};
 
@@ -139,8 +139,8 @@ public:
 	void SetSpeedOverride(EnumAsByte(ESpeedOverride) speed)		{ _pod._speedoverride = speed; }
 	EnumAsByte(ESpeedOverride) GetSpeedOverride()				{ return _pod._speedoverride; }
 
-	static unsigned char SpeedOverrideToP(EnumAsByte(ESpeedOverride) speed)	  {	return RoundMulDivU8((unsigned char) speed, 100, SpeedOverride100P);	}
-	static  EnumAsByte(ESpeedOverride) PToSpeedOverride(unsigned char speedP) { return (EnumAsByte(ESpeedOverride)) RoundMulDivU8(speedP, SpeedOverride100P, 100); }
+	static uint8_t SpeedOverrideToP(EnumAsByte(ESpeedOverride) speed)	  {	return RoundMulDivU8((uint8_t) speed, 100, SpeedOverride100P);	}
+	static  EnumAsByte(ESpeedOverride) PToSpeedOverride(uint8_t speedP) { return (EnumAsByte(ESpeedOverride)) RoundMulDivU8(speedP, SpeedOverride100P, 100); }
 
 	void SetUsual(steprate_t vMax);
 
@@ -159,10 +159,10 @@ public:
 	void WaitBusy();
 
 	bool CanQueueMovement()	 const								{ return !_movements._queue.IsFull(); }
-	unsigned char QueuedMovements()	 const						{ return _movements._queue.Count(); }
+	uint8_t QueuedMovements()	 const						{ return _movements._queue.Count(); }
 
-	unsigned char GetEnableTimeout(axis_t axis) const			{ return _pod._timeOutEnable[axis]; }
-	void SetEnableTimeout(axis_t axis, unsigned char sec) 		{ _pod._timeOutEnable[axis] = sec; }
+	uint8_t GetEnableTimeout(axis_t axis) const			{ return _pod._timeOutEnable[axis]; }
+	void SetEnableTimeout(axis_t axis, uint8_t sec) 		{ _pod._timeOutEnable[axis] = sec; }
 
 	void SetDirection(axisArray_t direction)					{ _pod._invertdirection = direction; }
 
@@ -189,11 +189,11 @@ public:
 	bool IsWaitConditional()									{ return _pod._isWaitConditional; }
 	void SetWaitConditional(bool conditionalwait)				{ _pod._isWaitConditional = conditionalwait; }
 
-	void UseReference(unsigned char referneceid, bool use)		{ _pod._useReference[referneceid] = use; }
-	bool IsUseReference(unsigned char referneceid)				{ return _pod._useReference[referneceid]; }
+	void UseReference(uint8_t referneceid, bool use)		{ _pod._useReference[referneceid] = use; }
+	bool IsUseReference(uint8_t referneceid)				{ return _pod._useReference[referneceid]; }
 	bool IsUseReference(axis_t axis, bool toMin)				{ return IsUseReference(ToReferenceId(axis, toMin)); }
 
-	debugvirtula bool MoveReference(axis_t axis, unsigned char referenceid, bool toMin, steprate_t vMax, sdist_t maxdist = 0, sdist_t distToRef = 0, sdist_t distIfRefIsOn = 0);
+	debugvirtula bool MoveReference(axis_t axis, uint8_t referenceid, bool toMin, steprate_t vMax, sdist_t maxdist = 0, sdist_t distToRef = 0, sdist_t distIfRefIsOn = 0);
 	void SetPosition(axis_t axis, udist_t pos);
 
 	//////////////////////////////
@@ -208,7 +208,7 @@ public:
 	void MoveRelEx(steprate_t vMax, unsigned short axis, sdist_t d, ...);	// repeat axis and d until axis not in 0 .. NUM_AXIS-1
 	void Wait(unsigned int sec100);							// unconditional wait
 	void WaitConditional(unsigned int sec100);				// conditional wait 
-	void IoControl(unsigned char tool, unsigned short level);
+	void IoControl(uint8_t tool, unsigned short level);
 
 	bool MoveUntil(TestContinueMove testcontinue, void*param);
 
@@ -240,26 +240,26 @@ public:
 
 	void AddEvent(StepperEvent event, void* eventparam, SEvent&old );
 
-	static unsigned char ToReferenceId(axis_t axis, bool minRef) { return axis * 2 + (minRef ? 0 : 1); }
+	static uint8_t ToReferenceId(axis_t axis, bool minRef) { return axis * 2 + (minRef ? 0 : 1); }
 
 	virtual bool  IsAnyReference() = 0;
-	virtual bool  IsReference(unsigned char referenceid) = 0;
+	virtual bool  IsReference(uint8_t referenceid) = 0;
 
-	void SetEnableAll(unsigned char level);				// level 0-255
-	virtual void SetEnable(axis_t axis, unsigned char level, bool force) = 0;
-	virtual unsigned char GetEnable(axis_t axis) = 0;
+	void SetEnableAll(uint8_t level);				// level 0-255
+	virtual void SetEnable(axis_t axis, uint8_t level, bool force) = 0;
+	virtual uint8_t GetEnable(axis_t axis) = 0;
 
-	static unsigned char ConvertLevel(bool enable)				{ return enable ? (unsigned char)(LevelMax) : (unsigned char)(LevelOff); }
+	static uint8_t ConvertLevel(bool enable)				{ return enable ? (uint8_t)(LevelMax) : (uint8_t)(LevelOff); }
 
-	void Dump(unsigned char options);							// options ==> EDumpOptions with bits
+	void Dump(uint8_t options);							// options ==> EDumpOptions with bits
 
 	////////////////////////////////////////////////////////
 
 private:
 
-	void SetTimeoutAndEnable(axis_t i, unsigned char timeout, unsigned char level, bool force);
+	void SetTimeoutAndEnable(axis_t i, uint8_t timeout, uint8_t level, bool force);
 
-	void QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax, unsigned char stepmult);
+	void QueueMove(const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax, uint8_t stepmult);
 	void QueueWait(const mdist_t dist, timer_t timerMax, bool checkCondition);
 
 	void EnqueuAndStartTimer(bool waitfinish);
@@ -286,7 +286,7 @@ private:
 
 protected:
 
-	bool MoveUntil(unsigned char referenceId, bool referencevalue, unsigned short stabletime);
+	bool MoveUntil(uint8_t referenceId, bool referencevalue, unsigned short stabletime);
 
 	void QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], steprate_t vMax);
 
@@ -313,7 +313,7 @@ protected:
 	timer_t SpeedToTimer(steprate_t speed) const;
 	steprate_t TimerToSpeed(timer_t timer) const;
 
-	static unsigned char GetStepMultiplier(timer_t timermax);
+	static uint8_t GetStepMultiplier(timer_t timermax);
 
 protected:
 
@@ -360,7 +360,7 @@ protected:
 		unsigned long	_timerStartOrOnIdle;						// timervalue if library start move or goes to Idle
 		unsigned long	_timerLastCheckEnable;						// timervalue
 
-		unsigned char	_idleLevel;									// level if idle (0..100)
+		uint8_t	_idleLevel;									// level if idle (0..100)
 		volatile EnumAsByte(ESpeedOverride)	_speedoverride;			// Speed override, 128 => 100% (change in irq possible)
 
 		axisArray_t		_lastdirection;								// for backlash
@@ -369,8 +369,8 @@ protected:
 		error_t			_error;
 		error_t			_fatalerror;
 
-		unsigned char	_timeOutEnable[NUM_AXIS];					// enabletimeout in sec if no step (0.. disable, always enabled)
-		unsigned char	_timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
+		uint8_t	_timeOutEnable[NUM_AXIS];					// enabletimeout in sec if no step (0.. disable, always enabled)
+		uint8_t	_timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
 
 #ifdef USESLIP
 		unsigned int _slipSum[NUM_AXIS];
@@ -479,9 +479,9 @@ protected:
 		timer_t GetDownTimer(bool acc)							{ return acc ? GetDownTimerAcc() : GetDownTimerDec(); }
 
 		mdist_t GetDistance(axis_t axis);
-		unsigned char GetStepMultiplier(axis_t axis)			{ return (_dirCount >> (axis * 4)) % 8; }
+		uint8_t GetStepMultiplier(axis_t axis)			{ return (_dirCount >> (axis * 4)) % 8; }
 		bool GetDirectionUp(axis_t axis)						{ return ((_dirCount >> (axis * 4)) & 8) != 0; }
-		unsigned char GetMaxStepMultiplier();
+		uint8_t GetMaxStepMultiplier();
 
 		bool Ramp(SMovement*mvNext);
 
@@ -516,13 +516,13 @@ protected:
 
 		void InitMove(CStepper*pStepper, SMovement* mvPrev, mdist_t steps, const mdist_t dist[NUM_AXIS], const bool directionUp[NUM_AXIS], timer_t timerMax);
 		void InitWait(CStepper*pStepper, mdist_t steps, timer_t timer, bool checkWaitConditional);
-		void InitIoControl(CStepper*pStepper, unsigned char tool, unsigned short level);
+		void InitIoControl(CStepper*pStepper, uint8_t tool, unsigned short level);
 
 		void InitStop(SMovement* mvPrev, timer_t timer, timer_t dectimer);
 
 		void SetBacklash()										{ _backlash = true; }
 
-		void Dump(unsigned char queueidx, unsigned char options);
+		void Dump(uint8_t queueidx, uint8_t options);
 
 #ifdef _MSC_VER
 		char _mvMSCInfo[MOVEMENTINFOSIZE];
@@ -553,7 +553,7 @@ protected:
 		timer_t _timer;			// current timer
 		timer_t _rest;			// rest of rampcalculation
 
-		unsigned char _count;	// increment of _n
+		uint8_t _count;	// increment of _n
 		char _dummyalign;
 
 #ifndef REDUCED_SIZE
@@ -564,12 +564,12 @@ protected:
 
 		void Init(SMovement* pMovement);
 
-		bool CalcTimerAcc(timer_t maxtimer, mdist_t n, unsigned char cnt);
-		bool CalcTimerDec(timer_t mintimer, mdist_t n, unsigned char cnt);
+		bool CalcTimerAcc(timer_t maxtimer, mdist_t n, uint8_t cnt);
+		bool CalcTimerDec(timer_t mintimer, mdist_t n, uint8_t cnt);
 
 	public:
 
-		void Dump(unsigned char options);
+		void Dump(uint8_t options);
 	};
 
 	stepperstatic SMovementState _movementstate;
@@ -587,7 +587,7 @@ protected:
 		mdist_t			_steps;
 		SMovement::EMovementState  _state;
 		mdist_t			_n;
-		unsigned char	_count;
+		uint8_t	_count;
 		char _spMSCInfo[MOVEMENTINFOSIZE];
 #endif
 		void Init(DirCount_t dirCount)
@@ -609,8 +609,8 @@ public:
 
 private:
 
-	SMovement* GetNextMovement(unsigned char idx);
-	SMovement* GetPrevMovement(unsigned char idx);
+	SMovement* GetNextMovement(uint8_t idx);
+	SMovement* GetPrevMovement(uint8_t idx);
 
 
 protected:
@@ -633,7 +633,7 @@ protected:
 
 protected:
 
-	bool  MoveAwayFromReference(axis_t axis, unsigned char referenceid, sdist_t dist, steprate_t vMax);
+	bool  MoveAwayFromReference(axis_t axis, uint8_t referenceid, sdist_t dist, steprate_t vMax);
 	virtual void MoveAwayFromReference(axis_t axis, sdist_t dist, steprate_t vMax)							{ MoveRel(axis, dist, vMax); };
 
 #ifdef _MSC_VER
@@ -641,7 +641,7 @@ protected:
 	virtual void  StepEnd() {};
 #endif
 
-	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) = 0;
+	virtual void  Step(const uint8_t steps[NUM_AXIS], axisArray_t directionUp) = 0;
 
 private:
 

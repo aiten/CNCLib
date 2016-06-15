@@ -65,7 +65,7 @@ protected:
 	virtual bool InitParse() override;						// begin parsing of a command (override for prechecks)
 	virtual bool GCommand(gcode_t gcode) override;
 	virtual bool MCommand(mcode_t mcode) override;
-	virtual bool Command(unsigned char ch) override;
+	virtual bool Command(char ch) override;
 
 private:
 
@@ -112,7 +112,7 @@ private:
 	bool CheckSD();
 	bool DeleteSDFile(char*buffer, bool errorifnotexists);
 
-	static void PrintSDFileListRecurse(class File& dir, unsigned char depth, unsigned short&count, char* filenamebuffer, char seperatorchar);
+	static void PrintSDFileListRecurse(class File& dir, uint8_t depth, unsigned short&count, char* filenamebuffer, char seperatorchar);
 
 protected:
 

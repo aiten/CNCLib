@@ -106,7 +106,7 @@ inline void CHAL::digitalWrite(pin_t pin, uint8_t lowOrHigh)
 	::digitalWrite(pin,lowOrHigh);
 }
 
-inline unsigned char CHAL::digitalRead(pin_t pin)
+inline uint8_t CHAL::digitalRead(pin_t pin)
 {
 	return ::digitalRead(pin);
 }
@@ -126,7 +126,7 @@ inline void CHAL::pinModeInputPullUp(pin_t pin)
 	::pinMode(pin, INPUT_PULLUP);
 }
 
-inline void CHAL::pinMode(pin_t pin, unsigned char mode)
+inline void CHAL::pinMode(pin_t pin, uint8_t mode)
 { 
 	::pinMode(pin,mode); 
 }

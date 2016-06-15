@@ -53,17 +53,17 @@ enum EStepperBaseAxis
 
 ////////////////////////////////////////////////////////
 
-static const unsigned char sbm800halfstep0[8] PROGMEM = { 0x3F, 0x3F, 0x1F, 0x1F, 0x1B, 0x1B, 0x3B, 0x3B };
-static const unsigned char sbm800halfstep20[8] PROGMEM = { 0x37, 0x36, 0x1E, 0x16, 0x13, 0x12, 0x3A, 0x32 };
-static const unsigned char sbm800halfstep60[8] PROGMEM = { 0x2F, 0x2D, 0x1D, 0x0D, 0x0B, 0x09, 0x39, 0x29 };
-static const unsigned char sbm800halfstep100[8] PROGMEM = { 0x27, 0x2D, 0x1C, 0x0D, 0x03, 0x09, 0x38, 0x29 };
+static const uint8_t sbm800halfstep0[8] PROGMEM = { 0x3F, 0x3F, 0x1F, 0x1F, 0x1B, 0x1B, 0x3B, 0x3B };
+static const uint8_t sbm800halfstep20[8] PROGMEM = { 0x37, 0x36, 0x1E, 0x16, 0x13, 0x12, 0x3A, 0x32 };
+static const uint8_t sbm800halfstep60[8] PROGMEM = { 0x2F, 0x2D, 0x1D, 0x0D, 0x0B, 0x09, 0x39, 0x29 };
+static const uint8_t sbm800halfstep100[8] PROGMEM = { 0x27, 0x2D, 0x1C, 0x0D, 0x03, 0x09, 0x38, 0x29 };
 
-static const unsigned char sbm800fullstep0[4] PROGMEM = { 0x3F, 0x3B, 0x1B, 0x1F };
-static const unsigned char sbm800fullstep20[4] PROGMEM = { 0x36, 0x32, 0x12, 0x16 };
-static const unsigned char sbm800fullstep60[4] PROGMEM = { 0x2D, 0x29, 0x09, 0x0D };
-static const unsigned char sbm800fullstep100[4] PROGMEM = { 0x24, 0x20, 0x00, 0x04 };
+static const uint8_t sbm800fullstep0[4] PROGMEM = { 0x3F, 0x3B, 0x1B, 0x1F };
+static const uint8_t sbm800fullstep20[4] PROGMEM = { 0x36, 0x32, 0x12, 0x16 };
+static const uint8_t sbm800fullstep60[4] PROGMEM = { 0x2D, 0x29, 0x09, 0x0D };
+static const uint8_t sbm800fullstep100[4] PROGMEM = { 0x24, 0x20, 0x00, 0x04 };
 
-static const unsigned char stepperadd[SMC800_NUM_AXIS] PROGMEM = { StepperX, StepperY, StepperZ };
+static const uint8_t stepperadd[SMC800_NUM_AXIS] PROGMEM = { StepperX, StepperY, StepperZ };
 
 ////////////////////////////////////////////////////////
 
@@ -74,7 +74,7 @@ CStepperSMC800::CStepperSMC800()
 
 ////////////////////////////////////////////////////////
 
-void CStepperSMC800::OutSMC800Cmd(const unsigned char val)
+void CStepperSMC800::OutSMC800Cmd(const uint8_t val)
 {
 
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
@@ -100,7 +100,7 @@ void CStepperSMC800::OutSMC800Cmd(const unsigned char val)
 
 void CStepperSMC800::InitMemVar()
 {
-	register unsigned char i;
+	register uint8_t i;
 	for (i = 0; i < SMC800_NUM_AXIS; i++)	_stepIdx[i] = 0;
 	for (i = 0; i < SMC800_NUM_AXIS; i++)	_level[i] = LevelOff;
 	for (i = 0; i < NUM_AXIS; i++)			_fullStepMode[i] = false;
@@ -162,7 +162,7 @@ void CStepperSMC800::Remove()
 
 ////////////////////////////////////////////////////////
 
-void  CStepperSMC800::Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp)
+void  CStepperSMC800::Step(const uint8_t steps[NUM_AXIS], axisArray_t directionUp)
 {
 	for (axis_t axis = 0; axis < NUM_AXIS; axis++)
 	{
@@ -180,7 +180,7 @@ void  CStepperSMC800::Step(const unsigned char steps[NUM_AXIS], axisArray_t dire
 
 ////////////////////////////////////////////////////////
 
-void CStepperSMC800::SetEnable(axis_t axis, unsigned char level, bool force )
+void CStepperSMC800::SetEnable(axis_t axis, uint8_t level, bool force )
 {
 	if (axis<SMC800_NUM_AXIS)
 	{
@@ -197,7 +197,7 @@ void CStepperSMC800::SetEnable(axis_t axis, unsigned char level, bool force )
 
 ////////////////////////////////////////////////////////
 
-unsigned char CStepperSMC800::GetEnable(axis_t axis)
+uint8_t CStepperSMC800::GetEnable(axis_t axis)
 {
 	if (axis >= SMC800_NUM_AXIS) return 0;
 	return _level[axis];
@@ -209,8 +209,8 @@ void CStepperSMC800::SetPhase(axis_t axis)
 {
 	if (axis < SMC800_NUM_AXIS)
 	{
-		register unsigned char addIO = pgm_read_byte(&stepperadd[axis]);
-		register unsigned char stepidx = _stepIdx[axis];
+		register uint8_t addIO = pgm_read_byte(&stepperadd[axis]);
+		register uint8_t stepidx = _stepIdx[axis];
 
 		if (_fullStepMode[axis])
 		{
@@ -245,7 +245,7 @@ void CStepperSMC800::SetPhase(axis_t axis)
 
 ////////////////////////////////////////////////////////
 
-bool  CStepperSMC800::IsReference(unsigned char /*referenceid*/)
+bool  CStepperSMC800::IsReference(uint8_t /*referenceid*/)
 {
 	return HALFastdigitalRead(SMC800_REFININ) == HIGH;
 }

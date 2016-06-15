@@ -63,11 +63,11 @@ void CRingBufferTest::RunTest()
 
 }
 
-void CRingBufferTest::TestRingBufferInsert(unsigned char startidx, unsigned char buffersize, unsigned char insertoffset)
+void CRingBufferTest::TestRingBufferInsert(uint8_t startidx, uint8_t buffersize, uint8_t insertoffset)
 {
 	CRingBufferQueue<SRingbuffer, 128> buffer;
 
-	unsigned char i;
+	uint8_t i;
 
 	for (i = 0; i < startidx; i++)
 	{
@@ -83,14 +83,14 @@ void CRingBufferTest::TestRingBufferInsert(unsigned char startidx, unsigned char
 
 	Assert(buffersize, buffer.Count());
 
-	unsigned char insertat = buffer.NextIndex(buffer.GetHeadPos(), insertoffset);
+	uint8_t insertat = buffer.NextIndex(buffer.GetHeadPos(), insertoffset);
 	buffer.InsertTail(insertat)->i = 2000;
 
 	Assert(buffersize + 1, buffer.Count());
 
 	int expect = 0;
 
-	for (unsigned char idx = buffer.H2TInit(); buffer.H2TTest(idx); idx = buffer.H2TInc(idx))
+	for (uint8_t idx = buffer.H2TInit(); buffer.H2TTest(idx); idx = buffer.H2TInc(idx))
 	{
 		if (idx != insertat)
 			Assert(expect++,buffer.Buffer[idx].i);

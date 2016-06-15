@@ -66,7 +66,7 @@ struct CGCodeParserBase::SModlessState CGCodeParserBase::_modlessstate;
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParserBase::Command(unsigned char /* ch */)			{ return false; }
+bool CGCodeParserBase::Command(char /* ch */)			{ return false; }
 
 ////////////////////////////////////////////////////////////
 
@@ -94,7 +94,7 @@ void CGCodeParserBase::CleanupParse()
 
 void CGCodeParserBase::SkipCommentNested()
 {
-	unsigned char cnt = 0;
+	uint8_t cnt = 0;
 	char*start = (char*)_reader->GetBuffer();
 
 	for (char ch = _reader->GetChar(); ch; ch = _reader->GetNextChar())
@@ -199,7 +199,7 @@ unsigned long CGCodeParserBase::GetUint32OrParam(unsigned long max)
 
 ////////////////////////////////////////////////////////////
 
-unsigned char CGCodeParserBase::GetSubCode()
+uint8_t CGCodeParserBase::GetSubCode()
 {
 	// subcode must follow immediately
 
@@ -269,7 +269,7 @@ void CGCodeParserBase::Parse()
 {
 	do
 	{
-		unsigned char ch = _reader->GetCharToUpper();
+		char ch = _reader->GetCharToUpper();
 		switch (ch)
 		{
 			case '\r':
@@ -330,7 +330,7 @@ void CGCodeParserBase::Parse()
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParserBase::GCommand(unsigned char gcode)
+bool CGCodeParserBase::GCommand(uint8_t gcode)
 {
 	switch (gcode)
 	{
@@ -394,7 +394,7 @@ mm1000_t CGCodeParserBase::ParseCoordinate(axis_t axis, mm1000_t relpos, EnumAsB
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParserBase::CheckAxisSpecified(axis_t axis, unsigned char& axes)
+bool CGCodeParserBase::CheckAxisSpecified(axis_t axis, uint8_t& axes)
 {
 	if (axis >= NUM_AXIS)
 	{
@@ -448,7 +448,7 @@ axis_t CGCodeParserBase::CharToAxisOffset(char axis)
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParserBase::GetUint8(unsigned char& value, unsigned char&specified, unsigned char bit)
+void CGCodeParserBase::GetUint8(uint8_t& value, uint8_t&specified, uint8_t bit)
 {
 	if (IsBitSet(specified, bit))
 	{
@@ -544,7 +544,7 @@ void CGCodeParserBase::GetFeedrate(SAxisMove& move)
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParserBase::GetG92Axis(axis_t axis, unsigned char& axes)
+void CGCodeParserBase::GetG92Axis(axis_t axis, uint8_t& axes)
 {
 	if (!CheckAxisSpecified(axis, axes))
 		return;
@@ -725,7 +725,7 @@ void CGCodeParserBase::G28Command()
 	}
 	else
 	{
-		for (unsigned char axis = 0; axis < NUM_AXIS; axis++)
+		for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
 		{
 			if (IsBitSet(move.axes, axis))
 			{
@@ -803,7 +803,7 @@ void CGCodeParserBase::G31Command()
 
 void CGCodeParserBase::G91Command()
 {
-	unsigned char subcode = GetSubCode();
+	uint8_t subcode = GetSubCode();
 
 	switch (subcode)
 	{
@@ -817,7 +817,7 @@ void CGCodeParserBase::G91Command()
 
 void CGCodeParserBase::G92Command()
 {
-	unsigned char axes = 0;
+	uint8_t axes = 0;
 
 	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
 	{
@@ -852,7 +852,7 @@ void CGCodeParserBase::SpindleSpeedCommand()
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParserBase::CallIOControl(unsigned char io, unsigned short value)
+void CGCodeParserBase::CallIOControl(uint8_t io, unsigned short value)
 {
 	CStepper::GetInstance()->IoControl(io, value);
 }
@@ -881,7 +881,7 @@ void CGCodeParserBase::M106Command()
 		_reader->GetNextChar();
 		_reader->SkipSpaces();
 
-		unsigned char power = (unsigned char)GetUint32OrParam(MAXLASER_POWER);
+		uint8_t power = (uint8_t)GetUint32OrParam(MAXLASER_POWER);
 
 #ifndef REDUCED_SIZE
 		if (IsError()) return;

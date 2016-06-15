@@ -83,7 +83,7 @@ void CMyControl::Init()
 
 ////////////////////////////////////////////////////////////
 
-void CMyControl::IOControl(unsigned char tool, unsigned short level)
+void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
@@ -91,7 +91,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 
 			if (level != 0)
 			{
-				_laserPWM.On((unsigned char)level);
+				_laserPWM.On((uint8_t)level);
 				_laserOnOff.On();
 			}
 			else
@@ -110,7 +110,7 @@ void CMyControl::IOControl(unsigned char tool, unsigned short level)
 
 ////////////////////////////////////////////////////////////
 
-unsigned short CMyControl::IOControl(unsigned char tool)
+unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{

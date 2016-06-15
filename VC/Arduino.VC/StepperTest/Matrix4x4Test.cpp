@@ -20,14 +20,14 @@ http://www.gnu.org/licenses/
 #include "stdafx.h"
 #include "Matrix4x4Test.h"
 
-bool CMatrix4x4Test::CompareMatrix(CMatrix4x4<float>& m, float in1[][4], float out1[][4], unsigned char size)
+bool CMatrix4x4Test::CompareMatrix(CMatrix4x4<float>& m, float in1[][4], float out1[][4], uint8_t size)
 {
-	for (unsigned char i = 0; i < size; i++)
+	for (uint8_t i = 0; i < size; i++)
 	{
 		float v2[4];
 		m.Mul(in1[i], v2);
 
-		for (unsigned char n = 0; n < 4; n++)
+		for (uint8_t n = 0; n < 4; n++)
 		{
 			if (!CMatrix4x4<float>::IsEqual(out1[i][n], v2[n], 0.00001f))
 			{

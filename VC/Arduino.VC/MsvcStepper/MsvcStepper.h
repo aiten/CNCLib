@@ -45,7 +45,7 @@ public:
 
 	virtual void Init() override;
 
-	virtual bool  IsReference(unsigned char referenceId) override;
+	virtual bool  IsReference(uint8_t referenceId) override;
 	virtual bool  IsAnyReference() override { return IsReference(0); };
 
 	void MoveRel3(sdist_t dX, sdist_t dY, sdist_t dZ, steprate_t vMax = 0)	{ MoveRelEx(vMax, X_AXIS, dX, Y_AXIS, dY, Z_AXIS, dZ, -1); }
@@ -54,11 +54,11 @@ public:
 protected:
 
 	virtual void  StepBegin(const SStepBuffer* step) override;
-	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) override;
+	virtual void  Step(const uint8_t steps[NUM_AXIS], axisArray_t directionUp) override;
 	virtual void  StepRequest(bool isr) override;
 
-	virtual void  SetEnable(axis_t axis, unsigned char level, bool /* force */) override { _level[axis] = level; };
-	virtual unsigned char GetEnable(axis_t axis) override		{ return _level[axis]; }
+	virtual void  SetEnable(axis_t axis, uint8_t level, bool /* force */) override { _level[axis] = level; };
+	virtual uint8_t GetEnable(axis_t axis) override		{ return _level[axis]; }
 
 public:
 	
@@ -69,21 +69,21 @@ public:
 		SMovement mv;
 	};
 
-	SMovementX GetMovement(unsigned char idxfromhead) 
+	SMovementX GetMovement(uint8_t idxfromhead) 
 	{
 		SMovementX mv;
 		idxfromhead = _movements._queue.NextIndex(_movements._queue.GetHeadPos(), idxfromhead);
 		mv.mv = _movements._queue.Buffer[idxfromhead];
 		return mv;
 	}
-	unsigned char GetMovementCount()
+	uint8_t GetMovementCount()
 	{
 		return _movements._queue.Count();
 	}
 
 private:
 
-	unsigned char _level[NUM_AXIS];
+	uint8_t _level[NUM_AXIS];
 
 public:
 
@@ -92,7 +92,7 @@ public:
 	virtual void StopTimer() override;					// to cancel all timer
 
 	virtual void OptimizeMovementQueue(bool force)  override;
-	virtual bool MoveReference(axis_t axis, unsigned char referenceid, bool toMin, steprate_t vMax, sdist_t maxdist, sdist_t distToRef, sdist_t distIfRefIsOn)  override;
+	virtual bool MoveReference(axis_t axis, uint8_t referenceid, bool toMin, steprate_t vMax, sdist_t maxdist, sdist_t distToRef, sdist_t distIfRefIsOn)  override;
 
 	// Test extensions
 
@@ -148,7 +148,7 @@ private:
 	int _refMovestart;
 
 	bool _isReferenceMove;
-	unsigned char _isReferenceId;
+	uint8_t _isReferenceId;
 	int  _referenceMoveSteps;
 
 public:

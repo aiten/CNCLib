@@ -19,7 +19,7 @@
 
 #pragma once
 
-typedef  unsigned char u8g_fntpgm_uint8_t;
+typedef  uint8_t u8g_fntpgm_uint8_t;
 
 class U8GLIB // : public Stream
 {

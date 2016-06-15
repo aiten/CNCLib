@@ -97,11 +97,11 @@ void CMenuBase::AdjustOffset(menupos_t firstline, menupos_t lastline)
 
 ////////////////////////////////////////////////////////////
 
-unsigned char CMenuBase::ToPrintLine(menupos_t firstline, menupos_t lastline, menupos_t i)
+uint8_t CMenuBase::ToPrintLine(menupos_t firstline, menupos_t lastline, menupos_t i)
 {
 	// return 255 if not to print
 
-	unsigned char printtorow = i + firstline - GetOffset();	// may overrun => no need to check for minus
+	uint8_t printtorow = i + firstline - GetOffset();	// may overrun => no need to check for minus
 	if (printtorow >= firstline && printtorow <= lastline)
 		return printtorow;
 
@@ -158,7 +158,7 @@ void CMenuBase::MenuButtonPressMenuBack(const SMenuItemDef* def)
 void CMenuBase::MenuButtonPressMove(const SMenuItemDef*def)
 {
 	axis_t axis = (axis_t)(unsigned int)GetMenuDef()->GetParam1();
-	unsigned char dist = (unsigned char)(unsigned int)def->GetParam1();
+	uint8_t dist = (uint8_t)(unsigned int)def->GetParam1();
 
 	if (dist == MoveHome) { MenuButtonPressHomeA(axis); return; }
 
@@ -190,7 +190,7 @@ void CMenuBase::MenuButtonPressMove(const SMenuItemDef*def)
 
 void CMenuBase::MenuButtonPressRotate(const SMenuItemDef*def)
 {
-	unsigned char req = (unsigned char)(unsigned int)def->GetParam1();
+	uint8_t req = (uint8_t)(unsigned int)def->GetParam1();
 
 	switch (req)
 	{

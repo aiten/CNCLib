@@ -25,7 +25,7 @@
 
 //////////////////////////////////////////
 
-template <class T, const unsigned char maxsize>		// do not use maxsize > 254 (255 is used internal)
+template <class T, const uint8_t maxsize>		// do not use maxsize > 254 (255 is used internal)
 class CRingBufferQueue								// maxxsize should be 2^n (because of % operation)
 {
 public:
@@ -55,7 +55,7 @@ public:
 		Enqueue();
 	}
 
-	void EnqueueCount(unsigned char cnt)
+	void EnqueueCount(uint8_t cnt)
 	{
 		CCriticalRegion crit;
 		_nexttail = NextIndex(_nexttail, cnt);
@@ -69,7 +69,7 @@ public:
 		_empty = _head == _nexttail;
 	}
 
-	void RemoveTail(unsigned char tail)
+	void RemoveTail(uint8_t tail)
 	{
 		CCriticalRegion crit;
 		_nexttail = NextIndex(tail);
@@ -86,7 +86,7 @@ public:
 		return !_empty && _head == _nexttail;
 	}
 
-	unsigned char Count() const
+	uint8_t Count() const
 	{
 		if (_empty)
 			return 0;
@@ -98,16 +98,16 @@ public:
 		return maxsize - _head + _nexttail;
 	}
 
-	unsigned char FreeCount() const
+	uint8_t FreeCount() const
 	{
 		return maxsize - Count();
 	}
 
-	T* InsertTail(unsigned char insertat)
+	T* InsertTail(uint8_t insertat)
 	{
 		if (IsInQueue(insertat))
 		{
-			for (unsigned char idx = T2HInit(); T2HTest(idx); idx = T2HInc(idx))
+			for (uint8_t idx = T2HInit(); T2HTest(idx); idx = T2HInc(idx))
 			{
 				Buffer[NextIndex(idx)] = Buffer[idx];
 				if (insertat == idx)
@@ -130,26 +130,26 @@ public:
 	T& Head()                       { return Buffer[GetHeadPos()]; }
 	T& Tail()                       { return Buffer[GetTailPos()]; }
 	T& NextTail()                   { return Buffer[GetNextTailPos()]; }
-	T& NextTail(unsigned char ofs)  { return Buffer[NextIndex(GetNextTailPos(), ofs)]; }
+	T& NextTail(uint8_t ofs)  { return Buffer[NextIndex(GetNextTailPos(), ofs)]; }
 
 	T* SaveTail()                   { return IsEmpty() ? 0 : &Tail(); }
 	T* SaveHead()                   { return IsEmpty() ? 0 : &Head(); }
 
-	T* GetNext(unsigned char idx)	{
+	T* GetNext(uint8_t idx)	{
 		idx = NextIndex(idx);
 		return idx != _nexttail && IsInQueue(idx) ? &Buffer[idx] : NULL;
 	}
-	T* GetPrev(unsigned char idx)	
+	T* GetPrev(uint8_t idx)	
 	{
 		if (idx == _head) return NULL;
 		idx = PrevIndex(idx);
 		return IsInQueue(idx) ? &Buffer[idx] : NULL;
 	}
-	unsigned char GetHeadPos() const		{ return _head; }
-	unsigned char GetNextTailPos() const	{ return _nexttail; }
-	unsigned char GetTailPos() const		{ return PrevIndex(_nexttail); }
+	uint8_t GetHeadPos() const		{ return _head; }
+	uint8_t GetNextTailPos() const	{ return _nexttail; }
+	uint8_t GetTailPos() const		{ return PrevIndex(_nexttail); }
 
-	bool IsInQueue(unsigned char idx) const	
+	bool IsInQueue(uint8_t idx) const	
 	{
 		if (_empty) return false;
 		if (_nexttail == _head) return true;
@@ -158,14 +158,14 @@ public:
 	}
 
 	// iteration from head to tail (H2T)
-	unsigned char H2TInit() const					{ return  _empty ? 255 : _head; }
-	bool H2TTest(unsigned char idx) const			{ return  idx != 255; }
-	unsigned char H2TInc(unsigned char idx) const	{ idx = NextIndex(idx); return idx == _nexttail ? 255 : idx; }
+	uint8_t H2TInit() const					{ return  _empty ? 255 : _head; }
+	bool H2TTest(uint8_t idx) const			{ return  idx != 255; }
+	uint8_t H2TInc(uint8_t idx) const	{ idx = NextIndex(idx); return idx == _nexttail ? 255 : idx; }
 
 	// iteration from tail to head (T2H)
-	unsigned char T2HInit() const					{ return  _empty ? 255 : GetTailPos(); }
-	bool T2HTest(unsigned char idx) const			{ return  idx != 255; }
-	unsigned char T2HInc(unsigned char idx) const	{ return idx == _head ? 255 : PrevIndex(idx); }
+	uint8_t T2HInit() const					{ return  _empty ? 255 : GetTailPos(); }
+	bool T2HTest(uint8_t idx) const			{ return  idx != 255; }
+	uint8_t T2HInc(uint8_t idx) const	{ return idx == _head ? 255 : PrevIndex(idx); }
 
 	void Clear()
 	{
@@ -178,8 +178,8 @@ public:
 private:
 	// often accessed members first => is faster
 
-	volatile unsigned char	_head;      // index of head of queue
-	volatile unsigned char	_nexttail;  // index of next free tail (NOT tail position)
+	volatile uint8_t	_head;      // index of head of queue
+	volatile uint8_t	_nexttail;  // index of next free tail (NOT tail position)
 	volatile bool			_empty;		// distinguish between full and empty
 
 public:
@@ -190,22 +190,22 @@ public:
 
 public:
 
-	unsigned char NextIndex(unsigned char idx) const
+	uint8_t NextIndex(uint8_t idx) const
 	{
-		return (unsigned char)((idx + 1)) % (maxsize);
+		return (uint8_t)((idx + 1)) % (maxsize);
 	}
 
-	unsigned char NextIndex(unsigned char idx, unsigned char count) const
+	uint8_t NextIndex(uint8_t idx, uint8_t count) const
 	{
-		return (unsigned char)((idx + count)) % (maxsize);
+		return (uint8_t)((idx + count)) % (maxsize);
 	}
 
-	unsigned char PrevIndex(unsigned char idx) const
+	uint8_t PrevIndex(uint8_t idx) const
 	{
 		return idx == 0 ? (maxsize - 1) : (idx - 1);
 	}
 
-	unsigned char PrevIndex(unsigned char idx, unsigned char count) const
+	uint8_t PrevIndex(uint8_t idx, uint8_t count) const
 	{
 		return (idx >= count) ? idx - count : (maxsize)-(count - idx);
 	}

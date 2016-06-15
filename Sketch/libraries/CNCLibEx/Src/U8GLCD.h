@@ -70,7 +70,7 @@ protected:
 	virtual class U8GLIB& GetU8G() = 0;
 	virtual class CMenuBase& GetMenu() = 0;
 
-	unsigned char GetPageCount();
+	uint8_t GetPageCount();
 
 public:
 
@@ -86,7 +86,7 @@ public:
 		OKBeep();
 	}
 
-	unsigned char GetMenuIdx();
+	uint8_t GetMenuIdx();
 
 	////////////////////////////////////////////////////////
 
@@ -109,7 +109,7 @@ protected:
 		RotarySlider
 	};
 
-	unsigned char GetPage();
+	uint8_t GetPage();
 
 	virtual unsigned long Draw(EDrawType draw) override;
 	virtual unsigned long Splash() override;
@@ -152,7 +152,7 @@ private:
 
 	EnumAsByte(ERotaryFocus)	_rotaryFocus=RotaryMainPage;
 
-	unsigned char				_currentpage;
+	uint8_t				_currentpage;
 
 	CRingBufferQueue<char, 128> _commandHis;
 
@@ -161,20 +161,20 @@ protected:
 	CRotaryButton<rotarypos_t, ROTARY_ACCURACY> _rotarybutton;
 	CPushButton									_rotarypushbutton;
 
-	unsigned char				_lcd_numaxis = NUM_AXIS;
-	unsigned char				_charHeight = 10;
-	unsigned char				_charWidth = 6;
+	uint8_t				_lcd_numaxis = NUM_AXIS;
+	uint8_t				_charHeight = 10;
+	uint8_t				_charWidth = 6;
 
 	const u8g_fntpgm_uint8_t*	_font = u8g_font_6x10;
 
 
-	unsigned char ToRow(unsigned char row) { return  (row + 1)*(_charHeight); }
-	unsigned char ToCol(unsigned char col) { return (col)*(_charWidth); }
+	uint8_t ToRow(uint8_t row) { return  (row + 1)*(_charHeight); }
+	uint8_t ToCol(uint8_t col) { return (col)*(_charWidth); }
 
-	unsigned char TotalRows() { return LCD_GROW / _charHeight; }
-	unsigned char TotalCols() { return LCD_GCOL / _charWidth; }
+	uint8_t TotalRows() { return LCD_GROW / _charHeight; }
+	uint8_t TotalCols() { return LCD_GCOL / _charWidth; }
 
-	static char* DrawPos(axis_t axis, mm1000_t pos, char *tmp, unsigned char precision);		// draw mm100 or inch
+	static char* DrawPos(axis_t axis, mm1000_t pos, char *tmp, uint8_t precision);		// draw mm100 or inch
 
 #if defined(__AVR_ARCH__)
 

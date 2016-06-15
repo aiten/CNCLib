@@ -59,10 +59,10 @@ protected:
 
 private:
 
-	void DrawPos(unsigned char col, unsigned char row, mm1000_t pos);
-	void DrawES(unsigned char col,  unsigned char row, bool es);
+	void DrawPos(uint8_t col, uint8_t row, mm1000_t pos);
+	void DrawES(uint8_t col,  uint8_t row, bool es);
 
-	void DrawPen(unsigned char col, unsigned char row);
+	void DrawPen(uint8_t col, uint8_t row);
 };
 
 ////////////////////////////////////////////////////////

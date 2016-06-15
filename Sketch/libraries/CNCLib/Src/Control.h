@@ -81,8 +81,8 @@ public:
 		VacuumOn = 1
 	};
 
-	virtual void IOControl(unsigned char /* tool */, unsigned short /*level */)	{ };
-	virtual unsigned short IOControl(unsigned char /* tool */)				{ return 0; };
+	virtual void IOControl(uint8_t /* tool */, unsigned short /*level */)	{ };
+	virtual unsigned short IOControl(uint8_t /* tool */)				{ return 0; };
 
 	//////////////////////////////////////////
 
@@ -138,7 +138,7 @@ private:
 	void CheckIdlePoll(bool isidle);							// check idle time and call Idle every 100ms
 
 
-	unsigned char	_bufferidx;									// read Buffer index , see SERIALBUFFERSIZE
+	uint8_t	_bufferidx;									// read Buffer index , see SERIALBUFFERSIZE
 
 	unsigned long	_lasttime;									// time last char received
 	unsigned long	_timeBlink;									// time to change blink state

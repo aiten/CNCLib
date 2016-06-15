@@ -46,7 +46,7 @@ public:
 		dest[2][2]= (src[0][0]*src[1][1]-src[1][0]*src[0][1])/determinant;
 /*
 		T determinant=0;
-		unsigned char i,j;
+		uint8_t i,j;
  
 		for(i=0;i<3;i++)
 			determinant = determinant + (src[0][i]*(src[1][(i+1)%3]*src[2][(i+2)%3] - src[1][(i+2)%3]*src[2][(i+1)%3]));

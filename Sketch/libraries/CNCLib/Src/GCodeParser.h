@@ -91,8 +91,8 @@ public:
 	static mm1000_t GetG54PosPreset(axis_t axis);
 	static mm1000_t GetToolHeightPosPreset(axis_t axis)		{ return axis == super::_modalstate.Plane_axis_2 ? _modalstate.ToolHeigtCompensation : 0; }
 	static void SetG54PosPreset(axis_t axis, mm1000_t pos)	{ _modalstate.G54Pospreset[0][axis] = pos; }
-	static unsigned char GetZeroPresetIdx()					{ return _modalstate.ZeroPresetIdx; }
-	static void SetZeroPresetIdx(unsigned char idx)			{ _modalstate.ZeroPresetIdx = idx; }
+	static uint8_t GetZeroPresetIdx()					{ return _modalstate.ZeroPresetIdx; }
+	static void SetZeroPresetIdx(uint8_t idx)			{ _modalstate.ZeroPresetIdx = idx; }
 
 	static bool IsG53Present()								{ return _modlessstate.ZeroPresetIdx == 0; }
 
@@ -110,7 +110,7 @@ protected:
 	virtual bool GCommand(gcode_t gcode) override;	// check for GCode extension => return true if command is parsed, false to do default
 	virtual bool MCommand(mcode_t mcode) override;
 	virtual bool SetParamCommand(param_t pramNo);
-	virtual bool Command(unsigned char ch) override;
+	virtual bool Command(char ch) override;
 
 	void ToolSelectCommand();
 
@@ -134,11 +134,11 @@ protected:
 		EnumAsByte(ECutterRadiusCompensation) CutterRadiusCompensation;
 		bool EvenSize;
 
-		unsigned char	ZeroPresetIdx;				// 0:g53-, 1:G54-
+		uint8_t	ZeroPresetIdx;				// 0:g53-, 1:G54-
 		bool			IsG98;						// G98 or G99	( Return To R or return to init Z) 
 
-		unsigned char	_debuglevel;
-		unsigned char	dummy;
+		uint8_t	_debuglevel;
+		uint8_t	dummy;
 
 		toolnr_t		ToolSelected;
 
@@ -161,8 +161,8 @@ protected:
 			ToolSelected = 1;
 			IsG98 = true;
 //POD		_debuglevel = 0;
-//POD		for (register unsigned char i = 0; i < NUM_AXIS; i++) G54Pospreset[i] = 0;
-//POD		for (register unsigned char i = 0; i < NUM_PARAMETER; i++) Parameter[i] = 0;
+//POD		for (register uint8_t i = 0; i < NUM_AXIS; i++) G54Pospreset[i] = 0;
+//POD		for (register uint8_t i = 0; i < NUM_PARAMETER; i++) Parameter[i] = 0;
 //POD		ToolHeigtCompensation = 0;
 		}
 	};
@@ -174,7 +174,7 @@ protected:
 
 	struct SModlessState
 	{
-		unsigned char	ZeroPresetIdx;				// 0:g53-, 1:G54-
+		uint8_t	ZeroPresetIdx;				// 0:g53-, 1:G54-
 		void Init()
 		{
 //			*this = SModlessState();		// POD .. Plane Old Daty Type => no Constructor => init with default value = 0
@@ -208,7 +208,7 @@ private:
 	void GetR81(SAxisMove& move);
 	void GetP81(SAxisMove& move);
 	void GetQ81(SAxisMove& move);
-	void GetL81(SAxisMove& move, unsigned char& l);
+	void GetL81(SAxisMove& move, uint8_t& l);
 	void GetAngleR(SAxisMove& move, mm1000_t& angle);		// get angle (with R Parameter)
 
 	void G10Command();
@@ -225,7 +225,7 @@ private:
 	void G68Ext12Command();
 	void G68ExtXXCommand(axis_t axis);
 	void G69Command();
-	void G5xCommand(unsigned char idx);
+	void G5xCommand(uint8_t idx);
 	void G8xCommand(SAxisMove& move, bool useP, bool useQ, bool useMinQ);
 	void G73Command();		// High-speed Peck Drilling for Shallow Holes
 	void G81Command();		// Basic drilling canned cycle

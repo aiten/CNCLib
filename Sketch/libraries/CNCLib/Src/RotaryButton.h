@@ -21,12 +21,12 @@
 
 ////////////////////////////////////////////////////////
 
-template <class rang_t, unsigned char ACCURACY>
+template <class rang_t, uint8_t ACCURACY>
 class CRotaryButton
 {
 public:
 
-	typedef unsigned char rotarypage_t;
+	typedef uint8_t rotarypage_t;
 
 	CRotaryButton()
 	{
@@ -56,7 +56,7 @@ public:
 		return Tick(CHAL::digitalRead(_pin1), CHAL::digitalRead(_pin2));
 	}
 
-	EnumAsByte(ERotaryEvent) Tick(unsigned char pinAValue, unsigned char pinBValue)
+	EnumAsByte(ERotaryEvent) Tick(uint8_t pinAValue, uint8_t pinBValue)
 	{
 		signed char add = 0;
 
@@ -152,7 +152,7 @@ protected:
 	bool			_overrunpos;
 	bool 			_lastchangedA;
 
-	unsigned char 	_lastPinValue;
+	uint8_t 		_lastPinValue;
 	signed char 	_lastadd;
 
 	pin_t			_pin1;

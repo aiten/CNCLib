@@ -82,10 +82,10 @@ protected:
 	error_t							_error;
 	PrintOKMessage					_OkMessage;
 
-	long GetInt32Scale(long minvalue, long maxvalue, unsigned char scale, unsigned char maxscale);	// get "float" e.g. 1.234 => 1234 or 12 => 12000, limit with scale
+	long GetInt32Scale(long minvalue, long maxvalue, uint8_t scale, uint8_t maxscale);	// get "float" e.g. 1.234 => 1234 or 12 => 12000, limit with scale
 	expr_t GetDouble();
 
-	unsigned char GetUInt8();
+	uint8_t GetUInt8();
 	unsigned short GetUInt16();
 	unsigned long GetUInt32();
 	char GetInt8();

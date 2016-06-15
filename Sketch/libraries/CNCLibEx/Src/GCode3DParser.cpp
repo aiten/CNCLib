@@ -101,7 +101,7 @@ bool CGCode3DParser::MCommand(mcode_t mcode)
 
 ////////////////////////////////////////////////////////////
 
-bool CGCode3DParser::Command(unsigned char ch)
+bool CGCode3DParser::Command(char ch)
 {
 	if (super::Command(ch))
 		return true;
@@ -134,7 +134,7 @@ void CGCode3DParser::M20Command()
 
 ////////////////////////////////////////////////////////////
 
-void CGCode3DParser::PrintSDFileListRecurse(File& dir, unsigned char depth, unsigned short&count, char* filenamebuffer, char seperatorchar)
+void CGCode3DParser::PrintSDFileListRecurse(File& dir, uint8_t depth, unsigned short&count, char* filenamebuffer, char seperatorchar)
 {
 #ifdef _MSC_VER
 #pragma warning (suppress: 4127)
@@ -401,11 +401,11 @@ bool CGCode3DParser::GetFileName(char*buffer)
 {
 	_reader->SkipSpaces();
 
-	unsigned char dotidx = 0;
-	unsigned char length = 0;
+	uint8_t dotidx = 0;
+	uint8_t length = 0;
 
 	char ch = _reader->GetChar();
-	for (unsigned char i = 0; i < MAXPATHNAME; i++)
+	for (uint8_t i = 0; i < MAXPATHNAME; i++)
 	{
 		if (ch == '.')
 		{

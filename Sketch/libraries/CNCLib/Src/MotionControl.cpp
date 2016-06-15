@@ -415,7 +415,7 @@ bool CMotionControl::Test(const mm1000_t src[NUM_AXIS],const mm1000_t ofs[NUM_AX
 
 		TransformFromMachinePosition(to_m,toorig);
 
-		for (unsigned char i = 0; i < NUM_AXIS && !isError; i++)
+		for (uint8_t i = 0; i < NUM_AXIS && !isError; i++)
 			isError = CompareMaxDiff(src[i], toorig[i]);
 	}
 	else

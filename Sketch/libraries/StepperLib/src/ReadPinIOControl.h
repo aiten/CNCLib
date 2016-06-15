@@ -21,12 +21,12 @@
 
 ////////////////////////////////////////////////////////
 
-template <pin_t PIN, unsigned char ONVALUE>
+template <pin_t PIN, uint8_t ONVALUE>
 class CReadPinIOControl
 {
 public:
 
-	static void Init(unsigned char inputmode = INPUT_PULLUP)
+	static void Init(uint8_t inputmode = INPUT_PULLUP)
 	{
 		CHAL::pinMode(PIN, inputmode);
 	}

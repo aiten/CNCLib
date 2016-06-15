@@ -27,6 +27,6 @@ public:
 
 	virtual void RunTest() override;
 
-	void TestRingBufferInsert(unsigned char startidx, unsigned char buffersize, unsigned char insertat);
+	void TestRingBufferInsert(uint8_t startidx, uint8_t buffersize, uint8_t insertat);
 };
 

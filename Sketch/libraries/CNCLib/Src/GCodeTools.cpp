@@ -71,9 +71,9 @@ const CGCodeTools::STools CGCodeTools::_tools[] PROGMEM =
 
 ////////////////////////////////////////////////////////
 
-unsigned char CGCodeTools::GetToolIndex(toolnr_t tool)
+uint8_t CGCodeTools::GetToolIndex(toolnr_t tool)
 {
-	for (unsigned char i = 0;; i++)
+	for (uint8_t i = 0;; i++)
 	{
 		toolnr_t t = pgm_read_word(&_tools[i].ToolNr);
 		if (t == 0xffff) break;
@@ -88,7 +88,7 @@ unsigned char CGCodeTools::GetToolIndex(toolnr_t tool)
 
 mm1000_t CGCodeTools::GetRadius(toolnr_t tool)
 {
-	unsigned char idx = GetToolIndex(tool);
+	uint8_t idx = GetToolIndex(tool);
 	if (idx == NOTOOLINDEX) return 0;
 
 	return pgm_read_dword(&_tools[idx].Radius);
@@ -98,7 +98,7 @@ mm1000_t CGCodeTools::GetRadius(toolnr_t tool)
 
 mm1000_t CGCodeTools::GetHeight(toolnr_t tool)
 {
-	unsigned char idx = GetToolIndex(tool);
+	uint8_t idx = GetToolIndex(tool);
 	if (idx == NOTOOLINDEX) return 0;
 
 	return pgm_read_dword(&_tools[idx].Height);

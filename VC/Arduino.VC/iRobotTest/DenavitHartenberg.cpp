@@ -80,13 +80,13 @@ void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],fl
 		{ -angle, angle, angle / 10 }
 	};
 
-	for (unsigned char j = 0; j < 3; j++)
+	for (uint8_t j = 0; j < 3; j++)
 		angles[j] = (search[j].max - search[j].min) / 2 + search[j].min;
 
 	if (true)
 	{
 		unsigned int count = 0;
-		unsigned char i=0;
+		uint8_t i=0;
 		float diff=FLT_MAX;
 
 		for (count=0;count<10000;count++)
@@ -98,9 +98,9 @@ void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],fl
 #define TEST_U
 #ifdef TEST
 			printf("%i:\t%08f:\t", count,diff);
-			for (unsigned char j = 0; j < NUM_AXIS; j++)
+			for (uint8_t j = 0; j < NUM_AXIS; j++)
 				printf("%08f%s", angles[j], j < NUM_AXIS-1 ? ":" : "\t");
-			for (unsigned char j = 0; j < NUM_AXIS; j++)
+			for (uint8_t j = 0; j < NUM_AXIS; j++)
 				printf("%08f%s", search[j].dist, j < NUM_AXIS - 1 ? ":" : "\n");
 #endif
 			i++;
@@ -122,10 +122,10 @@ void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],fl
 	}
 	else if (false)
 	{
-		unsigned char i;
+		uint8_t i;
 		for (i = 0; i < 200; i++)
 		{
-			for (unsigned char j = 0; j < 3; j++)
+			for (uint8_t j = 0; j < 3; j++)
 			{
 				if (SearchMinOld(posxyz, angles, j, search[j], epsilon) < epsilon)
 				{
@@ -145,7 +145,7 @@ void CDenavitHartenberg::FromPosition(float posxyz[3], float angles[NUM_AXIS],fl
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float CDenavitHartenberg::SearchStep(float pos[3], float inout[NUM_AXIS], unsigned char idx, float diff, SSearchDef& def)
+float CDenavitHartenberg::SearchStep(float pos[3], float inout[NUM_AXIS], uint8_t idx, float diff, SSearchDef& def)
 {
 	float oldiff = diff;
 
@@ -201,7 +201,7 @@ float CDenavitHartenberg::SearchStep(float pos[3], float inout[NUM_AXIS], unsign
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-float CDenavitHartenberg::SearchMinOld(float pos[3], float inout[NUM_AXIS], unsigned char idx, SSearchDef& def, float epsilon)
+float CDenavitHartenberg::SearchMinOld(float pos[3], float inout[NUM_AXIS], uint8_t idx, SSearchDef& def, float epsilon)
 {
 	float opdpos = inout[idx];
 	float dist = def.dist;
@@ -268,7 +268,7 @@ float CDenavitHartenberg::CalcDist(float pos[3], float in[NUM_AXIS])
 	TestConvert(A, v,true);
 
 	float dist = 0;
-	for (unsigned char i = 0; i < 3; i++)
+	for (uint8_t i = 0; i < 3; i++)
 		dist += (pos[i] - v[i]) * (pos[i] - v[i]);
 
 	return dist;

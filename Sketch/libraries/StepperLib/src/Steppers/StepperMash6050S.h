@@ -90,13 +90,13 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-	virtual void  SetEnable(axis_t , unsigned char , bool ) override
+	virtual void  SetEnable(axis_t , uint8_t , bool ) override
 	{
 	}
 
 	////////////////////////////////////////////////////////
 
-	virtual unsigned char GetEnable(axis_t ) override
+	virtual uint8_t GetEnable(axis_t ) override
 	{
 		return LevelMax;
 	}
@@ -117,7 +117,7 @@ static void Delay2() ALWAYSINLINE { CHAL::delayMicroseconds(1); }
 
 	////////////////////////////////////////////////////////
 
-	virtual void  Step(const unsigned char steps[NUM_AXIS], axisArray_t directionUp) override
+	virtual void  Step(const uint8_t steps[NUM_AXIS], axisArray_t directionUp) override
 	{
 		// Step:   LOW to HIGH
 		// PULS must be at least 1ms
@@ -134,7 +134,7 @@ static void Delay2() ALWAYSINLINE { CHAL::delayMicroseconds(1); }
 			_lastStepDirection = directionUp;
 		}
 
-		for (unsigned char cnt = 0;; cnt++)
+		for (uint8_t cnt = 0;; cnt++)
 		{
 			register bool have = false;
 			if (steps[X_AXIS] > cnt) { HALFastdigitalWriteNC(MASH6050S_X_STEP_PIN, MASH6050S_PIN_STEP_OFF); have = true; }
@@ -159,7 +159,7 @@ public:
 
 	////////////////////////////////////////////////////////
 
-	virtual bool IsReference(unsigned char referenceid) override
+	virtual bool IsReference(uint8_t referenceid) override
 	{
 		switch (referenceid)
 		{
