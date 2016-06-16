@@ -15,8 +15,12 @@
   http://www.gnu.org/licenses/
 */
 
+#include <StepperLib.h>
+
+
 #include "WaterFlow.h"
 #include "WatchDog.h"
+#include "LinearLookup.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -28,13 +32,43 @@ WatchDog watchDog;
 #define WATCHDOG_ON LOW
 
 #define WATERFLOW_PIN 2
+#define WATCHDOG_MINFLOW  50
+
+
 #define WATERTEMP_PIN A0
 
-#define WATCHDOG_MINFLOW  50
-#define WATCHDOG_MINTEMPON  10
-#define WATCHDOG_MINTEMPOFF 14
-#define WATCHDOG_MAXTEMPON  512
-#define WATCHDOG_MAXTEMPOFF 505
+#define WATCHDOG_MINTEMPON  4
+#define WATCHDOG_MINTEMPOFF 5
+#define WATCHDOG_MAXTEMPON  35.0
+#define WATCHDOG_MAXTEMPOFF 34.5
+
+#define WATERTEMP_OVERSAMPLING 16
+
+CLinearLookup<float, float>::SLookupTable linear10k[] =
+{
+  {1, 430},
+  {54, 137},
+  {107, 107},
+  {160, 91},
+  {213, 80},
+  {266, 71},
+  {319, 64},
+  {372, 57},
+  {425, 51},
+  {478, 46},
+  {531, 41},
+  {584, 35},
+  {637, 30},
+  {690, 25},
+  {743, 20},
+  {796, 14},
+  {849, 7},
+  {902, 0},
+  {955, -11},
+  {1008, -35}
+};
+CLinearLookup<float, float> temp10k(linear10k, sizeof(linear10k) / sizeof(CLinearLookup<float, float>::SLookupTable));
+
 
 #define TESTMODE
 
@@ -96,12 +130,12 @@ bool IsWatchDogOn()
 
 float ReadTemp()
 {
-	const unsigned char maxcount = 16;
+	const unsigned char maxcount = WATERTEMP_OVERSAMPLING;
 	int wtemp = 0;
 	for (int i = 0; i < maxcount; i++)
 		wtemp += analogRead(WATERTEMP_PIN);
 
-	return (float)wtemp / maxcount;
+  return temp10k.Lookup((float)wtemp / maxcount);
 }
 
 ////////////////////////////////////////////////////////////
@@ -132,6 +166,7 @@ void TestWatchDogSetup()
 
 void TestWatchDogLoop()
 {
+
 	if (blinkTime < millis())
 	{
 		blinkTime += BLINK_RATE;
@@ -145,7 +180,7 @@ void TestWatchDogLoop()
 	if (avgCount != lastAvgCount)
 	{
 		lastAvgCount = avgCount;
-		Serial.println(avgCount);
+		// Serial.println(avgCount);
 	}
 
 	static float lastwtemp = 0;
