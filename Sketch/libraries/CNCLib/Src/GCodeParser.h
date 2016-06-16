@@ -134,11 +134,11 @@ protected:
 		EnumAsByte(ECutterRadiusCompensation) CutterRadiusCompensation;
 		bool EvenSize;
 
-		uint8_t	ZeroPresetIdx;				// 0:g53-, 1:G54-
+		uint8_t			ZeroPresetIdx;				// 0:g53-, 1:G54-
 		bool			IsG98;						// G98 or G99	( Return To R or return to init Z) 
 
-		uint8_t	_debuglevel;
-		uint8_t	dummy;
+		uint8_t			_debuglevel;
+		uint8_t			dummy;
 
 		toolnr_t		ToolSelected;
 

@@ -138,7 +138,7 @@ private:
 	void CheckIdlePoll(bool isidle);							// check idle time and call Idle every 100ms
 
 
-	uint8_t	_bufferidx;									// read Buffer index , see SERIALBUFFERSIZE
+	uint8_t			_bufferidx;									// read Buffer index , see SERIALBUFFERSIZE
 
 	unsigned long	_lasttime;									// time last char received
 	unsigned long	_timeBlink;									// time to change blink state

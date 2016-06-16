@@ -104,8 +104,8 @@ public:
 
 	struct SIoControl
 	{
-		uint8_t _tool;
-		unsigned short _level;
+		uint8_t			_tool;
+		unsigned short	_level;
 	};
 
 	/////////////////////
@@ -159,10 +159,10 @@ public:
 	void WaitBusy();
 
 	bool CanQueueMovement()	 const								{ return !_movements._queue.IsFull(); }
-	uint8_t QueuedMovements()	 const						{ return _movements._queue.Count(); }
+	uint8_t QueuedMovements()	 const							{ return _movements._queue.Count(); }
 
-	uint8_t GetEnableTimeout(axis_t axis) const			{ return _pod._timeOutEnable[axis]; }
-	void SetEnableTimeout(axis_t axis, uint8_t sec) 		{ _pod._timeOutEnable[axis] = sec; }
+	uint8_t GetEnableTimeout(axis_t axis) const					{ return _pod._timeOutEnable[axis]; }
+	void SetEnableTimeout(axis_t axis, uint8_t sec) 			{ _pod._timeOutEnable[axis] = sec; }
 
 	void SetDirection(axisArray_t direction)					{ _pod._invertdirection = direction; }
 
@@ -189,8 +189,8 @@ public:
 	bool IsWaitConditional()									{ return _pod._isWaitConditional; }
 	void SetWaitConditional(bool conditionalwait)				{ _pod._isWaitConditional = conditionalwait; }
 
-	void UseReference(uint8_t referneceid, bool use)		{ _pod._useReference[referneceid] = use; }
-	bool IsUseReference(uint8_t referneceid)				{ return _pod._useReference[referneceid]; }
+	void UseReference(uint8_t referneceid, bool use)			{ _pod._useReference[referneceid] = use; }
+	bool IsUseReference(uint8_t referneceid)					{ return _pod._useReference[referneceid]; }
 	bool IsUseReference(axis_t axis, bool toMin)				{ return IsUseReference(ToReferenceId(axis, toMin)); }
 
 	debugvirtula bool MoveReference(axis_t axis, uint8_t referenceid, bool toMin, steprate_t vMax, sdist_t maxdist = 0, sdist_t distToRef = 0, sdist_t distIfRefIsOn = 0);
@@ -297,7 +297,7 @@ protected:
 
 	timer_t GetTimer(mdist_t steps, timer_t timerstart);										// calc "speed" after steps with constant a (from v0 = 0)
 	timer_t GetTimerAccelerating(mdist_t steps, timer_t timerv0, timer_t timerstart);			// calc "speed" after steps accelerating with constant a 
-	timer_t GetTimerDecelerating(mdist_t steps, timer_t timer, timer_t timerstart);			// calc "speed" after steps decelerating with constant a 
+	timer_t GetTimerDecelerating(mdist_t steps, timer_t timer, timer_t timerstart);				// calc "speed" after steps decelerating with constant a 
 
 	static mdist_t GetAccSteps(timer_t timer, timer_t timerstart);										// from v=0
 	static mdist_t GetDecSteps(timer_t timer, timer_t timerstop)								{ return GetAccSteps(timer, timerstop); } // to v=0
@@ -360,7 +360,7 @@ protected:
 		unsigned long	_timerStartOrOnIdle;						// timervalue if library start move or goes to Idle
 		unsigned long	_timerLastCheckEnable;						// timervalue
 
-		uint8_t	_idleLevel;									// level if idle (0..100)
+		uint8_t	_idleLevel;											// level if idle (0..100)
 		volatile EnumAsByte(ESpeedOverride)	_speedoverride;			// Speed override, 128 => 100% (change in irq possible)
 
 		axisArray_t		_lastdirection;								// for backlash
@@ -369,8 +369,8 @@ protected:
 		error_t			_error;
 		error_t			_fatalerror;
 
-		uint8_t	_timeOutEnable[NUM_AXIS];					// enabletimeout in sec if no step (0.. disable, always enabled)
-		uint8_t	_timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
+		uint8_t			_timeOutEnable[NUM_AXIS];					// enabletimeout in sec if no step (0.. disable, always enabled)
+		uint8_t			_timeEnable[NUM_AXIS];						// 0: active, do not turn off, else time to turn off
 
 #ifdef USESLIP
 		unsigned int _slipSum[NUM_AXIS];
@@ -479,7 +479,7 @@ protected:
 		timer_t GetDownTimer(bool acc)							{ return acc ? GetDownTimerAcc() : GetDownTimerDec(); }
 
 		mdist_t GetDistance(axis_t axis);
-		uint8_t GetStepMultiplier(axis_t axis)			{ return (_dirCount >> (axis * 4)) % 8; }
+		uint8_t GetStepMultiplier(axis_t axis)					{ return (_dirCount >> (axis * 4)) % 8; }
 		bool GetDirectionUp(axis_t axis)						{ return ((_dirCount >> (axis * 4)) & 8) != 0; }
 		uint8_t GetMaxStepMultiplier();
 
