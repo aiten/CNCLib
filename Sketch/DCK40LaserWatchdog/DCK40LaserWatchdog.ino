@@ -46,10 +46,10 @@ void setup()
 	Serial.begin(250000);
 
 	flow.Init(WATERFLOW_PIN);
-  watchDog.Init(WATCHDOG_PIN,WATCHDOG_ON);
+	watchDog.Init(WATCHDOG_PIN, WATCHDOG_ON);
 
 #ifdef TESTMODE
-  TestWatchDogSetup();
+	TestWatchDogSetup();
 #endif
 }
 
@@ -108,11 +108,10 @@ float ReadTemp()
 
 void loop()
 {
-  watchDog.OnOff(IsWatchDogOn());
-
+	watchDog.OnOff(IsWatchDogOn());
 
 #ifdef TESTMODE
-  TestWatchDogLoop();
+	TestWatchDogLoop();
 #endif
 }
 
@@ -126,19 +125,19 @@ bool blinkOn = false;
 #define BLINK_PIN 12
 
 void TestWatchDogSetup()
-{ 
-  pinMode(BLINK_PIN, OUTPUT);
-  blinkTime = millis() + BLINK_RATE;
+{
+	pinMode(BLINK_PIN, OUTPUT);
+	blinkTime = millis() + BLINK_RATE;
 }
 
 void TestWatchDogLoop()
-{ 
-  if (blinkTime < millis())
-  {
-    blinkTime += BLINK_RATE;
-    blinkOn = !blinkOn;
-    digitalWrite(BLINK_PIN, blinkOn ? HIGH : LOW);
-  }
+{
+	if (blinkTime < millis())
+	{
+		blinkTime += BLINK_RATE;
+		blinkOn = !blinkOn;
+		digitalWrite(BLINK_PIN, blinkOn ? HIGH : LOW);
+	}
 
 	static unsigned int lastAvgCount = 0xffff;
 	unsigned int avgCount = flow.AvgCount(2000);

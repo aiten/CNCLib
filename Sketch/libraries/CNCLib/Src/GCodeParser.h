@@ -282,7 +282,7 @@ protected:
 
 	static const struct SParamInfo _paramdef[] PROGMEM;
 
-	static const SParamInfo* FindParamInfo(ptr_t param, bool(*check)(const SParamInfo*, ptr_t param));
+	static const SParamInfo* FindParamInfo(intptr_t param, bool(*check)(const SParamInfo*, intptr_t param));
 	static const SParamInfo* FindParamInfoByText(const char* text);
 	static const SParamInfo* FindParamInfoByParamNo(param_t paramNo);
 };
