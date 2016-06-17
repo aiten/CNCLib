@@ -23,14 +23,16 @@
 WaterFlow flow;
 WatchDog watchDog;
 
+#define ALIVE_PIN 13
 
-#define WATCHDOG_PIN  13
+#define WATCHDOG_PIN  11
 #define WATCHDOG_ON LOW
 
 #define WATERFLOW_PIN 2
 #define WATERTEMP_PIN A0
 
-#define WATCHDOG_MINFLOW  50
+#define WATCHDOG_MINFLOW  10
+
 #define WATCHDOG_MINTEMPON  10
 #define WATCHDOG_MINTEMPOFF 14
 #define WATCHDOG_MAXTEMPON  512
@@ -45,6 +47,8 @@ void setup()
 
 	Serial.begin(250000);
 
+  pinMode(ALIVE_PIN,OUTPUT);
+
 	flow.Init(WATERFLOW_PIN);
   watchDog.Init(WATCHDOG_PIN,WATCHDOG_ON);
 
@@ -52,6 +56,9 @@ void setup()
   TestWatchDogSetup();
 #endif
 }
+
+unsigned long lastblink=0;
+bool  blinkWasOn=true;
 
 ////////////////////////////////////////////////////////////
 
@@ -110,6 +117,13 @@ void loop()
 {
   watchDog.OnOff(IsWatchDogOn());
 
+  if (millis()> lastblink)
+  {
+    lastblink = millis() +500;
+    blinkWasOn = !blinkWasOn;
+    digitalWrite(ALIVE_PIN, blinkWasOn ? HIGH : LOW);
+ 
+  }
 
 #ifdef TESTMODE
   TestWatchDogLoop();
