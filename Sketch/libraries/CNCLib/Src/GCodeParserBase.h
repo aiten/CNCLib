@@ -90,6 +90,8 @@ protected:
 	virtual mm1000_t CalcAllPreset(axis_t axis);
 	virtual void CommentMessage(char* )					{ };
 
+	virtual void OnMoveStart(bool)						{ };
+
 protected:
 
 	typedef void(CGCodeParserBase::*LastCommandCB)();
@@ -121,8 +123,8 @@ protected:
 
 		short			SpindleSpeed;			// > 0 CW, < 0 CCW
 
-		uint8_t	LaserPower;
-		uint8_t	Dummy;
+		uint8_t			LaserPower;
+		bool			CutMove;
 
 		mm1000_t		G92Pospreset[NUM_AXIS];
 
@@ -219,7 +221,7 @@ protected:
 	unsigned long GetUint32OrParam(unsigned long max);
 	unsigned long GetUint32OrParam()						{ return GetUint32OrParam(0xffffffffl); };
 	unsigned short GetUint16OrParam()						{ return (unsigned short)GetUint32OrParam(65535); };
-	uint8_t GetUint8OrParam()							{ return (uint8_t)GetUint32OrParam(255); };
+	uint8_t GetUint8OrParam()								{ return (uint8_t)GetUint32OrParam(255); };
 
 	mm1000_t GetRelativePosition(mm1000_t pos, axis_t axis)	{ return pos - CalcAllPreset(axis); }
 	mm1000_t GetRelativePosition(axis_t axis)				{ return GetRelativePosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis); }
@@ -252,6 +254,8 @@ protected:
 
 	void CallIOControl(uint8_t io, unsigned short value);
 	void SpindleSpeedCommand();
+
+	void MoveStart(bool cutmove);
 
 private:
 

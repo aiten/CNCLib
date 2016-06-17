@@ -35,7 +35,7 @@ public:
 
 	typedef uint8_t menupos_t;
 	typedef void(CMenuBase::*MenuFunction)(const SMenuItemDef*);
-	typedef ptr_t menuparam_t;
+	typedef intptr_t menuparam_t;
 
 	struct SMenuItemDef
 	{
@@ -70,7 +70,7 @@ public:
 			}
 		}
 
-		uint8_t FindMenuIdx(ptr_t param, bool(*check)(const SMenuItemDef*, ptr_t param)) const
+		uint8_t FindMenuIdx(intptr_t param, bool(*check)(const SMenuItemDef*, intptr_t param)) const
 		{
 			const SMenuItemDef* item = &GetItems()[0];
 			for (uint8_t x = 0; item->GetText() != NULL; x++, item++)

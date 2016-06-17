@@ -198,16 +198,18 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 }
 
 ////////////////////////////////////////////////////////////
-
+/*
 unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{
-    case Laser:   { return _laser.IsOn(); }
-
 #ifdef PROBE_PIN
 		case Probe:			{ return _probe.IsOn(); }
 #endif
+
+#ifdef REPORTIOIOSTATE
+
+    case Laser:   { return _laser.IsOn(); }
 
 #ifdef SPINDEL_ENABLE_PIN
 		case Spindel:		{ return _spindel.IsOn(); }
@@ -221,12 +223,15 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 		case ControllerFan: { return _controllerfan.IsOn(); }
 #elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
 		case ControllerFan: { return _controllerfan.Level; }
-#endif	
+#endif
+
+ #endif
+ 
 	}
 
 	return super::IOControl(tool);
 }
-
+*/
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Kill()

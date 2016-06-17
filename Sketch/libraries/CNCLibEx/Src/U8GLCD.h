@@ -54,7 +54,7 @@ public:
 		DrawLoopQueryTimerout
 	};
 
-	typedef bool(CU8GLcd::*DrawFunction)(EnumAsByte(EDrawLoopType) type, ptr_t data);
+	typedef bool(CU8GLcd::*DrawFunction)(EnumAsByte(EDrawLoopType) type, intptr_t data);
 	typedef void(CU8GLcd::*ButtonFunction)();
 
 protected:
@@ -119,7 +119,7 @@ protected:
 	unsigned long DrawLoop(DrawFunction drawfnc)						{ _curretDraw = drawfnc; return DrawLoop(); }
 	unsigned long DrawLoop();
 
-	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type,ptr_t data);
+	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type,intptr_t data);
 
 	void SetMenuPage();
 
@@ -133,18 +133,18 @@ protected:
 	void ButtonPressShowMenu();
 	void ButtonPressSpeedOverride();
 
-	bool DrawLoopSplash(EnumAsByte(EDrawLoopType) type,ptr_t data);
-	bool DrawLoopDebug(EnumAsByte(EDrawLoopType) type,ptr_t data);	
-	bool DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,ptr_t data);
-	bool DrawLoopPos(EnumAsByte(EDrawLoopType) type, ptr_t data);
-	bool DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, ptr_t data);
-	bool DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, ptr_t data);
-	bool DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, ptr_t data);
-	bool DrawLoopPreset(EnumAsByte(EDrawLoopType) type, ptr_t data);
-	bool DrawLoopStartSD(EnumAsByte(EDrawLoopType) type,ptr_t data);
-	bool DrawLoopError(EnumAsByte(EDrawLoopType) type,ptr_t data);
-    bool DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,ptr_t data);
-	bool DrawLoopMenu(EnumAsByte(EDrawLoopType) type,ptr_t data);
+	bool DrawLoopSplash(EnumAsByte(EDrawLoopType) type,intptr_t data);
+	bool DrawLoopDebug(EnumAsByte(EDrawLoopType) type,intptr_t data);	
+	bool DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,intptr_t data);
+	bool DrawLoopPos(EnumAsByte(EDrawLoopType) type, intptr_t data);
+	bool DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, intptr_t data);
+	bool DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, intptr_t data);
+	bool DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, intptr_t data);
+	bool DrawLoopPreset(EnumAsByte(EDrawLoopType) type, intptr_t data);
+	bool DrawLoopStartSD(EnumAsByte(EDrawLoopType) type,intptr_t data);
+	bool DrawLoopError(EnumAsByte(EDrawLoopType) type,intptr_t data);
+    bool DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,intptr_t data);
+	bool DrawLoopMenu(EnumAsByte(EDrawLoopType) type,intptr_t data);
 
 private:
 
@@ -152,7 +152,7 @@ private:
 
 	EnumAsByte(ERotaryFocus)	_rotaryFocus=RotaryMainPage;
 
-	uint8_t				_currentpage;
+	uint8_t						_currentpage;
 
 	CRingBufferQueue<char, 128> _commandHis;
 
@@ -161,9 +161,9 @@ protected:
 	CRotaryButton<rotarypos_t, ROTARY_ACCURACY> _rotarybutton;
 	CPushButton									_rotarypushbutton;
 
-	uint8_t				_lcd_numaxis = NUM_AXIS;
-	uint8_t				_charHeight = 10;
-	uint8_t				_charWidth = 6;
+	uint8_t						_lcd_numaxis = NUM_AXIS;
+	uint8_t						_charHeight = 10;
+	uint8_t						_charWidth = 6;
 
 	const u8g_fntpgm_uint8_t*	_font = u8g_font_6x10;
 

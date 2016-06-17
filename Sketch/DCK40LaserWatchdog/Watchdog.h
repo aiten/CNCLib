@@ -23,8 +23,8 @@ class WatchDog
 private:
 
 	bool _isOn = false;
-  uint8_t _onValue;
-  uint8_t _offValue;
+	uint8_t _onValue;
+	uint8_t _offValue;
 	uint8_t _pin;
 
 public:
@@ -32,20 +32,20 @@ public:
 	void Init(uint8_t pin, uint8_t onvalue)
 	{
 		_pin = pin;
-    _onValue = onvalue;
-    _offValue = onvalue == LOW ? HIGH : LOW;
+		_onValue = onvalue;
+		_offValue = onvalue == LOW ? HIGH : LOW;
 
-    pinMode(_pin, OUTPUT);
-    digitalWrite(_pin, _offValue); 
+		pinMode(_pin, OUTPUT);
+		digitalWrite(_pin, _offValue);
 	}
 
-  void OnOff(bool on)
-  {
-    if (on)
-      On();
-    else
-      Off();
-  }
+	void OnOff(bool on)
+	{
+		if (on)
+			On();
+		else
+			Off();
+	}
 
 	void On()
 	{

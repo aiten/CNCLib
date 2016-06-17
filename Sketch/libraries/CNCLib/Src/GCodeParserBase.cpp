@@ -231,6 +231,14 @@ bool CGCodeParserBase::ParseLineNumber(bool setlinenumber)
 
 ////////////////////////////////////////////////////////////
 
+void CGCodeParserBase::MoveStart(bool cutmove)
+{ 
+	_modalstate.CutMove = cutmove;
+	OnMoveStart(cutmove); 
+}
+
+////////////////////////////////////////////////////////////
+
 void CGCodeParserBase::ConstantVelocity()
 {
 	if (!_modalstate.ConstantVelocity)
@@ -591,6 +599,7 @@ void CGCodeParserBase::G0001Command(bool isG00)
 
 	if (move.axes)
 	{
+		MoveStart(!isG00);
 		CMotionControlBase::GetInstance()->MoveAbs(move.newpos, isG00 ? _modalstate.G0FeedRate : _modalstate.G1FeedRate);
 		ConstantVelocity();
 	}
@@ -653,6 +662,7 @@ void CGCodeParserBase::G0203Command(bool isG02)
 		offset[1] = mm1000_t(0.5*(y + (x*h_x2_div_d)));
 	}
 
+	MoveStart(true);
 	CMotionControlBase::GetInstance()->Arc(move.newpos, offset[0], offset[1], _modalstate.Plane_axis_0, _modalstate.Plane_axis_1, isG02, _modalstate.G1FeedRate);
 	ConstantVelocity();
 }

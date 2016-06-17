@@ -23,7 +23,7 @@ protected:
 	virtual void Initialized() override;
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 
-	void InitSD(uint8_t sdEnablePin);
+	void InitSD(pin_t sdEnablePin);
 
 	virtual void ReadAndExecuteCommand() override;
 
@@ -33,7 +33,7 @@ public:
 
 private:
 
-	uint8_t _sdEnablePin;
+	pin_t _sdEnablePin;
 };
 
 ////////////////////////////////////////////////////////
