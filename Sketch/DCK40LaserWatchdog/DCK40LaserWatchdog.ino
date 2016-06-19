@@ -15,7 +15,6 @@
   http://www.gnu.org/licenses/
 */
 
-
 #include "WaterFlow.h"
 #include "WatchDog.h"
 #include "LinearLookup.h"
@@ -26,6 +25,8 @@ WaterFlow flow;
 WatchDog watchDog;
 
 #define ALIVE_PIN 13
+//#define ALIVE_BLINK_RATE random(5,20)
+#define ALIVE_BLINK_RATE 250
 
 #define WATCHDOG_PIN  11
 #define WATCHDOG_ON LOW
@@ -33,21 +34,12 @@ WatchDog watchDog;
 #define WATERFLOW_PIN 2
 #define WATCHDOG_MINFLOW  50
 
-
 #define WATERTEMP_PIN A0
-
 
 #define WATCHDOG_MINTEMPON  4
 #define WATCHDOG_MINTEMPOFF 5
 #define WATCHDOG_MAXTEMPON  35.0
 #define WATCHDOG_MAXTEMPOFF 34.5
-<<<<<<< .mine
-#define WATCHDOG_MAXTEMPON  512
-#define WATCHDOG_MAXTEMPOFF 505
-=======
-
-
->>>>>>> .theirs
 
 #define WATERTEMP_OVERSAMPLING 16
 
@@ -76,27 +68,21 @@ CLinearLookup<float, float>::SLookupTable linear10k[] =
 };
 CLinearLookup<float, float> temp10k(linear10k, sizeof(linear10k) / sizeof(CLinearLookup<float, float>::SLookupTable));
 
-
-#define TESTMODE
-
 ////////////////////////////////////////////////////////////
 
 void setup()
 {
-
 	Serial.begin(250000);
 
   pinMode(ALIVE_PIN,OUTPUT);
 
 	flow.Init(WATERFLOW_PIN);
 	watchDog.Init(WATCHDOG_PIN, WATCHDOG_ON);
-
-#ifdef TESTMODE
-	TestWatchDogSetup();
-#endif
 }
 
-unsigned long lastblink=0;
+////////////////////////////////////////////////////////////
+
+unsigned long lastBlink=0;
 bool  blinkWasOn=true;
 
 ////////////////////////////////////////////////////////////
@@ -104,7 +90,6 @@ bool  blinkWasOn=true;
 bool IsWatchDogWaterFlowOn()
 {
 	unsigned int avgCount = flow.AvgCount(2000);
-
 	return avgCount > WATCHDOG_MINFLOW;
 }
 
@@ -156,51 +141,25 @@ void loop()
 {
 	watchDog.OnOff(IsWatchDogOn());
 
-  if (millis()> lastblink)
+  if (millis()> lastBlink)
   {
-    lastblink = millis() +500;
+    lastBlink = millis() + ALIVE_BLINK_RATE;
     blinkWasOn = !blinkWasOn;
     digitalWrite(ALIVE_PIN, blinkWasOn ? HIGH : LOW);
- 
   }
 
-#ifdef TESTMODE
 	TestWatchDogLoop();
-#endif
-}
-
-
-#ifdef TESTMODE
-
-unsigned long blinkTime;
-bool blinkOn = false;
-//#define BLINK_RATE 250
-#define BLINK_RATE random(5,20)
-#define BLINK_PIN 12
-
-void TestWatchDogSetup()
-{
-	pinMode(BLINK_PIN, OUTPUT);
-	blinkTime = millis() + BLINK_RATE;
 }
 
 void TestWatchDogLoop()
 {
-
-	if (blinkTime < millis())
-	{
-		blinkTime += BLINK_RATE;
-		blinkOn = !blinkOn;
-		digitalWrite(BLINK_PIN, blinkOn ? HIGH : LOW);
-	}
-
 	static unsigned int lastAvgCount = 0xffff;
 	unsigned int avgCount = flow.AvgCount(2000);
 
 	if (avgCount != lastAvgCount)
 	{
 		lastAvgCount = avgCount;
-		// Serial.println(avgCount);
+		Serial.println(avgCount);
 	}
 
 	static float lastwtemp = 0;
@@ -211,5 +170,4 @@ void TestWatchDogLoop()
 		Serial.println(wtemp);
 	}
 }
-#endif
 
