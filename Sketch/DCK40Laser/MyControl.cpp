@@ -222,13 +222,16 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 			_laserVacuum.On();
 			break;
 		case CStepper::OnIdleEvent:
-			if (millis() - stepper->IdleTime() > LASERWATER_ONTIME)
+			if (_laserOnOff.IsOn() == false)
 			{
-				_laserWater.Off();
-			}
-			if (millis() - stepper->IdleTime() > LASERVACUUM__ONTIME)
-			{
-				_laserVacuum.Off();
+				if (millis() - stepper->IdleTime() > LASERWATER_ONTIME)
+				{
+					_laserWater.Off();
+				}
+				if (millis() - stepper->IdleTime() > LASERVACUUM__ONTIME)
+				{
+					_laserVacuum.Off();
+				}
 			}
 			break;
 	}

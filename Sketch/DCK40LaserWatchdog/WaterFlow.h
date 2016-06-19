@@ -30,11 +30,11 @@ class WaterFlow
 public:
 	WaterFlow()
 	{
-    for(uint8_t i=0;i<SAMPELCOUNT;i++)
-    {
-      _count[i]=0;
-      _countTime[i] = 0;
-    }
+		for (uint8_t i = 0; i < SAMPELCOUNT; i++)
+		{
+			_count[i] = 0;
+			_countTime[i] = 0;
+		}
 	}
 
 	void Init(uint8_t pin)
@@ -65,9 +65,9 @@ public:
 			sumcount += _count[idx];
 		}
 
-    if (sumtime<=SAMPELTIME)
-      return 0;
-        
+		if (sumtime <= SAMPELTIME)
+			return 0;
+
 		return ScaleCount(sumcount, sumtime, timediff);
 	}
 
