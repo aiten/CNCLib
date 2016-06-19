@@ -21,8 +21,12 @@
 #include "WaterFlow.h"
 #include "WatchDog.h"
 #include "LinearLookup.h"
+#include "DHT.h"
 
 ////////////////////////////////////////////////////////////
+
+dht DHT;
+#define DHT11_PIN 5
 
 WaterFlow flow;
 WatchDog watchDog;
@@ -40,7 +44,7 @@ WatchDog watchDog;
 #define WATCHDOG_MINTEMPON  4
 #define WATCHDOG_MINTEMPOFF 5
 #define WATCHDOG_MAXTEMPON  35.0
-#define WATCHDOG_MAXTEMPOFF 34.5
+#define WATCHDOG_MAXTEMPOFF 33.0
 
 #define WATERTEMP_OVERSAMPLING 16
 
