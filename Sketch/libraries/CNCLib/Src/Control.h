@@ -43,8 +43,8 @@ public:
 
 	void StopProgram(bool checkconditional);		// see m00 / m01
 
-	void SetConditionalStop(bool stop);				// see m00 / m01
-	bool IsConditionalStop();
+	//void SetConditionalStop(bool stop);				// see m00 / m01
+	//bool IsConditionalStop();
 
 	void Delay(unsigned long ms);	// delay with idle processing
 
@@ -125,7 +125,8 @@ protected:
 
 	bool ParseAndPrintResult(CParser* parser, Stream* output);
 
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo);
+	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo);
+	virtual void OnParserEvent(class CParser*, unsigned char /* eventtype */, uintptr_t /* addinfo */) {};
 
 	bool IsResurrectCommand(const char*buffer)					{ return buffer[0] == '!' && buffer[1] == '!' && buffer[2] == '!' && (buffer[3] == 0 || (buffer[3] == '\r' && buffer[4] == 0)); }
 
@@ -153,7 +154,7 @@ private:
 
 	static void HandleInterrupt()								{ GetInstance()->TimerInterrupt(); }
 
-	static bool MyStepperEvent(CStepper*stepper, void* param, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) { return ((CControl*)param)->OnStepperEvent(stepper, eventtype, addinfo); }
+	static bool MyStepperEvent(CStepper*stepper, uintptr_t param, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo) { return ((CControl*)param)->OnStepperEvent(stepper, eventtype, addinfo); }
 
 	CStreamReader		_reader;
 

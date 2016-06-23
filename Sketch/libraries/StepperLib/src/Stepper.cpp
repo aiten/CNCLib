@@ -123,7 +123,7 @@ void CStepper::Init()
 
 ////////////////////////////////////////////////////////
 
-void CStepper::AddEvent(StepperEvent event, void* eventparam, SEvent& oldevent)
+void CStepper::AddEvent(StepperEvent event, uintptr_t eventparam, SEvent& oldevent)
 {
 	oldevent = _event;
 	_event._event = event;
@@ -1019,21 +1019,21 @@ void CStepper::OnStart()
 
 void CStepper::OnWait(EnumAsByte(EWaitType) wait)
 {
-	CallEvent(OnWaitEvent, (void*) (unsigned int) wait);
+	CallEvent(OnWaitEvent, wait);
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepper::OnError(error_t error)
 {
-	CallEvent(OnErrorEvent, (void*)error);
+	CallEvent(OnErrorEvent, (uintptr_t)error);
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepper::OnWarning(error_t warning)
 {
-	CallEvent(OnWarningEvent, (void*) warning);
+	CallEvent(OnWarningEvent, (uintptr_t) warning);
 	StepperSerial.print(MESSAGE_WARNING);
 	StepperSerial.println(warning);
 }
@@ -1042,7 +1042,7 @@ void CStepper::OnWarning(error_t warning)
 
 void CStepper::OnInfo(error_t info)
 {
-	CallEvent(OnInfoEvent, (void*)info);
+	CallEvent(OnInfoEvent, (uintptr_t)info);
 	StepperSerial.print((MESSAGE_INFO));
 	StepperSerial.println(info);
 }
@@ -1770,7 +1770,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 			}
 			if (_state == SMovement::StateReadyIo)
 			{
-				pStepper->CallEvent(OnIoEvent, (void*)&_pod._io);
+				pStepper->CallEvent(OnIoEvent, (uintptr_t)&_pod._io);
 				// pState->_n = _steps; => done by Init()
 				// this will end move immediately
 			}
@@ -2075,7 +2075,7 @@ void CStepper::QueueAndSplitStep(const udist_t dist[NUM_AXIS], const bool direct
 
 ////////////////////////////////////////////////////////
 
-bool CStepper::MoveUntil(TestContinueMove testcontinue, void*param)
+bool CStepper::MoveUntil(TestContinueMove testcontinue, uintptr_t param)
 {
 	while (IsBusy())
 	{

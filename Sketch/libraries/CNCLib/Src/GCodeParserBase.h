@@ -90,8 +90,6 @@ protected:
 	virtual mm1000_t CalcAllPreset(axis_t axis);
 	virtual void CommentMessage(char* )					{ };
 
-	virtual void OnMoveStart(bool)						{ };
-
 protected:
 
 	typedef void(CGCodeParserBase::*LastCommandCB)();
@@ -103,11 +101,11 @@ protected:
 	{
 		long			Linenumber;
 
-		uint8_t	Plane_axis_0;			// x
-		uint8_t	Plane_axis_1;			// y 
+		uint8_t			Plane_axis_0;			// x
+		uint8_t			Plane_axis_1;			// y 
 
-		uint8_t	Plane_axis_2;			// z
-		uint8_t	UnitConvert;			// bit array convert between inch and mm (a b c is Grad) 			
+		uint8_t			Plane_axis_2;			// z
+		uint8_t			UnitConvert;			// bit array convert between inch and mm (a b c is Grad) 			
 
 		bool			UnitisMm;				// g20,g21
 		bool			FeedRatePerUnit;		//feedrate per Unit(mm,inch) per min, or per revolution /g94/95
@@ -263,7 +261,7 @@ private:
 
 	void GetG92Axis(axis_t axis, uint8_t& count);
 
-	static bool G31TestProbe(void*);
+	static bool G31TestProbe(uintptr_t);
 
 	bool LastCommand();
 
@@ -305,8 +303,6 @@ private:
 	gcode_t GetGCode()							{ return GetUInt8(); }
 
 	/////////////////
-
-
 
 #ifdef _MSC_VER
 public:

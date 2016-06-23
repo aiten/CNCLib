@@ -54,7 +54,7 @@ public:
 		DrawLoopQueryTimerout
 	};
 
-	typedef bool(CU8GLcd::*DrawFunction)(EnumAsByte(EDrawLoopType) type, intptr_t data);
+	typedef bool(CU8GLcd::*DrawFunction)(EnumAsByte(EDrawLoopType) type, uintptr_t data);
 	typedef void(CU8GLcd::*ButtonFunction)();
 
 protected:
@@ -119,7 +119,7 @@ protected:
 	unsigned long DrawLoop(DrawFunction drawfnc)						{ _curretDraw = drawfnc; return DrawLoop(); }
 	unsigned long DrawLoop();
 
-	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type,intptr_t data);
+	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type,uintptr_t data);
 
 	void SetMenuPage();
 
@@ -133,18 +133,18 @@ protected:
 	void ButtonPressShowMenu();
 	void ButtonPressSpeedOverride();
 
-	bool DrawLoopSplash(EnumAsByte(EDrawLoopType) type,intptr_t data);
-	bool DrawLoopDebug(EnumAsByte(EDrawLoopType) type,intptr_t data);	
-	bool DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,intptr_t data);
-	bool DrawLoopPos(EnumAsByte(EDrawLoopType) type, intptr_t data);
-	bool DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, intptr_t data);
-	bool DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, intptr_t data);
-	bool DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, intptr_t data);
-	bool DrawLoopPreset(EnumAsByte(EDrawLoopType) type, intptr_t data);
-	bool DrawLoopStartSD(EnumAsByte(EDrawLoopType) type,intptr_t data);
-	bool DrawLoopError(EnumAsByte(EDrawLoopType) type,intptr_t data);
-    bool DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,intptr_t data);
-	bool DrawLoopMenu(EnumAsByte(EDrawLoopType) type,intptr_t data);
+	bool DrawLoopSplash(EnumAsByte(EDrawLoopType) type,uintptr_t data);
+	bool DrawLoopDebug(EnumAsByte(EDrawLoopType) type,uintptr_t data);	
+	bool DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,uintptr_t data);
+	bool DrawLoopPos(EnumAsByte(EDrawLoopType) type, uintptr_t data);
+	bool DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, uintptr_t data);
+	bool DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, uintptr_t data);
+	bool DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, uintptr_t data);
+	bool DrawLoopPreset(EnumAsByte(EDrawLoopType) type, uintptr_t data);
+	bool DrawLoopStartSD(EnumAsByte(EDrawLoopType) type,uintptr_t data);
+	bool DrawLoopError(EnumAsByte(EDrawLoopType) type,uintptr_t data);
+    bool DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,uintptr_t data);
+	bool DrawLoopMenu(EnumAsByte(EDrawLoopType) type,uintptr_t data);
 
 private:
 

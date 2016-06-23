@@ -47,7 +47,7 @@ protected:
 	virtual void Init() override;
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 	virtual void Idle(unsigned int idletime) override;
-	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo) override;
+	virtual bool OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo) override;
 
 	virtual bool IsKill() override;
 

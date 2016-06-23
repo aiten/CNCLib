@@ -223,7 +223,7 @@ bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMi
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
+bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
 {
 	switch (eventtype)
 	{

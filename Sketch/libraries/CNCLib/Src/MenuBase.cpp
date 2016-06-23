@@ -126,7 +126,7 @@ void CMenuBase::MenuButtonPressSetMenu(const SMenuItemDef*def)
 	if (posMenu!=NULL)
 	{
 		// param2 != NULL => find index
-		_position = newMenu->FindMenuIdx((intptr_t) def, [](const SMenuItemDef* def, intptr_t param) -> bool
+		_position = newMenu->FindMenuIdx((uintptr_t) def, [](const SMenuItemDef* def, uintptr_t param) -> bool
 		{
 			return	def->GetButtonPress() == &CMenuBase::MenuButtonPressSetMenu &&			// must be setMenu
 					def->GetParam1() == ((const SMenuItemDef*)param)->GetParam2();			// param1 or new menu ust be param2 of "Back from"
@@ -145,7 +145,7 @@ void CMenuBase::MenuButtonPressMenuBack(const SMenuItemDef* def)
 	
 	SetMenu(newMenu);
 
-	SetPosition(GetMenuDef()->FindMenuIdx((intptr_t) oldMenu, [](const SMenuItemDef* def, intptr_t oldMenu) -> bool
+	SetPosition(GetMenuDef()->FindMenuIdx((uintptr_t) oldMenu, [](const SMenuItemDef* def, uintptr_t oldMenu) -> bool
 	{
 		return def->GetParam1() == oldMenu && def->GetButtonPress() == &CMenuBase::MenuButtonPressSetMenu;
 	}));

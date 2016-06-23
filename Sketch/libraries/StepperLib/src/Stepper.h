@@ -91,15 +91,15 @@ public:
 		DumpDetails		= 128									// detail of each option
 	};
 
-	typedef bool(*StepperEvent)(CStepper*stepper, void* param, EnumAsByte(EStepperEvent) eventtype, void* addinfo);
-	typedef bool(*TestContinueMove)(void* param);
+	typedef bool(*StepperEvent)(CStepper*stepper, uintptr_t param, EnumAsByte(EStepperEvent) eventtype, uintptr_t addinfo);
+	typedef bool(*TestContinueMove)(uintptr_t param);
 
 	struct SEvent 
 	{
-		SEvent()																					{ _event = NULL;  _eventParam = NULL; }
+		SEvent()																						{ _event = NULL;  _eventParam = 0; }
 		StepperEvent  _event;
-		void*		  _eventParam;
-		bool Call(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)	{ if (_event) return _event(stepper, _eventParam, eventtype, addinfo); return true; }
+		uintptr_t 	  _eventParam;
+		bool Call(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)	{ if (_event) return _event(stepper, _eventParam, eventtype, addinfo); return true; }
 	};
 
 	struct SIoControl
@@ -210,7 +210,7 @@ public:
 	void WaitConditional(unsigned int sec100);				// conditional wait 
 	void IoControl(uint8_t tool, unsigned short level);
 
-	bool MoveUntil(TestContinueMove testcontinue, void*param);
+	bool MoveUntil(TestContinueMove testcontinue, uintptr_t param);
 
 	//////////////////////////////
 
@@ -238,7 +238,7 @@ public:
 #endif
 	unsigned long IdleTime() const								{ return _pod._timerStartOrOnIdle; }
 
-	void AddEvent(StepperEvent event, void* eventparam, SEvent&old );
+	void AddEvent(StepperEvent event, uintptr_t eventparam, SEvent&old );
 
 	static uint8_t ToReferenceId(axis_t axis, bool minRef) { return axis * 2 + (minRef ? 0 : 1); }
 
@@ -280,7 +280,7 @@ private:
 	void GoIdle();
 	void ContinueIdle();
 
-	void CallEvent(EnumAsByte(EStepperEvent) eventtype, void* addinfo=0)	{ _event.Call(this, eventtype, addinfo); }
+	void CallEvent(EnumAsByte(EStepperEvent) eventtype, uintptr_t addinfo=0)	{ _event.Call(this, eventtype, addinfo); }
 
 	void SubTotalSteps();
 

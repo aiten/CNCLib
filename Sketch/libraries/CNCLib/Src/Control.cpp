@@ -42,7 +42,7 @@ CControl::CControl()
 void CControl::Init()
 {
 	CStepper::GetInstance()->Init();
-	CStepper::GetInstance()->AddEvent(MyStepperEvent, this, _oldStepperEvent);
+	CStepper::GetInstance()->AddEvent(MyStepperEvent, (uintptr_t) this, _oldStepperEvent);
 
 #ifdef _USE_LCD
 	
@@ -499,7 +499,7 @@ void CControl::Delay(unsigned long ms)
 
 ////////////////////////////////////////////////////////////
 
-bool CControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, void* addinfo)
+bool CControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
 {
 	switch (eventtype)
 	{

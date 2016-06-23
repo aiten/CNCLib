@@ -234,7 +234,7 @@ bool CGCodeParserBase::ParseLineNumber(bool setlinenumber)
 void CGCodeParserBase::MoveStart(bool cutmove)
 { 
 	_modalstate.CutMove = cutmove;
-	OnMoveStart(cutmove); 
+//	OnMoveStart(cutmove); 
 }
 
 ////////////////////////////////////////////////////////////
@@ -753,7 +753,7 @@ void CGCodeParserBase::G28Command()
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParserBase::G31TestProbe(void* /* param */)
+bool CGCodeParserBase::G31TestProbe(uintptr_t /* param */)
 {
 	// return true if probe is not on
 	// => continue move to probe position
@@ -792,7 +792,7 @@ void CGCodeParserBase::G31Command()
 	Sync();
 
 	{
-		if (!G31TestProbe(NULL))
+		if (!G31TestProbe(0))
 		{
 			Error(MESSAGE(MESSAGE_GCODE_ProbeIOmustBeOff));
 			return;
@@ -800,7 +800,7 @@ void CGCodeParserBase::G31Command()
 
 		CMotionControlBase::GetInstance()->MoveAbs(move.newpos, _modalstate.G1FeedRate);
 
-		if (!CStepper::GetInstance()->MoveUntil(G31TestProbe, NULL))
+		if (!CStepper::GetInstance()->MoveUntil(G31TestProbe, 0))
 		{
 			Error(MESSAGE(MESSAGE_GCODE_ProbeFailed));
 			// no return => must set position again
