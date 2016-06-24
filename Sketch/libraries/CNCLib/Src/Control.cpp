@@ -42,7 +42,7 @@ CControl::CControl()
 void CControl::Init()
 {
 	CStepper::GetInstance()->Init();
-	CStepper::GetInstance()->AddEvent(MyStepperEvent, (uintptr_t) this, _oldStepperEvent);
+	CStepper::GetInstance()->AddEvent(StaticStepperEvent, (uintptr_t) this, _oldStepperEvent);
 
 #ifdef _USE_LCD
 	
@@ -499,7 +499,25 @@ void CControl::Delay(unsigned long ms)
 
 ////////////////////////////////////////////////////////////
 
-bool CControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
+bool CControl::StaticStepperEvent(CStepper* /*stepper*/, uintptr_t param, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo) 
+{ 
+	return ((CControl*)param)->StepperEvent(eventtype, addinfo);
+}
+
+
+////////////////////////////////////////////////////////////
+
+bool CControl::StepperEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
+{
+	if (OnEvent(eventtype, addinfo))
+		return true;
+
+	return _oldStepperEvent.Call(CStepper::GetInstance(), eventtype, addinfo);
+}
+
+////////////////////////////////////////////////////////////
+
+bool CControl::OnEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
 {
 	switch (eventtype)
 	{
@@ -516,5 +534,5 @@ bool CControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEve
 			IOControl(((CStepper::SIoControl*) addinfo)->_tool, ((CStepper::SIoControl*) addinfo)->_level);
 			break;
 	}
-	return _oldStepperEvent.Call(stepper, eventtype, addinfo);
+	return true;
 }

@@ -197,7 +197,7 @@ bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMi
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
+bool CMyControl::OnEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
 {
 	switch (eventtype)
 	{
@@ -205,12 +205,12 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 			_controllerfan.On();
 			break;
 		case CStepper::OnIdleEvent:
-			if (millis()-stepper->IdleTime() > CONTROLLERFAN_ONTIME)
+			if (millis()- CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME)
 			{
 				_controllerfan.Off();
 			}
 			break;
 	}
 
-	return super::OnStepperEvent(stepper, eventtype, addinfo);
+	return super::OnEvent(eventtype, addinfo);
 }

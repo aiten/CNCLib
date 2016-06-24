@@ -213,7 +213,7 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
+bool CMyControl::OnEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
 {
 	switch (eventtype)
 	{
@@ -224,11 +224,11 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 		case CStepper::OnIdleEvent:
 			if (_laserOnOff.IsOn() == false)
 			{
-				if (millis() - stepper->IdleTime() > LASERWATER_ONTIME)
+				if (millis() - CStepper::GetInstance()->IdleTime() > LASERWATER_ONTIME)
 				{
 					_laserWater.Off();
 				}
-				if (millis() - stepper->IdleTime() > LASERVACUUM__ONTIME)
+				if (millis() - CStepper::GetInstance()->IdleTime() > LASERVACUUM__ONTIME)
 				{
 					_laserVacuum.Off();
 				}
@@ -236,5 +236,5 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 			break;
 	}
 
-	return super::OnStepperEvent(stepper, eventtype, addinfo);
+	return super::OnEvent(eventtype, addinfo);
 }

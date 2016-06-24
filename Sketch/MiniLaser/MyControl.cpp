@@ -357,7 +357,7 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
+bool CMyControl::OnEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
 {
 #ifdef CONTROLLERFAN_FAN_PIN
 	switch (eventtype)
@@ -366,7 +366,7 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 			_controllerfan.On();
 			break;
 		case CStepper::OnIdleEvent:
-			if (millis()-stepper->IdleTime() > CONTROLLERFAN_ONTIME)
+			if (millis()-CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME)
 			{
 				_controllerfan.Off();
 			}
@@ -374,5 +374,5 @@ bool CMyControl::OnStepperEvent(CStepper*stepper, EnumAsByte(CStepper::EStepperE
 	}
 #endif
 
-	return super::OnStepperEvent(stepper, eventtype, addinfo);
+	return super::OnEvent(eventtype, addinfo);
 }
