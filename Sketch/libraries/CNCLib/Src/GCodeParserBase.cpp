@@ -879,6 +879,7 @@ void CGCodeParserBase::M0304Command(bool m3)
 		SpindleSpeedCommand();
 	}
 
+	_modalstate.SpindleOn = true;
 	CallIOControl(CControl::Spindel, m3 ? _modalstate.SpindleSpeed : -_modalstate.SpindleSpeed);
 }
 
@@ -900,7 +901,7 @@ void CGCodeParserBase::M106Command()
 		_modalstate.LaserPower = power;
 	}
 
-	_modalstate.CutMove = true;
+	_modalstate.LaserOn = true;
 	CallIOControl(CControl::Laser, _modalstate.LaserPower);
 }
 

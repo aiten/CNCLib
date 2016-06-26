@@ -70,7 +70,10 @@ public:
 	static bool IsMm1000()									{ return _modalstate.UnitisMm; }
 	static bool IsInch(axis_t axis)							{ return !IsMm1000() && IsBitSet(_modalstate.UnitConvert,axis);}		
 
-	static bool InCutMove()									{ return _modalstate.CutMove; }
+	static bool IsSpindleOn()								{ return _modalstate.SpindleOn; }
+	static bool IsLaserOn()									{ return _modalstate.LaserOn; }
+
+	static bool IsCutMove()									{ return _modalstate.CutMove; }
 	static uint8_t GetLaserPower()							{ return _modalstate.LaserPower; }
 
 	static void Init()										{ super::Init(); _modalstate.Init();  _modlessstate.Init(); }
@@ -126,6 +129,9 @@ protected:
 
 		uint8_t			LaserPower;
 		bool			CutMove;
+
+		bool			LaserOn;
+		bool			SpindleOn;
 
 		mm1000_t		G92Pospreset[NUM_AXIS];
 
@@ -287,13 +293,13 @@ private:
 	void G92Command();
 
 	void M0304Command(bool m3);					// spindle on CW/CCW
-	void M05Command()							{ CallIOControl(CControl::Spindel, 0); } //spindel off
+	void M05Command()							{ _modalstate.SpindleOn = false; CallIOControl(CControl::Spindel, 0); } //spindel off
 
 	void M07Command()							{ CallIOControl(CControl::Coolant, CControl::CoolantOn); };
 	void M09Command()							{ CallIOControl(CControl::Coolant, CControl::CoolantOff); };
 
 	void M106Command();							// laser on command
-	void M107Command()							{ _modalstate.CutMove = false;	CallIOControl(CControl::Laser, 0); }	//laser off
+	void M107Command()							{ _modalstate.LaserOn = false;	CallIOControl(CControl::Laser, 0); }	//laser off
 
 	/////////////////
 

@@ -509,7 +509,7 @@ bool CControl::StaticStepperEvent(CStepper* /*stepper*/, uintptr_t param, EnumAs
 
 bool CControl::StepperEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
 {
-	if (CallOnEvent((EnumAsByte(EStepperControlEvent)) eventtype, addinfo))
+	if (CallOnEvent(eventtype, addinfo))
 		return true;
 
 	return _oldStepperEvent.Call(CStepper::GetInstance(), eventtype, addinfo);

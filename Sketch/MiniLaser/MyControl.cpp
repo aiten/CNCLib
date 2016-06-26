@@ -363,12 +363,14 @@ bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t a
 	{
 		case OnStartCut:
 		{
-      bool newIsCutMove = (bool) addinfo;
-      if (CGCodeParserBase::InCutMove() != newIsCutMove)
-      {
-        CStepper::GetInstance()->IoControl(CControl::Laser, 
-                newIsCutMove ? CGCodeParserBase::GetLaserPower() : 0);
-      }
+			if (CGCodeParserBase::IsLaserOn())
+			{
+				bool newIsCutMove = addinfo!=0;
+				if (CGCodeParserBase::IsCutMove() != newIsCutMove)
+				{
+					CStepper::GetInstance()->IoControl(CControl::Laser,newIsCutMove ? CGCodeParserBase::GetLaserPower() : 0);
+				}
+			}
 			break;
 		}
 #ifdef CONTROLLERFAN_FAN_PIN
