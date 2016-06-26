@@ -38,7 +38,6 @@ bool CGCodeParserBase::_exit = false;
 ////////////////////////////////////////////////////////
 
 #define MAXSPINDEL_SPEED	0x7fff
-#define MAXLASER_POWER		0xff
 
 ////////////////////////////////////////////////////////
 
@@ -370,19 +369,16 @@ bool CGCodeParserBase::MCommand(mcode_t mcode)
 {
 	switch (mcode)
 	{
-		// Spindel
+		// Spindel (+laser)
+		case 106:
 		case 3:	M0304Command(true);		return true;
 		case 4:	M0304Command(false);	return true;
+		case 107:
 		case 5: M05Command();			return true;
 
 		// coolant
 		case 7:	M07Command();		return true;
 		case 9:	M09Command();		return true;
-
-		// laser
-		case 106:	M106Command();	return true;
-		case 107:	M107Command();	return true;
-
 	}
 	return false;
 }
@@ -583,6 +579,8 @@ bool CGCodeParserBase::LastCommand()
 
 void CGCodeParserBase::G0001Command(bool isG00)
 {
+	//uint8_t subcode = GetSubCode();
+
 	_modalstate.LastCommand = isG00 ? &CGCodeParserBase::G00Command : &CGCodeParserBase::G01Command;
 
 	SAxisMove move(true);
@@ -881,28 +879,6 @@ void CGCodeParserBase::M0304Command(bool m3)
 
 	_modalstate.SpindleOn = true;
 	CallIOControl(CControl::Spindel, m3 ? _modalstate.SpindleSpeed : -_modalstate.SpindleSpeed);
-}
-
-////////////////////////////////////////////////////////////
-
-void CGCodeParserBase::M106Command()
-{
-	char ch = _reader->SkipSpacesToUpper();
-	if (ch == 'S')
-	{
-		_reader->GetNextChar();
-		_reader->SkipSpaces();
-
-		uint8_t power = (uint8_t)GetUint32OrParam(MAXLASER_POWER);
-
-#ifndef REDUCED_SIZE
-		if (IsError()) return;
-#endif
-		_modalstate.LaserPower = power;
-	}
-
-	_modalstate.LaserOn = true;
-	CallIOControl(CControl::Laser, _modalstate.LaserPower);
 }
 
 ////////////////////////////////////////////////////////////

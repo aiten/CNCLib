@@ -149,7 +149,7 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
-    case Laser:
+    case Spindel:
       if (level != 0)
       {
 #ifdef LASER_ANALOG
@@ -164,25 +164,6 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
       }
       return;
 
-#ifdef SPINDEL_ENABLE_PIN
-		case Spindel:			
-			if (level != 0)
-			{
-#ifdef SPINDEL_ANALOGSPEED
-				_spindel.On((uint8_t) MulDivU32(abs(level),255, SPINDEL_MAXSPEED));
-#else        
-				_spindel.On();
-#endif
-#ifdef SPINDEL_DIR_PIN
-				_spindelDir.Set(((short)level)>0);
-#endif
-			}
-			else
-			{
-			  _spindel.Off();
-			}
-			return;
-#endif
 #ifdef COOLANT_PIN
 	    case Coolant:     _coolant.Set(level>0); return;
 #endif
@@ -202,14 +183,10 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{
-    case Laser:   { return _laser.IsOn(); }
+		case Spindel:		{ return _laser.IsOn(); }
 
 #ifdef PROBE_PIN
 		case Probe:			{ return _probe.IsOn(); }
-#endif
-
-#ifdef SPINDEL_ENABLE_PIN
-		case Spindel:		{ return _spindel.IsOn(); }
 #endif
 
 #ifdef COOLANT_PIN

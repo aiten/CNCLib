@@ -87,7 +87,7 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
-		case Laser:
+		case Spindel:
 
 			if (level != 0)
 			{
@@ -114,9 +114,9 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{
-		case Laser: { return _laserPWM.IsOn(); }
+		case Spindel: { return _laserPWM.IsOn(); }
 		case Coolant: { return _laserWater.IsOn(); }
-		case Vacuum: { return _laserVacuum.IsOn(); }
+		case Vacuum:  { return _laserVacuum.IsOn(); }
 	}
 
 	return super::IOControl(tool);

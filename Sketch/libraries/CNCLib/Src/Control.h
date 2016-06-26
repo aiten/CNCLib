@@ -61,7 +61,7 @@ public:
 		Coolant,
 		ControllerFan,
 		Vacuum,
-		Laser,
+		//Laser, => use spindel
 
 		// input
 		Probe,				// Probe for tool lenght

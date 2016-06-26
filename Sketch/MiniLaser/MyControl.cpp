@@ -150,7 +150,7 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
-    case Laser:
+    case Spindel:
       if (level != 0)
       {
 #ifdef LASER_ANALOG
@@ -165,25 +165,7 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
       }
       return;
 
-#ifdef SPINDEL_ENABLE_PIN
-		case Spindel:			
-			if (level != 0)
-			{
-#ifdef SPINDEL_ANALOGSPEED
-				_spindel.On((uint8_t) MulDivU32(abs(level),255, SPINDEL_MAXSPEED));
-#else        
-				_spindel.On();
-#endif
-#ifdef SPINDEL_DIR_PIN
-				_spindelDir.Set(((short)level)>0);
-#endif
-			}
-			else
-			{
-			  _spindel.Off();
-			}
-			return;
-#endif
+
 #ifdef COOLANT_PIN
 	    case Coolant:     _coolant.Set(level>0); return;
 #endif
@@ -363,12 +345,12 @@ bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t a
 	{
 		case OnStartCut:
 		{
-			if (CGCodeParserBase::IsLaserOn())
+			if (CGCodeParserBase::IsSpindleOn())
 			{
 				bool newIsCutMove = addinfo!=0;
 				if (CGCodeParserBase::IsCutMove() != newIsCutMove)
 				{
-					CStepper::GetInstance()->IoControl(CControl::Laser,newIsCutMove ? CGCodeParserBase::GetLaserPower() : 0);
+					CStepper::GetInstance()->IoControl(CControl::Spindel,newIsCutMove ? CGCodeParserBase::GetSpindleSpeed() : 0);
 				}
 			}
 			break;
