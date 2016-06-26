@@ -233,6 +233,7 @@ bool CGCodeParserBase::ParseLineNumber(bool setlinenumber)
 
 void CGCodeParserBase::MoveStart(bool cutmove)
 { 
+	CControl::GetInstance()->CallOnEvent(CControl::OnStartCut, cutmove);
 	_modalstate.CutMove = cutmove;
 //	OnMoveStart(cutmove); 
 }
@@ -899,6 +900,7 @@ void CGCodeParserBase::M106Command()
 		_modalstate.LaserPower = power;
 	}
 
+	_modalstate.CutMove = true;
 	CallIOControl(CControl::Laser, _modalstate.LaserPower);
 }
 

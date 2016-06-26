@@ -61,7 +61,9 @@ public:
 		OnErrorEvent,
 		OnWarningEvent,
 		OnInfoEvent,
-		OnIoEvent
+		OnIoEvent,
+
+		LastStepperEvent = OnIoEvent
 	};
 
 	#define LevelToProcent(a) (a*100/255)

@@ -499,7 +499,7 @@ void CControl::Delay(unsigned long ms)
 
 ////////////////////////////////////////////////////////////
 
-bool CControl::StaticStepperEvent(CStepper* /*stepper*/, uintptr_t param, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo) 
+bool CControl::StaticStepperEvent(CStepper* /*stepper*/, uintptr_t param, EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
 { 
 	return ((CControl*)param)->StepperEvent(eventtype, addinfo);
 }
@@ -509,7 +509,7 @@ bool CControl::StaticStepperEvent(CStepper* /*stepper*/, uintptr_t param, EnumAs
 
 bool CControl::StepperEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
 {
-	if (OnEvent(eventtype, addinfo))
+	if (CallOnEvent((EnumAsByte(EStepperControlEvent)) eventtype, addinfo))
 		return true;
 
 	return _oldStepperEvent.Call(CStepper::GetInstance(), eventtype, addinfo);
@@ -517,11 +517,18 @@ bool CControl::StepperEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintp
 
 ////////////////////////////////////////////////////////////
 
-bool CControl::OnEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
+bool CControl::CallOnEvent(uint8_t eventtype, uintptr_t param)
+{
+	return OnEvent((EnumAsByte(EStepperControlEvent)) eventtype, param);
+}
+
+////////////////////////////////////////////////////////////
+
+bool CControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo)
 {
 	switch (eventtype)
 	{
-		case CStepper::OnWaitEvent:
+		case OnWaitEvent:
 
 			if (CStepper::WaitTimeCritical > (CStepper::EWaitType) (unsigned int)addinfo)
 			{
@@ -529,7 +536,7 @@ bool CControl::OnEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t 
 			}
 			break;
 
-		case CStepper::OnIoEvent:
+		case OnIoEvent:
 			
 			IOControl(((CStepper::SIoControl*) addinfo)->_tool, ((CStepper::SIoControl*) addinfo)->_level);
 			break;

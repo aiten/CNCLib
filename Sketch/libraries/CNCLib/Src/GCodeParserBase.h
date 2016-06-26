@@ -70,6 +70,9 @@ public:
 	static bool IsMm1000()									{ return _modalstate.UnitisMm; }
 	static bool IsInch(axis_t axis)							{ return !IsMm1000() && IsBitSet(_modalstate.UnitConvert,axis);}		
 
+	static bool InCutMove()									{ return _modalstate.CutMove; }
+	static uint8_t GetLaserPower()							{ return _modalstate.LaserPower; }
+
 	static void Init()										{ super::Init(); _modalstate.Init();  _modlessstate.Init(); }
 
 protected:
@@ -290,7 +293,7 @@ private:
 	void M09Command()							{ CallIOControl(CControl::Coolant, CControl::CoolantOff); };
 
 	void M106Command();							// laser on command
-	void M107Command()							{ CallIOControl(CControl::Laser, 0); }	//laser off
+	void M107Command()							{ _modalstate.CutMove = false;	CallIOControl(CControl::Laser, 0); }	//laser off
 
 	/////////////////
 

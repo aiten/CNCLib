@@ -223,14 +223,14 @@ bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMi
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::OnEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
+bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo)
 {
 	switch (eventtype)
 	{
-		case CStepper::OnStartEvent:
+		case OnStartEvent:
 			_controllerfan.On();
 			break;
-		case CStepper::OnIdleEvent:
+		case OnIdleEvent:
 			if (millis()- CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME)
 			{
 				_controllerfan.Off();

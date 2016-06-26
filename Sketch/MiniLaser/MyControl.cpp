@@ -357,22 +357,32 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::OnEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
+bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo)
 {
-#ifdef CONTROLLERFAN_FAN_PIN
 	switch (eventtype)
 	{
-		case CStepper::OnStartEvent:
+		case OnStartCut:
+		{
+      bool newIsCutMove = (bool) addinfo;
+      if (CGCodeParserBase::InCutMove() != newIsCutMove)
+      {
+        CStepper::GetInstance()->IoControl(CControl::Laser, 
+                newIsCutMove ? CGCodeParserBase::GetLaserPower() : 0);
+      }
+			break;
+		}
+#ifdef CONTROLLERFAN_FAN_PIN
+		case OnStartEvent:
 			_controllerfan.On();
 			break;
-		case CStepper::OnIdleEvent:
+		case OnIdleEvent:
 			if (millis()-CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME)
 			{
 				_controllerfan.Off();
 			}
 			break;
-	}
 #endif
+	}
 
 	return super::OnEvent(eventtype, addinfo);
 }

@@ -83,7 +83,20 @@ public:
 
 	virtual void IOControl(uint8_t /* tool */, unsigned short /*level */)	{ };
 	virtual unsigned short IOControl(uint8_t /* tool */)				{ return 0; };
+	
+	enum EStepperControlEvent
+	{
+		OnStartEvent = CStepper::OnStartEvent,
+		OnIdleEvent = CStepper::OnIdleEvent,
+		OnDisableEvent = CStepper::OnDisableEvent,
+		OnWaitEvent = CStepper::OnWaitEvent,
+		OnErrorEvent = CStepper::OnErrorEvent,
+		OnWarningEvent = CStepper::OnWarningEvent,
+		OnInfoEvent = CStepper::OnInfoEvent,
+		OnIoEvent = CStepper::OnIoEvent,
 
+		OnStartCut
+	};
 	//////////////////////////////////////////
 
 	virtual void GoToReference()=0;								// Goto Refernce during Initialisation
@@ -125,7 +138,7 @@ protected:
 
 	bool ParseAndPrintResult(CParser* parser, Stream* output);
 
-	virtual bool OnEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo);
+	virtual bool OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo);
 
 	bool IsResurrectCommand(const char*buffer)					{ return buffer[0] == '!' && buffer[1] == '!' && buffer[2] == '!' && (buffer[3] == 0 || (buffer[3] == '\r' && buffer[4] == 0)); }
 
@@ -159,6 +172,11 @@ private:
 	CStreamReader		_reader;
 
 	void PrintError(Stream* output)								{ output->print(MESSAGE_ERROR); }
+
+public:
+
+	bool CallOnEvent(uint8_t eventtype, uintptr_t param);
+
 };
 
 ////////////////////////////////////////////////////////

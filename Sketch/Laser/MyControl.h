@@ -59,7 +59,7 @@ protected:
 	virtual void GoToReference() override;
 	virtual bool GoToReference(axis_t axis, steprate_t steprate, bool toMinRef) override;
 
-	virtual bool OnEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo) override;
+	virtual bool OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo) override;
 
 private:
 

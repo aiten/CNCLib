@@ -213,15 +213,15 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::OnEvent(EnumAsByte(CStepper::EStepperEvent) eventtype, uintptr_t addinfo)
+bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo)
 {
 	switch (eventtype)
 	{
-		case CStepper::OnStartEvent:
+		case OnStartEvent:
 			_laserWater.On();
 			_laserVacuum.On();
 			break;
-		case CStepper::OnIdleEvent:
+		case OnIdleEvent:
 			if (_laserOnOff.IsOn() == false)
 			{
 				if (millis() - CStepper::GetInstance()->IdleTime() > LASERWATER_ONTIME)
