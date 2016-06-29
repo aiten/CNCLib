@@ -68,10 +68,16 @@ namespace CNCLib.GCode.Load
 			AddComment("at " + DateTime.Now.ToString());
 
             AddComment("File", LoadOptions.FileName);
+
+			if (!string.IsNullOrEmpty(LoadOptions.StartupCommands))
+				AddCommands(LoadOptions.StartupCommands);
         }
 
         protected void PostLoad()
 		{
+			if (!string.IsNullOrEmpty(LoadOptions.ShutdownCommands))
+				AddCommands(LoadOptions.ShutdownCommands);
+
 			Commands.UpdateCache();
 		}
 
@@ -140,14 +146,25 @@ namespace CNCLib.GCode.Load
 
         #region Laser
 
+		protected bool HaveLaserOnOffCommand()
+		{
+			return string.IsNullOrEmpty(LoadOptions.LaserOnCommand)==false || string.IsNullOrEmpty(LoadOptions.LaserOffCommand)==false;
+		}
+
         protected void LaserOn()
 		{
 			if (_laserOn == false)
 			{
 				if (_laserWasOn || string.IsNullOrEmpty(LoadOptions.LaserFirstOnCommand))
-					AddCommands(LoadOptions.LaserOnCommand);
+				{
+					if (string.IsNullOrEmpty(LoadOptions.LaserOnCommand) == false)
+						AddCommands(LoadOptions.LaserOnCommand);
+				}
 				else
+				{
 					AddCommands(LoadOptions.LaserFirstOnCommand);
+				}
+
 				_laserWasOn = true;
 				_laserOn = true;
 			}
@@ -162,7 +179,8 @@ namespace CNCLib.GCode.Load
 		}
 		protected void ForceLaserOff()
 		{
-			AddCommands(LoadOptions.LaserOffCommand);
+			if (string.IsNullOrEmpty(LoadOptions.LaserOffCommand) == false)
+				AddCommands(LoadOptions.LaserOffCommand);
 			_laserOn = false;
 		}
 

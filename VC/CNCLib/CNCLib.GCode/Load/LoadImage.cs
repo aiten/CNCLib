@@ -118,14 +118,14 @@ namespace CNCLib.GCode.Load
 
                     if (isLaserOn != wasLaserOn && x != 0)
                     {
-                        AddCommandX(x - 1, y, ref lasty, wasLaserOn);
+                        AddCommandX(x, y, ref lasty, wasLaserOn);
                         wasLaserOn = isLaserOn;
                     }
                     else if (x == 0)
                     {
                         wasLaserOn = isLaserOn;
                         if (isLaserOn)
-                            AddCommandX(x, y, ref lasty, wasLaserOn);
+                            AddCommandX(x, y, ref lasty, false);
                     }
                     lastLaserOn = isLaserOn;
 
@@ -150,7 +150,7 @@ namespace CNCLib.GCode.Load
             if (y != lasty)
             {
                 var cy = new G00Command();
-                int x1 = x - 4; if (x1 < 0) x = 0;
+                int x1 = x - 4; 
 
                 cy.AddVariable('X', ToGCode((x1 * PixelSizeX) + ShiftX + shift));
                 cy.AddVariable('Y', ToGCode((SizeY - y - 1) * PixelSizeY + ShiftY));
@@ -158,7 +158,14 @@ namespace CNCLib.GCode.Load
                 Commands.Add(cy);
             }
 
-            var cx = new G01Command();
+			Command cx;
+			// if we have no laser on/off we switch with g01 and g00
+
+			if (HaveLaserOnOffCommand() || laserOn == true)
+				cx = new G01Command();
+			else
+				cx = new G00Command();
+
             cx.AddVariable('X', ToGCode((x * PixelSizeX) + ShiftX + shift));
             Commands.Add(cx);
         }

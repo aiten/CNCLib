@@ -41,8 +41,12 @@ namespace CNCLib.Logic.Contracts.DTO
 
         public String GCodeWriteToFileName { get; set; } = @"c:\tmp\test.gcode";
 
+		//ALL (not GCode)
+		public string StartupCommands { get; set; }
+		public string ShutdownCommands { get; set; } = @"M5";
+
 		//HPGL
-        public bool SwapXY { get; set; } = false;
+		public bool SwapXY { get; set; } = false;
         public decimal ScaleX { get; set; } = 1;
         public decimal ScaleY { get; set; } = 1;
         public decimal OfsX { get; set; } = 0;
@@ -76,8 +80,9 @@ namespace CNCLib.Logic.Contracts.DTO
 		public string LaserFirstOnCommand { get; set; } = "M106 S255";
 		public string LaserOnCommand { get; set; } = "M106";
         public string LaserOffCommand { get; set; } = "M107";
+		public string LaserLastOffCommand { get; set; } = "M107";
 
-        public decimal LaserSize { get; set; } = 0.333m;
+		public decimal LaserSize { get; set; } = 0.333m;
 
 		//IMG
         public String ImageWriteToFileName { get; set; } = @"c:\tmp\image.bmp";
