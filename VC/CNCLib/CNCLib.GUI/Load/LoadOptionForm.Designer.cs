@@ -117,6 +117,8 @@
 			this._startupCommands = new System.Windows.Forms.TextBox();
 			this.label23 = new System.Windows.Forms.Label();
 			this._shutdownCommands = new System.Windows.Forms.TextBox();
+			this.label24 = new System.Windows.Forms.Label();
+			this._laserAccDist = new System.Windows.Forms.TextBox();
 			this._autoScaleGb.SuspendLayout();
 			this._generateForEngrageGroup.SuspendLayout();
 			this._generateForLaserGroup.SuspendLayout();
@@ -968,12 +970,30 @@
 			this._shutdownCommands.Size = new System.Drawing.Size(168, 20);
 			this._shutdownCommands.TabIndex = 21;
 			// 
+			// label24
+			// 
+			this.label24.AutoSize = true;
+			this.label24.Location = new System.Drawing.Point(486, 51);
+			this.label24.Name = "label24";
+			this.label24.Size = new System.Drawing.Size(76, 13);
+			this.label24.TabIndex = 28;
+			this.label24.Text = "Laser Acc Dist";
+			// 
+			// _laserAccDist
+			// 
+			this._laserAccDist.Location = new System.Drawing.Point(569, 47);
+			this._laserAccDist.Name = "_laserAccDist";
+			this._laserAccDist.Size = new System.Drawing.Size(45, 20);
+			this._laserAccDist.TabIndex = 27;
+			// 
 			// LoadOptionForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(802, 444);
+			this.Controls.Add(this.label24);
 			this.Controls.Add(this.label22);
+			this.Controls.Add(this._laserAccDist);
 			this.Controls.Add(this.label7);
 			this.Controls.Add(this._startupCommands);
 			this.Controls.Add(this.label23);
@@ -1113,5 +1133,7 @@
 		private System.Windows.Forms.TextBox _startupCommands;
 		private System.Windows.Forms.Label label23;
 		private System.Windows.Forms.TextBox _shutdownCommands;
+		private System.Windows.Forms.Label label24;
+		private System.Windows.Forms.TextBox _laserAccDist;
 	}
 }

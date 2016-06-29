@@ -115,7 +115,6 @@ namespace CNCLib.GCode.Load
                         isLaserOn = !isLaserOn;
                     }
 
-
                     if (isLaserOn != wasLaserOn && x != 0)
                     {
                         AddCommandX(x, y, ref lasty, wasLaserOn);
@@ -150,9 +149,9 @@ namespace CNCLib.GCode.Load
             if (y != lasty)
             {
                 var cy = new G00Command();
-                int x1 = x - 4; 
+                double x1 = (x * PixelSizeX) + ShiftX + shift - (double)LoadOptions.LaserAccDist;
 
-                cy.AddVariable('X', ToGCode((x1 * PixelSizeX) + ShiftX + shift));
+				cy.AddVariable('X', ToGCode(x1));
                 cy.AddVariable('Y', ToGCode((SizeY - y - 1) * PixelSizeY + ShiftY));
                 lasty = y;
                 Commands.Add(cy);

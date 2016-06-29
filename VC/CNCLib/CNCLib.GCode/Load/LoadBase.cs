@@ -140,11 +140,13 @@ namespace CNCLib.GCode.Load
 			AddComment("LaserOffCommand", LoadOptions.LaserOffCommand);
 
             AddComment("Speed", LoadOptions.MoveSpeed);
-        }
 
-        #endregion
+			AddComment("LaserAccDist", LoadOptions.LaserAccDist);
+		}
 
-        #region Laser
+		#endregion
+
+		#region Laser
 
 		protected bool HaveLaserOnOffCommand()
 		{

@@ -83,9 +83,11 @@ namespace CNCLib.Logic.Contracts.DTO
 		public string LaserLastOffCommand { get; set; } = "M107";
 
 		public decimal LaserSize { get; set; } = 0.333m;
+		public decimal LaserAccDist { get; set; } = 1m;
+
 
 		//IMG
-        public String ImageWriteToFileName { get; set; } = @"c:\tmp\image.bmp";
+		public String ImageWriteToFileName { get; set; } = @"c:\tmp\image.bmp";
 
         public Byte GrayThreshold { get; set; } = 127;
 

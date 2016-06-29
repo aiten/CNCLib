@@ -111,8 +111,10 @@ namespace CNCLib.GUI.Load
                     DotDistY = decimal.Parse(_holeDotDistY.Text),
 
                     UseYShift = _holeYShift.Checked,
-                    RotateHeart = _holeRotateHeart.Checked
-                };
+                    RotateHeart = _holeRotateHeart.Checked,
+
+					LaserAccDist = decimal.Parse(_laserAccDist.Text)
+				};
 
 				if (_loadGCode.Checked) r.LoadType = LoadOptions.ELoadType.GCode;
 				else if (_loadHPGL.Checked) r.LoadType = LoadOptions.ELoadType.HPGL;
@@ -185,6 +187,8 @@ namespace CNCLib.GUI.Load
 				_laserFirstOn.Text = value.LaserFirstOnCommand;
 				_laserOn.Text = value.LaserOnCommand;
 				_laserOff.Text = value.LaserOffCommand;
+
+				_laserAccDist.Text = value.LaserAccDist.ToString();
 
 				_startupCommands.Text = value.StartupCommands;
 				_shutdownCommands.Text = value.ShutdownCommands;
