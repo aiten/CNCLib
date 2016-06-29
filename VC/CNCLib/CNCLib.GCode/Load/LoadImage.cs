@@ -159,14 +159,18 @@ namespace CNCLib.GCode.Load
 
 			Command cx;
 			// if we have no laser on/off we switch with g01 and g00
-
-			if (HaveLaserOnOffCommand() || laserOn == true)
+			bool use_g1 = HaveLaserOnOffCommand() || laserOn == true;
+			if (use_g1)
 				cx = new G01Command();
 			else
 				cx = new G00Command();
 
             cx.AddVariable('X', ToGCode((x * PixelSizeX) + ShiftX + shift));
-            Commands.Add(cx);
+
+			if (!use_g1)
+				cx.AddVariableNoValue('F');
+
+			Commands.Add(cx);
         }
     }
 }

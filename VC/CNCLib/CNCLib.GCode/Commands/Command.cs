@@ -76,20 +76,28 @@ namespace CNCLib.GCode.Commands
 		protected class Variable
 		{
 			public char Name;
-			public decimal Value;
+			public decimal? Value;
 			public string Parameter;
 
 			public string ToGCode() 
-			{ 
+			{
+				if (Value.HasValue)
+					return Name + Value.Value.ToString(CultureInfo.InvariantCulture);
+
 				if (string.IsNullOrEmpty(Parameter))
-					return Name + Value.ToString(CultureInfo.InvariantCulture); 
-				return Name + "#" + Parameter; 
+					return Name.ToString();
+
+				return Name + "#" + Parameter;
 			}
 		};
 
 		public void AddVariable(char name, decimal value)
 		{
 			_variables.Add(new Variable() { Name = name, Value = value });
+		}
+		public void AddVariableNoValue(char name)
+		{
+			_variables.Add(new Variable() { Name = name });
 		}
 		public void AddVariableParam(char name, string paramvalue)
 		{
@@ -107,9 +115,9 @@ namespace CNCLib.GCode.Commands
 		public bool TryGetVariable(char name, out decimal val)
 		{
 			Variable var = _variables.Find( n => n.Name == name);
-			if (var!=null)
+			if (var!=null && var.Value.HasValue)
 			{
-				val = var.Value;
+				val = var.Value.Value;
 				return true;
 			}
 			val = 0;

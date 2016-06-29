@@ -234,7 +234,6 @@ void CGCodeParserBase::MoveStart(bool cutmove)
 { 
 	CControl::GetInstance()->CallOnEvent(CControl::OnStartCut, cutmove);
 	_modalstate.CutMove = cutmove;
-//	OnMoveStart(cutmove); 
 }
 
 ////////////////////////////////////////////////////////////
@@ -579,9 +578,17 @@ bool CGCodeParserBase::LastCommand()
 
 void CGCodeParserBase::G0001Command(bool isG00)
 {
-	//uint8_t subcode = GetSubCode();
+	// we assume:
+	// g0				no cut move
+	// g1 / g2 /g3		cut move (see MoveStart()) 
+
+	// Extention to standard:
+	// g0 x10 F  => g0 with feedrate (not CutMove)
+	// g0 x10 F1 => error
+
 
 	_modalstate.LastCommand = isG00 ? &CGCodeParserBase::G00Command : &CGCodeParserBase::G01Command;
+	bool useG0Feed = isG00;
 
 	SAxisMove move(true);
 
@@ -589,8 +596,15 @@ void CGCodeParserBase::G0001Command(bool isG00)
 	{
 		axis_t axis;
 		if ((axis = CharToAxis(ch)) < NUM_AXIS) GetAxis(axis, move, _modalstate.IsAbsolut ? AbsolutWithZeroShiftPosition : RelativPosition);
-		else if (ch == 'F' && isG00) { Error(MESSAGE(MESSAGE_GCODE_FeedrateWithG0)); return; }
 		else if (ch == 'F' && !isG00) GetFeedrate(move);
+		else if (ch == 'F' && isG00) {
+										if (IsInt(_reader->GetNextCharSkipScaces())) 
+										{ 
+											Error(MESSAGE(MESSAGE_GCODE_FeedrateWithG0)); 
+											return; 
+										}
+										useG0Feed = false; 
+									  }
 		else break;
 
 		if (CheckError()) { return; }
@@ -599,7 +613,7 @@ void CGCodeParserBase::G0001Command(bool isG00)
 	if (move.axes)
 	{
 		MoveStart(!isG00);
-		CMotionControlBase::GetInstance()->MoveAbs(move.newpos, isG00 ? _modalstate.G0FeedRate : _modalstate.G1FeedRate);
+		CMotionControlBase::GetInstance()->MoveAbs(move.newpos, useG0Feed ? _modalstate.G0FeedRate : _modalstate.G1FeedRate);
 		ConstantVelocity();
 	}
 }
