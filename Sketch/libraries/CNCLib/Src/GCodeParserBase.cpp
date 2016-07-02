@@ -811,6 +811,7 @@ void CGCodeParserBase::G31Command()
 			return;
 		}
 
+//		MoveStart(true);
 		CMotionControlBase::GetInstance()->MoveAbs(move.newpos, _modalstate.G1FeedRate);
 
 		if (!CStepper::GetInstance()->MoveUntil(G31TestProbe, 0))
