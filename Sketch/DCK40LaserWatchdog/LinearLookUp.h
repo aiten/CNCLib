@@ -58,7 +58,7 @@ public:
     if (TOutput(1)/2!=0)
   		return (TOutput) pgm_read_float(&_pTable[i].output);
 		if (sizeof(TOutput) == 4)
-			return (TInput)pgm_read_dword(&_pTable[i].output);
+			return (TOutput)pgm_read_dword(&_pTable[i].output);
 		if (sizeof(TOutput) == 2)
 			return (TOutput)pgm_read_word(&_pTable[i].output);
 		return (TOutput)pgm_read_byte(&_pTable[i].output);
