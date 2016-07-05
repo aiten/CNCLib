@@ -18,10 +18,6 @@
 
 ////////////////////////////////////////////////////////////
 
-extern class WaterFlow flow;
-
-////////////////////////////////////////////////////////////
-
 #define SAMPELCOUNT 16
 #define SAMPELTIME  200
 
@@ -43,6 +39,7 @@ public:
 		_countTime[_countIdx] = millis();
 		Next();
 
+		_ISRInstance = this;
 		pinMode(pin, INPUT);
 		attachInterrupt(digitalPinToInterrupt(pin), StaticISRPinRising, RISING);
 	}
@@ -73,6 +70,8 @@ public:
 
 private:
 
+	static WaterFlow* _ISRInstance;
+
 	static unsigned int ScaleCount(unsigned int count, unsigned long totaltime, unsigned long scaletotime)
 	{
 		return (unsigned long)count * scaletotime / totaltime;
@@ -96,7 +95,7 @@ private:
 
 	static void StaticISRPinRising()
 	{
-		flow.ISRPinRising();
+		_ISRInstance->ISRPinRising();
 	}
 
 	void ISRPinRising()

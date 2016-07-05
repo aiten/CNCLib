@@ -1,3 +1,4 @@
+////////////////////////////////////////////////////////
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -14,25 +15,21 @@
   GNU General Public License for more details.
   http://www.gnu.org/licenses/
 */
+////////////////////////////////////////////////////////
 
-#include "WatchDogController.h"
+#include "stdafx.h"
+#include <math.h>
 
-////////////////////////////////////////////////////////////
+#include "..\..\..\Sketch\DCK40LaserWatchdog\DCK40LaserWatchDog.ino"
 
-WatchDogController controller;
+CSerial Serial;
 
-////////////////////////////////////////////////////////////
-
-void setup()
+int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 {
-	Serial.begin(250000);
+	setup();
 
-	controller.Setup();
-}
-
-////////////////////////////////////////////////////////////
-
-void loop()
-{
-	controller.Loop();
+	while (true)
+	{
+		loop();
+	}
 }
