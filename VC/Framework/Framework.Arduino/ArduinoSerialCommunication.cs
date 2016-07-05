@@ -497,9 +497,16 @@ namespace Framework.Arduino
 
         private void ErrorSerial()
         {
-            _serialPort.Close();
-            _serialPort.DtrEnable = false;
-            _serialPort.Open();
+            try
+            {
+                _serialPort.Close();
+                _serialPort.DtrEnable = false;
+                _serialPort.Open();
+            }
+            catch (Exception e)
+            {
+                Disconnect(false);
+            }
         }
 
         private void WaitUntilNoPendingCommands()

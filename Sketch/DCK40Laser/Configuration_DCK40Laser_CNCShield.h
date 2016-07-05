@@ -61,7 +61,7 @@
 #define LASERWATER_PIN	CNCSHIELD_A5_PIN
 #define LASERWATER_ON  LOW
 #define LASERWATER_OFF HIGH
-#define LASERWATER_ONTIME	10000 // 1200000			// switch off if idle for 1200 => 20 min Sec
+#define LASERWATER_ONTIME	120000 // 1200000			// switch off if idle for 1200 => 20 min Sec
 
 #define LASERVACUUM_PIN	CNCSHIELD_A4_PIN
 #define LASERVACUUM_ON  LOW
