@@ -52,6 +52,20 @@
 #define TOIE1 1
 #define TOV1 0
 
+#define CHANGE 1
+#define FALLING 2
+#define RISING 3
+
+#define INTERNAL 3
+#define DEFAULT 1
+#define EXTERNAL 0
+
+#define NOT_A_PIN 0
+#define NOT_A_PORT 0
+
+#define NOT_AN_INTERRUPT -1
+
+
 #define ISR(a) void a(void)
 
 #define __FlashStringHelper char
@@ -71,6 +85,11 @@ inline char pgm_read_byte(const char* p) { return *p; }
 typedef  const char* PGM_P;
 
 
+inline void attachInterrupt(uint8_t, void(*)(void), int /* mode */) {};
+inline void detachInterrupt(uint8_t) {};
+
+inline uint8_t digitalPinToInterrupt(uint8_t p) { return ((p) == 2 ? 0 : ((p) == 3 ? 1 : NOT_AN_INTERRUPT)); }
+
 typedef unsigned char	uint8_t;
 typedef signed char		int8_t;
 
@@ -79,6 +98,10 @@ inline int analogRead(short) { return 0; };
 inline void digitalWrite(short, short)	{};
 inline uint8_t digitalRead(short /*pin*/) { return LOW; };
 inline void pinMode(short, short)		{};
+
+static uint8_t A0 = 0;
+
+
 static uint8_t PORTA;
 static uint8_t PORTB;
 static uint8_t PORTC;
@@ -217,6 +240,7 @@ public:
 	void println(long l)			{ printf("%li\n", l); };
 	void println(unsigned long ul)	{ printf("%lu\n", ul); };
 	void println(const char*s)		{ printf("%s\n", s); };
+	void println(float f)			{ printf("%f\n", f); };
 
 	void begin(int )				{ };
 	virtual int available()	 		{

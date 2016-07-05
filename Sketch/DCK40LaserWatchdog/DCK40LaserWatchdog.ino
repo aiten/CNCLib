@@ -21,6 +21,15 @@
 
 ////////////////////////////////////////////////////////////
 
+#define RELAY1_PIN	11
+#define RELAY2_PIN	10
+
+#define INPUT1_PIN	9
+#define INPUT2_PIN	8
+#define INPUT3_PIN	7
+
+////////////////////////////////////////////////////////////
+
 WaterFlow flow;
 WatchDog watchDog;
 
@@ -28,7 +37,7 @@ WatchDog watchDog;
 //#define ALIVE_BLINK_RATE random(5,20)
 #define ALIVE_BLINK_RATE 250
 
-#define WATCHDOG_PIN  11
+#define WATCHDOG_PIN  RELAY1_PIN
 #define WATCHDOG_ON LOW
 
 #define WATERFLOW_PIN 2
@@ -87,6 +96,18 @@ bool  blinkWasOn=true;
 
 ////////////////////////////////////////////////////////////
 
+float ReadTemp()
+{
+	const unsigned char maxcount = WATERTEMP_OVERSAMPLING;
+	int wtemp = 0;
+	for (int i = 0; i < maxcount; i++)
+		wtemp += analogRead(WATERTEMP_PIN);
+
+  return temp10k.Lookup((float)wtemp / maxcount);
+}
+
+////////////////////////////////////////////////////////////
+
 bool IsWatchDogWaterFlowOn()
 {
 	unsigned int avgCount = flow.AvgCount(2000);
@@ -125,15 +146,7 @@ bool IsWatchDogOn()
 
 ////////////////////////////////////////////////////////////
 
-float ReadTemp()
-{
-	const unsigned char maxcount = WATERTEMP_OVERSAMPLING;
-	int wtemp = 0;
-	for (int i = 0; i < maxcount; i++)
-		wtemp += analogRead(WATERTEMP_PIN);
-
-  return temp10k.Lookup((float)wtemp / maxcount);
-}
+void TestWatchDogLoop();
 
 ////////////////////////////////////////////////////////////
 
