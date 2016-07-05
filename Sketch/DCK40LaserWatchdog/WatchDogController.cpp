@@ -62,7 +62,7 @@ const CLinearLookup<uint16_t, float>::SLookupTable linear10k[] PROGMEM =
 	{ OVERSAMPLING*1023, -273.15 }, // 0
 };
 
-CLinearLookup<uint16_t, float> temp10k(linear10k, sizeof(linear10k) / sizeof(CLinearLookup<float, float>::SLookupTable));
+CLinearLookup<uint16_t, float> temp10k(linear10k, sizeof(linear10k) / sizeof(CLinearLookup<uint16_t, float>::SLookupTable));
 
 ////////////////////////////////////////////////////////////
 

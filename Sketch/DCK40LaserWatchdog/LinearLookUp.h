@@ -36,14 +36,18 @@ public:
 	TInput GetInput(index_t i) const
 	{
 #if defined(__AVR_ARCH__)
-//	  if(TInput==float)
-//		  return (TInput) pgm_read_float(&_pTable[i].input);
+
+    if (TInput(1)/2!=0)
+      return (TInput) pgm_read_float(&_pTable[i].input);
 		if (sizeof(TInput) == 4)
 			return (TInput) pgm_read_dword(&_pTable[i].input);
 		if (sizeof(TInput) == 2)
 			return (TInput) pgm_read_word(&_pTable[i].input);
 		return (TInput)pgm_read_byte(&_pTable[i].input);
 #else
+		if (std::is_floating_point<float>())
+		{
+		}
 		return _pTable[i].input;
 #endif
 	}
@@ -51,15 +55,13 @@ public:
 	TOutput GetOutput(index_t i) const
 	{
 #if defined(__AVR_ARCH__)
-	#if TInput==float
-		return (TOutput) pgm_read_float(&_pTable[i].output);
-	#else
-			if (sizeof(TOutput) == 4)
-				return (TInput)pgm_read_dword(&_pTable[i].output);
-			if (sizeof(TOutput) == 2)
-				return (TOutput)pgm_read_word(&_pTable[i].output);
-			return (TOutput)pgm_read_byte(&_pTable[i].output);
-	#endif
+    if (TOutput(1)/2!=0)
+  		return (TOutput) pgm_read_float(&_pTable[i].output);
+		if (sizeof(TOutput) == 4)
+			return (TInput)pgm_read_dword(&_pTable[i].output);
+		if (sizeof(TOutput) == 2)
+			return (TOutput)pgm_read_word(&_pTable[i].output);
+		return (TOutput)pgm_read_byte(&_pTable[i].output);
 #else
 		return _pTable[i].output;
 #endif
