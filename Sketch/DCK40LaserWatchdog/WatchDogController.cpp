@@ -126,7 +126,7 @@ void WatchDogController::Loop()
 	if (abs(_currentTemp - _lastTemp) > 1)
 	{
 		_drawLCDRequest = true;
-		_currentTemp = _currentTemp;
+		_lastTemp = _currentTemp;
 		Serial.println(_currentTemp);
 	}
 
@@ -172,6 +172,41 @@ bool WatchDogController::IsWatchDogTempOn()
 
 ////////////////////////////////////////////////////////////
 
+bool WatchDogController::IsWatchDogSW1On()
+{
+  bool old = _sw1On;
+  _sw1On = digitalRead(INPUT1_PIN) == LOW;
+  if (_sw1On != old)
+    _drawLCDRequest = true;
+  
+  return _sw1On;
+}
+////////////////////////////////////////////////////////////
+
+bool WatchDogController::IsWatchDogSW2On()
+{
+  bool old = _sw2On;
+  _sw2On = digitalRead(INPUT2_PIN) == LOW;
+  if (_sw2On != old)
+    _drawLCDRequest = true;
+  
+  return _sw2On;
+}
+
+////////////////////////////////////////////////////////////
+
+bool WatchDogController::IsWatchDogSW3On()
+{
+  bool old = _sw3On;
+  _sw3On = digitalRead(INPUT3_PIN) == LOW;
+  if (_sw3On != old)
+    _drawLCDRequest = true;
+  
+  return _sw3On;
+}
+
+////////////////////////////////////////////////////////////
+
 bool WatchDogController::IsWatchDogOn()
 {
 	// first test all 
@@ -180,9 +215,13 @@ bool WatchDogController::IsWatchDogOn()
 	bool isWaterFlowOn = IsWatchDogWaterFlowOn();
 	bool isWaterTempOn = IsWatchDogTempOn();
 
+  bool isSW1On = IsWatchDogSW1On();
+  bool isSW2On = IsWatchDogSW2On();
+  bool isSW3On = IsWatchDogSW3On();
+
 	// now test
 
-	return isWaterFlowOn && isWaterTempOn;
+	return isWaterFlowOn && isWaterTempOn && isSW1On && isSW2On&& isSW3On;
 }
 
 ////////////////////////////////////////////////////////////
@@ -198,13 +237,23 @@ void WatchDogController::DrawLcd()
   else
 	  lcd.print(F("OFF"));
 
+  lcd.setCursor(5, 0);
+  lcd.print(F("1:"));
+  lcd.print(_sw1On ? F("1") : F("0"));
+  
+  lcd.print(F(" 2:"));
+  lcd.print(_sw2On ? F("1") : F("0"));
+
+  lcd.print(F(" 3:"));
+  lcd.print(_sw3On ? F("1") : F("0"));
+
   lcd.setCursor(0, 1);
   lcd.print(F("F:"));
   lcd.print(_lastFlow);
   
   lcd.setCursor(5,1);
   lcd.print(F("T:"));
-  lcd.print(_lastTemp);
+  lcd.print(_lastTemp,1);
   _drawLCDRequest = false;
 }
 

@@ -73,6 +73,10 @@ private:
 	bool IsWatchDogWaterFlowOn();
 	bool IsWatchDogTempOn();
 
+  bool IsWatchDogSW1On();
+  bool IsWatchDogSW2On();
+  bool IsWatchDogSW3On();
+
 	bool IsWatchDogOn();
 
 	void DrawLcd();
