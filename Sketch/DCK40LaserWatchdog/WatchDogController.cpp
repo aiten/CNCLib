@@ -24,8 +24,16 @@
 #include <stdlib.h>
 #include <arduino.h>
 
+#include <LiquidCrystal_I2C.h>
+
 #include "WatchDogController.h"
 #include "LinearLookup.h"
+
+////////////////////////////////////////////////////////////
+
+LiquidCrystal_I2C lcd(0x3f, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  
+
+////////////////////////////////////////////////////////////
 
 #define OVERSAMPLING 16
 
@@ -75,6 +83,13 @@ void WatchDogController::Setup()
 	pinMode(INPUT2_PIN, INPUT_PULLUP);
 	pinMode(INPUT3_PIN, INPUT_PULLUP);
 
+  lcd.begin(16,2);               // initialize the lcd 
+
+  lcd.home();                   // go home
+  lcd.print(F("DC-K40 Watchdog"));  
+  lcd.setCursor ( 0, 1 );        // go to the next line
+  lcd.print (F("H. Aitenbichler"));
+
 	_flow.Init(WATERFLOW_PIN);
 	_watchDog.Init(WATCHDOG_PIN, WATCHDOG_ON);
 }
@@ -83,7 +98,16 @@ void WatchDogController::Setup()
 
 void WatchDogController::Loop()
 {
-	_watchDog.OnOff(IsWatchDogOn());
+	bool ison;
+	if (_watchDog.OnOff((ison=IsWatchDogOn())))
+	{
+		_drawLCDRequest = true;
+		if (ison)
+			Serial.println(F("Watchdog ON"));
+		else
+			Serial.println(F("Watchdog OFF"));
+	}
+
 
 	if (millis()> _lastBlink)
 	{
@@ -92,7 +116,22 @@ void WatchDogController::Loop()
 		digitalWrite(ALIVE_PIN, _blinkWasOn ? HIGH : LOW);
 	}
 
-	TestWatchDogLoop();
+	if (_currentFlow != _lastFlow)
+	{
+		_drawLCDRequest = true;
+		_lastFlow = _currentFlow;
+		Serial.println(_lastFlow);
+	}
+
+	if (abs(_currentTemp - _lastTemp) > 1)
+	{
+		_drawLCDRequest = true;
+		_currentTemp = _currentTemp;
+		Serial.println(_currentTemp);
+	}
+
+	if (_drawLCDRequest)
+		DrawLcd();
 }
 
 ////////////////////////////////////////////////////////////
@@ -100,27 +139,27 @@ void WatchDogController::Loop()
 float WatchDogController::ReadTemp()
 {
 	const unsigned char maxcount = WATERTEMP_OVERSAMPLING;
-	uint16_t wtemp = 0;
+	int wtemp = 0;
 	for (int i = 0; i < maxcount; i++)
 		wtemp += analogRead(WATERTEMP_PIN);
 
 //	return temp10k.Lookup((float)wtemp / maxcount);
-	return temp10k.Lookup(wtemp);
+	return temp10k.Lookup((uint16_t) wtemp);
 }
 
 ////////////////////////////////////////////////////////////
 
 bool WatchDogController::IsWatchDogWaterFlowOn()
 {
-	unsigned int avgCount = _flow.AvgCount(2000);
-	return avgCount > WATCHDOG_MINFLOW;
+	_currentFlow = _flow.AvgCount(2000);
+	return _currentFlow > WATCHDOG_MINFLOW;
 }
 
 ////////////////////////////////////////////////////////////
 
 bool WatchDogController::IsWatchDogTempOn()
 {
-	float wtemp = ReadTemp();
+	float wtemp = _currentTemp = ReadTemp();
 	static bool tempOn = false;
 
 	if (tempOn)
@@ -148,23 +187,25 @@ bool WatchDogController::IsWatchDogOn()
 
 ////////////////////////////////////////////////////////////
 
-void WatchDogController::TestWatchDogLoop()
+void WatchDogController::DrawLcd()
 {
-	static unsigned int lastAvgCount = 0xffff;
-	unsigned int avgCount = _flow.AvgCount(2000);
+  lcd.clear();
 
-	if (avgCount != lastAvgCount)
-	{
-		lastAvgCount = avgCount;
-		Serial.println(avgCount);
-	}
+  lcd.home();
 
-	static float lastwtemp = 0;
-	float wtemp = ReadTemp();
-	if (abs(wtemp - lastwtemp) > 1)
-	{
-		lastwtemp = wtemp;
-		Serial.println(wtemp);
-	}
+  if (_watchDog.IsOn())
+	  lcd.print(F("ON"));
+  else
+	  lcd.print(F("OFF"));
+
+  lcd.setCursor(0, 1);
+  lcd.print(F("F:"));
+  lcd.print(_lastFlow);
+  
+  lcd.setCursor(5,1);
+  lcd.print(F("T:"));
+  lcd.print(_lastTemp);
+  _drawLCDRequest = false;
 }
+
 

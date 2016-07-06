@@ -39,34 +39,40 @@ public:
 		digitalWrite(_pin, _offValue);
 	}
 
-	void OnOff(bool on)
+	bool OnOff(bool on)
 	{
-		if (on)
-			On();
-		else
-			Off();
+		return on ? On() : Off();
 	}
 
-	void On()
+	bool On()
 	{
 		digitalWrite(_pin, _onValue);
 		if (_isOn == false)
 		{
 			_isOn = true;
-			Serial.println(F("Watchdog ON"));
+			return true;
 		}
+		return false;
 	}
 
 	////////////////////////////////////////////////////////////
 
-	void Off()
+	bool IsOn()
+	{
+		return _isOn;
+	}
+
+	////////////////////////////////////////////////////////////
+
+	bool Off()
 	{
 		digitalWrite(_pin, _offValue);
 		if (_isOn == true)
 		{
 			_isOn = false;
-			Serial.println(F("Watchdog OFF"));
+			return true;
 		}
+		return false;
 	}
 };
 

@@ -75,7 +75,19 @@ private:
 
 	bool IsWatchDogOn();
 
-	void TestWatchDogLoop();
+	void DrawLcd();
+
+	float _currentTemp=0.0;
+	unsigned int _currentFlow=0xffff;
+
+	float _lastTemp = 0.0;
+	unsigned int _lastFlow = 0xffff;
+
+	bool _sw1On = true;
+	bool _sw2On = true;
+	bool _sw3On = true;
+
+	bool _drawLCDRequest = false;
 };
 
 ////////////////////////////////////////////////////////////

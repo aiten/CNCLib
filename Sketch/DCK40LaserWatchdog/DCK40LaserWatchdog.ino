@@ -15,6 +15,7 @@
   http://www.gnu.org/licenses/
 */
 
+#include <LiquidCrystal_I2C.h>
 #include "WatchDogController.h"
 
 ////////////////////////////////////////////////////////////
