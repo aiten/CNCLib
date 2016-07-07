@@ -8,6 +8,7 @@
     <ClCompile Include="..\..\..\Sketch\DCK40LaserWatchdog\WaterFlow.cpp">
       <Filter>WatchDog</Filter>
     </ClCompile>
+    <ClCompile Include="DCK40LaserWatchDog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

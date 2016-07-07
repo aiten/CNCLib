@@ -31,6 +31,11 @@
 
 ////////////////////////////////////////////////////////////
 
+#define MINDRAW_INTERVALL 100
+
+////////////////////////////////////////////////////////////
+
+
 #define ALIVE_PIN 13
 #define ALIVE_BLINK_RATE 250
 
@@ -64,6 +69,8 @@ private:
 
 	unsigned long _lastBlink = 0;
 	bool  _blinkWasOn = true;
+	unsigned long _lastDraw = 0;
+	bool _drawLCDRequest = false;
 
 	WaterFlow _flow;
 	WatchDog _watchDog;
@@ -73,16 +80,16 @@ private:
 	bool IsWatchDogWaterFlowOn();
 	bool IsWatchDogTempOn();
 
-  bool IsWatchDogSW1On();
-  bool IsWatchDogSW2On();
-  bool IsWatchDogSW3On();
+	bool IsWatchDogSW1On();
+	bool IsWatchDogSW2On();
+	bool IsWatchDogSW3On();
 
 	bool IsWatchDogOn();
 
 	void DrawLcd();
 
-	float _currentTemp=0.0;
-	unsigned int _currentFlow=0xffff;
+	float _currentTemp = 0.0;
+	unsigned int _currentFlow = 0xffff;
 
 	float _lastTemp = 0.0;
 	unsigned int _lastFlow = 0xffff;
@@ -91,7 +98,6 @@ private:
 	bool _sw2On = true;
 	bool _sw3On = true;
 
-	bool _drawLCDRequest = false;
 };
 
 ////////////////////////////////////////////////////////////
