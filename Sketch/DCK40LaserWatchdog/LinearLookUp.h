@@ -37,12 +37,12 @@ public:
 	{
 #if defined(__AVR_ARCH__)
 
-    if (TInput(1)/2!=0)
-      return (TInput) pgm_read_float(&_pTable[i].input);
+		if (TInput(1) / 2 != 0)
+			return (TInput)pgm_read_float(&_pTable[i].input);
 		if (sizeof(TInput) == 4)
-			return (TInput) pgm_read_dword(&_pTable[i].input);
+			return (TInput)pgm_read_dword(&_pTable[i].input);
 		if (sizeof(TInput) == 2)
-			return (TInput) pgm_read_word(&_pTable[i].input);
+			return (TInput)pgm_read_word(&_pTable[i].input);
 		return (TInput)pgm_read_byte(&_pTable[i].input);
 #else
 		return _pTable[i].input;
@@ -52,8 +52,8 @@ public:
 	TOutput GetOutput(index_t i) const
 	{
 #if defined(__AVR_ARCH__)
-    if (TOutput(1)/2!=0)
-  		return (TOutput) pgm_read_float(&_pTable[i].output);
+		if (TOutput(1) / 2 != 0)
+			return (TOutput)pgm_read_float(&_pTable[i].output);
 		if (sizeof(TOutput) == 4)
 			return (TOutput)pgm_read_dword(&_pTable[i].output);
 		if (sizeof(TOutput) == 2)
@@ -67,8 +67,8 @@ public:
 	TOutput LinearInterpolation(TInput input, index_t i) const
 	{
 		TInput   distinput = input - GetInput(i);
-		TInput   diffinput = GetInput(i+1) - GetInput(i);
-		TOutput  diffoutput = GetOutput(i+1) - GetOutput(i);
+		TInput   diffinput = GetInput(i + 1) - GetInput(i);
+		TOutput  diffoutput = GetOutput(i + 1) - GetOutput(i);
 
 		//return pTable[i].output + ( distinput / diffinput  ) * diffoutput; => OK if TInput is float
 		return GetOutput(i) + (distinput * diffoutput) / diffinput;

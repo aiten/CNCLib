@@ -37,7 +37,8 @@ public:
 	void print(char) {};
 	void print(uint8_t) {};
 	void print(unsigned int) {};
-	void print(float) {};
+	void print(int) {};
+	void print(float, int =2 ) {};
 	void print(short) {};
 	void print(unsigned long) {};
 	void home() {};
