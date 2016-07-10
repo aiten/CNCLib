@@ -18,6 +18,8 @@
 
 ////////////////////////////////////////////////////////////
 
+#include <avr\interrupt.h>
+
 #define SAMPELCOUNT 16
 #define SAMPELTIME  200
 
@@ -46,7 +48,12 @@ public:
 
 	unsigned int AvgCount(unsigned int timediff = 1000)
 	{
-		TestSampleTime();
+		{
+			uint8_t s = SREG;
+			cli();					//  DisableInterrups();
+			TestSampleTime();
+			SREG = s;
+		}
 
 		// no disable interrupts => cache
 
