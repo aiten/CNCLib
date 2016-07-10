@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using Framework.Wpf.Helpers;
 using Framework.Arduino;
 using CNCLib.Wpf.Models;
+using System;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
@@ -57,7 +58,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 			foreach (ArduinoSerialCommunication.Command rc in Com.CommandHistoryCopy)
 			{
-				results.Add(new SentCNCCommand() { CommandDate = rc.SentTime.Value, CommandText = rc.CommandText, Result = rc.ResultText });
+                DateTime senttime = (rc.SentTime.HasValue) ? rc.SentTime.Value : DateTime.Today;
+
+                results.Add(new SentCNCCommand() { CommandDate = senttime, CommandText = rc.CommandText, Result = rc.ResultText });
 
 			}
 			CommandHistoryCollection = results;

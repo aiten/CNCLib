@@ -79,6 +79,8 @@ void WatchDogController::Setup()
 	pinMode(ALIVE_PIN, OUTPUT);
 	pinMode(RELAY2_PIN, OUTPUT);
 
+  digitalWrite(RELAY2_PIN, HIGH);
+
 	pinMode(INPUT1_PIN, INPUT_PULLUP);
 	pinMode(INPUT2_PIN, INPUT_PULLUP);
 	pinMode(INPUT3_PIN, INPUT_PULLUP);
@@ -87,13 +89,16 @@ void WatchDogController::Setup()
 
 	_flow.Init(WATERFLOW_PIN);
 	_watchDog.Init(WATCHDOG_PIN, WATCHDOG_ON);
+
+
+  _redrawtime = millis();
 }
 
 ////////////////////////////////////////////////////////////
 
 void WatchDogController::Loop()
 {
-	bool ison;
+  bool ison;
 	if (_watchDog.OnOff((ison = IsWatchDogOn())))
 	{
 		_drawLCDRequest = true;
@@ -103,6 +108,13 @@ void WatchDogController::Loop()
 			Serial.println(F("Watchdog OFF"));
 	}
 
+
+  if (millis() > _redrawtime)
+  {
+    _secActive++;
+    _drawLCDRequest = true;
+    _redrawtime += 1000;
+  }
 
 	if (millis() > _lastBlink)
 	{
@@ -256,6 +268,17 @@ void WatchDogController::DrawLcd()
 	lcd.print(F("T:"));
 	lcd.print(_lastTemp, 1);
 	_drawLCDRequest = false;
+
+  int min = _secActive / 60;
+  int sec = _secActive % 60;
+  lcd.setCursor(11, 1);
+  if (min<10)
+    lcd.print(' ');
+  lcd.print(min);
+  lcd.print(':');
+  if (sec<10)
+    lcd.print('0');
+  lcd.print(sec);
 }
 
 
