@@ -45,9 +45,6 @@ public:
 			return (TInput) pgm_read_word(&_pTable[i].input);
 		return (TInput)pgm_read_byte(&_pTable[i].input);
 #else
-		if (std::is_floating_point<float>())
-		{
-		}
 		return _pTable[i].input;
 #endif
 	}

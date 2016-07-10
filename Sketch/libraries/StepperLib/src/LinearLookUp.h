@@ -21,7 +21,7 @@
 
 //////////////////////////////////////////
 
-template<class TInput, class TOutput> 
+template<class TInput, class TOutput>
 class CLinearLookup
 {
 public:
@@ -33,84 +33,114 @@ public:
 
 	typedef uint8_t index_t;
 
-	static TOutput LinearInterpolation(SLookupTable* pTable, TInput input, index_t i)
+	TInput GetInput(index_t i) const
 	{
-		TInput   distinput   = input - pTable[i].input;
-		TInput   diffinput   = pTable[i+1].input  - pTable[i].input;
-		TOutput  diffoutput  = pTable[i+1].output - pTable[i].output;
+#if defined(__AVR_ARCH__)
 
-		//return pTable[i].output + ( distinput / diffinput  ) * diffoutput; => OK if TInput is float
-		return pTable[i].output + ( distinput * diffoutput )  / diffinput;
+    if (TInput(1)/2!=0)
+      return (TInput) pgm_read_float(&_pTable[i].input);
+		if (sizeof(TInput) == 4)
+			return (TInput) pgm_read_dword(&_pTable[i].input);
+		if (sizeof(TInput) == 2)
+			return (TInput) pgm_read_word(&_pTable[i].input);
+		return (TInput)pgm_read_byte(&_pTable[i].input);
+#else
+		return _pTable[i].input;
+#endif
 	}
 
-	static TOutput Lookup(SLookupTable* pTable, index_t tabelSize, TInput input)
+	TOutput GetOutput(index_t i) const
+	{
+#if defined(__AVR_ARCH__)
+    if (TOutput(1)/2!=0)
+  		return (TOutput) pgm_read_float(&_pTable[i].output);
+		if (sizeof(TOutput) == 4)
+			return (TOutput)pgm_read_dword(&_pTable[i].output);
+		if (sizeof(TOutput) == 2)
+			return (TOutput)pgm_read_word(&_pTable[i].output);
+		return (TOutput)pgm_read_byte(&_pTable[i].output);
+#else
+		return _pTable[i].output;
+#endif
+	}
+
+	TOutput LinearInterpolation(TInput input, index_t i) const
+	{
+		TInput   distinput = input - GetInput(i);
+		TInput   diffinput = GetInput(i+1) - GetInput(i);
+		TOutput  diffoutput = GetOutput(i+1) - GetOutput(i);
+
+		//return pTable[i].output + ( distinput / diffinput  ) * diffoutput; => OK if TInput is float
+		return GetOutput(i) + (distinput * diffoutput) / diffinput;
+	}
+
+	TOutput Lookup(TInput input) const
 	{
 		// table must be sorted!!!!
 		// binary serach
 
 		index_t c;
 		index_t left = 0;
-		index_t right = tabelSize - 1;
+		index_t right = _tabelSize - 1;
 
-		if (tabelSize==0)	return TOutput(0);
+		if (_tabelSize == 0)	return TOutput(0);
 
-		while (true)   
+		while (true)
 		{
 			c = left + ((right - left) / 2);
- 
-			if (pTable[c].input == input)	
+
+			TInput val = GetInput(c);
+
+			if (val == input)
 			{
 				// no linear approximation (we found the exact value)
-				return pTable[c].output;
+				return GetOutput(c);
 			}
 			else
 			{
-				if (pTable[c].input > input)
+				if (val > input)
 				{
 					if (c == 0)
 					{
 						// no approximation => input < first table entry 
-						return pTable[c].output;
+						return GetOutput(c);
 					}
 
 					right = c - 1;
 					if (left > right)
 					{
 						// linear approximation between c-1 and c
-						return LinearInterpolation(pTable, input, c - 1);
+						return LinearInterpolation(input, c - 1);
 					}
 				}
-				else 
+				else
 				{
-					if (c == (tabelSize - 1))
+					if (c == (_tabelSize - 1))
 					{
 						// no approximation => input > last table entry 
-						return pTable[c].output;
+						return GetOutput(c);
 					}
 
 					left = c + 1;
 					if (left > right)
 					{
 						// linear approximation between c and c+1
-						return LinearInterpolation(pTable, input, c);
+						return LinearInterpolation(input, c);
 					}
 				}
 			}
 		}
 	}
 
-	CLinearLookup(SLookupTable* pTable, index_t tabelSize) : _tabelSize(tabelSize), _pTable(pTable)
+	CLinearLookup(const SLookupTable* pTable, index_t tabelSize)
 	{
-	}
-
-	TOutput Lookup(TInput input)
-	{
-		return Lookup(_pTable,_tabelSize,input);
+		_tabelSize = tabelSize;
+		_pTable = pTable;
 	}
 
 private:
 
-	SLookupTable* _pTable;
+	const SLookupTable* _pTable;
 	uint8_t _tabelSize;
 
 };
