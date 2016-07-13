@@ -149,7 +149,7 @@ namespace CNCLib.Repository.Context
                 SizeA = 360m,
                 SizeB = 360m,
                 SizeC = 360m,
-                BaudRate = 250000,
+                BaudRate = 115200,
                 BufferSize = 63,
                 CommandToUpper = false,
                 ProbeSizeZ = 25m,
@@ -264,8 +264,13 @@ namespace CNCLib.Repository.Context
                 ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO",
                 Name = @"grave image"
             };
+            var graveIMGG00G01Item = new Item
+            {
+                ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO",
+                Name = @"grave image (G0G1)"
+            };
 
-            var items = new[] { cutItem, cutHoleItem, graveItem, graveIMGItem,  };
+            var items = new[] { cutItem, cutHoleItem, graveItem, graveIMGItem, graveIMGG00G01Item };
 
             context.Items.AddRange(items);
 
@@ -313,8 +318,22 @@ namespace CNCLib.Repository.Context
                 new ItemProperty() { Item = graveIMGItem, Name = @"ImageDPIY",           Value=@"66.7"    },
                 new ItemProperty() { Item = graveIMGItem, Name = @"AutoScaleSizeX",      Value=@"150"    },
                 new ItemProperty() { Item = graveIMGItem, Name = @"AutoScaleSizeY",      Value=@"150"    },
-				new ItemProperty() { Item = graveIMGItem, Name = @"LoadType",            Value=@"Image"    }
-			};
+				new ItemProperty() { Item = graveIMGItem, Name = @"LoadType",            Value=@"Image"    },
+
+                //grave Image (G0G1)
+                new ItemProperty() { Item = graveIMGG00G01Item, Name = @"SettingName",         Value=graveIMGG00G01Item.Name    },
+                new ItemProperty() { Item = graveIMGG00G01Item, Name = @"LaserFirstOnCommand", Value=@"M106 S255"    },
+                new ItemProperty() { Item = graveIMGG00G01Item, Name = @"LaserOnCommand",      Value=@""    },
+                new ItemProperty() { Item = graveIMGG00G01Item, Name = @"LaserOffCommand",      Value=@""    },
+                new ItemProperty() { Item = graveIMGG00G01Item, Name = @"PenMoveType",         Value=@"CommandString"    },
+                new ItemProperty() { Item = graveIMGG00G01Item, Name = @"MoveSpeed",           Value=@"450"    },
+                new ItemProperty() { Item = graveIMGG00G01Item, Name = @"AutoScale",           Value=@"true"    },
+                new ItemProperty() { Item = graveIMGG00G01Item, Name = @"ImageDPIX",           Value=@"66.7"    },
+                new ItemProperty() { Item = graveIMGG00G01Item, Name = @"ImageDPIY",           Value=@"66.7"    },
+                new ItemProperty() { Item = graveIMGG00G01Item, Name = @"AutoScaleSizeX",      Value=@"150"    },
+                new ItemProperty() { Item = graveIMGG00G01Item, Name = @"AutoScaleSizeY",      Value=@"150"    },
+                new ItemProperty() { Item = graveIMGG00G01Item, Name = @"LoadType",            Value=@"Image"    }
+            };
 
             context.ItemProperties.AddRange(itemproperties);
         }

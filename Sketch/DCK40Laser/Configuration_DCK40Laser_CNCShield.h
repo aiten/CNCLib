@@ -53,7 +53,13 @@
 #define HOLD_PIN CNCSHIELD_HOLD_PIN
 #define RESUME_PIN CNCSHIELD_RESUME_PIN
 
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+// 11 use timer 1 => 44 timer5 for pwm (https://oscarliang.com/arduino-timer-and-interrupt-tutorial/) 
+#define LASER_PWM_PIN  44
+#else
 #define LASER_PWM_PIN  11
+#endif
+
 #define LASER_ENABLE_PIN  CNCSHIELD_SPINDEL_ENABLE_PIN
 #define LASER_ENABLE_ON  LOW
 #define LASER_ENABLE_OFF HIGH
@@ -61,7 +67,8 @@
 #define LASERWATER_PIN	CNCSHIELD_A5_PIN
 #define LASERWATER_ON  LOW
 #define LASERWATER_OFF HIGH
-#define LASERWATER_ONTIME	120000 // 1200000			// switch off if idle for 1200 => 20 min Sec
+#define LASERWATER_ONTIME	120000 // 120000			// switch off if idle for 12000 => 2 min Sec
+//#define LASERWATER_ONTIME  1000 // 1200000     // switch off if idle for 1200 => 20 min Sec
 
 #define LASERVACUUM_PIN	CNCSHIELD_A4_PIN
 #define LASERVACUUM_ON  LOW

@@ -24,6 +24,7 @@
 #include <Control.h>
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
+#include <Analog8InvertIOControl.h>
 #include <ReadPinIOControl.h>
 #include <PushButtonLow.h>
 
@@ -39,7 +40,7 @@ private:
 
 public:
 
-	CMyControl()				 { }
+	CMyControl() { }
 
 	virtual void Kill() override;
 
@@ -63,8 +64,9 @@ protected:
 
 private:
 
-    CAnalog8IOControl<LASER_PWM_PIN> _laserPWM;
-    COnOffIOControl<LASER_ENABLE_PIN, LASER_ENABLE_ON, LASER_ENABLE_OFF> _laserOnOff;
+	//    CAnalog8InvertIOControl<LASER_PWM_PIN> _laserPWM;
+	CAnalog8IOControl<LASER_PWM_PIN> _laserPWM;
+	COnOffIOControl<LASER_ENABLE_PIN, LASER_ENABLE_ON, LASER_ENABLE_OFF> _laserOnOff;
 
 	CReadPinIOControl<KILL_PIN, KILL_PIN_ON> _kill;
 

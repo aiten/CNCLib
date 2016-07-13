@@ -251,13 +251,9 @@ void WatchDogController::DrawLcd()
 		lcd.print(F("OFF"));
 
 	lcd.setCursor(5, 0);
-	lcd.print(F("1:"));
+	lcd.print(F("S:"));
 	lcd.print(_sw1On ? F("1") : F("0"));
-
-	lcd.print(F(" 2:"));
 	lcd.print(_sw2On ? F("1") : F("0"));
-
-	lcd.print(F(" 3:"));
 	lcd.print(_sw3On ? F("1") : F("0"));
 
 	lcd.setCursor(0, 1);
@@ -269,9 +265,11 @@ void WatchDogController::DrawLcd()
 	lcd.print(_lastTemp, 1);
 	_drawLCDRequest = false;
 
-	int min = _secActive / 60;
-	int sec = _secActive % 60;
-	lcd.setCursor(11, 1);
+	unsigned int min  = _secActive / 60;
+	unsigned int sec  = _secActive % 60;
+	lcd.setCursor(10, 0);
+  if (min < 100)
+    lcd.print(' ');
 	if (min < 10)
 		lcd.print(' ');
 	lcd.print(min);
