@@ -33,7 +33,6 @@
 
 CMyControl Control;
 CMotionControl MotionControl;
-#define CMyParser CGCodeParser
 
 ////////////////////////////////////////////////////////////
 
@@ -79,6 +78,11 @@ void CMyControl::Init()
 	CGCodeParserBase::SetG1MaxFeedRate(STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED, CNC_ACC, CNC_DEC);
+
+#ifdef MYUSE_LCD
+  InitSD(SD_ENABLE_PIN);
+#endif
+  
 }
 
 ////////////////////////////////////////////////////////////

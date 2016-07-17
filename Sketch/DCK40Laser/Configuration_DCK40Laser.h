@@ -34,6 +34,7 @@
 ////////////////////////////////////////////////////////
 
 #define STEPPERTYPE 4		// CStepperCNCShield
+//#define STEPPERTYPE 5   // RampsFD
 
 ////////////////////////////////////////////////////////
 
@@ -41,7 +42,43 @@
 
 #include "Configuration_DCK40Laser_CNCShield.h"
 
+#elif STEPPERTYPE==5
+
+#include "Configuration_DCK40Laser_RampsFD.h"
+
 #endif
+
+////////////////////////////////////////////////////////
+
+#define TOOTH 20
+#define TOOTHSIZE 2
+#define STEPROTATION 6400.0
+
+#define X_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
+#define Y_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
+#define Z_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
+#define A_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
+
+////////////////////////////////////////////////////////
+
+#define MOVEAWAYFROMREF_STEPS 100
+
+////////////////////////////////////////////////////////
+
+#define CNC_MAXSPEED 55000        // steps/sec
+#define CNC_ACC  700
+#define CNC_DEC  800
+
+////////////////////////////////////////////////////////
+
+#define GO_DEFAULT_STEPRATE		CNC_MAXSPEED	// steps/sec
+#define G1_DEFAULT_STEPRATE		10000	// steps/sec
+#define G1_DEFAULT_MAXSTEPRATE	CNC_MAXSPEED	// steps/sec
+
+#define STEPRATERATE_REFMOVE	5000
+
+#undef SETDIRECTION
+//#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
 
 ////////////////////////////////////////////////////////
 

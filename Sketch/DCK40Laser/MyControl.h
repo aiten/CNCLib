@@ -32,11 +32,11 @@
 
 ////////////////////////////////////////////////////////
 
-class CMyControl : public CControl
+class CMyControl : public CMyControleBase
 {
 private:
 
-	typedef CControl super;
+  typedef CMyControleBase super;
 
 public:
 
@@ -69,8 +69,6 @@ private:
 	COnOffIOControl<LASER_ENABLE_PIN, LASER_ENABLE_ON, LASER_ENABLE_OFF> _laserOnOff;
 
 	CReadPinIOControl<KILL_PIN, KILL_PIN_ON> _kill;
-
-	CReadPinIOControl<LASERWATCHDOG_PIN, LASERWATCHDOG_ON> _laserWatchDog;
 
 	CPushButtonLow _hold;
 	CPushButtonLow _resume;
