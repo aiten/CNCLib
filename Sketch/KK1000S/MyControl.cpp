@@ -109,7 +109,7 @@ void CMyControl::Init()
 	_probe.Init(MASH6050S_INPUTPINMODE);
 	_kill.Init(MASH6050S_INPUTPINMODE);
 
-	_killLcd.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
+	_holdresume.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
 
 	InitSD(SD_ENABLE_PIN);
 }
@@ -174,12 +174,12 @@ void CMyControl::Poll()
 
 	if (IsHold())
 	{
-		if (_killLcd.IsOn())
+		if (_holdresume.IsOn())
 		{
 			Resume();
-      Lcd.ClearDiagnostic();
+			Lcd.ClearDiagnostic();
 		}
-	} else if (_killLcd.IsOn())
+	} else if (_holdresume.IsOn())
 	{
 		Hold();
 		Lcd.Diagnostic(F("LCD Hold"));
@@ -191,7 +191,7 @@ void CMyControl::Poll()
 void CMyControl::TimerInterrupt()
 {
 	super::TimerInterrupt();
-	_killLcd.Check();
+	_holdresume.Check();
 }
 
 ////////////////////////////////////////////////////////////

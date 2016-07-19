@@ -64,14 +64,14 @@ protected:
 
 private:
 
-	//    CAnalog8InvertIOControl<LASER_PWM_PIN> _laserPWM;
 	CAnalog8IOControl<LASER_PWM_PIN> _laserPWM;
 	COnOffIOControl<LASER_ENABLE_PIN, LASER_ENABLE_ON, LASER_ENABLE_OFF> _laserOnOff;
 
 	CReadPinIOControl<KILL_PIN, KILL_PIN_ON> _kill;
 
-	CPushButtonLow _hold;
-	CPushButtonLow _resume;
+//	CPushButtonLow _hold;
+//	CPushButtonLow _resume;
+	CPushButton _holdresume;
 
 	COnOffIOControl<LASERWATER_PIN, LASERWATER_ON, LASERWATER_OFF> _laserWater;
 	COnOffIOControl<LASERVACUUM_PIN, LASERVACUUM_ON, LASERVACUUM_OFF> _laserVacuum;

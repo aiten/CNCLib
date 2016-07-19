@@ -36,16 +36,8 @@ CMotionControl MotionControl;
 
 ////////////////////////////////////////////////////////////
 
-#ifndef MYNUM_AXIS
-#error Please define MYNUM_AXIS
-#endif
-
-////////////////////////////////////////////////////////////
-
 void CMyControl::Init()
 {
-	DisableBlinkLed();
-
 	StepperSerial.println(MESSAGE_MYCONTROL_Laser_Starting);
 
 	CMotionControlBase::GetInstance()->Init();
@@ -68,8 +60,10 @@ void CMyControl::Init()
 	
 	_kill.Init();
 
-	_hold.SetPin(HOLD_PIN);
-	_resume.SetPin(RESUME_PIN);
+	_holdresume.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
+
+	//	_hold.SetPin(HOLD_PIN);
+//	_resume.SetPin(RESUME_PIN);
 
 	CMyParser::Init();
 
@@ -139,24 +133,12 @@ void CMyControl::Kill()
 
 bool CMyControl::IsKill()
 {
-	return _kill.IsOn();
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyControl::TimerInterrupt()
-{
-	super::TimerInterrupt();
-
-	_hold.Check();
-	_resume.Check();
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyControl::Initialized()
-{
-	super::Initialized();
+	if (false && _kill.IsOn())
+	{
+		Lcd.Diagnostic(F("E-Stop"));
+		return true;
+	}
+	return false;
 }
 
 ////////////////////////////////////////////////////////////
@@ -165,6 +147,19 @@ void CMyControl::Poll()
 {
 	super::Poll();
 
+	if (IsHold())
+	{
+		if (_holdresume.IsOn())
+		{
+			Resume();
+			Lcd.ClearDiagnostic();
+		}
+	} else if (_holdresume.IsOn())
+	{
+		Hold();
+		Lcd.Diagnostic(F("LCD Hold"));
+	}
+/*
 	if (IsHold())
 	{
 		if (_resume.IsOn())
@@ -176,6 +171,26 @@ void CMyControl::Poll()
 	{
 		Hold();
 	}
+*/
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::TimerInterrupt()
+{
+	super::TimerInterrupt();
+	_holdresume.Check();
+	/*
+	_hold.Check();
+	_resume.Check();
+*/
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::Initialized()
+{
+	super::Initialized();
 }
 
 ////////////////////////////////////////////////////////////
@@ -221,6 +236,18 @@ bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t a
 {
 	switch (eventtype)
 	{
+    case OnStartCut:
+    {
+      if (CGCodeParserBase::IsSpindleOn())
+      {
+        bool newIsCutMove = addinfo!=0;
+        if (CGCodeParserBase::IsCutMove() != newIsCutMove)
+        {
+          CStepper::GetInstance()->IoControl(CControl::Spindel,newIsCutMove ? CGCodeParserBase::GetSpindleSpeed() : 0);
+        }
+      }
+      break;
+    }
 		case OnStartEvent:
 			_laserWater.On();
 			_laserVacuum.On();

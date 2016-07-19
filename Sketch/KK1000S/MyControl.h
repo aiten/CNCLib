@@ -71,7 +71,7 @@ private:
 	CReadPinIOControl<PROBE1_PIN, PROBE_ON> _probe;
 //	CReadPinIOControl<MASH6050S_KILL_PIN,MASH6050S_KILL_PIN_ON> _kill;
 	CReadPinIOTriggerControl<MASH6050S_KILL_PIN,MASH6050S_KILL_PIN_ON,200> _kill;
-	CPushButton _killLcd;
+	CPushButton _holdresume;
 
 	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
 };

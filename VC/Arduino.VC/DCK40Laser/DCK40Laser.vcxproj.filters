@@ -25,6 +25,15 @@
     <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_DCK40Laser_CNCShield.h">
       <Filter>DCK40Laser</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_DCK40Laser_RampsFD.h">
+      <Filter>DCK40Laser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\DCK40Laser\MyLCD.h">
+      <Filter>DCK40Laser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\DCK40Laser\MyMenu.h">
+      <Filter>DCK40Laser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -34,6 +43,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\DCK40Laser\MyControl.cpp">
+      <Filter>DCK40Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\DCK40Laser\MyLCD.cpp">
+      <Filter>DCK40Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\DCK40Laser\MyMenu.cpp">
       <Filter>DCK40Laser</Filter>
     </ClCompile>
   </ItemGroup>

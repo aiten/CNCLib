@@ -18,6 +18,9 @@
 
 #include <StepperLib.h>
 #include <CNCLib.h>
+#include <CNCLibEx.h>
+#include <U8glib.h>
+
 
 #include "MyControl.h"
 #include "GCodeParser.h"
