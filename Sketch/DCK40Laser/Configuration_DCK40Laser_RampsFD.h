@@ -49,6 +49,9 @@
 
 // change some pin definition here:
 
+#undef RAMPSFD_REF_ON 
+#undef RAMPSFD_REF_OFF
+
 #define RAMPSFD_REF_ON  1
 #define RAMPSFD_REF_OFF 0
 
@@ -75,7 +78,7 @@
 #define LASERVACUUM_PIN	RAMPSFD_SERVO4_PIN
 #define LASERVACUUM_ON  LOW
 #define LASERVACUUM_OFF HIGH
-#define LASERVACUUM__ONTIME	9000			// switch off if idle for ?? Sec
+#define LASERVACUUM__ONTIME	60000			// switch off if idle for ?? Sec
 
 ////////////////////////////////////////////////////////
 

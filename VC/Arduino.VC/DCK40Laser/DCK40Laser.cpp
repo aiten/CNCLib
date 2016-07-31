@@ -25,6 +25,7 @@
 #include "..\..\..\sketch\DCK40Laser\MyControl.h"
 
 CSerial Serial;
+SDClass SD;
 
 static void setup();
 static void loop();

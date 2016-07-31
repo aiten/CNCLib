@@ -116,7 +116,7 @@ namespace CNCLib.Repository.Context
             var minilaser = new Machine
             {
                 Name = "MinLaser",
-                ComPort = "com3",
+                ComPort = "com4",
                 Axis = 2,
                 SizeX = 36m,
                 SizeY = 36m,

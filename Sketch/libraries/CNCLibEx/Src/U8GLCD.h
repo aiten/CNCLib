@@ -32,6 +32,8 @@
 #define LCD_GROW 64
 #define LCD_GCOL 128
 
+#define SCREENSAVERTIMEOUT 120000
+
 ////////////////////////////////////////////////////////
 
 class CU8GLcd : public CLcd
@@ -133,6 +135,7 @@ protected:
 	void ButtonPressShowMenu();
 	void ButtonPressSpeedOverride();
 
+	bool DrawLoopScreenSaver(EnumAsByte(EDrawLoopType) type, uintptr_t data);
 	bool DrawLoopSplash(EnumAsByte(EDrawLoopType) type,uintptr_t data);
 	bool DrawLoopDebug(EnumAsByte(EDrawLoopType) type,uintptr_t data);	
 	bool DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type,uintptr_t data);
@@ -154,6 +157,12 @@ private:
 
 	uint8_t						_currentpage;
 
+	int8_t						_screensaveX = 0;
+	int8_t						_screensaveY = 0;
+	int8_t						_screensaveXDiff = 1;
+	int8_t						_screensaveYDiff = 1;
+	unsigned long				_screensaveTime = 0;
+
 	CRingBufferQueue<char, 128> _commandHis;
 
 protected:
@@ -161,12 +170,13 @@ protected:
 	CRotaryButton<rotarypos_t, ROTARY_ACCURACY> _rotarybutton;
 	CPushButton									_rotarypushbutton;
 
+	unsigned long				_rotaryEventTime = 0;
+
 	uint8_t						_lcd_numaxis = NUM_AXIS;
 	uint8_t						_charHeight = 10;
 	uint8_t						_charWidth = 6;
 
 	const u8g_fntpgm_uint8_t*	_font = u8g_font_6x10;
-
 
 	uint8_t ToRow(uint8_t row) { return  (row + 1)*(_charHeight); }
 	uint8_t ToCol(uint8_t col) { return (col)*(_charWidth); }

@@ -57,7 +57,7 @@ void CMyControl::Init()
 
 	_laserWater.Init();
 	_laserVacuum.Init();
-	
+
 	_kill.Init();
 
 	_holdresume.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
@@ -74,9 +74,9 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED, CNC_ACC, CNC_DEC);
 
 #ifdef MYUSE_LCD
-  InitSD(SD_ENABLE_PIN);
+	InitSD(SD_ENABLE_PIN);
 #endif
-  
+
 }
 
 ////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 			return;
 
 		case Vacuum:  _laserVacuum.Set(level > 0); return;
-		// case Coolant: _laserWater.Set(level > 0); return; do not allow water turn off
+			// case Coolant: _laserWater.Set(level > 0); return; do not allow water turn off
 
 	}
 
@@ -114,7 +114,7 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 	{
 		case Spindel: { return _laserPWM.IsOn(); }
 		case Coolant: { return _laserWater.IsOn(); }
-		case Vacuum:  { return _laserVacuum.IsOn(); }
+		case Vacuum: { return _laserVacuum.IsOn(); }
 	}
 
 	return super::IOControl(tool);
@@ -154,24 +154,25 @@ void CMyControl::Poll()
 			Resume();
 			Lcd.ClearDiagnostic();
 		}
-	} else if (_holdresume.IsOn())
+	}
+	else if (_holdresume.IsOn())
 	{
 		Hold();
 		Lcd.Diagnostic(F("LCD Hold"));
 	}
-/*
-	if (IsHold())
-	{
-		if (_resume.IsOn())
+	/*
+		if (IsHold())
 		{
-			Resume();
+			if (_resume.IsOn())
+			{
+				Resume();
+			}
 		}
-	}
-	else if (_hold.IsOn())
-	{
-		Hold();
-	}
-*/
+		else if (_hold.IsOn())
+		{
+			Hold();
+		}
+	*/
 }
 
 ////////////////////////////////////////////////////////////
@@ -236,18 +237,18 @@ bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t a
 {
 	switch (eventtype)
 	{
-    case OnStartCut:
-    {
-      if (CGCodeParserBase::IsSpindleOn())
-      {
-        bool newIsCutMove = addinfo!=0;
-        if (CGCodeParserBase::IsCutMove() != newIsCutMove)
-        {
-          CStepper::GetInstance()->IoControl(CControl::Spindel,newIsCutMove ? CGCodeParserBase::GetSpindleSpeed() : 0);
-        }
-      }
-      break;
-    }
+		case OnStartCut:
+		{
+			if (CGCodeParserBase::IsSpindleOn())
+			{
+				bool newIsCutMove = addinfo != 0;
+				if (CGCodeParserBase::IsCutMove() != newIsCutMove)
+				{
+					CStepper::GetInstance()->IoControl(CControl::Spindel, newIsCutMove ? CGCodeParserBase::GetSpindleSpeed() : 0);
+				}
+			}
+			break;
+		}
 		case OnStartEvent:
 			_laserWater.On();
 			_laserVacuum.On();

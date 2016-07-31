@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plotter", "Plotter\Plotter.vcxproj", "{AB8D0B94-F0C2-4593-8509-E31E8132D1E1}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -61,6 +61,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MiniLaser", "MiniLaser\Mini
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DCK40LaserWatchDog", "DCK40LaserWatchDog\DCK40LaserWatchDog.vcxproj", "{DE09D7D5-1431-4CF4-A638-C46D81F4AD36}"
+	ProjectSection(ProjectDependencies) = postProject
+		{65F3EA50-71B8-4573-8D35-786D97FDFA91} = {65F3EA50-71B8-4573-8D35-786D97FDFA91}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

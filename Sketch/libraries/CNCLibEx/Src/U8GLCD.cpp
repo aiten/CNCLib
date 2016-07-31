@@ -137,9 +137,10 @@ void CU8GLcd::TimerInterrupt()
 
 	switch (_rotarybutton.Tick())
 	{
-		case CRotaryButton<rotarypos_t, ROTARY_ACCURACY>::Overrun:
+		case CRotaryButton<rotarypos_t, ROTARY_ACCURACY>::Nothing:
 			break;
-		case CRotaryButton<rotarypos_t, ROTARY_ACCURACY>::Underflow:
+		default:
+			_rotaryEventTime = millis();
 			break;
 	}
 
@@ -156,6 +157,7 @@ void CU8GLcd::Poll()
 
 	if (_rotarypushbutton.IsOn())
 	{
+		_rotaryEventTime = millis();
 		ButtonPress();
 	}
 }
@@ -214,23 +216,30 @@ unsigned long CU8GLcd::DrawLoop()
 {
 	unsigned long timeout = 1000;
 
-	if (_curretDraw)
+	DrawFunction curretDraw = _curretDraw;
+
+	if (!IsSplash() && !CStepper::GetInstance()->IsBusy() && 
+		(millis() - _rotaryEventTime) > SCREENSAVERTIMEOUT && 
+		(millis() - CStepper::GetInstance()->IdleTime()) > SCREENSAVERTIMEOUT)
+		curretDraw = &CU8GLcd::DrawLoopScreenSaver;
+
+	if (curretDraw)
 	{
-		if ((this->*_curretDraw)(DrawLoopSetup,0))
+		if ((this->*curretDraw)(DrawLoopSetup,0))
 		{
 			GetU8G().firstPage();
 			do
 			{
-				if (!(this->*_curretDraw)(DrawLoopHeader,0))
+				if (!(this->*curretDraw)(DrawLoopHeader,0))
 					break;
 
-				if (!(this->*_curretDraw)(DrawLoopDraw,0))
+				if (!(this->*curretDraw)(DrawLoopDraw,0))
 					break;
 			} 
 			while (GetU8G().nextPage());
 		}
 		
-		(this->*_curretDraw)(DrawLoopQueryTimerout,(uintptr_t) &timeout);
+		(this->*curretDraw)(DrawLoopQueryTimerout,(uintptr_t) &timeout);
 	}
 	return timeout;
 }
@@ -319,6 +328,39 @@ bool CU8GLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type, uintptr_t /* data 
 		}
 */
 	}
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+
+bool CU8GLcd::DrawLoopScreenSaver(EnumAsByte(EDrawLoopType) type, uintptr_t data)
+{
+	if (type == DrawLoopHeader)	return true;
+	if (type == DrawLoopQueryTimerout) { *((unsigned long*)data) = 50; return true; }
+	if (type != DrawLoopDraw)	return DrawLoopDefault(type, data);
+
+	GetU8G().drawStr(ToCol(_screensaveX), ToRow(_screensaveY), F("*"));
+
+	const int8_t textsize = 0;
+
+	if (_screensaveTime > millis()) return true;
+	_screensaveTime = millis() + 500;
+
+	_screensaveX += _screensaveXDiff;
+	if (_screensaveX >= (TotalCols() - textsize) || _screensaveX < 0)
+	{
+		_screensaveX -= _screensaveXDiff*2;
+		_screensaveXDiff = -_screensaveXDiff;
+	}
+
+	_screensaveY += _screensaveYDiff;
+	if (_screensaveY >= TotalRows() || _screensaveY < 0)
+	{
+		_screensaveY -= _screensaveYDiff * 2;
+		_screensaveYDiff = -_screensaveYDiff;
+	}
+
+
 	return true;
 }
 
