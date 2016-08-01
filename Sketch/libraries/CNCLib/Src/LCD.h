@@ -72,7 +72,7 @@ protected:
 
 	virtual unsigned long Splash() = 0;							// return time to display
 
-	bool IsSplash()												{ return _splash; };
+	bool IsSplash() const 										{ return _splash; };
 
 public:
 

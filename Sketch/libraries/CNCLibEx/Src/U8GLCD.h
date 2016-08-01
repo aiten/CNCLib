@@ -165,6 +165,8 @@ private:
 
 	CRingBufferQueue<char, 128> _commandHis;
 
+	bool IsScreenSaver() const;
+
 protected:
 
 	CRotaryButton<rotarypos_t, ROTARY_ACCURACY> _rotarybutton;

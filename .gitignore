@@ -30,3 +30,4 @@ PublishProfiles/
 /Doc
 /VC/Arduino.VC/iRobot/Axis.xlsx
 /VC/Arduino.VC/DCK40Laser/DCK40Laser.csv
+/VC/CNCLib/*.db

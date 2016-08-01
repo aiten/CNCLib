@@ -91,7 +91,7 @@ namespace CNCLib.Repository.Context
             var laser = new Machine
             {
                 Name = "Laser",
-                ComPort = "com13",
+                ComPort = "com6",
                 Axis = 2,
                 SizeX = 400m,
                 SizeY = 380m,
@@ -141,7 +141,7 @@ namespace CNCLib.Repository.Context
             var dck40laser = new Machine
             {
                 Name = "DC-K40-Laser",
-                ComPort = "com12",
+                ComPort = "com3",
                 Axis = 2,
                 SizeX = 320m,
                 SizeY = 220m,

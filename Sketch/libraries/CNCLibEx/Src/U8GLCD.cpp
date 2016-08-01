@@ -157,8 +157,10 @@ void CU8GLcd::Poll()
 
 	if (_rotarypushbutton.IsOn())
 	{
+		bool screensaver = IsScreenSaver();
 		_rotaryEventTime = millis();
-		ButtonPress();
+		if (!screensaver)
+			ButtonPress();
 	}
 }
 
@@ -212,15 +214,22 @@ unsigned long CU8GLcd::Draw(EDrawType draw)
 
 ////////////////////////////////////////////////////////////
 
+bool CU8GLcd::IsScreenSaver() const
+{
+	return (!IsSplash() && !CStepper::GetInstance()->IsBusy() &&
+		(millis() - _rotaryEventTime) > SCREENSAVERTIMEOUT &&
+		(millis() - CStepper::GetInstance()->IdleTime()) > SCREENSAVERTIMEOUT);
+}
+
+////////////////////////////////////////////////////////////
+
 unsigned long CU8GLcd::DrawLoop()
 {
 	unsigned long timeout = 1000;
 
 	DrawFunction curretDraw = _curretDraw;
 
-	if (!IsSplash() && !CStepper::GetInstance()->IsBusy() && 
-		(millis() - _rotaryEventTime) > SCREENSAVERTIMEOUT && 
-		(millis() - CStepper::GetInstance()->IdleTime()) > SCREENSAVERTIMEOUT)
+	if (IsScreenSaver())
 		curretDraw = &CU8GLcd::DrawLoopScreenSaver;
 
 	if (curretDraw)

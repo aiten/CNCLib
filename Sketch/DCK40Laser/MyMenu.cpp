@@ -159,7 +159,7 @@ const CMyMenu::SMenuItemDef CMyMenu::_SDMenuItems[] PROGMEM =
 const CMyMenu::SMenuItemDef CMyMenu::_extraMenuItems[] PROGMEM =
 {
 	{ _mG92Clear,&CMenuBase::MenuButtonPressSetCommand, (menuparam_t) _g92 },
-	{ _mHomeZ,   &CMenuBase::MenuButtonPressHome, (menuparam_t)Z_AXIS },
+	//{ _mHomeZ,   &CMenuBase::MenuButtonPressHome, (menuparam_t)Z_AXIS },
 	//{ _mProbeZ,	 &CMenuBase::MenuButtonPressProbe, (menuparam_t)Z_AXIS },
 	//{ _mSpindle, &CMenuBase::MenuButtonPressSpindle },
 	//{ _mCoolant, &CMenuBase::MenuButtonPressCoolant },
