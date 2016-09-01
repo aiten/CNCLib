@@ -75,7 +75,7 @@ namespace CNCLib.GCode.Load
 
         protected void PostLoad()
 		{
-			if (!string.IsNullOrEmpty(LoadOptions.ShutdownCommands))
+			if (LoadOptions != null && !string.IsNullOrEmpty(LoadOptions.ShutdownCommands))
 				AddCommands(LoadOptions.ShutdownCommands);
 
 			Commands.UpdateCache();
