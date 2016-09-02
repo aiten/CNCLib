@@ -22,7 +22,7 @@ namespace CNCLib.Logic
 {
 	public sealed class LogicAutoMapperProfile : Profile
 	{
-		protected override void Configure()
+		public LogicAutoMapperProfile()
 		{
 			CreateMap<CNCLib.Repository.Contracts.Entities.Machine, CNCLib.Logic.Contracts.DTO.Machine>().ReverseMap();
 			CreateMap<CNCLib.Repository.Contracts.Entities.MachineInitCommand, CNCLib.Logic.Contracts.DTO.MachineInitCommand>().ReverseMap();

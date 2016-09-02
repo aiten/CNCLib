@@ -23,7 +23,7 @@ namespace CNCLib.Logic
 {
 	public sealed class WpfAutoMapperProfile : Profile
 	{
-		protected override void Configure()
+		public WpfAutoMapperProfile()
 		{
 			CreateMap<CNCLib.Wpf.Models.Machine, CNCLib.Logic.Contracts.DTO.Machine>().ReverseMap();
 			CreateMap<CNCLib.Wpf.Models.MachineInitCommand, CNCLib.Logic.Contracts.DTO.MachineInitCommand>().ReverseMap();
