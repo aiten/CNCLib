@@ -24,6 +24,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.WebAPI.Models;
+using System.Reflection;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
@@ -43,7 +44,10 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
 				LoadOptions info = new LoadOptions() { LoadType = LoadOptions.ELoadType.HPGL };
 
-				info.FileName = @"c:\data\heikes-mietzi.hpgl";
+				Assembly ass = Assembly.GetExecutingAssembly();
+				string asspath = Path.GetDirectoryName(ass.Location);
+
+				info.FileName = asspath + @"\TestData\heikes-mietzi.hpgl";
 				info.FileContent = File.ReadAllBytes(info.FileName);
 
 				HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
@@ -76,7 +80,10 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 					ImageDPIY = 66.7m
 				};
 
-				info.FileName = @"c:\data\Wendelin_Ait110.png";
+				Assembly ass = Assembly.GetExecutingAssembly();
+				string asspath = Path.GetDirectoryName(ass.Location);
+
+				info.FileName = asspath + @"\TestData\Wendelin_Ait110.png";
 				info.FileContent = File.ReadAllBytes(info.FileName);
 
 				HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
@@ -109,11 +116,13 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 									ImageDPIY = 66.7m
 								};
 				*/
+				Assembly ass = Assembly.GetExecutingAssembly();
+				string asspath = Path.GetDirectoryName(ass.Location);
 
 				var input = new CreateGCode()
 				{
 					LoadOptionsId = 1,
-					FileName = @"c:\data\Wendelin_Ait110.png"
+					FileName = asspath + @"\TestData\Wendelin_Ait110.png"
 				};
 
 				input.FileContent = File.ReadAllBytes(input.FileName);

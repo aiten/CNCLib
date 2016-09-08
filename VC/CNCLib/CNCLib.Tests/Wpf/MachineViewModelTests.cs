@@ -24,6 +24,9 @@ using NSubstitute;
 using CNCLib.Wpf.ViewModels;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
+using CNCLib.ServiceProxy;
+using AutoMapper;
+using CNCLib.Wpf;
 
 namespace CNCLib.Tests.Wpf
 {
@@ -57,13 +60,13 @@ namespace CNCLib.Tests.Wpf
 
             Dependency.Container.RegisterInstance(rep);
 
-            return rep;
+			return rep;
 		}
 
 		[TestMethod]
 		public void GetMachine()
 		{
-			var rep = CreateMock<IMachineController>();
+			var rep = CreateMock<IMachineService>();
 
 			Machine machine = CreateMachine(1);
 			rep.Get(1).Returns(machine);
@@ -104,7 +107,7 @@ namespace CNCLib.Tests.Wpf
 		[TestMethod]
 		public void GetMachineAddNew()
 		{
-			var rep = CreateMock<IMachineController>();
+			var rep = CreateMock<IMachineService>();
 
 			Machine machine1 = CreateMachine(1);
 			rep.Get(1).Returns(machine1);

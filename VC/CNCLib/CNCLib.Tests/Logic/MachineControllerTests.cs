@@ -24,6 +24,8 @@ using CNCLib.Logic;
 using System.Linq;
 using NSubstitute;
 using Framework.Tools.Dependency;
+using Framework.Tools.Pattern;
+using Framework.EF;
 
 namespace CNCLib.Tests.Logic
 {
@@ -57,7 +59,7 @@ namespace CNCLib.Tests.Logic
 
             Dependency.Container.RegisterInstance(rep);
 
-            return rep;
+			return rep;
 		}
 
 		[TestMethod]

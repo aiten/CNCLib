@@ -147,6 +147,10 @@
       <Project>{d689cd99-a022-4f38-8ae1-a269c82a729c}</Project>
       <Name>CNCLib.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
+      <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
+      <Name>CNCLib.ServiceProxy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Wpf\CNCLib.Wpf.csproj">
       <Project>{60555245-d32e-4a94-ab0e-cb2a6693a9ba}</Project>
       <Name>CNCLib.Wpf</Name>

@@ -19,7 +19,7 @@
 using System;
 using AutoMapper;
 
-namespace CNCLib.Logic
+namespace CNCLib.Wpf
 {
 	public sealed class WpfAutoMapperProfile : Profile
 	{

@@ -34,7 +34,19 @@ namespace CNCLib.Wpf.Models
 		public static Machine Convert(this Logic.Contracts.DTO.Machine from)
 		{
 			var map = Dependency.Resolve<IMapper>();
-			return map.Map<Machine>(from);
+			var to = map.Map<Machine>(from);
+
+			// automapper do not map readonly observable collections
+			foreach (var m in from.MachineCommands)
+			{
+				to.MachineCommands.Add(map.Map<MachineCommand>(m));
+			}
+			foreach (var mi in from.MachineInitCommands)
+			{
+				to.MachineInitCommands.Add(map.Map<MachineInitCommand>(mi));
+			}
+
+			return to;
 		}
 	}
 }

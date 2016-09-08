@@ -22,6 +22,7 @@ using Framework.Test;
 using AutoMapper;
 using CNCLib.Logic;
 using Framework.Tools.Dependency;
+using CNCLib.Wpf;
 
 namespace CNCLib.Tests
 {
