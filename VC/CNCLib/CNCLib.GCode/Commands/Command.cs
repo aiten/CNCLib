@@ -231,7 +231,7 @@ namespace CNCLib.GCode.Commands
 			}
 		}
 
-		protected decimal ReadVariable(CommandStream stream, char param)
+		protected decimal? ReadVariable(CommandStream stream, char param, bool allow)
 		{
 			stream.Next();
 			stream.SkipSpaces();
@@ -242,9 +242,20 @@ namespace CNCLib.GCode.Commands
 				AddVariableParam(param,paramNr.ToString());
 				return 0;
 			}
-			decimal val = stream.GetDecimal() ;
-			AddVariable(param,val);
-			return val;
+
+			stream.SkipSpaces();
+
+			if (stream.IsInt())
+			{
+				decimal val = stream.GetDecimal();
+				AddVariable(param, val);
+				return val;
+			}
+			else
+			{
+				AddVariableNoValue(param);
+				return null;
+			}
 		}
 
 		public virtual bool ReadFrom(CommandStream stream)
@@ -263,14 +274,14 @@ namespace CNCLib.GCode.Commands
 				{
 					switch (stream.SkipSpacesToUpper())
 					{
-						case 'X': ep.X = ReadVariable(stream, stream.NextCharToUpper); break;
-						case 'Y': ep.Y = ReadVariable(stream, stream.NextCharToUpper); break;
-						case 'Z': ep.Z = ReadVariable(stream, stream.NextCharToUpper); break;
-						case 'F':
+						case 'X': ep.X = ReadVariable(stream, stream.NextCharToUpper, false); break;
+						case 'Y': ep.Y = ReadVariable(stream, stream.NextCharToUpper, false); break;
+						case 'Z': ep.Z = ReadVariable(stream, stream.NextCharToUpper, false); break;
+						case 'F': ReadVariable(stream, stream.NextCharToUpper, true); break;
 						case 'R':
 						case 'I':
 						case 'J':
-						case 'K': ReadVariable(stream,stream.NextCharToUpper); break;
+						case 'K': ReadVariable(stream,stream.NextCharToUpper, false); break;
 						default:
 							{
 								ReadFromToEnd(stream);
