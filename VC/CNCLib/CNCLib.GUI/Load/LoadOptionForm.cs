@@ -23,6 +23,8 @@ using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace CNCLib.GUI.Load
 {
@@ -40,7 +42,6 @@ namespace CNCLib.GUI.Load
         public LoadOptionForm()
         {
             InitializeComponent();
-
             ReadSettings();
         }
 
@@ -292,20 +293,27 @@ namespace CNCLib.GUI.Load
 				LoadInfo = item.Item;
             }
         }
-        private void _saveSettings_Click(object sender, EventArgs e)
-        {
-            LoadOptions obj;
-            try
-            {
-                obj = this.LoadInfo;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Get values failed: " + ex.Message);
-                return;
-            }
 
-            if (!string.IsNullOrEmpty(obj.SettingName))
+		private LoadOptions GetValues()
+		{
+			LoadOptions obj;
+			try
+			{
+				obj = this.LoadInfo;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Get values failed: " + ex.Message);
+				return null;
+			}
+			return obj;
+		}
+
+		private void _saveSettings_Click(object sender, EventArgs e)
+        {
+            LoadOptions obj = GetValues();
+
+            if (obj != null && !string.IsNullOrEmpty(obj.SettingName))
             {
                 try
                 {
@@ -343,18 +351,9 @@ namespace CNCLib.GUI.Load
 
         private void _deleteSettings_Click(object sender, EventArgs e)
         {
-            LoadOptions obj;
-            try
-            {
-                obj = this.LoadInfo;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Get values failed: " + ex.Message);
-                return;
-            }
+			LoadOptions obj = GetValues();
 
-            if (!string.IsNullOrEmpty(obj.SettingName))
+			if (obj != null && !string.IsNullOrEmpty(obj.SettingName))
             {
                 try
                 {
@@ -376,7 +375,49 @@ namespace CNCLib.GUI.Load
             }
         }
 
-        private void _holeDotSizeYEq_Click(object sender, EventArgs e)
+		private void _exportSettings_Click(object sender, EventArgs e)
+		{
+			LoadOptions obj = GetValues();
+
+			if (obj != null && !string.IsNullOrEmpty(obj.SettingName))
+			{
+				using (SaveFileDialog form = new SaveFileDialog())
+				{
+					form.FileName = obj.SettingName + @".xml";
+					if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+					{
+						using (StreamWriter sw = new StreamWriter(form.FileName))
+						{
+							XmlSerializer serializer = new XmlSerializer(typeof(LoadOptions));
+							serializer.Serialize(sw, obj);
+							sw.Close();
+						}
+					}
+				}
+			}
+		}
+
+		private void _importSettings_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog form = new OpenFileDialog())
+			{
+				form.FileName = @"*.xml";
+				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				{
+					using (StreamReader sr = new StreamReader(form.FileName))
+					{
+						XmlSerializer serializer = new XmlSerializer(typeof(LoadOptions));
+						LoadOptions obj = (LoadOptions) serializer.Deserialize(sr);
+						sr.Close();
+
+						_settingName.SelectedItem = null;
+						this.LoadInfo = obj;
+					}
+				}
+			}
+		}
+
+		private void _holeDotSizeYEq_Click(object sender, EventArgs e)
         {
             _holeDotSizeY.Text = _holeDotSizeX.Text;
         }
