@@ -39,7 +39,7 @@ namespace CNCLib.Tests.Logic
 
 
 		[TestMethod]
-		public void GetMachinesNone()
+		public void GetItemNone()
 		{
 			var rep = CreateMock<IItemRepository>();
 
@@ -52,7 +52,73 @@ namespace CNCLib.Tests.Logic
 			Assert.AreEqual(true, all.Length == 0);
 		}
 
-        [TestMethod]
+		[TestMethod]
+		public void GetItemAll()
+		{
+			var rep = CreateMock<IItemRepository>();
+
+			var itemEntity = new Item[2]
+			{
+				new Item() { ItemID=1,Name="Test1" },
+				new Item() { ItemID=2,Name="Test2" },
+			};
+			rep.Get().Returns(itemEntity);
+
+			ItemController ctrl = new ItemController();
+
+			var all = ctrl.GetAll().ToArray();
+			Assert.AreEqual(2, all.Count());
+			Assert.AreEqual(1, all.FirstOrDefault().ItemID);
+			Assert.AreEqual("Test1", all.FirstOrDefault().Name);
+		}
+
+		[TestMethod]
+		public void GetAllType()
+		{
+			var rep = CreateMock<IItemRepository>();
+
+			var itemEntity = new Item[2]
+			{
+				new Item() { ItemID=1,Name="Test1" },
+				new Item() { ItemID=2,Name="Test2" },
+			};
+			rep.Get("System.String,mscorlib").Returns(itemEntity);
+
+			ItemController ctrl = new ItemController();
+
+			var all = ctrl.GetAll(typeof(string));
+
+			Assert.AreEqual(2, all.Count());
+			Assert.AreEqual(1, all.FirstOrDefault().ItemID);
+			Assert.AreEqual("Test1", all.FirstOrDefault().Name);
+		}
+
+		[TestMethod]
+		public void GetItem()
+		{
+			var rep = CreateMock<IItemRepository>();
+			rep.Get(1).Returns(new Item() { ItemID = 1, Name = "Test1" });
+
+			ItemController ctrl = new ItemController();
+
+			var all = ctrl.Get(1);
+
+			Assert.AreEqual(1, all.ItemID);
+			Assert.AreEqual("Test1", all.Name);
+		}
+
+		[TestMethod]
+		public void GetItemNull()
+		{
+			var rep = CreateMock<IItemRepository>();
+
+			ItemController ctrl = new ItemController();
+
+			var all = ctrl.Get(10);
+
+			Assert.IsNull(all);
+		}
+		[TestMethod]
         public void CreateObject()
         {
             var rep = CreateMock<IItemRepository>();
@@ -164,5 +230,24 @@ namespace CNCLib.Tests.Logic
             rep.Received().Get(1);
             rep.DidNotReceiveWithAnyArgs().Delete(null);
         }
-    }
+
+
+		[TestMethod]
+		public void SaveItem()
+		{
+			// arrange
+
+			var rep = CreateMock<IItemRepository>();
+			ItemController ctrl = new ItemController();
+
+			//act
+
+			ctrl.Save(1,"Test",new ItemControllerTestClass() {IntProperty=1 });
+
+			//assert
+			rep.Received().Store(Arg.Is<Item>(x => x.ItemID == 1));
+			rep.Received().Store(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y=>y.Name=="IntProperty").Value=="1"));
+			rep.DidNotReceiveWithAnyArgs().Delete(null);
+		}
+	}
 }

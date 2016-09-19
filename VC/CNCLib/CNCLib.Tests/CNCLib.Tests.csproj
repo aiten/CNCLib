@@ -87,6 +87,7 @@
     <Compile Include="Drawing\DitherTest.cs" />
     <Compile Include="Logic\ItemControllerTestClass.cs" />
     <Compile Include="Logic\ItemControllerTests.cs" />
+    <Compile Include="Logic\LoadOptionsControllerTests.cs" />
     <Compile Include="Repository\ItemRepositoryTests.cs" />
     <Compile Include="Wpf\MachineViewModelTests.cs" />
     <Compile Include="Logic\MachineControllerTests.cs" />

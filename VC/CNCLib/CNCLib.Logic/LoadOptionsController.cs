@@ -88,33 +88,6 @@ namespace CNCLib.Logic
 			}
 		}
 
-		#region Default machine
-
-		public int GetDetaultMachine()
-		{
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
-			{
-				var config = rep.Get("Environment", "DefaultMachineID");
-
-				if (config == default(Repository.Contracts.Entities.Configuration))
-					return -1;
-
-				return int.Parse(config.Value);
-			}
-		}
-		public void SetDetaultMachine(int defaultMachineID)
-		{
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
-            {
-                rep.Save(new Repository.Contracts.Entities.Configuration() { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
-                uow.Save();
-            }
-        }
-
-		#endregion
-
 		#region IDisposable Support
 		private bool disposedValue = false; // To detect redundant calls
 
