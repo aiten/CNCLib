@@ -26,7 +26,7 @@ namespace CNCLib.GCode.Commands
 
 		public G04Command()
 		{
-			Code = "G04";
+			Code = "G4";
 		}
 
 		#endregion

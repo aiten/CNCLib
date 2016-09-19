@@ -48,7 +48,7 @@ namespace CNCLib.GCode.Commands
 
             if (IsRegistered(name))
 			{
-				Type shape = _shapes[name];
+				Type shape = _shapes[name.ToUpper()];
 				return (Command)Activator.CreateInstance(shape); ;
 			}
 			return null;
@@ -84,7 +84,10 @@ namespace CNCLib.GCode.Commands
             return _shapes.Keys.ToArray<String>();
         }
 
-		public bool IsRegistered(string name) { return _shapes.ContainsKey(name); } 
+		public bool IsRegistered(string name)
+		{
+			return _shapes.ContainsKey(name.ToUpper());
+		} 
 
 		private void RegisterAll()
 		{
