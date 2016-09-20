@@ -29,8 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Arduino", "..\Fra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0942B8A6-0C1A-47A0-B67F-C98979BA830C}"
 	ProjectSection(SolutionItems) = preProject
-		CNCLibAssemblyInfo.cs = CNCLibAssemblyInfo.cs
-		..\Framework\FrameworkAssemblyInfo.cs = ..\Framework\FrameworkAssemblyInfo.cs
+		CNCLibSolutionInfo.cs = CNCLibSolutionInfo.cs
+		CNCLibSolutionInfoVersion.cs = CNCLibSolutionInfoVersion.cs
+		..\Framework\FrameworkSolutionInfo.cs = ..\Framework\FrameworkSolutionInfo.cs
+		..\Framework\FrameworkSolutionInfoVersion.cs = ..\Framework\FrameworkSolutionInfoVersion.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Repository.Contracts", "CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj", "{0ECC8284-505B-43CC-9DF9-AC5D5EEF786A}"

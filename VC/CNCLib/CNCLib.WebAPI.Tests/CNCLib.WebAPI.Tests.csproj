@@ -60,6 +60,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\CNCLibSolutionInfo.cs">
+      <Link>Properties\CNCLibSolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\CNCLibSolutionInfoVersion.cs">
+      <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
+    </Compile>
     <Compile Include="AzureWebApi\AzureWebApiTest.cs" />
     <Compile Include="AzureWebApi\GCodeWebApiTest.cs" />
     <Compile Include="AzureWebApi\LoadOptionsWebApiTest.cs" />

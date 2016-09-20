@@ -193,9 +193,13 @@
     <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CNCLibAssemblyInfo.cs">
-      <Link>Properties\CNCLibAssemblyInfo.cs</Link>
+    <Compile Include="..\CNCLibSolutionInfo.cs">
+      <Link>Properties\CNCLibSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="..\CNCLibSolutionInfoVersion.cs">
+      <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
+    </Compile>
+
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

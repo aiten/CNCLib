@@ -55,9 +55,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\FrameworkAssemblyInfo.cs">
-      <Link>Properties\FrameworkAssemblyInfo.cs</Link>
+    <Compile Include="..\FrameworkSolutionInfo.cs">
+      <Link>Properties\FrameworkSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="..\FrameworkSolutionInfoVersion.cs">
+      <Link>Properties\FrameworkSolutionInfoVersion.cs</Link>
+    </Compile>
+
     <Compile Include="RepositoryBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitOfWork.cs" />

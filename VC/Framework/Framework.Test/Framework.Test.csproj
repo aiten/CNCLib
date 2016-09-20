@@ -62,6 +62,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\FrameworkSolutionInfo.cs">
+      <Link>Properties\FrameworkSolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\FrameworkSolutionInfoVersion.cs">
+      <Link>Properties\FrameworkSolutionInfoVersion.cs</Link>
+    </Compile>
     <Compile Include="Dependency\MockingDependencyContainer.cs" />
     <Compile Include="Dependency\UnitTestDependencyProvider.cs" />
     <Compile Include="Dependency\UnityUnitOfWorkWrapper.cs" />

@@ -19,12 +19,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
 [assembly: AssemblyTitle("Framework.Wpf")]
 [assembly: AssemblyProduct("Framework.Wpf")]
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("496ce574-65b5-44fc-afca-1d5b622c0dda")]
 
-// Version information for an assembly consists of the following four values:
+[assembly: Guid("496ce574-65b5-44fc-afca-1d5b622c0dda")]

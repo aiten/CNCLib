@@ -19,12 +19,8 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-// Allgemeine Informationen über eine Assembly werden über die folgenden 
-// Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
-// die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("CNCLib.BL")]
-[assembly: AssemblyProduct("CNCLib.BL")]
+[assembly: AssemblyTitle("CNCLib.Logic")]
+[assembly: AssemblyProduct("CNCLib.Logic")]
 
-// Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
 [assembly: Guid("8f9ccb87-75eb-419b-97c8-7c311c9c0146")]
 

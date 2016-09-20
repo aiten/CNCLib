@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -19,8 +19,15 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("CNCLib.Tests")]
-[assembly: AssemblyProduct("CNCLib.Tests")]
-
-[assembly: Guid("08c0ca35-14d2-4875-9c1d-0363ab95a30d")]
-
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Build and Revision Numbers 
+// by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.*")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

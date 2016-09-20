@@ -19,12 +19,8 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
 [assembly: AssemblyTitle("Framework.Tools")]
 [assembly: AssemblyProduct("Framework.Tools")]
 
-// The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("99c91315-0574-4842-b3d2-f1eeca448a45")]
 

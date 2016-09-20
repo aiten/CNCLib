@@ -84,8 +84,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CNCLibAssemblyInfo.cs">
-      <Link>CNCLibAssemblyInfo.cs</Link>
+    <Compile Include="..\CNCLibSolutionInfo.cs">
+      <Link>Properties\CNCLibSolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\CNCLibSolutionInfoVersion.cs">
+      <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />

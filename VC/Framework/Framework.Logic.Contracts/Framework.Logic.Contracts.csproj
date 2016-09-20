@@ -41,6 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\FrameworkSolutionInfo.cs">
+      <Link>Properties\FrameworkSolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\FrameworkSolutionInfoVersion.cs">
+      <Link>Properties\FrameworkSolutionInfoVersion.cs</Link>
+    </Compile>
     <Compile Include="IRestController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

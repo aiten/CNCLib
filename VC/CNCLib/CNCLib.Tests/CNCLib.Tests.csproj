@@ -80,9 +80,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="..\CNCLibAssemblyInfo.cs">
-      <Link>Properties\CNCLibAssemblyInfo.cs</Link>
+    <Compile Include="..\CNCLibSolutionInfo.cs">
+      <Link>Properties\CNCLibSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="..\CNCLibSolutionInfoVersion.cs">
+      <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
+    </Compile>
+
     <Compile Include="CNCUnitTest.cs" />
     <Compile Include="Drawing\DitherTest.cs" />
     <Compile Include="Logic\ItemControllerTestClass.cs" />
