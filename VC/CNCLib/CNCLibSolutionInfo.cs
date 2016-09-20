@@ -22,6 +22,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright (c) 2013-2016 Herbert Aitenbichler")]
 [assembly: AssemblyTrademark("CNCLib")]
 [assembly: ComVisible(false)]
+[assembly: AssemblyCompany("Herbert Aitenbichler")]
 
 //[assembly: AssemblyDelaySignAttribute(true)]
 //[assembly: AssemblyKeyFile(@"..\..\..\HApublic.snk")]
