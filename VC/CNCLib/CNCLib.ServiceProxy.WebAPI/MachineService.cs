@@ -120,6 +120,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 
 		public async Task<int> GetDetaultMachineAsync()
 		{
+			await Task.Run(() => 1);
 			return 1;
 			//throw new NotImplementedException();
 		}
@@ -131,6 +132,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 
 		public async Task SetDetaultMachineAsync(int defaultMachineID)
 		{
+			await Task.Run(() => 1);
 			throw new NotImplementedException();
 		}
 		public void SetDetaultMachine(int defaultMachineID)

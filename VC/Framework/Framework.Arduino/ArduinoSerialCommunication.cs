@@ -503,7 +503,7 @@ namespace Framework.Arduino
                 _serialPort.DtrEnable = false;
                 _serialPort.Open();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Disconnect(false);
             }
