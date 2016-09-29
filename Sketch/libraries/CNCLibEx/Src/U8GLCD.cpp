@@ -67,6 +67,9 @@ void CU8GLcd::Init()
 		_charWidth = 6;
 		_font = u8g_font_6x12;
 	}
+
+	GetU8G().begin();
+
 	super::Init();
 
 	GetMenu().SetMainMenu();
@@ -348,7 +351,7 @@ bool CU8GLcd::DrawLoopScreenSaver(EnumAsByte(EDrawLoopType) type, uintptr_t data
 	if (type == DrawLoopQueryTimerout) { *((unsigned long*)data) = 50; return true; }
 	if (type != DrawLoopDraw)	return DrawLoopDefault(type, data);
 
-	GetU8G().drawStr(ToCol(_screensaveX), ToRow(_screensaveY), F("*"));
+	DrawString(ToCol(_screensaveX), ToRow(_screensaveY), F("*"));
 
 	const int8_t textsize = 0;
 
@@ -380,9 +383,9 @@ bool CU8GLcd::DrawLoopSplash(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 200000; return true; }
 	if (type!=DrawLoopDraw)	return DrawLoopDefault(type,data);
 
-	GetU8G().drawStr(ToCol(TotalCols() / 2 - 1), ToRow(2), F("by"));
-	GetU8G().drawStr(ToCol(3), ToRow(3), F("H. Aitenbichler"));
-	GetU8G().drawStr(ToCol(5), ToRow(5), F(__DATE__));
+	DrawString(ToCol(TotalCols() / 2 - 1), ToRow(2), F("by"));
+	DrawString(ToCol(3), ToRow(3), F("H. Aitenbichler"));
+	DrawString(ToCol(5), ToRow(5), F(__DATE__));
 
 	return true;
 }
@@ -394,38 +397,38 @@ bool CU8GLcd::DrawLoopDebug(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type==DrawLoopHeader)	return true;
 	if (type!=DrawLoopDraw)		return DrawLoopDefault(type,data);
 
-	GetU8G().drawStr(ToCol(0), ToRow(0) + HeadLineOffset, F("Debug"));
+	DrawString(ToCol(0), ToRow(0) + HeadLineOffset, F("Debug"));
 
 	char tmp[16];
 
 	for (uint8_t i = 0; i < _lcd_numaxis; i++)
 	{
-		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset);
 
 		udist_t pos = CStepper::GetInstance()->GetCurrentPosition(i);
 
-		GetU8G().print(CSDist::ToString(pos, tmp, 6));
-		GetU8G().print(F(" "));
-		GetU8G().print(DrawPos(i,CMotionControlBase::GetInstance()->ToMm1000(i, pos),tmp,6));
-		GetU8G().print(F(" "));
+		Print(CSDist::ToString(pos, tmp, 6));
+		Print(F(" "));
+		Print(DrawPos(i,CMotionControlBase::GetInstance()->ToMm1000(i, pos),tmp,6));
+		Print(F(" "));
 
-		GetU8G().print(CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(i, true)) ? '1' : '0');
-		GetU8G().print(CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(i, false)) ? '1' : '0');
+		Print(CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(i, true)) ? '1' : '0');
+		Print(CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(i, false)) ? '1' : '0');
 
-		GetU8G().print((CStepper::GetInstance()->GetLastDirection()&(1 << i)) ? '+' : '-');
+		Print((CStepper::GetInstance()->GetLastDirection()&(1 << i)) ? '+' : '-');
 	}
 
-	GetU8G().setPrintPos(ToCol(20), ToRow(0 + 1) + PosLineOffset);
-	GetU8G().print(CControl::GetInstance()->IOControl(CControl::Probe) ? '1' : '0');
+	SetPosition(ToCol(20), ToRow(0 + 1) + PosLineOffset);
+	Print(CControl::GetInstance()->IOControl(CControl::Probe) ? '1' : '0');
 
-	GetU8G().setPrintPos(ToCol(19), ToRow(0 + 2) + PosLineOffset);
-	GetU8G().print(CSDist::ToString(CStepper::GetInstance()->QueuedMovements(), tmp, 2));
+	SetPosition(ToCol(19), ToRow(0 + 2) + PosLineOffset);
+	Print(CSDist::ToString(CStepper::GetInstance()->QueuedMovements(), tmp, 2));
 
-	GetU8G().setPrintPos(ToCol(18), ToRow(4) + PosLineOffset);
-	GetU8G().print(CSDist::ToString(CStepper::SpeedOverrideToP(CStepper::GetInstance()->GetSpeedOverride()), tmp, 3));
+	SetPosition(ToCol(18), ToRow(4) + PosLineOffset);
+	Print(CSDist::ToString(CStepper::SpeedOverrideToP(CStepper::GetInstance()->GetSpeedOverride()), tmp, 3));
 
-	GetU8G().setPrintPos(ToCol(20), ToRow(5) + PosLineOffset);
-	GetU8G().print(CControl::GetInstance()->IsHold() ? '1' : '0');
+	SetPosition(ToCol(20), ToRow(5) + PosLineOffset);
+	Print(CControl::GetInstance()->IsHold() ? '1' : '0');
 
 	return true;
 }
@@ -437,19 +440,19 @@ bool CU8GLcd::DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type==DrawLoopHeader)	return true;
 	if (type!=DrawLoopDraw)		return DrawLoopDefault(type,data);
 
-	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); GetU8G().print(F("Absolut  Current"));
+	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset); Print(F("Absolut  Current"));
 	char tmp[16];
 
 	for (uint8_t i = 0; i < _lcd_numaxis; i++)
 	{
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
 
-		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-		tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp,i));
+		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp,i));
 
-		GetU8G().print(DrawPos(i,CMotionControlBase::GetInstance()->GetPosition(i),tmp,7));
-		GetU8G().print(F(" "));
-		GetU8G().print(DrawPos(i,CMotionControlBase::GetInstance()->GetPosition(i) - psall,tmp,7));
+		Print(DrawPos(i,CMotionControlBase::GetInstance()->GetPosition(i),tmp,7));
+		Print(F(" "));
+		Print(DrawPos(i,CMotionControlBase::GetInstance()->GetPosition(i) - psall,tmp,7));
 	}
 
 	return true;
@@ -462,7 +465,7 @@ bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type == DrawLoopHeader)	return true;
 	if (type != DrawLoopDraw)	return DrawLoopDefault(type, data);
 
-	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); GetU8G().print(F("Absolut# Current"));
+	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset); Print(F("Absolut# Current"));
 	char tmp[16];
 
 	mm1000_t dest[NUM_AXIS];
@@ -475,12 +478,12 @@ bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	{
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
 
-		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-		tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp, i));
+		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp, i));
 
-		GetU8G().print(DrawPos(i,dest[i],tmp,7));
-		GetU8G().print(F(" "));
-		GetU8G().print(DrawPos(i,dest[i] - psall,tmp,7));
+		Print(DrawPos(i,dest[i],tmp,7));
+		Print(F(" "));
+		Print(DrawPos(i,dest[i] - psall,tmp,7));
 	}
 
 	return true;
@@ -494,23 +497,23 @@ bool CU8GLcd::DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 200000; return true; }
 	if (type != DrawLoopDraw)	return DrawLoopDefault(type, data);
 
-	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); GetU8G().print(F("Rotate 2D"));
+	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset); Print(F("Rotate 2D"));
 	char tmp[16];
 
 	for (uint8_t i = 0; i < NUM_AXISXYZ; i++)
 	{
-		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-		tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp, i));
+		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp, i));
 
 		mm1000_t ofs = CMotionControl::GetInstance()->GetOffset2D(i);
-		GetU8G().print(DrawPos(i,ofs,tmp,7));
+		Print(DrawPos(i,ofs,tmp,7));
 
 		if (CMotionControl::GetInstance()->IsEnabled2D(i))
 		{
 			mm1000_t rad = CMm1000::FromRAD(CMotionControl::GetInstance()->GetAngle2D(i));
 
-			GetU8G().print(F(" "));
-			GetU8G().print(CMm1000::ToString(rad,tmp,7,2));
+			Print(F(" "));
+			Print(CMm1000::ToString(rad,tmp,7,2));
 		}
 	}
 
@@ -525,7 +528,7 @@ bool CU8GLcd::DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 200000; return true; }
 	if (type != DrawLoopDraw)		return DrawLoopDefault(type, data);
 
-	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); GetU8G().print(F("Rotate 3D"));
+	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset); Print(F("Rotate 3D"));
 
 	if (CMotionControl::GetInstance()->IsRotate())
 	{
@@ -536,22 +539,22 @@ bool CU8GLcd::DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 			mm1000_t ofs  = CMotionControl::GetInstance()->GetOffset(i);
 			mm1000_t vect = CMotionControl::GetInstance()->GetVector(i);
 
-			GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-			tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp, i));
+			SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset);
+			tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp, i));
 
-			GetU8G().print(DrawPos(i,ofs,tmp,7));
-			GetU8G().print(F(" "));
-			GetU8G().print(DrawPos(i,vect,tmp,7));
+			Print(DrawPos(i,ofs,tmp,7));
+			Print(F(" "));
+			Print(DrawPos(i,vect,tmp,7));
 		}
 
-		GetU8G().setPrintPos(ToCol(0), ToRow(NUM_AXISXYZ + 1) + PosLineOffset);
-		GetU8G().print(F("R"));
-		GetU8G().print(CMm1000::ToString(CMm1000::FromRAD(CMotionControl::GetInstance()->GetAngle()), tmp, 7, 2));
+		SetPosition(ToCol(0), ToRow(NUM_AXISXYZ + 1) + PosLineOffset);
+		Print(F("R"));
+		Print(CMm1000::ToString(CMm1000::FromRAD(CMotionControl::GetInstance()->GetAngle()), tmp, 7, 2));
 	}
 	else
 	{
-		GetU8G().setPrintPos(ToCol(6), ToRow(2 + 1) + PosLineOffset);
-		GetU8G().print(F("no rotation"));
+		SetPosition(ToCol(6), ToRow(2 + 1) + PosLineOffset);
+		Print(F("no rotation"));
 	}
 
 	return true;
@@ -570,22 +573,22 @@ bool CU8GLcd::DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, uintptr_t da
 	if (type==DrawLoopQueryTimerout && _rotaryFocus == RotarySlider)	{ *((unsigned long*)data) = 333; return true; }
 	if (type != DrawLoopDraw)			return DrawLoopDefault(type, data);
 
-	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset); GetU8G().print(F("Speed Override"));
+	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset); Print(F("Speed Override"));
 	char tmp[16];
 
-	GetU8G().setPrintPos(ToCol(8), ToRow(2 + 1) + PosLineOffset);
+	SetPosition(ToCol(8), ToRow(2 + 1) + PosLineOffset);
 
 	if (_rotaryFocus == RotarySlider)
 	{
 		uint8_t speedInP = _rotarybutton.GetPageIdx(ToPageIdx(100)+1) * SPEEDOVERIDESTEPSIZE;
 		CStepper::GetInstance()->SetSpeedOverride(CStepper::PToSpeedOverride(speedInP));
-		GetU8G().print('>');
+		Print('>');
 	}
 
-	GetU8G().print(CSDist::ToString(CStepper::SpeedOverrideToP(CStepper::GetInstance()->GetSpeedOverride()), tmp, 3));
+	Print(CSDist::ToString(CStepper::SpeedOverrideToP(CStepper::GetInstance()->GetSpeedOverride()), tmp, 3));
 
 	if (_rotaryFocus == RotarySlider)
-		GetU8G().print('<');
+		Print('<');
 
 	return true;
 }
@@ -627,22 +630,22 @@ bool CU8GLcd::DrawLoopPreset(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 
 	const __FlashStringHelper* zeroShiftName[] PROGMEM = { F("G53"), F("G54"), F("G55"), F("G56"), F("G57"), F("G58"), F("G59") };
 
-	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset);  GetU8G().print(F("Preset: ")); GetU8G().print(zeroShiftName[CGCodeParser::GetZeroPresetIdx()]); GetU8G().print(F(" G92 Height"));
+	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset);  Print(F("Preset: ")); Print(zeroShiftName[CGCodeParser::GetZeroPresetIdx()]); Print(F(" G92 Height"));
 
 	char tmp[16];
 
 	for (uint8_t i = 0; i < _lcd_numaxis; i++)
 	{
-		GetU8G().setPrintPos(ToCol(0), ToRow(i + 1) + PosLineOffset);
-		tmp[0] = 0; GetU8G().print(CMenuBase::AddAxisName(tmp,i));
+		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp,i));
 		ps = CGCodeParser::GetG54PosPreset(i);
-		GetU8G().print(DrawPos(i,ps,tmp,7));
+		Print(DrawPos(i,ps,tmp,7));
 
 		ps = CGCodeParser::GetG92PosPreset(i);
-		GetU8G().print(DrawPos(i,ps,tmp,7));
+		Print(DrawPos(i,ps,tmp,7));
 
 		ps = CGCodeParser::GetToolHeightPosPreset(i);
-		GetU8G().print(DrawPos(i,ps, tmp, 6));
+		Print(DrawPos(i,ps, tmp, 6));
 	}
 	return true;
 }
@@ -671,11 +674,11 @@ bool CU8GLcd::DrawLoopStartSD(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	char tmp[16];
 
 	if (!CGCode3DParser::GetExecutingFile())
-  	    GetU8G().drawStr(ToCol(3), ToRow(2), F("Press to start"));
+		DrawString(ToCol(3), ToRow(2), F("Press to start"));
 
-	GetU8G().setPrintPos(ToCol(0), ToRow(3) + PosLineOffset); GetU8G().print(F("File: ")); GetU8G().print(CGCode3DParser::GetExecutingFileName());
-	GetU8G().setPrintPos(ToCol(0), ToRow(4) + PosLineOffset); GetU8G().print(F("At:   ")); GetU8G().print(CSDist::ToString(CGCode3DParser::GetExecutingFilePosition(), tmp, 8));
-	GetU8G().setPrintPos(ToCol(0), ToRow(5) + PosLineOffset); GetU8G().print(F("Line: ")); GetU8G().print(CSDist::ToString(CGCode3DParser::GetExecutingFileLine(), tmp, 8));
+	SetPosition(ToCol(0), ToRow(3) + PosLineOffset); Print(F("File: ")); Print(CGCode3DParser::GetExecutingFileName());
+	SetPosition(ToCol(0), ToRow(4) + PosLineOffset); Print(F("At:   ")); Print(CSDist::ToString(CGCode3DParser::GetExecutingFilePosition(), tmp, 8));
+	SetPosition(ToCol(0), ToRow(5) + PosLineOffset); Print(F("Line: ")); Print(CSDist::ToString(CGCode3DParser::GetExecutingFileLine(), tmp, 8));
 
 	return true;
 }
@@ -690,19 +693,19 @@ bool CU8GLcd::DrawLoopError(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	uint8_t errors = 0;
 
 	if (CStepper::GetInstance()->GetFatalError())
-		GetU8G().drawStr(ToCol(0), ToRow(++errors + 1), CStepper::GetInstance()->GetFatalError());
+		DrawString(ToCol(0), ToRow(++errors + 1), CStepper::GetInstance()->GetFatalError());
 
 	if (GetDiagnostic())
-		GetU8G().drawStr(ToCol(0), ToRow(++errors + 1), GetDiagnostic());
+		DrawString(ToCol(0), ToRow(++errors + 1), GetDiagnostic());
 
 	if (CControl::GetInstance()->IsKilled())
-		GetU8G().drawStr(ToCol(0), ToRow(++errors + 1), F("emergency stop"));
+		DrawString(ToCol(0), ToRow(++errors + 1), F("emergency stop"));
 
 	if (CControl::GetInstance()->IsHold())
-		GetU8G().drawStr(ToCol(0), ToRow(++errors + 1), F("hold"));
+		DrawString(ToCol(0), ToRow(++errors + 1), F("hold"));
 
 	if (errors == 0)
-		GetU8G().drawStr(ToCol(0), ToRow(2), F("no errors"));
+		DrawString(ToCol(0), ToRow(2), F("no errors"));
 
 	return true;
 }
@@ -722,7 +725,7 @@ bool CU8GLcd::DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,uintptr_t data)
 
 	for (uint8_t i = 0; i < totalRows - 1; i++)
 	{
-		GetU8G().setPrintPos(ToCol(0), ToRow(totalRows - i - 1) + PosLineOffset);
+		SetPosition(ToCol(0), ToRow(totalRows - i - 1) + PosLineOffset);
 
 		uint8_t idx = totalCols;
 		tmp[idx] = 0;
@@ -733,7 +736,7 @@ bool CU8GLcd::DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,uintptr_t data)
 			{
 				tmp[--idx] = _commandHis.Buffer[commandpos];
 			}
-			GetU8G().print(&tmp[idx]);
+			Print(&tmp[idx]);
 		}
 	}
 
@@ -791,9 +794,9 @@ bool CU8GLcd::DrawLoopMenu(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 333; return true; }
 	if (type!=DrawLoopDraw)				return DrawLoopDefault(type,data);
 
-	GetU8G().setPrintPos(ToCol(0), ToRow(0) + HeadLineOffset);
-	GetU8G().print(F("Menu: "));
-	GetU8G().print(GetMenu().GetMenuDef()->GetText());
+	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset);
+	Print(F("Menu: "));
+	Print(GetMenu().GetMenuDef()->GetText());
 
 	uint8_t x = 255;
 	const uint8_t printFirstLine = 1;
@@ -813,14 +816,14 @@ bool CU8GLcd::DrawLoopMenu(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 		uint8_t printtorow = GetMenu().ToPrintLine(printFirstLine, printLastLine, i);
 		if (printtorow != 255)
 		{
-			GetU8G().setPrintPos(ToCol(0), ToRow(printtorow) + PosLineOffset);
+			SetPosition(ToCol(0), ToRow(printtorow) + PosLineOffset);
 			if (i == x && _rotaryFocus == RotaryMenuPage)
-				GetU8G().print(F(">"));
+				Print(F(">"));
 			else
-				GetU8G().print(F(" "));
+				Print(F(" "));
 
 
-			GetU8G().print(GetMenu().GetMenuDef()->GetItems()[i].GetText());
+			Print(GetMenu().GetMenuDef()->GetItems()[i].GetText());
 		}
 	}
 

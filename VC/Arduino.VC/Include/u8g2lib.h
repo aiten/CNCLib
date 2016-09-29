@@ -19,17 +19,15 @@
 
 #pragma once
 
-typedef  uint8_t u8g_fntpgm_uint8_t;
-
-class U8GLIB // : public Stream
+class U8G2 // : public Stream
 {
 public:
 	void begin() {};
 	void firstPage() {};
 	bool nextPage() { return false; }
 	void drawStr(int, int, const char*) {}
-	void setFont(const u8g_fntpgm_uint8_t *font) { font; };
-	void setPrintPos(int , int )	{ };
+	void setFont(const uint8_t *font) { font; };
+	void setCursor(int , int )	{ };
 
 	void print(const char)			{ };
 
@@ -37,13 +35,14 @@ public:
 	void println(const char*)		{ };
 };
 
-class U8GLIB_ST7920_128X64_1X : public U8GLIB
+class U8G2_ST7920_128X64_1_SW_SPI : public U8G2
 {
 public:
-	U8GLIB_ST7920_128X64_1X(int, int, int) {};
+	U8G2_ST7920_128X64_1_SW_SPI(void*, int, int, int) {};
 };
 
-static const u8g_fntpgm_uint8_t* u8g_font_unifont;
-static const u8g_fntpgm_uint8_t* u8g_font_unifontr;
-static const u8g_fntpgm_uint8_t* u8g_font_6x12;
-static const u8g_fntpgm_uint8_t* u8g_font_6x10;
+static void* U8G2_R0;
+static const uint8_t* u8g_font_unifont;
+static const uint8_t* u8g_font_unifontr;
+static const uint8_t* u8g_font_6x12;
+static const uint8_t* u8g_font_6x10;

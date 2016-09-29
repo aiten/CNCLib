@@ -44,9 +44,10 @@
 //
 ////////////////////////////////////////////////////////////
 
-U8GLIB_ST7920_128X64_1X u8g(CAT(BOARDNAME,_ST7920_CLK_PIN), CAT(BOARDNAME,_ST7920_DAT_PIN), CAT(BOARDNAME,_ST7920_CS_PIN));	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
+U8GLIB_ST7920_128X64_1X u8g(CAT(BOARDNAME,_ST7920_CLK_PIN), CAT(BOARDNAME,_ST7920_DAT_PIN), CAT(BOARDNAME,_ST7920_CS_PIN));  // SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
+//U8G2_ST7920_128X64_1_SW_SPI u8g(U8G2_R0, CAT(BOARDNAME,_ST7920_CLK_PIN), CAT(BOARDNAME,_ST7920_DAT_PIN), CAT(BOARDNAME,_ST7920_CS_PIN));	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
 
-U8GLIB& CMyLcd::GetU8G() { return u8g; }
+U8G2& CMyLcd::GetU8G() { return u8g; }
 
 ////////////////////////////////////////////////////////////
 
@@ -113,15 +114,15 @@ bool CMyLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	{
 #ifdef USE_RAMPS14
 #if defined(__SAM3X8E__)
-		GetU8G().drawStr(ToCol(0), ToRow(0), F("Proxxon MF70 Ramps14S"));
+		DrawString(ToCol(0), ToRow(0), F("Proxxon MF70 Ramps14S"));
 #else
-		GetU8G().drawStr(ToCol(0), ToRow(0), F("Proxxon MF70 Ramps14M"));
+		DrawString(ToCol(0), ToRow(0), F("Proxxon MF70 Ramps14M"));
 #endif
 #else
 #if defined(__SAM3X8E__)
-		GetU8G().drawStr(ToCol(0), ToRow(0), F("Proxxon MF70 RampsFDS"));
+		DrawString(ToCol(0), ToRow(0), F("Proxxon MF70 RampsFDS"));
 #else
-		GetU8G().drawStr(ToCol(0), ToRow(0), F("Proxxon MF70 RampsFDM"));
+		DrawString(ToCol(0), ToRow(0), F("Proxxon MF70 RampsFDM"));
 #endif
 #endif
 		return true;

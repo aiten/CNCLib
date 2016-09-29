@@ -44,9 +44,13 @@
 //
 ////////////////////////////////////////////////////////////
 
-U8GLIB_ST7920_128X64_1X u8g(CAT(BOARDNAME,_ST7920_CLK_PIN), CAT(BOARDNAME,_ST7920_DAT_PIN), CAT(BOARDNAME,_ST7920_CS_PIN));	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
+#ifdef USE_U8G2_LIB
+U8G2_ST7920_128X64_2_SW_SPI u8g(U8G2_R0, CAT(BOARDNAME, _ST7920_CLK_PIN), CAT(BOARDNAME, _ST7920_DAT_PIN), CAT(BOARDNAME, _ST7920_CS_PIN));	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
+#else
+U8GLIB_ST7920_128X64_1X u8g(CAT(BOARDNAME, _ST7920_CLK_PIN), CAT(BOARDNAME, _ST7920_DAT_PIN), CAT(BOARDNAME, _ST7920_CS_PIN));	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
+#endif
 
-U8GLIB& CMyLcd::GetU8G() { return u8g; }
+U8G2& CMyLcd::GetU8G() { return u8g; }
 
 ////////////////////////////////////////////////////////////
 
@@ -108,9 +112,9 @@ bool CMyLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type,uintptr_t data)
 	if (type==DrawLoopHeader)
 	{
 #if defined(__SAM3X8E__)
-	u8g.drawStr(ToCol(4), ToRow(0), F("KK1000S Due"));
+		DrawString(ToCol(4), ToRow(0), F("KK1000S Due"));
 #else
-	u8g.drawStr(ToCol(4), ToRow(0), F("KK1000S Mega"));
+		DrawString(ToCol(4), ToRow(0), F("KK1000S Mega"));
 #endif
 		return true;
 	}

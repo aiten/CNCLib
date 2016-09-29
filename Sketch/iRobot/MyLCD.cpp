@@ -44,9 +44,13 @@
 //
 ////////////////////////////////////////////////////////////
 
+#ifdef USE_U8G2_LIB
+U8G2_ST7920_128X64_1_SW_SPI u8g(U8G2_R0, 23, 17, 16);	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
+#else
 U8GLIB_ST7920_128X64_1X u8g(23, 17, 16);	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
+#endif
 
-U8GLIB& CMyLcd::GetU8G() { return u8g; }
+U8G2& CMyLcd::GetU8G() { return u8g; }
 
 ////////////////////////////////////////////////////////////
 
@@ -109,7 +113,7 @@ bool CMyLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type,uintptr_t data)
 {
 	if (type==DrawLoopHeader)
 	{
-		GetU8G().drawStr(ToCol(0), ToRow(0), F("iRobot Mega"));
+		DrawString(ToCol(0), ToRow(0), F("iRobot Mega"));
 		return true;
 	}
 

@@ -21,7 +21,13 @@
 
 ////////////////////////////////////////////////////////
 
+#undef USE_U8G2_LIB
 #include <U8glib.h>
+
+#ifndef USE_U8G2_LIB
+#define U8G2 U8GLIB
+#endif
+
 #include <LCD.h>
 #include <RotaryButton.h>
 #include <PushButton.h>
@@ -33,6 +39,7 @@
 #define LCD_GCOL 128
 
 #define SCREENSAVERTIMEOUT 120000
+
 
 ////////////////////////////////////////////////////////
 
@@ -69,10 +76,48 @@ protected:
 
 protected:
 
-	virtual class U8GLIB& GetU8G() = 0;
+	virtual class U8G2& GetU8G() = 0;
 	virtual class CMenuBase& GetMenu() = 0;
 
 	uint8_t GetPageCount();
+
+	inline void DrawString(uint8_t x, uint8_t y, const __FlashStringHelper* s)
+	{
+#ifdef USE_U8G2_LIB
+		GetU8G().setCursor(x, y);
+		GetU8G().print(s);
+#else
+		GetU8G().drawStr(x, y, s);
+#endif
+	}
+
+	inline void SetPosition(uint8_t x, uint8_t y)
+	{
+#ifdef USE_U8G2_LIB
+		GetU8G().setCursor(x, y);
+#else
+		GetU8G().setPrintPos(x, y);
+#endif
+	}
+
+#ifndef _MSC_VER
+
+	inline void Print(const __FlashStringHelper* s)
+	{
+		GetU8G().print(s);
+	}
+
+#endif
+
+	inline void Print(const char* s)
+	{
+		GetU8G().print(s);
+	}
+	#
+	inline void Print(char ch)
+	{
+		GetU8G().print(ch);
+	}
 
 public:
 
@@ -178,7 +223,7 @@ protected:
 	uint8_t						_charHeight = 10;
 	uint8_t						_charWidth = 6;
 
-	const u8g_fntpgm_uint8_t*	_font = u8g_font_6x10;
+	const uint8_t*				_font = u8g_font_6x10;
 
 	uint8_t ToRow(uint8_t row) { return  (row + 1)*(_charHeight); }
 	uint8_t ToCol(uint8_t col) { return (col)*(_charWidth); }
