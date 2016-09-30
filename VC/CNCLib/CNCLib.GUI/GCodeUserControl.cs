@@ -59,7 +59,7 @@ namespace CNCLib.GUI
 
         public CommandList Commands { get { return _commands; } }
 
-		public delegate void GCodeEventHandler(object o, GCoderUserControlEventArgs info);
+		public delegate void GCodeEventHandler(object sender, GCoderUserControlEventArgs e);
 
 		public event GCodeEventHandler GCodeMousePosition;
         public event GCodeEventHandler ZoomOffsetChanged;

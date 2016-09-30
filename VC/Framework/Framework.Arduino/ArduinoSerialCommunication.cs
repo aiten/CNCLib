@@ -54,7 +54,7 @@ namespace Framework.Arduino
 
         #region Events
 
-        public delegate void CommandEventHandler(object com, ArduinoSerialCommunicationEventArgs info);
+        public delegate void CommandEventHandler(object sender, ArduinoSerialCommunicationEventArgs e);
 
         // The event we publish
         public event CommandEventHandler WaitForSend;
