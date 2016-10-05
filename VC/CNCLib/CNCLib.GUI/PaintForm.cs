@@ -44,9 +44,10 @@ namespace CNCLib.GUI
 			SetMachineSize();
             ValuesFromControl();
 
-            _laserColor.Color = _gCodeCtrl.LaserColor;
+            _laserOnColor.Color = _gCodeCtrl.LaserOnColor;
+			_laserOffColor.Color = _gCodeCtrl.LaserOffColor;
 
-            new CNCLib.GCode.Commands.CommandFactory();
+			new CNCLib.GCode.Commands.CommandFactory();
 		}
 
 		public void SetMachineSize()
@@ -326,17 +327,20 @@ namespace CNCLib.GUI
             ValuesFromControl();
         }
 
-        private void colorComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void _machineColor_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			_gCodeCtrl.MachineColor = _colorCB.Color;
 		}
-        private void _laserColor_SelectedIndexChanged(object sender, EventArgs e)
+        private void _laserOnColor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _gCodeCtrl.LaserColor = _laserColor.Color;
+            _gCodeCtrl.LaserOnColor = _laserOnColor.Color;
         }
+		private void _laserOffColor_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			_gCodeCtrl.LaserOffColor = _laserOffColor.Color;
+		}
 
-
-        private void CheckKeyPress(KeyPressEventArgs e)
+		private void CheckKeyPress(KeyPressEventArgs e)
         {
             if (e.KeyChar == '\r')
             {

@@ -55,9 +55,10 @@ namespace CNCLib.GUI
         public double LaserSize { get { return _laserSize; } set { _laserSize = value; ReInitDraw(); } }
 
         public Color MachineColor { get { return _machineColor; } set { _machineColor = value; ReInitDraw(); } }
-        public Color LaserColor { get { return _laserColor; } set { _laserColor = value; ReInitDraw(); } }
+        public Color LaserOnColor { get { return _laserOnColor; } set { _laserOnColor = value; ReInitDraw(); } }
+		public Color LaserOffColor { get { return _laserOffColor; } set { _laserOffColor = value; ReInitDraw(); } }
 
-        public CommandList Commands { get { return _commands; } }
+		public CommandList Commands { get { return _commands; } }
 
 		public delegate void GCodeEventHandler(object sender, GCoderUserControlEventArgs e);
 
@@ -79,9 +80,10 @@ namespace CNCLib.GUI
         double  _ratioX = 1;
         double  _ratioY = 1;
         Color   _machineColor = Color.Black;
-        Color   _laserColor = Color.Red;
+        Color   _laserOnColor = Color.Red;
+		Color	_laserOffColor = Color.Orange;
 
-        CommandList _commands = new CommandList();
+		CommandList _commands = new CommandList();
 
 		private ArduinoSerialCommunication Com
 		{
@@ -258,11 +260,11 @@ namespace CNCLib.GUI
 
             _fastLine = new Pen(Color.Green, fastSize);
             _NoMove = new Pen(Color.Blue, fastSize);
-            _laserCutLine = new Pen(LaserColor, ToClient(new Point3D(OffsetX+(decimal)LaserSize,0m,0m)).X);
+            _laserCutLine = new Pen(LaserOnColor, ToClient(new Point3D(OffsetX+(decimal)LaserSize,0m,0m)).X);
             _laserCutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
             _laserCutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-            _laserFastLine = new Pen(Color.Orange, (float)(fastSize / 2.0));
-            _machineLine = new Pen(Color.LightBlue, 1);
+            _laserFastLine = new Pen(LaserOffColor, (float)(fastSize / 2.0));
+			_machineLine = new Pen(Color.LightBlue, 1);
 
             _helpLine = new Pen(Color.Yellow, 1);
         }

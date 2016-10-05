@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
 			this._headerPanel = new System.Windows.Forms.Panel();
-			this._laserColor = new CNCLib.GUI.ColorComboBox();
+			this._useAzure = new System.Windows.Forms.CheckBox();
+			this._laserOnColor = new CNCLib.GUI.ColorComboBox();
 			this._zoomLbl = new System.Windows.Forms.Label();
 			this._zoom = new System.Windows.Forms.TextBox();
 			this._zoomIn = new System.Windows.Forms.Button();
@@ -53,15 +54,16 @@
 			this._sendTo = new System.Windows.Forms.Button();
 			this._mainPanel = new System.Windows.Forms.Panel();
 			this._gCodeCtrl = new CNCLib.GUI.GCodeUserControl();
-			this._useAzure = new System.Windows.Forms.CheckBox();
+			this._laserOffColor = new CNCLib.GUI.ColorComboBox();
 			this._headerPanel.SuspendLayout();
 			this._mainPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// _headerPanel
 			// 
+			this._headerPanel.Controls.Add(this._laserOffColor);
 			this._headerPanel.Controls.Add(this._useAzure);
-			this._headerPanel.Controls.Add(this._laserColor);
+			this._headerPanel.Controls.Add(this._laserOnColor);
 			this._headerPanel.Controls.Add(this._zoomLbl);
 			this._headerPanel.Controls.Add(this._zoom);
 			this._headerPanel.Controls.Add(this._zoomIn);
@@ -85,27 +87,52 @@
 			this._headerPanel.Controls.Add(this._sendTo);
 			this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this._headerPanel.Location = new System.Drawing.Point(0, 0);
-			this._headerPanel.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._headerPanel.Margin = new System.Windows.Forms.Padding(6);
 			this._headerPanel.Name = "_headerPanel";
 			this._headerPanel.Size = new System.Drawing.Size(1568, 113);
 			this._headerPanel.TabIndex = 0;
 			// 
+			// _useAzure
+			// 
+			this._useAzure.AutoSize = true;
+			this._useAzure.Location = new System.Drawing.Point(1376, 21);
+			this._useAzure.Name = "_useAzure";
+			this._useAzure.Size = new System.Drawing.Size(141, 29);
+			this._useAzure.TabIndex = 37;
+			this._useAzure.Text = "use Azure";
+			this._useAzure.UseVisualStyleBackColor = true;
+			// 
 			// _laserColor
 			// 
-			this._laserColor.Color = System.Drawing.Color.Black;
-			this._laserColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-			this._laserColor.DropDownHeight = 400;
-			this._laserColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this._laserColor.DropDownWidth = 200;
-			this._laserColor.FormattingEnabled = true;
-			this._laserColor.IntegralHeight = false;
-			this._laserColor.Location = new System.Drawing.Point(1002, 17);
-			this._laserColor.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-			this._laserColor.MaxDropDownItems = 20;
-			this._laserColor.Name = "_laserColor";
-			this._laserColor.Size = new System.Drawing.Size(264, 32);
-			this._laserColor.TabIndex = 36;
-			this._laserColor.SelectedIndexChanged += new System.EventHandler(this._laserColor_SelectedIndexChanged);
+			this._laserOnColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this._laserOnColor.DropDownHeight = 400;
+			this._laserOnColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this._laserOnColor.DropDownWidth = 200;
+			this._laserOnColor.FormattingEnabled = true;
+			this._laserOnColor.IntegralHeight = false;
+			this._laserOnColor.Location = new System.Drawing.Point(1002, 17);
+			this._laserOnColor.Margin = new System.Windows.Forms.Padding(6);
+			this._laserOnColor.MaxDropDownItems = 20;
+			this._laserOnColor.Name = "_laserColor";
+			this._laserOnColor.Size = new System.Drawing.Size(264, 32);
+			this._laserOnColor.TabIndex = 36;
+			this._laserOnColor.SelectedIndexChanged += new System.EventHandler(this._laserOnColor_SelectedIndexChanged);
+			// 
+			// colorComboBox1
+			// 
+			this._laserOffColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this._laserOffColor.DropDownHeight = 400;
+			this._laserOffColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this._laserOffColor.DropDownWidth = 200;
+			this._laserOffColor.FormattingEnabled = true;
+			this._laserOffColor.IntegralHeight = false;
+			this._laserOffColor.Location = new System.Drawing.Point(1002, 53);
+			this._laserOffColor.Margin = new System.Windows.Forms.Padding(6);
+			this._laserOffColor.MaxDropDownItems = 20;
+			this._laserOffColor.Name = "_laserOffColor";
+			this._laserOffColor.Size = new System.Drawing.Size(264, 32);
+			this._laserOffColor.TabIndex = 38;
+			this._laserOffColor.SelectedIndexChanged += new System.EventHandler(this._laserOffColor_SelectedIndexChanged);
 			// 
 			// _zoomLbl
 			// 
@@ -120,7 +147,7 @@
 			// _zoom
 			// 
 			this._zoom.Location = new System.Drawing.Point(288, 13);
-			this._zoom.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._zoom.Margin = new System.Windows.Forms.Padding(6);
 			this._zoom.Name = "_zoom";
 			this._zoom.Size = new System.Drawing.Size(80, 31);
 			this._zoom.TabIndex = 19;
@@ -129,7 +156,7 @@
 			// _zoomIn
 			// 
 			this._zoomIn.Location = new System.Drawing.Point(404, 13);
-			this._zoomIn.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._zoomIn.Margin = new System.Windows.Forms.Padding(6);
 			this._zoomIn.Name = "_zoomIn";
 			this._zoomIn.Size = new System.Drawing.Size(30, 38);
 			this._zoomIn.TabIndex = 26;
@@ -140,7 +167,7 @@
 			// _zoomOut
 			// 
 			this._zoomOut.Location = new System.Drawing.Point(374, 13);
-			this._zoomOut.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._zoomOut.Margin = new System.Windows.Forms.Padding(6);
 			this._zoomOut.Name = "_zoomOut";
 			this._zoomOut.Size = new System.Drawing.Size(30, 38);
 			this._zoomOut.TabIndex = 25;
@@ -158,12 +185,12 @@
 			this._colorCB.FormattingEnabled = true;
 			this._colorCB.IntegralHeight = false;
 			this._colorCB.Location = new System.Drawing.Point(288, 56);
-			this._colorCB.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._colorCB.Margin = new System.Windows.Forms.Padding(6);
 			this._colorCB.MaxDropDownItems = 20;
 			this._colorCB.Name = "_colorCB";
 			this._colorCB.Size = new System.Drawing.Size(264, 32);
 			this._colorCB.TabIndex = 31;
-			this._colorCB.SelectedIndexChanged += new System.EventHandler(this.colorComboBox1_SelectedIndexChanged);
+			this._colorCB.SelectedIndexChanged += new System.EventHandler(this._machineColor_SelectedIndexChanged);
 			// 
 			// _ofsXLbl
 			// 
@@ -178,7 +205,7 @@
 			// _offsetX
 			// 
 			this._offsetX.Location = new System.Drawing.Point(658, 15);
-			this._offsetX.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._offsetX.Margin = new System.Windows.Forms.Padding(6);
 			this._offsetX.Name = "_offsetX";
 			this._offsetX.Size = new System.Drawing.Size(80, 31);
 			this._offsetX.TabIndex = 20;
@@ -187,7 +214,7 @@
 			// _ofsXPlus
 			// 
 			this._ofsXPlus.Location = new System.Drawing.Point(778, 13);
-			this._ofsXPlus.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._ofsXPlus.Margin = new System.Windows.Forms.Padding(6);
 			this._ofsXPlus.Name = "_ofsXPlus";
 			this._ofsXPlus.Size = new System.Drawing.Size(30, 38);
 			this._ofsXPlus.TabIndex = 28;
@@ -198,7 +225,7 @@
 			// _ofsXMin
 			// 
 			this._ofsXMin.Location = new System.Drawing.Point(746, 13);
-			this._ofsXMin.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._ofsXMin.Margin = new System.Windows.Forms.Padding(6);
 			this._ofsXMin.Name = "_ofsXMin";
 			this._ofsXMin.Size = new System.Drawing.Size(30, 38);
 			this._ofsXMin.TabIndex = 27;
@@ -219,7 +246,7 @@
 			// _offsetY
 			// 
 			this._offsetY.Location = new System.Drawing.Point(658, 54);
-			this._offsetY.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._offsetY.Margin = new System.Windows.Forms.Padding(6);
 			this._offsetY.Name = "_offsetY";
 			this._offsetY.Size = new System.Drawing.Size(80, 31);
 			this._offsetY.TabIndex = 21;
@@ -228,7 +255,7 @@
 			// _ofsYPlus
 			// 
 			this._ofsYPlus.Location = new System.Drawing.Point(778, 54);
-			this._ofsYPlus.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._ofsYPlus.Margin = new System.Windows.Forms.Padding(6);
 			this._ofsYPlus.Name = "_ofsYPlus";
 			this._ofsYPlus.Size = new System.Drawing.Size(30, 38);
 			this._ofsYPlus.TabIndex = 30;
@@ -239,7 +266,7 @@
 			// _ofsYMin
 			// 
 			this._ofsYMin.Location = new System.Drawing.Point(746, 54);
-			this._ofsYMin.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._ofsYMin.Margin = new System.Windows.Forms.Padding(6);
 			this._ofsYMin.Name = "_ofsYMin";
 			this._ofsYMin.Size = new System.Drawing.Size(30, 38);
 			this._ofsYMin.TabIndex = 29;
@@ -260,7 +287,7 @@
 			// _laserSize
 			// 
 			this._laserSize.Location = new System.Drawing.Point(906, 15);
-			this._laserSize.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._laserSize.Margin = new System.Windows.Forms.Padding(6);
 			this._laserSize.Name = "_laserSize";
 			this._laserSize.Size = new System.Drawing.Size(80, 31);
 			this._laserSize.TabIndex = 34;
@@ -279,7 +306,7 @@
 			// _cutterSize
 			// 
 			this._cutterSize.Location = new System.Drawing.Point(906, 54);
-			this._cutterSize.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._cutterSize.Margin = new System.Windows.Forms.Padding(6);
 			this._cutterSize.Name = "_cutterSize";
 			this._cutterSize.Size = new System.Drawing.Size(80, 31);
 			this._cutterSize.TabIndex = 32;
@@ -288,7 +315,7 @@
 			// _redraw
 			// 
 			this._redraw.Location = new System.Drawing.Point(448, 10);
-			this._redraw.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._redraw.Margin = new System.Windows.Forms.Padding(6);
 			this._redraw.Name = "_redraw";
 			this._redraw.Size = new System.Drawing.Size(108, 44);
 			this._redraw.TabIndex = 20;
@@ -309,7 +336,7 @@
 			// _load
 			// 
 			this._load.Location = new System.Drawing.Point(1376, 62);
-			this._load.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._load.Margin = new System.Windows.Forms.Padding(6);
 			this._load.Name = "_load";
 			this._load.Size = new System.Drawing.Size(168, 44);
 			this._load.TabIndex = 3;
@@ -320,7 +347,7 @@
 			// _sendTo
 			// 
 			this._sendTo.Location = new System.Drawing.Point(12, 12);
-			this._sendTo.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._sendTo.Margin = new System.Windows.Forms.Padding(6);
 			this._sendTo.Name = "_sendTo";
 			this._sendTo.Size = new System.Drawing.Size(150, 44);
 			this._sendTo.TabIndex = 0;
@@ -333,7 +360,7 @@
 			this._mainPanel.Controls.Add(this._gCodeCtrl);
 			this._mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._mainPanel.Location = new System.Drawing.Point(0, 113);
-			this._mainPanel.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this._mainPanel.Margin = new System.Windows.Forms.Padding(6);
 			this._mainPanel.Name = "_mainPanel";
 			this._mainPanel.Size = new System.Drawing.Size(1568, 966);
 			this._mainPanel.TabIndex = 2;
@@ -344,11 +371,12 @@
 			this._gCodeCtrl.CutterSize = 0D;
 			this._gCodeCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._gCodeCtrl.KeepRatio = true;
-			this._gCodeCtrl.LaserColor = System.Drawing.Color.Red;
+			this._gCodeCtrl.LaserOffColor = System.Drawing.Color.Orange;
+			this._gCodeCtrl.LaserOnColor = System.Drawing.Color.Red;
 			this._gCodeCtrl.LaserSize = 0.254D;
 			this._gCodeCtrl.Location = new System.Drawing.Point(0, 0);
 			this._gCodeCtrl.MachineColor = System.Drawing.Color.Black;
-			this._gCodeCtrl.Margin = new System.Windows.Forms.Padding(12, 12, 12, 12);
+			this._gCodeCtrl.Margin = new System.Windows.Forms.Padding(12);
 			this._gCodeCtrl.Name = "_gCodeCtrl";
 			this._gCodeCtrl.OffsetX = new decimal(new int[] {
             0,
@@ -376,16 +404,6 @@
 			this._gCodeCtrl.GCodeMousePosition += new CNCLib.GUI.GCodeUserControl.GCodeEventHandler(this._plotterCtrl_GCodeMousePosition);
 			this._gCodeCtrl.ZoomOffsetChanged += new CNCLib.GUI.GCodeUserControl.GCodeEventHandler(this._gCodeCtrl_ZoomOffsetChanged);
 			// 
-			// _useAzure
-			// 
-			this._useAzure.AutoSize = true;
-			this._useAzure.Location = new System.Drawing.Point(1376, 21);
-			this._useAzure.Name = "_useAzure";
-			this._useAzure.Size = new System.Drawing.Size(141, 29);
-			this._useAzure.TabIndex = 37;
-			this._useAzure.Text = "use Azure";
-			this._useAzure.UseVisualStyleBackColor = true;
-			// 
 			// PaintForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -393,7 +411,7 @@
 			this.ClientSize = new System.Drawing.Size(1568, 1079);
 			this.Controls.Add(this._mainPanel);
 			this.Controls.Add(this._headerPanel);
-			this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.Margin = new System.Windows.Forms.Padding(6);
 			this.Name = "PaintForm";
 			this.Text = "PaintForm";
 			this.Load += new System.EventHandler(this.PaintForm_Load);
@@ -430,7 +448,8 @@
         private System.Windows.Forms.Label _cutterLbl;
         private System.Windows.Forms.TextBox _laserSize;
         private System.Windows.Forms.Label _laserLbL;
-        private ColorComboBox _laserColor;
+        private ColorComboBox _laserOnColor;
+		private ColorComboBox _laserOffColor;
 		private System.Windows.Forms.CheckBox _useAzure;
 	}
 }
