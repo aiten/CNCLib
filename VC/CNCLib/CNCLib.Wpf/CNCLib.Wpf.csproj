@@ -72,7 +72,10 @@
     <Compile Include="..\CNCLibSolutionInfoVersion.cs">
       <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
     </Compile>
-
+    <Compile Include="Controls\GCoderUserControlEventArgs.cs" />
+    <Compile Include="Controls\GCodeUserControl.xaml.cs">
+      <DependentUpon>GCodeUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MoveUserControl.xaml.cs">
       <DependentUpon>MoveUserControl.xaml</DependentUpon>
     </Compile>
@@ -81,6 +84,9 @@
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\JoystickArduinoSerialCommunication.cs" />
     <Compile Include="Helpers\JoystickHelper.cs" />
+    <Compile Include="Views\PreviewPage.xaml.cs">
+      <DependentUpon>PreviewPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WpfAutoMapperProfile.cs" />
     <Compile Include="Models\Converter.cs" />
     <Compile Include="Models\Joystick.cs" />
@@ -122,6 +128,10 @@
     <Compile Include="Views\SetupPage.xaml.cs">
       <DependentUpon>SetupPage.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\GCodeUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\MoveUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -155,6 +165,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PaintPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PreviewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
