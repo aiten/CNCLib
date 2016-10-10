@@ -27,63 +27,47 @@ using System.Diagnostics;
 
 namespace CNCLib.GUI
 {
-	public partial class GCodeUserControl : UserControl , IOutputCommand
+	public partial class GCodeUserControl : UserControl
 	{
 		#region crt
 
 		public GCodeUserControl()
 		{
             InitializeComponent();
-
             SetStyle(ControlStyles.DoubleBuffer, true);
-            InitPen();
         }
 
         #endregion
 
         #region Properties
 
-        public decimal SizeX { get { return _sizeX; } set { _sizeX = value; CalcRatio(); } }
-        public decimal SizeY { get { return _sizeY; } set { _sizeY = value; CalcRatio(); } }
+        public decimal SizeX { get { return _bitmapDraw.SizeX; } set { _bitmapDraw.SizeX = value; } }
+        public decimal SizeY { get { return _bitmapDraw.SizeY; } set { _bitmapDraw.SizeY = value; } }
 
-        public bool KeepRatio { get { return _keepRatio; } set { _keepRatio = value; ReInitDraw(); } }
+        public bool KeepRatio { get { return _bitmapDraw.KeepRatio; } set { _bitmapDraw.KeepRatio = value; ReInitDraw(); } }
 
-        public double Zoom { get { return _zoom; } set { _zoom = value; ReInitDraw(); } }
-		public decimal OffsetX { get { return _offsetX; } set { _offsetX = value; ReInitDraw(); } }
-		public decimal OffsetY { get { return _offsetY; } set { _offsetY = value; ReInitDraw(); } }
-        public double CutterSize { get { return _cutterSize; } set { _cutterSize = value; ReInitDraw(); } }
-        public double LaserSize { get { return _laserSize; } set { _laserSize = value; ReInitDraw(); } }
+        public double Zoom { get { return _bitmapDraw.Zoom; } set { _bitmapDraw.Zoom = value; ReInitDraw(); } }
+		public decimal OffsetX { get { return _bitmapDraw.OffsetX; } set { _bitmapDraw.OffsetX = value; ReInitDraw(); } }
+		public decimal OffsetY { get { return _bitmapDraw.OffsetY; } set { _bitmapDraw.OffsetY = value; ReInitDraw(); } }
+        public double CutterSize { get { return _bitmapDraw.CutterSize; } set { _bitmapDraw.CutterSize = value; ReInitDraw(); } }
+        public double LaserSize { get { return _bitmapDraw.LaserSize; } set { _bitmapDraw.LaserSize = value; ReInitDraw(); } }
 
-        public Color MachineColor { get { return _machineColor; } set { _machineColor = value; ReInitDraw(); } }
-        public Color LaserOnColor { get { return _laserOnColor; } set { _laserOnColor = value; ReInitDraw(); } }
-		public Color LaserOffColor { get { return _laserOffColor; } set { _laserOffColor = value; ReInitDraw(); } }
+        public Color MachineColor { get { return _bitmapDraw.MachineColor; } set { _bitmapDraw.MachineColor = value; ReInitDraw(); } }
+        public Color LaserOnColor { get { return _bitmapDraw.LaserOnColor; } set { _bitmapDraw.LaserOnColor = value; ReInitDraw(); } }
+		public Color LaserOffColor { get { return _bitmapDraw.LaserOffColor; } set { _bitmapDraw.LaserOffColor = value; ReInitDraw(); } }
 
-		public CommandList Commands { get { return _commands; } }
+		public CommandList Commands { get { return _bitmapDraw.Commands; } }
 
 		public delegate void GCodeEventHandler(object sender, GCoderUserControlEventArgs e);
 
 		public event GCodeEventHandler GCodeMousePosition;
         public event GCodeEventHandler ZoomOffsetChanged;
 
-        #endregion
+		#endregion
 
-        #region private Members
+		#region private Members
 
-        bool    _keepRatio = true;
-        double  _zoom = 1;
-        decimal _sizeX = 130.000m;
-        decimal _sizeY = 45.000m;
-        decimal _offsetX = 0;
-		decimal _offsetY = 0;
-        double  _cutterSize = 0;
-        double  _laserSize = 0.254;
-        double  _ratioX = 1;
-        double  _ratioY = 1;
-        Color   _machineColor = Color.Black;
-        Color   _laserOnColor = Color.Red;
-		Color	_laserOffColor = Color.Orange;
-
-		CommandList _commands = new CommandList();
+		private GCodeBitmapDraw _bitmapDraw = new GCodeBitmapDraw();
 
 		private ArduinoSerialCommunication Com
 		{
@@ -91,72 +75,6 @@ namespace CNCLib.GUI
 		}
 
 		#endregion
-
-		#region Convert Coordinats
-
-		decimal AdjustX(decimal xx)
-		{
-			// x: 0...
-			return xx + OffsetX;
-		}
-
-		decimal AdjustY(decimal yy)
-		{
-			// y: 0...
-			return SizeY - (yy + OffsetY);
-		}
-
-		Point3D FromClient(Point pt)
-		{
-			// with e.g.  867
-			// max pt.X = 686 , pt.x can be 0
-			return new Point3D(
-							AdjustX((decimal) Math.Round(pt.X / _ratioX / Zoom, 3)),
-                            AdjustY((decimal) Math.Round(pt.Y / _ratioY / Zoom, 3)),
-							0);
-		}
-
-		Point ToClient(Point3D pt)
-		{
-			return new Point(
-                ToClientXInt((double) (pt.X??0)), 
-                ToClientYInt((double)(pt.Y ?? 0)));
-		}
-
-        double ToClientX(double val)
-        {
-            double x = (double)(val - (double) OffsetX) * Zoom;
-            return _ratioX * x;
-        }
-        double ToClientY(double val)
-        {
-            double y = (double)(((double) SizeY - (val + (double)OffsetY))) * Zoom;
-            return _ratioY * y;
-        }
-        int ToClientXInt(double val)
-        {
-            return (int)Math.Round(ToClientX(val), 0);
-        }
-        int ToClientYInt(double val)
-        {
-            return (int)Math.Round(ToClientY(val), 0);
-        }
-
-        const double SignX = 1.0;
-        const double SignY = -1.0;
-
-        int ToClientSizeX(double X)
-        {
-            double x = X * Zoom;
-            return (int)Math.Round(_ratioX * x, 0);
-        }
-        int ToClientSizeY(double Y)
-        {
-            double y = Y * Zoom;
-            return (int)Math.Round(_ratioY * y, 0);
-        }
-
-        #endregion
 
         #region Drag/Drop
 
@@ -169,9 +87,9 @@ namespace CNCLib.GUI
         private void GCodeUserControl_MouseWheel(object sender, MouseEventArgs e)
         {
             if (e.Delta > 0)
-                _zoom *= 1.1;
+                Zoom *= 1.1;
             else
-                _zoom /= 1.1;
+                Zoom /= 1.1;
 
             OnZoomOffsetChanged();
             Invalidate();
@@ -182,9 +100,9 @@ namespace CNCLib.GUI
             {
                 if (!_isdragging)
                 {
-                    _mouseDown = FromClient(e.Location);
-                    _mouseDownOffsetX = _offsetX;
-                    _mouseDownOffsetY = _offsetY;
+                    _mouseDown = _bitmapDraw.FromClient(e.Location);
+                    _mouseDownOffsetX = OffsetX;
+                    _mouseDownOffsetY = OffsetY;
                     _sw.Start();
                 }
                 _isdragging = true;
@@ -195,17 +113,17 @@ namespace CNCLib.GUI
 		{
 			if (GCodeMousePosition != null)
 			{
-				GCodeMousePosition(this, new GCoderUserControlEventArgs() { GCodePosition = FromClient(e.Location) });
+				GCodeMousePosition(this, new GCoderUserControlEventArgs() { GCodePosition = _bitmapDraw.FromClient(e.Location) });
 			}
             if (_isdragging)
             {
-                _offsetX = _mouseDownOffsetX;
-                _offsetY = _mouseDownOffsetY;
-                Point3D c = FromClient(e.Location);
+                OffsetX = _mouseDownOffsetX;
+                OffsetY = _mouseDownOffsetY;
+                Point3D c = _bitmapDraw.FromClient(e.Location);
                 decimal newX = _mouseDownOffsetX - (c.X.Value - _mouseDown.X.Value);
                 decimal newY = _mouseDownOffsetY + (c.Y.Value - _mouseDown.Y.Value);
-                _offsetX = newX;
-                _offsetY = newY;
+                OffsetX = newX;
+                OffsetY = newY;
                 OnZoomOffsetChanged();
                 if (_sw.ElapsedMilliseconds > 300)
                 {
@@ -229,7 +147,6 @@ namespace CNCLib.GUI
         {
             if (ZoomOffsetChanged != null)
             {
-                InitPen();
                 ZoomOffsetChanged(this, new GCoderUserControlEventArgs() );
             }
         }
@@ -240,233 +157,32 @@ namespace CNCLib.GUI
 
         private void ReInitDraw()
         {
-            InitPen();
             Invalidate();
         }
-        private void InitPen()
-        {
-            Color cutColor = MachineColor == Color.White ? Color.Black : Color.White;
-            float cutsize = CutterSize > 0 ? (float)ToClient(new Point3D(OffsetX + (decimal)CutterSize, 0m, 0m)).X : 2;
-            float fastSize = 0.5f;
 
-            _cutLine = new Pen(cutColor, cutsize);
-            _cutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-            _cutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-
-            _cutDot     = new Pen(Color.Blue, cutsize);
-            _cutEllipse = new Pen(Color.Cyan, cutsize);
-
-            _cut = new Pen[] { _cutLine, _cutDot, _cutEllipse };
-
-            _fastLine = new Pen(Color.Green, fastSize);
-            _NoMove = new Pen(Color.Blue, fastSize);
-            _laserCutLine = new Pen(LaserOnColor, ToClient(new Point3D(OffsetX+(decimal)LaserSize,0m,0m)).X);
-            _laserCutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-            _laserCutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-            _laserFastLine = new Pen(LaserOffColor, (float)(fastSize / 2.0));
-			_machineLine = new Pen(Color.LightBlue, 1);
-
-            _helpLine = new Pen(Color.Yellow, 1);
-        }
-
-        private void PlotterUserControl_Paint(object sender, PaintEventArgs e)
+        private void GCodeUserControl_Paint(object sender, PaintEventArgs e)
 		{
-            //Create a Bitmap object with the size of the form
-            Bitmap curBitmap = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
-            //Create a temporary Graphics object from the bitmap
-            Graphics g1 = Graphics.FromImage(curBitmap);
-            g1.InterpolationMode = InterpolationMode.NearestNeighbor;
-            g1.SmoothingMode = SmoothingMode.None;
-            g1.PixelOffsetMode = PixelOffsetMode.None;
-            g1.CompositingQuality = CompositingQuality.HighSpeed;
-            g1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
+			if (_bitmapDraw.RenderSize.Height == 0 || _bitmapDraw.RenderSize.Width == 0)
+				return;
 
-            //Draw lines on the temporary Graphics object
+			var curBitmap = _bitmapDraw.DrawToBitmap();
 
-            var ee = new PaintEventArgs(g1, new Rectangle());
-
-            Point from = ToClient(new Point3D(0, SizeY, 0));
-            Point to = ToClient(new Point3D(SizeX, 0, 0m));
-            Size sz = new Size(to.X - from.X, to.Y - from.Y);
-            Rectangle rc = new Rectangle(from, sz);
-
-            g1.FillRectangle(new SolidBrush(MachineColor), rc);
-
-            _commands.Paint(this, ee);
-
-            //Call DrawImage of Graphics and draw bitmap
             e.Graphics.DrawImage(curBitmap, 0, 0);
-            //Dispose of objects
-            g1.Dispose();
             curBitmap.Dispose();
        }
 
-        private void CalcRatio()
-        {
-            _ratioX = ClientSize.Width / (double) SizeX;
-            _ratioY = ClientSize.Height / (double) SizeY;
-
-            if (KeepRatio)
-            {
-                if (_ratioX > _ratioY) _ratioX = _ratioY;
-                else if (_ratioX < _ratioY) _ratioY = _ratioX;
-            }
-       }
-
         private Size _lastsize;
-		private void PlotterUserControl_Resize(object sender, EventArgs e)
+		private void GCodeUserControl_Resize(object sender, EventArgs e)
 		{
 			if (_lastsize.Height != 0 && Size.Width > 0 && Size.Height > 0)
 			{
 				//RecalcClientCoord();
 			}
+			_bitmapDraw.RenderSize = Size;
 			_lastsize = Size;
-            CalcRatio();
             Invalidate();
 		}
 
         #endregion
-
-        #region IOutput 
-
-        Pen _NoMove;
-        Pen _cutEllipse;
-        Pen _cutLine;
-        Pen _cutDot;
-        Pen[] _cut;
-        Pen _fastLine;
-        Pen _laserCutLine;
-        Pen _laserFastLine;
-        Pen _machineLine;
-        Pen _helpLine;
-
-        public void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo)
-        {
-            if (drawtype == DrawType.NoDraw) return;
-
-            PaintEventArgs e = (PaintEventArgs)param;
-
-            Point from = ToClient(ptFrom);
-            Point to = ToClient(ptTo);
-
-            if (PreDrawLineOrArc(param, drawtype, from, to))
-            {
-                e.Graphics.DrawLine(GetPen(drawtype, LineDrawType.Line), from, to);
-            }
-        }
-
-        private bool PreDrawLineOrArc(object param, DrawType drawtype, Point from, Point to)
-        {
-            PaintEventArgs e = (PaintEventArgs)param;
-
-            if (from.Equals(to))
-            {
-                if (drawtype == DrawType.LaserCut)
-                    e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 1, 1);
-                else
-                    e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 4, 4);
-
-                return false;
-            }
-            return true;
-        }
-
-        public void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptCenter, int xradius, int yradius)
-		{
-            if (drawtype == DrawType.NoDraw) return;
-
-			PaintEventArgs e = (PaintEventArgs)param;
-			Point from = ToClient(ptCenter);
-			e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X- xradius/2, from.Y-yradius/2, xradius, yradius);
-		}
-
-        double ConvertRadToDeg(double rad)
-        {
-            double deg = -rad * 180.0 / Math.PI + 180.0;
-            while (deg < 0)
-                deg += 360;
-
-            while (deg > 360)
-                deg -= 360;
-
-            return deg;
-        }
-
-
-        public void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D pIJ, bool clockwise)
-        {
-            if (drawtype == DrawType.NoDraw) return;
-
-            PaintEventArgs e = (PaintEventArgs)param;
-
-            Point from = ToClient(ptFrom);
-            Point to = ToClient(ptTo);
-
-            //e.Graphics.DrawLine(_helpLine, from, to);
-
-            double I = (double)pIJ.X.Value;
-            double J = (double)pIJ.Y.Value;
-            double R = Math.Sqrt(I * I + J * J);
-
-            double cx = (double)ptFrom.X.Value + I;
-            double cy = (double)ptFrom.Y.Value + J;
-
-            double startAng = ConvertRadToDeg(Math.Atan2(J, I));
-            double endAng = ConvertRadToDeg(Math.Atan2(cy - (double)ptTo.Y.Value, cx - (double)ptTo.X.Value));
-            double diffAng = (endAng - startAng);
-            if (startAng > endAng)
-                diffAng += 360;
-
-            if (clockwise == false)
-            {
-                startAng = endAng;
-                diffAng = 360 - diffAng;
-                while (diffAng > 360)
-                    diffAng -= 360;
-
-                while (diffAng < -360)
-                    diffAng += 360;
-            }
-
-            Point rcfrom = new Point(ToClientXInt(cx - R* SignX), ToClientYInt(cy - R* SignY));
-            int RR = ToClientSizeX(R * 2);
-            Rectangle rec = new Rectangle(rcfrom, new Size(RR,RR));
-
-            //e.Graphics.DrawRectangle(_helpLine, rec);
-
-            if (rec.Width > 0 && rec.Height > 0)
-            {
-                try
-                {
-                    e.Graphics.DrawArc(GetPen(drawtype, LineDrawType.Line), rec.X, rec.Y, rec.Width, rec.Height, (float)startAng, (float)diffAng);
-                }
-                catch (OutOfMemoryException)
-                {
-                    // ignore this Exception
-                }
-            }
-        }
-
-        enum LineDrawType
-        {
-            Line=0,
-            Dot=1,
-            Ellipse=2
-        };
-
-		private Pen GetPen(DrawType moveType, LineDrawType drawtype)
-		{
-			switch (moveType)
-			{
-				default:
-				case DrawType.NoMove: return _NoMove;
-				case DrawType.Fast: return _fastLine;
-				case DrawType.Cut: return _cut[(int) drawtype];
-                case DrawType.LaserFast: return _laserFastLine;
-                case DrawType.LaserCut: return _laserCutLine;
-            }
-        }
-
-		#endregion
 	}
 }

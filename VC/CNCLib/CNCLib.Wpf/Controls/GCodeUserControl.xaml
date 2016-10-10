@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:CNCLib.Wpf.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            
-    </Grid>
+    <Canvas>
+        <Canvas.CacheMode>
+        <BitmapCache EnableClearType="True" RenderAtScale="1.0" />
+    </Canvas.CacheMode>
+    </Canvas>
 </UserControl>

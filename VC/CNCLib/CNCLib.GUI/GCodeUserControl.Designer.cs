@@ -37,12 +37,12 @@
 			this.AutoScroll = true;
 			this.Name = "GCodeUserControl";
 			this.Size = new System.Drawing.Size(419, 270);
-			this.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotterUserControl_Paint);
+			this.Paint += new System.Windows.Forms.PaintEventHandler(this.GCodeUserControl_Paint);
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GCodeUserControl_MouseDown);
 			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GCodeUserControl_MouseMove);
 			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GCodeUserControl_MouseUp);
 			this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.GCodeUserControl_MouseWheel);
-			this.Resize += new System.EventHandler(this.PlotterUserControl_Resize);
+			this.Resize += new System.EventHandler(this.GCodeUserControl_Resize);
 			this.ResumeLayout(false);
 
         }

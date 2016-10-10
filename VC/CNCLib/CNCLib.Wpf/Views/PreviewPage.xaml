@@ -13,7 +13,7 @@
         <StackPanel DockPanel.Dock="Top">
             <Label Content="Test" />
         </StackPanel>
-        <ctrl:GCodeUserControl/>
+        <ctrl:GCodeUserControl />
 
     </DockPanel>
 </Page>
