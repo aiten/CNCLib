@@ -41,8 +41,8 @@ namespace CNCLib.GUI
 
         #region Properties
 
-        public decimal SizeX { get { return _bitmapDraw.SizeX; } set { _bitmapDraw.SizeX = value; } }
-        public decimal SizeY { get { return _bitmapDraw.SizeY; } set { _bitmapDraw.SizeY = value; } }
+        public decimal SizeX { get { return _bitmapDraw.SizeX; } set { _bitmapDraw.SizeX = value; ReInitDraw(); } }
+        public decimal SizeY { get { return _bitmapDraw.SizeY; } set { _bitmapDraw.SizeY = value; ReInitDraw(); } }
 
         public bool KeepRatio { get { return _bitmapDraw.KeepRatio; } set { _bitmapDraw.KeepRatio = value; ReInitDraw(); } }
 
@@ -171,15 +171,9 @@ namespace CNCLib.GUI
             curBitmap.Dispose();
        }
 
-        private Size _lastsize;
 		private void GCodeUserControl_Resize(object sender, EventArgs e)
 		{
-			if (_lastsize.Height != 0 && Size.Width > 0 && Size.Height > 0)
-			{
-				//RecalcClientCoord();
-			}
 			_bitmapDraw.RenderSize = Size;
-			_lastsize = Size;
             Invalidate();
 		}
 

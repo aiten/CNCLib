@@ -32,7 +32,6 @@ namespace CNCLib.GUI
 
 		public GCodeBitmapDraw()
 		{
-			InitPen();
 		}
 
 		#endregion
@@ -42,7 +41,7 @@ namespace CNCLib.GUI
 		public decimal SizeX { get { return _sizeX; } set { _sizeX = value; CalcRatio(); } }
 		public decimal SizeY { get { return _sizeY; } set { _sizeY = value; CalcRatio(); } }
 
-		public bool KeepRatio { get { return _keepRatio; } set { _keepRatio = value; ReInitDraw(); } }
+		public bool KeepRatio { get { return _keepRatio; } set { _keepRatio = value; CalcRatio(); } }
 
 		public double Zoom { get { return _zoom; } set { _zoom = value; ReInitDraw(); } }
 		public decimal OffsetX { get { return _offsetX; } set { _offsetX = value; ReInitDraw(); } }
@@ -56,9 +55,6 @@ namespace CNCLib.GUI
 
 		public CommandList Commands { get { return _commands; } }
 
-		public delegate void GCodeEventHandler(object sender, GCoderUserControlEventArgs e);
-
-		private Size _rendersize;
 		public Size RenderSize
 		{
 			get { return _rendersize; }
@@ -77,6 +73,9 @@ namespace CNCLib.GUI
 
 		#region private Members
 
+		bool _needReInit = true;
+
+		Size _rendersize;
 		bool _keepRatio = true;
 		double _zoom = 1;
 		decimal _sizeX = 130.000m;
@@ -170,37 +169,43 @@ namespace CNCLib.GUI
 
 		void ReInitDraw()
 		{
-			InitPen();
+			_needReInit = true;
 		}
 
 		void InitPen()
 		{
-			Color cutColor = MachineColor == Color.White ? Color.Black : Color.White;
-			float cutsize = CutterSize > 0 ? (float)ToClient(new Point3D(OffsetX + (decimal)CutterSize, 0m, 0m)).X : 2;
-			float fastSize = 0.5f;
+			if (_needReInit)
+			{
+				Color cutColor = MachineColor == Color.White ? Color.Black : Color.White;
+				float cutsize = CutterSize > 0 ? (float)ToClient(new Point3D(OffsetX + (decimal)CutterSize, 0m, 0m)).X : 2;
+				float fastSize = 0.5f;
 
-			_cutLine = new Pen(cutColor, cutsize);
-			_cutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-			_cutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+				_cutLine = new Pen(cutColor, cutsize);
+				_cutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+				_cutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
 
-			_cutDot = new Pen(Color.Blue, cutsize);
-			_cutEllipse = new Pen(Color.Cyan, cutsize);
+				_cutDot = new Pen(Color.Blue, cutsize);
+				_cutEllipse = new Pen(Color.Cyan, cutsize);
 
-			_cut = new Pen[] { _cutLine, _cutDot, _cutEllipse };
+				_cut = new Pen[] { _cutLine, _cutDot, _cutEllipse };
 
-			_fastLine = new Pen(Color.Green, fastSize);
-			_NoMove = new Pen(Color.Blue, fastSize);
-			_laserCutLine = new Pen(LaserOnColor, ToClient(new Point3D(OffsetX + (decimal)LaserSize, 0m, 0m)).X);
-			_laserCutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-			_laserCutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-			_laserFastLine = new Pen(LaserOffColor, (float)(fastSize / 2.0));
-			_machineLine = new Pen(Color.LightBlue, 1);
+				_fastLine = new Pen(Color.Green, fastSize);
+				_NoMove = new Pen(Color.Blue, fastSize);
+				_laserCutLine = new Pen(LaserOnColor, ToClient(new Point3D(OffsetX + (decimal)LaserSize, 0m, 0m)).X);
+				_laserCutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+				_laserCutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+				_laserFastLine = new Pen(LaserOffColor, (float)(fastSize / 2.0));
+				_machineLine = new Pen(Color.LightBlue, 1);
 
-			_helpLine = new Pen(Color.Yellow, 1);
+				_helpLine = new Pen(Color.Yellow, 1);
+				_needReInit = false;
+			}
 		}
 
 		public Bitmap DrawToBitmap()
 		{
+			InitPen();
+
 			Bitmap curBitmap = new Bitmap(RenderSize.Width, RenderSize.Height);
 
 			Graphics g1 = Graphics.FromImage(curBitmap);

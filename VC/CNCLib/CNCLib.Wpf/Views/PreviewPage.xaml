@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CNCLib.Wpf.Views"
       xmlns:ctrl="clr-namespace:CNCLib.Wpf.Controls"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="PreviewPage">
@@ -12,8 +13,14 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
             <Label Content="Test" />
+            <xctk:ColorPicker Name="machinColor" />
+            <Slider Name="zoomSlider"  Value="1" Minimum="0" Maximum="10"/>
         </StackPanel>
-        <ctrl:GCodeUserControl />
-
+        <Slider Name="offsetXSlider"  Value="0" Minimum="-1000" Maximum="1000" DockPanel.Dock="Bottom"/>
+        <Slider Name="offsetYSlider"  Value="0" Minimum="-1000" Maximum="1000" DockPanel.Dock="Right" Orientation="Vertical" IsDirectionReversed="True"/>
+        <ctrl:GCodeUserControl MachineColor="{Binding Path=SelectedColor,ElementName=machinColor,Mode=TwoWay}"
+                                Zoom="{Binding Path=Value,ElementName=zoomSlider,Mode=TwoWay}" 
+                               OffsetX="{Binding Path=Value,ElementName=offsetXSlider,Mode=TwoWay}"
+                               OffsetY="{Binding Path=Value,ElementName=offsetYSlider,Mode=TwoWay}"/>
     </DockPanel>
 </Page>

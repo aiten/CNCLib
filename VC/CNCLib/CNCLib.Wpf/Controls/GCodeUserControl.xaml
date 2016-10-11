@@ -7,8 +7,5 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Canvas>
-        <Canvas.CacheMode>
-        <BitmapCache EnableClearType="True" RenderAtScale="1.0" />
-    </Canvas.CacheMode>
     </Canvas>
 </UserControl>
