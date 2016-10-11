@@ -61,7 +61,9 @@ namespace CNCLib.GUI.Load
 
         static public Framework.Tools.Pattern.IFactory LogicFactory { get; set; }
 
-        public LoadOptions LoadInfo 
+		public bool UseAzure { get { return _useAzure.Checked; } set { _useAzure.Checked = value; } }
+
+		public LoadOptions LoadInfo 
         {   
             get
 			{

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
 			this._headerPanel = new System.Windows.Forms.Panel();
-			this._useAzure = new System.Windows.Forms.CheckBox();
+			this._laserOffColor = new CNCLib.GUI.ColorComboBox();
 			this._laserOnColor = new CNCLib.GUI.ColorComboBox();
 			this._zoomLbl = new System.Windows.Forms.Label();
 			this._zoom = new System.Windows.Forms.TextBox();
@@ -54,7 +54,6 @@
 			this._sendTo = new System.Windows.Forms.Button();
 			this._mainPanel = new System.Windows.Forms.Panel();
 			this._gCodeCtrl = new CNCLib.GUI.GCodeUserControl();
-			this._laserOffColor = new CNCLib.GUI.ColorComboBox();
 			this._headerPanel.SuspendLayout();
 			this._mainPanel.SuspendLayout();
 			this.SuspendLayout();
@@ -62,7 +61,6 @@
 			// _headerPanel
 			// 
 			this._headerPanel.Controls.Add(this._laserOffColor);
-			this._headerPanel.Controls.Add(this._useAzure);
 			this._headerPanel.Controls.Add(this._laserOnColor);
 			this._headerPanel.Controls.Add(this._zoomLbl);
 			this._headerPanel.Controls.Add(this._zoom);
@@ -92,40 +90,157 @@
 			this._headerPanel.Size = new System.Drawing.Size(1568, 113);
 			this._headerPanel.TabIndex = 0;
 			// 
-			// _useAzure
+			// _laserOffColor
 			// 
-			this._useAzure.AutoSize = true;
-			this._useAzure.Location = new System.Drawing.Point(1376, 21);
-			this._useAzure.Name = "_useAzure";
-			this._useAzure.Size = new System.Drawing.Size(141, 29);
-			this._useAzure.TabIndex = 37;
-			this._useAzure.Text = "use Azure";
-			this._useAzure.UseVisualStyleBackColor = true;
-			// 
-			// _laserColor
-			// 
-			this._laserOnColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-			this._laserOnColor.DropDownHeight = 400;
-			this._laserOnColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this._laserOnColor.DropDownWidth = 200;
-			this._laserOnColor.FormattingEnabled = true;
-			this._laserOnColor.IntegralHeight = false;
-			this._laserOnColor.Location = new System.Drawing.Point(1002, 17);
-			this._laserOnColor.Margin = new System.Windows.Forms.Padding(6);
-			this._laserOnColor.MaxDropDownItems = 20;
-			this._laserOnColor.Name = "_laserColor";
-			this._laserOnColor.Size = new System.Drawing.Size(264, 32);
-			this._laserOnColor.TabIndex = 36;
-			this._laserOnColor.SelectedIndexChanged += new System.EventHandler(this._laserOnColor_SelectedIndexChanged);
-			// 
-			// colorComboBox1
-			// 
+			this._laserOffColor.Color = System.Drawing.Color.Black;
 			this._laserOffColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
 			this._laserOffColor.DropDownHeight = 400;
 			this._laserOffColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this._laserOffColor.DropDownWidth = 200;
 			this._laserOffColor.FormattingEnabled = true;
 			this._laserOffColor.IntegralHeight = false;
+			this._laserOffColor.Items.AddRange(new object[] {
+            "Transparent",
+            "AliceBlue",
+            "AntiqueWhite",
+            "Aqua",
+            "Aquamarine",
+            "Azure",
+            "Beige",
+            "Bisque",
+            "Black",
+            "BlanchedAlmond",
+            "Blue",
+            "BlueViolet",
+            "Brown",
+            "BurlyWood",
+            "CadetBlue",
+            "Chartreuse",
+            "Chocolate",
+            "Coral",
+            "CornflowerBlue",
+            "Cornsilk",
+            "Crimson",
+            "Cyan",
+            "DarkBlue",
+            "DarkCyan",
+            "DarkGoldenrod",
+            "DarkGray",
+            "DarkGreen",
+            "DarkKhaki",
+            "DarkMagenta",
+            "DarkOliveGreen",
+            "DarkOrange",
+            "DarkOrchid",
+            "DarkRed",
+            "DarkSalmon",
+            "DarkSeaGreen",
+            "DarkSlateBlue",
+            "DarkSlateGray",
+            "DarkTurquoise",
+            "DarkViolet",
+            "DeepPink",
+            "DeepSkyBlue",
+            "DimGray",
+            "DodgerBlue",
+            "Firebrick",
+            "FloralWhite",
+            "ForestGreen",
+            "Fuchsia",
+            "Gainsboro",
+            "GhostWhite",
+            "Gold",
+            "Goldenrod",
+            "Gray",
+            "Green",
+            "GreenYellow",
+            "Honeydew",
+            "HotPink",
+            "IndianRed",
+            "Indigo",
+            "Ivory",
+            "Khaki",
+            "Lavender",
+            "LavenderBlush",
+            "LawnGreen",
+            "LemonChiffon",
+            "LightBlue",
+            "LightCoral",
+            "LightCyan",
+            "LightGoldenrodYellow",
+            "LightGreen",
+            "LightGray",
+            "LightPink",
+            "LightSalmon",
+            "LightSeaGreen",
+            "LightSkyBlue",
+            "LightSlateGray",
+            "LightSteelBlue",
+            "LightYellow",
+            "Lime",
+            "LimeGreen",
+            "Linen",
+            "Magenta",
+            "Maroon",
+            "MediumAquamarine",
+            "MediumBlue",
+            "MediumOrchid",
+            "MediumPurple",
+            "MediumSeaGreen",
+            "MediumSlateBlue",
+            "MediumSpringGreen",
+            "MediumTurquoise",
+            "MediumVioletRed",
+            "MidnightBlue",
+            "MintCream",
+            "MistyRose",
+            "Moccasin",
+            "NavajoWhite",
+            "Navy",
+            "OldLace",
+            "Olive",
+            "OliveDrab",
+            "Orange",
+            "OrangeRed",
+            "Orchid",
+            "PaleGoldenrod",
+            "PaleGreen",
+            "PaleTurquoise",
+            "PaleVioletRed",
+            "PapayaWhip",
+            "PeachPuff",
+            "Peru",
+            "Pink",
+            "Plum",
+            "PowderBlue",
+            "Purple",
+            "Red",
+            "RosyBrown",
+            "RoyalBlue",
+            "SaddleBrown",
+            "Salmon",
+            "SandyBrown",
+            "SeaGreen",
+            "SeaShell",
+            "Sienna",
+            "Silver",
+            "SkyBlue",
+            "SlateBlue",
+            "SlateGray",
+            "Snow",
+            "SpringGreen",
+            "SteelBlue",
+            "Tan",
+            "Teal",
+            "Thistle",
+            "Tomato",
+            "Turquoise",
+            "Violet",
+            "Wheat",
+            "White",
+            "WhiteSmoke",
+            "Yellow",
+            "YellowGreen"});
 			this._laserOffColor.Location = new System.Drawing.Point(1002, 53);
 			this._laserOffColor.Margin = new System.Windows.Forms.Padding(6);
 			this._laserOffColor.MaxDropDownItems = 20;
@@ -133,6 +248,165 @@
 			this._laserOffColor.Size = new System.Drawing.Size(264, 32);
 			this._laserOffColor.TabIndex = 38;
 			this._laserOffColor.SelectedIndexChanged += new System.EventHandler(this._laserOffColor_SelectedIndexChanged);
+			// 
+			// _laserOnColor
+			// 
+			this._laserOnColor.Color = System.Drawing.Color.Black;
+			this._laserOnColor.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this._laserOnColor.DropDownHeight = 400;
+			this._laserOnColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this._laserOnColor.DropDownWidth = 200;
+			this._laserOnColor.FormattingEnabled = true;
+			this._laserOnColor.IntegralHeight = false;
+			this._laserOnColor.Items.AddRange(new object[] {
+            "Transparent",
+            "AliceBlue",
+            "AntiqueWhite",
+            "Aqua",
+            "Aquamarine",
+            "Azure",
+            "Beige",
+            "Bisque",
+            "Black",
+            "BlanchedAlmond",
+            "Blue",
+            "BlueViolet",
+            "Brown",
+            "BurlyWood",
+            "CadetBlue",
+            "Chartreuse",
+            "Chocolate",
+            "Coral",
+            "CornflowerBlue",
+            "Cornsilk",
+            "Crimson",
+            "Cyan",
+            "DarkBlue",
+            "DarkCyan",
+            "DarkGoldenrod",
+            "DarkGray",
+            "DarkGreen",
+            "DarkKhaki",
+            "DarkMagenta",
+            "DarkOliveGreen",
+            "DarkOrange",
+            "DarkOrchid",
+            "DarkRed",
+            "DarkSalmon",
+            "DarkSeaGreen",
+            "DarkSlateBlue",
+            "DarkSlateGray",
+            "DarkTurquoise",
+            "DarkViolet",
+            "DeepPink",
+            "DeepSkyBlue",
+            "DimGray",
+            "DodgerBlue",
+            "Firebrick",
+            "FloralWhite",
+            "ForestGreen",
+            "Fuchsia",
+            "Gainsboro",
+            "GhostWhite",
+            "Gold",
+            "Goldenrod",
+            "Gray",
+            "Green",
+            "GreenYellow",
+            "Honeydew",
+            "HotPink",
+            "IndianRed",
+            "Indigo",
+            "Ivory",
+            "Khaki",
+            "Lavender",
+            "LavenderBlush",
+            "LawnGreen",
+            "LemonChiffon",
+            "LightBlue",
+            "LightCoral",
+            "LightCyan",
+            "LightGoldenrodYellow",
+            "LightGreen",
+            "LightGray",
+            "LightPink",
+            "LightSalmon",
+            "LightSeaGreen",
+            "LightSkyBlue",
+            "LightSlateGray",
+            "LightSteelBlue",
+            "LightYellow",
+            "Lime",
+            "LimeGreen",
+            "Linen",
+            "Magenta",
+            "Maroon",
+            "MediumAquamarine",
+            "MediumBlue",
+            "MediumOrchid",
+            "MediumPurple",
+            "MediumSeaGreen",
+            "MediumSlateBlue",
+            "MediumSpringGreen",
+            "MediumTurquoise",
+            "MediumVioletRed",
+            "MidnightBlue",
+            "MintCream",
+            "MistyRose",
+            "Moccasin",
+            "NavajoWhite",
+            "Navy",
+            "OldLace",
+            "Olive",
+            "OliveDrab",
+            "Orange",
+            "OrangeRed",
+            "Orchid",
+            "PaleGoldenrod",
+            "PaleGreen",
+            "PaleTurquoise",
+            "PaleVioletRed",
+            "PapayaWhip",
+            "PeachPuff",
+            "Peru",
+            "Pink",
+            "Plum",
+            "PowderBlue",
+            "Purple",
+            "Red",
+            "RosyBrown",
+            "RoyalBlue",
+            "SaddleBrown",
+            "Salmon",
+            "SandyBrown",
+            "SeaGreen",
+            "SeaShell",
+            "Sienna",
+            "Silver",
+            "SkyBlue",
+            "SlateBlue",
+            "SlateGray",
+            "Snow",
+            "SpringGreen",
+            "SteelBlue",
+            "Tan",
+            "Teal",
+            "Thistle",
+            "Tomato",
+            "Turquoise",
+            "Violet",
+            "Wheat",
+            "White",
+            "WhiteSmoke",
+            "Yellow",
+            "YellowGreen"});
+			this._laserOnColor.Location = new System.Drawing.Point(1002, 17);
+			this._laserOnColor.Margin = new System.Windows.Forms.Padding(6);
+			this._laserOnColor.MaxDropDownItems = 20;
+			this._laserOnColor.Name = "_laserOnColor";
+			this._laserOnColor.Size = new System.Drawing.Size(264, 32);
+			this._laserOnColor.TabIndex = 36;
+			this._laserOnColor.SelectedIndexChanged += new System.EventHandler(this._laserOnColor_SelectedIndexChanged);
 			// 
 			// _zoomLbl
 			// 
@@ -184,6 +458,148 @@
 			this._colorCB.DropDownWidth = 200;
 			this._colorCB.FormattingEnabled = true;
 			this._colorCB.IntegralHeight = false;
+			this._colorCB.Items.AddRange(new object[] {
+            "Transparent",
+            "AliceBlue",
+            "AntiqueWhite",
+            "Aqua",
+            "Aquamarine",
+            "Azure",
+            "Beige",
+            "Bisque",
+            "Black",
+            "BlanchedAlmond",
+            "Blue",
+            "BlueViolet",
+            "Brown",
+            "BurlyWood",
+            "CadetBlue",
+            "Chartreuse",
+            "Chocolate",
+            "Coral",
+            "CornflowerBlue",
+            "Cornsilk",
+            "Crimson",
+            "Cyan",
+            "DarkBlue",
+            "DarkCyan",
+            "DarkGoldenrod",
+            "DarkGray",
+            "DarkGreen",
+            "DarkKhaki",
+            "DarkMagenta",
+            "DarkOliveGreen",
+            "DarkOrange",
+            "DarkOrchid",
+            "DarkRed",
+            "DarkSalmon",
+            "DarkSeaGreen",
+            "DarkSlateBlue",
+            "DarkSlateGray",
+            "DarkTurquoise",
+            "DarkViolet",
+            "DeepPink",
+            "DeepSkyBlue",
+            "DimGray",
+            "DodgerBlue",
+            "Firebrick",
+            "FloralWhite",
+            "ForestGreen",
+            "Fuchsia",
+            "Gainsboro",
+            "GhostWhite",
+            "Gold",
+            "Goldenrod",
+            "Gray",
+            "Green",
+            "GreenYellow",
+            "Honeydew",
+            "HotPink",
+            "IndianRed",
+            "Indigo",
+            "Ivory",
+            "Khaki",
+            "Lavender",
+            "LavenderBlush",
+            "LawnGreen",
+            "LemonChiffon",
+            "LightBlue",
+            "LightCoral",
+            "LightCyan",
+            "LightGoldenrodYellow",
+            "LightGreen",
+            "LightGray",
+            "LightPink",
+            "LightSalmon",
+            "LightSeaGreen",
+            "LightSkyBlue",
+            "LightSlateGray",
+            "LightSteelBlue",
+            "LightYellow",
+            "Lime",
+            "LimeGreen",
+            "Linen",
+            "Magenta",
+            "Maroon",
+            "MediumAquamarine",
+            "MediumBlue",
+            "MediumOrchid",
+            "MediumPurple",
+            "MediumSeaGreen",
+            "MediumSlateBlue",
+            "MediumSpringGreen",
+            "MediumTurquoise",
+            "MediumVioletRed",
+            "MidnightBlue",
+            "MintCream",
+            "MistyRose",
+            "Moccasin",
+            "NavajoWhite",
+            "Navy",
+            "OldLace",
+            "Olive",
+            "OliveDrab",
+            "Orange",
+            "OrangeRed",
+            "Orchid",
+            "PaleGoldenrod",
+            "PaleGreen",
+            "PaleTurquoise",
+            "PaleVioletRed",
+            "PapayaWhip",
+            "PeachPuff",
+            "Peru",
+            "Pink",
+            "Plum",
+            "PowderBlue",
+            "Purple",
+            "Red",
+            "RosyBrown",
+            "RoyalBlue",
+            "SaddleBrown",
+            "Salmon",
+            "SandyBrown",
+            "SeaGreen",
+            "SeaShell",
+            "Sienna",
+            "Silver",
+            "SkyBlue",
+            "SlateBlue",
+            "SlateGray",
+            "Snow",
+            "SpringGreen",
+            "SteelBlue",
+            "Tan",
+            "Teal",
+            "Thistle",
+            "Tomato",
+            "Turquoise",
+            "Violet",
+            "Wheat",
+            "White",
+            "WhiteSmoke",
+            "Yellow",
+            "YellowGreen"});
 			this._colorCB.Location = new System.Drawing.Point(288, 56);
 			this._colorCB.Margin = new System.Windows.Forms.Padding(6);
 			this._colorCB.MaxDropDownItems = 20;
@@ -335,7 +751,7 @@
 			// 
 			// _load
 			// 
-			this._load.Location = new System.Drawing.Point(1376, 62);
+			this._load.Location = new System.Drawing.Point(1373, 32);
 			this._load.Margin = new System.Windows.Forms.Padding(6);
 			this._load.Name = "_load";
 			this._load.Size = new System.Drawing.Size(168, 44);
@@ -450,6 +866,5 @@
         private System.Windows.Forms.Label _laserLbL;
         private ColorComboBox _laserOnColor;
 		private ColorComboBox _laserOffColor;
-		private System.Windows.Forms.CheckBox _useAzure;
 	}
 }

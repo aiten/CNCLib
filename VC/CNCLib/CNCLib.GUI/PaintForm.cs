@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.GCode.Load;
 using CNCLib.GCode.Commands;
 using CNCLib.GCode;
 using System;
@@ -26,16 +25,12 @@ using System.Windows.Forms;
 using System.Threading;
 using CNCLib.GUI.Load;
 using Framework.Arduino;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.GUI
 {
 	public partial class PaintForm : Form
 	{
-
 		#region Crt
 
 		public PaintForm()
@@ -128,114 +123,50 @@ namespace CNCLib.GUI
 			});
         }
 
-        private void SaveGCode(string filename)
-        {
-            using (StreamWriter sw = new StreamWriter(filename))
-            {
-                Command last = null;
-                foreach (Command r in _gCodeCtrl.Commands)
-                {
-                    string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
-                    if (cmds != null)
-                    {
-                        foreach (String str in cmds)
-                        {
-                            sw.WriteLine(str);
-                        }
-                    }
-                    last = r;
-                }
-            }
-        }
-
         #endregion
 
-        LoadOptions loadinfo = new LoadOptions();
+			LoadOptions loadinfo = new LoadOptions();
+			bool _useAzure = false;
 
-        private async void _load_Click(object sender, EventArgs e)
-        {
-			if (loadinfo.AutoScaleSizeX == 0 || loadinfo.AutoScale == false)
+			private async void _load_Click(object sender, EventArgs e)
 			{
-				loadinfo.AutoScaleSizeX = _gCodeCtrl.SizeX;
-				loadinfo.AutoScaleSizeY = _gCodeCtrl.SizeY;
-			}
-
-			using (LoadOptionForm form = new LoadOptionForm())
-			{
-				form.LoadInfo = loadinfo;
-
-				if (form.ShowDialog() == DialogResult.OK)
+				if (loadinfo.AutoScaleSizeX == 0 || loadinfo.AutoScale == false)
 				{
-					loadinfo = form.LoadInfo;
-                    if (_useAzure.Checked)
-                    {
-                        _load.Enabled = false;
-                        await LoadAzureAsync(form.LoadInfo);
-                        _load.Enabled = true;
-                    }
-                    else
-                        LoadLocal(form.LoadInfo);
-
-					_redraw_Click(null, null);
+					loadinfo.AutoScaleSizeX = _gCodeCtrl.SizeX;
+					loadinfo.AutoScaleSizeY = _gCodeCtrl.SizeY;
 				}
-			}
-        }
 
-		private void LoadLocal(LoadOptions info)
-		{
-			try
-			{
-				LoadBase load = LoadBase.Create(info);
-
-				load.LoadOptions = info;
-				load.Load();
-				_gCodeCtrl.Commands.Clear();
-				_gCodeCtrl.Commands.AddRange(load.Commands);
-				if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
+				using (LoadOptionForm form = new LoadOptionForm())
 				{
-					SaveGCode(loadinfo.GCodeWriteToFileName);
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show("Load Failed! " + ex.Message);
-			}
-		}
+					form.LoadInfo = loadinfo;
+					form.UseAzure = _useAzure;
 
-		private readonly string webserverurl = @"http://cnclibapi.azurewebsites.net";
-		private readonly string api = @"api/GCode";
-
-		private System.Net.Http.HttpClient CreateHttpClient()
-		{
-			var client = new HttpClient();
-			client.BaseAddress = new Uri(webserverurl);
-			client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			return client;
-		}
-
-		private async Task LoadAzureAsync(LoadOptions info)
-		{
-			using (var client = CreateHttpClient())
-			{
-				info.FileContent = File.ReadAllBytes(info.FileName);
-
-				HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
-				string[] gcode = await response.Content.ReadAsAsync<string[]>();
-
-				if (response.IsSuccessStatusCode)
-				{
-					LoadGCode load= new LoadGCode();
-					load.Load(gcode);
-					_gCodeCtrl.Commands.Clear();
-					_gCodeCtrl.Commands.AddRange(load.Commands);
-					if (!string.IsNullOrEmpty(info.GCodeWriteToFileName))
+					if (form.ShowDialog() == DialogResult.OK)
 					{
-						SaveGCode(info.GCodeWriteToFileName);
+						loadinfo = form.LoadInfo;
+						_useAzure = form.UseAzure;
+
+						var ld = new GCodeLoad();
+
+						try
+						{
+							_load.Enabled = false;
+							CommandList commands = await ld.Load(loadinfo, _useAzure);
+							_gCodeCtrl.Commands.Clear();
+							_gCodeCtrl.Commands.AddRange(commands);
+						}
+						catch (Exception ex)
+						{
+							throw;
+						}
+						finally
+						{
+							_load.Enabled = true;
+							_redraw_Click(null, null);
+						}
 					}
 				}
 			}
-		}
 
 		private void ValuesFromControl()
         {

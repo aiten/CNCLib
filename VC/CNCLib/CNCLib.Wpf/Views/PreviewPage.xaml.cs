@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CNCLib.GCode.Commands;
+using CNCLib.GUI.Load;
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.Views
 {
@@ -23,6 +28,39 @@ namespace CNCLib.Wpf.Views
 		public PreviewPage()
 		{
 			InitializeComponent();
+
+			machinColor.SelectedColor = gcode.MachineColor;
+			laserOnColor.SelectedColor = gcode.LaserOnColor;
+			laserOffColor.SelectedColor = gcode.LaserOffColor;
+			laserSize.Text = gcode.LaserSize.ToString(CultureInfo.InvariantCulture);
+
+			var vm = DataContext as PreviewViewModel;
+			if (vm.GCodeLoaded == null)
+				vm.GCodeLoaded = new Action<CommandList>((l) =>
+				{
+					this.gcode.Commands.Clear();
+					this.gcode.Commands.AddRange(l);
+					this.gcode.InvalidateVisual();
+					this.InvalidateVisual();
+				});
+
+
+			if (vm.GetLoadInfo == null)
+				vm.GetLoadInfo = new Func<PreviewViewModel.GetLoadInfoArg, bool>((arg) =>
+				{
+					using (LoadOptionForm form = new LoadOptionForm())
+					{
+						form.LoadInfo = arg.LoadOption;
+						form.UseAzure = arg.UseAzure;
+
+						if (form.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+							return false;
+
+						arg.LoadOption = form.LoadInfo;
+						arg.UseAzure = form.UseAzure;
+						return true;
+					}
+				});
 		}
 	}
 }
