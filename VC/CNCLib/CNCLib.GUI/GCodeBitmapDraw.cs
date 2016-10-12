@@ -55,7 +55,7 @@ namespace CNCLib.GUI
 		public Color CutColor { get { return _cutColor; } set { _cutColor = value; ReInitDraw(); } }
 
 
-		public CommandList Commands { get { return _commands; } }
+//		public CommandList Commands { get { return _commands; } }
 
 		public Size RenderSize
 		{
@@ -97,7 +97,7 @@ namespace CNCLib.GUI
 		Color _noMoveColor = Color.Blue;
 		Color _fastLineColor = Color.Green;
 
-		CommandList _commands = new CommandList();
+//		CommandList _commands = new CommandList();
 
 		private ArduinoSerialCommunication Com
 		{
@@ -207,7 +207,7 @@ namespace CNCLib.GUI
 			}
 		}
 
-		public Bitmap DrawToBitmap()
+		public Bitmap DrawToBitmap(CommandList commands)
 		{
 			InitPen();
 
@@ -229,7 +229,7 @@ namespace CNCLib.GUI
 
 			g1.FillRectangle(new SolidBrush(MachineColor), rc);
 
-			_commands.Paint(this, ee);
+			commands.Paint(this, ee);
 
 			g1.Dispose();
 			return curBitmap;

@@ -56,7 +56,7 @@ namespace CNCLib.GUI
         public Color LaserOnColor { get { return _bitmapDraw.LaserOnColor; } set { _bitmapDraw.LaserOnColor = value; ReInitDraw(); } }
 		public Color LaserOffColor { get { return _bitmapDraw.LaserOffColor; } set { _bitmapDraw.LaserOffColor = value; ReInitDraw(); } }
 
-		public CommandList Commands { get { return _bitmapDraw.Commands; } }
+		public CommandList Commands { get; } = new CommandList();
 
 		public delegate void GCodeEventHandler(object sender, GCoderUserControlEventArgs e);
 
@@ -165,7 +165,7 @@ namespace CNCLib.GUI
 			if (_bitmapDraw.RenderSize.Height == 0 || _bitmapDraw.RenderSize.Width == 0)
 				return;
 
-			var curBitmap = _bitmapDraw.DrawToBitmap();
+			var curBitmap = _bitmapDraw.DrawToBitmap(Commands);
 
             e.Graphics.DrawImage(curBitmap, 0, 0);
             curBitmap.Dispose();

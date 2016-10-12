@@ -51,21 +51,7 @@ namespace CNCLib.Wpf.Controls
 		public GCodeUserControl()
 		{
 			InitializeComponent();
-/*
-			LoadOptions loadinfo = new LoadOptions();
-			loadinfo.FileName = @"c:\tmp\test.nc";
-			loadinfo.LoadType = LoadOptions.ELoadType.GCode;
-			LoadBase load = LoadBase.Create(loadinfo);
 
-			load.LoadOptions = loadinfo;
-			load.Load();
-
-			_bitmapDraw.RenderSize = new System.Drawing.Size((int)ActualWidth, (int)ActualHeight);
-
-			_bitmapDraw.Commands.Clear();
-			_bitmapDraw.Commands.AddRange(load.Commands);
-			Zoom = 1;
-*/
 			MouseWheel += GCodeUserControl_MouseWheel;
 
 			MouseDown += GCodeUserControl_MouseDown;
@@ -75,7 +61,7 @@ namespace CNCLib.Wpf.Controls
 
 		#region Properties
 
-		public CommandList Commands { get { return _bitmapDraw.Commands; }  }
+		public CommandList Commands { get; } = new CommandList();
 
 		private static void OnZoomChanged(DependencyObject dependencyObject,  DependencyPropertyChangedEventArgs e)
 		{
@@ -292,12 +278,18 @@ namespace CNCLib.Wpf.Controls
 
 		#endregion
 
-
-		#region private Members
-
-		private ArduinoSerialCommunication Com
+		#region render
+		protected override void OnRenderSizeChanged(System.Windows.SizeChangedInfo sizeInfo)
 		{
-			get { return Framework.Tools.Pattern.Singleton<ArduinoSerialCommunication>.Instance; }
+			base.OnRenderSizeChanged(sizeInfo);
+			_bitmapDraw.RenderSize = new System.Drawing.Size((int) sizeInfo.NewSize.Width, (int) sizeInfo.NewSize.Height);
+			InvalidateVisual();
+		}
+
+		protected override void OnRender(System.Windows.Media.DrawingContext drawingContext)
+		{
+			base.OnRender(drawingContext);
+			this.DrawCommands(drawingContext);
 		}
 
 		#endregion
@@ -308,30 +300,12 @@ namespace CNCLib.Wpf.Controls
 		{
 			return Color.FromArgb(color.A, color.R, color.G, color.B);
 		}
+
 		static System.Drawing.Color ColorToColor(Color color)
 		{
 			return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
 		}
 
-		private void ReInitDraw()
-		{
-			//InitPen();
-			//Invalidate();
-		}
-
-		protected override void OnRenderSizeChanged(System.Windows.SizeChangedInfo sizeInfo)
-		{
-			base.OnRenderSizeChanged(sizeInfo);
-			_bitmapDraw.RenderSize = new System.Drawing.Size((int) sizeInfo.NewSize.Width, (int) sizeInfo.NewSize.Height);
-			InvalidateVisual();
-		}
-		#endregion
-
-		protected override void OnRender(System.Windows.Media.DrawingContext drawingContext)
-		{
-			base.OnRender(drawingContext);
-			this.DrawCommands(drawingContext);
-		}
 
 		private void DrawCommands(System.Windows.Media.DrawingContext context)
 		{
@@ -344,12 +318,15 @@ namespace CNCLib.Wpf.Controls
 				_bitmapDraw.SizeY = Global.Instance.Machine.SizeY;
 			}
 
-			var curBitmap = _bitmapDraw.DrawToBitmap();
+			var curBitmap = _bitmapDraw.DrawToBitmap(Commands);
 			MemoryStream stream = new MemoryStream();
 			curBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
 			var cc = new System.Windows.Media.ImageSourceConverter().ConvertFrom(stream);
 			context.DrawImage((System.Windows.Media.ImageSource)cc, new System.Windows.Rect(0,0, this.ActualWidth, this.ActualHeight));
 			curBitmap.Dispose();
 		}
+
+		#endregion
+
 	}
 }

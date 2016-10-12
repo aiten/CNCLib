@@ -324,7 +324,7 @@ namespace Framework.Arduino
 		/// Send multiple command lines to the arduino. Wait until the commands are transferrd (do not wait on reply)
 		/// </summary>
 		/// <param name="commands"></param>
-		public void SendCommands(string[] commands)
+		public void SendCommands(IEnumerable<string> commands)
         {
             if (commands != null)
             {

@@ -107,19 +107,9 @@ namespace CNCLib.GUI
 		private void _sendTo_Click(object sender, EventArgs e)
         {
 			AsyncRunCommand(() =>
-			{
-				List<String> commands = new List<string>();
-				Command last = null;
-				foreach (Command r in _gCodeCtrl.Commands)
-				{
-					string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
-					if (cmds != null)
-					{
-						commands.AddRange(cmds);
-					}
-					last = r;
-				}
-				Com.SendCommands(commands.ToArray());
+			{				
+				var commands = _gCodeCtrl.Commands.ToStringList();
+				Com.SendCommands(commands);
 			});
         }
 

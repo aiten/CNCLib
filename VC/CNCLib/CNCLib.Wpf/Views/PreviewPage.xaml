@@ -17,6 +17,7 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                <Button Content="SendTo" Command="{Binding SendToCommand}" Margin="0,0,5,0"/>
                 <Label Content="Machine:" />
                 <xctk:ColorPicker Name="machinColor" Width="50"/>
                 <Label Content="Laser On:" />

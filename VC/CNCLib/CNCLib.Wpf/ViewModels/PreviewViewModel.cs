@@ -37,17 +37,17 @@ using CNCLib.GCode.Commands;
 namespace CNCLib.Wpf.ViewModels
 {
 	public class PreviewViewModel : BaseViewModel
-    {
-        public PreviewViewModel()
+	{
+		public PreviewViewModel()
 		{
 		}
 
 		#region Properties
 
 		private Framework.Arduino.ArduinoSerialCommunication Com
-        {
+		{
 			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
-        }
+		}
 
 		public Action<CommandList> GCodeLoaded { get; set; }
 
@@ -55,7 +55,7 @@ namespace CNCLib.Wpf.ViewModels
 		{
 			public LoadOptions LoadOption { get; set; }
 			public bool UseAzure { get; set; }
-		} 
+		}
 		public Func<GetLoadInfoArg, bool> GetLoadInfo { get; set; }
 
 		#endregion
@@ -67,11 +67,13 @@ namespace CNCLib.Wpf.ViewModels
 		#region Operations
 
 		public void SendTo()
-        {
+		{
+//			var commands = _gCodeCtrl.Commands.ToStringList();
+//			Com.SendCommands(commands);
 		}
 
-        public async void Load()
-        {
+		public async void Load()
+		{
 			if (loadinfo.AutoScaleSizeX == 0 || loadinfo.AutoScale == false)
 			{
 				loadinfo.AutoScaleSizeX = Settings.Instance.SizeX;
@@ -80,8 +82,8 @@ namespace CNCLib.Wpf.ViewModels
 
 			var arg = new GetLoadInfoArg() { LoadOption = loadinfo, UseAzure = _useAzure };
 
-			if (GetLoadInfo!= null && GetLoadInfo(arg))
-			{ 
+			if (GetLoadInfo != null && GetLoadInfo(arg))
+			{
 				loadinfo = arg.LoadOption;
 				_useAzure = arg.UseAzure;
 
@@ -105,22 +107,22 @@ namespace CNCLib.Wpf.ViewModels
 		}
 
 		public bool CanSendTo()
-        {
-            return Com.IsConnected;
-        }
+		{
+			return Com.IsConnected;
+		}
 
 		public bool CanLoad()
 		{
 			return _loading == false;
 		}
 
-  
 		#endregion
 
 		#region Commands
 
 		public ICommand LoadCommand { get { return new DelegateCommand(Load, CanLoad); } }
 		public ICommand SendToCommand { get { return new DelegateCommand(SendTo, CanSendTo); } }
+
 		#endregion
 	}
 }

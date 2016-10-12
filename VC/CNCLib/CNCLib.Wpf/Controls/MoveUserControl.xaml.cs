@@ -194,7 +194,7 @@ namespace CNCLib.Wpf.Controls
 
 		#endregion
 
-		#region enent forwards
+		#region event forwards
 
 		private void OnZDown()
 		{
