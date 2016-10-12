@@ -784,12 +784,12 @@
 			// _gCodeCtrl
 			// 
 			this._gCodeCtrl.AutoScroll = true;
-			this._gCodeCtrl.CutterSize = 0D;
+			this._gCodeCtrl.CutterSize = 0m;
 			this._gCodeCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._gCodeCtrl.KeepRatio = true;
 			this._gCodeCtrl.LaserOffColor = System.Drawing.Color.Orange;
 			this._gCodeCtrl.LaserOnColor = System.Drawing.Color.Red;
-			this._gCodeCtrl.LaserSize = 0.254D;
+			this._gCodeCtrl.LaserSize = 0.254m;
 			this._gCodeCtrl.Location = new System.Drawing.Point(0, 0);
 			this._gCodeCtrl.MachineColor = System.Drawing.Color.Black;
 			this._gCodeCtrl.Margin = new System.Windows.Forms.Padding(12);

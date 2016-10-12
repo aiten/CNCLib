@@ -24,11 +24,11 @@ namespace CNCLib.GCode.Commands
     {
         NoDraw,
         NoMove,
-        Fast,            // Go
-        Cut,          // G1,G2
-        LaserFast,       // Go
-        LaserCut      // G1,G2
-    }
+        Fast,         // Go
+        Cut,          // G1,G2,G3
+        LaserFast,    // Go
+		LaserCut      // G1,G2,G3
+	}
 
     public interface IOutputCommand
 	{

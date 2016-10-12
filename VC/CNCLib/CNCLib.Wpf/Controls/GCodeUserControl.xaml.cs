@@ -159,18 +159,47 @@ namespace CNCLib.Wpf.Controls
 			set { SetValue(LaserOffColorProperty, value); }
 		}
 
-		public static DependencyProperty LaserSizeProperty = DependencyProperty.Register("LaserSize", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.254,OnLaserSizeChanged));
+		public static DependencyProperty LaserSizeProperty = DependencyProperty.Register("LaserSize", typeof(decimal), typeof(GCodeUserControl), new PropertyMetadata(0.254m,OnLaserSizeChanged));
 
 		private static void OnLaserSizeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
-			godeCtrl._bitmapDraw.LaserSize = (double)e.NewValue;
+			godeCtrl._bitmapDraw.LaserSize = (decimal)e.NewValue;
 			godeCtrl.InvalidateVisual();
 		}
-		public double LaserSize
+		public decimal LaserSize
 		{
-			get { return (double)GetValue(LaserSizeProperty); }
+			get { return (decimal)GetValue(LaserSizeProperty); }
 			set { SetValue(LaserSizeProperty, value); }
+		}
+
+
+		private static readonly DependencyPropertyKey MouseOverPositionXPropertyKey =
+					  DependencyProperty.RegisterReadOnly("MouseOverPositionX",
+					  typeof(decimal?), typeof(GCodeUserControl),
+					  new FrameworkPropertyMetadata(null));
+
+		public static readonly DependencyProperty MouseOverPositionXProperty =
+					  MouseOverPositionXPropertyKey.DependencyProperty;
+
+		public decimal? MouseOverPositionX
+		{
+			get { return (decimal?)GetValue(MouseOverPositionXProperty); }
+			private set { SetValue(MouseOverPositionXPropertyKey, value); }
+		}
+
+		private static readonly DependencyPropertyKey MouseOverPositionYPropertyKey =
+					  DependencyProperty.RegisterReadOnly("MouseOverPositionY",
+					  typeof(decimal?), typeof(GCodeUserControl),
+					  new FrameworkPropertyMetadata(null));
+
+		public static readonly DependencyProperty MouseOverPositionYProperty =
+					  MouseOverPositionYPropertyKey.DependencyProperty;
+
+		public decimal? MouseOverPositionY
+		{
+			get { return (decimal?)GetValue(MouseOverPositionYProperty); }
+			private set { SetValue(MouseOverPositionYPropertyKey, value); }
 		}
 
 		#endregion
@@ -204,7 +233,7 @@ namespace CNCLib.Wpf.Controls
 			{
 				if (!_isdragging)
 				{
-					var pt = new System.Drawing.Point((int) e.GetPosition(null).X, (int) e.GetPosition(null).Y);
+					var pt = new System.Drawing.Point((int) e.GetPosition(this).X, (int) e.GetPosition(this).Y);
 					_mouseDown = _bitmapDraw.FromClient(pt);
 					_mouseDownOffsetX = OffsetX;
 					_mouseDownOffsetY = OffsetY;
@@ -216,11 +245,14 @@ namespace CNCLib.Wpf.Controls
 
 		private void GCodeUserControl_MouseMove(object sender, MouseEventArgs e)
 		{
-			var pt = new System.Drawing.Point((int)e.GetPosition(null).X, (int)e.GetPosition(null).Y);
+			var pt = new System.Drawing.Point((int)e.GetPosition(this).X, (int)e.GetPosition(this).Y);
+			var gcodePosition = _bitmapDraw.FromClient(pt);
+			MouseOverPositionX = gcodePosition.X;
+			MouseOverPositionY = gcodePosition.Y;
 
 			if (GCodeMousePosition != null)
 			{
-				GCodeMousePosition(this, new GCoderUserControlEventArgs() { GCodePosition = _bitmapDraw.FromClient(pt) });
+				GCodeMousePosition(this, new GCoderUserControlEventArgs() { GCodePosition = gcodePosition });
 			}
 			if (_isdragging)
 			{

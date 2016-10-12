@@ -30,7 +30,15 @@
                 <Button Content="Load" Command="{Binding LoadCommand}"/>
             </StackPanel>
         </StackPanel>
-        <Slider Name="offsetXSlider"  Minimum="-1000" Maximum="1000" DockPanel.Dock="Bottom"/>
+
+        <DockPanel DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal" MinWidth="90"> 
+                <Label Content="{Binding Path=MouseOverPositionX,ElementName=gcode}" Padding="0" />
+                <Label Content=":" DockPanel.Dock ="Left" Padding="0"/>
+                <Label Content="{Binding Path=MouseOverPositionY,ElementName=gcode}"  Padding="0"/>
+            </StackPanel>
+            <Slider Name="offsetXSlider"  Minimum="-1000" Maximum="1000" />
+        </DockPanel>
         <Slider Name="offsetYSlider"  Minimum="-1000" Maximum="1000" DockPanel.Dock="Right" Orientation="Vertical" IsDirectionReversed="True"/>
         <ctrl:GCodeUserControl x:Name="gcode"
                                MachineColor="{Binding Path=SelectedColor,ElementName=machinColor}"

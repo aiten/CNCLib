@@ -193,13 +193,13 @@ namespace CNCLib.GUI
             {
                 _gCodeCtrl.OffsetY = valDec;
             }
-            if (double.TryParse(_laserSize.Text, out valDbl))
+            if (decimal.TryParse(_laserSize.Text, out valDec))
             {
-                _gCodeCtrl.LaserSize = valDbl;
+                _gCodeCtrl.LaserSize = valDec;
             }
-            if (double.TryParse(_cutterSize.Text, out valDbl))
+            if (decimal.TryParse(_cutterSize.Text, out valDec))
             {
-                _gCodeCtrl.CutterSize = valDbl;
+                _gCodeCtrl.CutterSize = valDec;
             }
         }
         private void _redraw_Click(object sender, EventArgs e)

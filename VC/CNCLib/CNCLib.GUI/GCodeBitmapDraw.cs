@@ -46,25 +46,27 @@ namespace CNCLib.GUI
 		public double Zoom { get { return _zoom; } set { _zoom = value; ReInitDraw(); } }
 		public decimal OffsetX { get { return _offsetX; } set { _offsetX = value; ReInitDraw(); } }
 		public decimal OffsetY { get { return _offsetY; } set { _offsetY = value; ReInitDraw(); } }
-		public double CutterSize { get { return _cutterSize; } set { _cutterSize = value; ReInitDraw(); } }
-		public double LaserSize { get { return _laserSize; } set { _laserSize = value; ReInitDraw(); } }
+		public decimal CutterSize { get { return _cutterSize; } set { _cutterSize = value; ReInitDraw(); } }
+		public decimal LaserSize { get { return _laserSize; } set { _laserSize = value; ReInitDraw(); } }
 
 		public Color MachineColor { get { return _machineColor; } set { _machineColor = value; ReInitDraw(); } }
 		public Color LaserOnColor { get { return _laserOnColor; } set { _laserOnColor = value; ReInitDraw(); } }
 		public Color LaserOffColor { get { return _laserOffColor; } set { _laserOffColor = value; ReInitDraw(); } }
+		public Color CutColor { get { return _cutColor; } set { _cutColor = value; ReInitDraw(); } }
+
 
 		public CommandList Commands { get { return _commands; } }
 
 		public Size RenderSize
 		{
-			get { return _rendersize; }
+			get { return _renderSize; }
 			set
 			{
-				if (_rendersize.Height != 0 && value.Width > 0 && value.Height > 0)
+				if (_renderSize.Height != 0 && value.Width > 0 && value.Height > 0)
 				{
 					//RecalcClientCoord();
 				}
-				_rendersize = value;
+				_renderSize = value;
 				CalcRatio();
 			}
 		}
@@ -75,20 +77,25 @@ namespace CNCLib.GUI
 
 		bool _needReInit = true;
 
-		Size _rendersize;
+		Size _renderSize;
 		bool _keepRatio = true;
 		double _zoom = 1;
+		double _ratioX = 1;
+		double _ratioY = 1;
 		decimal _sizeX = 130.000m;
 		decimal _sizeY = 45.000m;
 		decimal _offsetX = 0;
 		decimal _offsetY = 0;
-		double _cutterSize = 0;
-		double _laserSize = 0.254;
-		double _ratioX = 1;
-		double _ratioY = 1;
+		decimal _cutterSize = 0;
+		decimal _laserSize = 0.254m;
 		Color _machineColor = Color.Black;
 		Color _laserOnColor = Color.Red;
 		Color _laserOffColor = Color.Orange;
+		Color _cutColor = Color.White;
+		Color _cutDotColor = Color.Blue;
+		Color _cutEllipseColor = Color.Cyan;
+		Color _noMoveColor = Color.Blue;
+		Color _fastLineColor = Color.Green;
 
 		CommandList _commands = new CommandList();
 
@@ -177,27 +184,25 @@ namespace CNCLib.GUI
 			if (_needReInit)
 			{
 				Color cutColor = MachineColor == Color.White ? Color.Black : Color.White;
-				float cutsize = CutterSize > 0 ? (float)ToClient(new Point3D(OffsetX + (decimal)CutterSize, 0m, 0m)).X : 2;
+				float cutsize = CutterSize > 0 ? (float)ToClient(new Point3D(OffsetX + CutterSize, 0m, 0m)).X : 2;
 				float fastSize = 0.5f;
 
-				_cutLine = new Pen(cutColor, cutsize);
-				_cutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-				_cutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+				_cutLinePen = new Pen(cutColor, cutsize);
+				_cutLinePen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+				_cutLinePen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
 
-				_cutDot = new Pen(Color.Blue, cutsize);
-				_cutEllipse = new Pen(Color.Cyan, cutsize);
+				_cutDotPen = new Pen(_cutDotColor, cutsize);
+				_cutEllipsePen = new Pen(_cutEllipseColor, cutsize);
 
-				_cut = new Pen[] { _cutLine, _cutDot, _cutEllipse };
+				_cutPen = new Pen[] { _cutLinePen, _cutDotPen, _cutEllipsePen };
 
-				_fastLine = new Pen(Color.Green, fastSize);
-				_NoMove = new Pen(Color.Blue, fastSize);
-				_laserCutLine = new Pen(LaserOnColor, ToClient(new Point3D(OffsetX + (decimal)LaserSize, 0m, 0m)).X);
-				_laserCutLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-				_laserCutLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-				_laserFastLine = new Pen(LaserOffColor, (float)(fastSize / 2.0));
-				_machineLine = new Pen(Color.LightBlue, 1);
+				_fastLinePen = new Pen(_fastLineColor, fastSize);
+				_noMovePen = new Pen(Color.Blue, fastSize);
+				_laserCutLinePen = new Pen(LaserOnColor, ToClient(new Point3D(OffsetX + LaserSize, 0m, 0m)).X);
+				_laserCutLinePen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+				_laserCutLinePen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+				_laserFastLinePen = new Pen(LaserOffColor, (float)(fastSize / 2.0));
 
-				_helpLine = new Pen(Color.Yellow, 1);
 				_needReInit = false;
 			}
 		}
@@ -246,16 +251,14 @@ namespace CNCLib.GUI
 
 		#region IOutput 
 
-		Pen _NoMove;
-		Pen _cutEllipse;
-		Pen _cutLine;
-		Pen _cutDot;
-		Pen[] _cut;
-		Pen _fastLine;
-		Pen _laserCutLine;
-		Pen _laserFastLine;
-		Pen _machineLine;
-		Pen _helpLine;
+		Pen _noMovePen;
+		Pen _cutEllipsePen;
+		Pen _cutLinePen;
+		Pen _cutDotPen;
+		Pen[] _cutPen;
+		Pen _fastLinePen;
+		Pen _laserCutLinePen;
+		Pen _laserFastLinePen;
 
 		public void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo)
 		{
@@ -272,22 +275,6 @@ namespace CNCLib.GUI
 			}
 		}
 
-		private bool PreDrawLineOrArc(object param, DrawType drawtype, Point from, Point to)
-		{
-			PaintEventArgs e = (PaintEventArgs)param;
-
-			if (from.Equals(to))
-			{
-				if (drawtype == DrawType.LaserCut)
-					e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 1, 1);
-				else
-					e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 4, 4);
-
-				return false;
-			}
-			return true;
-		}
-
 		public void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptCenter, int xradius, int yradius)
 		{
 			if (drawtype == DrawType.NoDraw) return;
@@ -296,19 +283,6 @@ namespace CNCLib.GUI
 			Point from = ToClient(ptCenter);
 			e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X - xradius / 2, from.Y - yradius / 2, xradius, yradius);
 		}
-
-		double ConvertRadToDeg(double rad)
-		{
-			double deg = -rad * 180.0 / Math.PI + 180.0;
-			while (deg < 0)
-				deg += 360;
-
-			while (deg > 360)
-				deg -= 360;
-
-			return deg;
-		}
-
 
 		public void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D pIJ, bool clockwise)
 		{
@@ -364,6 +338,34 @@ namespace CNCLib.GUI
 			}
 		}
 
+		private bool PreDrawLineOrArc(object param, DrawType drawtype, Point from, Point to)
+		{
+			PaintEventArgs e = (PaintEventArgs)param;
+
+			if (from.Equals(to))
+			{
+				if (drawtype == DrawType.LaserCut)
+					e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 1, 1);
+				else
+					e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 4, 4);
+
+				return false;
+			}
+			return true;
+		}
+
+		static double ConvertRadToDeg(double rad)
+		{
+			double deg = -rad * 180.0 / Math.PI + 180.0;
+			while (deg < 0)
+				deg += 360;
+
+			while (deg > 360)
+				deg -= 360;
+
+			return deg;
+		}
+
 		enum LineDrawType
 		{
 			Line = 0,
@@ -376,11 +378,11 @@ namespace CNCLib.GUI
 			switch (moveType)
 			{
 				default:
-				case DrawType.NoMove: return _NoMove;
-				case DrawType.Fast: return _fastLine;
-				case DrawType.Cut: return _cut[(int)drawtype];
-				case DrawType.LaserFast: return _laserFastLine;
-				case DrawType.LaserCut: return _laserCutLine;
+				case DrawType.NoMove: return _noMovePen;
+				case DrawType.Fast: return _fastLinePen;
+				case DrawType.Cut: return _cutPen[(int)drawtype];
+				case DrawType.LaserFast: return _laserFastLinePen;
+				case DrawType.LaserCut: return _laserCutLinePen;
 			}
 		}
 

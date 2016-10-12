@@ -49,8 +49,8 @@ namespace CNCLib.GUI
         public double Zoom { get { return _bitmapDraw.Zoom; } set { _bitmapDraw.Zoom = value; ReInitDraw(); } }
 		public decimal OffsetX { get { return _bitmapDraw.OffsetX; } set { _bitmapDraw.OffsetX = value; ReInitDraw(); } }
 		public decimal OffsetY { get { return _bitmapDraw.OffsetY; } set { _bitmapDraw.OffsetY = value; ReInitDraw(); } }
-        public double CutterSize { get { return _bitmapDraw.CutterSize; } set { _bitmapDraw.CutterSize = value; ReInitDraw(); } }
-        public double LaserSize { get { return _bitmapDraw.LaserSize; } set { _bitmapDraw.LaserSize = value; ReInitDraw(); } }
+        public decimal CutterSize { get { return _bitmapDraw.CutterSize; } set { _bitmapDraw.CutterSize = value; ReInitDraw(); } }
+        public decimal LaserSize { get { return _bitmapDraw.LaserSize; } set { _bitmapDraw.LaserSize = value; ReInitDraw(); } }
 
         public Color MachineColor { get { return _bitmapDraw.MachineColor; } set { _bitmapDraw.MachineColor = value; ReInitDraw(); } }
         public Color LaserOnColor { get { return _bitmapDraw.LaserOnColor; } set { _bitmapDraw.LaserOnColor = value; ReInitDraw(); } }
