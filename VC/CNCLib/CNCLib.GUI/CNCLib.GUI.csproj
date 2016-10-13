@@ -60,10 +60,6 @@
     <Compile Include="..\CNCLibSolutionInfoVersion.cs">
       <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
     </Compile>
-    <Compile Include="ColorCombobox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="GCoderUserControlEventArgs.cs" />
     <Compile Include="GCodeBitmapDraw.cs" />
     <Compile Include="Load\LoadOptionForm.cs">
       <SubType>Form</SubType>
@@ -71,27 +67,9 @@
     <Compile Include="Load\LoadOptionForm.Designer.cs">
       <DependentUpon>LoadOptionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PaintForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PaintForm.Designer.cs">
-      <DependentUpon>PaintForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GCodeUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GCodeUserControl.Designer.cs">
-      <DependentUpon>GCodeUserControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Load\LoadOptionForm.resx">
       <DependentUpon>LoadOptionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PaintForm.resx">
-      <DependentUpon>PaintForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GCodeUserControl.resx">
-      <DependentUpon>GCodeUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -192,8 +192,6 @@ namespace CNCLib.Wpf.Controls
 
 		#region Drag/Drop
 
-		public delegate void GCodeEventHandler(object sender, GCoderUserControlEventArgs e);
-
 		private bool _isdragging = false;
 		private Point3D _mouseDown;
 		private decimal _mouseDownOffsetX;

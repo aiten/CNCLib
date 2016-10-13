@@ -146,9 +146,6 @@
     <Compile Include="Views\ManualControlPage.xaml.cs">
       <DependentUpon>ManualControlPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PaintPage.xaml.cs">
-      <DependentUpon>PaintPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SetupPage.xaml.cs">
       <DependentUpon>SetupPage.xaml</DependentUpon>
     </Compile>
@@ -187,10 +184,6 @@
     <Page Include="Views\ManualControlPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\PaintPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PreviewPage.xaml">
       <SubType>Designer</SubType>
