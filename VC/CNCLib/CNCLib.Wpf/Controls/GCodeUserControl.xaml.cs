@@ -16,27 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using CNCLib.GCode.Commands;
-using CNCLib.GCode.Load;
 using CNCLib.GUI;
-using CNCLib.Logic.Contracts.DTO;
-using Framework.Arduino;
 using Framework.Tools.Drawing;
 
 namespace CNCLib.Wpf.Controls
@@ -61,7 +47,21 @@ namespace CNCLib.Wpf.Controls
 
 		#region Properties
 
-		public CommandList Commands { get; } = new CommandList();
+		public int Test { get; set; } 
+
+		private static void OnCommandsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		{
+			var godeCtrl = (GCodeUserControl)dependencyObject;
+			godeCtrl.InvalidateVisual();
+		}
+
+		public static DependencyProperty CommandsProperty = DependencyProperty.Register("Commands", typeof(CommandList), typeof(GCodeUserControl), new PropertyMetadata(OnCommandsChanged));
+		public CommandList Commands
+		{
+			get { return (CommandList)GetValue(CommandsProperty); }
+			set { SetValue(CommandsProperty, value); }
+		}
+
 
 		private static void OnZoomChanged(DependencyObject dependencyObject,  DependencyPropertyChangedEventArgs e)
 		{
@@ -194,9 +194,6 @@ namespace CNCLib.Wpf.Controls
 
 		public delegate void GCodeEventHandler(object sender, GCoderUserControlEventArgs e);
 
-		public event GCodeEventHandler GCodeMousePosition;
-		public event GCodeEventHandler ZoomOffsetChanged;
-
 		private bool _isdragging = false;
 		private Point3D _mouseDown;
 		private decimal _mouseDownOffsetX;
@@ -210,7 +207,6 @@ namespace CNCLib.Wpf.Controls
 			else
 				Zoom /= 1.1;
 
-			OnZoomOffsetChanged();
 			InvalidateVisual();
 		}
 
@@ -236,10 +232,6 @@ namespace CNCLib.Wpf.Controls
 			MouseOverPositionX = gcodePosition.X;
 			MouseOverPositionY = gcodePosition.Y;
 
-			if (GCodeMousePosition != null)
-			{
-				GCodeMousePosition(this, new GCoderUserControlEventArgs() { GCodePosition = gcodePosition });
-			}
 			if (_isdragging)
 			{
 				OffsetX = _mouseDownOffsetX;
@@ -249,7 +241,6 @@ namespace CNCLib.Wpf.Controls
 				decimal newY = _mouseDownOffsetY + (c.Y.Value - _mouseDown.Y.Value);
 				OffsetX = newX;
 				OffsetY = newY;
-				OnZoomOffsetChanged();
 				if (_sw.ElapsedMilliseconds > 300)
 				{
 					_sw.Start();
@@ -263,17 +254,8 @@ namespace CNCLib.Wpf.Controls
 			if (_isdragging)
 			{
 				InvalidateVisual();
-				OnZoomOffsetChanged();
 			}
 			_isdragging = false;
-		}
-
-		private void OnZoomOffsetChanged()
-		{
-			if (ZoomOffsetChanged != null)
-			{
-				ZoomOffsetChanged(this, new GCoderUserControlEventArgs());
-			}
 		}
 
 		#endregion

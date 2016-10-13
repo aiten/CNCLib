@@ -31,59 +31,22 @@ namespace CNCLib.Wpf.ViewModels
 {
 	public class MachineViewModel : BaseViewModel, IDisposable
 	{
-        public MachineViewModel()
+		#region crt
+
+		public MachineViewModel()
 		{
             AddNewMachine = false;
 		}
+
+		#endregion
+
+		#region dispose
+
 		public void Dispose()
 		{
 		}
 
-		public void LoadMachine(int machineID)
-        {
-            CNCLib.Logic.Contracts.DTO.Machine dto;
-			using (var controller = Dependency.Resolve<IMachineService>())
-			{
-				AddNewMachine = machineID <= 0;
-				if (AddNewMachine)
-				{
-					dto = controller.DefaultMachine();
-				}
-				else
-				{
-					dto = controller.Get(machineID);
-				}
-			}
-
-			_currentMachine = dto.Convert(); 
-
-			OnPropertyChanged(() => MachineName);
-            OnPropertyChanged(() => ComPort);
-			OnPropertyChanged(() => Axis);
-			OnPropertyChanged(() => BaudRate);
-            OnPropertyChanged(() => CommandToUpper);
-            OnPropertyChanged(() => SizeX);
-            OnPropertyChanged(() => SizeY);
-            OnPropertyChanged(() => SizeZ);
-			OnPropertyChanged(() => SizeA);
-			OnPropertyChanged(() => SizeB);
-			OnPropertyChanged(() => SizeC);
-			OnPropertyChanged(() => BufferSize);
-			OnPropertyChanged(() => ProbeSizeX);
-			OnPropertyChanged(() => ProbeSizeY);
-			OnPropertyChanged(() => ProbeSizeZ);
-			OnPropertyChanged(() => ProbeDist);
-			OnPropertyChanged(() => ProbeDistUp);
-			OnPropertyChanged(() => ProbeFeed);
-			OnPropertyChanged(() => SDSupport);
-			OnPropertyChanged(() => Spindle);
-			OnPropertyChanged(() => Coolant);
-            OnPropertyChanged(() => Laser);
-            OnPropertyChanged(() => Rotate);
-
-			OnPropertyChanged(() => MachineCommands);
-			OnPropertyChanged(() => MachineInitCommands);
-		}
+		#endregion
 
 		#region Properties
 
@@ -221,11 +184,57 @@ namespace CNCLib.Wpf.ViewModels
 			get { return _currentMachine.MachineInitCommands; }
 		}
 
+		public bool AddNewMachine { get; set; }
+
 		#endregion
 
-		public bool AddNewMachine { get; set; }
-        
-        #region Operations
+		#region Operations
+
+		public void LoadMachine(int machineID)
+		{
+			CNCLib.Logic.Contracts.DTO.Machine dto;
+			using (var controller = Dependency.Resolve<IMachineService>())
+			{
+				AddNewMachine = machineID <= 0;
+				if (AddNewMachine)
+				{
+					dto = controller.DefaultMachine();
+				}
+				else
+				{
+					dto = controller.Get(machineID);
+				}
+			}
+
+			_currentMachine = dto.Convert();
+
+			OnPropertyChanged(() => MachineName);
+			OnPropertyChanged(() => ComPort);
+			OnPropertyChanged(() => Axis);
+			OnPropertyChanged(() => BaudRate);
+			OnPropertyChanged(() => CommandToUpper);
+			OnPropertyChanged(() => SizeX);
+			OnPropertyChanged(() => SizeY);
+			OnPropertyChanged(() => SizeZ);
+			OnPropertyChanged(() => SizeA);
+			OnPropertyChanged(() => SizeB);
+			OnPropertyChanged(() => SizeC);
+			OnPropertyChanged(() => BufferSize);
+			OnPropertyChanged(() => ProbeSizeX);
+			OnPropertyChanged(() => ProbeSizeY);
+			OnPropertyChanged(() => ProbeSizeZ);
+			OnPropertyChanged(() => ProbeDist);
+			OnPropertyChanged(() => ProbeDistUp);
+			OnPropertyChanged(() => ProbeFeed);
+			OnPropertyChanged(() => SDSupport);
+			OnPropertyChanged(() => Spindle);
+			OnPropertyChanged(() => Coolant);
+			OnPropertyChanged(() => Laser);
+			OnPropertyChanged(() => Rotate);
+
+			OnPropertyChanged(() => MachineCommands);
+			OnPropertyChanged(() => MachineInitCommands);
+		}
 
 		public void SaveMachine()
 		{
@@ -241,6 +250,7 @@ namespace CNCLib.Wpf.ViewModels
 			LoadMachine(id);
             CloseAction();
         }
+
 		public bool CanSaveMachine()
 		{
 			return true;
@@ -254,15 +264,18 @@ namespace CNCLib.Wpf.ViewModels
 			}
 			CloseAction();
 		}
+
 		public bool CanDeleteMachine()
         {
             return !AddNewMachine;
         }
-        public void AddMachine()
+
+		public void AddMachine()
         {
             LoadMachine(-1);
         }
-        public bool CanAddMachine()
+
+		public bool CanAddMachine()
         {
             return !AddNewMachine;
         }

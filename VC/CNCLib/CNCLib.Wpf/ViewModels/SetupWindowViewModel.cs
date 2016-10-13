@@ -35,14 +35,20 @@ namespace CNCLib.Wpf.ViewModels
 {
 	public class SetupWindowViewModel : BaseViewModel
     {
-        public SetupWindowViewModel()
+		#region crt
+
+		public SetupWindowViewModel()
 		{
 			LoadMachines(-1);
 			LoadJoystick();
  			ResetOnConnect = false;
 		}
 
-        private void LoadMachines(int defaultmachineid)
+		#endregion
+
+		#region private operations
+
+		private void LoadMachines(int defaultmachineid)
         {
             var machines = new ObservableCollection<Models.Machine>();
 
@@ -72,6 +78,15 @@ namespace CNCLib.Wpf.ViewModels
 			int dummyid;
 			Joystick = JoystickHelper.Load(out dummyid);
 		}
+
+		#endregion
+
+		#region GUI-forward
+
+		public Action<int> EditMachine { get; set; }
+		public Action EditJoystick { get; set; }
+
+		#endregion
 
 		#region Properties
 
@@ -168,7 +183,7 @@ namespace CNCLib.Wpf.ViewModels
 			}
 			catch(Exception e)
 			{
-				MessageBox.Show("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 			OnPropertyChanged(() => Connected);
@@ -185,7 +200,7 @@ namespace CNCLib.Wpf.ViewModels
             }
             catch (Exception e)
             {
-                MessageBox.Show("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             OnPropertyChanged(() => ConnectedJoystick);
@@ -238,23 +253,14 @@ namespace CNCLib.Wpf.ViewModels
 
         public void SetupMachine()
         {
-            var dlg = new MachineView();
-
-            var vm = dlg.DataContext as MachineViewModel;
-            var mID = Machine!=null ? Machine.MachineID : -1; 
-            vm.LoadMachine(mID);
-            dlg.ShowDialog();
-
+            var mID = Machine!=null ? Machine.MachineID : -1;
+			EditMachine?.Invoke(mID);
             LoadMachines(mID);
         }
 
 		public void SetupJoystick()
 		{
-			var dlg = new JoystickView();
-
-			var vm = dlg.DataContext as JoystickView;
-			dlg.ShowDialog();
-
+			EditJoystick?.Invoke();
 			LoadJoystick();
 		}
 

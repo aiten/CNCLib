@@ -35,15 +35,6 @@ namespace CNCLib.Wpf.Views
 			laserSize.Text = gcode.LaserSize.ToString(CultureInfo.InvariantCulture);
 
 			var vm = DataContext as PreviewViewModel;
-			if (vm.GCodeLoaded == null)
-				vm.GCodeLoaded = new Action<CommandList>((l) =>
-				{
-					this.gcode.Commands.Clear();
-					this.gcode.Commands.AddRange(l);
-					this.gcode.InvalidateVisual();
-					this.InvalidateVisual();
-				});
-
 
 			if (vm.GetLoadInfo == null)
 				vm.GetLoadInfo = new Func<PreviewViewModel.GetLoadInfoArg, bool>((arg) =>
@@ -61,6 +52,14 @@ namespace CNCLib.Wpf.Views
 						return true;
 					}
 				});
+
+			if (vm.MessageBox == null)
+			{
+				vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
+				{
+					return MessageBox.Show(messageBoxText, caption, button, icon);
+				});
+			}
 		}
 	}
 }

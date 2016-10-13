@@ -18,12 +18,15 @@
 
 using Framework.Wpf.Helpers;
 using System;
+using System.Windows;
 
 namespace Framework.Wpf.ViewModels
 {
 	public class BaseViewModel : NotificationObject
 	{
 		public Action CloseAction { get; set; }
+
+		public Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>MessageBox{ get; set; }
 
 		public virtual void Cleanup()
 		{

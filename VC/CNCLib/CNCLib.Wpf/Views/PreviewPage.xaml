@@ -42,6 +42,8 @@
         </DockPanel>
         <Slider Name="offsetYSlider"  Minimum="-1000" Maximum="1000" DockPanel.Dock="Right" Orientation="Vertical" IsDirectionReversed="True"/>
         <ctrl:GCodeUserControl x:Name="gcode"
+                               Test="1"
+                               Commands="{Binding Path=Commands}"
                                MachineColor="{Binding Path=SelectedColor,ElementName=machinColor}"
                                LaserOnColor="{Binding Path=SelectedColor,ElementName=laserOnColor}"
                                LaserOffColor="{Binding Path=SelectedColor,ElementName=laserOffColor}"

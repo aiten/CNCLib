@@ -17,39 +17,44 @@
 */
 
 using System;
-using System.Linq;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
-using Framework.Wpf.ViewModels;
-using Framework.Wpf.Helpers;
 using System.Windows;
-using Framework.Tools;
+using System.Windows.Input;
 using CNCLib.GCode;
-using CNCLib.Wpf.Models;
-using CNCLib.Logic.Contracts;
-using CNCLib.ServiceProxy;
-using Framework.Tools.Dependency;
-using CNCLib.Wpf.Helpers;
-using CNCLib.Logic.Contracts.DTO;
-using CNCLib.GUI.Load;
 using CNCLib.GCode.Commands;
+using CNCLib.Logic.Contracts.DTO;
+using Framework.Wpf.Helpers;
+using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.ViewModels
 {
 	public class PreviewViewModel : BaseViewModel
 	{
+		#region crt
+
 		public PreviewViewModel()
 		{
 		}
 
+		#endregion
+
 		#region Properties
 
-		private Framework.Arduino.ArduinoSerialCommunication Com
+		public Framework.Arduino.ArduinoSerialCommunication Com
 		{
 			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
 		}
 
-		public Action<CommandList> GCodeLoaded { get; set; }
+		private CommandList _commands = new CommandList();
+
+		public CommandList Commands
+		{
+			get { return _commands; }
+			set { SetProperty(() => _commands == value, () => _commands = value); }
+		}
+
+		#endregion
+
+		#region GUI-forward
 
 		public class GetLoadInfoArg
 		{
@@ -60,16 +65,19 @@ namespace CNCLib.Wpf.ViewModels
 
 		#endregion
 
+		#region private/intern
+
 		LoadOptions loadinfo = new LoadOptions();
 		bool _useAzure = false;
 		bool _loading = false;
+
+		#endregion
 
 		#region Operations
 
 		public void SendTo()
 		{
-//			var commands = _gCodeCtrl.Commands.ToStringList();
-//			Com.SendCommands(commands);
+			Com.SendCommands(Commands.ToStringList());
 		}
 
 		public async void Load()
@@ -81,8 +89,7 @@ namespace CNCLib.Wpf.ViewModels
 			}
 
 			var arg = new GetLoadInfoArg() { LoadOption = loadinfo, UseAzure = _useAzure };
-
-			if (GetLoadInfo != null && GetLoadInfo(arg))
+			if ((GetLoadInfo?.Invoke(arg)).GetValueOrDefault(false))
 			{
 				loadinfo = arg.LoadOption;
 				_useAzure = arg.UseAzure;
@@ -92,12 +99,11 @@ namespace CNCLib.Wpf.ViewModels
 				try
 				{
 					_loading = true;
-					CommandList commands = await ld.Load(loadinfo, _useAzure);
-					GCodeLoaded?.Invoke(commands);
+					Commands = await ld.Load(loadinfo, _useAzure);
 				}
 				catch (Exception ex)
 				{
-					throw;
+					MessageBox?.Invoke("Load failed with error: " + ex.Message, "CNCLib", MessageBoxButton.OK, MessageBoxImage.Stop);
 				}
 				finally
 				{
@@ -108,7 +114,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public bool CanSendTo()
 		{
-			return Com.IsConnected;
+			return !_loading && Com.IsConnected;
 		}
 
 		public bool CanLoad()

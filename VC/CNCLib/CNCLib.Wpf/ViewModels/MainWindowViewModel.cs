@@ -23,17 +23,21 @@ namespace CNCLib.Wpf.ViewModels
 {
 	public class MainWindowViewModel : BaseViewModel
     {
-        public MainWindowViewModel()
+		#region crt
+
+		public MainWindowViewModel()
 		{
 		}
- 
-        #region Properties
-        #endregion
 
-        #region Operations
-        #endregion
+		#endregion
 
-        #region Commands
-        #endregion
-    }
+		#region Properties
+		#endregion
+
+		#region Operations
+		#endregion
+
+		#region Commands
+		#endregion
+	}
 }

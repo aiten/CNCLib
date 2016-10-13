@@ -24,14 +24,13 @@ PublishProfiles/
 /VC/CNCLib/CNCLib.Web.MVC/bin
 /VC/CNCLib/CNCLib.Logic/bin
 /VC/CNCLib/PublishScripts
-/VC/Arduino.VC/ArduinoVC.VC.db
 *.opendb
+*.db
 /VC/Arduino.VC/Lib/StepperSystem.pdb
 /Doc
 /VC/Arduino.VC/iRobot/Axis.xlsx
 /VC/Arduino.VC/DCK40Laser/DCK40Laser.csv
-/VC/CNCLib/*.db
 /Sketch/DCK40LaserCNCShield
 /VC/CNCLib/CNCLib.GCode/HApublic.snk
-/VC/CNCLib/HApublic.snk
-/VC/Framework/HApublic.snk
+HApublic.snk
+

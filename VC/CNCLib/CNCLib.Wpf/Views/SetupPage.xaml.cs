@@ -16,7 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+using System.Windows;
 using System.Windows.Controls;
+using CNCLib.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.Views
 {
@@ -28,6 +31,37 @@ namespace CNCLib.Wpf.Views
 		public SetupPage()
 		{
 			InitializeComponent();
+
+			var vm = DataContext as SetupWindowViewModel;
+
+			if (vm.EditMachine == null)
+			{
+				vm.EditMachine = new Action<int>((mID) =>
+				{
+					var dlg = new MachineView();
+					var vmdlg = dlg.DataContext as MachineViewModel;
+					vmdlg.LoadMachine(mID);
+					dlg.ShowDialog();
+				});
+			}
+
+			if (vm.EditJoystick == null)
+			{
+				vm.EditJoystick = new Action(() =>
+				{
+					var dlg = new JoystickView();
+					var vmdlg = dlg.DataContext as JoystickView;
+					dlg.ShowDialog();
+				});
+			}
+
+			if (vm.MessageBox == null)
+			{
+				vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
+				{
+					return MessageBox.Show(messageBoxText, caption, button, icon);
+				});
+			}
 		}
 	}
 }

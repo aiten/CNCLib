@@ -26,21 +26,23 @@ namespace CNCLib.Wpf.ViewModels
 {
 	public class JoystickViewModel : BaseViewModel, IDisposable
 	{
-        public JoystickViewModel()
+
+		#region crt
+
+		public JoystickViewModel()
 		{
 			LoadJoystick();
 		}
+
+		#endregion
+
+		#region dispose
+
 		public void Dispose()
 		{
 		}
 
-		public void LoadJoystick()
-        {
-			_currentJoystick = JoystickHelper.Load(out _id);
-
-			OnPropertyChanged(() => ComPort);
-			OnPropertyChanged(() => BaudRate);
-		}
+		#endregion
 
 		#region Properties
 
@@ -60,14 +62,22 @@ namespace CNCLib.Wpf.ViewModels
 		}
 
 		#endregion
-        
-        #region Operations
+
+		#region Operations
+		public void LoadJoystick()
+		{
+			_currentJoystick = JoystickHelper.Load(out _id);
+
+			OnPropertyChanged(() => ComPort);
+			OnPropertyChanged(() => BaudRate);
+		}
 
 		public void SaveJoystick()
 		{
 			JoystickHelper.Save(_currentJoystick, ref _id);
 			CloseAction();
         }
+
 		public bool CanSaveJoystick()
 		{
 			return true;
