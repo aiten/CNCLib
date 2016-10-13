@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using CNCLib.GCode;
@@ -69,7 +70,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		LoadOptions loadinfo = new LoadOptions();
 		bool _useAzure = false;
-		bool _loading = false;
+		bool _loadingOrSending = false;
 
 		#endregion
 
@@ -77,7 +78,23 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void SendTo()
 		{
-			Com.SendCommands(Commands.ToStringList());
+			new Thread(() =>
+			{
+				_loadingOrSending = true;
+
+				try
+				{
+					Com.ClearCommandHistory();
+					Com.SendCommands(Commands.ToStringList());
+					Com.WriteCommandHistory(@"c:\tmp\Command.txt");
+				}
+				finally
+				{
+					_loadingOrSending = false;
+				}
+			}
+			).Start();
+
 		}
 
 		public async void Load()
@@ -98,7 +115,7 @@ namespace CNCLib.Wpf.ViewModels
 
 				try
 				{
-					_loading = true;
+					_loadingOrSending = true;
 					Commands = await ld.Load(loadinfo, _useAzure);
 				}
 				catch (Exception ex)
@@ -107,19 +124,20 @@ namespace CNCLib.Wpf.ViewModels
 				}
 				finally
 				{
-					_loading = false;
+					_loadingOrSending = false;
 				}
 			}
 		}
 
 		public bool CanSendTo()
 		{
-			return !_loading && Com.IsConnected;
+//			return !_loading;
+			return !_loadingOrSending && Com.IsConnected;
 		}
 
 		public bool CanLoad()
 		{
-			return _loading == false;
+			return _loadingOrSending == false;
 		}
 
 		#endregion

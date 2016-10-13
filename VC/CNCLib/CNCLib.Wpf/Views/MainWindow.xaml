@@ -26,11 +26,11 @@
                     Source="/CNCLib.Wpf;component/Views/ManualControlPage.xaml"
                 />
             </TabItem>
-            <TabItem Header="Paint">
+            <!--<TabItem Header="Paint">
                 <Frame
                     Source="/CNCLib.Wpf;component/Views/PaintPage.xaml"
                 />
-            </TabItem>
+            </TabItem>-->
             <TabItem Header="Preview">
                 <Frame
                     Source="/CNCLib.Wpf;component/Views/PreviewPage.xaml"
