@@ -60,7 +60,7 @@ namespace Framework.Arduino
         public event CommandEventHandler WaitForSend;
         public event CommandEventHandler CommandSending;
         public event CommandEventHandler CommandSent;
-        public event CommandEventHandler CommandWaitReply;
+        public event CommandEventHandler WaitCommandSent;
         public event CommandEventHandler ReplyReceived;
         public event CommandEventHandler ReplyOK;
         public event CommandEventHandler ReplyError;
@@ -316,9 +316,18 @@ namespace Framework.Arduino
 		/// <param name="line">command line to send</param>
 		public void SendCommand(string line)
         {
-            AsyncSendCommand(line);
+            SplitAndQueueCommand(line);
             WaitUntilNoPendingCommands();
         }
+
+		/// <summary>
+		/// Queue command - do nat wait - not for transfer and not for replay
+		/// </summary>
+		/// <param name="line">command line to send</param>
+		public void QueueCommand(string line)
+		{
+			SplitAndQueueCommand(line);
+		}
 
 		/// <summary>
 		/// Send multiple command lines to the arduino. Wait until the commands are transferrd (do not wait on reply)
@@ -328,21 +337,43 @@ namespace Framework.Arduino
         {
             if (commands != null)
             {
-                foreach (string cmd in commands)
-                {
-                    AsyncSendCommand(cmd);
-                    if (Aborted)
-                        break;
-                }
+				QueueCommands(commands);
 				WaitUntilNoPendingCommands();
             }
         }
+
+		/// <summary>
+		/// Send multiple command lines to the arduino. Do no wait
+		/// </summary>
+		/// <param name="commands"></param>
+		public void QueueCommands(IEnumerable<string> commands)
+		{
+			if (commands != null)
+			{
+				foreach (string cmd in commands)
+				{
+					SplitAndQueueCommand(cmd);
+					if (Aborted)
+						break;
+				}
+			}
+		}
 
 		/// <summary>
 		/// Send commands stored in a file. Wait until the commands are transferrd (do not wait on reply)
 		/// </summary>
 		/// <param name="filename">used for a StreamReader</param>
 		public void SendFile(string filename)
+		{
+			QueueFile(filename);
+			WaitUntilNoPendingCommands();
+		}
+
+		/// <summary>
+		/// Send commands stored in a file. Wait until the commands are transferrd (do not wait on reply)
+		/// </summary>
+		/// <param name="filename">used for a StreamReader</param>
+		public void QueueFile(string filename)
 		{
 			using (StreamReader sr = new StreamReader(filename))
 			{
@@ -353,27 +384,27 @@ namespace Framework.Arduino
 				{
 					lines.Add(line);
 				}
-				SendCommands(lines.ToArray());
+				QueueCommands(lines.ToArray());
 			}
 		}
 
-        #endregion
+		#endregion
 
-        #region Internals
+		#region Internals
 
-        private void AsyncSendCommand(string line)
+		private void SplitAndQueueCommand(string line)
         {
             string[] cmds = SplitCommand(line);
             foreach (string cmd in cmds)
             {
-                Command pcmd = CreateCommand(cmd);
+                Command pcmd = QueueCommandString(cmd);
                 if (pcmd != null)
                 {
                     // sending is done in Write-Thread
                 }
             }
         }
-        private Command CreateCommand(string cmd)
+        private Command QueueCommandString(string cmd)
         {
             if (string.IsNullOrEmpty(cmd))
                 return null;
@@ -383,20 +414,19 @@ namespace Framework.Arduino
 
 			cmd = cmd.Replace('\t', ' ');
 
-            lock (_pendingCommands)
+			Command c = new Command() { CommandText = cmd };
+
+			lock (_pendingCommands)
             {
 				if (_pendingCommands.Count==0)
 					_autoEvent.Set();			// start Async task now!
 
-                Command c = new Command() { CommandText = cmd };
                 _pendingCommands.Add(c);
-
-				Trace.WriteTrace("Queue", cmd);
-
-				OnComandQueueChanged(new ArduinoSerialCommunicationEventArgs(null, c));
-                return c;
             }
-        }
+			Trace.WriteTrace("Queue", cmd);
+			OnComandQueueChanged(new ArduinoSerialCommunicationEventArgs(null, c));
+			return c;
+		}
 
 		private  void SendCommand(Command cmd)
         {
@@ -525,7 +555,7 @@ namespace Framework.Arduino
 				if (cmd == null) break;
 
 				var eventarg = new ArduinoSerialCommunicationEventArgs(null,cmd);
-                OnCommandWaitReply(eventarg);
+                OnWaitCommandSent(eventarg);
                 if (Aborted || eventarg.Abort) return;
 
 				_autoEvent.WaitOne(10);
@@ -739,11 +769,11 @@ namespace Framework.Arduino
                 CommandSent(this, info);
             }
         }
-        protected virtual void OnCommandWaitReply(ArduinoSerialCommunicationEventArgs info)
+        protected virtual void OnWaitCommandSent(ArduinoSerialCommunicationEventArgs info)
         {
-            if (CommandWaitReply != null)
+            if (WaitCommandSent != null)
             {
-                CommandWaitReply(this, info);
+                WaitCommandSent(this, info);
             }
         }
         protected virtual void OnReplyReceived(ArduinoSerialCommunicationEventArgs info)
