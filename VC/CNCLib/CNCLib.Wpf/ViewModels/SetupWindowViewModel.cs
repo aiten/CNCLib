@@ -176,7 +176,7 @@ namespace CNCLib.Wpf.ViewModels
 
 						foreach (var initcmd in initCommands.OrderBy(cmd => cmd.SeqNo))
 						{
-							Com.SendCommand(initcmd.CommandString);
+							Com.QueueCommand(initcmd.CommandString);
 						}
 					}
 				}

@@ -85,7 +85,7 @@ namespace CNCLib.Wpf.ViewModels
 				try
 				{
 					Com.ClearCommandHistory();
-					Com.SendCommands(Commands.ToStringList());
+					Com.SendCommandsAsync(Commands.ToStringList()).Wait();
 					Com.WriteCommandHistory(@"c:\tmp\Command.txt");
 				}
 				finally

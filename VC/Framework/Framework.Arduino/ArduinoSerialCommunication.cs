@@ -24,6 +24,8 @@ using System.IO;
 using System.Threading;
 using System.IO.Ports;
 using Framework.Tools;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Framework.Arduino
 {
@@ -297,15 +299,21 @@ namespace Framework.Arduino
 		/// </summary>
 		/// <param name="line">command line</param>
 		/// <returns></returns>
-		public string SendCommandAndRead(string line)
+		public async Task<string> SendCommandAndReadAsync(string line, int waitForMilliseconds=int.MaxValue)
 		{
+			await WaitUntilNoPendingCommands(waitForMilliseconds);
+
 			string message = null;
 			var checkresponse = new ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
 			{
 				message = e.Info;
 			});
 			ReplyOK += checkresponse;
-			SendCommand(line);
+			QueueCommand(line);
+
+			await WaitUntilNoPendingCommands(waitForMilliseconds);
+
+
 			ReplyOK -= checkresponse;
 			return message;
 		}
@@ -317,7 +325,7 @@ namespace Framework.Arduino
 		public void SendCommand(string line)
         {
             SplitAndQueueCommand(line);
-            WaitUntilNoPendingCommands();
+            WaitUntilNoPendingCommands().Wait();
         }
 
 		/// <summary>
@@ -333,12 +341,12 @@ namespace Framework.Arduino
 		/// Send multiple command lines to the arduino. Wait until the commands are transferrd (do not wait on reply)
 		/// </summary>
 		/// <param name="commands"></param>
-		public void SendCommands(IEnumerable<string> commands)
+		public async Task SendCommandsAsync(IEnumerable<string> commands)
         {
             if (commands != null)
             {
 				QueueCommands(commands);
-				WaitUntilNoPendingCommands();
+				await WaitUntilNoPendingCommands();
             }
         }
 
@@ -363,10 +371,10 @@ namespace Framework.Arduino
 		/// Send commands stored in a file. Wait until the commands are transferrd (do not wait on reply)
 		/// </summary>
 		/// <param name="filename">used for a StreamReader</param>
-		public void SendFile(string filename)
+		public async Task SendFileAsync(string filename)
 		{
 			QueueFile(filename);
-			WaitUntilNoPendingCommands();
+			await WaitUntilNoPendingCommands();
 		}
 
 		/// <summary>
@@ -539,8 +547,9 @@ namespace Framework.Arduino
             }
         }
 
-        private void WaitUntilNoPendingCommands()
+        private async Task<bool> WaitUntilNoPendingCommands(int maxMilliseconds=int.MaxValue)
 		{
+			var sw = Stopwatch.StartNew();
 			while (_continue)
             {
                 Command cmd = null; ;
@@ -552,14 +561,19 @@ namespace Framework.Arduino
 					}
                 }
 
-				if (cmd == null) break;
+				if (cmd == null) return true;
 
 				var eventarg = new ArduinoSerialCommunicationEventArgs(null,cmd);
                 OnWaitCommandSent(eventarg);
-                if (Aborted || eventarg.Abort) return;
+                if (Aborted || eventarg.Abort) return false;
 
-				_autoEvent.WaitOne(10);
+				if (_autoEvent.WaitOne(10) == false)
+					await Task.Delay(1);
+
+				if (sw.ElapsedMilliseconds > maxMilliseconds)
+					return false;
             }
+			return false; // aborting
 		}
 
         private void Write()

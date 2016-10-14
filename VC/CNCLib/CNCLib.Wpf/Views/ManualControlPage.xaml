@@ -121,7 +121,7 @@
                 </ComboBox>
                 <Button Command="{Binding DirectCommand.SendDirectCommand}" Content="Send Command" Height="26" Width="100"/>
                 <Label Content="File" Margin="10,0,0,0"/>
-                <TextBox x:Name="FileName2"  Text="{Binding SD.FileName, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" MinWidth="200" VerticalContentAlignment="Center"   />
+                <TextBox x:Name="FileName2"  Text="{Binding SD.FileName, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" MinWidth="100" MaxWidth="250" VerticalContentAlignment="Center"   />
                 <Button Content="?"   x:Name="BrowseFileOpenDialog2" Click="BrowseFileOpenDialog_Click"  Width="20" />
                 <Button Command="{Binding SD.SendFileDirectCommand}" Content="Send File" Width="100" Margin="5,0,0,0"/>
             </StackPanel>
