@@ -61,7 +61,7 @@ namespace Plotter.GUI
 		{
 			if (Com.IsConnected)
 			{
-				new Thread(() =>
+				new Task(() =>
 				{
 					Invoke(new MethodInvoker(() =>
 					{

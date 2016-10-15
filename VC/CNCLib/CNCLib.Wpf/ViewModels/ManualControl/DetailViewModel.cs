@@ -37,9 +37,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			//get { return true; }
 			get { return Com.IsConnected; }
 		}
-		protected void AsyncRunCommand(Action todo)
+		protected void RunInNewTask(Action todo)
 		{
-			Vm.AsyncRunCommand(todo);
+			Vm.RunInNewTask(todo);
 		}
 		protected void SetPositions(string[] positions, int positionIdx)
 		{

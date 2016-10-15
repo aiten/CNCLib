@@ -20,6 +20,7 @@ using System;
 using Framework.Wpf.ViewModels;
 using System.Threading;
 using CNCLib.Wpf.ViewModels.ManualControl;
+using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -178,9 +179,9 @@ namespace CNCLib.Wpf.ViewModels
 			}
 		}
 
-		public void AsyncRunCommand(Action todo)
+		public void RunInNewTask(Action todo)
 		{
-			new Thread(() =>
+			new Task(() =>
 			{
 				try
 				{

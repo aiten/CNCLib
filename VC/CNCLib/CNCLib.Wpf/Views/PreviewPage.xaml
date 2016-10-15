@@ -19,15 +19,15 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
                 <Button Content="SendTo" Command="{Binding SendToCommand}" Margin="0,0,5,0"/>
                 <Label Content="Machine:" />
-                <xctk:ColorPicker Name="machinColor" Width="50"/>
+                <xctk:ColorPicker SelectedColor="{Binding Path=MachineColor}"  Width="50"/>
                 <Label Content="Laser On:" />
-                <xctk:ColorPicker Name="laserOnColor" Width="50"/>
+                <xctk:ColorPicker SelectedColor="{Binding Path=LaserOnColor}" Width="50"/>
                 <Label Content="Laser Off:" />
-                <xctk:ColorPicker Name="laserOffColor" Width="50"/>
+                <xctk:ColorPicker SelectedColor="{Binding Path=LaserOffColor}" Width="50"/>
                 <Label Content="Laser size:" />
-                <TextBox Name="laserSize" VerticalAlignment="Center" MinWidth="30"/>
+                <TextBox Text="{Binding Path=LaserSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" MinWidth="30"/>
                 <Label Content="Zoom" />
-                <Slider Name="zoomSlider"  Value="1" Minimum="0.1" Maximum="25" Width="200"/>
+                <Slider Value="{Binding Path=Zoom}" Minimum="0.1" Maximum="25" Width="200"/>
                 <Button Content="Load" Command="{Binding LoadCommand}"/>
             </StackPanel>
         </StackPanel>
@@ -38,18 +38,19 @@
                 <Label Content=":" DockPanel.Dock ="Left" Padding="0"/>
                 <Label Content="{Binding Path=MouseOverPositionY,ElementName=gcode}"  Padding="0"/>
             </StackPanel>
-            <Slider Name="offsetXSlider"  Minimum="-1000" Maximum="1000" />
+            <Button Content="[x]" Command="{Binding Path=ResetViewCommand}" DockPanel.Dock="Right"/>
+            <Slider Value="{Binding Path=OffsetX}" Minimum="-1000" Maximum="1000" />
         </DockPanel>
-        <Slider Name="offsetYSlider"  Minimum="-1000" Maximum="1000" DockPanel.Dock="Right" Orientation="Vertical" IsDirectionReversed="True"/>
+        <Slider Value="{Binding Path=OffsetY}" Minimum="-1000" Maximum="1000" DockPanel.Dock="Right" Orientation="Vertical" IsDirectionReversed="True"/>
         <ctrl:GCodeUserControl x:Name="gcode"
                                Test="1"
                                Commands="{Binding Path=Commands}"
-                               MachineColor="{Binding Path=SelectedColor,ElementName=machinColor}"
-                               LaserOnColor="{Binding Path=SelectedColor,ElementName=laserOnColor}"
-                               LaserOffColor="{Binding Path=SelectedColor,ElementName=laserOffColor}"
-                               LaserSize="{Binding Path=Text,ElementName=laserSize}"
-                               Zoom="{Binding Path=Value,ElementName=zoomSlider,Mode=TwoWay}" 
-                               OffsetX="{Binding Path=Value,ElementName=offsetXSlider,Mode=TwoWay}"
-                               OffsetY="{Binding Path=Value,ElementName=offsetYSlider,Mode=TwoWay}"/>
+                               MachineColor="{Binding Path=MachineColor}"
+                               LaserOnColor="{Binding Path=LaserOnColor}"
+                               LaserOffColor="{Binding Path=LaserOffColor}"
+                               LaserSize="{Binding Path=LaserSize}"
+                               Zoom="{Binding Path=Zoom,Mode=TwoWay}" 
+                               OffsetX="{Binding Path=OffsetX,Mode=TwoWay}"
+                               OffsetY="{Binding Path=OffsetY,Mode=TwoWay}"/>
     </DockPanel>
 </Page>

@@ -62,11 +62,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region Commands / CanCommands
-		private void SendMoveCommand(string dist) { AsyncRunCommand(() => { Com.SendCommand("g91 g0" + AxisName + dist + " g90"); }); }
+		private void SendMoveCommand(string dist) { RunInNewTask(() => { Com.SendCommand("g91 g0" + AxisName + dist + " g90"); }); }
 
 		private void SendProbeCommand(string axisname, decimal probesize)
 		{
-			AsyncRunCommand(() =>
+			RunInNewTask(() =>
 			{
 				string probdist = Global.Instance.Machine.ProbeDist.ToString(CultureInfo.InvariantCulture);
 				string probdistup = Global.Instance.Machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
@@ -81,12 +81,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			});
 		}
 
-		public void SendRefMove() { AsyncRunCommand(() => { Com.SendCommand("g28 " + AxisName + "0"); }); }
-		public void SendG92() { AsyncRunCommand(() => { Com.SendCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); }); }
+		public void SendRefMove() { RunInNewTask(() => { Com.SendCommand("g28 " + AxisName + "0"); }); }
+		public void SendG92() { RunInNewTask(() => { Com.SendCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); }); }
 		public void SendG31() { SendProbeCommand(AxisName, ProbeSize); }
 		public void SendHome() 
 		{ 
-			AsyncRunCommand(() => 
+			RunInNewTask(() => 
 			{ 
 				if (HomeIsMax) 
 					Com.SendCommand("g53 g0"+ AxisName+"#" + (5161+AxisIndex).ToString()); 

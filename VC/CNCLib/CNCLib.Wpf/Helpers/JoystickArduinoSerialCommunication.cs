@@ -20,6 +20,7 @@ using CNCLib.Wpf.ViewModels.ManualControl;
 using Framework.Arduino;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.Helpers
 {
@@ -30,9 +31,9 @@ namespace CNCLib.Wpf.Helpers
             get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
         }
 
-        public void AsyncRunCommand(Action todo)
+        public void RunCommandInNewTask(Action todo)
         {
-            new Thread(() =>
+            new Task(() =>
             {
                 try
                 {
@@ -50,7 +51,7 @@ namespace CNCLib.Wpf.Helpers
         {
             base.OnReplyReceived(info);
 
-            AsyncRunCommand(() =>
+            RunCommandInNewTask(() =>
 			{
 				Com.SendCommand(info.Info);
 				//this.SendCommand(Com.LastCommand.ResultText);

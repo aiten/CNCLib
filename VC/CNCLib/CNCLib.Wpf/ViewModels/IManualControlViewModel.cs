@@ -17,12 +17,13 @@
 */
 
 using System;
+using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels
 {
 	public interface IManualControlViewModel
 	{
-		void AsyncRunCommand(Action todo);
+		void RunInNewTask(Action todo);
 		void SetPositions(string[] positions, int positionIdx);
 	}
 }

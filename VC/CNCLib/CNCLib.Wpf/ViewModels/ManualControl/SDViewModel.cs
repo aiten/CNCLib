@@ -49,11 +49,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region Commands / CanCommands
-		public void SendM20File() { AsyncRunCommand(() => { Com.SendCommand("m20"); }); }
+		public void SendM20File() { RunInNewTask(() => { Com.SendCommand("m20"); }); }
 		public void SendM24File() { SendM24File(SDFileName); }
 		public void SendM24File(string filename)
 		{
-			AsyncRunCommand(() =>
+			RunInNewTask(() =>
 			{
 				Com.SendCommand("m23 " + filename);
 				Com.SendCommand("m24");
@@ -63,7 +63,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public void SendM28File() { SendM28File(FileName, SDFileName); }
 		public void SendM28File(string filename, string sDFileName)
 		{
-			AsyncRunCommand(() =>
+			RunInNewTask(() =>
 			{
 				using (StreamReader sr = new StreamReader(filename))
 				{
@@ -100,16 +100,16 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public void SendM30File() { SendM30File(SDFileName); }
 		public void SendM30File(string filename)
 		{
-			AsyncRunCommand(() =>
+			RunInNewTask(() =>
 			{
 				Com.SendCommand("m30 " + filename);
 			});
 		}
-		public void SendFileDirect() { AsyncRunCommand(() => { Com.SendFileAsync(FileName).Wait(); }); }
+		public void SendFileDirect() { RunInNewTask(() => { Com.SendFileAsync(FileName).Wait(); }); }
 
 		public void AddToFile()
 		{
-			AsyncRunCommand(() =>
+			RunInNewTask(() =>
 			{
 				string message = Com.SendCommandAndReadAsync("m114").Result;
 				if (!string.IsNullOrEmpty(message))

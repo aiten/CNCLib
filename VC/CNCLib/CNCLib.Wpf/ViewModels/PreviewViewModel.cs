@@ -18,8 +18,10 @@
 
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using CNCLib.GCode;
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
@@ -53,6 +55,56 @@ namespace CNCLib.Wpf.ViewModels
 			set { SetProperty(() => _commands == value, () => _commands = value); }
 		}
 
+		private decimal _offsetX = 0;
+
+		public decimal OffsetX
+		{
+			get { return _offsetX; }
+			set { SetProperty(() => _offsetX == value, () => _offsetX = value); }
+		}
+
+		private decimal _offsetY = 0;
+		public decimal OffsetY
+		{
+			get { return _offsetY; }
+			set { SetProperty(() => _offsetY == value, () => _offsetY = value); }
+		}
+
+		private double _zoom = 1;
+		public double Zoom
+		{
+			get { return _zoom; }
+			set { SetProperty(() => _zoom == value, () => _zoom = value); }
+		}
+
+		private decimal _laserSize = 0.25m;
+		public decimal LaserSize
+		{
+			get { return _laserSize; }
+			set { SetProperty(() => _laserSize == value, () => _laserSize = value); }
+		}
+
+		private Color _machineColor=Colors.Black;
+		public Color MachineColor
+		{
+			get { return _machineColor; }
+			set { SetProperty(() => _machineColor == value, () => _machineColor = value); }
+		}
+
+		private Color _laserOnColor=Colors.Red;
+		public Color LaserOnColor
+		{
+			get { return _laserOnColor; }
+			set { SetProperty(() => _laserOnColor == value, () => _laserOnColor = value); }
+		}
+
+		private Color _laserOffColor = Colors.Orange;
+		public Color LaserOffColor
+		{
+			get { return _laserOffColor; }
+			set { SetProperty(() => _laserOffColor == value, () => _laserOffColor = value); }
+		}
+
 		#endregion
 
 		#region GUI-forward
@@ -78,7 +130,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void SendTo()
 		{
-			new Thread(() =>
+			new Task(() =>
 			{
 				_loadingOrSending = true;
 
@@ -131,13 +183,24 @@ namespace CNCLib.Wpf.ViewModels
 
 		public bool CanSendTo()
 		{
-//			return !_loading;
-			return !_loadingOrSending && Com.IsConnected;
+			return !_loadingOrSending && Com.IsConnected && Commands.Count > 0;
 		}
 
 		public bool CanLoad()
 		{
 			return _loadingOrSending == false;
+		}
+
+		public bool CanResetView()
+		{
+			return true;
+		}
+
+		public void ResetView()
+		{
+			OffsetX = 0;
+			OffsetY = 0;
+			Zoom = 1;
 		}
 
 		#endregion
@@ -146,6 +209,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public ICommand LoadCommand { get { return new DelegateCommand(Load, CanLoad); } }
 		public ICommand SendToCommand { get { return new DelegateCommand(SendTo, CanSendTo); } }
+		public ICommand ResetViewCommand { get { return new DelegateCommand(ResetView, CanResetView); } }
 
 		#endregion
 	}

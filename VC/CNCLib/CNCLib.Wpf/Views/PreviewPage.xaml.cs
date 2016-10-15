@@ -29,11 +29,6 @@ namespace CNCLib.Wpf.Views
 		{
 			InitializeComponent();
 
-			machinColor.SelectedColor = gcode.MachineColor;
-			laserOnColor.SelectedColor = gcode.LaserOnColor;
-			laserOffColor.SelectedColor = gcode.LaserOffColor;
-			laserSize.Text = gcode.LaserSize.ToString(CultureInfo.InvariantCulture);
-
 			var vm = DataContext as PreviewViewModel;
 
 			if (vm.GetLoadInfo == null)

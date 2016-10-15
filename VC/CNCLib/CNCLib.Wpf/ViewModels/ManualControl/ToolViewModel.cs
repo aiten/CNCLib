@@ -68,21 +68,21 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             return CanSend() && Global.Instance.Machine.Laser;
         }
 
-        public void SendInfo() { AsyncRunCommand(() => { Com.SendCommand("?"); }); }
-		public void SendAbort() { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.SendCommand("!"); }); }
-		public void SendResurrect() { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.SendCommand("!!!"); }); }
-		public void ClearQueue() { AsyncRunCommand(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); }); }
-		public void SendCNCLibCommand(string command) { AsyncRunCommand(() => { Com.SendCommand(command); }); }
-		public void SendM03SpindelOn() { AsyncRunCommand(() => { Com.SendCommand("m3"); }); }
-		public void SendM05SpindelOff() { AsyncRunCommand(() => { Com.SendCommand("m5"); }); }
-		public void SendM07CoolandOn() { AsyncRunCommand(() => { Com.SendCommand("m7"); }); }
-		public void SendM09CoolandOff() { AsyncRunCommand(() => { Com.SendCommand("m9"); }); }
-        public void SendM106LaserOn() { AsyncRunCommand(() => { Com.SendCommand("m106 s255"); }); }
-        public void SendM106LaserOnMin() { AsyncRunCommand(() => { Com.SendCommand("m106 s1"); }); }
-        public void SendM107LaserOff() { AsyncRunCommand(() => { Com.SendCommand("m107"); }); }
+        public void SendInfo() { RunInNewTask(() => { Com.SendCommand("?"); }); }
+		public void SendAbort() { RunInNewTask(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.SendCommand("!"); }); }
+		public void SendResurrect() { RunInNewTask(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.SendCommand("!!!"); }); }
+		public void ClearQueue() { RunInNewTask(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); }); }
+		public void SendCNCLibCommand(string command) { RunInNewTask(() => { Com.SendCommand(command); }); }
+		public void SendM03SpindelOn() { RunInNewTask(() => { Com.SendCommand("m3"); }); }
+		public void SendM05SpindelOff() { RunInNewTask(() => { Com.SendCommand("m5"); }); }
+		public void SendM07CoolandOn() { RunInNewTask(() => { Com.SendCommand("m7"); }); }
+		public void SendM09CoolandOff() { RunInNewTask(() => { Com.SendCommand("m9"); }); }
+        public void SendM106LaserOn() { RunInNewTask(() => { Com.SendCommand("m106 s255"); }); }
+        public void SendM106LaserOnMin() { RunInNewTask(() => { Com.SendCommand("m106 s1"); }); }
+        public void SendM107LaserOff() { RunInNewTask(() => { Com.SendCommand("m107"); }); }
         public void SendM114PrintPos()
 		{
-			AsyncRunCommand(() =>
+			RunInNewTask(() =>
 			{
 				string message = Com.SendCommandAndReadAsync("m114").Result;
 
@@ -103,7 +103,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 				}
 			});
 		}
-		public void WritePending() { AsyncRunCommand(() => { Com.WritePendingCommandsToFile(System.IO.Path.GetTempPath() + "PendingCommands.nc"); }); }
+		public void WritePending() { RunInNewTask(() => { Com.WritePendingCommandsToFile(System.IO.Path.GetTempPath() + "PendingCommands.nc"); }); }
 
 		#endregion
 
