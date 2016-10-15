@@ -40,12 +40,14 @@ namespace CNCLib.GUI
 
 		public decimal SizeX { get { return _sizeX; } set { _sizeX = value; CalcRatio(); } }
 		public decimal SizeY { get { return _sizeY; } set { _sizeY = value; CalcRatio(); } }
+		public decimal SizeZ { get { return _sizeZ; } set { _sizeZ = value; CalcRatio(); } }
 
 		public bool KeepRatio { get { return _keepRatio; } set { _keepRatio = value; CalcRatio(); } }
 
 		public double Zoom { get { return _zoom; } set { _zoom = value; ReInitDraw(); } }
 		public decimal OffsetX { get { return _offsetX; } set { _offsetX = value; ReInitDraw(); } }
 		public decimal OffsetY { get { return _offsetY; } set { _offsetY = value; ReInitDraw(); } }
+		public decimal OffsetZ { get { return _offsetZ; } set { _offsetZ = value; ReInitDraw(); } }
 		public decimal CutterSize { get { return _cutterSize; } set { _cutterSize = value; ReInitDraw(); } }
 		public decimal LaserSize { get { return _laserSize; } set { _laserSize = value; ReInitDraw(); } }
 
@@ -60,6 +62,7 @@ namespace CNCLib.GUI
 
 		public Color FastMoveColor { get { return _fastColor; } set { _fastColor = value; ReInitDraw(); } }
 
+		public Rotate3D Rotate { get { return _rotate3D; } set { _rotate3D = value; ReInitDraw(); } }
 		//		public CommandList Commands { get { return _commands; } }
 
 		public Size RenderSize
@@ -87,10 +90,13 @@ namespace CNCLib.GUI
 		double _zoom = 1;
 		double _ratioX = 1;
 		double _ratioY = 1;
+		double _ratioZ = 1;
 		decimal _sizeX = 130.000m;
 		decimal _sizeY = 45.000m;
+		decimal _sizeZ = 70.000m;
 		decimal _offsetX = 0;
 		decimal _offsetY = 0;
+		decimal _offsetZ = 0;
 		decimal _cutterSize = 0;
 		decimal _laserSize = 0.254m;
 		Color _machineColor = Color.Black;
@@ -103,7 +109,9 @@ namespace CNCLib.GUI
 		Color _noMoveColor = Color.Blue;
 		Color _fastColor = Color.Green;
 
-//		CommandList _commands = new CommandList();
+		Rotate3D _rotate3D = new Rotate3D();
+
+		//		CommandList _commands = new CommandList();
 
 		private ArduinoSerialCommunication Com
 		{
@@ -136,44 +144,62 @@ namespace CNCLib.GUI
 							0);
 		}
 
+		PointF ToClientF(Point3D pt)
+		{
+			pt = _rotate3D.Rotate(pt);
+
+			double x = ((double)((double)(pt.X ?? 0) - (double)OffsetX) * Zoom) * _ratioX;
+			double y = ((double)(((double)SizeY - (((double)(pt.Y ?? 0)) + (double)OffsetY))) * Zoom) * _ratioY;
+			//double z = ((double)((double)(pt.Z ?? 0) - (double)OffsetZ) * Zoom) * _ratioZ;
+
+			return new PointF((float) x, (float) y);
+		}
 		Point ToClient(Point3D pt)
 		{
-			return new Point(
-				ToClientXInt((double)(pt.X ?? 0)),
-				ToClientYInt((double)(pt.Y ?? 0)));
+			var p = ToClientF(pt);
+			return new Point((int)Math.Round(p.X, 0), (int)Math.Round(p.Y, 0));
 		}
-
-		double ToClientX(double val)
-		{
-			double x = (double)(val - (double)OffsetX) * Zoom;
-			return _ratioX * x;
-		}
-		double ToClientY(double val)
-		{
-			double y = (double)(((double)SizeY - (val + (double)OffsetY))) * Zoom;
-			return _ratioY * y;
-		}
-		int ToClientXInt(double val)
-		{
-			return (int)Math.Round(ToClientX(val), 0);
-		}
-		int ToClientYInt(double val)
-		{
-			return (int)Math.Round(ToClientY(val), 0);
-		}
-
+		/*
+				double ToClientX(double val)
+				{
+					double x = (double)(val - (double)OffsetX) * Zoom;
+					return _ratioX * x;
+				}
+				double ToClientY(double val)
+				{
+					double y = (double)(((double)SizeY - (val + (double)OffsetY))) * Zoom;
+					return _ratioY * y;
+				}
+				double ToClientZ(double val)
+				{
+					double z = (double)(((double)SizeZ - (val + (double)OffsetZ))) * Zoom;
+					return _ratioZ * z;
+				}
+				int ToClientXInt(double val)
+				{
+					return (int)Math.Round(ToClientX(val), 0);
+				}
+				int ToClientYInt(double val)
+				{
+					return (int)Math.Round(ToClientY(val), 0);
+				}
+		*/
 		const double SignX = 1.0;
 		const double SignY = -1.0;
 
-		int ToClientSizeX(double X)
+		double ToClientSizeX(double X)
 		{
-			double x = X * Zoom;
-			return (int)Math.Round(_ratioX * x, 0);
+			var pt3d = new Point3D((decimal)X, 0, 0);
+			pt3d = Rotate.Rotate(pt3d);
+			double x = (double) (pt3d.X??0) * Zoom;
+			return _ratioX * x;
 		}
-		int ToClientSizeY(double Y)
+		double ToClientSizeY(double Y)
 		{
-			double y = Y * Zoom;
-			return (int)Math.Round(_ratioY * y, 0);
+			var pt3d = new Point3D(0,(decimal)Y, 0);
+			pt3d = Rotate.Rotate(pt3d);
+			double y = (double)(pt3d.Y ?? 0) * Zoom;
+			return _ratioY * y;
 		}
 
 		#endregion
@@ -189,7 +215,7 @@ namespace CNCLib.GUI
 		{
 			if (_needReInit)
 			{
-				float cutsize = CutterSize > 0 ? (float)ToClient(new Point3D(OffsetX + CutterSize, 0m, 0m)).X : 2;
+				float cutsize = CutterSize > 0 ? (float)ToClientSizeX((double)CutterSize) : 2;
 				float fastSize = 0.5f;
 
 				_cutPen = new Pen(CutColor, cutsize);
@@ -204,7 +230,7 @@ namespace CNCLib.GUI
 
 				_fastPen = new Pen(FastMoveColor, fastSize);
 				_noMovePen = new Pen(Color.Blue, fastSize);
-				_laserCutPen = new Pen(LaserOnColor, ToClient(new Point3D(OffsetX + LaserSize, 0m, 0m)).X);
+				_laserCutPen = new Pen(LaserOnColor, (float) ToClientSizeX((double) LaserSize));
 				_laserCutPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
 				_laserCutPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
 				_laserFastPen = new Pen(LaserOffColor, (float)(fastSize / 2.0));
@@ -228,12 +254,11 @@ namespace CNCLib.GUI
 
 			var ee = new PaintEventArgs(g1, new Rectangle());
 
-			Point from = ToClient(new Point3D(0, SizeY, 0));
-			Point to = ToClient(new Point3D(SizeX, 0, 0m));
-			Size sz = new Size(to.X - from.X, to.Y - from.Y);
-			Rectangle rc = new Rectangle(from, sz);
+			var from = ToClient(new Point3D(0, SizeY, 0));
+			var to = ToClient(new Point3D(SizeX, 0, 0m));
 
-			g1.FillRectangle(new SolidBrush(MachineColor), rc);
+			var pts = new PointF[] { ToClientF(new Point3D(0, 0, 0)), ToClientF(new Point3D(0, SizeY, 0)), ToClientF(new Point3D(SizeX, SizeY, 0)), ToClientF(new Point3D(SizeX, 0, 0)) };
+			g1.FillPolygon(new SolidBrush(MachineColor), pts);
 
 			commands?.Paint(this, ee);
 
@@ -250,6 +275,7 @@ namespace CNCLib.GUI
 			{
 				if (_ratioX > _ratioY) _ratioX = _ratioY;
 				else if (_ratioX < _ratioY) _ratioY = _ratioX;
+				_ratioZ = _ratioX;
 			}
 		}
 
@@ -273,8 +299,8 @@ namespace CNCLib.GUI
 
 			PaintEventArgs e = (PaintEventArgs)param;
 
-			Point from = ToClient(ptFrom);
-			Point to = ToClient(ptTo);
+			var from = ToClientF(ptFrom);
+			var to   = ToClientF(ptTo);
 
 			if (PreDrawLineOrArc(param, drawtype, from, to))
 			{
@@ -287,7 +313,7 @@ namespace CNCLib.GUI
 			if (drawtype == DrawType.NoDraw) return;
 
 			PaintEventArgs e = (PaintEventArgs)param;
-			Point from = ToClient(ptCenter);
+			var from = ToClientF(ptCenter);
 			e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X - xradius / 2, from.Y - yradius / 2, xradius, yradius);
 		}
 
@@ -297,10 +323,10 @@ namespace CNCLib.GUI
 
 			PaintEventArgs e = (PaintEventArgs)param;
 
-			Point from = ToClient(ptFrom);
-			Point to = ToClient(ptTo);
+			var from = ToClientF(ptFrom);
+			var to   = ToClientF(ptTo);
 
-			//e.Graphics.DrawLine(_helpLine, from, to);
+			pIJ = Rotate.Rotate(pIJ);
 
 			double I = (double)pIJ.X.Value;
 			double J = (double)pIJ.Y.Value;
@@ -326,9 +352,11 @@ namespace CNCLib.GUI
 					diffAng += 360;
 			}
 
-			Point rcfrom = new Point(ToClientXInt(cx - R * SignX), ToClientYInt(cy - R * SignY));
-			int RR = ToClientSizeX(R * 2);
-			Rectangle rec = new Rectangle(rcfrom, new Size(RR, RR));
+			var pt3d = new Point3D((decimal) (cx - R * SignX), (decimal) (cy - R * SignY), ptFrom.Z??0);
+			PointF rcfrom = ToClientF(pt3d);
+			//Point rcfrom = new Point(ToClientXInt(cx - R * SignX), ToClientYInt(cy - R * SignY));
+			float RR = (float) ToClientSizeX(R * 2);
+			var rec = new RectangleF(rcfrom, new SizeF(RR, RR));
 
 			//e.Graphics.DrawRectangle(_helpLine, rec);
 
@@ -345,7 +373,7 @@ namespace CNCLib.GUI
 			}
 		}
 
-		private bool PreDrawLineOrArc(object param, DrawType drawtype, Point from, Point to)
+		private bool PreDrawLineOrArc(object param, DrawType drawtype, PointF from, PointF to)
 		{
 			PaintEventArgs e = (PaintEventArgs)param;
 
@@ -378,7 +406,7 @@ namespace CNCLib.GUI
 			Line = 0,
 			Dot = 1,
 			Ellipse = 2,
-			Arc=3
+			Arc = 3
 		};
 
 		private Pen GetPen(DrawType moveType, LineDrawType drawtype)
@@ -396,4 +424,5 @@ namespace CNCLib.GUI
 
 		#endregion
 	}
+
 }

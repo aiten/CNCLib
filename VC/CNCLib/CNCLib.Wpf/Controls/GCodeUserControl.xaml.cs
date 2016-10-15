@@ -335,8 +335,20 @@ namespace CNCLib.Wpf.Controls
 			InvalidateVisual();
 		}
 
+		bool _rotated = false;
+
 		private void GCodeUserControl_MouseDown(object sender, MouseEventArgs e)
 		{
+			if (e.RightButton == MouseButtonState.Pressed)
+			{
+				if (_rotated)
+					_bitmapDraw.Rotate = new Rotate3D();
+				else
+					_bitmapDraw.Rotate = new Rotate3D(45.0/180.0*Math.PI, new double[] { -1, -1, 0 });
+				_rotated = !_rotated;
+				InvalidateVisual();
+			}
+			else
 			{
 				if (!_isdragging)
 				{

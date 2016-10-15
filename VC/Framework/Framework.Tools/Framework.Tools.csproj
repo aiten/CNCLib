@@ -64,7 +64,6 @@
     <Compile Include="..\FrameworkSolutionInfoVersion.cs">
       <Link>Properties\FrameworkSolutionInfoVersion.cs</Link>
     </Compile>
-
     <Compile Include="CommandStream.cs" />
     <Compile Include="Dependency\BaseDependencyContainer.cs" />
     <Compile Include="Dependency\Dependency.cs" />
@@ -78,6 +77,7 @@
     <Compile Include="Drawing\FloydSteinbergDither.cs" />
     <Compile Include="Drawing\ImageHelper.cs" />
     <Compile Include="Drawing\Point3D.cs" />
+    <Compile Include="Drawing\Rotate3D.cs" />
     <Compile Include="Drawing\Vector3D.cs" />
     <Compile Include="Pattern\IFactory.cs" />
     <Compile Include="Pattern\FactoryType2Type.cs" />

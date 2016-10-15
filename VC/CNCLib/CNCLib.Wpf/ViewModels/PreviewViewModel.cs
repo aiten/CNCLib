@@ -112,7 +112,7 @@ namespace CNCLib.Wpf.ViewModels
 			set { SetProperty(() => _laserOffColor == value, () => _laserOffColor = value); }
 		}
 
-		private Color _cutColor = Colors.White;
+		private Color _cutColor = Colors.LightGray;
 		public Color CutColor
 		{
 			get { return _cutColor; }
