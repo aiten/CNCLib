@@ -18,37 +18,69 @@
         <StackPanel DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
                 <Button Content="SendTo" Command="{Binding SendToCommand}" Margin="0,0,5,0"/>
-                <Label Content="Machine:" />
-                <xctk:ColorPicker SelectedColor="{Binding Path=MachineColor}"  Width="50"/>
-                <Label Content="Laser On:" />
-                <xctk:ColorPicker SelectedColor="{Binding Path=LaserOnColor}" Width="50"/>
-                <Label Content="Laser Off:" />
-                <xctk:ColorPicker SelectedColor="{Binding Path=LaserOffColor}" Width="50"/>
+                <Button Content="Load" Command="{Binding LoadCommand}" Margin="0,0,5,0"/>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Machine:" />
+                    <xctk:ColorPicker SelectedColor="{Binding Path=MachineColor}"  Width="50"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Laser On:" />
+                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOnColor}" Width="50"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Laser Off:" />
+                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOffColor}" Width="50"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Cut:" />
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutColor}" Width="50"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="CutDot:" />
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutDotColor}" Width="50"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="CutElipse:" />
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutEllipseColor}" Width="50"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="CutArc:" />
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutArcColor}" Width="50"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Fast:" />
+                    <xctk:ColorPicker SelectedColor="{Binding Path=FastColor}" Width="50"/>
+                </StackPanel>
                 <Label Content="Laser size:" />
                 <TextBox Text="{Binding Path=LaserSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" MinWidth="30"/>
-                <Label Content="Zoom" />
-                <Slider Value="{Binding Path=Zoom}" Minimum="0.1" Maximum="25" Width="200"/>
-                <Button Content="Load" Command="{Binding LoadCommand}"/>
             </StackPanel>
         </StackPanel>
-
-        <DockPanel DockPanel.Dock="Bottom">
-            <StackPanel Orientation="Horizontal" MinWidth="90"> 
+        <DockPanel DockPanel.Dock="Bottom" Margin="0,1,0,1">
+            <StackPanel Orientation="Horizontal" MinWidth="90">
                 <Label Content="{Binding Path=MouseOverPositionX,ElementName=gcode}" Padding="0" />
-                <Label Content=":" DockPanel.Dock ="Left" Padding="0"/>
+                <Label Content=":" Padding="0"/>
                 <Label Content="{Binding Path=MouseOverPositionY,ElementName=gcode}"  Padding="0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Zoom:" Padding="0"/>
+                <Slider Value="{Binding Path=Zoom}" Minimum="0.1" Maximum="25" Width="200"/>
             </StackPanel>
             <Button Content="[x]" Command="{Binding Path=ResetViewCommand}" DockPanel.Dock="Right"/>
             <Slider Value="{Binding Path=OffsetX}" Minimum="-1000" Maximum="1000" />
         </DockPanel>
         <Slider Value="{Binding Path=OffsetY}" Minimum="-1000" Maximum="1000" DockPanel.Dock="Right" Orientation="Vertical" IsDirectionReversed="True"/>
         <ctrl:GCodeUserControl x:Name="gcode"
-                               Test="1"
                                Commands="{Binding Path=Commands}"
                                MachineColor="{Binding Path=MachineColor}"
                                LaserOnColor="{Binding Path=LaserOnColor}"
                                LaserOffColor="{Binding Path=LaserOffColor}"
                                LaserSize="{Binding Path=LaserSize}"
+                               CutColor="{Binding Path=CutColor}"
+                               CutDotColor="{Binding Path=CutDotColor}"
+                               CutEllipseColor="{Binding Path=CutEllipseColor}"
+                               CutArcColor="{Binding Path=CutArcColor}"
+                               FastMoveColor="{Binding Path=FastColor}"
+                               CutterSize="{Binding Path=CutterSize}"
                                Zoom="{Binding Path=Zoom,Mode=TwoWay}" 
                                OffsetX="{Binding Path=OffsetX,Mode=TwoWay}"
                                OffsetY="{Binding Path=OffsetY,Mode=TwoWay}"/>

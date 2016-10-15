@@ -48,22 +48,33 @@ namespace CNCLib.Wpf.Controls
 
 		#region Properties
 
-		public int Test { get; set; } 
 
-		private static void OnCommandsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
-		{
-			var godeCtrl = (GCodeUserControl)dependencyObject;
-			godeCtrl.InvalidateVisual();
-		}
-
+		/// <summary>
+		/// Command Property
+		/// </summary>
 		public static DependencyProperty CommandsProperty = DependencyProperty.Register("Commands", typeof(CommandList), typeof(GCodeUserControl), new PropertyMetadata(OnCommandsChanged));
 		public CommandList Commands
 		{
 			get { return (CommandList)GetValue(CommandsProperty); }
 			set { SetValue(CommandsProperty, value); }
 		}
+		private static void OnCommandsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		{
+			var godeCtrl = (GCodeUserControl)dependencyObject;
+			godeCtrl.InvalidateVisual();
+		}
 
+		#region View Properties
 
+		/// <summary>
+		/// Zoom Property
+		/// </summary>
+		public static DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnZoomChanged));
+		public double Zoom
+		{
+			get { return (double)GetValue(ZoomProperty); }
+			set { SetValue(ZoomProperty, value); }
+		}
 		private static void OnZoomChanged(DependencyObject dependencyObject,  DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
@@ -71,18 +82,30 @@ namespace CNCLib.Wpf.Controls
 			godeCtrl.InvalidateVisual();
 		}
 
-		public static DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnZoomChanged));
-		public double Zoom
+		/// <summary>
+		/// OffsetX Property
+		/// </summary>
+		public static DependencyProperty OffsetXProperty = DependencyProperty.Register("OffsetX", typeof(decimal), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetXChanged));
+		public decimal OffsetX
 		{
-			get { return (double)GetValue(ZoomProperty); }
-			set { SetValue(ZoomProperty, value); }
+			get { return (decimal)GetValue(OffsetXProperty); }
+			set { SetValue(OffsetXProperty, value); }
 		}
-
 		private static void OnOffsetXChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
 			godeCtrl._bitmapDraw.OffsetX = (decimal)e.NewValue;
 			godeCtrl.InvalidateVisual();
+		}
+
+		/// <summary>
+		/// OffsetY Property
+		/// </summary>
+		public static DependencyProperty OffsetYProperty = DependencyProperty.Register("OffsetY", typeof(decimal), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetYChanged));
+		public decimal OffsetY
+		{
+			get { return (decimal)GetValue(OffsetYProperty); }
+			set { SetValue(OffsetYProperty, value); }
 		}
 		private static void OnOffsetYChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -91,76 +114,176 @@ namespace CNCLib.Wpf.Controls
 			godeCtrl.InvalidateVisual();
 		}
 
-		public static DependencyProperty OffsetXProperty = DependencyProperty.Register("OffsetX", typeof(decimal), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetXChanged));
-		public static DependencyProperty OffsetYProperty = DependencyProperty.Register("OffsetY", typeof(decimal), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetYChanged));
-		public decimal OffsetX
-		{
-			get { return (decimal)GetValue(OffsetXProperty); }
-			set { SetValue(OffsetXProperty, value); }
-		}
-		public decimal OffsetY
-		{
-			get { return (decimal)GetValue(OffsetYProperty); }
-			set { SetValue(OffsetYProperty, value); }
-		}
+		#endregion
 
+		#region Color Properties
+
+		/// <summary>
+		/// MachineColor Property
+		/// </summary>
 		public static DependencyProperty MachineColorProperty = DependencyProperty.Register("MachineColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Black,OnMachineColorChanged));
-
+		public Color MachineColor
+		{
+			get { return (Color)GetValue(MachineColorProperty); }
+			set { SetValue(MachineColorProperty, value); }
+		}
 		private static void OnMachineColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
 			godeCtrl._bitmapDraw.MachineColor = ColorToColor((Color)e.NewValue);
 			godeCtrl.InvalidateVisual();
 		}
-		public Color MachineColor
-		{
-			get { return (Color)GetValue(MachineColorProperty); }
-			set { SetValue(MachineColorProperty, value); }
-		}
 
+		/// <summary>
+		/// LaserOnColor Property
+		/// </summary>
 		public static DependencyProperty LaserOnColorProperty = DependencyProperty.Register("LaserOnColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Red,OnLaserOnColorChanged));
-
+		public Color LaserOnColor
+		{
+			get { return (Color)GetValue(LaserOnColorProperty); }
+			set { SetValue(LaserOnColorProperty, value); }
+		}
 		private static void OnLaserOnColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
 			godeCtrl._bitmapDraw.LaserOnColor = ColorToColor((Color)e.NewValue);
 			godeCtrl.InvalidateVisual();
 		}
-		public Color LaserOnColor
-		{
-			get { return (Color)GetValue(LaserOnColorProperty); }
-			set { SetValue(LaserOnColorProperty, value); }
-		}
 
+		/// <summary>
+		/// LaserOffColor Property
+		/// </summary>
 		public static DependencyProperty LaserOffColorProperty = DependencyProperty.Register("LaserOffColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange,OnLaserOffColorChanged));
-
+		public Color LaserOffColor
+		{
+			get { return (Color)GetValue(LaserOffColorProperty); }
+			set { SetValue(LaserOffColorProperty, value); }
+		}
 		private static void OnLaserOffColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
 			godeCtrl._bitmapDraw.LaserOffColor = ColorToColor((Color)e.NewValue);
 			godeCtrl.InvalidateVisual();
 		}
-		public Color LaserOffColor
+
+		/// <summary>
+		/// CutColor Property
+		/// </summary>
+		public static DependencyProperty CutColorProperty = DependencyProperty.Register("CutColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutColorChanged));
+		public Color CutColor
 		{
-			get { return (Color)GetValue(LaserOffColorProperty); }
-			set { SetValue(LaserOffColorProperty, value); }
+			get { return (Color)GetValue(CutColorProperty); }
+			set { SetValue(CutColorProperty, value); }
+		}
+		private static void OnCutColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		{
+			var godeCtrl = (GCodeUserControl)dependencyObject;
+			godeCtrl._bitmapDraw.CutColor = ColorToColor((Color)e.NewValue);
+			godeCtrl.InvalidateVisual();
 		}
 
-		public static DependencyProperty LaserSizeProperty = DependencyProperty.Register("LaserSize", typeof(decimal), typeof(GCodeUserControl), new PropertyMetadata(0.254m,OnLaserSizeChanged));
+		/// <summary>
+		/// CutDotColor Property
+		/// </summary>
+		public static DependencyProperty CutDotColorProperty = DependencyProperty.Register("CutDotColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutDotColorChanged));
+		public Color CutDotColor
+		{
+			get { return (Color)GetValue(CutDotColorProperty); }
+			set { SetValue(CutDotColorProperty, value); }
+		}
+		private static void OnCutDotColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		{
+			var godeCtrl = (GCodeUserControl)dependencyObject;
+			godeCtrl._bitmapDraw.CutDotColor = ColorToColor((Color)e.NewValue);
+			godeCtrl.InvalidateVisual();
+		}
 
+
+		/// <summary>
+		/// CutArcColor Property
+		/// </summary>
+		public static DependencyProperty CutEllipseColorProperty = DependencyProperty.Register("CutEllipseColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutEllipseColorChanged));
+		public Color CutEllipseColor
+		{
+			get { return (Color)GetValue(CutEllipseColorProperty); }
+			set { SetValue(CutEllipseColorProperty, value); }
+		}
+		private static void OnCutEllipseColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		{
+			var godeCtrl = (GCodeUserControl)dependencyObject;
+			godeCtrl._bitmapDraw.CutEllipseColor = ColorToColor((Color)e.NewValue);
+			godeCtrl.InvalidateVisual();
+		}
+
+		/// <summary>
+		/// CutArcColor Property
+		/// </summary>
+		public static DependencyProperty CutArcColorProperty = DependencyProperty.Register("CutArcColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutArcColorChanged));
+		public Color CutArcColor
+		{
+			get { return (Color)GetValue(CutArcColorProperty); }
+			set { SetValue(CutArcColorProperty, value); }
+		}
+		private static void OnCutArcColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		{
+			var godeCtrl = (GCodeUserControl)dependencyObject;
+			godeCtrl._bitmapDraw.CutArcColor = ColorToColor((Color)e.NewValue);
+			godeCtrl.InvalidateVisual();
+		}
+
+		/// <summary>
+		/// FastMoveColor Property
+		/// </summary>
+		public static DependencyProperty FastMoveColorProperty = DependencyProperty.Register("FastMoveColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnFastMoveColorChanged));
+		public Color FastMoveColor
+		{
+			get { return (Color)GetValue(FastMoveColorProperty); }
+			set { SetValue(FastMoveColorProperty, value); }
+		}
+		private static void OnFastMoveColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		{
+			var godeCtrl = (GCodeUserControl)dependencyObject;
+			godeCtrl._bitmapDraw.FastMoveColor = ColorToColor((Color)e.NewValue);
+			godeCtrl.InvalidateVisual();
+		}
+
+		#endregion
+
+		/// <summary>
+		/// LaserSize Property
+		/// </summary>
+		public static DependencyProperty LaserSizeProperty = DependencyProperty.Register("LaserSize", typeof(decimal), typeof(GCodeUserControl), new PropertyMetadata(0.254m, OnLaserSizeChanged));
+		public decimal LaserSize
+		{
+			get { return (decimal)GetValue(LaserSizeProperty); }
+			set { SetValue(LaserSizeProperty, value); }
+		}
 		private static void OnLaserSizeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
 			godeCtrl._bitmapDraw.LaserSize = (decimal)e.NewValue;
 			godeCtrl.InvalidateVisual();
 		}
-		public decimal LaserSize
+
+		/// <summary>
+		/// CutterSize Property
+		/// </summary>
+		public static DependencyProperty CutterSizeProperty = DependencyProperty.Register("CutterSize", typeof(decimal), typeof(GCodeUserControl), new PropertyMetadata(0.254m, OnCutterSizeChanged));
+		public decimal CutterSize
 		{
-			get { return (decimal)GetValue(LaserSizeProperty); }
-			set { SetValue(LaserSizeProperty, value); }
+			get { return (decimal)GetValue(CutterSizeProperty); }
+			set { SetValue(CutterSizeProperty, value); }
+		}
+		private static void OnCutterSizeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		{
+			var godeCtrl = (GCodeUserControl)dependencyObject;
+			godeCtrl._bitmapDraw.CutterSize = (decimal)e.NewValue;
+			godeCtrl.InvalidateVisual();
 		}
 
-
+		/// <summary>
+		/// MouseOverX Property
+		/// </summary>
 		private static readonly DependencyPropertyKey MouseOverPositionXPropertyKey =
 					  DependencyProperty.RegisterReadOnly("MouseOverPositionX",
 					  typeof(decimal?), typeof(GCodeUserControl),
@@ -175,6 +298,9 @@ namespace CNCLib.Wpf.Controls
 			private set { SetValue(MouseOverPositionXPropertyKey, value); }
 		}
 
+		/// <summary>
+		/// MouseOverY Property
+		/// </summary>
 		private static readonly DependencyPropertyKey MouseOverPositionYPropertyKey =
 					  DependencyProperty.RegisterReadOnly("MouseOverPositionY",
 					  typeof(decimal?), typeof(GCodeUserControl),
@@ -219,6 +345,7 @@ namespace CNCLib.Wpf.Controls
 					_mouseDownOffsetX = OffsetX;
 					_mouseDownOffsetY = OffsetY;
 					_sw.Start();
+					Mouse.Capture(this);
 				}
 				_isdragging = true;
 			}
@@ -252,6 +379,7 @@ namespace CNCLib.Wpf.Controls
 		{
 			if (_isdragging)
 			{
+				Mouse.Capture(null);
 				InvalidateVisual();
 			}
 			_isdragging = false;

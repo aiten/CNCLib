@@ -84,6 +84,13 @@ namespace CNCLib.Wpf.ViewModels
 			set { SetProperty(() => _laserSize == value, () => _laserSize = value); }
 		}
 
+		private decimal _cutterSize = 0;
+		public decimal CutterSize
+		{
+			get { return _cutterSize; }
+			set { SetProperty(() => _cutterSize == value, () => _cutterSize = value); }
+		}
+
 		private Color _machineColor=Colors.Black;
 		public Color MachineColor
 		{
@@ -103,6 +110,41 @@ namespace CNCLib.Wpf.ViewModels
 		{
 			get { return _laserOffColor; }
 			set { SetProperty(() => _laserOffColor == value, () => _laserOffColor = value); }
+		}
+
+		private Color _cutColor = Colors.White;
+		public Color CutColor
+		{
+			get { return _cutColor; }
+			set { SetProperty(() => _cutColor == value, () => _cutColor = value); }
+		}
+
+		private Color _cutDotColor = Colors.Blue;
+		public Color CutDotColor
+		{
+			get { return _cutDotColor; }
+			set { SetProperty(() => _cutDotColor == value, () => _cutDotColor = value); }
+		}
+
+		private Color _cutEllipseColor = Colors.Cyan;
+		public Color CutEllipseColor
+		{
+			get { return _cutEllipseColor; }
+			set { SetProperty(() => _cutEllipseColor == value, () => _cutEllipseColor = value); }
+		}
+
+		private Color _cutArcColor = Colors.Beige;
+		public Color CutArcColor
+		{
+			get { return _cutArcColor; }
+			set { SetProperty(() => _cutArcColor == value, () => _cutArcColor = value); }
+		}
+
+		private Color _fastColor = Colors.Green;
+		public Color FastColor
+		{
+			get { return _fastColor; }
+			set { SetProperty(() => _fastColor == value, () => _fastColor = value); }
 		}
 
 		#endregion
