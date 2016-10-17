@@ -76,7 +76,7 @@ namespace CNCLib.GCode.Commands
 		protected class Variable
 		{
 			public char Name;
-			public decimal? Value;
+			public double? Value;
 			public string Parameter;
 
 			public string ToGCode() 
@@ -91,7 +91,7 @@ namespace CNCLib.GCode.Commands
 			}
 		};
 
-		public void AddVariable(char name, decimal value)
+		public void AddVariable(char name, double value)
 		{
 			_variables.Add(new Variable() { Name = name, Value = value });
 		}
@@ -103,16 +103,20 @@ namespace CNCLib.GCode.Commands
 		{
 			_variables.Add(new Variable() { Name = name, Parameter = paramvalue });
 		}
-
-		public decimal GetVariable(char name, decimal defaultvalue)
+		public void AddVariable(char name, decimal value)
 		{
-			decimal ret;
+			_variables.Add(new Variable() { Name = name, Value = (double) value });
+		}
+
+		public double GetVariable(char name, double defaultvalue)
+		{
+			double ret;
 			if (TryGetVariable(name, out ret))
 				return ret;
 			return defaultvalue;
 		}
 
-		public bool TryGetVariable(char name, out decimal val)
+		public bool TryGetVariable(char name, out double val)
 		{
 			Variable var = _variables.Find( n => n.Name == name);
 			if (var!=null && var.Value.HasValue)
@@ -167,7 +171,7 @@ namespace CNCLib.GCode.Commands
 
 		protected string GCodeHelper(Point3D current)
         {
-			String cmd = Code;
+			var cmd = Code;
 			if (!string.IsNullOrEmpty(SubCode))
 				cmd += "." + SubCode;
 
@@ -203,12 +207,12 @@ namespace CNCLib.GCode.Commands
 		{
 			if (PositionValid)
 			{
-				Point3D sc = new Point3D();
-				decimal val;
+				var sc = new Point3D();
+				double val;
 
-				if (TryGetVariable('X', out val)) sc.X = val;
-				if (TryGetVariable('Y', out val)) sc.Y = val;
-				if (TryGetVariable('Z', out val)) sc.Z = val;
+				if (TryGetVariable('X', out val)) sc.X = (double) val;
+				if (TryGetVariable('Y', out val)) sc.Y = (double) val;
+				if (TryGetVariable('Z', out val)) sc.Z = (double) val;
 				if (!sc.HasAllValues && PrevCommand != null)
 				{
 					sc.AssignMissing(PrevCommand.CalculatedEndPosition);
@@ -231,14 +235,14 @@ namespace CNCLib.GCode.Commands
 			}
 		}
 
-		protected decimal? ReadVariable(CommandStream stream, char param, bool allow)
+		protected double? ReadVariable(CommandStream stream, char param, bool allow)
 		{
 			stream.Next();
 			stream.SkipSpaces();
 			if (stream.NextChar == '#')
 			{
 				stream.Next();
-				int paramNr = stream.GetInt();
+				var paramNr = stream.GetInt();
 				AddVariableParam(param,paramNr.ToString());
 				return 0;
 			}
@@ -247,7 +251,7 @@ namespace CNCLib.GCode.Commands
 
 			if (stream.IsInt())
 			{
-				decimal val = stream.GetDecimal();
+				var val = stream.GetDouble();
 				AddVariable(param, val);
 				return val;
 			}

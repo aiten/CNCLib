@@ -16,11 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+
 namespace Framework.Tools.Drawing
 {
 	public class Point3D
 	{
-		public Point3D(decimal x, decimal y, decimal z)
+		public Point3D(double x, double y, double z)
 		{
 			X = x; Y = y; Z = z;
 		}
@@ -30,9 +32,9 @@ namespace Framework.Tools.Drawing
 			//Y = new decimal?();
 			//Z = new decimal?();
 		}
-		public decimal? X { get; set; }
-		public decimal? Y { get; set; }
-		public decimal? Z { get; set; }
+		public double? X { get; set; }
+		public double? Y { get; set; }
+		public double? Z { get; set; }
 
 		public bool HasAllValues { get { return X.HasValue && Y.HasValue && Z.HasValue;  } }
 

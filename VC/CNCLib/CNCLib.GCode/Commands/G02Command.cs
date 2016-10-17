@@ -42,7 +42,7 @@ namespace CNCLib.GCode.Commands
 
         public override void Draw(IOutputCommand output, DrawState state, object param)
 		{
-            decimal I, J;
+            double I, J;
             if (!TryGetVariable('I', out I))
             {
                 I = 0;

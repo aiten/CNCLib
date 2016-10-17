@@ -127,10 +127,10 @@ namespace CNCLib.GCode.Load
 					}
 				}
 			}
-			LoadOptions.OfsX = -(_minpt.X.Value - LoadOptions.AutoScaleBorderDistX);
-			LoadOptions.OfsY = -(_minpt.Y.Value - LoadOptions.AutoScaleBorderDistY);
-			decimal sizex = _maxpt.X.Value - _minpt.X.Value + 2 * LoadOptions.AutoScaleBorderDistX;
-			decimal sizey = _maxpt.Y.Value - _minpt.Y.Value + 2 * LoadOptions.AutoScaleBorderDistY;
+			LoadOptions.OfsX = -((decimal) _minpt.X.Value - LoadOptions.AutoScaleBorderDistX);
+			LoadOptions.OfsY = -((decimal)_minpt.Y.Value - LoadOptions.AutoScaleBorderDistY);
+			decimal sizex = (decimal)_maxpt.X.Value - (decimal)_minpt.X.Value + 2 * LoadOptions.AutoScaleBorderDistX;
+			decimal sizey = (decimal)_maxpt.Y.Value - (decimal)_minpt.Y.Value + 2 * LoadOptions.AutoScaleBorderDistY;
 
 			LoadOptions.ScaleX = LoadOptions.AutoScaleSizeX / sizex;
 			LoadOptions.ScaleY = LoadOptions.AutoScaleSizeY / sizey;
@@ -274,9 +274,9 @@ namespace CNCLib.GCode.Load
         private Point3D GetSpaceCoordiante(bool isRelativPoint)
         {
 			Point3D pt = new Point3D();
-            pt.X = _stream.GetInt() / 40m;
+            pt.X = _stream.GetInt() / 40.0;
 			_stream.IsCommand(",") ;
-			pt.Y = _stream.GetInt() / 40m;
+			pt.Y = _stream.GetInt() / 40.0;
 
 			AdjustOrig(ref pt);
 
@@ -297,7 +297,7 @@ namespace CNCLib.GCode.Load
 		{
 			if (LoadOptions.SwapXY)
 			{
-				decimal tmp = pt.X.Value;
+				var tmp = pt.X.Value;
 				pt.X = pt.Y;
 				pt.Y = -tmp;
 			}
@@ -307,14 +307,14 @@ namespace CNCLib.GCode.Load
         {
             if (!isRelativPoint)
             {
-                pt.X += LoadOptions.OfsX;
-                pt.Y += LoadOptions.OfsY;
+                pt.X += (double) LoadOptions.OfsX;
+                pt.Y += (double) LoadOptions.OfsY;
             }
 
             if (LoadOptions.ScaleX != 0)
-				pt.X = Math.Round(pt.X.Value * LoadOptions.ScaleX, 3);
+				pt.X = Math.Round(pt.X.Value * (double)LoadOptions.ScaleX, 3);
             if (LoadOptions.ScaleY != 0)
-				pt.Y = Math.Round(pt.Y.Value * LoadOptions.ScaleY, 3);
+				pt.Y = Math.Round(pt.Y.Value * (double)LoadOptions.ScaleY, 3);
         }
     }
 }

@@ -136,6 +136,10 @@ namespace Framework.Tools
             SkipSpaces();
             return ret;
         }
+		public double GetDouble()
+		{
+			return (double)GetDecimal();
+		}
 		public decimal GetDecimal()
 		{
 			SkipSpaces();

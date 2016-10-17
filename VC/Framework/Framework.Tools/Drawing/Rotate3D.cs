@@ -1,8 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2016 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using System;
+using Framework.Tools.Drawing;
 
 namespace Framework.Tools.Drawing
 {
@@ -32,20 +47,20 @@ namespace Framework.Tools.Drawing
 			n2 = n2 / vectorlenght;
 			n3 = n3 / vectorlenght;
 
-			double cosa = Math.Cos(rad);
-			double sina = Math.Sin(rad);
+			double cos = Math.Cos(rad);
+			double sin = Math.Sin(rad);
 
-			_vect[0, 0] = n1 * n1 * (1 - cosa) + cosa;
-			_vect[0, 1] = n1 * n2 * (1 - cosa) - n3 * sina;
-			_vect[0, 2] = n1 * n3 * (1 - cosa) + n2 * sina;
+			_vect[0, 0] = n1 * n1 * (1 - cos) + cos;
+			_vect[0, 1] = n1 * n2 * (1 - cos) - n3 * sin;
+			_vect[0, 2] = n1 * n3 * (1 - cos) + n2 * sin;
 
-			_vect[1, 0] = n1 * n2 * (1 - cosa) + n3 * sina;
-			_vect[1, 1] = n2 * n2 * (1 - cosa) + cosa;
-			_vect[1, 2] = n2 * n3 * (1 - cosa) - n1 * sina;
+			_vect[1, 0] = n1 * n2 * (1 - cos) + n3 * sin;
+			_vect[1, 1] = n2 * n2 * (1 - cos) + cos;
+			_vect[1, 2] = n2 * n3 * (1 - cos) - n1 * sin;
 
-			_vect[2, 0] = n1 * n3 * (1 - cosa) - n2 * sina;
-			_vect[2, 1] = n2 * n3 * (1 - cosa) + n1 * sina;
-			_vect[2, 2] = n3 * n3 * (1 - cosa) + cosa;
+			_vect[2, 0] = n1 * n3 * (1 - cos) - n2 * sin;
+			_vect[2, 1] = n2 * n3 * (1 - cos) + n1 * sin;
+			_vect[2, 2] = n3 * n3 * (1 - cos) + cos;
 		}
 
 		/////////////////////////////////////////////////////////
@@ -63,13 +78,13 @@ namespace Framework.Tools.Drawing
 
 		public Point3D Rotate(Point3D pt)
 		{
-			double x = (double) (pt.X ?? 0);
-			double y = (double) (pt.Y ?? 0);
-			double z = (double) (pt.Z ?? 0);
+			double x = pt.X ?? 0;
+			double y = pt.Y ?? 0;
+			double z = pt.Z ?? 0;
 
 			Rotate(ref x, ref y, ref z);
 
-			return new Point3D((decimal)x, (decimal)y, (decimal)z);
+			return new Point3D(x, y, z);
 		}
 	}
 

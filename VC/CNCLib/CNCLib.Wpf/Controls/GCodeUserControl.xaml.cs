@@ -42,7 +42,7 @@ namespace CNCLib.Wpf.Controls
 			MouseWheel += GCodeUserControl_MouseWheel;
 
 			MouseDown += GCodeUserControl_MouseDown;
-			MouseUp   += GCodeUserControl_MouseUp;
+			MouseUp += GCodeUserControl_MouseUp;
 			MouseMove += GCodeUserControl_MouseMove;
 		}
 
@@ -75,42 +75,42 @@ namespace CNCLib.Wpf.Controls
 			get { return (double)GetValue(ZoomProperty); }
 			set { SetValue(ZoomProperty, value); }
 		}
-		private static void OnZoomChanged(DependencyObject dependencyObject,  DependencyPropertyChangedEventArgs e)
+		private static void OnZoomChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
-			godeCtrl._bitmapDraw.Zoom = (double) e.NewValue;
+			godeCtrl._bitmapDraw.Zoom = (double)e.NewValue;
 			godeCtrl.InvalidateVisual();
 		}
 
 		/// <summary>
 		/// OffsetX Property
 		/// </summary>
-		public static DependencyProperty OffsetXProperty = DependencyProperty.Register("OffsetX", typeof(decimal), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetXChanged));
-		public decimal OffsetX
+		public static DependencyProperty OffsetXProperty = DependencyProperty.Register("OffsetX", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetXChanged));
+		public double OffsetX
 		{
-			get { return (decimal)GetValue(OffsetXProperty); }
+			get { return (double)GetValue(OffsetXProperty); }
 			set { SetValue(OffsetXProperty, value); }
 		}
 		private static void OnOffsetXChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
-			godeCtrl._bitmapDraw.OffsetX = (decimal)e.NewValue;
+			godeCtrl._bitmapDraw.OffsetX = (double)e.NewValue;
 			godeCtrl.InvalidateVisual();
 		}
 
 		/// <summary>
 		/// OffsetY Property
 		/// </summary>
-		public static DependencyProperty OffsetYProperty = DependencyProperty.Register("OffsetY", typeof(decimal), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetYChanged));
-		public decimal OffsetY
+		public static DependencyProperty OffsetYProperty = DependencyProperty.Register("OffsetY", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetYChanged));
+		public double OffsetY
 		{
-			get { return (decimal)GetValue(OffsetYProperty); }
+			get { return (double)GetValue(OffsetYProperty); }
 			set { SetValue(OffsetYProperty, value); }
 		}
 		private static void OnOffsetYChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
-			godeCtrl._bitmapDraw.OffsetY = (decimal)e.NewValue;
+			godeCtrl._bitmapDraw.OffsetY = (double)e.NewValue;
 			godeCtrl.InvalidateVisual();
 		}
 
@@ -121,7 +121,7 @@ namespace CNCLib.Wpf.Controls
 		/// <summary>
 		/// MachineColor Property
 		/// </summary>
-		public static DependencyProperty MachineColorProperty = DependencyProperty.Register("MachineColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Black,OnMachineColorChanged));
+		public static DependencyProperty MachineColorProperty = DependencyProperty.Register("MachineColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Black, OnMachineColorChanged));
 		public Color MachineColor
 		{
 			get { return (Color)GetValue(MachineColorProperty); }
@@ -137,7 +137,7 @@ namespace CNCLib.Wpf.Controls
 		/// <summary>
 		/// LaserOnColor Property
 		/// </summary>
-		public static DependencyProperty LaserOnColorProperty = DependencyProperty.Register("LaserOnColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Red,OnLaserOnColorChanged));
+		public static DependencyProperty LaserOnColorProperty = DependencyProperty.Register("LaserOnColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Red, OnLaserOnColorChanged));
 		public Color LaserOnColor
 		{
 			get { return (Color)GetValue(LaserOnColorProperty); }
@@ -153,7 +153,7 @@ namespace CNCLib.Wpf.Controls
 		/// <summary>
 		/// LaserOffColor Property
 		/// </summary>
-		public static DependencyProperty LaserOffColorProperty = DependencyProperty.Register("LaserOffColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange,OnLaserOffColorChanged));
+		public static DependencyProperty LaserOffColorProperty = DependencyProperty.Register("LaserOffColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnLaserOffColorChanged));
 		public Color LaserOffColor
 		{
 			get { return (Color)GetValue(LaserOffColorProperty); }
@@ -252,32 +252,32 @@ namespace CNCLib.Wpf.Controls
 		/// <summary>
 		/// LaserSize Property
 		/// </summary>
-		public static DependencyProperty LaserSizeProperty = DependencyProperty.Register("LaserSize", typeof(decimal), typeof(GCodeUserControl), new PropertyMetadata(0.254m, OnLaserSizeChanged));
-		public decimal LaserSize
+		public static DependencyProperty LaserSizeProperty = DependencyProperty.Register("LaserSize", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.25, OnLaserSizeChanged));
+		public double LaserSize
 		{
-			get { return (decimal)GetValue(LaserSizeProperty); }
+			get { return (double)GetValue(LaserSizeProperty); }
 			set { SetValue(LaserSizeProperty, value); }
 		}
 		private static void OnLaserSizeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
-			godeCtrl._bitmapDraw.LaserSize = (decimal)e.NewValue;
+			godeCtrl._bitmapDraw.LaserSize = (double)e.NewValue;
 			godeCtrl.InvalidateVisual();
 		}
 
 		/// <summary>
 		/// CutterSize Property
 		/// </summary>
-		public static DependencyProperty CutterSizeProperty = DependencyProperty.Register("CutterSize", typeof(decimal), typeof(GCodeUserControl), new PropertyMetadata(0.254m, OnCutterSizeChanged));
-		public decimal CutterSize
+		public static DependencyProperty CutterSizeProperty = DependencyProperty.Register("CutterSize", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnCutterSizeChanged));
+		public double CutterSize
 		{
-			get { return (decimal)GetValue(CutterSizeProperty); }
+			get { return (double)GetValue(CutterSizeProperty); }
 			set { SetValue(CutterSizeProperty, value); }
 		}
 		private static void OnCutterSizeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
-			godeCtrl._bitmapDraw.CutterSize = (decimal)e.NewValue;
+			godeCtrl._bitmapDraw.CutterSize = (double)e.NewValue;
 			godeCtrl.InvalidateVisual();
 		}
 
@@ -286,15 +286,15 @@ namespace CNCLib.Wpf.Controls
 		/// </summary>
 		private static readonly DependencyPropertyKey MouseOverPositionXPropertyKey =
 					  DependencyProperty.RegisterReadOnly("MouseOverPositionX",
-					  typeof(decimal?), typeof(GCodeUserControl),
+					  typeof(double?), typeof(GCodeUserControl),
 					  new FrameworkPropertyMetadata(null));
 
 		public static readonly DependencyProperty MouseOverPositionXProperty =
 					  MouseOverPositionXPropertyKey.DependencyProperty;
 
-		public decimal? MouseOverPositionX
+		public double? MouseOverPositionX
 		{
-			get { return (decimal?)GetValue(MouseOverPositionXProperty); }
+			get { return (double?)GetValue(MouseOverPositionXProperty); }
 			private set { SetValue(MouseOverPositionXPropertyKey, value); }
 		}
 
@@ -303,15 +303,15 @@ namespace CNCLib.Wpf.Controls
 		/// </summary>
 		private static readonly DependencyPropertyKey MouseOverPositionYPropertyKey =
 					  DependencyProperty.RegisterReadOnly("MouseOverPositionY",
-					  typeof(decimal?), typeof(GCodeUserControl),
+					  typeof(double?), typeof(GCodeUserControl),
 					  new FrameworkPropertyMetadata(null));
 
 		public static readonly DependencyProperty MouseOverPositionYProperty =
 					  MouseOverPositionYPropertyKey.DependencyProperty;
 
-		public decimal? MouseOverPositionY
+		public double? MouseOverPositionY
 		{
-			get { return (decimal?)GetValue(MouseOverPositionYProperty); }
+			get { return (double?)GetValue(MouseOverPositionYProperty); }
 			private set { SetValue(MouseOverPositionYPropertyKey, value); }
 		}
 
@@ -320,9 +320,16 @@ namespace CNCLib.Wpf.Controls
 		#region Drag/Drop
 
 		private bool _isdragging = false;
+		 enum EDraggingType
+		{
+			Position,
+			RotateAngle
+		};
+		private EDraggingType _draggingType;
+
 		private Point3D _mouseDown;
-		private decimal _mouseDownOffsetX;
-		private decimal _mouseDownOffsetY;
+		private double _mouseDownOffsetX;
+		private double _mouseDownOffsetY;
 		private Stopwatch _sw = new Stopwatch();
 
 		private void GCodeUserControl_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -335,50 +342,88 @@ namespace CNCLib.Wpf.Controls
 			InvalidateVisual();
 		}
 
-		bool _rotated = false;
+		double _rotateAngle = 0;
+		double[] _rotaryVector = new double[] { -1, 0.1, 0 };
+
+		int _rotatedIdx = 0;
+		Rotate3D[] _rotate = new Rotate3D[]
+		{
+			new Rotate3D(),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -1, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.9, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.8, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.7, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.6, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.5, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.4, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.3, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.2, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.1, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.0, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.1, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.2, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.3, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.4, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.5, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.6, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.7, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.8, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.9, 0 }),
+			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 1, 0 })
+		};
 
 		private void GCodeUserControl_MouseDown(object sender, MouseEventArgs e)
 		{
+			if (!_isdragging)
+			{
+				var pt = new System.Drawing.Point((int) e.GetPosition(this).X, (int) e.GetPosition(this).Y);
+				_mouseDown = _bitmapDraw.FromClient(pt);
+				_mouseDownOffsetX = OffsetX;
+				_mouseDownOffsetY = OffsetY;
+				_sw.Start();
+				Mouse.Capture(this);
+			}
+			_isdragging = true;
 			if (e.RightButton == MouseButtonState.Pressed)
-			{
-				if (_rotated)
-					_bitmapDraw.Rotate = new Rotate3D();
-				else
-					_bitmapDraw.Rotate = new Rotate3D(45.0/180.0*Math.PI, new double[] { -1, -1, 0 });
-				_rotated = !_rotated;
-				InvalidateVisual();
-			}
+				_draggingType = EDraggingType.RotateAngle;
 			else
-			{
-				if (!_isdragging)
-				{
-					var pt = new System.Drawing.Point((int) e.GetPosition(this).X, (int) e.GetPosition(this).Y);
-					_mouseDown = _bitmapDraw.FromClient(pt);
-					_mouseDownOffsetX = OffsetX;
-					_mouseDownOffsetY = OffsetY;
-					_sw.Start();
-					Mouse.Capture(this);
-				}
-				_isdragging = true;
-			}
+				_draggingType = EDraggingType.Position;
 		}
 
 		private void GCodeUserControl_MouseMove(object sender, MouseEventArgs e)
 		{
 			var pt = new System.Drawing.Point((int)e.GetPosition(this).X, (int)e.GetPosition(this).Y);
 			var gcodePosition = _bitmapDraw.FromClient(pt);
-			MouseOverPositionX = gcodePosition.X;
-			MouseOverPositionY = gcodePosition.Y;
+			MouseOverPositionX = Math.Round(gcodePosition.X??0,3);
+			MouseOverPositionY = Math.Round(gcodePosition.Y??0,3);
 
 			if (_isdragging)
 			{
-				OffsetX = _mouseDownOffsetX;
-				OffsetY = _mouseDownOffsetY;
-				Point3D c = _bitmapDraw.FromClient(pt);
-				decimal newX = _mouseDownOffsetX - (c.X.Value - _mouseDown.X.Value);
-				decimal newY = _mouseDownOffsetY + (c.Y.Value - _mouseDown.Y.Value);
-				OffsetX = newX;
-				OffsetY = newY;
+				switch (_draggingType)
+				{
+					case EDraggingType.Position:
+						{
+							OffsetX = _mouseDownOffsetX;
+							OffsetY = _mouseDownOffsetY;
+							var c = _bitmapDraw.FromClient(pt);
+							var newX = _mouseDownOffsetX - (c.X.Value - _mouseDown.X.Value);
+							var newY = _mouseDownOffsetY + (c.Y.Value - _mouseDown.Y.Value);
+							OffsetX = newX;
+							OffsetY = newY;
+							break;
+						}
+					case EDraggingType.RotateAngle:
+						{
+							var c = _bitmapDraw.FromClient(pt);
+							var newX = _mouseDownOffsetX - (c.X.Value - _mouseDown.X.Value);
+							var newY = _mouseDownOffsetY + (c.Y.Value - _mouseDown.Y.Value);
+
+							_rotatedIdx = (int) (Math.Abs((_mouseDownOffsetX- newX))) % _rotate.Length;
+							_bitmapDraw.Rotate = _rotate[_rotatedIdx];
+							InvalidateVisual();
+							break;
+						}
+				}
 				if (_sw.ElapsedMilliseconds > 300)
 				{
 					_sw.Start();
@@ -435,8 +480,8 @@ namespace CNCLib.Wpf.Controls
 
 			if (Global.Instance.Machine != null)
 			{
-				_bitmapDraw.SizeX = Global.Instance.Machine.SizeX;
-				_bitmapDraw.SizeY = Global.Instance.Machine.SizeY;
+				_bitmapDraw.SizeX = (double) Global.Instance.Machine.SizeX;
+				_bitmapDraw.SizeY = (double) Global.Instance.Machine.SizeY;
 			}
 
 			var curBitmap = _bitmapDraw.DrawToBitmap(Commands);

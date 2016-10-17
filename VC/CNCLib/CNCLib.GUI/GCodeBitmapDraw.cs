@@ -38,18 +38,18 @@ namespace CNCLib.GUI
 
 		#region Properties
 
-		public decimal SizeX { get { return _sizeX; } set { _sizeX = value; CalcRatio(); } }
-		public decimal SizeY { get { return _sizeY; } set { _sizeY = value; CalcRatio(); } }
-		public decimal SizeZ { get { return _sizeZ; } set { _sizeZ = value; CalcRatio(); } }
+		public double SizeX { get { return _sizeX; } set { _sizeX = value; CalcRatio(); } }
+		public double SizeY { get { return _sizeY; } set { _sizeY = value; CalcRatio(); } }
+		public double SizeZ { get { return _sizeZ; } set { _sizeZ = value; CalcRatio(); } }
 
 		public bool KeepRatio { get { return _keepRatio; } set { _keepRatio = value; CalcRatio(); } }
 
 		public double Zoom { get { return _zoom; } set { _zoom = value; ReInitDraw(); } }
-		public decimal OffsetX { get { return _offsetX; } set { _offsetX = value; ReInitDraw(); } }
-		public decimal OffsetY { get { return _offsetY; } set { _offsetY = value; ReInitDraw(); } }
-		public decimal OffsetZ { get { return _offsetZ; } set { _offsetZ = value; ReInitDraw(); } }
-		public decimal CutterSize { get { return _cutterSize; } set { _cutterSize = value; ReInitDraw(); } }
-		public decimal LaserSize { get { return _laserSize; } set { _laserSize = value; ReInitDraw(); } }
+		public double OffsetX { get { return _offsetX; } set { _offsetX = value; ReInitDraw(); } }
+		public double OffsetY { get { return _offsetY; } set { _offsetY = value; ReInitDraw(); } }
+		public double OffsetZ { get { return _offsetZ; } set { _offsetZ = value; ReInitDraw(); } }
+		public double CutterSize { get { return _cutterSize; } set { _cutterSize = value; ReInitDraw(); } }
+		public double LaserSize { get { return _laserSize; } set { _laserSize = value; ReInitDraw(); } }
 
 		public Color MachineColor { get { return _machineColor; } set { _machineColor = value; ReInitDraw(); } }
 		public Color LaserOnColor { get { return _laserOnColor; } set { _laserOnColor = value; ReInitDraw(); } }
@@ -91,14 +91,14 @@ namespace CNCLib.GUI
 		double _ratioX = 1;
 		double _ratioY = 1;
 		double _ratioZ = 1;
-		decimal _sizeX = 130.000m;
-		decimal _sizeY = 45.000m;
-		decimal _sizeZ = 70.000m;
-		decimal _offsetX = 0;
-		decimal _offsetY = 0;
-		decimal _offsetZ = 0;
-		decimal _cutterSize = 0;
-		decimal _laserSize = 0.254m;
+		double _sizeX = 130.000;
+		double _sizeY = 45.000;
+		double _sizeZ = 70.000;
+		double _offsetX = 0;
+		double _offsetY = 0;
+		double _offsetZ = 0;
+		double _cutterSize = 0;
+		double _laserSize = 0.254;
 		Color _machineColor = Color.Black;
 		Color _laserOnColor = Color.Red;
 		Color _laserOffColor = Color.Orange;
@@ -122,13 +122,13 @@ namespace CNCLib.GUI
 
 		#region Convert Coordinats
 
-		decimal AdjustX(decimal xx)
+		double AdjustX(double xx)
 		{
 			// x: 0...
 			return xx + OffsetX;
 		}
 
-		decimal AdjustY(decimal yy)
+		double AdjustY(double yy)
 		{
 			// y: 0...
 			return SizeY - (yy + OffsetY);
@@ -139,8 +139,8 @@ namespace CNCLib.GUI
 			// with e.g.  867
 			// max pt.X = 686 , pt.x can be 0
 			return new Point3D(
-							AdjustX((decimal)Math.Round(pt.X / _ratioX / Zoom, 3)),
-							AdjustY((decimal)Math.Round(pt.Y / _ratioY / Zoom, 3)),
+							AdjustX(Math.Round(pt.X / _ratioX / Zoom, 3)),
+							AdjustY(Math.Round(pt.Y / _ratioY / Zoom, 3)),
 							0);
 		}
 
@@ -148,8 +148,8 @@ namespace CNCLib.GUI
 		{
 			pt = _rotate3D.Rotate(pt);
 
-			double x = ((double)((double)(pt.X ?? 0) - (double)OffsetX) * Zoom) * _ratioX;
-			double y = ((double)(((double)SizeY - (((double)(pt.Y ?? 0)) + (double)OffsetY))) * Zoom) * _ratioY;
+			double x = (((pt.X ?? 0) - OffsetX) * Zoom) * _ratioX;
+			double y = (((SizeY - (((pt.Y ?? 0)) + OffsetY))) * Zoom) * _ratioY;
 			//double z = ((double)((double)(pt.Z ?? 0) - (double)OffsetZ) * Zoom) * _ratioZ;
 
 			return new PointF((float) x, (float) y);
@@ -189,16 +189,16 @@ namespace CNCLib.GUI
 
 		double ToClientSizeX(double X)
 		{
-			var pt3d = new Point3D((decimal)X, 0, 0);
+			var pt3d = new Point3D(X, 0, 0);
 			pt3d = Rotate.Rotate(pt3d);
-			double x = (double) (pt3d.X??0) * Zoom;
+			double x = (pt3d.X??0) * Zoom;
 			return _ratioX * x;
 		}
 		double ToClientSizeY(double Y)
 		{
-			var pt3d = new Point3D(0,(decimal)Y, 0);
+			var pt3d = new Point3D(0,Y, 0);
 			pt3d = Rotate.Rotate(pt3d);
-			double y = (double)(pt3d.Y ?? 0) * Zoom;
+			double y = (pt3d.Y ?? 0) * Zoom;
 			return _ratioY * y;
 		}
 
@@ -215,7 +215,7 @@ namespace CNCLib.GUI
 		{
 			if (_needReInit)
 			{
-				float cutsize = CutterSize > 0 ? (float)ToClientSizeX((double)CutterSize) : 2;
+				float cutsize = CutterSize > 0 ? (float)ToClientSizeX(CutterSize) : 2;
 				float fastSize = 0.5f;
 
 				_cutPen = new Pen(CutColor, cutsize);
@@ -230,7 +230,7 @@ namespace CNCLib.GUI
 
 				_fastPen = new Pen(FastMoveColor, fastSize);
 				_noMovePen = new Pen(Color.Blue, fastSize);
-				_laserCutPen = new Pen(LaserOnColor, (float) ToClientSizeX((double) LaserSize));
+				_laserCutPen = new Pen(LaserOnColor, (float) ToClientSizeX(LaserSize));
 				_laserCutPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
 				_laserCutPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
 				_laserFastPen = new Pen(LaserOffColor, (float)(fastSize / 2.0));
@@ -255,7 +255,7 @@ namespace CNCLib.GUI
 			var ee = new PaintEventArgs(g1, new Rectangle());
 
 			var from = ToClient(new Point3D(0, SizeY, 0));
-			var to = ToClient(new Point3D(SizeX, 0, 0m));
+			var to = ToClient(new Point3D(SizeX, 0, 0));
 
 			var pts = new PointF[] { ToClientF(new Point3D(0, 0, 0)), ToClientF(new Point3D(0, SizeY, 0)), ToClientF(new Point3D(SizeX, SizeY, 0)), ToClientF(new Point3D(SizeX, 0, 0)) };
 			g1.FillPolygon(new SolidBrush(MachineColor), pts);
@@ -268,8 +268,8 @@ namespace CNCLib.GUI
 
 		private void CalcRatio()
 		{
-			_ratioX = RenderSize.Width / (double)SizeX;
-			_ratioY = RenderSize.Height / (double)SizeY;
+			_ratioX = RenderSize.Width / SizeX;
+			_ratioY = RenderSize.Height / SizeY;
 
 			if (KeepRatio)
 			{
@@ -328,15 +328,15 @@ namespace CNCLib.GUI
 
 			pIJ = Rotate.Rotate(pIJ);
 
-			double I = (double)pIJ.X.Value;
-			double J = (double)pIJ.Y.Value;
+			double I = pIJ.X.Value;
+			double J = pIJ.Y.Value;
 			double R = Math.Sqrt(I * I + J * J);
 
-			double cx = (double)ptFrom.X.Value + I;
-			double cy = (double)ptFrom.Y.Value + J;
+			double cx = ptFrom.X.Value + I;
+			double cy = ptFrom.Y.Value + J;
 
 			double startAng = ConvertRadToDeg(Math.Atan2(J, I));
-			double endAng = ConvertRadToDeg(Math.Atan2(cy - (double)ptTo.Y.Value, cx - (double)ptTo.X.Value));
+			double endAng = ConvertRadToDeg(Math.Atan2(cy - ptTo.Y.Value, cx - ptTo.X.Value));
 			double diffAng = (endAng - startAng);
 			if (startAng > endAng)
 				diffAng += 360;
@@ -352,7 +352,7 @@ namespace CNCLib.GUI
 					diffAng += 360;
 			}
 
-			var pt3d = new Point3D((decimal) (cx - R * SignX), (decimal) (cy - R * SignY), ptFrom.Z??0);
+			var pt3d = new Point3D(cx - R * SignX, cy - R * SignY, ptFrom.Z??0);
 			PointF rcfrom = ToClientF(pt3d);
 			//Point rcfrom = new Point(ToClientXInt(cx - R * SignX), ToClientYInt(cy - R * SignY));
 			float RR = (float) ToClientSizeX(R * 2);
