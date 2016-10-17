@@ -61,6 +61,7 @@ namespace CNCLib.GUI
 		public Color CutArcColor { get { return _cutArcColor; } set { _cutArcColor = value; ReInitDraw(); } }
 
 		public Color FastMoveColor { get { return _fastColor; } set { _fastColor = value; ReInitDraw(); } }
+		public Color HelpLineColor { get { return _helpLineColor; } set { _helpLineColor = value; ReInitDraw(); } }
 
 		public Rotate3D Rotate { get { return _rotate3D; } set { _rotate3D = value; ReInitDraw(); } }
 		//		public CommandList Commands { get { return _commands; } }
@@ -108,6 +109,7 @@ namespace CNCLib.GUI
 		Color _cutArcColor = Color.Beige;
 		Color _noMoveColor = Color.Blue;
 		Color _fastColor = Color.Green;
+		Color _helpLineColor = Color.LightGray;
 
 		Rotate3D _rotate3D = new Rotate3D();
 
@@ -202,6 +204,8 @@ namespace CNCLib.GUI
 				_cutDotPen = new Pen(CutDotColor, cutsize);
 				_cutEllipsePen = new Pen(CutEllipseColor, cutsize);
 				_cutArcPen = new Pen(CutArcColor, cutsize);
+				_cutArcPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+				_cutArcPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
 
 				_cutPens = new Pen[] { _cutPen, _cutDotPen, _cutEllipsePen, _cutArcPen };
 
@@ -211,6 +215,8 @@ namespace CNCLib.GUI
 				_laserCutPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
 				_laserCutPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
 				_laserFastPen = new Pen(LaserOffColor, (float)(fastSize / 2.0));
+
+				_helpLinePen = new Pen(_helpLineColor, (float)(fastSize / 2.0));
 
 				_needReInit = false;
 			}
@@ -233,6 +239,19 @@ namespace CNCLib.GUI
 
 			var pts = new PointF[] { ToClientF(new Point3D(0, 0, 0)), ToClientF(new Point3D(0, SizeY, 0)), ToClientF(new Point3D(SizeX, SizeY, 0)), ToClientF(new Point3D(SizeX, 0, 0)) };
 			g1.FillPolygon(new SolidBrush(MachineColor), pts);
+
+			for (int i = 1; ; i++)
+			{
+				var x = i * 10.0;
+				if (x > SizeX)	break;
+				g1.DrawLine(_helpLinePen, ToClientF(new Point3D(i * 10.0, 0, 0)), ToClientF(new Point3D(i * 10.0, SizeY, 0)));
+			}
+			for (int i = 1; ; i++)
+			{
+				var y = i * 10.0;
+				if (y > SizeY) break;
+				g1.DrawLine(_helpLinePen, ToClientF(new Point3D(0, i * 10.0, 0)), ToClientF(new Point3D(SizeX, i * 10.0, 0)));
+			}
 
 			commands?.Paint(this, ee);
 
@@ -266,6 +285,7 @@ namespace CNCLib.GUI
 		Pen _fastPen;
 		Pen _laserCutPen;
 		Pen _laserFastPen;
+		Pen _helpLinePen;
 
 		public void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo)
 		{

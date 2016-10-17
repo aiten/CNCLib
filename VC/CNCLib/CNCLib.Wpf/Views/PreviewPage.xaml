@@ -21,35 +21,39 @@
                 <Button Content="Load" Command="{Binding LoadCommand}" Margin="0,0,5,0"/>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Machine:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=MachineColor}"  Width="50"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=MachineColor}"  Width="40"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Laser On:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOnColor}" Width="50"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOnColor}" Width="40"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Laser Off:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOffColor}" Width="50"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOffColor}" Width="40"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Cut:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=CutColor}" Width="50"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutColor}" Width="40"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="CutDot:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=CutDotColor}" Width="50"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutDotColor}" Width="40"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="CutElipse:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=CutEllipseColor}" Width="50"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutEllipseColor}" Width="40"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="CutArc:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=CutArcColor}" Width="50"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutArcColor}" Width="40"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Fast:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=FastColor}" Width="50"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=FastColor}" Width="40"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Help:" />
+                    <xctk:ColorPicker SelectedColor="{Binding Path=HelpLineColor}" Width="40"/>
                 </StackPanel>
                 <Label Content="Laser size:" />
                 <TextBox Text="{Binding Path=LaserSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" MinWidth="30"/>
@@ -82,8 +86,10 @@
                                CutEllipseColor="{Binding Path=CutEllipseColor}"
                                CutArcColor="{Binding Path=CutArcColor}"
                                FastMoveColor="{Binding Path=FastColor}"
+                               HelpLineColor="{Binding Path=HelpLineColor}"
                                CutterSize="{Binding Path=CutterSize}"
                                Zoom="{Binding Path=Zoom,Mode=TwoWay}" 
+                               RotateAngle="{Binding Path=RotateAngle,Mode=TwoWay}" 
                                OffsetX="{Binding Path=OffsetX,Mode=TwoWay}"
                                OffsetY="{Binding Path=OffsetY,Mode=TwoWay}"/>
     </DockPanel>

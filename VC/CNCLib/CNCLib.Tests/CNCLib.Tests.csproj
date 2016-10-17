@@ -86,6 +86,7 @@
       <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
     </Compile>
     <Compile Include="CNCUnitTest.cs" />
+    <Compile Include="Drawing\Rotate3DTest.cs" />
     <Compile Include="Drawing\DitherTest.cs" />
     <Compile Include="Logic\ItemControllerTestClass.cs" />
     <Compile Include="Logic\ItemControllerTests.cs" />

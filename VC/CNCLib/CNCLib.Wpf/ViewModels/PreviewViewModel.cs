@@ -77,6 +77,13 @@ namespace CNCLib.Wpf.ViewModels
 			set { SetProperty(() => _zoom == value, () => _zoom = value); }
 		}
 
+		private double _rotateAngle = 0.0;
+		public double RotateAngle
+		{
+			get { return _rotateAngle; }
+			set { SetProperty(() => _rotateAngle == value, () => _rotateAngle = value); }
+		}
+
 		private decimal _laserSize = 0.25m;
 		public decimal LaserSize
 		{
@@ -145,6 +152,13 @@ namespace CNCLib.Wpf.ViewModels
 		{
 			get { return _fastColor; }
 			set { SetProperty(() => _fastColor == value, () => _fastColor = value); }
+		}
+
+		private Color _helpLineColor = Colors.LightBlue;
+		public Color HelpLineColor
+		{
+			get { return _helpLineColor; }
+			set { SetProperty(() => _helpLineColor == value, () => _helpLineColor = value); }
 		}
 
 		#endregion
@@ -243,6 +257,7 @@ namespace CNCLib.Wpf.ViewModels
 			OffsetX = 0;
 			OffsetY = 0;
 			Zoom = 1;
+			RotateAngle = 0;
 		}
 
 		#endregion

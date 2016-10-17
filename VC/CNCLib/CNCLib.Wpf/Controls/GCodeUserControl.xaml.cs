@@ -113,6 +113,22 @@ namespace CNCLib.Wpf.Controls
 			godeCtrl._bitmapDraw.OffsetY = (double)e.NewValue;
 			godeCtrl.InvalidateVisual();
 		}
+		/// <summary>
+		/// RotateAngle Property
+		/// </summary>
+		public static DependencyProperty RotateAngleProperty = DependencyProperty.Register("RotateAngle", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnRotateAngleChanged));
+		public double RotateAngle
+		{
+			get { return (double)GetValue(RotateAngleProperty); }
+			set { SetValue(RotateAngleProperty, value); }
+		}
+		private static void OnRotateAngleChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		{
+			var godeCtrl = (GCodeUserControl)dependencyObject;
+			godeCtrl._bitmapDraw.Rotate = godeCtrl._rotate = new Rotate3D((double)e.NewValue, godeCtrl._rotaryVector);
+			godeCtrl._rotateInvers = new Rotate3D(-(double)e.NewValue, godeCtrl._rotaryVector);
+			godeCtrl.InvalidateVisual();
+		}
 
 		#endregion
 
@@ -232,7 +248,7 @@ namespace CNCLib.Wpf.Controls
 		}
 
 		/// <summary>
-		/// FastMoveColor Property
+		/// HelpLineColor Property
 		/// </summary>
 		public static DependencyProperty FastMoveColorProperty = DependencyProperty.Register("FastMoveColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnFastMoveColorChanged));
 		public Color FastMoveColor
@@ -244,6 +260,22 @@ namespace CNCLib.Wpf.Controls
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
 			godeCtrl._bitmapDraw.FastMoveColor = ColorToColor((Color)e.NewValue);
+			godeCtrl.InvalidateVisual();
+		}
+
+		/// <summary>
+		/// HelpLineColor Property
+		/// </summary>
+		public static DependencyProperty HelpLineColorProperty = DependencyProperty.Register("HelpLineColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnHelpLineColorChanged));
+		public Color HelpLineColor
+		{
+			get { return (Color)GetValue(HelpLineColorProperty); }
+			set { SetValue(HelpLineColorProperty, value); }
+		}
+		private static void OnHelpLineColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		{
+			var godeCtrl = (GCodeUserControl)dependencyObject;
+			godeCtrl._bitmapDraw.HelpLineColor = ColorToColor((Color)e.NewValue);
 			godeCtrl.InvalidateVisual();
 		}
 
@@ -343,8 +375,9 @@ namespace CNCLib.Wpf.Controls
 			InvalidateVisual();
 		}
 
-		double _rotateAngle = 0;
 		double[] _rotaryVector = new double[] { 0, 0, 0 };
+		Rotate3D _rotate=new Rotate3D();
+		Rotate3D _rotateInvers = new Rotate3D();
 
 		private void GCodeUserControl_MouseDown(object sender, MouseEventArgs e)
 		{
@@ -370,7 +403,7 @@ namespace CNCLib.Wpf.Controls
 		{
 			var mousePos = e.GetPosition(this);
 			var pt = new System.Drawing.PointF((float)mousePos.X, (float)mousePos.Y);
-
+//			var gcodePosition = _rotateInvers.Rotate(_bitmapDraw.FromClient(pt));
 			var gcodePosition = _bitmapDraw.FromClient(pt);
 			MouseOverPositionX = Math.Round(gcodePosition.X ?? 0, 3);
 			MouseOverPositionY = Math.Round(gcodePosition.Y ?? 0, 3);
@@ -384,9 +417,9 @@ namespace CNCLib.Wpf.Controls
 					{
 						_bitmapDraw.OffsetX = _mouseDownCNCOffsetX;     // faster: do not assign with Dependent Property
 						_bitmapDraw.OffsetY = _mouseDownCNCOffsetY;
-						gcodePosition = _bitmapDraw.FromClient(pt);		// recalculate with orig offset
-						var newX = _mouseDownCNCOffsetX - (gcodePosition.X.Value - _mouseDownCNCPos.X.Value);
-						var newY = _mouseDownCNCOffsetY + (gcodePosition.Y.Value - _mouseDownCNCPos.Y.Value);
+						var c  = _bitmapDraw.FromClient(pt);		// recalculate with orig offset
+						var newX = _mouseDownCNCOffsetX - (c.X.Value - _mouseDownCNCPos.X.Value);
+						var newY = _mouseDownCNCOffsetY + (c.Y.Value - _mouseDownCNCPos.Y.Value);
 						_bitmapDraw.OffsetX = newX;
 						_bitmapDraw.OffsetY = newY;
 						break;
@@ -402,13 +435,14 @@ namespace CNCLib.Wpf.Controls
 						var rotateX = diffX / maxdiffX;
 						var rotateY = diffY / maxdiffY;
 
-						_rotateAngle = Math.Abs(rotateX) > Math.Abs(rotateY) ? rotateX : rotateY;
-						_rotateAngle *=  2.0 * Math.PI;
+						RotateAngle = 2.0 * Math.PI * (Math.Abs(rotateX) > Math.Abs(rotateY) ? rotateX : rotateY);
 							
 						_rotaryVector[1] = diffX;
 						_rotaryVector[0] = -diffY;
 
-						_bitmapDraw.Rotate = new Rotate3D(_rotateAngle, _rotaryVector);
+						_bitmapDraw.Rotate = 
+						_rotate = new Rotate3D(RotateAngle, _rotaryVector);
+						_rotateInvers = new Rotate3D(-RotateAngle, _rotaryVector);
 						break;
 					}
 			}
