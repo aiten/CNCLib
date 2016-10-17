@@ -319,17 +319,18 @@ namespace CNCLib.Wpf.Controls
 
 		#region Drag/Drop
 
-		private bool _isdragging = false;
 		 enum EDraggingType
 		{
+			NoDragging,
 			Position,
 			RotateAngle
 		};
-		private EDraggingType _draggingType;
+		private EDraggingType _draggingType = EDraggingType.NoDragging;
 
-		private Point3D _mouseDown;
-		private double _mouseDownOffsetX;
-		private double _mouseDownOffsetY;
+		private Point	_mouseDownPos;
+		private Point3D _mouseDownCNCPos;
+		private double _mouseDownCNCOffsetX;
+		private double _mouseDownCNCOffsetY;
 		private Stopwatch _sw = new Stopwatch();
 
 		private void GCodeUserControl_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -343,103 +344,96 @@ namespace CNCLib.Wpf.Controls
 		}
 
 		double _rotateAngle = 0;
-		double[] _rotaryVector = new double[] { -1, 0.1, 0 };
-
-		int _rotatedIdx = 0;
-		Rotate3D[] _rotate = new Rotate3D[]
-		{
-			new Rotate3D(),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -1, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.9, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.8, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.7, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.6, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.5, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.4, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.3, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.2, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.1, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, -0.0, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.1, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.2, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.3, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.4, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.5, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.6, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.7, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.8, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 0.9, 0 }),
-			new Rotate3D(45.0 / 180.0 * Math.PI, new double[] { -1, 1, 0 })
-		};
+		double[] _rotaryVector = new double[] { 0, 0, 0 };
 
 		private void GCodeUserControl_MouseDown(object sender, MouseEventArgs e)
 		{
-			if (!_isdragging)
+			if (_draggingType == EDraggingType.NoDragging)
 			{
-				var pt = new System.Drawing.Point((int) e.GetPosition(this).X, (int) e.GetPosition(this).Y);
-				_mouseDown = _bitmapDraw.FromClient(pt);
-				_mouseDownOffsetX = OffsetX;
-				_mouseDownOffsetY = OffsetY;
+				_mouseDownPos = e.GetPosition(this);
+				var pt = new System.Drawing.PointF((float) _mouseDownPos.X, (float)_mouseDownPos.Y);
+				_mouseDownCNCPos = _bitmapDraw.FromClient(pt);
+				_mouseDownCNCOffsetX = OffsetX;
+				_mouseDownCNCOffsetY = OffsetY;
 				_sw.Start();
 				Mouse.Capture(this);
+
+				if (e.RightButton == MouseButtonState.Pressed)
+					_draggingType = EDraggingType.RotateAngle;
+				else
+					_draggingType = EDraggingType.Position;
+
 			}
-			_isdragging = true;
-			if (e.RightButton == MouseButtonState.Pressed)
-				_draggingType = EDraggingType.RotateAngle;
-			else
-				_draggingType = EDraggingType.Position;
 		}
 
 		private void GCodeUserControl_MouseMove(object sender, MouseEventArgs e)
 		{
-			var pt = new System.Drawing.Point((int)e.GetPosition(this).X, (int)e.GetPosition(this).Y);
+			var mousePos = e.GetPosition(this);
+			var pt = new System.Drawing.PointF((float)mousePos.X, (float)mousePos.Y);
+
 			var gcodePosition = _bitmapDraw.FromClient(pt);
-			MouseOverPositionX = Math.Round(gcodePosition.X??0,3);
-			MouseOverPositionY = Math.Round(gcodePosition.Y??0,3);
+			MouseOverPositionX = Math.Round(gcodePosition.X ?? 0, 3);
+			MouseOverPositionY = Math.Round(gcodePosition.Y ?? 0, 3);
 
-			if (_isdragging)
+			switch (_draggingType)
 			{
-				switch (_draggingType)
-				{
-					case EDraggingType.Position:
-						{
-							OffsetX = _mouseDownOffsetX;
-							OffsetY = _mouseDownOffsetY;
-							var c = _bitmapDraw.FromClient(pt);
-							var newX = _mouseDownOffsetX - (c.X.Value - _mouseDown.X.Value);
-							var newY = _mouseDownOffsetY + (c.Y.Value - _mouseDown.Y.Value);
-							OffsetX = newX;
-							OffsetY = newY;
-							break;
-						}
-					case EDraggingType.RotateAngle:
-						{
-							var c = _bitmapDraw.FromClient(pt);
-							var newX = _mouseDownOffsetX - (c.X.Value - _mouseDown.X.Value);
-							var newY = _mouseDownOffsetY + (c.Y.Value - _mouseDown.Y.Value);
+				case EDraggingType.NoDragging:
+					return;
 
-							_rotatedIdx = (int) (Math.Abs((_mouseDownOffsetX- newX))) % _rotate.Length;
-							_bitmapDraw.Rotate = _rotate[_rotatedIdx];
-							InvalidateVisual();
-							break;
-						}
-				}
-				if (_sw.ElapsedMilliseconds > 300)
-				{
-					_sw.Start();
-					InvalidateVisual();
-				}
+				case EDraggingType.Position:
+					{
+						_bitmapDraw.OffsetX = _mouseDownCNCOffsetX;     // faster: do not assign with Dependent Property
+						_bitmapDraw.OffsetY = _mouseDownCNCOffsetY;
+						gcodePosition = _bitmapDraw.FromClient(pt);		// recalculate with orig offset
+						var newX = _mouseDownCNCOffsetX - (gcodePosition.X.Value - _mouseDownCNCPos.X.Value);
+						var newY = _mouseDownCNCOffsetY + (gcodePosition.Y.Value - _mouseDownCNCPos.Y.Value);
+						_bitmapDraw.OffsetX = newX;
+						_bitmapDraw.OffsetY = newY;
+						break;
+					}
+				case EDraggingType.RotateAngle:
+					{
+						var diffX = mousePos.X - _mouseDownPos.X;
+						var diffY = mousePos.Y - _mouseDownPos.Y;
+
+						var maxdiffX = RenderSize.Width;
+						var maxdiffY = RenderSize.Height;
+
+						var rotateX = diffX / maxdiffX;
+						var rotateY = diffY / maxdiffY;
+
+						_rotateAngle = Math.Abs(rotateX) > Math.Abs(rotateY) ? rotateX : rotateY;
+						_rotateAngle *=  2.0 * Math.PI;
+							
+						_rotaryVector[1] = diffX;
+						_rotaryVector[0] = -diffY;
+
+						_bitmapDraw.Rotate = new Rotate3D(_rotateAngle, _rotaryVector);
+						break;
+					}
+			}
+			if (_sw.ElapsedMilliseconds > 300)
+			{
+				_sw.Start();
+				InvalidateVisual();
 			}
 		}
 
 		private void GCodeUserControl_MouseUp(object sender, MouseEventArgs e)
 		{
-			if (_isdragging)
+			if (_draggingType != EDraggingType.NoDragging)
 			{
+				switch (_draggingType)
+				{
+					case EDraggingType.Position:
+						OffsetX = _bitmapDraw.OffsetX;
+						OffsetY = _bitmapDraw.OffsetY;
+						break;
+				}
 				Mouse.Capture(null);
 				InvalidateVisual();
+				_draggingType = EDraggingType.NoDragging;
 			}
-			_isdragging = false;
 		}
 
 		#endregion
@@ -448,8 +442,11 @@ namespace CNCLib.Wpf.Controls
 		protected override void OnRenderSizeChanged(System.Windows.SizeChangedInfo sizeInfo)
 		{
 			base.OnRenderSizeChanged(sizeInfo);
-			_bitmapDraw.RenderSize = new System.Drawing.Size((int) sizeInfo.NewSize.Width, (int) sizeInfo.NewSize.Height);
-			InvalidateVisual();
+			if (_draggingType == EDraggingType.NoDragging)
+			{
+				_bitmapDraw.RenderSize = new System.Drawing.Size((int)sizeInfo.NewSize.Width, (int)sizeInfo.NewSize.Height);
+				InvalidateVisual();
+			}
 		}
 
 		protected override void OnRender(System.Windows.Media.DrawingContext drawingContext)
@@ -478,7 +475,7 @@ namespace CNCLib.Wpf.Controls
 			if (_bitmapDraw.RenderSize.Height == 0 || _bitmapDraw.RenderSize.Width == 0)
 				return;
 
-			if (Global.Instance.Machine != null)
+			if (_draggingType == EDraggingType.NoDragging && Global.Instance.Machine != null)
 			{
 				_bitmapDraw.SizeX = (double) Global.Instance.Machine.SizeX;
 				_bitmapDraw.SizeY = (double) Global.Instance.Machine.SizeY;

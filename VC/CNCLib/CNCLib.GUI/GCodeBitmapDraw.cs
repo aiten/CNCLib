@@ -38,9 +38,9 @@ namespace CNCLib.GUI
 
 		#region Properties
 
-		public double SizeX { get { return _sizeX; } set { _sizeX = value; CalcRatio(); } }
-		public double SizeY { get { return _sizeY; } set { _sizeY = value; CalcRatio(); } }
-		public double SizeZ { get { return _sizeZ; } set { _sizeZ = value; CalcRatio(); } }
+		public double SizeX { get { return _sizeX; } set { bool calc = _sizeX != value;  _sizeX = value; if (calc) CalcRatio(); } }
+		public double SizeY { get { return _sizeY; } set { bool calc = _sizeY != value;  _sizeY = value; if (calc) CalcRatio(); } }
+		public double SizeZ { get { return _sizeZ; } set { bool calc = _sizeZ != value;  _sizeZ = value; if (calc) CalcRatio(); } }
 
 		public bool KeepRatio { get { return _keepRatio; } set { _keepRatio = value; CalcRatio(); } }
 
@@ -134,7 +134,7 @@ namespace CNCLib.GUI
 			return SizeY - (yy + OffsetY);
 		}
 
-		public Point3D FromClient(Point pt)
+		public Point3D FromClient(PointF pt)
 		{
 			// with e.g.  867
 			// max pt.X = 686 , pt.x can be 0
@@ -154,36 +154,13 @@ namespace CNCLib.GUI
 
 			return new PointF((float) x, (float) y);
 		}
+/*
 		Point ToClient(Point3D pt)
 		{
 			var p = ToClientF(pt);
 			return new Point((int)Math.Round(p.X, 0), (int)Math.Round(p.Y, 0));
 		}
-		/*
-				double ToClientX(double val)
-				{
-					double x = (double)(val - (double)OffsetX) * Zoom;
-					return _ratioX * x;
-				}
-				double ToClientY(double val)
-				{
-					double y = (double)(((double)SizeY - (val + (double)OffsetY))) * Zoom;
-					return _ratioY * y;
-				}
-				double ToClientZ(double val)
-				{
-					double z = (double)(((double)SizeZ - (val + (double)OffsetZ))) * Zoom;
-					return _ratioZ * z;
-				}
-				int ToClientXInt(double val)
-				{
-					return (int)Math.Round(ToClientX(val), 0);
-				}
-				int ToClientYInt(double val)
-				{
-					return (int)Math.Round(ToClientY(val), 0);
-				}
-		*/
+*/
 		const double SignX = 1.0;
 		const double SignY = -1.0;
 
@@ -253,9 +230,6 @@ namespace CNCLib.GUI
 			g1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
 
 			var ee = new PaintEventArgs(g1, new Rectangle());
-
-			var from = ToClient(new Point3D(0, SizeY, 0));
-			var to = ToClient(new Point3D(SizeX, 0, 0));
 
 			var pts = new PointF[] { ToClientF(new Point3D(0, 0, 0)), ToClientF(new Point3D(0, SizeY, 0)), ToClientF(new Point3D(SizeX, SizeY, 0)), ToClientF(new Point3D(SizeX, 0, 0)) };
 			g1.FillPolygon(new SolidBrush(MachineColor), pts);
