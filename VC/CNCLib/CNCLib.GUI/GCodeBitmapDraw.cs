@@ -32,6 +32,7 @@ namespace CNCLib.GUI
 
 		public GCodeBitmapDraw()
 		{
+			Rotate = new Rotate3D();
 		}
 
 		#endregion
@@ -63,7 +64,7 @@ namespace CNCLib.GUI
 		public Color FastMoveColor { get { return _fastColor; } set { _fastColor = value; ReInitDraw(); } }
 		public Color HelpLineColor { get { return _helpLineColor; } set { _helpLineColor = value; ReInitDraw(); } }
 
-		public Rotate3D Rotate { get { return _rotate3D; } set { _rotate3D = value; ReInitDraw(); } }
+		public Rotate3D Rotate { get { return _rotate3D; } set { _rotate3D = value; PrepareRotate(); ReInitDraw(); } } 
 		//		public CommandList Commands { get { return _commands; } }
 
 		public Size RenderSize
@@ -111,7 +112,7 @@ namespace CNCLib.GUI
 		Color _fastColor = Color.Green;
 		Color _helpLineColor = Color.LightGray;
 
-		Rotate3D _rotate3D = new Rotate3D();
+		Rotate3D _rotate3D;
 
 		//		CommandList _commands = new CommandList();
 
@@ -146,6 +147,51 @@ namespace CNCLib.GUI
 							0);
 		}
 
+		double _rotateScaleX;
+		double _rotateScaleY;
+		double _rotateAngleX;
+		double _rotateAngleY;
+		double _rotateZscaleX;
+		double _rotateZscaleY;
+
+		void PrepareRotate()
+		{
+			var axisX = Rotate.Rotate(1.0, 0.0, 0.0);
+			var axisY = Rotate.Rotate(0.0, 1.0, 0.0);
+			var axisZ = Rotate.Rotate(0.0, 0.0, 1.0);
+			var axisXX = axisX.X ?? 0.0;
+			var axisXY = axisX.Y ?? 0.0;
+			var axisYX = axisY.X ?? 0.0;
+			var axisYY = axisY.Y ?? 0.0;
+
+			_rotateAngleX = Math.Atan2(axisXY, axisXX);
+			_rotateAngleY = Math.Atan2(axisYY, axisYX);
+			_rotateScaleX = Math.Sqrt(axisXX * axisXX + axisXY * axisXY);
+			_rotateScaleY = Math.Sqrt(axisYX * axisYX + axisYY * axisYY);
+
+			_rotateZscaleX = axisZ.X ?? 0.0;
+			_rotateZscaleY = axisZ.Y ?? 0.0;
+		}
+
+		public Point3D FromClient(PointF pt, double z)
+		{
+			var notrotated = FromClient(pt);
+			var notrotatedX = notrotated.X ?? 0.0;
+			var notrotatedY = notrotated.Y ?? 0.0;
+			var notrotatedAngel = Math.Atan2(notrotatedY, notrotatedX);
+			var c = Math.Sqrt(notrotatedX * notrotatedX + notrotatedY * notrotatedY);
+
+			var anglec =  Math.PI - (_rotateAngleY - _rotateAngleX);
+			var anglea = _rotateAngleY - notrotatedAngel;
+			var angleb = notrotatedAngel - _rotateAngleX;
+			var rateC = c / Math.Sin(anglec);
+
+			var a = Math.Sin(anglea) * rateC;
+			var b = Math.Sin(angleb) * rateC;
+
+			return new Point3D(z* _rotateZscaleX + a / _rotateScaleX, z * _rotateZscaleY + b / _rotateScaleY, z);
+		}
+
 		PointF ToClientF(Point3D pt)
 		{
 			pt = _rotate3D.Rotate(pt);
@@ -156,13 +202,7 @@ namespace CNCLib.GUI
 
 			return new PointF((float) x, (float) y);
 		}
-/*
-		Point ToClient(Point3D pt)
-		{
-			var p = ToClientF(pt);
-			return new Point((int)Math.Round(p.X, 0), (int)Math.Round(p.Y, 0));
-		}
-*/
+
 		const double SignX = 1.0;
 		const double SignY = -1.0;
 

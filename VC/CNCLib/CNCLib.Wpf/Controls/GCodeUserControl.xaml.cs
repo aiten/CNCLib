@@ -126,7 +126,7 @@ namespace CNCLib.Wpf.Controls
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
 			godeCtrl._bitmapDraw.Rotate = godeCtrl._rotate = new Rotate3D((double)e.NewValue, godeCtrl._rotaryVector);
-			godeCtrl._rotateInvers = new Rotate3D(-(double)e.NewValue, godeCtrl._rotaryVector);
+			//godeCtrl._rotateInvers = new Rotate3D(-(double)e.NewValue, godeCtrl._rotaryVector);
 			godeCtrl.InvalidateVisual();
 		}
 
@@ -377,7 +377,6 @@ namespace CNCLib.Wpf.Controls
 
 		double[] _rotaryVector = new double[] { 0, 0, 0 };
 		Rotate3D _rotate=new Rotate3D();
-		Rotate3D _rotateInvers = new Rotate3D();
 
 		private void GCodeUserControl_MouseDown(object sender, MouseEventArgs e)
 		{
@@ -403,10 +402,10 @@ namespace CNCLib.Wpf.Controls
 		{
 			var mousePos = e.GetPosition(this);
 			var pt = new System.Drawing.PointF((float)mousePos.X, (float)mousePos.Y);
-//			var gcodePosition = _rotateInvers.Rotate(_bitmapDraw.FromClient(pt));
-			var gcodePosition = _bitmapDraw.FromClient(pt);
-			MouseOverPositionX = Math.Round(gcodePosition.X ?? 0, 3);
-			MouseOverPositionY = Math.Round(gcodePosition.Y ?? 0, 3);
+			var gcoderotated = _bitmapDraw.FromClient(pt,0.0);
+
+			MouseOverPositionX = Math.Round(gcoderotated.X ?? 0, 3);
+			MouseOverPositionY = Math.Round(gcoderotated.Y ?? 0, 3);
 
 			switch (_draggingType)
 			{
@@ -417,7 +416,7 @@ namespace CNCLib.Wpf.Controls
 					{
 						_bitmapDraw.OffsetX = _mouseDownCNCOffsetX;     // faster: do not assign with Dependent Property
 						_bitmapDraw.OffsetY = _mouseDownCNCOffsetY;
-						var c  = _bitmapDraw.FromClient(pt);		// recalculate with orig offset
+						var c  = _bitmapDraw.FromClient(pt);			// recalculate with orig offset
 						var newX = _mouseDownCNCOffsetX - (c.X.Value - _mouseDownCNCPos.X.Value);
 						var newY = _mouseDownCNCOffsetY + (c.Y.Value - _mouseDownCNCPos.Y.Value);
 						_bitmapDraw.OffsetX = newX;
@@ -442,7 +441,6 @@ namespace CNCLib.Wpf.Controls
 
 						_bitmapDraw.Rotate = 
 						_rotate = new Rotate3D(RotateAngle, _rotaryVector);
-						_rotateInvers = new Rotate3D(-RotateAngle, _rotaryVector);
 						break;
 					}
 			}
