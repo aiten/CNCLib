@@ -254,9 +254,10 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void ResetView()
 		{
+			Zoom = 1;
+			// set Zoom first, set Zoom adjusts OffsetX/Y
 			OffsetX = 0;
 			OffsetY = 0;
-			Zoom = 1;
 			RotateAngle = 0;
 		}
 

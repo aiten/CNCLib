@@ -78,8 +78,22 @@ namespace CNCLib.Wpf.Controls
 		private static void OnZoomChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
-			godeCtrl._bitmapDraw.Zoom = (double)e.NewValue;
-			godeCtrl.InvalidateVisual();
+			godeCtrl.OnZoomChanged(e);
+		}
+
+		private void OnZoomChanged(DependencyPropertyChangedEventArgs e)
+		{
+			var center = new System.Drawing.PointF((float) (ActualWidth / 2.0), (float) (ActualHeight / 2.0));
+			var centerold = _bitmapDraw.FromClient(center);
+
+			_bitmapDraw.Zoom = (double)e.NewValue;
+
+			var centernew = _bitmapDraw.FromClient(center);
+			OffsetX += (centerold.X??0) - (centernew.X??0);
+			OffsetY -= (centerold.Y??0) - (centernew.Y??0);
+
+			// adjust x/y to center again
+			InvalidateVisual();
 		}
 
 		/// <summary>

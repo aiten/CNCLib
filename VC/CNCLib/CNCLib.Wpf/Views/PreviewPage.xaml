@@ -62,9 +62,9 @@
             </StackPanel>
         </StackPanel>
         <DockPanel DockPanel.Dock="Bottom" Margin="0,1,0,1">
-            <StackPanel Orientation="Horizontal" MinWidth="90">
+            <StackPanel Orientation="Horizontal" MinWidth="100">
                 <Label Content="{Binding Path=MouseOverPositionX,ElementName=gcode}" Padding="0" />
-                <Label Content=":" Padding="0"/>
+                <Label Content=" : " Padding="0"/>
                 <Label Content="{Binding Path=MouseOverPositionY,ElementName=gcode}"  Padding="0"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
