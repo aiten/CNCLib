@@ -257,6 +257,7 @@ namespace CNCLib.GUI
 				_laserFastPen = new Pen(LaserOffColor, (float)(fastSize / 2.0));
 
 				_helpLinePen = new Pen(_helpLineColor, (float)(fastSize / 2.0));
+				_helpLinePen10 = new Pen(_helpLineColor, (float)(fastSize*4));
 
 				_needReInit = false;
 			}
@@ -284,13 +285,13 @@ namespace CNCLib.GUI
 			{
 				var x = i * 10.0;
 				if (x > SizeX)	break;
-				g1.DrawLine(_helpLinePen, ToClientF(new Point3D(i * 10.0, 0, 0)), ToClientF(new Point3D(i * 10.0, SizeY, 0)));
+				g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(i * 10.0, 0, 0)), ToClientF(new Point3D(i * 10.0, SizeY, 0)));
 			}
 			for (int i = 1; ; i++)
 			{
 				var y = i * 10.0;
 				if (y > SizeY) break;
-				g1.DrawLine(_helpLinePen, ToClientF(new Point3D(0, i * 10.0, 0)), ToClientF(new Point3D(SizeX, i * 10.0, 0)));
+				g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(0, i * 10.0, 0)), ToClientF(new Point3D(SizeX, i * 10.0, 0)));
 			}
 
 			commands?.Paint(this, ee);
@@ -326,6 +327,7 @@ namespace CNCLib.GUI
 		Pen _laserCutPen;
 		Pen _laserFastPen;
 		Pen _helpLinePen;
+		Pen _helpLinePen10;
 
 		public void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo)
 		{
