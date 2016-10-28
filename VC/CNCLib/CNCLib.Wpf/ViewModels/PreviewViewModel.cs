@@ -24,6 +24,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using CNCLib.GCode;
 using CNCLib.GCode.Commands;
+using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;

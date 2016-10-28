@@ -19,6 +19,8 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Xml.Serialization;
+using CNCLib.GCode.CamBam;
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools;
@@ -37,6 +39,10 @@ namespace CNCLib.GCode.Load
         Point3D _last = new Point3D();
         Point3D _minpt = new Point3D() { X = int.MaxValue, Y = int.MaxValue };
         Point3D _maxpt = new Point3D() { X = int.MinValue, Y = int.MinValue };
+
+		CamBam.CamBam _cambam = new CamBam.CamBam();
+		CamBam.CamBam.PLine _pline;
+		CamBam.CamBam.Layer _layer;
 
         public override void Load()
         {
@@ -83,7 +89,11 @@ namespace CNCLib.GCode.Load
                     Commands.Add(setspeed);
                 }
 
-                string line;
+				_layer = _cambam.AddLayer();
+				_layer.Name = @"Standard";
+				_layer.Color = @"127,255,0";
+
+				string line;
                 while ((line = sr.ReadLine()) != null)
                 {
                     _stream.Line = line;
@@ -97,6 +107,12 @@ namespace CNCLib.GCode.Load
 				if (!_lastIsPenUp)
 				{
                     LoadPenUp();
+				}
+
+				using (TextWriter writer = new StreamWriter(@"c:\tmp\CNCLib.cb"))
+				{
+					XmlSerializer x = new XmlSerializer(typeof(CamBam.CamBam));
+					x.Serialize(writer, _cambam);
 				}
 
 				if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
@@ -183,7 +199,7 @@ namespace CNCLib.GCode.Load
                             }
                             else
                             {
-                                LoadPenDown();
+                                LoadPenDown(_last);
                             }
 							_lastIsPenUp = _IsPenUp;
 						}
@@ -200,6 +216,7 @@ namespace CNCLib.GCode.Load
 							else
 							{
 								r = new G01Command();
+								AddCamBamPoint(pt);
 							}
 							r.AddVariable('X', pt.X.Value);
 							r.AddVariable('Y', pt.Y.Value);
@@ -224,35 +241,46 @@ namespace CNCLib.GCode.Load
             return true;
         }
 
-        private void LoadPenDown()
-        {
-            if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
-            {
-                var r = new G01Command();
-                if (LoadOptions.EngravePosInParameter)
-                {
-                    r.AddVariableParam('Z', "2");
-                }
-                else
-                {
-                    r.AddVariable('Z', LoadOptions.EngravePosDown);
-                }
-                if (LoadOptions.EngraveDownSpeed.HasValue)
-                {
-                    r.AddVariable('F', LoadOptions.EngraveDownSpeed.Value);
-                    _needSpeed = LoadOptions.MoveSpeed.HasValue;
-                }
-                Commands.AddCommand(r);
-            }
-            else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
-            {
+        private void LoadPenDown(Point3D pt)
+		{
+			if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
+			{
+				var r = new G01Command();
+				if (LoadOptions.EngravePosInParameter)
+				{
+					r.AddVariableParam('Z', "2");
+				}
+				else
+				{
+					r.AddVariable('Z', LoadOptions.EngravePosDown);
+				}
+				if (LoadOptions.EngraveDownSpeed.HasValue)
+				{
+					r.AddVariable('F', LoadOptions.EngraveDownSpeed.Value);
+					_needSpeed = LoadOptions.MoveSpeed.HasValue;
+				}
+				Commands.AddCommand(r);
+			}
+			else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
+			{
 				LaserOn();
 			}
+
+			_pline = _layer.AddPLine();
+			AddCamBamPoint(pt);
 		}
 
-        private void LoadPenUp()
+		private void AddCamBamPoint(Point3D pt)
+		{
+ 			_pline.Pts.Add(new CamBam.CamBam.PLinePoints()
+			{
+				X = pt.X, Y=pt.Y, Z=pt.Z
+			});
+		}
+
+		private void LoadPenUp()
         {
-            if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
+			if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
             {
                 var r = new G00Command();
                 if (LoadOptions.EngravePosInParameter)
@@ -269,7 +297,13 @@ namespace CNCLib.GCode.Load
             {
                 LaserOff();
             }
-        }
+
+			if (_pline != null)
+			{
+				_pline.CheckAndSetClosed();
+				_pline = null;
+			}
+		}
 
         private Point3D GetSpaceCoordiante(bool isRelativPoint)
         {

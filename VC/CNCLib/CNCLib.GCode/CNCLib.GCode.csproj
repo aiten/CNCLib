@@ -57,7 +57,7 @@
     <Compile Include="..\CNCLibSolutionInfoVersion.cs">
       <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
     </Compile>
-    <Compile Include="CamBam\CamBamExport.cs" />
+    <Compile Include="CamBam\CamBam.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Commands\CommandList.cs" />
