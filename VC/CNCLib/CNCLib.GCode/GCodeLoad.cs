@@ -24,6 +24,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using CNCLib.GCode.Commands;
 using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts.DTO;
@@ -82,6 +83,12 @@ namespace CNCLib.GCode
 				{
 					SaveGCode(loadinfo.GCodeWriteToFileName);
 				}
+				using (TextWriter writer = new StreamWriter(@"c:\tmp\CNCLib.cb"))
+				{
+					XmlSerializer x = new XmlSerializer(typeof(CamBam.CamBam));
+					x.Serialize(writer, load.CamBam);
+				}
+
 			}
 			catch (Exception)
 			{

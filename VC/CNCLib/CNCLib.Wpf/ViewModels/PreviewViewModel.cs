@@ -17,14 +17,12 @@
 */
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using CNCLib.GCode;
 using CNCLib.GCode.Commands;
-using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
@@ -162,6 +160,13 @@ namespace CNCLib.Wpf.ViewModels
 			set { SetProperty(() => _helpLineColor == value, () => _helpLineColor = value); }
 		}
 
+		private string _cmdHistoryFileName = @"c:\tmp\Command.txt";
+		public string CmdHistoryFileName
+		{
+			get { return _cmdHistoryFileName; }
+			set { SetProperty(() => _cmdHistoryFileName == value, () => _cmdHistoryFileName = value); }
+		}
+
 		#endregion
 
 		#region GUI-forward
@@ -195,7 +200,7 @@ namespace CNCLib.Wpf.ViewModels
 				{
 					Com.ClearCommandHistory();
 					Com.SendCommandsAsync(Commands.ToStringList()).Wait();
-					Com.WriteCommandHistory(@"c:\tmp\Command.txt");
+					Com.WriteCommandHistory(CmdHistoryFileName);
 				}
 				finally
 				{
@@ -203,7 +208,6 @@ namespace CNCLib.Wpf.ViewModels
 				}
 			}
 			).Start();
-
 		}
 
 		public async void Load()
