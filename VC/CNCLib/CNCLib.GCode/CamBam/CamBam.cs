@@ -54,12 +54,12 @@ namespace CNCLib.GCode.CamBam
 		};
 
 		[XmlArray("layers")]
-		public List<Layer> Lasers { get; set; } = new List<Layer>();
+		public List<Layer> Layers { get; set; } = new List<Layer>();
 
 		public Layer AddLayer()
 		{
 			var l = new Layer();
-			Lasers.Add(l);
+			Layers.Add(l);
 			return l;
 		}
 

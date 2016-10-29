@@ -140,7 +140,6 @@ namespace CNCLib.GCode
 					{
 						SaveGCode(info.GCodeWriteToFileName);
 					}
-					WriteCamBam(load);
 				}
 			}
 		}
