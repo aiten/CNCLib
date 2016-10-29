@@ -99,7 +99,7 @@ namespace CNCLib.GCode.CamBam
 
 			public void WriteXml(XmlWriter writer)
 			{
-				writer.WriteValue(
+				writer.WriteString(
 				string.Format(@"{0},{1},{2}",
 				(X ?? 0).ToString(CultureInfo.InvariantCulture),
 				(Y ?? 0).ToString(CultureInfo.InvariantCulture),
@@ -108,7 +108,10 @@ namespace CNCLib.GCode.CamBam
 
 			public void ReadXml(XmlReader reader)
 			{
-				throw new NotImplementedException();
+				string[] fields = reader.ReadElementContentAsString().Split(',');
+				if (fields.Length > 0 && !string.IsNullOrEmpty(fields[0])) X = double.Parse(fields[0], CultureInfo.InvariantCulture); else X = null;
+				if (fields.Length > 1 && !string.IsNullOrEmpty(fields[1])) Y = double.Parse(fields[1], CultureInfo.InvariantCulture); else Y = null;
+				if (fields.Length > 2 && !string.IsNullOrEmpty(fields[2])) Z = double.Parse(fields[2], CultureInfo.InvariantCulture); else Z = null;
 			}
 
 			public XmlSchema GetSchema()

@@ -83,17 +83,30 @@ namespace CNCLib.GCode
 				{
 					SaveGCode(loadinfo.GCodeWriteToFileName);
 				}
-				using (TextWriter writer = new StreamWriter(@"c:\tmp\CNCLib.cb"))
-				{
-					XmlSerializer x = new XmlSerializer(typeof(CamBam.CamBam));
-					x.Serialize(writer, load.CamBam);
-				}
+				WriteCamBam(load);
 
 			}
 			catch (Exception)
 			{
 				throw;
 			}
+		}
+
+		private static void WriteCamBam(LoadBase load)
+		{
+			using (TextWriter writer = new StreamWriter(@"c:\tmp\CNCLib.cb"))
+			{
+				XmlSerializer x = new XmlSerializer(typeof(CamBam.CamBam));
+				x.Serialize(writer, load.CamBam);
+			}
+/*
+			using (TextReader reader = new StreamReader(@"c:\tmp\CNCLib.cb"))
+			{
+				XmlSerializer x = new XmlSerializer(typeof(CamBam.CamBam));
+				var cb = x.Deserialize(reader);
+				cb.ToString();
+			}
+*/
 		}
 
 		private readonly string webserverurl = @"http://cnclibapi.azurewebsites.net";
@@ -127,6 +140,7 @@ namespace CNCLib.GCode
 					{
 						SaveGCode(info.GCodeWriteToFileName);
 					}
+					WriteCamBam(load);
 				}
 			}
 		}
