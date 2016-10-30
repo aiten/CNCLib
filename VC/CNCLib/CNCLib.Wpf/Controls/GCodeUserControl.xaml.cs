@@ -48,6 +48,14 @@ namespace CNCLib.Wpf.Controls
 
 		#region Properties
 
+		public static readonly DependencyProperty GotoPosCommandProperty = DependencyProperty.Register(
+			"GotoPos", typeof(ICommand), typeof(GCodeUserControl), new PropertyMetadata(default(ICommand)));
+
+		public ICommand GotoPos
+		{
+			get { return (ICommand)GetValue(GotoPosCommandProperty); }
+			set { SetValue(GotoPosCommandProperty, value); }
+		}
 
 		/// <summary>
 		/// Command Property
@@ -392,23 +400,38 @@ namespace CNCLib.Wpf.Controls
 		double[] _rotaryVector = new double[] { 0, 0, 0 };
 		Rotate3D _rotate=new Rotate3D();
 
+		private bool IsGotoPosKey()
+		{
+			return (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
+		}
+
 		private void GCodeUserControl_MouseDown(object sender, MouseEventArgs e)
 		{
 			if (_draggingType == EDraggingType.NoDragging)
 			{
-				_mouseDownPos = e.GetPosition(this);
-				var pt = new System.Drawing.PointF((float) _mouseDownPos.X, (float)_mouseDownPos.Y);
-				_mouseDownCNCPos = _bitmapDraw.FromClient(pt);
-				_mouseDownCNCOffsetX = OffsetX;
-				_mouseDownCNCOffsetY = OffsetY;
-				_sw.Start();
-				Mouse.Capture(this);
+				var mousePos = e.GetPosition(this);
+				var pt = new System.Drawing.PointF((float)mousePos.X, (float)mousePos.Y);
 
-				if (e.RightButton == MouseButtonState.Pressed)
-					_draggingType = EDraggingType.RotateAngle;
+				if (IsGotoPosKey())
+				{
+					var gcoderotated = _bitmapDraw.FromClient(pt, 0.0);
+					if (GotoPos != null && GotoPos.CanExecute(gcoderotated))
+						GotoPos.Execute(gcoderotated);
+				}
 				else
-					_draggingType = EDraggingType.Position;
+				{
+					_mouseDownPos = mousePos;
+					_mouseDownCNCPos = _bitmapDraw.FromClient(pt);
+					_mouseDownCNCOffsetX = OffsetX;
+					_mouseDownCNCOffsetY = OffsetY;
+					_sw.Start();
+					Mouse.Capture(this);
 
+					if (e.RightButton == MouseButtonState.Pressed)
+						_draggingType = EDraggingType.RotateAngle;
+					else
+						_draggingType = EDraggingType.Position;
+				}
 			}
 		}
 

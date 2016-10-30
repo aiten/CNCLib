@@ -91,6 +91,7 @@
                                Zoom="{Binding Path=Zoom,Mode=TwoWay}" 
                                RotateAngle="{Binding Path=RotateAngle,Mode=TwoWay}" 
                                OffsetX="{Binding Path=OffsetX,Mode=TwoWay}"
-                               OffsetY="{Binding Path=OffsetY,Mode=TwoWay}"/>
+                               OffsetY="{Binding Path=OffsetY,Mode=TwoWay}"
+                               GotoPos="{Binding Path=GotoPosCommand}"/>
     </DockPanel>
 </Page>

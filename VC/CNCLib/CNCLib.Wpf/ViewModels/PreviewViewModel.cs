@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -24,6 +25,7 @@ using System.Windows.Media;
 using CNCLib.GCode;
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
+using Framework.Tools.Drawing;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
@@ -266,6 +268,19 @@ namespace CNCLib.Wpf.ViewModels
 			RotateAngle = 0;
 		}
 
+		public void GotoPos(Point3D pt)
+		{
+			new Task(() =>
+			{
+				Com.SendCommand(string.Format(@"g0 x{0} y{1}", (pt.X??0.0).ToString(CultureInfo.InvariantCulture), (pt.Y?? 0.0).ToString(CultureInfo.InvariantCulture)));
+			}
+			).Start();
+		}
+		public bool CanGotoPos(Point3D pt)
+		{
+			return !_loadingOrSending && Com.IsConnected;
+		}
+
 		#endregion
 
 		#region Commands
@@ -273,6 +288,7 @@ namespace CNCLib.Wpf.ViewModels
 		public ICommand LoadCommand { get { return new DelegateCommand(Load, CanLoad); } }
 		public ICommand SendToCommand { get { return new DelegateCommand(SendTo, CanSendTo); } }
 		public ICommand ResetViewCommand { get { return new DelegateCommand(ResetView, CanResetView); } }
+		public ICommand GotoPosCommand { get { return new DelegateCommand<Point3D>(GotoPos, CanGotoPos); } }
 
 		#endregion
 	}
