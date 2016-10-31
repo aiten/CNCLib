@@ -205,7 +205,7 @@ public:
 	// functions: 1 rotation(6400Steps) = 1mm
 
 	static mm1000_t ToMm1000_1_6400(axis_t /* axis */, sdist_t val)								{ return  RoundMulDivU32(val, 40, 256); }
-	static sdist_t  ToMachine_1_6400(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 16, 25); }
+	static sdist_t  ToMachine_1_6400(axis_t /* axis */, mm1000_t val)							{ return  MulDivU32(val, 32, 5); }
 
 	// functions: 1 rotation(6400Steps) = 5mm
 

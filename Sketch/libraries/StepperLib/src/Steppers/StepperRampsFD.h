@@ -131,7 +131,7 @@ protected:
 			case Z_AXIS:  if (level != LevelOff)	HALFastdigitalWrite(RAMPSFD_Z_ENABLE_PIN,  RAMPSFD_PIN_ENABLE_ON);	else	HALFastdigitalWrite(RAMPSFD_Z_ENABLE_PIN,  RAMPSFD_PIN_ENABLE_OFF); break;
 			case E0_AXIS: if (level != LevelOff)	HALFastdigitalWrite(RAMPSFD_E0_ENABLE_PIN, RAMPSFD_PIN_ENABLE_ON);	else	HALFastdigitalWrite(RAMPSFD_E0_ENABLE_PIN, RAMPSFD_PIN_ENABLE_OFF); break;
 			case E1_AXIS: if (level != LevelOff)	HALFastdigitalWrite(RAMPSFD_E1_ENABLE_PIN, RAMPSFD_PIN_ENABLE_ON);	else	HALFastdigitalWrite(RAMPSFD_E1_ENABLE_PIN, RAMPSFD_PIN_ENABLE_OFF); break;
-			case E2_AXIS: if (level != LevelOff)	HALFastdigitalWrite(RAMPSFD_E1_ENABLE_PIN, RAMPSFD_PIN_ENABLE_ON);	else	HALFastdigitalWrite(RAMPSFD_E1_ENABLE_PIN, RAMPSFD_PIN_ENABLE_OFF); break;
+			case E2_AXIS: if (level != LevelOff)	HALFastdigitalWrite(RAMPSFD_E2_ENABLE_PIN, RAMPSFD_PIN_ENABLE_ON);	else	HALFastdigitalWrite(RAMPSFD_E2_ENABLE_PIN, RAMPSFD_PIN_ENABLE_OFF); break;
 
 #ifdef _MSC_VER
 #pragma warning( default : 4127 )

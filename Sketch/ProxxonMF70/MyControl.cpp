@@ -60,9 +60,9 @@ void CMyControl::Init()
 	//  CStepper::GetInstance()->SetMaxSpeed(20000);
 	CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350*SPEEDFACTOR_SQT), steprate_t(350*SPEEDFACTOR_SQT));
 
-	CGCodeParserBase::SetG0FeedRate(-feedrate_t(526518));					// feedrate_t(526518) => VMAXTOFEEDRATE(((SPEED_MULTIPLIER_4)-5))
-	CGCodeParserBase::SetG1FeedRate(feedrate_t(100000));
-	CGCodeParserBase::SetG1MaxFeedRate(feedrate_t(500000));
+	CGCodeParserBase::SetG0FeedRate(-feedrate_t(526518)*SPEEDFACTOR);					// feedrate_t(526518) => VMAXTOFEEDRATE(((SPEED_MULTIPLIER_4)-5))
+	CGCodeParserBase::SetG1FeedRate(feedrate_t(100000)*SPEEDFACTOR);
+	CGCodeParserBase::SetG1MaxFeedRate(feedrate_t(500000)*SPEEDFACTOR);
 
 	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 130000));
 	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 45000));
@@ -80,7 +80,7 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetEnableTimeout(B_AXIS, 2);
 
 #if NUM_AXIS > 5
-	CStepper::GetInstance()->SetLimitMax(C_AXIS, CMotionControl::ToMachine(B_AXIS,360000));
+	CStepper::GetInstance()->SetLimitMax(C_AXIS, CMotionControl::ToMachine(C_AXIS,360000));
 	CStepper::GetInstance()->SetJerkSpeed(C_AXIS, SPEEDFACTOR*1000);
 
 	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
@@ -103,8 +103,10 @@ void CMyControl::Init()
 
 	_probe.Init();
 
+#if NUM_AXIS < 6
 // LCD KILL is shared with E1 (RampsFD) (DIR)
 	_holdKillLcd.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
+#endif
 
 	InitSD(SD_ENABLE_PIN);
 }
@@ -153,7 +155,11 @@ void CMyControl::Kill()
 
 bool CMyControl::IsKill()
 {
-	return _holdKillLcd.IsOn();
+#if NUM_AXIS > 5
+  return false;
+#else
+  return _holdKillLcd.IsOn();
+#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -161,7 +167,9 @@ bool CMyControl::IsKill()
 void CMyControl::TimerInterrupt()
 {
 	super::TimerInterrupt();
+#if NUM_AXIS < 6
 	_holdKillLcd.Check();
+#endif
 }
 
 ////////////////////////////////////////////////////////////
