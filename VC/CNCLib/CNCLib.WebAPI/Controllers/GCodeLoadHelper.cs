@@ -16,33 +16,37 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
 using System.IO;
-using System.Web.Http;
 using CNCLib.GCode.Load;
-using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.ServiceProxy;
-using CNCLib.WebAPI.Models;
-using Framework.Tools.Dependency;
 
 namespace CNCLib.WebAPI.Controllers
 {
-	public class GCodeController : ApiController
+	public class GCodeLoadHelper
 	{
-//		[ActionName("")]
-		public IEnumerable<string> Post([FromBody] LoadOptions input)
+		public static LoadBase CallLoad(string filename, byte[] filecontent, LoadOptions opt)
 		{
-			return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input).Commands.ToStringList();
-		}
+			string pathfilename = Path.GetFileName(filename);
+			string tmpfile = Path.GetTempPath() + pathfilename;
 
-//		[ActionName("CreateGCode")]
-		public IEnumerable<string> Put([FromBody] CreateGCode input)
-		{
-			using (var service = Dependency.Resolve<ILoadOptionsService>())
+			opt.FileName = tmpfile;
+			opt.ImageWriteToFileName = null;
+
+			try
 			{
-				LoadOptions opt = service.Get(input.LoadOptionsId);
-				return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt).Commands.ToStringList();
+				File.WriteAllBytes(tmpfile, filecontent);
+
+				LoadBase load = LoadBase.Create(opt);
+
+				if (load == null)
+					return null;
+
+				load.Load();
+				return load;
+			}
+			finally
+			{
+				File.Delete(tmpfile);
 			}
 		}
 	}

@@ -66,6 +66,7 @@
       <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
     </Compile>
     <Compile Include="AzureWebApi\AzureWebApiTest.cs" />
+    <Compile Include="AzureWebApi\CambamWebApiTest.cs" />
     <Compile Include="AzureWebApi\GCodeWebApiTest.cs" />
     <Compile Include="AzureWebApi\LoadOptionsWebApiTest.cs" />
     <Compile Include="AzureWebApi\MachineWebApiTest.cs" />

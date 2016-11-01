@@ -19,6 +19,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Http;
+using System.Xml.Serialization;
 using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
@@ -28,21 +29,28 @@ using Framework.Tools.Dependency;
 
 namespace CNCLib.WebAPI.Controllers
 {
-	public class GCodeController : ApiController
+	public class CambamController : ApiController
 	{
-//		[ActionName("")]
-		public IEnumerable<string> Post([FromBody] LoadOptions input)
+		//		[ActionName("")]
+		public string Post([FromBody] LoadOptions input)
 		{
-			return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input).Commands.ToStringList();
+			var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input);
+			var sw = new StringWriter();
+			new XmlSerializer(typeof(CNCLib.GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
+			return sw.ToString();
+
 		}
 
-//		[ActionName("CreateGCode")]
-		public IEnumerable<string> Put([FromBody] CreateGCode input)
+		//		[ActionName("CreateGCode")]
+		public string Put([FromBody] CreateGCode input)
 		{
 			using (var service = Dependency.Resolve<ILoadOptionsService>())
 			{
 				LoadOptions opt = service.Get(input.LoadOptionsId);
-				return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt).Commands.ToStringList();
+				var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt);
+				var sw = new StringWriter();
+				new XmlSerializer(typeof(CNCLib.GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
+				return sw.ToString();
 			}
 		}
 	}
