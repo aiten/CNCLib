@@ -313,7 +313,6 @@ namespace Framework.Arduino
 
 			await WaitUntilNoPendingCommands(waitForMilliseconds);
 
-
 			ReplyOK -= checkresponse;
 			return message;
 		}
@@ -395,6 +394,40 @@ namespace Framework.Arduino
 				QueueCommands(lines.ToArray());
 			}
 		}
+
+		/// <summary>
+		/// Wait until any respons is received from the arduino
+		/// Use the function e.g. after a reset to receive the boot message
+		/// </summary>
+		/// <param name="maxMilliseconds"></param>
+		/// <returns></returns>
+		public async Task<string> WaitUntilResonse(int maxMilliseconds = int.MaxValue)
+		{
+			string message = null;
+			var checkresponse = new ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
+			{
+				message = e.Info;
+			});
+
+			try
+			{
+				ReplyReceived += checkresponse;
+
+				var sw = Stopwatch.StartNew();
+				while (_continue && message == null && sw.ElapsedMilliseconds < maxMilliseconds)
+				{
+					if (_autoEvent.WaitOne(10) == false)
+						await Task.Delay(1);
+				}
+			}
+			finally
+			{
+				ReplyReceived -= checkresponse;
+			}
+
+			return message;
+		}
+
 
 		#endregion
 
@@ -547,7 +580,8 @@ namespace Framework.Arduino
             }
         }
 
-        private async Task<bool> WaitUntilNoPendingCommands(int maxMilliseconds=int.MaxValue)
+
+		private async Task<bool> WaitUntilNoPendingCommands(int maxMilliseconds=int.MaxValue)
 		{
 			var sw = Stopwatch.StartNew();
 			while (_continue)
