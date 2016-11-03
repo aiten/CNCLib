@@ -153,7 +153,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region Operations
 
-		public void Connect()
+		public async void Connect()
         {
 			try
 			{
@@ -171,7 +171,7 @@ namespace CNCLib.Wpf.ViewModels
 					{
 						if (ResetOnConnect)
 						{
-							Com.SendCommand("");
+							await Com.SendCommandAndReadAsync("",5000);
 						}
 
 						foreach (var initcmd in initCommands.OrderBy(cmd => cmd.SeqNo))
