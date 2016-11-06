@@ -439,8 +439,8 @@ bool CGCodeParser::Command(char ch)
 			return true;
 		}
 
+		// case '-':
 		case '!':
-		case '-':
 		case '?':
 		case '$': CommandEscape(); return true;
 	}

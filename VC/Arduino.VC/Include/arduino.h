@@ -93,10 +93,12 @@ inline uint8_t digitalPinToInterrupt(uint8_t p) { return ((p) == 2 ? 0 : ((p) ==
 typedef unsigned char	uint8_t;
 typedef signed char		int8_t;
 
+extern std::function<uint8_t(short)> mydigitalRead;
+
 inline void analogWrite(short, int)	{};
 inline int analogRead(short) { return 0; };
 inline void digitalWrite(short, short)	{};
-inline uint8_t digitalRead(short /*pin*/) { return LOW; };
+inline uint8_t digitalRead(short pin) { if (mydigitalRead != NULL) return mydigitalRead(pin); return LOW; };
 inline void pinMode(short, short)		{};
 
 static uint8_t A0 = 0;
