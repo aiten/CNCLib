@@ -33,7 +33,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public int AxisIndex { get; set; }
 		public string AxisName { get { return Global.Instance.Machine.GetAxisName(AxisIndex); } }
 		public decimal Size { get { return Global.Instance.Machine.GetSize(AxisIndex); }  }
-		public decimal ProbeSize { get { return Global.Instance.Machine.GetProbeSize(AxisIndex); } }
+		//public decimal ProbeSize { get { return Global.Instance.Machine.GetProbeSize(AxisIndex); } }
 		public bool HomeIsMax { get; set; }
 
 		private string _param = "0";
@@ -64,26 +64,17 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#region Commands / CanCommands
 		private void SendMoveCommand(string dist) { RunInNewTask(() => { Com.SendCommand("g91 g0" + AxisName + dist + " g90"); }); }
 
-		private void SendProbeCommand(string axisname, decimal probesize)
+		private void SendProbeCommand(int axisindex)
 		{
 			RunInNewTask(() =>
 			{
-				string probdist = Global.Instance.Machine.ProbeDist.ToString(CultureInfo.InvariantCulture);
-				string probdistup = Global.Instance.Machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
-				string probfeed = Global.Instance.Machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
-
-				Com.SendCommand("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90");
-				if ((Com.LastCommand.ReplyType & ArduinoSerialCommunication.EReplyType.ReplyError) == 0)
-				{
-					Com.SendCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
-					Com.SendCommand("g91 g0" + axisname + probdistup + " g90");
-				}
+				new MachineGCodeHelper().SendProbeCommand(AxisIndex);
 			});
 		}
 
 		public void SendRefMove() { RunInNewTask(() => { Com.SendCommand("g28 " + AxisName + "0"); }); }
 		public void SendG92() { RunInNewTask(() => { Com.SendCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); }); }
-		public void SendG31() { SendProbeCommand(AxisName, ProbeSize); }
+		public void SendG31() { SendProbeCommand(AxisIndex); }
 		public void SendHome() 
 		{ 
 			RunInNewTask(() => 

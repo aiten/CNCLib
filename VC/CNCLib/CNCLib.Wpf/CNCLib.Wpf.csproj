@@ -87,6 +87,7 @@
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\JoystickArduinoSerialCommunication.cs" />
     <Compile Include="Helpers\JoystickHelper.cs" />
+    <Compile Include="Helpers\MachineGCodeHelper.cs" />
     <Compile Include="ViewModels\PreviewViewModel.cs" />
     <Compile Include="Views\PreviewPage.xaml.cs">
       <DependentUpon>PreviewPage.xaml</DependentUpon>

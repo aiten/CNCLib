@@ -53,8 +53,14 @@ namespace CNCLib.Wpf.Helpers
 
             RunCommandInNewTask(() =>
 			{
-				Com.SendCommand(info.Info);
-				//this.SendCommand(Com.LastCommand.ResultText);
+				if (string.Compare(info.Info.Trim(),";g31:z", true) == 0)
+				{
+					new MachineGCodeHelper().SendProbeCommand(2);
+				}
+				else
+				{
+					Com.SendCommand(info.Info);
+				}
 			})
 			;
         }

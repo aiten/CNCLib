@@ -260,7 +260,7 @@ void loop()
 
   if (btn4.IsOn())
   {
-    Serial.println(F(";btn4"));
+    Serial.println(F(";g31:z"));
   }
 
   if (btn5.IsOn())
