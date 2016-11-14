@@ -72,6 +72,13 @@ public:
 		}
 	}
 
+	bool IsPressed()
+	{
+		// current state!!!!!
+		// use IsOn() 
+		return CHAL::digitalRead(_pin) == _onvalue;
+	}
+
 	bool IsOn()
 	{
 		// check and set state 
