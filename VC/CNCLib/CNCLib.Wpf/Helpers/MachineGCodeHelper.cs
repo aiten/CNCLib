@@ -15,7 +15,7 @@ namespace CNCLib.Wpf.Helpers
 			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
 		}
 
-		public void SendProbeCommand(int axisindex)
+		public async void SendProbeCommand(int axisindex)
 		{
 			string axisname = Global.Instance.Machine.GetAxisName(axisindex);
 			decimal probesize = Global.Instance.Machine.GetProbeSize(axisindex);
@@ -24,7 +24,7 @@ namespace CNCLib.Wpf.Helpers
 			string probdistup = Global.Instance.Machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
 			string probfeed = Global.Instance.Machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
 
-			Com.SendCommand("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90");
+			await Com.SendCommandAndReadAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90");
 			if ((Com.LastCommand.ReplyType & ArduinoSerialCommunication.EReplyType.ReplyError) == 0)
 			{
 				Com.SendCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));

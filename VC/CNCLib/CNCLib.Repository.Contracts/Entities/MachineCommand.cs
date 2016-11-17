@@ -27,6 +27,7 @@ namespace CNCLib.Repository.Contracts.Entities
 		public int MachineID { get; set; }
         public int? PosX { get; set; }
         public int? PosY { get; set; }
-        public virtual Machine Machine { get; set; }
+		public string JoystickMessage { get; set; }
+		public virtual Machine Machine { get; set; }
 	}
 }

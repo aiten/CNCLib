@@ -296,6 +296,7 @@ namespace Framework.Arduino
 
 		/// <summary>
 		/// Send a command to the arduino and wait until a (OK) reply
+		/// Queue must be empty
 		/// </summary>
 		/// <param name="line">command line</param>
 		/// <returns></returns>
@@ -318,13 +319,13 @@ namespace Framework.Arduino
 		}
 
 		/// <summary>
-		/// Send command and wait until the command is transfered (do not wait on reply)
+		/// Send command and wait until the command is transfered and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="line">command line to send</param>
-		public void SendCommand(string line)
+		public async void SendCommand(string line)
         {
             SplitAndQueueCommand(line);
-            WaitUntilNoPendingCommands().Wait();
+            await WaitUntilNoPendingCommands();
         }
 
 		/// <summary>
@@ -337,7 +338,7 @@ namespace Framework.Arduino
 		}
 
 		/// <summary>
-		/// Send multiple command lines to the arduino. Wait until the commands are transferrd (do not wait on reply)
+		/// Send multiple command lines to the arduino. Wait until the commands are transferrd and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="commands"></param>
 		public async Task SendCommandsAsync(IEnumerable<string> commands)
@@ -367,7 +368,7 @@ namespace Framework.Arduino
 		}
 
 		/// <summary>
-		/// Send commands stored in a file. Wait until the commands are transferrd (do not wait on reply)
+		/// Send commands stored in a file. Wait until the commands are transferrd and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="filename">used for a StreamReader</param>
 		public async Task SendFileAsync(string filename)
@@ -377,7 +378,7 @@ namespace Framework.Arduino
 		}
 
 		/// <summary>
-		/// Send commands stored in a file. Wait until the commands are transferrd (do not wait on reply)
+		/// Send commands stored in a file. Wait until the commands are transferrd and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="filename">used for a StreamReader</param>
 		public void QueueFile(string filename)

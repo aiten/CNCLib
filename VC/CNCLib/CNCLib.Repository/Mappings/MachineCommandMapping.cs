@@ -33,8 +33,10 @@ namespace CNCLib.Repository.Mappings
             Property((m) => m.CommandName).
                 IsRequired().
                 HasMaxLength(64);
+			Property((m) => m.JoystickMessage).
+				HasMaxLength(64);
 
-            /*
+			/*
             ==> Index should ignore null
 
                         Property(m => m.MachineID)
@@ -46,6 +48,6 @@ namespace CNCLib.Repository.Mappings
                         Property(m => m.PosY)
                             .HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute("IDX_MachinePosXPosY", 2) { IsUnique = true }));
             */
-        }
-    }
+		}
+	}
 }
