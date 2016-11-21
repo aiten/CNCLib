@@ -23,11 +23,14 @@ namespace CNCLib.Repository.Context
 {
 
 	//    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
-	public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
+	//public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
+	public class CNCLibInitializer : MigrateDatabaseToLatestVersion<CNCLibContext, CNCLib.Repository.Migrations.Configuration>
     {
-        protected override void Seed(CNCLibContext context)
-        {
-            CNCSeed(context);
+        //protected override void Seed(CNCLibContext context)
+
+		protected void Seed(CNCLibContext context)
+		{
+			CNCSeed(context);
         }
 
         public static void CNCSeed(CNCLibContext context)
