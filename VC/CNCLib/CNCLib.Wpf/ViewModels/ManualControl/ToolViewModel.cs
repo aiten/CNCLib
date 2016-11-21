@@ -84,7 +84,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			RunInNewTask(() =>
 			{
-				string message = Com.SendCommandAndReadAsync("m114").Result;
+				string message = Com.SendCommandAndReadOKReplyAsync("m114").Result;
 
 				if (!string.IsNullOrEmpty(message))
 				{
@@ -93,7 +93,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 					SetPositions(message.Split(':'),0);
 				}
 
-				message = Com.SendCommandAndReadAsync("m114 s1").Result;
+				message = Com.SendCommandAndReadOKReplyAsync("m114 s1").Result;
 
 				if (!string.IsNullOrEmpty(message))
 				{

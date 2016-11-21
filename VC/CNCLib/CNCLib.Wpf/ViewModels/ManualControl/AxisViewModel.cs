@@ -68,7 +68,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			RunInNewTask(() =>
 			{
-				new MachineGCodeHelper().SendProbeCommand(AxisIndex);
+				new MachineGCodeHelper().SendProbeCommandAsync(AxisIndex).Wait();
 			});
 		}
 

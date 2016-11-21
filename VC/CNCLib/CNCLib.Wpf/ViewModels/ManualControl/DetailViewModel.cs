@@ -32,6 +32,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
 		}
+		public CNCLib.Wpf.Helpers.MachineGCodeHelper GCode
+		{
+			get { return Framework.Tools.Pattern.Singleton<CNCLib.Wpf.Helpers.MachineGCodeHelper>.Instance; }
+		}
+
 		public bool Connected
 		{
 			//get { return true; }

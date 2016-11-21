@@ -55,7 +55,7 @@ namespace CNCLib.Wpf.Helpers
 			{
 				if (string.Compare(info.Info.Trim(),";g31:z", true) == 0)
 				{
-					new MachineGCodeHelper().SendProbeCommand(2);
+					new MachineGCodeHelper().SendProbeCommandAsync(2).Wait();
 				}
 				else
 				{

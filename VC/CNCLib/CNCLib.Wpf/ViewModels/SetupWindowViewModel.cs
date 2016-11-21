@@ -170,7 +170,7 @@ namespace CNCLib.Wpf.ViewModels
 					if (initCommands.Count() > 0)
 					{
 						// wait (do not check if reset - arduino may reset even the "reset" is not specified)
-						await Com.WaitUntilResonse(3000);
+						await Com.WaitUntilResonseAsync(3000);
 
 						foreach (var initcmd in initCommands.OrderBy(cmd => cmd.SeqNo))
 						{

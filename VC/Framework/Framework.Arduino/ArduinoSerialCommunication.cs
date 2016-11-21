@@ -267,6 +267,11 @@ namespace Framework.Arduino
 			}
 		}
 
+		/// <summary>
+		/// write all pending (command with no reliy) to file
+		/// Intended to be used if user abort queue because of an error
+		/// </summary>
+		/// <param name="filename"></param>
 		public void WritePendingCommandsToFile(string filename)
 		{
 			using (StreamWriter sw = new StreamWriter(filename))
@@ -299,22 +304,23 @@ namespace Framework.Arduino
 		/// Queue must be empty
 		/// </summary>
 		/// <param name="line">command line</param>
-		/// <returns></returns>
-		public async Task<string> SendCommandAndReadAsync(string line, int waitForMilliseconds=int.MaxValue)
+		/// <returns>ok result from arduino or empty(if error)</returns>
+		public async Task<string> SendCommandAndReadOKReplyAsync(string line, int waitForMilliseconds=int.MaxValue)
 		{
-			await WaitUntilNoPendingCommands(waitForMilliseconds);
-
 			string message = null;
-			var checkresponse = new ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
+			if (WaitUntilNoPendingCommandsAsync(waitForMilliseconds).Result)
 			{
-				message = e.Info;
-			});
-			ReplyOK += checkresponse;
-			QueueCommand(line);
+				var checkresponse = new ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
+				{
+					message = e.Info;
+				});
+				ReplyOK += checkresponse;
+				QueueCommand(line);
 
-			await WaitUntilNoPendingCommands(waitForMilliseconds);
+				await WaitUntilNoPendingCommandsAsync(waitForMilliseconds);
 
-			ReplyOK -= checkresponse;
+				ReplyOK -= checkresponse;
+			}
 			return message;
 		}
 
@@ -322,66 +328,83 @@ namespace Framework.Arduino
 		/// Send command and wait until the command is transfered and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="line">command line to send</param>
-		public async void SendCommand(string line)
+		public async Task<IEnumerable<Command>> SendCommandAsync(string line)
         {
-            SplitAndQueueCommand(line);
-            await WaitUntilNoPendingCommands();
+            var ret = SplitAndQueueCommand(line);
+            await WaitUntilNoPendingCommandsAsync();
+			return ret;
         }
+
+		/// <summary>
+		/// Send command and wait until the command is transfered and we got a reply (no command pending)
+		/// </summary>
+		/// <param name="line">command line to send</param>
+		public IEnumerable<Command> SendCommand(string line)
+		{
+			return SendCommandAsync(line).Result;
+		}
 
 		/// <summary>
 		/// Queue command - do nat wait - not for transfer and not for replay
 		/// </summary>
 		/// <param name="line">command line to send</param>
-		public void QueueCommand(string line)
+		public IEnumerable<Command> QueueCommand(string line)
 		{
-			SplitAndQueueCommand(line);
+			return SplitAndQueueCommand(line);
 		}
 
 		/// <summary>
 		/// Send multiple command lines to the arduino. Wait until the commands are transferrd and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="commands"></param>
-		public async Task SendCommandsAsync(IEnumerable<string> commands)
+		public async Task<IEnumerable<Command>> SendCommandsAsync(IEnumerable<string> commands)
         {
             if (commands != null)
             {
-				QueueCommands(commands);
-				await WaitUntilNoPendingCommands();
+				var ret = QueueCommands(commands);
+				await WaitUntilNoPendingCommandsAsync();
+				return ret;
             }
-        }
+			return new List<Command>();
+		}
 
 		/// <summary>
 		/// Send multiple command lines to the arduino. Do no wait
 		/// </summary>
 		/// <param name="commands"></param>
-		public void QueueCommands(IEnumerable<string> commands)
+		public IEnumerable<Command> QueueCommands(IEnumerable<string> commands)
 		{
+			var list = new List<Command>();
+
 			if (commands != null)
 			{
 				foreach (string cmd in commands)
 				{
-					SplitAndQueueCommand(cmd);
+					var cmds = SplitAndQueueCommand(cmd);
 					if (Aborted)
 						break;
+					list.AddRange(cmds);
 				}
 			}
+			return list;
 		}
 
 		/// <summary>
 		/// Send commands stored in a file. Wait until the commands are transferrd and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="filename">used for a StreamReader</param>
-		public async Task SendFileAsync(string filename)
+		public async Task<IEnumerable<Command>> SendFileAsync(string filename)
 		{
-			QueueFile(filename);
-			await WaitUntilNoPendingCommands();
+			var list = QueueFile(filename);
+			await WaitUntilNoPendingCommandsAsync();
+			return list;
 		}
 
 		/// <summary>
 		/// Send commands stored in a file. Wait until the commands are transferrd and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="filename">used for a StreamReader</param>
-		public void QueueFile(string filename)
+		public IEnumerable<Command> QueueFile(string filename)
 		{
 			using (StreamReader sr = new StreamReader(filename))
 			{
@@ -392,17 +415,18 @@ namespace Framework.Arduino
 				{
 					lines.Add(line);
 				}
-				QueueCommands(lines.ToArray());
+				return QueueCommands(lines.ToArray());
 			}
 		}
 
 		/// <summary>
-		/// Wait until any respons is received from the arduino
+		/// Wait until any response is received from the arduino
 		/// Use the function e.g. after a reset to receive the boot message
+		/// No command must be sent
 		/// </summary>
 		/// <param name="maxMilliseconds"></param>
 		/// <returns></returns>
-		public async Task<string> WaitUntilResonse(int maxMilliseconds = int.MaxValue)
+		public async Task<string> WaitUntilResonseAsync(int maxMilliseconds = int.MaxValue)
 		{
 			string message = null;
 			var checkresponse = new ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
@@ -434,17 +458,20 @@ namespace Framework.Arduino
 
 		#region Internals
 
-		private void SplitAndQueueCommand(string line)
+		private IEnumerable<Command> SplitAndQueueCommand(string line)
         {
+			var cmdlist = new List<Command>();
             string[] cmds = SplitCommand(line);
             foreach (string cmd in cmds)
             {
                 Command pcmd = QueueCommandString(cmd);
                 if (pcmd != null)
                 {
-                    // sending is done in Write-Thread
+					// sending is done in Write-Thread
+					cmdlist.Add(pcmd);
                 }
             }
+			return cmdlist;
         }
         private Command QueueCommandString(string cmd)
         {
@@ -581,8 +608,12 @@ namespace Framework.Arduino
             }
         }
 
-
-		private async Task<bool> WaitUntilNoPendingCommands(int maxMilliseconds=int.MaxValue)
+		/// <summary>
+		/// Wait until command queue is empty
+		/// </summary>
+		/// <param name="maxMilliseconds"></param>
+		/// <returns>true = ok, false = timeout or aborting</returns>
+		private async Task<bool> WaitUntilNoPendingCommandsAsync(int maxMilliseconds=int.MaxValue)
 		{
 			var sw = Stopwatch.StartNew();
 			while (_continue)
@@ -798,47 +829,29 @@ namespace Framework.Arduino
         #region OnEvents
         protected virtual void OnWaitForSend(ArduinoSerialCommunicationEventArgs info)
         {
-            if (WaitForSend != null)
-            {
-                WaitForSend(this, info);
-            }
+			WaitForSend?.Invoke(this, info);
         }
 
         protected virtual void OnCommandSending(ArduinoSerialCommunicationEventArgs info)
         {
-            if (CommandSending != null)
-            {
-                CommandSending(this, info);
-            }
+			CommandSending?.Invoke(this, info);
         }
         protected virtual void OnCommandSent(ArduinoSerialCommunicationEventArgs info)
         {
-            if (CommandSent != null)
-            {
-                CommandSent(this, info);
-            }
+			CommandSent?.Invoke(this, info);
         }
         protected virtual void OnWaitCommandSent(ArduinoSerialCommunicationEventArgs info)
         {
-            if (WaitCommandSent != null)
-            {
-                WaitCommandSent(this, info);
-            }
+			WaitCommandSent?.Invoke(this, info);
         }
         protected virtual void OnReplyReceived(ArduinoSerialCommunicationEventArgs info)
         {
-            if (ReplyReceived != null)
-            {
-                ReplyReceived(this, info);
-            }
+			ReplyReceived?.Invoke(this, info);
         }
 
         protected virtual void OnReplyInfo(ArduinoSerialCommunicationEventArgs info)
         {
-            if (ReplyInfo != null)
-            {
-                ReplyInfo(this, info);
-            }
+			ReplyInfo?.Invoke(this, info);
         }
         protected virtual void OnReplyError(ArduinoSerialCommunicationEventArgs info)
         {
@@ -846,11 +859,8 @@ namespace Framework.Arduino
 			{
 				_commands.Last().ReplyType |= EReplyType.ReplyError;
 			}
-			
-			if (ReplyError != null)
-            {
-                ReplyError(this, info);
-            }
+
+			ReplyError?.Invoke(this, info);
         }
         protected virtual void OnReplyDone(ArduinoSerialCommunicationEventArgs info)
         {
@@ -858,11 +868,8 @@ namespace Framework.Arduino
 			{
 				_commands.Last().ReplyType |= EReplyType.ReplyOK;
 			}
-			
-			if (ReplyOK != null)
-            {
-                ReplyOK(this, info);
-            }
+
+			ReplyOK?.Invoke(this, info);
         }
         protected virtual void OnReplyUnknown(ArduinoSerialCommunicationEventArgs info)
         {
@@ -870,19 +877,13 @@ namespace Framework.Arduino
 			{
 				_commands.Last().ReplyType |= EReplyType.ReplyUnkown;
 			}
-			
-			if (ReplyUnknown != null)
-            {
-                ReplyUnknown(this, info);
-            }
+
+			ReplyUnknown?.Invoke(this, info);
         }
 
 		protected virtual void OnComandQueueChanged(ArduinoSerialCommunicationEventArgs info)
 		{
-			if (CommandQueueChanged != null)
-			{
-				CommandQueueChanged(this, info);
-			}
+			CommandQueueChanged?.Invoke(this, info);
 		}
 
 		#endregion
