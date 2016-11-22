@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -16,21 +16,20 @@
   http://www.gnu.org/licenses/
 */
 
-namespace CNCLib.Repository.Migrations
+using CNCLib.Repository.Contracts.Entities;
+using System.Data.Entity;
+
+namespace CNCLib.Repository.Context
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
-    public partial class Version1 : DbMigration
+
+	//    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
+	//public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
+
+    public class CNCLibInitializerTest : DropCreateDatabaseAlways<CNCLibContext>
     {
-        public override void Up()
+        protected override void Seed(CNCLibContext context)
         {
-            AddColumn("dbo.MachineCommand", "JoystickMessage", c => c.String(maxLength: 64));
-        }
-        
-        public override void Down()
-        {
-            DropColumn("dbo.MachineCommand", "JoystickMessage");
+            CNCLibDefaultData.CNCSeed(context);
         }
     }
 }
