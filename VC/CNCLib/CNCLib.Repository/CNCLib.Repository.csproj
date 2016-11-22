@@ -61,6 +61,7 @@
     <Compile Include="Context\CNCLibDefaultData.cs" />
     <Compile Include="CNCLibRepository.cs" />
     <Compile Include="Context\CNCLibInitializer.cs" />
+    <Compile Include="Context\CNCLibInitializerAzure.cs" />
     <Compile Include="Context\CNCLibInitializerTest.cs" />
     <Compile Include="ItemRepository.cs" />
     <Compile Include="MachineRepository.cs" />
@@ -97,7 +98,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
