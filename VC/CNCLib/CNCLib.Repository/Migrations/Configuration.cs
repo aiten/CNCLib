@@ -27,7 +27,7 @@ namespace CNCLib.Repository.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             ContextKey = "CNCLib.Repository.Context.CNCLibContext";
         }
 

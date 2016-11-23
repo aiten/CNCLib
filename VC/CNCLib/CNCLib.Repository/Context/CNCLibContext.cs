@@ -74,8 +74,7 @@ namespace CNCLib.Repository.Context
 
         private void Configure()
         {
-            //System.Data.Entity.Database.SetInitializer<CNCLibContext>(new CNCLibInitializer());
-			System.Data.Entity.Database.SetInitializer<CNCLibContext>(new CNCLibInitializerAzure());
+            System.Data.Entity.Database.SetInitializer<CNCLibContext>(new CNCLibInitializer());
 			Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
             Configuration.AutoDetectChangesEnabled = true;

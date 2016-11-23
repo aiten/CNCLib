@@ -90,7 +90,7 @@ namespace Framework.EF
 				if (InTransaction)
 					RollbackTransaction();
 
-				_context.Dispose();
+				_context?.Dispose();
 			}
 
 			_disposed = true;

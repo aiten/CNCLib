@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Logic", "CNCLib.Logic\CNCLib.Logic.csproj", "{36B9838B-493F-4BAC-A8D3-35298C4FFDC7}"
 EndProject
@@ -73,6 +73,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.ServiceProxy.Logic", "CNCLib.ServiceProxy.Logic\CNCLib.ServiceProxy.Logic.csproj", "{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.ServiceProxy.WebAPI", "CNCLib.ServiceProxy.WebAPI\CNCLib.ServiceProxy.WebAPI.csproj", "{6487301A-6889-412C-92EC-899AAD61A9A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Wpf.Sql.Start", "CNCLib.Wpf.Sql.Start\CNCLib.Wpf.Sql.Start.csproj", "{E8405B39-EDAD-40C7-BF32-79553A130E34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -180,6 +182,10 @@ Global
 		{6487301A-6889-412C-92EC-899AAD61A9A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6487301A-6889-412C-92EC-899AAD61A9A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6487301A-6889-412C-92EC-899AAD61A9A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8405B39-EDAD-40C7-BF32-79553A130E34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8405B39-EDAD-40C7-BF32-79553A130E34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8405B39-EDAD-40C7-BF32-79553A130E34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8405B39-EDAD-40C7-BF32-79553A130E34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

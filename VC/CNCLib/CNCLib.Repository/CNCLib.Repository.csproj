@@ -61,7 +61,6 @@
     <Compile Include="Context\CNCLibDefaultData.cs" />
     <Compile Include="CNCLibRepository.cs" />
     <Compile Include="Context\CNCLibInitializer.cs" />
-    <Compile Include="Context\CNCLibInitializerAzure.cs" />
     <Compile Include="Context\CNCLibInitializerTest.cs" />
     <Compile Include="ItemRepository.cs" />
     <Compile Include="MachineRepository.cs" />
@@ -72,14 +71,6 @@
     <Compile Include="Mappings\MachineInitCommandMapping.cs" />
     <Compile Include="Mappings\MachineCommandMapping.cs" />
     <Compile Include="Mappings\MachineMapping.cs" />
-    <Compile Include="Migrations\Version1.cs" />
-    <Compile Include="Migrations\Version1.Designer.cs">
-      <DependentUpon>Version1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\InitialCreate.cs" />
-    <Compile Include="Migrations\InitialCreate.Designer.cs">
-      <DependentUpon>InitialCreate.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -101,14 +92,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\Version1.resx">
-      <DependentUpon>Version1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\InitialCreate.resx">
-      <DependentUpon>InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

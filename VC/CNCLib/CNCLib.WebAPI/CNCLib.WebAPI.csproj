@@ -288,11 +288,9 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Properties\PublishProfiles\CNCLib - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\CNCLibAPI - Web Deploy %282%29.pubxml" />
-    <None Include="Properties\PublishProfiles\CNCLibAPI - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\CNCLibAPI.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\CNCLibAPI - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />

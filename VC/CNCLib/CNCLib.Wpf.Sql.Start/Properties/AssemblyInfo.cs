@@ -16,23 +16,18 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Data.Entity;
+using System.Reflection;
+using System.Windows;
 
-namespace CNCLib.Repository.Context
-{
-	public class CNCLibInitializerAzure : CreateDatabaseIfNotExists<CNCLibContext>
-	{
-		protected override void Seed(CNCLibContext context)
-		{
-			base.Seed(context);
+[assembly: AssemblyTitle("CNCLib.Wpf.Start")]
+[assembly: AssemblyProduct("CNCLib.Wpf.Start")]
 
-			// add Testdata to database if no data are stored
+[assembly: ThemeInfo(
+	ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
+									 //(used if a resource is not found in the page, 
+									 // or application resource dictionaries)
+	ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
+											  //(used if a resource is not found in the page, 
+											  // app, or any theme specific resource dictionaries)
+)]
 
-			if (context.Machines.CountAsync().Result == 0 && context.Configurations.CountAsync().Result == 0 && context.Items.CountAsync().Result == 0)
-			{
-				CNCLibDefaultData.CNCSeed(context);
-				context.SaveChanges();
-			}
-		}
-	}
-}
