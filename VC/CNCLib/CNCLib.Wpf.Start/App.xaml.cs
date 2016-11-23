@@ -25,6 +25,7 @@ using Framework.EF;
 using CNCLib.Repository.Context;
 using AutoMapper;
 using CNCLib.Logic;
+using System.IO;
 
 namespace CNCLib.Wpf.Start
 {
@@ -35,7 +36,18 @@ namespace CNCLib.Wpf.Start
 	{
 		private void AppStartup(object sender, StartupEventArgs e)
 		{
-            Dependency.Initialize(new LiveDependencyProvider());
+			var userprofilepath = Environment.GetEnvironmentVariable(@"USERPROFILE");
+			AppDomain.CurrentDomain.SetData("DataDirectory", userprofilepath);
+
+			// move file from c:\tmp
+			var tmpsdf = @"c:\tmp\CNCLib.sdf";
+			var upfsdf = userprofilepath + @"\CNCLib.sdf";
+			if (File.Exists(tmpsdf) && File.Exists(upfsdf) == false)
+			{
+				File.Move(tmpsdf, upfsdf);
+			}
+
+			Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(
 				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
 //				typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
