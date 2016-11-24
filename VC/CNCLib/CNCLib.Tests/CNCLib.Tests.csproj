@@ -38,8 +38,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework">
@@ -88,7 +88,8 @@
     <Compile Include="CNCUnitTest.cs" />
     <Compile Include="Drawing\Rotate3DTest.cs" />
     <Compile Include="Drawing\DitherTest.cs" />
-    <Compile Include="Logic\ItemControllerTestClass.cs" />
+    <Compile Include="Logic\DynItemControllerTestClass.cs" />
+    <Compile Include="Logic\DynItemControllerTests.cs" />
     <Compile Include="Logic\ItemControllerTests.cs" />
     <Compile Include="Logic\LoadOptionsControllerTests.cs" />
     <Compile Include="Repository\ItemRepositoryTests.cs" />
@@ -130,6 +131,10 @@
     <ProjectReference Include="..\..\Framework\Framework.Wpf\Framework.Wpf.csproj">
       <Project>{8568383e-054d-4882-8d6a-b956684cfaae}</Project>
       <Name>Framework.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Logic.Client\CNCLib.Logic.Client.csproj">
+      <Project>{d7277bf7-35e8-47c7-8e4a-448e2224f559}</Project>
+      <Name>CNCLib.Logic.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
       <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>

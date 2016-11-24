@@ -36,8 +36,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -56,7 +56,6 @@
     <Compile Include="..\CNCLibSolutionInfoVersion.cs">
       <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
     </Compile>
-
     <Compile Include="ItemController.cs" />
     <Compile Include="LogicAutoMapperProfile.cs" />
     <Compile Include="LoadOptionsController.cs" />
@@ -80,6 +79,10 @@
     <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj">
       <Project>{f9c446f4-6365-4189-95c5-009ef0160882}</Project>
       <Name>CNCLib.GCode</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Logic.Client\CNCLib.Logic.Client.csproj">
+      <Project>{d7277bf7-35e8-47c7-8e4a-448e2224f559}</Project>
+      <Name>CNCLib.Logic.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
       <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>

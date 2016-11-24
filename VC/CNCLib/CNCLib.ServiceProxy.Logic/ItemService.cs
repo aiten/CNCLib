@@ -29,14 +29,14 @@ namespace CNCLib.ServiceProxy.Logic
 	{
 		private IItemController _controller = Dependency.Resolve<IItemController>();
 
-		public int Add(string name, object value)
+		public int Add(Item value)
 		{
-			return _controller.Add(name, value);
+			return _controller.Add(value);
 		}
 
-		public void Delete(int id)
+		public void Delete(Item value)
 		{
-			_controller.Delete(id);
+			_controller.Delete(value);
 		}
 
 		public Item Get(int id)
@@ -48,18 +48,14 @@ namespace CNCLib.ServiceProxy.Logic
 		{
 			return _controller.GetAll();
 		}
-		public IEnumerable<Item> GetAll(Type t)
+		public IEnumerable<Item> GetByClassName(string classname)
 		{
-			return _controller.GetAll(t);
+			return _controller.GetByClassName(classname);
 		}
 
-		public void Save(int id, string name, object value)
+		public int Update(Item value)
 		{
-			_controller.Save(id,name,value);
-		}
-		public object Create(int id)
-		{
-			return _controller.Create(id);
+			return _controller.Update(value);
 		}
 
 		#region IDisposable Support
@@ -71,8 +67,8 @@ namespace CNCLib.ServiceProxy.Logic
 			{
 				if (disposing)
 				{
-					_controller.Dispose();
-					_controller = null;
+					//_controller.Dispose();
+					//_controller = null;
 				}
 
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

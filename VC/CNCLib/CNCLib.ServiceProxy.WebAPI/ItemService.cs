@@ -22,44 +22,140 @@ using System.Collections.Generic;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace CNCLib.ServiceProxy.WebAPI
 {
-	public class ItemService : IItemService
+	public class ItemService : ServiceBase, IItemService
 	{
-		private IItemController _controller = Dependency.Resolve<IItemController>();
+		protected readonly string api = @"api/Item";
 
-		public int Add(string name, object value)
+
+		public async Task<int> AddAsync(Item value)
 		{
-			return _controller.Add(name, value);
+			using (var client = CreateHttpClient())
+			{
+				HttpResponseMessage response = await client.PostAsJsonAsync(api, value);
+
+				if (response.IsSuccessStatusCode)
+					return -1;
+
+				return await response.Content.ReadAsAsync<int>();
+			}
+		}
+		public int Add(Item value)
+		{
+			var task = AddAsync(value);
+			return task.ConfigureAwait(false).GetAwaiter().GetResult();
+
+			//return Task.Run(() => AddAsync(value)).Result;
 		}
 
-		public void Delete(int id)
+		public async Task<Item> DefaultItemAsync()
 		{
-			_controller.Delete(id);
+			return await GetAsync(-1);
+		}
+		public Item DefaultItem()
+		{
+			return Task.Run(() => DefaultItemAsync()).Result;
+		}
+
+		public async Task DeleteAsync(Item value)
+		{
+			using (var client = CreateHttpClient())
+			{
+				HttpResponseMessage response = await client.DeleteAsync(api + "/" + value.ItemID);
+
+				if (response.IsSuccessStatusCode)
+				{
+					//return RedirectToAction("Index");
+				}
+				//return HttpNotFound();
+			}
+		}
+		public void Delete(Item value)
+		{
+			Task.Run(() => DeleteAsync(value)).Wait();
+		}
+
+		public async Task<Item> GetAsync(int id)
+		{
+			using (var client = CreateHttpClient())
+			{
+				HttpResponseMessage response = await client.GetAsync(api + "/" + id);
+				if (response.IsSuccessStatusCode)
+				{
+					Item value = await response.Content.ReadAsAsync<Item>();
+
+					return value;
+				}
+			}
+			return null;
 		}
 
 		public Item Get(int id)
 		{
-			return _controller.Get(id);
+			return Task.Run(() => GetAsync(id)).Result;
+
+		}
+		public async Task<IEnumerable<Item>> GetAllAsync()
+		{
+
+			using (var client = CreateHttpClient())
+			{
+				HttpResponseMessage response = await client.GetAsync(api);
+				if (response.IsSuccessStatusCode)
+				{
+					IEnumerable<Item> Items = await response.Content.ReadAsAsync<IEnumerable<Item>>();
+					return Items;
+				}
+				return null;
+			}
 		}
 
 		public IEnumerable<Item> GetAll()
 		{
-			return _controller.GetAll();
-		}
-		public IEnumerable<Item> GetAll(Type t)
-		{
-			return _controller.GetAll(t);
+			return Task.Run(() => GetAllAsync()).Result;
 		}
 
-		public void Save(int id, string name, object value)
+		public async Task<IEnumerable<Item>> GetByClassNameAsync(string classname)
 		{
-			_controller.Save(id,name,value);
+
+			using (var client = CreateHttpClient())
+			{
+				HttpResponseMessage response = await client.GetAsync(api + "/?classname=" + classname);
+				if (response.IsSuccessStatusCode)
+				{
+					IEnumerable<Item> Items = await response.Content.ReadAsAsync<IEnumerable<Item>>();
+					return Items;
+				}
+				return null;
+			}
 		}
-		public object Create(int id)
+
+		public IEnumerable<Item> GetByClassName(string classname)
 		{
-			return _controller.Create(id);
+			return Task.Run(() => GetByClassNameAsync(classname)).Result;
+		}
+
+
+		public async Task<int> UpdateAsync(Item value)
+		{
+			using (var client = CreateHttpClient())
+			{
+				var response = await client.PutAsJsonAsync(api + "/" + value.ItemID, value);
+
+				if (response.IsSuccessStatusCode)
+				{
+					return value.ItemID;
+				}
+				return -1;
+			}
+		}
+		public int Update(Item value)
+		{
+			return Task.Run(() => UpdateAsync(value)).Result;
 		}
 
 		#region IDisposable Support
@@ -71,8 +167,8 @@ namespace CNCLib.ServiceProxy.WebAPI
 			{
 				if (disposing)
 				{
-					_controller.Dispose();
-					_controller = null;
+					//_controller.Dispose();
+					//_controller = null;
 				}
 
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

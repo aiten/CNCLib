@@ -19,21 +19,12 @@
 using System;
 using System.Collections.Generic;
 using CNCLib.Logic.Contracts.DTO;
+using Framework.Logic.Contracts;
 
 namespace CNCLib.ServiceProxy
 {
-	public interface IItemService : IDisposable
+	public interface IItemService : IDisposable, IRestController<Item>
 	{
-		Item Get(int id);
-
-		IEnumerable<Item> GetAll();
-
-		IEnumerable<Item> GetAll(Type t);
-
-		object Create(int id);
-
-        int Add(string name, object value);
-        void Save(int id, string name, object value);
-        void Delete(int id);
-    }
+		IEnumerable<Item> GetByClassName(string classname);
+	}
 }

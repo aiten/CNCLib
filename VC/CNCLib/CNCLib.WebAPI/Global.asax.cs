@@ -44,6 +44,7 @@ namespace CNCLib.WebAPI
 
 			Dependency.Container.RegisterType<IRest< CNCLib.Logic.Contracts.DTO.Machine>, MachineRest>();
 			Dependency.Container.RegisterType<IRest<CNCLib.Logic.Contracts.DTO.LoadOptions>, LoadInfoRest>();
+			Dependency.Container.RegisterType<IRest<CNCLib.Logic.Contracts.DTO.Item>, ItemRest>();
 
 			var config = new MapperConfiguration(cfg =>
 			{

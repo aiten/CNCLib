@@ -28,7 +28,8 @@ namespace CNCLib.Logic
 			CreateMap<CNCLib.Repository.Contracts.Entities.MachineInitCommand, CNCLib.Logic.Contracts.DTO.MachineInitCommand>().ReverseMap();
 			CreateMap<CNCLib.Repository.Contracts.Entities.MachineCommand, CNCLib.Logic.Contracts.DTO.MachineCommand>().ReverseMap();
 
-			CreateMap<CNCLib.Repository.Contracts.Entities.Item, CNCLib.Logic.Contracts.DTO.Item>();
+			CreateMap<CNCLib.Repository.Contracts.Entities.Item, CNCLib.Logic.Contracts.DTO.Item>().ReverseMap(); ;
+			CreateMap<CNCLib.Repository.Contracts.Entities.ItemProperty, CNCLib.Logic.Contracts.DTO.ItemProperty>().ReverseMap(); ;
 		}
 	}
 }

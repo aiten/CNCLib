@@ -16,15 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
 
 namespace CNCLib.Logic.Contracts.DTO
 {
-	public class Item
+	public class DynItem
 	{
 		public int ItemID { get; set; }
 		public string Name { get; set; }
-        public string ClassName { get; set; }
-        public virtual ICollection<ItemProperty> ItemProperties { get; set; }
-    }
+	}
 }

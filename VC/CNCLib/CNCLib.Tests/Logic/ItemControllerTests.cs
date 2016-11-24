@@ -18,12 +18,14 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CNCLib.Repository.Contracts.Entities;
-using CNCLib.Repository.Contracts;
 using CNCLib.Logic;
 using System.Linq;
 using NSubstitute;
 using Framework.Tools.Dependency;
+using CNCLib.Logic.Client;
+using CNCLib.ServiceProxy;
+using CNCLib.Repository.Contracts;
+using CNCLib.Repository.Contracts.Entities;
 
 namespace CNCLib.Tests.Logic
 {
@@ -34,7 +36,13 @@ namespace CNCLib.Tests.Logic
         {
 			TInterface rep = Substitute.For<TInterface>();
             Dependency.Container.RegisterInstance(rep);
-            return rep;
+
+//			TInterface uow = Substitute.For<Framework.EF.UnitOfWork>();
+//			Dependency.Container.RegisterInstance(uow);
+
+			Dependency.Container.RegisterType<Framework.Tools.Pattern.IUnitOfWork, Framework.EF.UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
+
+			return rep;
 		}
 
 
@@ -46,7 +54,7 @@ namespace CNCLib.Tests.Logic
 			var itemEntity = new Item[0];
 			rep.Get().Returns(itemEntity);
 
-			ItemController ctrl = new ItemController();
+			var ctrl = new ItemController();
 
 			var all = ctrl.GetAll().ToArray();
 			Assert.AreEqual(true, all.Length == 0);
@@ -64,30 +72,9 @@ namespace CNCLib.Tests.Logic
 			};
 			rep.Get().Returns(itemEntity);
 
-			ItemController ctrl = new ItemController();
+			var ctrl = new ItemController();
 
 			var all = ctrl.GetAll().ToArray();
-			Assert.AreEqual(2, all.Count());
-			Assert.AreEqual(1, all.FirstOrDefault().ItemID);
-			Assert.AreEqual("Test1", all.FirstOrDefault().Name);
-		}
-
-		[TestMethod]
-		public void GetAllType()
-		{
-			var rep = CreateMock<IItemRepository>();
-
-			var itemEntity = new Item[2]
-			{
-				new Item() { ItemID=1,Name="Test1" },
-				new Item() { ItemID=2,Name="Test2" },
-			};
-			rep.Get("System.String,mscorlib").Returns(itemEntity);
-
-			ItemController ctrl = new ItemController();
-
-			var all = ctrl.GetAll(typeof(string));
-
 			Assert.AreEqual(2, all.Count());
 			Assert.AreEqual(1, all.FirstOrDefault().ItemID);
 			Assert.AreEqual("Test1", all.FirstOrDefault().Name);
@@ -99,7 +86,7 @@ namespace CNCLib.Tests.Logic
 			var rep = CreateMock<IItemRepository>();
 			rep.Get(1).Returns(new Item() { ItemID = 1, Name = "Test1" });
 
-			ItemController ctrl = new ItemController();
+			var ctrl = new ItemController();
 
 			var all = ctrl.Get(1);
 
@@ -112,86 +99,13 @@ namespace CNCLib.Tests.Logic
 		{
 			var rep = CreateMock<IItemRepository>();
 
-			ItemController ctrl = new ItemController();
+			var ctrl = new ItemController();
 
 			var all = ctrl.Get(10);
 
 			Assert.IsNull(all);
 		}
-		[TestMethod]
-        public void CreateObject()
-        {
-            var rep = CreateMock<IItemRepository>();
-
-            Item itemEntity = CreateItem();
-
-            rep.Get(1).Returns(itemEntity);
-
-            ItemController ctrl = new ItemController();
-
-            var item = ctrl.Create(1);
-            Assert.IsNotNull(item);
-
-            ItemControllerTestClass item2 = (ItemControllerTestClass)item;
-
-            Assert.AreEqual("Hallo", item2.StringProperty);
-            Assert.AreEqual(1, item2.IntProperty);
-            Assert.AreEqual(1, item2.IntProperty);
-            Assert.AreEqual(1.234, item2.DoubleProperty);
-            Assert.AreEqual(1.234, item2.DoubleNullProperty);
-            Assert.AreEqual(9.876m, item2.DecimalProperty);
-            Assert.AreEqual(9.876m, item2.DecimalNullProperty);
-        }
-
-        private static Item CreateItem()
-        {
-            return new Item
-            {
-                ItemID = 1,
-                Name = "Hallo",
-                ClassName = typeof(ItemControllerTestClass).AssemblyQualifiedName,
-                ItemProperties = new[]
-                            {
-                                new ItemProperty{ ItemID = 1, Name = "StringProperty", Value = "Hallo" },
-                                new ItemProperty{ ItemID = 1, Name = "IntProperty", Value = "1" },
-                                new ItemProperty{ ItemID = 1, Name = "DoubleProperty",  Value = "1.234" },
-                                new ItemProperty{ ItemID = 1, Name = "DecimalProperty", Value = "9.876" },
-                                new ItemProperty{ ItemID = 1, Name = "IntNullProperty" },
-                                new ItemProperty{ ItemID = 1, Name = "DoubleNullProperty",  Value = "1.234" },
-                                new ItemProperty{ ItemID = 1, Name = "DecimalNullProperty", Value = "9.876" }
-                            }
-            };
-        }
-
-        [TestMethod]
-        public void AddObject()
-        {
-            var rep = CreateMock<IItemRepository>();
-
-            Item itemEntity = CreateItem();
-
-            ItemControllerTestClass obj = new ItemControllerTestClass()
-            {
-                StringProperty = "Hallo",
-                IntProperty = 1,
-                DoubleProperty = 1.234,
-                DoubleNullProperty = 1.234,
-                DecimalProperty = 9.876m,
-                DecimalNullProperty = 9.876m
-            };
-
-            ItemController ctrl = new ItemController();
-
-            var id = ctrl.Add("Hallo", obj);
-
-            rep.Received().Store(Arg.Is<Item>(x => x.Name == "Hallo"));
-            rep.Received().Store(Arg.Is<Item>(x => x.ItemID == 0));
-            rep.Received().Store(Arg.Is<Item>(x => x.ItemProperties.Count == 7));
-            rep.Received().Store(Arg.Is<Item>(x => x.ItemProperties.Where(y => y.Name == "StringProperty").FirstOrDefault().Value == "Hallo" ));
-            rep.Received().Store(Arg.Is<Item>(x => x.ItemProperties.Where(y => y.Name == "DoubleProperty").FirstOrDefault().Value == "1.234"));
-            rep.Received().Store(Arg.Is<Item>(x => x.ItemProperties.Where(y => y.Name == "DecimalNullProperty").FirstOrDefault().Value == "9.876"));
-        }
-
+/*
         [TestMethod]
         public void DeleteItem()
         {
@@ -202,7 +116,7 @@ namespace CNCLib.Tests.Logic
             Item itemEntity = CreateItem();
             rep.Get(1).Returns(itemEntity);
 
-            ItemController ctrl = new ItemController();
+            var ctrl = new DynItemController();
 
             //act
 
@@ -212,7 +126,7 @@ namespace CNCLib.Tests.Logic
             rep.Received().Get(1);
             rep.Received().Delete(itemEntity);
         }
-
+*/
         [TestMethod]
         public void DeleteItemNone()
         {
@@ -220,34 +134,16 @@ namespace CNCLib.Tests.Logic
 
             var rep = CreateMock<IItemRepository>();
 
-            ItemController ctrl = new ItemController();
+            var ctrl = new ItemController();
+
+			var item = new CNCLib.Logic.Contracts.DTO.Item() { ItemID = 3000, Name = "Hallo" };
 
             //act
 
-            ctrl.Delete(1);
-
-            //assert
-            rep.Received().Get(1);
-            rep.DidNotReceiveWithAnyArgs().Delete(null);
-        }
-
-
-		[TestMethod]
-		public void SaveItem()
-		{
-			// arrange
-
-			var rep = CreateMock<IItemRepository>();
-			ItemController ctrl = new ItemController();
-
-			//act
-
-			ctrl.Save(1,"Test",new ItemControllerTestClass() {IntProperty=1 });
+            ctrl.Delete(item);
 
 			//assert
-			rep.Received().Store(Arg.Is<Item>(x => x.ItemID == 1));
-			rep.Received().Store(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y=>y.Name=="IntProperty").Value=="1"));
-			rep.DidNotReceiveWithAnyArgs().Delete(null);
+			rep.Received().Delete(Arg.Is<Item>(x => x.ItemID == item.ItemID));
 		}
 	}
 }

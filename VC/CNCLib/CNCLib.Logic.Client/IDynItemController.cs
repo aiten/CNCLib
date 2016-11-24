@@ -16,17 +16,24 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+using System.Collections.Generic;
+using CNCLib.Logic.Contracts.DTO;
 
-namespace CNCLib.Tests.Logic
+namespace CNCLib.Logic.Client
 {
-	public class ItemControllerTestClass
-    {
-        public int IntProperty { get; set; }
-        public string StringProperty { get; set; }
-        public double DoubleProperty { get; set; }
-        public decimal DecimalProperty { get; set; }
-        public int? IntNullProperty { get; set; }
-        public double? DoubleNullProperty { get; set; }
-        public decimal? DecimalNullProperty { get; set; }
+	public interface IDynItemController : IDisposable
+	{
+		DynItem Get(int id);
+
+		IEnumerable<DynItem> GetAll();
+
+		IEnumerable<DynItem> GetAll(Type t);
+
+		object Create(int id);
+
+        int Add(string name, object value);
+        void Save(int id, string name, object value);
+        void Delete(int id);
     }
 }

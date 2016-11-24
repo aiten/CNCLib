@@ -16,77 +16,60 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using Framework.Tools;
-using Framework.Logic;
-using CNCLib.Repository.Contracts;
-using CNCLib.Logic.Converter;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
-using CNCLib.GCode.Load;
-using CNCLib.Logic.Client;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Description;
+using Framework.Web;
+using CNCLib.ServiceProxy;
 
-namespace CNCLib.Logic
+namespace CNCLib.WebAPI.Controllers
 {
-	public class LoadOptionsController : ControllerBase, ILoadOptionsController
+	public class ItemController : RestController<Item>
 	{
-		public IEnumerable<LoadOptions> GetAll()
+	}
+
+	public class ItemRest : IRest<Item>
+	{
+		private IItemService _service = Dependency.Resolve<IItemService>();
+
+		public IEnumerable<Item> Get()
 		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
-			{
-				var list = new List<LoadOptions>();
-				foreach (DynItem item in controller.GetAll(typeof(LoadOptions)))
-				{
-					LoadOptions li = (LoadOptions)controller.Create(item.ItemID);
-					li.Id = item.ItemID;
-					list.Add(li);
-				}
-				return list;
-			}
+			return _service.GetAll();
+		}
+		public IEnumerable<Item> Get(string classname)
+		{
+			return _service.GetByClassName(classname);
 		}
 
-		public LoadOptions Get(int id)
+		public Item Get(int id)
 		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
-			{
-				object obj = controller.Create(id);
-				if (obj != null || obj is LoadOptions)
-				{
-					LoadOptions li = (LoadOptions)obj;
-					li.Id = id;
-					return (LoadOptions)obj;
-				}
-
-				return null;
-			}
+			return _service.Get(id);
 		}
 
-		public void Delete(LoadOptions m)
-        {
-			using (var controller = Dependency.Resolve<IDynItemController>())
-			{
-				controller.Delete(m.Id);
-			}
-        }
-
-		public int Add(LoadOptions m)
+		public int Add(Item value)
 		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
-			{
-				return controller.Add(m.SettingName, m);
-			}
+			return _service.Add(value);
 		}
 
-		public int Update(LoadOptions m)
+		public void Update(int id, Item value)
 		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
-			{
-				controller.Save(m.Id, m.SettingName, m);
-				return m.Id;
-			}
+			_service.Update(value);
+		}
+
+		public void Delete(int id, Item value)
+		{
+			_service.Delete(value);
+		}
+
+		public bool CompareId(int id, Item value)
+		{
+			return id == value.ItemID;
 		}
 
 		#region IDisposable Support
@@ -98,7 +81,8 @@ namespace CNCLib.Logic
 			{
 				if (disposing)
 				{
-					// TODO: dispose managed state (managed objects).
+					_service.Dispose();
+					_service = null;
 				}
 
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
@@ -109,13 +93,13 @@ namespace CNCLib.Logic
 		}
 
 		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-		// ~MachineController() {
+		// ~MachineRest() {
 		//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
 		//   Dispose(false);
 		// }
 
 		// This code added to correctly implement the disposable pattern.
-		void IDisposable.Dispose()
+		public void Dispose()
 		{
 			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
 			Dispose(true);
@@ -123,5 +107,6 @@ namespace CNCLib.Logic
 			// GC.SuppressFinalize(this);
 		}
 		#endregion
+
 	}
 }

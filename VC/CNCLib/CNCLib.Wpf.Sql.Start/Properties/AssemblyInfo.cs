@@ -19,8 +19,8 @@
 using System.Reflection;
 using System.Windows;
 
-[assembly: AssemblyTitle("CNCLib.Wpf.Start")]
-[assembly: AssemblyProduct("CNCLib.Wpf.Start")]
+[assembly: AssemblyTitle("CNCLib.Wpf.Sql.Start")]
+[assembly: AssemblyProduct("CNCLib.Wpf.Sql.Start")]
 
 [assembly: ThemeInfo(
 	ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located

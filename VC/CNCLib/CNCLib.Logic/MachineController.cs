@@ -59,36 +59,6 @@ namespace CNCLib.Logic
 				return dto;
 			}
         }
-		public Machine DefaultMachine()
-		{
-			var dto = new Machine()
-			{
-				Name = "New",
-				ComPort = "comX",
-				Axis = 3,
-				SizeX = 130m,
-				SizeY = 45m,
-				SizeZ = 81m,
-				SizeA = 360m,
-				SizeB = 360m,
-				SizeC = 360m,
-				BaudRate = 115200,
-				BufferSize = 63,
-				CommandToUpper = false,
-				ProbeSizeZ = 25,
-				ProbeDist = 10m,
-				ProbeDistUp = 3m,
-				ProbeFeed = 100m,
-				SDSupport = true,
-				Spindle = true,
-				Coolant = true,
-				Rotate = true,
-                Laser = false,
-                MachineCommands = new MachineCommand[0],
-				MachineInitCommands = new MachineInitCommand[0]
-			};
-            return dto;
-		}
 
 		public void Delete(Machine m)
         {
@@ -128,6 +98,37 @@ namespace CNCLib.Logic
 		}
 
 		#region Default machine
+
+		public Machine DefaultMachine()
+		{
+			var dto = new Machine()
+			{
+				Name = "New",
+				ComPort = "comX",
+				Axis = 3,
+				SizeX = 130m,
+				SizeY = 45m,
+				SizeZ = 81m,
+				SizeA = 360m,
+				SizeB = 360m,
+				SizeC = 360m,
+				BaudRate = 115200,
+				BufferSize = 63,
+				CommandToUpper = false,
+				ProbeSizeZ = 25,
+				ProbeDist = 10m,
+				ProbeDistUp = 3m,
+				ProbeFeed = 100m,
+				SDSupport = true,
+				Spindle = true,
+				Coolant = true,
+				Rotate = true,
+				Laser = false,
+				MachineCommands = new MachineCommand[0],
+				MachineInitCommands = new MachineInitCommand[0]
+			};
+			return dto;
+		}
 
 		public int GetDetaultMachine()
 		{

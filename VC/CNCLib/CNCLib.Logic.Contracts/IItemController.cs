@@ -18,21 +18,12 @@
 
 using System;
 using System.Collections.Generic;
+using Framework.Logic.Contracts;
 
 namespace CNCLib.Logic.Contracts
 {
-	public interface IItemController : IDisposable
+	public interface IItemController : IRestController<DTO.Item>
 	{
-		DTO.Item Get(int id);
-
-		IEnumerable<DTO.Item> GetAll();
-
-		IEnumerable<DTO.Item> GetAll(Type t);
-
-		object Create(int id);
-
-        int Add(string name, object value);
-        void Save(int id, string name, object value);
-        void Delete(int id);
-    }
+		IEnumerable<DTO.Item> GetByClassName(string classname);
+	}
 }

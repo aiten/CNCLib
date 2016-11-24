@@ -16,15 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
 
-namespace CNCLib.Logic.Contracts.DTO
+namespace CNCLib.Tests.Logic
 {
-	public class Item
-	{
-		public int ItemID { get; set; }
-		public string Name { get; set; }
-        public string ClassName { get; set; }
-        public virtual ICollection<ItemProperty> ItemProperties { get; set; }
+	public class DynItemControllerTestClass
+    {
+        public int IntProperty { get; set; }
+        public string StringProperty { get; set; }
+        public double DoubleProperty { get; set; }
+        public decimal DecimalProperty { get; set; }
+        public int? IntNullProperty { get; set; }
+        public double? DoubleNullProperty { get; set; }
+        public decimal? DecimalNullProperty { get; set; }
     }
 }

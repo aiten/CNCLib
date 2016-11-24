@@ -41,5 +41,12 @@ namespace CNCLib.Logic.Converter
 			var map = Dependency.Resolve<IMapper>();
 			return map.Map<Item>(from);
         }
-    }
+
+		public static Repository.Contracts.Entities.Item Convert(this Item from)
+		{
+			var map = Dependency.Resolve<IMapper>();
+			return map.Map<Repository.Contracts.Entities.Item>(from);
+		}
+
+	}
 }

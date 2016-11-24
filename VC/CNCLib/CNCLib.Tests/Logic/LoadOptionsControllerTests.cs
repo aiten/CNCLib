@@ -27,6 +27,7 @@ using Framework.Tools.Pattern;
 using Framework.EF;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Client;
 
 namespace CNCLib.Tests.Logic
 {
@@ -43,12 +44,12 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public void GetAllLoadOptions()
 		{
-			var rep = CreateMock<IItemController>();
+			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
-			rep.GetAll(typeof(LoadOptions)).Returns(new Item[1]
+			rep.GetAll(typeof(LoadOptions)).Returns(new DynItem[1]
 			{
-				new Item() { ItemID=1, Name="Entry1"  }
+				new DynItem() { ItemID=1, Name="Entry1"  }
 			});
 			rep.Create(1).Returns(new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
@@ -63,7 +64,7 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public void GetLoadOptions()
 		{
-			var rep = CreateMock<IItemController>();
+			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
 			rep.Create(1).Returns(new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" });
@@ -78,7 +79,7 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public void GetLoadOptionsNull()
 		{
-			var rep = CreateMock<IItemController>();
+			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
 			rep.Create(1).Returns(new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" });
@@ -92,7 +93,7 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public void AddLoadOptions()
 		{
-			var rep = CreateMock<IItemController>();
+			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
 			var opt = new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" };
@@ -105,7 +106,7 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public void UpdateLoadOptions()
 		{
-			var rep = CreateMock<IItemController>();
+			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
 			var opt = new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" };
@@ -118,7 +119,7 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public void DeleteLoadOptions()
 		{
-			var rep = CreateMock<IItemController>();
+			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
 			var opt = new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" };

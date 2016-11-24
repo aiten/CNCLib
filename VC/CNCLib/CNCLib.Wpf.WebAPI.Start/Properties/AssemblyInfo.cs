@@ -16,15 +16,18 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
+using System.Reflection;
+using System.Windows;
 
-namespace CNCLib.Logic.Contracts.DTO
-{
-	public class Item
-	{
-		public int ItemID { get; set; }
-		public string Name { get; set; }
-        public string ClassName { get; set; }
-        public virtual ICollection<ItemProperty> ItemProperties { get; set; }
-    }
-}
+[assembly: AssemblyTitle("CNCLib.Wpf.WebAPI.Start")]
+[assembly: AssemblyProduct("CNCLib.Wpf.WebAPI.Start")]
+
+[assembly: ThemeInfo(
+	ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
+									 //(used if a resource is not found in the page, 
+									 // or application resource dictionaries)
+	ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
+											  //(used if a resource is not found in the page, 
+											  // app, or any theme specific resource dictionaries)
+)]
+

@@ -32,284 +32,91 @@ namespace CNCLib.Logic
 {
 	public class ItemController : ControllerBase, IItemController
 	{
+		public IEnumerable<Item> GetAll()
+		{
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+			{
+				return Convert(rep.Get());
+			}
+		}
+
+		public IEnumerable<Item> GetByClassName(string classname)
+		{
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+			{
+				return Convert(rep.Get(classname));
+			}
+		}
+
 		public Item Get(int id)
 		{
 			using (var uow = Dependency.Resolve<IUnitOfWork>())
 			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
 			{
-				var item = rep.Get(id);
-				if (item == null)
-					return null;
-
-				var dto = item.Convert();
-				return dto;
+				return Convert(rep.Get(id));
 			}
 		}
 
-		public IEnumerable<Item> GetAll(Type t)
+
+		public void Delete(Item item)
 		{
 			using (var uow = Dependency.Resolve<IUnitOfWork>())
 			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
 			{
-				var all = rep.Get(GetClassName(t));
-				List<Item> l = new List<Item>();
-				foreach (var o in all)
-				{
-					l.Add(o.Convert());
-				}
-				return l;
+				rep.Delete(item.Convert());
+				uow.Save();
 			}
 		}
 
-		public IEnumerable<Item> GetAll()
+		public int Add(Item item)
 		{
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
 			{
-				var all = rep.Get();
-				List<Item> l = new List<Item>();
-				foreach (var o in all)
-				{
-					l.Add(o.Convert());
-				}
-				return l;
+				var me = item.Convert();
+				me.ItemID = 0;
+				foreach (var mc in me.ItemProperties) mc.ItemID = 0;
+				rep.Store(me);
+				uow.Save();
+				return me.ItemID;
 			}
 		}
 
-        public object Create(int id)
-        {
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
-            {
-                var item = rep.Get(id);
-
-				if (item == null)
-					return null;
-
-                Type t = Type.GetType(item.ClassName);
-                var obj = Activator.CreateInstance(t);
-
-                foreach (var ip in item.ItemProperties)
-				{
-					AssignProperty(obj, ip, t.GetProperty(ip.Name));
-				}
-				return obj;
-            }
-        }
-
-		private static void AssignProperty(object obj, Repository.Contracts.Entities.ItemProperty ip, PropertyInfo pi)
+		public int Update(Item item)
 		{
-			if (pi != null && pi.CanWrite)
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
 			{
-				if (pi.PropertyType == typeof(string))
-				{
-					pi.SetValue(obj, ip.Value);
-				}
-				else if (pi.PropertyType == typeof(int))
-				{
-					pi.SetValue(obj, int.Parse(ip.Value));
-				}
-				else if (pi.PropertyType == typeof(Byte))
-				{
-					pi.SetValue(obj, Byte.Parse(ip.Value));
-				}
-				else if (pi.PropertyType == typeof(bool))
-				{
-					pi.SetValue(obj, ip.Value == "true");
-				}
-				else if (pi.PropertyType == typeof(decimal))
-				{
-					pi.SetValue(obj, decimal.Parse(ip.Value, CultureInfo.InvariantCulture));
-				}
-				else if (pi.PropertyType == typeof(float))
-				{
-					pi.SetValue(obj, double.Parse(ip.Value, CultureInfo.InvariantCulture));
-				}
-				else if (pi.PropertyType == typeof(double))
-				{
-					pi.SetValue(obj, double.Parse(ip.Value, CultureInfo.InvariantCulture));
-				}
-				else if (pi.PropertyType == typeof(int?))
-				{
-					int? val = null;
-					if (!string.IsNullOrEmpty(ip.Value))
-						val = int.Parse(ip.Value);
-
-					pi.SetValue(obj, val);
-				}
-				else if (pi.PropertyType == typeof(decimal?))
-				{
-					decimal? val = null;
-					if (!string.IsNullOrEmpty(ip.Value))
-						val = decimal.Parse(ip.Value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
-
-					pi.SetValue(obj, val);
-				}
-				else if (pi.PropertyType == typeof(double?))
-				{
-					double? val = null;
-					if (!string.IsNullOrEmpty(ip.Value))
-						val = double.Parse(ip.Value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
-
-					pi.SetValue(obj, val);
-				}
-				else if (pi.PropertyType.IsEnum)
-				{
-					pi.SetValue(obj, Enum.Parse(pi.PropertyType, ip.Value));
-				}
-				else if (pi.PropertyType == typeof(Byte[]))
-				{
-					if (!string.IsNullOrEmpty(ip.Value))
-					{
-						Byte[] bytes = Convert.FromBase64String(ip.Value);
-						pi.SetValue(obj, bytes);
-					}
-				}
-				else
-				{
-					throw new NotImplementedException();
-				}
+				var me = item.Convert();
+				rep.Store(me);
+				uow.Save();
+				return me.ItemID;
 			}
 		}
 
-		private List<CNCLib.Repository.Contracts.Entities.ItemProperty> GetProperties(int id, object obj)
-        {
-            Type t = obj.GetType();
-
-            var list = new List<CNCLib.Repository.Contracts.Entities.ItemProperty>();
-
-            foreach (PropertyInfo pi in t.GetProperties())
-            {
-                if (pi.CanWrite && pi.CanRead)
-                {
-                    string value = null;
-                    if (pi.PropertyType == typeof(string))
-                    {
-						object str = pi.GetValue(obj);
-						if (str!=null)
-							value =  (string) str;
-                    }
-					else if (
-						pi.PropertyType == typeof(int) ||
-						pi.PropertyType == typeof(Byte))
-					{
-						value = pi.GetValue(obj).ToString();
-					}
-					else if (pi.PropertyType == typeof(bool))
-                    {
-                        value = (bool) pi.GetValue(obj) ? "true" : "false";
-                    }
-                    else if (pi.PropertyType == typeof(decimal))
-                    {
-                        value = ((decimal) pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (pi.PropertyType == typeof(float))
-                    {
-                        value = ((float)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (pi.PropertyType == typeof(double))
-                    {
-                        value = ((double)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (pi.PropertyType == typeof(int?))
-                    {
-                        int? val = (int?) pi.GetValue(obj);
-                        if (val.HasValue)
-                            value = val.Value.ToString();
-                    }
-                    else if (pi.PropertyType == typeof(decimal?))
-                    {
-                        decimal? val = (decimal?)pi.GetValue(obj);
-                        if (val.HasValue)
-                            value = val.Value.ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (pi.PropertyType == typeof(double?))
-                    {
-                        double? val = (double?)pi.GetValue(obj);
-                        if (val.HasValue)
-                            value = val.Value.ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (pi.PropertyType.IsEnum)
-                    {
-                        value = pi.GetValue(obj).ToString();
-                    }
-					else if (pi.PropertyType == typeof(Byte[]))
-					{
-						Byte[] bytes = (Byte[]) pi.GetValue(obj);
-						if (bytes != null)
-							value = Convert.ToBase64String(bytes);
-					}
-                    else
-                    {
-                        throw new NotImplementedException();
-                    }
-                    var prop = new CNCLib.Repository.Contracts.Entities.ItemProperty() { Name = pi.Name, ItemID = id };
-                    if (!string.IsNullOrEmpty(value))
-                        prop.Value = value;
-                    list.Add(prop);
-                }
-            }
-            return list;
-        }
-
-        public int Add(string name, object obj)
-        {
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
-            {
-                var list = GetProperties(0, obj);
-
-                var item = new CNCLib.Repository.Contracts.Entities.Item()
-                {
-                    Name = name,
-                    ClassName = GetClassName(obj.GetType()),
-                    ItemProperties = list.ToArray()
-                };
-                rep.Store(item);
-                uow.Save();
-                return item.ItemID;
-            }
-        }
-
-        public void Save(int id, string name, object obj)
-        {
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
-            {
-                var list = GetProperties(id, obj);
-
-                var item = new CNCLib.Repository.Contracts.Entities.Item()
-                {
-                    ItemID = id,
-                    Name = name,
-                    ClassName = GetClassName(obj.GetType()),
-                    ItemProperties = list.ToArray()
-                };
-                rep.Store(item);
-                uow.Save();
-            }
-        }
-
-        public void Delete(int id)
-        {
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
-            {
-                var item = rep.Get(id);
-                if (item!=null)
-                    rep.Delete(item);
-                uow.Save();
-            }
-        }
-
-		private static string GetClassName(Type t)
+		private static Item Convert(Repository.Contracts.Entities.Item item)
 		{
-			string[] names = t.AssemblyQualifiedName.Split(',');
-			return names[0].Trim() + "," + names[1].Trim();
+			if (item == null)
+				return null;
+
+			var dto = item.Convert();
+			return dto;
 		}
 
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+		private static IEnumerable<Item> Convert(Repository.Contracts.Entities.Item[] items)
+		{
+			List<Item> l = new List<Item>();
+			foreach (var i in items)
+			{
+				l.Add(i.Convert());
+			}
+			return l;
+		}
+
+		#region IDisposable Support
+		private bool disposedValue = false; // To detect redundant calls
 
 		protected virtual void Dispose(bool disposing)
 		{
@@ -334,7 +141,7 @@ namespace CNCLib.Logic
 		// }
 
 		// This code added to correctly implement the disposable pattern.
-		void IDisposable.Dispose()
+		void Dispose()
 		{
 			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
 			Dispose(true);

@@ -16,15 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
-namespace CNCLib.Logic.Contracts.DTO
-{
-	public class Item
-	{
-		public int ItemID { get; set; }
-		public string Name { get; set; }
-        public string ClassName { get; set; }
-        public virtual ICollection<ItemProperty> ItemProperties { get; set; }
-    }
-}
+[assembly: AssemblyTitle("CNCLib.Logic.Client")]
+[assembly: AssemblyProduct("CNCLib.Logic.Client")]
+
+[assembly: Guid("B482661F-0614-46F0-A3F5-74355D9C00E8")]
+
