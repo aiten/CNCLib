@@ -22,7 +22,6 @@ using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using Framework.EF;
-using CNCLib.Repository.Context;
 using AutoMapper;
 using CNCLib.Logic;
 using CNCLib.ServiceProxy;
@@ -37,17 +36,15 @@ namespace CNCLib.Wpf.WebAPI.Start
 		private void AppStartup(object sender, StartupEventArgs e)
 		{
             Dependency.Initialize(new LiveDependencyProvider());
-            Dependency.Container.RegisterTypesIncludingInternals(
-//				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
+			Dependency.Container.RegisterTypesIncludingInternals(
+				//				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
 				typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
-				typeof(CNCLib.Repository.MachineRepository).Assembly,
-				typeof(CNCLib.Logic.Client.DynItemController).Assembly,
-				typeof(CNCLib.Logic.MachineController).Assembly);
-//			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+				typeof(CNCLib.Logic.Client.DynItemController).Assembly);
+	//			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
 			var config = new MapperConfiguration(cfg =>
 				{
-					cfg.AddProfile<LogicAutoMapperProfile>();
+//					cfg.AddProfile<LogicAutoMapperProfile>();
 					cfg.AddProfile<WpfAutoMapperProfile>();
 				});
 			config.AssertConfigurationIsValid();
