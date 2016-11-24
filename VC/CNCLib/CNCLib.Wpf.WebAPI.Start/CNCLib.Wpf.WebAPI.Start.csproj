@@ -138,6 +138,10 @@
       <Project>{55108499-fac2-4f19-b88e-9e240cccbd60}</Project>
       <Name>CNCLib.GUI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Logic.Client\CNCLib.Logic.Client.csproj">
+      <Project>{d7277bf7-35e8-47c7-8e4a-448e2224f559}</Project>
+      <Name>CNCLib.Logic.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
       <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
       <Name>CNCLib.Logic.Contracts.DTO</Name>
