@@ -32,6 +32,18 @@ namespace CNCLib.WebAPI.Controllers
 {
 	public class ItemController : RestController<Item>
 	{
+		public IHttpActionResult Get(string classname)
+		{
+			using (IItemService service = Dependency.Resolve<IItemService>())
+			{
+				var m = service.GetByClassName(classname);
+				if (m == null)
+				{
+					return NotFound();
+				}
+				return Ok(m);
+			}
+		}
 	}
 
 	public class ItemRest : IRest<Item>
@@ -41,10 +53,6 @@ namespace CNCLib.WebAPI.Controllers
 		public IEnumerable<Item> Get()
 		{
 			return _service.GetAll();
-		}
-		public IEnumerable<Item> Get(string classname)
-		{
-			return _service.GetByClassName(classname);
 		}
 
 		public Item Get(int id)

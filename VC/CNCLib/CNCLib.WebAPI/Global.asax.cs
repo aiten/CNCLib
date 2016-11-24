@@ -39,7 +39,8 @@ namespace CNCLib.WebAPI
 			Dependency.Container.RegisterTypesIncludingInternals(
 				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
 				typeof(CNCLib.Repository.MachineRepository).Assembly,
-				typeof(CNCLib.Logic.MachineController).Assembly);
+				typeof(CNCLib.Logic.MachineController).Assembly,
+				typeof(CNCLib.Logic.Client.DynItemController).Assembly);
 			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
 			Dependency.Container.RegisterType<IRest< CNCLib.Logic.Contracts.DTO.Machine>, MachineRest>();
