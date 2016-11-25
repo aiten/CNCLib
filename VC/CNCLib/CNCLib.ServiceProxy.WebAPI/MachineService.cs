@@ -47,8 +47,6 @@ namespace CNCLib.ServiceProxy.WebAPI
 		{
 			var task = AddAsync(value);
 			return task.ConfigureAwait(false).GetAwaiter().GetResult();
-
-			//return Task.Run(() => AddAsync(value)).Result;
 		}
 
 		public async Task<Machine> DefaultMachineAsync()
@@ -120,9 +118,17 @@ namespace CNCLib.ServiceProxy.WebAPI
 
 		public async Task<int> GetDetaultMachineAsync()
 		{
-			await Task.Run(() => 1);
-			return 1;
-			//throw new NotImplementedException();
+			using (var client = CreateHttpClient())
+			{
+				HttpResponseMessage response = await client.GetAsync(api + "/defaultmachine");
+				if (response.IsSuccessStatusCode)
+				{
+					int value = await response.Content.ReadAsAsync<int>();
+
+					return value;
+				}
+			}
+			return 0;
 		}
 
 		public int GetDetaultMachine()
@@ -130,10 +136,18 @@ namespace CNCLib.ServiceProxy.WebAPI
 			return Task.Run(() => GetDetaultMachineAsync()).Result;
 		}
 
-		public async Task SetDetaultMachineAsync(int defaultMachineID)
+		public async Task SetDetaultMachineAsync(int id)
 		{
-			await Task.Run(() => 1);
-			throw new NotImplementedException();
+			using (var client = CreateHttpClient())
+			{
+				var response = await client.PutAsJsonAsync($"{api}/defaultmachine?id={id}","dummy");
+
+				if (response.IsSuccessStatusCode)
+				{
+					return;
+				}
+				return;
+			}
 		}
 		public void SetDetaultMachine(int defaultMachineID)
 		{

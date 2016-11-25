@@ -32,8 +32,8 @@ namespace CNCLib.WebAPI.Controllers
 {
 	public class MachineController : RestController<Machine>
 	{
-		[ActionName("defaultmachine")]
-		//[HttpGet] //Always explicitly state the accepted HTTP method
+		[Route("api/Machine/default")]
+		[HttpGet] //Always explicitly state the accepted HTTP method
 		public IHttpActionResult DefaultMachine()
 		{
 			using (IMachineService service = Dependency.Resolve<IMachineService>())
@@ -45,18 +45,42 @@ namespace CNCLib.WebAPI.Controllers
 				}
 				return Ok(m);
 			}
-
-		}
-/*
-		public int GetDetaultMachine()
-		{
-			return 1;
 		}
 
-		public void SetDetaultMachine(int defaultMachineID)
+		[Route("api/Machine/defaultmachine")]
+		[HttpGet] //Always explicitly state the accepted HTTP method
+		public IHttpActionResult GetDetaultMachine()
 		{
+			using (IMachineService service = Dependency.Resolve<IMachineService>())
+			{
+				int id = service.GetDetaultMachine();
+				return Ok(id);
+			}
 		}
-*/
+
+		[Route("api/Machine/defaultmachine")]
+		[HttpPut] //Always explicitly state the accepted HTTP method
+		public IHttpActionResult SetDetaultMachine(int id)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			try
+			{
+				using (IMachineService service = Dependency.Resolve<IMachineService>())
+				{
+					service.SetDetaultMachine(id);
+				}
+				return StatusCode(HttpStatusCode.NoContent);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+
 	}
 
 	public class MachineRest : IRest<Machine>

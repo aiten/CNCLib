@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -28,7 +29,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 {
 	public class ServiceBase
 	{
-		protected readonly string webserverurl = @"http://cnclibapi.azurewebsites.net";
+		protected readonly string webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibapi.azurewebsites.net";
 
 		protected System.Net.Http.HttpClient CreateHttpClient()
 		{
