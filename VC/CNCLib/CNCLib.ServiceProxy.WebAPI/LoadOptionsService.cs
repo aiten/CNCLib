@@ -62,7 +62,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 		}
 		public void Delete(LoadOptions value)
 		{
-			Task.Run(() => DeleteAsync(value)).Wait();
+			Task.Run(() => DeleteAsync(value)).GetAwaiter().GetResult();
 		}
 
 		public async Task<LoadOptions> GetAsync(int id)

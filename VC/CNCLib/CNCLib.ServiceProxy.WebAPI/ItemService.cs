@@ -76,7 +76,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 		}
 		public void Delete(Item value)
 		{
-			Task.Run(() => DeleteAsync(value)).Wait();
+			Task.Run(() => DeleteAsync(value)).GetAwaiter().GetResult();
 		}
 
 		public async Task<Item> GetAsync(int id)

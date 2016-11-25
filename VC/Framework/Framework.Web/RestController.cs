@@ -28,7 +28,6 @@ namespace Framework.Web
 {
 	public abstract class RestController<T> : ApiController
 	{
-		// GET api/values
 		public IEnumerable<T> Get()
 		{
 			using (var controller = Dependency.Resolve<IRest<T>>())

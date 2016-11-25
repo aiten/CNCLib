@@ -83,7 +83,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                         {
                             lines.Add(line);
                         }
-                        Com.SendCommandsAsync(lines.ToArray()).Wait();
+                        Com.SendCommandsAsync(lines.ToArray()).GetAwaiter().GetResult();
 	
 						bool filesavednresponse = false;
 						checkresponse = new Framework.Arduino.ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
@@ -105,7 +105,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 				Com.SendCommand("m30 " + filename);
 			});
 		}
-		public void SendFileDirect() { RunInNewTask(() => { Com.SendFileAsync(FileName).Wait(); }); }
+		public void SendFileDirect() { RunInNewTask(() => { Com.SendFileAsync(FileName).GetAwaiter().GetResult(); }); }
 
 		public void AddToFile()
 		{

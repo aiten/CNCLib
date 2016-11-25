@@ -32,6 +32,31 @@ namespace CNCLib.WebAPI.Controllers
 {
 	public class MachineController : RestController<Machine>
 	{
+		[ActionName("defaultmachine")]
+		//[HttpGet] //Always explicitly state the accepted HTTP method
+		public IHttpActionResult DefaultMachine()
+		{
+			using (IMachineService service = Dependency.Resolve<IMachineService>())
+			{
+				var m = service.DefaultMachine();
+				if (m == null)
+				{
+					return NotFound();
+				}
+				return Ok(m);
+			}
+
+		}
+/*
+		public int GetDetaultMachine()
+		{
+			return 1;
+		}
+
+		public void SetDetaultMachine(int defaultMachineID)
+		{
+		}
+*/
 	}
 
 	public class MachineRest : IRest<Machine>

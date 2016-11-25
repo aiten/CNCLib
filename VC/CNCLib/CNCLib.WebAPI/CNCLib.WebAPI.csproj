@@ -54,6 +54,14 @@
       <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.5\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -325,6 +333,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Framework.EF\Framework.EF.csproj">
+      <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
+      <Name>Framework.EF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj">
       <Project>{e598aaa4-fe51-46bd-b852-4a9eeb21a5c5}</Project>
       <Name>Framework.Logic.Contracts</Name>
@@ -352,6 +364,18 @@
     <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">
       <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>
       <Name>CNCLib.Logic.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Logic\CNCLib.Logic.csproj">
+      <Project>{36b9838b-493f-4bac-a8d3-35298c4ffdc7}</Project>
+      <Name>CNCLib.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj">
+      <Project>{0ecc8284-505b-43cc-9df9-ac5d5eef786a}</Project>
+      <Name>CNCLib.Repository.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Repository\CNCLib.Repository.csproj">
+      <Project>{d689cd99-a022-4f38-8ae1-a269c82a729c}</Project>
+      <Name>CNCLib.Repository</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.ServiceProxy.Logic\CNCLib.ServiceProxy.Logic.csproj">
       <Project>{f6696f23-9dcc-4d9a-9418-e7d1fed7eabd}</Project>

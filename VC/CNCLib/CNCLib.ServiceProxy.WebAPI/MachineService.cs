@@ -75,7 +75,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 		}
 		public void Delete(Machine value)
 		{
-			Task.Run(() => DeleteAsync(value)).Wait();
+			Task.Run(() => DeleteAsync(value)).GetAwaiter().GetResult();
 		}
 
 		public async Task<Machine> GetAsync(int id)
@@ -137,7 +137,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 		}
 		public void SetDetaultMachine(int defaultMachineID)
 		{
-			Task.Run(() => SetDetaultMachineAsync(defaultMachineID)).Wait();
+			Task.Run(() => SetDetaultMachineAsync(defaultMachineID)).GetAwaiter().GetResult();
 		}
 
 		public async Task<int> UpdateAsync(Machine value)

@@ -201,7 +201,7 @@ namespace CNCLib.Wpf.ViewModels
 				try
 				{
 					Com.ClearCommandHistory();
-					Com.SendCommandsAsync(Commands.ToStringList()).Wait();
+					Com.SendCommandsAsync(Commands.ToStringList()).GetAwaiter().GetResult();
 					Com.WriteCommandHistory(CmdHistoryFileName);
 				}
 				finally
