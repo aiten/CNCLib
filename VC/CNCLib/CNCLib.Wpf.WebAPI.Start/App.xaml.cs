@@ -21,7 +21,6 @@ using System.Windows;
 using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
-using Framework.EF;
 using AutoMapper;
 using CNCLib.Logic;
 using CNCLib.ServiceProxy;

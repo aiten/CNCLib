@@ -22,9 +22,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using AutoMapper;
 using CNCLib.Logic;
-using CNCLib.Repository.Context;
 using CNCLib.WebAPI.Controllers;
-using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using Framework.Web;
@@ -38,15 +36,12 @@ namespace CNCLib.WebAPI
 			Dependency.Initialize(new LiveDependencyProvider());
 			Dependency.Container.RegisterTypesIncludingInternals(
 				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
-				typeof(CNCLib.Repository.MachineRepository).Assembly,
-				typeof(CNCLib.Logic.MachineController).Assembly,
 				typeof(CNCLib.Logic.Client.DynItemController).Assembly);
-			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
 			Dependency.Container.RegisterType<IRest< CNCLib.Logic.Contracts.DTO.Machine>, MachineRest>();
 			Dependency.Container.RegisterType<IRest<CNCLib.Logic.Contracts.DTO.LoadOptions>, LoadInfoRest>();
 			Dependency.Container.RegisterType<IRest<CNCLib.Logic.Contracts.DTO.Item>, ItemRest>();
-
+/*
 			var config = new MapperConfiguration(cfg =>
 			{
 				cfg.AddProfile<LogicAutoMapperProfile>();
@@ -55,7 +50,7 @@ namespace CNCLib.WebAPI
 			var mapper = config.CreateMapper();
 
 			Dependency.Container.RegisterInstance<IMapper>(mapper);
-
+*/
 
 			AreaRegistration.RegisterAllAreas();
 			GlobalConfiguration.Configure(WebApiConfig.Register);

@@ -65,10 +65,6 @@
       <Project>{e598aaa4-fe51-46bd-b852-4a9eeb21a5c5}</Project>
       <Name>Framework.Logic.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj">
-      <Project>{081814da-adc7-4b65-ae16-856c1b3d3ce8}</Project>
-      <Name>Framework.Logic</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
       <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>
       <Name>Framework.Tools</Name>

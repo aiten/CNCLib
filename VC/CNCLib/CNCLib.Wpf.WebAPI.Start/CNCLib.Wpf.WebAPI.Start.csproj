@@ -114,10 +114,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.EF\Framework.EF.csproj">
-      <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
-      <Name>Framework.EF</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj">
       <Project>{e598aaa4-fe51-46bd-b852-4a9eeb21a5c5}</Project>
       <Name>Framework.Logic.Contracts</Name>
@@ -145,10 +141,6 @@
     <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">
       <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>
       <Name>CNCLib.Logic.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.ServiceProxy.Logic\CNCLib.ServiceProxy.Logic.csproj">
-      <Project>{f6696f23-9dcc-4d9a-9418-e7d1fed7eabd}</Project>
-      <Name>CNCLib.ServiceProxy.Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.ServiceProxy.WebAPI\CNCLib.ServiceProxy.WebAPI.csproj">
       <Project>{6487301a-6889-412c-92ec-899aad61a9a5}</Project>
