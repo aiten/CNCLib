@@ -52,10 +52,23 @@ namespace CNCLib.Wpf.WebAPI.Start
 
 			Dependency.Container.RegisterInstance<IMapper>(mapper);
 
-
-			using (var controller = Dependency.Resolve<IMachineService>())
+			// Open WebAPI Connection
+			//
+			try
 			{
-				var m = controller.Get(-1);
+				using (var controller = Dependency.Resolve<IMachineService>())
+				{
+					var m = controller.GetDetaultMachine();
+					if (m == -1)
+					{
+						throw new ArgumentException("illegal defaulemachne");
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Cannot connect to WebAPI: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				Application.Current.Shutdown();
 			}
 		}
 	}

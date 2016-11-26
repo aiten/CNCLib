@@ -128,7 +128,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 					return value;
 				}
 			}
-			return 0;
+			return -1;
 		}
 
 		public int GetDetaultMachine()
