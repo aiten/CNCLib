@@ -368,11 +368,11 @@ namespace CNCLib.GUI
 			double J = pIJ.Y.Value;
 			double R = Math.Sqrt(I * I + J * J);
 
-			double cx = ptFrom.X.Value + I;
-			double cy = ptFrom.Y.Value + J;
+			double cx = (ptFrom.X??0.0) + I;
+			double cy = (ptFrom.Y??0.0) + J;
 
 			double startAng = ConvertRadToDeg(Math.Atan2(J, I));
-			double endAng = ConvertRadToDeg(Math.Atan2(cy - ptTo.Y.Value, cx - ptTo.X.Value));
+			double endAng = ConvertRadToDeg(Math.Atan2(cy - (ptTo.Y??0.0), cx - (ptTo.X??0.0)));
 			double diffAng = (endAng - startAng);
 			if (startAng > endAng)
 				diffAng += 360;
