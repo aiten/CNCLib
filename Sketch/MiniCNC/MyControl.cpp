@@ -56,7 +56,7 @@ void CMyControl::Init()
 	super::Init();
 
 #ifdef SETDIRECTION
-	CStepper::GetInstance()->SetDirection((1 << X_AXIS) + (1 << Y_AXIS));
+	CStepper::GetInstance()->SetDirection(SETDIRECTION);
 #endif
 
 	//CStepper::GetInstance()->SetBacklash(SPEEDFACTOR*5000);
@@ -136,6 +136,7 @@ void CMyControl::Init()
 
 	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE));
 	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE));
+	CGCodeParserBase::SetG1MaxFeedRate(STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED, CNC_ACC, CNC_DEC);
 }

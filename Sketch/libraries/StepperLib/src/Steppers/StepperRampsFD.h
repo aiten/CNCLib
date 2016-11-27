@@ -197,7 +197,7 @@ protected:
 			if (steps[E1_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPSFD_E1_STEP_PIN, RAMPSFD_PIN_STEP_OFF); have = true; }
 			if (steps[E2_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPSFD_E2_STEP_PIN, RAMPSFD_PIN_STEP_OFF); have = true; }
 
-			Delay1();
+			Delay1(6);
 
 			if (steps[X_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPSFD_X_STEP_PIN, RAMPSFD_PIN_STEP_ON); }
 			if (steps[Y_AXIS] > cnt) { HALFastdigitalWriteNC(RAMPSFD_Y_STEP_PIN, RAMPSFD_PIN_STEP_ON); }

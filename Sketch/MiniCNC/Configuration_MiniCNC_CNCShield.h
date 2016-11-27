@@ -22,12 +22,14 @@
 ////////////////////////////////////////////////////////
 
 #define CMyStepper CStepperCNCShield
-#define ConversionToMm1000 CNCShieldToMm1000
-#define ConversionToMachine CNCShieldToMachine
+//#define ConversionToMm1000 CNCShieldToMm1000
+//#define ConversionToMachine CNCShieldToMachine
+#define ConversionToMm1000 CMotionControlBase::ToMm1000_1_3200
+#define ConversionToMachine CMotionControlBase::ToMachine_1_3200
 
 ////////////////////////////////////////////////////////
 
-#define MYNUM_AXIS 4
+#define MYNUM_AXIS 3
 #define CNCSHIELD_NUM_AXIS MYNUM_AXIS
 
 #include <Steppers/StepperCNCShield_pins.h>
@@ -91,10 +93,10 @@
 
 ////////////////////////////////////////////////////////
 
-#define X_STEPSPERMM (3200.0/5)
-#define Y_STEPSPERMM (3200.0/5)
-#define Z_STEPSPERMM (3200.0/5)
-#define A_STEPSPERMM (3200.0/5)
+#define X_STEPSPERMM (3200.0/1)
+#define Y_STEPSPERMM (3200.0/1)
+#define Z_STEPSPERMM (3200.0/1)
+#define A_STEPSPERMM (3200.0/1)
 
 inline mm1000_t CNCShieldToMm1000(axis_t axis, sdist_t val)
 {
@@ -122,8 +124,8 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 
 ////////////////////////////////////////////////////////
 
-#define X_MAXSIZE 800000				// in mm1000_t
-#define Y_MAXSIZE 500000 
+#define X_MAXSIZE 100000				// in mm1000_t
+#define Y_MAXSIZE 100000 
 #define Z_MAXSIZE 100000 
 #define A_MAXSIZE 50000 
 
@@ -146,24 +148,27 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 #define REFMOVE_3_AXIS	X_AXIS
 //#define REFMOVE_3_AXIS	A_AXIS
 
+#define MOVEAWAYFROMREF_STEPS 100
+
 ////////////////////////////////////////////////////////
 
-#define GO_DEFAULT_STEPRATE		20000	// steps/sec
+#define CNC_MAXSPEED 27000        // steps/sec
+#define CNC_ACC  350
+#define CNC_DEC  400
+
+////////////////////////////////////////////////////////
+
+#define GO_DEFAULT_STEPRATE		CNC_MAXSPEED	// steps/sec
 #define G1_DEFAULT_STEPRATE		10000	// steps/sec
+#define G1_DEFAULT_MAXSTEPRATE	CNC_MAXSPEED	// steps/sec
 
 #define STEPRATERATE_REFMOVE	GO_DEFAULT_STEPRATE
 
-#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
+//#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
 
 ////////////////////////////////////////////////////////
 
 #undef NOGOTOREFERENCEATBOOT
-
-////////////////////////////////////////////////////////
-
-#define CNC_MAXSPEED 14000				// steps/sec
-#define CNC_ACC  350
-#define CNC_DEC  400
 
 ////////////////////////////////////////////////////////
 

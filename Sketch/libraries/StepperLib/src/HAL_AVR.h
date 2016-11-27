@@ -78,6 +78,10 @@ inline void CHAL::delayMicroseconds0250() {	__asm__("nop\n\tnop\n\tnop\n\tnop\n\
 
 inline void CHAL::delayMicroseconds0312() {	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\t"); }
 
+inline void CHAL::delayMicroseconds0375() { __asm__("nop\n\tnop\n\tnop\n\tnopn\tnop\n\tnop\n\t"); }
+
+inline void CHAL::delayMicroseconds0438() { __asm__("nop\n\tnop\n\tnop\n\tnopn\tnop\n\tnop\n\tnop\n\t"); }
+
 inline void CHAL::delayMicroseconds0500() {	__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t"); }
 
 inline void CHAL::delayMicroseconds(unsigned int us) {	::delayMicroseconds(us); }

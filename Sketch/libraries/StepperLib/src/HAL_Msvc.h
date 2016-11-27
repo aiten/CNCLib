@@ -59,6 +59,8 @@ inline void CHAL::EnableInterrupts()	{	sei(); }
 
 inline void CHAL::delayMicroseconds0250() {  }
 inline void CHAL::delayMicroseconds0312() {  }
+inline void CHAL::delayMicroseconds0375() {  }
+inline void CHAL::delayMicroseconds0438() {  }
 inline void CHAL::delayMicroseconds0500() {  }
 inline void CHAL::delayMicroseconds(unsigned int) {}
 

@@ -56,7 +56,7 @@ void CMyControl::Init()
 	super::Init();
 
 #ifdef SETDIRECTION
-	CStepper::GetInstance()->SetDirection((1 << X_AXIS) + (1 << Y_AXIS));
+	CStepper::GetInstance()->SetDirection(SETDIRECTION);
 #endif
 
 	//CStepper::GetInstance()->SetBacklash(SPEEDFACTOR*5000);

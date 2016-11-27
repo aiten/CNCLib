@@ -29,7 +29,7 @@ static void Delay2() ALWAYSINLINE				{ CHAL::delayMicroseconds(1); }
 
 #else //AVR
 
-static void Delay1() ALWAYSINLINE				{ CHAL::delayMicroseconds0312(); }
-static void Delay2() ALWAYSINLINE				{ CHAL::delayMicroseconds0500(); }
+static void Delay1(uint8_t numaxis) ALWAYSINLINE	{ if (numaxis>3) CHAL::delayMicroseconds0312(); else CHAL::delayMicroseconds0500();}
+static void Delay2() ALWAYSINLINE					{ CHAL::delayMicroseconds0500(); }
 
 #endif
