@@ -27,6 +27,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Framework.Web;
 using CNCLib.ServiceProxy;
+using System.Threading.Tasks;
 
 namespace CNCLib.WebAPI.Controllers
 {
@@ -50,29 +51,29 @@ namespace CNCLib.WebAPI.Controllers
 	{
 		private IItemService _service = Dependency.Resolve<IItemService>();
 
-		public IEnumerable<Item> Get()
+		public Task<IEnumerable<Item>> Get()
 		{
 			return _service.GetAll();
 		}
 
-		public Item Get(int id)
+		public Task<Item> Get(int id)
 		{
 			return _service.Get(id);
 		}
 
-		public int Add(Item value)
+		public Task<int> Add(Item value)
 		{
 			return _service.Add(value);
 		}
 
-		public void Update(int id, Item value)
+		public Task Update(int id, Item value)
 		{
-			_service.Update(value);
+			return _service.Update(value);
 		}
 
-		public void Delete(int id, Item value)
+		public Task Delete(int id, Item value)
 		{
-			_service.Delete(value);
+			return _service.Delete(value);
 		}
 
 		public bool CompareId(int id, Item value)

@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
+using System.Threading.Tasks;
 
 namespace CNCLib.ServiceProxy.Logic
 {
@@ -29,31 +30,31 @@ namespace CNCLib.ServiceProxy.Logic
 	{
 		private IItemController _controller = Dependency.Resolve<IItemController>();
 
-		public int Add(Item value)
+		public Task<int> Add(Item value)
 		{
 			return _controller.Add(value);
 		}
 
-		public void Delete(Item value)
+		public Task Delete(Item value)
 		{
-			_controller.Delete(value);
+			return _controller.Delete(value);
 		}
 
-		public Item Get(int id)
+		public Task<Item> Get(int id)
 		{
 			return _controller.Get(id);
 		}
 
-		public IEnumerable<Item> GetAll()
+		public Task<IEnumerable<Item>> GetAll()
 		{
 			return _controller.GetAll();
 		}
-		public IEnumerable<Item> GetByClassName(string classname)
+		public Task<IEnumerable<Item>> GetByClassName(string classname)
 		{
 			return _controller.GetByClassName(classname);
 		}
 
-		public int Update(Item value)
+		public Task<int> Update(Item value)
 		{
 			return _controller.Update(value);
 		}

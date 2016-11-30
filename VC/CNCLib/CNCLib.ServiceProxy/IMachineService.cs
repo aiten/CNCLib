@@ -19,13 +19,14 @@
 using System;
 using Framework.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
+using System.Threading.Tasks;
 
 namespace CNCLib.ServiceProxy
 {
 	public interface IMachineService : IDisposable, IRestController<Machine>
 	{
-		Machine DefaultMachine();
-		int GetDetaultMachine();
-		void SetDetaultMachine(int defaultMachineID);
+		Task<Machine> DefaultMachine();
+		Task<int> GetDetaultMachine();
+		Task SetDetaultMachine(int defaultMachineID);
 	}
 }

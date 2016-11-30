@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Framework.Tools.Dependency;
@@ -28,7 +29,7 @@ namespace Framework.Web
 {
 	public abstract class RestController<T> : ApiController
 	{
-		public IEnumerable<T> Get()
+		public Task<IEnumerable<T>> Get()
 		{
 			using (var controller = Dependency.Resolve<IRest<T>>())
 			{
@@ -63,7 +64,7 @@ namespace Framework.Web
 			{
 				using (var controller = Dependency.Resolve<IRest<T>>())
 				{
-					int newid = controller.Add(value);
+					int newid = controller.Add(value).Result;
 					return CreatedAtRoute("DefaultApi", new { id = newid }, value);
 				}
 			}
@@ -107,13 +108,13 @@ namespace Framework.Web
 		{
 			using (var controller = Dependency.Resolve<IRest<T>>())
 			{
-				var value = controller.Get(id);
+				var value = controller.Get(id).Result;
 				if (value == null)
 				{
 					return NotFound();
 				}
 
-				controller.Delete(id, value);
+				controller.Delete(id, value).GetAwaiter().GetResult();
 				return Ok(value);
 			}
 		}

@@ -31,7 +31,7 @@ namespace CNCLib.Wpf.Helpers
 		{
 			using (var controller = Dependency.Resolve<IDynItemController>())
 			{
-				var joystick = controller.GetAll(typeof(Models.Joystick));
+				var joystick = controller.GetAll(typeof(Models.Joystick)).Result;
 				if (joystick != null && joystick.Count() > 0)
 				{
 					id = joystick.First().ItemID;
@@ -54,7 +54,7 @@ namespace CNCLib.Wpf.Helpers
 				}
 				else
 				{
-					id = controller.Add("Joystick", joystick);
+					id = controller.Add("Joystick", joystick).Result;
 				}
 			}
 		}

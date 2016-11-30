@@ -27,47 +27,56 @@ using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using CNCLib.Logic.Contracts;
 using CNCLib.ServiceProxy;
+using System.Threading.Tasks;
 
 namespace CNCLib.Logic.Client
 {
 	public class DynItemController : IDynItemController
 	{
-		public DynItem Get(int id)
+		public Task<DynItem> Get(int id)
 		{
-			using (var service = Dependency.Resolve<IItemService>())
+			return Task.Run(() =>
 			{
-				var item = service.Get(id);
-				if (item == null)
-					return null;
+				using (var service = Dependency.Resolve<IItemService>())
+				{
+					var item = service.Get(id).Result;
+					if (item == null)
+						return null;
 
-				return Convert(item);
-			}
+					return Convert(item);
+				}
+			});
 		}
 
-		public IEnumerable<DynItem> GetAll(Type t)
+		public Task<IEnumerable<DynItem>> GetAll(Type t)
 		{
-			using (var service = Dependency.Resolve<IItemService>())
+			return Task.Run(() =>
 			{
-				var allitems = service.GetByClassName(GetClassName(t));
-				return Convert(allitems);
-			}
+				using (var service = Dependency.Resolve<IItemService>())
+				{
+					var allitems = service.GetByClassName(GetClassName(t)).Result;
+					return (IEnumerable<DynItem>) Convert(allitems);
+				}
+			});
 		}
 
-
-		public IEnumerable<DynItem> GetAll()
+		public Task<IEnumerable<DynItem>> GetAll()
 		{
-			using (var service = Dependency.Resolve<IItemService>())
+			return Task.Run(() =>
 			{
-				var allitems = service.GetAll();
-				return Convert(allitems);
-			}
+				using (var service = Dependency.Resolve<IItemService>())
+				{
+					var allitems = service.GetAll().Result;
+					return Convert(allitems);
+				}
+			});
 		}
 
 		public object Create(int id)
         {
 			using (var service = Dependency.Resolve<IItemService>())
 			{
-				var item = service.Get(id);
+				var item = service.Get(id).Result;
 
 				if (item == null)
 					return null;
@@ -238,30 +247,39 @@ namespace CNCLib.Logic.Client
             return list;
         }
 
-        public int Add(string name, object obj)
+        public Task<int> Add(string name, object obj)
 		{
-			using (var service = Dependency.Resolve<IItemService>())
+			return Task.Run(() =>
 			{
-				return service.Add(ConvertToItem(name, obj, 0));
-			}
+				using (var service = Dependency.Resolve<IItemService>())
+				{
+					return service.Add(ConvertToItem(name, obj, 0));
+				}
+			});
 		}
 
-		public void Save(int id, string name, object obj)
+		public Task Save(int id, string name, object obj)
         {
-			using (var service = Dependency.Resolve<IItemService>())
+			return Task.Run(() =>
 			{
-				service.Update(ConvertToItem(name, obj, id));
-			}
+				using (var service = Dependency.Resolve<IItemService>())
+				{
+					service.Update(ConvertToItem(name, obj, id));
+				}
+			});
         }
 
-        public void Delete(int id)
+        public Task Delete(int id)
         {
-			using (var service = Dependency.Resolve<IItemService>())
+			return Task.Run(() =>
 			{
-				var item = service.Get(id);
-				if (item != null)
-					service.Delete(item);
-			}
+				using (var service = Dependency.Resolve<IItemService>())
+				{
+					var item = service.Get(id).Result;
+					if (item != null)
+						service.Delete(item);
+				}
+			});
         }
 
 		private Item ConvertToItem(string name, object obj, int id)

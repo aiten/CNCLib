@@ -43,19 +43,21 @@ namespace CNCLib.ServiceProxy.WebAPI
 				return await response.Content.ReadAsAsync<int>();
 			}
 		}
-		public int Add(Machine value)
+		public Task<int> Add(Machine value)
 		{
-			var task = AddAsync(value);
-			return task.ConfigureAwait(false).GetAwaiter().GetResult();
+			return AddAsync(value);
+			//var task = AddAsync(value);
+			//return task.ConfigureAwait(false).GetAwaiter().GetResult();
 		}
 
 		public async Task<Machine> DefaultMachineAsync()
 		{
 			return await GetAsync(-1);
 		}
-		public Machine DefaultMachine()
+		public Task<Machine> DefaultMachine()
 		{
-			return Task.Run(() => DefaultMachineAsync()).Result;
+			return DefaultMachineAsync();
+			//return Task.Run(() => DefaultMachineAsync()).Result;
 		}
 
 		public async Task DeleteAsync(Machine value)
@@ -71,9 +73,10 @@ namespace CNCLib.ServiceProxy.WebAPI
 				//return HttpNotFound();
 			}
 		}
-		public void Delete(Machine value)
+		public Task Delete(Machine value)
 		{
-			Task.Run(() => DeleteAsync(value)).GetAwaiter().GetResult();
+			return DeleteAsync(value);
+			//Task.Run(() => DeleteAsync(value)).GetAwaiter().GetResult();
 		}
 
 		public async Task<Machine> GetAsync(int id)
@@ -91,9 +94,10 @@ namespace CNCLib.ServiceProxy.WebAPI
 			return null;
 		}
 
-		public Machine Get(int id)
+		public Task<Machine> Get(int id)
 		{
-			return Task.Run(() => GetAsync(id)).Result;
+			return GetAsync(id);
+			//return Task.Run(() => GetAsync(id)).Result;
 
 		}
 		public async Task<IEnumerable<Machine>> GetAllAsync()
@@ -111,9 +115,10 @@ namespace CNCLib.ServiceProxy.WebAPI
 			}
 		}
 
-		public IEnumerable<Machine> GetAll()
+		public Task<IEnumerable<Machine>> GetAll()
 		{
-			return Task.Run(() => GetAllAsync()).Result;
+			return GetAllAsync();
+			//return Task.Run(() => GetAllAsync()).Result;
 		}
 
 		public async Task<int> GetDetaultMachineAsync()
@@ -131,9 +136,10 @@ namespace CNCLib.ServiceProxy.WebAPI
 			return -1;
 		}
 
-		public int GetDetaultMachine()
+		public Task<int> GetDetaultMachine()
 		{
-			return Task.Run(() => GetDetaultMachineAsync()).Result;
+			return GetDetaultMachineAsync();
+			//return Task.Run(() => GetDetaultMachineAsync()).Result;
 		}
 
 		public async Task SetDetaultMachineAsync(int id)
@@ -149,9 +155,10 @@ namespace CNCLib.ServiceProxy.WebAPI
 				return;
 			}
 		}
-		public void SetDetaultMachine(int defaultMachineID)
+		public Task SetDetaultMachine(int defaultMachineID)
 		{
-			Task.Run(() => SetDetaultMachineAsync(defaultMachineID)).GetAwaiter().GetResult();
+			return SetDetaultMachineAsync(defaultMachineID);
+			//Task.Run(() => SetDetaultMachineAsync(defaultMachineID)).GetAwaiter().GetResult();
 		}
 
 		public async Task<int> UpdateAsync(Machine value)
@@ -167,9 +174,10 @@ namespace CNCLib.ServiceProxy.WebAPI
 				return -1;
 			}
 		}
-		public int Update(Machine value)
+		public Task<int> Update(Machine value)
 		{
-			return Task.Run(() => UpdateAsync(value)).Result;
+			return UpdateAsync(value);
+			//return Task.Run(() => UpdateAsync(value)).Result;
 		}
 
 		#region IDisposable Support

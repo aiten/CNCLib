@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
+using System.Threading.Tasks;
 
 namespace CNCLib.ServiceProxy.Logic
 {
@@ -29,27 +30,27 @@ namespace CNCLib.ServiceProxy.Logic
 	{
 		private ILoadOptionsController _controller = Dependency.Resolve<ILoadOptionsController>();
 
-		public int Add(LoadOptions value)
+		public Task<int> Add(LoadOptions value)
 		{
 			return _controller.Add(value);
 		}
 
-		public void Delete(LoadOptions value)
+		public Task Delete(LoadOptions value)
 		{
-			_controller.Delete(value);
+			return _controller.Delete(value);
 		}
 
-		public LoadOptions Get(int id)
+		public Task<LoadOptions> Get(int id)
 		{
 			return _controller.Get(id);
 		}
 
-		public IEnumerable<LoadOptions> GetAll()
+		public Task<IEnumerable<LoadOptions>> GetAll()
 		{
 			return _controller.GetAll();
 		}
 
-		public int Update(LoadOptions value)
+		public Task<int> Update(LoadOptions value)
 		{
 			return _controller.Update(value);
 		}

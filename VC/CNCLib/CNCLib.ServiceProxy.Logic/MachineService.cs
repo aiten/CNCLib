@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
+using System.Threading.Tasks;
 
 namespace CNCLib.ServiceProxy.Logic
 {
@@ -29,42 +30,42 @@ namespace CNCLib.ServiceProxy.Logic
 	{
 		private IMachineController _controller = Dependency.Resolve<IMachineController>();
 
-		public int Add(Machine value)
+		public Task<int> Add(Machine value)
 		{
 			return _controller.Add(value);
 		}
 
-		public Machine DefaultMachine()
+		public Task<Machine> DefaultMachine()
 		{
 			return _controller.DefaultMachine();
 		}
 
-		public void Delete(Machine value)
+		public Task Delete(Machine value)
 		{
-			_controller.Delete(value);
+			return _controller.Delete(value);
 		}
 
-		public Machine Get(int id)
+		public Task<Machine> Get(int id)
 		{
 			return _controller.Get(id);
 		}
 
-		public IEnumerable<Machine> GetAll()
+		public Task<IEnumerable<Machine>> GetAll()
 		{
 			return _controller.GetAll();
 		}
 
-		public int GetDetaultMachine()
+		public Task<int> GetDetaultMachine()
 		{
 			return _controller.GetDetaultMachine();
 		}
 
-		public void SetDetaultMachine(int defaultMachineID)
+		public Task SetDetaultMachine(int defaultMachineID)
 		{
-			_controller.SetDetaultMachine(defaultMachineID);
+			return _controller.SetDetaultMachine(defaultMachineID);
 		}
 
-		public int Update(Machine value)
+		public Task<int> Update(Machine value)
 		{
 			return _controller.Update(value);
 		}

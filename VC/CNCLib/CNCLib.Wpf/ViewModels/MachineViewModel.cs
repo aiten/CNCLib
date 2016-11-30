@@ -198,11 +198,11 @@ namespace CNCLib.Wpf.ViewModels
 				AddNewMachine = machineID <= 0;
 				if (AddNewMachine)
 				{
-					dto = controller.DefaultMachine();
+					dto = controller.DefaultMachine().Result;
 				}
 				else
 				{
-					dto = controller.Get(machineID);
+					dto = controller.Get(machineID).Result;
 				}
 			}
 
@@ -244,7 +244,7 @@ namespace CNCLib.Wpf.ViewModels
 
 			using (var controller = Dependency.Resolve<IMachineService>())
 			{
-				id = controller.Update(m);
+				id = controller.Update(m).Result;
 			}
 
 			LoadMachine(id);

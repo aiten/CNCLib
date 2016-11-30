@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Logic.Contracts;
 
@@ -25,6 +26,6 @@ namespace CNCLib.ServiceProxy
 {
 	public interface IItemService : IDisposable, IRestController<Item>
 	{
-		IEnumerable<Item> GetByClassName(string classname);
+		Task<IEnumerable<Item>> GetByClassName(string classname);
 	}
 }

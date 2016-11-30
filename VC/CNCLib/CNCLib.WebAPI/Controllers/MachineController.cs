@@ -27,6 +27,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Framework.Web;
 using CNCLib.ServiceProxy;
+using System.Threading.Tasks;
 
 namespace CNCLib.WebAPI.Controllers
 {
@@ -53,7 +54,7 @@ namespace CNCLib.WebAPI.Controllers
 		{
 			using (IMachineService service = Dependency.Resolve<IMachineService>())
 			{
-				int id = service.GetDetaultMachine();
+				int id = service.GetDetaultMachine().Result;
 				return Ok(id);
 			}
 		}
@@ -87,12 +88,12 @@ namespace CNCLib.WebAPI.Controllers
 	{
 		private IMachineService _service = Dependency.Resolve<IMachineService>();
 
-		public IEnumerable<Machine> Get()
+		public Task<IEnumerable<Machine>> Get()
 		{
 			return _service.GetAll();
 		}
 
-		public Machine Get(int id)
+		public Task<Machine> Get(int id)
 		{
 			if (id == -1)
 				return _service.DefaultMachine();
@@ -100,19 +101,19 @@ namespace CNCLib.WebAPI.Controllers
 			return _service.Get(id);
 		}
 
-		public int Add(Machine value)
+		public Task<int> Add(Machine value)
 		{
 			return _service.Add(value);
 		}
 
-		public void Update(int id, Machine value)
+		public Task Update(int id, Machine value)
 		{
-			_service.Update(value);
+			return _service.Update(value);
 		}
 
-		public void Delete(int id, Machine value)
+		public Task Delete(int id, Machine value)
 		{
-			_service.Delete(value);
+			return _service.Delete(value);
 		}
 
 		public bool CompareId(int id, Machine value)

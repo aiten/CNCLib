@@ -42,12 +42,13 @@ namespace CNCLib.ServiceProxy.WebAPI
 				return await response.Content.ReadAsAsync<int>();
 			}
 		}
-		public int Add(LoadOptions value)
+		public Task<int> Add(LoadOptions value)
 		{
-			return Task.Run(() => AddAsync(value)).Result;
+			return AddAsync(value);
+			//return Task.Run(() => AddAsync(value)).Result;
 		}
 
-		public async void DeleteAsync(LoadOptions value)
+		public async Task DeleteAsync(LoadOptions value)
 		{
 			using (var client = CreateHttpClient())
 			{
@@ -60,9 +61,10 @@ namespace CNCLib.ServiceProxy.WebAPI
 				//return HttpNotFound();
 			}
 		}
-		public void Delete(LoadOptions value)
+		public Task Delete(LoadOptions value)
 		{
-			Task.Run(() => DeleteAsync(value)).GetAwaiter().GetResult();
+			return DeleteAsync(value);
+			//Task.Run(() => DeleteAsync(value)).GetAwaiter().GetResult();
 		}
 
 		public async Task<LoadOptions> GetAsync(int id)
@@ -80,9 +82,10 @@ namespace CNCLib.ServiceProxy.WebAPI
 			return null;
 		}
 
-		public LoadOptions Get(int id)
+		public Task<LoadOptions> Get(int id)
 		{
-			return Task.Run(() => GetAsync(id)).Result;
+			return GetAsync(id);
+			//return Task.Run(() => GetAsync(id)).Result;
 		}
 
 		public async Task<IEnumerable<LoadOptions>> GetAllAsync()
@@ -100,9 +103,10 @@ namespace CNCLib.ServiceProxy.WebAPI
 			}
 		}
 
-		public IEnumerable<LoadOptions> GetAll()
+		public Task<IEnumerable<LoadOptions>> GetAll()
 		{
-			return Task.Run(() => GetAllAsync()).Result;
+			return GetAllAsync();
+			//return Task.Run(() => GetAllAsync()).Result;
 		}
 
 		public async Task<int> UpdateAsync(LoadOptions value)
@@ -119,9 +123,10 @@ namespace CNCLib.ServiceProxy.WebAPI
 			}
 		}
 
-		public int Update(LoadOptions value)
+		public Task<int> Update(LoadOptions value)
 		{
-			return Task.Run(() => UpdateAsync(value)).Result;
+			return UpdateAsync(value);
+			//return Task.Run(() => UpdateAsync(value)).Result;
 		}
 
 		#region IDisposable Support

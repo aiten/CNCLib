@@ -51,7 +51,7 @@ namespace CNCLib.GUI.Load
 
             using (var controller = Dependency.Resolve<ILoadOptionsService>())
             {
-                var items = controller.GetAll();
+                var items = controller.GetAll().Result;
                 foreach (var s in items)
                 {
                     _settingName.Items.Add(new LoadOptionDefinition() { Item = s });
@@ -329,7 +329,7 @@ namespace CNCLib.GUI.Load
                         }
                         else
                         {
-                            int id = controller.Add(obj);
+                            int id = controller.Add(obj).Result;
                             ReadSettings();
                             int idx = 0;
                             foreach (LoadOptionDefinition o in _settingName.Items)

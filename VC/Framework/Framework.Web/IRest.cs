@@ -26,11 +26,11 @@ namespace Framework.Web
 {
 	public interface IRest<T> : IDisposable
 	{
-		T Get(int id);
-		IEnumerable<T> Get();
-		int Add(T value);
-		void Update(int id, T value);
-		void Delete(int id, T value);
+		Task<T> Get(int id);
+		Task<IEnumerable<T>> Get();
+		Task<int> Add(T value);
+		Task Update(int id, T value);
+		Task Delete(int id, T value);
 		bool CompareId(int id, T value);
 	}
 }

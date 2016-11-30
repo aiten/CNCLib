@@ -27,73 +27,92 @@ using System.Reflection;
 using System.Globalization;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
+using System.Threading.Tasks;
 
 namespace CNCLib.Logic
 {
 	public class ItemController : ControllerBase, IItemController
 	{
-		public IEnumerable<Item> GetAll()
+		public Task<IEnumerable<Item>> GetAll()
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+			return Task.Run(() =>
 			{
-				return Convert(rep.Get());
-			}
+				using (var uow = Dependency.Resolve<IUnitOfWork>())
+				using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+				{
+					return Convert(rep.Get());
+				}
+			});
 		}
 
-		public IEnumerable<Item> GetByClassName(string classname)
+		public Task<IEnumerable<Item>> GetByClassName(string classname)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+			return Task.Run(() =>
 			{
-				return Convert(rep.Get(classname));
-			}
+				using (var uow = Dependency.Resolve<IUnitOfWork>())
+				using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+				{
+					return Convert(rep.Get(classname));
+				}
+			});
 		}
 
-		public Item Get(int id)
+		public Task<Item> Get(int id)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+			return Task.Run(() =>
 			{
-				return Convert(rep.Get(id));
-			}
+				using (var uow = Dependency.Resolve<IUnitOfWork>())
+				using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+				{
+					return Convert(rep.Get(id));
+				}
+			});
 		}
 
 
-		public void Delete(Item item)
+		public Task Delete(Item item)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+			return Task.Run(() =>
 			{
-				rep.Delete(item.Convert());
-				uow.Save();
-			}
+				using (var uow = Dependency.Resolve<IUnitOfWork>())
+				using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+				{
+					rep.Delete(item.Convert());
+					uow.Save();
+				}
+			});
 		}
 
-		public int Add(Item item)
+		public Task<int> Add(Item item)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+			return Task.Run(() =>
 			{
-				var me = item.Convert();
-				me.ItemID = 0;
-				foreach (var mc in me.ItemProperties) mc.ItemID = 0;
-				rep.Store(me);
-				uow.Save();
-				return me.ItemID;
-			}
+				using (var uow = Dependency.Resolve<IUnitOfWork>())
+				using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+				{
+					var me = item.Convert();
+					me.ItemID = 0;
+					foreach (var mc in me.ItemProperties) mc.ItemID = 0;
+					rep.Store(me);
+					uow.Save();
+					return me.ItemID;
+				}
+			});
 		}
 
-		public int Update(Item item)
+		public Task<int> Update(Item item)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+			return Task.Run(() =>
 			{
-				var me = item.Convert();
-				rep.Store(me);
-				uow.Save();
-				return me.ItemID;
-			}
+				using (var uow = Dependency.Resolve<IUnitOfWork>())
+				using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+				{
+					var me = item.Convert();
+					rep.Store(me);
+					uow.Save();
+					return me.ItemID;
+				}
+			});
 		}
 
 		private static Item Convert(Repository.Contracts.Entities.Item item)

@@ -46,7 +46,7 @@ namespace CNCLib.WebAPI.Controllers
 		{
 			using (var service = Dependency.Resolve<ILoadOptionsService>())
 			{
-				LoadOptions opt = service.Get(input.LoadOptionsId);
+				LoadOptions opt = service.Get(input.LoadOptionsId).Result;
 				var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt);
 				var sw = new StringWriter();
 				new XmlSerializer(typeof(CNCLib.GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);

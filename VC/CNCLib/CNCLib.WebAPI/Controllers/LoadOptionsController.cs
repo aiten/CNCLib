@@ -17,6 +17,7 @@
 */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
@@ -33,29 +34,29 @@ namespace CNCLib.WebAPI.Controllers
 	{
 		private ILoadOptionsService _service = Dependency.Resolve<ILoadOptionsService>();
 
-		public IEnumerable<LoadOptions> Get()
+		public Task<IEnumerable<LoadOptions>> Get()
 		{
 			return _service.GetAll();
 		}
 
-		public LoadOptions Get(int id)
+		public Task<LoadOptions> Get(int id)
 		{
 			return _service.Get(id);
 		}
 
-		public int Add(LoadOptions value)
+		public Task<int> Add(LoadOptions value)
 		{
 			return _service.Add(value);
 		}
 
-		public void Update(int id, LoadOptions value)
+		public Task Update(int id, LoadOptions value)
 		{
-			_service.Update(value);
+			return _service.Update(value);
 		}
 
-		public void Delete(int id, LoadOptions value)
+		public Task Delete(int id, LoadOptions value)
 		{
-			_service.Delete(value);
+			return _service.Delete(value);
 		}
 
 		public bool CompareId(int id, LoadOptions value)

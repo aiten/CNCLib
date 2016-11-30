@@ -28,65 +28,81 @@ using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using CNCLib.GCode.Load;
 using CNCLib.Logic.Client;
+using System.Threading.Tasks;
 
 namespace CNCLib.Logic
 {
 	public class LoadOptionsController : ControllerBase, ILoadOptionsController
 	{
-		public IEnumerable<LoadOptions> GetAll()
+		public Task<IEnumerable<LoadOptions>> GetAll()
 		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
+			return Task.Run(() =>
 			{
-				var list = new List<LoadOptions>();
-				foreach (DynItem item in controller.GetAll(typeof(LoadOptions)))
+				using (var controller = Dependency.Resolve<IDynItemController>())
 				{
-					LoadOptions li = (LoadOptions)controller.Create(item.ItemID);
-					li.Id = item.ItemID;
-					list.Add(li);
+					var list = new List<LoadOptions>();
+					foreach (DynItem item in controller.GetAll(typeof(LoadOptions)).Result)
+					{
+						LoadOptions li = (LoadOptions)controller.Create(item.ItemID);
+						li.Id = item.ItemID;
+						list.Add(li);
+					}
+					return (IEnumerable<LoadOptions>) list;
 				}
-				return list;
-			}
+			});
 		}
 
-		public LoadOptions Get(int id)
+		public Task<LoadOptions> Get(int id)
 		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
+			return Task.Run(() =>
 			{
-				object obj = controller.Create(id);
-				if (obj != null || obj is LoadOptions)
+				using (var controller = Dependency.Resolve<IDynItemController>())
 				{
-					LoadOptions li = (LoadOptions)obj;
-					li.Id = id;
-					return (LoadOptions)obj;
-				}
+					object obj = controller.Create(id);
+					if (obj != null || obj is LoadOptions)
+					{
+						LoadOptions li = (LoadOptions)obj;
+						li.Id = id;
+						return (LoadOptions)obj;
+					}
 
-				return null;
-			}
+					return null;
+				}
+			});
 		}
 
-		public void Delete(LoadOptions m)
+		public Task Delete(LoadOptions m)
         {
-			using (var controller = Dependency.Resolve<IDynItemController>())
+			return Task.Run(() =>
 			{
-				controller.Delete(m.Id);
-			}
+				using (var controller = Dependency.Resolve<IDynItemController>())
+				{
+					controller.Delete(m.Id);
+				}
+			});
         }
 
-		public int Add(LoadOptions m)
+		public Task<int> Add(LoadOptions m)
 		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
+			return Task.Run(() =>
 			{
-				return controller.Add(m.SettingName, m);
-			}
+				using (var controller = Dependency.Resolve<IDynItemController>())
+				{
+					return controller.Add(m.SettingName, m);
+				}
+			});
 		}
 
-		public int Update(LoadOptions m)
+		public Task<int> Update(LoadOptions m)
 		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
+			return Task.Run(() =>
 			{
-				controller.Save(m.Id, m.SettingName, m);
-				return m.Id;
-			}
+				using (var controller = Dependency.Resolve<IDynItemController>())
+				{
+					controller.Save(m.Id, m.SettingName, m);
+					return m.Id;
+				}
+			});
 		}
 
 		#region IDisposable Support

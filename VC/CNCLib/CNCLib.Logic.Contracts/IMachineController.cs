@@ -18,14 +18,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Framework.Logic.Contracts;
 
 namespace CNCLib.Logic.Contracts
 {
 	public interface IMachineController : IDisposable, IRestController<DTO.Machine>
 	{
-		DTO.Machine DefaultMachine();
-		int GetDetaultMachine();
-		void SetDetaultMachine(int defaultMachineID);
+		Task<DTO.Machine> DefaultMachine();
+		Task<int> GetDetaultMachine();
+		Task SetDetaultMachine(int defaultMachineID);
 	}
 }

@@ -58,7 +58,7 @@ namespace CNCLib.Wpf.WebAPI.Start
 			{
 				using (var controller = Dependency.Resolve<IMachineService>())
 				{
-					var m = controller.GetDetaultMachine();
+					var m = controller.GetDetaultMachine().Result;
 					if (m == -1)
 					{
 						throw new ArgumentException("illegal defaulemachne");

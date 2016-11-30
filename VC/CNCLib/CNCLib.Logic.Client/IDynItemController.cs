@@ -18,22 +18,23 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.Logic.Client
 {
 	public interface IDynItemController : IDisposable
 	{
-		DynItem Get(int id);
+		Task<DynItem> Get(int id);
 
-		IEnumerable<DynItem> GetAll();
+		Task<IEnumerable<DynItem>> GetAll();
 
-		IEnumerable<DynItem> GetAll(Type t);
+		Task<IEnumerable<DynItem>> GetAll(Type t);
 
 		object Create(int id);
 
-        int Add(string name, object value);
-        void Save(int id, string name, object value);
-        void Delete(int id);
+        Task<int> Add(string name, object value);
+        Task Save(int id, string name, object value);
+        Task Delete(int id);
     }
 }

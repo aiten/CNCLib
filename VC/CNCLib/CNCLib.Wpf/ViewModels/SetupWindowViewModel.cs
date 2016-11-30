@@ -54,11 +54,11 @@ namespace CNCLib.Wpf.ViewModels
 
 			using (var controller = Dependency.Resolve<IMachineService>())
 			{
-				foreach(var m in controller.GetAll())
+				foreach(var m in controller.GetAll().Result)
 				{
 					machines.Add(Converter.Convert(m));
 				}
-				int defaultM = controller.GetDetaultMachine();
+				int defaultM = controller.GetDetaultMachine().Result;
 
 				Machines = machines;
 
@@ -214,7 +214,7 @@ namespace CNCLib.Wpf.ViewModels
 
 			using (var controller = Dependency.Resolve<IMachineService>())
 			{
-				Global.Instance.Machine = controller.Get(Machine.MachineID);
+				Global.Instance.Machine = controller.Get(Machine.MachineID).Result;
 			}
 		}
 
