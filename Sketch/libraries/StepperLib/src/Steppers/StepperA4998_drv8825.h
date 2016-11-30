@@ -19,12 +19,12 @@
 
 #if defined(USE_A4998)
 
-static void Delay1() ALWAYSINLINE				{ } 
+static void Delay1(uint8_t) ALWAYSINLINE		{ }
 static void Delay2() ALWAYSINLINE				{ } 
 
 #elif defined(__SAM3X8E__)
 
-static void Delay1() ALWAYSINLINE				{ CHAL::delayMicroseconds(1); } 
+static void Delay1(uint8_t) ALWAYSINLINE		{ CHAL::delayMicroseconds(1); } 
 static void Delay2() ALWAYSINLINE				{ CHAL::delayMicroseconds(1); } 
 
 #else //AVR
