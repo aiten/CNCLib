@@ -19,6 +19,7 @@
 using Framework.Tools.Pattern;
 using System;
 using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace Framework.EF
 {
@@ -57,19 +58,19 @@ namespace Framework.EF
 			Context.Entry(entity).State = EntityState.Deleted;
 		}
 
-		public void Save()
+		public async Task Save()
 		{
-			Context.SaveChanges();
+			await Context.SaveChangesAsync();
 		}
 
-		public int ExecuteSqlCommand(string sql)
+		public async Task<int> ExecuteSqlCommand(string sql)
 		{
-			return Context.Database.ExecuteSqlCommand(sql);
+			return await Context.Database.ExecuteSqlCommandAsync(sql);
 		}
 
-		public int ExecuteSqlCommand(string sql, params object[] parameters)
+		public async Task<int> ExecuteSqlCommand(string sql, params object[] parameters)
 		{
-			return Context.Database.ExecuteSqlCommand(sql, parameters);
+			return await Context.Database.ExecuteSqlCommandAsync(sql, parameters);
 		}
 
 		bool _disposed; 

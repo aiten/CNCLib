@@ -32,7 +32,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 		protected readonly string api = @"api/Item";
 
 
-		public async Task<int> AddAsync(Item value)
+		public async Task<int> Add(Item value)
 		{
 			using (var client = CreateHttpClient())
 			{
@@ -44,26 +44,13 @@ namespace CNCLib.ServiceProxy.WebAPI
 				return await response.Content.ReadAsAsync<int>();
 			}
 		}
-		public Task<int> Add(Item value)
-		{
-			return AddAsync(value);
-			//var task = AddAsync(value);
-			//return task.ConfigureAwait(false).GetAwaiter().GetResult();
 
-			//return Task.Run(() => AddAsync(value)).Result;
+		public async Task<Item> DefaultItem()
+		{
+			return await Get(-1);
 		}
 
-		public async Task<Item> DefaultItemAsync()
-		{
-			return await GetAsync(-1);
-		}
-		public Task<Item> DefaultItem()
-		{
-			return DefaultItemAsync();
-			//return Task.Run(() => DefaultItemAsync()).Result;
-		}
-
-		public async Task DeleteAsync(Item value)
+		public async Task Delete(Item value)
 		{
 			using (var client = CreateHttpClient())
 			{
@@ -76,13 +63,8 @@ namespace CNCLib.ServiceProxy.WebAPI
 				//return HttpNotFound();
 			}
 		}
-		public Task Delete(Item value)
-		{
-			return DeleteAsync(value);
-			//Task.Run(() => DeleteAsync(value)).GetAwaiter().GetResult();
-		}
 
-		public async Task<Item> GetAsync(int id)
+		public async Task<Item> Get(int id)
 		{
 			using (var client = CreateHttpClient())
 			{
@@ -97,13 +79,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 			return null;
 		}
 
-		public Task<Item> Get(int id)
-		{
-			return GetAsync(id);
-			//return Task.Run(() => GetAsync(id)).Result;
-
-		}
-		public async Task<IEnumerable<Item>> GetAllAsync()
+		public async Task<IEnumerable<Item>> GetAll()
 		{
 			using (var client = CreateHttpClient())
 			{
@@ -117,13 +93,8 @@ namespace CNCLib.ServiceProxy.WebAPI
 			}
 		}
 
-		public Task<IEnumerable<Item>> GetAll()
-		{
-			return GetAllAsync();
-			//return Task.Run(() => GetAllAsync()).Result;
-		}
 
-		public async Task<IEnumerable<Item>> GetByClassNameAsync(string classname)
+		public async Task<IEnumerable<Item>> GetByClassName(string classname)
 		{
 			using (var client = CreateHttpClient())
 			{
@@ -137,14 +108,8 @@ namespace CNCLib.ServiceProxy.WebAPI
 			}
 		}
 
-		public Task<IEnumerable<Item>> GetByClassName(string classname)
-		{
-			return GetByClassNameAsync(classname);
-			//return Task.Run(() => GetByClassNameAsync(classname)).Result;
-		}
 
-
-		public async Task<int> UpdateAsync(Item value)
+		public async Task<int> Update(Item value)
 		{
 			using (var client = CreateHttpClient())
 			{
@@ -156,11 +121,6 @@ namespace CNCLib.ServiceProxy.WebAPI
 				}
 				return -1;
 			}
-		}
-		public Task<int> Update(Item value)
-		{
-			return UpdateAsync(value);
-//			return Task.Run(() => UpdateAsync(value)).Result;
 		}
 
 		#region IDisposable Support

@@ -54,7 +54,7 @@ namespace CNCLib.WebAPI.Controllers
 		{
 			using (IMachineService service = Dependency.Resolve<IMachineService>())
 			{
-				int id = service.GetDetaultMachine().Result;
+				int id = service.GetDetaultMachine().ConfigureAwait(false).GetAwaiter().GetResult();
 				return Ok(id);
 			}
 		}

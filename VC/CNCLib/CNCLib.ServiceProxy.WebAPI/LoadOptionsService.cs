@@ -30,7 +30,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 	{
 		protected readonly string api = @"api/LoadOptions";
 
-		public async Task<int> AddAsync(LoadOptions value)
+		public async Task<int> Add(LoadOptions value)
 		{
 			using (var client = CreateHttpClient())
 			{
@@ -42,13 +42,8 @@ namespace CNCLib.ServiceProxy.WebAPI
 				return await response.Content.ReadAsAsync<int>();
 			}
 		}
-		public Task<int> Add(LoadOptions value)
-		{
-			return AddAsync(value);
-			//return Task.Run(() => AddAsync(value)).Result;
-		}
 
-		public async Task DeleteAsync(LoadOptions value)
+		public async Task Delete(LoadOptions value)
 		{
 			using (var client = CreateHttpClient())
 			{
@@ -61,13 +56,8 @@ namespace CNCLib.ServiceProxy.WebAPI
 				//return HttpNotFound();
 			}
 		}
-		public Task Delete(LoadOptions value)
-		{
-			return DeleteAsync(value);
-			//Task.Run(() => DeleteAsync(value)).GetAwaiter().GetResult();
-		}
 
-		public async Task<LoadOptions> GetAsync(int id)
+		public async Task<LoadOptions> Get(int id)
 		{
 			using (var client = CreateHttpClient())
 			{
@@ -82,15 +72,8 @@ namespace CNCLib.ServiceProxy.WebAPI
 			return null;
 		}
 
-		public Task<LoadOptions> Get(int id)
+		public async Task<IEnumerable<LoadOptions>> GetAll()
 		{
-			return GetAsync(id);
-			//return Task.Run(() => GetAsync(id)).Result;
-		}
-
-		public async Task<IEnumerable<LoadOptions>> GetAllAsync()
-		{
-
 			using (var client = CreateHttpClient())
 			{
 				HttpResponseMessage response = await client.GetAsync(api);
@@ -103,13 +86,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 			}
 		}
 
-		public Task<IEnumerable<LoadOptions>> GetAll()
-		{
-			return GetAllAsync();
-			//return Task.Run(() => GetAllAsync()).Result;
-		}
-
-		public async Task<int> UpdateAsync(LoadOptions value)
+		public async Task<int> Update(LoadOptions value)
 		{
 			using (var client = CreateHttpClient())
 			{
@@ -121,12 +98,6 @@ namespace CNCLib.ServiceProxy.WebAPI
 				}
 				return -1;
 			}
-		}
-
-		public Task<int> Update(LoadOptions value)
-		{
-			return UpdateAsync(value);
-			//return Task.Run(() => UpdateAsync(value)).Result;
 		}
 
 		#region IDisposable Support

@@ -25,6 +25,7 @@ using Framework.Tools.Dependency;
 using CNCLib.Logic.Client;
 using CNCLib.ServiceProxy;
 using CNCLib.Logic.Contracts.DTO;
+using System.Threading.Tasks;
 
 namespace CNCLib.Tests.Logic
 {
@@ -40,7 +41,7 @@ namespace CNCLib.Tests.Logic
 
 
 		[TestMethod]
-		public void GetItemNone()
+		public async Task GetItemNone()
 		{
 			var srv = CreateMock<IItemService>();
 
@@ -49,12 +50,12 @@ namespace CNCLib.Tests.Logic
 
 			var ctrl = new DynItemController();
 
-			var all = ctrl.GetAll().ConfigureAwait(false).GetAwaiter().GetResult().ToArray();
+			var all = (await ctrl.GetAll()).ToArray();
 			Assert.AreEqual(true, all.Length == 0);
 		}
 
 		[TestMethod]
-		public void GetItemAll()
+		public async Task GetItemAll()
 		{
 			var srv = CreateMock<IItemService>();
 
@@ -67,14 +68,14 @@ namespace CNCLib.Tests.Logic
 
 			var ctrl = new DynItemController();
 
-			var all = ctrl.GetAll().ConfigureAwait(false).GetAwaiter().GetResult().ToArray();
+			var all = (await ctrl.GetAll()).ToArray();
 			Assert.AreEqual(2, all.Count());
 			Assert.AreEqual(1, all.FirstOrDefault().ItemID);
 			Assert.AreEqual("Test1", all.FirstOrDefault().Name);
 		}
 
 		[TestMethod]
-		public void GetAllType()
+		public async Task GetAllType()
 		{
 			var srv = CreateMock<IItemService>();
 
@@ -87,7 +88,7 @@ namespace CNCLib.Tests.Logic
 
 			var ctrl = new DynItemController();
 
-			var all = ctrl.GetAll(typeof(string)).ConfigureAwait(false).GetAwaiter().GetResult();
+			var all = await ctrl.GetAll(typeof(string));
 
 			Assert.AreEqual(2, all.Count());
 			Assert.AreEqual(1, all.FirstOrDefault().ItemID);
@@ -95,32 +96,32 @@ namespace CNCLib.Tests.Logic
 		}
 
 		[TestMethod]
-		public void GetItem()
+		public async Task GetItem()
 		{
 			var srv = CreateMock<IItemService>();
 			srv.Get(1).Returns(new Item() { ItemID = 1, Name = "Test1" });
 
 			var ctrl = new DynItemController();
 
-			var all = ctrl.Get(1).ConfigureAwait(false).GetAwaiter().GetResult();
+			var all = await ctrl.Get(1);
 
 			Assert.AreEqual(1, all.ItemID);
 			Assert.AreEqual("Test1", all.Name);
 		}
 
 		[TestMethod]
-		public void GetItemNull()
+		public async Task GetItemNull()
 		{
 			var srv = CreateMock<IItemService>();
 
 			var ctrl = new DynItemController();
 
-			var all = ctrl.Get(10).ConfigureAwait(false).GetAwaiter().GetResult();
+			var all = await ctrl.Get(10);
 
 			Assert.IsNull(all);
 		}
 		[TestMethod]
-        public void CreateObject()
+        public async Task CreateObject()
         {
             var srv = CreateMock<IItemService>();
 
@@ -130,7 +131,7 @@ namespace CNCLib.Tests.Logic
 
             var ctrl = new DynItemController();
 
-            var item = ctrl.Create(1);
+            var item = await ctrl.Create(1);
             Assert.IsNotNull(item);
 
             DynItemControllerTestClass item2 = (DynItemControllerTestClass)item;
@@ -165,7 +166,7 @@ namespace CNCLib.Tests.Logic
         }
 
         [TestMethod]
-        public void AddObject()
+        public async Task AddObject()
         {
             var srv = CreateMock<IItemService>();
 
@@ -183,18 +184,18 @@ namespace CNCLib.Tests.Logic
 
             var ctrl = new DynItemController();
 
-            var id = ctrl.Add("Hallo", obj);
+            var id = await ctrl.Add("Hallo", obj);
 
-            srv.Received().Add(Arg.Is<Item>(x => x.Name == "Hallo"));
-            srv.Received().Add(Arg.Is<Item>(x => x.ItemID == 0));
-            srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Count == 7));
-            srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Where(y => y.Name == "StringProperty").FirstOrDefault().Value == "Hallo" ));
-            srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Where(y => y.Name == "DoubleProperty").FirstOrDefault().Value == "1.234"));
-            srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Where(y => y.Name == "DecimalNullProperty").FirstOrDefault().Value == "9.876"));
+            await srv.Received().Add(Arg.Is<Item>(x => x.Name == "Hallo"));
+			await srv.Received().Add(Arg.Is<Item>(x => x.ItemID == 0));
+			await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Count == 7));
+			await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Where(y => y.Name == "StringProperty").FirstOrDefault().Value == "Hallo" ));
+			await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Where(y => y.Name == "DoubleProperty").FirstOrDefault().Value == "1.234"));
+			await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Where(y => y.Name == "DecimalNullProperty").FirstOrDefault().Value == "9.876"));
         }
 
         [TestMethod]
-        public void DeleteItem()
+        public async Task DeleteItem()
         {
             // arrange
 
@@ -207,15 +208,15 @@ namespace CNCLib.Tests.Logic
 
             //act
 
-            ctrl.Delete(1).ConfigureAwait(false).GetAwaiter().GetResult();
+            await ctrl.Delete(1);
 
             //assert
-            srv.Received().Get(1);
-            srv.Received().Delete(itemEntity);
+            await srv.Received().Get(1);
+			await srv.Received().Delete(itemEntity);
         }
 
         [TestMethod]
-        public void DeleteItemNone()
+        public async Task DeleteItemNone()
         {
             // arrange
 
@@ -225,16 +226,16 @@ namespace CNCLib.Tests.Logic
 
             //act
 
-            ctrl.Delete(1).ConfigureAwait(false).GetAwaiter().GetResult();
+            await ctrl.Delete(1);
 
             //assert
-            srv.Received().Get(1);
-            srv.DidNotReceiveWithAnyArgs().Delete(null);
+            await srv.Received().Get(1);
+			await srv.DidNotReceiveWithAnyArgs().Delete(null);
         }
 
 
 		[TestMethod]
-		public void SaveItem()
+		public async Task SaveItem()
 		{
 			// arrange
 
@@ -243,12 +244,12 @@ namespace CNCLib.Tests.Logic
 
 			//act
 
-			ctrl.Save(1,"Test",new DynItemControllerTestClass() {IntProperty=1 }).ConfigureAwait(false).GetAwaiter().GetResult();
+			await ctrl.Save(1,"Test",new DynItemControllerTestClass() {IntProperty=1 });
 
 			//assert
-			srv.Received().Update(Arg.Is<Item>(x => x.ItemID == 1));
-			srv.Received().Update(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y=>y.Name=="IntProperty").Value=="1"));
-			srv.DidNotReceiveWithAnyArgs().Delete(null);
+			await srv.Received().Update(Arg.Is<Item>(x => x.ItemID == 1));
+			await srv.Received().Update(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y=>y.Name=="IntProperty").Value=="1"));
+			await srv.DidNotReceiveWithAnyArgs().Delete(null);
 		}
 	}
 }

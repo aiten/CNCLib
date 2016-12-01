@@ -22,39 +22,40 @@ using Framework.Tools.Dependency;
 using CNCLib.Logic.Contracts;
 using CNCLib.ServiceProxy;
 using CNCLib.Logic.Client;
+using System.Threading.Tasks;
+using System;
 
 namespace CNCLib.Wpf.Helpers
 {
 	public class JoystickHelper
 	{
-		internal static Joystick Load(out int id)
+		internal static async Task<Tuple<Joystick,int>> Load()
 		{
 			using (var controller = Dependency.Resolve<IDynItemController>())
 			{
-				var joystick = controller.GetAll(typeof(Models.Joystick)).Result;
+				var joystick = await controller.GetAll(typeof(Models.Joystick));
 				if (joystick != null && joystick.Count() > 0)
 				{
-					id = joystick.First().ItemID;
-					return (Models.Joystick)controller.Create(id);
+					int id = joystick.First().ItemID;
+					return new Tuple<Joystick, int> ((Models.Joystick) await controller.Create(id),id);
 				}
 			}
-			id = -1;
 
-			return new Joystick() { BaudRate = 250000, ComPort = @"com7" };
-
+			return new Tuple<Joystick, int> (new Joystick() { BaudRate = 250000, ComPort = @"com7" },-1);
 		}
 
-		internal static void Save(Joystick joystick, ref int id)
+		internal static async Task<int> Save(Joystick joystick, int id)
 		{
 			using (var controller = Dependency.Resolve<IDynItemController>())
 			{
 				if (id >= 0)
 				{
-					controller.Save(id, "Joystick", joystick);
+					await controller.Save(id, "Joystick", joystick);
+					return id;
 				}
 				else
 				{
-					id = controller.Add("Joystick", joystick).Result;
+					return await controller.Add("Joystick", joystick);
 				}
 			}
 		}

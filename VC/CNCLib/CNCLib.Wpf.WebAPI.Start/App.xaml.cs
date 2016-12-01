@@ -24,6 +24,7 @@ using Framework.Tools.Pattern;
 using AutoMapper;
 using CNCLib.Logic;
 using CNCLib.ServiceProxy;
+using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.WebAPI.Start
 {
@@ -54,22 +55,27 @@ namespace CNCLib.Wpf.WebAPI.Start
 
 			// Open WebAPI Connection
 			//
-			try
+			bool ok = Task.Run(async () =>
 			{
-				using (var controller = Dependency.Resolve<IMachineService>())
+				try
 				{
-					var m = controller.GetDetaultMachine().Result;
-					if (m == -1)
+					using (var controller = Dependency.Resolve<IMachineService>())
 					{
-						throw new ArgumentException("illegal defaulemachne");
+						var m = await controller.GetDetaultMachine();
+						if (m == -1)
+						{
+							throw new ArgumentException("illegal defaulemachne");
+						}
 					}
+					return true;
 				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show($"Cannot connect to WebAPI: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				Application.Current.Shutdown();
-			}
+				catch (Exception ex)
+				{
+					MessageBox.Show($"Cannot connect to WebAPI: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					Application.Current.Shutdown();
+					return false;
+				}
+			}).ConfigureAwait(true).GetAwaiter().GetResult();
 		}
 	}
 }

@@ -17,6 +17,8 @@
 */
 
 using System.Linq;
+using System.Data.Entity;
+using System.Threading.Tasks;
 using CNCLib.Repository.Contracts;
 using Framework.Tools;
 
@@ -24,22 +26,22 @@ namespace CNCLib.Repository
 {
 	public class ConfigurationRepository : CNCLibRepository, IConfigurationRepository
 	{
-		public Contracts.Entities.Configuration Get(string group, string  name)
+		public async Task<Contracts.Entities.Configuration> Get(string group, string  name)
         {
-			return Context.Configurations.Where((c) => c.Group == group && c.Name == name).FirstOrDefault();
+			return await Context.Configurations.Where((c) => c.Group == group && c.Name == name).FirstOrDefaultAsync();
         }
 
-		public void Delete(Contracts.Entities.Configuration configuration)
+		public async Task Delete(Contracts.Entities.Configuration configuration)
         {
 			Uow.MarkDeleted(configuration);
         }
 
 
-		public void Save(Contracts.Entities.Configuration configuration)
+		public async Task Save(Contracts.Entities.Configuration configuration)
 		{
 			// search und update machine
 
-			var cInDb = Context.Configurations.Where((c) => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefault();
+			var cInDb = await Context.Configurations.Where((c) => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
 
 			if (cInDb == default(Contracts.Entities.Configuration))
 			{

@@ -32,151 +32,127 @@ namespace CNCLib.Logic
 {
 	public class MachineController : ControllerBase, IMachineController
 	{
-		public Task<IEnumerable<Machine>> GetAll()
+		public async Task<IEnumerable<Machine>> GetAll()
 		{
-			return Task.Run(() =>
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
 			{
-				using (var uow = Dependency.Resolve<IUnitOfWork>())
-				using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+				var machines = await rep.GetMachines();
+				List<Machine> l = new List<Machine>();
+				foreach (var m in machines)
 				{
-					var machines = rep.GetMachines();
-					List<Machine> l = new List<Machine>();
-					foreach (var m in machines)
-					{
-						l.Add(m.Convert());
-					}
-					return (IEnumerable < Machine >) l;
+					l.Add(m.Convert());
 				}
-			});
+				return (IEnumerable < Machine >) l;
+			}
 		}
 
-        public Task<Machine> Get(int id)
+        public async Task<Machine> Get(int id)
         {
-			return Task.Run(() =>
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
 			{
-				using (var uow = Dependency.Resolve<IUnitOfWork>())
-				using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
-				{
-					var machine = rep.GetMachine(id);
-					if (machine == null)
-						return null;
+				var machine = await rep.GetMachine(id);
+				if (machine == null)
+					return null;
 
-					var dto = machine.Convert();
-					return dto;
-				}
-			});
+				var dto = machine.Convert();
+				return dto;
+			}
 		}
 
-		public Task Delete(Machine m)
+		public async Task Delete(Machine m)
         {
-			return Task.Run(() =>
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
 			{
-				using (var uow = Dependency.Resolve<IUnitOfWork>())
-				using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
-				{
-					rep.Delete(m.Convert());
-					uow.Save();
-				}
-			});
+				await rep.Delete(m.Convert());
+				await uow.Save();
+			}
 		}
 
-		public Task<int> Add(Machine m)
+		public async Task<int> Add(Machine m)
 		{
-			return Task.Run(() =>
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
 			{
-				using (var uow = Dependency.Resolve<IUnitOfWork>())
-				using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
-				{
-					var me = m.Convert();
-					me.MachineID = 0;
-					foreach (var mc in me.MachineInitCommands) mc.MachineID = 0;
-					foreach (var mi in me.MachineInitCommands) mi.MachineID = 0;
-					rep.Store(me);
-					uow.Save();
-					return me.MachineID;
-				}
-			});
+				var me = m.Convert();
+				me.MachineID = 0;
+				foreach (var mc in me.MachineInitCommands) mc.MachineID = 0;
+				foreach (var mi in me.MachineInitCommands) mi.MachineID = 0;
+				await rep.Store(me);
+				await uow.Save();
+				return me.MachineID;
+			}
 		}
 
-		public Task<int> Update(Machine m)
+		public async Task<int> Update(Machine m)
 		{
-			return Task.Run(() =>
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
 			{
-				using (var uow = Dependency.Resolve<IUnitOfWork>())
-				using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
-				{
-					var me = m.Convert();
-					rep.Store(me);
-					uow.Save();
-					return me.MachineID;
-				}
-			});
+				var me = m.Convert();
+				await rep.Store(me);
+				await uow.Save();
+				return me.MachineID;
+			}
 		}
 
 		#region Default machine
 
-		public Task<Machine> DefaultMachine()
+		public async Task<Machine> DefaultMachine()
 		{
-			return Task.Run(() =>
+			var dto = new Machine()
 			{
-				var dto = new Machine()
-				{
-					Name = "New",
-					ComPort = "comX",
-					Axis = 3,
-					SizeX = 130m,
-					SizeY = 45m,
-					SizeZ = 81m,
-					SizeA = 360m,
-					SizeB = 360m,
-					SizeC = 360m,
-					BaudRate = 115200,
-					BufferSize = 63,
-					CommandToUpper = false,
-					ProbeSizeZ = 25,
-					ProbeDist = 10m,
-					ProbeDistUp = 3m,
-					ProbeFeed = 100m,
-					SDSupport = true,
-					Spindle = true,
-					Coolant = true,
-					Rotate = true,
-					Laser = false,
-					MachineCommands = new MachineCommand[0],
-					MachineInitCommands = new MachineInitCommand[0]
-				};
-				return dto;
-			});
+				Name = "New",
+				ComPort = "comX",
+				Axis = 3,
+				SizeX = 130m,
+				SizeY = 45m,
+				SizeZ = 81m,
+				SizeA = 360m,
+				SizeB = 360m,
+				SizeC = 360m,
+				BaudRate = 115200,
+				BufferSize = 63,
+				CommandToUpper = false,
+				ProbeSizeZ = 25,
+				ProbeDist = 10m,
+				ProbeDistUp = 3m,
+				ProbeFeed = 100m,
+				SDSupport = true,
+				Spindle = true,
+				Coolant = true,
+				Rotate = true,
+				Laser = false,
+				MachineCommands = new MachineCommand[0],
+				MachineInitCommands = new MachineInitCommand[0]
+			};
+			return dto;
 		}
 
-		public Task<int> GetDetaultMachine()
+		public async Task<int> GetDetaultMachine()
 		{
-			return Task.Run(() =>
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
 			{
-				using (var uow = Dependency.Resolve<IUnitOfWork>())
-				using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
-				{
-					var config = rep.Get("Environment", "DefaultMachineID");
+				var config = await rep.Get("Environment", "DefaultMachineID");
 
-					if (config == default(Repository.Contracts.Entities.Configuration))
-						return -1;
+				if (config == default(Repository.Contracts.Entities.Configuration))
+					return -1;
 
-					return int.Parse(config.Value);
-				}
-			});
+				return int.Parse(config.Value);
+			}
 		}
 
-		public Task SetDetaultMachine(int defaultMachineID)
+		public async Task SetDetaultMachine(int defaultMachineID)
 		{
-			return Task.Run(() =>
+			using (var uow = Dependency.Resolve<IUnitOfWork>())
+			using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
 			{
-				using (var uow = Dependency.Resolve<IUnitOfWork>())
-				using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
-				{
-					rep.Save(new Repository.Contracts.Entities.Configuration() { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
-					uow.Save();
-				}
-			});
+				await rep.Save(new Repository.Contracts.Entities.Configuration() { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
+				await uow.Save();
+			}
 		}
 
 		#endregion

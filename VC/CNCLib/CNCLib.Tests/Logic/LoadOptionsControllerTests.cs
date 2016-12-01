@@ -28,6 +28,7 @@ using Framework.EF;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Client;
+using System.Threading.Tasks;
 
 namespace CNCLib.Tests.Logic
 {
@@ -42,7 +43,7 @@ namespace CNCLib.Tests.Logic
 		}
 
 		[TestMethod]
-		public void GetAllLoadOptions()
+		public async Task GetAllLoadOptions()
 		{
 			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
@@ -53,7 +54,7 @@ namespace CNCLib.Tests.Logic
 			});
 			rep.Create(1).Returns(new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
-			var all = ctrl.GetAll().ConfigureAwait(false).GetAwaiter().GetResult();
+			var all = await ctrl.GetAll();
 
 			Assert.AreEqual(1, all.Count());
 			Assert.AreEqual(1, all.FirstOrDefault().Id);
@@ -62,14 +63,14 @@ namespace CNCLib.Tests.Logic
 		}
 
 		[TestMethod]
-		public void GetLoadOptions()
+		public async Task GetLoadOptions()
 		{
 			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
 			rep.Create(1).Returns(new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
-			var all = ctrl.Get(1).ConfigureAwait(false).GetAwaiter().GetResult();
+			var all = await ctrl.Get(1);
 
 			Assert.AreEqual(1, all.Id);
 			Assert.AreEqual("Entry1", all.SettingName);
@@ -77,56 +78,56 @@ namespace CNCLib.Tests.Logic
 		}
 
 		[TestMethod]
-		public void GetLoadOptionsNull()
+		public async Task GetLoadOptionsNull()
 		{
 			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
 			rep.Create(1).Returns(new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
-			var all = ctrl.Get(2).ConfigureAwait(false).GetAwaiter().GetResult();
+			var all = await ctrl.Get(2);
 
 			Assert.IsNull(all);
 		}
 
 
 		[TestMethod]
-		public void AddLoadOptions()
+		public async Task AddLoadOptions()
 		{
 			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
 			var opt = new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
-			ctrl.Add(opt).ConfigureAwait(false).GetAwaiter().GetResult();
+			await ctrl.Add(opt);
 
-			rep.Received().Add(Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
+			await rep.Received().Add(Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
 		}
 
 		[TestMethod]
-		public void UpdateLoadOptions()
+		public async Task UpdateLoadOptions()
 		{
 			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
 			var opt = new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
-			ctrl.Update(opt).ConfigureAwait(false).GetAwaiter().GetResult();
+			await ctrl.Update(opt);
 
-			rep.Received().Save(Arg.Is<int>(x => x == 1), Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
+			await rep.Received().Save(Arg.Is<int>(x => x == 1), Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
 		}
 
 		[TestMethod]
-		public void DeleteLoadOptions()
+		public async Task DeleteLoadOptions()
 		{
 			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
 			var opt = new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
-			ctrl.Delete(opt).ConfigureAwait(false).GetAwaiter().GetResult();
+			await ctrl.Delete(opt).ConfigureAwait(false);
 
-			rep.Received().Delete(Arg.Is<int>(x => x == 1));
+			await rep.Received().Delete(Arg.Is<int>(x => x == 1));
 		}
 	}
 }

@@ -21,6 +21,7 @@ using System.Windows.Input;
 using Framework.Wpf.ViewModels;
 using Framework.Wpf.Helpers;
 using CNCLib.Wpf.Helpers;
+using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -64,17 +65,19 @@ namespace CNCLib.Wpf.ViewModels
 		#endregion
 
 		#region Operations
-		public void LoadJoystick()
+		public async Task LoadJoystick()
 		{
-			_currentJoystick = JoystickHelper.Load(out _id);
+			var joystick = await JoystickHelper.Load();
+			_currentJoystick = joystick.Item1;
+			_id = joystick.Item2;
 
 			OnPropertyChanged(() => ComPort);
 			OnPropertyChanged(() => BaudRate);
 		}
 
-		public void SaveJoystick()
+		public async void SaveJoystick()
 		{
-			JoystickHelper.Save(_currentJoystick, ref _id);
+			_id = await JoystickHelper.Save(_currentJoystick, _id);
 			CloseAction();
         }
 

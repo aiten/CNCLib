@@ -26,6 +26,7 @@ using CNCLib.Logic.Client;
 using CNCLib.ServiceProxy;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
+using System.Threading.Tasks;
 
 namespace CNCLib.Tests.Logic
 {
@@ -47,7 +48,7 @@ namespace CNCLib.Tests.Logic
 
 
 		[TestMethod]
-		public void GetItemNone()
+		public async Task GetItemNone()
 		{
 			var rep = CreateMock<IItemRepository>();
 
@@ -56,12 +57,12 @@ namespace CNCLib.Tests.Logic
 
 			var ctrl = new ItemController();
 
-			var all = ctrl.GetAll().ConfigureAwait(false).GetAwaiter().GetResult().ToArray();
+			var all = (await ctrl.GetAll()).ToArray();
 			Assert.AreEqual(true, all.Length == 0);
 		}
 
 		[TestMethod]
-		public void GetItemAll()
+		public async Task GetItemAll()
 		{
 			var rep = CreateMock<IItemRepository>();
 
@@ -74,34 +75,34 @@ namespace CNCLib.Tests.Logic
 
 			var ctrl = new ItemController();
 
-			var all = ctrl.GetAll().ConfigureAwait(false).GetAwaiter().GetResult().ToArray();
+			var all = (await ctrl.GetAll()).ToArray();
 			Assert.AreEqual(2, all.Count());
 			Assert.AreEqual(1, all.FirstOrDefault().ItemID);
 			Assert.AreEqual("Test1", all.FirstOrDefault().Name);
 		}
 
 		[TestMethod]
-		public void GetItem()
+		public async Task GetItem()
 		{
 			var rep = CreateMock<IItemRepository>();
 			rep.Get(1).Returns(new Item() { ItemID = 1, Name = "Test1" });
 
 			var ctrl = new ItemController();
 
-			var all = ctrl.Get(1).ConfigureAwait(false).GetAwaiter().GetResult();
+			var all = await ctrl.Get(1);
 
 			Assert.AreEqual(1, all.ItemID);
 			Assert.AreEqual("Test1", all.Name);
 		}
 
 		[TestMethod]
-		public void GetItemNull()
+		public async Task GetItemNull()
 		{
 			var rep = CreateMock<IItemRepository>();
 
 			var ctrl = new ItemController();
 
-			var all = ctrl.Get(10).ConfigureAwait(false).GetAwaiter().GetResult();
+			var all = await ctrl.Get(10);
 
 			Assert.IsNull(all);
 		}
@@ -128,7 +129,7 @@ namespace CNCLib.Tests.Logic
         }
 */
         [TestMethod]
-        public void DeleteItemNone()
+        public async Task DeleteItemNone()
         {
             // arrange
 
@@ -140,10 +141,10 @@ namespace CNCLib.Tests.Logic
 
             //act
 
-            ctrl.Delete(item).ConfigureAwait(false).GetAwaiter().GetResult();
+            await ctrl.Delete(item);
 
 			//assert
-			rep.Received().Delete(Arg.Is<Item>(x => x.ItemID == item.ItemID));
+			await rep.Received().Delete(Arg.Is<Item>(x => x.ItemID == item.ItemID));
 		}
 	}
 }

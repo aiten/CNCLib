@@ -16,17 +16,18 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Threading.Tasks;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository.Contracts
 {
 	public interface IMachineRepository: IBaseRepository
 	{
-		Entities.Machine[] GetMachines();
-		Entities.Machine GetMachine(int id);
-		void Delete(Entities.Machine m);
-		Entities.MachineCommand[] GetMachineCommands(int machineID);
-		Entities.MachineInitCommand[] GetMachineInitCommands(int machineID);
-		void Store(Entities.Machine machine);
+		Task<Entities.Machine[]> GetMachines();
+		Task<Entities.Machine> GetMachine(int id);
+		Task Delete(Entities.Machine m);
+		Task<Entities.MachineCommand[]> GetMachineCommands(int machineID);
+		Task<Entities.MachineInitCommand[]> GetMachineInitCommands(int machineID);
+		Task Store(Entities.Machine machine);
 	}
 }

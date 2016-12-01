@@ -64,7 +64,7 @@ namespace Framework.Web
 			{
 				using (var controller = Dependency.Resolve<IRest<T>>())
 				{
-					int newid = controller.Add(value).Result;
+					int newid = controller.Add(value).ConfigureAwait(false).GetAwaiter().GetResult();
 					return CreatedAtRoute("DefaultApi", new { id = newid }, value);
 				}
 			}
@@ -108,7 +108,7 @@ namespace Framework.Web
 		{
 			using (var controller = Dependency.Resolve<IRest<T>>())
 			{
-				var value = controller.Get(id).Result;
+				var value = controller.Get(id).ConfigureAwait(false).GetAwaiter().GetResult();
 				if (value == null)
 				{
 					return NotFound();

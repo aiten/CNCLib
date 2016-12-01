@@ -41,7 +41,7 @@ namespace CNCLib.WebAPI.Controllers
 		{
 			using (var service = Dependency.Resolve<ILoadOptionsService>())
 			{
-				LoadOptions opt = service.Get(input.LoadOptionsId).Result;
+				LoadOptions opt = service.Get(input.LoadOptionsId).ConfigureAwait(false).GetAwaiter().GetResult();
 				return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt).Commands.ToStringList();
 			}
 		}

@@ -21,29 +21,30 @@ using System.Linq;
 using Framework.Tools;
 using System.Data.Entity;
 using CNCLib.Repository.Contracts;
+using System.Threading.Tasks;
 
 namespace CNCLib.Repository
 {
 	public class MachineRepository : CNCLibRepository, IMachineRepository
 	{
-		public Contracts.Entities.Machine[] GetMachines()
+		public async Task<Contracts.Entities.Machine[]> GetMachines()
 		{
-            return Context.Machines.
+            return await Context.Machines.
                 Include((d) => d.MachineCommands).
                 Include((d) => d.MachineInitCommands).
-                ToArray();
+                ToArrayAsync();
 		}
 
-		public Contracts.Entities.Machine GetMachine(int id)
+		public async Task<Contracts.Entities.Machine> GetMachine(int id)
         {
-			return Context.Machines.
+			return await Context.Machines.
 				Where((m) => m.MachineID == id).
 				Include((d) => d.MachineCommands).
 				Include((d) => d.MachineInitCommands).
-				FirstOrDefault();
+				FirstOrDefaultAsync();
         }
 
-		public void Delete(Contracts.Entities.Machine m)
+		public async Task Delete(Contracts.Entities.Machine m)
         {
 			m.MachineCommands = null;
 			m.MachineInitCommands = null;
@@ -52,31 +53,31 @@ namespace CNCLib.Repository
             //Uow.ExecuteSqlCommand("delete from MachineInitCommand where MachineID = " + m.MachineID); => delete cascade
         }
 
-        public Contracts.Entities.MachineCommand[] GetMachineCommands(int machineID)
+        public async Task<Contracts.Entities.MachineCommand[]> GetMachineCommands(int machineID)
 		{
-			return Context.MachineCommands.
+			return await Context.MachineCommands.
 				Where(c => c.MachineID == machineID).
-				ToArray();
+				ToArrayAsync();
 		}
 
-		public Contracts.Entities.MachineInitCommand[] GetMachineInitCommands(int machineID)
+		public async Task<Contracts.Entities.MachineInitCommand[]> GetMachineInitCommands(int machineID)
 		{
-			return Context.MachineInitCommands.
+			return await Context.MachineInitCommands.
 				Where(c => c.MachineID == machineID).
-				ToArray();
+				ToArrayAsync();
 		}
 
-		public void Store(Contracts.Entities.Machine machine)
+		public async Task Store(Contracts.Entities.Machine machine)
 		{
 			// search und update machine
 
 			int id = machine.MachineID;
 
-			var machineInDb = Context.Machines.
+			var machineInDb = await Context.Machines.
 				Where((m) => m.MachineID == id).
 				Include((d) => d.MachineCommands).
 				Include((d) => d.MachineInitCommands).
-				FirstOrDefault();
+				FirstOrDefaultAsync();
 			var machineCommands = machine.MachineCommands ?? new List<Contracts.Entities.MachineCommand>();
 			var machineInitCommands = machine.MachineInitCommands ?? new List<Contracts.Entities.MachineInitCommand>();
 

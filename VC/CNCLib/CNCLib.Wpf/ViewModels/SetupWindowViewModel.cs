@@ -30,6 +30,7 @@ using CNCLib.Logic.Contracts;
 using CNCLib.ServiceProxy;
 using Framework.Tools.Dependency;
 using CNCLib.Wpf.Helpers;
+using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -48,17 +49,17 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region private operations
 
-		private void LoadMachines(int defaultmachineid)
+		private async Task LoadMachines(int defaultmachineid)
         {
             var machines = new ObservableCollection<Models.Machine>();
 
 			using (var controller = Dependency.Resolve<IMachineService>())
 			{
-				foreach(var m in controller.GetAll().Result)
+				foreach(var m in await controller.GetAll())
 				{
 					machines.Add(Converter.Convert(m));
 				}
-				int defaultM = controller.GetDetaultMachine().Result;
+				int defaultM = await controller.GetDetaultMachine();
 
 				Machines = machines;
 
@@ -73,10 +74,9 @@ namespace CNCLib.Wpf.ViewModels
 				Machine = defaultmachine;
 			}
 		}
-		private void LoadJoystick()
+		private async Task LoadJoystick()
 		{
-			int dummyid;
-			Joystick = JoystickHelper.Load(out dummyid);
+			Joystick = (await JoystickHelper.Load()).Item1;
 		}
 
 		#endregion
@@ -161,7 +161,7 @@ namespace CNCLib.Wpf.ViewModels
                 Com.CommandToUpper = Machine.CommandToUpper;
                 Com.BaudRate = (int)Machine.BaudRate;
                 Com.Connect(Machine.ComPort);
-                SetGlobal();
+                await SetGlobal();
 
 				if (SendInitCommands && Machine != null)
 				{
@@ -205,7 +205,7 @@ namespace CNCLib.Wpf.ViewModels
         }
 
 
-        private void SetGlobal()
+        private async Task SetGlobal()
         {
 			Settings.Instance.SizeX = Machine.SizeX;
 			Settings.Instance.SizeY = Machine.SizeY;
@@ -214,7 +214,7 @@ namespace CNCLib.Wpf.ViewModels
 
 			using (var controller = Dependency.Resolve<IMachineService>())
 			{
-				Global.Instance.Machine = controller.Get(Machine.MachineID).Result;
+				Global.Instance.Machine = await controller.Get(Machine.MachineID);
 			}
 		}
 
@@ -249,17 +249,17 @@ namespace CNCLib.Wpf.ViewModels
         }
 
 
-        public void SetupMachine()
+        public async void SetupMachine()
         {
             var mID = Machine!=null ? Machine.MachineID : -1;
 			EditMachine?.Invoke(mID);
-            LoadMachines(mID);
+            await LoadMachines(mID);
         }
 
-		public void SetupJoystick()
+		public async void SetupJoystick()
 		{
 			EditJoystick?.Invoke();
-			LoadJoystick();
+			await LoadJoystick();
 		}
 
 		public void SetDefaultMachine()

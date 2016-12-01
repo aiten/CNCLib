@@ -16,14 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Threading.Tasks;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository.Contracts
 {
 	public interface IConfigurationRepository : IBaseRepository
     {
-		Entities.Configuration Get(string group, string name);
-		void Delete(Entities.Configuration configuration);
-		void Save(Entities.Configuration configuration);
+		Task<Entities.Configuration> Get(string group, string name);
+		Task Delete(Entities.Configuration configuration);
+		Task Save(Entities.Configuration configuration);
 	}
 }

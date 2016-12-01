@@ -33,50 +33,41 @@ namespace CNCLib.Logic.Client
 {
 	public class DynItemController : IDynItemController
 	{
-		public Task<DynItem> Get(int id)
+		public async Task<DynItem> Get(int id)
 		{
-			return Task.Run(() =>
+			using (var service = Dependency.Resolve<IItemService>())
 			{
-				using (var service = Dependency.Resolve<IItemService>())
-				{
-					var item = service.Get(id).Result;
-					if (item == null)
-						return null;
+				var item = await service.Get(id);
+				if (item == null)
+					return null;
 
-					return Convert(item);
-				}
-			});
+				return Convert(item);
+			}
 		}
 
-		public Task<IEnumerable<DynItem>> GetAll(Type t)
+		public async Task<IEnumerable<DynItem>> GetAll(Type t)
 		{
-			return Task.Run(() =>
+			using (var service = Dependency.Resolve<IItemService>())
 			{
-				using (var service = Dependency.Resolve<IItemService>())
-				{
-					var allitems = service.GetByClassName(GetClassName(t)).Result;
-					return (IEnumerable<DynItem>) Convert(allitems);
-				}
-			});
+				var allitems = await service.GetByClassName(GetClassName(t));
+				return (IEnumerable<DynItem>) Convert(allitems);
+			}
 		}
 
-		public Task<IEnumerable<DynItem>> GetAll()
+		public async Task<IEnumerable<DynItem>> GetAll()
 		{
-			return Task.Run(() =>
+			using (var service = Dependency.Resolve<IItemService>())
 			{
-				using (var service = Dependency.Resolve<IItemService>())
-				{
-					var allitems = service.GetAll().Result;
-					return Convert(allitems);
-				}
-			});
+				var allitems = await service.GetAll();
+				return Convert(allitems);
+			}
 		}
 
-		public object Create(int id)
+		public async Task<object> Create(int id)
         {
 			using (var service = Dependency.Resolve<IItemService>())
 			{
-				var item = service.Get(id).Result;
+				var item = await service.Get(id);
 
 				if (item == null)
 					return null;
@@ -247,33 +238,30 @@ namespace CNCLib.Logic.Client
             return list;
         }
 
-        public Task<int> Add(string name, object obj)
+        public async Task<int> Add(string name, object obj)
 		{
 			using (var service = Dependency.Resolve<IItemService>())
 			{
-				return service.Add(ConvertToItem(name, obj, 0));
+				return await service.Add(ConvertToItem(name, obj, 0));
 			}
 		}
 
-		public Task Save(int id, string name, object obj)
+		public async Task Save(int id, string name, object obj)
         {
 			using (var service = Dependency.Resolve<IItemService>())
 			{
-				return service.Update(ConvertToItem(name, obj, id));
+				await service.Update(ConvertToItem(name, obj, id));
 			}
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-			return Task.Run(() =>
+			using (var service = Dependency.Resolve<IItemService>())
 			{
-				using (var service = Dependency.Resolve<IItemService>())
-				{
-					var item = service.Get(id).Result;
-					if (item != null)
-						service.Delete(item);
-				}
-			});
+				var item = service.Get(id).ConfigureAwait(false).GetAwaiter().GetResult();
+				if (item != null)
+					await service.Delete(item);
+			}
         }
 
 		private Item ConvertToItem(string name, object obj, int id)

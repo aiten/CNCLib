@@ -26,6 +26,7 @@ using CNCLib.Logic.Contracts;
 using CNCLib.Wpf.Models;
 using Framework.Tools.Dependency;
 using CNCLib.ServiceProxy;
+using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -190,7 +191,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region Operations
 
-		public void LoadMachine(int machineID)
+		public async Task LoadMachine(int machineID)
 		{
 			CNCLib.Logic.Contracts.DTO.Machine dto;
 			using (var controller = Dependency.Resolve<IMachineService>())
@@ -198,11 +199,11 @@ namespace CNCLib.Wpf.ViewModels
 				AddNewMachine = machineID <= 0;
 				if (AddNewMachine)
 				{
-					dto = controller.DefaultMachine().Result;
+					dto = await controller.DefaultMachine();
 				}
 				else
 				{
-					dto = controller.Get(machineID).Result;
+					dto = await controller.Get(machineID);
 				}
 			}
 
@@ -236,7 +237,7 @@ namespace CNCLib.Wpf.ViewModels
 			OnPropertyChanged(() => MachineInitCommands);
 		}
 
-		public void SaveMachine()
+		public async void SaveMachine()
 		{
             int id;
 
@@ -244,10 +245,10 @@ namespace CNCLib.Wpf.ViewModels
 
 			using (var controller = Dependency.Resolve<IMachineService>())
 			{
-				id = controller.Update(m).Result;
+				id = await controller.Update(m);
 			}
 
-			LoadMachine(id);
+			await LoadMachine(id);
             CloseAction();
         }
 
@@ -256,11 +257,11 @@ namespace CNCLib.Wpf.ViewModels
 			return true;
 		}
 
-        public void DeleteMachine()
+        public async void DeleteMachine()
         {
 			using (var controller = Dependency.Resolve<IMachineService>())
 			{
-				controller.Delete(_currentMachine.Convert());
+				await controller.Delete(_currentMachine.Convert());
 			}
 			CloseAction();
 		}
@@ -270,9 +271,9 @@ namespace CNCLib.Wpf.ViewModels
             return !AddNewMachine;
         }
 
-		public void AddMachine()
+		public async void AddMachine()
         {
-            LoadMachine(-1);
+            await LoadMachine(-1);
         }
 
 		public bool CanAddMachine()

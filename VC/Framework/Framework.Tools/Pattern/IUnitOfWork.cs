@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Threading.Tasks;
 
 namespace Framework.Tools.Pattern
 {
@@ -27,13 +28,12 @@ namespace Framework.Tools.Pattern
 		void MarkDeleted(object entity);
 		void SetValue(object entity, object values);
 
-
-		void Save();
+		Task Save();
 
 		// SQL Commands
 
-		int ExecuteSqlCommand(string sql);
-		int ExecuteSqlCommand(string sql, params object[] parameters);
+		Task<int> ExecuteSqlCommand(string sql);
+		Task<int> ExecuteSqlCommand(string sql, params object[] parameters);
 
 		// Transaction
 

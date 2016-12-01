@@ -23,6 +23,7 @@ using System.Linq;
 using CNCLib.Repository.Contracts;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
+using System.Threading.Tasks;
 
 namespace CNCLib.Tests.Repository
 {
@@ -36,71 +37,71 @@ namespace CNCLib.Tests.Repository
 		}
 
         [TestMethod]
-        public void QueryAllMachines()
+        public async Task QueryAllMachines()
         {
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
-                var machines = rep.GetMachines();
+                var machines = await rep.GetMachines();
 				Assert.AreEqual(true, machines.Length >= 2);
 			}
 	    }
 
 		[TestMethod]
-		public void QueryOneMachineFound()
+		public async Task QueryOneMachineFound()
 		{
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
-                var machines = rep.GetMachine(1);
+                var machines = await rep.GetMachine(1);
 				Assert.AreEqual(1, machines.MachineID);
 			}
 		}
 
 		[TestMethod]
-		public void QueryOneMachineNotFound()
+		public async Task QueryOneMachineNotFound()
 		{
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
-                var machines = rep.GetMachine(1000);
+                var machines = await rep.GetMachine(1000);
 				Assert.IsNull(machines);
 			}
 		}
 
 		[TestMethod]
-		public void AddOneMachine()
+		public async Task AddOneMachine()
 		{
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
                 var machine = CreateMachine("AddOneMachine");
-				rep.Store(machine);
-                uow.Save();
+				await rep.Store(machine);
+				await uow.Save();
 				Assert.AreNotEqual(0, machine.MachineID);
 			}
 		}
 		[TestMethod]
-		public void AddOneMachineWithCommands()
+		public async Task AddOneMachineWithCommands()
 		{
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
                 var machine = CreateMachine("AddOneMachineWithCommands");
 				AddMachinCommands(machine);
-                rep.Store(machine);
-                uow.Save();
+				await rep.Store(machine);
+				await uow.Save();
                 Assert.AreNotEqual(0, machine.MachineID);
             }
         }
 
 		[TestMethod]
-		public void AddOneMachineAndRead()
+		public async Task AddOneMachineAndRead()
         {
             var machine = CreateMachine("AddOneMachineAndRead");
-            int id = WriteMachine(machine);
+            int id = await WriteMachine(machine);
 
-            var machineread = ReadMachine(id);
+            var machineread = await ReadMachine(id);
 
             Assert.AreEqual(0, machineread.MachineCommands.Count);
             Assert.AreEqual(0, machineread.MachineInitCommands.Count);
@@ -109,13 +110,13 @@ namespace CNCLib.Tests.Repository
         }
 
        [TestMethod]
-       public void AddOneMachineWithCommandsAndRead()
+       public async Task AddOneMachineWithCommandsAndRead()
        {
             var machine = CreateMachine("AddOneMachineWithCommandsAndRead");
             int count = AddMachinCommands(machine);
-            int id = WriteMachine(machine);
+            int id = await WriteMachine(machine);
 
-            var machineread = ReadMachine(id);
+            var machineread = await ReadMachine(id);
 
             Assert.AreEqual(count, machineread.MachineCommands.Count);
             Assert.AreEqual(0, machineread.MachineInitCommands.Count);
@@ -124,13 +125,13 @@ namespace CNCLib.Tests.Repository
        }
 
        [TestMethod]
-       public void AddOneMachineWithInitCommandsAndRead()
+       public async Task AddOneMachineWithInitCommandsAndRead()
        {
             var machine = CreateMachine("AddOneMachineWithInitCommandsAndRead");
             int count = AddMachinInitCommands(machine);
-            int id = WriteMachine(machine);
+            int id = await WriteMachine(machine);
 
-            var machineread = ReadMachine(id);
+            var machineread = await ReadMachine(id);
 
             Assert.AreEqual(0, machineread.MachineCommands.Count);
             Assert.AreEqual(count, machineread.MachineInitCommands.Count);
@@ -139,7 +140,7 @@ namespace CNCLib.Tests.Repository
        }
 
        [TestMethod]
-       public void UpdateOneMachineAndRead()
+       public async Task UpdateOneMachineAndRead()
        {
             var machine = CreateMachine("UpdateOneMachineAndRead");
             int id;
@@ -147,24 +148,24 @@ namespace CNCLib.Tests.Repository
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
-                rep.Store(machine);
-                uow.Save();
+				await rep.Store(machine);
+				await uow.Save();
                 id = machine.MachineID;
                 Assert.AreNotEqual(0, id);
 
                 machine.Name = "UpdateOneMachineAndRead#2";
 
-                rep.Store(machine);
-                uow.Save();
+				await rep.Store(machine);
+				await uow.Save();
             }
 
-            var machineread = ReadMachine(id);
+            var machineread = await ReadMachine(id);
             Assert.AreEqual(0, machineread.MachineCommands.Count);
             CompareMachine(machine, machineread);
        }
 
        [TestMethod]
-       public void UpdateOneMachineNoCommandChangeAndRead()
+       public async Task UpdateOneMachineNoCommandChangeAndRead()
        {
             var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
             int count = AddMachinCommands(machine);
@@ -173,27 +174,27 @@ namespace CNCLib.Tests.Repository
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
-                rep.Store(machine);
-                uow.Save();
+				await rep.Store(machine);
+				await uow.Save();
                 id = machine.MachineID;
                 Assert.AreNotEqual(0, id);
 
                 machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
-                rep.Store(machine);
-                uow.Save();
+				await rep.Store(machine);
+				await uow.Save();
             }
 
-            var machineread = ReadMachine(id);
+            var machineread = await ReadMachine(id);
             Assert.AreEqual(count, machineread.MachineCommands.Count);
             CompareMachine(machine, machineread);
        }
 
        [TestMethod]
-       public void UpdateOneMachineCommandChangeAndRead()
+       public async Task UpdateOneMachineCommandChangeAndRead()
        {
             var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
             int count = AddMachinCommands(machine);
-            int id = WriteMachine(machine);
+            int id = await WriteMachine(machine);
             int newcount;
 
             using (var uow = Dependency.Resolve<IUnitOfWork>())
@@ -207,41 +208,41 @@ namespace CNCLib.Tests.Repository
 
                 newcount = count + 2 - 1;
 
-                rep.Store(machine);
-                uow.Save();
+				await rep.Store(machine);
+				await uow.Save();
             }
 
-            var machineread = ReadMachine(id);
+            var machineread = await ReadMachine(id);
             Assert.AreEqual(newcount, machineread.MachineCommands.Count);
             CompareMachine(machine, machineread);
        }
 
        [TestMethod]
-       public void DeleteMachineWithCommandAndRead()
+       public async Task DeleteMachineWithCommandAndRead()
        {
             var machine = CreateMachine("DeleteMachineWithCommandAndRead");
             int count = AddMachinCommands(machine);
-            int id = WriteMachine(machine);
+            int id = await WriteMachine(machine);
 
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
-                rep.Delete(machine);
-                uow.Save();
+				await rep.Delete(machine);
+				await uow.Save();
 
-                Assert.IsNull(rep.GetMachine(id));
+                Assert.IsNull(await rep.GetMachine(id));
             }
        }
 
-        private static int WriteMachine(Machine machine)
+        private static async Task<int> WriteMachine(Machine machine)
         {
             int id;
 
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
-                rep.Store(machine);
-                uow.Save();
+				await rep.Store(machine);
+				await uow.Save();
                 id = machine.MachineID;
                 Assert.AreNotEqual(0, id);
             }
@@ -249,12 +250,12 @@ namespace CNCLib.Tests.Repository
             return id;
         }
 
-        private static Machine ReadMachine(int id)
+        private static async Task<Machine> ReadMachine(int id)
         {
             using (var uow = Dependency.Resolve<IUnitOfWork>())
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
-                return rep.GetMachine(id);
+                return await rep.GetMachine(id);
             }
         }
 

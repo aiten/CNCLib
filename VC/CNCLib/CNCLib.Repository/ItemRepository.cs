@@ -21,51 +21,52 @@ using System.Linq;
 using Framework.Tools;
 using System.Data.Entity;
 using CNCLib.Repository.Contracts;
+using System.Threading.Tasks;
 
 namespace CNCLib.Repository
 {
 	public class ItemRepository : CNCLibRepository, IItemRepository
 	{
-		public Contracts.Entities.Item[] Get()
+		public async Task<Contracts.Entities.Item[]> Get()
 		{
-			return Context.Items.
+			return await Context.Items.
 				Include((d) => d.ItemProperties).
-				ToArray();
+				ToArrayAsync();
 		}
 
-		public Contracts.Entities.Item[] Get(string typeidstring)
+		public async Task<Contracts.Entities.Item[]> Get(string typeidstring)
 		{
-			return Context.Items.
+			return await Context.Items.
 				Where((m) => m.ClassName == typeidstring).
 				Include((d) => d.ItemProperties).
-				ToArray();
+				ToArrayAsync();
 		}
 
-		public Contracts.Entities.Item Get(int id)
+		public async Task<Contracts.Entities.Item> Get(int id)
         {
-			return Context.Items.
+			return await Context.Items.
 				Where((m) => m.ItemID == id).
 				Include((d) => d.ItemProperties).
-				FirstOrDefault();
+				FirstOrDefaultAsync();
         }
 
-		public void Delete(Contracts.Entities.Item e)
+		public async Task Delete(Contracts.Entities.Item e)
         {
 			e.ItemProperties = null;
 			Uow.MarkDeleted(e);
 			// Uow.ExecuteSqlCommand("delete from ItemProperty where ItemID = " + e.ItemID); => delete cascade
         }
 
-		public void Store(Contracts.Entities.Item item)
+		public async Task Store(Contracts.Entities.Item item)
 		{
 			// search und update machine
 
 			int id = item.ItemID;
 
-			var itemInDb = Context.Items.
+			var itemInDb = await Context.Items.
 				Where((m) => m.ItemID == id).
 				Include((d) => d.ItemProperties).
-				FirstOrDefault();
+				FirstOrDefaultAsync();
 
             var optValues = item.ItemProperties ?? new List<Contracts.Entities.ItemProperty>();
 

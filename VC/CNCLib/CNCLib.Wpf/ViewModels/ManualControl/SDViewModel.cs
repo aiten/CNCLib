@@ -111,7 +111,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			RunInNewTask(() =>
 			{
-				string message = Com.SendCommandAndReadOKReplyAsync("m114").Result;
+				string message = Com.SendCommandAndReadOKReplyAsync("m114").ConfigureAwait(false).GetAwaiter().GetResult();
 				if (!string.IsNullOrEmpty(message))
 				{
 					message = message.Replace("ok", "");
