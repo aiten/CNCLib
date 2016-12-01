@@ -49,7 +49,7 @@ namespace CNCLib.Tests.Logic
 
 			var ctrl = new DynItemController();
 
-			var all = ctrl.GetAll().ToArray();
+			var all = ctrl.GetAll().ConfigureAwait(false).GetAwaiter().GetResult().ToArray();
 			Assert.AreEqual(true, all.Length == 0);
 		}
 
@@ -67,7 +67,7 @@ namespace CNCLib.Tests.Logic
 
 			var ctrl = new DynItemController();
 
-			var all = ctrl.GetAll().ToArray();
+			var all = ctrl.GetAll().ConfigureAwait(false).GetAwaiter().GetResult().ToArray();
 			Assert.AreEqual(2, all.Count());
 			Assert.AreEqual(1, all.FirstOrDefault().ItemID);
 			Assert.AreEqual("Test1", all.FirstOrDefault().Name);
@@ -87,7 +87,7 @@ namespace CNCLib.Tests.Logic
 
 			var ctrl = new DynItemController();
 
-			var all = ctrl.GetAll(typeof(string));
+			var all = ctrl.GetAll(typeof(string)).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			Assert.AreEqual(2, all.Count());
 			Assert.AreEqual(1, all.FirstOrDefault().ItemID);
@@ -102,7 +102,7 @@ namespace CNCLib.Tests.Logic
 
 			var ctrl = new DynItemController();
 
-			var all = ctrl.Get(1);
+			var all = ctrl.Get(1).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			Assert.AreEqual(1, all.ItemID);
 			Assert.AreEqual("Test1", all.Name);
@@ -115,7 +115,7 @@ namespace CNCLib.Tests.Logic
 
 			var ctrl = new DynItemController();
 
-			var all = ctrl.Get(10);
+			var all = ctrl.Get(10).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			Assert.IsNull(all);
 		}
@@ -207,7 +207,7 @@ namespace CNCLib.Tests.Logic
 
             //act
 
-            ctrl.Delete(1);
+            ctrl.Delete(1).ConfigureAwait(false).GetAwaiter().GetResult();
 
             //assert
             srv.Received().Get(1);
@@ -225,7 +225,7 @@ namespace CNCLib.Tests.Logic
 
             //act
 
-            ctrl.Delete(1);
+            ctrl.Delete(1).ConfigureAwait(false).GetAwaiter().GetResult();
 
             //assert
             srv.Received().Get(1);
@@ -243,7 +243,7 @@ namespace CNCLib.Tests.Logic
 
 			//act
 
-			ctrl.Save(1,"Test",new DynItemControllerTestClass() {IntProperty=1 });
+			ctrl.Save(1,"Test",new DynItemControllerTestClass() {IntProperty=1 }).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			//assert
 			srv.Received().Update(Arg.Is<Item>(x => x.ItemID == 1));

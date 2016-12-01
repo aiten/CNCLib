@@ -53,7 +53,7 @@ namespace CNCLib.Tests.Logic
 			});
 			rep.Create(1).Returns(new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
-			var all = ctrl.GetAll();
+			var all = ctrl.GetAll().ConfigureAwait(false).GetAwaiter().GetResult();
 
 			Assert.AreEqual(1, all.Count());
 			Assert.AreEqual(1, all.FirstOrDefault().Id);
@@ -69,7 +69,7 @@ namespace CNCLib.Tests.Logic
 
 			rep.Create(1).Returns(new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
-			var all = ctrl.Get(1);
+			var all = ctrl.Get(1).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			Assert.AreEqual(1, all.Id);
 			Assert.AreEqual("Entry1", all.SettingName);
@@ -84,7 +84,7 @@ namespace CNCLib.Tests.Logic
 
 			rep.Create(1).Returns(new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
-			var all = ctrl.Get(2);
+			var all = ctrl.Get(2).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			Assert.IsNull(all);
 		}
@@ -98,7 +98,7 @@ namespace CNCLib.Tests.Logic
 
 			var opt = new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
-			ctrl.Add(opt);
+			ctrl.Add(opt).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			rep.Received().Add(Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
 		}
@@ -111,7 +111,7 @@ namespace CNCLib.Tests.Logic
 
 			var opt = new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
-			ctrl.Update(opt);
+			ctrl.Update(opt).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			rep.Received().Save(Arg.Is<int>(x => x == 1), Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
 		}
@@ -124,7 +124,7 @@ namespace CNCLib.Tests.Logic
 
 			var opt = new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
-			ctrl.Delete(opt);
+			ctrl.Delete(opt).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			rep.Received().Delete(Arg.Is<int>(x => x == 1));
 		}

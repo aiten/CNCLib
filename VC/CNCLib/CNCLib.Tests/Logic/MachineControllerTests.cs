@@ -60,7 +60,7 @@ namespace CNCLib.Tests.Logic
 					{ new CNCLib.Logic.Contracts.DTO.MachineInitCommand() { MachineID = 1, MachineInitCommandID = 1, CommandString ="2", SeqNo=1 } }
 			};
 
-			var machineID = ctrl.Add(machineEntity1);
+			var machineID = ctrl.Add(machineEntity1).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			rep.ReceivedWithAnyArgs().Store(new Machine());
 			Assert.AreEqual(machineID, 0);
@@ -76,10 +76,10 @@ namespace CNCLib.Tests.Logic
 			var machineEntity1 = new Machine() { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			rep.GetMachine(1).Returns(machineEntity1);
 
-			var machine = ctrl.Get(1);
+			var machine = ctrl.Get(1).ConfigureAwait(false).GetAwaiter().GetResult();
 			machine.Name = "SuperMaxi";
 
-			ctrl.Update(machine);
+			ctrl.Update(machine).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			rep.Received().Store(Arg.Is<Machine>(x => x.Name == "SuperMaxi"));
 			rep.Received().Store(Arg.Is<Machine>(x => x.MachineID == 11));
@@ -95,10 +95,10 @@ namespace CNCLib.Tests.Logic
 			var machineEntity1 = new Machine() { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			rep.GetMachine(1).Returns(machineEntity1);
 
-			var machine = ctrl.Get(1);
+			var machine = ctrl.Get(1).ConfigureAwait(false).GetAwaiter().GetResult();
 			machine.Name = "SuperMaxi";
 
-			ctrl.Delete(machine);
+			ctrl.Delete(machine).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			rep.Received().Delete(Arg.Is<Machine>(x => x.Name == "SuperMaxi"));
 			rep.Received().Delete(Arg.Is<Machine>(x => x.MachineID == 11));
@@ -114,7 +114,7 @@ namespace CNCLib.Tests.Logic
 
 			MachineController ctrl = new MachineController();
 
-			var machines = ctrl.GetAll().ToArray();
+			var machines = ctrl.GetAll().ConfigureAwait(false).GetAwaiter().GetResult().ToArray();
 			Assert.AreEqual(true, machines.Length == 0);
 		}
 
@@ -128,7 +128,7 @@ namespace CNCLib.Tests.Logic
 
 			MachineController ctrl = new MachineController();
 
-			var machines = ctrl.GetAll().ToArray();
+			var machines = ctrl.GetAll().ConfigureAwait(false).GetAwaiter().GetResult().ToArray();
 			Assert.AreEqual(true, machines.Length == 1);
 			Assert.AreEqual(1, machines[0].MachineID);
 			Assert.AreEqual("Maxi", machines[0].Name);
@@ -155,7 +155,7 @@ namespace CNCLib.Tests.Logic
 
 			MachineController ctrl = new MachineController();
 
-			var machines = ctrl.GetAll().ToArray();
+			var machines = ctrl.GetAll().ConfigureAwait(false).GetAwaiter().GetResult().ToArray();
 			Assert.AreEqual(true, machines.Length == 2);
 			Assert.AreEqual(1, machines[0].MachineID);
 			Assert.AreEqual("Maxi", machines[0].Name);
@@ -182,7 +182,7 @@ namespace CNCLib.Tests.Logic
 
 			MachineController ctrl = new MachineController();
 
-			var machine = ctrl.Get(1);
+			var machine = ctrl.Get(1).ConfigureAwait(false).GetAwaiter().GetResult();
 			Assert.AreEqual(machineEntity1.Name, machine.Name);
 			Assert.AreEqual(machineEntity1.MachineID, machine.MachineID);
 			Assert.IsNotNull(machine.MachineCommands);
@@ -203,7 +203,7 @@ namespace CNCLib.Tests.Logic
 
 			MachineController ctrl = new MachineController();
 
-			var machine = ctrl.Get(3);
+			var machine = ctrl.Get(3).ConfigureAwait(false).GetAwaiter().GetResult();
 			Assert.IsNull(machine);
 		}
 
@@ -212,7 +212,7 @@ namespace CNCLib.Tests.Logic
 		{
 			MachineController ctrl = new MachineController();
 
-			var machine = ctrl.DefaultMachine();
+			var machine = ctrl.DefaultMachine().ConfigureAwait(false).GetAwaiter().GetResult();
 			Assert.IsNotNull(machine);
 			Assert.AreEqual("New", machine.Name);
 		}
@@ -225,8 +225,9 @@ namespace CNCLib.Tests.Logic
 			MachineController ctrl = new MachineController();
 
 			rep.Get("Environment", "DefaultMachineID").Returns(new Configuration() { Value = "14" });
+			var dm = ctrl.GetDetaultMachine().ConfigureAwait(false).GetAwaiter().GetResult();
 
-			Assert.AreEqual(14, ctrl.GetDetaultMachine());
+			Assert.AreEqual(14, dm);
 		}
 
 		[TestMethod]
@@ -240,7 +241,7 @@ namespace CNCLib.Tests.Logic
 
 			rep.Get("Environment", "DefaultMachineID").Returns(nullconfig);
 
-			Assert.AreEqual(-1, ctrl.GetDetaultMachine());
+			Assert.AreEqual(-1, ctrl.GetDetaultMachine().ConfigureAwait(false).GetAwaiter().GetResult());
 		}
 
 		[TestMethod]
@@ -250,7 +251,7 @@ namespace CNCLib.Tests.Logic
 
 			MachineController ctrl = new MachineController();
 
-			ctrl.SetDetaultMachine(15);
+			ctrl.SetDetaultMachine(15).ConfigureAwait(false).GetAwaiter().GetResult();
 
 			rep.Get("Environment", "DefaultMachineID").Returns(new Configuration() { Value = "14" });
 

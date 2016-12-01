@@ -249,24 +249,18 @@ namespace CNCLib.Logic.Client
 
         public Task<int> Add(string name, object obj)
 		{
-			return Task.Run(() =>
+			using (var service = Dependency.Resolve<IItemService>())
 			{
-				using (var service = Dependency.Resolve<IItemService>())
-				{
-					return service.Add(ConvertToItem(name, obj, 0));
-				}
-			});
+				return service.Add(ConvertToItem(name, obj, 0));
+			}
 		}
 
 		public Task Save(int id, string name, object obj)
         {
-			return Task.Run(() =>
+			using (var service = Dependency.Resolve<IItemService>())
 			{
-				using (var service = Dependency.Resolve<IItemService>())
-				{
-					service.Update(ConvertToItem(name, obj, id));
-				}
-			});
+				return service.Update(ConvertToItem(name, obj, id));
+			}
         }
 
         public Task Delete(int id)
