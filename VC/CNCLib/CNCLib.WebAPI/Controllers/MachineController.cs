@@ -35,11 +35,11 @@ namespace CNCLib.WebAPI.Controllers
 	{
 		[Route("api/Machine/default")]
 		[HttpGet] //Always explicitly state the accepted HTTP method
-		public IHttpActionResult DefaultMachine()
+		public async Task<IHttpActionResult> DefaultMachine()
 		{
 			using (IMachineService service = Dependency.Resolve<IMachineService>())
 			{
-				var m = service.DefaultMachine();
+				var m = await service.DefaultMachine();
 				if (m == null)
 				{
 					return NotFound();
@@ -50,18 +50,18 @@ namespace CNCLib.WebAPI.Controllers
 
 		[Route("api/Machine/defaultmachine")]
 		[HttpGet] //Always explicitly state the accepted HTTP method
-		public IHttpActionResult GetDetaultMachine()
+		public async Task<IHttpActionResult> GetDetaultMachine()
 		{
 			using (IMachineService service = Dependency.Resolve<IMachineService>())
 			{
-				int id = service.GetDetaultMachine().ConfigureAwait(false).GetAwaiter().GetResult();
+				int id = await service.GetDetaultMachine();
 				return Ok(id);
 			}
 		}
 
 		[Route("api/Machine/defaultmachine")]
 		[HttpPut] //Always explicitly state the accepted HTTP method
-		public IHttpActionResult SetDetaultMachine(int id)
+		public async Task<IHttpActionResult> SetDetaultMachine(int id)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -72,7 +72,7 @@ namespace CNCLib.WebAPI.Controllers
 			{
 				using (IMachineService service = Dependency.Resolve<IMachineService>())
 				{
-					service.SetDetaultMachine(id);
+					await service.SetDetaultMachine(id);
 				}
 				return StatusCode(HttpStatusCode.NoContent);
 			}
@@ -88,32 +88,32 @@ namespace CNCLib.WebAPI.Controllers
 	{
 		private IMachineService _service = Dependency.Resolve<IMachineService>();
 
-		public Task<IEnumerable<Machine>> Get()
+		public async Task<IEnumerable<Machine>> Get()
 		{
-			return _service.GetAll();
+			return await _service.GetAll();
 		}
 
-		public Task<Machine> Get(int id)
+		public async Task<Machine> Get(int id)
 		{
 			if (id == -1)
-				return _service.DefaultMachine();
+				return await _service.DefaultMachine();
 
-			return _service.Get(id);
+			return await _service.Get(id);
 		}
 
-		public Task<int> Add(Machine value)
+		public async Task<int> Add(Machine value)
 		{
-			return _service.Add(value);
+			return await _service.Add(value);
 		}
 
-		public Task Update(int id, Machine value)
+		public async Task Update(int id, Machine value)
 		{
-			return _service.Update(value);
+			await _service.Update(value);
 		}
 
-		public Task Delete(int id, Machine value)
+		public async Task Delete(int id, Machine value)
 		{
-			return _service.Delete(value);
+			await _service.Delete(value);
 		}
 
 		public bool CompareId(int id, Machine value)

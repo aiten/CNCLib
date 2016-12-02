@@ -33,11 +33,11 @@ namespace CNCLib.WebAPI.Controllers
 {
 	public class ItemController : RestController<Item>
 	{
-		public IHttpActionResult Get(string classname)
+		public async Task<IHttpActionResult> Get(string classname)
 		{
 			using (IItemService service = Dependency.Resolve<IItemService>())
 			{
-				var m = service.GetByClassName(classname);
+				var m = await service.GetByClassName(classname);
 				if (m == null)
 				{
 					return NotFound();

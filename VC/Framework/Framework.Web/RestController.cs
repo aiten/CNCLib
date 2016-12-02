@@ -39,11 +39,11 @@ namespace Framework.Web
 
 		// GET api/values/5
 		//[ResponseType(T)]
-		public IHttpActionResult Get(int id)
+		public async Task<IHttpActionResult> Get(int id)
 		{
 			using (var controller = Dependency.Resolve<IRest<T>>())
 			{
-				var m = controller.Get(id);
+				var m = await controller.Get(id);
 				if (m == null)
 				{
 					return NotFound();
@@ -54,7 +54,7 @@ namespace Framework.Web
 
 		// POST api/values == Create
 		//[ResponseType(typeof(T))]
-		public IHttpActionResult Post([FromBody]T value)
+		public async Task<IHttpActionResult> Post([FromBody]T value)
 		{
 			if (!ModelState.IsValid || value == null)
 			{
@@ -64,7 +64,7 @@ namespace Framework.Web
 			{
 				using (var controller = Dependency.Resolve<IRest<T>>())
 				{
-					int newid = controller.Add(value).ConfigureAwait(false).GetAwaiter().GetResult();
+					int newid = await controller.Add(value);
 					return CreatedAtRoute("DefaultApi", new { id = newid }, value);
 				}
 			}
@@ -76,7 +76,7 @@ namespace Framework.Web
 
 		// PUT api/values/5
 		[ResponseType(typeof(void))]
-		public IHttpActionResult Put(int id, [FromBody]T value)
+		public async Task<IHttpActionResult> Put(int id, [FromBody]T value)
 		{
 			if (!ModelState.IsValid || value == null)
 			{
@@ -92,7 +92,7 @@ namespace Framework.Web
 						return BadRequest("Missmatch between id and machineID");
 					}
 
-					controller.Update(id, value);
+					await controller.Update(id, value);
 					return StatusCode(HttpStatusCode.NoContent);
 				}
 			}
@@ -104,11 +104,11 @@ namespace Framework.Web
 
 		// DELETE api/values/5
 		//[ResponseType(typeof(T))]
-		public IHttpActionResult Delete(int id)
+		public async Task<IHttpActionResult> Delete(int id)
 		{
 			using (var controller = Dependency.Resolve<IRest<T>>())
 			{
-				var value = controller.Get(id).ConfigureAwait(false).GetAwaiter().GetResult();
+				var value = await controller.Get(id);
 				if (value == null)
 				{
 					return NotFound();

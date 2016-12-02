@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Xml.Serialization;
 using CNCLib.GCode.Load;
@@ -42,11 +43,11 @@ namespace CNCLib.WebAPI.Controllers
 		}
 
 		//		[ActionName("CreateGCode")]
-		public string Put([FromBody] CreateGCode input)
+		public async Task<string> Put([FromBody] CreateGCode input)
 		{
 			using (var service = Dependency.Resolve<ILoadOptionsService>())
 			{
-				LoadOptions opt = service.Get(input.LoadOptionsId).ConfigureAwait(false).GetAwaiter().GetResult();
+				LoadOptions opt = await service.Get(input.LoadOptionsId);
 				var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt);
 				var sw = new StringWriter();
 				new XmlSerializer(typeof(CNCLib.GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);

@@ -34,29 +34,29 @@ namespace CNCLib.WebAPI.Controllers
 	{
 		private ILoadOptionsService _service = Dependency.Resolve<ILoadOptionsService>();
 
-		public Task<IEnumerable<LoadOptions>> Get()
+		public async Task<IEnumerable<LoadOptions>> Get()
 		{
-			return _service.GetAll();
+			return await _service.GetAll();
 		}
 
-		public Task<LoadOptions> Get(int id)
+		public async Task<LoadOptions> Get(int id)
 		{
-			return _service.Get(id);
+			return await _service.Get(id);
 		}
 
-		public Task<int> Add(LoadOptions value)
+		public async Task<int> Add(LoadOptions value)
 		{
-			return _service.Add(value);
+			return await _service.Add(value);
 		}
 
-		public Task Update(int id, LoadOptions value)
+		public async Task Update(int id, LoadOptions value)
 		{
-			return _service.Update(value);
+			await _service.Update(value);
 		}
 
-		public Task Delete(int id, LoadOptions value)
+		public async Task Delete(int id, LoadOptions value)
 		{
-			return _service.Delete(value);
+			await _service.Delete(value);
 		}
 
 		public bool CompareId(int id, LoadOptions value)

@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Web.Http;
 using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts;
@@ -37,11 +38,11 @@ namespace CNCLib.WebAPI.Controllers
 		}
 
 //		[ActionName("CreateGCode")]
-		public IEnumerable<string> Put([FromBody] CreateGCode input)
+		public async Task<IEnumerable<string>> Put([FromBody] CreateGCode input)
 		{
 			using (var service = Dependency.Resolve<ILoadOptionsService>())
 			{
-				LoadOptions opt = service.Get(input.LoadOptionsId).ConfigureAwait(false).GetAwaiter().GetResult();
+				LoadOptions opt = await service.Get(input.LoadOptionsId);
 				return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt).Commands.ToStringList();
 			}
 		}
