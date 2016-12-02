@@ -23,11 +23,12 @@ using System.Windows.Input;
 
 namespace Framework.Wpf.Helpers
 {
-    public class DelegateCommandAsync : ICommand
+    public class DelegateCommandAsync<T> : ICommand
     {
-        private readonly Func<Task> _command;
+        private readonly Func<CancellationToken, Task<T>> _command;
         private readonly Func<bool> _canExecute;
-		private readonly CancelAsyncCommand _cancelCommand;
+		private readonly CancelAsyncCommand _cancelCommand = new CancelAsyncCommand();
+		private NotifyTaskCompletion<T> _execution;
 
 		public event EventHandler CanExecuteChanged
         {
@@ -40,7 +41,7 @@ namespace Framework.Wpf.Helpers
 			CommandManager.InvalidateRequerySuggested();
 		}
 
-		public DelegateCommandAsync(Func<Task> command, Func<bool> canExecute = null)
+		public DelegateCommandAsync(Func<CancellationToken, Task<T>> command, Func<bool> canExecute = null)
         {
             if (command == null)
                 throw new ArgumentNullException();
@@ -50,14 +51,24 @@ namespace Framework.Wpf.Helpers
 
         public async void Execute(object parameter)
         {
-            await _command();
+			_cancelCommand.NotifyCommandStarting();
+			_execution = new NotifyTaskCompletion<T>(_command(_cancelCommand.Token));
+			RaiseCanExecuteChanged();
+//			await _execution.TaskCompletion;
+			await _execution.Task;
+			_cancelCommand.NotifyCommandFinished();
+			RaiseCanExecuteChanged();
         }
 
-        public bool CanExecute(object parameter)
+		public ICommand CancelCommand
+		{
+			get { return _cancelCommand; }
+		}
+
+		public bool CanExecute(object parameter)
         {
             return _canExecute == null || _canExecute();
         }
-
 
 		private sealed class CancelAsyncCommand : ICommand
 		{

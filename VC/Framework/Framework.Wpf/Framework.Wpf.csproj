@@ -52,6 +52,7 @@
     <Compile Include="..\FrameworkSolutionInfoVersion.cs">
       <Link>Properties\FrameworkSolutionInfoVersion.cs</Link>
     </Compile>
+    <Compile Include="Helpers\NotifyTaskCompletion.cs" />
     <Compile Include="Helpers\DelegateCommandAsync.cs" />
     <Compile Include="Helpers\DelegateCommandWithParameter.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
