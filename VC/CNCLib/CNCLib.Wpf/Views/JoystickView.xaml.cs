@@ -30,9 +30,16 @@ namespace CNCLib.Wpf
         public JoystickView()
         {
             InitializeComponent();
+
             var vm = DataContext as BaseViewModel;
 			if (vm.CloseAction == null)
 				vm.CloseAction = new Action(() => this.Close());
+
+			Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
+			{
+				var vmm = DataContext as BaseViewModel;
+				await vmm.Loaded();
+			});
 		}
 	}
 }

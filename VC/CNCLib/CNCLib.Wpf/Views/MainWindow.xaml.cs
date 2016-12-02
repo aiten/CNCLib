@@ -18,6 +18,7 @@
 
 using System;
 using System.Windows;
+using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.Views
 {
@@ -29,7 +30,14 @@ namespace CNCLib.Wpf.Views
 		public MainWindow()
 		{
 			InitializeComponent();
-            DateTime now = DateTime.Now;
+
+			Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
+			{
+				var vmm = DataContext as BaseViewModel;
+				await vmm.Loaded();
+			});
+
+			DateTime now = DateTime.Now;
 			Com.Trace.EnableTrace(string.Format(@"{0}CNCLibTrace_{1:D4}{2:D2}{3:D2}_{4:D2}{5:D2}{6:D2}.txt",
                     System.IO.Path.GetTempPath(),
                     now.Year,now.Month,now.Day,now.Hour,now.Minute,now.Second));

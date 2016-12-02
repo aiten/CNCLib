@@ -32,7 +32,12 @@ namespace CNCLib.Wpf.ViewModels
 
 		public JoystickViewModel()
 		{
-			LoadJoystick();
+		}
+
+		public override async Task Loaded()
+		{
+			await base.Loaded();
+			await LoadJoystick();
 		}
 
 		#endregion

@@ -28,7 +28,6 @@ namespace Framework.Wpf.Helpers
         private readonly Func<CancellationToken, Task<T>> _command;
         private readonly Func<bool> _canExecute;
 		private readonly CancelAsyncCommand _cancelCommand = new CancelAsyncCommand();
-		private NotifyTaskCompletion<T> _execution;
 
 		public event EventHandler CanExecuteChanged
         {
@@ -52,10 +51,8 @@ namespace Framework.Wpf.Helpers
         public async void Execute(object parameter)
         {
 			_cancelCommand.NotifyCommandStarting();
-			_execution = new NotifyTaskCompletion<T>(_command(_cancelCommand.Token));
 			RaiseCanExecuteChanged();
-//			await _execution.TaskCompletion;
-			await _execution.Task;
+			await _command(_cancelCommand.Token);
 			_cancelCommand.NotifyCommandFinished();
 			RaiseCanExecuteChanged();
         }

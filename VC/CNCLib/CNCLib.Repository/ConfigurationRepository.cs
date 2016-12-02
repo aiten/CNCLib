@@ -34,6 +34,7 @@ namespace CNCLib.Repository
 		public async Task Delete(Contracts.Entities.Configuration configuration)
         {
 			Uow.MarkDeleted(configuration);
+			await Task.FromResult(0);
         }
 
 

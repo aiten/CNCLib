@@ -54,8 +54,9 @@ namespace CNCLib.Repository
         {
 			e.ItemProperties = null;
 			Uow.MarkDeleted(e);
+			await Task.FromResult(0);
 			// Uow.ExecuteSqlCommand("delete from ItemProperty where ItemID = " + e.ItemID); => delete cascade
-        }
+		}
 
 		public async Task Store(Contracts.Entities.Item item)
 		{

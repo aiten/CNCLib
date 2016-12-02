@@ -49,11 +49,12 @@ namespace CNCLib.Repository
 			m.MachineCommands = null;
 			m.MachineInitCommands = null;
 			Uow.MarkDeleted(m);
-            //Uow.ExecuteSqlCommand("delete from MachineCommand where MachineID = " + m.MachineID); => delete cascade
-            //Uow.ExecuteSqlCommand("delete from MachineInitCommand where MachineID = " + m.MachineID); => delete cascade
-        }
+			await Task.FromResult(0);
+			//Uow.ExecuteSqlCommand("delete from MachineCommand where MachineID = " + m.MachineID); => delete cascade
+			//Uow.ExecuteSqlCommand("delete from MachineInitCommand where MachineID = " + m.MachineID); => delete cascade
+		}
 
-        public async Task<Contracts.Entities.MachineCommand[]> GetMachineCommands(int machineID)
+		public async Task<Contracts.Entities.MachineCommand[]> GetMachineCommands(int machineID)
 		{
 			return await Context.MachineCommands.
 				Where(c => c.MachineID == machineID).

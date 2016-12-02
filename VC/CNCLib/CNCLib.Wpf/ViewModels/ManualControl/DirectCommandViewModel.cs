@@ -52,7 +52,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ObservableCollection<string> DirectCommandHistory
 		{
 			get { return _directCommandHistory; }
-			set { AssignProperty(ref _directCommandHistory, value); }
+			set { SetProperty(ref _directCommandHistory, value); }
 		}
 
 		#endregion

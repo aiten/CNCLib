@@ -128,7 +128,7 @@ namespace CNCLib.Logic
 				MachineCommands = new MachineCommand[0],
 				MachineInitCommands = new MachineInitCommand[0]
 			};
-			return dto;
+			return await Task.FromResult(dto);
 		}
 
 		public async Task<int> GetDetaultMachine()

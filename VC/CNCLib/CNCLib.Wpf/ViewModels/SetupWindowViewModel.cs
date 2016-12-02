@@ -40,9 +40,14 @@ namespace CNCLib.Wpf.ViewModels
 
 		public SetupWindowViewModel()
 		{
-			LoadMachines(-1);
-			LoadJoystick();
  			ResetOnConnect = false;
+		}
+
+		public override async Task Loaded()
+		{
+			await base.Loaded();
+			await LoadMachines(-1);
+			await LoadJoystick();
 		}
 
 		#endregion
@@ -106,7 +111,7 @@ namespace CNCLib.Wpf.ViewModels
 		{
             get { return _selectedMachine; }
 			set {
-                    AssignProperty(ref _selectedMachine, value);
+                    SetProperty(ref _selectedMachine, value);
                     if (value!=null)
                         SetGlobal();
                 }
@@ -120,7 +125,7 @@ namespace CNCLib.Wpf.ViewModels
         public ObservableCollection<Models.Machine> Machines
 		{
 			get { return _machines; }
-			set { AssignProperty(ref _machines, value); }
+			set { SetProperty(ref _machines, value); }
 		}
 
         public bool Connected
@@ -153,7 +158,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region Operations
 
-		public async void Connect()
+		public async Task Connect()
         {
 			try
 			{
@@ -185,6 +190,7 @@ namespace CNCLib.Wpf.ViewModels
 				return;
 			}
 			OnPropertyChanged(() => Connected);
+			CommandManager.InvalidateRequerySuggested();
 		}
 
         public void ConnectJoystick()
@@ -292,7 +298,7 @@ namespace CNCLib.Wpf.ViewModels
 		#region Commands
 
 		public ICommand SetupMachineCommand { get { return new DelegateCommand(SetupMachine, CanSetupMachine); } }
- 		public ICommand ConnectCommand { get { return new DelegateCommand(Connect, CanConnect); } }
+		public ICommand ConnectCommand { get { return new DelegateCommand(async () => await Connect(), CanConnect); } }
 		public ICommand DisConnectCommand	{ get { return new DelegateCommand(DisConnect, CanDisConnect); } }
 		public ICommand SetDefaultMachineCommand { get { return new DelegateCommand(SetDefaultMachine, CanSetupMachine); } }
         public ICommand ConnectJoystickCommand { get { return new DelegateCommand(ConnectJoystick, CanConnectJoystick); } }

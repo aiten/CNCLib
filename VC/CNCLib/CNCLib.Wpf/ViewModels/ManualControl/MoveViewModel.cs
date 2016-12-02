@@ -32,9 +32,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         #region Commands / CanCommands
 
-        private void SendMoveCommand(double dist, char axisname) { RunInNewTask(() => { Com.SendCommand("g91 g0" + axisname + dist.ToString(CultureInfo.InvariantCulture) + " g90"); }); }
+        private void SendMoveCommand(double? dist, char axisname) { RunInNewTask(() => { Com.SendCommand("g91 g0" + axisname + dist??0.0.ToString(CultureInfo.InvariantCulture) + " g90"); }); }
 
-		public bool CanSendCommand(double dist)
+		public bool CanSendCommand(double? dist)
 		{
 			return CanSend();
 		}
@@ -43,12 +43,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region ICommands
 
-		public ICommand SendRightCommand { get { return new DelegateCommand<double>((double dist) => SendMoveCommand(dist, 'X'), CanSendCommand); } }
-        public ICommand SendLeftCommand { get { return new DelegateCommand<double>((double dist) => SendMoveCommand(-dist, 'X'), CanSendCommand); } }
-        public ICommand SendUpCommand { get { return new DelegateCommand<double>((double dist) => SendMoveCommand(dist, 'Y'), CanSendCommand); } }
-        public ICommand SendDownCommand { get { return new DelegateCommand<double>((double dist) => SendMoveCommand(-dist, 'Y'), CanSendCommand); } }
-		public ICommand SendZUpCommand { get { return new DelegateCommand<double>((double dist) => SendMoveCommand(dist, 'Z'), CanSendCommand); } }
-		public ICommand SendZDownCommand { get { return new DelegateCommand<double>((double dist) => SendMoveCommand(-dist, 'Z'), CanSendCommand); } }
+		public ICommand SendRightCommand { get { return new DelegateCommand<double?>((double? dist) => SendMoveCommand(dist, 'X'), CanSendCommand); } }
+        public ICommand SendLeftCommand { get { return new DelegateCommand<double?>((double? dist) => SendMoveCommand(-dist, 'X'), CanSendCommand); } }
+        public ICommand SendUpCommand { get { return new DelegateCommand<double?>((double? dist) => SendMoveCommand(dist, 'Y'), CanSendCommand); } }
+        public ICommand SendDownCommand { get { return new DelegateCommand<double?>((double? dist) => SendMoveCommand(-dist, 'Y'), CanSendCommand); } }
+		public ICommand SendZUpCommand { get { return new DelegateCommand<double?>((double? dist) => SendMoveCommand(dist, 'Z'), CanSendCommand); } }
+		public ICommand SendZDownCommand { get { return new DelegateCommand<double?>((double? dist) => SendMoveCommand(-dist, 'Z'), CanSendCommand); } }
 
 		#endregion
 	}

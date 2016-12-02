@@ -17,36 +17,25 @@
 */
 
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Framework.Wpf.Helpers
 {
-    public class DelegateCommand<T> : ICommand
+    public class DelegateCommand<T> : Prism.Commands.DelegateCommand<T>
     {
-        private readonly Action<T> _command;
-        private readonly Func<T, bool> _canExecute;
-        public event EventHandler CanExecuteChanged
+        public override event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public DelegateCommand(Action<T> command, Func<T,bool> canExecute = null)
+        public DelegateCommand(Action<T> command, Func<T,bool> canExecute = null) : base(command,canExecute)
         {
-            if (command == null)
-                throw new ArgumentNullException();
-            _canExecute = canExecute;
-            _command = command;
         }
 
-        public void Execute(object parameter)
-        {
-            _command((T) parameter);
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute == null || _canExecute((T) parameter);
-        }
-    }
+		protected DelegateCommand(Func<T, Task> executeMethod, Func<T, bool> canExecuteMethod) : base(executeMethod, canExecuteMethod)
+		{
+		}
+	}
 }

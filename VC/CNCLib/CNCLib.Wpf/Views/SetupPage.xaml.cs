@@ -20,6 +20,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using CNCLib.Wpf.ViewModels;
+using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.Views
 {
@@ -31,6 +32,12 @@ namespace CNCLib.Wpf.Views
 		public SetupPage()
 		{
 			InitializeComponent();
+
+			Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
+			{
+				var vmm = DataContext as BaseViewModel;
+				await vmm.Loaded();
+			});
 
 			var vm = DataContext as SetupWindowViewModel;
 

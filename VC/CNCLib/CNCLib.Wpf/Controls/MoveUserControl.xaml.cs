@@ -198,42 +198,42 @@ namespace CNCLib.Wpf.Controls
 
 		private void OnZDown()
 		{
-			double dist = MoveDist;
+			double? dist = MoveDist;
 			if (ZDown != null && ZDown.CanExecute(dist))
 				ZDown.Execute(dist);
 		}
 
 		private void OnZUp()
 		{
-			double dist = MoveDist;
+			double? dist = MoveDist;
 			if (ZUp != null && ZUp.CanExecute(dist))
 				ZUp.Execute(dist);
 		}
 
 		private void OnDown()
 		{
-			double dist = MoveDist;
+			double? dist = MoveDist;
 			if (Down != null && Down.CanExecute(dist))
 				Down.Execute(dist);
 		}
 
 		private void OnUp()
 		{
-			double dist = MoveDist;
+			double? dist = MoveDist;
 			if (Up != null && Up.CanExecute(dist))
 				Up.Execute(dist);
 		}
 
 		private void OnRight()
 		{
-			double dist = MoveDist;
+			double? dist = MoveDist;
 			if (Right != null && Right.CanExecute(dist))
 				Right.Execute(dist);
 		}
 
 		private void OnLeft()
 		{
-			double dist = MoveDist;
+			double? dist = MoveDist;
 			if (Left != null && Left.CanExecute(dist))
 				Left.Execute(dist);
 		}

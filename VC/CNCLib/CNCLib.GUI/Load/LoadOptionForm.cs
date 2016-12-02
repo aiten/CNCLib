@@ -25,6 +25,7 @@ using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
 using System.IO;
 using System.Xml.Serialization;
+using System.Threading.Tasks;
 
 namespace CNCLib.GUI.Load
 {
@@ -42,20 +43,26 @@ namespace CNCLib.GUI.Load
         public LoadOptionForm()
         {
             InitializeComponent();
-            ReadSettings();
         }
 
-        private void ReadSettings()
+        private async Task ReadSettings(string selectsettingstring)
         {
             _settingName.Items.Clear();
 
             using (var controller = Dependency.Resolve<ILoadOptionsService>())
             {
-                var items = controller.GetAll().ConfigureAwait(false).GetAwaiter().GetResult();
+                var items = await controller.GetAll();
+				int idx = 0;
                 foreach (var s in items)
                 {
                     _settingName.Items.Add(new LoadOptionDefinition() { Item = s });
-                }
+					if (selectsettingstring == s.SettingName)
+					{
+						_settingName.SelectedItem = s;
+						_settingName.SelectedIndex = idx;
+					}
+					idx++;
+				}
             }
         }
 
@@ -311,7 +318,7 @@ namespace CNCLib.GUI.Load
 			return obj;
 		}
 
-		private void _saveSettings_Click(object sender, EventArgs e)
+		private async void _saveSettings_Click(object sender, EventArgs e)
         {
             LoadOptions obj = GetValues();
 
@@ -325,12 +332,12 @@ namespace CNCLib.GUI.Load
                         {
                             LoadOptionDefinition item = (LoadOptionDefinition)_settingName.SelectedItem;
 							obj.Id = item.Item.Id;
-							controller.Update(obj);
+							await controller.Update(obj);
                         }
                         else
                         {
-                            int id = controller.Add(obj).ConfigureAwait(false).GetAwaiter().GetResult();
-                            ReadSettings();
+                            int id = await controller.Add(obj);
+							await ReadSettings("");
                             int idx = 0;
                             foreach (LoadOptionDefinition o in _settingName.Items)
                             {
@@ -351,7 +358,7 @@ namespace CNCLib.GUI.Load
             }
        }
 
-        private void _deleteSettings_Click(object sender, EventArgs e)
+        private async void _deleteSettings_Click(object sender, EventArgs e)
         {
 			LoadOptions obj = GetValues();
 
@@ -364,8 +371,8 @@ namespace CNCLib.GUI.Load
                         if (_settingName.SelectedItem != null)
                         {
                             LoadOptionDefinition item = (LoadOptionDefinition)_settingName.SelectedItem;
-                            controller.Delete(item.Item);
-                            ReadSettings();
+                            await controller.Delete(item.Item);
+                            await ReadSettings("");
                             _settingName.Text = "";
                         }
                     }
@@ -428,5 +435,10 @@ namespace CNCLib.GUI.Load
         {
             _holeDotDistY.Text = _holeDotDistX.Text;
         }
+
+		private async void LoadOptionForm_Load(object sender, EventArgs e)
+		{
+			await ReadSettings(LoadInfo.SettingName);
+		}
 	}
 }

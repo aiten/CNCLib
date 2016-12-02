@@ -212,7 +212,7 @@ namespace CNCLib.Wpf.ViewModels
 			).Start();
 		}
 
-		public async void Load()
+		public async Task Load()
 		{
 			if (loadinfo.AutoScaleSizeX == 0 || loadinfo.AutoScale == false)
 			{
@@ -240,6 +240,7 @@ namespace CNCLib.Wpf.ViewModels
 				finally
 				{
 					_loadingOrSending = false;
+					CommandManager.InvalidateRequerySuggested();
 				}
 			}
 		}
@@ -285,7 +286,8 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region Commands
 
-		public ICommand LoadCommand { get { return new DelegateCommand(Load, CanLoad); } }
+		private ICommand _LoadCommand;
+		public ICommand LoadCommand { get { return _LoadCommand ?? (_LoadCommand = new DelegateCommand(async () => await Load(), CanLoad)); } }
 		public ICommand SendToCommand { get { return new DelegateCommand(SendTo, CanSendTo); } }
 		public ICommand ResetViewCommand { get { return new DelegateCommand(ResetView, CanResetView); } }
 		public ICommand GotoPosCommand { get { return new DelegateCommand<Point3D>(GotoPos, CanGotoPos); } }

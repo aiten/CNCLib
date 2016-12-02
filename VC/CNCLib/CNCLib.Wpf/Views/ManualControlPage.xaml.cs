@@ -34,6 +34,13 @@ namespace CNCLib.Wpf
             InitializeComponent();
 
 			var vm = DataContext as BaseViewModel;
+
+			Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
+			{
+				var vmm = DataContext as BaseViewModel;
+				await vmm.Loaded();
+			});
+
 		}
 
 		public bool IsConnected

@@ -5,9 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:cwf="clr-namespace:CNCLib.GUI;assembly=CNCLib.GUI"      
+        xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"
         xmlns:local="clr-namespace:CNCLib.Wpf.Views"
         mc:Ignorable="d"
         Title="CNCLib" Height="750" Width="1000" Closing="Window_Closing">
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

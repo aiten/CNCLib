@@ -19,10 +19,12 @@
 using Framework.Wpf.Helpers;
 using System;
 using System.Windows;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace Framework.Wpf.ViewModels
 {
-	public class BaseViewModel : NotificationObject
+	public class BaseViewModel : Prism.Mvvm.BindableBase // NotificationObject
 	{
 		public Action CloseAction { get; set; }
 
@@ -31,6 +33,28 @@ namespace Framework.Wpf.ViewModels
 		public virtual void Cleanup()
 		{
 
+		}
+		public virtual async Task Loaded()
+		{
+			await Task.FromResult(0);
+		}
+
+		protected bool SetProperty(Func<bool> equal, Action action, [CallerMemberName] string propertyName = null)
+		{
+			if (equal())
+			{
+				return false;
+			}
+
+			OnProperty(action, propertyName);
+
+			return true;
+		}
+
+		protected void OnProperty(Action action, [CallerMemberName] string propertyName = null)
+		{
+			action();
+			OnPropertyChanged(propertyName);
 		}
 	}
 }
