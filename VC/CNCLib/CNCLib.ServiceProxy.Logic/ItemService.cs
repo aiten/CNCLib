@@ -30,33 +30,33 @@ namespace CNCLib.ServiceProxy.Logic
 	{
 		private IItemController _controller = Dependency.Resolve<IItemController>();
 
-		public Task<int> Add(Item value)
+		public async Task<int> Add(Item value)
 		{
-			return _controller.Add(value);
+			return await _controller.Add(value);
 		}
 
-		public Task Delete(Item value)
+		public async Task Delete(Item value)
 		{
-			return _controller.Delete(value);
+			await _controller.Delete(value);
 		}
 
-		public Task<Item> Get(int id)
+		public async Task<Item> Get(int id)
 		{
-			return _controller.Get(id);
+			return await _controller.Get(id);
 		}
 
-		public Task<IEnumerable<Item>> GetAll()
+		public async Task<IEnumerable<Item>> GetAll()
 		{
-			return _controller.GetAll();
+			return await _controller.GetAll();
 		}
-		public Task<IEnumerable<Item>> GetByClassName(string classname)
+		public async Task<IEnumerable<Item>> GetByClassName(string classname)
 		{
-			return _controller.GetByClassName(classname);
+			return await _controller.GetByClassName(classname);
 		}
 
-		public Task<int> Update(Item value)
+		public async Task<int> Update(Item value)
 		{
-			return _controller.Update(value);
+			return await _controller.Update(value);
 		}
 
 		#region IDisposable Support

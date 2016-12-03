@@ -308,7 +308,7 @@ namespace Framework.Arduino
 		public async Task<string> SendCommandAndReadOKReplyAsync(string line, int waitForMilliseconds=int.MaxValue)
 		{
 			string message = null;
-			if (WaitUntilNoPendingCommandsAsync(waitForMilliseconds).ConfigureAwait(false).GetAwaiter().GetResult())
+			if (await WaitUntilNoPendingCommandsAsync(waitForMilliseconds))
 			{
 				var checkresponse = new ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
 				{

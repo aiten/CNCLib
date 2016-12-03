@@ -258,7 +258,7 @@ namespace CNCLib.Logic.Client
         {
 			using (var service = Dependency.Resolve<IItemService>())
 			{
-				var item = service.Get(id).ConfigureAwait(false).GetAwaiter().GetResult();
+				var item = await service.Get(id);
 				if (item != null)
 					await service.Delete(item);
 			}

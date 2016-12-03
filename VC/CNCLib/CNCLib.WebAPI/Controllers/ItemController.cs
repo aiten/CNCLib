@@ -51,29 +51,29 @@ namespace CNCLib.WebAPI.Controllers
 	{
 		private IItemService _service = Dependency.Resolve<IItemService>();
 
-		public Task<IEnumerable<Item>> Get()
+		public async Task<IEnumerable<Item>> Get()
 		{
-			return _service.GetAll();
+			return await _service.GetAll();
 		}
 
-		public Task<Item> Get(int id)
+		public async Task<Item> Get(int id)
 		{
-			return _service.Get(id);
+			return await _service.Get(id);
 		}
 
-		public Task<int> Add(Item value)
+		public async Task<int> Add(Item value)
 		{
-			return _service.Add(value);
+			return await _service.Add(value);
 		}
 
-		public Task Update(int id, Item value)
+		public async Task Update(int id, Item value)
 		{
-			return _service.Update(value);
+			await _service.Update(value);
 		}
 
-		public Task Delete(int id, Item value)
+		public async Task Delete(int id, Item value)
 		{
-			return _service.Delete(value);
+			await _service.Delete(value);
 		}
 
 		public bool CompareId(int id, Item value)

@@ -30,44 +30,44 @@ namespace CNCLib.ServiceProxy.Logic
 	{
 		private IMachineController _controller = Dependency.Resolve<IMachineController>();
 
-		public Task<int> Add(Machine value)
+		public async Task<int> Add(Machine value)
 		{
-			return _controller.Add(value);
+			return await _controller.Add(value);
 		}
 
-		public Task<Machine> DefaultMachine()
+		public async Task<Machine> DefaultMachine()
 		{
-			return _controller.DefaultMachine();
+			return await _controller.DefaultMachine();
 		}
 
-		public Task Delete(Machine value)
+		public async Task Delete(Machine value)
 		{
-			return _controller.Delete(value);
+			await _controller.Delete(value);
 		}
 
-		public Task<Machine> Get(int id)
+		public async Task<Machine> Get(int id)
 		{
-			return _controller.Get(id);
+			return await _controller.Get(id);
 		}
 
-		public Task<IEnumerable<Machine>> GetAll()
+		public async Task<IEnumerable<Machine>> GetAll()
 		{
-			return _controller.GetAll();
+			return await _controller.GetAll();
 		}
 
-		public Task<int> GetDetaultMachine()
+		public async Task<int> GetDetaultMachine()
 		{
-			return _controller.GetDetaultMachine();
+			return await _controller.GetDetaultMachine();
 		}
 
-		public Task SetDetaultMachine(int defaultMachineID)
+		public async Task SetDetaultMachine(int defaultMachineID)
 		{
-			return _controller.SetDetaultMachine(defaultMachineID);
+			await _controller.SetDetaultMachine(defaultMachineID);
 		}
 
-		public Task<int> Update(Machine value)
+		public async Task<int> Update(Machine value)
 		{
-			return _controller.Update(value);
+			return await _controller.Update(value);
 		}
 
 		#region IDisposable Support

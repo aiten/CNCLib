@@ -29,11 +29,11 @@ namespace Framework.Web
 {
 	public abstract class RestController<T> : ApiController
 	{
-		public Task<IEnumerable<T>> Get()
+		public async Task<IEnumerable<T>> Get()
 		{
 			using (var controller = Dependency.Resolve<IRest<T>>())
 			{
-				return controller.Get();
+				return await controller.Get();
 			}
 		}
 
@@ -114,7 +114,7 @@ namespace Framework.Web
 					return NotFound();
 				}
 
-				controller.Delete(id, value).GetAwaiter().GetResult();
+				await controller.Delete(id, value);
 				return Ok(value);
 			}
 		}

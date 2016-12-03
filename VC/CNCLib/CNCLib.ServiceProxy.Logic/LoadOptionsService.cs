@@ -30,29 +30,29 @@ namespace CNCLib.ServiceProxy.Logic
 	{
 		private ILoadOptionsController _controller = Dependency.Resolve<ILoadOptionsController>();
 
-		public Task<int> Add(LoadOptions value)
+		public async Task<int> Add(LoadOptions value)
 		{
-			return _controller.Add(value);
+			return await _controller.Add(value);
 		}
 
-		public Task Delete(LoadOptions value)
+		public async Task Delete(LoadOptions value)
 		{
-			return _controller.Delete(value);
+			await _controller.Delete(value);
 		}
 
-		public Task<LoadOptions> Get(int id)
+		public async Task<LoadOptions> Get(int id)
 		{
-			return _controller.Get(id);
+			return await _controller.Get(id);
 		}
 
-		public Task<IEnumerable<LoadOptions>> GetAll()
+		public async Task<IEnumerable<LoadOptions>> GetAll()
 		{
-			return _controller.GetAll();
+			return await _controller.GetAll();
 		}
 
-		public Task<int> Update(LoadOptions value)
+		public async Task<int> Update(LoadOptions value)
 		{
-			return _controller.Update(value);
+			return await _controller.Update(value);
 		}
 
 		#region IDisposable Support
