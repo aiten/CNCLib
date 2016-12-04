@@ -19,6 +19,7 @@
 using System;
 using System.Linq;
 using System.Windows.Input;
+using CNCLib.Wpf.Helpers;
 using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
@@ -99,17 +100,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                     var cmd = GetCmd(x, y);
                     if (cmd !=null)
                     {
-                        string[] seperators = { @"\n" };
-                        string[] cmds = cmd.CommandString.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (var s in cmds)
-                        {
-                            Com.SendCommand(s);
-                        }
+						new MachineGCodeHelper().SendCommandAsync(cmd.CommandString).ConfigureAwait(false).GetAwaiter().GetResult();
                     }
                 });
         }
 		
-
 		#endregion
 
 		#region ICommand

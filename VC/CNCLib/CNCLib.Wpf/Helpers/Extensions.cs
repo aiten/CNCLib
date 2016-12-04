@@ -17,6 +17,7 @@
 */
 
 using System;
+using CNCLib.GCode;
 
 namespace CNCLib.Wpf.Helpers
 {
@@ -24,16 +25,7 @@ namespace CNCLib.Wpf.Helpers
 	{
 		public static string GetAxisName(this CNCLib.Logic.Contracts.DTO.Machine m, int axis)
 		{
-			switch (axis)
-			{
-				case 0: return "X";
-				case 1: return "Y";
-				case 2: return "Z";
-				case 3: return "A";
-				case 4: return "B";
-				case 5: return "C";
-			}
-			throw new NotImplementedException();
+			return GCodeHelper.IndexToAxisName(axis).ToString();
 		}
 
 		public static decimal GetSize(this CNCLib.Logic.Contracts.DTO.Machine m, int axis)

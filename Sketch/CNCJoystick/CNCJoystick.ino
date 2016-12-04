@@ -64,12 +64,12 @@ int maxspeedslow = MAXSPEED2;  //mmpermin
 int intervall = INTERVALL;      // ms
 
 bool speedfast = false;
-unsigned char laserpower = 255;
 
 char buffer[64];
 unsigned char bufferidx = 0;
 
 unsigned long timeNext = 0;
+unsigned long buttonCount[6] = { 0 };
 
 ////////////////////////////////////////////////////////
 
@@ -211,35 +211,38 @@ void loop()
 
   if (btn1.IsOn())
   {
-    laserpower = 255;
-    Serial.println(F("m107"));
+    Serial.print(F(";btn1:"));
+    Serial.println(buttonCount[6-1]++);
   }
 
   if (btn2.IsOn())
   {
-    laserpower = laserpower == 1 ? 255 : 1;
-    Serial.print(F("m106 s"));
-    Serial.println((int) laserpower);
+    Serial.print(F(";btn2:"));
+    Serial.println(buttonCount[2-1]++);
   }
 
   if (btn3.IsOn())
   {
-    Serial.println(F(";btn3"));
+    Serial.print(F(";btn3:"));
+    Serial.println(buttonCount[3-1]++);
   }
 
   if (btn4.IsOn())
   {
-    Serial.println(F(";btn4"));
+    Serial.print(F(";btn4:"));
+    Serial.println(buttonCount[4-1]++);
   }
 
   if (btn5.IsOn())
   {
-    Serial.println(F(";btn5"));
+    Serial.print(F(";btn5:"));
+    Serial.println(buttonCount[5-1]++);
   }
 
   if (btn6.IsOn())
   {
-    Serial.println(F("g92 x0y0"));
+    Serial.print(F(";btn6:"));
+    Serial.println(buttonCount[6-1]++);
   }
 }
 
