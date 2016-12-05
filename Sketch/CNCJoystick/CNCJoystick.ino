@@ -56,7 +56,8 @@ CPushButton btn6(BUTTON6, LOW);
 const int maxanalog = 32;
 const int minanalog = 0;
 const int maxdist = (maxanalog - minanalog) / 2;
-int neutralanalog = (maxanalog - minanalog) / 2;
+int neutralanalogX = (maxanalog - minanalog) / 2;
+int neutralanalogY = (maxanalog - minanalog) / 2;
 
 int maxspeedfast = MAXSPEED1;  //mmpermin
 int maxspeedslow = MAXSPEED2;  //mmpermin
@@ -68,8 +69,9 @@ bool speedfast = false;
 char buffer[64];
 unsigned char bufferidx = 0;
 
+#define LOGBUTTINCOUNT 12
 unsigned long timeNext = 0;
-unsigned long buttonCount[6] = { 0 };
+unsigned long buttonCount[LOGBUTTINCOUNT] = { 0 };
 
 ////////////////////////////////////////////////////////
 
@@ -77,8 +79,8 @@ void setup()
 {
   X.Init(); X.SetMinMax(minanalog, maxanalog);
   Y.Init(); Y.SetMinMax(minanalog, maxanalog);
-
-  neutralanalog = X.Read();
+  neutralanalogX = X.Read();
+  neutralanalogY = Y.Read();
 
   Serial.begin(250000);
 }
@@ -92,22 +94,39 @@ unsigned long MoveTime(unsigned int distinmm1000, unsigned int mmPerMin)
 
 ////////////////////////////////////////////////////////
 
-void SendCommand(int mm1000X, int mm1000Y, unsigned int mmPerMin)
+bool SendCommand(int mm1000X, int mm1000Y, int mm1000Z, int mm1000A, unsigned int mmPerMin)
 {
-  Serial.print(F("g91 g1"));
-  if (mm1000X != 0)
+  if (mm1000X==0 || mm1000Y==0 || mm1000Z==0 || mm1000A==0)
   {
-    Serial.print('X');
-    Serial.print(mm1000X / 1000.0);
+    Serial.print(F("g91 g1"));
+    if (mm1000X != 0)
+    {
+      Serial.print('X');
+      Serial.print(mm1000X / 1000.0);
+    }
+    if (mm1000Y != 0)
+    {
+      Serial.print('Y');
+      Serial.print(mm1000Y / 1000.0);
+    }
+    if (mm1000Z != 0)
+    {
+      Serial.print('Z');
+      Serial.print(mm1000Z / 1000.0);
+    }
+    if (mm1000A != 0)
+    {
+      Serial.print('A');
+      Serial.print(mm1000A / 1000.0);
+    }
+    Serial.print(F("F"));
+    Serial.print(mmPerMin);
+    Serial.println(F(" g90"));
+
+    return true;
   }
-  if (mm1000Y != 0)
-  {
-    Serial.print('Y');
-    Serial.print(mm1000Y / 1000.0);
-  }
-  Serial.print(F("F"));
-  Serial.print(mmPerMin);
-  Serial.println(F(" g90"));
+
+  return false;
 }
 
 ////////////////////////////////////////////////////////
@@ -136,6 +155,23 @@ unsigned int ToSpeed(int diffX, int diffY)
 
 ////////////////////////////////////////////////////////
 
+void Error()
+{
+  Serial.println(F(";ERROR"));
+  PrintVar();
+}
+
+////////////////////////////////////////////////////////
+
+void PrintVar()
+{
+    Serial.print(F(";maxspeedfast="));Serial.println(maxspeedfast);
+    Serial.print(F(";maxspeedslow="));Serial.println(maxspeedslow);
+    Serial.print(F(";intervall="));Serial.println(intervall);
+}
+
+////////////////////////////////////////////////////////
+
 void InCommand(char*b)
 {
   char*col = strchr(b,'=');
@@ -144,22 +180,38 @@ void InCommand(char*b)
     *col = 0;
     col++;
 
-    int varidx = atoi(b);
     int varvalue = atoi(col);
 
-    Serial.print(varidx);
-    Serial.print(F("="));
-    Serial.println(varvalue);
-
-    switch(varidx)
+    if      (strcmp_P(b,PSTR("maxspeedfast"))==0)  maxspeedfast = varvalue;
+    else if (strcmp_P(b,PSTR("maxspeedslow"))==0)  maxspeedslow = varvalue;
+    else if (strcmp_P(b,PSTR("intervall"))==0)     intervall = varvalue;
+    else
     {
-      case 1: maxspeedfast = varvalue; break;
-      case 2: maxspeedslow = varvalue; break;
-      case 3: intervall    = varvalue; break;
+      Error();
+      return;
     }
+    PrintVar();
   }
-  
-  //Serial.println(b);
+  else
+  {
+    Error();
+  }  
+}
+
+////////////////////////////////////////////////////////
+
+void ButtonPress(uint8_t buttonIndex)
+{
+    if (btn5.IsPressed())
+      buttonIndex += 4;
+    if (btn6.IsPressed())
+      buttonIndex += 8;
+
+    if (LOGBUTTINCOUNT >= buttonIndex)
+    {
+      Serial.print(F(";btn"));Serial.print(((uint16_t)buttonIndex)+1);Serial.print(F(":"));
+      Serial.println(buttonCount[buttonIndex]++);
+    }
 }
 
 ////////////////////////////////////////////////////////
@@ -190,8 +242,8 @@ void loop()
   {
     int x = X.Read();
     int y = Y.Read();
-    int xdist = x - neutralanalog;
-    int ydist = y - neutralanalog;
+    int xdist = x - neutralanalogX;
+    int ydist = y - neutralanalogY;
     float angle = atan2(ydist, xdist);
 
     int speedPerMin = ToSpeed(xdist, ydist);
@@ -199,8 +251,20 @@ void loop()
     if (speedPerMin)
     {
       unsigned int mm1000 = SpeedToDist(speedPerMin, intervall);
-      SendCommand((int) (cos(angle)*mm1000), (int) (-sin(angle)*mm1000), speedPerMin);
-      timeNext = millis() + MoveTime(abs(mm1000), speedPerMin);
+      int mm1000X=0,mm1000Y=0,mm1000Z=0,mm1000A=0;
+
+      if (btn5.IsPressed())
+      {
+        mm1000Z = (int) (-sin(angle)*mm1000);
+      }
+      else
+      {
+        mm1000X = (int) (cos(angle)*mm1000);
+        mm1000Y = (int) (-sin(angle)*mm1000);
+      }
+
+      if (SendCommand(mm1000X, mm1000Y, mm1000Z,mm1000A, speedPerMin))
+        timeNext = millis() + MoveTime(abs(mm1000), speedPerMin);
     }
   }
 
@@ -211,38 +275,30 @@ void loop()
 
   if (btn1.IsOn())
   {
-    Serial.print(F(";btn1:"));
-    Serial.println(buttonCount[6-1]++);
+    ButtonPress(0);
   }
 
   if (btn2.IsOn())
   {
-    Serial.print(F(";btn2:"));
-    Serial.println(buttonCount[2-1]++);
+    ButtonPress(1);
   }
 
   if (btn3.IsOn())
   {
-    Serial.print(F(";btn3:"));
-    Serial.println(buttonCount[3-1]++);
+    ButtonPress(2);
   }
 
   if (btn4.IsOn())
   {
-    Serial.print(F(";btn4:"));
-    Serial.println(buttonCount[4-1]++);
+    ButtonPress(3);
   }
 
   if (btn5.IsOn())
   {
-    Serial.print(F(";btn5:"));
-    Serial.println(buttonCount[5-1]++);
   }
 
   if (btn6.IsOn())
   {
-    Serial.print(F(";btn6:"));
-    Serial.println(buttonCount[6-1]++);
   }
 }
 

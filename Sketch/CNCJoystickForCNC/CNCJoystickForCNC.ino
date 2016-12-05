@@ -70,6 +70,7 @@ char buffer[64];
 unsigned char bufferidx = 0;
 
 unsigned long timeNext = 0;
+unsigned long buttonCount[6] = { 0 };
 
 ////////////////////////////////////////////////////////
 
@@ -243,24 +244,26 @@ void loop()
 
   if (btn1.IsOn())
   {
-    // spindle off
-    Serial.println(F("m9"));
+    Serial.print(F(";btn1:"));
+    Serial.println(buttonCount[6-1]++);
   }
 
   if (btn2.IsOn())
   {
-    // coolant off off
-    Serial.println(F("m5"));
+    Serial.print(F(";btn2:"));
+    Serial.println(buttonCount[2-1]++);
   }
 
   if (btn3.IsOn())
   {
-    Serial.println(F(";btn3"));
+    Serial.print(F(";btn3:"));
+    Serial.println(buttonCount[3-1]++);
   }
 
   if (btn4.IsOn())
   {
-    Serial.println(F(";g31:z"));
+    Serial.print(F(";btn4:"));
+    Serial.println(buttonCount[4-1]++);
   }
 
   if (btn5.IsOn())
