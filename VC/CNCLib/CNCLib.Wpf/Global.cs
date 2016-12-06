@@ -16,12 +16,23 @@
   http://www.gnu.org/licenses/
 */
 
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Wpf
 {
-	public class Global : Singleton<Global>
+	public class Global : Singleton<Global>, INotifyPropertyChanged
 	{
-		public CNCLib.Logic.Contracts.DTO.Machine Machine { get; set; }
+		private CNCLib.Logic.Contracts.DTO.Machine _machine;
+		public CNCLib.Logic.Contracts.DTO.Machine Machine { get { return _machine; } set { _machine = value; OnPropertyChanged(); } }
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+
+		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
 }

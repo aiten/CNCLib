@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using CNCLib.Wpf.Helpers;
@@ -29,6 +30,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public CustomViewModel(IManualControlViewModel vm)
 			: base(vm)
 		{
+			Global.Instance.PropertyChanged += (object sender, PropertyChangedEventArgs e) => { if (e.PropertyName == "Machine") MachineChanged(); }; 
 		}
 
         #region Properties
@@ -69,9 +71,54 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         public String Desc63 { get { return GetDesc(6, 3); } }
         public String Desc64 { get { return GetDesc(6, 4); } }
 
-        #endregion
+		#endregion
 
-        private CNCLib.Logic.Contracts.DTO.MachineCommand GetCmd(int x, int y)
+		private void MachineChanged()
+		{
+			OnPropertyChanged(() => Desc00);
+			OnPropertyChanged(() => Desc01);
+			OnPropertyChanged(() => Desc02);
+			OnPropertyChanged(() => Desc03);
+			OnPropertyChanged(() => Desc04);
+
+			OnPropertyChanged(() => Desc10);
+			OnPropertyChanged(() => Desc11);
+			OnPropertyChanged(() => Desc12);
+			OnPropertyChanged(() => Desc13);
+			OnPropertyChanged(() => Desc14);
+
+			OnPropertyChanged(() => Desc20);
+			OnPropertyChanged(() => Desc21);
+			OnPropertyChanged(() => Desc22);
+			OnPropertyChanged(() => Desc23);
+			OnPropertyChanged(() => Desc24);
+
+			OnPropertyChanged(() => Desc30);
+			OnPropertyChanged(() => Desc31);
+			OnPropertyChanged(() => Desc32);
+			OnPropertyChanged(() => Desc33);
+			OnPropertyChanged(() => Desc34);
+
+			OnPropertyChanged(() => Desc40);
+			OnPropertyChanged(() => Desc41);
+			OnPropertyChanged(() => Desc42);
+			OnPropertyChanged(() => Desc43);
+			OnPropertyChanged(() => Desc44);
+
+			OnPropertyChanged(() => Desc50);
+			OnPropertyChanged(() => Desc51);
+			OnPropertyChanged(() => Desc52);
+			OnPropertyChanged(() => Desc53);
+			OnPropertyChanged(() => Desc54);
+
+			OnPropertyChanged(() => Desc60);
+			OnPropertyChanged(() => Desc61);
+			OnPropertyChanged(() => Desc62);
+			OnPropertyChanged(() => Desc63);
+			OnPropertyChanged(() => Desc64);
+		}
+
+		private CNCLib.Logic.Contracts.DTO.MachineCommand GetCmd(int x, int y)
         {
 			if (Global.Instance.Machine == null || Global.Instance.Machine.MachineCommands == null)
 				return null;
