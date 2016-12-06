@@ -69,7 +69,7 @@ bool speedfast = false;
 char buffer[64];
 unsigned char bufferidx = 0;
 
-#define LOGBUTTINCOUNT 12
+#define LOGBUTTINCOUNT 16
 unsigned long timeNext = 0;
 unsigned long buttonCount[LOGBUTTINCOUNT] = { 0 };
 
@@ -83,6 +83,8 @@ void setup()
   neutralanalogY = Y.Read();
 
   Serial.begin(250000);
+
+  Serial.println(F(";CNCJoystick, " __DATE__ ));
 }
 
 ////////////////////////////////////////////////////////
@@ -185,6 +187,7 @@ void InCommand(char*b)
     if      (strcmp_P(b,PSTR("maxspeedfast"))==0)  maxspeedfast = varvalue;
     else if (strcmp_P(b,PSTR("maxspeedslow"))==0)  maxspeedslow = varvalue;
     else if (strcmp_P(b,PSTR("intervall"))==0)     intervall = varvalue;
+    else if (strcmp_P(b,PSTR("count"))==0)         memset(buttonCount,sizeof(buttonCount),0);
     else
     {
       Error();
@@ -202,14 +205,21 @@ void InCommand(char*b)
 
 void ButtonPress(uint8_t buttonIndex)
 {
+    Serial.print(F(";btn"));Serial.print(((uint16_t)buttonIndex)+1);
     if (btn5.IsPressed())
+    {
       buttonIndex += 4;
+      Serial.print(F("s"));        
+    }
     if (btn6.IsPressed())
+    {
       buttonIndex += 8;
-
+      Serial.print(F("c"));
+    }        
+    
     if (LOGBUTTINCOUNT >= buttonIndex)
     {
-      Serial.print(F(";btn"));Serial.print(((uint16_t)buttonIndex)+1);Serial.print(F(":"));
+      Serial.print(F(":"));
       Serial.println(buttonCount[buttonIndex]++);
     }
 }

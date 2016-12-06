@@ -18,6 +18,7 @@
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using CNCLib.Wpf.Models;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Wpf
@@ -26,6 +27,10 @@ namespace CNCLib.Wpf
 	{
 		private CNCLib.Logic.Contracts.DTO.Machine _machine;
 		public CNCLib.Logic.Contracts.DTO.Machine Machine { get { return _machine; } set { _machine = value; OnPropertyChanged(); } }
+
+		private Joystick _joystick;
+		public Joystick Joystick { get { return _joystick; } set { _joystick = value; OnPropertyChanged(); } }
+
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

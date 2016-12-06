@@ -66,6 +66,11 @@ namespace CNCLib.Wpf.ViewModels
 			get { return _currentJoystick.BaudRate; }
             set { SetProperty(() => _currentJoystick.BaudRate == value, () => _currentJoystick.BaudRate = value); }
 		}
+		public string InitCommands
+		{
+			get { return _currentJoystick.InitCommands; }
+			set { SetProperty(() => _currentJoystick.InitCommands == value, () => _currentJoystick.InitCommands = value); }
+		}
 
 		#endregion
 
@@ -78,6 +83,7 @@ namespace CNCLib.Wpf.ViewModels
 
 			OnPropertyChanged(() => ComPort);
 			OnPropertyChanged(() => BaudRate);
+			OnPropertyChanged(() => InitCommands);
 		}
 
 		public async void SaveJoystick()

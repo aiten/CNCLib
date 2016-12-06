@@ -59,5 +59,66 @@ namespace CNCLib.Wpf.Helpers
 				}
 			}
 		}
+		private Framework.Arduino.ArduinoSerialCommunication ComJoystick
+		{
+			get { return Framework.Tools.Pattern.Singleton<JoystickArduinoSerialCommunication>.Instance; }
+		}
+
+		public void JoystickReplyReceived(string trim)
+		{
+			// ;btn5		=> look for ;btn5
+			// ;btn5:x		=> x is presscount - always incremented, look for max x in setting => modulo 
+
+			int idx;
+
+			if ((idx = trim.IndexOf(':')) < 0)
+			{
+				var mc = Global.Instance.Machine.MachineCommands.Where((m) => m.JoystickMessage == trim).FirstOrDefault();
+				if (mc != null)
+					trim = mc.CommandString;
+			}
+			else
+			{
+				string btn = trim.Substring(0, idx + 1);
+				var mclist = Global.Instance.Machine.MachineCommands.Where((m) => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
+
+				uint max = 0;
+				foreach (var m in mclist)
+				{
+					uint val = 0;
+					if (uint.TryParse(m.JoystickMessage.Substring(idx + 1), out val))
+					{
+						if (val > max)
+							max = val;
+					}
+				}
+
+				string findcmd = $"{btn}{uint.Parse(trim.Substring(idx + 1)) % (max + 1)}";
+
+				var mc = Global.Instance.Machine.MachineCommands.Where((m) => m.JoystickMessage == findcmd).FirstOrDefault();
+				if (mc == null)
+				{
+					// try to find ;btn3 (without :)  
+					findcmd = trim.Substring(0, idx);
+					mc = Global.Instance.Machine.MachineCommands.Where((m) => m.JoystickMessage == findcmd).FirstOrDefault();
+				}
+
+				if (mc != null)
+					trim = mc.CommandString;
+			}
+
+			new MachineGCodeHelper().SendCommandAsync(trim).ConfigureAwait(false).GetAwaiter().GetResult();
+		}
+
+
+		public async Task SendInitCommands(string commandstring)
+		{
+			string[] seperators = { @"\n" };
+			string[] cmds = commandstring.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
+			foreach (var s in cmds)
+			{
+				await ComJoystick.SendCommandAsync(s);
+			}
+		}
 	}
 }

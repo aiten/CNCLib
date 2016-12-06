@@ -345,7 +345,7 @@ namespace Framework.Arduino
 		}
 
 		/// <summary>
-		/// Queue command - do nat wait - not for transfer and not for replay
+		/// Queue command - do not wait - not for transfer and not for replay
 		/// </summary>
 		/// <param name="line">command line to send</param>
 		public IEnumerable<Command> QueueCommand(string line)

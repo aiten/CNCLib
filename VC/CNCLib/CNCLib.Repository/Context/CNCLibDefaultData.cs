@@ -174,31 +174,31 @@ namespace CNCLib.Repository.Context
             var machinecommands = new []
             {
                 //ProxxonMF70
-                new MachineCommand{ Machine=proxonMF70, CommandName = "Set XY = 0",   CommandString =@"g92 x0\ng92 y0", PosX=0,PosY=0,	JoystickMessage=";btn4" },
-				new MachineCommand{ Machine=proxonMF70, CommandName = "Set X = 0",    CommandString =@"g92 x0",    PosX=0, PosY=1,		JoystickMessage=";btn4S" },
-                new MachineCommand{ Machine=proxonMF70, CommandName = "Set Y = 0",    CommandString =@"g92 y0",    PosX=0, PosY=2,		JoystickMessage=";btn4C" },
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Set XY = 0",   CommandString =@"g92 x0\ng92 y0\n;beep", PosX=0,PosY=0,	JoystickMessage=";btn4" },
+				new MachineCommand{ Machine=proxonMF70, CommandName = "Set X = 0",    CommandString =@"g92 x0",    PosX=0, PosY=1,		JoystickMessage=";btn4s" },
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Set Y = 0",    CommandString =@"g92 y0",    PosX=0, PosY=2,		JoystickMessage=";btn4c" },
                 new MachineCommand{ Machine=proxonMF70, CommandName = "Set Z = 0",    CommandString =@"g92 z0",    PosX=0, PosY=3,		JoystickMessage=";btn3" },
-				new MachineCommand{ Machine=proxonMF70, CommandName = "Probe Z",	  CommandString =@";probe:z",  PosX=0, PosY=4,      JoystickMessage=";btn3S" },
+				new MachineCommand{ Machine=proxonMF70, CommandName = "Probe Z",	  CommandString =@";probe:z",  PosX=0, PosY=4,      JoystickMessage=";btn3s" },
 				new MachineCommand{ Machine=proxonMF70, CommandName = "Spindle On",   CommandString =@"m3",        PosX=1, PosY=0,      JoystickMessage=";btn1" },
-                new MachineCommand{ Machine=proxonMF70, CommandName = "Spindle Off",  CommandString =@"m5",        PosX=1, PosY=1,		JoystickMessage=";btn1S" },
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Spindle Off",  CommandString =@"m5",        PosX=1, PosY=1,		JoystickMessage=";btn1s" },
                 new MachineCommand{ Machine=proxonMF70, CommandName = "Coolant On",   CommandString =@"m7",        PosX=1, PosY=2,      JoystickMessage=";btn2" },
-                new MachineCommand{ Machine=proxonMF70, CommandName = "Coolant Off",  CommandString =@"m9",        PosX=1, PosY=3,      JoystickMessage=";btn2S" },
+                new MachineCommand{ Machine=proxonMF70, CommandName = "Coolant Off",  CommandString =@"m9",        PosX=1, PosY=3,      JoystickMessage=";btn2s" },
 
                 //kk1000s
-                new MachineCommand{ Machine=kk1000s, CommandName = "Set XY = 0",    CommandString =@"g92 x0\ng92 y0", PosX=0, PosY=0 ,  JoystickMessage=";btn4" },
-				new MachineCommand{ Machine=kk1000s, CommandName = "Set X = 0",		CommandString =@"g92 x0",    PosX=0, PosY=1,		JoystickMessage=";btn4S" },
-                new MachineCommand{ Machine=kk1000s, CommandName = "Set Y = 0",		CommandString =@"g92 y0",    PosX=0, PosY=2,		JoystickMessage=";btn4C" },
+                new MachineCommand{ Machine=kk1000s, CommandName = "Set XY = 0",    CommandString =@"g92 x0\ng92 y0\n;beep", PosX=0, PosY=0 ,  JoystickMessage=";btn4" },
+				new MachineCommand{ Machine=kk1000s, CommandName = "Set X = 0",		CommandString =@"g92 x0",    PosX=0, PosY=1,		JoystickMessage=";btn4s" },
+                new MachineCommand{ Machine=kk1000s, CommandName = "Set Y = 0",		CommandString =@"g92 y0",    PosX=0, PosY=2,		JoystickMessage=";btn4c" },
                 new MachineCommand{ Machine=kk1000s, CommandName = "Set Z = 0",		CommandString =@"g92 z0",    PosX=0, PosY=3,		JoystickMessage=";btn3" },
-				new MachineCommand{ Machine=kk1000s, CommandName = "Probe Z",		CommandString = @";probe:z", PosX = 0, PosY = 4,	JoystickMessage=";btn3S" },
+				new MachineCommand{ Machine=kk1000s, CommandName = "Probe Z",		CommandString = @";probe:z", PosX = 0, PosY = 4,	JoystickMessage=";btn3s" },
                 new MachineCommand{ Machine=kk1000s, CommandName = "Spindle On",	CommandString =@"m3",        PosX=1, PosY=0,		JoystickMessage=";btn1" },
-                new MachineCommand{ Machine=kk1000s, CommandName = "Spindle Off",	CommandString =@"m5",        PosX=1, PosY=1,		JoystickMessage=";btn1S" },
+                new MachineCommand{ Machine=kk1000s, CommandName = "Spindle Off",	CommandString =@"m5",        PosX=1, PosY=1,		JoystickMessage=";btn1s" },
                 new MachineCommand{ Machine=kk1000s, CommandName = "Coolant On",	CommandString =@"m7",        PosX=1, PosY=2,		JoystickMessage=";btn2" },
-                new MachineCommand{ Machine=kk1000s, CommandName = "Coolant Off",	CommandString =@"m9",        PosX=1, PosY=3,		JoystickMessage=";btn2S" },   
+                new MachineCommand{ Machine=kk1000s, CommandName = "Coolant Off",	CommandString =@"m9",        PosX=1, PosY=3,		JoystickMessage=";btn2s" },   
 																																	   
                 //laser
-                new MachineCommand{ Machine=laser, CommandName = "Set XY = 0",  CommandString =@"g92 x0\ng92 y0", PosX=0, PosY=0,		JoystickMessage=";btn4" },
-                new MachineCommand{ Machine=laser, CommandName = "Set X = 0",   CommandString =@"g92 x0",       PosX=0, PosY=1,			JoystickMessage=";btn4S" },
-                new MachineCommand{ Machine=laser, CommandName = "Set Y = 0",   CommandString =@"g92 y0",       PosX=0, PosY=2,			JoystickMessage=";btn4C" },
+                new MachineCommand{ Machine=laser, CommandName = "Set XY = 0",  CommandString =@"g92 x0\ng92 y0\n;beep", PosX=0, PosY=0,		JoystickMessage=";btn4" },
+                new MachineCommand{ Machine=laser, CommandName = "Set X = 0",   CommandString =@"g92 x0",       PosX=0, PosY=1,			JoystickMessage=";btn4s" },
+                new MachineCommand{ Machine=laser, CommandName = "Set Y = 0",   CommandString =@"g92 y0",       PosX=0, PosY=2,			JoystickMessage=";btn4c" },
                 new MachineCommand{ Machine=laser, CommandName = "Laser Off",   CommandString =@"m107",         PosX=1, PosY=0,			JoystickMessage=";btn1" },
                 new MachineCommand{ Machine=laser, CommandName = "Laser On",    CommandString =@"m106",         PosX=1, PosY=1,			JoystickMessage=";btn2:0" },
                 new MachineCommand{ Machine=laser, CommandName = "Laser Min",   CommandString =@"m106 s1",      PosX=1, PosY=2,			JoystickMessage=";btn2:1" },
@@ -206,8 +206,8 @@ namespace CNCLib.Repository.Context
 
                 //minlaser
                 new MachineCommand{ Machine=minilaser, CommandName = "Set XY = 0",  CommandString =@"g92 x0\ng92 y0\n;beep", PosX=0,PosY=0,	JoystickMessage=";btn4" },
-                new MachineCommand{ Machine=minilaser, CommandName = "Set X = 0",   CommandString =@"g92 x0\n;beep",PosX=0, PosY=1,			JoystickMessage=";btn4S" },
-                new MachineCommand{ Machine=minilaser, CommandName = "Set Y = 0",   CommandString =@"g92 y0\n;beep",PosX=0, PosY=2,			JoystickMessage=";btn4C" },
+                new MachineCommand{ Machine=minilaser, CommandName = "Set X = 0",   CommandString =@"g92 x0\n;beep",PosX=0, PosY=1,			JoystickMessage=";btn4s" },
+                new MachineCommand{ Machine=minilaser, CommandName = "Set Y = 0",   CommandString =@"g92 y0\n;beep",PosX=0, PosY=2,			JoystickMessage=";btn4c" },
                 new MachineCommand{ Machine=minilaser, CommandName = "Laser Off",   CommandString =@"m107",         PosX=1, PosY=0,			JoystickMessage=";btn1" },
                 new MachineCommand{ Machine=minilaser, CommandName = "Laser On",    CommandString =@"m106",         PosX=1, PosY=1,			JoystickMessage=";btn2:0" },
                 new MachineCommand{ Machine=minilaser, CommandName = "Laser Min",   CommandString =@"m106 s1",      PosX=1, PosY=2,			JoystickMessage=";btn2:1" },
@@ -215,9 +215,9 @@ namespace CNCLib.Repository.Context
                 new MachineCommand{ Machine=minilaser, CommandName = "Sqare",       CommandString =@"m106 s2\ng0x0y0\ng0x36\ng0y36\ng0x0\ng0y0m107",    PosX=3, PosY=0 },
 
                 //co2 laser
-                new MachineCommand{ Machine=dck40laser, CommandName = "Set XY = 0",  CommandString =@"g92 x0\ng92 y0", PosX=0, PosY=0,      JoystickMessage=";btn4" },
-                new MachineCommand{ Machine=dck40laser, CommandName = "Set X = 0",   CommandString =@"g92 x0",       PosX=0, PosY=1,		JoystickMessage=";btn4S" },
-                new MachineCommand{ Machine=dck40laser, CommandName = "Set Y = 0",   CommandString =@"g92 y0",       PosX=0, PosY=2,		JoystickMessage=";btn4C" },
+                new MachineCommand{ Machine=dck40laser, CommandName = "Set XY = 0",  CommandString =@"g92 x0\ng92 y0\n;beep", PosX=0, PosY=0,      JoystickMessage=";btn4" },
+                new MachineCommand{ Machine=dck40laser, CommandName = "Set X = 0",   CommandString =@"g92 x0",       PosX=0, PosY=1,		JoystickMessage=";btn4s" },
+                new MachineCommand{ Machine=dck40laser, CommandName = "Set Y = 0",   CommandString =@"g92 y0",       PosX=0, PosY=2,		JoystickMessage=";btn4c" },
                 new MachineCommand{ Machine=dck40laser, CommandName = "Laser Off",   CommandString =@"m107",         PosX=1, PosY=0,		JoystickMessage=";btn1" },
                 new MachineCommand{ Machine=dck40laser, CommandName = "Laser On",    CommandString =@"m106",         PosX=1, PosY=1,		JoystickMessage=";btn2:0" },
                 new MachineCommand{ Machine=dck40laser, CommandName = "Laser Min",   CommandString =@"m106 s1",      PosX=1, PosY=2,		JoystickMessage=";btn2:1" },

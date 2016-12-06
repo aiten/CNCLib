@@ -82,6 +82,7 @@ namespace CNCLib.Wpf.ViewModels
 		private async Task LoadJoystick()
 		{
 			Joystick = (await JoystickHelper.Load()).Item1;
+			Global.Instance.Joystick = Joystick;
 		}
 
 		#endregion
@@ -201,6 +202,9 @@ namespace CNCLib.Wpf.ViewModels
                 ComJoystick.CommandToUpper = false;
                 ComJoystick.BaudRate = Joystick.BaudRate;
                 ComJoystick.Connect(Joystick.ComPort);
+
+
+
             }
             catch (Exception e)
             {

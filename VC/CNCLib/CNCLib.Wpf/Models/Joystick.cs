@@ -23,5 +23,6 @@ namespace CNCLib.Wpf.Models
 	{
 		public string ComPort { get; set; }
 		public int BaudRate { get; set; }
+		public string InitCommands { get; set; }
 	}
 }
