@@ -406,6 +406,9 @@ namespace CNCLib.GUI
 				{
 					// ignore this Exception
 				}
+				catch (ArgumentException)
+				{
+				}
 			}
 		}
 

@@ -147,8 +147,24 @@ namespace CNCLib.Wpf.Controls
 		private static void OnRotateAngleChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
 			var godeCtrl = (GCodeUserControl)dependencyObject;
-			godeCtrl._bitmapDraw.Rotate = godeCtrl._rotate = new Rotate3D((double)e.NewValue, godeCtrl._rotaryVector);
+			godeCtrl._bitmapDraw.Rotate = godeCtrl._rotate = new Rotate3D((double)e.NewValue, godeCtrl.RotateVector);
 			//godeCtrl._rotateInvers = new Rotate3D(-(double)e.NewValue, godeCtrl._rotaryVector);
+			godeCtrl.InvalidateVisual();
+		}
+
+		/// <summary>
+		/// RotateAngle Property
+		/// </summary>
+		public static DependencyProperty RotateVectorProperty = DependencyProperty.Register("RotateVector", typeof(double[]), typeof(GCodeUserControl), new PropertyMetadata(new double[] { 0, 0, 1 }, OnRotateVectorChanged));
+		public double[] RotateVector
+		{
+			get { return (double[])GetValue(RotateVectorProperty); }
+			set { SetValue(RotateVectorProperty, value); }
+		}
+		private static void OnRotateVectorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+		{
+			var godeCtrl = (GCodeUserControl)dependencyObject;
+			godeCtrl._bitmapDraw.Rotate = godeCtrl._rotate = new Rotate3D(godeCtrl.RotateAngle, (double[])e.NewValue);
 			godeCtrl.InvalidateVisual();
 		}
 
@@ -397,7 +413,6 @@ namespace CNCLib.Wpf.Controls
 			InvalidateVisual();
 		}
 
-		double[] _rotaryVector = new double[] { 0, 0, 0 };
 		Rotate3D _rotate=new Rotate3D();
 
 		private bool IsGotoPosKey()
@@ -472,12 +487,12 @@ namespace CNCLib.Wpf.Controls
 						var rotateY = diffY / maxdiffY;
 
 						RotateAngle = 2.0 * Math.PI * (Math.Abs(rotateX) > Math.Abs(rotateY) ? rotateX : rotateY);
-							
-						_rotaryVector[1] = diffX;
-						_rotaryVector[0] = -diffY;
+
+						RotateVector[1] = diffX;
+						RotateVector[0] = -diffY;
 
 						_bitmapDraw.Rotate = 
-						_rotate = new Rotate3D(RotateAngle, _rotaryVector);
+						_rotate = new Rotate3D(RotateAngle, RotateVector);
 						break;
 					}
 			}

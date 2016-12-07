@@ -72,6 +72,7 @@
                 <Slider Value="{Binding Path=Zoom}" Minimum="0.1" Maximum="25" Width="200"/>
             </StackPanel>
             <Button Content="[x]" Command="{Binding Path=ResetViewCommand}" DockPanel.Dock="Right"/>
+            <Button Content="[x]" Command="{Binding Path=ResetToLatheViewCommand}" DockPanel.Dock="Right"/>
             <Slider Value="{Binding Path=OffsetX}" Minimum="-1000" Maximum="1000" />
         </DockPanel>
         <Slider Value="{Binding Path=OffsetY}" Minimum="-1000" Maximum="1000" DockPanel.Dock="Right" Orientation="Vertical" IsDirectionReversed="True"/>
@@ -90,6 +91,7 @@
                                CutterSize="{Binding Path=CutterSize}"
                                Zoom="{Binding Path=Zoom,Mode=TwoWay}" 
                                RotateAngle="{Binding Path=RotateAngle,Mode=TwoWay}" 
+                               RotateVector="{Binding Path=RotateVector,Mode=TwoWay}" 
                                OffsetX="{Binding Path=OffsetX,Mode=TwoWay}"
                                OffsetY="{Binding Path=OffsetY,Mode=TwoWay}"
                                GotoPos="{Binding Path=GotoPosCommand}"/>

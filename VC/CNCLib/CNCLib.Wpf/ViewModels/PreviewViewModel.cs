@@ -84,6 +84,12 @@ namespace CNCLib.Wpf.ViewModels
 			get { return _rotateAngle; }
 			set { SetProperty(() => _rotateAngle == value, () => _rotateAngle = value); }
 		}
+		private double[] _rotateVector = new double[] { 0, 0, 1 };
+		public double[] RotateVector
+		{
+			get { return _rotateVector; }
+			set { SetProperty(() => _rotateVector == value, () => _rotateVector = value); }
+		}
 
 		private decimal _laserSize = 0.25m;
 		public decimal LaserSize
@@ -268,6 +274,16 @@ namespace CNCLib.Wpf.ViewModels
 			OffsetY = 0;
 			RotateAngle = 0;
 		}
+		public void ResetToLatheView()
+		{
+			Zoom = 1;
+			// set Zoom first, set Zoom adjusts OffsetX/Y
+			OffsetX = 0;
+			OffsetY = 0;
+			RotateVector = new double[] { 1, 1, 1 };
+			RotateAngle = Math.PI*4.0/3.0;
+
+		}
 
 		public void GotoPos(Point3D pt)
 		{
@@ -291,6 +307,7 @@ namespace CNCLib.Wpf.ViewModels
 		public ICommand SendToCommand { get { return new DelegateCommand(SendTo, CanSendTo); } }
 		public ICommand ResetViewCommand { get { return new DelegateCommand(ResetView, CanResetView); } }
 		public ICommand GotoPosCommand { get { return new DelegateCommand<Point3D>(GotoPos, CanGotoPos); } }
+		public ICommand ResetToLatheViewCommand { get { return new DelegateCommand(ResetToLatheView, CanResetView); } }
 
 		#endregion
 	}
