@@ -37,6 +37,12 @@ namespace CNCLib.GCode.Commands
 
 		#region Draw
 
+		public override void Draw(IOutputCommand output, DrawState state, object param)
+		{
+			base.Draw(output, state, param);
+			state.CurrentPane = Pane.XYPane;
+		}
+
 		#endregion
 	}
 }

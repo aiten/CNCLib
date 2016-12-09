@@ -82,9 +82,8 @@ namespace CNCLib.GCode
 				if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
 				{
 					SaveGCode(loadinfo.GCodeWriteToFileName);
+					WriteCamBam(load, Path.GetDirectoryName(loadinfo.GCodeWriteToFileName) + @"\" + Path.GetFileNameWithoutExtension(loadinfo.GCodeWriteToFileName) + @".cb");
 				}
-				WriteCamBam(load, Path.GetDirectoryName(loadinfo.GCodeWriteToFileName) + @"\" + Path.GetFileNameWithoutExtension(loadinfo.GCodeWriteToFileName) + @".cb");
-
 			}
 			catch (Exception)
 			{

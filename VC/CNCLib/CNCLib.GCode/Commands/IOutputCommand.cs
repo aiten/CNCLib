@@ -30,10 +30,17 @@ namespace CNCLib.GCode.Commands
 		LaserCut      // G1,G2,G3
 	}
 
+	public enum Pane
+	{
+		XYPane,
+		XZPane,
+		YZPane
+	}
+
     public interface IOutputCommand
 	{
         void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo);
-        void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D iIJ, bool clockwise);
+        void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D iIJ, bool clockwise, Pane pane);
         void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptCenter, int xradius, int yradius);
 	}
 }

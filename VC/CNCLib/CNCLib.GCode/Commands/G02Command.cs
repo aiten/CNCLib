@@ -42,7 +42,7 @@ namespace CNCLib.GCode.Commands
 
         public override void Draw(IOutputCommand output, DrawState state, object param)
 		{
-            double I, J;
+            double I, J, K;
             if (!TryGetVariable('I', out I))
             {
                 I = 0;
@@ -51,8 +51,12 @@ namespace CNCLib.GCode.Commands
             {
                 J = 0;
             }
+			if (!TryGetVariable('K', out K))
+			{
+				K = 0;
+			}
 
-            output.DrawArc(this,param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition,new Framework.Tools.Drawing.Point3D() { X=I, Y=J},true);
+			output.DrawArc(this,param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition,new Framework.Tools.Drawing.Point3D() { X=I, Y=J,Z=K},true, state.CurrentPane);
        }
 
 		#endregion

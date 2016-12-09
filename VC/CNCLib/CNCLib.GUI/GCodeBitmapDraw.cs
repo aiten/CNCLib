@@ -353,7 +353,7 @@ namespace CNCLib.GUI
 			e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X - xradius / 2, from.Y - yradius / 2, xradius, yradius);
 		}
 
-		public void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D pIJ, bool clockwise)
+		public void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D pIJK, bool clockwise, Pane pane)
 		{
 			if (drawtype == DrawType.NoDraw) return;
 
@@ -362,10 +362,11 @@ namespace CNCLib.GUI
 			var from = ToClientF(ptFrom);
 			var to   = ToClientF(ptTo);
 
-			pIJ = Rotate.Rotate(pIJ);
+			pIJK = Rotate.Rotate(pIJK);
 
-			double I = pIJ.X.Value;
-			double J = pIJ.Y.Value;
+			double I = pIJK.X.Value;
+			double J = pIJK.Y.Value;
+			double K = pIJK.Z.Value;
 			double R = Math.Sqrt(I * I + J * J);
 
 			double cx = (ptFrom.X??0.0) + I;
