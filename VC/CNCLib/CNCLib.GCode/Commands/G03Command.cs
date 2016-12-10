@@ -40,7 +40,7 @@ namespace CNCLib.GCode.Commands
 
 		#region Draw
 
-		public override void Draw(IOutputCommand output, DrawState state, object param)
+		public override void Draw(IOutputCommand output, CommandState state, object param)
 		{
             double I, J, K;
             if (!TryGetVariable('I', out I))

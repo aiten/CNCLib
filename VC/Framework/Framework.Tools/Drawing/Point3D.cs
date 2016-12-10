@@ -36,6 +36,24 @@ namespace Framework.Tools.Drawing
 		public double? Y { get; set; }
 		public double? Z { get; set; }
 
+		public double? this[int axis]
+		{
+			get
+			{
+				if (axis == 0) return X;
+				if (axis == 1) return Y;
+				if (axis == 2) return Z;
+				throw new ArgumentOutOfRangeException();
+			}
+			set
+			{
+				if (axis == 0) X = value;
+				else if (axis == 1) Y = value;
+				else if (axis == 2) Z = value;
+				else throw new ArgumentOutOfRangeException();
+			}
+		}
+
 		public bool HasAllValues { get { return X.HasValue && Y.HasValue && Z.HasValue;  } }
 
 		public void AssignMissing(Point3D from)

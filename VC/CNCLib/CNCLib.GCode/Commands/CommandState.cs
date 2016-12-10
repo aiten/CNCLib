@@ -1,6 +1,6 @@
 ﻿namespace CNCLib.GCode.Commands
 {
-	public class DrawState
+	public class CommandState
     {
         public bool UseLaser { get; set; } = false;
         public bool LaserOn { get; set; } = false;

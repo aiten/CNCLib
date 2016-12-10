@@ -55,7 +55,7 @@ namespace CNCLib.GCode.Commands
 		}
 		public void Paint(IOutputCommand output, object param)
 		{
-            var drawstate = new DrawState();
+            var drawstate = new CommandState();
 
 			foreach (Command cmd in this)
 			{

@@ -132,7 +132,7 @@ namespace CNCLib.GCode.Commands
 
         #region Draw
 
-        public DrawType Convert(MoveType movetype, DrawState state)
+        public DrawType Convert(MoveType movetype, CommandState state)
         {
             if (movetype == MoveType.NoMove) return DrawType.NoDraw;
 
@@ -156,7 +156,7 @@ namespace CNCLib.GCode.Commands
             return DrawType.NoDraw;
         }
 
-        public virtual void Draw(IOutputCommand output, DrawState state, object param)
+        public virtual void Draw(IOutputCommand output, CommandState state, object param)
 		{
 			output.DrawLine(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition);
 		}

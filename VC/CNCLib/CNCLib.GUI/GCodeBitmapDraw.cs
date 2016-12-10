@@ -205,6 +205,7 @@ namespace CNCLib.GUI
 
 		const double SignX = 1.0;
 		const double SignY = -1.0;
+		const double SignZ = 1.0;
 
 		double ToClientSizeX(double X)
 		{
@@ -219,6 +220,13 @@ namespace CNCLib.GUI
 			pt3d = Rotate.Rotate(pt3d);
 			double y = (pt3d.Y ?? 0) * Zoom;
 			return _ratioY * y;
+		}
+		double ToClientSizeZ(double Z)
+		{
+			var pt3d = new Point3D(0, 0, Z);
+			pt3d = Rotate.Rotate(pt3d);
+			double z = (pt3d.Z ?? 0) * Zoom;
+			return _ratioZ * z;
 		}
 
 		#endregion
@@ -343,6 +351,18 @@ namespace CNCLib.GUI
 				e.Graphics.DrawLine(GetPen(drawtype, LineDrawType.Line), from, to);
 			}
 		}
+		void Line(object param, Pen pen, Point3D ptFrom, Point3D ptTo)
+		{
+			PaintEventArgs e = (PaintEventArgs)param;
+
+			var from = ToClientF(ptFrom);
+			var to = ToClientF(ptTo);
+
+			if (from.Equals(to) == false)
+			{
+				e.Graphics.DrawLine(pen, from, to);
+			}
+		}
 
 		public void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptCenter, int xradius, int yradius)
 		{
@@ -357,61 +377,141 @@ namespace CNCLib.GUI
 		{
 			if (drawtype == DrawType.NoDraw) return;
 
-			PaintEventArgs e = (PaintEventArgs)param;
-
-			var from = ToClientF(ptFrom);
-			var to   = ToClientF(ptTo);
-
-			pIJK = Rotate.Rotate(pIJK);
-
-			double I = pIJK.X.Value;
-			double J = pIJK.Y.Value;
-			double K = pIJK.Z.Value;
-			double R = Math.Sqrt(I * I + J * J);
-
-			double cx = (ptFrom.X??0.0) + I;
-			double cy = (ptFrom.Y??0.0) + J;
-
-			double startAng = ConvertRadToDeg(Math.Atan2(J, I));
-			double endAng = ConvertRadToDeg(Math.Atan2(cy - (ptTo.Y??0.0), cx - (ptTo.X??0.0)));
-			double diffAng = (endAng - startAng);
-			if (startAng > endAng)
-				diffAng += 360;
-
-			if (clockwise == false)
+			switch (pane)
 			{
-				startAng = endAng;
-				diffAng = 360 - diffAng;
-				while (diffAng > 360)
-					diffAng -= 360;
-
-				while (diffAng < -360)
-					diffAng += 360;
-			}
-
-			var pt3d = new Point3D(cx - R * SignX, cy - R * SignY, ptFrom.Z??0);
-			PointF rcfrom = ToClientF(pt3d);
-			//Point rcfrom = new Point(ToClientXInt(cx - R * SignX), ToClientYInt(cy - R * SignY));
-			float RR = (float) ToClientSizeX(R * 2);
-			var rec = new RectangleF(rcfrom, new SizeF(RR, RR));
-
-			//e.Graphics.DrawRectangle(_helpLine, rec);
-
-			if (rec.Width > 0 && rec.Height > 0)
-			{
-				try
-				{
-					e.Graphics.DrawArc(GetPen(drawtype, LineDrawType.Arc), rec.X, rec.Y, rec.Width, rec.Height, (float)startAng, (float)diffAng);
-				}
-				catch (OutOfMemoryException)
-				{
-					// ignore this Exception
-				}
-				catch (ArgumentException)
-				{
-				}
+				default:
+				case Pane.XYPane:
+					Arc(cmd, param, drawtype, ptFrom, ptTo, pIJK.X ?? 0.0, pIJK.Y ?? 0, 0, 1, 2, clockwise);
+					break;
+				case Pane.XZPane:
+					Arc(cmd, param, drawtype, ptFrom, ptTo, pIJK.X ?? 0.0, pIJK.Z ?? 0, 0, 2, 1, clockwise);
+					break;
 			}
 		}
+
+		const double ARCCORRECTION = (10.0 * Math.PI / 180.0);      // every 10grad
+		const double SEGMENTS_K = 4.0;
+		const double SEGMENTS_D = 18.0;		// 20 Grad 
+
+		static double Hypot(double dx, double dy)
+		{
+			return Math.Sqrt(dx * dx + dy * dy);
+		}
+
+		private void Arc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, double offset0, double offset1, int  axis_0, int axis_1, int axis_linear, bool isclockwise)
+		{
+			Pen pen = GetPen(drawtype, LineDrawType.Arc);
+
+			Point3D current = new Point3D(ptFrom.X??0.0, ptFrom.Y ?? 0.0, ptFrom.Z ?? 0.0);
+			Point3D last = new Point3D(ptFrom.X ?? 0.0, ptFrom.Y ?? 0.0, ptFrom.Z ?? 0.0);
+			double center_axis0 = current[axis_0].Value + offset0;
+			double center_axis1 = current[axis_1].Value + offset1;
+
+			double linear_travel_max = (ptTo[axis_linear]??0.0) - current[axis_linear].Value;
+/*
+			mm1000_t dist_linear[NUM_AXIS] = { 0 };
+
+			for (axis_t x = 0; x<NUM_AXIS; x++)
+			{
+				if (x != axis_0 && x != axis_1)
+				{
+					dist_linear[x] = to[x] - current[x];
+					if (dist_linear[x] > linear_travel_max)
+						linear_travel_max = dist_linear[x];
+				}
+		}
+*/
+			double radius = Hypot(offset0,offset1);
+
+			double r_axis0 = -offset0;  // Radius vector from center to current location
+			double r_axis1 = -offset1;
+			double rt_axis0 = (ptTo[axis_0]??0.0) - center_axis0;
+			double rt_axis1 = (ptTo[axis_1]??0.0) - center_axis1;
+
+			// CCW angle between position and target from circle center. Only one atan2() trig computation required.
+			double angular_travel = Math.Atan2(r_axis0 * rt_axis1 - r_axis1 * rt_axis0, r_axis0 * rt_axis0 + r_axis1 * rt_axis1);
+
+			if (angular_travel == 0.0 || angular_travel == -0.0)
+			{
+				// 360Grad
+				if (isclockwise)
+					angular_travel = -2.0 * Math.PI;
+				else
+					angular_travel = 2.0 * Math.PI;
+			}
+			else
+			{
+				if (angular_travel< 0.0)	{ angular_travel += 2.0 * Math.PI; }
+				if (isclockwise)			{ angular_travel -= 2.0 * Math.PI; }
+			}
+
+			if (Hypot(angular_travel* radius, Math.Abs(linear_travel_max)) < 0.001)
+			{
+				return;
+			}
+
+			// difference to Grbl => use dynamic calculation of segements => suitable for small r
+			//
+			// segments for full circle => (CONST_K * r * M_PI * b + CONST_D)		(r in mm, b ...2?)
+
+			uint segments = (uint) Math.Abs(Math.Floor(((2 * SEGMENTS_K* Math.PI))* radius + SEGMENTS_D) * angular_travel / (2.0* Math.PI));
+
+			if (segments > 1)
+			{
+				double theta_per_segment = angular_travel / segments;
+
+				int arc_correction = (int)(ARCCORRECTION / theta_per_segment);
+				if (arc_correction< 0) arc_correction = -arc_correction;
+
+				// Vector rotation matrix values
+				double cos_T = 1.0 - 0.5 * theta_per_segment * theta_per_segment;
+				double sin_T = theta_per_segment;
+
+				double sin_Ti;
+				double cos_Ti;
+				double r_axisi;
+				uint i;
+				uint count = 0;
+
+				for (i = 1; i<segments; i++)
+				{
+					if (count<arc_correction)
+					{
+						// Apply vector rotation matrix 
+						r_axisi = r_axis0* sin_T + r_axis1* cos_T;
+						r_axis0 = r_axis0* cos_T - r_axis1* sin_T;
+						r_axis1 = r_axisi;
+						count++;
+					}
+					else
+					{
+						// Arc correction to radius vector. Computed only every N_ARC_CORRECTION increments.
+						// Compute exact location by applying transformation matrix from initial radius vector(=-offset).
+						cos_Ti = Math.Cos(i* theta_per_segment);
+						sin_Ti = Math.Sin(i* theta_per_segment);
+						r_axis0 = -offset0* cos_Ti + offset1* sin_Ti;
+						r_axis1 = -offset0* sin_Ti - offset1* cos_Ti;
+						count = 0;
+					}
+
+					// Update arc_target location
+
+					current[axis_0] = center_axis0 + r_axis0;
+					current[axis_1] = center_axis1 + r_axis1;
+					current[axis_linear] = ptTo[axis_linear]??0.0 - linear_travel_max * segments / (segments - i);
+
+					Line(param, pen, last, current);
+
+					last.X = current.X;
+					last.Y = current.Y;
+					last.Z = current.Z;
+				}
+			}
+
+			// Ensure last segment arrives at target location.
+			Line(param, pen, last, ptTo);
+		}
+
 
 		private bool PreDrawLineOrArc(object param, DrawType drawtype, PointF from, PointF to)
 		{

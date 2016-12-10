@@ -37,7 +37,7 @@ namespace CNCLib.GCode.Commands
         #endregion
 
         #region Draw
-        public override void Draw(IOutputCommand output, DrawState state, object param)
+        public override void Draw(IOutputCommand output, CommandState state, object param)
         {
             //base.Draw(output, state, param);
 
