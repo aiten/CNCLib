@@ -27,6 +27,7 @@
 
 #include <GCodeParserBase.h>
 #include "MyControl.h"
+#include <ControlTemplate.h>
 
 ////////////////////////////////////////////////////////////
 
@@ -48,7 +49,7 @@ void CMyControl::Init()
 	DisableBlinkLed();
 #endif
 
-  StepperSerial.println(MESSAGE_MYCONTROL_Laser_Starting);
+	StepperSerial.println(MESSAGE_MYCONTROL_Laser_Starting);
 //	StepperSerial.println(MESSAGE_CTRLX);
 
 	CMotionControlBase::GetInstance()->Init();
@@ -57,7 +58,7 @@ void CMyControl::Init()
 	super::Init();
 
 #ifdef SETDIRECTION
-	CStepper::GetInstance()->SetDirection((1 << X_AXIS) + (1 << Y_AXIS));
+	CStepper::GetInstance()->SetDirection(SETDIRECTION);
 #endif
 
 	//CStepper::GetInstance()->SetBacklash(SPEEDFACTOR*5000);
@@ -76,33 +77,7 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS, A_MAXSIZE));
 #endif
 
-#ifdef X_USEREFERENCE_MIN
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
-#endif
-#ifdef X_USEREFERENCE_MAX
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, false), true);
-#endif
-
-#ifdef Y_USEREFERENCE_MIN
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
-#endif
-#ifdef Y_USEREFERENCE_MAX
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, false), true);
-#endif
-
-#ifdef Z_USEREFERENCE_MIN
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true), true);
-#endif
-#ifdef Z_USEREFERENCE_MAX
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, false), true);
-#endif
-
-#ifdef A_USEREFERENCE_MIN
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, true), true);
-#endif
-#ifdef A_USEREFERENCE_MAX
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, false), true);
-#endif
+	CControlTemplate<X_USEREFERENCE, Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE>::InitReference();
 
 #ifdef CONTROLLERFAN_FAN_PIN
 	#ifdef CONTROLLERFAN_ANALOGSPEED

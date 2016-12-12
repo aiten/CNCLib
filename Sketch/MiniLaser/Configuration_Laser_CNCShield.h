@@ -159,18 +159,12 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 #define A_MAXSIZE 50000 
 
 ////////////////////////////////////////////////////////
+// NoReference, ReferaeceToMin, ReferaeceToMax
 
-//#define X_USEREFERENCE_MIN	
-//#define X_USEREFERENCE_MAX
-
-//#define Y_USEREFERENCE_MIN	
-//#define Y_USEREFERENCE_MAX
-
-//#define Z_USEREFERENCE_MIN	
-//#define Z_USEREFERENCE_MAX
-
-//#define A_USEREFERENCE_MIN	
-//#define A_USEREFERENCE_MAX
+#define X_USEREFERENCE	EReverenceType::NoReference
+#define Y_USEREFERENCE	EReverenceType::NoReference
+#define Z_USEREFERENCE	EReverenceType::NoReference
+#define A_USEREFERENCE	EReverenceType::NoReference
 
 //#define REFMOVE_1_AXIS	Z_AXIS
 //#define REFMOVE_2_AXIS	Y_AXIS
