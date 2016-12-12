@@ -77,6 +77,8 @@ public:
 
 	static void Init()										{ super::Init(); _modalstate.Init();  _modlessstate.Init(); }
 
+	static void Init(feedrate_t feedrateG0, feedrate_t feedrateG1, feedrate_t feedrateG1max) {	Init(); SetG0FeedRate(feedrateG0); SetG1FeedRate(feedrateG1); SetG1MaxFeedRate(feedrateG1max); }
+
 protected:
 
 	// overrides to exend parser

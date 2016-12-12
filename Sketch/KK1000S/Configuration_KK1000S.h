@@ -21,6 +21,27 @@
 
 ////////////////////////////////////////////////////////
 
+#define X_MAXSIZE 800000				// in mm1000_t
+#define Y_MAXSIZE 500000 
+#define Z_MAXSIZE 100000 
+#define A_MAXSIZE 360000 
+#define B_MAXSIZE 360000 
+#define C_MAXSIZE 360000 
+
+#define X_USEREFERENCE	EReverenceType::ReferaeceToMin
+#define Y_USEREFERENCE	EReverenceType::ReferaeceToMin
+#define Z_USEREFERENCE	EReverenceType::ReferaeceToMax
+#define A_USEREFERENCE	EReverenceType::NoReference
+
+#undef NOGOTOREFERENCEATBOOT
+
+#define REFMOVE_1_AXIS  Z_AXIS
+#define REFMOVE_2_AXIS  Y_AXIS
+#define REFMOVE_3_AXIS  X_AXIS
+#define REFMOVE_4_AXIS  255
+
+////////////////////////////////////////////////////////
+
 #include <Steppers/StepperMash6050S_pins.h>
 #include <Steppers/StepperMash6050S.h>
 #define BOARDNAME MASH6050S 

@@ -21,6 +21,20 @@
 
 ////////////////////////////////////////////////////////
 
+#define MOVEAWAYFROMREF_STEPS 10
+
+////////////////////////////////////////////////////////
+
+#define CNC_MAXSPEED 20000 // 27000        // steps/sec
+#define CNC_ACC  500
+#define CNC_DEC  550
+
+////////////////////////////////////////////////////////
+
+//#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
+
+////////////////////////////////////////////////////////
+
 #define CMyStepper CStepperCNCShield
 #define ConversionToMm1000 CNCShieldToMm1000
 #define ConversionToMachine CNCShieldToMachine
@@ -152,49 +166,3 @@ inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
 }
 
 ////////////////////////////////////////////////////////
-
-#define X_MAXSIZE 36000				// in mm1000_t
-#define Y_MAXSIZE 36000 
-#define Z_MAXSIZE 10000 
-#define A_MAXSIZE 50000 
-
-////////////////////////////////////////////////////////
-// NoReference, ReferaeceToMin, ReferaeceToMax
-
-#define X_USEREFERENCE	EReverenceType::NoReference
-#define Y_USEREFERENCE	EReverenceType::NoReference
-#define Z_USEREFERENCE	EReverenceType::NoReference
-#define A_USEREFERENCE	EReverenceType::NoReference
-
-//#define REFMOVE_1_AXIS	Z_AXIS
-//#define REFMOVE_2_AXIS	Y_AXIS
-//#define REFMOVE_3_AXIS	X_AXIS
-//#define REFMOVE_3_AXIS	A_AXIS
-
-#define MOVEAWAYFROMREF_STEPS 100
-
-////////////////////////////////////////////////////////
-
-#define CNC_MAXSPEED 20000 // 27000        // steps/sec
-#define CNC_ACC  500
-#define CNC_DEC  550
-
-////////////////////////////////////////////////////////
-
-#define GO_DEFAULT_STEPRATE		CNC_MAXSPEED	// steps/sec
-#define G1_DEFAULT_STEPRATE		10000			// steps/sec
-#define G1_DEFAULT_MAXSTEPRATE	CNC_MAXSPEED	// steps/sec
-
-#define STEPRATERATE_REFMOVE	4000
-
-#undef SETDIRECTION
-//#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
-
-////////////////////////////////////////////////////////
-
-#undef NOGOTOREFERENCEATBOOT
-
-////////////////////////////////////////////////////////
-
-#include <MessageCNCLib.h>
-

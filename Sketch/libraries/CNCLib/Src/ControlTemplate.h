@@ -27,16 +27,14 @@ enum EReverenceType
 	ReferaeceToMax
 };
 
-template<
-	EReverenceType refx,
-	EReverenceType refy,
-	EReverenceType refz,
-	EReverenceType refa
-> class CControlTemplate
+class CControlTemplate
 {
 public:
 
-	static void InitReference()
+	//////////////////////////////////////////////////////////////
+	// inline template
+
+	static inline void InitReference(EReverenceType refx,EReverenceType refy,EReverenceType refz,EReverenceType refa)
 	{
 		if (refx == ReferaeceToMin)
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
@@ -58,6 +56,23 @@ public:
 		else if (refa == ReferaeceToMax)
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, false), true);
 	}
+
+	static inline void SetLimitMinMax(axis_t numxis, udist_t maxx, udist_t maxy, udist_t maxz, udist_t maxa, udist_t maxb, udist_t maxc)
+	{
+		if (numxis >= 1)
+			CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, maxx));
+		if (numxis >= 2)
+			CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, maxy));
+		if (numxis >= 3)
+			CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, maxz));
+		if (numxis >= 4)
+			CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS, maxa));
+		if (numxis >= 5)
+			CStepper::GetInstance()->SetLimitMax(B_AXIS, CMotionControlBase::GetInstance()->ToMachine(B_AXIS, maxb));
+		if (numxis >= 6)
+			CStepper::GetInstance()->SetLimitMax(C_AXIS, CMotionControlBase::GetInstance()->ToMachine(C_AXIS, maxc));
+	}
+
 };
 
 ////////////////////////////////////////////////////////

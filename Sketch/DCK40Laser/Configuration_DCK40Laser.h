@@ -26,10 +26,17 @@
 #define Z_MAXSIZE 100000 
 #define A_MAXSIZE 50000 
 
-////////////////////////////////////////////////////////
+#define X_USEREFERENCE	EReverenceType::ReferaeceToMin
+#define Y_USEREFERENCE	EReverenceType::ReferaeceToMax
+#define Z_USEREFERENCE	EReverenceType::NoReference
+#define A_USEREFERENCE	EReverenceType::NoReference
 
 #undef NOGOTOREFERENCEATBOOT
-//#define NOGOTOREFERENCEATBOOT
+
+#define REFMOVE_1_AXIS  X_AXIS
+#define REFMOVE_2_AXIS  Y_AXIS
+#define REFMOVE_3_AXIS  255
+#define REFMOVE_4_AXIS  255
 
 ////////////////////////////////////////////////////////
 

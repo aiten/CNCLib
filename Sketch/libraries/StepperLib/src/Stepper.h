@@ -664,5 +664,7 @@ protected:
 	static void HandleInterrupt()								{ GetInstance()->StepRequest(true); }
 	static void HandleBackground()								{ GetInstance()->Background(); }
 
-	//////////////////////////////////////////
+	//////////////////////////////////////////////////////////////
+	// inline template
+
 };

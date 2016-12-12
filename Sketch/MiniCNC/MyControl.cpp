@@ -26,6 +26,8 @@
 #include <CNCLib.h>
 
 #include <GCodeParserBase.h>
+#include <ControlTemplate.h>
+
 #include "MyControl.h"
 
 ////////////////////////////////////////////////////////////
@@ -64,44 +66,8 @@ void CMyControl::Init()
 	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,35));  
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
-	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, X_MAXSIZE));
-	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, Y_MAXSIZE));
-
-#if MYNUM_AXIS > 2
-	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, Z_MAXSIZE));
-#endif
-
-#if MYNUM_AXIS > 3
-	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS, A_MAXSIZE));
-#endif
-
-#ifdef X_USEREFERENCE_MIN
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
-#endif
-#ifdef X_USEREFERENCE_MAX
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, false), true);
-#endif
-
-#ifdef Y_USEREFERENCE_MIN
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
-#endif
-#ifdef Y_USEREFERENCE_MAX
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, false), true);
-#endif
-
-#ifdef Z_USEREFERENCE_MIN
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true), true);
-#endif
-#ifdef Z_USEREFERENCE_MAX
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, false), true);
-#endif
-
-#ifdef A_USEREFERENCE_MIN
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, true), true);
-#endif
-#ifdef A_USEREFERENCE_MAX
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, false), true);
-#endif
+	CControlTemplate::SetLimitMinMax(MYNUM_AXIS, X_MAXSIZE, Y_MAXSIZE, Z_MAXSIZE, A_MAXSIZE,0,0);
+	CControlTemplate::InitReference(X_USEREFERENCE, Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE);
 
 #ifdef CONTROLLERFAN_FAN_PIN
 	#ifdef CONTROLLERFAN_ANALOGSPEED
@@ -132,11 +98,7 @@ void CMyControl::Init()
 	_resume.SetPin(RESUME_PIN);
 #endif
 
-	CGCodeParserBase::Init();
-
-	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE));
-	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE));
-	CGCodeParserBase::SetG1MaxFeedRate(STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
+	CGCodeParserBase::Init(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED, CNC_ACC, CNC_DEC);
 }
@@ -289,18 +251,7 @@ void CMyControl::GoToReference()
 
 #else
 
-#ifdef REFMOVE_1_AXIS
-	GoToReference(REFMOVE_1_AXIS, 0, CStepper::GetInstance()->IsUseReference(REFMOVE_1_AXIS, true));
-#endif
-#ifdef REFMOVE_2_AXIS
-	GoToReference(REFMOVE_2_AXIS, 0, CStepper::GetInstance()->IsUseReference(REFMOVE_2_AXIS, true));
-#endif
-#ifdef REFMOVE_3_AXIS
-	GoToReference(REFMOVE_3_AXIS, 0, CStepper::GetInstance()->IsUseReference(REFMOVE_3_AXIS, true));
-#endif
-#ifdef REFMOVE_4_AXIS
-	GoToReference(REFMOVE_4_AXIS, 0, CStepper::GetInstance()->IsUseReference(REFMOVE_4_AXIS, true));
-#endif
+	GotoReference(REFMOVE_1_AXIS, REFMOVE_2_AXIS, REFMOVE_3_AXIS, REFMOVE_4_AXIS);
 
 #endif
 }

@@ -177,6 +177,23 @@ public:
 
 	bool CallOnEvent(uint8_t eventtype, uintptr_t param);
 
+	//////////////////////////////////////////////////////////////
+	// inline template
+
+	inline void GotoReference(axis_t ref1, axis_t ref2, axis_t ref3, axis_t ref4)
+	{
+		if (ref1 != 255)
+			GoToReference(ref1, 0, CStepper::GetInstance()->IsUseReference(ref1, true));
+
+		if (ref2 != 255)
+			GoToReference(ref2, 0, CStepper::GetInstance()->IsUseReference(ref2, true));
+
+		if (ref3 != 255)
+			GoToReference(ref3, 0, CStepper::GetInstance()->IsUseReference(ref3, true));
+
+		if (ref4 != 255)
+			GoToReference(ref4, 0, CStepper::GetInstance()->IsUseReference(ref4, true));
+	}
 };
 
 ////////////////////////////////////////////////////////

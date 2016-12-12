@@ -27,6 +27,8 @@
 
 #include <GCodeParserBase.h>
 #include <GCodeParser.h>
+#include <ControlTemplate.h>
+
 #include "MyControl.h"
 
 ////////////////////////////////////////////////////////////
@@ -45,12 +47,8 @@ void CMyControl::Init()
 
 	super::Init();
 
-	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, X_MAXSIZE));
-	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, Y_MAXSIZE));
-	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, Z_MAXSIZE));
-
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, false), true);
+	CControlTemplate::SetLimitMinMax(3, X_MAXSIZE, Y_MAXSIZE, Z_MAXSIZE, A_MAXSIZE, 0, 0);
+	CControlTemplate::InitReference(X_USEREFERENCE, Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE);
 
 	_laserPWM.Init();
 	_laserOnOff.Init();
@@ -67,10 +65,7 @@ void CMyControl::Init()
 
 	CMyParser::Init();
 
-	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE));
-	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE));
-	CGCodeParserBase::SetG1MaxFeedRate(STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
-
+	CGCodeParserBase::Init(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED, CNC_ACC, CNC_DEC);
 
 #ifdef MYUSE_LCD
@@ -210,8 +205,7 @@ void CMyControl::GoToReference()
 
 #else
 
-	GoToReference(Y_AXIS, 0, CStepper::GetInstance()->IsUseReference(Y_AXIS, true));
-	GoToReference(X_AXIS, 0, CStepper::GetInstance()->IsUseReference(X_AXIS, true));
+	GotoReference(REFMOVE_1_AXIS, REFMOVE_2_AXIS, REFMOVE_3_AXIS, REFMOVE_4_AXIS);
 
 #endif
 }

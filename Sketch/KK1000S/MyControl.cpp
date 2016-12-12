@@ -30,6 +30,7 @@
 #include <CNCLibEx.h>
 
 #include <GCode3DParser.h>
+#include <ControlTemplate.h>
 #include "MyControl.h"
 #include "MyLcd.h"
 
@@ -60,14 +61,7 @@ void CMyControl::Init()
 
 	CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350), steprate_t(350));
 
-	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 800000));
-	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 500000));
-	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, 100000));
-//MSCV has only 3 axis!
-#if NUM_AXIS > 3
-	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS, 360000));		// grad
-	CStepper::GetInstance()->SetLimitMax(B_AXIS, CMotionControlBase::GetInstance()->ToMachine(B_AXIS, 360000));
-#endif
+	CControlTemplate::SetLimitMinMax(NUM_AXIS, X_MAXSIZE, Y_MAXSIZE, Z_MAXSIZE, A_MAXSIZE, B_MAXSIZE, C_MAXSIZE);
 
 	CStepper::GetInstance()->SetJerkSpeed(X_AXIS, 1000);
 	CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, 1000);
@@ -81,24 +75,17 @@ void CMyControl::Init()
 #endif
 
 #if NUM_AXIS > 5
-	CStepper::GetInstance()->SetLimitMax(C_AXIS, CMotionControl::ToMachine(B_AXIS,360000));
 	CStepper::GetInstance()->SetJerkSpeed(C_AXIS, 1000);
-
 	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
 #endif
-
-	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(30000));
-	CGCodeParserBase::SetG1FeedRate(feedrate_t(100000));
-	CGCodeParserBase::SetG1MaxFeedRate(STEPRATETOFEEDRATE(30000));
 
 	for (register uint8_t i = 0; i < NUM_AXIS * 2; i++)
 	{
 		CStepper::GetInstance()->UseReference(i, false);
 	}
 
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, false), true);
+	CControlTemplate::InitReference(X_USEREFERENCE, Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE);
+	CGCodeParserBase::Init(-STEPRATETOFEEDRATE(30000), feedrate_t(100000), STEPRATETOFEEDRATE(30000));
 
 	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
 
@@ -206,9 +193,7 @@ void CMyControl::Initialized()
 
 void CMyControl::GoToReference()
 {
-	GoToReference(Z_AXIS, 0, false);
-	GoToReference(Y_AXIS, 0, true);
-	GoToReference(X_AXIS, 0, true);
+	GotoReference(REFMOVE_1_AXIS, REFMOVE_2_AXIS, REFMOVE_3_AXIS, REFMOVE_4_AXIS);
 }
 
 ////////////////////////////////////////////////////////////

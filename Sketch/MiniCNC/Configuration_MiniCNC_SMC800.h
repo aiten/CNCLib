@@ -21,6 +21,18 @@
 
 ////////////////////////////////////////////////////////
 
+#define MOVEAWAYFROMREF_STEPS 10
+
+////////////////////////////////////////////////////////
+
+#define CNC_MAXSPEED 3000
+#define CNC_ACC  150
+#define CNC_DEC  180
+
+//#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)    // set bit to invert direction of each axis
+
+////////////////////////////////////////////////////////
+
 #define MYNUM_AXIS 3
 
 ////////////////////////////////////////////////////////
@@ -39,52 +51,6 @@
 #define Y_STEPSPERMM 400.0
 #define Z_STEPSPERMM 400.0
 #define A_STEPSPERMM 400.0
-
-////////////////////////////////////////////////////////
-
-#define X_MAXSIZE 200000        // in mm1000_t
-#define Y_MAXSIZE 200000 
-#define Z_MAXSIZE 100000 
-#define A_MAXSIZE 50000 
-
-////////////////////////////////////////////////////////
-
-#define X_USEREFERENCE_MIN  
-//#define X_USEREFERENCE_MAX
-
-#define Y_USEREFERENCE_MIN  
-//#define Y_USEREFERENCE_MAX
-
-//#define Z_USEREFERENCE_MIN  
-#define Z_USEREFERENCE_MAX
-
-//#define A_USEREFERENCE_MIN  
-//#define A_USEREFERENCE_MAX
-
-#define REFMOVE_1_AXIS  Z_AXIS
-#define REFMOVE_2_AXIS  Y_AXIS
-#define REFMOVE_3_AXIS  X_AXIS
-//#define REFMOVE_3_AXIS  A_AXIS
-
-////////////////////////////////////////////////////////
-
-#define GO_DEFAULT_STEPRATE    CNC_MAXSPEED  // steps/sec
-#define G1_DEFAULT_STEPRATE   10000         // steps/sec
-#define G1_DEFAULT_MAXSTEPRATE  CNC_MAXSPEED  // steps/sec
-
-#define STEPRATERATE_REFMOVE  GO_DEFAULT_STEPRATE
-
-//#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)    // set bit to invert direction of each axis
-
-////////////////////////////////////////////////////////
-
-#define NOGOTOREFERENCEATBOOT
-
-////////////////////////////////////////////////////////
-
-#define CNC_MAXSPEED 3000
-#define CNC_ACC  150
-#define CNC_DEC  180
 
 ////////////////////////////////////////////////////////
 
