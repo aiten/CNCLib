@@ -24,5 +24,3 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 [assembly: AssemblyCompany("Herbert Aitenbichler")]
 
-//[assembly: AssemblyDelaySignAttribute(true)]
-//[assembly: AssemblyKeyFile(@"..\..\..\HApublic.snk")]
