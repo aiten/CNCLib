@@ -21,9 +21,19 @@
 
 ////////////////////////////////////////////////////////
 
+#define MOVEAWAYFROMREF_STEPS 100
+
+////////////////////////////////////////////////////////
+
+#define CNC_MAXSPEED 27000        // steps/sec
+#define CNC_ACC  350
+#define CNC_DEC  400
+
+////////////////////////////////////////////////////////
+
 #define CMyStepper CStepperCNCShield
-#define ConversionToMm1000 CNCShieldToMm1000
-#define ConversionToMachine CNCShieldToMachine
+#define ConversionToMm1000 LaserToMm1000
+#define ConversionToMachine LaserToMachine
 
 ////////////////////////////////////////////////////////
 
@@ -97,55 +107,6 @@
 ////////////////////////////////////////////////////////
 
 #define DISABLELEDBLINK
-
-////////////////////////////////////////////////////////
-
-// GT2 with 15Tooth => 30mm
-
-#define TOOTH 15
-#define TOOTHSIZE 2
-
-#define X_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
-#define Y_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
-#define Z_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
-#define A_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
-
-inline mm1000_t CNCShieldToMm1000(axis_t axis, sdist_t val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (mm1000_t)(val * (1000.0 / X_STEPSPERMM));
-		case Y_AXIS: return  (mm1000_t)(val * (1000.0 / Y_STEPSPERMM));
-		case Z_AXIS: return  (mm1000_t)(val * (1000.0 / Z_STEPSPERMM));
-		case A_AXIS: return  (mm1000_t)(val * (1000.0 / A_STEPSPERMM));
-	}
-}
-
-inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (sdist_t)(val * (X_STEPSPERMM / 1000.0));
-		case Y_AXIS: return  (sdist_t)(val * (Y_STEPSPERMM / 1000.0));
-		case Z_AXIS: return  (sdist_t)(val * (Z_STEPSPERMM / 1000.0));
-		case A_AXIS: return  (sdist_t)(val * (A_STEPSPERMM / 1000.0));
-	}
-}
-
-
-#define MOVEAWAYFROMREF_STEPS 100
-
-////////////////////////////////////////////////////////
-
-#define CNC_MAXSPEED 27000        // steps/sec
-#define CNC_ACC  350
-#define CNC_DEC  400
-
-////////////////////////////////////////////////////////
-
-#undef NOGOTOREFERENCEATBOOT
 
 ////////////////////////////////////////////////////////
 

@@ -34,8 +34,20 @@
 ////////////////////////////////////////////////////////
 
 #define CMyStepper CStepperL298N
+
 #define ConversionToMm1000 ToMm1000_L298N
 #define ConversionToMachine ToMachine_L298N
+//#define ConversionToMm1000 MiniCNCToMm1000
+//#define ConversionToMachine MiniCNCToMachine
+
+// 48 steps/rot
+inline mm1000_t ToMm1000_L298N(axis_t /* axis */, sdist_t val) { return  RoundMulDivU32(val, 125, 6); }
+inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val) { return  RoundMulDivU32(val, 6, 125); }
+
+#define X_STEPSPERMM 48.0
+#define Y_STEPSPERMM 48.0
+#define Z_STEPSPERMM 48.0
+#define A_STEPSPERMM 48.0
 
 ////////////////////////////////////////////////////////
 
@@ -44,18 +56,6 @@
 ////////////////////////////////////////////////////////
 
 #define MYNUM_AXIS  4
-
-////////////////////////////////////////////////////////
-
-#define X_STEPSPERMM 48.0
-#define Y_STEPSPERMM 48.0
-#define Z_STEPSPERMM 48.0
-#define A_STEPSPERMM 48.0
-
-// 48 steps/rot
-inline mm1000_t ToMm1000_L298N(axis_t /* axis */, sdist_t val) { return  RoundMulDivU32(val, 125, 6); }
-inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val) { return  RoundMulDivU32(val, 6, 125); }
-
 
 ////////////////////////////////////////////////////////
 

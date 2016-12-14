@@ -42,6 +42,11 @@ public:
 		Set(false);
 	}
 
+	void On(uint8_t dummy)
+	{
+		Set(dummy!=0);
+	}
+
 	void On()
 	{
 		Set(true);

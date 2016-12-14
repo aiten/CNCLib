@@ -98,7 +98,7 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 	switch (tool)
 	{
 #ifdef CONTROLLERFAN_FAN_PIN
-		case ControllerFan:		_controllerfan.Level = (uint8_t)level;		return;
+		case ControllerFan:		_controllerfan.SetLevel((uint8_t)level);		return;
 #endif
 	}
 
@@ -112,7 +112,7 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 	switch (tool)
 	{
 #ifdef CONTROLLERFAN_FAN_PIN
-		case ControllerFan: { return _controllerfan.Level; }
+		case ControllerFan: { return _controllerfan.GetLevel(); }
 #endif
 	}
 

@@ -27,7 +27,6 @@
 
 #include <GCodeParserBase.h>
 #include <ControlTemplate.h>
-
 #include "MyControl.h"
 
 ////////////////////////////////////////////////////////////
@@ -66,7 +65,7 @@ void CMyControl::Init()
 	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,35));  
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
-	CControlTemplate::SetLimitMinMax(MYNUM_AXIS, X_MAXSIZE, Y_MAXSIZE, Z_MAXSIZE, A_MAXSIZE,0,0);
+	CControlTemplate::SetLimitMinMax(MYNUM_AXIS, X_MAXSIZE, Y_MAXSIZE, Z_MAXSIZE, A_MAXSIZE, 0, 0);
 	CControlTemplate::InitReference(X_USEREFERENCE, Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE);
 
 #ifdef CONTROLLERFAN_FAN_PIN
@@ -77,29 +76,15 @@ void CMyControl::Init()
 	#endif
 #endif
 
-#ifdef SPINDEL_ENABLE_PIN
 	_spindel.Init();
-#endif
-
-#ifdef PROBE_PIN
 	_probe.Init();
-#endif
-
-#ifdef KILL_PIN
 	_kill.Init();
-#endif
-
-#ifdef COOLANT_PIN
 	_coolant.Init();
-#endif
 
-#if defined(HOLD_PIN) && defined(RESUME_PIN)
 	_hold.SetPin(HOLD_PIN);
 	_resume.SetPin(RESUME_PIN);
-#endif
 
-	CGCodeParserBase::Init(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
-
+	CGCodeParserBase::SetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED, CNC_ACC, CNC_DEC);
 }
 
@@ -109,32 +94,21 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
-#ifdef SPINDEL_ENABLE_PIN
-		case Spindel:			
+		case Spindel:	
+
 			if (level != 0)
 			{
-#ifdef SPINDEL_ANALOGSPEED
 				_spindel.On((uint8_t) MulDivU32(abs(level),255, SPINDEL_MAXSPEED));
-#else        
-				_spindel.On();
-#endif
-#ifdef SPINDEL_DIR_PIN
 				_spindelDir.Set(((short)level)>0);
-#endif
-			}
-			else
-			{
-			  _spindel.Off();
 			}
 			return;
-#endif
-#ifdef COOLANT_PIN
-	    case Coolant:     _coolant.Set(level>0); return;
-#endif
+
+		case Coolant:     _coolant.Set(level>0); return;
+
 #if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
 		case ControllerFan:		_controllerfan.Set(level>0);	return;
 #elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan:		_controllerfan.Level = (uint8_t)level;		return;
+		case ControllerFan:		_controllerfan.SetLevel((uint8_t)level);return;
 #endif
 	}
 	
@@ -147,19 +121,14 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{
-#ifdef PROBE_PIN
 		case Probe:			{ return _probe.IsOn(); }
-#endif
-#ifdef SPINDEL_ENABLE_PIN
 		case Spindel:		{ return _spindel.IsOn(); }
-#endif
-#ifdef COOLANT_PIN
 		case Coolant:		{ return _coolant.IsOn(); }
-#endif
+
 #if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
 		case ControllerFan: { return _controllerfan.IsOn(); }
 #elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan: { return _controllerfan.Level; }
+		case ControllerFan: { return _controllerfan.GetLevel(); }
 #endif	
 	}
 
@@ -171,23 +140,16 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 void CMyControl::Kill()
 {
 	super::Kill();
-#ifdef SPINDEL_ENABLE_PIN
+
 	_spindel.Off();
-#endif
-#ifdef COOLANT_PIN
 	_coolant.Set(false);
-#endif
 }
 
 ////////////////////////////////////////////////////////////
 
 bool CMyControl::IsKill()
 {
-#ifdef KILL_PIN
 	return _kill.IsOn();
-#else
-	return false;
-#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -195,12 +157,9 @@ bool CMyControl::IsKill()
 void CMyControl::TimerInterrupt()
 {
 	super::TimerInterrupt();
-#ifdef HOLD_PIN
+  
 	_hold.Check();
-#endif
-#ifdef RESUME_PIN
 	_resume.Check();
-#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -208,8 +167,9 @@ void CMyControl::TimerInterrupt()
 void CMyControl::Initialized()
 {
 	super::Initialized();
+ 
 #if defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
-	_controllerfan.Level=128;
+	_controllerfan.SetLevel(128);
 #endif
 }
 
@@ -218,8 +178,6 @@ void CMyControl::Initialized()
 void CMyControl::Poll()
 {
 	super::Poll();
-
-#if defined(HOLD_PIN) && defined(RESUME_PIN)
 
 	if (IsHold())
 	{
@@ -232,7 +190,6 @@ void CMyControl::Poll()
 	{
 		Hold();
 	}
-#endif
 }
 
 ////////////////////////////////////////////////////////////

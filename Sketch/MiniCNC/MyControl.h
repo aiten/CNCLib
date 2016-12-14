@@ -26,6 +26,7 @@
 #include <Analog8IOControl.h>
 #include <ReadPinIOControl.h>
 #include <PushButtonLow.h>
+#include <DummyIOControl.h>
 
 #include "Configuration_MiniCNC.h"
 
@@ -71,21 +72,39 @@ private:
 	#endif
 	#ifdef SPINDEL_DIR_PIN
 		COnOffIOControl<SPINDEL_DIR_PIN, SPINDEL_DIR_CLW, SPINDEL_DIR_CCLW> _spindelDir;
-	#endif
+	#else
+		CDummyIOControl _spindelDir;
+#endif
+#else
+	CDummyIOControl _spindel;
+	CDummyIOControl _spindelDir;
 #endif  
+
 #ifdef COOLANT_PIN
 	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
+#else
+	CDummyIOControl _coolant;
 #endif
 #ifdef PROBE_PIN
 	CReadPinIOControl<PROBE_PIN, PROBE_ON> _probe;
+#else
+	CDummyIOControl _probe;
 #endif
+
 #ifdef KILL_PIN
 	CReadPinIOControl<KILL_PIN, KILL_PIN_ON> _kill;
+#else
+	CDummyIOControl _kill;
 #endif
+
 #if defined(HOLD_PIN) && defined(RESUME_PIN)
 	CPushButtonLow _hold;
 	CPushButtonLow _resume;
+#else
+	CDummyIOControl _hold;
+	CDummyIOControl _resume;
 #endif
+
 #ifdef CONTROLLERFAN_FAN_PIN
 	#ifdef CONTROLLERFAN_ANALOGSPEED
 		#if defined(USE_RAMPSFD)

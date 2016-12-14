@@ -70,6 +70,32 @@
 
 ////////////////////////////////////////////////////////
 
+inline mm1000_t MiniCNCToMm1000(axis_t axis, sdist_t val)
+{
+	switch (axis)
+	{
+		default:
+		case X_AXIS: return  (mm1000_t)(val * (1000.0 / X_STEPSPERMM));
+		case Y_AXIS: return  (mm1000_t)(val * (1000.0 / Y_STEPSPERMM));
+		case Z_AXIS: return  (mm1000_t)(val * (1000.0 / Z_STEPSPERMM));
+		case A_AXIS: return  (mm1000_t)(val * (1000.0 / A_STEPSPERMM));
+	}
+}
+
+inline sdist_t MiniCNCToMachine(axis_t axis, mm1000_t  val)
+{
+	switch (axis)
+	{
+		default:
+		case X_AXIS: return  (sdist_t)(val * (X_STEPSPERMM / 1000.0));
+		case Y_AXIS: return  (sdist_t)(val * (Y_STEPSPERMM / 1000.0));
+		case Z_AXIS: return  (sdist_t)(val * (Z_STEPSPERMM / 1000.0));
+		case A_AXIS: return  (sdist_t)(val * (A_STEPSPERMM / 1000.0));
+	}
+}
+
+////////////////////////////////////////////////////////
+
 #include <MessageCNCLib.h>
 
 #define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC:" __DATE__ )

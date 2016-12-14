@@ -72,7 +72,6 @@ public:
 		if (numxis >= 6)
 			CStepper::GetInstance()->SetLimitMax(C_AXIS, CMotionControlBase::GetInstance()->ToMachine(C_AXIS, maxc));
 	}
-
 };
 
 ////////////////////////////////////////////////////////

@@ -85,7 +85,7 @@ void CMyControl::Init()
 	}
 
 	CControlTemplate::InitReference(X_USEREFERENCE, Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE);
-	CGCodeParserBase::Init(-STEPRATETOFEEDRATE(30000), feedrate_t(100000), STEPRATETOFEEDRATE(30000));
+	CGCodeParserBase::SetFeedRate(-STEPRATETOFEEDRATE(30000), feedrate_t(100000), STEPRATETOFEEDRATE(30000));
 
 	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
 
@@ -109,7 +109,7 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 	{
 		case Spindel:			_spindel.Set(level>0);	return;
 		case Coolant:			_coolant.Set(level>0); return;
-		case ControllerFan:		_controllerfan.Level = (uint8_t)level;		return;
+		case ControllerFan:		_controllerfan.SetLevel((uint8_t)level); return;
 		case Vacuum:			break;
 	}
 	
@@ -125,7 +125,7 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 		case Probe:			{ return _probe.IsOn(); }
 		case Spindel:		{ return _spindel.IsOn(); }
 		case Coolant:		{ return _coolant.IsOn(); }
-		case ControllerFan:	{ return _controllerfan.Level; }
+		case ControllerFan:	{ return _controllerfan.GetLevel(); }
 		case Vacuum:		break;
 	}
 
@@ -186,7 +186,7 @@ void CMyControl::TimerInterrupt()
 void CMyControl::Initialized()
 {
 	super::Initialized();
-	_controllerfan.Level=128;
+	_controllerfan.SetLevel(128);
 }
 
 ////////////////////////////////////////////////////////////

@@ -34,10 +34,16 @@
 ////////////////////////////////////////////////////////
 
 #define CMyStepper CStepperCNCShield
-//#define ConversionToMm1000 CNCShieldToMm1000
-//#define ConversionToMachine CNCShieldToMachine
+
+//#define ConversionToMm1000 MiniCNCToMm1000
+//#define ConversionToMachine MiniCNCToMachine
 #define ConversionToMm1000 CMotionControlBase::ToMm1000_1_3200
 #define ConversionToMachine CMotionControlBase::ToMachine_1_3200
+
+#define X_STEPSPERMM (3200.0/1)
+#define Y_STEPSPERMM (3200.0/1)
+#define Z_STEPSPERMM (3200.0/1)
+#define A_STEPSPERMM (3200.0/1)
 
 ////////////////////////////////////////////////////////
 
@@ -105,33 +111,3 @@
 
 ////////////////////////////////////////////////////////
 
-#define X_STEPSPERMM (3200.0/1)
-#define Y_STEPSPERMM (3200.0/1)
-#define Z_STEPSPERMM (3200.0/1)
-#define A_STEPSPERMM (3200.0/1)
-
-inline mm1000_t CNCShieldToMm1000(axis_t axis, sdist_t val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (mm1000_t)(val * (1000.0 / X_STEPSPERMM));
-		case Y_AXIS: return  (mm1000_t)(val * (1000.0 / Y_STEPSPERMM));
-		case Z_AXIS: return  (mm1000_t)(val * (1000.0 / Z_STEPSPERMM));
-		case A_AXIS: return  (mm1000_t)(val * (1000.0 / A_STEPSPERMM));
-	}
-}
-
-inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (sdist_t)(val * (X_STEPSPERMM / 1000.0));
-		case Y_AXIS: return  (sdist_t)(val * (Y_STEPSPERMM / 1000.0));
-		case Z_AXIS: return  (sdist_t)(val * (Z_STEPSPERMM / 1000.0));
-		case A_AXIS: return  (sdist_t)(val * (A_STEPSPERMM / 1000.0));
-	}
-}
-
-////////////////////////////////////////////////////////

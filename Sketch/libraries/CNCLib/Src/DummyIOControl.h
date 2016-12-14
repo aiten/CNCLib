@@ -21,62 +21,37 @@
 
 ////////////////////////////////////////////////////////
 
-template <pin_t PIN>
-class CAnalog8IOControl
+class CDummyIOControl
 {
 public:
 
-	void Init(uint8_t level=0)		// init and set default value
+	void Init()
 	{
-		MySetLevel(level);
-		_level = level;
 	}
 
-	void On(uint8_t level)			// Set level and turn on
+	void Set(bool)
 	{
-		_level = level;
-		MySetLevel(level);
 	}
 
-	void OnMax()							// turn on at max level
+	void Off()
 	{
-		MySetLevel(255);
 	}
 
-	void On()								// turn on at specified level (see Level property)
+	void On(uint8_t  = 0)			// same signature as CAnalog8IOControl
 	{
-		MySetLevel(_level);
 	}
 
-	void Off()								// turn off, use On() to switch on at same value
+	bool IsOn() const				// default is off, e.g. for "kill"
 	{
-		MySetLevel(0);
+		return false;
 	}
 
-	bool IsOn() const
+	void SetPin(pin_t)
 	{
-		return _lastlevel != 0;
 	}
 
-	void SetLevel(uint8_t level)
+	void Check()
 	{
-		_level = level;
-	}
-
-	uint8_t GetLevel() const
-	{
-		return _level;
-	}
-
-private:
-
-	uint8_t _level;					// use like a property
-	uint8_t _lastlevel;
-
-	void MySetLevel(uint8_t level)
-	{
-		_lastlevel = level;
-		CHAL::analogWrite8(PIN, level);
 	}
 };
 

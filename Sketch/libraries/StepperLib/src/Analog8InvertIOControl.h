@@ -26,45 +26,54 @@ class CAnalog8InvertIOControl
 {
 public:
 
-	uint8_t Level;					// use like a property
-
 	void Init(uint8_t level=0)		// init and set default value
 	{
-		SetLevel(level);
-		Level = level;
+		MySetLevel(level);
+		_level = level;
 	}
 
 	void On(uint8_t level)			// Set level and turn on
 	{
-		Level = level;
-		SetLevel(level);
+		_level = level;
+		MySetLevel(level);
 	}
 
 	void OnMax()							// turn on at max level
 	{
-		SetLevel(255);
+		MySetLevel(255);
 	}
 
 	void On()								// turn on at specified level (see Level property)
 	{
-		SetLevel(Level);
+		MySetLevel(_level);
 	}
 
 	void Off()								// turn off, use On() to switch on at same value
 	{
-		SetLevel(0);
+		MySetLevel(0);
 	}
 
-	bool IsOn()
+	bool IsOn() const
 	{
 		return _lastlevel != 0;
 	}
 
+	void SetLevel(uint8_t level)
+	{
+		_level = level;
+	}
+
+	uint8_t GetLevel() const
+	{
+		return _level;
+	}
+
 private:
 
+	uint8_t _level;					// use like a property
 	uint8_t _lastlevel;
 
-	void SetLevel(uint8_t level)
+	void MySetLevel(uint8_t level)
 	{
 		_lastlevel = level;
 		CHAL::analogWrite8(PIN, 255 - level);

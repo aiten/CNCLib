@@ -45,14 +45,13 @@
 #define CMyStepper CStepperTB6560
 #define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
 #define ConversionToMachine CMotionControl::ToMachine_1_3200
-
-////////////////////////////////////////////////////////
+//#define ConversionToMm1000 MiniCNCToMm1000
+//#define ConversionToMachine MiniCNCToMachine
 
 #define X_STEPSPERMM 3200.0
 #define Y_STEPSPERMM 3200.0
 #define Z_STEPSPERMM 3200.0
 #define A_STEPSPERMM 3200.0
-
 
 ////////////////////////////////////////////////////////
 
