@@ -31,7 +31,4 @@ PublishProfiles/
 /VC/Arduino.VC/iRobot/Axis.xlsx
 /VC/Arduino.VC/DCK40Laser/DCK40Laser.csv
 /Sketch/DCK40LaserCNCShield
-/VC/CNCLib/CNCLib.GCode/HApublic.snk
-HApublic.snk
-
-/VC/Sign/Call-Invoke-SignCNCLibDlls.ps1
+/VC/Sign/Call-Invoke-SignCNCLib.ps1

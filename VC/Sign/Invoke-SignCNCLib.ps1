@@ -22,6 +22,7 @@
 	./Invoke-Environment '"%VS140COMNTOOLS%\vsvars32.bat"'
 
 	$snExe = join-path "$($env:WindowsSDK_ExecutablePath_x86)" "sn.exe"
+	$signToolsExe = join-path "$($env:WindowsSdkDir)\Bin\x86" "signtool.exe"
 
 	$tokenNameMapping = @{
 		"6C79896E3E38DBB7" = @(.\pfx2snk.ps1 .\CNCLib.pfx -pfxPassword $pfxPassword)
@@ -69,11 +70,21 @@
 		    $keyPath = "$keyName"
             $assName = $($_.FullName)
 
-            Write-Output "Signing $($_.FullName)"
-		    Set-ItemProperty "$($_.FullName)" IsReadOnly $false
+            Write-Output "Signing $assName"
+		    Set-ItemProperty "$assName" IsReadOnly $false
 
             &"$snExe" -R "$assName" "$keyPath" 
-	    }
+			if ($lastexitcode -ne 0) 
+			{
+				throw "Could not sign $assName"
+			}
+
+            &"$signToolsExe" sign /f ".\CNCLib.pfx" /p "$pfxPassword" "$assName" 
+			if ($lastexitcode -ne 0) 
+			{
+				throw "Could not sign $assName"
+			}
+		}
     }
     Finally
     {
