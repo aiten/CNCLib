@@ -34,3 +34,4 @@ PublishProfiles/
 /VC/CNCLib/CNCLib.GCode/HApublic.snk
 HApublic.snk
 
+/VC/Sign/Call-Invoke-SignCNCLibDlls.ps1
