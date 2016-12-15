@@ -78,7 +78,7 @@ void CMyControl::Init()
 	_hold.SetPin(HOLD_PIN);
 	_resume.SetPin(RESUME_PIN);
 
-	CGCodeParserBase::SetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
+	CGCodeParserBase::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED, CNC_ACC, CNC_DEC);
 }
 
@@ -102,8 +102,8 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{
-		case Probe:			{ return _probe.IsOn(); }
 		case Spindel:		{ return _spindel.IsOn(); }
+		case Probe:			{ return _probe.IsOn(); }
 		case Coolant:		{ return _coolant.IsOn(); }
 		case ControllerFan: { return _controllerfan.GetLevel(); }
 	}

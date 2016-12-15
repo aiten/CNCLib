@@ -64,16 +64,11 @@ protected:
 
 private:
 
-#ifdef LASER_ANALOG
-    CAnalog8IOControl<LASER_ENABLE_PIN> _laser;
-#else
-    COnOffIOControl<LASER_ENABLE_PIN, LASER_DIGITAL_ON, LASER_DIGITAL_OFF> _laser;
-#endif
-
 #ifdef SPINDEL_ENABLE_PIN
 	#ifdef SPINDEL_ANALOGSPEED
 		CAnalog8IOControl<SPINDEL_ENABLE_PIN> _spindel;
-		inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t)MulDivU32(abs(level), 255, SPINDEL_MAXSPEED)); }
+//		inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t)MulDivU32(abs(level), 255, SPINDEL_MAXSPEED)); }
+		inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t)level; }
 #else
 		COnOffIOControl<SPINDEL_ENABLE_PIN, SPINDEL_DIGITAL_ON, SPINDEL_DIGITAL_OFF> _spindel;
 		inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t) level; }

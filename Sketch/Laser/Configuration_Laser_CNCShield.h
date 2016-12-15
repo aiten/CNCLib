@@ -31,6 +31,10 @@
 
 ////////////////////////////////////////////////////////
 
+//#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
+
+////////////////////////////////////////////////////////
+
 #define CMyStepper CStepperCNCShield
 #define ConversionToMm1000 LaserToMm1000
 #define ConversionToMachine LaserToMachine
@@ -44,10 +48,15 @@
 
 // change some pin definition here:
 
-// use ZMinRef for analog laser PWM
+// use ZMinRef(=11) for analog laser PWM
+// new ZRef = 10
+
 #undef CNCSHIELD_Z_MIN_PIN
 #undef CNCSHIELD_Z_MAX_PIN
 #define CNCSHIELD_Z_MIN_PIN 10
+
+#undef CNCSHIELD_SPINDEL_ENABLE_PIN
+#define CNCSHIELD_SPINDEL_ENABLE_PIN 11
 
 #include <Steppers/StepperCNCShield.h>
 
@@ -77,7 +86,6 @@
 #define COOLANT_OFF		CNCSHIELD_COOLANT_OFF
 #endif
 
-//#undef CNCSHIELD_SPINDEL_ENABLE_PIN
 #ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
 #define SPINDEL_ENABLE_PIN	CNCSHIELD_SPINDEL_ENABLE_PIN
 #define SPINDEL_DIGITAL_ON	CNCSHIELD_SPINDEL_DIGITAL_ON
@@ -85,14 +93,9 @@
 #define SPINDEL_DIR_PIN		CNCSHIELD_SPINDEL_DIR_PIN
 #define SPINDEL_DIR_CLW		CNCSHIELD_SPINDEL_DIR_CLW
 #define SPINDEL_DIR_CCLW	CNCSHIELD_SPINDEL_DIR_CCLW
-#undef  SPINDEL_ANALOGSPEED
-#define SPINDEL_MAXSPEED	25000			// analog 255
+#define SPINDEL_ANALOGSPEED
+#define SPINDEL_MAXSPEED	255			// analog 255
 #endif
-
-#define LASER_ENABLE_PIN  11
-#define LASER_DIGITAL_ON  HIGH
-#define LASER_DIGITAL_OFF LOW
-#define  LASER_ANALOG
 
 #undef USECONTROLERFAN
 #ifdef USECONTROLERFAN
@@ -109,6 +112,3 @@
 #define DISABLELEDBLINK
 
 ////////////////////////////////////////////////////////
-
-#include <MessageCNCLib.h>
-

@@ -36,8 +36,8 @@
 ////////////////////////////////////////////////////////
 
 #define CMyStepper CStepperCNCShield
-#define ConversionToMm1000 CNCShieldToMm1000
-#define ConversionToMachine CNCShieldToMachine
+#define ConversionToMm1000 LaserToMm1000
+#define ConversionToMachine LaserToMachine
 
 ////////////////////////////////////////////////////////
 
@@ -71,6 +71,9 @@
 #undef CNCSHIELD_Z_MAX_PIN
 #define CNCSHIELD_Z_MIN_PIN 10
 
+#undef CNCSHIELD_SPINDEL_ENABLE_PIN
+#define CNCSHIELD_SPINDEL_ENABLE_PIN 11
+
 #include <Steppers/StepperCNCShield.h>
 
 ////////////////////////////////////////////////////////
@@ -99,7 +102,6 @@
 #define COOLANT_OFF		CNCSHIELD_COOLANT_OFF
 #endif
 
-//#undef CNCSHIELD_SPINDEL_ENABLE_PIN
 #ifdef CNCSHIELD_SPINDEL_ENABLE_PIN
 #define SPINDEL_ENABLE_PIN	CNCSHIELD_SPINDEL_ENABLE_PIN
 #define SPINDEL_DIGITAL_ON	CNCSHIELD_SPINDEL_DIGITAL_ON
@@ -107,14 +109,9 @@
 #define SPINDEL_DIR_PIN		CNCSHIELD_SPINDEL_DIR_PIN
 #define SPINDEL_DIR_CLW		CNCSHIELD_SPINDEL_DIR_CLW
 #define SPINDEL_DIR_CCLW	CNCSHIELD_SPINDEL_DIR_CCLW
-#undef  SPINDEL_ANALOGSPEED
-#define SPINDEL_MAXSPEED	25000			// analog 255
+#define SPINDEL_ANALOGSPEED
+#define SPINDEL_MAXSPEED	255			// analog 255
 #endif
-
-#define LASER_ENABLE_PIN  11
-#define LASER_DIGITAL_ON  HIGH
-#define LASER_DIGITAL_OFF LOW
-#define  LASER_ANALOG
 
 #undef USECONTROLERFAN
 #ifdef USECONTROLERFAN
@@ -129,40 +126,5 @@
 ////////////////////////////////////////////////////////
 
 #define DISABLELEDBLINK
-
-////////////////////////////////////////////////////////
-
-// 3 mm/rot
-// 20 steps/rot
-// * 16 => 1/16 step
-
-#define X_STEPSPERMM (20.0/3*16)
-#define Y_STEPSPERMM (20.0/3*16)
-#define Z_STEPSPERMM (20.0/3*16)
-#define A_STEPSPERMM (20.0/3*16)
-
-inline mm1000_t CNCShieldToMm1000(axis_t axis, sdist_t val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (mm1000_t)(val * (1000.0 / X_STEPSPERMM));
-		case Y_AXIS: return  (mm1000_t)(val * (1000.0 / Y_STEPSPERMM));
-		case Z_AXIS: return  (mm1000_t)(val * (1000.0 / Z_STEPSPERMM));
-		case A_AXIS: return  (mm1000_t)(val * (1000.0 / A_STEPSPERMM));
-	}
-}
-
-inline sdist_t CNCShieldToMachine(axis_t axis, mm1000_t  val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (sdist_t)(val * (X_STEPSPERMM / 1000.0));
-		case Y_AXIS: return  (sdist_t)(val * (Y_STEPSPERMM / 1000.0));
-		case Z_AXIS: return  (sdist_t)(val * (Z_STEPSPERMM / 1000.0));
-		case A_AXIS: return  (sdist_t)(val * (A_STEPSPERMM / 1000.0));
-	}
-}
 
 ////////////////////////////////////////////////////////
