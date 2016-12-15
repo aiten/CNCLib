@@ -68,13 +68,7 @@ void CMyControl::Init()
 	CControlTemplate::SetLimitMinMax(MYNUM_AXIS, X_MAXSIZE, Y_MAXSIZE, Z_MAXSIZE, A_MAXSIZE, 0, 0);
 	CControlTemplate::InitReference(X_USEREFERENCE, Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE);
 
-#ifdef CONTROLLERFAN_FAN_PIN
-	#ifdef CONTROLLERFAN_ANALOGSPEED
-		_controllerfan.Init(128);
-	#else
-		_controllerfan.Init();
-	#endif
-#endif
+	_controllerfan.Init(128);
 
 	_spindel.Init();
 	_probe.Init();
@@ -94,22 +88,9 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
-		case Spindel:	
-
-			if (level != 0)
-			{
-				_spindel.On((uint8_t) MulDivU32(abs(level),255, SPINDEL_MAXSPEED));
-				_spindelDir.Set(((short)level)>0);
-			}
-			return;
-
-		case Coolant:     _coolant.Set(level>0); return;
-
-#if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan:		_controllerfan.Set(level>0);	return;
-#elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan:		_controllerfan.SetLevel((uint8_t)level);return;
-#endif
+		case Spindel:		_spindel.On(ConvertSpindelSpeedToIO(level)); _spindelDir.Set(((short)level)>0);	return;
+		case Coolant:		_coolant.Set(level>0); return;
+		case ControllerFan:	_controllerfan.SetLevel((uint8_t)level);return;
 	}
 	
 	super::IOControl(tool, level);
@@ -124,12 +105,7 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 		case Probe:			{ return _probe.IsOn(); }
 		case Spindel:		{ return _spindel.IsOn(); }
 		case Coolant:		{ return _coolant.IsOn(); }
-
-#if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan: { return _controllerfan.IsOn(); }
-#elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
 		case ControllerFan: { return _controllerfan.GetLevel(); }
-#endif	
 	}
 
 	return super::IOControl(tool);
@@ -167,10 +143,8 @@ void CMyControl::TimerInterrupt()
 void CMyControl::Initialized()
 {
 	super::Initialized();
- 
-#if defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
+
 	_controllerfan.SetLevel(128);
-#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -218,6 +192,7 @@ void CMyControl::GoToReference()
 bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
 {
 	return super::GoToReference(axis, STEPRATERATE_REFMOVE, toMinRef);
+//	return CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, STEPRATERATE_REFMOVE, 0, MOVEAWAYFROMREF_STEPS);
 }
 
 ////////////////////////////////////////////////////////////
@@ -232,20 +207,18 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 
 bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo)
 {
-#ifdef CONTROLLERFAN_FAN_PIN
 	switch (eventtype)
 	{
 		case OnStartEvent:
 			_controllerfan.On();
 			break;
 		case OnIdleEvent:
-			if (millis()-CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME)
+			if (IsControllerFanTimeout())
 			{
 				_controllerfan.Off();
 			}
 			break;
 	}
-#endif
 
 	return super::OnEvent(eventtype, addinfo);
 }

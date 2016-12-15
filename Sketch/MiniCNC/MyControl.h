@@ -67,9 +67,11 @@ private:
 #ifdef SPINDEL_ENABLE_PIN
 	#ifdef SPINDEL_ANALOGSPEED
 		CAnalog8IOControl<SPINDEL_ENABLE_PIN> _spindel;
-	#else
+		inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t)MulDivU32(abs(level), 255, SPINDEL_MAXSPEED)); }
+#else
 		COnOffIOControl<SPINDEL_ENABLE_PIN, SPINDEL_DIGITAL_ON, SPINDEL_DIGITAL_OFF> _spindel;
-	#endif
+		inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t) level; }
+#endif
 	#ifdef SPINDEL_DIR_PIN
 		COnOffIOControl<SPINDEL_DIR_PIN, SPINDEL_DIR_CLW, SPINDEL_DIR_CCLW> _spindelDir;
 	#else
@@ -78,6 +80,7 @@ private:
 #else
 	CDummyIOControl _spindel;
 	CDummyIOControl _spindelDir;
+	inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return level; }
 #endif  
 
 #ifdef COOLANT_PIN
@@ -115,6 +118,10 @@ private:
 	#else
 		COnOffIOControl<CONTROLLERFAN_FAN_PIN, CONTROLLERFAN_DIGITAL_ON, CONTROLLERFAN_DIGITAL_OFF> _controllerfan;
 	#endif
+	inline bool IsControllerFanTimeout() { return millis() - CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME;	}
+#else
+	CDummyIOControl _controllerfan;
+	inline bool IsControllerFanTimeout() { return false; }
 #endif
 
 };

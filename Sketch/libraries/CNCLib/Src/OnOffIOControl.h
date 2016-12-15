@@ -42,9 +42,9 @@ public:
 		Set(false);
 	}
 
-	void On(uint8_t dummy)
+	void On(uint8_t isOn)
 	{
-		Set(dummy!=0);
+		Set(isOn !=0);
 	}
 
 	void On()
