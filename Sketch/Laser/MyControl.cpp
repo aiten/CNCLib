@@ -68,36 +68,15 @@ void CMyControl::Init()
 	CControlTemplate::SetLimitMinMax(MYNUM_AXIS, X_MAXSIZE, Y_MAXSIZE, Z_MAXSIZE, A_MAXSIZE, 0, 0);
 	CControlTemplate::InitReference(X_USEREFERENCE, Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE);
 
-#ifdef CONTROLLERFAN_FAN_PIN
-	#ifdef CONTROLLERFAN_ANALOGSPEED
-		_controllerfan.Init(128);
-	#else
-		_controllerfan.Init();
-	#endif
-#endif
+	_controllerfan.Init(128);
 
-  _laser.Init();
-
-#ifdef SPINDEL_ENABLE_PIN
 	_spindel.Init();
-#endif
-
-#ifdef PROBE_PIN
 	_probe.Init();
-#endif
-
-#ifdef KILL_PIN
 	_kill.Init();
-#endif
-
-#ifdef COOLANT_PIN
 	_coolant.Init();
-#endif
 
-#if defined(HOLD_PIN) && defined(RESUME_PIN)
 	_hold.SetPin(HOLD_PIN);
 	_resume.SetPin(RESUME_PIN);
-#endif
 
 	CGCodeParserBase::SetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED, CNC_ACC, CNC_DEC);
@@ -109,29 +88,11 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
-    case Spindel:
-      if (level != 0)
-      {
-#ifdef LASER_ANALOG
-        _laser.On((uint8_t) level);
-#else        
-        _laser.On();
-#endif
-      }
-      else
-      {
-        _laser.Off();
-      }
-      return;
+		case Spindel:		_laser.On((uint8_t)level);		return;
 
-#ifdef COOLANT_PIN
-	    case Coolant:     _coolant.Set(level>0); return;
-#endif
-#if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan:		_controllerfan.Set(level>0);	return;
-#elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan:		_controllerfan.Level = (uint8_t)level;		return;
-#endif
+		case Spindel:		_spindel.On(ConvertSpindelSpeedToIO(level)); _spindelDir.Set(((short)level)>0);	return;
+		case Coolant:		_coolant.Set(level>0); return;
+		case ControllerFan:	_controllerfan.SetLevel((uint8_t)level);return;
 	}
 	
 	super::IOControl(tool, level);
@@ -145,19 +106,9 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 	{
 		case Spindel:		{ return _laser.IsOn(); }
 
-#ifdef PROBE_PIN
 		case Probe:			{ return _probe.IsOn(); }
-#endif
-
-#ifdef COOLANT_PIN
 		case Coolant:		{ return _coolant.IsOn(); }
-#endif
-
-#if defined(CONTROLLERFAN_FAN_PIN) && !defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan: { return _controllerfan.IsOn(); }
-#elif defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
-		case ControllerFan: { return _controllerfan.Level; }
-#endif	
+		case ControllerFan: { return _controllerfan.GetLevel(); }
 	}
 
 	return super::IOControl(tool);
@@ -169,26 +120,16 @@ void CMyControl::Kill()
 {
 	super::Kill();
 
-  _laser.Off();
-  
-#ifdef SPINDEL_ENABLE_PIN
+	_laser.Off();
 	_spindel.Off();
-#endif
-
-#ifdef COOLANT_PIN
 	_coolant.Set(false);
-#endif
 }
 
 ////////////////////////////////////////////////////////////
 
 bool CMyControl::IsKill()
 {
-#ifdef KILL_PIN
 	return _kill.IsOn();
-#else
-	return false;
-#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -197,13 +138,8 @@ void CMyControl::TimerInterrupt()
 {
 	super::TimerInterrupt();
   
-#ifdef HOLD_PIN
 	_hold.Check();
-#endif
-
-#ifdef RESUME_PIN
 	_resume.Check();
-#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -211,10 +147,8 @@ void CMyControl::TimerInterrupt()
 void CMyControl::Initialized()
 {
 	super::Initialized();
- 
-#if defined(CONTROLLERFAN_FAN_PIN) && defined(CONTROLLERFAN_ANALOGSPEED)
-	_controllerfan.Level=128;
-#endif
+
+	_controllerfan.SetLevel(128);
 }
 
 ////////////////////////////////////////////////////////////
@@ -222,8 +156,6 @@ void CMyControl::Initialized()
 void CMyControl::Poll()
 {
 	super::Poll();
-
-#if defined(HOLD_PIN) && defined(RESUME_PIN)
 
 	if (IsHold())
 	{
@@ -236,7 +168,6 @@ void CMyControl::Poll()
 	{
 		Hold();
 	}
-#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -279,20 +210,18 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 
 bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo)
 {
-#ifdef CONTROLLERFAN_FAN_PIN
 	switch (eventtype)
 	{
 		case OnStartEvent:
 			_controllerfan.On();
 			break;
 		case OnIdleEvent:
-			if (millis()-CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME)
+			if (IsControllerFanTimeout())
 			{
 				_controllerfan.Off();
 			}
 			break;
 	}
-#endif
 
 	return super::OnEvent(eventtype, addinfo);
 }

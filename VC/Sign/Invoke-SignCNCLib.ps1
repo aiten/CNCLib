@@ -54,7 +54,7 @@
 			    return
 		    }
 
-		    if ( !($text -match $regex1) -and !($text -match $regex2) ) 
+		    if ( ($text -notmatch $regex1) -and ($text -notmatch $regex2) ) 
             {
 			    throw "Could not find public key token"
 		    }
