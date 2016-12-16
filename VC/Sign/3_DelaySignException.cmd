@@ -1,4 +1,4 @@
 rem sn -k CNCLib.snk
-sn -Vr *,6C79896E3E38DBB7
+sn -Vr *,f1dd8891e96f0824
 sn -Vl
 pause

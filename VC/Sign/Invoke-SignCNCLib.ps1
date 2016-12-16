@@ -25,7 +25,7 @@
 	$signToolsExe = join-path "$($env:WindowsSdkDir)\Bin\x86" "signtool.exe"
 
 	$tokenNameMapping = @{
-		"6C79896E3E38DBB7" = @(.\pfx2snk.ps1 .\CNCLib.pfx -pfxPassword $pfxPassword)
+		"f1dd8891e96f0824" = @(.\pfx2snk.ps1 .\CNCLib.pfx -pfxPassword $pfxPassword)
 	}
 
     Try
