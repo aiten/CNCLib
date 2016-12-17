@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="MiniCNCEpprom">
+      <UniqueIdentifier>{8bd08f54-b62d-4a9c-b0bd-4d7a50e5854c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNCEEprom\Configuration_MiniCNC.h">
+      <Filter>MiniCNCEpprom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNCEEprom\Configuration_MiniCNC_CNCShield.h">
+      <Filter>MiniCNCEpprom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNCEEprom\Configuration_MiniCNC_L298N.h">
+      <Filter>MiniCNCEpprom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNCEEprom\Configuration_MiniCNC_SMC800.h">
+      <Filter>MiniCNCEpprom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNCEEprom\Configuration_MiniCNC_TB6560.h">
+      <Filter>MiniCNCEpprom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNCEEprom\MyControl.h">
+      <Filter>MiniCNCEpprom</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniCNCEEprom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\MiniCNCEEprom\MyControl.cpp">
+      <Filter>MiniCNCEpprom</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Sketch\MiniCNCEEprom\MiniCNCEEprom.ino">
+      <Filter>MiniCNCEpprom</Filter>
+    </None>
+  </ItemGroup>
+</Project>

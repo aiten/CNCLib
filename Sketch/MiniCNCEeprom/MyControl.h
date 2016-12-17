@@ -63,8 +63,24 @@ protected:
 
 	virtual bool OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo) override;
 
+public:
+
   #define EEPROM_NUM_AXIS 4
   
+	enum EConfigSlot
+	{
+		Signature=0,
+		MaxSize = 1,
+		ScaleMmToMachine = MaxSize+EEPROM_NUM_AXIS,
+		ReferenceType = ScaleMmToMachine+1,
+		RefMove,
+
+		MaxStepRate,
+		Acc,
+		Dec,
+		RefMoveStepRate
+	};
+
   struct SCNCEeprom
   {
     uint32_t  signature;
@@ -72,7 +88,7 @@ protected:
 
     float     ScaleMm1000ToMachine;
   
-    EnumAsByte(EReverenceType) referenceType[EEPROM_NUM_AXIS]; 
+	uint8_t	  referenceType[EEPROM_NUM_AXIS];
     uint8_t   refmove[EEPROM_NUM_AXIS];
   
     uint32_t  maxsteprate;
@@ -80,8 +96,6 @@ protected:
     uint32_t  dec;
     uint32_t  refmovesteprate;
   };
-
-  void GetConfig(SCNCEeprom*);
 
 private:
 

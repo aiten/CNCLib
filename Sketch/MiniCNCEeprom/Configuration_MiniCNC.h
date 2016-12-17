@@ -24,7 +24,7 @@
 #define X_MAXSIZE 200000        // in mm1000_t
 #define Y_MAXSIZE 200000 
 #define Z_MAXSIZE 100000 
-#define A_MAXSIZE 50000 
+#define A_MAXSIZE 360000 
 
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
@@ -63,9 +63,9 @@
 
 ////////////////////////////////////////////////////////
 
-#define GO_DEFAULT_STEPRATE		((steprate_t) eeprom.maxsteprate)	// steps/sec
+#define GO_DEFAULT_STEPRATE		((steprate_t) CConfigEeprom::GetSlotU32(EConfigSlot::MaxStepRate))	// steps/sec
 #define G1_DEFAULT_STEPRATE		10000			// steps/sec
-#define G1_DEFAULT_MAXSTEPRATE	((steprate_t) eeprom.maxsteprate)	// steps/sec
+#define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetSlotU32(EConfigSlot::MaxStepRate))	// steps/sec
 
 #define STEPRATERATE_REFMOVE	CNC_MAXSPEED // GO_DEFAULT_STEPRATE
 

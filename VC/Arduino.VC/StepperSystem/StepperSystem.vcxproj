@@ -19,6 +19,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLibEx\Src\U8GLCD.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Beep.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\CNCLib.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigEeprom.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigurationCNCLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Control.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ControlTemplate.h" />
@@ -90,6 +91,7 @@
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\GCode3DParser.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLibEx\Src\U8GLCD.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\Beep.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigEeprom.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\Control.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\ExpressionParser.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeExpressionParser.cpp" />

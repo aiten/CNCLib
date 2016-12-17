@@ -24,6 +24,7 @@
 #include "StreamReader.h"
 #include <ConfigurationStepperLib.h>
 #include <MessageStepperLib.h>
+#include "MessageCNCLib.h"
 
 ////////////////////////////////////////////////////////
 
@@ -82,6 +83,8 @@ protected:
 	error_t							_error;
 	PrintOKMessage					_OkMessage;
 
+public:
+
 	long GetInt32Scale(long minvalue, long maxvalue, uint8_t scale, uint8_t maxscale);	// get "float" e.g. 1.234 => 1234 or 12 => 12000, limit with scale
 	expr_t GetDouble();
 
@@ -95,6 +98,8 @@ protected:
 
 	static bool IsUInt(char ch)				{ return CStreamReader::IsDigit(ch); }
 	static bool IsInt(char ch)				{ return CStreamReader::IsMinus(ch) || CStreamReader::IsDigit(ch); }
+
+protected:
 
 	//////////////////////////////////////////////////////
 	// Textsearch  (=Tokens)

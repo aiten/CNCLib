@@ -26,6 +26,7 @@
 #include "MotionControlBase.h"
 
 #include "GCodeParserBase.h"
+#include "ConfigEeprom.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -65,8 +66,13 @@ struct CGCodeParserBase::SModlessState CGCodeParserBase::_modlessstate;
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParserBase::Command(char /* ch */ )
+bool CGCodeParserBase::Command(char ch)
 {
+	if (ch == '$' && CSingleton<CConfigEeprom>::GetInstance())
+	{
+		_reader->GetNextCharSkipScaces();
+		return CSingleton<CConfigEeprom>::GetInstance()->ParseConfig(this);
+	}
 	return false; 
 }
 

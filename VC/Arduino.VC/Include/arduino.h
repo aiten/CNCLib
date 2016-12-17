@@ -78,6 +78,15 @@
 #define strcmp_P(a,b) strcmp(a,b)
 #define strcasecmp_P(a,b) _stricmp(a,b)
 
+#define memcpy_P(a,b,c) memcpy(a,b,c)
+
+#define eeprom_read_block(a,b,c) memcpy(a,b,c)
+#define eeprom_write_block(a,b,c) memcpy(b,a,c)
+
+inline void eeprom_write_dword(uint32_t *  __p, uint32_t  	__value) { *__p = __value;  }
+inline uint32_t eeprom_read_dword(const uint32_t * __p) { return *__p;  }
+inline uint8_t eeprom_read_byte(const uint8_t * __p) { return *__p; }
+
 #define __FlashStringHelper char
 #define F(a) a
 #define PROGMEM 
@@ -217,7 +226,7 @@ inline unsigned long millis() { return GetTickCount(); }
 inline void delay(unsigned long ms) { Sleep(ms); }
 
 #define STDIO 0
-
+#define HEX 16
 class Stream
 {
 public:
@@ -233,14 +242,21 @@ public:
 	void print(int i)				{ printf("%i", i); };
 	void print(long l)				{ printf("%li", l); };
 	void print(unsigned long ul)	{ printf("%lu", ul); };
+	void print(unsigned long ul, uint8_t base)
+	{
+		if (base == 10) printf("%lu", ul);
+		if (base == 16) printf("%x", ul);
+	}
 	void print(const char*s)		{ printf("%s", s); };
 	void print(float f)				{ printf("%f", f); };
 
 	void println()					{ printf("\n"); };
 	void println(unsigned int ui)	{ printf("%u\n", ui); };
+	void println(char c)			{ printf("%c\n", c); };
 	void println(int i)				{ printf("%i\n", i); };
 	void println(long l)			{ printf("%li\n", l); };
 	void println(unsigned long ul)	{ printf("%lu\n", ul); };
+	void println(unsigned long ul, uint8_t base) { print(ul, base); println(); };
 	void println(const char*s)		{ printf("%s\n", s); };
 	void println(float f)			{ printf("%f\n", f); };
 
