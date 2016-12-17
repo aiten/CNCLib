@@ -70,14 +70,15 @@ protected:
     uint32_t  signature;
     mm1000_t  maxsize[EEPROM_NUM_AXIS];
 
-    float     StepsToMm1000;
+    float     ScaleMm1000ToMachine;
   
     EnumAsByte(EReverenceType) referenceType[EEPROM_NUM_AXIS]; 
     uint8_t   refmove[EEPROM_NUM_AXIS];
   
-    steprate_t  maxsteprate;
-    steprate_t  acc;
-    steprate_t  dec;
+    uint32_t  maxsteprate;
+    uint32_t  acc;
+    uint32_t  dec;
+    uint32_t  refmovesteprate;
   };
 
   void GetConfig(SCNCEeprom*);

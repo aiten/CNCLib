@@ -34,9 +34,12 @@
 #define Z_USEREFERENCE	EReverenceType::ReferenceToMax
 #define A_USEREFERENCE	EReverenceType::NoReference
 
-#define REFMOVE_1_AXIS  Z_AXIS
-#define REFMOVE_2_AXIS  Y_AXIS
-#define REFMOVE_3_AXIS  X_AXIS
+//#define REFMOVE_1_AXIS  Z_AXIS
+//#define REFMOVE_2_AXIS  Y_AXIS
+//#define REFMOVE_3_AXIS  X_AXIS
+#define REFMOVE_1_AXIS  255
+#define REFMOVE_2_AXIS  255
+#define REFMOVE_3_AXIS  255
 #define REFMOVE_4_AXIS  255
 
 ////////////////////////////////////////////////////////
@@ -60,26 +63,26 @@
 
 ////////////////////////////////////////////////////////
 
-#define GO_DEFAULT_STEPRATE		eeprom.maxsteprate	// steps/sec
+#define GO_DEFAULT_STEPRATE		((steprate_t) eeprom.maxsteprate)	// steps/sec
 #define G1_DEFAULT_STEPRATE		10000			// steps/sec
-#define G1_DEFAULT_MAXSTEPRATE	eeprom.maxsteprate	// steps/sec
+#define G1_DEFAULT_MAXSTEPRATE	((steprate_t) eeprom.maxsteprate)	// steps/sec
 
 #define STEPRATERATE_REFMOVE	CNC_MAXSPEED // GO_DEFAULT_STEPRATE
 
 ////////////////////////////////////////////////////////
 
-extern float scalToMm;
-extern float scalToMachine;
+extern float scaleToMm;
+extern float scaleToMachine;
 
 inline mm1000_t MiniCNCToMm1000(axis_t axis, sdist_t val)
 {
 	switch (axis)
 	{
 		default:
-		case X_AXIS: return  (mm1000_t)(val * scalToMm);
-		case Y_AXIS: return  (mm1000_t)(val * scalToMm);
-		case Z_AXIS: return  (mm1000_t)(val * scalToMm);
-		case A_AXIS: return  (mm1000_t)(val * scalToMm);
+		case X_AXIS: return  (mm1000_t)(val * scaleToMm);
+		case Y_AXIS: return  (mm1000_t)(val * scaleToMm);
+		case Z_AXIS: return  (mm1000_t)(val * scaleToMm);
+		case A_AXIS: return  (mm1000_t)(val * scaleToMm);
 	}
 }
 
@@ -88,10 +91,10 @@ inline sdist_t MiniCNCToMachine(axis_t axis, mm1000_t  val)
 	switch (axis)
 	{
 		default:
-		case X_AXIS: return  (sdist_t)(val * scalToMachine);
-		case Y_AXIS: return  (sdist_t)(val * scalToMachine);
-		case Z_AXIS: return  (sdist_t)(val * scalToMachine);
-		case A_AXIS: return  (sdist_t)(val * scalToMachine);
+		case X_AXIS: return  (sdist_t)(val * scaleToMachine);
+		case Y_AXIS: return  (sdist_t)(val * scaleToMachine);
+		case Z_AXIS: return  (sdist_t)(val * scaleToMachine);
+		case A_AXIS: return  (sdist_t)(val * scaleToMachine);
 	}
 }
 
@@ -99,5 +102,5 @@ inline sdist_t MiniCNCToMachine(axis_t axis, mm1000_t  val)
 
 #include <MessageCNCLib.h>
 
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC:" __DATE__ )
+#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC-E:" __DATE__ )
 

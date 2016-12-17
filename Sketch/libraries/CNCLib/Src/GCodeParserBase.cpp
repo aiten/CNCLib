@@ -65,7 +65,10 @@ struct CGCodeParserBase::SModlessState CGCodeParserBase::_modlessstate;
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParserBase::Command(char /* ch */)			{ return false; }
+bool CGCodeParserBase::Command(char /* ch */ )
+{
+	return false; 
+}
 
 ////////////////////////////////////////////////////////////
 

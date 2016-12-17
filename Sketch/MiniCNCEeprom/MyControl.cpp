@@ -42,8 +42,8 @@ CMotionControlBase MotionControl;
 
 ////////////////////////////////////////////////////////////
 
-float scalToMm;
-float scalToMachine;
+float scaleToMm;
+float scaleToMachine;
 
 void CMyControl::GetConfig(SCNCEeprom* eeprom)
 {
@@ -57,7 +57,7 @@ void CMyControl::GetConfig(SCNCEeprom* eeprom)
       (1000.0 / X_STEPSPERMM),
       { X_USEREFERENCE,   Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE },
       { REFMOVE_1_AXIS,   REFMOVE_2_AXIS, REFMOVE_3_AXIS, REFMOVE_4_AXIS },
-      CNC_MAXSPEED,CNC_ACC,CNC_DEC 
+      CNC_MAXSPEED,CNC_ACC,CNC_DEC,0
     };
     memcpy_P(eeprom, &eepromFlash, sizeof(SCNCEeprom)); 
   }
@@ -70,8 +70,8 @@ void CMyControl::Init()
   SCNCEeprom eeprom;
   GetConfig(&eeprom);
 
-  scalToMm = eeprom.StepsToMm1000;
-  scalToMachine = 1.0 / eeprom.StepsToMm1000;
+  scaleToMm = eeprom.ScaleMm1000ToMachine;
+  scaleToMachine = 1.0 / eeprom.ScaleMm1000ToMachine;
 
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();
@@ -79,6 +79,12 @@ void CMyControl::Init()
 
 	StepperSerial.println(MESSAGE_MYCONTROL_Proxxon_Starting);
 
+  uint32_t* uint = (uint32_t*) &eeprom;
+  for(int i=0; i<sizeof(SCNCEeprom)/sizeof(uint32_t);i++,uint++)
+  {
+    Serial.print('$');Serial.print(i);Serial.print('=');Serial.print(*uint);Serial.print('(');Serial.print(*uint,HEX);Serial.println(')');
+  }
+  
 	CMotionControlBase::GetInstance()->Init();
 	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
@@ -107,7 +113,7 @@ void CMyControl::Init()
 	_resume.SetPin(RESUME_PIN);
 
 	CGCodeParserBase::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
-	CStepper::GetInstance()->SetDefaultMaxSpeed(eeprom.maxsteprate, eeprom.acc, eeprom.dec);
+	CStepper::GetInstance()->SetDefaultMaxSpeed((steprate_t) eeprom.maxsteprate, (steprate_t)eeprom.acc, (steprate_t)eeprom.dec);
 }
 
 ////////////////////////////////////////////////////////////
@@ -204,19 +210,18 @@ void CMyControl::GoToReference()
   for (axis_t i = 0; i < EEPROM_NUM_AXIS; i++)
   {
     axis_t axis = eeprom.refmove[i];
-    if (axis!=255)
+    if (axis < EEPROM_NUM_AXIS && eeprom.referenceType[axis]!=EReverenceType::NoReference)
     {
-      GoToReference(axis, 0, CStepper::GetInstance()->IsUseReference(axis, true));    
-//      GoToReference(axis, 0, eeprom.referenceType[axis]==EReverenceType::ReferenceToMin);    
+      GoToReference(axis, (steprate_t) eeprom.refmovesteprate, eeprom.referenceType[axis]==EReverenceType::ReferenceToMin);    
     }
   }
 }
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
+bool CMyControl::GoToReference(axis_t axis, steprate_t steprate, bool toMinRef)
 {
-	return super::GoToReference(axis, STEPRATERATE_REFMOVE, toMinRef);
+	return super::GoToReference(axis, steprate, toMinRef);
 //	return CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, STEPRATERATE_REFMOVE, 0, MOVEAWAYFROMREF_STEPS);
 }
 
