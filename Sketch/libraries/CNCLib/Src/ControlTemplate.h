@@ -23,8 +23,8 @@
 enum EReverenceType
 {
 	NoReference,
-	ReferaeceToMin,
-	ReferaeceToMax
+	ReferenceToMin,
+	ReferenceToMax
 };
 
 class CControlTemplate
@@ -34,26 +34,26 @@ public:
 	//////////////////////////////////////////////////////////////
 	// inline template
 
-	static inline void InitReference(EReverenceType refx,EReverenceType refy,EReverenceType refz,EReverenceType refa)
+	static inline void InitReference(EnumAsByte(EReverenceType) refx, EnumAsByte(EReverenceType) refy, EnumAsByte(EReverenceType) refz, EnumAsByte(EReverenceType) refa)
 	{
-		if (refx == ReferaeceToMin)
+		if (refx == ReferenceToMin)
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
-		else if (refx == ReferaeceToMax)
+		else if (refx == ReferenceToMax)
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, false), true);
 
-		if (refy == ReferaeceToMin)
+		if (refy == ReferenceToMin)
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
-		else if (refy == ReferaeceToMax)
+		else if (refy == ReferenceToMax)
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, false), true);
 
-		if (refz == ReferaeceToMin)
+		if (refz == ReferenceToMin)
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true), true);
-		else if (refz == ReferaeceToMax)
+		else if (refz == ReferenceToMax)
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, false), true);
 
-		if (refa == ReferaeceToMin)
+		if (refa == ReferenceToMin)
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, true), true);
-		else if (refa == ReferaeceToMax)
+		else if (refa == ReferenceToMax)
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, false), true);
 	}
 

@@ -26,8 +26,8 @@
 #define Z_MAXSIZE 100000 
 #define A_MAXSIZE 50000 
 
-#define X_USEREFERENCE	EReverenceType::ReferaeceToMin
-#define Y_USEREFERENCE	EReverenceType::ReferaeceToMax
+#define X_USEREFERENCE	EReverenceType::ReferenceToMin
+#define Y_USEREFERENCE	EReverenceType::ReferenceToMax
 #define Z_USEREFERENCE	EReverenceType::NoReference
 #define A_USEREFERENCE	EReverenceType::NoReference
 

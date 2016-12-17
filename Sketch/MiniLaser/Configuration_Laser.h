@@ -27,7 +27,7 @@
 #define A_MAXSIZE 50000 
 
 ////////////////////////////////////////////////////////
-// NoReference, ReferaeceToMin, ReferaeceToMax
+// NoReference, ReferenceToMin, ReferenceToMax
 
 #define X_USEREFERENCE	EReverenceType::NoReference
 #define Y_USEREFERENCE	EReverenceType::NoReference

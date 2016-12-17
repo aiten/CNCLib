@@ -28,9 +28,9 @@
 #define B_MAXSIZE 360000 
 #define C_MAXSIZE 360000 
 
-#define X_USEREFERENCE	EReverenceType::ReferaeceToMin
-#define Y_USEREFERENCE	EReverenceType::ReferaeceToMin
-#define Z_USEREFERENCE	EReverenceType::ReferaeceToMax
+#define X_USEREFERENCE	EReverenceType::ReferenceToMin
+#define Y_USEREFERENCE	EReverenceType::ReferenceToMin
+#define Z_USEREFERENCE	EReverenceType::ReferenceToMax
 #define A_USEREFERENCE	EReverenceType::NoReference
 
 #undef NOGOTOREFERENCEATBOOT
