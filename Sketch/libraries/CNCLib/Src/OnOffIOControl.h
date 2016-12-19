@@ -32,6 +32,12 @@ public:
 		Set(false);
 	}
 
+	void Init(uint8_t isOn)
+	{
+		Init();
+		On(isOn);
+	}
+
 	void Set(bool val)
 	{
 		CHAL::digitalWrite(PIN, val ? ONVALUE : OFFVALUE);
@@ -57,6 +63,15 @@ public:
 		return CHAL::digitalRead(PIN) == ONVALUE;
 	}
 
+	void SetLevel(uint8_t isOn)
+	{
+		On(isOn);
+	}
+
+	uint8_t GetLevel()
+	{
+		return IsOn();
+	}
 };
 
 ////////////////////////////////////////////////////////

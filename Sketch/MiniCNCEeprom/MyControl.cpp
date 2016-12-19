@@ -106,8 +106,12 @@ void CMyControl::Init()
 	_kill.Init();
 	_coolant.Init();
 
-	_hold.SetPin(HOLD_PIN);
+#if defined(HOLD_PIN)
+  _hold.SetPin(HOLD_PIN);
+#endif
+#if defined(RESUME_PIN)
 	_resume.SetPin(RESUME_PIN);
+#endif
 
 	CGCodeParserBase::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 	CStepper::GetInstance()->SetDefaultMaxSpeed(
