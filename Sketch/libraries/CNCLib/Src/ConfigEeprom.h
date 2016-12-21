@@ -34,7 +34,7 @@ private:
 	const void* _defaulteeprom;
 
 	bool _eepromvalid=false;
-	bool _eepromchecked=false;
+	bool _eepromcanwrite=false;
 
 public:
 

@@ -118,8 +118,6 @@ void CMyControl::Init()
 		((steprate_t)CConfigEeprom::GetSlotU32(EConfigSlot::MaxStepRate)),
 		((steprate_t)CConfigEeprom::GetSlotU32(EConfigSlot::Acc)),
 		((steprate_t)CConfigEeprom::GetSlotU32(EConfigSlot::Dec)));
-
-	CSingleton<CConfigEeprom>::GetInstance()->PrintConfig();
 }
 
 ////////////////////////////////////////////////////////////

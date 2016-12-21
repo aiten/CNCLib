@@ -441,8 +441,7 @@ bool CGCodeParser::Command(char ch)
 
 		// case '-':
 		case '!':
-		case '?':
-		case '$': CommandEscape(); return true;
+		case '?': CommandEscape(); return true;
 	}
 	return false;
 }
@@ -1300,9 +1299,6 @@ void CGCodeParser::M300Command()
 
 void CGCodeParser::CommandEscape()
 {
-	if (_reader->GetChar() == '$')
-		_reader->GetNextChar();
-
 	CNCLibCommandExtensions();
 }
 

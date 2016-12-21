@@ -71,7 +71,9 @@ bool CGCodeParserBase::Command(char ch)
 	if (ch == '$' && CSingleton<CConfigEeprom>::GetInstance())
 	{
 		_reader->GetNextCharSkipScaces();
-		return CSingleton<CConfigEeprom>::GetInstance()->ParseConfig(this);
+		if (!CSingleton<CConfigEeprom>::GetInstance()->ParseConfig(this) && !IsError())
+			Error(MESSAGE_GCODE_CommandExpected);
+		return true;
 	}
 	return false; 
 }

@@ -81,18 +81,6 @@ uint8_t CConfigEeprom::GetSlot8(uint8_t slot, uint8_t ofs)
 }
 
 ////////////////////////////////////////////////////////////
-/*
-bool CConfigEeprom::GetConfig(void* eeprom)
-{
-	eeprom_read_block(eeprom, (const void*)EEPROMBASEADRUINT32, _eepromsizesize);
-	if (*((uint32_t*)eeprom) == 0x21436587) return true;
-
-	memcpy_P(eeprom, _defaulteeprom, _eepromsizesize);
-	return false;
-}
-*/
-
-////////////////////////////////////////////////////////////
 
 void CConfigEeprom::SetSlot32(uint8_t slot, uint32_t value)
 {
@@ -126,17 +114,30 @@ void CConfigEeprom::PrintConfig()
 
 bool CConfigEeprom::ParseConfig(CParser* parser)
 {
+	switch (parser->GetReader()->SkipSpaces())
+	{
+		case '?': 
+			PrintConfig();
+			parser->GetReader()->GetNextChar();
+			return true;
+		case '!':
+			_eepromcanwrite = true;
+			parser->GetReader()->GetNextChar();
+			return true;
+	}
+
 	uint8_t slot = parser->GetUInt8();
-	if (parser->GetReader()->SkipSpaces() != '=') return false;
+	if (parser->GetReader()->SkipSpaces() != '=') 
+		return false;
+
 	parser->GetReader()->GetNextChar();
 	uint32_t varvalue = parser->GetUInt32();
 
-	if (!parser->IsError() && slot < _eepromsizesize / sizeof(uint32_t))
-	{
-		if (!_eepromvalid) FlushConfig();
-		SetSlot32(slot, varvalue);
-		PrintConfig();
-	}
+	if (parser->IsError() || slot < _eepromsizesize / sizeof(uint32_t) || !_eepromcanwrite)
+		return false;
+
+	if (!_eepromvalid) FlushConfig();
+	SetSlot32(slot, varvalue);
 
 	return true;
 }
