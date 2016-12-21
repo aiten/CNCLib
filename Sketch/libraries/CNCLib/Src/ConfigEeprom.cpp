@@ -133,7 +133,7 @@ bool CConfigEeprom::ParseConfig(CParser* parser)
 	parser->GetReader()->GetNextChar();
 	uint32_t varvalue = parser->GetUInt32();
 
-	if (parser->IsError() || slot < _eepromsizesize / sizeof(uint32_t) || !_eepromcanwrite)
+	if (parser->IsError() || slot >= _eepromsizesize / sizeof(uint32_t) || !_eepromcanwrite)
 		return false;
 
 	if (!_eepromvalid) FlushConfig();
