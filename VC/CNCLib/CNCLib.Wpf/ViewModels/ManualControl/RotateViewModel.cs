@@ -51,14 +51,14 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region ICommand
-		public ICommand SendG69Command			{ get { return new DelegateCommand(SendG69, CanSendRotate); } }
-		public ICommand SendG68X0Y0R90Command	{ get { return new DelegateCommand(SendG68X0Y0R90, CanSendRotate); } }
-		public ICommand SendG68X0Y0R270Command	{ get { return new DelegateCommand(SendG68X0Y0R270, CanSendRotate); } }
+		public ICommand SendG69Command			=> new DelegateCommand(SendG69, CanSendRotate);
+		public ICommand SendG68X0Y0R90Command	=> new DelegateCommand(SendG68X0Y0R90, CanSendRotate);
+		public ICommand SendG68X0Y0R270Command	=> new DelegateCommand(SendG68X0Y0R270, CanSendRotate);
 
-		public ICommand SendG6810Command		{ get { return new DelegateCommand(SendG6810, CanSendRotate); } }
-		public ICommand SendG6811Command		{ get { return new DelegateCommand(SendG6811, CanSendRotate); } }
-		public ICommand SendG6813Command		{ get { return new DelegateCommand(SendG6813, CanSendRotate); } }
-		public ICommand SendG6814Command		{ get { return new DelegateCommand(SendG6814, CanSendRotate); } }
+		public ICommand SendG6810Command		=> new DelegateCommand(SendG6810, CanSendRotate);
+		public ICommand SendG6811Command		=> new DelegateCommand(SendG6811, CanSendRotate);
+		public ICommand SendG6813Command		=> new DelegateCommand(SendG6813, CanSendRotate);
+		public ICommand SendG6814Command		=> new DelegateCommand(SendG6814, CanSendRotate);
 
 
 		#endregion

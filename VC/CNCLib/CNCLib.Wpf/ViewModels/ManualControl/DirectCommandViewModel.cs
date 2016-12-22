@@ -68,7 +68,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region ICommand
-		public ICommand SendDirectCommand { get { return new DelegateCommand(SendDirect, CanSendDirectCommand); } }
+		public ICommand SendDirectCommand => new DelegateCommand(SendDirect, CanSendDirectCommand);
 
 		#endregion
 	}

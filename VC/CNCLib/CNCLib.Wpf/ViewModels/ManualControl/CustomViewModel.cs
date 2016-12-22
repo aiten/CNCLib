@@ -155,41 +155,41 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region ICommand
-		public ICommand Send00Command { get { return new DelegateCommand(() => SendXY(0,0), () => CanSendXY(0,0)); } }
-        public ICommand Send01Command { get { return new DelegateCommand(() => SendXY(0, 1), () => CanSendXY(0, 1)); } }
-        public ICommand Send02Command { get { return new DelegateCommand(() => SendXY(0, 2), () => CanSendXY(0, 2)); } }
-        public ICommand Send03Command { get { return new DelegateCommand(() => SendXY(0, 3), () => CanSendXY(0, 3)); } }
-        public ICommand Send04Command { get { return new DelegateCommand(() => SendXY(0, 4), () => CanSendXY(0, 4)); } }
-        public ICommand Send10Command { get { return new DelegateCommand(() => SendXY(1, 0), () => CanSendXY(1, 0)); } }
-        public ICommand Send11Command { get { return new DelegateCommand(() => SendXY(1, 1), () => CanSendXY(1, 1)); } }
-        public ICommand Send12Command { get { return new DelegateCommand(() => SendXY(1, 2), () => CanSendXY(1, 2)); } }
-        public ICommand Send13Command { get { return new DelegateCommand(() => SendXY(1, 3), () => CanSendXY(1, 3)); } }
-        public ICommand Send14Command { get { return new DelegateCommand(() => SendXY(1, 4), () => CanSendXY(1, 4)); } }
-        public ICommand Send20Command { get { return new DelegateCommand(() => SendXY(2, 0), () => CanSendXY(2, 0)); } }
-        public ICommand Send21Command { get { return new DelegateCommand(() => SendXY(2, 1), () => CanSendXY(2, 1)); } }
-        public ICommand Send22Command { get { return new DelegateCommand(() => SendXY(2, 2), () => CanSendXY(2, 2)); } }
-        public ICommand Send23Command { get { return new DelegateCommand(() => SendXY(2, 3), () => CanSendXY(2, 3)); } }
-        public ICommand Send24Command { get { return new DelegateCommand(() => SendXY(2, 4), () => CanSendXY(2, 4)); } }
-        public ICommand Send30Command { get { return new DelegateCommand(() => SendXY(3, 0), () => CanSendXY(3, 0)); } }
-        public ICommand Send31Command { get { return new DelegateCommand(() => SendXY(3, 1), () => CanSendXY(3, 1)); } }
-        public ICommand Send32Command { get { return new DelegateCommand(() => SendXY(3, 2), () => CanSendXY(3, 2)); } }
-        public ICommand Send33Command { get { return new DelegateCommand(() => SendXY(3, 3), () => CanSendXY(3, 3)); } }
-        public ICommand Send34Command { get { return new DelegateCommand(() => SendXY(3, 4), () => CanSendXY(3, 4)); } }
-        public ICommand Send40Command { get { return new DelegateCommand(() => SendXY(4, 0), () => CanSendXY(4, 0)); } }
-        public ICommand Send41Command { get { return new DelegateCommand(() => SendXY(4, 1), () => CanSendXY(4, 1)); } }
-        public ICommand Send42Command { get { return new DelegateCommand(() => SendXY(4, 2), () => CanSendXY(4, 2)); } }
-        public ICommand Send43Command { get { return new DelegateCommand(() => SendXY(4, 3), () => CanSendXY(4, 3)); } }
-        public ICommand Send44Command { get { return new DelegateCommand(() => SendXY(4, 4), () => CanSendXY(4, 4)); } }
-        public ICommand Send50Command { get { return new DelegateCommand(() => SendXY(5, 0), () => CanSendXY(5, 0)); } }
-        public ICommand Send51Command { get { return new DelegateCommand(() => SendXY(5, 1), () => CanSendXY(5, 1)); } }
-        public ICommand Send52Command { get { return new DelegateCommand(() => SendXY(5, 2), () => CanSendXY(5, 2)); } }
-        public ICommand Send53Command { get { return new DelegateCommand(() => SendXY(5, 3), () => CanSendXY(5, 3)); } }
-        public ICommand Send54Command { get { return new DelegateCommand(() => SendXY(5, 4), () => CanSendXY(5, 4)); } }
-        public ICommand Send60Command { get { return new DelegateCommand(() => SendXY(6, 0), () => CanSendXY(6, 0)); } }
-        public ICommand Send61Command { get { return new DelegateCommand(() => SendXY(6, 1), () => CanSendXY(6, 1)); } }
-        public ICommand Send62Command { get { return new DelegateCommand(() => SendXY(6, 2), () => CanSendXY(6, 2)); } }
-        public ICommand Send63Command { get { return new DelegateCommand(() => SendXY(6, 3), () => CanSendXY(6, 3)); } }
-        public ICommand Send64Command { get { return new DelegateCommand(() => SendXY(6, 4), () => CanSendXY(6, 4)); } }
+		public ICommand Send00Command => new DelegateCommand(() => SendXY(0,0), () => CanSendXY(0,0));
+        public ICommand Send01Command => new DelegateCommand(() => SendXY(0, 1), () => CanSendXY(0, 1));
+        public ICommand Send02Command => new DelegateCommand(() => SendXY(0, 2), () => CanSendXY(0, 2));
+        public ICommand Send03Command => new DelegateCommand(() => SendXY(0, 3), () => CanSendXY(0, 3));
+        public ICommand Send04Command => new DelegateCommand(() => SendXY(0, 4), () => CanSendXY(0, 4));
+        public ICommand Send10Command => new DelegateCommand(() => SendXY(1, 0), () => CanSendXY(1, 0));
+        public ICommand Send11Command => new DelegateCommand(() => SendXY(1, 1), () => CanSendXY(1, 1));
+        public ICommand Send12Command => new DelegateCommand(() => SendXY(1, 2), () => CanSendXY(1, 2));
+        public ICommand Send13Command => new DelegateCommand(() => SendXY(1, 3), () => CanSendXY(1, 3));
+        public ICommand Send14Command => new DelegateCommand(() => SendXY(1, 4), () => CanSendXY(1, 4));
+        public ICommand Send20Command => new DelegateCommand(() => SendXY(2, 0), () => CanSendXY(2, 0));
+        public ICommand Send21Command => new DelegateCommand(() => SendXY(2, 1), () => CanSendXY(2, 1));
+        public ICommand Send22Command => new DelegateCommand(() => SendXY(2, 2), () => CanSendXY(2, 2));
+        public ICommand Send23Command => new DelegateCommand(() => SendXY(2, 3), () => CanSendXY(2, 3));
+        public ICommand Send24Command => new DelegateCommand(() => SendXY(2, 4), () => CanSendXY(2, 4));
+        public ICommand Send30Command => new DelegateCommand(() => SendXY(3, 0), () => CanSendXY(3, 0));
+        public ICommand Send31Command => new DelegateCommand(() => SendXY(3, 1), () => CanSendXY(3, 1));
+        public ICommand Send32Command => new DelegateCommand(() => SendXY(3, 2), () => CanSendXY(3, 2));
+        public ICommand Send33Command => new DelegateCommand(() => SendXY(3, 3), () => CanSendXY(3, 3));
+        public ICommand Send34Command => new DelegateCommand(() => SendXY(3, 4), () => CanSendXY(3, 4));
+        public ICommand Send40Command => new DelegateCommand(() => SendXY(4, 0), () => CanSendXY(4, 0));
+        public ICommand Send41Command => new DelegateCommand(() => SendXY(4, 1), () => CanSendXY(4, 1)); 
+        public ICommand Send42Command => new DelegateCommand(() => SendXY(4, 2), () => CanSendXY(4, 2));
+        public ICommand Send43Command => new DelegateCommand(() => SendXY(4, 3), () => CanSendXY(4, 3));
+        public ICommand Send44Command => new DelegateCommand(() => SendXY(4, 4), () => CanSendXY(4, 4));
+        public ICommand Send50Command => new DelegateCommand(() => SendXY(5, 0), () => CanSendXY(5, 0));
+        public ICommand Send51Command => new DelegateCommand(() => SendXY(5, 1), () => CanSendXY(5, 1));
+        public ICommand Send52Command => new DelegateCommand(() => SendXY(5, 2), () => CanSendXY(5, 2));
+        public ICommand Send53Command => new DelegateCommand(() => SendXY(5, 3), () => CanSendXY(5, 3));
+        public ICommand Send54Command => new DelegateCommand(() => SendXY(5, 4), () => CanSendXY(5, 4));
+        public ICommand Send60Command => new DelegateCommand(() => SendXY(6, 0), () => CanSendXY(6, 0));
+        public ICommand Send61Command => new DelegateCommand(() => SendXY(6, 1), () => CanSendXY(6, 1));
+        public ICommand Send62Command => new DelegateCommand(() => SendXY(6, 2), () => CanSendXY(6, 2));
+        public ICommand Send63Command => new DelegateCommand(() => SendXY(6, 3), () => CanSendXY(6, 3));
+        public ICommand Send64Command => new DelegateCommand(() => SendXY(6, 4), () => CanSendXY(6, 4));  
 
         #endregion
     }

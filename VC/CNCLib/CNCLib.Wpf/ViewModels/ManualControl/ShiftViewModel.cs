@@ -48,14 +48,14 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region ICommand
-		public ICommand SendG53Command { get { return new DelegateCommand(SendG53, CanSend); } }
-		public ICommand SendG54Command { get { return new DelegateCommand(SendG54, CanSend); } }
-		public ICommand SendG55Command { get { return new DelegateCommand(SendG55, CanSend); } }
-		public ICommand SendG56Command { get { return new DelegateCommand(SendG56, CanSend); } }
-		public ICommand SendG57Command { get { return new DelegateCommand(SendG57, CanSend); } }
-		public ICommand SendG58Command { get { return new DelegateCommand(SendG58, CanSend); } }
-		public ICommand SendG59Command { get { return new DelegateCommand(SendG59, CanSend); } }
-		public ICommand SendG92Command { get { return new DelegateCommand(SendG92, CanSend); } }
+		public ICommand SendG53Command => new DelegateCommand(SendG53, CanSend);
+		public ICommand SendG54Command => new DelegateCommand(SendG54, CanSend);
+		public ICommand SendG55Command => new DelegateCommand(SendG55, CanSend);
+		public ICommand SendG56Command => new DelegateCommand(SendG56, CanSend);
+		public ICommand SendG57Command => new DelegateCommand(SendG57, CanSend);
+		public ICommand SendG58Command => new DelegateCommand(SendG58, CanSend);
+		public ICommand SendG59Command => new DelegateCommand(SendG59, CanSend);
+		public ICommand SendG92Command => new DelegateCommand(SendG92, CanSend);	   
 
 		#endregion
 	}

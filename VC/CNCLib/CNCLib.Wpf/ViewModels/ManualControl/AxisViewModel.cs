@@ -95,20 +95,20 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region ICommands
 
-		public ICommand SendPlus100Command { get { return new DelegateCommand(() => SendMoveCommand("100"), () => CanSendCommand() && Size >= 100.0m); } }
-		public ICommand SendPlus10Command { get { return new DelegateCommand(() => SendMoveCommand("10"), () => CanSendCommand() && Size >= 10.0m); } }
-		public ICommand SendPlus1Command { get { return new DelegateCommand(() => SendMoveCommand("1"), () => CanSendCommand() && Size >= 1.0m); } }
-		public ICommand SendPlus01Command { get { return new DelegateCommand(() => SendMoveCommand("0.1"), () => CanSendCommand() && Size >= 0.1m); } }
-		public ICommand SendPlus001Command { get { return new DelegateCommand(() => SendMoveCommand("0.01"), () => CanSendCommand() && Size >= 0.01m); } }
-		public ICommand SendMinus100Command { get { return new DelegateCommand(() => SendMoveCommand("-100"), () => CanSendCommand() && Size >= 100.0m); } }
-		public ICommand SendMinus10Command { get { return new DelegateCommand(() => SendMoveCommand("-10"), () => CanSendCommand() && Size >= 10.0m); } }
-		public ICommand SendMinus1Command { get { return new DelegateCommand(() => SendMoveCommand("-1"), () => CanSendCommand() && Size >= 1.0m); } }
-		public ICommand SendMinus01Command { get { return new DelegateCommand(() => SendMoveCommand("-0.1"), () => CanSendCommand() && Size >= 0.1m); } }
-		public ICommand SendMinus001Command { get { return new DelegateCommand(() => SendMoveCommand("-0.01"), () => CanSendCommand() && Size >= 0.01m); } }
-		public ICommand SendRefMoveCommand { get { return new DelegateCommand(SendRefMove, CanSendCommand); } }
-		public ICommand SendG92Command { get { return new DelegateCommand(SendG92,  () => { decimal dummy; return CanSendCommand() && decimal.TryParse(Param,out dummy); }); } }
-		public ICommand SendG31Command { get { return new DelegateCommand(SendG31, CanSendCommand); } }
-		public ICommand SendHomeCommand { get { return new DelegateCommand(SendHome, CanSendCommand); } }
+		public ICommand SendPlus100Command => new DelegateCommand(() => SendMoveCommand("100"), () => CanSendCommand() && Size >= 100.0m);
+		public ICommand SendPlus10Command => new DelegateCommand(() => SendMoveCommand("10"), () => CanSendCommand() && Size >= 10.0m);
+		public ICommand SendPlus1Command => new DelegateCommand(() => SendMoveCommand("1"), () => CanSendCommand() && Size >= 1.0m);
+		public ICommand SendPlus01Command => new DelegateCommand(() => SendMoveCommand("0.1"), () => CanSendCommand() && Size >= 0.1m);
+		public ICommand SendPlus001Command => new DelegateCommand(() => SendMoveCommand("0.01"), () => CanSendCommand() && Size >= 0.01m);
+		public ICommand SendMinus100Command => new DelegateCommand(() => SendMoveCommand("-100"), () => CanSendCommand() && Size >= 100.0m);
+		public ICommand SendMinus10Command => new DelegateCommand(() => SendMoveCommand("-10"), () => CanSendCommand() && Size >= 10.0m);
+		public ICommand SendMinus1Command => new DelegateCommand(() => SendMoveCommand("-1"), () => CanSendCommand() && Size >= 1.0m);
+		public ICommand SendMinus01Command => new DelegateCommand(() => SendMoveCommand("-0.1"), () => CanSendCommand() && Size >= 0.1m);
+		public ICommand SendMinus001Command => new DelegateCommand(() => SendMoveCommand("-0.01"), () => CanSendCommand() && Size >= 0.01m);
+		public ICommand SendRefMoveCommand => new DelegateCommand(SendRefMove, CanSendCommand);
+		public ICommand SendG92Command => new DelegateCommand(SendG92,  () => { decimal dummy; return CanSendCommand() && decimal.TryParse(Param,out dummy); });
+		public ICommand SendG31Command => new DelegateCommand(SendG31, CanSendCommand);
+		public ICommand SendHomeCommand => new DelegateCommand(SendHome, CanSendCommand);
 
 		#endregion
 	}

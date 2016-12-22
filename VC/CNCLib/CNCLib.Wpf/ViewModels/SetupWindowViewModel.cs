@@ -301,13 +301,13 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region Commands
 
-		public ICommand SetupMachineCommand { get { return new DelegateCommand(SetupMachine, CanSetupMachine); } }
-		public ICommand ConnectCommand { get { return new DelegateCommand(async () => await Connect(), CanConnect); } }
-		public ICommand DisConnectCommand	{ get { return new DelegateCommand(DisConnect, CanDisConnect); } }
-		public ICommand SetDefaultMachineCommand { get { return new DelegateCommand(SetDefaultMachine, CanSetupMachine); } }
-        public ICommand ConnectJoystickCommand { get { return new DelegateCommand(ConnectJoystick, CanConnectJoystick); } }
-        public ICommand DisConnectJoystickCommand { get { return new DelegateCommand(DisConnectJoystick, CanDisConnectJoystick); } }
-		public ICommand SetupJoystickCommand { get { return new DelegateCommand(SetupJoystick, CanSetupJoystick); } }
+		public ICommand SetupMachineCommand => new DelegateCommand(SetupMachine, CanSetupMachine);
+		public ICommand ConnectCommand => new DelegateCommand(async () => await Connect(), CanConnect);
+		public ICommand DisConnectCommand	=> new DelegateCommand(DisConnect, CanDisConnect);
+		public ICommand SetDefaultMachineCommand => new DelegateCommand(SetDefaultMachine, CanSetupMachine);
+        public ICommand ConnectJoystickCommand => new DelegateCommand(ConnectJoystick, CanConnectJoystick);
+        public ICommand DisConnectJoystickCommand => new DelegateCommand(DisConnectJoystick, CanDisConnectJoystick);
+		public ICommand SetupJoystickCommand => new DelegateCommand(SetupJoystick, CanSetupJoystick);
 
 		#endregion
 	}

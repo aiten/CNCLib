@@ -108,19 +108,19 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region ICommand
-		public ICommand SendInfoCommand { get { return new DelegateCommand(SendInfo, CanSend); } }
-		public ICommand SendAbortCommand { get { return new DelegateCommand(SendAbort, CanSend); } }
-		public ICommand SendResurrectCommand { get { return new DelegateCommand(SendResurrect, CanSend); } }
-		public ICommand SendClearQueue { get { return new DelegateCommand(ClearQueue, CanSend); } }
-		public ICommand SendM03SpindelOnCommand { get { return new DelegateCommand(SendM03SpindelOn, CanSendSpindle); } }
-		public ICommand SendM05SpindelOffCommand { get { return new DelegateCommand(SendM05SpindelOff, CanSendSpindle); } }
-		public ICommand SendM07CoolandOnCommand { get { return new DelegateCommand(SendM07CoolandOn, CanSendCoolant); } }
-		public ICommand SendM09CoolandOffCommand { get { return new DelegateCommand(SendM09CoolandOff, CanSendCoolant); } }
-        public ICommand SendM106LaserOnCommand { get { return new DelegateCommand(SendM106LaserOn, CanSendLaser); } }
-        public ICommand SendM106LaserOnMinCommand { get { return new DelegateCommand(SendM106LaserOnMin, CanSendLaser); } }
-        public ICommand SendM107LaserOffCommand { get { return new DelegateCommand(SendM107LaserOff, CanSendLaser); } }
-        public ICommand SendM114Command { get { return new DelegateCommand(SendM114PrintPos, CanSend); } }
-		public ICommand WritePendingCommands { get { return new DelegateCommand(WritePending, CanSend); } }
+		public ICommand SendInfoCommand => new DelegateCommand(SendInfo, CanSend);
+		public ICommand SendAbortCommand => new DelegateCommand(SendAbort, CanSend);
+		public ICommand SendResurrectCommand => new DelegateCommand(SendResurrect, CanSend);
+		public ICommand SendClearQueue => new DelegateCommand(ClearQueue, CanSend);
+		public ICommand SendM03SpindelOnCommand => new DelegateCommand(SendM03SpindelOn, CanSendSpindle);
+		public ICommand SendM05SpindelOffCommand => new DelegateCommand(SendM05SpindelOff, CanSendSpindle);
+		public ICommand SendM07CoolandOnCommand => new DelegateCommand(SendM07CoolandOn, CanSendCoolant);
+		public ICommand SendM09CoolandOffCommand => new DelegateCommand(SendM09CoolandOff, CanSendCoolant);
+        public ICommand SendM106LaserOnCommand => new DelegateCommand(SendM106LaserOn, CanSendLaser);
+        public ICommand SendM106LaserOnMinCommand => new DelegateCommand(SendM106LaserOnMin, CanSendLaser);
+        public ICommand SendM107LaserOffCommand => new DelegateCommand(SendM107LaserOff, CanSendLaser);
+        public ICommand SendM114Command => new DelegateCommand(SendM114PrintPos, CanSend);
+		public ICommand WritePendingCommands => new DelegateCommand(WritePending, CanSend);
 
 		#endregion
 	}

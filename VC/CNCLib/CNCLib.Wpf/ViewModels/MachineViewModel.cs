@@ -285,9 +285,9 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region Commands
 
-		public ICommand SaveMachineCommand { get { return new DelegateCommand(SaveMachine, CanSaveMachine); } }
-        public ICommand DeleteMachineCommand { get { return new DelegateCommand(DeleteMachine, CanDeleteMachine); } }
-        public ICommand AddMachineCommand { get { return new DelegateCommand(AddMachine, CanAddMachine); } }
+		public ICommand SaveMachineCommand => new DelegateCommand(SaveMachine, CanSaveMachine);
+        public ICommand DeleteMachineCommand => new DelegateCommand(DeleteMachine, CanDeleteMachine);
+        public ICommand AddMachineCommand => new DelegateCommand(AddMachine, CanAddMachine);
 
         #endregion
     }

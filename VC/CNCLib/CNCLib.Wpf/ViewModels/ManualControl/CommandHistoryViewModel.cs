@@ -75,8 +75,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region ICommand
 
-		public ICommand RefreshHistoryCommand { get { return new DelegateCommand(RefreshCommandHistory, CanSend); } }
-		public ICommand ClearHistoryCommand { get { return new DelegateCommand(ClearCommandHistory, CanSend); } }
+		public ICommand RefreshHistoryCommand => new DelegateCommand(RefreshCommandHistory, CanSend);
+		public ICommand ClearHistoryCommand => new DelegateCommand(ClearCommandHistory, CanSend);
 
 		#endregion
 	}

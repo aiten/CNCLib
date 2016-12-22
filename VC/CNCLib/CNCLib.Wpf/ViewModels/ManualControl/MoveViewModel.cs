@@ -43,12 +43,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region ICommands
 
-		public ICommand SendRightCommand { get { return new DelegateCommand<double?>((double? dist) => SendMoveCommand(dist, 'X'), CanSendCommand); } }
-        public ICommand SendLeftCommand { get { return new DelegateCommand<double?>((double? dist) => SendMoveCommand(-dist, 'X'), CanSendCommand); } }
-        public ICommand SendUpCommand { get { return new DelegateCommand<double?>((double? dist) => SendMoveCommand(dist, 'Y'), CanSendCommand); } }
-        public ICommand SendDownCommand { get { return new DelegateCommand<double?>((double? dist) => SendMoveCommand(-dist, 'Y'), CanSendCommand); } }
-		public ICommand SendZUpCommand { get { return new DelegateCommand<double?>((double? dist) => SendMoveCommand(dist, 'Z'), CanSendCommand); } }
-		public ICommand SendZDownCommand { get { return new DelegateCommand<double?>((double? dist) => SendMoveCommand(-dist, 'Z'), CanSendCommand); } }
+		public ICommand SendRightCommand => new DelegateCommand<double?>((double? dist) => SendMoveCommand(dist, 'X'), CanSendCommand);
+        public ICommand SendLeftCommand => new DelegateCommand<double?>((double? dist) => SendMoveCommand(-dist, 'X'), CanSendCommand);
+        public ICommand SendUpCommand => new DelegateCommand<double?>((double? dist) => SendMoveCommand(dist, 'Y'), CanSendCommand);
+        public ICommand SendDownCommand => new DelegateCommand<double?>((double? dist) => SendMoveCommand(-dist, 'Y'), CanSendCommand);
+		public ICommand SendZUpCommand => new DelegateCommand<double?>((double? dist) => SendMoveCommand(dist, 'Z'), CanSendCommand);
+		public ICommand SendZDownCommand => new DelegateCommand<double?>((double? dist) => SendMoveCommand(-dist, 'Z'), CanSendCommand);
 
 		#endregion
 	}

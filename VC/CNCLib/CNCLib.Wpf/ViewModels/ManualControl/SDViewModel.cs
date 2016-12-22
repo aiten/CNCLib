@@ -154,12 +154,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region ICommand
-		public ICommand SendM20FileCommand { get { return new DelegateCommand(SendM20File, CanSendSDCommand); } }
-		public ICommand SendM24FileCommand { get { return new DelegateCommand(SendM24File, CanSendSDFileNameCommand); } }
-		public ICommand SendM28FileCommand { get { return new DelegateCommand(SendM28File, CanSendFileNameAndSDFileNameCommand); } }
-		public ICommand SendM30FileCommand { get { return new DelegateCommand(SendM30File, CanSendSDFileNameCommand); } }
-		public ICommand SendFileDirectCommand { get { return new DelegateCommand(SendFileDirect, CanSendFileNameCommand); } }
-		public ICommand AddToFileCommand { get { return new DelegateCommand(AddToFile, CanSendFileNameCommand); } }
+		public ICommand SendM20FileCommand => new DelegateCommand(SendM20File, CanSendSDCommand);
+		public ICommand SendM24FileCommand => new DelegateCommand(SendM24File, CanSendSDFileNameCommand);
+		public ICommand SendM28FileCommand => new DelegateCommand(SendM28File, CanSendFileNameAndSDFileNameCommand);
+		public ICommand SendM30FileCommand => new DelegateCommand(SendM30File, CanSendSDFileNameCommand);
+		public ICommand SendFileDirectCommand => new DelegateCommand(SendFileDirect, CanSendFileNameCommand);
+		public ICommand AddToFileCommand => new DelegateCommand(AddToFile, CanSendFileNameCommand);
 
 		#endregion
 	}

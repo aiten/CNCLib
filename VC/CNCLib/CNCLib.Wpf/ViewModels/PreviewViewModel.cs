@@ -304,10 +304,10 @@ namespace CNCLib.Wpf.ViewModels
 
 		private ICommand _LoadCommand;
 		public ICommand LoadCommand { get { return _LoadCommand ?? (_LoadCommand = new DelegateCommand(async () => await Load(), CanLoad)); } }
-		public ICommand SendToCommand { get { return new DelegateCommand(SendTo, CanSendTo); } }
-		public ICommand ResetViewCommand { get { return new DelegateCommand(ResetView, CanResetView); } }
-		public ICommand GotoPosCommand { get { return new DelegateCommand<Point3D>(GotoPos, CanGotoPos); } }
-		public ICommand ResetToLatheViewCommand { get { return new DelegateCommand(ResetToLatheView, CanResetView); } }
+		public ICommand SendToCommand => new DelegateCommand(SendTo, CanSendTo);
+		public ICommand ResetViewCommand => new DelegateCommand(ResetView, CanResetView);
+		public ICommand GotoPosCommand => new DelegateCommand<Point3D>(GotoPos, CanGotoPos);
+		public ICommand ResetToLatheViewCommand => new DelegateCommand(ResetToLatheView, CanResetView);
 
 		#endregion
 	}

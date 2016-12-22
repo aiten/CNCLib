@@ -101,7 +101,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region Commands
 
-		public ICommand SaveJoystickCommand { get { return new DelegateCommand(SaveJoystick, CanSaveJoystick); } }
+		public ICommand SaveJoystickCommand => new DelegateCommand(SaveJoystick, CanSaveJoystick); 
 
         #endregion
     }
