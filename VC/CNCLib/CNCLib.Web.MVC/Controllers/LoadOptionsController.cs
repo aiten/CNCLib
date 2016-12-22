@@ -29,13 +29,13 @@ namespace CNCLib.Web.MVC.Controllers
 {
     public class LoadOptionsController : Controller
     {
-		private readonly string webserverurl = @"http://cnclibapi.azurewebsites.net";
-		private readonly string api = @"_api/LoadOptions";
+		private readonly string _webserverurl = @"http://cnclibapi.azurewebsites.net";
+		private readonly string _api = @"api/LoadOptions";
 
 		private System.Net.Http.HttpClient CreateHttpClient()
 		{
 			var client = new HttpClient();
-			client.BaseAddress = new Uri(webserverurl);
+			client.BaseAddress = new Uri(_webserverurl);
 			client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			return client;
@@ -45,7 +45,7 @@ namespace CNCLib.Web.MVC.Controllers
 		{
 			using (var client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.GetAsync(api + "/" + id);
+				HttpResponseMessage response = await client.GetAsync(_api + "/" + id);
 				if (response.IsSuccessStatusCode)
 				{
 					LoadOptions value = await response.Content.ReadAsAsync<LoadOptions>();
@@ -61,7 +61,7 @@ namespace CNCLib.Web.MVC.Controllers
 		{
 			using (var client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.GetAsync(api);
+				HttpResponseMessage response = await client.GetAsync(_api);
 				if (response.IsSuccessStatusCode)
 				{
 					IEnumerable<LoadOptions> infos = await response.Content.ReadAsAsync<IEnumerable<LoadOptions>>();
@@ -105,7 +105,7 @@ namespace CNCLib.Web.MVC.Controllers
 			{
 				using (var client = CreateHttpClient())
 				{
-					HttpResponseMessage response = await client.PostAsJsonAsync(api, loadInfo);
+					HttpResponseMessage response = await client.PostAsJsonAsync(_api, loadInfo);
 
 					if (response.IsSuccessStatusCode)
 						return RedirectToAction("Index");
@@ -141,7 +141,7 @@ namespace CNCLib.Web.MVC.Controllers
 			{
 				using (var client = CreateHttpClient())
 				{
-					var response = await client.PutAsJsonAsync(api + "/" + loadInfo.Id, loadInfo);
+					var response = await client.PutAsJsonAsync(_api + "/" + loadInfo.Id, loadInfo);
 
 					if (response.IsSuccessStatusCode)
 					{
@@ -161,7 +161,7 @@ namespace CNCLib.Web.MVC.Controllers
 			}
 			using (var client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.DeleteAsync(api + "/" + id);
+				HttpResponseMessage response = await client.DeleteAsync(_api + "/" + id);
 
 				if (response.IsSuccessStatusCode)
 				{
@@ -178,7 +178,7 @@ namespace CNCLib.Web.MVC.Controllers
 		{
 			using (var client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.DeleteAsync(api + "/" + id);
+				HttpResponseMessage response = await client.DeleteAsync(_api + "/" + id);
 
 				if (response.IsSuccessStatusCode)
 				{

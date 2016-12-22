@@ -26,7 +26,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 {
     public class MachineService : ServiceBase, IMachineService
 	{
-		protected readonly string _api = @"_api/Machine";
+		protected readonly string _api = @"api/Machine";
 
 		public async Task<int> Add(Machine value)
 		{

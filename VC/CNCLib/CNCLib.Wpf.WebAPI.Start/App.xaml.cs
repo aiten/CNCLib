@@ -61,7 +61,7 @@ namespace CNCLib.Wpf.WebAPI.Start
 						int m = await controller.GetDetaultMachine();
 						if (m == -1)
 						{
-							throw new ArgumentException("illegal defaultmachne");
+							throw new ArgumentException("cannot connect to service");
 						}
 					}
 					return true;

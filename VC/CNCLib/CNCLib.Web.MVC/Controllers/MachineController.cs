@@ -29,13 +29,13 @@ namespace CNCLib.Web.MVC.Controllers
 {
 	public class MachineController : Controller
     {
-        private readonly string webserverurl = @"http://cnclibapi.azurewebsites.net";
-		private readonly string api = @"_api/machine";
+        private readonly string _webserverurl = @"http://cnclibapi.azurewebsites.net";
+		private readonly string _api = @"api/machine";
 
         private HttpClient CreateHttpClient()
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri(webserverurl);
+            client.BaseAddress = new Uri(_webserverurl);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return client;
@@ -45,7 +45,7 @@ namespace CNCLib.Web.MVC.Controllers
 		{
 			using (var client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.GetAsync(api + "/" + id);
+				HttpResponseMessage response = await client.GetAsync(_api + "/" + id);
 				if (response.IsSuccessStatusCode)
 				{
 					Machine value = await response.Content.ReadAsAsync<Machine>();
@@ -61,7 +61,7 @@ namespace CNCLib.Web.MVC.Controllers
         {
 			using (var client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.GetAsync(api);
+				HttpResponseMessage response = await client.GetAsync(_api);
 				if (response.IsSuccessStatusCode)
 				{
 					IEnumerable<Machine> machines = await response.Content.ReadAsAsync<IEnumerable<Machine>>();
@@ -135,7 +135,7 @@ namespace CNCLib.Web.MVC.Controllers
 
                 using (var client = CreateHttpClient())
                 {
-                    HttpResponseMessage response = await client.PostAsJsonAsync(api, machine);
+                    HttpResponseMessage response = await client.PostAsJsonAsync(_api, machine);
 
                     if (response.IsSuccessStatusCode)
                         return RedirectToAction("Index");
@@ -184,7 +184,7 @@ namespace CNCLib.Web.MVC.Controllers
 					}
                     using (var client = CreateHttpClient())
                     {
-						var response = await client.PutAsJsonAsync(api + "/" + machine.MachineID, machine);
+						var response = await client.PutAsJsonAsync(_api + "/" + machine.MachineID, machine);
 
 						if (response.IsSuccessStatusCode)
 						{
@@ -206,7 +206,7 @@ namespace CNCLib.Web.MVC.Controllers
 
             using (var client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.DeleteAsync(api + "/" + id);
+                HttpResponseMessage response = await client.DeleteAsync(_api + "/" + id);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -223,7 +223,7 @@ namespace CNCLib.Web.MVC.Controllers
         {
             using (var client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.DeleteAsync(api + "/" + id);
+                HttpResponseMessage response = await client.DeleteAsync(_api + "/" + id);
 
                 if (response.IsSuccessStatusCode)
                 {

@@ -26,7 +26,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 {
     public class ItemService : ServiceBase, IItemService
 	{
-		protected readonly string _api = @"_api/Item";
+		protected readonly string _api = @"api/Item";
 
 
 		public async Task<int> Add(Item value)

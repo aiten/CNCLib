@@ -26,7 +26,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 {
     public class LoadOptionsService : ServiceBase, ILoadOptionsService
 	{
-		protected readonly string _api = @"_api/LoadOptions";
+		protected readonly string _api = @"api/LoadOptions";
 
 		public async Task<int> Add(LoadOptions value)
 		{
