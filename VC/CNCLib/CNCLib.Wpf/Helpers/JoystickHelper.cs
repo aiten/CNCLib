@@ -19,15 +19,13 @@
 using System.Linq;
 using CNCLib.Wpf.Models;
 using Framework.Tools.Dependency;
-using CNCLib.Logic.Contracts;
-using CNCLib.ServiceProxy;
 using CNCLib.Logic.Client;
 using System.Threading.Tasks;
 using System;
 
 namespace CNCLib.Wpf.Helpers
 {
-	public class JoystickHelper
+    public class JoystickHelper
 	{
 		internal static async Task<Tuple<Joystick,int>> Load()
 		{

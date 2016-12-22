@@ -29,17 +29,17 @@ namespace CNCLib.GCode.CamBam
 	public class CamBam
 	{
 		[XmlAttribute("name")]
-		public String Name { get; set; } = @"CNCLib";
+		public string Name { get; set; } = @"CNCLib";
 		[XmlAttribute("version")]
-		public String Version { get; set; } = "0.9.8.0";
+		public string Version { get; set; } = "0.9.8.0";
 
 		[XmlType("layer")]
 		public class Layer
 		{
 			[XmlAttribute("name")]
-			public String Name { get; set; }
+			public string Name { get; set; }
 			[XmlAttribute("color")]
-			public String Color { get; set; }
+			public string Color { get; set; }
 
 			[XmlArray(ElementName = "objects")]
 			public List<PLine> PLines { get; set; } = new List<PLine>();
@@ -51,7 +51,7 @@ namespace CNCLib.GCode.CamBam
 				PLines.Add(pline);
 				return pline;
 			}
-		};
+		}
 
 		[XmlArray("layers")]
 		public List<Layer> Layers { get; set; } = new List<Layer>();

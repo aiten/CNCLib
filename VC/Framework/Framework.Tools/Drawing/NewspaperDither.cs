@@ -74,7 +74,7 @@ namespace Framework.Tools.Drawing
         {
             public int x;
             public int y;
-        };
+        }
 
         Offsets[] _offsets = new Offsets[]
         {

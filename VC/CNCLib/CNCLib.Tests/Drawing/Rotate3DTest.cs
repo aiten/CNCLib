@@ -1,12 +1,10 @@
 ﻿using Framework.Tools.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System;
 
 namespace CNCLib.Tests.Drawing
 {
-	[TestClass]
+    [TestClass]
     public class Rotate3DTest
     {
         [TestMethod]

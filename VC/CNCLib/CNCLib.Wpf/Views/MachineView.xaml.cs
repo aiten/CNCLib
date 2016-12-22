@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Wpf.ViewModels;
 using System;
 using System.Windows;
+using Framework.Wpf.ViewModels;
 
-namespace CNCLib.Wpf
+namespace CNCLib.Wpf.Views
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

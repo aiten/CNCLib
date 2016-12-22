@@ -16,14 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Linq;
 using AutoMapper;
-using Framework.Tools;
 using Framework.Tools.Dependency;
 
 namespace CNCLib.Wpf.Models
 {
-	static class Converter
+    static class Converter
 	{
 		public static Logic.Contracts.DTO.Machine Convert(this Machine from)
 		{

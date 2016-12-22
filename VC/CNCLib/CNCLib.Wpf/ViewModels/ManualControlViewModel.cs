@@ -18,13 +18,12 @@
 
 using System;
 using Framework.Wpf.ViewModels;
-using System.Threading;
 using CNCLib.Wpf.ViewModels.ManualControl;
 using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels
 {
-	public class ManualControlViewModel : BaseViewModel, IManualControlViewModel
+    public class ManualControlViewModel : BaseViewModel, IManualControlViewModel
 	{
 		#region crt
 

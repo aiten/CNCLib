@@ -18,21 +18,16 @@
 
 using System;
 using System.Collections.Generic;
-using Framework.Tools;
 using Framework.Logic;
-using CNCLib.Repository.Contracts;
-using CNCLib.Logic.Converter;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
-using CNCLib.GCode.Load;
 using CNCLib.Logic.Client;
 using System.Threading.Tasks;
 
 namespace CNCLib.Logic
 {
-	public class LoadOptionsController : ControllerBase, ILoadOptionsController
+    public class LoadOptionsController : ControllerBase, ILoadOptionsController
 	{
 		public async Task<IEnumerable<LoadOptions>> GetAll()
 		{

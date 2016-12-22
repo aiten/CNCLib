@@ -16,22 +16,19 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Description;
 using Framework.Web;
 using CNCLib.ServiceProxy;
 using System.Threading.Tasks;
 
 namespace CNCLib.WebAPI.Controllers
 {
-	public class MachineController : RestController<Machine>
+    public class MachineController : RestController<Machine>
 	{
 		[Route("api/Machine/default")]
 		[HttpGet] //Always explicitly state the accepted HTTP method
@@ -122,11 +119,11 @@ namespace CNCLib.WebAPI.Controllers
 		}
 
 		#region IDisposable Support
-		private bool disposedValue = false; // To detect redundant calls
+		private bool _disposedValue; // To detect redundant calls
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!disposedValue)
+			if (!_disposedValue)
 			{
 				if (disposing)
 				{
@@ -137,7 +134,7 @@ namespace CNCLib.WebAPI.Controllers
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
 				// TODO: set large fields to null.
 
-				disposedValue = true;
+				_disposedValue = true;
 			}
 		}
 

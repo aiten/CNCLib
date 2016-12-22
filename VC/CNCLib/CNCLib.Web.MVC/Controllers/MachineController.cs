@@ -30,7 +30,7 @@ namespace CNCLib.Web.MVC.Controllers
 	public class MachineController : Controller
     {
         private readonly string webserverurl = @"http://cnclibapi.azurewebsites.net";
-		private readonly string api = @"api/machine";
+		private readonly string api = @"_api/machine";
 
         private HttpClient CreateHttpClient()
         {

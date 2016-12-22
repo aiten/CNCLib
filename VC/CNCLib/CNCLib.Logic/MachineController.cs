@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using Framework.Tools;
 using Framework.Logic;
 using CNCLib.Repository.Contracts;
 using CNCLib.Logic.Converter;
@@ -30,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Logic
 {
-	public class MachineController : ControllerBase, IMachineController
+    public class MachineController : ControllerBase, IMachineController
 	{
 		public async Task<IEnumerable<Machine>> GetAll()
 		{

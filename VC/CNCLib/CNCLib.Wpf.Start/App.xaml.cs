@@ -79,8 +79,8 @@ namespace CNCLib.Wpf.Start
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("Cannot create/connect database in c:\\tmp\n\r" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				Application.Current.Shutdown();
+				MessageBox.Show($"Cannot create/connect database in { upfsdf } \n\r" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				Current.Shutdown();
 			}
 		}
 	}

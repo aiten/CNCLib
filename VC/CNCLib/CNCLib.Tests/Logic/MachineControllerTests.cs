@@ -24,13 +24,11 @@ using CNCLib.Logic;
 using System.Linq;
 using NSubstitute;
 using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
-using Framework.EF;
 using System.Threading.Tasks;
 
 namespace CNCLib.Tests.Logic
 {
-	[TestClass]
+    [TestClass]
 	public class MachineControllerTests : CNCUnitTest
 	{
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable

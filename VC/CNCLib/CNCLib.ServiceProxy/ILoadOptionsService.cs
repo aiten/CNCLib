@@ -17,13 +17,12 @@
 */
 
 using System;
-using System.Collections.Generic;
 using Framework.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.ServiceProxy
 {
-	public interface ILoadOptionsService : IDisposable, IRestController<LoadOptions>
+    public interface ILoadOptionsService : IDisposable, IRestController<LoadOptions>
 	{
 	}
 }

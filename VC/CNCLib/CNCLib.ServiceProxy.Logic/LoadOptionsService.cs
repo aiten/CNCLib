@@ -17,7 +17,6 @@
 */
 
 
-using System;
 using System.Collections.Generic;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Contracts;
@@ -26,7 +25,7 @@ using System.Threading.Tasks;
 
 namespace CNCLib.ServiceProxy.Logic
 {
-	public class LoadOptionsService : ILoadOptionsService
+    public class LoadOptionsService : ILoadOptionsService
 	{
 		private ILoadOptionsController _controller = Dependency.Resolve<ILoadOptionsController>();
 
@@ -56,11 +55,11 @@ namespace CNCLib.ServiceProxy.Logic
 		}
 
 		#region IDisposable Support
-		private bool disposedValue = false; // To detect redundant calls
+		private bool _disposedValue; // To detect redundant calls
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!disposedValue)
+			if (!_disposedValue)
 			{
 				if (disposing)
 				{
@@ -71,7 +70,7 @@ namespace CNCLib.ServiceProxy.Logic
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
 				// TODO: set large fields to null.
 
-				disposedValue = true;
+				_disposedValue = true;
 			}
 		}
 

@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -43,7 +42,7 @@ namespace Framework.Web
 		{
 			using (var controller = Dependency.Resolve<IRest<T>>())
 			{
-				var m = await controller.Get(id);
+				T m = await controller.Get(id);
 				if (m == null)
 				{
 					return NotFound();
@@ -108,7 +107,7 @@ namespace Framework.Web
 		{
 			using (var controller = Dependency.Resolve<IRest<T>>())
 			{
-				var value = await controller.Get(id);
+				T value = await controller.Get(id);
 				if (value == null)
 				{
 					return NotFound();

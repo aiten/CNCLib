@@ -18,20 +18,16 @@
 
 using System;
 using System.Collections.Generic;
-using Framework.Logic;
 using CNCLib.Logic.Contracts.DTO;
 using System.Reflection;
-using System.Linq;
 using System.Globalization;
 using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
-using CNCLib.Logic.Contracts;
 using CNCLib.ServiceProxy;
 using System.Threading.Tasks;
 
 namespace CNCLib.Logic.Client
 {
-	public class DynItemController : IDynItemController
+    public class DynItemController : IDynItemController
 	{
 		public async Task<DynItem> Get(int id)
 		{
@@ -49,8 +45,8 @@ namespace CNCLib.Logic.Client
 		{
 			using (var service = Dependency.Resolve<IItemService>())
 			{
-				var allitems = await service.GetByClassName(GetClassName(t));
-				return (IEnumerable<DynItem>) Convert(allitems);
+				IEnumerable<Item> allitems = await service.GetByClassName(GetClassName(t));
+				return Convert(allitems);
 			}
 		}
 
@@ -58,7 +54,7 @@ namespace CNCLib.Logic.Client
 		{
 			using (var service = Dependency.Resolve<IItemService>())
 			{
-				var allitems = await service.GetAll();
+				IEnumerable<Item> allitems = await service.GetAll();
 				return Convert(allitems);
 			}
 		}
@@ -67,7 +63,7 @@ namespace CNCLib.Logic.Client
         {
 			using (var service = Dependency.Resolve<IItemService>())
 			{
-				var item = await service.Get(id);
+				Item item = await service.Get(id);
 
 				if (item == null)
 					return null;
@@ -75,7 +71,7 @@ namespace CNCLib.Logic.Client
 				Type t = Type.GetType(item.ClassName);
 				var obj = Activator.CreateInstance(t);
 
-				foreach (var ip in item.ItemProperties)
+				foreach (ItemProperty ip in item.ItemProperties)
 				{
 					AssignProperty(obj, ip, t.GetProperty(ip.Name));
 				}
@@ -298,11 +294,11 @@ namespace CNCLib.Logic.Client
 		}
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue; // To detect redundant calls
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!disposedValue)
+			if (!_disposedValue)
 			{
 				if (disposing)
 				{
@@ -312,7 +308,7 @@ namespace CNCLib.Logic.Client
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
 				// TODO: set large fields to null.
 
-				disposedValue = true;
+				_disposedValue = true;
 			}
 		}
 

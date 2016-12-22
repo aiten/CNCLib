@@ -16,8 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Framework.Test.Dependency;
 using Framework.Test;
 using AutoMapper;
 using CNCLib.Logic;
@@ -26,7 +24,7 @@ using CNCLib.Wpf;
 
 namespace CNCLib.Tests
 {
-	public abstract class CNCUnitTest : UnitTestBase
+    public abstract class CNCUnitTest : UnitTestBase
 	{
 		protected override void InitializeCoreDependencies()
 		{

@@ -394,7 +394,7 @@ namespace CNCLib.Wpf.Controls
 			NoDragging,
 			Position,
 			RotateAngle
-		};
+		}
 		private EDraggingType _draggingType = EDraggingType.NoDragging;
 
 		private Point	_mouseDownPos;

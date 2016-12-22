@@ -48,7 +48,7 @@ namespace Framework.Arduino
 			ReplyError=2,
 			ReplyInfo=4,
 			ReplyUnkown=8
-		};
+		}
 
 		List<Command> _pendingCommands = new List<Command>();
 
@@ -85,12 +85,12 @@ namespace Framework.Arduino
 		public class Command
 		{
             public DateTime? SentTime { get; set; }
-            public String CommandText { get; set; }
+            public string CommandText { get; set; }
 
             public EReplyType ReplyType { get; set; }
             public DateTime? ReplyReceivedTime { get; set; }
 
-            public String ResultText { get; set; }
+            public string ResultText { get; set; }
 		}
 
 		public int CommandsInQueue
@@ -105,9 +105,9 @@ namespace Framework.Arduino
 
 		public int BaudRate { get; set; }				= 115200;
 		public bool ResetOnConnect { get; set; }		= false;
-		public String OkTag { get; set; }				= @"ok";
-		public String ErrorTag { get; set; }			= @"Error:";
-		public String InfoTag { get; set; }				= @"Info:";
+		public string OkTag { get; set; }				= @"ok";
+		public string ErrorTag { get; set; }			= @"Error:";
+		public string InfoTag { get; set; }				= @"Info:";
 		public bool CommandToUpper { get; set; }		= false;
 		public bool ErrorIsReply { get; set; }			= false;     // each command must end with ok
         public int MaxCommandHistoryCount { get; set; } = int.MaxValue;
@@ -238,7 +238,7 @@ namespace Framework.Arduino
 			Aborted = false;
 		}
 
-		virtual protected void SetupCom(string portname)
+		protected virtual void SetupCom(string portname)
         {
             _serialPort = new SerialPort();
 
@@ -299,13 +299,14 @@ namespace Framework.Arduino
 
 		#region Send Command(s)
 
-		/// <summary>
-		/// Send a command to the arduino and wait until a (OK) reply
-		/// Queue must be empty
-		/// </summary>
-		/// <param name="line">command line</param>
-		/// <returns>ok result from arduino or empty(if error)</returns>
-		public async Task<string> SendCommandAndReadOKReplyAsync(string line, int waitForMilliseconds=int.MaxValue)
+	    /// <summary>
+	    /// Send a command to the arduino and wait until a (OK) reply
+	    /// Queue must be empty
+	    /// </summary>
+	    /// <param name="line">command line</param>
+	    /// <param name="waitForMilliseconds"></param>
+	    /// <returns>ok result from arduino or empty(if error)</returns>
+	    public async Task<string> SendCommandAndReadOKReplyAsync(string line, int waitForMilliseconds=int.MaxValue)
 		{
 			string message = null;
 			if (await WaitUntilNoPendingCommandsAsync(waitForMilliseconds))
@@ -409,8 +410,8 @@ namespace Framework.Arduino
 			using (StreamReader sr = new StreamReader(filename))
 			{
 				Aborted = false;
-				String line;
-				List<String> lines = new List<string>();
+                string line;
+				List<string> lines = new List<string>();
 				while ((line = sr.ReadLine()) != null && !Aborted)
 				{
 					lines.Add(line);
@@ -517,10 +518,10 @@ namespace Framework.Arduino
 
             string commandtext = cmd.CommandText;
 
-            const int crlf_size = 2;
+            const int CRLF_SIZE = 2;
 
-            if (commandtext.Length >= ArduinoLineSize + crlf_size) 
-                commandtext = commandtext.Substring(0, ArduinoLineSize - 1 - crlf_size);
+            if (commandtext.Length >= ArduinoLineSize + CRLF_SIZE) 
+                commandtext = commandtext.Substring(0, ArduinoLineSize - 1 - CRLF_SIZE);
 
             while (commandtext.Length > ArduinoBuffersize - 1)
             {
@@ -554,24 +555,24 @@ namespace Framework.Arduino
             }
             catch (InvalidOperationException e)
             {
-                Trace.WriteTraceFlush("WriteInvalidOperationException", commandtext + @" => " + e.Message);
+                Trace.WriteTraceFlush("WriteInvalidOperationException", $@"{commandtext} => {e.Message}");
                 Disconnect(false);
             }
             catch (IOException e)
             {
-                Trace.WriteTraceFlush("WriteIOException", commandtext + @" => " + e.Message);
+                Trace.WriteTraceFlush("WriteIOException", $@"{commandtext} => {e.Message}");
                 ErrorSerial();
             }
             catch (Exception e)
             {
-                Trace.WriteTraceFlush("WriteException", commandtext + @" => " + e.GetType().ToString() + @" " + e.Message);
+                Trace.WriteTraceFlush("WriteException", $@"{commandtext} => {e.GetType().ToString()} {e.Message}");
             }
             return false;
         }
 
         private bool WriteLineSerial(string commandtext)
         {
-            Trace.WriteTrace("Write", commandtext + @"\n");
+            Trace.WriteTrace("Write", $@"{commandtext}\n");
             try
             {
                 _serialPort.WriteLine(commandtext);
@@ -579,17 +580,17 @@ namespace Framework.Arduino
             }
             catch (InvalidOperationException e)
             {
-                Trace.WriteTraceFlush("WriteInvalidOperationException", commandtext + @"\n => " + e.Message);
+                Trace.WriteTraceFlush("WriteInvalidOperationException", $@"{commandtext}\n => {e.Message}");
                 Disconnect(false);
             }
             catch (IOException e)
             {
-                Trace.WriteTraceFlush("WriteIOException", commandtext + @"\n => " + e.Message);
+                Trace.WriteTraceFlush("WriteIOException", $@"{commandtext}\n => {e.Message}");
                 ErrorSerial();
             }
             catch (Exception e)
             {
-                Trace.WriteTraceFlush("WriteException", commandtext + @"\n => " + e.GetType().ToString() + @" " + e.Message);
+                Trace.WriteTraceFlush("WriteException", $@"{commandtext}\n => {e.GetType().ToString()} {e.Message}");
             }
             return false;
         }
@@ -618,7 +619,7 @@ namespace Framework.Arduino
 			var sw = Stopwatch.StartNew();
 			while (_continue)
             {
-                Command cmd = null; ;
+                Command cmd = null;
                 lock (_pendingCommands)
                 {
 					if (_pendingCommands.Count > 0)

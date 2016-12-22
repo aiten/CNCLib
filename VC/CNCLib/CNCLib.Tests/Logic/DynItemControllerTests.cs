@@ -18,7 +18,6 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CNCLib.Logic;
 using System.Linq;
 using NSubstitute;
 using Framework.Tools.Dependency;
@@ -29,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Tests.Logic
 {
-	[TestClass]
+    [TestClass]
 	public class DynItemControllerTests : CNCUnitTest
 	{
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
@@ -59,7 +58,7 @@ namespace CNCLib.Tests.Logic
 		{
 			var srv = CreateMock<IItemService>();
 
-			var itemEntity = new Item[2]
+			var itemEntity = new Item[]
 			{
 				new Item() { ItemID=1,Name="Test1" },
 				new Item() { ItemID=2,Name="Test2" },
@@ -79,7 +78,7 @@ namespace CNCLib.Tests.Logic
 		{
 			var srv = CreateMock<IItemService>();
 
-			var itemEntity = new Item[2]
+			var itemEntity = new Item[]
 			{
 				new Item() { ItemID=1,Name="Test1" },
 				new Item() { ItemID=2,Name="Test2" },

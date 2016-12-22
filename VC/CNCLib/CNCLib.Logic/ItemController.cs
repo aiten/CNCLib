@@ -16,22 +16,19 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
 using Framework.Logic;
 using CNCLib.Repository.Contracts;
 using CNCLib.Logic.Converter;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
-using System.Reflection;
-using System.Globalization;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using System.Threading.Tasks;
 
 namespace CNCLib.Logic
 {
-	public class ItemController : ControllerBase, IItemController
+    public class ItemController : ControllerBase, IItemController
 	{
 		public async Task<IEnumerable<Item>> GetAll()
 		{

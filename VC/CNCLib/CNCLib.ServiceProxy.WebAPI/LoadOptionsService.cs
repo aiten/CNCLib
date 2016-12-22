@@ -17,24 +17,22 @@
 */
 
 
-using System;
 using System.Collections.Generic;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Logic.Contracts;
-using Framework.Tools.Dependency;
 using System.Threading.Tasks;
 using System.Net.Http;
 
 namespace CNCLib.ServiceProxy.WebAPI
-{	public class LoadOptionsService : ServiceBase, ILoadOptionsService
+{
+    public class LoadOptionsService : ServiceBase, ILoadOptionsService
 	{
-		protected readonly string api = @"api/LoadOptions";
+		protected readonly string _api = @"_api/LoadOptions";
 
 		public async Task<int> Add(LoadOptions value)
 		{
-			using (var client = CreateHttpClient())
+			using (HttpClient client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.PostAsJsonAsync(api, value);
+				HttpResponseMessage response = await client.PostAsJsonAsync(_api, value);
 
 				if (response.IsSuccessStatusCode)
 					return -1;
@@ -45,9 +43,9 @@ namespace CNCLib.ServiceProxy.WebAPI
 
 		public async Task Delete(LoadOptions value)
 		{
-			using (var client = CreateHttpClient())
+			using (HttpClient client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.DeleteAsync(api + "/" + value.Id);
+				HttpResponseMessage response = await client.DeleteAsync(_api + "/" + value.Id);
 
 				if (response.IsSuccessStatusCode)
 				{
@@ -59,12 +57,12 @@ namespace CNCLib.ServiceProxy.WebAPI
 
 		public async Task<LoadOptions> Get(int id)
 		{
-			using (var client = CreateHttpClient())
+			using (HttpClient client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.GetAsync(api + "/" + id);
+				HttpResponseMessage response = await client.GetAsync(_api + "/" + id);
 				if (response.IsSuccessStatusCode)
 				{
-					var value = await response.Content.ReadAsAsync<LoadOptions>();
+					LoadOptions value = await response.Content.ReadAsAsync<LoadOptions>();
 
 					return value;
 				}
@@ -74,12 +72,12 @@ namespace CNCLib.ServiceProxy.WebAPI
 
 		public async Task<IEnumerable<LoadOptions>> GetAll()
 		{
-			using (var client = CreateHttpClient())
+			using (HttpClient client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.GetAsync(api);
+				HttpResponseMessage response = await client.GetAsync(_api);
 				if (response.IsSuccessStatusCode)
 				{
-					var values = await response.Content.ReadAsAsync<IEnumerable<LoadOptions>>();
+					IEnumerable<LoadOptions> values = await response.Content.ReadAsAsync<IEnumerable<LoadOptions>>();
 					return values;
 				}
 				return null;
@@ -90,7 +88,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 		{
 			using (var client = CreateHttpClient())
 			{
-				var response = await client.PutAsJsonAsync(api + "/" + value.Id, value);
+				HttpResponseMessage response = await client.PutAsJsonAsync(_api + "/" + value.Id, value);
 
 				if (response.IsSuccessStatusCode)
 				{
@@ -101,11 +99,11 @@ namespace CNCLib.ServiceProxy.WebAPI
 		}
 
 		#region IDisposable Support
-		private bool disposedValue = false; // To detect redundant calls
+		private bool _disposedValue; // To detect redundant calls
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!disposedValue)
+			if (!_disposedValue)
 			{
 				if (disposing)
 				{
@@ -116,7 +114,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
 				// TODO: set large fields to null.
 
-				disposedValue = true;
+				_disposedValue = true;
 			}
 		}
 

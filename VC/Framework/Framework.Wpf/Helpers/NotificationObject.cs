@@ -28,7 +28,7 @@ namespace Framework.Wpf.Helpers
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		// Set Property if value is different
-		protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null) where T : IComparable
+		protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null) where T : IComparable
 		{
 			if (object.Equals(storage, value)) return false;	// ref equal
 			if (storage != null && storage.CompareTo(value) == 0) return false;	// logical equal
@@ -60,7 +60,7 @@ namespace Framework.Wpf.Helpers
 		}
 
 		// AssignProperty, value may be the same
-		protected bool AssignProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null)
+		protected bool AssignProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
 		{
 			OnPropertyChanging(propertyName);
 			storage = value;

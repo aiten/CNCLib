@@ -17,12 +17,9 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using CNCLib.GCode.Commands;
@@ -31,7 +28,7 @@ using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.GCode
 {
-	public class GCodeLoad
+    public class GCodeLoad
 	{
 		private void SaveGCode(string filename)
 		{
@@ -43,7 +40,7 @@ namespace CNCLib.GCode
 					string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
 					if (cmds != null)
 					{
-						foreach (String str in cmds)
+						foreach (string str in cmds)
 						{
 							sw.WriteLine(str);
 						}

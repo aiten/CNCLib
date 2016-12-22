@@ -18,21 +18,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.Web.MVC.Controllers
 {
-	public class LoadOptionsController : Controller
+    public class LoadOptionsController : Controller
     {
 		private readonly string webserverurl = @"http://cnclibapi.azurewebsites.net";
-		private readonly string api = @"api/LoadOptions";
+		private readonly string api = @"_api/LoadOptions";
 
 		private System.Net.Http.HttpClient CreateHttpClient()
 		{

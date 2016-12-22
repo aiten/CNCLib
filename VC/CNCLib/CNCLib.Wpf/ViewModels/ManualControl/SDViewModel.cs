@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using Framework.Wpf.Helpers;
@@ -24,7 +23,7 @@ using System.IO;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
-	public class SDViewModel : DetailViewModel
+    public class SDViewModel : DetailViewModel
 	{
 		public SDViewModel(IManualControlViewModel vm) : base(vm)
 		{
@@ -78,7 +77,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 					if (savefileinresponse)
 					{
 						string line;
-                        List<String> lines = new List<string>();
+                        List<string> lines = new List<string>();
                         while ((line = sr.ReadLine()) != null)
                         {
                             lines.Add(line);

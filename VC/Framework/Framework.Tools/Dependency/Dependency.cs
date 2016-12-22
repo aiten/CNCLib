@@ -46,13 +46,7 @@ namespace Framework.Tools.Dependency
         /// <summary>
         /// Returns the DependencyContainer that should be used to register and resolve dependencies.
         /// </summary>
-        public static IDependencyContainer Container
-        {
-            get
-            {
-                return _provider.Container;
-            }
-        }
+        public static IDependencyContainer Container => _provider.Container;
 
         /// <summary>
         /// Resolves a dependency by forwarding the call to the <see cref="Container"/>.

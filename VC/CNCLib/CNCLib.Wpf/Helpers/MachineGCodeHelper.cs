@@ -1,9 +1,6 @@
 ﻿using Framework.Arduino;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CNCLib.GCode;
 using CNCLib.Logic.Contracts.DTO;
@@ -11,7 +8,7 @@ using System.Media;
 
 namespace CNCLib.Wpf.Helpers
 {
-	public class MachineGCodeHelper
+    public class MachineGCodeHelper
 	{
 		public Framework.Arduino.ArduinoSerialCommunication Com
 		{

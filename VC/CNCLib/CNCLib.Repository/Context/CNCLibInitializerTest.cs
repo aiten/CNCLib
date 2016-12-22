@@ -16,14 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Repository.Contracts.Entities;
 using System.Data.Entity;
 
 namespace CNCLib.Repository.Context
 {
 
-	//    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
-	//public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
+    //    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
+    //public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
 
     public class CNCLibInitializerTest : DropCreateDatabaseAlways<CNCLibContext>
     {

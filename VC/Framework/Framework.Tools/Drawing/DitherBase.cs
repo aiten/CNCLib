@@ -32,10 +32,10 @@ namespace Framework.Tools.Drawing
         protected int _scansize;
         protected int[] _rgbValues;
 
-        int _AddForA = 3;
-        int _AddForR = 2;
-        int _AddForG = 1;
-        int _AddForB = 0;
+        int _addForA = 3;
+        int _addForR = 2;
+        int _addForG = 1;
+        int _addForB = 0;
 
         #endregion
 
@@ -58,13 +58,17 @@ namespace Framework.Tools.Drawing
             public static byte Saturation(int r)
             {
                 if (r <= 0)
+                {
                     return 0;
-                else if (r > 255)
-                    return (byte)255;
-                else
-                    return (byte)(r);
+                }
+                if (r > 255)
+                {
+                    return 255;
+                }
+
+                return (byte) (r);
             }
-        };
+        }
 
         #region properties
 
@@ -132,18 +136,24 @@ namespace Framework.Tools.Drawing
         protected Color GetPixel(int x, int y)
         {
             int idx = ToByteIdx(x, y);
-            return new Color() { R = _rgbValues[idx + _AddForR], G = _rgbValues[idx + _AddForG], B = _rgbValues[idx + _AddForB], A = (_AddForA < 0) ? (Byte)255 : _rgbValues[idx + _AddForA] };
+            return new Color()
+            {
+                R = _rgbValues[idx + _addForR],
+                G = _rgbValues[idx + _addForG],
+                B = _rgbValues[idx + _addForB],
+                A = (_addForA < 0) ? 255 : _rgbValues[idx + _addForA]
+            };
         }
 
         protected void SetPixel(int x, int y, Color color)
         {
             int idx = ToByteIdx(x, y);
-            _rgbValues[idx + _AddForR] = color.R;
-            _rgbValues[idx + _AddForG] = color.G;
-            _rgbValues[idx + _AddForB] = color.B;
+            _rgbValues[idx + _addForR] = color.R;
+            _rgbValues[idx + _addForG] = color.G;
+            _rgbValues[idx + _addForB] = color.B;
 
-            if (_AddForA >= 0)
-                _rgbValues[idx + _AddForA] = color.A;
+            if (_addForA >= 0)
+                _rgbValues[idx + _addForA] = color.A;
         }
         protected void SetPixel(int x, int y, int r, int g, int b, int a)
         {
@@ -169,7 +179,7 @@ namespace Framework.Tools.Drawing
             _height = imageX.Height;
             _width = imageX.Width;
 
-            Rectangle rect = new Rectangle(0, 0, _width, _height);
+            var rect = new Rectangle(0, 0, _width, _height);
             BitmapData bmpData = imageX.LockBits(rect, ImageLockMode.ReadOnly, imageX.PixelFormat);
             IntPtr ptr = bmpData.Scan0;
             _scansize = Math.Abs(bmpData.Stride);
@@ -180,14 +190,14 @@ namespace Framework.Tools.Drawing
             imageX.UnlockBits(bmpData);
             _rgbValues = new int[bytes];
 
-            for (int i = 0; i < bytes; i++)
+            for (var i = 0; i < bytes; i++)
                 _rgbValues[i] = rgbValues[i];
 
             switch (imageX.PixelFormat)
             {
                 case PixelFormat.Format24bppRgb:
                     _bytesPerPixel = 3;
-                    _AddForA = -1;
+                    _addForA = -1;
                     break;
             }
         }
@@ -203,13 +213,13 @@ namespace Framework.Tools.Drawing
 		{ 
 			var bsrc = new Bitmap(_width, _height, imageX.PixelFormat);
 
-            Rectangle rect = new Rectangle(0, 0, _width, _height);
+            var rect = new Rectangle(0, 0, _width, _height);
             BitmapData bmpData = bsrc.LockBits(rect, ImageLockMode.WriteOnly, bsrc.PixelFormat);
             IntPtr ptr = bmpData.Scan0;
 
             var rgbValues = new Byte[_rgbValues.Length];
 
-            for (int i = 0; i < _rgbValues.Length; i++)
+            for (var i = 0; i < _rgbValues.Length; i++)
                 rgbValues[i] = Color.Saturation(_rgbValues[i]);
 
             int bytes = Math.Abs(bmpData.Stride) * _height;
@@ -223,9 +233,9 @@ namespace Framework.Tools.Drawing
 
         protected Bitmap WriteImageFormat1bppIndexed(Bitmap bsrc)
         {
-            Rectangle rect = new Rectangle(0, 0, _width, _height);
+            var rect = new Rectangle(0, 0, _width, _height);
 
-            Bitmap b = new Bitmap(_width, _height, PixelFormat.Format1bppIndexed);
+            var b = new Bitmap(_width, _height, PixelFormat.Format1bppIndexed);
 
             BitmapData bmpData = b.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format1bppIndexed);
             IntPtr ptr = bmpData.Scan0;
@@ -233,9 +243,9 @@ namespace Framework.Tools.Drawing
             int bytes = scansize * _height;
             byte[] rgbvalues = new byte[bytes];
 
-            for (int y = 0; y < _height; y++)
+            for (var y = 0; y < _height; y++)
             {
-                for (int x = 0; x < _width; x++)
+                for (var x = 0; x < _width; x++)
                 {
                     Color currentPixel = GetPixel(x, y);
                     if (currentPixel.R != 0)
@@ -261,19 +271,19 @@ namespace Framework.Tools.Drawing
 
         protected Bitmap WriteImageFormat4bppIndexed(Bitmap bsrc)
         {
-            Rectangle rect = new Rectangle(0, 0, _width, _height);
+            var rect = new Rectangle(0, 0, _width, _height);
 
-            Bitmap b = new Bitmap(_width, _height, PixelFormat.Format4bppIndexed);
+            var b = new Bitmap(_width, _height, PixelFormat.Format4bppIndexed);
 
             BitmapData bmpData = b.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format4bppIndexed);
             IntPtr ptr = bmpData.Scan0;
             int scansize = Math.Abs(bmpData.Stride);
             int bytes = scansize * _height;
-            byte[] rgbvalues = new byte[bytes];
+            var rgbvalues = new byte[bytes];
 
-            for (int y = 0; y < _height; y++)
+            for (var y = 0; y < _height; y++)
             {
-                for (int x = 0; x < _width; x++)
+                for (var x = 0; x < _width; x++)
                 {
                     Color currentPixel = GetPixel(x, y);
                     if (currentPixel.R != 0)
@@ -290,7 +300,7 @@ namespace Framework.Tools.Drawing
 
             ColorPalette cp = b.Palette;
 
-            for (int i = 0; i < 15; i++)
+            for (var i = 0; i < 15; i++)
             {
                 cp.Entries[i] = System.Drawing.Color.FromArgb(255, i*16, i*16, i*16);
             }

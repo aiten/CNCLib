@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Framework.Tools;
@@ -31,7 +30,7 @@ namespace CNCLib.GCode.Commands
 			NoMove,
 			Fast,		// Go
 			Normal		// G1,G2
-		};
+		}
 
 		#region crt
 
@@ -89,7 +88,7 @@ namespace CNCLib.GCode.Commands
 
 				return Name + "#" + Parameter;
 			}
-		};
+		}
 
 		public void AddVariable(char name, double value)
 		{

@@ -17,14 +17,13 @@
 */
 
 using CNCLib.Repository.Contracts.Entities;
-using System.Data.Entity;
 
 namespace CNCLib.Repository.Context
 {
 
-	//    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
-	//public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
-	public static class CNCLibDefaultData
+    //    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
+    //public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
+    public static class CNCLibDefaultData
     {
         public static void CNCSeed(CNCLibContext context)
         {

@@ -16,12 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
 
 namespace CNCLib.GCode.Commands
 {
-	public class CommandList :	List<Command>
+    public class CommandList :	List<Command>
 	{
 		public struct PaintState
 		{
@@ -74,7 +73,7 @@ namespace CNCLib.GCode.Commands
 				string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
 				if (cmds != null)
 				{
-					foreach (String str in cmds)
+					foreach (string str in cmds)
 					{
 						list.Add(str);
 					}

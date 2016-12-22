@@ -54,9 +54,9 @@ namespace Framework.Tools.Drawing
 			}
 		}
 
-		public bool HasAllValues { get { return X.HasValue && Y.HasValue && Z.HasValue;  } }
+		public bool HasAllValues => X.HasValue && Y.HasValue && Z.HasValue;
 
-		public void AssignMissing(Point3D from)
+	    public void AssignMissing(Point3D from)
 		{
 			if (!X.HasValue && from.X.HasValue) X = from.X;
 			if (!Y.HasValue && from.Y.HasValue) Y = from.Y;
@@ -65,7 +65,7 @@ namespace Framework.Tools.Drawing
 
 		public static implicit operator System.Drawing.Point(Point3D sc)
 		{
-			return new System.Drawing.Point((int)sc.X.Value, (int) sc.Y.Value);
+			return new System.Drawing.Point((int) (sc.X??0.0), (int) (sc.Y??0.0));
 		}
 
 		public void Offset(Point3D p)

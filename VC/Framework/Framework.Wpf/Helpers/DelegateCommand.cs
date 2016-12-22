@@ -17,7 +17,6 @@
 */
 
 using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Framework.Wpf.Helpers

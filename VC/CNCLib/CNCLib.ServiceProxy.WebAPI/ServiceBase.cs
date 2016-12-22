@@ -17,24 +17,20 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CNCLib.ServiceProxy.WebAPI
 {
-	public class ServiceBase
+    public class ServiceBase
 	{
-		protected readonly string webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibapi.azurewebsites.net";
+		protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibapi.azurewebsites.net";
 
-		protected System.Net.Http.HttpClient CreateHttpClient()
+		protected HttpClient CreateHttpClient()
 		{
 			var client = new HttpClient();
-			client.BaseAddress = new Uri(webserverurl);
+			client.BaseAddress = new Uri(_webserverurl);
 			client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			return client;

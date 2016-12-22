@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Wpf.Helpers;
 using System;
 using System.Windows;
 using System.Runtime.CompilerServices;
@@ -24,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Wpf.ViewModels
 {
-	public class BaseViewModel : Prism.Mvvm.BindableBase // NotificationObject
+    public class BaseViewModel : Prism.Mvvm.BindableBase // NotificationObject
 	{
 		public Action CloseAction { get; set; }
 

@@ -24,7 +24,7 @@ namespace CNCLib.GCode.Commands
 	public class IsGCommandAttribute : Attribute
 	{
 		public bool IsGComamnd { get; set; }
-		public String RegisterAs { get; set; }
+		public string RegisterAs { get; set; }
 		public IsGCommandAttribute()
 		{
 			IsGComamnd = true;

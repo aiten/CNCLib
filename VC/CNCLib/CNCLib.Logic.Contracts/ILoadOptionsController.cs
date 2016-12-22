@@ -17,12 +17,11 @@
 */
 
 using System;
-using System.Collections.Generic;
 using Framework.Logic.Contracts;
 
 namespace CNCLib.Logic.Contracts
 {
-	public interface ILoadOptionsController : IDisposable, IRestController<DTO.LoadOptions>
+    public interface ILoadOptionsController : IDisposable, IRestController<DTO.LoadOptions>
 	{
 	}
 }

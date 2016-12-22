@@ -30,7 +30,7 @@ namespace Framework.Tools.Dependency
         {
             if (!t.IsInterface)
             {
-                throw new ResolutionFailedException(string.Format("Tried to resolve type {0}. This is not an interface which indicates a bug.", t.FullName));
+                throw new ResolutionFailedException($"Tried to resolve type {t.FullName}. This is not an interface which indicates a bug.");
             }
             try
             {
@@ -38,7 +38,7 @@ namespace Framework.Tools.Dependency
             }
             catch (Microsoft.Practices.Unity.ResolutionFailedException ex)
             {
-                throw new ResolutionFailedException(string.Format("Resolution for {0} failed", t.FullName), ex);
+                throw new ResolutionFailedException($"Resolution for {t.FullName} failed", ex);
             }
         }
     }

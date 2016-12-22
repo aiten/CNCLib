@@ -19,14 +19,11 @@
 using CNCLib.Wpf.ViewModels.ManualControl;
 using Framework.Arduino;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using CNCLib.GCode;
-using System.Linq;
 
 namespace CNCLib.Wpf.Helpers
 {
-	class JoystickArduinoSerialCommunication : ArduinoSerialCommunication
+    class JoystickArduinoSerialCommunication : ArduinoSerialCommunication
 	{
 		private Framework.Arduino.ArduinoSerialCommunication Com
 		{

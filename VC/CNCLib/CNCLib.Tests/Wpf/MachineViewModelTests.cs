@@ -18,19 +18,16 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CNCLib.Logic.Contracts;
 using System.Linq;
 using NSubstitute;
 using CNCLib.Wpf.ViewModels;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
 using CNCLib.ServiceProxy;
-using AutoMapper;
-using CNCLib.Wpf;
 
 namespace CNCLib.Tests.Wpf
 {
-	[TestClass]
+    [TestClass]
 	public class MachineViewModelTests : CNCUnitTest
 	{
 		/*

@@ -18,14 +18,13 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Framework.Tools;
 using System.Data.Entity;
 using CNCLib.Repository.Contracts;
 using System.Threading.Tasks;
 
 namespace CNCLib.Repository
 {
-	public class MachineRepository : CNCLibRepository, IMachineRepository
+    public class MachineRepository : CNCLibRepository, IMachineRepository
 	{
 		public async Task<Contracts.Entities.Machine[]> GetMachines()
 		{

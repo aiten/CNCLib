@@ -17,11 +17,8 @@
 */
 
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using System.Web.Http;
-using CNCLib.GCode.Load;
-using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
 using CNCLib.WebAPI.Models;
@@ -29,7 +26,7 @@ using Framework.Tools.Dependency;
 
 namespace CNCLib.WebAPI.Controllers
 {
-	public class GCodeController : ApiController
+    public class GCodeController : ApiController
 	{
 //		[ActionName("")]
 		public IEnumerable<string> Post([FromBody] LoadOptions input)

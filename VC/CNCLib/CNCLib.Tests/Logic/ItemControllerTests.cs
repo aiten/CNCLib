@@ -22,15 +22,13 @@ using CNCLib.Logic;
 using System.Linq;
 using NSubstitute;
 using Framework.Tools.Dependency;
-using CNCLib.Logic.Client;
-using CNCLib.ServiceProxy;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using System.Threading.Tasks;
 
 namespace CNCLib.Tests.Logic
 {
-	[TestClass]
+    [TestClass]
 	public class ItemControllerTests : CNCUnitTest
 	{
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable

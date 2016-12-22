@@ -37,7 +37,7 @@ namespace Framework.Tools.Pattern
 
 		public void Register(Type from, Type to)
 		{
-			if (_typ2typeemapping.ContainsKey(from) == true)
+			if (_typ2typeemapping.ContainsKey(from))
 			{
 				throw new ArgumentException();
 			}

@@ -68,7 +68,7 @@ namespace CNCLib.Wpf.Sql.Start
 			catch (Exception ex)
 			{
 				MessageBox.Show("Cannot connect to database" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				Application.Current.Shutdown();
+				Current.Shutdown();
 			}
 		}
 	}

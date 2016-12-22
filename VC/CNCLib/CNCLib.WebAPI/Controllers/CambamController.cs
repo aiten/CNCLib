@@ -16,13 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Xml.Serialization;
-using CNCLib.GCode.Load;
-using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
 using CNCLib.WebAPI.Models;
@@ -30,7 +27,7 @@ using Framework.Tools.Dependency;
 
 namespace CNCLib.WebAPI.Controllers
 {
-	public class CambamController : ApiController
+    public class CambamController : ApiController
 	{
 		//		[ActionName("")]
 		public string Post([FromBody] LoadOptions input)

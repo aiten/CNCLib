@@ -16,10 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.GCode.Load;
 using System;
 using System.Windows.Forms;
-using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
@@ -29,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace CNCLib.GUI.Load
 {
-	public partial class LoadOptionForm : Form
+    public partial class LoadOptionForm : Form
     {
         protected class LoadOptionDefinition
         {

@@ -17,19 +17,16 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 
 // see https://msdn.microsoft.com/magazine/dn605875
 
 namespace Framework.Wpf.Helpers
 {
-	public sealed class NotifyTaskCompletion<TResult> : INotifyPropertyChanged
+    public sealed class NotifyTaskCompletion<TResult> : INotifyPropertyChanged
 	{
 		public NotifyTaskCompletion(Task<TResult> task)
 		{

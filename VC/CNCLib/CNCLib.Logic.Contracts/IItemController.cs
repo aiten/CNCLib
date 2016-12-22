@@ -16,14 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Framework.Logic.Contracts;
 
 namespace CNCLib.Logic.Contracts
 {
-	public interface IItemController : IRestController<DTO.Item>
+    public interface IItemController : IRestController<DTO.Item>
 	{
 		Task<IEnumerable<DTO.Item>> GetByClassName(string classname);
 	}

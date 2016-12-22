@@ -18,7 +18,6 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
 using Framework.Tools.Dependency;
@@ -26,7 +25,7 @@ using Framework.Web;
 
 namespace CNCLib.WebAPI.Controllers
 {
-	public class LoadOptionsController : RestController<LoadOptions>
+    public class LoadOptionsController : RestController<LoadOptions>
 	{
 	}
 
@@ -65,11 +64,11 @@ namespace CNCLib.WebAPI.Controllers
 		}
 
 		#region IDisposable Support
-		private bool disposedValue = false; // To detect redundant calls
+		private bool _disposedValue; // To detect redundant calls
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!disposedValue)
+			if (!_disposedValue)
 			{
 				if (disposing)
 				{
@@ -80,7 +79,7 @@ namespace CNCLib.WebAPI.Controllers
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
 				// TODO: set large fields to null.
 
-				disposedValue = true;
+				_disposedValue = true;
 			}
 		}
 

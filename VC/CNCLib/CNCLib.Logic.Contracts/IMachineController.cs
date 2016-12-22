@@ -17,13 +17,12 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Framework.Logic.Contracts;
 
 namespace CNCLib.Logic.Contracts
 {
-	public interface IMachineController : IDisposable, IRestController<DTO.Machine>
+    public interface IMachineController : IDisposable, IRestController<DTO.Machine>
 	{
 		Task<DTO.Machine> DefaultMachine();
 		Task<int> GetDetaultMachine();

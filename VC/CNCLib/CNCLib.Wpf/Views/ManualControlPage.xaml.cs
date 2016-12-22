@@ -22,7 +22,7 @@ using System.Windows.Controls;
 using CNCLib.Wpf.ViewModels;
 using Framework.Wpf.ViewModels;
 
-namespace CNCLib.Wpf
+namespace CNCLib.Wpf.Views
 {
 	/// <summary>
 	/// Interaction logic for ManualControl.xaml

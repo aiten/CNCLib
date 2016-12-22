@@ -18,13 +18,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Framework.Web
 {
-	public interface IRest<T> : IDisposable
+    public interface IRest<T> : IDisposable
 	{
 		Task<T> Get(int id);
 		Task<IEnumerable<T>> Get();

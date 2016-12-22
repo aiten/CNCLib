@@ -23,10 +23,8 @@ using System.Collections.ObjectModel;
 using Framework.Wpf.ViewModels;
 using Framework.Wpf.Helpers;
 using System.Windows;
-using Framework.Tools;
 using CNCLib.GCode;
 using CNCLib.Wpf.Models;
-using CNCLib.Logic.Contracts;
 using CNCLib.ServiceProxy;
 using Framework.Tools.Dependency;
 using CNCLib.Wpf.Helpers;
@@ -34,7 +32,7 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels
 {
-	public class SetupWindowViewModel : BaseViewModel
+    public class SetupWindowViewModel : BaseViewModel
     {
 		#region crt
 

@@ -19,23 +19,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
-using Framework.Tools;
-using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 
 namespace Framework.EF
 {
-	public class RepositoryBase
+    public class RepositoryBase
 	{
         public IUnitOfWork Uow { get; set; }
 
-		public void Sync<t>(ICollection<t> inDb, ICollection<t> toDb, Func<t, t, bool> predicate) 
+		public void Sync<T>(ICollection<T> inDb, ICollection<T> toDb, Func<T, T, bool> predicate) 
 		{
 			// 1. Delete from DB (in DB) and update
-			List<t> delete = new List<t>();
+			var delete = new List<T>();
 
-			foreach (t entityInDb in inDb)
+			foreach (T entityInDb in inDb)
 			{
                 var entityToDb = toDb.FirstOrDefault(x => predicate(x, entityInDb));
 				if (entityToDb != null && predicate(entityToDb, entityInDb))
@@ -55,7 +52,7 @@ namespace Framework.EF
 
 			// 2. Add To DB
 
-			foreach (t entityToDb in toDb)
+			foreach (T entityToDb in toDb)
 			{
 				var entityInDb = inDb.FirstOrDefault(x => predicate(x, entityToDb));
 				if (entityInDb == null || predicate(entityToDb, entityInDb) == false)

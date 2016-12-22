@@ -31,15 +31,15 @@ namespace CNCLib.Logic.Contracts.DTO
 			Image,
 			ImageHole
 
-		};
+		}
 		public ELoadType LoadType { get; set; } = ELoadType.GCode;
 
-		public String FileName { get; set; }
+		public string FileName { get; set; }
 		public Byte[] FileContent { get; set; }
 
-		public String SettingName { get; set; }
+		public string SettingName { get; set; }
 
-        public String GCodeWriteToFileName { get; set; } = @"c:\tmp\test.gcode";
+        public string GCodeWriteToFileName { get; set; } = @"c:\tmp\test.gcode";
 
 		//ALL (not GCode)
 		public string StartupCommands { get; set; }
@@ -66,7 +66,7 @@ namespace CNCLib.Logic.Contracts.DTO
         {
             ZMove,
             CommandString
-        };
+        }
 
         public PenType PenMoveType { get; set; } = PenType.ZMove;
 
@@ -87,7 +87,7 @@ namespace CNCLib.Logic.Contracts.DTO
 
 
 		//IMG
-		public String ImageWriteToFileName { get; set; } = @"c:\tmp\image.bmp";
+		public string ImageWriteToFileName { get; set; } = @"c:\tmp\image.bmp";
 
         public Byte GrayThreshold { get; set; } = 127;
 
@@ -97,7 +97,7 @@ namespace CNCLib.Logic.Contracts.DTO
         {
             FloydSteinbergDither,
             NewspaperDither
-        };
+        }
 
         public bool ImageInvert { get; set; } = false;
 
@@ -120,7 +120,7 @@ namespace CNCLib.Logic.Contracts.DTO
             Hexagon,
             Diamond,
             Heart
-        };
+        }
         public EHoleType HoleType { get; set; } = EHoleType.Hexagon;
     }
 }

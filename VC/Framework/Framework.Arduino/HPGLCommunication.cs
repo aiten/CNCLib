@@ -36,7 +36,7 @@ namespace Framework.Arduino
         protected string[] SplitHPGL(string line)
         {
             string[] cmds = line.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            List<string> cmdlist = new List<string>(); ;
+            List<string> cmdlist = new List<string>();
 
             foreach (string l in cmds)
             {

@@ -547,7 +547,7 @@ namespace CNCLib.GUI
 			Dot = 1,
 			Ellipse = 2,
 			Arc = 3
-		};
+		}
 
 		private Pen GetPen(DrawType moveType, LineDrawType drawtype)
 		{

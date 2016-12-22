@@ -37,10 +37,7 @@ namespace Framework.Tools.Pattern
             }
         }
 
-        public static bool Allocated
-        {
-            get { return _instance != null; }
-        }
+        public static bool Allocated => _instance != null;
 
         public static void Free()
         {

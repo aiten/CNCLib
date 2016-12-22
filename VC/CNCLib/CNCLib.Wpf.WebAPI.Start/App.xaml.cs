@@ -18,20 +18,17 @@
 
 using System;
 using System.Windows;
-using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
 using AutoMapper;
-using CNCLib.Logic;
 using CNCLib.ServiceProxy;
 using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.WebAPI.Start
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
-	public partial class App : Application
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
 	{
 		private void AppStartup(object sender, StartupEventArgs e)
 		{
@@ -61,10 +58,10 @@ namespace CNCLib.Wpf.WebAPI.Start
 				{
 					using (var controller = Dependency.Resolve<IMachineService>())
 					{
-						var m = await controller.GetDetaultMachine();
+						int m = await controller.GetDetaultMachine();
 						if (m == -1)
 						{
-							throw new ArgumentException("illegal defaulemachne");
+							throw new ArgumentException("illegal defaultmachne");
 						}
 					}
 					return true;
@@ -72,7 +69,7 @@ namespace CNCLib.Wpf.WebAPI.Start
 				catch (Exception ex)
 				{
 					MessageBox.Show($"Cannot connect to WebAPI: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-					Application.Current.Shutdown();
+					Current.Shutdown();
 					return false;
 				}
 			}).ConfigureAwait(true).GetAwaiter().GetResult();

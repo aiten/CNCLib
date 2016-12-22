@@ -17,7 +17,6 @@
 */
 
 using System;
-using Framework.Tools.Drawing;
 
 namespace Framework.Tools.Drawing
 {
@@ -38,9 +37,9 @@ namespace Framework.Tools.Drawing
 
 		public void Set3DRotate(double rad, double[] vect)
 		{
-			double n1 = (double)vect[0];
-			double n2 = (double)-vect[1];
-			double n3 = (double)vect[2];
+			double n1 = vect[0];
+			double n2 = -vect[1];
+			double n3 = vect[2];
 
 			double vectorlenght = Math.Sqrt(n1 * n1 + n2 * n2 + n3 * n3);
 			n1 = n1 / vectorlenght;

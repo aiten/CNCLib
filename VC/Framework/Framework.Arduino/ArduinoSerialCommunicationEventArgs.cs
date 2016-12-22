@@ -26,9 +26,9 @@ namespace Framework.Arduino
 		{
 			Command = cmd;
 			if (cmd != null && string.IsNullOrEmpty(info))
-				this.Info = cmd.CommandText;
+				Info = cmd.CommandText;
 			else
-				this.Info = info;
+				Info = info;
 			Continue = false;
 			Abort = false;
 		}

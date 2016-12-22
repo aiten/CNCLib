@@ -16,16 +16,16 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Wpf.Helpers;
 using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
-	public class CustomViewModel : DetailViewModel
+    public class CustomViewModel : DetailViewModel
 	{
 		public CustomViewModel(IManualControlViewModel vm)
 			: base(vm)
@@ -35,41 +35,41 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         #region Properties
 
-        public String Desc00 { get { return GetDesc(0,0); } }
-        public String Desc01 { get { return GetDesc(0,1); } }
-        public String Desc02 { get { return GetDesc(0,2); } }
-        public String Desc03 { get { return GetDesc(0,3); } }
-        public String Desc04 { get { return GetDesc(0,4); } }
-        public String Desc10 { get { return GetDesc(1,0); } }
-        public String Desc11 { get { return GetDesc(1,1); } }
-        public String Desc12 { get { return GetDesc(1,2); } }
-        public String Desc13 { get { return GetDesc(1,3); } }
-        public String Desc14 { get { return GetDesc(1,4); } }
-        public String Desc20 { get { return GetDesc(2, 0); } }
-        public String Desc21 { get { return GetDesc(2, 1); } }
-        public String Desc22 { get { return GetDesc(2, 2); } }
-        public String Desc23 { get { return GetDesc(2, 3); } }
-        public String Desc24 { get { return GetDesc(2, 4); } }
-        public String Desc30 { get { return GetDesc(3, 0); } }
-        public String Desc31 { get { return GetDesc(3, 1); } }
-        public String Desc32 { get { return GetDesc(3, 2); } }
-        public String Desc33 { get { return GetDesc(3, 3); } }
-        public String Desc34 { get { return GetDesc(3, 4); } }
-        public String Desc40 { get { return GetDesc(4, 0); } }
-        public String Desc41 { get { return GetDesc(4, 1); } }
-        public String Desc42 { get { return GetDesc(4, 2); } }
-        public String Desc43 { get { return GetDesc(4, 3); } }
-        public String Desc44 { get { return GetDesc(4, 4); } }
-        public String Desc50 { get { return GetDesc(5, 0); } }
-        public String Desc51 { get { return GetDesc(5, 1); } }
-        public String Desc52 { get { return GetDesc(5, 2); } }
-        public String Desc53 { get { return GetDesc(5, 3); } }
-        public String Desc54 { get { return GetDesc(5, 4); } }
-        public String Desc60 { get { return GetDesc(6, 0); } }
-        public String Desc61 { get { return GetDesc(6, 1); } }
-        public String Desc62 { get { return GetDesc(6, 2); } }
-        public String Desc63 { get { return GetDesc(6, 3); } }
-        public String Desc64 { get { return GetDesc(6, 4); } }
+        public string Desc00 { get { return GetDesc(0,0); } }
+        public string Desc01 { get { return GetDesc(0,1); } }
+        public string Desc02 { get { return GetDesc(0,2); } }
+        public string Desc03 { get { return GetDesc(0,3); } }
+        public string Desc04 { get { return GetDesc(0,4); } }
+        public string Desc10 { get { return GetDesc(1,0); } }
+        public string Desc11 { get { return GetDesc(1,1); } }
+        public string Desc12 { get { return GetDesc(1,2); } }
+        public string Desc13 { get { return GetDesc(1,3); } }
+        public string Desc14 { get { return GetDesc(1,4); } }
+        public string Desc20 { get { return GetDesc(2, 0); } }
+        public string Desc21 { get { return GetDesc(2, 1); } }
+        public string Desc22 { get { return GetDesc(2, 2); } }
+        public string Desc23 { get { return GetDesc(2, 3); } }
+        public string Desc24 { get { return GetDesc(2, 4); } }
+        public string Desc30 { get { return GetDesc(3, 0); } }
+        public string Desc31 { get { return GetDesc(3, 1); } }
+        public string Desc32 { get { return GetDesc(3, 2); } }
+        public string Desc33 { get { return GetDesc(3, 3); } }
+        public string Desc34 { get { return GetDesc(3, 4); } }
+        public string Desc40 { get { return GetDesc(4, 0); } }
+        public string Desc41 { get { return GetDesc(4, 1); } }
+        public string Desc42 { get { return GetDesc(4, 2); } }
+        public string Desc43 { get { return GetDesc(4, 3); } }
+        public string Desc44 { get { return GetDesc(4, 4); } }
+        public string Desc50 { get { return GetDesc(5, 0); } }
+        public string Desc51 { get { return GetDesc(5, 1); } }
+        public string Desc52 { get { return GetDesc(5, 2); } }
+        public string Desc53 { get { return GetDesc(5, 3); } }
+        public string Desc54 { get { return GetDesc(5, 4); } }
+        public string Desc60 { get { return GetDesc(6, 0); } }
+        public string Desc61 { get { return GetDesc(6, 1); } }
+        public string Desc62 { get { return GetDesc(6, 2); } }
+        public string Desc63 { get { return GetDesc(6, 3); } }
+        public string Desc64 { get { return GetDesc(6, 4); } }
 
 		#endregion
 
@@ -123,12 +123,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			if (Global.Instance.Machine == null || Global.Instance.Machine.MachineCommands == null)
 				return null;
 
-            return Global.Instance.Machine.MachineCommands.Where(m => m.PosX == x && m.PosY == y).FirstOrDefault();
+            return Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.PosX == x && m.PosY == y);
         }
 
         private string GetDesc(int x, int y)
         {
-            var cmd = GetCmd(x,y);
+            MachineCommand cmd = GetCmd(x,y);
             return cmd == null ? "" : cmd.CommandName;
         }
 

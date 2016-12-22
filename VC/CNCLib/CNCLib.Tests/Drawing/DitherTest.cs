@@ -36,15 +36,15 @@ namespace CNCLib.Tests.Drawing
         {
             var dt = new DitherTestClass();
 
-            const int xsize= 100;
-            const int ysize = 100;
+            const int XSIZE= 100;
+            const int YSIZE = 100;
 
-            var b1 = new Bitmap(xsize, ysize);
+            var b1 = new Bitmap(XSIZE, YSIZE);
             var b2 = dt.Process(b1);
 
-            for (int x = 0; x < xsize; x++)
+            for (int x = 0; x < XSIZE; x++)
             {
-                for (int y = 0; y < ysize; y++)
+                for (int y = 0; y < YSIZE; y++)
                 {
                     Color col = b2.GetPixel(x, y);
 
@@ -70,18 +70,18 @@ namespace CNCLib.Tests.Drawing
         {
             var dt = new FloydSteinbergDither();
 
-            const int xsize = 100;
-            const int ysize = 100;
+            const int XSIZE = 100;
+            const int YSIZE = 100;
 
-            var b1 = new Bitmap(xsize, ysize);
+            var b1 = new Bitmap(XSIZE, YSIZE);
 
             b1.SetPixel(50, 50, Color.FromArgb(255, 255, 255, 255));
 
             var b2 = dt.Process(b1);
 
-            for (int x = 0; x < xsize; x++)
+            for (int x = 0; x < XSIZE; x++)
             {
-                for (int y = 0; y < ysize; y++)
+                for (int y = 0; y < YSIZE; y++)
                 {
                     Color col = b2.GetPixel(x, y);
 
@@ -108,10 +108,10 @@ namespace CNCLib.Tests.Drawing
         {
             var dt = new FloydSteinbergDither();
 
-            const int xsize = 100;
-            const int ysize = 100;
+            const int XSIZE = 100;
+            const int YSIZE = 100;
 
-            var b1 = new Bitmap(xsize, ysize, PixelFormat.Format32bppArgb);
+            var b1 = new Bitmap(XSIZE, YSIZE, PixelFormat.Format32bppArgb);
 
             b1.SetPixel(50, 50, Color.FromArgb(255, 127, 127, 127));
 			b1.SetPixel(50, 51, Color.FromArgb(255, 127, 127, 127));
@@ -120,9 +120,9 @@ namespace CNCLib.Tests.Drawing
 
 			var b2 = dt.Process(b1);
 
-            for (int x = 0; x < xsize; x++)
+            for (int x = 0; x < XSIZE; x++)
             {
-                for (int y = 0; y < ysize; y++)
+                for (int y = 0; y < YSIZE; y++)
                 {
                     Color col = b2.GetPixel(x, y);
 

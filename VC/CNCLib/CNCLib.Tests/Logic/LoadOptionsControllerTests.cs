@@ -18,21 +18,17 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CNCLib.Repository.Contracts;
 using CNCLib.Logic;
 using System.Linq;
 using NSubstitute;
 using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
-using Framework.EF;
-using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Client;
 using System.Threading.Tasks;
 
 namespace CNCLib.Tests.Logic
 {
-	[TestClass]
+    [TestClass]
 	public class LoadOptionsControllerTests : CNCUnitTest
 	{
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable

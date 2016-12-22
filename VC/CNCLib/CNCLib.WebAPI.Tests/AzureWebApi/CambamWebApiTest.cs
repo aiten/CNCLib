@@ -23,12 +23,11 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.WebAPI.Models;
 using System.Reflection;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
-	[TestClass]
+    [TestClass]
     public class CambamWebApiTest : AzureWebApiTest
     {
         private readonly string api = "/api/Cambam";

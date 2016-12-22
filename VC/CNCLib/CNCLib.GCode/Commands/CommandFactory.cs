@@ -25,14 +25,14 @@ namespace CNCLib.GCode.Commands
 {
     public class CommandFactory
     {
-		private Dictionary<String, Type> _shapes = new Dictionary<String, Type>(); 
+		private Dictionary<string, Type> _shapes = new Dictionary<string, Type>(); 
         
 		public CommandFactory()
 		{
 			RegisterAll();
 		}
 
-		public void RegisterShape(String name, Type shape)
+		public void RegisterShape(string name, Type shape)
         {
             if (name.Contains(" "))
                 throw new ArgumentException();

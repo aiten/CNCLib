@@ -20,11 +20,10 @@ using System.Windows.Input;
 using Framework.Wpf.Helpers;
 using System.Globalization;
 using CNCLib.Wpf.Helpers;
-using Framework.Arduino;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
-	public class AxisViewModel : DetailViewModel
+    public class AxisViewModel : DetailViewModel
 	{
 		public AxisViewModel(IManualControlViewModel vm) : base(vm) 	{}
 

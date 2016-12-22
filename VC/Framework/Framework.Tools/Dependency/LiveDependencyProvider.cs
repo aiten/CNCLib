@@ -27,9 +27,6 @@ namespace Framework.Tools.Dependency
     {
         private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new LiveDependencyContainer());
 
-        public IDependencyContainer Container
-        {
-            get { return _dependencyContainer.Value; }
-        }
+        public IDependencyContainer Container => _dependencyContainer.Value;
     }
 }

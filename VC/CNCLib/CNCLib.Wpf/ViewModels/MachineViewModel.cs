@@ -21,8 +21,6 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using Framework.Wpf.ViewModels;
 using Framework.Wpf.Helpers;
-using Framework.Tools;
-using CNCLib.Logic.Contracts;
 using CNCLib.Wpf.Models;
 using Framework.Tools.Dependency;
 using CNCLib.ServiceProxy;
@@ -30,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels
 {
-	public class MachineViewModel : BaseViewModel, IDisposable
+    public class MachineViewModel : BaseViewModel, IDisposable
 	{
 		#region crt
 

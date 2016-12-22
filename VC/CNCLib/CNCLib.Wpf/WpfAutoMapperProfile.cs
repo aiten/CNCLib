@@ -16,12 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using AutoMapper;
 
 namespace CNCLib.Wpf
 {
-	public sealed class WpfAutoMapperProfile : Profile
+    public sealed class WpfAutoMapperProfile : Profile
 	{
 		public WpfAutoMapperProfile()
 		{

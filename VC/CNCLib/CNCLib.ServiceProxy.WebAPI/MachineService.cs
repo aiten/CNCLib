@@ -17,25 +17,22 @@
 */
 
 
-using System;
 using System.Collections.Generic;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Logic.Contracts;
-using Framework.Tools.Dependency;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CNCLib.ServiceProxy.WebAPI
 {
-	public class MachineService : ServiceBase, IMachineService
+    public class MachineService : ServiceBase, IMachineService
 	{
-		protected readonly string api = @"api/Machine";
+		protected readonly string _api = @"_api/Machine";
 
 		public async Task<int> Add(Machine value)
 		{
-			using (var client = CreateHttpClient())
+			using (HttpClient client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.PostAsJsonAsync(api, value);
+				HttpResponseMessage response = await client.PostAsJsonAsync(_api, value);
 
 				if (response.IsSuccessStatusCode)
 					return -1;
@@ -51,9 +48,9 @@ namespace CNCLib.ServiceProxy.WebAPI
 
 		public async Task Delete(Machine value)
 		{
-			using (var client = CreateHttpClient())
+			using (HttpClient client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.DeleteAsync(api + "/" + value.MachineID);
+				HttpResponseMessage response = await client.DeleteAsync(_api + "/" + value.MachineID);
 
 				if (response.IsSuccessStatusCode)
 				{
@@ -65,9 +62,9 @@ namespace CNCLib.ServiceProxy.WebAPI
 
 		public async Task<Machine> Get(int id)
 		{
-			using (var client = CreateHttpClient())
+			using (HttpClient client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.GetAsync(api + "/" + id);
+				HttpResponseMessage response = await client.GetAsync(_api + "/" + id);
 				if (response.IsSuccessStatusCode)
 				{
 					Machine value = await response.Content.ReadAsAsync<Machine>();
@@ -81,9 +78,9 @@ namespace CNCLib.ServiceProxy.WebAPI
 		public async Task<IEnumerable<Machine>> GetAll()
 		{ 
 
-			using (var client = CreateHttpClient())
+			using (HttpClient client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.GetAsync(api);
+				HttpResponseMessage response = await client.GetAsync(_api);
 				if (response.IsSuccessStatusCode)
 				{
 					IEnumerable<Machine> machines = await response.Content.ReadAsAsync<IEnumerable<Machine>>();
@@ -95,9 +92,9 @@ namespace CNCLib.ServiceProxy.WebAPI
 
 		public async Task<int> GetDetaultMachine()
 		{
-			using (var client = CreateHttpClient())
+			using (HttpClient client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.GetAsync(api + "/defaultmachine");
+				HttpResponseMessage response = await client.GetAsync(_api + "/defaultmachine");
 				if (response.IsSuccessStatusCode)
 				{
 					int value = await response.Content.ReadAsAsync<int>();
@@ -110,9 +107,9 @@ namespace CNCLib.ServiceProxy.WebAPI
 
 		public async Task SetDetaultMachine(int id)
 		{
-			using (var client = CreateHttpClient())
+			using (HttpClient client = CreateHttpClient())
 			{
-				var response = await client.PutAsJsonAsync($"{api}/defaultmachine?id={id}","dummy");
+				HttpResponseMessage response = await client.PutAsJsonAsync($"{_api}/defaultmachine?id={id}","dummy");
 
 				if (response.IsSuccessStatusCode)
 				{
@@ -124,9 +121,9 @@ namespace CNCLib.ServiceProxy.WebAPI
 
 		public async Task<int> Update(Machine value)
 		{
-			using (var client = CreateHttpClient())
+			using (HttpClient client = CreateHttpClient())
 			{
-				var response = await client.PutAsJsonAsync(api + "/" + value.MachineID, value);
+				HttpResponseMessage response = await client.PutAsJsonAsync(_api + "/" + value.MachineID, value);
 
 				if (response.IsSuccessStatusCode)
 				{
@@ -137,11 +134,11 @@ namespace CNCLib.ServiceProxy.WebAPI
 		}
 
 		#region IDisposable Support
-		private bool disposedValue = false; // To detect redundant calls
+		private bool _disposedValue; // To detect redundant calls
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!disposedValue)
+			if (!_disposedValue)
 			{
 				if (disposing)
 				{
@@ -152,7 +149,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
 				// TODO: set large fields to null.
 
-				disposedValue = true;
+				_disposedValue = true;
 			}
 		}
 

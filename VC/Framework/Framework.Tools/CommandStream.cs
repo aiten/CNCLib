@@ -156,7 +156,7 @@ namespace Framework.Tools
 				decimal scale = 0.1m;
 				while (char.IsDigit(NextChar))
 				{
-					val += scale * (decimal)(NextChar - '0');
+					val += scale * (NextChar - '0');
 					scale /= 10;
 					Next();
 				}
