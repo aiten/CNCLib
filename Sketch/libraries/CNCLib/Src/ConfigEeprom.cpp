@@ -69,14 +69,14 @@ uint8_t CConfigEeprom::GetSlotU8(uint8_t slot, uint8_t ofs) { return GetInstance
 
 uint32_t CConfigEeprom::GetSlot32(uint8_t slot)
 {
-	if (_eepromvalid)	return eeprom_read_dword(EEPROMBASEADRUINT32+slot);
+	if (_eepromvalid)	return CHAL::eeprom_read_dword(EEPROMBASEADRUINT32+slot);
 	return pgm_read_dword(((uint32_t*) _defaulteeprom)+slot);
 }
 ////////////////////////////////////////////////////////////
 
 uint8_t CConfigEeprom::GetSlot8(uint8_t slot, uint8_t ofs)
 {
-	if (_eepromvalid)	return eeprom_read_byte((uint8_t*) EEPROMBASEADRUINT32 + slot*sizeof(uint32_t) + ofs);
+	if (_eepromvalid)	return CHAL::eeprom_read_byte((uint8_t*) EEPROMBASEADRUINT32 + slot*sizeof(uint32_t) + ofs);
 	return pgm_read_byte((uint8_t*)_defaulteeprom + slot * sizeof(uint32_t) + ofs);
 }
 
@@ -84,7 +84,7 @@ uint8_t CConfigEeprom::GetSlot8(uint8_t slot, uint8_t ofs)
 
 void CConfigEeprom::SetSlot32(uint8_t slot, uint32_t value)
 {
-	eeprom_write_dword(EEPROMBASEADRUINT32 + slot, value);
+	CHAL::eeprom_write_dword(EEPROMBASEADRUINT32 + slot, value);
 }
 
 ////////////////////////////////////////////////////////////

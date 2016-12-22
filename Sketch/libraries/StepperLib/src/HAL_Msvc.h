@@ -133,6 +133,21 @@ inline void CHAL::pinMode(pin_t pin, uint8_t mode)
 	::pinMode(pin,mode); 
 }
 
+inline void CHAL::eeprom_write_dword(uint32_t *  __p, uint32_t  	__value)
+{
+	::eeprom_write_dword(__p, __value);
+}
+
+inline uint32_t CHAL::eeprom_read_dword(const uint32_t * __p)
+{
+	return ::eeprom_read_dword(__p);
+}
+
+inline uint8_t CHAL::eeprom_read_byte(const uint8_t * __p)
+{
+	return ::eeprom_read_byte(__p);
+}
+
 ////////////////////////////////////////////////////////
 
 #endif 

@@ -302,5 +302,20 @@ void CHAL::pinModeInputPullUp(pin_t pin)
 	::pinMode(pin, INPUT_PULLUP);
 }
 
+void CHAL::eeprom_write_dword(uint32_t *  __p, uint32_t  	__value) 
+{ 
+	::eeprom_write_dword(__p, __value);
+}
+
+uint32_t CHAL::eeprom_read_dword(const uint32_t * __p) 
+{ 
+	return ::eeprom_read_dword(__p);
+}
+
+uint8_t CHAL::eeprom_read_byte(const uint8_t * __p) 
+{ 
+	return ::eeprom_read_byte(__p);
+}
+
 #endif 
 

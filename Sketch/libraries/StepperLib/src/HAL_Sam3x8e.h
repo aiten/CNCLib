@@ -122,6 +122,21 @@ inline void CHAL::pinModeInputPullUp(pin_t pin)
 	::pinMode(pin, INPUT_PULLUP);
 }
 
+// SAM3x has no eeprom => ignore
+
+inline void CHAL::eeprom_write_dword(uint32_t *, uint32_t)
+{
+}
+
+inline uint32_t CHAL::eeprom_read_dword(const uint32_t *)
+{
+	return 0;
+}
+
+inline uint8_t CHAL::eeprom_read_byte(const uint8_t *)
+{
+	return 0;
+}
 ////////////////////////////////////////////////////////
 
 inline void CHAL::delayMicroseconds(unsigned int usec)
