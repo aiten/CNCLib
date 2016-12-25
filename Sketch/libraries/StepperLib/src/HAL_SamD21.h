@@ -23,7 +23,7 @@
 // Due 32Bit
 ////////////////////////////////////////////////////////
 
-#if defined(__SAM3X8E__)
+#if defined(__SAMD21G18A__)
 
 #include <itoa.h>
 
@@ -70,14 +70,16 @@ inline  int pgm_read_int(const void* p) { return * ((const int*) p); }
 
 #define TIMEROVERHEAD		1				// decrease Timervalue for ISR overhead before set new timer
 
-inline void CHAL::DisableInterrupts()		{	cpu_irq_disable(); }
-inline void CHAL::EnableInterrupts()		{	cpu_irq_enable(); }
+inline void CHAL::DisableInterrupts()		{ __disable_irq(); }
+inline void CHAL::EnableInterrupts()		{ __enable_irq(); }
 
 inline irqflags_t CHAL::GetSREG()			{ return cpu_irq_save(); }
 inline void CHAL::SetSREG(irqflags_t a)		{ cpu_irq_restore(a); }
 
+// TODO
 // use CAN as backgroundworker thread
-#define IRQTYPE CAN0_IRQn
+#define NVIC_EncodePriority(a,b,c) 0
+#define IRQTYPE I2S_IRQn
 
 inline void CHAL::BackgroundRequest()			{ NVIC_SetPendingIRQ(IRQTYPE); }
 inline void CHAL::InitBackground(HALEvent evt)	{ NVIC_EnableIRQ(IRQTYPE);  NVIC_SetPriority(IRQTYPE, NVIC_EncodePriority(4, 7, 0)); _BackgroundEvent = evt; }

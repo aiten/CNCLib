@@ -243,6 +243,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigEeprom.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_SamD21.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">

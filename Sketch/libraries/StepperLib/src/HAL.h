@@ -66,6 +66,19 @@ typedef uint32_t pin_t;
 #define NEVER_INLINE_SAM
 #define ALIGN_WORD			__attribute__((aligned (4)))
 
+#elif defined(__SAMD21G18A__)
+
+typedef uint32_t pin_t;
+
+#define ALWAYSINLINE		__attribute__((__always_inline__)) 
+#define ALWAYSINLINE_SAM	__attribute__((__always_inline__)) 
+#define ALWAYSINLINE_AVR
+#define NEVER_INLINE		__attribute__((__noinline__))
+#define NEVER_INLINE_AVR	__attribute__((__noinline__))
+#define NEVER_INLINE_SAM
+#define ALIGN_WORD			__attribute__((aligned (4)))
+
+#define irqflags_t uint8_t
 
 #elif defined(__AVR_ARCH__)
 
@@ -151,14 +164,12 @@ public:
 
 #endif
 
-#if defined(__SAM3X8E__)
+#if defined(__SAM3X8E__) || defined(__SAMD21G18A__)
 
-	// use CAN as backgroundworker thread
+	static void BackgroundRequest();
+	static void InitBackground(HALEvent evt);
 
-	static void BackgroundRequest()				{ NVIC_SetPendingIRQ(CAN0_IRQn); }
-	static void InitBackground(HALEvent evt)	{ NVIC_EnableIRQ(CAN0_IRQn);  NVIC_SetPriority(CAN0_IRQn, NVIC_EncodePriority(4, 7, 0)); _CAM0Event = evt; }
-
-	static HALEvent _CAM0Event;
+	static HALEvent _BackgroundEvent;
 
 #endif
 
@@ -209,6 +220,7 @@ public:
 
 #include "HAL_AVR.h"
 #include "HAL_Sam3x8e.h"
+#include "HAL_SamD21.h"
 #include "HAL_Msvc.h"
 
 //////////////////////////////////////////

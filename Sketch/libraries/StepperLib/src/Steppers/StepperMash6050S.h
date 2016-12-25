@@ -103,7 +103,7 @@ protected:
 
 	////////////////////////////////////////////////////////
 
-#if defined(__SAM3X8E__)
+#if defined(__SAM3X8E__) || defined(__SAMD21G18A__)
 
 static void Delay1() ALWAYSINLINE { CHAL::delayMicroseconds(2); }
 static void Delay2() ALWAYSINLINE { CHAL::delayMicroseconds(2); }

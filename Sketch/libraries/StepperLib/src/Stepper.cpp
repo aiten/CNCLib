@@ -112,7 +112,7 @@ void CStepper::Init()
 {
 	InitMemVar();
 	InitTimer();
-#if defined(__SAM3X8E__)
+#if defined(__SAM3X8E__) || defined(__SAMD21G18A__)
 	CHAL::InitBackground(HandleBackground);
 #endif
 
@@ -1454,7 +1454,7 @@ static volatile bool _backgroundactive = false;
 
 void CStepper::StartBackground()
 {
-#if defined(__SAM3X8E__)
+#if defined(__SAM3X8E__) || defined(__SAMD21G18A__)
 	// sam3x cannot call timer interrupt nested.
 	// we use a other ISR (CAN) as Tail-chaining with lower (priority value is higher) priority and exit the Timer ISR
 

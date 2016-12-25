@@ -32,7 +32,7 @@
 #define MASH6050S_REF_ON			0
 #define MASH6050S_REF_OFF			1
 
-#if defined(__AVR_ATmega2560__) || defined(__SAM3X8E__)
+#if defined(__AVR_ATmega2560__) || defined(__SAM3X8E__) || defined(__SAMD21G18A__)
 
 ////////////////////////////////////////////////////////
 
@@ -64,7 +64,7 @@
 #define MASH6050S_C_MIN_PIN			18
 
 #define MASH6050S_SDPOWER			-1
-#if defined(__SAM3X8E__)
+#if defined(__SAM3X8E__) || defined(__SAMD21G18A__)
 #define MASH6050S_SDSS_PIN			4
 #else
 #define MASH6050S_SDSS_PIN			53

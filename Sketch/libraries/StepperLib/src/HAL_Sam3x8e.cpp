@@ -47,10 +47,10 @@ void TC6_Handler()
 
 void CAN0_Handler()
 {
-	CHAL::_CAM0Event();
+	CHAL::_BackgroundEvent();
 }
 
-CHAL::HALEvent CHAL::_CAM0Event = IgnoreIrq;
+CHAL::HALEvent CHAL::_BackgroundEvent = IgnoreIrq;
 
 ////////////////////////////////////////////////////////
 

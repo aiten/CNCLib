@@ -100,7 +100,7 @@ typedef const __FlashStringHelper * error_t;
 
 ////////////////////////////////////////////////////////
 
-#elif defined(__SAM3X8E__)
+#elif defined(__SAM3X8E__) || defined(__SAMD21G18A__)
 
 // usual with Ramps FD
 

@@ -22,7 +22,7 @@
 static void Delay1(uint8_t) ALWAYSINLINE		{ }
 static void Delay2() ALWAYSINLINE				{ } 
 
-#elif defined(__SAM3X8E__)
+#elif defined(__SAM3X8E__) || defined(__SAMD21G18A__)
 
 static void Delay1(uint8_t) ALWAYSINLINE		{ CHAL::delayMicroseconds(1); } 
 static void Delay2() ALWAYSINLINE				{ CHAL::delayMicroseconds(1); } 

@@ -30,7 +30,7 @@ typedef unsigned short param_t;
 
 #define NUM_MAXPARAMNAMELENGTH 16
 
-#if defined(__SAM3X8E__)
+#if defined(__SAM3X8E__) || defined(__SAMD21G18A__)
 
 #define NUM_PARAMETER	16
 #define G54ARRAYSIZE	6

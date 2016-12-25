@@ -23,7 +23,7 @@
 
 // not implemented on due
 
-#if !defined(__SAM3X8E__)
+#if !defined(__SAM3X8E__) && !defined(__SAMD21G18A__)
 
 ////////////////////////////////////////////////////////
 

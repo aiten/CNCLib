@@ -84,7 +84,7 @@ unsigned long _ulsqrt(unsigned long val);
 
 ////////////////////////////////////////////////////////
 
-#if defined(_MSC_VER) || defined(__SAM3X8E__)
+#if defined(_MSC_VER) || defined(__SAM3X8E__) || defined(__SAMD21G18A__)
 
 typedef struct _udiv_t {
 	unsigned short quot;
