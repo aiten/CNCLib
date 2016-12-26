@@ -53,7 +53,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_AVR.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Msvc.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.h" />
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_SamD21.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_SamD21g18a.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\LinearLookUp.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\MessageStepperLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\PushValue.h" />
@@ -110,6 +110,7 @@
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_AVR.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_SamD21g18a.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperL298N.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperSMC800.cpp" />

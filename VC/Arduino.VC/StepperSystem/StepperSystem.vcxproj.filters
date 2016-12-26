@@ -243,7 +243,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigEeprom.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_SamD21.h">
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_SamD21g18a.h">
       <Filter>StepperLib</Filter>
     </ClInclude>
   </ItemGroup>
@@ -328,6 +328,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigEeprom.cpp">
       <Filter>CNCLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_SamD21g18a.cpp">
+      <Filter>StepperLib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

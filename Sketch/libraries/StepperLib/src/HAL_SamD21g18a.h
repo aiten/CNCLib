@@ -70,11 +70,21 @@ inline  int pgm_read_int(const void* p) { return * ((const int*) p); }
 
 #define TIMEROVERHEAD		1				// decrease Timervalue for ISR overhead before set new timer
 
-inline void CHAL::DisableInterrupts()		{ __disable_irq(); }
-inline void CHAL::EnableInterrupts()		{ __enable_irq(); }
+inline void CHAL::DisableInterrupts()		{ noInterrupts(); }
+inline void CHAL::EnableInterrupts()		{ interrupts(); }
 
-inline irqflags_t CHAL::GetSREG()			{ return cpu_irq_save(); }
-inline void CHAL::SetSREG(irqflags_t a)		{ cpu_irq_restore(a); }
+#ifndef interruptsStatus
+#define interruptsStatus() __interruptsStatus()
+static inline unsigned char __interruptsStatus(void) __attribute__((always_inline, unused));
+static inline unsigned char __interruptsStatus(void)
+{
+	// See http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0497a/CHDBIBGJ.html
+	return (__get_PRIMASK() ? 0 : 1);
+}
+#endif
+
+inline irqflags_t CHAL::GetSREG()			{ return interruptsStatus(); }
+inline void CHAL::SetSREG(irqflags_t a)		{ if (a != GetSREG()) if (a) EnableInterrupts(); else DisableInterrupts(); }
 
 // TODO
 // use CAN as backgroundworker thread
@@ -87,27 +97,15 @@ inline void CHAL::InitBackground(HALEvent evt)	{ NVIC_EnableIRQ(IRQTYPE);  NVIC_
 #define HALFastdigitalRead(a)	CHAL::digitalRead(a)
 #define HALFastdigitalWrite(a,b) CHAL::digitalWrite(a,b)
 #define HALFastdigitalWriteNC(a,b) CHAL::digitalWrite(a,b)
-/*
-inline void digitalWriteDirect(int pin, boolean val){
-  if(val) g_APinDescription[pin].pPort -> PIO_SODR = g_APinDescription[pin].ulPin;
-  else    g_APinDescription[pin].pPort -> PIO_CODR = g_APinDescription[pin].ulPin;
-}
 
-inline int digitalReadDirect(int pin){
-  return !!(g_APinDescription[pin].pPort -> PIO_PDSR & g_APinDescription[pin].ulPin);
-}
-*/
 inline uint8_t CHAL::digitalRead(pin_t pin)
 {
-  return (g_APinDescription[pin].pPort -> PIO_PDSR & g_APinDescription[pin].ulPin) ? HIGH : LOW;
-//	return ::digitalReadDirect(pin);
+	return ::digitalRead(pin);
 }
 
 inline void CHAL::digitalWrite(pin_t pin, uint8_t val)
 {
-  if(val) g_APinDescription[pin].pPort -> PIO_SODR = g_APinDescription[pin].ulPin;
-  else    g_APinDescription[pin].pPort -> PIO_CODR = g_APinDescription[pin].ulPin;
-  //	digitalWriteDirect(pin,lowOrHigh);
+	::digitalWrite(pin,val);
 }
 
 inline void CHAL::pinMode(pin_t pin, uint8_t mode)
@@ -130,7 +128,7 @@ inline void CHAL::pinModeInputPullUp(pin_t pin)
 	::pinMode(pin, INPUT_PULLUP);
 }
 
-// SAM3x has no eeprom => ignore
+// SAMD21 eeprom => ignore
 
 inline void CHAL::eeprom_write_dword(uint32_t *, uint32_t)
 {
@@ -179,13 +177,13 @@ inline void CHAL::delayMicroseconds0250()
 
 ////////////////////////////////////////////////////////
 
-#define DUETIMER1_TC					TC2
-#define DUETIMER1_CHANNEL				2
-#define DUETIMER1_IRQTYPE				((IRQn_Type) ID_TC8)
-
-#define DUETIMER3_TC					TC2
-#define DUETIMER3_CHANNEL				0
-#define DUETIMER3_IRQTYPE				((IRQn_Type) ID_TC6)
+#define ZEROTIMER1_TC					TC2
+#define ZEROTIMER1_CHANNEL				2
+#define ZEROTIMER1_IRQTYPE				((IRQn_Type) ID_TC4)
+		
+#define ZEROTIMER3_TC					TC2
+#define ZEROTIMER3_CHANNEL				0
+#define ZEROTIMER3_IRQTYPE				((IRQn_Type) ID_TC5)
 
 ////////////////////////////////////////////////////////
 
@@ -214,8 +212,8 @@ inline void CHAL::StartTimer1(timer_t delay)
 	uint32_t timer_count = delay;
 
 	if(timer_count == 0) timer_count = 1;
-	TC_SetRC(DUETIMER1_TC, DUETIMER1_CHANNEL, timer_count);
-	TC_Start(DUETIMER1_TC, DUETIMER1_CHANNEL);
+
+	//TODO...
 }
 
 ////////////////////////////////////////////////////////
@@ -224,25 +222,17 @@ inline void  CHAL::InitTimer1(HALEvent evt)
 {
 	_TimerEvent1 = evt;
 
-	pmc_enable_periph_clk(DUETIMER1_IRQTYPE );
-	NVIC_SetPriority(DUETIMER1_IRQTYPE, NVIC_EncodePriority(4, 1, 0));
-
-	TC_Configure(DUETIMER1_TC, DUETIMER1_CHANNEL, TC_CMR_WAVSEL_UP_RC | TC_CMR_WAVE | TC_CMR_TCCLKS_TIMER_CLOCK1);
-
-	TC_SetRC(DUETIMER1_TC, DUETIMER1_CHANNEL, 100000L);
-	TC_Start(DUETIMER1_TC, DUETIMER1_CHANNEL);
-
-	DUETIMER1_TC->TC_CHANNEL[DUETIMER1_CHANNEL].TC_IER = TC_IER_CPCS;
-	DUETIMER1_TC->TC_CHANNEL[DUETIMER1_CHANNEL].TC_IDR = ~TC_IER_CPCS;
-	NVIC_EnableIRQ(DUETIMER1_IRQTYPE); 
+	//TODO...
+	NVIC_EnableIRQ(ZEROTIMER1_IRQTYPE);
 }
 
 ////////////////////////////////////////////////////////
 
 inline void CHAL::StopTimer1()
 {
-	NVIC_DisableIRQ(DUETIMER1_IRQTYPE);
-	TC_Stop(DUETIMER1_TC, DUETIMER1_CHANNEL);
+	NVIC_DisableIRQ(ZEROTIMER1_IRQTYPE);
+
+	//TODO...
 }  
 
 ////////////////////////////////////////////////////////
@@ -252,8 +242,8 @@ inline void  CHAL::RemoveTimer3() {}
 inline void CHAL::StartTimer3(timer_t timer_count)
 {
 	if (timer_count == 0) timer_count = 1;
-	TC_SetRC(DUETIMER3_TC, DUETIMER3_CHANNEL, timer_count);
-	TC_Start(DUETIMER3_TC, DUETIMER3_CHANNEL);
+
+	//TODO...
 }
 
 ////////////////////////////////////////////////////////
@@ -262,25 +252,18 @@ inline void  CHAL::InitTimer3(HALEvent evt)
 {
 	_TimerEvent3 = evt;
 
-	pmc_enable_periph_clk(DUETIMER3_IRQTYPE);
-	NVIC_SetPriority(DUETIMER3_IRQTYPE, NVIC_EncodePriority(4, 3, 0));
+	//TODO...
 
-	TC_Configure(DUETIMER3_TC, DUETIMER3_CHANNEL, TC_CMR_WAVSEL_UP_RC | TC_CMR_WAVE | TC_CMR_TCCLKS_TIMER_CLOCK1);
-
-	TC_SetRC(DUETIMER3_TC, DUETIMER3_CHANNEL, 100000L);
-	TC_Start(DUETIMER3_TC, DUETIMER3_CHANNEL);
-
-	DUETIMER3_TC->TC_CHANNEL[DUETIMER3_CHANNEL].TC_IER = TC_IER_CPCS;
-	DUETIMER3_TC->TC_CHANNEL[DUETIMER3_CHANNEL].TC_IDR = ~TC_IER_CPCS;
-	NVIC_EnableIRQ(DUETIMER3_IRQTYPE);
+	NVIC_EnableIRQ(ZEROTIMER3_IRQTYPE);
 }
 
 ////////////////////////////////////////////////////////
 
 inline void CHAL::StopTimer3()
 {
-	NVIC_DisableIRQ(DUETIMER3_IRQTYPE);
-	TC_Stop(DUETIMER3_TC, DUETIMER3_CHANNEL);
+	NVIC_DisableIRQ(ZEROTIMER3_IRQTYPE);
+
+	//TODO...
 }
 
 #endif 

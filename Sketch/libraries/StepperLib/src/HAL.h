@@ -220,7 +220,7 @@ public:
 
 #include "HAL_AVR.h"
 #include "HAL_Sam3x8e.h"
-#include "HAL_SamD21.h"
+#include "HAL_SamD21g18a.h"
 #include "HAL_Msvc.h"
 
 //////////////////////////////////////////

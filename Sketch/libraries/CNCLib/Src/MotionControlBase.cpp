@@ -18,6 +18,7 @@
 ////////////////////////////////////////////////////////
 
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 
 #include <arduino.h>
