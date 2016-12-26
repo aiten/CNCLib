@@ -358,7 +358,7 @@ bool CGCodeParserBase::GCommand(uint8_t gcode)
 		case 3:		G03Command(); return true;
 		case 4:		G04Command(); return true;
 		case 17:	G171819Command(X_AXIS, Y_AXIS, Z_AXIS); return true;
-		case 18:	G171819Command(Z_AXIS, X_AXIS, Y_AXIS); return true;
+		case 18:	G171819Command(X_AXIS, Z_AXIS, Y_AXIS); return true;
 		case 19:	G171819Command(Y_AXIS, Z_AXIS, X_AXIS); return true;
 		case 20:	G20Command(); return true;
 		case 21:	G21Command();  return true;
