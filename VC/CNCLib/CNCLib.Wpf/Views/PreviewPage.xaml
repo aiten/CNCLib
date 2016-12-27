@@ -62,7 +62,7 @@
             </StackPanel>
         </StackPanel>
         <DockPanel DockPanel.Dock="Bottom" Margin="0,1,0,1">
-            <StackPanel Orientation="Horizontal" MinWidth="100">
+            <StackPanel Orientation="Horizontal" MinWidth="110">
                 <Label Content="{Binding Path=MouseOverPositionX,ElementName=gcode}" Padding="0" />
                 <Label Content=" : " Padding="0"/>
                 <Label Content="{Binding Path=MouseOverPositionY,ElementName=gcode}"  Padding="0"/>
@@ -71,8 +71,9 @@
                 <Label Content="Zoom:" Padding="0"/>
                 <Slider Value="{Binding Path=Zoom}" Minimum="0.1" Maximum="25" Width="200"/>
             </StackPanel>
-            <Button Content="[x]" Command="{Binding Path=ResetViewCommand}" DockPanel.Dock="Right"/>
-            <Button Content="[x]" Command="{Binding Path=ResetToLatheViewCommand}" DockPanel.Dock="Right"/>
+            <Button Content="[XY]" Command="{Binding Path=ResetViewCommandXY}" DockPanel.Dock="Right"/>
+            <Button Content="[XZ]" Command="{Binding Path=ResetViewCommandXZ}" DockPanel.Dock="Right"/>
+            <Button Content="[YZ]" Command="{Binding Path=ResetViewCommandYZ}" DockPanel.Dock="Right"/>
             <Slider Value="{Binding Path=OffsetX}" Minimum="-1000" Maximum="1000" />
         </DockPanel>
         <Slider Value="{Binding Path=OffsetY}" Minimum="-1000" Maximum="1000" DockPanel.Dock="Right" Orientation="Vertical" IsDirectionReversed="True"/>

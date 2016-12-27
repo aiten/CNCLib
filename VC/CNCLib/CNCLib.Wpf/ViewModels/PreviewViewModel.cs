@@ -266,7 +266,7 @@ namespace CNCLib.Wpf.ViewModels
 			return true;
 		}
 
-		public void ResetView()
+		public void ResetViewXY()
 		{
 			Zoom = 1;
 			// set Zoom first, set Zoom adjusts OffsetX/Y
@@ -274,7 +274,8 @@ namespace CNCLib.Wpf.ViewModels
 			OffsetY = 0;
 			RotateAngle = 0;
 		}
-		public void ResetToLatheView()
+
+		public void ResetViewXZ()
 		{
 			Zoom = 1;
 			// set Zoom first, set Zoom adjusts OffsetX/Y
@@ -282,7 +283,16 @@ namespace CNCLib.Wpf.ViewModels
 			OffsetY = 0;
 			RotateVector = new double[] { 1, 1, 1 };
 			RotateAngle = Math.PI*4.0/3.0;
+		}
 
+		public void ResetViewYZ()
+		{
+			Zoom = 1;
+			// set Zoom first, set Zoom adjusts OffsetX/Y
+			OffsetX = 0;
+			OffsetY = 0;
+			RotateVector = new double[] { 1, 0, 0 };
+			RotateAngle = -Math.PI / 2.0;
 		}
 
 		public void GotoPos(Point3D pt)
@@ -305,9 +315,10 @@ namespace CNCLib.Wpf.ViewModels
 		private ICommand _LoadCommand;
 		public ICommand LoadCommand { get { return _LoadCommand ?? (_LoadCommand = new DelegateCommand(async () => await Load(), CanLoad)); } }
 		public ICommand SendToCommand => new DelegateCommand(SendTo, CanSendTo);
-		public ICommand ResetViewCommand => new DelegateCommand(ResetView, CanResetView);
+		public ICommand ResetViewCommandXY => new DelegateCommand(ResetViewXY, CanResetView);
 		public ICommand GotoPosCommand => new DelegateCommand<Point3D>(GotoPos, CanGotoPos);
-		public ICommand ResetToLatheViewCommand => new DelegateCommand(ResetToLatheView, CanResetView);
+		public ICommand ResetViewCommandXZ => new DelegateCommand(ResetViewXZ, CanResetView);
+		public ICommand ResetViewCommandYZ => new DelegateCommand(ResetViewYZ, CanResetView);
 
 		#endregion
 	}

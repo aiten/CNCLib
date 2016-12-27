@@ -19,6 +19,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -459,6 +460,12 @@ namespace CNCLib.Wpf.Controls
 			MouseOverPositionX = Math.Round(gcoderotated.X ?? 0, 3);
 			MouseOverPositionY = Math.Round(gcoderotated.Y ?? 0, 3);
 
+			if (MouseOverPositionX >= 10000.0) MouseOverPositionX = 9999.999;
+			if (MouseOverPositionY >= 10000.0) MouseOverPositionY = 9999.999;
+
+			if (MouseOverPositionX <= -10000.0) MouseOverPositionX = -9999.999;
+			if (MouseOverPositionY <= -10000.0) MouseOverPositionY = -9999.999;
+
 			switch (_draggingType)
 			{
 				case EDraggingType.NoDragging:
@@ -565,7 +572,7 @@ namespace CNCLib.Wpf.Controls
 				_bitmapDraw.SizeY = (double) Global.Instance.Machine.SizeY;
 			}
 
-			var curBitmap = _bitmapDraw.DrawToBitmap(Commands);
+			var curBitmap = _bitmapDraw.DrawToBitmap(Commands, Commands.FirstOrDefault(), Commands.LastOrDefault());
 			MemoryStream stream = new MemoryStream();
 			curBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
 			var cc = new System.Windows.Media.ImageSourceConverter().ConvertFrom(stream);

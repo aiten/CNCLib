@@ -65,7 +65,6 @@ namespace CNCLib.GUI
 		public Color HelpLineColor { get { return _helpLineColor; } set { _helpLineColor = value; ReInitDraw(); } }
 
 		public Rotate3D Rotate { get { return _rotate3D; } set { _rotate3D = value; PrepareRotate(); ReInitDraw(); } } 
-		//		public CommandList Commands { get { return _commands; } }
 
 		public Size RenderSize
 		{
@@ -113,8 +112,6 @@ namespace CNCLib.GUI
 		Color _helpLineColor = Color.LightGray;
 
 		Rotate3D _rotate3D;
-
-		//		CommandList _commands = new CommandList();
 
 		private ArduinoSerialCommunication Com
 		{
@@ -271,7 +268,7 @@ namespace CNCLib.GUI
 			}
 		}
 
-		public Bitmap DrawToBitmap(CommandList commands)
+		public Bitmap DrawToBitmap(CommandList commands, Command from, Command to)
 		{
 			InitPen();
 
@@ -288,6 +285,12 @@ namespace CNCLib.GUI
 
 			var pts = new PointF[] { ToClientF(new Point3D(0, 0, 0)), ToClientF(new Point3D(0, SizeY, 0)), ToClientF(new Point3D(SizeX, SizeY, 0)), ToClientF(new Point3D(SizeX, 0, 0)) };
 			g1.FillPolygon(new SolidBrush(MachineColor), pts);
+
+			// draw axis
+
+			g1.DrawLine(new Pen(Color.Red,0.25f), ToClientF(new Point3D(-SizeX * 0.1, 0, 0)), ToClientF(new Point3D(SizeX*1.1,0, 0)));
+			g1.DrawLine(new Pen(Color.Green, 0.25f), ToClientF(new Point3D(0, -SizeY * 0.1, 0)), ToClientF(new Point3D(0, SizeY * 1.1, 0)));
+			g1.DrawLine(new Pen(Color.Blue, 0.25f), ToClientF(new Point3D(0, 0, -SizeZ * 0.1)), ToClientF(new Point3D(0, 0, SizeZ * 1.1)));
 
 			for (int i = 1; ; i++)
 			{
