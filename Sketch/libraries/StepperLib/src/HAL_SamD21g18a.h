@@ -31,32 +31,24 @@
 inline  const void* pgm_read_ptr(const void* p) { return *((void **)p); }
 inline  int pgm_read_int(const void* p) { return * ((const int*) p); }
 
-#define TIMER0FREQUENCE		TIMER3FREQUENCE
-#define TIMER0PRESCALE      TIMER3PRESCALE		
+#define TIMER0FREQUENCE		(F_CPU/TIMER0PRESCALE)
+#define TIMER0PRESCALE      1024			
 
 // compatible to AVR => no 32 bit Timers
 #if 1
 #define TIMER1FREQUENCE		2000000L	
-#define TIMER1PRESCALE      8			
+#define TIMER1PRESCALE      x			
 #else
 #define TIMER1FREQUENCE		(F_CPU/TIMER1PRESCALE)
 #define TIMER1PRESCALE      2			
 #endif
 
+// Clock should be AVR Compatible 2Mhz => 48Mhz/24
+#define SCALE48To2	24	
+#define TIMER1_CLKGEN		5
+	
 #define TIMER1MIN			4
 #define TIMER1MAX			0xffffffffl
-
-#define TIMER2FREQUENCE		(F_CPU/TIMER2PRESCALE)
-#define TIMER2PRESCALE      2			
-
-#define TIMER3FREQUENCE		(F_CPU/TIMER3PRESCALE)
-#define TIMER3PRESCALE      2			
-
-#define TIMER4FREQUENCE		(F_CPU/TIMER4PRESCALE)
-#define TIMER4PRESCALE      2			
-
-#define TIMER5FREQUENCE		(F_CPU/TIMER5PRESCALE)
-#define TIMER5PRESCALE      2			
 
 #define MAXINTERRUPTSPEED	(65535/7)		// maximal possible interrupt rate => steprate_t
 
@@ -174,16 +166,34 @@ inline void CHAL::delayMicroseconds0250()
 		);
 }
 
-
 ////////////////////////////////////////////////////////
 
-#define ZEROTIMER1_TC					TC2
-#define ZEROTIMER1_CHANNEL				2
-#define ZEROTIMER1_IRQTYPE				((IRQn_Type) ID_TC4)
-		
-#define ZEROTIMER3_TC					TC2
-#define ZEROTIMER3_CHANNEL				0
-#define ZEROTIMER3_IRQTYPE				((IRQn_Type) ID_TC5)
+inline void WaitForSyncGCLK()
+{
+	while (GCLK->STATUS.bit.SYNCBUSY == 1);
+}
+
+inline void InitGClk(int CLKGEN,int Dest)
+{
+	// Clock should be AVR Compatible 2Mhz => 48Mhz/24
+
+	REG_GCLK_GENCTRL =    // GCLK_GENCTRL_DIVSEL |
+		GCLK_GENCTRL_IDC |
+		GCLK_GENCTRL_GENEN |
+		GCLK_GENCTRL_SRC_DFLL48M |
+		GCLK_GENCTRL_ID(CLKGEN);
+	WaitForSyncGCLK();
+
+	REG_GCLK_GENDIV = GCLK_GENDIV_DIV(SCALE48To2) |     // Divide the 48MHz clock source by divisor x: 48MHz/x=xxMHz
+	                  GCLK_GENDIV_ID(CLKGEN);			// Select Generic Clock (GCLK) 4
+	WaitForSyncGCLK();
+
+	// Enable clock for TC
+	REG_GCLK_CLKCTRL = (uint16_t)(GCLK_CLKCTRL_CLKEN |
+		GCLK_CLKCTRL_GEN(CLKGEN) |
+		GCLK_CLKCTRL_ID(Dest));
+	WaitForSyncGCLK();
+}
 
 ////////////////////////////////////////////////////////
 
@@ -191,80 +201,121 @@ inline void  CHAL::RemoveTimer0() {}
 
 inline void CHAL::StartTimer0(timer_t delay)
 {
-	StartTimer3(delay);
+	uint16_t timer_count = (uint16_t)delay;
+
+	if (timer_count == 0) timer_count = 1;
+
+	//TODO...
 }
 
 inline void  CHAL::InitTimer0(HALEvent evt)
 {
-	InitTimer3(evt);
+	_TimerEvent0 = evt;
+
+	//TODO...
+
+	//NVIC_EnableIRQ(ZEROTIMER0_IRQTYPE);
 }
+
+inline void CHAL::StopTimer0()
+{
+	//NVIC_DisableIRQ(ZEROTIMER3_IRQTYPE);
+
+	//TODO...
+}
+
+////////////////////////////////////////////////////////
+
+inline void WaitForSyncTC(TcCount16* TC)
+{
+	while (TC->STATUS.bit.SYNCBUSY == 1);
+}
+
+inline TcCount16* GetTimer1Struct() { return (TcCount16*)TC4; }
 
 inline void  CHAL::RemoveTimer1() {}
 
 inline void CHAL::StartTimer1(timer_t delay)
 {
 	// convert old AVR timer delay value for SAM timers
-	delay *= 21;		// 2MhZ to 42MhZ
+	//delay *= 21;		// 2MhZ to 42MhZ
 
 	//	delay /= 2;			// do not know why
 	//	uint32_t timer_count = (delay * TIMER1_PRESCALE);
 
-	uint32_t timer_count = delay;
+	uint16_t timer_count = (uint16_t) delay;
 
 	if(timer_count == 0) timer_count = 1;
 
-	//TODO...
+	TcCount16* TC = GetTimer1Struct();
+
+	TC->CC[0].reg = timer_count;
+
+	TC->CTRLBSET.bit.CMD = TC_CTRLBCLR_CMD_RETRIGGER_Val;
+	WaitForSyncTC(TC);
+
+	StepperSerial.print("TCS:");
+	StepperSerial.println(timer_count);
 }
 
 ////////////////////////////////////////////////////////
 
 inline void  CHAL::InitTimer1(HALEvent evt)
 {
+	InitGClk(TIMER1_CLKGEN, GCM_TC4_TC5);
+
 	_TimerEvent1 = evt;
 
-	//TODO...
-	NVIC_EnableIRQ(ZEROTIMER1_IRQTYPE);
+	TcCount16* TC = GetTimer1Struct();
+
+	TC->CTRLA.reg &= ~TC_CTRLA_ENABLE;			// Disable
+	WaitForSyncTC(TC);
+
+	TC->CTRLA.reg = TC_CTRLA_MODE_COUNT16 |		// Set Timer counter Mode to 32 bits
+		TC_CTRLA_WAVEGEN_MFRQ |					// use TOP
+		TC_CTRLA_PRESCALER_DIV16;				// Set perscaler
+	WaitForSyncTC(TC);
+
+	TC->CTRLBSET.bit.ONESHOT = 1;
+	WaitForSyncTC(TC);
+
+	TC->CC[0].reg = 10000;
+	WaitForSyncTC(TC);
+
+	TC->CTRLBSET.bit.CMD = TC_CTRLBCLR_CMD_RETRIGGER_Val;
+	WaitForSyncTC(TC);
+
+	// Interrupts
+	TC->INTENSET.reg = 0;                     // disable all interrupts
+	TC->INTENSET.bit.OVF = 1;                 // enable overfollow
+
+											  // Configure interrupt request
+	NVIC_DisableIRQ(TC4_IRQn);
+	NVIC_ClearPendingIRQ(TC4_IRQn);
+	NVIC_SetPriority(TC4_IRQn, 0);
+	NVIC_EnableIRQ(TC4_IRQn);
+
+	// Enable TC
+	TC->CTRLA.reg |= TC_CTRLA_ENABLE;
+	WaitForSyncTC(TC);
+
+	StepperSerial.println("TCI");
+
 }
 
 ////////////////////////////////////////////////////////
 
 inline void CHAL::StopTimer1()
 {
-	NVIC_DisableIRQ(ZEROTIMER1_IRQTYPE);
+	NVIC_DisableIRQ(TC4_IRQn);
 
-	//TODO...
-}  
+	TcCount16* TC = (TcCount16*)TC4;
 
-////////////////////////////////////////////////////////
-
-inline void  CHAL::RemoveTimer3() {}
-
-inline void CHAL::StartTimer3(timer_t timer_count)
-{
-	if (timer_count == 0) timer_count = 1;
-
-	//TODO...
+	TC->CTRLA.reg &= ~TC_CTRLA_ENABLE;			// Disable
+	WaitForSyncTC(TC);
 }
 
 ////////////////////////////////////////////////////////
-
-inline void  CHAL::InitTimer3(HALEvent evt)
-{
-	_TimerEvent3 = evt;
-
-	//TODO...
-
-	NVIC_EnableIRQ(ZEROTIMER3_IRQTYPE);
-}
-
-////////////////////////////////////////////////////////
-
-inline void CHAL::StopTimer3()
-{
-	NVIC_DisableIRQ(ZEROTIMER3_IRQTYPE);
-
-	//TODO...
-}
 
 #endif 
 

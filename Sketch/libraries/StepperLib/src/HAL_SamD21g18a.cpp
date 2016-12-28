@@ -31,21 +31,26 @@
 
 static void IgnoreIrq() {}
 
-//__attribute__((__interrupt__))
-//__attribute__((nesting))
-void TC8_Handler()
+void TC4_Handler()
 {
-	//TC_GetStatus(DUETIMER1_TC, DUETIMER1_CHANNEL);
-	//DODO:SAMD21
+	TcCount16* TC = GetTimer1Struct();
+
+	if (TC->INTFLAG.bit.OVF == 1)                     // A overflow caused the interrupt
+	{
+		TC->INTFLAG.bit.OVF = 1;                     // writing a one clears the flag ovf flag
+		WaitForSyncTC(TC);
+	}
+	
+	StepperSerial.println("TC");
 	CHAL::_TimerEvent1();
 }
-
+/*
 void TC6_Handler()
 {
 	//DODO:SAMD21
 	CHAL::_TimerEvent3();
 }
-
+*/
 void CAN0_Handler()
 {
 	CHAL::_BackgroundEvent();

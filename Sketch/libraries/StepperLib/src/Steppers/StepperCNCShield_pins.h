@@ -111,7 +111,7 @@
 #define CNCSHIELD_COOLANT_ON		LOW
 #define CNCSHIELD_COOLANT_OFF		HIGH
 
-#if defined(__AVR_ATmega328P__) || defined (_MSC_VER)
+#if defined(__AVR_ATmega328P__) || defined (_MSC_VER) || defined(__SAMD21G18A__)
 #define CNCSHIELD_A4_PIN     18    // AD4
 #define CNCSHIELD_A5_PIN     19    // AD5
 #else
