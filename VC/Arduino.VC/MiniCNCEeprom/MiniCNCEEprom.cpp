@@ -35,6 +35,15 @@ class CStepper& Stepper = MyStepper;
 
 int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 {
+	mydigitalRead = [](short pin)
+	{
+		switch (pin)
+		{
+			case CNCSHIELD_HOLD_PIN: return CNCSHIELD_HOLD_OFF;
+		}
+		return LOW;
+	};
+
 	setup();
 
 	while (!CGCodeParserBase::_exit)

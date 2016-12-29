@@ -37,14 +37,14 @@ inline  int pgm_read_int(const void* p) { return * ((const int*) p); }
 // compatible to AVR => no 32 bit Timers
 #if 1
 #define TIMER1FREQUENCE		2000000L	
-#define TIMER1PRESCALE      x			
+#define TIMER1PRESCALE      (8*3)
 #else
 #define TIMER1FREQUENCE		(F_CPU/TIMER1PRESCALE)
 #define TIMER1PRESCALE      2			
 #endif
 
-// Clock should be AVR Compatible 2Mhz => 48Mhz/24
-#define SCALE48To2	24	
+// Clock should be AVR Compatible 2Mhz => 48Mhz/8(prescaler)/3(genclk)
+#define SCALE48To2			3	
 #define TIMER1_CLKGEN		5
 	
 #define TIMER1MIN			4
@@ -237,25 +237,26 @@ inline void  CHAL::RemoveTimer1() {}
 
 inline void CHAL::StartTimer1(timer_t delay)
 {
-	// convert old AVR timer delay value for SAM timers
-	//delay *= 21;		// 2MhZ to 42MhZ
-
-	//	delay /= 2;			// do not know why
-	//	uint32_t timer_count = (delay * TIMER1_PRESCALE);
+	// do not use 32bit => 2Mhz Timer as AVR
 
 	uint16_t timer_count = (uint16_t) delay;
-
 	if(timer_count == 0) timer_count = 1;
 
 	TcCount16* TC = GetTimer1Struct();
 
-	TC->CC[0].reg = timer_count;
-
 	TC->CTRLBSET.bit.CMD = TC_CTRLBCLR_CMD_RETRIGGER_Val;
+	TC->CC[0].reg = timer_count;
+	
+	TC->CTRLA.reg |= TC_CTRLA_ENABLE;
+
+	// dont care about wait (we are in ISR)
 	WaitForSyncTC(TC);
 
-	StepperSerial.print("TCS:");
-	StepperSerial.println(timer_count);
+//	if (timer_count != 64516)
+//	{
+//		StepperSerial.print("TCS:");
+//		StepperSerial.println(timer_count);
+//	}
 }
 
 ////////////////////////////////////////////////////////
@@ -273,34 +274,30 @@ inline void  CHAL::InitTimer1(HALEvent evt)
 
 	TC->CTRLA.reg = TC_CTRLA_MODE_COUNT16 |		// Set Timer counter Mode to 32 bits
 		TC_CTRLA_WAVEGEN_MFRQ |					// use TOP
-		TC_CTRLA_PRESCALER_DIV16;				// Set perscaler
+		TC_CTRLA_PRESCALER_DIV8;				// Set perscaler
 	WaitForSyncTC(TC);
 
 	TC->CTRLBSET.bit.ONESHOT = 1;
 	WaitForSyncTC(TC);
 
-	TC->CC[0].reg = 10000;
+	TC->CC[0].reg = 100;
 	WaitForSyncTC(TC);
 
-	TC->CTRLBSET.bit.CMD = TC_CTRLBCLR_CMD_RETRIGGER_Val;
+	TC->CTRLBSET.bit.CMD = TC_CTRLBCLR_CMD_STOP;
 	WaitForSyncTC(TC);
 
-	// Interrupts
+		// Interrupts
 	TC->INTENSET.reg = 0;                     // disable all interrupts
 	TC->INTENSET.bit.OVF = 1;                 // enable overfollow
 
-											  // Configure interrupt request
-	NVIC_DisableIRQ(TC4_IRQn);
+	NVIC_DisableIRQ(TC4_IRQn);				  // Configure interrupt request
 	NVIC_ClearPendingIRQ(TC4_IRQn);
 	NVIC_SetPriority(TC4_IRQn, 0);
 	NVIC_EnableIRQ(TC4_IRQn);
 
-	// Enable TC
-	TC->CTRLA.reg |= TC_CTRLA_ENABLE;
-	WaitForSyncTC(TC);
-
-	StepperSerial.println("TCI");
-
+//	// Enable TC
+//	TC->CTRLA.reg |= TC_CTRLA_ENABLE;
+//	WaitForSyncTC(TC);
 }
 
 ////////////////////////////////////////////////////////

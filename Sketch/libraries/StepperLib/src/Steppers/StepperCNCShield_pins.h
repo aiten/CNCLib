@@ -81,7 +81,7 @@
 
 #endif
 
-#if defined(__AVR_ATmega328P__) || defined (_MSC_VER)
+#if defined(__AVR_ATmega328P__) || defined (_MSC_VER)  || defined(__SAMD21G18A__)
 
 // 14=>AD0
 #define CNCSHIELD_ABORT_PIN			14

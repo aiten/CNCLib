@@ -41,7 +41,7 @@ void TC4_Handler()
 		WaitForSyncTC(TC);
 	}
 	
-	StepperSerial.println("TC");
+//	StepperSerial.println("TC");
 	CHAL::_TimerEvent1();
 }
 /*
@@ -51,7 +51,7 @@ void TC6_Handler()
 	CHAL::_TimerEvent3();
 }
 */
-void CAN0_Handler()
+void I2S_Handler()
 {
 	CHAL::_BackgroundEvent();
 }
