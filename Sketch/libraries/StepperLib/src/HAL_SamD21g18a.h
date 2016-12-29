@@ -31,22 +31,25 @@
 inline  const void* pgm_read_ptr(const void* p) { return *((void **)p); }
 inline  int pgm_read_int(const void* p) { return * ((const int*) p); }
 
-#define TIMER0FREQUENCE		(F_CPU/TIMER0PRESCALE)
+// Clock should be AVR Compatible 2Mhz => 48Mhz/8(prescaler)/3(genclk)
+#define TIMERCLOCKDIV		3	
+#define TIMER1_CLKGEN		5
+
+#define TIMERBASEFREQUENCE	(F_CPU/TIMER1_CLKGEN)
+
+
+#define TIMER0FREQUENCE		(TIMERBASEFREQUENCE/TIMER0PRESCALE)
 #define TIMER0PRESCALE      1024			
 
 // compatible to AVR => no 32 bit Timers
 #if 1
 #define TIMER1FREQUENCE		2000000L	
-#define TIMER1PRESCALE      (8*3)
+//#define TIMER1PRESCALE      (8*3)
 #else
-#define TIMER1FREQUENCE		(F_CPU/TIMER1PRESCALE)
+#define TIMER1FREQUENCE		(TIMERBASEFREQUENCE/TIMER1PRESCALE)
 #define TIMER1PRESCALE      2			
 #endif
 
-// Clock should be AVR Compatible 2Mhz => 48Mhz/8(prescaler)/3(genclk)
-#define SCALE48To2			3	
-#define TIMER1_CLKGEN		5
-	
 #define TIMER1MIN			4
 #define TIMER1MAX			0xffffffffl
 
@@ -173,7 +176,7 @@ inline void WaitForSyncGCLK()
 	while (GCLK->STATUS.bit.SYNCBUSY == 1);
 }
 
-inline void InitGClk(int CLKGEN,int Dest)
+inline void InitGClk(int clkgen,int dest,int clockdiv)
 {
 	// Clock should be AVR Compatible 2Mhz => 48Mhz/24
 
@@ -184,15 +187,25 @@ inline void InitGClk(int CLKGEN,int Dest)
 		GCLK_GENCTRL_ID(CLKGEN);
 	WaitForSyncGCLK();
 
-	REG_GCLK_GENDIV = GCLK_GENDIV_DIV(SCALE48To2) |     // Divide the 48MHz clock source by divisor x: 48MHz/x=xxMHz
-	                  GCLK_GENDIV_ID(CLKGEN);			// Select Generic Clock (GCLK) 4
-	WaitForSyncGCLK();
+	if (clockdiv > 1)
+	{
+		REG_GCLK_GENDIV = GCLK_GENDIV_DIV(clockdiv) |	// Divide the 48MHz clock source by divisor x: 48MHz/x=xxMHz
+			GCLK_GENDIV_ID(clkgen);						// Select Generic Clock (GCLK) 
+		WaitForSyncGCLK();
+	}
 
 	// Enable clock for TC
 	REG_GCLK_CLKCTRL = (uint16_t)(GCLK_CLKCTRL_CLKEN |
-		GCLK_CLKCTRL_GEN(CLKGEN) |
-		GCLK_CLKCTRL_ID(Dest));
+		GCLK_CLKCTRL_GEN(clkgen) |
+		GCLK_CLKCTRL_ID(dest));
 	WaitForSyncGCLK();
+}
+
+////////////////////////////////////////////////////////
+
+inline void WaitForSyncTC(TcCount16* TC)
+{
+	while (TC->STATUS.bit.SYNCBUSY == 1);
 }
 
 ////////////////////////////////////////////////////////
@@ -226,16 +239,11 @@ inline void CHAL::StopTimer0()
 
 ////////////////////////////////////////////////////////
 
-inline void WaitForSyncTC(TcCount16* TC)
-{
-	while (TC->STATUS.bit.SYNCBUSY == 1);
-}
-
 inline TcCount16* GetTimer1Struct() { return (TcCount16*)TC4; }
 
 inline void  CHAL::RemoveTimer1() {}
 
-inline void CHAL::StartTimer1(timer_t delay)
+inline void CHAL::StartTimer1OneShot(timer_t delay)
 {
 	// do not use 32bit => 2Mhz Timer as AVR
 
@@ -261,9 +269,9 @@ inline void CHAL::StartTimer1(timer_t delay)
 
 ////////////////////////////////////////////////////////
 
-inline void  CHAL::InitTimer1(HALEvent evt)
+inline void  CHAL::InitTimer1OneShot(HALEvent evt)
 {
-	InitGClk(TIMER1_CLKGEN, GCM_TC4_TC5);
+	InitGClk(TIMER1_CLKGEN, GCM_TC4_TC5, TIMERCLOCKDIV);
 
 	_TimerEvent1 = evt;
 

@@ -654,12 +654,11 @@ private:
 
 protected:
 
-	debugvirtula void InitTimer()								{ CHAL::InitTimer1(HandleInterrupt); }
+	debugvirtula void InitTimer()								{ CHAL::InitTimer1OneShot(HandleInterrupt); }
 	debugvirtula void RemoveTimer()								{ CHAL::RemoveTimer1(); }
 
 	debugvirtula void StartTimer(timer_t timerB);
 	debugvirtula void SetIdleTimer();
-	debugvirtula void StopTimer();
 
 	static void HandleInterrupt()								{ GetInstance()->StepRequest(true); }
 	static void HandleBackground()								{ GetInstance()->Background(); }

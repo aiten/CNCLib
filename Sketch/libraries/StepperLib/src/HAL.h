@@ -122,11 +122,17 @@ public:
 	static void StartTimer0(timer_t timer);
 	static void StopTimer0();
 
-	// min 16 bit
-	static void InitTimer1(HALEvent evt);
+	// min 16 bit (AVR 2MHZ) 
+	static void InitTimer1OneShot(HALEvent evt);
 	static void RemoveTimer1();
-	static void StartTimer1(timer_t timer);
+	static void StartTimer1OneShot(timer_t timer);
 	static void StopTimer1();
+
+	static HALEvent _TimerEvent0;
+	static HALEvent _TimerEvent1;
+/*
+
+=> not used timers
 
 	// 8 bit
 	static void InitTimer2(HALEvent evt);
@@ -134,8 +140,6 @@ public:
 	static void StartTimer2(timer_t timer);
 	static void StopTimer2();
 
-	static HALEvent _TimerEvent0;
-	static HALEvent _TimerEvent1;
 	static HALEvent _TimerEvent2;
 
 #if !defined( __AVR_ATmega328P__)
@@ -163,7 +167,7 @@ public:
 	static HALEvent _TimerEvent5;
 
 #endif
-
+*/
 #if defined(__SAM3X8E__) || defined(__SAMD21G18A__)
 
 	static void BackgroundRequest();

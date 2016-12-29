@@ -136,22 +136,14 @@ void CStepper::AddEvent(StepperEvent event, uintptr_t eventparam, SEvent& oldeve
 void CStepper::StartTimer(timer_t timer)
 {
 	_pod._timerRunning = true;
-	CHAL::StartTimer1(timer);
+	CHAL::StartTimer1OneShot(timer);
 }
 
 ////////////////////////////////////////////////////////
 
 void CStepper::SetIdleTimer()
 {
-	CHAL::StartTimer1(IDLETIMER1VALUE);
-	_pod._timerRunning = false;
-}
-
-////////////////////////////////////////////////////////
-
-void CStepper::StopTimer()
-{
-	CHAL::StopTimer1();
+	CHAL::StartTimer1OneShot(IDLETIMER1VALUE);
 	_pod._timerRunning = false;
 }
 

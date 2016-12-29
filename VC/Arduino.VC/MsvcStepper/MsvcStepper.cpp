@@ -136,13 +136,6 @@ void CMsvcStepper::SetIdleTimer()
 
 ////////////////////////////////////////////////////////////
 
-void CMsvcStepper::StopTimer()
-{
-	__super::StopTimer();
-}
-
-////////////////////////////////////////////////////////////
-
 void CMsvcStepper::StepRequest(bool isr)
 {
 	_refMovestart++;

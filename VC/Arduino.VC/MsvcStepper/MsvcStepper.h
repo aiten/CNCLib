@@ -89,7 +89,6 @@ public:
 
 	virtual void StartTimer(timer_t timerB) override;		// 0 => set idle timer (==Timer not running)
 	virtual void SetIdleTimer() override;					// set idle Timer
-	virtual void StopTimer() override;					// to cancel all timer
 
 	virtual void OptimizeMovementQueue(bool force)  override;
 	virtual bool MoveReference(axis_t axis, uint8_t referenceid, bool toMin, steprate_t vMax, sdist_t maxdist, sdist_t distToRef, sdist_t distIfRefIsOn)  override;

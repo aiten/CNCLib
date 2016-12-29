@@ -201,7 +201,7 @@ inline void  CHAL::InitTimer0(HALEvent evt)
 
 inline void  CHAL::RemoveTimer1() {}
 
-inline void CHAL::StartTimer1(timer_t delay)
+inline void CHAL::StartTimer1OneShot(timer_t delay)
 {
 	// convert old AVR timer delay value for SAM timers
 	delay *= 21;		// 2MhZ to 42MhZ
@@ -218,7 +218,7 @@ inline void CHAL::StartTimer1(timer_t delay)
 
 ////////////////////////////////////////////////////////
 
-inline void  CHAL::InitTimer1(HALEvent evt)
+inline void  CHAL::InitTimer1OneShot(HALEvent evt)
 {
 	_TimerEvent1 = evt;
 

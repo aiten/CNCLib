@@ -120,7 +120,7 @@ inline void CHAL::StopTimer0()
 
 inline void  CHAL::RemoveTimer1() {}
 
-inline void  CHAL::InitTimer1(HALEvent evt)
+inline void  CHAL::InitTimer1OneShot(HALEvent evt)
 {
 	_TimerEvent1 = evt;
 
@@ -131,7 +131,7 @@ inline void  CHAL::InitTimer1(HALEvent evt)
 
 ////////////////////////////////////////////////////////
 
-inline void CHAL::StartTimer1(timer_t timer)
+inline void CHAL::StartTimer1OneShot(timer_t timer)
 {
 	TCNT1  = 0 - timer;  
 	TIMSK1 |= (1<<TOIE1);					// Aktiviert Interrupt beim Overflow des Timers 1
