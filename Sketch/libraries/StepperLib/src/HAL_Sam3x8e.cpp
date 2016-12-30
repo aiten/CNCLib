@@ -33,7 +33,7 @@ static void IgnoreIrq() {}
 
 void TC6_Handler()
 {
-	TC_GetStatus(DUETIMER3_TC, DUETIMER0_CHANNEL);
+	TC_GetStatus(DUETIMER0_TC, DUETIMER0_CHANNEL);
 	CHAL::_TimerEvent0();
 }
 

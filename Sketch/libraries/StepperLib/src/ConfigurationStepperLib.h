@@ -21,7 +21,8 @@
 #pragma once
 
 //#define StepperSerial SerialUSB
-#define StepperSerial Serial
+//#define StepperSerial Serial
+extern class HardwareSerial& StepperSerial;
 
 ////////////////////////////////////////////////////////
 

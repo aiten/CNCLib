@@ -24,6 +24,8 @@
 CSerial Serial;
 CMsvcStepper Stepper;
 
+HardwareSerial& StepperSerial = Serial;
+
 static void setup();
 static void loop();
 

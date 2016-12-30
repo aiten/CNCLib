@@ -34,8 +34,20 @@
 ////////////////////////////////////////////////////////////
 
 CMyControl Control;
+
+#ifdef REDUCED_SIZE
 CMotionControlBase MotionControl;
+#define CMyParser CGCodeParserBase
+#define InitParser()
+#else
+#include <GCodeParser.h>
+CMotionControl MotionControl;
+#define CMyParser CGCodeParser
+#define InitParser() CGCodeParser::Init()
+#endif
+
 CConfigEeprom Eprom;
+HardwareSerial& StepperSerial = Serial;
 
 ////////////////////////////////////////////////////////////
 
@@ -73,7 +85,6 @@ void CMyControl::Init()
 
 	StepperSerial.println(MESSAGE_MYCONTROL_Proxxon_Starting);
 
-	CMotionControlBase::GetInstance()->Init();
 	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
 	super::Init();
@@ -113,6 +124,7 @@ void CMyControl::Init()
 	_resume.SetPin(RESUME_PIN);
 #endif
 
+  InitParser();
 	CGCodeParserBase::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 	CStepper::GetInstance()->SetDefaultMaxSpeed(
 		((steprate_t)CConfigEeprom::GetSlotU32(EConfigSlot::MaxStepRate)),
@@ -233,7 +245,7 @@ bool CMyControl::GoToReference(axis_t axis, steprate_t steprate, bool toMinRef)
 
 bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 {
-	CGCodeParserBase gcode(reader, output);
+	CMyParser gcode(reader, output);
 	return ParseAndPrintResult(&gcode, output);
 }
 

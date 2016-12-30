@@ -39,7 +39,7 @@ ISR(TIMER1_OVF_vect)
 {
 	CHAL::_TimerEvent1();
 }
-
+/*
 ISR(TIMER2_OVF_vect)
 {
 	CHAL::_TimerEvent2();
@@ -63,7 +63,7 @@ ISR(TIMER5_OVF_vect)
 }
 
 #endif
-
+*/
 void CHAL::digitalWrite(pin_t pin, uint8_t val)
 {
 //	uint8_t timer = digitalPinToTimer(pin);

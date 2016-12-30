@@ -311,7 +311,11 @@ private:
 
 };
 
-class CSerial : public Stream
+class HardwareSerial : public Stream
+{
+};
+
+class CSerial : public HardwareSerial
 {
 };
 

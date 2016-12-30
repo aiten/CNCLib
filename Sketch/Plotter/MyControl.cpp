@@ -29,12 +29,12 @@
 #include "PlotterControl.h"
 
 CMotionControl MotionControl;
+HardwareSerial& StepperSerial = Serial;
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Init()
 {
-  CMotionControlBase::GetInstance()->Init();
   CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
 #ifdef __USE_LCD__

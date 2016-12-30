@@ -40,7 +40,7 @@ void CMotionControlTest::RunTest()
 void CMotionControlTest::TestFeedRate()
 {
 	CMotionControlBase mc;
-	mc.Init();
+	mc.UnitTest();
 	mc.InitConversion(
 		[](axis_t , sdist_t val) { return (mm1000_t)val; },
 		[](axis_t , mm1000_t val) { return (sdist_t)val; }
@@ -60,7 +60,7 @@ void CMotionControlTest::TestFeedRate()
 void CMotionControlTest::TestFeedRateDistOverrun()
 {
 	CMotionControlBase mc;
-	mc.Init();
+	mc.UnitTest();
 	mc.InitConversion(
 		[](axis_t , sdist_t val) { return (mm1000_t)val; },
 		[](axis_t , mm1000_t val) { return (sdist_t)val; }
@@ -80,7 +80,7 @@ void CMotionControlTest::TestFeedRateDistOverrun()
 void CMotionControlTest::TestFeedRateFeedRateOverrun()
 {
 	CMotionControlBase mc;
-	mc.Init();
+	mc.UnitTest();
 	mc.InitConversion(
 		[](axis_t, sdist_t val) { return (mm1000_t)val/10; },
 		[](axis_t, mm1000_t val) { return (sdist_t)val/10; }

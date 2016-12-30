@@ -80,7 +80,7 @@ static inline unsigned char __interruptsStatus(void)
 #endif
 
 inline irqflags_t CHAL::GetSREG()			{ return interruptsStatus(); }
-inline void CHAL::SetSREG(irqflags_t a)		{ if (a != GetSREG()) if (a) EnableInterrupts(); else DisableInterrupts(); }
+inline void CHAL::SetSREG(irqflags_t a)		{ if (a != GetSREG()) { if (a) EnableInterrupts(); else DisableInterrupts(); } }
 
 // TODO
 // use CAN as backgroundworker thread
@@ -185,6 +185,7 @@ inline void InitGClk(int clkgen,int dest,int clockdiv)
 		GCLK_GENCTRL_IDC |
 		GCLK_GENCTRL_GENEN |
 		GCLK_GENCTRL_SRC_DFLL48M |
+		GCLK_CLKCTRL_GEN_GCLK1 |
 		GCLK_GENCTRL_ID(clkgen);
 	WaitForSyncGCLK();
 
@@ -198,6 +199,7 @@ inline void InitGClk(int clkgen,int dest,int clockdiv)
 	// Enable clock for TC
 	REG_GCLK_CLKCTRL = (uint16_t)(GCLK_CLKCTRL_CLKEN |
 		GCLK_CLKCTRL_GEN(clkgen) |
+		GCLK_CLKCTRL_GEN_GCLK1 |
 		GCLK_CLKCTRL_ID(dest));
 	WaitForSyncGCLK();
 }

@@ -34,6 +34,8 @@
 CMyControl Control;
 CMotionControlBase MotionControl;
 
+HardwareSerial& StepperSerial = Serial;
+
 ////////////////////////////////////////////////////////////
 
 #ifndef MYNUM_AXIS
@@ -51,7 +53,6 @@ void CMyControl::Init()
 
 	StepperSerial.println(MESSAGE_MYCONTROL_Laser_Starting);
 
-	CMotionControlBase::GetInstance()->Init();
 	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
 	super::Init();

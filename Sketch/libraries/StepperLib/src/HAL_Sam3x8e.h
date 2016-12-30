@@ -200,7 +200,7 @@ inline void CHAL::StartTimer0(timer_t timer_count)
 
 inline void  CHAL::InitTimer0(HALEvent evt)
 {
-	_TimerEvent3 = evt;
+	_TimerEvent0 = evt;
 
 	pmc_enable_periph_clk(DUETIMER0_IRQTYPE);
 	NVIC_SetPriority(DUETIMER0_IRQTYPE, NVIC_EncodePriority(4, 3, 0));

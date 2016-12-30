@@ -28,6 +28,8 @@
 
 #pragma warning(disable: 4127)
 
+HardwareSerial& StepperSerial = Serial;
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	argc; argv;
