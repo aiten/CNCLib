@@ -31,6 +31,20 @@
 
 static void IgnoreIrq() {}
 
+void TC5_Handler()
+{
+	TcCount16* TC = GetTimer0Struct();
+
+	if (TC->INTFLAG.bit.OVF == 1)                     // A overflow caused the interrupt
+	{
+		TC->INTFLAG.bit.OVF = 1;                     // writing a one clears the flag ovf flag
+		WaitForSyncTC(TC);
+	}
+
+	CHAL::_TimerEvent0();
+}
+
+
 void TC4_Handler()
 {
 	TcCount16* TC = GetTimer1Struct();
@@ -44,13 +58,7 @@ void TC4_Handler()
 //	StepperSerial.println("TC");
 	CHAL::_TimerEvent1();
 }
-/*
-void TC6_Handler()
-{
-	//DODO:SAMD21
-	CHAL::_TimerEvent3();
-}
-*/
+
 void I2S_Handler()
 {
 	CHAL::_BackgroundEvent();

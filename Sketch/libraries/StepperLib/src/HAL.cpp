@@ -38,6 +38,7 @@ static void IgnoreIrq() {}
 
 CHAL::HALEvent CHAL::_TimerEvent0 = IgnoreIrq;
 CHAL::HALEvent CHAL::_TimerEvent1 = IgnoreIrq;
+/*
 CHAL::HALEvent CHAL::_TimerEvent2 = IgnoreIrq;
 
 #if !defined(__AVR_ATmega328P__)
@@ -47,7 +48,7 @@ CHAL::HALEvent CHAL::_TimerEvent4 = IgnoreIrq;
 CHAL::HALEvent CHAL::_TimerEvent5 = IgnoreIrq;
 
 #endif
-
+*/
 #ifdef _MSC_VER
 
 std::function<uint8_t(short)> mydigitalRead=NULL;

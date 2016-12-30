@@ -33,6 +33,7 @@ inline  int pgm_read_int(const void* p) { return * ((const int*) p); }
 
 // Clock should be AVR Compatible 2Mhz => 48Mhz/8(prescaler)/3(genclk)
 #define TIMERCLOCKDIV		3	
+#define TIMER0_CLKGEN		5
 #define TIMER1_CLKGEN		5
 
 #define TIMERBASEFREQUENCE	(F_CPU/TIMER1_CLKGEN)
@@ -184,7 +185,7 @@ inline void InitGClk(int clkgen,int dest,int clockdiv)
 		GCLK_GENCTRL_IDC |
 		GCLK_GENCTRL_GENEN |
 		GCLK_GENCTRL_SRC_DFLL48M |
-		GCLK_GENCTRL_ID(CLKGEN);
+		GCLK_GENCTRL_ID(clkgen);
 	WaitForSyncGCLK();
 
 	if (clockdiv > 1)
@@ -210,24 +211,55 @@ inline void WaitForSyncTC(TcCount16* TC)
 
 ////////////////////////////////////////////////////////
 
+inline TcCount16* GetTimer0Struct() { return (TcCount16*)TC5; }
+
 inline void  CHAL::RemoveTimer0() {}
 
 inline void CHAL::StartTimer0(timer_t delay)
 {
-	uint16_t timer_count = (uint16_t)delay;
+	// do not use 32bit
 
+	uint16_t timer_count = (uint16_t)delay;
 	if (timer_count == 0) timer_count = 1;
 
-	//TODO...
+	TcCount16* TC = GetTimer0Struct();
+
+	TC->CTRLBSET.bit.CMD = TC_CTRLBCLR_CMD_RETRIGGER_Val;
+	TC->CC[0].reg = timer_count;
+
+	TC->CTRLA.reg |= TC_CTRLA_ENABLE;
+
+	// dont care about wait (we are in ISR)
+	// WaitForSyncTC(TC);
 }
 
 inline void  CHAL::InitTimer0(HALEvent evt)
 {
 	_TimerEvent0 = evt;
 
-	//TODO...
+	InitGClk(TIMER0_CLKGEN, GCM_TC4_TC5, TIMERCLOCKDIV);
 
-	//NVIC_EnableIRQ(ZEROTIMER0_IRQTYPE);
+	TcCount16* TC = GetTimer0Struct();
+
+	TC->CTRLA.reg &= ~TC_CTRLA_ENABLE;			// Disable
+	WaitForSyncTC(TC);
+
+	TC->CTRLA.reg = TC_CTRLA_MODE_COUNT16 |		// Set Timer counter Mode to 32 bits
+		TC_CTRLA_WAVEGEN_MFRQ |					// use TOP
+		TC_CTRLA_PRESCALER_DIV1024;				// Set perscaler
+	WaitForSyncTC(TC);
+
+	TC->CC[0].reg = 100;
+	WaitForSyncTC(TC);
+
+	// Interrupts
+	TC->INTENSET.reg = 0;                     // disable all interrupts
+	TC->INTENSET.bit.OVF = 1;                 // enable overfollow
+
+	NVIC_DisableIRQ(TC5_IRQn);				  // Configure interrupt request
+	NVIC_ClearPendingIRQ(TC5_IRQn);
+	NVIC_SetPriority(TC5_IRQn, 0);
+	NVIC_EnableIRQ(TC5_IRQn);
 }
 
 inline void CHAL::StopTimer0()
@@ -291,7 +323,7 @@ inline void  CHAL::InitTimer1OneShot(HALEvent evt)
 	TC->CC[0].reg = 100;
 	WaitForSyncTC(TC);
 
-	TC->CTRLBSET.bit.CMD = TC_CTRLBCLR_CMD_STOP;
+	TC->CTRLBSET.bit.CMD = TC_CTRLBCLR_CMD_STOP_Val;
 	WaitForSyncTC(TC);
 
 		// Interrupts

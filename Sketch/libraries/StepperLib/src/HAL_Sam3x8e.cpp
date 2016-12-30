@@ -31,18 +31,18 @@
 
 static void IgnoreIrq() {}
 
+void TC6_Handler()
+{
+	TC_GetStatus(DUETIMER3_TC, DUETIMER0_CHANNEL);
+	CHAL::_TimerEvent0();
+}
+
 //__attribute__((__interrupt__))
 //__attribute__((nesting))
 void TC8_Handler()
 {
 	TC_GetStatus(DUETIMER1_TC, DUETIMER1_CHANNEL);
 	CHAL::_TimerEvent1();
-}
-
-void TC6_Handler()
-{
-	TC_GetStatus(DUETIMER3_TC, DUETIMER3_CHANNEL);
-	CHAL::_TimerEvent3();
 }
 
 void CAN0_Handler()

@@ -31,8 +31,8 @@
 inline  const void* pgm_read_ptr(const void* p) { return *((void **)p); }
 inline  int pgm_read_int(const void* p) { return * ((const int*) p); }
 
-#define TIMER0FREQUENCE		TIMER3FREQUENCE
-#define TIMER0PRESCALE      TIMER3PRESCALE		
+#define TIMER0FREQUENCE		(F_CPU/TIMER0PRESCALE)
+#define TIMER0PRESCALE      2			
 
 // compatible to AVR => no 32 bit Timers
 #if 1
@@ -45,7 +45,7 @@ inline  int pgm_read_int(const void* p) { return * ((const int*) p); }
 
 #define TIMER1MIN			4
 #define TIMER1MAX			0xffffffffl
-
+/*
 #define TIMER2FREQUENCE		(F_CPU/TIMER2PRESCALE)
 #define TIMER2PRESCALE      2			
 
@@ -57,7 +57,7 @@ inline  int pgm_read_int(const void* p) { return * ((const int*) p); }
 
 #define TIMER5FREQUENCE		(F_CPU/TIMER5PRESCALE)
 #define TIMER5PRESCALE      2			
-
+*/
 #define MAXINTERRUPTSPEED	(65535/7)		// maximal possible interrupt rate => steprate_t
 
 #define SPEED_MULTIPLIER_1	0
@@ -181,23 +181,49 @@ inline void CHAL::delayMicroseconds0250()
 #define DUETIMER1_CHANNEL				2
 #define DUETIMER1_IRQTYPE				((IRQn_Type) ID_TC8)
 
-#define DUETIMER3_TC					TC2
-#define DUETIMER3_CHANNEL				0
-#define DUETIMER3_IRQTYPE				((IRQn_Type) ID_TC6)
+#define DUETIMER0_TC					TC2
+#define DUETIMER0_CHANNEL				0
+#define DUETIMER0_IRQTYPE				((IRQn_Type) ID_TC6)
 
 ////////////////////////////////////////////////////////
 
 inline void  CHAL::RemoveTimer0() {}
 
-inline void CHAL::StartTimer0(timer_t delay)
+inline void CHAL::StartTimer0(timer_t timer_count)
 {
-	StartTimer3(delay);
+	if (timer_count == 0) timer_count = 1;
+	TC_SetRC(DUETIMER0_TC, DUETIMER0_CHANNEL, timer_count);
+	TC_Start(DUETIMER0_TC, DUETIMER0_CHANNEL);
 }
+
+////////////////////////////////////////////////////////
 
 inline void  CHAL::InitTimer0(HALEvent evt)
 {
-	InitTimer3(evt);
+	_TimerEvent3 = evt;
+
+	pmc_enable_periph_clk(DUETIMER0_IRQTYPE);
+	NVIC_SetPriority(DUETIMER0_IRQTYPE, NVIC_EncodePriority(4, 3, 0));
+
+	TC_Configure(DUETIMER0_TC, DUETIMER0_CHANNEL, TC_CMR_WAVSEL_UP_RC | TC_CMR_WAVE | TC_CMR_TCCLKS_TIMER_CLOCK1);
+
+	TC_SetRC(DUETIMER0_TC, DUETIMER0_CHANNEL, 100000L);
+	TC_Start(DUETIMER0_TC, DUETIMER0_CHANNEL);
+
+	DUETIMER0_TC->TC_CHANNEL[DUETIMER0_CHANNEL].TC_IER = TC_IER_CPCS;
+	DUETIMER0_TC->TC_CHANNEL[DUETIMER0_CHANNEL].TC_IDR = ~TC_IER_CPCS;
+	NVIC_EnableIRQ(DUETIMER0_IRQTYPE);
 }
+
+////////////////////////////////////////////////////////
+
+inline void CHAL::StopTimer0()
+{
+	NVIC_DisableIRQ(DUETIMER0_IRQTYPE);
+	TC_Stop(DUETIMER0_TC, DUETIMER0_CHANNEL);
+}
+
+////////////////////////////////////////////////////////
 
 inline void  CHAL::RemoveTimer1() {}
 
@@ -242,44 +268,6 @@ inline void CHAL::StopTimer1()
 	NVIC_DisableIRQ(DUETIMER1_IRQTYPE);
 	TC_Stop(DUETIMER1_TC, DUETIMER1_CHANNEL);
 }  
-
-////////////////////////////////////////////////////////
-
-inline void  CHAL::RemoveTimer3() {}
-
-inline void CHAL::StartTimer3(timer_t timer_count)
-{
-	if (timer_count == 0) timer_count = 1;
-	TC_SetRC(DUETIMER3_TC, DUETIMER3_CHANNEL, timer_count);
-	TC_Start(DUETIMER3_TC, DUETIMER3_CHANNEL);
-}
-
-////////////////////////////////////////////////////////
-
-inline void  CHAL::InitTimer3(HALEvent evt)
-{
-	_TimerEvent3 = evt;
-
-	pmc_enable_periph_clk(DUETIMER3_IRQTYPE);
-	NVIC_SetPriority(DUETIMER3_IRQTYPE, NVIC_EncodePriority(4, 3, 0));
-
-	TC_Configure(DUETIMER3_TC, DUETIMER3_CHANNEL, TC_CMR_WAVSEL_UP_RC | TC_CMR_WAVE | TC_CMR_TCCLKS_TIMER_CLOCK1);
-
-	TC_SetRC(DUETIMER3_TC, DUETIMER3_CHANNEL, 100000L);
-	TC_Start(DUETIMER3_TC, DUETIMER3_CHANNEL);
-
-	DUETIMER3_TC->TC_CHANNEL[DUETIMER3_CHANNEL].TC_IER = TC_IER_CPCS;
-	DUETIMER3_TC->TC_CHANNEL[DUETIMER3_CHANNEL].TC_IDR = ~TC_IER_CPCS;
-	NVIC_EnableIRQ(DUETIMER3_IRQTYPE);
-}
-
-////////////////////////////////////////////////////////
-
-inline void CHAL::StopTimer3()
-{
-	NVIC_DisableIRQ(DUETIMER3_IRQTYPE);
-	TC_Stop(DUETIMER3_TC, DUETIMER3_CHANNEL);
-}
 
 #endif 
 

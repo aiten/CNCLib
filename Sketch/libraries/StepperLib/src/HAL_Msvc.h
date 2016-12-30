@@ -78,7 +78,7 @@ inline void CHAL::InitTimer1OneShot(HALEvent evt){ _TimerEvent1 = evt; }
 inline void CHAL::RemoveTimer1()			{}
 inline void CHAL::StartTimer1OneShot(timer_t)		{}
 inline void CHAL::StopTimer1()				{}
-
+/*
 inline void CHAL::InitTimer2(HALEvent evt){ _TimerEvent2 = evt; }
 inline void CHAL::RemoveTimer2()			{}
 inline void CHAL::StartTimer2(timer_t)		{}
@@ -98,7 +98,7 @@ inline void CHAL::InitTimer5(HALEvent evt){ _TimerEvent5 = evt; }
 inline void CHAL::RemoveTimer5()			{}
 inline void CHAL::StartTimer5(timer_t)		{}
 inline void CHAL::StopTimer5()				{}
-
+*/
 #define HALFastdigitalRead(a) CHAL::digitalRead(a)
 #define HALFastdigitalWrite(a,b) CHAL::digitalWrite(a,b)
 #define HALFastdigitalWriteNC(a,b) CHAL::digitalWrite(a,b)

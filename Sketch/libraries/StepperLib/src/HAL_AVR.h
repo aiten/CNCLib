@@ -37,7 +37,7 @@
 
 #define TIMER1MIN			32
 #define TIMER1MAX			0xffff
-
+/*
 #define TIMER2PRESCALE      1024
 #define TIMER2FREQUENCE		(F_CPU/TIMER2PRESCALE)
 
@@ -53,7 +53,7 @@
 #define TIMER5FREQUENCE		(F_CPU/TIMER5PRESCALE)
 
 #endif
-
+*/
 #define MAXINTERRUPTSPEED	(65535/7)	// maximal possible interrupt rate => steprate_t
 
 #define SPEED_MULTIPLIER_1	0
@@ -147,7 +147,7 @@ inline void CHAL::StopTimer1()
 	TIMSK1 &= ~(1<<TOIE1);					// Deaktiviert Interrupt beim Overflow des Timers 1
 	TCNT1=0;  
 }  
-
+/*
 ////////////////////////////////////////////////////////
 
 inline void  CHAL::RemoveTimer2() {}
@@ -282,7 +282,7 @@ inline void CHAL::StopTimer5()
 }  
 
 #endif
-
+*/
 #define HALFastdigitalWrite(a,b) WRITE(a,b)
 #define HALFastdigitalWriteNC(a,b) _WRITE_NC(a,b)
 #define HALFastdigitalRead(a) READ(a)

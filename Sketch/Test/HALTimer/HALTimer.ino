@@ -19,13 +19,18 @@
 #include <StepperLib.h>
 
 ////////////////////////////////////////////////////////
-unsigned int irq_count = 0;
+unsigned int irq_countTimer0 = 0;
+unsigned int irq_countTimer1 = 0;
 
-void HandleInterrupt()
+void HandleInterruptTimer0()
 {
-  irq_count++;
+  irq_countTimer0++;
+}
+void HandleInterruptTimer1()
+{
+  irq_countTimer1++;
 
-  CHAL::StartTimer1(48000);
+  CHAL::StartTimer1OneShot(48000);
 }
 
 void setup()
@@ -33,50 +38,61 @@ void setup()
   Serial.begin(250000);
   Serial.println(F("Start HAL Timer Test"));
 
+  CHAL::InitTimer0(HandleInterruptTimer0);
+  CHAL::InitTimer1OneShot(HandleInterruptTimer1);
 
-  CHAL::InitTimer1(HandleInterrupt);
-
-  CHAL::StartTimer1(65530);
+  CHAL::StartTimer0(10000);
+  CHAL::StartTimer1OneShot(65530);
 
   {
     CCriticalRegion crit;
     // do not wait until finished
-    CHAL::StartTimer1(50000);
-
-    
-
-    
+    CHAL::StartTimer1OneShot(50000);
   }
   Serial.println(F("Setup done"));
 }
 
 void loop()
 {
-  static unsigned int myirq_count = 0;
-  static long starttime = millis();
+  static unsigned int myirq_countTimer0 = 0;
+  static unsigned int myirq_countTimer1 = 0;
+  static long starttime0 = millis();
+  static long starttime1 = millis();
 
   // dummy
-  delay(250);
+  delay(333);
 
   static int dotcount = 0;
 
-  if (myirq_count != irq_count)
+  if (myirq_countTimer0 != irq_countTimer0 || myirq_countTimer1 != irq_countTimer1)
   {
     if (dotcount > 0)
       Serial.println();
-    Serial.print("Timer=");
-    myirq_count = irq_count;
-    Serial.print(myirq_count);
-    Serial.print("(");
-    Serial.print((millis() - starttime) / 1000.0 / myirq_count, 6);
-    Serial.println(")");
+    if (myirq_countTimer0 != irq_countTimer0)
+    {
+      Serial.print("Timer0=");
+      myirq_countTimer0 = irq_countTimer0;
+      Serial.print(myirq_countTimer0);
+      Serial.print("(");
+      Serial.print((millis() - starttime0) / 1000.0 / myirq_countTimer0, 6);
+      Serial.println(")");
+    }
+    if (myirq_countTimer1 != irq_countTimer1)
+    {
+      Serial.print("Timer1=");
+      myirq_countTimer1 = irq_countTimer1;
+      Serial.print(myirq_countTimer1);
+      Serial.print("(");
+      Serial.print((millis() - starttime1) / 1000.0 / myirq_countTimer1, 6);
+      Serial.println(")");
+    }
   }
   else
   {
     dotcount++;
     Serial.print('+');
     if (dotcount > 40)
-    { 
+    {
       dotcount = 0;
       Serial.println();
     }
