@@ -43,6 +43,7 @@
 
 #define MYNUM_AXIS 3
 #define CNCSHIELD_NUM_AXIS MYNUM_AXIS
+#define CNCSHIELD_GBRL11
 
 #include <Steppers/StepperCNCShield_pins.h>
 
