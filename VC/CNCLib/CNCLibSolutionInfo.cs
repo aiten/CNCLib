@@ -2,7 +2,7 @@
 /*
   This file is part of CNCLib - A library for stepper motors.
 
-  Copyright (c) 2013-2016 Herbert Aitenbichler
+  Copyright (c) 2013-2017 Herbert Aitenbichler
 
   CNCLib is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyCopyright("Copyright (c) 2013-2016 Herbert Aitenbichler")]
+[assembly: AssemblyCopyright("Copyright (c) 2013-2017 Herbert Aitenbichler")]
 [assembly: AssemblyTrademark("CNCLib")]
 [assembly: ComVisible(false)]
 [assembly: AssemblyCompany("Herbert Aitenbichler")]
