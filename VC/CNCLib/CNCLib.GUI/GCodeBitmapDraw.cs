@@ -100,6 +100,7 @@ namespace CNCLib.GUI
 		double _offsetZ = 0;
 		double _cutterSize = 0;
 		double _laserSize = 0.254;
+
 		Color _machineColor = Color.Black;
 		Color _laserOnColor = Color.Red;
 		Color _laserOffColor = Color.Orange;
@@ -234,38 +235,49 @@ namespace CNCLib.GUI
 		{
 			_needReInit = true;
 		}
-
 		void InitPen()
 		{
 			if (_needReInit)
 			{
-				float cutsize = CutterSize > 0 ? (float)ToClientSizeX(CutterSize) : 2;
 				float fastSize = 0.5f;
 
-				_cutPen = new Pen(CutColor, cutsize);
-				_cutPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-				_cutPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-
-				_cutDotPen = new Pen(CutDotColor, cutsize);
-				_cutEllipsePen = new Pen(CutEllipseColor, cutsize);
-				_cutArcPen = new Pen(CutArcColor, cutsize);
-				_cutArcPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-				_cutArcPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-
-				_cutPens = new Pen[] { _cutPen, _cutDotPen, _cutEllipsePen, _cutArcPen };
-
-				_fastPen = new Pen(FastMoveColor, fastSize);
-				_noMovePen = new Pen(Color.Blue, fastSize);
-				_laserCutPen = new Pen(LaserOnColor, (float) ToClientSizeX(LaserSize));
-				_laserCutPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-				_laserCutPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-				_laserFastPen = new Pen(LaserOffColor, (float)(fastSize / 2.0));
-
 				_helpLinePen = new Pen(_helpLineColor, (float)(fastSize / 2.0));
-				_helpLinePen10 = new Pen(_helpLineColor, (float)(fastSize*4));
+				_helpLinePen10 = new Pen(_helpLineColor, (float)(fastSize * 4));
+
+				InitPen(_selected, (c) => c);
+				InitPen(_dithered, (c) =>
+				{
+					return Color.FromArgb(25, c);
+				}
+				);
 
 				_needReInit = false;
 			}
+		}
+
+		void InitPen(PenSet set, Func<Color,Color> colorconverter)
+		{
+			float cutsize = CutterSize > 0 ? (float)ToClientSizeX(CutterSize) : 2;
+			float fastSize = 0.5f;
+
+			set._cutPen = new Pen(CutColor, cutsize);
+			set._cutPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+			set._cutPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+
+			set._cutDotPen = new Pen(colorconverter(CutDotColor), cutsize);
+			set._cutEllipsePen = new Pen(colorconverter(CutEllipseColor), cutsize);
+			set._cutArcPen = new Pen(colorconverter(CutArcColor), cutsize);
+			set._cutArcPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+			set._cutArcPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+
+			set._cutPens = new Pen[] { set._cutPen, set._cutDotPen, set._cutEllipsePen, set._cutArcPen };
+
+			set._fastPen = new Pen(colorconverter(FastMoveColor), fastSize);
+			set._noMovePen = new Pen(colorconverter(Color.Blue), fastSize);
+			set._laserCutPen = new Pen(colorconverter(LaserOnColor), (float) ToClientSizeX(LaserSize));
+			set._laserCutPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+			set._laserCutPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+			set._laserFastPen = new Pen(colorconverter(LaserOffColor), (float)(fastSize / 2.0));
 		}
 
 		public Bitmap DrawToBitmap(CommandList commands, Command from, Command to)
@@ -328,17 +340,24 @@ namespace CNCLib.GUI
 
 		#region IOutput 
 
-		Pen _noMovePen;
-		Pen _cutEllipsePen;
-		Pen _cutArcPen;
-		Pen _cutPen;
-		Pen _cutDotPen;
-		Pen[] _cutPens;
-		Pen _fastPen;
-		Pen _laserCutPen;
-		Pen _laserFastPen;
-		Pen _helpLinePen;
-		Pen _helpLinePen10;
+		private class PenSet
+		{
+			public Pen _noMovePen;
+			public Pen _cutEllipsePen;
+			public Pen _cutArcPen;
+			public Pen _cutPen;
+			public Pen _cutDotPen;
+			public Pen[] _cutPens;
+			public Pen _fastPen;
+			public Pen _laserCutPen;
+			public Pen _laserFastPen;
+		};
+
+		public Pen _helpLinePen;
+		public Pen _helpLinePen10;
+
+		PenSet _dithered = new PenSet();
+		PenSet _selected = new PenSet();
 
 		public void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo)
 		{
@@ -554,17 +573,19 @@ namespace CNCLib.GUI
 
 		private Pen GetPen(DrawType moveType, LineDrawType drawtype)
 		{
-			if ((moveType & DrawType.Draw) == 0) return _noMovePen;
+			PenSet set = (moveType & DrawType.Selected) == DrawType.Selected ? _selected : _dithered;
+
+			if ((moveType & DrawType.Draw) == 0) return set._noMovePen;
 
 			bool isCut   = (moveType & DrawType.Cut) == DrawType.Cut;
 			bool isLaser = (moveType & DrawType.Laser) == DrawType.Laser;
 
 			if (isLaser)
 			{
-				return isCut ? _laserCutPen : _laserFastPen;
+				return isCut ? set._laserCutPen : set._laserFastPen;
 			}
 
-			return isCut ? _cutPens[(int)drawtype] : _fastPen;
+			return isCut ? set._cutPens[(int)drawtype] : set._fastPen;
 		}
 
 		#endregion

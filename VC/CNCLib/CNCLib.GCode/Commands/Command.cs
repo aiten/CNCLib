@@ -137,6 +137,9 @@ namespace CNCLib.GCode.Commands
 
 			if (movetype != MoveType.NoMove)
 			{
+				if (state.IsSelected)
+					drawtype |= DrawType.Selected;
+
 				drawtype |= DrawType.Draw;
 
 				if (state.UseLaser)

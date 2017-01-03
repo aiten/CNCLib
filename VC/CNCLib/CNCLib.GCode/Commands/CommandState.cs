@@ -26,8 +26,6 @@ namespace CNCLib.GCode.Commands
         public bool CoolantOn { get; set; } = false;
 		public Pane CurrentPane { get; set; } = Pane.XYPane;
 
-		public bool IsCurrent { get; set; } = false;
-		public bool IsPreCurrent { get; set; } = false;
-		public bool IsPostCurrent { get; set; } = false;
+		public bool IsSelected { get; set; } = true;
 	}
 }
