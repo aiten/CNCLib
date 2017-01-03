@@ -26,8 +26,10 @@ namespace CNCLib.GCode.Commands
     {
 		NoDraw = 0,
 		Draw=1,
-		Cut =2,      // Go or G1,G2,G3
-		Laser=4      
+		Cut =2,			// Go or G1,G2,G3
+		Laser=4,
+		Selected=8,		// e.g. current (focused or in work) commands
+		Done=16			      
 	}
 
 	public enum Pane

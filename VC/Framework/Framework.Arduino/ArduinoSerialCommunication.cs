@@ -115,6 +115,9 @@ namespace Framework.Arduino
         public int ArduinoLineSize { get; set; } = 128;
         public TraceStream Trace { get { return _trace; } }
 
+		public bool Pause { get; set; } = false;
+		public bool SendNext { get; set; } = false;
+
 		#endregion
 
 		#region Setup/Init Methodes
@@ -675,13 +678,14 @@ namespace Framework.Arduino
 				// nextcmd			=> next command to be sent
 				// queuedcmdlenght	=> lenght of command in the arduino buffer
 
-				if (nextcmd != null)
+				if (nextcmd != null && (!Pause || SendNext))
 				{
-					// send everyting if queue is empty
-					// or send command if pending commands + this fit into arduino queue
 					if (queuedcmdlenght == 0 || queuedcmdlenght + nextcmd.CommandText.Length + 2 < ArduinoBuffersize)
 					{
+						// send everyting if queue is empty
+						// or send command if pending commands + this fit into arduino queue
 						SendCommand(nextcmd);
+						SendNext = false;
 					}
 					else
 					{

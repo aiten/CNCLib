@@ -23,7 +23,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
 	public class DetailViewModel : BaseViewModel
 	{
-		private IManualControlViewModel Vm { get; set; }
+		protected IManualControlViewModel Vm { get; set; }
 		public DetailViewModel(IManualControlViewModel vm)
 		{
 			Vm = vm;

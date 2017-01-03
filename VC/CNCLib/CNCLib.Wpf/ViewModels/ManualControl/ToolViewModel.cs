@@ -23,7 +23,7 @@ using Framework.Arduino;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
-	public class ToolViewModel : DetailViewModel , IDisposable
+	public class ToolViewModel : DetailViewModel, IDisposable
 	{
 		#region ctr
 
@@ -44,12 +44,24 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		public int PendingCommandCount
 		{
-			get	{ return Com.CommandsInQueue; }
+			get { return Com.CommandsInQueue; }
+		}
+		public bool Pause
+		{
+			get { return Com.Pause; }
+			set { Com.Pause = value; }
 		}
 
 		private void CommandQueueChanged(object sender, ArduinoSerialCommunicationEventArgs arg)
 		{
 			OnPropertyChanged(() => PendingCommandCount);
+		}
+
+		private async void SetSendNext()
+		{
+			Com.SendNext = true;
+			await Com.WaitUntilResonseAsync(100);
+			((ManualControlViewModel)Vm).CommandHistory.RefreshAfterCommand();
 		}
 
 		#endregion
@@ -63,12 +75,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			return CanSend() && Global.Instance.Machine.Coolant;
 		}
-        public bool CanSendLaser()
-        {
-            return CanSend() && Global.Instance.Machine.Laser;
-        }
+		public bool CanSendLaser()
+		{
+			return CanSend() && Global.Instance.Machine.Laser;
+		}
 
-        public void SendInfo() { RunInNewTask(() => { Com.SendCommand("?"); }); }
+		public void SendInfo() { RunInNewTask(() => { Com.SendCommand("?"); }); }
 		public void SendAbort() { RunInNewTask(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.SendCommand("!"); }); }
 		public void SendResurrect() { RunInNewTask(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.SendCommand("!!!"); }); }
 		public void ClearQueue() { RunInNewTask(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); }); }
@@ -77,10 +89,10 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public void SendM05SpindelOff() { RunInNewTask(() => { Com.SendCommand("m5"); }); }
 		public void SendM07CoolandOn() { RunInNewTask(() => { Com.SendCommand("m7"); }); }
 		public void SendM09CoolandOff() { RunInNewTask(() => { Com.SendCommand("m9"); }); }
-        public void SendM106LaserOn() { RunInNewTask(() => { Com.SendCommand("m106 s255"); }); }
-        public void SendM106LaserOnMin() { RunInNewTask(() => { Com.SendCommand("m106 s1"); }); }
-        public void SendM107LaserOff() { RunInNewTask(() => { Com.SendCommand("m107"); }); }
-        public void SendM114PrintPos()
+		public void SendM106LaserOn() { RunInNewTask(() => { Com.SendCommand("m106 s255"); }); }
+		public void SendM106LaserOnMin() { RunInNewTask(() => { Com.SendCommand("m106 s1"); }); }
+		public void SendM107LaserOff() { RunInNewTask(() => { Com.SendCommand("m107"); }); }
+		public void SendM114PrintPos()
 		{
 			RunInNewTask(() =>
 			{
@@ -90,7 +102,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 				{
 					message = message.Replace("ok", "");
 					message = message.Replace(" ", "");
-					SetPositions(message.Split(':'),0);
+					SetPositions(message.Split(':'), 0);
 				}
 
 				message = Com.SendCommandAndReadOKReplyAsync("m114 s1").ConfigureAwait(false).GetAwaiter().GetResult();
@@ -99,7 +111,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 				{
 					message = message.Replace("ok", "");
 					message = message.Replace(" ", "");
-					SetPositions(message.Split(':'),1);
+					SetPositions(message.Split(':'), 1);
 				}
 			});
 		}
@@ -116,11 +128,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ICommand SendM05SpindelOffCommand => new DelegateCommand(SendM05SpindelOff, CanSendSpindle);
 		public ICommand SendM07CoolandOnCommand => new DelegateCommand(SendM07CoolandOn, CanSendCoolant);
 		public ICommand SendM09CoolandOffCommand => new DelegateCommand(SendM09CoolandOff, CanSendCoolant);
-        public ICommand SendM106LaserOnCommand => new DelegateCommand(SendM106LaserOn, CanSendLaser);
-        public ICommand SendM106LaserOnMinCommand => new DelegateCommand(SendM106LaserOnMin, CanSendLaser);
-        public ICommand SendM107LaserOffCommand => new DelegateCommand(SendM107LaserOff, CanSendLaser);
-        public ICommand SendM114Command => new DelegateCommand(SendM114PrintPos, CanSend);
+		public ICommand SendM106LaserOnCommand => new DelegateCommand(SendM106LaserOn, CanSendLaser);
+		public ICommand SendM106LaserOnMinCommand => new DelegateCommand(SendM106LaserOnMin, CanSendLaser);
+		public ICommand SendM107LaserOffCommand => new DelegateCommand(SendM107LaserOff, CanSendLaser);
+		public ICommand SendM114Command => new DelegateCommand(SendM114PrintPos, CanSend);
 		public ICommand WritePendingCommands => new DelegateCommand(WritePending, CanSend);
+		public ICommand SendNextCommands => new DelegateCommand(SetSendNext, () => CanSend() && Pause && PendingCommandCount > 0);
 
 		#endregion
 	}

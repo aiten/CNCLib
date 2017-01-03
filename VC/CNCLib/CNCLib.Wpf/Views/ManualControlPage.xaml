@@ -310,15 +310,17 @@
 
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
 
-                    <Button Command="{Binding CommandHistory.ClearHistoryCommand}" Content="Clear" Width="100" Margin="0,0,5,0" />
-                    <Button Command="{Binding CommandHistory.RefreshHistoryCommand}" Content="Refresh" Width="100" Margin="0,0,5,0" />
-                    <Button Command="{Binding Tool.SendInfoCommand}" Content="Info"   Width="100" Margin="0,0,5,0"/>
-                    <Button Command="{Binding Tool.SendAbortCommand}" Content="Abort" Width="100" Margin="0,0,5,0"/>
-                    <Button Command="{Binding Tool.SendResurrectCommand}" Content="Resurrect" Width="100" />
+                    <Button Command="{Binding CommandHistory.ClearHistoryCommand}" Content="Clear" Width="60" Margin="0,0,5,0" />
+                    <Button Command="{Binding CommandHistory.RefreshHistoryCommand}" Content="Refresh" Width="60" Margin="0,0,5,0" />
+                    <Button Command="{Binding Tool.SendInfoCommand}" Content="Info"   Width="60" Margin="0,0,5,0"/>
+                    <Button Command="{Binding Tool.SendAbortCommand}" Content="Abort" Width="60" Margin="0,0,5,0"/>
+                    <Button Command="{Binding Tool.SendResurrectCommand}" Content="Resurrect" Width="60" />
                     <Label  Content="Pending Commands:" />
                     <TextBox Text="{Binding Tool.PendingCommandCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center" Margin="0,0,5,0" />
                     <Button Command="{Binding Tool.SendClearQueue}" Content="Clear Queue" Width="60" />
                     <Button Command="{Binding Tool.WritePendingCommands}" Content="WritePending" Width="60" />
+                    <CheckBox IsChecked="{Binding Tool.Pause}" Content="Pause" Width="60" Margin="10,0,0,0" VerticalAlignment="Center" />
+                    <Button Command="{Binding Tool.SendNextCommands}" Content="SendNext" Width="60" />
 
                 </StackPanel>
 
