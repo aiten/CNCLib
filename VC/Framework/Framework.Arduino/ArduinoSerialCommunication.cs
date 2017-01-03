@@ -91,6 +91,8 @@ namespace Framework.Arduino
             public DateTime? ReplyReceivedTime { get; set; }
 
             public string ResultText { get; set; }
+
+			public object Tag { get; set; }
 		}
 
 		public int CommandsInQueue

@@ -280,7 +280,7 @@ namespace CNCLib.GUI
 			set._laserFastPen = new Pen(colorconverter(LaserOffColor), (float)(fastSize / 2.0));
 		}
 
-		public Bitmap DrawToBitmap(CommandList commands, Command from, Command to)
+		public Bitmap DrawToBitmap(CommandList commands)
 		{
 			InitPen();
 

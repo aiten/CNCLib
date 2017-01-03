@@ -572,7 +572,7 @@ namespace CNCLib.Wpf.Controls
 				_bitmapDraw.SizeY = (double) Global.Instance.Machine.SizeY;
 			}
 
-			var curBitmap = _bitmapDraw.DrawToBitmap(Commands, Commands.FirstOrDefault(), Commands.LastOrDefault());
+			var curBitmap = _bitmapDraw.DrawToBitmap(Commands);
 			MemoryStream stream = new MemoryStream();
 			curBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
 			var cc = new System.Windows.Media.ImageSourceConverter().ConvertFrom(stream);
