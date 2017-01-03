@@ -207,7 +207,7 @@ namespace CNCLib.Wpf.ViewModels
 				try
 				{
 					Com.ClearCommandHistory();
-					Com.SendCommandsAsync(Commands.ToStringList()).GetAwaiter().GetResult();
+					Com.QueueCommands(Commands.ToStringList());
 					Com.WriteCommandHistory(CmdHistoryFileName);
 				}
 				finally
@@ -297,11 +297,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void GotoPos(Point3D pt)
 		{
-			new Task(() =>
-			{
-				Com.SendCommand(string.Format(@"g0 x{0} y{1}", (pt.X??0.0).ToString(CultureInfo.InvariantCulture), (pt.Y?? 0.0).ToString(CultureInfo.InvariantCulture)));
-			}
-			).Start();
+			Com.QueueCommand(string.Format(@"g0 x{0} y{1}", (pt.X??0.0).ToString(CultureInfo.InvariantCulture), (pt.Y?? 0.0).ToString(CultureInfo.InvariantCulture)));
 		}
 		public bool CanGotoPos(Point3D pt)
 		{

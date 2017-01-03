@@ -35,14 +35,14 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region Commands / CanCommands
 
-		public void SendG53() { RunInNewTask(() => { Com.SendCommand("g53"); }); }
-		public void SendG54() { RunInNewTask(() => { Com.SendCommand("g54"); }); }
-		public void SendG55() { RunInNewTask(() => { Com.SendCommand("g55"); }); }
-		public void SendG56() { RunInNewTask(() => { Com.SendCommand("g56"); }); }
-		public void SendG57() { RunInNewTask(() => { Com.SendCommand("g57"); }); }
-		public void SendG58() { RunInNewTask(() => { Com.SendCommand("g58"); }); }
-		public void SendG59() { RunInNewTask(() => { Com.SendCommand("g59"); }); }
-		public void SendG92() { RunInNewTask(() => { Com.SendCommand("g92"); }); }
+		public void SendG53() { RunAndUpdate(() => { Com.QueueCommand("g53"); }); }
+		public void SendG54() { RunAndUpdate(() => { Com.QueueCommand("g54"); }); }
+		public void SendG55() { RunAndUpdate(() => { Com.QueueCommand("g55"); }); }
+		public void SendG56() { RunAndUpdate(() => { Com.QueueCommand("g56"); }); }
+		public void SendG57() { RunAndUpdate(() => { Com.QueueCommand("g57"); }); }
+		public void SendG58() { RunAndUpdate(() => { Com.QueueCommand("g58"); }); }
+		public void SendG59() { RunAndUpdate(() => { Com.QueueCommand("g59"); }); }
+		public void SendG92() { RunAndUpdate(() => { Com.QueueCommand("g92"); }); }
 			
 
 		#endregion

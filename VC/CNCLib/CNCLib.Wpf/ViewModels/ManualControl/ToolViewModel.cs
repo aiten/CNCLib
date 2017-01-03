@@ -52,16 +52,23 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			set { Com.Pause = value; }
 		}
 
+		private bool _updateAfterSendNext = false;
+
 		private void CommandQueueChanged(object sender, ArduinoSerialCommunicationEventArgs arg)
 		{
 			OnPropertyChanged(() => PendingCommandCount);
+
+			if (_updateAfterSendNext)
+			{
+				_updateAfterSendNext = false;
+				((ManualControlViewModel)Vm).CommandHistory.RefreshAfterCommand();
+			}
 		}
 
-		private async void SetSendNext()
+		private void SetSendNext()
 		{
-			Com.SendNext = true;
-			await Com.WaitUntilResonseAsync(100);
-			((ManualControlViewModel)Vm).CommandHistory.RefreshAfterCommand();
+			_updateAfterSendNext = true;
+			Com.SendNext = true; 
 		}
 
 		#endregion
@@ -80,18 +87,17 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			return CanSend() && Global.Instance.Machine.Laser;
 		}
 
-		public void SendInfo() { RunInNewTask(() => { Com.SendCommand("?"); }); }
-		public void SendAbort() { RunInNewTask(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.SendCommand("!"); }); }
-		public void SendResurrect() { RunInNewTask(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.SendCommand("!!!"); }); }
-		public void ClearQueue() { RunInNewTask(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); }); }
-		public void SendCNCLibCommand(string command) { RunInNewTask(() => { Com.SendCommand(command); }); }
-		public void SendM03SpindelOn() { RunInNewTask(() => { Com.SendCommand("m3"); }); }
-		public void SendM05SpindelOff() { RunInNewTask(() => { Com.SendCommand("m5"); }); }
-		public void SendM07CoolandOn() { RunInNewTask(() => { Com.SendCommand("m7"); }); }
-		public void SendM09CoolandOff() { RunInNewTask(() => { Com.SendCommand("m9"); }); }
-		public void SendM106LaserOn() { RunInNewTask(() => { Com.SendCommand("m106 s255"); }); }
-		public void SendM106LaserOnMin() { RunInNewTask(() => { Com.SendCommand("m106 s1"); }); }
-		public void SendM107LaserOff() { RunInNewTask(() => { Com.SendCommand("m107"); }); }
+		public void SendInfo() { RunAndUpdate(() => { Com.QueueCommand("?"); }); }
+		public void SendAbort() { RunAndUpdate(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.QueueCommand("!"); }); }
+		public void SendResurrect() { RunAndUpdate(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.QueueCommand("!!!"); }); }
+		public void ClearQueue() { RunAndUpdate(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); }); }
+		public void SendM03SpindelOn() { RunAndUpdate(() => { Com.QueueCommand("m3"); }); }
+		public void SendM05SpindelOff() { RunAndUpdate(() => { Com.QueueCommand("m5"); }); }
+		public void SendM07CoolandOn() { RunAndUpdate(() => { Com.QueueCommand("m7"); }); }
+		public void SendM09CoolandOff() { RunAndUpdate(() => { Com.QueueCommand("m9"); }); }
+		public void SendM106LaserOn() { RunAndUpdate(() => { Com.QueueCommand("m106 s255"); }); }
+		public void SendM106LaserOnMin() { RunAndUpdate(() => { Com.QueueCommand("m106 s1"); }); }
+		public void SendM107LaserOff() { RunAndUpdate(() => { Com.QueueCommand("m107"); }); }
 		public void SendM114PrintPos()
 		{
 			RunInNewTask(() =>

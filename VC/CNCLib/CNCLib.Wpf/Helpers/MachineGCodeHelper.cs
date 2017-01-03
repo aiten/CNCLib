@@ -31,8 +31,8 @@ namespace CNCLib.Wpf.Helpers
 			await Com.SendCommandAndReadOKReplyAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90");
 			if ((Com.LastCommand.ReplyType & ArduinoSerialCommunication.EReplyType.ReplyError) == 0)
 			{
-				Com.SendCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
-				Com.SendCommand("g91 g0" + axisname + probdistup + " g90");
+				Com.QueueCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
+				Com.QueueCommand("g91 g0" + axisname + probdistup + " g90");
 				return true;
 			};
 			return false;

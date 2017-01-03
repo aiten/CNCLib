@@ -20,6 +20,7 @@ using System;
 using Framework.Wpf.ViewModels;
 using CNCLib.Wpf.ViewModels.ManualControl;
 using System.Threading.Tasks;
+using Framework.Arduino;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -177,20 +178,33 @@ namespace CNCLib.Wpf.ViewModels
 				if (positions.Length >= 6) AxisC.RelPos = positions[5];
 			}
 		}
+		public void RunAndUpdate(Action todo)
+		{
+			try
+			{
+				todo();
+			}
+			finally
+			{
+				Com.CommandQueueChanged += CommandQueueChanged;
+			}
+		}
+
+		private void CommandQueueChanged(object sender, ArduinoSerialCommunicationEventArgs arg)
+		{
+			if (Com.CommandsInQueue == 0)
+			{
+				Com.CommandQueueChanged -= CommandQueueChanged;
+				CommandHistory.RefreshAfterCommand();
+				//Com.WriteCommandHistory(CommandHistoryViewModel.CommandHistoryFile);
+			}
+		}
 
 		public void RunInNewTask(Action todo)
 		{
 			new Task(() =>
 			{
-				try
-				{
-					todo();
-					Com.WriteCommandHistory(CommandHistoryViewModel.CommandHistoryFile);
-				}
-				finally
-				{
-					CommandHistory.RefreshAfterCommand();
-				}
+				RunAndUpdate(todo);
 			}
 			).Start();
 		}

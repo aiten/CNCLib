@@ -23,6 +23,7 @@ namespace CNCLib.Wpf.ViewModels
     public interface IManualControlViewModel
 	{
 		void RunInNewTask(Action todo);
+		void RunAndUpdate(Action todo);
 		void SetPositions(string[] positions, int positionIdx);
 	}
 }

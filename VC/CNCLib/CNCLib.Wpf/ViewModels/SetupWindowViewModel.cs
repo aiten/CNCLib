@@ -44,8 +44,11 @@ namespace CNCLib.Wpf.ViewModels
 		public override async Task Loaded()
 		{
 			await base.Loaded();
-			await LoadMachines(-1);
-			await LoadJoystick();
+			if (_machines == null)
+			{
+				await LoadMachines(-1);
+				await LoadJoystick();
+			}
 		}
 
 		#endregion

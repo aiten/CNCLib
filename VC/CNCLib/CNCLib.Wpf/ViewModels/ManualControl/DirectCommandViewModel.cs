@@ -52,14 +52,14 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ObservableCollection<string> DirectCommandHistory
 		{
 			get { return _directCommandHistory; }
-			set { SetProperty(ref _directCommandHistory, value); }
+			set { SetProperty(ref _directCommandHistory, value); OnPropertyChanged(() => DirectCommandHistory); }
 		}
 
 		#endregion
 
 		#region Commands / CanCommands
 
-		public void SendDirect() { RunInNewTask(() => { Com.SendCommand(DirectCommand); }); AddDirectCommandHistory(DirectCommand); }
+		public void SendDirect() { RunAndUpdate(() => { Com.QueueCommand(DirectCommand); }); AddDirectCommandHistory(DirectCommand); }
 		public bool CanSendDirectCommand()
 		{
 			return Connected && !string.IsNullOrEmpty(DirectCommand);

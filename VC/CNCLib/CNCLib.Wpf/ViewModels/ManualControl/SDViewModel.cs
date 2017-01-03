@@ -48,14 +48,14 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region Commands / CanCommands
-		public void SendM20File() { RunInNewTask(() => { Com.SendCommand("m20"); }); }
+		public void SendM20File() { RunAndUpdate(() => { Com.QueueCommand("m20"); }); }
 		public void SendM24File() { SendM24File(SDFileName); }
 		public void SendM24File(string filename)
 		{
-			RunInNewTask(() =>
+			RunAndUpdate(() =>
 			{
-				Com.SendCommand("m23 " + filename);
-				Com.SendCommand("m24");
+				Com.QueueCommand("m23 " + filename);
+				Com.QueueCommand("m24");
 			});
 		}
 
@@ -99,9 +99,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public void SendM30File() { SendM30File(SDFileName); }
 		public void SendM30File(string filename)
 		{
-			RunInNewTask(() =>
+			RunAndUpdate(() =>
 			{
-				Com.SendCommand("m30 " + filename);
+				Com.QueueCommand("m30 " + filename);
 			});
 		}
 		public void SendFileDirect() { RunInNewTask(() => { Com.SendFileAsync(FileName).GetAwaiter().GetResult(); }); }

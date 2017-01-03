@@ -32,12 +32,15 @@ namespace CNCLib.Wpf.Views
 		public SetupPage()
 		{
 			InitializeComponent();
-
-			Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
+			RoutedEventHandler loaded=null;
+			loaded = new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
 			{
 				var vmm = DataContext as BaseViewModel;
 				await vmm.Loaded();
+				((SetupPage)e.Source).Loaded -= loaded;
 			});
+
+			Loaded += loaded;
 
 			var vm = DataContext as SetupWindowViewModel;
 

@@ -32,7 +32,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         #region Commands / CanCommands
 
-        private void SendMoveCommand(double? dist, char axisname) { RunInNewTask(() => { Com.SendCommand("g91 g0" + axisname + dist??0.0.ToString(CultureInfo.InvariantCulture) + " g90"); }); }
+        private void SendMoveCommand(double? dist, char axisname) { RunAndUpdate(() => { Com.QueueCommand("g91 g0" + axisname + dist??0.0.ToString(CultureInfo.InvariantCulture) + " g90"); }); }
 
 		public bool CanSendCommand(double? dist)
 		{

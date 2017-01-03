@@ -142,7 +142,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendXY(int x, int y)
         {
-            RunInNewTask(() => 
+			RunAndUpdate(() => 
                 {
                     var cmd = GetCmd(x, y);
                     if (cmd !=null)

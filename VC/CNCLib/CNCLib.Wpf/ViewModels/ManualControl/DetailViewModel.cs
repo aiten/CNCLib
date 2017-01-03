@@ -46,6 +46,10 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			Vm.RunInNewTask(todo);
 		}
+		protected void RunAndUpdate(Action todo)
+		{
+			Vm.RunAndUpdate(todo);
+		}
 		protected void SetPositions(string[] positions, int positionIdx)
 		{
 			Vm.SetPositions(positions, positionIdx);
