@@ -22,11 +22,14 @@ namespace CNCLib.GCode.Commands
 {
     public class CommandList :	List<Command>
 	{
-		public struct PaintState
-		{
-			public int CommandIdx;
-			public int SelectedIdx;
-		}
+
+		#region Properties
+
+		public Command Current { get; set; }
+
+		#endregion
+
+		#region Add/Update
 
 		public void AddCommand(Command cmd)
 		{
@@ -52,13 +55,32 @@ namespace CNCLib.GCode.Commands
 				cmd.UpdateCalculatedEndPosition();
 			}
 		}
+
+		#endregion
+
+		#region Paint + Convert
+
 		public void Paint(IOutputCommand output, object param)
 		{
-            var drawstate = new CommandState();
+            var commandstate = new CommandState();
+			bool haveseencurrent = false;
 
 			foreach (Command cmd in this)
 			{
-				cmd.Draw(output, drawstate, param);
+				commandstate.IsCurrent = cmd == Current;
+				if (commandstate.IsCurrent)
+				{
+					haveseencurrent = true;
+					commandstate.IsPreCurrent = false;
+					commandstate.IsPostCurrent = false;
+				}
+				else
+				{
+					commandstate.IsPreCurrent  = !haveseencurrent;
+					commandstate.IsPostCurrent = haveseencurrent;
+				}
+
+				cmd.Draw(output, commandstate, param);
 			}
 		}
 
@@ -82,5 +104,7 @@ namespace CNCLib.GCode.Commands
 			}
 			return list;
 		}
+
+		#endregion
 	}
 }

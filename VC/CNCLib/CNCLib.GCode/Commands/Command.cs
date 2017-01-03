@@ -133,26 +133,25 @@ namespace CNCLib.GCode.Commands
 
         public DrawType Convert(MoveType movetype, CommandState state)
         {
-            if (movetype == MoveType.NoMove) return DrawType.NoDraw;
+			DrawType drawtype = DrawType.NoDraw;
 
-            if (state.UseLaser)
-            {
-                if (state.LaserOn == false) return DrawType.NoDraw;
+			if (movetype != MoveType.NoMove)
+			{
+				drawtype |= DrawType.Draw;
 
-                switch (movetype)
-                {
-                    case MoveType.Fast:   return DrawType.LaserFast;
-                    case MoveType.Normal: return DrawType.LaserCut;
-                }
-            }
+				if (state.UseLaser)
+				{
+					if (state.LaserOn == false) return DrawType.NoDraw;
+					drawtype |= DrawType.Laser;
+				}
 
-            switch (movetype)
-            {
-                case MoveType.Fast: return DrawType.Fast;
-                case MoveType.Normal: return DrawType.Cut;
-            }
+				if (movetype == MoveType.Normal)
+				{
+					drawtype |= DrawType.Cut;
+				}
+			}
 
-            return DrawType.NoDraw;
+            return drawtype;
         }
 
         public virtual void Draw(IOutputCommand output, CommandState state, object param)

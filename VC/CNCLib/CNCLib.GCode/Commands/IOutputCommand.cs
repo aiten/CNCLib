@@ -17,17 +17,17 @@
 */
 
 using Framework.Tools.Drawing;
+using System;
 
 namespace CNCLib.GCode.Commands
 {
-    public enum DrawType
+	[Flags]
+	public enum DrawType
     {
-        NoDraw,
-        NoMove,
-        Fast,         // Go
-        Cut,          // G1,G2,G3
-        LaserFast,    // Go
-		LaserCut      // G1,G2,G3
+		NoDraw = 0,
+		Draw=1,
+		Cut =2,      // Go or G1,G2,G3
+		Laser=4      
 	}
 
 	public enum Pane

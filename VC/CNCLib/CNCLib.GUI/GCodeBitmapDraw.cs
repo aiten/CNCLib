@@ -522,7 +522,7 @@ namespace CNCLib.GUI
 
 			if (from.Equals(to))
 			{
-				if (drawtype == DrawType.LaserCut)
+				if ((drawtype & DrawType.Laser) == DrawType.Laser)
 					e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 1, 1);
 				else
 					e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), from.X, from.Y, 4, 4);
@@ -554,18 +554,19 @@ namespace CNCLib.GUI
 
 		private Pen GetPen(DrawType moveType, LineDrawType drawtype)
 		{
-			switch (moveType)
+			if ((moveType & DrawType.Draw) == 0) return _noMovePen;
+
+			bool isCut   = (moveType & DrawType.Cut) == DrawType.Cut;
+			bool isLaser = (moveType & DrawType.Laser) == DrawType.Laser;
+
+			if (isLaser)
 			{
-				default:
-				case DrawType.NoMove: return _noMovePen;
-				case DrawType.Fast: return _fastPen;
-				case DrawType.Cut: return _cutPens[(int)drawtype];
-				case DrawType.LaserFast: return _laserFastPen;
-				case DrawType.LaserCut: return _laserCutPen;
+				return isCut ? _laserCutPen : _laserFastPen;
 			}
+
+			return isCut ? _cutPens[(int)drawtype] : _fastPen;
 		}
 
 		#endregion
 	}
-
 }
