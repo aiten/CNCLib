@@ -48,6 +48,14 @@ namespace CNCLib.Wpf.Views
 					return MessageBox.Show(messageBoxText, caption, button, icon);
 				});
 			}
+
+			if (vm.RefreshPreview == null)
+			{
+				vm.RefreshPreview = new Action(() =>
+				{
+					gcode.Dispatcher.Invoke(() => gcode.InvalidateVisual());
+				});
+			}
 		}
 	}
 }

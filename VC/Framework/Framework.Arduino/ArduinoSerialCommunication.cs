@@ -724,6 +724,18 @@ namespace Framework.Arduino
                 try
                 {
                     ch = (char) _serialPort.ReadChar();
+/*
+					using (StreamWriter f = new StreamWriter(@"c:\tmp\cnclibread.txt", true))
+					{
+						string m = ch.ToString();
+						string mr = m.Replace("\n", @"\n").Replace("\r", @"\r").Replace("\t", @"\t");
+						if (m.CompareTo(mr)==0)
+							f.Write(m);
+						else
+							f.WriteLine(mr);
+					}
+*/	
+
                     if (ch == '\n')
                     {
                         message = sb.ToString();

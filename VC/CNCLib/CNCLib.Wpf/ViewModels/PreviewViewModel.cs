@@ -22,12 +22,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Linq;
 using CNCLib.GCode;
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Drawing;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
+using Framework.Arduino;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -37,6 +39,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public PreviewViewModel()
 		{
+			Com.CommandSending += CommandSending;
 		}
 
 		#endregion
@@ -186,6 +189,8 @@ namespace CNCLib.Wpf.ViewModels
 		}
 		public Func<GetLoadInfoArg, bool> GetLoadInfo { get; set; }
 
+		public Action RefreshPreview { get; set; }
+
 		#endregion
 
 		#region private/intern
@@ -193,6 +198,18 @@ namespace CNCLib.Wpf.ViewModels
 		LoadOptions loadinfo = new LoadOptions();
 		bool _useAzure = false;
 		bool _loadingOrSending = false;
+
+		Command _lastCurrentCommand = null;
+
+		private void CommandSending(object sender, ArduinoSerialCommunicationEventArgs arg)
+		{
+			Commands.Current = Commands.FirstOrDefault((c) => c == arg.Command.Tag);
+			if (Commands.Current != _lastCurrentCommand)
+			{
+				_lastCurrentCommand = Commands.Current;
+				RefreshPreview?.Invoke();
+			}
+		}
 
 		#endregion
 
@@ -207,7 +224,22 @@ namespace CNCLib.Wpf.ViewModels
 				try
 				{
 					Com.ClearCommandHistory();
-					Com.QueueCommands(Commands.ToStringList());
+					Command last = null;
+					Commands.ForEach((cmd) =>
+					{
+						string[] cmds = cmd.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
+						if (cmds != null)
+						{
+							foreach (string str in cmds)
+							{
+								foreach (var c in Com.QueueCommand(str))
+								{
+									c.Tag = cmd;
+								}
+							}
+						}
+						last = cmd;
+					});
 					Com.WriteCommandHistory(CmdHistoryFileName);
 				}
 				finally
