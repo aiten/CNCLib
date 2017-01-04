@@ -43,22 +43,10 @@
 
 #define MYNUM_AXIS 3
 #define CNCSHIELD_NUM_AXIS MYNUM_AXIS
-#define CNCSHIELD_GBRL11
+//#define CNCSHIELD_GBRL09
 
 #include <Steppers/StepperCNCShield_pins.h>
-
 // change some pin definition here:
-
-// use ZMinRef(=11) for analog laser PWM
-// new ZRef = 10
-
-#undef CNCSHIELD_Z_MIN_PIN
-#undef CNCSHIELD_Z_MAX_PIN
-#define CNCSHIELD_Z_MIN_PIN 10
-
-#undef CNCSHIELD_SPINDEL_ENABLE_PIN
-#define CNCSHIELD_SPINDEL_ENABLE_PIN 11
-
 #include <Steppers/StepperCNCShield.h>
 
 ////////////////////////////////////////////////////////

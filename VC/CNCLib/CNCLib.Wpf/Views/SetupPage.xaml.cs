@@ -55,6 +55,16 @@ namespace CNCLib.Wpf.Views
 				});
 			}
 
+			if (vm.ShowEeprom == null)
+			{
+				vm.ShowEeprom = new Action(() =>
+				{
+					var dlg = new EepromView();
+					var vmdlg = dlg.DataContext as EepromViewModel;
+					dlg.ShowDialog();
+				});
+			}
+
 			if (vm.EditJoystick == null)
 			{
 				vm.EditJoystick = new Action(() =>

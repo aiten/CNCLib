@@ -194,8 +194,8 @@ bool CControl::ParseAndPrintResult(CParser *parser, Stream* output)
 			PrintError(output);
 			output->print(parser->GetError());
 			output->print(MESSAGE_CONTROL_RESULTS);
-//			output->println(_buffer);
-			output->println(millis());
+			output->println(_buffer);
+//			output->println(millis());
 		}
 		ret = false;
 	}

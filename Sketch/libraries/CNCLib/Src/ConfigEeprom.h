@@ -58,6 +58,39 @@ private:
 	void FlushConfig();
 	void SetSlot32(uint8_t slot, uint32_t value);
 
+public: 
+
+	#define EEPROM_NUM_AXIS 4
+
+	enum EConfigSlot
+	{
+		Signature = 0,
+		MaxSize = 1,
+		ScaleMmToMachine = MaxSize + EEPROM_NUM_AXIS,
+		ReferenceType = ScaleMmToMachine + 1,
+		RefMove,
+
+		MaxStepRate,
+		Acc,
+		Dec,
+		RefMoveStepRate
+	};
+
+	struct SCNCEeprom
+	{
+		uint32_t  signature;
+		mm1000_t  maxsize[EEPROM_NUM_AXIS];
+
+		float     ScaleMm1000ToMachine;
+
+		uint8_t	  referenceType[EEPROM_NUM_AXIS];
+		uint8_t   refmove[EEPROM_NUM_AXIS];
+
+		uint32_t  maxsteprate;
+		uint32_t  acc;
+		uint32_t  dec;
+		uint32_t  refmovesteprate;
+	};
 };
 
 ////////////////////////////////////////////////////////

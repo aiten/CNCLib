@@ -27,6 +27,7 @@
 #include <ReadPinIOControl.h>
 #include <PushButtonLow.h>
 #include <DummyIOControl.h>
+#include <ControlTemplate.h>
 
 #include "Configuration_MiniCNC.h"
 

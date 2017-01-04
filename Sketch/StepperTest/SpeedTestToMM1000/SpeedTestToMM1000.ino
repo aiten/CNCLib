@@ -5,11 +5,11 @@ typedef long sdist_t;
 //typedef mm1000_t(*ToMm1000_t) (axis_t axis, sdist_t val);
 typedef sdist_t(*ToMachine_t) (axis_t axis, mm1000_t val);
 
-#define Serial SerialUSB
+//#define Serial SerialUSB
 
 void setup() 
 {
-  Serial.begin(115200);
+  Serial.begin(250000);
 
   Serial.println("Hallo Arduino/Uno");
 }
@@ -64,14 +64,17 @@ void TestFnc(ToMachine_t fnc, const char* text)
 
 void loop() 
 {
+    TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) MulDivU32(val, 16, 5); },               "int(16,5): ");
+    TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) (val * (3200.0/1000.0)); },             "float:     ");
+ 
 //  TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) (val * (256.0/80.0)); },          "float: ");
  // TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) ((val * (256.0/80.0))+0.5); },    "floatR:");
 //  TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) MulDivI32(val, 256, 80); },              "int(256,80): ");
 // TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) MulDivI32(val, 16,  5); },              "int(16,5):   ");
 //  TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) MulDivU32(val, 32,  16); },              "int(32,16):  ");
 //  TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) MulDivU32(val, 17,  16); },              "int(17,16):  ");
-    TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) MulDivU32(val, 80, 256); },              "int(80,256): ");
-    TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) MulDivU32(val, 37, 17); },               "int(37,17): ");
+//    TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) MulDivU32(val, 80, 256); },              "int(80,256): ");
+//    TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) MulDivU32(val, 37, 17); },               "int(37,17): ");
 //  TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) RoundMulDivU32(val, 256, 80); },         "int1r: ");
 //  TestFnc( [] (axis_t /* axis */, mm1000_t val) { return  (sdist_t) MulDivU32(val, 2032, 25); },             "int2:  ");
 }

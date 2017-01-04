@@ -45,7 +45,7 @@ HardwareSerial& StepperSerial = Serial;
 
 void CMyControl::Init()
 {
-	StepperSerial.println(MESSAGE_MYCONTROL_Proxxon_Starting);
+	StepperSerial.println(MESSAGE_MYCONTROL_Starting);
 
 	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 

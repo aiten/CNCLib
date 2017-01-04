@@ -101,7 +101,12 @@
     <Compile Include="Helpers\JoystickArduinoSerialCommunication.cs" />
     <Compile Include="Helpers\JoystickHelper.cs" />
     <Compile Include="Helpers\MachineGCodeHelper.cs" />
+    <Compile Include="Models\Eeprom.cs" />
+    <Compile Include="ViewModels\EepromViewModel.cs" />
     <Compile Include="ViewModels\PreviewViewModel.cs" />
+    <Compile Include="Views\EepromView.xaml.cs">
+      <DependentUpon>EepromView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PreviewPage.xaml.cs">
       <DependentUpon>PreviewPage.xaml</DependentUpon>
     </Compile>
@@ -160,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\StylesResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EepromView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

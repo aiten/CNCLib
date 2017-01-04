@@ -92,6 +92,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public Action<int> EditMachine { get; set; }
 		public Action EditJoystick { get; set; }
+		public Action ShowEeprom { get; set; }
 
 		#endregion
 
@@ -298,6 +299,11 @@ namespace CNCLib.Wpf.ViewModels
 			return !ConnectedJoystick;
 		}
 
+		public void SetEeprom()
+		{
+			ShowEeprom?.Invoke();
+		}
+
 		#endregion
 
 		#region Commands
@@ -305,6 +311,7 @@ namespace CNCLib.Wpf.ViewModels
 		public ICommand SetupMachineCommand => new DelegateCommand(SetupMachine, CanSetupMachine);
 		public ICommand ConnectCommand => new DelegateCommand(async () => await Connect(), CanConnect);
 		public ICommand DisConnectCommand	=> new DelegateCommand(DisConnect, CanDisConnect);
+		public ICommand EepromCommand => new DelegateCommand(SetEeprom, CanDisConnect);
 		public ICommand SetDefaultMachineCommand => new DelegateCommand(SetDefaultMachine, CanSetupMachine);
         public ICommand ConnectJoystickCommand => new DelegateCommand(ConnectJoystick, CanConnectJoystick);
         public ICommand DisConnectJoystickCommand => new DelegateCommand(DisConnectJoystick, CanDisConnectJoystick);

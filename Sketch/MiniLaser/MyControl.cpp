@@ -27,13 +27,26 @@
 
 #include <GCodeParserBase.h>
 #include <ControlTemplate.h>
+#include <ConfigEeprom.h>
+
 #include "MyControl.h"
 
 ////////////////////////////////////////////////////////////
 
 CMyControl Control;
-CMotionControlBase MotionControl;
 
+#ifdef REDUCED_SIZE
+CMotionControlBase MotionControl;
+#define CMyParser CGCodeParserBase
+#define InitParser()
+#else
+#include <GCodeParser.h>
+CMotionControl MotionControl;
+#define CMyParser CGCodeParser
+#define InitParser() CGCodeParser::Init()
+#endif
+
+CConfigEeprom Eprom;
 HardwareSerial& StepperSerial = Serial;
 
 ////////////////////////////////////////////////////////////
@@ -44,14 +57,33 @@ HardwareSerial& StepperSerial = Serial;
 
 ////////////////////////////////////////////////////////////
 
+float scaleToMm;
+float scaleToMachine;
+
+static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
+{
+  0x21436587,
+  { X_MAXSIZE,        Y_MAXSIZE,      Y_MAXSIZE,      A_MAXSIZE },
+  (1000.0 / X_STEPSPERMM),
+  { X_USEREFERENCE,   Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE },
+  { REFMOVE_1_AXIS,   REFMOVE_2_AXIS, REFMOVE_3_AXIS, REFMOVE_4_AXIS },
+  CNC_MAXSPEED,CNC_ACC,CNC_DEC,0
+};
+
+////////////////////////////////////////////////////////////
+
 void CMyControl::Init()
 {
+	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, 0x21436587);
+
+	scaleToMm = CConfigEeprom::GetSlotFloat(CConfigEeprom::ScaleMmToMachine);
+	scaleToMachine = 1.0 / scaleToMm;
 
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();
 #endif
 
-	StepperSerial.println(MESSAGE_MYCONTROL_Laser_Starting);
+	StepperSerial.println(MESSAGE_MYCONTROL_Starting);
 
 	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
@@ -66,8 +98,17 @@ void CMyControl::Init()
 	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,35));  
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
-	CControlTemplate::SetLimitMinMax(MYNUM_AXIS, X_MAXSIZE, Y_MAXSIZE, Z_MAXSIZE, A_MAXSIZE, 0, 0);
-	CControlTemplate::InitReference(X_USEREFERENCE, Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE);
+	CControlTemplate::SetLimitMinMax(MYNUM_AXIS, 
+		CConfigEeprom::GetSlotU32(CConfigEeprom::MaxSize + X_AXIS),
+		CConfigEeprom::GetSlotU32(CConfigEeprom::MaxSize + Y_AXIS),
+		CConfigEeprom::GetSlotU32(CConfigEeprom::MaxSize + Z_AXIS),
+		CConfigEeprom::GetSlotU32(CConfigEeprom::MaxSize + A_AXIS),
+		0, 0);
+	CControlTemplate::InitReference(
+		(EReverenceType) CConfigEeprom::GetSlotU8(CConfigEeprom::ReferenceType, X_AXIS),
+		(EReverenceType) CConfigEeprom::GetSlotU8(CConfigEeprom::ReferenceType, Y_AXIS),
+		(EReverenceType) CConfigEeprom::GetSlotU8(CConfigEeprom::ReferenceType, Z_AXIS),
+		(EReverenceType) CConfigEeprom::GetSlotU8(CConfigEeprom::ReferenceType, A_AXIS));
 
 	_controllerfan.Init(128);
 
@@ -76,11 +117,19 @@ void CMyControl::Init()
 	_kill.Init();
 	_coolant.Init();
 
-	_hold.SetPin(HOLD_PIN);
+#if defined(HOLD_PIN)
+  _hold.SetPin(HOLD_PIN);
+#endif
+#if defined(RESUME_PIN)
 	_resume.SetPin(RESUME_PIN);
+#endif
 
+  InitParser();
 	CGCodeParserBase::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
-	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED, CNC_ACC, CNC_DEC);
+	CStepper::GetInstance()->SetDefaultMaxSpeed(
+		((steprate_t)CConfigEeprom::GetSlotU32(CConfigEeprom::MaxStepRate)),
+		((steprate_t)CConfigEeprom::GetSlotU32(CConfigEeprom::Acc)),
+		((steprate_t)CConfigEeprom::GetSlotU32(CConfigEeprom::Dec)));
 }
 
 ////////////////////////////////////////////////////////////
@@ -89,11 +138,11 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
-		case Spindel:		_spindel.On(ConvertSpindelSpeedToIO(level)); _spindelDir.Set(((short)level)>0);	return;
-		case Coolant:		_coolant.Set(level>0); return;
-		case ControllerFan:	_controllerfan.SetLevel((uint8_t)level);return;
+		case Spindel:		_spindel.On(ConvertSpindelSpeedToIO(level)); _spindelDir.Set(((short)level) > 0);	return;
+		case Coolant:		_coolant.Set(level > 0); return;
+		case ControllerFan:	_controllerfan.SetLevel((uint8_t)level); return;
 	}
-	
+
 	super::IOControl(tool, level);
 }
 
@@ -134,7 +183,7 @@ bool CMyControl::IsKill()
 void CMyControl::TimerInterrupt()
 {
 	super::TimerInterrupt();
-  
+
 	_hold.Check();
 	_resume.Check();
 }
@@ -160,7 +209,7 @@ void CMyControl::Poll()
 		{
 			Resume();
 		}
-	} 
+	}
 	else if (_hold.IsOn())
 	{
 		Hold();
@@ -171,36 +220,32 @@ void CMyControl::Poll()
 
 void CMyControl::GoToReference()
 {
-#ifdef NOGOTOREFERENCEATBOOT
-
-#pragma message ("for test purpose only, not gotoReference at boot")
-
-	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
-
-	// force linking to see size used in sketch
-	if (IsHold())
-		super::GoToReference(X_AXIS, CMotionControlBase::FeedRateToStepRate(X_AXIS, 300000), true);
-
-#else
-
-	GotoReference(REFMOVE_1_AXIS, REFMOVE_2_AXIS, REFMOVE_3_AXIS, REFMOVE_4_AXIS);
-
-#endif
+	for (axis_t i = 0; i < EEPROM_NUM_AXIS; i++)
+	{
+		axis_t axis = CConfigEeprom::GetSlotU8(CConfigEeprom::RefMove, i);
+		if (axis < EEPROM_NUM_AXIS)
+		{
+			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetSlotU8(CConfigEeprom::ReferenceType, axis);
+			if (referenceType != EReverenceType::NoReference)
+				GoToReference(axis,	(steprate_t) CConfigEeprom::GetSlotU32(CConfigEeprom::RefMoveStepRate),referenceType == EReverenceType::ReferenceToMin);
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////
 
-bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
+bool CMyControl::GoToReference(axis_t axis, steprate_t steprate, bool toMinRef)
 {
-  return CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, STEPRATERATE_REFMOVE,0,MOVEAWAYFROMREF_STEPS);
+	return super::GoToReference(axis, steprate, toMinRef);
+	//	return CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, STEPRATERATE_REFMOVE, 0, MOVEAWAYFROMREF_STEPS);
 }
 
 ////////////////////////////////////////////////////////////
 
 bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 {
-	CGCodeParserBase gcode(reader,output);
-	return ParseAndPrintResult(&gcode,output);
+	CMyParser gcode(reader, output);
+	return ParseAndPrintResult(&gcode, output);
 }
 
 ////////////////////////////////////////////////////////////

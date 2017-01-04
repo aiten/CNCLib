@@ -59,5 +59,5 @@
 
 #include <MessageCNCLib.h>
 
-#define MESSAGE_MYCONTROL_iRobot_Starting					F("iRobotCNC:" __DATE__ )
+#define MESSAGE_MYCONTROL_Starting					F("iRobotCNC:" __DATE__ )
 

@@ -33,25 +33,29 @@
 
 ////////////////////////////////////////////////////////
 
-#define MYNUM_AXIS 4
+#define CMyStepper CStepperTB6560
+
+#define ConversionToMm1000 MiniCNCToMm1000
+#define ConversionToMachine MiniCNCToMachine
+//#define ConversionToMm1000 CMotionControlBase::ToMm1000_1_3200
+//#define ConversionToMachine CMotionControlBase::ToMachine_1_3200
+
+#define X_STEPSPERMM (3200.0/1)
+#define Y_STEPSPERMM (3200.0/1)
+#define Z_STEPSPERMM (3200.0/1)
+#define A_STEPSPERMM (3200.0/1)
 
 ////////////////////////////////////////////////////////
 
+#define MYNUM_AXIS 4
 #include <Steppers/StepperTB6560_pins.h>
 #include <Steppers/StepperTB6560.h>
 
 ////////////////////////////////////////////////////////
 
-#define CMyStepper CStepperTB6560
-#define ConversionToMm1000 CMotionControl::ToMm1000_1_3200
-#define ConversionToMachine CMotionControl::ToMachine_1_3200
-//#define ConversionToMm1000 MiniCNCToMm1000
-//#define ConversionToMachine MiniCNCToMachine
 
-#define X_STEPSPERMM 3200.0
-#define Y_STEPSPERMM 3200.0
-#define Z_STEPSPERMM 3200.0
-#define A_STEPSPERMM 3200.0
+
+////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////
 

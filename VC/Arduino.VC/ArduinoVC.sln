@@ -65,11 +65,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DCK40LaserWatchDog", "DCK40
 		{65F3EA50-71B8-4573-8D35-786D97FDFA91} = {65F3EA50-71B8-4573-8D35-786D97FDFA91}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MiniCNCEeprom", "MiniCNCEeprom\MiniCNCEeprom.vcxproj", "{C767B093-C094-4D33-B2F2-B3A2C0CCBBD3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{65F3EA50-71B8-4573-8D35-786D97FDFA91} = {65F3EA50-71B8-4573-8D35-786D97FDFA91}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -128,10 +123,6 @@ Global
 		{DE09D7D5-1431-4CF4-A638-C46D81F4AD36}.Debug|Win32.Build.0 = Debug|Win32
 		{DE09D7D5-1431-4CF4-A638-C46D81F4AD36}.Release|Win32.ActiveCfg = Release|Win32
 		{DE09D7D5-1431-4CF4-A638-C46D81F4AD36}.Release|Win32.Build.0 = Release|Win32
-		{C767B093-C094-4D33-B2F2-B3A2C0CCBBD3}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C767B093-C094-4D33-B2F2-B3A2C0CCBBD3}.Debug|Win32.Build.0 = Debug|Win32
-		{C767B093-C094-4D33-B2F2-B3A2C0CCBBD3}.Release|Win32.ActiveCfg = Release|Win32
-		{C767B093-C094-4D33-B2F2-B3A2C0CCBBD3}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

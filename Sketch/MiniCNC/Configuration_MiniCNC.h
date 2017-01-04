@@ -24,7 +24,7 @@
 #define X_MAXSIZE 200000        // in mm1000_t
 #define Y_MAXSIZE 200000 
 #define Z_MAXSIZE 100000 
-#define A_MAXSIZE 50000 
+#define A_MAXSIZE 360000 
 
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
@@ -34,11 +34,12 @@
 #define Z_USEREFERENCE	EReverenceType::ReferenceToMax
 #define A_USEREFERENCE	EReverenceType::NoReference
 
-#undef NOGOTOREFERENCEATBOOT
-
-#define REFMOVE_1_AXIS  Z_AXIS
-#define REFMOVE_2_AXIS  Y_AXIS
-#define REFMOVE_3_AXIS  X_AXIS
+//#define REFMOVE_1_AXIS  Z_AXIS
+//#define REFMOVE_2_AXIS  Y_AXIS
+//#define REFMOVE_3_AXIS  X_AXIS
+#define REFMOVE_1_AXIS  255
+#define REFMOVE_2_AXIS  255
+#define REFMOVE_3_AXIS  255
 #define REFMOVE_4_AXIS  255
 
 ////////////////////////////////////////////////////////
@@ -62,23 +63,26 @@
 
 ////////////////////////////////////////////////////////
 
-#define GO_DEFAULT_STEPRATE		CNC_MAXSPEED	// steps/sec
+#define GO_DEFAULT_STEPRATE		((steprate_t) CConfigEeprom::GetSlotU32(CConfigEeprom::MaxStepRate))	// steps/sec
 #define G1_DEFAULT_STEPRATE		10000			// steps/sec
-#define G1_DEFAULT_MAXSTEPRATE	CNC_MAXSPEED	// steps/sec
+#define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetSlotU32(CConfigEeprom::MaxStepRate))	// steps/sec
 
-#define STEPRATERATE_REFMOVE	GO_DEFAULT_STEPRATE
+#define STEPRATERATE_REFMOVE	CNC_MAXSPEED // GO_DEFAULT_STEPRATE
 
 ////////////////////////////////////////////////////////
+
+extern float scaleToMm;
+extern float scaleToMachine;
 
 inline mm1000_t MiniCNCToMm1000(axis_t axis, sdist_t val)
 {
 	switch (axis)
 	{
 		default:
-		case X_AXIS: return  (mm1000_t)(val * (1000.0 / X_STEPSPERMM));
-		case Y_AXIS: return  (mm1000_t)(val * (1000.0 / Y_STEPSPERMM));
-		case Z_AXIS: return  (mm1000_t)(val * (1000.0 / Z_STEPSPERMM));
-		case A_AXIS: return  (mm1000_t)(val * (1000.0 / A_STEPSPERMM));
+		case X_AXIS: return  (mm1000_t)(val * scaleToMm);
+		case Y_AXIS: return  (mm1000_t)(val * scaleToMm);
+		case Z_AXIS: return  (mm1000_t)(val * scaleToMm);
+		case A_AXIS: return  (mm1000_t)(val * scaleToMm);
 	}
 }
 
@@ -87,10 +91,10 @@ inline sdist_t MiniCNCToMachine(axis_t axis, mm1000_t  val)
 	switch (axis)
 	{
 		default:
-		case X_AXIS: return  (sdist_t)(val * (X_STEPSPERMM / 1000.0));
-		case Y_AXIS: return  (sdist_t)(val * (Y_STEPSPERMM / 1000.0));
-		case Z_AXIS: return  (sdist_t)(val * (Z_STEPSPERMM / 1000.0));
-		case A_AXIS: return  (sdist_t)(val * (A_STEPSPERMM / 1000.0));
+		case X_AXIS: return  (sdist_t)(val * scaleToMachine);
+		case Y_AXIS: return  (sdist_t)(val * scaleToMachine);
+		case Z_AXIS: return  (sdist_t)(val * scaleToMachine);
+		case A_AXIS: return  (sdist_t)(val * scaleToMachine);
 	}
 }
 
@@ -98,5 +102,5 @@ inline sdist_t MiniCNCToMachine(axis_t axis, mm1000_t  val)
 
 #include <MessageCNCLib.h>
 
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("MiniCNC:" __DATE__ )
+#define MESSAGE_MYCONTROL_Starting					F("MiniCNC:" __DATE__ )
 

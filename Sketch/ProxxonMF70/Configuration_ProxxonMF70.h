@@ -115,13 +115,13 @@
 
 #if defined(__SAM3X8E__)
 #if defined(USE_RAMPS14)
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps 1.4 due is starting ... (" __DATE__ ", " __TIME__ ")")
+#define MESSAGE_MYCONTROL_Starting					F("Proxxon MF 70(HA) Ramps 1.4 due is starting ... (" __DATE__ ", " __TIME__ ")")
 #elif defined(USE_RAMPSFD)
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps FD due is starting ... (" __DATE__ ", " __TIME__ ")")
+#define MESSAGE_MYCONTROL_Starting					F("Proxxon MF 70(HA) Ramps FD due is starting ... (" __DATE__ ", " __TIME__ ")")
 #endif
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps 1.4 mega is starting ... (" __DATE__ ", " __TIME__ ")")
+#define MESSAGE_MYCONTROL_Starting					F("Proxxon MF 70(HA) Ramps 1.4 mega is starting ... (" __DATE__ ", " __TIME__ ")")
 #else
-#define MESSAGE_MYCONTROL_Proxxon_Starting					F("Proxxon MF 70(HA) Ramps 1.4 is starting ... (" __DATE__ ", " __TIME__ ")")
+#define MESSAGE_MYCONTROL_Starting					F("Proxxon MF 70(HA) Ramps 1.4 is starting ... (" __DATE__ ", " __TIME__ ")")
 #endif
 
