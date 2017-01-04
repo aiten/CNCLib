@@ -260,7 +260,7 @@ namespace CNCLib.GUI
 			float cutsize = CutterSize > 0 ? (float)ToClientSizeX(CutterSize) : 2;
 			float fastSize = 0.5f;
 
-			set._cutPen = new Pen(CutColor, cutsize);
+			set._cutPen = new Pen(colorconverter(CutColor), cutsize);
 			set._cutPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
 			set._cutPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
 
