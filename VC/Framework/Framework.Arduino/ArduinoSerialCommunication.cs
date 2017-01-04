@@ -723,7 +723,9 @@ namespace Framework.Arduino
                 char ch;
                 try
                 {
-                    ch = (char) _serialPort.ReadChar();
+					if (true)
+					{
+						ch = (char)_serialPort.ReadChar();
 /*
 					using (StreamWriter f = new StreamWriter(@"c:\tmp\cnclibread.txt", true))
 					{
@@ -734,19 +736,23 @@ namespace Framework.Arduino
 						else
 							f.WriteLine(mr);
 					}
-*/	
+*/
 
-                    if (ch == '\n')
-                    {
-                        message = sb.ToString();
-                        sb.Clear();
-                    }
-                    else
-                    {
-                        sb.Append(ch);
-                    }
-                    // have problem with :
-                    //					message = _serialPort.ReadLine();
+						if (ch == '\n')
+						{
+							message = sb.ToString();
+							sb.Clear();
+						}
+						else
+						{
+							sb.Append(ch);
+						}
+					}
+					else
+					{
+						// have problem with :
+						message = _serialPort.ReadLine();
+					}
 				}
 				catch (TimeoutException) { }
 				catch (InvalidOperationException e)
@@ -848,29 +854,35 @@ namespace Framework.Arduino
         #region OnEvents
         protected virtual void OnWaitForSend(ArduinoSerialCommunicationEventArgs info)
         {
-			WaitForSend?.Invoke(this, info);
+			if (WaitForSend!=null)
+				Task.Run(() => WaitForSend?.Invoke(this, info));
         }
 
         protected virtual void OnCommandSending(ArduinoSerialCommunicationEventArgs info)
         {
-			CommandSending?.Invoke(this, info);
+			if (CommandSending != null)
+				Task.Run(() => CommandSending?.Invoke(this, info));
         }
         protected virtual void OnCommandSent(ArduinoSerialCommunicationEventArgs info)
         {
-			CommandSent?.Invoke(this, info);
+			if (CommandSent != null)
+				Task.Run(() => CommandSent?.Invoke(this, info));
         }
         protected virtual void OnWaitCommandSent(ArduinoSerialCommunicationEventArgs info)
         {
-			WaitCommandSent?.Invoke(this, info);
+			if (WaitCommandSent != null)
+				Task.Run(() => WaitCommandSent?.Invoke(this, info));
         }
         protected virtual void OnReplyReceived(ArduinoSerialCommunicationEventArgs info)
         {
-			ReplyReceived?.Invoke(this, info);
+			if (ReplyReceived != null)
+				Task.Run(() => ReplyReceived?.Invoke(this, info));
         }
 
         protected virtual void OnReplyInfo(ArduinoSerialCommunicationEventArgs info)
         {
-			ReplyInfo?.Invoke(this, info);
+			if (ReplyInfo != null)
+				Task.Run(() => ReplyInfo?.Invoke(this, info));
         }
         protected virtual void OnReplyError(ArduinoSerialCommunicationEventArgs info)
         {
@@ -879,7 +891,8 @@ namespace Framework.Arduino
 				_commands.Last().ReplyType |= EReplyType.ReplyError;
 			}
 
-			ReplyError?.Invoke(this, info);
+			if (ReplyError != null)
+				Task.Run(() => ReplyError?.Invoke(this, info));
         }
         protected virtual void OnReplyDone(ArduinoSerialCommunicationEventArgs info)
         {
@@ -888,7 +901,8 @@ namespace Framework.Arduino
 				_commands.Last().ReplyType |= EReplyType.ReplyOK;
 			}
 
-			ReplyOK?.Invoke(this, info);
+			if (ReplyOK != null)
+				Task.Run(() => ReplyOK?.Invoke(this, info));
         }
         protected virtual void OnReplyUnknown(ArduinoSerialCommunicationEventArgs info)
         {
@@ -897,12 +911,14 @@ namespace Framework.Arduino
 				_commands.Last().ReplyType |= EReplyType.ReplyUnkown;
 			}
 
-			ReplyUnknown?.Invoke(this, info);
+			if (ReplyUnknown != null)
+				Task.Run(() => ReplyUnknown?.Invoke(this, info));
         }
 
 		protected virtual void OnComandQueueChanged(ArduinoSerialCommunicationEventArgs info)
 		{
-			CommandQueueChanged?.Invoke(this, info);
+			if (CommandQueueChanged!=null)
+				Task.Run(()=>CommandQueueChanged?.Invoke(this, info));
 		}
 
 		#endregion

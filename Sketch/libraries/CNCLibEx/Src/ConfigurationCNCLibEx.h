@@ -25,26 +25,6 @@
 
 ////////////////////////////////////////////////////////
 
-typedef float expr_t;			// type for expression parser
-
-typedef long mm1000_t;			// 1/1000 mm
-typedef long feedrate_t;		// mm_1000 / min
-
-////////////////////////////////////////////////////////
-//
-// Control
-
-#define SERIALBUFFERSIZE	128			// even size 
-
-#define TIMEOUTCALLIDEL		333			// time in ms after move completet to call Idle
-
-#define IDLETIMER0VALUE     TIMER0VALUE(1000)		// AVR dont care ... Timer 0 shared with milli	
-
-#define BLINK_LED			13
-#define TIMEOUTBLINK		1000		// blink of led 13
-
-////////////////////////////////////////////////////////
-
 #include "MessageCNCLibEx.h"
 
 ////////////////////////////////////////////////////////

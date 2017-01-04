@@ -240,7 +240,6 @@ namespace CNCLib.Wpf.ViewModels
 						}
 						last = cmd;
 					});
-					Com.WriteCommandHistory(CmdHistoryFileName);
 				}
 				finally
 				{

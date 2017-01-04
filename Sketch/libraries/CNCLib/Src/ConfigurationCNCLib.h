@@ -57,7 +57,7 @@ typedef long inch100000_t;		// 1/100000 inch
 #define TIMEOUTCALLIDEL		333			// time in ms after move completet to call Idle
 #define TIMEOUTCALLPOLL		500			// time in ms to call Poll() next if not idle => ASSERT( TIMEOUTCALLPOLL > TIMEOUTCALLIDEL)
 
-#define IDLETIMER0VALUE     TIMER0VALUE(1000)		// AVR dont care ... Timer 0 shared with milli	
+#define IDLETIMER0VALUE     TIMER0VALUE(50)		// AVR dont care ... Timer 0 shared with milli, other 50Hz
 
 #define BLINK_LED			13
 #define TIMEOUTBLINK		1000		// blink of led 13
