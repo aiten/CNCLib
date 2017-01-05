@@ -1,10 +1,30 @@
-﻿using Framework.Arduino;
+﻿////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2017 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
 using System;
+using System.Linq;
 using System.Globalization;
 using System.Threading.Tasks;
 using CNCLib.GCode;
 using CNCLib.Logic.Contracts.DTO;
 using System.Media;
+using System.Collections.Generic;
+using Framework.Arduino;
 
 namespace CNCLib.Wpf.Helpers
 {
@@ -37,6 +57,52 @@ namespace CNCLib.Wpf.Helpers
 			};
 			return false;
 		}
+
+		public async Task<UInt32[]> GetEpromValuesAsync()
+		{
+			ArduinoSerialCommunication.Command cmd = (await Com.SendCommandAsync("$?")).FirstOrDefault();
+			if (cmd != null)
+			{
+				string[] seperators = { "\n", "\r" };
+				string[] lines = cmd.ResultText.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
+				var intvalues = new Dictionary<int, uint>();
+				int maxslot = -1;
+				foreach (var line in lines)
+				{
+					// e.g. $1=65535(ffff)
+					string[] assign = line.Split('=');
+
+					int slot;
+					if (assign.Length == 2 && assign[0].StartsWith("$") && int.TryParse(assign[0].TrimStart('$'), out slot))
+					{
+						uint slotvalue;
+						string valuestr = assign[1];
+						int idx1 = valuestr.IndexOf('(');
+						if (idx1 > 0)
+							valuestr = valuestr.Substring(0,idx1);
+
+						if (UInt32.TryParse(valuestr, out slotvalue))
+						{
+							intvalues[slot] = slotvalue;
+							if (maxslot < slot)
+								maxslot = slot;
+						}
+					}
+				}
+				if (maxslot > 0)
+				{
+					UInt32[] ret = new UInt32[maxslot + 1];
+					for (int i=0;i<= maxslot;i++)
+					{
+						if (intvalues.ContainsKey(i))
+							ret[i] = intvalues[i];
+					}
+					return ret;
+				}
+			}
+			return null;
+		}
+
 		public async Task SendCommandAsync(string commandstring)
 		{
 			await SendCommandAsync(Global.Instance.Machine, commandstring);

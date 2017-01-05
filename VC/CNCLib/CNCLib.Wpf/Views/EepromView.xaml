@@ -15,7 +15,7 @@
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="10,10,10,10">
             <Button Command="{Binding ReadEepromCommand}"  Content="Read Eeprom" Width="100"/>
-            <Button Command="{Binding ReadEepromCommand}"  Content="Write Eeprom" Margin="10,0" Width="100"/>
+            <Button Command="{Binding WriteEepromCommand}"  Content="Write Eeprom" Margin="10,0" Width="100"/>
         </StackPanel>
 
         <xctk:PropertyGrid DataContext="{Binding EepromValue}" SelectedObject="{Binding}">
