@@ -19,10 +19,10 @@
     <ClInclude Include="..\..\..\Sketch\MiniLaser\MyControl.h">
       <Filter>MiniLaser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniLaser\Configuration_Laser.h">
+    <ClInclude Include="..\..\..\Sketch\MiniLaser\Configuration.h">
       <Filter>MiniLaser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniLaser\Configuration_Laser_CNCShield.h">
+    <ClInclude Include="..\..\..\Sketch\MiniLaser\Configuration_CNCShield.h">
       <Filter>MiniLaser</Filter>
     </ClInclude>
   </ItemGroup>

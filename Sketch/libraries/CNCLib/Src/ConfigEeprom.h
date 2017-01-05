@@ -25,6 +25,15 @@
 
 ////////////////////////////////////////////////////////
 
+#ifdef REDUCED_SIZE
+
+typedef uint8_t eepromofs_t;
+
+#else
+
+typedef uint16_t eepromofs_t;
+
+#endif
 
 class CConfigEeprom : public CSingleton<CConfigEeprom>
 {
@@ -40,56 +49,60 @@ public:
 
 	void Init(unsigned short eepromsizesize, const void* defaulteeprom, uint32_t eepromID);
 
-	static uint32_t GetSlotU32(uint8_t slot);
-	static uint32_t GetSlotU32(uint8_t slot, uint8_t ofs);
-	static uint8_t  GetSlotU8(uint8_t slot, uint8_t ofs);
+	static uint32_t GetConfigU32(eepromofs_t);
+	static uint8_t  GetConfigU8(eepromofs_t);
 
-	static float GetSlotFloat(uint8_t slot);
+	static float GetConfigFloat(eepromofs_t);
 
 	void PrintConfig();
 
 	bool ParseConfig(class CParser*);
 
-	uint32_t GetSlot32(uint8_t slot);
-	uint8_t GetSlot8(uint8_t slot, uint8_t ofs);
+	uint32_t GetConfig32(eepromofs_t ofs);
+	uint8_t GetConfig8(eepromofs_t ofs);
 
 private:
 
 	void FlushConfig();
-	void SetSlot32(uint8_t slot, uint32_t value);
+	void SetConfig32(eepromofs_t ofs, uint32_t value);
 
 public: 
 
 	#define EEPROM_NUM_AXIS 4
 
-	enum EConfigSlot
-	{
-		Signature = 0,
-		MaxSize = 1,
-		ScaleMmToMachine = MaxSize + EEPROM_NUM_AXIS,
-		ReferenceType = ScaleMmToMachine + 1,
-		RefMove,
-
-		MaxStepRate,
-		Acc,
-		Dec,
-		RefMoveStepRate
-	};
-
 	struct SCNCEeprom
 	{
 		uint32_t  signature;
-		mm1000_t  maxsize[EEPROM_NUM_AXIS];
 
-		float     ScaleMm1000ToMachine;
-
-		uint8_t	  referenceType[EEPROM_NUM_AXIS];
 		uint8_t   refmove[EEPROM_NUM_AXIS];
 
 		uint32_t  maxsteprate;
 		uint32_t  acc;
 		uint32_t  dec;
 		uint32_t  refmovesteprate;
+
+		float     ScaleMm1000ToMachine;
+
+		struct SAxisDefinitions
+		{
+			mm1000_t	size;
+
+			uint8_t		referenceType;	// EReverenceType
+			uint8_t		dummy1;
+			uint8_t		dummy2;
+			uint8_t		dummy3;
+
+#ifndef REDUCED_SIZE
+
+			uint32_t	maxsteprate;
+			uint32_t	acc;
+			uint32_t	dec;
+			uint32_t	refmovesteprate;
+
+			float		ScaleMm1000ToMachine;
+#endif
+
+		} axis[EEPROM_NUM_AXIS];
 	};
 };
 

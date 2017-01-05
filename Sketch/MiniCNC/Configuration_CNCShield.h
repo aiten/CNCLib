@@ -35,8 +35,8 @@
 
 #define CMyStepper CStepperCNCShield
 
-#define ConversionToMm1000 MiniCNCToMm1000
-#define ConversionToMachine MiniCNCToMachine
+#define ConversionToMm1000 MyConvertToMm1000
+#define ConversionToMachine MyConvertToMachine
 //#define ConversionToMm1000 CMotionControlBase::ToMm1000_1_3200
 //#define ConversionToMachine CMotionControlBase::ToMachine_1_3200
 
@@ -58,7 +58,6 @@
 //#define CNCSHIELD_X_STEP_PIN 2
 
 #include <Steppers/StepperCNCShield.h>
-//#define CNCSHIELD_GBRL09
 
 ////////////////////////////////////////////////////////
 

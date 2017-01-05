@@ -36,8 +36,8 @@
 ////////////////////////////////////////////////////////
 
 #define CMyStepper CStepperCNCShield
-#define ConversionToMm1000 LaserToMm1000
-#define ConversionToMachine LaserToMachine
+#define ConversionToMm1000 MyConvertToMm1000
+#define ConversionToMachine MyConvertToMachine
 
 ////////////////////////////////////////////////////////
 

@@ -85,8 +85,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sketch\MiniLaser\Configuration_Laser.h" />
-    <ClInclude Include="..\..\..\Sketch\MiniLaser\Configuration_Laser_CNCShield.h" />
+    <ClInclude Include="..\..\..\Sketch\MiniLaser\Configuration.h" />
+    <ClInclude Include="..\..\..\Sketch\MiniLaser\Configuration_CNCShield.h" />
     <ClInclude Include="..\..\..\Sketch\MiniLaser\MyControl.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

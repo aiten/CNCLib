@@ -53,47 +53,63 @@ void CConfigEeprom::Init(unsigned short eepromsizesize, const void* defaulteepro
 	_defaulteeprom = defaulteeprom;
 
 	_eepromvalid = true;
-	_eepromvalid = GetSlotU32(0) == eepromID;
+	_eepromvalid = GetConfigU32(offsetof(SCNCEeprom,signature)) == eepromID;
 }
 
 ////////////////////////////////////////////////////////////
 
-uint32_t CConfigEeprom::GetSlotU32(uint8_t slot) { return GetInstance()->GetSlot32(slot); }
-uint32_t CConfigEeprom::GetSlotU32(uint8_t slot, uint8_t ofs) { return GetInstance()->GetSlot32(slot+ofs); };
-
-float CConfigEeprom::GetSlotFloat(uint8_t slot) { union { uint32_t u; float f; } v; v.u = GetInstance()->GetSlot32(slot); return v.f; }
-
-uint8_t CConfigEeprom::GetSlotU8(uint8_t slot, uint8_t ofs) { return GetInstance()->GetSlot8(slot,ofs); };
-
-////////////////////////////////////////////////////////////
-
-uint32_t CConfigEeprom::GetSlot32(uint8_t slot)
-{
-	if (_eepromvalid)	return CHAL::eeprom_read_dword(EEPROMBASEADRUINT32+slot);
-	return pgm_read_dword(((uint32_t*) _defaulteeprom)+slot);
-}
-////////////////////////////////////////////////////////////
-
-uint8_t CConfigEeprom::GetSlot8(uint8_t slot, uint8_t ofs)
-{
-	if (_eepromvalid)	return CHAL::eeprom_read_byte((uint8_t*) EEPROMBASEADRUINT32 + slot*sizeof(uint32_t) + ofs);
-	return pgm_read_byte((uint8_t*)_defaulteeprom + slot * sizeof(uint32_t) + ofs);
+float CConfigEeprom::GetConfigFloat(eepromofs_t ofs) 
+{ 
+	union { uint32_t u; float f; } v; 
+	v.u = GetInstance()->GetConfig32(ofs); 
+	return v.f; 
 }
 
+uint32_t CConfigEeprom::GetConfigU32(eepromofs_t ofs) 
+{ 
+	return GetInstance()->GetConfig32(ofs); 
+};
+
+uint8_t CConfigEeprom::GetConfigU8(eepromofs_t ofs)
+{
+	return GetInstance()->GetConfig8(ofs);
+};
+
 ////////////////////////////////////////////////////////////
 
-void CConfigEeprom::SetSlot32(uint8_t slot, uint32_t value)
+inline const void* AddAdr(const void*adr, eepromofs_t ofs)
 {
-	CHAL::eeprom_write_dword(EEPROMBASEADRUINT32 + slot, value);
+	return ((uint8_t*)adr) + ofs;
+}
+
+uint32_t CConfigEeprom::GetConfig32(eepromofs_t ofs)
+{
+	if (_eepromvalid)	return CHAL::eeprom_read_dword((uint32_t*) AddAdr(EEPROMBASEADRUINT32,ofs));
+	return pgm_read_dword((uint32_t*) AddAdr(_defaulteeprom,ofs));
+}
+
+////////////////////////////////////////////////////////////
+
+uint8_t CConfigEeprom::GetConfig8(eepromofs_t ofs)
+{
+	if (_eepromvalid)	return CHAL::eeprom_read_byte((uint8_t*)AddAdr(EEPROMBASEADRUINT32,ofs));
+	return pgm_read_byte((uint8_t*)AddAdr(_defaulteeprom, ofs));
+}
+
+////////////////////////////////////////////////////////////
+
+void CConfigEeprom::SetConfig32(eepromofs_t ofs, uint32_t value)
+{
+	CHAL::eeprom_write_dword((uint32_t*)AddAdr(EEPROMBASEADRUINT32, ofs), value);
 }
 
 ////////////////////////////////////////////////////////////
 
 void CConfigEeprom::FlushConfig()
 {
-	for (uint8_t slot = 0; slot < _eepromsizesize / sizeof(uint32_t); slot++)
+	for (eepromofs_t ofs = 0; ofs < _eepromsizesize; ofs+=sizeof(uint32_t))
 	{
-		SetSlot32(slot, GetSlot32(slot));
+		SetConfig32(ofs, GetConfig32(ofs));
 	}
 	_eepromvalid = true;
 }
@@ -102,10 +118,10 @@ void CConfigEeprom::FlushConfig()
 
 void CConfigEeprom::PrintConfig()
 {
-	for (uint8_t slot = 0; slot < _eepromsizesize / sizeof(uint32_t); slot++)
+	for (eepromofs_t ofs = 0; ofs < _eepromsizesize; ofs += sizeof(uint32_t))
 	{
-		uint32_t val = GetSlot32(slot);
-		StepperSerial.print('$'); StepperSerial.print(slot); StepperSerial.print('='); 
+		uint32_t val = GetConfig32(ofs);
+		StepperSerial.print('$'); StepperSerial.print(ofs/sizeof(uint32_t)); StepperSerial.print('=');
 		StepperSerial.print(val); StepperSerial.print('('); StepperSerial.print(val, HEX); StepperSerial.println(')');
 	}
 }
@@ -137,7 +153,7 @@ bool CConfigEeprom::ParseConfig(CParser* parser)
 		return false;
 
 	if (!_eepromvalid) FlushConfig();
-	SetSlot32(slot, varvalue);
+	SetConfig32(slot*sizeof(uint32_t), varvalue);
 
 	return true;
 }

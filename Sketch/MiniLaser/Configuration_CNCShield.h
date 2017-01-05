@@ -36,13 +36,14 @@
 ////////////////////////////////////////////////////////
 
 #define CMyStepper CStepperCNCShield
-#define ConversionToMm1000 LaserToMm1000
-#define ConversionToMachine LaserToMachine
+#define ConversionToMm1000 MyConvertToMm1000
+#define ConversionToMachine MyConvertToMachine
 
 ////////////////////////////////////////////////////////
 
 #define MYNUM_AXIS 3
 #define CNCSHIELD_NUM_AXIS MYNUM_AXIS
+//#define CNCSHIELD_GBRL09
 
 #include <Steppers/StepperCNCShield_pins.h>
 
@@ -65,14 +66,6 @@
 #undef CNCSHIELD_Z_DIR_PIN
 #define CNCSHIELD_Z_STEP_PIN    7
 #define CNCSHIELD_Z_DIR_PIN     4
-
-// use ZMinRef for analog laser PWM
-#undef CNCSHIELD_Z_MIN_PIN
-#undef CNCSHIELD_Z_MAX_PIN
-#define CNCSHIELD_Z_MIN_PIN 10
-
-#undef CNCSHIELD_SPINDEL_ENABLE_PIN
-#define CNCSHIELD_SPINDEL_ENABLE_PIN 11
 
 #include <Steppers/StepperCNCShield.h>
 

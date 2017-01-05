@@ -34,8 +34,6 @@
 #define Z_USEREFERENCE	EReverenceType::NoReference
 #define A_USEREFERENCE	EReverenceType::NoReference
 
-#undef NOGOTOREFERENCEATBOOT
-
 #define REFMOVE_1_AXIS  Y_AXIS
 #define REFMOVE_2_AXIS  X_AXIS
 #define REFMOVE_3_AXIS  255
@@ -48,14 +46,14 @@
 ////////////////////////////////////////////////////////
 
 #if STEPPERTYPE==4
-#include "Configuration_Laser_CNCShield.h"
+#include "Configuration_CNCShield.h"
 #endif
 
 ////////////////////////////////////////////////////////
 
-#define GO_DEFAULT_STEPRATE		((steprate_t) CConfigEeprom::GetSlotU32(CConfigEeprom::MaxStepRate))	// steps/sec
+#define GO_DEFAULT_STEPRATE		((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
 #define G1_DEFAULT_STEPRATE		10000			// steps/sec
-#define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetSlotU32(CConfigEeprom::MaxStepRate))	// steps/sec
+#define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
 
 #define STEPRATERATE_REFMOVE	4000
 
@@ -76,33 +74,7 @@ extern float scaleToMachine;
 #define Z_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
 #define A_STEPSPERMM (3200.0/(TOOTH*TOOTHSIZE))
 
-inline mm1000_t LaserToMm1000(axis_t axis, sdist_t val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (mm1000_t)(val * scaleToMm);
-		case Y_AXIS: return  (mm1000_t)(val * scaleToMm);
-		case Z_AXIS: return  (mm1000_t)(val * scaleToMm);
-		case A_AXIS: return  (mm1000_t)(val * scaleToMm);
-	}
-}
-
-inline sdist_t LaserToMachine(axis_t axis, mm1000_t  val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (sdist_t)(val * scaleToMachine);
-		case Y_AXIS: return  (sdist_t)(val * scaleToMachine);
-		case Z_AXIS: return  (sdist_t)(val * scaleToMachine);
-		case A_AXIS: return  (sdist_t)(val * scaleToMachine);
-	}
-}
-
 ////////////////////////////////////////////////////////
-
-#include <MessageCNCLib.h>
 
 #define MESSAGE_MYCONTROL_Starting					F("Laser:" __DATE__ )
 

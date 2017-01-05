@@ -29,7 +29,7 @@
 #include <DummyIOControl.h>
 #include <ControlTemplate.h>
 
-#include "Configuration_MiniCNC.h"
+#include "Configuration.h"
 
 ////////////////////////////////////////////////////////
 
@@ -68,16 +68,20 @@ private:
 #ifdef SPINDEL_ENABLE_PIN
 	#ifdef SPINDEL_ANALOGSPEED
 		CAnalog8IOControl<SPINDEL_ENABLE_PIN> _spindel;
-		inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t)MulDivU32(abs(level), 255, SPINDEL_MAXSPEED)); }
-#else
+		#if SPINDEL_MAXSPEED == 255
+			inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t)level; }
+		#else	
+			inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t)MulDivU32(abs(level), 255, SPINDEL_MAXSPEED); }
+		#endif
+	#else
 		COnOffIOControl<SPINDEL_ENABLE_PIN, SPINDEL_DIGITAL_ON, SPINDEL_DIGITAL_OFF> _spindel;
 		inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t) level; }
-#endif
+	#endif
 	#ifdef SPINDEL_DIR_PIN
 		COnOffIOControl<SPINDEL_DIR_PIN, SPINDEL_DIR_CLW, SPINDEL_DIR_CCLW> _spindelDir;
 	#else
 		CDummyIOControl _spindelDir;
-#endif
+	#endif
 #else
 	CDummyIOControl _spindel;
 	CDummyIOControl _spindelDir;

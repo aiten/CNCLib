@@ -7,17 +7,15 @@
         xmlns:local="clr-namespace:CNCLib.Wpf.Views"
         xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"        
         mc:Ignorable="d"
-        Title="Eeprom configuration" Height="700" Width="300">
+        Title="Eeprom configuration" Height="700" Width="500">
     <Window.DataContext>
         <vm:EepromViewModel />
     </Window.DataContext>
 
     <DockPanel>
-        <Label Content="Eeprom" DockPanel.Dock="Top"/>
-
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="5,5,5,5">
-            <Button Command="{Binding ReadEepromCommand}"  Content="Read Eeprom"/>
-            <Button Command="{Binding ReadEepromCommand}"  Content="Write Eeprom" Margin="10,0"/>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="10,10,10,10">
+            <Button Command="{Binding ReadEepromCommand}"  Content="Read Eeprom" Width="100"/>
+            <Button Command="{Binding ReadEepromCommand}"  Content="Write Eeprom" Margin="10,0" Width="100"/>
         </StackPanel>
 
         <xctk:PropertyGrid DataContext="{Binding EepromValue}" SelectedObject="{Binding}">

@@ -16,13 +16,13 @@
     <ClInclude Include="targetver.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\Laser\Configuration_Laser.h">
-      <Filter>Laser</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\Laser\MyControl.h">
       <Filter>Laser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\Laser\Configuration_Laser_CNCShield.h">
+    <ClInclude Include="..\..\..\Sketch\Laser\Configuration.h">
+      <Filter>Laser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\Laser\Configuration_CNCShield.h">
       <Filter>Laser</Filter>
     </ClInclude>
   </ItemGroup>

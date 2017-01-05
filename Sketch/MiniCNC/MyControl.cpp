@@ -60,14 +60,47 @@ HardwareSerial& StepperSerial = Serial;
 float scaleToMm;
 float scaleToMachine;
 
+mm1000_t MyConvertToMm1000(axis_t axis, sdist_t val)
+{
+	switch (axis)
+	{
+		default:
+		case X_AXIS: return  (mm1000_t)(val * scaleToMm);
+		case Y_AXIS: return  (mm1000_t)(val * scaleToMm);
+		case Z_AXIS: return  (mm1000_t)(val * scaleToMm);
+		case A_AXIS: return  (mm1000_t)(val * scaleToMm);
+	}
+}
+
+sdist_t MyConvertToMachine(axis_t axis, mm1000_t  val)
+{
+	switch (axis)
+	{
+		default:
+		case X_AXIS: return  (sdist_t)(val * scaleToMachine);
+		case Y_AXIS: return  (sdist_t)(val * scaleToMachine);
+		case Z_AXIS: return  (sdist_t)(val * scaleToMachine);
+		case A_AXIS: return  (sdist_t)(val * scaleToMachine);
+	}
+}
+
+////////////////////////////////////////////////////////////
+
 static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 {
-  0x21436587,
-  { X_MAXSIZE,        Y_MAXSIZE,      Y_MAXSIZE,      A_MAXSIZE },
-  (1000.0 / X_STEPSPERMM),
-  { X_USEREFERENCE,   Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE },
-  { REFMOVE_1_AXIS,   REFMOVE_2_AXIS, REFMOVE_3_AXIS, REFMOVE_4_AXIS },
-  CNC_MAXSPEED,CNC_ACC,CNC_DEC,0
+	0x21436587,
+	{ REFMOVE_1_AXIS,   REFMOVE_2_AXIS, REFMOVE_3_AXIS, REFMOVE_4_AXIS },
+	CNC_MAXSPEED,
+	CNC_ACC,
+	CNC_DEC,
+	STEPRATERATE_REFMOVE,
+	(1000.0 / X_STEPSPERMM),
+	{
+		{ X_MAXSIZE,     X_USEREFERENCE },
+		{ Y_MAXSIZE,     Y_USEREFERENCE },
+		{ Z_MAXSIZE,     Z_USEREFERENCE },
+		{ A_MAXSIZE,     A_USEREFERENCE },
+	}
 };
 
 ////////////////////////////////////////////////////////////
@@ -76,7 +109,7 @@ void CMyControl::Init()
 {
 	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, 0x21436587);
 
-	scaleToMm = CConfigEeprom::GetSlotFloat(CConfigEeprom::ScaleMmToMachine);
+	scaleToMm = CConfigEeprom::GetConfigFloat(offsetof(CConfigEeprom::SCNCEeprom, ScaleMm1000ToMachine));
 	scaleToMachine = 1.0 / scaleToMm;
 
 #ifdef DISABLELEDBLINK
@@ -99,16 +132,16 @@ void CMyControl::Init()
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
 	CControlTemplate::SetLimitMinMax(MYNUM_AXIS, 
-		CConfigEeprom::GetSlotU32(CConfigEeprom::MaxSize + X_AXIS),
-		CConfigEeprom::GetSlotU32(CConfigEeprom::MaxSize + Y_AXIS),
-		CConfigEeprom::GetSlotU32(CConfigEeprom::MaxSize + Z_AXIS),
-		CConfigEeprom::GetSlotU32(CConfigEeprom::MaxSize + A_AXIS),
+		CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[X_AXIS].size)),
+		CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[Y_AXIS].size)),
+		CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[Z_AXIS].size)),
+		CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[A_AXIS].size)),
 		0, 0);
 	CControlTemplate::InitReference(
-		(EReverenceType) CConfigEeprom::GetSlotU8(CConfigEeprom::ReferenceType, X_AXIS),
-		(EReverenceType) CConfigEeprom::GetSlotU8(CConfigEeprom::ReferenceType, Y_AXIS),
-		(EReverenceType) CConfigEeprom::GetSlotU8(CConfigEeprom::ReferenceType, Z_AXIS),
-		(EReverenceType) CConfigEeprom::GetSlotU8(CConfigEeprom::ReferenceType, A_AXIS));
+		(EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[X_AXIS].referenceType)),
+		(EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[Y_AXIS].referenceType)),
+		(EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[Z_AXIS].referenceType)),
+		(EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[A_AXIS].referenceType)));
 
 	_controllerfan.Init(128);
 
@@ -127,9 +160,9 @@ void CMyControl::Init()
   InitParser();
 	CGCodeParserBase::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 	CStepper::GetInstance()->SetDefaultMaxSpeed(
-		((steprate_t)CConfigEeprom::GetSlotU32(CConfigEeprom::MaxStepRate)),
-		((steprate_t)CConfigEeprom::GetSlotU32(CConfigEeprom::Acc)),
-		((steprate_t)CConfigEeprom::GetSlotU32(CConfigEeprom::Dec)));
+		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate))),
+		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, acc))),
+		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, dec))));
 }
 
 ////////////////////////////////////////////////////////////
@@ -222,12 +255,12 @@ void CMyControl::GoToReference()
 {
 	for (axis_t i = 0; i < EEPROM_NUM_AXIS; i++)
 	{
-		axis_t axis = CConfigEeprom::GetSlotU8(CConfigEeprom::RefMove, i);
+		axis_t axis = CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, refmove[0])+i);
 		if (axis < EEPROM_NUM_AXIS)
 		{
-			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetSlotU8(CConfigEeprom::ReferenceType, axis);
+			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType)+sizeof(CConfigEeprom::SCNCEeprom)*axis);
 			if (referenceType != EReverenceType::NoReference)
-				GoToReference(axis,	(steprate_t) CConfigEeprom::GetSlotU32(CConfigEeprom::RefMoveStepRate),referenceType == EReverenceType::ReferenceToMin);
+				GoToReference(axis,	(steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, refmovesteprate)),referenceType == EReverenceType::ReferenceToMin);
 		}
 	}
 }

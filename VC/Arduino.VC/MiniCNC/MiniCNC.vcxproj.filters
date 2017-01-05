@@ -16,22 +16,22 @@
     <ClInclude Include="targetver.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC.h">
-      <Filter>MiniCNC</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\MiniCNC\MyControl.h">
       <Filter>MiniCNC</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_L298N.h">
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\configuration.h">
       <Filter>MiniCNC</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_SMC800.h">
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_CNCShield.h">
       <Filter>MiniCNC</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_TB6560.h">
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_L298N.h">
       <Filter>MiniCNC</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_MiniCNC_CNCShield.h">
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_SMC800.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_TB6560.h">
       <Filter>MiniCNC</Filter>
     </ClInclude>
   </ItemGroup>

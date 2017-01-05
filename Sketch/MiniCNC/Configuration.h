@@ -52,55 +52,24 @@
 ////////////////////////////////////////////////////////
 
 #if STEPPERTYPE==1
-#include "Configuration_MiniCNC_L298N.h"
+#include "Configuration_L298N.h"
 #elif STEPPERTYPE==2
-#include "Configuration_MiniCNC_SMC800.h"
+#include "Configuration_SMC800.h"
 #elif STEPPERTYPE==3
-#include "Configuration_MiniCNC_TB6560.h"
+#include "Configuration_TB6560.h"
 #elif STEPPERTYPE==4
-#include "Configuration_MiniCNC_CNCShield.h"
+#include "Configuration_CNCShield.h"
 #endif
 
 ////////////////////////////////////////////////////////
 
-#define GO_DEFAULT_STEPRATE		((steprate_t) CConfigEeprom::GetSlotU32(CConfigEeprom::MaxStepRate))	// steps/sec
+#define GO_DEFAULT_STEPRATE		((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
 #define G1_DEFAULT_STEPRATE		10000			// steps/sec
-#define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetSlotU32(CConfigEeprom::MaxStepRate))	// steps/sec
+#define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
 
-#define STEPRATERATE_REFMOVE	CNC_MAXSPEED // GO_DEFAULT_STEPRATE
-
-////////////////////////////////////////////////////////
-
-extern float scaleToMm;
-extern float scaleToMachine;
-
-inline mm1000_t MiniCNCToMm1000(axis_t axis, sdist_t val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (mm1000_t)(val * scaleToMm);
-		case Y_AXIS: return  (mm1000_t)(val * scaleToMm);
-		case Z_AXIS: return  (mm1000_t)(val * scaleToMm);
-		case A_AXIS: return  (mm1000_t)(val * scaleToMm);
-	}
-}
-
-inline sdist_t MiniCNCToMachine(axis_t axis, mm1000_t  val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (sdist_t)(val * scaleToMachine);
-		case Y_AXIS: return  (sdist_t)(val * scaleToMachine);
-		case Z_AXIS: return  (sdist_t)(val * scaleToMachine);
-		case A_AXIS: return  (sdist_t)(val * scaleToMachine);
-	}
-}
+#define STEPRATERATE_REFMOVE	0 // 0 ... default
 
 ////////////////////////////////////////////////////////
-
-#include <MessageCNCLib.h>
 
 #define MESSAGE_MYCONTROL_Starting					F("MiniCNC:" __DATE__ )
 
