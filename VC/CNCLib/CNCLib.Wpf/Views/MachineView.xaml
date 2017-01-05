@@ -4,22 +4,22 @@
         xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="CNCLib.Wpf.Views.MachineView"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="Machine" Height="602.056" Width="485">
+        Title="Machine" Height="600" Width="500">
     <Window.DataContext>
         <vm:MachineViewModel />
     </Window.DataContext>
     <DockPanel>
         <StackPanel Margin="10,10,10,10" DockPanel.Dock="Bottom">
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <Button Command="{Binding SaveMachineCommand}" Content="Save"  />
-                <Button Command="{Binding DeleteMachineCommand}" Content="Delete" Margin="10,0,0,0"  />
-                <Button Command="{Binding AddMachineCommand}" Content="Add" Margin="10,0,0,0"  />
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding SaveMachineCommand}" Width="60" Content="Save"  />
+                <Button Command="{Binding DeleteMachineCommand}" Content="Delete" Width="60" Margin="10,0,0,0"  />
+                <Button Command="{Binding AddMachineCommand}" Content="Add" Width="60" Margin="10,0,0,0"  />
             </StackPanel>
             <StackPanel Orientation="Horizontal"/>
         </StackPanel>
 
-        <TabControl Margin="0,0,0,10">
-            <TabItem Header="Setup#1">
+        <TabControl>
+            <TabItem Header="Setup">
                 <xctk:PropertyGrid DataContext="{Binding Machine}" SelectedObject="{Binding}">
                 </xctk:PropertyGrid>
             </TabItem>

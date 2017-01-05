@@ -55,21 +55,10 @@ namespace CNCLib.Wpf.ViewModels
 		Models.Joystick _currentJoystick = new Models.Joystick();
 		int _id = -1;
 
-        public string ComPort
-        {
-			get { return _currentJoystick.ComPort; }
-            set { SetProperty(() => _currentJoystick.ComPort == value, () => _currentJoystick.ComPort = value); }
-        }
-
-		public int BaudRate
+		public Models.Joystick Joystick
 		{
-			get { return _currentJoystick.BaudRate; }
-            set { SetProperty(() => _currentJoystick.BaudRate == value, () => _currentJoystick.BaudRate = value); }
-		}
-		public string InitCommands
-		{
-			get { return _currentJoystick.InitCommands; }
-			set { SetProperty(() => _currentJoystick.InitCommands == value, () => _currentJoystick.InitCommands = value); }
+			get { return _currentJoystick; }
+			set { SetProperty(() => _currentJoystick == value, () => _currentJoystick = value); }
 		}
 
 		#endregion
@@ -78,12 +67,10 @@ namespace CNCLib.Wpf.ViewModels
 		public async Task LoadJoystick()
 		{
 			var joystick = await JoystickHelper.Load();
-			_currentJoystick = joystick.Item1;
 			_id = joystick.Item2;
+			Joystick = joystick.Item1;
 
-			OnPropertyChanged(() => ComPort);
-			OnPropertyChanged(() => BaudRate);
-			OnPropertyChanged(() => InitCommands);
+			OnPropertyChanged(() => Joystick);
 		}
 
 		public async void SaveJoystick()

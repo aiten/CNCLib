@@ -33,7 +33,7 @@ namespace CNCLib.Wpf.Models
 		[ReadOnly(false)]
 		[Browsable(false)]
 		[Category(CATEGORY_INTERNAL)]
-		[DisplayName("MachineID")]
+		[DisplayName("Machine ID")]
 		[Description("Internal Id of machine")]
 		public int MachineID { get; set; }
 
@@ -58,27 +58,27 @@ namespace CNCLib.Wpf.Models
 		public string Name { get; set; }
 
 		[Category(CATEGORY_SIZE)]
-		[DisplayName("SizeX")]
+		[DisplayName("Size-X")]
 		[Description("Size of the X axis (in mm)")]
 		public decimal SizeX { get; set; }
 		[Category(CATEGORY_SIZE)]
-		[DisplayName("SizeY")]
+		[DisplayName("Size-Y")]
 		[Description("Size of the Y axis (in mm)")]
 		public decimal SizeY { get; set; }
 		[Category(CATEGORY_SIZE)]
-		[DisplayName("SizeZ")]
+		[DisplayName("Size-Z")]
 		[Description("Size of the Z axis (in mm)")]
 		public decimal SizeZ { get; set; }
 		[Category(CATEGORY_SIZE)]
-		[DisplayName("SizeA")]
+		[DisplayName("Size-A")]
 		[Description("Size of the A axis (in mm/grad)")]
 		public decimal SizeA { get; set; }
 		[Category(CATEGORY_SIZE)]
-		[DisplayName("SizeB")]
+		[DisplayName("Size-B")]
 		[Description("Size of the B axis (in mm/grad)")]
 		public decimal SizeB { get; set; }
 		[Category(CATEGORY_SIZE)]
-		[DisplayName("SizeC")]
+		[DisplayName("Size-C")]
 		[Description("Size of the C axis (in mm/grad)")]
 		public decimal SizeC { get; set; }
 
@@ -93,15 +93,15 @@ namespace CNCLib.Wpf.Models
 		public bool CommandToUpper { get; set; }
 
 		[Category(CATEGORY_PROBE)]
-		[DisplayName("ProbeSizeX")]
+		[DisplayName("ProbeSize-X")]
 		[Description("Distance between probe hit an 0 (the size of the probe-tool)")]
 		public decimal ProbeSizeX { get; set; }
 		[Category(CATEGORY_PROBE)]
-		[DisplayName("ProbeSizeY")]
+		[DisplayName("ProbeSize-Y")]
 		[Description("Distance between probe hit an 0 (the size of the probe-tool)")]
 		public decimal ProbeSizeY { get; set; }
 		[Category(CATEGORY_PROBE)]
-		[DisplayName("ProbeSizeZ")]
+		[DisplayName("ProbeSize-Z")]
 		[Description("Distance between probe hit an 0 (the size of the probe-tool)")]
 		public decimal ProbeSizeZ { get; set; }
 		[Category(CATEGORY_PROBE)]

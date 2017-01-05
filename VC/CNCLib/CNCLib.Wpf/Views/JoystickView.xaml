@@ -3,34 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"
         x:Class="CNCLib.Wpf.Views.JoystickView"
-        Title="Joystick" Height="210" Width="380">
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="Joystick" Height="350" Width="500">
     <Window.DataContext>
         <vm:JoystickViewModel />
     </Window.DataContext>
-    <StackPanel Margin="10,10,10,0">
-        <StackPanel Margin="0,0,0,10">
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <Button Command="{Binding SaveJoystickCommand}" Content="Save"  />
+    <DockPanel>
+        <StackPanel Margin="10,10,10,10" DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding SaveJoystickCommand}" Content="Save" Width="60" />
             </StackPanel>
             <StackPanel Orientation="Horizontal"/>
         </StackPanel>
-        <TabControl Margin="0,0,0,10" Height="120" >
-            <TabItem Header="Setup">
-                <StackPanel >
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="COM-Port" Width="140"/>
-                        <TextBox Text="{Binding ComPort}" VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="BaudRate" Width="140" />
-                        <TextBox Text="{Binding BaudRate}"  VerticalAlignment="Center" Width="100" HorizontalContentAlignment="Right"  />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Init-Commands" Width="140" />
-                        <TextBox Text="{Binding InitCommands}"  VerticalAlignment="Center" Width="200" HorizontalContentAlignment="Left"  />
-                    </StackPanel>
-                </StackPanel>
-            </TabItem>
-        </TabControl>
-    </StackPanel>
+        <xctk:PropertyGrid DataContext="{Binding Joystick}" SelectedObject="{Binding}">
+        </xctk:PropertyGrid>
+    </DockPanel>
 </Window>
