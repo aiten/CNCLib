@@ -142,12 +142,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendXY(int x, int y)
         {
-			RunAndUpdate(() => 
+			RunAndUpdate(async () => 
                 {
                     var cmd = GetCmd(x, y);
                     if (cmd !=null)
                     {
-						new MachineGCodeHelper().SendCommandAsync(cmd.CommandString).ConfigureAwait(false).GetAwaiter().GetResult();
+						await new MachineGCodeHelper().SendCommandAsync(cmd.CommandString);
                     }
                 });
         }

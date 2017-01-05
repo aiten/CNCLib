@@ -148,6 +148,11 @@ inline uint8_t CHAL::eeprom_read_byte(const uint8_t * __p)
 	return ::eeprom_read_byte(__p);
 }
 
+inline bool CHAL::HaveEeprom()
+{
+	return true;
+}
+
 ////////////////////////////////////////////////////////
 
 #endif 

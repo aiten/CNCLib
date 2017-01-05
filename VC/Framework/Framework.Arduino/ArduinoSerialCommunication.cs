@@ -840,7 +840,8 @@ namespace Framework.Arduino
                     {
                         lock (_pendingCommands)
                         {
-                            _pendingCommands.RemoveAt(0);
+							if (_pendingCommands.Count > 0)	// may cause because of a reset
+								_pendingCommands.RemoveAt(0);
 							_autoEvent.Set();
 						}
 						OnComandQueueChanged(new ArduinoSerialCommunicationEventArgs(null, cmd));

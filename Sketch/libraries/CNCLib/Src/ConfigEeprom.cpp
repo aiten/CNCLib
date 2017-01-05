@@ -137,6 +137,8 @@ bool CConfigEeprom::ParseConfig(CParser* parser)
 			parser->GetReader()->GetNextChar();
 			return true;
 		case '!':
+			if (!CHAL::HaveEeprom())
+				return false;
 			_eepromcanwrite = true;
 			parser->GetReader()->GetNextChar();
 			return true;

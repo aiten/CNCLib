@@ -202,6 +202,7 @@ public:
 
 	static unsigned short analogRead(pin_t pin);
 
+	static bool HaveEeprom() ALWAYSINLINE;
 	static void eeprom_write_dword(uint32_t *  __p, uint32_t  	__value) ALWAYSINLINE;
 	static uint32_t eeprom_read_dword(const uint32_t * __p) ALWAYSINLINE;
 	static uint8_t eeprom_read_byte(const uint8_t * __p) ALWAYSINLINE;

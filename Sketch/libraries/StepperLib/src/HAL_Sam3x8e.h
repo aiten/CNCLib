@@ -143,6 +143,12 @@ inline uint8_t CHAL::eeprom_read_byte(const uint8_t *)
 {
 	return 0;
 }
+
+inline bool CHAL::HaveEeprom()
+{
+	return false;
+}
+
 ////////////////////////////////////////////////////////
 
 inline void CHAL::delayMicroseconds(unsigned int usec)
