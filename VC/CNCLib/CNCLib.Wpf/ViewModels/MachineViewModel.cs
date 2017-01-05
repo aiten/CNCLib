@@ -51,125 +51,10 @@ namespace CNCLib.Wpf.ViewModels
 
 		Models.Machine _currentMachine = new Models.Machine();
 
-        public string MachineName
-        {
-            get { return _currentMachine.Name; }
-            set { SetProperty(() => _currentMachine.Name == value, () => _currentMachine.Name = value); }
-        }
-
-        public string ComPort
-        {
-			get { return _currentMachine.ComPort; }
-            set { SetProperty(() => _currentMachine.ComPort == value, () => _currentMachine.ComPort = value); }
-        }
-
-		public int BaudRate
+		public Models.Machine Machine
 		{
-			get { return _currentMachine.BaudRate; }
-            set { SetProperty(() => _currentMachine.BaudRate == value, () => _currentMachine.BaudRate = value); }
-		}
-		public int Axis
-		{
-			get { return _currentMachine.Axis; }
-			set { SetProperty(() => _currentMachine.Axis == value, () => _currentMachine.Axis = value); }
-		}
-
-		public bool CommandToUpper
-		{
-			get { return _currentMachine.CommandToUpper; }
-			set { SetProperty(() => _currentMachine.CommandToUpper == value, () => _currentMachine.CommandToUpper = value); }
-		}
-
-		public int BufferSize
-		{
-			get { return _currentMachine.BufferSize; }
-			set { SetProperty(() => _currentMachine.BufferSize == value, () => _currentMachine.BufferSize = value); }
-		}
-
-		public decimal SizeX
-		{
-			get { return _currentMachine.SizeX; }
-			set { SetProperty(() => _currentMachine.SizeX == value, () => _currentMachine.SizeX = value); }
-		}
-		public decimal SizeY
-		{
-			get { return _currentMachine.SizeY; }
-			set { SetProperty(() => _currentMachine.SizeY == value, () => _currentMachine.SizeY = value); }
-		}
-		public decimal SizeZ
-		{
-			get { return _currentMachine.SizeZ; }
-            set { SetProperty(() => _currentMachine.SizeZ == value, () => _currentMachine.SizeZ = value); }
-		}
-		public decimal SizeA
-		{
-			get { return _currentMachine.SizeA; }
-			set { SetProperty(() => _currentMachine.SizeA == value, () => _currentMachine.SizeA = value); }
-		}
-		public decimal SizeB
-		{
-			get { return _currentMachine.SizeB; }
-			set { SetProperty(() => _currentMachine.SizeB == value, () => _currentMachine.SizeB = value); }
-		}
-		public decimal SizeC
-		{
-			get { return _currentMachine.SizeC; }
-			set { SetProperty(() => _currentMachine.SizeC == value, () => _currentMachine.SizeC = value); }
-		}
-		public decimal ProbeSizeX
-		{
-			get { return _currentMachine.ProbeSizeX; }
-			set { SetProperty(() => _currentMachine.ProbeSizeX == value, () => _currentMachine.ProbeSizeX = value); }
-		}
-		public decimal ProbeSizeY
-		{
-			get { return _currentMachine.ProbeSizeY; }
-			set { SetProperty(() => _currentMachine.ProbeSizeY == value, () => _currentMachine.ProbeSizeY = value); }
-		}
-		public decimal ProbeSizeZ
-		{
-			get { return _currentMachine.ProbeSizeZ; }
-			set { SetProperty(() => _currentMachine.ProbeSizeZ == value, () => _currentMachine.ProbeSizeZ = value); }
-		}
-		public decimal ProbeDistUp
-		{
-			get { return _currentMachine.ProbeDistUp; }
-			set { SetProperty(() => _currentMachine.ProbeDistUp == value, () => _currentMachine.ProbeDistUp = value); }
-		}
-		public decimal ProbeDist
-		{
-			get { return _currentMachine.ProbeDist; }
-			set { SetProperty(() => _currentMachine.ProbeDist == value, () => _currentMachine.ProbeDist = value); }
-		}
-		public decimal ProbeFeed
-		{
-			get { return _currentMachine.ProbeFeed; }
-			set { SetProperty(() => _currentMachine.ProbeFeed == value, () => _currentMachine.ProbeFeed = value); }
-		}
-		public bool SDSupport
-		{
-			get { return _currentMachine.SDSupport; }
-			set { SetProperty(() => _currentMachine.SDSupport == value, () => _currentMachine.SDSupport = value); }
-		}
-		public bool Spindle
-		{
-			get { return _currentMachine.Spindle; }
-			set { SetProperty(() => _currentMachine.Spindle == value, () => _currentMachine.Spindle = value); }
-		}
-		public bool Coolant
-		{
-			get { return _currentMachine.Coolant; }
-			set { SetProperty(() => _currentMachine.Coolant == value, () => _currentMachine.Coolant = value); }
-		}
-        public bool Laser
-        {
-            get { return _currentMachine.Laser; }
-            set { SetProperty(() => _currentMachine.Laser == value, () => _currentMachine.Laser = value); }
-        }
-        public bool Rotate
-		{
-			get { return _currentMachine.Rotate; }
-			set { SetProperty(() => _currentMachine.Rotate == value, () => _currentMachine.Rotate = value); }
+			get { return _currentMachine; }
+			set { SetProperty(() => _currentMachine == value, () => _currentMachine = value); }
 		}
 
 		public ObservableCollection<Models.MachineCommand> MachineCommands
@@ -205,31 +90,9 @@ namespace CNCLib.Wpf.ViewModels
 				}
 			}
 
-			_currentMachine = dto.Convert();
+			Machine = dto.Convert();
 
-			OnPropertyChanged(() => MachineName);
-			OnPropertyChanged(() => ComPort);
-			OnPropertyChanged(() => Axis);
-			OnPropertyChanged(() => BaudRate);
-			OnPropertyChanged(() => CommandToUpper);
-			OnPropertyChanged(() => SizeX);
-			OnPropertyChanged(() => SizeY);
-			OnPropertyChanged(() => SizeZ);
-			OnPropertyChanged(() => SizeA);
-			OnPropertyChanged(() => SizeB);
-			OnPropertyChanged(() => SizeC);
-			OnPropertyChanged(() => BufferSize);
-			OnPropertyChanged(() => ProbeSizeX);
-			OnPropertyChanged(() => ProbeSizeY);
-			OnPropertyChanged(() => ProbeSizeZ);
-			OnPropertyChanged(() => ProbeDist);
-			OnPropertyChanged(() => ProbeDistUp);
-			OnPropertyChanged(() => ProbeFeed);
-			OnPropertyChanged(() => SDSupport);
-			OnPropertyChanged(() => Spindle);
-			OnPropertyChanged(() => Coolant);
-			OnPropertyChanged(() => Laser);
-			OnPropertyChanged(() => Rotate);
+			OnPropertyChanged(() => Machine);
 
 			OnPropertyChanged(() => MachineCommands);
 			OnPropertyChanged(() => MachineInitCommands);

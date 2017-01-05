@@ -17,42 +17,126 @@
 */
 
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace CNCLib.Wpf.Models
 {
 	public class Machine 
 	{
-        public int MachineID { get; set; }
+		const string CATEGORY_INTERNAL = "Internal";
+		const string CATEGORY_COMMUNICATION = "Communication";
+		const string CATEGORY_SIZE = "Size";
+		const string CATEGORY_FEATURES = "Features";
+		const string CATEGORY_PROBE = "Probe";
+		const string CATEGORY_GENERAL = "General";
 
+		[ReadOnly(false)]
+		[Browsable(false)]
+		[Category(CATEGORY_INTERNAL)]
+		[DisplayName("MachineID")]
+		[Description("Internal Id of machine")]
+		public int MachineID { get; set; }
+
+		[Category(CATEGORY_COMMUNICATION)]
+		[DisplayName("ComPort")]
+		[Description("Com of attached arduino")]
 		public string ComPort { get; set; }
+
+		[Category(CATEGORY_COMMUNICATION)]
+		[DisplayName("BaudRate")]
+		[Description("BaudRate")]
 		public int BaudRate { get; set; }
+
+		[Category(CATEGORY_SIZE)]
+		[DisplayName("Axis")]
+		[Description("Active axis count")]
 		public int Axis { get; set; }
 
+		[Category(CATEGORY_GENERAL)]
+		[DisplayName("Name")]
+		[Description("Name of the machine")]
 		public string Name { get; set; }
 
+		[Category(CATEGORY_SIZE)]
+		[DisplayName("SizeX")]
+		[Description("Size of the X axis (in mm)")]
 		public decimal SizeX { get; set; }
+		[Category(CATEGORY_SIZE)]
+		[DisplayName("SizeY")]
+		[Description("Size of the Y axis (in mm)")]
 		public decimal SizeY { get; set; }
+		[Category(CATEGORY_SIZE)]
+		[DisplayName("SizeZ")]
+		[Description("Size of the Z axis (in mm)")]
 		public decimal SizeZ { get; set; }
+		[Category(CATEGORY_SIZE)]
+		[DisplayName("SizeA")]
+		[Description("Size of the A axis (in mm/grad)")]
 		public decimal SizeA { get; set; }
+		[Category(CATEGORY_SIZE)]
+		[DisplayName("SizeB")]
+		[Description("Size of the B axis (in mm/grad)")]
 		public decimal SizeB { get; set; }
+		[Category(CATEGORY_SIZE)]
+		[DisplayName("SizeC")]
+		[Description("Size of the C axis (in mm/grad)")]
 		public decimal SizeC { get; set; }
 
+		[Category(CATEGORY_COMMUNICATION)]
+		[DisplayName("BufferSize")]
+		[Description("Size of arduino stream input buffer, usual 63 bytes")]
 		public int BufferSize { get; set; }
 
+		[Category(CATEGORY_COMMUNICATION)]
+		[DisplayName("CommandToUpper")]
+		[Description("Convert all commands to uppercase before sending to machine")]
 		public bool CommandToUpper { get; set; }
 
- 		public decimal ProbeSizeX { get; set; }
+		[Category(CATEGORY_PROBE)]
+		[DisplayName("ProbeSizeX")]
+		[Description("Distance between probe hit an 0 (the size of the probe-tool)")]
+		public decimal ProbeSizeX { get; set; }
+		[Category(CATEGORY_PROBE)]
+		[DisplayName("ProbeSizeY")]
+		[Description("Distance between probe hit an 0 (the size of the probe-tool)")]
 		public decimal ProbeSizeY { get; set; }
+		[Category(CATEGORY_PROBE)]
+		[DisplayName("ProbeSizeZ")]
+		[Description("Distance between probe hit an 0 (the size of the probe-tool)")]
 		public decimal ProbeSizeZ { get; set; }
+		[Category(CATEGORY_PROBE)]
+		[DisplayName("ProbeDistUp")]
+		[Description("Distance to retract when probe is hit")]
 		public decimal ProbeDistUp { get; set; }
+		[Category(CATEGORY_PROBE)]
+		[DisplayName("ProbeDist")]
+		[Description("Distance to move untile probe must hit")]
 		public decimal ProbeDist { get; set; }
+		[Category(CATEGORY_PROBE)]
+		[DisplayName("ProbeFeed")]
+		[Description("Feedrate while probe is active")]
 		public decimal ProbeFeed { get; set; }
 
+		[Category(CATEGORY_FEATURES)]
+		[DisplayName("SDSupport")]
+		[Description("Machine has a SD card")]
 		public bool SDSupport { get; set; }
+		[Category(CATEGORY_FEATURES)]
+		[DisplayName("Spindle")]
+		[Description("Can switch on/of the spindle")]
 		public bool Spindle { get; set; }
+		[Category(CATEGORY_FEATURES)]
+		[DisplayName("Coolant")]
+		[Description("Can switch on/of the coolant")]
 		public bool Coolant { get; set; }
-        public bool Laser { get; set; }
-        public bool Rotate { get; set; }
+		[Category(CATEGORY_FEATURES)]
+		[DisplayName("Laser")]
+		[Description("This is a laser")]
+		public bool Laser { get; set; }
+		[Category(CATEGORY_FEATURES)]
+		[DisplayName("Rotate")]
+		[Description("Machin can rotate the coordinate system")]
+		public bool Rotate { get; set; }
 
 		private ObservableCollection<Models.MachineCommand> _MachineCommands;
 
