@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using CNCLib.Wpf.Helpers;
 using CNCLib.GCode;
 using System.IO;
+using System.Windows;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -71,40 +72,49 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void WriteEeprom()
 		{
-			var ee = new EepromV1() { Values = EepromValue.Values };
-
-			if (ee.IsValid)
+			if (MessageBox?.Invoke("Send 'Write EEprom commands' to machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
 			{
-				//ee[EepromV1.EValueOffsets8.NumAxis] = EepromValue.NumAxis;
-				//ee[EepromV1.EValueOffsets8.UseAxis] = EepromValue.UseAxis;
+				var ee = new EepromV1() { Values = EepromValue.Values };
 
-				//eeprom.Info = ee[EepromV1.EValueOffsets32.Info];
+				if (ee.IsValid)
+				{
+					//ee[EepromV1.EValueOffsets8.NumAxis] = EepromValue.NumAxis;
+					//ee[EepromV1.EValueOffsets8.UseAxis] = EepromValue.UseAxis;
 
-				ee[0, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeX;
-				ee[1, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeY;
-				ee[2, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeZ;
-				ee[3, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeA;
+					//eeprom.Info = ee[EepromV1.EValueOffsets32.Info];
 
-				ee[0, EepromV1.EAxisOffsets8.EReverenceType] = (byte) EepromValue.RefMoveX;
-				ee[1, EepromV1.EAxisOffsets8.EReverenceType] = (byte) EepromValue.RefMoveY;
-				ee[2, EepromV1.EAxisOffsets8.EReverenceType] = (byte) EepromValue.RefMoveZ;
-				ee[3, EepromV1.EAxisOffsets8.EReverenceType] = (byte) EepromValue.RefMoveA;
+					ee[0, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeX;
+					ee[1, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeY;
+					ee[2, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeZ;
+					ee[3, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeA;
 
-				ee[0, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence0;
-				ee[1, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence1;
-				ee[2, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence2;
-				ee[3, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence3;
-				ee[EepromV1.EValueOffsets32.RefMoveStepRate] = EepromValue.RefMoveSteprate;
+					ee[0, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveX;
+					ee[1, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveY;
+					ee[2, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveZ;
+					ee[3, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveA;
 
-				ee[EepromV1.EValueOffsets32.MaxstepRate] = EepromValue.MaxStepRate;
-				ee[EepromV1.EValueOffsets32.Acc] = EepromValue.Acc;
-				ee[EepromV1.EValueOffsets32.Dec] = EepromValue.Dec;
-				ee[EepromV1.EValueOffsets32.ScaleMm1000ToMachine] =  BitConverter.ToUInt32(BitConverter.GetBytes(EepromValue.ScaleMMToMachine), 0);
+					ee[0, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence0;
+					ee[1, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence1;
+					ee[2, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence2;
+					ee[3, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence3;
+					ee[EepromV1.EValueOffsets32.RefMoveStepRate] = EepromValue.RefMoveSteprate;
 
-				File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EEpromWrite.nc"), ee.ToGCode());
+					ee[EepromV1.EValueOffsets32.MaxstepRate] = EepromValue.MaxStepRate;
+					ee[EepromV1.EValueOffsets32.Acc] = EepromValue.Acc;
+					ee[EepromV1.EValueOffsets32.Dec] = EepromValue.Dec;
+					ee[EepromV1.EValueOffsets32.ScaleMm1000ToMachine] = BitConverter.ToUInt32(BitConverter.GetBytes(EepromValue.ScaleMMToMachine), 0);
+
+					File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EEpromWrite.nc"), ee.ToGCode());
+
+					Task.Run(async () =>
+					{
+						await Com.SendCommandAsync(@"$!");
+						await Com.SendCommandsAsync(ee.ToGCode());
+					});
+				}
+
+				CloseAction();
 			}
-
-			CloseAction();
         }
 
 		public void ReadEeprom()
@@ -156,6 +166,20 @@ namespace CNCLib.Wpf.ViewModels
 			});
 		}
 
+		public void EraseEeprom()
+		{
+			if (MessageBox?.Invoke("Send 'Erase EEprom command' to machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+			{
+				Task.Run(async () =>
+				{
+					await Com.SendCommandAsync(@"$!");
+					await Com.SendCommandAsync(@"$0=0");
+				});
+
+				CloseAction();
+			}
+        }
+
 		public bool CanReadEeprom()
 		{
 			return Com.IsConnected;
@@ -165,6 +189,10 @@ namespace CNCLib.Wpf.ViewModels
 		{
 			return Com.IsConnected && _validReadEeprom;
 		}
+		public bool CanEraseEeprom()
+		{
+			return Com.IsConnected;
+		}
 
 		#endregion
 
@@ -172,7 +200,8 @@ namespace CNCLib.Wpf.ViewModels
 
 		public ICommand ReadEepromCommand => new DelegateCommand(ReadEeprom, CanReadEeprom);
         public ICommand WriteEepromCommand => new DelegateCommand(WriteEeprom, CanWriteEeprom);
+		public ICommand EraseEepromCommand => new DelegateCommand(EraseEeprom, CanEraseEeprom);
 
-        #endregion
-    }
+		#endregion
+	}
 }

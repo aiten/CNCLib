@@ -46,6 +46,13 @@ namespace CNCLib.Wpf.Views
 			if (vm.CloseAction == null)
 				vm.CloseAction = new Action(() => this.Close());
 
+			if (vm.MessageBox == null)
+			{
+				vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
+				{
+					return MessageBox.Show(messageBoxText, caption, button, icon);
+				});
+			}
 		}
 	}
 }
