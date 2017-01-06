@@ -70,6 +70,16 @@ public:
 
 	#define EEPROM_NUM_AXIS 4
 
+	#define EEPROM_INFO_SPINDLE			(1<<0)
+	#define EEPROM_INFO_SPINDLE_ANALOG	(1<<1)
+	#define EEPROM_INFO_COOLANT	(1<<2)
+	#define EEPROM_INFO_SD		(1<<3)
+	#define EEPROM_INFO_ROTATE	(1<<4)
+
+	#define EEPROM_INFO_KILL	(1<<31)
+	#define EEPROM_INFO_HOLD	(1<<30)
+	#define EEPROM_INFO_RESUME	(1<<29)
+
 	struct SCNCEeprom
 	{
 		uint32_t  signature;

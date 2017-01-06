@@ -171,7 +171,7 @@ namespace CNCLib.Wpf.ViewModels
 			set { SetProperty(() => _helpLineColor == value, () => _helpLineColor = value); }
 		}
 
-		private string _cmdHistoryFileName = @"c:\tmp\Command.txt";
+		private string _cmdHistoryFileName = @"%USERPROFILE%\Documents\Command.txt";
 		public string CmdHistoryFileName
 		{
 			get { return _cmdHistoryFileName; }

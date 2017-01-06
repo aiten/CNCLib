@@ -89,7 +89,7 @@ sdist_t MyConvertToMachine(axis_t axis, mm1000_t  val)
 static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 {
 	0x21436587,
-	NUM_AXIS, 2, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
+	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
 	0,
 	CNC_MAXSPEED,
 	CNC_ACC,

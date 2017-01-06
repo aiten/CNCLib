@@ -32,7 +32,7 @@ namespace CNCLib.GCode
 	{
 		private void SaveGCode(string filename)
 		{
-			using (StreamWriter sw = new StreamWriter(filename))
+			using (StreamWriter sw = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 			{
 				Command last = null;
 				foreach (Command r in Commands)
@@ -90,7 +90,7 @@ namespace CNCLib.GCode
 
 		private static void WriteCamBam(LoadBase load, string filename)
 		{
-			using (TextWriter writer = new StreamWriter(filename))
+			using (TextWriter writer = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 			{
 				XmlSerializer x = new XmlSerializer(typeof(CamBam.CamBam));
 				x.Serialize(writer, load.CamBam);

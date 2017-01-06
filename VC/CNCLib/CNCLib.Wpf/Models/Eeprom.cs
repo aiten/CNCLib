@@ -19,11 +19,14 @@ namespace CNCLib.Wpf.Models
 		const string CATEGORY_FEATURES = "Features";
 		const string CATEGORY_PROBE = "Probe";
 		const string CATEGORY_GENERAL = "General";
+		const string CATEGORY_INFO = "Info";
 
 		const string CATEGORY_AXIS_X = "Axis X";
 		const string CATEGORY_AXIS_Y = "Axis Y";
 		const string CATEGORY_AXIS_Z = "Axis Z";
 		const string CATEGORY_AXIS_A = "Axis A";
+		const string CATEGORY_AXIS_B = "Axis B";
+		const string CATEGORY_AXIS_C = "Axis C";
 
 		const int EEPROM_NUM_AXIS = 4;
 
@@ -39,7 +42,12 @@ namespace CNCLib.Wpf.Models
 			YAxis = 1,
 			ZAxis = 2,
 			AAxis = 3,
-			No=255
+			BAxis = 4,
+			CAxis = 5,
+			UAxis = 6,
+			VAxis = 7,
+			WAxis = 8,
+			No = 255
 		};
 
 		public UInt32[] Values { get; set; }
@@ -49,17 +57,17 @@ namespace CNCLib.Wpf.Models
 		[Description("Maximum steprate in Hz")]
 		public uint MaxStepRate { get; set; }
 
-		[Category(CATEGORY_GENERAL)]
+		[Category(CATEGORY_INFO)]
 		[DisplayName("NumAxis")]
 		[Description("Supported Axis")]
 		public uint NumAxis { get; set; }
 
-		[Category(CATEGORY_GENERAL)]
+		[Category(CATEGORY_INFO)]
 		[DisplayName("UseAxis")]
 		[Description("Useabel axis")]
 		public uint UseAxis { get; set; }
 
-		[Category(CATEGORY_GENERAL)]
+		[Category(CATEGORY_INFO)]
 		[DisplayName("Info")]
 		[Description("Info 32bit")]
 		public uint Info { get; set; }

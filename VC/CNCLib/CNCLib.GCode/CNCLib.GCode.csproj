@@ -96,6 +96,7 @@
     <Compile Include="Commands\G91Command.cs" />
     <Compile Include="Commands\G92Command.cs" />
     <Compile Include="Commands\GxxCommand.cs" />
+    <Compile Include="EepromV1.cs" />
     <Compile Include="GCodeHelper.cs" />
     <Compile Include="GCodeLoad.cs" />
     <Compile Include="Load\LoadBase.cs" />

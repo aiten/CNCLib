@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using Framework.Wpf.Helpers;
 using System.IO;
+using System;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
@@ -31,7 +32,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region Properties
 
-		private string _fileName = @"c:\tmp\test.GCode";
+		private string _fileName = @"%USERPROFILE%\Documents\test.GCode";
 		public string FileName
 		{
 			get { return _fileName; }
@@ -117,7 +118,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 					message = message.Replace(" ", "");
 					string[] positions = message.Split(':');
 
-					using (StreamWriter sw = new StreamWriter(FileName, true))
+					using (StreamWriter sw = new StreamWriter(Environment.ExpandEnvironmentVariables(FileName), true))
 					{
 						sw.Write("g1");
 						if (positions.Length >= 1) sw.Write("X"+positions[0]);

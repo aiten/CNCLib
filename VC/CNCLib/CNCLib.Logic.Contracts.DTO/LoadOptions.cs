@@ -39,7 +39,7 @@ namespace CNCLib.Logic.Contracts.DTO
 
 		public string SettingName { get; set; }
 
-        public string GCodeWriteToFileName { get; set; } = @"c:\tmp\test.gcode";
+        public string GCodeWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\test.gcode";
 
 		//ALL (not GCode)
 		public string StartupCommands { get; set; }
@@ -87,7 +87,7 @@ namespace CNCLib.Logic.Contracts.DTO
 
 
 		//IMG
-		public string ImageWriteToFileName { get; set; } = @"c:\tmp\image.bmp";
+		public string ImageWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\image.bmp";
 
         public Byte GrayThreshold { get; set; } = 127;
 

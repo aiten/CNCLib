@@ -279,7 +279,7 @@ namespace Framework.Arduino
 		/// <param name="filename"></param>
 		public void WritePendingCommandsToFile(string filename)
 		{
-			using (StreamWriter sw = new StreamWriter(filename))
+			using (StreamWriter sw = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 			{
 				lock (_pendingCommands)
 				{
@@ -952,7 +952,7 @@ namespace Framework.Arduino
 		{
 			lock (_commands)
 			{
-				using (StreamWriter sr = new StreamWriter(filename))
+				using (StreamWriter sr = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 				{
                     foreach (ArduinoSerialCommunication.Command cmds in _commands)
 					{

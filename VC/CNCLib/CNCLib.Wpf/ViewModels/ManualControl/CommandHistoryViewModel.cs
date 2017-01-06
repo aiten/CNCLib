@@ -32,7 +32,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 		}
 
-		public const string CommandHistoryFile = @"c:\tmp\Command.txt";
+		public const string CommandHistoryFile = @"%USERPROFILE%\Documents\Command.txt";
 
 		#region Properties
 
