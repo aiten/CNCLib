@@ -99,7 +99,7 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 	{
 		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS },
 		{ Y_MAXSIZE,     Y_USEREFERENCE, REFMOVE_2_AXIS },
-		{ Z_MAXSIZE,     Z_USEREFERENCE, REFMOVE_3_AXIS},
+		{ Z_MAXSIZE,     Z_USEREFERENCE, REFMOVE_3_AXIS },
 		{ A_MAXSIZE,     A_USEREFERENCE, REFMOVE_4_AXIS },
 	}
 };
@@ -256,10 +256,10 @@ void CMyControl::GoToReference()
 {
 	for (axis_t i = 0; i < EEPROM_NUM_AXIS; i++)
 	{
-		axis_t axis = CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].refmoveSequence)+sizeof(CConfigEeprom::SCNCEeprom)*i);
+		axis_t axis = CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].refmoveSequence)+sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*i);
 		if (axis < EEPROM_NUM_AXIS)
 		{
-			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType)+sizeof(CConfigEeprom::SCNCEeprom)*axis);
+			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType)+sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
 			if (referenceType != EReverenceType::NoReference)
 				GoToReference(axis,	(steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, refmovesteprate)),referenceType == EReverenceType::ReferenceToMin);
 		}
