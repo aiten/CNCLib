@@ -74,7 +74,12 @@ public:
 	{
 		uint32_t  signature;
 
-		uint8_t   refmove[EEPROM_NUM_AXIS];
+		uint8_t	  num_axis;
+		uint8_t	  used_axis;
+		uint8_t	  offsetAxis;
+		uint8_t	  sizeofAxis;
+
+		uint32_t  info;
 
 		uint32_t  maxsteprate;
 		uint32_t  acc;
@@ -87,8 +92,9 @@ public:
 		{
 			mm1000_t	size;
 
-			uint8_t		referenceType;	// EReverenceType
-			uint8_t		dummy1;
+			uint8_t		referenceType;		// EReverenceType
+			uint8_t		refmoveSequence;
+			
 			uint8_t		dummy2;
 			uint8_t		dummy3;
 

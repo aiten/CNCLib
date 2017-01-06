@@ -69,6 +69,57 @@ namespace CNCLib.Wpf.ViewModels
 		{
             CloseAction();
         }
+
+		class EpromValues
+		{
+			UInt32[] _values;
+			public UInt32[] Values
+			{	get { return _values; }
+				set { _values = value; Analyse(); } 
+			}
+
+			public bool IsValid(UInt32 signature)
+			{
+				return Values?.Length > 0 && Values[0] == signature;
+			}
+			public UInt32 Value(uint ofs)
+			{
+				return Values[ofs];
+			}
+
+			public byte Value(uint ofs, int idx)
+			{
+				UInt32 val = Value(ofs);
+				return (byte)((val >> (idx * 8)) & 0xff);
+			}
+
+			public UInt32 AxisValue(uint axis, uint ofs)
+			{
+				return Values[_ofsaxis + axis * _sizeaxis + ofs];
+			}
+			public byte AxisValue(uint axis, uint ofs, int idx)
+			{
+				UInt32 val = AxisValue(axis, ofs);
+				return (byte)((val >> (idx*8)) & 0xff);
+			}
+
+			uint _num_axis;
+			uint _used_axis;
+			uint _ofsaxis;
+			uint _sizeaxis;
+
+			private void Analyse()
+			{
+				if (Values?.Length > 0)
+				{
+					_num_axis = (Values[1] >> 0) & 0xff;
+					_used_axis = (Values[1] >> 8) & 0xff;
+					_ofsaxis = ((Values[1] >> 16) & 0xff) / sizeof(UInt32);
+					_sizeaxis = ((Values[1] >> 24) & 0xff) / sizeof(UInt32);
+				}
+			}
+		}
+
 		public void ReadEeprom()
 		{
 			Task.Run(async () =>
@@ -77,14 +128,20 @@ namespace CNCLib.Wpf.ViewModels
 				if (values != null)
 				{
 					var eeprom = new Eeprom() { Values = values };
+					var ee = new EpromValues() { Values = values };
 
-					if (values[0] == 0x21436587)
+					if (ee.IsValid(0x21436587))
 					{
 						//	struct SCNCEeprom
 						//		{
 						//			uint32_t signature;
 
-						//			uint8_t refmove[EEPROM_NUM_AXIS];
+						//			uint8_t num_axis;
+						//			uint8_t used_axis;
+						//			uint8_t offsetAxis;
+						//			uint8_t sizeofAxis;
+
+						//			uint32_t info;
 
 						//			uint32_t maxsteprate;
 						//			uint32_t acc;
@@ -97,8 +154,9 @@ namespace CNCLib.Wpf.ViewModels
 						//			{
 						//				mm1000_t size;
 
-						//				uint8_t referenceType;  // EReverenceType
-						//				uint8_t dummy1;
+						//				uint8_t referenceType;      // EReverenceType
+						//				uint8_t refmoveSequence;
+
 						//				uint8_t dummy2;
 						//				uint8_t dummy3;
 
@@ -117,41 +175,47 @@ namespace CNCLib.Wpf.ViewModels
 						//	};
 
 						//$0 = 558065031(21436587)
-						//$1 = 4294901761(FFFF0001)
-						//$2 = 27000(6978)
-						//$3 = 350(15E)
-						//$4 = 400(190)
-						//$5 = 4000(FA0)
-						//$6 = 1091960832(41160000)
-						//$7 = 400000(61A80)
-						//$8 = 1(1)
-						//$9 = 380000(5CC60)
-						//$10 = 1(1)
-						//$11 = 100000(186A0)
-						//$12 = 0(0)
-						//$13 = 50000(C350)
-						//$14 = 0(0)
+						//$1 = 136315396(8200204)
+						//$2 = 0(0)
+						//$3 = 20000(4E20)
+						//$4 = 500(1F4)
+						//$5 = 550(226)
+						//$6 = 20000(4E20)
+						//$7 = 1091960832(41160000)
+						//$8 = 36000(8CA0)
+						//$9 = 65280(FF00)
+						//$10 = 36000(8CA0)
+						//$11 = 65280(FF00)
+						//$12 = 10000(2710)
+						//$13 = 65280(FF00)
+						//$14 = 50000(C350)
+						//$15 = 65280(FF00)
 
-						eeprom.SizeX = values[7];
-						eeprom.SizeY = values[9];
-						eeprom.SizeZ = values[11];
-						eeprom.SizeA = values[13];
+						eeprom.NumAxis = ee.Value(1, 0);
+						eeprom.UseAxis = ee.Value(1, 1);
 
-						eeprom.RefMoveX = (Eeprom.EReverenceType)(values[8] & 0xff);
-						eeprom.RefMoveY = (Eeprom.EReverenceType)(values[10] & 0xff);
-						eeprom.RefMoveZ = (Eeprom.EReverenceType)(values[12] & 0xff);
-						eeprom.RefMoveA = (Eeprom.EReverenceType)(values[14] & 0xff);
+						eeprom.Info = ee.Value(2);
 
-						eeprom.RefSeqence0 = (Eeprom.EReverenceSequence)(values[1] & 0xff);
-						eeprom.RefSeqence1 = (Eeprom.EReverenceSequence)((values[1]>>8) & 0xff);
-						eeprom.RefSeqence2 = (Eeprom.EReverenceSequence)((values[1] >> 16) & 0xff);
-						eeprom.RefSeqence3 = (Eeprom.EReverenceSequence)((values[1] >> 24) & 0xff);
-						eeprom.RefMoveSteprate = values[5];
+						eeprom.SizeX = ee.AxisValue(0, 0);
+						eeprom.SizeY = ee.AxisValue(1, 0);
+						eeprom.SizeZ = ee.AxisValue(2, 0);
+						eeprom.SizeA = ee.AxisValue(3, 0);
 
-						eeprom.MaxStepRate = values[2];
-						eeprom.Acc = values[3];
-						eeprom.Dec = values[4];
-						eeprom.ScaleMMToMachine = BitConverter.ToSingle(BitConverter.GetBytes(values[6]), 0);
+						eeprom.RefMoveX = (Eeprom.EReverenceType)ee.AxisValue(0, 1, 0);
+						eeprom.RefMoveY = (Eeprom.EReverenceType)ee.AxisValue(1, 1, 0);
+						eeprom.RefMoveZ = (Eeprom.EReverenceType)ee.AxisValue(2, 1, 0);
+						eeprom.RefMoveA = (Eeprom.EReverenceType)ee.AxisValue(3, 1, 0);
+
+						eeprom.RefSeqence0 = (Eeprom.EReverenceSequence)ee.AxisValue(0, 1, 1);
+						eeprom.RefSeqence1 = (Eeprom.EReverenceSequence)ee.AxisValue(1, 1, 1);
+						eeprom.RefSeqence2 = (Eeprom.EReverenceSequence)ee.AxisValue(2, 1, 1);
+						eeprom.RefSeqence3 = (Eeprom.EReverenceSequence)ee.AxisValue(3, 1, 1);
+						eeprom.RefMoveSteprate = ee.Value(6);
+
+						eeprom.MaxStepRate = ee.Value(3);
+						eeprom.Acc = ee.Value(4);
+						eeprom.Dec = ee.Value(5);
+						eeprom.ScaleMMToMachine = BitConverter.ToSingle(BitConverter.GetBytes(ee.Value(7)), 0);
 					}
 
 					EepromValue = eeprom;

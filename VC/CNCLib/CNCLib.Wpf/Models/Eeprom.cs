@@ -35,10 +35,10 @@ namespace CNCLib.Wpf.Models
 		};
 		public enum EReverenceSequence
 		{
-			XAxix=0,
-			YAxix = 1,
-			ZAxix = 2,
-			AAxix = 3,
+			XAxis=0,
+			YAxis = 1,
+			ZAxis = 2,
+			AAxis = 3,
 			No=255
 		};
 
@@ -48,6 +48,21 @@ namespace CNCLib.Wpf.Models
 		[DisplayName("MaxStepRate")]
 		[Description("Maximum steprate in Hz")]
 		public uint MaxStepRate { get; set; }
+
+		[Category(CATEGORY_GENERAL)]
+		[DisplayName("NumAxis")]
+		[Description("Supported Axis")]
+		public uint NumAxis { get; set; }
+
+		[Category(CATEGORY_GENERAL)]
+		[DisplayName("UseAxis")]
+		[Description("Useabel axis")]
+		public uint UseAxis { get; set; }
+
+		[Category(CATEGORY_GENERAL)]
+		[DisplayName("Info")]
+		[Description("Info 32bit")]
+		public uint Info { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Acc")]

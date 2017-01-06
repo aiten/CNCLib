@@ -89,17 +89,18 @@ sdist_t MyConvertToMachine(axis_t axis, mm1000_t  val)
 static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 {
 	0x21436587,
-	{ REFMOVE_1_AXIS,   REFMOVE_2_AXIS, REFMOVE_3_AXIS, REFMOVE_4_AXIS },
+	NUM_AXIS, 2, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
+	0,
 	CNC_MAXSPEED,
 	CNC_ACC,
 	CNC_DEC,
 	STEPRATERATE_REFMOVE,
 	(1000.0 / X_STEPSPERMM),
 	{
-		{ X_MAXSIZE,     X_USEREFERENCE },
-		{ Y_MAXSIZE,     Y_USEREFERENCE },
-		{ Z_MAXSIZE,     Z_USEREFERENCE },
-		{ A_MAXSIZE,     A_USEREFERENCE },
+		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS },
+		{ Y_MAXSIZE,     Y_USEREFERENCE, REFMOVE_2_AXIS },
+		{ Z_MAXSIZE,     Z_USEREFERENCE, REFMOVE_3_AXIS },
+		{ A_MAXSIZE,     A_USEREFERENCE, REFMOVE_4_AXIS },
 	}
 };
 
@@ -255,7 +256,7 @@ void CMyControl::GoToReference()
 {
 	for (axis_t i = 0; i < EEPROM_NUM_AXIS; i++)
 	{
-		axis_t axis = CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, refmove[0])+i);
+		axis_t axis = CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].refmoveSequence) + sizeof(CConfigEeprom::SCNCEeprom)*i);
 		if (axis < EEPROM_NUM_AXIS)
 		{
 			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType)+sizeof(CConfigEeprom::SCNCEeprom)*axis);
