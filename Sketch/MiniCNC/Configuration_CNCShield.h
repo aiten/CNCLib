@@ -21,29 +21,11 @@
 
 ////////////////////////////////////////////////////////
 
-#define MOVEAWAYFROMREF_STEPS 100
-
-////////////////////////////////////////////////////////
-
-#define CNC_MAXSPEED 27000        // steps/sec
-#define CNC_ACC  350
-#define CNC_DEC  400
-
 //#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
 
 ////////////////////////////////////////////////////////
 
 #define CMyStepper CStepperCNCShield
-
-#define ConversionToMm1000 MyConvertToMm1000
-#define ConversionToMachine MyConvertToMachine
-//#define ConversionToMm1000 CMotionControlBase::ToMm1000_1_3200
-//#define ConversionToMachine CMotionControlBase::ToMachine_1_3200
-
-#define X_STEPSPERMM (3200.0/1)
-#define Y_STEPSPERMM (3200.0/1)
-#define Z_STEPSPERMM (3200.0/1)
-#define A_STEPSPERMM (3200.0/1)
 
 ////////////////////////////////////////////////////////
 

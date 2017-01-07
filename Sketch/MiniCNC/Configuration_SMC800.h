@@ -53,8 +53,6 @@
 
 #include <Steppers/StepperSMC800.h>
 
-
-
 ////////////////////////////////////////////////////////
 
 #define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
