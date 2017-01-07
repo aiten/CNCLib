@@ -21,23 +21,11 @@
 
 ////////////////////////////////////////////////////////
 
-#define MOVEAWAYFROMREF_STEPS 100
-
-////////////////////////////////////////////////////////
-
-#define CNC_MAXSPEED 27000        // steps/sec
-#define CNC_ACC  350
-#define CNC_DEC  400
-
-////////////////////////////////////////////////////////
-
 //#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
 
 ////////////////////////////////////////////////////////
 
 #define CMyStepper CStepperCNCShield
-#define ConversionToMm1000 MyConvertToMm1000
-#define ConversionToMachine MyConvertToMachine
 
 ////////////////////////////////////////////////////////
 
@@ -46,7 +34,11 @@
 //#define CNCSHIELD_GBRL09
 
 #include <Steppers/StepperCNCShield_pins.h>
+
 // change some pin definition here:
+//#undef CNCSHIELD_X_STEP_PIN
+//#define CNCSHIELD_X_STEP_PIN 2
+
 #include <Steppers/StepperCNCShield.h>
 
 ////////////////////////////////////////////////////////

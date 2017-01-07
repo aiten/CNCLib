@@ -35,6 +35,13 @@ typedef uint16_t eepromofs_t;
 
 #endif
 
+enum EReverenceType
+{
+	NoReference,
+	ReferenceToMin,
+	ReferenceToMax
+};
+
 class CConfigEeprom : public CSingleton<CConfigEeprom>
 {
 private:
@@ -67,12 +74,6 @@ private:
 	void SetConfig32(eepromofs_t ofs, uint32_t value);
 
 public: 
-
-#ifdef REDUCED_SIZE
-#define EEPROM_NUM_AXIS 4
-#else
-#define EEPROM_NUM_AXIS 6
-#endif
 
 	#define EEPROM_INFO_SPINDLE			(1<<0)
 	#define EEPROM_INFO_SPINDLE_ANALOG	(1<<1)
@@ -122,7 +123,7 @@ public:
 			float		ScaleMm1000ToMachine;
 #endif
 
-		} axis[EEPROM_NUM_AXIS];
+		} axis[NUM_AXIS];
 	};
 };
 

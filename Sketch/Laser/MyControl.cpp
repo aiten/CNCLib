@@ -26,7 +26,6 @@
 #include <CNCLib.h>
 
 #include <GCodeParserBase.h>
-#include <ControlTemplate.h>
 #include <ConfigEeprom.h>
 
 #include "MyControl.h"
@@ -69,6 +68,8 @@ mm1000_t MyConvertToMm1000(axis_t axis, sdist_t val)
 		case Y_AXIS: return  (mm1000_t)(val * scaleToMm);
 		case Z_AXIS: return  (mm1000_t)(val * scaleToMm);
 		case A_AXIS: return  (mm1000_t)(val * scaleToMm);
+		case B_AXIS: return  (mm1000_t)(val * scaleToMm);
+		case C_AXIS: return  (mm1000_t)(val * scaleToMm);
 	}
 }
 
@@ -81,6 +82,8 @@ sdist_t MyConvertToMachine(axis_t axis, mm1000_t  val)
 		case Y_AXIS: return  (sdist_t)(val * scaleToMachine);
 		case Z_AXIS: return  (sdist_t)(val * scaleToMachine);
 		case A_AXIS: return  (sdist_t)(val * scaleToMachine);
+		case B_AXIS: return  (sdist_t)(val * scaleToMachine);
+		case C_AXIS: return  (sdist_t)(val * scaleToMachine);
 	}
 }
 
@@ -100,7 +103,15 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS },
 		{ Y_MAXSIZE,     Y_USEREFERENCE, REFMOVE_2_AXIS },
 		{ Z_MAXSIZE,     Z_USEREFERENCE, REFMOVE_3_AXIS },
+#if NUM_AXIS > 3
 		{ A_MAXSIZE,     A_USEREFERENCE, REFMOVE_4_AXIS },
+#endif
+#if NUM_AXIS > 4
+		{ B_MAXSIZE,     B_USEREFERENCE, REFMOVE_5_AXIS },
+#endif
+#if NUM_AXIS > 5
+		{ C_MAXSIZE,     C_USEREFERENCE, REFMOVE_5_AXIS },
+#endif
 	}
 };
 
@@ -132,17 +143,14 @@ void CMyControl::Init()
 	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,35));  
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
-	CControlTemplate::SetLimitMinMax(MYNUM_AXIS, 
-		CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[X_AXIS].size)),
-		CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[Y_AXIS].size)),
-		CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[Z_AXIS].size)),
-		CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[A_AXIS].size)),
-		0, 0);
-	CControlTemplate::InitReference(
-		(EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[X_AXIS].referenceType)),
-		(EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[Y_AXIS].referenceType)),
-		(EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[Z_AXIS].referenceType)),
-		(EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[A_AXIS].referenceType)));
+	for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
+	{
+		EnumAsByte(EReverenceType) ref = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
+		if (ref != NoReference)
+			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(axis, ref == EReverenceType::ReferenceToMin), true);
+
+		CStepper::GetInstance()->SetLimitMax(axis, CMotionControlBase::GetInstance()->ToMachine(axis, CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[0].size) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis)));
+	}
 
 	_controllerfan.Init(128);
 
@@ -152,7 +160,7 @@ void CMyControl::Init()
 	_coolant.Init();
 
 #if defined(HOLD_PIN)
-  _hold.SetPin(HOLD_PIN);
+  	_hold.SetPin(HOLD_PIN);
 #endif
 #if defined(RESUME_PIN)
 	_resume.SetPin(RESUME_PIN);
@@ -254,10 +262,10 @@ void CMyControl::Poll()
 
 void CMyControl::GoToReference()
 {
-	for (axis_t i = 0; i < EEPROM_NUM_AXIS; i++)
+	for (axis_t i = 0; i < NUM_AXIS; i++)
 	{
 		axis_t axis = CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].refmoveSequence)+sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*i);
-		if (axis < EEPROM_NUM_AXIS)
+		if (axis < NUM_AXIS)
 		{
 			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType)+sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
 			if (referenceType != EReverenceType::NoReference)

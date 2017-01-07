@@ -21,12 +21,35 @@
 
 ////////////////////////////////////////////////////////
 
+#define STEPPERTYPE 4		// CStepperCNCShield
+
+////////////////////////////////////////////////////////
+
+#define USBBAUDRATE 250000
+
+////////////////////////////////////////////////////////
+
 #define X_MAXSIZE 36000				// in mm1000_t
 #define Y_MAXSIZE 36000 
 #define Z_MAXSIZE 10000 
 #define A_MAXSIZE 50000 
+// 3 mm/rot
+// 20 steps/rot
+// * 16 => 1/16 step
+
+#define X_STEPSPERMM (20.0/3*16)
+#define Y_STEPSPERMM (20.0/3*16)
+#define Z_STEPSPERMM (20.0/3*16)
+#define A_STEPSPERMM (20.0/3*16)
+
+#define ConversionToMm1000 MyConvertToMm1000
+#define ConversionToMachine MyConvertToMachine
 
 ////////////////////////////////////////////////////////
+
+#define CNC_MAXSPEED 20000 // 27000        // steps/sec
+#define CNC_ACC  500
+#define CNC_DEC  550
 // NoReference, ReferenceToMin, ReferenceToMax
 
 #define X_USEREFERENCE	EReverenceType::NoReference
@@ -39,9 +62,7 @@
 #define REFMOVE_3_AXIS	255
 #define REFMOVE_4_AXIS	255
 
-////////////////////////////////////////////////////////
-
-#define STEPPERTYPE 4		// CStepperCNCShield
+#define MOVEAWAYFROMREF_STEPS 10
 
 ////////////////////////////////////////////////////////
 
@@ -52,24 +73,10 @@
 ////////////////////////////////////////////////////////
 
 #define GO_DEFAULT_STEPRATE		((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
-#define G1_DEFAULT_STEPRATE		10000			// steps/sec
+#define G1_DEFAULT_STEPRATE		(CNC_MAXSPEED/2)			// steps/sec
 #define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
 
 #define STEPRATERATE_REFMOVE	CNC_MAXSPEED // GO_DEFAULT_STEPRATE
-
-////////////////////////////////////////////////////////
-
-extern float scaleToMm;
-extern float scaleToMachine;
-
-// 3 mm/rot
-// 20 steps/rot
-// * 16 => 1/16 step
-
-#define X_STEPSPERMM (20.0/3*16)
-#define Y_STEPSPERMM (20.0/3*16)
-#define Z_STEPSPERMM (20.0/3*16)
-#define A_STEPSPERMM (20.0/3*16)
 
 ////////////////////////////////////////////////////////
 

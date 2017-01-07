@@ -27,7 +27,6 @@
 #include <ReadPinIOControl.h>
 #include <PushButtonLow.h>
 #include <DummyIOControl.h>
-#include <ControlTemplate.h>
 
 #include "Configuration.h"
 
@@ -85,7 +84,7 @@ private:
 #else
 	CDummyIOControl _spindel;
 	CDummyIOControl _spindelDir;
-	inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return level; }
+	inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t) level; }
 #endif  
 
 #ifdef COOLANT_PIN
