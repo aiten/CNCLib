@@ -68,7 +68,11 @@ private:
 
 public: 
 
-	#define EEPROM_NUM_AXIS 4
+#ifdef REDUCED_SIZE
+#define EEPROM_NUM_AXIS 4
+#else
+#define EEPROM_NUM_AXIS 6
+#endif
 
 	#define EEPROM_INFO_SPINDLE			(1<<0)
 	#define EEPROM_INFO_SPINDLE_ANALOG	(1<<1)

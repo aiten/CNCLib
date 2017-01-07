@@ -34,7 +34,13 @@ public:
 	//////////////////////////////////////////////////////////////
 	// inline template
 
-	static inline void InitReference(EnumAsByte(EReverenceType) refx, EnumAsByte(EReverenceType) refy, EnumAsByte(EReverenceType) refz, EnumAsByte(EReverenceType) refa)
+	static inline void InitReference(
+					EnumAsByte(EReverenceType) refx = NoReference, 
+					EnumAsByte(EReverenceType) refy = NoReference, 
+					EnumAsByte(EReverenceType) refz = NoReference, 
+					EnumAsByte(EReverenceType) refa = NoReference, 
+					EnumAsByte(EReverenceType) refb = NoReference, 
+					EnumAsByte(EReverenceType) refc = NoReference)
 	{
 		if (refx == ReferenceToMin)
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
@@ -55,6 +61,16 @@ public:
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, true), true);
 		else if (refa == ReferenceToMax)
 			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(A_AXIS, false), true);
+
+		if (refb == ReferenceToMin)
+			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(B_AXIS, true), true);
+		else if (refb == ReferenceToMax)
+			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(B_AXIS, false), true);
+
+		if (refc == ReferenceToMin)
+			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(C_AXIS, true), true);
+		else if (refc == ReferenceToMax)
+			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(C_AXIS, false), true);
 	}
 
 	static inline void SetLimitMinMax(axis_t numxis, udist_t maxx, udist_t maxy, udist_t maxz, udist_t maxa, udist_t maxb, udist_t maxc)
