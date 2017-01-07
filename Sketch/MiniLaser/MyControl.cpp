@@ -152,7 +152,7 @@ void CMyControl::Init()
 	_coolant.Init();
 
 #if defined(HOLD_PIN)
-  _hold.SetPin(HOLD_PIN);
+  	_hold.SetPin(HOLD_PIN);
 #endif
 #if defined(RESUME_PIN)
 	_resume.SetPin(RESUME_PIN);
