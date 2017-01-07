@@ -27,7 +27,7 @@
 
 #define CMyStepper CStepperCNCShield
 #define CMyParser CGCodeParser
-#define CMyControleBase CControl
+#define CMyControlBase CControl
 
 ////////////////////////////////////////////////////////
 

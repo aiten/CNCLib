@@ -19,19 +19,19 @@
     <ClInclude Include="..\..\..\Sketch\DCK40Laser\MyControl.h">
       <Filter>DCK40Laser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_DCK40Laser.h">
-      <Filter>DCK40Laser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_DCK40Laser_CNCShield.h">
-      <Filter>DCK40Laser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_DCK40Laser_RampsFD.h">
-      <Filter>DCK40Laser</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\DCK40Laser\MyLCD.h">
       <Filter>DCK40Laser</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\DCK40Laser\MyMenu.h">
+      <Filter>DCK40Laser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_CNCShield.h">
+      <Filter>DCK40Laser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_RampsFD.h">
+      <Filter>DCK40Laser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration.h">
       <Filter>DCK40Laser</Filter>
     </ClInclude>
   </ItemGroup>

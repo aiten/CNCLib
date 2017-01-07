@@ -24,23 +24,23 @@
 #include <Control.h>
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
-#include <Analog8InvertIOControl.h>
 #include <ReadPinIOControl.h>
 #include <PushButtonLow.h>
+#include <DummyIOControl.h>
 
-#include "Configuration_DCK40Laser.h"
+#include "Configuration.h"
 
 ////////////////////////////////////////////////////////
 
-class CMyControl : public CMyControleBase
+class CMyControl : public CMyControlBase
 {
 private:
 
-  typedef CMyControleBase super;
+  typedef CMyControlBase super;
 
 public:
 
-	CMyControl() { }
+	CMyControl()				 { }
 
 	virtual void Kill() override;
 
@@ -67,14 +67,75 @@ private:
 	CAnalog8IOControl<LASER_PWM_PIN> _laserPWM;
 	COnOffIOControl<LASER_ENABLE_PIN, LASER_ENABLE_ON, LASER_ENABLE_OFF> _laserOnOff;
 
-	CReadPinIOControl<KILL_PIN, KILL_PIN_ON> _kill;
-
-//	CPushButtonLow _hold;
-//	CPushButtonLow _resume;
 	CPushButton _holdresume;
 
 	COnOffIOControl<LASERWATER_PIN, LASERWATER_ON, LASERWATER_OFF> _laserWater;
 	COnOffIOControl<LASERVACUUM_PIN, LASERVACUUM_ON, LASERVACUUM_OFF> _laserVacuum;
+
+#ifdef SPINDEL_ENABLE_PIN
+	#ifdef SPINDEL_ANALOGSPEED
+		CAnalog8IOControl<SPINDEL_ENABLE_PIN> _spindel;
+		#if SPINDEL_MAXSPEED == 255
+			inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t)level; }
+		#else	
+			inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t)MulDivU32(abs(level), 255, SPINDEL_MAXSPEED); }
+		#endif
+	#else
+		COnOffIOControl<SPINDEL_ENABLE_PIN, SPINDEL_DIGITAL_ON, SPINDEL_DIGITAL_OFF> _spindel;
+		inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t) level; }
+	#endif
+	#ifdef SPINDEL_DIR_PIN
+		COnOffIOControl<SPINDEL_DIR_PIN, SPINDEL_DIR_CLW, SPINDEL_DIR_CCLW> _spindelDir;
+	#else
+		CDummyIOControl _spindelDir;
+	#endif
+#else
+	CDummyIOControl _spindel;
+	CDummyIOControl _spindelDir;
+	inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t) level; }
+#endif  
+
+#ifdef COOLANT_PIN
+	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
+#else
+	CDummyIOControl _coolant;
+#endif
+#ifdef PROBE_PIN
+	CReadPinIOControl<PROBE_PIN, PROBE_ON> _probe;
+#else
+	CDummyIOControl _probe;
+#endif
+
+#ifdef KILL_PIN
+	CReadPinIOControl<KILL_PIN, KILL_PIN_ON> _kill;
+#else
+	CDummyIOControl _kill;
+#endif
+
+#if defined(HOLD_PIN) && defined(RESUME_PIN)
+	CPushButtonLow _hold;
+	CPushButtonLow _resume;
+#else
+	CDummyIOControl _hold;
+	CDummyIOControl _resume;
+#endif
+
+#ifdef CONTROLLERFAN_FAN_PIN
+	#ifdef CONTROLLERFAN_ANALOGSPEED
+		#if defined(USE_RAMPSFD)
+			CAnalog8InvertIOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
+		#else
+			CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
+		#endif
+	#else
+		COnOffIOControl<CONTROLLERFAN_FAN_PIN, CONTROLLERFAN_DIGITAL_ON, CONTROLLERFAN_DIGITAL_OFF> _controllerfan;
+	#endif
+	inline bool IsControllerFanTimeout() { return millis() - CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME;	}
+#else
+	CDummyIOControl _controllerfan;
+	inline bool IsControllerFanTimeout() { return false; }
+#endif
+
 };
 
 ////////////////////////////////////////////////////////

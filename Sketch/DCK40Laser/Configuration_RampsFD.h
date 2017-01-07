@@ -36,7 +36,7 @@
 
 #define CMyStepper CStepperRampsFD
 #define CMyParser CGCode3DParser
-#define CMyControleBase CControl3D
+#define CMyControlBase CControl3D
 
 ////////////////////////////////////////////////////////
 
@@ -96,5 +96,4 @@
 
 ////////////////////////////////////////////////////////
 
-#include <MessageCNCLib.h>
 

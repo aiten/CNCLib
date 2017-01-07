@@ -30,7 +30,8 @@
 #include <CNCLibEx.h>
 
 #include <GCode3DParser.h>
-#include <ControlTemplate.h>
+#include <ConfigEeprom.h>
+
 #include "MyControl.h"
 #include "MyLcd.h"
 
@@ -193,7 +194,16 @@ void CMyControl::Initialized()
 
 void CMyControl::GoToReference()
 {
-	GotoReference(REFMOVE_1_AXIS, REFMOVE_2_AXIS, REFMOVE_3_AXIS, REFMOVE_4_AXIS);
+	for (axis_t i = 0; i < NUM_AXIS; i++)
+	{
+		axis_t axis = CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].refmoveSequence)+sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*i);
+		if (axis < NUM_AXIS)
+		{
+			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType)+sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
+			if (referenceType != EReverenceType::NoReference)
+				GoToReference(axis,	(steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, refmovesteprate)),referenceType == EReverenceType::ReferenceToMin);
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////

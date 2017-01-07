@@ -22,7 +22,6 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigEeprom.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigurationCNCLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Control.h" />
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ControlTemplate.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\DummyIOControl.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ExpressionParser.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\GCodeExpressionParser.h" />
