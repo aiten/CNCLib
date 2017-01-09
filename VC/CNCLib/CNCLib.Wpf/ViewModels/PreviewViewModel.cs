@@ -217,7 +217,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void SendTo()
 		{
-			new Task(() =>
+			Task.Run(() =>
 			{
 				_loadingOrSending = true;
 
@@ -245,8 +245,7 @@ namespace CNCLib.Wpf.ViewModels
 				{
 					_loadingOrSending = false;
 				}
-			}
-			).Start();
+			});
 		}
 
 		public async Task Load()

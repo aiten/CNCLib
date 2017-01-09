@@ -69,6 +69,7 @@ namespace Framework.Arduino
         public event CommandEventHandler ReplyInfo;
         public event CommandEventHandler ReplyUnknown;
 		public event CommandEventHandler CommandQueueChanged;
+		public event CommandEventHandler CommandQueueEmpty;
 
 		#endregion
 
@@ -163,12 +164,14 @@ namespace Framework.Arduino
 
 			if (!wasempty)
 				OnComandQueueChanged(new ArduinoSerialCommunicationEventArgs(null, null));
+
+			OnComandQueueEmpty(new ArduinoSerialCommunicationEventArgs(null, null));
 		}
 
-        /// <summary>
+		/// <summary>
 		/// Disconnect from arduino 
 		/// </summary>
-        public void Disconnect()
+		public void Disconnect()
         {
             Disconnect(true);
         }
@@ -222,6 +225,8 @@ namespace Framework.Arduino
 
 			if (!wasempty)
 				OnComandQueueChanged(new ArduinoSerialCommunicationEventArgs(null, null));
+
+			OnComandQueueChanged(new ArduinoSerialCommunicationEventArgs(null, null));
 
 			Aborted = true;
         }
@@ -316,16 +321,13 @@ namespace Framework.Arduino
 			string message = null;
 			if (await WaitUntilNoPendingCommandsAsync(waitForMilliseconds))
 			{
-				var checkresponse = new ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
+				var commands = QueueCommand(line);
+				if (await WaitUntilCommandsDoneAsync(commands, waitForMilliseconds))
 				{
-					message = e.Info;
-				});
-				ReplyOK += checkresponse;
-				QueueCommand(line);
-
-				await WaitUntilNoPendingCommandsAsync(waitForMilliseconds);
-
-				ReplyOK -= checkresponse;
+					var lastCmd = commands.Last();
+					if (lastCmd.ReplyType == EReplyType.ReplyOK)
+						message = lastCmd.ResultText;
+				}
 			}
 			return message;
 		}
@@ -633,11 +635,13 @@ namespace Framework.Arduino
 					}
                 }
 
-				if (cmd == null) return true;
+				if (cmd == null)
+					return true;
 
 				var eventarg = new ArduinoSerialCommunicationEventArgs(null,cmd);
                 OnWaitCommandSent(eventarg);
-                if (Aborted || eventarg.Abort) return false;
+                if (Aborted || eventarg.Abort)
+					return false;
 
 				if (_autoEvent.WaitOne(10) == false)
 					await Task.Delay(1);
@@ -648,7 +652,32 @@ namespace Framework.Arduino
 			return false; // aborting
 		}
 
-        private void Write()
+		private async Task<bool> WaitUntilCommandsDoneAsync(IEnumerable<Command> commands, int maxMilliseconds = int.MaxValue)
+		{
+			var sw = Stopwatch.StartNew();
+			while (_continue)
+			{
+				var noReplayCmd = commands.FirstOrDefault((cmd) => cmd.ReplyType == EReplyType.NoReply);
+
+				if (noReplayCmd == null)
+					return true;
+
+				// wait
+				var eventarg = new ArduinoSerialCommunicationEventArgs(null, noReplayCmd);
+				OnWaitCommandSent(eventarg);
+				if (Aborted || eventarg.Abort)
+					return false;
+
+				if (_autoEvent.WaitOne(10) == false)
+					await Task.Delay(1);
+
+				if (sw.ElapsedMilliseconds > maxMilliseconds)
+					return false;
+			}
+			return false; // aborting
+		}
+
+		private void Write()
         {
 			// Aync write thread to send commands to the arduino
 
@@ -838,13 +867,19 @@ namespace Framework.Arduino
 
                     if (endcommand && cmd != null)
                     {
-                        lock (_pendingCommands)
+						bool isEmpty = false;
+						lock (_pendingCommands)
                         {
 							if (_pendingCommands.Count > 0)	// may cause because of a reset
 								_pendingCommands.RemoveAt(0);
+
+							isEmpty = _pendingCommands.Count == 0;
 							_autoEvent.Set();
 						}
 						OnComandQueueChanged(new ArduinoSerialCommunicationEventArgs(null, cmd));
+
+						if (isEmpty)
+							OnComandQueueEmpty(new ArduinoSerialCommunicationEventArgs(null, cmd));
 					}
 				}
             }
@@ -920,6 +955,11 @@ namespace Framework.Arduino
 		{
 			if (CommandQueueChanged!=null)
 				Task.Run(()=>CommandQueueChanged?.Invoke(this, info));
+		}
+		protected virtual void OnComandQueueEmpty(ArduinoSerialCommunicationEventArgs info)
+		{
+			if (CommandQueueEmpty != null)
+				Task.Run(() => CommandQueueEmpty?.Invoke(this, info));
 		}
 
 		#endregion

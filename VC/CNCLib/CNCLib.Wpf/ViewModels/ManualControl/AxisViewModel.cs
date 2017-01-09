@@ -20,6 +20,7 @@ using System.Windows.Input;
 using Framework.Wpf.Helpers;
 using System.Globalization;
 using CNCLib.Wpf.Helpers;
+using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
@@ -65,9 +66,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		private void SendProbeCommand(int axisindex)
 		{
-			RunAndUpdate(() =>
+			RunAndUpdate(async() =>
 			{
-				new MachineGCodeHelper().SendProbeCommandAsync(AxisIndex).GetAwaiter().GetResult();
+				await new MachineGCodeHelper().SendProbeCommandAsync(AxisIndex);
 			});
 		}
 

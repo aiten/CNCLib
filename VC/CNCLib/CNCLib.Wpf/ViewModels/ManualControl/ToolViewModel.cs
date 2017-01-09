@@ -30,12 +30,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ToolViewModel(IManualControlViewModel vm)
 			: base(vm)
 		{
-			Com.CommandQueueChanged += new ArduinoSerialCommunication.CommandEventHandler(CommandQueueChanged);
+			Com.CommandQueueChanged += new ArduinoSerialCommunication.CommandEventHandler(OnCommandQueueChanged);
 		}
 
 		public void Dispose()
 		{
-			Com.CommandQueueChanged -= new ArduinoSerialCommunication.CommandEventHandler(CommandQueueChanged);
+			Com.CommandQueueChanged -= new ArduinoSerialCommunication.CommandEventHandler(OnCommandQueueChanged);
 		}
 
 		#endregion
@@ -54,7 +54,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		private bool _updateAfterSendNext = false;
 
-		private void CommandQueueChanged(object sender, ArduinoSerialCommunicationEventArgs arg)
+		private void OnCommandQueueChanged(object sender, ArduinoSerialCommunicationEventArgs arg)
 		{
 			OnPropertyChanged(() => PendingCommandCount);
 
@@ -100,9 +100,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public void SendM107LaserOff() { RunAndUpdate(() => { Com.QueueCommand("m107"); }); }
 		public void SendM114PrintPos()
 		{
-			RunInNewTask(() =>
+			RunAndUpdate(async () =>
 			{
-				string message = Com.SendCommandAndReadOKReplyAsync("m114").ConfigureAwait(false).GetAwaiter().GetResult();
+				string message = await Com.SendCommandAndReadOKReplyAsync("m114");
 
 				if (!string.IsNullOrEmpty(message))
 				{
@@ -111,7 +111,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 					SetPositions(message.Split(':'), 0);
 				}
 
-				message = Com.SendCommandAndReadOKReplyAsync("m114 s1").ConfigureAwait(false).GetAwaiter().GetResult();
+				message = await Com.SendCommandAndReadOKReplyAsync("m114 s1");
 
 				if (!string.IsNullOrEmpty(message))
 				{

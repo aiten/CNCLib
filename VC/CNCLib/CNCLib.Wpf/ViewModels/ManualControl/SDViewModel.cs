@@ -105,13 +105,13 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 				Com.QueueCommand("m30 " + filename);
 			});
 		}
-		public void SendFileDirect() { RunInNewTask(() => { Com.SendFileAsync(FileName).GetAwaiter().GetResult(); }); }
+		public void SendFileDirect() { RunAndUpdate(async () => { await Com.SendFileAsync(FileName); }); }
 
 		public void AddToFile()
 		{
-			RunInNewTask(() =>
+			RunAndUpdate(async () =>
 			{
-				string message = Com.SendCommandAndReadOKReplyAsync("m114").ConfigureAwait(false).GetAwaiter().GetResult();
+				string message = await Com.SendCommandAndReadOKReplyAsync("m114");
 				if (!string.IsNullOrEmpty(message))
 				{
 					message = message.Replace("ok", "");

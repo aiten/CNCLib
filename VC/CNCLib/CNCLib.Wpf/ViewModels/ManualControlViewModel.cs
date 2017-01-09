@@ -71,13 +71,15 @@ namespace CNCLib.Wpf.ViewModels
 			Rotate = new RotateViewModel(this) { };
 
             Custom = new CustomViewModel(this) { };
-        }
 
-        #endregion
+			Com.CommandQueueEmpty += OnCommandQueueEmpty;
+		}
 
-        #region AxisVM
+		#endregion
 
-        public AxisViewModel AxisX { get; private set; }
+		#region AxisVM
+
+		public AxisViewModel AxisX { get; private set; }
 
 		public AxisViewModel AxisY { get; private set; }
 
@@ -180,33 +182,21 @@ namespace CNCLib.Wpf.ViewModels
 		}
 		public void RunAndUpdate(Action todo)
 		{
-			try
-			{
-				todo();
-			}
-			finally
-			{
-				Com.CommandQueueChanged += CommandQueueChanged;
-			}
+			todo();
 		}
 
-		private void CommandQueueChanged(object sender, ArduinoSerialCommunicationEventArgs arg)
+		private void OnCommandQueueEmpty(object sender, ArduinoSerialCommunicationEventArgs arg)
 		{
-			if (Com.CommandsInQueue == 0)
-			{
-				Com.CommandQueueChanged -= CommandQueueChanged;
-				CommandHistory.RefreshAfterCommand();
-				//Com.WriteCommandHistory(CommandHistoryViewModel.CommandHistoryFile);
-			}
+			CommandHistory.RefreshAfterCommand();
 		}
 
 		public void RunInNewTask(Action todo)
 		{
-			new Task(() =>
+			Task.Run(() =>
 			{
 				RunAndUpdate(todo);
 			}
-			).Start();
+			);
 		}
 
 		#endregion

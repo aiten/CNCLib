@@ -37,7 +37,7 @@ namespace CNCLib.Wpf.Helpers
 
 		public void RunCommandInNewTask(Action todo)
 		{
-			new Task(() =>
+			Task.Run(() =>
 			{
 				try
 				{
@@ -47,8 +47,7 @@ namespace CNCLib.Wpf.Helpers
 				finally
 				{
 				}
-			}
-			).Start();
+			});
 		}
 
 		protected override void OnReplyReceived(ArduinoSerialCommunicationEventArgs info)
