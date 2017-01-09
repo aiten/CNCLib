@@ -107,29 +107,29 @@
 ////////////////////////////////////////////////////////
 
 #define MASH6050S_LED_PIN			13		// D13
-#define MASH6050S_PS_ON_PIN			12		// D12
+//#define MASH6050S_PS_ON_PIN			12		// D12
 
-#define MASH6050S_FET1D8_PIN		8		// D8 FET1
-#define MASH6050S_FET2D9_PIN		9		// D9 FET2
-#define MASH6050S_FET3D10_PIN		10		// D10 FET3
+//#define MASH6050S_FET1D8_PIN		8		// D8 FET1
+//#define MASH6050S_FET2D9_PIN		9		// D9 FET2
+//#define MASH6050S_FET3D10_PIN		10		// D10 FET3
 
 //#define MASH6050S_KILL_PIN			41		// D41
 
-#define MASH6050S_TEMP_0_PIN		67		// AD13
-#define MASH6050S_TEMP_1_PIN		68		// AD14
-#define MASH6050S_TEMP_2_PIN		69		// AD15
+//#define MASH6050S_TEMP_0_PIN		67		// AD13
+//#define MASH6050S_TEMP_1_PIN		68		// AD14
+//#define MASH6050S_TEMP_2_PIN		69		// AD15
 
-#define MASH6050S_SERVO0_PIN		11		// D11
-#define MASH6050S_SERVO1_PIN		6		// D6
-#define MASH6050S_SERVO2_PIN		5		// D5
-#define MASH6050S_SERVO3_PIN		4		// D4
+//#define MASH6050S_SERVO0_PIN		11		// D11
+//#define MASH6050S_SERVO1_PIN		6		// D6
+//#define MASH6050S_SERVO2_PIN		5		// D5
+//#define MASH6050S_SERVO3_PIN		4		// D4
 
 // these pins are defined in the SD library if building with SD support  
 #define MASH6050S_MAX_SCK_PIN         52		// D52
 #define MASH6050S_MAX_MISO_PIN        50		// D50
 #define MASH6050S_MAX_MOSI_PIN        51		// D51
 #define MASH6050S_MAX6675_SS		  53		// D53
-
+/*
 #define MASH6050S_AUX2_1				-1		// VLogic
 #define MASH6050S_AUX2_2				-1		// GND
 #define MASH6050S_AUX2_3				59		// AD5
@@ -169,29 +169,29 @@
 #define MASH6050S_AUX4_17				17		// UART2_RX  Serial2 on pins 17 (RX) and 16 (TX)
 #define MASH6050S_AUX4_18				16		// UART2_TX
 // 3-8: share E1&E2
-
+*/
 ////////////////////////////////////////////////////////
 // LCD
 
-#define MASH6050S_LCD_ROTARY_ENC		MASH6050S_AUX4_10		// Dreh Encoder auf Ramps 1.4 - Press button
-#define MASH6050S_LCD_ROTARY_EN1		MASH6050S_AUX4_11		// Dreh Encoder auf Ramps 1.4
-#define MASH6050S_LCD_ROTARY_EN2		MASH6050S_AUX4_12		// Dreh Encoder auf Ramps 1.4
+#define MASH6050S_LCD_ROTARY_ENC		35  // MASH6050S_AUX4_10		// Dreh Encoder auf Ramps 1.4 - Press button
+#define MASH6050S_LCD_ROTARY_EN1		33	// MASH6050S_AUX4_11		// Dreh Encoder auf Ramps 1.4
+#define MASH6050S_LCD_ROTARY_EN2		31  // MASH6050S_AUX4_12		// Dreh Encoder auf Ramps 1.4
 
 #define MASH6050S_LCD_ROTARY_ENC_ON	LOW		// Pressed
 #define MASH6050S_LCD_ROTARY_ENC_OFF	HIGH
 
-#define MASH6050S_LCD_BEEPER			MASH6050S_AUX4_9		// Summer auf Ramps 1.4
-#define MASH6050S_LCD_KILL_PIN			MASH6050S_AUX4_7		// Stoptaste auf Ramps 1.4
+#define MASH6050S_LCD_BEEPER			37 // MASH6050S_AUX4_9		// Summer auf Ramps 1.4
+#define MASH6050S_LCD_KILL_PIN			41 // MASH6050S_AUX4_7		// Stoptaste auf Ramps 1.4
 
 #define MASH6050S_LCD_KILL_PIN_ON  LOW	// Pressed
 #define MASH6050S_LCD_KILL_PIN_OFF HIGH
 
-#define MASH6050S_LCD_PINS_RS			MASH6050S_AUX4_18 
-#define MASH6050S_LCD_PINS_ENABLE		MASH6050S_AUX4_17
-#define MASH6050S_LCD_PINS_D4			MASH6050S_AUX4_16
-#define MASH6050S_LCD_PINS_D5			MASH6050S_AUX4_15  
-#define MASH6050S_LCD_PINS_D6			MASH6050S_AUX4_14
-#define MASH6050S_LCD_PINS_D7			MASH6050S_AUX4_13
+#define MASH6050S_LCD_PINS_RS			16 // MASH6050S_AUX4_18 
+#define MASH6050S_LCD_PINS_ENABLE		17 // MASH6050S_AUX4_17
+#define MASH6050S_LCD_PINS_D4			23 // MASH6050S_AUX4_16
+#define MASH6050S_LCD_PINS_D5			25 // MASH6050S_AUX4_15  
+#define MASH6050S_LCD_PINS_D6			27 // MASH6050S_AUX4_14
+#define MASH6050S_LCD_PINS_D7			29 // MASH6050S_AUX4_13
 
 #define MASH6050S_ST7920_CLK_PIN		MASH6050S_LCD_PINS_D4
 #define MASH6050S_ST7920_DAT_PIN		MASH6050S_LCD_PINS_ENABLE

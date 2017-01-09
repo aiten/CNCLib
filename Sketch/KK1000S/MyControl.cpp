@@ -41,12 +41,43 @@ CMyControl Control;
 CGCodeTools GCodeTools;
 
 CMotionControl MotionControl;
+CConfigEeprom Eprom;
+
 HardwareSerial& StepperSerial = Serial;
+////////////////////////////////////////////////////////////
+
+static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
+{
+	0x21436587,
+	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
+	0,
+	CNC_MAXSPEED,
+	CNC_ACC,
+	CNC_DEC,
+	0,// STEPRATERATE_REFMOVE,
+	(1000.0 / X_STEPSPERMM),
+	{
+		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS },
+		{ Y_MAXSIZE,     Y_USEREFERENCE, REFMOVE_2_AXIS },
+		{ Z_MAXSIZE,     Z_USEREFERENCE, REFMOVE_3_AXIS },
+#if NUM_AXIS > 3
+		{ A_MAXSIZE,     A_USEREFERENCE, REFMOVE_4_AXIS },
+#endif
+#if NUM_AXIS > 4
+		{ B_MAXSIZE,     B_USEREFERENCE, REFMOVE_5_AXIS },
+#endif
+#if NUM_AXIS > 5
+		{ C_MAXSIZE,     C_USEREFERENCE, REFMOVE_6_AXIS },
+#endif
+	}
+};
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Init()
 {
+	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, 0x21436587);
+
 	StepperSerial.println(MESSAGE_MYCONTROL_Starting);
 
 	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
@@ -61,8 +92,6 @@ void CMyControl::Init()
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
 	CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350), steprate_t(350));
-
-	CControlTemplate::SetLimitMinMax(NUM_AXIS, X_MAXSIZE, Y_MAXSIZE, Z_MAXSIZE, A_MAXSIZE, B_MAXSIZE, C_MAXSIZE);
 
 	CStepper::GetInstance()->SetJerkSpeed(X_AXIS, 1000);
 	CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, 1000);
@@ -80,25 +109,33 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
 #endif
 
-	for (register uint8_t i = 0; i < NUM_AXIS * 2; i++)
+	for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
 	{
-		CStepper::GetInstance()->UseReference(i, false);
+		EnumAsByte(EReverenceType) ref = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
+		if (ref != NoReference)
+			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(axis, ref == EReverenceType::ReferenceToMin), true);
+
+		CStepper::GetInstance()->SetLimitMax(axis, CMotionControlBase::GetInstance()->ToMachine(axis, CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[0].size) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis)));
 	}
 
-	CControlTemplate::InitReference(X_USEREFERENCE, Y_USEREFERENCE, Z_USEREFERENCE, A_USEREFERENCE);
-	CGCodeParserBase::SetFeedRate(-STEPRATETOFEEDRATE(30000), feedrate_t(100000), STEPRATETOFEEDRATE(30000));
+	_controllerfan.Init(128);
 
-	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
-
-	_coolant.Init();
 	_spindel.Init();
-	_controllerfan.Init(255);
+	_probe.Init();
+	_kill.Init();
+	_coolant.Init();
 
 	_probe.Init(MASH6050S_INPUTPINMODE);
 	_kill.Init(MASH6050S_INPUTPINMODE);
 
 	_holdresume.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
 
+	CGCodeParser::Init();
+	CGCodeParserBase::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
+	CStepper::GetInstance()->SetDefaultMaxSpeed(
+		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate))),
+		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, acc))),
+		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, dec))));
 	InitSD(SD_ENABLE_PIN);
 }
 
@@ -108,12 +145,11 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
-		case Spindel:			_spindel.Set(level>0);	return;
-		case Coolant:			_coolant.Set(level>0); return;
-		case ControllerFan:		_controllerfan.SetLevel((uint8_t)level); return;
-		case Vacuum:			break;
+		case Spindel:		_spindel.On(ConvertSpindelSpeedToIO(level)); _spindelDir.Set(((short)level) > 0);	return;
+		case Coolant:		_coolant.Set(level > 0); return;
+		case ControllerFan:	_controllerfan.SetLevel((uint8_t)level); return;
 	}
-	
+
 	super::IOControl(tool, level);
 }
 
@@ -123,11 +159,10 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{
-		case Probe:			{ return _probe.IsOn(); }
 		case Spindel:		{ return _spindel.IsOn(); }
+		case Probe:			{ return _probe.IsOn(); }
 		case Coolant:		{ return _coolant.IsOn(); }
-		case ControllerFan:	{ return _controllerfan.GetLevel(); }
-		case Vacuum:		break;
+		case ControllerFan: { return _controllerfan.GetLevel(); }
 	}
 
 	return super::IOControl(tool);
@@ -138,7 +173,8 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 void CMyControl::Kill()
 {
 	super::Kill();
-	_spindel.Set(false);
+
+	_spindel.Off();
 	_coolant.Set(false);
 }
 
@@ -152,6 +188,25 @@ bool CMyControl::IsKill()
 		return true;
 	}
 	return false;
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::TimerInterrupt()
+{
+	super::TimerInterrupt();
+	_holdresume.Check();
+	_hold.Check();
+	_resume.Check();
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::Initialized()
+{
+	super::Initialized();
+
+	_controllerfan.SetLevel(128);
 }
 
 ////////////////////////////////////////////////////////////
@@ -172,22 +227,6 @@ void CMyControl::Poll()
 		Hold();
 		Lcd.Diagnostic(F("LCD Hold"));
 	}
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyControl::TimerInterrupt()
-{
-	super::TimerInterrupt();
-	_holdresume.Check();
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyControl::Initialized()
-{
-	super::Initialized();
-	_controllerfan.SetLevel(128);
 }
 
 ////////////////////////////////////////////////////////////
@@ -226,7 +265,7 @@ bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t a
 			_controllerfan.On();
 			break;
 		case OnIdleEvent:
-			if (millis()- CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME)
+			if (IsControllerFanTimeout())
 			{
 				_controllerfan.Off();
 			}

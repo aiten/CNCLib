@@ -37,7 +37,7 @@ CStepperMash6050S Stepper;
 
 void setup()
 {
-	StepperSerial.begin(115200);
+	StepperSerial.begin(USBBAUDRATE);
 }
 
 ////////////////////////////////////////////////////////////

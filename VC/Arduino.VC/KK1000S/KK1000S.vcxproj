@@ -85,7 +85,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sketch\KK1000S\Configuration_KK1000S.h" />
+    <ClInclude Include="..\..\..\Sketch\KK1000S\Configuration.h" />
+    <ClInclude Include="..\..\..\Sketch\KK1000S\Configuration_Mash6050S.h" />
     <ClInclude Include="..\..\..\Sketch\KK1000S\MyControl.h" />
     <ClInclude Include="..\..\..\Sketch\KK1000S\MyLCD.h" />
     <ClInclude Include="..\..\..\Sketch\KK1000S\MyMenu.h" />

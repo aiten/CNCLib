@@ -36,6 +36,8 @@
 #define Y_MAXSIZE 200000 
 #define Z_MAXSIZE 100000 
 #define A_MAXSIZE 360000 
+#define B_MAXSIZE 360000 
+#define C_MAXSIZE 360000 
 
 #define STEPSPERROTATION	200
 #define MICROSTEPPING		16
@@ -62,11 +64,15 @@
 #define Y_USEREFERENCE	EReverenceType::ReferenceToMin
 #define Z_USEREFERENCE	EReverenceType::ReferenceToMax
 #define A_USEREFERENCE	EReverenceType::NoReference
+#define B_USEREFERENCE  EReverenceType::NoReference
+#define C_USEREFERENCE  EReverenceType::NoReference
 
 #define REFMOVE_1_AXIS  255
 #define REFMOVE_2_AXIS  255
 #define REFMOVE_3_AXIS  255
 #define REFMOVE_4_AXIS  255
+#define REFMOVE_5_AXIS  255
+#define REFMOVE_6_AXIS  255
 
 #define MOVEAWAYFROMREF_STEPS 100
 

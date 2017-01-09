@@ -110,7 +110,7 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 		{ B_MAXSIZE,     B_USEREFERENCE, REFMOVE_5_AXIS },
 #endif
 #if NUM_AXIS > 5
-		{ C_MAXSIZE,     C_USEREFERENCE, REFMOVE_5_AXIS },
+		{ C_MAXSIZE,     C_USEREFERENCE, REFMOVE_6_AXIS },
 #endif
 	}
 };
