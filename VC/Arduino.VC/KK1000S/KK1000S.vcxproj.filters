@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Sketch\KK1000S\MyControl.cpp">
+      <Filter>KK1000S</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\KK1000S\MyLCD.cpp">
+      <Filter>KK1000S</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\KK1000S\MyMenu.cpp">
+      <Filter>KK1000S</Filter>
+    </ClCompile>
+    <ClCompile Include="KK1000S.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Sketch\KK1000S\MyControl.h">
+      <Filter>KK1000S</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\KK1000S\MyLCD.h">
+      <Filter>KK1000S</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\KK1000S\MyMenu.h">
+      <Filter>KK1000S</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\KK1000S\Configuration.h">
+      <Filter>KK1000S</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\KK1000S\Configuration_Mash6050S.h">
+      <Filter>KK1000S</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="KK1000S">
+      <UniqueIdentifier>{d6e627c2-6efc-406a-a719-c23a3b237e49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{5642057e-d305-4c73-b41a-54200caab4dc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Sketch\KK1000S\KK1000S.ino">
+      <Filter>KK1000S</Filter>
+    </None>
+  </ItemGroup>
+</Project>
