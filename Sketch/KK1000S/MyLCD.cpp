@@ -15,6 +15,7 @@
   GNU General Public License for more details.
   http://www.gnu.org/licenses/
 */
+
 ////////////////////////////////////////////////////////
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -45,7 +46,7 @@
 ////////////////////////////////////////////////////////////
 
 #ifdef USE_U8G2_LIB
-U8G2_ST7920_128X64_1_SW_SPI u8g(U8G2_R0, CAT(BOARDNAME, _ST7920_CLK_PIN), CAT(BOARDNAME, _ST7920_DAT_PIN), CAT(BOARDNAME, _ST7920_CS_PIN));	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
+U8G2_ST7920_128X64_1_SW_SPI u8g(U8G2_R0, CAT(BOARDNAME,_ST7920_CLK_PIN), CAT(BOARDNAME,_ST7920_DAT_PIN), CAT(BOARDNAME,_ST7920_CS_PIN));	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
 #else
 U8GLIB_ST7920_128X64_1X u8g(CAT(BOARDNAME, _ST7920_CLK_PIN), CAT(BOARDNAME, _ST7920_DAT_PIN), CAT(BOARDNAME, _ST7920_CS_PIN));	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
 #endif
@@ -121,3 +122,6 @@ bool CMyLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type,uintptr_t data)
 
 	return super::DrawLoopDefault(type,data);
 }
+
+////////////////////////////////////////////////////////////
+

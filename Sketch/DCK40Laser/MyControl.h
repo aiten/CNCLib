@@ -67,8 +67,6 @@ private:
 	CAnalog8IOControl<LASER_PWM_PIN> _laserPWM;
 	COnOffIOControl<LASER_ENABLE_PIN, LASER_ENABLE_ON, LASER_ENABLE_OFF> _laserOnOff;
 
-	CPushButton _holdresume;
-
 	COnOffIOControl<LASERWATER_PIN, LASERWATER_ON, LASERWATER_OFF> _laserWater;
 	COnOffIOControl<LASERVACUUM_PIN, LASERVACUUM_ON, LASERVACUUM_OFF> _laserVacuum;
 
@@ -113,11 +111,17 @@ private:
 #endif
 
 #if defined(HOLD_PIN) && defined(RESUME_PIN)
-	CPushButtonLow _hold;
-	CPushButtonLow _resume;
+	CPushButtonLow<HOLD_PIN,LOW> _hold;
+	CPushButtonLow<RESUME_PIN, LOW> _resume;
 #else
 	CDummyIOControl _hold;
 	CDummyIOControl _resume;
+#endif
+
+#if defined(HOLDRESUME_PIN)
+	CPushButtonLow<HOLDRESUME_PIN,LOW> _holdresume;
+#else
+	CDummyIOControl _holdresume;
 #endif
 
 #ifdef CONTROLLERFAN_FAN_PIN

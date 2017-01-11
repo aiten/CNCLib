@@ -101,7 +101,7 @@ public:
 		uint32_t  dec;
 		uint32_t  refmovesteprate;
 
-		float     ScaleMm1000ToMachine;
+		float     StepsPerMm1000;
 
 		struct SAxisDefinitions
 		{

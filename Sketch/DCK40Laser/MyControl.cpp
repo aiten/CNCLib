@@ -46,20 +46,19 @@ HardwareSerial& StepperSerial = Serial;
 
 ////////////////////////////////////////////////////////////
 
-float scaleToMm;
-float scaleToMachine;
+float StepsPerMm1000;
 
 mm1000_t MyConvertToMm1000(axis_t axis, sdist_t val)
 {
 	switch (axis)
 	{
 		default:
-		case X_AXIS: return  (mm1000_t)(val * scaleToMm);
-		case Y_AXIS: return  (mm1000_t)(val * scaleToMm);
-		case Z_AXIS: return  (mm1000_t)(val * scaleToMm);
-		case A_AXIS: return  (mm1000_t)(val * scaleToMm);
-		case B_AXIS: return  (mm1000_t)(val * scaleToMm);
-		case C_AXIS: return  (mm1000_t)(val * scaleToMm);
+		case X_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
+		case Y_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
+		case Z_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
+		case A_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
+		case B_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
+		case C_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
 	}
 }
 
@@ -68,12 +67,12 @@ sdist_t MyConvertToMachine(axis_t axis, mm1000_t  val)
 	switch (axis)
 	{
 		default:
-		case X_AXIS: return  (sdist_t)(val * scaleToMachine);
-		case Y_AXIS: return  (sdist_t)(val * scaleToMachine);
-		case Z_AXIS: return  (sdist_t)(val * scaleToMachine);
-		case A_AXIS: return  (sdist_t)(val * scaleToMachine);
-		case B_AXIS: return  (sdist_t)(val * scaleToMachine);
-		case C_AXIS: return  (sdist_t)(val * scaleToMachine);
+		case X_AXIS: return  (sdist_t)(val * StepsPerMm1000);
+		case Y_AXIS: return  (sdist_t)(val * StepsPerMm1000);
+		case Z_AXIS: return  (sdist_t)(val * StepsPerMm1000);
+		case A_AXIS: return  (sdist_t)(val * StepsPerMm1000);
+		case B_AXIS: return  (sdist_t)(val * StepsPerMm1000);
+		case C_AXIS: return  (sdist_t)(val * StepsPerMm1000);
 	}
 }
 
@@ -88,7 +87,7 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 	CNC_ACC,
 	CNC_DEC,
 	STEPRATERATE_REFMOVE,
-	(1000.0 / X_STEPSPERMM),
+	X_STEPSPERMM/1000.0,
 	{
 		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS },
 		{ Y_MAXSIZE,     Y_USEREFERENCE, REFMOVE_2_AXIS },
@@ -111,8 +110,7 @@ void CMyControl::Init()
 {
 	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, 0x21436587);
 
-	scaleToMm = CConfigEeprom::GetConfigFloat(offsetof(CConfigEeprom::SCNCEeprom, ScaleMm1000ToMachine));
-	scaleToMachine = 1.0 / scaleToMm;
+	StepsPerMm1000 = CConfigEeprom::GetConfigFloat(offsetof(CConfigEeprom::SCNCEeprom, StepsPerMm1000));
 
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();
@@ -150,14 +148,9 @@ void CMyControl::Init()
 	_kill.Init();
 	_coolant.Init();
 
-#if defined(HOLD_PIN)
-  	_hold.SetPin(HOLD_PIN);
-#endif
-#if defined(RESUME_PIN)
-	_resume.SetPin(RESUME_PIN);
-#endif
-
-	_holdresume.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
+  	_hold.Init();
+	_resume.Init();
+	_holdresume.Init();
 
 	CMyParser::Init();
 
@@ -239,16 +232,15 @@ bool CMyControl::IsKill()
 	return false;
 }
 
-
 ////////////////////////////////////////////////////////////
 
 void CMyControl::TimerInterrupt()
 {
 	super::TimerInterrupt();
-	_holdresume.Check();
 
 	_hold.Check();
 	_resume.Check();
+	_holdresume.Check();
 }
 
 ////////////////////////////////////////////////////////////
@@ -268,30 +260,17 @@ void CMyControl::Poll()
 
 	if (IsHold())
 	{
-		if (_holdresume.IsOn())
+		if (_resume.IsOn() || _holdresume.IsOn())
 		{
 			Resume();
 			Lcd.ClearDiagnostic();
 		}
 	}
-	else if (_holdresume.IsOn())
+	else if (_hold.IsOn() || _holdresume.IsOn())
 	{
 		Hold();
 		Lcd.Diagnostic(F("LCD Hold"));
 	}
-	/*
-		if (IsHold())
-		{
-			if (_resume.IsOn())
-			{
-				Resume();
-			}
-		}
-		else if (_hold.IsOn())
-		{
-			Hold();
-		}
-	*/
 }
 
 ////////////////////////////////////////////////////////////

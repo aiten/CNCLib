@@ -26,7 +26,7 @@
 #include <Analog8IOControl.h>
 #include <ReadPinIOControl.h>
 #include <ReadPinIOTriggerControl.h>
-#include <PushButton.h>
+#include <PushButtonLow.h>
 #include <DummyIOControl.h>
 #include "Configuration.h"
 
@@ -106,11 +106,17 @@ private:
 #endif
 
 #if defined(HOLD_PIN) && defined(RESUME_PIN)
-	CPushButtonLow _hold;
-	CPushButtonLow _resume;
+	CPushButtonLow<HOLD_PIN,LOW> _hold;
+	CPushButtonLow<RESUME_PIN, LOW> _resume;
 #else
 	CDummyIOControl _hold;
 	CDummyIOControl _resume;
+#endif
+
+#if defined(HOLDRESUME_PIN)
+	CPushButtonLow<HOLDRESUME_PIN,LOW> _holdresume;
+#else
+	CDummyIOControl _holdresume;
 #endif
 
 #ifdef CONTROLLERFAN_FAN_PIN
@@ -129,7 +135,6 @@ private:
 	inline bool IsControllerFanTimeout() { return false; }
 #endif
 
-	CPushButton _holdresume;
 };
 
 ////////////////////////////////////////////////////////

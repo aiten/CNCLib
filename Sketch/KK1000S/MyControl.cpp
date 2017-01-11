@@ -23,9 +23,6 @@
 #include <stdlib.h>
 #include <arduino.h>
 
-#include <SPI.h>
-#include <SD.h>
-
 #include <CNCLib.h>
 #include <CNCLibEx.h>
 
@@ -55,7 +52,7 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 	CNC_ACC,
 	CNC_DEC,
 	0,// STEPRATERATE_REFMOVE,
-	(1000.0 / X_STEPSPERMM),
+	X_STEPSPERMM/1000.0,
 	{
 		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS },
 		{ Y_MAXSIZE,     Y_USEREFERENCE, REFMOVE_2_AXIS },
@@ -125,10 +122,12 @@ void CMyControl::Init()
 	_kill.Init();
 	_coolant.Init();
 
+  	_hold.Init();
+	_resume.Init();
+	_holdresume.Init();
+
 	_probe.Init(MASH6050S_INPUTPINMODE);
 	_kill.Init(MASH6050S_INPUTPINMODE);
-
-	_holdresume.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
 
 	CGCodeParser::Init();
 	CGCodeParserBase::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
@@ -195,9 +194,10 @@ bool CMyControl::IsKill()
 void CMyControl::TimerInterrupt()
 {
 	super::TimerInterrupt();
-	_holdresume.Check();
+
 	_hold.Check();
 	_resume.Check();
+	_holdresume.Check();
 }
 
 ////////////////////////////////////////////////////////////
@@ -217,12 +217,13 @@ void CMyControl::Poll()
 
 	if (IsHold())
 	{
-		if (_holdresume.IsOn())
+		if (_resume.IsOn() || _holdresume.IsOn())
 		{
 			Resume();
 			Lcd.ClearDiagnostic();
 		}
-	} else if (_holdresume.IsOn())
+	}
+	else if (_hold.IsOn() || _holdresume.IsOn())
 	{
 		Hold();
 		Lcd.Diagnostic(F("LCD Hold"));

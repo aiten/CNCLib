@@ -59,6 +59,9 @@
 #define KILL_PIN_ON MASH6050S_KILL_PIN_ON
 #define KILL_PIN_OFF MASH6050S_KILL_PIN_OFF
 
+#define HOLDRESUME_PIN CAT(BOARDNAME, _LCD_KILL_PIN)
+#define HOLDRESUME_PIN_ON CAT(BOARDNAME, _LCD_KILL_PIN_ON)
+
 ////////////////////////////////////////////////////////
 
 #define LCD_GROW 64

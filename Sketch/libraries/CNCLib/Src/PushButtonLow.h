@@ -25,7 +25,7 @@
 
 ////////////////////////////////////////////////////////
 
-
+template <pin_t PIN, uint8_t ONVALUE>
 class CPushButtonLow
 {
 public:
@@ -34,15 +34,14 @@ public:
 	{
 	}
 
-	void SetPin(pin_t pin)		
-	{ 
-		_pin=pin; 
-		CHAL::pinModeInputPullUp(_pin);
+	static void Init(uint8_t inputmode = INPUT_PULLUP)
+	{
+		CHAL::pinMode(PIN, inputmode);
 	}
 
 	void Check()
 	{
-		bool isOn = CHAL::digitalRead(_pin) == LOW;
+		bool isOn = CHAL::digitalRead(PIN) == ONVALUE;
 		switch (_state)
 		{
 			case ButtonOff:
@@ -71,6 +70,13 @@ public:
 		}
 	}
 
+	static bool IsPressed()
+	{
+		// current state!!!!!
+		// use IsOn() 
+		return CHAL::digitalRead(PIN) == ONVALUE;
+	}
+
 	bool IsOn()
 	{
 		// check and set state 
@@ -92,8 +98,6 @@ public:
 	}
 
 protected:
-
-	pin_t	_pin = 0;
 
 	enum EButtonState
 	{

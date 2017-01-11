@@ -60,6 +60,9 @@
 
 ////////////////////////////////////////////////////////
 
+#define HOLDRESUME_PIN CAT(BOARDNAME, _LCD_KILL_PIN)
+#define HOLDRESUME_PIN_ON CAT(BOARDNAME, _LCD_KILL_PIN_ON))
+
 #define KILL_PIN		RAMPSFD_ESTOP_PIN
 #define KILL_PIN_ON		LOW
 

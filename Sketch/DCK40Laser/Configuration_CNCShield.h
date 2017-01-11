@@ -33,15 +33,11 @@
 
 #define MYNUM_AXIS 3
 #define CNCSHIELD_NUM_AXIS MYNUM_AXIS
+//#define CNCSHIELD_GBRL09
 
 #include <Steppers/StepperCNCShield_pins.h>
 
 // change some pin definition here:
-
-// use ZMinRef for analog laser PWM
-#undef CNCSHIELD_Z_MIN_PIN
-#undef CNCSHIELD_Z_MAX_PIN
-#define CNCSHIELD_Z_MIN_PIN 10
 
 #undef CNCSHIELD_REF_ON
 #undef CNCSHIELD_REF_OFF
@@ -53,16 +49,24 @@
 
 ////////////////////////////////////////////////////////
 
+#ifdef CNCSHIELD_ABORT_PIN
 #define KILL_PIN		CNCSHIELD_ABORT_PIN
 #define KILL_PIN_ON		CNCSHIELD_ABORT_ON
+#endif
 
+#ifdef CNCSHIELD_HOLD_PIN
 #define HOLD_PIN CNCSHIELD_HOLD_PIN
+#endif
+
+#ifdef CNCSHIELD_RESUME_PIN
 #define RESUME_PIN CNCSHIELD_RESUME_PIN
+#endif
 
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 // 11 use timer 1 => 44 timer5 for pwm (https://oscarliang.com/arduino-timer-and-interrupt-tutorial/) 
 #define LASER_PWM_PIN  44
 #else
+#define DISABLELEDBLINK
 #define LASER_PWM_PIN  11
 #endif
 
@@ -83,8 +87,19 @@
 
 #define LASERWATCHDOG_PIN		CNCSHIELD_SPINDEL_DIR_PIN
 #define LASERWATCHDOG_ON		LOW
+#undef USECONTROLERFAN
+#ifdef USECONTROLERFAN
+#define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
+#define CONTROLLERFAN_FAN_PIN	14 // 10
+
+#define CONTROLLERFAN_DIGITAL_ON  HIGH
+#define CONTROLLERFAN_DIGITAL_OFF LOW
+#undef  CONTROLLERFAN_ANALOGSPEED
+#endif
 
 ////////////////////////////////////////////////////////
 
-#include <MessageCNCLib.h>
+#define DISABLELEDBLINK
+
+////////////////////////////////////////////////////////
 

@@ -105,11 +105,17 @@ private:
 #endif
 
 #if defined(HOLD_PIN) && defined(RESUME_PIN)
-	CPushButtonLow _hold;
-	CPushButtonLow _resume;
+	CPushButtonLow<HOLD_PIN,LOW> _hold;
+	CPushButtonLow<RESUME_PIN, LOW> _resume;
 #else
 	CDummyIOControl _hold;
 	CDummyIOControl _resume;
+#endif
+
+#if defined(HOLDRESUME_PIN)
+	CPushButtonLow<HOLDRESUME_PIN,LOW> _holdresume;
+#else
+	CDummyIOControl _holdresume;
 #endif
 
 #ifdef CONTROLLERFAN_FAN_PIN
