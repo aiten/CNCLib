@@ -219,9 +219,6 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Steppers\StepperSMC800.h">
       <Filter>StepperLib\Steppers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\PushButtonLow.h">
-      <Filter>CNCLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\DecimalAsInt.h">
       <Filter>CNCLib</Filter>
     </ClInclude>
@@ -242,6 +239,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_SamD21g18a.h">
       <Filter>StepperLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\PushButtonLow.h">
+      <Filter>CNCLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -102,7 +102,7 @@ namespace CNCLib.Wpf.ViewModels
 					ee[EepromV1.EValueOffsets32.MaxstepRate] = EepromValue.MaxStepRate;
 					ee[EepromV1.EValueOffsets32.Acc] = EepromValue.Acc;
 					ee[EepromV1.EValueOffsets32.Dec] = EepromValue.Dec;
-					ee[EepromV1.EValueOffsets32.ScaleMm1000ToMachine] = BitConverter.ToUInt32(BitConverter.GetBytes(EepromValue.ScaleMMToMachine), 0);
+					ee[EepromV1.EValueOffsets32.StepsPerMm1000] = BitConverter.ToUInt32(BitConverter.GetBytes(EepromValue.StepsPerMm1000), 0);
 
 					File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EEpromWrite.nc"), ee.ToGCode());
 
@@ -156,7 +156,7 @@ namespace CNCLib.Wpf.ViewModels
 						eeprom.MaxStepRate	= ee[EepromV1.EValueOffsets32.MaxstepRate];
 						eeprom.Acc			= ee[EepromV1.EValueOffsets32.Acc];
 						eeprom.Dec			= ee[EepromV1.EValueOffsets32.Dec];
-						eeprom.ScaleMMToMachine = BitConverter.ToSingle(BitConverter.GetBytes(ee[EepromV1.EValueOffsets32.ScaleMm1000ToMachine]), 0);
+						eeprom.StepsPerMm1000 = BitConverter.ToSingle(BitConverter.GetBytes(ee[EepromV1.EValueOffsets32.StepsPerMm1000]), 0);
 
 						_validReadEeprom = true;
 					}

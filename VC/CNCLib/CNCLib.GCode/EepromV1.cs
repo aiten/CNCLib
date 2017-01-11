@@ -51,7 +51,7 @@ namespace CNCLib.GCode
 			Acc,
 			Dec,
 			RefMoveStepRate,
-			ScaleMm1000ToMachine
+			StepsPerMm1000
 		}
 		public enum EValueOffsets8
 		{

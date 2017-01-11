@@ -152,8 +152,7 @@ namespace CNCLib.Wpf.Models
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Scale mm to machine")]
-		[Description("mm/1000 divide by value => steps to go")]
-		//This custom editor is a Class that implements the ITypeEditor interface
-		public float ScaleMMToMachine { get; set; }
+		[Description("Steps for 1/1000mm => steps to go for 1/1000mm")]
+		public float StepsPerMm1000 { get; set; }
 	}
 }
