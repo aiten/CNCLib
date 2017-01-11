@@ -40,7 +40,7 @@ namespace CNCLib.GCode.Load
             _shiftLaserOn = -SHIFT * (double) LoadOptions.LaserSize;
             _shiftLaserOff = SHIFT * (double) LoadOptions.LaserSize;
 
-            using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(LoadOptions.FileName))
+            using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(Environment.ExpandEnvironmentVariables(LoadOptions.FileName)))
             {
                 System.Drawing.Bitmap b;
                 switch (bx.PixelFormat)

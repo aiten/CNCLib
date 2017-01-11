@@ -25,6 +25,19 @@
 
 #if defined(__SAM3X8E__)
 
+#define PIN_A0   (18)
+#define PIN_A1   (19)
+#define PIN_A2   (20)
+#define PIN_A3   (21)
+#define PIN_A4   (22)
+#define PIN_A5   (23)
+#define PIN_A6   (24)
+#define PIN_A7   (25)
+#define PIN_A8   (26)
+#define PIN_A9   (27)
+#define PIN_A10  (28)
+#define PIN_A11  (29)
+
 #include <itoa.h>
 
 #undef pgm_read_ptr

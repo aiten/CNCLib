@@ -78,8 +78,9 @@ namespace CNCLib.GCode
 				Commands.AddRange(load.Commands);
 				if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
 				{
-					SaveGCode(loadinfo.GCodeWriteToFileName);
-					WriteCamBam(load, Path.GetDirectoryName(loadinfo.GCodeWriteToFileName) + @"\" + Path.GetFileNameWithoutExtension(loadinfo.GCodeWriteToFileName) + @".cb");
+					string gcodeFileName = Environment.ExpandEnvironmentVariables(loadinfo.GCodeWriteToFileName);
+					SaveGCode(gcodeFileName);
+					WriteCamBam(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb");
 				}
 			}
 			catch (Exception)
@@ -126,7 +127,7 @@ namespace CNCLib.GCode
 					Commands.AddRange(load.Commands);
 					if (!string.IsNullOrEmpty(info.GCodeWriteToFileName))
 					{
-						SaveGCode(info.GCodeWriteToFileName);
+						SaveGCode(Environment.ExpandEnvironmentVariables(info.GCodeWriteToFileName));
 					}
 				}
 			}
