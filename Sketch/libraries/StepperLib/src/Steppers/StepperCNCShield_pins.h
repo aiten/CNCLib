@@ -108,23 +108,12 @@
 
 #endif
 
-#if defined(__AVR_ATmega328P__) || defined (_MSC_VER)  || defined(__SAMD21G18A__)
-
 // 14=>AD0
-#define CNCSHIELD_ABORT_PIN			14
-#define CNCSHIELD_HOLD_PIN			15
-#define CNCSHIELD_RESUME_PIN		16
-#define CNCSHIELD_COOLANT_PIN		17
+#define CNCSHIELD_ABORT_PIN			PIN_A0
+#define CNCSHIELD_HOLD_PIN			PIN_A1
+#define CNCSHIELD_RESUME_PIN		PIN_A2
+#define CNCSHIELD_COOLANT_PIN		PIN_A3
 
-#elif defined(__AVR_ATmega2560__)
-
-// 54=>AD0
-#define CNCSHIELD_ABORT_PIN			54
-#define CNCSHIELD_HOLD_PIN			55
-#define CNCSHIELD_RESUME_PIN		56
-#define CNCSHIELD_COOLANT_PIN		57
-
-#endif
 
 #define CNCSHIELD_ABORT_ON			LOW
 #define CNCSHIELD_ABORT_OFF			HIGH
@@ -138,13 +127,8 @@
 #define CNCSHIELD_COOLANT_ON		LOW
 #define CNCSHIELD_COOLANT_OFF		HIGH
 
-#if defined(__AVR_ATmega328P__) || defined (_MSC_VER) || defined(__SAMD21G18A__)
-#define CNCSHIELD_A4_PIN     18    // AD4
-#define CNCSHIELD_A5_PIN     19    // AD5
-#else
-#define CNCSHIELD_A4_PIN     58    // AD4 (Mega)
-#define CNCSHIELD_A5_PIN     59    // AD5 (Mega)
-#endif
+#define CNCSHIELD_A4_PIN     PIN_A4
+#define CNCSHIELD_A5_PIN     PIN_A5
 
 #define CNCSHIELD_PROBE_PIN     CNCSHIELD_A4_PIN
 #define CNCSHIELD_PROBE_ON      LOW

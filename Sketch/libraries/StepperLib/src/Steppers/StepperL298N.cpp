@@ -47,15 +47,12 @@ pin_t CStepperL298N::_pin[NUM_AXIS][4] =
 {
 	{ 2, 3, 4, 5 },
 	{ 6, 7, 8, 9 },
-#if defined(__AVR_ATmega328P__)
-	{ 14, 15, 16, 17 },			// A0-A3
+	{ PIN_A0, PIN_A1, PIN_A2, PIN_A3 },			// A0-A3
 #if NUM_AXIS > 3
-	{ 18, 19, 11, 12 },			// A4&5,11&12
-#endif
+#if defined(__AVR_ATmega328P__) || defined(__SAMD21G18A__)
+	{ PIN_A4, PIN_A5, 11, 12 },			// A4&5,11&12
 #else
-	{ 54, 55, 56, 57 },			// A0-A3
-#if NUM_AXIS > 3
-	{ 58, 59, 60, 61 }			// A4-A5
+	{ PIN_A4, PIN_A5, PIN_A6, PIN_A7 }			// A4-A5
 #endif
 #endif
 };

@@ -239,7 +239,9 @@ bool CControl::Command(char* buffer, Stream* output)
 #endif
 		if (output)
 		{
-			PrintError(output); output->println(MESSAGE_CONTROL_KILLED);
+			PrintError(output); 
+			output->println(MESSAGE_CONTROL_KILLED);
+			output->println(MESSAGE_OK);
 		}
 		return false;
 	}

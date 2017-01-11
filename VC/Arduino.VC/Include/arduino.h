@@ -110,8 +110,18 @@ inline void digitalWrite(short, short)	{};
 inline uint8_t digitalRead(short pin) { if (mydigitalRead != NULL) return mydigitalRead(pin); return LOW; };
 inline void pinMode(short, short)		{};
 
-static uint8_t A0 = 0;
+#define LED_BUILTIN (13)
 
+#define PIN_A0   (14)
+#define PIN_A1   (15)
+#define PIN_A2   (16)
+#define PIN_A3   (17)
+#define PIN_A4   (18)
+#define PIN_A5   (19)
+#define PIN_A6   (20)
+#define PIN_A7   (21)
+
+static uint8_t A0 = PIN_A0;
 
 static uint8_t PORTA;
 static uint8_t PORTB;

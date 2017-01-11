@@ -59,7 +59,7 @@ typedef long inch100000_t;		// 1/100000 inch
 
 #define IDLETIMER0VALUE     TIMER0VALUE(500)		// AVR dont care ... Timer 0 shared with milli, other ?Hz
 
-#define BLINK_LED			13
+#define BLINK_LED			LED_BUILTIN
 #define TIMEOUTBLINK		1000		// blink of led 13
 
 ////////////////////////////////////////////////////////
