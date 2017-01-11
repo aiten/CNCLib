@@ -61,7 +61,7 @@ namespace CNCLib.Wpf.Helpers
 		public async Task<UInt32[]> GetEpromValuesAsync()
 		{
 			ArduinoSerialCommunication.Command cmd = (await Com.SendCommandAsync("$?")).FirstOrDefault();
-			if (cmd != null)
+			if (cmd != null && string.IsNullOrEmpty(cmd.ResultText)==false)
 			{
 				string[] seperators = { "\n", "\r" };
 				string[] lines = cmd.ResultText.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
