@@ -62,7 +62,7 @@ void CControl::Init()
 
 void CControl::Initialized()
 {
-	StepperSerial.println(MESSAGE_OK);
+	StepperSerial.println(MESSAGE_OK_INITIALIZED);
 	GoToReference();
 	CMotionControlBase::GetInstance()->SetPositionFromMachine();
 }
@@ -101,7 +101,7 @@ void CControl::Resurrect()
 #endif
 
 	_bufferidx = 0;
-	StepperSerial.println(MESSAGE_OK);
+	StepperSerial.println(MESSAGE_OK_RESURRECT);
 }
 
 ////////////////////////////////////////////////////////////
@@ -146,42 +146,6 @@ bool CControl::ParseAndPrintResult(CParser *parser, Stream* output)
 {
 	bool ret = true;
 
-#define SENDOKIMMEDIATELY
-#undef SENDOKIMMEDIATELY
-
-#ifdef SENDOKIMMEDIATELY 
-	///////////////////////////////////////////////////////////////////////////
-	// send OK pre Parse => give PC time to send next
-
-	if (output) output->println(MESSAGE_OK);
-
-	parser->ParseCommand();
-
-	if (parser->IsError())
-	{
-		if (output)
-		{
-			PrintError(output);
-			output->print(parser->GetError());
-			output->print(MESSAGE_CONTROL_RESULTS);
-			output->println(_buffer);
-		}
-		ret = false;
-	}
-
-	if (parser->GetOkMessage() != NULL)
-	{
-		if (output)
-		{
-			output->print(MESSAGE_OK);
-			output->print(F(" "));
-		}
-		parser->GetOkMessage()();
-		if (output) output->println();
-	}
-
-#else
-
 	///////////////////////////////////////////////////////////////////////////
 	// send OK after Parse
 
@@ -194,25 +158,26 @@ bool CControl::ParseAndPrintResult(CParser *parser, Stream* output)
 			PrintError(output);
 			output->print(parser->GetError());
 			output->print(MESSAGE_CONTROL_RESULTS);
-			output->println(_buffer);
-//			output->println(millis());
+			output->print(_buffer);
+//			output->print(millis());
 		}
 		ret = false;
 	}
-
-	if (output) output->print(MESSAGE_OK);
-	if (parser->GetOkMessage() != NULL)
+	else
 	{
-		if (output)
+		// => not in "else" if "OK" should be sent after "Error:"
+		if (output) output->print(MESSAGE_OK);
+		if (parser->GetOkMessage() != NULL)
 		{
-			output->print(F(" "));
+			if (output)
+			{
+				output->print(F(" "));
+			}
+			parser->GetOkMessage()();
 		}
-		parser->GetOkMessage()();
 	}
 
 	if (output) output->println();
-
-#endif
 
 	return ret;
 }
@@ -241,7 +206,8 @@ bool CControl::Command(char* buffer, Stream* output)
 		{
 			PrintError(output); 
 			output->println(MESSAGE_CONTROL_KILLED);
-			output->println(MESSAGE_OK);
+// => uncomment if "OK" will not be sent after "Error:"
+//			output->println(MESSAGE_OK);
 		}
 		return false;
 	}
@@ -263,7 +229,7 @@ bool CControl::Command(char* buffer, Stream* output)
 	else if (output)
 	{
 		// send OK on empty line (command)
-		output->println(MESSAGE_OK);
+		output->println(MESSAGE_OK_EMPTYLINE);
 	}
 	
 	return ret;

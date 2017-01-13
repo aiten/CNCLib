@@ -40,10 +40,13 @@
 #endif
 
 #define MESSAGE_CTRLX								StepperMessageOne("Grbl 0.9j ['$' for help]")
+#define MESSAGE_OK_INITIALIZED						MESSAGE_OK
+#define MESSAGE_OK_RESURRECT						MESSAGE_OK
+#define MESSAGE_OK_EMPTYLINE						MESSAGE_OK
 #define MESSAGE_OK									StepperMessageOne("ok")
-#define MESSAGE_ERROR								StepperMessageOne("Error:")
-#define MESSAGE_INFO								StepperMessageOne("Info:")
-#define MESSAGE_WARNING								StepperMessageOne("Warning:")
+#define MESSAGE_ERROR								StepperMessageOne("error:")
+#define MESSAGE_INFO								StepperMessageOne("info:")
+#define MESSAGE_WARNING								StepperMessageOne("warning:")
 
 #define MESSAGE_UNKNOWNERROR						StepperMessage("?","Unknown error")
 

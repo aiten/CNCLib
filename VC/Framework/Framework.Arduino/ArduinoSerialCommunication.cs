@@ -109,10 +109,10 @@ namespace Framework.Arduino
 		public int BaudRate { get; set; }				= 115200;
 		public bool ResetOnConnect { get; set; }		= false;
 		public string OkTag { get; set; }				= @"ok";
-		public string ErrorTag { get; set; }			= @"Error:";
-		public string InfoTag { get; set; }				= @"Info:";
+		public string ErrorTag { get; set; }			= @"error:";
+		public string InfoTag { get; set; }				= @"info:";
 		public bool CommandToUpper { get; set; }		= false;
-		public bool ErrorIsReply { get; set; }			= false;     // each command must end with ok
+		public bool ErrorIsReply { get; set; }			= true;			// each command must end with "ok" of "Error"
         public int MaxCommandHistoryCount { get; set; } = int.MaxValue;
 		public int ArduinoBuffersize { get; set; }		= 64;
         public int ArduinoLineSize { get; set; } = 128;
@@ -845,13 +845,13 @@ namespace Framework.Arduino
                         endcommand = true;
                         OnReplyDone(new ArduinoSerialCommunicationEventArgs(message, cmd));
                     }
-                    else if (message.StartsWith(ErrorTag))
+                    else if (message.StartsWith(ErrorTag, StringComparison.OrdinalIgnoreCase))
                     {
 						if (ErrorIsReply)
 							endcommand = true;
                         OnReplyError(new ArduinoSerialCommunicationEventArgs(message, cmd));
                     }
-                    else if (message.StartsWith(InfoTag))
+                    else if (message.StartsWith(InfoTag, StringComparison.OrdinalIgnoreCase))
                     {
 						if (cmd != null)
 						{
