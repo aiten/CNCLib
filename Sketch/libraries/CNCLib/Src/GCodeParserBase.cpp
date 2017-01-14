@@ -768,7 +768,7 @@ void CGCodeParserBase::G28Command()
 				if (usmin || usmax)
 					CControl::GetInstance()->GoToReference(axis, 0, usmin);
 				else
-					CStepper::GetInstance()->SetPosition(axis, move.newpos[axis]);
+					CStepper::GetInstance()->SetPosition(axis, CMotionControlBase::GetInstance()->ToMachine(axis, move.newpos[axis]));
 			}
 		}
 	}
