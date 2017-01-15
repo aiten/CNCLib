@@ -1,15 +1,19 @@
 #include <StepperLib.h>
-#include <Steppers/StepperTB6560_pins.h>
-#include <Steppers/StepperTB6560.h>
+
+#include <Steppers/StepperCNCShield_pins.h>
+
+#include <Steppers/StepperCNCShield.h>
 
 #if !defined(__AVR_ATmega328P__)
-//#error Only Works with Arduino:Duemilanove
+//#error Only Works with Arduino:Uno
 #endif
 
-CStepperTB6560 Stepper;
+CStepperCNCShield Stepper;
+
+HardwareSerial& StepperSerial = Serial;
 
 //#define DEFSPEED steprate_t(25500)  // tested by try and errror
-#define DEFSPEED steprate_t(15500)  // tested by try and errror
+#define DEFSPEED steprate_t(10000)  // tested by try and errror
 
 #define TESTAXIS 1
 
@@ -17,8 +21,8 @@ CStepperTB6560 Stepper;
 
 void setup()
 {
-  StepperSerial.begin(115200);
-  StepperSerial.println(F("StepperTestL298N is starting ... (" __DATE__ ", " __TIME__ ")"));
+  StepperSerial.begin(250000);
+  StepperSerial.println(F("StepperTestCNCShield is starting ... (" __DATE__ ", " __TIME__ ")"));
 
   Stepper.Init();
   CHAL::pinMode(13, OUTPUT);
@@ -29,9 +33,9 @@ void setup()
   Stepper.SetLimitMax(1, 100000);
   Stepper.SetLimitMax(2, 100000);
   
-  Stepper.SetEnableTimeout(0, 1);
-  Stepper.SetEnableTimeout(1, 1);
-  Stepper.SetEnableTimeout(2, 1);
+//  Stepper.SetEnableTimeout(0, 1);
+//  Stepper.SetEnableTimeout(1, 1);
+//  Stepper.SetEnableTimeout(2, 1);
 
 #ifdef REFMOVE
 
@@ -90,15 +94,16 @@ void Test1()
   {
     for (register unsigned char i=0;mv[i].dist != 0; i++)
     {
-      sdist_t    dist = mv[i].dist;
+      sdist_t    dist = -mv[i].dist;
       steprate_t rate = RoundMulDivUInt(mv[i].rate,DEFSPEED,50000);
       Stepper.CStepper::MoveRel(axis, dist, rate); count[axis] -= dist;
+      Serial.println(rate);
     }
   
     WaitBusy();
   }
 
-  Stepper.MoveRel(count,DEFSPEED);
+  Stepper.MoveRel(count,DEFSPEED/2);
 
   Serial.println(Stepper.GetPosition(X_AXIS));
   Serial.println(Stepper.GetPosition(Y_AXIS));
