@@ -28,7 +28,7 @@ namespace CNCLib.GCode
 	{
 		#region Properties
 
-		public UInt32 Signature { get; private set; } = 0x21436587;
+		public UInt32 Signature { get; private set; } = 0x21436501;
 
 		UInt32[] _values;
 		public UInt32[] Values
@@ -46,11 +46,14 @@ namespace CNCLib.GCode
 		{
 			Signatrue = 0,
 			InfoOffset1,
-			Info,
+			Info1,
+			Info2,
+			Values8Bit,
 			MaxstepRate,
 			Acc,
 			Dec,
 			RefMoveStepRate,
+			MoveAwayFromRefernece,
 			StepsPerMm1000
 		}
 		public enum EValueOffsets8

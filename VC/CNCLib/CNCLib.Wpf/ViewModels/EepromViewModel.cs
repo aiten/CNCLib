@@ -98,6 +98,7 @@ namespace CNCLib.Wpf.ViewModels
 					ee[2, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence2;
 					ee[3, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence3;
 					ee[EepromV1.EValueOffsets32.RefMoveStepRate] = EepromValue.RefMoveSteprate;
+					ee[EepromV1.EValueOffsets32.MoveAwayFromRefernece] = EepromValue.MoveAwayFromRefernece;
 
 					ee[EepromV1.EValueOffsets32.MaxstepRate] = EepromValue.MaxStepRate;
 					ee[EepromV1.EValueOffsets32.Acc] = EepromValue.Acc;
@@ -135,7 +136,8 @@ namespace CNCLib.Wpf.ViewModels
 						eeprom.NumAxis = ee[EepromV1.EValueOffsets8.NumAxis];
 						eeprom.UseAxis = ee[EepromV1.EValueOffsets8.UseAxis];
 
-						eeprom.Info		= ee[EepromV1.EValueOffsets32.Info];
+						eeprom.Info1	= ee[EepromV1.EValueOffsets32.Info1];
+						eeprom.Info2 = ee[EepromV1.EValueOffsets32.Info2];
 
 						eeprom.SizeX = ee[0, EepromV1.EAxisOffsets32.Size];
 						eeprom.SizeY = ee[1, EepromV1.EAxisOffsets32.Size];
@@ -152,6 +154,7 @@ namespace CNCLib.Wpf.ViewModels
 						eeprom.RefSeqence2 = (Eeprom.EReverenceSequence)ee[2, EepromV1.EAxisOffsets8.EReverenceSeqence];
 						eeprom.RefSeqence3 = (Eeprom.EReverenceSequence)ee[3, EepromV1.EAxisOffsets8.EReverenceSeqence];
 						eeprom.RefMoveSteprate = ee[EepromV1.EValueOffsets32.RefMoveStepRate];
+						eeprom.MoveAwayFromRefernece = ee[EepromV1.EValueOffsets32.MoveAwayFromRefernece];
 
 						eeprom.MaxStepRate	= ee[EepromV1.EValueOffsets32.MaxstepRate];
 						eeprom.Acc			= ee[EepromV1.EValueOffsets32.Acc];

@@ -31,6 +31,7 @@
 #define USBBAUDRATE 250000
 
 ////////////////////////////////////////////////////////
+#if Generic
 
 #define X_MAXSIZE 200000        // in mm1000_t
 #define Y_MAXSIZE 200000 
@@ -74,8 +75,53 @@
 #define REFMOVE_5_AXIS  255
 #define REFMOVE_6_AXIS  255
 
-#define MOVEAWAYFROMREF_STEPS 100
+#else
 
+#define X_MAXSIZE 160000        // in mm1000_t
+#define Y_MAXSIZE 105000 
+#define Z_MAXSIZE 30000 
+#define A_MAXSIZE 360000 
+#define B_MAXSIZE 360000 
+#define C_MAXSIZE 360000 
+
+#define STEPSPERROTATION  200
+#define MICROSTEPPING   16
+#define SCREWLEAD     4.0
+
+#define X_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
+#define Y_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
+#define Z_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
+#define A_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
+
+#define ConversionToMm1000 MyConvertToMm1000
+#define ConversionToMachine MyConvertToMachine
+
+////////////////////////////////////////////////////////
+
+#define CNC_MAXSPEED 30000        // steps/sec
+#define CNC_ACC  350
+#define CNC_DEC  400
+
+////////////////////////////////////////////////////////
+// NoReference, ReferenceToMin, ReferenceToMax
+
+#define X_USEREFERENCE  EReverenceType::NoReference
+#define Y_USEREFERENCE  EReverenceType::NoReference
+#define Z_USEREFERENCE  EReverenceType::NoReference
+#define A_USEREFERENCE  EReverenceType::NoReference
+#define B_USEREFERENCE  EReverenceType::NoReference
+#define C_USEREFERENCE  EReverenceType::NoReference
+
+#define REFMOVE_1_AXIS  255
+#define REFMOVE_2_AXIS  255
+#define REFMOVE_3_AXIS  255
+#define REFMOVE_4_AXIS  255
+#define REFMOVE_5_AXIS  255
+#define REFMOVE_6_AXIS  255
+
+#define MOVEAWAYFROMREF_MM1000 500
+
+#endif
 
 ////////////////////////////////////////////////////////
 
@@ -95,7 +141,7 @@
 #define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
 #define G1_DEFAULT_FEEDPRATE	100000	// in mm1000 / min
 
-#define STEPRATERATE_REFMOVE	0 // 0 ... default
+#define STEPRATERATE_REFMOVE	(CNC_MAXSPEED/4)
 
 ////////////////////////////////////////////////////////
 

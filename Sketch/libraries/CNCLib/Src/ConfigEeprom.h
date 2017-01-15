@@ -85,6 +85,8 @@ public:
 	#define EEPROM_INFO_HOLD	(1<<30)
 	#define EEPROM_INFO_RESUME	(1<<29)
 
+	#define EPROM_SIGNATURE		0x21436501
+
 	struct SCNCEeprom
 	{
 		uint32_t  signature;
@@ -94,12 +96,19 @@ public:
 		uint8_t	  offsetAxis;
 		uint8_t	  sizeofAxis;
 
-		uint32_t  info;
+		uint32_t  info1;
+		uint32_t  info2;
+
+		uint8_t	  dummy1;
+		uint8_t	  dummy2;
+		uint8_t	  dummy3;
+		uint8_t	  dummy4;
 
 		uint32_t  maxsteprate;
 		uint32_t  acc;
 		uint32_t  dec;
 		uint32_t  refmovesteprate;
+		uint32_t  moveAwayFromRefernece;
 
 		float     StepsPerMm1000;
 

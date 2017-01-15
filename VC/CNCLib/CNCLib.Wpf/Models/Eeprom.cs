@@ -68,9 +68,14 @@ namespace CNCLib.Wpf.Models
 		public uint UseAxis { get; set; }
 
 		[Category(CATEGORY_INFO)]
-		[DisplayName("Info")]
+		[DisplayName("Info1")]
 		[Description("Info 32bit")]
-		public uint Info { get; set; }
+		public uint Info1 { get; set; }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("Info2")]
+		[Description("Info 32bit")]
+		public uint Info2 { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Acc")]
@@ -86,6 +91,11 @@ namespace CNCLib.Wpf.Models
 		[DisplayName("RefMoveStepRate")]
 		[Description("Steprate for reference-move")]
 		public uint RefMoveSteprate { get; set; }
+
+		[Category(CATEGORY_GENERAL)]
+		[DisplayName("MoveAwayFromRefernece")]
+		[Description("Distance between refmove hit and 0 (in mm1000)")]
+		public uint MoveAwayFromRefernece { get; set; }
 
 		[Category(CATEGORY_AXIS_X)]
 		[DisplayName("Size-X")]

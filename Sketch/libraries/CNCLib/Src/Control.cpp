@@ -25,6 +25,7 @@
 #include "Lcd.h"
 
 #include "GCodeParserBase.h"
+#include "ConfigEeprom.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -72,9 +73,13 @@ void CControl::Initialized()
 bool CControl::GoToReference(axis_t axis, steprate_t steprate, bool toMinRef)
 {
 	if (steprate == 0)
-		steprate = CStepper::GetInstance()->GetDefaultVmax();
+	{
+		steprate = (steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, refmovesteprate));
+	}
 	// goto min/max
-	return CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, steprate);
+	return CStepper::GetInstance()->MoveReference(
+		axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, steprate,0, 
+		CMotionControlBase::GetInstance()->ToMachine(axis,CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, moveAwayFromRefernece))));
 }
 
 ////////////////////////////////////////////////////////////

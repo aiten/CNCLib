@@ -71,7 +71,7 @@
 #define REFMOVE_3_AXIS  255
 #define REFMOVE_4_AXIS  255
 
-#define MOVEAWAYFROMREF_STEPS 100
+#define MOVEAWAYFROMREF_MM1000 500
 
 ////////////////////////////////////////////////////////
 
@@ -82,8 +82,8 @@
 ////////////////////////////////////////////////////////
 
 #define GO_DEFAULT_STEPRATE		((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
-#define G1_DEFAULT_STEPRATE		(CNC_MAXSPEED/2)			// steps/sec
 #define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
+#define G1_DEFAULT_FEEDPRATE	100000	// in mm1000 / min
 
 #define STEPRATERATE_REFMOVE	4000
 

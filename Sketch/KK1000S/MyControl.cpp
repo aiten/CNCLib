@@ -52,6 +52,7 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 	CNC_ACC,
 	CNC_DEC,
 	0,// STEPRATERATE_REFMOVE,
+	0,
 	X_STEPSPERMM/1000.0,
 	{
 		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS },
