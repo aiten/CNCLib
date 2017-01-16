@@ -19,41 +19,33 @@
 
 #pragma once
 
-////////////////////////////////////////////////////////
+#include <Steppers/StepperRamps14_pins.h>
+#include <Steppers/StepperRamps14.h>
+#define BOARDNAME RAMPS14
 
-#include "Configuration.h"
-
-////////////////////////////////////////////////////////
-
-#include <U8GLCD.h>
-#include "MyMenu.h"
+#define SPEEDFACTOR 1
+#define SPEEDFACTOR_SQT 1
 
 ////////////////////////////////////////////////////////
 
-class CMyLcd : public CU8GLcd
-{
-private:
-
-	typedef CU8GLcd super;
-
-public:
-
-	virtual void Init() override;
-	virtual void Beep(const SPlayTone*, bool) override;
-
-protected:
-
-	virtual class U8G2& GetU8G() override;
-	virtual class CMenuBase& GetMenu() override	{ return _menu; }
-
-	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type, uintptr_t data) override;
-
-private:
-
-	CMyMenu _menu;
-
-};
+#define LCD_NUMAXIS	5
+#define MYNUM_AXIS	5
 
 ////////////////////////////////////////////////////////
 
-extern CMyLcd Lcd;
+
+#if defined(__SAM3X8E__)
+
+#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN2)
+#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN1)
+#define SD_ENABLE_PIN	 	 52
+
+#else
+
+#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN1)
+#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN2)
+#define SD_ENABLE_PIN		 CAT(BOARDNAME,_SDSS_PIN)
+
+#endif
+
+////////////////////////////////////////////////////////

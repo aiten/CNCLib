@@ -85,7 +85,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sketch\ProxxonMF70\Configuration_ProxxonMF70.h" />
+    <ClInclude Include="..\..\..\Sketch\ProxxonMF70\Configuration.h" />
+    <ClInclude Include="..\..\..\Sketch\ProxxonMF70\Configuration_Ramps14.h" />
+    <ClInclude Include="..\..\..\Sketch\ProxxonMF70\Configuration_RampsFD.h" />
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\MyControl.h" />
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\MyLCD.h" />
     <ClInclude Include="..\..\..\Sketch\ProxxonMF70\MyMenu.h" />

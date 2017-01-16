@@ -29,6 +29,7 @@
 #include <CNCLib.h>
 #include <CNCLibEx.h>
 
+#include <ConfigEeprom.h>
 #include <GCode3DParser.h>
 #include "MyControl.h"
 #include "MyLcd.h"
@@ -36,39 +37,66 @@
 ////////////////////////////////////////////////////////////
 
 CMyControl Control;
-CGCodeTools GCodeTools;
-
 CMotionControl MotionControl;
+CGCodeTools GCodeTools;
+CConfigEeprom Eprom;
 HardwareSerial& StepperSerial = Serial;
+
+////////////////////////////////////////////////////////////
+
+static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
+{
+	EPROM_SIGNATURE,
+	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
+	0,0,
+	0,0,0,0,
+	CNC_MAXSPEED,
+	CNC_ACC,
+	CNC_DEC,
+	STEPRATERATE_REFMOVE,
+	MOVEAWAYFROMREF_MM1000,
+	X_STEPSPERMM/1000.0,
+	{
+		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS },
+		{ Y_MAXSIZE,     Y_USEREFERENCE, REFMOVE_2_AXIS },
+		{ Z_MAXSIZE,     Z_USEREFERENCE, REFMOVE_3_AXIS },
+#if NUM_AXIS > 3
+		{ A_MAXSIZE,     A_USEREFERENCE, REFMOVE_4_AXIS },
+#endif
+#if NUM_AXIS > 4
+		{ B_MAXSIZE,     B_USEREFERENCE, REFMOVE_5_AXIS },
+#endif
+#if NUM_AXIS > 5
+		{ C_MAXSIZE,     C_USEREFERENCE, REFMOVE_6_AXIS },
+#endif
+	}
+};
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Init()
 {
-	StepperSerial.println(MESSAGE_MYCONTROL_Starting);
+	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, EPROM_SIGNATURE);
 
-	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
+	CMotionControlBase::GetInstance()->InitConversionBestStepsPer(CConfigEeprom::GetConfigFloat(offsetof(CConfigEeprom::SCNCEeprom, StepsPerMm1000)));
+
+#ifdef DISABLELEDBLINK
+	DisableBlinkLed();
+#endif
+
+	StepperSerial.println(MESSAGE_MYCONTROL_Starting);
 
 	super::Init();
 
-	//CStepper::GetInstance()->SetDirection((1<<X_AXIS) + (1<<Y_AXIS));
+#ifdef SETDIRECTION
+	CStepper::GetInstance()->SetDirection(SETDIRECTION);
+#endif
 
 	//CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 20));
 	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 35));
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
 	//  CStepper::GetInstance()->SetMaxSpeed(20000);
-	CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350*SPEEDFACTOR_SQT), steprate_t(350*SPEEDFACTOR_SQT));
-
-	CGCodeParserBase::SetG0FeedRate(-feedrate_t(526518)*SPEEDFACTOR);					// feedrate_t(526518) => VMAXTOFEEDRATE(((SPEED_MULTIPLIER_4)-5))
-	CGCodeParserBase::SetG1FeedRate(feedrate_t(100000)*SPEEDFACTOR);
-	CGCodeParserBase::SetG1MaxFeedRate(feedrate_t(500000)*SPEEDFACTOR);
-
-	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 130000));
-	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 45000));
-	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, 81000));
-	CStepper::GetInstance()->SetLimitMax(A_AXIS, CMotionControlBase::GetInstance()->ToMachine(A_AXIS, 360000));		// grad
-	CStepper::GetInstance()->SetLimitMax(B_AXIS, CMotionControlBase::GetInstance()->ToMachine(B_AXIS, 360000));
 
 	CStepper::GetInstance()->SetJerkSpeed(X_AXIS, SPEEDFACTOR*1000);
 	CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, SPEEDFACTOR*1000);
@@ -86,29 +114,41 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
 #endif
 
-	for (register uint8_t i = 0; i < NUM_AXIS * 2; i++)
+	for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
 	{
-		CStepper::GetInstance()->UseReference(i, false);
+		EnumAsByte(EReverenceType) ref = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
+		if (ref != NoReference)
+			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(axis, ref == EReverenceType::ReferenceToMin), true);
+
+		CStepper::GetInstance()->SetLimitMax(axis, CMotionControlBase::GetInstance()->ToMachine(axis, CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[0].size) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis)));
 	}
 
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, false), true);
-
-	CStepper::GetInstance()->SetPosition(Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS));
-
-	_coolant.Init();
-	_spindel.Init();
 	_controllerfan.Init(255);
 
+	_spindel.Init();
 	_probe.Init();
+	_kill.Init();
+	_coolant.Init();
+
+  	_hold.Init();
+	_resume.Init();
+	_holdresume.Init();
 
 #if NUM_AXIS < 6
 // LCD KILL is shared with E1 (RampsFD) (DIR)
 	_holdKillLcd.SetPin(CAT(BOARDNAME, _LCD_KILL_PIN), CAT(BOARDNAME, _LCD_KILL_PIN_ON));
 #endif
 
+	CGCodeParserDefault::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), G1_DEFAULT_FEEDPRATE, STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
+	CStepper::GetInstance()->SetDefaultMaxSpeed(
+		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate))),
+		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, acc))),
+		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, dec))));
+
+#ifdef MYUSE_LCD
 	InitSD(SD_ENABLE_PIN);
+#endif
+
 }
 
 ////////////////////////////////////////////////////////////
@@ -117,12 +157,11 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
-		case Spindel:			_spindel.Set(level>0);	return;
-		case Coolant:			_coolant.Set(level>0); return;
-		case ControllerFan:		_controllerfan.SetLevel((uint8_t)level);		return;
-		case Vacuum:			break;
+		case Spindel:		_spindel.On(ConvertSpindelSpeedToIO(level)); _spindelDir.Set(((short)level) > 0);	return;
+		case Coolant:		_coolant.Set(level > 0); return;
+		case ControllerFan:	_controllerfan.SetLevel((uint8_t)level); return;
 	}
-	
+
 	super::IOControl(tool, level);
 }
 
@@ -132,11 +171,10 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{
-		case Probe:			{ return _probe.IsOn(); }
 		case Spindel:		{ return _spindel.IsOn(); }
+		case Probe:			{ return _probe.IsOn(); }
 		case Coolant:		{ return _coolant.IsOn(); }
-		case ControllerFan:	{ return _controllerfan.GetLevel(); }
-		case Vacuum:		break;
+		case ControllerFan: { return _controllerfan.GetLevel(); }
 	}
 
 	return super::IOControl(tool);
@@ -147,7 +185,8 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 void CMyControl::Kill()
 {
 	super::Kill();
-	_spindel.Set(false);
+
+	_spindel.Off();
 	_coolant.Set(false);
 }
 
@@ -160,6 +199,14 @@ bool CMyControl::IsKill()
 #else
   return _holdKillLcd.IsOn();
 #endif
+	if (_kill.IsOn())
+	{
+#ifdef MYUSE_LCD
+		Lcd.Diagnostic(F("E-Stop"));
+#endif
+		return true;
+	}
+	return false;
 }
 
 ////////////////////////////////////////////////////////////
@@ -167,6 +214,10 @@ bool CMyControl::IsKill()
 void CMyControl::TimerInterrupt()
 {
 	super::TimerInterrupt();
+
+	_hold.Check();
+	_resume.Check();
+	_holdresume.Check();
 #if NUM_AXIS < 6
 	_holdKillLcd.Check();
 #endif
@@ -177,30 +228,49 @@ void CMyControl::TimerInterrupt()
 void CMyControl::Initialized()
 {
 	super::Initialized();
+
 	_controllerfan.SetLevel(128);
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::Poll()
+{
+	super::Poll();
+
+	if (IsHold())
+	{
+		if (_resume.IsOn() || _holdresume.IsOn())
+		{
+			Resume();
+#ifdef MYUSE_LCD
+			Lcd.ClearDiagnostic();
+#endif
+		}
+	}
+	else if (_hold.IsOn() || _holdresume.IsOn())
+	{
+		Hold();
+#ifdef MYUSE_LCD
+		Lcd.Diagnostic(F("LCD Hold"));
+#endif
+	}
 }
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::GoToReference()
 {
-	GoToReference(Z_AXIS, 0, false);
-	GoToReference(Y_AXIS, 0, true);
-	GoToReference(X_AXIS, 0, true);
-}
-
-////////////////////////////////////////////////////////////
-
-bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
-{
-#if defined(__SAM3X8E__)
-	if (toMinRef)
-		CStepper::GetInstance()->SetPosition(axis, 0);
-	else
-		CStepper::GetInstance()->SetPosition(axis, CStepper::GetInstance()->GetLimitMax(axis));
-#else
-	return super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 300000),toMinRef);
-#endif
+	for (axis_t i = 0; i < NUM_AXIS; i++)
+	{
+		axis_t axis = CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].refmoveSequence)+sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*i);
+		if (axis < NUM_AXIS)
+		{
+			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType)+sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
+			if (referenceType != EReverenceType::NoReference)
+				super::GoToReference(axis,	0,referenceType == EReverenceType::ReferenceToMin);
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -213,7 +283,7 @@ bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t a
 			_controllerfan.On();
 			break;
 		case OnIdleEvent:
-			if (millis()- CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME)
+			if (IsControllerFanTimeout())
 			{
 				_controllerfan.Off();
 			}

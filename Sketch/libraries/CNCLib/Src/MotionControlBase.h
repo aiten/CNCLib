@@ -54,6 +54,8 @@ class CMotionControlBase : public CSingleton<CMotionControlBase>
 public:
 
 	static void InitConversion(ToMm1000_t toMm1000, ToMachine_t toMachine)						{ _ToMm1000 = toMm1000; _ToMachine = toMachine; }
+	static void InitConversionStepsPer(float stepspermm1000)									{ InitConversion(ToMm1000_StepsPer, ToMachine_StepsPer); StepsPerMm1000 = stepspermm1000; }
+	static void InitConversionBestStepsPer(float stepspermm1000);
 
 	static mm1000_t ToMm1000(axis_t axis, sdist_t val)											{ return _ToMm1000(axis,val);  }
 	static sdist_t ToMachine(axis_t axis, mm1000_t val)											{ return _ToMachine(axis, val); }
@@ -122,6 +124,12 @@ public:
 	// mm1000_t => 2^31 = 2147483648 = 2147483.648 mm = 2147.483648m 
 	//
 	//
+
+	static float StepsPerMm1000;
+	static mm1000_t ToMm1000_StepsPer(axis_t /* axis */, sdist_t val);
+	static sdist_t  ToMachine_StepsPer(axis_t /* axis */, mm1000_t val);
+
+
 
 	// one Step = 0.1mm => 10/rot
 	static mm1000_t ToMm1000_1_10(axis_t /* axis */, sdist_t val)								{ return  RoundMulDivU32(val, 100, 1); }

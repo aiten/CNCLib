@@ -58,9 +58,6 @@
 #define B_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
 #define C_STEPSPERMM (STEPROTATION/(TOOTH*TOOTHSIZE))
 
-#define ConversionToMm1000 MyConvertToMm1000
-#define ConversionToMachine MyConvertToMachine
-
 ////////////////////////////////////////////////////////
 
 #define CNC_MAXSPEED 55000        // steps/sec

@@ -42,14 +42,12 @@
 #define Z_STEPSPERMM (20.0/3*16)
 #define A_STEPSPERMM (20.0/3*16)
 
-#define ConversionToMm1000 MyConvertToMm1000
-#define ConversionToMachine MyConvertToMachine
-
 ////////////////////////////////////////////////////////
 
 #define CNC_MAXSPEED 20000 // 27000        // steps/sec
 #define CNC_ACC  500
 #define CNC_DEC  550
+
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
 

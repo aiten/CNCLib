@@ -45,38 +45,6 @@ HardwareSerial& StepperSerial = Serial;
 
 ////////////////////////////////////////////////////////////
 
-float StepsPerMm1000;
-
-mm1000_t MyConvertToMm1000(axis_t axis, sdist_t val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
-		case Y_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
-		case Z_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
-		case A_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
-		case B_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
-		case C_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
-	}
-}
-
-sdist_t MyConvertToMachine(axis_t axis, mm1000_t  val)
-{
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (sdist_t)(val * StepsPerMm1000);
-		case Y_AXIS: return  (sdist_t)(val * StepsPerMm1000);
-		case Z_AXIS: return  (sdist_t)(val * StepsPerMm1000);
-		case A_AXIS: return  (sdist_t)(val * StepsPerMm1000);
-		case B_AXIS: return  (sdist_t)(val * StepsPerMm1000);
-		case C_AXIS: return  (sdist_t)(val * StepsPerMm1000);
-	}
-}
-
-////////////////////////////////////////////////////////////
-
 static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 {
 	EPROM_SIGNATURE,
@@ -111,15 +79,13 @@ void CMyControl::Init()
 {
 	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, EPROM_SIGNATURE);
 
-	StepsPerMm1000 = CConfigEeprom::GetConfigFloat(offsetof(CConfigEeprom::SCNCEeprom, StepsPerMm1000));
+	CMotionControlBase::GetInstance()->InitConversionBestStepsPer(CConfigEeprom::GetConfigFloat(offsetof(CConfigEeprom::SCNCEeprom, StepsPerMm1000)));
 
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();
 #endif
 
 	StepperSerial.println(MESSAGE_MYCONTROL_Starting);
-
-	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
 	super::Init();
 
@@ -136,7 +102,7 @@ void CMyControl::Init()
 		CStepper::GetInstance()->SetLimitMax(axis, CMotionControlBase::GetInstance()->ToMachine(axis, CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[0].size) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis)));
 	}
 
-	_controllerfan.Init(128);
+	_controllerfan.Init(255);
 
 	_laserPWM.Init();
 	_laserOnOff.Init();

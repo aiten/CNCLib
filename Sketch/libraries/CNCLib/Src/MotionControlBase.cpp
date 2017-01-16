@@ -417,3 +417,43 @@ void CMotionControlBase::MoveRelEx(feedrate_t feedrate, unsigned short axis, mm1
 	MoveAbs(dest, feedrate);
 }
 
+////////////////////////////////////////////////////////
+
+void CMotionControlBase::InitConversionBestStepsPer(float stepspermm1000)
+{
+	InitConversionStepsPer(stepspermm1000);
+}
+
+////////////////////////////////////////////////////////
+
+float CMotionControlBase::StepsPerMm1000;
+
+////////////////////////////////////////////////////////
+
+mm1000_t CMotionControlBase::ToMm1000_StepsPer(axis_t axis, sdist_t val)
+{
+	switch (axis)
+	{
+		default:
+		case X_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
+		case Y_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
+		case Z_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
+		case A_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
+		case B_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
+		case C_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
+	}
+}
+
+sdist_t CMotionControlBase::ToMachine_StepsPer(axis_t axis, mm1000_t  val)
+{
+	switch (axis)
+	{
+		default:
+		case X_AXIS: return  (sdist_t)(val * StepsPerMm1000);
+		case Y_AXIS: return  (sdist_t)(val * StepsPerMm1000);
+		case Z_AXIS: return  (sdist_t)(val * StepsPerMm1000);
+		case A_AXIS: return  (sdist_t)(val * StepsPerMm1000);
+		case B_AXIS: return  (sdist_t)(val * StepsPerMm1000);
+		case C_AXIS: return  (sdist_t)(val * StepsPerMm1000);
+	}
+}

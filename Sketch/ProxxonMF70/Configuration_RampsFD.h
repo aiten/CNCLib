@@ -21,39 +21,20 @@
 
 ////////////////////////////////////////////////////////
 
-#include "Configuration.h"
+#include <Steppers/StepperRampsFD_pins.h>
+#include <Steppers/StepperRampsFD.h>
+#define BOARDNAME RAMPSFD
+
+#define SPEEDFACTOR 2
+#define SPEEDFACTOR_SQT 1.41421356237309504880
 
 ////////////////////////////////////////////////////////
 
-#include <U8GLCD.h>
-#include "MyMenu.h"
+#define LCD_NUMAXIS	6
+#define MYNUM_AXIS	6
 
 ////////////////////////////////////////////////////////
 
-class CMyLcd : public CU8GLcd
-{
-private:
-
-	typedef CU8GLcd super;
-
-public:
-
-	virtual void Init() override;
-	virtual void Beep(const SPlayTone*, bool) override;
-
-protected:
-
-	virtual class U8G2& GetU8G() override;
-	virtual class CMenuBase& GetMenu() override	{ return _menu; }
-
-	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type, uintptr_t data) override;
-
-private:
-
-	CMyMenu _menu;
-
-};
-
-////////////////////////////////////////////////////////
-
-extern CMyLcd Lcd;
+#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN1)
+#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN2)
+#define SD_ENABLE_PIN		 CAT(BOARDNAME,_SDSS_PIN)

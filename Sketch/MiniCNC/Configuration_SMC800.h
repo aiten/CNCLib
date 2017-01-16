@@ -31,11 +31,6 @@
 
 #define CMyStepper CStepperSMC800
 
-#define ConversionToMm1000 MiniCNCToMm1000
-#define ConversionToMachine MiniCNCToMachine
-//#define ConversionToMm1000 CMotionControlBase::ToMm1000_1_400
-//#define ConversionToMachine CMotionControlBase::ToMachine_1_400
-
 #define X_STEPSPERMM 400.0
 #define Y_STEPSPERMM 400.0
 #define Z_STEPSPERMM 400.0

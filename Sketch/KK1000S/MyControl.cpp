@@ -36,11 +36,11 @@
 
 CMyControl Control;
 CGCodeTools GCodeTools;
-
 CMotionControl MotionControl;
 CConfigEeprom Eprom;
-
 HardwareSerial& StepperSerial = Serial;
+
+
 ////////////////////////////////////////////////////////////
 
 static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
@@ -75,7 +75,11 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 
 void CMyControl::Init()
 {
-	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, 0x21436587);
+	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, EPROM_SIGNATURE);
+
+#ifdef DISABLELEDBLINK
+	DisableBlinkLed();
+#endif
 
 	StepperSerial.println(MESSAGE_MYCONTROL_Starting);
 
@@ -83,7 +87,9 @@ void CMyControl::Init()
 
 	super::Init();
 
-	CStepper::GetInstance()->SetDirection((1<<X_AXIS) + (1<<Y_AXIS));
+#ifdef SETDIRECTION
+	CStepper::GetInstance()->SetDirection(SETDIRECTION);
+#endif
 
 	//CStepper::GetInstance()->SetBacklash(5000);
 	//CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 20));

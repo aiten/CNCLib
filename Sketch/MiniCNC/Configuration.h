@@ -52,9 +52,6 @@
 #define B_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 #define C_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 
-#define ConversionToMm1000 MyConvertToMm1000
-#define ConversionToMachine MyConvertToMachine
-
 ////////////////////////////////////////////////////////
 
 #define CNC_MAXSPEED 27000        // steps/sec
@@ -83,7 +80,7 @@
 
 #else
 
-#define X_MAXSIZE 160000        // in mm1000_t
+#define X_MAXSIZE 150000        // in mm1000_t
 #define Y_MAXSIZE 105000 
 #define Z_MAXSIZE 30000 
 #define A_MAXSIZE 360000 
@@ -101,12 +98,9 @@
 #define B_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 #define C_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 
-#define ConversionToMm1000 MyConvertToMm1000
-#define ConversionToMachine MyConvertToMachine
-
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED 30000        // steps/sec
+#define CNC_MAXSPEED 20000        // steps/sec
 #define CNC_ACC  350
 #define CNC_DEC  400
 
