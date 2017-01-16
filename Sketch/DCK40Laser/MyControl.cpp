@@ -25,7 +25,6 @@
 
 #include <CNCLib.h>
 
-#include <GCodeParserBase.h>
 #include <GCodeParser.h>
 #include <ConfigEeprom.h>
 
@@ -80,14 +79,15 @@ sdist_t MyConvertToMachine(axis_t axis, mm1000_t  val)
 
 static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 {
-	0x21436587,
+	EPROM_SIGNATURE,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
-	0,
+	0,0,
+	0,0,0,0,
 	CNC_MAXSPEED,
 	CNC_ACC,
 	CNC_DEC,
 	STEPRATERATE_REFMOVE,
-	MOVEAWAYFROMREF_STEPS,
+	MOVEAWAYFROMREF_MM1000,
 	X_STEPSPERMM/1000.0,
 	{
 		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS },
@@ -109,7 +109,7 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 
 void CMyControl::Init()
 {
-	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, 0x21436587);
+	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, EPROM_SIGNATURE);
 
 	StepsPerMm1000 = CConfigEeprom::GetConfigFloat(offsetof(CConfigEeprom::SCNCEeprom, StepsPerMm1000));
 
@@ -153,9 +153,7 @@ void CMyControl::Init()
 	_resume.Init();
 	_holdresume.Init();
 
-	CMyParser::Init();
-
-	CGCodeParserBase::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
+	CGCodeParserDefault::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), G1_DEFAULT_FEEDPRATE, STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 	CStepper::GetInstance()->SetDefaultMaxSpeed(
 		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate))),
 		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, acc))),
@@ -227,7 +225,9 @@ bool CMyControl::IsKill()
 {
 	if (false && _kill.IsOn())
 	{
+#ifdef MYUSE_LCD
 		Lcd.Diagnostic(F("E-Stop"));
+#endif
 		return true;
 	}
 	return false;
@@ -264,13 +264,17 @@ void CMyControl::Poll()
 		if (_resume.IsOn() || _holdresume.IsOn())
 		{
 			Resume();
+#ifdef MYUSE_LCD
 			Lcd.ClearDiagnostic();
+#endif
 		}
 	}
 	else if (_hold.IsOn() || _holdresume.IsOn())
 	{
 		Hold();
+#ifdef MYUSE_LCD
 		Lcd.Diagnostic(F("LCD Hold"));
+#endif
 	}
 }
 
@@ -285,25 +289,9 @@ void CMyControl::GoToReference()
 		{
 			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType)+sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
 			if (referenceType != EReverenceType::NoReference)
-				GoToReference(axis,	(steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, refmovesteprate)),referenceType == EReverenceType::ReferenceToMin);
+				super::GoToReference(axis,	0,referenceType == EReverenceType::ReferenceToMin);
 		}
 	}
-}
-
-////////////////////////////////////////////////////////////
-
-bool CMyControl::GoToReference(axis_t axis, steprate_t steprate, bool toMinRef)
-{
-	return super::GoToReference(axis, steprate, toMinRef);
-	//	return CStepper::GetInstance()->MoveReference(axis, CStepper::GetInstance()->ToReferenceId(axis, toMinRef), toMinRef, STEPRATERATE_REFMOVE, 0, MOVEAWAYFROMREF_STEPS);
-}
-
-////////////////////////////////////////////////////////////
-
-bool CMyControl::Parse(CStreamReader* reader, Stream* output)
-{
-	CMyParser gcode(reader, output);
-	return ParseAndPrintResult(&gcode, output);
 }
 
 ////////////////////////////////////////////////////////////

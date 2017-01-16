@@ -99,6 +99,7 @@ public:
 	static mm1000_t GetAllPreset(axis_t axis)				{ return GetG92PosPreset(axis) + GetG54PosPreset(axis) + GetToolHeightPosPreset(axis); }
 
 	static void Init()										{ super::Init(); _modalstate.Init(); _modlessstate.Init(); }
+	static void InitAndSetFeedRate(feedrate_t feedrateG0, feedrate_t feedrateG1, feedrate_t feedrateG1max) { Init();  super::InitAndSetFeedRate(feedrateG0, feedrateG1, feedrateG1max); }
 
 protected:
 

@@ -84,12 +84,14 @@
 #define REFMOVE_5_AXIS  255
 #define REFMOVE_6_AXIS  255
 
-#define MOVEAWAYFROMREF_STEPS 100
+#define MOVEAWAYFROMREF_MM1000 250
+
+#define SPINDEL_ANALOGSPEED
+#define SPINDEL_MAXSPEED	255			// analog 255
 
 ////////////////////////////////////////////////////////
 
 #if STEPPERTYPE==4
-
 #include "Configuration_CNCShield.h"
 #elif STEPPERTYPE==5
 #include "Configuration_RampsFD.h"
@@ -98,8 +100,8 @@
 ////////////////////////////////////////////////////////
 
 #define GO_DEFAULT_STEPRATE		((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
-#define G1_DEFAULT_STEPRATE		(CNC_MAXSPEED/2)			// steps/sec
 #define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
+#define G1_DEFAULT_FEEDPRATE	100000	// in mm1000 / min
 
 #define STEPRATERATE_REFMOVE	5000
 

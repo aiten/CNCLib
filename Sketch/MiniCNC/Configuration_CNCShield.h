@@ -36,8 +36,7 @@
 #include <Steppers/StepperCNCShield_pins.h>
 
 // change some pin definition here:
-//#undef CNCSHIELD_X_STEP_PIN
-//#define CNCSHIELD_X_STEP_PIN 2
+
 
 #include <Steppers/StepperCNCShield.h>
 
@@ -74,8 +73,6 @@
 #define SPINDEL_DIR_PIN		CNCSHIELD_SPINDEL_DIR_PIN
 #define SPINDEL_DIR_CLW		CNCSHIELD_SPINDEL_DIR_CLW
 #define SPINDEL_DIR_CCLW	CNCSHIELD_SPINDEL_DIR_CCLW
-#define SPINDEL_ANALOGSPEED
-#define SPINDEL_MAXSPEED	10000			// analog 255
 #endif
 
 #undef USECONTROLERFAN

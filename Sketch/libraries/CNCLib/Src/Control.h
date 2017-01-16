@@ -27,6 +27,16 @@
 #include "MenuBase.h"
 
 ////////////////////////////////////////////////////////
+
+#ifdef REDUCED_SIZE
+#define CGCodeParserDefault CGCodeParserBase
+#define CMotionControlDefault CMotionControlBase
+#else
+#define CGCodeParserDefault CGCodeParser
+#define CMotionControlDefault CMotionControl
+#endif
+
+////////////////////////////////////////////////////////
 // Control: read from USB (or File) and pass string to the Parser
 
 class CControl : public CSingleton<CControl>
@@ -126,7 +136,7 @@ protected:
 	virtual void Init();
 	virtual void Initialized();									// called if Init() is done
 
-	virtual bool Parse(CStreamReader* reader, Stream* output)=0;// abstract: specify Parser
+	virtual bool Parse(CStreamReader* reader, Stream* output);	// specify Parser, default parser
 	virtual bool Command(char* xbuffer, Stream* output);		// execute Command (call parser)
 	virtual void Idle(unsigned int idletime);					// called after TIMEOUTCALLIDEL in idle state
 	virtual void Poll();										// call in Idle and at least e.g. 100ms (not in interrupt), see CheckIdlePoll

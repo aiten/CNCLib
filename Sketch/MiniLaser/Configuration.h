@@ -50,6 +50,7 @@
 #define CNC_MAXSPEED 20000 // 27000        // steps/sec
 #define CNC_ACC  500
 #define CNC_DEC  550
+////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
 
 #define X_USEREFERENCE	EReverenceType::NoReference
@@ -64,6 +65,8 @@
 
 #define MOVEAWAYFROMREF_MM1000 250
 
+#define SPINDEL_ANALOGSPEED
+#define SPINDEL_MAXSPEED	255			// analog 255
 
 ////////////////////////////////////////////////////////
 

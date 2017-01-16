@@ -45,14 +45,15 @@ HardwareSerial& StepperSerial = Serial;
 
 static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 {
-	0x21436587,
+	EPROM_SIGNATURE,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
-	0,
+	0,0,
+	0,0,0,0,
 	CNC_MAXSPEED,
 	CNC_ACC,
 	CNC_DEC,
-	0,// STEPRATERATE_REFMOVE,
-	0,
+	STEPRATERATE_REFMOVE,
+	MOVEAWAYFROMREF_MM1000,
 	X_STEPSPERMM/1000.0,
 	{
 		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS },
@@ -130,13 +131,16 @@ void CMyControl::Init()
 	_probe.Init(MASH6050S_INPUTPINMODE);
 	_kill.Init(MASH6050S_INPUTPINMODE);
 
-	CGCodeParser::Init();
-	CGCodeParserBase::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_STEPRATE), STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
+	CGCodeParserDefault::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), G1_DEFAULT_FEEDPRATE, STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 	CStepper::GetInstance()->SetDefaultMaxSpeed(
 		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate))),
 		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, acc))),
 		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, dec))));
+
+#ifdef MYUSE_LCD
 	InitSD(SD_ENABLE_PIN);
+#endif
+
 }
 
 ////////////////////////////////////////////////////////////
@@ -184,7 +188,9 @@ bool CMyControl::IsKill()
 {
 	if (_kill.IsOn())
 	{
-		Lcd.Diagnostic(F("KK1000S E-Stop"));
+#ifdef MYUSE_LCD
+		Lcd.Diagnostic(F("E-Stop"));
+#endif
 		return true;
 	}
 	return false;
@@ -221,13 +227,17 @@ void CMyControl::Poll()
 		if (_resume.IsOn() || _holdresume.IsOn())
 		{
 			Resume();
+#ifdef MYUSE_LCD
 			Lcd.ClearDiagnostic();
+#endif
 		}
 	}
 	else if (_hold.IsOn() || _holdresume.IsOn())
 	{
 		Hold();
+#ifdef MYUSE_LCD
 		Lcd.Diagnostic(F("LCD Hold"));
+#endif
 	}
 }
 
@@ -242,7 +252,7 @@ void CMyControl::GoToReference()
 		{
 			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType)+sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
 			if (referenceType != EReverenceType::NoReference)
-				GoToReference(axis,	(steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, refmovesteprate)),referenceType == EReverenceType::ReferenceToMin);
+				super::GoToReference(axis,	0,referenceType == EReverenceType::ReferenceToMin);
 		}
 	}
 }

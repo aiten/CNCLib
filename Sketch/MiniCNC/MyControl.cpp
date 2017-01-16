@@ -25,7 +25,7 @@
 
 #include <CNCLib.h>
 
-#include <GCodeParserBase.h>
+#include <GCodeParser.h>
 #include <ConfigEeprom.h>
 
 #include "MyControl.h"
@@ -33,18 +33,7 @@
 ////////////////////////////////////////////////////////////
 
 CMyControl Control;
-
-#ifdef REDUCED_SIZE
-CMotionControlBase MotionControl;
-#define CMyParser CGCodeParserBase
-#define InitParser()
-#else
-#include <GCodeParser.h>
-CMotionControl MotionControl;
-#define CMyParser CGCodeParser
-#define InitParser() CGCodeParser::Init()
-#endif
-
+CMotionControlDefault MotionControl;
 CConfigEeprom Eprom;
 HardwareSerial& StepperSerial = Serial;
 
@@ -138,11 +127,6 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetDirection(SETDIRECTION);
 #endif
 
-	//CStepper::GetInstance()->SetBacklash(SPEEDFACTOR*5000);
-	//CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControl::ToMachine(X_AXIS,20));  
-	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControl::ToMachine(Y_AXIS,35));  
-	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
-
 	for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
 	{
 		EnumAsByte(EReverenceType) ref = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
@@ -163,12 +147,16 @@ void CMyControl::Init()
 	_resume.Init();
 	_holdresume.Init();
 
-	InitParser();
-	CGCodeParserBase::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), G1_DEFAULT_FEEDPRATE, STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
+	CGCodeParserDefault::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), G1_DEFAULT_FEEDPRATE, STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 	CStepper::GetInstance()->SetDefaultMaxSpeed(
 		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate))),
 		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, acc))),
 		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, dec))));
+
+#ifdef MYUSE_LCD
+	InitSD(SD_ENABLE_PIN);
+#endif
+
 }
 
 ////////////////////////////////////////////////////////////
@@ -216,6 +204,9 @@ bool CMyControl::IsKill()
 {
 	if (_kill.IsOn())
 	{
+#ifdef MYUSE_LCD
+		Lcd.Diagnostic(F("E-Stop"));
+#endif
 		return true;
 	}
 	return false;
@@ -252,11 +243,17 @@ void CMyControl::Poll()
 		if (_resume.IsOn() || _holdresume.IsOn())
 		{
 			Resume();
+#ifdef MYUSE_LCD
+			Lcd.ClearDiagnostic();
+#endif
 		}
 	}
 	else if (_hold.IsOn() || _holdresume.IsOn())
 	{
 		Hold();
+#ifdef MYUSE_LCD
+		Lcd.Diagnostic(F("LCD Hold"));
+#endif
 	}
 }
 
@@ -274,14 +271,6 @@ void CMyControl::GoToReference()
 				super::GoToReference(axis,	0,referenceType == EReverenceType::ReferenceToMin);
 		}
 	}
-}
-
-////////////////////////////////////////////////////////////
-
-bool CMyControl::Parse(CStreamReader* reader, Stream* output)
-{
-	CMyParser gcode(reader, output);
-	return ParseAndPrintResult(&gcode, output);
 }
 
 ////////////////////////////////////////////////////////////

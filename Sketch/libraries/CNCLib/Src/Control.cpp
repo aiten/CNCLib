@@ -24,7 +24,7 @@
 #include "Control.h"
 #include "Lcd.h"
 
-#include "GCodeParserBase.h"
+#include "GCodeParser.h"
 #include "ConfigEeprom.h"
 
 ////////////////////////////////////////////////////////////
@@ -143,6 +143,14 @@ void CControl::Poll()
 	if (CLcd::GetInstance())
 		CLcd::GetInstance()->Poll();
 #endif
+}
+
+////////////////////////////////////////////////////////////
+
+bool CControl::Parse(CStreamReader* reader, Stream* output)
+{
+	CGCodeParserDefault gcode(reader, output);
+	return ParseAndPrintResult(&gcode, output);
 }
 
 ////////////////////////////////////////////////////////////

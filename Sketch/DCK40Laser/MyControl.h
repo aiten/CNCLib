@@ -56,9 +56,7 @@ protected:
 
 	bool IsKill() override;
 	virtual void Poll() override;
-	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 	virtual void GoToReference() override;
-	virtual bool GoToReference(axis_t axis, steprate_t steprate, bool toMinRef) override;
 
 	virtual bool OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo) override;
 
