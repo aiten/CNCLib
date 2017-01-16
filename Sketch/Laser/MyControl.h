@@ -54,7 +54,7 @@ protected:
 
 	virtual void TimerInterrupt() override;
 
-	bool IsKill() override;
+	virtual bool IsKill() override;
 	virtual void Poll() override;
 	virtual void GoToReference() override;
 
