@@ -54,6 +54,13 @@ private:
 
 public:
 
+	CConfigEeprom() {};
+
+	CConfigEeprom(unsigned short eepromsizesize, const void* defaulteeprom, uint32_t eepromID)
+	{
+		Init(eepromsizesize, defaulteeprom, eepromID);
+	}
+
 	void Init(unsigned short eepromsizesize, const void* defaulteeprom, uint32_t eepromID);
 
 	static uint32_t GetConfigU32(eepromofs_t);

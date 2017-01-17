@@ -80,8 +80,6 @@ void CMyControl::Init()
 {
 	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, EPROM_SIGNATURE);
 
-	CMotionControlBase::GetInstance()->InitConversionBestStepsPer(CConfigEeprom::GetConfigFloat(offsetof(CConfigEeprom::SCNCEeprom, StepsPerMm1000)));
-
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();
 #endif
@@ -93,6 +91,9 @@ void CMyControl::Init()
 #ifdef SETDIRECTION
 	CStepper::GetInstance()->SetDirection(SETDIRECTION);
 #endif
+
+	InitFromEeprom();
+
 /*
 	//CStepper::GetInstance()->SetBacklash(5000);
 	//CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 20));
@@ -117,14 +118,6 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
 #endif
 */
-	for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
-	{
-		EnumAsByte(EReverenceType) ref = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
-		if (ref != NoReference)
-			CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(axis, ref == EReverenceType::ReferenceToMin), true);
-
-		CStepper::GetInstance()->SetLimitMax(axis, CMotionControlBase::GetInstance()->ToMachine(axis, CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[0].size) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis)));
-	}
 
 	_controllerfan.Init(255);
 
@@ -141,10 +134,6 @@ void CMyControl::Init()
 	_kill.Init(MASH6050S_INPUTPINMODE);
 
 	CGCodeParserDefault::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), G1_DEFAULT_FEEDPRATE, STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
-	CStepper::GetInstance()->SetDefaultMaxSpeed(
-		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate))),
-		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, acc))),
-		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, dec))));
 
 #ifdef MYUSE_LCD
 	InitSD(SD_ENABLE_PIN);
@@ -247,22 +236,6 @@ void CMyControl::Poll()
 #ifdef MYUSE_LCD
 		Lcd.Diagnostic(F("LCD Hold"));
 #endif
-	}
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyControl::GoToReference()
-{
-	for (axis_t i = 0; i < NUM_AXIS; i++)
-	{
-		axis_t axis = CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].refmoveSequence)+sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*i);
-		if (axis < NUM_AXIS)
-		{
-			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType)+sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
-			if (referenceType != EReverenceType::NoReference)
-				super::GoToReference(axis,	0,referenceType == EReverenceType::ReferenceToMin);
-		}
 	}
 }
 

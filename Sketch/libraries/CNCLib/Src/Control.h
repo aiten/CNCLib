@@ -109,8 +109,12 @@ public:
 	};
 	//////////////////////////////////////////
 
-	virtual void GoToReference()=0;								// Goto Reference during Initialisation
+	virtual void GoToReference();								// Goto Reference during Initialisation
 	virtual bool GoToReference(axis_t axis,steprate_t steprate, bool toMinRef);
+
+	//////////////////////////////////////////
+
+	void InitFromEeprom();
 
 	//////////////////////////////////////////
 

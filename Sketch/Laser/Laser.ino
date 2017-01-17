@@ -31,8 +31,6 @@ CMyStepper Stepper;
 void setup()
 {
   StepperSerial.begin(USBBAUDRATE);
-//	StepperSerial.begin(250000);
-//  StepperSerial.begin(9600);
 }
 
 ////////////////////////////////////////////////////////////

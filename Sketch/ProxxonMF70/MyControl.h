@@ -58,7 +58,6 @@ protected:
 
 	virtual bool IsKill() override;
 	virtual void Poll() override;
-	virtual void GoToReference() override;
 
 	virtual bool OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo) override;
 
