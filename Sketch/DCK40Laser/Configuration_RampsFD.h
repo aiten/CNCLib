@@ -21,11 +21,6 @@
 
 ////////////////////////////////////////////////////////
 
-#define MYUSE_LCD
-#define LCD_NUMAXIS  2
-
-////////////////////////////////////////////////////////
-
 #define CMyStepper CStepperRampsFD
 #define CMyParser CGCode3DParser
 #define CMyControlBase CControl3D

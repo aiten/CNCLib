@@ -25,18 +25,18 @@
 
 #if defined(__SAM3X8E__)
 
-#define PIN_A0   (18)
-#define PIN_A1   (19)
-#define PIN_A2   (20)
-#define PIN_A3   (21)
-#define PIN_A4   (22)
-#define PIN_A5   (23)
-#define PIN_A6   (24)
-#define PIN_A7   (25)
-#define PIN_A8   (26)
-#define PIN_A9   (27)
-#define PIN_A10  (28)
-#define PIN_A11  (29)
+#define PIN_A0   (54)
+#define PIN_A1   (55)
+#define PIN_A2   (56)
+#define PIN_A3   (57)
+#define PIN_A4   (58)
+#define PIN_A5   (59)
+#define PIN_A6   (60)
+#define PIN_A7   (61)
+#define PIN_A8   (62)
+#define PIN_A9   (63)
+#define PIN_A10  (64)
+#define PIN_A11  (65)
 
 #include <itoa.h>
 

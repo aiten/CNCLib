@@ -52,30 +52,12 @@ namespace CNCLib.Wpf.Models
 
 		public UInt32[] Values { get; set; }
 
+		#region General
+
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("MaxStepRate")]
 		[Description("Maximum steprate in Hz")]
 		public uint MaxStepRate { get; set; }
-
-		[Category(CATEGORY_INFO)]
-		[DisplayName("NumAxis")]
-		[Description("Supported Axis")]
-		public uint NumAxis { get; set; }
-
-		[Category(CATEGORY_INFO)]
-		[DisplayName("UseAxis")]
-		[Description("Useabel axis")]
-		public uint UseAxis { get; set; }
-
-		[Category(CATEGORY_INFO)]
-		[DisplayName("Info1")]
-		[Description("Info 32bit")]
-		public uint Info1 { get; set; }
-
-		[Category(CATEGORY_INFO)]
-		[DisplayName("Info2")]
-		[Description("Info 32bit")]
-		public uint Info2 { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Acc")]
@@ -97,72 +79,148 @@ namespace CNCLib.Wpf.Models
 		[Description("Distance between refmove hit and 0 (in mm1000)")]
 		public uint MoveAwayFromRefernece { get; set; }
 
+		[Category(CATEGORY_GENERAL)]
+		[DisplayName("Scale mm to machine")]
+		[Description("Steps for 1/1000mm => steps to go for 1/1000mm")]
+		public float StepsPerMm1000 { get; set; }
+
+		#endregion
+
+		#region Info
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("NumAxis")]
+		[Description("Supported Axis")]
+		public uint NumAxis { get; set; }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("UseAxis")]
+		[Description("Useabel axis")]
+		public uint UseAxis { get; set; }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("Info1")]
+		[Description("Info 32bit")]
+		public uint Info1 { get; set; }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("Info2")]
+		[Description("Info 32bit")]
+		public uint Info2 { get; set; }
+
+		#endregion
+
+		#region Axis-X
+
 		[Category(CATEGORY_AXIS_X)]
 		[DisplayName("Size-X")]
 		[Description("Maximum size X in mm/1000")]
 		public uint SizeX { get; set; }
+
+		[Category(CATEGORY_AXIS_X)]
+		[DisplayName("RefMove-X")]
+		[Description("Reference-Move for axis X")]
+		public EReverenceType RefMoveX { get; set; }
+
+		#endregion
+		#region Axis-Y
 
 		[Category(CATEGORY_AXIS_Y)]
 		[DisplayName("Size-Y")]
 		[Description("Maximum size of Y in mm/1000")]
 		public uint SizeY { get; set; }
 
-		[Category(CATEGORY_AXIS_Z)]
-		[DisplayName("Size-Z")]
-		[Description("Maximum size of Z in mm/1000")]
-		//This custom editor is a Class that implements the ITypeEditor interface
-		public uint SizeZ { get; set; }
-
-		[Category(CATEGORY_AXIS_A)]
-		[DisplayName("Size-A")]
-		[Description("Maximum size of A in mm/1000")]
-		//This custom editor is a Class that implements the ITypeEditor interface
-		public uint SizeA { get; set; }
-
-		[Category(CATEGORY_AXIS_X)]
-		[DisplayName("RefMove-X")]
-		[Description("Reference-Move for axis X")]
-
-		public EReverenceType RefMoveX { get; set; }
 		[Category(CATEGORY_AXIS_Y)]
 		[DisplayName("RefMove-Y")]
 		[Description("Reference-Move for axis Y")]
-
 		public EReverenceType RefMoveY { get; set; }
+
+		#endregion
+		#region Axis-Z
+
+		[Category(CATEGORY_AXIS_Z)]
+		[DisplayName("Size-Z")]
+		[Description("Maximum size of Z in mm/1000")]
+
+		public uint SizeZ { get; set; }
 		[Category(CATEGORY_AXIS_Z)]
 		[DisplayName("RefMove-Z")]
 		[Description("Reference-Move for axis Z")]
 		public EReverenceType RefMoveZ { get; set; }
+
+		#endregion
+		#region Axis-A
+
+		[Category(CATEGORY_AXIS_A)]
+		[DisplayName("Size-A")]
+		[Description("Maximum size of A in mm/1000")]
+		public uint SizeA { get; set; }
 
 		[Category(CATEGORY_AXIS_A)]
 		[DisplayName("RefMove-A")]
 		[Description("Reference-Move for axis A")]
 		public EReverenceType RefMoveA { get; set; }
 
-		[Category(CATEGORY_GENERAL)]
-		[DisplayName("Ref-Sequence 0")]
-		[Description("Axis for Refeence-sequnce 0")]
-		public EReverenceSequence RefSeqence0 { get; set; }
+		#endregion
+		#region Axis-B
+
+		[Category(CATEGORY_AXIS_B)]
+		[DisplayName("Size-B")]
+		[Description("Maximum size of A in mm/1000")]
+		public uint SizeB { get; set; }
+
+		[Category(CATEGORY_AXIS_B)]
+		[DisplayName("RefMove-B")]
+		[Description("Reference-Move for axis B")]
+		public EReverenceType RefMoveB { get; set; }
+
+		#endregion
+		#region Axis-C
+
+		[Category(CATEGORY_AXIS_C)]
+		[DisplayName("Size-C")]
+		[Description("Maximum size of C in mm/1000")]
+		public uint SizeC { get; set; }
+
+		[Category(CATEGORY_AXIS_C)]
+		[DisplayName("RefMove-C")]
+		[Description("Reference-Move for axis C")]
+		public EReverenceType RefMoveC { get; set; }
+
+		#endregion
+
+		#region Refmove-General
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Ref-Sequence 1")]
-		[Description("Axis for Refeence-sequnce 0")]
-		public EReverenceSequence RefSeqence1 { get; set; }
+		[Description("Axis for Refeence-sequnce 1")]
+		public EReverenceSequence RefSeqence1 { get; set; } = EReverenceSequence.No;
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Ref-Sequence 2")]
 		[Description("Axis for Refeence-sequnce 2")]
-		public EReverenceSequence RefSeqence2 { get; set; }
+		public EReverenceSequence RefSeqence2 { get; set; } = EReverenceSequence.No;
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Ref-Sequence 3")]
 		[Description("Axis for Refeence-sequnce 3")]
-		public EReverenceSequence RefSeqence3 { get; set; }
-
+		public EReverenceSequence RefSeqence3 { get; set; } = EReverenceSequence.No;
 
 		[Category(CATEGORY_GENERAL)]
-		[DisplayName("Scale mm to machine")]
-		[Description("Steps for 1/1000mm => steps to go for 1/1000mm")]
-		public float StepsPerMm1000 { get; set; }
+		[DisplayName("Ref-Sequence 4")]
+		[Description("Axis for Refeence-sequnce 3")]
+		public EReverenceSequence RefSeqence4 { get; set; } = EReverenceSequence.No;
+
+		[Category(CATEGORY_GENERAL)]
+		[DisplayName("Ref-Sequence 5")]
+		[Description("Axis for Refeence-sequnce 5")]
+		public EReverenceSequence RefSeqence5 { get; set; } = EReverenceSequence.No;
+
+		[Category(CATEGORY_GENERAL)]
+		[DisplayName("Ref-Sequence 6")]
+		[Description("Axis for Refeence-sequnce 6")]
+		public EReverenceSequence RefSeqence6 { get; set; } = EReverenceSequence.No;
+
+		#endregion
 	}
 }

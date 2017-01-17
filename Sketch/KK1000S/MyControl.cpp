@@ -93,13 +93,13 @@ void CMyControl::Init()
 #ifdef SETDIRECTION
 	CStepper::GetInstance()->SetDirection(SETDIRECTION);
 #endif
-
+/*
 	//CStepper::GetInstance()->SetBacklash(5000);
 	//CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 20));
 	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 35));
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
-	CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350), steprate_t(350));
+	//CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350), steprate_t(350));
 
 	CStepper::GetInstance()->SetJerkSpeed(X_AXIS, 1000);
 	CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, 1000);
@@ -116,7 +116,7 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetJerkSpeed(C_AXIS, 1000);
 	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
 #endif
-
+*/
 	for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
 	{
 		EnumAsByte(EReverenceType) ref = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);

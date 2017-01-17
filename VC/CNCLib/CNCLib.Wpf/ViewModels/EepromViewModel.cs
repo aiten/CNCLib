@@ -82,21 +82,45 @@ namespace CNCLib.Wpf.ViewModels
 					//ee[EepromV1.EValueOffsets8.UseAxis] = EepromValue.UseAxis;
 
 					//eeprom.Info = ee[EepromV1.EValueOffsets32.Info];
+					var numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
 
-					ee[0, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeX;
-					ee[1, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeY;
-					ee[2, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeZ;
-					ee[3, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeA;
+					if (numaxis > 0)
+					{
+						ee[0, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeX;
+						ee[0, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveX;
+						ee[0, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence1;
+					}
+					if (numaxis > 1)
+					{
+						ee[1, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeY;
+						ee[1, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveY;
+						ee[1, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence2;
+					}
+					if (numaxis > 2)
+					{
+						ee[2, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeZ;
+						ee[2, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveZ;
+						ee[2, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence3;
+					}
+					if (numaxis > 3)
+					{
+						ee[3, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeA;
+						ee[3, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveA;
+						ee[3, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence4;
+					}
+					if (numaxis > 4)
+					{
+						ee[4, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeB;
+						ee[4, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveB;
+						ee[4, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence5;
+					}
+					if (numaxis > 5)
+					{
+						ee[4, EepromV1.EAxisOffsets32.Size] = EepromValue.SizeC;
+						ee[4, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveC;
+						ee[4, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence6;
+					}
 
-					ee[0, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveX;
-					ee[1, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveY;
-					ee[2, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveZ;
-					ee[3, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.RefMoveA;
-
-					ee[0, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence0;
-					ee[1, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence1;
-					ee[2, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence2;
-					ee[3, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)EepromValue.RefSeqence3;
 					ee[EepromV1.EValueOffsets32.RefMoveStepRate] = EepromValue.RefMoveSteprate;
 					ee[EepromV1.EValueOffsets32.MoveAwayFromRefernece] = EepromValue.MoveAwayFromRefernece;
 
@@ -132,27 +156,51 @@ namespace CNCLib.Wpf.ViewModels
 					{
 
 						File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EEpromRead.nc"), ee.ToGCode());
+						var numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
 
 						eeprom.NumAxis = ee[EepromV1.EValueOffsets8.NumAxis];
 						eeprom.UseAxis = ee[EepromV1.EValueOffsets8.UseAxis];
 
-						eeprom.Info1	= ee[EepromV1.EValueOffsets32.Info1];
+						eeprom.Info1 = ee[EepromV1.EValueOffsets32.Info1];
 						eeprom.Info2 = ee[EepromV1.EValueOffsets32.Info2];
 
-						eeprom.SizeX = ee[0, EepromV1.EAxisOffsets32.Size];
-						eeprom.SizeY = ee[1, EepromV1.EAxisOffsets32.Size];
-						eeprom.SizeZ = ee[2, EepromV1.EAxisOffsets32.Size];
-						eeprom.SizeA = ee[3, EepromV1.EAxisOffsets32.Size];
+						if (numaxis > 0)
+						{
+							eeprom.SizeX		= ee[0, EepromV1.EAxisOffsets32.Size];
+							eeprom.RefMoveX		= (Eeprom.EReverenceType)ee[0, EepromV1.EAxisOffsets8.EReverenceType];
+							eeprom.RefSeqence1	= (Eeprom.EReverenceSequence)ee[0, EepromV1.EAxisOffsets8.EReverenceSeqence];
+						}
+						if (numaxis > 1)
+						{
+							eeprom.SizeY = ee[1, EepromV1.EAxisOffsets32.Size];
+							eeprom.RefMoveY = (Eeprom.EReverenceType)ee[1, EepromV1.EAxisOffsets8.EReverenceType];
+							eeprom.RefSeqence2 = (Eeprom.EReverenceSequence)ee[1, EepromV1.EAxisOffsets8.EReverenceSeqence];
+						}
+						if (numaxis > 2)
+						{
+							eeprom.SizeZ = ee[2, EepromV1.EAxisOffsets32.Size];
+							eeprom.RefMoveZ = (Eeprom.EReverenceType)ee[2, EepromV1.EAxisOffsets8.EReverenceType];
+							eeprom.RefSeqence3 = (Eeprom.EReverenceSequence)ee[2, EepromV1.EAxisOffsets8.EReverenceSeqence];
+						}
+						if (numaxis > 3)
+						{
+							eeprom.SizeA = ee[3, EepromV1.EAxisOffsets32.Size];
+							eeprom.RefMoveA = (Eeprom.EReverenceType)ee[3, EepromV1.EAxisOffsets8.EReverenceType];
+							eeprom.RefSeqence4 = (Eeprom.EReverenceSequence)ee[3, EepromV1.EAxisOffsets8.EReverenceSeqence];
+						}
+						if (numaxis > 4)
+						{
+							eeprom.SizeB = ee[4, EepromV1.EAxisOffsets32.Size];
+							eeprom.RefMoveB = (Eeprom.EReverenceType)ee[4, EepromV1.EAxisOffsets8.EReverenceType];
+							eeprom.RefSeqence5 = (Eeprom.EReverenceSequence)ee[4, EepromV1.EAxisOffsets8.EReverenceSeqence];
+						}
+						if (numaxis > 5)
+						{
+							eeprom.SizeC = ee[5, EepromV1.EAxisOffsets32.Size];
+							eeprom.RefMoveC = (Eeprom.EReverenceType)ee[5, EepromV1.EAxisOffsets8.EReverenceType];
+							eeprom.RefSeqence6 = (Eeprom.EReverenceSequence)ee[5, EepromV1.EAxisOffsets8.EReverenceSeqence];
+						}
 
-						eeprom.RefMoveX = (Eeprom.EReverenceType)ee[0, EepromV1.EAxisOffsets8.EReverenceType];
-						eeprom.RefMoveY = (Eeprom.EReverenceType)ee[1, EepromV1.EAxisOffsets8.EReverenceType];
-						eeprom.RefMoveZ = (Eeprom.EReverenceType)ee[2, EepromV1.EAxisOffsets8.EReverenceType];
-						eeprom.RefMoveA = (Eeprom.EReverenceType)ee[3, EepromV1.EAxisOffsets8.EReverenceType];
-
-						eeprom.RefSeqence0 = (Eeprom.EReverenceSequence)ee[0, EepromV1.EAxisOffsets8.EReverenceSeqence];
-						eeprom.RefSeqence1 = (Eeprom.EReverenceSequence)ee[1, EepromV1.EAxisOffsets8.EReverenceSeqence];
-						eeprom.RefSeqence2 = (Eeprom.EReverenceSequence)ee[2, EepromV1.EAxisOffsets8.EReverenceSeqence];
-						eeprom.RefSeqence3 = (Eeprom.EReverenceSequence)ee[3, EepromV1.EAxisOffsets8.EReverenceSeqence];
 						eeprom.RefMoveSteprate = ee[EepromV1.EValueOffsets32.RefMoveStepRate];
 						eeprom.MoveAwayFromRefernece = ee[EepromV1.EValueOffsets32.MoveAwayFromRefernece];
 

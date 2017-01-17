@@ -21,6 +21,10 @@
 
 ////////////////////////////////////////////////////////
 
+#define MYUSE_LCD
+
+////////////////////////////////////////////////////////
+
 #define HARDWARETYPE 1			// ramps 1.4, microsteps 16
 //#define HARDWARETYPE 2			// rampsfd, microsteps 32
 
@@ -96,7 +100,7 @@
 #define REFMOVE_5_AXIS  255
 #define REFMOVE_6_AXIS  255
 
-#define MOVEAWAYFROMREF_MM1000 250
+#define MOVEAWAYFROMREF_MM1000 125
 
 #undef SPINDEL_ANALOGSPEED
 #define SPINDEL_MAXSPEED	255			// analog 255
@@ -132,14 +136,14 @@
 
 ////////////////////////////////////////////////////////
 
-#define SPINDEL_PIN	CAT(BOARDNAME,_AUX2_6)	// Ramps1.4 D40
+#define SPINDEL_ENABLE_PIN	CAT(BOARDNAME,_AUX2_6)	// Ramps1.4 D40
 
-#define SPINDEL_ON  LOW
-#define SPINDEL_OFF HIGH
+#define SPINDEL_DIGITAL_ON  LOW
+#define SPINDEL_DIGITAL_OFF HIGH
 
 ////////////////////////////////////////////////////////
 
-#define PROBE1_PIN	CAT(BOARDNAME,_AUX2_7)	// Ramps 1.4 D44 
+#define PROBE_PIN	CAT(BOARDNAME,_AUX2_7)	// Ramps 1.4 D44 
 #define PROBE2_PIN	CAT(BOARDNAME,_AUX2_5)	// Ramps 1.4 A10 
 
 #define PROBE_ON  LOW
