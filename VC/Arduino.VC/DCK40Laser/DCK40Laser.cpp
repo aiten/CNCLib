@@ -23,6 +23,10 @@
 #include "..\MsvcStepper\MsvcStepper.h"
 #include "TestTools.h"
 #include "..\..\..\sketch\DCK40Laser\MyControl.h"
+#include "..\..\..\sketch\DCK40Laser\MyLcd.h"
+
+#include <SPI.h>
+#include <SD.h>
 
 CSerial Serial;
 SDClass SD;

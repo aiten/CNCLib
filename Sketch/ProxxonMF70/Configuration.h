@@ -21,8 +21,27 @@
 
 ////////////////////////////////////////////////////////
 
+#define HARDWARETYPE 1			// ramps 1.4, microsteps 16
+//#define HARDWARETYPE 2			// rampsfd, microsteps 32
+
+
+#if HARDWARETYPE==1
+
 #define USE_RAMPS14
-//#define USE_RAMPSFD
+
+#define SPEEDFACTOR 1
+#define SPEEDFACTOR_SQT 1
+
+#elif HARDWARETYPE==2
+
+#define USE_RAMPSFD
+
+#define SPEEDFACTOR 2
+#define SPEEDFACTOR_SQT 1.41421356237309504880
+
+#else
+
+#endif
 
 ////////////////////////////////////////////////////////
 
@@ -133,21 +152,6 @@
 
 #define ROTARY_ENC           CAT(BOARDNAME,_LCD_ROTARY_ENC)
 #define ROTARY_ENC_ON		 CAT(BOARDNAME,_LCD_ROTARY_ENC_ON)
-
-#if defined(__SAM3X8E__) && defined (USE_RAMPS14)
-
-#define SD_ENABLE_PIN	 	 52
-#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN2)
-#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN1)
-#define ROTARY_ENC           CAT(BOARDNAME,_LCD_ROTARY_ENC)
-
-#else
-
-#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN1)
-#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN2)
-#define SD_ENABLE_PIN		 CAT(BOARDNAME,_SDSS_PIN)
-
-#endif
 
 ////////////////////////////////////////////////////////
 

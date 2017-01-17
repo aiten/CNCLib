@@ -19,12 +19,11 @@
 
 #pragma once
 
+////////////////////////////////////////////////////////
+
 #include <Steppers/StepperRamps14_pins.h>
 #include <Steppers/StepperRamps14.h>
 #define BOARDNAME RAMPS14
-
-#define SPEEDFACTOR 1
-#define SPEEDFACTOR_SQT 1
 
 ////////////////////////////////////////////////////////
 
@@ -32,7 +31,6 @@
 #define MYNUM_AXIS	5
 
 ////////////////////////////////////////////////////////
-
 
 #if defined(__SAM3X8E__)
 

@@ -22,6 +22,7 @@
 ////////////////////////////////////////////////////////
 
 #include <Control3D.h>
+
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
 #include <Analog8InvertIOControl.h>
@@ -29,9 +30,6 @@
 #include <PushButtonLow.h>
 #include <PushButton.h>
 #include <DummyIOControl.h>
-
-////////////////////////////////////////////////////////
-
 #include "Configuration.h"
 
 ////////////////////////////////////////////////////////
@@ -143,3 +141,4 @@ private:
 ////////////////////////////////////////////////////////
 
 extern CMyControl Control;
+

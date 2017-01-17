@@ -86,7 +86,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration.h" />
-    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_CNCShield.h" />
     <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_RampsFD.h" />
     <ClInclude Include="..\..\..\Sketch\DCK40Laser\MyControl.h" />
     <ClInclude Include="..\..\..\Sketch\DCK40Laser\MyLCD.h" />

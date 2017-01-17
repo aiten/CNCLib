@@ -21,6 +21,8 @@
 #include <CNCLibEx.h>
 #include <U8glib.h>
 
+#include <SPI.h>
+#include <SD.h>
 
 #include "MyControl.h"
 #include "GCodeParser.h"

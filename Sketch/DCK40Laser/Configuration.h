@@ -21,7 +21,6 @@
 
 ////////////////////////////////////////////////////////
 
-//#define STEPPERTYPE 4		// CStepperCNCShield
 #define STEPPERTYPE 5   // RampsFD
 
 ////////////////////////////////////////////////////////
@@ -88,9 +87,7 @@
 
 ////////////////////////////////////////////////////////
 
-#if STEPPERTYPE==4
-#include "Configuration_CNCShield.h"
-#elif STEPPERTYPE==5
+#if STEPPERTYPE==5
 #include "Configuration_RampsFD.h"
 #endif
 

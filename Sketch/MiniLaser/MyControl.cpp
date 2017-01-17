@@ -24,7 +24,6 @@
 #include <arduino.h>
 
 #include <CNCLib.h>
-
 #include <GCodeParser.h>
 #include <ConfigEeprom.h>
 
@@ -102,7 +101,7 @@ void CMyControl::Init()
 		CStepper::GetInstance()->SetLimitMax(axis, CMotionControlBase::GetInstance()->ToMachine(axis, CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[0].size) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis)));
 	}
 
-	_controllerfan.Init(128);
+	_controllerfan.Init(255);
 
 	_spindel.Init();
 	_probe.Init();

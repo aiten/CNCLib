@@ -21,14 +21,6 @@
 
 ////////////////////////////////////////////////////////
 
-#include <CNCLibEx.h>
-#include <Control3D.h>
-#include <GCode3DParser.h>
-
-#include "MyLCD.h"
-
-////////////////////////////////////////////////////////
-
 #define MYUSE_LCD
 #define LCD_NUMAXIS  2
 
@@ -56,7 +48,6 @@
 #define RAMPSFD_REF_OFF 0
 
 #include <Steppers/StepperRampsFD.h>
-#include <CNCLibEx.h>
 
 ////////////////////////////////////////////////////////
 

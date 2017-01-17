@@ -56,9 +56,6 @@
 #define B_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 #define C_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 
-#define ConversionToMm1000 CMotionControlBase::ToMm1000_5_3200
-#define ConversionToMachine CMotionControlBase::ToMachine_5_3200
-
 ////////////////////////////////////////////////////////
 
 #define CNC_MAXSPEED 30000        // steps/sec

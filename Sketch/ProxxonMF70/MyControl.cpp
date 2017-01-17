@@ -23,24 +23,26 @@
 #include <stdlib.h>
 #include <arduino.h>
 
-#include <SPI.h>
-#include <SD.h>
-
 #include <CNCLib.h>
-#include <CNCLibEx.h>
-
+#include <GCodeParser.h>
 #include <ConfigEeprom.h>
-#include <GCode3DParser.h>
+
 #include "MyControl.h"
-#include "MyLcd.h"
+#include "MyLCD.h"
 
 ////////////////////////////////////////////////////////////
 
 CMyControl Control;
-CMotionControl MotionControl;
 CGCodeTools GCodeTools;
+CMotionControl MotionControl;
 CConfigEeprom Eprom;
 HardwareSerial& StepperSerial = Serial;
+
+////////////////////////////////////////////////////////////
+
+#ifndef MYNUM_AXIS
+#error Please define MYNUM_AXIS
+#endif
 
 ////////////////////////////////////////////////////////////
 
@@ -92,6 +94,7 @@ void CMyControl::Init()
 	CStepper::GetInstance()->SetDirection(SETDIRECTION);
 #endif
 
+	//CStepper::GetInstance()->SetBacklash(5000);
 	//CStepper::GetInstance()->SetBacklash(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, 20));
 	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 35));
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));

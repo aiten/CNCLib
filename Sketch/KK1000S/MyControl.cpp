@@ -24,13 +24,11 @@
 #include <arduino.h>
 
 #include <CNCLib.h>
-#include <CNCLibEx.h>
-
-#include <GCode3DParser.h>
+#include <GCodeParser.h>
 #include <ConfigEeprom.h>
 
 #include "MyControl.h"
-#include "MyLcd.h"
+#include "MyLCD.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -40,6 +38,11 @@ CMotionControl MotionControl;
 CConfigEeprom Eprom;
 HardwareSerial& StepperSerial = Serial;
 
+////////////////////////////////////////////////////////////
+
+#ifndef MYNUM_AXIS
+#error Please define MYNUM_AXIS
+#endif
 
 ////////////////////////////////////////////////////////////
 
@@ -77,13 +80,13 @@ void CMyControl::Init()
 {
 	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, EPROM_SIGNATURE);
 
+	CMotionControlBase::GetInstance()->InitConversionBestStepsPer(CConfigEeprom::GetConfigFloat(offsetof(CConfigEeprom::SCNCEeprom, StepsPerMm1000)));
+
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();
 #endif
 
 	StepperSerial.println(MESSAGE_MYCONTROL_Starting);
-
-	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
 	super::Init();
 
@@ -123,7 +126,7 @@ void CMyControl::Init()
 		CStepper::GetInstance()->SetLimitMax(axis, CMotionControlBase::GetInstance()->ToMachine(axis, CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[0].size) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis)));
 	}
 
-	_controllerfan.Init(128);
+	_controllerfan.Init(255);
 
 	_spindel.Init();
 	_probe.Init();

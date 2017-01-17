@@ -25,9 +25,6 @@
     <ClInclude Include="..\..\..\Sketch\DCK40Laser\MyMenu.h">
       <Filter>DCK40Laser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_CNCShield.h">
-      <Filter>DCK40Laser</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\DCK40Laser\Configuration_RampsFD.h">
       <Filter>DCK40Laser</Filter>
     </ClInclude>

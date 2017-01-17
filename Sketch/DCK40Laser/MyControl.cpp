@@ -24,11 +24,11 @@
 #include <arduino.h>
 
 #include <CNCLib.h>
-
 #include <GCodeParser.h>
 #include <ConfigEeprom.h>
 
 #include "MyControl.h"
+#include "MyLCD.h"
 
 ////////////////////////////////////////////////////////////
 

@@ -25,9 +25,6 @@
 #include <Steppers/StepperRampsFD.h>
 #define BOARDNAME RAMPSFD
 
-#define SPEEDFACTOR 2
-#define SPEEDFACTOR_SQT 1.41421356237309504880
-
 ////////////////////////////////////////////////////////
 
 #define LCD_NUMAXIS	6

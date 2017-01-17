@@ -421,7 +421,22 @@ void CMotionControlBase::MoveRelEx(feedrate_t feedrate, unsigned short axis, mm1
 
 void CMotionControlBase::InitConversionBestStepsPer(float stepspermm1000)
 {
-	InitConversionStepsPer(stepspermm1000);
+	if (stepspermm1000 == 3.2f)
+	{
+		InitConversion(ToMm1000_1_3200, ToMachine_1_3200);
+	}
+	else if (stepspermm1000 == 6.4f)
+	{
+		InitConversion(ToMm1000_1_6400, ToMachine_1_6400);
+	}
+	else if (stepspermm1000 == 0.64f)
+	{
+		InitConversion(ToMm1000_5_3200, ToMachine_5_3200);
+	}
+	else
+	{
+		InitConversionStepsPer(stepspermm1000);
+	}
 }
 
 ////////////////////////////////////////////////////////
