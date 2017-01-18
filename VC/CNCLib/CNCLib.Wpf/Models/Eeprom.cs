@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
 namespace CNCLib.Wpf.Models
@@ -21,14 +22,7 @@ namespace CNCLib.Wpf.Models
 		const string CATEGORY_GENERAL = "General";
 		const string CATEGORY_INFO = "Info";
 
-		const string CATEGORY_AXIS_X = "Axis X";
-		const string CATEGORY_AXIS_Y = "Axis Y";
-		const string CATEGORY_AXIS_Z = "Axis Z";
-		const string CATEGORY_AXIS_A = "Axis A";
-		const string CATEGORY_AXIS_B = "Axis B";
-		const string CATEGORY_AXIS_C = "Axis C";
-
-		const int EEPROM_NUM_AXIS = 4;
+		const int EEPROM_NUM_AXIS = 6;
 
 		public enum EReverenceType
 		{
@@ -110,116 +104,92 @@ namespace CNCLib.Wpf.Models
 
 		#endregion
 
-		#region Axis-X
+		#region Axis
 
-		[Category(CATEGORY_AXIS_X)]
-		[DisplayName("Size-X")]
-		[Description("Maximum size X in mm/1000")]
-		public uint SizeX { get; set; }
+		public class SAxis
+		{
+			[DisplayName("Size")]
+			[Description("Maximum size in mm/1000")]
+			public uint Size { get; set; }
 
-		[Category(CATEGORY_AXIS_X)]
-		[DisplayName("RefMove-X")]
-		[Description("Reference-Move for axis X")]
-		public EReverenceType RefMoveX { get; set; }
+			[DisplayName("RefMove")]
+			[Description("Reference-Move for axis")]
+			public EReverenceType RefMove { get; set; }
 
-		#endregion
-		#region Axis-Y
+			public override string ToString()
+			{
+				return Size.ToString() + (RefMove == EReverenceType.NoReference ? "" : $",{RefMove}");
+			}
+		};
 
-		[Category(CATEGORY_AXIS_Y)]
-		[DisplayName("Size-Y")]
-		[Description("Maximum size of Y in mm/1000")]
-		public uint SizeY { get; set; }
+		private SAxis[] _axis = new SAxis[EEPROM_NUM_AXIS] { new SAxis(), new SAxis(), new SAxis(), new SAxis(), new SAxis(), new SAxis() };
 
-		[Category(CATEGORY_AXIS_Y)]
-		[DisplayName("RefMove-Y")]
-		[Description("Reference-Move for axis Y")]
-		public EReverenceType RefMoveY { get; set; }
+		public SAxis GetAxis(int axis) { return _axis[axis]; }
 
-		#endregion
-		#region Axis-Z
+		[ExpandableObject]
+		[Category("Axis")]
+		[Description("Definition of axis")]
+		public SAxis AxisX { get { return _axis[0]; } }
 
-		[Category(CATEGORY_AXIS_Z)]
-		[DisplayName("Size-Z")]
-		[Description("Maximum size of Z in mm/1000")]
+		[ExpandableObject]
+		[Category("Axis")]
+		[Description("Definition of axis")]
+		public SAxis AxisY { get { return _axis[1]; } }
 
-		public uint SizeZ { get; set; }
-		[Category(CATEGORY_AXIS_Z)]
-		[DisplayName("RefMove-Z")]
-		[Description("Reference-Move for axis Z")]
-		public EReverenceType RefMoveZ { get; set; }
-
-		#endregion
-		#region Axis-A
-
-		[Category(CATEGORY_AXIS_A)]
-		[DisplayName("Size-A")]
-		[Description("Maximum size of A in mm/1000")]
-		public uint SizeA { get; set; }
-
-		[Category(CATEGORY_AXIS_A)]
-		[DisplayName("RefMove-A")]
-		[Description("Reference-Move for axis A")]
-		public EReverenceType RefMoveA { get; set; }
-
-		#endregion
-		#region Axis-B
-
-		[Category(CATEGORY_AXIS_B)]
-		[DisplayName("Size-B")]
-		[Description("Maximum size of A in mm/1000")]
-		public uint SizeB { get; set; }
-
-		[Category(CATEGORY_AXIS_B)]
-		[DisplayName("RefMove-B")]
-		[Description("Reference-Move for axis B")]
-		public EReverenceType RefMoveB { get; set; }
-
-		#endregion
-		#region Axis-C
-
-		[Category(CATEGORY_AXIS_C)]
-		[DisplayName("Size-C")]
-		[Description("Maximum size of C in mm/1000")]
-		public uint SizeC { get; set; }
-
-		[Category(CATEGORY_AXIS_C)]
-		[DisplayName("RefMove-C")]
-		[Description("Reference-Move for axis C")]
-		public EReverenceType RefMoveC { get; set; }
+		[ExpandableObject]
+		[Category("Axis")]
+		[Description("Definition of axis")]
+		public SAxis AxisZ { get { return _axis[2]; } }
+		[ExpandableObject]
+		[Category("Axis")]
+		[Description("Definition of axis")]
+		public SAxis AxisA { get { return _axis[3]; } }
+		[ExpandableObject]
+		[Category("Axis")]
+		[Description("Definition of axis")]
+		public SAxis AxisB { get { return _axis[4]; } }
+		[ExpandableObject]
+		[Category("Axis")]
+		[Description("Definition of axis")]
+		public SAxis AxisC { get { return _axis[5]; } }
 
 		#endregion
 
 		#region Refmove-General
 
+		private EReverenceSequence[] _refSeqences = new EReverenceSequence[EEPROM_NUM_AXIS] { EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No };
+
+		public EReverenceSequence this[int i] { get { return _refSeqences[i]; } set { _refSeqences[i] = value; } }
+
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Ref-Sequence 1")]
 		[Description("Axis for Refeence-sequnce 1")]
-		public EReverenceSequence RefSeqence1 { get; set; } = EReverenceSequence.No;
+		public EReverenceSequence RefSeqence1 { get { return _refSeqences[0]; } set { _refSeqences[0] = value; } }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Ref-Sequence 2")]
 		[Description("Axis for Refeence-sequnce 2")]
-		public EReverenceSequence RefSeqence2 { get; set; } = EReverenceSequence.No;
+		public EReverenceSequence RefSeqence2 { get { return _refSeqences[1]; } set { _refSeqences[1] = value; } }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Ref-Sequence 3")]
 		[Description("Axis for Refeence-sequnce 3")]
-		public EReverenceSequence RefSeqence3 { get; set; } = EReverenceSequence.No;
+		public EReverenceSequence RefSeqence3 { get { return _refSeqences[2]; } set { _refSeqences[2] = value; } }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Ref-Sequence 4")]
 		[Description("Axis for Refeence-sequnce 3")]
-		public EReverenceSequence RefSeqence4 { get; set; } = EReverenceSequence.No;
+		public EReverenceSequence RefSeqence4 { get { return _refSeqences[3]; } set { _refSeqences[3] = value; } }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Ref-Sequence 5")]
 		[Description("Axis for Refeence-sequnce 5")]
-		public EReverenceSequence RefSeqence5 { get; set; } = EReverenceSequence.No;
+		public EReverenceSequence RefSeqence5 { get { return _refSeqences[4]; } set { _refSeqences[4] = value; } }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Ref-Sequence 6")]
 		[Description("Axis for Refeence-sequnce 6")]
-		public EReverenceSequence RefSeqence6 { get; set; } = EReverenceSequence.No;
+		public EReverenceSequence RefSeqence6 { get { return _refSeqences[5]; } set { _refSeqences[5] = value; } }
 
 		#endregion
 	}
