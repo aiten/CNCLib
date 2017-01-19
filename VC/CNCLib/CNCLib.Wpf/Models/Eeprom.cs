@@ -131,6 +131,8 @@ namespace CNCLib.Wpf.Models
 			[Description("Reference-Move for axis")]
 			public EReverenceType RefMove { get; set; }
 
+			[DisplayName("StepperDirection")]
+			[Description("Invert the rotation direction of the stepper")]
 			public bool StepperDirection { get; set; }
 
 			public override string ToString()
