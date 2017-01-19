@@ -15,14 +15,24 @@ namespace CNCLib.Wpf.Models
 {
 	public class Eeprom
 	{
-		const string CATEGORY_INTERNAL = "Internal";
-		const string CATEGORY_SIZE = "Size";
-		const string CATEGORY_FEATURES = "Features";
-		const string CATEGORY_PROBE = "Probe";
-		const string CATEGORY_GENERAL = "General";
-		const string CATEGORY_INFO = "Info";
+		public static Eeprom Create(int numaxis)
+		{
+			if (numaxis > 4) return new EepromAxis6();
+			if (numaxis == 4) return new EepromAxis4();
+			if (numaxis == 3) return new EepromAxis3();
+			if (numaxis >= 1) return new EepromAxis2();
 
-		const int EEPROM_NUM_AXIS = 6;
+			return new Eeprom();
+		}
+
+		protected const string CATEGORY_INTERNAL = "Internal";
+		protected const string CATEGORY_SIZE = "Size";
+		protected const string CATEGORY_FEATURES = "Features";
+		protected const string CATEGORY_PROBE = "Probe";
+		protected const string CATEGORY_GENERAL = "General";
+		protected const string CATEGORY_INFO = "Info";
+
+		protected const int EEPROM_NUM_AXIS = 6;
 
 		public enum EReverenceType
 		{
@@ -122,74 +132,17 @@ namespace CNCLib.Wpf.Models
 			}
 		};
 
-		private SAxis[] _axis = new SAxis[EEPROM_NUM_AXIS] { new SAxis(), new SAxis(), new SAxis(), new SAxis(), new SAxis(), new SAxis() };
+		protected SAxis[] _axis = new SAxis[EEPROM_NUM_AXIS] { new SAxis(), new SAxis(), new SAxis(), new SAxis(), new SAxis(), new SAxis() };
 
 		public SAxis GetAxis(int axis) { return _axis[axis]; }
-
-		[ExpandableObject]
-		[Category("Axis")]
-		[Description("Definition of axis")]
-		public SAxis AxisX { get { return _axis[0]; } }
-
-		[ExpandableObject]
-		[Category("Axis")]
-		[Description("Definition of axis")]
-		public SAxis AxisY { get { return _axis[1]; } }
-
-		[ExpandableObject]
-		[Category("Axis")]
-		[Description("Definition of axis")]
-		public SAxis AxisZ { get { return _axis[2]; } }
-		[ExpandableObject]
-		[Category("Axis")]
-		[Description("Definition of axis")]
-		public SAxis AxisA { get { return _axis[3]; } }
-		[ExpandableObject]
-		[Category("Axis")]
-		[Description("Definition of axis")]
-		public SAxis AxisB { get { return _axis[4]; } }
-		[ExpandableObject]
-		[Category("Axis")]
-		[Description("Definition of axis")]
-		public SAxis AxisC { get { return _axis[5]; } }
 
 		#endregion
 
 		#region Refmove-General
 
-		private EReverenceSequence[] _refSeqences = new EReverenceSequence[EEPROM_NUM_AXIS] { EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No };
+		protected EReverenceSequence[] _refSeqences = new EReverenceSequence[EEPROM_NUM_AXIS] { EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No };
 
 		public EReverenceSequence this[int i] { get { return _refSeqences[i]; } set { _refSeqences[i] = value; } }
-
-		[Category(CATEGORY_GENERAL)]
-		[DisplayName("Ref-Sequence 1")]
-		[Description("Axis for Refeence-sequnce 1")]
-		public EReverenceSequence RefSeqence1 { get { return _refSeqences[0]; } set { _refSeqences[0] = value; } }
-
-		[Category(CATEGORY_GENERAL)]
-		[DisplayName("Ref-Sequence 2")]
-		[Description("Axis for Refeence-sequnce 2")]
-		public EReverenceSequence RefSeqence2 { get { return _refSeqences[1]; } set { _refSeqences[1] = value; } }
-
-		[Category(CATEGORY_GENERAL)]
-		[DisplayName("Ref-Sequence 3")]
-		[Description("Axis for Refeence-sequnce 3")]
-		public EReverenceSequence RefSeqence3 { get { return _refSeqences[2]; } set { _refSeqences[2] = value; } }
-
-		[Category(CATEGORY_GENERAL)]
-		[DisplayName("Ref-Sequence 4")]
-		[Description("Axis for Refeence-sequnce 3")]
-		public EReverenceSequence RefSeqence4 { get { return _refSeqences[3]; } set { _refSeqences[3] = value; } }
-
-		[Category(CATEGORY_GENERAL)]
-		[DisplayName("Ref-Sequence 5")]
-		[Description("Axis for Refeence-sequnce 5")]
-		public EReverenceSequence RefSeqence5 { get { return _refSeqences[4]; } set { _refSeqences[4] = value; } }
-
-		[Category(CATEGORY_GENERAL)]
-		[DisplayName("Ref-Sequence 6")]
-		[Description("Axis for Refeence-sequnce 6")]
-		public EReverenceSequence RefSeqence6 { get { return _refSeqences[5]; } set { _refSeqences[5] = value; } }
 
 		#endregion
 	}

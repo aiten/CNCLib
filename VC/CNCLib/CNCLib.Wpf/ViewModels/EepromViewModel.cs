@@ -119,7 +119,6 @@ namespace CNCLib.Wpf.ViewModels
 				UInt32[] values = await new MachineGCodeHelper().GetEpromValuesAsync();
 				if (values != null)
 				{
-					var eeprom = new Eeprom() { Values = values };
 					var ee = new EepromV1() { Values = values };
 
 					if (ee.IsValid)
@@ -127,6 +126,9 @@ namespace CNCLib.Wpf.ViewModels
 
 						File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EEpromRead.nc"), ee.ToGCode());
 						var numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
+
+						var eeprom = Eeprom.Create(numaxis);
+						eeprom.Values = values;
 
 						eeprom.NumAxis = ee[EepromV1.EValueOffsets8.NumAxis];
 						eeprom.UseAxis = ee[EepromV1.EValueOffsets8.UseAxis];
@@ -151,9 +153,13 @@ namespace CNCLib.Wpf.ViewModels
 						eeprom.StepsPerMm1000 = BitConverter.ToSingle(BitConverter.GetBytes(ee[EepromV1.EValueOffsets32.StepsPerMm1000]), 0);
 
 						_validReadEeprom = true;
-					}
 
-					EepromValue = eeprom;
+						EepromValue = eeprom;
+					}
+					else
+					{
+						EepromValue = Eeprom.Create(0);
+					}
 				}
 			});
 		}

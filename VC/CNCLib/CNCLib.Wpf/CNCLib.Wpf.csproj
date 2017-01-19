@@ -101,6 +101,10 @@
     <Compile Include="Helpers\JoystickArduinoSerialCommunication.cs" />
     <Compile Include="Helpers\JoystickHelper.cs" />
     <Compile Include="Helpers\MachineGCodeHelper.cs" />
+    <Compile Include="Models\EepromAxis4.cs" />
+    <Compile Include="Models\EepromAxis3.cs" />
+    <Compile Include="Models\EepromAxis2.cs" />
+    <Compile Include="Models\EepromAxis6.cs" />
     <Compile Include="Models\Eeprom.cs" />
     <Compile Include="ViewModels\EepromViewModel.cs" />
     <Compile Include="ViewModels\PreviewViewModel.cs" />
