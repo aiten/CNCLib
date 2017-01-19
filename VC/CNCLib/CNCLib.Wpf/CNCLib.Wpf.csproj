@@ -106,7 +106,7 @@
     <Compile Include="Models\EepromAxis2.cs" />
     <Compile Include="Models\EepromAxis6.cs" />
     <Compile Include="Models\Eeprom.cs" />
-    <Compile Include="ViewModels\ManualControl\EepromViewModel.cs" />
+    <Compile Include="ViewModels\EepromViewModel.cs" />
     <Compile Include="ViewModels\PreviewViewModel.cs" />
     <Compile Include="Views\EepromView.xaml.cs">
       <DependentUpon>EepromView.xaml</DependentUpon>
