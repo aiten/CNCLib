@@ -82,17 +82,59 @@ private:
 
 public: 
 
-	#define EEPROM_INFO_spindle			(1<<0)
-	#define EEPROM_INFO_spindle_ANALOG	(1<<1)
-	#define EEPROM_INFO_COOLANT	(1<<2)
-	#define EEPROM_INFO_SD		(1<<3)
-	#define EEPROM_INFO_ROTATE	(1<<4)
+	enum EEpromInfo1
+	{
+		EEPROM_INFO_SPINDLE	= (1<<0),
+		EEPROM_INFO_SPINDLE_ANALOG = (1<<1),
+		EEPROM_INFO_SPINDLE_DIR = (1 << 2),
+		EEPROM_INFO_COOLANT	= (1<<3),
+		EEPROM_INFO_PROBE   = (1<<4),
 
-	#define EEPROM_INFO_KILL	(1<<31)
-	#define EEPROM_INFO_HOLD	(1<<30)
-	#define EEPROM_INFO_RESUME	(1<<29)
+		EEPROM_INFO_SD		= (1<<11),
+		EEPROM_INFO_ROTATE	= (1<<10),
+
+		EEPROM_INFO_HOLDRESUME = (1<<12),
+		EEPROM_INFO_HOLD	= (1<<13),
+		EEPROM_INFO_RESUME	= (1<<14),
+		EEPROM_INFO_KILL	= (1<<15)
+	};
 
 	#define EPROM_SIGNATURE		0x21436501
+
+	static constexpr uint32_t GetInfo1()
+	{
+		return
+
+#ifdef SPINDLE_ENABLE_PIN
+			CConfigEeprom::EEPROM_INFO_SPINDLE |
+#ifdef SPINDLE_ANALOGSPEED
+			CConfigEeprom::EEPROM_INFO_SPINDLE_ANALOG |
+#endif
+#ifdef SPINDLE_DIR_PIN
+			CConfigEeprom::EEPROM_INFO_SPINDLE_DIR |
+#endif
+#endif
+#ifdef COOLANT_PIN
+			CConfigEeprom::EEPROM_INFO_COOLANT |
+#endif
+#ifdef PROBE_PIN
+			CConfigEeprom::EEPROM_INFO_PROBE |
+#endif
+#ifdef KILL_PIN
+			CConfigEeprom::EEPROM_INFO_KILL |
+#endif
+#ifdef HOLD_PIN
+			CConfigEeprom::EEPROM_INFO_HOLD |
+#endif
+#ifdef RESUME_PIN
+			CConfigEeprom::EEPROM_INFO_RESUME |
+#endif
+#ifdef HOLDRESUME_PIN
+			CConfigEeprom::EEPROM_INFO_HOLDRESUME |
+#endif
+
+			0;
+	}
 
 	struct SCNCEeprom
 	{

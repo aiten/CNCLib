@@ -47,7 +47,8 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 {
 	EPROM_SIGNATURE,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
-	0,0,
+	CConfigEeprom::GetInfo1(),
+	0,
 	STEPPERDIRECTION,0xea,0xea,0xea,
 	SPINDLE_MAXSPEED,0xffff,
 	CNC_MAXSPEED,
