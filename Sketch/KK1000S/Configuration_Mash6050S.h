@@ -40,11 +40,11 @@
 
 ////////////////////////////////////////////////////////
 
-//#define SPINDEL_PIN	CAT(BOARDNAME,_AUX2_6)	// Ramps1.4 D40
-#define SPINDEL_ENABLE_PIN 40
+//#define SPINDLE_PIN	CAT(BOARDNAME,_AUX2_6)	// Ramps1.4 D40
+#define SPINDLE_ENABLE_PIN 40
 
-#define SPINDEL_DIGITAL_ON  HIGH
-#define SPINDEL_DIGITAL_OFF LOW
+#define SPINDLE_DIGITAL_ON  HIGH
+#define SPINDLE_DIGITAL_OFF LOW
 
 ////////////////////////////////////////////////////////
 

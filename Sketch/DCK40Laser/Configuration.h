@@ -42,8 +42,8 @@
 #define B_MAXSIZE 1000 
 #define C_MAXSIZE 1000 
 
-#undef SETDIRECTION
-//#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
+#define STEPPERDIRECTION 0
+//#define STEPPERDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
 
 #define STEPSPERROTATION	400
 #define MICROSTEPPING		16
@@ -84,8 +84,8 @@
 
 #define MOVEAWAYFROMREF_MM1000 250
 
-#define SPINDEL_ANALOGSPEED
-#define SPINDEL_MAXSPEED	255			// analog 255
+#define SPINDLE_ANALOGSPEED
+#define SPINDLE_MAXSPEED	255			// analog 255
 
 ////////////////////////////////////////////////////////
 

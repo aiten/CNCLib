@@ -29,6 +29,7 @@
 #include <ReadPinIOTriggerControl.h>
 #include <PushButtonLow.h>
 #include <DummyIOControl.h>
+#include <ConfigEeprom.h>
 
 #include "Configuration.h"
 
@@ -64,27 +65,27 @@ protected:
 
 private:
 
-#ifdef SPINDEL_ENABLE_PIN
-	#ifdef SPINDEL_ANALOGSPEED
-		CAnalog8IOControl<SPINDEL_ENABLE_PIN> _spindel;
-		#if SPINDEL_MAXSPEED == 255
-			inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t)level; }
+#ifdef SPINDLE_ENABLE_PIN
+	#ifdef SPINDLE_ANALOGSPEED
+		CAnalog8IOControl<SPINDLE_ENABLE_PIN> _spindle;
+		#if SPINDLE_MAXSPEED == 255
+			inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return (uint8_t)level; }
 		#else	
-			inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t)MulDivU32(abs(level), 255, SPINDEL_MAXSPEED); }
+			inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return ConvertSpindleSpeedToIO8(CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, maxspindlespeed)),level); }
 		#endif
 	#else
-		COnOffIOControl<SPINDEL_ENABLE_PIN, SPINDEL_DIGITAL_ON, SPINDEL_DIGITAL_OFF> _spindel;
-		inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t) level; }
+		COnOffIOControl<SPINDLE_ENABLE_PIN, SPINDLE_DIGITAL_ON, SPINDLE_DIGITAL_OFF> _spindle;
+		inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return (uint8_t) level; }
 	#endif
-	#ifdef SPINDEL_DIR_PIN
-		COnOffIOControl<SPINDEL_DIR_PIN, SPINDEL_DIR_CLW, SPINDEL_DIR_CCLW> _spindelDir;
+	#ifdef SPINDLE_DIR_PIN
+		COnOffIOControl<SPINDLE_DIR_PIN, SPINDLE_DIR_CLW, SPINDLE_DIR_CCLW> _spindleDir;
 	#else
-		CDummyIOControl _spindelDir;
+		CDummyIOControl _spindleDir;
 	#endif
 #else
-	CDummyIOControl _spindel;
-	CDummyIOControl _spindelDir;
-	inline uint8_t ConvertSpindelSpeedToIO(unsigned short level) { return (uint8_t) level; }
+	CDummyIOControl _spindle;
+	CDummyIOControl _spindleDir;
+	inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return (uint8_t) level; }
 #endif  
 
 #ifdef COOLANT_PIN

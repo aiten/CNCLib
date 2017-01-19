@@ -75,8 +75,8 @@
 #define REFMOVE_5_AXIS  255
 #define REFMOVE_6_AXIS  255
 
-#undef SPINDEL_ANALOGSPEED
-#define SPINDEL_MAXSPEED	255			// analog 255
+#undef SPINDLE_ANALOGSPEED
+#define SPINDLE_MAXSPEED	255			// analog 255
 
 #else
 
@@ -86,6 +86,10 @@
 #define A_MAXSIZE 360000 
 #define B_MAXSIZE 360000 
 #define C_MAXSIZE 360000 
+
+////////////////////////////////////////////////////////
+
+#define STEPPERDIRECTION 0		// set bit to invert direction of each axis
 
 #define STEPSPERROTATION  200
 #define MICROSTEPPING   16
@@ -123,8 +127,8 @@
 
 #define MOVEAWAYFROMREF_MM1000 500
 
-#define SPINDEL_ANALOGSPEED
-#define SPINDEL_MAXSPEED	10000			// analog 255
+#define SPINDLE_ANALOGSPEED
+#define SPINDLE_MAXSPEED	10000			// analog 255
 
 #endif
 

@@ -38,7 +38,7 @@ bool CGCodeParserBase::_exit = false;
 
 ////////////////////////////////////////////////////////
 
-#define MAXSPINDEL_SPEED	0x7fff
+#define MAXSPINDLE_SPEED	0xffff
 
 ////////////////////////////////////////////////////////
 
@@ -379,7 +379,7 @@ bool CGCodeParserBase::MCommand(mcode_t mcode)
 {
 	switch (mcode)
 	{
-		// Spindel (+laser)
+		// Spindle (+laser)
 		case 106:
 		case 3:	M0304Command(true);		return true;
 		case 4:	M0304Command(false);	return true;
@@ -876,7 +876,7 @@ void CGCodeParserBase::G92Command()
 void CGCodeParserBase::SpindleSpeedCommand()
 {
 	_reader->SkipSpaces();
-	short speed = (short) GetUint32OrParam(MAXSPINDEL_SPEED);
+	short speed = (short) GetUint32OrParam(MAXSPINDLE_SPEED);
 
 #ifndef REDUCED_SIZE
 	if (IsError()) return;
@@ -904,7 +904,7 @@ void CGCodeParserBase::M0304Command(bool m3)
 	}
 
 	_modalstate.SpindleOn = true;
-	CallIOControl(CControl::Spindel, m3 ? _modalstate.SpindleSpeed : -_modalstate.SpindleSpeed);
+	CallIOControl(m3 ? CControl::SpindleCW : CControl::SpindleCCW, _modalstate.SpindleSpeed);
 }
 
 ////////////////////////////////////////////////////////////

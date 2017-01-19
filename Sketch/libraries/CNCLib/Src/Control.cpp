@@ -72,6 +72,8 @@ void CControl::Initialized()
 
 void CControl::InitFromEeprom()
 {
+	CStepper::GetInstance()->SetDirection(CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, stepperdirections)));
+
 #ifdef REDUCED_SIZE
 	CMotionControlBase::GetInstance()->InitConversionStepsPer(CConfigEeprom::GetConfigFloat(offsetof(CConfigEeprom::SCNCEeprom, StepsPerMm1000)));
 #else
@@ -91,6 +93,14 @@ void CControl::InitFromEeprom()
 		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate))),
 		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, acc))),
 		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, dec))));
+}
+
+////////////////////////////////////////////////////////////
+
+uint8_t CControl::ConvertSpindleSpeedToIO8(unsigned short maxspeed, unsigned short level) 
+{ 
+	if (level > maxspeed) return 255;
+	return (uint8_t)MulDivU32(level, 255, maxspeed); 
 }
 
 ////////////////////////////////////////////////////////////

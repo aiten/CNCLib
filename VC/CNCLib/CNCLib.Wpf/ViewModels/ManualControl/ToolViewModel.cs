@@ -91,8 +91,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public void SendAbort() { RunAndUpdate(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.QueueCommand("!"); }); }
 		public void SendResurrect() { RunAndUpdate(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.QueueCommand("!!!"); }); }
 		public void ClearQueue() { RunAndUpdate(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); }); }
-		public void SendM03SpindelOn() { RunAndUpdate(() => { Com.QueueCommand("m3"); }); }
-		public void SendM05SpindelOff() { RunAndUpdate(() => { Com.QueueCommand("m5"); }); }
+		public void SendM03SpindleOn() { RunAndUpdate(() => { Com.QueueCommand("m3"); }); }
+		public void SendM05SpindleOff() { RunAndUpdate(() => { Com.QueueCommand("m5"); }); }
 		public void SendM07CoolandOn() { RunAndUpdate(() => { Com.QueueCommand("m7"); }); }
 		public void SendM09CoolandOff() { RunAndUpdate(() => { Com.QueueCommand("m9"); }); }
 		public void SendM106LaserOn() { RunAndUpdate(() => { Com.QueueCommand("m106 s255"); }); }
@@ -130,8 +130,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ICommand SendAbortCommand => new DelegateCommand(SendAbort, CanSend);
 		public ICommand SendResurrectCommand => new DelegateCommand(SendResurrect, CanSend);
 		public ICommand SendClearQueue => new DelegateCommand(ClearQueue, CanSend);
-		public ICommand SendM03SpindelOnCommand => new DelegateCommand(SendM03SpindelOn, CanSendSpindle);
-		public ICommand SendM05SpindelOffCommand => new DelegateCommand(SendM05SpindelOff, CanSendSpindle);
+		public ICommand SendM03SpindleOnCommand => new DelegateCommand(SendM03SpindleOn, CanSendSpindle);
+		public ICommand SendM05SpindleOffCommand => new DelegateCommand(SendM05SpindleOff, CanSendSpindle);
 		public ICommand SendM07CoolandOnCommand => new DelegateCommand(SendM07CoolandOn, CanSendCoolant);
 		public ICommand SendM09CoolandOffCommand => new DelegateCommand(SendM09CoolandOff, CanSendCoolant);
 		public ICommand SendM106LaserOnCommand => new DelegateCommand(SendM106LaserOn, CanSendLaser);

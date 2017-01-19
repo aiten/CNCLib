@@ -25,7 +25,6 @@
 
 #include <CNCLib.h>
 #include <GCodeParser.h>
-#include <ConfigEeprom.h>
 
 #include "MyControl.h"
 
@@ -49,7 +48,8 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 	EPROM_SIGNATURE,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
 	0,0,
-	0,0,0,0,
+	STEPPERDIRECTION,0,0,0,
+	SPINDLE_MAXSPEED,0,
 	CNC_MAXSPEED,
 	CNC_ACC,
 	CNC_DEC,
@@ -86,15 +86,11 @@ void CMyControl::Init()
 
 	super::Init();
 
-#ifdef SETDIRECTION
-	CStepper::GetInstance()->SetDirection(SETDIRECTION);
-#endif
-
 	InitFromEeprom();
 
 	_controllerfan.Init(255);
 
-	_spindel.Init();
+	_spindle.Init();
 	_probe.Init();
 	_kill.Init();
 	_coolant.Init();
@@ -117,7 +113,8 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
-		case Spindel:		_spindel.On(ConvertSpindelSpeedToIO(level)); _spindelDir.Set(((short)level) > 0);	return;
+		case SpindleCCW:
+		case SpindleCW:		_spindle.On(ConvertSpindleSpeedToIO(level)); _spindleDir.Set(tool == SpindleCCW);	return;
 		case Coolant:		_coolant.Set(level > 0); return;
 		case ControllerFan:	_controllerfan.SetLevel((uint8_t)level); return;
 	}
@@ -131,7 +128,7 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{
-		case Spindel:		{ return _spindel.IsOn(); }
+		case SpindleCW:		{ return _spindle.IsOn(); }
 		case Probe:			{ return _probe.IsOn(); }
 		case Coolant:		{ return _coolant.IsOn(); }
 		case ControllerFan: { return _controllerfan.GetLevel(); }
@@ -146,7 +143,7 @@ void CMyControl::Kill()
 {
 	super::Kill();
 
-	_spindel.Off();
+	_spindle.Off();
 	_coolant.Set(false);
 }
 

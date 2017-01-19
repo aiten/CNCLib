@@ -254,7 +254,7 @@ void CMenuBase::MenuButtonPressMoveG92(const SMenuItemDef*)
 
 void CMenuBase::MenuButtonPressSpindle(const SMenuItemDef*)
 {
-	if (CControl::GetInstance()->IOControl(CControl::Spindel) != 0)
+	if (CControl::GetInstance()->IOControl(CControl::SpindleCW) != 0)
 		PostCommand(F("m5"));
 	else
 		PostCommand(F("m3"));

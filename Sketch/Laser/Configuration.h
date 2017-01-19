@@ -49,7 +49,7 @@
 #define ConversionToMm1000 MyConvertToMm1000
 #define ConversionToMachine MyConvertToMachine
 
-#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
+#define STEPPERDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
 
 ////////////////////////////////////////////////////////
 
@@ -72,8 +72,8 @@
 
 #define MOVEAWAYFROMREF_MM1000 500
 
-#define SPINDEL_ANALOGSPEED
-#define SPINDEL_MAXSPEED	255			// analog 255
+#define SPINDLE_ANALOGSPEED
+#define SPINDLE_MAXSPEED	255			// analog 255
 
 ////////////////////////////////////////////////////////
 

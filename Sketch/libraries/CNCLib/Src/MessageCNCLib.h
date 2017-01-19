@@ -52,7 +52,7 @@
 #define MESSAGE_GCODE_CommandExpected				StepperMessage("11","command expected")
 #define MESSAGE_GCODE_IllegalCommand				StepperMessage("12","Illegal command")
 #define MESSAGE_GCODE_NoValidTool					StepperMessage("13","No valid tool")
-//#define MESSAGE_GCODE_SpindleSpeedExceeded			StepperMessage("14","Spindle speed exceeded")
+//#define MESSAGE_GCODE_spindleSpeedExceeded			StepperMessage("14","Spindle speed exceeded")
 #define MESSAGE_GCODE_AxisNotSupported				StepperMessage("15","axis not supported")
 #define MESSAGE_GCODE_AxisAlreadySpecified			StepperMessage("16","axis already specified")
 #define MESSAGE_GCODE_ParameterSpecifiedMoreThanOnce StepperMessage("17","parameter specified more than once")

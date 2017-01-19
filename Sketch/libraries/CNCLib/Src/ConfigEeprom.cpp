@@ -70,11 +70,6 @@ uint32_t CConfigEeprom::GetConfigU32(eepromofs_t ofs)
 	return GetInstance()->GetConfig32(ofs); 
 };
 
-uint8_t CConfigEeprom::GetConfigU8(eepromofs_t ofs)
-{
-	return GetInstance()->GetConfig8(ofs);
-};
-
 ////////////////////////////////////////////////////////////
 
 inline const void* AddAdr(const void*adr, eepromofs_t ofs)
@@ -86,14 +81,6 @@ uint32_t CConfigEeprom::GetConfig32(eepromofs_t ofs)
 {
 	if (_eepromvalid)	return CHAL::eeprom_read_dword((uint32_t*) AddAdr(EEPROMBASEADRUINT32,ofs));
 	return pgm_read_dword((uint32_t*) AddAdr(_defaulteeprom,ofs));
-}
-
-////////////////////////////////////////////////////////////
-
-uint8_t CConfigEeprom::GetConfig8(eepromofs_t ofs)
-{
-	if (_eepromvalid)	return CHAL::eeprom_read_byte((uint8_t*)AddAdr(EEPROMBASEADRUINT32,ofs));
-	return pgm_read_byte((uint8_t*)AddAdr(_defaulteeprom, ofs));
 }
 
 ////////////////////////////////////////////////////////////

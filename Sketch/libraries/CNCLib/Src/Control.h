@@ -67,11 +67,12 @@ public:
 	enum EIOTools
 	{
 		// Output
-		Spindel,
+		SpindleCW,
+		SpindleCCW,
 		Coolant,
 		ControllerFan,
 		Vacuum,
-		//Laser, => use spindel
+		//Laser, => use Spindle
 
 		// input
 		Probe,				// Probe for tool lenght
@@ -115,6 +116,7 @@ public:
 	//////////////////////////////////////////
 
 	void InitFromEeprom();
+	static uint8_t ConvertSpindleSpeedToIO8(unsigned short maxspeed, unsigned short level); // { return (uint8_t)MulDivU32(abs(level), 255, maxspeed); }
 
 	//////////////////////////////////////////
 

@@ -63,8 +63,8 @@
 
 #define MOVEAWAYFROMREF_MM1000 250
 
-#define SPINDEL_ANALOGSPEED
-#define SPINDEL_MAXSPEED	255			// analog 255
+#define SPINDLE_ANALOGSPEED
+#define SPINDLE_MAXSPEED	255			// analog 255
 
 ////////////////////////////////////////////////////////
 

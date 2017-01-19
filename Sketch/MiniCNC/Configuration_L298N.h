@@ -25,7 +25,8 @@
 #define CNC_ACC  65
 #define CNC_DEC  75
 
-//#define SETDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)    // set bit to invert direction of each axis
+#define STEPPERDIRECTION 0
+//#define STEPPERDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)    // set bit to invert direction of each axis
 
 ////////////////////////////////////////////////////////
 
@@ -54,7 +55,7 @@
 
 ////////////////////////////////////////////////////////
 
-#undef SPINDEL_PIN
+#undef SPINDLE_ENABLE_PIN
 
 ////////////////////////////////////////////////////////
 

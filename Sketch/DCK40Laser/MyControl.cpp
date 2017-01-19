@@ -25,7 +25,6 @@
 
 #include <CNCLib.h>
 #include <GCodeParser.h>
-#include <ConfigEeprom.h>
 
 #include "MyControl.h"
 #include "MyLCD.h"
@@ -50,7 +49,8 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 	EPROM_SIGNATURE,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
 	0,0,
-	0,0,0,0,
+	STEPPERDIRECTION,0,0,0,
+	SPINDLE_MAXSPEED,0,
 	CNC_MAXSPEED,
 	CNC_ACC,
 	CNC_DEC,
@@ -87,10 +87,6 @@ void CMyControl::Init()
 
 	super::Init();
 
-#ifdef SETDIRECTION
-	CStepper::GetInstance()->SetDirection(SETDIRECTION);
-#endif
-
 	InitFromEeprom();
 
 	_controllerfan.Init(255);
@@ -101,7 +97,7 @@ void CMyControl::Init()
 	_laserWater.Init();
 	_laserVacuum.Init();
 
-	_spindel.Init();
+	_spindle.Init();
 	_probe.Init();
 	_kill.Init();
 	_coolant.Init();
@@ -124,7 +120,8 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
 	switch (tool)
 	{
-		case Spindel:
+		case SpindleCCW:
+		case SpindleCW:
 
 			if (level != 0)
 			{
@@ -151,7 +148,8 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{
-		case Spindel: 		{ return _laserPWM.IsOn(); }
+		case SpindleCW:
+		case SpindleCCW:	{ return _laserPWM.IsOn(); }
 		case Probe:			{ return _probe.IsOn(); }
 		case Coolant: 		{ return _laserWater.IsOn(); }
 		case Vacuum: 		{ return _laserVacuum.IsOn(); }
@@ -167,7 +165,7 @@ void CMyControl::Kill()
 {
 	super::Kill();
 
-	_spindel.Off();
+	_spindle.Off();
 	_coolant.Set(false);
 	_laserOnOff.Off();
 }
@@ -244,7 +242,7 @@ bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t a
 				bool newIsCutMove = addinfo != 0;
 				if (CGCodeParserBase::IsCutMove() != newIsCutMove)
 				{
-					CStepper::GetInstance()->IoControl(CControl::Spindel, newIsCutMove ? CGCodeParserBase::GetSpindleSpeed() : 0);
+					CStepper::GetInstance()->IoControl(CControl::SpindleCW, newIsCutMove ? CGCodeParserBase::GetSpindleSpeed() : 0);
 				}
 			}
 			break;

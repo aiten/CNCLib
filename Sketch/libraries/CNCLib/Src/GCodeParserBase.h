@@ -291,7 +291,7 @@ private:
 	void G92Command();
 
 	void M0304Command(bool m3);					// spindle on CW/CCW
-	void M05Command()							{ _modalstate.SpindleOn = false; CallIOControl(CControl::Spindel, 0); } //spindel off
+	void M05Command()							{ _modalstate.SpindleOn = false; CallIOControl(CControl::SpindleCW, 0); } //Spindle off
 
 	void M07Command()							{ CallIOControl(CControl::Coolant, CControl::CoolantOn); };
 	void M09Command()							{ CallIOControl(CControl::Coolant, CControl::CoolantOff); };

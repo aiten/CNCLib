@@ -62,7 +62,8 @@
 
 ////////////////////////////////////////////////////////
 
-//#define SETDIRECTION (1<<X_AXIS) + (1<<Y_AXIS)		// set bit to invert direction of each axis
+#define STEPPERDIRECTION 0
+//#define STEPPERDIRECTION (1<<X_AXIS) + (1<<Y_AXIS)		// set bit to invert direction of each axis
 
 ////////////////////////////////////////////////////////
 
@@ -102,8 +103,8 @@
 
 #define MOVEAWAYFROMREF_MM1000 125
 
-#undef SPINDEL_ANALOGSPEED
-#define SPINDEL_MAXSPEED	255			// analog 255
+#undef SPINDLE_ANALOGSPEED
+#define SPINDLE_MAXSPEED	255			// analog 255
 
 ////////////////////////////////////////////////////////
 
@@ -136,10 +137,10 @@
 
 ////////////////////////////////////////////////////////
 
-#define SPINDEL_ENABLE_PIN	CAT(BOARDNAME,_AUX2_6)	// Ramps1.4 D40
+#define SPINDLE_ENABLE_PIN	CAT(BOARDNAME,_AUX2_6)	// Ramps1.4 D40
 
-#define SPINDEL_DIGITAL_ON  LOW
-#define SPINDEL_DIGITAL_OFF HIGH
+#define SPINDLE_DIGITAL_ON  LOW
+#define SPINDLE_DIGITAL_OFF HIGH
 
 ////////////////////////////////////////////////////////
 

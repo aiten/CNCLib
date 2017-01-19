@@ -64,7 +64,8 @@ public:
 	void Init(unsigned short eepromsizesize, const void* defaulteeprom, uint32_t eepromID);
 
 	static uint32_t GetConfigU32(eepromofs_t);
-	static uint8_t  GetConfigU8(eepromofs_t);
+	static uint8_t  GetConfigU8(eepromofs_t ofs )  { return (uint8_t)GetConfigU32(ofs); };
+	static uint16_t  GetConfigU16(eepromofs_t ofs) { return (uint16_t)GetConfigU32(ofs); };
 
 	static float GetConfigFloat(eepromofs_t);
 
@@ -73,7 +74,6 @@ public:
 	bool ParseConfig(class CParser*);
 
 	uint32_t GetConfig32(eepromofs_t ofs);
-	uint8_t GetConfig8(eepromofs_t ofs);
 
 private:
 
@@ -82,8 +82,8 @@ private:
 
 public: 
 
-	#define EEPROM_INFO_SPINDLE			(1<<0)
-	#define EEPROM_INFO_SPINDLE_ANALOG	(1<<1)
+	#define EEPROM_INFO_spindle			(1<<0)
+	#define EEPROM_INFO_spindle_ANALOG	(1<<1)
 	#define EEPROM_INFO_COOLANT	(1<<2)
 	#define EEPROM_INFO_SD		(1<<3)
 	#define EEPROM_INFO_ROTATE	(1<<4)
@@ -106,14 +106,17 @@ public:
 		uint32_t  info1;
 		uint32_t  info2;
 
-		uint8_t	  dummy1;
+		uint8_t	  stepperdirections;		// bits for each axis, see CStepper::SetDirection
 		uint8_t	  dummy2;
 		uint8_t	  dummy3;
 		uint8_t	  dummy4;
 
+		uint16_t  maxspindlespeed;
+		uint16_t  dummy5;
+
 		uint32_t  maxsteprate;
-		uint32_t  acc;
-		uint32_t  dec;
+		uint16_t  acc;
+		uint16_t  dec;
 		uint32_t  refmovesteprate;
 		uint32_t  moveAwayFromRefernece;
 

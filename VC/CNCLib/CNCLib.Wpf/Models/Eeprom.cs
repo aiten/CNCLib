@@ -66,12 +66,12 @@ namespace CNCLib.Wpf.Models
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Acc")]
 		[Description("Acceleration factor")]
-		public uint Acc { get; set; }
+		public ushort Acc { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Dec")]
 		[Description("Deceleration factor")]
-		public uint Dec { get; set; }
+		public ushort Dec { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("RefMoveStepRate")]
@@ -87,6 +87,11 @@ namespace CNCLib.Wpf.Models
 		[DisplayName("Scale mm to machine")]
 		[Description("Steps for 1/1000mm => steps to go for 1/1000mm")]
 		public float StepsPerMm1000 { get; set; }
+
+		[Category(CATEGORY_GENERAL)]
+		[DisplayName("MaxSpindleSpeed")]
+		[Description("Max speed (rpm) of spindle")]
+		public ushort MaxSpindleSpeed { get; set; }
 
 		#endregion
 
@@ -125,6 +130,8 @@ namespace CNCLib.Wpf.Models
 			[DisplayName("RefMove")]
 			[Description("Reference-Move for axis")]
 			public EReverenceType RefMove { get; set; }
+
+			public bool StepperDirection { get; set; }
 
 			public override string ToString()
 			{

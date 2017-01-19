@@ -43,7 +43,7 @@
 
 ////////////////////////////////////////////////////////
 
-#define SETDIRECTION (1<<X_AXIS) + (1<<Y_AXIS)		// set bit to invert direction of each axis
+#define STEPPERDIRECTION (1<<X_AXIS) + (1<<Y_AXIS)		// set bit to invert direction of each axis
 
 // PIN AS Ramps 1.4 
 #define STEPSPERROTATION	200
@@ -82,8 +82,8 @@
 
 #define MOVEAWAYFROMREF_MM1000 250
 
-#undef SPINDEL_ANALOGSPEED
-#define SPINDEL_MAXSPEED	255			// analog 255
+#undef SPINDLE_ANALOGSPEED
+#define SPINDLE_MAXSPEED	255			// analog 255
 
 ////////////////////////////////////////////////////////
 
