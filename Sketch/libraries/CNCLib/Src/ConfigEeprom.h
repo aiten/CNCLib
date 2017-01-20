@@ -91,6 +91,8 @@ public:
 		HAVE_COOLANT	= (1<<3),
 		HAVE_PROBE   = (1<<4),
 
+		IS_LASER	 = (1<<5),
+
 		HAVE_SD		= (1<<10),
 		CAN_ROTATE	= (1<<11),
 

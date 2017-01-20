@@ -31,6 +31,9 @@
 
 #include "Configuration.h"
 
+// must be after "Configuration.h" because of defines
+#include <ControlImplementation.h>
+
 ////////////////////////////////////////////////////////
 
 class CMyControl : public CControl
@@ -62,75 +65,9 @@ protected:
 
 private:
 
-#ifdef SPINDLE_ENABLE_PIN
-	#ifdef SPINDLE_ANALOGSPEED
-		CAnalog8IOControl<SPINDLE_ENABLE_PIN> _spindle;
-		#if SPINDLE_MAXSPEED == 255
-			inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return (uint8_t)level; }
-		#else	
-			inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return ConvertSpindleSpeedToIO8(CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, maxspindlespeed)),level); }
-		#endif
-	#else
-		COnOffIOControl<SPINDLE_ENABLE_PIN, SPINDLE_DIGITAL_ON, SPINDLE_DIGITAL_OFF> _spindle;
-		inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return (uint8_t) level; }
-	#endif
-	#ifdef SPINDLE_DIR_PIN
-		COnOffIOControl<SPINDLE_DIR_PIN, SPINDLE_DIR_CLW, SPINDLE_DIR_CCLW> _spindleDir;
-	#else
-		CDummyIOControl _spindleDir;
-	#endif
-#else
-	CDummyIOControl _spindle;
-	CDummyIOControl _spindleDir;
-	inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return (uint8_t) level; }
-#endif  
+  static const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash;
 
-#ifdef COOLANT_PIN
-	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
-#else
-	CDummyIOControl _coolant;
-#endif
-#ifdef PROBE_PIN
-	CReadPinIOControl<PROBE_PIN, PROBE_ON> _probe;
-#else
-	CDummyIOControl _probe;
-#endif
-
-#ifdef KILL_PIN
-	CReadPinIOControl<KILL_PIN, KILL_PIN_ON> _kill;
-#else
-	CDummyIOControl _kill;
-#endif
-
-#if defined(HOLD_PIN) && defined(RESUME_PIN)
-	CPushButtonLow<HOLD_PIN,LOW> _hold;
-	CPushButtonLow<RESUME_PIN, LOW> _resume;
-#else
-	CDummyIOControl _hold;
-	CDummyIOControl _resume;
-#endif
-
-#if defined(HOLDRESUME_PIN)
-	CPushButtonLow<HOLDRESUME_PIN,LOW> _holdresume;
-#else
-	CDummyIOControl _holdresume;
-#endif
-
-#ifdef CONTROLLERFAN_FAN_PIN
-	#ifdef CONTROLLERFAN_ANALOGSPEED
-		#if defined(USE_RAMPSFD)
-			CAnalog8InvertIOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
-		#else
-			CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
-		#endif
-	#else
-		COnOffIOControl<CONTROLLERFAN_FAN_PIN, CONTROLLERFAN_DIGITAL_ON, CONTROLLERFAN_DIGITAL_OFF> _controllerfan;
-	#endif
-	inline bool IsControllerFanTimeout() { return millis() - CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME;	}
-#else
-	CDummyIOControl _controllerfan;
-	inline bool IsControllerFanTimeout() { return false; }
-#endif
+  ControlData _data;
 
 };
 

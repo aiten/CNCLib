@@ -20,6 +20,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Beep.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\CNCLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigEeprom.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ControlImplementation.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\ConfigurationCNCLib.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\Control.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\CNCLib\Src\DummyIOControl.h" />
