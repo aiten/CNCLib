@@ -40,6 +40,15 @@ class CStepper& Stepper = MyStepper;
 
 int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 {
+	mydigitalRead = [](short pin)
+	{
+		switch (pin)
+		{
+			case CAT(BOARDNAME, _LCD_KILL_PIN): return CAT(BOARDNAME, _LCD_KILL_PIN_OFF);
+		}
+		return LOW;
+	};
+
 	setup();
 
 	while (!CGCodeParserBase::_exit)

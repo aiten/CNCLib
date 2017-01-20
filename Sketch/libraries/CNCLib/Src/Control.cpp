@@ -91,8 +91,8 @@ void CControl::InitFromEeprom()
 
 	CStepper::GetInstance()->SetDefaultMaxSpeed(
 		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate))),
-		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, acc))),
-		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, dec))));
+		((steprate_t)CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, acc))),
+		((steprate_t)CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, dec))));
 }
 
 ////////////////////////////////////////////////////////////

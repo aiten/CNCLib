@@ -99,7 +99,7 @@ namespace CNCLib.Wpf.Models
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("MaxSpindleSpeed")]
-		[Description("Max speed (rpm) of spindle")]
+		[Description("Max speed (rpm) of spindle or laser power (1-255)")]
 		public ushort MaxSpindleSpeed { get; set; }
 
 		#endregion
@@ -175,6 +175,11 @@ namespace CNCLib.Wpf.Models
 		[DisplayName("HasKill")]
 		[Description("Machine has a kill input")]
 		public bool HasKill { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_KILL)); } set { } }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("IsLaser")]
+		[Description("Machine is a laser")]
+		public bool IsLaser { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_LASER)); } set { } }
 
 		[Category(CATEGORY_INFO)]
 		[DisplayName("Info2")]

@@ -46,9 +46,6 @@
 #define Z_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/(TOOTH*TOOTHSIZE))
 #define A_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/(TOOTH*TOOTHSIZE))
 
-#define ConversionToMm1000 MyConvertToMm1000
-#define ConversionToMachine MyConvertToMachine
-
 #define STEPPERDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)		// set bit to invert direction of each axis
 
 ////////////////////////////////////////////////////////
@@ -80,6 +77,11 @@
 #if STEPPERTYPE==4
 #include "Configuration_CNCShield.h"
 #endif
+
+////////////////////////////////////////////////////////
+
+// do not use probe
+#undef PROBE_PIN
 
 ////////////////////////////////////////////////////////
 

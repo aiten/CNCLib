@@ -203,10 +203,13 @@ constexpr uint16_t GetInfo1a()
 		CConfigEeprom::HAVE_RESUME |
 #endif
 #ifdef HOLDRESUME_PIN
-		CConfigEeprom::EEPROM_INFO_HOLDRESUME |
+		CConfigEeprom::HAVE_HOLDRESUME |
 #endif
 #ifndef REDUCED_SIZE
 		CConfigEeprom::CAN_ROTATE |
+#endif
+#ifdef MYUSE_LCD
+		CConfigEeprom::HAVE_SD |
 #endif
 		CConfigEeprom::NONE;
 }

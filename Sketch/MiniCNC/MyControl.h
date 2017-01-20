@@ -65,10 +65,9 @@ protected:
 
 private:
 
-  static const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash;
+	static const CConfigEeprom::SCNCEeprom _eepromFlash;
 
-  ControlData _data;
-
+	ControlData _data;
 };
 
 ////////////////////////////////////////////////////////

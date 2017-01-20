@@ -52,6 +52,8 @@
 #define B_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 #define C_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 
+#define STEPPERDIRECTION (0)		// set bit to invert direction of each axis
+
 ////////////////////////////////////////////////////////
 
 #define CNC_MAXSPEED 27000        // steps/sec

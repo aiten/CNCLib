@@ -42,6 +42,8 @@
 #define Z_STEPSPERMM (20.0/3*16)
 #define A_STEPSPERMM (20.0/3*16)
 
+#define STEPPERDIRECTION (0)		// set bit to invert direction of each axis
+
 ////////////////////////////////////////////////////////
 
 #define CNC_MAXSPEED 20000 // 27000        // steps/sec
@@ -71,6 +73,11 @@
 #if STEPPERTYPE==4
 #include "Configuration_CNCShield.h"
 #endif
+
+////////////////////////////////////////////////////////
+
+// do not use probe
+#undef PROBE_PIN
 
 ////////////////////////////////////////////////////////
 
