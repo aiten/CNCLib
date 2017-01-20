@@ -34,53 +34,11 @@
 
 #if Generic
 
-#define X_MAXSIZE 200000        // in mm1000_t
-#define Y_MAXSIZE 200000 
-#define Z_MAXSIZE 100000 
-#define A_MAXSIZE 360000 
-#define B_MAXSIZE 360000 
-#define C_MAXSIZE 360000 
-
-#define STEPSPERROTATION	200
-#define MICROSTEPPING		16
-#define SCREWLEAD			1.0
-
-#define X_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
-#define Y_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
-#define Z_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
-#define A_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
-#define B_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
-#define C_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
-
-#define STEPPERDIRECTION (0)		// set bit to invert direction of each axis
-
-////////////////////////////////////////////////////////
-
-#define CNC_MAXSPEED 27000        // steps/sec
-#define CNC_ACC  350
-#define CNC_DEC  400
-
-////////////////////////////////////////////////////////
-// NoReference, ReferenceToMin, ReferenceToMax
-
-#define X_USEREFERENCE	EReverenceType::ReferenceToMin
-#define Y_USEREFERENCE	EReverenceType::ReferenceToMin
-#define Z_USEREFERENCE	EReverenceType::ReferenceToMax
-#define A_USEREFERENCE	EReverenceType::NoReference
-#define B_USEREFERENCE  EReverenceType::NoReference
-#define C_USEREFERENCE  EReverenceType::NoReference
-
-#define REFMOVE_1_AXIS  255
-#define REFMOVE_2_AXIS  255
-#define REFMOVE_3_AXIS  255
-#define REFMOVE_4_AXIS  255
-#define REFMOVE_5_AXIS  255
-#define REFMOVE_6_AXIS  255
-
-#undef SPINDLE_ANALOGSPEED
-#define SPINDLE_MAXSPEED	255			// analog 255
+#include "Configuration_Generic.h"
 
 #else
+
+////////////////////////////////////////////////////////
 
 #define X_MAXSIZE 150000        // in mm1000_t
 #define Y_MAXSIZE 105000 
@@ -131,6 +89,8 @@
 
 #define SPINDLE_ANALOGSPEED
 #define SPINDLE_MAXSPEED	10000			// analog 255
+
+////////////////////////////////////////////////////////
 
 #endif
 

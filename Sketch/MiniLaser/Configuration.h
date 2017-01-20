@@ -33,16 +33,19 @@
 #define Y_MAXSIZE 36000 
 #define Z_MAXSIZE 10000 
 #define A_MAXSIZE 50000 
-// 3 mm/rot
-// 20 steps/rot
-// * 16 => 1/16 step
 
-#define X_STEPSPERMM (20.0/3*16)
-#define Y_STEPSPERMM (20.0/3*16)
-#define Z_STEPSPERMM (20.0/3*16)
-#define A_STEPSPERMM (20.0/3*16)
+////////////////////////////////////////////////////////
 
-#define STEPPERDIRECTION (0)		// set bit to invert direction of each axis
+#define STEPPERDIRECTION 0		// set bit to invert direction of each axis
+
+#define STEPSPERROTATION	20
+#define MICROSTEPPING		16
+#define SCREWLEAD			3.0
+
+#define X_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
+#define Y_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
+#define Z_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
+#define A_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 
 ////////////////////////////////////////////////////////
 
