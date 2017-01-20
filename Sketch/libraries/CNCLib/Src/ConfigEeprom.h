@@ -90,8 +90,8 @@ public:
 		EEPROM_INFO_COOLANT	= (1<<3),
 		EEPROM_INFO_PROBE   = (1<<4),
 
-		EEPROM_INFO_SD		= (1<<11),
-		EEPROM_INFO_ROTATE	= (1<<10),
+		EEPROM_INFO_SD		= (1<<10),
+		EEPROM_INFO_ROTATE	= (1<<11),
 
 		EEPROM_INFO_HOLDRESUME = (1<<12),
 		EEPROM_INFO_HOLD	= (1<<13),
@@ -110,7 +110,8 @@ public:
 		uint8_t	  offsetAxis;
 		uint8_t	  sizeofAxis;
 
-		uint32_t  info1;
+		uint16_t  info1a;
+		uint16_t  info1b;
 		uint32_t  info2;
 
 		uint8_t	  stepperdirections;		// bits for each axis, see CStepper::SetDirection

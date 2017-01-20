@@ -34,6 +34,9 @@ namespace CNCLib.Wpf.Helpers
 		{
 			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
 		}
+
+		#region Probe
+
 		public async Task<bool> SendProbeCommandAsync(int axisindex)
 		{
 			return await SendProbeCommandAsync(Global.Instance.Machine, axisindex);
@@ -57,6 +60,10 @@ namespace CNCLib.Wpf.Helpers
 			};
 			return false;
 		}
+
+		#endregion
+
+		#region EEprom
 
 		public async Task<UInt32[]> GetEpromValuesAsync()
 		{
@@ -102,6 +109,20 @@ namespace CNCLib.Wpf.Helpers
 			}
 			return null;
 		}
+
+		public async Task WriteEepromValuesAsync(EepromV1 ee)
+		{
+			await Com.SendCommandAsync(@"$!");
+			await Com.SendCommandsAsync(ee.ToGCode());
+		}
+
+		public async Task EraseEepromValuesAsync()
+		{
+			await Com.SendCommandAsync(@"$!");
+			await Com.SendCommandAsync(@"$0=0");
+		}
+
+		#endregion
 
 		public async Task SendCommandAsync(string commandstring)
 		{

@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Converters\InvertBoolConverter.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="Helpers\EepromHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\JoystickArduinoSerialCommunication.cs" />
     <Compile Include="Helpers\JoystickHelper.cs" />

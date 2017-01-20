@@ -110,7 +110,7 @@ namespace CNCLib.Wpf.Models
 		[Category(CATEGORY_INFO)]
 		[DisplayName("Info1")]
 		[Description("Info 32bit")]
-		public uint Info1 { get; set; }
+		public GCode.EepromV1.EInfo1 Info1 { get; set; }
 
 		[Category(CATEGORY_INFO)]
 		[DisplayName("Info2")]

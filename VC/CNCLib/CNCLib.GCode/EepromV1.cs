@@ -85,7 +85,27 @@ namespace CNCLib.GCode
 			EReverenceSeqence = (((int)EAxisOffsets32.Ofsett1) << 8) + 1,
 		}
 
+		[Flags]
+		public enum EInfo1
+		{
+			EEPROM_INFO_SPINDLE = (1 << 0),
+			EEPROM_INFO_SPINDLE_ANALOG = (1 << 1),
+			EEPROM_INFO_SPINDLE_DIR = (1 << 2),
+			EEPROM_INFO_COOLANT = (1 << 3),
+			EEPROM_INFO_PROBE = (1 << 4),
+
+			EEPROM_INFO_SD = (1 << 10),
+			EEPROM_INFO_ROTATE = (1 << 11),
+
+			EEPROM_INFO_HOLDRESUME = (1 << 12),
+			EEPROM_INFO_HOLD = (1 << 13),
+			EEPROM_INFO_RESUME = (1 << 14),
+			EEPROM_INFO_KILL = (1 << 15)
+		}
+
 		#endregion
+
+		#region Get/Set
 
 		public UInt32 this[EValueOffsets32 ofs] { get { return GetValue32(ofs); } set { SetValue32(ofs, value); } }
 		public UInt16 this[EValueOffsets16 ofs] { get { return GetValue16(ofs); } set { SetValue16(ofs, value); } }
@@ -115,6 +135,8 @@ namespace CNCLib.GCode
 		{
 			return new Tuple<EAxisOffsets32, int>((EAxisOffsets32)(((int)ofsidx >> 8) & 0xff), (int)ofsidx & 0xff);
 		}
+
+		#endregion
 
 		#region Read
 
