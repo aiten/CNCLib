@@ -41,7 +41,7 @@ HardwareSerial& StepperSerial = Serial;
 #error Please define MYNUM_AXIS
 #endif
 
-constexpr uint16_t GetInfo1b()
+constexpr uint16_t GetInfo1a()
 {
 	return 
 #ifdef SPINDLE_ENABLE_PIN
@@ -80,7 +80,7 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 {
 	EPROM_SIGNATURE,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
-	0,GetInfo1b(),
+	GetInfo1a(),0,
 	0,
 	STEPPERDIRECTION,0xea,0xea,0xea,
 	SPINDLE_MAXSPEED,0xffff,

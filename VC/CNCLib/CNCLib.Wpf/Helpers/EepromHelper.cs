@@ -47,7 +47,7 @@ namespace CNCLib.Wpf.Helpers
 					eeprom.NumAxis = ee[EepromV1.EValueOffsets8.NumAxis];
 					eeprom.UseAxis = ee[EepromV1.EValueOffsets8.UseAxis];
 
-					eeprom.Info1 = (EepromV1.EInfo1) ee[EepromV1.EValueOffsets32.Info1];
+					eeprom.Info1 = ee[EepromV1.EValueOffsets32.Info1];
 					eeprom.Info2 = ee[EepromV1.EValueOffsets32.Info2];
 
 					for (int i = 0; i < numaxis; i++)

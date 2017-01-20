@@ -1,15 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2014 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
-using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
+using CNCLib.GCode;
 
 namespace CNCLib.Wpf.Models
 {
@@ -99,18 +108,73 @@ namespace CNCLib.Wpf.Models
 
 		[Category(CATEGORY_INFO)]
 		[DisplayName("NumAxis")]
-		[Description("Supported Axis")]
+		[Description("Supported Axis"), ReadOnly(true)]
 		public uint NumAxis { get; set; }
 
 		[Category(CATEGORY_INFO)]
 		[DisplayName("UseAxis")]
-		[Description("Useabel axis")]
+		[Description("Useabel axis"), ReadOnly(true)]
 		public uint UseAxis { get; set; }
 
 		[Category(CATEGORY_INFO)]
 		[DisplayName("Info1")]
-		[Description("Info 32bit")]
-		public GCode.EepromV1.EInfo1 Info1 { get; set; }
+		[Description("Info 32bit"), ReadOnly(true)]
+		public uint Info1 { get; set; }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("HasSpindle")]
+		[Description("Maschine has a spindle, can use m3/m5")]
+		public bool HasSpindle { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE)); } set { } }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("AnalogSpindle")]
+		[Description("Can set the speed of the spindle with e.g.  m3 s1000")]
+		public bool HasAnalogSpindle { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE_ANALOG)); } set { } }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("HasSpindleDirection")]
+		[Description("Can set spindle direction, mse m3/m4")]
+		public bool HasSpindleDirection { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE_DIR)); } set { } }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("HasCoolant")]
+		[Description("Machine has coolant (use m7/m9)")]
+		public bool HasCoolant { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_COOLANT)); } set { } }
+
+        [Category(CATEGORY_INFO)]
+		[DisplayName("HasProbe")]
+		[Description("Machine has probe input (use g31)")]
+		public bool HasProbe { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_PROBE)); } set { } }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("HasSD")]
+		[Description("Machine has a SD card")]
+		public bool HasSD { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SD)); } set { } }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("CanRotate")]
+		[Description("Machine can rotate coordinate system (g68/g69)")]
+		public bool CanRotate { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SD)); } set { } }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("HasHold")]
+		[Description("Machine has a hold input")]
+		public bool HasHold { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_HOLD)); } set { } }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("HasResume")]
+		[Description("Machine has a resume input")]
+		public bool HasResume { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_RESUME)); } set { } }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("HasHoldResume")]
+		[Description("Machine has a hold/resume input")]
+		public bool HasHoldResume { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_HOLDRESUME)); } set { } }
+
+		[Category(CATEGORY_INFO)]
+		[DisplayName("HasKill")]
+		[Description("Machine has a kill input")]
+		public bool HasKill { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_KILL)); } set { } }
 
 		[Category(CATEGORY_INFO)]
 		[DisplayName("Info2")]
