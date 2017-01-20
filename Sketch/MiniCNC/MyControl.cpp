@@ -45,43 +45,46 @@ constexpr uint16_t GetInfo1a()
 {
 	return 
 #ifdef SPINDLE_ENABLE_PIN
-		CConfigEeprom::EEPROM_INFO_SPINDLE |
+		CConfigEeprom::HAVE_SPINDLE |
 #ifdef SPINDLE_ANALOGSPEED
-		CConfigEeprom::EEPROM_INFO_SPINDLE_ANALOG |
+		CConfigEeprom::HAVE_SPINDLE_ANALOG |
 #endif
 #ifdef SPINDLE_DIR_PIN
-		CConfigEeprom::EEPROM_INFO_SPINDLE_DIR |
+		CConfigEeprom::HAVE_SPINDLE_DIR |
 #endif
 #endif
 #ifdef COOLANT_PIN
-		CConfigEeprom::EEPROM_INFO_COOLANT |
+		CConfigEeprom::HAVE_COOLANT |
 #endif
 #ifdef PROBE_PIN
-		CConfigEeprom::EEPROM_INFO_PROBE |
+		CConfigEeprom::HAVE_PROBE |
 #endif
 #ifdef KILL_PIN
-		CConfigEeprom::EEPROM_INFO_KILL |
+		CConfigEeprom::HAVE_KILL |
 #endif
 #ifdef HOLD_PIN
-		CConfigEeprom::EEPROM_INFO_HOLD |
+		CConfigEeprom::HAVE_HOLD |
 #endif
 #ifdef RESUME_PIN
-		CConfigEeprom::EEPROM_INFO_RESUME |
+		CConfigEeprom::HAVE_RESUME |
 #endif
 #ifdef HOLDRESUME_PIN
 		CConfigEeprom::EEPROM_INFO_HOLDRESUME |
 #endif
-    0;
+#ifndef REDUCED_SIZE
+		CConfigEeprom::CAN_ROTATE |
+#endif
+		0;
 }
 
 ////////////////////////////////////////////////////////////
 
-static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
+const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash PROGMEM =
 {
 	EPROM_SIGNATURE,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
 	GetInfo1a(),0,
-	0,
+	0,//Control.CMyControl::CoolantInfo(),
 	STEPPERDIRECTION,0xea,0xea,0xea,
 	SPINDLE_MAXSPEED,0xffff,
 	CNC_MAXSPEED,
@@ -110,7 +113,7 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 
 void CMyControl::Init()
 {
-	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, EPROM_SIGNATURE);
+	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &_eepromFlash, EPROM_SIGNATURE);
 
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();

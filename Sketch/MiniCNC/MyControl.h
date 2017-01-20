@@ -62,10 +62,10 @@ protected:
 
 private:
 
+  static const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash;
+
 #ifdef SPINDLE_ENABLE_PIN
-	public: static CConfigEeprom::EEpromInfo1 SpindleInfo() { return CConfigEeprom::EEpromInfo1::EEPROM_INFO_SPINDLE; }
 	#ifdef SPINDLE_ANALOGSPEED
-		#define INFO1_SPINDLE EEpromInfo1::EEPROM_INFO_SPINDLE|EEpromInfo1::EEPROM_INFO_SPINDLE_ANALOG
 		CAnalog8IOControl<SPINDLE_ENABLE_PIN> _spindle;
 		#if SPINDLE_MAXSPEED == 255
 			inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return (uint8_t)level; }
@@ -73,7 +73,6 @@ private:
 			inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return ConvertSpindleSpeedToIO8(CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, maxspindlespeed)),level); }
 		#endif
 	#else
-		#define INFO1_SPINDLE EEpromInfo1::EEPROM_INFO_SPINDLE
 		COnOffIOControl<SPINDLE_ENABLE_PIN, SPINDLE_DIGITAL_ON, SPINDLE_DIGITAL_OFF> _spindle;
 		inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return (uint8_t) level; }
 	#endif
@@ -134,6 +133,8 @@ private:
 	CDummyIOControl _controllerfan;
 	inline bool IsControllerFanTimeout() { return false; }
 #endif
+
+	// constexpr uint32_t CoolantInfo() const  { return _controllerfan.IsConnected() ? CConfigEeprom::EEpromInfo1::HAVE_COOLANT : CConfigEeprom::EEpromInfo1::NONE; }
 
 };
 
