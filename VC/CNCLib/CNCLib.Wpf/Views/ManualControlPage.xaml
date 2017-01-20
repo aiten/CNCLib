@@ -179,11 +179,11 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Extras">
+                <TabItem Header="Extras" Height="22" VerticalAlignment="Top">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
-                            <Button Command="{Binding Tool.SendM03SpindelOnCommand}" Content="Spindel On"/>
-                            <Button Command="{Binding Tool.SendM05SpindelOffCommand}" Content="Spindel Off" />
+                            <Button Command="{Binding Tool.SendM03SpindleOnCommand}" Content="Spindel On"/>
+                            <Button Command="{Binding Tool.SendM05SpindleOffCommand}" Content="Spindel Off" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
                             <Button Command="{Binding Tool.SendM07CoolandOnCommand}" Content="Cooland On"/>

@@ -45,11 +45,12 @@ HardwareSerial& StepperSerial = Serial;
 
 ////////////////////////////////////////////////////////////
 
-static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
+const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash PROGMEM =
 {
 	EPROM_SIGNATURE,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
-	0,0,0,
+	GetInfo1a(),0,
+	0,
 	STEPPERDIRECTION,0,0,0,
 	SPINDLE_MAXSPEED,0,
 	CNC_MAXSPEED,
@@ -78,7 +79,7 @@ static const CConfigEeprom::SCNCEeprom eepromFlash PROGMEM =
 
 void CMyControl::Init()
 {
-	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &eepromFlash, EPROM_SIGNATURE);
+	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &_eepromFlash, EPROM_SIGNATURE);
 
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();
@@ -89,6 +90,11 @@ void CMyControl::Init()
 	super::Init();
 
 	InitFromEeprom();
+
+	_data.Init();
+
+	_data._probe.Init(MASH6050S_INPUTPINMODE);
+	_mykill.Init(MASH6050S_INPUTPINMODE);
 
 /*
 	//CStepper::GetInstance()->SetBacklash(5000);
@@ -115,20 +121,6 @@ void CMyControl::Init()
 #endif
 */
 
-	_controllerfan.Init(255);
-
-	_spindle.Init();
-	_probe.Init();
-	_kill.Init();
-	_coolant.Init();
-
-  	_hold.Init();
-	_resume.Init();
-	_holdresume.Init();
-
-	_probe.Init(MASH6050S_INPUTPINMODE);
-	_kill.Init(MASH6050S_INPUTPINMODE);
-
 	CGCodeParserDefault::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), G1_DEFAULT_FEEDPRATE, STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
 
 #ifdef MYUSE_LCD
@@ -141,15 +133,10 @@ void CMyControl::Init()
 
 void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
-	switch (tool)
+	if (!_data.IOControl(tool, level))
 	{
-		case SpindleCCW:
-		case SpindleCW:		_spindle.On(ConvertSpindleSpeedToIO(level)); _spindleDir.Set(tool == SpindleCCW);	return;
-		case Coolant:		_coolant.Set(level > 0); return;
-		case ControllerFan:	_controllerfan.SetLevel((uint8_t)level); return;
+		super::IOControl(tool, level);
 	}
-
-	super::IOControl(tool, level);
 }
 
 ////////////////////////////////////////////////////////////
@@ -158,10 +145,11 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{
-		case SpindleCW:		{ return _spindle.IsOn(); }
-		case Probe:			{ return _probe.IsOn(); }
-		case Coolant:		{ return _coolant.IsOn(); }
-		case ControllerFan: { return _controllerfan.GetLevel(); }
+		case SpindleCW:
+		case SpindleCCW:	{ return _data._spindle.IsOn(); }
+		case Probe:			{ return _data._probe.IsOn(); }
+		case Coolant:		{ return _data._coolant.IsOn(); }
+		case ControllerFan: { return _data._controllerfan.GetLevel(); }
 	}
 
 	return super::IOControl(tool);
@@ -172,16 +160,14 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 void CMyControl::Kill()
 {
 	super::Kill();
-
-	_spindle.Off();
-	_coolant.Set(false);
+	_data.Kill();
 }
 
 ////////////////////////////////////////////////////////////
 
 bool CMyControl::IsKill()
 {
-	if (_kill.IsOn())
+	if (_mykill.IsOn() || _data.IsKill())
 	{
 #ifdef MYUSE_LCD
 		Lcd.Diagnostic(F("E-Stop"));
@@ -196,10 +182,7 @@ bool CMyControl::IsKill()
 void CMyControl::TimerInterrupt()
 {
 	super::TimerInterrupt();
-
-	_hold.Check();
-	_resume.Check();
-	_holdresume.Check();
+	_data.TimerInterrupt();
 }
 
 ////////////////////////////////////////////////////////////
@@ -207,8 +190,7 @@ void CMyControl::TimerInterrupt()
 void CMyControl::Initialized()
 {
 	super::Initialized();
-
-	_controllerfan.SetLevel(128);
+	_data.Initialized();
 }
 
 ////////////////////////////////////////////////////////////
@@ -219,7 +201,7 @@ void CMyControl::Poll()
 
 	if (IsHold())
 	{
-		if (_resume.IsOn() || _holdresume.IsOn())
+		if (_data._resume.IsOn() || _data._holdresume.IsOn())
 		{
 			Resume();
 #ifdef MYUSE_LCD
@@ -227,7 +209,7 @@ void CMyControl::Poll()
 #endif
 		}
 	}
-	else if (_hold.IsOn() || _holdresume.IsOn())
+	else if (_data._hold.IsOn() || _data._holdresume.IsOn())
 	{
 		Hold();
 #ifdef MYUSE_LCD
@@ -250,18 +232,6 @@ bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMi
 
 bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo)
 {
-	switch (eventtype)
-	{
-		case OnStartEvent:
-			_controllerfan.On();
-			break;
-		case OnIdleEvent:
-			if (IsControllerFanTimeout())
-			{
-				_controllerfan.Off();
-			}
-			break;
-	}
-
+	_data.OnEvent(eventtype, addinfo);
 	return super::OnEvent(eventtype, addinfo);
 }
