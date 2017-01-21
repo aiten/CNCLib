@@ -32,14 +32,6 @@
 
 ////////////////////////////////////////////////////////
 
-#if Generic
-
-#include "Configuration_Generic.h"
-
-#else
-
-////////////////////////////////////////////////////////
-
 #define X_MAXSIZE 150000        // in mm1000_t
 #define Y_MAXSIZE 105000 
 #define Z_MAXSIZE 30000 
@@ -85,14 +77,17 @@
 #define REFMOVE_5_AXIS  255
 #define REFMOVE_6_AXIS  255
 
+#define X_REFERENCEHITVALUE LOW
+#define Y_REFERENCEHITVALUE LOW
+#define Z_REFERENCEHITVALUE LOW
+#define A_REFERENCEHITVALUE LOW
+#define B_REFERENCEHITVALUE LOW
+#define C_REFERENCEHITVALUE LOW
+
 #define MOVEAWAYFROMREF_MM1000 500
 
 #define SPINDLE_ANALOGSPEED
 #define SPINDLE_MAXSPEED	10000			// analog 255
-
-////////////////////////////////////////////////////////
-
-#endif
 
 ////////////////////////////////////////////////////////
 

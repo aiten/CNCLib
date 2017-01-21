@@ -125,9 +125,9 @@ unsigned long CMyLcd::Draw(EDrawType /* draw */)
   }
   	DrawPos(2, 0, CMotionControlBase::GetInstance()->GetPosition(X_AXIS));
 	DrawPos(2, 1, CMotionControlBase::GetInstance()->GetPosition(Y_AXIS));
-	DrawES(17, 0, CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true)));
-	DrawES(18, 0, CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true)));
-	DrawES(19, 0, CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true)));
+	DrawES(17, 0, CStepper::GetInstance()->GetReferenceValue(CStepper::GetInstance()->ToReferenceId(X_AXIS, true)));
+	DrawES(18, 0, CStepper::GetInstance()->GetReferenceValue(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true)));
+	DrawES(19, 0, CStepper::GetInstance()->GetReferenceValue(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true)));
 	DrawPen(4, 2);
 
 	lcd.setCursor(0,3);

@@ -66,12 +66,12 @@
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
 
-#define X_USEREFERENCE	EReverenceType::ReferenceToMin
-#define Y_USEREFERENCE	EReverenceType::ReferenceToMin
-#define Z_USEREFERENCE	EReverenceType::ReferenceToMax
-#define A_USEREFERENCE	EReverenceType::NoReference
-#define B_USEREFERENCE  EReverenceType::NoReference
-#define C_USEREFERENCE  EReverenceType::NoReference
+#define X_referenceHitValue	EReverenceType::ReferenceToMin
+#define Y_referenceHitValue	EReverenceType::ReferenceToMin
+#define Z_referenceHitValue	EReverenceType::ReferenceToMax
+#define A_referenceHitValue	EReverenceType::NoReference
+#define B_referenceHitValue  EReverenceType::NoReference
+#define C_referenceHitValue  EReverenceType::NoReference
 
 #define REFMOVE_1_AXIS  Z_AXIS
 #define REFMOVE_2_AXIS  Y_AXIS

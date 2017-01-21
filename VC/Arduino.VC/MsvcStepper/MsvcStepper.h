@@ -45,8 +45,8 @@ public:
 
 	virtual void Init() override;
 
-	virtual bool  IsReference(uint8_t referenceId) override;
-	virtual bool  IsAnyReference() override { return IsReference(0); };
+	virtual uint8_t  GetReferenceValue(uint8_t referenceId) override;
+	virtual bool  IsAnyReference() override { return GetReferenceValue(0)==_pod._referenceHitValue[0]; };
 
 	void MoveRel3(sdist_t dX, sdist_t dY, sdist_t dZ, steprate_t vMax = 0)	{ MoveRelEx(vMax, X_AXIS, dX, Y_AXIS, dY, Z_AXIS, dZ, -1); }
 	void MoveAbs3(udist_t X, udist_t Y, udist_t Z, steprate_t vMax = 0)		{ MoveAbsEx(vMax, X_AXIS, X, Y_AXIS, Y, Z_AXIS, Z, -1); }

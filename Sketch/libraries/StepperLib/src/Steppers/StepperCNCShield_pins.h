@@ -55,9 +55,6 @@
 
 ////////////////////////////////////////////////////////
 
-#define CNCSHIELD_REF_ON			0
-#define CNCSHIELD_REF_OFF			1
-
 #define CNCSHIELD_ENABLE_PIN		8
 
 #define CNCSHIELD_X_STEP_PIN		2

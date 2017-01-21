@@ -56,10 +56,10 @@
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
 
-#define X_USEREFERENCE	EReverenceType::NoReference
-#define Y_USEREFERENCE	EReverenceType::NoReference
-#define Z_USEREFERENCE	EReverenceType::NoReference
-#define A_USEREFERENCE	EReverenceType::NoReference
+#define X_referenceHitValue	EReverenceType::NoReference
+#define Y_referenceHitValue	EReverenceType::NoReference
+#define Z_referenceHitValue	EReverenceType::NoReference
+#define A_referenceHitValue	EReverenceType::NoReference
 
 #define REFMOVE_1_AXIS	255
 #define REFMOVE_2_AXIS	255

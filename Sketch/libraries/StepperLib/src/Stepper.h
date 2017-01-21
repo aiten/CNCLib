@@ -191,8 +191,8 @@ public:
 	bool IsWaitConditional()									{ return _pod._isWaitConditional; }
 	void SetWaitConditional(bool conditionalwait)				{ _pod._isWaitConditional = conditionalwait; }
 
-	void UseReference(uint8_t referneceid, bool use)			{ _pod._useReference[referneceid] = use; }
-	bool IsUseReference(uint8_t referneceid)					{ return _pod._useReference[referneceid]; }
+	void SetReferenceHitValue(uint8_t referneceid, uint8_t valueHit)	{ _pod._referenceHitValue[referneceid] = valueHit; }
+	bool IsUseReference(uint8_t referneceid)					{ return _pod._referenceHitValue[referneceid] != 255; }
 	bool IsUseReference(axis_t axis, bool toMin)				{ return IsUseReference(ToReferenceId(axis, toMin)); }
 
 	debugvirtula bool MoveReference(axis_t axis, uint8_t referenceid, bool toMin, steprate_t vMax, sdist_t maxdist = 0, sdist_t distToRef = 0, sdist_t distIfRefIsOn = 0);
@@ -245,7 +245,8 @@ public:
 	static uint8_t ToReferenceId(axis_t axis, bool minRef) { return axis * 2 + (minRef ? 0 : 1); }
 
 	virtual bool  IsAnyReference() = 0;
-	virtual bool  IsReference(uint8_t referenceid) = 0;
+	virtual uint8_t  GetReferenceValue(uint8_t referenceid) = 0;
+	bool IsReferenceTest(uint8_t referenceid) { return GetReferenceValue(referenceid) == _pod._referenceHitValue[referenceid]; }
 
 	void SetEnableAll(uint8_t level);				// level 0-255
 	virtual void SetEnable(axis_t axis, uint8_t level, bool force) = 0;
@@ -346,7 +347,7 @@ protected:
 		udist_t			_current[NUM_AXIS];							// update in ISR
 		udist_t			_calculatedpos[NUM_AXIS];					// calculated in advanced (use movement queue)
 
-		bool			_useReference[NUM_AXIS * 2];				// each axis min and max - used in ISR
+		uint8_t			_referenceHitValue[NUM_REFERENCE];			// each axis min and max - used in ISR LOW,HIGH, 255(not used)
 
 		steprate_t		_maxJerkSpeed[NUM_AXIS];					// immediate change of speed without ramp (in junction)
 

@@ -145,30 +145,33 @@ public:
 
 	////////////////////////////////////////////////////////
 
-	virtual bool IsReference(uint8_t referenceid) override
+	virtual uint8_t GetReferenceValue(uint8_t referenceid) override
 	{
 		// min and max is the same pin
 		switch (referenceid)
 		{
 			case 0:
-			case 1: return HALFastdigitalRead(CNCSHIELD_X_MIN_PIN) == CNCSHIELD_REF_ON;
+			case 1: return HALFastdigitalRead(CNCSHIELD_X_MIN_PIN);
 			case 2:
-			case 3: return HALFastdigitalRead(CNCSHIELD_Y_MIN_PIN) == CNCSHIELD_REF_ON;
+			case 3: return HALFastdigitalRead(CNCSHIELD_Y_MIN_PIN);
 			case 4:
-			case 5: return HALFastdigitalRead(CNCSHIELD_Z_MIN_PIN) == CNCSHIELD_REF_ON;
+			case 5: return HALFastdigitalRead(CNCSHIELD_Z_MIN_PIN);
 		}
-		return false;
+		return 255;
 	}
 
 	////////////////////////////////////////////////////////
 
 	virtual bool IsAnyReference() override
 	{
+		uint8_t xref = HALFastdigitalRead(CNCSHIELD_X_MIN_PIN);
+		uint8_t yref = HALFastdigitalRead(CNCSHIELD_Y_MIN_PIN);
+		uint8_t zref = HALFastdigitalRead(CNCSHIELD_Z_MIN_PIN);
 		// min and max is the same pin
 		return
-			((_pod._useReference[0] || _pod._useReference[1]) && HALFastdigitalRead(CNCSHIELD_X_MIN_PIN) == CNCSHIELD_REF_ON) ||
-			((_pod._useReference[2] || _pod._useReference[3]) && HALFastdigitalRead(CNCSHIELD_Y_MIN_PIN) == CNCSHIELD_REF_ON) ||
-			((_pod._useReference[4] || _pod._useReference[5]) && HALFastdigitalRead(CNCSHIELD_Z_MIN_PIN) == CNCSHIELD_REF_ON);
+			_pod._referenceHitValue[0] == xref || _pod._referenceHitValue[1] == xref ||
+			_pod._referenceHitValue[2] == yref || _pod._referenceHitValue[3] == yref ||
+			_pod._referenceHitValue[4] == zref || _pod._referenceHitValue[5] == zref;
 	}
 
 protected:

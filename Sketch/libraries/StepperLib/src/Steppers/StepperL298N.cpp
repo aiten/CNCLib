@@ -41,8 +41,7 @@ static const uint8_t _L298Nfullstep2Pin[4] PROGMEM = { 3, 2, 0, 1 };
 ////////////////////////////////////////////////////////
 
  // reference: difference between microswitch (on=LOW) and optical (on=>HIGH) 
- uint8_t CStepperL298N::_referenceOn = LOW;
-
+ 
 pin_t CStepperL298N::_pin[NUM_AXIS][4] =
 {
 	{ 2, 3, 4, 5 },
@@ -101,8 +100,8 @@ void CStepperL298N::Init(void)
 				if (IsUseEN2(i)) CHAL::pinModeOutput(_pinenable[i][1]);
 			}
 
-			if (ToReferenceId(i, true) != 0)  CHAL::pinMode(_pinenable[i][1], _referenceOn==LOW ? INPUT_PULLUP : INPUT);
-			if (ToReferenceId(i, false) != 0) CHAL::pinMode(_pinenable[i][1], _referenceOn==LOW ? INPUT_PULLUP : INPUT);
+			if (ToReferenceId(i, true) != 0)  CHAL::pinMode(_pinenable[i][1], INPUT_PULLUP);
+			if (ToReferenceId(i, false) != 0) CHAL::pinMode(_pinenable[i][1], INPUT_PULLUP);
 		}
 	}
 }
@@ -224,12 +223,12 @@ void CStepperL298N::SetPhase(axis_t axis)
 
 ////////////////////////////////////////////////////////
 
-bool  CStepperL298N::IsReference(uint8_t referenceid)
+uint8_t CStepperL298N::GetReferenceValue(uint8_t referenceid)
 {
 	if (_pinRef[referenceid] != 0)
-		return CHAL::digitalRead(_pinRef[referenceid]) == _referenceOn;
+		return CHAL::digitalRead(_pinRef[referenceid]);
 
-	return false;
+	return 255;
 }
 
 ////////////////////////////////////////////////////////
@@ -238,8 +237,8 @@ bool  CStepperL298N::IsAnyReference()
 {
 	for (axis_t axis = 0; axis < NUM_AXIS; axis++)
 	{
-		if ((_pod._useReference[axis * 2] && _pinRef[axis * 2] && CHAL::digitalRead(_pinRef[axis * 2]) == _referenceOn) ||
-			(_pod._useReference[axis * 2 + 1] && _pinRef[axis * 2 + 1] && CHAL::digitalRead(_pinRef[axis * 2 + 1]) == _referenceOn))
+		if ((_pinRef[axis * 2]		&& CHAL::digitalRead(_pinRef[axis * 2])		== _pod._referenceHitValue[axis * 2]) ||
+			(_pinRef[axis * 2 + 1]	&& CHAL::digitalRead(_pinRef[axis * 2 + 1]) == _pod._referenceHitValue[axis * 2 + 1]))
 			return true;
 	}
 	return false;

@@ -41,8 +41,8 @@ public:
 
 public:
 
-	virtual bool IsAnyReference() override							{ return IsReference(0); };
-	virtual bool IsReference(uint8_t referenceid) override;
+	virtual bool IsAnyReference() override							{ return GetReferenceValue(0) == HIGH; };
+	virtual uint8_t GetReferenceValue(uint8_t referenceid) override;
 
 	void SetFullStepMode(axis_t axis, bool fullstepMode)			{ _fullStepMode[axis] = fullstepMode; };
 

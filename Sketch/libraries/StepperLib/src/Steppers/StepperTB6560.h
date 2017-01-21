@@ -203,12 +203,12 @@ public:
 		return false;
 		/*
 		return
-		(_useReference[0] && HALFastdigitalRead(TB6560_X_MIN_PIN) == TB6560_REF_ON) ||
-		(_useReference[1] && HALFastdigitalRead(TB6560_X_MAX_PIN) == TB6560_REF_ON) ||
-		(_useReference[2] && HALFastdigitalRead(TB6560_Y_MIN_PIN) == TB6560_REF_ON) ||
-		(_useReference[3] && HALFastdigitalRead(TB6560_Y_MAX_PIN) == TB6560_REF_ON) ||
-		(_useReference[4] && HALFastdigitalRead(TB6560_Z_MIN_PIN) == TB6560_REF_ON) ||
-		(_useReference[5] && HALFastdigitalRead(TB6560_Z_MAX_PIN) == TB6560_REF_ON);
+		(_referenceHitValue[0] && HALFastdigitalRead(TB6560_X_MIN_PIN) == TB6560_REF_ON) ||
+		(_referenceHitValue[1] && HALFastdigitalRead(TB6560_X_MAX_PIN) == TB6560_REF_ON) ||
+		(_referenceHitValue[2] && HALFastdigitalRead(TB6560_Y_MIN_PIN) == TB6560_REF_ON) ||
+		(_referenceHitValue[3] && HALFastdigitalRead(TB6560_Y_MAX_PIN) == TB6560_REF_ON) ||
+		(_referenceHitValue[4] && HALFastdigitalRead(TB6560_Z_MIN_PIN) == TB6560_REF_ON) ||
+		(_referenceHitValue[5] && HALFastdigitalRead(TB6560_Z_MAX_PIN) == TB6560_REF_ON);
 		*/
 	}
 

@@ -193,16 +193,16 @@ public:
 
 	////////////////////////////////////////////////////////
 
-	virtual bool IsReference(uint8_t referenceid) override
+	virtual uint8_t GetReferenceValue(uint8_t referenceid) override
 	{
 		switch (referenceid)
 		{
-			case 0: return HALFastdigitalRead(RAMPS14_X_MIN_PIN) == RAMPS14_REF_ON;
-			case 1: return HALFastdigitalRead(RAMPS14_X_MAX_PIN) == RAMPS14_REF_ON;
-			case 2: return HALFastdigitalRead(RAMPS14_Y_MIN_PIN) == RAMPS14_REF_ON;
-			case 3: return HALFastdigitalRead(RAMPS14_Y_MAX_PIN) == RAMPS14_REF_ON;
-			case 4: return HALFastdigitalRead(RAMPS14_Z_MIN_PIN) == RAMPS14_REF_ON;
-			case 5: return HALFastdigitalRead(RAMPS14_Z_MAX_PIN) == RAMPS14_REF_ON;
+			case 0: return HALFastdigitalRead(RAMPS14_X_MIN_PIN);
+			case 1: return HALFastdigitalRead(RAMPS14_X_MAX_PIN);
+			case 2: return HALFastdigitalRead(RAMPS14_Y_MIN_PIN);
+			case 3: return HALFastdigitalRead(RAMPS14_Y_MAX_PIN);
+			case 4: return HALFastdigitalRead(RAMPS14_Z_MIN_PIN);
+			case 5: return HALFastdigitalRead(RAMPS14_Z_MAX_PIN);
 				/* No reference for E0 & E1
 				case 6: return HALFastdigitalRead(RAMPS14_E0_MIN_PIN)==RAMPS14_REF_ON;
 				case 7: return HALFastdigitalRead(RAMPS14_E0_MAX_PIN)==RAMPS14_REF_ON;
@@ -210,7 +210,7 @@ public:
 				case 9: return HALFastdigitalRead(RAMPS14_E1_MAX_PIN)==RAMPS14_REF_ON;
 				*/
 		}
-		return false;
+		return 255;
 	}
 
 	////////////////////////////////////////////////////////
@@ -218,12 +218,12 @@ public:
 	virtual bool IsAnyReference() override
 	{
 		return
-			(_pod._useReference[0] && HALFastdigitalRead(RAMPS14_X_MIN_PIN) == RAMPS14_REF_ON) ||
-			(_pod._useReference[1] && HALFastdigitalRead(RAMPS14_X_MAX_PIN) == RAMPS14_REF_ON) ||
-			(_pod._useReference[2] && HALFastdigitalRead(RAMPS14_Y_MIN_PIN) == RAMPS14_REF_ON) ||
-			(_pod._useReference[3] && HALFastdigitalRead(RAMPS14_Y_MAX_PIN) == RAMPS14_REF_ON) ||
-			(_pod._useReference[4] && HALFastdigitalRead(RAMPS14_Z_MIN_PIN) == RAMPS14_REF_ON) ||
-			(_pod._useReference[5] && HALFastdigitalRead(RAMPS14_Z_MAX_PIN) == RAMPS14_REF_ON);
+			_pod._referenceHitValue[0] == HALFastdigitalRead(RAMPS14_X_MIN_PIN) ||
+			_pod._referenceHitValue[1] == HALFastdigitalRead(RAMPS14_X_MAX_PIN) ||
+			_pod._referenceHitValue[2] == HALFastdigitalRead(RAMPS14_Y_MIN_PIN) ||
+			_pod._referenceHitValue[3] == HALFastdigitalRead(RAMPS14_Y_MAX_PIN) ||
+			_pod._referenceHitValue[4] == HALFastdigitalRead(RAMPS14_Z_MIN_PIN) ||
+			_pod._referenceHitValue[5] == HALFastdigitalRead(RAMPS14_Z_MAX_PIN);
 	}
 };
 

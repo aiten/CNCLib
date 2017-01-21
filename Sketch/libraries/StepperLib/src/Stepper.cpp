@@ -59,6 +59,8 @@ void CStepper::InitMemVar()
 	for (i = 0; i < NUM_AXIS; i++)	_pod._limitMax[i] = 0x00ffffff;
 #endif
 
+	for (i = 0; i < NUM_REFERENCE; i++) { _pod._referenceHitValue[i] = 255; }
+
 	_pod._checkReference = true;
 	_pod._timerbacklash = (timer_t)-1;
 
@@ -2090,7 +2092,7 @@ bool CStepper::MoveUntil(uint8_t referenceId, bool referencevalue, unsigned shor
 
 	while (IsBusy())
 	{
-		if (IsReference(referenceId) == referencevalue)
+		if (IsReferenceTest(referenceId) == referencevalue)
 		{
 			if (time == 0) time = millis() + stabletime;		// allow stabletime == 0
 			if (millis() >= time)
@@ -2112,7 +2114,7 @@ bool CStepper::MoveUntil(uint8_t referenceId, bool referencevalue, unsigned shor
 
 bool CStepper::MoveAwayFromReference(axis_t axis, uint8_t referenceid, sdist_t dist, steprate_t vMax)
 {
-	if (IsReference(referenceid))
+	if (IsReferenceTest(referenceid))
 	{
 		Info(MESSAGE_STEPPER_IsReferenceIsOn);
 		CPushValue<bool> OldCheckForReference(&_pod._checkReference, false);
@@ -2122,7 +2124,7 @@ bool CStepper::MoveAwayFromReference(axis_t axis, uint8_t referenceid, sdist_t d
 			return false;
 	}
 
-	return !IsReference(referenceid);
+	return !IsReferenceTest(referenceid);
 }
 
 ////////////////////////////////////////////////////////
@@ -2197,11 +2199,9 @@ bool  CStepper::IsAnyReference()
 {
 	// slow version of IsAnyReference => override and do not call base
 
-	for (axis_t axis = 0; axis < NUM_AXIS; axis++)
+	for (axis_t ref = 0; ref < NUM_REFERENCE; ref++)
 	{
-		uint8_t referenceidmin = ToReferenceId(axis, true);
-		uint8_t referenceidmax = ToReferenceId(axis, false);
-		if ((_pod._useReference[referenceidmin] && IsReference(referenceidmin)) || (_pod._useReference[referenceidmax] && IsReference(referenceidmax)))
+		if (_pod._referenceHitValue[ref] == GetReferenceValue(ref))
 			return true;
 	}
 	return false;
@@ -2416,12 +2416,12 @@ void CStepper::Dump(uint8_t options)
 
 	if (options&DumpState)
 	{
-		for (i = 0; i < sizeof(_pod._useReference); i++)
+		for (i = 0; i < sizeof(_pod._referenceHitValue); i++)
 		{
-			StepperSerial.print(i == 0 ? F("ES") : F(":ES")); StepperSerial.print(i); StepperSerial.print(F("=")); StepperSerial.print(IsReference(i));
+			StepperSerial.print(i == 0 ? F("ES") : F(":ES")); StepperSerial.print(i); StepperSerial.print(F("=")); StepperSerial.print(GetReferenceValue(i));
 		}
 		StepperSerial.print(F(":ANY=")); StepperSerial.print(IsAnyReference());
-		DumpArray<bool, NUM_AXIS * 2>(F(":UseReference"), _pod._useReference, false);
+		DumpArray<uint8_t, NUM_AXIS * 2>(F(":UseReference"), _pod._referenceHitValue, false);
 
 		for (i = 0; i < NUM_AXIS; i++)
 		{

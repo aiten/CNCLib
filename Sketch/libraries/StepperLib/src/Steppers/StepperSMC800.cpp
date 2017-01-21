@@ -245,9 +245,9 @@ void CStepperSMC800::SetPhase(axis_t axis)
 
 ////////////////////////////////////////////////////////
 
-bool  CStepperSMC800::IsReference(uint8_t /*referenceid*/)
+uint8_t CStepperSMC800::GetReferenceValue(uint8_t /*referenceid*/)
 {
-	return HALFastdigitalRead(SMC800_REFININ) == HIGH;
+	return HALFastdigitalRead(SMC800_REFININ);
 }
 
 ////////////////////////////////////////////////////////

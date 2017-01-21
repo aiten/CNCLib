@@ -39,7 +39,6 @@ protected:
 	static pin_t _pin[NUM_AXIS][4];
 	static pin_t _pinenable[NUM_AXIS][2];
 	static pin_t _pinRef[NUM_AXIS*2];
-	static uint8_t _referenceOn;
 
 protected:
 
@@ -50,7 +49,7 @@ protected:
 public:
 
 	virtual bool IsAnyReference() override;
-	virtual bool IsReference(uint8_t referenceid) override;
+	virtual uint8_t GetReferenceValue(uint8_t referenceid) override;
 
 	// Set before Init()
 	void SetPin(axis_t axis, pin_t in1, pin_t in2, pin_t in3, pin_t in4) { _pin[axis][0] = in1;  _pin[axis][1] = in2; _pin[axis][2] = in3; _pin[axis][3] = in4; }

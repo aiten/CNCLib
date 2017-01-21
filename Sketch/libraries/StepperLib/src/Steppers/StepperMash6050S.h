@@ -159,16 +159,16 @@ public:
 
 	////////////////////////////////////////////////////////
 
-	virtual bool IsReference(uint8_t referenceid) override
+	virtual uint8_t GetReferenceValue(uint8_t referenceid) override
 	{
 		switch (referenceid)
 		{
-			case 0: return HALFastdigitalRead(MASH6050S_X_MIN_PIN) == MASH6050S_REF_ON;
-			case 2: return HALFastdigitalRead(MASH6050S_Y_MIN_PIN) == MASH6050S_REF_ON;
-			case 5: return HALFastdigitalRead(MASH6050S_Z_MAX_PIN) == MASH6050S_REF_ON;
-			case 6: return HALFastdigitalRead(MASH6050S_C_MIN_PIN) == MASH6050S_REF_ON;
+			case 0: return HALFastdigitalRead(MASH6050S_X_MIN_PIN);
+			case 2: return HALFastdigitalRead(MASH6050S_Y_MIN_PIN);
+			case 5: return HALFastdigitalRead(MASH6050S_Z_MAX_PIN);
+			case 6: return HALFastdigitalRead(MASH6050S_C_MIN_PIN);
 		}
-		return false;
+		return 255;
 	}
 
 	////////////////////////////////////////////////////////
@@ -176,10 +176,10 @@ public:
 	virtual bool IsAnyReference() override
 	{
 		return
-			(_pod._useReference[0] && HALFastdigitalRead(MASH6050S_X_MIN_PIN) == MASH6050S_REF_ON) ||
-			(_pod._useReference[2] && HALFastdigitalRead(MASH6050S_Y_MIN_PIN) == MASH6050S_REF_ON) ||
-			(_pod._useReference[5] && HALFastdigitalRead(MASH6050S_Z_MAX_PIN) == MASH6050S_REF_ON) ||
-			(_pod._useReference[6] && HALFastdigitalRead(MASH6050S_C_MIN_PIN) == MASH6050S_REF_ON);
+			_pod._referenceHitValue[0] == HALFastdigitalRead(MASH6050S_X_MIN_PIN) ||
+			_pod._referenceHitValue[2] == HALFastdigitalRead(MASH6050S_Y_MIN_PIN) ||
+			_pod._referenceHitValue[5] == HALFastdigitalRead(MASH6050S_Z_MAX_PIN) ||
+			_pod._referenceHitValue[6] == HALFastdigitalRead(MASH6050S_C_MIN_PIN);
 	}
 
 	////////////////////////////////////////////////////////

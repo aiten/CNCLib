@@ -140,7 +140,7 @@ public:
 			uint8_t		referenceType;		// EReverenceType
 			uint8_t		refmoveSequence;
 			
-			uint8_t		dummy2;
+			uint8_t		referenceValue;
 			uint8_t		dummy3;
 
 #ifndef REDUCED_SIZE

@@ -412,8 +412,8 @@ bool CU8GLcd::DrawLoopDebug(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 		Print(DrawPos(i,CMotionControlBase::GetInstance()->ToMm1000(i, pos),tmp,6));
 		Print(F(" "));
 
-		Print(CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(i, true)) ? '1' : '0');
-		Print(CStepper::GetInstance()->IsReference(CStepper::GetInstance()->ToReferenceId(i, false)) ? '1' : '0');
+		Print(CStepper::GetInstance()->GetReferenceValue(CStepper::GetInstance()->ToReferenceId(i, true)) ? '1' : '0');
+		Print(CStepper::GetInstance()->GetReferenceValue(CStepper::GetInstance()->ToReferenceId(i, false)) ? '1' : '0');
 
 		Print((CStepper::GetInstance()->GetLastDirection()&(1 << i)) ? '+' : '-');
 	}

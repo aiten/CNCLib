@@ -72,7 +72,7 @@ protected:
 
 public:
 
-	virtual bool IsReference(uint8_t referenceid) override;
+	virtual uint8_t GetReferenceValue(uint8_t referenceid) override;
 	virtual bool IsAnyReference() override;
 
     protected:
