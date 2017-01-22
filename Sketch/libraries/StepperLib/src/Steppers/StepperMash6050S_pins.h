@@ -29,8 +29,8 @@
 
 ////////////////////////////////////////////////////////
 
-#define MASH6050S_REF_ON			0
-#define MASH6050S_REF_OFF			1
+//#define MASH6050S_REF_ON			0
+//#define MASH6050S_REF_OFF			1
 
 #if defined(__AVR_ATmega2560__) || defined(__SAM3X8E__) || defined(__SAMD21G18A__)
 

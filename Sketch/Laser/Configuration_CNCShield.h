@@ -25,7 +25,6 @@
 
 ////////////////////////////////////////////////////////
 
-#define MYNUM_AXIS 3
 #define CNCSHIELD_NUM_AXIS MYNUM_AXIS
 //#define CNCSHIELD_GBRL09
 

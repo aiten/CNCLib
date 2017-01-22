@@ -19,9 +19,6 @@
 
 #pragma once
 
-////////////////////////////////////////////////////////
-
-#define MYUSE_LCD
 
 ////////////////////////////////////////////////////////
 
@@ -53,6 +50,10 @@
 
 ////////////////////////////////////////////////////////
 
+#define MYUSE_LCD
+
+////////////////////////////////////////////////////////
+
 #define X_MAXSIZE 130000				// in mm1000_t
 #define Y_MAXSIZE 45000 
 #define Z_MAXSIZE 81000 
@@ -64,8 +65,6 @@
 
 #define STEPPERDIRECTION 0
 //#define STEPPERDIRECTION (1<<X_AXIS) + (1<<Y_AXIS)		// set bit to invert direction of each axis
-
-////////////////////////////////////////////////////////
 
 #define STEPSPERROTATION	200
 #define MICROSTEPPING		(16*SPEEDFACTOR)
@@ -87,12 +86,12 @@
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
 
-#define X_referenceHitValue	EReverenceType::ReferenceToMin
-#define Y_referenceHitValue	EReverenceType::ReferenceToMin
-#define Z_referenceHitValue	EReverenceType::ReferenceToMax
-#define A_referenceHitValue	EReverenceType::NoReference
-#define B_referenceHitValue  EReverenceType::NoReference
-#define C_referenceHitValue  EReverenceType::NoReference
+#define X_USEREFERENCE	EReverenceType::ReferenceToMin
+#define Y_USEREFERENCE	EReverenceType::ReferenceToMin
+#define Z_USEREFERENCE	EReverenceType::ReferenceToMax
+#define A_USEREFERENCE	EReverenceType::NoReference
+#define B_USEREFERENCE	EReverenceType::NoReference
+#define C_USEREFERENCE	EReverenceType::NoReference
 
 #define REFMOVE_1_AXIS  Z_AXIS
 #define REFMOVE_2_AXIS  Y_AXIS
@@ -100,6 +99,13 @@
 #define REFMOVE_4_AXIS  255
 #define REFMOVE_5_AXIS  255
 #define REFMOVE_6_AXIS  255
+
+#define X_REFERENCEHITVALUE LOW
+#define Y_REFERENCEHITVALUE LOW
+#define Z_REFERENCEHITVALUE LOW
+#define A_REFERENCEHITVALUE LOW
+#define B_REFERENCEHITVALUE LOW
+#define C_REFERENCEHITVALUE LOW
 
 #define MOVEAWAYFROMREF_MM1000 125
 

@@ -59,17 +59,17 @@ const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash PROGMEM =
 	MOVEAWAYFROMREF_MM1000,
 	X_STEPSPERMM/1000.0,
 	{
-		{ X_MAXSIZE,     X_referenceHitValue, REFMOVE_1_AXIS },
-		{ Y_MAXSIZE,     Y_referenceHitValue, REFMOVE_2_AXIS },
-		{ Z_MAXSIZE,     Z_referenceHitValue, REFMOVE_3_AXIS },
+		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS,  X_REFERENCEHITVALUE },
+		{ Y_MAXSIZE,     Y_USEREFERENCE, REFMOVE_2_AXIS,  Y_REFERENCEHITVALUE },
+		{ Z_MAXSIZE,     Z_USEREFERENCE, REFMOVE_3_AXIS,  Z_REFERENCEHITVALUE },
 #if NUM_AXIS > 3
-		{ A_MAXSIZE,     A_referenceHitValue, REFMOVE_4_AXIS },
+		{ A_MAXSIZE,     A_USEREFERENCE, REFMOVE_4_AXIS,  A_REFERENCEHITVALUE },
 #endif
 #if NUM_AXIS > 4
-		{ B_MAXSIZE,     B_referenceHitValue, REFMOVE_5_AXIS },
+		{ B_MAXSIZE,     B_USEREFERENCE, REFMOVE_5_AXIS,  B_REFERENCEHITVALUE },
 #endif
 #if NUM_AXIS > 5
-		{ C_MAXSIZE,     C_referenceHitValue, REFMOVE_6_AXIS },
+		{ C_MAXSIZE,     C_USEREFERENCE, REFMOVE_6_AXIS,  C_REFERENCEHITVALUE },
 #endif
 	}
 };
@@ -159,7 +159,6 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 void CMyControl::Kill()
 {
 	super::Kill();
-
 	_data.Kill();
 	_laserOnOff.Off();
 }

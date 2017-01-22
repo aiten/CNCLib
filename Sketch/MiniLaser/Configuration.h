@@ -29,10 +29,16 @@
 
 ////////////////////////////////////////////////////////
 
+#define MYNUM_AXIS 2
+
+////////////////////////////////////////////////////////
+
 #define X_MAXSIZE 36000				// in mm1000_t
 #define Y_MAXSIZE 36000 
 #define Z_MAXSIZE 10000 
 #define A_MAXSIZE 50000 
+#define B_MAXSIZE 360000 
+#define C_MAXSIZE 360000 
 
 ////////////////////////////////////////////////////////
 
@@ -46,25 +52,38 @@
 #define Y_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 #define Z_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 #define A_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
+#define B_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
+#define C_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED 20000 // 27000        // steps/sec
+#define CNC_MAXSPEED 20000         // steps/sec
 #define CNC_ACC  500
 #define CNC_DEC  550
 
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
 
-#define X_referenceHitValue	EReverenceType::NoReference
-#define Y_referenceHitValue	EReverenceType::NoReference
-#define Z_referenceHitValue	EReverenceType::NoReference
-#define A_referenceHitValue	EReverenceType::NoReference
+#define X_USEREFERENCE  EReverenceType::NoReference
+#define Y_USEREFERENCE  EReverenceType::NoReference
+#define Z_USEREFERENCE  EReverenceType::NoReference
+#define A_USEREFERENCE  EReverenceType::NoReference
+#define B_USEREFERENCE  EReverenceType::NoReference
+#define C_USEREFERENCE  EReverenceType::NoReference
 
-#define REFMOVE_1_AXIS	255
-#define REFMOVE_2_AXIS	255
-#define REFMOVE_3_AXIS	255
-#define REFMOVE_4_AXIS	255
+#define REFMOVE_1_AXIS  255
+#define REFMOVE_2_AXIS  255
+#define REFMOVE_3_AXIS  255
+#define REFMOVE_4_AXIS  255
+#define REFMOVE_5_AXIS  255
+#define REFMOVE_6_AXIS  255
+
+#define X_REFERENCEHITVALUE LOW
+#define Y_REFERENCEHITVALUE LOW
+#define Z_REFERENCEHITVALUE LOW
+#define A_REFERENCEHITVALUE LOW
+#define B_REFERENCEHITVALUE LOW
+#define C_REFERENCEHITVALUE LOW
 
 #define MOVEAWAYFROMREF_MM1000 250
 

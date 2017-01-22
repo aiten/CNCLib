@@ -29,8 +29,8 @@
 
 ////////////////////////////////////////////////////////
 
-#define LCD_NUMAXIS  2
 #define MYNUM_AXIS 2
+#define LCD_NUMAXIS  MYNUM_AXIS
 #define MYUSE_LCD
 
 ////////////////////////////////////////////////////////
@@ -70,12 +70,13 @@
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
 
-#define X_referenceHitValue	EReverenceType::ReferenceToMin
-#define Y_referenceHitValue	EReverenceType::ReferenceToMax
-#define Z_referenceHitValue	EReverenceType::NoReference
-#define A_referenceHitValue	EReverenceType::NoReference
-#define B_referenceHitValue	EReverenceType::NoReference
-#define C_referenceHitValue	EReverenceType::NoReference
+#define X_USEREFERENCE	EReverenceType::ReferenceToMin
+#define Y_USEREFERENCE	EReverenceType::ReferenceToMax
+#define Z_USEREFERENCE	EReverenceType::NoReference
+#define A_USEREFERENCE	EReverenceType::NoReference
+#define B_USEREFERENCE	EReverenceType::NoReference
+#define C_USEREFERENCE	EReverenceType::NoReference
+
 
 #define REFMOVE_1_AXIS  X_AXIS
 #define REFMOVE_2_AXIS  Y_AXIS
@@ -83,6 +84,13 @@
 #define REFMOVE_4_AXIS  255
 #define REFMOVE_5_AXIS  255
 #define REFMOVE_6_AXIS  255
+
+#define X_REFERENCEHITVALUE LOW
+#define Y_REFERENCEHITVALUE LOW
+#define Z_REFERENCEHITVALUE LOW
+#define A_REFERENCEHITVALUE LOW
+#define B_REFERENCEHITVALUE LOW
+#define C_REFERENCEHITVALUE LOW
 
 #define MOVEAWAYFROMREF_MM1000 250
 

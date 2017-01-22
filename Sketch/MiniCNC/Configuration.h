@@ -32,6 +32,10 @@
 
 ////////////////////////////////////////////////////////
 
+#define MYNUM_AXIS 3
+
+////////////////////////////////////////////////////////
+
 #define X_MAXSIZE 150000        // in mm1000_t
 #define Y_MAXSIZE 105000 
 #define Z_MAXSIZE 30000 
@@ -43,9 +47,9 @@
 
 #define STEPPERDIRECTION 0		// set bit to invert direction of each axis
 
-#define STEPSPERROTATION  200
-#define MICROSTEPPING   16
-#define SCREWLEAD     4.0
+#define STEPSPERROTATION	200
+#define MICROSTEPPING		16
+#define SCREWLEAD			4.0
 
 #define X_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 #define Y_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
@@ -63,12 +67,12 @@
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
 
-#define X_USEREFERENCE  EReverenceType::NoReference
-#define Y_USEREFERENCE  EReverenceType::NoReference
-#define Z_USEREFERENCE  EReverenceType::NoReference
-#define A_USEREFERENCE  EReverenceType::NoReference
-#define B_USEREFERENCE  EReverenceType::NoReference
-#define C_USEREFERENCE  EReverenceType::NoReference
+#define X_USEREFERENCE	EReverenceType::NoReference
+#define Y_USEREFERENCE	EReverenceType::NoReference
+#define Z_USEREFERENCE	EReverenceType::NoReference
+#define A_USEREFERENCE	EReverenceType::NoReference
+#define B_USEREFERENCE	EReverenceType::NoReference
+#define C_USEREFERENCE	EReverenceType::NoReference
 
 #define REFMOVE_1_AXIS  255
 #define REFMOVE_2_AXIS  255
