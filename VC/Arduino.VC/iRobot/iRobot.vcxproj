@@ -85,7 +85,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sketch\iRobot\Configuration_iRobot.h" />
+    <ClInclude Include="..\..\..\Sketch\iRobot\Configuration.h" />
     <ClInclude Include="..\..\..\Sketch\iRobot\MyControl.h" />
     <ClInclude Include="..\..\..\Sketch\iRobot\MyLCD.h" />
     <ClInclude Include="..\..\..\Sketch\iRobot\MyMenu.h" />

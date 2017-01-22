@@ -19,9 +19,6 @@
     <ClInclude Include="..\..\..\Sketch\iRobot\MyControl.h">
       <Filter>iRobot</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\iRobot\Configuration_iRobot.h">
-      <Filter>iRobot</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\iRobot\StepperServo.h">
       <Filter>iRobot</Filter>
     </ClInclude>
@@ -35,6 +32,9 @@
       <Filter>iRobot</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\iRobot\MyMenu.h">
+      <Filter>iRobot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\iRobot\Configuration.h">
       <Filter>iRobot</Filter>
     </ClInclude>
   </ItemGroup>
