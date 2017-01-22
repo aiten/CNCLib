@@ -64,8 +64,25 @@ public:
 	void Init(unsigned short eepromsizesize, const void* defaulteeprom, uint32_t eepromID);
 
 	static uint32_t GetConfigU32(eepromofs_t);
-	static uint8_t  GetConfigU8(eepromofs_t ofs )  { return (uint8_t)GetConfigU32(ofs); };
+#if defined(__SAMD21G18A__) || defined(_MSC_VER)
+	static uint8_t  GetConfigU8(eepromofs_t ofs)
+	{
+		// must be dword alligned
+		eepromofs_t diff = ofs % 4;
+		uint32_t val = GetConfigU32(ofs - diff);
+		return (val >> (diff * 8)) & 0xff;
+	};
+	static uint16_t  GetConfigU16(eepromofs_t ofs)
+	{
+		// must be dword alligned
+		eepromofs_t diff = ofs % 4;
+		uint32_t val = GetConfigU32(ofs-diff);
+		return (val >> (diff * 8)) & 0xffff;
+	}
+#else	
+	static uint8_t  GetConfigU8(eepromofs_t ofs) { return (uint8_t)GetConfigU32(ofs); };
 	static uint16_t  GetConfigU16(eepromofs_t ofs) { return (uint16_t)GetConfigU32(ofs); };
+#endif
 
 	static float GetConfigFloat(eepromofs_t);
 

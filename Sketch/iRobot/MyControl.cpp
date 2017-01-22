@@ -43,17 +43,58 @@ CMyControl Control;
 CGCodeTools GCodeTools;
 
 CMyMotionControl MotionControl;
+CConfigEeprom Eprom;
+
 HardwareSerial& StepperSerial = Serial;
+const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash PROGMEM =
+{
+	EPROM_SIGNATURE,
+	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
+	GetInfo1a(),0,
+	0,
+	STEPPERDIRECTION,0,0,0,
+	SPINDLE_MAXSPEED,0,
+	CNC_MAXSPEED,
+	CNC_ACC,
+	CNC_DEC,
+	STEPRATERATE_REFMOVE,
+	MOVEAWAYFROMREF_MM1000,
+	X_STEPSPERMM/1000.0,
+	{
+		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS,  X_REFERENCEHITVALUE },
+		{ Y_MAXSIZE,     Y_USEREFERENCE, REFMOVE_2_AXIS,  Y_REFERENCEHITVALUE },
+		{ Z_MAXSIZE,     Z_USEREFERENCE, REFMOVE_3_AXIS,  Z_REFERENCEHITVALUE },
+#if NUM_AXIS > 3
+		{ A_MAXSIZE,     A_USEREFERENCE, REFMOVE_4_AXIS,  A_REFERENCEHITVALUE },
+#endif
+#if NUM_AXIS > 4
+		{ B_MAXSIZE,     B_USEREFERENCE, REFMOVE_5_AXIS,  B_REFERENCEHITVALUE },
+#endif
+#if NUM_AXIS > 5
+		{ C_MAXSIZE,     C_USEREFERENCE, REFMOVE_6_AXIS,  C_REFERENCEHITVALUE },
+#endif
+	}
+};
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Init()
 {
+	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &_eepromFlash, EPROM_SIGNATURE);
+
+#ifdef DISABLELEDBLINK
+	DisableBlinkLed();
+#endif
+
 	StepperSerial.println(MESSAGE_MYCONTROL_Starting);
 
-	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
-
 	super::Init();
+
+	InitFromEeprom();
+
+	_data.Init();
+
+	CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
 
 	CStepper::GetInstance()->SetLimitMin(X_AXIS, MIN_LIMIT);  // ms
 	CStepper::GetInstance()->SetLimitMin(Y_AXIS, MIN_LIMIT);
@@ -68,19 +109,27 @@ void CMyControl::Init()
 	CGCodeParserBase::SetG0FeedRate(-STEPRATETOFEEDRATE(30000));
 	CGCodeParserBase::SetG1FeedRate(STEPRATETOFEEDRATE(10000));
 
-	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED,CNC_ACC,CNC_DEC);
-	_killLcd.Init();
+/*
 
+	CStepper::GetInstance()->SetDefaultMaxSpeed(CNC_MAXSPEED,CNC_ACC,CNC_DEC);
+*/
+//	CGCodeParserDefault::InitAndSetFeedRate(-STEPRATETOFEEDRATE(GO_DEFAULT_STEPRATE), G1_DEFAULT_FEEDPRATE, STEPRATETOFEEDRATE(G1_DEFAULT_MAXSTEPRATE));
+
+#ifdef MYUSE_LCD
 	InitSD(SD_ENABLE_PIN);
+#endif
+
 }
 
 ////////////////////////////////////////////////////////////
 
 bool CMyControl::IsKill()
 {
-	if (_killLcd.IsOn())
+	if (_data.IsKill())
 	{
+#ifdef MYUSE_LCD
 		Lcd.Diagnostic(F("LCD E-Stop"));
+#endif
 		return true;
 	}
 	return false;

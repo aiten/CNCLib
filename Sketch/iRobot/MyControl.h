@@ -25,8 +25,12 @@
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
 #include <ReadPinIOControl.h>
+#include <DummyIOControl.h>
+#include <ConfigEeprom.h>
 
-#include "Configuration_iRobot.h"
+#include "Configuration.h"
+
+#include <ControlImplementation.h>
 
 ////////////////////////////////////////////////////////
 
@@ -52,7 +56,9 @@ protected:
 
 private:
 
-	CReadPinIOControl<LCD_KILL_PIN, KILL_ON> _killLcd;
+	static const CConfigEeprom::SCNCEeprom _eepromFlash;
+
+	ControlData _data;
 };
 
 ////////////////////////////////////////////////////////

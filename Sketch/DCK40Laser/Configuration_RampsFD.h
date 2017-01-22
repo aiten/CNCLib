@@ -74,8 +74,6 @@
 #define LCD_GROW 64
 #define LCD_GCOL 128
 
-#define LCD_NUMAXIS  2
-
 #define ROTARY_ENC           CAT(BOARDNAME,_LCD_ROTARY_ENC)
 #define ROTARY_ENC_ON    CAT(BOARDNAME,_LCD_ROTARY_ENC_ON)
 

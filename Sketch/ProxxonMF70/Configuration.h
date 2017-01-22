@@ -66,9 +66,9 @@
 #define STEPPERDIRECTION 0
 //#define STEPPERDIRECTION (1<<X_AXIS) + (1<<Y_AXIS)		// set bit to invert direction of each axis
 
-#define STEPSPERROTATION	200
-#define MICROSTEPPING		(16*SPEEDFACTOR)
-#define SCREWLEAD			1.0
+#define STEPSPERROTATION  200
+#define MICROSTEPPING     (16*SPEEDFACTOR)
+#define SCREWLEAD         1.0
 
 #define X_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
 #define Y_STEPSPERMM ((STEPSPERROTATION*MICROSTEPPING)/SCREWLEAD)
@@ -79,7 +79,7 @@
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED (28000*SPEEDFACTOR)        // steps/sec
+#define CNC_MAXSPEED (((steprate_t)28000)*SPEEDFACTOR)        // steps/sec
 #define CNC_ACC  (350*SPEEDFACTOR_SQT)
 #define CNC_DEC  (400*SPEEDFACTOR_SQT)
 

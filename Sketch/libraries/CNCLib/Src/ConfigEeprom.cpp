@@ -52,8 +52,15 @@ void CConfigEeprom::Init(unsigned short eepromsizesize, const void* defaulteepro
 	_eepromsizesize = eepromsizesize;
 	_defaulteeprom = defaulteeprom;
 
-	_eepromvalid = true;
-	_eepromvalid = GetConfigU32(offsetof(SCNCEeprom,signature)) == eepromID;
+	if (CHAL::HaveEeprom())
+	{
+		_eepromvalid = true;
+		_eepromvalid = GetConfigU32(offsetof(SCNCEeprom, signature)) == eepromID;
+	}
+	else
+	{
+		_eepromvalid = false;;
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -79,6 +86,7 @@ inline const void* AddAdr(const void*adr, eepromofs_t ofs)
 
 uint32_t CConfigEeprom::GetConfig32(eepromofs_t ofs)
 {
+	//StepperSerial.println((int)ofs);
 	if (_eepromvalid)	return CHAL::eeprom_read_dword((uint32_t*) AddAdr(EEPROMBASEADRUINT32,ofs));
 	return pgm_read_dword((uint32_t*) AddAdr(_defaulteeprom,ofs));
 }
