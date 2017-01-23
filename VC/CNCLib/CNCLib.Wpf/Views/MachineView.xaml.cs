@@ -39,6 +39,15 @@ namespace CNCLib.Wpf.Views
 				var vmm = DataContext as BaseViewModel;
 				await vmm.Loaded();
 			});
+
+			if (vm.MessageBox == null)
+			{
+				vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
+				{
+					return MessageBox.Show(messageBoxText, caption, button, icon);
+				});
+			}
+
 		}
 	}
 }

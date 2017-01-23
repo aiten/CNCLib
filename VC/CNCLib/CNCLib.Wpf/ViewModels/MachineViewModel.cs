@@ -25,6 +25,8 @@ using CNCLib.Wpf.Models;
 using Framework.Tools.Dependency;
 using CNCLib.ServiceProxy;
 using System.Threading.Tasks;
+using System.Windows;
+using CNCLib.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -48,6 +50,10 @@ namespace CNCLib.Wpf.ViewModels
 		#endregion
 
 		#region Properties
+		private Framework.Arduino.ArduinoSerialCommunication Com
+		{
+			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
+		}
 
 		Models.Machine _currentMachine = new Models.Machine();
 
@@ -138,9 +144,62 @@ namespace CNCLib.Wpf.ViewModels
         }
 
 		public bool CanAddMachine()
-        {
-            return !AddNewMachine;
-        }
+		{
+			return !AddNewMachine;
+		}
+
+		public async void ReadFromMachine()
+		{
+			if (MessageBox?.Invoke("Read configuration from machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+			{
+				try
+				{
+					Com.ResetOnConnect = true;
+					Com.CommandToUpper = Machine.CommandToUpper;
+					Com.BaudRate = (int)Machine.BaudRate;
+					Com.Connect(Machine.ComPort);
+
+					await Com.SendCommandAsync("?");
+
+					var eeprom = await new EepromHelper().ReadEepromAsync();
+					if (eeprom != null)
+					{
+						Machine.Coolant = eeprom.HasCoolant;
+						Machine.Rotate = eeprom.CanRotate;
+						Machine.Spindle = eeprom.HasSpindle;
+						Machine.SDSupport = eeprom.HasSD;
+						Machine.Rotate = eeprom.CanRotate;
+						Machine.Coolant = eeprom.HasCoolant;
+						Machine.Laser = eeprom.IsLaser;
+						Machine.Axis = (int) eeprom.UseAxis;
+
+						Machine.SizeX = eeprom.GetAxis(0).Size / 1000m;
+						Machine.SizeY = eeprom.GetAxis(1).Size / 1000m;
+						Machine.SizeZ = eeprom.GetAxis(2).Size / 1000m;
+						Machine.SizeA = eeprom.GetAxis(3).Size / 1000m;
+
+						var orig = Machine;
+						Machine = null;
+						Machine = orig;
+					}
+				}
+				catch (Exception e)
+				{
+					MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+					return;
+				}
+				finally
+				{
+					Com.Disconnect();
+				}
+			}
+		}
+
+		public bool CanReadFromMachine()
+		{
+			return true;
+		}
+
 
 		#endregion
 
@@ -150,6 +209,8 @@ namespace CNCLib.Wpf.ViewModels
         public ICommand DeleteMachineCommand => new DelegateCommand(DeleteMachine, CanDeleteMachine);
         public ICommand AddMachineCommand => new DelegateCommand(AddMachine, CanAddMachine);
 
-        #endregion
-    }
+		public ICommand ReadFromMachineCommand => new DelegateCommand(ReadFromMachine, CanReadFromMachine);
+
+		#endregion
+	}
 }

@@ -152,9 +152,14 @@ namespace CNCLib.Wpf.Models
 		public bool HasSD { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SD)); } set { } }
 
 		[Category(CATEGORY_INFO)]
+		[DisplayName("HasEeprom")]
+		[Description("Configuration can be written to eeprom")]
+		public bool HasEeprom { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_EEPROM)); } set { } }
+
+		[Category(CATEGORY_INFO)]
 		[DisplayName("CanRotate")]
 		[Description("Machine can rotate coordinate system (g68/g69)")]
-		public bool CanRotate { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SD)); } set { } }
+		public bool CanRotate { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_ROTATE)); } set { } }
 
 		[Category(CATEGORY_INFO)]
 		[DisplayName("HasHold")]

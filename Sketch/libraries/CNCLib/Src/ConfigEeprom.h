@@ -64,7 +64,10 @@ public:
 	void Init(unsigned short eepromsizesize, const void* defaulteeprom, uint32_t eepromID);
 
 	static uint32_t GetConfigU32(eepromofs_t);
-#if defined(__SAMD21G18A__) || defined(_MSC_VER)
+#if defined(__AVR_ARCH__)
+	static uint8_t  GetConfigU8(eepromofs_t ofs) { return (uint8_t)GetConfigU32(ofs); };
+	static uint16_t  GetConfigU16(eepromofs_t ofs) { return (uint16_t)GetConfigU32(ofs); };
+#else
 	static uint8_t  GetConfigU8(eepromofs_t ofs)
 	{
 		// must be dword alligned
@@ -75,13 +78,11 @@ public:
 	static uint16_t  GetConfigU16(eepromofs_t ofs)
 	{
 		// must be dword alligned
+		// must be in this 32bit value (diff can only be 0,1,2 and not 3)
 		eepromofs_t diff = ofs % 4;
 		uint32_t val = GetConfigU32(ofs-diff);
 		return (val >> (diff * 8)) & 0xffff;
 	}
-#else	
-	static uint8_t  GetConfigU8(eepromofs_t ofs) { return (uint8_t)GetConfigU32(ofs); };
-	static uint16_t  GetConfigU16(eepromofs_t ofs) { return (uint16_t)GetConfigU32(ofs); };
 #endif
 
 	static float GetConfigFloat(eepromofs_t);
@@ -110,6 +111,7 @@ public:
 
 		IS_LASER	 = (1<<5),
 
+		HAVE_EEPROM = (1<<9),
 		HAVE_SD		= (1<<10),
 		CAN_ROTATE	= (1<<11),
 

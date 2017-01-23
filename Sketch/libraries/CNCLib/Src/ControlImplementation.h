@@ -208,6 +208,9 @@ constexpr uint16_t GetInfo1a()
 #ifndef REDUCED_SIZE
 		CConfigEeprom::CAN_ROTATE |
 #endif
+#if defined(__AVR_ARCH__)
+		CConfigEeprom::HAVE_EEPROM |
+#endif
 #ifdef MYUSE_LCD
 		CConfigEeprom::HAVE_SD |
 #endif

@@ -93,6 +93,7 @@ namespace CNCLib.GCode
 			EEPROM_INFO_PROBE = (1 << 4),
 			EEPROM_INFO_LASER = (1 << 5),
 
+			EEPROM_INFO_EEPROM = (1 << 9),
 			EEPROM_INFO_SD = (1 << 10),
 			EEPROM_INFO_ROTATE = (1 << 11),
 

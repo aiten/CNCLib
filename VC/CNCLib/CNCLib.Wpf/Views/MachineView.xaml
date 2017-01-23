@@ -14,6 +14,7 @@
                 <Button Command="{Binding SaveMachineCommand}" Width="60" Content="Save"  />
                 <Button Command="{Binding DeleteMachineCommand}" Content="Delete" Width="60" Margin="10,0,0,0"  />
                 <Button Command="{Binding AddMachineCommand}" Content="Add" Width="60" Margin="10,0,0,0"  />
+                <Button Command="{Binding ReadFromMachineCommand}" Content="Read from machine" Width="120" Margin="50,0,0,0"  />
             </StackPanel>
             <StackPanel Orientation="Horizontal"/>
         </StackPanel>
