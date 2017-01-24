@@ -27,6 +27,7 @@ using CNCLib.ServiceProxy;
 using System.Threading.Tasks;
 using System.Windows;
 using CNCLib.Wpf.Helpers;
+using CNCLib.GCode;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -154,12 +155,13 @@ namespace CNCLib.Wpf.ViewModels
 			{
 				try
 				{
-					Com.ResetOnConnect = true;
+					Com.ResetOnConnect = Settings.Instance.ResetOnConnect;
 					Com.CommandToUpper = Machine.CommandToUpper;
 					Com.BaudRate = (int)Machine.BaudRate;
 					Com.Connect(Machine.ComPort);
 
-					await Com.SendCommandAsync("?");
+					await Com.SendCommandAsync("?",3000);
+					await Task.Delay(100);
 
 					var eeprom = await new EepromHelper().ReadEepromAsync();
 					if (eeprom != null)

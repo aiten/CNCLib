@@ -336,10 +336,12 @@ namespace Framework.Arduino
 		/// Send command and wait until the command is transfered and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="line">command line to send</param>
-		public async Task<IEnumerable<Command>> SendCommandAsync(string line)
+		public async Task<IEnumerable<Command>> SendCommandAsync(string line, int waitForMilliseconds = int.MaxValue)
         {
             var ret = SplitAndQueueCommand(line);
-            await WaitUntilNoPendingCommandsAsync();
+			if (!await WaitUntilNoPendingCommandsAsync(waitForMilliseconds))
+				throw new TimeoutException();
+
 			return ret;
         }
 

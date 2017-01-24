@@ -65,9 +65,9 @@ namespace CNCLib.Wpf.Helpers
 
 		#region EEprom
 
-		public async Task<UInt32[]> GetEpromValuesAsync()
+		public async Task<UInt32[]> GetEpromValuesAsync(int waitForMilliseconds = 3000)
 		{
-			ArduinoSerialCommunication.Command cmd = (await Com.SendCommandAsync("$?")).FirstOrDefault();
+			ArduinoSerialCommunication.Command cmd = (await Com.SendCommandAsync("$?", waitForMilliseconds)).FirstOrDefault();
 			if (cmd != null && string.IsNullOrEmpty(cmd.ResultText)==false)
 			{
 				string[] seperators = { "\n", "\r" };

@@ -147,7 +147,7 @@ namespace CNCLib.Wpf.ViewModels
 		public bool ResetOnConnect
 		{
 			get { return _resetOnConnect; }
-			set { SetProperty(ref _resetOnConnect, value); }
+			set { SetProperty(ref _resetOnConnect, value); Settings.Instance.ResetOnConnect = value; }
 		}
 
 		private bool _sendInitCommands = true;

@@ -27,10 +27,15 @@ namespace CNCLib.GCode
             SizeX = 130.0m;
             SizeY = 45.0m;
             SizeZ = 81.0m;
-        }
+			ResetOnConnect = false;
+		}
 
 		public decimal SizeX { get; set; }
 		public decimal SizeY { get; set; }
 		public decimal SizeZ { get; set; }
-    }
+
+
+		public bool ResetOnConnect { get; set; }
+
+	}
 }
