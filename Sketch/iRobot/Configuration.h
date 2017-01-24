@@ -28,15 +28,18 @@
 ////////////////////////////////////////////////////////
 
 #define USBBAUDRATE 115200
+
 ////////////////////////////////////////////////////////
 
 #define MYNUM_AXIS 6
+#define LCD_NUMAXIS  MYNUM_AXIS
+#define MYUSE_LCD
 
 ////////////////////////////////////////////////////////
 
-#define X_MAXSIZE 1000				// in mm1000_t
-#define Y_MAXSIZE 1000 
-#define Z_MAXSIZE 1000 
+#define X_MAXSIZE 300000				// in mm1000_t
+#define Y_MAXSIZE 300000 
+#define Z_MAXSIZE 300000 
 #define A_MAXSIZE 1000 
 #define B_MAXSIZE 1000 
 #define C_MAXSIZE 1000 
@@ -56,9 +59,9 @@
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED 15000
-#define CNC_ACC  200
-#define CNC_DEC  250
+#define CNC_MAXSPEED 50000
+#define CNC_ACC  350
+#define CNC_DEC  400
 
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
@@ -102,18 +105,12 @@
 
 #define STEPRATERATE_REFMOVE	(CNC_MAXSPEED/4)
 
-#define GO_DEFAULT_STEPRATE		((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
-#define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
-#define G1_DEFAULT_FEEDPRATE	100000	// in mm1000 / min
-
-#define STEPRATERATE_REFMOVE	(CNC_MAXSPEED/4)
+////////////////////////////////////////////////////////
 
 #define LCD_GROW 64
 #define LCD_GCOL 128
 
 #define LCD_BEEPER 37
-
-#define LCD_NUMAXIS	6
 
 #define ROTARY_ENC           35
 #define ROTARY_ENC_ON		 LOW

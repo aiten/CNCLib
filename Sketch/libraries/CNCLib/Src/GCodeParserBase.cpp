@@ -538,7 +538,25 @@ void CGCodeParserBase::GetFeedrate(SAxisMove& move)
 
 	if (!_modalstate.FeedRatePerUnit) { ErrorNotImplemented(); return; }
 
-	feedrate_t feedrate = GetInt32Scale(FEEDRATE_MIN, FEEDRATE_MAX, FEEDRATE_SCALE, FEEDRATE_MAXSCALE);
+	feedrate_t feedrate;
+
+#ifdef REDUCED_SIZE
+	if (false)
+#else
+	if (_reader->GetChar() == '#')
+#endif
+	{
+		_reader->GetNextChar();
+		feedrate = ParseParameter(false);	// return in mm1000
+		if (FEEDRATE_MIN > feedrate)
+			Error(MESSAGE(MESSAGE_PARSER_ValueLessThanMin));
+		else if (FEEDRATE_MAX < feedrate)
+			Error(MESSAGE(MESSAGE_PARSER_ValueGreaterThanMax));
+	}
+	else
+	{
+		feedrate = GetInt32Scale(FEEDRATE_MIN, FEEDRATE_MAX, FEEDRATE_SCALE, FEEDRATE_MAXSCALE);
+	}
 	// feedrate is 1/1000mm/min (scale 3) 
 
 	if (!_modalstate.UnitisMm)

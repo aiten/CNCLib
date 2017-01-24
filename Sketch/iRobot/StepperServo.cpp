@@ -56,12 +56,15 @@ void CStepperServo::SetServo()
 		udist_t pos;
 		if (i==Y_AXIS)
 		{
-			pos = MAX_LIMIT+MIN_LIMIT-GetCurrentPosition(i);
+			pos = udist_t(MAX_LIMIT)+udist_t(MIN_LIMIT)-GetCurrentPosition(i);
 		}
 		else
 		{
 			pos = GetCurrentPosition(i);
 		}
+
+		pos = (pos + SERVO_POSITION_SCALE / 2) / SERVO_POSITION_SCALE;	// and round
+
 		if (pos != _lastPos[i])
 		{
 			_servo[i].write(pos);

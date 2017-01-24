@@ -41,15 +41,19 @@
 
 ////////////////////////////////////////////////////////
 
-#define CENTER_LIMIT				MG995_CENTER
-#define MIN_LIMIT					MG995_MIN_PULSE_WIDTH
-#define MAX_LIMIT					MG995_MAX_PULSE_WIDTH
-#define MAX_ROTATION				MG995_MAX_ROTATION
-#define MsForPI						MG995_MsForPI
+#define SERVO_POSITION_SCALE		2   // for rounding
 
-#define INIT_PULS1					1740
-#define INIT_PULS2					1230
-#define INIT_PULS3					CENTER_LIMIT
+#define CENTER_LIMIT  (MG995_CENTER*SERVO_POSITION_SCALE)
+#define MIN_LIMIT     (MG995_MIN_PULSE_WIDTH*SERVO_POSITION_SCALE)
+#define MAX_LIMIT     (MG995_MAX_PULSE_WIDTH*SERVO_POSITION_SCALE)
+#define MAX_ROTATION  MG995_MAX_ROTATION
+#define MsForPI       (MG995_MsForPI*SERVO_POSITION_SCALE)
+
+#define INIT_PULS1		(1740*SERVO_POSITION_SCALE)
+#define INIT_PULS2		(1230*SERVO_POSITION_SCALE)
+#define INIT_PULS3		CENTER_LIMIT
+
+
 
 ////////////////////////////////////////////////////////
 
