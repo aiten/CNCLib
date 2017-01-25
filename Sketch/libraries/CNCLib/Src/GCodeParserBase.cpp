@@ -320,6 +320,7 @@ void CGCodeParserBase::Parse()
 			}
 			case '$':
 			{
+				_reader->GetNextChar();
 				if (CSingleton<CConfigEeprom>::GetInstance() == NULL || !CSingleton<CConfigEeprom>::GetInstance()->ParseConfig(this) )
 				{
 					if (!IsError())
