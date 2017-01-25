@@ -66,15 +66,8 @@ struct CGCodeParserBase::SModlessState CGCodeParserBase::_modlessstate;
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParserBase::Command(char ch)
+bool CGCodeParserBase::Command(char /* ch */)
 {
-	if (ch == '$' && CSingleton<CConfigEeprom>::GetInstance())
-	{
-		_reader->GetNextCharSkipScaces();
-		if (!CSingleton<CConfigEeprom>::GetInstance()->ParseConfig(this) && !IsError())
-			Error(MESSAGE_GCODE_CommandExpected);
-		return true;
-	}
 	return false; 
 }
 
@@ -323,6 +316,35 @@ void CGCodeParserBase::Parse()
 				{
 					Error(MESSAGE(MESSAGE_GCODE_UnspportedMCodeIgnored));	return;
 				}
+				break;
+			}
+			case '$':
+			{
+				if (CSingleton<CConfigEeprom>::GetInstance() == NULL || !CSingleton<CConfigEeprom>::GetInstance()->ParseConfig(this) )
+				{
+					if (!IsError())
+						Error(MESSAGE_GCODE_IllegalCommand);
+					return;
+				}
+				break;
+			}
+			case '?':
+			{
+				_reader->GetNextChar();
+				_OkMessage = []()
+				{
+					// print abs pos => no negative values
+					for (uint8_t i = 0; i < NUM_AXIS; i++)
+					{
+						if (i != 0)
+							StepperSerial.print(':');
+						udist_t pos = CMotionControlBase::GetInstance()->GetPosition(i);
+						ldiv_t divrem = ldiv(pos, 1000);
+						StepperSerial.print((uint16_t) divrem.quot);
+						StepperSerial.print('.');
+						StepperSerial.print((uint16_t) divrem.rem);
+					}
+				};
 				break;
 			}
 

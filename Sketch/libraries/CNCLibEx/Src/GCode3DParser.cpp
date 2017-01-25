@@ -289,7 +289,7 @@ void CGCode3DParser::M27Command()
 	{
 		StepperSerial.print(MESSAGE_PARSER3D_SD_PRINTING_BYTE);
 		StepperSerial.print(_state._printFilePos);
-		StepperSerial.print(MESSAGE_PARSER_COLON);
+		StepperSerial.print(':');
 		StepperSerial.print(_state._printFileSize);
 		StepperSerial.print(MESSAGE_PARSER3D_SD_PRINTING_LINE);
 		StepperSerial.println(_state._printFileLine);

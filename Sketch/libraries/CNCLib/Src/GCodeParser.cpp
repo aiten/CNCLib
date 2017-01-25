@@ -441,7 +441,7 @@ bool CGCodeParser::Command(char ch)
 
 		// case '-':
 		case '!':
-		case '?': CommandEscape(); return true;
+		case '&': CommandEscape(); return true;
 	}
 	return false;
 }
@@ -1310,7 +1310,7 @@ void CGCodeParser::CNCLibCommandExtensions()
 
 	switch (ch)
 	{
-		case '?':
+		case '&':
 		{
 			_reader->GetNextChar();
 			if (!ExpectEndOfCommand()) { return; }
@@ -1342,7 +1342,7 @@ void CGCodeParser::PrintAbsPosition()
 	for (uint8_t i = 0; i < NUM_AXIS; i++)
 	{
 		if (i != 0)
-			StepperSerial.print(MESSAGE_PARSER_COLON);
+			StepperSerial.print(':');
 		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i), tmp, 3));
 	}
 }
@@ -1355,7 +1355,7 @@ void CGCodeParser::PrintRelPosition()
 	for (uint8_t i = 0; i < NUM_AXIS; i++)
 	{
 		if (i != 0)
-			StepperSerial.print(MESSAGE_PARSER_COLON);
+			StepperSerial.print(':');
 
 		StepperSerial.print(CMm1000::ToString(CMotionControlBase::GetInstance()->GetPosition(i) - CGCodeParser::GetAllPreset(i), tmp, 3));
 	}

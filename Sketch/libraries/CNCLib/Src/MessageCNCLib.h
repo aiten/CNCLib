@@ -96,7 +96,5 @@
 #define MESSAGE_GCODE_IJKVECTORIS0					StepperMessage("3E","Vector IJK is 0")
 #define MESSAGE_GCODE_SPECIFIED						StepperMessage("3F","IJK is specified")
 
-#define MESSAGE_PARSER_COLON F(":")
-
 ////////////////////////////////////////////////////////
 

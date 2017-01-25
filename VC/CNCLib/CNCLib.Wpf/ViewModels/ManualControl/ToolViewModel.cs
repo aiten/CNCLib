@@ -88,6 +88,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		}
 
 		public void SendInfo() { RunAndUpdate(() => { Com.QueueCommand("?"); }); }
+		public void SendDebug() { RunAndUpdate(() => { Com.QueueCommand("&"); }); }
 		public void SendAbort() { RunAndUpdate(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.QueueCommand("!"); }); }
 		public void SendResurrect() { RunAndUpdate(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); Com.QueueCommand("!!!"); }); }
 		public void ClearQueue() { RunAndUpdate(() => { Com.AbortCommands(); Com.ResumeAfterAbort(); }); }
@@ -127,6 +128,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region ICommand
 		public ICommand SendInfoCommand => new DelegateCommand(SendInfo, CanSend);
+		public ICommand SendDebugCommand => new DelegateCommand(SendDebug, CanSend);
 		public ICommand SendAbortCommand => new DelegateCommand(SendAbort, CanSend);
 		public ICommand SendResurrectCommand => new DelegateCommand(SendResurrect, CanSend);
 		public ICommand SendClearQueue => new DelegateCommand(ClearQueue, CanSend);
