@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Framework.Tools;
@@ -72,39 +73,64 @@ namespace CNCLib.GCode.Commands
 		public string SubCode { get; protected set;  }
 		public string Code { get; protected set; }
 
-		protected class Variable
+		public class Variable
 		{
 			public char Name { get; set; }
 			public double? Value { get; set; }
 			public string Parameter { get; set; }
 
+			public bool ForceFloatingPoint { get; set; }
+
 			public string ToGCode() 
 			{
 				if (Value.HasValue)
-					return Name + Value.Value.ToString(CultureInfo.InvariantCulture);
+				{
+					string ret = Name + Value.Value.ToString(CultureInfo.InvariantCulture);
+					if (ForceFloatingPoint && ret.IndexOf('.')==-1)
+					{
+						return ret + ".0";
+					}
+					return ret;
+				}
 
 				if (string.IsNullOrEmpty(Parameter))
 					return Name.ToString();
 
 				return Name + "#" + Parameter;
 			}
+
+			public Variable ShallowCopy()
+			{
+				return (Variable)MemberwiseClone();
+			}
 		}
 
-		public void AddVariable(char name, double value)
+		public void AddVariable(Variable var)
 		{
-			_variables.Add(new Variable() { Name = name, Value = value });
+			_variables.Add(var);
+		}
+		public void AddVariable(char name,Variable var)
+		{
+			var newvar = var.ShallowCopy();
+			newvar.Name = name;
+			_variables.Add(newvar);
+		}
+
+		public void AddVariable(char name, double value, bool isFloatingPoint)
+		{
+			AddVariable(new Variable() { Name = name, Value = value, ForceFloatingPoint = isFloatingPoint });
 		}
 		public void AddVariableNoValue(char name)
 		{
-			_variables.Add(new Variable() { Name = name });
+			AddVariable(new Variable() { Name = name });
 		}
 		public void AddVariableParam(char name, string paramvalue)
 		{
-			_variables.Add(new Variable() { Name = name, Parameter = paramvalue });
+			AddVariable(new Variable() { Name = name, Parameter = paramvalue });
 		}
 		public void AddVariable(char name, decimal value)
 		{
-			_variables.Add(new Variable() { Name = name, Value = (double) value });
+			AddVariable(new Variable() { Name = name, Value = (double) value });
 		}
 
 		public double GetVariable(char name, double defaultvalue)
@@ -115,9 +141,14 @@ namespace CNCLib.GCode.Commands
 			return defaultvalue;
 		}
 
+		public Variable GetVariable(char name)
+		{
+			return _variables.Find(n => n.Name == name);
+		}
+
 		public bool TryGetVariable(char name, out double val)
 		{
-			Variable var = _variables.Find( n => n.Name == name);
+			Variable var = GetVariable(name);
 			if (var!=null && var.Value.HasValue)
 			{
 				val = var.Value.Value;
@@ -129,7 +160,7 @@ namespace CNCLib.GCode.Commands
 
 		public string TryGetVariableGCode(char name)
 		{
-			Variable var = _variables.Find(n => n.Name == name);
+			Variable var = GetVariable(name);
 			if (var != null && var.Value.HasValue)
 			{
 				return var.ToGCode();
@@ -139,10 +170,10 @@ namespace CNCLib.GCode.Commands
 
 		public bool CopyVariable(char name, Command dest)
 		{
-			Variable var = _variables.Find(n => n.Name == name);
+			Variable var = GetVariable(name);
 			if (var == null || !var.Value.HasValue) return false;
 
-			dest.AddVariable(name, var.Value.Value);
+			dest.AddVariable(var.ShallowCopy());
 
 			return true;
 		}
@@ -256,7 +287,7 @@ namespace CNCLib.GCode.Commands
 			}
 		}
 
-		protected double? ReadVariable(CommandStream stream, char param, bool allow)
+		protected double? ReadVariable(CommandStream stream, char param, bool allowNameOnly)
 		{
 			stream.Next();
 			stream.SkipSpaces();
@@ -270,17 +301,20 @@ namespace CNCLib.GCode.Commands
 
 			stream.SkipSpaces();
 
-			if (stream.IsInt())
+			if (stream.IsNumber())
 			{
-				var val = stream.GetDouble();
-				AddVariable(param, val);
+				bool isFloatingPoint;
+				var val = stream.GetDouble(out isFloatingPoint);
+				AddVariable(param, val, isFloatingPoint);
 				return val;
 			}
-			else
+			else if (allowNameOnly)
 			{
 				AddVariableNoValue(param);
 				return null;
 			}
+
+			throw new ArgumentOutOfRangeException();
 		}
 
 		public virtual bool ReadFrom(CommandStream stream)
@@ -303,7 +337,7 @@ namespace CNCLib.GCode.Commands
 						case 'Y': ep.Y = ReadVariable(stream, stream.NextCharToUpper, false); break;
 						case 'Z': ep.Z = ReadVariable(stream, stream.NextCharToUpper, false); break;
 						case 'F': ReadVariable(stream, stream.NextCharToUpper, true); break;
-// 1.0 different to 1	case 'P':
+						case 'P':
 						case 'R':
 						case 'I':
 						case 'J':
@@ -318,10 +352,19 @@ namespace CNCLib.GCode.Commands
 			}
 			else
 			{
-				ReadFromToEnd(stream);
+				while (true)
+				{
+					switch (stream.SkipSpacesToUpper())
+					{
+						case 'P': ReadVariable(stream, stream.NextCharToUpper, false); break;
+						default:
+						{
+							ReadFromToEnd(stream);
+							return true;
+						}
+					}
+				}
 			}
-
-			return true;
 		}
 
 		#endregion

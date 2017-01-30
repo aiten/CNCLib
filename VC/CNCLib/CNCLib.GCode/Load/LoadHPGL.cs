@@ -151,7 +151,7 @@ namespace CNCLib.GCode.Load
 
                 if (cmdidx==4)
                 {
-                    if (_stream.IsInt())
+                    if (_stream.IsNumber())
                     {
                         int coloridx = _stream.GetInt();
 						if (coloridx >= 1 && coloridx <= 8)
@@ -166,7 +166,7 @@ namespace CNCLib.GCode.Load
                         case 1: _IsPenUp = false; break;
                     }
 
-                    while (_stream.IsInt())
+                    while (_stream.IsNumber())
                     {
                         Point3D pt = GetSpaceCoordiante(cmdidx == 3);
                         if (cmdidx == 3)  // move rel
@@ -202,8 +202,8 @@ namespace CNCLib.GCode.Load
 								r = new G01Command();
 								AddCamBamPoint(pt);
 							}
-							r.AddVariable('X', pt.X.Value);
-							r.AddVariable('Y', pt.Y.Value);
+							r.AddVariable('X', pt.X.Value, false);
+							r.AddVariable('Y', pt.Y.Value, false);
                             if (_needSpeed)
                             {
                                 _needSpeed = false;

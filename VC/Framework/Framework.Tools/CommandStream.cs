@@ -117,7 +117,7 @@ namespace Framework.Tools
             return str.ToString();
         }
 
-        public bool IsInt()
+        public bool IsNumber()
         {
             SkipSpaces();
             return NextChar == '-' || char.IsDigit(NextChar);
@@ -136,12 +136,13 @@ namespace Framework.Tools
             SkipSpaces();
             return ret;
         }
-		public double GetDouble()
+		public double GetDouble(out bool isFloatingPoint)
 		{
-			return (double)GetDecimal();
+			return (double)GetDecimal(out isFloatingPoint);
 		}
-		public decimal GetDecimal()
+		public decimal GetDecimal(out bool isFloatingPoint)
 		{
+			isFloatingPoint = false;
 			SkipSpaces();
 			bool negativ = NextChar == '-';
 			if (negativ) Next();
@@ -152,6 +153,7 @@ namespace Framework.Tools
 
 			if (NextChar == '.')
 			{
+				isFloatingPoint = true;
 				Next();
 				decimal scale = 0.1m;
 				while (char.IsDigit(NextChar))

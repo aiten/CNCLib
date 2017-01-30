@@ -49,53 +49,57 @@ namespace CNCLib.GCode.Commands
 				// (G04 P0)
 				// G00 Z0.5000
 
-				double r;
-				if (TryGetVariable('R',out r))
+				Variable r = GetVariable('R');
+				if (r == null)
 				{
-					state.G82_R = r;
+					r = state.G82_R;
 				}
 				else
 				{
-					r = state.G82_R ?? 0;
+					state.G82_R = r.ShallowCopy();
 				}
-				double p;
-				if (TryGetVariable('P', out p))
+
+				Variable p = GetVariable('P');
+				if (p == null)
 				{
-					state.G82_P = p;
+					p = state.G82_P;
 				}
 				else
 				{
-					p = state.G82_P ?? 0;
+					state.G82_P = p.ShallowCopy();
 				}
-				double z;
-				if (TryGetVariable('Z', out z))
+
+				Variable z = GetVariable('Z');
+				if (z == null)
 				{
-					state.G82_Z = z;
+					z = state.G82_Z;
 				}
 				else
 				{
-					z = state.G82_Z ?? 0;
+					state.G82_Z = z.ShallowCopy();
 				}
+
+				var list = new List<string>();
 
 				var move1 = new G00Command();
 				CopyVariable('X', move1);
 				CopyVariable('Y', move1);
+				list.AddRange(move1.GetGCodeCommands(startfrom, state));
 
 				var move2 = new G01Command();
 				move2.AddVariable('Z', z);
 				CopyVariable('F', move2);
+				list.AddRange(move2.GetGCodeCommands(startfrom, state));
 
-				var move3 = new G04Command();
-				move3.AddVariable('P', p);
+				if (p != null && (p.Value ?? 0) != 0.0)
+				{
+					var move3 = new G04Command();
+					move3.AddVariable('P', p);
+					list.AddRange(move3.GetGCodeCommands(startfrom, state));
+				}
 
 				var move4 = new G00Command();
 				move4.AddVariable('Z', r);
-
-				var list = new List<string>();
-				list.AddRange(move1.GetGCodeCommands(startfrom, state));
-				list.AddRange(move2.GetGCodeCommands(startfrom, state));
-				if (p != 0.0)
-					list.AddRange(move3.GetGCodeCommands(startfrom, state));
 				list.AddRange(move4.GetGCodeCommands(startfrom, state));
 
 				ret = list.ToArray();
