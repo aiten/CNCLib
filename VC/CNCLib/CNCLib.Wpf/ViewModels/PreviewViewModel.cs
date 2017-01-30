@@ -225,9 +225,10 @@ namespace CNCLib.Wpf.ViewModels
 				{
 					Com.ClearCommandHistory();
 					Command last = null;
+					CommandState state = new CommandState();
 					Commands.ForEach((cmd) =>
 					{
-						string[] cmds = cmd.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
+						string[] cmds = cmd.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null,state);
 						if (cmds != null)
 						{
 							foreach (string str in cmds)

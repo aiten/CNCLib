@@ -74,9 +74,9 @@ namespace CNCLib.GCode.Commands
 
 		protected class Variable
 		{
-			public char Name;
-			public double? Value;
-			public string Parameter;
+			public char Name { get; set; }
+			public double? Value { get; set; }
+			public string Parameter { get; set; }
 
 			public string ToGCode() 
 			{
@@ -127,11 +127,31 @@ namespace CNCLib.GCode.Commands
 			return false;
 		}
 
-        #endregion
+		public string TryGetVariableGCode(char name)
+		{
+			Variable var = _variables.Find(n => n.Name == name);
+			if (var != null && var.Value.HasValue)
+			{
+				return var.ToGCode();
+			}
+			return null;
+		}
 
-        #region Draw
+		public bool CopyVariable(char name, Command dest)
+		{
+			Variable var = _variables.Find(n => n.Name == name);
+			if (var == null || !var.Value.HasValue) return false;
 
-        public DrawType Convert(MoveType movetype, CommandState state)
+			dest.AddVariable(name, var.Value.Value);
+
+			return true;
+		}
+
+		#endregion
+
+		#region Draw
+
+		public DrawType Convert(MoveType movetype, CommandState state)
         {
 			DrawType drawtype = DrawType.NoDraw;
 
@@ -191,7 +211,7 @@ namespace CNCLib.GCode.Commands
 			return cmd;
         }
 
-		public virtual string[] GetGCodeCommands(Point3D startfrom)
+		public virtual string[] GetGCodeCommands(Point3D startfrom, CommandState state)
 		{
 			string[] ret = new string[] 
             {
@@ -283,6 +303,7 @@ namespace CNCLib.GCode.Commands
 						case 'Y': ep.Y = ReadVariable(stream, stream.NextCharToUpper, false); break;
 						case 'Z': ep.Z = ReadVariable(stream, stream.NextCharToUpper, false); break;
 						case 'F': ReadVariable(stream, stream.NextCharToUpper, true); break;
+// 1.0 different to 1	case 'P':
 						case 'R':
 						case 'I':
 						case 'J':

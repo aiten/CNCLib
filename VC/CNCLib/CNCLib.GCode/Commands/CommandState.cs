@@ -19,13 +19,17 @@
 namespace CNCLib.GCode.Commands
 {
 	public class CommandState
-    {
-        public bool UseLaser { get; set; } = false;
-        public bool LaserOn { get; set; } = false;
-        public bool SpindleOn { get; set; } = false;
-        public bool CoolantOn { get; set; } = false;
+	{
+		public bool UseLaser { get; set; } = false;
+		public bool LaserOn { get; set; } = false;
+		public bool SpindleOn { get; set; } = false;
+		public bool CoolantOn { get; set; } = false;
 		public Pane CurrentPane { get; set; } = Pane.XYPane;
 
 		public bool IsSelected { get; set; } = true;
+
+		public double? G82_R { get; set; }
+		public double? G82_P { get; set; }
+		public double? G82_Z { get; set; }
 	}
 }

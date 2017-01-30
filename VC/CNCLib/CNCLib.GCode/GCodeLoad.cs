@@ -35,9 +35,10 @@ namespace CNCLib.GCode
 			using (StreamWriter sw = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 			{
 				Command last = null;
+				CommandState state = new CommandState();
 				foreach (Command r in Commands)
 				{
-					string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
+					string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null,state);
 					if (cmds != null)
 					{
 						foreach (string str in cmds)

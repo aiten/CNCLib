@@ -17,6 +17,9 @@
 */
 
 
+using System.Collections.Generic;
+using Framework.Tools.Drawing;
+
 namespace CNCLib.GCode.Commands
 {
 	[IsGCommand]
@@ -32,6 +35,78 @@ namespace CNCLib.GCode.Commands
 		#endregion
 
 		#region GCode
+		public override string[] GetGCodeCommands(Point3D startfrom, CommandState state) 
+		{
+			string[] ret;
+			if (Settings.Instance.SubstDrillCycle)
+			{
+				// from
+				// G82 X-8.8900 Y3.8100  Z-0.2794 F400 R0.5000  P0.000000
+				// next command with R and P G82 X-11.4300 Y3.8100
+				// to
+				// G00 X-8.8900 Y3.8100
+				// G01 Z-0.2794 F400
+				// (G04 P0)
+				// G00 Z0.5000
+
+				double r;
+				if (TryGetVariable('R',out r))
+				{
+					state.G82_R = r;
+				}
+				else
+				{
+					r = state.G82_R ?? 0;
+				}
+				double p;
+				if (TryGetVariable('P', out p))
+				{
+					state.G82_P = p;
+				}
+				else
+				{
+					p = state.G82_P ?? 0;
+				}
+				double z;
+				if (TryGetVariable('Z', out z))
+				{
+					state.G82_Z = z;
+				}
+				else
+				{
+					z = state.G82_Z ?? 0;
+				}
+
+				var move1 = new G00Command();
+				CopyVariable('X', move1);
+				CopyVariable('Y', move1);
+
+				var move2 = new G01Command();
+				move2.AddVariable('Z', z);
+				CopyVariable('F', move2);
+
+				var move3 = new G04Command();
+				move3.AddVariable('P', p);
+
+				var move4 = new G00Command();
+				move4.AddVariable('Z', r);
+
+				var list = new List<string>();
+				list.AddRange(move1.GetGCodeCommands(startfrom, state));
+				list.AddRange(move2.GetGCodeCommands(startfrom, state));
+				if (p != 0.0)
+					list.AddRange(move3.GetGCodeCommands(startfrom, state));
+				list.AddRange(move4.GetGCodeCommands(startfrom, state));
+
+				ret = list.ToArray();
+			}
+			else
+			{
+				ret = base.GetGCodeCommands(startfrom,state);
+			}
+
+			return ret;
+		}
 
 		#endregion
 

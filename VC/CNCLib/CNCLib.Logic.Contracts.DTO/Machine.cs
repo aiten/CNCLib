@@ -46,6 +46,7 @@ namespace CNCLib.Logic.Contracts.DTO
 		public bool Coolant { get; set; }
         public bool Laser { get; set; }
         public bool Rotate { get; set; }
+		public bool SubstDrillCycle { get; set; }
 
 		public IEnumerable<MachineCommand> MachineCommands { get; set; }
 		public IEnumerable<MachineInitCommand> MachineInitCommands { get; set; }

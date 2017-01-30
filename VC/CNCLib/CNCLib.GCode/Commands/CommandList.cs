@@ -79,10 +79,11 @@ namespace CNCLib.GCode.Commands
 			var list = new List<string>();
 
 			Command last = null;
+			CommandState state = new CommandState();
 
 			foreach (Command r in this)
 			{
-				string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null);
+				string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null,state);
 				if (cmds != null)
 				{
 					foreach (string str in cmds)

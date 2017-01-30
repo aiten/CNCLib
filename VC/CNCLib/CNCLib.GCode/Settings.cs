@@ -34,6 +34,7 @@ namespace CNCLib.GCode
 		public decimal SizeY { get; set; }
 		public decimal SizeZ { get; set; }
 
+		public bool SubstDrillCycle { get; set; } = false;
 
 		public bool ResetOnConnect { get; set; }
 

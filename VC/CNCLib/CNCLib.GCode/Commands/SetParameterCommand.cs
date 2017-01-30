@@ -33,7 +33,7 @@ namespace CNCLib.GCode.Commands
 		#endregion
 
 		#region GCode
-		public override string[] GetGCodeCommands(Point3D startfrom)
+		public override string[] GetGCodeCommands(Point3D startfrom, CommandState state)
 		{
 			string[] ret = new string[] 
             {

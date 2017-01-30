@@ -29,6 +29,7 @@ namespace CNCLib.Wpf.Models
 		const string CATEGORY_FEATURES = "Features";
 		const string CATEGORY_PROBE = "Probe";
 		const string CATEGORY_GENERAL = "General";
+		const string CATEGORY_BEHAVIOR = "Behavior";
 
 		[ReadOnly(false)]
 		[Browsable(false)]
@@ -137,6 +138,11 @@ namespace CNCLib.Wpf.Models
 		[DisplayName("Rotate")]
 		[Description("Machin can rotate the coordinate system")]
 		public bool Rotate { get; set; }
+
+		[Category(CATEGORY_BEHAVIOR)]
+		[DisplayName("SubstDrillCycle")]
+		[Description("Substidute Drill Cycle with g0/g1 because machine doesn't support g82")]
+		public bool SubstDrillCycle { get; set; }
 
 		private ObservableCollection<Models.MachineCommand> _MachineCommands;
 
