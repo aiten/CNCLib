@@ -48,7 +48,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 {
                     LoadOptions l = await response.Content.ReadAsAsync<LoadOptions>();
 
-                    Assert.AreEqual(true,l.AutoScale);
+                    Assert.IsNotNull(l);
                 }
             }
         }
