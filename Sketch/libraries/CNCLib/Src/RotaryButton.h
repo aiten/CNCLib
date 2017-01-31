@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
-template <class rang_t, uint8_t ACCURACY>
+template <class range_t, uint8_t ACCURACY>
 class CRotaryButton
 {
 public:
@@ -97,7 +97,7 @@ public:
 			_lastadd = add;
 		}
 
-		rang_t pos = GetPos();
+		range_t pos = GetPos();
 		if (pos > _maxpos) 
 		{
 			if (_overrunpos) 
@@ -121,19 +121,19 @@ public:
 		return add > 0 ? RightTurn : LeftTurn;
 	}
 
-	void SetMinMax(rang_t minpos, rang_t maxpos, bool overrun)	{ _minpos = minpos; _maxpos = maxpos; _overrunpos = overrun; }
+	void SetMinMax(range_t minpos, range_t maxpos, bool overrun)	{ _minpos = minpos; _maxpos = maxpos; _overrunpos = overrun; }
 
-	rang_t GetMin()												{ return _minpos; }
-	rang_t GetMax()												{ return _maxpos; }
+	range_t GetMin()											{ return _minpos; }
+	range_t GetMax()											{ return _maxpos; }
 	bool GetOverrrunMode()										{ return _overrunpos; }
 
-	rang_t GetFullRangePos()									{ return _pos; }
+	range_t GetFullRangePos()									{ return _pos; }
 
-	rang_t GetPos()												{ return (_pos + ((_pos > 0) ? ACCURACY/2 : -(ACCURACY/2))) / ACCURACY; }
-	void SetPos(rang_t pos)										{ _pos = pos * ACCURACY; }
+	range_t GetPos()											{ return (_pos + ((_pos > 0) ? ACCURACY/2 : -(ACCURACY/2))) / ACCURACY; }
+	void SetPos(range_t pos)									{ _pos = pos * ACCURACY; }
 
 	void SetPageIdx(rotarypage_t page)							{ SetPos(page); }
-	rotarypage_t GetPageIdx(rotarypage_t pages)					{ rang_t rpage = GetPos()%pages; if (rpage < 0) rpage = pages+rpage; return (rotarypage_t) rpage; }
+	rotarypage_t GetPageIdx(rotarypage_t pages)					{ range_t rpage = GetPos()%pages; if (rpage < 0) rpage = pages+rpage; return (rotarypage_t) rpage; }
 
 	void SetPin(pin_t pin1, pin_t pin2)
 	{	
@@ -145,9 +145,9 @@ public:
 
 protected:
 
-	volatile rang_t  _pos;
-	rang_t			_minpos;
-	rang_t			_maxpos;
+	volatile range_t  _pos;
+	range_t			_minpos;
+	range_t			_maxpos;
 
 	bool			_overrunpos;
 	bool 			_lastchangedA;
