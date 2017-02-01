@@ -25,7 +25,8 @@ namespace CNCLib.Repository.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            ContextKey = "CNCLib.Repository.Context.CNCLibContext";
+			AutomaticMigrationDataLossAllowed = true;
+			ContextKey = "CNCLib.Repository.Context.CNCLibContext";
         }
 
         protected override void Seed(CNCLib.Repository.Context.CNCLibContext context)

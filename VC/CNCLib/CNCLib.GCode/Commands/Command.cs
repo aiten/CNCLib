@@ -180,6 +180,15 @@ namespace CNCLib.GCode.Commands
 
 		#endregion
 
+		#region 
+
+		public virtual Command[] ConvertCommand(CommandState state, ConvertOptions options)
+		{
+			return new Command[] { this };
+		}
+
+		#endregion
+
 		#region Draw
 
 		public DrawType Convert(MoveType movetype, CommandState state)

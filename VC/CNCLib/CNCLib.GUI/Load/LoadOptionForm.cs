@@ -81,6 +81,9 @@ namespace CNCLib.GUI.Load
 					ScaleX = decimal.Parse(_scaleX.Text),
 					ScaleY = decimal.Parse(_scaleY.Text),
 					SwapXY = _swapXY.Checked,
+
+					SubstG82 = _substG82.Checked,
+
 					AutoScale = _autoScale.Checked,
 					AutoScaleBorderDistX = decimal.Parse(_AutoScaleBorderDistX.Text),
 					AutoScaleBorderDistY = decimal.Parse(_AutoScaleBorderDistY.Text),
@@ -174,7 +177,10 @@ namespace CNCLib.GUI.Load
                 _ofsY.Text = value.OfsY.ToString();
                 _scaleX.Text = value.ScaleX.ToString();
                 _scaleY.Text = value.ScaleY.ToString();
-                _swapXY.Checked = value.SwapXY;
+				_swapXY.Checked = value.SwapXY;
+
+				_substG82.Checked = value.SubstG82;
+
 				_autoScale.Checked = value.AutoScale;
 				_AutoScaleBorderDistX.Text = value.AutoScaleBorderDistX.ToString();
 				_AutoScaleBorderDistY.Text = value.AutoScaleBorderDistY.ToString();

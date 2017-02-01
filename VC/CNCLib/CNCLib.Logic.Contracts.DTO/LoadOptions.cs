@@ -45,6 +45,10 @@ namespace CNCLib.Logic.Contracts.DTO
 		public string StartupCommands { get; set; }
 		public string ShutdownCommands { get; set; } = @"M5";
 
+		// G-CODE
+
+		public bool SubstG82 { get; set; } = false;
+
 		//HPGL
 		public bool SwapXY { get; set; } = false;
         public decimal ScaleX { get; set; } = 1;
