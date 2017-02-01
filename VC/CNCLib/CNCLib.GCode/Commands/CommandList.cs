@@ -17,12 +17,12 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CNCLib.GCode.Commands
 {
-    public class CommandList :	List<Command>
+	public class CommandList : List<Command>
 	{
-
 		#region Properties
 
 		public Command Current { get; set; }
@@ -35,18 +35,24 @@ namespace CNCLib.GCode.Commands
 		{
 			if (Count > 0)
 			{
-				this[Count-1].NextCommand = cmd;
+				this[Count - 1].NextCommand = cmd;
 				cmd.PrevCommand = this[Count - 1];
 			}
 			cmd.NextCommand = null;
 			base.Add(cmd);
 		}
 
-		public new void Add(Command cmd) 
-		{ 
-			AddCommand(cmd); 
+		public new void Add(Command cmd)
+		{
+			AddCommand(cmd);
 		}
-
+		public void AddCommands(IEnumerable<Command> cmds)
+		{
+			foreach (var cmd in cmds)
+			{
+				AddCommand(cmd);
+			}
+		}
 
 		public void UpdateCache()
 		{
@@ -62,7 +68,7 @@ namespace CNCLib.GCode.Commands
 
 		public void Paint(IOutputCommand output, object param)
 		{
-            var commandstate = new CommandState();
+			var commandstate = new CommandState();
 			bool haveseencurrent = Current == null;
 
 			foreach (Command cmd in this)
@@ -83,7 +89,7 @@ namespace CNCLib.GCode.Commands
 
 			foreach (Command r in this)
 			{
-				string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null,state);
+				string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null, state);
 				if (cmds != null)
 				{
 					foreach (string str in cmds)
@@ -96,6 +102,19 @@ namespace CNCLib.GCode.Commands
 			return list;
 		}
 
-		#endregion
+		public CommandList Convert(ConvertOptions options)
+		{
+			var list = new CommandList();
+			CommandState state = new CommandState();
+
+			foreach (Command r in this)
+			{
+				list.AddCommands(r.ConvertCommand(state, options));
+			}
+
+			return list;
+
+			#endregion
+		}
 	}
 }

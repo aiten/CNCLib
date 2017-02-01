@@ -119,6 +119,11 @@ namespace CNCLib.GCode.Load
 				AddCommands(LoadOptions.ShutdownCommands);
 
 			Commands.UpdateCache();
+
+			var options = new ConvertOptions() { SubstG82 = LoadOptions.SubstG82 };
+
+			Commands = Commands.Convert(options);
+			Commands.UpdateCache();
 		}
 
 		#endregion

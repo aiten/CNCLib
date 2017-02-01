@@ -139,11 +139,6 @@ namespace CNCLib.Wpf.Models
 		[Description("Machin can rotate the coordinate system")]
 		public bool Rotate { get; set; }
 
-		[Category(CATEGORY_BEHAVIOR)]
-		[DisplayName("SubstDrillCycle")]
-		[Description("Substidute Drill Cycle with g0/g1 because machine doesn't support g82")]
-		public bool SubstDrillCycle { get; set; }
-
 		private ObservableCollection<Models.MachineCommand> _MachineCommands;
 
 		public ObservableCollection<Models.MachineCommand> MachineCommands

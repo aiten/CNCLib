@@ -71,6 +71,7 @@
     <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Commands\CommandList.cs" />
     <Compile Include="Commands\CommandState.cs" />
+    <Compile Include="Commands\ConvertOptions.cs" />
     <Compile Include="Commands\G00Command.cs" />
     <Compile Include="Commands\G01Command.cs" />
     <Compile Include="Commands\DrillCommand.cs" />

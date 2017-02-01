@@ -34,82 +34,78 @@ namespace CNCLib.GCode.Commands
 
 		#endregion
 
-		#region GCode
-		public override string[] GetGCodeCommands(Point3D startfrom, CommandState state) 
+		#region Convert
+
+		public override Command[] ConvertCommand(CommandState state, ConvertOptions options)
 		{
-			string[] ret;
-			if (Settings.Instance.SubstDrillCycle)
+			if (!options.SubstG82)
 			{
-				// from
-				// G82 X-8.8900 Y3.8100  Z-0.2794 F400 R0.5000  P0.000000
-				// next command with R and P G82 X-11.4300 Y3.8100
-				// to
-				// G00 X-8.8900 Y3.8100
-				// G01 Z-0.2794 F400
-				// (G04 P0)
-				// G00 Z0.5000
+				return base.ConvertCommand(state, options);
+			}
 
-				Variable r = GetVariable('R');
-				if (r == null)
-				{
-					r = state.G82_R;
-				}
-				else
-				{
-					state.G82_R = r.ShallowCopy();
-				}
+			// from
+			// G82 X-8.8900 Y3.8100  Z-0.2794 F400 R0.5000  P0.000000
+			// next command with R and P G82 X-11.4300 Y3.8100
+			// to
+			// G00 X-8.8900 Y3.8100
+			// G01 Z-0.2794 F400
+			// (G04 P0)
+			// G00 Z0.5000
 
-				Variable p = GetVariable('P');
-				if (p == null)
-				{
-					p = state.G82_P;
-				}
-				else
-				{
-					state.G82_P = p.ShallowCopy();
-				}
-
-				Variable z = GetVariable('Z');
-				if (z == null)
-				{
-					z = state.G82_Z;
-				}
-				else
-				{
-					state.G82_Z = z.ShallowCopy();
-				}
-
-				var list = new List<string>();
-
-				var move1 = new G00Command();
-				CopyVariable('X', move1);
-				CopyVariable('Y', move1);
-				list.AddRange(move1.GetGCodeCommands(startfrom, state));
-
-				var move2 = new G01Command();
-				move2.AddVariable('Z', z);
-				CopyVariable('F', move2);
-				list.AddRange(move2.GetGCodeCommands(startfrom, state));
-
-				if (p != null && (p.Value ?? 0) != 0.0)
-				{
-					var move3 = new G04Command();
-					move3.AddVariable('P', p);
-					list.AddRange(move3.GetGCodeCommands(startfrom, state));
-				}
-
-				var move4 = new G00Command();
-				move4.AddVariable('Z', r);
-				list.AddRange(move4.GetGCodeCommands(startfrom, state));
-
-				ret = list.ToArray();
+			Variable r = GetVariable('R');
+			if (r == null)
+			{
+				r = state.G82_R;
 			}
 			else
 			{
-				ret = base.GetGCodeCommands(startfrom,state);
+				state.G82_R = r.ShallowCopy();
 			}
 
-			return ret;
+			Variable p = GetVariable('P');
+			if (p == null)
+			{
+				p = state.G82_P;
+			}
+			else
+			{
+				state.G82_P = p.ShallowCopy();
+			}
+
+			Variable z = GetVariable('Z');
+			if (z == null)
+			{
+				z = state.G82_Z;
+			}
+			else
+			{
+				state.G82_Z = z.ShallowCopy();
+			}
+
+			var list = new List<Command>();
+
+			var move1 = new G00Command();
+			CopyVariable('X', move1);
+			CopyVariable('Y', move1);
+			list.Add(move1);
+
+			var move2 = new G01Command();
+			move2.AddVariable('Z', z);
+			CopyVariable('F', move2);
+			list.Add(move2);
+
+			if (p != null && (p.Value ?? 0) != 0.0)
+			{
+				var move3 = new G04Command();
+				move3.AddVariable('P', p);
+				list.Add(move3);
+			}
+
+			var move4 = new G00Command();
+			move4.AddVariable('Z', r);
+			list.Add(move4);
+
+			return list.ToArray();
 		}
 
 		#endregion
