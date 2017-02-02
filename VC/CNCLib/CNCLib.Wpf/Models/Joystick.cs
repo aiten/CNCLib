@@ -39,7 +39,7 @@ namespace CNCLib.Wpf.Models
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("InitCommands")]
-		[Description(@"Commands sent to the joystick after connected. Seperated commands with \n")]
+		[Description(@"Commands sent to the joystick after connected. Seperate commands with \n")]
 		public string InitCommands { get; set; }
 	}
 }
