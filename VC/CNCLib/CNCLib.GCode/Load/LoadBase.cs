@@ -120,10 +120,13 @@ namespace CNCLib.GCode.Load
 
 			Commands.UpdateCache();
 
-			var options = new ConvertOptions() { SubstG82 = LoadOptions.SubstG82 };
+			if (LoadOptions != null)
+			{
+				var options = new ConvertOptions() { SubstG82 = LoadOptions.SubstG82 };
 
-			Commands = Commands.Convert(options);
-			Commands.UpdateCache();
+				Commands = Commands.Convert(options);
+				Commands.UpdateCache();
+			}
 		}
 
 		#endregion
