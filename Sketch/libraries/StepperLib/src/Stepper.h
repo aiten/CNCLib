@@ -324,7 +324,7 @@ protected:
 	// often accessed members first => is faster
 	// even size of struct and 2byte alignement
 
-	struct POD														// POD .. Plane Old Daty Type => no Constructor => init with default value = 0
+	struct POD														// POD .. Plane Old Data Type => no Constructor => init with default value = 0
 	{
 		volatile bool	_timerRunning;
 		bool			_checkReference;							// check for "IsReference" in ISR (while normal move)

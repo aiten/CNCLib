@@ -28,20 +28,6 @@ public:
 
 	typedef uint8_t rotarypage_t;
 
-	CRotaryButton()
-	{
-		_pos = 0;
-		_lastchangedA = false;
-		_lastPinValue = 0;
-		_lastadd = 0;
-		_minpos  = 0;
-		_maxpos     = 127/ACCURACY;
-		_overrunpos = false;
-
-		_pin1 =		0;
-		_pin2 =		0;
-	}
-
 	enum ERotaryEvent
 	{
 		Nothing=0,
@@ -58,67 +44,40 @@ public:
 
 	EnumAsByte(ERotaryEvent) Tick(uint8_t pinAValue, uint8_t pinBValue)
 	{
+		uint8_t p = ToPos(pinAValue,pinBValue);
+		if (p == _lastPos) return Nothing;
+
 		signed char add = 0;
+		if      (_lastPos == 3 && p == 0) add = 1;
+		else if (_lastPos == 0 && p == 3) add = -1;
+		else add = (signed char)p - (signed char)_lastPos;
 
-		if (_lastchangedA)									// ignore A and wait until B change
-		{
-			if (pinBValue != _lastPinValue)					// B change => A must be stable
-			{
-				_lastchangedA = false;
-				_lastPinValue = pinAValue;
-
-				if (pinBValue != LOW)    					// from LOW => HIGH
-					add = _lastPinValue != LOW ? +1 : -1;
-				else
-					add = _lastPinValue == LOW ? +1 : -1;
-			}
-		}
-		else												// ignore B and wait until A change
-		{
-			if (pinAValue != _lastPinValue)					// A change => B must be stable
-			{
-				_lastchangedA = true;
-				_lastPinValue = pinBValue;
-				if (pinAValue != LOW)    					// from LOW => HIGH
-					add = _lastPinValue == LOW ? +1 : -1;
-				else
-					add = _lastPinValue != LOW ? +1 : -1;
-			}
-		}
-
-		if (add==0) return Nothing;
-		
-		// check for change of direction
-
+		_lastPos = p;
 		_pos += add;
-		if (add != _lastadd)
-		{
-			_pos += add;
-			_lastadd = add;
-		}
 
 		range_t pos = GetPos();
-		if (pos > _maxpos) 
+		if (pos > _maxpos)
 		{
-			if (_overrunpos) 
-				_pos -= (_maxpos - _minpos +1) * ACCURACY;
+			if (_overrunpos)
+				_pos -= (_maxpos - _minpos + 1) * ACCURACY;
 			else
 				_pos -= ACCURACY;
-			
+
 			return Overrun;
 		}
-		
-		if (pos < _minpos) 
+
+		if (pos < _minpos)
 		{
-			if (_overrunpos) 
-				_pos += (_maxpos - _minpos +1) * ACCURACY;
+			if (_overrunpos)
+				_pos += (_maxpos - _minpos + 1) * ACCURACY;
 			else
 				_pos += ACCURACY;
 
 			return Underflow;
 		}
-		
+
 		return add > 0 ? RightTurn : LeftTurn;
+
 	}
 
 	void SetMinMax(range_t minpos, range_t maxpos, bool overrun)	{ _minpos = minpos; _maxpos = maxpos; _overrunpos = overrun; }
@@ -145,18 +104,21 @@ public:
 
 protected:
 
-	volatile range_t  _pos;
-	range_t			_minpos;
-	range_t			_maxpos;
+	static inline uint8_t ToPos(uint8_t pinAValue, uint8_t pinBValue)
+	{
+		if (pinAValue) return (pinBValue) ? 0 : 3;
+		return (pinBValue) ? 1 : 2;
+	}
 
-	bool			_overrunpos;
-	bool 			_lastchangedA;
+	volatile range_t  _pos=0;
+	range_t			_minpos=0;
+	range_t			_maxpos=127 / ACCURACY;
 
-	uint8_t 		_lastPinValue;
-	signed char 	_lastadd;
+	bool			_overrunpos = false;
+	uint8_t 		_lastPos = 0;
 
-	pin_t			_pin1;
-	pin_t			_pin2;
+	pin_t			_pin1		= 0;
+	pin_t			_pin2		= 0;
 };
 
 ////////////////////////////////////////////////////////

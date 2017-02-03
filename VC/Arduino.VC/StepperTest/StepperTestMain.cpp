@@ -19,6 +19,7 @@
 
 #include "stdafx.h"
 
+#include "RotaryTest.h"
 #include "RingBufferTest.h"
 #include "ToStringTest.h"
 #include "Matrix4x4Test.h"
@@ -35,6 +36,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	argc; argv;
 
 	CTestClass::Init(argv[0]);
+
+	{
+		CRotaryTest test;
+		test.RunTest();
+	}
 
 	{
 		CMotionControlTest test;

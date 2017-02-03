@@ -90,6 +90,7 @@
     <ClInclude Include="Matrix4x4Test.h" />
     <ClInclude Include="MotionControlTest.h" />
     <ClInclude Include="RingBufferTest.h" />
+    <ClInclude Include="RotaryTest.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StepperTest.h" />
     <ClInclude Include="targetver.h" />
@@ -101,6 +102,7 @@
     <ClCompile Include="Matrix4x4Test.cpp" />
     <ClCompile Include="MotionControlTest.cpp" />
     <ClCompile Include="RingBufferTest.cpp" />
+    <ClCompile Include="RotaryTest.cpp" />
     <ClCompile Include="StepperTest.cpp" />
     <ClCompile Include="StepperTestMain.cpp" />
     <ClCompile Include="stdafx.cpp">

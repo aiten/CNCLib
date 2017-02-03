@@ -155,7 +155,7 @@ protected:
 
 		void Init()	
 		{
-			*this = SModalState();		// POD .. Plane Old Daty Type => no Constructor => init with default value = 0
+			*this = SModalState();		// POD .. Plane Old Data Type => no Constructor => init with default value = 0
 			ZeroPresetIdx = 1;						// always 54
 //POD		G8xQ = G8xR = G8xPlane2 = G8xP = 0;
 			CutterRadiusCompensation = CutterRadiusOff;
@@ -173,17 +173,17 @@ protected:
 	////////////////////////////////////////////////////////
 	// Modeless State
 
-	struct SModlessState
+	struct SModelessState
 	{
 		uint8_t	ZeroPresetIdx;				// 0:g53-, 1:G54-
 		void Init()
 		{
-//			*this = SModlessState();		// POD .. Plane Old Daty Type => no Constructor => init with default value = 0
+//			*this = SModelessState();		// POD .. Plane Old Data Type => no Constructor => init with default value = 0
 			ZeroPresetIdx = _modalstate.ZeroPresetIdx;
 		}
 	};
 
-	static SModlessState _modlessstate;
+	static SModelessState _modlessstate;
 
 	////////////////////////////////////////////////////////
 	// Parser structure

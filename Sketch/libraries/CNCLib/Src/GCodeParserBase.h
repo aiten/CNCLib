@@ -138,7 +138,7 @@ protected:
 
 		void Init()	
 		{
-			*this = SModalState();		// POD .. Plane Old Daty Type => no Constructor => init with default value = 0
+			*this = SModalState();		// POD .. Plane Old Data Type => no Constructor => init with default value = 0
 //POD		Linenumber = 0;
 //POD		LastCommand = NULL;
 			UnitisMm = true;
@@ -162,17 +162,17 @@ protected:
 	////////////////////////////////////////////////////////
 	// Modeless State
 
-	struct SModlessState
+	struct SModelessState
 	{
 //		uint8_t	ZeroPresetIdx;				// 0:g53-, 1:G54-
 		void Init()
 		{
-			*this = SModlessState();		// POD .. Plane Old Daty Type => no Constructor => init with default value = 0
+			*this = SModelessState();		// POD .. Plane Old Data Type => no Constructor => init with default value = 0
 //			ZeroPresetIdx = _modalstate.ZeroPresetIdx;
 		}
 	};
 
-	static SModlessState _modlessstate;
+	static SModelessState _modlessstate;
 
 	////////////////////////////////////////////////////////
 	// Parser structure

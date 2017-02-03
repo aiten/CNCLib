@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////
 
 struct CGCodeParser::SModalState CGCodeParser::_modalstate;
-struct CGCodeParser::SModlessState CGCodeParser::_modlessstate;
+struct CGCodeParser::SModelessState CGCodeParser::_modlessstate;
 
 ////////////////////////////////////////////////////////////
 

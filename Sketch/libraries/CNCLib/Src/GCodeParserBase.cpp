@@ -62,7 +62,7 @@ bool CGCodeParserBase::_exit = false;
 ////////////////////////////////////////////////////////////
 
 struct CGCodeParserBase::SModalState CGCodeParserBase::_modalstate;
-struct CGCodeParserBase::SModlessState CGCodeParserBase::_modlessstate;
+struct CGCodeParserBase::SModelessState CGCodeParserBase::_modlessstate;
 
 ////////////////////////////////////////////////////////////
 
