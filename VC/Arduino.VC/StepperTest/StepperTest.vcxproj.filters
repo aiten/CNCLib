@@ -37,6 +37,9 @@
     <ClInclude Include="MotionControlTest.h">
       <Filter>Tests</Filter>
     </ClInclude>
+    <ClInclude Include="RotaryTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -64,6 +67,9 @@
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="MotionControlTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="RotaryTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>
