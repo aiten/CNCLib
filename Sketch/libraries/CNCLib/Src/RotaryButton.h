@@ -100,6 +100,7 @@ public:
 			_pin2=pin2; 
 			CHAL::pinModeInputPullUp(_pin1);
 			CHAL::pinModeInputPullUp(_pin2);
+			_lastPos = ToPos(CHAL::digitalRead(_pin1), CHAL::digitalRead(_pin2));
 	}
 
 protected:
