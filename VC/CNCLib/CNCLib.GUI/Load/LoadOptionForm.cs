@@ -50,16 +50,14 @@ namespace CNCLib.GUI.Load
             using (var controller = Dependency.Resolve<ILoadOptionsService>())
             {
                 var items = await controller.GetAll();
-				int idx = 0;
                 foreach (var s in items)
                 {
-                    _settingName.Items.Add(new LoadOptionDefinition() { Item = s });
+                    int idx = _settingName.Items.Add(new LoadOptionDefinition() { Item = s });
 					if (selectsettingstring == s.SettingName)
 					{
 						_settingName.SelectedItem = s;
 						_settingName.SelectedIndex = idx;
 					}
-					idx++;
 				}
             }
         }
