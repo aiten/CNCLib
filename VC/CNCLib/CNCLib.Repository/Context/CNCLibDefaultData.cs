@@ -158,14 +158,40 @@ namespace CNCLib.Repository.Context
                 Laser = true
             };
 
+			var miniCNC = new Machine
+			{
+				Name = "MiniCNC",
+				ComPort = "com6",
+				Axis = 3,
+				SizeX = 150m,
+				SizeY = 105m,
+				SizeZ = 30m,
+				SizeA = 360m,
+				SizeB = 360m,
+				SizeC = 360m,
+				BaudRate = 250000,
+				BufferSize = 63,
+				CommandToUpper = false,
+				ProbeSizeZ = 1.5m,
+				ProbeDist = 2m,
+				ProbeDistUp = 1m,
+				ProbeFeed = 100m,
+				SDSupport = false,
+				Spindle = true,
+				Coolant = true,
+				Rotate = false,
+				Laser = false
+			};
 
-            var machines = new []
+
+			var machines = new []
             {
                 proxonMF70,
                 kk1000s,
                 laser,
                 minilaser,
-                dck40laser
+                dck40laser,
+				miniCNC
             };
 
             context.Machines.AddRange(machines);
@@ -221,7 +247,16 @@ namespace CNCLib.Repository.Context
                 new MachineCommand{ Machine=dck40laser, CommandName = "Laser On",    CommandString =@"m106",         PosX=1, PosY=1,		JoystickMessage=";btn2:0" },
                 new MachineCommand{ Machine=dck40laser, CommandName = "Laser Min",   CommandString =@"m106 s1",      PosX=1, PosY=2,		JoystickMessage=";btn2:1" },
                 new MachineCommand{ Machine=dck40laser, CommandName = "Laser Max",   CommandString =@"m106 s255",    PosX=1, PosY=3,		JoystickMessage=";btn2:2" },
-            };
+
+                //MiniCNC
+                new MachineCommand{ Machine=miniCNC, CommandName = "Set XY = 0",   CommandString =@"g92 x0\ng92 y0\n;beep", PosX=0,PosY=0,   JoystickMessage=";btn4" },
+				new MachineCommand{ Machine=miniCNC, CommandName = "Set X = 0",    CommandString =@"g92 x0",    PosX=0, PosY=1,      JoystickMessage=";btn4s" },
+				new MachineCommand{ Machine=miniCNC, CommandName = "Set Y = 0",    CommandString =@"g92 y0",    PosX=0, PosY=2,      JoystickMessage=";btn4c" },
+				new MachineCommand{ Machine=miniCNC, CommandName = "Set Z = 0",    CommandString =@"g92 z0",    PosX=0, PosY=3,      JoystickMessage=";btn3" },
+				new MachineCommand{ Machine=miniCNC, CommandName = "Probe Z",      CommandString =@";probe:z",  PosX=0, PosY=4,      JoystickMessage=";btn3s" },
+				new MachineCommand{ Machine=miniCNC, CommandName = "Spindle On",   CommandString =@"m3",        PosX=1, PosY=0,      JoystickMessage=";btn1" },
+				new MachineCommand{ Machine=miniCNC, CommandName = "Spindle Off",  CommandString =@"m5",        PosX=1, PosY=1,      JoystickMessage=";btn1s" },
+			};
 
             var machineinitcommands = new[]
             {
