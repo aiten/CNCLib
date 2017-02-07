@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="IOControlTest.h" />
     <ClInclude Include="LinearLookupTest.h" />
     <ClInclude Include="Matrix4x4Test.h" />
     <ClInclude Include="MotionControlTest.h" />
@@ -98,6 +99,7 @@
     <ClInclude Include="ToStringTest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="IOControlTest.cpp" />
     <ClCompile Include="LinearLookupTest.cpp" />
     <ClCompile Include="Matrix4x4Test.cpp" />
     <ClCompile Include="MotionControlTest.cpp" />

@@ -40,6 +40,9 @@
     <ClInclude Include="RotaryTest.h">
       <Filter>Tests</Filter>
     </ClInclude>
+    <ClInclude Include="IOControlTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -70,6 +73,9 @@
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="RotaryTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="IOControlTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>
