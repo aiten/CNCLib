@@ -33,6 +33,13 @@
 
 ////////////////////////////////////////////////////////
 
+#ifndef SPINDLE_FADETIME 
+#define SPINDLE_FADETIME 8
+#endif
+
+////////////////////////////////////////////////////////
+
+
 struct ControlData
 {
 #ifdef SPINDLE_ENABLE_PIN
@@ -42,7 +49,7 @@ struct ControlData
 	inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return (uint8_t)level; }
 #else	
 	#ifdef SPINDLE_DIR_PIN
-		CAnalog8XIOControlSmooth<SPINDLE_ENABLE_PIN, SPINDLE_DIR_PIN, 2> _spindle;
+		CAnalog8XIOControlSmooth<SPINDLE_ENABLE_PIN, SPINDLE_DIR_PIN, SPINDLE_FADETIME> _spindle;
 		inline int16_t ConvertSpindleSpeedToIO(unsigned short level) { return CControl::ConvertSpindleSpeedToIO8(CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, maxspindlespeed)), level); }
 		#undef SPINDLE_DIR_PIN
 		#define SPINDLESPEEDISINT

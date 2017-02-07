@@ -28,6 +28,7 @@ public:
 
 	void Init(int16_t level=0)		// init and set default value
 	{
+		_nexttime = 0;
 		_currentlevel = 0;
 		MySetLevel(level);
 #ifndef REDUCED_SIZE
@@ -98,7 +99,7 @@ public:
 			else
 				_currentlevel++;
 			CHAL::digitalWrite(DIRPIN, _currentlevel >= 0);
-			CHAL::analogWrite8(PWMPIN, (uint8_t) _currentlevel);
+			CHAL::analogWrite8(PWMPIN, (uint8_t)abs(_currentlevel));
 		}
 	}
 
@@ -117,7 +118,6 @@ private:
 	void MySetLevel(int16_t level)
 	{
 		_iolevel = level;
-		_nexttime = 0;
 	}
 };
 
