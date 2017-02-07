@@ -111,6 +111,8 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 
 ////////////////////////////////////////////////////////////
 
+#ifndef REDUCED_SIZE
+
 unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
@@ -124,7 +126,7 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 
 	return super::IOControl(tool);
 }
-
+#endif
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Kill()
