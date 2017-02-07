@@ -21,12 +21,18 @@
 
 ////////////////////////////////////////////////////////
 
-template <pin_t PIN>
-class CAnalog8InvertIOControl
+template <pin_t PIN, uint16_t delayMs>
+class CAnalog8IOControlSmooth
 {
 public:
 
-	void Init(uint8_t level=0)				// init and set default value
+	CAnalog8IOControlSmooth()
+	{
+		_currentlevel=0;
+		_iolevel=0;
+	}
+
+	void Init(uint8_t level=0)		// init and set default value
 	{
 		MySetLevel(level);
 		_level = level;
@@ -72,15 +78,36 @@ public:
 	{
 		return _iolevel;
 	}
+
+	uint8_t GetCurrentIOLevel() const
+	{
+		return _currentlevel;
+	}
+
+	void Poll()
+	{
+		if (_currentlevel != _iolevel && millis() >= _nexttime)
+		{
+			_nexttime = millis() + delayMs;
+			if (_currentlevel > _iolevel)
+				_currentlevel--;
+			else
+				_currentlevel++;
+			CHAL::analogWrite8(PIN, _currentlevel);
+		}
+	}
+
 private:
 
-	uint8_t _level;	
-	uint8_t _iolevel;
+	unsigned long _nexttime;				// time to modify level
+	uint8_t _level;					// value if "enabled", On/Off will switch between 0..level
+	uint8_t _currentlevel;			// used for analogWrite
+	uint8_t _iolevel;				// current level
 
 	void MySetLevel(uint8_t level)
 	{
 		_iolevel = level;
-		CHAL::analogWrite8(PIN, 255 - level);
+		_nexttime = 0;
 	}
 };
 

@@ -35,11 +35,14 @@ class CStepper& Stepper = MyStepper;
 
 int _tmain(int /* argc */, _TCHAR* /* argv */ [])
 {
+
 	mydigitalRead = [](short pin)
 	{
 		switch (pin)
 		{
+#ifdef KILL_PIN
 			case KILL_PIN: return HIGH;
+#endif
 		}
 		return LOW;
 	};

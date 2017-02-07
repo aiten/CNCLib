@@ -88,6 +88,7 @@
 #define MOVEAWAYFROMREF_MM1000 250
 
 #define SPINDLE_ANALOGSPEED
+#define SPINDLE_ISLASER
 #define SPINDLE_MAXSPEED	255			// analog 255
 
 ////////////////////////////////////////////////////////

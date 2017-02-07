@@ -21,20 +21,25 @@
 
 ////////////////////////////////////////////////////////
 
-template <pin_t PIN>
-class CAnalog8InvertIOControl
+template <pin_t PWMPIN, pin_t DIRPIN, uint16_t delayMs>
+class CAnalog8XIOControlSmooth
 {
 public:
 
-	void Init(uint8_t level=0)				// init and set default value
+	void Init(int16_t level=0)		// init and set default value
 	{
+		_currentlevel = 0;
 		MySetLevel(level);
+#ifndef REDUCED_SIZE
 		_level = level;
+#endif
 	}
 
-	void On(uint8_t level)					// Set level and turn on
+	void On(int16_t level)					// Set level and turn on
 	{
+#ifndef REDUCED_SIZE
 		_level = level;
+#endif
 		MySetLevel(level);
 	}
 
@@ -43,10 +48,12 @@ public:
 		On(255);
 	}
 
+#ifndef REDUCED_SIZE
 	void On()								// turn on at specified level (see Level property)
 	{
 		MySetLevel(_level);
 	}
+#endif
 
 	void Off()								// turn off, use On() to switch on at same value
 	{
@@ -58,29 +65,59 @@ public:
 		return _iolevel != 0;
 	}
 
-	void SetLevel(uint8_t level)
+#ifndef REDUCED_SIZE
+	void SetLevel(int16_t level)
 	{
 		_level = level;
 	}
 
-	uint8_t GetLevel() const
+	int16_t GetLevel() const
 	{
 		return _level;
 	}
+#endif
 
-	uint8_t GetIOLevel() const
+	int16_t GetIOLevel() const
 	{
 		return _iolevel;
 	}
+
+	int16_t GetCurrentIOLevel() const
+	{
+		return _currentlevel;
+	}
+
+	void Poll()
+	{
+		unsigned long milli;
+		if (_currentlevel != _iolevel && (milli=millis()) >= _nexttime)
+		{
+			_nexttime = milli + delayMs;
+			if (_currentlevel > _iolevel)
+				_currentlevel--;
+			else
+				_currentlevel++;
+			CHAL::digitalWrite(DIRPIN, _currentlevel >= 0);
+			CHAL::analogWrite8(PWMPIN, (uint8_t) _currentlevel);
+		}
+	}
+
 private:
 
-	uint8_t _level;	
-	uint8_t _iolevel;
+	unsigned long _nexttime;		// time to modify level
 
-	void MySetLevel(uint8_t level)
+#ifndef REDUCED_SIZE
+	int16_t	_level;					// value if "enabled", On/Off will switch between 0..level
+#endif
+
+	int16_t	_currentlevel;			// used for analogWrite
+	int16_t	_iolevel;				// current level
+
+
+	void MySetLevel(int16_t level)
 	{
 		_iolevel = level;
-		CHAL::analogWrite8(PIN, 255 - level);
+		_nexttime = 0;
 	}
 };
 

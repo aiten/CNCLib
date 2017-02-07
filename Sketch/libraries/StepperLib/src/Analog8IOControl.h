@@ -26,21 +26,21 @@ class CAnalog8IOControl
 {
 public:
 
-	void Init(uint8_t level=0)		// init and set default value
+	void Init(uint8_t level=0)				// init and set default value
 	{
 		MySetLevel(level);
 		_level = level;
 	}
 
-	void On(uint8_t level)			// Set level and turn on
+	void On(uint8_t level)					// Set level and turn on
 	{
 		_level = level;
 		MySetLevel(level);
 	}
 
-	void OnMax()							// turn on at max level
+	void OnMax()							// turn on at max level, same as On(255)
 	{
-		MySetLevel(255);
+		On(255);
 	}
 
 	void On()								// turn on at specified level (see Level property)
@@ -55,7 +55,7 @@ public:
 
 	bool IsOn() const
 	{
-		return _lastlevel != 0;
+		return _iolevel != 0;
 	}
 
 	void SetLevel(uint8_t level)
@@ -68,14 +68,23 @@ public:
 		return _level;
 	}
 
+	uint8_t GetIOLevel() const
+	{
+		return _iolevel;
+	}
+
+	void Poll()
+	{
+	}
+
 private:
 
-	uint8_t _level;					// use like a property
-	uint8_t _lastlevel;
+	uint8_t _level;	
+	uint8_t _iolevel;
 
 	void MySetLevel(uint8_t level)
 	{
-		_lastlevel = level;
+		_iolevel = level;
 		CHAL::analogWrite8(PIN, level);
 	}
 };

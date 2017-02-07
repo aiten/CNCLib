@@ -19,6 +19,7 @@
 
 #include "stdafx.h"
 
+#include "IOControlTest.h"
 #include "RotaryTest.h"
 #include "RingBufferTest.h"
 #include "ToStringTest.h"
@@ -36,6 +37,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	argc; argv;
 
 	CTestClass::Init(argv[0]);
+
+	{
+		CIOControlTest test;
+		test.RunTest();
+	}
 
 	{
 		CRotaryTest test;

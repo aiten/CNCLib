@@ -175,7 +175,7 @@ public:
 
 	////////////////////////////////////////////////////////
 
-	virtual bool IsReference(uint8_t /* referenceid */) override
+	virtual uint8_t GetReferenceValue(uint8_t referenceid) override
 	{
 		/*
 		switch (referenceid)
@@ -193,7 +193,7 @@ public:
 		//		case 9: return HALFastdigitalRead(TB6560_B_MAX_PIN)==TB6560_REF_ON;
 		}
 		*/
-		return false;
+		return 0;
 	}
 
 	////////////////////////////////////////////////////////

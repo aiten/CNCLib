@@ -24,6 +24,7 @@
 #include <Control.h>
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
+#include <Analog8IOControlSmooth.h>
 #include <ReadPinIOControl.h>
 #include <PushButtonLow.h>
 #include <DummyIOControl.h>
@@ -49,7 +50,9 @@ public:
 	virtual void Kill() override;
 
 	virtual void IOControl(uint8_t tool, unsigned short level) override;
+#ifndef REDUCED_SIZE
 	virtual unsigned short IOControl(uint8_t tool) override;
+#endif
 
 protected:
 

@@ -101,7 +101,7 @@ void CControl::InitFromEeprom()
 
 uint8_t CControl::ConvertSpindleSpeedToIO8(unsigned short maxspeed, unsigned short level) 
 { 
-	if (level > maxspeed) return 255;
+	if (level >= maxspeed) return 255;
 	return (uint8_t)MulDivU32(level, 255, maxspeed); 
 }
 
