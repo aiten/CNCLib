@@ -94,6 +94,7 @@
 
 #define SPINDLE_ANALOGSPEED
 #define SPINDLE_MAXSPEED	255			// analog 255
+#define SPINDLE_ISLASER
 
 ////////////////////////////////////////////////////////
 

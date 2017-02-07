@@ -24,7 +24,7 @@ http://www.gnu.org/licenses/
 #include <Analog8IOControlSmooth.h>
 #include <Analog8IOControl.h>
 #include <Analog8InvertIOControl.h>
-#include <Analog9IOControlSmooth.h>
+#include <Analog8XIOControlSmooth.h>
 
 
 void CIOControlTest::RunTest()
@@ -200,7 +200,7 @@ void CIOControlTest::TestAnalogIOSmoothFade()
 
 void CIOControlTest::TestAnalog9IOSmooth()
 {
-	CAnalog9IOControlSmooth<10,11, 1> spindle;
+	CAnalog8XIOControlSmooth<10,11, 1> spindle;
 
 	spindle.Init(0);
 
@@ -246,7 +246,7 @@ void CIOControlTest::TestAnalog9IOSmooth()
 
 void CIOControlTest::TestAnalog9IOSmoothFade()
 {
-	CAnalog9IOControlSmooth<10,11, 0> spindle;
+	CAnalog8XIOControlSmooth<10,11, 0> spindle;
 
 	spindle.Init(CHAR_MAX);
 	Assert(CHAR_MAX, spindle.GetLevel());

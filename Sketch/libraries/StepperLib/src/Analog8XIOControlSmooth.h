@@ -22,18 +22,13 @@
 ////////////////////////////////////////////////////////
 
 template <pin_t PWMPIN, pin_t DIRPIN, uint16_t delayMs>
-class CAnalog9IOControlSmooth
+class CAnalog8XIOControlSmooth
 {
 public:
 
-	CAnalog9IOControlSmooth()
-	{
-		_currentlevel=0;
-		_iolevel=0;
-	}
-
 	void Init(int16_t level=0)		// init and set default value
 	{
+		_currentlevel = 0;
 		MySetLevel(level);
 #ifndef REDUCED_SIZE
 		_level = level;
@@ -94,9 +89,10 @@ public:
 
 	void Poll()
 	{
-		if (_currentlevel != _iolevel && millis() >= _nexttime)
+		unsigned long milli;
+		if (_currentlevel != _iolevel && (milli=millis()) >= _nexttime)
 		{
-			_nexttime = millis() + delayMs;
+			_nexttime = milli + delayMs;
 			if (_currentlevel > _iolevel)
 				_currentlevel--;
 			else

@@ -26,8 +26,7 @@
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
 #include <Analog8IOControlSmooth.h>
-#include <Analog9IOControlSmooth.h>
-#include <Analog8IOControlDirSmooth.h>
+#include <Analog8XIOControlSmooth.h>
 #include <ReadPinIOControl.h>
 #include <PushButtonLow.h>
 #include <DummyIOControl.h>
@@ -38,15 +37,19 @@ struct ControlData
 {
 #ifdef SPINDLE_ENABLE_PIN
 #ifdef SPINDLE_ANALOGSPEED
-#if SPINDLE_MAXSPEED == 255
+#ifdef SPINDLE_ISLASER
 	CAnalog8IOControl<SPINDLE_ENABLE_PIN> _spindle;
 	inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return (uint8_t)level; }
 #else	
-//	CAnalog8IOControlSmooth<SPINDLE_ENABLE_PIN, 2> _spindle;
-//	inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return CControl::ConvertSpindleSpeedToIO8(CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, maxspindlespeed)), level); }
-	CAnalog8IOControlDirSmooth<SPINDLE_ENABLE_PIN, SPINDLE_DIR_PIN, 2> _spindle;
-	inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return CControl::ConvertSpindleSpeedToIO8(CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, maxspindlespeed)), level); }
-#undef SPINDLE_DIR_PIN
+	#ifdef SPINDLE_DIR_PIN
+		CAnalog8XIOControlSmooth<SPINDLE_ENABLE_PIN, SPINDLE_DIR_PIN, 2> _spindle;
+		inline int16_t ConvertSpindleSpeedToIO(unsigned short level) { return CControl::ConvertSpindleSpeedToIO8(CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, maxspindlespeed)), level); }
+		#undef SPINDLE_DIR_PIN
+		#define SPINDLESPEEDISINT
+	#else
+		CAnalog8IOControlSmooth<SPINDLE_ENABLE_PIN, 2> _spindle;
+		inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return CControl::ConvertSpindleSpeedToIO8(CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, maxspindlespeed)), level); }
+	#endif
 #endif
 #else
 	COnOffIOControl<SPINDLE_ENABLE_PIN, SPINDLE_DIGITAL_ON, SPINDLE_DIGITAL_OFF> _spindle;
@@ -128,12 +131,16 @@ struct ControlData
 	{
 		switch (tool)
 		{
-			case CControl::SpindleCW:		_spindle.On(ConvertSpindleSpeedToIO(level),true);return true;
-			case CControl::SpindleCCW:		_spindle.On(ConvertSpindleSpeedToIO(level),false); return true;
-				/*
+#ifdef SPINDLESPEEDISINT
+			case CControl::SpindleCW:		_spindle.On(ConvertSpindleSpeedToIO(level));return true;
+			case CControl::SpindleCCW:		_spindle.On(-ConvertSpindleSpeedToIO(level)); return true;
+#else
+
 			case CControl::SpindleCW:
-			case CControl::SpindleCCW:		_spindle.On(ConvertSpindleSpeedToIO(level)); _spindleDir.Set(tool == CControl::SpindleCCW);	return true;
-*/
+			case CControl::SpindleCCW:		_spindle.On(ConvertSpindleSpeedToIO(level)); 
+											_spindleDir.Set(tool == CControl::SpindleCCW);	
+											return true;
+#endif
 			case CControl::Coolant:			_coolant.Set(level > 0); return true;
 			case CControl::ControllerFan:	_controllerfan.SetLevel((uint8_t)level); return true;
 		}
@@ -198,6 +205,9 @@ constexpr uint16_t GetInfo1a()
 #ifdef SPINDLE_DIR_PIN
 		CConfigEeprom::HAVE_SPINDLE_DIR |
 #endif
+#endif
+#ifdef SPINDLE_ISLASER
+		CConfigEeprom::IS_LASER |
 #endif
 #ifdef COOLANT_PIN
 		CConfigEeprom::HAVE_COOLANT |

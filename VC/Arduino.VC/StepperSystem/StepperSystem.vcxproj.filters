@@ -249,10 +249,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8IOControlSmooth.h">
       <Filter>StepperLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog9IOControlSmooth.h">
-      <Filter>StepperLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8IOControlDirSmooth.h">
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8XIOControlSmooth.h">
       <Filter>StepperLib</Filter>
     </ClInclude>
   </ItemGroup>
