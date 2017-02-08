@@ -924,30 +924,21 @@ namespace Framework.Arduino
         }
         protected virtual void OnReplyError(ArduinoSerialCommunicationEventArgs info)
         {
-			if (_commands.Count > 0)
-			{
-				_commands.Last().ReplyType |= EReplyType.ReplyError;
-			}
+			WriteLastCommandReplyType(EReplyType.ReplyError);
 
 			if (ReplyError != null)
 				Task.Run(() => ReplyError?.Invoke(this, info));
         }
         protected virtual void OnReplyDone(ArduinoSerialCommunicationEventArgs info)
         {
-			if (_commands.Count > 0)
-			{
-				_commands.Last().ReplyType |= EReplyType.ReplyOK;
-			}
+			WriteLastCommandReplyType(EReplyType.ReplyOK);
 
 			if (ReplyOK != null)
 				Task.Run(() => ReplyOK?.Invoke(this, info));
         }
         protected virtual void OnReplyUnknown(ArduinoSerialCommunicationEventArgs info)
         {
-			if (_commands.Count > 0)
-			{
-				_commands.Last().ReplyType |= EReplyType.ReplyUnkown;
-			}
+			WriteLastCommandReplyType(EReplyType.ReplyUnkown);
 
 			if (ReplyUnknown != null)
 				Task.Run(() => ReplyUnknown?.Invoke(this, info));
@@ -964,11 +955,22 @@ namespace Framework.Arduino
 				Task.Run(() => CommandQueueEmpty?.Invoke(this, info));
 		}
 
-		#endregion
+		private void WriteLastCommandReplyType(EReplyType replytype)
+		{
+			lock (_commands)
+			{
+				if (_commands.Count > 0)
+				{
+					_commands.Last().ReplyType |= replytype;
+				}
+			}
+		}
 
-		#region Command History 
+#endregion
 
-		List<Command> _commands = new List<Command>();
+#region Command History 
+
+List<Command> _commands = new List<Command>();
         public List<Command> CommandHistoryCopy { get { lock (_commands) { return new List<Command>(_commands); } } }
 
 		public Command LastCommand
