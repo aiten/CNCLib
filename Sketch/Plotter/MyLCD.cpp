@@ -26,12 +26,11 @@
 
 #include <StepperLib.h>
 #include <CNCLib.h>
-#include <LiquidCrystal_I2C.h>
 
 #include "MyControl.h"
 #include "MyLCD.h"
 
-#ifdef __USE_LCD__
+#ifdef MYUSE_LCD
 
 #include "PlotterControl.h"
 #include "HPGLParser.h"

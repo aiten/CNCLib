@@ -22,10 +22,18 @@
 ////////////////////////////////////////////////////////
 
 #include <Control.h>
+#include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
+#include <Analog8IOControlSmooth.h>
 #include <ReadPinIOControl.h>
+#include <PushButtonLow.h>
+#include <DummyIOControl.h>
+#include <ConfigEeprom.h>
 
-#include "Configuration_Plotter.h"
+#include "Configuration.h"
+
+// must be after "Configuration.h" because of defines
+#include <ControlImplementation.h>
 
 ////////////////////////////////////////////////////////
 
@@ -37,30 +45,41 @@ private:
 
 public:
 
-	void MyInit() { return Init(); }
+	CMyControl()				 { }
+
+	virtual void Kill() override;
 
 	virtual void IOControl(uint8_t tool, unsigned short level) override;
+#ifndef REDUCED_SIZE
 	virtual unsigned short IOControl(uint8_t tool) override;
+#endif
 
 protected:
 
 	virtual void Init() override;
+	virtual void Initialized() override;
+
+	virtual void TimerInterrupt() override;
 	virtual bool Parse(CStreamReader* reader, Stream* output) override;
 	virtual void Idle(unsigned int idletime) override;
-	virtual bool OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo) override;
 
 	virtual bool IsKill() override;
+	virtual void Poll() override;
 
-	virtual void GoToReference() override;
-	virtual bool GoToReference(axis_t axis, steprate_t steprate, bool toMinRef) override;
+	virtual bool OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo) override;
+
+public:
+
+	void MyInit() { return Init(); }
 
 private:
 
-	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
-	CReadPinIOControl<RAMPS14_KILL_PIN,RAMPS14_LCD_KILL_PIN_ON> _kill;
+	static const CConfigEeprom::SCNCEeprom _eepromFlash;
 
+	ControlData _data;
 };
 
 ////////////////////////////////////////////////////////
 
 extern CMyControl Control;
+

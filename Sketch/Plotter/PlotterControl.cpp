@@ -73,8 +73,8 @@ void CPlotter::PenUp()
 	{
 		CStepper::GetInstance()->Wait(1);
 		_isPenDown = false;
-		CMotionControlBase::GetInstance()->MoveAbsEx(MOVEPENUP_FEEDRATE, Z_AXIS, POS_Z_PENUP, -1);
-#ifdef __USE_LCD__
+		CMotionControlBase::GetInstance()->MoveAbsEx(MOVEPENUP_FEEDRATE, Z_AXIS, CStepper::GetInstance()->GetLimitMin(Z_AXIS), -1);
+#ifdef MYUSE_LCD
 		// Lcd.DrawRequest(true,CLcd::DrawAll); => delay off movementbuffer
 #endif
 
@@ -89,9 +89,9 @@ void CPlotter::PenDown()
 	if (!_isPenDown)
 	{
 		_isPenDown = true;
-		CMotionControlBase::GetInstance()->MoveAbsEx(MOVEPENDOWN_FEEDRATE,Z_AXIS, POS_Z_PENDOWN,-1);
+		CMotionControlBase::GetInstance()->MoveAbsEx(MOVEPENDOWN_FEEDRATE,Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS),-1);
 		CStepper::GetInstance()->Wait(1);
-#ifdef __USE_LCD__
+#ifdef MYUSE_LCD
 		// Lcd.DrawRequest(true,CLcd::DrawAll); => delay off movementbuffer
 		Lcd.DrawRequest(CLcd::DrawForceAll);
 #endif

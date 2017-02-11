@@ -27,7 +27,10 @@
 
 #include <Wire.h>  // Comes with Arduino IDE
 
+#ifdef MYUSE_LCD
 #include <LiquidCrystal_I2C.h>
+#endif
+
 
 ////////////////////////////////////////////////////////////
 
@@ -37,7 +40,7 @@ CPlotter Plotter;
 
 ////////////////////////////////////////////////////////////
 
-#ifdef __USE_LCD__
+#ifdef MYUSE_LCD
 CMyLcd Lcd;
 #endif
 

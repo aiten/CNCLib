@@ -18,6 +18,7 @@
 ////////////////////////////////////////////////////////
 
 #include <stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <arduino.h>
@@ -28,116 +29,172 @@
 #include "HPGLParser.h"
 #include "PlotterControl.h"
 
+////////////////////////////////////////////////////////////
+
 CMotionControl MotionControl;
+CConfigEeprom Eprom;
 HardwareSerial& StepperSerial = Serial;
+
+////////////////////////////////////////////////////////////
+
+#ifndef MYNUM_AXIS
+#error Please define MYNUM_AXIS
+#endif
+
+////////////////////////////////////////////////////////////
+
+const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash PROGMEM =
+{
+	EPROM_SIGNATURE,
+	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
+	GetInfo1a(),0,
+	0,
+	STEPPERDIRECTION,0,0,0,
+	SPINDLE_MAXSPEED,0,
+	CNC_MAXSPEED,
+	CNC_ACC,
+	CNC_DEC,
+	STEPRATERATE_REFMOVE,
+	MOVEAWAYFROMREF_MM1000,
+	X_STEPSPERMM/1000.0,
+	{
+		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS,  X_REFERENCEHITVALUE },
+		{ Y_MAXSIZE,     Y_USEREFERENCE, REFMOVE_2_AXIS,  Y_REFERENCEHITVALUE },
+		{ Z_MAXSIZE,     Z_USEREFERENCE, REFMOVE_3_AXIS,  Z_REFERENCEHITVALUE },
+#if NUM_AXIS > 3
+		{ A_MAXSIZE,     A_USEREFERENCE, REFMOVE_4_AXIS,  A_REFERENCEHITVALUE },
+#endif
+#if NUM_AXIS > 4
+		{ B_MAXSIZE,     B_USEREFERENCE, REFMOVE_5_AXIS,  B_REFERENCEHITVALUE },
+#endif
+#if NUM_AXIS > 5
+		{ C_MAXSIZE,     C_USEREFERENCE, REFMOVE_6_AXIS,  C_REFERENCEHITVALUE },
+#endif
+	}
+};
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Init()
 {
-  CMotionControlBase::GetInstance()->InitConversion(ConversionToMm1000, ConversionToMachine);
+	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &_eepromFlash, EPROM_SIGNATURE);
 
-#ifdef __USE_LCD__
-	Lcd.Init();
+#ifdef DISABLELEDBLINK
+	DisableBlinkLed();
 #endif
 
-	StepperSerial.println(F("Plotter(HA) is starting ... (" __DATE__ ", " __TIME__ ")"));
+	StepperSerial.println(MESSAGE_MYCONTROL_Starting);
 
 	super::Init();
 
+	InitFromEeprom();
+
+	_data.Init();
+
 	CHPGLParser::Init();
 
-	CStepper::GetInstance()->SetLimitMax(X_AXIS, CMotionControlBase::GetInstance()->ToMachine(X_AXIS, X_MAXSIZE));
-	CStepper::GetInstance()->SetLimitMax(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, Y_MAXSIZE));
-	CStepper::GetInstance()->SetLimitMax(Z_AXIS, CMotionControlBase::GetInstance()->ToMachine(Z_AXIS, Z_MAXSIZE));
+#ifdef MYUSE_LCD
+	Lcd.Init();
+#endif
 
-	CStepper::GetInstance()->SetJerkSpeed(0, 1000);  // 500 * 8?
-	CStepper::GetInstance()->SetJerkSpeed(1, 2000);
-	CStepper::GetInstance()->SetJerkSpeed(2, 1000);
-
-	CStepper::GetInstance()->SetDefaultMaxSpeed(MAXSTEPRATE, 400, 450);
-  
-	_controllerfan.Init(255);
-	_kill.Init();
-
-#if defined(__AVR_ARCH__) || defined(__SAM3X8E__)
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(X_AXIS, true), true);
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true), true);
-	CStepper::GetInstance()->UseReference(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true), true);
-	CStepper::GetInstance()->UseReference(EMERGENCY_ENDSTOP, true);    // not stop
-#endif    
-}
-
-////////////////////////////////////////////////////////////
-
-void CMyControl::GoToReference()
-{
-	GoToReference(Z_AXIS, 0, true);
-	GoToReference(Y_AXIS, 0, true);
-	GoToReference(X_AXIS, 0, true);
-}
-
-////////////////////////////////////////////////////////////
-
-bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
-{
-	return super::GoToReference(axis, FEEDRATE_REFMOVE, toMinRef);
-}
-
-////////////////////////////////////////////////////////////
-
-bool CMyControl::IsKill()
-{
-	return _kill.IsOn();
 }
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
-	switch (tool)
+	if (!_data.IOControl(tool, level))
 	{
-#ifdef CONTROLLERFAN_FAN_PIN
-		case ControllerFan:		_controllerfan.SetLevel((uint8_t)level);		return;
-#endif
+		super::IOControl(tool, level);
 	}
-
-	super::IOControl(tool, level);
 }
 
 ////////////////////////////////////////////////////////////
+
+#ifndef REDUCED_SIZE
 
 unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{
-#ifdef CONTROLLERFAN_FAN_PIN
-		case ControllerFan: { return _controllerfan.GetLevel(); }
-#endif
+		case SpindleCW:
+		case SpindleCCW:	{ return _data._spindle.IsOn(); }
+		case Probe:			{ return _data._probe.IsOn(); }
+		case Coolant:		{ return _data._coolant.IsOn(); }
+		case ControllerFan: { return _data._controllerfan.GetLevel(); }
 	}
 
 	return super::IOControl(tool);
+}
+#endif
+////////////////////////////////////////////////////////////
+
+void CMyControl::Kill()
+{
+	super::Kill();
+	_data.Kill();
+}
+
+////////////////////////////////////////////////////////////
+
+bool CMyControl::IsKill()
+{
+	if (_data.IsKill())
+	{
+#ifdef MYUSE_LCD
+		Lcd.Diagnostic(F("E-Stop"));
+#endif
+		return true;
+	}
+	return false;
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::TimerInterrupt()
+{
+	super::TimerInterrupt();
+	_data.TimerInterrupt();
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::Initialized()
+{
+	super::Initialized();
+	_data.Initialized();
+}
+
+////////////////////////////////////////////////////////////
+
+void CMyControl::Poll()
+{
+	super::Poll();
+
+	if (IsHold())
+	{
+		if (_data._resume.IsOn() || _data._holdresume.IsOn())
+		{
+			Resume();
+#ifdef MYUSE_LCD
+			Lcd.ClearDiagnostic();
+#endif
+		}
+	}
+	else if (_data._hold.IsOn() || _data._holdresume.IsOn())
+	{
+		Hold();
+#ifdef MYUSE_LCD
+		Lcd.Diagnostic(F("LCD Hold"));
+#endif
+	}
 }
 
 ////////////////////////////////////////////////////////////
 
 bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo)
 {
-#ifdef CONTROLLERFAN_FAN_PIN
-	switch (eventtype)
-	{
-		case OnStartEvent:
-			_controllerfan.On();
-			break;
-		case OnIdleEvent:
-			if (millis() - CStepper::GetInstance()->IdleTime() > CONTROLLERFAN_ONTIME)
-			{
-				_controllerfan.Off();
-			}
-			break;
-	}
-#endif
-
+	_data.OnEvent(eventtype, addinfo);
 	return super::OnEvent(eventtype, addinfo);
 }
 

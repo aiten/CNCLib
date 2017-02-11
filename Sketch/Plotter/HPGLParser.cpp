@@ -62,6 +62,19 @@ mm1000_t CHPGLParser::HPGLToMM1000Y(long yy)
 
 void CHPGLParser::Parse()
 {
+	char ch = _reader->GetCharToUpper();
+	if (ch == '$')
+	{
+		_reader->GetNextChar();
+		if (CSingleton<CConfigEeprom>::GetInstance() == NULL || !CSingleton<CConfigEeprom>::GetInstance()->ParseConfig(this))
+		{
+			if (!IsError())
+				Error(MESSAGE_GCODE_IllegalCommand);
+		}
+		_reader->GetNextCharSkipScaces();
+		return;
+	}
+
 	if (IsToken(F("SP"), false, false) || IsToken(F("LT"), false, false))	{ IgnoreCommand();		return; }
 	if (IsToken(F("IN"), false, false))										{ InitCommand();		return; }
 	if (IsToken(F("PD"), false, false))										{ PenMoveCommand(PD);	return; }
