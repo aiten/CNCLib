@@ -551,13 +551,13 @@ namespace Framework.Arduino
                 string firstX = commandtext.Substring(0, firstSize);
                 commandtext = commandtext.Substring(firstSize);
 
-                if (!WriteSerial(firstX))
+                if (!WriteSerial(firstX,false))
                     return;
 
                Thread.Sleep(250);
             }
 
-            if (WriteLineSerial(commandtext))
+            if (WriteSerial(commandtext,true))
             {
                 cmd.SentTime = DateTime.Now;
                 eventarg = new ArduinoSerialCommunicationEventArgs(null, cmd);
@@ -565,12 +565,15 @@ namespace Framework.Arduino
             }
         }
 
-        private bool WriteSerial(string commandtext)
+        private bool WriteSerial(string commandtext, bool addNewLine)
         {
             Trace.WriteTrace("Write", commandtext);
             try
             {
-                _serialPort.Write(commandtext);
+				if (addNewLine)
+					commandtext = commandtext + _serialPort.NewLine;
+
+				WriteToSerialAsync(commandtext).ConfigureAwait(false).GetAwaiter().GetResult();
                 return true;
             }
             catch (InvalidOperationException e)
@@ -586,31 +589,6 @@ namespace Framework.Arduino
             catch (Exception e)
             {
                 Trace.WriteTraceFlush("WriteException", $@"{commandtext} => {e.GetType().ToString()} {e.Message}");
-            }
-            return false;
-        }
-
-        private bool WriteLineSerial(string commandtext)
-        {
-            Trace.WriteTrace("Write", $@"{commandtext}\n");
-            try
-            {
-                _serialPort.WriteLine(commandtext);
-                return true;
-            }
-            catch (InvalidOperationException e)
-            {
-                Trace.WriteTraceFlush("WriteInvalidOperationException", $@"{commandtext}\n => {e.Message}");
-                Disconnect(false);
-            }
-            catch (IOException e)
-            {
-                Trace.WriteTraceFlush("WriteIOException", $@"{commandtext}\n => {e.Message}");
-                ErrorSerial();
-            }
-            catch (Exception e)
-            {
-                Trace.WriteTraceFlush("WriteException", $@"{commandtext}\n => {e.GetType().ToString()} {e.Message}");
             }
             return false;
         }
@@ -753,13 +731,20 @@ namespace Framework.Arduino
             }
         }
 
-		private string ReadFromSerial()
+		public async Task WriteToSerialAsync(string str)
+		{
+			byte[] encodedStr =	_serialPort.Encoding.GetBytes(str);
+
+			await _serialPort.BaseStream.WriteAsync(encodedStr, 0, encodedStr.Length, _serialPortCancellationTokenSource.Token);
+			await _serialPort.BaseStream.FlushAsync();
+		}
+
+		private async Task<string> ReadFromSerialAsync()
 		{
 			int readmaxsize = 256;
 			byte[] buffer = new byte[readmaxsize];
-			int readsize = _serialPort.BaseStream.ReadAsync(buffer, 0, readmaxsize, _serialPortCancellationTokenSource.Token).ConfigureAwait(false).GetAwaiter().GetResult();
-			return System.Text.Encoding.Default.GetString(buffer, 0, readsize);
-
+			int readsize = await _serialPort.BaseStream.ReadAsync(buffer, 0, readmaxsize, _serialPortCancellationTokenSource.Token);
+			return _serialPort.Encoding.GetString(buffer, 0, readsize);
 		}
 
         private void Read()
@@ -770,7 +755,7 @@ namespace Framework.Arduino
 			{
 				try
 				{
-					sb.Append(ReadFromSerial());
+					sb.Append(ReadFromSerialAsync().ConfigureAwait(false).GetAwaiter().GetResult());
 				}
 				catch (InvalidOperationException e)
 				{
