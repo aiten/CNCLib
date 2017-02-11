@@ -47,7 +47,16 @@ bool CGCode3DParser::InitParse()
 	if (_state._isM28)
 	{
 		const char* linestart = _reader->GetBuffer();
-		if (!ParseLineNumber(false))	return false;
+
+		// ignore linenumbers
+		if (_reader->SkipSpacesToUpper() == 'N')
+		{
+			if (IsUInt(_reader->GetNextChar()))
+			{
+				GetInt32();
+				_reader->SkipSpaces();
+			}
+		}
 
 		// m28 writes all subsequent commands to the sd file
 		// m29 ends the writing => we have to check first

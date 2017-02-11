@@ -226,6 +226,7 @@ namespace CNCLib.Wpf.ViewModels
 					Com.ClearCommandHistory();
 					Command last = null;
 					CommandState state = new CommandState();
+					ushort line = 1;
 					Commands.ForEach((cmd) =>
 					{
 						string[] cmds = cmd.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null,state);
@@ -233,7 +234,7 @@ namespace CNCLib.Wpf.ViewModels
 						{
 							foreach (string str in cmds)
 							{
-								foreach (var c in Com.QueueCommand(str))
+								foreach (var c in Com.QueueCommand($"N{line++} {str}"))
 								{
 									c.Tag = cmd;
 								}

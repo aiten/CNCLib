@@ -214,7 +214,7 @@ uint8_t CGCodeParserBase::GetSubCode()
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParserBase::ParseLineNumber(bool setlinenumber)
+bool CGCodeParserBase::ParseLineNumber()
 {
 	if (_reader->SkipSpacesToUpper() == 'N')
 	{
@@ -223,11 +223,17 @@ bool CGCodeParserBase::ParseLineNumber(bool setlinenumber)
 			Error(MESSAGE(MESSAGE_GCODE_LinenumberExpected));
 			return false;
 		}
-		long linenumber = GetInt32();
-		if (setlinenumber && !_reader->IsError())
-			_modalstate.Linenumber = linenumber;
-
+#ifdef REDUCED_SIZE
+		_modalstate.Linenumber = GetUInt16();
+#else
+		_modalstate.Linenumber = GetInt32();
+#endif
 		_reader->SkipSpaces();
+
+		_OkMessage = []()
+		{
+			StepperSerial.print((uint16_t) _modalstate.Linenumber);
+		};
 	}
 	return true;
 }
@@ -291,7 +297,7 @@ void CGCodeParserBase::Parse()
 			case ';':	SkipSpacesOrComment(); break;
 			case 'N':
 			{
-				if (!ParseLineNumber(true))		return;
+				if (!ParseLineNumber())		return;
 				break;
 			}
 			case 'G':

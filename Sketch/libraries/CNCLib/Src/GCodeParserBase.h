@@ -92,7 +92,7 @@ protected:
 	virtual bool MCommand(mcode_t mcode);
 	virtual bool Command(char ch);
 
-	virtual bool ParseLineNumber(bool setlinenumber);	// line number is ignored! => ret is error
+	virtual bool ParseLineNumber();
 	virtual char SkipSpacesOrComment() override;
 
 	virtual mm1000_t CalcAllPreset(axis_t axis);
@@ -107,7 +107,11 @@ protected:
 
 	struct SModalState
 	{
+#ifdef REDUCED_SIZE
+		uint16_t		Linenumber;
+#else
 		long			Linenumber;
+#endif
 
 		uint8_t			Plane_axis_0;			// x
 		uint8_t			Plane_axis_1;			// y 
