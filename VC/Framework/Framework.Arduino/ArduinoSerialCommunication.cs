@@ -35,8 +35,9 @@ namespace Framework.Arduino
 
         bool _continue;
         SerialPort _serialPort;
-        Thread _readThread;
-        Thread _writeThread;
+		CancellationTokenSource _serialPortCancellationTokenSource;
+		Thread _readThread;
+		Thread _writeThread;
 		AutoResetEvent _autoEvent = new AutoResetEvent(false);
 		TraceStream _trace = new TraceStream();
 
@@ -181,18 +182,26 @@ namespace Framework.Arduino
             Trace.WriteTraceFlush("Disconnecting",join.ToString());
             Aborted = true;
             _continue = false;
+			_serialPortCancellationTokenSource.Cancel();
 
-            if (join && _readThread != null)
-                _readThread.Join();
-            _readThread = null;
+
+			if (join && _readThread != null)
+			{
+				_readThread.Abort();
+				while (!_readThread.Join(100))
+				{
+						Thread.Sleep(1);
+				}
+			}
+			_readThread = null;
 
             if (join && _writeThread != null)
             {
-                while (!_writeThread.Join(100))
+               while (!_writeThread.Join(100))
                 {
                     _autoEvent.Set();
                 }
-            }
+			}
             _writeThread = null;
 
             if (_serialPort != null)
@@ -206,8 +215,12 @@ namespace Framework.Arduino
                     // ignore exception
                 }
                 _serialPort.Dispose();
-            }
-            Trace.WriteTraceFlush("Disconnected", join.ToString());
+				_serialPortCancellationTokenSource.Dispose();
+				_serialPort = null;
+				_serialPortCancellationTokenSource = null;
+
+			}
+			Trace.WriteTraceFlush("Disconnected", join.ToString());
         }
 
         /// <summary>
@@ -251,8 +264,10 @@ namespace Framework.Arduino
 		protected virtual void SetupCom(string portname)
         {
             _serialPort = new SerialPort();
+			_serialPortCancellationTokenSource = new CancellationTokenSource();
 
-            _serialPort.PortName = portname;
+
+			_serialPort.PortName = portname;
             _serialPort.BaudRate = BaudRate;
             _serialPort.Parity = Parity.None;
             _serialPort.DataBits = 8;
@@ -265,7 +280,8 @@ namespace Framework.Arduino
             // Set the read/write timeouts
             _serialPort.ReadTimeout = 500;
             _serialPort.WriteTimeout = 500;
-        }
+
+		}
 
 		public void Dispose()
 		{
@@ -742,6 +758,15 @@ namespace Framework.Arduino
             }
         }
 
+		char MyRead()
+		{
+			int readmaxsize = 1;
+			byte[] buffer = new byte[readmaxsize];
+			int readsize = _serialPort.BaseStream.ReadAsync(buffer, 0, readmaxsize, _serialPortCancellationTokenSource.Token).ConfigureAwait(false).GetAwaiter().GetResult();
+			return System.Text.Encoding.Default.GetString(buffer, 0, readsize)[0];
+
+		}
+
         private void Read()
         {
             // Aync read thread to read 8command) results from the arduino
@@ -756,7 +781,8 @@ namespace Framework.Arduino
                 {
 					if (true)
 					{
-						ch = (char)_serialPort.ReadChar();
+						//ch = (char)_serialPort.ReadChar();
+						ch = MyRead();
 /*
 					using (StreamWriter f = new StreamWriter(@"c:\tmp\cnclibread.txt", true))
 					{
@@ -968,9 +994,9 @@ namespace Framework.Arduino
 
 #endregion
 
-#region Command History 
+		#region Command History 
 
-List<Command> _commands = new List<Command>();
+		List<Command> _commands = new List<Command>();
         public List<Command> CommandHistoryCopy { get { lock (_commands) { return new List<Command>(_commands); } } }
 
 		public Command LastCommand

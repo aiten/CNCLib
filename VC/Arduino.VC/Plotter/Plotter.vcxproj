@@ -86,8 +86,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sketch\Plotter\Configuration_Plotter.h" />
-    <ClInclude Include="..\..\..\Sketch\Plotter\Configuration_Plotter_Ramps14.h" />
+    <ClInclude Include="..\..\..\Sketch\Plotter\Configuration.h" />
+    <ClInclude Include="..\..\..\Sketch\Plotter\Configuration_Ramps14.h" />
     <ClInclude Include="..\..\..\Sketch\Plotter\HPGLParser.h" />
     <ClInclude Include="..\..\..\Sketch\Plotter\MyControl.h" />
     <ClInclude Include="..\..\..\Sketch\Plotter\MyLCD.h" />

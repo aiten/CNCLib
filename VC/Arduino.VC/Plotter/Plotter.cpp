@@ -45,7 +45,9 @@ CMsvcStepper MyStepper;
 class CStepper& Stepper = MyStepper;
 CMyControl Control;
 CPlotter Plotter;
+#ifdef MYUSE_LCD
 CMyLcd Lcd;
+#endif
 
 void setup() 
 {     
