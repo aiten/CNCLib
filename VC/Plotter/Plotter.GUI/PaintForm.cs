@@ -131,7 +131,7 @@ namespace Plotter.GUI
 						commands.AddRange(cmds);
 					}
 				}
-				Com.SendCommands(commands.ToArray());
+				Com.SendCommandsAsync(commands.ToArray());
 			});
         }
         private void _paintfrom_Click(object sender, EventArgs e)
@@ -155,7 +155,7 @@ namespace Plotter.GUI
 					}
 					idx++;
 				}
-	            Com.SendCommands(commands.ToArray());
+	            Com.SendCommandsAsync(commands.ToArray());
 			});
 		}
         private void _paintSelected_Click(object sender, EventArgs e)
@@ -176,7 +176,7 @@ namespace Plotter.GUI
 					}
 					idx++;
 				}
-		        Com.SendCommands(commands.ToArray());
+		        Com.SendCommandsAsync(commands.ToArray());
 	            SetSelShape(_plotterCtrl.SelectedShape + 1);
 			});
 		}
@@ -344,7 +344,7 @@ namespace Plotter.GUI
 			{
 				AsyncRunCommand(() =>
 				{
-					Com.SendCommands(info.Shape.GetHPGLCommands());
+					Com.SendCommandsAsync(info.Shape.GetHPGLCommands());
 				});
 			}
 		}
@@ -355,7 +355,7 @@ namespace Plotter.GUI
 			{
 				AsyncRunCommand(() =>
 				{
-					Com.SendCommands(info.Shape.GetHPGLCommands());
+					Com.SendCommandsAsync(info.Shape.GetHPGLCommands());
 				});
 			}
 		}
@@ -366,7 +366,7 @@ namespace Plotter.GUI
 			{
 				AsyncRunCommand(() =>
 				{
-					Com.SendCommands(new string[] { info.PolyLinePoint.HPGLCommand });
+					Com.SendCommandsAsync(new string[] { info.PolyLinePoint.HPGLCommand });
 				});
 			}
 		}

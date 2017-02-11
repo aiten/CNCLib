@@ -48,7 +48,7 @@ CMyLcd Lcd;
 
 void setup()
 {  
-  StepperSerial.begin(115200);
+  StepperSerial.begin(USBBAUDRATE);
 }
 
 ////////////////////////////////////////////////////////////
