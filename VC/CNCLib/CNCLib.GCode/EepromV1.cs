@@ -80,7 +80,8 @@ namespace CNCLib.GCode
 		{
 			EReverenceType = (((int)EAxisOffsets32.Ofsett1) << 8) + 00,
 			EReverenceSeqence = (((int)EAxisOffsets32.Ofsett1) << 8) + 1,
-			EReverenceHitValue = (((int)EAxisOffsets32.Ofsett1) << 8) + 2,
+			EReverenceHitValueMin = (((int)EAxisOffsets32.Ofsett1) << 8) + 2,
+			EReverenceHitValueMax = (((int)EAxisOffsets32.Ofsett1) << 8) + 3,
 		}
 
 		[Flags]

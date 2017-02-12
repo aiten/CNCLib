@@ -113,6 +113,8 @@ public:
 	virtual void GoToReference();								// Goto Reference during Initialisation
 	virtual bool GoToReference(axis_t axis,steprate_t steprate, bool toMinRef);
 
+	bool GoToReference(axis_t axis);
+
 	//////////////////////////////////////////
 
 	void InitFromEeprom();

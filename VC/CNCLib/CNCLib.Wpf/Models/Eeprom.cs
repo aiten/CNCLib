@@ -209,9 +209,14 @@ namespace CNCLib.Wpf.Models
 			[Description("Invert the rotation direction of the stepper")]
 			public bool StepperDirection { get; set; }
 
-			[DisplayName("RefHitValue")]
-			[Description("Value of IO if reference is hit - usual 0, optical 1")]
-			public byte RefHitValue { get; set; }
+			[DisplayName("RefHitValueMin")]
+			[Description("Value of IO if reference is hit - usual 0, optical 1, 255 disabled")]
+			public byte RefHitValueMin { get; set; }
+
+			[DisplayName("RefHitValueMax")]
+			[Description("Value of IO if reference is hit - usual 0, optical 1, 255 disabled")]
+			public byte RefHitValueMax { get; set; }
+
 
 			public override string ToString()
 			{

@@ -83,10 +83,8 @@ void CControl::InitFromEeprom()
 	for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
 	{
 		eepromofs_t ofs = sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis;
-		EnumAsByte(EReverenceType) ref = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType) + ofs);
-		if (ref != NoReference)
-			CStepper::GetInstance()->SetReferenceHitValue(CStepper::GetInstance()->ToReferenceId(axis, ref == EReverenceType::ReferenceToMin),
-				CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceValue) + ofs));
+		CStepper::GetInstance()->SetReferenceHitValue(CStepper::GetInstance()->ToReferenceId(axis, true),  CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceValue_min) + ofs));
+		CStepper::GetInstance()->SetReferenceHitValue(CStepper::GetInstance()->ToReferenceId(axis, false), CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceValue_max) + ofs));
 
 		CStepper::GetInstance()->SetLimitMax(axis, CMotionControlBase::GetInstance()->ToMachine(axis, CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[0].size) + ofs)));
 	}
@@ -114,11 +112,21 @@ void CControl::GoToReference()
 		axis_t axis = CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].refmoveSequence) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*i);
 		if (axis < NUM_AXIS)
 		{
-			EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
-			if (referenceType != EReverenceType::NoReference)
-				GoToReference(axis, 0, referenceType == EReverenceType::ReferenceToMin);
+			GoToReference(axis);
 		}
 	}
+}
+
+////////////////////////////////////////////////////////////
+
+bool CControl::GoToReference(axis_t axis)
+{
+	EnumAsByte(EReverenceType) referenceType = (EReverenceType)CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceType) + sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis);
+	if (referenceType == EReverenceType::NoReference) 
+		return false;
+
+	GoToReference(axis, 0, referenceType == EReverenceType::ReferenceToMin);
+	return true;
 }
 
 ////////////////////////////////////////////////////////////

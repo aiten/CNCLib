@@ -817,11 +817,7 @@ void CGCodeParserBase::G28Command()
 		{
 			if (IsBitSet(move.axes, axis))
 			{
-				bool usmin = CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(axis, true));
-				bool usmax = CStepper::GetInstance()->IsUseReference(CStepper::GetInstance()->ToReferenceId(axis, false));
-				if (usmin || usmax)
-					CControl::GetInstance()->GoToReference(axis, 0, usmin);
-				else
+				if (!CControl::GetInstance()->GoToReference(axis))
 					CStepper::GetInstance()->SetPosition(axis, CMotionControlBase::GetInstance()->ToMachine(axis, move.newpos[axis]));
 			}
 		}

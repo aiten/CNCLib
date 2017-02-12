@@ -159,8 +159,8 @@ public:
 			uint8_t		referenceType;		// EReverenceType
 			uint8_t		refmoveSequence;
 			
-			uint8_t		referenceValue;
-			uint8_t		dummy3;
+			uint8_t		referenceValue_min;
+			uint8_t		referenceValue_max;
 
 #ifndef REDUCED_SIZE
 
