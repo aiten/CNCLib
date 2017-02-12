@@ -85,7 +85,6 @@ namespace CNCLib.GCode.Load
 				if (!_stream.IsNumber())
 					throw new FormatException();
 
-				_stream.Next();
 				linenumber = _stream.GetInt();
 				_stream.SkipSpaces();
             }
