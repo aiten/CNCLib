@@ -48,6 +48,7 @@ namespace CNCLib.Logic.Contracts.DTO
 		// G-CODE
 
 		public bool SubstG82 { get; set; } = false;
+		public bool AddLineNumbers { get; set; } = false;
 
 		//HPGL
 		public bool SwapXY { get; set; } = false;

@@ -108,9 +108,10 @@ protected:
 	struct SModalState
 	{
 #ifdef REDUCED_SIZE
-		uint16_t		Linenumber;
+		uint16_t		LineNumber;
 #else
-		long			Linenumber;
+		long			ReceivedLineNumber;
+		long			LineNumber;
 #endif
 
 		uint8_t			Plane_axis_0;			// x

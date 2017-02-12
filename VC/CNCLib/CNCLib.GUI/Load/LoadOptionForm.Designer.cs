@@ -124,6 +124,7 @@
 			this._importSettings = new System.Windows.Forms.Button();
 			this._substG82 = new System.Windows.Forms.CheckBox();
 			this._GCode = new System.Windows.Forms.GroupBox();
+			this._addLineNumbers = new System.Windows.Forms.CheckBox();
 			this._autoScaleGb.SuspendLayout();
 			this._generateForEngrageGroup.SuspendLayout();
 			this._generateForLaserGroup.SuspendLayout();
@@ -959,7 +960,7 @@
 			this._loadpanel.Controls.Add(this._load);
 			this._loadpanel.Controls.Add(this._cancel);
 			this._loadpanel.Location = new System.Drawing.Point(15, 391);
-			this._loadpanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this._loadpanel.Margin = new System.Windows.Forms.Padding(2);
 			this._loadpanel.Name = "_loadpanel";
 			this._loadpanel.Size = new System.Drawing.Size(248, 92);
 			this._loadpanel.TabIndex = 42;
@@ -968,7 +969,7 @@
 			// 
 			this._useAzure.AutoSize = true;
 			this._useAzure.Location = new System.Drawing.Point(154, 8);
-			this._useAzure.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this._useAzure.Margin = new System.Windows.Forms.Padding(2);
 			this._useAzure.Name = "_useAzure";
 			this._useAzure.Size = new System.Drawing.Size(73, 17);
 			this._useAzure.TabIndex = 42;
@@ -1039,6 +1040,7 @@
 			// 
 			// _GCode
 			// 
+			this._GCode.Controls.Add(this._addLineNumbers);
 			this._GCode.Controls.Add(this._substG82);
 			this._GCode.Location = new System.Drawing.Point(18, 309);
 			this._GCode.Name = "_GCode";
@@ -1046,6 +1048,16 @@
 			this._GCode.TabIndex = 22;
 			this._GCode.TabStop = false;
 			this._GCode.Text = "GCode";
+			// 
+			// _addLineNumbers
+			// 
+			this._addLineNumbers.AutoSize = true;
+			this._addLineNumbers.Location = new System.Drawing.Point(18, 49);
+			this._addLineNumbers.Name = "_addLineNumbers";
+			this._addLineNumbers.Size = new System.Drawing.Size(110, 17);
+			this._addLineNumbers.TabIndex = 33;
+			this._addLineNumbers.Text = "Add LineNumbers";
+			this._addLineNumbers.UseVisualStyleBackColor = true;
 			// 
 			// LoadOptionForm
 			// 
@@ -1206,5 +1218,6 @@
 		private System.Windows.Forms.CheckBox _useAzure;
 		private System.Windows.Forms.CheckBox _substG82;
 		private System.Windows.Forms.GroupBox _GCode;
+		private System.Windows.Forms.CheckBox _addLineNumbers;
 	}
 }

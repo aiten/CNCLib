@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using Framework.Tools;
 using Framework.Tools.Drawing;
 
@@ -72,6 +73,8 @@ namespace CNCLib.GCode.Commands
 
 		public string SubCode { get; protected set;  }
 		public string Code { get; protected set; }
+
+		public int? LineNumber { get; set; }
 
 		public class Variable
 		{
@@ -232,24 +235,50 @@ namespace CNCLib.GCode.Commands
 
 		protected string GCodeHelper(Point3D current)
         {
-			var cmd = Code;
-			if (!string.IsNullOrEmpty(SubCode))
-				cmd += "." + SubCode;
+			var sb = new StringBuilder();
+
+			if (LineNumber.HasValue)
+			{
+				sb.Append(GCodeLineNumber(""));
+			}
+
+			if (!string.IsNullOrEmpty(Code))
+			{
+				if (sb.Length > 0)
+					sb.Append(' ');
+
+				sb.Append(Code);
+				if (!string.IsNullOrEmpty(SubCode))
+				{
+					sb.Append('.');
+					sb.Append(SubCode);
+				}
+			}
 
 			foreach (Variable p in _variables )
 			{
-				cmd += " " + p.ToGCode();
+				sb.Append(' ');
+				sb.Append(p.ToGCode());
 			}
 
 			if (!string.IsNullOrEmpty(GCodeAdd))
 			{
-				if (!string.IsNullOrEmpty(cmd))
-					cmd += " ";
+				if (sb.Length > 0)
+					sb.Append(' ');
 
-				cmd += GCodeAdd;
+				sb.Append(GCodeAdd);
 			}
-			return cmd;
+			return sb.ToString();
         }
+
+		protected string GCodeLineNumber(string postString)
+		{
+			if (LineNumber.HasValue)
+			{
+				return $"N{ LineNumber }{postString}";
+			}
+			return "";
+		}
 
 		public virtual string[] GetGCodeCommands(Point3D startfrom, CommandState state)
 		{
@@ -326,7 +355,7 @@ namespace CNCLib.GCode.Commands
 			throw new ArgumentOutOfRangeException();
 		}
 
-		public virtual bool ReadFrom(CommandStream stream)
+		public virtual void ReadFrom(CommandStream stream)
 		{
 			Point3D ep = new Point3D();
 
@@ -354,7 +383,7 @@ namespace CNCLib.GCode.Commands
 						default:
 							{
 								ReadFromToEnd(stream);
-								return true;
+								return;
 							}
 					}
 				}
@@ -369,7 +398,7 @@ namespace CNCLib.GCode.Commands
 						default:
 						{
 							ReadFromToEnd(stream);
-							return true;
+							return;
 						}
 					}
 				}

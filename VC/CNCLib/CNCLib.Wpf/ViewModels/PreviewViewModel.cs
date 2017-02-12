@@ -234,7 +234,7 @@ namespace CNCLib.Wpf.ViewModels
 						{
 							foreach (string str in cmds)
 							{
-								foreach (var c in Com.QueueCommand($"N{line++} {str}"))
+								foreach (var c in Com.QueueCommand(str))
 								{
 									c.Tag = cmd;
 								}

@@ -1196,7 +1196,7 @@ void CGCodeParser::M110Command()
 
 	if (!ExpectEndOfCommand()) { return; }
 
-	super::_modalstate.Linenumber = linenumber;
+	super::_modalstate.LineNumber = linenumber;
 }
 ////////////////////////////////////////////////////////////
 

@@ -37,8 +37,8 @@ namespace CNCLib.GCode.Commands
 		{
 			string[] ret = new string[] 
             {
-                GCodeAdd
-            };
+				GCodeLineNumber(" ") + GCodeAdd
+			};
 			return ret;
 		}
 

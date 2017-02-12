@@ -125,6 +125,25 @@ namespace CNCLib.GCode.Load
 				var options = new ConvertOptions() { SubstG82 = LoadOptions.SubstG82 };
 
 				Commands = Commands.Convert(options);
+
+				if (LoadOptions.AddLineNumbers)
+				{
+					int linenumber = 1;
+
+					foreach (Command r in Commands)
+					{
+						if (r.LineNumber.HasValue)
+						{
+							linenumber = r.LineNumber.Value;
+						}
+						else
+						{
+							r.LineNumber = linenumber;
+						}
+						linenumber++;
+					}
+				}
+
 				Commands.UpdateCache();
 			}
 		}

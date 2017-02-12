@@ -224,15 +224,19 @@ bool CGCodeParserBase::ParseLineNumber()
 			return false;
 		}
 #ifdef REDUCED_SIZE
-		_modalstate.Linenumber = GetUInt16();
+		_modalstate.LineNumber = GetUInt16();
 #else
-		_modalstate.Linenumber = GetInt32();
+		_modalstate.LineNumber = GetInt32();
 #endif
 		_reader->SkipSpaces();
 
 		_OkMessage = []()
 		{
-			StepperSerial.print((uint16_t) _modalstate.Linenumber);
+			StepperSerial.print(_modalstate.LineNumber);
+#ifndef REDUCED_SIZE
+			StepperSerial.print(':');
+			StepperSerial.print(_modalstate.ReceivedLineNumber);
+#endif
 		};
 	}
 	return true;
@@ -284,6 +288,9 @@ mm1000_t CGCodeParserBase::CalcAllPreset(axis_t axis)
 
 void CGCodeParserBase::Parse()
 {
+#ifndef REDUCED_SIZE
+	_modalstate.ReceivedLineNumber++;
+#endif
 	do
 	{
 		char ch = _reader->GetCharToUpper();
