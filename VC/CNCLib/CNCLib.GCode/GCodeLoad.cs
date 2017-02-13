@@ -82,6 +82,10 @@ namespace CNCLib.GCode
 					string gcodeFileName = Environment.ExpandEnvironmentVariables(loadinfo.GCodeWriteToFileName);
 					SaveGCode(gcodeFileName);
 					WriteCamBam(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb");
+
+					string hpglFileName = Environment.ExpandEnvironmentVariables(loadinfo.GCodeWriteToFileName);
+
+					WriteImportInfo(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl");
 				}
 			}
 			catch (Exception)
@@ -96,6 +100,16 @@ namespace CNCLib.GCode
 			{
 				XmlSerializer x = new XmlSerializer(typeof(CamBam.CamBam));
 				x.Serialize(writer, load.CamBam);
+			}
+		}
+		private void WriteImportInfo(LoadBase load, string filename)
+		{
+			if (Commands.Exists((c) => !string.IsNullOrEmpty(c.ImportInfo)))
+			{
+				using (TextWriter writer = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
+				{
+					Commands.ForEach((c) => { if (!string.IsNullOrEmpty(c.ImportInfo)) writer.WriteLine(c.ImportInfo); });
+				}
 			}
 		}
 

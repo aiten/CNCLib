@@ -192,15 +192,18 @@ namespace CNCLib.GCode.Load
 
 						if (!analyse)
 						{
+							string hpglCmd;
 							Command r;
 							if (_IsPenUp)
 							{
 								r = new G00Command();
+								hpglCmd = "PU";
 							}
 							else
 							{
 								r = new G01Command();
 								AddCamBamPoint(pt);
+								hpglCmd = "PD";
 							}
 							r.AddVariable('X', pt.X.Value, false);
 							r.AddVariable('Y', pt.Y.Value, false);
@@ -210,6 +213,8 @@ namespace CNCLib.GCode.Load
                                 r.AddVariable('F', LoadOptions.MoveSpeed.Value);
                             }
                             Commands.AddCommand(r);
+
+							r.ImportInfo = $"{hpglCmd}{(int) (pt.X.Value*40.0)},{(int) (pt.Y.Value*40.0)}";
 						}
 
                         _stream.IsCommand(",");

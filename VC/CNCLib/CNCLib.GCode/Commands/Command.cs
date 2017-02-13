@@ -76,6 +76,15 @@ namespace CNCLib.GCode.Commands
 
 		public int? LineNumber { get; set; }
 
+		/// <summary>
+		/// Importinfo, e.g. HPGL Command
+		/// </summary>
+		public string ImportInfo { get; set; }
+
+		#endregion
+
+		#region GCode-Variables
+
 		public class Variable
 		{
 			public char Name { get; set; }
@@ -183,16 +192,12 @@ namespace CNCLib.GCode.Commands
 
 		#endregion
 
-		#region 
+		#region Draw
 
 		public virtual Command[] ConvertCommand(CommandState state, ConvertOptions options)
 		{
 			return new Command[] { this };
 		}
-
-		#endregion
-
-		#region Draw
 
 		public DrawType Convert(MoveType movetype, CommandState state)
         {
