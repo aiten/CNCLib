@@ -111,22 +111,22 @@ void CMyControl::IOControl(uint8_t tool, unsigned short level)
 
 ////////////////////////////////////////////////////////////
 
-#ifndef REDUCED_SIZE
-
 unsigned short CMyControl::IOControl(uint8_t tool)
 {
 	switch (tool)
 	{
+#ifndef REDUCED_SIZE
 		case SpindleCW:
 		case SpindleCCW:	{ return _data._spindle.IsOn(); }
-		case Probe:			{ return _data._probe.IsOn(); }
 		case Coolant:		{ return _data._coolant.IsOn(); }
 		case ControllerFan: { return _data._controllerfan.GetLevel(); }
+#endif
+		case Probe:			{ return _data._probe.IsOn(); }
 	}
 
 	return super::IOControl(tool);
 }
-#endif
+
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Kill()
