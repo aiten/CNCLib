@@ -32,16 +32,16 @@ static const uint8_t _L298Nfullstep4Pin[4] PROGMEM = { 10, 9, 5, 6 };
  // aAbB => a => !a=A 
 static const uint8_t _L298Nfullstep2Pin[4] PROGMEM = { 3, 2, 0, 1 };
 
- ////////////////////////////////////////////////////////
- 
- CStepperL298N::CStepperL298N()
+////////////////////////////////////////////////////////
+
+CStepperL298N::CStepperL298N()
 {
 }
 
 ////////////////////////////////////////////////////////
 
  // reference: difference between microswitch (on=LOW) and optical (on=>HIGH) 
- 
+
 pin_t CStepperL298N::_pin[NUM_AXIS][4] =
 {
 	{ 2, 3, 4, 5 },
@@ -49,7 +49,7 @@ pin_t CStepperL298N::_pin[NUM_AXIS][4] =
 	{ PIN_A0, PIN_A1, PIN_A2, PIN_A3 },			// A0-A3
 #if NUM_AXIS > 3
 #if defined(__AVR_ATmega328P__) || defined(__SAMD21G18A__)
-	{ PIN_A4, PIN_A5, 11, 12 },			// A4&5,11&12
+	{ PIN_A4, PIN_A5, 12, 13 },					// A4&5,12&13, leave 11 for Spindle PWM, A6&A7 are input only!
 #else
 	{ PIN_A4, PIN_A5, PIN_A6, PIN_A7 }			// A4-A5
 #endif
@@ -67,7 +67,7 @@ pin_t CStepperL298N::_pinenable[NUM_AXIS][2] =
 //	{}
 };
 
-pin_t CStepperL298N::_pinRef[NUM_AXIS*2] =
+pin_t CStepperL298N::_pinRef[NUM_AXIS * 2] =
 {
 	0				// 0 .. not used
 };
@@ -75,7 +75,7 @@ pin_t CStepperL298N::_pinRef[NUM_AXIS*2] =
 ////////////////////////////////////////////////////////
 
 void CStepperL298N::Init(void)
-{	
+{
 	super::Init();
 
 	InitMemVar();
@@ -118,11 +118,11 @@ void CStepperL298N::InitMemVar()
 
 void  CStepperL298N::Step(const uint8_t steps[NUM_AXIS], axisArray_t directionUp)
 {
-	for (axis_t axis=0;axis < NUM_AXIS;axis++)
+	for (axis_t axis = 0; axis < NUM_AXIS; axis++)
 	{
 		if (steps[axis])
 		{
-			if (directionUp&1)
+			if (directionUp & 1)
 				_stepIdx[axis] += steps[axis];
 			else
 				_stepIdx[axis] -= steps[axis];
@@ -174,8 +174,8 @@ uint8_t CStepperL298N::GetEnable(axis_t axis)
 
 	if (IsUseEN1(axis))
 	{
-		return ConvertLevel(CHAL::digitalRead(_pinenable[axis][0]) != LOW && 
-							(IsUseEN2(axis) ? CHAL::digitalRead(_pinenable[axis][1]) != LOW : true));
+		return ConvertLevel(CHAL::digitalRead(_pinenable[axis][0]) != LOW &&
+			(IsUseEN2(axis) ? CHAL::digitalRead(_pinenable[axis][1]) != LOW : true));
 	}
 
 	if (Is2Pin(axis))	return LevelMax;		// 2PIN and no enable => can't be turned off
@@ -237,8 +237,8 @@ bool  CStepperL298N::IsAnyReference()
 {
 	for (axis_t axis = 0; axis < NUM_AXIS; axis++)
 	{
-		if ((_pinRef[axis * 2]		&& CHAL::digitalRead(_pinRef[axis * 2])		== _pod._referenceHitValue[axis * 2]) ||
-			(_pinRef[axis * 2 + 1]	&& CHAL::digitalRead(_pinRef[axis * 2 + 1]) == _pod._referenceHitValue[axis * 2 + 1]))
+		if ((_pinRef[axis * 2]     && CHAL::digitalRead(_pinRef[axis * 2])     == _pod._referenceHitValue[axis * 2]) ||
+			(_pinRef[axis * 2 + 1] && CHAL::digitalRead(_pinRef[axis * 2 + 1]) == _pod._referenceHitValue[axis * 2 + 1]))
 			return true;
 	}
 	return false;
