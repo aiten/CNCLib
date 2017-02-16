@@ -209,7 +209,7 @@ constexpr uint16_t GetInfo1a()
 #ifdef SPINDLE_ANALOGSPEED
 		CConfigEeprom::HAVE_SPINDLE_ANALOG |
 #endif
-#ifdef SPINDLE_DIR_PIN
+#if defined(SPINDLE_DIR_PIN) || defined(SPINDLESPEEDISINT)
 		CConfigEeprom::HAVE_SPINDLE_DIR |
 #endif
 #endif
