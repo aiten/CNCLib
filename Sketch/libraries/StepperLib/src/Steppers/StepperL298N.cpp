@@ -235,10 +235,9 @@ uint8_t CStepperL298N::GetReferenceValue(uint8_t referenceid)
 
 bool  CStepperL298N::IsAnyReference()
 {
-	for (axis_t axis = 0; axis < NUM_AXIS; axis++)
+	for (axis_t axis2 = 0; axis2 < NUM_AXIS*2; axis2++)
 	{
-		if ((_pinRef[axis * 2]     && CHAL::digitalRead(_pinRef[axis * 2])     == _pod._referenceHitValue[axis * 2]) ||
-			(_pinRef[axis * 2 + 1] && CHAL::digitalRead(_pinRef[axis * 2 + 1]) == _pod._referenceHitValue[axis * 2 + 1]))
+		if (_pinRef[axis2] && CHAL::digitalRead(_pinRef[axis2]) == _pod._referenceHitValue[axis2])
 			return true;
 	}
 	return false;

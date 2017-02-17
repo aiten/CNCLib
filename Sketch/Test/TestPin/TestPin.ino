@@ -11,7 +11,9 @@ pinMode(15,INPUT);
 pinMode(16,INPUT);
 pinMode(17,INPUT);
 pinMode(18,INPUT);
-pinMode(A4,INPUT);
+pinMode(A5,INPUT);
+pinMode(A6,INPUT);
+pinMode(A7,INPUT);
 digitalWrite(9,HIGH);
 digitalWrite(10,HIGH);
 digitalWrite(11,HIGH);
@@ -22,7 +24,9 @@ digitalWrite(15,HIGH);
 digitalWrite(16,HIGH);
 digitalWrite(17,HIGH);
 digitalWrite(18,HIGH);
-digitalWrite(A4,HIGH);
+digitalWrite(A5,HIGH);
+digitalWrite(A6,HIGH);
+digitalWrite(A7,HIGH);
 Serial.begin(115200);
 
 pinMode(12,OUTPUT);
@@ -42,7 +46,9 @@ int pin15=false;
 int pin16=false;
 int pin17=false;
 int pin18=false;
-int pinA4=false;
+int pinA5=false;
+int pinA6=false;
+int pinA7=false;
 
 void TestPin(int pin, int&pinval)
 {
@@ -71,6 +77,8 @@ void loop()
   TestPin(16,pin16);
   TestPin(17,pin17);
   TestPin(18,pin18);
-  TestPin(A4,pinA4);
+  TestPin(A5,pinA5);
+  TestPin(A6,pinA6);
+  TestPin(A7,pinA7);
 
 }
