@@ -138,7 +138,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="CNCLib.pfx" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
