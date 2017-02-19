@@ -21,10 +21,10 @@
 
 ////////////////////////////////////////////////////////
 
-//#define STEPPERTYPE 1		// CStepperL298N
+#define STEPPERTYPE 1		// CStepperL298N
 //#define STEPPERTYPE 2		// CStepperSMC800
 //#define STEPPERTYPE 3		// CStepperTB6560
-#define STEPPERTYPE 4		// CStepperCNCShield
+//#define STEPPERTYPE 4		// CStepperCNCShield
 
 ////////////////////////////////////////////////////////
 
@@ -64,6 +64,7 @@
 #define CNC_MAXSPEED 20000        // steps/sec
 #define CNC_ACC  350
 #define CNC_DEC  400
+#define CNC_JERKSPEED 1000
 
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
@@ -100,6 +101,7 @@
 
 #define SPINDLE_ANALOGSPEED
 #define SPINDLE_MAXSPEED	10000			// analog 255
+#define SPINDEL_FADETIMEDELAY  8    // 8ms * 255 => 2040ms from 0 to max, 4080 from -max to +max
 
 ////////////////////////////////////////////////////////
 

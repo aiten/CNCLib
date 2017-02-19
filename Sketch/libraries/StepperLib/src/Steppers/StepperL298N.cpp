@@ -40,8 +40,6 @@ CStepperL298N::CStepperL298N()
 
 ////////////////////////////////////////////////////////
 
- // reference: difference between microswitch (on=LOW) and optical (on=>HIGH) 
-
 pin_t CStepperL298N::_pin[NUM_AXIS][4] =
 {
 	{ 2, 3, 4, 5 },
@@ -56,13 +54,13 @@ pin_t CStepperL298N::_pin[NUM_AXIS][4] =
 #endif
 };
 
-pin_t CStepperL298N::_pinenable[NUM_AXIS][2] =
+pin_t CStepperL298N::_pinenable[NUM_AXIS] =
 {
-	{ 10, 0 },		// 0 ... not used
-	{ 10, 0 },		// 0 ... not used
-	{ 10, 0 }		// 0 ... not used
+	10,
+	10,
+	10
 #if NUM_AXIS > 3
-	,{ 10, 0 }		// 0 ... not used
+	,10
 #endif
 //	{}
 };
@@ -96,12 +94,18 @@ void CStepperL298N::Init(void)
 
 			if (IsUseEN1(i))
 			{
-				CHAL::pinModeOutput(_pinenable[i][0]);
-				if (IsUseEN2(i)) CHAL::pinModeOutput(_pinenable[i][1]);
+				CHAL::pinModeOutput(_pinenable[i]);
+//				CHAL::pinModeOutput(_pinenable[i][0]);
+//				if (IsUseEN2(i)) CHAL::pinModeOutput(_pinenable[i][1]);
 			}
+		}
+	}
 
-			if (ToReferenceId(i, true) != 0)  CHAL::pinMode(_pinenable[i][1], INPUT_PULLUP);
-			if (ToReferenceId(i, false) != 0) CHAL::pinMode(_pinenable[i][1], INPUT_PULLUP);
+	for (i = 0; i < NUM_AXIS * 2; i++)
+	{
+		if (_pinRef[i] != 0)
+		{
+			CHAL::pinMode(_pinRef[i], INPUT_PULLUP);
 		}
 	}
 }
@@ -111,7 +115,7 @@ void CStepperL298N::InitMemVar()
 {
 	register uint8_t i;
 	for (i = 0; i < NUM_AXIS; i++)	_stepIdx[i] = 0;
-	for (i = 0; i < NUM_AXIS; i++)	_fullStepMode[i] = false;
+	_fullStepMode = false;
 }
 
 ////////////////////////////////////////////////////////
@@ -140,8 +144,9 @@ void CStepperL298N::SetEnable(axis_t axis, uint8_t level, bool  force)
 	{
 		if (IsUseEN1(axis))
 		{
-			CHAL::digitalWrite(_pinenable[axis][0], level != LevelOff ? HIGH : LOW);
-			if (IsUseEN2(axis)) CHAL::digitalWrite(_pinenable[axis][1], level != LevelOff ? HIGH : LOW);
+			CHAL::digitalWrite(_pinenable[axis], level != LevelOff ? HIGH : LOW);
+//			CHAL::digitalWrite(_pinenable[axis][0], level != LevelOff ? HIGH : LOW);
+//			if (IsUseEN2(axis)) CHAL::digitalWrite(_pinenable[axis][1], level != LevelOff ? HIGH : LOW);
 		}
 		else if (Is2Pin(axis))
 		{
@@ -152,11 +157,7 @@ void CStepperL298N::SetEnable(axis_t axis, uint8_t level, bool  force)
 			if (level == LevelOff)
 			{
 				// 4 PIN => set all to off
-
-				CHAL::digitalWrite(_pin[axis][0], LOW);
-				CHAL::digitalWrite(_pin[axis][1], LOW);
-				CHAL::digitalWrite(_pin[axis][2], LOW);
-				CHAL::digitalWrite(_pin[axis][3], LOW);
+				SetPhase(axis, 0);
 			}
 			else if (force)
 			{
@@ -174,8 +175,9 @@ uint8_t CStepperL298N::GetEnable(axis_t axis)
 
 	if (IsUseEN1(axis))
 	{
-		return ConvertLevel(CHAL::digitalRead(_pinenable[axis][0]) != LOW &&
-			(IsUseEN2(axis) ? CHAL::digitalRead(_pinenable[axis][1]) != LOW : true));
+		return ConvertLevel(CHAL::digitalRead(_pinenable[axis]) != LOW);
+//		return ConvertLevel(CHAL::digitalRead(_pinenable[axis][0]) != LOW &&
+//			(IsUseEN2(axis) ? CHAL::digitalRead(_pinenable[axis][1]) != LOW : true));
 	}
 
 	if (Is2Pin(axis))	return LevelMax;		// 2PIN and no enable => can't be turned off
@@ -199,7 +201,7 @@ void CStepperL298N::SetPhase(axis_t axis)
 
 		if (Is4Pin(axis))
 		{
-			if (_fullStepMode[axis])
+			if (_fullStepMode)
 			{
 				bitmask = pgm_read_byte(&_L298Nfullstep4Pin[_stepIdx[axis] & 0x3]);
 			}
@@ -214,10 +216,17 @@ void CStepperL298N::SetPhase(axis_t axis)
 			bitmask = pgm_read_byte(&_L298Nfullstep2Pin[_stepIdx[axis] & 0x3]);
 		}
 
-		CHAL::digitalWrite(_pin[axis][0], bitmask & 1);
-		CHAL::digitalWrite(_pin[axis][1], bitmask & 2);
-		CHAL::digitalWrite(_pin[axis][2], bitmask & 4);
-		CHAL::digitalWrite(_pin[axis][3], bitmask & 8);
+		SetPhase(axis, bitmask);
+	}
+}
+
+////////////////////////////////////////////////////////
+
+void  CStepperL298N::SetPhase(axis_t axis, uint8_t bitmask)
+{
+	for (uint8_t i = 0; i < 4; i++, bitmask /= 2)
+	{
+		CHAL::digitalWrite(_pin[axis][i], bitmask & 1);
 	}
 }
 

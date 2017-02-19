@@ -37,7 +37,8 @@ public:
 protected:
 
 	static pin_t _pin[NUM_AXIS][4];
-	static pin_t _pinenable[NUM_AXIS][2];
+	static pin_t _pinenable[NUM_AXIS];
+//	static pin_t _pinenable[NUM_AXIS][2];
 	static pin_t _pinRef[NUM_AXIS*2];
 
 protected:
@@ -54,10 +55,11 @@ public:
 	// Set before Init()
 	void SetPin(axis_t axis, pin_t in1, pin_t in2, pin_t in3, pin_t in4) { _pin[axis][0] = in1;  _pin[axis][1] = in2; _pin[axis][2] = in3; _pin[axis][3] = in4; }
 	void SetPin(axis_t axis, pin_t in1, pin_t in2)					{ _pin[axis][0] = in1;  _pin[axis][1] = in2; _pin[axis][2] = 0; _pin[axis][3] = 0; }
-	void SetEnablePin(axis_t axis, pin_t en1, pin_t en2)			{ _pinenable[axis][0] = en1;  _pinenable[axis][1] = en2; }
+	void SetEnablePin(axis_t axis, pin_t en)						{ _pinenable[axis] = en;}
+//	void SetEnablePin(axis_t axis, pin_t en1, pin_t en2)			{ _pinenable[axis][0] = en1;  _pinenable[axis][1] = en2; }
 	void SetRefPin(axis_t axis, pin_t refmin, pin_t refmax)			{ _pinRef[ToReferenceId(axis, true)] = refmin;  _pinRef[ToReferenceId(axis, false)] = refmax; }
 
-	void SetFullStepMode(axis_t axis, bool fullstepMode)			{ _fullStepMode[axis] = fullstepMode; };
+	void SetFullStepMode(bool fullstepMode)							{ _fullStepMode = fullstepMode; };
 
 private:
 
@@ -65,15 +67,18 @@ private:
 	bool Is4Pin(axis_t axis)										{ return _pin[axis][2] != 0; }
 	bool Is2Pin(axis_t axis)										{ return _pin[axis][2] == 0; }
 
-	bool IsUseEN1(axis_t axis)										{ return _pinenable[axis][0] != 0; }
-	bool IsUseEN2(axis_t axis)										{ return _pinenable[axis][1] != 0; }
+	bool IsUseEN1(axis_t axis)										{ return _pinenable[axis] != 0; }
+//	bool IsUseEN1(axis_t axis)										{ return _pinenable[axis][0] != 0; }
+//	bool IsUseEN2(axis_t axis)										{ return _pinenable[axis][1] != 0; }
 
 	uint8_t _stepIdx[NUM_AXIS];
-	bool _fullStepMode[NUM_AXIS];
+	bool _fullStepMode;
 
 	void InitMemVar();
 
-	void   SetPhase(axis_t axis);
+	void  SetPhase(axis_t axis);
+
+	void  SetPhase(axis_t axis, uint8_t bitmask);
 
 	////////////////////////////////////////////////////////
 };

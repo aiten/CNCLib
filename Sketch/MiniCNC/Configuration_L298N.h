@@ -24,6 +24,7 @@
 #define CNC_MAXSPEED 375
 #define CNC_ACC  65
 #define CNC_DEC  75
+#define CNC_JERKSPEED 10
 
 #define STEPPERDIRECTION 0
 //#define STEPPERDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)    // set bit to invert direction of each axis
@@ -61,7 +62,8 @@
 ////////////////////////////////////////////////////////
 // 
 
-#define PROBE_PIN A6
+//#define PROBE_PIN PIN_A6
+#undef PROBE_PIN
 #define PROBE_ON LOW
 
 ////////////////////////////////////////////////////////
