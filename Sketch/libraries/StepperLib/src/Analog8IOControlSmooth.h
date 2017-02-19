@@ -21,26 +21,32 @@
 
 ////////////////////////////////////////////////////////
 
-template <pin_t PIN, uint16_t delayMs>
+template <pin_t PWMPIN>
 class CAnalog8IOControlSmooth
 {
 public:
 
-	CAnalog8IOControlSmooth()
+	void Init()		// init and set default value
 	{
-		_currentlevel=0;
-		_iolevel=0;
+		_nexttime = 0;
+		_currentlevel = _iolevel = 0;
+		Out(0);
+#ifndef REDUCED_SIZE
+		_level = 0;
+#endif
 	}
 
-	void Init(uint8_t level=0)		// init and set default value
+	void Init(uint8_t level)		// init and set default value
 	{
-		MySetLevel(level);
-		_level = level;
+		Init();
+		On(level);
 	}
 
 	void On(uint8_t level)					// Set level and turn on
 	{
+#ifndef REDUCED_SIZE
 		_level = level;
+#endif
 		MySetLevel(level);
 	}
 
@@ -49,10 +55,12 @@ public:
 		On(255);
 	}
 
+#ifndef REDUCED_SIZE
 	void On()								// turn on at specified level (see Level property)
 	{
 		MySetLevel(_level);
 	}
+#endif
 
 	void Off()								// turn off, use On() to switch on at same value
 	{
@@ -64,7 +72,8 @@ public:
 		return _iolevel != 0;
 	}
 
-	void SetLevel(uint8_t level)
+#ifndef REDUCED_SIZE
+	void SetLevel(int16_t level)
 	{
 		_level = level;
 	}
@@ -73,6 +82,7 @@ public:
 	{
 		return _level;
 	}
+#endif
 
 	uint8_t GetIOLevel() const
 	{
@@ -86,28 +96,48 @@ public:
 
 	void Poll()
 	{
-		if (_currentlevel != _iolevel && millis() >= _nexttime)
+		unsigned long milli;
+		if (_currentlevel != _iolevel && (milli=millis()) >= _nexttime)
 		{
-			_nexttime = millis() + delayMs;
+			_nexttime = milli + _delayMs;
 			if (_currentlevel > _iolevel)
 				_currentlevel--;
 			else
 				_currentlevel++;
-			CHAL::analogWrite8(PIN, _currentlevel);
+
+			Out(_currentlevel);
 		}
+	}
+
+	void SetDelay(uint8_t delayms)
+	{
+		_delayMs = delayms;
 	}
 
 private:
 
-	unsigned long _nexttime;				// time to modify level
+	static void Out(uint8_t lvl) 
+	{
+		CHAL::analogWrite8(PWMPIN,lvl);
+	}
+
+	unsigned long _nexttime;		// time to modify level
+#ifndef REDUCED_SIZE
 	uint8_t _level;					// value if "enabled", On/Off will switch between 0..level
+#endif
+
 	uint8_t _currentlevel;			// used for analogWrite
 	uint8_t _iolevel;				// current level
+	uint8_t	_delayMs;
 
-	void MySetLevel(uint8_t level)
+	void MySetLevel(uint8_t level) NEVER_INLINE_AVR
 	{
 		_iolevel = level;
-		_nexttime = 0;
+		if (_delayMs == 0)
+		{
+			_currentlevel = level;
+			Out(level);
+		}
 	}
 };
 

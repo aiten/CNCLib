@@ -21,19 +21,25 @@
 
 ////////////////////////////////////////////////////////
 
-template <pin_t PWMPIN, pin_t DIRPIN, uint16_t delayMs>
+template <pin_t PWMPIN, pin_t DIRPIN>
 class CAnalog8XIOControlSmooth
 {
 public:
 
-	void Init(int16_t level=0)		// init and set default value
+	void Init()		// init and set default value
 	{
 		_nexttime = 0;
-		_currentlevel = 0;
-		MySetLevel(level);
+		_currentlevel = _iolevel = 0;
+		Out(0);
 #ifndef REDUCED_SIZE
-		_level = level;
+		_level = 0;
 #endif
+	}
+
+	void Init(int16_t level)		// init and set default value
+	{
+		Init();
+		On(level);
 	}
 
 	void On(int16_t level)					// Set level and turn on
@@ -93,17 +99,28 @@ public:
 		unsigned long milli;
 		if (_currentlevel != _iolevel && (milli=millis()) >= _nexttime)
 		{
-			_nexttime = milli + delayMs;
+			_nexttime = milli + _delayMs;
 			if (_currentlevel > _iolevel)
 				_currentlevel--;
 			else
 				_currentlevel++;
-			CHAL::digitalWrite(DIRPIN, _currentlevel >= 0);
-			CHAL::analogWrite8(PWMPIN, (uint8_t)abs(_currentlevel));
+
+			Out(_currentlevel);
 		}
 	}
 
+	void SetDelay(uint8_t delayms)
+	{
+		_delayMs = delayms;
+	}
+
 private:
+
+	static void Out(int16_t lvl)
+	{
+		CHAL::digitalWrite(DIRPIN, lvl >= 0);
+		CHAL::analogWrite8(PWMPIN, (uint8_t)abs(lvl));
+	}
 
 	unsigned long _nexttime;		// time to modify level
 
@@ -114,10 +131,16 @@ private:
 	int16_t	_currentlevel;			// used for analogWrite
 	int16_t	_iolevel;				// current level
 
+	uint8_t	_delayMs;
 
 	void MySetLevel(int16_t level)
 	{
 		_iolevel = level;
+		if (_delayMs == 0)
+		{
+			_currentlevel = level;
+			Out(level);
+		}
 	}
 };
 

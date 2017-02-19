@@ -49,13 +49,15 @@ struct ControlData
 	inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return (uint8_t)level; }
 #else	
 	#ifdef SPINDLE_DIR_PIN
-		CAnalog8XIOControlSmooth<SPINDLE_ENABLE_PIN, SPINDLE_DIR_PIN, SPINDLE_FADETIME> _spindle;
+		CAnalog8XIOControlSmooth<SPINDLE_ENABLE_PIN, SPINDLE_DIR_PIN> _spindle;
 		inline int16_t ConvertSpindleSpeedToIO(unsigned short level) { return CControl::ConvertSpindleSpeedToIO8(CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, maxspindlespeed)), level); }
 		#undef SPINDLE_DIR_PIN
 		#define SPINDLESPEEDISINT
+		#define SPINDLESMOOTH
 	#else
-		CAnalog8IOControlSmooth<SPINDLE_ENABLE_PIN, 2> _spindle;
+		CAnalog8IOControlSmooth<SPINDLE_ENABLE_PIN> _spindle;
 		inline uint8_t ConvertSpindleSpeedToIO(unsigned short level) { return CControl::ConvertSpindleSpeedToIO8(CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, maxspindlespeed)), level); }
+		#define SPINDLESMOOTH
 	#endif
 #endif
 #else
@@ -125,6 +127,9 @@ struct ControlData
 		_controllerfan.Init(255);
 
 		_spindle.Init();
+#ifdef SPINDLESMOOTH
+		_spindle.SetDelay(CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, spindlefadetime)));
+#endif
 		_probe.Init();
 		_kill.Init();
 		_coolant.Init();

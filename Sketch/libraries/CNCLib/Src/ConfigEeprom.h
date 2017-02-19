@@ -139,10 +139,10 @@ public:
 		uint8_t	  stepperdirections;		// bits for each axis, see CStepper::SetDirection
 		uint8_t	  dummy2;
 		uint8_t	  dummy3;
-		uint8_t	  dummy4;
+		uint8_t	  spindlefadetime;
 
 		uint16_t  maxspindlespeed;
-		uint16_t  dummy5;
+		uint16_t  jerkspeed;
 
 		uint32_t  maxsteprate;
 		uint16_t  acc;

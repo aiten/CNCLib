@@ -122,7 +122,8 @@ void CIOControlTest::TestAnalogIOInvert()
 
 void CIOControlTest::TestAnalogIOSmooth()
 {
-	CAnalog8IOControlSmooth<10,1> spindle;
+	CAnalog8IOControlSmooth<10> spindle;
+	spindle.SetDelay(1);
 
 	spindle.Init(0);
 
@@ -163,7 +164,8 @@ void CIOControlTest::TestAnalogIOSmooth()
 
 void CIOControlTest::TestAnalogIOSmoothFade()
 {
-	CAnalog8IOControlSmooth<10,0> spindle;
+	CAnalog8IOControlSmooth<10> spindle;
+	spindle.SetDelay(0);
 
 	spindle.Init(100);
 	Assert(100, spindle.GetLevel());
@@ -200,7 +202,8 @@ void CIOControlTest::TestAnalogIOSmoothFade()
 
 void CIOControlTest::TestAnalog9IOSmooth()
 {
-	CAnalog8XIOControlSmooth<10,11, 1> spindle;
+	CAnalog8XIOControlSmooth<10,11> spindle;
+	spindle.SetDelay(1);
 
 	spindle.Init(0);
 
@@ -246,7 +249,8 @@ void CIOControlTest::TestAnalog9IOSmooth()
 
 void CIOControlTest::TestAnalog9IOSmoothFade()
 {
-	CAnalog8XIOControlSmooth<10,11, 0> spindle;
+	CAnalog8XIOControlSmooth<10,11> spindle;
+	spindle.SetDelay(0);
 
 	spindle.Init(CHAR_MAX);
 	Assert(CHAR_MAX, spindle.GetLevel());
