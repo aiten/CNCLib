@@ -63,6 +63,7 @@ namespace CNCLib.Wpf.Helpers
 					}
 
 					eeprom.MaxSpindleSpeed = ee[EepromV1.EValueOffsets16.MaxSpindleSpeed];
+					eeprom.SpindleFadeTime = ee[EepromV1.EValueOffsets8.SpindleFadeTime];
 
 					eeprom.RefMoveSteprate = ee[EepromV1.EValueOffsets32.RefMoveStepRate];
 					eeprom.MoveAwayFromRefernece = ee[EepromV1.EValueOffsets32.MoveAwayFromRefernece];
@@ -70,6 +71,8 @@ namespace CNCLib.Wpf.Helpers
 					eeprom.MaxStepRate = ee[EepromV1.EValueOffsets32.MaxStepRate];
 					eeprom.Acc = ee[EepromV1.EValueOffsets16.Acc];
 					eeprom.Dec = ee[EepromV1.EValueOffsets16.Dec];
+					eeprom.JerkSpeed = ee[EepromV1.EValueOffsets16.JerkSpeed];
+
 					eeprom.StepsPerMm1000 = BitConverter.ToSingle(BitConverter.GetBytes(ee[EepromV1.EValueOffsets32.StepsPerMm1000]), 0);
 
 					return eeprom;
@@ -103,12 +106,16 @@ namespace CNCLib.Wpf.Helpers
 				}
 
 				ee[EepromV1.EValueOffsets16.MaxSpindleSpeed] = EepromValue.MaxSpindleSpeed;
+				ee[EepromV1.EValueOffsets8.SpindleFadeTime]  = EepromValue.SpindleFadeTime;
+
 				ee[EepromV1.EValueOffsets32.RefMoveStepRate] = EepromValue.RefMoveSteprate;
 				ee[EepromV1.EValueOffsets32.MoveAwayFromRefernece] = EepromValue.MoveAwayFromRefernece;
 
 				ee[EepromV1.EValueOffsets32.MaxStepRate] = EepromValue.MaxStepRate;
 				ee[EepromV1.EValueOffsets16.Acc] = EepromValue.Acc;
 				ee[EepromV1.EValueOffsets16.Dec] = EepromValue.Dec;
+				ee[EepromV1.EValueOffsets16.JerkSpeed] = EepromValue.JerkSpeed;
+
 				ee[EepromV1.EValueOffsets32.StepsPerMm1000] = BitConverter.ToUInt32(BitConverter.GetBytes(EepromValue.StepsPerMm1000), 0);
 
 				File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromWrite.nc"), ee.ToGCode());

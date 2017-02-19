@@ -58,12 +58,14 @@ namespace CNCLib.GCode
 			NumAxis = (((int) EValueOffsets32.InfoOffset1) << 8) + 00,
 			UseAxis = (((int) EValueOffsets32.InfoOffset1) << 8) + 01,
 
-			StepperDirection = (((int)EValueOffsets32.Values8Bit1) << 8) + 0
+			StepperDirection = (((int)EValueOffsets32.Values8Bit1) << 8) + 0,
+			SpindleFadeTime  = (((int)EValueOffsets32.Values8Bit1) << 8) + 3
 		}
 
 		public enum EValueOffsets16
 		{
 			MaxSpindleSpeed = (((int)EValueOffsets32.Values16Bit1) << 8) + 00,
+			JerkSpeed		= (((int)EValueOffsets32.Values16Bit1) << 8) + 01,
 
 			Acc = (((int)EValueOffsets32.OffsetAccDec) << 8) + 00,
 			Dec = (((int)EValueOffsets32.OffsetAccDec) << 8) + 01,

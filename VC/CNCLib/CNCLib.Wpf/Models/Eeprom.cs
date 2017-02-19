@@ -83,6 +83,11 @@ namespace CNCLib.Wpf.Models
 		public ushort Dec { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
+		[DisplayName("JerkSpeed")]
+		[Description("Maximum Jerkspeed - speed difference without acceleration - in Hz")]
+		public ushort JerkSpeed { get; set; }
+
+		[Category(CATEGORY_GENERAL)]
 		[DisplayName("RefMoveStepRate")]
 		[Description("Steprate for reference-move")]
 		public uint RefMoveSteprate { get; set; }
@@ -101,6 +106,12 @@ namespace CNCLib.Wpf.Models
 		[DisplayName("MaxSpindleSpeed")]
 		[Description("Max speed (rpm) of spindle or laser power (1-255)")]
 		public ushort MaxSpindleSpeed { get; set; }
+
+		[Category(CATEGORY_GENERAL)]
+		[DisplayName("SpindleFadeTime")]
+		[Description("Time in ms between incrementing the analog PWM output - e.g. 8ms will result in a 2040ms time between stop an max")]
+		public byte SpindleFadeTime { get; set; }
+
 
 		#endregion
 
