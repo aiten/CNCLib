@@ -62,6 +62,7 @@
 #define CNC_MAXSPEED 50000
 #define CNC_ACC  350
 #define CNC_DEC  400
+#define CNC_JERKSPEED 1000
 
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
@@ -98,6 +99,7 @@
 
 #undef SPINDLE_ANALOGSPEED
 #define SPINDLE_MAXSPEED	255			// analog 255
+#define SPINDEL_FADETIMEDELAY  0    // 8ms * 255 => 2040ms from 0 to max, 4080 from -max to +max
 
 ////////////////////////////////////////////////////////
 

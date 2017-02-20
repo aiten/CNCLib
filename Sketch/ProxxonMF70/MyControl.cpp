@@ -51,8 +51,9 @@ const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash PROGMEM =
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
 	GetInfo1a(),0,
 	0,
-	STEPPERDIRECTION,0,0,0,
-	SPINDLE_MAXSPEED,0,
+	STEPPERDIRECTION,0,0,SPINDEL_FADETIMEDELAY,
+	SPINDLE_MAXSPEED,
+	CNC_JERKSPEED,
 	CNC_MAXSPEED,
 	CNC_ACC,
 	CNC_DEC,
@@ -98,21 +99,11 @@ void CMyControl::Init()
 	//CStepper::GetInstance()->SetBacklash(Y_AXIS, CMotionControlBase::GetInstance()->ToMachine(Y_AXIS, 35));
 	//CStepper::GetInstance()->SetBacklash(Z_AXIS, CMotionControl::ToMachine(Z_AXIS,20));
 
-	//  CStepper::GetInstance()->SetMaxSpeed(20000);
-
-	CStepper::GetInstance()->SetJerkSpeed(X_AXIS, SPEEDFACTOR*1000);
-	CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, SPEEDFACTOR*1000);
-	CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, SPEEDFACTOR*1000);
-	CStepper::GetInstance()->SetJerkSpeed(A_AXIS, SPEEDFACTOR*1000);
-	CStepper::GetInstance()->SetJerkSpeed(B_AXIS, SPEEDFACTOR*1000);
-
 	CStepper::GetInstance()->SetEnableTimeout(A_AXIS, 2);
 	CStepper::GetInstance()->SetEnableTimeout(B_AXIS, 2);
 
 #if NUM_AXIS > 5
 	CStepper::GetInstance()->SetLimitMax(C_AXIS, CMotionControl::ToMachine(C_AXIS,360000));
-	CStepper::GetInstance()->SetJerkSpeed(C_AXIS, SPEEDFACTOR*1000);
-
 	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
 #endif
 

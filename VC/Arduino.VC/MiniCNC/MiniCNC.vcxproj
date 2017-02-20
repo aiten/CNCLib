@@ -85,7 +85,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\configuration.h" />
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration.h" />
     <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_CNCShield.h" />
     <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_L298N.h" />
     <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_SMC800.h" />

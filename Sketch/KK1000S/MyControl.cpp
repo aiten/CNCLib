@@ -51,8 +51,9 @@ const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash PROGMEM =
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
 	GetInfo1a(),0,
 	0,
-	STEPPERDIRECTION,0,0,0,
-	SPINDLE_MAXSPEED,0,
+	STEPPERDIRECTION,0,0,SPINDEL_FADETIMEDELAY,
+	SPINDLE_MAXSPEED,
+	CNC_JERKSPEED,
 	CNC_MAXSPEED,
 	CNC_ACC,
 	CNC_DEC,
@@ -104,19 +105,12 @@ void CMyControl::Init()
 
 	//CStepper::GetInstance()->SetDefaultMaxSpeed(SPEED_MULTIPLIER_7, steprate_t(350), steprate_t(350));
 
-	CStepper::GetInstance()->SetJerkSpeed(X_AXIS, 1000);
-	CStepper::GetInstance()->SetJerkSpeed(Y_AXIS, 1000);
-	CStepper::GetInstance()->SetJerkSpeed(Z_AXIS, 1000);
 #if NUM_AXIS > 3
-	CStepper::GetInstance()->SetJerkSpeed(A_AXIS, 1000);
-	CStepper::GetInstance()->SetJerkSpeed(B_AXIS, 1000);
-
 	CStepper::GetInstance()->SetEnableTimeout(A_AXIS, 2);
 	CStepper::GetInstance()->SetEnableTimeout(B_AXIS, 2);
 #endif
 
 #if NUM_AXIS > 5
-	CStepper::GetInstance()->SetJerkSpeed(C_AXIS, 1000);
 	CStepper::GetInstance()->SetEnableTimeout(C_AXIS, 2);
 #endif
 */

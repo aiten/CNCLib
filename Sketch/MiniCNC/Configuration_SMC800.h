@@ -24,6 +24,7 @@
 #define CNC_MAXSPEED 3000
 #define CNC_ACC  150
 #define CNC_DEC  180
+#define CNC_JERKSPEED 60
 
 #define STEPPERDIRECTION 0
 //#define STEPPERDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)    // set bit to invert direction of each axis
