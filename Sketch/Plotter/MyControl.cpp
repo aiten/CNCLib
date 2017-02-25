@@ -17,6 +17,10 @@
 */
 ////////////////////////////////////////////////////////
 
+#define _CRT_SECURE_NO_WARNINGS
+
+////////////////////////////////////////////////////////
+
 #include <stdio.h>
 #include <stdio.h>
 #include <string.h>
@@ -98,6 +102,7 @@ void CMyControl::Init()
 	Lcd.Init();
 #endif
 
+  InitSD(SD_ENABLE_PIN);
 }
 
 ////////////////////////////////////////////////////////////
@@ -211,6 +216,12 @@ void CMyControl::Idle(unsigned int idletime)
 
 bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 {
+	if (reader->GetCharToUpper() == 0x1b)			// escape
+	{
+		reader->GetNextChar();
+		return super::Parse(reader, output);
+	}
+
 	CHPGLParser hpgl(reader, output);
 	return ParseAndPrintResult(&hpgl, output);
 }

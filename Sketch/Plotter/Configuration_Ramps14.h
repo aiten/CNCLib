@@ -23,6 +23,36 @@
 
 #include <Steppers/StepperRamps14_pins.h>
 #include <Steppers/StepperRamps14.h>
+#define BOARDNAME RAMPS14
+
+////////////////////////////////////////////////////////
+
+#define LCD_NUMAXIS  3
+#define MYNUM_AXIS  3
+
+////////////////////////////////////////////////////////
+
+#if defined(__SAM3X8E__)
+
+#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN2)
+#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN1)
+#define SD_ENABLE_PIN     52
+
+#else
+
+#define ROTARY_EN1       CAT(BOARDNAME,_LCD_ROTARY_EN1)
+#define ROTARY_EN2       CAT(BOARDNAME,_LCD_ROTARY_EN2)
+#define SD_ENABLE_PIN    CAT(BOARDNAME,_SDSS_PIN)
+
+#endif
+
+////////////////////////////////////////////////////////
+
+#define LCD_GROW 64
+#define LCD_GCOL 128
+
+#define ROTARY_ENC        CAT(BOARDNAME,_LCD_ROTARY_ENC)
+#define ROTARY_ENC_ON     CAT(BOARDNAME,_LCD_ROTARY_ENC_ON)
 
 ////////////////////////////////////////////////////////
 

@@ -45,7 +45,7 @@ public:
 
 	bool IsPenDown()			{ return _isPenDown; }
 	uint8_t GetPen()			{ return _pen; }
-	void SetPen(uint8_t pen)	{ _pen = pen; }
+	bool SetPen(uint8_t pen);
 
 protected:
 
@@ -55,6 +55,13 @@ protected:
 	bool _isPenDownTimeout;
 
 	uint8_t _pen;
+	bool _havePen;	
+
+private:
+
+	bool PenToDepot();
+	bool PenFromDepot(uint8_t pen);
+
 };
 
 ////////////////////////////////////////////////////////

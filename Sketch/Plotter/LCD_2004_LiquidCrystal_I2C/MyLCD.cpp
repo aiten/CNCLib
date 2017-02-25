@@ -27,13 +27,13 @@
 #include <StepperLib.h>
 #include <CNCLib.h>
 
-#include "MyControl.h"
+#include "..\MyControl.h"
 #include "MyLCD.h"
 
 #ifdef MYUSE_LCD
 
-#include "PlotterControl.h"
-#include "HPGLParser.h"
+#include "..\PlotterControl.h"
+//#include "HPGLParser.h"
 
 ////////////////////////////////////////////////////////////
 

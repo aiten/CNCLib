@@ -89,6 +89,8 @@
     <ClInclude Include="..\..\..\Sketch\Plotter\Configuration.h" />
     <ClInclude Include="..\..\..\Sketch\Plotter\Configuration_Ramps14.h" />
     <ClInclude Include="..\..\..\Sketch\Plotter\HPGLParser.h" />
+    <ClInclude Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyLCD.h" />
+    <ClInclude Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyMenu.h" />
     <ClInclude Include="..\..\..\Sketch\Plotter\MyControl.h" />
     <ClInclude Include="..\..\..\Sketch\Plotter\MyLCD.h" />
     <ClInclude Include="..\..\..\sketch\Plotter\PlotterControl.h" />
@@ -99,6 +101,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Sketch\Plotter\HPGLParser.cpp" />
+    <ClCompile Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyLCD.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyMenu.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\Sketch\Plotter\MyControl.cpp" />
     <ClCompile Include="..\..\..\Sketch\Plotter\MyLCD.cpp" />
     <ClCompile Include="..\..\..\sketch\Plotter\PlotterControl.cpp" />

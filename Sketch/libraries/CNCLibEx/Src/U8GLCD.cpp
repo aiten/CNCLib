@@ -656,7 +656,11 @@ void CU8GLcd::ButtonPressStartSDPage()
 {
 	PostCommand(F("m21"));									// Init SD
 
-	if (PostCommand(F("m23 proxxon.nc")))
+	char printfilename[MAXFILEEXTNAME + 1 + 4];
+	strcpy_P(printfilename, PSTR("m23 "));
+	strcat(printfilename, CGCode3DParser::GetExecutingFileName());
+
+	if (PostCommand(printfilename))
 	{
 		PostCommand(F("m24"));
 	}

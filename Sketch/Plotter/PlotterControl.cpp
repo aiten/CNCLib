@@ -37,6 +37,7 @@ CPlotter::CPlotter()
 	_isPenDownTimeout = false;
 	_isDelayPen = false;
 	_pen = 0;
+	_havePen = true;
 }
 
 ////////////////////////////////////////////////////////////
@@ -110,4 +111,52 @@ void CPlotter::DelayPenNow()
 		else
 			PenUp();
 	}
+}
+
+////////////////////////////////////////////////////////////
+
+bool CPlotter::SetPen(uint8_t pen) 
+{ 
+	if (_pen == pen && _havePen)
+		return true;
+
+	if (!PenToDepot())
+		return false;
+
+	return PenFromDepot(pen);
+}
+
+////////////////////////////////////////////////////////////
+
+bool CPlotter::PenToDepot()
+{
+	if (!_havePen)
+		return true;
+	
+	PenUp();
+
+	/////////////////////////////////////
+	// TODO: 
+
+
+	////////////////////////////////////
+
+	_havePen = false;
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+
+bool CPlotter::PenFromDepot(uint8_t pen)
+{
+
+	/////////////////////////////////////
+	// TODO: 
+
+
+	////////////////////////////////////
+
+	_pen = pen;
+	_havePen = true;
+	return true;
 }

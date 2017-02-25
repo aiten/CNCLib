@@ -26,6 +26,9 @@
 //#define STEPPERTYPE 3		// CStepperTB6560
 #define STEPPERTYPE 4		// CStepperRamps14
 
+//#define LCD_TYPE  1         // LCD_2004_LiquidCrystal_I2C
+#define LCD_TYPE  2         // LCD_12864_u8g
+
 ////////////////////////////////////////////////////////
 
 #define USBBAUDRATE 115200

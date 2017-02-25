@@ -11,6 +11,9 @@
     <Filter Include="Plotter">
       <UniqueIdentifier>{8bd08f54-b62d-4a9c-b0bd-4d7a50e5854c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plotter\LCD_12864_u8g">
+      <UniqueIdentifier>{76bf99f1-191f-4345-95c6-8e6854d5b753}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\MsvcStepper\MsvcStepper.h">
@@ -43,6 +46,12 @@
     <ClInclude Include="..\..\..\Sketch\Plotter\Configuration_Ramps14.h">
       <Filter>Plotter</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyLCD.h">
+      <Filter>Plotter\LCD_12864_u8g</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyMenu.h">
+      <Filter>Plotter\LCD_12864_u8g</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -65,6 +74,12 @@
     </ClCompile>
     <ClCompile Include="Plotter.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyLCD.cpp">
+      <Filter>Plotter\LCD_12864_u8g</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyMenu.cpp">
+      <Filter>Plotter\LCD_12864_u8g</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

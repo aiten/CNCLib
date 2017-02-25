@@ -75,7 +75,8 @@ void CHPGLParser::Parse()
 		return;
 	}
 
-	if (IsToken(F("SP"), false, false) || IsToken(F("LT"), false, false)) { IgnoreCommand();		return; }
+	if (IsToken(F("LT"), false, false)) { IgnoreCommand();		return; }
+	if (IsToken(F("SP"), false, false)) { SelectPenCommand();	return; }
 	if (IsToken(F("IN"), false, false)) { InitCommand();		return; }
 	if (IsToken(F("PD"), false, false)) { PenMoveCommand(PD);	return; }
 	if (IsToken(F("PU"), false, false)) { PenMoveCommand(PU);	return; }
@@ -176,3 +177,10 @@ void CHPGLParser::PenMoveCommand(uint8_t cmdidx)
 }
 
 ////////////////////////////////////////////////////////////
+
+void CHPGLParser::SelectPenCommand()
+{
+	uint8_t newpen = GetUInt8();
+	Plotter.SetPen(newpen);
+	_reader->GetNextCharSkipScaces();
+}

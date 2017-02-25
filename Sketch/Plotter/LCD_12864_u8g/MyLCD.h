@@ -17,44 +17,43 @@
 */
 ////////////////////////////////////////////////////////
 
-#include <StepperLib.h>
-#include <CNCLib.h>
+#pragma once
 
-#include "MyControl.h"
-#include "PlotterControl.h"
-#include "MyLcd.h"
-#include "HPGLParser.h"
+////////////////////////////////////////////////////////
 
-#if LCD_TYPE==1
-#include <Wire.h>  // Comes with Arduino IDE
-#include <LiquidCrystal_I2C.h>
-#elif LCD_TYPE==2
-#include <U8glib.h>
-#endif
+#include "../Configuration.h"
 
-////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
 
-CMyStepper Stepper;
-CMyControl Control;
-CPlotter Plotter;
+#include <U8GLCD.h>
+#include "MyMenu.h"
 
-////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
 
-#ifdef MYUSE_LCD
-CMyLcd Lcd;
-#endif
-
-////////////////////////////////////////////////////////////
-
-void setup()
-{  
-  StepperSerial.begin(USBBAUDRATE);
-}
-
-////////////////////////////////////////////////////////////
-
-void loop()
+class CMyLcd : public CU8GLcd
 {
-  Control.Run();
-}
+private:
 
+	typedef CU8GLcd super;
+
+public:
+
+	virtual void Init() override;
+	virtual void Beep(const SPlayTone*, bool) override;
+
+protected:
+
+	virtual class U8G2& GetU8G() override;
+	virtual class CMenuBase& GetMenu() override	{ return _menu; }
+
+	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type,uintptr_t data) override;
+
+private:
+
+	CMyMenu _menu;
+
+};
+
+////////////////////////////////////////////////////////
+
+extern CMyLcd Lcd;

@@ -17,44 +17,15 @@
 */
 ////////////////////////////////////////////////////////
 
-#include <StepperLib.h>
-#include <CNCLib.h>
+#pragma once
 
-#include "MyControl.h"
-#include "PlotterControl.h"
-#include "MyLcd.h"
-#include "HPGLParser.h"
+////////////////////////////////////////////////////////
+
+#include "Configuration.h"
 
 #if LCD_TYPE==1
-#include <Wire.h>  // Comes with Arduino IDE
-#include <LiquidCrystal_I2C.h>
+#include "LCD_2004_LiquidCrystal_I2C/MyLCD.h"
 #elif LCD_TYPE==2
-#include <U8glib.h>
+#include "LCD_12864_u8g/MyLCD.h"
 #endif
-
-////////////////////////////////////////////////////////////
-
-CMyStepper Stepper;
-CMyControl Control;
-CPlotter Plotter;
-
-////////////////////////////////////////////////////////////
-
-#ifdef MYUSE_LCD
-CMyLcd Lcd;
-#endif
-
-////////////////////////////////////////////////////////////
-
-void setup()
-{  
-  StepperSerial.begin(USBBAUDRATE);
-}
-
-////////////////////////////////////////////////////////////
-
-void loop()
-{
-  Control.Run();
-}
 

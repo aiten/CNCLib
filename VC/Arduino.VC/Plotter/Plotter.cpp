@@ -24,6 +24,9 @@
 #include "..\..\..\sketch\Plotter\MyLcd.h"
 #include "..\..\..\sketch\Plotter\PlotterControl.h"
 
+#include <SPI.h>
+#include <SD.h>
+
 CSerial Serial;
 
 static void setup();
@@ -45,6 +48,8 @@ CMsvcStepper MyStepper;
 class CStepper& Stepper = MyStepper;
 CMyControl Control;
 CPlotter Plotter;
+SDClass SD;
+
 #ifdef MYUSE_LCD
 CMyLcd Lcd;
 #endif

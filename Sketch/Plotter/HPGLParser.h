@@ -76,6 +76,8 @@ public:
 
 private:
 
+	void SelectPenCommand();
+
 	void IgnoreCommand();
 	void InitCommand();
 	void PenMoveCommand(uint8_t cmdidx);

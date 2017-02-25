@@ -88,7 +88,7 @@ private:
 			_printFilePos = 0;
 			_printFileLine = 0;
 			_isM28 = false;
-			_printfilename[0] = 0;
+			strcpy_P(_printfilename, PSTR("CNCLib.nc"));
 		}
 	};
 
