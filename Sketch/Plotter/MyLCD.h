@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
-#define FORCE_NO_LCD
+//#define FORCE_NO_LCD
 
 ////////////////////////////////////////////////////////
 
@@ -54,7 +54,7 @@ public:
 	virtual void Init() override;
 	virtual void TimerInterrupt() override;
 
-	virtual void Beep(const SPlayTone*,bool)	 override	{ };
+	virtual void Beep(const SPlayTone*, bool)	 override { };
 
 protected:
 
@@ -65,7 +65,7 @@ protected:
 private:
 
 	void DrawPos(uint8_t col, uint8_t row, mm1000_t pos);
-	void DrawES(uint8_t col,  uint8_t row, bool es);
+	void DrawES(uint8_t col, uint8_t row, bool es);
 
 	void DrawPen(uint8_t col, uint8_t row);
 };

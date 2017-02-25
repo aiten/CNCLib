@@ -49,18 +49,15 @@
 
 ////////////////////////////////////////////////////////////
 
-LiquidCrystal_I2C	lcd(I2C_ADDR, En_pin, Rw_pin, Rs_pin, D4_pin, D5_pin, D6_pin, D7_pin);
+//LiquidCrystal_I2C	lcd(I2C_ADDR, En_pin, Rw_pin, Rs_pin, D4_pin, D5_pin, D6_pin, D7_pin);
+LiquidCrystal_I2C  lcd(I2C_ADDR, MYLCD_COLS, MYLCD_ROWS);
 
 ////////////////////////////////////////////////////////////
 
 void CMyLcd::Init()
 {
-	lcd.setBacklightPin(BACKLIGHT_PIN, POSITIVE);
-	lcd.setBacklight(HIGH);
-
+	lcd.init();                      // initialize the lcd 
 	lcd.backlight();			// finish with backlight on  
-
-	lcd.begin(MYLCD_COLS, MYLCD_ROWS);			// initialize the lcd for 20 chars 4 lines, turn on backlight
 
 	super::Init();
 }
@@ -70,14 +67,14 @@ void CMyLcd::Init()
 void CMyLcd::TimerInterrupt()
 {
 	super::TimerInterrupt();
-/*
-	if (READ(KILL_PIN)==0)
-	{
-		CStepper::GetInstance()->AbortMove();
-	}	
+	/*
+		if (READ(KILL_PIN)==0)
+		{
+			CStepper::GetInstance()->AbortMove();
+		}
 
-	button.Tick(READ(BTN_EN1),READ(BTN_EN2));
-*/
+		button.Tick(READ(BTN_EN1),READ(BTN_EN2));
+	*/
 }
 
 ////////////////////////////////////////////////////////////
@@ -85,12 +82,9 @@ void CMyLcd::TimerInterrupt()
 void CMyLcd::FirstDraw()
 {
 	lcd.clear();
-//	lcd.setCursor(0, 0); lcd.print(F("123456789001234567890"));
 	lcd.setCursor(0, 0); lcd.print(F("X:xxx.xx"));
 	lcd.setCursor(0, 1); lcd.print(F("Y:xxx.xx"));
 	lcd.setCursor(0, 2); lcd.print(F("Pen:x"));
-	//	lcd.setCursor(0, 2); lcd.print(F("Herbert Aitenbichler"));
-	//	lcd.setCursor(0, 3); lcd.print(F("Herbert Aitenbichler"));
 }
 
 ////////////////////////////////////////////////////////////
@@ -104,7 +98,7 @@ unsigned long CMyLcd::Splash()
 	lcd.setCursor(0, 2);
 	lcd.print(F("Herbert Aitenbichler"));
 	lcd.setCursor(0, 3);
-	lcd.print(F( __DATE__ "," __TIME__ ));
+	lcd.print(F(__DATE__ "," __TIME__));
 
 	delay(100);
 
@@ -115,28 +109,28 @@ unsigned long CMyLcd::Splash()
 
 unsigned long CMyLcd::Draw(EDrawType /* draw */)
 {
-  static bool firstdraw = true;
+	static bool firstdraw = true;
 
-  if (firstdraw)
-  {
-    FirstDraw();
-    firstdraw=false;
-  }
-  	DrawPos(2, 0, CMotionControlBase::GetInstance()->GetPosition(X_AXIS));
+	if (firstdraw)
+	{
+		FirstDraw();
+		firstdraw = false;
+	}
+	DrawPos(2, 0, CMotionControlBase::GetInstance()->GetPosition(X_AXIS));
 	DrawPos(2, 1, CMotionControlBase::GetInstance()->GetPosition(Y_AXIS));
 	DrawES(17, 0, CStepper::GetInstance()->GetReferenceValue(CStepper::GetInstance()->ToReferenceId(X_AXIS, true)));
 	DrawES(18, 0, CStepper::GetInstance()->GetReferenceValue(CStepper::GetInstance()->ToReferenceId(Y_AXIS, true)));
 	DrawES(19, 0, CStepper::GetInstance()->GetReferenceValue(CStepper::GetInstance()->ToReferenceId(Z_AXIS, true)));
 	DrawPen(4, 2);
 
-	lcd.setCursor(0,3);
+	lcd.setCursor(0, 3);
 	lcd.print(CStepper::GetInstance()->GetTotalSteps());
 
-    uint8_t queued = CStepper::GetInstance()->QueuedMovements();
-    lcd.setCursor(18, 3);
-    if (queued<10)
-        lcd.print(' ');
-    lcd.print((short) queued);
+	uint8_t queued = CStepper::GetInstance()->QueuedMovements();
+	lcd.setCursor(18, 3);
+	if (queued < 10)
+		lcd.print(' ');
+	lcd.print((short)queued);
 
 	return 333;
 }
@@ -168,7 +162,7 @@ void CMyLcd::DrawPen(uint8_t col, uint8_t row)
 {
 	lcd.setCursor(col, row);
 	lcd.print(Plotter.GetPen());
-	lcd.print(Plotter.IsPenDown() ? F(" down") : F(" up  ") );
+	lcd.print(Plotter.IsPenDown() ? F(" down") : F(" up  "));
 }
 
 #endif

@@ -33,8 +33,8 @@ public:
 	void PenUp();
 	void PenDown();
 
-	void DelayPenUp()  { _isDelayPen = true; _isDelayPenDown = false; }
-	void DelayPenDown(){ _isDelayPen = true; _isDelayPenDown = true; }
+	void DelayPenUp()			{ _isDelayPen = true; _isDelayPenDown = false; }
+	void DelayPenDown()			{ _isDelayPen = true; _isDelayPenDown = true; }
 	void DelayPenNow();    // go
 
 	void StopPen()
@@ -43,9 +43,9 @@ public:
 		_isDelayPen = false;
 	};
 
-	bool IsPenDown()				{ return _isPenDown; }
+	bool IsPenDown()			{ return _isPenDown; }
 	uint8_t GetPen()			{ return _pen; }
-	void SetPen(uint8_t pen)	{ _pen=pen; }
+	void SetPen(uint8_t pen)	{ _pen = pen; }
 
 protected:
 

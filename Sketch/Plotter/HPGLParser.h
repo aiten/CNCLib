@@ -33,14 +33,14 @@ private:
 
 public:
 
-	CHPGLParser(CStreamReader* reader,Stream* output) : CParser(reader,output)	{ };
+	CHPGLParser(CStreamReader* reader, Stream* output) : CParser(reader, output) { };
 
 	virtual void Parse() override;
 
 	static mm1000_t HPGLToMM1000X(long xx);
 	static mm1000_t HPGLToMM1000Y(long yy);
 
-	static void Init()											{ super::Init(); _state.Init(); }
+	static void Init() { super::Init(); _state.Init(); }
 
 	struct SState
 	{
@@ -62,7 +62,7 @@ public:
 		{
 			_HPGLIsAbsolut = true;
 
-			FeedRateUp   = PENUP_FEEDRATE;
+			FeedRateUp = PENUP_FEEDRATE;
 			FeedRateDown = PENDOWN_FEEDRATE;
 
 			_HPOffsetX = 0;
@@ -79,7 +79,7 @@ private:
 	void IgnoreCommand();
 	void InitCommand();
 	void PenMoveCommand(uint8_t cmdidx);
-	
+
 };
 
 ////////////////////////////////////////////////////////

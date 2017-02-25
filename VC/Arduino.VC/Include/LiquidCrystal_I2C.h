@@ -24,9 +24,11 @@
 class LiquidCrystal_I2C
 {
 public:
+	LiquidCrystal_I2C(int, int, int) {};
 	LiquidCrystal_I2C(int, int, int, int, int, int, int, int) {};
 	LiquidCrystal_I2C(int, int, int, int, int, int, int, int, int, int) {};
 
+	void init() {};
 	void setBacklightPin(int, int){};
 	void setBacklight(int){};
 	void backlight(){};

@@ -75,16 +75,16 @@ void CHPGLParser::Parse()
 		return;
 	}
 
-	if (IsToken(F("SP"), false, false) || IsToken(F("LT"), false, false))	{ IgnoreCommand();		return; }
-	if (IsToken(F("IN"), false, false))										{ InitCommand();		return; }
-	if (IsToken(F("PD"), false, false))										{ PenMoveCommand(PD);	return; }
-	if (IsToken(F("PU"), false, false))										{ PenMoveCommand(PU);	return; }
-	if (IsToken(F("PA"), false, false))										{ PenMoveCommand(PA);	return; }
-	if (IsToken(F("PR"), false, false))										{ PenMoveCommand(PR);	return; }
+	if (IsToken(F("SP"), false, false) || IsToken(F("LT"), false, false)) { IgnoreCommand();		return; }
+	if (IsToken(F("IN"), false, false)) { InitCommand();		return; }
+	if (IsToken(F("PD"), false, false)) { PenMoveCommand(PD);	return; }
+	if (IsToken(F("PU"), false, false)) { PenMoveCommand(PU);	return; }
+	if (IsToken(F("PA"), false, false)) { PenMoveCommand(PA);	return; }
+	if (IsToken(F("PR"), false, false)) { PenMoveCommand(PR);	return; }
 
 	// command escape to "own" extension
 
-	CHelpParser mycommand(GetReader(),GetOutput());
+	CHelpParser mycommand(GetReader(), GetOutput());
 	mycommand.ParseCommand();
 
 	if (mycommand.IsError()) Error(mycommand.GetError());
@@ -119,10 +119,10 @@ void CHPGLParser::PenMoveCommand(uint8_t cmdidx)
 		case PR:	_state._HPGLIsAbsolut = false;	break;
 	}
 
-	if (IsToken(F("PD"), false, false))											{ PenMoveCommand(PD);	return; }
-	if (IsToken(F("PU"), false, false))											{ PenMoveCommand(PU);	return; }
-	if (IsToken(F("PA"), false, false))											{ PenMoveCommand(PA);	return; }
-	if (IsToken(F("PR"), false, false))											{ PenMoveCommand(PR);	return; }
+	if (IsToken(F("PD"), false, false)) { PenMoveCommand(PD);	return; }
+	if (IsToken(F("PU"), false, false)) { PenMoveCommand(PU);	return; }
+	if (IsToken(F("PA"), false, false)) { PenMoveCommand(PA);	return; }
+	if (IsToken(F("PR"), false, false)) { PenMoveCommand(PR);	return; }
 
 	while (IsInt(_reader->GetChar()))
 	{
@@ -157,7 +157,7 @@ void CHPGLParser::PenMoveCommand(uint8_t cmdidx)
 			if (x != CMotionControlBase::GetInstance()->GetPosition(X_AXIS) || y != CMotionControlBase::GetInstance()->GetPosition(Y_AXIS))
 			{
 				Plotter.DelayPenNow();
-				CMotionControlBase::GetInstance()->MoveAbsEx(_state.FeedRate , X_AXIS, x, Y_AXIS, y, -1);
+				CMotionControlBase::GetInstance()->MoveAbsEx(_state.FeedRate, X_AXIS, x, Y_AXIS, y, -1);
 			}
 		}
 		else
@@ -165,7 +165,7 @@ void CHPGLParser::PenMoveCommand(uint8_t cmdidx)
 			if (x != 0 || y != 0)
 			{
 				Plotter.DelayPenNow();
-				CMotionControlBase::GetInstance()->MoveRelEx(_state.FeedRate,X_AXIS,x, Y_AXIS, y, -1);
+				CMotionControlBase::GetInstance()->MoveRelEx(_state.FeedRate, X_AXIS, x, Y_AXIS, y, -1);
 			}
 		}
 		if (_reader->SkipSpaces() != ',')
