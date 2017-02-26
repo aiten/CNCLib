@@ -97,12 +97,9 @@ void CMyControl::Init()
 	_data.Init();
 
 	CHPGLParser::Init();
+	Plotter.Init();
 
-#ifdef MYUSE_LCD
-	Lcd.Init();
-#endif
-
-  InitSD(SD_ENABLE_PIN);
+	InitSD(SD_ENABLE_PIN);
 }
 
 ////////////////////////////////////////////////////////////
@@ -169,6 +166,7 @@ void CMyControl::Initialized()
 {
 	super::Initialized();
 	_data.Initialized();
+	Plotter.Initialized();
 }
 
 ////////////////////////////////////////////////////////////
@@ -222,8 +220,25 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 		return super::Parse(reader, output);
 	}
 
+	switch (reader->GetChar())
+	{
+    case '$':
+		case '?':
+		case '&':
+			return super::Parse(reader, output);
+	}
+
 	CHPGLParser hpgl(reader, output);
 	return ParseAndPrintResult(&hpgl, output);
 }
 
 ////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+

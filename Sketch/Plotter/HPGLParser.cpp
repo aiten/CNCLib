@@ -60,36 +60,27 @@ mm1000_t CHPGLParser::HPGLToMM1000Y(long yy)
 
 ////////////////////////////////////////////////////////////
 
+void CHPGLParser::ReadAndSkipSemicolon()
+{
+	char ch = _reader->SkipSpaces();
+	if (ch == ';')
+		_reader->GetNextChar();
+}
+
+////////////////////////////////////////////////////////////
+
 void CHPGLParser::Parse()
 {
-	char ch = _reader->GetCharToUpper();
-	if (ch == '$')
-	{
-		_reader->GetNextChar();
-		if (CSingleton<CConfigEeprom>::GetInstance() == NULL || !CSingleton<CConfigEeprom>::GetInstance()->ParseConfig(this))
-		{
-			if (!IsError())
-				Error(MESSAGE_GCODE_IllegalCommand);
-		}
-		_reader->GetNextCharSkipScaces();
-		return;
-	}
-
-	if (IsToken(F("LT"), false, false)) { IgnoreCommand();		return; }
 	if (IsToken(F("SP"), false, false)) { SelectPenCommand();	return; }
 	if (IsToken(F("IN"), false, false)) { InitCommand();		return; }
 	if (IsToken(F("PD"), false, false)) { PenMoveCommand(PD);	return; }
 	if (IsToken(F("PU"), false, false)) { PenMoveCommand(PU);	return; }
 	if (IsToken(F("PA"), false, false)) { PenMoveCommand(PA);	return; }
 	if (IsToken(F("PR"), false, false)) { PenMoveCommand(PR);	return; }
+	if (IsToken(F("LT"), false, false)) { IgnoreCommand();		return; }
+	if (IsToken(F("WU"), false, false)) { IgnoreCommand();		return; }
 
-	// command escape to "own" extension
-
-	CHelpParser mycommand(GetReader(), GetOutput());
-	mycommand.ParseCommand();
-
-	if (mycommand.IsError()) Error(mycommand.GetError());
-	_OkMessage = mycommand.GetOkMessage();
+	Error(MESSAGE_GCODE_IllegalCommand);
 }
 
 ////////////////////////////////////////////////////////////
@@ -103,7 +94,11 @@ void CHPGLParser::IgnoreCommand()
 
 void CHPGLParser::InitCommand()
 {
-	Control.MyInit();
+	// Init HPGL Parser
+
+	Init();
+
+	ReadAndSkipSemicolon();
 }
 
 ////////////////////////////////////////////////////////////
@@ -174,6 +169,7 @@ void CHPGLParser::PenMoveCommand(uint8_t cmdidx)
 
 		_reader->GetNextCharSkipScaces();
 	}
+	ReadAndSkipSemicolon();
 }
 
 ////////////////////////////////////////////////////////////
@@ -182,5 +178,14 @@ void CHPGLParser::SelectPenCommand()
 {
 	uint8_t newpen = GetUInt8();
 	Plotter.SetPen(newpen);
-	_reader->GetNextCharSkipScaces();
+	ReadAndSkipSemicolon();
 }
+
+
+
+
+
+
+
+
+

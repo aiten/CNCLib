@@ -63,6 +63,7 @@
 
 #define MOVEPENUP_FEEDRATE		-STEPRATETOFEEDRATE(4000)
 #define MOVEPENDOWN_FEEDRATE	-STEPRATETOFEEDRATE(3000)
+#define MOVEPENCHANGE_FEEDRATE	-STEPRATETOFEEDRATE(4000)
 
 //#define EMERGENCY_ENDSTOP 5
 
@@ -88,3 +89,12 @@
 #endif
 
 ////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+

@@ -37,7 +37,22 @@ CPlotter::CPlotter()
 	_isPenDownTimeout = false;
 	_isDelayPen = false;
 	_pen = 0;
-	_havePen = true;
+	_havePen = false;
+}
+
+////////////////////////////////////////////////////////////
+
+void CPlotter::Init()
+{
+  _servo1.attach(SERVO1_PIN);
+}
+
+////////////////////////////////////////////////////////////
+
+void CPlotter::Initialized()
+{
+	_servo1.write(SERVO1_CLAMPOPEN);
+	PenUpNow();
 }
 
 ////////////////////////////////////////////////////////////
@@ -72,15 +87,22 @@ void CPlotter::PenUp()
 	_isDelayPen = false;
 	if (_isPenDown)
 	{
-		CStepper::GetInstance()->Wait(1);
-		_isPenDown = false;
-		CMotionControlBase::GetInstance()->MoveAbsEx(MOVEPENUP_FEEDRATE, Z_AXIS, CStepper::GetInstance()->GetLimitMin(Z_AXIS), -1);
-#ifdef MYUSE_LCD
-		// Lcd.DrawRequest(true,CLcd::DrawAll); => delay off movementbuffer
-#endif
-
+		PenUpNow();
 	}
 }
+
+////////////////////////////////////////////////////////////
+
+void CPlotter::PenUpNow()
+{
+	CStepper::GetInstance()->Wait(1);
+	_isPenDown = false;
+	CMotionControlBase::GetInstance()->MoveAbsEx(MOVEPENUP_FEEDRATE, Z_AXIS, PLOTTER_PENUPPOS, -1);
+#ifdef MYUSE_LCD
+	// Lcd.DrawRequest(true,CLcd::DrawAll); => delay off movementbuffer
+#endif
+}
+
 
 ////////////////////////////////////////////////////////////
 
@@ -90,7 +112,7 @@ void CPlotter::PenDown()
 	if (!_isPenDown)
 	{
 		_isPenDown = true;
-		CMotionControlBase::GetInstance()->MoveAbsEx(MOVEPENDOWN_FEEDRATE, Z_AXIS, CStepper::GetInstance()->GetLimitMax(Z_AXIS), -1);
+		CMotionControlBase::GetInstance()->MoveAbsEx(MOVEPENDOWN_FEEDRATE, Z_AXIS, PLOTTER_PENDOWNPOS, -1);
 		CStepper::GetInstance()->Wait(1);
 #ifdef MYUSE_LCD
 		// Lcd.DrawRequest(true,CLcd::DrawAll); => delay off movementbuffer
@@ -115,6 +137,30 @@ void CPlotter::DelayPenNow()
 
 ////////////////////////////////////////////////////////////
 
+void CPlotter::ToPenChangePos(uint8_t pen)
+{
+	mm1000_t ofs_y = pen*PLOTTER_PENCHANGEPOS_Y_OFS;
+	CMotionControlBase::GetInstance()->MoveAbsEx(
+									CHPGLParser::_state.FeedRateUp,
+									X_AXIS, PLOTTER_PENCHANGEPOS_X,
+									Y_AXIS, PLOTTER_PENCHANGEPOS_Y + ofs_y,
+									-1);
+
+	CMotionControlBase::GetInstance()->MoveAbsEx(MOVEPENCHANGE_FEEDRATE, Z_AXIS, PLOTTER_PENCHANGEPOS, -1);
+	CStepper::GetInstance()->WaitBusy();
+}
+
+////////////////////////////////////////////////////////////
+
+void CPlotter::OffPenChangePos(uint8_t pen)
+{
+	CMotionControlBase::GetInstance()->MoveAbsEx(MOVEPENCHANGE_FEEDRATE, Z_AXIS, PLOTTER_PENUPPOS, -1);
+	CStepper::GetInstance()->WaitBusy();
+}
+
+
+////////////////////////////////////////////////////////////
+
 bool CPlotter::SetPen(uint8_t pen) 
 { 
 	if (_pen == pen && _havePen)
@@ -134,10 +180,17 @@ bool CPlotter::PenToDepot()
 		return true;
 	
 	PenUp();
+	CStepper::GetInstance()->WaitBusy();
 
 	/////////////////////////////////////
 	// TODO: 
 
+	ToPenChangePos(_pen);
+
+	_servo1.write(SERVO1_CLAMPOPEN);
+	delay(SERVO1_CLAMPOPENDELAY);
+
+	OffPenChangePos(_pen);
 
 	////////////////////////////////////
 
@@ -153,6 +206,12 @@ bool CPlotter::PenFromDepot(uint8_t pen)
 	/////////////////////////////////////
 	// TODO: 
 
+	ToPenChangePos(pen);
+
+	_servo1.write(SERVO1_CLAMPCLOSE);
+	delay(SERVO1_CLAMPCLOSEDELAY);
+
+	OffPenChangePos(pen);
 
 	////////////////////////////////////
 
@@ -160,3 +219,12 @@ bool CPlotter::PenFromDepot(uint8_t pen)
 	_havePen = true;
 	return true;
 }
+
+
+
+
+
+
+
+
+

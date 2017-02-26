@@ -129,5 +129,32 @@
 #define STEPRATERATE_REFMOVE	(CNC_MAXSPEED/4)
 
 ////////////////////////////////////////////////////////
+// PlotterControl
+
+#define SERVO1_PIN RAMPS14_SERVO3_PIN
+#define SERVO1_CLAMPOPEN	1000
+#define SERVO1_CLAMPCLOSE	2000
+#define SERVO1_CLAMPOPENDELAY	1000
+#define SERVO1_CLAMPCLOSEDELAY	1000
+
+#define PLOTTER_PENDOWNPOS		CMotionControlBase::GetInstance()->ToMm1000(Z_AXIS,CStepper::GetInstance()->GetLimitMax(Z_AXIS))
+#define PLOTTER_PENUPPOS		CMotionControlBase::GetInstance()->ToMm1000(Z_AXIS,((CStepper::GetInstance()->GetLimitMax(Z_AXIS)-CStepper::GetInstance()->GetLimitMin(Z_AXIS))/2))
+#define PLOTTER_PENCHANGEPOS	CMotionControlBase::GetInstance()->ToMm1000(Z_AXIS,CStepper::GetInstance()->GetLimitMin(Z_AXIS))
+
+#define PLOTTER_PENCHANGEPOS_X	CMotionControlBase::GetInstance()->ToMm1000(X_AXIS,CStepper::GetInstance()->GetLimitMax(X_AXIS))
+#define PLOTTER_PENCHANGEPOS_Y	CMotionControlBase::GetInstance()->ToMm1000(Y_AXIS,CStepper::GetInstance()->GetLimitMin(Y_AXIS))
+#define PLOTTER_PENCHANGEPOS_Y_OFS	30000l	//mm1000
+
+////////////////////////////////////////////////////////
+
 
 #define MESSAGE_MYCONTROL_Starting F("Plotter(HA) is starting ... (" __DATE__ ", " __TIME__ ")")
+
+
+
+
+
+
+
+
+

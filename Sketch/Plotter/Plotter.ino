@@ -19,6 +19,7 @@
 
 #include <StepperLib.h>
 #include <CNCLib.h>
+#include <Servo.h>
 
 #include "MyControl.h"
 #include "PlotterControl.h"
@@ -57,4 +58,13 @@ void loop()
 {
   Control.Run();
 }
+
+
+
+
+
+
+
+
+
 

@@ -76,6 +76,8 @@ public:
 
 private:
 
+	void ReadAndSkipSemicolon();
+
 	void SelectPenCommand();
 
 	void IgnoreCommand();
@@ -85,6 +87,15 @@ private:
 };
 
 ////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
 
 
 

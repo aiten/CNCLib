@@ -21,20 +21,28 @@
 
 ////////////////////////////////////////////////////////
 
+#include <Servo.h>
+
+////////////////////////////////////////////////////////
+
 class CPlotter
 {
 public:
 
 	CPlotter();
 
+	void Init();
+	void Initialized();
+
 	void Idle(unsigned int idletime);
 	void Resume();
 
-	void PenUp();
 	void PenDown();
+	void PenUp();
+	void PenUpNow();
 
-	void DelayPenUp()			{ _isDelayPen = true; _isDelayPenDown = false; }
-	void DelayPenDown()			{ _isDelayPen = true; _isDelayPenDown = true; }
+	void DelayPenUp() { _isDelayPen = true; _isDelayPenDown = false; }
+	void DelayPenDown() { _isDelayPen = true; _isDelayPenDown = true; }
 	void DelayPenNow();    // go
 
 	void StopPen()
@@ -47,7 +55,8 @@ public:
 	uint8_t GetPen()			{ return _pen; }
 	bool SetPen(uint8_t pen);
 
-protected:
+
+private:
 
 	bool _isDelayPen;
 	bool _isDelayPenDown;
@@ -57,13 +66,23 @@ protected:
 	uint8_t _pen;
 	bool _havePen;	
 
-private:
-
 	bool PenToDepot();
 	bool PenFromDepot(uint8_t pen);
+	void ToPenChangePos(uint8_t pen);
+	void OffPenChangePos(uint8_t pen);
 
+	Servo _servo1;
 };
 
 ////////////////////////////////////////////////////////
 
 extern CPlotter Plotter;
+
+
+
+
+
+
+
+
+

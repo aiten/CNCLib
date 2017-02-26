@@ -68,10 +68,6 @@ protected:
 
 	virtual bool OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo) override;
 
-public:
-
-	void MyInit() { return Init(); }
-
 private:
 
 	static const CConfigEeprom::SCNCEeprom _eepromFlash;
@@ -82,4 +78,13 @@ private:
 ////////////////////////////////////////////////////////
 
 extern CMyControl Control;
+
+
+
+
+
+
+
+
+
 
