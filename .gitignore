@@ -44,3 +44,4 @@ PublishProfiles/
 
 /Sketch/libraries/LiquidCrystal_I2C
 /VC/Plotter/packages
+/Sketch/libraries/U8glib

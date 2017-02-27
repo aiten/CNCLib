@@ -41,7 +41,7 @@ namespace Plotter.GUI
         {
             InitializeComponent();
             _com.SelectedItem = "COM6";
-			SizeX = 520;
+			SizeX = 515;
 			SizeY = 295;
 			UpdateButtons();
 

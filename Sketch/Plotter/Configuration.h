@@ -39,9 +39,9 @@
 
 ////////////////////////////////////////////////////////
 
-#define X_MAXSIZE 520000		//520mm
+#define X_MAXSIZE 515000		//515mm
 #define Y_MAXSIZE 295000		//295mm
-#define Z_MAXSIZE 21000			//21mm
+#define Z_MAXSIZE 8000			//8
 #define A_MAXSIZE 360000 
 #define B_MAXSIZE 360000 
 #define C_MAXSIZE 360000 
