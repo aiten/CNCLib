@@ -177,7 +177,9 @@ void CHPGLParser::PenMoveCommand(uint8_t cmdidx)
 void CHPGLParser::SelectPenCommand()
 {
 	uint8_t newpen = GetUInt8();
-	Plotter.SetPen(newpen);
+	if (!Plotter.SetPen(newpen))
+		Error(F("Select Pen failed"));
+
 	ReadAndSkipSemicolon();
 }
 

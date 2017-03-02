@@ -47,8 +47,9 @@ HardwareSerial& StepperSerial = Serial;
 
 ////////////////////////////////////////////////////////////
 
-const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash PROGMEM =
+const CMyControl::SMyCNCEeprom CMyControl::_eepromFlash PROGMEM =
 {
+  {
 	EPROM_SIGNATURE,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
 	GetInfo1a(),0,
@@ -61,7 +62,7 @@ const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash PROGMEM =
 	CNC_DEC,
 	STEPRATERATE_REFMOVE,
 	MOVEAWAYFROMREF_MM1000,
-	X_STEPSPERMM/1000.0,
+	X_STEPSPERMM / 1000.0,
 	{
 		{ X_MAXSIZE,     X_USEREFERENCE, REFMOVE_1_AXIS,  X_REFERENCEHITVALUE_MIN, X_REFERENCEHITVALUE_MAX },
 		{ Y_MAXSIZE,     Y_USEREFERENCE, REFMOVE_2_AXIS,  Y_REFERENCEHITVALUE_MIN, Y_REFERENCEHITVALUE_MAX },
@@ -76,13 +77,32 @@ const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash PROGMEM =
 		{ C_MAXSIZE,     C_USEREFERENCE, REFMOVE_6_AXIS,  C_REFERENCEHITVALUE_MIN, C_REFERENCEHITVALUE_MAX },
 #endif
 	}
+  },
+  // Plotter EEprom Extension
+
+	PLOTTER_DEFAULT_PENDOWN_FEEDRATE,
+	PLOTTER_DEFAULT_PENUP_FEEDRATE,
+
+	PLOTTER_DEFAULT_Z_PENDOWN_FEEDRATE,
+	PLOTTER_DEFAULT_Z_PENUP_FEEDRATE,
+	PLOTTER_DEFAULT_Z_PENCHANGE_FEEDRATE,
+
+	PLOTTER_PENDOWNPOS_Z,
+	PLOTTER_PENUPPOS_Z,
+
+	PLOTTER_PENCHANGEPOS_X,
+	PLOTTER_PENCHANGEPOS_Y,
+	PLOTTER_PENCHANGEPOS_Z,
+
+	PLOTTER_PENCHANGEPOS_X_OFS,
+	PLOTTER_PENCHANGEPOS_Y_OFS
 };
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Init()
 {
-	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CConfigEeprom::SCNCEeprom), &_eepromFlash, EPROM_SIGNATURE);
+	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CMyControl::SMyCNCEeprom), &_eepromFlash, EPROM_SIGNATURE);
 
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();
