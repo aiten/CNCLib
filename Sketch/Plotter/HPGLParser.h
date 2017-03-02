@@ -60,11 +60,16 @@ public:
 		{
 			_HPGLIsAbsolut = true;
 
-			FeedRateUp   = -((feedrate_t)CConfigEeprom::GetConfigU32(offsetof(CMyControl::SMyCNCEeprom, penupFeedrate)));		// always negativ
-			FeedRateDown = CConfigEeprom::GetConfigU32(offsetof(CMyControl::SMyCNCEeprom, pendownFeedrate));
-
 			_HPOffsetX = 0;
 			_HPOffsetY = 0;
+
+			SetFeedRates();
+		}
+
+		void SetFeedRates()
+		{
+			FeedRateUp = -((feedrate_t)CConfigEeprom::GetConfigU32(offsetof(CMyControl::SMyCNCEeprom, penupFeedrate)));		// always negativ
+			FeedRateDown = CConfigEeprom::GetConfigU32(offsetof(CMyControl::SMyCNCEeprom, pendownFeedrate));
 		}
 	};
 
@@ -75,6 +80,8 @@ private:
 	void ReadAndSkipSemicolon();
 
 	void SelectPenCommand();
+	void PenVelocityCommand();
+	void PenVelocityNormalCommand();
 
 	void IgnoreCommand();
 	void InitCommand();
