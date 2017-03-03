@@ -68,8 +68,10 @@ private:
 
 	bool PenToDepot();
 	bool PenFromDepot(uint8_t pen);
-	void ToPenChangePos(uint8_t pen);
-	void OffPenChangePos(uint8_t pen);
+	bool ToPenChangePos(uint8_t pen);
+	bool OffPenChangePos(uint8_t pen);
+
+	mm1000_t ConvertConfigPos(mm1000_t pos, axis_t axis);
 
 	Servo _servo1;
 };

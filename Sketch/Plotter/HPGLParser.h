@@ -56,19 +56,20 @@ public:
 
 		// Plotter
 
-		unsigned int _penUpTimeOut;
-
 		void Init()
 		{
 			_HPGLIsAbsolut = true;
 
-			FeedRateUp = PENUP_FEEDRATE;
-			FeedRateDown = PENDOWN_FEEDRATE;
-
 			_HPOffsetX = 0;
 			_HPOffsetY = 0;
 
-			_penUpTimeOut = 1000;
+			SetFeedRates();
+		}
+
+		void SetFeedRates()
+		{
+			FeedRateUp = -((feedrate_t)CConfigEeprom::GetConfigU32(offsetof(CMyControl::SMyCNCEeprom, penupFeedrate)));		// always negativ
+			FeedRateDown = CConfigEeprom::GetConfigU32(offsetof(CMyControl::SMyCNCEeprom, pendownFeedrate));
 		}
 	};
 
@@ -79,6 +80,8 @@ private:
 	void ReadAndSkipSemicolon();
 
 	void SelectPenCommand();
+	void PenVelocityCommand();
+	void PenVelocityNormalCommand();
 
 	void IgnoreCommand();
 	void InitCommand();

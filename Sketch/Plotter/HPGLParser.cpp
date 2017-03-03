@@ -72,6 +72,8 @@ void CHPGLParser::ReadAndSkipSemicolon()
 void CHPGLParser::Parse()
 {
 	if (IsToken(F("SP"), false, false)) { SelectPenCommand();	return; }
+	if (IsToken(F("VS"), false, false)) { PenVelocityCommand();	return; }
+	if (IsToken(F("VN"), false, false)) { PenVelocityNormalCommand();	return; }
 	if (IsToken(F("IN"), false, false)) { InitCommand();		return; }
 	if (IsToken(F("PD"), false, false)) { PenMoveCommand(PD);	return; }
 	if (IsToken(F("PU"), false, false)) { PenMoveCommand(PU);	return; }
@@ -177,15 +179,30 @@ void CHPGLParser::PenMoveCommand(uint8_t cmdidx)
 void CHPGLParser::SelectPenCommand()
 {
 	uint8_t newpen = GetUInt8();
-	Plotter.SetPen(newpen);
+	if (!Plotter.SetPen(newpen))
+		Error(F("Select Pen failed"));
+
 	ReadAndSkipSemicolon();
 }
 
+////////////////////////////////////////////////////////////
 
+void CHPGLParser::PenVelocityNormalCommand()
+{
+	_state.SetFeedRates();
+	ReadAndSkipSemicolon();
+}
 
+////////////////////////////////////////////////////////////
 
+void CHPGLParser::PenVelocityCommand()
+{
+	long velocityCmPerSec = GetInt32Scale(10, 1000, 2, 255);
 
+	if (IsError()) return;
 
+	// feedrate=>scale5, => mul with scale3
+	_state.FeedRateDown = velocityCmPerSec * 1000;
 
-
-
+	ReadAndSkipSemicolon();
+}

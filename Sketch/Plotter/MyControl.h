@@ -68,9 +68,32 @@ protected:
 
 	virtual bool OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t addinfo) override;
 
+public:
+
+	struct SMyCNCEeprom
+	{
+		CConfigEeprom::SCNCEeprom _std;
+		feedrate_t	pendownFeedrate;
+		feedrate_t	penupFeedrate;
+
+		feedrate_t	movependownFeedrate;
+		feedrate_t	movepenupFeedrate;
+		feedrate_t	movepenchangeFeedrate;
+
+		mm1000_t	pendownpos;
+		mm1000_t	penuppos;
+
+		mm1000_t	penchangepos_x;
+		mm1000_t	penchangepos_y;
+		mm1000_t	penchangepos_z;
+
+		mm1000_t	penchangepos_x_ofs;
+		mm1000_t	penchangepos_y_ofs;
+	};
+
 private:
 
-	static const CConfigEeprom::SCNCEeprom _eepromFlash;
+	static const SMyCNCEeprom _eepromFlash;
 
 	ControlData _data;
 };

@@ -137,16 +137,28 @@
 #define SERVO1_CLAMPOPENDELAY	1000
 #define SERVO1_CLAMPCLOSEDELAY	1000
 
-#define PLOTTER_PENDOWNPOS		CMotionControlBase::GetInstance()->ToMm1000(Z_AXIS,CStepper::GetInstance()->GetLimitMax(Z_AXIS))
-#define PLOTTER_PENUPPOS		CMotionControlBase::GetInstance()->ToMm1000(Z_AXIS,((CStepper::GetInstance()->GetLimitMax(Z_AXIS)-CStepper::GetInstance()->GetLimitMin(Z_AXIS))/2))
-#define PLOTTER_PENCHANGEPOS	CMotionControlBase::GetInstance()->ToMm1000(Z_AXIS,CStepper::GetInstance()->GetLimitMin(Z_AXIS))
+#define PLOTTER_DEFAULT_PENUP_FEEDRATE		14000000l  // -STEPRATETOFEEDRATE(25000);
+#define PLOTTER_DEFAULT_PENDOWN_FEEDRATE	4500000l    // STEPRATETOFEEDRATE(8000);
 
-#define PLOTTER_PENCHANGEPOS_X	CMotionControlBase::GetInstance()->ToMm1000(X_AXIS,CStepper::GetInstance()->GetLimitMax(X_AXIS))
-#define PLOTTER_PENCHANGEPOS_Y	CMotionControlBase::GetInstance()->ToMm1000(Y_AXIS,CStepper::GetInstance()->GetLimitMin(Y_AXIS))
+#define PLOTTER_DEFAULT_Z_PENUP_FEEDRATE		2250000l // -STEPRATETOFEEDRATE(4000)
+#define PLOTTER_DEFAULT_Z_PENDOWN_FEEDRATE		1700000l // -STEPRATETOFEEDRATE(3000)
+#define PLOTTER_DEFAULT_Z_PENCHANGE_FEEDRATE	2250000l // -STEPRATETOFEEDRATE(4000)
+
+#define PLOTTER_PENCOUNT		8
+
+
+#define PLOTTER_PENDOWNPOS_Z	0x7fffffffl
+#define PLOTTER_PENUPPOS_Z		(Z_MAXSIZE/2)
+#define PLOTTER_PENCHANGEPOS_Z	0
+
+#define PLOTTER_PENCHANGEPOS_X	0x7fffffffl
+#define PLOTTER_PENCHANGEPOS_X_OFS	0
+#define PLOTTER_PENCHANGEPOS_Y	0
 #define PLOTTER_PENCHANGEPOS_Y_OFS	30000l	//mm1000
 
-////////////////////////////////////////////////////////
+#define PLOTTER_PENUP_TIMEOUT	1000
 
+////////////////////////////////////////////////////////
 
 #define MESSAGE_MYCONTROL_Starting F("Plotter(HA) is starting ... (" __DATE__ ", " __TIME__ ")")
 
