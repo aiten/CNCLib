@@ -230,6 +230,7 @@ public:
 	axisArray_t GetLastDirection() const						{ return _pod._lastdirection; }		// check for backlash
 
 	steprate_t GetDefaultVmax() const							{ return TimerToSpeed(_pod._timerMaxDefault); }
+	steprate_t GetMaxSpeed(axis_t axis) const					{ return min(GetDefaultVmax(),TimerToSpeed(_pod._timerMax[axis])); }
 	steprate_t GetAcc(axis_t axis) const						{ return TimerToSpeed(_pod._timerAcc[axis]); }
 	steprate_t GetDec(axis_t axis) const						{ return TimerToSpeed(_pod._timerDec[axis]); }
 	steprate_t GetJerkSpeed(axis_t axis) const					{ return _pod._maxJerkSpeed[axis]; }

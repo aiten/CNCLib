@@ -359,6 +359,31 @@ steprate_t CMotionControlBase::FeedRateToStepRate(axis_t axis, feedrate_t feedra
 	return steprate ? steprate : 1; 
 }
 
+/////////////////////////////////////////////////////////
+
+feedrate_t CMotionControlBase::StepRateToFeedRate(axis_t axis, steprate_t steprate)	
+{
+	// 60 because of min=>sec (feedrate in mm1000/min)
+	feedrate_t feedrate = (feedrate_t)_ToMm1000(axis, steprate * 60); 
+	return feedrate ? feedrate : 1; 
+}
+/////////////////////////////////////////////////////////
+
+feedrate_t CMotionControlBase::GetMaxFeedRate(axis_t axis, feedrate_t feedrate)	
+{
+	steprate_t steprate = FeedRateToStepRate(axis, feedrate);
+	steprate_t maxsteprate = CStepper::GetInstance()->GetMaxSpeed(axis);
+
+	// feedrate may overrun (feedrate 32bit, steprate 16bit)
+	feedrate_t feedrateoverrun = StepRateToFeedRate(axis, steprate);
+
+	if (abs(feedrateoverrun - feedrate) > 1024 || steprate > maxsteprate)
+	{
+		return StepRateToFeedRate(axis,maxsteprate);
+	}
+	return feedrate;
+}
+
 ////////////////////////////////////////////////////////
 // repeat axis and d until axis not in 0 .. NUM_AXIS
 

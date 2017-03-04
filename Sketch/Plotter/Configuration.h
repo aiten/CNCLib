@@ -39,7 +39,7 @@
 
 ////////////////////////////////////////////////////////
 
-#define X_MAXSIZE 515000		//515mm
+#define X_MAXSIZE 510000		//515mm
 #define Y_MAXSIZE 295000		//295mm
 #define Z_MAXSIZE 8000			//8
 #define A_MAXSIZE 360000 
@@ -68,10 +68,10 @@
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED 25000        // steps/sec
-#define CNC_ACC  400
-#define CNC_DEC  450
-#define CNC_JERKSPEED 1000
+#define CNC_MAXSPEED	25000        // steps/sec
+#define CNC_ACC			400
+#define CNC_DEC			450
+#define CNC_JERKSPEED	1000
 
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
@@ -107,7 +107,7 @@
 #define MOVEAWAYFROMREF_MM1000 500
 
 #define SPINDLE_ANALOGSPEED
-#define SPINDLE_MAXSPEED	10000			// analog 255
+#define SPINDLE_MAXSPEED		10000		// analog 255
 #define SPINDEL_FADETIMEDELAY  0    		// 8ms * 255 => 2040ms from 0 to max, 4080 from -max to +max
 
 ////////////////////////////////////////////////////////
@@ -132,31 +132,31 @@
 // PlotterControl
 
 #define SERVO1_PIN RAMPS14_SERVO3_PIN
-#define SERVO1_CLAMPOPEN	1000
-#define SERVO1_CLAMPCLOSE	2000
+#define SERVO1_CLAMPOPEN		1000
+#define SERVO1_CLAMPCLOSE		2000
 #define SERVO1_CLAMPOPENDELAY	1000
 #define SERVO1_CLAMPCLOSEDELAY	1000
 
-#define PLOTTER_DEFAULT_PENUP_FEEDRATE		14000000l  // -STEPRATETOFEEDRATE(25000);
-#define PLOTTER_DEFAULT_PENDOWN_FEEDRATE	4500000l    // STEPRATETOFEEDRATE(8000);
+#define PLOTTER_DEFAULT_PENUP_FEEDRATE			LONG_MAX	 // reduced to maxsteprate
+#define PLOTTER_DEFAULT_PENDOWN_FEEDRATE		3600000l     // 60 mm/ sec;
 
-#define PLOTTER_DEFAULT_Z_PENUP_FEEDRATE		2250000l // -STEPRATETOFEEDRATE(4000)
-#define PLOTTER_DEFAULT_Z_PENDOWN_FEEDRATE		1700000l // -STEPRATETOFEEDRATE(3000)
-#define PLOTTER_DEFAULT_Z_PENCHANGE_FEEDRATE	2250000l // -STEPRATETOFEEDRATE(4000)
+#define PLOTTER_DEFAULT_Z_PENUP_FEEDRATE		2400000l // 40 mm / sec
+#define PLOTTER_DEFAULT_Z_PENDOWN_FEEDRATE		1800000l // 30 mm / sec
+#define PLOTTER_DEFAULT_Z_PENCHANGE_FEEDRATE	2400000l // 40 mm / sec
 
 #define PLOTTER_PENCOUNT		8
 
 
-#define PLOTTER_PENDOWNPOS_Z	0x7fffffffl
-#define PLOTTER_PENUPPOS_Z		(Z_MAXSIZE/2)
-#define PLOTTER_PENCHANGEPOS_Z	0
+#define PLOTTER_PENDOWNPOS_Z		LONG_MAX
+#define PLOTTER_PENUPPOS_Z			(Z_MAXSIZE/2)
+#define PLOTTER_PENCHANGEPOS_Z		0
 
-#define PLOTTER_PENCHANGEPOS_X	0x7fffffffl
+#define PLOTTER_PENCHANGEPOS_X		LONG_MAX
 #define PLOTTER_PENCHANGEPOS_X_OFS	0
-#define PLOTTER_PENCHANGEPOS_Y	0
+#define PLOTTER_PENCHANGEPOS_Y		0
 #define PLOTTER_PENCHANGEPOS_Y_OFS	30000l	//mm1000
 
-#define PLOTTER_PENUP_TIMEOUT	1000
+#define PLOTTER_PENUP_TIMEOUT		1000
 
 ////////////////////////////////////////////////////////
 

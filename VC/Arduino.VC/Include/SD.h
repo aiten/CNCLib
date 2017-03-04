@@ -75,7 +75,7 @@ public:
 
 	char _OSfilename[512];
 	char _pathname[512];
-	char _name[8 + 1 + 3 + 1];
+	char _name[512];
 
 	bool isDirectory()
 	{

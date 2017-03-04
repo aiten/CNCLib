@@ -108,6 +108,9 @@ public:
 	steprate_t GetFeedRate(const mm1000_t to[NUM_AXIS], feedrate_t feedrate);
 	static steprate_t FeedRateToStepRate(axis_t axis, feedrate_t feedrate);
 
+	static feedrate_t StepRateToFeedRate(axis_t axis, steprate_t steprate);	
+	static feedrate_t GetMaxFeedRate(axis_t axis, feedrate_t feedrate=LONG_MAX);
+	
 	/////////////////////////////////////////////////////////
 	// some helper function to move (all result in MoveAbs(...)
 
