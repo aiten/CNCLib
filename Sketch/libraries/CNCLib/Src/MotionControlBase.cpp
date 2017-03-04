@@ -364,7 +364,7 @@ steprate_t CMotionControlBase::FeedRateToStepRate(axis_t axis, feedrate_t feedra
 feedrate_t CMotionControlBase::StepRateToFeedRate(axis_t axis, steprate_t steprate)	
 {
 	// 60 because of min=>sec (feedrate in mm1000/min)
-	feedrate_t feedrate = (feedrate_t)_ToMm1000(axis, steprate * 60); 
+	feedrate_t feedrate = (feedrate_t)_ToMm1000(axis, steprate * 60l); 
 	return feedrate ? feedrate : 1; 
 }
 /////////////////////////////////////////////////////////
