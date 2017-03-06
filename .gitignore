@@ -42,6 +42,7 @@ PublishProfiles/
 /Doc/Screen2.jpg
 /Doc/Screen1a.jpg
 
+/VC/Plotter/packages
 /Sketch/libraries/LiquidCrystal_I2C
 /VC/Plotter/packages
 /Sketch/libraries/U8glib

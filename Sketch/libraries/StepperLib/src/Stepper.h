@@ -138,6 +138,8 @@ public:
 	void SetDefaultMaxSpeed(steprate_t vMax, steprate_t v0Acc, steprate_t v0Dec)				{ SetDefaultMaxSpeed(vMax); for (axis_t i = 0; i < NUM_AXIS; i++) { SetAcc(i, v0Acc); SetDec(i, v0Dec); } }
 	void SetDefaultMaxSpeed(steprate_t vMax, axis_t axis, steprate_t v0Acc, steprate_t v0Dec)	{ SetDefaultMaxSpeed(vMax); SetAccDec(axis, v0Acc, v0Dec); }
 
+	void SetDefaultMaxSpeed(steprate_t vMax, steprate_t v0Acc, steprate_t v0Dec, steprate_t vMaxJerk)	{ SetDefaultMaxSpeed(vMax); for (axis_t i = 0; i < NUM_AXIS; i++) { SetAcc(i, v0Acc); SetDec(i, v0Dec); SetJerkSpeed(i, vMaxJerk);} }
+	
 	void SetSpeedOverride(EnumAsByte(ESpeedOverride) speed)		{ _pod._speedoverride = speed; }
 	EnumAsByte(ESpeedOverride) GetSpeedOverride()				{ return _pod._speedoverride; }
 
