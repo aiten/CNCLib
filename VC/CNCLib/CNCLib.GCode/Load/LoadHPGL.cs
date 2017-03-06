@@ -147,7 +147,9 @@ namespace CNCLib.GCode.Load
             string[] cmds = new string[] { "PU", "PD", "PA", "PR", "SP" };
             while (!_stream.IsEOF())
             {
-                int cmdidx = _stream.IsCommand(cmds);
+				_stream.SkipSpaces();
+				int idx = _stream.PushIdx();
+				int cmdidx = _stream.IsCommand(cmds);
 
                 if (cmdidx==4)
                 {
@@ -157,8 +159,13 @@ namespace CNCLib.GCode.Load
 						if (coloridx >= 1 && coloridx <= 8)
 							_color = (coloridx - 1); //  _pencolor[coloridx - 1];
                     }
-                }
-                else if (cmdidx >= 0)
+					if (!analyse)
+					{
+						_stream.PopIdx(idx);
+						HpglCommandToEnd(analyse);
+					}
+				}
+				else if (cmdidx >= 0)
                 {
                     switch (cmdidx)
                     {
@@ -220,17 +227,35 @@ namespace CNCLib.GCode.Load
                         _stream.IsCommand(",");
                     }
                 }
-                else
-                {
-                    // skip command
-                    _stream.SkipEndCommand();
-                }
-            }
+                else if (_stream.SkipSpaces()==';')
+				{
+					_stream.Next();
+				}
+				else
+				{
+					HpglCommandToEnd(analyse);
+				}
+			}
 
             return true;
         }
 
-        private void LoadPenDown(Point3D pt)
+		private void HpglCommandToEnd(bool analyse)
+		{
+			var hpglcmd = _stream.ReadString(new char[] { ';' });
+			if (!analyse)
+				NewHpglCommand(hpglcmd);
+		}
+
+		private void NewHpglCommand(string hpglcmd)
+		{
+			var r = new GxxCommand();
+			r.SetCode($";HPGL={hpglcmd}");
+			r.ImportInfo = hpglcmd;
+			Commands.AddCommand(r);
+		}
+
+		private void LoadPenDown(Point3D pt)
 		{
 			if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
 			{

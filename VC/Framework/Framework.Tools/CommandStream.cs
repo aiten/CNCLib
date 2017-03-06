@@ -18,6 +18,7 @@
 
 using System;
 using System.Linq;
+using System.Text;
 
 namespace Framework.Tools
 {
@@ -32,6 +33,9 @@ namespace Framework.Tools
 
         public char NextChar		{ get { return  IsEOF() ? ((char) 0) : _line[_idx];  } }
 		public char NextCharToUpper { get { return char.ToUpper(NextChar); } }
+
+		public int PushIdx()		{ return _idx; }
+		public void PopIdx(int idx) { _idx = idx; }
 
         public char SkipSpaces()	
         {
@@ -105,6 +109,18 @@ namespace Framework.Tools
  
             return -1;
         }
+
+		public string ReadString(char[] termchar)
+		{
+			var sb = new StringBuilder();
+
+			while (!IsEOF() && !termchar.Contains(NextChar))
+			{
+				sb.Append(NextChar);
+				Next();
+			}
+			return sb.ToString();
+		}
 
         public string ReadDigits()
         {
