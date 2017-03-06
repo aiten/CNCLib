@@ -81,7 +81,13 @@ void CControl::InitFromEeprom()
 #endif
 
 	uint16_t jerkspeed = CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, jerkspeed));
-	if (jerkspeed == 0) jerkspeed = 1000;
+	if (jerkspeed == 0) jerkspeed = 1024;
+	
+	CStepper::GetInstance()->SetDefaultMaxSpeed(
+		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate))),
+		((steprate_t)CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, acc))),
+		((steprate_t)CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, dec))),
+		jerkspeed);
 
 	for (uint8_t axis = 0; axis < NUM_AXIS; axis++)
 	{
@@ -90,14 +96,7 @@ void CControl::InitFromEeprom()
 		CStepper::GetInstance()->SetReferenceHitValue(CStepper::GetInstance()->ToReferenceId(axis, false), CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceValue_max) + ofs));
 
 		CStepper::GetInstance()->SetLimitMax(axis, CMotionControlBase::GetInstance()->ToMachine(axis, CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[0].size) + ofs)));
-
-		CStepper::GetInstance()->SetJerkSpeed(axis, jerkspeed);
 	}
-
-	CStepper::GetInstance()->SetDefaultMaxSpeed(
-		((steprate_t)CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate))),
-		((steprate_t)CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, acc))),
-		((steprate_t)CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, dec))));
 }
 
 ////////////////////////////////////////////////////////////
