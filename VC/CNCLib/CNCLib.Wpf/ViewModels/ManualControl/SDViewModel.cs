@@ -74,8 +74,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 					{
 						savefileinresponse = e.Info.Contains(sDFileName);
 					});
-					Com.ReplyUnknown += checkresponse;
-					Com.SendCommand("m28 " + sDFileName);
+                    var com = new MachineGCodeHelper();
+                    var prefix = com.GetCommandPrefix();
+
+                    Com.ReplyUnknown += checkresponse;
+					Com.SendCommand(prefix+"m28 " + sDFileName);
 					Com.ReplyUnknown -= checkresponse;
 					if (savefileinresponse)
 					{
@@ -83,7 +86,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                         List<string> lines = new List<string>();
                         while ((line = sr.ReadLine()) != null)
                         {
-                            lines.Add(line);
+                            lines.Add(prefix + line);
                         }
                         Com.SendCommandsAsync(lines.ToArray()).GetAwaiter().GetResult();
 	
@@ -93,7 +96,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 							filesavednresponse = e.Info.Contains("Done");
 						});
 						Com.ReplyUnknown += checkresponse;
-						Com.SendCommand("m29");
+						Com.SendCommand(prefix + "m29");
 						Com.ReplyUnknown -= checkresponse;
 					}
 				}

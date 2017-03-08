@@ -124,16 +124,30 @@ namespace CNCLib.Wpf.Helpers
 
 		#endregion
 
-		public void QueueCommand(string commandstring)
+        public string GetCommandPrefix()
+        {
+            var prefix = Global.Instance.Machine.CommandPrefix;
+            if (prefix == "\\e")
+                prefix = "\033";
+
+            return prefix;
+        }
+
+        public void QueueCommand(string commandstring)
 		{
 			QueueCommand(Global.Instance.Machine, commandstring);
 		}
 		public void QueueCommand(Machine machine, string commandstring)
 		{
-			Com.QueueCommand(commandstring);
-		}
+            var prefix = GetCommandPrefix();
+ 
+            if (!string.IsNullOrEmpty(prefix))
+                commandstring = prefix + commandstring;
 
-		public async Task SendCommandAsync(string commandstring)
+            Com.QueueCommand(commandstring);
+        }
+
+        public async Task SendCommandAsync(string commandstring)
 		{
 			await SendCommandAsync(Global.Instance.Machine, commandstring);
 		}
