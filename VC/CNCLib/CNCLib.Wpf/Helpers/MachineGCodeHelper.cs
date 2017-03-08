@@ -124,6 +124,15 @@ namespace CNCLib.Wpf.Helpers
 
 		#endregion
 
+		public void QueueCommand(string commandstring)
+		{
+			QueueCommand(Global.Instance.Machine, commandstring);
+		}
+		public void QueueCommand(Machine machine, string commandstring)
+		{
+			Com.QueueCommand(commandstring);
+		}
+
 		public async Task SendCommandAsync(string commandstring)
 		{
 			await SendCommandAsync(Global.Instance.Machine, commandstring);

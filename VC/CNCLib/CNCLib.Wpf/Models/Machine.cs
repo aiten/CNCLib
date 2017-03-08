@@ -136,8 +136,13 @@ namespace CNCLib.Wpf.Models
 		public bool Laser { get; set; }
 		[Category(CATEGORY_FEATURES)]
 		[DisplayName("Rotate")]
-		[Description("Machin can rotate the coordinate system")]
+		[Description("Machine can rotate the coordinate system")]
 		public bool Rotate { get; set; }
+
+		[Category(CATEGORY_FEATURES)]
+		[DisplayName("CommandPrefix")]
+		[Description("prefix for used to send gcode commands")]
+		public string CommandPrefix { get; set; }
 
 		private ObservableCollection<Models.MachineCommand> _MachineCommands;
 

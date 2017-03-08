@@ -21,6 +21,7 @@ using System.Windows.Input;
 using Framework.Wpf.Helpers;
 using System.IO;
 using System;
+using CNCLib.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
@@ -49,14 +50,15 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region Commands / CanCommands
-		public void SendM20File() { RunAndUpdate(() => { Com.QueueCommand("m20"); }); }
+		public void SendM20File() { RunAndUpdate(() => { new MachineGCodeHelper().QueueCommand("m20"); }); }
 		public void SendM24File() { SendM24File(SDFileName); }
 		public void SendM24File(string filename)
 		{
 			RunAndUpdate(() =>
 			{
-				Com.QueueCommand("m23 " + filename);
-				Com.QueueCommand("m24");
+				var com = new MachineGCodeHelper();
+				com.QueueCommand("m23 " + filename);
+				com.QueueCommand("m24");
 			});
 		}
 
@@ -102,7 +104,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			RunAndUpdate(() =>
 			{
-				Com.QueueCommand("m30 " + filename);
+				new MachineGCodeHelper().QueueCommand("m30 " + filename);
 			});
 		}
 		public void SendFileDirect() { RunAndUpdate(async () => { await Com.SendFileAsync(FileName); }); }

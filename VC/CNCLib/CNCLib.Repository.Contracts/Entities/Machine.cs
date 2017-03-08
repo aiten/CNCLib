@@ -46,6 +46,7 @@ namespace CNCLib.Repository.Contracts.Entities
 		public bool Coolant { get; set; }
         public bool Laser { get; set; }
         public bool Rotate { get; set; }
+		public string CommandPrefix { get; set; }
 
 		public virtual ICollection<MachineCommand> MachineCommands { get; set; }
 		public virtual ICollection<MachineInitCommand> MachineInitCommands { get; set; }
