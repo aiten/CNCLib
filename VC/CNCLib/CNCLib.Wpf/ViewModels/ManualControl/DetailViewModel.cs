@@ -62,6 +62,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			return Connected;
 		}
 
+        public bool CanSendPlotter()
+        {
+            return CanSend() && string.IsNullOrEmpty(Global.Instance.Machine.CommandPrefix);
+        }
+
 		#endregion
 	}
 }

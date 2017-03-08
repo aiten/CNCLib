@@ -20,6 +20,7 @@ using System;
 using System.Windows.Input;
 using Framework.Wpf.Helpers;
 using Framework.Arduino;
+using CNCLib.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
@@ -76,15 +77,15 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#region Commands / CanCommands
 		public bool CanSendSpindle()
 		{
-			return CanSend() && Global.Instance.Machine.Spindle;
+			return CanSendPlotter() && Global.Instance.Machine.Spindle;
 		}
 		public bool CanSendCoolant()
 		{
-			return CanSend() && Global.Instance.Machine.Coolant;
+			return CanSendPlotter() && Global.Instance.Machine.Coolant;
 		}
 		public bool CanSendLaser()
 		{
-			return CanSend() && Global.Instance.Machine.Laser;
+			return CanSendPlotter() && Global.Instance.Machine.Laser;
 		}
 
 		public void SendInfo() { RunAndUpdate(() => { Com.QueueCommand("?"); }); }
@@ -103,7 +104,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			RunAndUpdate(async () =>
 			{
-				string message = await Com.SendCommandAndReadOKReplyAsync("m114");
+				string message = await Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"));
 
 				if (!string.IsNullOrEmpty(message))
 				{
@@ -112,7 +113,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 					SetPositions(message.Split(':'), 0);
 				}
 
-				message = await Com.SendCommandAndReadOKReplyAsync("m114 s1");
+				message = await Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"));
 
 				if (!string.IsNullOrEmpty(message))
 				{

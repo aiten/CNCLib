@@ -50,15 +50,14 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region Commands / CanCommands
-		public void SendM20File() { RunAndUpdate(() => { new MachineGCodeHelper().QueueCommand("m20"); }); }
+		public void SendM20File() { RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("m20")); }); }
 		public void SendM24File() { SendM24File(SDFileName); }
 		public void SendM24File(string filename)
 		{
 			RunAndUpdate(() =>
 			{
-				var com = new MachineGCodeHelper();
-				com.QueueCommand("m23 " + filename);
-				com.QueueCommand("m24");
+				Com.QueueCommand(MachineGCodeHelper.PrepareCommand("m23 " + filename));
+				Com.QueueCommand(MachineGCodeHelper.PrepareCommand("m24"));
 			});
 		}
 
@@ -74,11 +73,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 					{
 						savefileinresponse = e.Info.Contains(sDFileName);
 					});
-                    var com = new MachineGCodeHelper();
-                    var prefix = com.GetCommandPrefix();
 
                     Com.ReplyUnknown += checkresponse;
-					Com.SendCommand(prefix+"m28 " + sDFileName);
+					Com.SendCommand(MachineGCodeHelper.PrepareCommand("m28 " + sDFileName));
 					Com.ReplyUnknown -= checkresponse;
 					if (savefileinresponse)
 					{
@@ -86,7 +83,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                         List<string> lines = new List<string>();
                         while ((line = sr.ReadLine()) != null)
                         {
-                            lines.Add(prefix + line);
+                            lines.Add(MachineGCodeHelper.PrepareCommand(line));
                         }
                         Com.SendCommandsAsync(lines.ToArray()).GetAwaiter().GetResult();
 	
@@ -96,7 +93,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 							filesavednresponse = e.Info.Contains("Done");
 						});
 						Com.ReplyUnknown += checkresponse;
-						Com.SendCommand(prefix + "m29");
+						Com.SendCommand(MachineGCodeHelper.PrepareCommand("m29"));
 						Com.ReplyUnknown -= checkresponse;
 					}
 				}
@@ -107,7 +104,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			RunAndUpdate(() =>
 			{
-				new MachineGCodeHelper().QueueCommand("m30 " + filename);
+                Com.QueueCommand(MachineGCodeHelper.PrepareCommand("m30 " + filename));
 			});
 		}
 		public void SendFileDirect() { RunAndUpdate(async () => { await Com.SendFileAsync(FileName); }); }
@@ -116,7 +113,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			RunAndUpdate(async () =>
 			{
-				string message = await Com.SendCommandAndReadOKReplyAsync("m114");
+				string message = await Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"));
 				if (!string.IsNullOrEmpty(message))
 				{
 					message = message.Replace("ok", "");
@@ -164,7 +161,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ICommand SendM28FileCommand => new DelegateCommand(SendM28File, CanSendFileNameAndSDFileNameCommand);
 		public ICommand SendM30FileCommand => new DelegateCommand(SendM30File, CanSendSDFileNameCommand);
 		public ICommand SendFileDirectCommand => new DelegateCommand(SendFileDirect, CanSendFileNameCommand);
-		public ICommand AddToFileCommand => new DelegateCommand(AddToFile, CanSendFileNameCommand);
+		public ICommand AddToFileCommand => new DelegateCommand(AddToFile, () => CanSendPlotter() && CanSendFileNameCommand());
 
 		#endregion
 	}
