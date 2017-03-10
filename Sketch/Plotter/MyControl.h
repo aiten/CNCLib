@@ -31,6 +31,7 @@
 #include <ConfigEeprom.h>
 
 #include "Configuration.h"
+#include "MyLCD.h"
 
 // must be after "Configuration.h" because of defines
 #include <ControlImplementation.h>
@@ -107,6 +108,7 @@ private:
 ////////////////////////////////////////////////////////
 
 extern CMyControl Control;
+
 
 
 

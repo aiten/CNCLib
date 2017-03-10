@@ -260,3 +260,4 @@ mm1000_t CPlotter::ConvertConfigPos(mm1000_t pos, axis_t axis)
 	}
 	return pos;
 }
+

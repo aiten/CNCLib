@@ -212,3 +212,4 @@ void CHPGLParser::PenVelocityCommand()
 
 	ReadAndSkipSemicolon();
 }
+
