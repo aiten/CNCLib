@@ -140,9 +140,9 @@ namespace CNCLib.Wpf.Models
 		public bool Rotate { get; set; }
 
 		[Category(CATEGORY_FEATURES)]
-		[DisplayName("CommandPrefix")]
-		[Description("prefix for used to send gcode commands")]
-		public string CommandPrefix { get; set; }
+		[DisplayName("CommandSyntax")]
+		[Description("Syntax of machine commands, e.g. GCode, HPGL")]
+		public Logic.Contracts.DTO.CommandSyntax CommandSyntax { get; set; }
 
 		private ObservableCollection<Models.MachineCommand> _MachineCommands;
 

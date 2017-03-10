@@ -25,9 +25,10 @@ namespace CNCLib.GCode
 	{
 		#region Properties
 
-		public UInt32 Signature { get; private set; } = 0x21436501;
+        public const uint SIGNATURE = 0x21436501;
+        public const uint SIGNATUREPLOTTER = 0x21438701;
 
-		UInt32[] _values;
+        UInt32[] _values;
 		public UInt32[] Values
 		{
 			get { return _values; }
@@ -36,10 +37,10 @@ namespace CNCLib.GCode
 
 		public bool IsValid
 		{
-			get { return Values?.Length > 0 && Values[0] == Signature; }
+			get { return Values?.Length > 0 && (Values[0] == SIGNATURE || Values[0] == SIGNATUREPLOTTER); }
 		}
-
-		public enum EValueOffsets32
+ 
+        public enum EValueOffsets32
 		{
 			Signatrue = 0,
 			InfoOffset1,
@@ -57,8 +58,10 @@ namespace CNCLib.GCode
 		{
 			NumAxis = (((int) EValueOffsets32.InfoOffset1) << 8) + 00,
 			UseAxis = (((int) EValueOffsets32.InfoOffset1) << 8) + 01,
+            OfsOfAxis = (((int) EValueOffsets32.InfoOffset1) << 8) + 02,
+            SizeOfAxis = (((int)EValueOffsets32.InfoOffset1) << 8) + 03,
 
-			StepperDirection = (((int)EValueOffsets32.Values8Bit1) << 8) + 0,
+            StepperDirection = (((int)EValueOffsets32.Values8Bit1) << 8) + 0,
 			SpindleFadeTime  = (((int)EValueOffsets32.Values8Bit1) << 8) + 3
 		}
 
@@ -70,7 +73,6 @@ namespace CNCLib.GCode
 			Acc = (((int)EValueOffsets32.OffsetAccDec) << 8) + 00,
 			Dec = (((int)EValueOffsets32.OffsetAccDec) << 8) + 01,
 		}
-
 
 		public enum EAxisOffsets32
 		{
@@ -86,7 +88,38 @@ namespace CNCLib.GCode
 			EReverenceHitValueMax = (((int)EAxisOffsets32.Ofsett1) << 8) + 3,
 		}
 
-		[Flags]
+        public enum EValueOffsets32Plotter
+        { 
+            EPenDownFeedrate,
+            EPenUpFeedrate,
+
+            EMovePenDownFeedrate,
+            EMovePenUpFeedrate,
+            EMovePenChangeFeedrate,
+
+            EPenDownPos,
+            EPenUpPos,
+
+            EPenChangePosX,
+            EPenChangePosY,
+            EPenChangePosZ,
+
+            EPenChangePosXOfs,
+            EPenChangePosYOfs,
+
+            EPenchangeServoClampPos,
+            EPenchangeServoClampDelay
+        }
+        public enum EValueOffsets16Plotter
+        {
+            EPenchangeServoClampOpenPos = (((int)EValueOffsets32Plotter.EPenchangeServoClampPos) << 8) + 00,
+            EPenchangeServoClampClosePos = (((int)EValueOffsets32Plotter.EPenchangeServoClampPos) << 8) + 01,
+
+            EPenchangeServoClampOpenDelay  = (((int)EValueOffsets32Plotter.EPenchangeServoClampDelay) << 8) + 00,
+            EPenchangeServoClampCloseDelay = (((int)EValueOffsets32Plotter.EPenchangeServoClampDelay) << 8) + 01,
+        }
+
+        [Flags]
 		public enum EInfo1
 		{
 			EEPROM_INFO_SPINDLE = (1 << 0),
@@ -96,7 +129,9 @@ namespace CNCLib.GCode
 			EEPROM_INFO_PROBE = (1 << 4),
 			EEPROM_INFO_LASER = (1 << 5),
 
-			EEPROM_INFO_EEPROM = (1 << 9),
+            EEPROM_INFO_COMMANDSYNTAX = (1 << 6), // (3bits)
+
+            EEPROM_INFO_EEPROM = (1 << 9),
 			EEPROM_INFO_SD = (1 << 10),
 			EEPROM_INFO_ROTATE = (1 << 11),
 
@@ -106,17 +141,32 @@ namespace CNCLib.GCode
 			EEPROM_INFO_KILL = (1 << 15)
 		}
 
-		#endregion
+        public static Logic.Contracts.DTO.CommandSyntax GetCommandSyntax(uint info1)
+        {
+            return (Logic.Contracts.DTO.CommandSyntax)((info1 >> 6) & 7);
+        }
+        #endregion
 
-		#region Get/Set
+        #region Get/Set
 
-		public UInt32 this[EValueOffsets32 ofs] { get { return GetValue32(ofs); } set { SetValue32(ofs, value); } }
+        public UInt32 this[EValueOffsets32 ofs] { get { return GetValue32(ofs); } set { SetValue32(ofs, value); } }
 		public UInt16 this[EValueOffsets16 ofs] { get { return GetValue16(ofs); } set { SetValue16(ofs, value); } }
 		public byte this[EValueOffsets8 ofs] { get { return GetValue8(ofs); } set { SetValue8(ofs, value); } }
 		public UInt32 this[int axis, EAxisOffsets32 ofs] { get { return GetAxisValue32(axis,ofs); } set { SetAxisValue32(axis, ofs, value); } }
 		public byte this[int axis, EAxisOffsets8 ofs] { get { return GetAxisValue8(axis,ofs); } set { SetAxisValue8(axis,ofs, value); } }
 
-		public List<string> ToGCode()
+        private EValueOffsets32 AddPlotterOfs(EValueOffsets32Plotter ofs)
+        {
+            return (EValueOffsets32) ((uint) ofs + _ofsAfterAxis);
+        }
+        private EValueOffsets16 AddPlotterOfs(EValueOffsets16Plotter ofs)
+        {
+            return (EValueOffsets16)((uint)ofs + (_ofsAfterAxis<<8));
+        }
+        public UInt32 this[EValueOffsets32Plotter ofs] { get { return GetValue32(AddPlotterOfs(ofs)); } set { SetValue32(AddPlotterOfs(ofs), value); } }
+        public UInt16 this[EValueOffsets16Plotter ofs] { get { return GetValue16(AddPlotterOfs(ofs)); } set { SetValue16(AddPlotterOfs(ofs), value); } }
+
+        public List<string> ToGCode()
 		{
 			var list = new List<string>();
 			for (int slot = 2;slot<Values.Length;slot++)
@@ -228,6 +278,7 @@ namespace CNCLib.GCode
 		uint _used_axis;
 		uint _ofsaxis;
 		uint _sizeaxis;
+        uint _ofsAfterAxis;
 
 		private void Analyse()
 		{
@@ -237,7 +288,8 @@ namespace CNCLib.GCode
 				_used_axis = (Values[1] >> 8) & 0xff;
 				_ofsaxis = ((Values[1] >> 16) & 0xff) / sizeof(UInt32);
 				_sizeaxis = ((Values[1] >> 24) & 0xff) / sizeof(UInt32);
-			}
+                _ofsAfterAxis = _ofsaxis + _sizeaxis * _num_axis;
+            }
 		}
 
 		#endregion

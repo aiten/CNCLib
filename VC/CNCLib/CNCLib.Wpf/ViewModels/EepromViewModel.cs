@@ -91,7 +91,7 @@ namespace CNCLib.Wpf.ViewModels
 			}
 			else
 			{
-				EepromValue = Eeprom.Create(0);
+				EepromValue = Eeprom.Create(0,0);
 			}
 		}
 

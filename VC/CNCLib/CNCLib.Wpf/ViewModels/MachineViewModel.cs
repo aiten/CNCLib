@@ -180,6 +180,8 @@ namespace CNCLib.Wpf.ViewModels
 						Machine.SizeZ = eeprom.GetAxis(2).Size / 1000m;
 						Machine.SizeA = eeprom.GetAxis(3).Size / 1000m;
 
+                        Machine.CommandSyntax = eeprom.CommandSyntax;
+
 						var orig = Machine;
 						Machine = null;
 						Machine = orig;

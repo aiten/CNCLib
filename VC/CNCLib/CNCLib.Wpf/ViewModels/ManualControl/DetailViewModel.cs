@@ -64,7 +64,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public bool CanSendPlotter()
         {
-            return CanSend() && string.IsNullOrEmpty(Global.Instance.Machine.CommandPrefix);
+            return CanSend() && Global.Instance.Machine.CommandSyntax != Logic.Contracts.DTO.CommandSyntax.HPGL;
         }
 
 		#endregion

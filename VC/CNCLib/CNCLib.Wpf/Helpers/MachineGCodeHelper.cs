@@ -136,11 +136,11 @@ namespace CNCLib.Wpf.Helpers
 
         protected static string GetCommandPrefix()
         {
-            var prefix = Global.Instance.Machine.CommandPrefix;
-            if (prefix == "\\e")
-                prefix = ((char) 27).ToString();
+            var prefix = Global.Instance.Machine.CommandSyntax;
+            if (prefix == CommandSyntax.HPGL)
+                return ((char) 27).ToString();
 
-            return prefix;
+            return null;
         }
 
         public async Task SendCommandAsync(string commandstring)
