@@ -248,5 +248,10 @@ constexpr uint16_t GetInfo1a()
 #ifdef MYUSE_LCD
 		CConfigEeprom::HAVE_SD |
 #endif
+#ifdef REDUCED_SIZE
+		COMMANDSYNTAX_VALUE(CConfigEeprom::GCodeBasic) |
+#else
+		COMMANDSYNTAX_VALUE(CConfigEeprom::GCode) |
+#endif
 		CConfigEeprom::NONE;
 }

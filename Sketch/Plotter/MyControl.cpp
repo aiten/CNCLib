@@ -52,7 +52,7 @@ const CMyControl::SMyCNCEeprom CMyControl::_eepromFlash PROGMEM =
   {
 	EPROM_SIGNATURE,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
-	GetInfo1a(),0,
+	COMMANDSYNTAX_CLEAR(GetInfo1a()) | COMMANDSYNTAX_VALUE(CConfigEeprom::HPGL),0,
 	0,
 	STEPPERDIRECTION,0,0,SPINDEL_FADETIMEDELAY,
 	SPINDLE_MAXSPEED,

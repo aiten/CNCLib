@@ -100,6 +100,13 @@ private:
 
 public: 
 
+	enum ECommandSyntax
+	{
+		GCodeBasic = 0,
+		GCode = 1,
+		HPGL = 7,           // max 3 bit
+	};
+
 	enum EEpromInfo1
 	{
 		NONE = 0,
@@ -111,6 +118,10 @@ public:
 
 		IS_LASER	 = (1<<5),
 
+		COMMANDSYNTAXBIT0 = (1 << 6),
+		COMMANDSYNTAXBIT1 = (1 << 7),
+		COMMANDSYNTAXBIT2 = (1 << 8),
+
 		HAVE_EEPROM = (1<<9),
 		HAVE_SD		= (1<<10),
 		CAN_ROTATE	= (1<<11),
@@ -120,6 +131,12 @@ public:
 		HAVE_RESUME	= (1<<14),
 		HAVE_KILL	= (1<<15)
 	};
+
+	#define COMMANDSYNTAX_BIT	6
+	#define COMMANDSYNTAX_LEN	2
+	#define COMMANDSYNTAX_MASK  (CConfigEeprom::COMMANDSYNTAXBIT0+CConfigEeprom::COMMANDSYNTAXBIT1+CConfigEeprom::COMMANDSYNTAXBIT2)
+	#define COMMANDSYNTAX_VALUE(a)	(((a)*(1<<COMMANDSYNTAX_BIT))&COMMANDSYNTAX_MASK)
+	#define COMMANDSYNTAX_CLEAR(a)	((a)&~COMMANDSYNTAX_MASK)
 
 	#define EPROM_SIGNATURE		0x21436501
 
