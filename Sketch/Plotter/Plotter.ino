@@ -41,12 +41,6 @@ CPlotter Plotter;
 
 ////////////////////////////////////////////////////////////
 
-#ifdef MYUSE_LCD
-CMyLcd Lcd;
-#endif
-
-////////////////////////////////////////////////////////////
-
 void setup()
 {  
   StepperSerial.begin(USBBAUDRATE);
@@ -58,6 +52,7 @@ void loop()
 {
   Control.Run();
 }
+
 
 
 
