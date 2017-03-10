@@ -89,6 +89,12 @@ public:
 
 		mm1000_t	penchangepos_x_ofs;
 		mm1000_t	penchangepos_y_ofs;
+
+    unsigned short penchangeServoClampOpenPos;
+    unsigned short penchangeServoClampClosePos;
+
+    unsigned short penchangeServoClampOpenDelay;
+    unsigned short penchangeServoClampCloseDelay;
 	};
 
 private:

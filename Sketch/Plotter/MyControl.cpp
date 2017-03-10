@@ -50,7 +50,7 @@ HardwareSerial& StepperSerial = Serial;
 const CMyControl::SMyCNCEeprom CMyControl::_eepromFlash PROGMEM =
 {
   {
-	EPROM_SIGNATURE,
+	EPROM_SIGNATURE_PLOTTER,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
 	COMMANDSYNTAX_CLEAR(GetInfo1a()) | COMMANDSYNTAX_VALUE(CConfigEeprom::HPGL),0,
 	0,
@@ -95,14 +95,17 @@ const CMyControl::SMyCNCEeprom CMyControl::_eepromFlash PROGMEM =
 	PLOTTER_PENCHANGEPOS_Z,
 
 	PLOTTER_PENCHANGEPOS_X_OFS,
-	PLOTTER_PENCHANGEPOS_Y_OFS
+	PLOTTER_PENCHANGEPOS_Y_OFS,
+
+  SERVO1_CLAMPOPEN,SERVO1_CLAMPCLOSE,
+  SERVO1_CLAMPOPENDELAY,SERVO1_CLAMPCLOSEDELAY
 };
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Init()
 {
-	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CMyControl::SMyCNCEeprom), &_eepromFlash, EPROM_SIGNATURE);
+	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CMyControl::SMyCNCEeprom), &_eepromFlash, EPROM_SIGNATURE_PLOTTER);
 
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();
