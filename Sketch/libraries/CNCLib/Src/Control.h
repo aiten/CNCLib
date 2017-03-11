@@ -134,6 +134,7 @@ public:
 	//////////////////////////////////////////
 
 	const char* GetBuffer()				{ return _buffer; }
+	uint8_t GetBufferCount()			{ return _bufferidx; }
 	virtual bool IsEndOfCommandChar(char ch);					// override default End of command char, default \n
 
 protected:

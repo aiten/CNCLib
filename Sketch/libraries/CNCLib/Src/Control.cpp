@@ -465,22 +465,23 @@ void CControl::ReadAndExecuteCommand()
 
 bool CControl::PostCommand(const __FlashStringHelper* cmd, Stream* output)
 {
-	if (_bufferidx > 0) return false;
-	const char* cmd1 = (const char*) cmd;
+// use _buffer to execute command
 
-	for (;_bufferidx<sizeof(_buffer);_bufferidx++)
+	const char* cmd1 = (const char*)cmd;
+	uint8_t idx = _bufferidx;
+	uint8_t idxprogmem = 0;
+
+	for (;idx<sizeof(_buffer); idx++, idxprogmem++)
 	{
-		_buffer[_bufferidx] = pgm_read_byte(&cmd1[_bufferidx]);
+		_buffer[idx] = pgm_read_byte(&cmd1[idxprogmem]);
 
-		if (_buffer[_bufferidx] == 0)
+		if (_buffer[idx] == 0)
 		{
-			bool ret = Command(_buffer,output);
-			_bufferidx=0;
-			return ret;
+			return Command(&_buffer[_bufferidx], output);
 		}
 	}
-
-	_bufferidx = 0;
+	
+	// do not fit in buffer
 	return false;
 }
 
@@ -488,24 +489,8 @@ bool CControl::PostCommand(const __FlashStringHelper* cmd, Stream* output)
 
 bool CControl::PostCommand(char* cmd, Stream* output)
 {
-	if (_bufferidx > 0) return false;
-
-	for (;_bufferidx<sizeof(_buffer);_bufferidx++)
-	{
-		_buffer[_bufferidx] = cmd[_bufferidx];
-
-		if (_buffer[_bufferidx] == 0)
-		{
-			bool ret = Command(_buffer,output);
-			_bufferidx=0;
-			return ret;
-		}
-	}
-
-	_bufferidx = 0;
-	return false;
+	return Command(cmd, output);
 }
-
 
 ////////////////////////////////////////////////////////////
 

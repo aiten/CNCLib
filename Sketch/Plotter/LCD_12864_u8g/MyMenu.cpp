@@ -164,7 +164,7 @@ const CMyMenu::SMenuItemDef CMyMenu::_extraMenuItems[] PROGMEM =
 //	{ _mSpindle, &CMenuBase::MenuButtonPressSpindle },
 //	{ _mCoolant, &CMenuBase::MenuButtonPressCoolant },
 	{ _mFuerElise, (MenuFunction) &CMyMenu::MenuButtonPressFuerElise },
-//	{ _mResurrect, (MenuFunction) &CMyMenu::MenuButtonPressResurrect },
+	{ _mResurrect, (MenuFunction) &CMyMenu::MenuButtonPressResurrect },
 	{ _mHold,	(MenuFunction)&CMyMenu::MenuButtonPressHold },
 	{ _mResume,	(MenuFunction)&CMyMenu::MenuButtonPressResume },
 	{ _mBack,	 &CMenuBase::MenuButtonPressMenuBack, (menuparam_t) &_mainMenu },

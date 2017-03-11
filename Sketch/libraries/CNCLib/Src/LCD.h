@@ -45,6 +45,12 @@ public:
 		DrawAll				// draw with timeout
 	};
 
+	enum ESyntaxType
+	{
+		GCodeBasic=0,
+		GCode=1
+	};
+
 	virtual void Init();
 	virtual void DrawRequest(EDrawType draw);
 
@@ -80,8 +86,10 @@ public:
 	void OKBeep()												{ Beep(SPlayTone::PlayOK,true); }
 	void ErrorBeep()											{ Beep(SPlayTone::PlayError,true); }
 
-	bool PostCommand(const __FlashStringHelper* cmd, Stream* output=NULL);
+	bool PostCommand(uint8_t syntaxtype, const __FlashStringHelper* cmd, Stream* output=NULL);
 	bool PostCommand(char* cmd, Stream* output=NULL);
+
+	virtual uint8_t InitPostCommand(uint8_t syntaxtype, char* cmd);
 
 private:
 

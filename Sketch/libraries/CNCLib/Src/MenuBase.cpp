@@ -112,7 +112,7 @@ uint8_t CMenuBase::ToPrintLine(menupos_t firstline, menupos_t lastline, menupos_
 
 void CMenuBase::MenuButtonPressSetCommand(const SMenuItemDef*def)
 { 
-	PostCommand((const __FlashStringHelper*)def->GetParam1()); 
+	PostCommand(CLcd::GCodeBasic,(const __FlashStringHelper*)def->GetParam1());
 }
 
 ////////////////////////////////////////////////////////////
@@ -164,7 +164,9 @@ void CMenuBase::MenuButtonPressMove(const SMenuItemDef*def)
 
 	char tmp[24];
 
-	strcpy_P(tmp, PSTR("g91 g0 "));
+	InitPostCommand(CLcd::GCodeBasic,tmp);
+
+	strcat_P(tmp, PSTR("g91 g0 "));
 	AddAxisName(tmp, axis);
 
 	switch (dist)
@@ -194,10 +196,10 @@ void CMenuBase::MenuButtonPressRotate(const SMenuItemDef*def)
 
 	switch (req)
 	{
-		case RotateClear:		PostCommand(F("g68.10")); break;
-		case RotateOffset:		PostCommand(F("g68.11")); break;
-		case RotateSetYZ:		PostCommand(F("g68.13 j0k0")); break;
-		case RotateSetX:		PostCommand(F("g68.14 i0")); break;
+		case RotateClear:		PostCommand(CLcd::GCode, F("g68.10")); break;
+		case RotateOffset:		PostCommand(CLcd::GCode, F("g68.11")); break;
+		case RotateSetYZ:		PostCommand(CLcd::GCode, F("g68.13 j0k0")); break;
+		case RotateSetX:		PostCommand(CLcd::GCode, F("g68.14 i0")); break;
 	}
 }
 
@@ -205,11 +207,11 @@ void CMenuBase::MenuButtonPressRotate(const SMenuItemDef*def)
 
 void CMenuBase::MenuButtonPressProbe(const SMenuItemDef*)
 {
-	if (PostCommand(F("g91 g31 Z-10 F100 g90")))
+	if (PostCommand(CLcd::GCode, F("g91 g31 Z-10 F100 g90")))
 	{
-		PostCommand(F("g92 Z-25"));
+		PostCommand(CLcd::GCode, F("g92 Z-25"));
 		//GetLcd()->SetDefaultPage();
-		PostCommand(F("g91 Z3 g90"));
+		PostCommand(CLcd::GCode, F("g91 Z3 g90"));
 	}
 }
 
@@ -224,7 +226,8 @@ void CMenuBase::MenuButtonPressHomeA(axis_t axis)
 {
 	char tmp[16];
 
-	strcpy_P(tmp, PSTR("g53 g0"));
+	InitPostCommand(CLcd::GCode, tmp);
+	strcat_P(tmp, PSTR("g53 g0"));
 	AddAxisName(tmp, axis);
 
 	switch (axis)
@@ -243,7 +246,9 @@ void CMenuBase::MenuButtonPressMoveG92(const SMenuItemDef*)
 
 	axis_t axis = (axis_t)(unsigned int)GetMenuDef()->GetParam1();
 
-	strcpy_P(tmp, PSTR("g92 "));
+	InitPostCommand(CLcd::GCodeBasic, tmp);
+
+	strcat_P(tmp, PSTR("g92 "));
 	AddAxisName(tmp, axis);
 	strcat_P(tmp, PSTR("0"));
 
@@ -255,9 +260,9 @@ void CMenuBase::MenuButtonPressMoveG92(const SMenuItemDef*)
 void CMenuBase::MenuButtonPressSpindle(const SMenuItemDef*)
 {
 	if (CControl::GetInstance()->IOControl(CControl::SpindleCW) != 0)
-		PostCommand(F("m5"));
+		PostCommand(CLcd::GCodeBasic, F("m5"));
 	else
-		PostCommand(F("m3"));
+		PostCommand(CLcd::GCodeBasic, F("m3"));
 }
 
 ////////////////////////////////////////////////////////////
@@ -265,9 +270,9 @@ void CMenuBase::MenuButtonPressSpindle(const SMenuItemDef*)
 void CMenuBase::MenuButtonPressCoolant(const SMenuItemDef*)
 {
 	if (CControl::GetInstance()->IOControl(CControl::Coolant) != 0)
-		PostCommand(F("m9"));
+		PostCommand(CLcd::GCodeBasic, F("m9"));
 	else
-		PostCommand(F("m7"));
+		PostCommand(CLcd::GCodeBasic, F("m7"));
 }
 
 ////////////////////////////////////////////////////////////

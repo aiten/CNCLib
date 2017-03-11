@@ -50,10 +50,6 @@ CMyControl Control;
 CPlotter Plotter;
 SDClass SD;
 
-#ifdef MYUSE_LCD
-CMyLcd Lcd;
-#endif
-
 void setup() 
 {     
 	MyStepper.DelayOptimization = false;
