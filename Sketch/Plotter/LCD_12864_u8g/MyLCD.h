@@ -41,6 +41,8 @@ public:
 	virtual void Init() override;
 	virtual void Beep(const SPlayTone*, bool) override;
 
+	virtual uint8_t InitPostCommand(uint8_t syntaxtype, char* cmd) override;
+
 protected:
 
 	virtual class U8G2& GetU8G() override;

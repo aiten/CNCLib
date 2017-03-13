@@ -20,7 +20,14 @@ using System.Collections.Generic;
 
 namespace CNCLib.Logic.Contracts.DTO
 {
-	public class Machine
+    public enum CommandSyntax
+    {
+        GCodeBasic = 0,
+        GCode = 1,
+        HPGL = 7,           // max 3 bit
+    }
+
+    public class Machine
 	{
 		public int MachineID { get; set; }
 		public string ComPort { get; set; }
@@ -47,7 +54,7 @@ namespace CNCLib.Logic.Contracts.DTO
         public bool Laser { get; set; }
         public bool Rotate { get; set; }
 
-		public string CommandPrefix { get; set; }
+		public CommandSyntax CommandSyntax { get; set; }
 
 		public IEnumerable<MachineCommand> MachineCommands { get; set; }
 		public IEnumerable<MachineInitCommand> MachineInitCommands { get; set; }

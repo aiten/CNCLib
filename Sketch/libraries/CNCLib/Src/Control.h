@@ -74,6 +74,16 @@ public:
 		Vacuum,
 		//Laser, => use Spindle
 
+		Servo1,
+		Servo2,
+		Servo3,
+		Servo4,
+
+		User1,
+		User2,
+		User3,
+		User4,
+
 		// input
 		Probe,				// Probe for tool lenght
 		ProgramStop			// see M01
@@ -134,6 +144,7 @@ public:
 	//////////////////////////////////////////
 
 	const char* GetBuffer()				{ return _buffer; }
+	uint8_t GetBufferCount()			{ return _bufferidx; }
 	virtual bool IsEndOfCommandChar(char ch);					// override default End of command char, default \n
 
 protected:

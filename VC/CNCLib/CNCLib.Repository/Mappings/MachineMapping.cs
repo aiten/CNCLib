@@ -41,8 +41,8 @@ namespace CNCLib.Repository.Mappings
             Property((m) => m.SizeY).IsRequired();
             Property((m) => m.SizeZ).IsRequired();
 
-			Property((m) => m.CommandPrefix).
-				HasMaxLength(16);
-		}
-	}
+            Property((m) => m.CommandSyntax).
+                IsRequired();
+        }
+    }
 }

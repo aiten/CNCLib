@@ -73,6 +73,19 @@ PROGMEM const CU8GLcd::SPageDef CU8GLcd::_pagedef[] =
 
 ////////////////////////////////////////////////////////////
 
+uint8_t CMyLcd::InitPostCommand(uint8_t syntaxtype, char* cmd)
+{
+	uint8_t idx = super::InitPostCommand(syntaxtype,cmd);
+	if (idx != 7)
+	{
+		cmd[idx++] = 27;		// escape
+		cmd[idx] = 0;
+	}
+	return idx;
+}
+
+////////////////////////////////////////////////////////////
+
 void CMyLcd::Init()
 {
 	_lcd_numaxis = LCD_NUMAXIS;

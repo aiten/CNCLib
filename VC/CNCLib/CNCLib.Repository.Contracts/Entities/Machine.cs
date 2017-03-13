@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace CNCLib.Repository.Contracts.Entities
 {
-	public class Machine
+    public class Machine
 	{
 		public int MachineID { get; set; }
 		public string ComPort { get; set; }
@@ -46,7 +46,7 @@ namespace CNCLib.Repository.Contracts.Entities
 		public bool Coolant { get; set; }
         public bool Laser { get; set; }
         public bool Rotate { get; set; }
-		public string CommandPrefix { get; set; }
+		public int CommandSyntax { get; set; }
 
 		public virtual ICollection<MachineCommand> MachineCommands { get; set; }
 		public virtual ICollection<MachineInitCommand> MachineInitCommands { get; set; }

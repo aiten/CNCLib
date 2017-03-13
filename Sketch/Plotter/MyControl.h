@@ -21,6 +21,8 @@
 
 ////////////////////////////////////////////////////////
 
+#include <Servo.h>
+
 #include <Control3D.h>
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
@@ -31,6 +33,7 @@
 #include <ConfigEeprom.h>
 
 #include "Configuration.h"
+#include "MyLCD.h"
 
 // must be after "Configuration.h" because of defines
 #include <ControlImplementation.h>
@@ -45,7 +48,7 @@ private:
 
 public:
 
-	CMyControl()				 { }
+	CMyControl() { }
 
 	virtual void Kill() override;
 
@@ -89,6 +92,12 @@ public:
 
 		mm1000_t	penchangepos_x_ofs;
 		mm1000_t	penchangepos_y_ofs;
+
+		unsigned short penchangeServoClampOpenPos;
+		unsigned short penchangeServoClampClosePos;
+
+		unsigned short penchangeServoClampOpenDelay;
+		unsigned short penchangeServoClampCloseDelay;
 	};
 
 private:
@@ -96,11 +105,15 @@ private:
 	static const SMyCNCEeprom _eepromFlash;
 
 	ControlData _data;
+
+	Servo _servo1;
+	Servo _servo2;
 };
 
 ////////////////////////////////////////////////////////
 
 extern CMyControl Control;
+
 
 
 

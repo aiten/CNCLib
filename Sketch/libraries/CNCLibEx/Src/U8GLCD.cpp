@@ -418,17 +418,21 @@ bool CU8GLcd::DrawLoopDebug(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 		Print((CStepper::GetInstance()->GetLastDirection()&(1 << i)) ? '+' : '-');
 	}
 
-	SetPosition(ToCol(20), ToRow(0 + 1) + PosLineOffset);
+	SetPosition(ToCol(19), ToRow(0 + 1) + PosLineOffset);
 	Print(CControl::GetInstance()->IOControl(CControl::Probe) ? '1' : '0');
 
-	SetPosition(ToCol(19), ToRow(0 + 2) + PosLineOffset);
+	SetPosition(ToCol(20), ToRow(0 + 1) + PosLineOffset);
+	Print(CControl::GetInstance()->IsHold() ? '1' : '0');
+
+	SetPosition(ToCol(19), ToRow(0 + 3) + PosLineOffset);
+	Print(CSDist::ToString(CControl::GetInstance()->GetBufferCount(), tmp, 2));
+
+	SetPosition(ToCol(19), ToRow(0 + 4) + PosLineOffset);
 	Print(CSDist::ToString(CStepper::GetInstance()->QueuedMovements(), tmp, 2));
 
-	SetPosition(ToCol(18), ToRow(4) + PosLineOffset);
+	SetPosition(ToCol(18), ToRow(0 + 5) + PosLineOffset);
 	Print(CSDist::ToString(CStepper::SpeedOverrideToP(CStepper::GetInstance()->GetSpeedOverride()), tmp, 3));
 
-	SetPosition(ToCol(20), ToRow(5) + PosLineOffset);
-	Print(CControl::GetInstance()->IsHold() ? '1' : '0');
 
 	return true;
 }
@@ -654,15 +658,16 @@ bool CU8GLcd::DrawLoopPreset(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 
 void CU8GLcd::ButtonPressStartSDPage()
 {
-	PostCommand(F("m21"));									// Init SD
+	PostCommand(CLcd::GCode, F("m21"));									// Init SD
 
-	char printfilename[MAXFILEEXTNAME + 1 + 4];
-	strcpy_P(printfilename, PSTR("m23 "));
+	char printfilename[MAXFILEEXTNAME + 1 + 10];
+	InitPostCommand(CLcd::GCode, printfilename);
+	strcat_P(printfilename, PSTR("m23 "));
 	strcat(printfilename, CGCode3DParser::GetExecutingFileName());
 
 	if (PostCommand(printfilename))
 	{
-		PostCommand(F("m24"));
+		PostCommand(CLcd::GCode, F("m24"));
 	}
 
 	OKBeep();

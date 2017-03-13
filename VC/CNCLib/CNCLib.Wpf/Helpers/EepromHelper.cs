@@ -41,39 +41,9 @@ namespace CNCLib.Wpf.Helpers
 					File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromRead.nc"), ee.ToGCode());
 					var numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
 
-					var eeprom = Eeprom.Create(numaxis);
+					var eeprom = Eeprom.Create(ee[EepromV1.EValueOffsets32.Signatrue],numaxis);
 					eeprom.Values = values;
-
-					eeprom.NumAxis = ee[EepromV1.EValueOffsets8.NumAxis];
-					eeprom.UseAxis = ee[EepromV1.EValueOffsets8.UseAxis];
-
-					eeprom.Info1 = ee[EepromV1.EValueOffsets32.Info1];
-					eeprom.Info2 = ee[EepromV1.EValueOffsets32.Info2];
-
-					for (int i = 0; i < numaxis; i++)
-					{
-						eeprom.GetAxis(i).Size = ee[i, EepromV1.EAxisOffsets32.Size];
-						eeprom.GetAxis(i).RefMove = (Eeprom.EReverenceType)ee[i, EepromV1.EAxisOffsets8.EReverenceType];
-						eeprom.GetAxis(i).RefHitValueMin = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin];
-						eeprom.GetAxis(i).RefHitValueMax = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax];
-
-						eeprom.GetAxis(i).StepperDirection = (ee[EepromV1.EValueOffsets8.StepperDirection] & (1 << i)) != 0;
-
-						eeprom[i] = (Eeprom.EReverenceSequence)ee[i, EepromV1.EAxisOffsets8.EReverenceSeqence];
-					}
-
-					eeprom.MaxSpindleSpeed = ee[EepromV1.EValueOffsets16.MaxSpindleSpeed];
-					eeprom.SpindleFadeTime = ee[EepromV1.EValueOffsets8.SpindleFadeTime];
-
-					eeprom.RefMoveSteprate = ee[EepromV1.EValueOffsets32.RefMoveStepRate];
-					eeprom.MoveAwayFromRefernece = ee[EepromV1.EValueOffsets32.MoveAwayFromRefernece];
-
-					eeprom.MaxStepRate = ee[EepromV1.EValueOffsets32.MaxStepRate];
-					eeprom.Acc = ee[EepromV1.EValueOffsets16.Acc];
-					eeprom.Dec = ee[EepromV1.EValueOffsets16.Dec];
-					eeprom.JerkSpeed = ee[EepromV1.EValueOffsets16.JerkSpeed];
-
-					eeprom.StepsPerMm1000 = BitConverter.ToSingle(BitConverter.GetBytes(ee[EepromV1.EValueOffsets32.StepsPerMm1000]), 0);
+                    eeprom.ReadFrom(ee);
 
 					return eeprom;
 				}
@@ -87,36 +57,7 @@ namespace CNCLib.Wpf.Helpers
 
 			if (ee.IsValid)
 			{
-				var numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
-
-				for (int i = 0; i < numaxis; i++)
-				{
-					ee[i, EepromV1.EAxisOffsets32.Size] = EepromValue.GetAxis(i).Size;
-					ee[i, EepromV1.EAxisOffsets8.EReverenceType] = (byte)EepromValue.GetAxis(i).RefMove;
-					ee[i, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)(Eeprom.EReverenceSequence)EepromValue[i];
-					ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin] = EepromValue.GetAxis(i).RefHitValueMin;
-					ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax] = EepromValue.GetAxis(i).RefHitValueMax;
-
-					var direction = ee[EepromV1.EValueOffsets8.StepperDirection] & (~(1 << i));
-					if (EepromValue.GetAxis(i).StepperDirection)
-					{
-						direction += 1 << i;
-					}
-					ee[EepromV1.EValueOffsets8.StepperDirection] = (byte)direction;
-				}
-
-				ee[EepromV1.EValueOffsets16.MaxSpindleSpeed] = EepromValue.MaxSpindleSpeed;
-				ee[EepromV1.EValueOffsets8.SpindleFadeTime]  = EepromValue.SpindleFadeTime;
-
-				ee[EepromV1.EValueOffsets32.RefMoveStepRate] = EepromValue.RefMoveSteprate;
-				ee[EepromV1.EValueOffsets32.MoveAwayFromRefernece] = EepromValue.MoveAwayFromRefernece;
-
-				ee[EepromV1.EValueOffsets32.MaxStepRate] = EepromValue.MaxStepRate;
-				ee[EepromV1.EValueOffsets16.Acc] = EepromValue.Acc;
-				ee[EepromV1.EValueOffsets16.Dec] = EepromValue.Dec;
-				ee[EepromV1.EValueOffsets16.JerkSpeed] = EepromValue.JerkSpeed;
-
-				ee[EepromV1.EValueOffsets32.StepsPerMm1000] = BitConverter.ToUInt32(BitConverter.GetBytes(EepromValue.StepsPerMm1000), 0);
+                EepromValue.WriteTo(ee);
 
 				File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromWrite.nc"), ee.ToGCode());
 

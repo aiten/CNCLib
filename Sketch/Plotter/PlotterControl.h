@@ -21,10 +21,6 @@
 
 ////////////////////////////////////////////////////////
 
-#include <Servo.h>
-
-////////////////////////////////////////////////////////
-
 class CPlotter
 {
 public:
@@ -51,8 +47,8 @@ public:
 		_isDelayPen = false;
 	};
 
-	bool IsPenDown()			{ return _isPenDown; }
-	uint8_t GetPen()			{ return _pen; }
+	bool IsPenDown() { return _isPenDown; }
+	uint8_t GetPen() { return _pen; }
 	bool SetPen(uint8_t pen);
 
 
@@ -64,7 +60,9 @@ private:
 	bool _isPenDownTimeout;
 
 	uint8_t _pen;
-	bool _havePen;	
+	bool _havePen;
+
+	bool MoveToPenPosition(feedrate_t feedrate, mm1000_t pos);
 
 	bool PenToDepot();
 	bool PenFromDepot(uint8_t pen);
@@ -72,13 +70,12 @@ private:
 	bool OffPenChangePos(uint8_t pen);
 
 	mm1000_t ConvertConfigPos(mm1000_t pos, axis_t axis);
-
-	Servo _servo1;
 };
 
 ////////////////////////////////////////////////////////
 
 extern CPlotter Plotter;
+
 
 
 

@@ -29,13 +29,26 @@
 //#define LCD_TYPE  1         // LCD_2004_LiquidCrystal_I2C
 #define LCD_TYPE  2         // LCD_12864_u8g
 
+#define PENTYPE_ZAXIS 0 
+#define PENTYPE_SERVO 1
+
+#define PENTYPE PENTYPE_ZAXIS
+
 ////////////////////////////////////////////////////////
 
 #define USBBAUDRATE 115200
 
 ////////////////////////////////////////////////////////
 
-#define MYNUM_AXIS 3
+#define EPROM_SIGNATURE_PLOTTER 0x21438701
+
+////////////////////////////////////////////////////////
+
+#define MYUSE_LCD
+
+////////////////////////////////////////////////////////
+
+#define FROMPENTYPE(a,b) (PENTYPE==PENTYPE_ZAXIS ? (a) : (b))
 
 ////////////////////////////////////////////////////////
 
@@ -78,7 +91,7 @@
 
 #define X_USEREFERENCE	EReverenceType::ReferenceToMin
 #define Y_USEREFERENCE	EReverenceType::ReferenceToMin
-#define Z_USEREFERENCE	EReverenceType::ReferenceToMin
+#define Z_USEREFERENCE	FROMPENTYPE(EReverenceType::ReferenceToMin,EReverenceType::NoReference)
 #define A_USEREFERENCE	EReverenceType::NoReference
 #define B_USEREFERENCE	EReverenceType::NoReference
 #define C_USEREFERENCE	EReverenceType::NoReference
@@ -140,16 +153,31 @@
 #define PLOTTER_DEFAULT_PENUP_FEEDRATE			LONG_MAX	 // reduced to maxsteprate
 #define PLOTTER_DEFAULT_PENDOWN_FEEDRATE		3600000l     // 60 mm/ sec;
 
+#if PENTYPETYPE==0			// Z-AXIS
+
 #define PLOTTER_DEFAULT_Z_PENUP_FEEDRATE		2400000l // 40 mm / sec
 #define PLOTTER_DEFAULT_Z_PENDOWN_FEEDRATE		1800000l // 30 mm / sec
 #define PLOTTER_DEFAULT_Z_PENCHANGE_FEEDRATE	2400000l // 40 mm / sec
 
-#define PLOTTER_PENCOUNT		8
-
-
 #define PLOTTER_PENDOWNPOS_Z		LONG_MAX
 #define PLOTTER_PENUPPOS_Z			(Z_MAXSIZE/2)
 #define PLOTTER_PENCHANGEPOS_Z		0
+
+#elif PENTYPETYPE == 1		// servo
+
+// feedrate are used as delays (in ms)
+#define PLOTTER_DEFAULT_Z_PENUP_FEEDRATE		200
+#define PLOTTER_DEFAULT_Z_PENDOWN_FEEDRATE		200
+#define PLOTTER_DEFAULT_Z_PENCHANGE_FEEDRATE	200
+
+// servo positions (micro sec)
+#define PLOTTER_PENDOWNPOS_Z		2000
+#define PLOTTER_PENUPPOS_Z			1500
+#define PLOTTER_PENCHANGEPOS_Z		1000
+
+#endif
+
+#define PLOTTER_PENCOUNT		8
 
 #define PLOTTER_PENCHANGEPOS_X		LONG_MAX
 #define PLOTTER_PENCHANGEPOS_X_OFS	0
@@ -161,6 +189,7 @@
 ////////////////////////////////////////////////////////
 
 #define MESSAGE_MYCONTROL_Starting F("Plotter(HA) is starting ... (" __DATE__ ", " __TIME__ ")")
+
 
 
 

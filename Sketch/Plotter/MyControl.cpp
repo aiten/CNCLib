@@ -50,9 +50,9 @@ HardwareSerial& StepperSerial = Serial;
 const CMyControl::SMyCNCEeprom CMyControl::_eepromFlash PROGMEM =
 {
   {
-	EPROM_SIGNATURE,
+	EPROM_SIGNATURE_PLOTTER,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
-	GetInfo1a(),0,
+	COMMANDSYNTAX_CLEAR(GetInfo1a()) | COMMANDSYNTAX_VALUE(CConfigEeprom::HPGL),0,
 	0,
 	STEPPERDIRECTION,0,0,SPINDEL_FADETIMEDELAY,
 	SPINDLE_MAXSPEED,
@@ -78,7 +78,7 @@ const CMyControl::SMyCNCEeprom CMyControl::_eepromFlash PROGMEM =
 #endif
 	}
   },
-  // Plotter EEprom Extension
+	// Plotter EEprom Extension
 
 	PLOTTER_DEFAULT_PENDOWN_FEEDRATE,
 	PLOTTER_DEFAULT_PENUP_FEEDRATE,
@@ -95,14 +95,17 @@ const CMyControl::SMyCNCEeprom CMyControl::_eepromFlash PROGMEM =
 	PLOTTER_PENCHANGEPOS_Z,
 
 	PLOTTER_PENCHANGEPOS_X_OFS,
-	PLOTTER_PENCHANGEPOS_Y_OFS
+	PLOTTER_PENCHANGEPOS_Y_OFS,
+
+	SERVO1_CLAMPOPEN,SERVO1_CLAMPCLOSE,
+	SERVO1_CLAMPOPENDELAY,SERVO1_CLAMPCLOSEDELAY
 };
 
 ////////////////////////////////////////////////////////////
 
 void CMyControl::Init()
 {
-	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CMyControl::SMyCNCEeprom), &_eepromFlash, EPROM_SIGNATURE);
+	CSingleton<CConfigEeprom>::GetInstance()->Init(sizeof(CMyControl::SMyCNCEeprom), &_eepromFlash, EPROM_SIGNATURE_PLOTTER);
 
 #ifdef DISABLELEDBLINK
 	DisableBlinkLed();
@@ -119,6 +122,9 @@ void CMyControl::Init()
 	CHPGLParser::Init();
 	Plotter.Init();
 
+	_servo1.attach(SERVO1_PIN);
+
+
 	InitSD(SD_ENABLE_PIN);
 }
 
@@ -126,6 +132,12 @@ void CMyControl::Init()
 
 void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
+	switch (tool)
+	{
+		case Servo1:	_servo1.write(level); return;
+		case Servo2:	_servo2.write(level); return;
+	}
+
 	if (!_data.IOControl(tool, level))
 	{
 		super::IOControl(tool, level);
@@ -140,11 +152,11 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 	{
 #ifndef REDUCED_SIZE
 		case SpindleCW:
-		case SpindleCCW:	{ return _data._spindle.IsOn(); }
-		case Coolant:		{ return _data._coolant.IsOn(); }
+		case SpindleCCW: { return _data._spindle.IsOn(); }
+		case Coolant: { return _data._coolant.IsOn(); }
 		case ControllerFan: { return _data._controllerfan.GetLevel(); }
 #endif
-		case Probe:			{ return _data._probe.IsOn(); }
+		case Probe: { return _data._probe.IsOn(); }
 	}
 
 	return super::IOControl(tool);
@@ -186,6 +198,7 @@ void CMyControl::Initialized()
 {
 	super::Initialized();
 	_data.Initialized();
+	_servo1.write(SERVO1_CLAMPOPEN);
 	Plotter.Initialized();
 }
 
@@ -242,7 +255,7 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 
 	switch (reader->GetChar())
 	{
-    case '$':
+		case '$':
 		case '?':
 		case '&':
 			return super::Parse(reader, output);
@@ -253,6 +266,7 @@ bool CMyControl::Parse(CStreamReader* reader, Stream* output)
 }
 
 ////////////////////////////////////////////////////////////
+
 
 
 

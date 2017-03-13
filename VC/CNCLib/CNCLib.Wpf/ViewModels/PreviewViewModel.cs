@@ -211,11 +211,27 @@ namespace CNCLib.Wpf.ViewModels
 			}
 		}
 
-		#endregion
+        private bool IsHPGLAndPlotter()
+        {
+            if (Global.Instance.Machine.CommandSyntax != CommandSyntax.HPGL)
+                return true;
 
-		#region Operations
+            if (Commands == null || Commands.Count == 0)
+                return true;
 
-		public void SendTo()
+            foreach (var c in Commands)
+            { 
+                if (!string.IsNullOrEmpty(c.ImportInfo))
+                    return true;
+            };
+            return false;
+        }
+
+        #endregion
+
+        #region Operations
+
+        public void SendTo()
 		{
 			Task.Run(() =>
 			{
@@ -224,24 +240,42 @@ namespace CNCLib.Wpf.ViewModels
 				try
 				{
 					Com.ClearCommandHistory();
-					Command last = null;
-					CommandState state = new CommandState();
-					ushort line = 1;
-					Commands.ForEach((cmd) =>
-					{
-						string[] cmds = cmd.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null,state);
-						if (cmds != null)
-						{
-							foreach (string str in cmds)
-							{
-								foreach (var c in Com.QueueCommand(str))
-								{
-									c.Tag = cmd;
-								}
-							}
-						}
-						last = cmd;
-					});
+
+                    if (Global.Instance.Machine.CommandSyntax == CommandSyntax.HPGL && IsHPGLAndPlotter())
+                    {
+                        Commands.ForEach((cmd) =>
+                        {
+                            string cmdstr = cmd.ImportInfo;
+                            if (!string.IsNullOrEmpty(cmdstr))
+                            {
+                                foreach (var c in Com.QueueCommand(cmdstr))
+                                {
+                                    c.Tag = cmd;
+                                }
+                            }
+                        });
+                    }
+                    else
+                    {
+                        Command last = null;
+                        CommandState state = new CommandState();
+
+                        Commands.ForEach((cmd) =>
+                        {
+                            string[] cmds = cmd.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null, state);
+                            if (cmds != null)
+                            {
+                                foreach (string str in cmds)
+                                {
+                                    foreach (var c in Com.QueueCommand(str))
+                                    {
+                                        c.Tag = cmd;
+                                    }
+                                }
+                            }
+                            last = cmd;
+                        });
+                    }
 				}
 				finally
 				{
@@ -285,7 +319,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public bool CanSendTo()
 		{
-			return !_loadingOrSending && Com.IsConnected && Commands.Count > 0;
+			return !_loadingOrSending && Com.IsConnected && Commands.Count > 0 && IsHPGLAndPlotter();
 		}
 
 		public bool CanLoad()

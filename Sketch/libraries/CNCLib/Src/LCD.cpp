@@ -86,14 +86,33 @@ void CLcd::DrawRequest(EDrawType draw)
 
 ////////////////////////////////////////////////////////////
 
-bool CLcd::PostCommand(const __FlashStringHelper* cmd, Stream* output)
+uint8_t CLcd::InitPostCommand(uint8_t /* syntaxtype */, char* cmd)
 {
-	if (!CControl::GetInstance()->PostCommand(cmd,output))
+	cmd[0] = 0;
+	return 0;
+}
+
+////////////////////////////////////////////////////////////
+
+bool CLcd::PostCommand(uint8_t syntaxtype, const __FlashStringHelper* cmd, Stream* output)
+{
+	char buffer[32];
+
+	const char* cmd1 = (const char*)cmd;
+	uint8_t idx = InitPostCommand(syntaxtype, buffer);
+	uint8_t idxprogmem = 0;
+
+	for (; idx < sizeof(buffer); idx++, idxprogmem++)
 	{
-		ErrorBeep();
-		return false;
+		buffer[idx] = pgm_read_byte(&cmd1[idxprogmem]);
+
+		if (buffer[idx] == 0)
+		{
+			return PostCommand(buffer, output);
+		}
 	}
-	return true;
+
+	return false;
 }
 
 ////////////////////////////////////////////////////////////

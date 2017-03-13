@@ -115,8 +115,9 @@ protected:
 
 	//////////////////////////////////////////
 
-	bool PostCommand(const __FlashStringHelper* cmd, Stream* output=NULL)	{ return CLcd::GetInstance()->PostCommand(cmd,output); }
-	bool PostCommand(char* cmd, Stream* output=NULL)						{ return CLcd::GetInstance()->PostCommand(cmd,output); }
+	bool PostCommand(uint8_t syntaxtype, const __FlashStringHelper* cmd, Stream* output=NULL)	{ return CLcd::GetInstance()->PostCommand(syntaxtype,cmd,output); }
+	bool PostCommand(char* cmd, Stream* output=NULL)				{ return CLcd::GetInstance()->PostCommand(cmd,output); }
+	uint8_t InitPostCommand(uint8_t syntaxtype, char* cmd)			{ return CLcd::GetInstance()->InitPostCommand(syntaxtype,cmd); }
 
 	//////////////////////////////////////////
 
