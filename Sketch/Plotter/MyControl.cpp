@@ -122,6 +122,9 @@ void CMyControl::Init()
 	CHPGLParser::Init();
 	Plotter.Init();
 
+	_servo1.attach(SERVO1_PIN);
+
+
 	InitSD(SD_ENABLE_PIN);
 }
 
@@ -129,6 +132,12 @@ void CMyControl::Init()
 
 void CMyControl::IOControl(uint8_t tool, unsigned short level)
 {
+	switch (tool)
+	{
+		case Servo1:	_servo1.write(level); return;
+		case Servo2:	_servo2.write(level); return;
+	}
+
 	if (!_data.IOControl(tool, level))
 	{
 		super::IOControl(tool, level);
@@ -189,6 +198,7 @@ void CMyControl::Initialized()
 {
 	super::Initialized();
 	_data.Initialized();
+	_servo1.write(SERVO1_CLAMPOPEN);
 	Plotter.Initialized();
 }
 

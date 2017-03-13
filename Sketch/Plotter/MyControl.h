@@ -21,6 +21,8 @@
 
 ////////////////////////////////////////////////////////
 
+#include <Servo.h>
+
 #include <Control3D.h>
 #include <OnOffIOControl.h>
 #include <Analog8IOControl.h>
@@ -103,6 +105,9 @@ private:
 	static const SMyCNCEeprom _eepromFlash;
 
 	ControlData _data;
+
+	Servo _servo1;
+	Servo _servo2;
 };
 
 ////////////////////////////////////////////////////////

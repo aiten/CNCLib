@@ -21,10 +21,6 @@
 
 ////////////////////////////////////////////////////////
 
-#include <Servo.h>
-
-////////////////////////////////////////////////////////
-
 class CPlotter
 {
 public:
@@ -66,14 +62,14 @@ private:
 	uint8_t _pen;
 	bool _havePen;
 
+	bool MoveToPenPosition(feedrate_t feedrate, mm1000_t pos);
+
 	bool PenToDepot();
 	bool PenFromDepot(uint8_t pen);
 	bool ToPenChangePos(uint8_t pen);
 	bool OffPenChangePos(uint8_t pen);
 
 	mm1000_t ConvertConfigPos(mm1000_t pos, axis_t axis);
-
-	Servo _servo1;
 };
 
 ////////////////////////////////////////////////////////
