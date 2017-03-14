@@ -124,6 +124,9 @@ void CMyControl::Init()
 
 	_servo1.attach(SERVO1_PIN);
 
+#if PENTYPE == PENTYPE_SERVO
+  _servo2.attach(SERVO2_PIN);
+#endif
 
 	InitSD(SD_ENABLE_PIN);
 }

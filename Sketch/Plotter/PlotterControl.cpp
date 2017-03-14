@@ -143,12 +143,27 @@ void CPlotter::DelayPenNow()
 
 bool CPlotter::MoveToPenPosition(feedrate_t feedrate, mm1000_t pos)
 {
-	CMotionControlBase::GetInstance()->MoveAbsEx(
-		feedrate,
-		Z_AXIS, pos,
-		-1);
+#if PENTYPE == PENTYPE_ZAXIS      // Z-AXIS
 
-	return !CStepper::GetInstance()->IsError();
+  CMotionControlBase::GetInstance()->MoveAbsEx(
+    feedrate,
+    Z_AXIS, pos,
+    -1);
+
+  return !CStepper::GetInstance()->IsError();
+
+#elif PENTYPE == PENTYPE_SERVO    // servo
+
+  CStepper::GetInstance()->IoControl(CControl::Servo2, (short) pos);
+  CStepper::GetInstance()->Wait(feedrate / 10);
+
+  return true;
+
+#else
+
+error
+
+#endif
 }
 
 ////////////////////////////////////////////////////////////
