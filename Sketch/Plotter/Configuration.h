@@ -32,7 +32,7 @@
 #define PENTYPE_ZAXIS 0 
 #define PENTYPE_SERVO 1
 
-#define PENTYPE PENTYPE_ZAXIS
+#define PENTYPE PENTYPE_SERVO
 
 ////////////////////////////////////////////////////////
 
@@ -153,7 +153,7 @@
 #define PLOTTER_DEFAULT_PENUP_FEEDRATE			LONG_MAX	 // reduced to maxsteprate
 #define PLOTTER_DEFAULT_PENDOWN_FEEDRATE		3600000l     // 60 mm/ sec;
 
-#if PENTYPETYPE==0			// Z-AXIS
+#if PENTYPE == PENTYPE_ZAXIS			// Z-AXIS
 
 #define PLOTTER_DEFAULT_Z_PENUP_FEEDRATE		2400000l // 40 mm / sec
 #define PLOTTER_DEFAULT_Z_PENDOWN_FEEDRATE		1800000l // 30 mm / sec
@@ -163,7 +163,9 @@
 #define PLOTTER_PENUPPOS_Z			(Z_MAXSIZE/2)
 #define PLOTTER_PENCHANGEPOS_Z		0
 
-#elif PENTYPETYPE == 1		// servo
+#elif PENTYPE == PENTYPE_SERVO		// servo
+
+#define SERVO2_PIN RAMPS14_SERVO2_PIN
 
 // feedrate are used as delays (in ms)
 #define PLOTTER_DEFAULT_Z_PENUP_FEEDRATE		200
@@ -174,6 +176,10 @@
 #define PLOTTER_PENDOWNPOS_Z		2000
 #define PLOTTER_PENUPPOS_Z			1500
 #define PLOTTER_PENCHANGEPOS_Z		1000
+
+#else
+
+error;
 
 #endif
 
@@ -189,13 +195,4 @@
 ////////////////////////////////////////////////////////
 
 #define MESSAGE_MYCONTROL_Starting F("Plotter(HA) is starting ... (" __DATE__ ", " __TIME__ ")")
-
-
-
-
-
-
-
-
-
 
