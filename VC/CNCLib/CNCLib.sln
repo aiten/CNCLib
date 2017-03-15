@@ -59,10 +59,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 		PublishScripts\Templates\CNCLibWeb.param.dev.json = PublishScripts\Templates\CNCLibWeb.param.dev.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Web.MVC", "CNCLib.Web.MVC\CNCLib.Web.MVC.csproj", "{8A68676C-1E3D-4644-8415-43A7BE56DD9C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Web.MVC.Tests", "CNCLib.Web.MVC.Tests\CNCLib.Web.MVC.Tests.csproj", "{E4D8BE07-B098-4D9E-9636-1DAFF529D322}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Web", "..\Framework\Framework.Web\Framework.Web.csproj", "{2E4BAA13-7562-4336-91A4-B8211816D936}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Logic.Contracts", "..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj", "{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5}"
@@ -157,14 +153,6 @@ Global
 		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8A68676C-1E3D-4644-8415-43A7BE56DD9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A68676C-1E3D-4644-8415-43A7BE56DD9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A68676C-1E3D-4644-8415-43A7BE56DD9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A68676C-1E3D-4644-8415-43A7BE56DD9C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4D8BE07-B098-4D9E-9636-1DAFF529D322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4D8BE07-B098-4D9E-9636-1DAFF529D322}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4D8BE07-B098-4D9E-9636-1DAFF529D322}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4D8BE07-B098-4D9E-9636-1DAFF529D322}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E4BAA13-7562-4336-91A4-B8211816D936}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E4BAA13-7562-4336-91A4-B8211816D936}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E4BAA13-7562-4336-91A4-B8211816D936}.Release|Any CPU.ActiveCfg = Release|Any CPU
