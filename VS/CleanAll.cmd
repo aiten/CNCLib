@@ -1,6 +1,7 @@
 call C:\DevStudio.2015\vc\vcvarsall.bat
 call "D:\Program Files (x86)\Microsoft Visual Studio 14.0\vc\vcvarsall.bat"
 call "%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\vc\vcvarsall.bat"
+call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
 
 set BuildTarget=Debug
 
