@@ -272,6 +272,13 @@ bool CPlotter::PenFromDepot(uint8_t pen)
 
 mm1000_t CPlotter::ConvertConfigPos(mm1000_t pos, axis_t axis)
 {
+#if PENTYPE == PENTYPE_SERVO    // servo
+	if (axis == Z_AXIS)
+	{
+		return pos;
+	}
+#endif
+
 	if (pos >= 0x7fff000l)
 	{
 		eepromofs_t ofs = sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis;
