@@ -21,9 +21,11 @@ PublishProfiles/
 /VS/CNCLib/CNCLib.WebAPI/_bin_deployableAssemblies
 /VS/CNCLib/CNCLib.Web.WebForm/bin
 /VS/CNCLib/CNCLib.Web/bin
-/VS/CNCLib/CNCLib.Web.MVC/bin
 /VS/CNCLib/CNCLib.Logic/bin
 /VS/CNCLib/PublishScripts
+
+obj
+bin
 
 *.opendb
 *.db

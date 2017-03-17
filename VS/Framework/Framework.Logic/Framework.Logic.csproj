@@ -28,9 +28,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Framework.Tools\Framework.Tools.csproj">
     </ProjectReference>
   </ItemGroup>

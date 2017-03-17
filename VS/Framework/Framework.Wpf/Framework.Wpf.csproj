@@ -33,9 +33,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Prism.Core" Version="6.2.0" />
   </ItemGroup>
   <ItemGroup>

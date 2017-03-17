@@ -31,9 +31,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Unity" Version="4.0.1" />
   </ItemGroup>
 </Project>

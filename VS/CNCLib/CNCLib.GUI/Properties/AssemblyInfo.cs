@@ -19,8 +19,8 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-//[assembly: AssemblyTitle("CNCLib.GUI")]
-//[assembly: AssemblyProduct("CNCLib.GUI")]
+[assembly: AssemblyTitle("CNCLib.GUI")]
+[assembly: AssemblyProduct("CNCLib.GUI")]
 
 [assembly: Guid("1ef8f228-ce06-4f44-8e58-9357f10ffc56")]
 
