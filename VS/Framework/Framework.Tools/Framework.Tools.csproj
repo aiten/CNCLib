@@ -16,9 +16,8 @@
     <Authors>Herbert Aitenbichler</Authors>
     <Company>Herbert Aitenbichler</Company>
     <Product>Framework</Product>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.0.2.0</Version>
+    <Version>1.0.2</Version>
+    <Copyright>Copyright (c) 2013-2017 Herbert Aitenbichler</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -30,11 +29,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\FrameworkSolutionInfo.cs">
-      <Link>Properties\FrameworkSolutionInfo.cs</Link>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

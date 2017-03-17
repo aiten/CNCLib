@@ -14,6 +14,8 @@
     <Authors>Herbert Aitenbichler</Authors>
     <Company>Herbert Aitenbichler</Company>
     <Product>CNCLib</Product>
+    <Copyright>Copyright (c) 2013-2017 Herbert Aitenbichler</Copyright>
+    <Version>1.0.2</Version>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

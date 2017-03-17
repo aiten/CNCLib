@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <RootNamespace>CNCLib.Logic</RootNamespace>
-    <AssemblyName>CNCLib.Logic</AssemblyName>
 	<TargetFramework>net461</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
@@ -25,11 +23,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CNCLibSolutionInfo.cs">
-      <Link>Properties\CNCLibSolutionInfo.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj">    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj">    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">    </ProjectReference>
@@ -49,5 +42,7 @@
     <Authors>Herbert Aitenbichler</Authors>
     <Company>Herbert Aitenbichler</Company>
     <Product>CNCLib</Product>
+    <Copyright>Copyright (c) 2013-2017 Herbert Aitenbichler</Copyright>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 </Project>

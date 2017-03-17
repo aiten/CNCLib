@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <RootNamespace>Framework.Arduino</RootNamespace>
-    <AssemblyName>Framework.Arduino</AssemblyName>
 	<TargetFramework>net461</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
@@ -16,6 +14,8 @@
     <Authors>Herbert Aitenbichler</Authors>
     <Company>Herbert Aitenbichler</Company>
     <Product>Framework</Product>
+    <Copyright>Copyright (c) 2013-2017 Herbert Aitenbichler</Copyright>
+    <Version>1.0.2</Version>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -26,11 +26,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\FrameworkSolutionInfo.cs">
-      <Link>Properties\FrameworkSolutionInfo.cs</Link>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj"></ProjectReference>

@@ -22,5 +22,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright (c) 2013-2017 Herbert Aitenbichler")]
 [assembly: AssemblyTrademark("CNCLib")]
 [assembly: ComVisible(false)]
-//[assembly: AssemblyCompany("Herbert Aitenbichler")]
+[assembly: AssemblyCompany("Herbert Aitenbichler")]
 

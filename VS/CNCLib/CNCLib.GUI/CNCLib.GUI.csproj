@@ -48,6 +48,8 @@
     <Authors>Herbert Aitenbichler</Authors>
     <Company>Herbert Aitenbichler</Company>
     <Product>CNCLib</Product>
+    <Copyright>Copyright (c) 2013-2017 Herbert Aitenbichler</Copyright>
+    <Version>1.0.2</Version>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -62,11 +64,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\CNCLibSolutionInfo.cs">
-      <Link>Properties\CNCLibSolutionInfo.cs</Link>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj"> </ProjectReference>
