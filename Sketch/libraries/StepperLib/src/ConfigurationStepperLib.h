@@ -61,7 +61,7 @@ typedef const __FlashStringHelper * error_t;
 
 #define WAITTIMER1VALUE		TIMER1VALUE(100)		// Idle timer value for "no step" movement
 
-#define TIMER1VALUEMAXSPEED	TIMER1VALUE(MAXSPEED)
+#define TIMER1VALUEMAXSPEED	TIMER1VALUE(STEPRATE_MAX)
 
 ////////////////////////////////////////////////////////
 
@@ -152,7 +152,7 @@ ToDo;
 #define MAXSTEPSPERMOVE		0xffff			// split in moves
 #define MAXACCDECSTEPS		(0x10000/4 -10)	// max stepps for acc and dec ramp ( otherwise overrun)
 
-#define MAXSPEED			(65535)			// see range for steprate_t
+#define STEPRATE_MAX		(65535l)		// see range for steprate_t
 
 typedef unsigned short timer_t;			// timer tpye (16bit)
 typedef unsigned short mdist_t;			// tpye for one movement (16bit)
@@ -168,7 +168,7 @@ typedef unsigned short steprate_t;		// tpye for speed (Hz), Steps/sec
 #define MAXSTEPSPERMOVE		0xffffffff	// split in Moves
 #define MAXACCDECSTEPS		0x1000000
 
-#define MAXSPEED			(128000)	// limit steprate_t
+#define STEPRATE_MAX		(128000l)	// limit steprate_t
 
 typedef unsigned long timer_t;			// timer tpye (32bit)
 typedef unsigned long mdist_t;			// tpye for one movement (32bit)

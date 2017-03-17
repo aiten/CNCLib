@@ -163,7 +163,6 @@ unsigned short CMyControl::IOControl(uint8_t tool)
 
 		case Servo1:	return (unsigned short) _servo1.readMicroseconds();
 		case Servo2:	return (unsigned short) _servo2.readMicroseconds();
-
 	}
 
 	return super::IOControl(tool);

@@ -14,6 +14,9 @@
     <Filter Include="Plotter\LCD_12864_u8g">
       <UniqueIdentifier>{76bf99f1-191f-4345-95c6-8e6854d5b753}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plotter\LCD_2004_LiquidCrystal_I2C">
+      <UniqueIdentifier>{21f88c5d-d025-4119-9d6b-8d78752fdcbe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\MsvcStepper\MsvcStepper.h">
@@ -52,6 +55,9 @@
     <ClInclude Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyMenu.h">
       <Filter>Plotter\LCD_12864_u8g</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\Plotter\LCD_2004_LiquidCrystal_I2C\MyLCD.h">
+      <Filter>Plotter\LCD_2004_LiquidCrystal_I2C</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -80,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyMenu.cpp">
       <Filter>Plotter\LCD_12864_u8g</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\Plotter\LCD_2004_LiquidCrystal_I2C\MyLCD.cpp">
+      <Filter>Plotter\LCD_2004_LiquidCrystal_I2C</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
