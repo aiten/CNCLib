@@ -91,6 +91,9 @@
     <ClInclude Include="..\..\..\Sketch\Plotter\HPGLParser.h" />
     <ClInclude Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyLCD.h" />
     <ClInclude Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyMenu.h" />
+    <ClInclude Include="..\..\..\Sketch\Plotter\LCD_2004_LiquidCrystal_I2C\MyLCD.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\Plotter\MyControl.h" />
     <ClInclude Include="..\..\..\Sketch\Plotter\MyLCD.h" />
     <ClInclude Include="..\..\..\sketch\Plotter\PlotterControl.h" />
@@ -105,6 +108,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\Plotter\LCD_12864_u8g\MyMenu.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\Plotter\LCD_2004_LiquidCrystal_I2C\MyLCD.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\Sketch\Plotter\MyControl.cpp" />

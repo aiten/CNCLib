@@ -3,7 +3,7 @@
 *.bak
 *.sdf
 *.user
-/VS/Arduino.VS/Lib/StepperSystem.lib
+/VS/Arduino.VC/Lib/StepperSystem.lib
 
 Debug/
 Release/
