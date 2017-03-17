@@ -1,32 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk" >
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D689CD99-A022-4F38-8AE1-A269C82A729C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CNCLib.Repository</RootNamespace>
-    <AssemblyName>CNCLib.Repository</AssemblyName>
 	<TargetFramework>net461</TargetFramework>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -38,14 +13,6 @@
     <AssemblyOriginatorKeyFile>..\CNCLibPublic.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -61,26 +28,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.EF\Framework.EF.csproj">
-      <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
-      <Name>Framework.EF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
-      <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>
-      <Name>Framework.Tools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj">
-      <Project>{0ecc8284-505b-43cc-9df9-ac5d5eef786a}</Project>
-      <Name>CNCLib.Repository.Contracts</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.EF\Framework.EF.csproj">   </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj">    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <PackageReference Include="EntityFramework" Version="6.1.3" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
+    <Authors>Herbert Aitenbichler</Authors>
+    <Company>Herbert Aitenbichler</Company>
+    <Product>CNCLib</Product>
     </PropertyGroup>
 </Project>

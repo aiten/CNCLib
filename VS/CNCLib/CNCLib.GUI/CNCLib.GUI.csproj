@@ -45,6 +45,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\CNCLibPublic.snk</AssemblyOriginatorKeyFile>
+    <Authors>Herbert Aitenbichler</Authors>
+    <Company>Herbert Aitenbichler</Company>
+    <Product>CNCLib</Product>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -66,30 +69,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj">
-      <Project>{e598aaa4-fe51-46bd-b852-4a9eeb21a5c5}</Project>
-      <Name>Framework.Logic.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
-      <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>
-      <Name>Framework.Tools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj">
-      <Project>{77f5a48d-e908-4a95-a09e-771e8be8817b}</Project>
-      <Name>Framework.Arduino</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj">
-      <Project>{f9c446f4-6365-4189-95c5-009ef0160882}</Project>
-      <Name>CNCLib.GCode</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
-      <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
-      <Name>CNCLib.Logic.Contracts.DTO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
-      <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
-      <Name>CNCLib.ServiceProxy</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj"> </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj">    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj">    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Load\LoadOptionForm.cs">
@@ -98,5 +83,10 @@
     <Compile Update="Load\LoadOptionForm.Designer.cs">
       <SubType>Form</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+    </None>
   </ItemGroup>
 </Project>

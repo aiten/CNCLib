@@ -1,38 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk" >
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CNCLib.ServiceProxy</RootNamespace>
-    <AssemblyName>CNCLib.ServiceProxy</AssemblyName>
 	<TargetFramework>net461</TargetFramework>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>2.0</OldToolsVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -42,6 +11,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\CNCLibPublic.snk</AssemblyOriginatorKeyFile>
+    <Authors>Herbert Aitenbichler</Authors>
+    <Company>Herbert Aitenbichler</Company>
+    <Product>CNCLib</Product>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -60,12 +32,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj">
-      <Project>{e598aaa4-fe51-46bd-b852-4a9eeb21a5c5}</Project>
-      <Name>Framework.Logic.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
-      <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
-      <Name>CNCLib.Logic.Contracts.DTO</Name>
     </ProjectReference>
   </ItemGroup>
 
