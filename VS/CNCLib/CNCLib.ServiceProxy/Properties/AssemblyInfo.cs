@@ -19,8 +19,8 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("CNCLib.ServiceProxy")]
-[assembly: AssemblyProduct("CNCLib.ServiceProxy")]
+//[assembly: AssemblyTitle("CNCLib.ServiceProxy")]
+//[assembly: AssemblyProduct("CNCLib.ServiceProxy")]
 
 [assembly: Guid("f4c854c1-3154-4e73-85b0-2c9fcbc9ad17")]
 

@@ -19,8 +19,8 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("CNCLib.WebAPI")]
-[assembly: AssemblyProduct("CNCLib.WebAPI")]
+//[assembly: AssemblyTitle("CNCLib.WebAPI")]
+//[assembly: AssemblyProduct("CNCLib.WebAPI")]
 
 [assembly: Guid("0e22441e-ffff-41d4-925c-2315b74d9798")]
 

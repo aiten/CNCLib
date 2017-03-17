@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Framework.Tools</RootNamespace>
     <AssemblyName>Framework.Tools</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+	<TargetFramework>net461</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -38,6 +37,12 @@
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\FrameworkPublic.snk</AssemblyOriginatorKeyFile>
+    <Authors>Herbert Aitenbichler</Authors>
+    <Company>Herbert Aitenbichler</Company>
+    <Product>Framework</Product>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.2.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -70,45 +75,10 @@
     <Compile Include="..\FrameworkSolutionInfo.cs">
       <Link>Properties\FrameworkSolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="..\FrameworkSolutionInfoVersion.cs">
-      <Link>Properties\FrameworkSolutionInfoVersion.cs</Link>
-    </Compile>
-    <Compile Include="CommandStream.cs" />
-    <Compile Include="Dependency\BaseDependencyContainer.cs" />
-    <Compile Include="Dependency\Dependency.cs" />
-    <Compile Include="Dependency\IDependencyContainer.cs" />
-    <Compile Include="Dependency\IDependencyProvider.cs" />
-    <Compile Include="Dependency\LiveDependencyContainer.cs" />
-    <Compile Include="Dependency\LiveDependencyProvider.cs" />
-    <Compile Include="Dependency\ResolutionFailedException.cs" />
-    <Compile Include="Drawing\DitherBase.cs" />
-    <Compile Include="Drawing\NewspaperDither.cs" />
-    <Compile Include="Drawing\FloydSteinbergDither.cs" />
-    <Compile Include="Drawing\ImageHelper.cs" />
-    <Compile Include="Drawing\Point3D.cs" />
-    <Compile Include="Drawing\Rotate3D.cs" />
-    <Compile Include="Drawing\Vector3D.cs" />
-    <Compile Include="Pattern\IFactory.cs" />
-    <Compile Include="Pattern\FactoryType2Type.cs" />
-    <Compile Include="Pattern\FactoryType2Obj.cs" />
-    <Compile Include="Pattern\IBaseRepository.cs" />
-    <Compile Include="Pattern\IUnitOfWork.cs" />
-    <Compile Include="TraceStream.cs" />
-    <Compile Include="Pattern\Singleton.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WinAPIWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

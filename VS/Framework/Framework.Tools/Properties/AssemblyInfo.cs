@@ -19,8 +19,8 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Framework.Tools")]
-[assembly: AssemblyProduct("Framework.Tools")]
+//[assembly: AssemblyTitle("Framework.Tools")]
+//[assembly: AssemblyProduct("Framework.Tools")]
 
 [assembly: Guid("99c91315-0574-4842-b3d2-f1eeca448a45")]
 
