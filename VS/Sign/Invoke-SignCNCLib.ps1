@@ -23,8 +23,11 @@
 	./Invoke-Environment '"C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vsvars32.bat"'
 
 
-	$snExe = join-path "$($env:WindowsSDK_ExecutablePath_x86)" "sn.exe"
-	$signToolsExe = join-path "$($env:WindowsSdkDir)\Bin\x86" "signtool.exe"
+#	$snExe = join-path "$($env:WindowsSDK_ExecutablePath_x86)" "sn.exe"
+#	$signToolsExe = join-path "$($env:WindowsSdkDir)\Bin\x86" "signtool.exe"
+
+    $snExe = '"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.2 Tools\sn.exe"'
+    $signToolsExe ='"C:\Program Files (x86)\Microsoft SDKs\ClickOnce\SignTool\signtool.exe"'
 
 	$tokenNameMapping = @{
 		"f1dd8891e96f0824" = @(.\pfx2snk.ps1 .\CNCLib.pfx -pfxPassword $pfxPassword)
