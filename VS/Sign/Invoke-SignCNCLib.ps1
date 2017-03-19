@@ -25,8 +25,8 @@
 #	$snExe = join-path "$($env:WindowsSDK_ExecutablePath_x86)" "sn.exe"
 #	$signToolsExe = join-path "$($env:WindowsSdkDir)\Bin\x86" "signtool.exe"
 
-    $snExe = '"..\TFSBin\sn.exe"'
-    $signToolsExe ='"..\signtool.exe"'
+    $snExe = '"../TFSBin/sn.exe"'
+    $signToolsExe ='"../signtool.exe"'
 
 	$tokenNameMapping = @{
 		"f1dd8891e96f0824" = @(.\pfx2snk.ps1 .\CNCLib.pfx -pfxPassword $pfxPassword)
