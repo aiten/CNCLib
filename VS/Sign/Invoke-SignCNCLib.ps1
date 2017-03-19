@@ -26,7 +26,7 @@
 #	$snExe = join-path "$($env:WindowsSDK_ExecutablePath_x86)" "sn.exe"
 #	$signToolsExe = join-path "$($env:WindowsSdkDir)\Bin\x86" "signtool.exe"
 
-    $snExe = '"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.2 Tools\sn.exe"'
+    $snExe = '"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\sn.exe"'
     $signToolsExe ='"C:\Program Files (x86)\Microsoft SDKs\ClickOnce\SignTool\signtool.exe"'
 
 	$tokenNameMapping = @{
