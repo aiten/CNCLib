@@ -22,6 +22,7 @@
 #	./Invoke-Environment '"%VS150COMNTOOLS%\vsvars32.bat"'
 	./Invoke-Environment '"C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vsvars32.bat"'
 
+throw  "$($env:WindowsSDK_ExecutablePath_x86) $($env:WindowsSdkDir)"
 
 #	$snExe = join-path "$($env:WindowsSDK_ExecutablePath_x86)" "sn.exe"
 #	$signToolsExe = join-path "$($env:WindowsSdkDir)\Bin\x86" "signtool.exe"
