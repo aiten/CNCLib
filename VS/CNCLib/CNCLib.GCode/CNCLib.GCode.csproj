@@ -5,13 +5,10 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
     <DelaySign>true</DelaySign>
+    <AssemblyOriginatorKeyFile>..\CNCLibPublic.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\CNCLibPublic.snk</AssemblyOriginatorKeyFile>
-    <Description />
     <Product>CNCLib</Product>
     <Company>Herbert Aitenbichler</Company>
     <Authors>Herbert Aitenbichler</Authors>

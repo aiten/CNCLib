@@ -5,12 +5,15 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
     <DelaySign>true</DelaySign>
+    <AssemblyOriginatorKeyFile>..\CNCLibPublic.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\CNCLibPublic.snk</AssemblyOriginatorKeyFile>
+    <Authors>Herbert Aitenbichler</Authors>
+    <Company>Herbert Aitenbichler</Company>
+    <Product>CNCLib</Product>
+    <Copyright>Copyright (c) 2013-2017 Herbert Aitenbichler</Copyright>
+    <Version>1.0.2</Version>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -35,11 +38,4 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.0.1" />
   </ItemGroup>
-  <PropertyGroup>
-    <Authors>Herbert Aitenbichler</Authors>
-    <Company>Herbert Aitenbichler</Company>
-    <Product>CNCLib</Product>
-    <Copyright>Copyright (c) 2013-2017 Herbert Aitenbichler</Copyright>
-    <Version>1.0.2</Version>
-  </PropertyGroup>
 </Project>

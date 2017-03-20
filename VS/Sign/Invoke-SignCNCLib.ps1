@@ -1,6 +1,20 @@
-
-# Load environment variables for Visual Studio 2015, so we can
-# find the right windows sdk dir to load sn.exe
+#////////////////////////////////////////////////////////
+#/*
+#  This file is part of CNCLib - A library for stepper motors.
+#
+#  Copyright (c) 2013-2017 Herbert Aitenbichler
+#
+#  CNCLib is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  CNCLib is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  http://www.gnu.org/licenses/
+#*/
 
 <#
 .SYNOPSIS
@@ -25,8 +39,8 @@
 #	$snExe = join-path "$($env:WindowsSDK_ExecutablePath_x86)" "sn.exe"
 #	$signToolsExe = join-path "$($env:WindowsSdkDir)\Bin\x86" "signtool.exe"
 
-    $snExe = "C:\a\1\s\VS\TFSBin\sn.exe"
-    $signToolsExe = "C:\a\1\s\VS\TFSBin\signtool.exe"
+    $snExe = "..\TFSBin\sn.exe"
+    $signToolsExe = "..\TFSBin\signtool.exe"
 
 	$tokenNameMapping = @{
 		"f1dd8891e96f0824" = @(.\pfx2snk.ps1 .\CNCLib.pfx -pfxPassword $pfxPassword)
