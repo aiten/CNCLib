@@ -19,14 +19,7 @@
 
 #include "stdafx.h"
 
-#include "IOControlTest.h"
-#include "RotaryTest.h"
-#include "RingBufferTest.h"
-#include "ToStringTest.h"
-#include "Matrix4x4Test.h"
 #include "StepperTest.h"
-#include "LinearLookupTest.h"
-#include "MotionControlTest.h"
 
 #pragma warning(disable: 4127)
 
@@ -37,41 +30,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	argc; argv;
 
 	CTestClass::Init(argv[0]);
-
-	{
-		CIOControlTest test;
-		test.RunTest();
-	}
-
-	{
-		CRotaryTest test;
-		test.RunTest();
-	}
-
-	{
-		CMotionControlTest test;
-		test.RunTest();
-	}
-
-	{
-		CRingBufferTest test;
-		test.RunTest();
-	}
-
-	{
-		CToStringTest test;
-		test.RunTest();
-	}
-
-	{
-		CMatrix4x4Test test;
-		test.RunTest();
-	}
-
-	{
-		CLinearLookupTest test;
-		test.RunTest();
-	}
 
 	{
 		CStepperTest test;

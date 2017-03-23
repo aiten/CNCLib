@@ -218,10 +218,10 @@ void CMyControl::Poll()
 
 bool CMyControl::GoToReference(axis_t axis, steprate_t /* steprate */, bool toMinRef)
 {
-	if (!super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis,1000000), toMinRef))
+	if (!super::GoToReference(axis, CMotionControlBase::GetInstance()->FeedRateToStepRate(axis,1000000), toMinRef))
 		return false;
 
-	return super::GoToReference(axis, CMotionControlBase::FeedRateToStepRate(axis, 200000), toMinRef);
+	return super::GoToReference(axis, CMotionControlBase::GetInstance()->FeedRateToStepRate(axis, 200000), toMinRef);
 }
 
 ////////////////////////////////////////////////////////////

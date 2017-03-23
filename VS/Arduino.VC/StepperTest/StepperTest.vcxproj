@@ -86,25 +86,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="IOControlTest.h" />
-    <ClInclude Include="LinearLookupTest.h" />
-    <ClInclude Include="Matrix4x4Test.h" />
-    <ClInclude Include="MotionControlTest.h" />
-    <ClInclude Include="RingBufferTest.h" />
-    <ClInclude Include="RotaryTest.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StepperTest.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestClass.h" />
-    <ClInclude Include="ToStringTest.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IOControlTest.cpp" />
-    <ClCompile Include="LinearLookupTest.cpp" />
-    <ClCompile Include="Matrix4x4Test.cpp" />
-    <ClCompile Include="MotionControlTest.cpp" />
-    <ClCompile Include="RingBufferTest.cpp" />
-    <ClCompile Include="RotaryTest.cpp" />
     <ClCompile Include="StepperTest.cpp" />
     <ClCompile Include="StepperTestMain.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -112,7 +99,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestClass.cpp" />
-    <ClCompile Include="ToStringTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

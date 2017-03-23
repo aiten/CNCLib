@@ -16,31 +16,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix4x4Test.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="RingBufferTest.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
     <ClInclude Include="StepperTest.h">
       <Filter>Tests</Filter>
     </ClInclude>
     <ClInclude Include="TestClass.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="ToStringTest.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="LinearLookupTest.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="MotionControlTest.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="RotaryTest.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="IOControlTest.h">
       <Filter>Tests</Filter>
     </ClInclude>
   </ItemGroup>
@@ -51,31 +30,10 @@
     <ClCompile Include="StepperTestMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix4x4Test.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="RingBufferTest.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="StepperTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="TestClass.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="ToStringTest.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="LinearLookupTest.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="MotionControlTest.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="RotaryTest.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="IOControlTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>

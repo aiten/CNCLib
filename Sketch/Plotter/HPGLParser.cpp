@@ -208,7 +208,7 @@ void CHPGLParser::PenVelocityCommand()
 	if (IsError()) return;
 
 	// feedrate is => mm_1000 / min
-	_state.FeedRateDown = CMotionControlBase::GetMaxFeedRate(X_AXIS,velocityCmPerSec * 60l * 10l);
+	_state.FeedRateDown = CMotionControlBase::GetInstance()->GetMaxFeedRate(X_AXIS,velocityCmPerSec * 60l * 10l);
 
 	ReadAndSkipSemicolon();
 }

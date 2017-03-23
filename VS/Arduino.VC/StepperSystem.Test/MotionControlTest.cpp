@@ -90,7 +90,7 @@ namespace StepperSystemTest
 			Assert::AreEqual((long)1159, (long)mc.GetFeedRate(to3, 1234 * 60));
 		}
 
-		TEST_METHOD(FeedRateFeedRateOverrun16BitTest)
+		TEST_METHOD(FeedRateOverrun16BitTest)
 		{
 			CMotionControlBase mc;
 			mc.UnitTest();
