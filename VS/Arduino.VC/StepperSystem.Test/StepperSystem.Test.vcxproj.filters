@@ -29,14 +29,29 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UnitTest1.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="LinearLookupTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="IOControlTest.cpp">
       <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="ToStringTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="RingBufferTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="RotaryTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix4x4Test.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="MotionControlTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="StepperSystemGlobal.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

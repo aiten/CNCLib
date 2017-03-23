@@ -27,16 +27,17 @@ http://www.gnu.org/licenses/
 
 #include "CppUnitTest.h"
 
+////////////////////////////////////////////////////////
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace StepperSystemTest
 {
-
-	TEST_CLASS(IOControlTest)
+	TEST_CLASS(CIOControlTest)
 	{
 	public:
 
-		TEST_METHOD(TestAnalogIO)
+		TEST_METHOD(AnalogIOTest)
 		{
 			CAnalog8IOControl<10> spindle;
 
@@ -76,7 +77,7 @@ namespace StepperSystemTest
 			Assert::AreEqual((uint8_t)111, spindle.GetLevel());
 		}
 
-		TEST_METHOD(TestAnalogIOInvert)
+		TEST_METHOD(AnalogIOInvertTest)
 		{
 			CAnalog8InvertIOControl<10> spindle;
 
@@ -115,7 +116,7 @@ namespace StepperSystemTest
 			Assert::AreEqual((uint8_t)100, spindle.GetIOLevel());
 			Assert::AreEqual((uint8_t)111, spindle.GetLevel());
 		}
-		TEST_METHOD(TestAnalogIOSmooth)
+		TEST_METHOD(AnalogIOSmoothTest)
 		{
 
 			CAnalog8IOControlSmooth<10> spindle;
@@ -157,10 +158,10 @@ namespace StepperSystemTest
 			Assert::AreEqual((uint8_t)111, spindle.GetLevel());
 
 		}
-		TEST_METHOD(TestAnalogIOSmoothFade)
+		TEST_METHOD(AnalogIOSmoothFadeTest)
 		{
 			CAnalog8IOControlSmooth<10> spindle;
-			spindle.SetDelay(0);
+			spindle.SetDelay(255);
 
 			spindle.Init(100);
 			Assert::AreEqual((uint8_t)100, spindle.GetLevel());
@@ -171,14 +172,14 @@ namespace StepperSystemTest
 
 			for (uint8_t i = 1; i < 100; i++)
 			{
-				spindle.Poll();
+				spindle.PollForce();
 				Assert::AreEqual((uint8_t)100, spindle.GetLevel());
 				Assert::AreEqual((uint8_t)100, spindle.GetIOLevel());
 				Assert::AreEqual(i, spindle.GetCurrentIOLevel());
 			}
-			spindle.Poll();
+			spindle.PollForce();
 			Assert::AreEqual((uint8_t)100, spindle.GetCurrentIOLevel());
-			spindle.Poll();
+			spindle.PollForce();
 			Assert::AreEqual((uint8_t)100, spindle.GetCurrentIOLevel());
 
 			spindle.On(50);
@@ -188,17 +189,17 @@ namespace StepperSystemTest
 
 			for (uint8_t i = 99; i > 50; i--)
 			{
-				spindle.Poll();
+				spindle.PollForce();
 				Assert::AreEqual((uint8_t)50, spindle.GetLevel());
 				Assert::AreEqual((uint8_t)50, spindle.GetIOLevel());
 				Assert::AreEqual(i, spindle.GetCurrentIOLevel());
 			}
 		}
 
-		TEST_METHOD(TestAnalog9IOSmooth)
+		TEST_METHOD(Analog9IOSmoothTest)
 		{
 			CAnalog8XIOControlSmooth<10, 11> spindle;
-			spindle.SetDelay(1);
+			spindle.SetDelay(255);	// never reached => we use PollForce
 
 			spindle.Init(0);
 
@@ -241,29 +242,28 @@ namespace StepperSystemTest
 			Assert::AreEqual((int16_t)111, spindle.GetLevel());
 
 		}
-		TEST_METHOD(TestAnalog9IOSmoothFade)
+
+		TEST_METHOD(Analog9IOSmoothFadeTest)
 		{
 			CAnalog8XIOControlSmooth<10, 11> spindle;
-			spindle.SetDelay(0);
+			spindle.SetDelay(255);	// never reached => we use PollForce
 
 			spindle.Init(CHAR_MAX);
 			Assert::AreEqual((int16_t)CHAR_MAX, spindle.GetLevel());
 			Assert::AreEqual((int16_t)CHAR_MAX, spindle.GetIOLevel());
 			Assert::AreEqual((int16_t)0, spindle.GetCurrentIOLevel());
 
-			// delay is 0 => inc eache call to "poll"
-
 			for (int16_t i = 1; i <= CHAR_MAX; i++)
 			{
-				spindle.Poll();
+				spindle.PollForce();
 				Assert::AreEqual((int16_t)CHAR_MAX, spindle.GetLevel());
 				Assert::AreEqual((int16_t)CHAR_MAX, spindle.GetIOLevel());
 				Assert::AreEqual(i, spindle.GetCurrentIOLevel());
 			}
 
-			spindle.Poll();
+			spindle.PollForce();
 			Assert::AreEqual((int16_t)CHAR_MAX, spindle.GetCurrentIOLevel());
-			spindle.Poll();
+			spindle.PollForce();
 			Assert::AreEqual((int16_t)CHAR_MAX, spindle.GetCurrentIOLevel());
 
 			spindle.On(CHAR_MIN);
@@ -273,7 +273,7 @@ namespace StepperSystemTest
 
 			for (int16_t i = CHAR_MAX - 1; i >= CHAR_MIN; i--)
 			{
-				spindle.Poll();
+				spindle.PollForce();
 				Assert::AreEqual((int16_t)CHAR_MIN, spindle.GetLevel());
 				Assert::AreEqual((int16_t)CHAR_MIN, spindle.GetIOLevel());
 				Assert::AreEqual(i, spindle.GetCurrentIOLevel());

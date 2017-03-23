@@ -109,6 +109,12 @@ public:
 		}
 	}
 
+	void PollForce()
+	{
+		_nexttime = 0;
+		Poll();
+	}
+
 	void SetDelay(uint8_t delayms)
 	{
 		_delayMs = delayms;

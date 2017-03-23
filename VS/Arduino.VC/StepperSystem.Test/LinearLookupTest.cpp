@@ -25,6 +25,8 @@ http://www.gnu.org/licenses/
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
+////////////////////////////////////////////////////////
+
 namespace StepperSystemTest
 {
 
@@ -45,11 +47,11 @@ namespace StepperSystemTest
 	CLinearLookup<long, long>::SLookupTable linearLL[255];
 
 
-	TEST_CLASS(LinearLookupTests)
+	TEST_CLASS(CLinearLookupTests)
 	{
 	public:
 
-		TEST_METHOD(LinearLookupTest)
+		TEST_METHOD(LinearLookupIntToIntTest)
 		{
 			CLinearLookup<int, int> ii(linearII, sizeof(linearII) / sizeof(CLinearLookup<int, int>::SLookupTable));
 
@@ -63,7 +65,10 @@ namespace StepperSystemTest
 			Assert::AreEqual(10 + (90 * 1 / 10), ii.Lookup(11));
 			Assert::AreEqual(10 + (90 * 5 / 10), ii.Lookup(15));
 			Assert::AreEqual(10 + (90 * 9 / 10), ii.Lookup(19));
+		}
 
+		TEST_METHOD(LinearLookupIntToFloatTest)
+		{
 			CLinearLookup<int, float> lf(linearIF, sizeof(linearIF) / sizeof(CLinearLookup<int, float>::SLookupTable));
 
 			Assert::AreEqual((float) 0.1, lf.Lookup(10));
@@ -76,7 +81,10 @@ namespace StepperSystemTest
 			Assert::AreEqual(float(0.1 - (0.09 * 1 / 10)), lf.Lookup(11));
 			Assert::AreEqual(float(0.1 - (0.09 * 5 / 10)), lf.Lookup(15));
 			Assert::AreEqual(float(0.1 - (0.09 * 9 / 10)), lf.Lookup(19), 0.001f);
+		}
 
+		TEST_METHOD(LinearLookupLongToLongTest)
+		{
 			// test max size (255)
 
 			CLinearLookup<long, long> ll(linearLL, sizeof(linearLL) / sizeof(CLinearLookup<long, long>::SLookupTable));

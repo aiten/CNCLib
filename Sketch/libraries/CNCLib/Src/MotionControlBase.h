@@ -95,6 +95,11 @@ public:
 
 	virtual void UnitTest() {};
 
+	CMotionControlBase()
+	{
+		memset(&_current, 0, sizeof(_current));
+	}
+
 #endif
 
 	////////////////////////////////////////
