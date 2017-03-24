@@ -108,6 +108,12 @@ namespace StepperSystemTest
 			{
 				char* dest = fgets(lined, sizeof(lined), fdest);
 				Assert::IsTrue(dest != NULL);
+				if (strcmp(src, dest) != 0)
+				{
+					Assert::Fail();
+				}
+
+				//Assert::AreSame(src, dest);
 
 				src = fgets(lines, sizeof(lines), fsrc);
 			}

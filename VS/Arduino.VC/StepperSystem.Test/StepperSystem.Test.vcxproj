@@ -172,6 +172,30 @@
     <ClCompile Include="StepperTest.cpp" />
     <ClCompile Include="ToStringTest.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="TestResult\Test_Acc1000Acc1500Dec800Dec.csv" />
+    <None Include="TestResult\Test_Acc1000AccCutDec800.csv" />
+    <None Include="TestResult\Test_Acc25000Dec.csv" />
+    <None Include="TestResult\Test_Acc5000Dec.csv" />
+    <None Include="TestResult\Test_Acc5000DecCutAcc4800Dec.csv" />
+    <None Include="TestResult\Test_AccCutDec.csv" />
+    <None Include="TestResult\Test_BreakDown.csv" />
+    <None Include="TestResult\Test_BreakDownDelay.csv" />
+    <None Include="TestResult\Test_BreakDownPause.csv" />
+    <None Include="TestResult\Test_JerkSameDifferentDirection.csv" />
+    <None Include="TestResult\Test_JerkSameDirection.csv" />
+    <None Include="TestResult\Test_JunctionSpeedDifferentDirection.csv" />
+    <None Include="TestResult\Test_JunctionSpeedSameDirection.csv" />
+    <None Include="TestResult\Test_JunctionYLessSpeed.csv" />
+    <None Include="TestResult\Test_LastMoveTo0.csv" />
+    <None Include="TestResult\Test_LongSlow.csv" />
+    <None Include="TestResult\Test_MergeRamp.csv" />
+    <None Include="TestResult\Test_MergeRampWithIo.csv" />
+    <None Include="TestResult\Test_SetMaxAxixSpeed.csv" />
+    <None Include="TestResult\Test_SpeedUp.csv" />
+    <None Include="TestResult\Test_StepUp.csv" />
+    <None Include="TestResult\Test_UpDown.csv" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

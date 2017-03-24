@@ -5,24 +5,19 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Tests">
       <UniqueIdentifier>{87909e58-ee9a-46cd-936f-32b9fd5b0a5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestResult">
+      <UniqueIdentifier>{83e85d24-0c47-4654-96dd-bd0465ce5aaa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -56,5 +51,73 @@
     <ClCompile Include="StepperTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestResult\Test_Acc1000Acc1500Dec800Dec.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_Acc1000AccCutDec800.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_Acc5000Dec.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_Acc5000DecCutAcc4800Dec.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_Acc25000Dec.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_AccCutDec.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_BreakDown.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_BreakDownDelay.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_BreakDownPause.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_JerkSameDifferentDirection.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_JerkSameDirection.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_JunctionSpeedDifferentDirection.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_JunctionSpeedSameDirection.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_JunctionYLessSpeed.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_LastMoveTo0.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_LongSlow.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_MergeRamp.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_SetMaxAxixSpeed.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_SpeedUp.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_StepUp.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_UpDown.csv">
+      <Filter>TestResult</Filter>
+    </None>
+    <None Include="TestResult\Test_MergeRampWithIo.csv">
+      <Filter>TestResult</Filter>
+    </None>
   </ItemGroup>
 </Project>

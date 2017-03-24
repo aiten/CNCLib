@@ -224,11 +224,13 @@ void CMsvcStepper::InitTest(const char* filename)
 	_TotalSteps = 1;
 	_exportIdx = 1;
 
-	for (axis_t x = 0; x < NUM_AXIS; x++)
+	for (axis_t x = 0; x < NUM_AXIS_MVC; x++)
 	{
-		SetJerkSpeed(x, 500);
-		SetPosition(x, 0);
-
+		if (x < NUM_AXIS)
+		{
+			SetJerkSpeed(x, 500);
+			SetPosition(x, 0);
+		}
 		_sumtime[x] = 0;
 		_count[x] = 0;
 		_sumtime[x] = 0;
