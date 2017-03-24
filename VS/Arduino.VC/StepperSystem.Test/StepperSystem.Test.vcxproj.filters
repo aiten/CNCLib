@@ -53,5 +53,8 @@
     <ClCompile Include="StepperSystemGlobal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StepperTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

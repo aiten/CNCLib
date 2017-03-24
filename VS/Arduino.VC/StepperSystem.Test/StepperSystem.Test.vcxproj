@@ -79,6 +79,8 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)..\..\Sketch\libraries\CNCLibEx\Src;$(SolutionDir)..\..\Sketch\libraries\CNCLib\Src;$(SolutionDir)..\..\Sketch\libraries\StepperLib\Src;$(SolutionDir)Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Lib\;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <IntDir>$(ProjectDir)$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -87,6 +89,8 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)..\..\Sketch\libraries\CNCLibEx\Src;$(SolutionDir)..\..\Sketch\libraries\CNCLib\Src;$(SolutionDir)..\..\Sketch\libraries\StepperLib\Src;$(SolutionDir)Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Lib\;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <IntDir>$(ProjectDir)$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -165,6 +169,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="StepperSystemGlobal.cpp" />
+    <ClCompile Include="StepperTest.cpp" />
     <ClCompile Include="ToStringTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

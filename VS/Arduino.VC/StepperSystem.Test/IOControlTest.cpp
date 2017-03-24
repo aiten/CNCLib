@@ -116,9 +116,9 @@ namespace StepperSystemTest
 			Assert::AreEqual((uint8_t)100, spindle.GetIOLevel());
 			Assert::AreEqual((uint8_t)111, spindle.GetLevel());
 		}
+
 		TEST_METHOD(AnalogIOSmoothTest)
 		{
-
 			CAnalog8IOControlSmooth<10> spindle;
 			spindle.SetDelay(1);
 
@@ -158,6 +158,7 @@ namespace StepperSystemTest
 			Assert::AreEqual((uint8_t)111, spindle.GetLevel());
 
 		}
+
 		TEST_METHOD(AnalogIOSmoothFadeTest)
 		{
 			CAnalog8IOControlSmooth<10> spindle;
