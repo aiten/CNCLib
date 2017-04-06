@@ -75,47 +75,47 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		private void MachineChanged()
 		{
-			OnPropertyChanged(() => Desc00);
-			OnPropertyChanged(() => Desc01);
-			OnPropertyChanged(() => Desc02);
-			OnPropertyChanged(() => Desc03);
-			OnPropertyChanged(() => Desc04);
+			RaisePropertyChanged(nameof(Desc00));
+			RaisePropertyChanged(nameof(Desc01));
+			RaisePropertyChanged(nameof(Desc02));
+			RaisePropertyChanged(nameof(Desc03));
+			RaisePropertyChanged(nameof(Desc04));
+ 
+			RaisePropertyChanged(nameof(Desc10));
+			RaisePropertyChanged(nameof(Desc11));
+			RaisePropertyChanged(nameof(Desc12));
+			RaisePropertyChanged(nameof(Desc13));
+			RaisePropertyChanged(nameof(Desc14));
 
-			OnPropertyChanged(() => Desc10);
-			OnPropertyChanged(() => Desc11);
-			OnPropertyChanged(() => Desc12);
-			OnPropertyChanged(() => Desc13);
-			OnPropertyChanged(() => Desc14);
+			RaisePropertyChanged(nameof(Desc20));
+			RaisePropertyChanged(nameof(Desc21));
+			RaisePropertyChanged(nameof(Desc22));
+			RaisePropertyChanged(nameof(Desc23));
+			RaisePropertyChanged(nameof(Desc24));
 
-			OnPropertyChanged(() => Desc20);
-			OnPropertyChanged(() => Desc21);
-			OnPropertyChanged(() => Desc22);
-			OnPropertyChanged(() => Desc23);
-			OnPropertyChanged(() => Desc24);
+			RaisePropertyChanged(nameof(Desc30));
+			RaisePropertyChanged(nameof(Desc31));
+			RaisePropertyChanged(nameof(Desc32));
+			RaisePropertyChanged(nameof(Desc33));
+			RaisePropertyChanged(nameof(Desc34));
 
-			OnPropertyChanged(() => Desc30);
-			OnPropertyChanged(() => Desc31);
-			OnPropertyChanged(() => Desc32);
-			OnPropertyChanged(() => Desc33);
-			OnPropertyChanged(() => Desc34);
+			RaisePropertyChanged(nameof(Desc40));
+			RaisePropertyChanged(nameof(Desc41));
+			RaisePropertyChanged(nameof(Desc42));
+			RaisePropertyChanged(nameof(Desc43));
+			RaisePropertyChanged(nameof(Desc44));
 
-			OnPropertyChanged(() => Desc40);
-			OnPropertyChanged(() => Desc41);
-			OnPropertyChanged(() => Desc42);
-			OnPropertyChanged(() => Desc43);
-			OnPropertyChanged(() => Desc44);
+			RaisePropertyChanged(nameof(Desc50));
+			RaisePropertyChanged(nameof(Desc51));
+			RaisePropertyChanged(nameof(Desc52));
+			RaisePropertyChanged(nameof(Desc53));
+			RaisePropertyChanged(nameof(Desc54));
 
-			OnPropertyChanged(() => Desc50);
-			OnPropertyChanged(() => Desc51);
-			OnPropertyChanged(() => Desc52);
-			OnPropertyChanged(() => Desc53);
-			OnPropertyChanged(() => Desc54);
-
-			OnPropertyChanged(() => Desc60);
-			OnPropertyChanged(() => Desc61);
-			OnPropertyChanged(() => Desc62);
-			OnPropertyChanged(() => Desc63);
-			OnPropertyChanged(() => Desc64);
+			RaisePropertyChanged(nameof(Desc60));
+			RaisePropertyChanged(nameof(Desc61));
+			RaisePropertyChanged(nameof(Desc62));
+			RaisePropertyChanged(nameof(Desc63));
+			RaisePropertyChanged(nameof(Desc64));
 		}
 
 		private CNCLib.Logic.Contracts.DTO.MachineCommand GetCmd(int x, int y)

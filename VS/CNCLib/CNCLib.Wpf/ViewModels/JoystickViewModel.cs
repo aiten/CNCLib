@@ -70,7 +70,7 @@ namespace CNCLib.Wpf.ViewModels
 			_id = joystick.Item2;
 			Joystick = joystick.Item1;
 
-			OnPropertyChanged(() => Joystick);
+			RaisePropertyChanged(nameof(Joystick));
 		}
 
 		public async void SaveJoystick()

@@ -57,7 +57,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		private void OnCommandQueueChanged(object sender, ArduinoSerialCommunicationEventArgs arg)
 		{
-			OnPropertyChanged(() => PendingCommandCount);
+			RaisePropertyChanged(nameof(PendingCommandCount));
 
 			if (_updateAfterSendNext)
 			{

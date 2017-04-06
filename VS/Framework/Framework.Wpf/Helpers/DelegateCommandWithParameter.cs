@@ -34,8 +34,8 @@ namespace Framework.Wpf.Helpers
         {
         }
 
-		protected DelegateCommand(Func<T, Task> executeMethod, Func<T, bool> canExecuteMethod) : base(executeMethod, canExecuteMethod)
-		{
-		}
+		//protected DelegateCommand(Func<T, Task> executeMethod, Func<T, bool> canExecuteMethod) : base(executeMethod, canExecuteMethod)
+		//{
+		//}
 	}
 }

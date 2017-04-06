@@ -37,15 +37,15 @@ namespace Framework.Wpf.Helpers
 			}
 		}
 
-		private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		private void RaisePropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		private void OnPropertyChanged<TProperty>(Expression<Func<TProperty>> projection)
+		private void RaisePropertyChanged<TProperty>(Expression<Func<TProperty>> projection)
 		{
 			var memberExpression = (MemberExpression)projection.Body;
-			OnPropertyChanged(memberExpression.Member.Name);
+			RaisePropertyChanged(memberExpression.Member.Name);
 		}
 
 
@@ -59,24 +59,24 @@ namespace Framework.Wpf.Helpers
 			{
 			}
 
-			OnPropertyChanged(() => Status);
-			OnPropertyChanged(() => IsCompleted);
-			OnPropertyChanged(() => IsNotCompleted);
+			RaisePropertyChanged(nameof(Status));
+			RaisePropertyChanged(nameof(IsCompleted));
+			RaisePropertyChanged(nameof(IsNotCompleted));
 			if (task.IsCanceled)
 			{
-				OnPropertyChanged(() => IsCanceled);
+				RaisePropertyChanged(nameof(IsCanceled));
 			}
 			else if (task.IsFaulted)
 			{
-				OnPropertyChanged(() => IsFaulted);
-				OnPropertyChanged(() => Exception);
-				OnPropertyChanged(() => InnerException);
-				OnPropertyChanged(() => ErrorMessage);
+				RaisePropertyChanged(nameof(IsFaulted));
+				RaisePropertyChanged(nameof(Exception));
+				RaisePropertyChanged(nameof(InnerException));
+				RaisePropertyChanged(nameof(ErrorMessage));
 			}
 			else
 			{
-				OnPropertyChanged(() => IsSuccessfullyCompleted);
-				OnPropertyChanged(() => Result);
+				RaisePropertyChanged(nameof(IsSuccessfullyCompleted));
+				RaisePropertyChanged(nameof(Result));
 			}
 		}
 		public Task<TResult> Task { get; private set; }

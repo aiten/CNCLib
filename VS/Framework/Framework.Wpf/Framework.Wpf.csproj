@@ -31,7 +31,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Prism.Core" Version="6.2.0" />
+    <PackageReference Include="Prism.Core" Version="6.3.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Framework.Tools\Framework.Tools.csproj">

@@ -192,7 +192,7 @@ namespace CNCLib.Wpf.ViewModels
 				MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
-			OnPropertyChanged(() => Connected);
+			RaisePropertyChanged(nameof(Connected));
 			CommandManager.InvalidateRequerySuggested();
 		}
 
@@ -204,18 +204,14 @@ namespace CNCLib.Wpf.ViewModels
                 ComJoystick.CommandToUpper = false;
                 ComJoystick.BaudRate = Joystick.BaudRate;
                 ComJoystick.Connect(Joystick.ComPort);
-
-
-
             }
             catch (Exception e)
             {
 				MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            OnPropertyChanged(() => ConnectedJoystick);
+            RaisePropertyChanged(nameof(ConnectedJoystick));
         }
-
 
         private async Task SetGlobal()
         {
@@ -238,7 +234,7 @@ namespace CNCLib.Wpf.ViewModels
 		public void DisConnect()
 		{
 			Com.Disconnect();
-			OnPropertyChanged(() => Connected);
+			RaisePropertyChanged(nameof(Connected));
 		}
 		public bool CanDisConnect()
 		{
@@ -253,13 +249,12 @@ namespace CNCLib.Wpf.ViewModels
         public void DisConnectJoystick()
         {
             ComJoystick.Disconnect();
-            OnPropertyChanged(() => ConnectedJoystick);
+            RaisePropertyChanged(nameof(ConnectedJoystick));
         }
         public bool CanDisConnectJoystick()
         {
             return ConnectedJoystick;
         }
-
 
         public async void SetupMachine()
         {

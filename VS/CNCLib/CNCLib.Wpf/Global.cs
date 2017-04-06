@@ -26,16 +26,16 @@ namespace CNCLib.Wpf
 	public class Global : Singleton<Global>, INotifyPropertyChanged
 	{
 		private CNCLib.Logic.Contracts.DTO.Machine _machine;
-		public CNCLib.Logic.Contracts.DTO.Machine Machine { get { return _machine; } set { _machine = value; OnPropertyChanged(); } }
+		public CNCLib.Logic.Contracts.DTO.Machine Machine { get { return _machine; } set { _machine = value; RaisePropertyChanged(); } }
 
 		private Joystick _joystick;
-		public Joystick Joystick { get { return _joystick; } set { _joystick = value; OnPropertyChanged(); } }
+		public Joystick Joystick { get { return _joystick; } set { _joystick = value; RaisePropertyChanged(); } }
 
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
 
-		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}

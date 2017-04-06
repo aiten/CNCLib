@@ -33,10 +33,8 @@ namespace Framework.Wpf.Helpers
 			if (object.Equals(storage, value)) return false;	// ref equal
 			if (storage != null && storage.CompareTo(value) == 0) return false;	// logical equal
 
-			//OnProperty(() => storage = value,propertyName);
-			OnPropertyChanging(propertyName);
             storage = value;
-			OnPropertyChanged(propertyName);
+			RaisePropertyChanged(propertyName);
 			return true;
 		}
 
@@ -47,38 +45,32 @@ namespace Framework.Wpf.Helpers
                 return false;
             }
 
-			OnProperty(action, propertyName);
+            action();
+            RaisePropertyChanged(propertyName);
 
-			return true;
+            return true;
         }
 
 		protected void OnProperty(Action action, [CallerMemberName] string propertyName = null)
 		{
-			OnPropertyChanging(propertyName);
 			action();
-			OnPropertyChanged(propertyName);
+			RaisePropertyChanged(propertyName);
 		}
 
 		// AssignProperty, value may be the same
-		protected bool AssignProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+		protected void AssignProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
 		{
-			OnPropertyChanging(propertyName);
 			storage = value;
-			OnPropertyChanged(propertyName);
-			return true;
+			RaisePropertyChanged(propertyName);
 		}
 
-		protected bool AssignProperty(Action action, [CallerMemberName] string propertyName = null)
+		protected void AssignProperty(Action action, [CallerMemberName] string propertyName = null)
 		{
-			OnProperty(action, propertyName);
-			return true;
+            action();
+            RaisePropertyChanged(propertyName);
 		}
 
-		protected virtual void OnPropertyChanging([CallerMemberName] string propertyName = null)
-        {
-        }
-
-		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			var eventHandler = this.PropertyChanged;
 			if (eventHandler != null)
@@ -90,7 +82,7 @@ namespace Framework.Wpf.Helpers
 		protected void OnPropertyChanged<TProperty>(Expression<Func<TProperty>> projection)
 		{
 			var memberExpression = (MemberExpression)projection.Body;
-			OnPropertyChanged(memberExpression.Member.Name);
+			RaisePropertyChanged(memberExpression.Member.Name);
 		}
 	}
 }

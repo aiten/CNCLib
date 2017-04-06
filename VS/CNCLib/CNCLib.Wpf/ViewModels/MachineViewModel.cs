@@ -99,10 +99,10 @@ namespace CNCLib.Wpf.ViewModels
 
 			Machine = dto.Convert();
 
-			OnPropertyChanged(() => Machine);
+			RaisePropertyChanged(nameof(Machine));
 
-			OnPropertyChanged(() => MachineCommands);
-			OnPropertyChanged(() => MachineInitCommands);
+			RaisePropertyChanged(nameof(MachineCommands));
+			RaisePropertyChanged(nameof(MachineInitCommands));
 		}
 
 		public async void SaveMachine()

@@ -45,15 +45,15 @@ namespace Framework.Wpf.ViewModels
 				return false;
 			}
 
-			OnProperty(action, propertyName);
+			RaisePropertyChanged(action, propertyName);
 
 			return true;
 		}
 
-		protected void OnProperty(Action action, [CallerMemberName] string propertyName = null)
+		protected void RaisePropertyChanged(Action action, [CallerMemberName] string propertyName = null)
 		{
 			action();
-			OnPropertyChanged(propertyName);
+            RaisePropertyChanged(propertyName);
 		}
 	}
 }
