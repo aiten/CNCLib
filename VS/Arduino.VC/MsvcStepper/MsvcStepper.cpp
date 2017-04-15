@@ -98,14 +98,17 @@ void CMsvcStepper::OnIdle(unsigned long idletime)
 
 uint8_t CMsvcStepper::GetReferenceValue(uint8_t referenceid)
 {
+	uint8_t refhitvalue = _pod._referenceHitValue[referenceid];
+	uint8_t refoffvalue = _pod._referenceHitValue[referenceid] == LOW ? HIGH : LOW;
+
 	if (!_isReferenceMove || referenceid != _isReferenceId)
 	{
-		return _pod._referenceHitValue[referenceid]==LOW ? HIGH : LOW;
+		return refoffvalue;
 	}
 
 	_referenceMoveSteps++;
 
-	return (_referenceMoveSteps / 16) % 2 == 0 ? LOW : HIGH;
+	return (_referenceMoveSteps / 16) % 2 == 0 ? refhitvalue : refoffvalue;
 }
 
 ////////////////////////////////////////////////////////////
