@@ -1884,7 +1884,9 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 				case StateUpDec:
 
-					if (pState->CalcTimerDec(_pod._move._ramp._timerRun, _pod._move._ramp._nUpOffset - n, count))
+					if (pState->CalcTimerDec(_pod._move._ramp._timerRun, 
+											_pod._move._ramp._nUpOffset > n ? _pod._move._ramp._nUpOffset - n : 0, 
+											count))
 					{
 						_state = StateRun;
 					}
