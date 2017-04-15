@@ -1852,6 +1852,11 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 					unsigned short div = pgm_read_word(&corrtab[pState->_count - 2][1]);
 					pState->_timer = (timer_t)MulDivU32(pState->_timer, mul, div);
 				}
+				else if (pState->_count <= 1 && _pod._move._ramp._nUpOffset == 0 && _state == StateUpDec)
+				{
+					// mdist_t is unsigned and _pod._move._ramp._nUpOffset -n cause an underrun
+					_pod._move._ramp._nUpOffset = 1;
+				}
 			}
 		}
 		else if (_state == StateWait)
@@ -1884,9 +1889,7 @@ bool CStepper::SMovement::CalcNextSteps(bool continues)
 
 				case StateUpDec:
 
-					if (pState->CalcTimerDec(_pod._move._ramp._timerRun, 
-											_pod._move._ramp._nUpOffset > n ? _pod._move._ramp._nUpOffset - n : 0, 
-											count))
+					if (pState->CalcTimerDec(_pod._move._ramp._timerRun,_pod._move._ramp._nUpOffset - n,count))
 					{
 						_state = StateRun;
 					}
