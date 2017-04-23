@@ -61,11 +61,14 @@ namespace CNCLib.Logic.Contracts.DTO
 		public bool AutoScale { get; set; } = false;
         public bool AutoScaleKeepRatio { get; set; } = true;
 
+        public bool AutoScaleCenter { get; set; } = false;
+
         public decimal AutoScaleSizeX { get; set; } = 0;
         public decimal AutoScaleSizeY { get; set; } = 0;
 
         public decimal AutoScaleBorderDistX { get; set; } = 0.5m;
 		public decimal AutoScaleBorderDistY { get; set; } = 0.5m;
+
 
         public enum PenType
         {

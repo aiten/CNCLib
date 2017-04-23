@@ -115,7 +115,9 @@ namespace CNCLib.GCode.Load
 			AddComment("AutoScaleDistX", LoadOptions.AutoScaleBorderDistX);
 			AddComment("AutoScaleDistY", LoadOptions.AutoScaleBorderDistY);
 
-			using (StreamReader sr = new StreamReader(LoadOptions.FileName))
+            AddComment("AutoScaleCenter", LoadOptions.AutoScaleCenter.ToString());
+
+            using (StreamReader sr = new StreamReader(LoadOptions.FileName))
 			{
 				string line;
 				while ((line = sr.ReadLine()) != null)
@@ -127,22 +129,39 @@ namespace CNCLib.GCode.Load
 					}
 				}
 			}
-			LoadOptions.OfsX = -((decimal) _minpt.X.Value - LoadOptions.AutoScaleBorderDistX);
-			LoadOptions.OfsY = -((decimal)_minpt.Y.Value - LoadOptions.AutoScaleBorderDistY);
-			decimal sizex = (decimal)_maxpt.X.Value - (decimal)_minpt.X.Value + 2 * LoadOptions.AutoScaleBorderDistX;
-			decimal sizey = (decimal)_maxpt.Y.Value - (decimal)_minpt.Y.Value + 2 * LoadOptions.AutoScaleBorderDistY;
 
-			LoadOptions.ScaleX = LoadOptions.AutoScaleSizeX / sizex;
-			LoadOptions.ScaleY = LoadOptions.AutoScaleSizeY / sizey;
+            decimal sizex = (decimal)_maxpt.X.Value - (decimal)_minpt.X.Value;
+			decimal sizey = (decimal)_maxpt.Y.Value - (decimal)_minpt.Y.Value;
 
-			if (LoadOptions.AutoScaleKeepRatio)
+            decimal borderX = LoadOptions.AutoScaleBorderDistX;
+            decimal borderY = LoadOptions.AutoScaleBorderDistY;
+
+            decimal destSizeX = LoadOptions.AutoScaleSizeX - 2m * borderX;
+            decimal destSizeY = LoadOptions.AutoScaleSizeY - 2m * borderY;
+
+            LoadOptions.ScaleX = destSizeX / sizex;
+			LoadOptions.ScaleY = destSizeY / sizey;
+
+            if (LoadOptions.AutoScaleKeepRatio)
 			{
 				LoadOptions.ScaleX =
 				LoadOptions.ScaleY = Math.Min(LoadOptions.ScaleX, LoadOptions.ScaleY);
-			}
-		}
 
-		private bool Command(bool analyse)
+                if (LoadOptions.AutoScaleCenter)
+                {
+                    decimal sizeXscaled = LoadOptions.ScaleX * sizex;
+                    decimal sizeYscaled = LoadOptions.ScaleY * sizey;
+
+                    borderX += (destSizeX - sizeXscaled) / 2m;
+                    borderY += (destSizeY - sizeYscaled) / 2m;
+                }
+            }
+
+            LoadOptions.OfsX = -((decimal)_minpt.X.Value - borderX / LoadOptions.ScaleX);
+            LoadOptions.OfsY = -((decimal)_minpt.Y.Value - borderY / LoadOptions.ScaleY);
+        }
+
+        private bool Command(bool analyse)
         {
             string[] cmds = new string[] { "PU", "PD", "PA", "PR", "SP" };
             while (!_stream.IsEOF())
@@ -343,14 +362,14 @@ namespace CNCLib.GCode.Load
         {
             if (!isRelativPoint)
             {
-                pt.X += (double) LoadOptions.OfsX;
-                pt.Y += (double) LoadOptions.OfsY;
+                pt.X += (double)LoadOptions.OfsX;
+                pt.Y += (double)LoadOptions.OfsY;
             }
 
             if (LoadOptions.ScaleX != 0)
-				pt.X = Math.Round(pt.X.Value * (double)LoadOptions.ScaleX, 3);
+                pt.X = Math.Round(pt.X.Value * (double)LoadOptions.ScaleX, 3);
             if (LoadOptions.ScaleY != 0)
-				pt.Y = Math.Round(pt.Y.Value * (double)LoadOptions.ScaleY, 3);
+                pt.Y = Math.Round(pt.Y.Value * (double)LoadOptions.ScaleY, 3);
         }
     }
 }

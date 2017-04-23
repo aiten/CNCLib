@@ -89,7 +89,8 @@ namespace CNCLib.GUI.Load
 					AutoScaleSizeX = decimal.Parse(_AutoScaleSizeX.Text),
 					AutoScaleSizeY = decimal.Parse(_AutoScaleSizeY.Text),
 					AutoScaleKeepRatio = _AutoScaleKeepRatio.Checked,
-					PenMoveType = _generateForEngrave.Checked ? LoadOptions.PenType.ZMove : LoadOptions.PenType.CommandString,
+                    AutoScaleCenter = _AutoScaleCenter.Checked,
+                    PenMoveType = _generateForEngrave.Checked ? LoadOptions.PenType.ZMove : LoadOptions.PenType.CommandString,
 
 					EngravePosUp = decimal.Parse(_engraveZUp.Text),
 					EngravePosDown = decimal.Parse(_engraveZDown.Text),
@@ -187,8 +188,9 @@ namespace CNCLib.GUI.Load
 				_AutoScaleSizeX.Text = value.AutoScaleSizeX.ToString();
 				_AutoScaleSizeY.Text = value.AutoScaleSizeY.ToString();
 				_AutoScaleKeepRatio.Checked = value.AutoScaleKeepRatio;
+                _AutoScaleCenter.Checked = value.AutoScaleCenter;
 
-				_generateForEngrave.Checked = value.PenMoveType == LoadOptions.PenType.ZMove;
+                _generateForEngrave.Checked = value.PenMoveType == LoadOptions.PenType.ZMove;
 				_generateForLaser.Checked = value.PenMoveType == LoadOptions.PenType.CommandString;
 
 				_engraveZUp.Text = value.EngravePosUp.ToString();
