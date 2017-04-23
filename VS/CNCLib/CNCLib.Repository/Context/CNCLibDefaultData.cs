@@ -16,22 +16,47 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Linq;
 using CNCLib.Repository.Contracts.Entities;
 
 namespace CNCLib.Repository.Context
 {
 
-    //    public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
+    //public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
     //public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
     public static class CNCLibDefaultData
     {
         public static void CNCSeed(CNCLibContext context)
         {
-            MachineSeed(context);
+            var users = UserSeed(context);
+            MachineSeed(context,users);
             ItemSeed(context);
         }
 
-        private static void MachineSeed(CNCLibContext context)
+        private static User[] UserSeed(CNCLibContext context)
+        {
+           var user1 = new User
+            {
+                UserName = "Herbert"
+            };
+
+            var user2 = new User
+            {
+                UserName = "Edith"
+            };
+
+            var users = new []
+            {
+                user1,
+                user2
+            };
+
+            context.Users.AddRange(users);
+
+            return users;
+        }
+
+        private static void MachineSeed(CNCLibContext context, User[] users)
         {
             var proxonMF70 = new Machine
             {
@@ -55,7 +80,9 @@ namespace CNCLib.Repository.Context
                 Spindle = true,
                 Coolant = true,
                 Rotate = true,
-                Laser = false
+                Laser = false,
+
+                User = users[0]
             };
 
             var kk1000s = new Machine

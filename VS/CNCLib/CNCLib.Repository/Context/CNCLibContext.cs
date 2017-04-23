@@ -35,6 +35,7 @@ namespace CNCLib.Repository.Context
             Configure();    
         }
 
+        public DbSet<User> Users { get; set; }
         public DbSet<Machine> Machines { get; set; }
 		public DbSet<MachineCommand> MachineCommands { get; set; }
 		public DbSet<MachineInitCommand> MachineInitCommands { get; set; }
@@ -61,6 +62,10 @@ namespace CNCLib.Repository.Context
 
             modelBuilder.Configurations.Add(new ItemMapping());
             modelBuilder.Configurations.Add(new ItemPropertyMapping());
+
+            // User -------------------------------------
+
+            modelBuilder.Configurations.Add(new UserMapping());
 
             // -------------------------------------
 

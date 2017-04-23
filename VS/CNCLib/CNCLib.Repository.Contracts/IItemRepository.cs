@@ -26,7 +26,7 @@ namespace CNCLib.Repository.Contracts
 		Task<Entities.Item[]> Get();
 		Task<Entities.Item[]> Get(string typeidstring);
 		Task<Entities.Item> Get(int id);
-		Task Delete(Entities.Item o);
-		Task Store(Entities.Item o);
+		Task Delete(Entities.Item item);
+		Task Store(Entities.Item item);
 	}
 }

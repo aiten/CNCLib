@@ -42,6 +42,10 @@ namespace CNCLib.Repository.Mappings
             Property((m) => m.ClassName).
                 IsRequired().
                 HasMaxLength(255);
+
+            Property((m) => m.UserID).
+                IsOptional();
+
         }
     }
 }

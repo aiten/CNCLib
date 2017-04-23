@@ -43,6 +43,10 @@ namespace CNCLib.Repository.Mappings
 
             Property((m) => m.CommandSyntax).
                 IsRequired();
+
+            Property((m) => m.UserID).
+                IsOptional();
+
         }
     }
 }

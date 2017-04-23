@@ -60,6 +60,7 @@ namespace CNCLib.Tests.Repository
             Dependency.Container.RegisterType<IConfigurationRepository, ConfigurationRepository>();
             Dependency.Container.RegisterType<IMachineRepository, MachineRepository>();
             Dependency.Container.RegisterType<IItemRepository, ItemRepository>();
+            Dependency.Container.RegisterType<IUserRepository, UserRepository>();
             Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
         }
     }

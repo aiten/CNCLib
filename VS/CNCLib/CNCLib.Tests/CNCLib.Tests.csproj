@@ -106,6 +106,7 @@
     <Compile Include="Logic\ItemControllerTests.cs" />
     <Compile Include="Logic\LoadOptionsControllerTests.cs" />
     <Compile Include="Repository\ItemRepositoryTests.cs" />
+    <Compile Include="Repository\UserRepositoryTests.cs" />
     <Compile Include="Wpf\MachineViewModelTests.cs" />
     <Compile Include="Logic\MachineControllerTests.cs" />
     <Compile Include="Repository\ConfigurationRepositoryTests.cs" />

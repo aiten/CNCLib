@@ -16,29 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Threading.Tasks;
+using Framework.Tools.Pattern;
 
-namespace CNCLib.Repository.Contracts.Entities
+namespace CNCLib.Repository.Contracts
 {
-	public class Configuration
+	public interface IUserRepository: IBaseRepository
 	{
-		public string Group { get; set; }
-		public string Name { get; set; }
-		public string Type { get; set; }
-		public string Value { get; set; }
-        public int? UserID { get; set; }
-        public virtual User User { get; set; }
-
-
-        public Configuration()
-		{
-		}
-		public Configuration(string group, string name, object value)
-		{
-			Name = name;
-			Group = group;
-			Value = value.ToString();
-
-			Type = value.GetType().ToString();
-		}
+		Task<Entities.User[]> GetUsers();
+		Task<Entities.User> GetUser(int id);
+        Task<Entities.User> GetUser(string username);
+        Task Delete(Entities.User u);
+		Task Store(Entities.User u);
 	}
 }

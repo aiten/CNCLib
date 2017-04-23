@@ -17,33 +17,32 @@
 */
 
 using CNCLib.Repository.Contracts.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 
 namespace CNCLib.Repository.Mappings
 {
-	public class ConfigurationMapping : EntityTypeConfiguration<Configuration>
+	public class UserMapping : EntityTypeConfiguration<User>
     {
-        public ConfigurationMapping()
+        public UserMapping()
         {
-            HasKey(m => new { m.Group, m.Name });
 
-            Property((m) => m.Group).
+            HasKey(m => m.UserID);
+
+            Property(e => e.UserName)
+                    .HasColumnAnnotation(
+                        IndexAnnotation.AnnotationName,
+                        new IndexAnnotation(new IndexAttribute("IDX_UniqueUserName") { IsUnique = true }));
+
+            Property((m) => m.UserName).
                 IsRequired().
-                HasMaxLength(256);
+                IsUnicode().
+                HasMaxLength(128);
 
-            Property((m) => m.Name).
-                IsRequired().
-                HasMaxLength(256);
-
-            Property((m) => m.Type).
-                IsRequired().
-                HasMaxLength(256);
-
-            Property((m) => m.Value).
-                HasMaxLength(4000);
-
-            Property((m) => m.UserID).
-                IsOptional();
+            Property((m) => m.UserPassword).
+                IsOptional().
+                HasMaxLength(255);
         }
     }
 }

@@ -70,27 +70,27 @@ namespace CNCLib.Wpf.Models
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("MaxStepRate")]
-		[Description("Maximum steprate in Hz")]
+		[Description("Maximum steprate in Hz (AVR 8bit max 16bit, e.g. 25000)")]
 		public uint MaxStepRate { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Acc")]
-		[Description("Acceleration factor")]
-		public ushort Acc { get; set; }
+		[Description("Acceleration factor (e.g. 350)]")]
+        public ushort Acc { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("Dec")]
-		[Description("Deceleration factor")]
+		[Description("Deceleration factor (e.g. 400)")]
 		public ushort Dec { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("JerkSpeed")]
-		[Description("Maximum Jerkspeed - speed difference without acceleration - in Hz")]
+		[Description("Maximum Jerkspeed - speed difference without acceleration - in Hz (e.g. 1000)")]
 		public ushort JerkSpeed { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("RefMoveStepRate")]
-		[Description("Steprate for reference-move")]
+		[Description("Steprate for reference-move (AVR 8bit max 16bit, less than 'MaxStepRate'")]
 		public uint RefMoveSteprate { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
