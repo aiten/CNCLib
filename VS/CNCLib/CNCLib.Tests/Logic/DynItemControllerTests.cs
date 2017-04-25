@@ -17,14 +17,15 @@
 */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using NSubstitute;
-using Framework.Tools.Dependency;
-using CNCLib.Logic.Client;
-using CNCLib.ServiceProxy;
-using CNCLib.Logic.Contracts.DTO;
 using System.Threading.Tasks;
+using CNCLib.Logic.Client;
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.ServiceProxy;
+using FluentAssertions;
+using Framework.Tools.Dependency;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 
 namespace CNCLib.Tests.Logic
 {
@@ -50,7 +51,7 @@ namespace CNCLib.Tests.Logic
 			var ctrl = new DynItemController();
 
 			var all = (await ctrl.GetAll()).ToArray();
-			Assert.AreEqual(true, all.Length == 0);
+            all.Should().BeEmpty();
 		}
 
 		[TestMethod]
@@ -66,11 +67,16 @@ namespace CNCLib.Tests.Logic
 			srv.GetAll().Returns(itemEntity);
 
 			var ctrl = new DynItemController();
-
 			var all = (await ctrl.GetAll()).ToArray();
-			Assert.AreEqual(2, all.Count());
-			Assert.AreEqual(1, all.FirstOrDefault().ItemID);
-			Assert.AreEqual("Test1", all.FirstOrDefault().Name);
+
+            all.Should().HaveCount(2);
+            all.FirstOrDefault().ShouldBeEquivalentTo(
+                new
+                {
+                    ItemID = 1,
+                    Name = "Test1"
+                }
+            );
 		}
 
 		[TestMethod]
@@ -86,26 +92,34 @@ namespace CNCLib.Tests.Logic
 			srv.GetByClassName("System.String,mscorlib").Returns(itemEntity);
 
 			var ctrl = new DynItemController();
-
 			var all = await ctrl.GetAll(typeof(string));
 
-			Assert.AreEqual(2, all.Count());
-			Assert.AreEqual(1, all.FirstOrDefault().ItemID);
-			Assert.AreEqual("Test1", all.FirstOrDefault().Name);
-		}
+            all.Should().HaveCount(2);
+            all.FirstOrDefault().ShouldBeEquivalentTo(
+                new
+                {
+                    ItemID = 1,
+                    Name = "Test1"
+                }
+            );
+        }
 
-		[TestMethod]
+        [TestMethod]
 		public async Task GetItem()
 		{
 			var srv = CreateMock<IItemService>();
 			srv.Get(1).Returns(new Item() { ItemID = 1, Name = "Test1" });
 
 			var ctrl = new DynItemController();
-
 			var all = await ctrl.Get(1);
 
-			Assert.AreEqual(1, all.ItemID);
-			Assert.AreEqual("Test1", all.Name);
+            all.ShouldBeEquivalentTo(
+                new
+                {
+                    ItemID = 1,
+                    Name = "Test1"
+                }
+            );
 		}
 
 		[TestMethod]
@@ -114,10 +128,9 @@ namespace CNCLib.Tests.Logic
 			var srv = CreateMock<IItemService>();
 
 			var ctrl = new DynItemController();
-
 			var all = await ctrl.Get(10);
 
-			Assert.IsNull(all);
+            all.Should().BeNull();
 		}
 		[TestMethod]
         public async Task CreateObject()
@@ -131,17 +144,18 @@ namespace CNCLib.Tests.Logic
             var ctrl = new DynItemController();
 
             var item = await ctrl.Create(1);
-            Assert.IsNotNull(item);
+            item.Should().NotBeNull();
+            item.Should().BeOfType(typeof(DynItemControllerTestClass));
 
             DynItemControllerTestClass item2 = (DynItemControllerTestClass)item;
 
-            Assert.AreEqual("Hallo", item2.StringProperty);
-            Assert.AreEqual(1, item2.IntProperty);
-            Assert.AreEqual(1, item2.IntProperty);
-            Assert.AreEqual(1.234, item2.DoubleProperty);
-            Assert.AreEqual(1.234, item2.DoubleNullProperty);
-            Assert.AreEqual(9.876m, item2.DecimalProperty);
-            Assert.AreEqual(9.876m, item2.DecimalNullProperty);
+            item2.StringProperty.Should().Be("Hallo", item2.StringProperty);
+            item2.IntProperty.Should().Be(1);
+            item2.IntProperty.Should().Be(1);
+            item2.DoubleProperty.Should().Be(1.234);
+            item2.DoubleNullProperty.Should().Be(1.234);
+            item2.DecimalProperty.Should().Be(9.876m);
+            item2.DecimalNullProperty.Should().Be(9.876m);
         }
 
         private static Item CreateItem()

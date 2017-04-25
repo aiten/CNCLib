@@ -17,14 +17,15 @@
 */
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CNCLib.Logic;
 using System.Linq;
-using NSubstitute;
-using Framework.Tools.Dependency;
+using System.Threading.Tasks;
+using CNCLib.Logic;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
-using System.Threading.Tasks;
+using FluentAssertions;
+using Framework.Tools.Dependency;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 
 namespace CNCLib.Tests.Logic
 {
@@ -56,7 +57,7 @@ namespace CNCLib.Tests.Logic
 			var ctrl = new ItemController();
 
 			var all = (await ctrl.GetAll()).ToArray();
-			Assert.AreEqual(true, all.Length == 0);
+			all.Should().BeEmpty();
 		}
 
 		[TestMethod]
@@ -74,9 +75,14 @@ namespace CNCLib.Tests.Logic
 			var ctrl = new ItemController();
 
 			var all = (await ctrl.GetAll()).ToArray();
-			Assert.AreEqual(2, all.Count());
-			Assert.AreEqual(1, all.FirstOrDefault().ItemID);
-			Assert.AreEqual("Test1", all.FirstOrDefault().Name);
+
+            all.Should().HaveCount(2);
+            new
+            {
+                ItemID = 1,
+                Name = "Test1"
+            }
+            .ShouldBeEquivalentTo(all.FirstOrDefault());
 		}
 
 		[TestMethod]
@@ -89,8 +95,12 @@ namespace CNCLib.Tests.Logic
 
 			var all = await ctrl.Get(1);
 
-			Assert.AreEqual(1, all.ItemID);
-			Assert.AreEqual("Test1", all.Name);
+            new
+            {
+                ItemID = 1,
+                Name = "Test1"
+            }
+            .ShouldBeEquivalentTo(all);
 		}
 
 		[TestMethod]
@@ -102,30 +112,9 @@ namespace CNCLib.Tests.Logic
 
 			var all = await ctrl.Get(10);
 
-			Assert.IsNull(all);
+            all.Should().BeNull();
 		}
-/*
-        [TestMethod]
-        public void DeleteItem()
-        {
-            // arrange
 
-            var rep = CreateMock<IItemRepository>();
-
-            Item itemEntity = CreateItem();
-            rep.Get(1).Returns(itemEntity);
-
-            var ctrl = new DynItemController();
-
-            //act
-
-            ctrl.Delete(1);
-
-            //assert
-            rep.Received().Get(1);
-            rep.Received().Delete(itemEntity);
-        }
-*/
         [TestMethod]
         public async Task DeleteItemNone()
         {
