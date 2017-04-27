@@ -64,7 +64,7 @@ namespace Framework.Web
 				using (var controller = Dependency.Resolve<IRest<T>>())
 				{
 					int newid = await controller.Add(value);
-					return CreatedAtRoute("DefaultApi", new { id = newid }, value);
+					return CreatedAtRoute("DefaultApi", new { id = newid }, await controller.Get(newid));
 				}
 			}
 			catch (Exception ex)
