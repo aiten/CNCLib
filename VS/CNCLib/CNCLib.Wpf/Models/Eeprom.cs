@@ -18,6 +18,7 @@
 
 using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using CNCLib.GCode;
 
 namespace CNCLib.Wpf.Models
@@ -68,29 +69,32 @@ namespace CNCLib.Wpf.Models
 
 		#region General
 
+        [Range(1,int.MaxValue)]
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("MaxStepRate")]
 		[Description("Maximum steprate in Hz (AVR 8bit max 16bit, e.g. 25000)")]
 		public uint MaxStepRate { get; set; }
 
-		[Category(CATEGORY_GENERAL)]
+        [Range(62, 1024)]
+        [Category(CATEGORY_GENERAL)]
 		[DisplayName("Acc")]
-		[Description("Acceleration factor (e.g. 350)]")]
+		[Description("Acceleration factor (e.g. 350)], must be > 61")]
         public ushort Acc { get; set; }
 
-		[Category(CATEGORY_GENERAL)]
+        [Range(62, 1024)]
+        [Category(CATEGORY_GENERAL)]
 		[DisplayName("Dec")]
-		[Description("Deceleration factor (e.g. 400)")]
+		[Description("Deceleration factor (e.g. 400), must be > 61")]
 		public ushort Dec { get; set; }
 
-		[Category(CATEGORY_GENERAL)]
+        [Category(CATEGORY_GENERAL)]
 		[DisplayName("JerkSpeed")]
 		[Description("Maximum Jerkspeed - speed difference without acceleration - in Hz (e.g. 1000)")]
 		public ushort JerkSpeed { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
 		[DisplayName("RefMoveStepRate")]
-		[Description("Steprate for reference-move (AVR 8bit max 16bit, less than 'MaxStepRate'")]
+		[Description("Steprate for reference-move (AVR 8bit max 16bit, less than 'MaxStepRate')")]
 		public uint RefMoveSteprate { get; set; }
 
 		[Category(CATEGORY_GENERAL)]
@@ -98,7 +102,7 @@ namespace CNCLib.Wpf.Models
 		[Description("Distance between refmove hit and 0 (in mm1000)")]
 		public uint MoveAwayFromRefernece { get; set; }
 
-		[Category(CATEGORY_GENERAL)]
+        [Category(CATEGORY_GENERAL)]
 		[DisplayName("Scale mm to machine")]
 		[Description("Steps for 1/1000mm => steps to go for 1/1000mm")]
 		public float StepsPerMm1000 { get; set; }
@@ -114,11 +118,11 @@ namespace CNCLib.Wpf.Models
 		public byte SpindleFadeTime { get; set; }
 
 
-		#endregion
+        #endregion
 
-		#region Info
+        #region Info
 
-		[Category(CATEGORY_INFO)]
+        [Category(CATEGORY_INFO)]
 		[DisplayName("NumAxis")]
 		[Description("Supported Axis"), ReadOnly(true)]
 		public uint NumAxis { get; set; }

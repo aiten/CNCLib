@@ -12,3 +12,4 @@ drop table Item;
 drop table MachineCommand;
 drop table MachineInitCommand;
 drop table Machine;
+drop table [User];
