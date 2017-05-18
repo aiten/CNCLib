@@ -13,7 +13,7 @@
     <Company>Herbert Aitenbichler</Company>
     <Product>Framework</Product>
     <Copyright>Copyright (c) 2013-2017 Herbert Aitenbichler</Copyright>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Xml.Linq" />
