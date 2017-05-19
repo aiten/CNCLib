@@ -376,14 +376,11 @@ feedrate_t CMotionControlBase::GetMaxFeedRate(axis_t axis, feedrate_t feedrate)
 {
 	steprate_t steprate = FeedRateToStepRate(axis, feedrate);
 	steprate_t maxsteprate = CStepper::GetInstance()->GetMaxSpeed(axis);
+	feedrate_t maxfeedrate = StepRateToFeedRate(axis, maxsteprate);
 
-	// feedrate may overrun (feedrate 32bit, steprate 16bit)
-	feedrate_t feedrateoverrun = StepRateToFeedRate(axis, steprate);
+	if (feedrate > maxfeedrate)
+		return maxfeedrate;
 
-	if (abs(feedrateoverrun - feedrate) > 1024 || steprate > maxsteprate)
-	{
-		return StepRateToFeedRate(axis,maxsteprate);
-	}
 	return feedrate;
 }
 

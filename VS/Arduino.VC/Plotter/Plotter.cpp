@@ -33,6 +33,12 @@ static void setup();
 static void loop();
 static void Idle();
 
+CMsvcStepper MyStepper;
+class CStepper& Stepper = MyStepper;
+CMyControl Control;
+CPlotter Plotter;
+SDClass SD;
+
 int _tmain(int /* argc */, _TCHAR* /* argv*/ [])
 {
 	setup();
@@ -42,13 +48,9 @@ int _tmain(int /* argc */, _TCHAR* /* argv*/ [])
 	{
 		loop();
 	}
-}
 
-CMsvcStepper MyStepper;
-class CStepper& Stepper = MyStepper;
-CMyControl Control;
-CPlotter Plotter;
-SDClass SD;
+	MyStepper.EndTest();
+}
 
 void setup() 
 {     
