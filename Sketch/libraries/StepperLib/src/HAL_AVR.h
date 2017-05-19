@@ -322,5 +322,23 @@ inline bool CHAL::HaveEeprom()
 	return true;
 }
 
+inline uint32_t* CHAL::GetEepromBaseAdr()
+{
+	return (uint32_t*)NULL;
+}
+
+inline void CHAL::InitEeprom()
+{
+}
+
+inline void CHAL::FlushEeprom()
+{
+}
+
+inline bool CHAL::NeedFlushEeprom()
+{
+	return false;
+}
+
 #endif 
 

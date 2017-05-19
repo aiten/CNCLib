@@ -148,7 +148,12 @@ inline uint8_t CHAL::eeprom_read_byte(const uint8_t * __p)
 	return ::eeprom_read_byte(__p);
 }
 
-inline bool CHAL::HaveEeprom()
+inline uint32_t* CHAL::GetEepromBaseAdr()
+{
+	return _eepromBuffer;
+}
+
+inline bool CHAL::NeedFlushEeprom()
 {
 	return true;
 }

@@ -32,23 +32,10 @@ template<> CConfigEeprom* CSingleton<CConfigEeprom>::_instance = NULL;
 
 ////////////////////////////////////////////////////////////
 
-#if defined(_MSC_VER)
-
-static uint32_t EEPROMBASEADRUINT32_X[2048] = { 0 };
-static uint32_t* EEPROMBASEADRUINT32 = EEPROMBASEADRUINT32_X;
-
-#else
-
-#include <alloca.h>
-
-#define EEPROMBASEADRUINT32 (uint32_t*) NULL
-
-#endif
-
-////////////////////////////////////////////////////////////
-
 void CConfigEeprom::Init(unsigned short eepromsizesize, const void* defaulteeprom, uint32_t eepromID)
 {
+	CHAL::InitEeprom();
+
 	_eepromsizesize = eepromsizesize;
 	_defaulteeprom = defaulteeprom;
 
@@ -61,6 +48,13 @@ void CConfigEeprom::Init(unsigned short eepromsizesize, const void* defaulteepro
 	{
 		_eepromvalid = false;;
 	}
+}
+
+////////////////////////////////////////////////////////////
+
+void CConfigEeprom::Flush()
+{
+	CHAL::FlushEeprom();
 }
 
 ////////////////////////////////////////////////////////////
@@ -87,7 +81,7 @@ inline const void* AddAdr(const void*adr, eepromofs_t ofs)
 uint32_t CConfigEeprom::GetConfig32(eepromofs_t ofs)
 {
 	//StepperSerial.println((int)ofs);
-	if (_eepromvalid)	return CHAL::eeprom_read_dword((uint32_t*) AddAdr(EEPROMBASEADRUINT32,ofs));
+	if (_eepromvalid)	return CHAL::eeprom_read_dword((uint32_t*) AddAdr(CHAL::GetEepromBaseAdr(),ofs));
 	return pgm_read_dword((uint32_t*) AddAdr(_defaulteeprom,ofs));
 }
 
@@ -95,7 +89,7 @@ uint32_t CConfigEeprom::GetConfig32(eepromofs_t ofs)
 
 void CConfigEeprom::SetConfig32(eepromofs_t ofs, uint32_t value)
 {
-	CHAL::eeprom_write_dword((uint32_t*)AddAdr(EEPROMBASEADRUINT32, ofs), value);
+	CHAL::eeprom_write_dword((uint32_t*)AddAdr(CHAL::GetEepromBaseAdr(), ofs), value);
 }
 
 ////////////////////////////////////////////////////////////
@@ -135,6 +129,13 @@ bool CConfigEeprom::ParseConfig(CParser* parser)
 			if (!CHAL::HaveEeprom())
 				return false;
 			_eepromcanwrite = true;
+			parser->GetReader()->GetNextChar();
+			return true;
+		case 'w':
+			if (!CHAL::HaveEeprom() || !CHAL::NeedFlushEeprom() || !_eepromcanwrite)
+				return false;
+			_eepromcanwrite = false;
+			Flush();
 			parser->GetReader()->GetNextChar();
 			return true;
 	}

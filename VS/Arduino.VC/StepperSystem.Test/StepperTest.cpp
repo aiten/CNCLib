@@ -757,7 +757,8 @@ namespace StepperSystemTest
 
 		void WriteStepperTestMovement()
 		{
-			FILE *f = fopen("c:\\tmp\\test.txt", "wt");
+			FILE*f;
+			fopen_s(&f, "c:\\tmp\\test.txt", "wt");
 
 			fprintf(f, "\tAssert(%i, Stepper.GetMovementCount());\n", (int)Stepper.GetMovementCount());
 			for (uint8_t i = 0; i < Stepper.GetMovementCount(); i++)

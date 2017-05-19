@@ -338,5 +338,8 @@
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_SamD21g18a.cpp">
       <Filter>StepperLib</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Msvc.cpp">
+      <Filter>StepperLib</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

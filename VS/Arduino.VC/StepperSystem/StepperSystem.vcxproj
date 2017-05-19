@@ -111,6 +111,7 @@
     <ClCompile Include="..\..\..\Sketch\libraries\CNCLib\Src\DecimalAsInt.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_AVR.cpp" />
+    <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Msvc.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_SamD21g18a.cpp" />
     <ClCompile Include="..\..\..\Sketch\libraries\StepperLib\src\Stepper.cpp" />

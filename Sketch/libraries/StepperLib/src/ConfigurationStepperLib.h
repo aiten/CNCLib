@@ -121,16 +121,16 @@ typedef const __FlashStringHelper * error_t;
 
 typedef unsigned long long uint64_t;
 
-//#undef use32bit
-//#define use16bit
+#undef use32bit
+#define use16bit
 
-#undef use16bit
-#define use32bit
+//#undef use16bit
+//#define use32bit
 
 #define STEPBUFFERSIZE		16		// size 2^x but not 256
 #define MOVEMENTBUFFERSIZE	8
 
-#define NUM_AXIS 3
+#define NUM_AXIS 5
 
 #undef REFERENCESTABLETIME
 #define REFERENCESTABLETIME	0

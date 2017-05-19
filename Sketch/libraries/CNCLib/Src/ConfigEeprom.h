@@ -62,6 +62,7 @@ public:
 	}
 
 	void Init(unsigned short eepromsizesize, const void* defaulteeprom, uint32_t eepromID);
+	void Flush();
 
 	static uint32_t GetConfigU32(eepromofs_t);
 #if defined(__AVR_ARCH__)

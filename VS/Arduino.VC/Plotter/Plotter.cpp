@@ -57,6 +57,7 @@ void setup()
 	MyStepper.CacheSize = 50000;
 	MyStepper.InitTest("Plotter.csv");
 	Serial.SetIdle(Idle);
+	CHAL::SetEepromFilename("Plotter.eeprom");
 }
 
 void loop() 

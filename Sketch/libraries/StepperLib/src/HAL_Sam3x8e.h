@@ -162,6 +162,24 @@ inline bool CHAL::HaveEeprom()
 	return false;
 }
 
+inline uint32_t* CHAL::GetEepromBaseAdr()
+{
+	return (uint32_t*)NULL;
+}
+
+inline void CHAL::InitEeprom()
+{
+}
+
+inline void CHAL::FlushEeprom()
+{
+}
+
+inline bool CHAL::NeedFlushEeprom()
+{
+	return true;
+}
+
 ////////////////////////////////////////////////////////
 
 inline void CHAL::delayMicroseconds(unsigned int usec)
