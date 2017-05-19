@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 CStepperRamps14 Stepper;
+HardwareSerial& StepperSerial = Serial;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -66,7 +67,7 @@ void setup()
 
 	for (register unsigned char i=0;i<NUM_AXIS*2;i++)
 	{
-		Stepper.UseReference(i,false);  
+		Stepper.SetReferenceHitValue(i,255);  
 	}
 
 	Stepper.SetWaitFinishMove(false);
