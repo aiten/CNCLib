@@ -65,18 +65,23 @@ namespace CNCLib.Wpf.ViewModels
 			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
 		}
 
-		#endregion
+        #endregion
 
-		#region Operations
+        #region Operations
 
+        private void MessageRestart()
+        {
+            MessageBox?.Invoke("Done! Please restart machine!", "CNCLib", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
 
-		public async void WriteEeprom()
+        public async void WriteEeprom()
 		{
 			if (MessageBox?.Invoke("Send 'Write EEprom commands' to machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
 			{
 				if (await new EepromHelper().WriteEepromAsync(EepromValue))
 				{
-					CloseAction();
+                    MessageRestart();
+                    CloseAction();
 				}
 			}
 		}
@@ -101,7 +106,8 @@ namespace CNCLib.Wpf.ViewModels
 			{
 				if (await new EepromHelper().EraseEepromAsync())
 				{
-					CloseAction();
+                    MessageRestart();
+                    CloseAction();
 				}
 			}
 		}
