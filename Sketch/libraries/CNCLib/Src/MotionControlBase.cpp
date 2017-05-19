@@ -374,14 +374,10 @@ feedrate_t CMotionControlBase::StepRateToFeedRate(axis_t axis, steprate_t stepra
 
 feedrate_t CMotionControlBase::GetMaxFeedRate(axis_t axis, feedrate_t feedrate)	
 {
-	steprate_t steprate = FeedRateToStepRate(axis, feedrate);
 	steprate_t maxsteprate = CStepper::GetInstance()->GetMaxSpeed(axis);
 	feedrate_t maxfeedrate = StepRateToFeedRate(axis, maxsteprate);
 
-	if (feedrate > maxfeedrate)
-		return maxfeedrate;
-
-	return feedrate;
+	return min(feedrate,maxfeedrate);
 }
 
 ////////////////////////////////////////////////////////
