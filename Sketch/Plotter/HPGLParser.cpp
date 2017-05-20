@@ -113,7 +113,7 @@ void CHPGLParser::InitCommand()
 
 void CHPGLParser::PenMoveCommand(uint8_t cmdidx)
 {
-	Plotter.Resume();
+	Plotter.Resume(cmdidx != PU);
 
 	switch (cmdidx)
 	{

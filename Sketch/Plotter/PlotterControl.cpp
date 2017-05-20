@@ -59,6 +59,15 @@ void CPlotter::Idle(unsigned int /* idletime */)
 {
 	if (!CStepper::GetInstance()->IsBusy() && (millis() - CStepper::GetInstance()->IdleTime()) > PLOTTER_PENUP_TIMEOUT)
 	{
+		if (_isDelayPen)
+		{
+			// abort delay but set position
+			if (_isDelayPenDown)
+			{
+				_isPenDownTimeout = true;
+			}
+			PenUp();
+		}
 		if (_isPenDown)
 		{
 			PenUp();
@@ -69,9 +78,9 @@ void CPlotter::Idle(unsigned int /* idletime */)
 
 ////////////////////////////////////////////////////////////
 
-void CPlotter::Resume()
+void CPlotter::Resume(bool restorePenDown)
 {
-	if (_isPenDownTimeout)
+	if (_isPenDownTimeout && restorePenDown)
 	{
 		PenDown();
 	}
@@ -195,7 +204,6 @@ bool CPlotter::OffPenChangePos(uint8_t pen)
 			CConfigEeprom::GetConfigU32(offsetof(CMyControl::SMyCNCEeprom, movepenchangeFeedrate)),
 		ConvertConfigPos(CConfigEeprom::GetConfigU32(offsetof(CMyControl::SMyCNCEeprom, penuppos)), Z_AXIS));
 }
-
 
 ////////////////////////////////////////////////////////////
 

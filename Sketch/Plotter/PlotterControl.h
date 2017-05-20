@@ -31,7 +31,7 @@ public:
 	void Initialized();
 
 	void Idle(unsigned int idletime);
-	void Resume();
+	void Resume(bool restorePenDown);
 
 	void PenDown();
 	void PenUp();
@@ -41,16 +41,9 @@ public:
 	void DelayPenDown() { _isDelayPen = true; _isDelayPenDown = true; }
 	void DelayPenNow();    // go
 
-	void StopPen()
-	{
-		_isPenDown = 0;
-		_isDelayPen = false;
-	};
-
 	bool IsPenDown() { return _isPenDown; }
 	uint8_t GetPen() { return _pen; }
 	bool SetPen(uint8_t pen);
-
 
 private:
 
