@@ -50,6 +50,10 @@ protected:
 
 	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type,uintptr_t data) override;
 
+public:
+
+	bool DrawLoopDebugPlotter(EnumAsByte(EDrawLoopType) type, uintptr_t data);
+
 private:
 
 	CMyMenu _menu;

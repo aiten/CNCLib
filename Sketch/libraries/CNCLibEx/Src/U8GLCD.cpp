@@ -43,11 +43,6 @@
 #include "GCode3DParser.h"
 
 ////////////////////////////////////////////////////////////
-
-#define HeadLineOffset (-2)
-#define PosLineOffset  (_lcd_numaxis > 5 ? 0 : 1)
-
-////////////////////////////////////////////////////////////
 //
 // used full graphic controller for Ramps 1.4 or FD
 //
@@ -140,7 +135,7 @@ void CU8GLcd::TimerInterrupt()
 
 	switch (_rotarybutton.Tick())
 	{
-		case CRotaryButton<rotarypos_t, ROTARY_ACCURACY>::Nothing:
+		case CRotaryButton<rotarypos_t, CU8GLcd_ROTARY_ACCURACY>::Nothing:
 			break;
 		default:
 			_rotaryEventTime = millis();
@@ -220,8 +215,8 @@ unsigned long CU8GLcd::Draw(EDrawType draw)
 bool CU8GLcd::IsScreenSaver() const
 {
 	return (!IsSplash() && !CStepper::GetInstance()->IsBusy() &&
-		(millis() - _rotaryEventTime) > SCREENSAVERTIMEOUT &&
-		(millis() - CStepper::GetInstance()->IdleTime()) > SCREENSAVERTIMEOUT);
+		(millis() - _rotaryEventTime) > CU8GLcd_SCREENSAVERTIMEOUT &&
+		(millis() - CStepper::GetInstance()->IdleTime()) > CU8GLcd_SCREENSAVERTIMEOUT);
 }
 
 ////////////////////////////////////////////////////////////
@@ -397,13 +392,13 @@ bool CU8GLcd::DrawLoopDebug(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type==DrawLoopHeader)	return true;
 	if (type!=DrawLoopDraw)		return DrawLoopDefault(type,data);
 
-	DrawString(ToCol(0), ToRow(0) + HeadLineOffset, F("Debug"));
+	DrawString(ToCol(0), ToRow(0) - HeadLineOffset(), F("Debug"));
 
 	char tmp[16];
 
 	for (uint8_t i = 0; i < _lcd_numaxis; i++)
 	{
-		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset());
 
 		udist_t pos = CStepper::GetInstance()->GetCurrentPosition(i);
 
@@ -418,19 +413,19 @@ bool CU8GLcd::DrawLoopDebug(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 		Print((CStepper::GetInstance()->GetLastDirection()&(1 << i)) ? '+' : '-');
 	}
 
-	SetPosition(ToCol(19), ToRow(0 + 1) + PosLineOffset);
+	SetPosition(ToCol(19), ToRow(0 + 1) + PosLineOffset());
 	Print(CControl::GetInstance()->IOControl(CControl::Probe) ? '1' : '0');
 
-	SetPosition(ToCol(20), ToRow(0 + 1) + PosLineOffset);
+	SetPosition(ToCol(20), ToRow(0 + 1) + PosLineOffset());
 	Print(CControl::GetInstance()->IsHold() ? '1' : '0');
 
-	SetPosition(ToCol(19), ToRow(0 + 3) + PosLineOffset);
+	SetPosition(ToCol(19), ToRow(0 + 3) + PosLineOffset());
 	Print(CSDist::ToString(CControl::GetInstance()->GetBufferCount(), tmp, 2));
 
-	SetPosition(ToCol(19), ToRow(0 + 4) + PosLineOffset);
+	SetPosition(ToCol(19), ToRow(0 + 4) + PosLineOffset());
 	Print(CSDist::ToString(CStepper::GetInstance()->QueuedMovements(), tmp, 2));
 
-	SetPosition(ToCol(18), ToRow(0 + 5) + PosLineOffset);
+	SetPosition(ToCol(18), ToRow(0 + 5) + PosLineOffset());
 	Print(CSDist::ToString(CStepper::SpeedOverrideToP(CStepper::GetInstance()->GetSpeedOverride()), tmp, 3));
 
 
@@ -444,14 +439,14 @@ bool CU8GLcd::DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type==DrawLoopHeader)	return true;
 	if (type!=DrawLoopDraw)		return DrawLoopDefault(type,data);
 
-	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset); Print(F("Absolut  Current"));
+	SetPosition(ToCol(0), ToRow(0) - HeadLineOffset()); Print(F("Absolut  Current"));
 	char tmp[16];
 
 	for (uint8_t i = 0; i < _lcd_numaxis; i++)
 	{
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
 
-		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset());
 		tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp,i));
 
 		Print(DrawPos(i,CMotionControlBase::GetInstance()->GetPosition(i),tmp,7));
@@ -469,7 +464,7 @@ bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type == DrawLoopHeader)	return true;
 	if (type != DrawLoopDraw)	return DrawLoopDefault(type, data);
 
-	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset); Print(F("Absolut# Current"));
+	SetPosition(ToCol(0), ToRow(0) - HeadLineOffset()); Print(F("Absolut# Current"));
 	char tmp[16];
 
 	mm1000_t dest[NUM_AXIS];
@@ -482,7 +477,7 @@ bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	{
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
 
-		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset());
 		tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp, i));
 
 		Print(DrawPos(i,dest[i],tmp,7));
@@ -501,12 +496,12 @@ bool CU8GLcd::DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 200000; return true; }
 	if (type != DrawLoopDraw)	return DrawLoopDefault(type, data);
 
-	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset); Print(F("Rotate 2D"));
+	SetPosition(ToCol(0), ToRow(0) - HeadLineOffset()); Print(F("Rotate 2D"));
 	char tmp[16];
 
 	for (uint8_t i = 0; i < NUM_AXISXYZ; i++)
 	{
-		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset());
 		tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp, i));
 
 		mm1000_t ofs = CMotionControl::GetInstance()->GetOffset2D(i);
@@ -532,7 +527,7 @@ bool CU8GLcd::DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 200000; return true; }
 	if (type != DrawLoopDraw)		return DrawLoopDefault(type, data);
 
-	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset); Print(F("Rotate 3D"));
+	SetPosition(ToCol(0), ToRow(0) - HeadLineOffset()); Print(F("Rotate 3D"));
 
 	if (CMotionControl::GetInstance()->IsRotate())
 	{
@@ -543,7 +538,7 @@ bool CU8GLcd::DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 			mm1000_t ofs  = CMotionControl::GetInstance()->GetOffset(i);
 			mm1000_t vect = CMotionControl::GetInstance()->GetVector(i);
 
-			SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset);
+			SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset());
 			tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp, i));
 
 			Print(DrawPos(i,ofs,tmp,7));
@@ -551,13 +546,13 @@ bool CU8GLcd::DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 			Print(DrawPos(i,vect,tmp,7));
 		}
 
-		SetPosition(ToCol(0), ToRow(NUM_AXISXYZ + 1) + PosLineOffset);
+		SetPosition(ToCol(0), ToRow(NUM_AXISXYZ + 1) + PosLineOffset());
 		Print(F("R"));
 		Print(CMm1000::ToString(CMm1000::FromRAD(CMotionControl::GetInstance()->GetAngle()), tmp, 7, 2));
 	}
 	else
 	{
-		SetPosition(ToCol(6), ToRow(2 + 1) + PosLineOffset);
+		SetPosition(ToCol(6), ToRow(2 + 1) + PosLineOffset());
 		Print(F("no rotation"));
 	}
 
@@ -577,10 +572,10 @@ bool CU8GLcd::DrawLoopSpeedOverride(EnumAsByte(EDrawLoopType) type, uintptr_t da
 	if (type==DrawLoopQueryTimerout && _rotaryFocus == RotarySlider)	{ *((unsigned long*)data) = 333; return true; }
 	if (type != DrawLoopDraw)			return DrawLoopDefault(type, data);
 
-	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset); Print(F("Speed Override"));
+	SetPosition(ToCol(0), ToRow(0) - HeadLineOffset()); Print(F("Speed Override"));
 	char tmp[16];
 
-	SetPosition(ToCol(8), ToRow(2 + 1) + PosLineOffset);
+	SetPosition(ToCol(8), ToRow(2 + 1) + PosLineOffset());
 
 	if (_rotaryFocus == RotarySlider)
 	{
@@ -634,13 +629,13 @@ bool CU8GLcd::DrawLoopPreset(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 
 	const __FlashStringHelper* zeroShiftName[] PROGMEM = { F("G53"), F("G54"), F("G55"), F("G56"), F("G57"), F("G58"), F("G59") };
 
-	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset);  Print(F("Preset: ")); Print(zeroShiftName[CGCodeParser::GetZeroPresetIdx()]); Print(F(" G92 Height"));
+	SetPosition(ToCol(0), ToRow(0) - HeadLineOffset());  Print(F("Preset: ")); Print(zeroShiftName[CGCodeParser::GetZeroPresetIdx()]); Print(F(" G92 Height"));
 
 	char tmp[16];
 
 	for (uint8_t i = 0; i < _lcd_numaxis; i++)
 	{
-		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset);
+		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset());
 		tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp,i));
 		ps = CGCodeParser::GetG54PosPreset(i);
 		Print(DrawPos(i,ps,tmp,7));
@@ -685,9 +680,9 @@ bool CU8GLcd::DrawLoopStartSD(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (!CGCode3DParser::GetExecutingFile())
 		DrawString(ToCol(3), ToRow(2), F("Press to start"));
 
-	SetPosition(ToCol(0), ToRow(3) + PosLineOffset); Print(F("File: ")); Print(CGCode3DParser::GetExecutingFileName());
-	SetPosition(ToCol(0), ToRow(4) + PosLineOffset); Print(F("At:   ")); Print(CSDist::ToString(CGCode3DParser::GetExecutingFilePosition(), tmp, 8));
-	SetPosition(ToCol(0), ToRow(5) + PosLineOffset); Print(F("Line: ")); Print(CSDist::ToString(CGCode3DParser::GetExecutingFileLine(), tmp, 8));
+	SetPosition(ToCol(0), ToRow(3) + PosLineOffset()); Print(F("File: ")); Print(CGCode3DParser::GetExecutingFileName());
+	SetPosition(ToCol(0), ToRow(4) + PosLineOffset()); Print(F("At:   ")); Print(CSDist::ToString(CGCode3DParser::GetExecutingFilePosition(), tmp, 8));
+	SetPosition(ToCol(0), ToRow(5) + PosLineOffset()); Print(F("Line: ")); Print(CSDist::ToString(CGCode3DParser::GetExecutingFileLine(), tmp, 8));
 
 	return true;
 }
@@ -734,7 +729,7 @@ bool CU8GLcd::DrawLoopCommandHis(EnumAsByte(EDrawLoopType) type,uintptr_t data)
 
 	for (uint8_t i = 0; i < totalRows - 1; i++)
 	{
-		SetPosition(ToCol(0), ToRow(totalRows - i - 1) + PosLineOffset);
+		SetPosition(ToCol(0), ToRow(totalRows - i - 1) + PosLineOffset());
 
 		uint8_t idx = totalCols;
 		tmp[idx] = 0;
@@ -803,7 +798,7 @@ bool CU8GLcd::DrawLoopMenu(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	if (type==DrawLoopQueryTimerout)	{ *((unsigned long*)data) = 333; return true; }
 	if (type!=DrawLoopDraw)				return DrawLoopDefault(type,data);
 
-	SetPosition(ToCol(0), ToRow(0) + HeadLineOffset);
+	SetPosition(ToCol(0), ToRow(0) - HeadLineOffset());
 	Print(F("Menu: "));
 	Print(GetMenu().GetMenuDef()->GetText());
 
@@ -825,7 +820,7 @@ bool CU8GLcd::DrawLoopMenu(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 		uint8_t printtorow = GetMenu().ToPrintLine(printFirstLine, printLastLine, i);
 		if (printtorow != 255)
 		{
-			SetPosition(ToCol(0), ToRow(printtorow) + PosLineOffset);
+			SetPosition(ToCol(0), ToRow(printtorow) + PosLineOffset());
 			if (i == x && _rotaryFocus == RotaryMenuPage)
 				Print(F(">"));
 			else

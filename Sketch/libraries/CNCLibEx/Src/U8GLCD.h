@@ -33,13 +33,14 @@
 #include <PushButton.h>
 #include <Beep.h>
 
-#define ROTARY_ACCURACY	4
+////////////////////////////////////////////////////////////
 
-#define LCD_GROW 64
-#define LCD_GCOL 128
+#define CU8GLcd_ROTARY_ACCURACY	4
 
-#define SCREENSAVERTIMEOUT 120000
+#define CU8GLcd_LCD_GROW 64
+#define CU8GLcd_LCD_GCOL 128
 
+#define CU8GLcd_SCREENSAVERTIMEOUT 120000
 
 ////////////////////////////////////////////////////////
 
@@ -214,7 +215,7 @@ private:
 
 protected:
 
-	CRotaryButton<rotarypos_t, ROTARY_ACCURACY> _rotarybutton;
+	CRotaryButton<rotarypos_t, CU8GLcd_ROTARY_ACCURACY> _rotarybutton;
 	CPushButton									_rotarypushbutton;
 
 	unsigned long				_rotaryEventTime = 0;
@@ -228,8 +229,11 @@ protected:
 	uint8_t ToRow(uint8_t row) { return  (row + 1)*(_charHeight); }
 	uint8_t ToCol(uint8_t col) { return (col)*(_charWidth); }
 
-	uint8_t TotalRows() { return LCD_GROW / _charHeight; }
-	uint8_t TotalCols() { return LCD_GCOL / _charWidth; }
+	uint8_t TotalRows() { return CU8GLcd_LCD_GROW / _charHeight; }
+	uint8_t TotalCols() { return CU8GLcd_LCD_GCOL / _charWidth; }
+
+	uint8_t HeadLineOffset() { return 2; }
+	uint8_t PosLineOffset() { return (_lcd_numaxis > 5 ? 0 : 1); }
 
 	static char* DrawPos(axis_t axis, mm1000_t pos, char *tmp, uint8_t precision);		// draw mm100 or inch
 

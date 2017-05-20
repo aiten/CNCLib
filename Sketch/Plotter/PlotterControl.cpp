@@ -70,8 +70,8 @@ void CPlotter::Idle(unsigned int /* idletime */)
 		}
 		if (_isPenDown)
 		{
-			PenUp();
 			_isPenDownTimeout = true;
+			PenUp();
 		}
 	}
 }
@@ -80,11 +80,12 @@ void CPlotter::Idle(unsigned int /* idletime */)
 
 void CPlotter::Resume(bool restorePenDown)
 {
-	if (_isPenDownTimeout && restorePenDown)
+	if (IsResumePenDown())
 	{
-		PenDown();
+		_isPenDownTimeout = false;
+		if (restorePenDown)
+			PenDown();
 	}
-	_isPenDownTimeout = false;
 }
 
 ////////////////////////////////////////////////////////////

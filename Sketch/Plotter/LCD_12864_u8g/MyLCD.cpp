@@ -29,10 +29,12 @@
 
 #include "MyLcd.h"
 #include "../MyControl.h"
+#include "../PlotterControl.h"
 #include <RotaryButton.h>
 #include <GCodeParser.h>
 #include <GCode3DParser.h>
 #include <U8glib.h>
+
 
 ////////////////////////////////////////////////////////////
 //
@@ -61,7 +63,7 @@ PROGMEM const CU8GLcd::SPageDef CU8GLcd::_pagedef[] =
 	{ &CU8GLcd::DrawLoopPos,	&CU8GLcd::ButtonPressShowMenu },
 	{ &CU8GLcd::DrawLoopRotate2D,	&CU8GLcd::ButtonPressShowMenu },
 	{ &CU8GLcd::DrawLoopRotate3D,	&CU8GLcd::ButtonPressShowMenu },
-	{ &CU8GLcd::DrawLoopDebug,  &CU8GLcd::ButtonPressShowMenu },
+	{ (DrawFunction) &CMyLcd::DrawLoopDebugPlotter,  &CU8GLcd::ButtonPressShowMenu },
 	{ &CU8GLcd::DrawLoopSpeedOverride,  &CU8GLcd::ButtonPressSpeedOverride },
 //	{ &CU8GLcd::DrawLoopPreset, &CU8GLcd::ButtonPressShowMenu },
 	{ &CU8GLcd::DrawLoopStartSD,&CU8GLcd::ButtonPressStartSDPage },
@@ -129,6 +131,26 @@ bool CMyLcd::DrawLoopDefault(EnumAsByte(EDrawLoopType) type,uintptr_t data)
 	}
 
 	return super::DrawLoopDefault(type,data);
+}
+
+////////////////////////////////////////////////////////////
+
+bool CMyLcd::DrawLoopDebugPlotter(EnumAsByte(EDrawLoopType) type, uintptr_t data)
+{
+	bool ret = DrawLoopDebug(type, data);
+
+	char tmp[16];
+
+	if (type == DrawLoopDraw)
+	{
+		SetPosition(ToCol(0), ToRow(0 + 5) + PosLineOffset());
+		Print(CSDist::ToString(Plotter.GetPen(), tmp, 2));
+		Print(Plotter.IsPenDown() ? F(" is down") : F(" is up"));
+		if (Plotter.IsResumePenDown())
+			Print(F("(resume)"));
+	}
+
+	return ret;
 }
 
 ////////////////////////////////////////////////////////////
