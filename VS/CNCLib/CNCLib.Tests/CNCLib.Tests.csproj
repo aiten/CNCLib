@@ -111,6 +111,7 @@
     <Compile Include="Drawing\DitherTest.cs" />
     <Compile Include="Logic\DynItemControllerTestClass.cs" />
     <Compile Include="Logic\DynItemControllerTests.cs" />
+    <Compile Include="Logic\EepromConfigControllerTests.cs" />
     <Compile Include="Logic\ItemControllerTests.cs" />
     <Compile Include="Logic\LoadOptionsControllerTests.cs" />
     <Compile Include="Repository\ItemRepositoryTests.cs" />

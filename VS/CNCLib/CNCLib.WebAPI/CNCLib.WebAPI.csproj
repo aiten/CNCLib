@@ -245,6 +245,7 @@
     <Compile Include="Controllers\GCodeController.cs" />
     <Compile Include="Controllers\LoadOptionsController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
+    <Compile Include="Controllers\EepromConfigurationMachineController.cs" />
     <Compile Include="Controllers\MachineController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

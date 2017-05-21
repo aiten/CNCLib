@@ -16,25 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Framework.Tools;
 
-namespace CNCLib.ServiceProxy.WebAPI
+namespace CNCLib.Logic.Contracts.DTO
 {
-    public class ServiceBase : DisposeWrapper
-	{
-		protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibapi.azurewebsites.net";
-
-		protected HttpClient CreateHttpClient()
-		{
-			var client = new HttpClient();
-			client.BaseAddress = new Uri(_webserverurl);
-			client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			return client;
-		}
-	}
+	public class EepromConfigurationInput
+    {
+        public ushort Teeth { get; set; }
+        public double ToothsizeinMm { get; set; }
+        public ushort Microsteps { get; set; }
+        public ushort StepsPerRotation { get; set; }
+        public double EstimatedRotationSpeed { get; set; }
+        public double TimeToAcc { get; set; }
+        public double TimeToDec { get; set; }
+    }
 }

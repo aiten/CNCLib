@@ -17,24 +17,15 @@
 */
 
 using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Framework.Tools;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using CNCLib.Logic.Contracts.DTO;
+using Framework.Logic.Contracts;
 
-namespace CNCLib.ServiceProxy.WebAPI
+namespace CNCLib.ServiceProxy
 {
-    public class ServiceBase : DisposeWrapper
+	public interface IEepromConfigurationService : IDisposable
 	{
-		protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibapi.azurewebsites.net";
-
-		protected HttpClient CreateHttpClient()
-		{
-			var client = new HttpClient();
-			client.BaseAddress = new Uri(_webserverurl);
-			client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			return client;
-		}
+		Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param);
 	}
 }

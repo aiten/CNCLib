@@ -36,7 +36,6 @@ namespace CNCLib.WebAPI.Controllers
 			var sw = new StringWriter();
 			new XmlSerializer(typeof(CNCLib.GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
 			return sw.ToString();
-
 		}
 
 		//		[ActionName("CreateGCode")]

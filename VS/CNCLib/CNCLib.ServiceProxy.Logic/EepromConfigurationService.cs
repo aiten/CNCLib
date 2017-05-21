@@ -16,25 +16,30 @@
   http://www.gnu.org/licenses/
 */
 
+
+using System.Collections.Generic;
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contracts;
+using Framework.Tools.Dependency;
+using System.Threading.Tasks;
 using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using Framework.Tools;
 
-namespace CNCLib.ServiceProxy.WebAPI
+namespace CNCLib.ServiceProxy.Logic
 {
-    public class ServiceBase : DisposeWrapper
-	{
-		protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibapi.azurewebsites.net";
+    public class EepromConfigurationService : DisposeWrapper, IEepromConfigurationService
+    {
+        private IEepromConfigurationController _controller = Dependency.Resolve<IEepromConfigurationController>();
 
-		protected HttpClient CreateHttpClient()
-		{
-			var client = new HttpClient();
-			client.BaseAddress = new Uri(_webserverurl);
-			client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			return client;
-		}
-	}
+        public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
+        {
+            return await _controller.CalculateConfig(param);
+        }
+
+        protected override void DisposeManaged()
+        {
+            _controller.Dispose();
+            _controller = null;
+        }
+    }
 }

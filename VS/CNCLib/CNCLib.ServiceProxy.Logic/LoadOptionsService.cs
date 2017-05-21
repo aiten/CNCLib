@@ -22,10 +22,11 @@ using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Contracts;
 using Framework.Tools.Dependency;
 using System.Threading.Tasks;
+using Framework.Tools;
 
 namespace CNCLib.ServiceProxy.Logic
 {
-    public class LoadOptionsService : ILoadOptionsService
+    public class LoadOptionsService : DisposeWrapper, ILoadOptionsService
 	{
 		private ILoadOptionsController _controller = Dependency.Resolve<ILoadOptionsController>();
 
@@ -54,41 +55,15 @@ namespace CNCLib.ServiceProxy.Logic
 			return await _controller.Update(value);
 		}
 
-		#region IDisposable Support
-		private bool _disposedValue; // To detect redundant calls
+        #region IDisposable Support
 
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!_disposedValue)
-			{
-				if (disposing)
-				{
-					_controller.Dispose();
-					_controller = null;
-				}
+        protected override void DisposeManaged()
+        {
+            _controller.Dispose();
+            _controller = null;
+        }
 
-				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-				// TODO: set large fields to null.
+        #endregion
 
-				_disposedValue = true;
-			}
-		}
-
-		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-		// ~MachineRest() {
-		//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-		//   Dispose(false);
-		// }
-
-		// This code added to correctly implement the disposable pattern.
-		public void Dispose()
-		{
-			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-			Dispose(true);
-			// TODO: uncomment the following line if the finalizer is overridden above.
-			// GC.SuppressFinalize(this);
-		}
-		#endregion
-
-	}
+    }
 }
