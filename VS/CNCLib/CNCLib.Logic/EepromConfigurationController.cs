@@ -40,21 +40,30 @@ namespace CNCLib.Logic
 
             result.StepsPerRotation = (uint)param.Microsteps* (uint)param.StepsPerRotation;
             result.DistancePerRotationInMm = param.Teeth * param.ToothsizeinMm;
-            result.StepsPerMm = result.StepsPerRotation / result.DistancePerRotationInMm;
+            if (result.DistancePerRotationInMm != 0)
+            {
+                result.StepsPerMm = result.StepsPerRotation / result.DistancePerRotationInMm;
+            }
 
             result.EstimatedMaxStepRate = result.StepsPerRotation * param.EstimatedRotationSpeed;
             result.EstimatedMaxSpeedInMmSec = result.DistancePerRotationInMm * param.EstimatedRotationSpeed;
-            result.EstimatedAccelerationInMmSec2 = result.EstimatedMaxSpeedInMmSec / param.TimeToAcc;
-            result.EstimatedDecelerationInMmSec2 = result.EstimatedMaxSpeedInMmSec / param.TimeToDec;
-            result.EstimatedAcc = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToAcc) * acc_corr;
-            result.EstimatedDec = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToDec) * acc_corr; 
+            if (param.TimeToAcc != 0.0)
+            {
+                result.EstimatedAccelerationInMmSec2 = result.EstimatedMaxSpeedInMmSec / param.TimeToAcc;
+                result.EstimatedAcc = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToAcc) * acc_corr;
+            }
+            if (param.TimeToDec != 0.0)
+            {
+                result.EstimatedDecelerationInMmSec2 = result.EstimatedMaxSpeedInMmSec / param.TimeToDec;
+                result.EstimatedDec = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToDec) * acc_corr;
+            }
             result.EstimatedJerkSpeed = result.EstimatedMaxStepRate / jerkfactor;
 
             result.MaxStepRate = (uint)Math.Round(result.EstimatedMaxStepRate, 0);
             result.Acc = (ushort)Math.Round(result.EstimatedAcc, 0); ;
             result.Dec = (ushort)Math.Round(result.EstimatedDec, 0); ;
             result.JerkSpeed = (uint)Math.Round(result.EstimatedJerkSpeed,0);
-            result.StepsPerMm1000 = (float)result.StepsPerMm;
+            result.StepsPerMm1000 = (float)(result.StepsPerMm/1000.0);
 
             return await Task.FromResult(result);
         }
