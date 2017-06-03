@@ -88,7 +88,7 @@ namespace CNCLib.GCode
 					WriteImportInfo(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl");
 				}
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
 				throw;
 			}

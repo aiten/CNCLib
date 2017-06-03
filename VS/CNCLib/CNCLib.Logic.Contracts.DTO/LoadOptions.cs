@@ -20,45 +20,45 @@ using System;
 
 namespace CNCLib.Logic.Contracts.DTO
 {
-	public class LoadOptions
-	{
-		public int Id { get; set; }
+    public class LoadOptions
+    {
+        public int Id { get; set; }
 
-		public enum ELoadType
-		{
-			GCode,
-			HPGL,
-			Image,
-			ImageHole
+        public enum ELoadType
+        {
+            GCode,
+            HPGL,
+            Image,
+            ImageHole
 
-		}
-		public ELoadType LoadType { get; set; } = ELoadType.GCode;
+        }
+        public ELoadType LoadType { get; set; } = ELoadType.GCode;
 
-		public string FileName { get; set; }
-		public Byte[] FileContent { get; set; }
+        public string FileName { get; set; }
+        public Byte[] FileContent { get; set; }
 
-		public string SettingName { get; set; }
+        public string SettingName { get; set; }
 
         public string GCodeWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\test.gcode";
 
-		//ALL (not GCode)
-		public string StartupCommands { get; set; }
-		public string ShutdownCommands { get; set; } = @"M5";
+        //ALL (not GCode)
+        public string StartupCommands { get; set; }
+        public string ShutdownCommands { get; set; } = @"M5";
 
-		// G-CODE
+        // G-CODE
 
-		public bool SubstG82 { get; set; } = false;
-		public bool AddLineNumbers { get; set; } = false;
+        public bool SubstG82 { get; set; } = false;
+        public bool AddLineNumbers { get; set; } = false;
 
-		//HPGL
-		public bool SwapXY { get; set; } = false;
+        //HPGL
+        public bool SwapXY { get; set; } = false;
         public decimal ScaleX { get; set; } = 1;
         public decimal ScaleY { get; set; } = 1;
         public decimal OfsX { get; set; } = 0;
         public decimal OfsY { get; set; } = 0;
 
-		//HPGL+IMG
-		public bool AutoScale { get; set; } = false;
+        //HPGL+IMG
+        public bool AutoScale { get; set; } = false;
         public bool AutoScaleKeepRatio { get; set; } = true;
 
         public bool AutoScaleCenter { get; set; } = false;
@@ -67,7 +67,7 @@ namespace CNCLib.Logic.Contracts.DTO
         public decimal AutoScaleSizeY { get; set; } = 0;
 
         public decimal AutoScaleBorderDistX { get; set; } = 0.5m;
-		public decimal AutoScaleBorderDistY { get; set; } = 0.5m;
+        public decimal AutoScaleBorderDistY { get; set; } = 0.5m;
 
 
         public enum PenType
@@ -85,17 +85,29 @@ namespace CNCLib.Logic.Contracts.DTO
         public decimal? MoveSpeed { get; set; } = 500m;
         public decimal? EngraveDownSpeed { get; set; }
 
-		public string LaserFirstOnCommand { get; set; } = "M106 S255";
-		public string LaserOnCommand { get; set; } = "M106";
+        public string LaserFirstOnCommand { get; set; } = "M106 S255";
+        public string LaserOnCommand { get; set; } = "M106";
         public string LaserOffCommand { get; set; } = "M107";
-		public string LaserLastOffCommand { get; set; } = "M107";
+        public string LaserLastOffCommand { get; set; } = "M107";
 
-		public decimal LaserSize { get; set; } = 0.333m;
-		public decimal LaserAccDist { get; set; } = 1m;
+        public decimal LaserSize { get; set; } = 0.333m;
+        public decimal LaserAccDist { get; set; } = 1m;
+
+        public enum SmoothTypeEnum
+        {
+            NoSmooth = 0,
+            SplitLine = 1,
+            SplineLine = 2
+        }
+
+        public SmoothTypeEnum SmoothType { get; set; } = SmoothTypeEnum.NoSmooth;
+        public decimal? SmoothMinAngle { get; set; } = (decimal) (45 * (Math.PI / 180));
+        public decimal? SmoothMinLineLenght { get; set; } = 1m;
+        public decimal? SmoothMaxError { get; set; } = 1m / 40m;
 
 
-		//IMG
-		public string ImageWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\image.bmp";
+        //IMG
+        public string ImageWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\image.bmp";
 
         public Byte GrayThreshold { get; set; } = 127;
 

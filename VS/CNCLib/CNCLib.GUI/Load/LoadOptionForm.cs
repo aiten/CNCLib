@@ -124,8 +124,14 @@ namespace CNCLib.GUI.Load
                     UseYShift = _holeYShift.Checked,
                     RotateHeart = _holeRotateHeart.Checked,
 
-					LaserAccDist = decimal.Parse(_laserAccDist.Text)
-				};
+					LaserAccDist = decimal.Parse(_laserAccDist.Text),
+
+                    SmoothMaxError = decimal.Parse(_smoothMaxError.Text),
+                    SmoothMinLineLenght = decimal.Parse(_smoothMinLineLenght.Text),
+                    SmoothMinAngle = (decimal) (double.Parse(_smoothMinAngle.Text) * Math.PI / 180),
+
+                    SmoothType = _smoothEnable.Checked ? LoadOptions.SmoothTypeEnum.SplitLine : LoadOptions.SmoothTypeEnum.NoSmooth,
+                };
 
 				if (_loadGCode.Checked) r.LoadType = LoadOptions.ELoadType.GCode;
 				else if (_loadHPGL.Checked) r.LoadType = LoadOptions.ELoadType.HPGL;
@@ -243,6 +249,17 @@ namespace CNCLib.GUI.Load
 
                 _holeYShift.Checked = value.UseYShift;
                 _holeRotateHeart.Checked = value.RotateHeart;
+
+                switch (value.SmoothType)
+                {
+                    case LoadOptions.SmoothTypeEnum.NoSmooth:   _smoothEnable.Checked = false; break;
+                    case LoadOptions.SmoothTypeEnum.SplineLine:
+                    case LoadOptions.SmoothTypeEnum.SplitLine:   _smoothEnable.Checked = true; break;
+                }
+
+                _smoothMaxError.Text = value.SmoothMaxError.ToString();
+                _smoothMinAngle.Text = ((double) (value.SmoothMinAngle??0m) * 180.0 / Math.PI).ToString();
+                _smoothMinLineLenght.Text = value.SmoothMinLineLenght.ToString();
 
                 SetEnableState();
 			}
@@ -442,9 +459,40 @@ namespace CNCLib.GUI.Load
             _holeDotDistY.Text = _holeDotDistX.Text;
         }
 
-		private async void LoadOptionForm_Load(object sender, EventArgs e)
+        private async void LoadOptionForm_Load(object sender, EventArgs e)
 		{
 			await ReadSettings(LoadInfo.SettingName);
 		}
-	}
+
+        private void SelectTab(LoadOptions.ELoadType loadtype)
+        {
+            switch (loadtype)
+            {
+                case LoadOptions.ELoadType.GCode: _tabControl.SelectTab(_tabPageGCode); break;
+                case LoadOptions.ELoadType.HPGL: _tabControl.SelectTab(_tabPageScale); break;
+                case LoadOptions.ELoadType.Image: _tabControl.SelectTab(_tabPageImage); break;
+                case LoadOptions.ELoadType.ImageHole: _tabControl.SelectTab(_tabPageImage); break;
+            }
+        }
+
+        private void _loadGCode_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectTab(LoadOptions.ELoadType.GCode);
+        }
+
+        private void _loadHPGL_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectTab(LoadOptions.ELoadType.HPGL);
+        }
+
+        private void _loadImage_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectTab(LoadOptions.ELoadType.Image);
+        }
+
+        private void _loadimageHole_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectTab(LoadOptions.ELoadType.ImageHole);
+        }
+    }
 }
