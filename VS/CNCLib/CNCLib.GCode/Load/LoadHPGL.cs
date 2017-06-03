@@ -30,11 +30,9 @@ namespace CNCLib.GCode.Load
 {
 	public class LoadHPGL : LoadBase
     {
-        CommandStream _stream = new CommandStream();
-        bool _IsPenUp = true;
 		bool _lastIsPenUp = false;
-        int _color = 0;
         bool _needSpeed = false;
+        bool _DEBUG = true;
 
         class HPGLCommand
         {
@@ -46,12 +44,20 @@ namespace CNCLib.GCode.Load
             };
             public HPGLCommandType CommandType { get; set; } = HPGLCommandType.Other;
             public bool IsPenCommand { get { return CommandType == HPGLCommandType.PenUp || CommandType == HPGLCommandType.PenDown; } }
+            public bool IsPenDownCommand { get { return CommandType == HPGLCommandType.PenDown; } }
             public bool IsPointToValid { get { return IsPenCommand; } }
             public Point3D PointFrom { get; set; }
             public Point3D PointTo { get; set; }
             public double? LineAngle { get; set; }
             public double? DiffLineAngleWithNext { get; set; }
             public string CommandString { get; set; }
+
+            public void ResetCalculated()
+            {
+                PointFrom = null;
+                DiffLineAngleWithNext = null;
+                LineAngle = null;
+            }
         }
 
         private IList<HPGLCommand> GetHPGLCommandList()
@@ -142,6 +148,7 @@ namespace CNCLib.GCode.Load
 
             foreach(var cmd in list)
             {
+                cmd.ResetCalculated();
                 if (cmd.IsPointToValid)
                 {
                     if (last != null)
@@ -150,7 +157,7 @@ namespace CNCLib.GCode.Load
                         cmd.LineAngle = Math.Atan2((cmd.PointTo.Y ?? 0.0) - (cmd.PointFrom.Y ?? 0.0), (cmd.PointTo.X ?? 0.0) - (cmd.PointFrom.X ?? 0.0));
                         cmd.DiffLineAngleWithNext = null;
 
-                        if (last.LineAngle.HasValue)
+                        if (last.LineAngle.HasValue && cmd.IsPenDownCommand)
                         {
                             last.DiffLineAngleWithNext = last.LineAngle - cmd.LineAngle;
                             if (last.DiffLineAngleWithNext > Math.PI)
@@ -158,22 +165,9 @@ namespace CNCLib.GCode.Load
 
                             if (last.DiffLineAngleWithNext < -Math.PI)
                                 last.DiffLineAngleWithNext += (Math.PI*2.0);
-
                         }
                     }
-                    else
-                    {
-                        cmd.PointFrom = null;
-                        cmd.LineAngle = null;
-                        cmd.DiffLineAngleWithNext = null;
-                    }
                     last = cmd;
-                }
-                else
-                {
-                    cmd.PointFrom = null;
-                    cmd.LineAngle = null;
-                    cmd.DiffLineAngleWithNext = null;
                 }
             }
         }
@@ -299,6 +293,9 @@ namespace CNCLib.GCode.Load
             LoadOptions.OfsX = -((decimal)minpt.X.Value - borderX / LoadOptions.ScaleX);
             LoadOptions.OfsY = -((decimal)minpt.Y.Value - borderY / LoadOptions.ScaleY);
         }
+
+        #region Smooth 
+
         private IList<HPGLCommand> Smooth(IList<HPGLCommand> list)
         {
             var newlist = new List<HPGLCommand>();
@@ -306,11 +303,11 @@ namespace CNCLib.GCode.Load
             int startidx = 0;
             while (startidx < list.Count())
             {
-                var nopenlist = list.Skip(startidx).TakeWhile((e) => e.CommandType != HPGLCommand.HPGLCommandType.PenDown);
+                var nopenlist = list.Skip(startidx).TakeWhile((e) => !e.IsPenDownCommand);
                 newlist.AddRange(nopenlist);
                 startidx += nopenlist.Count();
 
-                var line = list.Skip(startidx).TakeWhile((e) => e.CommandType == HPGLCommand.HPGLCommandType.PenDown);
+                var line = list.Skip(startidx).TakeWhile((e) => e.IsPenDownCommand);
                 startidx += line.Count();
 
                 newlist.AddRange(SmoothLine(line));
@@ -320,8 +317,12 @@ namespace CNCLib.GCode.Load
             return newlist;
         }
 
+        int lineidx = 1;
         private IList<HPGLCommand> SmoothLine(IEnumerable<HPGLCommand> line)
         {
+            if (_DEBUG)
+                WriteLineToFile(line, lineidx++);
+
             var list = new List<HPGLCommand>();
             double maxAngle = LoadOptions.SmoothMinAngle.HasValue ? (double)LoadOptions.SmoothMinAngle.Value : (45 * (Math.PI / 180));
 
@@ -403,7 +404,7 @@ namespace CNCLib.GCode.Load
                         //double a = Math.Sin(alpha) / Math.Sin(gamma) * c;
 
                         double hc = b * Math.Sin(alpha) * swapscale;
-                        double dc = Math.Sqrt(hc * hc + b * b);
+                        double dc = Math.Sqrt(b * b - hc * hc);
                         double hc4 = hc / 4.0;
 
                         if (Math.Abs(hc4) > maxerror && Math.Abs(hc4) < c && Math.Abs(dc)< c )
@@ -437,38 +438,38 @@ namespace CNCLib.GCode.Load
             };
         }
 
+        #endregion
+
         private bool Command(HPGLCommand cmd)
         {
+            bool isPenUp = true;
+
             if (cmd.IsPenCommand)
             {
                 switch (cmd.CommandType)
                 {
-                    case HPGLCommand.HPGLCommandType.PenDown: _IsPenUp = false; break;
-                    case HPGLCommand.HPGLCommandType.PenUp: _IsPenUp = true; break;
+                    case HPGLCommand.HPGLCommandType.PenDown: isPenUp = false; break;
+                    case HPGLCommand.HPGLCommandType.PenUp: isPenUp = true; break;
                 }
 
-                Point3D pt = cmd.PointTo;
-                Adjust(ref pt, false);
+                Point3D pt = Adjust(cmd.PointTo);
 
-                if (_IsPenUp != _lastIsPenUp)
+                if (isPenUp != _lastIsPenUp)
                 {
-                    if (_IsPenUp)
+                    if (isPenUp)
                     {
                         LoadPenUp();
                     }
                     else
                     {
-                        Point3D ptfrom = cmd.PointFrom;
-                        Adjust(ref ptfrom, false);
-
-                        LoadPenDown(ptfrom);
+                        LoadPenDown(Adjust(cmd.PointFrom));
                     }
-                    _lastIsPenUp = _IsPenUp;
+                    _lastIsPenUp = isPenUp;
                 }
 
                 string hpglCmd;
                 Command r;
-                if (_IsPenUp)
+                if (isPenUp)
                 {
                     r = new G00Command();
                     hpglCmd = "PU";
@@ -563,18 +564,42 @@ namespace CNCLib.GCode.Load
 			}
 		}
 
-        private void Adjust(ref Point3D pt,bool isRelativPoint)
+        private Point3D Adjust(Point3D pt)
         {
-            if (!isRelativPoint)
+            var ret = new Point3D
             {
-                pt.X += (double)LoadOptions.OfsX;
-                pt.Y += (double)LoadOptions.OfsY;
-            }
+                X = pt.X,
+                Y = pt.Y,
+                Z = pt.Z
+            };
 
             if (LoadOptions.ScaleX != 0)
-                pt.X = Math.Round(pt.X.Value * (double)LoadOptions.ScaleX, 3);
+                ret.X = Math.Round(ret.X.Value * (double)LoadOptions.ScaleX, 3);
             if (LoadOptions.ScaleY != 0)
-                pt.Y = Math.Round(pt.Y.Value * (double)LoadOptions.ScaleY, 3);
+                ret.Y = Math.Round(ret.Y.Value * (double)LoadOptions.ScaleY, 3);
+
+            return ret;
         }
+
+        #region Debug-Helpers
+
+        private void WriteLineToFile(IEnumerable<HPGLCommand> list, int lineIdx)
+        {
+            if (list.Count() > 0)
+            {
+                var firstfrom = list.First().PointFrom;
+                using (StreamWriter sw = new StreamWriter(Environment.ExpandEnvironmentVariables($"%TMP%\\CNCLib_Line{lineIdx}.plt")))
+                {
+                    sw.WriteLine($"PU {(int) (firstfrom.X.Value*40)},{(int) (firstfrom.Y.Value*40)}");
+                    foreach (var cmd in list)
+                    {
+                        sw.WriteLine($"PD {(int) (cmd.PointTo.X.Value*40)},{(int) (cmd.PointTo.Y.Value*40)}");
+                    }
+                }
+            }
+        }
+
+        #endregion
+
     }
 }
