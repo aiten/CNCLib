@@ -43,6 +43,10 @@
             this._AutoScaleSizeY = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this._autoScaleGb = new System.Windows.Forms.GroupBox();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
             this._AutoScaleCenter = new System.Windows.Forms.CheckBox();
             this._dpiXeqY = new System.Windows.Forms.Button();
             this._AutoScaleKeepRatio = new System.Windows.Forms.CheckBox();
@@ -75,6 +79,7 @@
             this._laserOn = new System.Windows.Forms.TextBox();
             this._generateForLaser = new System.Windows.Forms.RadioButton();
             this._generalGroup = new System.Windows.Forms.GroupBox();
+            this._scaleToDefault = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this._grayThreshold = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -127,6 +132,9 @@
             this._GCode = new System.Windows.Forms.GroupBox();
             this._addLineNumbers = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
             this._smoothEnable = new System.Windows.Forms.CheckBox();
             this.label27 = new System.Windows.Forms.Label();
             this._smoothMinAngle = new System.Windows.Forms.TextBox();
@@ -135,11 +143,16 @@
             this.label26 = new System.Windows.Forms.Label();
             this._smoothMaxError = new System.Windows.Forms.TextBox();
             this._tabControl = new System.Windows.Forms.TabControl();
-            this._tabPageFiles = new System.Windows.Forms.TabPage();
             this._tabPageScale = new System.Windows.Forms.TabPage();
             this._tabPageEngrave = new System.Windows.Forms.TabPage();
             this._tabPageImage = new System.Windows.Forms.TabPage();
             this._tabPageGCode = new System.Windows.Forms.TabPage();
+            this._tabPageFiles = new System.Windows.Forms.TabPage();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
             this._autoScaleGb.SuspendLayout();
             this._generateForEngrageGroup.SuspendLayout();
             this._generateForLaserGroup.SuspendLayout();
@@ -151,45 +164,45 @@
             this._GCode.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this._tabControl.SuspendLayout();
-            this._tabPageFiles.SuspendLayout();
             this._tabPageScale.SuspendLayout();
             this._tabPageEngrave.SuspendLayout();
             this._tabPageImage.SuspendLayout();
             this._tabPageGCode.SuspendLayout();
+            this._tabPageFiles.SuspendLayout();
             this.SuspendLayout();
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(24, 121);
+            this.label2.Location = new System.Drawing.Point(13, 100);
             this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 25);
+            this.label2.Size = new System.Drawing.Size(69, 25);
             this.label2.TabIndex = 6;
-            this.label2.Text = "Ofs";
+            this.label2.Text = "Offset";
             // 
             // _ofsX
             // 
-            this._ofsX.Location = new System.Drawing.Point(126, 117);
+            this._ofsX.Location = new System.Drawing.Point(115, 96);
             this._ofsX.Margin = new System.Windows.Forms.Padding(6);
             this._ofsX.Name = "_ofsX";
-            this._ofsX.Size = new System.Drawing.Size(164, 31);
+            this._ofsX.Size = new System.Drawing.Size(125, 31);
             this._ofsX.TabIndex = 7;
             this._ofsX.Text = "0";
             // 
             // _ofsY
             // 
-            this._ofsY.Location = new System.Drawing.Point(296, 117);
+            this._ofsY.Location = new System.Drawing.Point(242, 96);
             this._ofsY.Margin = new System.Windows.Forms.Padding(6);
             this._ofsY.Name = "_ofsY";
-            this._ofsY.Size = new System.Drawing.Size(164, 31);
+            this._ofsY.Size = new System.Drawing.Size(125, 31);
             this._ofsY.TabIndex = 8;
             this._ofsY.Text = "0";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(24, 87);
+            this.label1.Location = new System.Drawing.Point(13, 66);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(66, 25);
@@ -198,26 +211,26 @@
             // 
             // _scaleX
             // 
-            this._scaleX.Location = new System.Drawing.Point(126, 79);
+            this._scaleX.Location = new System.Drawing.Point(115, 58);
             this._scaleX.Margin = new System.Windows.Forms.Padding(6);
             this._scaleX.Name = "_scaleX";
-            this._scaleX.Size = new System.Drawing.Size(164, 31);
+            this._scaleX.Size = new System.Drawing.Size(125, 31);
             this._scaleX.TabIndex = 4;
             this._scaleX.Text = "1";
             // 
             // _scaleY
             // 
-            this._scaleY.Location = new System.Drawing.Point(296, 77);
+            this._scaleY.Location = new System.Drawing.Point(242, 57);
             this._scaleY.Margin = new System.Windows.Forms.Padding(6);
             this._scaleY.Name = "_scaleY";
-            this._scaleY.Size = new System.Drawing.Size(164, 31);
+            this._scaleY.Size = new System.Drawing.Size(125, 31);
             this._scaleY.TabIndex = 5;
             this._scaleY.Text = "1";
             // 
             // _swapXY
             // 
             this._swapXY.AutoSize = true;
-            this._swapXY.Location = new System.Drawing.Point(126, 37);
+            this._swapXY.Location = new System.Drawing.Point(115, 139);
             this._swapXY.Margin = new System.Windows.Forms.Padding(6);
             this._swapXY.Name = "_swapXY";
             this._swapXY.Size = new System.Drawing.Size(132, 29);
@@ -268,24 +281,24 @@
             // 
             // _AutoScaleSizeX
             // 
-            this._AutoScaleSizeX.Location = new System.Drawing.Point(170, 79);
+            this._AutoScaleSizeX.Location = new System.Drawing.Point(130, 118);
             this._AutoScaleSizeX.Margin = new System.Windows.Forms.Padding(6);
             this._AutoScaleSizeX.Name = "_AutoScaleSizeX";
-            this._AutoScaleSizeX.Size = new System.Drawing.Size(134, 31);
+            this._AutoScaleSizeX.Size = new System.Drawing.Size(125, 31);
             this._AutoScaleSizeX.TabIndex = 11;
             // 
             // _AutoScaleSizeY
             // 
-            this._AutoScaleSizeY.Location = new System.Drawing.Point(320, 79);
+            this._AutoScaleSizeY.Location = new System.Drawing.Point(259, 118);
             this._AutoScaleSizeY.Margin = new System.Windows.Forms.Padding(6);
             this._AutoScaleSizeY.Name = "_AutoScaleSizeY";
-            this._AutoScaleSizeY.Size = new System.Drawing.Size(114, 31);
+            this._AutoScaleSizeY.Size = new System.Drawing.Size(125, 31);
             this._AutoScaleSizeY.TabIndex = 12;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(24, 87);
+            this.label3.Location = new System.Drawing.Point(12, 121);
             this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(97, 25);
@@ -294,6 +307,11 @@
             // 
             // _autoScaleGb
             // 
+            this._autoScaleGb.Controls.Add(this.label34);
+            this._autoScaleGb.Controls.Add(this.label33);
+            this._autoScaleGb.Controls.Add(this.label32);
+            this._autoScaleGb.Controls.Add(this._autoScale);
+            this._autoScaleGb.Controls.Add(this.label31);
             this._autoScaleGb.Controls.Add(this._AutoScaleCenter);
             this._autoScaleGb.Controls.Add(this._dpiXeqY);
             this._autoScaleGb.Controls.Add(this._AutoScaleKeepRatio);
@@ -303,23 +321,62 @@
             this._autoScaleGb.Controls.Add(this.label15);
             this._autoScaleGb.Controls.Add(this._AutoScaleBorderDistX);
             this._autoScaleGb.Controls.Add(this._imageDPIX);
-            this._autoScaleGb.Controls.Add(this._autoScale);
             this._autoScaleGb.Controls.Add(this.label3);
             this._autoScaleGb.Controls.Add(this._AutoScaleSizeY);
             this._autoScaleGb.Controls.Add(this._AutoScaleSizeX);
-            this._autoScaleGb.Location = new System.Drawing.Point(28, 34);
+            this._autoScaleGb.Location = new System.Drawing.Point(18, 23);
             this._autoScaleGb.Margin = new System.Windows.Forms.Padding(6);
             this._autoScaleGb.Name = "_autoScaleGb";
             this._autoScaleGb.Padding = new System.Windows.Forms.Padding(6);
-            this._autoScaleGb.Size = new System.Drawing.Size(470, 238);
+            this._autoScaleGb.Size = new System.Drawing.Size(453, 336);
             this._autoScaleGb.TabIndex = 14;
             this._autoScaleGb.TabStop = false;
-            this._autoScaleGb.Text = "AutoScale";
+            this._autoScaleGb.Text = "Auto Scale (HPGL/Image)";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(315, 87);
+            this.label34.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(27, 25);
+            this.label34.TabIndex = 40;
+            this.label34.Text = "Y";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(181, 87);
+            this.label33.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(26, 25);
+            this.label33.TabIndex = 39;
+            this.label33.Text = "X";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(390, 157);
+            this.label32.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(46, 25);
+            this.label32.TabIndex = 38;
+            this.label32.Text = "mm";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(390, 121);
+            this.label31.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(46, 25);
+            this.label31.TabIndex = 37;
+            this.label31.Text = "mm";
             // 
             // _AutoScaleCenter
             // 
             this._AutoScaleCenter.AutoSize = true;
-            this._AutoScaleCenter.Location = new System.Drawing.Point(348, 37);
+            this._AutoScaleCenter.Location = new System.Drawing.Point(130, 286);
             this._AutoScaleCenter.Margin = new System.Windows.Forms.Padding(6);
             this._AutoScaleCenter.Name = "_AutoScaleCenter";
             this._AutoScaleCenter.Size = new System.Drawing.Size(108, 29);
@@ -329,10 +386,10 @@
             // 
             // _dpiXeqY
             // 
-            this._dpiXeqY.Location = new System.Drawing.Point(412, 167);
+            this._dpiXeqY.Location = new System.Drawing.Point(386, 202);
             this._dpiXeqY.Margin = new System.Windows.Forms.Padding(6);
             this._dpiXeqY.Name = "_dpiXeqY";
-            this._dpiXeqY.Size = new System.Drawing.Size(40, 44);
+            this._dpiXeqY.Size = new System.Drawing.Size(40, 31);
             this._dpiXeqY.TabIndex = 31;
             this._dpiXeqY.Text = "=";
             this._dpiXeqY.UseVisualStyleBackColor = true;
@@ -341,7 +398,7 @@
             // _AutoScaleKeepRatio
             // 
             this._AutoScaleKeepRatio.AutoSize = true;
-            this._AutoScaleKeepRatio.Location = new System.Drawing.Point(188, 35);
+            this._AutoScaleKeepRatio.Location = new System.Drawing.Point(130, 245);
             this._AutoScaleKeepRatio.Margin = new System.Windows.Forms.Padding(6);
             this._AutoScaleKeepRatio.Name = "_AutoScaleKeepRatio";
             this._AutoScaleKeepRatio.Size = new System.Drawing.Size(150, 29);
@@ -352,7 +409,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(24, 131);
+            this.label4.Location = new System.Drawing.Point(12, 160);
             this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(49, 25);
@@ -361,24 +418,24 @@
             // 
             // _imageDPIY
             // 
-            this._imageDPIY.Location = new System.Drawing.Point(320, 169);
+            this._imageDPIY.Location = new System.Drawing.Point(259, 202);
             this._imageDPIY.Margin = new System.Windows.Forms.Padding(6);
             this._imageDPIY.Name = "_imageDPIY";
-            this._imageDPIY.Size = new System.Drawing.Size(86, 31);
+            this._imageDPIY.Size = new System.Drawing.Size(125, 31);
             this._imageDPIY.TabIndex = 29;
             // 
             // _AutoScaleBorderDistY
             // 
-            this._AutoScaleBorderDistY.Location = new System.Drawing.Point(320, 123);
+            this._AutoScaleBorderDistY.Location = new System.Drawing.Point(259, 154);
             this._AutoScaleBorderDistY.Margin = new System.Windows.Forms.Padding(6);
             this._AutoScaleBorderDistY.Name = "_AutoScaleBorderDistY";
-            this._AutoScaleBorderDistY.Size = new System.Drawing.Size(114, 31);
+            this._AutoScaleBorderDistY.Size = new System.Drawing.Size(125, 31);
             this._AutoScaleBorderDistY.TabIndex = 15;
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(24, 179);
+            this.label15.Location = new System.Drawing.Point(12, 205);
             this.label15.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(110, 25);
@@ -387,24 +444,24 @@
             // 
             // _AutoScaleBorderDistX
             // 
-            this._AutoScaleBorderDistX.Location = new System.Drawing.Point(170, 123);
+            this._AutoScaleBorderDistX.Location = new System.Drawing.Point(130, 154);
             this._AutoScaleBorderDistX.Margin = new System.Windows.Forms.Padding(6);
             this._AutoScaleBorderDistX.Name = "_AutoScaleBorderDistX";
-            this._AutoScaleBorderDistX.Size = new System.Drawing.Size(134, 31);
+            this._AutoScaleBorderDistX.Size = new System.Drawing.Size(125, 31);
             this._AutoScaleBorderDistX.TabIndex = 14;
             // 
             // _imageDPIX
             // 
-            this._imageDPIX.Location = new System.Drawing.Point(170, 169);
+            this._imageDPIX.Location = new System.Drawing.Point(130, 202);
             this._imageDPIX.Margin = new System.Windows.Forms.Padding(6);
             this._imageDPIX.Name = "_imageDPIX";
-            this._imageDPIX.Size = new System.Drawing.Size(86, 31);
+            this._imageDPIX.Size = new System.Drawing.Size(125, 31);
             this._imageDPIX.TabIndex = 27;
             // 
             // _autoScale
             // 
             this._autoScale.AutoSize = true;
-            this._autoScale.Location = new System.Drawing.Point(36, 37);
+            this._autoScale.Location = new System.Drawing.Point(17, 47);
             this._autoScale.Margin = new System.Windows.Forms.Padding(6);
             this._autoScale.Name = "_autoScale";
             this._autoScale.Size = new System.Drawing.Size(148, 29);
@@ -632,6 +689,10 @@
             // 
             // _generalGroup
             // 
+            this._generalGroup.Controls.Add(this.label37);
+            this._generalGroup.Controls.Add(this.label35);
+            this._generalGroup.Controls.Add(this.label36);
+            this._generalGroup.Controls.Add(this._scaleToDefault);
             this._generalGroup.Controls.Add(this._swapXY);
             this._generalGroup.Controls.Add(this.label1);
             this._generalGroup.Controls.Add(this._scaleX);
@@ -639,14 +700,25 @@
             this._generalGroup.Controls.Add(this.label2);
             this._generalGroup.Controls.Add(this._ofsY);
             this._generalGroup.Controls.Add(this._ofsX);
-            this._generalGroup.Location = new System.Drawing.Point(519, 34);
+            this._generalGroup.Location = new System.Drawing.Point(18, 371);
             this._generalGroup.Margin = new System.Windows.Forms.Padding(6);
             this._generalGroup.Name = "_generalGroup";
             this._generalGroup.Padding = new System.Windows.Forms.Padding(6);
-            this._generalGroup.Size = new System.Drawing.Size(476, 169);
+            this._generalGroup.Size = new System.Drawing.Size(453, 193);
             this._generalGroup.TabIndex = 21;
             this._generalGroup.TabStop = false;
-            this._generalGroup.Text = "Scale / Offeset";
+            this._generalGroup.Text = "Scale / Offset (HPGL)";
+            // 
+            // _scaleToDefault
+            // 
+            this._scaleToDefault.Location = new System.Drawing.Point(381, 49);
+            this._scaleToDefault.Margin = new System.Windows.Forms.Padding(6);
+            this._scaleToDefault.Name = "_scaleToDefault";
+            this._scaleToDefault.Size = new System.Drawing.Size(40, 38);
+            this._scaleToDefault.TabIndex = 41;
+            this._scaleToDefault.Text = "C";
+            this._scaleToDefault.UseVisualStyleBackColor = true;
+            this._scaleToDefault.Click += new System.EventHandler(this._scaleToDefault_Click);
             // 
             // label12
             // 
@@ -719,7 +791,7 @@
             this._imageG.Size = new System.Drawing.Size(470, 342);
             this._imageG.TabIndex = 27;
             this._imageG.TabStop = false;
-            this._imageG.Text = "Image";
+            this._imageG.Text = "Image-Import";
             // 
             // _imageInvert
             // 
@@ -786,7 +858,7 @@
             this._laserGraveG.Controls.Add(this.label13);
             this._laserGraveG.Controls.Add(this.label14);
             this._laserGraveG.Controls.Add(this._penDownSpeed);
-            this._laserGraveG.Location = new System.Drawing.Point(234, 384);
+            this._laserGraveG.Location = new System.Drawing.Point(6, 403);
             this._laserGraveG.Margin = new System.Windows.Forms.Padding(6);
             this._laserGraveG.Name = "_laserGraveG";
             this._laserGraveG.Padding = new System.Windows.Forms.Padding(6);
@@ -858,6 +930,8 @@
             // 
             // _imageHoleG
             // 
+            this._imageHoleG.Controls.Add(this.label38);
+            this._imageHoleG.Controls.Add(this.label39);
             this._imageHoleG.Controls.Add(this._holeDotDistYEq);
             this._imageHoleG.Controls.Add(this._holeDotSizeYEq);
             this._imageHoleG.Controls.Add(this._holeDotDistY);
@@ -877,17 +951,17 @@
             this._imageHoleG.Margin = new System.Windows.Forms.Padding(6);
             this._imageHoleG.Name = "_imageHoleG";
             this._imageHoleG.Padding = new System.Windows.Forms.Padding(6);
-            this._imageHoleG.Size = new System.Drawing.Size(470, 337);
+            this._imageHoleG.Size = new System.Drawing.Size(385, 465);
             this._imageHoleG.TabIndex = 32;
             this._imageHoleG.TabStop = false;
             this._imageHoleG.Text = "Image Hole";
             // 
             // _holeDotDistYEq
             // 
-            this._holeDotDistYEq.Location = new System.Drawing.Point(374, 83);
+            this._holeDotDistYEq.Location = new System.Drawing.Point(325, 103);
             this._holeDotDistYEq.Margin = new System.Windows.Forms.Padding(6);
             this._holeDotDistYEq.Name = "_holeDotDistYEq";
-            this._holeDotDistYEq.Size = new System.Drawing.Size(40, 44);
+            this._holeDotDistYEq.Size = new System.Drawing.Size(30, 31);
             this._holeDotDistYEq.TabIndex = 40;
             this._holeDotDistYEq.Text = "=";
             this._holeDotDistYEq.UseVisualStyleBackColor = true;
@@ -895,10 +969,10 @@
             // 
             // _holeDotSizeYEq
             // 
-            this._holeDotSizeYEq.Location = new System.Drawing.Point(376, 38);
+            this._holeDotSizeYEq.Location = new System.Drawing.Point(325, 67);
             this._holeDotSizeYEq.Margin = new System.Windows.Forms.Padding(6);
             this._holeDotSizeYEq.Name = "_holeDotSizeYEq";
-            this._holeDotSizeYEq.Size = new System.Drawing.Size(40, 44);
+            this._holeDotSizeYEq.Size = new System.Drawing.Size(30, 31);
             this._holeDotSizeYEq.TabIndex = 32;
             this._holeDotSizeYEq.Text = "=";
             this._holeDotSizeYEq.UseVisualStyleBackColor = true;
@@ -906,7 +980,7 @@
             // 
             // _holeDotDistY
             // 
-            this._holeDotDistY.Location = new System.Drawing.Point(272, 88);
+            this._holeDotDistY.Location = new System.Drawing.Point(236, 103);
             this._holeDotDistY.Margin = new System.Windows.Forms.Padding(6);
             this._holeDotDistY.Name = "_holeDotDistY";
             this._holeDotDistY.Size = new System.Drawing.Size(86, 31);
@@ -914,7 +988,7 @@
             // 
             // _holeDotDistX
             // 
-            this._holeDotDistX.Location = new System.Drawing.Point(174, 88);
+            this._holeDotDistX.Location = new System.Drawing.Point(147, 103);
             this._holeDotDistX.Margin = new System.Windows.Forms.Padding(6);
             this._holeDotDistX.Name = "_holeDotDistX";
             this._holeDotDistX.Size = new System.Drawing.Size(86, 31);
@@ -923,17 +997,17 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(38, 94);
+            this.label20.Location = new System.Drawing.Point(32, 106);
             this.label20.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(117, 25);
+            this.label20.Size = new System.Drawing.Size(88, 25);
             this.label20.TabIndex = 38;
-            this.label20.Text = "DotDistX/Y";
+            this.label20.Text = "Dot Dist";
             // 
             // _holeRotateHeart
             // 
             this._holeRotateHeart.AutoSize = true;
-            this._holeRotateHeart.Location = new System.Drawing.Point(322, 240);
+            this._holeRotateHeart.Location = new System.Drawing.Point(198, 379);
             this._holeRotateHeart.Margin = new System.Windows.Forms.Padding(6);
             this._holeRotateHeart.Name = "_holeRotateHeart";
             this._holeRotateHeart.Size = new System.Drawing.Size(107, 29);
@@ -944,7 +1018,7 @@
             // _holeYShift
             // 
             this._holeYShift.AutoSize = true;
-            this._holeYShift.Location = new System.Drawing.Point(44, 154);
+            this._holeYShift.Location = new System.Drawing.Point(37, 150);
             this._holeYShift.Margin = new System.Windows.Forms.Padding(6);
             this._holeYShift.Name = "_holeYShift";
             this._holeYShift.Size = new System.Drawing.Size(108, 29);
@@ -955,7 +1029,7 @@
             // _holeHeart
             // 
             this._holeHeart.AutoSize = true;
-            this._holeHeart.Location = new System.Drawing.Point(208, 238);
+            this._holeHeart.Location = new System.Drawing.Point(100, 379);
             this._holeHeart.Margin = new System.Windows.Forms.Padding(6);
             this._holeHeart.Name = "_holeHeart";
             this._holeHeart.Size = new System.Drawing.Size(95, 29);
@@ -965,7 +1039,7 @@
             // 
             // _holeDotSizeY
             // 
-            this._holeDotSizeY.Location = new System.Drawing.Point(274, 38);
+            this._holeDotSizeY.Location = new System.Drawing.Point(236, 67);
             this._holeDotSizeY.Margin = new System.Windows.Forms.Padding(6);
             this._holeDotSizeY.Name = "_holeDotSizeY";
             this._holeDotSizeY.Size = new System.Drawing.Size(86, 31);
@@ -974,7 +1048,7 @@
             // _holeDiamond
             // 
             this._holeDiamond.AutoSize = true;
-            this._holeDiamond.Location = new System.Drawing.Point(208, 200);
+            this._holeDiamond.Location = new System.Drawing.Point(100, 338);
             this._holeDiamond.Margin = new System.Windows.Forms.Padding(6);
             this._holeDiamond.Name = "_holeDiamond";
             this._holeDiamond.Size = new System.Drawing.Size(128, 29);
@@ -985,7 +1059,7 @@
             // _holeHexagon
             // 
             this._holeHexagon.AutoSize = true;
-            this._holeHexagon.Location = new System.Drawing.Point(38, 279);
+            this._holeHexagon.Location = new System.Drawing.Point(100, 297);
             this._holeHexagon.Margin = new System.Windows.Forms.Padding(6);
             this._holeHexagon.Name = "_holeHexagon";
             this._holeHexagon.Size = new System.Drawing.Size(129, 29);
@@ -996,7 +1070,7 @@
             // _holeSquare
             // 
             this._holeSquare.AutoSize = true;
-            this._holeSquare.Location = new System.Drawing.Point(38, 200);
+            this._holeSquare.Location = new System.Drawing.Point(100, 218);
             this._holeSquare.Margin = new System.Windows.Forms.Padding(6);
             this._holeSquare.Name = "_holeSquare";
             this._holeSquare.Size = new System.Drawing.Size(112, 29);
@@ -1007,7 +1081,7 @@
             // _holeCircle
             // 
             this._holeCircle.AutoSize = true;
-            this._holeCircle.Location = new System.Drawing.Point(38, 238);
+            this._holeCircle.Location = new System.Drawing.Point(100, 256);
             this._holeCircle.Margin = new System.Windows.Forms.Padding(6);
             this._holeCircle.Name = "_holeCircle";
             this._holeCircle.Size = new System.Drawing.Size(98, 29);
@@ -1017,7 +1091,7 @@
             // 
             // _holeDotSizeX
             // 
-            this._holeDotSizeX.Location = new System.Drawing.Point(174, 38);
+            this._holeDotSizeX.Location = new System.Drawing.Point(147, 67);
             this._holeDotSizeX.Margin = new System.Windows.Forms.Padding(6);
             this._holeDotSizeX.Name = "_holeDotSizeX";
             this._holeDotSizeX.Size = new System.Drawing.Size(86, 31);
@@ -1026,12 +1100,12 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(38, 44);
+            this.label21.Location = new System.Drawing.Point(32, 70);
             this.label21.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(122, 25);
+            this.label21.Size = new System.Drawing.Size(93, 25);
             this.label21.TabIndex = 20;
-            this.label21.Text = "DotSizeX/Y";
+            this.label21.Text = "Dot Size";
             // 
             // _loadGCode
             // 
@@ -1201,6 +1275,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label30);
+            this.groupBox1.Controls.Add(this.label29);
+            this.groupBox1.Controls.Add(this.label28);
             this.groupBox1.Controls.Add(this._smoothEnable);
             this.groupBox1.Controls.Add(this.label27);
             this.groupBox1.Controls.Add(this._smoothMinAngle);
@@ -1208,19 +1285,49 @@
             this.groupBox1.Controls.Add(this._smoothMinLineLenght);
             this.groupBox1.Controls.Add(this.label26);
             this.groupBox1.Controls.Add(this._smoothMaxError);
-            this.groupBox1.Location = new System.Drawing.Point(28, 305);
+            this.groupBox1.Location = new System.Drawing.Point(504, 23);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox1.Size = new System.Drawing.Size(470, 239);
+            this.groupBox1.Size = new System.Drawing.Size(453, 200);
             this.groupBox1.TabIndex = 32;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "HPGL Smooth";
             // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(315, 157);
+            this.label30.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(55, 25);
+            this.label30.TabIndex = 36;
+            this.label30.Text = "grad";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(315, 122);
+            this.label29.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(46, 25);
+            this.label29.TabIndex = 35;
+            this.label29.Text = "mm";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(315, 83);
+            this.label28.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(46, 25);
+            this.label28.TabIndex = 34;
+            this.label28.Text = "mm";
+            // 
             // _smoothEnable
             // 
             this._smoothEnable.AutoSize = true;
-            this._smoothEnable.Location = new System.Drawing.Point(62, 36);
+            this._smoothEnable.Location = new System.Drawing.Point(22, 36);
             this._smoothEnable.Margin = new System.Windows.Forms.Padding(6);
             this._smoothEnable.Name = "_smoothEnable";
             this._smoothEnable.Size = new System.Drawing.Size(187, 29);
@@ -1231,7 +1338,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(57, 172);
+            this.label27.Location = new System.Drawing.Point(23, 157);
             this.label27.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(106, 25);
@@ -1240,16 +1347,16 @@
             // 
             // _smoothMinAngle
             // 
-            this._smoothMinAngle.Location = new System.Drawing.Point(221, 169);
+            this._smoothMinAngle.Location = new System.Drawing.Point(187, 154);
             this._smoothMinAngle.Margin = new System.Windows.Forms.Padding(6);
             this._smoothMinAngle.Name = "_smoothMinAngle";
-            this._smoothMinAngle.Size = new System.Drawing.Size(86, 31);
+            this._smoothMinAngle.Size = new System.Drawing.Size(125, 31);
             this._smoothMinAngle.TabIndex = 23;
             // 
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(57, 83);
+            this.label25.Location = new System.Drawing.Point(23, 83);
             this.label25.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(152, 25);
@@ -1258,28 +1365,28 @@
             // 
             // _smoothMinLineLenght
             // 
-            this._smoothMinLineLenght.Location = new System.Drawing.Point(221, 83);
+            this._smoothMinLineLenght.Location = new System.Drawing.Point(187, 83);
             this._smoothMinLineLenght.Margin = new System.Windows.Forms.Padding(6);
             this._smoothMinLineLenght.Name = "_smoothMinLineLenght";
-            this._smoothMinLineLenght.Size = new System.Drawing.Size(86, 31);
+            this._smoothMinLineLenght.Size = new System.Drawing.Size(125, 31);
             this._smoothMinLineLenght.TabIndex = 21;
             // 
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(57, 129);
+            this.label26.Location = new System.Drawing.Point(23, 122);
             this.label26.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(100, 25);
+            this.label26.Size = new System.Drawing.Size(104, 25);
             this.label26.TabIndex = 20;
-            this.label26.Text = "MaxError";
+            this.label26.Text = "Max error";
             // 
             // _smoothMaxError
             // 
-            this._smoothMaxError.Location = new System.Drawing.Point(221, 126);
+            this._smoothMaxError.Location = new System.Drawing.Point(187, 119);
             this._smoothMaxError.Margin = new System.Windows.Forms.Padding(6);
             this._smoothMaxError.Name = "_smoothMaxError";
-            this._smoothMaxError.Size = new System.Drawing.Size(86, 31);
+            this._smoothMaxError.Size = new System.Drawing.Size(125, 31);
             this._smoothMaxError.TabIndex = 19;
             // 
             // _tabControl
@@ -1294,22 +1401,6 @@
             this._tabControl.SelectedIndex = 0;
             this._tabControl.Size = new System.Drawing.Size(1055, 634);
             this._tabControl.TabIndex = 45;
-            // 
-            // _tabPageFiles
-            // 
-            this._tabPageFiles.Controls.Add(this._saveGCodeToFileName);
-            this._tabPageFiles.Controls.Add(this.label17);
-            this._tabPageFiles.Controls.Add(this._shutdownCommands);
-            this._tabPageFiles.Controls.Add(this.label23);
-            this._tabPageFiles.Controls.Add(this._startupCommands);
-            this._tabPageFiles.Controls.Add(this.label22);
-            this._tabPageFiles.Location = new System.Drawing.Point(8, 39);
-            this._tabPageFiles.Name = "_tabPageFiles";
-            this._tabPageFiles.Padding = new System.Windows.Forms.Padding(3);
-            this._tabPageFiles.Size = new System.Drawing.Size(1039, 587);
-            this._tabPageFiles.TabIndex = 0;
-            this._tabPageFiles.Text = "Files";
-            this._tabPageFiles.UseVisualStyleBackColor = true;
             // 
             // _tabPageScale
             // 
@@ -1359,6 +1450,72 @@
             this._tabPageGCode.Text = "GCode";
             this._tabPageGCode.UseVisualStyleBackColor = true;
             // 
+            // _tabPageFiles
+            // 
+            this._tabPageFiles.Controls.Add(this._saveGCodeToFileName);
+            this._tabPageFiles.Controls.Add(this.label17);
+            this._tabPageFiles.Controls.Add(this._shutdownCommands);
+            this._tabPageFiles.Controls.Add(this.label23);
+            this._tabPageFiles.Controls.Add(this._startupCommands);
+            this._tabPageFiles.Controls.Add(this.label22);
+            this._tabPageFiles.Location = new System.Drawing.Point(8, 39);
+            this._tabPageFiles.Name = "_tabPageFiles";
+            this._tabPageFiles.Padding = new System.Windows.Forms.Padding(3);
+            this._tabPageFiles.Size = new System.Drawing.Size(1039, 587);
+            this._tabPageFiles.TabIndex = 0;
+            this._tabPageFiles.Text = "Files";
+            this._tabPageFiles.UseVisualStyleBackColor = true;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(296, 27);
+            this.label35.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(27, 25);
+            this.label35.TabIndex = 43;
+            this.label35.Text = "Y";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(162, 27);
+            this.label36.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(26, 25);
+            this.label36.TabIndex = 42;
+            this.label36.Text = "X";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(375, 99);
+            this.label37.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(46, 25);
+            this.label37.TabIndex = 44;
+            this.label37.Text = "mm";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(266, 36);
+            this.label38.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(27, 25);
+            this.label38.TabIndex = 42;
+            this.label38.Text = "Y";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(177, 36);
+            this.label39.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(26, 25);
+            this.label39.TabIndex = 41;
+            this.label39.Text = "X";
+            // 
             // LoadOptionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -1405,13 +1562,13 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this._tabControl.ResumeLayout(false);
-            this._tabPageFiles.ResumeLayout(false);
-            this._tabPageFiles.PerformLayout();
             this._tabPageScale.ResumeLayout(false);
             this._tabPageEngrave.ResumeLayout(false);
             this._tabPageEngrave.PerformLayout();
             this._tabPageImage.ResumeLayout(false);
             this._tabPageGCode.ResumeLayout(false);
+            this._tabPageFiles.ResumeLayout(false);
+            this._tabPageFiles.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1531,5 +1688,18 @@
         private System.Windows.Forms.TextBox _smoothMinAngle;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.CheckBox _smoothEnable;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Button _scaleToDefault;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label label39;
     }
 }

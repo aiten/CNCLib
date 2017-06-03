@@ -273,6 +273,7 @@ namespace CNCLib.GUI.Load
 				_ofsY.Enabled = false;
 				_scaleX.Enabled = false;
 				_scaleY.Enabled = false;
+                _scaleToDefault.Enabled = false;
 
 				_AutoScaleBorderDistX.Enabled = true;
 				_AutoScaleBorderDistY.Enabled = true;
@@ -286,8 +287,9 @@ namespace CNCLib.GUI.Load
 				_ofsY.Enabled = true;
 				_scaleX.Enabled = true;
 				_scaleY.Enabled = true;
+                _scaleToDefault.Enabled = true;
 
-				_AutoScaleBorderDistX.Enabled = false;
+                _AutoScaleBorderDistX.Enabled = false;
 				_AutoScaleBorderDistY.Enabled = false;
 				_AutoScaleSizeX.Enabled = false;
 				_AutoScaleSizeY.Enabled = false;
@@ -493,6 +495,14 @@ namespace CNCLib.GUI.Load
         private void _loadimageHole_CheckedChanged(object sender, EventArgs e)
         {
             SelectTab(LoadOptions.ELoadType.ImageHole);
+        }
+
+        private void _scaleToDefault_Click(object sender, EventArgs e)
+        {
+            _scaleX.Text = "1";
+            _scaleY.Text = "1";
+            _ofsX.Text = "0";
+            _ofsY.Text = "0";
         }
     }
 }

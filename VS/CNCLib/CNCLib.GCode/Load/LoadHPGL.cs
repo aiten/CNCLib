@@ -30,9 +30,9 @@ namespace CNCLib.GCode.Load
 {
 	public class LoadHPGL : LoadBase
     {
-		bool _lastIsPenUp = false;
-        bool _needSpeed = false;
-        bool _DEBUG = true;
+        bool _DEBUG = false;
+
+        #region HPGLCommand
 
         class HPGLCommand
         {
@@ -60,7 +60,11 @@ namespace CNCLib.GCode.Load
             }
         }
 
-        private IList<HPGLCommand> GetHPGLCommandList()
+        #endregion
+
+        #region Read PLT
+
+        private IList<HPGLCommand> ReadHPGLCommandList()
         {
             var list = new List<HPGLCommand>();
             using (StreamReader sr = new StreamReader(LoadOptions.FileName))
@@ -91,9 +95,7 @@ namespace CNCLib.GCode.Load
 
                             while (stream.IsNumber())
                             {
-                                //Point3D pt = GetSpaceCoordiante(cmdidx == 3);
-
-                                Point3D pt = new Point3D();
+                                 Point3D pt = new Point3D();
                                 pt.X = stream.GetInt() / 40.0;
                                 stream.IsCommand(",");
                                 pt.Y = stream.GetInt() / 40.0;
@@ -131,12 +133,12 @@ namespace CNCLib.GCode.Load
                 }
             }
 
-            CalculateAngle(list,null);
+            CalculateAngles(list,null);
 
             return list;
         }
 
-        private void CalculateAngle(IEnumerable<HPGLCommand> list, Point3D firstfrom)
+        private void CalculateAngles(IEnumerable<HPGLCommand> list, Point3D firstfrom)
         {
             HPGLCommand last = null;
             if (firstfrom != null)
@@ -172,10 +174,27 @@ namespace CNCLib.GCode.Load
             }
         }
 
+        private void AdjustOrig(ref Point3D pt)
+        {
+            if (LoadOptions.SwapXY)
+            {
+                var tmp = pt.X.Value;
+                pt.X = pt.Y;
+                pt.Y = -tmp;
+            }
+        }
+
+        #endregion
+
+        #region Load
+
+        bool _lastIsPenUp = false;
+        bool _needSpeed = false;
+
         public override void Load()
         {
             PreLoad();
-            var list = GetHPGLCommandList();
+            var list = ReadHPGLCommandList();
 
             if (LoadOptions.AutoScale)
 			{
@@ -242,7 +261,142 @@ namespace CNCLib.GCode.Load
 			PostLoad();
         }
 
-		private void AutoScale(IList<HPGLCommand> list)
+        private bool Command(HPGLCommand cmd)
+        {
+            bool isPenUp = true;
+
+            if (cmd.IsPenCommand)
+            {
+                switch (cmd.CommandType)
+                {
+                    case HPGLCommand.HPGLCommandType.PenDown: isPenUp = false; break;
+                    case HPGLCommand.HPGLCommandType.PenUp: isPenUp = true; break;
+                }
+
+                Point3D pt = Adjust(cmd.PointTo);
+
+                if (isPenUp != _lastIsPenUp)
+                {
+                    if (isPenUp)
+                    {
+                        LoadPenUp();
+                    }
+                    else
+                    {
+                        LoadPenDown(Adjust(cmd.PointFrom));
+                    }
+                    _lastIsPenUp = isPenUp;
+                }
+
+                string hpglCmd;
+                Command r;
+                if (isPenUp)
+                {
+                    r = new G00Command();
+                    hpglCmd = "PU";
+                }
+                else
+                {
+                    r = new G01Command();
+                    AddCamBamPoint(pt);
+                    hpglCmd = "PD";
+                }
+                r.AddVariable('X', pt.X.Value, false);
+                r.AddVariable('Y', pt.Y.Value, false);
+                if (_needSpeed)
+                {
+                    _needSpeed = false;
+                    r.AddVariable('F', LoadOptions.MoveSpeed.Value);
+                }
+                Commands.AddCommand(r);
+
+                r.ImportInfo = $"{hpglCmd}{(int)(pt.X.Value * 40.0)},{(int)(pt.Y.Value * 40.0)}";
+            }
+            else
+            {
+                var r = new GxxCommand();
+                r.SetCode($";HPGL={cmd.CommandString}");
+                r.ImportInfo = cmd.CommandString;
+                Commands.AddCommand(r);
+            }
+
+            return true;
+        }
+
+        private void LoadPenDown(Point3D pt)
+        {
+            if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
+            {
+                var r = new G01Command();
+                if (LoadOptions.EngravePosInParameter)
+                {
+                    r.AddVariableParam('Z', "2");
+                }
+                else
+                {
+                    r.AddVariable('Z', LoadOptions.EngravePosDown);
+                }
+                if (LoadOptions.EngraveDownSpeed.HasValue)
+                {
+                    r.AddVariable('F', LoadOptions.EngraveDownSpeed.Value);
+                    _needSpeed = LoadOptions.MoveSpeed.HasValue;
+                }
+                Commands.AddCommand(r);
+            }
+            else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
+            {
+                LaserOn();
+            }
+
+            AddCamBamPLine();
+            AddCamBamPoint(pt);
+        }
+
+        private void LoadPenUp()
+        {
+            if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
+            {
+                var r = new G00Command();
+                if (LoadOptions.EngravePosInParameter)
+                {
+                    r.AddVariableParam('Z', "1");
+                }
+                else
+                {
+                    r.AddVariable('Z', LoadOptions.EngravePosUp);
+                }
+                Commands.AddCommand(r);
+            }
+            else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
+            {
+                LaserOff();
+            }
+
+            FinishCamBamPLine();
+        }
+
+        private Point3D Adjust(Point3D pt)
+        {
+            var ret = new Point3D
+            {
+                X = pt.X,
+                Y = pt.Y,
+                Z = pt.Z
+            };
+
+            if (LoadOptions.ScaleX != 0)
+                ret.X = Math.Round(ret.X.Value * (double)LoadOptions.ScaleX, 3);
+            if (LoadOptions.ScaleY != 0)
+                ret.Y = Math.Round(ret.Y.Value * (double)LoadOptions.ScaleY, 3);
+
+            return ret;
+        }
+
+        #endregion
+
+        #region AutoScale
+
+        private void AutoScale(IList<HPGLCommand> list)
 		{
 			AddComment("AutoScaleX", LoadOptions.AutoScaleSizeX);
 			AddComment("AutoScaleY", LoadOptions.AutoScaleSizeY);
@@ -294,6 +448,8 @@ namespace CNCLib.GCode.Load
             LoadOptions.OfsY = -((decimal)minpt.Y.Value - borderY / LoadOptions.ScaleY);
         }
 
+        #endregion
+
         #region Smooth 
 
         private IList<HPGLCommand> Smooth(IList<HPGLCommand> list)
@@ -313,7 +469,7 @@ namespace CNCLib.GCode.Load
                 newlist.AddRange(SmoothLine(line));
             }
 
-            CalculateAngle(newlist,null);
+            CalculateAngles(newlist,null);
             return newlist;
         }
 
@@ -357,7 +513,7 @@ namespace CNCLib.GCode.Load
                 if (newline.Count() == line.Count())
                     return newline;
                 line = newline;
-                CalculateAngle(line, firstfrom);
+                CalculateAngles(line, firstfrom);
             }
             return line;
         }
@@ -439,147 +595,6 @@ namespace CNCLib.GCode.Load
         }
 
         #endregion
-
-        private bool Command(HPGLCommand cmd)
-        {
-            bool isPenUp = true;
-
-            if (cmd.IsPenCommand)
-            {
-                switch (cmd.CommandType)
-                {
-                    case HPGLCommand.HPGLCommandType.PenDown: isPenUp = false; break;
-                    case HPGLCommand.HPGLCommandType.PenUp: isPenUp = true; break;
-                }
-
-                Point3D pt = Adjust(cmd.PointTo);
-
-                if (isPenUp != _lastIsPenUp)
-                {
-                    if (isPenUp)
-                    {
-                        LoadPenUp();
-                    }
-                    else
-                    {
-                        LoadPenDown(Adjust(cmd.PointFrom));
-                    }
-                    _lastIsPenUp = isPenUp;
-                }
-
-                string hpglCmd;
-                Command r;
-                if (isPenUp)
-                {
-                    r = new G00Command();
-                    hpglCmd = "PU";
-                }
-                else
-                {
-                    r = new G01Command();
-                    AddCamBamPoint(pt);
-                    hpglCmd = "PD";
-                }
-                r.AddVariable('X', pt.X.Value, false);
-                r.AddVariable('Y', pt.Y.Value, false);
-                if (_needSpeed)
-                {
-                    _needSpeed = false;
-                    r.AddVariable('F', LoadOptions.MoveSpeed.Value);
-                }
-                Commands.AddCommand(r);
-
-                r.ImportInfo = $"{hpglCmd}{(int)(pt.X.Value * 40.0)},{(int)(pt.Y.Value * 40.0)}";
-            }
-            else
-            {
-                var r = new GxxCommand();
-                r.SetCode($";HPGL={cmd.CommandString}");
-                r.ImportInfo = cmd.CommandString;
-                Commands.AddCommand(r);
-            }
-
-            return true;
-        }
-
-		private void LoadPenDown(Point3D pt)
-		{
-			if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
-			{
-				var r = new G01Command();
-				if (LoadOptions.EngravePosInParameter)
-				{
-					r.AddVariableParam('Z', "2");
-				}
-				else
-				{
-					r.AddVariable('Z', LoadOptions.EngravePosDown);
-				}
-				if (LoadOptions.EngraveDownSpeed.HasValue)
-				{
-					r.AddVariable('F', LoadOptions.EngraveDownSpeed.Value);
-					_needSpeed = LoadOptions.MoveSpeed.HasValue;
-				}
-				Commands.AddCommand(r);
-			}
-			else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
-			{
-				LaserOn();
-			}
-
-			AddCamBamPLine();
-			AddCamBamPoint(pt);
-		}
-
-		private void LoadPenUp()
-        {
-			if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
-            {
-                var r = new G00Command();
-                if (LoadOptions.EngravePosInParameter)
-                {
-                    r.AddVariableParam('Z', "1");
-                }
-                else
-                {
-                    r.AddVariable('Z', LoadOptions.EngravePosUp);
-                }
-                Commands.AddCommand(r);
-            }
-            else // if (LoadOptions.PenMoveType == LoadInfo.PenType.Command)
-            {
-                LaserOff();
-            }
-
-			FinishCamBamPLine();
-		}
-
-		private void AdjustOrig(ref Point3D pt)
-		{
-			if (LoadOptions.SwapXY)
-			{
-				var tmp = pt.X.Value;
-				pt.X = pt.Y;
-				pt.Y = -tmp;
-			}
-		}
-
-        private Point3D Adjust(Point3D pt)
-        {
-            var ret = new Point3D
-            {
-                X = pt.X,
-                Y = pt.Y,
-                Z = pt.Z
-            };
-
-            if (LoadOptions.ScaleX != 0)
-                ret.X = Math.Round(ret.X.Value * (double)LoadOptions.ScaleX, 3);
-            if (LoadOptions.ScaleY != 0)
-                ret.Y = Math.Round(ret.Y.Value * (double)LoadOptions.ScaleY, 3);
-
-            return ret;
-        }
 
         #region Debug-Helpers
 
