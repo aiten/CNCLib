@@ -384,6 +384,9 @@ namespace CNCLib.GCode.Load
                 Z = pt.Z
             };
 
+            ret.X += (double)LoadOptions.OfsX;
+            ret.Y += (double)LoadOptions.OfsY;
+
             if (LoadOptions.ScaleX != 0)
                 ret.X = Math.Round(ret.X.Value * (double)LoadOptions.ScaleX, 3);
             if (LoadOptions.ScaleY != 0)
