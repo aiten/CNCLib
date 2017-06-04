@@ -18,9 +18,8 @@
 
 using System;
 using System.Text;
-using System.Windows.Media;
 
-namespace CNCLib.Wpf.Helpers
+namespace Framework.Helpers
 {
     public static class RandomHelper
     {
@@ -77,10 +76,11 @@ namespace CNCLib.Wpf.Helpers
             var range = new TimeSpan(to.Ticks - from.Ticks);
             return from + new TimeSpan((long)(range.Ticks * RandomSeed.NextDouble()));
         }
-
+/*
         public static Color RandomColor()
         {
             return Color.FromRgb((byte)RandomSeed.Next(255), (byte)RandomSeed.Next(255), (byte)RandomSeed.Next(255));
         }
+*/
     }
 }

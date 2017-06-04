@@ -20,7 +20,7 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace Framework.Tools
+namespace Framework.Tools.Helpers
 {
 	public class CommandStream
     {

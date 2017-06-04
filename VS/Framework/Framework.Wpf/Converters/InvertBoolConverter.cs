@@ -17,22 +17,24 @@
 */
 
 using System;
+using System.Globalization;
 using System.Windows.Data;
 
-namespace CNCLib.Wpf.Converters
+namespace Framework.Wpf.Converters
 {
-    public class IsBiggerThanConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            var x = System.Convert.ToDouble(parameter);
-            var v = System.Convert.ToDouble(value);
-            return (v > x);
-        }
+	[ValueConversion(typeof(bool), typeof(bool))]
+	public class InvertBoolConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			bool booleanValue = (bool)value;
+			return !booleanValue;
+		}
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			bool booleanValue = (bool)value;
+			return !booleanValue;
+		}
+	}
 }

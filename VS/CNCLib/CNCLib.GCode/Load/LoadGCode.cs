@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools;
-using CNCLib.GCode.Commands;
-using System.IO;
 using System;
+using System.IO;
+using CNCLib.GCode.Commands;
+using Framework.Tools.Helpers;
 
 namespace CNCLib.GCode.Load
 {

@@ -23,7 +23,7 @@ using System.IO;
 using System.Linq;
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools;
+using Framework.Tools.Helpers;
 using Framework.Tools.Drawing;
 
 namespace CNCLib.GCode.Load

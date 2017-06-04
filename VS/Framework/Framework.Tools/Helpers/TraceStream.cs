@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
-namespace Framework.Tools
+namespace Framework.Tools.Helpers
 {
     public class TraceStream : IDisposable
     {

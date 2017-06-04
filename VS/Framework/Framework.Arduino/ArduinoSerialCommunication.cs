@@ -23,7 +23,7 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using System.IO.Ports;
-using Framework.Tools;
+using Framework.Tools.Helpers;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
