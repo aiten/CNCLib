@@ -147,7 +147,7 @@ namespace CNCLib.Wpf.ViewModels
 		public bool ResetOnConnect
 		{
 			get { return _resetOnConnect; }
-			set { SetProperty(ref _resetOnConnect, value); Settings.Instance.ResetOnConnect = value; }
+			set { SetProperty(ref _resetOnConnect, value); Global.Instance.ResetOnConnect = value; }
 		}
 
 		private bool _sendInitCommands = true;
@@ -215,16 +215,16 @@ namespace CNCLib.Wpf.ViewModels
 
         private async Task SetGlobal()
         {
-			Settings.Instance.SizeX = Machine.SizeX;
-			Settings.Instance.SizeY = Machine.SizeY;
-			Settings.Instance.SizeZ = Machine.SizeZ;
+			Global.Instance.SizeX = Machine.SizeX;
+            Global.Instance.SizeY = Machine.SizeY;
+            Global.Instance.SizeZ = Machine.SizeZ;
 			Com.ArduinoBuffersize = Machine.BufferSize;
 
 			using (var controller = Dependency.Resolve<IMachineService>())
 			{
 				Global.Instance.Machine = await controller.Get(Machine.MachineID);
 			}
-		}
+        }
 
 		public bool CanConnect()
         {

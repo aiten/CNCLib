@@ -27,7 +27,7 @@ using CNCLib.GCode.Commands;
 using CNCLib.GCode.GUI;
 using Framework.Tools.Drawing;
 
-namespace CNCLib.Wpf.Controls
+namespace CNCLib.GCode.GUI.Controls
 {
 	/// <summary>
 	/// Interaction logic for GCodeUserControl.xaml
@@ -47,9 +47,12 @@ namespace CNCLib.Wpf.Controls
 			MouseMove += GCodeUserControl_MouseMove;
 		}
 
-		#region Properties
+        #region Properties
 
-		public static readonly DependencyProperty GotoPosCommandProperty = DependencyProperty.Register(
+        public double SizeX { get; set; } = 140.0;
+        public double SizeY { get; set; } = 45.0;
+
+        public static readonly DependencyProperty GotoPosCommandProperty = DependencyProperty.Register(
 			"GotoPos", typeof(ICommand), typeof(GCodeUserControl), new PropertyMetadata(default(ICommand)));
 
 		public ICommand GotoPos
@@ -566,10 +569,10 @@ namespace CNCLib.Wpf.Controls
 			if (_bitmapDraw.RenderSize.Height == 0 || _bitmapDraw.RenderSize.Width == 0)
 				return;
 
-			if (_draggingType == EDraggingType.NoDragging && Global.Instance.Machine != null)
+			if (_draggingType == EDraggingType.NoDragging)
 			{
-				_bitmapDraw.SizeX = (double) Global.Instance.Machine.SizeX;
-				_bitmapDraw.SizeY = (double) Global.Instance.Machine.SizeY;
+				_bitmapDraw.SizeX = SizeX;
+				_bitmapDraw.SizeY = SizeY;
 			}
 
 			var curBitmap = _bitmapDraw.DrawToBitmap(Commands);

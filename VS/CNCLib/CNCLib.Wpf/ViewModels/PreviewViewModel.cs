@@ -288,8 +288,8 @@ namespace CNCLib.Wpf.ViewModels
 		{
 			if (loadinfo.AutoScaleSizeX == 0 || loadinfo.AutoScale == false)
 			{
-				loadinfo.AutoScaleSizeX = Settings.Instance.SizeX;
-				loadinfo.AutoScaleSizeY = Settings.Instance.SizeY;
+				loadinfo.AutoScaleSizeX = Global.Instance.SizeX;
+				loadinfo.AutoScaleSizeY = Global.Instance.SizeY;
 			}
 
 			var arg = new GetLoadInfoArg() { LoadOption = loadinfo, UseAzure = _useAzure };

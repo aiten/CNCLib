@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using CNCLib.GCode.GUI.Load;
@@ -16,13 +17,23 @@ namespace CNCLib.Wpf.Views
 		{
 			InitializeComponent();
 
-			Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
+            Global.Instance.PropertyChanged += (object sender, PropertyChangedEventArgs e) => 
+            {
+                if (e.PropertyName.StartsWith("Size"))
+                {
+                    gcode.SizeX = (double) Global.Instance.SizeX;
+                    gcode.SizeY = (double) Global.Instance.SizeY;
+                };
+            };
+
+            Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
 			{
 				var vmm = DataContext as BaseViewModel;
 				await vmm.Loaded();
 			});
 
-			var vm = DataContext as PreviewViewModel;
+
+            var vm = DataContext as PreviewViewModel;
 
 			if (vm.GetLoadInfo == null)
 				vm.GetLoadInfo = new Func<PreviewViewModel.GetLoadInfoArg, bool>((arg) =>

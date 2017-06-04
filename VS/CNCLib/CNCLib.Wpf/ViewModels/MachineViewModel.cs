@@ -155,7 +155,7 @@ namespace CNCLib.Wpf.ViewModels
 			{
 				try
 				{
-					Com.ResetOnConnect = Settings.Instance.ResetOnConnect;
+					Com.ResetOnConnect = Global.Instance.ResetOnConnect;
 					Com.CommandToUpper = Machine.CommandToUpper;
 					Com.BaudRate = (int)Machine.BaudRate;
 					Com.Connect(Machine.ComPort);

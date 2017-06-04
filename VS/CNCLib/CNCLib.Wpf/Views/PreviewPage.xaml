@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CNCLib.Wpf.Views"
-      xmlns:ctrl="clr-namespace:CNCLib.Wpf.Controls"
+      xmlns:gctrl="clr-namespace:CNCLib.GCode.GUI.Controls;assembly=CNCLib.GCode.GUI"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"
       mc:Ignorable="d" 
@@ -77,7 +77,7 @@
             <Slider Value="{Binding Path=OffsetX}" Minimum="-1000" Maximum="1000" />
         </DockPanel>
         <Slider Value="{Binding Path=OffsetY}" Minimum="-1000" Maximum="1000" DockPanel.Dock="Right" Orientation="Vertical" IsDirectionReversed="True"/>
-        <ctrl:GCodeUserControl x:Name="gcode"
+        <gctrl:GCodeUserControl x:Name="gcode"
                                Commands="{Binding Path=Commands}"
                                MachineColor="{Binding Path=MachineColor}"
                                LaserOnColor="{Binding Path=LaserOnColor}"
