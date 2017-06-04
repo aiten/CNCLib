@@ -16,30 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Test;
 using AutoMapper;
-using CNCLib.Logic;
-using Framework.Tools.Dependency;
-using CNCLib.Wpf;
-using CNCLib.GCode.GUI;
 
-namespace CNCLib.Tests
+namespace CNCLib.GCode.GUI
 {
-    public abstract class CNCUnitTest : UnitTestBase
+    public sealed class GCodeGUIAutoMapperProfile : Profile
 	{
-		protected override void InitializeCoreDependencies()
+		public GCodeGUIAutoMapperProfile()
 		{
-			var config = new MapperConfiguration(cfg =>
-			{
-				cfg.AddProfile<LogicAutoMapperProfile>();
-				cfg.AddProfile<WpfAutoMapperProfile>();
-                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-            });
-			config.AssertConfigurationIsValid();
-
-			var mapper = config.CreateMapper();
-
-			Dependency.Container.RegisterInstance<IMapper>(mapper);
+			CreateMap<CNCLib.GCode.GUI.Models.LoadOptions, CNCLib.Logic.Contracts.DTO.LoadOptions>().ReverseMap();
 		}
 	}
 }

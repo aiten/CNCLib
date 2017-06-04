@@ -17,22 +17,23 @@
 */
 
 using System;
+using System.IO;
 using System.Windows;
+using AutoMapper;
+using CNCLib.GCode.GUI;
+using CNCLib.Logic;
 using CNCLib.Logic.Contracts;
+using CNCLib.Repository.Context;
+using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
-using Framework.EF;
-using CNCLib.Repository.Context;
-using AutoMapper;
-using CNCLib.Logic;
-using System.IO;
 
 namespace CNCLib.Wpf.Start
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
-	public partial class App : Application
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
 	{
 		private void AppStartup(object sender, StartupEventArgs e)
 		{
@@ -60,7 +61,8 @@ namespace CNCLib.Wpf.Start
 				{
 					cfg.AddProfile<LogicAutoMapperProfile>();
 					cfg.AddProfile<WpfAutoMapperProfile>();
-				});
+                    cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                });
 			config.AssertConfigurationIsValid();
 
 			var mapper = config.CreateMapper();

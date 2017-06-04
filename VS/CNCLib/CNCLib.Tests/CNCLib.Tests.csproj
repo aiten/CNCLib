@@ -155,6 +155,14 @@
       <Project>{8568383e-054d-4882-8d6a-b956684cfaae}</Project>
       <Name>Framework.Wpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CNCLib.GCode.GUI\CNCLib.GCode.GUI.csproj">
+      <Project>{55108499-fac2-4f19-b88e-9e240cccbd60}</Project>
+      <Name>CNCLib.GCode.GUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj">
+      <Project>{f9c446f4-6365-4189-95c5-009ef0160882}</Project>
+      <Name>CNCLib.GCode</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Client\CNCLib.Logic.Client.csproj">
       <Project>{d7277bf7-35e8-47c7-8e4a-448e2224f559}</Project>
       <Name>CNCLib.Logic.Client</Name>

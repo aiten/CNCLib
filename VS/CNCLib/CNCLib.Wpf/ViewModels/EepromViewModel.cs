@@ -17,18 +17,12 @@
 */
 
 using System;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
-using Framework.Wpf.ViewModels;
-using Framework.Wpf.Helpers;
-using CNCLib.Wpf.Models;
-using Framework.Tools.Dependency;
-using CNCLib.ServiceProxy;
-using System.Threading.Tasks;
-using CNCLib.Wpf.Helpers;
-using CNCLib.GCode;
-using System.IO;
 using System.Windows;
+using System.Windows.Input;
+using CNCLib.Wpf.Helpers;
+using CNCLib.Wpf.Models;
+using Framework.Wpf.Helpers;
+using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.ViewModels
 {

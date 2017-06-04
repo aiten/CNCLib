@@ -17,11 +17,12 @@
 */
 
 using System;
-using System.Windows;
-using Framework.Tools.Dependency;
-using AutoMapper;
-using CNCLib.ServiceProxy;
 using System.Threading.Tasks;
+using System.Windows;
+using AutoMapper;
+using CNCLib.GCode.GUI;
+using CNCLib.ServiceProxy;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Wpf.WebAPI.Start
 {
@@ -43,7 +44,9 @@ namespace CNCLib.Wpf.WebAPI.Start
 				{
 //					cfg.AddProfile<LogicAutoMapperProfile>();
 					cfg.AddProfile<WpfAutoMapperProfile>();
-				});
+                    cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+
+                });
 			config.AssertConfigurationIsValid();
 
 			var mapper = config.CreateMapper();

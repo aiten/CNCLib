@@ -3,8 +3,13 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using CNCLib.GCode.GUI.Load;
+using CNCLib.GCode.GUI.Views;
+using CNCLib.GCode.GUI.ViewModels;
 using CNCLib.Wpf.ViewModels;
 using Framework.Wpf.ViewModels;
+using AutoMapper;
+using Framework.Tools.Dependency;
+using System.Windows.Input;
 
 namespace CNCLib.Wpf.Views
 {
@@ -38,18 +43,32 @@ namespace CNCLib.Wpf.Views
 			if (vm.GetLoadInfo == null)
 				vm.GetLoadInfo = new Func<PreviewViewModel.GetLoadInfoArg, bool>((arg) =>
 				{
-					using (LoadOptionForm form = new LoadOptionForm())
-					{
-						form.LoadInfo = arg.LoadOption;
-						form.UseAzure = arg.UseAzure;
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        var dlg = new LoadOptionView();
+                        var vmdlg = dlg.DataContext as LoadOptionViewModel;
+                        vmdlg.LoadOptionsValue = Dependency.Resolve<IMapper>().Map<CNCLib.GCode.GUI.Models.LoadOptions>(arg.LoadOption);
+                        if (!dlg.ShowDialog() ?? false)
+                            return false;
+                        
+                        arg.LoadOption = Dependency.Resolve<IMapper>().Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
+                        return true;
+                    }
+                    else
+                    {
+                        using (LoadOptionForm form = new LoadOptionForm())
+                        {
+                            form.LoadInfo = arg.LoadOption;
+                            form.UseAzure = arg.UseAzure;
 
-						if (form.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-							return false;
+                            if (form.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                                return false;
 
-						arg.LoadOption = form.LoadInfo;
-						arg.UseAzure = form.UseAzure;
-						return true;
-					}
+                            arg.LoadOption = form.LoadInfo;
+                            arg.UseAzure = form.UseAzure;
+                            return true;
+                        }
+                    }
 				});
 
 			if (vm.MessageBox == null)
