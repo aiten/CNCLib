@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using CNCLib.GUI.Load;
+using CNCLib.GCode.GUI.Load;
 using CNCLib.Wpf.ViewModels;
 using Framework.Wpf.ViewModels;
 

@@ -1,4 +1,4 @@
-﻿namespace CNCLib.GUI.Load
+﻿namespace CNCLib.GCode.GUI.Load
 {
     partial class LoadOptionForm
     {

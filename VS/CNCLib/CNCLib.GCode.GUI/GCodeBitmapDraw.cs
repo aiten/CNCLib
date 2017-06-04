@@ -24,7 +24,7 @@ using CNCLib.GCode.Commands;
 using Framework.Arduino;
 using System.Drawing.Drawing2D;
 
-namespace CNCLib.GUI
+namespace CNCLib.GCode.GUI
 {
 	public partial class GCodeBitmapDraw : IOutputCommand
 	{

@@ -157,7 +157,7 @@
       <Project>{8568383e-054d-4882-8d6a-b956684cfaae}</Project>
       <Name>Framework.Wpf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.GUI\CNCLib.GUI.csproj">
+    <ProjectReference Include="..\CNCLib.GCode.GUI\CNCLib.GCode.GUI.csproj">
       <Project>{55108499-fac2-4f19-b88e-9e240cccbd60}</Project>
       <Name>CNCLib.GUI</Name>
     </ProjectReference>

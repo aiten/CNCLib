@@ -8,8 +8,8 @@
     <ProjectGuid>{55108499-FAC2-4F19-B88E-9E240CCCBD60}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CNCLib.GUI</RootNamespace>
-    <AssemblyName>CNCLib.GUI</AssemblyName>
+    <RootNamespace>CNCLib.GCode.GUI</RootNamespace>
+    <AssemblyName>CNCLib.GCode.GUI</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

@@ -48,7 +48,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 {
                     Machine m = await response.Content.ReadAsAsync<Machine>();
 
-                    Assert.AreEqual(m.Axis, 5);
+                    Assert.AreEqual(1, m.MachineID);
                 }
             }
         }

@@ -24,7 +24,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using CNCLib.GCode.Commands;
-using CNCLib.GUI;
+using CNCLib.GCode.GUI;
 using Framework.Tools.Drawing;
 
 namespace CNCLib.Wpf.Controls

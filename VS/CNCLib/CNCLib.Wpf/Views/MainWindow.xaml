@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
-        xmlns:cwf="clr-namespace:CNCLib.GUI;assembly=CNCLib.GUI"      
+        xmlns:cwf="clr-namespace:CNCLib.GCode.GUI;assembly=CNCLib.GCode.GUI"      
         xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"
         xmlns:local="clr-namespace:CNCLib.Wpf.Views"
         mc:Ignorable="d"

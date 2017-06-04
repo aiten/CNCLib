@@ -25,7 +25,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
 
-namespace CNCLib.GUI.Load
+namespace CNCLib.GCode.GUI.Load
 {
     public partial class LoadOptionForm : Form
     {

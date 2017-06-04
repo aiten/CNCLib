@@ -121,7 +121,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
 				var input = new CreateGCode()
 				{
-					LoadOptionsId = 1,
+					LoadOptionsId = 3,
 					FileName = asspath + @"\TestData\Wendelin_Ait110.png"
 				};
 
