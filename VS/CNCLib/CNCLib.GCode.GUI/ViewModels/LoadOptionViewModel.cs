@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CNCLib.GCode.GUI.Models;
@@ -40,7 +41,7 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         #region GUI-forward
 
-        //		public Action<int> EditMachine { get; set; }
+        public Func<string,string> BrowseFileNameFunc { get; set; }
 
         #endregion
 
@@ -57,6 +58,11 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         #region Operations
 
+        public bool Can()
+        {
+            return true;
+        }
+
         public async Task Connect()
         {
 		}
@@ -68,13 +74,53 @@ namespace CNCLib.GCode.GUI.ViewModels
             //return !Connected && Machine != null;
         }
 
+        void BrowseFileName()
+        {
+            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.FileName);
+            if (filename != null)
+            {
+                LoadOptionsValue.FileName = filename;
+                RaisePropertyChanged(nameof(LoadOptionsValue));
+            }
+        }
+        void BrowseGCodeFileName()
+        {
+            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.GCodeWriteToFileName);
+            if (filename != null)
+            {
+                LoadOptionsValue.GCodeWriteToFileName = filename;
+                RaisePropertyChanged(nameof(LoadOptionsValue));
+            }
+        }
+        void BrowseImageFileName()
+        {
+            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.ImageWriteToFileName);
+            if (filename != null)
+            {
+                LoadOptionsValue.ImageWriteToFileName = filename;
+                RaisePropertyChanged(nameof(LoadOptionsValue));
+            }
+        }
 
-		#endregion
+        void RaiseLoadOptionsChanged()
+        {
+            RaisePropertyChanged(nameof(LoadOptionsValue));
+        }
 
-		#region Commands
+        #endregion
 
-		public ICommand ConnectCommand => new DelegateCommand(async () => await Connect(), CanConnect);
+        #region Commands
 
-		#endregion
-	}
+        public ICommand ConnectCommand => new DelegateCommand(async () => await Connect(), CanConnect);
+        public ICommand BrowseFileNameCommand => new DelegateCommand(BrowseFileName, Can);
+        public ICommand BrowseGCodeFileNameCommand => new DelegateCommand(BrowseGCodeFileName, Can);
+        public ICommand BrowseImageFileNameCommand => new DelegateCommand(BrowseImageFileName, Can);
+        public ICommand SetSameDPICommand => new DelegateCommand(() => { LoadOptionsValue.ImageDPIY = LoadOptionsValue.ImageDPIX; RaiseLoadOptionsChanged(); }, Can);
+        public ICommand SetSameScaleToCommand => new DelegateCommand(() => { LoadOptionsValue.ScaleY = LoadOptionsValue.ScaleX; RaiseLoadOptionsChanged(); }, Can);
+        public ICommand SetSameOfsCommand => new DelegateCommand(() => { LoadOptionsValue.OfsY = LoadOptionsValue.OfsX; RaiseLoadOptionsChanged(); }, Can);
+        public ICommand SetSameDotSizeCommand => new DelegateCommand(() => { LoadOptionsValue.DotSizeY = LoadOptionsValue.DotSizeX; RaiseLoadOptionsChanged(); }, Can);
+        public ICommand SetSameDotDistCommand => new DelegateCommand(() => { LoadOptionsValue.DotDistY = LoadOptionsValue.DotDistX; RaiseLoadOptionsChanged(); }, Can);
+
+        #endregion
+    }
 }

@@ -105,6 +105,8 @@ namespace CNCLib.GCode.GUI.Models
         public decimal? SmoothMinLineLenght { get; set; } = 1m;
         public decimal? SmoothMaxError { get; set; } = 1m / 40m;
 
+        // calculated
+        public bool SmoothEnabled { get { return SmoothType != SmoothTypeEnum.NoSmooth; } set { SmoothType = value ? SmoothTypeEnum.SplitLine : SmoothTypeEnum.NoSmooth; } }
 
         //IMG
         public string ImageWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\image.bmp";

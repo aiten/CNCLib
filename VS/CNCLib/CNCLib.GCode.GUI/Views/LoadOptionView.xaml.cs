@@ -17,7 +17,9 @@
 */
 
 using System;
+using System.IO;
 using System.Windows;
+using CNCLib.GCode.GUI.ViewModels;
 using Framework.Wpf.ViewModels;
 
 namespace CNCLib.GCode.GUI.Views
@@ -31,7 +33,7 @@ namespace CNCLib.GCode.GUI.Views
 		{
 			InitializeComponent();
 
-			var vm = DataContext as BaseViewModel;
+			var vm = DataContext as LoadOptionViewModel;
 			if (vm.CloseAction == null)
 				vm.CloseAction = new Action(() => this.Close());
 
@@ -48,6 +50,27 @@ namespace CNCLib.GCode.GUI.Views
 					return MessageBox.Show(messageBoxText, caption, button, icon);
 				});
 			}
-		}
-	}
+
+            if (vm.BrowseFileNameFunc == null)
+            {
+                vm.BrowseFileNameFunc = new Func<string, string>((string filename) =>
+               {
+                    Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+                   dlg.FileName = filename;
+                   string dir = Path.GetDirectoryName(filename);
+                   if (!string.IsNullOrEmpty(dir))
+                   {
+                       dlg.InitialDirectory = dir;
+                       dlg.FileName = Path.GetFileName(filename);
+                   }
+
+                    if ((dlg.ShowDialog()??false))
+                    {
+                        return filename = dlg.FileName;
+                    }
+                    return null;
+               });
+            }
+        }
+    }
 }

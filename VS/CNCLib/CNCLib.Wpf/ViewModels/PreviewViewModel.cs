@@ -286,7 +286,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public async Task Load()
 		{
-			if (loadinfo.AutoScaleSizeX == 0 || loadinfo.AutoScale == false)
+			if (loadinfo.AutoScaleSizeX == 0 || loadinfo.AutoScaleSizeY == 0)
 			{
 				loadinfo.AutoScaleSizeX = Global.Instance.SizeX;
 				loadinfo.AutoScaleSizeY = Global.Instance.SizeY;
