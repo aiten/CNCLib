@@ -17,9 +17,16 @@
 */
 
 using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml.Serialization;
+using AutoMapper;
 using CNCLib.GCode.GUI.Models;
+using CNCLib.ServiceProxy;
+using Framework.Tools.Dependency;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
@@ -33,6 +40,14 @@ namespace CNCLib.GCode.GUI.ViewModels
 		{
 		}
 
+        public override async Task Loaded()
+        {
+            await base.Loaded();
+            await LoadAllSettings();
+        }
+
+        private bool _allSettingsLoaded = false;
+
         #endregion
 
         #region private operations
@@ -41,7 +56,7 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         #region GUI-forward
 
-        public Func<string,string> BrowseFileNameFunc { get; set; }
+        public Func<string,bool,string> BrowseFileNameFunc { get; set; }
 
         #endregion
 
@@ -51,32 +66,68 @@ namespace CNCLib.GCode.GUI.ViewModels
         public LoadOptions LoadOptionsValue
         {
             get { return _loadOptions; }
-            set { SetProperty(() => _loadOptions == value, () => _loadOptions = value); }
+            set { SetProperty(() => _loadOptions == value, () => _loadOptions = value);  }
         }
+
+        private ObservableCollection<LoadOptions> _allLoadOptions = new ObservableCollection<LoadOptions>();
+        public ObservableCollection<LoadOptions> AllLoadOptions
+        {
+            get { return _allLoadOptions; }
+            set { SetProperty(ref _allLoadOptions, value); }
+        }
+
+        private LoadOptions _selectedloadOptions = new LoadOptions();
+        public LoadOptions SelectedLoadOption
+        {
+            get { return _selectedloadOptions; }
+            set {
+                    SetProperty(() => _selectedloadOptions == value, () => _selectedloadOptions = value);
+                    if (value != null && _allSettingsLoaded)
+                        LoadOptionsValue = value;
+                }
+        }
+
+        private bool _useAzure = false;
+        public bool UseAzure
+        {
+            get { return _useAzure; }
+            set { SetProperty(() => _useAzure == value, () => _useAzure = value); }
+        }
+
 
         #endregion
 
         #region Operations
+
+        private async Task LoadAllSettings()
+        {
+            _allLoadOptions.Clear();
+
+            using (var controller = Dependency.Resolve<ILoadOptionsService>())
+            {
+                var map = Dependency.Resolve<IMapper>();
+                var items = await controller.GetAll();
+                foreach (var s in items.OrderBy((o) => o.SettingName))
+                {
+                    var option = map.Map<LoadOptions>(s);
+                    _allLoadOptions.Add(option);
+                    if (option.SettingName == LoadOptionsValue.SettingName)
+                    {
+                        SelectedLoadOption = option;
+                    }
+                }
+            }
+            _allSettingsLoaded = true;
+        }
 
         public bool Can()
         {
             return true;
         }
 
-        public async Task Connect()
-        {
-		}
-
-
-		public bool CanConnect()
-        {
-            return true;
-            //return !Connected && Machine != null;
-        }
-
         void BrowseFileName()
         {
-            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.FileName);
+            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.FileName,false);
             if (filename != null)
             {
                 LoadOptionsValue.FileName = filename;
@@ -85,7 +136,7 @@ namespace CNCLib.GCode.GUI.ViewModels
         }
         void BrowseGCodeFileName()
         {
-            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.GCodeWriteToFileName);
+            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.GCodeWriteToFileName,false);
             if (filename != null)
             {
                 LoadOptionsValue.GCodeWriteToFileName = filename;
@@ -94,7 +145,7 @@ namespace CNCLib.GCode.GUI.ViewModels
         }
         void BrowseImageFileName()
         {
-            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.ImageWriteToFileName);
+            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.ImageWriteToFileName,false);
             if (filename != null)
             {
                 LoadOptionsValue.ImageWriteToFileName = filename;
@@ -107,11 +158,107 @@ namespace CNCLib.GCode.GUI.ViewModels
             RaisePropertyChanged(nameof(LoadOptionsValue));
         }
 
+        #region Settings
+
+        async Task SaveSettings()
+        {
+            try
+            {
+                using (var controller = Dependency.Resolve<ILoadOptionsService>())
+                {
+                    var map = Dependency.Resolve<IMapper>();
+
+                    if (SelectedLoadOption != null)
+                    {
+                        var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+                        await controller.Update(opt);
+                    }
+                    else
+                    {
+                        var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(LoadOptionsValue);
+                        int id = await controller.Add(opt);
+                        _allSettingsLoaded = false;
+                        await LoadAllSettings();
+                      }
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox?.Show("Save Options failed: " + ex.Message);
+            }
+
+        }
+        async Task DeleteSettings()
+        {
+            try
+            {
+                using (var controller = Dependency.Resolve<ILoadOptionsService>())
+                {
+                    var map = Dependency.Resolve<IMapper>();
+                    var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+                    await controller.Delete(opt);
+                    _allSettingsLoaded = false;
+                    await LoadAllSettings();
+                    LoadOptionsValue = new LoadOptions();
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Delete Options failed: " + ex.Message);
+            }
+
+        }
+        async Task ImportSettings()
+        {
+            string filename = BrowseFileNameFunc?.Invoke(@"*.xml", false);
+            if (filename != null)
+            {
+                {
+                    using (StreamReader sr = new StreamReader(filename))
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(CNCLib.Logic.Contracts.DTO.LoadOptions));
+                        var opt = (CNCLib.Logic.Contracts.DTO.LoadOptions)serializer.Deserialize(sr);
+                        sr.Close();
+
+                        if (_allLoadOptions.FirstOrDefault((o) => o.SettingName == opt.SettingName)!=null)
+                        {
+                            opt.SettingName = $"{opt.SettingName}#imported#{DateTime.Now}"; 
+                        }
+
+                        using (var controller = Dependency.Resolve<ILoadOptionsService>())
+                        {
+                            int id = await controller.Add(opt);
+                            _allSettingsLoaded = false;
+                            await LoadAllSettings();
+                            SelectedLoadOption = _allLoadOptions.FirstOrDefault((o) => o.SettingName == opt.SettingName);
+                        }
+                    }
+                }
+            }
+        }
+        void ExportSettings()
+        {
+            string filename = BrowseFileNameFunc?.Invoke(SelectedLoadOption.SettingName + @".xml", true);
+            if (filename != null)
+            {
+                var map = Dependency.Resolve<IMapper>();
+                var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+
+                using (StreamWriter sw = new StreamWriter(filename))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(CNCLib.Logic.Contracts.DTO.LoadOptions));
+                    serializer.Serialize(sw, opt);
+                    sw.Close();
+                }
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Commands
 
-        public ICommand ConnectCommand => new DelegateCommand(async () => await Connect(), CanConnect);
         public ICommand BrowseFileNameCommand => new DelegateCommand(BrowseFileName, Can);
         public ICommand BrowseGCodeFileNameCommand => new DelegateCommand(BrowseGCodeFileName, Can);
         public ICommand BrowseImageFileNameCommand => new DelegateCommand(BrowseImageFileName, Can);
@@ -120,6 +267,10 @@ namespace CNCLib.GCode.GUI.ViewModels
         public ICommand SetSameOfsCommand => new DelegateCommand(() => { LoadOptionsValue.OfsY = LoadOptionsValue.OfsX; RaiseLoadOptionsChanged(); }, Can);
         public ICommand SetSameDotSizeCommand => new DelegateCommand(() => { LoadOptionsValue.DotSizeY = LoadOptionsValue.DotSizeX; RaiseLoadOptionsChanged(); }, Can);
         public ICommand SetSameDotDistCommand => new DelegateCommand(() => { LoadOptionsValue.DotDistY = LoadOptionsValue.DotDistX; RaiseLoadOptionsChanged(); }, Can);
+        public ICommand SaveSettingCommand => new DelegateCommand(async () => await SaveSettings(), Can);
+        public ICommand DeleteSettingCommand => new DelegateCommand(async () => await DeleteSettings(), () => Can() && SelectedLoadOption != null);
+        public ICommand ImportSettingCommand => new DelegateCommand(async () => await ImportSettings(), Can);
+        public ICommand ExportSettingCommand => new DelegateCommand(ExportSettings, () => Can() && SelectedLoadOption != null);
 
         #endregion
     }

@@ -12,7 +12,7 @@
     <Window.DataContext>
         <vm:LoadOptionViewModel />
     </Window.DataContext>
- 
+
     <Window.Resources>
         <fhlp:EnumBooleanConverter x:Key="EnumBooleanConverter" />
     </Window.Resources>
@@ -30,7 +30,33 @@
         <TabControl>
             <TabItem Header="GCode">
                 <StackPanel Orientation="Vertical" Margin="10,10,10,10">
-                    <StackPanel Orientation="Horizontal">
+                    <GroupBox Header="Settings">
+                        <StackPanel Margin="5,5,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <Label Content="Name" Width="120"/>
+                                <ComboBox Width="200" SelectedItem="{Binding SelectedLoadOption}" ItemsSource="{Binding AllLoadOptions}" DisplayMemberPath="SettingName" IsEditable="True" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="120,10,0,0">
+                                <Button Command="{Binding SaveSettingCommand}"  Content="Save" Width="80"/>
+                                <Button Command="{Binding DeleteSettingCommand}"  Content="Delete" Width="80"/>
+                                <Button Command="{Binding ExportSettingCommand}"  Content="Export" Width="80"/>
+                                <Button Command="{Binding ImportSettingCommand}"  Content="Import" Width="80"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="File type">
+                        <StackPanel Margin="5,5,0,0">
+                            <RadioButton GroupName="LoadTypeGroup" Content="GCode"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=GCode}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="LoadTypeGroup" Content="HPGL"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=HPGL}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="LoadTypeGroup" Content="Image"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Image}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="LoadTypeGroup" Content="Image-Hole"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=ImageHole}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                            <CheckBox Content="Use Azure" IsChecked="{Binding UseAzure}"  Margin="0,15,0,0"   />
+
+                            
+                        </StackPanel>
+                    </GroupBox>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Content="Save GCode to" Width="120"/>
                         <TextBox Text="{Binding LoadOptionsValue.GCodeWriteToFileName}" VerticalContentAlignment="Center" />
                         <Button Command="{Binding BrowseGCodeFileNameCommand}"  Content="?"/>
@@ -49,14 +75,8 @@
                     <CheckBox Content="Add line numbers" IsChecked="{Binding LoadOptionsValue.AddLineNumbers}"    Margin="120,5,0,0" />
                     <CheckBox Content="Substitute G82" IsChecked="{Binding LoadOptionsValue.SubstG82}"    Margin="120,5,0,0"  />
 
-                    <RadioButton GroupName="LoadTypeGroup" Content="GCode"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=GCode}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
-                    <RadioButton GroupName="LoadTypeGroup" Content="HPGL"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=HPGL}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
-                    <RadioButton GroupName="LoadTypeGroup" Content="Image"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Image}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
-                    <RadioButton GroupName="LoadTypeGroup" Content="Image-Hole"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=ImageHole}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
-
-
                 </StackPanel>
-                
+
             </TabItem>
             <TabItem Header="HPGL/Image">
                 <StackPanel>

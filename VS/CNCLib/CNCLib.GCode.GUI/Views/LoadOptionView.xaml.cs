@@ -51,11 +51,25 @@ namespace CNCLib.GCode.GUI.Views
 				});
 			}
 
+            Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
+            {
+                var vmm = DataContext as BaseViewModel;
+                await vmm.Loaded();
+            });
+
             if (vm.BrowseFileNameFunc == null)
             {
-                vm.BrowseFileNameFunc = new Func<string, string>((string filename) =>
+                vm.BrowseFileNameFunc = new Func<string, bool, string>((string filename, bool savefile) =>
                {
-                    Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+                   Microsoft.Win32.FileDialog dlg;
+                   if (savefile)
+                   {
+                       dlg = new Microsoft.Win32.SaveFileDialog();
+                   }
+                   else
+                   {
+                       dlg = new Microsoft.Win32.OpenFileDialog();
+                   }
                    dlg.FileName = filename;
                    string dir = Path.GetDirectoryName(filename);
                    if (!string.IsNullOrEmpty(dir))
