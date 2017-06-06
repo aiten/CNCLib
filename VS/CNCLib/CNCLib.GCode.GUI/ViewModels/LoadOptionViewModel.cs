@@ -57,8 +57,6 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         #region GUI-forward
 
-        public Func<string,bool,string> BrowseFileNameFunc { get; set; }
-
         #endregion
 
         #region Properties

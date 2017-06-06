@@ -17,8 +17,10 @@
 */
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Windows.Markup;
 using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
@@ -40,8 +42,11 @@ namespace CNCLib.Wpf.Start
 			var userprofilepath = Environment.GetEnvironmentVariable(@"USERPROFILE");
 			AppDomain.CurrentDomain.SetData("DataDirectory", userprofilepath);
 
-			// move file from c:\tmp
-			var tmpsdf = @"c:\tmp\CNCLib.sdf";
+            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
+                XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+
+            // move file from c:\tmp
+            var tmpsdf = @"c:\tmp\CNCLib.sdf";
 			var upfsdf = userprofilepath + @"\CNCLib.sdf";
 			if (File.Exists(tmpsdf) && File.Exists(upfsdf) == false)
 			{

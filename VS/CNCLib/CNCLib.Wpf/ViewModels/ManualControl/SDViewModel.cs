@@ -162,7 +162,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ICommand SendM30FileCommand => new DelegateCommand(SendM30File, CanSendSDFileNameCommand);
 		public ICommand SendFileDirectCommand => new DelegateCommand(SendFileDirect, CanSendFileNameCommand);
 		public ICommand AddToFileCommand => new DelegateCommand(AddToFile, () => CanSendPlotter() && CanSendFileNameCommand());
+        public ICommand BrowseForSDFileCommand => new DelegateCommand(() => { string filename = BrowseFileNameFunc?.Invoke(FileName, false); if (filename != null) FileName = filename; } , CanSend);
 
-		#endregion
-	}
+        #endregion
+    }
 }

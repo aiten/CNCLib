@@ -21,6 +21,7 @@ using System.Windows;
 using System.Windows.Controls;
 using CNCLib.Wpf.ViewModels;
 using Framework.Wpf.ViewModels;
+using Framework.Wpf.View;
 
 namespace CNCLib.Wpf.Views
 {
@@ -33,14 +34,13 @@ namespace CNCLib.Wpf.Views
         {
             InitializeComponent();
 
-			var vm = DataContext as BaseViewModel;
+            var vm = DataContext as ManualControlViewModel;
+            if (vm != null)
+            {
+                vm.SD.DefaulInitForBaseViewModel();
+            }
 
-			Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
-			{
-				var vmm = DataContext as BaseViewModel;
-				await vmm.Loaded();
-			});
-
+            this.DefaulInitForBaseViewModel();
 		}
 
 		public bool IsConnected
@@ -51,31 +51,5 @@ namespace CNCLib.Wpf.Views
                 return false;
             }
         }
-
-        #region Other
-
-		private void BrowseFileOpenDialog_Click(object sender, RoutedEventArgs e)
-		{
-			// Configure open file dialog box
-			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-			//dlg.FileName = "Document"; // Default file name
-			//dlg.DefaultExt = ".txt"; // Default file extension
-			//dlg.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
-
-			// Show open file dialog box
-			Nullable<bool> result = dlg.ShowDialog();
-
-			// Process open file dialog box results
-			if (result == true)
-			{
-				// Open document
-				string filename = dlg.FileName;
-				var vm = DataContext as ManualControlViewModel;
-				if (vm != null) vm.SD.FileName = filename;
-			}
-		}
-
-        #endregion
-  
     }
 }

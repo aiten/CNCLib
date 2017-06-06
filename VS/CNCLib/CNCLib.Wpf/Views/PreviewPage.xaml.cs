@@ -26,7 +26,7 @@ namespace CNCLib.Wpf.Views
 
             Global.Instance.PropertyChanged += (object sender, PropertyChangedEventArgs e) => 
             {
-                if (e.PropertyName.StartsWith("Size"))
+                if (e.PropertyName == nameof(Global.SizeX) || e.PropertyName == nameof(Global.SizeY))
                 {
                     gcode.SizeX = (double) Global.Instance.SizeX;
                     gcode.SizeY = (double) Global.Instance.SizeY;

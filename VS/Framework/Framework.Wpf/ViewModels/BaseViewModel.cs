@@ -62,6 +62,8 @@ namespace Framework.Wpf.ViewModels
 
         public Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>MessageBox{ get; set; }
 
+        public Func<string, bool, string> BrowseFileNameFunc { get; set; }
+
         /// <summary>
         /// Close this window
         /// </summary>

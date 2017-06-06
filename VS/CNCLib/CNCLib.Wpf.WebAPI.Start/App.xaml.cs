@@ -17,8 +17,10 @@
 */
 
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Markup;
 using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.ServiceProxy;
@@ -33,6 +35,9 @@ namespace CNCLib.Wpf.WebAPI.Start
 	{
 		private void AppStartup(object sender, StartupEventArgs e)
 		{
+            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
+                XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+
             Dependency.Initialize(new LiveDependencyProvider());
 			Dependency.Container.RegisterTypesIncludingInternals(
 				//				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,

@@ -17,10 +17,7 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Framework.Wpf.ViewModels;
@@ -29,12 +26,54 @@ namespace Framework.Wpf.View
 {
     public static class BaseViewModelExtensions
     {
+        public static void DefaulInitForBaseViewModel(this BaseViewModel vm)
+        {
+            if (vm.MessageBox == null)
+            {
+                vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
+                {
+                    return MessageBox.Show(messageBoxText, caption, button, icon);
+                });
+            }
+
+            if (vm.BrowseFileNameFunc == null)
+            {
+                vm.BrowseFileNameFunc = new Func<string, bool, string>((string filename, bool savefile) =>
+                {
+                    Microsoft.Win32.FileDialog dlg;
+                    if (savefile)
+                    {
+                        dlg = new Microsoft.Win32.SaveFileDialog();
+                    }
+                    else
+                    {
+                        dlg = new Microsoft.Win32.OpenFileDialog();
+                    }
+                    dlg.FileName = filename;
+                    string dir = Path.GetDirectoryName(filename);
+                    if (!string.IsNullOrEmpty(dir))
+                    {
+                        dlg.InitialDirectory = dir;
+                        dlg.FileName = Path.GetFileName(filename);
+                    }
+
+                    if ((dlg.ShowDialog() ?? false))
+                    {
+                        return filename = dlg.FileName;
+                    }
+                    return null;
+                });
+            }
+        }
+
         public static void DefaulInitForBaseViewModel(this Window view)
         {
             var vm = view.DataContext as BaseViewModel;
 
             if (vm != null)
             {
+                vm.DefaulInitForBaseViewModel();
+
                 if (vm.CloseAction == null)
                     vm.CloseAction = new Action(() => view.Close());
 
@@ -43,14 +82,6 @@ namespace Framework.Wpf.View
 
                 if (vm.DialogCancelAction == null)
                     vm.DialogCancelAction = new Action(() => { view.DialogResult = false; view.Close(); });
-
-                if (vm.MessageBox == null)
-                {
-                    vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
-                    {
-                        return MessageBox.Show(messageBoxText, caption, button, icon);
-                    });
-                }
 
                 view.Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
                 {
@@ -65,7 +96,9 @@ namespace Framework.Wpf.View
 
             if (vm != null)
             {
-/*
+                vm.DefaulInitForBaseViewModel();
+
+/*  => not for page
                 if (vm.CloseAction == null)
                     vm.CloseAction = new Action(() => view.Close());
 
@@ -75,13 +108,6 @@ namespace Framework.Wpf.View
                 if (vm.DialogCancelAction == null)
                     vm.DialogCancelAction = new Action(() => { view.DialogResult = false; view.Close(); });
 */
-                if (vm.MessageBox == null)
-                {
-                    vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
-                    {
-                        return MessageBox.Show(messageBoxText, caption, button, icon);
-                    });
-                }
 
                 view.Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
                 {

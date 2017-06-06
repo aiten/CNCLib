@@ -17,7 +17,9 @@
 */
 
 using System;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Markup;
 using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
@@ -36,6 +38,9 @@ namespace CNCLib.Wpf.Sql.Start
 	{
 		private void AppStartup(object sender, StartupEventArgs e)
 		{
+            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
+                XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+
             Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(
 				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
