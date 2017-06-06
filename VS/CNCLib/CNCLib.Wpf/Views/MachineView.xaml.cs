@@ -16,38 +16,21 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Windows;
-using Framework.Wpf.ViewModels;
+using Framework.Wpf.View;
 
 namespace CNCLib.Wpf.Views
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MachineView : Window
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MachineView : Window
     {
         public MachineView()
         {
             InitializeComponent();
-            var vm = DataContext as BaseViewModel;
-			if (vm.CloseAction == null)
-				vm.CloseAction = new Action(() => this.Close());
 
-			Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
-			{
-				var vmm = DataContext as BaseViewModel;
-				await vmm.Loaded();
-			});
-
-			if (vm.MessageBox == null)
-			{
-				vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
-				{
-					return MessageBox.Show(messageBoxText, caption, button, icon);
-				});
-			}
-
+            this.DefaulInitForBaseViewModel();
 		}
 	}
 }

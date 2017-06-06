@@ -16,43 +16,21 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Wpf.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Framework.Wpf.View;
 
 namespace CNCLib.Wpf.Views
 {
-	/// <summary>
-	/// Interaction logic for EepromView.xaml
-	/// </summary>
-	public partial class EepromView : Window
+    /// <summary>
+    /// Interaction logic for EepromView.xaml
+    /// </summary>
+    public partial class EepromView : Window
 	{
 		public EepromView()
 		{
 			InitializeComponent();
 
-			var vm = DataContext as BaseViewModel;
-			if (vm.CloseAction == null)
-				vm.CloseAction = new Action(() => this.Close());
-
-			if (vm.MessageBox == null)
-			{
-				vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
-				{
-					return MessageBox.Show(messageBoxText, caption, button, icon);
-				});
-			}
+            this.DefaulInitForBaseViewModel();
 		}
 	}
 }

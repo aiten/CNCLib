@@ -27,10 +27,6 @@ namespace Framework.Wpf.ViewModels
 {
     public class BaseViewModel : Prism.Mvvm.BindableBase // NotificationObject
 	{
-        /// <summary>
-        /// Close this window
-        /// </summary>
-		public Action CloseAction { get; set; }
 
         #region ModalDialogs
 
@@ -62,9 +58,18 @@ namespace Framework.Wpf.ViewModels
 
         #endregion
 
+        #region GUI Forwards
+
         public Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>MessageBox{ get; set; }
 
-		public virtual void Cleanup()
+        /// <summary>
+        /// Close this window
+        /// </summary>
+		public Action CloseAction { get; set; }
+
+        #endregion
+
+        public virtual void Cleanup()
 		{
 
 		}
@@ -73,7 +78,9 @@ namespace Framework.Wpf.ViewModels
 			await Task.FromResult(0);
 		}
 
-		protected bool SetProperty(Func<bool> equal, Action action, [CallerMemberName] string propertyName = null)
+        #region properties
+
+        protected bool SetProperty(Func<bool> equal, Action action, [CallerMemberName] string propertyName = null)
 		{
 			if (equal())
 			{
@@ -90,5 +97,7 @@ namespace Framework.Wpf.ViewModels
 			action();
             RaisePropertyChanged(propertyName);
 		}
-	}
+
+        #endregion
+    }
 }

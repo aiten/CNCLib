@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using AutoMapper;
@@ -43,7 +44,7 @@ namespace CNCLib.GCode.GUI.ViewModels
         public override async Task Loaded()
         {
             await base.Loaded();
-            await LoadAllSettings();
+            await LoadAllSettings(null);
         }
 
         private bool _allSettingsLoaded = false;
@@ -76,7 +77,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             set { SetProperty(ref _allLoadOptions, value); }
         }
 
-        private LoadOptions _selectedloadOptions = new LoadOptions();
+        private LoadOptions _selectedloadOptions = null;
         public LoadOptions SelectedLoadOption
         {
             get { return _selectedloadOptions; }
@@ -99,7 +100,7 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         #region Operations
 
-        private async Task LoadAllSettings()
+        private async Task LoadAllSettings(int? setselectedid)
         {
             _allLoadOptions.Clear();
 
@@ -111,7 +112,7 @@ namespace CNCLib.GCode.GUI.ViewModels
                 {
                     var option = map.Map<LoadOptions>(s);
                     _allLoadOptions.Add(option);
-                    if (option.SettingName == LoadOptionsValue.SettingName)
+                    if (setselectedid.HasValue && option.Id == setselectedid.Value)
                     {
                         SelectedLoadOption = option;
                     }
@@ -168,26 +169,35 @@ namespace CNCLib.GCode.GUI.ViewModels
                 {
                     var map = Dependency.Resolve<IMapper>();
 
-                    if (SelectedLoadOption != null)
-                    {
-                        var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
-                        await controller.Update(opt);
-                    }
-                    else
-                    {
-                        var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(LoadOptionsValue);
-                        int id = await controller.Add(opt);
-                        _allSettingsLoaded = false;
-                        await LoadAllSettings();
-                      }
+                    var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+                    await controller.Update(opt);
                 }
             }
             catch (Exception ex)
             {
-                //MessageBox?.Show("Save Options failed: " + ex.Message);
+                MessageBox?.Invoke("Save Options failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
+        async Task SaveAsSettings()
+        {
+            try
+            {
+                using (var controller = Dependency.Resolve<ILoadOptionsService>())
+                {
+                    var map = Dependency.Resolve<IMapper>();
+
+                    var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(LoadOptionsValue);
+                    int id = await controller.Add(opt);
+                    await LoadAllSettings(id);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox?.Invoke("SaveAs Options failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         async Task DeleteSettings()
         {
             try
@@ -197,22 +207,21 @@ namespace CNCLib.GCode.GUI.ViewModels
                     var map = Dependency.Resolve<IMapper>();
                     var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
                     await controller.Delete(opt);
-                    _allSettingsLoaded = false;
-                    await LoadAllSettings();
-                    LoadOptionsValue = new LoadOptions();
+                    await LoadAllSettings(AllLoadOptions?.FirstOrDefault((o) => o.Id != opt.Id)?.Id);
                 }
             }
             catch (Exception ex)
             {
-                //MessageBox.Show("Delete Options failed: " + ex.Message);
+                MessageBox?.Invoke("Delete Options failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
+
         async Task ImportSettings()
         {
             string filename = BrowseFileNameFunc?.Invoke(@"*.xml", false);
             if (filename != null)
             {
+                try
                 {
                     using (StreamReader sr = new StreamReader(filename))
                     {
@@ -228,11 +237,13 @@ namespace CNCLib.GCode.GUI.ViewModels
                         using (var controller = Dependency.Resolve<ILoadOptionsService>())
                         {
                             int id = await controller.Add(opt);
-                            _allSettingsLoaded = false;
-                            await LoadAllSettings();
-                            SelectedLoadOption = _allLoadOptions.FirstOrDefault((o) => o.SettingName == opt.SettingName);
+                            await LoadAllSettings(id);
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox?.Invoke("ImportSettings failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -267,7 +278,8 @@ namespace CNCLib.GCode.GUI.ViewModels
         public ICommand SetSameOfsCommand => new DelegateCommand(() => { LoadOptionsValue.OfsY = LoadOptionsValue.OfsX; RaiseLoadOptionsChanged(); }, Can);
         public ICommand SetSameDotSizeCommand => new DelegateCommand(() => { LoadOptionsValue.DotSizeY = LoadOptionsValue.DotSizeX; RaiseLoadOptionsChanged(); }, Can);
         public ICommand SetSameDotDistCommand => new DelegateCommand(() => { LoadOptionsValue.DotDistY = LoadOptionsValue.DotDistX; RaiseLoadOptionsChanged(); }, Can);
-        public ICommand SaveSettingCommand => new DelegateCommand(async () => await SaveSettings(), Can);
+        public ICommand SaveSettingCommand => new DelegateCommand(async () => await SaveSettings(), () => Can() && SelectedLoadOption != null);
+        public ICommand SaveAsSettingCommand => new DelegateCommand(async () => await SaveAsSettings(), () => Can() && !string.IsNullOrEmpty(LoadOptionsValue.SettingName));
         public ICommand DeleteSettingCommand => new DelegateCommand(async () => await DeleteSettings(), () => Can() && SelectedLoadOption != null);
         public ICommand ImportSettingCommand => new DelegateCommand(async () => await ImportSettings(), Can);
         public ICommand ExportSettingCommand => new DelegateCommand(ExportSettings, () => Can() && SelectedLoadOption != null);

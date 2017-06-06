@@ -6,7 +6,7 @@ using CNCLib.GCode.GUI.Load;
 using CNCLib.GCode.GUI.Views;
 using CNCLib.GCode.GUI.ViewModels;
 using CNCLib.Wpf.ViewModels;
-using Framework.Wpf.ViewModels;
+using Framework.Wpf.View;
 using AutoMapper;
 using Framework.Tools.Dependency;
 using System.Windows.Input;
@@ -22,6 +22,8 @@ namespace CNCLib.Wpf.Views
 		{
 			InitializeComponent();
 
+            this.DefaulInitForBaseViewModel();
+
             Global.Instance.PropertyChanged += (object sender, PropertyChangedEventArgs e) => 
             {
                 if (e.PropertyName.StartsWith("Size"))
@@ -30,13 +32,6 @@ namespace CNCLib.Wpf.Views
                     gcode.SizeY = (double) Global.Instance.SizeY;
                 };
             };
-
-            Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
-			{
-				var vmm = DataContext as BaseViewModel;
-				await vmm.Loaded();
-			});
-
 
             var vm = DataContext as PreviewViewModel;
 
@@ -73,13 +68,6 @@ namespace CNCLib.Wpf.Views
                     }
 				});
 
-			if (vm.MessageBox == null)
-			{
-				vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
-				{
-					return MessageBox.Show(messageBoxText, caption, button, icon);
-				});
-			}
 
 			if (vm.RefreshPreview == null)
 			{

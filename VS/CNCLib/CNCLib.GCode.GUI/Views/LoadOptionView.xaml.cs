@@ -21,6 +21,7 @@ using System.IO;
 using System.Windows;
 using CNCLib.GCode.GUI.ViewModels;
 using Framework.Wpf.ViewModels;
+using Framework.Wpf.View;
 
 namespace CNCLib.GCode.GUI.Views
 {
@@ -33,29 +34,9 @@ namespace CNCLib.GCode.GUI.Views
 		{
 			InitializeComponent();
 
-			var vm = DataContext as LoadOptionViewModel;
-			if (vm.CloseAction == null)
-				vm.CloseAction = new Action(() => this.Close());
+            this.DefaulInitForBaseViewModel();
 
-            if (vm.DialogOKAction == null)
-                vm.DialogOKAction = new Action(() => { this.DialogResult = true; this.Close(); });
-
-            if (vm.DialogCancelAction == null)
-                vm.DialogCancelAction = new Action(() => { this.DialogResult = false; this.Close(); });
-
-            if (vm.MessageBox == null)
-			{
-				vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
-				{
-					return MessageBox.Show(messageBoxText, caption, button, icon);
-				});
-			}
-
-            Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
-            {
-                var vmm = DataContext as BaseViewModel;
-                await vmm.Loaded();
-            });
+            var vm = DataContext as LoadOptionViewModel;
 
             if (vm.BrowseFileNameFunc == null)
             {

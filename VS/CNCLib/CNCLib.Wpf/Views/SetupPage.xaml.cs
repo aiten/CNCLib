@@ -20,6 +20,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using CNCLib.Wpf.ViewModels;
+using Framework.Wpf.View;
 using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.Views
@@ -32,7 +33,10 @@ namespace CNCLib.Wpf.Views
 		public SetupPage()
 		{
 			InitializeComponent();
-			RoutedEventHandler loaded=null;
+
+            this.DefaulInitForBaseViewModel();
+/*
+            RoutedEventHandler loaded =null;
 			loaded = new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
 			{
 				var vmm = DataContext as BaseViewModel;
@@ -41,7 +45,7 @@ namespace CNCLib.Wpf.Views
 			});
 
 			Loaded += loaded;
-
+*/
 			var vm = DataContext as SetupWindowViewModel;
 
 			if (vm.EditMachine == null)
@@ -72,14 +76,6 @@ namespace CNCLib.Wpf.Views
 					var dlg = new JoystickView();
 					var vmdlg = dlg.DataContext as JoystickView;
 					dlg.ShowDialog();
-				});
-			}
-
-			if (vm.MessageBox == null)
-			{
-				vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
-				{
-					return MessageBox.Show(messageBoxText, caption, button, icon);
 				});
 			}
 		}
