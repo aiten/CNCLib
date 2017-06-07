@@ -74,20 +74,32 @@ namespace Framework.Wpf.View
             {
                 vm.DefaulInitForBaseViewModel();
 
-                if (vm.CloseAction == null)
-                    vm.CloseAction = new Action(() => view.Close());
-
-                if (vm.DialogOKAction == null)
-                    vm.DialogOKAction = new Action(() => { view.DialogResult = true; view.Close(); });
-
-                if (vm.DialogCancelAction == null)
-                    vm.DialogCancelAction = new Action(() => { view.DialogResult = false; view.Close(); });
-
-                view.Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
+                var closeAction = new Action(() => view.Close());
+                var dialogOkAction = new Action(() => { view.DialogResult = true; view.Close(); });
+                var dialogCancelAction = new Action(() => { view.DialogResult = false; view.Close(); });
+                var loadedEvent = new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
                 {
                     var vmm = view.DataContext as BaseViewModel;
                     await vmm.Loaded();
                 });
+
+                RoutedEventHandler unloadedEvent=null;
+
+                unloadedEvent = new RoutedEventHandler((object v, RoutedEventArgs e) =>
+                {
+                    vm.CloseAction = null;
+                    vm.DialogOKAction = null;
+                    vm.DialogCancelAction = null;
+                    view.Loaded -= loadedEvent;
+                    view.Unloaded -= unloadedEvent;
+                });
+
+                vm.CloseAction = closeAction;
+                vm.DialogOKAction = dialogOkAction;
+                vm.DialogCancelAction = dialogCancelAction;
+
+                view.Loaded += loadedEvent;
+                view.Unloaded += unloadedEvent;
             }
         }
         public static void DefaulInitForBaseViewModel(this Page view)

@@ -44,7 +44,7 @@ namespace CNCLib.GCode.GUI.ViewModels
         public override async Task Loaded()
         {
             await base.Loaded();
-            await LoadAllSettings(null);
+            await LoadAllSettings(LoadOptionsValue.Id);
         }
 
         private bool _allSettingsLoaded = false;

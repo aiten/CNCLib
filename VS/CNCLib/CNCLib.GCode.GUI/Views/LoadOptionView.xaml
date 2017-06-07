@@ -15,6 +15,7 @@
 
     <Window.Resources>
         <fhlp:EnumBooleanConverter x:Key="EnumBooleanConverter" />
+        <fhlp:InvertBoolConverter x:Key="InvertBoolConverter" />
     </Window.Resources>
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="10,10,10,10">
@@ -57,7 +58,7 @@
                             <RadioButton GroupName="LoadTypeGroup" Content="Image-Hole"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=ImageHole}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
                             <CheckBox Content="Use Azure" IsChecked="{Binding UseAzure}"  Margin="0,15,0,0"   />
 
-                            
+
                         </StackPanel>
                     </GroupBox>
 
@@ -83,7 +84,7 @@
                 </StackPanel>
 
             </TabItem>
-            <TabItem Header="HPGL/Image">
+            <TabItem Header="HPGL/Image" Height="22" VerticalAlignment="Bottom">
                 <StackPanel>
                     <GroupBox Header="Auto Scale">
                         <StackPanel>
@@ -93,26 +94,26 @@
                                 <Label Content="X" Width="60" HorizontalContentAlignment="Center" />
                                 <Label Content="Y" Width="60" HorizontalContentAlignment="Center"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.AutoScale}">
                                 <Label Content="Scale to" Width="120"/>
                                 <TextBox Text="{Binding LoadOptionsValue.AutoScaleSizeX}" VerticalContentAlignment="Center" Width="60" />
                                 <TextBox Text="{Binding LoadOptionsValue.AutoScaleSizeY}" VerticalContentAlignment="Center" Width="60" />
                                 <Label Content="mm"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.AutoScale}">
                                 <Label Content="Boarder Distance" Width="120"/>
                                 <TextBox Text="{Binding LoadOptionsValue.AutoScaleBorderDistX}" VerticalContentAlignment="Center" Width="60" />
                                 <TextBox Text="{Binding LoadOptionsValue.AutoScaleBorderDistY}" VerticalContentAlignment="Center" Width="60" />
                                 <Label Content="mm"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.AutoScale}">
                                 <Label Content="DPI" Width="120"/>
                                 <TextBox Text="{Binding LoadOptionsValue.ImageDPIX}" VerticalContentAlignment="Center" Width="60" />
                                 <TextBox Text="{Binding LoadOptionsValue.ImageDPIY}" VerticalContentAlignment="Center" Width="60" />
                                 <Button Command="{Binding SetSameDPICommand}"  Content="="/>
                             </StackPanel>
-                            <CheckBox Content="Keep X/Y ratio" IsChecked="{Binding LoadOptionsValue.AutoScaleKeepRatio}"  Margin="120,5,0,0"   />
-                            <CheckBox Content="Center" IsChecked="{Binding LoadOptionsValue.AutoScaleCenter}"    Margin="120,5,0,0"  />
+                            <CheckBox Content="Keep X/Y ratio" IsChecked="{Binding LoadOptionsValue.AutoScaleKeepRatio}" IsEnabled="{Binding LoadOptionsValue.AutoScale}" Margin="120,5,0,0"   />
+                            <CheckBox Content="Center" IsChecked="{Binding LoadOptionsValue.AutoScaleCenter}"  IsEnabled="{Binding LoadOptionsValue.AutoScale}"  Margin="120,5,0,0"  />
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Manual Scale">
@@ -122,14 +123,14 @@
                                 <Label Content="X" Width="60" HorizontalContentAlignment="Center" />
                                 <Label Content="Y" Width="60" HorizontalContentAlignment="Center"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.AutoScale, Converter={StaticResource InvertBoolConverter}}">
                                 <Label Content="Scale" Width="120"/>
                                 <TextBox Text="{Binding LoadOptionsValue.ScaleX}" VerticalContentAlignment="Center" Width="60" />
                                 <TextBox Text="{Binding LoadOptionsValue.ScaleY}" VerticalContentAlignment="Center" Width="60" />
                                 <Button Command="{Binding SetSameScaleToCommand}"  Content="="/>
                                 <Label Content="1=100%"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal"  IsEnabled="{Binding LoadOptionsValue.AutoScale, Converter={StaticResource InvertBoolConverter}}">
                                 <Label Content="Offset" Width="120"/>
                                 <TextBox Text="{Binding LoadOptionsValue.OfsX}" VerticalContentAlignment="Center" Width="60" />
                                 <TextBox Text="{Binding LoadOptionsValue.OfsY}" VerticalContentAlignment="Center" Width="60" />
@@ -142,17 +143,17 @@
                     <GroupBox Header="Smooth (HPGL)">
                         <StackPanel>
                             <CheckBox Content="Smooth"  IsChecked="{Binding LoadOptionsValue.SmoothEnabled}"   Margin="10,10,0,0"  />
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.SmoothEnabled}">
                                 <Label Content="Minimum line lenght" Width="120"/>
                                 <TextBox Text="{Binding LoadOptionsValue.SmoothMinLineLenght}" VerticalContentAlignment="Center" Width="60" />
                                 <Label Content="mm"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.SmoothEnabled}">
                                 <Label Content="Max error" Width="120"/>
                                 <TextBox Text="{Binding LoadOptionsValue.SmoothMaxError}" VerticalContentAlignment="Center" Width="60" />
                                 <Label Content="mm"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.SmoothEnabled}">
                                 <Label Content="Minimum angle" Width="120"/>
                                 <TextBox Text="{Binding LoadOptionsValue.SmoothMinAngle}" VerticalContentAlignment="Center" Width="60" />
                                 <Label Content="rad"/>
@@ -163,8 +164,8 @@
             </TabItem>
             <TabItem Header="HPGL Engrave/Laser">
                 <StackPanel>
-                    <RadioButton GroupName="PenMoveTypeGroup" Content="Generate for Laser"  IsChecked="{Binding LoadOptionsValue.PenMoveType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CommandString}"   Margin="10,10,0,0"  />
-                    <GroupBox Header="Laser">
+                    <RadioButton x:Name="_HPGLLaser" GroupName="PenMoveTypeGroup" Content="Generate for Laser"  IsChecked="{Binding LoadOptionsValue.PenMoveType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CommandString}"   Margin="10,10,0,0"  />
+                    <GroupBox Header="Laser" IsEnabled="{Binding IsChecked, ElementName=_HPGLLaser}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Laser first on" Width="120"/>
@@ -194,7 +195,7 @@
                         </StackPanel>
                     </GroupBox>
                     <RadioButton GroupName="PenMoveTypeGroup" Content="Generate for engrave"  IsChecked="{Binding LoadOptionsValue.PenMoveType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=ZMove}"   Margin="10,10,0,0"  />
-                    <GroupBox Header="Engrave">
+                    <GroupBox Header="Engrave" IsEnabled="{Binding LoadOptionsValue.PenMoveType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=ZMove}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Z position Up" Width="120"/>
@@ -252,7 +253,7 @@
 
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Image hole">
+                    <GroupBox Header="Image hole" IsEnabled="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=ImageHole}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="" Width="120"/>
@@ -285,7 +286,7 @@
                             <RadioButton GroupName="HoleTypeGroup" Content="Diamond"  IsChecked="{Binding LoadOptionsValue.HoleType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Diamond}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
                             <StackPanel Orientation="Horizontal">
                                 <RadioButton GroupName="HoleTypeGroup" Content="Heart"  IsChecked="{Binding LoadOptionsValue.HoleType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Heart}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
-                                <CheckBox Content="Rotate"  IsChecked="{Binding LoadOptionsValue.RotateHeart}"   Margin="30,0,0,0"  />
+                                <CheckBox Content="Rotate"  IsChecked="{Binding LoadOptionsValue.RotateHeart}"  IsEnabled="{Binding LoadOptionsValue.HoleType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Heart}"  Margin="30,0,0,0"  />
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>

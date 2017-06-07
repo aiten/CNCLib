@@ -25,8 +25,8 @@ using Framework.Wpf.Helpers;
 
 namespace Framework.Wpf.ViewModels
 {
-    public class BaseViewModel : Prism.Mvvm.BindableBase // NotificationObject
-	{
+    public class BaseViewModel : BindableBase
+    {
 
         #region ModalDialogs
 
@@ -79,27 +79,5 @@ namespace Framework.Wpf.ViewModels
 		{
 			await Task.FromResult(0);
 		}
-
-        #region properties
-
-        protected bool SetProperty(Func<bool> equal, Action action, [CallerMemberName] string propertyName = null)
-		{
-			if (equal())
-			{
-				return false;
-			}
-
-			RaisePropertyChanged(action, propertyName);
-
-			return true;
-		}
-
-		protected void RaisePropertyChanged(Action action, [CallerMemberName] string propertyName = null)
-		{
-			action();
-            RaisePropertyChanged(propertyName);
-		}
-
-        #endregion
     }
 }

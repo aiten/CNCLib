@@ -40,19 +40,6 @@ namespace CNCLib.Wpf.Views
 				{
                     if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
-                        var dlg = new LoadOptionView();
-                        var vmdlg = dlg.DataContext as LoadOptionViewModel;
-                        vmdlg.LoadOptionsValue = Dependency.Resolve<IMapper>().Map<CNCLib.GCode.GUI.Models.LoadOptions>(arg.LoadOption);
-                        vmdlg.UseAzure = arg.UseAzure;
-                        if (!dlg.ShowDialog() ?? false)
-                            return false;
-                        
-                        arg.LoadOption = Dependency.Resolve<IMapper>().Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
-                        arg.UseAzure = vmdlg.UseAzure;
-                        return true;
-                    }
-                    else
-                    {
                         using (LoadOptionForm form = new LoadOptionForm())
                         {
                             form.LoadInfo = arg.LoadOption;
@@ -66,7 +53,20 @@ namespace CNCLib.Wpf.Views
                             return true;
                         }
                     }
-				});
+                    else
+                    {
+                        var dlg = new LoadOptionView();
+                        var vmdlg = dlg.DataContext as LoadOptionViewModel;
+                        vmdlg.LoadOptionsValue = Dependency.Resolve<IMapper>().Map<CNCLib.GCode.GUI.Models.LoadOptions>(arg.LoadOption);
+                        vmdlg.UseAzure = arg.UseAzure;
+                        if (!dlg.ShowDialog() ?? false)
+                            return false;
+
+                        arg.LoadOption = Dependency.Resolve<IMapper>().Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
+                        arg.UseAzure = vmdlg.UseAzure;
+                        return true;
+                    }
+                });
 
 
 			if (vm.RefreshPreview == null)

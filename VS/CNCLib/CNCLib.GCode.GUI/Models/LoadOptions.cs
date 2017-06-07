@@ -17,10 +17,11 @@
 */
 
 using System;
+using Framework.Wpf.ViewModels;
 
 namespace CNCLib.GCode.GUI.Models
 {
-    public class LoadOptions
+    public class LoadOptions : BindableBase
     {
         public int Id { get; set; }
 
@@ -32,9 +33,13 @@ namespace CNCLib.GCode.GUI.Models
             ImageHole
 
         }
-        public ELoadType LoadType { get; set; } = ELoadType.GCode;
+        private ELoadType _LoadType = ELoadType.GCode;
+        public ELoadType LoadType { get => _LoadType; set { SetProperty(ref _LoadType, value); } }
 
-        public string FileName { get; set; }
+        public string _FileName;
+        public string FileName { get => _FileName; set { SetProperty(ref _FileName, value); } }
+
+
         public Byte[] FileContent { get; set; }
 
         public string SettingName { get; set; }
@@ -58,7 +63,9 @@ namespace CNCLib.GCode.GUI.Models
         public decimal OfsY { get; set; } = 0;
 
         //HPGL+IMG
-        public bool AutoScale { get; set; } = false;
+        public bool _AutoScale;
+        public bool AutoScale { get => _AutoScale; set { SetProperty(ref _AutoScale, value); } }
+
         public bool AutoScaleKeepRatio { get; set; } = true;
 
         public bool AutoScaleCenter { get; set; } = false;
@@ -76,7 +83,8 @@ namespace CNCLib.GCode.GUI.Models
             CommandString
         }
 
-        public PenType PenMoveType { get; set; } = PenType.ZMove;
+        public PenType _PenMoveType = PenType.ZMove;
+        public PenType PenMoveType { get => _PenMoveType; set { SetProperty(ref _PenMoveType, value); } }
 
         public bool EngravePosInParameter { get; set; } = true;
         public decimal EngravePosUp { get; set; } = 1m;
@@ -100,7 +108,9 @@ namespace CNCLib.GCode.GUI.Models
             SplineLine = 2
         }
 
-        public SmoothTypeEnum SmoothType { get; set; } = SmoothTypeEnum.NoSmooth;
+        public SmoothTypeEnum _SmoothType = SmoothTypeEnum.NoSmooth;
+        public SmoothTypeEnum SmoothType { get => _SmoothType; set { SetProperty(ref _SmoothType, value); RaisePropertyChanged(nameof(SmoothEnabled)); } }
+
         public decimal? SmoothMinAngle { get; set; } = (decimal) (45 * (Math.PI / 180));
         public decimal? SmoothMinLineLenght { get; set; } = 1m;
         public decimal? SmoothMaxError { get; set; } = 1m / 40m;
@@ -121,9 +131,11 @@ namespace CNCLib.GCode.GUI.Models
             NewspaperDither
         }
 
+        public DitherFilter _Dither = DitherFilter.FloydSteinbergDither;
+        public DitherFilter Dither { get => _Dither; set { SetProperty(ref _Dither, value); } }
+
         public bool ImageInvert { get; set; } = false;
 
-        public DitherFilter Dither { get; set; } = DitherFilter.FloydSteinbergDither;
         public int NewspaperDitherSize { get; set; } = 5;
 
         // Hole
@@ -143,6 +155,7 @@ namespace CNCLib.GCode.GUI.Models
             Diamond,
             Heart
         }
-        public EHoleType HoleType { get; set; } = EHoleType.Hexagon;
+        public EHoleType _HoleType = EHoleType.Hexagon;
+        public EHoleType HoleType { get => _HoleType; set { SetProperty(ref _HoleType, value); } }
     }
 }
