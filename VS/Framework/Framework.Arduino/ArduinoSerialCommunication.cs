@@ -183,7 +183,7 @@ namespace Framework.Arduino
         {
             Trace.WriteTraceFlush("Disconnecting",join.ToString());
             Aborted = true;
-			_serialPortCancellationTokenSource.Cancel();
+			_serialPortCancellationTokenSource?.Cancel();
 
 
 			if (join && _readThread != null)

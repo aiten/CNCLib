@@ -15,6 +15,8 @@ devenv CNCLib\CNCLib.sln /Clean %BuildTarget%
 devenv Plotter\Plotter.sln /Clean %BuildTarget%
 devenv SpeedChart\SpeedChart.sln /Clean  %BuildTarget%
 
+
+for /D /R  %%d in (packages) do if exist %%d rmdir /Q /S %%d
 for /D /R  %%d in (Debug) do if exist %%d rmdir /Q /S %%d
 for /D /R  %%d in (Release) do if exist %%d rmdir /Q /S %%d
 for /D /R  %%d in (Bin) do if exist %%d rmdir /Q /S %%d
