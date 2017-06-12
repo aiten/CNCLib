@@ -66,11 +66,13 @@ namespace CNCLib.Wpf.WebAPI.Start
 				{
 					using (var controller = Dependency.Resolve<IMachineService>())
 					{
-						int m = await controller.GetDetaultMachine();
+						var m = await controller.Get(1000000);
+/*
 						if (m == -1)
 						{
 							throw new ArgumentException("cannot connect to service");
 						}
+*/
 					}
 					return true;
 				}
