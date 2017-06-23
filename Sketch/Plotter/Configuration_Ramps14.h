@@ -75,10 +75,12 @@
 
 #ifdef RAMPS14_HOLD_PIN
 #define HOLD_PIN CNCSHIELD_HOLD_PIN
+#define HOLD_PIN_ON CNCSHIELD_HOLD_PIN_ON
 #endif
 
 #ifdef RAMPS14_RESUME_PIN
 #define RESUME_PIN CNCSHIELD_RESUME_PIN
+#define RESUME_PIN_ON CNCSHIELD_RESUME_PIN_ON
 #endif
 
 ////////////////////////////////////////////////////////

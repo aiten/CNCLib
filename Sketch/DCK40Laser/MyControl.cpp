@@ -250,7 +250,7 @@ bool CMyControl::OnEvent(EnumAsByte(EStepperControlEvent) eventtype, uintptr_t a
 				{
 					_laserWater.Off();
 				}
-				if (millis() - CStepper::GetInstance()->IdleTime() > LASERVACUUM__ONTIME)
+				if (millis() - CStepper::GetInstance()->IdleTime() > LASERVACUUM_ONTIME)
 				{
 					_laserVacuum.Off();
 				}

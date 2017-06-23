@@ -82,12 +82,12 @@ struct ControlData
 #endif  
 
 #ifdef COOLANT_PIN
-	COnOffIOControl<COOLANT_PIN, COOLANT_ON, COOLANT_OFF> _coolant;
+	COnOffIOControl<COOLANT_PIN, COOLANT_PIN_ON, COOLANT_PIN_OFF> _coolant;
 #else
 	CDummyIOControl _coolant;
 #endif
 #ifdef PROBE_PIN
-	CReadPinIOControl<PROBE_PIN, PROBE_ON> _probe;
+	CReadPinIOControl<PROBE_PIN, PROBE_PIN_ON> _probe;
 #else
 	CDummyIOControl _probe;
 #endif
@@ -103,15 +103,15 @@ struct ControlData
 #endif
 
 #if defined(HOLD_PIN) && defined(RESUME_PIN)
-	CPushButtonLow<HOLD_PIN, LOW> _hold;
-	CPushButtonLow<RESUME_PIN, LOW> _resume;
+	CPushButtonLow<HOLD_PIN, HOLD_PIN_ON> _hold;
+	CPushButtonLow<RESUME_PIN, RESUME_PIN_ON> _resume;
 #else
 	CDummyIOControl _hold;
 	CDummyIOControl _resume;
 #endif
 
 #if defined(HOLDRESUME_PIN)
-	CPushButtonLow<HOLDRESUME_PIN, LOW> _holdresume;
+	CPushButtonLow<HOLDRESUME_PIN, HOLDRESUME_PIN_ON> _holdresume;
 #else
 	CDummyIOControl _holdresume;
 #endif

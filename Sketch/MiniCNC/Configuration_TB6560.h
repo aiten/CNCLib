@@ -68,8 +68,8 @@
 
 #define PROBE_PIN	12
 
-#define PROBE_ON  LOW
-#define PROBE_OFF HIGH
+#define PROBE_PIN_ON  LOW
+#define PROBE_PIN_OFF HIGH
 
 ////////////////////////////////////////////////////////
 

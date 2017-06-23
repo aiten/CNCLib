@@ -64,7 +64,7 @@
 
 //#define PROBE_PIN PIN_A6
 #undef PROBE_PIN
-#define PROBE_ON LOW
+#define PROBE_PIN_ON LOW
 
 ////////////////////////////////////////////////////////
 

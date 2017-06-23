@@ -35,8 +35,8 @@
 //#define COOLANT_PIN	CAT(BOARDNAME,_AUX2_8)	// Ramps1.4 D42
 #define COOLANT_PIN	42
 
-#define COOLANT_ON  HIGH
-#define COOLANT_OFF LOW
+#define COOLANT_PIN_ON  HIGH
+#define COOLANT_PIN_OFF LOW
 
 ////////////////////////////////////////////////////////
 
@@ -52,15 +52,15 @@
 //#define PROBE1_PIN	CAT(BOARDNAME,_AUX2_7)	// Ramps 1.4 D44 
 //#define PROBE2_PIN	CAT(BOARDNAME,_AUX2_5)	// Ramps 1.4 A10 
 
-#define PROBE_ON  LOW
-#define PROBE_OFF HIGH
+#define PROBE_PIN_ON  LOW
+#define PROBE_PIN_OFF HIGH
 
 #define KILL_PIN MASH6050S_KILL_PIN
 #define KILL_PIN_ON MASH6050S_KILL_PIN_ON
 #define KILL_PIN_OFF MASH6050S_KILL_PIN_OFF
 
-#define HOLDRESUME_PIN CAT(BOARDNAME, _LCD_KILL_PIN)
-#define HOLDRESUME_PIN_ON CAT(BOARDNAME, _LCD_KILL_PIN_ON)
+#define HOLDRESUME_PIN		CAT(BOARDNAME, _LCD_KILL_PIN)
+#define HOLDRESUME_PIN_ON	CAT(BOARDNAME, _LCD_KILL_PIN_ON)
 
 ////////////////////////////////////////////////////////
 
