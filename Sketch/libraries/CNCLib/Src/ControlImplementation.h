@@ -37,8 +37,14 @@
 #define SPINDLE_FADETIME 8
 #endif
 
-////////////////////////////////////////////////////////
+#ifndef PROBE_INPUTPINMODE
+#define PROBE_INPUTPINMODE INPUT_PULLUP
+#endif
+#ifndef KILL_INPUTPINMODE
+#define KILL_INPUTPINMODE INPUT_PULLUP
+#endif
 
+////////////////////////////////////////////////////////
 
 struct ControlData
 {
@@ -87,7 +93,11 @@ struct ControlData
 #endif
 
 #ifdef KILL_PIN
+#ifdef KILL_ISTRIGGER
+	CReadPinIOTriggerControl<KILL_PIN, KILL_PIN_ON, 200> _kill;
+#else
 	CReadPinIOControl<KILL_PIN, KILL_PIN_ON> _kill;
+#endif
 #else
 	CDummyIOControl _kill;
 #endif
@@ -108,7 +118,7 @@ struct ControlData
 
 #ifdef CONTROLLERFAN_FAN_PIN
 #ifdef CONTROLLERFAN_ANALOGSPEED
-#if defined(USE_RAMPSFD)
+#ifdef CONTROLLERFAN_ANALOGSPEED_INVERT
 	CAnalog8InvertIOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
 #else
 	CAnalog8IOControl<CONTROLLERFAN_FAN_PIN> _controllerfan;
@@ -130,8 +140,8 @@ struct ControlData
 #ifdef SPINDLESMOOTH
 		_spindle.SetDelay(CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, spindlefadetime)));
 #endif
-		_probe.Init();
-		_kill.Init();
+		_probe.Init(PROBE_INPUTPINMODE);
+		_kill.Init(KILL_INPUTPINMODE);
 		_coolant.Init();
 
 		_hold.Init();
