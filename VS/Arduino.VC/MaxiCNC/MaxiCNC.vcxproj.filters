@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="MaxiCNC">
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MaxiCNC\MyControl.h">
+      <Filter>MaxiCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MaxiCNC\MyLCD.h">
+      <Filter>MaxiCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MaxiCNC\MyMenu.h">
+      <Filter>MaxiCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MaxiCNC\Configuration.h">
+      <Filter>MaxiCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MaxiCNC\Configuration_Ramps14.h">
+      <Filter>MaxiCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MaxiCNC\Configuration_RampsFD.h">
+      <Filter>MaxiCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MaxiCNC\Configuration_ProxxonMF70.h">
+      <Filter>MaxiCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MaxiCNC\Configuration_KK1000S.h">
+      <Filter>MaxiCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MaxiCNC\Configuration_Mash6050S.h">
+      <Filter>MaxiCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MaxiCNC\Configuration_ProxxonMF70_FD.h">
+      <Filter>MaxiCNC</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaxiCNC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\MaxiCNC\MyControl.cpp">
+      <Filter>MaxiCNC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\MaxiCNC\MyLCD.cpp">
+      <Filter>MaxiCNC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Sketch\MaxiCNC\MyMenu.cpp">
+      <Filter>MaxiCNC</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Sketch\MaxiCNC\MaxiCNC.ino">
+      <Filter>MaxiCNC</Filter>
+    </None>
+    <None Include="test.nc" />
+  </ItemGroup>
+</Project>

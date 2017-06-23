@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plotter", "Plotter\Plotter.vcxproj", "{AB8D0B94-F0C2-4593-8509-E31E8132D1E1}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -61,6 +61,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DCK40LaserWatchDog", "DCK40
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StepperSystem.Test", "StepperSystem.Test\StepperSystem.Test.vcxproj", "{7E085396-CAAC-458E-B04C-0DBF14811025}"
+	ProjectSection(ProjectDependencies) = postProject
+		{65F3EA50-71B8-4573-8D35-786D97FDFA91} = {65F3EA50-71B8-4573-8D35-786D97FDFA91}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MaxiCNC", "MaxiCNC\MaxiCNC.vcxproj", "{B06146B7-2323-4233-B586-FCEB370C8F02}"
 	ProjectSection(ProjectDependencies) = postProject
 		{65F3EA50-71B8-4573-8D35-786D97FDFA91} = {65F3EA50-71B8-4573-8D35-786D97FDFA91}
 	EndProjectSection
@@ -153,6 +158,12 @@ Global
 		{7E085396-CAAC-458E-B04C-0DBF14811025}.Release|Win32.Build.0 = Release|Win32
 		{7E085396-CAAC-458E-B04C-0DBF14811025}.Release|x64.ActiveCfg = Release|x64
 		{7E085396-CAAC-458E-B04C-0DBF14811025}.Release|x64.Build.0 = Release|x64
+		{B06146B7-2323-4233-B586-FCEB370C8F02}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B06146B7-2323-4233-B586-FCEB370C8F02}.Debug|Win32.Build.0 = Debug|Win32
+		{B06146B7-2323-4233-B586-FCEB370C8F02}.Debug|x64.ActiveCfg = Debug|Win32
+		{B06146B7-2323-4233-B586-FCEB370C8F02}.Release|Win32.ActiveCfg = Release|Win32
+		{B06146B7-2323-4233-B586-FCEB370C8F02}.Release|Win32.Build.0 = Release|Win32
+		{B06146B7-2323-4233-B586-FCEB370C8F02}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
