@@ -23,7 +23,6 @@
 
 #include <Steppers/StepperRampsFD_pins.h>
 
-
 //swap X with E PINs
 #undef RAMPSFD_X_STEP_PIN
 #undef RAMPSFD_X_DIR_PIN

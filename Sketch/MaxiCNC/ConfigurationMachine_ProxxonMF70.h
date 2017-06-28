@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
-#define CMyStepper CStepperRampsFD
+#define CMyStepper CStepperRamps14
 
 ////////////////////////////////////////////////////////
 
@@ -46,15 +46,15 @@
 //#define STEPPERDIRECTION (1<<X_AXIS) + (1<<Y_AXIS)		// set bit to invert direction of each axis
 
 #define STEPSPERROTATION  200
-#define MICROSTEPPING     32
+#define MICROSTEPPING     16
 #define SCREWLEAD         1.0
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED ((steprate_t)56000)        // steps/sec => 8.75 rot /sec
-#define CNC_ACC  496                            // 0.257 => time to full speed
-#define CNC_DEC  565                            // 0.1975 => time to break
-#define CNC_JERKSPEED 2240
+#define CNC_MAXSPEED ((steprate_t)28000)        // steps/sec => 8.75 rot /sec
+#define CNC_ACC  350                            // 0.257 => time to full speed
+#define CNC_DEC  400                            // 0.1975 => time to break
+#define CNC_JERKSPEED 1000
 
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
@@ -95,7 +95,7 @@
 
 ////////////////////////////////////////////////////////
 
-#include "Configuration_RampsFD.h"
+#include "ConfigurationStepper_Ramps14.h"
 
 ////////////////////////////////////////////////////////
 
@@ -103,15 +103,14 @@
 #define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
 #define G1_DEFAULT_FEEDPRATE	  100000	// in mm1000 / min
 
-#define STEPRATERATE_REFMOVE	  (CNC_MAXSPEED/3)
-#define FEEDRATE_REFMOVE_PHASE2		200000
+#define STEPRATERATE_REFMOVE		(CNC_MAXSPEED/3)
+//#define FEEDRATE_REFMOVE_PHASE2		200000
 
 ////////////////////////////////////////////////////////
 
 #define CONTROLLERFAN_ONTIME	  10000			// switch off controllerfan if idle for 10 Sec
 #define CONTROLLERFAN_FAN_PIN	  CAT(BOARDNAME,_FET2D9_PIN)
 #define CONTROLLERFAN_ANALOGSPEED
-#define CONTROLLERFAN_ANALOGSPEED_INVERT
 
 ////////////////////////////////////////////////////////
 
@@ -135,11 +134,8 @@
 #define PROBE_PIN_ON  LOW
 #define PROBE_PIN_OFF HIGH
 
-#if NUM_AXIS < 6
-// LCD KILL is shared with E1 (RampsFD) (DIR)
 #define HOLDRESUME_PIN		CAT(BOARDNAME, _LCD_KILL_PIN)
 #define HOLDRESUME_PIN_ON	CAT(BOARDNAME, _LCD_KILL_PIN_ON)
-#endif
 
 ////////////////////////////////////////////////////////
 
@@ -156,10 +152,10 @@
 #include <MessageCNCLibEx.h>
 
 #if defined(__SAM3X8E__)
-#define MESSAGE_MYCONTROL_Starting			F("Proxxon MF 70(HA) Ramps FD due is starting ... (" __DATE__ ", " __TIME__ ")")
-#define MESSAGE_LCD_HEADLINE						F("Proxxon MF70 RampsFD-D")
+#define MESSAGE_MYCONTROL_Starting			F("Proxxon MF 70(HA) Ramps 1.4 due is starting ... (" __DATE__ ", " __TIME__ ")")
+#define MESSAGE_LCD_HEADLINE						F("Proxxon MF70 Ramps14D")
 #else
-#define MESSAGE_MYCONTROL_Starting			F("Proxxon MF 70(HA) Ramps FD is starting ... (" __DATE__ ", " __TIME__ ")")
-#define MESSAGE_LCD_HEADLINE						F("Proxxon MF70 RampsFD-M")
+#define MESSAGE_MYCONTROL_Starting			F("Proxxon MF 70(HA) Ramps 1.4 is starting ... (" __DATE__ ", " __TIME__ ")")
+#define MESSAGE_LCD_HEADLINE						F("Proxxon MF70 Ramps14M")
 #endif
 

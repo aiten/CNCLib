@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////
 
-#define CMyStepper CStepperRamps14
+#define CMyStepper CStepperMash6050S
 
 ////////////////////////////////////////////////////////
 
@@ -29,31 +29,33 @@
 
 ////////////////////////////////////////////////////////
 
+#define MYNUM_AXIS 3
+#define LCD_NUMAXIS  MYNUM_AXIS
 #define MYUSE_LCD
 
 ////////////////////////////////////////////////////////
 
-#define X_MAXSIZE 130000				// in mm1000_t
-#define Y_MAXSIZE 45000 
-#define Z_MAXSIZE 81000 
+#define X_MAXSIZE 800000				// in mm1000_t
+#define Y_MAXSIZE 500000 
+#define Z_MAXSIZE 100000 
 #define A_MAXSIZE 360000 
 #define B_MAXSIZE 360000 
 #define C_MAXSIZE 360000 
 
 ////////////////////////////////////////////////////////
 
-#define STEPPERDIRECTION 0
-//#define STEPPERDIRECTION (1<<X_AXIS) + (1<<Y_AXIS)		// set bit to invert direction of each axis
+#define STEPPERDIRECTION (1<<X_AXIS) + (1<<Y_AXIS)		// set bit to invert direction of each axis
 
-#define STEPSPERROTATION  200
-#define MICROSTEPPING     16
-#define SCREWLEAD         1.0
+// PIN AS Ramps 1.4 
+#define STEPSPERROTATION	200
+#define MICROSTEPPING		16
+#define SCREWLEAD			5.0
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED ((steprate_t)28000)        // steps/sec => 8.75 rot /sec
-#define CNC_ACC  350                            // 0.257 => time to full speed
-#define CNC_DEC  400                            // 0.1975 => time to break
+#define CNC_MAXSPEED 30000        // steps/sec
+#define CNC_ACC  350
+#define CNC_DEC  400
 #define CNC_JERKSPEED 1000
 
 ////////////////////////////////////////////////////////
@@ -75,27 +77,27 @@
 
 #define X_REFERENCEHITVALUE_MIN LOW
 #define Y_REFERENCEHITVALUE_MIN LOW
-#define Z_REFERENCEHITVALUE_MIN LOW
-#define A_REFERENCEHITVALUE_MIN LOW
-#define B_REFERENCEHITVALUE_MIN LOW
-#define C_REFERENCEHITVALUE_MIN LOW
+#define Z_REFERENCEHITVALUE_MIN 255
+#define A_REFERENCEHITVALUE_MIN 255
+#define B_REFERENCEHITVALUE_MIN 255
+#define C_REFERENCEHITVALUE_MIN 255
 
-#define X_REFERENCEHITVALUE_MAX LOW
-#define Y_REFERENCEHITVALUE_MAX LOW
+#define X_REFERENCEHITVALUE_MAX 255
+#define Y_REFERENCEHITVALUE_MAX 255
 #define Z_REFERENCEHITVALUE_MAX LOW
-#define A_REFERENCEHITVALUE_MAX LOW
-#define B_REFERENCEHITVALUE_MAX LOW
-#define C_REFERENCEHITVALUE_MAX LOW
+#define A_REFERENCEHITVALUE_MAX 255
+#define B_REFERENCEHITVALUE_MAX 255
+#define C_REFERENCEHITVALUE_MAX 255
 
-#define MOVEAWAYFROMREF_MM1000 125
+#define MOVEAWAYFROMREF_MM1000 250
 
 #undef SPINDLE_ANALOGSPEED
 #define SPINDLE_MAXSPEED	255			// analog 255
-#define SPINDEL_FADETIMEDELAY  0	// 8ms * 255 => 2040ms from 0 to max, 4080 from -max to +max
+#define SPINDEL_FADETIMEDELAY  0    // 8ms * 255 => 2040ms from 0 to max, 4080 from -max to +max
 
 ////////////////////////////////////////////////////////
 
-#include "Configuration_Ramps14.h"
+#include "ConfigurationStepper_Mash6050S.h"
 
 ////////////////////////////////////////////////////////
 
@@ -103,36 +105,45 @@
 #define G1_DEFAULT_MAXSTEPRATE	((steprate_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, maxsteprate)))	// steps/sec
 #define G1_DEFAULT_FEEDPRATE	  100000	// in mm1000 / min
 
-#define STEPRATERATE_REFMOVE		(CNC_MAXSPEED/3)
-//#define FEEDRATE_REFMOVE_PHASE2		200000
+#define STEPRATERATE_REFMOVE	(CNC_MAXSPEED/4)
+#define FEEDRATE_REFMOVE_PHASE2		200000
 
 ////////////////////////////////////////////////////////
-
+//#define CONTROLLERFAN_FAN_PIN	CAT(BOARDNAME,_FET2D9_PIN)
 #define CONTROLLERFAN_ONTIME	  10000			// switch off controllerfan if idle for 10 Sec
-#define CONTROLLERFAN_FAN_PIN	  CAT(BOARDNAME,_FET2D9_PIN)
-#define CONTROLLERFAN_ANALOGSPEED
+
 
 ////////////////////////////////////////////////////////
 
-#define COOLANT_PIN	CAT(BOARDNAME,_AUX2_8)	// Ramps1.4 D42
+//#define COOLANT_PIN	CAT(BOARDNAME,_AUX2_8)	// Ramps1.4 D42
+#define COOLANT_PIN	42
 
-#define COOLANT_PIN_ON  LOW
-#define COOLANT_PIN_OFF HIGH
-
-////////////////////////////////////////////////////////
-
-#define SPINDLE_ENABLE_PIN	CAT(BOARDNAME,_AUX2_6)	// Ramps1.4 D40
-
-#define SPINDLE_DIGITAL_ON  LOW
-#define SPINDLE_DIGITAL_OFF HIGH
+#define COOLANT_PIN_ON  HIGH
+#define COOLANT_PIN_OFF LOW
 
 ////////////////////////////////////////////////////////
 
-#define PROBE_PIN	CAT(BOARDNAME,_AUX2_7)	// Ramps 1.4 D44 
-#define PROBE2_PIN	CAT(BOARDNAME,_AUX2_5)	// Ramps 1.4 A10 
+//#define SPINDLE_PIN	CAT(BOARDNAME,_AUX2_6)	// Ramps1.4 D40
+#define SPINDLE_ENABLE_PIN 40
+
+#define SPINDLE_DIGITAL_ON  HIGH
+#define SPINDLE_DIGITAL_OFF LOW
+
+////////////////////////////////////////////////////////
+
+#define PROBE_PIN	CAT(BOARDNAME,_C_MIN_PIN)	// Ref of C 
+//#define PROBE1_PIN	CAT(BOARDNAME,_AUX2_7)	// Ramps 1.4 D44 
+//#define PROBE2_PIN	CAT(BOARDNAME,_AUX2_5)	// Ramps 1.4 A10 
 
 #define PROBE_PIN_ON  LOW
 #define PROBE_PIN_OFF HIGH
+
+#define PROBE_INPUTPINMODE CAT(BOARDNAME,_INPUTPINMODE)
+
+#define KILL_PIN MASH6050S_KILL_PIN
+#define KILL_PIN_ON MASH6050S_KILL_PIN_ON
+#define KILL_PIN_OFF MASH6050S_KILL_PIN_OFF
+#define KILL_ISTRIGGER
 
 #define HOLDRESUME_PIN		CAT(BOARDNAME, _LCD_KILL_PIN)
 #define HOLDRESUME_PIN_ON	CAT(BOARDNAME, _LCD_KILL_PIN_ON)
@@ -145,17 +156,19 @@
 #define ROTARY_ENC           CAT(BOARDNAME,_LCD_ROTARY_ENC)
 #define ROTARY_ENC_ON		 CAT(BOARDNAME,_LCD_ROTARY_ENC_ON)
 
-//#define LCD_MENU_MOVE100
+#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN1)
+#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN2)
+#define SD_ENABLE_PIN		 CAT(BOARDNAME,_SDSS_PIN)
 
 ////////////////////////////////////////////////////////
 
 #include <MessageCNCLibEx.h>
 
 #if defined(__SAM3X8E__)
-#define MESSAGE_MYCONTROL_Starting			F("Proxxon MF 70(HA) Ramps 1.4 due is starting ... (" __DATE__ ", " __TIME__ ")")
-#define MESSAGE_LCD_HEADLINE						F("Proxxon MF70 Ramps14D")
+#define MESSAGE_MYCONTROL_Starting					F("KK1000S(HA) due is starting ... (" __DATE__ ", " __TIME__ ")")
+#define MESSAGE_LCD_HEADLINE F("KK1000S Due")
 #else
-#define MESSAGE_MYCONTROL_Starting			F("Proxxon MF 70(HA) Ramps 1.4 is starting ... (" __DATE__ ", " __TIME__ ")")
-#define MESSAGE_LCD_HEADLINE						F("Proxxon MF70 Ramps14M")
+#define MESSAGE_MYCONTROL_Starting					F("KK1000S(HA) Mega is starting ... (" __DATE__ ", " __TIME__ ")")
+#define MESSAGE_LCD_HEADLINE F("Proxxon MF70 Ramps14M")
 #endif
 
