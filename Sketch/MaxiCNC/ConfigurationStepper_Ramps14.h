@@ -31,19 +31,3 @@
 #define MYNUM_AXIS	5
 
 ////////////////////////////////////////////////////////
-
-#if defined(__SAM3X8E__)
-
-#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN2)
-#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN1)
-#define SD_ENABLE_PIN	 	 52
-
-#else
-
-#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN1)
-#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN2)
-#define SD_ENABLE_PIN		 CAT(BOARDNAME,_SDSS_PIN)
-
-#endif
-
-////////////////////////////////////////////////////////

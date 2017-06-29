@@ -252,6 +252,9 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\Analog8XIOControlSmooth.h">
       <Filter>StepperLib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_I2CEEprom.h">
+      <Filter>StepperLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MsvcStepper\MsvcStepper.cpp">

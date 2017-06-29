@@ -139,13 +139,19 @@
 
 ////////////////////////////////////////////////////////
 
+//#define LCD_MENU_MOVE100
+
 #define LCD_GROW 64
 #define LCD_GCOL 128
 
 #define ROTARY_ENC           CAT(BOARDNAME,_LCD_ROTARY_ENC)
 #define ROTARY_ENC_ON		 CAT(BOARDNAME,_LCD_ROTARY_ENC_ON)
 
-//#define LCD_MENU_MOVE100
+#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN1)
+#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN2)
+//#define ROTARY_INVERTDIRECTION
+
+#define SD_ENABLE_PIN		 CAT(BOARDNAME,_SDSS_PIN)
 
 ////////////////////////////////////////////////////////
 

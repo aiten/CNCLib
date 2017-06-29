@@ -150,6 +150,8 @@
 
 ////////////////////////////////////////////////////////
 
+#define LCD_MENU_MOVE100
+
 #define LCD_GROW 64
 #define LCD_GCOL 128
 
