@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////
 
 #define X_MAXSIZE 130000				// in mm1000_t
-#define Y_MAXSIZE 45000 
+#define Y_MAXSIZE 130000 
 #define Z_MAXSIZE 81000 
 #define A_MAXSIZE 360000 
 #define B_MAXSIZE 360000 
@@ -47,7 +47,7 @@
 
 #define STEPSPERROTATION  200
 #define MICROSTEPPING     32
-#define SCREWLEAD         1.0
+#define SCREWLEAD         5.0
 
 ////////////////////////////////////////////////////////
 
@@ -59,16 +59,19 @@
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
 
-#define X_USEREFERENCE	EReverenceType::ReferenceToMin
-#define Y_USEREFERENCE	EReverenceType::ReferenceToMin
-#define Z_USEREFERENCE	EReverenceType::ReferenceToMax
+//#define X_USEREFERENCE	EReverenceType::ReferenceToMin
+//#define Y_USEREFERENCE	EReverenceType::ReferenceToMin
+//#define Z_USEREFERENCE	EReverenceType::ReferenceToMax
+#define X_USEREFERENCE  EReverenceType::NoReference
+#define Y_USEREFERENCE  EReverenceType::NoReference
+#define Z_USEREFERENCE  EReverenceType::NoReference
 #define A_USEREFERENCE	EReverenceType::NoReference
 #define B_USEREFERENCE	EReverenceType::NoReference
 #define C_USEREFERENCE	EReverenceType::NoReference
 
-#define REFMOVE_1_AXIS  Z_AXIS
-#define REFMOVE_2_AXIS  Y_AXIS
-#define REFMOVE_3_AXIS  X_AXIS
+#define REFMOVE_1_AXIS  255
+#define REFMOVE_2_AXIS  255
+#define REFMOVE_3_AXIS  255
 #define REFMOVE_4_AXIS  255
 #define REFMOVE_5_AXIS  255
 #define REFMOVE_6_AXIS  255
