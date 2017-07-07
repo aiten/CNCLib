@@ -75,8 +75,13 @@
 #define RAMPS14_E1_ENABLE_PIN		30
 
 #define RAMPS14_SDPOWER				-1
-#define RAMPS14_SDSS_PIN			53
 #define RAMPS14_LED_PIN				13
+
+#if defined(__SAM3X8E__)
+#define RAMPS14_SDSS_PIN	 		52
+#else
+#define RAMPS14_SDSS_PIN			53
+#endif
 
 #define RAMPS14_PS_ON_PIN			12
 

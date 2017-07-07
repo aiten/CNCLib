@@ -53,6 +53,7 @@
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\fastio.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_AVR.h" />
+    <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_I2CEEprom.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Msvc.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_Sam3x8e.h" />
     <ClInclude Include="..\..\..\Sketch\libraries\StepperLib\src\HAL_SamD21g18a.h" />

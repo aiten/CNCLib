@@ -25,22 +25,22 @@
 #define HARDWARETYPE_CUSTOM			    99 // custom
 
 //#define HARDWARETYPE HARDWARETYPE_PROXXONMF70
-//#define HARDWARETYPE HARDWARETYPE_PROXXONMF70_FD
-#define HARDWARETYPE HARDWARETYPE_KK1000S
+#define HARDWARETYPE HARDWARETYPE_PROXXONMF70_FD
+//#define HARDWARETYPE HARDWARETYPE_KK1000S
 
 ////////////////////////////////////////////////////////
 
 #if HARDWARETYPE==HARDWARETYPE_PROXXONMF70
 
-#include "Configuration_ProxxonMF70.h"
+#include "ConfigurationMachine_ProxxonMF70.h"
 
 #elif HARDWARETYPE==HARDWARETYPE_PROXXONMF70_FD
 
-#include "Configuration_ProxxonMF70_FD.h"
+#include "ConfigurationMachine_ProxxonMF70_FD.h"
 
 #elif HARDWARETYPE==HARDWARETYPE_KK1000S
 
-#include "Configuration_KK1000S.h"
+#include "ConfigurationMachine_KK1000S.h"
 
 #else
 

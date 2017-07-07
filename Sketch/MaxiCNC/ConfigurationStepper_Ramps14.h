@@ -21,36 +21,13 @@
 
 ////////////////////////////////////////////////////////
 
-#include <Steppers/StepperRampsFD_pins.h>
-
-
-//swap X with E PINs
-#undef RAMPSFD_X_STEP_PIN
-#undef RAMPSFD_X_DIR_PIN
-#undef RAMPSFD_X_ENABLE_PIN
-#undef RAMPSFD_E0_STEP_PIN
-#undef RAMPSFD_E0_DIR_PIN
-#undef RAMPSFD_E0_ENABLE_PIN
-
-#define RAMPSFD_E0_STEP_PIN      63
-#define RAMPSFD_E0_DIR_PIN     62
-#define RAMPSFD_E0_ENABLE_PIN    48
-
-#define RAMPSFD_X_STEP_PIN     36
-#define RAMPSFD_X_DIR_PIN      28
-#define RAMPSFD_X_ENABLE_PIN   42
-////////////////////////////////////////
-
-#include <Steppers/StepperRampsFD.h>
-#define BOARDNAME RAMPSFD
+#include <Steppers/StepperRamps14_pins.h>
+#include <Steppers/StepperRamps14.h>
+#define BOARDNAME RAMPS14
 
 ////////////////////////////////////////////////////////
 
-#define LCD_NUMAXIS	6
-#define MYNUM_AXIS	6
+#define LCD_NUMAXIS	5
+#define MYNUM_AXIS	5
 
 ////////////////////////////////////////////////////////
-
-#define ROTARY_EN1           CAT(BOARDNAME,_LCD_ROTARY_EN1)
-#define ROTARY_EN2           CAT(BOARDNAME,_LCD_ROTARY_EN2)
-#define SD_ENABLE_PIN		 CAT(BOARDNAME,_SDSS_PIN)

@@ -97,7 +97,7 @@
 
 ////////////////////////////////////////////////////////
 
-#include "Configuration_Mash6050S.h"
+#include "ConfigurationStepper_Mash6050S.h"
 
 ////////////////////////////////////////////////////////
 
@@ -149,6 +149,8 @@
 #define HOLDRESUME_PIN_ON	CAT(BOARDNAME, _LCD_KILL_PIN_ON)
 
 ////////////////////////////////////////////////////////
+
+#define LCD_MENU_MOVE100
 
 #define LCD_GROW 64
 #define LCD_GCOL 128

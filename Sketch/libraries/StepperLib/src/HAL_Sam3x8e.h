@@ -141,25 +141,26 @@ inline void CHAL::pinModeInputPullUp(pin_t pin)
 	::pinMode(pin, INPUT_PULLUP);
 }
 
-// SAM3x has no eeprom => ignore
+#include "HAL_I2CEEprom.h"
 
-inline void CHAL::eeprom_write_dword(uint32_t *, uint32_t)
+inline void CHAL::eeprom_write_dword(uint32_t *eeadr, uint32_t value)
 {
+	CHAL_I2C_EEprom24C256::i2c_eeprom_write_dword((unsigned int)eeadr,value);
 }
 
-inline uint32_t CHAL::eeprom_read_dword(const uint32_t *)
+inline uint32_t CHAL::eeprom_read_dword(const uint32_t *eeadr)
 {
-	return 0;
+	return CHAL_I2C_EEprom24C256::i2c_eeprom_read_dword((unsigned int)eeadr);
 }
 
-inline uint8_t CHAL::eeprom_read_byte(const uint8_t *)
+inline uint8_t CHAL::eeprom_read_byte(const uint8_t *eeadr)
 {
-	return 0;
+	return CHAL_I2C_EEprom24C256::i2c_eeprom_read_byte((unsigned int) eeadr);
 }
 
 inline bool CHAL::HaveEeprom()
 {
-	return false;
+	return true;
 }
 
 inline uint32_t* CHAL::GetEepromBaseAdr()
@@ -169,6 +170,7 @@ inline uint32_t* CHAL::GetEepromBaseAdr()
 
 inline void CHAL::InitEeprom()
 {
+	CHAL_I2C_EEprom24C256::Init();
 }
 
 inline void CHAL::FlushEeprom()
@@ -177,7 +179,7 @@ inline void CHAL::FlushEeprom()
 
 inline bool CHAL::NeedFlushEeprom()
 {
-	return true;
+	return false;
 }
 
 ////////////////////////////////////////////////////////
