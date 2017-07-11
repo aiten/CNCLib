@@ -63,6 +63,12 @@ void I2S_Handler()
 {
 	CHAL::_BackgroundEvent();
 }
+/*
+void TC3_Handler()
+{
+	CHAL::_BackgroundEvent();
+}
+*/
 
 CHAL::HALEvent CHAL::_BackgroundEvent = IgnoreIrq;
 

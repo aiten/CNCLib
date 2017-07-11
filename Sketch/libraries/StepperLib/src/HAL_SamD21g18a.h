@@ -54,6 +54,10 @@ inline  int pgm_read_int(const void* p) { return * ((const int*) p); }
 #define TIMER1MIN			4
 #define TIMER1MAX			0xffffffffl
 
+#define TIMER0_INTERRUPTPRIORITY	3		// Polling
+#define TIMER1_INTERRUPTPRIORITY	2		// Main timer for stepper, USB => 1
+#define BACKGROUND_INTERRUPTPRIORITY	3
+
 #define MAXINTERRUPTSPEED	(65535/7)		// maximal possible interrupt rate => steprate_t
 
 #define SPEED_MULTIPLIER_1	0
@@ -65,6 +69,7 @@ inline  int pgm_read_int(const void* p) { return * ((const int*) p); }
 #define SPEED_MULTIPLIER_7	(MAXINTERRUPTSPEED*6)
 
 #define TIMEROVERHEAD		1				// decrease Timervalue for ISR overhead before set new timer
+
 
 inline void CHAL::DisableInterrupts()		{ noInterrupts(); }
 inline void CHAL::EnableInterrupts()		{ interrupts(); }
@@ -82,13 +87,11 @@ static inline unsigned char __interruptsStatus(void)
 inline irqflags_t CHAL::GetSREG()			{ return interruptsStatus(); }
 inline void CHAL::SetSREG(irqflags_t a)		{ if (a != GetSREG()) { if (a) EnableInterrupts(); else DisableInterrupts(); } }
 
-// TODO
-// use CAN as backgroundworker thread
-#define NVIC_EncodePriority(a,b,c) 0
 #define IRQTYPE I2S_IRQn
+//#define IRQTYPE TC3_IRQn
 
 inline void CHAL::BackgroundRequest()			{ NVIC_SetPendingIRQ(IRQTYPE); }
-inline void CHAL::InitBackground(HALEvent evt)	{ NVIC_EnableIRQ(IRQTYPE);  NVIC_SetPriority(IRQTYPE, NVIC_EncodePriority(4, 7, 0)); _BackgroundEvent = evt; }
+inline void CHAL::InitBackground(HALEvent evt)	{ NVIC_EnableIRQ(IRQTYPE);  NVIC_SetPriority(IRQTYPE, BACKGROUND_INTERRUPTPRIORITY); _BackgroundEvent = evt; }
 
 #define HALFastdigitalRead(a)	CHAL::digitalRead(a)
 #define HALFastdigitalWrite(a,b) CHAL::digitalWrite(a,b)
@@ -284,7 +287,7 @@ inline void  CHAL::InitTimer0(HALEvent evt)
 
 	NVIC_DisableIRQ(TC5_IRQn);				  // Configure interrupt request
 	NVIC_ClearPendingIRQ(TC5_IRQn);
-	NVIC_SetPriority(TC5_IRQn, 0);
+	NVIC_SetPriority(TC5_IRQn, TIMER0_INTERRUPTPRIORITY);
 	NVIC_EnableIRQ(TC5_IRQn);
 }
 
@@ -358,7 +361,7 @@ inline void  CHAL::InitTimer1OneShot(HALEvent evt)
 
 	NVIC_DisableIRQ(TC4_IRQn);				  // Configure interrupt request
 	NVIC_ClearPendingIRQ(TC4_IRQn);
-	NVIC_SetPriority(TC4_IRQn, 0);
+	NVIC_SetPriority(TC4_IRQn, TIMER1_INTERRUPTPRIORITY);
 	NVIC_EnableIRQ(TC4_IRQn);
 
 //	// Enable TC
