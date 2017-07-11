@@ -30,6 +30,7 @@ public:
 	{
 		_nexttime = 0;
 		_currentlevel = _iolevel = 0;
+		CHAL::pinMode(DIRPIN, OUTPUT);
 		Out(0);
 #ifndef REDUCED_SIZE
 		_level = 0;

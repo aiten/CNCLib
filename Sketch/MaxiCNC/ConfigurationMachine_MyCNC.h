@@ -33,17 +33,18 @@
 
 ////////////////////////////////////////////////////////
 
-#define X_MAXSIZE 130000				// in mm1000_t
-#define Y_MAXSIZE 130000 
-#define Z_MAXSIZE 81000 
+#define X_MAXSIZE 134000				// in mm1000_t
+#define Y_MAXSIZE 134000 
+#define Z_MAXSIZE 83000 
 #define A_MAXSIZE 360000 
 #define B_MAXSIZE 360000 
 #define C_MAXSIZE 360000 
 
 ////////////////////////////////////////////////////////
 
-#define STEPPERDIRECTION 0
+//#define STEPPERDIRECTION 0
 //#define STEPPERDIRECTION (1<<X_AXIS) + (1<<Y_AXIS)		// set bit to invert direction of each axis
+#define STEPPERDIRECTION (1<<Y_AXIS)                  // set bit to invert direction of each axis
 
 #define STEPSPERROTATION  200
 #define MICROSTEPPING     32
@@ -159,10 +160,10 @@
 #include <MessageCNCLibEx.h>
 
 #if defined(__SAM3X8E__)
-#define MESSAGE_MYCONTROL_Starting			F("Proxxon MF 70(HA) Ramps FD due is starting ... (" __DATE__ ", " __TIME__ ")")
-#define MESSAGE_LCD_HEADLINE						F("Proxxon MF70 RampsFD-D")
+#define MESSAGE_MYCONTROL_Starting			F("My-CNC(HA) Ramps FD due is starting ... (" __DATE__ ", " __TIME__ ")")
+#define MESSAGE_LCD_HEADLINE						F("My-CNC RampsFD-D")
 #else
-#define MESSAGE_MYCONTROL_Starting			F("Proxxon MF 70(HA) Ramps FD is starting ... (" __DATE__ ", " __TIME__ ")")
-#define MESSAGE_LCD_HEADLINE						F("Proxxon MF70 RampsFD-M")
+#define MESSAGE_MYCONTROL_Starting			F("My-CNC(HA) Ramps FD is starting ... (" __DATE__ ", " __TIME__ ")")
+#define MESSAGE_LCD_HEADLINE						F("My-CNC RampsFD-M")
 #endif
 

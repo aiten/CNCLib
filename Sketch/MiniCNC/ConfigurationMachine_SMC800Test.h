@@ -21,56 +21,56 @@
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED 375
-#define CNC_ACC  65
-#define CNC_DEC  75
-#define CNC_JERKSPEED 10
+#define USBBAUDRATE 250000
+
+////////////////////////////////////////////////////////
+
+#include "ConfigurationMachine_Default.h"
+
+////////////////////////////////////////////////////////
 
 #define STEPPERDIRECTION 0
 //#define STEPPERDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)    // set bit to invert direction of each axis
 
-////////////////////////////////////////////////////////
-
-#define CMyStepper CStepperL298N
-
-// 48 steps/rot
-//inline mm1000_t ToMm1000_L298N(axis_t /* axis */, sdist_t val) { return  RoundMulDivU32(val, 125, 6); }
-//inline sdist_t  ToMachine_L298N(axis_t /* axis */, mm1000_t val) { return  RoundMulDivU32(val, 6, 125); }
-
-#define X_STEPSPERMM 48.0
-#define Y_STEPSPERMM 48.0
-#define Z_STEPSPERMM 48.0
-#define A_STEPSPERMM 48.0
+#define STEPSPERROTATION	200
+#define MICROSTEPPING		2
+#define SCREWLEAD			1.0
 
 ////////////////////////////////////////////////////////
 
-#include <Steppers/StepperL298N.h>
+#define CNC_MAXSPEED	3000
+#define CNC_ACC			130			// 0.2sec to acc
+#define CNC_DEC			150			// 0.15sec to break
+#define CNC_JERKSPEED	120
 
 ////////////////////////////////////////////////////////
 
-#define MYNUM_AXIS  4
+#include "ConfigurationStepper_SMC800.h"
 
 ////////////////////////////////////////////////////////
 
-#undef CONTROLLERFAN_PIN
+#define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
+//#define CONTROLLERFAN_FAN_PIN	-1 //14 // 10
+#undef CONTROLLERFAN_FAN_PIN
 
-////////////////////////////////////////////////////////
-// PWM Spindel Pin
-
-#define SPINDLE_ENABLE_PIN  11
-
-////////////////////////////////////////////////////////
-// 
-
-//#define PROBE_PIN PIN_A6
-#undef PROBE_PIN
-#define PROBE_PIN_ON LOW
+#define CONTROLLERFAN_DIGITAL_ON  HIGH
+#define CONTROLLERFAN_DIGITAL_OFF LOW
 
 ////////////////////////////////////////////////////////
 
-#undef KILL_PIN
+#define SPINDLE_ENABLE_PIN	15
+
+#define SPINDLE_DIGITAL_ON  LOW
+#define SPINDLE_DIGITAL_OFF HIGH
 
 ////////////////////////////////////////////////////////
 
-#define DISABLELEDBLINK
+#define PROBE_PIN	16
+
+#define PROBE_PIN_ON  LOW
+#define PROBE_PIN_OFF HIGH
+
+////////////////////////////////////////////////////////
+
+#define MESSAGE_MYCONTROL_Starting          F("SMC800:" __DATE__ )
 

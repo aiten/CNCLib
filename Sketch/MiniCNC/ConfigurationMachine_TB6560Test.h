@@ -21,54 +21,62 @@
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED 3000
-#define CNC_ACC  150
-#define CNC_DEC  180
-#define CNC_JERKSPEED 60
+#define USBBAUDRATE 250000
+
+////////////////////////////////////////////////////////
+
+#include "ConfigurationMachine_Default.h"
+
+////////////////////////////////////////////////////////
 
 #define STEPPERDIRECTION 0
 //#define STEPPERDIRECTION (1 << X_AXIS) + (1 << Y_AXIS)    // set bit to invert direction of each axis
 
-////////////////////////////////////////////////////////
-
-#define CMyStepper CStepperSMC800
-
-#define X_STEPSPERMM 400.0
-#define Y_STEPSPERMM 400.0
-#define Z_STEPSPERMM 400.0
-#define A_STEPSPERMM 400.0
+#define STEPSPERROTATION	200
+#define MICROSTEPPING		8
+#define SCREWLEAD			1.0
 
 ////////////////////////////////////////////////////////
 
-#define MYNUM_AXIS 3
+#define CNC_MAXSPEED 14000
+#define CNC_ACC  350
+#define CNC_DEC  400
+#define CNC_JERKSPEED	500
 
 ////////////////////////////////////////////////////////
 
-#include <Steppers/StepperSMC800.h>
+#include "ConfigurationStepper_TB6560.h"
 
 ////////////////////////////////////////////////////////
 
 #define CONTROLLERFAN_ONTIME	10000			// switch off controllerfan if idle for 10 Sec
-//#define CONTROLLERFAN_FAN_PIN	-1 //14 // 10
-#undef CONTROLLERFAN_FAN_PIN
+#define CONTROLLERFAN_FAN_PIN	14 // AD0
 
 #define CONTROLLERFAN_DIGITAL_ON  HIGH
 #define CONTROLLERFAN_DIGITAL_OFF LOW
 
 ////////////////////////////////////////////////////////
 
-#define SPINDLE_ENABLE_PIN	15
+#define SPINDLE_ENABLE_PIN	11
 
 #define SPINDLE_DIGITAL_ON  LOW
 #define SPINDLE_DIGITAL_OFF HIGH
 
 ////////////////////////////////////////////////////////
 
-#define PROBE_PIN	16
+#define PROBE_PIN	12
 
 #define PROBE_PIN_ON  LOW
 #define PROBE_PIN_OFF HIGH
 
 ////////////////////////////////////////////////////////
 
-#undef KILL_PIN	
+#undef KILL_PIN
+
+#define KILL_ON  LOW
+#define KILL_OFF HIGH
+
+////////////////////////////////////////////////////////
+
+#define MESSAGE_MYCONTROL_Starting          F("TB6560:" __DATE__ )
+

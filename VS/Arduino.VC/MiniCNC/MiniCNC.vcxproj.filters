@@ -19,19 +19,37 @@
     <ClInclude Include="..\..\..\Sketch\MiniCNC\MyControl.h">
       <Filter>MiniCNC</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_CNCShield.h">
-      <Filter>MiniCNC</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_L298N.h">
-      <Filter>MiniCNC</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_SMC800.h">
-      <Filter>MiniCNC</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration_TB6560.h">
-      <Filter>MiniCNC</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\MiniCNC\Configuration.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\ConfigurationMachine_CNC3325.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\ConfigurationMachine_Default.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\ConfigurationMachine_L298NTest.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\ConfigurationStepper_CNCShield.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\ConfigurationStepper_L298N.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\ConfigurationStepper_SMC800.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\ConfigurationStepper_TB6560.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\ConfigurationMachine_CNCShieldTest.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\ConfigurationMachine_SMC800Test.h">
+      <Filter>MiniCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MiniCNC\ConfigurationMachineTB6560Test.h">
       <Filter>MiniCNC</Filter>
     </ClInclude>
   </ItemGroup>
