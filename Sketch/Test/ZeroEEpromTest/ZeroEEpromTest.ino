@@ -30,19 +30,6 @@ void PrintHex(uint32_t val)
     Serial.print(':');
 }
 
-void PrintEeprom()
-{
-  for (int i=0;i<16;i++)
-  {
-    uint32_t val = CHAL::eeprom_read_dword(CHAL::GetEepromBaseAdr()+i);
-    PrintHex(val%256);
-    PrintHex((val>>8)%256);
-    PrintHex((val>>16)%256);
-    PrintHex((val>>24)%256);
-  }
-  Serial.println();
-}
-
 void setup()
 {
   Serial.begin(250000);
@@ -56,38 +43,105 @@ void setup()
     return;
   }
 
-  CHAL::InitEeprom();
+   Serial.println(F("Setup done"));
+   Serial.println(F("(i)nit, (r)ead, (s)et, (w)rite"));
+}
 
-  PrintEeprom();
+static char _buffer[128];
+static uint8_t _bufferidx=0;
 
+bool IsEndOfCommandChar(char ch)
+{
+  return ch == '\r' || ch == '\n' || ch == (char) - 1;
+}
+
+void CommandRead()
+{
+  Serial.println("Eeprom: ");
+  for (int i=0;i<16;i++)
+  {
+    uint32_t val = CHAL::eeprom_read_dword(CHAL::GetEepromBaseAdr()+i);
+   
+    PrintHex(val%256);
+    PrintHex((val>>8)%256);
+    PrintHex((val>>16)%256);
+    PrintHex((val>>24)%256);
+  }
+  Serial.println();
+}
+
+void CommandInit()
+{
+    CHAL::InitEeprom();
+    Serial.println("init done");
+}
+
+void CommandSet()
+{
   for (int i=0;i<16;i++)
   {
     CHAL::eeprom_write_dword(CHAL::GetEepromBaseAdr()+i,CHAL::eeprom_read_dword(CHAL::GetEepromBaseAdr()+i)+i);
   }
+  CommandRead();
+}
 
-  PrintEeprom();
+void CommandWrite()
+{
+    CHAL::FlushEeprom();
+}
 
-  Serial.println(F("Flushing ..."));
-
-  CHAL::FlushEeprom();
-  
-  Serial.println(F("Read"));
-  
-  CHAL::InitEeprom();
-  PrintEeprom();
-
-  Serial.println(F("Setup done"));
+void Command(char* buffer)
+{
+  if (buffer[0])
+  {
+    if (strcmp(buffer,"read") == 0 || strcmp(buffer,"r") == 0)
+    {
+      CommandRead();
+    }
+    else if ((strcmp(buffer,"init") == 0 || strcmp(buffer,"i") == 0))
+    {
+      CommandInit();
+    }
+    else if ((strcmp(buffer,"set") == 0 || strcmp(buffer,"s") == 0))
+    {
+      CommandSet();
+    }
+    else if ((strcmp(buffer,"write") == 0 || strcmp(buffer,"w") == 0))
+    {
+      CommandWrite();
+    }
+    else
+    {
+        Serial.println(buffer);
+        Serial.println("?");
+    }
+  }
 }
 
 void loop()
 {
-  static uint32_t nexttime=0;
-  uint32_t now=millis();
-
-  if (nexttime < now)
+  if (Serial.available() > 0)
   {
-    Serial.println(F("alive"));
-    nexttime = now + 20000;
+    while (Serial.available() > 0)
+    {
+      char ch = _buffer[_bufferidx] = Serial.read();
+
+      if (IsEndOfCommandChar(ch))
+      {
+        _buffer[_bufferidx] = 0;      // remove from buffer
+        Command(_buffer);
+        _bufferidx = 0;
+
+        return;
+      }
+
+      _bufferidx++;
+      if (_bufferidx >= sizeof(_buffer))
+      {
+        Serial.println("MESSAGE_CONTROL_FLUSHBUFFER");
+        _bufferidx = 0;
+      }
+    }
   }
 }
 

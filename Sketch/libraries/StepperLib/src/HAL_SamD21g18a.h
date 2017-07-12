@@ -158,12 +158,13 @@ inline uint32_t* CHAL::GetEepromBaseAdr()
 
 inline void CHAL::InitEeprom()
 {
-	ReadFlash(_flashStorage, _flashBuffer, sizeof(_flashStorage));
+	FlashRead(_flashStorage, _flashBuffer, sizeof(_flashStorage));
 }
 
 inline void CHAL::FlushEeprom()
 {
-	WriteToFlash(_flashStorage, _flashBuffer, sizeof(_flashStorage));
+	FlashErase((void*)_flashStorage, sizeof(_flashBuffer));
+	FlashWriteWords((uint32_t*) _flashStorage, (uint32_t*) _flashBuffer, (sizeof(_flashStorage)+sizeof(uint32_t)-1)/sizeof(uint32_t));
 }
 
 inline bool CHAL::NeedFlushEeprom()
