@@ -143,10 +143,12 @@ inline uint32_t CHAL::eeprom_read_dword(const uint32_t * __p)
 	return ::eeprom_read_dword(__p);
 }
 
+/*
 inline uint8_t CHAL::eeprom_read_byte(const uint8_t * __p)
 {
 	return ::eeprom_read_byte(__p);
 }
+*/
 
 inline uint32_t* CHAL::GetEepromBaseAdr()
 {

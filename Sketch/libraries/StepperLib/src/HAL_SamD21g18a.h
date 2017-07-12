@@ -127,38 +127,43 @@ inline void CHAL::pinModeInputPullUp(pin_t pin)
 	::pinMode(pin, INPUT_PULLUP);
 }
 
-// SAMD21 eeprom => ignore
+///////////////////////////////////////////
 
-inline void CHAL::eeprom_write_dword(uint32_t *, uint32_t)
+inline void CHAL::eeprom_write_dword(uint32_t* ptr_buffer, uint32_t value)
 {
+	*ptr_buffer = value;
 }
 
-inline uint32_t CHAL::eeprom_read_dword(const uint32_t *)
+inline uint32_t CHAL::eeprom_read_dword(const uint32_t* ptr_buffer)
 {
-	return 0;
+	return *ptr_buffer;
 }
 
+/*
 inline uint8_t CHAL::eeprom_read_byte(const uint8_t *)
 {
 	return 0;
 }
+*/
 
 inline bool CHAL::HaveEeprom()
 {
-	return false;
+	return true;
 }
 
 inline uint32_t* CHAL::GetEepromBaseAdr()
 {
-	return (uint32_t*)NULL;
+	return (uint32_t*) _flashBuffer;
 }
 
 inline void CHAL::InitEeprom()
 {
+	ReadFlash(_flashStorage, _flashBuffer, sizeof(_flashStorage));
 }
 
 inline void CHAL::FlushEeprom()
 {
+	WriteToFlash(_flashStorage, _flashBuffer, sizeof(_flashStorage));
 }
 
 inline bool CHAL::NeedFlushEeprom()

@@ -152,12 +152,12 @@ inline uint32_t CHAL::eeprom_read_dword(const uint32_t *eeadr)
 {
 	return CHAL_I2C_EEprom24C256::i2c_eeprom_read_dword((unsigned int)eeadr);
 }
-
+/*
 inline uint8_t CHAL::eeprom_read_byte(const uint8_t *eeadr)
 {
 	return CHAL_I2C_EEprom24C256::i2c_eeprom_read_byte((unsigned int) eeadr);
 }
-
+*/
 inline bool CHAL::HaveEeprom()
 {
 	return true;

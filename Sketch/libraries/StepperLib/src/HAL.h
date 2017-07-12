@@ -177,6 +177,22 @@ public:
 
 #endif
 
+#if defined(__SAMD21G18A__)
+	
+//#define EEPROM_SIZE	1024		// must be x*256
+#define EEPROM_SIZE	256		// must be x*256
+
+	__attribute__((__aligned__(256))) \
+	static const uint8_t _flashStorage[EEPROM_SIZE];
+	static uint8_t _flashBuffer[EEPROM_SIZE];
+
+	static void WriteToFlash(const volatile void *flash_ptr, const void *data, uint32_t size);
+	static void EraseFlash(const volatile void *flash_ptr, uint32_t size);
+	static void EraseFlash(const volatile void *flash_ptr);
+	static void ReadFlash(const volatile void *flash_ptr, void *data, uint32_t size);
+
+#endif
+
 	static inline void DisableInterrupts() ALWAYSINLINE;
 	static inline void EnableInterrupts() ALWAYSINLINE;
 
@@ -209,7 +225,7 @@ public:
 
 	static void eeprom_write_dword(uint32_t *  __p, uint32_t  	__value) ALWAYSINLINE;
 	static uint32_t eeprom_read_dword(const uint32_t * __p) ALWAYSINLINE;
-	static uint8_t eeprom_read_byte(const uint8_t * __p) ALWAYSINLINE;
+	//static uint8_t eeprom_read_byte(const uint8_t * __p) ALWAYSINLINE;
 
 	static uint32_t* GetEepromBaseAdr() ALWAYSINLINE;
 
