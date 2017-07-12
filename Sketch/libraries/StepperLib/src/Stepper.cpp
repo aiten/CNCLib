@@ -297,6 +297,8 @@ void CStepper::EnqueuAndStartTimer(bool waitfinish)
 
 		if (StartMovement())
 		{
+			// fill step-buffer with interrupts enabled, otherwise "Zero" will cause an usb failure if interrupts are blocked to long
+			FillStepBuffer();
 			CCriticalRegion crit;
 			StepRequest(false);
 		}
