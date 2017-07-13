@@ -113,11 +113,15 @@ namespace CNCLib.Wpf.ViewModels
         public Models.Machine Machine
 		{
             get { return _selectedMachine; }
-			set {
-                    SetProperty(ref _selectedMachine, value);
-                    if (value!=null)
-                        SetGlobal();
+			set
+            {
+                SetProperty(ref _selectedMachine, value);
+                if (value != null)
+                {
+                    RaisePropertyChanged(nameof(NeedDtr));
+                    SetGlobal();
                 }
+            }
 		}
 
 		public Joystick Joystick { get; set; }
@@ -157,15 +161,23 @@ namespace CNCLib.Wpf.ViewModels
 			set { SetProperty(ref _sendInitCommands, value); }
 		}
 
-		#endregion
+        public bool NeedDtr
+        {
+            get { return Machine != null ? Machine.NeedDtr : false; }
+        }
 
-		#region Operations
+        #endregion
 
-		public async Task Connect()
+        #region Operations
+
+        public async Task Connect()
         {
 			try
 			{
-				Com.ResetOnConnect = ResetOnConnect;
+                if (Machine.NeedDtr)
+                    Com.ResetOnConnect = true;
+                else
+                    Com.ResetOnConnect = ResetOnConnect;
                 Com.CommandToUpper = Machine.CommandToUpper;
                 Com.BaudRate = (int)Machine.BaudRate;
                 Com.Connect(Machine.ComPort);

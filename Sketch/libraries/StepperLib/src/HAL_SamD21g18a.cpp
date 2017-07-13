@@ -63,22 +63,15 @@ void I2S_Handler()
 {
 	CHAL::_BackgroundEvent();
 }
-/*
-void TC3_Handler()
-{
-	CHAL::_BackgroundEvent();
-}
-*/
 
 CHAL::HALEvent CHAL::_BackgroundEvent = IgnoreIrq;
 
 ////////////////////////////////////////////////////////
 
-__attribute__((__aligned__(256))) \
 const uint8_t CHAL::_flashStorage[EEPROM_SIZE] = { };
 uint8_t CHAL::_flashBuffer[EEPROM_SIZE];
 
-#define wait_ready()   while (NVMCTRL->INTFLAG.bit.READY == 0) {}
+#define WaitReady()   while (NVMCTRL->INTFLAG.bit.READY == 0) {}
 
 void CHAL::FlashWriteWords(uint32_t *flash_ptr, const uint32_t *src, uint32_t n_words)
 {
@@ -92,14 +85,14 @@ void CHAL::FlashWriteWords(uint32_t *flash_ptr, const uint32_t *src, uint32_t n_
 
 		// Execute "PBC" Page Buffer Clear
 		NVMCTRL->CTRLA.reg = NVMCTRL_CTRLA_CMDEX_KEY | NVMCTRL_CTRLA_CMD_PBC;
-		wait_ready();
+		WaitReady();
 
 		while (len--)
 			*flash_ptr++ = *src++;
 
 		// Execute "WP" Write Page
 		NVMCTRL->CTRLA.reg = NVMCTRL_CTRLA_CMDEX_KEY | NVMCTRL_CTRLA_CMD_WP;
-		wait_ready();
+		WaitReady();
 	}
 }
 
@@ -121,7 +114,7 @@ void CHAL::FlashEraseRow(void *flash_ptr)
 {
 	NVMCTRL->ADDR.reg = ((uint32_t)flash_ptr) / 2;
 	NVMCTRL->CTRLA.reg = NVMCTRL_CTRLA_CMDEX_KEY | NVMCTRL_CTRLA_CMD_ER;
-	wait_ready();
+	WaitReady();
 }
 
 void CHAL::FlashRead(const void *flash_ptr, void *data, uint32_t size)

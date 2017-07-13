@@ -48,7 +48,12 @@ namespace CNCLib.Wpf.Models
 		[Description("BaudRate")]
 		public int BaudRate { get; set; }
 
-		[Category(CATEGORY_SIZE)]
+        [Category(CATEGORY_COMMUNICATION)]
+        [DisplayName("NeedDtr")]
+        [Description("Dtr is necessary to read/write data (Arduion Zero)")]
+        public bool NeedDtr { get; set; }
+
+        [Category(CATEGORY_SIZE)]
 		[DisplayName("Axis")]
 		[Description("Active axis count")]
 		public int Axis { get; set; }

@@ -179,13 +179,10 @@ public:
 
 #if defined(__SAMD21G18A__)
 	
-//#define EEPROM_SIZE	1024		// must be x*256
 #define EEPROM_SIZE	512		// must be x*256
 
-	__attribute__((__aligned__(256))) \
-	static const uint8_t _flashStorage[EEPROM_SIZE];
-	__attribute__((__aligned__(4))) \
-	static uint8_t _flashBuffer[EEPROM_SIZE];
+	static const uint8_t _flashStorage[EEPROM_SIZE] __attribute__((__aligned__(256)));
+	static uint8_t _flashBuffer[EEPROM_SIZE] __attribute__((__aligned__(4)));
 
 	static void FlashWriteWords(uint32_t *flash_ptr, const uint32_t *data, uint32_t nwords);
 	static void FlashErase(void *flash_ptr, uint32_t size);

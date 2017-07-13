@@ -32,7 +32,8 @@ namespace CNCLib.Logic.Contracts.DTO
 		public int MachineID { get; set; }
 		public string ComPort { get; set; }
 		public int BaudRate { get; set; }
-		public int Axis { get; set; }
+        public bool NeedDtr { get; set; }
+        public int Axis { get; set; }
 		public string Name { get; set; }
 		public decimal SizeX { get; set; }
 		public decimal SizeY { get; set; }

@@ -26,7 +26,8 @@ namespace CNCLib.Repository.Contracts.Entities
 		public string ComPort { get; set; }
 		public int Axis { get; set; }
 		public int BaudRate { get; set; }
-		public string Name { get; set; }
+        public bool NeedDtr { get; set; }
+        public string Name { get; set; }
 		public decimal SizeX { get; set; }
 		public decimal SizeY { get; set; }
 		public decimal SizeZ { get; set; }

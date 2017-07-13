@@ -44,7 +44,7 @@ void setup()
   }
 
    Serial.println(F("Setup done"));
-   Serial.println(F("(i)nit, (r)ead, (s)et, (w)rite"));
+   Serial.println(F("(i)nit, (r)ead, (s)et, (w)rite, (x)reset"));
 }
 
 static char _buffer[128];
@@ -109,6 +109,10 @@ void Command(char* buffer)
     else if ((strcmp(buffer,"write") == 0 || strcmp(buffer,"w") == 0))
     {
       CommandWrite();
+    }
+    else if ((strcmp(buffer,"reset") == 0 || strcmp(buffer,"x") == 0))
+    {
+      NVIC_SystemReset();
     }
     else
     {
