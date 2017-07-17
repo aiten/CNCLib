@@ -255,7 +255,7 @@ constexpr uint16_t GetInfo1a()
 #if defined(__AVR_ARCH__) || defined(__SAMD21G18A__)
 		CConfigEeprom::HAVE_EEPROM |
 #elif  defined(__SAM3X8E__)
-		(CHAL::HaveEeprom() ? CConfigEeprom::HAVE_EEPROM : 0) |
+//		(CHAL::HaveEeprom() ? CConfigEeprom::HAVE_EEPROM : 0) |
 #endif
 #ifdef MYUSE_LCD
 		CConfigEeprom::HAVE_SD |

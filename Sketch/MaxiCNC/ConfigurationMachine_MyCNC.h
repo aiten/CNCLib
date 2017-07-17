@@ -52,7 +52,7 @@
 
 ////////////////////////////////////////////////////////
 
-#define CNC_MAXSPEED ((steprate_t)56000)        // steps/sec => 8.75 rot /sec
+#define CNC_MAXSPEED ((steprate_t)50000)        // steps/sec => 50000 => 7.8 rot /sec
 #define CNC_ACC  496                            // 0.257 => time to full speed
 #define CNC_DEC  565                            // 0.1975 => time to break
 #define CNC_JERKSPEED 2240
@@ -60,36 +60,34 @@
 ////////////////////////////////////////////////////////
 // NoReference, ReferenceToMin, ReferenceToMax
 
-//#define X_USEREFERENCE	EReverenceType::ReferenceToMin
-//#define Y_USEREFERENCE	EReverenceType::ReferenceToMin
+#define X_USEREFERENCE	EReverenceType::ReferenceToMin
+#define Y_USEREFERENCE	EReverenceType::ReferenceToMax
 //#define Z_USEREFERENCE	EReverenceType::ReferenceToMax
-#define X_USEREFERENCE  EReverenceType::NoReference
-#define Y_USEREFERENCE  EReverenceType::NoReference
 #define Z_USEREFERENCE  EReverenceType::NoReference
 #define A_USEREFERENCE	EReverenceType::NoReference
 #define B_USEREFERENCE	EReverenceType::NoReference
 #define C_USEREFERENCE	EReverenceType::NoReference
 
 #define REFMOVE_1_AXIS  255
-#define REFMOVE_2_AXIS  255
-#define REFMOVE_3_AXIS  255
+#define REFMOVE_2_AXIS  X_AXIS
+#define REFMOVE_3_AXIS  Y_AXIS
 #define REFMOVE_4_AXIS  255
 #define REFMOVE_5_AXIS  255
 #define REFMOVE_6_AXIS  255
 
 #define X_REFERENCEHITVALUE_MIN LOW
-#define Y_REFERENCEHITVALUE_MIN LOW
-#define Z_REFERENCEHITVALUE_MIN LOW
-#define A_REFERENCEHITVALUE_MIN LOW
-#define B_REFERENCEHITVALUE_MIN LOW
-#define C_REFERENCEHITVALUE_MIN LOW
+#define Y_REFERENCEHITVALUE_MIN 255
+#define Z_REFERENCEHITVALUE_MIN 255
+#define A_REFERENCEHITVALUE_MIN 255
+#define B_REFERENCEHITVALUE_MIN 255
+#define C_REFERENCEHITVALUE_MIN 255
 
-#define X_REFERENCEHITVALUE_MAX LOW
+#define X_REFERENCEHITVALUE_MAX 255
 #define Y_REFERENCEHITVALUE_MAX LOW
 #define Z_REFERENCEHITVALUE_MAX LOW
-#define A_REFERENCEHITVALUE_MAX LOW
-#define B_REFERENCEHITVALUE_MAX LOW
-#define C_REFERENCEHITVALUE_MAX LOW
+#define A_REFERENCEHITVALUE_MAX 255
+#define B_REFERENCEHITVALUE_MAX 255
+#define C_REFERENCEHITVALUE_MAX 255
 
 #define MOVEAWAYFROMREF_MM1000 125
 
