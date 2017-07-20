@@ -66,6 +66,5 @@
     <None Include="..\..\..\Sketch\MaxiCNC\MaxiCNC.ino">
       <Filter>MaxiCNC</Filter>
     </None>
-    <None Include="test.nc" />
   </ItemGroup>
 </Project>

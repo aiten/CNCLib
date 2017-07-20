@@ -267,3 +267,8 @@ constexpr uint16_t GetInfo1a()
 #endif
 		CConfigEeprom::NONE;
 }
+
+constexpr uint16_t GetInfo1b()
+{
+	return 0;
+}
