@@ -48,7 +48,7 @@ const CConfigEeprom::SCNCEeprom CMyControl::_eepromFlash PROGMEM =
 {
 	EPROM_SIGNATURE,
 	NUM_AXIS, MYNUM_AXIS, offsetof(CConfigEeprom::SCNCEeprom,axis), sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions),
-	GetInfo1a()|CConfigEeprom::IS_LASER|CConfigEeprom::HAVE_SPINDLE|CConfigEeprom::HAVE_SPINDLE_ANALOG,0,
+	GetInfo1a()|CConfigEeprom::IS_LASER|CConfigEeprom::HAVE_SPINDLE|CConfigEeprom::HAVE_SPINDLE_ANALOG,GetInfo1b(),
 	0,
 	STEPPERDIRECTION,0,0,SPINDEL_FADETIMEDELAY,
 	SPINDLE_MAXSPEED,

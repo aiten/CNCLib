@@ -108,9 +108,9 @@ public:
 		HPGL = 7,           // max 3 bit
 	};
 
-	enum EEpromInfo1
+	enum EEpromInfo1a
 	{
-		NONE = 0,
+		NONE1a = 0,
 		HAVE_SPINDLE	= (1<<0),
 		HAVE_SPINDLE_ANALOG = (1<<1),
 		HAVE_SPINDLE_DIR = (1 << 2),
@@ -131,6 +131,12 @@ public:
 		HAVE_HOLD	= (1<<13),
 		HAVE_RESUME	= (1<<14),
 		HAVE_KILL	= (1<<15)
+	};
+
+	enum EEpromInfo1b
+	{
+		NONE1b = 0,
+		EEPROM_NEED_FLUSH = (1 << 0),
 	};
 
 	#define COMMANDSYNTAX_BIT	6
