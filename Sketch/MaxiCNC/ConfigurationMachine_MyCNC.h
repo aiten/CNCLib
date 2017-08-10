@@ -62,13 +62,13 @@
 
 #define X_USEREFERENCE	EReverenceType::ReferenceToMin
 #define Y_USEREFERENCE	EReverenceType::ReferenceToMax
-//#define Z_USEREFERENCE	EReverenceType::ReferenceToMax
-#define Z_USEREFERENCE  EReverenceType::NoReference
+#define Z_USEREFERENCE	EReverenceType::ReferenceToMax
+//#define Z_USEREFERENCE  EReverenceType::NoReference
 #define A_USEREFERENCE	EReverenceType::NoReference
 #define B_USEREFERENCE	EReverenceType::NoReference
 #define C_USEREFERENCE	EReverenceType::NoReference
 
-#define REFMOVE_1_AXIS  255
+#define REFMOVE_1_AXIS  Z_AXIS
 #define REFMOVE_2_AXIS  X_AXIS
 #define REFMOVE_3_AXIS  Y_AXIS
 #define REFMOVE_4_AXIS  255
