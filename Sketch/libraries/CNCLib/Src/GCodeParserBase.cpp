@@ -353,10 +353,9 @@ void CGCodeParserBase::Parse()
 						if (i != 0)
 							StepperSerial.print(':');
 						udist_t pos = CMotionControlBase::GetInstance()->GetPosition(i);
-						ldiv_t divrem = ldiv(pos, 1000);
-						StepperSerial.print((uint16_t) divrem.quot);
+						StepperSerial.print((uint16_t) (pos/1000l));
 						StepperSerial.print('.');
-						StepperSerial.print((uint16_t) divrem.rem);
+						StepperSerial.print((uint16_t) (pos%1000));
 					}
 				};
 				break;
