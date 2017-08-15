@@ -265,10 +265,14 @@ constexpr uint16_t GetInfo1a()
 #else
 		COMMANDSYNTAX_VALUE(CConfigEeprom::GCode) |
 #endif
-		CConfigEeprom::NONE;
+		CConfigEeprom::NONE1a;
 }
 
 constexpr uint16_t GetInfo1b()
 {
-	return 0;
+	return
+#if defined(__SAMD21G18A__)
+	CConfigEeprom::EEPROM_NEED_FLUSH |
+#endif
+		CConfigEeprom::NONE1b;
 }

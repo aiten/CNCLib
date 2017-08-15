@@ -520,7 +520,7 @@ namespace CNCLib.GCode.GUI
 
 					current[axis_0] = center_axis0 + r_axis0;
 					current[axis_1] = center_axis1 + r_axis1;
-					current[axis_linear] = ptTo[axis_linear]??0.0 - linear_travel_max * segments / (segments - i);
+					current[axis_linear] = (ptTo[axis_linear]??0.0) - linear_travel_max * (segments-i) / segments;
 
 					Line(param, pen, last, current);
 
