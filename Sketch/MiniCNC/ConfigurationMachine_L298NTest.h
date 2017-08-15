@@ -56,6 +56,7 @@
 ////////////////////////////////////////////////////////
 // PWM Spindel Pin
 
+#undef SPINDLE_ANALOGSPEED
 #define SPINDLE_ENABLE_PIN  11
 #define SPINDLE_DIGITAL_ON  LOW
 #define SPINDLE_DIGITAL_OFF HIGH
