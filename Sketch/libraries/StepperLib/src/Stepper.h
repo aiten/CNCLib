@@ -158,6 +158,7 @@ public:
 
 	void SetBacklash(steprate_t speed)			                { _pod._timerbacklash = SpeedToTimer(speed); };
 	bool IsSetBacklash()  const									{ return ((timer_t)-1) != _pod._timerbacklash; }
+	steprate_t GetBacklash()									{ return TimerToSpeed(_pod._timerbacklash); };
 
 	bool IsBusy()  const										{ return _pod._timerRunning; };
 	void WaitBusy();

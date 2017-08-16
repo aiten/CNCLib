@@ -239,6 +239,7 @@ protected:
 	bool CheckAxisSpecified(axis_t axis, uint8_t& axes);
 	axis_t CharToAxis(char axis);
 	axis_t CharToAxisOffset(char axis);
+	char AxisToChar(axis_t axis);
 
 	uint8_t GetSubCode();
 

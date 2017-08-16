@@ -47,7 +47,6 @@
 #define MESSAGE_GCODE_UnsupportedGCommand			StepperMessage("C","unsupported G command")
 #define MESSAGE_GCODE_MCodeExpected					StepperMessage("D","m-code expected")
 #define MESSAGE_GCODE_UnspportedMCodeIgnored		StepperMessage("E","unspported m code ignored")
-#define MESSAGE_GCODE_ParamNoExpected				StepperMessage("F","paramNo expected")
 #define MESSAGE_GCODE_EqExpected					StepperMessage("10","= expected")
 #define MESSAGE_GCODE_CommandExpected				StepperMessage("11","command expected")
 #define MESSAGE_GCODE_IllegalCommand				StepperMessage("12","Illegal command")

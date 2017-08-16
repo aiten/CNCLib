@@ -114,6 +114,7 @@ protected:
 	virtual bool Command(char ch) override;
 
 	void ToolSelectCommand();
+	void ParameterCommand();
 
 	virtual void CommentMessage(char*) override;
 	virtual mm1000_t CalcAllPreset(axis_t axis) override;
@@ -196,6 +197,7 @@ protected:
 	mm1000_t GetParamValue(param_t paramNo, bool convertToInch);
 	void SetParamValue(param_t parmNo);
 
+	static mm1000_t GetParamAsMm1000(mm1000_t posMm100, axis_t)					{ return posMm100; }
 	static mm1000_t GetParamAsPosition(mm1000_t posInMachine, axis_t axis)		{ return CMotionControlBase::GetInstance()->ToMm1000(axis, posInMachine); }
 	static mm1000_t GetParamAsMachine(mm1000_t posInmm1000, axis_t axis)		{ return CMotionControlBase::GetInstance()->ToMachine(axis, posInmm1000); }
 
@@ -267,6 +269,9 @@ protected:
 
 
 protected:
+
+	void PrintAllParam();
+	void PrintAllParam(param_t paramno, const char*paramname, axis_t axis);
 
 	struct SParamInfo
 	{
