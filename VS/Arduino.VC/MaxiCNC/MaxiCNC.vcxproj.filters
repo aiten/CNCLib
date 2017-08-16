@@ -32,9 +32,6 @@
     <ClInclude Include="..\..\..\Sketch\MaxiCNC\ConfigurationMachine_ProxxonMF70.h">
       <Filter>MaxiCNC</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Sketch\MaxiCNC\ConfigurationMachine_ProxxonMF70_FD.h">
-      <Filter>MaxiCNC</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Sketch\MaxiCNC\ConfigurationStepper_Mash6050S.h">
       <Filter>MaxiCNC</Filter>
     </ClInclude>
@@ -42,6 +39,9 @@
       <Filter>MaxiCNC</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Sketch\MaxiCNC\ConfigurationStepper_RampsFD.h">
+      <Filter>MaxiCNC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Sketch\MaxiCNC\ConfigurationMachine_MyCNC.h">
       <Filter>MaxiCNC</Filter>
     </ClInclude>
   </ItemGroup>

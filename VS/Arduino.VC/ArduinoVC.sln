@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plotter", "Plotter\Plotter.vcxproj", "{AB8D0B94-F0C2-4593-8509-E31E8132D1E1}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -13,19 +13,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StepperOnly", "StepperOnly\
 		{65F3EA50-71B8-4573-8D35-786D97FDFA91} = {65F3EA50-71B8-4573-8D35-786D97FDFA91}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProxxonMF70", "ProxxonMF70\ProxxonMF70.vcxproj", "{0C24E926-E2FD-4349-8E0C-847B75167584}"
-	ProjectSection(ProjectDependencies) = postProject
-		{65F3EA50-71B8-4573-8D35-786D97FDFA91} = {65F3EA50-71B8-4573-8D35-786D97FDFA91}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StepperSystem", "StepperSystem\StepperSystem.vcxproj", "{65F3EA50-71B8-4573-8D35-786D97FDFA91}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MiniCNC", "MiniCNC\MiniCNC.vcxproj", "{EE249357-B4C2-4661-AAC8-E1B85C9F53A5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{65F3EA50-71B8-4573-8D35-786D97FDFA91} = {65F3EA50-71B8-4573-8D35-786D97FDFA91}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KK1000S", "KK1000S\KK1000S.vcxproj", "{D675EE33-54A4-4F2E-99DA-E3950355E5D3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{65F3EA50-71B8-4573-8D35-786D97FDFA91} = {65F3EA50-71B8-4573-8D35-786D97FDFA91}
 	EndProjectSection
@@ -90,12 +80,6 @@ Global
 		{C930BEDB-0DC2-4794-B9E3-A4111CAC6E78}.Release|Win32.ActiveCfg = Release|Win32
 		{C930BEDB-0DC2-4794-B9E3-A4111CAC6E78}.Release|Win32.Build.0 = Release|Win32
 		{C930BEDB-0DC2-4794-B9E3-A4111CAC6E78}.Release|x64.ActiveCfg = Release|Win32
-		{0C24E926-E2FD-4349-8E0C-847B75167584}.Debug|Win32.ActiveCfg = Debug|Win32
-		{0C24E926-E2FD-4349-8E0C-847B75167584}.Debug|Win32.Build.0 = Debug|Win32
-		{0C24E926-E2FD-4349-8E0C-847B75167584}.Debug|x64.ActiveCfg = Debug|Win32
-		{0C24E926-E2FD-4349-8E0C-847B75167584}.Release|Win32.ActiveCfg = Release|Win32
-		{0C24E926-E2FD-4349-8E0C-847B75167584}.Release|Win32.Build.0 = Release|Win32
-		{0C24E926-E2FD-4349-8E0C-847B75167584}.Release|x64.ActiveCfg = Release|Win32
 		{65F3EA50-71B8-4573-8D35-786D97FDFA91}.Debug|Win32.ActiveCfg = Debug|Win32
 		{65F3EA50-71B8-4573-8D35-786D97FDFA91}.Debug|Win32.Build.0 = Debug|Win32
 		{65F3EA50-71B8-4573-8D35-786D97FDFA91}.Debug|x64.ActiveCfg = Debug|Win32
@@ -108,12 +92,6 @@ Global
 		{EE249357-B4C2-4661-AAC8-E1B85C9F53A5}.Release|Win32.ActiveCfg = Release|Win32
 		{EE249357-B4C2-4661-AAC8-E1B85C9F53A5}.Release|Win32.Build.0 = Release|Win32
 		{EE249357-B4C2-4661-AAC8-E1B85C9F53A5}.Release|x64.ActiveCfg = Release|Win32
-		{D675EE33-54A4-4F2E-99DA-E3950355E5D3}.Debug|Win32.ActiveCfg = Debug|Win32
-		{D675EE33-54A4-4F2E-99DA-E3950355E5D3}.Debug|Win32.Build.0 = Debug|Win32
-		{D675EE33-54A4-4F2E-99DA-E3950355E5D3}.Debug|x64.ActiveCfg = Debug|Win32
-		{D675EE33-54A4-4F2E-99DA-E3950355E5D3}.Release|Win32.ActiveCfg = Release|Win32
-		{D675EE33-54A4-4F2E-99DA-E3950355E5D3}.Release|Win32.Build.0 = Release|Win32
-		{D675EE33-54A4-4F2E-99DA-E3950355E5D3}.Release|x64.ActiveCfg = Release|Win32
 		{EF7D9999-7307-4B61-BD62-47D22359D45F}.Debug|Win32.ActiveCfg = Debug|Win32
 		{EF7D9999-7307-4B61-BD62-47D22359D45F}.Debug|Win32.Build.0 = Debug|Win32
 		{EF7D9999-7307-4B61-BD62-47D22359D45F}.Debug|x64.ActiveCfg = Debug|Win32

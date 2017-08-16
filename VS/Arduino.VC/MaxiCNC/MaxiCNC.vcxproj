@@ -86,12 +86,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Sketch\MaxiCNC\Configuration.h" />
+    <ClInclude Include="..\..\..\Sketch\MaxiCNC\ConfigurationMachine_MyCNC.h" />
     <ClInclude Include="..\..\..\Sketch\MaxiCNC\ConfigurationStepper_Mash6050S.h" />
     <ClInclude Include="..\..\..\Sketch\MaxiCNC\ConfigurationStepper_Ramps14.h" />
     <ClInclude Include="..\..\..\Sketch\MaxiCNC\ConfigurationStepper_RampsFD.h" />
     <ClInclude Include="..\..\..\Sketch\MaxiCNC\ConfigurationMachine_KK1000S.h" />
     <ClInclude Include="..\..\..\Sketch\MaxiCNC\ConfigurationMachine_ProxxonMF70.h" />
-    <ClInclude Include="..\..\..\Sketch\MaxiCNC\ConfigurationMachine_ProxxonMF70_FD.h" />
     <ClInclude Include="..\..\..\Sketch\MaxiCNC\MyControl.h" />
     <ClInclude Include="..\..\..\Sketch\MaxiCNC\MyLCD.h" />
     <ClInclude Include="..\..\..\Sketch\MaxiCNC\MyMenu.h" />
