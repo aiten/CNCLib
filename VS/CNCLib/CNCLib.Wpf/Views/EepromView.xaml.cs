@@ -17,7 +17,9 @@
 */
 
 using System.Windows;
+using CNCLib.Wpf.Models;
 using Framework.Wpf.View;
+using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace CNCLib.Wpf.Views
 {
@@ -32,5 +34,19 @@ namespace CNCLib.Wpf.Views
 
             this.DefaulInitForBaseViewModel();
 		}
-	}
+
+        private void PropertyGrid_PreparePropertyItem(object sender, PropertyItemEventArgs e)
+        {
+            var grid = (PropertyGrid)e.Source;
+        }
+
+        private void PropertyGrid_IsPropertyBrowsable(object sender, IsPropertyBrowsableArgs e)
+        {
+            if (_grid.SelectedObject != null)
+            {
+                var data = (Eeprom)_grid.SelectedObject;
+                e.IsBrowsable = data.IsPropertyBrowsable(e.PropertyDescriptor.Name);
+            }
+        }
+    }
 }

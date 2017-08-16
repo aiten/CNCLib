@@ -14,7 +14,7 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
 namespace CNCLib.Wpf.Models
 {
-    public class EepromPlotter : EepromAxis6
+    public class EepromPlotter : Eeprom
     {
         #region Plotter
 

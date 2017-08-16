@@ -151,7 +151,8 @@ namespace CNCLib.Wpf.Models
 
 		private ObservableCollection<Models.MachineCommand> _MachineCommands;
 
-		public ObservableCollection<Models.MachineCommand> MachineCommands
+        [Browsable(false)]
+        public ObservableCollection<Models.MachineCommand> MachineCommands
 		{
 			get
 			{
@@ -175,7 +176,8 @@ namespace CNCLib.Wpf.Models
 
 		private ObservableCollection<Models.MachineInitCommand> _MachineInitCommands;
 
-		public ObservableCollection<Models.MachineInitCommand> MachineInitCommands
+        [Browsable(false)]
+        public ObservableCollection<Models.MachineInitCommand> MachineInitCommands
 		{
 			get
 			{

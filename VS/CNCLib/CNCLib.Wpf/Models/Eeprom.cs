@@ -20,6 +20,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using CNCLib.GCode;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace CNCLib.Wpf.Models
 {
@@ -28,13 +29,37 @@ namespace CNCLib.Wpf.Models
 		public static Eeprom Create(uint signature, int numaxis)
 		{
             if (signature == EepromV1.SIGNATUREPLOTTER) return new EepromPlotter();
-			if (numaxis > 4) return new EepromAxis6();
-			if (numaxis == 4) return new EepromAxis4();
-			if (numaxis == 3) return new EepromAxis3();
-			if (numaxis >= 1) return new EepromAxis2();
-
 			return new Eeprom();
 		}
+
+        public bool? IsPropertyBrowsable(string propertyName)
+        {
+            if (propertyName == "Values")
+                return false;
+
+            if (propertyName == nameof(AxisY) || propertyName == nameof(RefSeqence2))
+            {
+                return NumAxis >= 2;
+            }
+            if (propertyName == nameof(AxisZ) || propertyName == nameof(RefSeqence3))
+            {
+                return NumAxis >= 3;
+            }
+            if (propertyName == nameof(AxisA) || propertyName == nameof(RefSeqence4))
+            {
+                return NumAxis >= 4;
+            }
+            if (propertyName == nameof(AxisB) || propertyName == nameof(RefSeqence5))
+            {
+                return NumAxis >= 5;
+            }
+            if (propertyName == nameof(AxisC) || propertyName == nameof(RefSeqence6))
+            {
+                return NumAxis >= 6;
+            }
+
+            return null;
+        }
 
 		protected const string CATEGORY_INTERNAL = "Internal";
 		protected const string CATEGORY_SIZE = "Size";
@@ -210,7 +235,7 @@ namespace CNCLib.Wpf.Models
 
         [Category(CATEGORY_INFO)]
 		[DisplayName("Info2")]
-		[Description("Info 32bit")]
+		[Description("Info 32bit"), ReadOnly(true)]
 		public uint Info2 { get; set; }
 
 		#endregion
@@ -250,11 +275,78 @@ namespace CNCLib.Wpf.Models
 
 		public SAxis GetAxis(int axis) { return _axis[axis]; }
 
-		#endregion
 
-		#region Refmove-General
+        [ExpandableObject]
+        [Category("Axis")]
+        [DisplayName("Axis-X")]
+        [Description("Definition of axis")]
+        public SAxis AxisX { get { return _axis[0]; } }
 
-		protected EReverenceSequence[] _refSeqences = new EReverenceSequence[EEPROM_NUM_AXIS] { EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No };
+        [ExpandableObject]
+        [Category("Axis")]
+        [DisplayName("Axis-Y")]
+        [Description("Definition of axis")]
+        public SAxis AxisY { get { return _axis[1]; } }
+
+        [ExpandableObject]
+        [Category("Axis")]
+        [DisplayName("Axis-Z")]
+        [Description("Definition of axis")]
+        public SAxis AxisZ { get { return _axis[2]; } }
+
+        [ExpandableObject]
+        [Category("Axis")]
+        [DisplayName("Axis-A")]
+        [Description("Definition of axis")]
+        public SAxis AxisA { get { return _axis[3]; } }
+
+        [ExpandableObject]
+        [Category("Axis")]
+        [DisplayName("Axis-B")]
+        [Description("Definition of axis")]
+        public SAxis AxisB { get { return _axis[4]; } }
+
+        [ExpandableObject]
+        [Category("Axis")]
+        [DisplayName("Axis-C")]
+        [Description("Definition of axis")]
+        public SAxis AxisC { get { return _axis[5]; } }
+
+        [Category(CATEGORY_GENERAL)]
+        [DisplayName("Ref-Sequence 1")]
+        [Description("Axis for reference-sequence 1")]
+        public EReverenceSequence RefSeqence1 { get { return _refSeqences[0]; } set { _refSeqences[0] = value; } }
+
+        [Category(CATEGORY_GENERAL)]
+        [DisplayName("Ref-Sequence 2")]
+        [Description("Axis for reference-sequence 2")]
+        public EReverenceSequence RefSeqence2 { get { return _refSeqences[1]; } set { _refSeqences[1] = value; } }
+
+        [Category(CATEGORY_GENERAL)]
+        [DisplayName("Ref-Sequence 3")]
+        [Description("Axis for reference-sequence 3")]
+        public EReverenceSequence RefSeqence3 { get { return _refSeqences[2]; } set { _refSeqences[2] = value; } }
+
+        [Category(CATEGORY_GENERAL)]
+        [DisplayName("Ref-Sequence 4")]
+        [Description("Axis for reference-sequence 4")]
+        public EReverenceSequence RefSeqence4 { get { return _refSeqences[3]; } set { _refSeqences[3] = value; } }
+
+        [Category(CATEGORY_GENERAL)]
+        [DisplayName("Ref-Sequence 5")]
+        [Description("Axis for reference-sequence 5")]
+        public EReverenceSequence RefSeqence5 { get { return _refSeqences[4]; } set { _refSeqences[4] = value; } }
+
+        [Category(CATEGORY_GENERAL)]
+        [DisplayName("Ref-Sequence 6")]
+        [Description("Axis for reference-sequence 6")]
+        public EReverenceSequence RefSeqence6 { get { return _refSeqences[5]; } set { _refSeqences[5] = value; } }
+
+        #endregion
+
+        #region Refmove-General
+
+        protected EReverenceSequence[] _refSeqences = new EReverenceSequence[EEPROM_NUM_AXIS] { EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No };
 
 		public EReverenceSequence this[int i] { get { return _refSeqences[i]; } set { _refSeqences[i] = value; } }
 

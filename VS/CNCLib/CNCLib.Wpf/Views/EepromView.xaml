@@ -19,7 +19,7 @@
             <Button Command="{Binding EraseEepromCommand}"  Content="Erase Eeprom" Margin="10,0" Width="100"/>
         </StackPanel>
 
-        <xctk:PropertyGrid DataContext="{Binding EepromValue}" SelectedObject="{Binding}">
+        <xctk:PropertyGrid DataContext="{Binding EepromValue}" SelectedObject="{Binding}" PreparePropertyItem="PropertyGrid_PreparePropertyItem" IsPropertyBrowsable="PropertyGrid_IsPropertyBrowsable" Name="_grid" >
         </xctk:PropertyGrid>
     </DockPanel>
 </Window>
