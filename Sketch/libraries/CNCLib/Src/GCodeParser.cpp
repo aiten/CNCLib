@@ -256,6 +256,8 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 			}
 			case PARAMSTART_FEEDRATE:			return GetG1FeedRate();
 			case PARAMSTART_BACKLASH_FEEDRATE:  return CMotionControlBase::GetInstance()->ToMm1000(0, CStepper::GetInstance()->GetBacklash())/60;  
+			case PARAMSTART_CONTROLLERFAN:		return CControl::GetInstance()->IOControl(CControl::ControllerFan);
+			case PARAMSTART_RAPIDMOVEFEED:		return -GetG0FeedRate();
 		}
 	}
 
@@ -274,6 +276,7 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 	else
 	{
 		mm1000_t mm1000 = CMm1000::ConvertFrom(exprpars.Answer);
+		uint32_t intvalue = exprpars.Answer;
 		const SParamInfo*param = FindParamInfoByParamNo(paramNo);
 
 		if (IsModifyParam(paramNo))				{ _modalstate.Parameter[paramNo - 1] = exprpars.Answer; }
@@ -284,13 +287,13 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 			{
 				case PARAMSTART_BACKLASH:			{ CStepper::GetInstance()->SetBacklash(axis, (mdist_t)GetParamAsMachine(mm1000, axis));	break;  }
 				case PARAMSTART_BACKLASH_FEEDRATE:	{ CStepper::GetInstance()->SetBacklash((steprate_t)CMotionControlBase::GetInstance()->ToMachine(0, mm1000 * 60)); break; }
-				case PARAMSTART_CONTROLLERFAN:		{ CControl::GetInstance()->IOControl(CControl::ControllerFan, (unsigned short)exprpars.Answer);	break;  }
+				case PARAMSTART_CONTROLLERFAN:		{ CControl::GetInstance()->IOControl(CControl::ControllerFan, (unsigned short)intvalue);	break;  }
 				case PARAMSTART_RAPIDMOVEFEED:		{ SetG0FeedRate(-CFeedrate1000::ConvertFrom(exprpars.Answer)); break;	}
 				case PARAMSTART_MAX:				{ CStepper::GetInstance()->SetLimitMax(axis, GetParamAsMachine(mm1000, axis));	break;	}
 				case PARAMSTART_MIN:				{ CStepper::GetInstance()->SetLimitMin(axis, GetParamAsMachine(mm1000, axis));	break;	}
-				case PARAMSTART_ACC:				{ CStepper::GetInstance()->SetAcc(axis, (steprate_t)mm1000); break;	}
-				case PARAMSTART_DEC:				{ CStepper::GetInstance()->SetDec(axis, (steprate_t)mm1000); break;	}
-				case PARAMSTART_JERK:				{ CStepper::GetInstance()->SetJerkSpeed(axis, (steprate_t)mm1000); break; }
+				case PARAMSTART_ACC:				{ CStepper::GetInstance()->SetAcc(axis, (steprate_t)intvalue); break;	}
+				case PARAMSTART_DEC:				{ CStepper::GetInstance()->SetDec(axis, (steprate_t)intvalue); break;	}
+				case PARAMSTART_JERK:				{ CStepper::GetInstance()->SetJerkSpeed(axis, (steprate_t)intvalue); break; }
 				default:							Error(MESSAGE_GCODE_UnspportedParameterNumber);	return;
 			}
 		}
@@ -361,7 +364,7 @@ static const char _acc[] PROGMEM = "_acc";
 static const char _dec[] PROGMEM = "_dec";
 static const char _jerk[] PROGMEM = "_jerk";
 static const char _fan[] PROGMEM = "_fan";
-static const char _g0feedrate[] PROGMEM = "_gofeedrate";
+static const char _g0feedrate[] PROGMEM = "_g0feedrate";
 static const char _xPos[] PROGMEM = "_x";
 static const char _yPos[] PROGMEM = "_y";
 static const char _zPos[] PROGMEM = "_z";
@@ -371,52 +374,53 @@ static const char _cPos[] PROGMEM = "_c";
 
 const CGCodeParser::SParamInfo CGCodeParser::_paramdef[] PROGMEM =
 {
-	{ PARAMSTART_G28HOME,	_g28home,		true },
-	{ PARAMSTART_G92OFFSET,	_g92home,		true },
-	{ PARAMSTART_CURRENTPOS,	_currentPos,true },
+	{ PARAMSTART_G28HOME,		_g28home,	true,	CGCodeParser::SParamInfo::IsMm1000 },
+	{ PARAMSTART_G92OFFSET,		_g92home,	true,	CGCodeParser::SParamInfo::IsMm1000 },
+	{ PARAMSTART_CURRENTPOS,	_currentPos,true,	CGCodeParser::SParamInfo::IsMm1000 },
 
-	{ PARAMSTART_CURRENTPOS,	_xPos,      false },
-	{ PARAMSTART_CURRENTPOS+1,	_yPos,      false },
-	{ PARAMSTART_CURRENTPOS+2,	_zPos,      false },
+	{ PARAMSTART_CURRENTPOS,	_xPos,      false,	CGCodeParser::SParamInfo::IsMm1000 },
+	{ PARAMSTART_CURRENTPOS+1,	_yPos,      false,	CGCodeParser::SParamInfo::IsMm1000 },
+	{ PARAMSTART_CURRENTPOS+2,	_zPos,      false,	CGCodeParser::SParamInfo::IsMm1000 },
 #if NUM_AXIS > 3
-	{ PARAMSTART_CURRENTPOS+3,	_aPos,      false },
+	{ PARAMSTART_CURRENTPOS+3,	_aPos,      false,	CGCodeParser::SParamInfo::IsMm1000 },
 #elif NUM_AXIS > 4
-	{ PARAMSTART_CURRENTPOS+4,	_bPos,      false },
+	{ PARAMSTART_CURRENTPOS+4,	_bPos,      false,	CGCodeParser::SParamInfo::IsMm1000 },
 #elif NUM_AXIS > 5
-	{ PARAMSTART_CURRENTPOS+5,	_cPos,      false },
+	{ PARAMSTART_CURRENTPOS+5,	_cPos,      false,	CGCodeParser::SParamInfo::IsMm1000 },
 #endif
 
-	{ PARAMSTART_CURRENTABSPOS,	_currentAbsPos,true },
-	{ PARAMSTART_BACKLASH,	_backlash,				true },
-	{ PARAMSTART_BACKLASH_FEEDRATE,	_backlashfeed,	false },
-	{ PARAMSTART_MAX,	_maxPos,			true },
-	{ PARAMSTART_MIN,	_minPos,			true },
-	{ PARAMSTART_ACC,	_acc,				true },
-	{ PARAMSTART_DEC,	_dec,				true },
-	{ PARAMSTART_JERK,	_jerk,				true },
-	{ PARAMSTART_CONTROLLERFAN,	_fan,		false },
-	{ PARAMSTART_RAPIDMOVEFEED,	_g0feedrate,false },
+	{ PARAMSTART_CURRENTABSPOS,	_currentAbsPos,true,		CGCodeParser::SParamInfo::IsMm1000 },
+	{ PARAMSTART_BACKLASH,	_backlash,		true,			CGCodeParser::SParamInfo::IsMm1000 },
+	{ PARAMSTART_BACKLASH_FEEDRATE,	_backlashfeed,	false,	CGCodeParser::SParamInfo::IsMm1000 },
+	{ PARAMSTART_MAX,			_maxPos,	true,			CGCodeParser::SParamInfo::IsMm1000 },
+	{ PARAMSTART_MIN,			_minPos,	true,			CGCodeParser::SParamInfo::IsInt },
+	{ PARAMSTART_ACC,			_acc,		true,			CGCodeParser::SParamInfo::IsInt },
+	{ PARAMSTART_DEC,			_dec,		true,			CGCodeParser::SParamInfo::IsInt },
+	{ PARAMSTART_JERK,			_jerk,		true,			CGCodeParser::SParamInfo::IsInt },
+	{ PARAMSTART_CONTROLLERFAN,	_fan,		false,			CGCodeParser::SParamInfo::IsInt },
+	{ PARAMSTART_RAPIDMOVEFEED,	_g0feedrate,false,			CGCodeParser::SParamInfo::IsMm1000 },
 
-	{ PARAMSTART_G54OFFSET + 0 * PARAMSTART_G54FF_OFFSET,	_g54home,	true },
-	{ PARAMSTART_G54OFFSET + 1 * PARAMSTART_G54FF_OFFSET,	_g55home,	true },
+	{ PARAMSTART_G54OFFSET + 0 * PARAMSTART_G54FF_OFFSET,	_g54home,	true,			CGCodeParser::SParamInfo::IsMm1000 },
+	{ PARAMSTART_G54OFFSET + 1 * PARAMSTART_G54FF_OFFSET,	_g55home,	true,			CGCodeParser::SParamInfo::IsMm1000 },
 #if G54ARRAYSIZE > 2
-	{ PARAMSTART_G54OFFSET + 2 * PARAMSTART_G54FF_OFFSET,	_g56home,	true },
+	{ PARAMSTART_G54OFFSET + 2 * PARAMSTART_G54FF_OFFSET,	_g56home,	true,			CGCodeParser::SParamInfo::IsMm1000 },
 #elif G54ARRAYSIZE > 3
-	{ PARAMSTART_G54OFFSET + 3 * PARAMSTART_G54FF_OFFSET,	_g57home,	true },
+	{ PARAMSTART_G54OFFSET + 3 * PARAMSTART_G54FF_OFFSET,	_g57home,	true,			CGCodeParser::SParamInfo::IsMm1000 },
 #elif G54ARRAYSIZE > 4
-	{ PARAMSTART_G54OFFSET + 4 * PARAMSTART_G54FF_OFFSET,	_g58home,	true },
+	{ PARAMSTART_G54OFFSET + 4 * PARAMSTART_G54FF_OFFSET,	_g58home,	true,			CGCodeParser::SParamInfo::IsMm1000 },
 #elif G54ARRAYSIZE > 5
-	{ PARAMSTART_G54OFFSET + 5 * PARAMSTART_G54FF_OFFSET,	_g59home,	true },
+	{ PARAMSTART_G54OFFSET + 5 * PARAMSTART_G54FF_OFFSET,	_g59home,	true,			CGCodeParser::SParamInfo::IsMm1000 },
 #endif
 
-	{ PARAMSTART_FEEDRATE,	_feedrate, false },
+	{ PARAMSTART_FEEDRATE,	_feedrate, false,			CGCodeParser::SParamInfo::IsMm1000 },
 	{ 0,NULL,false }
 };
 
 ////////////////////////////////////////////////////////////
 
-void CGCodeParser::PrintAllParam(param_t paramno, const char*paramname, axis_t axis)
+void CGCodeParser::PrintParam(const CGCodeParser::SParamInfo* item, axis_t axis)
 {
+	const char* paramname = item->GetText();
 	StepperSerial.print('#');
 	if (paramname != NULL)
 	{
@@ -430,9 +434,22 @@ void CGCodeParser::PrintAllParam(param_t paramno, const char*paramname, axis_t a
 			ofs = axis;
 		}
 		StepperSerial.print(F(">="));
-		StepperSerial.print(GetParamValue(paramno + ofs, false));
-		StepperSerial.print(F("\t;"));
-		StepperSerial.print(paramno + ofs);
+		mm1000_t paramvalue = GetParamValue(item->GetParamNo() + ofs, false);
+		switch (item->GetValueType())
+		{
+			default:
+			case SParamInfo::EValueType::IsInt:
+				StepperSerial.print(paramvalue);
+				break;
+			case SParamInfo::EValueType::IsMm1000:
+			{
+				char tmp[16];
+				StepperSerial.print(CMm1000::ToString(paramvalue,tmp,3));
+				break;
+			}
+		}
+		StepperSerial.print(F("\t\t;"));
+		StepperSerial.print(item->GetParamNo() + ofs);
 		StepperSerial.println();
 	}
 }
@@ -448,12 +465,12 @@ void CGCodeParser::PrintAllParam()
 		{
 			for (axis_t i = 0; i < NUM_AXIS; i++)
 			{
-				PrintAllParam(item->GetParamNo(), item->GetText(), i);
+				PrintParam(item, i);
 			}
 		}
 		else
 		{
-			PrintAllParam(item->GetParamNo(), item->GetText(), 255);
+			PrintParam(item, 255);
 		}
 		item++;
 	}

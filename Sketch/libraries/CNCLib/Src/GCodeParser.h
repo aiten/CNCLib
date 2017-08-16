@@ -270,21 +270,28 @@ protected:
 
 protected:
 
-	void PrintAllParam();
-	void PrintAllParam(param_t paramno, const char*paramname, axis_t axis);
-
 	struct SParamInfo
 	{
 	public:
 		param_t _paramNo;		// base param adress
 		const char* _text;
 		bool _allowaxisofs;
+		enum EValueType
+		{
+			IsInt,
+			IsMm1000
+		};
+		uint8_t _valuetype;
 	public:
 		//SParamInfo(param_t paramNo, const char* text, bool allowaxisofs):_paramNo(paramNo),_text(text),_allowaxisofs(allowaxisofs) {};
 		const char* GetText()   const { return (const char*)pgm_read_ptr(&this->_text); }
 		param_t GetParamNo()    const { return pgm_read_word(&this->_paramNo); }
 		bool GetAllowAxisOfs()  const { return pgm_read_byte(&this->_allowaxisofs) != 0; }
+		uint8_t GetValueType() const { return (uint8_t) pgm_read_byte(&this->_valuetype); }
 	};
+
+	void PrintAllParam();
+	void PrintParam(const SParamInfo* item, axis_t axis);
 
 	static const struct SParamInfo _paramdef[] PROGMEM;
 
