@@ -270,7 +270,7 @@ namespace CNCLib.Repository.Context
                 new MachineCommand{ Machine=minilaser, CommandName = "Laser On",    CommandString =@"m106",         PosX=1, PosY=1,			JoystickMessage=";btn2:0" },
                 new MachineCommand{ Machine=minilaser, CommandName = "Laser Min",   CommandString =@"m106 s1",      PosX=1, PosY=2,			JoystickMessage=";btn2:1" },
                 new MachineCommand{ Machine=minilaser, CommandName = "Laser Max",   CommandString =@"m106 s255",    PosX=1, PosY=3,			JoystickMessage=";btn2:2" },
-                new MachineCommand{ Machine=minilaser, CommandName = "Sqare",       CommandString =@"m106 s2\ng0x0y0\ng0x36\ng0y36\ng0x0\ng0y0m107",    PosX=3, PosY=0 },
+                new MachineCommand{ Machine=minilaser, CommandName = "Square",      CommandString =@"m106 s2\ng0x0y0\ng0x36\ng0y36\ng0x0\ng0y0m107",    PosX=3, PosY=0 },
 
                 //co2 laser
                 new MachineCommand{ Machine=dck40laser, CommandName = "Set XY = 0",  CommandString =@"g92 x0\ng92 y0\n;beep", PosX=0, PosY=0,      JoystickMessage=";btn4" },
