@@ -152,15 +152,6 @@ param_t CGCodeParser::ParseParamNo()
 			}
 		}
 
-		if (start[0] == '_')			// all system parameter start with _
-		{
-			// see: http://www.linuxcnc.org/docs/devel/html/gcode/overview.html#_predefined_named_parameters_a_id_sec_predefined_named_parameters_a
-			if (start[2] == 0 && (a = CharToAxis(CStreamReader::Toupper(start[1]))) < NUM_AXIS)
-			{
-				return PARAMSTART_CURRENTPOS + a;
-			}
-		}
-
 		CStreamReader::CSetTemporary terminatecolon(colon ? colon : end);
 
 		const SParamInfo* param = FindParamInfoByText(start);
@@ -236,6 +227,7 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 			case PARAMSTART_CURRENTPOS:			return GetParamAsMm1000(GetRelativePosition(axis), axis);
 			case PARAMSTART_CURRENTABSPOS:		return GetParamAsMm1000(CMotionControlBase::GetInstance()->GetPosition(axis), axis);
 			case PARAMSTART_BACKLASH:			return GetParamAsPosition(CStepper::GetInstance()->GetBacklash(axis), axis);
+			case PARAMSTART_BACKLASH_FEEDRATE:  return CMotionControlBase::GetInstance()->ToMm1000(0, CStepper::GetInstance()->GetBacklash()) * 60;
 			case PARAMSTART_MAX:				return GetParamAsPosition(CStepper::GetInstance()->GetLimitMax(axis), axis);
 			case PARAMSTART_MIN:				return GetParamAsPosition(CStepper::GetInstance()->GetLimitMin(axis), axis);
 			case PARAMSTART_ACC:				return CStepper::GetInstance()->GetAcc(axis);
@@ -251,11 +243,10 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 			{
 				uint8_t idx = (uint8_t)((param->GetParamNo() - PARAMSTART_G54OFFSET) / PARAMSTART_G54FF_OFFSET);
 				if (idx < G54ARRAYSIZE)
-					return GetParamAsPosition(_modalstate.G54Pospreset[idx][axis], axis);
+					return GetParamAsMm1000(_modalstate.G54Pospreset[idx][axis], axis);
 				break;
 			}
 			case PARAMSTART_FEEDRATE:			return GetG1FeedRate();
-			case PARAMSTART_BACKLASH_FEEDRATE:  return CMotionControlBase::GetInstance()->ToMm1000(0, CStepper::GetInstance()->GetBacklash())/60;  
 			case PARAMSTART_CONTROLLERFAN:		return CControl::GetInstance()->IOControl(CControl::ControllerFan);
 			case PARAMSTART_RAPIDMOVEFEED:		return -GetG0FeedRate();
 		}
@@ -279,14 +270,17 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 		uint32_t intvalue = exprpars.Answer;
 		const SParamInfo*param = FindParamInfoByParamNo(paramNo);
 
-		if (IsModifyParam(paramNo))				{ _modalstate.Parameter[paramNo - 1] = exprpars.Answer; }
+		if (IsModifyParam(paramNo))				
+		{ 
+			_modalstate.Parameter[paramNo - 1] = exprpars.Answer; 
+		}
 		else if (param != NULL)
 		{
 			axis_t axis = (axis_t)(paramNo - param->GetParamNo());
 			switch (param->GetParamNo())
 			{
 				case PARAMSTART_BACKLASH:			{ CStepper::GetInstance()->SetBacklash(axis, (mdist_t)GetParamAsMachine(mm1000, axis));	break;  }
-				case PARAMSTART_BACKLASH_FEEDRATE:	{ CStepper::GetInstance()->SetBacklash((steprate_t)CMotionControlBase::GetInstance()->ToMachine(0, mm1000 * 60)); break; }
+				case PARAMSTART_BACKLASH_FEEDRATE:	{ CStepper::GetInstance()->SetBacklash((steprate_t)GetParamAsFeedrate(mm1000, axis)); break; }
 				case PARAMSTART_CONTROLLERFAN:		{ CControl::GetInstance()->IOControl(CControl::ControllerFan, (unsigned short)intvalue);	break;  }
 				case PARAMSTART_RAPIDMOVEFEED:		{ SetG0FeedRate(-CFeedrate1000::ConvertFrom(exprpars.Answer)); break;	}
 				case PARAMSTART_MAX:				{ CStepper::GetInstance()->SetLimitMax(axis, GetParamAsMachine(mm1000, axis));	break;	}
@@ -294,7 +288,23 @@ void CGCodeParser::SetParamValue(param_t paramNo)
 				case PARAMSTART_ACC:				{ CStepper::GetInstance()->SetAcc(axis, (steprate_t)intvalue); break;	}
 				case PARAMSTART_DEC:				{ CStepper::GetInstance()->SetDec(axis, (steprate_t)intvalue); break;	}
 				case PARAMSTART_JERK:				{ CStepper::GetInstance()->SetJerkSpeed(axis, (steprate_t)intvalue); break; }
-				default:							Error(MESSAGE_GCODE_UnspportedParameterNumber);	return;
+
+				case PARAMSTART_G54OFFSET + 0 * PARAMSTART_G54FF_OFFSET:
+				case PARAMSTART_G54OFFSET + 1 * PARAMSTART_G54FF_OFFSET:
+				case PARAMSTART_G54OFFSET + 2 * PARAMSTART_G54FF_OFFSET:
+				case PARAMSTART_G54OFFSET + 3 * PARAMSTART_G54FF_OFFSET:
+				case PARAMSTART_G54OFFSET + 4 * PARAMSTART_G54FF_OFFSET:
+				case PARAMSTART_G54OFFSET + 5 * PARAMSTART_G54FF_OFFSET:
+				{
+					uint8_t idx = (uint8_t)((param->GetParamNo() - PARAMSTART_G54OFFSET) / PARAMSTART_G54FF_OFFSET);
+					if (idx < G54ARRAYSIZE)
+					{
+						_modalstate.G54Pospreset[idx][axis] = mm1000;
+					}
+					break;
+				}
+
+				default:							Error(MESSAGE_GCODE_ParameterReadOnly);	return;
 			}
 		}
 		else

@@ -200,6 +200,7 @@ protected:
 	static mm1000_t GetParamAsMm1000(mm1000_t posMm100, axis_t)					{ return posMm100; }
 	static mm1000_t GetParamAsPosition(mm1000_t posInMachine, axis_t axis)		{ return CMotionControlBase::GetInstance()->ToMm1000(axis, posInMachine); }
 	static mm1000_t GetParamAsMachine(mm1000_t posInmm1000, axis_t axis)		{ return CMotionControlBase::GetInstance()->ToMachine(axis, posInmm1000); }
+	static mm1000_t GetParamAsFeedrate(mm1000_t feedrate, axis_t axis)			{ return CMotionControlBase::GetInstance()->ToMachine(axis, feedrate / 60); }
 
 	mm1000_t GetRelativePosition(mm1000_t pos, axis_t axis)				{ return pos - GetG92PosPreset(axis) - GetG54PosPreset(axis); }
 	mm1000_t GetRelativePosition(axis_t axis)							{ return GetRelativePosition(CMotionControlBase::GetInstance()->GetPosition(axis), axis); }
@@ -287,7 +288,7 @@ protected:
 		const char* GetText()   const { return (const char*)pgm_read_ptr(&this->_text); }
 		param_t GetParamNo()    const { return pgm_read_word(&this->_paramNo); }
 		bool GetAllowAxisOfs()  const { return pgm_read_byte(&this->_allowaxisofs) != 0; }
-		uint8_t GetValueType() const { return (uint8_t) pgm_read_byte(&this->_valuetype); }
+		uint8_t GetValueType()	const { return (uint8_t) pgm_read_byte(&this->_valuetype); }
 	};
 
 	void PrintAllParam();
