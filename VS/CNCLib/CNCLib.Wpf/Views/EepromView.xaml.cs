@@ -45,7 +45,7 @@ namespace CNCLib.Wpf.Views
             if (_grid.SelectedObject != null)
             {
                 var data = (Eeprom)_grid.SelectedObject;
-                e.IsBrowsable = data.IsPropertyBrowsable(e.PropertyDescriptor.Name);
+                e.IsBrowsable = data.IsPropertyBrowsable(e.PropertyDescriptor);
             }
         }
     }

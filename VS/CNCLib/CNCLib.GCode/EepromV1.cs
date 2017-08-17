@@ -21,25 +21,31 @@ using System.Collections.Generic;
 
 namespace CNCLib.GCode
 {
-	public class EepromV1
-	{
-		#region Properties
+    public class EepromV1
+    {
+        #region Properties
 
         public const uint SIGNATURE = 0x21436501;
         public const uint SIGNATUREPLOTTER = 0x21438701;
 
         UInt32[] _values;
-		public UInt32[] Values
-		{
-			get { return _values; }
-			set { _values = value; Analyse(); }
-		}
+        public UInt32[] Values
+        {
+            get { return _values; }
+            set { _values = value; Analyse(); }
+        }
 
-		public bool IsValid
-		{
-			get { return Values?.Length > 0 && (Values[0] == SIGNATURE || Values[0] == SIGNATUREPLOTTER); }
-		}
- 
+        public bool IsValid
+        {
+            get { return Values?.Length > 0 && (Values[0] == SIGNATURE || Values[0] == SIGNATUREPLOTTER); }
+        }
+
+        public uint OfsAxis { get { return _ofsaxis; } }
+        public uint DWSizeAxis { get { return _sizeaxis; } }
+        public uint OfsAfterAxis { get { return  _ofsAfterAxis; } }
+
+        public const uint SIZEOFAXIX_EX = 2;
+
         public enum EValueOffsets32
 		{
 			Signatrue = 0,
@@ -77,10 +83,20 @@ namespace CNCLib.GCode
 		public enum EAxisOffsets32
 		{
 			Size = 0,
-			Ofsett1 = 1
-		}
+			Ofsett1,
+            MaxStepRate,
+            OffsetAccDec,
+            RefMoveStepRate,
+            StepsPerMm1000
+        }
 
-		public enum EAxisOffsets8
+        public enum EAxisOffsets16
+        {
+            Acc = (((int)EAxisOffsets32.OffsetAccDec) << 8) + 00,
+            Dec = (((int)EAxisOffsets32.OffsetAccDec) << 8) + 01,
+        }
+
+        public enum EAxisOffsets8
 		{
 			EReverenceType = (((int)EAxisOffsets32.Ofsett1) << 8) + 00,
 			EReverenceSeqence = (((int)EAxisOffsets32.Ofsett1) << 8) + 1,
@@ -153,7 +169,8 @@ namespace CNCLib.GCode
 		public UInt16 this[EValueOffsets16 ofs] { get { return GetValue16(ofs); } set { SetValue16(ofs, value); } }
 		public byte this[EValueOffsets8 ofs] { get { return GetValue8(ofs); } set { SetValue8(ofs, value); } }
 		public UInt32 this[int axis, EAxisOffsets32 ofs] { get { return GetAxisValue32(axis,ofs); } set { SetAxisValue32(axis, ofs, value); } }
-		public byte this[int axis, EAxisOffsets8 ofs] { get { return GetAxisValue8(axis,ofs); } set { SetAxisValue8(axis,ofs, value); } }
+        public UInt16 this[int axis, EAxisOffsets16 ofs] { get { return GetAxisValue16(axis, ofs); } set { SetAxisValue16(axis, ofs, value); } }
+        public byte this[int axis, EAxisOffsets8 ofs] { get { return GetAxisValue8(axis,ofs); } set { SetAxisValue8(axis,ofs, value); } }
 
         private EValueOffsets32 AddPlotterOfs(EValueOffsets32Plotter ofs)
         {
@@ -184,7 +201,12 @@ namespace CNCLib.GCode
 		{
 			return new Tuple<EValueOffsets32, int>((EValueOffsets32)(((int)ofsidx >> 8) & 0xff), (int)ofsidx & 0xff);
 		}
-		Tuple<EAxisOffsets32, int> GetIndex(EAxisOffsets8 ofsidx)
+        Tuple<EAxisOffsets32, int> GetIndex(EAxisOffsets16 ofsidx)
+        {
+            return new Tuple<EAxisOffsets32, int>((EAxisOffsets32)(((int)ofsidx >> 8) & 0xff), (int)ofsidx & 0xff);
+        }
+
+        Tuple<EAxisOffsets32, int> GetIndex(EAxisOffsets8 ofsidx)
 		{
 			return new Tuple<EAxisOffsets32, int>((EAxisOffsets32)(((int)ofsidx >> 8) & 0xff), (int)ofsidx & 0xff);
 		}
@@ -218,8 +240,15 @@ namespace CNCLib.GCode
 		{
 			return Values[_ofsaxis + axis * _sizeaxis + (int)ofs];
 		}
+        public ushort GetAxisValue16(int axis, EAxisOffsets16 ofsidx)
+        {
+            var offsets = GetIndex(ofsidx);
 
-		public byte GetAxisValue8(int axis, EAxisOffsets8 ofsidx)
+            UInt32 val = GetAxisValue32(axis,offsets.Item1);
+            return (ushort)((val >> (offsets.Item2 * 16)) & 0xffff);
+        }
+
+        public byte GetAxisValue8(int axis, EAxisOffsets8 ofsidx)
 		{
 			var offsets = GetIndex(ofsidx);
 
@@ -261,7 +290,17 @@ namespace CNCLib.GCode
 			Values[_ofsaxis + axis * _sizeaxis + (int)ofs] = value;
 		}
 
-		public void SetAxisValue8(int axis, EAxisOffsets8 ofsidx, byte value)
+        public void SetAxisValue16(int axis, EAxisOffsets16 ofsidx, ushort value)
+        {
+            var offsets = GetIndex(ofsidx);
+
+            UInt32 mask = ((UInt32)0xffff) << (offsets.Item2 * 16);
+            UInt32 val = GetAxisValue32(axis, offsets.Item1) & (~mask);
+
+            SetAxisValue32(axis, offsets.Item1, val + ((UInt32)value << (offsets.Item2 * 16)));
+        }
+
+        public void SetAxisValue8(int axis, EAxisOffsets8 ofsidx, byte value)
 		{
 			var offsets = GetIndex(ofsidx);
 

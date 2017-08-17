@@ -189,8 +189,8 @@ public:
 #ifndef REDUCED_SIZE
 
 			uint32_t	maxsteprate;
-			uint32_t	acc;
-			uint32_t	dec;
+			uint16_t	acc;
+			uint16_t	dec;
 			uint32_t	refmovesteprate;
 
 			float		ScaleMm1000ToMachine;

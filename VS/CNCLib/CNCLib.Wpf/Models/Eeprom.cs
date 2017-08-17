@@ -32,30 +32,50 @@ namespace CNCLib.Wpf.Models
 			return new Eeprom();
 		}
 
-        public bool? IsPropertyBrowsable(string propertyName)
+        public bool? IsPropertyBrowsable(PropertyDescriptor property)
         {
-            if (propertyName == "Values")
-                return false;
+            var propertyName = property.Name;
+            bool isaxis = property.ComponentType.Name == nameof(SAxis);
 
-            if (propertyName == nameof(AxisY) || propertyName == nameof(RefSeqence2))
+            if (isaxis)
             {
-                return NumAxis >= 2;
+                if (GetAxis(0).DWEESizeOf <= EepromV1.SIZEOFAXIX_EX)
+                {
+                    switch (propertyName)
+                    {
+                        case nameof(SAxis.Acc):
+                        case nameof(SAxis.Dec):
+                        case nameof(SAxis.MaxStepRate):
+                        case nameof(SAxis.StepsPerMm1000):
+                            return false;
+                    }
+                }
             }
-            if (propertyName == nameof(AxisZ) || propertyName == nameof(RefSeqence3))
+            else
             {
-                return NumAxis >= 3;
-            }
-            if (propertyName == nameof(AxisA) || propertyName == nameof(RefSeqence4))
-            {
-                return NumAxis >= 4;
-            }
-            if (propertyName == nameof(AxisB) || propertyName == nameof(RefSeqence5))
-            {
-                return NumAxis >= 5;
-            }
-            if (propertyName == nameof(AxisC) || propertyName == nameof(RefSeqence6))
-            {
-                return NumAxis >= 6;
+                if (propertyName == "Values")
+                    return false;
+
+                if (propertyName == nameof(AxisY) || propertyName == nameof(RefSeqence2))
+                {
+                    return NumAxis >= 2;
+                }
+                if (propertyName == nameof(AxisZ) || propertyName == nameof(RefSeqence3))
+                {
+                    return NumAxis >= 3;
+                }
+                if (propertyName == nameof(AxisA) || propertyName == nameof(RefSeqence4))
+                {
+                    return NumAxis >= 4;
+                }
+                if (propertyName == nameof(AxisB) || propertyName == nameof(RefSeqence5))
+                {
+                    return NumAxis >= 5;
+                }
+                if (propertyName == nameof(AxisC) || propertyName == nameof(RefSeqence6))
+                {
+                    return NumAxis >= 6;
+                }
             }
 
             return null;
@@ -264,8 +284,29 @@ namespace CNCLib.Wpf.Models
 			[Description("Value of IO if reference is hit - usual 0, optical 1, 255 disabled")]
 			public byte RefHitValueMax { get; set; }
 
+            [Range(1, int.MaxValue)]
+            [DisplayName("MaxStepRate")]
+            [Description("Maximum steprate in Hz (AVR 8bit max 16bit, e.g. 25000), 0 for machine default")]
+            public uint MaxStepRate { get; set; }
 
-			public override string ToString()
+            [Range(62, 1024)]
+            [DisplayName("Acc")]
+            [Description("Acceleration factor (e.g. 350)], must be > 61, 0 for machine default")]
+            public ushort Acc { get; set; }
+
+            [Range(62, 1024)]
+            [DisplayName("Dec")]
+            [Description("Deceleration factor (e.g. 400), must be > 61, 0 for machine default")]
+            public ushort Dec { get; set; }
+
+            [DisplayName("Scale mm to machine")]
+            [Description("Steps for 1/1000mm => steps to go for 1/1000mm, 0 for machine default")]
+            public float StepsPerMm1000 { get; set; }
+
+            [Browsable(false)]
+            public uint DWEESizeOf { get; set; }
+
+            public override string ToString()
 			{
 				return Size.ToString() + (RefMove == EReverenceType.NoReference ? "" : $",{RefMove}");
 			}
@@ -366,6 +407,7 @@ namespace CNCLib.Wpf.Models
 
             for (int i = 0; i < numaxis; i++)
             {
+                GetAxis(i).DWEESizeOf = ee.DWSizeAxis;
                 GetAxis(i).Size = ee[i, EepromV1.EAxisOffsets32.Size];
                 GetAxis(i).RefMove = (EReverenceType)ee[i, EepromV1.EAxisOffsets8.EReverenceType];
                 GetAxis(i).RefHitValueMin = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin];
@@ -374,6 +416,14 @@ namespace CNCLib.Wpf.Models
                 GetAxis(i).StepperDirection = (ee[EepromV1.EValueOffsets8.StepperDirection] & (1 << i)) != 0;
 
                 this[i] = (EReverenceSequence)ee[i, EepromV1.EAxisOffsets8.EReverenceSeqence];
+
+                if (ee.DWSizeAxis > EepromV1.SIZEOFAXIX_EX)
+                {
+                    GetAxis(i).MaxStepRate = ee[i, EepromV1.EAxisOffsets32.MaxStepRate];
+                    GetAxis(i).Acc = ee[i, EepromV1.EAxisOffsets16.Acc];
+                    GetAxis(i).Dec = ee[i, EepromV1.EAxisOffsets16.Dec];
+                    GetAxis(i).StepsPerMm1000 = BitConverter.ToSingle(BitConverter.GetBytes(ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000]), 0);
+                }
             }
 
             MaxSpindleSpeed = ee[EepromV1.EValueOffsets16.MaxSpindleSpeed];
@@ -408,6 +458,14 @@ namespace CNCLib.Wpf.Models
                     direction += 1 << i;
                 }
                 ee[EepromV1.EValueOffsets8.StepperDirection] = (byte)direction;
+
+                if (ee.DWSizeAxis > EepromV1.SIZEOFAXIX_EX)
+                {
+                    ee[i, EepromV1.EAxisOffsets32.MaxStepRate] = GetAxis(i).MaxStepRate;
+                    ee[i, EepromV1.EAxisOffsets16.Acc] = GetAxis(i).Acc;
+                    ee[i, EepromV1.EAxisOffsets16.Dec] = GetAxis(i).Dec;
+                    ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000] = BitConverter.ToUInt32(BitConverter.GetBytes(GetAxis(i).StepsPerMm1000), 0);
+                }
             }
 
             ee[EepromV1.EValueOffsets16.MaxSpindleSpeed] = MaxSpindleSpeed;
