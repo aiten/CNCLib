@@ -832,17 +832,20 @@ void CGCodeParserBase::G28Command()
 
 ////////////////////////////////////////////////////////////
 
-bool CGCodeParserBase::G31TestProbe(uintptr_t /* param */)
+bool CGCodeParserBase::G31TestProbe(uintptr_t param)
 {
 	// return true if probe is not on
 	// => continue move to probe position
 	// return false if probe is on (probe switch is pressed)
 
-	return CControl::GetInstance()->IOControl(CControl::Probe) == 0;
+	return (uint8_t) CControl::GetInstance()->IOControl(CControl::Probe) == (uint8_t)param;
 }
 
 void CGCodeParserBase::G31Command()
 {
+	uint8_t subcode = GetSubCode();
+	bool probevalue = subcode == 1;
+
 	// probe
 	SAxisMove move(true);
 
@@ -871,7 +874,7 @@ void CGCodeParserBase::G31Command()
 	Sync();
 
 	{
-		if (!G31TestProbe(0))
+		if (!G31TestProbe(probevalue))
 		{
 			Error(MESSAGE(MESSAGE_GCODE_ProbeIOmustBeOff));
 			return;
@@ -880,7 +883,7 @@ void CGCodeParserBase::G31Command()
 //		MoveStart(true);
 		CMotionControlBase::GetInstance()->MoveAbs(move.newpos, _modalstate.G1FeedRate);
 
-		if (!CStepper::GetInstance()->MoveUntil(G31TestProbe, 0))
+		if (!CStepper::GetInstance()->MoveUntil(G31TestProbe, probevalue))
 		{
 			Error(MESSAGE(MESSAGE_GCODE_ProbeFailed));
 			// no return => must set position again
