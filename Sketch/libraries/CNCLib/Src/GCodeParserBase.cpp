@@ -92,7 +92,6 @@ void CGCodeParserBase::CleanupParse()
 	_modlessstate.Init();		// state for no command
 }
 
-
 ////////////////////////////////////////////////////////////
 
 void CGCodeParserBase::SkipCommentNested()
@@ -483,11 +482,12 @@ axis_t CGCodeParserBase::CharToAxis(char axis)
 	}
 }
 
+////////////////////////////////////////////////////////////
+
 char CGCodeParserBase::AxisToChar(axis_t axis)
 {
 	return pgm_read_byte(PSTR("XYZABCUVW")+ axis);
 }
-
 
 ////////////////////////////////////////////////////////////
 
@@ -873,23 +873,20 @@ void CGCodeParserBase::G31Command()
 	
 	Sync();
 
+	if (!G31TestProbe(probevalue))
 	{
-		if (!G31TestProbe(probevalue))
-		{
-			Error(MESSAGE(MESSAGE_GCODE_ProbeIOmustBeOff));
-			return;
-		}
-
-//		MoveStart(true);
-		CMotionControlBase::GetInstance()->MoveAbs(move.newpos, _modalstate.G1FeedRate);
-
-		if (!CStepper::GetInstance()->MoveUntil(G31TestProbe, probevalue))
-		{
-			Error(MESSAGE(MESSAGE_GCODE_ProbeFailed));
-			// no return => must set position again
-		}
-		CMotionControlBase::GetInstance()->SetPositionFromMachine();
+		Error(MESSAGE(MESSAGE_GCODE_ProbeIOmustBeOff));
+		return;
 	}
+
+	CMotionControlBase::GetInstance()->MoveAbs(move.newpos, _modalstate.G1FeedRate);
+
+	if (!CStepper::GetInstance()->MoveUntil(G31TestProbe, probevalue))
+	{
+		Error(MESSAGE(MESSAGE_GCODE_ProbeFailed));
+		// no return => must set position again
+	}
+	CMotionControlBase::GetInstance()->SetPositionFromMachine();
 }
 
 ////////////////////////////////////////////////////////////
