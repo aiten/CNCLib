@@ -29,6 +29,7 @@
 
 #include "GCodeParser.h"
 #include "GCodeExpressionParser.h"
+#include "GCodeBuilder.h"
 #include "DecimalAsInt.h"
 
 ////////////////////////////////////////////////////////////
@@ -440,7 +441,7 @@ void CGCodeParser::PrintParam(const CGCodeParser::SParamInfo* item, axis_t axis)
 		if (axis != 255)
 		{
 			StepperSerial.print(':');
-			StepperSerial.print(AxisToChar(axis));
+			StepperSerial.print(CGCodeBuilder::AxisToChar(axis));
 			ofs = axis;
 		}
 		StepperSerial.print(F(">="));

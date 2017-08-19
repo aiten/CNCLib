@@ -484,13 +484,6 @@ axis_t CGCodeParserBase::CharToAxis(char axis)
 
 ////////////////////////////////////////////////////////////
 
-char CGCodeParserBase::AxisToChar(axis_t axis)
-{
-	return pgm_read_byte(PSTR("XYZABCUVW")+ axis);
-}
-
-////////////////////////////////////////////////////////////
-
 axis_t CGCodeParserBase::CharToAxisOffset(char axis)
 {
 	switch (axis)

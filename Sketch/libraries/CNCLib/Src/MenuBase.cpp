@@ -15,6 +15,7 @@
   GNU General Public License for more details.
   http://www.gnu.org/licenses/
 */
+
 ////////////////////////////////////////////////////////
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -28,6 +29,8 @@
 
 #include "Control.h"
 #include "MenuBase.h"
+#include "GCodeBuilder.h"
+#include "ConfigEeprom.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -112,7 +115,7 @@ uint8_t CMenuBase::ToPrintLine(menupos_t firstline, menupos_t lastline, menupos_
 
 void CMenuBase::MenuButtonPressSetCommand(const SMenuItemDef*def)
 { 
-	PostCommand(CLcd::GCodeBasic,(const __FlashStringHelper*)def->GetParam1());
+	PostCommand(EGCodeSyntaxType::GCodeBasic,(const __FlashStringHelper*)def->GetParam1());
 }
 
 ////////////////////////////////////////////////////////////
@@ -162,30 +165,29 @@ void CMenuBase::MenuButtonPressMove(const SMenuItemDef*def)
 
 	if (dist == MoveHome) { MenuButtonPressHomeA(axis); return; }
 
-	char tmp[24];
+	CGCodeBuilder builder;
+	InitPostCommand(EGCodeSyntaxType::GCodeBasic, builder.GetCommand());
 
-	InitPostCommand(CLcd::GCodeBasic,tmp);
-
-	strcat_P(tmp, PSTR("g91 g0 "));
-	AddAxisName(tmp, axis);
+	builder.Add(F("g91 g0 "))
+		.AddAxisName(axis);
 
 	switch (dist)
 	{
-		case MoveP100:	strcat_P(tmp, PSTR("100")); break;
-		case MoveP10:	strcat_P(tmp, PSTR("10")); break;
-		case MoveP1:	strcat_P(tmp, PSTR("1")); break;
-		case MoveP01:	strcat_P(tmp, PSTR("0.1")); break;
-		case MoveP001:	strcat_P(tmp, PSTR("0.01")); break;
-		case MoveM001:	strcat_P(tmp, PSTR("-0.01")); break;
-		case MoveM01:	strcat_P(tmp, PSTR("-0.1")); break;
-		case MoveM1:	strcat_P(tmp, PSTR("-1")); break;
-		case MoveM10:	strcat_P(tmp, PSTR("-10")); break;
-		case MoveM100:  strcat_P(tmp, PSTR("-100")); break;
+		case MoveP100:	builder.Add(F("100")); break;
+		case MoveP10:	builder.Add(F("10")); break;
+		case MoveP1:	builder.Add(F("1")); break;
+		case MoveP01:	builder.Add(F("0.1")); break;
+		case MoveP001:	builder.Add(F("0.01")); break;
+		case MoveM001:	builder.Add(F("-0.01")); break;
+		case MoveM01:	builder.Add(F("-0.1")); break;
+		case MoveM1:	builder.Add(F("-1")); break;
+		case MoveM10:	builder.Add(F("-10")); break;
+		case MoveM100:  builder.Add(F("-100")); break;
 	}
 
-	strcat_P(tmp, PSTR(" g90"));
+	builder.Add(F(" g90"));
 
-	PostCommand(tmp);
+	PostCommand(builder.GetCommand());
 }
 
 ////////////////////////////////////////////////////////////
@@ -196,22 +198,55 @@ void CMenuBase::MenuButtonPressRotate(const SMenuItemDef*def)
 
 	switch (req)
 	{
-		case RotateClear:		PostCommand(CLcd::GCode, F("g68.10")); break;
-		case RotateOffset:		PostCommand(CLcd::GCode, F("g68.11")); break;
-		case RotateSetYZ:		PostCommand(CLcd::GCode, F("g68.13 j0k0")); break;
-		case RotateSetX:		PostCommand(CLcd::GCode, F("g68.14 i0")); break;
+		case RotateClear:		PostCommand(EGCodeSyntaxType::GCode, F("g68.10")); break;
+		case RotateOffset:		PostCommand(EGCodeSyntaxType::GCode, F("g68.11")); break;
+		case RotateSetYZ:		PostCommand(EGCodeSyntaxType::GCode, F("g68.13 j0k0")); break;
+		case RotateSetX:		PostCommand(EGCodeSyntaxType::GCode, F("g68.14 i0")); break;
 	}
 }
 
 ////////////////////////////////////////////////////////////
 
-void CMenuBase::MenuButtonPressProbe(const SMenuItemDef*)
+void CMenuBase::MenuButtonPressProbe(const SMenuItemDef*def)
 {
-	if (PostCommand(CLcd::GCode, F("g91 g31 Z-10 F100 g90")))
+	MenuButtonPressProbe((axis_t)(unsigned int)def->GetParam1());
+}
+
+////////////////////////////////////////////////////////////
+
+
+void CMenuBase::MenuButtonPressProbe(axis_t axis)
+{
+	CGCodeBuilder builder;
+	InitPostCommand(EGCodeSyntaxType::GCode, builder.GetCommand());
+
+	builder.Add(F("g91 g31 "))
+			.AddAxisName(axis)
+			.Add(-10000)
+			.Add(F(" F100 g90"));
+
+	if (PostCommand(builder.GetCommand()))
 	{
-		PostCommand(CLcd::GCode, F("g92 Z-25"));
-		//GetLcd()->SetDefaultPage();
-		PostCommand(CLcd::GCode, F("g91 Z3 g90"));
+		eepromofs_t ofs = sizeof(CConfigEeprom::SCNCEeprom::SAxisDefinitions)*axis;
+
+		builder.InitCommand();
+		InitPostCommand(EGCodeSyntaxType::GCode, builder.GetCommand());
+
+		builder.Add(F("g92 "))
+			.AddAxisName(axis)
+			.Add(- (mm1000_t) CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[0].probesize) + ofs));
+
+		PostCommand(builder.GetCommand());
+
+		builder.InitCommand();
+		InitPostCommand(EGCodeSyntaxType::GCode, builder.GetCommand());
+		
+		builder.Add(F("g91 "))
+			.AddAxisName(axis)
+			.Add(3000)
+			.Add(F(" g90"));
+
+		PostCommand(builder.GetCommand());
 	}
 }
 
@@ -224,35 +259,34 @@ void CMenuBase::MenuButtonPressHome(const SMenuItemDef*def)
 
 void CMenuBase::MenuButtonPressHomeA(axis_t axis)
 {
-	char tmp[16];
+	CGCodeBuilder builder;
+	InitPostCommand(EGCodeSyntaxType::GCode, builder.GetCommand());
 
-	InitPostCommand(CLcd::GCode, tmp);
-	strcat_P(tmp, PSTR("g53 g0"));
-	AddAxisName(tmp, axis);
+	builder.Add(F("g53 g0"))
+		.AddAxisName(axis);
 
 	switch (axis)
 	{
-		case Z_AXIS: strcat_P(tmp, PSTR("#5163")); break;
-		default: strcat_P(tmp, PSTR("0")); break;
+		case Z_AXIS:	builder.Add(F("#5163")); break;
+		default:		builder.Add(F("0")); break;
 	}
-	PostCommand(tmp);
+	PostCommand(builder.GetCommand());
 };
 
 ////////////////////////////////////////////////////////////
 
 void CMenuBase::MenuButtonPressMoveG92(const SMenuItemDef*)
 {
-	char tmp[24];
-
 	axis_t axis = (axis_t)(unsigned int)GetMenuDef()->GetParam1();
 
-	InitPostCommand(CLcd::GCodeBasic, tmp);
+	CGCodeBuilder builder;
+	InitPostCommand(EGCodeSyntaxType::GCode, builder.GetCommand());
 
-	strcat_P(tmp, PSTR("g92 "));
-	AddAxisName(tmp, axis);
-	strcat_P(tmp, PSTR("0"));
+	builder.Add(F("g92 "))
+		.AddAxisName(axis)
+		.Add(F("0"));
 
-	PostCommand(tmp);
+	PostCommand(builder.GetCommand());
 }
 
 ////////////////////////////////////////////////////////////
@@ -260,9 +294,9 @@ void CMenuBase::MenuButtonPressMoveG92(const SMenuItemDef*)
 void CMenuBase::MenuButtonPressSpindle(const SMenuItemDef*)
 {
 	if (CControl::GetInstance()->IOControl(CControl::SpindleCW) != 0)
-		PostCommand(CLcd::GCodeBasic, F("m5"));
+		PostCommand(EGCodeSyntaxType::GCodeBasic, F("m5"));
 	else
-		PostCommand(CLcd::GCodeBasic, F("m3"));
+		PostCommand(EGCodeSyntaxType::GCodeBasic, F("m3"));
 }
 
 ////////////////////////////////////////////////////////////
@@ -270,9 +304,9 @@ void CMenuBase::MenuButtonPressSpindle(const SMenuItemDef*)
 void CMenuBase::MenuButtonPressCoolant(const SMenuItemDef*)
 {
 	if (CControl::GetInstance()->IOControl(CControl::Coolant) != 0)
-		PostCommand(CLcd::GCodeBasic, F("m9"));
+		PostCommand(EGCodeSyntaxType::GCodeBasic, F("m9"));
 	else
-		PostCommand(CLcd::GCodeBasic, F("m7"));
+		PostCommand(EGCodeSyntaxType::GCodeBasic, F("m7"));
 }
 
 ////////////////////////////////////////////////////////////
@@ -318,24 +352,4 @@ void CMenuBase::MenuButtonPressResume(const SMenuItemDef*)
 	{
 		CLcd::GetInstance()->ErrorBeep();
 	}
-}
-
-////////////////////////////////////////////////////////////
-
-char* CMenuBase::AddAxisName(char*buffer, axis_t axis)
-{
-	const char* axisname = NULL;
-	switch (axis)
-	{
-		case X_AXIS:	axisname = PSTR("X"); break;
-		case Y_AXIS:	axisname = PSTR("Y"); break;
-		case Z_AXIS:	axisname = PSTR("Z"); break;
-		case A_AXIS:	axisname = PSTR("A"); break;
-		case B_AXIS:	axisname = PSTR("B"); break;
-		case C_AXIS:	axisname = PSTR("C"); break;
-	}
-	if (axisname)
-		strcat_P(buffer, axisname);
-
-	return buffer;
 }

@@ -21,45 +21,40 @@
 
 ////////////////////////////////////////////////////////
 
-#include "../Configuration.h"
+#include "CNCLibTypes.h"
 
 ////////////////////////////////////////////////////////
 
-#include <U8GLCD.h>
-#include "MyMenu.h"
+#define GCODEBUILDER_MAXCOMANDLENGHT	24
 
 ////////////////////////////////////////////////////////
 
-class CMyLcd : public CU8GLcd
+class CGCodeBuilder
 {
-private:
-
-	typedef CU8GLcd super;
-
 public:
 
-	virtual void Init() override;
-	virtual void Beep(const SPlayTone*, bool) override;
+	CGCodeBuilder()
+	{
+		InitCommand();
+	}
 
-	virtual uint8_t InitPostCommand(EnumAsByte(EGCodeSyntaxType) syntaxtype, char* cmd) override;
+	////////////////////////////////////////////////////////////
 
-protected:
+	CGCodeBuilder& Add(const __FlashStringHelper* cmd);
+	CGCodeBuilder& Add(char* cmd);
+	CGCodeBuilder& AddAxisName(axis_t axis);
+	CGCodeBuilder& Add(mm1000_t mm1000);
+	static char AxisToChar(axis_t axis);
+	CGCodeBuilder& InitCommand();
 
-	virtual class U8G2& GetU8G() override;
-	virtual class CMenuBase& GetMenu() override	{ return _menu; }
-
-	virtual bool DrawLoopDefault(EnumAsByte(EDrawLoopType) type,uintptr_t data) override;
-
-public:
-
-	bool DrawLoopDebugPlotter(EnumAsByte(EDrawLoopType) type, uintptr_t data);
+	char* GetCommand()
+	{
+		return _commandstring;
+	}
 
 private:
 
-	CMyMenu _menu;
-
+	char _commandstring[GCODEBUILDER_MAXCOMANDLENGHT];
 };
 
 ////////////////////////////////////////////////////////
-
-extern CMyLcd Lcd;

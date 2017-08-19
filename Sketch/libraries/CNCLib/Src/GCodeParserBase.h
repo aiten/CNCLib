@@ -128,9 +128,7 @@ protected:
 
 		feedrate_t		G0FeedRate;
 		feedrate_t		G1FeedRate;
-
 		feedrate_t		G1MaxFeedRate;
-		feedrate_t		RefFeedRate;
 
 		short			SpindleSpeed;			// > 0 CW, < 0 CCW
 

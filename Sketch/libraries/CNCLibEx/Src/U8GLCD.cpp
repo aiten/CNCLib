@@ -41,6 +41,7 @@
 
 #include "GCodeParser.h"
 #include "GCode3DParser.h"
+#include "GCodeBuilder.h"
 
 ////////////////////////////////////////////////////////////
 //
@@ -447,7 +448,7 @@ bool CU8GLcd::DrawLoopPosAbs(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
 
 		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset());
-		tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp,i));
+		Print(CGCodeBuilder::AxisToChar(i));
 
 		Print(DrawPos(i,CMotionControlBase::GetInstance()->GetPosition(i),tmp,7));
 		Print(F(" "));
@@ -478,7 +479,7 @@ bool CU8GLcd::DrawLoopPos(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 		mm1000_t psall = CGCodeParser::GetAllPreset(i);
 
 		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset());
-		tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp, i));
+		Print(CGCodeBuilder::AxisToChar(i));
 
 		Print(DrawPos(i,dest[i],tmp,7));
 		Print(F(" "));
@@ -502,7 +503,7 @@ bool CU8GLcd::DrawLoopRotate2D(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	for (uint8_t i = 0; i < NUM_AXISXYZ; i++)
 	{
 		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset());
-		tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp, i));
+		Print(CGCodeBuilder::AxisToChar(i));
 
 		mm1000_t ofs = CMotionControl::GetInstance()->GetOffset2D(i);
 		Print(DrawPos(i,ofs,tmp,7));
@@ -539,7 +540,7 @@ bool CU8GLcd::DrawLoopRotate3D(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 			mm1000_t vect = CMotionControl::GetInstance()->GetVector(i);
 
 			SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset());
-			tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp, i));
+			Print(CGCodeBuilder::AxisToChar(i));
 
 			Print(DrawPos(i,ofs,tmp,7));
 			Print(F(" "));
@@ -636,7 +637,7 @@ bool CU8GLcd::DrawLoopPreset(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 	for (uint8_t i = 0; i < _lcd_numaxis; i++)
 	{
 		SetPosition(ToCol(0), ToRow(i + 1) + PosLineOffset());
-		tmp[0] = 0; Print(CMenuBase::AddAxisName(tmp,i));
+		Print(CGCodeBuilder::AxisToChar(i));
 		ps = CGCodeParser::GetG54PosPreset(i);
 		Print(DrawPos(i,ps,tmp,7));
 
@@ -653,16 +654,16 @@ bool CU8GLcd::DrawLoopPreset(EnumAsByte(EDrawLoopType) type, uintptr_t data)
 
 void CU8GLcd::ButtonPressStartSDPage()
 {
-	PostCommand(CLcd::GCode, F("m21"));									// Init SD
+	PostCommand(EGCodeSyntaxType::GCode, F("m21"));									// Init SD
 
 	char printfilename[MAXFILEEXTNAME + 1 + 10];
-	InitPostCommand(CLcd::GCode, printfilename);
+	InitPostCommand(EGCodeSyntaxType::GCode, printfilename);
 	strcat_P(printfilename, PSTR("m23 "));
 	strcat(printfilename, CGCode3DParser::GetExecutingFileName());
 
 	if (PostCommand(printfilename))
 	{
-		PostCommand(CLcd::GCode, F("m24"));
+		PostCommand(EGCodeSyntaxType::GCode, F("m24"));
 	}
 
 	OKBeep();

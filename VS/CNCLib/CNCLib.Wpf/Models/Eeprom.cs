@@ -47,6 +47,7 @@ namespace CNCLib.Wpf.Models
                         case nameof(SAxis.Dec):
                         case nameof(SAxis.MaxStepRate):
                         case nameof(SAxis.StepsPerMm1000):
+                        case nameof(SAxis.ProbeSize):
                             return false;
                     }
                 }
@@ -303,6 +304,11 @@ namespace CNCLib.Wpf.Models
             [Description("Steps for 1/1000mm => steps to go for 1/1000mm, 0 for machine default")]
             public float StepsPerMm1000 { get; set; }
 
+            [DisplayName("ProbeSize")]
+            [Description("Default probe size in mm/1000 (used in Lcd)")]
+            public uint ProbeSize { get; set; }
+
+
             [Browsable(false)]
             public uint DWEESizeOf { get; set; }
 
@@ -423,6 +429,7 @@ namespace CNCLib.Wpf.Models
                     GetAxis(i).Acc = ee[i, EepromV1.EAxisOffsets16.Acc];
                     GetAxis(i).Dec = ee[i, EepromV1.EAxisOffsets16.Dec];
                     GetAxis(i).StepsPerMm1000 = BitConverter.ToSingle(BitConverter.GetBytes(ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000]), 0);
+                    GetAxis(i).ProbeSize = ee[i, EepromV1.EAxisOffsets32.ProbeSize];
                 }
             }
 
@@ -465,6 +472,7 @@ namespace CNCLib.Wpf.Models
                     ee[i, EepromV1.EAxisOffsets16.Acc] = GetAxis(i).Acc;
                     ee[i, EepromV1.EAxisOffsets16.Dec] = GetAxis(i).Dec;
                     ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000] = BitConverter.ToUInt32(BitConverter.GetBytes(GetAxis(i).StepsPerMm1000), 0);
+                    ee[i, EepromV1.EAxisOffsets32.ProbeSize] = GetAxis(i).ProbeSize;
                 }
             }
 

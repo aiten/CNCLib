@@ -194,6 +194,8 @@ public:
 			uint32_t	refmovesteprate;
 
 			float		ScaleMm1000ToMachine;
+
+			mm1000_t	probesize;
 #endif
 
 		} axis[NUM_AXIS];

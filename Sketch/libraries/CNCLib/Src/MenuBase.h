@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "CNCLibTypes.h"
 #include "LCD.h"
 
 ////////////////////////////////////////////////////////
@@ -88,8 +89,6 @@ public:
 		menuparam_t GetParam2()	const								{ return (menuparam_t)pgm_read_ptr(&this->_param2); }
 	};
 
-	static char* AddAxisName(char*buffer, axis_t axis);
-
 public:
 
 	menupos_t GetPosition()											{ return _position; }
@@ -115,9 +114,9 @@ protected:
 
 	//////////////////////////////////////////
 
-	bool PostCommand(uint8_t syntaxtype, const __FlashStringHelper* cmd, Stream* output=NULL)	{ return CLcd::GetInstance()->PostCommand(syntaxtype,cmd,output); }
+	bool PostCommand(EnumAsByte(EGCodeSyntaxType) syntaxtype, const __FlashStringHelper* cmd, Stream* output=NULL)	{ return CLcd::GetInstance()->PostCommand(syntaxtype,cmd,output); }
 	bool PostCommand(char* cmd, Stream* output=NULL)				{ return CLcd::GetInstance()->PostCommand(cmd,output); }
-	uint8_t InitPostCommand(uint8_t syntaxtype, char* cmd)			{ return CLcd::GetInstance()->InitPostCommand(syntaxtype,cmd); }
+	uint8_t InitPostCommand(EnumAsByte(EGCodeSyntaxType) syntaxtype, char* cmd)			{ return CLcd::GetInstance()->InitPostCommand(syntaxtype,cmd); }
 
 	//////////////////////////////////////////
 
@@ -146,6 +145,7 @@ public:
 
 	void MenuButtonPressHomeA(axis_t axis);
 	void MenuButtonPressHome(const SMenuItemDef*);					// param1 : axis
+	void MenuButtonPressProbe(axis_t axis);
 	void MenuButtonPressProbe(const SMenuItemDef*);					// param1 : axis
 	void MenuButtonPressSpindle(const SMenuItemDef*);
 	void MenuButtonPressCoolant(const SMenuItemDef*);

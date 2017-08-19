@@ -75,7 +75,7 @@ PROGMEM const CU8GLcd::SPageDef CU8GLcd::_pagedef[] =
 
 ////////////////////////////////////////////////////////////
 
-uint8_t CMyLcd::InitPostCommand(uint8_t syntaxtype, char* cmd)
+uint8_t CMyLcd::InitPostCommand(EnumAsByte(EGCodeSyntaxType) syntaxtype, char* cmd)
 {
 	uint8_t idx = super::InitPostCommand(syntaxtype,cmd);
 	if (idx != 7)

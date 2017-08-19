@@ -22,6 +22,7 @@
 ////////////////////////////////////////////////////////
 
 #include <StepperLib.h>
+#include "CNCLibTypes.h"
 #include "Beep.h"
 
 ////////////////////////////////////////////////////////
@@ -43,12 +44,6 @@ public:
 		DrawFirst,			// draw after splash
 		DrawForceAll,		// draw now
 		DrawAll				// draw with timeout
-	};
-
-	enum ESyntaxType
-	{
-		GCodeBasic=0,
-		GCode=1
 	};
 
 	virtual void Init();
@@ -86,10 +81,10 @@ public:
 	void OKBeep()												{ Beep(SPlayTone::PlayOK,true); }
 	void ErrorBeep()											{ Beep(SPlayTone::PlayError,true); }
 
-	bool PostCommand(uint8_t syntaxtype, const __FlashStringHelper* cmd, Stream* output=NULL);
+	bool PostCommand(EnumAsByte(EGCodeSyntaxType) syntaxtype, const __FlashStringHelper* cmd, Stream* output=NULL);
 	bool PostCommand(char* cmd, Stream* output=NULL);
 
-	virtual uint8_t InitPostCommand(uint8_t syntaxtype, char* cmd);
+	virtual uint8_t InitPostCommand(EnumAsByte(EGCodeSyntaxType) syntaxtype, char* cmd);
 
 private:
 

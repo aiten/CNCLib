@@ -87,7 +87,8 @@ namespace CNCLib.GCode
             MaxStepRate,
             OffsetAccDec,
             RefMoveStepRate,
-            StepsPerMm1000
+            StepsPerMm1000,
+            ProbeSize,
         }
 
         public enum EAxisOffsets16
