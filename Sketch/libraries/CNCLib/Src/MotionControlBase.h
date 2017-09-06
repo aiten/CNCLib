@@ -54,9 +54,17 @@ class CMotionControlBase : public CSingleton<CMotionControlBase>
 
 public:
 
+#ifdef REDUCED_SIZE
+#define STEPSPERMM1000_SIZE 1
+#else
+#define STEPSPERMM1000_SIZE NUM_AXIS
+#endif
+
 	static void InitConversion(ToMm1000_t toMm1000, ToMachine_t toMachine)						{ _ToMm1000 = toMm1000; _ToMachine = toMachine; }
-	static void InitConversionStepsPer(float stepspermm1000)									{ InitConversion(ToMm1000_StepsPer, ToMachine_StepsPer); StepsPerMm1000 = stepspermm1000; }
+	static void InitConversionStepsPer(float stepspermm1000)									{ InitConversion(ToMm1000_StepsPer, ToMachine_StepsPer); for (axis_t x = 0; x < STEPSPERMM1000_SIZE; x++) StepsPerMm1000[x] = stepspermm1000; }
 	static void InitConversionBestStepsPer(float stepspermm1000);
+	static void SetConversionStepsPerEx()															{ InitConversion(ToMm1000_StepsPerEx, ToMachine_StepsPerEx); }
+	static void SetConversionStepsPerEx(axis_t axis, float stepspermm1000)						{ StepsPerMm1000[axis] = stepspermm1000;; }
 
 	static mm1000_t ToMm1000(axis_t axis, sdist_t val)											{ return _ToMm1000(axis,val);  }
 	static sdist_t ToMachine(axis_t axis, mm1000_t val)											{ return _ToMachine(axis, val); }
@@ -134,10 +142,13 @@ public:
 	//
 	//
 
-	static float StepsPerMm1000;
+	static float StepsPerMm1000[STEPSPERMM1000_SIZE];
+
 	static mm1000_t ToMm1000_StepsPer(axis_t /* axis */, sdist_t val);
 	static sdist_t  ToMachine_StepsPer(axis_t /* axis */, mm1000_t val);
 
+	static mm1000_t ToMm1000_StepsPerEx(axis_t axis, sdist_t val);
+	static sdist_t  ToMachine_StepsPerEx(axis_t axis, mm1000_t val);
 
 
 	// one Step = 0.1mm => 10/rot

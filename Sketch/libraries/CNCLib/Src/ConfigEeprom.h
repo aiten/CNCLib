@@ -193,7 +193,7 @@ public:
 			uint16_t	dec;
 			uint32_t	refmovesteprate;
 
-			float		ScaleMm1000ToMachine;
+			float		StepsPerMm1000;
 
 			mm1000_t	probesize;
 #endif

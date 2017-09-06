@@ -96,6 +96,25 @@ void CControl::InitFromEeprom()
 		CStepper::GetInstance()->SetReferenceHitValue(CStepper::GetInstance()->ToReferenceId(axis, false), CConfigEeprom::GetConfigU8(offsetof(CConfigEeprom::SCNCEeprom, axis[0].referenceValue_max) + ofs));
 
 		CStepper::GetInstance()->SetLimitMax(axis, CMotionControlBase::GetInstance()->ToMachine(axis, CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[0].size) + ofs)));
+
+#ifndef REDUCED_SIZE
+
+		steprate_t steprate = CConfigEeprom::GetConfigU32(offsetof(CConfigEeprom::SCNCEeprom, axis[0].maxsteprate) + ofs);
+		if (steprate != 0) CStepper::GetInstance()->SetMaxSpeed(axis, steprate);
+
+		steprate = CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, axis[0].acc) + ofs);
+		if (steprate != 0) CStepper::GetInstance()->SetAcc(axis, steprate);
+
+		steprate = CConfigEeprom::GetConfigU16(offsetof(CConfigEeprom::SCNCEeprom, axis[0].dec) + ofs);
+		if (steprate != 0) CStepper::GetInstance()->SetDec(axis, steprate);
+
+		float stepsperMM1000 = CConfigEeprom::GetConfigFloat(offsetof(CConfigEeprom::SCNCEeprom, axis[0].StepsPerMm1000) + ofs);
+		if (stepsperMM1000 != 0.0)
+		{
+			CMotionControlBase::GetInstance()->SetConversionStepsPerEx();
+			CMotionControlBase::GetInstance()->SetConversionStepsPerEx(axis, stepsperMM1000);
+		}
+#endif
 	}
 }
 

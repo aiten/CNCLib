@@ -442,6 +442,8 @@ void CMotionControlBase::MoveRelEx(feedrate_t feedrate, unsigned short axis, mm1
 
 void CMotionControlBase::InitConversionBestStepsPer(float stepspermm1000)
 {
+	InitConversionStepsPer(stepspermm1000);
+
 	if (stepspermm1000 == 3.2f)
 	{
 		InitConversion(ToMm1000_1_3200, ToMachine_1_3200);
@@ -454,42 +456,32 @@ void CMotionControlBase::InitConversionBestStepsPer(float stepspermm1000)
 	{
 		InitConversion(ToMm1000_5_3200, ToMachine_5_3200);
 	}
-	else
-	{
-		InitConversionStepsPer(stepspermm1000);
-	}
 }
 
 ////////////////////////////////////////////////////////
 
-float CMotionControlBase::StepsPerMm1000;
+float CMotionControlBase::StepsPerMm1000[STEPSPERMM1000_SIZE];
 
 ////////////////////////////////////////////////////////
 
-mm1000_t CMotionControlBase::ToMm1000_StepsPer(axis_t axis, sdist_t val)
+mm1000_t CMotionControlBase::ToMm1000_StepsPer(axis_t /* axis */, sdist_t val)
 {
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
-		case Y_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
-		case Z_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
-		case A_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
-		case B_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
-		case C_AXIS: return  (mm1000_t)(val / StepsPerMm1000);
-	}
+	return  (mm1000_t)(val / StepsPerMm1000[0]);
 }
 
-sdist_t CMotionControlBase::ToMachine_StepsPer(axis_t axis, mm1000_t  val)
+sdist_t CMotionControlBase::ToMachine_StepsPer(axis_t /* axis */, mm1000_t  val)
 {
-	switch (axis)
-	{
-		default:
-		case X_AXIS: return  (sdist_t)(val * StepsPerMm1000);
-		case Y_AXIS: return  (sdist_t)(val * StepsPerMm1000);
-		case Z_AXIS: return  (sdist_t)(val * StepsPerMm1000);
-		case A_AXIS: return  (sdist_t)(val * StepsPerMm1000);
-		case B_AXIS: return  (sdist_t)(val * StepsPerMm1000);
-		case C_AXIS: return  (sdist_t)(val * StepsPerMm1000);
-	}
+	return  (sdist_t)(val * StepsPerMm1000[0]);
+}
+
+////////////////////////////////////////////////////////
+
+mm1000_t CMotionControlBase::ToMm1000_StepsPerEx(axis_t axis, sdist_t val)
+{
+	return  (mm1000_t)(val / StepsPerMm1000[axis]);
+}
+
+sdist_t CMotionControlBase::ToMachine_StepsPerEx(axis_t axis, mm1000_t  val)
+{
+	return  (sdist_t)(val * StepsPerMm1000[axis]);
 }
