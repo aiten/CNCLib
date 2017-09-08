@@ -48,6 +48,7 @@ namespace CNCLib.Wpf.Models
                         case nameof(SAxis.MaxStepRate):
                         case nameof(SAxis.StepsPerMm1000):
                         case nameof(SAxis.ProbeSize):
+                        case nameof(SAxis.RefMoveSteprate):
                             return false;
                     }
                 }
@@ -253,6 +254,15 @@ namespace CNCLib.Wpf.Models
         [Description("Capability of macine commands")]
         public Logic.Contracts.DTO.CommandSyntax CommandSyntax { get { return EepromV1.GetCommandSyntax(Info1); } set { } }
 
+        [Category(CATEGORY_INFO)]
+        [DisplayName("NeedDtr")]
+        [Description("Dtr must be set to connect to machine (Arduino zero), otherwise Dtr cause a reset")]
+        public bool NeedDtr { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_NEED_DTR)); } set { } }
+
+        [Category(CATEGORY_INFO)]
+        [DisplayName("Need EEprom Flush")]
+        [Description("EEprom Flush command must be executed to save to EEprom (Arduino zero)")]
+        public bool NeedEEpromFlush { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_NEED_EEPROM_FLUSH)); } set { } }
 
         [Category(CATEGORY_INFO)]
 		[DisplayName("Info2")]
@@ -303,6 +313,10 @@ namespace CNCLib.Wpf.Models
             [DisplayName("Scale mm to machine")]
             [Description("Steps for 1/1000mm => steps to go for 1/1000mm, 0 for machine default")]
             public float StepsPerMm1000 { get; set; }
+
+            [DisplayName("RefMoveStepRate")]
+            [Description("Steprate for reference-move (AVR 8bit max 16bit, less than 'MaxStepRate'), 0 for machine default")]
+            public uint RefMoveSteprate { get; set; }
 
             [DisplayName("ProbeSize")]
             [Description("Default probe size in mm/1000 (used in Lcd)")]
@@ -430,6 +444,7 @@ namespace CNCLib.Wpf.Models
                     GetAxis(i).Dec = ee[i, EepromV1.EAxisOffsets16.Dec];
                     GetAxis(i).StepsPerMm1000 = BitConverter.ToSingle(BitConverter.GetBytes(ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000]), 0);
                     GetAxis(i).ProbeSize = ee[i, EepromV1.EAxisOffsets32.ProbeSize];
+                    GetAxis(i).RefMoveSteprate = ee[i, EepromV1.EAxisOffsets32.RefMoveStepRate];
                 }
             }
 
@@ -473,6 +488,7 @@ namespace CNCLib.Wpf.Models
                     ee[i, EepromV1.EAxisOffsets16.Dec] = GetAxis(i).Dec;
                     ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000] = BitConverter.ToUInt32(BitConverter.GetBytes(GetAxis(i).StepsPerMm1000), 0);
                     ee[i, EepromV1.EAxisOffsets32.ProbeSize] = GetAxis(i).ProbeSize;
+                    ee[i, EepromV1.EAxisOffsets32.RefMoveStepRate] = GetAxis(i).RefMoveSteprate;
                 }
             }
 

@@ -136,7 +136,8 @@ public:
 	enum EEpromInfo1b
 	{
 		NONE1b = 0,
-		EEPROM_NEED_FLUSH = (1 << 0),
+		EEPROM_NEED_EEPROM_FLUSH = (1 << 0),
+		EEPROM_NEED_DTR = (1 << 1),
 	};
 
 	#define COMMANDSYNTAX_BIT	6

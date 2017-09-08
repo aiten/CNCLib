@@ -28,7 +28,7 @@
 #define HARDWARETYPE_TB6560Test     13 // 
 #define HARDWARETYPE_CUSTOM	        99 // custom
 
-#define HARDWARETYPE HARDWARETYPE_L298Test
+#define HARDWARETYPE HARDWARETYPE_CNC3325
 
 ////////////////////////////////////////////////////////
 

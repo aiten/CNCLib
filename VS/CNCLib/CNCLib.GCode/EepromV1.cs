@@ -155,8 +155,11 @@ namespace CNCLib.GCode
 			EEPROM_INFO_HOLDRESUME = (1 << 12),
 			EEPROM_INFO_HOLD = (1 << 13),
 			EEPROM_INFO_RESUME = (1 << 14),
-			EEPROM_INFO_KILL = (1 << 15)
-		}
+			EEPROM_INFO_KILL = (1 << 15),
+
+            EEPROM_INFO_NEED_EEPROM_FLUSH = (1 << 16),
+            EEPROM_INFO_NEED_DTR = (1 << 17)
+        }
 
         public static Logic.Contracts.DTO.CommandSyntax GetCommandSyntax(uint info1)
         {
