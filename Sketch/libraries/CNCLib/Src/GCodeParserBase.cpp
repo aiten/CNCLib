@@ -849,16 +849,23 @@ void CGCodeParserBase::G31Command(bool probevalue)
 		if (CheckError()) { return; }
 	}
 
+	ProbeCommand(move, probevalue);
+}
+
+////////////////////////////////////////////////////////////
+
+bool CGCodeParserBase::ProbeCommand(SAxisMove& move, bool probevalue)
+{
 	if (move.axes==0)
 	{
 		Error(MESSAGE(MESSAGE_GCODE_NoAxesForProbe));
-		return;
+		return false;
 	}
 
 	if ((move.axes&7) == 0)
 	{
 		Error(MESSAGE(MESSAGE_GCODE_ProbeOnlyForXYZ));
-		return;
+		return false;
 	}
 	
 	Sync();
@@ -866,7 +873,7 @@ void CGCodeParserBase::G31Command(bool probevalue)
 	if (!G31TestProbe(probevalue))
 	{
 		Error(MESSAGE(MESSAGE_GCODE_ProbeIOmustBeOff));
-		return;
+		return false;
 	}
 
 	CMotionControlBase::GetInstance()->MoveAbs(move.newpos, _modalstate.G1FeedRate);
@@ -877,6 +884,7 @@ void CGCodeParserBase::G31Command(bool probevalue)
 		// no return => must set position again
 	}
 	CMotionControlBase::GetInstance()->SetPositionFromMachine();
+	return !IsError();
 }
 
 ////////////////////////////////////////////////////////////

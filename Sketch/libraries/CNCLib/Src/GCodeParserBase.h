@@ -267,6 +267,7 @@ protected:
 	void MoveStart(bool cutmove);
 
 	void G31Command(bool probevalue);
+	bool ProbeCommand(SAxisMove& move, bool probevalue);
 
 private:
 

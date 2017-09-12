@@ -228,7 +228,7 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 			case PARAMSTART_CURRENTPOS:			return GetParamAsMm1000(GetRelativePosition(axis), axis);
 			case PARAMSTART_CURRENTABSPOS:		return GetParamAsMm1000(CMotionControlBase::GetInstance()->GetPosition(axis), axis);
 			case PARAMSTART_PROBEPOS:			return GetParamAsMm1000(GetRelativePosition(_modalstate.G38ProbePos[axis],axis), axis);
-			case PARAMSTART_PROBEOK:			return _modalstate._probeOK?1:0;
+			case PARAMSTART_PROBEOK:			return _modalstate.ProbeOK?1:0;
 			case PARAMSTART_BACKLASH:			return GetParamAsPosition(CStepper::GetInstance()->GetBacklash(axis), axis);
 			case PARAMSTART_BACKLASH_FEEDRATE:  return CMotionControlBase::GetInstance()->ToMm1000(0, CStepper::GetInstance()->GetBacklash()) * 60;
 			case PARAMSTART_MAX:				return GetParamAsPosition(CStepper::GetInstance()->GetLimitMax(axis), axis);
@@ -791,12 +791,13 @@ void CGCodeParser::G38Command()
 	{
 		case 2: G31Command(false); break;
 		case 4: G31Command(true); break;
-		case 10: G31Command(true); break;
+		case 12: G38CenterProbe(false); return;
+		case 14: G38CenterProbe(true); return;
 		default: ErrorNotImplemented(); return;
 	}
 
-	_modalstate._probeOK = !IsError();
-	if (_modalstate._probeOK)
+	_modalstate.ProbeOK = !IsError();
+	if (_modalstate.ProbeOK)
 	{
 		CMotionControlBase::GetInstance()->GetPositions(_modalstate.G38ProbePos);
 	}
@@ -806,13 +807,54 @@ void CGCodeParser::G38Command()
 
 void CGCodeParser::G38CenterProbe(bool probevalue)
 {
-	const char*current = _reader->GetBuffer();
-	G31Command(probevalue);
-	if (!IsError())
+	// probe
+	SAxisMove move(false);
+
+	for (char ch = _reader->SkipSpacesToUpper(); ch; ch = _reader->SkipSpacesToUpper())
 	{
-		_reader->ResetBuffer(current);
-		G31Command(probevalue);
+		axis_t axis;
+		if ((axis = CharToAxis(ch)) < NUM_AXIS) GetAxis(axis, move, RelativPosition);
+		else if (ch == 'F') GetFeedrate(move);
+		else break;
+
+		if (CheckError()) { return; }
 	}
+
+	CMotionControlBase::GetInstance()->GetPositions(_modalstate.G38ProbePos);
+
+	for (axis_t axis = 0; axis < NUM_AXIS; axis++)
+	{
+		if (IsBitSet(move.axes, axis))
+		{
+			if (!CenterProbeCommand(move, probevalue, axis))
+				return;
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+bool CGCodeParser::CenterProbeCommand(SAxisMove& move, bool probevalue, axis_t axis)
+{
+	SAxisMove movenew(true);
+	movenew.axes = move.axes;
+	movenew.newpos[axis] += move.newpos[axis];
+
+	_modalstate.ProbeOK = ProbeCommand(movenew, probevalue);
+	if (!_modalstate.ProbeOK) return false;
+	
+	mm1000_t pos = CMotionControlBase::GetInstance()->GetPosition(axis);
+	movenew.newpos[axis] -= move.newpos[axis];
+	CMotionControlBase::GetInstance()->MoveAbs(movenew.newpos, super::_modalstate.G0FeedRate);
+	movenew.newpos[axis] -= move.newpos[axis];
+	
+	_modalstate.ProbeOK = ProbeCommand(movenew, probevalue);
+	if (!_modalstate.ProbeOK) return false;
+	
+	_modalstate.G38ProbePos[axis] = CMotionControlBase::GetInstance()->GetPosition(axis) + (pos - CMotionControlBase::GetInstance()->GetPosition(axis)) / 2;
+	CMotionControlBase::GetInstance()->MoveAbs(_modalstate.G38ProbePos, super::_modalstate.G0FeedRate);
+	
+	return true;
 }
 
 ////////////////////////////////////////////////////////////

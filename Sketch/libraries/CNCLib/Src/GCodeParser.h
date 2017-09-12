@@ -143,7 +143,7 @@ protected:
 		bool			IsG98;						// G98 or G99	( Return To R or return to init Z) 
 
 		uint8_t			_debuglevel;
-		uint8_t			_probeOK;
+		uint8_t			ProbeOK;
 
 		toolnr_t		ToolSelected;
 
@@ -258,6 +258,7 @@ private:
 	void M300Command();		// Play Song
 
 	void G38CenterProbe(bool probevalue);
+	bool CenterProbeCommand(SAxisMove& move, bool probevalue,axis_t axis);
 
 	/////////////////
 
