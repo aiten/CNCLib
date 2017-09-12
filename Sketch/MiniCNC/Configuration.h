@@ -23,12 +23,12 @@
 
 #define HARDWARETYPE_CNC3325         1 // CNC-3325, microsteps 32, DRV8825, CNCShield V3.51, zero
 #define HARDWARETYPE_CNCShieldTest  10 // All "Test" must be configured with eeprom
-#define HARDWARETYPE_L298Test	      11 // 
+#define HARDWARETYPE_L298Test	      11 // (test for sketch maxsize with arduino nano)
 #define HARDWARETYPE_SMCTest	      12 // 
 #define HARDWARETYPE_TB6560Test     13 // 
 #define HARDWARETYPE_CUSTOM	        99 // custom
 
-#define HARDWARETYPE HARDWARETYPE_CNC3325
+#define HARDWARETYPE HARDWARETYPE_L298Test
 
 ////////////////////////////////////////////////////////
 

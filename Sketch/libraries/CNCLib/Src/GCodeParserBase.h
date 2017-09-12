@@ -266,6 +266,8 @@ protected:
 
 	void MoveStart(bool cutmove);
 
+	void G31Command(bool probevalue);
+
 private:
 
 	void GetIJK(axis_t axis, SAxisMove& move, mm1000_t offset[2]);
@@ -287,7 +289,6 @@ private:
 	void G20Command()							{ _modalstate.UnitisMm = false; };
 	void G21Command()							{ _modalstate.UnitisMm = true; };
 	void G28Command();
-	void G31Command();
 	void G61Command()							{ _modalstate.ConstantVelocity = false; }
 	void G64Command()							{ _modalstate.ConstantVelocity = true; }
 	void G90Command()							{ _modalstate.IsAbsolut = true; }

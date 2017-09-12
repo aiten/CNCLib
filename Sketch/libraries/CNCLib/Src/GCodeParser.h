@@ -51,6 +51,9 @@ typedef unsigned short param_t;
 #define PARAMSTART_G54FF_OFFSET	  20		// 5241-5250 - Coordinate System 2, G55 (X Y Z A B C U V W R) - R denotes the XY rotation angle around the Z axis 
 #define PARAMSTART_CURRENTPOS	5420		// 5420-5428 - Current Position including offsets in current program units (X Y Z A B C U V W)
 
+#define PARAMSTART_PROBEPOS		5061		// After successful probing, parameters 5061 to 5069 will be set to the coordinates of X, Y, Z, A, B, C, U, V, W of the location of the controlled point at the time the probe changed state
+#define PARAMSTART_PROBEOK		5070		// Parameter 5070 is set to 1 if the probe succeeded and 0 if the probe failed
+
 // extent
 #define PARAMSTART_CURRENTABSPOS	6010	// Current Absolut machine position in current program units (X Y Z A B C U V W)
 #define PARAMSTART_BACKLASH			6031	// Backlash in current units(e.g. mm) (X Y Z A B C U V W)
@@ -140,7 +143,7 @@ protected:
 		bool			IsG98;						// G98 or G99	( Return To R or return to init Z) 
 
 		uint8_t			_debuglevel;
-		uint8_t			dummy;
+		uint8_t			_probeOK;
 
 		toolnr_t		ToolSelected;
 
@@ -150,6 +153,7 @@ protected:
 		mm1000_t		G8xP;
 
 		mm1000_t		G54Pospreset[G54ARRAYSIZE][NUM_AXIS];	// 54-59
+		mm1000_t		G38ProbePos[NUM_AXIS];
 		mm1000_t		ToolHeigtCompensation;
 
 		float			Parameter[NUM_PARAMETER];	// this is a expression, mm or inch
@@ -216,6 +220,7 @@ private:
 	void GetAngleR(SAxisMove& move, mm1000_t& angle);		// get angle (with R Parameter)
 
 	void G10Command();
+	void G38Command();
 	void G40Command()							{ _modalstate.CutterRadiusCompensation = SModalState::CutterRadiusOff; }
 	void G41Command();		// Cutter Radius Compensation left
 	void G42Command();		// Cutter Radius Compensation right
@@ -252,6 +257,7 @@ private:
 	void M220Command();		// Set Speed override
 	void M300Command();		// Play Song
 
+	void G38CenterProbe(bool probevalue);
 
 	/////////////////
 

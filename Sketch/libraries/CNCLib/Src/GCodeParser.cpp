@@ -227,6 +227,8 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 			case PARAMSTART_G92OFFSET:			return GetParamAsMm1000(super::_modalstate.G92Pospreset[axis], axis);
 			case PARAMSTART_CURRENTPOS:			return GetParamAsMm1000(GetRelativePosition(axis), axis);
 			case PARAMSTART_CURRENTABSPOS:		return GetParamAsMm1000(CMotionControlBase::GetInstance()->GetPosition(axis), axis);
+			case PARAMSTART_PROBEPOS:			return GetParamAsMm1000(GetRelativePosition(_modalstate.G38ProbePos[axis],axis), axis);
+			case PARAMSTART_PROBEOK:			return _modalstate._probeOK?1:0;
 			case PARAMSTART_BACKLASH:			return GetParamAsPosition(CStepper::GetInstance()->GetBacklash(axis), axis);
 			case PARAMSTART_BACKLASH_FEEDRATE:  return CMotionControlBase::GetInstance()->ToMm1000(0, CStepper::GetInstance()->GetBacklash()) * 60;
 			case PARAMSTART_MAX:				return GetParamAsPosition(CStepper::GetInstance()->GetLimitMax(axis), axis);
@@ -367,6 +369,8 @@ static const char _g58home[] PROGMEM = "_g58home";
 static const char _g59home[] PROGMEM = "_g59home";
 static const char _currentPos[] PROGMEM = "_current";
 static const char _currentAbsPos[] PROGMEM = "_currentAbs";
+static const char _probePos[] PROGMEM = "_probePos";
+static const char _probeOk[] PROGMEM = "_probeOK";
 static const char _backlash[] PROGMEM = "_backlash";
 static const char _backlashfeed[] PROGMEM = "_backlashfeed";
 static const char _minPos[] PROGMEM = "_minPos";
@@ -401,6 +405,8 @@ const CGCodeParser::SParamInfo CGCodeParser::_paramdef[] PROGMEM =
 #endif
 
 	{ PARAMSTART_CURRENTABSPOS,	_currentAbsPos,true,		CGCodeParser::SParamInfo::IsMm1000 },
+	{ PARAMSTART_PROBEPOS,		_probePos,	true,		CGCodeParser::SParamInfo::IsMm1000 },
+	{ PARAMSTART_PROBEOK,		_probeOk,	false,			CGCodeParser::SParamInfo::IsInt },
 	{ PARAMSTART_BACKLASH,	_backlash,		true,			CGCodeParser::SParamInfo::IsMm1000 },
 	{ PARAMSTART_BACKLASH_FEEDRATE,	_backlashfeed,	false,	CGCodeParser::SParamInfo::IsMm1000 },
 	{ PARAMSTART_MAX,			_maxPos,	true,			CGCodeParser::SParamInfo::IsMm1000 },
@@ -551,12 +557,13 @@ bool CGCodeParser::GCommand(uint8_t gcode)
 	switch (gcode)
 	{
 		case 10:	G10Command(); return true;
-		case 53:	G53Command(); return true;
+		case 38:	G38Command(); return true;
 		case 40:	G40Command(); return true;
 		case 41:	G41Command(); return true;
 		case 42:	G42Command(); return true;
 		case 43:	G43Command(); return true;
 		case 52:	InfoNotImplemented(); return true;
+		case 53:	G53Command(); return true;
 		case 54:	G5xCommand(1); return true;
 		case 55:	G5xCommand(2); return true;
 		case 56:	G5xCommand(3); return true;
@@ -776,6 +783,40 @@ void CGCodeParser::G10Command()
 
 ////////////////////////////////////////////////////////////
 
+void CGCodeParser::G38Command()
+{
+	uint8_t subCode = GetSubCode();
+
+	switch (subCode)
+	{
+		case 2: G31Command(false); break;
+		case 4: G31Command(true); break;
+		case 10: G31Command(true); break;
+		default: ErrorNotImplemented(); return;
+	}
+
+	_modalstate._probeOK = !IsError();
+	if (_modalstate._probeOK)
+	{
+		CMotionControlBase::GetInstance()->GetPositions(_modalstate.G38ProbePos);
+	}
+}
+
+////////////////////////////////////////////////////////////
+
+void CGCodeParser::G38CenterProbe(bool probevalue)
+{
+	const char*current = _reader->GetBuffer();
+	G31Command(probevalue);
+	if (!IsError())
+	{
+		_reader->ResetBuffer(current);
+		G31Command(probevalue);
+	}
+}
+
+////////////////////////////////////////////////////////////
+
 void CGCodeParser::G41Command()
 {
 /*
@@ -865,7 +906,7 @@ void CGCodeParser::G68Command()
 		case 14: G68ExtXXCommand(Y_AXIS); break;
 		case 15: G68ExtXXCommand(Z_AXIS); break;
 		case 255: G68CommandDefault(); break;
-		default:	ErrorNotImplemented(); break;
+		default:	ErrorNotImplemented(); return;
 	}
 
 	SetPositionAfterG68G69();
