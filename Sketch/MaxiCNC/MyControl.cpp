@@ -113,6 +113,11 @@ void CMyControl::Init()
 	InitSD(SD_ENABLE_PIN);
 #endif
 
+#ifdef DISABLE_ISANYREFERENCE
+
+  CStepper::GetInstance()->SetCheckForReference(false);
+
+#endif
 }
 
 ////////////////////////////////////////////////////////////

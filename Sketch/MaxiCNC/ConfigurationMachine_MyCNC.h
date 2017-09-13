@@ -91,6 +91,8 @@
 
 #define MOVEAWAYFROMREF_MM1000 125
 
+#define DISABLE_ISANYREFERENCE
+
 #undef SPINDLE_ANALOGSPEED
 #define SPINDLE_MAXSPEED	255			// analog 255
 #define SPINDEL_FADETIMEDELAY  0	// 8ms * 255 => 2040ms from 0 to max, 4080 from -max to +max
