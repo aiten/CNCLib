@@ -100,7 +100,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public void SendM106LaserOn() { RunAndUpdate(() => { Com.QueueCommand("m106 s255"); }); }
 		public void SendM106LaserOnMin() { RunAndUpdate(() => { Com.QueueCommand("m106 s1"); }); }
 		public void SendM107LaserOff() { RunAndUpdate(() => { Com.QueueCommand("m107"); }); }
-		public void SendM114PrintPos()
+        public void SendM100ProbeDefault() { RunAndUpdate(() => { Com.QueueCommand("m100"); }); }
+        public void SendM101ProbeInvert() { RunAndUpdate(() => { Com.QueueCommand("m101"); }); }
+        public void SendM114PrintPos()
 		{
 			RunAndUpdate(async () =>
 			{
@@ -137,7 +139,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ICommand SendM05SpindleOffCommand => new DelegateCommand(SendM05SpindleOff, CanSendSpindle);
 		public ICommand SendM07CoolandOnCommand => new DelegateCommand(SendM07CoolandOn, CanSendCoolant);
 		public ICommand SendM09CoolandOffCommand => new DelegateCommand(SendM09CoolandOff, CanSendCoolant);
-		public ICommand SendM106LaserOnCommand => new DelegateCommand(SendM106LaserOn, CanSendLaser);
+        public ICommand SendM100ProbeDefaultCommand => new DelegateCommand(SendM100ProbeDefault, CanSend);
+        public ICommand SendM101ProbeInvertCommand => new DelegateCommand(SendM101ProbeInvert, CanSend);
+        public ICommand SendM106LaserOnCommand => new DelegateCommand(SendM106LaserOn, CanSendLaser);
 		public ICommand SendM106LaserOnMinCommand => new DelegateCommand(SendM106LaserOnMin, CanSendLaser);
 		public ICommand SendM107LaserOffCommand => new DelegateCommand(SendM107LaserOff, CanSendLaser);
 		public ICommand SendM114Command => new DelegateCommand(SendM114PrintPos, CanSend);

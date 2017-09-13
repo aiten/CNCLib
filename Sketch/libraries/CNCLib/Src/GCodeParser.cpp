@@ -228,7 +228,7 @@ mm1000_t CGCodeParser::GetParamValue(param_t paramNo, bool convertUnits)
 			case PARAMSTART_CURRENTPOS:			return GetParamAsMm1000(GetRelativePosition(axis), axis);
 			case PARAMSTART_CURRENTABSPOS:		return GetParamAsMm1000(CMotionControlBase::GetInstance()->GetPosition(axis), axis);
 			case PARAMSTART_PROBEPOS:			return GetParamAsMm1000(GetRelativePosition(_modalstate.G38ProbePos[axis],axis), axis);
-			case PARAMSTART_PROBEOK:			return _modalstate.ProbeOK?1:0;
+			case PARAMSTART_PROBEOK:			return _modalstate.IsProbeOK?1:0;
 			case PARAMSTART_BACKLASH:			return GetParamAsPosition(CStepper::GetInstance()->GetBacklash(axis), axis);
 			case PARAMSTART_BACKLASH_FEEDRATE:  return CMotionControlBase::GetInstance()->ToMm1000(0, CStepper::GetInstance()->GetBacklash()) * 60;
 			case PARAMSTART_MAX:				return GetParamAsPosition(CStepper::GetInstance()->GetLimitMax(axis), axis);
@@ -789,15 +789,15 @@ void CGCodeParser::G38Command()
 
 	switch (subCode)
 	{
-		case 2: G31Command(false); break;
-		case 4: G31Command(true); break;
-		case 12: G38CenterProbe(false); return;
-		case 14: G38CenterProbe(true); return;
+		case 2: G31Command(super::_modalstate.ProbeOnValue); break;
+		case 4: G31Command(!super::_modalstate.ProbeOnValue); break;
+		case 12: G38CenterProbe(super::_modalstate.ProbeOnValue); return;
+		case 14: G38CenterProbe(!super::_modalstate.ProbeOnValue); return;
 		default: ErrorNotImplemented(); return;
 	}
 
-	_modalstate.ProbeOK = !IsError();
-	if (_modalstate.ProbeOK)
+	_modalstate.IsProbeOK = !IsError();
+	if (_modalstate.IsProbeOK)
 	{
 		CMotionControlBase::GetInstance()->GetPositions(_modalstate.G38ProbePos);
 	}
@@ -840,16 +840,16 @@ bool CGCodeParser::CenterProbeCommand(SAxisMove& move, bool probevalue, axis_t a
 	movenew.axes = move.axes;
 	movenew.newpos[axis] += move.newpos[axis];
 
-	_modalstate.ProbeOK = ProbeCommand(movenew, probevalue);
-	if (!_modalstate.ProbeOK) return false;
+	_modalstate.IsProbeOK = ProbeCommand(movenew, probevalue);
+	if (!_modalstate.IsProbeOK) return false;
 	
 	mm1000_t pos = CMotionControlBase::GetInstance()->GetPosition(axis);
 	movenew.newpos[axis] -= move.newpos[axis];
 	CMotionControlBase::GetInstance()->MoveAbs(movenew.newpos, super::_modalstate.G0FeedRate);
 	movenew.newpos[axis] -= move.newpos[axis];
 	
-	_modalstate.ProbeOK = ProbeCommand(movenew, probevalue);
-	if (!_modalstate.ProbeOK) return false;
+	_modalstate.IsProbeOK = ProbeCommand(movenew, probevalue);
+	if (!_modalstate.IsProbeOK) return false;
 	
 	_modalstate.G38ProbePos[axis] = CMotionControlBase::GetInstance()->GetPosition(axis) + (pos - CMotionControlBase::GetInstance()->GetPosition(axis)) / 2;
 	CMotionControlBase::GetInstance()->MoveAbs(_modalstate.G38ProbePos, super::_modalstate.G0FeedRate);

@@ -139,6 +139,9 @@ protected:
 
 		CGCodeParserBase::LastCommandCB LastCommand;
 
+		bool			ProbeOnValue;
+		bool			Dummy;
+
 		void Init()	
 		{
 			*this = SModalState();		// POD .. Plane Old Data Type => no Constructor => init with default value = 0

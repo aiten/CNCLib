@@ -143,7 +143,7 @@ protected:
 		bool			IsG98;						// G98 or G99	( Return To R or return to init Z) 
 
 		uint8_t			_debuglevel;
-		uint8_t			ProbeOK;
+		bool			IsProbeOK;
 
 		toolnr_t		ToolSelected;
 

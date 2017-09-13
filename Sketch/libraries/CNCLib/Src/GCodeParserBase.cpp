@@ -397,7 +397,7 @@ bool CGCodeParserBase::GCommand(uint8_t gcode)
 		case 20:	G20Command(); return true;
 		case 21:	G21Command();  return true;
 		case 28:	G28Command(); return true;
-		case 31:	G31Command(GetSubCode()==1); return true;
+		case 31:	G31Command(_modalstate.ProbeOnValue); return true;
 		case 61:	G61Command(); return true;
 		case 64:	G64Command(); return true;
 		case 90:	G90Command(); return true;
@@ -423,6 +423,10 @@ bool CGCodeParserBase::MCommand(mcode_t mcode)
 		// coolant
 		case 7:	M07Command();		return true;
 		case 9:	M09Command();		return true;
+
+		// probe config
+		case 100:	_modalstate.ProbeOnValue = false; return true;
+		case 101:	_modalstate.ProbeOnValue = true; return true;
 	}
 	return false;
 }

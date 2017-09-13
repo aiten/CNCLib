@@ -275,6 +275,12 @@
                             <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0">
                                 <Button Command="{Binding AxisZ.SendG31Command}" Content="Z G31 - Probe" />
                             </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0">
+                                <Button Command="{Binding Tool.SendM100ProbeDefaultCommand}" Content="M100 Probe-Default" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0">
+                                <Button Command="{Binding Tool.SendM101ProbeInvertCommand}" Content="M101 Probe-Invert" />
+                            </StackPanel>
                             <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"/>
                             <StackPanel Orientation="Vertical" MinWidth="100"/>
                         </StackPanel>
