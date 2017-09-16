@@ -168,7 +168,18 @@ namespace CNCLib.Wpf.Helpers
 				}
 				else
 				{
-					await Com.SendCommandAsync(s);
+                    if (s.TrimEnd().EndsWith("?"))
+                    {
+                        await Com.SendCommandAndReadOKReplyAsync(s.TrimEnd().TrimEnd('?'));
+                        if ((Com.LastCommand.ReplyType & ArduinoSerialCommunication.EReplyType.ReplyError) != 0)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            await Com.SendCommandAsync(s);
+                        }
+                    }
 				}
 			}
 		}
