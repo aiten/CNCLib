@@ -28,9 +28,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			Vm = vm;
 		}
-		public Framework.Arduino.ArduinoSerialCommunication Com
+		public Framework.Arduino.SerialCommunication.ISerial Com
 		{
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
 		}
 		public CNCLib.Wpf.Helpers.MachineGCodeHelper GCode
 		{

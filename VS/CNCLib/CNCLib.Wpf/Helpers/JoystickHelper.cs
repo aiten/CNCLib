@@ -57,7 +57,7 @@ namespace CNCLib.Wpf.Helpers
 				}
 			}
 		}
-		private Framework.Arduino.ArduinoSerialCommunication ComJoystick
+		private Framework.Arduino.SerialCommunication.ISerial ComJoystick
 		{
 			get { return Framework.Tools.Pattern.Singleton<JoystickArduinoSerialCommunication>.Instance; }
 		}

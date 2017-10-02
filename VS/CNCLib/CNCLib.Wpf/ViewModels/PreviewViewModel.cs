@@ -46,9 +46,9 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region Properties
 
-		public Framework.Arduino.ArduinoSerialCommunication Com
+		public Framework.Arduino.SerialCommunication.ISerial Com
 		{
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
 		}
 
 		private CommandList _commands = new CommandList();
@@ -201,7 +201,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		Command _lastCurrentCommand = null;
 
-		private void CommandSending(object sender, ArduinoSerialCommunicationEventArgs arg)
+		private void CommandSending(object sender, Framework.Arduino.SerialCommunication.SerialEventArgs arg)
 		{
 			Commands.Current = Commands.FirstOrDefault((c) => c == arg.Command.Tag);
 			if (Commands.Current != _lastCurrentCommand)

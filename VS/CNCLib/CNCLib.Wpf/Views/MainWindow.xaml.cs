@@ -42,11 +42,11 @@ namespace CNCLib.Wpf.Views
                     System.IO.Path.GetTempPath(),
                     now.Year,now.Month,now.Day,now.Hour,now.Minute,now.Second));
 		}
-		private Framework.Arduino.ArduinoSerialCommunication Com
+		private Framework.Arduino.SerialCommunication.ISerial Com
 		{
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
 		}
-        private Framework.Arduino.ArduinoSerialCommunication ComJoystick
+        private Framework.Arduino.SerialCommunication.ISerial ComJoystick
         {
             get { return Framework.Tools.Pattern.Singleton<Wpf.Helpers.JoystickArduinoSerialCommunication>.Instance; }
         }

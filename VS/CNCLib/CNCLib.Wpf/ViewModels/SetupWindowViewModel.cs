@@ -98,12 +98,12 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region Properties
 
-		private Framework.Arduino.ArduinoSerialCommunication Com
+		private Framework.Arduino.SerialCommunication.ISerial Com
         {
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
         }
 
-        private Framework.Arduino.ArduinoSerialCommunication ComJoystick
+        private Framework.Arduino.SerialCommunication.ISerial ComJoystick
         {
             get { return Framework.Tools.Pattern.Singleton<JoystickArduinoSerialCommunication>.Instance; }
         }

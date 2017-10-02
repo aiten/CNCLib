@@ -33,18 +33,18 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         #region Commands / CanCommands
 
-        private void SendMoveCommand(double? dist, char axisname) { RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g91 g0" + axisname + dist??0.0.ToString(CultureInfo.InvariantCulture) + " g90")); }); }
+        private void SendMoveCommand(double? dist, char axisname) { RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g91 g0" + axisname + (dist??0.0).ToString(CultureInfo.InvariantCulture) + " g90")); }); }
 
 		public bool CanSendCommand(double? dist)
 		{
-			return CanSend();
-		}
+            return CanSend();
+        }
 
-		#endregion
+        #endregion
 
-		#region ICommands
+        #region ICommands
 
-		public ICommand SendRightCommand => new DelegateCommand<double?>((double? dist) => SendMoveCommand(dist, 'X'), CanSendCommand);
+        public ICommand SendRightCommand => new DelegateCommand<double?>((double? dist) => SendMoveCommand(dist, 'X'), CanSendCommand);
         public ICommand SendLeftCommand => new DelegateCommand<double?>((double? dist) => SendMoveCommand(-dist, 'X'), CanSendCommand);
         public ICommand SendUpCommand => new DelegateCommand<double?>((double? dist) => SendMoveCommand(dist, 'Y'), CanSendCommand);
         public ICommand SendDownCommand => new DelegateCommand<double?>((double? dist) => SendMoveCommand(-dist, 'Y'), CanSendCommand);
