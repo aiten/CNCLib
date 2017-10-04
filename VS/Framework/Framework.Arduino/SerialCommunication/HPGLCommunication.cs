@@ -21,7 +21,7 @@ using System.Collections.Generic;
 
 namespace Framework.Arduino.SerialCommunication
 {
-	public class HPGLCommunication : Serial
+	public class HPGLSerial : Serial
     {
 
         readonly int maxmessagelength = 128;

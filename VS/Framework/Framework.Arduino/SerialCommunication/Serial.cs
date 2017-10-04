@@ -39,7 +39,6 @@ namespace Framework.Arduino.SerialCommunication
 		Thread _writeThread;
 		AutoResetEvent _autoEvent = new AutoResetEvent(false);
 		TraceStream _trace = new TraceStream();
-
 		List<SerialCommand> _pendingCommands = new List<SerialCommand>();
 
         #endregion
@@ -80,7 +79,6 @@ namespace Framework.Arduino.SerialCommunication
 		public bool IsConnected { get { return _serialPort != null && _serialPort.IsOpen; } }
 		public bool Aborted { get; protected set; }
 
-
 		public int BaudRate { get; set; }				= 115200;
 		public bool ResetOnConnect { get; set; }		= false;
 		public string OkTag { get; set; }				= @"ok";
@@ -90,12 +88,10 @@ namespace Framework.Arduino.SerialCommunication
 		public bool ErrorIsReply { get; set; }			= true;			// each command must end with "ok" of "Error"
         public int MaxCommandHistoryCount { get; set; } = int.MaxValue;
 		public int ArduinoBuffersize { get; set; }		= 64;
-        public int ArduinoLineSize { get; set; } = 128;
+        public int ArduinoLineSize { get; set; }        = 128;
         public TraceStream Trace { get { return _trace; } }
-
-		public bool Pause { get; set; } = false;
-		public bool SendNext { get; set; } = false;
-
+		public bool Pause { get; set; }                 = false;
+		public bool SendNext { get; set; }              = false;
 		private bool Continue {  get {	return (_serialPortCancellationTokenSource != null && !_serialPortCancellationTokenSource.IsCancellationRequested);	} 	}
 
 		#endregion
@@ -250,7 +246,6 @@ namespace Framework.Arduino.SerialCommunication
             // Set the read/write timeouts
             _serialPort.ReadTimeout = 500;
             _serialPort.WriteTimeout = 500;
-
 		}
 
 		public void Dispose()
