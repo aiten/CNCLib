@@ -22,7 +22,7 @@ namespace Framework.Arduino.SerialCommunication
 {
 	public class SerialEventArgs : EventArgs
 	{
-		public SerialEventArgs(string info, Command cmd)
+		public SerialEventArgs(string info, SerialCommand cmd)
 		{
 			Command = cmd;
 			if (cmd != null && string.IsNullOrEmpty(info))
@@ -39,6 +39,6 @@ namespace Framework.Arduino.SerialCommunication
 
 		public readonly string Info;
 
-		public Command Command { get; private set; }
+		public SerialCommand Command { get; private set; }
 	}
 }

@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Arduino.SerialCommunication
 {
-    public class Command
+    public class SerialCommand
     {
         public DateTime? SentTime { get; set; }
         public string CommandText { get; set; }

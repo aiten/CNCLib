@@ -40,7 +40,7 @@ namespace Framework.Arduino.SerialCommunication
 		AutoResetEvent _autoEvent = new AutoResetEvent(false);
 		TraceStream _trace = new TraceStream();
 
-		List<Command> _pendingCommands = new List<Command>();
+		List<SerialCommand> _pendingCommands = new List<SerialCommand>();
 
         #endregion
 
@@ -274,7 +274,7 @@ namespace Framework.Arduino.SerialCommunication
 			{
 				lock (_pendingCommands)
 				{
-					foreach (Command cmd in _pendingCommands)
+					foreach (SerialCommand cmd in _pendingCommands)
 					{
 						sw.WriteLine(cmd.CommandText);
 					}
@@ -322,7 +322,7 @@ namespace Framework.Arduino.SerialCommunication
 		/// Send command and wait until the command is transfered and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="line">command line to send</param>
-		public async Task<IEnumerable<Command>> SendCommandAsync(string line, int waitForMilliseconds = int.MaxValue)
+		public async Task<IEnumerable<SerialCommand>> SendCommandAsync(string line, int waitForMilliseconds = int.MaxValue)
         {
             var ret = SplitAndQueueCommand(line);
 			if (!await WaitUntilNoPendingCommandsAsync(waitForMilliseconds))
@@ -335,7 +335,7 @@ namespace Framework.Arduino.SerialCommunication
 		/// Send command and wait until the command is transfered and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="line">command line to send</param>
-		public IEnumerable<Command> SendCommand(string line)
+		public IEnumerable<SerialCommand> SendCommand(string line)
 		{
 			return SendCommandAsync(line).ConfigureAwait(false).GetAwaiter().GetResult();
 		}
@@ -344,7 +344,7 @@ namespace Framework.Arduino.SerialCommunication
 		/// Queue command - do not wait - not for transfer and not for replay
 		/// </summary>
 		/// <param name="line">command line to send</param>
-		public IEnumerable<Command> QueueCommand(string line)
+		public IEnumerable<SerialCommand> QueueCommand(string line)
 		{
 			return SplitAndQueueCommand(line);
 		}
@@ -353,7 +353,7 @@ namespace Framework.Arduino.SerialCommunication
 		/// Send multiple command lines to the arduino. Wait until the commands are transferrd and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="commands"></param>
-		public async Task<IEnumerable<Command>> SendCommandsAsync(IEnumerable<string> commands)
+		public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> commands)
         {
             if (commands != null)
             {
@@ -361,16 +361,16 @@ namespace Framework.Arduino.SerialCommunication
 				await WaitUntilNoPendingCommandsAsync();
 				return ret;
             }
-			return new List<Command>();
+			return new List<SerialCommand>();
 		}
 
 		/// <summary>
 		/// Send multiple command lines to the arduino. Do no wait
 		/// </summary>
 		/// <param name="commands"></param>
-		public IEnumerable<Command> QueueCommands(IEnumerable<string> commands)
+		public IEnumerable<SerialCommand> QueueCommands(IEnumerable<string> commands)
 		{
-			var list = new List<Command>();
+			var list = new List<SerialCommand>();
 
 			if (commands != null)
 			{
@@ -389,7 +389,7 @@ namespace Framework.Arduino.SerialCommunication
 		/// Send commands stored in a file. Wait until the commands are transferrd and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="filename">used for a StreamReader</param>
-		public async Task<IEnumerable<Command>> SendFileAsync(string filename)
+		public async Task<IEnumerable<SerialCommand>> SendFileAsync(string filename)
 		{
 			var list = QueueFile(filename);
 			await WaitUntilNoPendingCommandsAsync();
@@ -400,7 +400,7 @@ namespace Framework.Arduino.SerialCommunication
 		/// Send commands stored in a file. Wait until the commands are transferrd and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="filename">used for a StreamReader</param>
-		public IEnumerable<Command> QueueFile(string filename)
+		public IEnumerable<SerialCommand> QueueFile(string filename)
 		{
 			using (StreamReader sr = new StreamReader(filename))
 			{
@@ -454,13 +454,13 @@ namespace Framework.Arduino.SerialCommunication
 
 		#region Internals
 
-		private IEnumerable<Command> SplitAndQueueCommand(string line)
+		private IEnumerable<SerialCommand> SplitAndQueueCommand(string line)
         {
-			var cmdlist = new List<Command>();
+			var cmdlist = new List<SerialCommand>();
             string[] cmds = SplitCommand(line);
             foreach (string cmd in cmds)
             {
-                Command pcmd = QueueCommandString(cmd);
+                SerialCommand pcmd = QueueCommandString(cmd);
                 if (pcmd != null)
                 {
 					// sending is done in Write-Thread
@@ -469,7 +469,7 @@ namespace Framework.Arduino.SerialCommunication
             }
 			return cmdlist;
         }
-        private Command QueueCommandString(string cmd)
+        private SerialCommand QueueCommandString(string cmd)
         {
             if (string.IsNullOrEmpty(cmd))
                 return null;
@@ -479,7 +479,7 @@ namespace Framework.Arduino.SerialCommunication
 
 			cmd = cmd.Replace('\t', ' ');
 
-			Command c = new Command() { CommandText = cmd };
+			SerialCommand c = new SerialCommand() { CommandText = cmd };
 
 			lock (_pendingCommands)
             {
@@ -493,7 +493,7 @@ namespace Framework.Arduino.SerialCommunication
 			return c;
 		}
 
-		private  void SendCommand(Command cmd)
+		private  void SendCommand(SerialCommand cmd)
         {
             // SendCommands is called in the async Write thread 
 
@@ -592,7 +592,7 @@ namespace Framework.Arduino.SerialCommunication
 			var sw = Stopwatch.StartNew();
 			while (Continue)
             {
-                Command cmd = null;
+                SerialCommand cmd = null;
                 lock (_pendingCommands)
                 {
 					if (_pendingCommands.Count > 0)
@@ -618,7 +618,7 @@ namespace Framework.Arduino.SerialCommunication
 			return false; // aborting
 		}
 
-		private async Task<bool> WaitUntilCommandsDoneAsync(IEnumerable<Command> commands, int maxMilliseconds = int.MaxValue)
+		private async Task<bool> WaitUntilCommandsDoneAsync(IEnumerable<SerialCommand> commands, int maxMilliseconds = int.MaxValue)
 		{
 			var sw = Stopwatch.StartNew();
 			while (Continue)
@@ -649,7 +649,7 @@ namespace Framework.Arduino.SerialCommunication
 
             while (Continue)
             {
-                Command nextcmd=null;
+                SerialCommand nextcmd=null;
                 int queuedcmdlenght = 0;
 
 				// commands are sent to the arduino until the buffer is full
@@ -657,7 +657,7 @@ namespace Framework.Arduino.SerialCommunication
 
 				lock (_pendingCommands)
                 {
-					foreach (Command cmd in _pendingCommands)
+					foreach (SerialCommand cmd in _pendingCommands)
                     {
                         if (cmd.SentTime.HasValue)
                         {
@@ -763,7 +763,7 @@ namespace Framework.Arduino.SerialCommunication
 
 		private void MessageReceived(string message)
 		{
-			Command cmd = null;
+			SerialCommand cmd = null;
 			lock (_pendingCommands)
 			{
 				if (_pendingCommands.Count > 0)
@@ -930,10 +930,10 @@ namespace Framework.Arduino.SerialCommunication
 
 		#region Command History 
 
-		List<Command> _commands = new List<Command>();
-        public List<Command> CommandHistoryCopy { get { lock (_commands) { return new List<Command>(_commands); } } }
+		List<SerialCommand> _commands = new List<SerialCommand>();
+        public List<SerialCommand> CommandHistoryCopy { get { lock (_commands) { return new List<SerialCommand>(_commands); } } }
 
-		public Command LastCommand
+		public SerialCommand LastCommand
 		{
 			get
 			{
@@ -958,7 +958,7 @@ namespace Framework.Arduino.SerialCommunication
 			{
 				using (StreamWriter sr = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 				{
-                    foreach (SerialCommunication.Command cmds in _commands)
+                    foreach (SerialCommunication.SerialCommand cmds in _commands)
 					{
 						sr.Write(cmds.SentTime); sr.Write(":");
 						sr.Write(cmds.CommandText); sr.Write(" => ");
