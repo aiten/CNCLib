@@ -33,7 +33,7 @@ namespace Framework.Arduino.SerialCommunication
     {
         #region Private Members
 
-        SerialPort _serialPort;
+        ISerialPort _serialPort;
 		CancellationTokenSource _serialPortCancellationTokenSource;
 		Thread _readThread;
 		Thread _writeThread;
@@ -231,7 +231,7 @@ namespace Framework.Arduino.SerialCommunication
 
 		protected virtual void SetupCom(string portname)
         {
-            _serialPort = new SerialPort();
+            _serialPort = new MySerialPort();
 
 			_serialPort.PortName = portname;
             _serialPort.BaudRate = BaudRate;

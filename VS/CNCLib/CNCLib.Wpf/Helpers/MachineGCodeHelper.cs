@@ -171,7 +171,7 @@ namespace CNCLib.Wpf.Helpers
                     if (s.TrimEnd().EndsWith("?"))
                     {
                         await Com.SendCommandAndReadOKReplyAsync(s.TrimEnd().TrimEnd('?'));
-                        if ((Com.LastCommand.ReplyType & ArduinoSerialCommunication.EReplyType.ReplyError) != 0)
+                        if ((Com.LastCommand.ReplyType & Framework.Arduino.SerialCommunication.EReplyType.ReplyError) != 0)
                         {
                             return;
                         }
