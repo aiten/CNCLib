@@ -43,7 +43,8 @@ namespace CNCLib.Wpf.Sql.Start
 
             Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(
-				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
+                typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
+                typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
 //				typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
 				typeof(CNCLib.Repository.MachineRepository).Assembly,
 				typeof(CNCLib.Logic.Client.DynItemController).Assembly,

@@ -55,6 +55,7 @@ namespace CNCLib.Wpf.Start
 
 			Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(
+                typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
 				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
 //				typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
 				typeof(CNCLib.Repository.MachineRepository).Assembly,

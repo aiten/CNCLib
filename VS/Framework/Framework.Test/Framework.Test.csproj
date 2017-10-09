@@ -85,9 +85,14 @@
     <Compile Include="Dependency\UnitTestDependencyProvider.cs" />
     <Compile Include="Dependency\UnityUnitOfWorkWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerialCommunication\SerialTest.cs" />
     <Compile Include="UnitTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Framework.Arduino\Framework.Arduino.csproj">
+      <Project>{77f5a48d-e908-4a95-a09e-771e8be8817b}</Project>
+      <Name>Framework.Arduino</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Framework.EF\Framework.EF.csproj">
       <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
       <Name>Framework.EF</Name>
@@ -99,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

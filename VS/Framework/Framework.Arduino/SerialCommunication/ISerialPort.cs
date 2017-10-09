@@ -17,16 +17,15 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.IO.Ports;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.Arduino.SerialCommunication
 {
-    interface ISerialPort : IDisposable
+    /// <summary>
+    /// Interface to mock SerialPort
+    /// </summary>
+    public interface ISerialPort : IDisposable
     {
         void Open();
         void Close();
@@ -37,10 +36,10 @@ namespace Framework.Arduino.SerialCommunication
 
         string PortName { get; set; }
         int BaudRate { get; set; }
-        Parity Parity { get; set; }
+        System.IO.Ports.Parity Parity { get; set; }
         int DataBits { get; set; }
-        StopBits StopBits { get; set; }
-        Handshake Handshake { get; set; }
+        System.IO.Ports.StopBits StopBits { get; set; }
+        System.IO.Ports.Handshake Handshake { get; set; }
         string NewLine { get; set; }
 
         bool DtrEnable { get; set; }
@@ -55,7 +54,10 @@ namespace Framework.Arduino.SerialCommunication
         Encoding Encoding { get; }
     }
 
-    class MySerialPort : SerialPort, ISerialPort
+    /// <summary>
+    /// Implementation for ISerialPort for dependency injection 
+    /// </summary>
+    internal class SerialPort : System.IO.Ports.SerialPort, ISerialPort
     {
     }
 }

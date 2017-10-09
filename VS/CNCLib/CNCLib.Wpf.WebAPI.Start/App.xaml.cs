@@ -40,8 +40,9 @@ namespace CNCLib.Wpf.WebAPI.Start
 
             Dependency.Initialize(new LiveDependencyProvider());
 			Dependency.Container.RegisterTypesIncludingInternals(
-				//				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
-				typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
+                typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
+                //				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
+                typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
 				typeof(CNCLib.Logic.Client.DynItemController).Assembly);
 	//			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
