@@ -145,9 +145,9 @@ namespace CNCLib.Wpf.ViewModels
 
         #region Properties
 
-        public Framework.Arduino.ArduinoSerialCommunication Com
+        public Framework.Arduino.SerialCommunication.ISerial Com
         {
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
         }
 
         public bool Connected
@@ -185,7 +185,7 @@ namespace CNCLib.Wpf.ViewModels
 			todo();
 		}
 
-		private void OnCommandQueueEmpty(object sender, ArduinoSerialCommunicationEventArgs arg)
+		private void OnCommandQueueEmpty(object sender, Framework.Arduino.SerialCommunication.SerialEventArgs arg)
 		{
 			CommandHistory.RefreshAfterCommand();
 		}

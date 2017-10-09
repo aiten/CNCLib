@@ -69,7 +69,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 				using (StreamReader sr = new StreamReader(filename))
 				{
 					bool savefileinresponse = false;
-					var checkresponse = new Framework.Arduino.ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
+					var checkresponse = new Framework.Arduino.SerialCommunication.CommandEventHandler((obj, e) =>
 					{
 						savefileinresponse = e.Info.Contains(sDFileName);
 					});
@@ -88,7 +88,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                         Com.SendCommandsAsync(lines.ToArray()).GetAwaiter().GetResult();
 	
 						bool filesavednresponse = false;
-						checkresponse = new Framework.Arduino.ArduinoSerialCommunication.CommandEventHandler((obj, e) =>
+						checkresponse = new Framework.Arduino.SerialCommunication.CommandEventHandler((obj, e) =>
 						{
 							filesavednresponse = e.Info.Contains("Done");
 						});

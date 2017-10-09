@@ -56,7 +56,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			var results = new ObservableCollection<SentCNCCommand>();
 
-			foreach (ArduinoSerialCommunication.Command rc in Com.CommandHistoryCopy)
+			foreach (var rc in Com.CommandHistoryCopy)
 			{
                 DateTime senttime = (rc.SentTime.HasValue) ? rc.SentTime.Value : DateTime.Today;
 

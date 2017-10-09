@@ -17,28 +17,23 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Framework.Arduino
+namespace Framework.Arduino.SerialCommunication
 {
-	public class ArduinoSerialCommunicationEventArgs : EventArgs
-	{
-		public ArduinoSerialCommunicationEventArgs(string info, ArduinoSerialCommunication.Command cmd)
-		{
-			Command = cmd;
-			if (cmd != null && string.IsNullOrEmpty(info))
-				Info = cmd.CommandText;
-			else
-				Info = info;
-			Continue = false;
-			Abort = false;
-		}
+    public class SerialCommand
+    {
+        public DateTime? SentTime { get; set; }
+        public string CommandText { get; set; }
 
-		public bool Continue { get; set; }
-		public bool Abort { get; set; }
-		public string Result { get; set; }
+        public EReplyType ReplyType { get; set; }
+        public DateTime? ReplyReceivedTime { get; set; }
 
-		public readonly string Info;
+        public string ResultText { get; set; }
 
-		public ArduinoSerialCommunication.Command Command { get; private set; }
-	}
+        public object Tag { get; set; }
+    }
 }

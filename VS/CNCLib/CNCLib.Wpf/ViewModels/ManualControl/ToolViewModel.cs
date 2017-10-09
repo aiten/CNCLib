@@ -19,7 +19,6 @@
 using System;
 using System.Windows.Input;
 using Framework.Wpf.Helpers;
-using Framework.Arduino;
 using CNCLib.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
@@ -31,12 +30,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ToolViewModel(IManualControlViewModel vm)
 			: base(vm)
 		{
-			Com.CommandQueueChanged += new ArduinoSerialCommunication.CommandEventHandler(OnCommandQueueChanged);
+			Com.CommandQueueChanged += new Framework.Arduino.SerialCommunication.CommandEventHandler(OnCommandQueueChanged);
 		}
 
 		public void Dispose()
 		{
-			Com.CommandQueueChanged -= new ArduinoSerialCommunication.CommandEventHandler(OnCommandQueueChanged);
+			Com.CommandQueueChanged -= new Framework.Arduino.SerialCommunication.CommandEventHandler(OnCommandQueueChanged);
 		}
 
 		#endregion
@@ -55,7 +54,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		private bool _updateAfterSendNext = false;
 
-		private void OnCommandQueueChanged(object sender, ArduinoSerialCommunicationEventArgs arg)
+		private void OnCommandQueueChanged(object sender, Framework.Arduino.SerialCommunication.SerialEventArgs arg)
 		{
 			RaisePropertyChanged(nameof(PendingCommandCount));
 

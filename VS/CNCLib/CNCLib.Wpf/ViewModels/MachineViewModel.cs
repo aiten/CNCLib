@@ -51,9 +51,9 @@ namespace CNCLib.Wpf.ViewModels
 		#endregion
 
 		#region Properties
-		private Framework.Arduino.ArduinoSerialCommunication Com
+		private Framework.Arduino.SerialCommunication.ISerial Com
 		{
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
 		}
 
 		Models.Machine _currentMachine = new Models.Machine();

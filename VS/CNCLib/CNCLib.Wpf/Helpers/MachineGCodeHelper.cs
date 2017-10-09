@@ -30,9 +30,9 @@ namespace CNCLib.Wpf.Helpers
 {
     public class MachineGCodeHelper
 	{
-		public Framework.Arduino.ArduinoSerialCommunication Com
+		public Framework.Arduino.SerialCommunication.ISerial Com
 		{
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
 		}
 
 		#region Probe
@@ -52,7 +52,7 @@ namespace CNCLib.Wpf.Helpers
 			string probfeed = machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
 
 			await Com.SendCommandAndReadOKReplyAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90");
-			if ((Com.LastCommand.ReplyType & ArduinoSerialCommunication.EReplyType.ReplyError) == 0)
+			if ((Com.LastCommand.ReplyType & Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == 0)
 			{
 				Com.QueueCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
 				Com.QueueCommand("g91 g0" + axisname + probdistup + " g90");
@@ -67,7 +67,7 @@ namespace CNCLib.Wpf.Helpers
 
 		public async Task<UInt32[]> GetEpromValuesAsync(int waitForMilliseconds = 3000)
 		{
-			ArduinoSerialCommunication.Command cmd = (await Com.SendCommandAsync("$?", waitForMilliseconds)).FirstOrDefault();
+			var cmd = (await Com.SendCommandAsync("$?", waitForMilliseconds)).FirstOrDefault();
 			if (cmd != null && string.IsNullOrEmpty(cmd.ResultText)==false)
 			{
 				string[] seperators = { "\n", "\r" };

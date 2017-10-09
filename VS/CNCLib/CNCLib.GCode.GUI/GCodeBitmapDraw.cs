@@ -21,7 +21,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using Framework.Tools.Drawing;
 using CNCLib.GCode.Commands;
-using Framework.Arduino;
 using System.Drawing.Drawing2D;
 
 namespace CNCLib.GCode.GUI
@@ -114,9 +113,9 @@ namespace CNCLib.GCode.GUI
 
 		Rotate3D _rotate3D;
 
-		private ArduinoSerialCommunication Com
+        private Framework.Arduino.SerialCommunication.ISerial Com
 		{
-			get { return Framework.Tools.Pattern.Singleton<ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
 		}
 
 		#endregion

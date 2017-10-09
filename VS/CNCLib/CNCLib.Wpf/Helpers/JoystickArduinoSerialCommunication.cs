@@ -17,17 +17,16 @@
 */
 
 using CNCLib.Wpf.ViewModels.ManualControl;
-using Framework.Arduino;
 using System;
 using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.Helpers
 {
-    class JoystickArduinoSerialCommunication : ArduinoSerialCommunication
-	{
-		private Framework.Arduino.ArduinoSerialCommunication Com
+    class JoystickArduinoSerialCommunication : Framework.Arduino.SerialCommunication.Serial
+    {
+		private Framework.Arduino.SerialCommunication.ISerial Com
 		{
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.ArduinoSerialCommunication>.Instance; }
+			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
 		}
 
 		public JoystickArduinoSerialCommunication()
@@ -50,7 +49,7 @@ namespace CNCLib.Wpf.Helpers
 			});
 		}
 
-		protected override void OnReplyReceived(ArduinoSerialCommunicationEventArgs info)
+		protected override void OnReplyReceived(Framework.Arduino.SerialCommunication.SerialEventArgs info)
 		{
 			base.OnReplyReceived(info);
 
