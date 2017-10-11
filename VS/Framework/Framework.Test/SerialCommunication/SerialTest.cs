@@ -22,6 +22,7 @@ using System;
 using FluentAssertions;
 using Framework.Arduino.SerialCommunication;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Framework.Test
 {
@@ -39,8 +40,8 @@ namespace Framework.Test
         public void ConnectSerialTest()
         {
             var serialport = Substitute.For<Arduino.SerialCommunication.ISerialPort>();
-            var memorystream = new MemoryStream();
-            serialport.BaseStream.ReturnsForAnyArgs(memorystream);
+            var basestream = Substitute.For<MemoryStream>();
+            serialport.BaseStream.ReturnsForAnyArgs(basestream);
             var encoding = System.Text.Encoding.GetEncoding(12000);
             serialport.Encoding.ReturnsForAnyArgs(encoding);
 
@@ -53,11 +54,11 @@ namespace Framework.Test
         }
 
         [TestMethod]
-        public void WriteCommandSerialTest()
+        public async Task WriteCommandSerialTest()
         {
             var serialport = Substitute.For<Arduino.SerialCommunication.ISerialPort>();
-            var memorystream = new MemoryStream();
-            serialport.BaseStream.ReturnsForAnyArgs(memorystream);
+            var basestream = Substitute.For<MemoryStream>();
+            serialport.BaseStream.ReturnsForAnyArgs(basestream);
             var encoding = System.Text.Encoding.GetEncoding(12000);
             serialport.Encoding.ReturnsForAnyArgs(encoding);
 
@@ -65,10 +66,35 @@ namespace Framework.Test
 
             var serial = new Serial();
             serial.Connect("com2");
-            serial.QueueCommand("?");
-            serial.CommandsInQueue.Should().Be(1);
-            serial.Disconnect();
-        }
 
+            string[] results = new string[]
+            {
+                "ok\n\r",
+                "ok\n\r"
+            };
+            int resultidx = 0;
+
+            basestream.ReadAsync(Arg.Any<Byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
+                ReturnsForAnyArgs(async (x) =>
+                {
+                    if (serial.CommandsInQueue == 1)
+                    {
+                        byte[] encodedStr = encoding.GetBytes(results[resultidx++]);
+                        for (int i = 0; i < encodedStr.Length; i++)
+                        {
+                            ((Byte[])x[0])[i] = encodedStr[i];
+                        }
+                        return encodedStr.Length;
+                    }
+                    return 0;
+                });
+
+            await serial.SendCommandAsync("?");
+            await serial.SendCommandAsync("?");
+
+            serial.Disconnect();
+
+            basestream.Received().WriteAsync(Arg.Is<Byte[]>(e => (char) e[0] == '?'), 0,  4, Arg.Any<System.Threading.CancellationToken>());
+        }
     }
 }

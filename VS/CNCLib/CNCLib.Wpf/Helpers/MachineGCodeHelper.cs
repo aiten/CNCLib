@@ -24,7 +24,6 @@ using CNCLib.GCode;
 using CNCLib.Logic.Contracts.DTO;
 using System.Media;
 using System.Collections.Generic;
-using Framework.Arduino;
 
 namespace CNCLib.Wpf.Helpers
 {
