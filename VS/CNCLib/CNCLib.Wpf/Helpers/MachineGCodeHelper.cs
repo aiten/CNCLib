@@ -174,12 +174,12 @@ namespace CNCLib.Wpf.Helpers
                         {
                             return;
                         }
-                        else
-                        {
-                            await Com.SendCommandAsync(s);
-                        }
                     }
-				}
+                    else
+                    {
+                        await Com.SendCommandAsync(s);
+                    }
+                }
 			}
 		}
 	}
