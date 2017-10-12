@@ -33,24 +33,23 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
-                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="75"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Text="Legende" Grid.Row="0" Grid.RowSpan="2"/>
-                        <TextBox Text="\n" Grid.Row="1" Grid.Column="0" IsReadOnly="True"/>
-                        <Label Content="Seperate commands, the comands are sent sequential" Grid.Row="1" Grid.Column="1"/>
-                        <TextBox Text=";beep" Grid.Row="2" Grid.Column="0"/>
-                        <Label Content="Play a beep on PC speaker" Grid.Row="2" Grid.Column="1"/>
-                        <TextBox Text=";probe:z" Grid.Row="3" Grid.Column="0"/>
-                        <Label Content="Start a Z probe with the parameters stored in the machine definition" Grid.Row="3" Grid.Column="1"/>
-                        <TextBox Text="?" Grid.Row="4" Grid.Column="0"/>
-                        <Label Content="If the command ends with ? and the commnd fails, the execution is aborted" Grid.Row="4" Grid.Column="1"/>
-                        <TextBox Text=";btn1" Grid.Row="5" Grid.Column="0"/>
-                        <Label Content="Button 1 of joystick is presse" Grid.Row="5" Grid.Column="1"/>
+                        <TextBox Text="\n" Grid.Row="0" Grid.Column="0" IsReadOnly="True"/>
+                        <Label Content="Command seperator, the comands are sent sequential" Grid.Row="0" Grid.Column="1"/>
+                        <TextBox Text=";beep" Grid.Row="1" Grid.Column="0"/>
+                        <Label Content="Play a beep on the PC speaker" Grid.Row="1" Grid.Column="1"/>
+                        <TextBox Text=";probe:z" Grid.Row="2" Grid.Column="0"/>
+                        <Label Content="Start a Z probe with the parameters stored in the machine definition" Grid.Row="2" Grid.Column="1"/>
+                        <TextBox Text="?" Grid.Row="3" Grid.Column="0"/>
+                        <Label Content="If the command ends with ? and the commnd fails, the execution is aborted" Grid.Row="3" Grid.Column="1"/>
+                        <TextBox Text=";btn1" Grid.Row="4" Grid.Column="0"/>
+                        <Label Content="Button 1 of joystick is pressed (JoystickMessage)" Grid.Row="4" Grid.Column="1"/>
                     </Grid>
+                    <TextBox Text="Command Syntax:" DockPanel.Dock="Bottom"/>
                     <DataGrid ItemsSource="{Binding MachineCommands}"
                 	    AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" 
                 	    ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserAddRows="True" IsReadOnly="False" MaxHeight="500"  >
@@ -65,14 +64,28 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Init-Commands" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="55">
-                <DataGrid MinHeight="200" ItemsSource="{Binding MachineInitCommands}"
+                <DockPanel>
+                    <Grid DockPanel.Dock="Bottom">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="See Machine-Command page" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    </Grid>
+                    <TextBox Text="Command Syntax:" DockPanel.Dock="Bottom"/>
+                    <DataGrid MinHeight="200" ItemsSource="{Binding MachineInitCommands}"
                 	AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" 
                 	ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserAddRows="True" IsReadOnly="False" MaxHeight="500"  >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding SeqNo}" Header="SeqNo" MinWidth="150" IsReadOnly="False"/>
-                        <DataGridTextColumn Binding="{Binding CommandString}" Header="Command" MinWidth="150" IsReadOnly="False"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding SeqNo}" Header="SeqNo" MinWidth="150" IsReadOnly="False"/>
+                            <DataGridTextColumn Binding="{Binding CommandString}" Header="Command" MinWidth="150" IsReadOnly="False"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
             </TabItem>
         </TabControl>
     </DockPanel>
