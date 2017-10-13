@@ -104,7 +104,7 @@ namespace Framework.Test
 
             serial.Disconnect();
 
-            serialport.BaseStream.Received(2).WriteAsync(Arg.Is<Byte[]>(e => (char)e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
+            serialport.BaseStream.Received(1).WriteAsync(Arg.Is<Byte[]>(e => (char)e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
         }
 
         [TestMethod]
