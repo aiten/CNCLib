@@ -61,6 +61,7 @@ namespace Framework.Test
                 {
                     if (sendReply)
                     {
+                        await Task.Delay(10);
                         sendReply = false;
                         byte[] encodedStr = encoding.GetBytes(responsstrings[resultidx++]);
                         for (int i = 0; i < encodedStr.Length; i++)
@@ -69,6 +70,7 @@ namespace Framework.Test
                         }
                         return encodedStr.Length;
                     }
+                    await Task.Delay(10);
                     return 0;
                 });
 
