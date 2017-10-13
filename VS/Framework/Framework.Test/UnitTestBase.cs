@@ -31,16 +31,16 @@ namespace Framework.Test
         [TestInitialize]
         public void InitializeTest()
         {
-            if (!_globalInitialisationRun)
+            if (_globalInitialisationRun)
+            {
+                ReInitializeCoreDependencies();
+            }
+            else
             {
                 Framework.Tools.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
                 _globalInitialisationRun = true;
             }
-            else
-            {
-                ReInitializeCoreDependencies();
-            }
-			InitializeCoreDependencies();
+            InitializeCoreDependencies();
 		}
 
 		protected virtual void InitializeCoreDependencies()

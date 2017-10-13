@@ -47,19 +47,21 @@ namespace Framework.Test
             Framework.Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
 
             int resultidx = 0;
-            bool waitUntilcommandsInQueue0 = false;
+            bool sendReply = false;
+
+            basestream.WriteAsync(Arg.Any<Byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
+                ReturnsForAnyArgs(async (x) =>
+                {
+                    sendReply = true;
+                });
+
 
             basestream.ReadAsync(Arg.Any<Byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
                 ReturnsForAnyArgs(async (x) =>
                 {
-                    if (waitUntilcommandsInQueue0 && serial.CommandsInQueue==0)
+                    if (sendReply)
                     {
-                        waitUntilcommandsInQueue0 = false;
-
-                    }
-                    else if (serial.CommandsInQueue >= 1)
-                    {
-                        waitUntilcommandsInQueue0 = true;
+                        sendReply = false;
                         byte[] encodedStr = encoding.GetBytes(responsstrings[resultidx++]);
                         for (int i = 0; i < encodedStr.Length; i++)
                         {
@@ -69,6 +71,8 @@ namespace Framework.Test
                     }
                     return 0;
                 });
+
+
 
             return serialport;
         }
@@ -87,6 +91,7 @@ namespace Framework.Test
             var serial = new Serial();
             serial.Connect("com2");
             serial.CommandsInQueue.Should().Be(0);
+
             serial.Disconnect();
         }
 
@@ -122,7 +127,6 @@ namespace Framework.Test
 
             await serial.SendCommandAsync("?");
             await serial.SendCommandAsync("?");
-            await Task.Delay(10);
 
             serial.Disconnect();
             serialport.BaseStream.Received(2).WriteAsync(Arg.Is<Byte[]>(e => (char) e[0] == '?'), 0,  2, Arg.Any<System.Threading.CancellationToken>());
@@ -199,7 +203,7 @@ namespace Framework.Test
             var serial = new Serial();
             var serialport = CreateSerialPortMock(serial, new string[]
                                     {
-                                        serial.InfoTag + "\n\r",
+                                        serial.InfoTag + "\n\r" +
                                         serial.OkTag + "\n\r"
                                     });
 
@@ -230,7 +234,7 @@ namespace Framework.Test
             var serial = new Serial();
             var serialport = CreateSerialPortMock(serial, new string[]
                                     {
-                                        serial.ErrorTag + "\n\r",
+                                        serial.ErrorTag + "\n\r" +
                                         serial.OkTag + "\n\r"
                                     });
 
@@ -295,7 +299,7 @@ namespace Framework.Test
             var serial = new Serial();
             var serialport = CreateSerialPortMock(serial, new string[]
                                     {
-                                        "Hallo\n\r",
+                                        "Hallo\n\r" +
                                         serial.OkTag + "\n\r"
                                     });
 
