@@ -47,24 +47,25 @@ namespace Framework.Test
             Framework.Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
 
             int resultidx = 0;
+            bool waitUntilcommandsInQueue0 = false;
 
             basestream.ReadAsync(Arg.Any<Byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
                 ReturnsForAnyArgs(async (x) =>
                 {
-                    if (serial.CommandsInQueue >= 1)
+                    if (waitUntilcommandsInQueue0 && serial.CommandsInQueue==0)
                     {
+                        waitUntilcommandsInQueue0 = false;
 
+                    }
+                    else if (serial.CommandsInQueue >= 1)
+                    {
+                        waitUntilcommandsInQueue0 = true;
                         byte[] encodedStr = encoding.GetBytes(responsstrings[resultidx++]);
                         for (int i = 0; i < encodedStr.Length; i++)
                         {
                             ((Byte[])x[0])[i] = encodedStr[i];
                         }
                         return encodedStr.Length;
-/*
-                        byte[] encodedStr = encoding.GetBytes(responsstrings[resultidx++]);
-                        encodedStr.CopyTo(((Byte[])x[0]), encodedStr.Length);
-                        return encodedStr.Length;
-*/
                     }
                     return 0;
                 });
@@ -121,9 +122,9 @@ namespace Framework.Test
 
             await serial.SendCommandAsync("?");
             await serial.SendCommandAsync("?");
+            await Task.Delay(10);
 
             serial.Disconnect();
-
             serialport.BaseStream.Received(2).WriteAsync(Arg.Is<Byte[]>(e => (char) e[0] == '?'), 0,  2, Arg.Any<System.Threading.CancellationToken>());
         }
 
