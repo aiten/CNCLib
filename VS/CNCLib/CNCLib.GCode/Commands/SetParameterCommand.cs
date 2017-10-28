@@ -21,7 +21,7 @@ using Framework.Tools.Drawing;
 namespace CNCLib.GCode.Commands
 {
 	[IsGCommand("#")]
-	class SetParameterCommand : Command
+	public class SetParameterCommand : Command
     {
 		#region crt + factory
 

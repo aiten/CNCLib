@@ -20,7 +20,7 @@
 namespace CNCLib.GCode.Commands
 {
 	[IsGCommand]
-	class G83Command : DrillCommand
+	public class G83Command : DrillCommand
     {
 		#region crt + factory
 

@@ -21,7 +21,7 @@ using Framework.Tools.Drawing;
 
 namespace CNCLib.GCode.Commands
 {
-	class DrillCommand : Command
+	public class DrillCommand : Command
     {
 		#region crt + factory
 

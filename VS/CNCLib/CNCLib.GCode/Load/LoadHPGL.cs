@@ -60,7 +60,7 @@ namespace CNCLib.GCode.Load
             }
         }
 
-        class HPGLLine
+        private class HPGLLine
         {
             public IEnumerable<HPGLCommand> PreCommands { get; set; }
             public IEnumerable<HPGLCommand> Commands { get; set; }
@@ -76,8 +76,17 @@ namespace CNCLib.GCode.Load
             public bool IsEmbedded(HPGLLine to)
             {
                 if (ReferenceEquals(this, to)) return false;
-                return  MaxX >= to.MaxX && MinX <= to.MinX &&
-                        MaxY >= to.MaxY && MinY <= to.MinY; 
+                bool isRectangleEmbedded =
+                        MaxX >= to.MaxX && MinX <= to.MinX &&
+                        MaxY >= to.MaxY && MinY <= to.MinY;
+                if (!isRectangleEmbedded) return false;
+                return IsEmbeddedEx(to);
+            }
+
+            public bool IsEmbeddedEx(HPGLLine to)
+            {
+                // TODO concave Polyline
+                return true;
             }
 
             public int Level { get { return ParentLine == null ? 0 : ParentLine.Level + 1; } }
