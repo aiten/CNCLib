@@ -115,8 +115,16 @@ namespace CNCLib.GCode.GUI.Models
         public decimal? SmoothMinLineLenght { get; set; } = 1m;
         public decimal? SmoothMaxError { get; set; } = 1m / 40m;
 
+        public enum ConvertTypeEnum
+        {
+            NoConvert = 0,
+            InvertLineSequence = 1,
+        }
+        public ConvertTypeEnum ConvertType { get; set; } = ConvertTypeEnum.NoConvert;
+
         // calculated
         public bool SmoothEnabled { get { return SmoothType != SmoothTypeEnum.NoSmooth; } set { SmoothType = value ? SmoothTypeEnum.SplitLine : SmoothTypeEnum.NoSmooth; } }
+        public bool ConvertEnabled { get { return ConvertType != ConvertTypeEnum.NoConvert; } set { ConvertType = value ? ConvertTypeEnum.InvertLineSequence : ConvertTypeEnum.NoConvert; } }
 
         //IMG
         public string ImageWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\image.bmp";

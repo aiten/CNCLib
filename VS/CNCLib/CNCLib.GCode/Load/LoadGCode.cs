@@ -34,7 +34,7 @@ namespace CNCLib.GCode.Load
 
 			_lastnoPrefixCommand = null;
 
-            using (StreamReader sr = new StreamReader(LoadOptions.FileName))
+            using (StreamReader sr = GetStreamReader())
             {
 				try
 				{

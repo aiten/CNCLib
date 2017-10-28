@@ -54,6 +54,11 @@ namespace Framework.Tools.Drawing
 			}
 		}
 
+        public bool Compare2D(Point3D to)
+        {
+            return (X ?? 0.0) == (to.X ?? 0.0) && (Y ?? 0.0) == (to.Y ?? 0.0);
+        }
+
 		public bool HasAllValues => X.HasValue && Y.HasValue && Z.HasValue;
 
 	    public void AssignMissing(Point3D from)

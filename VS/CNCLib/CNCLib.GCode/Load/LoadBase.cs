@@ -21,6 +21,7 @@ using System;
 using System.Globalization;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Drawing;
+using System.IO;
 
 namespace CNCLib.GCode.Load
 {
@@ -94,6 +95,15 @@ namespace CNCLib.GCode.Load
 		#endregion
 
 		#region Load
+
+        protected StreamReader GetStreamReader()
+        {
+            if (LoadOptions.FileContent != null && LoadOptions.FileContent.Length > 0)
+            {
+                return new StreamReader(new MemoryStream(LoadOptions.FileContent,false));
+            }
+            return new StreamReader(LoadOptions.FileName);
+        }
 
 		public abstract void Load();
 

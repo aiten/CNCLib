@@ -20,7 +20,7 @@
 namespace CNCLib.GCode.Commands
 {
 	[IsGCommand("MXX")]
-    class MxxCommand : Command
+    public class MxxCommand : Command
     {
         #region crt + factory
 

@@ -99,8 +99,14 @@ namespace CNCLib.Logic.Contracts.DTO
             SplitLine = 1,
             SplineLine = 2
         }
-
         public SmoothTypeEnum SmoothType { get; set; } = SmoothTypeEnum.NoSmooth;
+        public enum ConvertTypeEnum
+        {
+            NoConvert = 0,
+            InvertLineSequence = 1,
+        }
+        public ConvertTypeEnum ConvertType { get; set; } = ConvertTypeEnum.NoConvert;
+
         public decimal? SmoothMinAngle { get; set; } = (decimal) (45 * (Math.PI / 180));
         public decimal? SmoothMinLineLenght { get; set; } = 1m;
         public decimal? SmoothMaxError { get; set; } = 1m / 40m;

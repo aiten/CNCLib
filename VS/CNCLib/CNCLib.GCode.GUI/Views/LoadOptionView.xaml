@@ -232,6 +232,11 @@
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
+                    <GroupBox Header="Reorder lines" Margin="0,5,0,0">
+                        <StackPanel>
+                            <CheckBox Content="Reorder Closed lines"  IsChecked="{Binding LoadOptionsValue.ConvertEnabled}"   Margin="10,10,0,0"  />
+                        </StackPanel>
+                    </GroupBox>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Image/Hole">
