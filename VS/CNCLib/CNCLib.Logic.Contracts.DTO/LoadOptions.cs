@@ -100,6 +100,7 @@ namespace CNCLib.Logic.Contracts.DTO
             SplineLine = 2
         }
         public SmoothTypeEnum SmoothType { get; set; } = SmoothTypeEnum.NoSmooth;
+
         public enum ConvertTypeEnum
         {
             NoConvert = 0,

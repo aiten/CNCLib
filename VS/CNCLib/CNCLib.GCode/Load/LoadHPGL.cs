@@ -32,7 +32,7 @@ namespace CNCLib.GCode.Load
     {
         bool _DEBUG = false;
 
-        #region HPGLCommand
+        #region HPGLCommand und HPGLLine
 
         class HPGLCommand
         {
