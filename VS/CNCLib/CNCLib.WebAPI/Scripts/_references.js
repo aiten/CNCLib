@@ -1,4 +1,4 @@
-﻿/// <reference path="jquery-3.1.1.js" />
+﻿/// <reference path="jquery-3.2.1.js" />
 /// <autosync enabled="true" />
 /// <reference path="ai.0.15.0-build58334.js" />
 /// <reference path="bootstrap.min.js" />
