@@ -49,8 +49,8 @@ namespace CNCLib.Tests.Load
             list.Count().Should().Be(3);
 
             Assert.IsTrue(list.First() is G01Command);       // G0 F500
-            Assert.IsTrue(list.ElementAt(1) is G00Command);       // G1 z1
-            Assert.IsTrue(list.ElementAt(2) is G01Command);       // G0 0,0
+            Assert.IsTrue(list.ElementAt(1) is G00Command);       // G0 z1
+            Assert.IsTrue(list.ElementAt(2) is G00Command);       // G0 0,0
         }
 
         [TestMethod]

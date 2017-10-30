@@ -17,7 +17,7 @@
 */
 
 using System;
-using Microsoft.Practices.Unity;
+using Unity;
 
 namespace Framework.Tools.Dependency
 {
@@ -36,7 +36,7 @@ namespace Framework.Tools.Dependency
             {
                 return _container.Resolve(t);
             }
-            catch (Microsoft.Practices.Unity.ResolutionFailedException ex)
+            catch (ResolutionFailedException ex)
             {
                 throw new ResolutionFailedException($"Resolution for {t.FullName} failed", ex);
             }

@@ -22,6 +22,7 @@ using System.Linq;
 using System.Reflection;
 using Unity;
 using Unity.Injection;
+using Unity.Lifetime;
 
 namespace Framework.Tools.Dependency
 {
@@ -56,8 +57,10 @@ namespace Framework.Tools.Dependency
         /// <returns>This instance.</returns>
         public IDependencyContainer RegisterTypes(params Assembly[] assemblies)
         {
-            _container.RegisterTypes(AllClasses.FromAssemblies(assemblies), WithMappings.FromMatchingInterface,
-                WithName.Default, WithLifetime.Transient);
+            throw new NotImplementedException();
+            //
+            //_container.RegisterTypes(AllClasses.FromAssemblies(assemblies), WithMappings.FromMatchingInterface,
+            //    WithName.Default, WithLifetime.Transient);
             return this;
         }
 
@@ -70,8 +73,21 @@ namespace Framework.Tools.Dependency
         /// <returns>This instance.</returns>
         public IDependencyContainer RegisterTypesIncludingInternals(params Assembly[] assemblies)
         {
-            _container.RegisterTypes(GetAllTypesFromAssemblies(assemblies), WithMappings.FromMatchingInterface, 
-                WithName.Default, WithLifetime.Transient);
+            foreach (var assembly in assemblies)
+            {
+                foreach (var type in assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract))
+                {
+                    string interfacename = "I" + type.Name;
+                    var interfacetype = type.GetInterface(interfacename);
+                    if(interfacetype != null)
+                    {
+                        _container.RegisterType(interfacetype,type);
+                    }
+                }
+            }
+//
+//            _container.RegisterTypes(GetAllTypesFromAssemblies(assemblies), WithMappings.FromMatchingInterface, 
+//                WithName.Default, WithLifetime.Transient);
             return this;
         }
 

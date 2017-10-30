@@ -17,8 +17,9 @@
 */
 
 using System;
-using Microsoft.Practices.Unity;
+using Unity;
 using NSubstitute;
+using Framework.Tools.Dependency;
 
 namespace Framework.Test.Dependency
 {
@@ -28,13 +29,13 @@ namespace Framework.Test.Dependency
         {
             if (!t.IsInterface)
             {
-                throw new Framework.Tools.Dependency.ResolutionFailedException(string.Format("Tried to resolve type {0}. This is not an interface which indicates a bug.", t.FullName));
+                throw new ResolutionFailedException(string.Format("Tried to resolve type {0}. This is not an interface which indicates a bug.", t.FullName));
             }
             try
             {
                 return _container.Resolve(t);
             }
-            catch (Microsoft.Practices.Unity.ResolutionFailedException)
+            catch (Unity.Exceptions.ResolutionFailedException)
             {
                 return Substitute.For(new Type[] { t }, new object[0]);
             }
