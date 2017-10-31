@@ -36,6 +36,11 @@ namespace Framework.Tools.Drawing
 		public double? Y { get; set; }
 		public double? Z { get; set; }
 
+        public static implicit operator Point2D (Point3D pt)
+        {
+            return new Point2D() { X = pt.X ?? 0.0, Y = pt.Y ?? 0.0 };
+        }
+
 		public double? this[int axis]
 		{
 			get

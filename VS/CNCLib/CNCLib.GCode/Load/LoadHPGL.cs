@@ -66,6 +66,8 @@ namespace CNCLib.GCode.Load
             public IEnumerable<HPGLCommand> Commands { get; set; }
             public IEnumerable<HPGLCommand> PostCommands { get; set; }
 
+            public Polygon2D Polygon { get { Load(); return _polygon; } }
+
             public double MaxX { get { Load();  return _maxX; } }
             public double MinX { get { Load(); return _minX; } }
             public double MaxY { get { Load(); return _maxY; } }
@@ -85,8 +87,10 @@ namespace CNCLib.GCode.Load
 
             public bool IsEmbeddedEx(HPGLLine to)
             {
-                // TODO concave Polyline
-                return true;
+                // TODO: we test points only!!!
+                // but it would be necessary to thes the whole line 
+
+                return _polygon.ArePointsInPolygon(to._polygon.Points);
             }
 
             public int Level { get { return ParentLine == null ? 0 : ParentLine.Level + 1; } }
@@ -97,11 +101,18 @@ namespace CNCLib.GCode.Load
             {
                 if (!_isLoaded)
                 {
-                    _maxX = Commands.Max(c => (c.PointTo.X ?? 0.0));
-                    _minX = Commands.Min(c => (c.PointTo.X ?? 0.0));
-                    _maxY = Commands.Max(c => (c.PointTo.Y ?? 0.0));
-                    _minY = Commands.Min(c => (c.PointTo.Y ?? 0.0));
-                    _isClosed = Commands != null && Commands.Count() >= 2 && Commands.First().PointFrom.Compare2D(Commands.Last().PointTo);
+                    var points = new List<Point2D>();
+                    if (Commands != null && Commands.Count() >= 1)
+                    {
+                        points.Add(Commands.First().PointFrom);
+                        points.AddRange(Commands.Select(c => new Point2D() { X = c.PointTo.X ?? 0.0, Y = c.PointTo.Y ?? 0.0 }));
+                    }
+                    _polygon = new Polygon2D() { Points = points };
+                    _maxX = _polygon.MaxX;
+                    _minX = _polygon.MinX;
+                    _maxY = _polygon.MaxY;
+                    _minY = _polygon.MinY;
+                    _isClosed = _polygon.IsClosed;
                     _isLoaded = true;
                 }
             }
@@ -112,6 +123,7 @@ namespace CNCLib.GCode.Load
             private double _minX;
             private double _maxY;
             private double _minY;
+            private Polygon2D _polygon;
         }
 
         #endregion
