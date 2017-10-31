@@ -27,6 +27,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Unity" Version="5.1.0" />
+    <PackageReference Include="Unity" Version="5.1.2" />
   </ItemGroup>
 </Project>
