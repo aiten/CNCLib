@@ -29,4 +29,7 @@
   <ItemGroup>
     <PackageReference Include="Unity" Version="5.1.2" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Clipper\" />
+  </ItemGroup>
 </Project>
