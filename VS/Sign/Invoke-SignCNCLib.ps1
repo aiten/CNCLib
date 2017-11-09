@@ -48,7 +48,7 @@
 
     Try
     {
-	echo $pfxPassword
+	echo $pfxPassword >$root\t.txt
 	    $regex1 = "Public key token is ([0-9a-z]*)"
         $regex2 = "ist ([0-9a-z]*)"
 
