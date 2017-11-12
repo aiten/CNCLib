@@ -39,10 +39,20 @@ namespace CNCLib.Tests.Repository
 		{
 			if (_init == false)
 			{
-				//drop and recreate the test Db everytime the tests are run. 
-				AppDomain.CurrentDomain.SetData("DataDirectory", testContext.TestDeploymentDir);
+                //drop and recreate the test Db everytime the tests are run. 
+                string sdfdir = testContext.TestDeploymentDir;
+                string sdfroot = System.IO.Path.GetPathRoot(sdfdir);
+                var driveinfo = new System.IO.DriveInfo(sdfroot);
 
-				using (var uow = new UnitOfWork<CNCLibContext>())
+                if (driveinfo.DriveType == System.IO.DriveType.Network)
+                {
+                    // a sdf file doesn't work on network-drive 
+                    sdfdir = System.IO.Path.GetTempPath();
+                }
+
+                AppDomain.CurrentDomain.SetData("DataDirectory", sdfdir);
+
+                using (var uow = new UnitOfWork<CNCLibContext>())
 				{
                     var x = uow.Context; // ref to get loaded
 					System.Data.Entity.Database.SetInitializer<CNCLibContext>(new CNCLibInitializerTest());
