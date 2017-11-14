@@ -22,7 +22,7 @@ using FluentAssertions;
 using Framework.Tools.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CNCLib.Tests.Drawing
+namespace Framework.Test.Drawing
 {
     [TestClass]
     public class DitherTest
