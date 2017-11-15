@@ -1,15 +1,31 @@
-﻿using System;
+﻿////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2017 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using System;
 using System.ComponentModel;
-using System.Windows;
 using System.Windows.Controls;
-using CNCLib.GCode.GUI.Load;
-using CNCLib.GCode.GUI.Views;
-using CNCLib.GCode.GUI.ViewModels;
-using CNCLib.Wpf.ViewModels;
-using Framework.Wpf.View;
-using AutoMapper;
-using Framework.Tools.Dependency;
 using System.Windows.Input;
+using AutoMapper;
+using CNCLib.GCode.GUI.ViewModels;
+using CNCLib.GCode.GUI.Views;
+using CNCLib.Wpf.ViewModels;
+using Framework.Tools.Dependency;
+using Framework.Wpf.View;
 
 namespace CNCLib.Wpf.Views
 {
@@ -38,34 +54,16 @@ namespace CNCLib.Wpf.Views
 			if (vm.GetLoadInfo == null)
 				vm.GetLoadInfo = new Func<PreviewViewModel.GetLoadInfoArg, bool>((arg) =>
 				{
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-                    {
-                        using (LoadOptionForm form = new LoadOptionForm())
-                        {
-                            form.LoadInfo = arg.LoadOption;
-                            form.UseAzure = arg.UseAzure;
+                    var dlg = new LoadOptionView();
+                    var vmdlg = dlg.DataContext as LoadOptionViewModel;
+                    vmdlg.LoadOptionsValue = Dependency.Resolve<IMapper>().Map<CNCLib.GCode.GUI.Models.LoadOptions>(arg.LoadOption);
+                    vmdlg.UseAzure = arg.UseAzure;
+                    if (!dlg.ShowDialog() ?? false)
+                        return false;
 
-                            if (form.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-                                return false;
-
-                            arg.LoadOption = form.LoadInfo;
-                            arg.UseAzure = form.UseAzure;
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        var dlg = new LoadOptionView();
-                        var vmdlg = dlg.DataContext as LoadOptionViewModel;
-                        vmdlg.LoadOptionsValue = Dependency.Resolve<IMapper>().Map<CNCLib.GCode.GUI.Models.LoadOptions>(arg.LoadOption);
-                        vmdlg.UseAzure = arg.UseAzure;
-                        if (!dlg.ShowDialog() ?? false)
-                            return false;
-
-                        arg.LoadOption = Dependency.Resolve<IMapper>().Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
-                        arg.UseAzure = vmdlg.UseAzure;
-                        return true;
-                    }
+                    arg.LoadOption = Dependency.Resolve<IMapper>().Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
+                    arg.UseAzure = vmdlg.UseAzure;
+                    return true;
                 });
 
 

@@ -121,8 +121,10 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         public bool Can()
         {
-            return true;
+            return Busy == false;
         }
+
+        public bool Busy { get; set; }
 
         void BrowseFileName()
         {
@@ -163,6 +165,7 @@ namespace CNCLib.GCode.GUI.ViewModels
         {
             try
             {
+                Busy = true;
                 using (var controller = Dependency.Resolve<ILoadOptionsService>())
                 {
                     var map = Dependency.Resolve<IMapper>();
@@ -175,12 +178,17 @@ namespace CNCLib.GCode.GUI.ViewModels
             {
                 MessageBox?.Invoke("Save Options failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            finally
+            {
+                Busy = false;
+            }
 
         }
         async Task SaveAsSettings()
         {
             try
             {
+                Busy = true;
                 using (var controller = Dependency.Resolve<ILoadOptionsService>())
                 {
                     var map = Dependency.Resolve<IMapper>();
@@ -194,12 +202,18 @@ namespace CNCLib.GCode.GUI.ViewModels
             {
                 MessageBox?.Invoke("SaveAs Options failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            finally
+            {
+                Busy = false;
+            }
+
         }
 
         async Task DeleteSettings()
         {
             try
             {
+                Busy = true;
                 using (var controller = Dependency.Resolve<ILoadOptionsService>())
                 {
                     var map = Dependency.Resolve<IMapper>();
@@ -212,6 +226,10 @@ namespace CNCLib.GCode.GUI.ViewModels
             {
                 MessageBox?.Invoke("Delete Options failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            finally
+            {
+                Busy = false;
+            }
         }
 
         async Task ImportSettings()
@@ -219,6 +237,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             string filename = BrowseFileNameFunc?.Invoke(@"*.xml", false);
             if (filename != null)
             {
+                Busy = true;
                 try
                 {
                     using (StreamReader sr = new StreamReader(filename))
@@ -242,6 +261,10 @@ namespace CNCLib.GCode.GUI.ViewModels
                 catch (Exception ex)
                 {
                     MessageBox?.Invoke("ImportSettings failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    Busy = false;
                 }
             }
         }
