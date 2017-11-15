@@ -21,12 +21,17 @@ using System.Linq;
 using System.Data.Entity;
 using CNCLib.Repository.Contracts;
 using System.Threading.Tasks;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
     public class MachineRepository : CNCLibRepository, IMachineRepository
 	{
-		public async Task<Contracts.Entities.Machine[]> GetMachines()
+        public MachineRepository(IUnitOfWork uow) : base(uow)
+        {
+        }
+
+        public async Task<Contracts.Entities.Machine[]> GetMachines()
 		{
             return await Context.Machines.
                 Include((d) => d.MachineCommands).

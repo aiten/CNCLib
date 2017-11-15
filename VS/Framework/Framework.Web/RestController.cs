@@ -26,29 +26,30 @@ using Framework.Tools.Dependency;
 
 namespace Framework.Web
 {
-	public abstract class RestController<T> : ApiController
-	{
-		public async Task<IEnumerable<T>> Get()
+    public abstract class RestController<T> : ApiController
+    {
+        public RestController(IRest<T> controller)
+        {
+            Controller = controller ?? throw new ArgumentNullException();
+        }
+
+        public IRest<T> Controller { get; private set; }
+
+        public async Task<IEnumerable<T>> Get()
 		{
-			using (var controller = Dependency.Resolve<IRest<T>>())
-			{
-				return await controller.Get();
-			}
+			return await Controller.Get();
 		}
 
 		// GET api/values/5
 		//[ResponseType(T)]
 		public async Task<IHttpActionResult> Get(int id)
 		{
-			using (var controller = Dependency.Resolve<IRest<T>>())
+			T m = await Controller.Get(id);
+			if (m == null)
 			{
-				T m = await controller.Get(id);
-				if (m == null)
-				{
-					return NotFound();
-				}
-				return Ok(m);
+				return NotFound();
 			}
+			return Ok(m);
 		}
 
 		// POST api/values == Create
@@ -61,11 +62,8 @@ namespace Framework.Web
 			}
 			try
 			{
-				using (var controller = Dependency.Resolve<IRest<T>>())
-				{
-					int newid = await controller.Add(value);
-					return CreatedAtRoute("DefaultApi", new { id = newid }, await controller.Get(newid));
-				}
+				int newid = await Controller.Add(value);
+				return CreatedAtRoute("DefaultApi", new { id = newid }, await Controller.Get(newid));
 			}
 			catch (Exception ex)
 			{
@@ -84,16 +82,13 @@ namespace Framework.Web
 
 			try
 			{
-				using (var controller = Dependency.Resolve<IRest<T>>())
+				if (Controller.CompareId(id,value) == false)
 				{
-					if (controller.CompareId(id,value) == false)
-					{
-						return BadRequest("Missmatch between id and machineID");
-					}
-
-					await controller.Update(id, value);
-					return StatusCode(HttpStatusCode.NoContent);
+					return BadRequest("Missmatch between id and machineID");
 				}
+
+				await Controller.Update(id, value);
+				return StatusCode(HttpStatusCode.NoContent);
 			}
 			catch (Exception ex)
 			{
@@ -105,17 +100,14 @@ namespace Framework.Web
 		//[ResponseType(typeof(T))]
 		public async Task<IHttpActionResult> Delete(int id)
 		{
-			using (var controller = Dependency.Resolve<IRest<T>>())
+			T value = await Controller.Get(id);
+			if (value == null)
 			{
-				T value = await controller.Get(id);
-				if (value == null)
-				{
-					return NotFound();
-				}
-
-				await controller.Delete(id, value);
-				return Ok(value);
+				return NotFound();
 			}
+
+			await Controller.Delete(id, value);
+			return Ok(value);
 		}
 	}
 }

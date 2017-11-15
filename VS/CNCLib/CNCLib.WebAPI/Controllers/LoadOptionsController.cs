@@ -27,7 +27,10 @@ namespace CNCLib.WebAPI.Controllers
 {
     public class LoadOptionsController : RestController<LoadOptions>
 	{
-	}
+        public LoadOptionsController(IRest<LoadOptions> controller) : base(controller)
+        {
+        }
+    }
 
 	public class LoadInfoRest : IRest<LoadOptions>
 	{

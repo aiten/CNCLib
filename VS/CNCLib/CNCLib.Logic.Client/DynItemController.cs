@@ -30,54 +30,49 @@ namespace CNCLib.Logic.Client
 {
     public class DynItemController : DisposeWrapper, IDynItemController
 	{
-		public async Task<DynItem> Get(int id)
+        public DynItemController(IItemService itemservice)
+        {
+            _itemservice = itemservice ?? throw new ArgumentNullException();
+        }
+
+        private IItemService _itemservice;
+
+        public async Task<DynItem> Get(int id)
 		{
-			using (var service = Dependency.Resolve<IItemService>())
-			{
-				var item = await service.Get(id);
+				var item = await _itemservice.Get(id);
 				if (item == null)
 					return null;
 
 				return Convert(item);
-			}
 		}
 
 		public async Task<IEnumerable<DynItem>> GetAll(Type t)
 		{
-			using (var service = Dependency.Resolve<IItemService>())
-			{
-				IEnumerable<Item> allitems = await service.GetByClassName(GetClassName(t));
-				return Convert(allitems);
-			}
+			IEnumerable<Item> allitems = await _itemservice.GetByClassName(GetClassName(t));
+			return Convert(allitems);
 		}
 
 		public async Task<IEnumerable<DynItem>> GetAll()
 		{
-			using (var service = Dependency.Resolve<IItemService>())
-			{
-				IEnumerable<Item> allitems = await service.GetAll();
-				return Convert(allitems);
-			}
+			IEnumerable<Item> allitems = await _itemservice.GetAll();
+			return Convert(allitems);
 		}
 
 		public async Task<object> Create(int id)
         {
-			using (var service = Dependency.Resolve<IItemService>())
+			Item item = await _itemservice.Get(id);
+
+			if (item == null)
+				return null;
+
+			Type t = Type.GetType(item.ClassName);
+			var obj = Activator.CreateInstance(t);
+
+			foreach (ItemProperty ip in item.ItemProperties)
 			{
-				Item item = await service.Get(id);
-
-				if (item == null)
-					return null;
-
-				Type t = Type.GetType(item.ClassName);
-				var obj = Activator.CreateInstance(t);
-
-				foreach (ItemProperty ip in item.ItemProperties)
-				{
-					AssignProperty(obj, ip, t.GetProperty(ip.Name));
-				}
-				return obj;
+				AssignProperty(obj, ip, t.GetProperty(ip.Name));
 			}
+			return obj;
         }
 
 		private static void AssignProperty(object obj, ItemProperty ip, PropertyInfo pi)
@@ -237,28 +232,19 @@ namespace CNCLib.Logic.Client
 
         public async Task<int> Add(string name, object obj)
 		{
-			using (var service = Dependency.Resolve<IItemService>())
-			{
-				return await service.Add(ConvertToItem(name, obj, 0));
-			}
+			return await _itemservice.Add(ConvertToItem(name, obj, 0));
 		}
 
 		public async Task Save(int id, string name, object obj)
         {
-			using (var service = Dependency.Resolve<IItemService>())
-			{
-				await service.Update(ConvertToItem(name, obj, id));
-			}
+			await _itemservice.Update(ConvertToItem(name, obj, id));
         }
 
         public async Task Delete(int id)
         {
-			using (var service = Dependency.Resolve<IItemService>())
-			{
-				var item = await service.Get(id);
-				if (item != null)
-					await service.Delete(item);
-			}
+			var item = await _itemservice.Get(id);
+			if (item != null)
+				await _itemservice.Delete(item);
         }
 
 		private Item ConvertToItem(string name, object obj, int id)

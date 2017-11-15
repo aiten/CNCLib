@@ -18,11 +18,16 @@
 
 using CNCLib.Repository.Context;
 using Framework.EF;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
 	public class CNCLibRepository : RepositoryBase
 	{
+        public CNCLibRepository(IUnitOfWork uow) : base(uow)
+        {
+        }
+
         public CNCLibContext Context { get { return ((UnitOfWork<CNCLibContext>)Uow).Context; } }
     }
 }

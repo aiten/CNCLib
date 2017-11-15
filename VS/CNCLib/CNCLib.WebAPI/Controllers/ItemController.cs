@@ -28,7 +28,11 @@ namespace CNCLib.WebAPI.Controllers
 {
     public class ItemController : RestController<Item>
 	{
-		public async Task<IHttpActionResult> Get(string classname)
+        public ItemController(IRest<Item> controller) : base(controller)
+        {
+        }
+
+        public async Task<IHttpActionResult> Get(string classname)
 		{
 			using (IItemService service = Dependency.Resolve<IItemService>())
 			{

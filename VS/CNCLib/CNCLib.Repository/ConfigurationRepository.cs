@@ -20,12 +20,17 @@ using System.Linq;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using CNCLib.Repository.Contracts;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
     public class ConfigurationRepository : CNCLibRepository, IConfigurationRepository
 	{
-		public async Task<Contracts.Entities.Configuration> Get(string group, string  name)
+        public ConfigurationRepository(IUnitOfWork uow) : base(uow)
+        {
+        }
+
+        public async Task<Contracts.Entities.Configuration> Get(string group, string  name)
         {
 			return await Context.Configurations.Where((c) => c.Group == group && c.Name == name).FirstOrDefaultAsync();
         }

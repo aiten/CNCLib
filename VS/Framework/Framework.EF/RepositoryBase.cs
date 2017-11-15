@@ -25,6 +25,11 @@ namespace Framework.EF
 {
     public class RepositoryBase
 	{
+        public RepositoryBase(IUnitOfWork uow)
+        {
+            Uow = uow ?? throw new ArgumentNullException();
+        }
+
         public IUnitOfWork Uow { get; set; }
 
 		public void Sync<T>(ICollection<T> inDb, ICollection<T> toDb, Func<T, T, bool> predicate) 

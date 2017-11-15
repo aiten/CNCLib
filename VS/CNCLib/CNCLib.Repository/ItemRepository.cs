@@ -21,12 +21,17 @@ using System.Linq;
 using System.Data.Entity;
 using CNCLib.Repository.Contracts;
 using System.Threading.Tasks;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
     public class ItemRepository : CNCLibRepository, IItemRepository
 	{
-		public async Task<Contracts.Entities.Item[]> Get()
+        public ItemRepository(IUnitOfWork uow) : base(uow)
+        {
+        }
+
+        public async Task<Contracts.Entities.Item[]> Get()
 		{
 			return await Context.Items.
 				Include((d) => d.ItemProperties).

@@ -21,12 +21,17 @@ using System.Linq;
 using System.Data.Entity;
 using CNCLib.Repository.Contracts;
 using System.Threading.Tasks;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
     public class UserRepository : CNCLibRepository, IUserRepository
 	{
-		public async Task<Contracts.Entities.User[]> GetUsers()
+        public UserRepository(IUnitOfWork uow) : base(uow)
+        {
+        }
+
+        public async Task<Contracts.Entities.User[]> GetUsers()
 		{
             return await Context.Users.
                 ToArrayAsync();

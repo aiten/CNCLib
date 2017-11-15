@@ -30,7 +30,11 @@ namespace CNCLib.WebAPI.Controllers
 {
     public class MachineController : RestController<Machine>
 	{
-		[Route("api/Machine/default")]
+        public MachineController(IRest<Machine> controller) : base(controller)
+        {
+        }
+
+        [Route("api/Machine/default")]
 		[HttpGet] //Always explicitly state the accepted HTTP method
 		public async Task<IHttpActionResult> DefaultMachine()
 		{

@@ -48,7 +48,7 @@ namespace CNCLib.Tests.Logic
 			var itemEntity = new Item[0];
 			srv.GetAll().Returns(itemEntity);
 
-			var ctrl = new DynItemController();
+			var ctrl = new DynItemController(srv);
 
 			var all = (await ctrl.GetAll()).ToArray();
             all.Should().BeEmpty();
@@ -66,7 +66,7 @@ namespace CNCLib.Tests.Logic
 			};
 			srv.GetAll().Returns(itemEntity);
 
-			var ctrl = new DynItemController();
+			var ctrl = new DynItemController(srv);
 			var all = (await ctrl.GetAll()).ToArray();
 
             all.Should().HaveCount(2);
@@ -91,7 +91,7 @@ namespace CNCLib.Tests.Logic
 			};
 			srv.GetByClassName("System.String,mscorlib").Returns(itemEntity);
 
-			var ctrl = new DynItemController();
+			var ctrl = new DynItemController(srv);
 			var all = await ctrl.GetAll(typeof(string));
 
             all.Should().HaveCount(2);
@@ -110,7 +110,7 @@ namespace CNCLib.Tests.Logic
 			var srv = CreateMock<IItemService>();
 			srv.Get(1).Returns(new Item() { ItemID = 1, Name = "Test1" });
 
-			var ctrl = new DynItemController();
+			var ctrl = new DynItemController(srv);
 			var all = await ctrl.Get(1);
 
             all.ShouldBeEquivalentTo(
@@ -127,7 +127,7 @@ namespace CNCLib.Tests.Logic
 		{
 			var srv = CreateMock<IItemService>();
 
-			var ctrl = new DynItemController();
+			var ctrl = new DynItemController(srv);
 			var all = await ctrl.Get(10);
 
             all.Should().BeNull();
@@ -141,7 +141,7 @@ namespace CNCLib.Tests.Logic
 
             srv.Get(1).Returns(itemEntity);
 
-            var ctrl = new DynItemController();
+            var ctrl = new DynItemController(srv);
 
             var item = await ctrl.Create(1);
             item.Should().NotBeNull();
@@ -195,7 +195,7 @@ namespace CNCLib.Tests.Logic
                 DecimalNullProperty = 9.876m
             };
 
-            var ctrl = new DynItemController();
+            var ctrl = new DynItemController(srv);
 
             var id = await ctrl.Add("Hallo", obj);
 
@@ -217,7 +217,7 @@ namespace CNCLib.Tests.Logic
             Item itemEntity = CreateItem();
             srv.Get(1).Returns(itemEntity);
 
-            var ctrl = new DynItemController();
+            var ctrl = new DynItemController(srv);
 
             //act
 
@@ -235,7 +235,7 @@ namespace CNCLib.Tests.Logic
 
             var srv = CreateMock<IItemService>();
 
-            var ctrl = new DynItemController();
+            var ctrl = new DynItemController(srv);
 
             //act
 
@@ -253,7 +253,7 @@ namespace CNCLib.Tests.Logic
 			// arrange
 
 			var srv = CreateMock<IItemService>();
-			var ctrl = new DynItemController();
+			var ctrl = new DynItemController(srv);
 
 			//act
 
