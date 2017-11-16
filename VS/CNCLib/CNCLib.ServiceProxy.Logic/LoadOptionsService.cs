@@ -17,18 +17,23 @@
 */
 
 
+using System;
 using System.Collections.Generic;
-using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Logic.Contracts;
-using Framework.Tools.Dependency;
 using System.Threading.Tasks;
+using CNCLib.Logic.Contracts;
+using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools;
 
 namespace CNCLib.ServiceProxy.Logic
 {
     public class LoadOptionsService : DisposeWrapper, ILoadOptionsService
 	{
-		private ILoadOptionsController _controller = Dependency.Resolve<ILoadOptionsController>();
+        public LoadOptionsService(ILoadOptionsController controller)
+        {
+            _controller = controller ?? throw new ArgumentNullException();
+        }
+
+        private ILoadOptionsController _controller;
 
 		public async Task<int> Add(LoadOptions value)
 		{
@@ -59,8 +64,6 @@ namespace CNCLib.ServiceProxy.Logic
 
         protected override void DisposeManaged()
         {
-            _controller.Dispose();
-            _controller = null;
         }
 
         #endregion

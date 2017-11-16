@@ -29,7 +29,12 @@ namespace CNCLib.ServiceProxy.Logic
 {
     public class EepromConfigurationService : DisposeWrapper, IEepromConfigurationService
     {
-        private IEepromConfigurationController _controller = Dependency.Resolve<IEepromConfigurationController>();
+        public EepromConfigurationService(IEepromConfigurationController controller)
+        {
+            _controller = controller ?? throw new ArgumentNullException();
+        }
+
+        private IEepromConfigurationController _controller;
 
         public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
         {
@@ -38,8 +43,6 @@ namespace CNCLib.ServiceProxy.Logic
 
         protected override void DisposeManaged()
         {
-            _controller.Dispose();
-            _controller = null;
         }
     }
 }

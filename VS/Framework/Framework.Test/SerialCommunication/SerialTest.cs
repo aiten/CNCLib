@@ -21,6 +21,7 @@ using NSubstitute;
 using System;
 using FluentAssertions;
 using Framework.Arduino.SerialCommunication;
+using Framework.Tools.Dependency;
 using System.IO;
 using System.Threading.Tasks;
 

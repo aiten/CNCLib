@@ -27,39 +27,24 @@ namespace Framework.Tools.Dependency
     /// </summary>
     public interface IDependencyContainer
     {
-        /// <summary>
-        /// Registers public and internal types of the given assemblies with the unity container. This is necessary
-        /// to workaround the internalsvisibleto hacks in the code base.
-        /// </summary>
-        /// <param name="assemblies">List of assemblies in which all types should be registered with their interfaces. 
-        /// This includes internal types. </param>
-        /// <returns>This instance.</returns>
-        IDependencyContainer RegisterTypesIncludingInternals(params Assembly[] assemblies);
-        
+
         /// <summary>
         /// Registers the given object for the interface. 
         /// </summary>
-        /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
+        /// <typeparam name="typeFrom">Interface that can be later resolved.</typeparam>
         /// <param name="obj">Object that should be returned for Resolve&lt;TInterface&gt;() calls.</param>
         /// <returns>This instance.</returns>
-        IDependencyContainer RegisterInstance<TInterface>(TInterface obj);
-        /// <summary>
-        /// Registers a type for the given interface.
-        /// </summary>
-        /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
-        /// <typeparam name="TType">Type that implements interface. On Resolve&lt;TInterface&gt;() calls a new instance is returned every time.</typeparam>
-        /// <returns>This instance.</returns>
-        IDependencyContainer RegisterType<TInterface, TType>() where TType : TInterface;
-        
-        /// <summary>
-        /// Registers a type for the given interface as a singleton. This means only one instance of this
-        /// type will ever be craeted.
-        /// </summary>
-        /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
-        /// <typeparam name="TType">Type that implements interface. On Resolve&lt;TInterface&gt;() always the same instance is returned.</typeparam>
-        /// <returns>This instance.</returns>
-        IDependencyContainer RegisterTypeAsSingleton<TInterface, TType>() where TType : TInterface;
+        IDependencyContainer RegisterInstance(Type typeFrom, object obj);
 
+        /// <summary>
+        /// Register typefrom to typeTo 
+        /// </summary>
+        /// <param name="typeFrom"></param>
+        /// <param name="typeTo"></param>
+        /// <returns></returns>
+        IDependencyContainer RegisterType(Type typeFrom, Type typeTo);
+
+/*
         /// <summary>
         /// Registers a type for the given interface using the parameter-less constructor.
         /// 
@@ -69,6 +54,7 @@ namespace Framework.Tools.Dependency
         /// <typeparam name="TType">Type that implements interface. On Resolve&lt;TInterface&gt;() calls a new instance is returned every time.</typeparam>
         /// <returns>This instance.</returns>
         IDependencyContainer RegisterTypeWithDefaultConstructor<TInterface, TType>() where TType : TInterface;
+*/
 
         /// <summary>
         /// This can be called in unit tests to reset the container to an empty state. 
@@ -84,14 +70,6 @@ namespace Framework.Tools.Dependency
         /// <returns>An object that implements type t.</returns>
         /// <exception cref="ResolutionFailedException">Thrown when no type was registered for the given interface.</exception>
         object Resolve(Type t);
-
-        /// <summary>
-        /// Resolves the interface to a specific type that was registered earlier. 
-        /// </summary>
-        /// <typeparam name="TInterface">Interface for which the registered type is looked up.</typeparam>
-        /// <returns>An instance of the interface that was registered with the container earlier.</returns>
-        /// <exception cref="ResolutionFailedException">Thrown when no type was registered for the given interface.</exception>
-        TInterface Resolve<TInterface>();
 
         /// <summary>
         /// Gets an enumeration containing all types registered with the dependency container.

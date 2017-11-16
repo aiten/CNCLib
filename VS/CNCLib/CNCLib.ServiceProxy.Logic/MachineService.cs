@@ -17,18 +17,24 @@
 */
 
 
+using System;
 using System.Collections.Generic;
-using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Logic.Contracts;
-using Framework.Tools.Dependency;
 using System.Threading.Tasks;
+using CNCLib.Logic.Contracts;
+using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.ServiceProxy.Logic
 {
     public class MachineService : DisposeWrapper, IMachineService
 	{
-		private IMachineController _controller = Dependency.Resolve<IMachineController>();
+        public MachineService(IMachineController controller)
+        {
+            _controller = controller ?? throw new ArgumentNullException();
+        }
+
+		private IMachineController _controller;
 
 		public async Task<int> Add(Machine value)
 		{
