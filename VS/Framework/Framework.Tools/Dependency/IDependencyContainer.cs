@@ -28,14 +28,6 @@ namespace Framework.Tools.Dependency
     public interface IDependencyContainer
     {
         /// <summary>
-        /// Registers all types in the given assemblies transiently with the interface that has the corresponding name.
-        /// E.g. a type FooDA would be registered to the interface IFooDA if it exists.
-        /// </summary>
-        /// <param name="assemblies">List of assemblies in which all non-abstract public types should be registered with their interfaces.</param>
-        /// <returns>This instance.</returns>
-        IDependencyContainer RegisterTypes(params Assembly[] assemblies);
-
-        /// <summary>
         /// Registers public and internal types of the given assemblies with the unity container. This is necessary
         /// to workaround the internalsvisibleto hacks in the code base.
         /// </summary>

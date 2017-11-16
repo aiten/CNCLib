@@ -23,7 +23,7 @@ using Framework.Tools.Dependency;
 
 namespace Framework.Test.Dependency
 {
-    public sealed class MockingDependencyContainer : Framework.Tools.Dependency.BaseDependencyContainer
+    public sealed class MockingDependencyContainer : Framework.Tools.Dependency.UnityDependencyContainer
     {
         public override object Resolve(Type t)
         {
