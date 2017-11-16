@@ -35,16 +35,19 @@ namespace CNCLib.Wpf.ViewModels
 	{
 		#region crt
 
-		public MachineViewModel()
+		public MachineViewModel(IMachineService machineService)
 		{
+            _machineService = machineService ?? throw new ArgumentNullException();
             AddNewMachine = false;
 		}
 
-		#endregion
+        readonly IMachineService _machineService;
 
-		#region dispose
+        #endregion
 
-		public void Dispose()
+        #region dispose
+
+        public void Dispose()
 		{
 		}
 
@@ -84,17 +87,14 @@ namespace CNCLib.Wpf.ViewModels
 		public async Task LoadMachine(int machineID)
 		{
 			CNCLib.Logic.Contracts.DTO.Machine dto;
-			using (var controller = Dependency.Resolve<IMachineService>())
+			AddNewMachine = machineID <= 0;
+			if (AddNewMachine)
 			{
-				AddNewMachine = machineID <= 0;
-				if (AddNewMachine)
-				{
-					dto = await controller.DefaultMachine();
-				}
-				else
-				{
-					dto = await controller.Get(machineID);
-				}
+				dto = await _machineService.DefaultMachine();
+			}
+			else
+			{
+				dto = await _machineService.Get(machineID);
 			}
 
 			Machine = dto.Convert();
@@ -111,10 +111,7 @@ namespace CNCLib.Wpf.ViewModels
 
 			var m = _currentMachine.Convert();
 
-			using (var controller = Dependency.Resolve<IMachineService>())
-			{
-				id = await controller.Update(m);
-			}
+			id = await _machineService.Update(m);
 
 			await LoadMachine(id);
             CloseAction();
@@ -127,10 +124,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public async void DeleteMachine()
         {
-			using (var controller = Dependency.Resolve<IMachineService>())
-			{
-				await controller.Delete(_currentMachine.Convert());
-			}
+    		await _machineService.Delete(_currentMachine.Convert());
 			CloseAction();
 		}
 

@@ -37,9 +37,14 @@ namespace CNCLib.GCode.GUI.ViewModels
     {
 		#region crt
 
-		public LoadOptionViewModel()
+		public LoadOptionViewModel(ILoadOptionsService loadOptionsService, IMapper mapper)
 		{
-		}
+            _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
+            _mapper = mapper ?? throw new ArgumentNullException();
+        }
+
+        readonly ILoadOptionsService _loadOptionsService;
+        readonly IMapper _mapper;
 
         public override async Task Loaded()
         {
@@ -102,18 +107,14 @@ namespace CNCLib.GCode.GUI.ViewModels
         {
             _allLoadOptions.Clear();
 
-            using (var controller = Dependency.Resolve<ILoadOptionsService>())
+            var items = await _loadOptionsService.GetAll();
+            foreach (var s in items.OrderBy((o) => o.SettingName))
             {
-                var map = Dependency.Resolve<IMapper>();
-                var items = await controller.GetAll();
-                foreach (var s in items.OrderBy((o) => o.SettingName))
+                var option = _mapper.Map<LoadOptions>(s);
+                _allLoadOptions.Add(option);
+                if (setselectedid.HasValue && option.Id == setselectedid.Value)
                 {
-                    var option = map.Map<LoadOptions>(s);
-                    _allLoadOptions.Add(option);
-                    if (setselectedid.HasValue && option.Id == setselectedid.Value)
-                    {
-                        SelectedLoadOption = option;
-                    }
+                    SelectedLoadOption = option;
                 }
             }
             _allSettingsLoaded = true;
@@ -166,13 +167,8 @@ namespace CNCLib.GCode.GUI.ViewModels
             try
             {
                 Busy = true;
-                using (var controller = Dependency.Resolve<ILoadOptionsService>())
-                {
-                    var map = Dependency.Resolve<IMapper>();
-
-                    var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
-                    await controller.Update(opt);
-                }
+                var opt = _mapper.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+                await _loadOptionsService.Update(opt);
             }
             catch (Exception ex)
             {
@@ -189,14 +185,9 @@ namespace CNCLib.GCode.GUI.ViewModels
             try
             {
                 Busy = true;
-                using (var controller = Dependency.Resolve<ILoadOptionsService>())
-                {
-                    var map = Dependency.Resolve<IMapper>();
-
-                    var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(LoadOptionsValue);
-                    int id = await controller.Add(opt);
-                    await LoadAllSettings(id);
-                }
+                var opt = _mapper.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(LoadOptionsValue);
+                int id = await _loadOptionsService.Add(opt);
+                await LoadAllSettings(id);
             }
             catch (Exception ex)
             {
@@ -214,13 +205,9 @@ namespace CNCLib.GCode.GUI.ViewModels
             try
             {
                 Busy = true;
-                using (var controller = Dependency.Resolve<ILoadOptionsService>())
-                {
-                    var map = Dependency.Resolve<IMapper>();
-                    var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
-                    await controller.Delete(opt);
-                    await LoadAllSettings(AllLoadOptions?.FirstOrDefault((o) => o.Id != opt.Id)?.Id);
-                }
+                var opt = _mapper.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+                await _loadOptionsService.Delete(opt);
+                await LoadAllSettings(AllLoadOptions?.FirstOrDefault((o) => o.Id != opt.Id)?.Id);
             }
             catch (Exception ex)
             {
@@ -251,11 +238,8 @@ namespace CNCLib.GCode.GUI.ViewModels
                             opt.SettingName = $"{opt.SettingName}#imported#{DateTime.Now}"; 
                         }
 
-                        using (var controller = Dependency.Resolve<ILoadOptionsService>())
-                        {
-                            int id = await controller.Add(opt);
-                            await LoadAllSettings(id);
-                        }
+                        int id = await _loadOptionsService.Add(opt);
+                        await LoadAllSettings(id);
                     }
                 }
                 catch (Exception ex)
@@ -273,8 +257,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             string filename = BrowseFileNameFunc?.Invoke(SelectedLoadOption.SettingName + @".xml", true);
             if (filename != null)
             {
-                var map = Dependency.Resolve<IMapper>();
-                var opt = map.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+                var opt = _mapper.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
 
                 using (StreamWriter sw = new StreamWriter(filename))
                 {

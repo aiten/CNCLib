@@ -33,7 +33,7 @@ namespace CNCLib.WebAPI.Controllers
             _service = service ?? throw new ArgumentNullException();
         }
 
-        private IItemService _service;
+        readonly IItemService _service;
 
         public async Task<IHttpActionResult> Get(string classname)
 		{
@@ -53,7 +53,7 @@ namespace CNCLib.WebAPI.Controllers
             _service = service ?? throw new ArgumentNullException();
         }
 
-        private IItemService _service;
+        readonly IItemService _service;
 
 		public async Task<IEnumerable<Item>> Get()
 		{

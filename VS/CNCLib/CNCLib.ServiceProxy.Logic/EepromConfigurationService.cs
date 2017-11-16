@@ -34,7 +34,7 @@ namespace CNCLib.ServiceProxy.Logic
             _controller = controller ?? throw new ArgumentNullException();
         }
 
-        private IEepromConfigurationController _controller;
+        readonly IEepromConfigurationController _controller;
 
         public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
         {

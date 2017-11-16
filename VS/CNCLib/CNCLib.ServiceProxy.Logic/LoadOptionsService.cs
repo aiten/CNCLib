@@ -33,7 +33,7 @@ namespace CNCLib.ServiceProxy.Logic
             _controller = controller ?? throw new ArgumentNullException();
         }
 
-        private ILoadOptionsController _controller;
+        readonly ILoadOptionsController _controller;
 
 		public async Task<int> Add(LoadOptions value)
 		{

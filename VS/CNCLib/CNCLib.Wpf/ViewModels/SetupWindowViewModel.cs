@@ -36,12 +36,16 @@ namespace CNCLib.Wpf.ViewModels
     {
 		#region crt
 
-		public SetupWindowViewModel()
+		public SetupWindowViewModel(IMachineService machineService)
 		{
- 			ResetOnConnect = false;
+            _machineService = machineService ?? throw new ArgumentNullException(); 
+             ResetOnConnect = false;
 		}
 
-		public override async Task Loaded()
+        readonly IMachineService _machineService;
+
+
+        public override async Task Loaded()
 		{
 			await base.Loaded();
 			if (_machines == null)
@@ -59,26 +63,23 @@ namespace CNCLib.Wpf.ViewModels
         {
             var machines = new ObservableCollection<Models.Machine>();
 
-			using (var controller = Dependency.Resolve<IMachineService>())
+			foreach(var m in await _machineService.GetAll())
 			{
-				foreach(var m in await controller.GetAll())
-				{
-					machines.Add(Converter.Convert(m));
-				}
-				int defaultM = await controller.GetDetaultMachine();
-
-				Machines = machines;
-
-				var defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultmachineid);
-
-				if (defaultmachine == null)
-					defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultM);
-
-				if (defaultmachine == null && machines.Count > 0)
-					defaultmachine = machines[0];
-
-				Machine = defaultmachine;
+				machines.Add(Converter.Convert(m));
 			}
+			int defaultM = await _machineService.GetDetaultMachine();
+
+			Machines = machines;
+
+			var defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultmachineid);
+
+			if (defaultmachine == null)
+				defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultM);
+
+			if (defaultmachine == null && machines.Count > 0)
+				defaultmachine = machines[0];
+
+			Machine = defaultmachine;
 		}
 		private async Task LoadJoystick()
 		{
@@ -232,10 +233,7 @@ namespace CNCLib.Wpf.ViewModels
             Global.Instance.SizeZ = Machine.SizeZ;
 			Com.ArduinoBuffersize = Machine.BufferSize;
 
-			using (var controller = Dependency.Resolve<IMachineService>())
-			{
-				Global.Instance.Machine = await controller.Get(Machine.MachineID);
-			}
+			Global.Instance.Machine = await _machineService.Get(Machine.MachineID);
         }
 
 		public bool CanConnect()
@@ -285,10 +283,7 @@ namespace CNCLib.Wpf.ViewModels
 	   {
             if (Machine != null)
             {
-                using (var controller = Dependency.Resolve<IMachineService>())
-                {
-                    controller.SetDetaultMachine(Machine.MachineID);
-                }
+                _machineService.SetDetaultMachine(Machine.MachineID);
             }
 	   }
 

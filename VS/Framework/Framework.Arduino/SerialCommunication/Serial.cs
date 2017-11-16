@@ -232,6 +232,11 @@ namespace Framework.Arduino.SerialCommunication
 
 		protected virtual void SetupCom(string portname)
         {
+            if (_serialPort != null)
+            {
+                _serialPort.Dispose();
+                _serialPort = null;
+            }
             _serialPort = Dependency.Resolve<ISerialPort>();
 
 			_serialPort.PortName = portname;

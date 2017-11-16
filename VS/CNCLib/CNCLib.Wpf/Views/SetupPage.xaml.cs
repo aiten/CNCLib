@@ -20,6 +20,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using CNCLib.Wpf.ViewModels;
+using Framework.Tools.Dependency;
 using Framework.Wpf.View;
 using Framework.Wpf.ViewModels;
 
@@ -32,7 +33,10 @@ namespace CNCLib.Wpf.Views
 	{
 		public SetupPage()
 		{
-			InitializeComponent();
+            var vm = Dependency.Resolve<ViewModels.SetupWindowViewModel>();
+            DataContext = vm;
+
+            InitializeComponent();
 
             this.DefaulInitForBaseViewModel();
 /*
@@ -46,8 +50,6 @@ namespace CNCLib.Wpf.Views
 
 			Loaded += loaded;
 */
-			var vm = DataContext as SetupWindowViewModel;
-
 			if (vm.EditMachine == null)
 			{
 				vm.EditMachine = new Action<int>((mID) =>

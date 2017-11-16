@@ -35,7 +35,7 @@ namespace CNCLib.Logic.Client
             _itemservice = itemservice ?? throw new ArgumentNullException();
         }
 
-        private IItemService _itemservice;
+        readonly IItemService _itemservice;
 
         public async Task<DynItem> Get(int id)
 		{

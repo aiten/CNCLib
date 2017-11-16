@@ -34,7 +34,7 @@ namespace CNCLib.ServiceProxy.Logic
             _controller = controller ?? throw new ArgumentNullException();
         }
 
-		private IMachineController _controller;
+		readonly IMachineController _controller;
 
 		public async Task<int> Add(Machine value)
 		{
@@ -80,8 +80,6 @@ namespace CNCLib.ServiceProxy.Logic
 
         protected override void DisposeManaged()
         {
-            _controller.Dispose();
-            _controller = null;
         }
 
         #endregion

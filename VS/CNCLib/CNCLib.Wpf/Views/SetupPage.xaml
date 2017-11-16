@@ -1,15 +1,11 @@
 ﻿<Page x:Class="CNCLib.Wpf.Views.SetupPage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"
         xmlns:local="clr-namespace:CNCLib.Wpf.Views"
         xmlns:fhlp="clr-namespace:Framework.Wpf.Converters;assembly=Framework.Wpf"
       
       Title="SetupPage">
 
-    <Page.DataContext>
-        <vm:SetupWindowViewModel />
-    </Page.DataContext>
     <Page.Resources>
         <fhlp:EnumBooleanConverter x:Key="EnumBooleanConverter" />
         <fhlp:InvertBoolConverter x:Key="InvertBoolConverter" />

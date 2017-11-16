@@ -51,7 +51,12 @@ namespace CNCLib.Wpf.Sql.Start
 				typeof(CNCLib.Logic.MachineController).Assembly);
 			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-			var config = new MapperConfiguration(cfg =>
+            Dependency.Container.RegisterTypesByName(
+                (n) => n.EndsWith("ViewModel"),
+                typeof(CNCLib.Wpf.ViewModels.MachineViewModel).Assembly,
+                typeof(CNCLib.GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+
+            var config = new MapperConfiguration(cfg =>
 				{
 					cfg.AddProfile<LogicAutoMapperProfile>();
 					cfg.AddProfile<WpfAutoMapperProfile>();

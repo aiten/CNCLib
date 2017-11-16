@@ -22,6 +22,7 @@ using System.Windows;
 using CNCLib.GCode.GUI.ViewModels;
 using Framework.Wpf.ViewModels;
 using Framework.Wpf.View;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.GCode.GUI.Views
 {
@@ -33,6 +34,9 @@ namespace CNCLib.GCode.GUI.Views
 		public LoadOptionView()
 		{
 			InitializeComponent();
+
+            var vm = Dependency.Resolve<LoadOptionViewModel>();
+            DataContext = vm;
 
             this.DefaulInitForBaseViewModel();
         }

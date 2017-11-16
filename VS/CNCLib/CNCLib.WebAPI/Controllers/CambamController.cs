@@ -34,7 +34,7 @@ namespace CNCLib.WebAPI.Controllers
             _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
         }
 
-        ILoadOptionsService _loadOptionsService;
+        readonly ILoadOptionsService _loadOptionsService;
 
         //		[ActionName("")]
         public string Post([FromBody] LoadOptions input)

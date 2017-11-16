@@ -39,7 +39,7 @@ namespace CNCLib.WebAPI.Controllers
             _service = service ?? throw new ArgumentNullException();
         }
 
-		private ILoadOptionsService _service;
+		readonly ILoadOptionsService _service;
 
 		public async Task<IEnumerable<LoadOptions>> Get()
 		{

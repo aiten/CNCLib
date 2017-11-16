@@ -35,7 +35,7 @@ namespace CNCLib.WebAPI.Controllers
             _eepromConfigurationService = eepromConfigurationService ?? throw new ArgumentNullException();
         }
 
-        IEepromConfigurationService _eepromConfigurationService;
+        readonly IEepromConfigurationService _eepromConfigurationService;
 
         public async Task<IHttpActionResult> Get(ushort teeth, double toothsizeInMm, ushort microsteps, ushort stepsPerRotation, double estimatedRotationSpeed, double timeToAcc, double timeToDec)
         {

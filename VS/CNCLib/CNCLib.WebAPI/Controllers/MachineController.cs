@@ -35,7 +35,7 @@ namespace CNCLib.WebAPI.Controllers
             _machineservice = machineservice ?? throw new ArgumentNullException();
         }
 
-        IMachineService _machineservice;
+        readonly IMachineService _machineservice;
 
         [Route("api/Machine/default")]
 		[HttpGet] //Always explicitly state the accepted HTTP method
@@ -86,7 +86,7 @@ namespace CNCLib.WebAPI.Controllers
             _service = service ?? throw new ArgumentNullException();
         }
 
-		private IMachineService _service;
+		readonly IMachineService _service;
 
 		public async Task<IEnumerable<Machine>> Get()
 		{

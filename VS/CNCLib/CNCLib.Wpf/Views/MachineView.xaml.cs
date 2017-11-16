@@ -17,6 +17,7 @@
 */
 
 using System.Windows;
+using Framework.Tools.Dependency;
 using Framework.Wpf.View;
 
 namespace CNCLib.Wpf.Views
@@ -28,6 +29,9 @@ namespace CNCLib.Wpf.Views
     {
         public MachineView()
         {
+            var vm = Dependency.Resolve<ViewModels.MachineViewModel>();
+            DataContext = vm;
+
             InitializeComponent();
 
             this.DefaulInitForBaseViewModel();

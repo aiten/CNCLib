@@ -24,6 +24,7 @@ using CNCLib.Wpf.ViewModels;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
 using CNCLib.ServiceProxy;
+using System.Threading.Tasks;
 
 namespace CNCLib.Tests.Wpf
 {
@@ -61,15 +62,15 @@ namespace CNCLib.Tests.Wpf
 		}
 
 		[TestMethod]
-		public void GetMachine()
+		public async Task GetMachine()
 		{
 			var rep = CreateMock<IMachineService>();
 
 			Machine machine = CreateMachine(1);
 			rep.Get(1).Returns(machine);
 
-			MachineViewModel mv = new MachineViewModel();
-			mv.LoadMachine(1);
+			MachineViewModel mv = new MachineViewModel(rep);
+			await mv.LoadMachine(1);
 
 			Assert.AreEqual(false, mv.AddNewMachine);
 			Assert.AreEqual(machine.Name, mv.Machine.Name);
@@ -112,7 +113,7 @@ namespace CNCLib.Tests.Wpf
 			Machine machinedef = CreateMachine(0);
 			rep.DefaultMachine().Returns(machinedef);
 
-			MachineViewModel mv = new MachineViewModel();
+			MachineViewModel mv = new MachineViewModel(rep);
 			mv.LoadMachine(-1);
 
 			Assert.AreEqual(true, mv.AddNewMachine);

@@ -5,13 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:CNCLib.GCode.GUI.Views"
-        xmlns:vm="clr-namespace:CNCLib.GCode.GUI.ViewModels"        
         xmlns:fhlp="clr-namespace:Framework.Wpf.Converters;assembly=Framework.Wpf"
         mc:Ignorable="d"
         Title="Load options" Height="585" Width="500">
-    <Window.DataContext>
-        <vm:LoadOptionViewModel />
-    </Window.DataContext>
 
     <Window.Resources>
         <fhlp:EnumBooleanConverter x:Key="EnumBooleanConverter" />

@@ -44,9 +44,14 @@ namespace CNCLib.Wpf.WebAPI.Start
                 //				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
                 typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
 				typeof(CNCLib.Logic.Client.DynItemController).Assembly);
-	//			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+            //			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-			var config = new MapperConfiguration(cfg =>
+            Dependency.Container.RegisterTypesByName(
+                (n) => n.EndsWith("ViewModel"),
+                typeof(CNCLib.Wpf.ViewModels.MachineViewModel).Assembly,
+                typeof(CNCLib.GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+
+            var config = new MapperConfiguration(cfg =>
 				{
 //					cfg.AddProfile<LogicAutoMapperProfile>();
 					cfg.AddProfile<WpfAutoMapperProfile>();
