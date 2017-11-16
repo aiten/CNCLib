@@ -16,39 +16,44 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools.Dependency;
+using System;
 using System.Collections.Generic;
-using System.Web.Http;
-using Framework.Web;
-using CNCLib.ServiceProxy;
 using System.Threading.Tasks;
+using System.Web.Http;
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.ServiceProxy;
+using Framework.Web;
 
 namespace CNCLib.WebAPI.Controllers
 {
     public class ItemController : RestController<Item>
 	{
-        public ItemController(IRest<Item> controller) : base(controller)
+        public ItemController(IRest<Item> controller, IItemService service) : base(controller)
         {
+            _service = service ?? throw new ArgumentNullException();
         }
+
+        private IItemService _service;
 
         public async Task<IHttpActionResult> Get(string classname)
 		{
-			using (IItemService service = Dependency.Resolve<IItemService>())
+			var m = await _service.GetByClassName(classname);
+			if (m == null)
 			{
-				var m = await service.GetByClassName(classname);
-				if (m == null)
-				{
-					return NotFound();
-				}
-				return Ok(m);
+				return NotFound();
 			}
+			return Ok(m);
 		}
 	}
 
 	public class ItemRest : IRest<Item>
 	{
-		private IItemService _service = Dependency.Resolve<IItemService>();
+        public ItemRest(IItemService service)
+        {
+            _service = service ?? throw new ArgumentNullException();
+        }
+
+        private IItemService _service;
 
 		public async Task<IEnumerable<Item>> Get()
 		{
@@ -89,8 +94,6 @@ namespace CNCLib.WebAPI.Controllers
 			{
 				if (disposing)
 				{
-					_service.Dispose();
-					_service = null;
 				}
 
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
-using Framework.Tools.Dependency;
 using Framework.Web;
 
 namespace CNCLib.WebAPI.Controllers
@@ -34,7 +34,12 @@ namespace CNCLib.WebAPI.Controllers
 
 	public class LoadInfoRest : IRest<LoadOptions>
 	{
-		private ILoadOptionsService _service = Dependency.Resolve<ILoadOptionsService>();
+        public LoadInfoRest(ILoadOptionsService service)
+        {
+            _service = service ?? throw new ArgumentNullException();
+        }
+
+		private ILoadOptionsService _service;
 
 		public async Task<IEnumerable<LoadOptions>> Get()
 		{
@@ -75,8 +80,6 @@ namespace CNCLib.WebAPI.Controllers
 			{
 				if (disposing)
 				{
-					_service.Dispose();
-					_service = null;
 				}
 
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
@@ -103,108 +106,4 @@ namespace CNCLib.WebAPI.Controllers
 		#endregion
 
 	}
-
-/*
-	public class LoadOptions2Controller : ApiController
-	{
-		// GET api/values
-		public IEnumerable<LoadInfo> Get()
-		{
-			using (var controller = Dependency.Resolve<IItemController>())
-			{
-				var list = new List<LoadInfo>();
-				foreach (Item item in controller.GetAll(typeof(LoadInfo)))
-				{
-					list.Add((LoadInfo)controller.Create(item.ItemID));
-				}
-				return list;
-			}
-		}
-
-		// GET api/values/5
-		[ResponseType(typeof(LoadInfo))]
-		public IHttpActionResult Get(int id)
-		{
-			try
-			{
-				using (var controller = Dependency.Resolve<IItemController>())
-				{
-					object obj = controller.Create(id);
-					if (obj != null || obj is LoadInfo)
-					{
-						return Ok((LoadInfo)obj);
-					}
-					return NotFound();
-				}
-			}
-			catch (Exception e)
-			{
-				return BadRequest(e.Message);
-			}
-		}
-
-		// POST api/values
-		public IHttpActionResult Post([FromBody]LoadInfo value)
-		{
-			if (!ModelState.IsValid || value == null)
-			{
-				return BadRequest(ModelState);
-			}
-
-			try
-			{
-				using (var controller = Dependency.Resolve<IItemController>())
-				{
-					int newid = controller.Add(value.SettingName,value);
-					return CreatedAtRoute("DefaultApi", new
-					{
-						id = newid
-					}, value);
-				}
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
-		}
-		// PUT api/values/5
-		public IHttpActionResult Put(int id, [FromBody]LoadInfo value)
-		{
-			if (!ModelState.IsValid || value == null)
-			{
-				return BadRequest(ModelState);
-			}
-
-			try
-			{
-				using (var controller = Dependency.Resolve<IItemController>())
-				{
-					controller.Save(id,value.SettingName,value);
-					return CreatedAtRoute("DefaultApi", new { id = id }, value);
-				}
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
-		}
-
-		// DELETE api/values/5
-		[ResponseType(typeof(Machine))]
-		public IHttpActionResult Delete(int id)
-		{
-			using (var controller = Dependency.Resolve<IItemController>())
-			{
-				var item = controller.Get(id);
-				if (item == null)
-				{
-					return NotFound();
-				}
-				controller.Delete(id);
-
-				return Ok(item);
-			}
-		}
-	}
-	*/
 }

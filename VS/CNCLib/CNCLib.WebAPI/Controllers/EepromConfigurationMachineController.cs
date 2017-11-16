@@ -30,29 +30,33 @@ namespace CNCLib.WebAPI.Controllers
 {
     public class EepromConfigurationController : ApiController
     {
+        public EepromConfigurationController(IEepromConfigurationService eepromConfigurationService)
+        {
+            _eepromConfigurationService = eepromConfigurationService ?? throw new ArgumentNullException();
+        }
+
+        IEepromConfigurationService _eepromConfigurationService;
+
         public async Task<IHttpActionResult> Get(ushort teeth, double toothsizeInMm, ushort microsteps, ushort stepsPerRotation, double estimatedRotationSpeed, double timeToAcc, double timeToDec)
         {
             // http://localhost:2024/api/EepromConfiguration?teeth=15&toothsizeInMm=2.0&microsteps=16&stepsPerRotation=200&estimatedRotationSpeed=7.8&timeToAcc=0.2&timeToDec=0.15
-            using (IEepromConfigurationService service = Dependency.Resolve<IEepromConfigurationService>())
+            var input = new EepromConfigurationInput()
             {
-                var input = new EepromConfigurationInput()
-                {
-                    Teeth = teeth,
-                    ToothsizeinMm = toothsizeInMm,
-                    Microsteps = microsteps,
-                    StepsPerRotation = stepsPerRotation,
-                    EstimatedRotationSpeed = estimatedRotationSpeed,
-                    TimeToAcc = timeToAcc,
-                    TimeToDec = timeToDec
-                };
+                Teeth = teeth,
+                ToothsizeinMm = toothsizeInMm,
+                Microsteps = microsteps,
+                StepsPerRotation = stepsPerRotation,
+                EstimatedRotationSpeed = estimatedRotationSpeed,
+                TimeToAcc = timeToAcc,
+                TimeToDec = timeToDec
+            };
 
-                var m = await service.CalculateConfig(input);
-                if (m == null)
-                {
-                    return NotFound();
-                }
-                return Ok(m);
+            var m = await _eepromConfigurationService.CalculateConfig(input);
+            if (m == null)
+            {
+                return NotFound();
             }
+            return Ok(m);
         }
     }
 }

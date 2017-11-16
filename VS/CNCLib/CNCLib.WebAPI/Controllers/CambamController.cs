@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -23,14 +24,20 @@ using System.Xml.Serialization;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
 using CNCLib.WebAPI.Models;
-using Framework.Tools.Dependency;
 
 namespace CNCLib.WebAPI.Controllers
 {
     public class CambamController : ApiController
 	{
-		//		[ActionName("")]
-		public string Post([FromBody] LoadOptions input)
+        public CambamController(ILoadOptionsService loadOptionsService)
+        {
+            _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
+        }
+
+        ILoadOptionsService _loadOptionsService;
+
+        //		[ActionName("")]
+        public string Post([FromBody] LoadOptions input)
 		{
 			var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input);
 			var sw = new StringWriter();
@@ -41,14 +48,11 @@ namespace CNCLib.WebAPI.Controllers
 		//		[ActionName("CreateGCode")]
 		public async Task<string> Put([FromBody] CreateGCode input)
 		{
-			using (var service = Dependency.Resolve<ILoadOptionsService>())
-			{
-				LoadOptions opt = await service.Get(input.LoadOptionsId);
-				var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt);
-				var sw = new StringWriter();
-				new XmlSerializer(typeof(CNCLib.GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
-				return sw.ToString();
-			}
+			LoadOptions opt = await _loadOptionsService.Get(input.LoadOptionsId);
+			var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt);
+			var sw = new StringWriter();
+			new XmlSerializer(typeof(CNCLib.GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
+			return sw.ToString();
 		}
 	}
 }

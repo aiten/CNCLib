@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -28,8 +29,15 @@ namespace CNCLib.WebAPI.Controllers
 {
     public class GCodeController : ApiController
 	{
-//		[ActionName("")]
-		public IEnumerable<string> Post([FromBody] LoadOptions input)
+        public GCodeController(ILoadOptionsService loadOptionsService)
+        {
+            _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
+        }
+
+        ILoadOptionsService _loadOptionsService;
+
+        //		[ActionName("")]
+        public IEnumerable<string> Post([FromBody] LoadOptions input)
 		{
 			return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input).Commands.ToStringList();
 		}
@@ -37,11 +45,8 @@ namespace CNCLib.WebAPI.Controllers
 //		[ActionName("CreateGCode")]
 		public async Task<IEnumerable<string>> Put([FromBody] CreateGCode input)
 		{
-			using (var service = Dependency.Resolve<ILoadOptionsService>())
-			{
-				LoadOptions opt = await service.Get(input.LoadOptionsId);
-				return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt).Commands.ToStringList();
-			}
+			LoadOptions opt = await _loadOptionsService.Get(input.LoadOptionsId);
+			return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt).Commands.ToStringList();
 		}
 	}
 }

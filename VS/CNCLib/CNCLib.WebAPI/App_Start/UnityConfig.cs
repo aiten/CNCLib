@@ -1,5 +1,7 @@
 using System;
-
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.WebAPI.Controllers;
+using Framework.Web;
 using Unity;
 
 namespace CNCLib.WebAPI
@@ -13,9 +15,13 @@ namespace CNCLib.WebAPI
         private static Lazy<IUnityContainer> container =
           new Lazy<IUnityContainer>(() =>
           {
-              var container = new UnityContainer();
+              var container = ((Framework.Tools.Dependency.UnityDependencyContainer) Framework.Tools.Dependency.Dependency.Container).MyUnityContainer;
+              /*
+                            var container = new UnityContainer();
+              */
               RegisterTypes(container);
               return container;
+
           });
 
         /// <summary>
@@ -42,6 +48,18 @@ namespace CNCLib.WebAPI
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+
+            container.RegisterType<CambamController>();
+            container.RegisterType<EepromConfigurationController>();
+            container.RegisterType<GCodeController>();
+            container.RegisterType<GCodeLoadHelper>();
+            container.RegisterType<HomeController>();
+            container.RegisterType<ItemController>();
+            container.RegisterType<IRest<Item>, ItemRest>();
+            container.RegisterType<LoadOptionsController>();
+            container.RegisterType<IRest<LoadOptions>, LoadInfoRest>();
+            container.RegisterType<MachineController>();
+            container.RegisterType<IRest<Machine>, MachineRest>();
         }
     }
 }

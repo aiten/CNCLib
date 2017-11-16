@@ -16,48 +16,45 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools.Dependency;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Web.Http;
-using Framework.Web;
-using CNCLib.ServiceProxy;
 using System.Threading.Tasks;
+using System.Web.Http;
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.ServiceProxy;
+using Framework.Tools.Dependency;
+using Framework.Web;
 
 namespace CNCLib.WebAPI.Controllers
 {
     public class MachineController : RestController<Machine>
 	{
-        public MachineController(IRest<Machine> controller) : base(controller)
+        public MachineController(IRest<Machine> controller, IMachineService machineservice) : base(controller)
         {
+            _machineservice = machineservice ?? throw new ArgumentNullException();
         }
+
+        IMachineService _machineservice;
 
         [Route("api/Machine/default")]
 		[HttpGet] //Always explicitly state the accepted HTTP method
 		public async Task<IHttpActionResult> DefaultMachine()
 		{
-			using (IMachineService service = Dependency.Resolve<IMachineService>())
+			var m = await _machineservice.DefaultMachine();
+			if (m == null)
 			{
-				var m = await service.DefaultMachine();
-				if (m == null)
-				{
-					return NotFound();
-				}
-				return Ok(m);
+				return NotFound();
 			}
+			return Ok(m);
 		}
 
 		[Route("api/Machine/defaultmachine")]
 		[HttpGet] //Always explicitly state the accepted HTTP method
 		public async Task<IHttpActionResult> GetDetaultMachine()
 		{
-			using (IMachineService service = Dependency.Resolve<IMachineService>())
-			{
-				int id = await service.GetDetaultMachine();
-				return Ok(id);
-			}
+			int id = await _machineservice.GetDetaultMachine();
+			return Ok(id);
 		}
 
 		[Route("api/Machine/defaultmachine")]
@@ -71,10 +68,7 @@ namespace CNCLib.WebAPI.Controllers
 
 			try
 			{
-				using (IMachineService service = Dependency.Resolve<IMachineService>())
-				{
-					await service.SetDetaultMachine(id);
-				}
+				await _machineservice.SetDetaultMachine(id);
 				return StatusCode(HttpStatusCode.NoContent);
 			}
 			catch (Exception ex)
@@ -87,7 +81,12 @@ namespace CNCLib.WebAPI.Controllers
 
 	public class MachineRest : IRest<Machine>
 	{
-		private IMachineService _service = Dependency.Resolve<IMachineService>();
+        public MachineRest(IMachineService service)
+        {
+            _service = service ?? throw new ArgumentNullException();
+        }
+
+		private IMachineService _service;
 
 		public async Task<IEnumerable<Machine>> Get()
 		{
@@ -131,8 +130,6 @@ namespace CNCLib.WebAPI.Controllers
 			{
 				if (disposing)
 				{
-					_service.Dispose();
-					_service = null;
 				}
 
 				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

@@ -27,6 +27,7 @@ using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using Framework.Web;
+using Unity.AspNet.WebApi;
 
 namespace CNCLib.WebAPI
 {
@@ -55,7 +56,10 @@ namespace CNCLib.WebAPI
 
 			Dependency.Container.RegisterInstance<IMapper>(mapper);
 
-			AreaRegistration.RegisterAllAreas();
+            var resolver = new UnityDependencyResolver(UnityConfig.Container);
+            GlobalConfiguration.Configuration.DependencyResolver = resolver;
+
+            AreaRegistration.RegisterAllAreas();
 			GlobalConfiguration.Configure(WebApiConfig.Register);
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
