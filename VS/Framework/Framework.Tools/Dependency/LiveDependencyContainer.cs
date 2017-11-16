@@ -24,7 +24,7 @@ namespace Framework.Tools.Dependency
     /// <summary>
     /// Dependency Contaienr for use in Live. Throws an exception when a Type cannot be resolved.
     /// </summary>
-    public sealed class LiveDependencyContainer : UnityDependencyContainer
+    public sealed class LiveDependencyContainer : BaseDependencyContainer
     {
         public override object Resolve(Type t)
         {

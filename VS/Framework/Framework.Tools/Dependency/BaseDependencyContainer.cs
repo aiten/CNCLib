@@ -29,20 +29,14 @@ namespace Framework.Tools.Dependency
     /// <summary>
     /// Inversion of Control container, which enables Dependency Injection. 
     /// </summary>
-    public abstract class UnityDependencyContainer : IDependencyContainer
+    public abstract class BaseDependencyContainer : IDependencyContainer
     {
         protected UnityContainer _container;
 
-        protected UnityDependencyContainer()
+        protected BaseDependencyContainer()
         {
             _container = new UnityContainer();
         }
-
-        /// <summary>
-        /// Get the Unity container
-        /// use the container e.g. in WebApi to use this container instead
-        /// </summary>
-        public UnityContainer MyUnityContainer { get { return _container;  } }
 
         /// <summary>
         /// This can be called in unit tests to reset the container to an empty state. 
@@ -53,6 +47,21 @@ namespace Framework.Tools.Dependency
         {
             _container.Dispose();
             _container = new UnityContainer();
+        }
+
+        /// <summary>
+        /// Registers all types in the given assemblies transiently with the interface that has the corresponding name.
+        /// E.g. a type FooDA would be registered to the interface IFooDA if it exists.
+        /// </summary>
+        /// <param name="assemblies">List of assemblies in which all non-abstract public types should be registered with their interfaces.</param>
+        /// <returns>This instance.</returns>
+        public IDependencyContainer RegisterTypes(params Assembly[] assemblies)
+        {
+            throw new NotImplementedException();
+            //
+            //_container.RegisterTypes(AllClasses.FromAssemblies(assemblies), WithMappings.FromMatchingInterface,
+            //    WithName.Default, WithLifetime.Transient);
+            return this;
         }
 
         /// <summary>
@@ -76,6 +85,9 @@ namespace Framework.Tools.Dependency
                     }
                 }
             }
+//
+//            _container.RegisterTypes(GetAllTypesFromAssemblies(assemblies), WithMappings.FromMatchingInterface, 
+//                WithName.Default, WithLifetime.Transient);
             return this;
         }
 
