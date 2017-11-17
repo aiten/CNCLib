@@ -152,7 +152,7 @@ namespace CNCLib.Tests.Load
                 "M5"            // ShutdownCommands
             };
 
-            var list = load.Commands.Where(e => e is G00Command || e is G01Command || e is MxxCommand);
+            var list = load.Commands.Where(e => e is G00Command || e is G01Command || e is M106Command || e is M107Command || e is MxxCommand);
 
             CheckGCode(list, gcode);
         }
@@ -191,7 +191,7 @@ namespace CNCLib.Tests.Load
                 "M5"            // ShutdownCommands
             };
 
-            var list = load.Commands.Where(e => e is G00Command || e is G01Command || e is MxxCommand);
+            var list = load.Commands.Where(e => e is G00Command || e is G01Command || e is M106Command || e is M107Command || e is MxxCommand);
 
             CheckGCode(list, gcode);
         }
@@ -254,7 +254,7 @@ namespace CNCLib.Tests.Load
                 "M5"
             };
 
-            var list = load.Commands.Where(e => e is G00Command || e is G01Command || e is MxxCommand);
+            var list = load.Commands.Where(e => e is G00Command || e is G01Command || e is M106Command || e is M107Command || e is MxxCommand);
 
             CheckGCode(list, gcode);
         }
