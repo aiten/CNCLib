@@ -30,7 +30,76 @@ namespace CNCLib.GCode
 {
     public class GCodeLoad
 	{
-		private void SaveGCode(string filename)
+        public async Task<CommandList> Load(LoadOptions loadinfo, bool azure)
+        {
+            if (azure)
+            {
+                await LoadAzureAsync(loadinfo);
+            }
+            else
+            {
+                LoadLocal(loadinfo);
+            }
+            return Commands;
+        }
+
+        private readonly string webserverurl = @"http://cnclibapi.azurewebsites.net";
+        private readonly string api = @"api/GCode";
+
+        #region private
+        private CommandList Commands => new CommandList();
+
+        private void LoadLocal(LoadOptions loadinfo)
+        {
+            try
+            {
+                LoadBase load = LoadBase.Create(loadinfo);
+
+                load.LoadOptions = loadinfo;
+                load.Load();
+                Commands.Clear();
+                Commands.AddRange(load.Commands);
+                if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
+                {
+                    string gcodeFileName = Environment.ExpandEnvironmentVariables(loadinfo.GCodeWriteToFileName);
+                    WriteGCodeFile(gcodeFileName);
+                    WriteCamBamFile(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb");
+
+                    string hpglFileName = Environment.ExpandEnvironmentVariables(loadinfo.GCodeWriteToFileName);
+
+                    WriteImportInfoFile(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl");
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        private async Task LoadAzureAsync(LoadOptions info)
+        {
+            using (var client = CreateHttpClient())
+            {
+                info.FileContent = File.ReadAllBytes(info.FileName);
+
+                HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
+                string[] gcode = await response.Content.ReadAsAsync<string[]>();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var load = new LoadGCode();
+                    load.Load(gcode);
+                    Commands.Clear();
+                    Commands.AddRange(load.Commands);
+                    if (!string.IsNullOrEmpty(info.GCodeWriteToFileName))
+                    {
+                        WriteGCodeFile(Environment.ExpandEnvironmentVariables(info.GCodeWriteToFileName));
+                    }
+                }
+            }
+        }
+
+        private void WriteGCodeFile(string filename)
 		{
 			using (StreamWriter sw = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 			{
@@ -51,50 +120,7 @@ namespace CNCLib.GCode
 			}
 		}
 
-		CommandList _commands = new CommandList();
-		protected CommandList Commands { get { return _commands; } }
-
-		public async Task<CommandList> Load(LoadOptions loadinfo, bool azure)
-		{ 
-			if (azure)
-			{
-				await LoadAzureAsync(loadinfo);
-			}
-			else
-			{ 
-				LoadLocal(loadinfo);
-			}
-			return Commands;
-		}
-
-		private void LoadLocal(LoadOptions loadinfo)
-		{
-			try
-			{
-				LoadBase load = LoadBase.Create(loadinfo);
-
-				load.LoadOptions = loadinfo;
-				load.Load();
-				Commands.Clear();
-				Commands.AddRange(load.Commands);
-				if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
-				{
-					string gcodeFileName = Environment.ExpandEnvironmentVariables(loadinfo.GCodeWriteToFileName);
-					SaveGCode(gcodeFileName);
-					WriteCamBam(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb");
-
-					string hpglFileName = Environment.ExpandEnvironmentVariables(loadinfo.GCodeWriteToFileName);
-
-					WriteImportInfo(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl");
-				}
-			}
-			catch (Exception e)
-			{
-				throw;
-			}
-		}
-
-		private static void WriteCamBam(LoadBase load, string filename)
+		private static void WriteCamBamFile(LoadBase load, string filename)
 		{
 			using (TextWriter writer = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 			{
@@ -102,7 +128,8 @@ namespace CNCLib.GCode
 				x.Serialize(writer, load.CamBam);
 			}
 		}
-		private void WriteImportInfo(LoadBase load, string filename)
+
+        private void WriteImportInfoFile(LoadBase load, string filename)
 		{
 			if (Commands.Exists((c) => !string.IsNullOrEmpty(c.ImportInfo)))
 			{
@@ -113,9 +140,6 @@ namespace CNCLib.GCode
 			}
 		}
 
-		private readonly string webserverurl = @"http://cnclibapi.azurewebsites.net";
-		private readonly string api = @"api/GCode";
-
 		private System.Net.Http.HttpClient CreateHttpClient()
 		{
 			var client = new HttpClient();
@@ -125,27 +149,6 @@ namespace CNCLib.GCode
 			return client;
 		}
 
-		private async Task LoadAzureAsync(LoadOptions info)
-		{
-			using (var client = CreateHttpClient())
-			{
-				info.FileContent = File.ReadAllBytes(info.FileName);
-
-				HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
-				string[] gcode = await response.Content.ReadAsAsync<string[]>();
-
-				if (response.IsSuccessStatusCode)
-				{
-					var load = new LoadGCode();
-					load.Load(gcode);
-					Commands.Clear();
-					Commands.AddRange(load.Commands);
-					if (!string.IsNullOrEmpty(info.GCodeWriteToFileName))
-					{
-						SaveGCode(Environment.ExpandEnvironmentVariables(info.GCodeWriteToFileName));
-					}
-				}
-			}
-		}
-	}
+        #endregion
+    }
 }

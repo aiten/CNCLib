@@ -110,7 +110,6 @@ namespace Framework.Tools.Dependency
             return container;
         }
 
-
         /// <summary>
         /// Resolves the interface to a specific type that was registered earlier. 
         /// </summary>

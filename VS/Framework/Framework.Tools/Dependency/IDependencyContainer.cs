@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Framework.Tools.Dependency
 {
@@ -44,17 +43,6 @@ namespace Framework.Tools.Dependency
         /// <returns></returns>
         IDependencyContainer RegisterType(Type typeFrom, Type typeTo);
 
-/*
-        /// <summary>
-        /// Registers a type for the given interface using the parameter-less constructor.
-        /// 
-        /// Usually unity uses the public constructor with the most parameters (and tries to resolve these parameters). 
-        /// </summary>
-        /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
-        /// <typeparam name="TType">Type that implements interface. On Resolve&lt;TInterface&gt;() calls a new instance is returned every time.</typeparam>
-        /// <returns>This instance.</returns>
-        IDependencyContainer RegisterTypeWithDefaultConstructor<TInterface, TType>() where TType : TInterface;
-*/
 
         /// <summary>
         /// This can be called in unit tests to reset the container to an empty state. 

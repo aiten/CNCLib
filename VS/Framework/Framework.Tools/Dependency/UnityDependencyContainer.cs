@@ -19,10 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Unity;
-using Unity.Injection;
-using Unity.Lifetime;
 
 namespace Framework.Tools.Dependency
 {
@@ -78,47 +75,6 @@ namespace Framework.Tools.Dependency
         public IDependencyContainer RegisterInstance(Type typeFrom, object obj)
         {
             _container.RegisterInstance(typeFrom, obj);
-            return this;
-        }
-
-        /*
-                /// <summary>
-                /// Registers a type for the given interface using the parameter-less constructor.
-                /// 
-                /// Usually unity uses the public constructor with the most parameters (and tries to resolve these parameters). 
-                /// </summary>
-                /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
-                /// <typeparam name="TType">Type that implements interface. On Resolve&lt;TInterface&gt;() calls a new instance is returned every time.</typeparam>
-                /// <returns>This instance.</returns>
-                public IDependencyContainer RegisterTypeWithDefaultConstructor<TInterface, TType>() where TType : TInterface
-                {
-                    _container.RegisterType<TInterface, TType>(new InjectionConstructor());
-                    return this;
-                }
-        */
-        /*
-                /// <summary>
-                /// Registers a type for the given interface as a singleton. This means only one instance of this
-                /// type will ever be craeted.
-                /// </summary>
-                /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
-                /// <typeparam name="TType">Type that implements interface. On Resolve&lt;TInterface&gt;() always the same instance is returned.</typeparam>
-                /// <returns>This instance.</returns>
-                public IDependencyContainer RegisterTypeAsSingleton<TInterface, TType>() where TType : TInterface
-                {
-                    _container.RegisterType<TInterface, TType>(new ContainerControlledLifetimeManager());
-                    return this;
-                }
-        */
-        /// <summary>
-        /// Registers the given object for the interface. 
-        /// </summary>
-        /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
-        /// <param name="obj">Object that should be returned for Resolve&lt;TInterface&gt;() calls.</param>
-        /// <returns>This instance.</returns>
-        public IDependencyContainer RegisterInstance<TInterface>(TInterface obj)
-        {
-            _container.RegisterInstance(obj);
             return this;
         }
 

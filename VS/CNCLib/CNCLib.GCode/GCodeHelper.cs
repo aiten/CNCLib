@@ -30,6 +30,7 @@ namespace CNCLib.GCode
 			}
 			return -1;
 		}
+
 		static public int AxisNameToIndex(char axisname)
 		{
 			switch (char.ToUpper(axisname))
