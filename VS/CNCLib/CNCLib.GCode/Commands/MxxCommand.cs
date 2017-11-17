@@ -43,6 +43,9 @@ namespace CNCLib.GCode.Commands
 
             switch (Code.ToUpper())
             {
+                case "M3": state.LaserOn = true;break;
+                case "M4": state.LaserOn = true; break;
+                case "M5": state.LaserOn = false; break;
                 case "M106": state.LaserOn = true; state.UseLaser = true;  break;
                 case "M107": state.LaserOn = false; break;
             }

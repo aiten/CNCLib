@@ -47,7 +47,7 @@ namespace CNCLib.GCode
         private readonly string api = @"api/GCode";
 
         #region private
-        private CommandList Commands => new CommandList();
+        private CommandList Commands { get; } = new CommandList();
 
         private void LoadLocal(LoadOptions loadinfo)
         {

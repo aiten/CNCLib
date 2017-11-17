@@ -26,10 +26,10 @@ namespace CNCLib.Logic.Contracts.DTO
 
         public enum ELoadType
         {
-            GCode,
-            HPGL,
-            Image,
-            ImageHole
+            GCode=0,
+            HPGL=1,
+            Image=2,
+            ImageHole=3
 
         }
         public ELoadType LoadType { get; set; } = ELoadType.GCode;
@@ -72,8 +72,8 @@ namespace CNCLib.Logic.Contracts.DTO
 
         public enum PenType
         {
-            ZMove,
-            CommandString
+            ZMove=0,
+            CommandString=1
         }
 
         public PenType PenMoveType { get; set; } = PenType.ZMove;
@@ -122,8 +122,8 @@ namespace CNCLib.Logic.Contracts.DTO
         public decimal? ImageDPIY { get; set; }
         public enum DitherFilter
         {
-            FloydSteinbergDither,
-            NewspaperDither
+            FloydSteinbergDither=0,
+            NewspaperDither=1
         }
 
         public bool ImageInvert { get; set; } = false;
@@ -142,11 +142,11 @@ namespace CNCLib.Logic.Contracts.DTO
 
         public enum EHoleType
         {
-            Square,
-            Circle,
-            Hexagon,
-            Diamond,
-            Heart
+            Square=0,
+            Circle=1,
+            Hexagon=2,
+            Diamond=3,
+            Heart=4
         }
         public EHoleType HoleType { get; set; } = EHoleType.Hexagon;
     }

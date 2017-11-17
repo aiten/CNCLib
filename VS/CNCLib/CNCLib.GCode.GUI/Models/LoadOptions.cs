@@ -27,10 +27,10 @@ namespace CNCLib.GCode.GUI.Models
 
         public enum ELoadType
         {
-            GCode,
-            HPGL,
-            Image,
-            ImageHole
+            GCode=0,
+            HPGL=1,
+            Image=2,
+            ImageHole=3
 
         }
         private ELoadType _LoadType = ELoadType.GCode;
@@ -79,8 +79,8 @@ namespace CNCLib.GCode.GUI.Models
 
         public enum PenType
         {
-            ZMove,
-            CommandString
+            ZMove=0,
+            CommandString=1
         }
 
         public PenType _PenMoveType = PenType.ZMove;
@@ -135,8 +135,8 @@ namespace CNCLib.GCode.GUI.Models
         public decimal? ImageDPIY { get; set; }
         public enum DitherFilter
         {
-            FloydSteinbergDither,
-            NewspaperDither
+            FloydSteinbergDither=0,
+            NewspaperDither=1
         }
 
         public DitherFilter _Dither = DitherFilter.FloydSteinbergDither;
@@ -157,11 +157,11 @@ namespace CNCLib.GCode.GUI.Models
 
         public enum EHoleType
         {
-            Square,
-            Circle,
-            Hexagon,
-            Diamond,
-            Heart
+            Square=0,
+            Circle=1,
+            Hexagon=2,
+            Diamond=3,
+            Heart=4
         }
         public EHoleType _HoleType = EHoleType.Hexagon;
         public EHoleType HoleType { get => _HoleType; set { SetProperty(ref _HoleType, value); } }
