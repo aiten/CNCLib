@@ -120,6 +120,12 @@ namespace CNCLib.Tests.Load
             CheckGCode(list, gcode);
         }
 
+        static bool IsGCommand(Command e)
+        {
+            return  e is G00Command || e is G01Command || e is M3Command || e is M4Command || e is M5Command || 
+                    e is M106Command || e is M107Command || e is MxxCommand;
+        }
+
         [TestMethod]
         public void LoadHPGLLaser()
         {
@@ -152,7 +158,7 @@ namespace CNCLib.Tests.Load
                 "M5"            // ShutdownCommands
             };
 
-            var list = load.Commands.Where(e => e is G00Command || e is G01Command || e is M106Command || e is M107Command || e is MxxCommand);
+            var list = load.Commands.Where(e => IsGCommand(e));
 
             CheckGCode(list, gcode);
         }
@@ -191,7 +197,7 @@ namespace CNCLib.Tests.Load
                 "M5"            // ShutdownCommands
             };
 
-            var list = load.Commands.Where(e => e is G00Command || e is G01Command || e is M106Command || e is M107Command || e is MxxCommand);
+            var list = load.Commands.Where(e => IsGCommand(e));
 
             CheckGCode(list, gcode);
         }
@@ -254,7 +260,7 @@ namespace CNCLib.Tests.Load
                 "M5"
             };
 
-            var list = load.Commands.Where(e => e is G00Command || e is G01Command || e is M106Command || e is M107Command || e is MxxCommand);
+            var list = load.Commands.Where(e => IsGCommand(e));
 
             CheckGCode(list, gcode);
         }
