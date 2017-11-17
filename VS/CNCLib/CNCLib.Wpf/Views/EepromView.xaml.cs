@@ -18,6 +18,7 @@
 
 using System.Windows;
 using CNCLib.Wpf.Models;
+using Framework.Tools.Dependency;
 using Framework.Wpf.View;
 using Xceed.Wpf.Toolkit.PropertyGrid;
 
@@ -30,7 +31,10 @@ namespace CNCLib.Wpf.Views
 	{
 		public EepromView()
 		{
-			InitializeComponent();
+            var vm = Dependency.Resolve<ViewModels.EepromViewModel>();
+            DataContext = vm;
+
+            InitializeComponent();
 
             this.DefaulInitForBaseViewModel();
 		}

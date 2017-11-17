@@ -22,6 +22,7 @@ using System.Windows.Controls;
 using CNCLib.Wpf.ViewModels;
 using Framework.Wpf.ViewModels;
 using Framework.Wpf.View;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Wpf.Views
 {
@@ -32,14 +33,12 @@ namespace CNCLib.Wpf.Views
     {
         public ManualControlPage()
         {
+            var vm = Dependency.Resolve<ViewModels.ManualControlViewModel>();
+            DataContext = vm;
+
             InitializeComponent();
 
-            var vm = DataContext as ManualControlViewModel;
-            if (vm != null)
-            {
-                vm.SD.DefaulInitForBaseViewModel();
-            }
-
+            vm.SD.DefaulInitForBaseViewModel();
             this.DefaulInitForBaseViewModel();
 		}
 

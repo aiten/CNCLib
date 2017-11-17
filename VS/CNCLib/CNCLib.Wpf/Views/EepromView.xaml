@@ -5,12 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:CNCLib.Wpf.Views"
-        xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"        
         mc:Ignorable="d"
         Title="Eeprom configuration" Height="700" Width="500">
-    <Window.DataContext>
-        <vm:EepromViewModel />
-    </Window.DataContext>
 
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="10,10,10,10">

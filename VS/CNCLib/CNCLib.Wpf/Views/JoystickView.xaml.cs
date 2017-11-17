@@ -18,6 +18,7 @@
 
 using System;
 using System.Windows;
+using Framework.Tools.Dependency;
 using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.Views
@@ -29,9 +30,11 @@ namespace CNCLib.Wpf.Views
     {
         public JoystickView()
         {
+            var vm = Dependency.Resolve<ViewModels.JoystickViewModel>();
+            DataContext = vm;
+
             InitializeComponent();
 
-            var vm = DataContext as BaseViewModel;
 			if (vm.CloseAction == null)
 				vm.CloseAction = new Action(() => Close());
 

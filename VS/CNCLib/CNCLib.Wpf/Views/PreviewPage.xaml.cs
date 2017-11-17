@@ -36,7 +36,10 @@ namespace CNCLib.Wpf.Views
 	{
 		public PreviewPage()
 		{
-			InitializeComponent();
+            var vm = Dependency.Resolve<ViewModels.PreviewViewModel>();
+            DataContext = vm;
+
+            InitializeComponent();
 
             this.DefaulInitForBaseViewModel();
 
@@ -48,8 +51,6 @@ namespace CNCLib.Wpf.Views
                     gcode.SizeY = (double) Global.Instance.SizeY;
                 };
             };
-
-            var vm = DataContext as PreviewViewModel;
 
 			if (vm.GetLoadInfo == null)
 				vm.GetLoadInfo = new Func<PreviewViewModel.GetLoadInfoArg, bool>((arg) =>
