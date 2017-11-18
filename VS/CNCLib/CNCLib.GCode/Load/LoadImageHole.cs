@@ -19,6 +19,7 @@
 using CNCLib.GCode.Commands;
 using System;
 using CNCLib.Logic.Contracts.DTO;
+using Framework.Tools.Helpers;
 
 namespace CNCLib.GCode.Load
 {
@@ -44,8 +45,8 @@ namespace CNCLib.GCode.Load
             PreLoad();
 
             AddCommentForLaser();
-
-            using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(LoadOptions.FileName))
+            
+            using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
             {
                 System.Drawing.Bitmap b;
                 switch (bx.PixelFormat)

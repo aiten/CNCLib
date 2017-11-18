@@ -199,7 +199,6 @@
                                 <TextBox Text="{Binding LoadOptionsValue.MoveSpeed}" VerticalContentAlignment="Center" Width="60" />
                                 <Label Content="mm/min"/>
                             </StackPanel>
-                            <CheckBox Content="Use gcode parameter"  IsChecked="{Binding LoadOptionsValue.EngravePosInParameter}"   Margin="120,10,0,0"  />
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>

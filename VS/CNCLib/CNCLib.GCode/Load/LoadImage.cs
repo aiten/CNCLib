@@ -19,6 +19,7 @@
 using System;
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
+using Framework.Tools.Helpers;
 
 namespace CNCLib.GCode.Load
 {
@@ -40,7 +41,7 @@ namespace CNCLib.GCode.Load
             _shiftLaserOn = -SHIFT * (double) LoadOptions.LaserSize;
             _shiftLaserOff = SHIFT * (double) LoadOptions.LaserSize;
 
-            using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(Environment.ExpandEnvironmentVariables(LoadOptions.FileName)))
+            using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
             {
                 System.Drawing.Bitmap b;
                 switch (bx.PixelFormat)

@@ -22,6 +22,7 @@ using System.Globalization;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Drawing;
 using System.IO;
+using Framework.Tools.Helpers;
 
 namespace CNCLib.GCode.Load
 {
@@ -102,7 +103,7 @@ namespace CNCLib.GCode.Load
             {
                 return new StreamReader(new MemoryStream(LoadOptions.FileContent,false));
             }
-            return new StreamReader(LoadOptions.FileName);
+            return new StreamReader(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName));
         }
 
 		public abstract void Load();
