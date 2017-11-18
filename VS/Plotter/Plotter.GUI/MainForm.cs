@@ -25,16 +25,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Framework.Arduino;
+using Framework.Arduino.SerialCommunication;
 using System.IO;
 
 namespace Plotter.GUI
 {
     public partial class MainForm : Form
     {
-        private HPGLCommunication Com
+        private HPGLSerial Com
         {
-            get { return Framework.Tools.Pattern.Singleton<HPGLCommunication>.Instance; }
+            get { return Framework.Tools.Pattern.Singleton<HPGLSerial>.Instance; }
         }
 
         public MainForm()
@@ -50,12 +50,12 @@ namespace Plotter.GUI
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Framework.Tools.Pattern.Singleton<HPGLCommunication>.Free();
+            Framework.Tools.Pattern.Singleton<HPGLSerial>.Free();
         }
 
         private void UpdateButtons()
         {
-            if (Framework.Tools.Pattern.Singleton<HPGLCommunication>.Allocated && Com.IsConnected)
+            if (Framework.Tools.Pattern.Singleton<HPGLSerial>.Allocated && Com.IsConnected)
             {
                 _paint.Enabled = true;
             }
@@ -80,7 +80,7 @@ namespace Plotter.GUI
         {
             if (Com.IsConnected)
             {
-                Framework.Tools.Pattern.Singleton<HPGLCommunication>.Free();
+                Framework.Tools.Pattern.Singleton<HPGLSerial>.Free();
 				_connect.Text = "Connect";
 			}
 			else 

@@ -28,7 +28,7 @@ using System.Windows.Forms;
 using Plotter.GUI.Shapes;
 using Framework.Tools;
 using System.Threading;
-using Framework.Arduino;
+using Framework.Arduino.SerialCommunication;
 using System.Drawing.Drawing2D;
 
 namespace Plotter.GUI
@@ -128,9 +128,9 @@ namespace Plotter.GUI
         Shapes.ShapeFactory _shapefactory = new Shapes.ShapeFactory();
         ShapeList _shapelist = new ShapeList();
 
-        private HPGLCommunication Com
+        private HPGLSerial Com
         {
-            get { return Framework.Tools.Pattern.Singleton<HPGLCommunication>.Instance; }
+            get { return Framework.Tools.Pattern.Singleton<HPGLSerial>.Instance; }
         }
 
         #endregion
