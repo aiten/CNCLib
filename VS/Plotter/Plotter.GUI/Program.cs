@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Framework.Tools.Dependency;
 
 namespace Plotter.GUI
 {
@@ -33,6 +34,11 @@ namespace Plotter.GUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            Dependency.Initialize(new LiveDependencyProvider());
+            Dependency.Container.RegisterTypesIncludingInternals(
+                typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
+
             Application.Run(new MainForm());
         }
     }

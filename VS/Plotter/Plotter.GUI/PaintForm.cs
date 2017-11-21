@@ -30,7 +30,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Framework.Arduino;
+using Framework.Arduino.SerialCommunication;
 
 namespace Plotter.GUI
 {
@@ -43,9 +43,9 @@ namespace Plotter.GUI
         {
             InitializeComponent();
         }
-        private HPGLCommunication Com
+        private HPGLSerial Com
         {
-            get { return Framework.Tools.Pattern.Singleton<HPGLCommunication>.Instance; }
+            get { return Framework.Tools.Pattern.Singleton<HPGLSerial>.Instance; }
         }
 
 		public int SizeXHPGL { get { return _plotterCtrl.SizeXHPGL; } set { _plotterCtrl.SizeXHPGL = value;  } }
