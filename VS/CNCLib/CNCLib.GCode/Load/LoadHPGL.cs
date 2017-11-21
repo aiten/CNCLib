@@ -199,9 +199,38 @@ namespace CNCLib.GCode.Load
                 }
             }
 
-            CalculateAngles(list,null);
-
             return list;
+        }
+
+        private void RemoveFirstPenUp(IList<HPGLCommand> list)
+        {
+            // remove first PU0,0 PU50,50 PU 100,100 => autoscale problem
+            var rlist = list.TakeWhile(h => !h.IsPenCommand || !h.IsPenDownCommand).ToList();
+            int countPenUp = rlist.Count(h => h.IsPenCommand);
+
+            foreach (var h in rlist)
+            {
+                if (h.IsPenCommand)
+                {
+                    if (countPenUp > 1)
+                        list.Remove(h);
+                    countPenUp--;
+                }
+            }
+        }
+
+        private void RemoveLastPenUp(IList<HPGLCommand> list)
+        {
+            // remove last PU0,0 => autoscale problem
+            var rlist = list.Reverse().TakeWhile(h => !h.IsPenCommand || !h.IsPenDownCommand).ToList();
+
+            foreach (var h in rlist)
+            {
+                if (h.IsPenCommand)
+                {
+                    list.Remove(h);
+                }
+            }
         }
 
         private void CalculateAngles(IEnumerable<HPGLCommand> list, Point3D firstfrom)
@@ -261,6 +290,10 @@ namespace CNCLib.GCode.Load
         {
             PreLoad();
             var list = ReadHPGLCommandList();
+
+            RemoveFirstPenUp(list);
+            RemoveLastPenUp(list);
+            CalculateAngles(list, null);
 
             if (LoadOptions.AutoScale)
 			{
