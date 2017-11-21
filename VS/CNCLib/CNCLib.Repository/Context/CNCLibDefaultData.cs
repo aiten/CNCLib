@@ -73,6 +73,7 @@ namespace CNCLib.Repository.Context
                 NeedDtr = false,
                 BufferSize = 63,
                 CommandToUpper = false,
+                CommandSyntax = 1, // CommandSyntax.GCode
                 ProbeSizeZ = 25m,
                 ProbeDist = 10m,
                 ProbeDistUp = 3m,
@@ -91,7 +92,7 @@ namespace CNCLib.Repository.Context
                 Name = "KK1000S",
                 ComPort = "com5",
                 Axis = 3,
-                SizeX = 830m,
+                SizeX = 800m,
                 SizeY = 500m,
                 SizeZ = 100m,
                 SizeA = 360m,
@@ -101,6 +102,7 @@ namespace CNCLib.Repository.Context
                 NeedDtr = false,
                 BufferSize = 63,
                 CommandToUpper = false,
+                CommandSyntax = 1, // CommandSyntax.GCode
                 ProbeSizeZ = 24.8m,
                 ProbeDist = 10m,
                 ProbeDistUp = 3m,
@@ -179,6 +181,7 @@ namespace CNCLib.Repository.Context
                 NeedDtr = false,
                 BufferSize = 63,
                 CommandToUpper = false,
+                CommandSyntax = 1, // CommandSyntax.GCode
                 ProbeSizeZ = 25m,
                 ProbeDist = 10m,
                 ProbeDistUp = 3m,
@@ -215,7 +218,6 @@ namespace CNCLib.Repository.Context
 				Rotate = false,
 				Laser = false
 			};
-
 
 			var machines = new []
             {
