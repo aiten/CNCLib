@@ -4,7 +4,7 @@
 *.bak
 *.sdf
 *.user
-/VS/Arduino.VC/Lib/StepperSystem.lib
+/Src/Arduino.VC/Lib/StepperSystem.lib
 
 Debug/
 Release/
@@ -12,18 +12,18 @@ ipch/
 .vs/
 PublishProfiles/
 
-/VS/builds
+/Src/builds
 /Sketch/libraries/grbl
 
-/VS/Arduino.VC/StepperTest/TestResult
+/Src/Arduino.VC/StepperTest/TestResult
 
-/VS/CNCLib/packages
-/VS/CNCLib/CNCLib.WebAPI/bin
-/VS/CNCLib/CNCLib.WebAPI/_bin_deployableAssemblies
-/VS/CNCLib/CNCLib.Web.WebForm/bin
-/VS/CNCLib/CNCLib.Web/bin
-/VS/CNCLib/CNCLib.Logic/bin
-/VS/CNCLib/PublishScripts
+/Src/CNCLib/packages
+/Src/CNCLib/CNCLib.WebAPI/bin
+/Src/CNCLib/CNCLib.WebAPI/_bin_deployableAssemblies
+/Src/CNCLib/CNCLib.Web.WebForm/bin
+/Src/CNCLib/CNCLib.Web/bin
+/Src/CNCLib/CNCLib.Logic/bin
+/Src/CNCLib/PublishScripts
 
 obj
 bin
@@ -31,11 +31,11 @@ bin
 *.opendb
 *.db
 
-/VS/Arduino.VC/Lib/StepperSystem.pdb
-/VS/Arduino.VC/iRobot/Axis.xlsx
-/VS/Arduino.VC/DCK40Laser/DCK40Laser.csv
+/Src/Arduino.VC/Lib/StepperSystem.pdb
+/Src/Arduino.VC/iRobot/Axis.xlsx
+/Src/Arduino.VC/DCK40Laser/DCK40Laser.csv
 /Sketch/DCK40LaserCNCShield
-/VS/Sign/Call-Invoke-SignCNCLib.ps1
+/Src/Sign/Call-Invoke-SignCNCLib.ps1
 
 /Doc/Screen7.Jpg
 /Doc/Screen6.Jpg
@@ -45,8 +45,8 @@ bin
 /Doc/Screen2.jpg
 /Doc/Screen1a.jpg
 
-/VS/Plotter/packages
+/Src/Plotter/packages
 /Sketch/libraries/LiquidCrystal_I2C
-/VS/Plotter/packages
+/Src/Plotter/packages
 /Sketch/libraries/U8glib
-/VS/CNCLib/TestResults
+/Src/CNCLib/TestResults
