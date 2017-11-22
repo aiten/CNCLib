@@ -46,11 +46,44 @@ namespace CNCLib.Tests.Load
 
             var list = load.Commands.Where(e => e is G00Command || e is G01Command);
 
-            list.Count().Should().Be(3);
+            list.Count().Should().Be(2);
 
             Assert.IsTrue(list.First() is G01Command);       // G0 F500
             Assert.IsTrue(list.ElementAt(1) is G00Command);       // G0 z1
-            Assert.IsTrue(list.ElementAt(2) is G00Command);       // G0 0,0
+            //Assert.IsTrue(list.ElementAt(2) is G00Command);       // G0 0,0 => PU0,0, is skipped by new version
+        }
+
+        [TestMethod]
+        public void LoadHPGLSkipPU()
+        {
+            var loadinfo = new LoadOptions()
+            {
+                LoadType = LoadOptions.ELoadType.HPGL,
+                AutoScale = false,
+                PenMoveType = LoadOptions.PenType.CommandString,
+                MoveSpeed = 499,
+                FileContent = Encoding.ASCII.GetBytes("IN;PU1000,100;PU0,0;PD400,400;PU0,0")
+                // leading PU1000,100 and trailing PU0,0 is skipped
+            };
+
+            var load = LoadBase.Create(loadinfo);
+
+            load.Load();
+
+            string[] gcode =
+            {
+                "G1 F499",
+                "M107",
+                "G0 X0 Y0",
+                "M106 S255",
+                "G1 X10 Y10",
+                "M107",
+                "M5"            // ShutdownCommands
+            };
+
+            var list = load.Commands.Where(e => IsGCommand(e));
+
+            CheckGCode(list, gcode);
         }
 
         [TestMethod]
@@ -193,7 +226,6 @@ namespace CNCLib.Tests.Load
                 "M106",
                 "G1 X30 Y30",
                 "M107",
-                "G0 X0 Y0",
                 "M5"            // ShutdownCommands
             };
 
@@ -217,7 +249,7 @@ namespace CNCLib.Tests.Load
                         "PU50,50;PD350,50,350,350,50,350,50,50;" +
                         "PU100,100;PD300,100,300,300,100,300,100,100;" +
                         "PU150,150;PD250,150,250,250,150,250,150,150;" +
-                        "PU;SP0;PU0,0")
+                        "PU;SP0")
             };
 
             var load = LoadBase.Create(loadinfo);
@@ -256,7 +288,6 @@ namespace CNCLib.Tests.Load
                 "G1 X10 Y0",
                 "G1 X0 Y0",
                 "M107",
-                "G0 X0 Y0",
                 "M5"
             };
 
