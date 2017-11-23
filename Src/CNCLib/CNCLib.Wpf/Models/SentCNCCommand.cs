@@ -34,8 +34,8 @@ namespace CNCLib.Wpf.Models
         private string _commandText;
         public string CommandText
         {
-            get { return _commandText; }
-            set { SetProperty(ref _commandText, value);  }
+            get => _commandText;
+            set => SetProperty(ref _commandText, value);
         }
 
         #endregion
@@ -45,8 +45,8 @@ namespace CNCLib.Wpf.Models
         private DateTime _commandDate;
         public DateTime CommandDate
         {
-            get { return _commandDate; }
-            set { SetProperty(ref _commandDate, value);  }
+            get => _commandDate;
+            set => SetProperty(ref _commandDate, value);
         }
 
         #endregion
@@ -56,8 +56,8 @@ namespace CNCLib.Wpf.Models
         private string _result;
         public string Result
         {
-            get { return _result; }
-            set { SetProperty(ref _result, value);  }
+            get => _result;
+            set => SetProperty(ref _result, value);
         }
 
         #endregion

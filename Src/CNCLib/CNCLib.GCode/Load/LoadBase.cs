@@ -44,9 +44,9 @@ namespace CNCLib.GCode.Load
 
 		#region CamBam
 
-		public CamBam.CamBam CamBam { get { return _cambam; } }
+		public CamBam.CamBam CamBam => _cambam;
 
-		private CamBam.CamBam.PLine _pline;
+	    private CamBam.CamBam.PLine _pline;
 		private CamBam.CamBam.Layer _layer;
 
 		protected void AddCamBamPoint(Point3D pt)
@@ -77,7 +77,7 @@ namespace CNCLib.GCode.Load
 
 		#region Factory
 
-		static public LoadBase Create(LoadOptions info)
+		public static LoadBase Create(LoadOptions info)
 		{
 			LoadBase load = null;
 			switch (info.LoadType)

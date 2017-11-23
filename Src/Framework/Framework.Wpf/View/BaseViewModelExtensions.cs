@@ -38,7 +38,7 @@ namespace Framework.Wpf.View
 
             if (vm.BrowseFileNameFunc == null)
             {
-                vm.BrowseFileNameFunc = new Func<string, bool, string>((string filename, bool savefile) =>
+                vm.BrowseFileNameFunc = new Func<string, bool, string>((filename, savefile) =>
                 {
                     Microsoft.Win32.FileDialog dlg;
                     if (savefile)
@@ -59,7 +59,7 @@ namespace Framework.Wpf.View
 
                     if ((dlg.ShowDialog() ?? false))
                     {
-                        return filename = dlg.FileName;
+                        return dlg.FileName;
                     }
                     return null;
                 });
@@ -77,7 +77,7 @@ namespace Framework.Wpf.View
                 var closeAction = new Action(() => view.Close());
                 var dialogOkAction = new Action(() => { view.DialogResult = true; view.Close(); });
                 var dialogCancelAction = new Action(() => { view.DialogResult = false; view.Close(); });
-                var loadedEvent = new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
+                var loadedEvent = new RoutedEventHandler(async (v, e) =>
                 {
                     var vmm = view.DataContext as BaseViewModel;
                     await vmm.Loaded();
@@ -85,7 +85,7 @@ namespace Framework.Wpf.View
 
                 RoutedEventHandler unloadedEvent=null;
 
-                unloadedEvent = new RoutedEventHandler((object v, RoutedEventArgs e) =>
+                unloadedEvent = new RoutedEventHandler((v, e) =>
                 {
                     vm.CloseAction = null;
                     vm.DialogOKAction = null;
@@ -121,7 +121,7 @@ namespace Framework.Wpf.View
                     vm.DialogCancelAction = new Action(() => { view.DialogResult = false; view.Close(); });
 */
 
-                view.Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
+                view.Loaded += new RoutedEventHandler(async (v, e) =>
                 {
                     var vmm = view.DataContext as BaseViewModel;
                     await vmm.Loaded();

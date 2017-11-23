@@ -28,6 +28,6 @@ namespace CNCLib.Repository
         {
         }
 
-        public CNCLibContext Context { get { return ((UnitOfWork<CNCLibContext>)Uow).Context; } }
-    }
+        public CNCLibContext Context => ((UnitOfWork<CNCLibContext>)Uow).Context;
+	}
 }

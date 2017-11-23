@@ -31,35 +31,37 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#region Properties
 
 		public int AxisIndex { get; set; }
-		public string AxisName { get { return Global.Instance.Machine.GetAxisName(AxisIndex); } }
-		public decimal Size { get { return Global.Instance.Machine.GetSize(AxisIndex); }  }
-		//public decimal ProbeSize { get { return Global.Instance.Machine.GetProbeSize(AxisIndex); } }
+		public string AxisName => Global.Instance.Machine.GetAxisName(AxisIndex);
+	    public decimal Size => Global.Instance.Machine.GetSize(AxisIndex);
+
+	    //public decimal ProbeSize { get { return Global.Instance.Machine.GetProbeSize(AxisIndex); } }
 		public bool HomeIsMax { get; set; }
 
 		private string _param = "0";
-		public decimal ParamDec { get { return decimal.Parse(Param); } }
-		public string Param
+		public decimal ParamDec => decimal.Parse(Param);
+
+	    public string Param
 		{
-			get { return _param; }
-			set { SetProperty(ref _param, value); }
-		}
+			get => _param;
+	        set => SetProperty(ref _param, value);
+	    }
 
 		private string _pos = "";
 		public string Pos
 		{
-			get { return _pos; }
-			set { SetProperty(ref _pos, value); }
+			get => _pos;
+		    set => SetProperty(ref _pos, value);
 		}
 		private string _relPos = "";
 		public string RelPos
 		{
-			get { return _relPos; }
-			set { SetProperty(ref _relPos, value); }
+			get => _relPos;
+		    set => SetProperty(ref _relPos, value);
 		}
 
-		public bool Enabled { get { return Global.Instance.Machine.Axis > AxisIndex && Size > 0m; } }
+		public bool Enabled => Global.Instance.Machine.Axis > AxisIndex && Size > 0m;
 
-		#endregion
+	    #endregion
 
 		#region Commands / CanCommands
 		private void SendMoveCommand(string dist) { RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g91 g0" + AxisName + dist + " g90")); }); }

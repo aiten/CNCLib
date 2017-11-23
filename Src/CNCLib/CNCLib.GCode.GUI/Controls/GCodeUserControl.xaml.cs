@@ -57,8 +57,8 @@ namespace CNCLib.GCode.GUI.Controls
 
 		public ICommand GotoPos
 		{
-			get { return (ICommand)GetValue(GotoPosCommandProperty); }
-			set { SetValue(GotoPosCommandProperty, value); }
+			get => (ICommand)GetValue(GotoPosCommandProperty);
+		    set => SetValue(GotoPosCommandProperty, value);
 		}
 
 		/// <summary>
@@ -67,8 +67,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty CommandsProperty = DependencyProperty.Register("Commands", typeof(CommandList), typeof(GCodeUserControl), new PropertyMetadata(OnCommandsChanged));
 		public CommandList Commands
 		{
-			get { return (CommandList)GetValue(CommandsProperty); }
-			set { SetValue(CommandsProperty, value); }
+			get => (CommandList)GetValue(CommandsProperty);
+		    set => SetValue(CommandsProperty, value);
 		}
 		private static void OnCommandsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -84,8 +84,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnZoomChanged));
 		public double Zoom
 		{
-			get { return (double)GetValue(ZoomProperty); }
-			set { SetValue(ZoomProperty, value); }
+			get => (double)GetValue(ZoomProperty);
+		    set => SetValue(ZoomProperty, value);
 		}
 		private static void OnZoomChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -114,8 +114,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty OffsetXProperty = DependencyProperty.Register("OffsetX", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetXChanged));
 		public double OffsetX
 		{
-			get { return (double)GetValue(OffsetXProperty); }
-			set { SetValue(OffsetXProperty, value); }
+			get => (double)GetValue(OffsetXProperty);
+		    set => SetValue(OffsetXProperty, value);
 		}
 		private static void OnOffsetXChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -130,8 +130,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty OffsetYProperty = DependencyProperty.Register("OffsetY", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetYChanged));
 		public double OffsetY
 		{
-			get { return (double)GetValue(OffsetYProperty); }
-			set { SetValue(OffsetYProperty, value); }
+			get => (double)GetValue(OffsetYProperty);
+		    set => SetValue(OffsetYProperty, value);
 		}
 		private static void OnOffsetYChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -145,8 +145,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty RotateAngleProperty = DependencyProperty.Register("RotateAngle", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnRotateAngleChanged));
 		public double RotateAngle
 		{
-			get { return (double)GetValue(RotateAngleProperty); }
-			set { SetValue(RotateAngleProperty, value); }
+			get => (double)GetValue(RotateAngleProperty);
+		    set => SetValue(RotateAngleProperty, value);
 		}
 		private static void OnRotateAngleChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -162,8 +162,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty RotateVectorProperty = DependencyProperty.Register("RotateVector", typeof(double[]), typeof(GCodeUserControl), new PropertyMetadata(new double[] { 0, 0, 1 }, OnRotateVectorChanged));
 		public double[] RotateVector
 		{
-			get { return (double[])GetValue(RotateVectorProperty); }
-			set { SetValue(RotateVectorProperty, value); }
+			get => (double[])GetValue(RotateVectorProperty);
+		    set => SetValue(RotateVectorProperty, value);
 		}
 		private static void OnRotateVectorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -182,8 +182,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty MachineColorProperty = DependencyProperty.Register("MachineColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Black, OnMachineColorChanged));
 		public Color MachineColor
 		{
-			get { return (Color)GetValue(MachineColorProperty); }
-			set { SetValue(MachineColorProperty, value); }
+			get => (Color)GetValue(MachineColorProperty);
+		    set => SetValue(MachineColorProperty, value);
 		}
 		private static void OnMachineColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -198,8 +198,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty LaserOnColorProperty = DependencyProperty.Register("LaserOnColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Red, OnLaserOnColorChanged));
 		public Color LaserOnColor
 		{
-			get { return (Color)GetValue(LaserOnColorProperty); }
-			set { SetValue(LaserOnColorProperty, value); }
+			get => (Color)GetValue(LaserOnColorProperty);
+		    set => SetValue(LaserOnColorProperty, value);
 		}
 		private static void OnLaserOnColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -214,8 +214,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty LaserOffColorProperty = DependencyProperty.Register("LaserOffColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnLaserOffColorChanged));
 		public Color LaserOffColor
 		{
-			get { return (Color)GetValue(LaserOffColorProperty); }
-			set { SetValue(LaserOffColorProperty, value); }
+			get => (Color)GetValue(LaserOffColorProperty);
+		    set => SetValue(LaserOffColorProperty, value);
 		}
 		private static void OnLaserOffColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -230,8 +230,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty CutColorProperty = DependencyProperty.Register("CutColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutColorChanged));
 		public Color CutColor
 		{
-			get { return (Color)GetValue(CutColorProperty); }
-			set { SetValue(CutColorProperty, value); }
+			get => (Color)GetValue(CutColorProperty);
+		    set => SetValue(CutColorProperty, value);
 		}
 		private static void OnCutColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -246,8 +246,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty CutDotColorProperty = DependencyProperty.Register("CutDotColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutDotColorChanged));
 		public Color CutDotColor
 		{
-			get { return (Color)GetValue(CutDotColorProperty); }
-			set { SetValue(CutDotColorProperty, value); }
+			get => (Color)GetValue(CutDotColorProperty);
+		    set => SetValue(CutDotColorProperty, value);
 		}
 		private static void OnCutDotColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -263,8 +263,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty CutEllipseColorProperty = DependencyProperty.Register("CutEllipseColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutEllipseColorChanged));
 		public Color CutEllipseColor
 		{
-			get { return (Color)GetValue(CutEllipseColorProperty); }
-			set { SetValue(CutEllipseColorProperty, value); }
+			get => (Color)GetValue(CutEllipseColorProperty);
+		    set => SetValue(CutEllipseColorProperty, value);
 		}
 		private static void OnCutEllipseColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -279,8 +279,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty CutArcColorProperty = DependencyProperty.Register("CutArcColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutArcColorChanged));
 		public Color CutArcColor
 		{
-			get { return (Color)GetValue(CutArcColorProperty); }
-			set { SetValue(CutArcColorProperty, value); }
+			get => (Color)GetValue(CutArcColorProperty);
+		    set => SetValue(CutArcColorProperty, value);
 		}
 		private static void OnCutArcColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -295,8 +295,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty FastMoveColorProperty = DependencyProperty.Register("FastMoveColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnFastMoveColorChanged));
 		public Color FastMoveColor
 		{
-			get { return (Color)GetValue(FastMoveColorProperty); }
-			set { SetValue(FastMoveColorProperty, value); }
+			get => (Color)GetValue(FastMoveColorProperty);
+		    set => SetValue(FastMoveColorProperty, value);
 		}
 		private static void OnFastMoveColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -311,8 +311,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty HelpLineColorProperty = DependencyProperty.Register("HelpLineColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnHelpLineColorChanged));
 		public Color HelpLineColor
 		{
-			get { return (Color)GetValue(HelpLineColorProperty); }
-			set { SetValue(HelpLineColorProperty, value); }
+			get => (Color)GetValue(HelpLineColorProperty);
+		    set => SetValue(HelpLineColorProperty, value);
 		}
 		private static void OnHelpLineColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -329,8 +329,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty LaserSizeProperty = DependencyProperty.Register("LaserSize", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.25, OnLaserSizeChanged));
 		public double LaserSize
 		{
-			get { return (double)GetValue(LaserSizeProperty); }
-			set { SetValue(LaserSizeProperty, value); }
+			get => (double)GetValue(LaserSizeProperty);
+		    set => SetValue(LaserSizeProperty, value);
 		}
 		private static void OnLaserSizeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -345,8 +345,8 @@ namespace CNCLib.GCode.GUI.Controls
 		public static DependencyProperty CutterSizeProperty = DependencyProperty.Register("CutterSize", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnCutterSizeChanged));
 		public double CutterSize
 		{
-			get { return (double)GetValue(CutterSizeProperty); }
-			set { SetValue(CutterSizeProperty, value); }
+			get => (double)GetValue(CutterSizeProperty);
+		    set => SetValue(CutterSizeProperty, value);
 		}
 		private static void OnCutterSizeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 		{
@@ -368,8 +368,8 @@ namespace CNCLib.GCode.GUI.Controls
 
 		public double? MouseOverPositionX
 		{
-			get { return (double?)GetValue(MouseOverPositionXProperty); }
-			private set { SetValue(MouseOverPositionXPropertyKey, value); }
+			get => (double?)GetValue(MouseOverPositionXProperty);
+		    private set => SetValue(MouseOverPositionXPropertyKey, value);
 		}
 
 		/// <summary>
@@ -385,8 +385,8 @@ namespace CNCLib.GCode.GUI.Controls
 
 		public double? MouseOverPositionY
 		{
-			get { return (double?)GetValue(MouseOverPositionYProperty); }
-			private set { SetValue(MouseOverPositionYPropertyKey, value); }
+			get => (double?)GetValue(MouseOverPositionYProperty);
+		    private set => SetValue(MouseOverPositionYPropertyKey, value);
 		}
 
 		#endregion

@@ -65,7 +65,7 @@ namespace CNCLib.Tests.Logic
 		{
 			var rep = CreateMock<IItemRepository>();
 
-			var itemEntity = new Item[2]
+			var itemEntity = new Item[]
 			{
 				new Item() { ItemID=1,Name="Test1" },
 				new Item() { ItemID=2,Name="Test2" },

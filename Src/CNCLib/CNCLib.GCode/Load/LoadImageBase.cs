@@ -25,8 +25,8 @@ namespace CNCLib.GCode.Load
     {
         protected double PixelSizeX { get; private set; } = 1;
         protected double PixelSizeY { get; private set; } = 1;
-        virtual protected double PixelDistX { get { return 0; } }
-        virtual protected double PixelDistY { get { return 0; } }
+        protected virtual double PixelDistX => 0;
+        protected virtual double PixelDistY => 0;
 
         protected int SizeX { get; private set; }
         protected int SizeY { get; private set; }

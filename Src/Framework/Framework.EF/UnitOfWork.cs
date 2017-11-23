@@ -103,9 +103,9 @@ namespace Framework.EF
 
 		private System.Data.Entity.DbContextTransaction _dbTran;
 
-		public bool InTransaction { get { return _dbTran != null; } }
+		public bool InTransaction => _dbTran != null;
 
-		public void BeginTransaction()
+	    public void BeginTransaction()
 		{
 			if (InTransaction) throw new ArgumentException();
 			_dbTran = Context.Database.BeginTransaction();

@@ -27,8 +27,8 @@ namespace Framework.Tools.Drawing
 
         public IEnumerable<Point2D> Points
         {
-            get { return _points; }
-            set { _points = value.ToArray(); }
+            get => _points;
+            set => _points = value.ToArray();
         }
 
         public bool IsClosed => _points.Length >= 2 && _points[0].Compare(_points[_points.Length - 1]);

@@ -29,12 +29,9 @@ namespace CNCLib.Wpf.Helpers
 {
     public class MachineGCodeHelper
 	{
-		public Framework.Arduino.SerialCommunication.ISerial Com
-		{
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
-		}
+		public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
 
-		#region Probe
+	    #region Probe
 
 		public async Task<bool> SendProbeCommandAsync(int axisindex)
 		{

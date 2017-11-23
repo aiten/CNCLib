@@ -42,15 +42,13 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region Properties
 
-		public int PendingCommandCount
+		public int PendingCommandCount => Com.CommandsInQueue;
+
+	    public bool Pause
 		{
-			get { return Com.CommandsInQueue; }
-		}
-		public bool Pause
-		{
-			get { return Com.Pause; }
-			set { Com.Pause = value; }
-		}
+			get => Com.Pause;
+	        set => Com.Pause = value;
+	    }
 
 		private bool _updateAfterSendNext = false;
 

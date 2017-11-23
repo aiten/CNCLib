@@ -70,21 +70,21 @@ namespace CNCLib.GCode.GUI.ViewModels
         private LoadOptions _loadOptions = new LoadOptions();
         public LoadOptions LoadOptionsValue
         {
-            get { return _loadOptions; }
+            get => _loadOptions;
             set { SetProperty(() => _loadOptions == value, () => _loadOptions = value);  }
         }
 
         private ObservableCollection<LoadOptions> _allLoadOptions = new ObservableCollection<LoadOptions>();
         public ObservableCollection<LoadOptions> AllLoadOptions
         {
-            get { return _allLoadOptions; }
-            set { SetProperty(ref _allLoadOptions, value); }
+            get => _allLoadOptions;
+            set => SetProperty(ref _allLoadOptions, value);
         }
 
         private LoadOptions _selectedloadOptions = null;
         public LoadOptions SelectedLoadOption
         {
-            get { return _selectedloadOptions; }
+            get => _selectedloadOptions;
             set {
                     SetProperty(() => _selectedloadOptions == value, () => _selectedloadOptions = value);
                     if (value != null && _allSettingsLoaded)
@@ -95,7 +95,7 @@ namespace CNCLib.GCode.GUI.ViewModels
         private bool _useAzure = false;
         public bool UseAzure
         {
-            get { return _useAzure; }
+            get => _useAzure;
             set { SetProperty(() => _useAzure == value, () => _useAzure = value); }
         }
 

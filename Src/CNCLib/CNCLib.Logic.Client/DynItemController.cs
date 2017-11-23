@@ -66,7 +66,7 @@ namespace CNCLib.Logic.Client
 				return null;
 
 			Type t = Type.GetType(item.ClassName);
-			var obj = Activator.CreateInstance(t);
+			var obj = Activator.CreateInstance(t ?? throw new InvalidOperationException());
 
 			foreach (ItemProperty ip in item.ItemProperties)
 			{

@@ -49,7 +49,7 @@ namespace CNCLib.GCode.Commands
             if (IsRegistered(name))
 			{
 				Type shape = _shapes[name.ToUpper()];
-				return (Command)Activator.CreateInstance(shape); ;
+				return (Command)Activator.CreateInstance(shape);
 			}
 			return null;
         }

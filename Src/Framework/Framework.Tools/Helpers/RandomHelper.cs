@@ -19,7 +19,7 @@
 using System;
 using System.Text;
 
-namespace Framework.Helpers
+namespace Framework.Tools.Helpers
 {
     public static class RandomHelper
     {

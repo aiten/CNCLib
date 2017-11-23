@@ -36,11 +36,11 @@ namespace CNCLib.Logic
 				var list = new List<LoadOptions>();
 				foreach (DynItem item in await controller.GetAll(typeof(LoadOptions)))
 				{
-					LoadOptions li = (LoadOptions) await controller.Create(item.ItemID);
+					var li = (LoadOptions) await controller.Create(item.ItemID);
 					li.Id = item.ItemID;
 					list.Add(li);
 				}
-				return (IEnumerable<LoadOptions>) list;
+				return list;
 			}
 		}
 
@@ -51,7 +51,7 @@ namespace CNCLib.Logic
 				object obj = await controller.Create(id);
 				if (obj != null || obj is LoadOptions)
 				{
-					LoadOptions li = (LoadOptions)obj;
+					var li = (LoadOptions)obj;
 					li.Id = id;
 					return (LoadOptions)obj;
 				}

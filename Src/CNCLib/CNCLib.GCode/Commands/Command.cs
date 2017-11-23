@@ -52,22 +52,10 @@ namespace CNCLib.GCode.Commands
 		public Command NextCommand { get; set; }
 		public Command PrevCommand { get; set; }
 
-        public Point3D CalculatedStartPosition 
-		{
-			get
-			{
-				return PrevCommand == null ? new Point3D() : PrevCommand.CalculatedEndPosition;
-			}
-		}
-		public Point3D CalculatedEndPosition
-		{
-			get
-			{
-				return _calculatedEndPosition;
-			}
-		}			
+        public Point3D CalculatedStartPosition => PrevCommand == null ? new Point3D() : PrevCommand.CalculatedEndPosition;
+	    public Point3D CalculatedEndPosition => _calculatedEndPosition;
 
-        public bool UseWithoutPrefix { get; protected set; }
+	    public bool UseWithoutPrefix { get; protected set; }
         public bool PositionValid { get; protected set; }
 		public MoveType Movetype { get; protected set; }
 
@@ -305,9 +293,9 @@ namespace CNCLib.GCode.Commands
 				var sc = new Point3D();
 				double val;
 
-				if (TryGetVariable('X', out val)) sc.X = (double) val;
-				if (TryGetVariable('Y', out val)) sc.Y = (double) val;
-				if (TryGetVariable('Z', out val)) sc.Z = (double) val;
+				if (TryGetVariable('X', out val)) sc.X = val;
+				if (TryGetVariable('Y', out val)) sc.Y = val;
+				if (TryGetVariable('Z', out val)) sc.Z = val;
 				if (!sc.HasAllValues && PrevCommand != null)
 				{
 					sc.AssignMissing(PrevCommand.CalculatedEndPosition);

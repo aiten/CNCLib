@@ -39,8 +39,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		private ObservableCollection<SentCNCCommand> _commandHistoryCollection;
 		public ObservableCollection<SentCNCCommand> CommandHistoryCollection
 		{
-			get { return _commandHistoryCollection; }
-			set { SetProperty(ref _commandHistoryCollection, value); }
+			get => _commandHistoryCollection;
+		    set => SetProperty(ref _commandHistoryCollection, value);
 		}
 
 		#endregion

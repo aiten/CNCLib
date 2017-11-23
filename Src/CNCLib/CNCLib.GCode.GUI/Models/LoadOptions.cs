@@ -33,11 +33,13 @@ namespace CNCLib.GCode.GUI.Models
             ImageHole=3
 
         }
-        private ELoadType _LoadType = ELoadType.GCode;
-        public ELoadType LoadType { get => _LoadType; set { SetProperty(ref _LoadType, value); } }
+        private ELoadType _loadType = ELoadType.GCode;
+        public ELoadType LoadType { get => _loadType; set => SetProperty(ref _loadType, value);
+        }
 
-        public string _FileName;
-        public string FileName { get => _FileName; set { SetProperty(ref _FileName, value); } }
+        public string _fileName;
+        public string FileName { get => _fileName; set => SetProperty(ref _fileName, value);
+        }
 
 
         public Byte[] FileContent { get; set; }
@@ -63,8 +65,9 @@ namespace CNCLib.GCode.GUI.Models
         public decimal OfsY { get; set; } = 0;
 
         //HPGL+IMG
-        public bool _AutoScale;
-        public bool AutoScale { get => _AutoScale; set { SetProperty(ref _AutoScale, value); } }
+        public bool _autoScale;
+        public bool AutoScale { get => _autoScale; set => SetProperty(ref _autoScale, value);
+        }
 
         public bool AutoScaleKeepRatio { get; set; } = true;
 
@@ -83,8 +86,9 @@ namespace CNCLib.GCode.GUI.Models
             CommandString=1
         }
 
-        public PenType _PenMoveType = PenType.ZMove;
-        public PenType PenMoveType { get => _PenMoveType; set { SetProperty(ref _PenMoveType, value); } }
+        public PenType _penMoveType = PenType.ZMove;
+        public PenType PenMoveType { get => _penMoveType; set => SetProperty(ref _penMoveType, value);
+        }
 
         public bool EngravePosInParameter { get; set; } = true;
         public decimal EngravePosUp { get; set; } = 1m;
@@ -108,8 +112,8 @@ namespace CNCLib.GCode.GUI.Models
             SplineLine = 2
         }
 
-        public SmoothTypeEnum _SmoothType = SmoothTypeEnum.NoSmooth;
-        public SmoothTypeEnum SmoothType { get => _SmoothType; set { SetProperty(ref _SmoothType, value); RaisePropertyChanged(nameof(SmoothEnabled)); } }
+        public SmoothTypeEnum _smoothType = SmoothTypeEnum.NoSmooth;
+        public SmoothTypeEnum SmoothType { get => _smoothType; set { SetProperty(ref _smoothType, value); RaisePropertyChanged(nameof(SmoothEnabled)); } }
 
         public decimal? SmoothMinAngle { get; set; } = (decimal) (45 * (Math.PI / 180));
         public decimal? SmoothMinLineLenght { get; set; } = 1m;
@@ -123,8 +127,12 @@ namespace CNCLib.GCode.GUI.Models
         public ConvertTypeEnum ConvertType { get; set; } = ConvertTypeEnum.NoConvert;
 
         // calculated
-        public bool SmoothEnabled { get { return SmoothType != SmoothTypeEnum.NoSmooth; } set { SmoothType = value ? SmoothTypeEnum.SplitLine : SmoothTypeEnum.NoSmooth; } }
-        public bool ConvertEnabled { get { return ConvertType != ConvertTypeEnum.NoConvert; } set { ConvertType = value ? ConvertTypeEnum.InvertLineSequence : ConvertTypeEnum.NoConvert; } }
+        public bool SmoothEnabled { get => SmoothType != SmoothTypeEnum.NoSmooth;
+            set => SmoothType = value ? SmoothTypeEnum.SplitLine : SmoothTypeEnum.NoSmooth;
+        }
+        public bool ConvertEnabled { get => ConvertType != ConvertTypeEnum.NoConvert;
+            set => ConvertType = value ? ConvertTypeEnum.InvertLineSequence : ConvertTypeEnum.NoConvert;
+        }
 
         //IMG
         public string ImageWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\image.bmp";
@@ -139,8 +147,9 @@ namespace CNCLib.GCode.GUI.Models
             NewspaperDither=1
         }
 
-        public DitherFilter _Dither = DitherFilter.FloydSteinbergDither;
-        public DitherFilter Dither { get => _Dither; set { SetProperty(ref _Dither, value); } }
+        public DitherFilter _dither = DitherFilter.FloydSteinbergDither;
+        public DitherFilter Dither { get => _dither; set => SetProperty(ref _dither, value);
+        }
 
         public bool ImageInvert { get; set; } = false;
 
@@ -163,7 +172,8 @@ namespace CNCLib.GCode.GUI.Models
             Diamond=3,
             Heart=4
         }
-        public EHoleType _HoleType = EHoleType.Hexagon;
-        public EHoleType HoleType { get => _HoleType; set { SetProperty(ref _HoleType, value); } }
+        public EHoleType _holeType = EHoleType.Hexagon;
+        public EHoleType HoleType { get => _holeType; set => SetProperty(ref _holeType, value);
+        }
     }
 }

@@ -99,22 +99,16 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region Properties
 
-		private Framework.Arduino.SerialCommunication.ISerial Com
-        {
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
-        }
+		private Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
 
-        private Framework.Arduino.SerialCommunication.ISerial ComJoystick
-        {
-            get { return Framework.Tools.Pattern.Singleton<JoystickArduinoSerialCommunication>.Instance; }
-        }
+        private Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<JoystickArduinoSerialCommunication>.Instance;
 
         #region Current Machine
 
         public Models.Machine Machine
 		{
-            get { return _selectedMachine; }
-			set
+            get => _selectedMachine;
+            set
             {
                 SetProperty(ref _selectedMachine, value);
                 if (value != null)
@@ -132,40 +126,31 @@ namespace CNCLib.Wpf.ViewModels
         private ObservableCollection<Models.Machine> _machines;
         public ObservableCollection<Models.Machine> Machines
 		{
-			get { return _machines; }
-			set { SetProperty(ref _machines, value); }
-		}
-
-        public bool Connected
-        {
-            get { return Com.IsConnected; }
+			get => _machines;
+            set => SetProperty(ref _machines, value);
         }
 
-        public bool ConnectedJoystick
-        {
-            get { return ComJoystick.IsConnected; }
-        }
+        public bool Connected => Com.IsConnected;
+
+        public bool ConnectedJoystick => ComJoystick.IsConnected;
 
         #endregion
 
         private bool _resetOnConnect=true;
 		public bool ResetOnConnect
 		{
-			get { return _resetOnConnect; }
-			set { SetProperty(ref _resetOnConnect, value); Global.Instance.ResetOnConnect = value; }
+			get => _resetOnConnect;
+		    set { SetProperty(ref _resetOnConnect, value); Global.Instance.ResetOnConnect = value; }
 		}
 
 		private bool _sendInitCommands = true;
 		public bool SendInitCommands
 		{
-			get { return _sendInitCommands; }
-			set { SetProperty(ref _sendInitCommands, value); }
+			get => _sendInitCommands;
+		    set => SetProperty(ref _sendInitCommands, value);
 		}
 
-        public bool NeedDtr
-        {
-            get { return Machine != null ? Machine.NeedDtr : false; }
-        }
+        public bool NeedDtr => Machine != null ? Machine.NeedDtr : false;
 
         #endregion
 

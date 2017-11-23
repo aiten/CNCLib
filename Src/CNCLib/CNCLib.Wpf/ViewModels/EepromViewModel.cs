@@ -51,15 +51,12 @@ namespace CNCLib.Wpf.ViewModels
 		private Eeprom _eeprom = new Eeprom();
 		public Eeprom EepromValue
 		{
-			get { return _eeprom; }
-			set { SetProperty(() => _eeprom == value, () => _eeprom = value); }
+			get => _eeprom;
+		    set { SetProperty(() => _eeprom == value, () => _eeprom = value); }
 		}
-		private Framework.Arduino.SerialCommunication.ISerial Com
-		{
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
-		}
+		private Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
 
-        #endregion
+	    #endregion
 
         #region Operations
 

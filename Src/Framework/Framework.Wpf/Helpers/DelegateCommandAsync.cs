@@ -31,9 +31,9 @@ namespace Framework.Wpf.Helpers
 
 		public event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
+            add => CommandManager.RequerySuggested += value;
+		    remove => CommandManager.RequerySuggested -= value;
+		}
 
 		protected void RaiseCanExecuteChanged()
 		{
@@ -57,12 +57,9 @@ namespace Framework.Wpf.Helpers
 			RaiseCanExecuteChanged();
         }
 
-		public ICommand CancelCommand
-		{
-			get { return _cancelCommand; }
-		}
+		public ICommand CancelCommand => _cancelCommand;
 
-		public bool CanExecute(object parameter)
+        public bool CanExecute(object parameter)
         {
             return _canExecute == null || _canExecute();
         }
@@ -74,8 +71,8 @@ namespace Framework.Wpf.Helpers
 
 			public event EventHandler CanExecuteChanged
 			{
-				add { CommandManager.RequerySuggested += value; }
-				remove { CommandManager.RequerySuggested -= value; }
+				add => CommandManager.RequerySuggested += value;
+			    remove => CommandManager.RequerySuggested -= value;
 			}
 
 			private void RaiseCanExecuteChanged()
@@ -83,8 +80,9 @@ namespace Framework.Wpf.Helpers
 				CommandManager.InvalidateRequerySuggested();
 			}
 
-			public CancellationToken Token { get { return _cts.Token; } }
-			public void NotifyCommandStarting()
+			public CancellationToken Token => _cts.Token;
+
+		    public void NotifyCommandStarting()
 			{
 				_commandExecuting = true;
 				if (!_cts.IsCancellationRequested)

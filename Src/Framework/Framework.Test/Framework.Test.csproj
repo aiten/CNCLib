@@ -102,7 +102,6 @@
     </Compile>
     <Compile Include="Dependency\MockingDependencyContainer.cs" />
     <Compile Include="Dependency\UnitTestDependencyProvider.cs" />
-    <Compile Include="Dependency\UnityUnitOfWorkWrapper.cs" />
     <Compile Include="Drawing\DitherTest.cs" />
     <Compile Include="Drawing\Polygon2DTest.cs" />
     <Compile Include="Drawing\Rotate3DTest.cs" />

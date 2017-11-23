@@ -16,24 +16,25 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NSubstitute;
 using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Framework.Arduino.SerialCommunication;
 using Framework.Tools.Dependency;
-using System.IO;
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 
-namespace Framework.Test
+namespace Framework.Test.SerialCommunication
 {
     [TestClass]
     public class SerialTest : UnitTestBase
     {
         private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
-            TInterface rep = Substitute.For<TInterface>();
-            Framework.Tools.Dependency.Dependency.Container.RegisterInstance(rep);
+            var rep = Substitute.For<TInterface>();
+            Tools.Dependency.Dependency.Container.RegisterInstance(rep);
             return rep;
         }
 
@@ -42,10 +43,10 @@ namespace Framework.Test
             var serialport = Substitute.For<Arduino.SerialCommunication.ISerialPort>();
             var basestream = Substitute.For<MemoryStream>();
             serialport.BaseStream.ReturnsForAnyArgs(basestream);
-            var encoding = System.Text.Encoding.GetEncoding(1200);
+            Encoding encoding = System.Text.Encoding.GetEncoding(1200);
             serialport.Encoding.ReturnsForAnyArgs(encoding);
 
-            Framework.Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
+            Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
 
             int resultidx = 0;
             bool sendReply = false;
@@ -83,13 +84,13 @@ namespace Framework.Test
         [TestMethod]
         public void ConnectSerialTest()
         {
-            var serialport = Substitute.For<Arduino.SerialCommunication.ISerialPort>();
+            var serialport = Substitute.For<ISerialPort>();
             var basestream = Substitute.For<MemoryStream>();
             serialport.BaseStream.ReturnsForAnyArgs(basestream);
-            var encoding = System.Text.Encoding.GetEncoding(12000);
+            Encoding encoding = Encoding.GetEncoding(12000);
             serialport.Encoding.ReturnsForAnyArgs(encoding);
 
-            Framework.Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
+            Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
 
             var serial = new Serial();
             serial.Connect("com2");
@@ -102,7 +103,7 @@ namespace Framework.Test
         public async Task WriteOneCommandSerialTest()
         {
             var serial = new Serial();
-            var serialport = CreateSerialPortMock(serial, new string[]
+            var serialport = CreateSerialPortMock(serial, new []
                                     {
                                         serial.OkTag + "\n\r"
                                     });
@@ -120,7 +121,7 @@ namespace Framework.Test
         public async Task WriteTwoCommandSerialTest()
         {
             var serial = new Serial();
-            var serialport = CreateSerialPortMock(serial, new string[]
+            var serialport = CreateSerialPortMock(serial, new []
                                     {
                                         serial.OkTag + "\n\r",
                                         serial.OkTag + "\n\r"
@@ -137,35 +138,35 @@ namespace Framework.Test
 
         #region events
 
-        class EventCalls
+        sealed class EventCalls
         {
-            public int eventWaitForSend = 0;
-            public int eventCommandSending = 0;
-            public int eventCommandSent = 0;
-            public int eventWaitCommandSent = 0;
-            public int eventReplyReceived = 0;
-            public int eventReplyOK = 0;
-            public int eventReplyError = 0;
-            public int eventReplyInfo = 0;
-            public int eventReplyUnknown = 0;
-            public int eventCommandQueueChanged = 0;
-            public int eventCommandQueueEmpty = 0;
+            public int EventWaitForSend { get; set; }
+            public int EventCommandSending { get; set; }
+            public int EventCommandSent { get; set; }
+            public int EventWaitCommandSent { get; set; }
+            public int EventReplyReceived { get; set; }
+            public int EventReplyOK { get; set; }
+            public int EventReplyError { get; set; }
+            public int EventReplyInfo { get; set; }
+            public int EventReplyUnknown { get; set; }
+            public int EventCommandQueueChanged { get; set; }
+            public int EventCommandQueueEmpty { get; set; }
         }
 
         private EventCalls SubscribeForEventCall(ISerial serial)
         {
-            EventCalls eventcounts = new EventCalls();
-            serial.WaitForSend += (object sender, SerialEventArgs e) => eventcounts.eventWaitForSend++;
-            serial.CommandSending += (object sender, SerialEventArgs e) => eventcounts.eventCommandSending++;
-            serial.CommandSent += (object sender, SerialEventArgs e) => eventcounts.eventCommandSent++;
-            serial.WaitCommandSent += (object sender, SerialEventArgs e) => eventcounts.eventWaitCommandSent++;
-            serial.ReplyReceived += (object sender, SerialEventArgs e) => eventcounts.eventReplyReceived++;
-            serial.ReplyOK += (object sender, SerialEventArgs e) => eventcounts.eventReplyOK++;
-            serial.ReplyError += (object sender, SerialEventArgs e) => eventcounts.eventReplyError++;
-            serial.ReplyInfo += (object sender, SerialEventArgs e) => eventcounts.eventReplyInfo++;
-            serial.ReplyUnknown += (object sender, SerialEventArgs e) => eventcounts.eventReplyUnknown++;
-            serial.CommandQueueChanged += (object sender, SerialEventArgs e) => eventcounts.eventCommandQueueChanged++;
-            serial.CommandQueueEmpty += (object sender, SerialEventArgs e) => eventcounts.eventCommandQueueEmpty++;
+            var eventcounts = new EventCalls();
+            serial.WaitForSend += (sender, e) => eventcounts.EventWaitForSend++;
+            serial.CommandSending += (sender, e) => eventcounts.EventCommandSending++;
+            serial.CommandSent += (sender, e) => eventcounts.EventCommandSent++;
+            serial.WaitCommandSent += (sender, e) => eventcounts.EventWaitCommandSent++;
+            serial.ReplyReceived += (sender, e) => eventcounts.EventReplyReceived++;
+            serial.ReplyOK += (sender, e) => eventcounts.EventReplyOK++;
+            serial.ReplyError += (sender, e) => eventcounts.EventReplyError++;
+            serial.ReplyInfo += (sender, e) => eventcounts.EventReplyInfo++;
+            serial.ReplyUnknown += (sender, e) => eventcounts.EventReplyUnknown++;
+            serial.CommandQueueChanged += (sender, e) => eventcounts.EventCommandQueueChanged++;
+            serial.CommandQueueEmpty += (sender, e) => eventcounts.EventCommandQueueEmpty++;
             return eventcounts;
         }
 
@@ -174,7 +175,7 @@ namespace Framework.Test
 
         {
             var serial = new Serial();
-            var serialport = CreateSerialPortMock(serial, new string[]
+            /* var serialport = */ CreateSerialPortMock(serial, new []
                                     {
                                         serial.OkTag + "\n\r"
                                     });
@@ -187,24 +188,24 @@ namespace Framework.Test
 
             serial.Disconnect();
 
-            eventCalls.eventWaitForSend.Should().Be(0);
-            eventCalls.eventCommandSending.Should().Be(1);
-            eventCalls.eventCommandSent.Should().Be(1);
-            eventCalls.eventWaitCommandSent.Should().BeGreaterOrEqualTo(1);
-            eventCalls.eventReplyReceived.Should().Be(1);
-            eventCalls.eventReplyOK.Should().Be(1);
-            eventCalls.eventReplyError.Should().Be(0);
-            eventCalls.eventReplyInfo.Should().Be(0);
-            eventCalls.eventReplyUnknown.Should().Be(0);
-            eventCalls.eventCommandQueueChanged.Should().Be(2);
-            eventCalls.eventCommandQueueEmpty.Should().Be(2);
+            eventCalls.EventWaitForSend.Should().Be(0);
+            eventCalls.EventCommandSending.Should().Be(1);
+            eventCalls.EventCommandSent.Should().Be(1);
+            eventCalls.EventWaitCommandSent.Should().BeGreaterOrEqualTo(1);
+            eventCalls.EventReplyReceived.Should().Be(1);
+            eventCalls.EventReplyOK.Should().Be(1);
+            eventCalls.EventReplyError.Should().Be(0);
+            eventCalls.EventReplyInfo.Should().Be(0);
+            eventCalls.EventReplyUnknown.Should().Be(0);
+            eventCalls.EventCommandQueueChanged.Should().Be(2);
+            eventCalls.EventCommandQueueEmpty.Should().Be(2);
         }
 
         [TestMethod]
         public async Task InfoEventSerialTest()
         {
             var serial = new Serial();
-            var serialport = CreateSerialPortMock(serial, new string[]
+            /* var serialport = */ CreateSerialPortMock(serial, new []
                                     {
                                         serial.InfoTag + "\n\r" +
                                         serial.OkTag + "\n\r"
@@ -218,24 +219,24 @@ namespace Framework.Test
 
             serial.Disconnect();
 
-            eventCalls.eventWaitForSend.Should().Be(0);
-            eventCalls.eventCommandSending.Should().Be(1);
-            eventCalls.eventCommandSent.Should().Be(1);
-            eventCalls.eventWaitCommandSent.Should().BeGreaterOrEqualTo(1);
-            eventCalls.eventReplyReceived.Should().Be(2);
-            eventCalls.eventReplyOK.Should().Be(1);
-            eventCalls.eventReplyError.Should().Be(0);
-            eventCalls.eventReplyInfo.Should().Be(1);
-            eventCalls.eventReplyUnknown.Should().Be(0);
-            eventCalls.eventCommandQueueChanged.Should().Be(2);
-            eventCalls.eventCommandQueueEmpty.Should().Be(2);
+            eventCalls.EventWaitForSend.Should().Be(0);
+            eventCalls.EventCommandSending.Should().Be(1);
+            eventCalls.EventCommandSent.Should().Be(1);
+            eventCalls.EventWaitCommandSent.Should().BeGreaterOrEqualTo(1);
+            eventCalls.EventReplyReceived.Should().Be(2);
+            eventCalls.EventReplyOK.Should().Be(1);
+            eventCalls.EventReplyError.Should().Be(0);
+            eventCalls.EventReplyInfo.Should().Be(1);
+            eventCalls.EventReplyUnknown.Should().Be(0);
+            eventCalls.EventCommandQueueChanged.Should().Be(2);
+            eventCalls.EventCommandQueueEmpty.Should().Be(2);
         }
 
         [TestMethod]
         public async Task ErrorEventWithOkSerialTest()
         {
             var serial = new Serial();
-            var serialport = CreateSerialPortMock(serial, new string[]
+            /* var serialport = */ CreateSerialPortMock(serial, new []
                                     {
                                         serial.ErrorTag + "\n\r" +
                                         serial.OkTag + "\n\r"
@@ -251,24 +252,24 @@ namespace Framework.Test
 
             serial.Disconnect();
 
-            eventCalls.eventWaitForSend.Should().Be(0);
-            eventCalls.eventCommandSending.Should().Be(1);
-            eventCalls.eventCommandSent.Should().Be(1);
-            eventCalls.eventWaitCommandSent.Should().BeGreaterOrEqualTo(1);
-            eventCalls.eventReplyReceived.Should().Be(2);
-            eventCalls.eventReplyOK.Should().Be(1);
-            eventCalls.eventReplyError.Should().Be(1);
-            eventCalls.eventReplyInfo.Should().Be(0);
-            eventCalls.eventReplyUnknown.Should().Be(0);
-            eventCalls.eventCommandQueueChanged.Should().Be(2);
-            eventCalls.eventCommandQueueEmpty.Should().Be(2);
+            eventCalls.EventWaitForSend.Should().Be(0);
+            eventCalls.EventCommandSending.Should().Be(1);
+            eventCalls.EventCommandSent.Should().Be(1);
+            eventCalls.EventWaitCommandSent.Should().BeGreaterOrEqualTo(1);
+            eventCalls.EventReplyReceived.Should().Be(2);
+            eventCalls.EventReplyOK.Should().Be(1);
+            eventCalls.EventReplyError.Should().Be(1);
+            eventCalls.EventReplyInfo.Should().Be(0);
+            eventCalls.EventReplyUnknown.Should().Be(0);
+            eventCalls.EventCommandQueueChanged.Should().Be(2);
+            eventCalls.EventCommandQueueEmpty.Should().Be(2);
         }
 
         [TestMethod]
         public async Task ErrorEventWithOutOkSerialTest()
         {
             var serial = new Serial();
-            var serialport = CreateSerialPortMock(serial, new string[]
+            /* var serialport = */ CreateSerialPortMock(serial, new []
                                     {
                                         serial.ErrorTag + "\n\r"
                                     });
@@ -283,24 +284,24 @@ namespace Framework.Test
 
             serial.Disconnect();
 
-            eventCalls.eventWaitForSend.Should().Be(0);
-            eventCalls.eventCommandSending.Should().Be(1);
-            eventCalls.eventCommandSent.Should().Be(1);
-            eventCalls.eventWaitCommandSent.Should().BeGreaterOrEqualTo(1);
-            eventCalls.eventReplyReceived.Should().Be(1);
-            eventCalls.eventReplyOK.Should().Be(0);
-            eventCalls.eventReplyError.Should().Be(1);
-            eventCalls.eventReplyInfo.Should().Be(0);
-            eventCalls.eventReplyUnknown.Should().Be(0);
-            eventCalls.eventCommandQueueChanged.Should().Be(2);
-            eventCalls.eventCommandQueueEmpty.Should().Be(2);
+            eventCalls.EventWaitForSend.Should().Be(0);
+            eventCalls.EventCommandSending.Should().Be(1);
+            eventCalls.EventCommandSent.Should().Be(1);
+            eventCalls.EventWaitCommandSent.Should().BeGreaterOrEqualTo(1);
+            eventCalls.EventReplyReceived.Should().Be(1);
+            eventCalls.EventReplyOK.Should().Be(0);
+            eventCalls.EventReplyError.Should().Be(1);
+            eventCalls.EventReplyInfo.Should().Be(0);
+            eventCalls.EventReplyUnknown.Should().Be(0);
+            eventCalls.EventCommandQueueChanged.Should().Be(2);
+            eventCalls.EventCommandQueueEmpty.Should().Be(2);
         }
 
         [TestMethod]
         public async Task UnknownEventSerialTest()
         {
             var serial = new Serial();
-            var serialport = CreateSerialPortMock(serial, new string[]
+            /* var serialport = */ CreateSerialPortMock(serial, new []
                                     {
                                         "Hallo\n\r" +
                                         serial.OkTag + "\n\r"
@@ -316,17 +317,17 @@ namespace Framework.Test
 
             serial.Disconnect();
 
-            eventCalls.eventWaitForSend.Should().Be(0);
-            eventCalls.eventCommandSending.Should().Be(1);
-            eventCalls.eventCommandSent.Should().Be(1);
-            eventCalls.eventWaitCommandSent.Should().BeGreaterOrEqualTo(1);
-            eventCalls.eventReplyReceived.Should().Be(2);
-            eventCalls.eventReplyOK.Should().Be(1);
-            eventCalls.eventReplyError.Should().Be(0);
-            eventCalls.eventReplyInfo.Should().Be(0);
-            eventCalls.eventReplyUnknown.Should().Be(1);
-            eventCalls.eventCommandQueueChanged.Should().Be(2);
-            eventCalls.eventCommandQueueEmpty.Should().Be(2);
+            eventCalls.EventWaitForSend.Should().Be(0);
+            eventCalls.EventCommandSending.Should().Be(1);
+            eventCalls.EventCommandSent.Should().Be(1);
+            eventCalls.EventWaitCommandSent.Should().BeGreaterOrEqualTo(1);
+            eventCalls.EventReplyReceived.Should().Be(2);
+            eventCalls.EventReplyOK.Should().Be(1);
+            eventCalls.EventReplyError.Should().Be(0);
+            eventCalls.EventReplyInfo.Should().Be(0);
+            eventCalls.EventReplyUnknown.Should().Be(1);
+            eventCalls.EventCommandQueueChanged.Should().Be(2);
+            eventCalls.EventCommandQueueEmpty.Should().Be(2);
         }
 
         #endregion

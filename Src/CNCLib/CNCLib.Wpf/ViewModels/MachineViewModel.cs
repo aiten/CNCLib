@@ -54,31 +54,22 @@ namespace CNCLib.Wpf.ViewModels
 		#endregion
 
 		#region Properties
-		private Framework.Arduino.SerialCommunication.ISerial Com
-		{
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
-		}
+		private Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
 
-		Models.Machine _currentMachine = new Models.Machine();
+	    Models.Machine _currentMachine = new Models.Machine();
 
 		public Models.Machine Machine
 		{
-			get { return _currentMachine; }
-			set { SetProperty(() => _currentMachine == value, () => _currentMachine = value); }
+			get => _currentMachine;
+		    set { SetProperty(() => _currentMachine == value, () => _currentMachine = value); }
 		}
 
-		public ObservableCollection<Models.MachineCommand> MachineCommands
-		{
-			get { return _currentMachine.MachineCommands; }
-				}
+		public ObservableCollection<Models.MachineCommand> MachineCommands => _currentMachine.MachineCommands;
 
 
-		public ObservableCollection<Models.MachineInitCommand> MachineInitCommands
-		{
-			get { return _currentMachine.MachineInitCommands; }
-		}
+	    public ObservableCollection<Models.MachineInitCommand> MachineInitCommands => _currentMachine.MachineInitCommands;
 
-		public bool AddNewMachine { get; set; }
+	    public bool AddNewMachine { get; set; }
 
 		#endregion
 

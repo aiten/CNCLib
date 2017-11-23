@@ -25,8 +25,8 @@ namespace Framework.Wpf.Helpers
     {
         public override event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
 
         public DelegateCommand(Action command, Func<bool> canExecute = null) : base(command,canExecute) 

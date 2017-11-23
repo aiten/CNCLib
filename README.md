@@ -1,13 +1,8 @@
 CNCLib
 ======
 
-CNCLib is a project to build your own DIY CNC machine.
+Build your own CNC machine/laser with *CNCLib* and *CNCStepper*.
 
-The first part of the project implements a library to customize CNC machines on
-different Arduino hardware.
-
-The second part is designed for Windows to communicate with the CNC (Arduino)
-machine.
 
 Arduino
 -------

@@ -30,24 +30,24 @@ namespace Framework.Test.Drawing
         public void NoRotateAngle0()
         {
             var r = new Rotate3D();
-			var pt_src = new Point3D(1.0, 2.0, 3.0);
-			var pt_dest = r.Rotate(pt_src);
+			var ptSrc = new Point3D(1.0, 2.0, 3.0);
+			var ptDest = r.Rotate(ptSrc);
 
-            pt_dest.X.Value.Should().Be(1.0);
-            pt_dest.Y.Value.Should().Be(2.0);
-            pt_dest.Z.Value.Should().Be(3.0);
+            (ptDest.X??throw new ArgumentException()).Should().Be(1.0);
+            (ptDest.Y??throw new ArgumentException()).Should().Be(2.0);
+            (ptDest.Z??throw new ArgumentException()).Should().Be(3.0);
 		}
 
 		[TestMethod]
 		public void RotateZAngle180Grad()
 		{
 			var r = new Rotate3D(Math.PI,new double[] { 0, 0, 1.0 });
-			var pt_src = new Point3D(1.0, 2.0, 3.0);
-			var pt_dest = r.Rotate(pt_src);
+			var ptSrc = new Point3D(1.0, 2.0, 3.0);
+			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(-1.0, Math.Round(pt_dest.X.Value,5));
-			Assert.AreEqual(-2.0, Math.Round(pt_dest.Y.Value,5));
-			Assert.AreEqual(3.0, pt_dest.Z.Value);
+			Assert.AreEqual(-1.0, Math.Round((ptDest.X??throw new ArgumentException()),5));
+			Assert.AreEqual(-2.0, Math.Round((ptDest.Y??throw new ArgumentException()),5));
+			Assert.AreEqual(3.0, (ptDest.Z??throw new ArgumentException()));
 
 		}
 
@@ -55,106 +55,106 @@ namespace Framework.Test.Drawing
 		public void RotateZAngleMinus180Grad()
 		{
 			var r = new Rotate3D(-Math.PI, new double[] { 0, 0, 1.0 });
-			var pt_src = new Point3D(1.0, 2.0, 3.0);
-			var pt_dest = r.Rotate(pt_src);
+			var ptSrc = new Point3D(1.0, 2.0, 3.0);
+			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(-1.0, Math.Round(pt_dest.X.Value, 5));
-			Assert.AreEqual(-2.0, Math.Round(pt_dest.Y.Value, 5));
-			Assert.AreEqual(3.0, pt_dest.Z.Value);
+			Assert.AreEqual(-1.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
+			Assert.AreEqual(-2.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
+			Assert.AreEqual(3.0, (ptDest.Z??throw new ArgumentException()));
 		}
 
 		[TestMethod]
 		public void RotateZAngle90Grad()
 		{
 			var r = new Rotate3D(Math.PI/2.0, new double[] { 0, 0, 1.0 });
-			var pt_src = new Point3D(1.0, 2.0, 3.0);
-			var pt_dest = r.Rotate(pt_src);
+			var ptSrc = new Point3D(1.0, 2.0, 3.0);
+			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(-2.0, Math.Round(pt_dest.X.Value, 5));
-			Assert.AreEqual(1.0, Math.Round(pt_dest.Y.Value, 5));
-			Assert.AreEqual(3.0, pt_dest.Z.Value);
+			Assert.AreEqual(-2.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
+			Assert.AreEqual(1.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
+			Assert.AreEqual(3.0, (ptDest.Z??throw new ArgumentException()));
 		}
 		[TestMethod]
 		public void RotateZAngleMinus90Grad()
 		{
 			var r = new Rotate3D(-Math.PI / 2.0, new double[] { 0, 0, 1.0 });
-			var pt_src = new Point3D(1.0, 2.0, 3.0);
-			var pt_dest = r.Rotate(pt_src);
+			var ptSrc = new Point3D(1.0, 2.0, 3.0);
+			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(2.0, Math.Round(pt_dest.X.Value, 5));
-			Assert.AreEqual(-1.0, Math.Round(pt_dest.Y.Value, 5));
-			Assert.AreEqual(3.0, pt_dest.Z.Value);
+			Assert.AreEqual(2.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
+			Assert.AreEqual(-1.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
+			Assert.AreEqual(3.0, (ptDest.Z??throw new ArgumentException()));
 		}
 
 		[TestMethod]
 		public void RotateXAngle90Grad()
 		{
 			var r = new Rotate3D(Math.PI / 2.0, new double[] { 1.0, 0, 0 });
-			var pt_src = new Point3D(1.0, 2.0, 3.0);
-			var pt_dest = r.Rotate(pt_src);
+			var ptSrc = new Point3D(1.0, 2.0, 3.0);
+			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(1.0, Math.Round(pt_dest.X.Value, 5));
-			Assert.AreEqual(-3.0, Math.Round(pt_dest.Y.Value, 5));
-			Assert.AreEqual(2.0, Math.Round(pt_dest.Z.Value,5));
+			Assert.AreEqual(1.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
+			Assert.AreEqual(-3.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
+			Assert.AreEqual(2.0, Math.Round((ptDest.Z??throw new ArgumentException()),5));
 		}
 		[TestMethod]
 		public void RotateXAngleMinus90Grad()
 		{
 			var r = new Rotate3D(-Math.PI / 2.0, new double[] { 1.0, 0, 0 });
-			var pt_src = new Point3D(1.0, 2.0, 3.0);
-			var pt_dest = r.Rotate(pt_src);
+			var ptSrc = new Point3D(1.0, 2.0, 3.0);
+			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(1.0, Math.Round(pt_dest.X.Value, 5));
-			Assert.AreEqual(3.0, Math.Round(pt_dest.Y.Value, 5));
-			Assert.AreEqual(-2.0, Math.Round(pt_dest.Z.Value,5));
+			Assert.AreEqual(1.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
+			Assert.AreEqual(3.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
+			Assert.AreEqual(-2.0, Math.Round((ptDest.Z??throw new ArgumentException()),5));
 		}
 
 		[TestMethod]
 		public void RotateYAngle90Grad()
 		{
 			var r = new Rotate3D(Math.PI / 2.0, new double[] { 0, 1.0, 0 });
-			var pt_src = new Point3D(1.0, 2.0, 3.0);
-			var pt_dest = r.Rotate(pt_src);
+			var ptSrc = new Point3D(1.0, 2.0, 3.0);
+			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(-3.0, Math.Round(pt_dest.X.Value, 5));
-			Assert.AreEqual(2.0, Math.Round(pt_dest.Y.Value, 5));
-			Assert.AreEqual(1.0, Math.Round(pt_dest.Z.Value, 5));
+			Assert.AreEqual(-3.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
+			Assert.AreEqual(2.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
+			Assert.AreEqual(1.0, Math.Round((ptDest.Z??throw new ArgumentException()), 5));
 		}
 		[TestMethod]
 		public void RotateYAngleMinus90Grad()
 		{
 			var r = new Rotate3D(-Math.PI / 2.0, new double[] { 0, 1.0, 0 });
-			var pt_src = new Point3D(1.0, 2.0, 3.0);
-			var pt_dest = r.Rotate(pt_src);
+			var ptSrc = new Point3D(1.0, 2.0, 3.0);
+			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(3.0, Math.Round(pt_dest.X.Value, 5));
-			Assert.AreEqual(2.0, Math.Round(pt_dest.Y.Value, 5));
-			Assert.AreEqual(-1.0, Math.Round(pt_dest.Z.Value, 5));
+			Assert.AreEqual(3.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
+			Assert.AreEqual(2.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
+			Assert.AreEqual(-1.0, Math.Round((ptDest.Z??throw new ArgumentException()), 5));
 		}
 		[TestMethod]
-		public void RotateXYZAngle90Grad()
+		public void RotateXyzAngle90Grad()
 		{
 			var r = new Rotate3D(Math.PI / 2.0, new double[] { 1.0, 1.0, 1.0 });
-			var pt_src = new Point3D(1.0, 2.0, 3.0);
-			var pt_dest = r.Rotate(pt_src);
+			var ptSrc = new Point3D(1.0, 2.0, 3.0);
+			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(Math.Round(-2.2200846792814621,10), Math.Round(pt_dest.X.Value, 10));
-			Assert.AreEqual(Math.Round(-1.8213672050459184, 10), Math.Round(pt_dest.Y.Value, 10));
-			Assert.AreEqual(Math.Round(2.3987174742355446, 10), Math.Round(pt_dest.Z.Value, 10));
+			Assert.AreEqual(Math.Round(-2.2200846792814621,10), Math.Round((ptDest.X??throw new ArgumentException()), 10));
+			Assert.AreEqual(Math.Round(-1.8213672050459184, 10), Math.Round((ptDest.Y??throw new ArgumentException()), 10));
+			Assert.AreEqual(Math.Round(2.3987174742355446, 10), Math.Round((ptDest.Z??throw new ArgumentException()), 10));
 		}
 
 		[TestMethod]
-		public void RotateXYZAngle90GradAndBack()
+		public void RotateXyzAngle90GradAndBack()
 		{
 			var r1 = new Rotate3D(Math.PI / 2.0, new double[] { 1.0, 1.0, 1.0 });
 			var r2 = new Rotate3D(-Math.PI / 2.0, new double[] { 1.0, 1.0, 1.0 });
-			var pt_src = new Point3D(1.0, 2.0, 3.0);
-			var pt_rot  = r1.Rotate(pt_src);
-			var pt_dest = r2.Rotate(pt_rot);
+			var ptSrc = new Point3D(1.0, 2.0, 3.0);
+			var ptRot  = r1.Rotate(ptSrc);
+			var ptDest = r2.Rotate(ptRot);
 
-			Assert.AreEqual(1.0, Math.Round(pt_dest.X.Value, 10));
-			Assert.AreEqual(2.0, Math.Round(pt_dest.Y.Value, 10));
-			Assert.AreEqual(3.0, Math.Round(pt_dest.Z.Value, 10));
+			Assert.AreEqual(1.0, Math.Round((ptDest.X??throw new ArgumentException()), 10));
+			Assert.AreEqual(2.0, Math.Round((ptDest.Y??throw new ArgumentException()), 10));
+			Assert.AreEqual(3.0, Math.Round((ptDest.Z??throw new ArgumentException()), 10));
 		}
 	}
 }

@@ -25,20 +25,20 @@ namespace CNCLib.GCode.Load
 {
 	public class LoadImageHole : LoadImageBase
     {
-        public int ImageToDotSizeX { get { return LoadOptions.DotSizeX; } }
-        public int ImageToDotSizeY { get { return LoadOptions.DotSizeY; } }
+        public int ImageToDotSizeX => LoadOptions.DotSizeX;
+        public int ImageToDotSizeY => LoadOptions.DotSizeY;
 
-        protected override double PixelDistX { get { return (double) LoadOptions.DotDistX; } }
-        protected override double PixelDistY { get { return (double) LoadOptions.DotDistY; } }
-        protected double LaserSize { get { return (double) LoadOptions.LaserSize; } }
+        protected override double PixelDistX => (double) LoadOptions.DotDistX;
+        protected override double PixelDistY => (double) LoadOptions.DotDistY;
+        protected double LaserSize => (double) LoadOptions.LaserSize;
 
 
-        public bool UseYShift { get { return LoadOptions.UseYShift; } }
-        public bool RotateHeart { get { return LoadOptions.RotateHeart; } }
+        public bool UseYShift => LoadOptions.UseYShift;
+        public bool RotateHeart => LoadOptions.RotateHeart;
 
-        public LoadOptions.EHoleType HoleType { get { return LoadOptions.HoleType; } }
+        public LoadOptions.EHoleType HoleType => LoadOptions.HoleType;
 
-        public double StartLaserDist { get { return 0.15; } }
+        public double StartLaserDist => 0.15;
 
         public override void Load()
         {

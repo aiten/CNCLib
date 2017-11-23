@@ -145,17 +145,11 @@ namespace CNCLib.Wpf.ViewModels
 
         #region Properties
 
-        public Framework.Arduino.SerialCommunication.ISerial Com
-        {
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
-        }
+        public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
 
-        public bool Connected
-        {
-            get { return Com.IsConnected; }
-        }
+	    public bool Connected => Com.IsConnected;
 
-		#endregion
+	    #endregion
 
 		#region Interface Implementation
 

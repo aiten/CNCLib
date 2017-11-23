@@ -39,7 +39,7 @@ namespace Framework.Tools.Dependency
         /// Get the Unity container
         /// use the container e.g. in WebApi to use this container instead
         /// </summary>
-        public UnityContainer MyUnityContainer { get { return _container;  } }
+        public UnityContainer MyUnityContainer => _container;
 
         /// <summary>
         /// This can be called in unit tests to reset the container to an empty state. 

@@ -38,37 +38,37 @@ namespace CNCLib.GCode.GUI
 
 		#region Properties
 
-		public double SizeX { get { return _sizeX; } set { bool calc = _sizeX != value;  _sizeX = value; if (calc) CalcRatio(); } }
-		public double SizeY { get { return _sizeY; } set { bool calc = _sizeY != value;  _sizeY = value; if (calc) CalcRatio(); } }
-		public double SizeZ { get { return _sizeZ; } set { bool calc = _sizeZ != value;  _sizeZ = value; if (calc) CalcRatio(); } }
+		public double SizeX { get => _sizeX;set { bool calc = _sizeX != value;  _sizeX = value; if (calc) CalcRatio(); } }
+		public double SizeY { get => _sizeY;set { bool calc = _sizeY != value;  _sizeY = value; if (calc) CalcRatio(); } }
+		public double SizeZ { get => _sizeZ;set { bool calc = _sizeZ != value;  _sizeZ = value; if (calc) CalcRatio(); } }
 
-		public bool KeepRatio { get { return _keepRatio; } set { _keepRatio = value; CalcRatio(); } }
+		public bool KeepRatio { get => _keepRatio;set { _keepRatio = value; CalcRatio(); } }
 
-		public double Zoom { get { return _zoom; } set { _zoom = value; ReInitDraw(); } }
-		public double OffsetX { get { return _offsetX; } set { _offsetX = value; ReInitDraw(); } }
-		public double OffsetY { get { return _offsetY; } set { _offsetY = value; ReInitDraw(); } }
-		public double OffsetZ { get { return _offsetZ; } set { _offsetZ = value; ReInitDraw(); } }
-		public double CutterSize { get { return _cutterSize; } set { _cutterSize = value; ReInitDraw(); } }
-		public double LaserSize { get { return _laserSize; } set { _laserSize = value; ReInitDraw(); } }
+		public double Zoom { get => _zoom;set { _zoom = value; ReInitDraw(); } }
+		public double OffsetX { get => _offsetX;set { _offsetX = value; ReInitDraw(); } }
+		public double OffsetY { get => _offsetY;set { _offsetY = value; ReInitDraw(); } }
+		public double OffsetZ { get => _offsetZ;set { _offsetZ = value; ReInitDraw(); } }
+		public double CutterSize { get => _cutterSize;set { _cutterSize = value; ReInitDraw(); } }
+		public double LaserSize { get => _laserSize;set { _laserSize = value; ReInitDraw(); } }
 
-		public Color MachineColor { get { return _machineColor; } set { _machineColor = value; ReInitDraw(); } }
-		public Color LaserOnColor { get { return _laserOnColor; } set { _laserOnColor = value; ReInitDraw(); } }
-		public Color LaserOffColor { get { return _laserOffColor; } set { _laserOffColor = value; ReInitDraw(); } }
+		public Color MachineColor { get => _machineColor;set { _machineColor = value; ReInitDraw(); } }
+		public Color LaserOnColor { get => _laserOnColor;set { _laserOnColor = value; ReInitDraw(); } }
+		public Color LaserOffColor { get => _laserOffColor;set { _laserOffColor = value; ReInitDraw(); } }
 
-		public Color CutColor { get { return _cutColor; } set { _cutColor = value; ReInitDraw(); } }
-		public Color CutDotColor { get { return _cutDotColor; } set { _cutDotColor = value; ReInitDraw(); } }
-		public Color CutEllipseColor { get { return _cutEllipseColor; } set { _cutEllipseColor = value; ReInitDraw(); } }
-		public Color CutArcColor { get { return _cutArcColor; } set { _cutArcColor = value; ReInitDraw(); } }
+		public Color CutColor { get => _cutColor;set { _cutColor = value; ReInitDraw(); } }
+		public Color CutDotColor { get => _cutDotColor;set { _cutDotColor = value; ReInitDraw(); } }
+		public Color CutEllipseColor { get => _cutEllipseColor;set { _cutEllipseColor = value; ReInitDraw(); } }
+		public Color CutArcColor { get => _cutArcColor;set { _cutArcColor = value; ReInitDraw(); } }
 
-		public Color FastMoveColor { get { return _fastColor; } set { _fastColor = value; ReInitDraw(); } }
-		public Color HelpLineColor { get { return _helpLineColor; } set { _helpLineColor = value; ReInitDraw(); } }
+		public Color FastMoveColor { get => _fastColor;set { _fastColor = value; ReInitDraw(); } }
+		public Color HelpLineColor { get => _helpLineColor;set { _helpLineColor = value; ReInitDraw(); } }
 
-		public Rotate3D Rotate { get { return _rotate3D; } set { _rotate3D = value; PrepareRotate(); ReInitDraw(); } } 
+		public Rotate3D Rotate { get => _rotate3D;set { _rotate3D = value; PrepareRotate(); ReInitDraw(); } } 
 
 		public Size RenderSize
 		{
-			get { return _renderSize; }
-			set
+			get => _renderSize;
+		    set
 			{
 				if (_renderSize.Height != 0 && value.Width > 0 && value.Height > 0)
 				{
@@ -112,11 +112,6 @@ namespace CNCLib.GCode.GUI
 		Color _helpLineColor = Color.LightGray;
 
 		Rotate3D _rotate3D;
-
-        private Framework.Arduino.SerialCommunication.ISerial Com
-		{
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
-		}
 
 		#endregion
 
@@ -199,10 +194,6 @@ namespace CNCLib.GCode.GUI
 
 			return new PointF((float) x, (float) y);
 		}
-
-		const double SignX = 1.0;
-		const double SignY = -1.0;
-		const double SignZ = 1.0;
 
 		double ToClientSizeX(double X)
 		{

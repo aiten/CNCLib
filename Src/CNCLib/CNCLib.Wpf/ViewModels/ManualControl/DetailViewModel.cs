@@ -28,21 +28,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			Vm = vm;
 		}
-		public Framework.Arduino.SerialCommunication.ISerial Com
-		{
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
-		}
-		public CNCLib.Wpf.Helpers.MachineGCodeHelper GCode
-		{
-			get { return Framework.Tools.Pattern.Singleton<CNCLib.Wpf.Helpers.MachineGCodeHelper>.Instance; }
-		}
+		public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
+	    public CNCLib.Wpf.Helpers.MachineGCodeHelper GCode => Framework.Tools.Pattern.Singleton<CNCLib.Wpf.Helpers.MachineGCodeHelper>.Instance;
 
-		public bool Connected
-		{
-			//get { return true; }
-			get { return Com.IsConnected; }
-		}
-		protected void RunInNewTask(Action todo)
+	    public bool Connected => Com.IsConnected;
+
+	    protected void RunInNewTask(Action todo)
 		{
 			Vm.RunInNewTask(todo);
 		}

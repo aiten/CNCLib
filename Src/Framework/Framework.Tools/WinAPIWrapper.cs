@@ -16,12 +16,12 @@ namespace Framework.Tools
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         static extern uint SetThreadExecutionState(EXECUTION_STATE esFlags);
 
-        static public void KeepAlive()
+        public static void KeepAlive()
         {
             SetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_SYSTEM_REQUIRED | EXECUTION_STATE.ES_CONTINUOUS);
         }
 
-        static public void AllowIdle()
+        public static void AllowIdle()
         {
             SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
         }

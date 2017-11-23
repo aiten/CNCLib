@@ -46,16 +46,11 @@ namespace CNCLib.Wpf.Views
                     System.IO.Path.GetTempPath(),
                     now.Year,now.Month,now.Day,now.Hour,now.Minute,now.Second));
 		}
-		private Framework.Arduino.SerialCommunication.ISerial Com
-		{
-			get { return Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance; }
-		}
-        private Framework.Arduino.SerialCommunication.ISerial ComJoystick
-        {
-            get { return Framework.Tools.Pattern.Singleton<Wpf.Helpers.JoystickArduinoSerialCommunication>.Instance; }
-        }
+		private Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+	    private Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<Wpf.Helpers.JoystickArduinoSerialCommunication>.Instance;
+
+	    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (Com.IsConnected)
 				Com.Disconnect();

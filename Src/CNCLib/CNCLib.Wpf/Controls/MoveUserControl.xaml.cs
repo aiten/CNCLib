@@ -39,8 +39,8 @@ namespace CNCLib.Wpf.Controls
 
 		public ICommand Left
 		{
-			get { return (ICommand)GetValue(LeftCommandProperty); }
-			set { SetValue(LeftCommandProperty, value); }
+			get => (ICommand)GetValue(LeftCommandProperty);
+		    set => SetValue(LeftCommandProperty, value);
 		}
 
 		public static readonly DependencyProperty RightCommandProperty = DependencyProperty.Register(
@@ -48,8 +48,8 @@ namespace CNCLib.Wpf.Controls
 
 		public ICommand Right
 		{
-			get { return (ICommand)GetValue(RightCommandProperty); }
-			set { SetValue(RightCommandProperty, value); }
+			get => (ICommand)GetValue(RightCommandProperty);
+		    set => SetValue(RightCommandProperty, value);
 		}
 
 		public static readonly DependencyProperty UpCommandProperty = DependencyProperty.Register(
@@ -57,8 +57,8 @@ namespace CNCLib.Wpf.Controls
 
 		public ICommand Up
 		{
-			get { return (ICommand)GetValue(UpCommandProperty); }
-			set { SetValue(UpCommandProperty, value); }
+			get => (ICommand)GetValue(UpCommandProperty);
+		    set => SetValue(UpCommandProperty, value);
 		}
 
 		public static readonly DependencyProperty DownCommandProperty = DependencyProperty.Register(
@@ -66,8 +66,8 @@ namespace CNCLib.Wpf.Controls
 
 		public ICommand Down
 		{
-			get { return (ICommand)GetValue(DownCommandProperty); }
-			set { SetValue(DownCommandProperty, value); }
+			get => (ICommand)GetValue(DownCommandProperty);
+		    set => SetValue(DownCommandProperty, value);
 		}
 
 		public static readonly DependencyProperty ZUpCommandProperty = DependencyProperty.Register(
@@ -75,8 +75,8 @@ namespace CNCLib.Wpf.Controls
 
 		public ICommand ZUp
 		{
-			get { return (ICommand)GetValue(ZUpCommandProperty); }
-			set { SetValue(ZUpCommandProperty, value); }
+			get => (ICommand)GetValue(ZUpCommandProperty);
+		    set => SetValue(ZUpCommandProperty, value);
 		}
 
 		public static readonly DependencyProperty ZDownCommandProperty = DependencyProperty.Register(
@@ -84,8 +84,8 @@ namespace CNCLib.Wpf.Controls
 
 		public ICommand ZDown
 		{
-			get { return (ICommand)GetValue(ZDownCommandProperty); }
-			set { SetValue(ZDownCommandProperty, value); }
+			get => (ICommand)GetValue(ZDownCommandProperty);
+		    set => SetValue(ZDownCommandProperty, value);
 		}
 
 		#endregion

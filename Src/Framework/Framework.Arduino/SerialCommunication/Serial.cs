@@ -61,24 +61,23 @@ namespace Framework.Arduino.SerialCommunication
 
 		#endregion
 
-		#region ctr
-
-		public Serial()
-        {
-		}
-
-        #endregion 
-
         #region Properties
 
 		public int CommandsInQueue
 		{
-			get { return _pendingCommands.Count;  }
+			get
+			{
+			    lock (_pendingCommands)
+                {
+			        return _pendingCommands.Count;
+			    }
+			}
 		}
 
 		//      public bool IsConnected { get { return true; }  }
-		public bool IsConnected { get { return _serialPort != null && _serialPort.IsOpen; } }
-		public bool Aborted { get; protected set; }
+		public bool IsConnected => _serialPort != null && _serialPort.IsOpen;
+
+        public bool Aborted { get; protected set; }
 
 		public int BaudRate { get; set; }				= 115200;
 		public bool ResetOnConnect { get; set; }		= false;
@@ -90,12 +89,12 @@ namespace Framework.Arduino.SerialCommunication
         public int MaxCommandHistoryCount { get; set; } = int.MaxValue;
 		public int ArduinoBuffersize { get; set; }		= 64;
         public int ArduinoLineSize { get; set; }        = 128;
-        public TraceStream Trace { get { return _trace; } }
-		public bool Pause { get; set; }                 = false;
+        public TraceStream Trace => _trace;
+        public bool Pause { get; set; }                 = false;
 		public bool SendNext { get; set; }              = false;
-		private bool Continue {  get {	return (_serialPortCancellationTokenSource != null && !_serialPortCancellationTokenSource.IsCancellationRequested);	} 	}
+		private bool Continue => (_serialPortCancellationTokenSource != null && !_serialPortCancellationTokenSource.IsCancellationRequested);
 
-		#endregion
+        #endregion
 
 		#region Setup/Init Methodes
 
@@ -184,7 +183,7 @@ namespace Framework.Arduino.SerialCommunication
                     // ignore exception
                 }
                 _serialPort.Dispose();
-				_serialPortCancellationTokenSource.Dispose();
+				_serialPortCancellationTokenSource?.Dispose();
 				_serialPort = null;
 				_serialPortCancellationTokenSource = null;
 
@@ -319,11 +318,12 @@ namespace Framework.Arduino.SerialCommunication
 			return message;
 		}
 
-		/// <summary>
-		/// Send command and wait until the command is transfered and we got a reply (no command pending)
-		/// </summary>
-		/// <param name="line">command line to send</param>
-		public async Task<IEnumerable<SerialCommand>> SendCommandAsync(string line, int waitForMilliseconds = int.MaxValue)
+        /// <summary>
+        /// Send command and wait until the command is transfered and we got a reply (no command pending)
+        /// </summary>
+        /// <param name="line">command line to send</param>
+        /// <param name="waitForMilliseconds"></param>
+        public async Task<IEnumerable<SerialCommand>> SendCommandAsync(string line, int waitForMilliseconds = int.MaxValue)
         {
             var ret = SplitAndQueueCommand(line);
 			if (!await WaitUntilNoPendingCommandsAsync(waitForMilliseconds))
@@ -564,7 +564,7 @@ namespace Framework.Arduino.SerialCommunication
             }
             catch (Exception e)
             {
-                Trace.WriteTraceFlush("WriteException", $@"{commandtext} => {e.GetType().ToString()} {e.Message}");
+                Trace.WriteTraceFlush("WriteException", $@"{commandtext} => {e.GetType()} {e.Message}");
             }
             return false;
         }
@@ -831,7 +831,7 @@ namespace Framework.Arduino.SerialCommunication
 
 				if (endcommand && cmd != null)
 				{
-					bool isEmpty = false;
+					bool isEmpty;
 					lock (_pendingCommands)
 					{
 						if (_pendingCommands.Count > 0) // may cause because of a reset

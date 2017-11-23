@@ -57,12 +57,9 @@ namespace CNCLib.Wpf.Helpers
 				}
 			}
 		}
-		private Framework.Arduino.SerialCommunication.ISerial ComJoystick
-		{
-			get { return Framework.Tools.Pattern.Singleton<JoystickArduinoSerialCommunication>.Instance; }
-		}
+		private Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<JoystickArduinoSerialCommunication>.Instance;
 
-		public void JoystickReplyReceived(string trim)
+	    public void JoystickReplyReceived(string trim)
 		{
 			// ;btn5		=> look for ;btn5
 			// ;btn5:x		=> x is presscount - always incremented, look for max x in setting => modulo 

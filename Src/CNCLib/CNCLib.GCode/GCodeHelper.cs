@@ -22,7 +22,7 @@ namespace CNCLib.GCode
 {
     public class GCodeHelper
 	{
-		static public int AxisNameToIndex(string axisname)
+		public static int AxisNameToIndex(string axisname)
 		{
 			if (axisname.Length == 1)
 			{
@@ -31,7 +31,7 @@ namespace CNCLib.GCode
 			return -1;
 		}
 
-		static public int AxisNameToIndex(char axisname)
+		public static int AxisNameToIndex(char axisname)
 		{
 			switch (char.ToUpper(axisname))
 			{
@@ -45,7 +45,7 @@ namespace CNCLib.GCode
 			return -1;
 		}
 
-		static public string IndexToAxisName(int axis)
+		public static string IndexToAxisName(int axis)
 		{
 			switch (axis)
 			{

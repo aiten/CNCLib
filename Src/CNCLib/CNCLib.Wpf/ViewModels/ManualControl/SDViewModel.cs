@@ -36,15 +36,15 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		private string _fileName = @"%USERPROFILE%\Documents\test.GCode";
 		public string FileName
 		{
-			get { return _fileName; }
-			set { SetProperty(ref _fileName, value); }
+			get => _fileName;
+		    set => SetProperty(ref _fileName, value);
 		}
 
 		private string _SDFileName = @"auto0.g";
 		public string SDFileName
 		{
-			get { return _SDFileName; }
-			set { SetProperty(ref _SDFileName, value); }
+			get => _SDFileName;
+		    set => SetProperty(ref _SDFileName, value);
 		}
 
 		#endregion

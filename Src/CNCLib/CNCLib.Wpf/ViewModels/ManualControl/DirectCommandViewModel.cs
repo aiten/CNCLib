@@ -37,8 +37,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		private string _directCommand;
 		public string DirectCommand
 		{
-			get { return _directCommand; }
-			set { SetProperty(ref _directCommand, value); }
+			get => _directCommand;
+		    set => SetProperty(ref _directCommand, value);
 		}
 
 		private void AddDirectCommandHistory(string cmd)
@@ -51,8 +51,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		private ObservableCollection<string> _directCommandHistory;
 		public ObservableCollection<string> DirectCommandHistory
 		{
-			get { return _directCommandHistory; }
-			set { SetProperty(ref _directCommandHistory, value); RaisePropertyChanged(nameof(DirectCommandHistory)); }
+			get => _directCommandHistory;
+		    set { SetProperty(ref _directCommandHistory, value); RaisePropertyChanged(nameof(DirectCommandHistory)); }
 		}
 
 		#endregion

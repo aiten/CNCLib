@@ -341,67 +341,67 @@ namespace CNCLib.Wpf.Models
         [Category("Axis")]
         [DisplayName("Axis-X")]
         [Description("Definition of axis")]
-        public SAxis AxisX { get { return _axis[0]; } }
+        public SAxis AxisX => _axis[0];
 
-        [ExpandableObject]
+	    [ExpandableObject]
         [Category("Axis")]
         [DisplayName("Axis-Y")]
         [Description("Definition of axis")]
-        public SAxis AxisY { get { return _axis[1]; } }
+        public SAxis AxisY => _axis[1];
 
-        [ExpandableObject]
+	    [ExpandableObject]
         [Category("Axis")]
         [DisplayName("Axis-Z")]
         [Description("Definition of axis")]
-        public SAxis AxisZ { get { return _axis[2]; } }
+        public SAxis AxisZ => _axis[2];
 
-        [ExpandableObject]
+	    [ExpandableObject]
         [Category("Axis")]
         [DisplayName("Axis-A")]
         [Description("Definition of axis")]
-        public SAxis AxisA { get { return _axis[3]; } }
+        public SAxis AxisA => _axis[3];
 
-        [ExpandableObject]
+	    [ExpandableObject]
         [Category("Axis")]
         [DisplayName("Axis-B")]
         [Description("Definition of axis")]
-        public SAxis AxisB { get { return _axis[4]; } }
+        public SAxis AxisB => _axis[4];
 
-        [ExpandableObject]
+	    [ExpandableObject]
         [Category("Axis")]
         [DisplayName("Axis-C")]
         [Description("Definition of axis")]
-        public SAxis AxisC { get { return _axis[5]; } }
+        public SAxis AxisC => _axis[5];
 
-        [Category(CATEGORY_GENERAL)]
+	    [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 1")]
         [Description("Axis for reference-sequence 1")]
-        public EReverenceSequence RefSeqence1 { get { return _refSeqences[0]; } set { _refSeqences[0] = value; } }
+        public EReverenceSequence RefSeqence1 { get => _refSeqences[0];set => _refSeqences[0] = value;}
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 2")]
         [Description("Axis for reference-sequence 2")]
-        public EReverenceSequence RefSeqence2 { get { return _refSeqences[1]; } set { _refSeqences[1] = value; } }
+        public EReverenceSequence RefSeqence2 { get => _refSeqences[1];set => _refSeqences[1] = value;}
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 3")]
         [Description("Axis for reference-sequence 3")]
-        public EReverenceSequence RefSeqence3 { get { return _refSeqences[2]; } set { _refSeqences[2] = value; } }
+        public EReverenceSequence RefSeqence3 { get => _refSeqences[2];set => _refSeqences[2] = value;}
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 4")]
         [Description("Axis for reference-sequence 4")]
-        public EReverenceSequence RefSeqence4 { get { return _refSeqences[3]; } set { _refSeqences[3] = value; } }
+        public EReverenceSequence RefSeqence4 { get => _refSeqences[3];set => _refSeqences[3] = value;}
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 5")]
         [Description("Axis for reference-sequence 5")]
-        public EReverenceSequence RefSeqence5 { get { return _refSeqences[4]; } set { _refSeqences[4] = value; } }
+        public EReverenceSequence RefSeqence5 { get => _refSeqences[4];set => _refSeqences[4] = value;}
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 6")]
         [Description("Axis for reference-sequence 6")]
-        public EReverenceSequence RefSeqence6 { get { return _refSeqences[5]; } set { _refSeqences[5] = value; } }
+        public EReverenceSequence RefSeqence6 { get => _refSeqences[5];set => _refSeqences[5] = value;}
 
         #endregion
 
@@ -409,7 +409,9 @@ namespace CNCLib.Wpf.Models
 
         protected EReverenceSequence[] _refSeqences = new EReverenceSequence[EEPROM_NUM_AXIS] { EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No };
 
-		public EReverenceSequence this[int i] { get { return _refSeqences[i]; } set { _refSeqences[i] = value; } }
+		public EReverenceSequence this[int i] { get => _refSeqences[i];
+		    set => _refSeqences[i] = value;
+		}
 
         #endregion
 

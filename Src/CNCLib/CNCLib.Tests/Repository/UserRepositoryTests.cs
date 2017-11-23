@@ -31,7 +31,7 @@ namespace CNCLib.Tests.Repository
 	public class UserRepositoryTests : RepositoryTests
 	{
 		[ClassInitialize]
-		public static new void ClassInit(TestContext testContext)
+		public new static void ClassInit(TestContext testContext)
 		{
 			RepositoryTests.ClassInit(testContext);
 		}

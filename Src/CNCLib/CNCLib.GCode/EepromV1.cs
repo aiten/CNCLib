@@ -31,18 +31,15 @@ namespace CNCLib.GCode
         UInt32[] _values;
         public UInt32[] Values
         {
-            get { return _values; }
+            get => _values;
             set { _values = value; Analyse(); }
         }
 
-        public bool IsValid
-        {
-            get { return Values?.Length > 0 && (Values[0] == SIGNATURE || Values[0] == SIGNATUREPLOTTER); }
-        }
+        public bool IsValid => Values?.Length > 0 && (Values[0] == SIGNATURE || Values[0] == SIGNATUREPLOTTER);
 
-        public uint OfsAxis { get { return _ofsaxis; } }
-        public uint DWSizeAxis { get { return _sizeaxis; } }
-        public uint OfsAfterAxis { get { return  _ofsAfterAxis; } }
+        public uint OfsAxis => _ofsaxis;
+        public uint DWSizeAxis => _sizeaxis;
+        public uint OfsAfterAxis => _ofsAfterAxis;
 
         public const uint SIZEOFAXIX_EX = 2;
 
@@ -62,22 +59,22 @@ namespace CNCLib.GCode
 		}
 		public enum EValueOffsets8
 		{
-			NumAxis = (((int) EValueOffsets32.InfoOffset1) << 8) + 00,
-			UseAxis = (((int) EValueOffsets32.InfoOffset1) << 8) + 01,
-            OfsOfAxis = (((int) EValueOffsets32.InfoOffset1) << 8) + 02,
-            SizeOfAxis = (((int)EValueOffsets32.InfoOffset1) << 8) + 03,
+			NumAxis = (EValueOffsets32.InfoOffset1 << 8) + 00,
+			UseAxis = (EValueOffsets32.InfoOffset1 << 8) + 01,
+            OfsOfAxis = (EValueOffsets32.InfoOffset1 << 8) + 02,
+            SizeOfAxis = (EValueOffsets32.InfoOffset1 << 8) + 03,
 
-            StepperDirection = (((int)EValueOffsets32.Values8Bit1) << 8) + 0,
-			SpindleFadeTime  = (((int)EValueOffsets32.Values8Bit1) << 8) + 3
+            StepperDirection = (EValueOffsets32.Values8Bit1 << 8) + 0,
+			SpindleFadeTime  = (EValueOffsets32.Values8Bit1 << 8) + 3
 		}
 
 		public enum EValueOffsets16
 		{
-			MaxSpindleSpeed = (((int)EValueOffsets32.Values16Bit1) << 8) + 00,
-			JerkSpeed		= (((int)EValueOffsets32.Values16Bit1) << 8) + 01,
+			MaxSpindleSpeed = (EValueOffsets32.Values16Bit1 << 8) + 00,
+			JerkSpeed		= (EValueOffsets32.Values16Bit1 << 8) + 01,
 
-			Acc = (((int)EValueOffsets32.OffsetAccDec) << 8) + 00,
-			Dec = (((int)EValueOffsets32.OffsetAccDec) << 8) + 01,
+			Acc = (EValueOffsets32.OffsetAccDec << 8) + 00,
+			Dec = (EValueOffsets32.OffsetAccDec << 8) + 01,
 		}
 
 		public enum EAxisOffsets32
@@ -93,16 +90,16 @@ namespace CNCLib.GCode
 
         public enum EAxisOffsets16
         {
-            Acc = (((int)EAxisOffsets32.OffsetAccDec) << 8) + 00,
-            Dec = (((int)EAxisOffsets32.OffsetAccDec) << 8) + 01,
+            Acc = (EAxisOffsets32.OffsetAccDec << 8) + 00,
+            Dec = (EAxisOffsets32.OffsetAccDec << 8) + 01,
         }
 
         public enum EAxisOffsets8
 		{
-			EReverenceType = (((int)EAxisOffsets32.Ofsett1) << 8) + 00,
-			EReverenceSeqence = (((int)EAxisOffsets32.Ofsett1) << 8) + 1,
-			EReverenceHitValueMin = (((int)EAxisOffsets32.Ofsett1) << 8) + 2,
-			EReverenceHitValueMax = (((int)EAxisOffsets32.Ofsett1) << 8) + 3,
+			EReverenceType = (EAxisOffsets32.Ofsett1 << 8) + 00,
+			EReverenceSeqence = (EAxisOffsets32.Ofsett1 << 8) + 1,
+			EReverenceHitValueMin = (EAxisOffsets32.Ofsett1 << 8) + 2,
+			EReverenceHitValueMax = (EAxisOffsets32.Ofsett1 << 8) + 3,
 		}
 
         public enum EValueOffsets32Plotter
@@ -129,11 +126,11 @@ namespace CNCLib.GCode
         }
         public enum EValueOffsets16Plotter
         {
-            EPenchangeServoClampOpenPos = (((int)EValueOffsets32Plotter.EPenchangeServoClampPos) << 8) + 00,
-            EPenchangeServoClampClosePos = (((int)EValueOffsets32Plotter.EPenchangeServoClampPos) << 8) + 01,
+            EPenchangeServoClampOpenPos = (EValueOffsets32Plotter.EPenchangeServoClampPos << 8) + 00,
+            EPenchangeServoClampClosePos = (EValueOffsets32Plotter.EPenchangeServoClampPos << 8) + 01,
 
-            EPenchangeServoClampOpenDelay  = (((int)EValueOffsets32Plotter.EPenchangeServoClampDelay) << 8) + 00,
-            EPenchangeServoClampCloseDelay = (((int)EValueOffsets32Plotter.EPenchangeServoClampDelay) << 8) + 01,
+            EPenchangeServoClampOpenDelay  = (EValueOffsets32Plotter.EPenchangeServoClampDelay << 8) + 00,
+            EPenchangeServoClampCloseDelay = (EValueOffsets32Plotter.EPenchangeServoClampDelay << 8) + 01,
         }
 
         [Flags]
@@ -169,12 +166,12 @@ namespace CNCLib.GCode
 
         #region Get/Set
 
-        public UInt32 this[EValueOffsets32 ofs] { get { return GetValue32(ofs); } set { SetValue32(ofs, value); } }
-		public UInt16 this[EValueOffsets16 ofs] { get { return GetValue16(ofs); } set { SetValue16(ofs, value); } }
-		public byte this[EValueOffsets8 ofs] { get { return GetValue8(ofs); } set { SetValue8(ofs, value); } }
-		public UInt32 this[int axis, EAxisOffsets32 ofs] { get { return GetAxisValue32(axis,ofs); } set { SetAxisValue32(axis, ofs, value); } }
-        public UInt16 this[int axis, EAxisOffsets16 ofs] { get { return GetAxisValue16(axis, ofs); } set { SetAxisValue16(axis, ofs, value); } }
-        public byte this[int axis, EAxisOffsets8 ofs] { get { return GetAxisValue8(axis,ofs); } set { SetAxisValue8(axis,ofs, value); } }
+        public UInt32 this[EValueOffsets32 ofs] { get => GetValue32(ofs);set => SetValue32(ofs, value);}
+		public UInt16 this[EValueOffsets16 ofs] { get => GetValue16(ofs);set => SetValue16(ofs, value);}
+		public byte this[EValueOffsets8 ofs] { get => GetValue8(ofs);set => SetValue8(ofs, value);}
+		public UInt32 this[int axis, EAxisOffsets32 ofs] { get => GetAxisValue32(axis,ofs);set => SetAxisValue32(axis, ofs, value);}
+        public UInt16 this[int axis, EAxisOffsets16 ofs] { get => GetAxisValue16(axis, ofs);set => SetAxisValue16(axis, ofs, value);}
+        public byte this[int axis, EAxisOffsets8 ofs] { get => GetAxisValue8(axis,ofs);set => SetAxisValue8(axis,ofs, value);}
 
         private EValueOffsets32 AddPlotterOfs(EValueOffsets32Plotter ofs)
         {
@@ -184,8 +181,8 @@ namespace CNCLib.GCode
         {
             return (EValueOffsets16)((uint)ofs + (_ofsAfterAxis<<8));
         }
-        public UInt32 this[EValueOffsets32Plotter ofs] { get { return GetValue32(AddPlotterOfs(ofs)); } set { SetValue32(AddPlotterOfs(ofs), value); } }
-        public UInt16 this[EValueOffsets16Plotter ofs] { get { return GetValue16(AddPlotterOfs(ofs)); } set { SetValue16(AddPlotterOfs(ofs), value); } }
+        public UInt32 this[EValueOffsets32Plotter ofs] { get => GetValue32(AddPlotterOfs(ofs)); set => SetValue32(AddPlotterOfs(ofs), value);}
+        public UInt16 this[EValueOffsets16Plotter ofs] { get => GetValue16(AddPlotterOfs(ofs)); set => SetValue16(AddPlotterOfs(ofs), value);}
 
         public List<string> ToGCode()
 		{
