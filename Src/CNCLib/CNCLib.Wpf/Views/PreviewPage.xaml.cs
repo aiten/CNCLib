@@ -36,7 +36,7 @@ namespace CNCLib.Wpf.Views
 	{
 		public PreviewPage()
 		{
-            var vm = Dependency.Resolve<ViewModels.PreviewViewModel>();
+            var vm = Dependency.Resolve<PreviewViewModel>();
             DataContext = vm;
 
             InitializeComponent();
@@ -57,12 +57,12 @@ namespace CNCLib.Wpf.Views
 				{
                     var dlg = new LoadOptionView();
                     var vmdlg = dlg.DataContext as LoadOptionViewModel;
-                    vmdlg.LoadOptionsValue = Dependency.Resolve<IMapper>().Map<CNCLib.GCode.GUI.Models.LoadOptions>(arg.LoadOption);
+                    vmdlg.LoadOptionsValue = Dependency.Resolve<IMapper>().Map<GCode.GUI.Models.LoadOptions>(arg.LoadOption);
                     vmdlg.UseAzure = arg.UseAzure;
                     if (!dlg.ShowDialog() ?? false)
                         return false;
 
-                    arg.LoadOption = Dependency.Resolve<IMapper>().Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
+                    arg.LoadOption = Dependency.Resolve<IMapper>().Map<Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
                     arg.UseAzure = vmdlg.UseAzure;
                     return true;
                 });

@@ -42,9 +42,9 @@ namespace Framework.Tools.Drawing
         {
             base.ConvertImage();
 
-            for (int y = 0; y < _height; y += DotSize)
+            for (int y = 0; y < Height; y += DotSize)
             {
-                for (int x = 0; x < _width; x += DotSize)
+                for (int x = 0; x < Width; x += DotSize)
                 {
                     int count = CountBlack(x, y);
                     FillBlack(x, y, count);
@@ -72,20 +72,20 @@ namespace Framework.Tools.Drawing
 
         struct Offsets
         {
-            public int x;
-            public int y;
+            public int X;
+            public int Y;
         }
 
-        Offsets[] _offsets = new Offsets[]
+        private Offsets[] _offsets = new Offsets[]
         {
-            new Offsets() { x =0, y=0 },
-            new Offsets() { x = -1, y = 0 },  new Offsets() { x = 0,  y = 1 }, new Offsets() { x = 1, y = 0 },  new Offsets() { x = 0,  y = -1 },
-            new Offsets() { x = -1, y = 1 },  new Offsets() { x = 1,  y = 1 }, new Offsets() { x = 1, y = -1 }, new Offsets() { x = -1,  y = -1 },
+            new Offsets() { X =0, Y=0 },
+            new Offsets() { X = -1, Y = 0 },  new Offsets() { X = 0,  Y = 1 }, new Offsets() { X = 1, Y = 0 },  new Offsets() { X = 0,  Y = -1 },
+            new Offsets() { X = -1, Y = 1 },  new Offsets() { X = 1,  Y = 1 }, new Offsets() { X = 1, Y = -1 }, new Offsets() { X = -1,  Y = -1 },
 
-            new Offsets() { x = -2, y = 0 },  new Offsets() { x = 0,  y = 2 }, new Offsets() { x = 2, y = 0 },    new Offsets() { x = 0,  y = -2 },
-            new Offsets() { x = -2, y = 1 },  new Offsets() { x = 1,  y = 2 }, new Offsets() { x = 2, y = -1 },   new Offsets() { x = -1, y = -2 },
-            new Offsets() { x = -1, y = 2 },  new Offsets() { x = 2,  y = 1 }, new Offsets() { x = 1, y = -2 },   new Offsets() { x = -2, y = -1 },
-            new Offsets() { x = -2, y = 2 },  new Offsets() { x = 2,  y = 2 }, new Offsets() { x = 2, y = -2 },   new Offsets() { x = -2, y = -2 }
+            new Offsets() { X = -2, Y = 0 },  new Offsets() { X = 0,  Y = 2 }, new Offsets() { X = 2, Y = 0 },    new Offsets() { X = 0,  Y = -2 },
+            new Offsets() { X = -2, Y = 1 },  new Offsets() { X = 1,  Y = 2 }, new Offsets() { X = 2, Y = -1 },   new Offsets() { X = -1, Y = -2 },
+            new Offsets() { X = -1, Y = 2 },  new Offsets() { X = 2,  Y = 1 }, new Offsets() { X = 1, Y = -2 },   new Offsets() { X = -2, Y = -1 },
+            new Offsets() { X = -2, Y = 2 },  new Offsets() { X = 2,  Y = 2 }, new Offsets() { X = 2, Y = -2 },   new Offsets() { X = -2, Y = -2 }
         };
 
         private void FillBlack(int x, int y, int count)
@@ -95,8 +95,8 @@ namespace Framework.Tools.Drawing
 
             for (int i=0;i<DotSize*DotSize;i++)
             {
-                int xx = x + DotSize / 2 + _offsets[i].x;
-                int yy = y + DotSize / 2 + _offsets[i].y;
+                int xx = x + DotSize / 2 + _offsets[i].X;
+                int yy = y + DotSize / 2 + _offsets[i].Y;
 
                 if (IsPixel(xx, yy))
                 {

@@ -20,7 +20,7 @@ namespace CNCLib.Repository.Migrations
 {
     using System.Data.Entity.Migrations;
 
-    public sealed class Configuration : DbMigrationsConfiguration<CNCLib.Repository.Context.CNCLibContext>
+    public sealed class Configuration : DbMigrationsConfiguration<Context.CNCLibContext>
     {
         public Configuration()
         {
@@ -29,7 +29,7 @@ namespace CNCLib.Repository.Migrations
 			ContextKey = "CNCLib.Repository.Context.CNCLibContext";
         }
 
-        protected override void Seed(CNCLib.Repository.Context.CNCLibContext context)
+        protected override void Seed(Context.CNCLibContext context)
         {
             //  This method will be called after migrating to the latest version.
 

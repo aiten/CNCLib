@@ -42,12 +42,13 @@ namespace Framework.Wpf.Helpers
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
+/*
 		private void RaisePropertyChanged<TProperty>(Expression<Func<TProperty>> projection)
 		{
 			var memberExpression = (MemberExpression)projection.Body;
 			RaisePropertyChanged(memberExpression.Member.Name);
 		}
-
+*/
 
 		private async Task WatchTaskAsync(Task task)
 		{

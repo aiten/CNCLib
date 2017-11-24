@@ -33,7 +33,7 @@ namespace CNCLib.Wpf.Views
 	{
 		public SetupPage()
 		{
-            var vm = Dependency.Resolve<ViewModels.SetupWindowViewModel>();
+            var vm = Dependency.Resolve<SetupWindowViewModel>();
             DataContext = vm;
 
             InitializeComponent();

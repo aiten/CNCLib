@@ -28,7 +28,7 @@ namespace Framework.Tools.Dependency
     /// </summary>
     public abstract class UnityDependencyContainer : IDependencyContainer
     {
-        protected UnityContainer _container;
+        private UnityContainer _container;
 
         protected UnityDependencyContainer()
         {
@@ -55,10 +55,7 @@ namespace Framework.Tools.Dependency
         /// <summary>
         /// Registers a type for the given interface.
         /// </summary>
-        /// <typeparam name="typeFrom">Interface that can be later resolved.</typeparam>
-        /// <typeparam name="typeTo">Type that implements interface. On Resolve&lt;TInterface&gt;() calls a new instance is returned every time.</typeparam>
         /// <returns>This instance.</returns>
-
         public IDependencyContainer RegisterType(Type typeFrom, Type typeTo)
         {
             _container.RegisterType(typeFrom,typeTo);
@@ -68,10 +65,7 @@ namespace Framework.Tools.Dependency
         /// <summary>
         /// Registers instance for a specified interface.
         /// </summary>
-        /// <typeparam name="typeFrom">Interface that can be later resolved.</typeparam>
-        /// <typeparam name="obj">intance of object</typeparam>
         /// <returns>This instance.</returns>
-
         public IDependencyContainer RegisterInstance(Type typeFrom, object obj)
         {
             _container.RegisterInstance(typeFrom, obj);

@@ -31,19 +31,12 @@ namespace Framework.Test.SerialCommunication
     [TestClass]
     public class SerialTest : UnitTestBase
     {
-        private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
-        {
-            var rep = Substitute.For<TInterface>();
-            Tools.Dependency.Dependency.Container.RegisterInstance(rep);
-            return rep;
-        }
-
         private ISerialPort CreateSerialPortMock(ISerial serial, string[] responsstrings)
         {
-            var serialport = Substitute.For<Arduino.SerialCommunication.ISerialPort>();
+            var serialport = Substitute.For<ISerialPort>();
             var basestream = Substitute.For<MemoryStream>();
             serialport.BaseStream.ReturnsForAnyArgs(basestream);
-            Encoding encoding = System.Text.Encoding.GetEncoding(1200);
+            Encoding encoding = Encoding.GetEncoding(1200);
             serialport.Encoding.ReturnsForAnyArgs(encoding);
 
             Tools.Dependency.Dependency.Container.RegisterInstance(serialport);

@@ -37,15 +37,15 @@ namespace CNCLib.WebAPI
 		{
 			Dependency.Initialize(new LiveDependencyProvider());
 			Dependency.Container.RegisterTypesIncludingInternals(
-				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
-				typeof(CNCLib.Repository.MachineRepository).Assembly,
-				typeof(CNCLib.Logic.Client.DynItemController).Assembly,
-				typeof(CNCLib.Logic.MachineController).Assembly);
+				typeof(ServiceProxy.Logic.MachineService).Assembly,
+				typeof(Repository.MachineRepository).Assembly,
+				typeof(Logic.Client.DynItemController).Assembly,
+				typeof(Logic.MachineController).Assembly);
 			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<Repository.Context.CNCLibContext>>();
 
-			Dependency.Container.RegisterType<IRest< CNCLib.Logic.Contracts.DTO.Machine>, MachineRest>();
-			Dependency.Container.RegisterType<IRest<CNCLib.Logic.Contracts.DTO.LoadOptions>, LoadInfoRest>();
-			Dependency.Container.RegisterType<IRest<CNCLib.Logic.Contracts.DTO.Item>, ItemRest>();
+			Dependency.Container.RegisterType<IRest< Logic.Contracts.DTO.Machine>, MachineRest>();
+			Dependency.Container.RegisterType<IRest<Logic.Contracts.DTO.LoadOptions>, LoadInfoRest>();
+			Dependency.Container.RegisterType<IRest<Logic.Contracts.DTO.Item>, ItemRest>();
 
 			var config = new MapperConfiguration(cfg =>
 			{

@@ -43,7 +43,7 @@ namespace CNCLib.GCode.Commands
         }
 
 		private Point3D _calculatedEndPosition;
-		protected List<Variable> _variables = new List<Variable>();
+		private List<Variable> _variables = new List<Variable>();
 
 		#endregion
 
@@ -184,7 +184,7 @@ namespace CNCLib.GCode.Commands
 
 		public virtual Command[] ConvertCommand(CommandState state, ConvertOptions options)
 		{
-			return new Command[] { this };
+			return new [] { this };
 		}
 
 		public DrawType Convert(MoveType movetype, CommandState state)
@@ -300,7 +300,7 @@ namespace CNCLib.GCode.Commands
 				{
 					sc.AssignMissing(PrevCommand.CalculatedEndPosition);
 				}
-				_calculatedEndPosition = sc;;
+				_calculatedEndPosition = sc;
 			}
 			else
 			{

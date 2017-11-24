@@ -42,14 +42,14 @@ namespace CNCLib.Wpf.WebAPI.Start
 			Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
                 //				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
-                typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
-				typeof(CNCLib.Logic.Client.DynItemController).Assembly);
+                typeof(ServiceProxy.WebAPI.MachineService).Assembly,
+				typeof(Logic.Client.DynItemController).Assembly);
             //			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
             Dependency.Container.RegisterTypesByName(
                 (n) => n.EndsWith("ViewModel"),
-                typeof(CNCLib.Wpf.ViewModels.MachineViewModel).Assembly,
-                typeof(CNCLib.GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+                typeof(ViewModels.MachineViewModel).Assembly,
+                typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
             var config = new MapperConfiguration(cfg =>
 				{

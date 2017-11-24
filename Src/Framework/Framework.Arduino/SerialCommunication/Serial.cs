@@ -30,7 +30,7 @@ using Framework.Tools.Dependency;
 
 namespace Framework.Arduino.SerialCommunication
 {
-	public class Serial : ISerial, IDisposable
+	public class Serial : ISerial
     {
         #region Private Members
 
@@ -288,7 +288,7 @@ namespace Framework.Arduino.SerialCommunication
 
 		protected virtual string[] SplitCommand(string line)
         {
-            return new string[] { line };
+            return new [] { line };
         }
 
 		#endregion
@@ -426,7 +426,7 @@ namespace Framework.Arduino.SerialCommunication
 		public async Task<string> WaitUntilResonseAsync(int maxMilliseconds = int.MaxValue)
 		{
 			string message = null;
-			var checkresponse = new SerialCommunication.CommandEventHandler((obj, e) =>
+			var checkresponse = new CommandEventHandler((obj, e) =>
 			{
 				message = e.Info;
 			});
@@ -776,7 +776,7 @@ namespace Framework.Arduino.SerialCommunication
 				if (cmd == null)
 				{
 					// timeout and no queue
-					Framework.Tools.WinAPIWrapper.AllowIdle();
+					Tools.WinAPIWrapper.AllowIdle();
 				}
 			}
 			else
@@ -789,7 +789,7 @@ namespace Framework.Arduino.SerialCommunication
 
 				if (cmd != null)
 				{
-					Framework.Tools.WinAPIWrapper.KeepAlive();
+					Tools.WinAPIWrapper.KeepAlive();
 
 					string result = cmd.ResultText;
 					if (string.IsNullOrEmpty(result))
@@ -959,7 +959,7 @@ namespace Framework.Arduino.SerialCommunication
 			{
 				using (StreamWriter sr = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 				{
-                    foreach (SerialCommunication.SerialCommand cmds in _commands)
+                    foreach (SerialCommand cmds in _commands)
 					{
 						sr.Write(cmds.SentTime); sr.Write(":");
 						sr.Write(cmds.CommandText); sr.Write(" => ");

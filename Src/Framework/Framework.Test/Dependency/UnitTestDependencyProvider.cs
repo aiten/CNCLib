@@ -23,7 +23,6 @@ namespace Framework.Test.Dependency
 {
     public sealed class UnitTestDependencyProvider : IDependencyProvider
     {
-        // (DAS) As soon as we want to support parallel unit tests, just replace this with a FlowLocalStorage storage.
         private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new MockingDependencyContainer());
 
         public IDependencyContainer Container => _dependencyContainer.Value;

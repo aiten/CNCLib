@@ -101,7 +101,7 @@ namespace Framework.EF
 
 		#region Transaction
 
-		private System.Data.Entity.DbContextTransaction _dbTran;
+		private DbContextTransaction _dbTran;
 
 		public bool InTransaction => _dbTran != null;
 

@@ -25,7 +25,7 @@ using System.Drawing.Drawing2D;
 
 namespace CNCLib.GCode.GUI
 {
-	public partial class GCodeBitmapDraw : IOutputCommand
+	public class GCodeBitmapDraw : IOutputCommand
 	{
 		#region crt
 
@@ -251,22 +251,22 @@ namespace CNCLib.GCode.GUI
 			float fastSize = 0.5f;
 
 			set._cutPen = new Pen(colorconverter(CutColor), cutsize);
-			set._cutPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-			set._cutPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+			set._cutPen.StartCap = LineCap.Round;
+			set._cutPen.EndCap = LineCap.Round;
 
 			set._cutDotPen = new Pen(colorconverter(CutDotColor), cutsize);
 			set._cutEllipsePen = new Pen(colorconverter(CutEllipseColor), cutsize);
 			set._cutArcPen = new Pen(colorconverter(CutArcColor), cutsize);
-			set._cutArcPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-			set._cutArcPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+			set._cutArcPen.StartCap = LineCap.Round;
+			set._cutArcPen.EndCap = LineCap.Round;
 
 			set._cutPens = new Pen[] { set._cutPen, set._cutDotPen, set._cutEllipsePen, set._cutArcPen };
 
 			set._fastPen = new Pen(colorconverter(FastMoveColor), fastSize);
 			set._noMovePen = new Pen(colorconverter(Color.Blue), fastSize);
 			set._laserCutPen = new Pen(colorconverter(LaserOnColor), (float) ToClientSizeX(LaserSize));
-			set._laserCutPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-			set._laserCutPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+			set._laserCutPen.StartCap = LineCap.Round;
+			set._laserCutPen.EndCap = LineCap.Round;
 			set._laserFastPen = new Pen(colorconverter(LaserOffColor), (float)(fastSize / 2.0));
 		}
 
@@ -385,7 +385,7 @@ namespace CNCLib.GCode.GUI
 			e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X - xradius / 2, from.Y - yradius / 2, xradius, yradius);
 		}
 
-		public void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D pIJK, bool clockwise, Pane pane)
+		public void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D ptIIJ, bool clockwise, Pane pane)
 		{
 			if (drawtype == DrawType.NoDraw) return;
 
@@ -393,10 +393,10 @@ namespace CNCLib.GCode.GUI
 			{
 				default:
 				case Pane.XYPane:
-					Arc(cmd, param, drawtype, ptFrom, ptTo, pIJK.X ?? 0.0, pIJK.Y ?? 0, 0, 1, 2, clockwise);
+					Arc(cmd, param, drawtype, ptFrom, ptTo, ptIIJ.X ?? 0.0, ptIIJ.Y ?? 0, 0, 1, 2, clockwise);
 					break;
 				case Pane.XZPane:
-					Arc(cmd, param, drawtype, ptFrom, ptTo, pIJK.X ?? 0.0, pIJK.Z ?? 0, 0, 2, 1, clockwise);
+					Arc(cmd, param, drawtype, ptFrom, ptTo, ptIIJ.X ?? 0.0, ptIIJ.Z ?? 0, 0, 2, 1, clockwise);
 					break;
 			}
 		}

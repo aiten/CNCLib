@@ -24,9 +24,9 @@ namespace CNCLib.Wpf
 	{
 		public WpfAutoMapperProfile()
 		{
-			CreateMap<CNCLib.Wpf.Models.Machine, CNCLib.Logic.Contracts.DTO.Machine>().ReverseMap();
-			CreateMap<CNCLib.Wpf.Models.MachineInitCommand, CNCLib.Logic.Contracts.DTO.MachineInitCommand>().ReverseMap();
-			CreateMap<CNCLib.Wpf.Models.MachineCommand, CNCLib.Logic.Contracts.DTO.MachineCommand>().ReverseMap();
+			CreateMap<Models.Machine, Logic.Contracts.DTO.Machine>().ReverseMap();
+			CreateMap<Models.MachineInitCommand, Logic.Contracts.DTO.MachineInitCommand>().ReverseMap();
+			CreateMap<Models.MachineCommand, Logic.Contracts.DTO.MachineCommand>().ReverseMap();
 		}
 	}
 }

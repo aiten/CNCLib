@@ -41,7 +41,7 @@ namespace CNCLib.WebAPI.Controllers
 		{
 			var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input);
 			var sw = new StringWriter();
-			new XmlSerializer(typeof(CNCLib.GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
+			new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
 			return sw.ToString();
 		}
 
@@ -51,7 +51,7 @@ namespace CNCLib.WebAPI.Controllers
 			LoadOptions opt = await _loadOptionsService.Get(input.LoadOptionsId);
 			var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt);
 			var sw = new StringWriter();
-			new XmlSerializer(typeof(CNCLib.GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
+			new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
 			return sw.ToString();
 		}
 	}

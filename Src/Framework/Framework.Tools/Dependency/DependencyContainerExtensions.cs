@@ -17,29 +17,18 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.Tools.Dependency
 {
     public static class DependencyContainerExtensions
     {
         /// <summary>
-        /// </summary>
-        /// <param name="assemblies">List of assemblies that should be searched for types.</param>
-        /// <returns>A list of all non-abstract classes in the given assemblies.</returns>
-        private static IEnumerable<Type> GetAllTypesFromAssemblies(IEnumerable<Assembly> assemblies)
-        {
-            return assemblies.SelectMany(assembly => assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract));
-        }
-
-        /// <summary>
         /// Registers the given object for the interface. 
         /// </summary>
         /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
+        /// <param name="container"></param>
         /// <param name="obj">Object that should be returned for Resolve&lt;TInterface&gt;() calls.</param>
         /// <returns>This instance.</returns>
         public static IDependencyContainer RegisterInstance<TInterface>(this IDependencyContainer container, TInterface obj)
@@ -63,7 +52,6 @@ namespace Framework.Tools.Dependency
         /// <summary>
         /// Registers a type for the given interface.
         /// </summary>
-        /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
         /// <returns>This instance.</returns>
         public static IDependencyContainer RegisterType<TType>(this IDependencyContainer container)
         {
@@ -75,6 +63,7 @@ namespace Framework.Tools.Dependency
         /// Registers public and internal types of the given assemblies with the unity container. This is necessary
         /// to workaround the internalsvisibleto hacks in the code base.
         /// </summary>
+        /// <param name="container"></param>
         /// <param name="assemblies">List of assemblies in which all types should be registered with their interfaces. 
         /// This includes internal types. </param>
         /// <returns>This instance.</returns>

@@ -124,7 +124,7 @@ namespace Framework.Tools.Helpers
 
         public string ReadDigits()
         {
-            var str = new System.Text.StringBuilder();
+            var str = new StringBuilder();
             while (char.IsDigit(NextChar))
             {
                 str.Append(NextChar);

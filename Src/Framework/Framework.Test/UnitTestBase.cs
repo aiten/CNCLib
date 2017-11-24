@@ -37,7 +37,7 @@ namespace Framework.Test
             }
             else
             {
-                Framework.Tools.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
+                Tools.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
                 _globalInitialisationRun = true;
             }
             InitializeCoreDependencies();
@@ -52,7 +52,7 @@ namespace Framework.Test
 		/// </summary>
 		private static void ReInitializeCoreDependencies()
         {
-            Framework.Tools.Dependency.Dependency.Container.ResetContainer();
+            Tools.Dependency.Dependency.Container.ResetContainer();
         }
     }
 }

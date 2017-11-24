@@ -20,7 +20,7 @@ using System;
 
 namespace CNCLib.GCode.Commands
 {
-	[System.AttributeUsage(System.AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class)]
 	public class IsGCommandAttribute : Attribute
 	{
 		public bool IsGComamnd { get; set; }

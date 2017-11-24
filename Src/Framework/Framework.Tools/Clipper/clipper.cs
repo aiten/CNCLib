@@ -75,15 +75,15 @@ namespace Framework.Tools.Clipper
 
     public DoublePoint(double x = 0, double y = 0)
     {
-      this.X = x; this.Y = y;
+      X = x; Y = y;
     }
     public DoublePoint(DoublePoint dp)
     {
-      this.X = dp.X; this.Y = dp.Y;
+      X = dp.X; Y = dp.Y;
     }
     public DoublePoint(IntPoint ip)
     {
-      this.X = ip.X; this.Y = ip.Y;
+      X = ip.X; Y = ip.Y;
     }
   };
 
@@ -253,7 +253,7 @@ namespace Framework.Tools.Clipper
       return !(val1 == val2);
     }
 
-    public override bool Equals(System.Object obj)
+    public override bool Equals(Object obj)
     {
       if (obj == null || !(obj is Int128))
         return false;
@@ -384,12 +384,12 @@ namespace Framework.Tools.Clipper
     }
     public IntPoint(double x, double y)
     {
-      this.X = (cInt)x; this.Y = (cInt)y;
+      X = (cInt)x; Y = (cInt)y;
     }
 
     public IntPoint(IntPoint pt)
     {
-        this.X = pt.X; this.Y = pt.Y;
+        X = pt.X; Y = pt.Y;
     }
 #endif
 
@@ -431,13 +431,13 @@ namespace Framework.Tools.Clipper
 
     public IntRect(cInt l, cInt t, cInt r, cInt b)
     {
-      this.left = l; this.top = t;
-      this.right = r; this.bottom = b;
+      left = l; top = t;
+      right = r; bottom = b;
     }
     public IntRect(IntRect ir)
     {
-      this.left = ir.left; this.top = ir.top;
-      this.right = ir.right; this.bottom = ir.bottom;
+      left = ir.left; top = ir.top;
+      right = ir.right; bottom = ir.bottom;
     }
   }
 
@@ -4757,7 +4757,7 @@ namespace Framework.Tools.Clipper
       }
       else
       {
-        IntRect r = Clipper.GetBounds(m_destPolys);
+        IntRect r = ClipperBase.GetBounds(m_destPolys);
         Path outer = new Path(4);
 
         outer.Add(new IntPoint(r.left - 10, r.bottom + 10));
@@ -4789,7 +4789,7 @@ namespace Framework.Tools.Clipper
       }
       else
       {
-        IntRect r = Clipper.GetBounds(m_destPolys);
+        IntRect r = ClipperBase.GetBounds(m_destPolys);
         Path outer = new Path(4);
 
         outer.Add(new IntPoint(r.left - 10, r.bottom + 10));

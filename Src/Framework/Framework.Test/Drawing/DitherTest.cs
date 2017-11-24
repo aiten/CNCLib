@@ -31,9 +31,9 @@ namespace Framework.Test.Drawing
         {
             protected override void ConvertImage()
             {
-                for (int y = 0; y < _height; y++)
+                for (int y = 0; y < Height; y++)
                 {
-                    for (int x = 0; x < _width; x++)
+                    for (int x = 0; x < Width; x++)
                     {
                         //Color currentPixel = GetPixel(x, y);
 

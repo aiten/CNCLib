@@ -31,11 +31,11 @@ namespace CNCLib.Wpf.Helpers
 		{
 			using (var controller = Dependency.Resolve<IDynItemController>())
 			{
-				var joystick = await controller.GetAll(typeof(Models.Joystick));
+				var joystick = await controller.GetAll(typeof(Joystick));
 				if (joystick != null && joystick.Count() > 0)
 				{
 					int id = joystick.First().ItemID;
-					return new Tuple<Joystick, int> ((Models.Joystick) await controller.Create(id),id);
+					return new Tuple<Joystick, int> ((Joystick) await controller.Create(id),id);
 				}
 			}
 

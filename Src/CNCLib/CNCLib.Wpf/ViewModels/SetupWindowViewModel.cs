@@ -61,7 +61,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		private async Task LoadMachines(int defaultmachineid)
         {
-            var machines = new ObservableCollection<Models.Machine>();
+            var machines = new ObservableCollection<Machine>();
 
 			foreach(var m in await _machineService.GetAll())
 			{
@@ -105,7 +105,7 @@ namespace CNCLib.Wpf.ViewModels
 
         #region Current Machine
 
-        public Models.Machine Machine
+        public Machine Machine
 		{
             get => _selectedMachine;
             set
@@ -121,10 +121,10 @@ namespace CNCLib.Wpf.ViewModels
 
 		public Joystick Joystick { get; set; }
 
-		Models.Machine _selectedMachine;
+		Machine _selectedMachine;
 
-        private ObservableCollection<Models.Machine> _machines;
-        public ObservableCollection<Models.Machine> Machines
+        private ObservableCollection<Machine> _machines;
+        public ObservableCollection<Machine> Machines
 		{
 			get => _machines;
             set => SetProperty(ref _machines, value);

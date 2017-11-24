@@ -66,7 +66,7 @@ namespace CNCLib.GCode.Load
 					Command();
 				}
 			}
-			catch (FormatException e)
+			catch (FormatException)
 			{
 				Commands.Clear();
 			}
@@ -90,7 +90,7 @@ namespace CNCLib.GCode.Load
             }
 
             _stream.SkipSpaces();
-			Command cmd=null;
+			Command cmd;
 
             if (_stream.NextCharToUpper == 'G')
             {

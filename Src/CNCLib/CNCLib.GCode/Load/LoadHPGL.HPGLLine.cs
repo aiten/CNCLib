@@ -30,7 +30,7 @@ namespace CNCLib.GCode.Load
             public IEnumerable<HPGLCommand> Commands { get; set; }
             public IEnumerable<HPGLCommand> PostCommands { get; set; }
 
-            public Polygon2D Polygon { get { Load(); return _polygon; } }
+            //public Polygon2D Polygon { get { Load(); return _polygon; } }
 
             public double MaxX { get { Load();  return _maxX; } }
             public double MinX { get { Load(); return _minX; } }

@@ -472,7 +472,7 @@ namespace CNCLib.Wpf.Models
             {
                 ee[i, EepromV1.EAxisOffsets32.Size] = GetAxis(i).Size;
                 ee[i, EepromV1.EAxisOffsets8.EReverenceType] = (byte)GetAxis(i).RefMove;
-                ee[i, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)(Eeprom.EReverenceSequence)this[i];
+                ee[i, EepromV1.EAxisOffsets8.EReverenceSeqence] = (byte)(EReverenceSequence)this[i];
                 ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin] = GetAxis(i).RefHitValueMin;
                 ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax] = GetAxis(i).RefHitValueMax;
 

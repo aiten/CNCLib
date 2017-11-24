@@ -25,8 +25,8 @@ namespace CNCLib.Wpf
 {
 	public class Global : Singleton<Global>, INotifyPropertyChanged
 	{
-		private CNCLib.Logic.Contracts.DTO.Machine _machine;
-		public CNCLib.Logic.Contracts.DTO.Machine Machine
+		private Logic.Contracts.DTO.Machine _machine;
+		public Logic.Contracts.DTO.Machine Machine
         {
             get => _machine;
 		    set {   _machine = value;

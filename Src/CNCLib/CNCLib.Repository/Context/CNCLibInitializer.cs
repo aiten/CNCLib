@@ -20,7 +20,7 @@ using System.Data.Entity;
 
 namespace CNCLib.Repository.Context
 {
-	public class CNCLibInitializer : MigrateDatabaseToLatestVersion<CNCLibContext, CNCLib.Repository.Migrations.Configuration>
+	public class CNCLibInitializer : MigrateDatabaseToLatestVersion<CNCLibContext, Migrations.Configuration>
 	{
 		public override void InitializeDatabase(CNCLibContext context)
 		{

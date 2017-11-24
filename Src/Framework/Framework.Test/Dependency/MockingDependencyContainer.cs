@@ -23,21 +23,21 @@ using Framework.Tools.Dependency;
 
 namespace Framework.Test.Dependency
 {
-    public sealed class MockingDependencyContainer : Framework.Tools.Dependency.UnityDependencyContainer
+    public sealed class MockingDependencyContainer : UnityDependencyContainer
     {
         public override object Resolve(Type t)
         {
             if (!t.IsInterface)
             {
-                throw new ResolutionFailedException(string.Format("Tried to resolve type {0}. This is not an interface which indicates a bug.", t.FullName));
+                throw new ResolutionFailedException($"Tried to resolve type {t.FullName}. This is not an interface which indicates a bug.");
             }
             try
             {
-                return _container.Resolve(t);
+                return MyUnityContainer.Resolve(t);
             }
             catch (Unity.Exceptions.ResolutionFailedException)
             {
-                return Substitute.For(new Type[] { t }, new object[0]);
+                return Substitute.For(new [] { t }, new object[0]);
             }
         }
     }

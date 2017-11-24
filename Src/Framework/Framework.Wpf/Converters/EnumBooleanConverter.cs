@@ -27,14 +27,14 @@ namespace Framework.Wpf.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var ParameterString = parameter as string;
-            if (ParameterString == null)
+            var parameterString = parameter as string;
+            if (parameterString == null)
                 return DependencyProperty.UnsetValue;
 
             if (Enum.IsDefined(value.GetType(), value) == false)
                 return DependencyProperty.UnsetValue;
 
-            object paramvalue = Enum.Parse(value.GetType(), ParameterString);
+            object paramvalue = Enum.Parse(value.GetType(), parameterString);
             return paramvalue.Equals(value);
         }
 

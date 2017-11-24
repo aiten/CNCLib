@@ -17,11 +17,10 @@
 */
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CNCLib.GCode.Commands
 {
-	public class CommandList : List<Command>
+    public class CommandList : List<Command>
 	{
 		#region Properties
 

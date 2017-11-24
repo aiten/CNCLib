@@ -56,18 +56,18 @@ namespace CNCLib.Wpf.ViewModels
 		#region Properties
 		private Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
 
-	    Models.Machine _currentMachine = new Models.Machine();
+	    Machine _currentMachine = new Machine();
 
-		public Models.Machine Machine
+		public Machine Machine
 		{
 			get => _currentMachine;
 		    set { SetProperty(() => _currentMachine == value, () => _currentMachine = value); }
 		}
 
-		public ObservableCollection<Models.MachineCommand> MachineCommands => _currentMachine.MachineCommands;
+		public ObservableCollection<MachineCommand> MachineCommands => _currentMachine.MachineCommands;
 
 
-	    public ObservableCollection<Models.MachineInitCommand> MachineInitCommands => _currentMachine.MachineInitCommands;
+	    public ObservableCollection<MachineInitCommand> MachineInitCommands => _currentMachine.MachineInitCommands;
 
 	    public bool AddNewMachine { get; set; }
 
@@ -77,7 +77,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public async Task LoadMachine(int machineID)
 		{
-			CNCLib.Logic.Contracts.DTO.Machine dto;
+			Logic.Contracts.DTO.Machine dto;
 			AddNewMachine = machineID <= 0;
 			if (AddNewMachine)
 			{

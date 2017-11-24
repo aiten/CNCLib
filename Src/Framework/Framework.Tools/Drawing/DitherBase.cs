@@ -26,11 +26,11 @@ namespace Framework.Tools.Drawing
     {
         #region private members
 
-        protected int _bytesPerPixel = 4;
-        protected int _height;
-        protected int _width;
-        protected int _scansize;
-        protected int[] _rgbValues;
+        int _bytesPerPixel = 4;
+        protected int Height;
+        protected int Width;
+        int _scansize;
+        int[] _rgbValues;
 
         int _addForA = 3;
         int _addForR = 2;
@@ -130,7 +130,7 @@ namespace Framework.Tools.Drawing
 
         protected bool IsPixel(int x, int y)
         {
-            return x < _width && y < _height;
+            return x < Width && y < Height;
         }
 
         protected Color GetPixel(int x, int y)
@@ -176,15 +176,15 @@ namespace Framework.Tools.Drawing
 
         protected void ReadImage(Bitmap imageX)
         {
-            _height = imageX.Height;
-            _width = imageX.Width;
+            Height = imageX.Height;
+            Width = imageX.Width;
 
-            var rect = new Rectangle(0, 0, _width, _height);
+            var rect = new Rectangle(0, 0, Width, Height);
             BitmapData bmpData = imageX.LockBits(rect, ImageLockMode.ReadOnly, imageX.PixelFormat);
             IntPtr ptr = bmpData.Scan0;
             _scansize = Math.Abs(bmpData.Stride);
 
-            int bytes = _scansize * _height;
+            int bytes = _scansize * Height;
             var rgbValues = new Byte[bytes];
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
             imageX.UnlockBits(bmpData);
@@ -206,14 +206,14 @@ namespace Framework.Tools.Drawing
 
 		protected Bitmap WriteImage(Bitmap imageX)
 		{
-			return WriteImageFormat4bppIndexed(imageX);
+			return WriteImageFormat4BppIndexed(imageX);
 		}
 
 		protected Bitmap WriteImageSamePixelFormat(Bitmap imageX)
 		{ 
-			var bsrc = new Bitmap(_width, _height, imageX.PixelFormat);
+			var bsrc = new Bitmap(Width, Height, imageX.PixelFormat);
 
-            var rect = new Rectangle(0, 0, _width, _height);
+            var rect = new Rectangle(0, 0, Width, Height);
             BitmapData bmpData = bsrc.LockBits(rect, ImageLockMode.WriteOnly, bsrc.PixelFormat);
             IntPtr ptr = bmpData.Scan0;
 
@@ -222,7 +222,7 @@ namespace Framework.Tools.Drawing
             for (var i = 0; i < _rgbValues.Length; i++)
                 rgbValues[i] = Color.Saturation(_rgbValues[i]);
 
-            int bytes = Math.Abs(bmpData.Stride) * _height;
+            int bytes = Math.Abs(bmpData.Stride) * Height;
             System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
             bsrc.UnlockBits(bmpData);
 
@@ -231,21 +231,21 @@ namespace Framework.Tools.Drawing
             return bsrc;
         }
 
-        protected Bitmap WriteImageFormat1bppIndexed(Bitmap bsrc)
+        protected Bitmap WriteImageFormat1BppIndexed(Bitmap bsrc)
         {
-            var rect = new Rectangle(0, 0, _width, _height);
+            var rect = new Rectangle(0, 0, Width, Height);
 
-            var b = new Bitmap(_width, _height, PixelFormat.Format1bppIndexed);
+            var b = new Bitmap(Width, Height, PixelFormat.Format1bppIndexed);
 
             BitmapData bmpData = b.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format1bppIndexed);
             IntPtr ptr = bmpData.Scan0;
             int scansize = Math.Abs(bmpData.Stride);
-            int bytes = scansize * _height;
+            int bytes = scansize * Height;
             byte[] rgbvalues = new byte[bytes];
 
-            for (var y = 0; y < _height; y++)
+            for (var y = 0; y < Height; y++)
             {
-                for (var x = 0; x < _width; x++)
+                for (var x = 0; x < Width; x++)
                 {
                     Color currentPixel = GetPixel(x, y);
                     if (currentPixel.R != 0)
@@ -269,21 +269,21 @@ namespace Framework.Tools.Drawing
             return b;
         }
 
-        protected Bitmap WriteImageFormat4bppIndexed(Bitmap bsrc)
+        protected Bitmap WriteImageFormat4BppIndexed(Bitmap bsrc)
         {
-            var rect = new Rectangle(0, 0, _width, _height);
+            var rect = new Rectangle(0, 0, Width, Height);
 
-            var b = new Bitmap(_width, _height, PixelFormat.Format4bppIndexed);
+            var b = new Bitmap(Width, Height, PixelFormat.Format4bppIndexed);
 
             BitmapData bmpData = b.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format4bppIndexed);
             IntPtr ptr = bmpData.Scan0;
             int scansize = Math.Abs(bmpData.Stride);
-            int bytes = scansize * _height;
+            int bytes = scansize * Height;
             var rgbvalues = new byte[bytes];
 
-            for (var y = 0; y < _height; y++)
+            for (var y = 0; y < Height; y++)
             {
-                for (var x = 0; x < _width; x++)
+                for (var x = 0; x < Width; x++)
                 {
                     Color currentPixel = GetPixel(x, y);
                     if (currentPixel.R != 0)

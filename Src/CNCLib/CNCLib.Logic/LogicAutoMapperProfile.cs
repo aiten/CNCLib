@@ -24,12 +24,12 @@ namespace CNCLib.Logic
 	{
 		public LogicAutoMapperProfile()
 		{
-			CreateMap<CNCLib.Repository.Contracts.Entities.Machine, CNCLib.Logic.Contracts.DTO.Machine>().ReverseMap();
-			CreateMap<CNCLib.Repository.Contracts.Entities.MachineInitCommand, CNCLib.Logic.Contracts.DTO.MachineInitCommand>().ReverseMap();
-			CreateMap<CNCLib.Repository.Contracts.Entities.MachineCommand, CNCLib.Logic.Contracts.DTO.MachineCommand>().ReverseMap();
+			CreateMap<Repository.Contracts.Entities.Machine, Contracts.DTO.Machine>().ReverseMap();
+			CreateMap<Repository.Contracts.Entities.MachineInitCommand, Contracts.DTO.MachineInitCommand>().ReverseMap();
+			CreateMap<Repository.Contracts.Entities.MachineCommand, Contracts.DTO.MachineCommand>().ReverseMap();
 
-			CreateMap<CNCLib.Repository.Contracts.Entities.Item, CNCLib.Logic.Contracts.DTO.Item>().ReverseMap(); ;
-			CreateMap<CNCLib.Repository.Contracts.Entities.ItemProperty, CNCLib.Logic.Contracts.DTO.ItemProperty>().ReverseMap(); ;
+			CreateMap<Repository.Contracts.Entities.Item, Contracts.DTO.Item>().ReverseMap(); ;
+			CreateMap<Repository.Contracts.Entities.ItemProperty, Contracts.DTO.ItemProperty>().ReverseMap(); ;
 		}
 	}
 }

@@ -144,8 +144,7 @@ namespace CNCLib.GCode.Load
         private void AddCommandX(int x, int y, ref int lasty, bool laserOn)
         {
             // start laser a bit later but switch it off earlier
-            double shift = 0;
-            shift = laserOn ? _shiftLaserOff : _shiftLaserOn;
+            double shift = laserOn ? _shiftLaserOff : _shiftLaserOn;
 
             if (y != lasty)
             {

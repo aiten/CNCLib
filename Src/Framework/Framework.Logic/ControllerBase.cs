@@ -16,12 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using Framework.Tools;
 
 namespace Framework.Logic
 {
-	public class ControllerBase : DisposeWrapper, IDisposable
+    public class ControllerBase : DisposeWrapper
     {
     }
 }

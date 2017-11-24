@@ -26,11 +26,10 @@ namespace Framework.Tools.Dependency
     /// </summary>
     public interface IDependencyContainer
     {
-
         /// <summary>
         /// Registers the given object for the interface. 
         /// </summary>
-        /// <typeparam name="typeFrom">Interface that can be later resolved.</typeparam>
+        /// <param name="typeFrom"></param>
         /// <param name="obj">Object that should be returned for Resolve&lt;TInterface&gt;() calls.</param>
         /// <returns>This instance.</returns>
         IDependencyContainer RegisterInstance(Type typeFrom, object obj);

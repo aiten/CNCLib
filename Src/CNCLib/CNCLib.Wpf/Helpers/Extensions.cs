@@ -23,12 +23,12 @@ namespace CNCLib.Wpf.Helpers
 {
 	public static class Extensions
 	{
-		public static string GetAxisName(this CNCLib.Logic.Contracts.DTO.Machine m, int axis)
+		public static string GetAxisName(this Logic.Contracts.DTO.Machine m, int axis)
 		{
 			return GCodeHelper.IndexToAxisName(axis).ToString();
 		}
 
-		public static decimal GetSize(this CNCLib.Logic.Contracts.DTO.Machine m, int axis)
+		public static decimal GetSize(this Logic.Contracts.DTO.Machine m, int axis)
 		{
 			switch (axis)
 			{
@@ -41,7 +41,7 @@ namespace CNCLib.Wpf.Helpers
 			}
 			throw new NotImplementedException();
 		}
-		public static decimal GetProbeSize(this CNCLib.Logic.Contracts.DTO.Machine m, int axis)
+		public static decimal GetProbeSize(this Logic.Contracts.DTO.Machine m, int axis)
 		{
 			switch (axis)
 			{

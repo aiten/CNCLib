@@ -48,7 +48,7 @@ namespace CNCLib.Wpf.Views
 		}
 		private Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
 
-	    private Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<Wpf.Helpers.JoystickArduinoSerialCommunication>.Instance;
+	    private Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<Helpers.JoystickArduinoSerialCommunication>.Instance;
 
 	    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{

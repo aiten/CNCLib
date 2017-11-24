@@ -96,7 +96,7 @@ namespace CNCLib.GCode.Load
                         }
                         else
                         {
-                            var hpglcmd = stream.ReadString(new char[] { ';' });
+                            var hpglcmd = stream.ReadString(new [] { ';' });
                             list.Add(new HPGLCommand() { CommandString = hpglcmd });
                         }
                     }

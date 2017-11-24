@@ -24,7 +24,7 @@ namespace CNCLib.GCode.GUI
 	{
 		public GCodeGUIAutoMapperProfile()
 		{
-			CreateMap<CNCLib.GCode.GUI.Models.LoadOptions, CNCLib.Logic.Contracts.DTO.LoadOptions>().ReverseMap();
+			CreateMap<Models.LoadOptions, Logic.Contracts.DTO.LoadOptions>().ReverseMap();
 		}
 	}
 }

@@ -16,13 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.IO;
 using System.Windows;
 using CNCLib.GCode.GUI.ViewModels;
-using Framework.Wpf.ViewModels;
-using Framework.Wpf.View;
 using Framework.Tools.Dependency;
+using Framework.Wpf.View;
 
 namespace CNCLib.GCode.GUI.Views
 {

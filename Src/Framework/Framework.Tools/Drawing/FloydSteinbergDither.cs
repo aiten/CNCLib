@@ -39,9 +39,9 @@ namespace Framework.Tools.Drawing
 
 		protected override void ConvertImage()
 		{
-            for (int y = 0; y < _height; y++)
+            for (int y = 0; y < Height; y++)
             {
-                for (int x = 0; x < _width; x++)
+                for (int x = 0; x < Width; x++)
                 {
                     Color currentPixel = GetPixel(x, y);
                     currentPixel.Saturation();
@@ -53,18 +53,18 @@ namespace Framework.Tools.Drawing
                     int errorG = (currentPixel.G) - (bestColorRGB.G);
                     int errorB = (currentPixel.B) - (bestColorRGB.B);
 
-                    if (x + 1 < _width)
+                    if (x + 1 < Width)
                     {
                         AddPixelSaturation(x + 1, y + 0, (errorR * 7) / 16, (errorG * 7) / 16, (errorB * 7) / 16, 0);
                     }
-                    if (y + 1 < _height)
+                    if (y + 1 < Height)
                     {
                         if (x - 1 >= 0)
                         {
                             AddPixelSaturation(x - 1, y + 1, (errorR * 3) / 16, (errorG * 3) / 16, (errorB * 3) / 16, 0);
                         }
                         AddPixelSaturation(x + 0, y + 1, (errorR * 5) / 16, (errorG * 5) / 16, (errorB * 5) / 16, 0);
-                        if (x + 1 < _width)
+                        if (x + 1 < Width)
                         {
                             AddPixelSaturation(x + 1, y + 1, (errorR * 1) / 16, (errorG * 1) / 16, (errorB * 1) / 16, 0);
                         }

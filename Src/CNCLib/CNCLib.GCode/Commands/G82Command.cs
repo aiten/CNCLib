@@ -18,11 +18,10 @@
 
 
 using System.Collections.Generic;
-using Framework.Tools.Drawing;
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand]
+    [IsGCommand]
 	public class G82Command : DrillCommand
     {
 		#region crt + factory
@@ -94,7 +93,7 @@ namespace CNCLib.GCode.Commands
 			CopyVariable('F', move2);
 			list.Add(move2);
 
-			if (p != null && (p.Value ?? 0) != 0.0)
+			if (p != null && (p.Value ?? 0.0) != 0.0)
 			{
 				var move3 = new G04Command();
 				move3.AddVariable('P', p);

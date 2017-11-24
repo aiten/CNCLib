@@ -52,11 +52,11 @@ namespace CNCLib.GCode.Load
                 return newlist;
             }
 
-            int lineidx = 1;
+            int _lineIdx = 1;
             private IList<HPGLCommand> SmoothLine(IEnumerable<HPGLCommand> line)
             {
                 if (LoadX._DEBUG)
-                    LoadX.WriteLineToFile(line, lineidx++);
+                    LoadX.WriteLineToFile(line, _lineIdx++);
 
                 var list = new List<HPGLCommand>();
                 double maxAngle = LoadOptions.SmoothMinAngle.HasValue ? (double)LoadOptions.SmoothMinAngle.Value : (45 * (Math.PI / 180));

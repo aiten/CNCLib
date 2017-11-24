@@ -19,22 +19,20 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using CNCLib.GCode.Commands;
-using CNCLib.GCode.GUI;
 using Framework.Tools.Drawing;
 
 namespace CNCLib.GCode.GUI.Controls
 {
-	/// <summary>
-	/// Interaction logic for GCodeUserControl.xaml
-	/// </summary>
-	public partial class GCodeUserControl : System.Windows.Controls.UserControl
+    /// <summary>
+    /// Interaction logic for GCodeUserControl.xaml
+    /// </summary>
+    public partial class GCodeUserControl : System.Windows.Controls.UserControl
 	{
-		private GCodeBitmapDraw _bitmapDraw = new GCodeBitmapDraw();
+		private readonly GCodeBitmapDraw _bitmapDraw = new GCodeBitmapDraw();
 
 		public GCodeUserControl()
 		{
@@ -533,7 +531,7 @@ namespace CNCLib.GCode.GUI.Controls
 		#endregion
 
 		#region render
-		protected override void OnRenderSizeChanged(System.Windows.SizeChangedInfo sizeInfo)
+		protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
 		{
 			base.OnRenderSizeChanged(sizeInfo);
 			if (_draggingType == EDraggingType.NoDragging)
@@ -543,20 +541,15 @@ namespace CNCLib.GCode.GUI.Controls
 			}
 		}
 
-		protected override void OnRender(System.Windows.Media.DrawingContext drawingContext)
+		protected override void OnRender(DrawingContext drawingContext)
 		{
 			base.OnRender(drawingContext);
-			this.DrawCommands(drawingContext);
+			DrawCommands(drawingContext);
 		}
 
 		#endregion
 
 		#region private
-
-		static Color ColorToColor(System.Drawing.Color color)
-		{
-			return Color.FromArgb(color.A, color.R, color.G, color.B);
-		}
 
 		static System.Drawing.Color ColorToColor(Color color)
 		{
@@ -564,7 +557,7 @@ namespace CNCLib.GCode.GUI.Controls
 		}
 
 
-		private void DrawCommands(System.Windows.Media.DrawingContext context)
+		private void DrawCommands(DrawingContext context)
 		{
 			if (_bitmapDraw.RenderSize.Height == 0 || _bitmapDraw.RenderSize.Width == 0)
 				return;
@@ -578,8 +571,8 @@ namespace CNCLib.GCode.GUI.Controls
 			var curBitmap = _bitmapDraw.DrawToBitmap(Commands);
 			MemoryStream stream = new MemoryStream();
 			curBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-			var cc = new System.Windows.Media.ImageSourceConverter().ConvertFrom(stream);
-			context.DrawImage((System.Windows.Media.ImageSource)cc, new System.Windows.Rect(0,0, this.ActualWidth, this.ActualHeight));
+			var cc = new ImageSourceConverter().ConvertFrom(stream);
+			context.DrawImage((ImageSource)cc, new Rect(0,0, ActualWidth, ActualHeight));
 			curBitmap.Dispose();
 		}
 

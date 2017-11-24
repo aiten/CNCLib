@@ -18,12 +18,11 @@
 
 using System;
 using System.Collections.Generic;
-using CNCLib.Logic.Contracts.DTO;
-using System.Reflection;
 using System.Globalization;
-using Framework.Tools.Dependency;
-using CNCLib.ServiceProxy;
+using System.Reflection;
 using System.Threading.Tasks;
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.ServiceProxy;
 using Framework.Tools;
 
 namespace CNCLib.Logic.Client
@@ -119,7 +118,7 @@ namespace CNCLib.Logic.Client
 				{
 					decimal? val = null;
 					if (!string.IsNullOrEmpty(ip.Value))
-						val = decimal.Parse(ip.Value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+						val = decimal.Parse(ip.Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
 
 					pi.SetValue(obj, val);
 				}
@@ -127,7 +126,7 @@ namespace CNCLib.Logic.Client
 				{
 					double? val = null;
 					if (!string.IsNullOrEmpty(ip.Value))
-						val = double.Parse(ip.Value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+						val = double.Parse(ip.Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
 
 					pi.SetValue(obj, val);
 				}
@@ -250,7 +249,7 @@ namespace CNCLib.Logic.Client
 		private Item ConvertToItem(string name, object obj, int id)
 		{
 			var list = GetProperties(id, obj);
-			var item = new CNCLib.Logic.Contracts.DTO.Item()
+			var item = new Item()
 			{
 				ItemID = id,
 				Name = name,

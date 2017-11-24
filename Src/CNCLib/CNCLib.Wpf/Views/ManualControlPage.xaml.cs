@@ -33,7 +33,7 @@ namespace CNCLib.Wpf.Views
     {
         public ManualControlPage()
         {
-            var vm = Dependency.Resolve<ViewModels.ManualControlViewModel>();
+            var vm = Dependency.Resolve<ManualControlViewModel>();
             DataContext = vm;
 
             InitializeComponent();

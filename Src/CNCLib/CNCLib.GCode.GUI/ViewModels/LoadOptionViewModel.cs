@@ -27,7 +27,6 @@ using System.Xml.Serialization;
 using AutoMapper;
 using CNCLib.GCode.GUI.Models;
 using CNCLib.ServiceProxy;
-using Framework.Tools.Dependency;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
@@ -168,7 +167,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             try
             {
                 Busy = true;
-                var opt = _mapper.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+                var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
                 await _loadOptionsService.Update(opt);
             }
             catch (Exception ex)
@@ -186,7 +185,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             try
             {
                 Busy = true;
-                var opt = _mapper.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(LoadOptionsValue);
+                var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(LoadOptionsValue);
                 int id = await _loadOptionsService.Add(opt);
                 await LoadAllSettings(id);
             }
@@ -206,7 +205,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             try
             {
                 Busy = true;
-                var opt = _mapper.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+                var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
                 await _loadOptionsService.Delete(opt);
                 await LoadAllSettings(AllLoadOptions?.FirstOrDefault((o) => o.Id != opt.Id)?.Id);
             }
@@ -230,8 +229,8 @@ namespace CNCLib.GCode.GUI.ViewModels
                 {
                     using (StreamReader sr = new StreamReader(filename))
                     {
-                        XmlSerializer serializer = new XmlSerializer(typeof(CNCLib.Logic.Contracts.DTO.LoadOptions));
-                        var opt = (CNCLib.Logic.Contracts.DTO.LoadOptions)serializer.Deserialize(sr);
+                        XmlSerializer serializer = new XmlSerializer(typeof(Logic.Contracts.DTO.LoadOptions));
+                        var opt = (Logic.Contracts.DTO.LoadOptions)serializer.Deserialize(sr);
                         sr.Close();
 
                         if (_allLoadOptions.FirstOrDefault((o) => o.SettingName == opt.SettingName)!=null)
@@ -258,11 +257,11 @@ namespace CNCLib.GCode.GUI.ViewModels
             string filename = BrowseFileNameFunc?.Invoke(SelectedLoadOption.SettingName + @".xml", true);
             if (filename != null)
             {
-                var opt = _mapper.Map<CNCLib.Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+                var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
 
                 using (StreamWriter sw = new StreamWriter(filename))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(CNCLib.Logic.Contracts.DTO.LoadOptions));
+                    XmlSerializer serializer = new XmlSerializer(typeof(Logic.Contracts.DTO.LoadOptions));
                     serializer.Serialize(sw, opt);
                     sw.Close();
                 }

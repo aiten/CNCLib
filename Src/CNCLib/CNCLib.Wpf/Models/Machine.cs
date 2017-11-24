@@ -149,21 +149,21 @@ namespace CNCLib.Wpf.Models
 		[Description("Syntax of machine commands, e.g. GCode, HPGL")]
 		public Logic.Contracts.DTO.CommandSyntax CommandSyntax { get; set; }
 
-		private ObservableCollection<Models.MachineCommand> _MachineCommands;
+		private ObservableCollection<MachineCommand> _MachineCommands;
 
         [Browsable(false)]
-        public ObservableCollection<Models.MachineCommand> MachineCommands
+        public ObservableCollection<MachineCommand> MachineCommands
 		{
 			get
 			{
 				if (_MachineCommands == null)
 				{
-					_MachineCommands = new ObservableCollection<Models.MachineCommand>();
+					_MachineCommands = new ObservableCollection<MachineCommand>();
 					_MachineCommands.CollectionChanged += ((sender, e) =>
 					{
 						if (e.NewItems != null)
 						{
-							foreach (Models.MachineCommand item in e.NewItems)
+							foreach (MachineCommand item in e.NewItems)
 							{
 								item.MachineID = MachineID;
 							}
@@ -174,21 +174,21 @@ namespace CNCLib.Wpf.Models
 			}
 		}
 
-		private ObservableCollection<Models.MachineInitCommand> _MachineInitCommands;
+		private ObservableCollection<MachineInitCommand> _MachineInitCommands;
 
         [Browsable(false)]
-        public ObservableCollection<Models.MachineInitCommand> MachineInitCommands
+        public ObservableCollection<MachineInitCommand> MachineInitCommands
 		{
 			get
 			{
 				if (_MachineInitCommands == null)
 				{
-					_MachineInitCommands = new ObservableCollection<Models.MachineInitCommand>();
+					_MachineInitCommands = new ObservableCollection<MachineInitCommand>();
 					_MachineInitCommands.CollectionChanged += ((sender, e) =>
 					{
 						if (e.NewItems != null)
 						{
-							foreach (Models.MachineInitCommand item in e.NewItems)
+							foreach (MachineInitCommand item in e.NewItems)
 							{
 								item.MachineID = MachineID;
 							}

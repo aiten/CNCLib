@@ -140,7 +140,7 @@ namespace CNCLib.GCode
 			}
 		}
 
-		private System.Net.Http.HttpClient CreateHttpClient()
+		private HttpClient CreateHttpClient()
 		{
 			var client = new HttpClient();
 			client.BaseAddress = new Uri(webserverurl);

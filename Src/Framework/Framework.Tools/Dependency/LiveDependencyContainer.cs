@@ -30,7 +30,7 @@ namespace Framework.Tools.Dependency
         {
             try
             {
-                return _container.Resolve(t);
+                return MyUnityContainer.Resolve(t);
             }
             catch (ResolutionFailedException ex)
             {

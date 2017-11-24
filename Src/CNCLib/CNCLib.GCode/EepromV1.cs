@@ -37,8 +37,8 @@ namespace CNCLib.GCode
 
         public bool IsValid => Values?.Length > 0 && (Values[0] == SIGNATURE || Values[0] == SIGNATUREPLOTTER);
 
-        public uint OfsAxis => _ofsaxis;
-        public uint DWSizeAxis => _sizeaxis;
+        public uint OfsAxis => _ofsAxis;
+        public uint DWSizeAxis => _sizeAxis;
         public uint OfsAfterAxis => _ofsAfterAxis;
 
         public const uint SIZEOFAXIX_EX = 2;
@@ -239,7 +239,7 @@ namespace CNCLib.GCode
 
 		public UInt32 GetAxisValue32(int axis, EAxisOffsets32 ofs)
 		{
-			return Values[_ofsaxis + axis * _sizeaxis + (int)ofs];
+			return Values[_ofsAxis + axis * _sizeAxis + (int)ofs];
 		}
         public ushort GetAxisValue16(int axis, EAxisOffsets16 ofsidx)
         {
@@ -288,7 +288,7 @@ namespace CNCLib.GCode
 
 		public void SetAxisValue32(int axis, EAxisOffsets32 ofs, UInt32 value)
 		{
-			Values[_ofsaxis + axis * _sizeaxis + (int)ofs] = value;
+			Values[_ofsAxis + axis * _sizeAxis + (int)ofs] = value;
 		}
 
         public void SetAxisValue16(int axis, EAxisOffsets16 ofsidx, ushort value)
@@ -314,21 +314,21 @@ namespace CNCLib.GCode
 
 		#region Analyse
 
-		uint _num_axis;
-		uint _used_axis;
-		uint _ofsaxis;
-		uint _sizeaxis;
+		uint _numAxis;
+		uint _usedAxis;
+		uint _ofsAxis;
+		uint _sizeAxis;
         uint _ofsAfterAxis;
 
 		private void Analyse()
 		{
 			if (Values?.Length > 0)
 			{
-				_num_axis = (Values[1] >> 0) & 0xff;
-				_used_axis = (Values[1] >> 8) & 0xff;
-				_ofsaxis = ((Values[1] >> 16) & 0xff) / sizeof(UInt32);
-				_sizeaxis = ((Values[1] >> 24) & 0xff) / sizeof(UInt32);
-                _ofsAfterAxis = _ofsaxis + _sizeaxis * _num_axis;
+				_numAxis = (Values[1] >> 0) & 0xff;
+				_usedAxis = (Values[1] >> 8) & 0xff;
+				_ofsAxis = ((Values[1] >> 16) & 0xff) / sizeof(UInt32);
+				_sizeAxis = ((Values[1] >> 24) & 0xff) / sizeof(UInt32);
+                _ofsAfterAxis = _ofsAxis + _sizeAxis * _numAxis;
             }
 		}
 

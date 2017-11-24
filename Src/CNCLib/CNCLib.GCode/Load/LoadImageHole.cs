@@ -77,7 +77,7 @@ namespace CNCLib.GCode.Load
         {
             LaserOff();
 
-            double top_pos = SizeY * (PixelSizeY + PixelDistY);
+            double topPos = SizeY * (PixelSizeY + PixelDistY);
 
             for (int iy = 0; ; iy++)
             {
@@ -99,7 +99,7 @@ namespace CNCLib.GCode.Load
                         double posy = y * (PixelSizeY+ PixelDistY) + ShiftY + PixelDistY/2;
                         // x,y left,top corner
 
-                        AddCommandX(posx, top_pos - posy,
+                        AddCommandX(posx, topPos - posy,
                                     GetDotSize(x, y),
                                     HoleType, ix);
                     }
@@ -126,10 +126,6 @@ namespace CNCLib.GCode.Load
             }
 
             return (ix * ImageToDotSizeX + xdiff);
-        }
-        private double AdjustYPos(int ix, int iy, double y)
-        {
-            return 0;
         }
 
         private double ToYPos(int iy)
@@ -182,8 +178,6 @@ namespace CNCLib.GCode.Load
             // size 0..1
 
             size = size * size;     // squared area 
-
-            double minholesize = LaserSize;
 
             if (LoadOptions.ImageInvert)
             {

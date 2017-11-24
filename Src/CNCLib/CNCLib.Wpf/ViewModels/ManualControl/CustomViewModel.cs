@@ -118,7 +118,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			RaisePropertyChanged(nameof(Desc64));
 		}
 
-		private CNCLib.Logic.Contracts.DTO.MachineCommand GetCmd(int x, int y)
+		private MachineCommand GetCmd(int x, int y)
         {
 			if (Global.Instance.Machine == null || Global.Instance.Machine.MachineCommands == null)
 				return null;

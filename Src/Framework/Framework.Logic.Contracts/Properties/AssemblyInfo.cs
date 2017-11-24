@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 //[assembly: AssemblyTitle("CNCLib.Logic.Contracts")]

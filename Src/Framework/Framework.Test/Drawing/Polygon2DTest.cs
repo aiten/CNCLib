@@ -29,7 +29,7 @@ namespace Framework.Test.Drawing
         {
             return new Polygon2D()
             {
-                Points = new Point2D[]
+                Points = new []
                 {
                     new Point2D() { X=0, Y=0 },
                     new Point2D() { X=100, Y=0 },
@@ -43,7 +43,7 @@ namespace Framework.Test.Drawing
         {
             return new Polygon2D()
             {
-                Points = new Point2D[]
+                Points = new []
                 {
                     new Point2D() { X=0, Y=0 },
                     new Point2D() { X=100, Y=0 },
