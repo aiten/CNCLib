@@ -16,20 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Windows;
 using System.Windows.Controls;
 using CNCLib.Wpf.ViewModels;
-using Framework.Wpf.ViewModels;
-using Framework.Wpf.View;
 using Framework.Tools.Dependency;
+using Framework.Wpf.View;
 
 namespace CNCLib.Wpf.Views
 {
-	/// <summary>
-	/// Interaction logic for ManualControl.xaml
-	/// </summary>
-	public partial class ManualControlPage : Page
+    /// <summary>
+    /// Interaction logic for ManualControl.xaml
+    /// </summary>
+    public partial class ManualControlPage : Page
     {
         public ManualControlPage()
         {
@@ -40,13 +37,14 @@ namespace CNCLib.Wpf.Views
 
             vm.SD.DefaulInitForBaseViewModel();
             this.DefaulInitForBaseViewModel();
-		}
+        }
 
-		public bool IsConnected
+        public bool IsConnected
         {
-            get {
-            var vm = DataContext as ManualControlViewModel;
-            if (vm != null) return vm.Com.IsConnected;
+            get
+            {
+                var vm = DataContext as ManualControlViewModel;
+                if (vm != null) return vm.Com.IsConnected;
                 return false;
             }
         }

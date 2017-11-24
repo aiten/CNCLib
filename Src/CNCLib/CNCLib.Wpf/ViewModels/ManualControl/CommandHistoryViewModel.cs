@@ -16,16 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Windows.Input;
-using System.Collections.ObjectModel;
-using Framework.Wpf.Helpers;
-using Framework.Arduino;
-using CNCLib.Wpf.Models;
 using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using CNCLib.Wpf.Models;
+using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
-	public class CommandHistoryViewModel : DetailViewModel
+    public class CommandHistoryViewModel : DetailViewModel
 	{
 		public CommandHistoryViewModel(IManualControlViewModel vm)
 			: base(vm)
@@ -58,9 +57,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 			foreach (var rc in Com.CommandHistoryCopy)
 			{
-                DateTime senttime = (rc.SentTime.HasValue) ? rc.SentTime.Value : DateTime.Today;
+                DateTime senttime = rc.SentTime ?? DateTime.Today;
 
-                results.Add(new SentCNCCommand() { CommandDate = senttime, CommandText = rc.CommandText, Result = rc.ResultText });
+                results.Add(new SentCNCCommand { CommandDate = senttime, CommandText = rc.CommandText, Result = rc.ResultText });
 
 			}
 			CommandHistoryCollection = results;

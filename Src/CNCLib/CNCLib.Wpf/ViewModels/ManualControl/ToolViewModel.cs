@@ -30,12 +30,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ToolViewModel(IManualControlViewModel vm)
 			: base(vm)
 		{
-			Com.CommandQueueChanged += new Framework.Arduino.SerialCommunication.CommandEventHandler(OnCommandQueueChanged);
+			Com.CommandQueueChanged += OnCommandQueueChanged;
 		}
 
 		public void Dispose()
 		{
-			Com.CommandQueueChanged -= new Framework.Arduino.SerialCommunication.CommandEventHandler(OnCommandQueueChanged);
+			Com.CommandQueueChanged -= OnCommandQueueChanged;
 		}
 
 		#endregion

@@ -16,14 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
-using Framework.Logic;
+using System.Threading.Tasks;
+using CNCLib.Logic.Client;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
+using Framework.Logic;
 using Framework.Tools.Dependency;
-using CNCLib.Logic.Client;
-using System.Threading.Tasks;
 
 namespace CNCLib.Logic
 {
@@ -49,7 +48,7 @@ namespace CNCLib.Logic
 			using (var controller = Dependency.Resolve<IDynItemController>())
 			{
 				object obj = await controller.Create(id);
-				if (obj != null || obj is LoadOptions)
+				if (obj != null)
 				{
 					var li = (LoadOptions)obj;
 					li.Id = id;

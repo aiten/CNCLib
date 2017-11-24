@@ -23,12 +23,6 @@ namespace CNCLib.Wpf.Models
 {
 	public class SentCNCCommand : NotificationObject
     {
-        #region Ctor
-        public SentCNCCommand()
-        {
-         }
-        #endregion
-
         #region CommandText
 
         private string _commandText;

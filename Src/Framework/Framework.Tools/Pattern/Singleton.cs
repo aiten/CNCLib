@@ -45,7 +45,7 @@ namespace Framework.Tools.Pattern
             {
                 foreach (MethodInfo mi in typeof(T).GetMethods())
                 {
-                    if (mi.Name == "Dispose" && mi.GetParameters().Count() == 0)
+                    if (mi.Name == "Dispose" && !mi.GetParameters().Any())
                     {
                         mi.Invoke(_instance, new object[0]);
                     }

@@ -16,16 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
-using Framework.Logic;
-using CNCLib.Repository.Contracts;
-using CNCLib.Logic.Converter;
+using System.Threading.Tasks;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Converter;
+using CNCLib.Repository.Contracts;
+using Framework.Logic;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
-using System.Threading.Tasks;
 
 namespace CNCLib.Logic
 {
@@ -37,12 +36,12 @@ namespace CNCLib.Logic
 			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
 			{
 				var machines = await rep.GetMachines();
-				List<Machine> l = new List<Machine>();
+				var l = new List<Machine>();
 				foreach (var m in machines)
 				{
 					l.Add(m.Convert());
 				}
-				return (IEnumerable < Machine >) l;
+				return l;
 			}
 		}
 
@@ -101,7 +100,7 @@ namespace CNCLib.Logic
 
 		public async Task<Machine> DefaultMachine()
 		{
-			var dto = new Machine()
+			var dto = new Machine
 			{
 				Name = "New",
 				ComPort = "comX",
@@ -150,7 +149,7 @@ namespace CNCLib.Logic
 			using (var uow = Dependency.Resolve<IUnitOfWork>())
 			using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
 			{
-				await rep.Save(new Repository.Contracts.Entities.Configuration() { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
+				await rep.Save(new Repository.Contracts.Entities.Configuration { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
 				await uow.Save();
 			}
 		}

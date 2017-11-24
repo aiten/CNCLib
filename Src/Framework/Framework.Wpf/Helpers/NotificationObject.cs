@@ -57,27 +57,10 @@ namespace Framework.Wpf.Helpers
 			RaisePropertyChanged(propertyName);
 		}
 
-		// AssignProperty, value may be the same
-		protected void AssignProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
-		{
-			storage = value;
-			RaisePropertyChanged(propertyName);
-		}
-
-		protected void AssignProperty(Action action, [CallerMemberName] string propertyName = null)
-		{
-            action();
-            RaisePropertyChanged(propertyName);
-		}
-
 		protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
 		{
-			var eventHandler = PropertyChanged;
-			if (eventHandler != null)
-			{
-				eventHandler(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
 		protected void OnPropertyChanged<TProperty>(Expression<Func<TProperty>> projection)
 		{

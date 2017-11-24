@@ -97,7 +97,7 @@ namespace CNCLib.GCode.Commands
 			{
 				if (t.IsClass)
 				{
-					IsGCommandAttribute isgcode = t.GetCustomAttribute<IsGCommandAttribute>();
+					var isgcode = t.GetCustomAttribute<IsGCommandAttribute>();
 					if (isgcode != null)
 					{
 						string ascodes = isgcode.RegisterAs;

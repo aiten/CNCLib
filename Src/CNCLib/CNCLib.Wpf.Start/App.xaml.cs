@@ -19,7 +19,6 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Markup;
 using AutoMapper;
@@ -40,15 +39,15 @@ namespace CNCLib.Wpf.Start
 	{
 		private void AppStartup(object sender, StartupEventArgs e)
 		{
-			var userprofilepath = Environment.GetEnvironmentVariable(@"USERPROFILE");
+			string userprofilepath = Environment.GetEnvironmentVariable(@"USERPROFILE");
 			AppDomain.CurrentDomain.SetData("DataDirectory", userprofilepath);
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
                 XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             // move file from c:\tmp
-            var tmpsdf = @"c:\tmp\CNCLib.sdf";
-			var upfsdf = userprofilepath + @"\CNCLib.sdf";
+		    string tmpsdf = @"c:\tmp\CNCLib.sdf";
+			string upfsdf = userprofilepath + @"\CNCLib.sdf";
 			if (File.Exists(tmpsdf) && File.Exists(upfsdf) == false)
 			{
 				File.Move(tmpsdf, upfsdf);
@@ -77,9 +76,8 @@ namespace CNCLib.Wpf.Start
                 });
 			config.AssertConfigurationIsValid();
 
-			var mapper = config.CreateMapper();
-
-			Dependency.Container.RegisterInstance<IMapper>(mapper);
+			IMapper mapper = config.CreateMapper();
+			Dependency.Container.RegisterInstance(mapper);
 
 
 			// Open Database here

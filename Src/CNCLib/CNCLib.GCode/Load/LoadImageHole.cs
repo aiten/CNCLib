@@ -46,7 +46,7 @@ namespace CNCLib.GCode.Load
 
             AddCommentForLaser();
             
-            using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
+            using (var bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
             {
                 System.Drawing.Bitmap b;
                 switch (bx.PixelFormat)

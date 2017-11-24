@@ -27,12 +27,12 @@ namespace Framework.Web
 {
     public abstract class RestController<T> : ApiController
     {
-        public RestController(IRest<T> controller)
+        protected RestController(IRest<T> controller)
         {
             Controller = controller ?? throw new ArgumentNullException();
         }
 
-        public IRest<T> Controller { get; private set; }
+        public IRest<T> Controller { get; }
 
         public async Task<IEnumerable<T>> Get()
 		{

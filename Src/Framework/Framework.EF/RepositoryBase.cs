@@ -39,7 +39,7 @@ namespace Framework.EF
 
 			foreach (T entityInDb in inDb)
 			{
-                var entityToDb = toDb.FirstOrDefault(x => predicate(x, entityInDb));
+                T entityToDb = toDb.FirstOrDefault(x => predicate(x, entityInDb));
 				if (entityToDb != null && predicate(entityToDb, entityInDb))
 				{
 					Uow.SetValue(entityInDb,entityToDb);

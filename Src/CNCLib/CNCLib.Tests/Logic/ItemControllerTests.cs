@@ -34,7 +34,7 @@ namespace CNCLib.Tests.Logic
 	{
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
-			TInterface rep = Substitute.For<TInterface>();
+			var rep = Substitute.For<TInterface>();
             Dependency.Container.RegisterInstance(rep);
 
 //			TInterface uow = Substitute.For<Framework.EF.UnitOfWork>();
@@ -67,8 +67,8 @@ namespace CNCLib.Tests.Logic
 
 			var itemEntity = new Item[]
 			{
-				new Item() { ItemID=1,Name="Test1" },
-				new Item() { ItemID=2,Name="Test2" },
+				new Item { ItemID=1,Name="Test1" },
+				new Item { ItemID=2,Name="Test2" }
 			};
 			rep.Get().Returns(itemEntity);
 
@@ -89,7 +89,7 @@ namespace CNCLib.Tests.Logic
 		public async Task GetItem()
 		{
 			var rep = CreateMock<IItemRepository>();
-			rep.Get(1).Returns(new Item() { ItemID = 1, Name = "Test1" });
+			rep.Get(1).Returns(new Item { ItemID = 1, Name = "Test1" });
 
 			var ctrl = new ItemController();
 
@@ -124,7 +124,7 @@ namespace CNCLib.Tests.Logic
 
             var ctrl = new ItemController();
 
-			var item = new CNCLib.Logic.Contracts.DTO.Item() { ItemID = 3000, Name = "Hallo" };
+			var item = new CNCLib.Logic.Contracts.DTO.Item { ItemID = 3000, Name = "Hallo" };
 
             //act
 

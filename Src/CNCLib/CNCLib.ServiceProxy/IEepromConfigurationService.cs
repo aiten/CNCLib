@@ -17,14 +17,12 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
-using Framework.Logic.Contracts;
 
 namespace CNCLib.ServiceProxy
 {
-	public interface IEepromConfigurationService : IDisposable
+    public interface IEepromConfigurationService : IDisposable
 	{
 		Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param);
 	}

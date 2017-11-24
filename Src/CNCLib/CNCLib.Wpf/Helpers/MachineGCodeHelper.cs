@@ -53,7 +53,7 @@ namespace CNCLib.Wpf.Helpers
 				Com.QueueCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
 				Com.QueueCommand("g91 g0" + axisname + probdistup + " g90");
 				return true;
-			};
+			}
 			return false;
 		}
 
@@ -94,7 +94,7 @@ namespace CNCLib.Wpf.Helpers
 				}
 				if (maxslot > 0)
 				{
-					UInt32[] ret = new UInt32[maxslot + 1];
+					var ret = new UInt32[maxslot + 1];
 					for (int i=0;i<= maxslot;i++)
 					{
 						if (intvalues.ContainsKey(i))
@@ -122,7 +122,7 @@ namespace CNCLib.Wpf.Helpers
 
         public static string PrepareCommand(string commandstring)
         {
-            var prefix = GetCommandPrefix();
+            string prefix = GetCommandPrefix();
 
             if (string.IsNullOrEmpty(prefix))
                 return commandstring;
@@ -148,7 +148,7 @@ namespace CNCLib.Wpf.Helpers
 		{
 			string[] seperators = { @"\n" };
 			string[] cmds = commandstring.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
-			foreach (var s in cmds)
+			foreach (string s in cmds)
 			{
 				string[] infos = s.Split(':');
 				int axis;

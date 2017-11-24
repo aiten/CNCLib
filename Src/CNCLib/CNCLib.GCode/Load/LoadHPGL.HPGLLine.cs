@@ -69,9 +69,9 @@ namespace CNCLib.GCode.Load
                     if (Commands != null && Commands.Any())
                     {
                         points.Add(Commands.First().PointFrom);
-                        points.AddRange(Commands.Select(c => new Point2D() { X = c.PointTo.X ?? 0.0, Y = c.PointTo.Y ?? 0.0 }));
+                        points.AddRange(Commands.Select(c => new Point2D { X = c.PointTo.X ?? 0.0, Y = c.PointTo.Y ?? 0.0 }));
                     }
-                    _polygon = new Polygon2D() { Points = points };
+                    _polygon = new Polygon2D { Points = points };
                     _maxX = _polygon.MaxX;
                     _minX = _polygon.MinX;
                     _maxY = _polygon.MaxY;

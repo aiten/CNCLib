@@ -27,8 +27,6 @@ namespace Framework.Tools.Drawing
         #region private members
 
         int _bytesPerPixel = 4;
-        protected int Height;
-        protected int Width;
         int _scansize;
         int[] _rgbValues;
 
@@ -39,12 +37,15 @@ namespace Framework.Tools.Drawing
 
         #endregion
 
+        protected int Height { get; set; }
+        protected int Width { get; set; }
+
         protected struct Color
         {
-            public int R;
-            public int G;
-            public int B;
-            public int A;
+            public int R { get; set; }
+            public int G { get; set; }
+            public int B { get; set; }
+            public int A { get; set; }
 
             public Color Saturation()
             {
@@ -97,7 +98,7 @@ namespace Framework.Tools.Drawing
             return (int)(0.2126 * col.R + 0.7152 * col.G + 0.0722 * col.B);
         }
 
-        protected Color FindNearestColorBW(Color col)
+        protected Color FindNearestColorBw(Color col)
         {
             int drb = 255 - col.R;
             int dgb = 255 - col.G;
@@ -110,17 +111,17 @@ namespace Framework.Tools.Drawing
             int errorw = drw * drw + dgw * dgw + dbw * dbw;
 
             if (errorw > errorb)
-                return new Color() { R = 255, G = 255, B = 255, A = 255 };
+                return new Color { R = 255, G = 255, B = 255, A = 255 };
 
-            return new Color() { R = 0, G = 0, B = 0, A = 255 };
+            return new Color { R = 0, G = 0, B = 0, A = 255 };
         }
 
         protected Color FindNearestColorGrayScale(Color col)
         {
             if (Luminance(col) > Graythreshold)
-                return new Color() { R = 255, G = 255, B = 255, A = 255 };
+                return new Color { R = 255, G = 255, B = 255, A = 255 };
 
-            return new Color() { R = 0, G = 0, B = 0, A = 255 };
+            return new Color { R = 0, G = 0, B = 0, A = 255 };
         }
 
         protected int ToByteIdx(int x, int y)
@@ -136,7 +137,7 @@ namespace Framework.Tools.Drawing
         protected Color GetPixel(int x, int y)
         {
             int idx = ToByteIdx(x, y);
-            return new Color()
+            return new Color
             {
                 R = _rgbValues[idx + _addForR],
                 G = _rgbValues[idx + _addForG],
@@ -157,7 +158,7 @@ namespace Framework.Tools.Drawing
         }
         protected void SetPixel(int x, int y, int r, int g, int b, int a)
         {
-            SetPixel(x, y, new Color() { R = r, G = g, B = b, A = a });
+            SetPixel(x, y, new Color { R = r, G = g, B = b, A = a });
         }
         protected void AddPixel(int x, int y, int r, int g, int b, int a)
         {
@@ -241,7 +242,7 @@ namespace Framework.Tools.Drawing
             IntPtr ptr = bmpData.Scan0;
             int scansize = Math.Abs(bmpData.Stride);
             int bytes = scansize * Height;
-            byte[] rgbvalues = new byte[bytes];
+            var rgbvalues = new byte[bytes];
 
             for (var y = 0; y < Height; y++)
             {

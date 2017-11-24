@@ -30,10 +30,6 @@ namespace CNCLib.Wpf.ViewModels
 	{
 		#region crt
 
-		public EepromViewModel()
-		{
-		}
-
 		bool _validReadEeprom;
 
 		#endregion

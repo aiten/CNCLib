@@ -37,9 +37,8 @@ namespace CNCLib.Tests
             });
 			config.AssertConfigurationIsValid();
 
-			var mapper = config.CreateMapper();
-
-			Dependency.Container.RegisterInstance<IMapper>(mapper);
+			IMapper mapper = config.CreateMapper();
+			Dependency.Container.RegisterInstance(mapper);
 		}
 	}
 }

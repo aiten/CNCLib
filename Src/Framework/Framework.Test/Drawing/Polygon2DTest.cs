@@ -27,28 +27,28 @@ namespace Framework.Test.Drawing
     {
         private static Polygon2D CreateClosedPolygon()
         {
-            return new Polygon2D()
+            return new Polygon2D
             {
                 Points = new []
                 {
-                    new Point2D() { X=0, Y=0 },
-                    new Point2D() { X=100, Y=0 },
-                    new Point2D() { X=100, Y=100 },
-                    new Point2D() { X=0, Y=100 },
-                    new Point2D() { X=0, Y=0 }
+                    new Point2D { X=0, Y=0 },
+                    new Point2D { X=100, Y=0 },
+                    new Point2D { X=100, Y=100 },
+                    new Point2D { X=0, Y=100 },
+                    new Point2D { X=0, Y=0 }
                 }
             };
         }
         private static Polygon2D CreateOpenPolygon()
         {
-            return new Polygon2D()
+            return new Polygon2D
             {
                 Points = new []
                 {
-                    new Point2D() { X=0, Y=0 },
-                    new Point2D() { X=100, Y=0 },
-                    new Point2D() { X=100, Y=100 },
-                    new Point2D() { X=0, Y=100 }
+                    new Point2D { X=0, Y=0 },
+                    new Point2D { X=100, Y=0 },
+                    new Point2D { X=100, Y=100 },
+                    new Point2D { X=0, Y=100 }
                  }
             };
         }
@@ -57,24 +57,24 @@ namespace Framework.Test.Drawing
         public void PointInPolygon()
         {
             Polygon2D polygon = CreateClosedPolygon();
-            polygon.IsPointInPolygon(new Point2D() { X = 50, Y = 50 }).Should().Be(true);
+            polygon.IsPointInPolygon(new Point2D { X = 50, Y = 50 }).Should().Be(true);
         }
 
         [TestMethod]
         public void PointInPolygonOnLine()
         {
             Polygon2D polygon = CreateClosedPolygon();
-            polygon.IsPointInPolygon(new Point2D() { X = 100, Y = 2 }).Should().Be(true,"point on line is in polygon");
+            polygon.IsPointInPolygon(new Point2D { X = 100, Y = 2 }).Should().Be(true,"point on line is in polygon");
         }
 
         [TestMethod]
         public void PointNotInPolygon()
         {
             Polygon2D polygon = CreateClosedPolygon();
-            polygon.IsPointInPolygon(new Point2D() { X = 1, Y = 100.5 }).Should().Be(false);
-            polygon.IsPointInPolygon(new Point2D() { X = 100.5, Y = 1 }).Should().Be(false);
-            polygon.IsPointInPolygon(new Point2D() { X = -0.5, Y = 1 }).Should().Be(false);
-            polygon.IsPointInPolygon(new Point2D() { X = 1, Y = -0.5 }).Should().Be(false);
+            polygon.IsPointInPolygon(new Point2D { X = 1, Y = 100.5 }).Should().Be(false);
+            polygon.IsPointInPolygon(new Point2D { X = 100.5, Y = 1 }).Should().Be(false);
+            polygon.IsPointInPolygon(new Point2D { X = -0.5, Y = 1 }).Should().Be(false);
+            polygon.IsPointInPolygon(new Point2D { X = 1, Y = -0.5 }).Should().Be(false);
         }
 
         [TestMethod]

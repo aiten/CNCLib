@@ -37,7 +37,7 @@ namespace CNCLib.WebAPI.Controllers
 
         public async Task<IHttpActionResult> Get(string classname)
 		{
-			var m = await _service.GetByClassName(classname);
+			IEnumerable<Item> m = await _service.GetByClassName(classname);
 			if (m == null)
 			{
 				return NotFound();

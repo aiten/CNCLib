@@ -104,7 +104,7 @@ namespace CNCLib.Logic.Contracts.DTO
         public enum ConvertTypeEnum
         {
             NoConvert = 0,
-            InvertLineSequence = 1,
+            InvertLineSequence = 1
         }
         public ConvertTypeEnum ConvertType { get; set; } = ConvertTypeEnum.NoConvert;
 

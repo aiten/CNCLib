@@ -42,7 +42,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				LoadOptions info = new LoadOptions() { LoadType = LoadOptions.ELoadType.HPGL };
+				var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
 
 				Assembly ass = Assembly.GetExecutingAssembly();
 				string asspath = Path.GetDirectoryName(ass.Location);
@@ -68,7 +68,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 				client.DefaultRequestHeaders.Accept.Clear();
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				LoadOptions info = new LoadOptions()
+				var info = new LoadOptions
 				{
 					LoadType = LoadOptions.ELoadType.Image,
 					AutoScale = true,
@@ -119,7 +119,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 				Assembly ass = Assembly.GetExecutingAssembly();
 				string asspath = Path.GetDirectoryName(ass.Location);
 
-				var input = new CreateGCode()
+				var input = new CreateGCode
 				{
 					LoadOptionsId = 3,
 					FileName = asspath + @"\TestData\Wendelin_Ait110.png"

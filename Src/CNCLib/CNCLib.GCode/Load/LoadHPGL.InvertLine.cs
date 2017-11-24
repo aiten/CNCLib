@@ -36,19 +36,19 @@ namespace CNCLib.GCode.Load
             {
                 // split 
 
+                int startidx = 0;
+
                 var linelist = new List<HPGLLine>();
                 IEnumerable<HPGLCommand> postCommands = null;
-                IEnumerable<HPGLCommand> preCommands = null;
+                IEnumerable<HPGLCommand> preCommands = list.Skip(startidx).TakeWhile((e) => !e.IsPenCommand);
 
-                int startidx = 0;
-                preCommands = list.Skip(startidx).TakeWhile((e) => !e.IsPenCommand);
                 startidx += preCommands.Count();
 
-                while (startidx < list.Count())
+                while (startidx < list.Count)
                 {
                     HPGLLine line = GetHPGLLine(list, ref startidx);
 
-                    if (startidx >= list.Count() && !line.Commands.Any())
+                    if (startidx >= list.Count && !line.Commands.Any())
                     {
                         postCommands = line.PreCommands;
                     }
@@ -108,7 +108,7 @@ namespace CNCLib.GCode.Load
             private IEnumerable<HPGLLine> OrderClosedLine(IEnumerable<HPGLLine> closedLines)
             {
                 var orderdlist = new List<HPGLLine>();
-                if (closedLines.Count() > 0)
+                if (closedLines.Any())
                 {
                     CalcClosedLineParent(closedLines);
                     int maxlevel = closedLines.Max(l => l.Level);
@@ -141,13 +141,12 @@ namespace CNCLib.GCode.Load
 
             private IEnumerable<HPGLLine> OffsetLine(double offset, HPGLLine line)
             {
-                var newlines = new List<HPGLLine>();
-                newlines.Add(line);
+                var newlines = new List<HPGLLine> { line };
 
                 var co = new ClipperOffset();
                 var solution = new List<List<IntPoint>>();
                 var solution2 = new List<List<IntPoint>>();
-                solution.Add(line.Commands.Select(x => new IntPoint(_scale * (x.PointFrom.X ?? 0.0), _scale * (x.PointFrom.Y ?? 0.0))).ToList());
+                solution.Add(line.Commands.Select(x => new IntPoint(_scale * x.PointFrom.X0, _scale * x.PointFrom.Y0)).ToList());
                 co.AddPaths(solution, JoinType.jtRound, EndType.etClosedPolygon);
                 co.Execute(ref solution2, offset);
                 var existingline = line;
@@ -159,8 +158,8 @@ namespace CNCLib.GCode.Load
 
                     foreach (var pt in polygon)
                     {
-                        var from = new Point3D() { X = pt.X / _scale, Y = pt.Y / _scale };
-                        var hpgl = new HPGLCommand() { PointFrom = from, CommandType = HPGLCommand.HPGLCommandType.PenDown };
+                        var from = new Point3D { X = pt.X / _scale, Y = pt.Y / _scale };
+                        var hpgl = new HPGLCommand { PointFrom = from, CommandType = HPGLCommand.HPGLCommandType.PenDown };
                         newcmds.Add(hpgl);
                         if (last != null)
                             last.PointTo = from;
@@ -171,14 +170,14 @@ namespace CNCLib.GCode.Load
                     if (existingline == null)
                     {
                         // add new line
-                        existingline = new HPGLLine()
+                        existingline = new HPGLLine
                         {
-                            PreCommands = new List<HPGLCommand>()
-                                        {
-                                            new HPGLCommand() { CommandType = HPGLCommand.HPGLCommandType.PenUp }
+                            PreCommands = new List<HPGLCommand>
+                            {
+                                            new HPGLCommand { CommandType = HPGLCommand.HPGLCommandType.PenUp }
                                         },
                             PostCommands = new List<HPGLCommand>(),
-                            ParentLine = line.ParentLine,
+                            ParentLine = line.ParentLine
                         };
                         newlines.Add(existingline);
                     }
@@ -192,13 +191,11 @@ namespace CNCLib.GCode.Load
 
             private static IEnumerable<HPGLLine> OptimizeDistanze(IEnumerable<HPGLLine> lines)
             {
-                var newlist = new List<HPGLLine>();
-                newlist.Add(lines.First());
-
+                var newlist = new List<HPGLLine> {lines.First()};
                 var list = new List<HPGLLine>();
                 list.AddRange(lines.Skip(1));
 
-                while (list.Count() > 0)
+                while (list.Any())
                 {
                     Point3D ptfrom = newlist.Last().Commands.Last().PointTo;
                     double maxdist = double.MaxValue;

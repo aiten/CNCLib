@@ -16,17 +16,16 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Windows;
 using Framework.Tools.Dependency;
 using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.Views
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class JoystickView : Window
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class JoystickView : Window
     {
         public JoystickView()
         {
@@ -36,13 +35,16 @@ namespace CNCLib.Wpf.Views
             InitializeComponent();
 
 			if (vm.CloseAction == null)
-				vm.CloseAction = new Action(() => Close());
+				vm.CloseAction = () => Close();
 
-			Loaded += new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
+			Loaded += async (object v, RoutedEventArgs e) =>
 			{
-				var vmm = DataContext as BaseViewModel;
-				await vmm.Loaded();
-			});
+			    var vmm = DataContext as BaseViewModel;
+			    if (vmm != null)
+			    {
+			        await vmm.Loaded();
+			    }
+			};
 		}
 	}
 }

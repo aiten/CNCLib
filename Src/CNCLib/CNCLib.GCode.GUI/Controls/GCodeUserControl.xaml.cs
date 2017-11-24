@@ -99,8 +99,8 @@ namespace CNCLib.GCode.GUI.Controls
 			_bitmapDraw.Zoom = (double)e.NewValue;
 
 			var centernew = _bitmapDraw.FromClient(center);
-			OffsetX += (centerold.X??0) - (centernew.X??0);
-			OffsetY -= (centerold.Y??0) - (centernew.Y??0);
+			OffsetX += centerold.X0 - centernew.X0;
+			OffsetY -= centerold.Y0 - centernew.Y0;
 
 			// adjust x/y to center again
 			InvalidateVisual();
@@ -458,8 +458,8 @@ namespace CNCLib.GCode.GUI.Controls
 			var pt = new System.Drawing.PointF((float)mousePos.X, (float)mousePos.Y);
 			var gcoderotated = _bitmapDraw.FromClient(pt,0.0);
 
-			MouseOverPositionX = Math.Round(gcoderotated.X ?? 0, 3);
-			MouseOverPositionY = Math.Round(gcoderotated.Y ?? 0, 3);
+			MouseOverPositionX = Math.Round(gcoderotated.X0, 3);
+			MouseOverPositionY = Math.Round(gcoderotated.Y0, 3);
 
 			if (MouseOverPositionX >= 10000.0) MouseOverPositionX = 9999.999;
 			if (MouseOverPositionY >= 10000.0) MouseOverPositionY = 9999.999;
@@ -477,22 +477,22 @@ namespace CNCLib.GCode.GUI.Controls
 						_bitmapDraw.OffsetX = _mouseDownCNCOffsetX;     // faster: do not assign with Dependent Property
 						_bitmapDraw.OffsetY = _mouseDownCNCOffsetY;
 						var c  = _bitmapDraw.FromClient(pt);			// recalculate with orig offset
-						var newX = _mouseDownCNCOffsetX - (c.X.Value - _mouseDownCNCPos.X.Value);
-						var newY = _mouseDownCNCOffsetY + (c.Y.Value - _mouseDownCNCPos.Y.Value);
+						double newX = _mouseDownCNCOffsetX - (c.X0 - _mouseDownCNCPos.X0);
+						double newY = _mouseDownCNCOffsetY + (c.Y0 - _mouseDownCNCPos.Y0);
 						_bitmapDraw.OffsetX = newX;
 						_bitmapDraw.OffsetY = newY;
 						break;
 					}
 				case EDraggingType.RotateAngle:
 					{
-						var diffX = mousePos.X - _mouseDownPos.X;
-						var diffY = mousePos.Y - _mouseDownPos.Y;
+						double diffX = mousePos.X - _mouseDownPos.X;
+						double diffY = mousePos.Y - _mouseDownPos.Y;
 
-						var maxdiffX = RenderSize.Width;
-						var maxdiffY = RenderSize.Height;
+						double maxdiffX = RenderSize.Width;
+						double maxdiffY = RenderSize.Height;
 
-						var rotateX = diffX / maxdiffX;
-						var rotateY = diffY / maxdiffY;
+						double rotateX = diffX / maxdiffX;
+						double rotateY = diffY / maxdiffY;
 
 						RotateAngle = 2.0 * Math.PI * (Math.Abs(rotateX) > Math.Abs(rotateY) ? rotateX : rotateY);
 
@@ -569,7 +569,7 @@ namespace CNCLib.GCode.GUI.Controls
 			}
 
 			var curBitmap = _bitmapDraw.DrawToBitmap(Commands);
-			MemoryStream stream = new MemoryStream();
+			var stream = new MemoryStream();
 			curBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
 			var cc = new ImageSourceConverter().ConvertFrom(stream);
 			context.DrawImage((ImageSource)cc, new Rect(0,0, ActualWidth, ActualHeight));

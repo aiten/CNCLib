@@ -64,9 +64,6 @@ namespace CNCLib.GCode
                     string gcodeFileName = Environment.ExpandEnvironmentVariables(loadinfo.GCodeWriteToFileName);
                     WriteGCodeFile(gcodeFileName);
                     WriteCamBamFile(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb");
-
-                    string hpglFileName = Environment.ExpandEnvironmentVariables(loadinfo.GCodeWriteToFileName);
-
                     WriteImportInfoFile(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl");
                 }
             }
@@ -101,13 +98,13 @@ namespace CNCLib.GCode
 
         private void WriteGCodeFile(string filename)
 		{
-			using (StreamWriter sw = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
+			using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 			{
 				Command last = null;
-				CommandState state = new CommandState();
-				foreach (Command r in Commands)
+				var state = new CommandState();
+				foreach (var r in Commands)
 				{
-					string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null,state);
+					string[] cmds = r.GetGCodeCommands(last?.CalculatedEndPosition,state);
 					if (cmds != null)
 					{
 						foreach (string str in cmds)
@@ -124,7 +121,7 @@ namespace CNCLib.GCode
 		{
 			using (TextWriter writer = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 			{
-				XmlSerializer x = new XmlSerializer(typeof(CamBam.CamBam));
+				var x = new XmlSerializer(typeof(CamBam.CamBam));
 				x.Serialize(writer, load.CamBam);
 			}
 		}
@@ -142,9 +139,8 @@ namespace CNCLib.GCode
 
 		private HttpClient CreateHttpClient()
 		{
-			var client = new HttpClient();
-			client.BaseAddress = new Uri(webserverurl);
-			client.DefaultRequestHeaders.Accept.Clear();
+		    var client = new HttpClient {BaseAddress = new Uri(webserverurl)};
+		    client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			return client;
 		}

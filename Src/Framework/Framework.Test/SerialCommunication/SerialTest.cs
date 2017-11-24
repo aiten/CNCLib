@@ -48,6 +48,7 @@ namespace Framework.Test.SerialCommunication
                 ReturnsForAnyArgs(async (x) =>
                 {
                     sendReply = true;
+                    await Task.FromResult(0);
                 });
 
 
@@ -107,7 +108,8 @@ namespace Framework.Test.SerialCommunication
 
             serial.Disconnect();
 
-            serialport.BaseStream.Received(1).WriteAsync(Arg.Is<Byte[]>(e => (char)e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
+            await serialport.BaseStream.Received(1).WriteAsync(Arg.Is<Byte[]>(e => (char)e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
+            await Task.FromResult(0);
         }
 
         [TestMethod]
@@ -126,7 +128,8 @@ namespace Framework.Test.SerialCommunication
             await serial.SendCommandAsync("?");
 
             serial.Disconnect();
-            serialport.BaseStream.Received(2).WriteAsync(Arg.Is<Byte[]>(e => (char) e[0] == '?'), 0,  2, Arg.Any<System.Threading.CancellationToken>());
+            await serialport.BaseStream.Received(2).WriteAsync(Arg.Is<Byte[]>(e => (char) e[0] == '?'), 0,  2, Arg.Any<System.Threading.CancellationToken>());
+            await Task.FromResult(0);
         }
 
         #region events
@@ -192,6 +195,8 @@ namespace Framework.Test.SerialCommunication
             eventCalls.EventReplyUnknown.Should().Be(0);
             eventCalls.EventCommandQueueChanged.Should().Be(2);
             eventCalls.EventCommandQueueEmpty.Should().Be(2);
+
+            await Task.FromResult(0);
         }
 
         [TestMethod]
@@ -223,6 +228,8 @@ namespace Framework.Test.SerialCommunication
             eventCalls.EventReplyUnknown.Should().Be(0);
             eventCalls.EventCommandQueueChanged.Should().Be(2);
             eventCalls.EventCommandQueueEmpty.Should().Be(2);
+
+            await Task.FromResult(0);
         }
 
         [TestMethod]
@@ -256,6 +263,8 @@ namespace Framework.Test.SerialCommunication
             eventCalls.EventReplyUnknown.Should().Be(0);
             eventCalls.EventCommandQueueChanged.Should().Be(2);
             eventCalls.EventCommandQueueEmpty.Should().Be(2);
+
+            await Task.FromResult(0);
         }
 
         [TestMethod]

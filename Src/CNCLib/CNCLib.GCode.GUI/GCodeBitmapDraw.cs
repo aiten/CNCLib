@@ -38,9 +38,9 @@ namespace CNCLib.GCode.GUI
 
 		#region Properties
 
-		public double SizeX { get => _sizeX;set { bool calc = _sizeX != value;  _sizeX = value; if (calc) CalcRatio(); } }
-		public double SizeY { get => _sizeY;set { bool calc = _sizeY != value;  _sizeY = value; if (calc) CalcRatio(); } }
-		public double SizeZ { get => _sizeZ;set { bool calc = _sizeZ != value;  _sizeZ = value; if (calc) CalcRatio(); } }
+		public double SizeX { get => _sizeX;set { bool calc = Math.Abs(_sizeX - value) > double.Epsilon;  _sizeX = value; if (calc) CalcRatio(); } }
+		public double SizeY { get => _sizeY;set { bool calc = Math.Abs(_sizeY - value) > double.Epsilon;  _sizeY = value; if (calc) CalcRatio(); } }
+		public double SizeZ { get => _sizeZ;set { bool calc = Math.Abs(_sizeZ - value) > double.Epsilon;  _sizeZ = value; if (calc) CalcRatio(); } }
 
 		public bool KeepRatio { get => _keepRatio;set { _keepRatio = value; CalcRatio(); } }
 
@@ -151,35 +151,35 @@ namespace CNCLib.GCode.GUI
 			var axisX = Rotate.Rotate(1.0, 0.0, 0.0);
 			var axisY = Rotate.Rotate(0.0, 1.0, 0.0);
 			var axisZ = Rotate.Rotate(0.0, 0.0, 1.0);
-			var axisXX = axisX.X ?? 0.0;
-			var axisXY = axisX.Y ?? 0.0;
-			var axisYX = axisY.X ?? 0.0;
-			var axisYY = axisY.Y ?? 0.0;
+			double axisXX = axisX.X0;
+			double axisXY = axisX.Y0;
+			double axisYX = axisY.X0;
+			double axisYY = axisY.Y0;
 
 			_rotateAngleX = Math.Atan2(axisXY, axisXX);
 			_rotateAngleY = Math.Atan2(axisYY, axisYX);
 			_rotateScaleX = Math.Sqrt(axisXX * axisXX + axisXY * axisXY);
 			_rotateScaleY = Math.Sqrt(axisYX * axisYX + axisYY * axisYY);
 
-			_rotateZscaleX = axisZ.X ?? 0.0;
-			_rotateZscaleY = axisZ.Y ?? 0.0;
+			_rotateZscaleX = axisZ.X0;
+			_rotateZscaleY = axisZ.Y0;
 		}
 
 		public Point3D FromClient(PointF pt, double z)
 		{
 			var notrotated = FromClient(pt);
-			var notrotatedX = notrotated.X ?? 0.0;
-			var notrotatedY = notrotated.Y ?? 0.0;
-			var notrotatedAngel = Math.Atan2(notrotatedY, notrotatedX);
-			var c = Math.Sqrt(notrotatedX * notrotatedX + notrotatedY * notrotatedY);
+			double notrotatedX = notrotated.X0;
+			double notrotatedY = notrotated.Y0;
+			double notrotatedAngel = Math.Atan2(notrotatedY, notrotatedX);
+			double c = Math.Sqrt(notrotatedX * notrotatedX + notrotatedY * notrotatedY);
 
-			var anglec =  Math.PI - (_rotateAngleY - _rotateAngleX);
-			var anglea = _rotateAngleY - notrotatedAngel;
-			var angleb = notrotatedAngel - _rotateAngleX;
-			var rateC = c / Math.Sin(anglec);
+			double anglec =  Math.PI - (_rotateAngleY - _rotateAngleX);
+			double anglea = _rotateAngleY - notrotatedAngel;
+			double angleb = notrotatedAngel - _rotateAngleX;
+			double rateC = c / Math.Sin(anglec);
 
-			var a = Math.Sin(anglea) * rateC;
-			var b = Math.Sin(angleb) * rateC;
+			double a = Math.Sin(anglea) * rateC;
+			double b = Math.Sin(angleb) * rateC;
 
 			return new Point3D(z* _rotateZscaleX + a / _rotateScaleX, z * _rotateZscaleY + b / _rotateScaleY, z);
 		}
@@ -188,8 +188,8 @@ namespace CNCLib.GCode.GUI
 		{
 			pt = _rotate3D.Rotate(pt);
 
-			double x = (((pt.X ?? 0) - OffsetX) * Zoom) * _ratioX;
-			double y = (((SizeY - (((pt.Y ?? 0)) + OffsetY))) * Zoom) * _ratioY;
+			double x = ((pt.X0 - OffsetX) * Zoom) * _ratioX;
+			double y = (((SizeY - (pt.Y0 + OffsetY))) * Zoom) * _ratioY;
 			//double z = ((double)((double)(pt.Z ?? 0) - (double)OffsetZ) * Zoom) * _ratioZ;
 
 			return new PointF((float) x, (float) y);
@@ -197,23 +197,23 @@ namespace CNCLib.GCode.GUI
 
 		double ToClientSizeX(double X)
 		{
-			var pt3d = new Point3D(X, 0, 0);
-			pt3d = Rotate.Rotate(pt3d);
-			double x = (pt3d.X??0) * Zoom;
+			var pt3D = new Point3D(X, 0, 0);
+			pt3D = Rotate.Rotate(pt3D);
+			double x = pt3D.X0 * Zoom;
 			return _ratioX * x;
 		}
 		double ToClientSizeY(double Y)
 		{
 			var pt3d = new Point3D(0,Y, 0);
 			pt3d = Rotate.Rotate(pt3d);
-			double y = (pt3d.Y ?? 0) * Zoom;
+			double y = pt3d.Y0 * Zoom;
 			return _ratioY * y;
 		}
 		double ToClientSizeZ(double Z)
 		{
 			var pt3d = new Point3D(0, 0, Z);
 			pt3d = Rotate.Rotate(pt3d);
-			double z = (pt3d.Z ?? 0) * Zoom;
+			double z = pt3d.Z0 * Zoom;
 			return _ratioZ * z;
 		}
 
@@ -235,11 +235,7 @@ namespace CNCLib.GCode.GUI
 				_helpLinePen10 = new Pen(_helpLineColor, (float)(fastSize * 4));
 
 				InitPen(_selected, (c) => c);
-				InitPen(_dithered, (c) =>
-				{
-					return Color.FromArgb(25, c);
-				}
-				);
+				InitPen(_dithered, (c) => Color.FromArgb(25, c));
 
 				_needReInit = false;
 			}
@@ -274,7 +270,7 @@ namespace CNCLib.GCode.GUI
 		{
 			InitPen();
 
-			Bitmap curBitmap = new Bitmap(RenderSize.Width, RenderSize.Height);
+			var curBitmap = new Bitmap(RenderSize.Width, RenderSize.Height);
 
 			Graphics g1 = Graphics.FromImage(curBitmap);
 			g1.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -296,13 +292,13 @@ namespace CNCLib.GCode.GUI
 
 			for (int i = 1; ; i++)
 			{
-				var x = i * 10.0;
+				double x = i * 10.0;
 				if (x > SizeX)	break;
 				g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(i * 10.0, 0, 0)), ToClientF(new Point3D(i * 10.0, SizeY, 0)));
 			}
 			for (int i = 1; ; i++)
 			{
-				var y = i * 10.0;
+				double y = i * 10.0;
 				if (y > SizeY) break;
 				g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(0, i * 10.0, 0)), ToClientF(new Point3D(SizeX, i * 10.0, 0)));
 			}
@@ -353,7 +349,7 @@ namespace CNCLib.GCode.GUI
 		{
 			if (drawtype == DrawType.NoDraw) return;
 
-			PaintEventArgs e = (PaintEventArgs)param;
+			var e = (PaintEventArgs)param;
 
 			var from = ToClientF(ptFrom);
 			var to   = ToClientF(ptTo);
@@ -365,7 +361,7 @@ namespace CNCLib.GCode.GUI
 		}
 		void Line(object param, Pen pen, Point3D ptFrom, Point3D ptTo)
 		{
-			PaintEventArgs e = (PaintEventArgs)param;
+			var e = (PaintEventArgs)param;
 
 			var from = ToClientF(ptFrom);
 			var to = ToClientF(ptTo);
@@ -380,7 +376,7 @@ namespace CNCLib.GCode.GUI
 		{
 			if (drawtype == DrawType.NoDraw) return;
 
-			PaintEventArgs e = (PaintEventArgs)param;
+			var e = (PaintEventArgs)param;
 			var from = ToClientF(ptCenter);
 			e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X - xradius / 2, from.Y - yradius / 2, xradius, yradius);
 		}
@@ -393,10 +389,10 @@ namespace CNCLib.GCode.GUI
 			{
 				default:
 				case Pane.XYPane:
-					Arc(cmd, param, drawtype, ptFrom, ptTo, ptIIJ.X ?? 0.0, ptIIJ.Y ?? 0, 0, 1, 2, clockwise);
+					Arc(cmd, param, drawtype, ptFrom, ptTo, ptIIJ.X0, ptIIJ.Y0, 0, 1, 2, clockwise);
 					break;
 				case Pane.XZPane:
-					Arc(cmd, param, drawtype, ptFrom, ptTo, ptIIJ.X ?? 0.0, ptIIJ.Z ?? 0, 0, 2, 1, clockwise);
+					Arc(cmd, param, drawtype, ptFrom, ptTo, ptIIJ.X0, ptIIJ.Z0, 0, 2, 1, clockwise);
 					break;
 			}
 		}
@@ -414,8 +410,8 @@ namespace CNCLib.GCode.GUI
 		{
 			Pen pen = GetPen(drawtype, LineDrawType.Arc);
 
-			Point3D current = new Point3D(ptFrom.X??0.0, ptFrom.Y ?? 0.0, ptFrom.Z ?? 0.0);
-			Point3D last = new Point3D(ptFrom.X ?? 0.0, ptFrom.Y ?? 0.0, ptFrom.Z ?? 0.0);
+			var current = new Point3D(ptFrom.X0, ptFrom.Y0, ptFrom.Z0);
+			var last = new Point3D(ptFrom.X0, ptFrom.Y0, ptFrom.Z0);
 			double center_axis0 = current[axis_0].Value + offset0;
 			double center_axis1 = current[axis_1].Value + offset1;
 
@@ -443,7 +439,7 @@ namespace CNCLib.GCode.GUI
 			// CCW angle between position and target from circle center. Only one atan2() trig computation required.
 			double angular_travel = Math.Atan2(r_axis0 * rt_axis1 - r_axis1 * rt_axis0, r_axis0 * rt_axis0 + r_axis1 * rt_axis1);
 
-			if (angular_travel == 0.0 || angular_travel == -0.0)
+			if (Math.Abs(angular_travel) < double.Epsilon)
 			{
 				// 360Grad
 				if (isclockwise)
@@ -479,10 +475,7 @@ namespace CNCLib.GCode.GUI
 				double cos_T = 1.0 - 0.5 * theta_per_segment * theta_per_segment;
 				double sin_T = theta_per_segment;
 
-				double sin_Ti;
-				double cos_Ti;
-				double r_axisi;
-				uint i;
+			    uint i;
 				uint count = 0;
 
 				for (i = 1; i<segments; i++)
@@ -490,7 +483,7 @@ namespace CNCLib.GCode.GUI
 					if (count<arc_correction)
 					{
 						// Apply vector rotation matrix 
-						r_axisi = r_axis0* sin_T + r_axis1* cos_T;
+						double r_axisi = r_axis0* sin_T + r_axis1* cos_T;
 						r_axis0 = r_axis0* cos_T - r_axis1* sin_T;
 						r_axis1 = r_axisi;
 						count++;
@@ -499,8 +492,8 @@ namespace CNCLib.GCode.GUI
 					{
 						// Arc correction to radius vector. Computed only every N_ARC_CORRECTION increments.
 						// Compute exact location by applying transformation matrix from initial radius vector(=-offset).
-						cos_Ti = Math.Cos(i* theta_per_segment);
-						sin_Ti = Math.Sin(i* theta_per_segment);
+						double cos_Ti = Math.Cos(i* theta_per_segment);
+						double sin_Ti = Math.Sin(i* theta_per_segment);
 						r_axis0 = -offset0* cos_Ti + offset1* sin_Ti;
 						r_axis1 = -offset0* sin_Ti - offset1* cos_Ti;
 						count = 0;
@@ -527,7 +520,7 @@ namespace CNCLib.GCode.GUI
 
 		private bool PreDrawLineOrArc(object param, DrawType drawtype, PointF from, PointF to)
 		{
-			PaintEventArgs e = (PaintEventArgs)param;
+			var e = (PaintEventArgs)param;
 
 			if (from.Equals(to))
 			{

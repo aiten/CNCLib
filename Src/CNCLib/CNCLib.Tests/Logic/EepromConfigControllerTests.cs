@@ -17,12 +17,9 @@
 */
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Logic;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Repository.Contracts;
-using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
 using Framework.Tools.Dependency;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -35,7 +32,7 @@ namespace CNCLib.Tests.Logic
     {
         private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
-            TInterface rep = Substitute.For<TInterface>();
+            var rep = Substitute.For<TInterface>();
             Dependency.Container.RegisterInstance(rep);
 
             Dependency.Container.RegisterType<Framework.Tools.Pattern.IUnitOfWork, Framework.EF.UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
@@ -53,7 +50,7 @@ namespace CNCLib.Tests.Logic
 
             var ctrl = new EepromConfigurationController();
 
-            var input = new EepromConfigurationInput()
+            var input = new EepromConfigurationInput
             {
                 Teeth = 15,
                 ToothsizeinMm = 2.0,

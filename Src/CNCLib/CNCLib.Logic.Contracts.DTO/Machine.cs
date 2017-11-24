@@ -24,7 +24,7 @@ namespace CNCLib.Logic.Contracts.DTO
     {
         GCodeBasic = 0,
         GCode = 1,
-        HPGL = 7,           // max 3 bit
+        HPGL = 7           // max 3 bit
     }
 
     public class Machine

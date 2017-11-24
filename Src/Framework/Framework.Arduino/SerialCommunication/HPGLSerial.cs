@@ -36,7 +36,7 @@ namespace Framework.Arduino.SerialCommunication
         protected string[] SplitHPGL(string line)
         {
             string[] cmds = line.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            List<string> cmdlist = new List<string>();
+            var cmdlist = new List<string>();
 
             foreach (string l in cmds)
             {
@@ -54,12 +54,9 @@ namespace Framework.Arduino.SerialCommunication
                     {
                         break;
                     }
-                    else
-                    {
-                        string sendmessage = message.Substring(0, idx);
-                        message = cmd + message.Substring(idx + 1);
-                        cmdlist.Add(sendmessage);
-                    }
+                    string sendmessage = message.Substring(0, idx);
+                    message = cmd + message.Substring(idx + 1);
+                    cmdlist.Add(sendmessage);
                 }
 
                 cmdlist.Add(message);

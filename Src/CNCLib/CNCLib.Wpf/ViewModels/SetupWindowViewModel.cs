@@ -17,18 +17,16 @@
 */
 
 using System;
-using System.Linq;
-using System.Windows.Input;
 using System.Collections.ObjectModel;
-using Framework.Wpf.ViewModels;
-using Framework.Wpf.Helpers;
-using System.Windows;
-using CNCLib.GCode;
-using CNCLib.Wpf.Models;
-using CNCLib.ServiceProxy;
-using Framework.Tools.Dependency;
-using CNCLib.Wpf.Helpers;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using CNCLib.ServiceProxy;
+using CNCLib.Wpf.Helpers;
+using CNCLib.Wpf.Models;
+using Framework.Wpf.Helpers;
+using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -150,7 +148,7 @@ namespace CNCLib.Wpf.ViewModels
 		    set => SetProperty(ref _sendInitCommands, value);
 		}
 
-        public bool NeedDtr => Machine != null ? Machine.NeedDtr : false;
+        public bool NeedDtr => Machine != null && Machine.NeedDtr;
 
         #endregion
 
@@ -173,7 +171,7 @@ namespace CNCLib.Wpf.ViewModels
 				{
 					var initCommands = Machine.MachineInitCommands;
 
-					if (initCommands.Count() > 0)
+					if (initCommands.Any())
 					{
 						// wait (do not check if reset - arduino may reset even the "reset" is not specified)
 						await Com.WaitUntilResonseAsync(3000);
@@ -253,7 +251,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public async void SetupMachine()
         {
-            var mID = Machine!=null ? Machine.MachineID : -1;
+            int mID = Machine?.MachineID ?? -1;
 			EditMachine?.Invoke(mID);
             await LoadMachines(mID);
         }

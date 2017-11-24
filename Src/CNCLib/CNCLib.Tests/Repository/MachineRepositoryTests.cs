@@ -201,8 +201,8 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
                 machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
-                machine.MachineCommands.Add(new MachineCommand() { CommandName = "Name#1", CommandString = "New#1", MachineID = id });
-                machine.MachineCommands.Add(new MachineCommand() { CommandName = "Name#2", CommandString = "New#2", MachineID = id });
+                machine.MachineCommands.Add(new MachineCommand { CommandName = "Name#1", CommandString = "New#1", MachineID = id });
+                machine.MachineCommands.Add(new MachineCommand { CommandName = "Name#2", CommandString = "New#2", MachineID = id });
                 machine.MachineCommands.Remove(machine.MachineCommands.Single(m => m.CommandString == "Test1"));
                 machine.MachineCommands.Single(m => m.CommandString == "Test2").CommandString = "Test2.Changed";
 
@@ -262,7 +262,7 @@ namespace CNCLib.Tests.Repository
 
         private static Machine CreateMachine(string name)
 		{
-			var machine = new Machine()
+			var machine = new Machine
 			{
 				ComPort = "com47",
 				Axis = 2,
@@ -291,24 +291,24 @@ namespace CNCLib.Tests.Repository
 		{
 			int count = 2;
 			machine.MachineCommands = new List<MachineCommand>();
-			machine.MachineCommands.Add(new MachineCommand() { CommandName = "Name1", CommandString = "Test1" });
-			machine.MachineCommands.Add(new MachineCommand() { CommandName = "Name1", CommandString = "Test2" });
+			machine.MachineCommands.Add(new MachineCommand { CommandName = "Name1", CommandString = "Test1" });
+			machine.MachineCommands.Add(new MachineCommand { CommandName = "Name1", CommandString = "Test2" });
 			return count;
 		}
 		private static int AddMachinInitCommands(Machine machine)
 		{
 			int count = 2;
 			machine.MachineInitCommands = new List<MachineInitCommand>();
-			machine.MachineInitCommands.Add(new MachineInitCommand() { SeqNo = 0, CommandString = "Test1" });
-			machine.MachineInitCommands.Add(new MachineInitCommand() { SeqNo = 1, CommandString = "Test2" });
+			machine.MachineInitCommands.Add(new MachineInitCommand { SeqNo = 0, CommandString = "Test1" });
+			machine.MachineInitCommands.Add(new MachineInitCommand { SeqNo = 1, CommandString = "Test2" });
 			return count;
 		}
 
 		private static void CompareMachine(Machine machine, Machine machineread)
 		{
 			Assert.AreEqual(true, machineread.CompareProperties(machine));
-            Assert.AreEqual(machine.MachineCommands == null ? 0 : machine.MachineCommands.Count, machineread.MachineCommands.Count);
-			Assert.AreEqual(machine.MachineInitCommands == null ? 0 : machine.MachineInitCommands.Count, machineread.MachineInitCommands.Count);
+            Assert.AreEqual(machine.MachineCommands?.Count ?? 0, machineread.MachineCommands.Count);
+			Assert.AreEqual(machine.MachineInitCommands?.Count ?? 0, machineread.MachineInitCommands.Count);
 
 			foreach (MachineCommand mc in machineread.MachineCommands)
 			{

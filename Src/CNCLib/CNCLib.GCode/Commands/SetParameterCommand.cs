@@ -35,7 +35,7 @@ namespace CNCLib.GCode.Commands
 		#region GCode
 		public override string[] GetGCodeCommands(Point3D startfrom, CommandState state)
 		{
-			string[] ret = new string[] 
+			var ret = new [] 
             {
 				GCodeLineNumber(" ") + GCodeAdd
 			};

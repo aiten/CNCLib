@@ -29,8 +29,8 @@ namespace CNCLib.Tests
 			{
 				if ((item.PropertyType == typeof(string) || item.PropertyType.IsValueType))
 				{
-					IComparable s = item.GetValue(src) as IComparable;
-					IComparable d = item.GetValue(dest) as IComparable;
+					var s = item.GetValue(src) as IComparable;
+					var d = item.GetValue(dest) as IComparable;
 
 					if (s != null && d != null && s.CompareTo(d) != 0)
 						return false;

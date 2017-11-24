@@ -46,9 +46,8 @@ namespace CNCLib.GCode.CamBam
 	
 			public PLine AddPLine()
 			{
-				var pline = new PLine();
-				pline.Id = PLines.Count + 1;
-				PLines.Add(pline);
+			    var pline = new PLine {Id = PLines.Count + 1};
+			    PLines.Add(pline);
 				return pline;
 			}
 		}
@@ -96,14 +95,13 @@ namespace CNCLib.GCode.CamBam
 			public double? X { get; set; }
 			public double? Y { get; set; }
 			public double? Z { get; set; }
+		    public double X0 => X ?? 0.0;
+		    public double Y0 => Y ?? 0.0;
+		    public double Z0 => Z ?? 0.0;
 
-			public void WriteXml(XmlWriter writer)
+            public void WriteXml(XmlWriter writer)
 			{
-				writer.WriteString(
-				string.Format(@"{0},{1},{2}",
-				(X ?? 0).ToString(CultureInfo.InvariantCulture),
-				(Y ?? 0).ToString(CultureInfo.InvariantCulture),
-				(Z ?? 0).ToString(CultureInfo.InvariantCulture)));
+				writer.WriteString($@"{X0.ToString(CultureInfo.InvariantCulture)},{Y0.ToString(CultureInfo.InvariantCulture)},{Z0.ToString(CultureInfo.InvariantCulture)}");
 			}
 
 			public void ReadXml(XmlReader reader)
@@ -121,7 +119,7 @@ namespace CNCLib.GCode.CamBam
 
 			public int CompareTo(PLinePoints other)
 			{
-				if ((X == other.X) && (Y == other.Y) && (Z == other.Z))
+				if (X == other.X && Y == other.Y && Z == other.Z)
 					return 0;
 
 				return 1;

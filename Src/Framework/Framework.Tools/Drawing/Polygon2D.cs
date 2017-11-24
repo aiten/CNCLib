@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -78,7 +79,7 @@ namespace Framework.Tools.Drawing
             return oddNodes;
         }
 
-        private int PreCalcPointInPolygon(out double[] constant, out double[] multiple)
+        private void PreCalcPointInPolygon(out double[] constant, out double[] multiple)
         {
             int i, j = _points.Length - 1;
 
@@ -86,7 +87,7 @@ namespace Framework.Tools.Drawing
             multiple = new double[_points.Length];
             for (i = 0; i < _points.Length; i++)
             {
-                if (_points[j].Y == _points[i].Y)
+                if (Math.Abs(_points[j].Y - _points[i].Y) < double.Epsilon)
                 {
                     constant[i] = _points[i].X;
                     multiple[i] = 0;
@@ -99,7 +100,7 @@ namespace Framework.Tools.Drawing
                 j = i;
             }
 
-            return j;
+            // return j;
         }
 
         #endregion

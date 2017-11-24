@@ -18,22 +18,21 @@
 
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Linq;
 using CNCLib.GCode;
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Drawing;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
-using Framework.Arduino;
 
 namespace CNCLib.Wpf.ViewModels
 {
-	public class PreviewViewModel : BaseViewModel
+    public class PreviewViewModel : BaseViewModel
 	{
 		#region crt
 
@@ -75,14 +74,14 @@ namespace CNCLib.Wpf.ViewModels
 		public double Zoom
 		{
 			get => _zoom;
-		    set { SetProperty(() => _zoom == value, () => _zoom = value); }
+		    set { SetProperty(() => Math.Abs(_zoom - value) < double.Epsilon, () => _zoom = value); }
 		}
 
 		private double _rotateAngle = 0.0;
 		public double RotateAngle
 		{
 			get => _rotateAngle;
-		    set { SetProperty(() => _rotateAngle == value, () => _rotateAngle = value); }
+		    set { SetProperty(() => Math.Abs(_rotateAngle - value) < double.Epsilon, () => _rotateAngle = value); }
 		}
 		private double[] _rotateVector = new double[] { 0, 0, 1 };
 		public double[] RotateVector
@@ -220,7 +219,7 @@ namespace CNCLib.Wpf.ViewModels
             { 
                 if (!string.IsNullOrEmpty(c.ImportInfo))
                     return true;
-            };
+            }
             return false;
         }
 
@@ -255,11 +254,11 @@ namespace CNCLib.Wpf.ViewModels
                     else
                     {
                         Command last = null;
-                        CommandState state = new CommandState();
+                        var state = new CommandState();
 
                         Commands.ForEach((cmd) =>
                         {
-                            string[] cmds = cmd.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null, state);
+                            string[] cmds = cmd.GetGCodeCommands(last?.CalculatedEndPosition, state);
                             if (cmds != null)
                             {
                                 foreach (string str in cmds)
@@ -289,7 +288,7 @@ namespace CNCLib.Wpf.ViewModels
 				loadinfo.AutoScaleSizeY = Global.Instance.SizeY;
 			}
 
-			var arg = new GetLoadInfoArg() { LoadOption = loadinfo, UseAzure = _useAzure };
+			var arg = new GetLoadInfoArg { LoadOption = loadinfo, UseAzure = _useAzure };
 			if ((GetLoadInfo?.Invoke(arg)).GetValueOrDefault(false))
 			{
 				loadinfo = arg.LoadOption;
@@ -360,7 +359,8 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void GotoPos(Point3D pt)
 		{
-			Com.QueueCommand(string.Format(@"g0 x{0} y{1}", (pt.X??0.0).ToString(CultureInfo.InvariantCulture), (pt.Y?? 0.0).ToString(CultureInfo.InvariantCulture)));
+			Com.QueueCommand(
+			    $@"g0 x{(pt.X0).ToString(CultureInfo.InvariantCulture)} y{(pt.Y0).ToString(CultureInfo.InvariantCulture)}");
 		}
 		public bool CanGotoPos(Point3D pt)
 		{

@@ -30,10 +30,6 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region crt
 
-		public JoystickViewModel()
-		{
-		}
-
 		public override async Task Loaded()
 		{
 			await base.Loaded();

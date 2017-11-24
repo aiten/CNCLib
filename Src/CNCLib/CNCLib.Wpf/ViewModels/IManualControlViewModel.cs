@@ -17,7 +17,6 @@
 */
 
 using System;
-using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels
 {

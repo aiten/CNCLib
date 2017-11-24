@@ -25,8 +25,8 @@ namespace Framework.Wpf.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            var x = System.Convert.ToDouble(parameter);
-            var v = System.Convert.ToDouble(value);
+            double x = System.Convert.ToDouble(parameter);
+            double v = System.Convert.ToDouble(value);
             return (v > x);
         }
 

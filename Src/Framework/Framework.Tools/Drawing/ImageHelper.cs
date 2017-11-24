@@ -37,10 +37,10 @@ namespace Framework.Tools.Drawing
             Encoder encoder = Encoder.Quality;
 
             // Create an EncoderParameters object. 
-            EncoderParameters encoderParameters = new EncoderParameters(1);
+            var encoderParameters = new EncoderParameters(1);
 
             // Save the image as a JPEG file with quality level.
-            EncoderParameter encoderParameter = new EncoderParameter(encoder, quality);
+            var encoderParameter = new EncoderParameter(encoder, quality);
             encoderParameters.Param[0] = encoderParameter;
             newImage.Save(filePath, imageCodecInfo, encoderParameters);
         }
@@ -61,7 +61,7 @@ namespace Framework.Tools.Drawing
             int newHeight = (int)(originalHeight * ratio);
 
             // Convert other formats (including CMYK) to RGB.
-            Bitmap newImage = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
+            var newImage = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
 
             // Draws the image in the specified size with quality mode set to HighQuality
             using (Graphics graphics = Graphics.FromImage(newImage))

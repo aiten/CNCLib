@@ -34,7 +34,7 @@ namespace CNCLib.Tests.Logic
 	{
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
-			TInterface srv = Substitute.For<TInterface>();
+			var srv = Substitute.For<TInterface>();
             Dependency.Container.RegisterInstance(srv);
             return srv;
 		}
@@ -61,8 +61,8 @@ namespace CNCLib.Tests.Logic
 
 			var itemEntity = new Item[]
 			{
-				new Item() { ItemID=1,Name="Test1" },
-				new Item() { ItemID=2,Name="Test2" },
+				new Item { ItemID=1,Name="Test1" },
+				new Item { ItemID=2,Name="Test2" }
 			};
 			srv.GetAll().Returns(itemEntity);
 
@@ -86,8 +86,8 @@ namespace CNCLib.Tests.Logic
 
 			var itemEntity = new Item[]
 			{
-				new Item() { ItemID=1,Name="Test1" },
-				new Item() { ItemID=2,Name="Test2" },
+				new Item { ItemID=1,Name="Test1" },
+				new Item { ItemID=2,Name="Test2" }
 			};
 			srv.GetByClassName("System.String,mscorlib").Returns(itemEntity);
 
@@ -108,7 +108,7 @@ namespace CNCLib.Tests.Logic
 		public async Task GetItem()
 		{
 			var srv = CreateMock<IItemService>();
-			srv.Get(1).Returns(new Item() { ItemID = 1, Name = "Test1" });
+			srv.Get(1).Returns(new Item { ItemID = 1, Name = "Test1" });
 
 			var ctrl = new DynItemController(srv);
 			var all = await ctrl.Get(1);
@@ -147,7 +147,7 @@ namespace CNCLib.Tests.Logic
             item.Should().NotBeNull();
             item.Should().BeOfType(typeof(DynItemControllerTestClass));
 
-            DynItemControllerTestClass item2 = (DynItemControllerTestClass)item;
+            var item2 = (DynItemControllerTestClass)item;
 
             item2.StringProperty.Should().Be("Hallo", item2.StringProperty);
             item2.IntProperty.Should().Be(1);
@@ -185,7 +185,7 @@ namespace CNCLib.Tests.Logic
 
             Item itemEntity = CreateItem();
 
-            DynItemControllerTestClass obj = new DynItemControllerTestClass()
+            var obj = new DynItemControllerTestClass
             {
                 StringProperty = "Hallo",
                 IntProperty = 1,
@@ -197,7 +197,7 @@ namespace CNCLib.Tests.Logic
 
             var ctrl = new DynItemController(srv);
 
-            var id = await ctrl.Add("Hallo", obj);
+            int id = await ctrl.Add("Hallo", obj);
 
             await srv.Received().Add(Arg.Is<Item>(x => x.Name == "Hallo"));
 			await srv.Received().Add(Arg.Is<Item>(x => x.ItemID == 0));
@@ -257,7 +257,7 @@ namespace CNCLib.Tests.Logic
 
 			//act
 
-			await ctrl.Save(1,"Test",new DynItemControllerTestClass() {IntProperty=1 });
+			await ctrl.Save(1,"Test",new DynItemControllerTestClass {IntProperty=1 });
 
 			//assert
 			await srv.Received().Update(Arg.Is<Item>(x => x.ItemID == 1));

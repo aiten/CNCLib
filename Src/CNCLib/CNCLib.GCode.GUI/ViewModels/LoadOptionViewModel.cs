@@ -227,9 +227,9 @@ namespace CNCLib.GCode.GUI.ViewModels
                 Busy = true;
                 try
                 {
-                    using (StreamReader sr = new StreamReader(filename))
+                    using (var sr = new StreamReader(filename))
                     {
-                        XmlSerializer serializer = new XmlSerializer(typeof(Logic.Contracts.DTO.LoadOptions));
+                        var serializer = new XmlSerializer(typeof(Logic.Contracts.DTO.LoadOptions));
                         var opt = (Logic.Contracts.DTO.LoadOptions)serializer.Deserialize(sr);
                         sr.Close();
 
@@ -259,9 +259,9 @@ namespace CNCLib.GCode.GUI.ViewModels
             {
                 var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
 
-                using (StreamWriter sw = new StreamWriter(filename))
+                using (var sw = new StreamWriter(filename))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(Logic.Contracts.DTO.LoadOptions));
+                    var serializer = new XmlSerializer(typeof(Logic.Contracts.DTO.LoadOptions));
                     serializer.Serialize(sw, opt);
                     sw.Close();
                 }

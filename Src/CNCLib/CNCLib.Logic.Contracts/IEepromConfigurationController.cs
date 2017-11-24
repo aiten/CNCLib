@@ -18,7 +18,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Framework.Logic.Contracts;
 
 namespace CNCLib.Logic.Contracts
 {

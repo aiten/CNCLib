@@ -33,7 +33,7 @@ namespace CNCLib.Tests.Logic
 	{
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
 		{
-			TInterface rep = Substitute.For<TInterface>();
+			var rep = Substitute.For<TInterface>();
 			Dependency.Container.RegisterInstance(rep);
 			return rep;
 		}
@@ -46,9 +46,9 @@ namespace CNCLib.Tests.Logic
 
 			rep.GetAll(typeof(LoadOptions)).Returns(new DynItem[1]
 			{
-				new DynItem() { ItemID=1, Name="Entry1"  }
+				new DynItem { ItemID=1, Name="Entry1"  }
 			});
-			rep.Create(1).Returns(new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" });
+			rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
 			var all = await ctrl.GetAll();
 
@@ -64,7 +64,7 @@ namespace CNCLib.Tests.Logic
 			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
-			rep.Create(1).Returns(new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" });
+			rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
 			var all = await ctrl.Get(1);
 
@@ -79,7 +79,7 @@ namespace CNCLib.Tests.Logic
 			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
-			rep.Create(1).Returns(new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" });
+			rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
 			var all = await ctrl.Get(2);
 
@@ -93,7 +93,7 @@ namespace CNCLib.Tests.Logic
 			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
-			var opt = new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" };
+			var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
 			await ctrl.Add(opt);
 
@@ -106,7 +106,7 @@ namespace CNCLib.Tests.Logic
 			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
-			var opt = new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" };
+			var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
 			await ctrl.Update(opt);
 
@@ -119,7 +119,7 @@ namespace CNCLib.Tests.Logic
 			var rep = CreateMock<IDynItemController>();
 			var ctrl = new LoadOptionsController();
 
-			var opt = new LoadOptions() { SettingName = "Entry1", Id = 1, FileName = "HA" };
+			var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
 			await ctrl.Delete(opt).ConfigureAwait(false);
 

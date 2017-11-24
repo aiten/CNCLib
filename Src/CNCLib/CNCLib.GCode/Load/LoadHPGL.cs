@@ -40,19 +40,18 @@ namespace CNCLib.GCode.Load
             using (StreamReader sr = GetStreamReader())
             {
                 string line;
-                Point3D last = new Point3D();
+                var last = new Point3D();
                 bool isPenUp = true;
-                CommandStream stream = new CommandStream();
+                var stream = new CommandStream();
 
                 while ((line = sr.ReadLine()) != null)
                 {
                     stream.Line = line;
 
-                    string[] cmds = new string[] { "PU", "PD", "PA", "PR" };
+                    var cmds = new [] { "PU", "PD", "PA", "PR" };
                     while (!stream.IsEOF())
                     {
                         stream.SkipSpaces();
-                        int idx = stream.PushIdx();
                         int cmdidx = stream.IsCommand(cmds);
 
                         if (cmdidx >= 0)
@@ -65,7 +64,7 @@ namespace CNCLib.GCode.Load
 
                             while (stream.IsNumber())
                             {
-                                Point3D pt = new Point3D();
+                                var pt = new Point3D();
                                 pt.X = stream.GetInt() / 40.0;
                                 stream.IsCommand(",");
                                 pt.Y = stream.GetInt() / 40.0;
@@ -78,8 +77,8 @@ namespace CNCLib.GCode.Load
                                     pt.Y += last.Y;
                                 }
 
-                                list.Add(new HPGLCommand()
-                                {
+                                list.Add(new HPGLCommand
+                                    {
                                     CommandType = isPenUp ? HPGLCommand.HPGLCommandType.PenUp : HPGLCommand.HPGLCommandType.PenDown,
                                     PointTo = pt
                                 }
@@ -97,7 +96,7 @@ namespace CNCLib.GCode.Load
                         else
                         {
                             var hpglcmd = stream.ReadString(new [] { ';' });
-                            list.Add(new HPGLCommand() { CommandString = hpglcmd });
+                            list.Add(new HPGLCommand { CommandString = hpglcmd });
                         }
                     }
                 }
@@ -141,7 +140,7 @@ namespace CNCLib.GCode.Load
         {
             if (LoadOptions.SwapXY)
             {
-                var tmp = pt.X.Value;
+                double tmp = pt.X0;
                 pt.X = pt.Y;
                 pt.Y = -tmp;
             }
@@ -165,7 +164,7 @@ namespace CNCLib.GCode.Load
 
             if (LoadOptions.AutoScale)
 			{
-			    var autoscale = new AutoScale()
+			    var autoscale = new AutoScale
 			    {
 			        LoadOptions = LoadOptions,
 			        LoadX = this
@@ -176,7 +175,7 @@ namespace CNCLib.GCode.Load
 
             if (LoadOptions.SmoothType != LoadOptions.SmoothTypeEnum.NoSmooth)
             {
-                var smooth = new Smooth()
+                var smooth = new Smooth
                 {
                     LoadOptions = LoadOptions,
                     LoadX = this
@@ -187,7 +186,7 @@ namespace CNCLib.GCode.Load
 
             if (LoadOptions.ConvertType != LoadOptions.ConvertTypeEnum.NoConvert)
             {
-                var invert = new InvertLine()
+                var invert = new InvertLine
                 {
                     LoadOptions = LoadOptions,
                     LoadX = this
@@ -218,8 +217,8 @@ namespace CNCLib.GCode.Load
 
 				if (LoadOptions.EngravePosInParameter)
 				{
-					Commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#1 = " + LoadOptions.EngravePosUp.ToString(CultureInfo.InvariantCulture) } );
-					Commands.AddCommand(new SetParameterCommand() { GCodeAdd = "#2 = " + LoadOptions.EngravePosDown.ToString(CultureInfo.InvariantCulture) });
+					Commands.AddCommand(new SetParameterCommand { GCodeAdd = "#1 = " + LoadOptions.EngravePosUp.ToString(CultureInfo.InvariantCulture) } );
+					Commands.AddCommand(new SetParameterCommand { GCodeAdd = "#2 = " + LoadOptions.EngravePosDown.ToString(CultureInfo.InvariantCulture) });
 				}
 			}
 
@@ -291,16 +290,16 @@ namespace CNCLib.GCode.Load
                     AddCamBamPoint(pt);
                     hpglCmd = "PD";
                 }
-                r.AddVariable('X', pt.X.Value, false);
-                r.AddVariable('Y', pt.Y.Value, false);
+                r.AddVariable('X', pt.X0, false);
+                r.AddVariable('Y', pt.Y0, false);
                 if (_needSpeed)
                 {
                     _needSpeed = false;
-                    r.AddVariable('F', LoadOptions.MoveSpeed.Value);
+                    r.AddVariable('F', LoadOptions.MoveSpeed??0);
                 }
                 Commands.AddCommand(r);
 
-                r.ImportInfo = $"{hpglCmd}{(int)(pt.X.Value * 40.0)},{(int)(pt.Y.Value * 40.0)}";
+                r.ImportInfo = $"{hpglCmd}{(int)(pt.X0 * 40.0)},{(int)(pt.Y0 * 40.0)}";
             }
             else
             {
@@ -378,9 +377,9 @@ namespace CNCLib.GCode.Load
             ret.Y += (double)LoadOptions.OfsY;
 
             if (LoadOptions.ScaleX != 0)
-                ret.X = Math.Round(ret.X.Value * (double)LoadOptions.ScaleX, 3);
+                ret.X = Math.Round(ret.X0 * (double)LoadOptions.ScaleX, 3);
             if (LoadOptions.ScaleY != 0)
-                ret.Y = Math.Round(ret.Y.Value * (double)LoadOptions.ScaleY, 3);
+                ret.Y = Math.Round(ret.Y0 * (double)LoadOptions.ScaleY, 3);
 
             return ret;
         }
@@ -391,15 +390,15 @@ namespace CNCLib.GCode.Load
 
         private void WriteLineToFile(IEnumerable<HPGLCommand> list, int lineIdx)
         {
-            if (list.Count() > 0)
+            if (list.Any())
             {
                 var firstfrom = list.First().PointFrom;
-                using (StreamWriter sw = new StreamWriter(Environment.ExpandEnvironmentVariables($"%TMP%\\CNCLib_Line{lineIdx}.plt")))
+                using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables($"%TMP%\\CNCLib_Line{lineIdx}.plt")))
                 {
-                    sw.WriteLine($"PU {(int) (firstfrom.X.Value*40)},{(int) (firstfrom.Y.Value*40)}");
+                    sw.WriteLine($"PU {(int) (firstfrom.X0*40)},{(int) (firstfrom.Y0*40)}");
                     foreach (var cmd in list)
                     {
-                        sw.WriteLine($"PD {(int) (cmd.PointTo.X.Value*40)},{(int) (cmd.PointTo.Y.Value*40)}");
+                        sw.WriteLine($"PD {(int) (cmd.PointTo.X0*40)},{(int) (cmd.PointTo.Y0*40)}");
                     }
                 }
             }

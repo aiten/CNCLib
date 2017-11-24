@@ -16,11 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Windows.Input;
-using Framework.Wpf.Helpers;
 using System.Globalization;
+using System.Windows.Input;
 using CNCLib.Wpf.Helpers;
-using System.Threading.Tasks;
+using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {

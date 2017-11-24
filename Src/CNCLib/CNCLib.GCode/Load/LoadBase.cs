@@ -30,11 +30,10 @@ namespace CNCLib.GCode.Load
 	{
 		bool _laserWasOn = false;
 		bool _laserOn = true;
-		CamBam.CamBam _cambam = new CamBam.CamBam();
 
-		#region Properties
+	    #region Properties
 
-		public CommandFactory CommandFactory { get; private set; } = new CommandFactory();
+		public CommandFactory CommandFactory { get; } = new CommandFactory();
 
 		public CommandList Commands { get; protected set; } = new CommandList();
 
@@ -44,14 +43,14 @@ namespace CNCLib.GCode.Load
 
 		#region CamBam
 
-		public CamBam.CamBam CamBam => _cambam;
+		public CamBam.CamBam CamBam { get; } = new CamBam.CamBam();
 
 	    private CamBam.CamBam.PLine _pline;
 		private CamBam.CamBam.Layer _layer;
 
 		protected void AddCamBamPoint(Point3D pt)
 		{
-			_pline.Pts.Add(new CamBam.CamBam.PLinePoints()
+			_pline.Pts.Add(new CamBam.CamBam.PLinePoints
 			{
 				X = pt.X,
 				Y = pt.Y,
@@ -126,14 +125,14 @@ namespace CNCLib.GCode.Load
 
 		protected void PostLoad()
 		{
-			if (LoadOptions != null && !string.IsNullOrEmpty(LoadOptions.ShutdownCommands))
+			if (!string.IsNullOrEmpty(LoadOptions?.ShutdownCommands))
 				AddCommands(LoadOptions.ShutdownCommands);
 
 			Commands.UpdateCache();
 
 			if (LoadOptions != null)
 			{
-				var options = new ConvertOptions() { SubstG82 = LoadOptions.SubstG82 };
+				var options = new ConvertOptions { SubstG82 = LoadOptions.SubstG82 };
 
 				Commands = Commands.Convert(options);
 
@@ -166,7 +165,7 @@ namespace CNCLib.GCode.Load
 		protected void AddCommands(string commandstring)
 		{
 			var cmds = commandstring.Split(new [] { @"\n", @"\r" }, StringSplitOptions.RemoveEmptyEntries);
-			foreach (var s in cmds)
+			foreach (string s in cmds)
 			{
 				var r = CommandFactory.CreateOrDefault(s);
 				Commands.Add(r);
@@ -179,12 +178,12 @@ namespace CNCLib.GCode.Load
 
 		protected void AddComment(string propertyName)
 		{
-			Commands.Add(new GxxCommand() { GCodeAdd = "; " + propertyName });
+			Commands.Add(new GxxCommand { GCodeAdd = "; " + propertyName });
 		}
 
 		protected void AddComment(string propertyName, string propertyvalue)
 		{
-			Commands.Add(new GxxCommand() { GCodeAdd = "; " + propertyName + " = " + propertyvalue });
+			Commands.Add(new GxxCommand { GCodeAdd = "; " + propertyName + " = " + propertyvalue });
 		}
 		protected void AddComment(string propertyName, decimal propertyvalue)
 		{

@@ -71,11 +71,9 @@ namespace CNCLib.GCode.Load
             System.Drawing.Bitmap b = bx;
             decimal scaleX = LoadOptions.ScaleX;
             decimal scaleY = LoadOptions.ScaleY;
-            double dpiX;
-            double dpiY;
 
-            dpiX = (double)(LoadOptions.ImageDPIX ?? (decimal)b.HorizontalResolution);
-            dpiY = (double)(LoadOptions.ImageDPIY ?? (decimal)b.VerticalResolution);
+            var dpiX = (double)(LoadOptions.ImageDPIX ?? (decimal)b.HorizontalResolution);
+            var dpiY = (double)(LoadOptions.ImageDPIY ?? (decimal)b.VerticalResolution);
 
             if (LoadOptions.AutoScale)
             {

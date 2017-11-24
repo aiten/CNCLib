@@ -36,7 +36,7 @@ namespace CNCLib.GCode.Commands
 
 		#region crt
 
-		public Command()
+	    protected Command()
         {
 			PositionValid = false;
 			Movetype = MoveType.NoMove;
@@ -118,19 +118,19 @@ namespace CNCLib.GCode.Commands
 
 		public void AddVariable(char name, double value, bool isFloatingPoint)
 		{
-			AddVariable(new Variable() { Name = name, Value = value, ForceFloatingPoint = isFloatingPoint });
+			AddVariable(new Variable { Name = name, Value = value, ForceFloatingPoint = isFloatingPoint });
 		}
 		public void AddVariableNoValue(char name)
 		{
-			AddVariable(new Variable() { Name = name });
+			AddVariable(new Variable { Name = name });
 		}
 		public void AddVariableParam(char name, string paramvalue)
 		{
-			AddVariable(new Variable() { Name = name, Parameter = paramvalue });
+			AddVariable(new Variable { Name = name, Parameter = paramvalue });
 		}
 		public void AddVariable(char name, decimal value)
 		{
-			AddVariable(new Variable() { Name = name, Value = (double) value });
+			AddVariable(new Variable { Name = name, Value = (double) value });
 		}
 
 		public double GetVariable(char name, double defaultvalue)
@@ -149,7 +149,7 @@ namespace CNCLib.GCode.Commands
 		public bool TryGetVariable(char name, out double val)
 		{
 			Variable var = GetVariable(name);
-			if (var!=null && var.Value.HasValue)
+			if (var?.Value != null)
 			{
 				val = var.Value.Value;
 				return true;
@@ -161,7 +161,7 @@ namespace CNCLib.GCode.Commands
 		public string TryGetVariableGCode(char name)
 		{
 			Variable var = GetVariable(name);
-			if (var != null && var.Value.HasValue)
+			if (var?.Value != null)
 			{
 				return var.ToGCode();
 			}
@@ -171,7 +171,7 @@ namespace CNCLib.GCode.Commands
 		public bool CopyVariable(char name, Command dest)
 		{
 			Variable var = GetVariable(name);
-			if (var == null || !var.Value.HasValue) return false;
+			if (var?.Value == null) return false;
 
 			dest.AddVariable(var.ShallowCopy());
 
@@ -189,7 +189,7 @@ namespace CNCLib.GCode.Commands
 
 		public DrawType Convert(MoveType movetype, CommandState state)
         {
-			DrawType drawtype = DrawType.NoDraw;
+			var drawtype = DrawType.NoDraw;
 
 			if (movetype != MoveType.NoMove)
 			{
@@ -275,7 +275,7 @@ namespace CNCLib.GCode.Commands
 
 		public virtual string[] GetGCodeCommands(Point3D startfrom, CommandState state)
 		{
-			string[] ret = new string[] 
+			var ret = new [] 
             {
                 GCodeHelper(startfrom)
             };
@@ -325,7 +325,7 @@ namespace CNCLib.GCode.Commands
 			if (stream.NextChar == '#')
 			{
 				stream.Next();
-				var paramNr = stream.GetInt();
+				int paramNr = stream.GetInt();
 				AddVariableParam(param,paramNr.ToString());
 				return 0;
 			}
@@ -335,7 +335,7 @@ namespace CNCLib.GCode.Commands
 			if (stream.IsNumber())
 			{
 				bool isFloatingPoint;
-				var val = stream.GetDouble(out isFloatingPoint);
+				double val = stream.GetDouble(out isFloatingPoint);
 				AddVariable(param, val, isFloatingPoint);
 				return val;
 			}
@@ -350,7 +350,7 @@ namespace CNCLib.GCode.Commands
 
 		public virtual void ReadFrom(CommandStream stream)
 		{
-			Point3D ep = new Point3D();
+			var ep = new Point3D();
 
 			if (stream.NextChar == '.')
 			{

@@ -16,15 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools.Dependency;
 using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Web.Http;
-using Framework.Web;
-using CNCLib.ServiceProxy;
 using System.Threading.Tasks;
+using System.Web.Http;
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.ServiceProxy;
 
 namespace CNCLib.WebAPI.Controllers
 {
@@ -40,7 +36,7 @@ namespace CNCLib.WebAPI.Controllers
         public async Task<IHttpActionResult> Get(ushort teeth, double toothsizeInMm, ushort microsteps, ushort stepsPerRotation, double estimatedRotationSpeed, double timeToAcc, double timeToDec)
         {
             // http://localhost:2024/api/EepromConfiguration?teeth=15&toothsizeInMm=2.0&microsteps=16&stepsPerRotation=200&estimatedRotationSpeed=7.8&timeToAcc=0.2&timeToDec=0.15
-            var input = new EepromConfigurationInput()
+            var input = new EepromConfigurationInput
             {
                 Teeth = teeth,
                 ToothsizeinMm = toothsizeInMm,

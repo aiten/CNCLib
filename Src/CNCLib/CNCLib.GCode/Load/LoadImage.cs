@@ -41,7 +41,7 @@ namespace CNCLib.GCode.Load
             _shiftLaserOn = -SHIFT * (double) LoadOptions.LaserSize;
             _shiftLaserOff = SHIFT * (double) LoadOptions.LaserSize;
 
-            using (System.Drawing.Bitmap bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
+            using (var bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
             {
                 System.Drawing.Bitmap b;
                 switch (bx.PixelFormat)
@@ -81,13 +81,13 @@ namespace CNCLib.GCode.Load
                 case LoadOptions.DitherFilter.FloydSteinbergDither:
                     AddComment("Image Converted with FloydSteinbergDither");
                     AddComment("GrayThreshold", LoadOptions.GrayThreshold);
-                    b = new Framework.Tools.Drawing.FloydSteinbergDither() { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
+                    b = new Framework.Tools.Drawing.FloydSteinbergDither { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
                     break;
                 case LoadOptions.DitherFilter.NewspaperDither:
                     AddComment("Image Converted with NewspaperDither");
                     AddComment("GrayThreshold", LoadOptions.GrayThreshold);
                     AddComment("Dithersize", LoadOptions.NewspaperDitherSize);
-                    b = new Framework.Tools.Drawing.NewspapergDither() { Graythreshold = LoadOptions.GrayThreshold, DotSize = LoadOptions.NewspaperDitherSize }.Process(b);
+                    b = new Framework.Tools.Drawing.NewspapergDither { Graythreshold = LoadOptions.GrayThreshold, DotSize = LoadOptions.NewspaperDitherSize }.Process(b);
                     break;
             }
 
@@ -159,7 +159,7 @@ namespace CNCLib.GCode.Load
 
 			Command cx;
 			// if we have no laser on/off we switch with g01 and g00
-			bool use_g1 = HaveLaserOnOffCommand() || laserOn == true;
+			bool use_g1 = HaveLaserOnOffCommand() || laserOn;
 			if (use_g1)
 				cx = new G01Command();
 			else

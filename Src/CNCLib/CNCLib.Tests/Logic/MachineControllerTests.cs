@@ -34,7 +34,7 @@ namespace CNCLib.Tests.Logic
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
 		{
 			//			var mockfactory = CreateMock();
-			TInterface rep = Substitute.For<TInterface>();
+			var rep = Substitute.For<TInterface>();
 			//			mockfactory.Register(typeof(TInterface), rep);
 
 			Dependency.Container.RegisterInstance(rep);
@@ -47,16 +47,16 @@ namespace CNCLib.Tests.Logic
 		{
 			var rep = CreateMock<IMachineRepository>();
 
-			MachineController ctrl = new MachineController();
+			var ctrl = new MachineController();
 
-			var machineEntity1 = new CNCLib.Logic.Contracts.DTO.Machine()
+			var machineEntity1 = new CNCLib.Logic.Contracts.DTO.Machine
 			{
 				MachineID = 1,
 				Name = "Maxi",
 				MachineCommands = new CNCLib.Logic.Contracts.DTO.MachineCommand[1]
-						{ new CNCLib.Logic.Contracts.DTO.MachineCommand() { MachineID = 1, MachineCommandID = 1, CommandName = @"1", CommandString=@"1",PosX=0,PosY=1 } },
+						{ new CNCLib.Logic.Contracts.DTO.MachineCommand { MachineID = 1, MachineCommandID = 1, CommandName = @"1", CommandString=@"1",PosX=0,PosY=1 } },
 				MachineInitCommands = new CNCLib.Logic.Contracts.DTO.MachineInitCommand[1]
-					{ new CNCLib.Logic.Contracts.DTO.MachineInitCommand() { MachineID = 1, MachineInitCommandID = 1, CommandString ="2", SeqNo=1 } }
+					{ new CNCLib.Logic.Contracts.DTO.MachineInitCommand { MachineID = 1, MachineInitCommandID = 1, CommandString ="2", SeqNo=1 } }
 			};
 
 			var machineID = await ctrl.Add(machineEntity1);
@@ -70,9 +70,9 @@ namespace CNCLib.Tests.Logic
 		{
 			var rep = CreateMock<IMachineRepository>();
 
-			MachineController ctrl = new MachineController();
+			var ctrl = new MachineController();
 
-			var machineEntity1 = new Machine() { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+			var machineEntity1 = new Machine { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			rep.GetMachine(1).Returns(machineEntity1);
 
 			var machine = await ctrl.Get(1);
@@ -89,9 +89,9 @@ namespace CNCLib.Tests.Logic
 		{
 			var rep = CreateMock<IMachineRepository>();
 
-			MachineController ctrl = new MachineController();
+			var ctrl = new MachineController();
 
-			var machineEntity1 = new Machine() { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+			var machineEntity1 = new Machine { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			rep.GetMachine(1).Returns(machineEntity1);
 
 			var machine = await ctrl.Get(1);
@@ -111,7 +111,7 @@ namespace CNCLib.Tests.Logic
 			var machineEntity = new Machine[0];
 			rep.GetMachines().Returns(machineEntity);
 
-			MachineController ctrl = new MachineController();
+			var ctrl = new MachineController();
 
 			var machines = (await ctrl.GetAll()).ToArray();
 			Assert.AreEqual(true, machines.Length == 0);
@@ -122,10 +122,10 @@ namespace CNCLib.Tests.Logic
 		{
 			var rep = CreateMock<IMachineRepository>();
 
-			var machineEntity = new Machine[] { new Machine() { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] } };
+			var machineEntity = new Machine[] { new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] } };
 			rep.GetMachines().Returns(machineEntity);
 
-			MachineController ctrl = new MachineController();
+			var ctrl = new MachineController();
 
 			var machines = (await ctrl.GetAll()).ToArray();
 			Assert.AreEqual(true, machines.Length == 1);
@@ -144,15 +144,16 @@ namespace CNCLib.Tests.Logic
 			var rep = CreateMock<IMachineRepository>();
 
 			var machineEntity = new Machine[]
-			{ new Machine() { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] },
-			  new Machine() { MachineID = 2, Name = "Maxi", BufferSize = 115200,
-								MachineCommands = new MachineCommand[] { new MachineCommand() { MachineID =2,MachineCommandID=1,CommandName="Test",CommandString="f"  } },
-								MachineInitCommands = new MachineInitCommand[] { new MachineInitCommand() { MachineID =2,MachineInitCommandID=1,SeqNo=0,CommandString="f"  } } }
+			{ new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] },
+			  new Machine
+			  { MachineID = 2, Name = "Maxi", BufferSize = 115200,
+								MachineCommands = new MachineCommand[] { new MachineCommand { MachineID =2,MachineCommandID=1,CommandName="Test",CommandString="f"  } },
+								MachineInitCommands = new MachineInitCommand[] { new MachineInitCommand { MachineID =2,MachineInitCommandID=1,SeqNo=0,CommandString="f"  } } }
 			};
 
 			rep.GetMachines().Returns(machineEntity);
 
-			MachineController ctrl = new MachineController();
+			var ctrl = new MachineController();
 
 			var machines = (await ctrl.GetAll()).ToArray();
 			Assert.AreEqual(true, machines.Length == 2);
@@ -174,12 +175,12 @@ namespace CNCLib.Tests.Logic
 		{
 			var rep = CreateMock<IMachineRepository>();
 
-			var machineEntity1 = new Machine() { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
-			var machineEntity2 = new Machine() { MachineID = 2, Name = "Mini", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+			var machineEntity1 = new Machine { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+			var machineEntity2 = new Machine { MachineID = 2, Name = "Mini", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			rep.GetMachine(1).Returns(machineEntity1);
 			rep.GetMachine(2).Returns(machineEntity2);
 
-			MachineController ctrl = new MachineController();
+			var ctrl = new MachineController();
 
 			var machine = await ctrl.Get(1);
 			Assert.AreEqual(machineEntity1.Name, machine.Name);
@@ -195,12 +196,12 @@ namespace CNCLib.Tests.Logic
 		{
 			var rep = CreateMock<IMachineRepository>();
 
-			var machineEntity1 = new Machine() { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
-			var machineEntity2 = new Machine() { MachineID = 2, Name = "Mini", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+			var machineEntity1 = new Machine { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+			var machineEntity2 = new Machine { MachineID = 2, Name = "Mini", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			rep.GetMachine(1).Returns(machineEntity1);
 			rep.GetMachine(2).Returns(machineEntity2);
 
-			MachineController ctrl = new MachineController();
+			var ctrl = new MachineController();
 
 			var machine = await ctrl.Get(3);
 			Assert.IsNull(machine);
@@ -209,7 +210,7 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task DefaultMachine()
 		{
-			MachineController ctrl = new MachineController();
+			var ctrl = new MachineController();
 
 			var machine = await ctrl.DefaultMachine();
 			Assert.IsNotNull(machine);
@@ -220,11 +221,10 @@ namespace CNCLib.Tests.Logic
 		public async Task GetDefaultMachine()
 		{
 			var rep = CreateMock<IConfigurationRepository>();
+			var ctrl = new MachineController();
 
-			MachineController ctrl = new MachineController();
-
-			rep.Get("Environment", "DefaultMachineID").Returns(new Configuration() { Value = "14" });
-			var dm = await ctrl.GetDetaultMachine();
+			rep.Get("Environment", "DefaultMachineID").Returns(new Configuration { Value = "14" });
+			int dm = await ctrl.GetDetaultMachine();
 
 			Assert.AreEqual(14, dm);
 		}
@@ -233,12 +233,9 @@ namespace CNCLib.Tests.Logic
 		public async Task GetDefaultMachineNotSet()
 		{
 			var rep = CreateMock<IConfigurationRepository>();
+			var ctrl = new MachineController();
 
-			MachineController ctrl = new MachineController();
-
-			Configuration nullconfig=null;
-
-			rep.Get("Environment", "DefaultMachineID").Returns(nullconfig);
+			rep.Get("Environment", "DefaultMachineID").Returns((Configuration)null);
 
 			Assert.AreEqual(-1, await ctrl.GetDetaultMachine());
 		}
@@ -248,11 +245,11 @@ namespace CNCLib.Tests.Logic
 		{
 			var rep = CreateMock<IConfigurationRepository>();
 
-			MachineController ctrl = new MachineController();
+			var ctrl = new MachineController();
 
 			await ctrl.SetDetaultMachine(15);
 
-			rep.Get("Environment", "DefaultMachineID").Returns(new Configuration() { Value = "14" });
+			rep.Get("Environment", "DefaultMachineID").Returns(new Configuration { Value = "14" });
 
 			await rep.Received().Save(Arg.Is<Configuration>(x => x.Group == "Environment" && x.Name == "DefaultMachineID" && x.Value == "15"));
 		}

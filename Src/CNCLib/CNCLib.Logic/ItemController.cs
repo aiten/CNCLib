@@ -105,7 +105,7 @@ namespace CNCLib.Logic
 
 		private static IEnumerable<Item> Convert(Repository.Contracts.Entities.Item[] items)
 		{
-			List<Item> l = new List<Item>();
+			var l = new List<Item>();
 			foreach (var i in items)
 			{
 				l.Add(i.Convert());

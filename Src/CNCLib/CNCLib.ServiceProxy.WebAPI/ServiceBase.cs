@@ -30,9 +30,8 @@ namespace CNCLib.ServiceProxy.WebAPI
 
 		protected HttpClient CreateHttpClient()
 		{
-			var client = new HttpClient();
-			client.BaseAddress = new Uri(_webserverurl);
-			client.DefaultRequestHeaders.Accept.Clear();
+		    var client = new HttpClient {BaseAddress = new Uri(_webserverurl)};
+		    client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			return client;
 		}

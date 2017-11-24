@@ -115,7 +115,6 @@ namespace CNCLib.ServiceProxy.WebAPI
 				{
 					return;
 				}
-				return;
 			}
 		}
 

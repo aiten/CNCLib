@@ -34,7 +34,7 @@ namespace CNCLib.Wpf.Models
 
         public bool? IsPropertyBrowsable(PropertyDescriptor property)
         {
-            var propertyName = property.Name;
+            string propertyName = property.Name;
             bool isaxis = property.ComponentType.Name == nameof(SAxis);
 
             if (isaxis)
@@ -419,7 +419,7 @@ namespace CNCLib.Wpf.Models
 
         public virtual void ReadFrom(EepromV1 ee)
         {
-            var numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
+            byte numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
 
             NumAxis = ee[EepromV1.EValueOffsets8.NumAxis];
             UseAxis = ee[EepromV1.EValueOffsets8.UseAxis];
@@ -466,7 +466,7 @@ namespace CNCLib.Wpf.Models
 
         public virtual void WriteTo(EepromV1 ee)
         {
-            var numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
+            byte numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
 
             for (int i = 0; i < numaxis; i++)
             {
@@ -476,7 +476,7 @@ namespace CNCLib.Wpf.Models
                 ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin] = GetAxis(i).RefHitValueMin;
                 ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax] = GetAxis(i).RefHitValueMax;
 
-                var direction = ee[EepromV1.EValueOffsets8.StepperDirection] & (~(1 << i));
+                int direction = ee[EepromV1.EValueOffsets8.StepperDirection] & (~(1 << i));
                 if (GetAxis(i).StepperDirection)
                 {
                     direction += 1 << i;

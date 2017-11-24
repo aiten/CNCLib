@@ -16,11 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Data.Entity;
-using CNCLib.Repository.Contracts;
+using System.Linq;
 using System.Threading.Tasks;
+using CNCLib.Repository.Contracts;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository

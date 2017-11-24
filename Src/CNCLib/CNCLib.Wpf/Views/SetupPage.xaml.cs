@@ -16,20 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Windows;
 using System.Windows.Controls;
 using CNCLib.Wpf.ViewModels;
 using Framework.Tools.Dependency;
 using Framework.Wpf.View;
-using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.Views
 {
-	/// <summary>
-	/// Interaction logic for SetupPage.xaml
-	/// </summary>
-	public partial class SetupPage : Page
+    /// <summary>
+    /// Interaction logic for SetupPage.xaml
+    /// </summary>
+    public partial class SetupPage : Page
 	{
 		public SetupPage()
 		{
@@ -52,33 +49,36 @@ namespace CNCLib.Wpf.Views
 */
 			if (vm.EditMachine == null)
 			{
-				vm.EditMachine = new Action<int>((mID) =>
+				vm.EditMachine = (mID) =>
 				{
-					var dlg = new MachineView();
-					var vmdlg = dlg.DataContext as MachineViewModel;
-					vmdlg.LoadMachine(mID);
-					dlg.ShowDialog();
-				});
+				    var dlg = new MachineView();
+				    var vmdlg = dlg.DataContext as MachineViewModel;
+				    if (vmdlg != null)
+				    {
+				        vmdlg.LoadMachine(mID);
+				        dlg.ShowDialog();
+				    }
+				};
 			}
 
 			if (vm.ShowEeprom == null)
 			{
-				vm.ShowEeprom = new Action(() =>
+				vm.ShowEeprom = () =>
 				{
-					var dlg = new EepromView();
-					var vmdlg = dlg.DataContext as EepromViewModel;
-					dlg.ShowDialog();
-				});
+				    var dlg = new EepromView();
+				    var vmdlg = dlg.DataContext as EepromViewModel;
+				    dlg.ShowDialog();
+				};
 			}
 
 			if (vm.EditJoystick == null)
 			{
-				vm.EditJoystick = new Action(() =>
+				vm.EditJoystick = () =>
 				{
-					var dlg = new JoystickView();
-					var vmdlg = dlg.DataContext as JoystickView;
-					dlg.ShowDialog();
-				});
+				    var dlg = new JoystickView();
+				    var vmdlg = dlg.DataContext as JoystickView;
+				    dlg.ShowDialog();
+				};
 			}
 		}
 	}

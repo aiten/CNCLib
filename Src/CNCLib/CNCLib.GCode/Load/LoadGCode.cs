@@ -60,7 +60,7 @@ namespace CNCLib.GCode.Load
 
 			try
 			{
-				foreach (var line in lines)
+				foreach (string line in lines)
 				{
 					_stream.Line = line;
 					Command();

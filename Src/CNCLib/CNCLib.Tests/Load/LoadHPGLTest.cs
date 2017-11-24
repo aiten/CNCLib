@@ -33,7 +33,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGL00()
         {
-            var loadinfo = new LoadOptions()
+            var loadinfo = new LoadOptions
             {
                 LoadType = LoadOptions.ELoadType.HPGL,
                 AutoScale = false,
@@ -56,7 +56,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGLSkipPU()
         {
-            var loadinfo = new LoadOptions()
+            var loadinfo = new LoadOptions
             {
                 LoadType = LoadOptions.ELoadType.HPGL,
                 AutoScale = false,
@@ -89,7 +89,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGLGengraveParam()
         {
-            var loadinfo = new LoadOptions()
+            var loadinfo = new LoadOptions
             {
                 LoadType = LoadOptions.ELoadType.HPGL,
                 AutoScale = false,
@@ -120,7 +120,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGLGengraveNoParamAndSpeed()
         {
-            var loadinfo = new LoadOptions()
+            var loadinfo = new LoadOptions
             {
                 LoadType = LoadOptions.ELoadType.HPGL,
                 AutoScale = false,
@@ -162,7 +162,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGLLaser()
         {
-            var loadinfo = new LoadOptions()
+            var loadinfo = new LoadOptions
             {
                 LoadType = LoadOptions.ELoadType.HPGL,
                 AutoScale = false,
@@ -199,7 +199,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGLConvertOpenLine()
         {
-            var loadinfo = new LoadOptions()
+            var loadinfo = new LoadOptions
             {
                 LoadType = LoadOptions.ELoadType.HPGL,
                 AutoScale = false,
@@ -236,7 +236,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGLConvertClosedLine()
         {
-            var loadinfo = new LoadOptions()
+            var loadinfo = new LoadOptions
             {
                 LoadType = LoadOptions.ELoadType.HPGL,
                 AutoScale = false,

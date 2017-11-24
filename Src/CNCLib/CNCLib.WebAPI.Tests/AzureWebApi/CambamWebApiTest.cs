@@ -41,7 +41,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				LoadOptions info = new LoadOptions() { LoadType = LoadOptions.ELoadType.HPGL };
+				var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
 
 				Assembly ass = Assembly.GetExecutingAssembly();
 				string asspath = Path.GetDirectoryName(ass.Location);

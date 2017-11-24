@@ -66,7 +66,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			RunInNewTask(() =>
 			{
-				using (StreamReader sr = new StreamReader(filename))
+				using (var sr = new StreamReader(filename))
 				{
 					bool savefileinresponse = false;
 					var checkresponse = new Framework.Arduino.SerialCommunication.CommandEventHandler((obj, e) =>
@@ -80,7 +80,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 					if (savefileinresponse)
 					{
 						string line;
-                        List<string> lines = new List<string>();
+                        var lines = new List<string>();
                         while ((line = sr.ReadLine()) != null)
                         {
                             lines.Add(MachineGCodeHelper.PrepareCommand(line));
@@ -88,10 +88,10 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                         Com.SendCommandsAsync(lines.ToArray()).GetAwaiter().GetResult();
 	
 						bool filesavednresponse = false;
-						checkresponse = new Framework.Arduino.SerialCommunication.CommandEventHandler((obj, e) =>
+						checkresponse = (obj, e) =>
 						{
-							filesavednresponse = e.Info.Contains("Done");
-						});
+						    filesavednresponse = e.Info.Contains("Done");
+						};
 						Com.ReplyUnknown += checkresponse;
 						Com.SendCommand(MachineGCodeHelper.PrepareCommand("m29"));
 						Com.ReplyUnknown -= checkresponse;
@@ -120,7 +120,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 					message = message.Replace(" ", "");
 					string[] positions = message.Split(':');
 
-					using (StreamWriter sw = new StreamWriter(Environment.ExpandEnvironmentVariables(FileName), true))
+					using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables(FileName), true))
 					{
 						sw.Write("g1");
 						if (positions.Length >= 1) sw.Write("X"+positions[0]);

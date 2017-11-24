@@ -72,26 +72,26 @@ namespace Framework.Tools.Drawing
 
         struct Offsets
         {
-            public int X;
-            public int Y;
+            public int X { get; set; }
+            public int Y { get; set; }
         }
 
         private Offsets[] _offsets = new Offsets[]
         {
-            new Offsets() { X =0, Y=0 },
-            new Offsets() { X = -1, Y = 0 },  new Offsets() { X = 0,  Y = 1 }, new Offsets() { X = 1, Y = 0 },  new Offsets() { X = 0,  Y = -1 },
-            new Offsets() { X = -1, Y = 1 },  new Offsets() { X = 1,  Y = 1 }, new Offsets() { X = 1, Y = -1 }, new Offsets() { X = -1,  Y = -1 },
+            new Offsets { X =0, Y=0 },
+            new Offsets { X = -1, Y = 0 },  new Offsets { X = 0,  Y = 1 }, new Offsets { X = 1, Y = 0 },  new Offsets { X = 0,  Y = -1 },
+            new Offsets { X = -1, Y = 1 },  new Offsets { X = 1,  Y = 1 }, new Offsets { X = 1, Y = -1 }, new Offsets { X = -1,  Y = -1 },
 
-            new Offsets() { X = -2, Y = 0 },  new Offsets() { X = 0,  Y = 2 }, new Offsets() { X = 2, Y = 0 },    new Offsets() { X = 0,  Y = -2 },
-            new Offsets() { X = -2, Y = 1 },  new Offsets() { X = 1,  Y = 2 }, new Offsets() { X = 2, Y = -1 },   new Offsets() { X = -1, Y = -2 },
-            new Offsets() { X = -1, Y = 2 },  new Offsets() { X = 2,  Y = 1 }, new Offsets() { X = 1, Y = -2 },   new Offsets() { X = -2, Y = -1 },
-            new Offsets() { X = -2, Y = 2 },  new Offsets() { X = 2,  Y = 2 }, new Offsets() { X = 2, Y = -2 },   new Offsets() { X = -2, Y = -2 }
+            new Offsets { X = -2, Y = 0 },  new Offsets { X = 0,  Y = 2 }, new Offsets { X = 2, Y = 0 },    new Offsets { X = 0,  Y = -2 },
+            new Offsets { X = -2, Y = 1 },  new Offsets { X = 1,  Y = 2 }, new Offsets { X = 2, Y = -1 },   new Offsets { X = -1, Y = -2 },
+            new Offsets { X = -1, Y = 2 },  new Offsets { X = 2,  Y = 1 }, new Offsets { X = 1, Y = -2 },   new Offsets { X = -2, Y = -1 },
+            new Offsets { X = -2, Y = 2 },  new Offsets { X = 2,  Y = 2 }, new Offsets { X = 2, Y = -2 },   new Offsets { X = -2, Y = -2 }
         };
 
         private void FillBlack(int x, int y, int count)
         {
-            var black = new Color() { R = 0, G = 0, B = 0, A = 0 };
-            var white = new Color() { R = 255, G = 255, B = 255, A = 255 };
+            var black = new Color { R = 0, G = 0, B = 0, A = 0 };
+            var white = new Color { R = 255, G = 255, B = 255, A = 255 };
 
             for (int i=0;i<DotSize*DotSize;i++)
             {

@@ -63,7 +63,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var m = new Machine() { Name = "MyUnitTest", ComPort = "comxx", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+                var m = new Machine { Name = "MyUnitTest", ComPort = "comxx", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 
                 HttpResponseMessage response = await client.PostAsJsonAsync(api, m);
                 Assert.AreEqual(true, response.IsSuccessStatusCode);

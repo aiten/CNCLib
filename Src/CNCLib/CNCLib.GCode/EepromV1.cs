@@ -74,7 +74,7 @@ namespace CNCLib.GCode
 			JerkSpeed		= (EValueOffsets32.Values16Bit1 << 8) + 01,
 
 			Acc = (EValueOffsets32.OffsetAccDec << 8) + 00,
-			Dec = (EValueOffsets32.OffsetAccDec << 8) + 01,
+			Dec = (EValueOffsets32.OffsetAccDec << 8) + 01
 		}
 
 		public enum EAxisOffsets32
@@ -85,13 +85,13 @@ namespace CNCLib.GCode
             OffsetAccDec,
             RefMoveStepRate,
             StepsPerMm1000,
-            ProbeSize,
+            ProbeSize
         }
 
         public enum EAxisOffsets16
         {
             Acc = (EAxisOffsets32.OffsetAccDec << 8) + 00,
-            Dec = (EAxisOffsets32.OffsetAccDec << 8) + 01,
+            Dec = (EAxisOffsets32.OffsetAccDec << 8) + 01
         }
 
         public enum EAxisOffsets8
@@ -99,7 +99,7 @@ namespace CNCLib.GCode
 			EReverenceType = (EAxisOffsets32.Ofsett1 << 8) + 00,
 			EReverenceSeqence = (EAxisOffsets32.Ofsett1 << 8) + 1,
 			EReverenceHitValueMin = (EAxisOffsets32.Ofsett1 << 8) + 2,
-			EReverenceHitValueMax = (EAxisOffsets32.Ofsett1 << 8) + 3,
+			EReverenceHitValueMax = (EAxisOffsets32.Ofsett1 << 8) + 3
 		}
 
         public enum EValueOffsets32Plotter
@@ -130,7 +130,7 @@ namespace CNCLib.GCode
             EPenchangeServoClampClosePos = (EValueOffsets32Plotter.EPenchangeServoClampPos << 8) + 01,
 
             EPenchangeServoClampOpenDelay  = (EValueOffsets32Plotter.EPenchangeServoClampDelay << 8) + 00,
-            EPenchangeServoClampCloseDelay = (EValueOffsets32Plotter.EPenchangeServoClampDelay << 8) + 01,
+            EPenchangeServoClampCloseDelay = (EValueOffsets32Plotter.EPenchangeServoClampDelay << 8) + 01
         }
 
         [Flags]

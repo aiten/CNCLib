@@ -89,9 +89,9 @@ namespace Framework.Tools.Drawing
 
 		public Point3D Rotate(Point3D pt)
 		{
-			double x = pt.X ?? 0;
-			double y = pt.Y ?? 0;
-			double z = pt.Z ?? 0;
+			double x = pt.X0;
+			double y = pt.Y0;
+			double z = pt.Z0;
 
 			Rotate(ref x, ref y, ref z);
 

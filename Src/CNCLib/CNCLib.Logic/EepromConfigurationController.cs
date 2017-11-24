@@ -17,15 +17,10 @@
 */
 
 using System;
-using System.Collections.Generic;
-using Framework.Logic;
-using CNCLib.Repository.Contracts;
-using CNCLib.Logic.Converter;
+using System.Threading.Tasks;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
-using System.Threading.Tasks;
+using Framework.Logic;
 
 namespace CNCLib.Logic
 {
@@ -40,19 +35,19 @@ namespace CNCLib.Logic
 
             result.StepsPerRotation = param.Microsteps * (uint)param.StepsPerRotation;
             result.DistancePerRotationInMm = param.Teeth * param.ToothsizeinMm;
-            if (result.DistancePerRotationInMm != 0.0)
+            if (Math.Abs(result.DistancePerRotationInMm) > double.Epsilon)
             {
                 result.StepsPerMm = result.StepsPerRotation / result.DistancePerRotationInMm;
             }
 
             result.EstimatedMaxStepRate = result.StepsPerRotation * param.EstimatedRotationSpeed;
             result.EstimatedMaxSpeedInMmSec = result.DistancePerRotationInMm * param.EstimatedRotationSpeed;
-            if (param.TimeToAcc != 0.0)
+            if (Math.Abs(param.TimeToAcc) > double.Epsilon)
             {
                 result.EstimatedAccelerationInMmSec2 = result.EstimatedMaxSpeedInMmSec / param.TimeToAcc;
                 result.EstimatedAcc = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToAcc) * acc_corr;
             }
-            if (param.TimeToDec != 0.0)
+            if (Math.Abs(param.TimeToDec) > double.Epsilon)
             {
                 result.EstimatedDecelerationInMmSec2 = result.EstimatedMaxSpeedInMmSec / param.TimeToDec;
                 result.EstimatedDec = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToDec) * acc_corr;

@@ -30,15 +30,15 @@ namespace Framework.Wpf.View
         {
             if (vm.MessageBox == null)
             {
-                vm.MessageBox = new Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>((messageBoxText, caption, button, icon) =>
+                vm.MessageBox = (messageBoxText, caption, button, icon) =>
                 {
                     return MessageBox.Show(messageBoxText, caption, button, icon);
-                });
+                };
             }
 
             if (vm.BrowseFileNameFunc == null)
             {
-                vm.BrowseFileNameFunc = new Func<string, bool, string>((filename, savefile) =>
+                vm.BrowseFileNameFunc = (filename, savefile) =>
                 {
                     Microsoft.Win32.FileDialog dlg;
                     if (savefile)
@@ -62,7 +62,7 @@ namespace Framework.Wpf.View
                         return dlg.FileName;
                     }
                     return null;
-                });
+                };
             }
         }
 
@@ -80,19 +80,19 @@ namespace Framework.Wpf.View
                 var loadedEvent = new RoutedEventHandler(async (v, e) =>
                 {
                     var vmm = view.DataContext as BaseViewModel;
-                    await vmm.Loaded();
+                    if (vmm != null) await vmm.Loaded();
                 });
 
                 RoutedEventHandler unloadedEvent=null;
 
-                unloadedEvent = new RoutedEventHandler((v, e) =>
+                unloadedEvent = (v, e) =>
                 {
                     vm.CloseAction = null;
                     vm.DialogOKAction = null;
                     vm.DialogCancelAction = null;
                     view.Loaded -= loadedEvent;
                     view.Unloaded -= unloadedEvent;
-                });
+                };
 
                 vm.CloseAction = closeAction;
                 vm.DialogOKAction = dialogOkAction;
@@ -110,22 +110,11 @@ namespace Framework.Wpf.View
             {
                 vm.DefaulInitForBaseViewModel();
 
-/*  => not for page
-                if (vm.CloseAction == null)
-                    vm.CloseAction = new Action(() => view.Close());
-
-                if (vm.DialogOKAction == null)
-                    vm.DialogOKAction = new Action(() => { view.DialogResult = true; view.Close(); });
-
-                if (vm.DialogCancelAction == null)
-                    vm.DialogCancelAction = new Action(() => { view.DialogResult = false; view.Close(); });
-*/
-
-                view.Loaded += new RoutedEventHandler(async (v, e) =>
+                view.Loaded += async (v, e) =>
                 {
                     var vmm = view.DataContext as BaseViewModel;
-                    await vmm.Loaded();
-                });
+                    if (vmm != null) await vmm.Loaded();
+                };
             }
         }
     }

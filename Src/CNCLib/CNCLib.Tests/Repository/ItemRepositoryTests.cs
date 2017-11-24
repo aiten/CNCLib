@@ -57,7 +57,7 @@ namespace CNCLib.Tests.Repository
 			{
 				await rep.Store(item);
 				await uow.Save();
-				Assert.AreNotEqual(0, (int)item.ItemID);
+				Assert.AreNotEqual(0, item.ItemID);
 			}
 		}
 
@@ -73,7 +73,7 @@ namespace CNCLib.Tests.Repository
 				await rep.Store(item);
 				await uow.Save();
             }
-            Assert.AreNotEqual(0, (int)item.ItemID);
+            Assert.AreNotEqual(0, item.ItemID);
         }
 
         [TestMethod]
@@ -201,8 +201,8 @@ namespace CNCLib.Tests.Repository
 
 
                 item.Name = "UpdateOneValuesChangeAndRead#2";
-                item.ItemProperties.Add(new ItemProperty() { Name = "Name#1", Value = "New#1", ItemID = id });
-                item.ItemProperties.Add(new ItemProperty() { Name = "Name#2", Value = "New#2", ItemID = id });
+                item.ItemProperties.Add(new ItemProperty { Name = "Name#1", Value = "New#1", ItemID = id });
+                item.ItemProperties.Add(new ItemProperty { Name = "Name#2", Value = "New#2", ItemID = id });
                 item.ItemProperties.Remove(item.ItemProperties.Single(m => m.Value == "Test1"));
                 item.ItemProperties.Single(m => m.Value == "Test2").Value = "Test2.Changed";
 
@@ -258,7 +258,7 @@ namespace CNCLib.Tests.Repository
 
 		private static Item CreateItem(string name)
 		{
-			var e = new Item()
+			var e = new Item
 			{
 				Name = name,
                 ClassName = "Dummy"
@@ -270,16 +270,16 @@ namespace CNCLib.Tests.Repository
 		{
 			int count = 3;
 			e.ItemProperties = new List<ItemProperty>();
-            e.ItemProperties.Add(new ItemProperty() { Name = "Name1", Value = "Test1" });
-            e.ItemProperties.Add(new ItemProperty() { Name = "Name2", Value = "Test2" });
-            e.ItemProperties.Add(new ItemProperty() { Name = "Name3" });
+            e.ItemProperties.Add(new ItemProperty { Name = "Name1", Value = "Test1" });
+            e.ItemProperties.Add(new ItemProperty { Name = "Name2", Value = "Test2" });
+            e.ItemProperties.Add(new ItemProperty { Name = "Name3" });
             return count;
 		}
 
 		private static void CompareItem(Item e1, Item e2)
 		{
 			Assert.AreEqual(true, e1.CompareProperties(e2));
-            Assert.AreEqual(e1.ItemProperties == null ? 0 : e1.ItemProperties.Count, e2.ItemProperties.Count);
+            Assert.AreEqual(e1.ItemProperties?.Count ?? 0, e2.ItemProperties.Count);
 
 			foreach (ItemProperty mc in e2.ItemProperties)
 			{

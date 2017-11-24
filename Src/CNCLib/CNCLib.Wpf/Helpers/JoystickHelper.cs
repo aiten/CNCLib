@@ -32,14 +32,14 @@ namespace CNCLib.Wpf.Helpers
 			using (var controller = Dependency.Resolve<IDynItemController>())
 			{
 				var joystick = await controller.GetAll(typeof(Joystick));
-				if (joystick != null && joystick.Count() > 0)
+				if (joystick != null && joystick.Any())
 				{
 					int id = joystick.First().ItemID;
 					return new Tuple<Joystick, int> ((Joystick) await controller.Create(id),id);
 				}
 			}
 
-			return new Tuple<Joystick, int> (new Joystick() { BaudRate = 250000, ComPort = @"com7" },-1);
+			return new Tuple<Joystick, int> (new Joystick { BaudRate = 250000, ComPort = @"com7" },-1);
 		}
 
 		internal static async Task<int> Save(Joystick joystick, int id)
@@ -51,10 +51,7 @@ namespace CNCLib.Wpf.Helpers
 					await controller.Save(id, "Joystick", joystick);
 					return id;
 				}
-				else
-				{
-					return await controller.Add("Joystick", joystick);
-				}
+				return await controller.Add("Joystick", joystick);
 			}
 		}
 		private Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<JoystickArduinoSerialCommunication>.Instance;
@@ -80,7 +77,7 @@ namespace CNCLib.Wpf.Helpers
 				uint max = 0;
 				foreach (var m in mclist)
 				{
-					uint val = 0;
+					uint val;
 					if (uint.TryParse(m.JoystickMessage.Substring(idx + 1), out val))
 					{
 						if (val > max)

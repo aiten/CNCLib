@@ -17,6 +17,8 @@
 */
 
 
+using System;
+
 namespace Framework.Tools.Drawing
 {
     public class Point2D
@@ -26,7 +28,7 @@ namespace Framework.Tools.Drawing
 
         public bool Compare(Point2D to)
         {
-            return X == to.X && Y == to.Y;
+            return Math.Abs(X - to.X) < double.Epsilon && Math.Abs(Y - to.Y) < double.Epsilon;
         }
 	}
 }

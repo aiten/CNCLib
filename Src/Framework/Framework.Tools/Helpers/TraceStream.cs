@@ -101,7 +101,7 @@ namespace Framework.Tools.Helpers
             {
                 lock (_messagetoWrite)
                 {
-                    _messagetoWrite.Add(string.Format("{0}:\t{1}\t{2}", DateTime.Now, type, message));
+                    _messagetoWrite.Add($"{DateTime.Now}:\t{type}\t{message}");
                     _autoEvent.Set();
                 }
             }

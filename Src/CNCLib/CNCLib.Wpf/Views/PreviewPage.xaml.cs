@@ -16,10 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.ComponentModel;
 using System.Windows.Controls;
-using System.Windows.Input;
 using AutoMapper;
 using CNCLib.GCode.GUI.ViewModels;
 using CNCLib.GCode.GUI.Views;
@@ -43,37 +41,42 @@ namespace CNCLib.Wpf.Views
 
             this.DefaulInitForBaseViewModel();
 
-            Global.Instance.PropertyChanged += (object sender, PropertyChangedEventArgs e) => 
-            {
-                if (e.PropertyName == nameof(Global.SizeX) || e.PropertyName == nameof(Global.SizeY))
-                {
-                    gcode.SizeX = (double) Global.Instance.SizeX;
-                    gcode.SizeY = (double) Global.Instance.SizeY;
-                };
-            };
+		    Global.Instance.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
+		    {
+		        if (e.PropertyName == nameof(Global.SizeX) || e.PropertyName == nameof(Global.SizeY))
+		        {
+		            gcode.SizeX = (double) Global.Instance.SizeX;
+		            gcode.SizeY = (double) Global.Instance.SizeY;
+		        }
+		    };
 
 			if (vm.GetLoadInfo == null)
-				vm.GetLoadInfo = new Func<PreviewViewModel.GetLoadInfoArg, bool>((arg) =>
-				{
-                    var dlg = new LoadOptionView();
-                    var vmdlg = dlg.DataContext as LoadOptionViewModel;
-                    vmdlg.LoadOptionsValue = Dependency.Resolve<IMapper>().Map<GCode.GUI.Models.LoadOptions>(arg.LoadOption);
-                    vmdlg.UseAzure = arg.UseAzure;
-                    if (!dlg.ShowDialog() ?? false)
-                        return false;
+				vm.GetLoadInfo = (arg) =>
+				    {
+				        var dlg = new LoadOptionView();
+				        var vmdlg = dlg.DataContext as LoadOptionViewModel;
+				        if (vmdlg != null)
+				        {
+				            vmdlg.LoadOptionsValue =
+				                Dependency.Resolve<IMapper>().Map<GCode.GUI.Models.LoadOptions>(arg.LoadOption);
+				            vmdlg.UseAzure = arg.UseAzure;
+				            if (!dlg.ShowDialog() ?? false)
+				                return false;
 
-                    arg.LoadOption = Dependency.Resolve<IMapper>().Map<Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
-                    arg.UseAzure = vmdlg.UseAzure;
-                    return true;
-                });
+				            arg.LoadOption = Dependency.Resolve<IMapper>()
+				                .Map<Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
+				            arg.UseAzure = vmdlg.UseAzure;
+				        }
+				        return true;
+				    };
 
 
 			if (vm.RefreshPreview == null)
 			{
-				vm.RefreshPreview = new Action(() =>
+				vm.RefreshPreview = () =>
 				{
-					gcode.Dispatcher.Invoke(() => gcode.InvalidateVisual());
-				});
+				    gcode.Dispatcher.Invoke(() => gcode.InvalidateVisual());
+				};
 			}
 		}
 	}

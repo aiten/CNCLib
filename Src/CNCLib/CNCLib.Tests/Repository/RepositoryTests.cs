@@ -23,6 +23,7 @@ using CNCLib.Repository;
 using Framework.EF;
 using System.Linq;
 using CNCLib.Repository.Contracts;
+using CNCLib.Repository.Contracts.Entities;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 
@@ -54,10 +55,10 @@ namespace CNCLib.Tests.Repository
 
                 using (var uow = new UnitOfWork<CNCLibContext>())
 				{
-                    var x = uow.Context; // ref to get loaded
+                    CNCLibContext x = uow.Context; // ref to get loaded
 					System.Data.Entity.Database.SetInitializer<CNCLibContext>(new CNCLibInitializerTest());
 					uow.InitializeDatabase();
-                    var o = uow.Context.Items.Where(i => i.ItemID == 0).FirstOrDefault();
+                    Item o = uow.Context.Items.Where(i => i.ItemID == 0).FirstOrDefault();
                     // force init
                 }
                 _init = true;

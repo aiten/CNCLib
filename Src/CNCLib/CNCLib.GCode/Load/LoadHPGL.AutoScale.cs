@@ -41,19 +41,19 @@ namespace CNCLib.GCode.Load
 
                 LoadX.AddComment("AutoScaleCenter", LoadX.LoadOptions.AutoScaleCenter.ToString());
 
-                var minpt = new Point3D()
+                var minpt = new Point3D
                 {
                     X = list.Where((x) => x.IsPenCommand).Min((c) => c.PointTo.X),
                     Y = list.Where((x) => x.IsPenCommand).Min((c) => c.PointTo.Y)
                 };
-                var maxpt = new Point3D()
+                var maxpt = new Point3D
                 {
                     X = list.Where((x) => x.IsPenCommand).Max((c) => c.PointTo.X),
                     Y = list.Where((x) => x.IsPenCommand).Max((c) => c.PointTo.Y)
                 };
 
-                decimal sizex = (decimal)maxpt.X.Value - (decimal)minpt.X.Value;
-                decimal sizey = (decimal)maxpt.Y.Value - (decimal)minpt.Y.Value;
+                decimal sizex = (decimal)((maxpt.X0) - (minpt.X0));
+                decimal sizey = (decimal)((maxpt.Y0) - (minpt.Y0));
 
                 decimal borderX = LoadX.LoadOptions.AutoScaleBorderDistX;
                 decimal borderY = LoadX.LoadOptions.AutoScaleBorderDistY;
@@ -79,8 +79,8 @@ namespace CNCLib.GCode.Load
                     }
                 }
 
-                LoadX.LoadOptions.OfsX = -((decimal)minpt.X.Value - borderX / LoadX.LoadOptions.ScaleX);
-                LoadX.LoadOptions.OfsY = -((decimal)minpt.Y.Value - borderY / LoadX.LoadOptions.ScaleY);
+                LoadX.LoadOptions.OfsX = -((decimal)(minpt.X0) - borderX / LoadX.LoadOptions.ScaleX);
+                LoadX.LoadOptions.OfsY = -((decimal)(minpt.Y0) - borderY / LoadX.LoadOptions.ScaleY);
             }
         }
     }

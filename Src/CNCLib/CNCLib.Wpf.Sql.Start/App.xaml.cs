@@ -64,9 +64,8 @@ namespace CNCLib.Wpf.Sql.Start
                 });
 			config.AssertConfigurationIsValid();
 
-			var mapper = config.CreateMapper();
-
-			Dependency.Container.RegisterInstance<IMapper>(mapper);
+			IMapper mapper = config.CreateMapper();
+			Dependency.Container.RegisterInstance(mapper);
 
 
 			// Open Database here

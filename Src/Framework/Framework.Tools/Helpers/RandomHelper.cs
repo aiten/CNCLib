@@ -23,7 +23,7 @@ namespace Framework.Tools.Helpers
 {
     public static class RandomHelper
     {
-        private static readonly Random RandomSeed = new Random();
+        private static readonly Random _randomSeed = new Random();
 
         /// <summary>
         /// Generates a random string with the given length
@@ -37,33 +37,33 @@ namespace Framework.Tools.Helpers
             var randStr = new StringBuilder(size);
 
             // Ascii start position (65 = A / 97 = a)
-            var start = (lowerCase) ? 97 : 65;
+            int start = (lowerCase) ? 97 : 65;
 
             // Add random chars
             for (var i = 0; i < size; i++)
-                randStr.Append((char)(26 * RandomSeed.NextDouble() + start));
+                randStr.Append((char)(26 * _randomSeed.NextDouble() + start));
 
             return randStr.ToString();
         }
 
         public static int RandomInt(int min, int max)
         {
-            return RandomSeed.Next(min, max);
+            return _randomSeed.Next(min, max);
         }
 
         public static double RandomDouble()
         {
-            return RandomSeed.NextDouble();
+            return _randomSeed.NextDouble();
         }
 
         public static double RandomNumber(int min, int max, int digits)
         {
-            return Math.Round(RandomSeed.Next(min, max - 1) + RandomSeed.NextDouble(), digits);
+            return Math.Round(_randomSeed.Next(min, max - 1) + _randomSeed.NextDouble(), digits);
         }
 
         public static bool RandomBool()
         {
-            return (RandomSeed.NextDouble() > 0.5);
+            return (_randomSeed.NextDouble() > 0.5);
         }
 
         public static DateTime RandomDate()
@@ -74,7 +74,7 @@ namespace Framework.Tools.Helpers
         public static DateTime RandomDate(DateTime from, DateTime to)
         {
             var range = new TimeSpan(to.Ticks - from.Ticks);
-            return from + new TimeSpan((long)(range.Ticks * RandomSeed.NextDouble()));
+            return from + new TimeSpan((long)(range.Ticks * _randomSeed.NextDouble()));
         }
 /*
         public static Color RandomColor()

@@ -53,7 +53,7 @@ namespace CNCLib.Tests.Wpf
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
 //			var mockfactory = CreateMock();
-			TInterface rep = Substitute.For<TInterface>();
+			var rep = Substitute.For<TInterface>();
 //			mockfactory.Register(typeof(TInterface), rep);
 
             Dependency.Container.RegisterInstance(rep);
@@ -69,7 +69,7 @@ namespace CNCLib.Tests.Wpf
 			Machine machine = CreateMachine(1);
 			rep.Get(1).Returns(machine);
 
-			MachineViewModel mv = new MachineViewModel(rep);
+			var mv = new MachineViewModel(rep);
 			await mv.LoadMachine(1);
 
 			Assert.AreEqual(false, mv.AddNewMachine);
@@ -81,7 +81,7 @@ namespace CNCLib.Tests.Wpf
 			Assert.AreEqual(machine.Name,mv.Machine.Name);
 			Assert.AreEqual(machine.ComPort,mv.Machine.ComPort);
 			Assert.AreEqual(machine.Axis,mv.Machine.Axis);
-			Assert.AreEqual(machine.BaudRate,mv.Machine.BaudRate);;
+			Assert.AreEqual(machine.BaudRate,mv.Machine.BaudRate);
 			Assert.AreEqual(machine.CommandToUpper, mv.Machine.CommandToUpper);
 			Assert.AreEqual(machine.SizeX	 ,mv.Machine.SizeX);
 			Assert.AreEqual(machine.SizeY	 ,mv.Machine.SizeY);
@@ -113,7 +113,7 @@ namespace CNCLib.Tests.Wpf
 			Machine machinedef = CreateMachine(0);
 			rep.DefaultMachine().Returns(machinedef);
 
-			MachineViewModel mv = new MachineViewModel(rep);
+			var mv = new MachineViewModel(rep);
 			mv.LoadMachine(-1);
 
 			Assert.AreEqual(true, mv.AddNewMachine);
@@ -125,15 +125,15 @@ namespace CNCLib.Tests.Wpf
 
 		private Machine CreateMachine(int machineid)
 		{
-            MachineCommand[] machinecommand = new MachineCommand[]
-				{ new MachineCommand() { MachineID = machineid, CommandName = "Test1", CommandString = "G20",MachineCommandID = machineid*10 + 0  },
-				  new MachineCommand() { MachineID = machineid, CommandName = "Test2", CommandString = "G21",MachineCommandID = machineid*10 + 1 }
+            var machinecommand = new MachineCommand[]
+				{ new MachineCommand { MachineID = machineid, CommandName = "Test1", CommandString = "G20",MachineCommandID = machineid*10 + 0  },
+				  new MachineCommand { MachineID = machineid, CommandName = "Test2", CommandString = "G21",MachineCommandID = machineid*10 + 1 }
 				};
-			MachineInitCommand[] machineinitcommand = new MachineInitCommand[]
-				{ new MachineInitCommand() { MachineID = machineid, SeqNo = 1, CommandString = "G20",MachineInitCommandID = machineid*20 },
-				  new MachineInitCommand() { MachineID = 1, SeqNo = 2, CommandString = "G21",MachineInitCommandID =machineid*20 + 1 }
+			var machineinitcommand = new []
+				{ new MachineInitCommand { MachineID = machineid, SeqNo = 1, CommandString = "G20",MachineInitCommandID = machineid*20 },
+				  new MachineInitCommand { MachineID = 1, SeqNo = 2, CommandString = "G21",MachineInitCommandID =machineid*20 + 1 }
 				};
-			var machine = new Machine()
+			var machine = new Machine
 			{
 				MachineID = machineid,
 				Name = "Maxi" + machineid.ToString(),

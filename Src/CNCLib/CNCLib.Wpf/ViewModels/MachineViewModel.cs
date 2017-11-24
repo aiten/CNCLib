@@ -17,17 +17,15 @@
 */
 
 using System;
-using System.Windows.Input;
 using System.Collections.ObjectModel;
-using Framework.Wpf.ViewModels;
-using Framework.Wpf.Helpers;
-using CNCLib.Wpf.Models;
-using Framework.Tools.Dependency;
-using CNCLib.ServiceProxy;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+using CNCLib.ServiceProxy;
 using CNCLib.Wpf.Helpers;
-using CNCLib.GCode;
+using CNCLib.Wpf.Models;
+using Framework.Wpf.Helpers;
+using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -98,11 +96,9 @@ namespace CNCLib.Wpf.ViewModels
 
 		public async void SaveMachine()
 		{
-            int id;
-
 			var m = _currentMachine.Convert();
 
-			id = await _machineService.Update(m);
+			int id = await _machineService.Update(m);
 
 			await LoadMachine(id);
             CloseAction();
@@ -142,7 +138,7 @@ namespace CNCLib.Wpf.ViewModels
 				{
 					Com.ResetOnConnect = Global.Instance.ResetOnConnect || Machine.NeedDtr;
 					Com.CommandToUpper = Machine.CommandToUpper;
-					Com.BaudRate = (int)Machine.BaudRate;
+					Com.BaudRate = Machine.BaudRate;
 					Com.Connect(Machine.ComPort);
 
 					await Com.SendCommandAsync("?",3000);
@@ -175,7 +171,6 @@ namespace CNCLib.Wpf.ViewModels
 				catch (Exception e)
 				{
 					MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-					return;
 				}
 				finally
 				{

@@ -270,7 +270,7 @@ namespace Framework.Arduino.SerialCommunication
 		/// <param name="filename"></param>
 		public void WritePendingCommandsToFile(string filename)
 		{
-			using (StreamWriter sw = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
+			using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 			{
 				lock (_pendingCommands)
 				{
@@ -403,11 +403,11 @@ namespace Framework.Arduino.SerialCommunication
 		/// <param name="filename">used for a StreamReader</param>
 		public IEnumerable<SerialCommand> QueueFile(string filename)
 		{
-			using (StreamReader sr = new StreamReader(filename))
+			using (var sr = new StreamReader(filename))
 			{
 				Aborted = false;
                 string line;
-				List<string> lines = new List<string>();
+				var lines = new List<string>();
 				while ((line = sr.ReadLine()) != null && !Aborted)
 				{
 					lines.Add(line);
@@ -480,7 +480,7 @@ namespace Framework.Arduino.SerialCommunication
 
 			cmd = cmd.Replace('\t', ' ');
 
-			SerialCommand c = new SerialCommand() { CommandText = cmd };
+			var c = new SerialCommand { CommandText = cmd };
 
 			lock (_pendingCommands)
             {
@@ -498,7 +498,7 @@ namespace Framework.Arduino.SerialCommunication
         {
             // SendCommands is called in the async Write thread 
 
-            SerialEventArgs eventarg = new SerialEventArgs(null, cmd);
+            var eventarg = new SerialEventArgs(null, cmd);
             OnCommandSending(eventarg);
 
             if (eventarg.Abort || Aborted) return;
@@ -718,7 +718,7 @@ namespace Framework.Arduino.SerialCommunication
 		private async Task<string> ReadFromSerialAsync()
 		{
 			int readmaxsize = 256;
-			byte[] buffer = new byte[readmaxsize];
+			var buffer = new byte[readmaxsize];
 			int readsize = await _serialPort.BaseStream.ReadAsync(buffer, 0, readmaxsize, _serialPortCancellationTokenSource.Token);
 			return _serialPort.Encoding.GetString(buffer, 0, readsize);
 		}
@@ -749,7 +749,7 @@ namespace Framework.Arduino.SerialCommunication
 					Thread.Sleep(250);
 				}
 
-				var inputbuffer = sb.ToString();
+				string inputbuffer = sb.ToString();
 
 				int idx;
 				while ((idx= inputbuffer.IndexOf('\n')) >= 0)
@@ -957,7 +957,7 @@ namespace Framework.Arduino.SerialCommunication
 		{
 			lock (_commands)
 			{
-				using (StreamWriter sr = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
+				using (var sr = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 				{
                     foreach (SerialCommand cmds in _commands)
 					{

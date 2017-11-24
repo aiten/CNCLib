@@ -47,7 +47,7 @@ namespace CNCLib.GCode.Commands
 		}
 		public void AddCommands(IEnumerable<Command> cmds)
 		{
-			foreach (var cmd in cmds)
+			foreach (Command cmd in cmds)
 			{
 				AddCommand(cmd);
 			}
@@ -84,11 +84,11 @@ namespace CNCLib.GCode.Commands
 			var list = new List<string>();
 
 			Command last = null;
-			CommandState state = new CommandState();
+			var state = new CommandState();
 
 			foreach (Command r in this)
 			{
-				string[] cmds = r.GetGCodeCommands(last != null ? last.CalculatedEndPosition : null, state);
+				string[] cmds = r.GetGCodeCommands(last?.CalculatedEndPosition, state);
 				if (cmds != null)
 				{
 					foreach (string str in cmds)
@@ -104,7 +104,7 @@ namespace CNCLib.GCode.Commands
 		public CommandList Convert(ConvertOptions options)
 		{
 			var list = new CommandList();
-			CommandState state = new CommandState();
+			var state = new CommandState();
 
 			foreach (Command r in this)
 			{

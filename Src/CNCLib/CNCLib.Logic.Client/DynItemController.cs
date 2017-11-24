@@ -38,7 +38,7 @@ namespace CNCLib.Logic.Client
 
         public async Task<DynItem> Get(int id)
 		{
-				var item = await _itemservice.Get(id);
+				Item item = await _itemservice.Get(id);
 				if (item == null)
 					return null;
 
@@ -190,19 +190,19 @@ namespace CNCLib.Logic.Client
                     }
                     else if (pi.PropertyType == typeof(int?))
                     {
-                        int? val = (int?) pi.GetValue(obj);
+                        var val = (int?) pi.GetValue(obj);
                         if (val.HasValue)
                             value = val.Value.ToString();
                     }
                     else if (pi.PropertyType == typeof(decimal?))
                     {
-                        decimal? val = (decimal?)pi.GetValue(obj);
+                        var val = (decimal?)pi.GetValue(obj);
                         if (val.HasValue)
                             value = val.Value.ToString(CultureInfo.InvariantCulture);
                     }
                     else if (pi.PropertyType == typeof(double?))
                     {
-                        double? val = (double?)pi.GetValue(obj);
+                        var val = (double?)pi.GetValue(obj);
                         if (val.HasValue)
                             value = val.Value.ToString(CultureInfo.InvariantCulture);
                     }
@@ -212,7 +212,7 @@ namespace CNCLib.Logic.Client
                     }
 					else if (pi.PropertyType == typeof(Byte[]))
 					{
-						Byte[] bytes = (Byte[]) pi.GetValue(obj);
+						var bytes = (Byte[]) pi.GetValue(obj);
 						if (bytes != null)
 							value = System.Convert.ToBase64String(bytes);
 					}
@@ -220,7 +220,7 @@ namespace CNCLib.Logic.Client
                     {
                         throw new NotImplementedException();
                     }
-                    var prop = new ItemProperty() { Name = pi.Name, ItemID = id };
+                    var prop = new ItemProperty { Name = pi.Name, ItemID = id };
                     if (!string.IsNullOrEmpty(value))
                         prop.Value = value;
                     list.Add(prop);
@@ -249,7 +249,7 @@ namespace CNCLib.Logic.Client
 		private Item ConvertToItem(string name, object obj, int id)
 		{
 			var list = GetProperties(id, obj);
-			var item = new Item()
+			var item = new Item
 			{
 				ItemID = id,
 				Name = name,
@@ -261,16 +261,16 @@ namespace CNCLib.Logic.Client
 
 		private static IEnumerable<DynItem> Convert(IEnumerable<Item> allitems)
 		{
-			List<DynItem> l = new List<DynItem>();
+			var l = new List<DynItem>();
 			foreach (var o in allitems)
 			{
-				l.Add(new DynItem() { ItemID = o.ItemID, Name = o.Name });
+				l.Add(new DynItem { ItemID = o.ItemID, Name = o.Name });
 			}
 			return l;
 		}
 		private static DynItem Convert(Item item)
 		{
-			return new DynItem() { ItemID = item.ItemID, Name = item.Name };
+			return new DynItem { ItemID = item.ItemID, Name = item.Name };
 		}
 
 		private static string GetClassName(Type t)

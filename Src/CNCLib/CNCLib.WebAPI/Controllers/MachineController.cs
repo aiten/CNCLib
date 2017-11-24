@@ -23,7 +23,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
-using Framework.Tools.Dependency;
 using Framework.Web;
 
 namespace CNCLib.WebAPI.Controllers

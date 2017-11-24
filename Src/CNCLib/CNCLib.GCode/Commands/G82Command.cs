@@ -17,6 +17,7 @@
 */
 
 
+using System;
 using System.Collections.Generic;
 
 namespace CNCLib.GCode.Commands
@@ -54,31 +55,31 @@ namespace CNCLib.GCode.Commands
 			Variable r = GetVariable('R');
 			if (r == null)
 			{
-				r = state.G82_R;
+				r = state.G82R;
 			}
 			else
 			{
-				state.G82_R = r.ShallowCopy();
+				state.G82R = r.ShallowCopy();
 			}
 
 			Variable p = GetVariable('P');
 			if (p == null)
 			{
-				p = state.G82_P;
+				p = state.G82P;
 			}
 			else
 			{
-				state.G82_P = p.ShallowCopy();
+				state.G82P = p.ShallowCopy();
 			}
 
 			Variable z = GetVariable('Z');
 			if (z == null)
 			{
-				z = state.G82_Z;
+				z = state.G82Z;
 			}
 			else
 			{
-				state.G82_Z = z.ShallowCopy();
+				state.G82Z = z.ShallowCopy();
 			}
 
 			var list = new List<Command>();
@@ -93,7 +94,7 @@ namespace CNCLib.GCode.Commands
 			CopyVariable('F', move2);
 			list.Add(move2);
 
-			if (p != null && (p.Value ?? 0.0) != 0.0)
+			if (p != null && Math.Abs((p.Value ?? 0.0)) > double.Epsilon)
 			{
 				var move3 = new G04Command();
 				move3.AddVariable('P', p);

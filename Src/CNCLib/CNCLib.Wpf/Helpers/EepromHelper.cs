@@ -16,30 +16,27 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+using System.IO;
+using System.Threading.Tasks;
 using CNCLib.GCode;
 using CNCLib.Wpf.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.Helpers
 {
-	class EepromHelper
+    class EepromHelper
 	{
 		public async Task<Eeprom> ReadEepromAsync()
 		{
 			UInt32[] values = await new MachineGCodeHelper().GetEpromValuesAsync();
 			if (values != null)
 			{
-				var ee = new EepromV1() { Values = values };
+				var ee = new EepromV1 { Values = values };
 
 				if (ee.IsValid)
 				{
 					File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromRead.nc"), ee.ToGCode());
-					var numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
+					byte numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
 
 					var eeprom = Eeprom.Create(ee[EepromV1.EValueOffsets32.Signatrue],numaxis);
 					eeprom.Values = values;
@@ -53,7 +50,7 @@ namespace CNCLib.Wpf.Helpers
 
 		public async Task<bool> WriteEepromAsync(Eeprom EepromValue)
 		{
-			var ee = new EepromV1() { Values = EepromValue.Values };
+			var ee = new EepromV1 { Values = EepromValue.Values };
 
 			if (ee.IsValid)
 			{

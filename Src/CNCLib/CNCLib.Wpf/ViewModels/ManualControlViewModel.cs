@@ -17,10 +17,9 @@
 */
 
 using System;
-using Framework.Wpf.ViewModels;
-using CNCLib.Wpf.ViewModels.ManualControl;
 using System.Threading.Tasks;
-using Framework.Arduino;
+using CNCLib.Wpf.ViewModels.ManualControl;
+using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -56,21 +55,21 @@ namespace CNCLib.Wpf.ViewModels
 				AxisIndex = 5
 			};
 
-            Move = new MoveViewModel(this) { };
+            Move = new MoveViewModel(this);
 
-            CommandHistory = new CommandHistoryViewModel(this) { };
+            CommandHistory = new CommandHistoryViewModel(this);
 
-			SD = new SDViewModel(this) { };
+			SD = new SDViewModel(this);
 
-			DirectCommand = new DirectCommandViewModel(this) { };
+			DirectCommand = new DirectCommandViewModel(this);
 
-			Shift = new ShiftViewModel(this) { };
+			Shift = new ShiftViewModel(this);
 
-			Tool = new ToolViewModel(this) { };
+			Tool = new ToolViewModel(this);
 
-			Rotate = new RotateViewModel(this) { };
+			Rotate = new RotateViewModel(this);
 
-            Custom = new CustomViewModel(this) { };
+            Custom = new CustomViewModel(this);
 
 			Com.CommandQueueEmpty += OnCommandQueueEmpty;
 		}
@@ -79,67 +78,67 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region AxisVM
 
-		public AxisViewModel AxisX { get; private set; }
+		public AxisViewModel AxisX { get; }
 
-		public AxisViewModel AxisY { get; private set; }
+		public AxisViewModel AxisY { get; }
 
-		public AxisViewModel AxisZ { get; private set; }
+		public AxisViewModel AxisZ { get; }
 
-		public AxisViewModel AxisA { get; private set; }
+		public AxisViewModel AxisA { get; }
 
-		public AxisViewModel AxisB { get; private set; }
+		public AxisViewModel AxisB { get; }
 		
-		public AxisViewModel AxisC { get; private set; }
+		public AxisViewModel AxisC { get; }
 
         #endregion
 
         #region MoveVM
 
-        public MoveViewModel Move { get; private set; }
+        public MoveViewModel Move { get; }
 
         #endregion
 
         #region CommandHistoryVM
 
-        public CommandHistoryViewModel CommandHistory { get; private set; }
+        public CommandHistoryViewModel CommandHistory { get; }
 
 		#endregion
 
 		#region SD_VM
 
-		public SDViewModel SD { get; private set; } 
+		public SDViewModel SD { get; } 
 
 		#endregion
 
 		#region DirectCommandVM
 
-		public DirectCommandViewModel DirectCommand { get; private set; }
+		public DirectCommandViewModel DirectCommand { get; }
 
 		#endregion
 
 		#region ShiftVM
 
-		public ShiftViewModel Shift { get; private set; }
+		public ShiftViewModel Shift { get; }
 
 		#endregion
 
 		#region ToolVM
 
 
-		public ToolViewModel Tool { get; private set; } 
+		public ToolViewModel Tool { get; } 
 
 		#endregion
 
 		#region RotateVM
 
 
-		public RotateViewModel Rotate { get; private set; }
+		public RotateViewModel Rotate { get; }
 
         #endregion
 
         #region CustomVM
 
-        public CustomViewModel Custom { get; private set; }
+        public CustomViewModel Custom { get; }
 
         #endregion
 

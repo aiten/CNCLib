@@ -37,8 +37,8 @@ namespace Framework.Arduino.SerialCommunication
 		public bool Abort { get; set; }
 		public string Result { get; set; }
 
-		public string Info { get; private set; }
+		public string Info { get; }
 
-		public SerialCommand Command { get; private set; }
+		public SerialCommand Command { get; }
 	}
 }

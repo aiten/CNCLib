@@ -36,9 +36,13 @@ namespace Framework.Tools.Drawing
 		public double? Y { get; set; }
 		public double? Z { get; set; }
 
+        public double X0 => X ?? 0.0;
+	    public double Y0 => Y ?? 0.0;
+	    public double Z0 => Z ?? 0.0;
+
         public static implicit operator Point2D (Point3D pt)
         {
-            return new Point2D() { X = pt.X ?? 0.0, Y = pt.Y ?? 0.0 };
+            return new Point2D { X = pt.X0, Y = pt.Y0 };
         }
 
 		public double? this[int axis]
@@ -61,7 +65,8 @@ namespace Framework.Tools.Drawing
 
         public bool Compare2D(Point3D to)
         {
-            return (X ?? 0.0) == (to.X ?? 0.0) && (Y ?? 0.0) == (to.Y ?? 0.0);
+            return Math.Abs((X0) - (to.X0)) < double.Epsilon && 
+                   Math.Abs((Y0) - (to.Y0)) < double.Epsilon;
         }
 
 		public bool HasAllValues => X.HasValue && Y.HasValue && Z.HasValue;
@@ -75,7 +80,7 @@ namespace Framework.Tools.Drawing
 
 		public static implicit operator System.Drawing.Point(Point3D sc)
 		{
-			return new System.Drawing.Point((int) (sc.X??0.0), (int) (sc.Y??0.0));
+			return new System.Drawing.Point((int) (sc.X0), (int) (sc.Y0));
 		}
 
 		public void Offset(Point3D p)

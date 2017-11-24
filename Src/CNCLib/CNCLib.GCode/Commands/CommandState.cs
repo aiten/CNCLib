@@ -28,8 +28,8 @@ namespace CNCLib.GCode.Commands
 
 		public bool IsSelected { get; set; } = true;
 
-		public Command.Variable G82_R { get; set; }
-		public Command.Variable G82_P { get; set; }
-		public Command.Variable G82_Z { get; set; }
+		public Command.Variable G82R { get; set; }
+		public Command.Variable G82P { get; set; }
+		public Command.Variable G82Z { get; set; }
 	}
 }

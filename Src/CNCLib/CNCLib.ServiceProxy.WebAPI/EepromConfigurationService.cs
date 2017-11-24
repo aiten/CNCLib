@@ -16,12 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-
-using System.Collections.Generic;
-using CNCLib.Logic.Contracts.DTO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System;
+using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.ServiceProxy.WebAPI
 {

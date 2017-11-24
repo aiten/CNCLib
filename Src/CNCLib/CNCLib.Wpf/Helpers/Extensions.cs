@@ -25,7 +25,7 @@ namespace CNCLib.Wpf.Helpers
 	{
 		public static string GetAxisName(this Logic.Contracts.DTO.Machine m, int axis)
 		{
-			return GCodeHelper.IndexToAxisName(axis).ToString();
+			return GCodeHelper.IndexToAxisName(axis);
 		}
 
 		public static decimal GetSize(this Logic.Contracts.DTO.Machine m, int axis)

@@ -16,13 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-
-using System.Collections.Generic;
-using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Logic.Contracts;
-using Framework.Tools.Dependency;
-using System.Threading.Tasks;
 using System;
+using System.Threading.Tasks;
+using CNCLib.Logic.Contracts;
+using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools;
 
 namespace CNCLib.ServiceProxy.Logic

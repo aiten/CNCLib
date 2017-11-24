@@ -36,7 +36,7 @@ namespace CNCLib.GCode.Load
                 var newlist = new List<HPGLCommand>();
 
                 int startidx = 0;
-                while (startidx < list.Count())
+                while (startidx < list.Count)
                 {
                     var nopenlist = list.Skip(startidx).TakeWhile((e) => !e.IsPenDownCommand);
                     newlist.AddRange(nopenlist);
@@ -66,7 +66,7 @@ namespace CNCLib.GCode.Load
                 {
                     // check for angle
                     var linepart = line.Skip(startidx).TakeWhile((c) => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) < maxAngle);
-                    if (linepart.Count() > 0)
+                    if (linepart.Any())
                     {
                         startidx += linepart.Count();
                         list.AddRange(SplitLine(linepart));
@@ -111,10 +111,10 @@ namespace CNCLib.GCode.Load
 
                 foreach (var pt in line)
                 {
-                    double x = (pt.PointTo.X ?? 0.0) - (pt.PointFrom.X ?? 0.0);
-                    double y = (pt.PointTo.Y ?? 0.0) - (pt.PointFrom.Y ?? 0.0);
+                    double x = (pt.PointTo.X0) - (pt.PointFrom.X0);
+                    double y = (pt.PointTo.Y0) - (pt.PointFrom.Y0);
 
-                    var c = Math.Sqrt(x * x + y * y);
+                    double c = Math.Sqrt(x * x + y * y);
 
                     if (minLineLenght <= c)
                     {
@@ -166,10 +166,10 @@ namespace CNCLib.GCode.Load
                 double dx = x * Math.Cos(linealpha);
                 double dy = x * Math.Sin(linealpha);
 
-                return new HPGLCommand()
+                return new HPGLCommand
                 {
                     CommandType = pt.CommandType,
-                    PointTo = new Point3D() { X = pt.PointFrom.X + dx, Y = pt.PointFrom.Y + dy }
+                    PointTo = new Point3D { X = pt.PointFrom.X + dx, Y = pt.PointFrom.Y + dy }
                 };
             }
 
@@ -177,7 +177,7 @@ namespace CNCLib.GCode.Load
             {
                 HPGLCommand last = null;
                 if (firstfrom != null)
-                    last = new HPGLCommand()
+                    last = new HPGLCommand
                     {
                         PointTo = firstfrom,
                         CommandType = HPGLCommand.HPGLCommandType.PenDown
@@ -191,7 +191,7 @@ namespace CNCLib.GCode.Load
                         if (last != null)
                         {
                             cmd.PointFrom = last.PointTo;
-                            cmd.LineAngle = Math.Atan2((cmd.PointTo.Y ?? 0.0) - (cmd.PointFrom.Y ?? 0.0), (cmd.PointTo.X ?? 0.0) - (cmd.PointFrom.X ?? 0.0));
+                            cmd.LineAngle = Math.Atan2((cmd.PointTo.Y0) - (cmd.PointFrom.Y0), (cmd.PointTo.X0) - (cmd.PointFrom.X0));
                             cmd.DiffLineAngleWithNext = null;
 
                             if (last.LineAngle.HasValue && cmd.IsPenDownCommand)
