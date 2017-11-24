@@ -43,13 +43,13 @@ namespace CNCLib.GCode.Load
 
                 var minpt = new Point3D
                 {
-                    X = list.Where((x) => x.IsPenCommand).Min((c) => c.PointTo.X),
-                    Y = list.Where((x) => x.IsPenCommand).Min((c) => c.PointTo.Y)
+                    X = list.Where(x => x.IsPenCommand).Min(c => c.PointTo.X),
+                    Y = list.Where(x => x.IsPenCommand).Min(c => c.PointTo.Y)
                 };
                 var maxpt = new Point3D
                 {
-                    X = list.Where((x) => x.IsPenCommand).Max((c) => c.PointTo.X),
-                    Y = list.Where((x) => x.IsPenCommand).Max((c) => c.PointTo.Y)
+                    X = list.Where(x => x.IsPenCommand).Max(c => c.PointTo.X),
+                    Y = list.Where(x => x.IsPenCommand).Max(c => c.PointTo.Y)
                 };
 
                 decimal sizex = (decimal)((maxpt.X0) - (minpt.X0));

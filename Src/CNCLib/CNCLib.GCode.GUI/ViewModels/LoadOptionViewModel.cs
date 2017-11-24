@@ -108,7 +108,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             _allLoadOptions.Clear();
 
             var items = await _loadOptionsService.GetAll();
-            foreach (var s in items.OrderBy((o) => o.SettingName))
+            foreach (var s in items.OrderBy(o => o.SettingName))
             {
                 var option = _mapper.Map<LoadOptions>(s);
                 _allLoadOptions.Add(option);
@@ -207,7 +207,7 @@ namespace CNCLib.GCode.GUI.ViewModels
                 Busy = true;
                 var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
                 await _loadOptionsService.Delete(opt);
-                await LoadAllSettings(AllLoadOptions?.FirstOrDefault((o) => o.Id != opt.Id)?.Id);
+                await LoadAllSettings(AllLoadOptions?.FirstOrDefault(o => o.Id != opt.Id)?.Id);
             }
             catch (Exception ex)
             {
@@ -233,7 +233,7 @@ namespace CNCLib.GCode.GUI.ViewModels
                         var opt = (Logic.Contracts.DTO.LoadOptions)serializer.Deserialize(sr);
                         sr.Close();
 
-                        if (_allLoadOptions.FirstOrDefault((o) => o.SettingName == opt.SettingName)!=null)
+                        if (_allLoadOptions.FirstOrDefault(o => o.SettingName == opt.SettingName)!=null)
                         {
                             opt.SettingName = $"{opt.SettingName}#imported#{DateTime.Now}"; 
                         }

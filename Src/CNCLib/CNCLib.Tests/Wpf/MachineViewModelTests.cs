@@ -125,7 +125,7 @@ namespace CNCLib.Tests.Wpf
 
 		private Machine CreateMachine(int machineid)
 		{
-            var machinecommand = new MachineCommand[]
+            var machinecommand = new []
 				{ new MachineCommand { MachineID = machineid, CommandName = "Test1", CommandString = "G20",MachineCommandID = machineid*10 + 0  },
 				  new MachineCommand { MachineID = machineid, CommandName = "Test2", CommandString = "G21",MachineCommandID = machineid*10 + 1 }
 				};

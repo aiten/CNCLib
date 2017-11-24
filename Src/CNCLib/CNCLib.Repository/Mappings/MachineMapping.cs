@@ -27,24 +27,24 @@ namespace CNCLib.Repository.Mappings
         {
             HasKey(m => m.MachineID);
 
-            Property((m) => m.Name).
+            Property(m => m.Name).
                 IsRequired().
                 HasMaxLength(64);
 
-            Property((m) => m.ComPort).
+            Property(m => m.ComPort).
                 IsRequired().
                 HasMaxLength(32);
 
-            Property((m) => m.Axis).IsRequired();
+            Property(m => m.Axis).IsRequired();
 
-            Property((m) => m.SizeX).IsRequired();
-            Property((m) => m.SizeY).IsRequired();
-            Property((m) => m.SizeZ).IsRequired();
+            Property(m => m.SizeX).IsRequired();
+            Property(m => m.SizeY).IsRequired();
+            Property(m => m.SizeZ).IsRequired();
 
-            Property((m) => m.CommandSyntax).
+            Property(m => m.CommandSyntax).
                 IsRequired();
 
-            Property((m) => m.UserID).
+            Property(m => m.UserID).
                 IsOptional();
 
         }

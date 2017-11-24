@@ -47,7 +47,7 @@ namespace CNCLib.Wpf.WebAPI.Start
             //			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
             Dependency.Container.RegisterTypesByName(
-                (n) => n.EndsWith("ViewModel"),
+                n => n.EndsWith("ViewModel"),
                 typeof(ViewModels.MachineViewModel).Assembly,
                 typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 

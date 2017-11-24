@@ -69,10 +69,10 @@ namespace CNCLib.Wpf.ViewModels
 
 			Machines = machines;
 
-			var defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultmachineid);
+			var defaultmachine = machines.FirstOrDefault(m => m.MachineID == defaultmachineid);
 
 			if (defaultmachine == null)
-				defaultmachine = machines.FirstOrDefault((m) => m.MachineID == defaultM);
+				defaultmachine = machines.FirstOrDefault(m => m.MachineID == defaultM);
 
 			if (defaultmachine == null && machines.Count > 0)
 				defaultmachine = machines[0];

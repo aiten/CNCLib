@@ -39,14 +39,14 @@ namespace CNCLib.Repository
 		public async Task<Contracts.Entities.User> GetUser(int id)
         {
 			return await Context.Users.
-				Where((m) => m.UserID == id).
+				Where(m => m.UserID == id).
 				FirstOrDefaultAsync();
         }
 
         public async Task<Contracts.Entities.User> GetUser(string username)
         {
             return await Context.Users.
-                Where((m) => m.UserName == username).
+                Where(m => m.UserName == username).
                 FirstOrDefaultAsync();
         }
 
@@ -63,7 +63,7 @@ namespace CNCLib.Repository
 			int id = user.UserID;
 
 			var UserInDb = await Context.Users.
-				Where((m) => m.UserID == id).
+				Where(m => m.UserID == id).
 				FirstOrDefaultAsync();
 
 			if (UserInDb == default(Contracts.Entities.User))

@@ -27,22 +27,22 @@ namespace CNCLib.Repository.Mappings
         {
             HasKey(m => new { m.Group, m.Name });
 
-            Property((m) => m.Group).
+            Property(m => m.Group).
                 IsRequired().
                 HasMaxLength(256);
 
-            Property((m) => m.Name).
+            Property(m => m.Name).
                 IsRequired().
                 HasMaxLength(256);
 
-            Property((m) => m.Type).
+            Property(m => m.Type).
                 IsRequired().
                 HasMaxLength(256);
 
-            Property((m) => m.Value).
+            Property(m => m.Value).
                 HasMaxLength(4000);
 
-            Property((m) => m.UserID).
+            Property(m => m.UserID).
                 IsOptional();
         }
     }

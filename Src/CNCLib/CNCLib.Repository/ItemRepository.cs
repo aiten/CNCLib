@@ -34,23 +34,23 @@ namespace CNCLib.Repository
         public async Task<Contracts.Entities.Item[]> Get()
 		{
 			return await Context.Items.
-				Include((d) => d.ItemProperties).
+				Include(d => d.ItemProperties).
 				ToArrayAsync();
 		}
 
 		public async Task<Contracts.Entities.Item[]> Get(string typeidstring)
 		{
 			return await Context.Items.
-				Where((m) => m.ClassName == typeidstring).
-				Include((d) => d.ItemProperties).
+				Where(m => m.ClassName == typeidstring).
+				Include(d => d.ItemProperties).
 				ToArrayAsync();
 		}
 
 		public async Task<Contracts.Entities.Item> Get(int id)
         {
 			return await Context.Items.
-				Where((m) => m.ItemID == id).
-				Include((d) => d.ItemProperties).
+				Where(m => m.ItemID == id).
+				Include(d => d.ItemProperties).
 				FirstOrDefaultAsync();
         }
 
@@ -69,8 +69,8 @@ namespace CNCLib.Repository
 			int id = item.ItemID;
 
 			var itemInDb = await Context.Items.
-				Where((m) => m.ItemID == id).
-				Include((d) => d.ItemProperties).
+				Where(m => m.ItemID == id).
+				Include(d => d.ItemProperties).
 				FirstOrDefaultAsync();
 
             var optValues = item.ItemProperties ?? new List<Contracts.Entities.ItemProperty>();

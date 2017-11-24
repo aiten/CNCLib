@@ -49,7 +49,7 @@ namespace CNCLib.Wpf.Views
 */
 			if (vm.EditMachine == null)
 			{
-				vm.EditMachine = (mID) =>
+				vm.EditMachine = mID =>
 				{
 				    var dlg = new MachineView();
 				    var vmdlg = dlg.DataContext as MachineViewModel;

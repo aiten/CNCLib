@@ -27,7 +27,7 @@ namespace CNCLib.Repository.Mappings
         {
             HasKey(mc => mc.MachineInitCommandID);
 
-            Property((m) => m.CommandString).
+            Property(m => m.CommandString).
                 IsRequired().
                 HasMaxLength(64);
         }

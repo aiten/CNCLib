@@ -153,7 +153,7 @@ namespace Framework.Test.Drawing
                         col.B.Should().Be(255);
 
                         x.Should().Be(50);
-                        y.Should().BeOneOf(new[] { 53, 51 });
+                        y.Should().BeOneOf(53, 51);
                     }
                     else
                     {

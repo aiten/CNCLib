@@ -38,11 +38,11 @@ namespace CNCLib.GCode.Load
                 int startidx = 0;
                 while (startidx < list.Count)
                 {
-                    var nopenlist = list.Skip(startidx).TakeWhile((e) => !e.IsPenDownCommand);
+                    var nopenlist = list.Skip(startidx).TakeWhile(e => !e.IsPenDownCommand);
                     newlist.AddRange(nopenlist);
                     startidx += nopenlist.Count();
 
-                    var line = list.Skip(startidx).TakeWhile((e) => e.IsPenDownCommand);
+                    var line = list.Skip(startidx).TakeWhile(e => e.IsPenDownCommand);
                     startidx += line.Count();
 
                     newlist.AddRange(SmoothLine(line));
@@ -65,7 +65,7 @@ namespace CNCLib.GCode.Load
                 while (startidx < line.Count())
                 {
                     // check for angle
-                    var linepart = line.Skip(startidx).TakeWhile((c) => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) < maxAngle);
+                    var linepart = line.Skip(startidx).TakeWhile(c => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) < maxAngle);
                     if (linepart.Any())
                     {
                         startidx += linepart.Count();
@@ -73,7 +73,7 @@ namespace CNCLib.GCode.Load
                     }
                     else
                     {
-                        linepart = line.Skip(startidx).TakeWhile((c) => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) >= maxAngle);
+                        linepart = line.Skip(startidx).TakeWhile(c => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) >= maxAngle);
                         startidx += linepart.Count();
                         list.AddRange(linepart);
                     }

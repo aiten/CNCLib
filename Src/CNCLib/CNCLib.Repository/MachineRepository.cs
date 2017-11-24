@@ -34,17 +34,17 @@ namespace CNCLib.Repository
         public async Task<Contracts.Entities.Machine[]> GetMachines()
 		{
             return await Context.Machines.
-                Include((d) => d.MachineCommands).
-                Include((d) => d.MachineInitCommands).
+                Include(d => d.MachineCommands).
+                Include(d => d.MachineInitCommands).
                 ToArrayAsync();
 		}
 
 		public async Task<Contracts.Entities.Machine> GetMachine(int id)
         {
 			return await Context.Machines.
-				Where((m) => m.MachineID == id).
-				Include((d) => d.MachineCommands).
-				Include((d) => d.MachineInitCommands).
+				Where(m => m.MachineID == id).
+				Include(d => d.MachineCommands).
+				Include(d => d.MachineInitCommands).
 				FirstOrDefaultAsync();
         }
 
@@ -79,9 +79,9 @@ namespace CNCLib.Repository
 			int id = machine.MachineID;
 
 			var machineInDb = await Context.Machines.
-				Where((m) => m.MachineID == id).
-				Include((d) => d.MachineCommands).
-				Include((d) => d.MachineInitCommands).
+				Where(m => m.MachineID == id).
+				Include(d => d.MachineCommands).
+				Include(d => d.MachineInitCommands).
 				FirstOrDefaultAsync();
 			var machineCommands = machine.MachineCommands ?? new List<Contracts.Entities.MachineCommand>();
 			var machineInitCommands = machine.MachineInitCommands ?? new List<Contracts.Entities.MachineInitCommand>();

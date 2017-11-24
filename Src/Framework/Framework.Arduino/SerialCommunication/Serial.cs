@@ -624,7 +624,7 @@ namespace Framework.Arduino.SerialCommunication
 			var sw = Stopwatch.StartNew();
 			while (Continue)
 			{
-				var noReplayCmd = commands.FirstOrDefault((cmd) => cmd.ReplyType == EReplyType.NoReply);
+				var noReplayCmd = commands.FirstOrDefault(cmd => cmd.ReplyType == EReplyType.NoReply);
 
 				if (noReplayCmd == null)
 					return true;

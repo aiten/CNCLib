@@ -53,9 +53,9 @@ namespace CNCLib.Tests.Logic
 			{
 				MachineID = 1,
 				Name = "Maxi",
-				MachineCommands = new CNCLib.Logic.Contracts.DTO.MachineCommand[1]
+				MachineCommands = new CNCLib.Logic.Contracts.DTO.MachineCommand[]
 						{ new CNCLib.Logic.Contracts.DTO.MachineCommand { MachineID = 1, MachineCommandID = 1, CommandName = @"1", CommandString=@"1",PosX=0,PosY=1 } },
-				MachineInitCommands = new CNCLib.Logic.Contracts.DTO.MachineInitCommand[1]
+				MachineInitCommands = new CNCLib.Logic.Contracts.DTO.MachineInitCommand[]
 					{ new CNCLib.Logic.Contracts.DTO.MachineInitCommand { MachineID = 1, MachineInitCommandID = 1, CommandString ="2", SeqNo=1 } }
 			};
 
@@ -122,7 +122,7 @@ namespace CNCLib.Tests.Logic
 		{
 			var rep = CreateMock<IMachineRepository>();
 
-			var machineEntity = new Machine[] { new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] } };
+			var machineEntity = new [] { new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] } };
 			rep.GetMachines().Returns(machineEntity);
 
 			var ctrl = new MachineController();
@@ -143,12 +143,12 @@ namespace CNCLib.Tests.Logic
 		{
 			var rep = CreateMock<IMachineRepository>();
 
-			var machineEntity = new Machine[]
+			var machineEntity = new []
 			{ new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] },
 			  new Machine
 			  { MachineID = 2, Name = "Maxi", BufferSize = 115200,
-								MachineCommands = new MachineCommand[] { new MachineCommand { MachineID =2,MachineCommandID=1,CommandName="Test",CommandString="f"  } },
-								MachineInitCommands = new MachineInitCommand[] { new MachineInitCommand { MachineID =2,MachineInitCommandID=1,SeqNo=0,CommandString="f"  } } }
+								MachineCommands = new [] { new MachineCommand { MachineID =2,MachineCommandID=1,CommandName="Test",CommandString="f"  } },
+								MachineInitCommands = new [] { new MachineInitCommand { MachineID =2,MachineInitCommandID=1,SeqNo=0,CommandString="f"  } } }
 			};
 
 			rep.GetMachines().Returns(machineEntity);

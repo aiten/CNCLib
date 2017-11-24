@@ -41,7 +41,7 @@ namespace CNCLib.Wpf.Views
 
             this.DefaulInitForBaseViewModel();
 
-		    Global.Instance.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
+		    Global.Instance.PropertyChanged += (sender, e) =>
 		    {
 		        if (e.PropertyName == nameof(Global.SizeX) || e.PropertyName == nameof(Global.SizeY))
 		        {
@@ -51,7 +51,7 @@ namespace CNCLib.Wpf.Views
 		    };
 
 			if (vm.GetLoadInfo == null)
-				vm.GetLoadInfo = (arg) =>
+				vm.GetLoadInfo = arg =>
 				    {
 				        var dlg = new LoadOptionView();
 				        var vmdlg = dlg.DataContext as LoadOptionViewModel;

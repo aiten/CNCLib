@@ -32,7 +32,7 @@ namespace CNCLib.Repository
 
         public async Task<Contracts.Entities.Configuration> Get(string group, string  name)
         {
-			return await Context.Configurations.Where((c) => c.Group == group && c.Name == name).FirstOrDefaultAsync();
+			return await Context.Configurations.Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
         }
 
 		public async Task Delete(Contracts.Entities.Configuration configuration)
@@ -46,7 +46,7 @@ namespace CNCLib.Repository
 		{
 			// search und update machine
 
-			var cInDb = await Context.Configurations.Where((c) => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
+			var cInDb = await Context.Configurations.Where(c => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
 
 			if (cInDb == default(Contracts.Entities.Configuration))
 			{

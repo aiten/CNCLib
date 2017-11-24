@@ -194,8 +194,6 @@ namespace CNCLib.GCode.Load
                 case LoadOptions.EHoleType.Hexagon:
                     size *= 1.0 / 0.86602540378443864676372317075294;
                     break;
-                default:
-                    break;
             }
 
 

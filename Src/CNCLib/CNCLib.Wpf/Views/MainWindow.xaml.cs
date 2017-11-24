@@ -35,7 +35,7 @@ namespace CNCLib.Wpf.Views
 
             InitializeComponent();
 
-			Loaded += async (object v, RoutedEventArgs e) =>
+			Loaded += async (v, e) =>
 			{
 			    var vmm = DataContext as BaseViewModel;
 			    if (vmm != null)

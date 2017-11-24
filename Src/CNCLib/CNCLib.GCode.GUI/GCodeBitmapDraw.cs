@@ -234,8 +234,8 @@ namespace CNCLib.GCode.GUI
 				_helpLinePen = new Pen(_helpLineColor, (float)(fastSize / 2.0));
 				_helpLinePen10 = new Pen(_helpLineColor, (float)(fastSize * 4));
 
-				InitPen(_selected, (c) => c);
-				InitPen(_dithered, (c) => Color.FromArgb(25, c));
+				InitPen(_selected, c => c);
+				InitPen(_dithered, c => Color.FromArgb(25, c));
 
 				_needReInit = false;
 			}
@@ -256,7 +256,7 @@ namespace CNCLib.GCode.GUI
 			set._cutArcPen.StartCap = LineCap.Round;
 			set._cutArcPen.EndCap = LineCap.Round;
 
-			set._cutPens = new Pen[] { set._cutPen, set._cutDotPen, set._cutEllipsePen, set._cutArcPen };
+			set._cutPens = new [] { set._cutPen, set._cutDotPen, set._cutEllipsePen, set._cutArcPen };
 
 			set._fastPen = new Pen(colorconverter(FastMoveColor), fastSize);
 			set._noMovePen = new Pen(colorconverter(Color.Blue), fastSize);
@@ -281,7 +281,7 @@ namespace CNCLib.GCode.GUI
 
 			var ee = new PaintEventArgs(g1, new Rectangle());
 
-			var pts = new PointF[] { ToClientF(new Point3D(0, 0, 0)), ToClientF(new Point3D(0, SizeY, 0)), ToClientF(new Point3D(SizeX, SizeY, 0)), ToClientF(new Point3D(SizeX, 0, 0)) };
+			var pts = new [] { ToClientF(new Point3D(0, 0, 0)), ToClientF(new Point3D(0, SizeY, 0)), ToClientF(new Point3D(SizeX, SizeY, 0)), ToClientF(new Point3D(SizeX, 0, 0)) };
 			g1.FillPolygon(new SolidBrush(MachineColor), pts);
 
 			// draw axis

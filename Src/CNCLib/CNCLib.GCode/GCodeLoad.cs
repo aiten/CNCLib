@@ -128,11 +128,11 @@ namespace CNCLib.GCode
 
         private void WriteImportInfoFile(LoadBase load, string filename)
 		{
-			if (Commands.Exists((c) => !string.IsNullOrEmpty(c.ImportInfo)))
+			if (Commands.Exists(c => !string.IsNullOrEmpty(c.ImportInfo)))
 			{
 				using (TextWriter writer = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
 				{
-					Commands.ForEach((c) => { if (!string.IsNullOrEmpty(c.ImportInfo)) writer.WriteLine(c.ImportInfo); });
+					Commands.ForEach(c => { if (!string.IsNullOrEmpty(c.ImportInfo)) writer.WriteLine(c.ImportInfo); });
 				}
 			}
 		}

@@ -45,7 +45,7 @@ namespace Framework.Test.SerialCommunication
             bool sendReply = false;
 
             basestream.WriteAsync(Arg.Any<Byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
-                ReturnsForAnyArgs(async (x) =>
+                ReturnsForAnyArgs(async x =>
                 {
                     sendReply = true;
                     await Task.FromResult(0);
@@ -53,7 +53,7 @@ namespace Framework.Test.SerialCommunication
 
 
             basestream.ReadAsync(Arg.Any<Byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
-                ReturnsForAnyArgs(async (x) =>
+                ReturnsForAnyArgs(async x =>
                 {
                     if (sendReply)
                     {

@@ -30,7 +30,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public CustomViewModel(IManualControlViewModel vm)
 			: base(vm)
 		{
-			Global.Instance.PropertyChanged += (object sender, PropertyChangedEventArgs e) => { if (e.PropertyName == "Machine") MachineChanged(); }; 
+			Global.Instance.PropertyChanged += (sender, e) => { if (e.PropertyName == "Machine") MachineChanged(); }; 
 		}
 
         #region Properties

@@ -199,7 +199,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		private void CommandSending(object sender, Framework.Arduino.SerialCommunication.SerialEventArgs arg)
 		{
-			Commands.Current = Commands.FirstOrDefault((c) => c == arg.Command.Tag);
+			Commands.Current = Commands.FirstOrDefault(c => c == arg.Command.Tag);
 			if (Commands.Current != _lastCurrentCommand)
 			{
 				_lastCurrentCommand = Commands.Current;
@@ -239,7 +239,7 @@ namespace CNCLib.Wpf.ViewModels
 
                     if (Global.Instance.Machine.CommandSyntax == CommandSyntax.HPGL && IsHPGLAndPlotter())
                     {
-                        Commands.ForEach((cmd) =>
+                        Commands.ForEach(cmd =>
                         {
                             string cmdstr = cmd.ImportInfo;
                             if (!string.IsNullOrEmpty(cmdstr))
@@ -256,7 +256,7 @@ namespace CNCLib.Wpf.ViewModels
                         Command last = null;
                         var state = new CommandState();
 
-                        Commands.ForEach((cmd) =>
+                        Commands.ForEach(cmd =>
                         {
                             string[] cmds = cmd.GetGCodeCommands(last?.CalculatedEndPosition, state);
                             if (cmds != null)

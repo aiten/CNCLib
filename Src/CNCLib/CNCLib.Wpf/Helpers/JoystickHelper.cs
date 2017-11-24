@@ -65,14 +65,14 @@ namespace CNCLib.Wpf.Helpers
 
 			if ((idx = trim.IndexOf(':')) < 0)
 			{
-				var mc = Global.Instance.Machine.MachineCommands.Where((m) => m.JoystickMessage == trim).FirstOrDefault();
+				var mc = Global.Instance.Machine.MachineCommands.Where(m => m.JoystickMessage == trim).FirstOrDefault();
 				if (mc != null)
 					trim = mc.CommandString;
 			}
 			else
 			{
 				string btn = trim.Substring(0, idx + 1);
-				var mclist = Global.Instance.Machine.MachineCommands.Where((m) => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
+				var mclist = Global.Instance.Machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
 
 				uint max = 0;
 				foreach (var m in mclist)
@@ -87,12 +87,12 @@ namespace CNCLib.Wpf.Helpers
 
 				string findcmd = $"{btn}{uint.Parse(trim.Substring(idx + 1)) % (max + 1)}";
 
-				var mc = Global.Instance.Machine.MachineCommands.Where((m) => m.JoystickMessage == findcmd).FirstOrDefault();
+				var mc = Global.Instance.Machine.MachineCommands.Where(m => m.JoystickMessage == findcmd).FirstOrDefault();
 				if (mc == null)
 				{
 					// try to find ;btn3 (without :)  
 					findcmd = trim.Substring(0, idx);
-					mc = Global.Instance.Machine.MachineCommands.Where((m) => m.JoystickMessage == findcmd).FirstOrDefault();
+					mc = Global.Instance.Machine.MachineCommands.Where(m => m.JoystickMessage == findcmd).FirstOrDefault();
 				}
 
 				if (mc != null)

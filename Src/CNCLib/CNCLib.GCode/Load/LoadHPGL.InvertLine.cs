@@ -40,7 +40,7 @@ namespace CNCLib.GCode.Load
 
                 var linelist = new List<HPGLLine>();
                 IEnumerable<HPGLCommand> postCommands = null;
-                IEnumerable<HPGLCommand> preCommands = list.Skip(startidx).TakeWhile((e) => !e.IsPenCommand);
+                IEnumerable<HPGLCommand> preCommands = list.Skip(startidx).TakeWhile(e => !e.IsPenCommand);
 
                 startidx += preCommands.Count();
 
@@ -224,13 +224,13 @@ namespace CNCLib.GCode.Load
             private static HPGLLine GetHPGLLine(IList<HPGLCommand> list, ref int startidx)
             {
                 var line = new HPGLLine();
-                line.PreCommands = list.Skip(startidx).TakeWhile((e) => !e.IsPenDownCommand);
+                line.PreCommands = list.Skip(startidx).TakeWhile(e => !e.IsPenDownCommand);
                 startidx += line.PreCommands.Count();
 
-                line.Commands = list.Skip(startidx).TakeWhile((e) => e.IsPenDownCommand);
+                line.Commands = list.Skip(startidx).TakeWhile(e => e.IsPenDownCommand);
                 startidx += line.Commands.Count();
 
-                line.PostCommands = list.Skip(startidx).TakeWhile((e) => false);    // always empty
+                line.PostCommands = list.Skip(startidx).TakeWhile(e => false);    // always empty
                 startidx += line.PostCommands.Count();
                 return line;
             }

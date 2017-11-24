@@ -27,13 +27,13 @@ namespace CNCLib.Repository.Mappings
         {
             HasKey(mc => mc.MachineCommandID);
 
-            Property((m) => m.CommandString).
+            Property(m => m.CommandString).
                 IsRequired().
                 HasMaxLength(64);
-            Property((m) => m.CommandName).
+            Property(m => m.CommandName).
                 IsRequired().
                 HasMaxLength(64);
-			Property((m) => m.JoystickMessage).
+			Property(m => m.JoystickMessage).
 				HasMaxLength(64);
 
 			/*

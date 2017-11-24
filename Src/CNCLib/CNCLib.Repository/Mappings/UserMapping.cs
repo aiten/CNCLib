@@ -35,12 +35,12 @@ namespace CNCLib.Repository.Mappings
                         IndexAnnotation.AnnotationName,
                         new IndexAnnotation(new IndexAttribute("IDX_UniqueUserName") { IsUnique = true }));
 
-            Property((m) => m.UserName).
+            Property(m => m.UserName).
                 IsRequired().
                 IsUnicode().
                 HasMaxLength(128);
 
-            Property((m) => m.UserPassword).
+            Property(m => m.UserPassword).
                 IsOptional().
                 HasMaxLength(255);
         }

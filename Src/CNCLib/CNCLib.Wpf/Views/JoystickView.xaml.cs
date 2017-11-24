@@ -37,7 +37,7 @@ namespace CNCLib.Wpf.Views
 			if (vm.CloseAction == null)
 				vm.CloseAction = () => Close();
 
-			Loaded += async (object v, RoutedEventArgs e) =>
+			Loaded += async (v, e) =>
 			{
 			    var vmm = DataContext as BaseViewModel;
 			    if (vmm != null)

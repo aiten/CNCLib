@@ -27,7 +27,7 @@ namespace CNCLib.Repository.Mappings
         {
             HasKey(m => new { m.ItemID, m.Name });
 
-            Property((m) => m.Name).
+            Property(m => m.Name).
                 IsRequired().
                 HasMaxLength(255);
         }
