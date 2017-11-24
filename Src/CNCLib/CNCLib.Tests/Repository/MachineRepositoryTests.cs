@@ -259,7 +259,6 @@ namespace CNCLib.Tests.Repository
             }
         }
 
-
         private static Machine CreateMachine(string name)
 		{
 			var machine = new Machine
@@ -289,19 +288,21 @@ namespace CNCLib.Tests.Repository
 
 		private static int AddMachinCommands(Machine machine)
 		{
-			int count = 2;
-			machine.MachineCommands = new List<MachineCommand>();
-			machine.MachineCommands.Add(new MachineCommand { CommandName = "Name1", CommandString = "Test1" });
-			machine.MachineCommands.Add(new MachineCommand { CommandName = "Name1", CommandString = "Test2" });
-			return count;
+		    machine.MachineCommands = new List<MachineCommand>
+		    {
+		        new MachineCommand {CommandName = "Name1", CommandString = "Test1"},
+		        new MachineCommand {CommandName = "Name1", CommandString = "Test2"}
+		    };
+		    return machine.MachineCommands.Count;
 		}
 		private static int AddMachinInitCommands(Machine machine)
 		{
-			int count = 2;
-			machine.MachineInitCommands = new List<MachineInitCommand>();
-			machine.MachineInitCommands.Add(new MachineInitCommand { SeqNo = 0, CommandString = "Test1" });
-			machine.MachineInitCommands.Add(new MachineInitCommand { SeqNo = 1, CommandString = "Test2" });
-			return count;
+		    machine.MachineInitCommands = new List<MachineInitCommand>
+		    {
+		        new MachineInitCommand {SeqNo = 0, CommandString = "Test1"},
+		        new MachineInitCommand {SeqNo = 1, CommandString = "Test2"}
+		    };
+		    return machine.MachineInitCommands.Count;
 		}
 
 		private static void CompareMachine(Machine machine, Machine machineread)

@@ -269,11 +269,13 @@ namespace CNCLib.Tests.Repository
 		private static int AddItemProperties(Item e)
 		{
 			int count = 3;
-			e.ItemProperties = new List<ItemProperty>();
-            e.ItemProperties.Add(new ItemProperty { Name = "Name1", Value = "Test1" });
-            e.ItemProperties.Add(new ItemProperty { Name = "Name2", Value = "Test2" });
-            e.ItemProperties.Add(new ItemProperty { Name = "Name3" });
-            return count;
+		    e.ItemProperties = new List<ItemProperty>
+		    {
+		        new ItemProperty {Name = "Name1", Value = "Test1"},
+		        new ItemProperty {Name = "Name2", Value = "Test2"},
+		        new ItemProperty {Name = "Name3"}
+		    };
+		    return count;
 		}
 
 		private static void CompareItem(Item e1, Item e2)

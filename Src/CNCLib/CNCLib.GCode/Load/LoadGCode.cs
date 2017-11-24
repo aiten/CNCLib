@@ -159,10 +159,7 @@ namespace CNCLib.GCode.Load
             // g without prefix
 
             Command cmd = CommandFactory.Create(_lastnoPrefixCommand.Code);
-            if (cmd != null)
-            {
-				cmd.ReadFrom(_stream);
-            }
+            cmd?.ReadFrom(_stream);
             return cmd;
         }
 

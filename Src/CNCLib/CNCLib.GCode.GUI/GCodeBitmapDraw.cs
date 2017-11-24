@@ -246,24 +246,31 @@ namespace CNCLib.GCode.GUI
 			float cutsize = CutterSize > 0 ? (float)ToClientSizeX(CutterSize) : 2;
 			float fastSize = 0.5f;
 
-			set._cutPen = new Pen(colorconverter(CutColor), cutsize);
-			set._cutPen.StartCap = LineCap.Round;
-			set._cutPen.EndCap = LineCap.Round;
+		    set._cutPen = new Pen(colorconverter(CutColor), cutsize)
+		    {
+		        StartCap = LineCap.Round,
+		        EndCap = LineCap.Round
+		    };
 
-			set._cutDotPen = new Pen(colorconverter(CutDotColor), cutsize);
+		    set._cutDotPen = new Pen(colorconverter(CutDotColor), cutsize);
 			set._cutEllipsePen = new Pen(colorconverter(CutEllipseColor), cutsize);
-			set._cutArcPen = new Pen(colorconverter(CutArcColor), cutsize);
-			set._cutArcPen.StartCap = LineCap.Round;
-			set._cutArcPen.EndCap = LineCap.Round;
+		    set._cutArcPen = new Pen(colorconverter(CutArcColor), cutsize)
+		    {
+		        StartCap = LineCap.Round,
+		        EndCap = LineCap.Round
+		    };
 
-			set._cutPens = new [] { set._cutPen, set._cutDotPen, set._cutEllipsePen, set._cutArcPen };
+		    set._cutPens = new [] { set._cutPen, set._cutDotPen, set._cutEllipsePen, set._cutArcPen };
 
 			set._fastPen = new Pen(colorconverter(FastMoveColor), fastSize);
 			set._noMovePen = new Pen(colorconverter(Color.Blue), fastSize);
-			set._laserCutPen = new Pen(colorconverter(LaserOnColor), (float) ToClientSizeX(LaserSize));
-			set._laserCutPen.StartCap = LineCap.Round;
-			set._laserCutPen.EndCap = LineCap.Round;
-			set._laserFastPen = new Pen(colorconverter(LaserOffColor), (float)(fastSize / 2.0));
+		    set._laserCutPen =
+		        new Pen(colorconverter(LaserOnColor), (float) ToClientSizeX(LaserSize))
+		        {
+		            StartCap = LineCap.Round,
+		            EndCap = LineCap.Round
+		        };
+		    set._laserFastPen = new Pen(colorconverter(LaserOffColor), (float)(fastSize / 2.0));
 		}
 
 		public Bitmap DrawToBitmap(CommandList commands)

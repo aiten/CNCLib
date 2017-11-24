@@ -81,7 +81,7 @@ namespace CNCLib.GCode.Commands
 
         public string[] GetKeys()
         {
-            return _shapes.Keys.ToArray<String>();
+            return _shapes.Keys.ToArray();
         }
 
 		public bool IsRegistered(string name)

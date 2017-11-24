@@ -58,7 +58,7 @@ namespace CNCLib.Tests.Repository
                     CNCLibContext x = uow.Context; // ref to get loaded
 					System.Data.Entity.Database.SetInitializer<CNCLibContext>(new CNCLibInitializerTest());
 					uow.InitializeDatabase();
-                    Item o = uow.Context.Items.Where(i => i.ItemID == 0).FirstOrDefault();
+                    Item o = uow.Context.Items.FirstOrDefault(i => i.ItemID == 0);
                     // force init
                 }
                 _init = true;

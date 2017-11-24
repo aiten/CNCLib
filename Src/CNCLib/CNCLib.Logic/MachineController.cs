@@ -51,10 +51,7 @@ namespace CNCLib.Logic
 			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
 			{
 				var machine = await rep.GetMachine(id);
-				if (machine == null)
-					return null;
-
-				var dto = machine.Convert();
+			    var dto = machine?.Convert();
 				return dto;
 			}
 		}

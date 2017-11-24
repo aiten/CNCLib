@@ -223,8 +223,10 @@ namespace CNCLib.GCode.Load
 
             private static HPGLLine GetHPGLLine(IList<HPGLCommand> list, ref int startidx)
             {
-                var line = new HPGLLine();
-                line.PreCommands = list.Skip(startidx).TakeWhile(e => !e.IsPenDownCommand);
+                var line = new HPGLLine
+                {
+                    PreCommands = list.Skip(startidx).TakeWhile(e => !e.IsPenDownCommand)
+                };
                 startidx += line.PreCommands.Count();
 
                 line.Commands = list.Skip(startidx).TakeWhile(e => e.IsPenDownCommand);

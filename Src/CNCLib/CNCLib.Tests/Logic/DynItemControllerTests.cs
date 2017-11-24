@@ -202,9 +202,9 @@ namespace CNCLib.Tests.Logic
             await srv.Received().Add(Arg.Is<Item>(x => x.Name == "Hallo"));
 			await srv.Received().Add(Arg.Is<Item>(x => x.ItemID == 0));
 			await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Count == 7));
-			await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Where(y => y.Name == "StringProperty").FirstOrDefault().Value == "Hallo" ));
-			await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Where(y => y.Name == "DoubleProperty").FirstOrDefault().Value == "1.234"));
-			await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Where(y => y.Name == "DecimalNullProperty").FirstOrDefault().Value == "9.876"));
+			await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "StringProperty").Value == "Hallo" ));
+			await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "DoubleProperty").Value == "1.234"));
+			await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "DecimalNullProperty").Value == "9.876"));
         }
 
         [TestMethod]

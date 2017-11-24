@@ -6,7 +6,6 @@
       Title="SetupPage">
 
     <Page.Resources>
-        <fhlp:EnumBooleanConverter x:Key="EnumBooleanConverter" />
         <fhlp:InvertBoolConverter x:Key="InvertBoolConverter" />
     </Page.Resources>
 

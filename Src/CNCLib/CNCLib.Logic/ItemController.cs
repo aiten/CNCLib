@@ -96,10 +96,7 @@ namespace CNCLib.Logic
 
 		private static Item Convert(Repository.Contracts.Entities.Item item)
 		{
-			if (item == null)
-				return null;
-
-			var dto = item.Convert();
+		    var dto = item?.Convert();
 			return dto;
 		}
 
