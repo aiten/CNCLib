@@ -38,22 +38,35 @@ Preview of CNC program
 - Rotate
 - Define colors for machine, laser, mill, ...
 
-<img src="Doc/Preview3D.jpg" alt="Drawing" style="width: 200px;"/>
+<img src="Doc/Preview3D.jpg" alt="Drawing" style="width: 100px;"/>
 
-Import and convert GCode/HPGL/Image
------
-GCode
+Import GCode
+=====
 - Import as it is
 - Add linenumbers
 - Convert e.g. g82 (drill command) because your machine does not support the command
 
-HPGL
+Import HPGL
+======
 - Import HPGL with "Resize" and "Move"
 
-Image - for grave
-- Import Image (laser)
+<img src="Doc/PreviewRose4.jpg" alt="Drawing" style="width: 100px;"/>
+
+Import Image
+=======
+- Import Image - for laser
+- Dither 
+
+<img src="Doc/PreviewImage.jpg" alt="Drawing" style="width: 100px;"/>
 
 Image - for cut holes
+=====
+- Differnet hole shapes (diamond, heard, circle, ...)
+
+<img src="Doc/PreviewHole.jpg" alt="Drawing" style="width: 100px;"/>   <img src="Doc/PreviewHoleDetail.jpg" alt="Drawing" style="width: 100px;"/>
+
+With this import option a CNC program is created to cut holes into e.g. a paper. The width of the holes are calculated from the image depending on the brightness.  
+
 
 
 
