@@ -1,59 +1,59 @@
+CNCLib / CNCStepper
+======
+
+Build your own CNC machine/laser with *CNCLib* and *CNCStepper*.<br />
+Both projects are on github.
+
+https://github.com/aiten/CNCLib <br />
+https://github.com/aiten/CNCStepper
+
+
 CNCLib
 ======
 
-Build your own CNC machine/laser with *CNCLib* and *CNCStepper*.
+CNCLib is a Windows application. 
 
+Define and configure your own machine
+------
+- USB Port 
+- Axis count and size
+- Probe definition
+- Initial commands 
+- Custom commands  
 
-Arduino
+Control your machine  
 -------
+- Send commands (gcode)
+- Move axis
+- Define zero-shift
+- Read/Write SD
+- Define rotations 
+- Configure CNC machine by writing to the Eeprom
+- Watch command history
 
-see folder: *Sketch*
-
-### Hardware
-
--   8 bit Arduino: Uno, Nano, Duemilanove, Mega 2560, Pro
-
--   32 bit Arduino: Due, zero, M0
-
--   Arduino Shields: CNCShield, Ramps 1.4, Ramps FD
-
--   Drivers: A4988, DRV8825, SMC 800, L298 and TB6560
-
--   LCD 12864 (using u8glib) and SD
-
--   can be used with servos
-
-### Software
-
--   Stepper motor library with acceleration support
-
--   GCode Interpreter basic and extended (Arduino dependent)
-
--   Axis supported: 4 or 6, depending on the hardware
-
--   LCD Support
-
--   SD Support
-
--   HPGL Interpreter sample
-
-Windows
+Preview of CNC program 
 -------
+- Scroll
+- Zoom in and out
+- Rotate
+- Define colors for machine, laser, mill, ...
 
-see folder: *VC/CNCLib*
+<img src="Doc/Preview3D.jpg" alt="Drawing" style="width: 200px;"/>
 
--   Sending (GCode) to Arduino
+Import and convert GCode/HPGL/Image
+-----
+GCode
+- Import as it is
+- Add linenumbers
+- Convert e.g. g82 (drill command) because your machine does not support the command
 
--   Configure CNC machine by writing to the Eeprom
+HPGL
+- Import HPGL with "Resize" and "Move"
 
--   Support different machines (axis, range, ...)
+Image - for grave
+- Import Image (laser)
 
--   Support CNC-Joystick(Arduino based)
+Image - for cut holes
 
--   Preview
 
--   Import HPGL with "Resize" and "Move"
 
--   Import Image (laser)
-
--   Sample for WPF, WebApi, Enterprise architecture, ...
