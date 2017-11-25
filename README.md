@@ -49,6 +49,8 @@ Import GCode
 Import HPGL
 ======
 - Import HPGL with "Resize" and "Move"
+- Option for "grave" => the CNC program will follow the line
+- Option for "cut" => the CNC program is created with an offset (laser-size or mill diameter) 
 
 <img src="Doc/PreviewRose4.jpg" alt="Drawing" style="width: 100px;"/>
 
