@@ -28,7 +28,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.3" />
@@ -46,4 +45,10 @@
     <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper">
+      <Version>6.2.2</Version>
+    </PackageReference>
+  </ItemGroup>
+ 
 </Project>

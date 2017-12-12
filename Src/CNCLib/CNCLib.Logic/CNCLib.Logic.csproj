@@ -36,6 +36,6 @@
     <ProjectReference Include="..\CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj">    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="6.2.0" />
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
   </ItemGroup>
 </Project>
