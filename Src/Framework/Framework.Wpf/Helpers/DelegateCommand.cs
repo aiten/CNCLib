@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Linq.Expressions;
 using System.Windows.Input;
 
 namespace Framework.Wpf.Helpers
@@ -32,5 +33,11 @@ namespace Framework.Wpf.Helpers
         public DelegateCommand(Action command, Func<bool> canExecute = null) : base(command,canExecute) 
         {
         }
-	}
+
+        public new DelegateCommand ObservesProperty<T>(Expression<Func<T>> propertyExpression)
+        {
+            base.ObservesProperty<T>(propertyExpression);
+            return this;
+        }
+    }
 }

@@ -35,25 +35,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region Commands / CanCommands
 
-		public void SendG53() { RunAndUpdate(() => { Com.QueueCommand("g53"); }); }
-		public void SendG54() { RunAndUpdate(() => { Com.QueueCommand("g54"); }); }
-		public void SendG55() { RunAndUpdate(() => { Com.QueueCommand("g55"); }); }
-		public void SendG56() { RunAndUpdate(() => { Com.QueueCommand("g56"); }); }
-		public void SendG57() { RunAndUpdate(() => { Com.QueueCommand("g57"); }); }
-		public void SendG58() { RunAndUpdate(() => { Com.QueueCommand("g58"); }); }
-		public void SendG59() { RunAndUpdate(() => { Com.QueueCommand("g59"); }); }
 		public void SendG92() { RunAndUpdate(() => { Com.QueueCommand("g92"); }); }
 			
 		#endregion
 
 		#region ICommand
-		public ICommand SendG53Command => new DelegateCommand(SendG53, CanSendPlotter);
-		public ICommand SendG54Command => new DelegateCommand(SendG54, CanSendPlotter);
-		public ICommand SendG55Command => new DelegateCommand(SendG55, CanSendPlotter);
-		public ICommand SendG56Command => new DelegateCommand(SendG56, CanSendPlotter);
-		public ICommand SendG57Command => new DelegateCommand(SendG57, CanSendPlotter);
-		public ICommand SendG58Command => new DelegateCommand(SendG58, CanSendPlotter);
-		public ICommand SendG59Command => new DelegateCommand(SendG59, CanSendPlotter);
 		public ICommand SendG92Command => new DelegateCommand(SendG92, CanSendPlotter);	   
 
 		#endregion

@@ -117,6 +117,7 @@
     <Compile Include="Models\EepromPlotter.cs" />
     <Compile Include="Models\Eeprom.cs" />
     <Compile Include="ViewModels\EepromViewModel.cs" />
+    <Compile Include="ViewModels\ManualControl\WorkOffsetViewModel.cs" />
     <Compile Include="ViewModels\PreviewViewModel.cs" />
     <Compile Include="Views\EepromView.xaml.cs">
       <DependentUpon>EepromView.xaml</DependentUpon>

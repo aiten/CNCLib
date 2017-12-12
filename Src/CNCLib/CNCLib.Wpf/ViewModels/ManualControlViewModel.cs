@@ -71,6 +71,8 @@ namespace CNCLib.Wpf.ViewModels
 
             Custom = new CustomViewModel(this);
 
+            WorkOffset = new WorkOffsetViewModel(this);
+
 			Com.CommandQueueEmpty += OnCommandQueueEmpty;
 		}
 
@@ -120,12 +122,19 @@ namespace CNCLib.Wpf.ViewModels
 
 		public ShiftViewModel Shift { get; }
 
-		#endregion
+        #endregion
 
-		#region ToolVM
+	    #region WorkOffsetVM
+
+	    public WorkOffsetViewModel WorkOffset { get; }
+
+	    #endregion
 
 
-		public ToolViewModel Tool { get; } 
+        #region ToolVM
+
+
+        public ToolViewModel Tool { get; } 
 
 		#endregion
 
