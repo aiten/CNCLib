@@ -8,6 +8,12 @@
     <DelaySign>true</DelaySign>
     <AssemblyOriginatorKeyFile>..\FrameworkPublic.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup> 
   <PropertyGroup>
     <Authors>Herbert Aitenbichler</Authors>
     <Company>Herbert Aitenbichler</Company>
