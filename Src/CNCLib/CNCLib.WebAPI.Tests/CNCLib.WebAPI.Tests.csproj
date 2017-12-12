@@ -100,8 +100,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper">
-      <Version>6.2.2</Version>
+    <PackageReference Include="Unity">
+      <Version>5.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions">
+      <Version>4.19.4</Version>
+    </PackageReference>
+    <PackageReference Include="NSubstitute">
+      <Version>3.1.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
