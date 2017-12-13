@@ -192,14 +192,14 @@
     </PackageReference>
     <PackageReference Include="Microsoft.SqlServer.Compact">
       <Version>4.0.8876.1</Version>
-	  <PrivateAssets>all</PrivateAssets>
-	  <IncludeAssets>NativeBinaries</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>NativeBinaries</IncludeAssets>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /s /y "$(SolutionDir)..\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\*.*" "$(TargetDir)"
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
