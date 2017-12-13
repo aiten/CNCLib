@@ -1,19 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <Import Project="$(ProjectDir)..\Framework.targets" />
+   <PropertyGroup>
 	<TargetFramework>net47</TargetFramework>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-    <DelaySign>true</DelaySign>
-    <AssemblyOriginatorKeyFile>..\FrameworkPublic.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <Authors>Herbert Aitenbichler</Authors>
-    <Company>Herbert Aitenbichler</Company>
-    <Product>Framework</Product>
-    <Copyright>Copyright (c) 2013-2017 Herbert Aitenbichler</Copyright>
-    <Version>1.0.3</Version>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -29,7 +18,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="6.2.0" />
     <PackageReference Include="EntityFramework" Version="6.2.0" />
   </ItemGroup>
   <ItemGroup>

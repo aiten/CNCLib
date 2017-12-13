@@ -98,6 +98,12 @@ namespace CNCLib.GCode.GUI.ViewModels
             set { SetProperty(() => _useAzure == value, () => _useAzure = value); }
         }
 
+        private bool _busy = false;
+        public bool Busy
+        {
+            get => _busy;
+            set { SetProperty(() => _busy == value, () => _busy = value); }
+        }
 
         #endregion
 
@@ -124,8 +130,6 @@ namespace CNCLib.GCode.GUI.ViewModels
         {
             return Busy == false;
         }
-
-        public bool Busy { get; set; }
 
         void BrowseFileName()
         {
@@ -272,6 +276,15 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         #endregion
 
+        #region overrides
+
+        protected override bool CanDialogOK()
+        {
+            return base.CanDialogOK() && !Busy;
+        }
+
+        #endregion
+
         #region Commands
 
         public ICommand BrowseFileNameCommand => new DelegateCommand(BrowseFileName, Can);
@@ -282,11 +295,16 @@ namespace CNCLib.GCode.GUI.ViewModels
         public ICommand SetSameOfsCommand => new DelegateCommand(() => { LoadOptionsValue.OfsY = LoadOptionsValue.OfsX; RaiseLoadOptionsChanged(); }, Can);
         public ICommand SetSameDotSizeCommand => new DelegateCommand(() => { LoadOptionsValue.DotSizeY = LoadOptionsValue.DotSizeX; RaiseLoadOptionsChanged(); }, Can);
         public ICommand SetSameDotDistCommand => new DelegateCommand(() => { LoadOptionsValue.DotDistY = LoadOptionsValue.DotDistX; RaiseLoadOptionsChanged(); }, Can);
-        public ICommand SaveSettingCommand => new DelegateCommand(async () => await SaveSettings(), () => Can() && SelectedLoadOption != null);
-        public ICommand SaveAsSettingCommand => new DelegateCommand(async () => await SaveAsSettings(), () => Can() && !string.IsNullOrEmpty(LoadOptionsValue.SettingName));
-        public ICommand DeleteSettingCommand => new DelegateCommand(async () => await DeleteSettings(), () => Can() && SelectedLoadOption != null);
-        public ICommand ImportSettingCommand => new DelegateCommand(async () => await ImportSettings(), Can);
-        public ICommand ExportSettingCommand => new DelegateCommand(ExportSettings, () => Can() && SelectedLoadOption != null);
+        public ICommand SaveSettingCommand => new DelegateCommand(async () => await SaveSettings(), () => Can() && SelectedLoadOption != null)
+            .ObservesProperty(() => Busy);
+        public ICommand SaveAsSettingCommand => new DelegateCommand(async () => await SaveAsSettings(), () => Can() && !string.IsNullOrEmpty(LoadOptionsValue.SettingName))
+            .ObservesProperty(() => Busy);
+        public ICommand DeleteSettingCommand => new DelegateCommand(async () => await DeleteSettings(), () => Can() && SelectedLoadOption != null)
+            .ObservesProperty(() => Busy);
+        public ICommand ImportSettingCommand => new DelegateCommand(async () => await ImportSettings(), Can)
+            .ObservesProperty(() => Busy);
+        public ICommand ExportSettingCommand => new DelegateCommand(ExportSettings, () => Can() && SelectedLoadOption != null)
+            .ObservesProperty(() => Busy);
 
         #endregion
     }

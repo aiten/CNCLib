@@ -1,19 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <Import Project="$(ProjectDir)..\Framework.targets" />
+   <PropertyGroup>
 	<TargetFramework>net47</TargetFramework>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-    <DelaySign>true</DelaySign>
-    <AssemblyOriginatorKeyFile>..\FrameworkPublic.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <Authors>Herbert Aitenbichler</Authors>
-    <Company>Herbert Aitenbichler</Company>
-    <Product>Framework</Product>
-    <Copyright>Copyright (c) 2013-2017 Herbert Aitenbichler</Copyright>
-    <Version>1.0.3</Version>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Xml.Linq" />
@@ -27,7 +16,7 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.3" />
     <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.3" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="Unity" Version="5.2.1" />
+    <PackageReference Include="Unity" Version="5.3.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Framework.Tools\Framework.Tools.csproj">
