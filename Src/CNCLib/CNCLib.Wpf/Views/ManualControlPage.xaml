@@ -298,17 +298,21 @@
                         <Label Content="Define work offset:"/>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                             <StackPanel>
-                                <Label Content="Work Offset G54" Width="100"/>
+                                <Label Content="Work Offset G54" Width="100" />
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="X:" Width="20" />
-                                    <TextBlock Width="80"></TextBlock>
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G54X}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Y:" Width="20" />
-                                    <TextBlock Width="80"></TextBlock>
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G54Y}" VerticalContentAlignment="Center" HorizontalAlignment="Right" />
                                 </StackPanel>
-                                <Button Command="{Binding WorkOffset.SendG59Command}" Content="Get"  />
-                                <Button Command="{Binding WorkOffset.SendG59Command}" Content="Set"  />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Z:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G54Z}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                                <Button Command="{Binding WorkOffset.SendG54GetCommand}" Content="Get"  Margin="0,10,0,5"/>
+                                <Button Command="{Binding WorkOffset.SendG54SetCommand}" Content="Set"  />
                              </StackPanel>
                         </StackPanel>
                     </StackPanel>

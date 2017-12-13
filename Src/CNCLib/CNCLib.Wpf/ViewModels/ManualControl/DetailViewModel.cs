@@ -53,7 +53,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			return Connected;
 		}
 
-        public bool CanSendPlotter()
+        public bool CanSendGCode()
         {
             return CanSend() && Global.Instance.Machine.CommandSyntax != Logic.Contracts.DTO.CommandSyntax.HPGL;
         }

@@ -74,15 +74,15 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#region Commands / CanCommands
 		public bool CanSendSpindle()
 		{
-			return CanSendPlotter() && Global.Instance.Machine.Spindle;
+			return CanSendGCode() && Global.Instance.Machine.Spindle;
 		}
 		public bool CanSendCoolant()
 		{
-			return CanSendPlotter() && Global.Instance.Machine.Coolant;
+			return CanSendGCode() && Global.Instance.Machine.Coolant;
 		}
 		public bool CanSendLaser()
 		{
-			return CanSendPlotter() && Global.Instance.Machine.Laser;
+			return CanSendGCode() && Global.Instance.Machine.Laser;
 		}
 
 		public void SendInfo() { RunAndUpdate(() => { Com.QueueCommand("?"); }); }

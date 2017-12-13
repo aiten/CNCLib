@@ -40,7 +40,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region ICommand
-		public ICommand SendG92Command => new DelegateCommand(SendG92, CanSendPlotter);	   
+		public ICommand SendG92Command => new DelegateCommand(SendG92, CanSendGCode);	   
 
 		#endregion
 	}

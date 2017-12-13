@@ -17,6 +17,8 @@
 */
 
 using System.Windows.Input;
+using System.Windows.Media.Converters;
+using CNCLib.Wpf.Helpers;
 using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
@@ -28,32 +30,95 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 		}
 
-		#region Properties
+        #region Properties
+
+        private decimal? _g54X;
+	    public decimal? G54X
+	    {
+	        get => _g54X;
+	        set => SetProperty(ref _g54X, value);
+	    }
+
+        private decimal? _g54Y;
+	    public decimal? G54Y
+	    {
+	        get => _g54Y;
+	        set => SetProperty(ref _g54Y, value);
+	    }
+
+        private decimal? _g54Z;
+	    public decimal? G54Z
+	    {
+	        get => _g54Z;
+	        set => SetProperty(ref _g54Z, value);
+	    }
 
 
-		#endregion
+        #endregion
 
-		#region Commands / CanCommands
+        #region Commands / CanCommands
 
-		public void SendG53() { RunAndUpdate(() => { Com.QueueCommand("g53"); }); }
+        public void SendG53() { RunAndUpdate(() => { Com.QueueCommand("g53"); }); }
 		public void SendG54() { RunAndUpdate(() => { Com.QueueCommand("g54"); }); }
 		public void SendG55() { RunAndUpdate(() => { Com.QueueCommand("g55"); }); }
 		public void SendG56() { RunAndUpdate(() => { Com.QueueCommand("g56"); }); }
 		public void SendG57() { RunAndUpdate(() => { Com.QueueCommand("g57"); }); }
 		public void SendG58() { RunAndUpdate(() => { Com.QueueCommand("g58"); }); }
 		public void SendG59() { RunAndUpdate(() => { Com.QueueCommand("g59"); }); }
-			
-		#endregion
 
-		#region ICommand
-		public ICommand SendG53Command => new DelegateCommand(SendG53, CanSendPlotter);
-		public ICommand SendG54Command => new DelegateCommand(SendG54, CanSendPlotter);
-		public ICommand SendG55Command => new DelegateCommand(SendG55, CanSendPlotter);
-		public ICommand SendG56Command => new DelegateCommand(SendG56, CanSendPlotter);
-		public ICommand SendG57Command => new DelegateCommand(SendG57, CanSendPlotter);
-		public ICommand SendG58Command => new DelegateCommand(SendG58, CanSendPlotter);
-		public ICommand SendG59Command => new DelegateCommand(SendG59, CanSendPlotter);
+	    public void GetG5x(int offsetG)
+	    {
+	        RunAndUpdate(async () =>
+	        {
+/*
+	            string message = await Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"));
 
-		#endregion
-	}
+	            if (!string.IsNullOrEmpty(message))
+	            {
+	                message = message.Replace("ok", "");
+	                message = message.Replace(" ", "");
+	                SetPositions(message.Split(':'), 0);
+	            }
+
+	            message = await Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"));
+
+	            if (!string.IsNullOrEmpty(message))
+	            {
+	                message = message.Replace("ok", "");
+	                message = message.Replace(" ", "");
+	                SetPositions(message.Split(':'), 1);
+	            }
+*/
+	        });
+        }
+        public bool CanGetG5x(int offsetG)
+	    {
+	        return CanSendGCode();
+	    }
+
+	    public void SetG5x(int offsetG)
+	    {
+	        
+	    }
+
+	    public bool CanGSetG5x(int offsetG)
+	    {
+	        return CanSendGCode();
+	    }
+
+        #endregion
+
+        #region ICommand
+        public ICommand SendG53Command => new DelegateCommand(SendG53, CanSendGCode);
+		public ICommand SendG54Command => new DelegateCommand(SendG54, CanSendGCode);
+		public ICommand SendG55Command => new DelegateCommand(SendG55, CanSendGCode);
+		public ICommand SendG56Command => new DelegateCommand(SendG56, CanSendGCode);
+		public ICommand SendG57Command => new DelegateCommand(SendG57, CanSendGCode);
+		public ICommand SendG58Command => new DelegateCommand(SendG58, CanSendGCode);
+		public ICommand SendG59Command => new DelegateCommand(SendG59, CanSendGCode);
+	    public ICommand GetG54Command => new DelegateCommand(() => GetG5x(0), () => CanGetG5x(0));
+	    public ICommand SetG54Command => new DelegateCommand(() => SetG5x(0), () => CanSetG5x(0));
+
+        #endregion
+    }
 }

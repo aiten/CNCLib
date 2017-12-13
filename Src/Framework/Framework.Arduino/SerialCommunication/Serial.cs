@@ -74,8 +74,8 @@ namespace Framework.Arduino.SerialCommunication
 			}
 		}
 
-		//      public bool IsConnected { get { return true; }  }
-		public bool IsConnected => _serialPort != null && _serialPort.IsOpen;
+		public bool IsConnected { get { return true; }  }
+		//public bool IsConnected => _serialPort != null && _serialPort.IsOpen;
 
         public bool Aborted { get; protected set; }
 

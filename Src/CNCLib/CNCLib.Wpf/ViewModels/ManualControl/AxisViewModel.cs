@@ -93,7 +93,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		}
         public bool CanSendCommandPlotter()
         {
-            return CanSendPlotter() && Enabled;
+            return CanSendGCode() && Enabled;
         }
 
         #endregion
