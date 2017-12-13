@@ -36,7 +36,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         #region Properties
 
-        private decimal?[,] _g54 = new decimal?[3,3];
+        private decimal?[,] _g54 = new decimal?[3,6];
         private void SetField(int axis, int offset, decimal? val)
         {
             _g54[axis, offset] = val;
@@ -91,6 +91,53 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 	        set => SetField(2, 2, value);
 	    }
 
+        public decimal? G57X
+	    {
+	        get => _g54[0, 3];
+	        set => SetField(0, 3, value);
+	    }
+	    public decimal? G57Y
+	    {
+	        get => _g54[1, 3];
+	        set => SetField(1, 3, value);
+	    }
+	    public decimal? G57Z
+	    {
+	        get => _g54[2, 3];
+	        set => SetField(2, 3, value);
+	    }
+
+        public decimal? G58X
+	    {
+	        get => _g54[0, 4];
+	        set => SetField(0, 4, value);
+	    }
+	    public decimal? G58Y
+	    {
+	        get => _g54[1, 4];
+	        set => SetField(1, 4, value);
+	    }
+	    public decimal? G58Z
+	    {
+	        get => _g54[2, 4];
+	        set => SetField(2, 4, value);
+	    }
+
+	    public decimal? G59X
+	    {
+	        get => _g54[0, 5];
+	        set => SetField(0, 5, value);
+	    }
+	    public decimal? G59Y
+	    {
+	        get => _g54[1, 5];
+	        set => SetField(1, 5, value);
+	    }
+	    public decimal? G59Z
+	    {
+	        get => _g54[2, 5];
+	        set => SetField(2, 5, value);
+	    }
         #endregion
 
         #region Commands / CanCommands
@@ -178,6 +225,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 	    public ICommand SetG55Command => new DelegateCommand(() => SetG5x(1), () => CanSetG5x(1));
 	    public ICommand GetG56Command => new DelegateCommand(() => GetG5x(2), () => CanGetG5x(2));
 	    public ICommand SetG56Command => new DelegateCommand(() => SetG5x(2), () => CanSetG5x(2));
+	    public ICommand GetG57Command => new DelegateCommand(() => GetG5x(3), () => CanGetG5x(2));
+	    public ICommand SetG57Command => new DelegateCommand(() => SetG5x(3), () => CanSetG5x(2));
+	    public ICommand GetG58Command => new DelegateCommand(() => GetG5x(4), () => CanGetG5x(2));
+	    public ICommand SetG58Command => new DelegateCommand(() => SetG5x(4), () => CanSetG5x(2));
+	    public ICommand GetG59Command => new DelegateCommand(() => GetG5x(5), () => CanGetG5x(2));
+	    public ICommand SetG59Command => new DelegateCommand(() => SetG5x(5), () => CanSetG5x(2));
 
         #endregion
     }

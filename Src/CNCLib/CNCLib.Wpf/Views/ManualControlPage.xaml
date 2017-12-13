@@ -347,6 +347,57 @@
                                 <Button Command="{Binding WorkOffset.GetG56Command}" Content="Get"  Margin="0,10,0,5"/>
                                 <Button Command="{Binding WorkOffset.SetG56Command}" Content="Set"  />
                             </StackPanel>
+                            <StackPanel>
+                                <Label Content="Offset G57" Width="100" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="X:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G57X}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Y:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G57Y}" VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Z:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G57Z}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                                <Button Command="{Binding WorkOffset.GetG57Command}" Content="Get"  Margin="0,10,0,5"/>
+                                <Button Command="{Binding WorkOffset.SetG57Command}" Content="Set"  />
+                            </StackPanel>
+                            <StackPanel>
+                                <Label Content="Offset G58" Width="100" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="X:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G58X}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Y:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G58Y}" VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Z:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G58Z}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                                <Button Command="{Binding WorkOffset.GetG58Command}" Content="Get"  Margin="0,10,0,5"/>
+                                <Button Command="{Binding WorkOffset.SetG58Command}" Content="Set"  />
+                            </StackPanel>
+                            <StackPanel>
+                                <Label Content="Offset G59" Width="100" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="X:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G59X}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Y:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G59Y}" VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Z:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G59Z}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
+                                </StackPanel>
+                                <Button Command="{Binding WorkOffset.GetG59Command}" Content="Get"  Margin="0,10,0,5"/>
+                                <Button Command="{Binding WorkOffset.SetG59Command}" Content="Set"  />
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
