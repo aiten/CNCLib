@@ -1,20 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-	<TargetFramework>net47</TargetFramework>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-    <DelaySign>true</DelaySign>
-    <AssemblyOriginatorKeyFile>..\FrameworkPublic.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <Authors>Herbert Aitenbichler</Authors>
-    <Company>Herbert Aitenbichler</Company>
-    <Product>Framework</Product>
-    <Copyright>Copyright (c) 2013-2017 Herbert Aitenbichler</Copyright>
-    <Version>1.0.3</Version>
-  </PropertyGroup>
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <Import Project="$(ProjectDir)..\Framework.targets" />
   <ItemGroup>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
