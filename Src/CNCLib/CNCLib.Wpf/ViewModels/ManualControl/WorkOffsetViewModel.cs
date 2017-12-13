@@ -16,8 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Converters;
+using CNCLib.GCode;
 using CNCLib.Wpf.Helpers;
 using Framework.Wpf.Helpers;
 
@@ -32,27 +36,60 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         #region Properties
 
-        private decimal? _g54X;
+        private decimal?[,] _g54 = new decimal?[3,3];
+        private void SetField(int axis, int offset, decimal? val)
+        {
+            _g54[axis, offset] = val;
+            RaisePropertyChanged($"G{54+ offset}{GCodeHelper.IndexToAxisName(axis)}");
+        }
+
 	    public decimal? G54X
 	    {
-	        get => _g54X;
-	        set => SetProperty(ref _g54X, value);
+	        get => _g54[0,0];
+	        set => SetField(0,0, value);
 	    }
-
-        private decimal? _g54Y;
 	    public decimal? G54Y
 	    {
-	        get => _g54Y;
-	        set => SetProperty(ref _g54Y, value);
+	        get => _g54[1, 0];
+	        set => SetField(1, 0, value);
 	    }
-
-        private decimal? _g54Z;
 	    public decimal? G54Z
 	    {
-	        get => _g54Z;
-	        set => SetProperty(ref _g54Z, value);
+	        get => _g54[2, 0];
+	        set => SetField(2, 0, value);
 	    }
 
+	    public decimal? G55X
+	    {
+	        get => _g54[0, 1];
+	        set => SetField(0, 1, value);
+	    }
+	    public decimal? G55Y
+	    {
+	        get => _g54[1, 1];
+	        set => SetField(1, 1, value);
+	    }
+	    public decimal? G55Z
+	    {
+	        get => _g54[2, 1];
+	        set => SetField(2, 1, value);
+	    }
+
+        public decimal? G56X
+	    {
+	        get => _g54[0, 2];
+	        set => SetField(0, 2, value);
+	    }
+	    public decimal? G56Y
+	    {
+	        get => _g54[1, 2];
+	        set => SetField(1, 2, value);
+	    }
+	    public decimal? G56Z
+	    {
+	        get => _g54[2, 2];
+	        set => SetField(2, 2, value);
+	    }
 
         #endregion
 
@@ -66,30 +103,42 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public void SendG58() { RunAndUpdate(() => { Com.QueueCommand("g58"); }); }
 		public void SendG59() { RunAndUpdate(() => { Com.QueueCommand("g59"); }); }
 
-	    public void GetG5x(int offsetG)
+	    private async Task<decimal?> GetParameterValue(int parameter)
+	    {
+	        string message = await Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand($"(print, #{parameter})"));
+
+	        if (!string.IsNullOrEmpty(message))
+	        {
+	            // expected response : 0\nok
+	            string pos = message.Split('\n').FirstOrDefault();
+	            if (decimal.TryParse(pos, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal val))
+	            {
+	                return val/1000m;
+	            }
+	        }
+	        return null;
+	    }
+
+        public void GetG5x(int offsetG)
 	    {
 	        RunAndUpdate(async () =>
 	        {
-/*
-	            string message = await Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"));
-
-	            if (!string.IsNullOrEmpty(message))
+                var gX = await GetParameterValue(5221 + offsetG * 20);
+                if (gX.HasValue)
+                {
+                    SetField(0,offsetG,gX);
+                }
+	            var gY = await GetParameterValue(5222 + offsetG * 20);
+	            if (gY.HasValue)
 	            {
-	                message = message.Replace("ok", "");
-	                message = message.Replace(" ", "");
-	                SetPositions(message.Split(':'), 0);
+	                SetField(1, offsetG, gY);
 	            }
-
-	            message = await Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"));
-
-	            if (!string.IsNullOrEmpty(message))
+                var gZ = await GetParameterValue(5223 + offsetG * 20);
+	            if (gZ.HasValue)
 	            {
-	                message = message.Replace("ok", "");
-	                message = message.Replace(" ", "");
-	                SetPositions(message.Split(':'), 1);
+	                SetField(2, offsetG, gZ);
 	            }
-*/
-	        });
+            });
         }
         public bool CanGetG5x(int offsetG)
 	    {
@@ -98,10 +147,17 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 	    public void SetG5x(int offsetG)
 	    {
-	        
-	    }
+	        string x = _g54[0, offsetG].HasValue ? $" X{_g54[0, offsetG].Value.ToString(CultureInfo.InvariantCulture)}" : "";
+	        string y = _g54[1, offsetG].HasValue ? $" Y{_g54[1, offsetG].Value.ToString(CultureInfo.InvariantCulture)}" : "";
+	        string z = _g54[2, offsetG].HasValue ? $" Z{_g54[2, offsetG].Value.ToString(CultureInfo.InvariantCulture)}" : "";
 
-	    public bool CanGSetG5x(int offsetG)
+            // p0 => current
+            // p1 => g54
+            // p2 => g55
+            Com.QueueCommand($"g10 l2 p{offsetG+1}{x}{y}{z}");
+        }
+
+	    public bool CanSetG5x(int offsetG)
 	    {
 	        return CanSendGCode();
 	    }
@@ -118,6 +174,10 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ICommand SendG59Command => new DelegateCommand(SendG59, CanSendGCode);
 	    public ICommand GetG54Command => new DelegateCommand(() => GetG5x(0), () => CanGetG5x(0));
 	    public ICommand SetG54Command => new DelegateCommand(() => SetG5x(0), () => CanSetG5x(0));
+	    public ICommand GetG55Command => new DelegateCommand(() => GetG5x(1), () => CanGetG5x(1));
+	    public ICommand SetG55Command => new DelegateCommand(() => SetG5x(1), () => CanSetG5x(1));
+	    public ICommand GetG56Command => new DelegateCommand(() => GetG5x(2), () => CanGetG5x(2));
+	    public ICommand SetG56Command => new DelegateCommand(() => SetG5x(2), () => CanSetG5x(2));
 
         #endregion
     }

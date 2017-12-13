@@ -74,8 +74,8 @@ namespace Framework.Arduino.SerialCommunication
 			}
 		}
 
-		public bool IsConnected { get { return true; }  }
-		//public bool IsConnected => _serialPort != null && _serialPort.IsOpen;
+		//public bool IsConnected { get { return true; }  }
+		public bool IsConnected => _serialPort != null && _serialPort.IsOpen;
 
         public bool Aborted { get; protected set; }
 
@@ -311,7 +311,7 @@ namespace Framework.Arduino.SerialCommunication
 				if (await WaitUntilCommandsDoneAsync(commands, waitForMilliseconds))
 				{
 					var lastCmd = commands.Last();
-					if (lastCmd.ReplyType == EReplyType.ReplyOK)
+					if (lastCmd.ReplyType.HasFlag(EReplyType.ReplyOK))
 						message = lastCmd.ResultText;
 				}
 			}
