@@ -21,10 +21,5 @@
     <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">    </ProjectReference>
     <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="AutoMapper">
-      <Version>6.2.2</Version>
-    </PackageReference>
-  </ItemGroup>
   
 </Project>

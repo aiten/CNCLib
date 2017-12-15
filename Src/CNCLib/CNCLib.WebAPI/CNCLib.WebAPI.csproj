@@ -298,7 +298,7 @@
       <Version>1.0.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Net.Compilers">
-      <Version>2.6.0</Version>
+      <Version>2.6.1</Version>
     </PackageReference>
     <PackageReference Include="Swashbuckle">
       <Version>5.6.0</Version>
