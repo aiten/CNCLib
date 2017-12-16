@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+             x:Name="MyWindwos"
              d:DesignHeight="300" d:DesignWidth="400">
     <Grid PreviewKeyDown="Grid_PreviewKeyDown" PreviewKeyUp="Grid_PreviewKeyUp">
         <Grid.RowDefinitions>
@@ -18,11 +19,16 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TextBox x:Name="_dist" Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="_dist_TextChanged" />
-        <Button x:Name="_left" Grid.Column="0" Grid.Row="1" Content="L" Click="_left_Click" />
-        <Button x:Name="_right" Grid.Column="2" Grid.Row="1" Content="R" Click="_right_Click" />
-        <Button x:Name="_up" Grid.Column="1" Grid.Row="0" Content="U" Click="_up_Click" />
-        <Button x:Name="_down" Grid.Column="1" Grid.Row="2" Content="D" Click="_down_Click" />
-        <Button x:Name="_Zup" Grid.Column="3" Grid.Row="0" Content="Z-U" Click="_Zup_Click" />
-        <Button x:Name="_Zdown" Grid.Column="3" Grid.Row="2" Content="Z-D" Click="_Zdown_Click"  />
+        <Button Grid.Column="0" Grid.Row="1" Content="L" />
+        <UniformGrid Grid.Column="2" Grid.Row="1" Rows="1" Columns="4">
+            <Button Command="{Binding ElementName=MyWindwos, Path=RightMinMinCommand}" Content="{Binding ElementName=MyWindwos, Path=MoveDistMinMin, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=RightMinCommand}" Content="{Binding ElementName=MyWindwos, Path=MoveDistMin, UpdateSourceTrigger=PropertyChanged }" HorizontalAlignment="Left" Width="25"/>
+            <Button Command="{Binding ElementName=MyWindwos, Path=RightDefaultCommand}" Content="{Binding ElementName=MyWindwos, Path=MoveDistDefault, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=RightMaxCommand}" Content="{Binding ElementName=MyWindwos, Path=MoveDistMax, UpdateSourceTrigger=PropertyChanged }" />
+        </UniformGrid>
+        <Button Grid.Column="1" Grid.Row="0" Content="U"  />
+        <Button Grid.Column="1" Grid.Row="2" Content="D"  />
+        <Button Grid.Column="3" Grid.Row="0" Content="Z-U" />
+        <Button Grid.Column="3" Grid.Row="2" Content="Z-D" />
     </Grid>
 </UserControl>

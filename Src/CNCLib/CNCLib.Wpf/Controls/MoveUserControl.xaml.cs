@@ -15,255 +15,315 @@
   GNU General Public License for more details.
   http://www.gnu.org/licenses/
 */
+
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.Controls
 {
-	/// <summary>
-	/// Interaction logic for MoveUserControl.xaml
-	/// </summary>
-	public partial class MoveUserControl : UserControl
-	{
-		public MoveUserControl()
-		{
-			InitializeComponent();
-			_dist.Text = MoveDist.ToString();
-		}
+    /// <summary>
+    /// Interaction logic for MoveUserControl.xaml
+    /// </summary>
+    public partial class MoveUserControl : UserControl, INotifyPropertyChanged
+    {
+        public MoveUserControl()
+        {
+            InitializeComponent();
+            _dist.Text = MoveDist.ToString();
+        }
 
-		#region Commands
+        #region INPC 
 
-		public static readonly DependencyProperty LeftCommandProperty = DependencyProperty.Register(
-			"Left", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+        public virtual event PropertyChangedEventHandler PropertyChanged;
 
-		public ICommand Left
-		{
-			get => (ICommand)GetValue(LeftCommandProperty);
-		    set => SetValue(LeftCommandProperty, value);
-		}
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
-		public static readonly DependencyProperty RightCommandProperty = DependencyProperty.Register(
-			"Right", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+        #endregion
 
-		public ICommand Right
-		{
-			get => (ICommand)GetValue(RightCommandProperty);
-		    set => SetValue(RightCommandProperty, value);
-		}
+        #region Commands
 
-		public static readonly DependencyProperty UpCommandProperty = DependencyProperty.Register(
-			"Up", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+        public static readonly DependencyProperty LeftCommandProperty = DependencyProperty.Register(
+            "Left", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-		public ICommand Up
-		{
-			get => (ICommand)GetValue(UpCommandProperty);
-		    set => SetValue(UpCommandProperty, value);
-		}
+        public ICommand Left
+        {
+            get => (ICommand)GetValue(LeftCommandProperty);
+            set => SetValue(LeftCommandProperty, value);
+        }
 
-		public static readonly DependencyProperty DownCommandProperty = DependencyProperty.Register(
-			"Down", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+        public static readonly DependencyProperty RightCommandProperty = DependencyProperty.Register(
+            "Right", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-		public ICommand Down
-		{
-			get => (ICommand)GetValue(DownCommandProperty);
-		    set => SetValue(DownCommandProperty, value);
-		}
+        public ICommand Right
+        {
+            get => (ICommand)GetValue(RightCommandProperty);
+            set => SetValue(RightCommandProperty, value);
+        }
 
-		public static readonly DependencyProperty ZUpCommandProperty = DependencyProperty.Register(
-			"ZUp", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+        public static readonly DependencyProperty UpCommandProperty = DependencyProperty.Register(
+            "Up", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-		public ICommand ZUp
-		{
-			get => (ICommand)GetValue(ZUpCommandProperty);
-		    set => SetValue(ZUpCommandProperty, value);
-		}
+        public ICommand Up
+        {
+            get => (ICommand)GetValue(UpCommandProperty);
+            set => SetValue(UpCommandProperty, value);
+        }
 
-		public static readonly DependencyProperty ZDownCommandProperty = DependencyProperty.Register(
-			"ZDown", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+        public static readonly DependencyProperty DownCommandProperty = DependencyProperty.Register(
+            "Down", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-		public ICommand ZDown
-		{
-			get => (ICommand)GetValue(ZDownCommandProperty);
-		    set => SetValue(ZDownCommandProperty, value);
-		}
+        public ICommand Down
+        {
+            get => (ICommand)GetValue(DownCommandProperty);
+            set => SetValue(DownCommandProperty, value);
+        }
 
-		#endregion
+        public static readonly DependencyProperty ZUpCommandProperty = DependencyProperty.Register(
+            "ZUp", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-		#region Properties
+        public ICommand ZUp
+        {
+            get => (ICommand)GetValue(ZUpCommandProperty);
+            set => SetValue(ZUpCommandProperty, value);
+        }
 
-		public double MoveDist { get; set; } = 10.0;
-		public double MoveDistDefault { get; set; } = 10.0;
-		public double MoveDistMax { get; set; } = 100.0;
-		public double MoveDistMin { get; set; } = 1.0;
-		public double MoveDistMinMin { get; set; } = 0.1;
+        public static readonly DependencyProperty ZDownCommandProperty = DependencyProperty.Register(
+            "ZDown", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-		#endregion
+        public ICommand ZDown
+        {
+            get => (ICommand)GetValue(ZDownCommandProperty);
+            set => SetValue(ZDownCommandProperty, value);
+        }
 
-		#region private events
+        #endregion
 
-		private bool IsModifyMoveDistKey(Key k)
-		{
-			switch (k)
-			{
-				case Key.LeftCtrl:
-				case Key.RightCtrl:
-				case Key.LeftShift:
-				case Key.RightShift:
-					return true;
-			}
-			return false;
-		}
+        #region ICommand
 
-		private void Grid_PreviewKeyUp(object sender, KeyEventArgs e)
-		{
-			if (IsModifyMoveDistKey(e.Key))
-				SetMoveDist();
-		}
+        bool CanSend()
+        {
+            return true;
+        }
 
-		private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
-		{
-			if (IsModifyMoveDistKey(e.Key))
-				SetMoveDist();
+        public ICommand RightMinMinCommand => new DelegateCommand(() => OnRight(MoveDistance.MinMinDistance),CanSend);
+        public ICommand RightMinCommand => new DelegateCommand(() => OnRight(MoveDistance.MinDistance), CanSend);
+        public ICommand RightDefaultCommand => new DelegateCommand(() => OnRight(MoveDistance.DefaultDistance), CanSend);
+        public ICommand RightMaxCommand => new DelegateCommand(() => OnRight(MoveDistance.MaxDistance), CanSend);
 
-			switch (e.Key)
-			{
-				case Key.Left:
-					OnLeft();
-					e.Handled = true;
-					break;
-				case Key.Right:
-					OnRight();
-					e.Handled = true;
-					break;
-				case Key.Up:
-					OnUp();
-					e.Handled = true;
-					break;
-				case Key.Down:
-					OnDown();
-					e.Handled = true;
-					break;
-				case Key.PageUp:
-					OnZUp();
-					e.Handled = true;
-					break;
-				case Key.PageDown:
-					OnZDown();
-					e.Handled = true;
-					break;
-			}
-		}
-		private void _up_Click(object sender, RoutedEventArgs e)
-		{
-			OnUp();
-		}
+        #endregion
 
-		private void _right_Click(object sender, RoutedEventArgs e)
-		{
-			OnRight();
-		}
+        #region Properties
 
-		private void _left_Click(object sender, RoutedEventArgs e)
-		{
-			OnLeft();
-		}
+        public enum MoveDistance
+        {
+            DefaultDistance,
+            MaxDistance,
+            MinDistance,
+            MinMinDistance,
+            UseDefault
+        };
 
-		private void _down_Click(object sender, RoutedEventArgs e)
-		{
-			OnDown();
-		}
-		private void _Zup_Click(object sender, RoutedEventArgs e)
-		{
-			OnZUp();
-		}
+        private double _moveDist = 10.0;
+        private double _moveDistDefault = 10.0;
+        private double _moveDistMax = 100.0;
+        private double _moveDistMin = 1.0;
+        private double _moveDistMinMin = 0.1;
 
-		private void _Zdown_Click(object sender, RoutedEventArgs e)
-		{
-			OnZDown();
-		}
+        public double MoveDist
+        {
+            get => _moveDist;
+            set
+            {
+                _moveDist = value;
+                RaisePropertyChanged(nameof(MoveDist));
+            }
+        }
 
-		private void _dist_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			double movedist;
-			if (double.TryParse(_dist.Text, out movedist))
-			{
-				MoveDist = movedist;
-			}
-		}
+        public double MoveDistDefault
+        {
+            get => _moveDistDefault;
+            set { _moveDistDefault = value; RaisePropertyChanged(); }
+        }
 
-		#endregion
+        public double MoveDistMax
+        {
+            get => _moveDistMax;
+            set { _moveDistMax = value; RaisePropertyChanged(); }
+        }
 
-		#region event forwards
+        public double MoveDistMin
+        {
+            get => _moveDistMin;
+            set
+            {
+                _moveDistMin = value;
+                RaisePropertyChanged();
+            }
+        }
+        public double MoveDistMinMin
+        {
+            get => _moveDistMinMin;
+            set
+            {
+                _moveDistMinMin = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
 
-		private void OnZDown()
-		{
-			double? dist = MoveDist;
-			if (ZDown != null && ZDown.CanExecute(dist))
-				ZDown.Execute(dist);
-		}
+        #region private events
 
-		private void OnZUp()
-		{
-			double? dist = MoveDist;
-			if (ZUp != null && ZUp.CanExecute(dist))
-				ZUp.Execute(dist);
-		}
+        private bool IsModifyMoveDistKey(Key k)
+        {
+            switch (k)
+            {
+                case Key.LeftCtrl:
+                case Key.RightCtrl:
+                case Key.LeftShift:
+                case Key.RightShift:
+                    return true;
+            }
+            return false;
+        }
 
-		private void OnDown()
-		{
-			double? dist = MoveDist;
-			if (Down != null && Down.CanExecute(dist))
-				Down.Execute(dist);
-		}
+        private void Grid_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (IsModifyMoveDistKey(e.Key))
+                SetMoveDist();
+        }
 
-		private void OnUp()
-		{
-			double? dist = MoveDist;
-			if (Up != null && Up.CanExecute(dist))
-				Up.Execute(dist);
-		}
+        private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (IsModifyMoveDistKey(e.Key))
+                SetMoveDist();
 
-		private void OnRight()
-		{
-			double? dist = MoveDist;
-			if (Right != null && Right.CanExecute(dist))
-				Right.Execute(dist);
-		}
+            switch (e.Key)
+            {
+                case Key.Left:
+                    OnLeft(MoveDistance.UseDefault);
+                    e.Handled = true;
+                    break;
+                case Key.Right:
+                    OnRight(MoveDistance.UseDefault);
+                    e.Handled = true;
+                    break;
+                case Key.Up:
+                    OnUp(MoveDistance.UseDefault);
+                    e.Handled = true;
+                    break;
+                case Key.Down:
+                    OnDown(MoveDistance.UseDefault);
+                    e.Handled = true;
+                    break;
+                case Key.PageUp:
+                    OnZUp(MoveDistance.UseDefault);
+                    e.Handled = true;
+                    break;
+                case Key.PageDown:
+                    OnZDown(MoveDistance.UseDefault);
+                    e.Handled = true;
+                    break;
+            }
+        }
+ 
+        private void _dist_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double movedist;
+            if (double.TryParse(_dist.Text, out movedist))
+            {
+                MoveDist = movedist;
+            }
+        }
 
-		private void OnLeft()
-		{
-			double? dist = MoveDist;
-			if (Left != null && Left.CanExecute(dist))
-				Left.Execute(dist);
-		}
+        #endregion
 
-		#endregion
+        #region event forwards
 
-		#region helper
+        private void OnZDown(MoveDistance mode)
+        {
+            double? dist = GetDist(mode);
+            if (ZDown != null && ZDown.CanExecute(dist))
+                ZDown.Execute(dist);
+        }
 
-		private void SetMoveDist()
-		{
-			MoveDist = GetDist();
-			_dist.Text = MoveDist.ToString();
-		}
+        private void OnZUp(MoveDistance mode)
+        {
+            double? dist = GetDist(mode);
+            if (ZUp != null && ZUp.CanExecute(dist))
+                ZUp.Execute(dist);
+        }
 
-		private double GetDist()
-		{
-			double dist;
-			bool isCtrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-			bool isShift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-			if (isCtrl && isShift)
-				dist = MoveDistMinMin;
-			else if (isShift)
-				dist = MoveDistMax;
-			else if (isCtrl)
-				dist = MoveDistMin;
-			else
-				dist = MoveDistDefault;
-			return dist;
-		}
+        private void OnDown(MoveDistance mode)
+        {
+            double? dist = GetDist(mode);
+            if (Down != null && Down.CanExecute(dist))
+                Down.Execute(dist);
+        }
 
-		#endregion
-	}
+        private void OnUp(MoveDistance mode)
+        {
+            double? dist = GetDist(mode);
+            if (Up != null && Up.CanExecute(dist))
+                Up.Execute(dist);
+        }
+
+        private void OnRight(MoveDistance mode)
+        {
+            double? dist = GetDist(mode);
+            if (Right != null && Right.CanExecute(dist))
+                Right.Execute(dist);
+        }
+
+        private void OnLeft(MoveDistance mode)
+        {
+            double? dist = GetDist(mode);
+            if (Left != null && Left.CanExecute(dist))
+                Left.Execute(dist);
+        }
+
+        #endregion
+
+        #region helper
+
+        private void SetMoveDist()
+        {
+            MoveDist = GetDist(GetDistanceMode());
+            _dist.Text = MoveDist.ToString();
+        }
+
+        private MoveDistance GetDistanceMode()
+        {
+            bool isCtrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            bool isShift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            if (isCtrl && isShift)
+                return MoveDistance.MinMinDistance;
+            if (isShift)
+                return MoveDistance.MaxDistance;
+            if (isCtrl)
+                return MoveDistance.MinDistance;
+            return MoveDistance.DefaultDistance;
+        }
+
+        private double GetDist(MoveDistance mode)
+        {
+            switch (mode)
+            {
+                case MoveDistance.UseDefault: return MoveDist;
+                case MoveDistance.MaxDistance: return MoveDistMax;
+                case MoveDistance.MinDistance: return MoveDistMin;
+                case MoveDistance.MinMinDistance: return MoveDistMinMin;
+                default:
+                case MoveDistance.DefaultDistance: return MoveDistDefault;
+            }
+        }
+
+        #endregion
+    }
 }

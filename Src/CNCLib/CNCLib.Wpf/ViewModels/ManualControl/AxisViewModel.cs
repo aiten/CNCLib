@@ -17,6 +17,7 @@
 */
 
 using System.Globalization;
+using System.Windows;
 using System.Windows.Input;
 using CNCLib.Wpf.Helpers;
 using Framework.Wpf.Helpers;
@@ -25,11 +26,14 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class AxisViewModel : DetailViewModel
 	{
-		public AxisViewModel(IManualControlViewModel vm) : base(vm) 	{}
+	    public AxisViewModel(IManualControlViewModel vm) : base(vm)
+	    {
+	        Global.Instance.PropertyChanged += (sender, e) => { if (e.PropertyName == "Machine") MachineChanged(); };
+        }
 
-		#region Properties
+        #region Properties
 
-		public int AxisIndex { get; set; }
+        public int AxisIndex { get; set; }
 		public string AxisName => Global.Instance.Machine.GetAxisName(AxisIndex);
 	    public decimal Size => Global.Instance.Machine.GetSize(AxisIndex);
 
@@ -60,10 +64,18 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		public bool Enabled => Global.Instance.Machine.Axis > AxisIndex && Size > 0m;
 
+        public Visibility Visibility => IsDesignTime || Enabled ? Visibility.Visible : Visibility.Hidden;
+
+	    private void MachineChanged()
+	    {
+	        RaisePropertyChanged(nameof(Enabled));
+	        RaisePropertyChanged(nameof(Visibility));
+	    }
+
 	    #endregion
 
-		#region Commands / CanCommands
-		private void SendMoveCommand(string dist) { RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g91 g0" + AxisName + dist + " g90")); }); }
+            #region Commands / CanCommands
+            private void SendMoveCommand(string dist) { RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g91 g0" + AxisName + dist + " g90")); }); }
 
 		private void SendProbeCommand(int axisindex)
 		{

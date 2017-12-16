@@ -57,6 +57,8 @@ namespace Framework.Wpf.ViewModels
 
         #endregion
 
+        public bool IsDesignTime => System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject());
+
         #region GUI Forwards
 
         public Func<string, string, MessageBoxButton, MessageBoxImage, MessageBoxResult>MessageBox{ get; set; }
