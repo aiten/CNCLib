@@ -112,10 +112,37 @@ namespace CNCLib.Wpf.Controls
             return true;
         }
 
-        public ICommand RightMinMinCommand => new DelegateCommand(() => OnRight(MoveDistance.MinMinDistance),CanSend);
-        public ICommand RightMinCommand => new DelegateCommand(() => OnRight(MoveDistance.MinDistance), CanSend);
-        public ICommand RightDefaultCommand => new DelegateCommand(() => OnRight(MoveDistance.DefaultDistance), CanSend);
-        public ICommand RightMaxCommand => new DelegateCommand(() => OnRight(MoveDistance.MaxDistance), CanSend);
+        public ICommand RightDist1Command => new DelegateCommand(() => OnRight(MoveDistance.Distance1),CanSend);
+        public ICommand RightDist2Command => new DelegateCommand(() => OnRight(MoveDistance.Distance2), CanSend);
+        public ICommand RightDist3Command => new DelegateCommand(() => OnRight(MoveDistance.Distance3), CanSend);
+        public ICommand RightDist4Command => new DelegateCommand(() => OnRight(MoveDistance.Distance4), CanSend);
+
+        public ICommand LeftDist1Command => new DelegateCommand(() => OnLeft(MoveDistance.Distance1), CanSend);
+        public ICommand LeftDist2Command => new DelegateCommand(() => OnLeft(MoveDistance.Distance2), CanSend);
+        public ICommand LeftDist3Command => new DelegateCommand(() => OnLeft(MoveDistance.Distance3), CanSend);
+        public ICommand LeftDist4Command => new DelegateCommand(() => OnLeft(MoveDistance.Distance4), CanSend);
+
+
+        public ICommand UpDist1Command => new DelegateCommand(() => OnUp(MoveDistance.Distance1), CanSend);
+        public ICommand UpDist2Command => new DelegateCommand(() => OnUp(MoveDistance.Distance2), CanSend);
+        public ICommand UpDist3Command => new DelegateCommand(() => OnUp(MoveDistance.Distance3), CanSend);
+        public ICommand UpDist4Command => new DelegateCommand(() => OnUp(MoveDistance.Distance4), CanSend);
+
+        public ICommand DownDist1Command => new DelegateCommand(() => OnDown(MoveDistance.Distance1), CanSend);
+        public ICommand DownDist2Command => new DelegateCommand(() => OnDown(MoveDistance.Distance2), CanSend);
+        public ICommand DownDist3Command => new DelegateCommand(() => OnDown(MoveDistance.Distance3), CanSend);
+        public ICommand DownDist4Command => new DelegateCommand(() => OnDown(MoveDistance.Distance4), CanSend);
+
+
+        public ICommand ZUpDist1Command => new DelegateCommand(() => OnZUp(MoveDistance.Distance1), CanSend);
+        public ICommand ZUpDist2Command => new DelegateCommand(() => OnZUp(MoveDistance.Distance2), CanSend);
+        public ICommand ZUpDist3Command => new DelegateCommand(() => OnZUp(MoveDistance.Distance3), CanSend);
+        public ICommand ZUpDist4Command => new DelegateCommand(() => OnZUp(MoveDistance.Distance4), CanSend);
+                        
+        public ICommand ZDownDist1Command => new DelegateCommand(() => OnZDown(MoveDistance.Distance1), CanSend);
+        public ICommand ZDownDist2Command => new DelegateCommand(() => OnZDown(MoveDistance.Distance2), CanSend);
+        public ICommand ZDownDist3Command => new DelegateCommand(() => OnZDown(MoveDistance.Distance3), CanSend);
+        public ICommand ZDownDist4Command => new DelegateCommand(() => OnZDown(MoveDistance.Distance4), CanSend);
 
         #endregion
 
@@ -123,18 +150,18 @@ namespace CNCLib.Wpf.Controls
 
         public enum MoveDistance
         {
-            DefaultDistance,
-            MaxDistance,
-            MinDistance,
-            MinMinDistance,
+            Distance3,
+            Distance4,
+            Distance2,
+            Distance1,
             UseDefault
         };
 
         private double _moveDist = 10.0;
-        private double _moveDistDefault = 10.0;
-        private double _moveDistMax = 100.0;
-        private double _moveDistMin = 1.0;
-        private double _moveDistMinMin = 0.1;
+        private double _moveDistance3 = 10.0;
+        private double _moveDistanze4 = 100.0;
+        private double _moveDistance2 = 1.0;
+        private double _moveDistance1 = 0.1;
 
         public double MoveDist
         {
@@ -146,33 +173,33 @@ namespace CNCLib.Wpf.Controls
             }
         }
 
-        public double MoveDistDefault
+        public double MoveDistance3
         {
-            get => _moveDistDefault;
-            set { _moveDistDefault = value; RaisePropertyChanged(); }
+            get => _moveDistance3;
+            set { _moveDistance3 = value; RaisePropertyChanged(); }
         }
 
-        public double MoveDistMax
+        public double MoveDistance4
         {
-            get => _moveDistMax;
-            set { _moveDistMax = value; RaisePropertyChanged(); }
+            get => _moveDistanze4;
+            set { _moveDistanze4 = value; RaisePropertyChanged(); }
         }
 
-        public double MoveDistMin
+        public double MoveDistance2
         {
-            get => _moveDistMin;
+            get => _moveDistance2;
             set
             {
-                _moveDistMin = value;
+                _moveDistance2 = value;
                 RaisePropertyChanged();
             }
         }
-        public double MoveDistMinMin
+        public double MoveDistance1
         {
-            get => _moveDistMinMin;
+            get => _moveDistance1;
             set
             {
-                _moveDistMinMin = value;
+                _moveDistance1 = value;
                 RaisePropertyChanged();
             }
         }
@@ -303,12 +330,12 @@ namespace CNCLib.Wpf.Controls
             bool isCtrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
             bool isShift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
             if (isCtrl && isShift)
-                return MoveDistance.MinMinDistance;
+                return MoveDistance.Distance1;
             if (isShift)
-                return MoveDistance.MaxDistance;
+                return MoveDistance.Distance4;
             if (isCtrl)
-                return MoveDistance.MinDistance;
-            return MoveDistance.DefaultDistance;
+                return MoveDistance.Distance2;
+            return MoveDistance.Distance3;
         }
 
         private double GetDist(MoveDistance mode)
@@ -316,11 +343,11 @@ namespace CNCLib.Wpf.Controls
             switch (mode)
             {
                 case MoveDistance.UseDefault: return MoveDist;
-                case MoveDistance.MaxDistance: return MoveDistMax;
-                case MoveDistance.MinDistance: return MoveDistMin;
-                case MoveDistance.MinMinDistance: return MoveDistMinMin;
+                case MoveDistance.Distance4: return MoveDistance4;
+                case MoveDistance.Distance2: return MoveDistance2;
+                case MoveDistance.Distance1: return MoveDistance1;
                 default:
-                case MoveDistance.DefaultDistance: return MoveDistDefault;
+                case MoveDistance.Distance3: return MoveDistance3;
             }
         }
 

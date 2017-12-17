@@ -8,27 +8,60 @@
              d:DesignHeight="300" d:DesignWidth="400">
     <Grid PreviewKeyDown="Grid_PreviewKeyDown" PreviewKeyUp="Grid_PreviewKeyUp">
         <Grid.RowDefinitions>
+            <RowDefinition Height="15"/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition Height="15"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15"/>
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="_dist" Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="_dist_TextChanged" />
-        <Button Grid.Column="0" Grid.Row="1" Content="L" />
-        <UniformGrid Grid.Column="2" Grid.Row="1" Rows="1" Columns="4">
-            <Button Command="{Binding ElementName=MyWindwos, Path=RightMinMinCommand}" Content="{Binding ElementName=MyWindwos, Path=MoveDistMinMin, UpdateSourceTrigger=PropertyChanged }" />
-            <Button Command="{Binding ElementName=MyWindwos, Path=RightMinCommand}" Content="{Binding ElementName=MyWindwos, Path=MoveDistMin, UpdateSourceTrigger=PropertyChanged }" HorizontalAlignment="Left" Width="25"/>
-            <Button Command="{Binding ElementName=MyWindwos, Path=RightDefaultCommand}" Content="{Binding ElementName=MyWindwos, Path=MoveDistDefault, UpdateSourceTrigger=PropertyChanged }" />
-            <Button Command="{Binding ElementName=MyWindwos, Path=RightMaxCommand}" Content="{Binding ElementName=MyWindwos, Path=MoveDistMax, UpdateSourceTrigger=PropertyChanged }" />
+        <TextBox x:Name="_dist" Grid.Column="2" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="_dist_TextChanged" />
+        <UniformGrid Grid.Column="1" Grid.Row="2" Rows="2" Columns="2">
+            <Button Command="{Binding ElementName=MyWindwos, Path=LeftDist2Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance2, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=LeftDist1Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance1, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=LeftDist4Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance4, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=LeftDist3Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance3, UpdateSourceTrigger=PropertyChanged }" />
         </UniformGrid>
-        <Button Grid.Column="1" Grid.Row="0" Content="U"  />
-        <Button Grid.Column="1" Grid.Row="2" Content="D"  />
-        <Button Grid.Column="3" Grid.Row="0" Content="Z-U" />
-        <Button Grid.Column="3" Grid.Row="2" Content="Z-D" />
+        <UniformGrid Grid.Column="3" Grid.Row="2" Rows="2" Columns="2">
+            <Button Command="{Binding ElementName=MyWindwos, Path=RightDist1Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance1, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=RightDist2Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance2, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=RightDist3Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance3, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=RightDist4Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance4, UpdateSourceTrigger=PropertyChanged }" />
+        </UniformGrid>
+        <UniformGrid Grid.Column="2" Grid.Row="1" Rows="2" Columns="2">
+            <Button Command="{Binding ElementName=MyWindwos, Path=UpDist2Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance2, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=UpDist4Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance4, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=UpDist1Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance1, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=UpDist3Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance3, UpdateSourceTrigger=PropertyChanged }" />
+        </UniformGrid>
+        <UniformGrid Grid.Column="2" Grid.Row="3" Rows="2" Columns="2">
+            <Button Command="{Binding ElementName=MyWindwos, Path=DownDist1Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance1, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=DownDist3Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance3, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=DownDist2Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance2, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=DownDist4Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance4, UpdateSourceTrigger=PropertyChanged }" />
+        </UniformGrid>
+        <UniformGrid Grid.Column="4" Grid.Row="1" Rows="2" Columns="2">
+            <Button Command="{Binding ElementName=MyWindwos, Path=ZUpDist2Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance2, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=ZUpDist4Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance4, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=ZUpDist1Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance1, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=ZUpDist3Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance3, UpdateSourceTrigger=PropertyChanged }" />
+        </UniformGrid>
+        <UniformGrid Grid.Column="4" Grid.Row="3" Rows="2" Columns="2">
+            <Button Command="{Binding ElementName=MyWindwos, Path=ZDownDist1Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance1, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=ZDownDist3Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance3, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=ZDownDist2Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance2, UpdateSourceTrigger=PropertyChanged }" />
+            <Button Command="{Binding ElementName=MyWindwos, Path=ZDownDist4Command}" Content="{Binding ElementName=MyWindwos, Path=MoveDistance4, UpdateSourceTrigger=PropertyChanged }" />
+        </UniformGrid>
+        <Label Grid.Column="2" Grid.Row="0" Content="Y+" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Padding="0" />
+        <Label Grid.Column="2" Grid.Row="4" Content="Y-" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Padding="0" />
+        <Label Grid.Column="4" Grid.Row="0" Content="Z+" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Padding="0" />
+        <Label Grid.Column="4" Grid.Row="4" Content="Z-" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Padding="0" />
+        <Label Grid.Column="0" Grid.Row="2" Content="X+" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Padding="0" />
     </Grid>
 </UserControl>
