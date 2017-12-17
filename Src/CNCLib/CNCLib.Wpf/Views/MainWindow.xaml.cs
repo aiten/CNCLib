@@ -20,14 +20,15 @@ using System;
 using System.Windows;
 using Framework.Tools.Dependency;
 using Framework.Wpf.ViewModels;
+using MahApps.Metro.Controls;
 
 namespace CNCLib.Wpf.Views
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window
-	{
+	public partial class MainWindow : MetroWindow
+    {
 		public MainWindow()
 		{
             var vm = Dependency.Resolve<ViewModels.MainWindowViewModel>();
