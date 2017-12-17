@@ -20,7 +20,7 @@
                 <xctk:PropertyGrid DataContext="{Binding Machine}" SelectedObject="{Binding}">
                 </xctk:PropertyGrid>
             </TabItem>
-            <TabItem Header="Commands" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="55">
+            <TabItem Header="Commands">
                 <DockPanel>
                     <Grid DockPanel.Dock="Bottom">
                         <Grid.RowDefinitions>
@@ -59,7 +59,7 @@
                     </DataGrid>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Init-Commands" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="55">
+            <TabItem Header="Init-Commands">
                 <DockPanel>
                     <Grid DockPanel.Dock="Bottom">
                         <Grid.RowDefinitions>

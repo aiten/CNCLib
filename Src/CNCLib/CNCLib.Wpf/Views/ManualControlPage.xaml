@@ -170,7 +170,7 @@
 
             </StackPanel>
             <TabControl  Margin="0,10,0,10">
-                <TabItem Header="Custom" Width="75">
+                <TabItem Header="Custom">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
                             <Button Command="{Binding Custom.Send00Command}" Content="{Binding Custom.Desc00}" Margin="0,0,2,1"/>
@@ -223,7 +223,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Extras" Width="75">
+                <TabItem Header="Extras">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
                             <Button Command="{Binding Tool.SendM03SpindleOnCommand}" Content="Spindel On"/>
@@ -243,7 +243,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Zero shift" Width="75">
+                <TabItem Header="Zero shift">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                             <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0" Visibility="{Binding AxisX.Visibility}">
@@ -281,7 +281,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Work offset" Width="75">
+                <TabItem Header="Work offset">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Select work offset:"/>
@@ -399,7 +399,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Rotate" Width="75">
+                <TabItem Header="Rotate">
                     <StackPanel>
                         <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                             <Button Command="{Binding Rotate.SendG69Command}" Content="G69 - Clear" MinWidth="100" Margin="0,0,5,0" />
@@ -414,7 +414,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="SD" Width="75">
+                <TabItem Header="SD">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
                             <Button Command="{Binding SD.SendM24FileCommand}" Content="M24 - Start"  />
@@ -434,7 +434,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Ref" Width="75">
+                <TabItem Header="Ref">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal">
                             <Button Command="{Binding AxisX.SendRefMoveCommand}" Content="X ref" Visibility="{Binding AxisX.Visibility}" Width="100" Margin="0,0,5,0" />

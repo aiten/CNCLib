@@ -81,7 +81,7 @@
                 </StackPanel>
 
             </TabItem>
-            <TabItem Header="Size" Height="22" VerticalAlignment="Bottom">
+            <TabItem Header="Size">
                 <StackPanel>
                     <GroupBox Header="Auto Scale">
                         <StackPanel>
