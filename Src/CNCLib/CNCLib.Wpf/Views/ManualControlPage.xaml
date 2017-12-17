@@ -10,141 +10,166 @@
     <DockPanel ScrollViewer.VerticalScrollBarVisibility="Auto">
         <StackPanel DockPanel.Dock="Top" Margin="5,5,5,0" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal">
-                <ctrl:MoveUserControl 
-                    Right="{Binding Move.SendRightCommand}" 
-                    Left="{Binding Move.SendLeftCommand}" 
-                    Up="{Binding Move.SendUpCommand}" 
-                    Down="{Binding Move.SendDownCommand}" 
-                    ZUp="{Binding Move.SendZUpCommand}" 
-                    ZDown="{Binding Move.SendZDownCommand}" 
-                    Height="180" Width="200" Margin="20"/>
-                <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0" Visibility="{Binding AxisX.Visibility}">
-                    <Button Command="{Binding AxisX.SendPlus100Command}" Content="X +100" />
-                    <Button Command="{Binding AxisX.SendPlus10Command}" Content="X +10" />
-                    <Button Command="{Binding AxisX.SendPlus1Command}" Content="X +1" />
-                    <Button Command="{Binding AxisX.SendPlus01Command}" Content="X +0.1" />
-                    <Button Command="{Binding AxisX.SendPlus001Command}" Content="X +0.01" />
-                    <Button Command="{Binding AxisX.SendMinus001Command}" Content="X -0.01" />
-                    <Button Command="{Binding AxisX.SendMinus01Command}" Content="X -0.1" />
-                    <Button Command="{Binding AxisX.SendMinus1Command}" Content="X -1" />
-                    <Button Command="{Binding AxisX.SendMinus10Command}" Content="X -10" />
-                    <Button Command="{Binding AxisX.SendMinus100Command}" Content="X -100" />
-                </StackPanel>
-                <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0" Visibility="{Binding AxisY.Visibility}">
-                    <Button Command="{Binding AxisY.SendPlus100Command}" Content="Y +100" />
-                    <Button Command="{Binding AxisY.SendPlus10Command}" Content="Y +10" />
-                    <Button Command="{Binding AxisY.SendPlus1Command}" Content="Y +1" />
-                    <Button Command="{Binding AxisY.SendPlus01Command}" Content="Y +0.1" />
-                    <Button Command="{Binding AxisY.SendPlus001Command}" Content="Y +0.01" />
-                    <Button Command="{Binding AxisY.SendMinus001Command}" Content="Y -0.01" />
-                    <Button Command="{Binding AxisY.SendMinus01Command}" Content="Y -0.1" />
-                    <Button Command="{Binding AxisY.SendMinus1Command}" Content="Y -1" />
-                    <Button Command="{Binding AxisY.SendMinus10Command}" Content="Y -10" />
-                    <Button Command="{Binding AxisY.SendMinus100Command}" Content="Y -100" />
-                </StackPanel>
-                <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0" Visibility="{Binding AxisZ.Visibility}">
-                    <Button Command="{Binding AxisZ.SendPlus100Command}" Content="Z +100" />
-                    <Button Command="{Binding AxisZ.SendPlus10Command}" Content="Z +10" />
-                    <Button Command="{Binding AxisZ.SendPlus1Command}" Content="Z +1" />
-                    <Button Command="{Binding AxisZ.SendPlus01Command}" Content="Z +0.1" />
-                    <Button Command="{Binding AxisZ.SendPlus001Command}" Content="Z +0.01" />
-                    <Button Command="{Binding AxisZ.SendMinus001Command}" Content="Z -0.01" />
-                    <Button Command="{Binding AxisZ.SendMinus01Command}" Content="Z -0.1" />
-                    <Button Command="{Binding AxisZ.SendMinus1Command}" Content="Z -1" />
-                    <Button Command="{Binding AxisZ.SendMinus10Command}" Content="Z -10" />
-                    <Button Command="{Binding AxisZ.SendMinus100Command}" Content="Z -100" />
-                </StackPanel>
-                <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0" Visibility="{Binding AxisA.Visibility}">
-                    <Button Command="{Binding AxisA.SendPlus100Command}" Content="A +100" />
-                    <Button Command="{Binding AxisA.SendPlus10Command}" Content="A +10" />
-                    <Button Command="{Binding AxisA.SendPlus1Command}" Content="A +1" />
-                    <Button Command="{Binding AxisA.SendPlus01Command}" Content="A +0.1" />
-                    <Button Command="{Binding AxisA.SendPlus001Command}" Content="A +0.01" />
-                    <Button Command="{Binding AxisA.SendMinus001Command}" Content="A -0.01" />
-                    <Button Command="{Binding AxisA.SendMinus01Command}" Content="A -0.1" />
-                    <Button Command="{Binding AxisA.SendMinus1Command}" Content="A -1" />
-                    <Button Command="{Binding AxisA.SendMinus10Command}" Content="A -10" />
-                    <Button Command="{Binding AxisA.SendMinus100Command}" Content="A -100" />
-                </StackPanel>
-                <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0" Visibility="{Binding AxisB.Visibility}">
-                    <Button Command="{Binding AxisB.SendPlus100Command}" Content="B +100" />
-                    <Button Command="{Binding AxisB.SendPlus10Command}" Content="B +10" />
-                    <Button Command="{Binding AxisB.SendPlus1Command}" Content="B +1" />
-                    <Button Command="{Binding AxisB.SendPlus01Command}" Content="B +0.1" />
-                    <Button Command="{Binding AxisB.SendPlus001Command}" Content="B +0.01" />
-                    <Button Command="{Binding AxisB.SendMinus001Command}" Content="B -0.01" />
-                    <Button Command="{Binding AxisB.SendMinus01Command}" Content="B -0.1" />
-                    <Button Command="{Binding AxisB.SendMinus1Command}" Content="B -1" />
-                    <Button Command="{Binding AxisB.SendMinus10Command}" Content="B -10" />
-                    <Button Command="{Binding AxisB.SendMinus100Command}" Content="B -100" />
-                </StackPanel>
-                <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0" Visibility="{Binding AxisC.Visibility}">
-                    <Button Command="{Binding AxisC.SendPlus100Command}" Content="C +100" />
-                    <Button Command="{Binding AxisC.SendPlus10Command}" Content="C +10" />
-                    <Button Command="{Binding AxisC.SendPlus1Command}" Content="C +1" />
-                    <Button Command="{Binding AxisC.SendPlus01Command}" Content="C +0.1" />
-                    <Button Command="{Binding AxisC.SendPlus001Command}" Content="C +0.01" />
-                    <Button Command="{Binding AxisC.SendMinus001Command}" Content="C -0.01" />
-                    <Button Command="{Binding AxisC.SendMinus01Command}" Content="C -0.1" />
-                    <Button Command="{Binding AxisC.SendMinus1Command}" Content="C -1" />
-                    <Button Command="{Binding AxisC.SendMinus10Command}" Content="C -10" />
-                    <Button Command="{Binding AxisC.SendMinus100Command}" Content="C -100" />
-                </StackPanel>
-                <StackPanel Orientation="Vertical" Width="120">
-                    <Button Command="{Binding Tool.SendM114Command}" Content="Read positions"/>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Absolut" Width="50" Margin="20,0,0,0"/>
-                        <Label Content="Current" Width="50" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding AxisX.Visibility}">
-                        <Label Content="X:" Width="20" />
-                        <TextBox Text="{Binding AxisX.Pos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  Width="50" VerticalContentAlignment="Center" />
-                        <TextBox Text="{Binding AxisX.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  Width="50" VerticalContentAlignment="Center" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding AxisY.Visibility}" >
-                        <Label Content="Y:" Width="20" />
-                        <TextBox Text="{Binding AxisY.Pos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center" />
-                        <TextBox Text="{Binding AxisY.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding AxisZ.Visibility}">
-                        <Label Content="Z:" Width="20" />
-                        <TextBox Text="{Binding AxisZ.Pos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
-                        <TextBox Text="{Binding AxisZ.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding AxisA.Visibility}">
-                        <Label Content="A:" Width="20" />
-                        <TextBox Text="{Binding AxisA.Pos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
-                        <TextBox Text="{Binding AxisA.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding AxisB.Visibility}">
-                        <Label Content="B:" Width="20" />
-                        <TextBox Text="{Binding AxisB.Pos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
-                        <TextBox Text="{Binding AxisB.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding AxisC.Visibility}">
-                        <Label Content="C:" Width="20" />
-                        <TextBox Text="{Binding AxisC.Pos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
-                        <TextBox Text="{Binding AxisC.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center" />
-                    </StackPanel>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel  Margin="0,0,0,5" Orientation="Horizontal">
-                <Label Content="Command:" Height="26" Width="100" Margin="0,0,5,0"/>
-                <!--<TextBox Text="{Binding DirectCommand, UpdateSourceTrigger=PropertyChanged}" Height="26" Width="241" VerticalContentAlignment="Center" VerticalAlignment="Center">
+                <TabControl>
+                    <TabItem Header="Move XYZ">
+                        <ctrl:MoveUserControl 
+                            Right="{Binding Move.SendRightCommand}" 
+                            Left="{Binding Move.SendLeftCommand}" 
+                            Up="{Binding Move.SendUpCommand}" 
+                            Down="{Binding Move.SendDownCommand}" 
+                            ZUp="{Binding Move.SendZUpCommand}" 
+                            ZDown="{Binding Move.SendZDownCommand}" 
+                            Height="180" Width="200" Margin="20"/>
+                    </TabItem>
+                    <TabItem Header="Move XYZ">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0" Visibility="{Binding AxisX.Visibility}">
+                                <Button Command="{Binding AxisX.SendPlus100Command}" Content="X +100" />
+                                <Button Command="{Binding AxisX.SendPlus10Command}" Content="X +10" />
+                                <Button Command="{Binding AxisX.SendPlus1Command}" Content="X +1" />
+                                <Button Command="{Binding AxisX.SendPlus01Command}" Content="X +0.1" />
+                                <Button Command="{Binding AxisX.SendPlus001Command}" Content="X +0.01" />
+                                <Button Command="{Binding AxisX.SendMinus001Command}" Content="X -0.01" />
+                                <Button Command="{Binding AxisX.SendMinus01Command}" Content="X -0.1" />
+                                <Button Command="{Binding AxisX.SendMinus1Command}" Content="X -1" />
+                                <Button Command="{Binding AxisX.SendMinus10Command}" Content="X -10" />
+                                <Button Command="{Binding AxisX.SendMinus100Command}" Content="X -100" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0" Visibility="{Binding AxisY.Visibility}">
+                                <Button Command="{Binding AxisY.SendPlus100Command}" Content="Y +100" />
+                                <Button Command="{Binding AxisY.SendPlus10Command}" Content="Y +10" />
+                                <Button Command="{Binding AxisY.SendPlus1Command}" Content="Y +1" />
+                                <Button Command="{Binding AxisY.SendPlus01Command}" Content="Y +0.1" />
+                                <Button Command="{Binding AxisY.SendPlus001Command}" Content="Y +0.01" />
+                                <Button Command="{Binding AxisY.SendMinus001Command}" Content="Y -0.01" />
+                                <Button Command="{Binding AxisY.SendMinus01Command}" Content="Y -0.1" />
+                                <Button Command="{Binding AxisY.SendMinus1Command}" Content="Y -1" />
+                                <Button Command="{Binding AxisY.SendMinus10Command}" Content="Y -10" />
+                                <Button Command="{Binding AxisY.SendMinus100Command}" Content="Y -100" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0" Visibility="{Binding AxisZ.Visibility}">
+                                <Button Command="{Binding AxisZ.SendPlus100Command}" Content="Z +100" />
+                                <Button Command="{Binding AxisZ.SendPlus10Command}" Content="Z +10" />
+                                <Button Command="{Binding AxisZ.SendPlus1Command}" Content="Z +1" />
+                                <Button Command="{Binding AxisZ.SendPlus01Command}" Content="Z +0.1" />
+                                <Button Command="{Binding AxisZ.SendPlus001Command}" Content="Z +0.01" />
+                                <Button Command="{Binding AxisZ.SendMinus001Command}" Content="Z -0.01" />
+                                <Button Command="{Binding AxisZ.SendMinus01Command}" Content="Z -0.1" />
+                                <Button Command="{Binding AxisZ.SendMinus1Command}" Content="Z -1" />
+                                <Button Command="{Binding AxisZ.SendMinus10Command}" Content="Z -10" />
+                                <Button Command="{Binding AxisZ.SendMinus100Command}" Content="Z -100" />
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="Move ABC">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0" Visibility="{Binding AxisA.Visibility}">
+                                <Button Command="{Binding AxisA.SendPlus100Command}" Content="A +100" />
+                                <Button Command="{Binding AxisA.SendPlus10Command}" Content="A +10" />
+                                <Button Command="{Binding AxisA.SendPlus1Command}" Content="A +1" />
+                                <Button Command="{Binding AxisA.SendPlus01Command}" Content="A +0.1" />
+                                <Button Command="{Binding AxisA.SendPlus001Command}" Content="A +0.01" />
+                                <Button Command="{Binding AxisA.SendMinus001Command}" Content="A -0.01" />
+                                <Button Command="{Binding AxisA.SendMinus01Command}" Content="A -0.1" />
+                                <Button Command="{Binding AxisA.SendMinus1Command}" Content="A -1" />
+                                <Button Command="{Binding AxisA.SendMinus10Command}" Content="A -10" />
+                                <Button Command="{Binding AxisA.SendMinus100Command}" Content="A -100" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0" Visibility="{Binding AxisB.Visibility}">
+                                <Button Command="{Binding AxisB.SendPlus100Command}" Content="B +100" />
+                                <Button Command="{Binding AxisB.SendPlus10Command}" Content="B +10" />
+                                <Button Command="{Binding AxisB.SendPlus1Command}" Content="B +1" />
+                                <Button Command="{Binding AxisB.SendPlus01Command}" Content="B +0.1" />
+                                <Button Command="{Binding AxisB.SendPlus001Command}" Content="B +0.01" />
+                                <Button Command="{Binding AxisB.SendMinus001Command}" Content="B -0.01" />
+                                <Button Command="{Binding AxisB.SendMinus01Command}" Content="B -0.1" />
+                                <Button Command="{Binding AxisB.SendMinus1Command}" Content="B -1" />
+                                <Button Command="{Binding AxisB.SendMinus10Command}" Content="B -10" />
+                                <Button Command="{Binding AxisB.SendMinus100Command}" Content="B -100" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0" Visibility="{Binding AxisC.Visibility}">
+                                <Button Command="{Binding AxisC.SendPlus100Command}" Content="C +100" />
+                                <Button Command="{Binding AxisC.SendPlus10Command}" Content="C +10" />
+                                <Button Command="{Binding AxisC.SendPlus1Command}" Content="C +1" />
+                                <Button Command="{Binding AxisC.SendPlus01Command}" Content="C +0.1" />
+                                <Button Command="{Binding AxisC.SendPlus001Command}" Content="C +0.01" />
+                                <Button Command="{Binding AxisC.SendMinus001Command}" Content="C -0.01" />
+                                <Button Command="{Binding AxisC.SendMinus01Command}" Content="C -0.1" />
+                                <Button Command="{Binding AxisC.SendMinus1Command}" Content="C -1" />
+                                <Button Command="{Binding AxisC.SendMinus10Command}" Content="C -10" />
+                                <Button Command="{Binding AxisC.SendMinus100Command}" Content="C -100" />
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+                <TabControl  Margin="5,0,5,0">
+                    <TabItem Header="Machine position">
+                        <StackPanel Orientation="Vertical" Margin="0,0,3,0">
+                            <Button Command="{Binding Tool.SendM114Command}" Content="Read positions"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Absolut" Width="50" Margin="20,0,0,0"/>
+                                <Label Content="Current" Width="50" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AxisX.Visibility}">
+                                <Label Content="X:" Width="20" />
+                                <TextBox Text="{Binding AxisX.Pos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  Width="50" VerticalContentAlignment="Center" />
+                                <TextBox Text="{Binding AxisX.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  Width="50" VerticalContentAlignment="Center" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AxisY.Visibility}" >
+                                <Label Content="Y:" Width="20" />
+                                <TextBox Text="{Binding AxisY.Pos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center" />
+                                <TextBox Text="{Binding AxisY.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AxisZ.Visibility}">
+                                <Label Content="Z:" Width="20" />
+                                <TextBox Text="{Binding AxisZ.Pos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
+                                <TextBox Text="{Binding AxisZ.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AxisA.Visibility}">
+                                <Label Content="A:" Width="20" />
+                                <TextBox Text="{Binding AxisA.Pos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
+                                <TextBox Text="{Binding AxisA.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AxisB.Visibility}">
+                                <Label Content="B:" Width="20" />
+                                <TextBox Text="{Binding AxisB.Pos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
+                                <TextBox Text="{Binding AxisB.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AxisC.Visibility}">
+                                <Label Content="C:" Width="20" />
+                                <TextBox Text="{Binding AxisC.Pos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center"  />
+                                <TextBox Text="{Binding AxisC.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right" IsReadOnly="True"  MinWidth="50" VerticalContentAlignment="Center" />
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+                <TabControl>
+                    <TabItem Header="Send Commands">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel  Orientation="Horizontal">
+                                <Label Content="Command:" Width="75"/>
+                                <!--<TextBox Text="{Binding DirectCommand, UpdateSourceTrigger=PropertyChanged}" Height="26" Width="241" VerticalContentAlignment="Center" VerticalAlignment="Center">
                         <TextBox.InputBindings><KeyBinding Command="{Binding Path=SendDirectCommand}" Key="Enter" /></TextBox.InputBindings>
                 </TextBox>-->
-                <ComboBox Text="{Binding DirectCommand.DirectCommand, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding DirectCommand.DirectCommandHistory}" Height="26" Width="200" VerticalContentAlignment="Center" VerticalAlignment="Center" IsEditable="True" Margin="0,0,5,0">
-                    <ComboBox.InputBindings>
-                        <KeyBinding Command="{Binding DirectCommand.SendDirectCommand}" Key="Enter" />
-                    </ComboBox.InputBindings>
-                </ComboBox>
-                <Button Command="{Binding DirectCommand.SendDirectCommand}" Content="Send Command" Height="26" Width="100"/>
-                <Label Content="File" Margin="10,0,0,0"/>
-                <TextBox x:Name="FileName2"  Text="{Binding SD.FileName, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" MinWidth="100" MaxWidth="250" VerticalContentAlignment="Center"   />
-                <Button Content="?" Command="{Binding SD.BrowseForSDFileCommand}"  Width="20" />
-                <Button Command="{Binding SD.SendFileDirectCommand}" Content="Send File" Width="100" Margin="5,0,0,0"/>
+                                <ComboBox Text="{Binding DirectCommand.DirectCommand, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding DirectCommand.DirectCommandHistory}" Height="26" Width="245" VerticalContentAlignment="Center" VerticalAlignment="Center" IsEditable="True" Margin="0,0,5,0">
+                                    <ComboBox.InputBindings>
+                                        <KeyBinding Command="{Binding DirectCommand.SendDirectCommand}" Key="Enter" />
+                                    </ComboBox.InputBindings>
+                                </ComboBox>
+                                <Button Command="{Binding DirectCommand.SendDirectCommand}" Content="Send Command" Height="26" Width="100"/>
+                            </StackPanel>
+                            <StackPanel  Orientation="Horizontal" Margin="0,10,0,0">
+                                <Label Content="File" Width="75" />
+                                <TextBox x:Name="FileName2"  Text="{Binding SD.FileName, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" MinWidth="100" MaxWidth="250" VerticalContentAlignment="Center"   />
+                                <Button Content="?" Command="{Binding SD.BrowseForSDFileCommand}"  Width="20" />
+                                <Button Command="{Binding SD.SendFileDirectCommand}" Content="Send File" Width="100" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+
             </StackPanel>
-            <TabControl  Margin="0,0,0,10">
+            <TabControl  Margin="0,10,0,10">
                 <TabItem Header="Custom" Width="75">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
