@@ -192,8 +192,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.SqlServer.Compact">
       <Version>4.0.8876.1</Version>
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>NativeBinaries</IncludeAssets>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
