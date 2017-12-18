@@ -309,8 +309,10 @@
                                     <Label Content="Z:" Width="20" />
                                     <TextBox Width="80" Text="{Binding WorkOffset.G54Z}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
                                 </StackPanel>
-                                <Button Command="{Binding WorkOffset.GetG54Command}" Content="Get"  />
-                                <Button Command="{Binding WorkOffset.SetG54Command}" Content="Set"  />
+                                <UniformGrid Margin="5,0,0,0" Rows="1" Columns="2">
+                                    <Button Command="{Binding WorkOffset.GetG54Command}" Content="Get"  />
+                                    <Button Command="{Binding WorkOffset.SetG54Command}" Content="Set"  />
+                                </UniformGrid>
                             </StackPanel>
                             <StackPanel>
                                 <Label Content="Offset 2" Width="100" />
@@ -326,8 +328,10 @@
                                     <Label Content="Z:" Width="20" />
                                     <TextBox Width="80" Text="{Binding WorkOffset.G55Z}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
                                 </StackPanel>
-                                <Button Command="{Binding WorkOffset.GetG55Command}" Content="Get"  />
-                                <Button Command="{Binding WorkOffset.SetG55Command}" Content="Set"  />
+                                <UniformGrid Margin="5,0,0,0"  Rows="1" Columns="2">
+                                    <Button Command="{Binding WorkOffset.GetG55Command}" Content="Get"  />
+                                    <Button Command="{Binding WorkOffset.SetG55Command}" Content="Set"  />
+                                </UniformGrid>
                             </StackPanel>
                             <StackPanel>
                                 <Label Content="Offset 3" Width="100" />
@@ -343,8 +347,10 @@
                                     <Label Content="Z:" Width="20" />
                                     <TextBox Width="80" Text="{Binding WorkOffset.G56Z}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
                                 </StackPanel>
-                                <Button Command="{Binding WorkOffset.GetG56Command}" Content="Get"  />
-                                <Button Command="{Binding WorkOffset.SetG56Command}" Content="Set"  />
+                                <UniformGrid Margin="5,0,0,0"  Rows="1" Columns="2">
+                                    <Button Command="{Binding WorkOffset.GetG56Command}" Content="Get"  />
+                                    <Button Command="{Binding WorkOffset.SetG56Command}" Content="Set"  />
+                                </UniformGrid>
                             </StackPanel>
                             <StackPanel>
                                 <Label Content="Offset 4" Width="100" />
@@ -360,8 +366,10 @@
                                     <Label Content="Z:" Width="20" />
                                     <TextBox Width="80" Text="{Binding WorkOffset.G57Z}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
                                 </StackPanel>
-                                <Button Command="{Binding WorkOffset.GetG57Command}" Content="Get" />
-                                <Button Command="{Binding WorkOffset.SetG57Command}" Content="Set" />
+                                <UniformGrid Margin="5,0,0,0" Rows="1" Columns="2">
+                                    <Button Command="{Binding WorkOffset.GetG57Command}" Content="Get" />
+                                    <Button Command="{Binding WorkOffset.SetG57Command}" Content="Set" />
+                                </UniformGrid>
                             </StackPanel>
                             <StackPanel>
                                 <Label Content="Offset 5" Width="100" />
@@ -377,8 +385,10 @@
                                     <Label Content="Z:" Width="20" />
                                     <TextBox Width="80" Text="{Binding WorkOffset.G58Z}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
                                 </StackPanel>
-                                <Button Command="{Binding WorkOffset.GetG58Command}" Content="Get"  />
-                                <Button Command="{Binding WorkOffset.SetG58Command}" Content="Set"  />
+                                <UniformGrid Margin="5,0,0,0" Rows="1" Columns="2">
+                                    <Button Command="{Binding WorkOffset.GetG58Command}" Content="Get"  />
+                                    <Button Command="{Binding WorkOffset.SetG58Command}" Content="Set"  />
+                                </UniformGrid>
                             </StackPanel>
                             <StackPanel>
                                 <Label Content="Offset 6" Width="100" />
@@ -394,8 +404,10 @@
                                     <Label Content="Z:" Width="20" />
                                     <TextBox Width="80" Text="{Binding WorkOffset.G59Z}" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
                                 </StackPanel>
-                                <Button Command="{Binding WorkOffset.GetG59Command}" Content="Get"  />
-                                <Button Command="{Binding WorkOffset.SetG59Command}" Content="Set"  />
+                                <UniformGrid Margin="5,0,0,0" Rows="1" Columns="2">
+                                    <Button Command="{Binding WorkOffset.GetG59Command}" Content="Get"  />
+                                    <Button Command="{Binding WorkOffset.SetG59Command}" Content="Set"  />
+                                </UniformGrid>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
