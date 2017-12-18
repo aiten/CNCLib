@@ -17,12 +17,15 @@
 */
 
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using AutoMapper;
 using CNCLib.GCode.GUI.ViewModels;
 using CNCLib.GCode.GUI.Views;
 using CNCLib.Wpf.ViewModels;
 using Framework.Tools.Dependency;
+using Framework.Wpf.Helpers;
 using Framework.Wpf.View;
 
 namespace CNCLib.Wpf.Views
@@ -32,7 +35,7 @@ namespace CNCLib.Wpf.Views
     /// </summary>
     public partial class PreviewPage : Page
 	{
-		public PreviewPage()
+        public PreviewPage()
 		{
             var vm = Dependency.Resolve<PreviewViewModel>();
             DataContext = vm;
@@ -41,7 +44,9 @@ namespace CNCLib.Wpf.Views
 
             this.DefaulInitForBaseViewModel();
 
-		    Global.Instance.PropertyChanged += (sender, e) =>
+            ToggleSettings();
+
+            Global.Instance.PropertyChanged += (sender, e) =>
 		    {
 		        if (e.PropertyName == nameof(Global.SizeX) || e.PropertyName == nameof(Global.SizeY))
 		        {
@@ -79,5 +84,31 @@ namespace CNCLib.Wpf.Views
 				};
 			}
 		}
+
+	    private bool _isSettingsVisible = true;
+
+	    void ToggleSettings()
+	    {
+	        if (_isSettingsVisible)
+	        {
+	            _settings.Visibility = Visibility.Hidden;
+	            _settings.Width = 0;
+	            _toggle.Content = ">";
+	        }
+	        else
+	        {
+	            _settings.Visibility = Visibility.Visible;
+	            _settings.Width = 100;
+	            _toggle.Content = "<";
+            }
+            _isSettingsVisible = !_isSettingsVisible;
+
+	    }
+	    bool CanToggleSettings()
+	    {
+	        return true;
+	    }
+
+        public ICommand ToggleSettingsCommand => new DelegateCommand(ToggleSettings, CanToggleSettings);
 	}
 }

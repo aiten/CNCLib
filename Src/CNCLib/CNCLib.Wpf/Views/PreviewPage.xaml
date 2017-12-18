@@ -7,6 +7,7 @@
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
+      x:Name="myPreviewPage"
       Title="PreviewPage">
 
     <DockPanel>
@@ -14,42 +15,48 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
                 <Button Content="SendTo" Command="{Binding SendToCommand}" Margin="0,0,5,0"/>
                 <Button Content="Load" Command="{Binding LoadCommand}" Margin="0,0,5,0"/>
-                <StackPanel Orientation="Horizontal">
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Left" >
+            <Button x:Name="_toggle" Content=">" Command="{Binding ElementName=myPreviewPage, Path=ToggleSettingsCommand}" />
+            <StackPanel x:Name="_settings"  Orientation="Vertical" Margin="0,0,0,2">
+                <DockPanel >
+                    <xctk:ColorPicker SelectedColor="{Binding Path=MachineColor}"  Width="40" DockPanel.Dock="Right"/>
                     <Label Content="Machine:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=MachineColor}"  Width="40"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                </DockPanel>
+                <DockPanel>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOnColor}" Width="40" DockPanel.Dock="Right"/>
                     <Label Content="Laser On:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOnColor}" Width="40"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                </DockPanel>
+                <DockPanel>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOffColor}" Width="40" DockPanel.Dock="Right"/>
                     <Label Content="Laser Off:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOffColor}" Width="40"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                </DockPanel>
+                <DockPanel>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutColor}" Width="40" DockPanel.Dock="Right"/>
                     <Label Content="Cut:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=CutColor}" Width="40"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                </DockPanel>
+                <DockPanel>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutDotColor}" Width="40" DockPanel.Dock="Right"/>
                     <Label Content="CutDot:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=CutDotColor}" Width="40"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                </DockPanel>
+                <DockPanel>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutEllipseColor}" Width="40" DockPanel.Dock="Right"/>
                     <Label Content="CutElipse:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=CutEllipseColor}" Width="40"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                </DockPanel>
+                <DockPanel>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutArcColor}" Width="40" DockPanel.Dock="Right"/>
                     <Label Content="CutArc:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=CutArcColor}" Width="40"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                </DockPanel>
+                <DockPanel>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=FastColor}" Width="40" DockPanel.Dock="Right"/>
                     <Label Content="Fast:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=FastColor}" Width="40"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                </DockPanel>
+                <DockPanel>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=HelpLineColor}" Width="40" DockPanel.Dock="Right"/>
                     <Label Content="Help:" />
-                    <xctk:ColorPicker SelectedColor="{Binding Path=HelpLineColor}" Width="40"/>
-                </StackPanel>
+                </DockPanel>
                 <Label Content="Laser size:" />
                 <TextBox Text="{Binding Path=LaserSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" MinWidth="30"/>
                 <Label Content="Cutter:" />
