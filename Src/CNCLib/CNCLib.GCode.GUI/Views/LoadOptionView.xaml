@@ -1,11 +1,12 @@
-﻿<Window x:Class="CNCLib.GCode.GUI.Views.LoadOptionView"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fhlp="clr-namespace:Framework.Wpf.Converters;assembly=Framework.Wpf"
+        xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="CNCLib.GCode.GUI.Views.LoadOptionView"
         mc:Ignorable="d"
-        Title="Load options" Height="585" Width="500">
+        Title="Load options" Height="700" Width="600">
 
     <Window.Resources>
         <fhlp:EnumBooleanConverter x:Key="EnumBooleanConverter" />
@@ -22,14 +23,14 @@
             <Button Command="{Binding DialogCancelCommand}"  Content="Cancel" Width="100"/>
         </StackPanel>
 
-        <TabControl>
-            <TabItem Header="GCode">
+        <TabControl Custom:TabControlHelper.IsUnderlined="True">
+            <TabItem Header="GCode" Custom:ControlsHelper.HeaderFontSize="15">
                 <StackPanel Orientation="Vertical" Margin="10,10,10,10">
                     <GroupBox Header="Settings">
                         <StackPanel Margin="5,5,0,0">
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <Label Content="Name" Width="120"/>
-                                <TextBox Width="200" Text="{Binding LoadOptionsValue.SettingName }" />
+                                <TextBox Width="200" Text="{Binding LoadOptionsValue.SettingName}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <Label Content="Prefefined settings" Width="120"/>
@@ -46,10 +47,10 @@
                     </GroupBox>
                     <GroupBox Header="File import type">
                         <StackPanel Margin="5,5,0,0">
-                            <RadioButton GroupName="LoadTypeGroup" Content="GCode"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=GCode}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
-                            <RadioButton GroupName="LoadTypeGroup" Content="HPGL"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=HPGL}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
-                            <RadioButton GroupName="LoadTypeGroup" Content="Image"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Image}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
-                            <RadioButton GroupName="LoadTypeGroup" Content="Image-Hole"  IsChecked="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=ImageHole}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="LoadTypeGroup" Content="GCode"  IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=GCode, Converter={StaticResource EnumBooleanConverter}}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="LoadTypeGroup" Content="HPGL"  IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=HPGL, Converter={StaticResource EnumBooleanConverter}}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="LoadTypeGroup" Content="Image"  IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=Image, Converter={StaticResource EnumBooleanConverter}}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="LoadTypeGroup" Content="Image-Hole"  IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=ImageHole, Converter={StaticResource EnumBooleanConverter}}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
                             <CheckBox Content="Use Azure" IsChecked="{Binding UseAzure}"  Margin="0,15,0,0"   />
 
 
@@ -59,29 +60,29 @@
                     <GroupBox Header="Output">
                         <StackPanel Margin="5,5,0,0">
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                            <Label Content="Save GCode to" Width="120"/>
-                            <TextBox Text="{Binding LoadOptionsValue.GCodeWriteToFileName}" VerticalContentAlignment="Center" />
-                            <Button Command="{Binding BrowseGCodeFileNameCommand}"  Content="?"/>
-                            <Label Content="filename"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Startup commands" Width="120"/>
-                            <TextBox Text="{Binding LoadOptionsValue.StartupCommands}" VerticalContentAlignment="Center" MinWidth="100"/>
-                            <Label Content="gcode"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Shutdown commands" Width="120"/>
-                            <TextBox Text="{Binding LoadOptionsValue.ShutdownCommands}" VerticalContentAlignment="Center" MinWidth="100"/>
-                            <Label Content="gcode"/>
-                        </StackPanel>
-                        <CheckBox Content="Add line numbers" IsChecked="{Binding LoadOptionsValue.AddLineNumbers}"    Margin="120,5,0,0" />
-                        <CheckBox Content="Substitute G82" IsChecked="{Binding LoadOptionsValue.SubstG82}"    Margin="120,5,0,0"  />
+                                <Label Content="Save GCode to" Width="120"/>
+                                <TextBox Text="{Binding LoadOptionsValue.GCodeWriteToFileName}" VerticalContentAlignment="Center" />
+                                <Button Command="{Binding BrowseGCodeFileNameCommand}"  Content="?"/>
+                                <Label Content="filename"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Startup commands" Width="120"/>
+                                <TextBox Text="{Binding LoadOptionsValue.StartupCommands}" VerticalContentAlignment="Center" MinWidth="100"/>
+                                <Label Content="gcode"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Shutdown commands" Width="120"/>
+                                <TextBox Text="{Binding LoadOptionsValue.ShutdownCommands}" VerticalContentAlignment="Center" MinWidth="100"/>
+                                <Label Content="gcode"/>
+                            </StackPanel>
+                            <CheckBox Content="Add line numbers" IsChecked="{Binding LoadOptionsValue.AddLineNumbers}"    Margin="120,5,0,0" />
+                            <CheckBox Content="Substitute G82" IsChecked="{Binding LoadOptionsValue.SubstG82}"    Margin="120,5,0,0"  />
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
 
             </TabItem>
-            <TabItem Header="Size">
+            <TabItem Header="Size" Custom:ControlsHelper.HeaderFontSize="15">
                 <StackPanel>
                     <GroupBox Header="Auto Scale">
                         <StackPanel>
@@ -139,9 +140,10 @@
                     </GroupBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Engrave/Laser">
+            <TabItem Header="Engrave/Laser" Custom:ControlsHelper.HeaderFontSize="15">
                 <StackPanel>
-                    <GroupBox Header="Laser"> <!-- IsEnabled="{Binding IsChecked, ElementName=_HPGLLaser}"> -->
+                    <GroupBox Header="Laser">
+                        <!-- IsEnabled="{Binding IsChecked, ElementName=_HPGLLaser}"> -->
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Laser first on" Width="120"/>
@@ -170,7 +172,7 @@
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Engrave" IsEnabled="{Binding LoadOptionsValue.PenMoveType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=ZMove}">
+                    <GroupBox Header="Engrave" IsEnabled="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=ZMove, Converter={StaticResource EnumBooleanConverter}}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Z position Up" Width="120"/>
@@ -201,10 +203,10 @@
                     </GroupBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="HPGL">
+            <TabItem Header="HPGL" Custom:ControlsHelper.HeaderFontSize="15">
                 <StackPanel>
-                    <RadioButton x:Name="_HPGLLaser" GroupName="PenMoveTypeGroup" Content="Generate for Laser"  IsChecked="{Binding LoadOptionsValue.PenMoveType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CommandString}"   Margin="10,10,0,0"  />
-                    <RadioButton GroupName="PenMoveTypeGroup" Content="Generate for engrave"  IsChecked="{Binding LoadOptionsValue.PenMoveType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=ZMove}"   Margin="10,10,0,0"  />
+                    <RadioButton x:Name="_HPGLLaser" GroupName="PenMoveTypeGroup" Content="Generate for Laser"  IsChecked="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=CommandString, Converter={StaticResource EnumBooleanConverter}}"   Margin="10,10,0,0"  />
+                    <RadioButton GroupName="PenMoveTypeGroup" Content="Generate for engrave"  IsChecked="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=ZMove, Converter={StaticResource EnumBooleanConverter}}"   Margin="10,10,0,0"  />
                     <GroupBox Header="Smooth" Margin="0,5,0,0">
                         <StackPanel>
                             <CheckBox Content="Smooth"  IsChecked="{Binding LoadOptionsValue.SmoothEnabled}"   Margin="10,10,0,0"  />
@@ -232,7 +234,7 @@
                     </GroupBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Image/Hole">
+            <TabItem Header="Image/Hole" Custom:ControlsHelper.HeaderFontSize="15">
                 <StackPanel>
                     <GroupBox Header="Image">
                         <StackPanel>
@@ -241,9 +243,9 @@
                                 <TextBox Text="{Binding LoadOptionsValue.GrayThreshold}" VerticalContentAlignment="Center" Width="60" />
                                 <Label Content="1..255"/>
                             </StackPanel>
-                            <RadioButton GroupName="DitherFilterGroup" Content="Floyd-Steinberg-Dither"  IsChecked="{Binding LoadOptionsValue.Dither, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=FloydSteinbergDither}"   Margin="120,10,0,0" />
+                            <RadioButton GroupName="DitherFilterGroup" Content="Floyd-Steinberg-Dither"  IsChecked="{Binding LoadOptionsValue.Dither, ConverterParameter=FloydSteinbergDither, Converter={StaticResource EnumBooleanConverter}}"   Margin="120,10,0,0" />
                             <StackPanel Orientation="Horizontal">
-                                <RadioButton GroupName="DitherFilterGroup" Content="Newspaper-Dither"  IsChecked="{Binding LoadOptionsValue.Dither, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=NewspaperDither}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
+                                <RadioButton GroupName="DitherFilterGroup" Content="Newspaper-Dither"  IsChecked="{Binding LoadOptionsValue.Dither, ConverterParameter=NewspaperDither, Converter={StaticResource EnumBooleanConverter}}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
                                 <Label Content="Dot size"  Margin="10,0,0,0"/>
                                 <TextBox Text="{Binding LoadOptionsValue.NewspaperDitherSize}" VerticalContentAlignment="Center" Width="60" />
                                 <Label Content="1,2,3,4,5"/>
@@ -258,7 +260,7 @@
 
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Image hole" IsEnabled="{Binding LoadOptionsValue.LoadType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=ImageHole}">
+                    <GroupBox Header="Image hole" IsEnabled="{Binding LoadOptionsValue.LoadType, ConverterParameter=ImageHole, Converter={StaticResource EnumBooleanConverter}}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="" Width="120"/>
@@ -283,15 +285,15 @@
                             <CheckBox Content="Shift Y"  IsChecked="{Binding LoadOptionsValue.UseYShift}"   Margin="120,5,0,10"  />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,-5">
                                 <Label Content="Hole types" Width="120"/>
-                                <RadioButton GroupName="HoleTypeGroup" Content="Square"  IsChecked="{Binding LoadOptionsValue.HoleType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Square}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                                <RadioButton GroupName="HoleTypeGroup" Content="Square"  IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Square, Converter={StaticResource EnumBooleanConverter}}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
                             </StackPanel>
-                            <RadioButton GroupName="HoleTypeGroup" Content="Circle"  IsChecked="{Binding LoadOptionsValue.HoleType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Circle}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
-                            <RadioButton GroupName="HoleTypeGroup" Content="Hexagon"  IsChecked="{Binding LoadOptionsValue.HoleType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Hexagon}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="HoleTypeGroup" Content="Circle"  IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Circle, Converter={StaticResource EnumBooleanConverter}}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="HoleTypeGroup" Content="Hexagon"  IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Hexagon, Converter={StaticResource EnumBooleanConverter}}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
 
-                            <RadioButton GroupName="HoleTypeGroup" Content="Diamond"  IsChecked="{Binding LoadOptionsValue.HoleType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Diamond}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="HoleTypeGroup" Content="Diamond"  IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Diamond, Converter={StaticResource EnumBooleanConverter}}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
                             <StackPanel Orientation="Horizontal">
-                                <RadioButton GroupName="HoleTypeGroup" Content="Heart"  IsChecked="{Binding LoadOptionsValue.HoleType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Heart}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
-                                <CheckBox Content="Rotate"  IsChecked="{Binding LoadOptionsValue.RotateHeart}"  IsEnabled="{Binding LoadOptionsValue.HoleType, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Heart}"  Margin="30,0,0,0"  />
+                                <RadioButton GroupName="HoleTypeGroup" Content="Heart"  IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Heart, Converter={StaticResource EnumBooleanConverter}}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
+                                <CheckBox Content="Rotate"  IsChecked="{Binding LoadOptionsValue.RotateHeart}"  IsEnabled="{Binding LoadOptionsValue.HoleType, ConverterParameter=Heart, Converter={StaticResource EnumBooleanConverter}}"  Margin="30,0,0,0"  />
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>

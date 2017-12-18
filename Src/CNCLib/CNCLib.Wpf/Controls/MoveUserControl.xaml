@@ -62,6 +62,7 @@
         <Label Grid.Column="2" Grid.Row="4" Content="Y-" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Padding="0" />
         <Label Grid.Column="4" Grid.Row="0" Content="Z+" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Padding="0" />
         <Label Grid.Column="4" Grid.Row="4" Content="Z-" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Padding="0" />
-        <Label Grid.Column="0" Grid.Row="2" Content="X+" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Padding="0" />
+        <Label Grid.Column="0" Grid.Row="2" Content="X-" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Padding="0" />
+        <Label Grid.Column="4" Grid.Row="2" Content="X+" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Padding="0" />
     </Grid>
 </UserControl>
