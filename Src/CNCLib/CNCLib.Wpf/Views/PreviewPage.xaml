@@ -12,14 +12,18 @@
 
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+            <DockPanel Margin="0,0,0,2">
+                <Button x:Name="_toggle" Content=">" Command="{Binding ElementName=myPreviewPage, Path=ToggleSettingsCommand}" />
                 <Button Content="SendTo" Command="{Binding SendToCommand}" Margin="0,0,5,0"/>
                 <Button Content="Load" Command="{Binding LoadCommand}" Margin="0,0,5,0"/>
-            </StackPanel>
+                <Label Content="Zoom:"/>
+                <Button Content="[XY]" Command="{Binding Path=ResetViewCommandXY}" DockPanel.Dock="Right"/>
+                <Button Content="[XZ]" Command="{Binding Path=ResetViewCommandXZ}" DockPanel.Dock="Right"/>
+                <Button Content="[YZ]" Command="{Binding Path=ResetViewCommandYZ}" DockPanel.Dock="Right"/>
+                <Slider Value="{Binding Path=Zoom}" Minimum="0.1" Maximum="25" Margin="5,0,5,0" VerticalAlignment="Center"/>
+            </DockPanel>
         </StackPanel>
-
         <StackPanel DockPanel.Dock="Left" >
-            <Button x:Name="_toggle" Content=">" Command="{Binding ElementName=myPreviewPage, Path=ToggleSettingsCommand}" />
             <StackPanel x:Name="_settings"  Orientation="Vertical" Margin="0,0,0,2">
                 <DockPanel >
                     <xctk:ColorPicker SelectedColor="{Binding Path=MachineColor}"  Width="40" DockPanel.Dock="Right"/>
@@ -69,14 +73,7 @@
                 <Label Content=" : " Padding="0"/>
                 <Label Content="{Binding Path=MouseOverPositionY,ElementName=gcode}"  Padding="0"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Zoom:" Padding="0"/>
-                <Slider Value="{Binding Path=Zoom}" Minimum="0.1" Maximum="25" Width="200"/>
-            </StackPanel>
-            <Button Content="[XY]" Command="{Binding Path=ResetViewCommandXY}" DockPanel.Dock="Right"/>
-            <Button Content="[XZ]" Command="{Binding Path=ResetViewCommandXZ}" DockPanel.Dock="Right"/>
-            <Button Content="[YZ]" Command="{Binding Path=ResetViewCommandYZ}" DockPanel.Dock="Right"/>
-            <Slider Value="{Binding Path=OffsetX}" Minimum="-1000" Maximum="1000" />
+            <Slider Value="{Binding Path=OffsetX}" Minimum="-1000" Maximum="1000" Margin="0,0,15,0"/>
         </DockPanel>
         <Slider Value="{Binding Path=OffsetY}" Minimum="-1000" Maximum="1000" DockPanel.Dock="Right" Orientation="Vertical" IsDirectionReversed="True"/>
         <gctrl:GCodeUserControl x:Name="gcode"
