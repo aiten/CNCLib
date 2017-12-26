@@ -26,6 +26,7 @@ namespace Framework.Tools
         [Flags]
         public enum EXECUTION_STATE : uint
         {
+            ES_NONE = 0,
             ES_CONTINUOUS = 0x80000000,
             ES_SYSTEM_REQUIRED = 0x00000001,
             ES_DISPLAY_REQUIRED = 0x00000002
@@ -42,6 +43,11 @@ namespace Framework.Tools
         public static void AllowIdle()
         {
             SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
+        }
+
+        public static void ResetTimer()
+        {
+            SetThreadExecutionState(EXECUTION_STATE.ES_NONE);
         }
     }
 }

@@ -484,8 +484,10 @@ namespace Framework.Arduino.SerialCommunication
 
 			lock (_pendingCommands)
             {
-				if (_pendingCommands.Count==0)
-					_autoEvent.Set();			// start Async task now!
+                if (_pendingCommands.Count == 0)
+                {
+                    _autoEvent.Set();           // start Async task now!
+                }
 
                 _pendingCommands.Add(c);
             }
@@ -494,7 +496,7 @@ namespace Framework.Arduino.SerialCommunication
 			return c;
 		}
 
-		private  void SendCommand(SerialCommand cmd)
+        private void SendCommand(SerialCommand cmd)
         {
             // SendCommands is called in the async Write thread 
 
@@ -646,7 +648,9 @@ namespace Framework.Arduino.SerialCommunication
 
 		private void Write()
         {
-			// Aync write thread to send commands to the arduino
+            Thread.CurrentThread.Priority = ThreadPriority.AboveNormal;
+
+            // Aync write thread to send commands to the arduino
 
             while (Continue)
             {
@@ -719,12 +723,15 @@ namespace Framework.Arduino.SerialCommunication
 		{
 			int readmaxsize = 256;
 			var buffer = new byte[readmaxsize];
+
 			int readsize = await _serialPort.BaseStream.ReadAsync(buffer, 0, readmaxsize, _serialPortCancellationTokenSource.Token);
 			return _serialPort.Encoding.GetString(buffer, 0, readsize);
 		}
 
         private void Read()
         {
+            Thread.CurrentThread.Priority = ThreadPriority.AboveNormal;
+
             var sb = new StringBuilder();
 
 			while (Continue)
@@ -771,15 +778,7 @@ namespace Framework.Arduino.SerialCommunication
 					cmd = _pendingCommands[0];
 			}
 
-			if (string.IsNullOrEmpty(message))
-			{
-				if (cmd == null)
-				{
-					// timeout and no queue
-					Tools.WinAPIWrapper.AllowIdle();
-				}
-			}
-			else
+			if (string.IsNullOrEmpty(message) == false)
 			{
 				Trace.WriteTrace("Read", message.Replace("\n", @"\n").Replace("\r", @"\r").Replace("\t", @"\t"));
 
@@ -789,7 +788,7 @@ namespace Framework.Arduino.SerialCommunication
 
 				if (cmd != null)
 				{
-					Tools.WinAPIWrapper.KeepAlive();
+					SetSystemKeepAlive();
 
 					string result = cmd.ResultText;
 					if (string.IsNullOrEmpty(result))
@@ -843,15 +842,28 @@ namespace Framework.Arduino.SerialCommunication
 					OnComandQueueChanged(new SerialEventArgs(null, cmd));
 
 					if (isEmpty)
-						OnComandQueueEmpty(new SerialEventArgs(null, cmd));
-				}
+                    {
+                        OnComandQueueEmpty(new SerialEventArgs(null, cmd));
+                        ClearSystemKeepAlive();
+                    }
+                }
 			}
 		}
 
-		#endregion
+        private static void SetSystemKeepAlive()
+        {
+            Tools.WinAPIWrapper.KeepAlive();
+            Tools.WinAPIWrapper.ResetTimer();
+        }
+        private static void ClearSystemKeepAlive()
+        {
+            Tools.WinAPIWrapper.AllowIdle();
+        }
 
-		#region OnEvents
-		protected virtual void OnWaitForSend(SerialEventArgs info)
+        #endregion
+
+        #region OnEvents
+        protected virtual void OnWaitForSend(SerialEventArgs info)
         {
 			if (WaitForSend!=null)
 				Task.Run(() => WaitForSend?.Invoke(this, info));
