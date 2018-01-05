@@ -433,7 +433,8 @@
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
                             <Button Command="{Binding SD.SendM24FileCommand}" Content="M24 - Start"  />
-                            <Button Command="{Binding SD.SendM28FileCommand}" Content="M28 - Copy"  />
+                            <Button Command="{Binding SD.SendM28FileCommand}" Content="M28 - Copy(File)"  />
+                            <Button Command="{Binding SD.SendM28PreViewCommand}" Content="M28 - Copy(Preview)"  />
                             <Button Command="{Binding SD.SendM30FileCommand}" Content="M30 - Del"  />
                             <Button Command="{Binding SD.SendM20FileCommand}" Content="M20 - Dir" />
                         </StackPanel>

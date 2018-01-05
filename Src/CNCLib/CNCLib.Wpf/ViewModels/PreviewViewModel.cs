@@ -52,7 +52,7 @@ namespace CNCLib.Wpf.ViewModels
 		public CommandList Commands
 		{
 			get => _commands;
-		    set { SetProperty(() => _commands == value, () => _commands = value); }
+		    set { SetProperty(() => _commands == value, () => _commands = value); Global.Instance.Commands = value; }
 		}
 
 		private decimal _offsetX = 0;

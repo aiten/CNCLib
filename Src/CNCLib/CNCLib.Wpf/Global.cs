@@ -18,6 +18,7 @@
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using CNCLib.GCode.Commands;
 using CNCLib.Wpf.Models;
 using Framework.Tools.Pattern;
 
@@ -55,6 +56,9 @@ namespace CNCLib.Wpf
 
         private bool _resetOnConnect = false;
         public bool ResetOnConnect { get => _resetOnConnect; set { _resetOnConnect = value; RaisePropertyChanged(); } }
+
+	    private CommandList _commands = new CommandList();
+	    public CommandList Commands { get => _commands; set { _commands = value; RaisePropertyChanged(); }}
 
         public event PropertyChangedEventHandler PropertyChanged;
 

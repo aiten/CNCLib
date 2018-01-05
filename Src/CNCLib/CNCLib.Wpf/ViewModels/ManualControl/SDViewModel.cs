@@ -21,6 +21,7 @@ using System.Windows.Input;
 using Framework.Wpf.Helpers;
 using System.IO;
 using System;
+using System.Linq;
 using CNCLib.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
@@ -66,40 +67,53 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			RunInNewTask(() =>
 			{
+			    var lines = new List<string>();
 				using (var sr = new StreamReader(filename))
 				{
-					bool savefileinresponse = false;
-					var checkresponse = new Framework.Arduino.SerialCommunication.CommandEventHandler((obj, e) =>
-					{
-						savefileinresponse = e.Info.Contains(sDFileName);
-					});
-
-                    Com.ReplyUnknown += checkresponse;
-					Com.SendCommand(MachineGCodeHelper.PrepareCommand("m28 " + sDFileName));
-					Com.ReplyUnknown -= checkresponse;
-					if (savefileinresponse)
-					{
-						string line;
-                        var lines = new List<string>();
-                        while ((line = sr.ReadLine()) != null)
-                        {
-                            lines.Add(MachineGCodeHelper.PrepareCommand(line));
-                        }
-                        Com.SendCommandsAsync(lines.ToArray()).GetAwaiter().GetResult();
-	
-						bool filesavednresponse = false;
-						checkresponse = (obj, e) =>
-						{
-						    filesavednresponse = e.Info.Contains("Done");
-						};
-						Com.ReplyUnknown += checkresponse;
-						Com.SendCommand(MachineGCodeHelper.PrepareCommand("m29"));
-						Com.ReplyUnknown -= checkresponse;
-					}
+				    string line;
+				    while ((line = sr.ReadLine()) != null)
+				    {
+				        lines.Add(MachineGCodeHelper.PrepareCommand(line));
+				    }
 				}
+			    SendM28(sDFileName, lines.ToArray());
 			});
 		}
-		public void SendM30File() { SendM30File(SDFileName); }
+	    public void SendM28PreView() { SendM28PreView(SDFileName); }
+
+	    public void SendM28PreView(string sDFileName)
+	    {
+	        RunInNewTask(() =>
+	        {
+	            var lines = Global.Instance.Commands.ToStringList();
+	            SendM28(sDFileName, lines.ToArray());
+	        });
+	    }
+
+        private void SendM28(string sDFileName, string[] lines)
+	    {
+	        bool savefileinresponse = false;
+	        var checkresponse = new Framework.Arduino.SerialCommunication.CommandEventHandler((obj, e) =>
+	        {
+	            savefileinresponse = e.Info.Contains(sDFileName);
+	        });
+
+	        Com.ReplyUnknown += checkresponse;
+	        Com.SendCommand(MachineGCodeHelper.PrepareCommand("m28 " + sDFileName));
+	        Com.ReplyUnknown -= checkresponse;
+	        if (savefileinresponse)
+	        {
+	            Com.SendCommandsAsync(lines).GetAwaiter().GetResult();
+
+	            bool filesavednresponse = false;
+	            checkresponse = (obj, e) => { filesavednresponse = e.Info.Contains("Done"); };
+	            Com.ReplyUnknown += checkresponse;
+	            Com.SendCommand(MachineGCodeHelper.PrepareCommand("m29"));
+	            Com.ReplyUnknown -= checkresponse;
+	        }
+	    }
+
+	    public void SendM30File() { SendM30File(SDFileName); }
 		public void SendM30File(string filename)
 		{
 			RunAndUpdate(() =>
@@ -159,6 +173,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ICommand SendM20FileCommand => new DelegateCommand(SendM20File, CanSendSDCommand);
 		public ICommand SendM24FileCommand => new DelegateCommand(SendM24File, CanSendSDFileNameCommand);
 		public ICommand SendM28FileCommand => new DelegateCommand(SendM28File, CanSendFileNameAndSDFileNameCommand);
+	    public ICommand SendM28PreViewCommand => new DelegateCommand(SendM28PreView, CanSendSDFileNameCommand);
 		public ICommand SendM30FileCommand => new DelegateCommand(SendM30File, CanSendSDFileNameCommand);
 		public ICommand SendFileDirectCommand => new DelegateCommand(SendFileDirect, CanSendFileNameCommand);
 		public ICommand AddToFileCommand => new DelegateCommand(AddToFile, () => CanSendGCode() && CanSendFileNameCommand());
