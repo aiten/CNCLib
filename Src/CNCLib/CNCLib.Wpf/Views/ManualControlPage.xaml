@@ -5,9 +5,11 @@
         xmlns:ctrl="clr-namespace:CNCLib.Wpf.Controls"
         xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="CNCLib.Wpf.Views.ManualControlPage"
         Title="ManualControlPage" Width="830" MinHeight="550">
-    <Page.DataContext>
+<!--
+<Page.DataContext>
         <vm:ManualControlViewModel />
     </Page.DataContext>
+-->    
     <DockPanel ScrollViewer.VerticalScrollBarVisibility="Auto">
         <StackPanel DockPanel.Dock="Top" Margin="5,5,5,0" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal">
