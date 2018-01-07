@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -87,7 +88,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             set {
                     SetProperty(() => _selectedloadOptions == value, () => _selectedloadOptions = value);
                     if (value != null && _allSettingsLoaded)
-                        LoadOptionsValue = value;
+                        LoadOptionsValue = _mapper.Map<LoadOptions>(value);
                 }
         }
 
@@ -130,6 +131,25 @@ namespace CNCLib.GCode.GUI.ViewModels
         {
             return Busy == false;
         }
+        public bool CanSave()
+        {
+            List<String> ignorelist = new List<string>(); 
+            if (LoadOptionsValue.AutoScale)
+            {
+                ignorelist.AddRange(new string[] {
+                    "ScaleX",
+                    "ScaleY",
+                    "OffsetX",
+                    "OffsetY"
+                });
+            }
+
+            if (Can() && SelectedLoadOption != null && !Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(SelectedLoadOption, LoadOptionsValue, ignorelist.ToArray()))
+            {
+                return true;
+            }
+            return false;
+        }
 
         void BrowseFileName()
         {
@@ -171,8 +191,9 @@ namespace CNCLib.GCode.GUI.ViewModels
             try
             {
                 Busy = true;
-                var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+                var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(LoadOptionsValue);
                 await _loadOptionsService.Update(opt);
+                await LoadAllSettings(LoadOptionsValue.Id);
             }
             catch (Exception ex)
             {
@@ -258,7 +279,7 @@ namespace CNCLib.GCode.GUI.ViewModels
         }
         void ExportSettings()
         {
-            string filename = BrowseFileNameFunc?.Invoke(SelectedLoadOption.SettingName + @".xml", true);
+            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.SettingName + @".xml", true);
             if (filename != null)
             {
                 var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
@@ -295,7 +316,7 @@ namespace CNCLib.GCode.GUI.ViewModels
         public ICommand SetSameOfsCommand => new DelegateCommand(() => { LoadOptionsValue.OfsY = LoadOptionsValue.OfsX; RaiseLoadOptionsChanged(); }, Can);
         public ICommand SetSameDotSizeCommand => new DelegateCommand(() => { LoadOptionsValue.DotSizeY = LoadOptionsValue.DotSizeX; RaiseLoadOptionsChanged(); }, Can);
         public ICommand SetSameDotDistCommand => new DelegateCommand(() => { LoadOptionsValue.DotDistY = LoadOptionsValue.DotDistX; RaiseLoadOptionsChanged(); }, Can);
-        public ICommand SaveSettingCommand => new DelegateCommand(async () => await SaveSettings(), () => Can() && SelectedLoadOption != null)
+        public ICommand SaveSettingCommand => new DelegateCommand(async () => await SaveSettings(), CanSave)
             .ObservesProperty(() => Busy);
         public ICommand SaveAsSettingCommand => new DelegateCommand(async () => await SaveAsSettings(), () => Can() && !string.IsNullOrEmpty(LoadOptionsValue.SettingName))
             .ObservesProperty(() => Busy);
