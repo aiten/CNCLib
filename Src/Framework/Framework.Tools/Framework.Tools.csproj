@@ -1,24 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-  <Import Project="$(ProjectDir)..\Framework.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <Import Project="$(ProjectDir)..\FrameworkStandard.targets" />
    <PropertyGroup>
-	<TargetFramework>net47</TargetFramework>
-  </PropertyGroup>
+	<TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>  
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-25914-04" />
+    <PackageReference Include="Unity">
+      <Version>5.5.4</Version>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Unity" Version="5.5.4" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Clipper\" />
-  </ItemGroup>
+
+  
 </Project>
