@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.3" />
     <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.3" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="Unity" Version="5.3.2" />
+    <PackageReference Include="Unity" Version="5.5.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Framework.Tools\Framework.Tools.csproj">

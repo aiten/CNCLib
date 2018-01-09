@@ -16,7 +16,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Unity" Version="5.3.2" />
+    <PackageReference Include="Unity" Version="5.5.4" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Clipper\" />
