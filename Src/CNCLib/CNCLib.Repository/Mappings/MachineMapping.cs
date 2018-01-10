@@ -17,35 +17,38 @@
 */
 
 using CNCLib.Repository.Contracts.Entities;
-using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CNCLib.Repository.Mappings
 {
-	public class MachineMapping : EntityTypeConfiguration<Machine>
+	public static class MachineMapping
     {
-		public MachineMapping()
+        public static void Map(this EntityTypeBuilder<Machine> entity)
         {
-            HasKey(m => m.MachineID);
+            entity.ToTable("Machine");
 
-            Property(m => m.Name).
+            entity.HasKey(m => m.MachineID);
+
+            entity.Property(m => m.Name).
                 IsRequired().
                 HasMaxLength(64);
 
-            Property(m => m.ComPort).
+            entity.Property(m => m.ComPort).
                 IsRequired().
                 HasMaxLength(32);
 
-            Property(m => m.Axis).IsRequired();
+            entity.Property(m => m.Axis).IsRequired();
 
-            Property(m => m.SizeX).IsRequired();
-            Property(m => m.SizeY).IsRequired();
-            Property(m => m.SizeZ).IsRequired();
+            entity.Property(m => m.SizeX).IsRequired();
+            entity.Property(m => m.SizeY).IsRequired();
+            entity.Property(m => m.SizeZ).IsRequired();
 
-            Property(m => m.CommandSyntax).
+            entity.Property(m => m.CommandSyntax).
                 IsRequired();
 
-            Property(m => m.UserID).
-                IsOptional();
+            entity.Property(m => m.UserID);
+//                IsOptional();
 
         }
     }

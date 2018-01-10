@@ -1,25 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <Import Project="$(ProjectDir)..\CNCLib.targets" />
    <PropertyGroup>
-	<TargetFramework>net47</TargetFramework>
+	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
+   <ItemGroup>
+     <PackageReference Include="EntityFrameworkCore.SqlServerCompact40" Version="2.0.1.1" />
+     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.1" />
+     <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1" />
+   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.EF\Framework.EF.csproj">   </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj">    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.2.0" />
   </ItemGroup>
 </Project>

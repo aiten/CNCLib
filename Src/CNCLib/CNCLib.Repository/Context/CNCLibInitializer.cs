@@ -16,10 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository.Context
 {
+/*
 	public class CNCLibInitializer : MigrateDatabaseToLatestVersion<CNCLibContext, Migrations.Configuration>
 	{
 		public override void InitializeDatabase(CNCLibContext context)
@@ -35,4 +36,5 @@ namespace CNCLib.Repository.Context
 			}
 		}
 	}
+*/
 }

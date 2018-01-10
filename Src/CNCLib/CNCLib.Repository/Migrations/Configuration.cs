@@ -18,8 +18,7 @@
 
 namespace CNCLib.Repository.Migrations
 {
-    using System.Data.Entity.Migrations;
-
+/*
     public sealed class Configuration : DbMigrationsConfiguration<Context.CNCLibContext>
     {
         public Configuration()
@@ -45,4 +44,5 @@ namespace CNCLib.Repository.Migrations
             //
         }
     }
+*/
 }

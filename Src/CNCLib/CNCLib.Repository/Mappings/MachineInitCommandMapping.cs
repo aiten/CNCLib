@@ -17,17 +17,20 @@
 */
 
 using CNCLib.Repository.Contracts.Entities;
-using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CNCLib.Repository.Mappings
 {
-	public class MachineInitCommandMapping : EntityTypeConfiguration<MachineInitCommand>
+    public static class MachineItemMapping
     {
-		public MachineInitCommandMapping()
+        public static void Map(this EntityTypeBuilder<MachineInitCommand> entity)
         {
-            HasKey(mc => mc.MachineInitCommandID);
+            entity.ToTable("MachineInitCommand");
 
-            Property(m => m.CommandString).
+            entity.HasKey(mc => mc.MachineInitCommandID);
+
+            entity.Property(m => m.CommandString).
                 IsRequired().
                 HasMaxLength(64);
         }

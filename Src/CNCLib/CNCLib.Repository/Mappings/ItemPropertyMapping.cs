@@ -17,17 +17,20 @@
 */
 
 using CNCLib.Repository.Contracts.Entities;
-using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CNCLib.Repository.Mappings
 {
-	public class ItemPropertyMapping : EntityTypeConfiguration<ItemProperty>
+	public static class ItemPropertyMapping
     {
-        public ItemPropertyMapping()
+        public static void Map(this EntityTypeBuilder<ItemProperty> entity)
         {
-            HasKey(m => new { m.ItemID, m.Name });
+            entity.ToTable("ItemProperty");
 
-            Property(m => m.Name).
+            entity.HasKey(m => new { m.ItemID, m.Name });
+
+            entity.Property(m => m.Name).
                 IsRequired().
                 HasMaxLength(255);
         }

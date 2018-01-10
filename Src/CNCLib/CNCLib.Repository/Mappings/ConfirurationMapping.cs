@@ -17,33 +17,36 @@
 */
 
 using CNCLib.Repository.Contracts.Entities;
-using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CNCLib.Repository.Mappings
 {
-	public class ConfigurationMapping : EntityTypeConfiguration<Configuration>
+	public static class ConfigurationMapping
     {
-        public ConfigurationMapping()
+        public static void Map(this EntityTypeBuilder<Configuration> entity)
         {
-            HasKey(m => new { m.Group, m.Name });
+            entity.ToTable("Configuration");
 
-            Property(m => m.Group).
+            entity.HasKey(m => new { m.Group, m.Name });
+
+            entity.Property(m => m.Group).
                 IsRequired().
                 HasMaxLength(256);
 
-            Property(m => m.Name).
+            entity.Property(m => m.Name).
                 IsRequired().
                 HasMaxLength(256);
 
-            Property(m => m.Type).
+            entity.Property(m => m.Type).
                 IsRequired().
                 HasMaxLength(256);
 
-            Property(m => m.Value).
+            entity.Property(m => m.Value).
                 HasMaxLength(4000);
 
-            Property(m => m.UserID).
-                IsOptional();
+//            entity.Property(m => m.UserID).
+//                IsOptional();
         }
     }
 }

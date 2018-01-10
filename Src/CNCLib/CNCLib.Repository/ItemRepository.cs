@@ -18,7 +18,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using CNCLib.Repository.Contracts;
 using System.Threading.Tasks;
 using Framework.Tools.Pattern;

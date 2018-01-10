@@ -17,31 +17,28 @@
 */
 
 using CNCLib.Repository.Contracts.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Infrastructure.Annotations;
-using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CNCLib.Repository.Mappings
 {
-	public class UserMapping : EntityTypeConfiguration<User>
+    public static class UserMapping
     {
-        public UserMapping()
+        public static void Map(this EntityTypeBuilder<User> entity)
         {
+            entity.ToTable("User");
 
-            HasKey(m => m.UserID);
+            entity.HasKey(m => m.UserID);
 
-            Property(e => e.UserName)
-                    .HasColumnAnnotation(
-                        IndexAnnotation.AnnotationName,
-                        new IndexAnnotation(new IndexAttribute("IDX_UniqueUserName") { IsUnique = true }));
+            entity.HasAlternateKey(e => e.UserName);
+//    new IndexAnnotation(new IndexAttribute("IDX_UniqueUserName") { IsUnique = true }));
 
-            Property(m => m.UserName).
+            entity.Property(m => m.UserName).
                 IsRequired().
                 IsUnicode().
                 HasMaxLength(128);
 
-            Property(m => m.UserPassword).
-                IsOptional().
+            entity.Property(m => m.UserPassword).
                 HasMaxLength(255);
         }
     }

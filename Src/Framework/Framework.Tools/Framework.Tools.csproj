@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-  <Import Project="$(ProjectDir)..\FrameworkStandard.targets" />
+  <Import Project="$(ProjectDir)..\Framework.targets" />
    <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>  

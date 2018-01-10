@@ -1,10 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-  <Import Project="$(ProjectDir)..\FrameworkStandard.targets" />
+  <Import Project="$(ProjectDir)..\Framework.targets" />
    <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>  
   <ItemGroup>
-    <PackageReference Include="Unity" Version="5.5.4" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.3" />
+    <PackageReference Include="Unity">
+      <Version>5.5.4</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Framework.Tools\Framework.Tools.csproj">

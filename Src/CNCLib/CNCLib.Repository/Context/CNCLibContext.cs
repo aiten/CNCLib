@@ -18,23 +18,16 @@
 
 using CNCLib.Repository.Contracts.Entities;
 using CNCLib.Repository.Mappings;
-using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
+using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository.Context
 {
 	public class CNCLibContext : DbContext
     {
-        public CNCLibContext()
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            Configure();
+            optionsBuilder.UseSqlCe(@"Data Source=C:\Users\Herbert\CNCLib.sdf");
         }
-
-        public CNCLibContext(string connectionString):base(connectionString)
-        {
-            Configure();    
-        }
-
         public DbSet<User> Users { get; set; }
         public DbSet<Machine> Machines { get; set; }
 		public DbSet<MachineCommand> MachineCommands { get; set; }
@@ -43,47 +36,38 @@ namespace CNCLib.Repository.Context
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemProperty> ItemProperties { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Machine -------------------------------------
             // MachineCommand -------------------------------------
             // MachineInitCommand -------------------------------------
 
-            modelBuilder.Configurations.Add(new MachineMapping());
-            modelBuilder.Configurations.Add(new MachineCommandMapping());
-            modelBuilder.Configurations.Add(new MachineInitCommandMapping());
+            modelBuilder.Entity<Machine>().Map();
+            modelBuilder.Entity<MachineCommand>().Map();
+            modelBuilder.Entity<MachineInitCommand>().Map();
 
             // Configuration -------------------------------------
 
-            modelBuilder.Configurations.Add(new ConfigurationMapping());
+            modelBuilder.Entity<Configuration>().Map();
 
             // Item -------------------------------------
             // ItemProperty -------------------------------------
 
-            modelBuilder.Configurations.Add(new ItemMapping());
-            modelBuilder.Configurations.Add(new ItemPropertyMapping());
+            modelBuilder.Entity<Item>().Map();
+            modelBuilder.Entity<ItemProperty>().Map();
 
             // User -------------------------------------
 
-            modelBuilder.Configurations.Add(new UserMapping());
+            modelBuilder.Entity<User>().Map();
 
             // -------------------------------------
 
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            //modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             // -------------------------------------
 
             base.OnModelCreating(modelBuilder);
 
-        }
-
-        private void Configure()
-        {
-            Database.SetInitializer<CNCLibContext>(new CNCLibInitializer());
-			Configuration.LazyLoadingEnabled = false;
-            Configuration.ProxyCreationEnabled = false;
-            Configuration.AutoDetectChangesEnabled = true;
-            Configuration.ValidateOnSaveEnabled = true; 
         }
     }
 }

@@ -17,35 +17,32 @@
 */
 
 using CNCLib.Repository.Contracts.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Infrastructure.Annotations;
-using System.Data.Entity.ModelConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CNCLib.Repository.Mappings
 {
-	public class ItemMapping : EntityTypeConfiguration<Item>
+	public static class ItemMapping
     {
-        public ItemMapping()
+        public static void Map(this EntityTypeBuilder<Item> entity)
         {
+            entity.ToTable("Item");
 
-            HasKey(m => m.ItemID);
+            entity.HasKey(m => m.ItemID);
 
-            Property(e => e.Name)
-                    .HasColumnAnnotation(
-                        IndexAnnotation.AnnotationName,
-                        new IndexAnnotation(new IndexAttribute("IDX_UniqueName") { IsUnique = true }));
+            entity.
+                HasAlternateKey(c => c.Name );
+ //                        new IndexAnnotation(new IndexAttribute("IDX_UniqueName") { IsUnique = true }));
 
-            Property(m => m.Name).
+            entity.Property(m => m.Name).
                 IsRequired().
                 HasMaxLength(64);
 
-            Property(m => m.ClassName).
+            entity.Property(m => m.ClassName).
                 IsRequired().
                 HasMaxLength(255);
 
-            Property(m => m.UserID).
-                IsOptional();
-
+            entity.Property(m => m.UserID);
         }
     }
 }

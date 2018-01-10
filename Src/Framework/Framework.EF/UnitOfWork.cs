@@ -16,14 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools.Pattern;
 using System;
-using System.Data.Entity;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Framework.Tools.Pattern;
 
 namespace Framework.EF
 {
-	public class UnitOfWork<T> : IUnitOfWork where T : DbContext, new()
+    public class UnitOfWork<T> : IUnitOfWork where T : DbContext, new()
 	{
 		private T _context;
 
@@ -65,7 +66,7 @@ namespace Framework.EF
 
 		public async Task<int> ExecuteSqlCommand(string sql)
 		{
-			return await Context.Database.ExecuteSqlCommandAsync(sql);
+		    return await Context.Database.ExecuteSqlCommandAsync(sql);
 		}
 
 		public async Task<int> ExecuteSqlCommand(string sql, params object[] parameters)
@@ -101,7 +102,7 @@ namespace Framework.EF
 
 		#region Transaction
 
-		private DbContextTransaction _dbTran;
+		private IDbContextTransaction _dbTran;
 
 		public bool InTransaction => _dbTran != null;
 
@@ -130,7 +131,8 @@ namespace Framework.EF
 
 		public void InitializeDatabase()
 		{
-			Context.Database.Initialize(true);        
+            throw new NotImplementedException();
+			//Context.Database.Initialize(true);        
 		}
 	}
 }
