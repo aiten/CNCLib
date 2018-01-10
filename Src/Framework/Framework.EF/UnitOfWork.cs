@@ -131,7 +131,7 @@ namespace Framework.EF
 
 		public void InitializeDatabase()
 		{
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
 			//Context.Database.Initialize(true);        
 		}
 	}

@@ -28,6 +28,7 @@ using CNCLib.Repository.Context;
 using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
+using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Wpf.Sql.Start
 {
@@ -41,7 +42,12 @@ namespace CNCLib.Wpf.Sql.Start
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
                 XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            Dependency.Initialize(new LiveDependencyProvider());
+		    Repository.Context.CNCLibContext.OnConfigure = (optionsBuilder) =>
+		    {
+		        optionsBuilder.UseSqlServer(@"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True");
+            };
+
+		    Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
                 typeof(ServiceProxy.Logic.MachineService).Assembly,

@@ -26,6 +26,7 @@ using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
+using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Tests.Repository
 {
@@ -51,12 +52,15 @@ namespace CNCLib.Tests.Repository
                     sdfdir = System.IO.Path.GetTempPath();
                 }
 
-                AppDomain.CurrentDomain.SetData("DataDirectory", sdfdir);
+			    CNCLib.Repository.Context.CNCLibContext.OnConfigure = (optionsBuilder) =>
+			    {
+			        optionsBuilder.UseSqlCe($@"Data Source={sdfdir}\CNCLibTest.sdf");
+			    };
 
                 using (var uow = new UnitOfWork<CNCLibContext>())
 				{
                     CNCLibContext x = uow.Context; // ref to get loaded
-					Microsoft.EntityFrameworkCore.Database.SetInitializer<CNCLibContext>(new CNCLibInitializerTest());
+//					Microsoft.EntityFrameworkCore.Database.SetInitializer<CNCLibContext>(new CNCLibInitializerTest());
 					uow.InitializeDatabase();
                     Item o = uow.Context.Items.FirstOrDefault(i => i.ItemID == 0);
                     // force init

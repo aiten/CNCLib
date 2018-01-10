@@ -29,6 +29,7 @@ using CNCLib.Repository.Context;
 using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
+using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Wpf.Start
 {
@@ -53,7 +54,13 @@ namespace CNCLib.Wpf.Start
 				File.Move(tmpsdf, upfsdf);
 			}
 
-			Dependency.Initialize(new LiveDependencyProvider());
+		    Repository.Context.CNCLibContext.OnConfigure = (optionsBuilder) =>
+		    {
+		        optionsBuilder.UseSqlCe($@"Data Source={upfsdf}");
+		    };
+	    
+
+            Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
 				typeof(ServiceProxy.Logic.MachineService).Assembly,

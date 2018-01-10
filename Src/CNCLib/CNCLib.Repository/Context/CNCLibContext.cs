@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using CNCLib.Repository.Contracts.Entities;
 using CNCLib.Repository.Mappings;
 using Microsoft.EntityFrameworkCore;
@@ -23,10 +24,12 @@ using Microsoft.EntityFrameworkCore;
 namespace CNCLib.Repository.Context
 {
 	public class CNCLibContext : DbContext
-    {
+	{
+	    public static Action<DbContextOptionsBuilder> OnConfigure;
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlCe(@"Data Source=C:\Users\Herbert\CNCLib.sdf");
+            OnConfigure?.Invoke(optionsBuilder);
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Machine> Machines { get; set; }
