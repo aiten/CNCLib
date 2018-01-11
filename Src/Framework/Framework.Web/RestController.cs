@@ -41,7 +41,7 @@ namespace Framework.Web
 
         // GET api/values/5
         //[ResponseType(T)]
-        [HttpGet("{Id}")]
+        [HttpGet("{id:int}")]
 		public async Task<IActionResult> Get(int id)
 		{
 			T m = await Controller.Get(id);
@@ -74,8 +74,8 @@ namespace Framework.Web
 
         // PUT api/values/5
         //[ResponseType(typeof(void))]
-        [HttpPut]
-		public async Task<IActionResult> Put(int id, [FromBody]T value)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Put(int id, [FromBody]T value)
 		{
 			if (!ModelState.IsValid || value == null)
 			{
@@ -100,8 +100,8 @@ namespace Framework.Web
 
         // DELETE api/values/5
         //[ResponseType(typeof(T))]
-        [HttpDelete]
-		public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
 		{
 			T value = await Controller.Get(id);
 			if (value == null)
