@@ -19,72 +19,56 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Framework.Web;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
+using Framework.Web;
 
 namespace CNCLib.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    public class ItemController : RestController<Item>
+    public class LoadOptionsController : RestController<LoadOptions>
 	{
-        public ItemController(IRest<Item> controller, IItemService service) : base(controller)
+        public LoadOptionsController(IRest<LoadOptions> controller) : base(controller)
+        {
+        }
+    }
+
+	public class LoadInfoRest : IRest<LoadOptions>
+	{
+        public LoadInfoRest(ILoadOptionsService service)
         {
             _service = service ?? throw new ArgumentNullException();
         }
 
-        readonly IItemService _service;
+		readonly ILoadOptionsService _service;
 
-	    [HttpGet("{classname}")]
-        public async Task<IActionResult> Get(string classname)
-		{
-			IEnumerable<Item> m = await _service.GetByClassName(classname);
-			if (m == null)
-			{
-				return NotFound();
-			}
-			return Ok(m);
-		}
-	}
-
-	public class ItemRest : IRest<Item>
-	{
-        public ItemRest(IItemService service)
-        {
-            _service = service ?? throw new ArgumentNullException();
-        }
-
-        readonly IItemService _service;
-
-		public async Task<IEnumerable<Item>> Get()
+		public async Task<IEnumerable<LoadOptions>> Get()
 		{
 			return await _service.GetAll();
 		}
 
-		public async Task<Item> Get(int id)
+		public async Task<LoadOptions> Get(int id)
 		{
 			return await _service.Get(id);
 		}
 
-		public async Task<int> Add(Item value)
+		public async Task<int> Add(LoadOptions value)
 		{
 			return await _service.Add(value);
 		}
 
-		public async Task Update(int id, Item value)
+		public async Task Update(int id, LoadOptions value)
 		{
 			await _service.Update(value);
 		}
 
-		public async Task Delete(int id, Item value)
+		public async Task Delete(int id, LoadOptions value)
 		{
 			await _service.Delete(value);
 		}
 
-		public bool CompareId(int id, Item value)
+		public bool CompareId(int id, LoadOptions value)
 		{
-			return id == value.ItemID;
+			return true;
 		}
 
 		#region IDisposable Support

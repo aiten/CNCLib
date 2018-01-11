@@ -19,14 +19,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Framework.Web;
+using System.Web.Http;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
+using Framework.Web;
 
 namespace CNCLib.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
     public class ItemController : RestController<Item>
 	{
         public ItemController(IRest<Item> controller, IItemService service) : base(controller)
@@ -36,8 +35,7 @@ namespace CNCLib.WebAPI.Controllers
 
         readonly IItemService _service;
 
-	    [HttpGet("{classname}")]
-        public async Task<IActionResult> Get(string classname)
+        public async Task<IHttpActionResult> Get(string classname)
 		{
 			IEnumerable<Item> m = await _service.GetByClassName(classname);
 			if (m == null)

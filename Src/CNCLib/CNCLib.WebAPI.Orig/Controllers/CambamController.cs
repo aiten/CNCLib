@@ -19,16 +19,15 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Web.Http;
 using System.Xml.Serialization;
-using Microsoft.AspNetCore.Mvc;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
 using CNCLib.WebAPI.Models;
 
 namespace CNCLib.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    public class CambamController : Controller
+    public class CambamController : ApiController
 	{
         public CambamController(ILoadOptionsService loadOptionsService)
         {
@@ -37,7 +36,7 @@ namespace CNCLib.WebAPI.Controllers
 
         readonly ILoadOptionsService _loadOptionsService;
 
-	    [HttpPost]
+        //		[ActionName("")]
         public string Post([FromBody] LoadOptions input)
 		{
 			var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input);
@@ -46,7 +45,7 @@ namespace CNCLib.WebAPI.Controllers
 			return sw.ToString();
 		}
 
-	    [HttpPut]
+		//		[ActionName("CreateGCode")]
 		public async Task<string> Put([FromBody] CreateGCode input)
 		{
 			LoadOptions opt = await _loadOptionsService.Get(input.LoadOptionsId);

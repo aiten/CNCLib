@@ -22,9 +22,11 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
 using Framework.Web;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CNCLib.WebAPI.Controllers
 {
+    [Route("api/[controller]")]
     public class LoadOptionsController : RestController<LoadOptions>
 	{
         public LoadOptionsController(IRest<LoadOptions> controller) : base(controller)

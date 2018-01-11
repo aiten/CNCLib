@@ -1,31 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Logic", "CNCLib.Logic\CNCLib.Logic.csproj", "{36B9838B-493F-4BAC-A8D3-35298C4FFDC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic", "CNCLib.Logic\CNCLib.Logic.csproj", "{36B9838B-493F-4BAC-A8D3-35298C4FFDC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Logic", "..\Framework\Framework.Logic\Framework.Logic.csproj", "{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Logic", "..\Framework\Framework.Logic\Framework.Logic.csproj", "{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Tools", "..\Framework\Framework.Tools\Framework.Tools.csproj", "{580E882D-3267-43F2-8A73-6737CAC731C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Tools", "..\Framework\Framework.Tools\Framework.Tools.csproj", "{580E882D-3267-43F2-8A73-6737CAC731C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Wpf", "..\Framework\Framework.Wpf\Framework.Wpf.csproj", "{8568383E-054D-4882-8D6A-B956684CFAAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Wpf", "..\Framework\Framework.Wpf\Framework.Wpf.csproj", "{8568383E-054D-4882-8D6A-B956684CFAAE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Wpf", "CNCLib.Wpf\CNCLib.Wpf.csproj", "{60555245-D32E-4A94-AB0E-CB2A6693A9BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.GCode", "CNCLib.GCode\CNCLib.GCode.csproj", "{F9C446F4-6365-4189-95C5-009EF0160882}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.GCode", "CNCLib.GCode\CNCLib.GCode.csproj", "{F9C446F4-6365-4189-95C5-009EF0160882}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.GCode.GUI", "CNCLib.GCode.GUI\CNCLib.GCode.GUI.csproj", "{55108499-FAC2-4F19-B88E-9E240CCCBD60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Repository", "CNCLib.Repository\CNCLib.Repository.csproj", "{D689CD99-A022-4F38-8AE1-A269C82A729C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository", "CNCLib.Repository\CNCLib.Repository.csproj", "{D689CD99-A022-4F38-8AE1-A269C82A729C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Tests", "CNCLib.Tests\CNCLib.Tests.csproj", "{E73BAF77-EAF6-41F0-BF6A-FF6F5BC71062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.EF", "..\Framework\Framework.EF\Framework.EF.csproj", "{E768F2ED-C63D-401E-A090-1C0465A84DF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.EF", "..\Framework\Framework.EF\Framework.EF.csproj", "{E768F2ED-C63D-401E-A090-1C0465A84DF5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Wpf.Start", "CNCLib.Wpf.Start\CNCLib.Wpf.Start.csproj", "{D6077813-9EAF-4807-B4AA-EF00BCCE9827}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Arduino", "..\Framework\Framework.Arduino\Framework.Arduino.csproj", "{77F5A48D-E908-4A95-A09E-771E8BE8817B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino", "..\Framework\Framework.Arduino\Framework.Arduino.csproj", "{77F5A48D-E908-4A95-A09E-771E8BE8817B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0942B8A6-0C1A-47A0-B67F-C98979BA830C}"
 	ProjectSection(SolutionItems) = preProject
@@ -36,13 +36,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\Framework\FrameworkSolutionInfoVersion.cs = ..\Framework\FrameworkSolutionInfoVersion.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Repository.Contracts", "CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj", "{0ECC8284-505B-43CC-9DF9-AC5D5EEF786A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.Contracts", "CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj", "{0ECC8284-505B-43CC-9DF9-AC5D5EEF786A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Logic.Contracts", "CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj", "{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Contracts", "CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj", "{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Test", "..\Framework\Framework.Test\Framework.Test.csproj", "{BBECB408-5426-4CE7-B7B6-970BDE436486}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.WebAPI", "CNCLib.WebAPI\CNCLib.WebAPI.csproj", "{DA845EDE-FADC-455C-AEF7-D1844B258784}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.WebAPI", "CNCLib.WebAPI\CNCLib.WebAPI.csproj", "{DA845EDE-FADC-455C-AEF7-D1844B258784}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.WebAPI.Tests", "CNCLib.WebAPI.Tests\CNCLib.WebAPI.Tests.csproj", "{6D3326B2-794C-48FD-B351-483D721BD0F9}"
 EndProject
@@ -59,23 +59,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 		PublishScripts\Templates\CNCLibWeb.param.dev.json = PublishScripts\Templates\CNCLibWeb.param.dev.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Web", "..\Framework\Framework.Web\Framework.Web.csproj", "{2E4BAA13-7562-4336-91A4-B8211816D936}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Web", "..\Framework\Framework.Web\Framework.Web.csproj", "{2E4BAA13-7562-4336-91A4-B8211816D936}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Logic.Contracts", "..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj", "{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Logic.Contracts", "..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj", "{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Logic.Contracts.DTO", "CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Contracts.DTO", "CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.ServiceProxy", "CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj", "{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.ServiceProxy", "CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj", "{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.ServiceProxy.Logic", "CNCLib.ServiceProxy.Logic\CNCLib.ServiceProxy.Logic.csproj", "{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.ServiceProxy.Logic", "CNCLib.ServiceProxy.Logic\CNCLib.ServiceProxy.Logic.csproj", "{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.ServiceProxy.WebAPI", "CNCLib.ServiceProxy.WebAPI\CNCLib.ServiceProxy.WebAPI.csproj", "{6487301A-6889-412C-92EC-899AAD61A9A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.ServiceProxy.WebAPI", "CNCLib.ServiceProxy.WebAPI\CNCLib.ServiceProxy.WebAPI.csproj", "{6487301A-6889-412C-92EC-899AAD61A9A5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Wpf.Sql.Start", "CNCLib.Wpf.Sql.Start\CNCLib.Wpf.Sql.Start.csproj", "{E8405B39-EDAD-40C7-BF32-79553A130E34}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Wpf.WebAPI.Start", "CNCLib.Wpf.WebAPI.Start\CNCLib.Wpf.WebAPI.Start.csproj", "{6D85A506-EEE3-4C6D-9316-AB3A10CBE76F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Logic.Client", "CNCLib.Logic.Client\CNCLib.Logic.Client.csproj", "{D7277BF7-35E8-47C7-8E4A-448E2224F559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Client", "CNCLib.Logic.Client\CNCLib.Logic.Client.csproj", "{D7277BF7-35E8-47C7-8E4A-448E2224F559}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{96217F41-39D9-4FCF-AACF-7EAEB4E4479C}"
 EndProject
@@ -117,10 +117,6 @@ Global
 		{D689CD99-A022-4F38-8AE1-A269C82A729C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D689CD99-A022-4F38-8AE1-A269C82A729C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D689CD99-A022-4F38-8AE1-A269C82A729C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E73BAF77-EAF6-41F0-BF6A-FF6F5BC71062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E73BAF77-EAF6-41F0-BF6A-FF6F5BC71062}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E73BAF77-EAF6-41F0-BF6A-FF6F5BC71062}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E73BAF77-EAF6-41F0-BF6A-FF6F5BC71062}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E768F2ED-C63D-401E-A090-1C0465A84DF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E768F2ED-C63D-401E-A090-1C0465A84DF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E768F2ED-C63D-401E-A090-1C0465A84DF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -149,10 +145,6 @@ Global
 		{DA845EDE-FADC-455C-AEF7-D1844B258784}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA845EDE-FADC-455C-AEF7-D1844B258784}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA845EDE-FADC-455C-AEF7-D1844B258784}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D3326B2-794C-48FD-B351-483D721BD0F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E4BAA13-7562-4336-91A4-B8211816D936}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E4BAA13-7562-4336-91A4-B8211816D936}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E4BAA13-7562-4336-91A4-B8211816D936}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -200,9 +192,10 @@ Global
 		{E768F2ED-C63D-401E-A090-1C0465A84DF5} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
 		{77F5A48D-E908-4A95-A09E-771E8BE8817B} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
 		{BBECB408-5426-4CE7-B7B6-970BDE436486} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
-		{A7A23498-5B70-4D17-A723-0CE3E0FB2096} = {CEB14D54-F5E6-4001-BDB3-4FBA632A7778}
-		{6FD6A784-F8DD-4B9A-B91C-4D1E767F0B65} = {CEB14D54-F5E6-4001-BDB3-4FBA632A7778}
 		{2E4BAA13-7562-4336-91A4-B8211816D936} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
 		{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {149E2CA7-C574-4FFF-8699-9678D9AFC1FA}
 	EndGlobalSection
 EndGlobal

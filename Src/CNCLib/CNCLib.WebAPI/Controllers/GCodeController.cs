@@ -19,14 +19,15 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
 using CNCLib.WebAPI.Models;
 
 namespace CNCLib.WebAPI.Controllers
 {
-    public class GCodeController : ApiController
+    [Route("api/[controller]")]
+    public class GCodeController : Controller
 	{
         public GCodeController(ILoadOptionsService loadOptionsService)
         {
@@ -35,13 +36,13 @@ namespace CNCLib.WebAPI.Controllers
 
         readonly ILoadOptionsService _loadOptionsService;
 
-        //		[ActionName("")]
+	    [HttpPost]
         public IEnumerable<string> Post([FromBody] LoadOptions input)
 		{
 			return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input).Commands.ToStringList();
 		}
 
-//		[ActionName("CreateGCode")]
+	    [HttpPut]
 		public async Task<IEnumerable<string>> Put([FromBody] CreateGCode input)
 		{
 			LoadOptions opt = await _loadOptionsService.Get(input.LoadOptionsId);

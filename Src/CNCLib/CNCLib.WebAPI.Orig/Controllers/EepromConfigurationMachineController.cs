@@ -18,14 +18,13 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using System.Web.Http;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
 
 namespace CNCLib.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    public class EepromConfigurationController : Controller
+    public class EepromConfigurationController : ApiController
     {
         public EepromConfigurationController(IEepromConfigurationService eepromConfigurationService)
         {
@@ -34,8 +33,7 @@ namespace CNCLib.WebAPI.Controllers
 
         readonly IEepromConfigurationService _eepromConfigurationService;
 
-        [HttpGet]
-        public async Task<IActionResult> Get(ushort teeth, double toothsizeInMm, ushort microsteps, ushort stepsPerRotation, double estimatedRotationSpeed, double timeToAcc, double timeToDec)
+        public async Task<IHttpActionResult> Get(ushort teeth, double toothsizeInMm, ushort microsteps, ushort stepsPerRotation, double estimatedRotationSpeed, double timeToAcc, double timeToDec)
         {
             // http://localhost:2024/api/EepromConfiguration?teeth=15&toothsizeInMm=2.0&microsteps=16&stepsPerRotation=200&estimatedRotationSpeed=7.8&timeToAcc=0.2&timeToDec=0.15
             var input = new EepromConfigurationInput

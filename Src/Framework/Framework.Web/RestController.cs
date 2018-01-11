@@ -20,12 +20,11 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Framework.Web
 {
-    public abstract class RestController<T> : ApiController
+    public abstract class RestController<T> : Controller
     {
         protected RestController(IRest<T> controller)
         {
@@ -34,14 +33,16 @@ namespace Framework.Web
 
         public IRest<T> Controller { get; }
 
+        [HttpGet]
         public async Task<IEnumerable<T>> Get()
 		{
 			return await Controller.Get();
 		}
 
-		// GET api/values/5
-		//[ResponseType(T)]
-		public async Task<IHttpActionResult> Get(int id)
+        // GET api/values/5
+        //[ResponseType(T)]
+        [HttpGet("{Id}")]
+		public async Task<IActionResult> Get(int id)
 		{
 			T m = await Controller.Get(id);
 			if (m == null)
@@ -51,9 +52,10 @@ namespace Framework.Web
 			return Ok(m);
 		}
 
-		// POST api/values == Create
-		//[ResponseType(typeof(T))]
-		public async Task<IHttpActionResult> Post([FromBody]T value)
+        // POST api/values == Create
+        //[ResponseType(typeof(T))]
+        [HttpPost]
+		public async Task<IActionResult> Post([FromBody]T value)
 		{
 			if (!ModelState.IsValid || value == null)
 			{
@@ -70,9 +72,10 @@ namespace Framework.Web
 			}
 		}
 
-		// PUT api/values/5
-		[ResponseType(typeof(void))]
-		public async Task<IHttpActionResult> Put(int id, [FromBody]T value)
+        // PUT api/values/5
+        //[ResponseType(typeof(void))]
+        [HttpPut]
+		public async Task<IActionResult> Put(int id, [FromBody]T value)
 		{
 			if (!ModelState.IsValid || value == null)
 			{
@@ -87,7 +90,7 @@ namespace Framework.Web
 				}
 
 				await Controller.Update(id, value);
-				return StatusCode(HttpStatusCode.NoContent);
+				return StatusCode(204);
 			}
 			catch (Exception ex)
 			{
@@ -95,9 +98,10 @@ namespace Framework.Web
 			}
 		}
 
-		// DELETE api/values/5
-		//[ResponseType(typeof(T))]
-		public async Task<IHttpActionResult> Delete(int id)
+        // DELETE api/values/5
+        //[ResponseType(typeof(T))]
+        [HttpDelete]
+		public async Task<IActionResult> Delete(int id)
 		{
 			T value = await Controller.Get(id);
 			if (value == null)

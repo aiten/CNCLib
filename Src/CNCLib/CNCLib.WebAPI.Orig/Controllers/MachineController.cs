@@ -18,73 +18,106 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Framework.Web;
+using System.Web.Http;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
+using Framework.Web;
 
 namespace CNCLib.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    public class ItemController : RestController<Item>
+    public class MachineController : RestController<Machine>
 	{
-        public ItemController(IRest<Item> controller, IItemService service) : base(controller)
+        public MachineController(IRest<Machine> controller, IMachineService machineservice) : base(controller)
         {
-            _service = service ?? throw new ArgumentNullException();
+            _machineservice = machineservice ?? throw new ArgumentNullException();
         }
 
-        readonly IItemService _service;
+        readonly IMachineService _machineservice;
 
-	    [HttpGet("{classname}")]
-        public async Task<IActionResult> Get(string classname)
+        [Route("api/Machine/default")]
+		[HttpGet] //Always explicitly state the accepted HTTP method
+		public async Task<IHttpActionResult> DefaultMachine()
 		{
-			IEnumerable<Item> m = await _service.GetByClassName(classname);
+			var m = await _machineservice.DefaultMachine();
 			if (m == null)
 			{
 				return NotFound();
 			}
 			return Ok(m);
 		}
+
+		[Route("api/Machine/defaultmachine")]
+		[HttpGet] //Always explicitly state the accepted HTTP method
+		public async Task<IHttpActionResult> GetDetaultMachine()
+		{
+			int id = await _machineservice.GetDetaultMachine();
+			return Ok(id);
+		}
+
+		[Route("api/Machine/defaultmachine")]
+		[HttpPut] //Always explicitly state the accepted HTTP method
+		public async Task<IHttpActionResult> SetDetaultMachine(int id)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			try
+			{
+				await _machineservice.SetDetaultMachine(id);
+				return StatusCode(HttpStatusCode.NoContent);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+
 	}
 
-	public class ItemRest : IRest<Item>
+	public class MachineRest : IRest<Machine>
 	{
-        public ItemRest(IItemService service)
+        public MachineRest(IMachineService service)
         {
             _service = service ?? throw new ArgumentNullException();
         }
 
-        readonly IItemService _service;
+		readonly IMachineService _service;
 
-		public async Task<IEnumerable<Item>> Get()
+		public async Task<IEnumerable<Machine>> Get()
 		{
 			return await _service.GetAll();
 		}
 
-		public async Task<Item> Get(int id)
+		public async Task<Machine> Get(int id)
 		{
+			if (id == -1)
+				return await _service.DefaultMachine();
+
 			return await _service.Get(id);
 		}
 
-		public async Task<int> Add(Item value)
+		public async Task<int> Add(Machine value)
 		{
 			return await _service.Add(value);
 		}
 
-		public async Task Update(int id, Item value)
+		public async Task Update(int id, Machine value)
 		{
 			await _service.Update(value);
 		}
 
-		public async Task Delete(int id, Item value)
+		public async Task Delete(int id, Machine value)
 		{
 			await _service.Delete(value);
 		}
 
-		public bool CompareId(int id, Item value)
+		public bool CompareId(int id, Machine value)
 		{
-			return id == value.ItemID;
+			return id == value.MachineID;
 		}
 
 		#region IDisposable Support

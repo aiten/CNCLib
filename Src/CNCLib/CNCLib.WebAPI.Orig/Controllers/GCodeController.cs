@@ -17,43 +17,35 @@
 */
 
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
-using Microsoft.AspNetCore.Mvc;
+using System.Web.Http;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
 using CNCLib.WebAPI.Models;
 
 namespace CNCLib.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    public class CambamController : Controller
+    public class GCodeController : ApiController
 	{
-        public CambamController(ILoadOptionsService loadOptionsService)
+        public GCodeController(ILoadOptionsService loadOptionsService)
         {
             _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
         }
 
         readonly ILoadOptionsService _loadOptionsService;
 
-	    [HttpPost]
-        public string Post([FromBody] LoadOptions input)
+        //		[ActionName("")]
+        public IEnumerable<string> Post([FromBody] LoadOptions input)
 		{
-			var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input);
-			var sw = new StringWriter();
-			new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
-			return sw.ToString();
+			return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input).Commands.ToStringList();
 		}
 
-	    [HttpPut]
-		public async Task<string> Put([FromBody] CreateGCode input)
+//		[ActionName("CreateGCode")]
+		public async Task<IEnumerable<string>> Put([FromBody] CreateGCode input)
 		{
 			LoadOptions opt = await _loadOptionsService.Get(input.LoadOptionsId);
-			var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt);
-			var sw = new StringWriter();
-			new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
-			return sw.ToString();
+			return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt).Commands.ToStringList();
 		}
 	}
 }

@@ -20,13 +20,14 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web.Http;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
 using Framework.Web;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CNCLib.WebAPI.Controllers
 {
+    [Route("api/[controller]")]
     public class MachineController : RestController<Machine>
 	{
         public MachineController(IRest<Machine> controller, IMachineService machineservice) : base(controller)
@@ -37,8 +38,8 @@ namespace CNCLib.WebAPI.Controllers
         readonly IMachineService _machineservice;
 
         [Route("api/Machine/default")]
-		[HttpGet] //Always explicitly state the accepted HTTP method
-		public async Task<IHttpActionResult> DefaultMachine()
+		[HttpGet]
+		public async Task<IActionResult> DefaultMachine()
 		{
 			var m = await _machineservice.DefaultMachine();
 			if (m == null)
@@ -48,17 +49,17 @@ namespace CNCLib.WebAPI.Controllers
 			return Ok(m);
 		}
 
-		[Route("api/Machine/defaultmachine")]
-		[HttpGet] //Always explicitly state the accepted HTTP method
-		public async Task<IHttpActionResult> GetDetaultMachine()
+		[Microsoft.AspNetCore.Mvc.Route("api/Machine/defaultmachine")]
+		[Microsoft.AspNetCore.Mvc.HttpGet] //Always explicitly state the accepted HTTP method
+		public async Task<IActionResult> GetDetaultMachine()
 		{
 			int id = await _machineservice.GetDetaultMachine();
 			return Ok(id);
 		}
 
-		[Route("api/Machine/defaultmachine")]
-		[HttpPut] //Always explicitly state the accepted HTTP method
-		public async Task<IHttpActionResult> SetDetaultMachine(int id)
+		[Microsoft.AspNetCore.Mvc.Route("api/Machine/defaultmachine")]
+		[Microsoft.AspNetCore.Mvc.HttpPut] //Always explicitly state the accepted HTTP method
+		public async Task<IActionResult> SetDetaultMachine(int id)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -68,7 +69,7 @@ namespace CNCLib.WebAPI.Controllers
 			try
 			{
 				await _machineservice.SetDetaultMachine(id);
-				return StatusCode(HttpStatusCode.NoContent);
+				return StatusCode(204);
 			}
 			catch (Exception ex)
 			{
