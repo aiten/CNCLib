@@ -12,13 +12,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.1" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.106" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CNCLib.Repository\CNCLib.Repository.csproj" />
+    <ProjectReference Include="..\CNCLib.Repository.SqLite\CNCLib.Repository.SqlLite.csproj" />
+    <ProjectReference Include="..\CNCLib.Repository.SqlServer\CNCLib.Repository.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>

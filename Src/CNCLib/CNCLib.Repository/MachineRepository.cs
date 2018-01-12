@@ -91,8 +91,12 @@ namespace CNCLib.Repository
 				// add new
 
 				Uow.MarkNew(machine);
+                foreach (var mc in machineCommands)
+			        Uow.MarkNew(mc);
+			    foreach (var mic in machineInitCommands)
+			        Uow.MarkNew(mic);
 			}
-			else
+            else
 			{
 				// syn with existing
 

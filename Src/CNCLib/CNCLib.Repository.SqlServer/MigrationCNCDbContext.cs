@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -16,29 +16,21 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Repository.Contracts.Entities;
+using CNCLib.Repository.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CNCLib.Repository.Mappings
-{
-    public static class UserMapping
+namespace CNCLib.Repository.SqlServer {
+    public class MigrationCNCLibContext : CNCLibContext
     {
-        public static void Map(this EntityTypeBuilder<User> entity)
+        static MigrationCNCLibContext()
         {
-            entity.ToTable("User");
-
-            entity.HasKey(m => m.UserID);
-
-            entity.HasIndex(e => e.UserName).IsUnique();
-
-            entity.Property(m => m.UserName).
-                IsRequired().
-                IsUnicode().
-                HasMaxLength(128);
-
-            entity.Property(m => m.UserPassword).
-                HasMaxLength(255);
+            CNCLibContext.OnConfigure = (optionsBuilder) =>
+            {
+                optionsBuilder.UseSqlServer(@"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True");
+                //optionsBuilder.UseSqlite($"Data Source={System.IO.Path.GetTempPath()}\\CNCLib.db");
+            };
         }
     }
 }
+
+

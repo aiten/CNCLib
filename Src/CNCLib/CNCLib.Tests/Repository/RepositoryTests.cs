@@ -42,26 +42,26 @@ namespace CNCLib.Tests.Repository
 			if (_init == false)
 			{
                 //drop and recreate the test Db everytime the tests are run. 
-                string sdfdir = testContext.TestDeploymentDir;
-                string sdfroot = System.IO.Path.GetPathRoot(sdfdir);
-                var driveinfo = new System.IO.DriveInfo(sdfroot);
+                string dbdir = testContext.TestDeploymentDir;
+                string pathRoot = System.IO.Path.GetPathRoot(dbdir);
+                var driveinfo = new System.IO.DriveInfo(pathRoot);
 
                 if (driveinfo.DriveType == System.IO.DriveType.Network)
                 {
-                    // a sdf file doesn't work on network-drive 
-                    sdfdir = System.IO.Path.GetTempPath();
+                    // a db file doesn't work on network-drive 
+                    dbdir = System.IO.Path.GetTempPath();
                 }
 
 			    CNCLib.Repository.Context.CNCLibContext.OnConfigure = (optionsBuilder) =>
 			    {
-			        optionsBuilder.UseSqlCe($@"Data Source={sdfdir}\CNCLibTest.sdf");
+			        optionsBuilder.UseSqlite($@"Data Source={dbdir}\CNCLibTest.db");
 			    };
 
                 using (var uow = new UnitOfWork<CNCLibContext>())
 				{
                     CNCLibContext x = uow.Context; // ref to get loaded
 //					Microsoft.EntityFrameworkCore.Database.SetInitializer<CNCLibContext>(new CNCLibInitializerTest());
-					uow.InitializeDatabase();
+//					uow.InitializeDatabase();
                     Item o = uow.Context.Items.FirstOrDefault(i => i.ItemID == 0);
                     // force init
                 }

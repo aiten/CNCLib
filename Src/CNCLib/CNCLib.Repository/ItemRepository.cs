@@ -79,8 +79,11 @@ namespace CNCLib.Repository
 			{
                 // add new
 				Uow.MarkNew(item);
-			}
-			else
+			    foreach (var iv in optValues)
+			        Uow.MarkNew(iv);
+
+            }
+            else
 			{
                 // syn with existing
 

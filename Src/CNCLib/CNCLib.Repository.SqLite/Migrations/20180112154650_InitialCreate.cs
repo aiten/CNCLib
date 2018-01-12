@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace CNCLib.Repository.Migrate.Migrations
+namespace CNCLib.Repository.SqlLite.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -14,14 +13,13 @@ namespace CNCLib.Repository.Migrate.Migrations
                 columns: table => new
                 {
                     UserID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     UserName = table.Column<string>(maxLength: 128, nullable: false),
                     UserPassword = table.Column<string>(maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.UserID);
-                    table.UniqueConstraint("AK_User_UserName", x => x.UserName);
                 });
 
             migrationBuilder.CreateTable(
@@ -50,7 +48,7 @@ namespace CNCLib.Repository.Migrate.Migrations
                 columns: table => new
                 {
                     ItemID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     ClassName = table.Column<string>(maxLength: 255, nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     UserID = table.Column<int>(nullable: true)
@@ -58,7 +56,6 @@ namespace CNCLib.Repository.Migrate.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Item", x => x.ItemID);
-                    table.UniqueConstraint("AK_Item_Name", x => x.Name);
                     table.ForeignKey(
                         name: "FK_Item_User_UserID",
                         column: x => x.UserID,
@@ -72,7 +69,7 @@ namespace CNCLib.Repository.Migrate.Migrations
                 columns: table => new
                 {
                     MachineID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Axis = table.Column<int>(nullable: false),
                     BaudRate = table.Column<int>(nullable: false),
                     BufferSize = table.Column<int>(nullable: false),
@@ -135,7 +132,7 @@ namespace CNCLib.Repository.Migrate.Migrations
                 columns: table => new
                 {
                     MachineCommandID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     CommandName = table.Column<string>(maxLength: 64, nullable: false),
                     CommandString = table.Column<string>(maxLength: 64, nullable: false),
                     JoystickMessage = table.Column<string>(maxLength: 64, nullable: true),
@@ -159,7 +156,7 @@ namespace CNCLib.Repository.Migrate.Migrations
                 columns: table => new
                 {
                     MachineInitCommandID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     CommandString = table.Column<string>(maxLength: 64, nullable: false),
                     MachineID = table.Column<int>(nullable: false),
                     SeqNo = table.Column<int>(nullable: false)
@@ -181,6 +178,12 @@ namespace CNCLib.Repository.Migrate.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Item_Name",
+                table: "Item",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Item_UserID",
                 table: "Item",
                 column: "UserID");
@@ -199,6 +202,12 @@ namespace CNCLib.Repository.Migrate.Migrations
                 name: "IX_MachineInitCommand_MachineID",
                 table: "MachineInitCommand",
                 column: "MachineID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_UserName",
+                table: "User",
+                column: "UserName",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

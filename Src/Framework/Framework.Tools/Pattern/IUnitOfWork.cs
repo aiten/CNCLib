@@ -40,9 +40,5 @@ namespace Framework.Tools.Pattern
 		void BeginTransaction();
 		void CommitTransaction();
 		void RollbackTransaction();
-
-		// Global
-
-		void InitializeDatabase();
     }
 }

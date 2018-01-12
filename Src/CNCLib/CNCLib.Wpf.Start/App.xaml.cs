@@ -19,6 +19,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Markup;
 using AutoMapper;
@@ -26,6 +27,8 @@ using CNCLib.GCode.GUI;
 using CNCLib.Logic;
 using CNCLib.Logic.Contracts;
 using CNCLib.Repository.Context;
+using CNCLib.Repository.Contracts;
+using CNCLib.ServiceProxy;
 using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
@@ -46,14 +49,16 @@ namespace CNCLib.Wpf.Start
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
                 XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-			string sqliteDBFile = userprofilepath + @"\CNCLib.db";
+			CNCLib.Repository.SqlLite.MigrationCNCLibContext.DatabaseFile = userprofilepath + @"\CNCLib.db";
 
-		    Repository.Context.CNCLibContext.OnConfigure = (optionsBuilder) =>
-		    {
-		        optionsBuilder.UseSqlite($@"Data Source={sqliteDBFile}");
-		    };
+            /*
+                        Repository.Context.CNCLibContext.OnConfigure = (optionsBuilder) =>
+                        {
+                            optionsBuilder.UseSqlite($@"Data Source={sqliteDBFile}");
+                        };
+            */
 
-            Dependency.Initialize(new LiveDependencyProvider());
+		    Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
 				typeof(ServiceProxy.Logic.MachineService).Assembly,
@@ -82,18 +87,25 @@ namespace CNCLib.Wpf.Start
 
 			// Open Database here
 			//
-			try
-			{
-				using (var controller = Dependency.Resolve<IMachineController>())
-				{
-					var dto = controller.Get(-1);
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show($"Cannot create/connect database in { sqliteDBFile } \n\r" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				Current.Shutdown();
-			}
+		    try
+		    {
+		        using (var ctx = new CNCLib.Repository.SqlLite.MigrationCNCLibContext())
+		        {
+		            ctx.Database.Migrate();
+		            if (ctx.Machines.FirstOrDefault() == null)
+		            {
+		                Repository.Context.CNCLibDefaultData.CNCSeed(ctx);
+		                ctx.SaveChanges();
+		            }
+		        }
+		    }
+		    catch (Exception ex)
+		    {
+		        MessageBox.Show(
+		            $"Cannot create/connect database in {CNCLib.Repository.SqlLite.MigrationCNCLibContext.DatabaseFile} \n\r" +
+		            ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+		        Current.Shutdown();
+		    }
 		}
 	}
 }

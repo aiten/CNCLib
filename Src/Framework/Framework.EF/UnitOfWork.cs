@@ -126,13 +126,6 @@ namespace Framework.EF
 			_dbTran = null;
 		}
 
-
 		#endregion
-
-		public void InitializeDatabase()
-		{
-            //throw new NotImplementedException();
-			//Context.Database.Initialize(true);        
-		}
 	}
 }

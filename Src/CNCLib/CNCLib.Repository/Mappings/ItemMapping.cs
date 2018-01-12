@@ -31,8 +31,7 @@ namespace CNCLib.Repository.Mappings
             entity.HasKey(m => m.ItemID);
 
             entity.
-                HasAlternateKey(c => c.Name );
- //                        new IndexAnnotation(new IndexAttribute("IDX_UniqueName") { IsUnique = true }));
+                HasIndex(c => c.Name ).IsUnique();
 
             entity.Property(m => m.Name).
                 IsRequired().
