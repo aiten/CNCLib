@@ -55,7 +55,6 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
             }
         }
 
-
         [TestMethod]
         public async Task CreateDeleteMachine()
         {

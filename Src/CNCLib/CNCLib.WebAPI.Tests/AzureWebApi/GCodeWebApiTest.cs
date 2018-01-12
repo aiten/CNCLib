@@ -23,7 +23,6 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.WebAPI.Models;
 using System.Reflection;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi
@@ -95,7 +94,15 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 			}
 		}
 
-		[TestMethod]
+        public class CreateGCode
+        {
+            public int LoadOptionsId { get; set; }
+            public string FileName { get; set; }
+
+            public Byte[] FileContent { get; set; }
+        }
+
+        [TestMethod]
 		public async Task PutImageWithStoredOptions()
 		{
 			using (var client = new HttpClient())
