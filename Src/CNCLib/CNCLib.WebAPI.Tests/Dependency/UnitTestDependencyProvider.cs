@@ -16,12 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+using Framework.Tools.Dependency;
 
-namespace CNCLib.WebAPI.Tests.AzureWebApi
+namespace CNCLib.WebAPI.Tests.Dependency
 {
-    public class AzureWebApiTest : UnitTestBase
+    public sealed class UnitTestDependencyProvider : IDependencyProvider
     {
-		//public static readonly string AzureUrl = @"http://localhost:1110/";
-		public static readonly string AzureUrl = @"http://cnclibapi.azurewebsites.net";
-	}
+        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new MockingDependencyContainer());
+
+        public IDependencyContainer Container => _dependencyContainer.Value;
+    }
 }

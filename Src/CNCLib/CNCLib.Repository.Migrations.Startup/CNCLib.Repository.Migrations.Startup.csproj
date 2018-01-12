@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(ProjectDir)..\CNCLib.targets" />
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>

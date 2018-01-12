@@ -1,10 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(ProjectDir)..\CNCLib.targets" />
    <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <ItemGroup>
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj">    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">    </ProjectReference>
@@ -12,5 +10,4 @@
     <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">    </ProjectReference>
     <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">    </ProjectReference>
   </ItemGroup>
- 
 </Project>
