@@ -187,19 +187,16 @@
     <Resource Include="Properties\CNCLib.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EntityFrameworkCore.SqlServerCompact40">
-      <Version>2.0.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
       <Version>2.0.1</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.SqlServer.Compact">
-      <Version>4.0.8876.1</Version>
+    <PackageReference Include="System.Data.SQLite.Core">
+      <Version>1.0.106</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /s /y "$(SolutionDir)..\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\*.*" "$(TargetDir)"
+    <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -46,19 +46,12 @@ namespace CNCLib.Wpf.Start
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
                 XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            // move file from c:\tmp
-		    string tmpsdf = @"c:\tmp\CNCLib.sdf";
-			string upfsdf = userprofilepath + @"\CNCLib.sdf";
-			if (File.Exists(tmpsdf) && File.Exists(upfsdf) == false)
-			{
-				File.Move(tmpsdf, upfsdf);
-			}
+			string sqliteDBFile = userprofilepath + @"\CNCLib.db";
 
 		    Repository.Context.CNCLibContext.OnConfigure = (optionsBuilder) =>
 		    {
-		        optionsBuilder.UseSqlCe($@"Data Source={upfsdf}");
+		        optionsBuilder.UseSqlite($@"Data Source={sqliteDBFile}");
 		    };
-	    
 
             Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(
@@ -98,7 +91,7 @@ namespace CNCLib.Wpf.Start
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show($"Cannot create/connect database in { upfsdf } \n\r" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show($"Cannot create/connect database in { sqliteDBFile } \n\r" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				Current.Shutdown();
 			}
 		}
