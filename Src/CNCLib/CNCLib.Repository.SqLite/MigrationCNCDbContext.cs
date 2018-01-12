@@ -44,7 +44,7 @@ namespace CNCLib.Repository.SqlLite
                     ctx.Database.EnsureDeleted();
 
                 ctx.Database.Migrate();
-                if (ctx.Machines.FirstOrDefault() == null)
+                if (!ctx.Machines.Any())
                 {
                     new CNCLibDefaultData().CNCSeed(ctx);
                     ctx.SaveChanges();

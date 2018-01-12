@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.1.0" />
   </ItemGroup>
 
@@ -41,6 +40,7 @@
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj">
     </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Repository.SqlServer\CNCLib.Repository.SqlServer.csproj" />
     <ProjectReference Include="..\CNCLib.Repository\CNCLib.Repository.csproj">
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.ServiceProxy.Logic\CNCLib.ServiceProxy.Logic.csproj">

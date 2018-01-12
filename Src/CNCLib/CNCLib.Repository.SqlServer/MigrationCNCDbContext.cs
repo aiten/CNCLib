@@ -16,19 +16,40 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Linq;
 using CNCLib.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository.SqlServer {
     public class MigrationCNCLibContext : CNCLibContext
     {
+        public static string ConnectString { get; set; } = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
+
         static MigrationCNCLibContext()
         {
-            CNCLibContext.OnConfigure = (optionsBuilder) =>
+            OnConfigure = (optionsBuilder) =>
             {
-                optionsBuilder.UseSqlServer(@"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True");
-                //optionsBuilder.UseSqlite($"Data Source={System.IO.Path.GetTempPath()}\\CNCLib.db");
+                optionsBuilder.UseSqlServer(ConnectString);
             };
+        }
+
+        public static void InitializeDatabase(string connectstring, bool dropdatabase)
+        {
+            if (!string.IsNullOrEmpty(connectstring))
+                ConnectString = connectstring;
+
+            using (var ctx = new MigrationCNCLibContext())
+            {
+                if (dropdatabase)
+                    ctx.Database.EnsureDeleted();
+
+                ctx.Database.Migrate();
+                if (!ctx.Machines.Any())
+                {
+                    new CNCLibDefaultData().CNCSeed(ctx);
+                    ctx.SaveChanges();
+                }
+            }
         }
     }
 }

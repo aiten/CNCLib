@@ -23,12 +23,10 @@ using System.Windows.Markup;
 using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
-using CNCLib.Logic.Contracts;
 using CNCLib.Repository.Context;
 using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
-using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Wpf.Sql.Start
 {
@@ -41,11 +39,6 @@ namespace CNCLib.Wpf.Sql.Start
 		{
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
                 XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
-
-		    Repository.Context.CNCLibContext.OnConfigure = (optionsBuilder) =>
-		    {
-		        optionsBuilder.UseSqlServer(@"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True");
-            };
 
 		    Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(
@@ -73,16 +66,15 @@ namespace CNCLib.Wpf.Sql.Start
 			IMapper mapper = config.CreateMapper();
 			Dependency.Container.RegisterInstance(mapper);
 
+//	        string sqlconnectstring = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
+		    string sqlconnectstring = null;
 
-			// Open Database here
-			//
-			try
-			{
-				using (var controller = Dependency.Resolve<IMachineController>())
-				{
-					var dto = controller.Get(-1);
-				}
-			}
+            // Open Database here
+
+            try
+            {
+		        CNCLib.Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false);
+		    }
 			catch (Exception ex)
 			{
 				MessageBox.Show("Cannot connect to database" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
