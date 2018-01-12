@@ -49,15 +49,6 @@ namespace CNCLib.Wpf.Start
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
                 XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-			CNCLib.Repository.SqlLite.MigrationCNCLibContext.DatabaseFile = userprofilepath + @"\CNCLib.db";
-
-            /*
-                        Repository.Context.CNCLibContext.OnConfigure = (optionsBuilder) =>
-                        {
-                            optionsBuilder.UseSqlite($@"Data Source={sqliteDBFile}");
-                        };
-            */
-
 		    Dependency.Initialize(new LiveDependencyProvider());
             Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
@@ -85,24 +76,17 @@ namespace CNCLib.Wpf.Start
 			Dependency.Container.RegisterInstance(mapper);
 
 
-			// Open Database here
-			//
-		    try
+            // Open Database here
+
+            string dbfile = userprofilepath + @"\CNCLib.db";
+            try
 		    {
-		        using (var ctx = new CNCLib.Repository.SqlLite.MigrationCNCLibContext())
-		        {
-		            ctx.Database.Migrate();
-		            if (ctx.Machines.FirstOrDefault() == null)
-		            {
-		                Repository.Context.CNCLibDefaultData.CNCSeed(ctx);
-		                ctx.SaveChanges();
-		            }
-		        }
+                CNCLib.Repository.SqlLite.MigrationCNCLibContext.InitializeDatabase(dbfile,false);
 		    }
 		    catch (Exception ex)
 		    {
 		        MessageBox.Show(
-		            $"Cannot create/connect database in {CNCLib.Repository.SqlLite.MigrationCNCLibContext.DatabaseFile} \n\r" +
+		            $"Cannot create/connect database in {dbfile} \n\r" +
 		            ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 		        Current.Shutdown();
 		    }

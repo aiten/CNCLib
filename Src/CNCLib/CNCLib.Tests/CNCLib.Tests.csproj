@@ -149,6 +149,10 @@
       <Project>{0ecc8284-505b-43cc-9df9-ac5d5eef786a}</Project>
       <Name>CNCLib.Repository.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Repository.SqLite\CNCLib.Repository.SqlLite.csproj">
+      <Project>{972c43c8-8bf9-41fa-ba3c-299ac44a6938}</Project>
+      <Name>CNCLib.Repository.SqlLite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Repository\CNCLib.Repository.csproj">
       <Project>{d689cd99-a022-4f38-8ae1-a269c82a729c}</Project>
       <Name>CNCLib.Repository</Name>

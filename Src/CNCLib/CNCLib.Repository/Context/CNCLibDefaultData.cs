@@ -20,19 +20,16 @@ using CNCLib.Repository.Contracts.Entities;
 
 namespace CNCLib.Repository.Context
 {
-
-    //public class CNCLibInitializer : DropCreateDatabaseAlways<CNCLibContext>
-    //public class CNCLibInitializer : CreateDatabaseIfNotExists<CNCLibContext>
-    public static class CNCLibDefaultData
+    public class CNCLibDefaultData
     {
-        public static void CNCSeed(CNCLibContext context)
+        public void CNCSeed(CNCLibContext context)
         {
             var users = UserSeed(context);
             MachineSeed(context,users);
             ItemSeed(context);
         }
 
-        private static User[] UserSeed(CNCLibContext context)
+        private User[] UserSeed(CNCLibContext context)
         {
            var user1 = new User
             {
@@ -55,7 +52,7 @@ namespace CNCLib.Repository.Context
             return users;
         }
 
-        private static void MachineSeed(CNCLibContext context, User[] users)
+        private void MachineSeed(CNCLibContext context, User[] users)
         {
             var proxonMF70 = new Machine
             {
@@ -307,7 +304,7 @@ namespace CNCLib.Repository.Context
             context.MachineCommands.AddRange(machinecommands);
             context.MachineInitCommands.AddRange(machineinitcommands);
         }
-        private static void ItemSeed(CNCLibContext context)
+        private void ItemSeed(CNCLibContext context)
         {
             var cutItem = new Item
             {

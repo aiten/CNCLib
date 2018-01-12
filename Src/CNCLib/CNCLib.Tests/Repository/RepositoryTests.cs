@@ -52,19 +52,9 @@ namespace CNCLib.Tests.Repository
                     dbdir = System.IO.Path.GetTempPath();
                 }
 
-			    CNCLib.Repository.Context.CNCLibContext.OnConfigure = (optionsBuilder) =>
-			    {
-			        optionsBuilder.UseSqlite($@"Data Source={dbdir}\CNCLibTest.db");
-			    };
+                string dbfile = $@"{ dbdir }\CNCLibTest.db";
+                CNCLib.Repository.SqlLite.MigrationCNCLibContext.InitializeDatabase(dbfile, true);
 
-                using (var uow = new UnitOfWork<CNCLibContext>())
-				{
-                    CNCLibContext x = uow.Context; // ref to get loaded
-//					Microsoft.EntityFrameworkCore.Database.SetInitializer<CNCLibContext>(new CNCLibInitializerTest());
-//					uow.InitializeDatabase();
-                    Item o = uow.Context.Items.FirstOrDefault(i => i.ItemID == 0);
-                    // force init
-                }
                 _init = true;
 			}
 		}
