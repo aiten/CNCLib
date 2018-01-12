@@ -261,6 +261,7 @@ namespace CNCLib.Logic.Client
 
 		private static IEnumerable<DynItem> Convert(IEnumerable<Item> allitems)
 		{
+		    if (allitems == null) return null;
 			var l = new List<DynItem>();
 			foreach (var o in allitems)
 			{
