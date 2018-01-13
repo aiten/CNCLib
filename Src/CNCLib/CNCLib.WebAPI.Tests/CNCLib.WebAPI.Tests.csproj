@@ -2,7 +2,7 @@
   <Import Project="$(ProjectDir)..\CNCLib.targets" />
 
   <PropertyGroup>
-    <TargetFramework>net47</TargetFramework>
+    <TargetFramework>net471</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
