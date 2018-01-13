@@ -65,6 +65,9 @@
       <Version>3.1.0</Version>
     </PackageReference>
   </ItemGroup>
+    <ItemGroup>
+    <Reference Include="netstandard" />
+  </ItemGroup> 
   <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs">
       <Link>Properties\FrameworkSolutionInfo.cs</Link>

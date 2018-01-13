@@ -70,6 +70,9 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
+    <ItemGroup>
+    <Reference Include="netstandard" />
+  </ItemGroup>   
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
