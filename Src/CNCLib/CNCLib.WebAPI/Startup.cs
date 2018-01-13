@@ -34,6 +34,8 @@ namespace CNCLib.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services.AddMvc();
 
             // Register the Swagger generator, defining one or more Swagger documents
@@ -68,6 +70,11 @@ namespace CNCLib.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(option => option.AllowAnyMethod());
+            app.UseCors(option => option.AllowAnyOrigin());
+            app.UseCors(option => option.AllowAnyHeader());
+            app.UseCors(option => option.AllowCredentials());
+
             string sqlconnectstring =
                 @"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = Herbert; Password = Edith1234;";
 
