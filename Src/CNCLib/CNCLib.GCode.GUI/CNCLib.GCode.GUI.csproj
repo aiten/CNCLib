@@ -70,6 +70,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="netstandard" />
+  </ItemGroup> 
+  <ItemGroup>
     <Compile Include="..\CNCLibSolutionInfo.cs">
       <Link>Properties\CNCLibSolutionInfo.cs</Link>
     </Compile>
