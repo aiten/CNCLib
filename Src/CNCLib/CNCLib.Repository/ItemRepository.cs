@@ -67,13 +67,12 @@ namespace CNCLib.Repository
 			// search und update machine
 
 			int id = item.ItemID;
+		    var optValues = item.ItemProperties?.ToList() ?? new List<Contracts.Entities.ItemProperty>();
 
 			var itemInDb = await Context.Items.
 				Where(m => m.ItemID == id).
 				Include(d => d.ItemProperties).
 				FirstOrDefaultAsync();
-
-            var optValues = item.ItemProperties ?? new List<Contracts.Entities.ItemProperty>();
 
 			if (itemInDb == default(Contracts.Entities.Item))
 			{

@@ -77,14 +77,14 @@ namespace CNCLib.Repository
 			// search und update machine
 
 			int id = machine.MachineID;
+		    var machineCommands = machine.MachineCommands?.ToList() ?? new List<Contracts.Entities.MachineCommand>();
+		    var machineInitCommands = machine.MachineInitCommands?.ToList() ?? new List<Contracts.Entities.MachineInitCommand>();
 
-			var machineInDb = await Context.Machines.
+            var machineInDb = await Context.Machines.
 				Where(m => m.MachineID == id).
 				Include(d => d.MachineCommands).
 				Include(d => d.MachineInitCommands).
 				FirstOrDefaultAsync();
-			var machineCommands = machine.MachineCommands ?? new List<Contracts.Entities.MachineCommand>();
-			var machineInitCommands = machine.MachineInitCommands ?? new List<Contracts.Entities.MachineInitCommand>();
 
 			if (machineInDb == default(Contracts.Entities.Machine))
 			{

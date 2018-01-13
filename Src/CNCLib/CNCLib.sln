@@ -29,6 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino", "..\Fra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0942B8A6-0C1A-47A0-B67F-C98979BA830C}"
 	ProjectSection(SolutionItems) = preProject
+		CNCLib.targets = CNCLib.targets
 		CNCLibPublic.snk = CNCLibPublic.snk
 		CNCLibSolutionInfo.cs = CNCLibSolutionInfo.cs
 		CNCLibSolutionInfoVersion.cs = CNCLibSolutionInfoVersion.cs
@@ -78,6 +79,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Client", "CNCLib.Logic.Client\CNCLib.Logic.Client.csproj", "{D7277BF7-35E8-47C7-8E4A-448E2224F559}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{96217F41-39D9-4FCF-AACF-7EAEB4E4479C}"
+	ProjectSection(SolutionItems) = preProject
+		..\Framework\FrameworkStandard.targets = ..\Framework\FrameworkStandard.targets
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.Migrations.Startup", "CNCLib.Repository.Migrations.Startup\CNCLib.Repository.Migrations.Startup.csproj", "{77F7D0C8-DEE4-4CA6-ABAD-B7602C55BDB5}"
 EndProject

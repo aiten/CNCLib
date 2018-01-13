@@ -2,7 +2,7 @@
   <Import Project="$(ProjectDir)..\CNCLib.targets" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>net47</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -11,12 +11,14 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0-preview-20180109-01" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj" />
     <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj" />
     <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj" />
+    <ProjectReference Include="..\CNCLib.ServiceProxy.WebAPI\CNCLib.ServiceProxy.WebAPI.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TestData\heikes-mietzi.hpgl">

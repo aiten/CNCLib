@@ -23,6 +23,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
+using CNCLib.ServiceProxy.WebAPI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -31,7 +32,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
     [TestClass]
     public class MachineWebApiTest : AzureWebApiTest
     {
-        private readonly string api = @"api/machine";
+        private readonly string api = @"api/Machine";
 
         [TestMethod]
         public async Task GetMachine1()
