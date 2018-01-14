@@ -13,11 +13,13 @@ using Framework.Tools.Pattern;
 using Framework.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Formatters.Json; 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace CNCLib.WebAPI
@@ -36,7 +38,9 @@ namespace CNCLib.WebAPI
         {
             services.AddCors();
 
-            services.AddMvc();
+            services.AddMvc().
+                AddJsonOptions(options =>
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c =>
