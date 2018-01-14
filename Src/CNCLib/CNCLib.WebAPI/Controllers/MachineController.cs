@@ -37,7 +37,7 @@ namespace CNCLib.WebAPI.Controllers
 
         readonly IMachineService _machineservice;
 
-        [Route("api/Machine/default")]
+        [Route("default")]
 		[HttpGet]
 		public async Task<IActionResult> DefaultMachine()
 		{
@@ -49,7 +49,7 @@ namespace CNCLib.WebAPI.Controllers
 			return Ok(m);
 		}
 
-		[Microsoft.AspNetCore.Mvc.Route("api/Machine/defaultmachine")]
+		[Microsoft.AspNetCore.Mvc.Route("defaultmachine")]
 		[Microsoft.AspNetCore.Mvc.HttpGet] //Always explicitly state the accepted HTTP method
 		public async Task<IActionResult> GetDetaultMachine()
 		{
@@ -57,7 +57,7 @@ namespace CNCLib.WebAPI.Controllers
 			return Ok(id);
 		}
 
-		[Microsoft.AspNetCore.Mvc.Route("api/Machine/defaultmachine")]
+		[Microsoft.AspNetCore.Mvc.Route("defaultmachine")]
 		[Microsoft.AspNetCore.Mvc.HttpPut] //Always explicitly state the accepted HTTP method
 		public async Task<IActionResult> SetDetaultMachine(int id)
 		{
