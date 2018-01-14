@@ -87,7 +87,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.Migration
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.SqlServer", "CNCLib.Repository.SqlServer\CNCLib.Repository.SqlServer.csproj", "{BD772F21-D4E2-4577-9AF3-FBE59BB72C03}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.SqlLite", "CNCLib.Repository.SqLite\CNCLib.Repository.SqlLite.csproj", "{972C43C8-8BF9-41FA-BA3C-299AC44A6938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.SqLite", "CNCLib.Repository.SqLite\CNCLib.Repository.SqLite.csproj", "{972C43C8-8BF9-41FA-BA3C-299AC44A6938}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

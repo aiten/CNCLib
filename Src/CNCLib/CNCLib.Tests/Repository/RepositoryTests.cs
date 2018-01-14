@@ -53,7 +53,7 @@ namespace CNCLib.Tests.Repository
                 }
 
                 string dbfile = $@"{ dbdir }\CNCLibTest.db";
-                CNCLib.Repository.SqlLite.MigrationCNCLibContext.InitializeDatabase(dbfile, true);
+                CNCLib.Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbfile, true);
 
                 _init = true;
 			}

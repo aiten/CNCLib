@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CNCLib.Repository.SqLite\CNCLib.Repository.SqlLite.csproj" />
+    <ProjectReference Include="..\CNCLib.Repository.SqLite\CNCLib.Repository.SqLite.csproj" />
     <ProjectReference Include="..\CNCLib.Repository.SqlServer\CNCLib.Repository.SqlServer.csproj" />
   </ItemGroup>
 

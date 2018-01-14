@@ -20,7 +20,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using CNCLib.Repository.Context;
 
-namespace CNCLib.Repository.SqlLite
+namespace CNCLib.Repository.SqLite
 {
     public class MigrationCNCLibContext : CNCLibContext
     {
@@ -38,7 +38,7 @@ namespace CNCLib.Repository.SqlLite
         {
             DatabaseFile = databasefile;
 
-            using (var ctx = new CNCLib.Repository.SqlLite.MigrationCNCLibContext())
+            using (var ctx = new CNCLib.Repository.SqLite.MigrationCNCLibContext())
             {
                 if (dropdatabase)
                     ctx.Database.EnsureDeleted();

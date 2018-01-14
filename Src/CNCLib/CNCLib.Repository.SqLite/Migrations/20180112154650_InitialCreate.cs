@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CNCLib.Repository.SqlLite.Migrations
+namespace CNCLib.Repository.SqLite.Migrations
 {
     public partial class InitialCreate : Migration
     {
