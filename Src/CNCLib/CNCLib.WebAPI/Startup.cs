@@ -77,7 +77,7 @@ namespace CNCLib.WebAPI
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             string sqlconnectstring =
-                @"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb2; Persist Security Info = True; User ID = Herbert; Password = Edith1234;";
+                @"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = Herbert; Password = Edith1234;";
 
             // Open Database here
 

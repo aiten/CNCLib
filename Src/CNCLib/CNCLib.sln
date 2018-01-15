@@ -80,7 +80,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Client", "CNCL
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{96217F41-39D9-4FCF-AACF-7EAEB4E4479C}"
 	ProjectSection(SolutionItems) = preProject
-		..\Framework\FrameworkStandard.targets = ..\Framework\FrameworkStandard.targets
+		..\Framework\Framework.targets = ..\Framework\Framework.targets
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.Migrations.Startup", "CNCLib.Repository.Migrations.Startup\CNCLib.Repository.Migrations.Startup.csproj", "{77F7D0C8-DEE4-4CA6-ABAD-B7602C55BDB5}"
