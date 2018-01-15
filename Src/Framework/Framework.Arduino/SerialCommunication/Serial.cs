@@ -423,7 +423,7 @@ namespace Framework.Arduino.SerialCommunication
 		/// </summary>
 		/// <param name="maxMilliseconds"></param>
 		/// <returns></returns>
-		public async Task<string> WaitUntilResonseAsync(int maxMilliseconds = int.MaxValue)
+		public async Task<string> WaitUntilResponseAsync(int maxMilliseconds = int.MaxValue)
 		{
 			string message = null;
 			var checkresponse = new CommandEventHandler((obj, e) =>

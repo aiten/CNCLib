@@ -39,7 +39,7 @@ namespace Framework.Arduino.SerialCommunication
         Task<IEnumerable<SerialCommand>> SendCommandAsync(string line, int waitForMilliseconds = int.MaxValue);
         Task<string> SendCommandAndReadOKReplyAsync(string line, int waitForMilliseconds = int.MaxValue);
         Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> commands);
-        Task<string> WaitUntilResonseAsync(int maxMilliseconds = int.MaxValue);
+        Task<string> WaitUntilResponseAsync(int maxMilliseconds = int.MaxValue);
         Task<IEnumerable<SerialCommand>> SendFileAsync(string filename);
 
         #endregion;
