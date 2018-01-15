@@ -36,7 +36,9 @@ namespace CNCLib.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()));
 
             services.AddMvc().
                 AddJsonOptions(options =>
@@ -74,11 +76,6 @@ namespace CNCLib.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseCors(option => option.AllowAnyMethod());
-            app.UseCors(option => option.AllowAnyOrigin());
-            app.UseCors(option => option.AllowAnyHeader());
-            app.UseCors(option => option.AllowCredentials());
-
             string sqlconnectstring =
                 @"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb2; Persist Security Info = True; User ID = Herbert; Password = Edith1234;";
 
@@ -104,6 +101,8 @@ namespace CNCLib.WebAPI
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1");
             });
+
+            app.UseCors("AllowAll");
             app.UseMvc();
         }
     }
