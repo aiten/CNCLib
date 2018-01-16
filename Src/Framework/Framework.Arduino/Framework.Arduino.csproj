@@ -1,22 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(ProjectDir)..\Framework.targets" />
   <PropertyGroup>
-	<TargetFramework>net471</TargetFramework>
+	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="System.IO.Ports" Version="4.5.0-preview1-25914-04" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="netstandard" />
-  </ItemGroup> 
+  
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj"></ProjectReference>
   </ItemGroup>
