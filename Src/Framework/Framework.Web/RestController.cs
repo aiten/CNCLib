@@ -33,6 +33,8 @@ namespace Framework.Web
 
         public IRest<T> Controller { get; }
 
+        protected string CurrentUri => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
+
         [HttpGet]
         public async Task<IEnumerable<T>> Get()
 		{
@@ -64,7 +66,7 @@ namespace Framework.Web
 			try
 			{
 				int newid = await Controller.Add(value);
-				return CreatedAtRoute("DefaultApi", new { id = newid }, await Controller.Get(newid));
+                return Created($@"{CurrentUri}/{newid}", await Controller.Get(newid));
 			}
 			catch (Exception ex)
 			{

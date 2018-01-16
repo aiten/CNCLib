@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="netstandard" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj" />
     <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj" />
     <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj" />
