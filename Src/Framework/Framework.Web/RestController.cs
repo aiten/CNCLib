@@ -28,91 +28,39 @@ namespace Framework.Web
     {
         protected RestController(IRest<T> controller)
         {
-            Controller = controller ?? throw new ArgumentNullException();
+            Rest = controller ?? throw new ArgumentNullException();
         }
 
-        public IRest<T> Controller { get; }
-
-        protected string CurrentUri => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
-
+        public IRest<T> Rest { get; }
+/*
         [HttpGet]
-        public async Task<IEnumerable<T>> Get()
+        public async Task<IActionResult> Get()
 		{
-			return await Controller.Get();
+			return await this.GetAll<T>(Rest);
 		}
-
-        // GET api/values/5
-        //[ResponseType(T)]
+*/
         [HttpGet("{id:int}")]
 		public async Task<IActionResult> Get(int id)
 		{
-			T m = await Controller.Get(id);
-			if (m == null)
-			{
-				return NotFound();
-			}
-			return Ok(m);
+		    return await this.Get<T>(Rest,id);
 		}
 
-        // POST api/values == Create
-        //[ResponseType(typeof(T))]
         [HttpPost]
 		public async Task<IActionResult> Post([FromBody]T value)
 		{
-			if (!ModelState.IsValid || value == null)
-			{
-				return BadRequest(ModelState);
-			}
-			try
-			{
-				int newid = await Controller.Add(value);
-                return Created($@"{CurrentUri}/{newid}", await Controller.Get(newid));
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
+		    return await this.Post<T>(Rest, value);
 		}
 
-        // PUT api/values/5
-        //[ResponseType(typeof(void))]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(int id, [FromBody]T value)
 		{
-			if (!ModelState.IsValid || value == null)
-			{
-				return BadRequest(ModelState);
-			}
-
-			try
-			{
-				if (Controller.CompareId(id,value) == false)
-				{
-					return BadRequest("Missmatch between id and machineID");
-				}
-
-				await Controller.Update(id, value);
-				return StatusCode(204);
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
+		    return await this.Put<T>(Rest, id, value);
 		}
 
-        // DELETE api/values/5
-        //[ResponseType(typeof(T))]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
 		{
-			T value = await Controller.Get(id);
-			if (value == null)
-			{
-				return NotFound();
-			}
-
-			await Controller.Delete(id, value);
-			return Ok(value);
+		    return await this.Delete<T>(Rest, id);
 		}
 	}
 }

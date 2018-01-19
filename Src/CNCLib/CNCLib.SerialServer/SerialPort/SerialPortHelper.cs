@@ -31,24 +31,37 @@ namespace CNCLib.SerialServer.SerialPort
 
         public string PortName { get; set; }
 
-        public Serial Serial { get; set; } = new Serial();
+        public Serial Serial { get; set; }
 
 
         #region INTERNAL List
 
         public static SerialPortHelper[] Ports { get; private set; } = GetPortDefinitions().ToArray();
 
+        public static SerialPortHelper GetPort(int id)
+        {
+            var port = Ports.FirstOrDefault((s) => s.Id == id);
+            if (port != null && port.Serial == null)
+            {
+                port.Serial = new Serial();
+            }
+            return port;
+        }
+
+        private static int GetIdFromPortName(string portname)
+        {
+            string portNo = portname.Remove(0,3); // remove "com"
+            return (int) uint.Parse(portNo);
+        }
+
         private static IEnumerable<SerialPortHelper> GetPortDefinitions()
         {
             var portnames = System.IO.Ports.SerialPort.GetPortNames();
-            return portnames.Select((port, index) => new SerialPortHelper() {Id = index + 1, PortName = port});
+            return portnames.Select((port, index) => new SerialPortHelper() {Id = GetIdFromPortName(port), PortName = port});
         }
 
         public static void Refresh()
         {
-            // keep same id
-            var maxid = Ports.Max((e) => e.Id);
-
             var currentportdefinition = GetPortDefinitions().ToList();
 
             var newlist = new List<SerialPortHelper>();
@@ -65,25 +78,18 @@ namespace CNCLib.SerialServer.SerialPort
             }
 
             //addnew ports 
-            int nextid = 1;
             foreach (var port in currentportdefinition)
             {
                 var existingport = newlist.Find((p) => port.PortName == p.PortName);
                 if (existingport == null)
                 {
-                    while (newlist.Any((e) => e.Id == nextid))
-                    {
-                        nextid++;
-                    }
-                    newlist.Add(new SerialPortHelper() {Id = nextid, PortName = port.PortName});
+                    newlist.Add(port);
                 }
             }
 
             Ports = newlist.ToArray();
-
-
-            #endregion
-
         }
+
+        #endregion
     }
 }

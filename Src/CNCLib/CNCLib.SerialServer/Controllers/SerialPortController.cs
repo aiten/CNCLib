@@ -24,15 +24,13 @@ using System.IO.Ports;
 using System.Threading.Tasks;
 using CNCLib.SerialServer.SerialPort;
 using Microsoft.AspNetCore.Mvc;
+using Framework.Arduino.SerialCommunication;
 
 namespace CNCLib.SerialServer.Controllers
 {
     [Route("api/[controller]")]
     public class SerialPortController : Controller
 	{
-        public SerialPortController() : base()
-        {
-        }
 	    protected string CurrentUri => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
 
         public class SerialPortDefinition
@@ -41,50 +39,107 @@ namespace CNCLib.SerialServer.Controllers
 	        public string PortName { get; set; }
 	    }
 
-        [HttpGet]
+	    private SerialPortDefinition GetDefinition(SerialPortHelper port)
+	    {
+	        return new SerialPortDefinition() {Id = port.Id, PortName = port.PortName};
+	    }
+
+	    [HttpGet]
 	    public async Task<IEnumerable<SerialPortDefinition>> Get()
         {
-            return SerialPortHelper.Ports.Select((e) => new SerialPortDefinition() { Id = e.Id, PortName = e.PortName});
+            return SerialPortHelper.Ports.Select((e) => GetDefinition(e));
         }
 
-	    // GET api/values/5
-	    //[ResponseType(T)]
 	    [HttpGet("{id:int}")]
 	    public async Task<IActionResult> Get(int id)
 	    {
-	        var m = SerialPortHelper.Ports.FirstOrDefault((s) => s.Id == id);
-	        if (m == null)
+	        var port = SerialPortHelper.GetPort(id);
+	        if (port == null)
 	        {
 	            return NotFound();
 	        }
-	        return Ok(new SerialPortDefinition() {Id = m.Id, PortName = m.PortName});
+	        return Ok(GetDefinition(port));
 	    }
 
-	    [HttpGet("refresh")]
+	    [HttpPost("refresh")]
 	    public async Task<IEnumerable<SerialPortDefinition>> Refresh()
 	    {
             SerialPortHelper.Refresh();
             return await Get();
 	    }
 
-	    // GET api/values/5
-	    //[ResponseType(T)]
-	    [HttpGet("{id:int}/open")]
-	    public async Task<IActionResult> Open(int id, int? baudrate=null,bool? resetOnConnect=true)
+	    [HttpPost("{id:int}/connect")]
+	    public async Task<IActionResult> Connect(int id, int? baudrate=null,bool? resetOnConnect=true)
 	    {
-	        var m = SerialPortHelper.Ports.FirstOrDefault((s) => s.Id == id);
-	        if (m == null)
+	        var port = SerialPortHelper.GetPort(id);
+	        if (port == null)
 	        {
 	            return NotFound();
 	        }
 
-	        m.Serial.BaudRate = baudrate ?? 250000;
-	        m.Serial.ResetOnConnect = resetOnConnect ?? true;
+	        port.Serial.BaudRate = baudrate ?? 250000;
+	        port.Serial.ResetOnConnect = resetOnConnect ?? true;
 
-            m.Serial.Connect(m.PortName);
+            port.Serial.Connect(port.PortName);
 
-	        return Ok(new SerialPortDefinition() { Id = m.Id, PortName = m.PortName });
+	        return Ok(GetDefinition(port));
 	    }
 
+	    [HttpPost("{id:int}/disconnect")]
+	    public async Task<IActionResult> DisConnect(int id)
+	    {
+	        var port = SerialPortHelper.GetPort(id);
+	        if (port == null)
+	        {
+	            return NotFound();
+	        }
+
+	        port.Serial.Disconnect();
+	        port.Serial = null;
+
+            return Ok();
+	    }
+        public class SerialCommands
+        {
+            public string[] Commands { get; set; }
+        }
+
+        [HttpPost("{id:int}/queue")]
+	    public async Task<IActionResult> QueueCommand(int id, [FromBody] SerialCommands commands)
+	    {
+	        var port = SerialPortHelper.GetPort(id);
+
+            if (port == null || commands == null || commands.Commands == null)
+            {
+                return NotFound();
+            }
+
+            var ret = new List<SerialCommand>();
+            foreach (var command in commands.Commands)
+            {
+                ret.AddRange(port.Serial.QueueCommand(command));
+            }
+
+            return Ok(ret);
+	    }
+
+	    [HttpPost("{id:int}/send")]
+	    public async Task<IActionResult> SendCommand(int id, [FromBody] SerialCommands commands)
+	    {
+	        var port = SerialPortHelper.GetPort(id);
+
+	        if (port == null || commands==null || commands.Commands==null)
+	        {
+	            return NotFound();
+	        }
+
+            var ret = new List<SerialCommand>();
+            foreach (var command in commands.Commands)
+            {
+                ret.AddRange(await port.Serial.SendCommandAsync(command));
+            }
+
+            return Ok(ret);
+        }
     }
 }

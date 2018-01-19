@@ -41,6 +41,7 @@ namespace Framework.Arduino.SerialCommunication
 		AutoResetEvent _autoEvent = new AutoResetEvent(false);
 		TraceStream _trace = new TraceStream();
 		List<SerialCommand> _pendingCommands = new List<SerialCommand>();
+        int _commandSeqId;
 
         #endregion
 
@@ -480,7 +481,7 @@ namespace Framework.Arduino.SerialCommunication
 
 			cmd = cmd.Replace('\t', ' ');
 
-			var c = new SerialCommand { CommandText = cmd };
+			var c = new SerialCommand { SeqId = _commandSeqId++, CommandText = cmd };
 
 			lock (_pendingCommands)
             {
@@ -490,7 +491,7 @@ namespace Framework.Arduino.SerialCommunication
                 }
 
                 _pendingCommands.Add(c);
-            }
+            };
 			Trace.WriteTrace("Queue", cmd);
 			OnComandQueueChanged(new SerialEventArgs(null, c));
 			return c;
