@@ -16,24 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Framework.Tools;
+using System.Runtime.InteropServices;
 
-namespace CNCLib.Serial.Client
-{
-    public class ServiceBase : DisposeWrapper
-	{
-		protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://localhost:63099";
+//[assembly: AssemblyTitle("CNCLib.ServiceProxy.WebAPI")]
+//[assembly: AssemblyProduct("CNCLib.ServiceProxy.WebAPI")]
 
-		protected HttpClient CreateHttpClient()
-		{
-		    var client = new HttpClient {BaseAddress = new Uri(_webserverurl)};
-		    client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			return client;
-		}
-	}
-}
+[assembly: Guid("6487301a-6889-412c-92ec-899aad61a9a5")]
+

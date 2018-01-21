@@ -17,23 +17,13 @@
 */
 
 using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Framework.Tools;
+using System.Collections.Generic;
 
-namespace CNCLib.Serial.Client
+namespace CNCLib.Serial.Shared
 {
-    public class ServiceBase : DisposeWrapper
-	{
-		protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://localhost:63099";
+    public class SerialCommands
+    {
+        public string[] Commands { get; set; }
+    }
 
-		protected HttpClient CreateHttpClient()
-		{
-		    var client = new HttpClient {BaseAddress = new Uri(_webserverurl)};
-		    client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			return client;
-		}
-	}
 }

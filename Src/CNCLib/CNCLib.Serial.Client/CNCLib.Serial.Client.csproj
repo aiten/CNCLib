@@ -11,5 +11,6 @@
     <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
     </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Serial.Shared\CNCLib.Serial.Shared.csproj" />
   </ItemGroup>
 </Project>

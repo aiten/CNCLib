@@ -18,9 +18,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Framework.Arduino.SerialCommunication;
 using Framework.Tools.Helpers;
+using CNCLib.Serial.Shared;
 
 namespace CNCLib.Serial.Client
 {
@@ -28,39 +31,32 @@ namespace CNCLib.Serial.Client
     {
         protected readonly string _api = @"api/SerialPort";
 
-        private static int GetIdFromPortName(string portname)
-        {
-            string portNo = portname.Remove(0, 3); // remove "com"
-            return (int)uint.Parse(portNo);
-        }
-
         public int PortId { get; private set; }
 
-        public class SerialPortDefinition
-        {
-            public int Id { get; set; }
-            public string PortName { get; set; }
-            public bool IsConnected { get; set; }
-        }
-
-        public class SerialCommands
-        {
-            public string[] Commands { get; set; }
-        }
-
-        public async void Connect(string portname)
+        public void Connect(string portname)
         {
             using (HttpClient client = CreateHttpClient())
             {
-                int id = GetIdFromPortName(portname);
-                HttpResponseMessage response = await client.PostAsJsonAsync($@"{_api}/{id}/connect?baudRate={BaudRate}?resetOnConnect{ResetOnConnect}","x");
-                if (response.IsSuccessStatusCode)
+                // first ge all ports
+                HttpResponseMessage responseAll = client.GetAsync($@"{_api}").GetAwaiter().GetResult();
+                if (responseAll.IsSuccessStatusCode)
                 {
-                    SerialPortDefinition value = await response.Content.ReadAsAsync<SerialPortDefinition>();
-                    IsConnected = true;
-                    PortId = id;
-                    return;
+                    IEnumerable<SerialPortDefinition> allPorts = responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>().GetAwaiter().GetResult();
+                    var port = allPorts.FirstOrDefault((p) => 0==string.Compare(p.PortName,portname,StringComparison.OrdinalIgnoreCase));
+                    if (port != null)
+                    {
+                        HttpResponseMessage response = client.PostAsJsonAsync(
+                            $@"{_api}/{port.Id}/connect?baudRate={BaudRate}?resetOnConnect{ResetOnConnect}", "x").GetAwaiter().GetResult();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            SerialPortDefinition value = response.Content.ReadAsAsync<SerialPortDefinition>().GetAwaiter().GetResult();
+                            IsConnected = true;
+                            PortId = port.Id;
+                            return;
+                        }
+                    }
                 }
+
                 throw new Exception("Connect to SerialPort failed");
             }
         }
@@ -113,17 +109,36 @@ namespace CNCLib.Serial.Client
                     }
                 }
             }
-            throw new Exception("DisConnect to SerialPort failed");
+            throw new Exception("Queue to SerialPort failed");
         }
 
         public async Task<IEnumerable<SerialCommand>> SendCommandAsync(string line, int waitForMilliseconds = Int32.MaxValue)
         {
-            throw new NotImplementedException();
+            if (PortId != 0)
+            {
+                using (HttpClient client = CreateHttpClient())
+                {
+                    var cmds = new SerialCommands() { Commands = new string[] { line } };
+                    HttpResponseMessage response = await client.PostAsJsonAsync($@"{_api}/{PortId}/send", cmds);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var value = response.Content.ReadAsAsync<IEnumerable<SerialCommand>>().Result;
+                        return value;
+                    }
+                }
+            }
+            throw new Exception("Send to SerialPort failed");
         }
 
         public async Task<string> SendCommandAndReadOKReplyAsync(string line, int waitForMilliseconds = Int32.MaxValue)
         {
-            throw new NotImplementedException();
+            var ret = await SendCommandAsync(line, waitForMilliseconds);
+            if (ret.Any())
+            {
+                var last = ret.Last();
+                return last.ReplyType == EReplyType.ReplyOK ? last.ResultText : null;
+            }
+            throw new Exception("Send to SerialPort failed");
         }
 
         public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> commands)
@@ -176,7 +191,18 @@ namespace CNCLib.Serial.Client
         public List<SerialCommand> CommandHistoryCopy { get; }
         public void ClearCommandHistory()
         {
-            throw new NotImplementedException();
+            if (PortId != 0)
+            {
+                using (HttpClient client = CreateHttpClient())
+                {
+                    HttpResponseMessage response = client.PostAsJsonAsync($@"{_api}/{PortId}/history/clear", "x").GetAwaiter().GetResult();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return;
+                    }
+                }
+            }
+            throw new Exception("ClearCommandHistory to SerialPort failed");
         }
 
         public void WritePendingCommandsToFile(string filename)

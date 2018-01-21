@@ -273,7 +273,7 @@
       <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
       <Name>CNCLib.Logic.Contracts.DTO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.SerialClient\CNCLib.Serial.Client.csproj">
+    <ProjectReference Include="..\CNCLib.Serial.Client\CNCLib.Serial.Client.csproj">
       <Project>{0ef35dce-594a-4ef2-8b82-52d97e4c3016}</Project>
       <Name>CNCLib.Serial.Client</Name>
     </ProjectReference>

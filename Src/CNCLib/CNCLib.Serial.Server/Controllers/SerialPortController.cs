@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Serial.Server.SerialPort;
+using CNCLib.Serial.Shared;
 using Framework.Arduino.SerialCommunication;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,13 +30,6 @@ namespace CNCLib.Serial.Server.Controllers
     public class SerialPortController : Controller
 	{
 	    protected string CurrentUri => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
-
-        public class SerialPortDefinition
-	    {
-	        public int Id { get; set; }
-	        public string PortName { get; set; }
-	        public bool IsConnected { get; set; }
-	    }
 
 	    private SerialPortDefinition GetDefinition(SerialPortHelper port)
 	    {
@@ -97,10 +91,6 @@ namespace CNCLib.Serial.Server.Controllers
 
             return Ok();
 	    }
-        public class SerialCommands
-        {
-            public string[] Commands { get; set; }
-        }
 
         [HttpPost("{id:int}/queue")]
 	    public async Task<IActionResult> QueueCommand(int id, [FromBody] SerialCommands commands)
@@ -139,5 +129,18 @@ namespace CNCLib.Serial.Server.Controllers
 
             return Ok(ret);
         }
+
+        [HttpPost("{id:int}/history/clear")]
+	    public async Task<IActionResult> ClearCommandHistory(int id)
+	    {
+	        var port = SerialPortHelper.GetPort(id);
+	        if (port == null)
+	        {
+	            return NotFound();
+	        }
+
+	        port.Serial.ClearCommandHistory();
+	        return Ok();
+	    }
     }
 }

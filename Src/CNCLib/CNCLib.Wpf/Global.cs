@@ -58,7 +58,7 @@ namespace CNCLib.Wpf
         public bool ResetOnConnect { get => _resetOnConnect; set { _resetOnConnect = value; RaisePropertyChanged(); } }
 
 //        public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
-	    public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<CNCLib.SerialClient.SerialService>.Instance;
+	    public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<CNCLib.Serial.Client.SerialService>.Instance;
 
         public Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<Helpers.JoystickArduinoSerialCommunication>.Instance;
 
