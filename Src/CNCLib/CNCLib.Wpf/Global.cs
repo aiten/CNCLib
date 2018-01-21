@@ -56,8 +56,11 @@ namespace CNCLib.Wpf
 
         private bool _resetOnConnect = false;
         public bool ResetOnConnect { get => _resetOnConnect; set { _resetOnConnect = value; RaisePropertyChanged(); } }
+	    public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
+	    public Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<Helpers.JoystickArduinoSerialCommunication>.Instance;
+	    public Helpers.MachineGCodeHelper GCode => Framework.Tools.Pattern.Singleton<Helpers.MachineGCodeHelper>.Instance;
 
-	    private CommandList _commands = new CommandList();
+        private CommandList _commands = new CommandList();
 	    public CommandList Commands { get => _commands; set { _commands = value; RaisePropertyChanged(); }}
 
         public event PropertyChangedEventHandler PropertyChanged;

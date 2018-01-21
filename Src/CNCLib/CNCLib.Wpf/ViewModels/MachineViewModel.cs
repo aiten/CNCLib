@@ -52,7 +52,6 @@ namespace CNCLib.Wpf.ViewModels
 		#endregion
 
 		#region Properties
-		private Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
 
 	    Machine _currentMachine = new Machine();
 
@@ -136,12 +135,12 @@ namespace CNCLib.Wpf.ViewModels
 			{
 				try
 				{
-					Com.ResetOnConnect = Global.Instance.ResetOnConnect || Machine.NeedDtr;
-					Com.CommandToUpper = Machine.CommandToUpper;
-					Com.BaudRate = Machine.BaudRate;
-					Com.Connect(Machine.ComPort);
+				    Global.Instance.Com.ResetOnConnect = Global.Instance.ResetOnConnect || Machine.NeedDtr;
+				    Global.Instance.Com.CommandToUpper = Machine.CommandToUpper;
+				    Global.Instance.Com.BaudRate = Machine.BaudRate;
+				    Global.Instance.Com.Connect(Machine.ComPort);
 
-					await Com.SendCommandAsync("?",3000);
+					await Global.Instance.Com.SendCommandAsync("?",3000);
 					await Task.Delay(100);
 
 					var eeprom = await new EepromHelper().ReadEepromAsync();
@@ -174,7 +173,7 @@ namespace CNCLib.Wpf.ViewModels
 				}
 				finally
 				{
-					Com.Disconnect();
+				    Global.Instance.Com.Disconnect();
 				}
 			}
 		}

@@ -54,9 +54,8 @@ namespace CNCLib.Wpf.Helpers
 				return await controller.Add("Joystick", joystick);
 			}
 		}
-		private Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<JoystickArduinoSerialCommunication>.Instance;
 
-	    public void JoystickReplyReceived(string trim)
+        public void JoystickReplyReceived(string trim)
 		{
 			// ;btn5		=> look for ;btn5
 			// ;btn5:x		=> x is presscount - always incremented, look for max x in setting => modulo 
@@ -109,7 +108,7 @@ namespace CNCLib.Wpf.Helpers
 			string[] cmds = commandstring.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
 			foreach (var s in cmds)
 			{
-				await ComJoystick.SendCommandAsync(s);
+				await Global.Instance.ComJoystick.SendCommandAsync(s);
 			}
 		}
 	}

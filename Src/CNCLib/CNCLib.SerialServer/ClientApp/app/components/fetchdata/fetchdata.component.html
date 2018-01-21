@@ -1,24 +1,20 @@
-<h1>Weather forecast</h1>
+<h1>Serial ports</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p *ngIf="!serialports"><em>Loading...</em></p>
 
-<p *ngIf="!forecasts"><em>Loading...</em></p>
-
-<table class='table' *ngIf="forecasts">
+<table class='table' *ngIf="serialports">
     <thead>
         <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
+            <th>Id</th>
+            <th>Port-Name</th>
+            <th>Is Connected</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let forecast of forecasts">
-            <td>{{ forecast.dateFormatted }}</td>
-            <td>{{ forecast.temperatureC }}</td>
-            <td>{{ forecast.temperatureF }}</td>
-            <td>{{ forecast.summary }}</td>
+        <tr *ngFor="let serialport of serialports">
+            <td>{{ serialport.Id }}</td>
+            <td>{{ serialport.PortName }}</td>
+            <td>{{ serialport.IsConnected }}</td>
         </tr>
     </tbody>
 </table>

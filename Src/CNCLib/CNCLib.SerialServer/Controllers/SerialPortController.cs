@@ -37,11 +37,12 @@ namespace CNCLib.SerialServer.Controllers
 	    {
 	        public int Id { get; set; }
 	        public string PortName { get; set; }
+	        public bool IsConnected { get; set; }
 	    }
 
 	    private SerialPortDefinition GetDefinition(SerialPortHelper port)
 	    {
-	        return new SerialPortDefinition() {Id = port.Id, PortName = port.PortName};
+	        return new SerialPortDefinition() {Id = port.Id, PortName = port.PortName, IsConnected = port.IsConnected};
 	    }
 
 	    [HttpGet]

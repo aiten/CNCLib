@@ -160,7 +160,14 @@ namespace Framework.Arduino.SerialCommunication
 
 			if (join && _readThread != null)
 			{
-				_readThread.Abort();
+			    try
+			    {
+			        _readThread.Abort();
+			    }
+			    catch (PlatformNotSupportedException)
+			    {
+			        // ignore
+			    }
 			}
 			_readThread = null;
 

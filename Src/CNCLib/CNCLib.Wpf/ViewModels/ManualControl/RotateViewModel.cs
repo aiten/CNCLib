@@ -41,13 +41,13 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			return CanSend() && Global.Instance.Machine.Rotate;
 		}
 
-		public void SendG69()							{ RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g69")); }); }
-		public void SendG68X0Y0R90()					{ RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g68 x0y0r90")); }); }
-		public void SendG68X0Y0R270()                   { RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g68 x0y0r270")); }); }
-		public void SendG6810()							{ RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.10")); }); }
-		public void SendG6811()							{ RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.11")); }); }
-		public void SendG6813()							{ RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.13 j0k0")); }); }
-		public void SendG6814()							{ RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.14 i0")); }); }
+		public void SendG69()							{ RunAndUpdate(() => { Global.Instance.Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g69")); }); }
+		public void SendG68X0Y0R90()					{ RunAndUpdate(() => { Global.Instance.Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g68 x0y0r90")); }); }
+		public void SendG68X0Y0R270()                   { RunAndUpdate(() => { Global.Instance.Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g68 x0y0r270")); }); }
+		public void SendG6810()							{ RunAndUpdate(() => { Global.Instance.Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.10")); }); }
+		public void SendG6811()							{ RunAndUpdate(() => { Global.Instance.Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.11")); }); }
+		public void SendG6813()							{ RunAndUpdate(() => { Global.Instance.Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.13 j0k0")); }); }
+		public void SendG6814()							{ RunAndUpdate(() => { Global.Instance.Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.14 i0")); }); }
 
 		#endregion
 

@@ -73,7 +73,7 @@ namespace CNCLib.Wpf.ViewModels
 
             WorkOffset = new WorkOffsetViewModel(this);
 
-			Com.CommandQueueEmpty += OnCommandQueueEmpty;
+		    Global.Instance.Com.CommandQueueEmpty += OnCommandQueueEmpty;
 		}
 
 		#endregion
@@ -153,9 +153,7 @@ namespace CNCLib.Wpf.ViewModels
 
         #region Properties
 
-        public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
-
-	    public bool Connected => Com.IsConnected;
+	    public bool Connected => Global.Instance.Com.IsConnected;
 
 	    #endregion
 

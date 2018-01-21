@@ -142,17 +142,17 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         #region Commands / CanCommands
 
-        public void SendG53() { RunAndUpdate(() => { Com.QueueCommand("g53"); }); }
-		public void SendG54() { RunAndUpdate(() => { Com.QueueCommand("g54"); }); }
-		public void SendG55() { RunAndUpdate(() => { Com.QueueCommand("g55"); }); }
-		public void SendG56() { RunAndUpdate(() => { Com.QueueCommand("g56"); }); }
-		public void SendG57() { RunAndUpdate(() => { Com.QueueCommand("g57"); }); }
-		public void SendG58() { RunAndUpdate(() => { Com.QueueCommand("g58"); }); }
-		public void SendG59() { RunAndUpdate(() => { Com.QueueCommand("g59"); }); }
+        public void SendG53() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("g53"); }); }
+		public void SendG54() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("g54"); }); }
+		public void SendG55() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("g55"); }); }
+		public void SendG56() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("g56"); }); }
+		public void SendG57() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("g57"); }); }
+		public void SendG58() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("g58"); }); }
+		public void SendG59() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("g59"); }); }
 
 	    private async Task<decimal?> GetParameterValue(int parameter)
 	    {
-	        string message = await Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand($"(print, #{parameter})"));
+	        string message = await Global.Instance.Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand($"(print, #{parameter})"));
 
 	        if (!string.IsNullOrEmpty(message))
 	        {
@@ -201,7 +201,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             // p0 => current
             // p1 => g54
             // p2 => g55
-            Com.QueueCommand($"g10 l2 p{offsetG+1}{x}{y}{z}");
+            Global.Instance.Com.QueueCommand($"g10 l2 p{offsetG+1}{x}{y}{z}");
         }
 
 	    public bool CanSetG5x(int offsetG)

@@ -59,7 +59,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region Commands / CanCommands
 
-		public void SendDirect() { RunAndUpdate(() => { Com.QueueCommand(DirectCommand); }); AddDirectCommandHistory(DirectCommand); }
+		public void SendDirect() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand(DirectCommand); }); AddDirectCommandHistory(DirectCommand); }
 		public bool CanSendDirectCommand()
 		{
 			return Connected && !string.IsNullOrEmpty(DirectCommand);

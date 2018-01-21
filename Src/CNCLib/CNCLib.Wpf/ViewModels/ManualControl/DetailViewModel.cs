@@ -28,10 +28,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			Vm = vm;
 		}
-		public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
-	    public Helpers.MachineGCodeHelper GCode => Framework.Tools.Pattern.Singleton<Helpers.MachineGCodeHelper>.Instance;
 
-	    public bool Connected => Com.IsConnected;
+	    public bool Connected => Global.Instance.Com.IsConnected;
 
 	    protected void RunInNewTask(Action todo)
 		{

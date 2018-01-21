@@ -33,6 +33,8 @@ namespace CNCLib.SerialServer.SerialPort
 
         public Serial Serial { get; set; }
 
+        public bool IsConnected => Serial != null ? Serial.IsConnected : false;
+
 
         #region INTERNAL List
 
