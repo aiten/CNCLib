@@ -89,7 +89,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.SqlServer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.SqLite", "CNCLib.Repository.SqLite\CNCLib.Repository.SqLite.csproj", "{972C43C8-8BF9-41FA-BA3C-299AC44A6938}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.SerialServer", "CNCLib.SerialServer\CNCLib.SerialServer.csproj", "{39FD3420-6140-4A24-82D3-2E9FB14B096E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Serial.Server", "CNCLib.SerialServer\CNCLib.Serial.Server.csproj", "{39FD3420-6140-4A24-82D3-2E9FB14B096E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Serial.Client", "CNCLib.SerialClient\CNCLib.Serial.Client.csproj", "{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -217,6 +219,10 @@ Global
 		{39FD3420-6140-4A24-82D3-2E9FB14B096E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39FD3420-6140-4A24-82D3-2E9FB14B096E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39FD3420-6140-4A24-82D3-2E9FB14B096E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

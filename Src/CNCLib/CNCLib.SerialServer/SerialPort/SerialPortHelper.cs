@@ -16,14 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using CNCLib.SerialServer.Controllers;
-using Framework.Arduino.SerialCommunication;
 
-namespace CNCLib.SerialServer.SerialPort
+namespace CNCLib.Serial.Server.SerialPort
 {
     public class SerialPortHelper
     {
@@ -31,7 +27,7 @@ namespace CNCLib.SerialServer.SerialPort
 
         public string PortName { get; set; }
 
-        public Serial Serial { get; set; }
+        public Framework.Arduino.SerialCommunication.Serial Serial { get; set; }
 
         public bool IsConnected => Serial != null ? Serial.IsConnected : false;
 
@@ -45,7 +41,7 @@ namespace CNCLib.SerialServer.SerialPort
             var port = Ports.FirstOrDefault((s) => s.Id == id);
             if (port != null && port.Serial == null)
             {
-                port.Serial = new Serial();
+                port.Serial = new Framework.Arduino.SerialCommunication.Serial();
             }
             return port;
         }

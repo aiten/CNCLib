@@ -16,17 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.IO.Ports;
 using System.Threading.Tasks;
-using CNCLib.SerialServer.SerialPort;
-using Microsoft.AspNetCore.Mvc;
+using CNCLib.Serial.Server.SerialPort;
 using Framework.Arduino.SerialCommunication;
+using Microsoft.AspNetCore.Mvc;
 
-namespace CNCLib.SerialServer.Controllers
+namespace CNCLib.Serial.Server.Controllers
 {
     [Route("api/[controller]")]
     public class SerialPortController : Controller
