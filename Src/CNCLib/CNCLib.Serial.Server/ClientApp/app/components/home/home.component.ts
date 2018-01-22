@@ -11,7 +11,7 @@ export class HomeComponent {
     appCopyright: string;
 
     constructor() {
-        this.appName = 'CNCLib.SerialServer';
+        this.appName = 'CNCLib.Serial.Server';
         this.appVersion = '0.0.1';
         this.appCopyright = '(c) by Herbert Aitenbichler';
     }
