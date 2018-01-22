@@ -142,5 +142,18 @@ namespace CNCLib.Serial.Server.Controllers
 	        port.Serial.ClearCommandHistory();
 	        return Ok();
 	    }
+
+        [HttpGet("{id:int}/history")]
+	    public async Task<IActionResult> GetCommandHistory(int id)
+	    {
+	        var port = SerialPortHelper.GetPort(id);
+	        if (port == null)
+	        {
+	            return NotFound();
+	        }
+
+	        var cmdlist = port.Serial.CommandHistoryCopy;
+	        return Ok(cmdlist);
+	    }
     }
 }

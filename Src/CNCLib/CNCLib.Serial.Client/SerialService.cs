@@ -188,7 +188,25 @@ namespace CNCLib.Serial.Client
             throw new NotImplementedException();
         }
 
-        public List<SerialCommand> CommandHistoryCopy { get; }
+        public List<SerialCommand> CommandHistoryCopy
+        {
+            get
+            {
+                if (PortId != 0)
+                {
+                    using (HttpClient client = CreateHttpClient())
+                    {
+                        HttpResponseMessage response = client.GetAsync($@"{_api}/{PortId}/history").GetAwaiter().GetResult();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var value = response.Content.ReadAsAsync<List<SerialCommand>>().Result;
+                            return value;
+                        }
+                    }
+                }
+                throw new Exception("ClearCommandHistory to SerialPort failed");
+            }
+        }
         public void ClearCommandHistory()
         {
             if (PortId != 0)
