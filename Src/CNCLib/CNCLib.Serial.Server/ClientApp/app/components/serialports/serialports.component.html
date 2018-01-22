@@ -8,6 +8,7 @@
             <th>Id</th>
             <th>Port-Name</th>
             <th>Is Connected</th>
+            <th>History</th>
         </tr>
     </thead>
     <tbody>
@@ -15,6 +16,7 @@
             <td>{{ serialport.Id }}</td>
             <td>{{ serialport.PortName }}</td>
             <td>{{ serialport.IsConnected }}</td>
+            <td><button (click)='showHistory(serialport.Id)'>History</button></td>
         </tr>
     </tbody>
 </table>

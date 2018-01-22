@@ -8,14 +8,14 @@ import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { SerialPortsComponent } from './components/serialports/serialports.component';
-import { CounterComponent } from './components/counter/counter.component';
+import { SerialPortHistoryComponent } from './components/serialporthistory/serialporthistory.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         NavMenuComponent,
-        CounterComponent,
         SerialPortsComponent,
+        SerialPortHistoryComponent,
         HomeComponent
     ],
     imports: [
@@ -25,8 +25,8 @@ import { CounterComponent } from './components/counter/counter.component';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
- //           { path: 'counter', component: CounterComponent },
             { path: 'serialports', component: SerialPortsComponent },
+            { path: 'serialports/:id/history', component: SerialPortHistoryComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]

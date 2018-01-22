@@ -26,9 +26,11 @@ namespace CNCLib.Serial.Client
 {
     public class ServiceBase : DisposeWrapper
 	{
-		protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://localhost:63099";
+        protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://localhost:50578";
+//        protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://localhost:63099";
+//      protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://ait10:5001";
 
-		protected HttpClient CreateHttpClient()
+        protected HttpClient CreateHttpClient()
 		{
 		    var client = new HttpClient {BaseAddress = new Uri(_webserverurl)};
 		    client.DefaultRequestHeaders.Accept.Clear();
