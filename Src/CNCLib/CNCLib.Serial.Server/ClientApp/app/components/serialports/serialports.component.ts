@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
+import { SerialPortDefinition } from '../models/serial.port.definition';
 
 @Component({
     selector: 'serialports',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class SerialPortsComponent {
     public serialports: SerialPortDefinition[];
-    public historyid: number;
+    public historyport: SerialPortDefinition;
 
     constructor(
         http: Http, 
@@ -19,17 +20,10 @@ export class SerialPortsComponent {
             {
                 this.serialports = result.json() as SerialPortDefinition[];
             }, error => console.error(error));
-            this.historyid = -1;
         }
 
-    showHistory(id: number)
+    showHistory(showhistoryport: SerialPortDefinition)
     {
-        this.historyid = id;
+        this.historyport = showhistoryport;
     }
-}
-
-interface SerialPortDefinition {
-    id: number;
-    portName: string;
-    isConnected: number;
 }

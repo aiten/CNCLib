@@ -1,6 +1,8 @@
-<h1>Serial command history</h1>
+<p>Command history: {{forserialportid}}</p>
 
 <p *ngIf="!serialcommands"><em>Loading...</em></p>
+
+<p><button (click)='refresh()'>Refresh</button><button (click)='clear()'>Clear</button></p>
 
 <table class='table' *ngIf="serialcommands">
     <thead>

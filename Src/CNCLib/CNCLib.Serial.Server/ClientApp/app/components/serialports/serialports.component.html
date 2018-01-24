@@ -16,10 +16,11 @@
             <td>{{ serialport.Id }}</td>
             <td>{{ serialport.PortName }}</td>
             <td>{{ serialport.IsConnected }}</td>
-            <td><button (click)='showHistory(serialport.Id)'>History</button></td>
+            <td><button (click)='showHistory(serialport)'>History</button></td>
         </tr>
     </tbody>
 </table>
 
-<serialporthistory *ngIf="historyid != -1" [id]="historyid">Loading...</serialporthistory>
-
+<div *ngIf="historyport">
+    <serialporthistory [forserialportid]="3">Loading...</serialporthistory>
+</div>
