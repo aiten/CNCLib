@@ -26,7 +26,7 @@ import { SerialPortHistoryComponent } from './components/serialporthistory/seria
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
             { path: 'serialports', component: SerialPortsComponent },
-            { path: 'serialports/:id/history', component: SerialPortHistoryComponent },
+//            { path: 'serialports/:id/history', component: SerialPortHistoryComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]

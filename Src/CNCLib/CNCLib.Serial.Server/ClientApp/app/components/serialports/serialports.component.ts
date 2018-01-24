@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class SerialPortsComponent {
     public serialports: SerialPortDefinition[];
+    public historyid: number;
 
     constructor(
         http: Http, 
@@ -18,12 +19,12 @@ export class SerialPortsComponent {
             {
                 this.serialports = result.json() as SerialPortDefinition[];
             }, error => console.error(error));
+            this.historyid = -1;
         }
 
     showHistory(id: number)
     {
-      console.log('Show history:' + this.baseUrl + id);
-      this.router.navigate([this.baseUrl + 'serialports',id,'history']);
+        this.historyid = id;
     }
 }
 

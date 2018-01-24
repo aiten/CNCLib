@@ -12,6 +12,7 @@ import 'rxjs/add/operator/switchMap';
 export class SerialPortHistoryComponent implements OnInit 
 {
     public serialcommands: SerialCommand[];
+    public id: number
     
     constructor(
         public http: Http,
@@ -20,18 +21,17 @@ export class SerialPortHistoryComponent implements OnInit
     {
     }
 
-    public id: number
-
     ngOnInit() 
     {
-        this.id = 3;
-//        this.http.get(this.baseUrl + 'api/SerialPort/' + this.id + '/history').
-        this.http.get(this.baseUrl + 'api/SerialPort/' + this.id + '/history').
-        subscribe(result => 
+        console.log('History for ' + this.id)
+        if (this.id >= 0)
         {
-            this.serialcommands = result.json() as SerialCommand[];
-        }, error => console.error(error));
-             
+            this.http.get(this.baseUrl + 'api/SerialPort/' + this.id + '/history').
+            subscribe(result => 
+            {
+                this.serialcommands = result.json() as SerialCommand[];
+            }, error => console.error(error));
+        }             
     }
 }
 

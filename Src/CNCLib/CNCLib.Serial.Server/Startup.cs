@@ -55,6 +55,8 @@ namespace CNCLib.Serial.Server
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseStaticFiles();
+
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -63,8 +65,6 @@ namespace CNCLib.Serial.Server
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1");
             });
-
-            app.UseStaticFiles();
 
             app.UseMvc(routes =>
             {
@@ -76,6 +76,7 @@ namespace CNCLib.Serial.Server
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
+
         }
     }
 }
