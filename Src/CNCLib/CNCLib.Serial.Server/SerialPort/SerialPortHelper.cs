@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,6 +31,10 @@ namespace CNCLib.Serial.Server.SerialPort
         public Framework.Arduino.SerialCommunication.Serial Serial { get; set; }
 
         public bool IsConnected => Serial != null ? Serial.IsConnected : false;
+
+        public bool IsAborted => Serial != null ? Serial.Aborted : false;
+        public bool IsSingleStep => Serial != null ? Serial.Pause : false;
+        public int CommandsInQueue => Serial != null ? Serial.CommandsInQueue : 0;
 
 
         #region INTERNAL List
@@ -55,6 +60,10 @@ namespace CNCLib.Serial.Server.SerialPort
         private static IEnumerable<SerialPortHelper> GetPortDefinitions()
         {
             var portnames = System.IO.Ports.SerialPort.GetPortNames();
+
+if (Environment.MachineName == "AIT7" && !portnames.Any())
+    portnames = new string[] { "com1" };
+
             return portnames.Select((port, index) => new SerialPortHelper() {Id = GetIdFromPortName(port), PortName = port});
         }
 

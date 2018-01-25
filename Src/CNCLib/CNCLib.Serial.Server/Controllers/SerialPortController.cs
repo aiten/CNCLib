@@ -33,10 +33,20 @@ namespace CNCLib.Serial.Server.Controllers
 
 	    private SerialPortDefinition GetDefinition(SerialPortHelper port)
 	    {
-	        return new SerialPortDefinition() {Id = port.Id, PortName = port.PortName, IsConnected = port.IsConnected};
+	        return new SerialPortDefinition()
+	        {
+	            Id = port.Id,
+	            PortName = port.PortName,
+	            IsConnected = port.IsConnected,
+	            IsAborted = port.IsAborted,
+                IsSingleStep = port.IsSingleStep,
+	            CommandsInQueue = port.CommandsInQueue,
+            };
 	    }
 
-	    [HttpGet]
+        #region Query/Info
+
+        [HttpGet]
 	    public async Task<IEnumerable<SerialPortDefinition>> Get()
         {
             return SerialPortHelper.Ports.Select((e) => GetDefinition(e));
@@ -60,7 +70,11 @@ namespace CNCLib.Serial.Server.Controllers
             return await Get();
 	    }
 
-	    [HttpPost("{id:int}/connect")]
+        #endregion
+
+        #region Connect/Disconnect
+
+        [HttpPost("{id:int}/connect")]
 	    public async Task<IActionResult> Connect(int id, int? baudrate=null,bool? resetOnConnect=true)
 	    {
 	        var port = SerialPortHelper.GetPort(id);
@@ -91,6 +105,10 @@ namespace CNCLib.Serial.Server.Controllers
 
             return Ok();
 	    }
+
+        #endregion
+
+        #region Send/Queue/Commands
 
         [HttpPost("{id:int}/queue")]
 	    public async Task<IActionResult> QueueCommand(int id, [FromBody] SerialCommands commands)
@@ -130,6 +148,75 @@ namespace CNCLib.Serial.Server.Controllers
             return Ok(ret);
         }
 
+	    [HttpPost("{id:int}/abort")]
+	    public async Task<IActionResult> AbortCommand(int id)
+	    {
+	        var port = SerialPortHelper.GetPort(id);
+	        if (port == null)
+	        {
+	            return NotFound();
+	        }
+
+	        port.Serial.AbortCommands();
+	        return Ok();
+	    }
+
+	    [HttpPost("{id:int}/resume")]
+	    public async Task<IActionResult> ResumeCommand(int id)
+	    {
+	        var port = SerialPortHelper.GetPort(id);
+	        if (port == null)
+	        {
+	            return NotFound();
+	        }
+
+	        port.Serial.ResumeAfterAbort();
+	        return Ok();
+	    }
+
+	    [HttpPost("{id:int}/enablesinglestep")]
+	    public async Task<IActionResult> EnableSingleStepCommand(int id)
+	    {
+	        var port = SerialPortHelper.GetPort(id);
+	        if (port == null)
+	        {
+	            return NotFound();
+	        }
+
+	        port.Serial.Pause = true;
+	        return Ok();
+	    }
+
+	    [HttpPost("{id:int}/disbablesinglestep")]
+	    public async Task<IActionResult> DisableSingleStepCommand(int id)
+	    {
+	        var port = SerialPortHelper.GetPort(id);
+	        if (port == null)
+	        {
+	            return NotFound();
+	        }
+
+	        port.Serial.Pause = false;
+	        return Ok();
+	    }
+
+	    [HttpPost("{id:int}/singlestep")]
+	    public async Task<IActionResult> SingleStepCommand(int id)
+	    {
+	        var port = SerialPortHelper.GetPort(id);
+	        if (port == null)
+	        {
+	            return NotFound();
+	        }
+
+	        port.Serial.SendNext = true;
+	        return Ok();
+	    }
+
+        #endregion
+
+        #region History
+
         [HttpPost("{id:int}/history/clear")]
 	    public async Task<IActionResult> ClearCommandHistory(int id)
 	    {
@@ -155,5 +242,7 @@ namespace CNCLib.Serial.Server.Controllers
 	        var cmdlist = port.Serial.CommandHistoryCopy;
 	        return Ok(cmdlist);
 	    }
+
+        #endregion
     }
 }

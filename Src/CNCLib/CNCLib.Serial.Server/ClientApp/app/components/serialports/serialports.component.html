@@ -7,7 +7,10 @@
         <tr>
             <th>Id</th>
             <th>Port-Name</th>
-            <th>Is Connected</th>
+            <th>Connected</th>
+            <th>Aborted</th>
+            <th>SingleStep</th>
+            <th>Queue</th>
             <th>History</th>
         </tr>
     </thead>
@@ -16,11 +19,14 @@
             <td>{{ serialport.Id }}</td>
             <td>{{ serialport.PortName }}</td>
             <td>{{ serialport.IsConnected }}</td>
-            <td><button (click)='showHistory(serialport)'>History</button></td>
+            <td>{{ serialport.IsAborted }}</td>
+            <td>{{ serialport.IsSingleStep }}</td>
+            <td>{{ serialport.CommandsInQueue }}</td>
+            <td><button *ngIf="serialports.isConnected" (click)='abort(serialport.Id)'>History</button><button (click)='showHistory(serialport.Id)'>History</button></td>
         </tr>
     </tbody>
 </table>
 
-<div *ngIf="historyport">
-    <serialporthistory [forserialportid]="3">Loading...</serialporthistory>
+<div *ngIf="historyportid">
+    <serialporthistory [forserialportid]=historyportid>Loading...</serialporthistory>
 </div>

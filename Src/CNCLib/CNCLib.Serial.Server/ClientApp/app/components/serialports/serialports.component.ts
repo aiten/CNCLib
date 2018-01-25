@@ -7,23 +7,33 @@ import { SerialPortDefinition } from '../models/serial.port.definition';
     selector: 'serialports',
     templateUrl: './serialports.component.html'
 })
-export class SerialPortsComponent {
+export class SerialPortsComponent
+{
     public serialports: SerialPortDefinition[];
-    public historyport: SerialPortDefinition;
+    public historyportid: number;
 
     constructor(
-        http: Http, 
+        private http: Http,
         @Inject('BASE_URL') public baseUrl: string,
         public router: Router)
-        {
-            http.get(baseUrl + 'api/SerialPort').subscribe(result => 
-            {
-                this.serialports = result.json() as SerialPortDefinition[];
-            }, error => console.error(error));
-        }
-
-    showHistory(showhistoryport: SerialPortDefinition)
     {
-        this.historyport = showhistoryport;
+        this.http.get(baseUrl + 'api/SerialPort').subscribe(result => 
+        {
+            this.serialports = result.json() as SerialPortDefinition[];
+        }, error => console.error(error));
+    }
+
+    showHistory(showhistoryportid: number)
+    {
+        this.historyportid = showhistoryportid;
+    }
+
+    abort(serialportid: number)
+    {
+        console.log('Abort ' + serialportid);
+        this.http.post(this.baseUrl + 'api/SerialPort/' + serialportid + '/abort',"x").
+            subscribe(result =>
+            {
+            }, error => console.error(error));
     }
 }
