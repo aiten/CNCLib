@@ -22,6 +22,7 @@ namespace Framework.Arduino.SerialCommunication
 {
     public class SerialCommand
     {
+        public int SeqId { get; set; }
         public DateTime? SentTime { get; set; }
         public string CommandText { get; set; }
 

@@ -95,8 +95,8 @@ namespace CNCLib.ServiceProxy.WebAPI
 		{
 			using (HttpClient client = CreateHttpClient())
 			{
-			    HttpResponseMessage response = await client.GetAsync(_api + "/" + classname);
-//				HttpResponseMessage response = await client.GetAsync(_api + "/?classname=" + classname);
+//			    HttpResponseMessage response = await client.GetAsync(_api + "/" + classname);
+				HttpResponseMessage response = await client.GetAsync(_api + "/?classname=" + classname);
 				if (response.IsSuccessStatusCode)
 				{
 					IEnumerable<Item> items = await response.Content.ReadAsAsync<IEnumerable<Item>>();

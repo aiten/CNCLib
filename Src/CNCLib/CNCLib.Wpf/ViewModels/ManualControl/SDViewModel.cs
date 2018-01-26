@@ -51,14 +51,14 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		#endregion
 
 		#region Commands / CanCommands
-		public void SendM20File() { RunAndUpdate(() => { Com.QueueCommand(MachineGCodeHelper.PrepareCommand("m20")); }); }
+		public void SendM20File() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m20")); }); }
 		public void SendM24File() { SendM24File(SDFileName); }
 		public void SendM24File(string filename)
 		{
 			RunAndUpdate(() =>
 			{
-				Com.QueueCommand(MachineGCodeHelper.PrepareCommand("m23 " + filename));
-				Com.QueueCommand(MachineGCodeHelper.PrepareCommand("m24"));
+				Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m23 " + filename));
+				Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m24"));
 			});
 		}
 
@@ -98,18 +98,18 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 	            savefileinresponse = e.Info.Contains(sDFileName);
 	        });
 
-	        Com.ReplyUnknown += checkresponse;
-	        Com.SendCommand(MachineGCodeHelper.PrepareCommand("m28 " + sDFileName));
-	        Com.ReplyUnknown -= checkresponse;
+	        Global.Instance.Com.Current.ReplyUnknown += checkresponse;
+	        Global.Instance.Com.Current.SendCommand(MachineGCodeHelper.PrepareCommand("m28 " + sDFileName));
+	        Global.Instance.Com.Current.ReplyUnknown -= checkresponse;
 	        if (savefileinresponse)
 	        {
-	            Com.SendCommandsAsync(lines).GetAwaiter().GetResult();
+	            Global.Instance.Com.Current.SendCommandsAsync(lines).GetAwaiter().GetResult();
 
 	            bool filesavednresponse = false;
 	            checkresponse = (obj, e) => { filesavednresponse = e.Info.Contains("Done"); };
-	            Com.ReplyUnknown += checkresponse;
-	            Com.SendCommand(MachineGCodeHelper.PrepareCommand("m29"));
-	            Com.ReplyUnknown -= checkresponse;
+	            Global.Instance.Com.Current.ReplyUnknown += checkresponse;
+	            Global.Instance.Com.Current.SendCommand(MachineGCodeHelper.PrepareCommand("m29"));
+	            Global.Instance.Com.Current.ReplyUnknown -= checkresponse;
 	        }
 	    }
 
@@ -118,16 +118,16 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			RunAndUpdate(() =>
 			{
-                Com.QueueCommand(MachineGCodeHelper.PrepareCommand("m30 " + filename));
+                Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m30 " + filename));
 			});
 		}
-		public void SendFileDirect() { RunAndUpdate(async () => { await Com.SendFileAsync(FileName); }); }
+		public void SendFileDirect() { RunAndUpdate(async () => { await Global.Instance.Com.Current.SendFileAsync(FileName); }); }
 
 		public void AddToFile()
 		{
 			RunAndUpdate(async () =>
 			{
-				string message = await Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"));
+				string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"));
 				if (!string.IsNullOrEmpty(message))
 				{
 					message = message.Replace("ok", "");

@@ -55,7 +55,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			var results = new ObservableCollection<SentCNCCommand>();
 
-			foreach (var rc in Com.CommandHistoryCopy)
+			foreach (var rc in Global.Instance.Com.Current.CommandHistoryCopy)
 			{
                 DateTime senttime = rc.SentTime ?? DateTime.Today;
 
@@ -66,7 +66,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		}
 		public void ClearCommandHistory()
 		{
-			Com.ClearCommandHistory();
+		    Global.Instance.Com.Current.ClearCommandHistory();
 			RefreshCommandHistory();
 		}
 

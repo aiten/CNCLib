@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic", "CNCLib.Logic\CNCLib.Logic.csproj", "{36B9838B-493F-4BAC-A8D3-35298C4FFDC7}"
 EndProject
@@ -88,6 +88,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.SqlServer", "CNCLib.Repository.SqlServer\CNCLib.Repository.SqlServer.csproj", "{BD772F21-D4E2-4577-9AF3-FBE59BB72C03}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.SqLite", "CNCLib.Repository.SqLite\CNCLib.Repository.SqLite.csproj", "{972C43C8-8BF9-41FA-BA3C-299AC44A6938}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Serial.Server", "CNCLib.Serial.Server\CNCLib.Serial.Server.csproj", "{39FD3420-6140-4A24-82D3-2E9FB14B096E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Serial.Client", "CNCLib.Serial.Client\CNCLib.Serial.Client.csproj", "{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Serial.Shared", "CNCLib.Serial.Shared\CNCLib.Serial.Shared.csproj", "{8715E92C-ACA6-4B39-8A31-69CFB8357224}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -211,6 +217,18 @@ Global
 		{972C43C8-8BF9-41FA-BA3C-299AC44A6938}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{972C43C8-8BF9-41FA-BA3C-299AC44A6938}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{972C43C8-8BF9-41FA-BA3C-299AC44A6938}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39FD3420-6140-4A24-82D3-2E9FB14B096E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39FD3420-6140-4A24-82D3-2E9FB14B096E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39FD3420-6140-4A24-82D3-2E9FB14B096E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39FD3420-6140-4A24-82D3-2E9FB14B096E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8715E92C-ACA6-4B39-8A31-69CFB8357224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8715E92C-ACA6-4B39-8A31-69CFB8357224}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8715E92C-ACA6-4B39-8A31-69CFB8357224}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8715E92C-ACA6-4B39-8A31-69CFB8357224}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

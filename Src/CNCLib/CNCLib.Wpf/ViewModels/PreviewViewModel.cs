@@ -38,14 +38,12 @@ namespace CNCLib.Wpf.ViewModels
 
 		public PreviewViewModel()
 		{
-			Com.CommandSending += CommandSending;
+			Global.Instance.Com.Current.CommandSending += CommandSending;
 		}
 
 		#endregion
 
 		#region Properties
-
-		public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
 
 	    private CommandList _commands = new CommandList();
 
@@ -235,7 +233,7 @@ namespace CNCLib.Wpf.ViewModels
 
 				try
 				{
-					Com.ClearCommandHistory();
+					Global.Instance.Com.Current.ClearCommandHistory();
 
                     if (Global.Instance.Machine.CommandSyntax == CommandSyntax.HPGL && IsHPGLAndPlotter())
                     {
@@ -244,7 +242,7 @@ namespace CNCLib.Wpf.ViewModels
                             string cmdstr = cmd.ImportInfo;
                             if (!string.IsNullOrEmpty(cmdstr))
                             {
-                                foreach (var c in Com.QueueCommand(cmdstr))
+                                foreach (var c in Global.Instance.Com.Current.QueueCommand(cmdstr))
                                 {
                                     c.Tag = cmd;
                                 }
@@ -263,7 +261,7 @@ namespace CNCLib.Wpf.ViewModels
                             {
                                 foreach (string str in cmds)
                                 {
-                                    foreach (var c in Com.QueueCommand(str))
+                                    foreach (var c in Global.Instance.Com.Current.QueueCommand(str))
                                     {
                                         c.Tag = cmd;
                                     }
@@ -315,7 +313,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public bool CanSendTo()
 		{
-			return !_loadingOrSending && Com.IsConnected && Commands.Count > 0 && IsHPGLAndPlotter();
+			return !_loadingOrSending && Global.Instance.Com.Current.IsConnected && Commands.Count > 0 && IsHPGLAndPlotter();
 		}
 
 		public bool CanLoad()
@@ -359,12 +357,12 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void GotoPos(Point3D pt)
 		{
-			Com.QueueCommand(
+			Global.Instance.Com.Current.QueueCommand(
 			    $@"g0 x{(pt.X0).ToString(CultureInfo.InvariantCulture)} y{(pt.Y0).ToString(CultureInfo.InvariantCulture)}");
 		}
 		public bool CanGotoPos(Point3D pt)
 		{
-			return !_loadingOrSending && Com.IsConnected;
+			return !_loadingOrSending && Global.Instance.Com.Current.IsConnected;
 		}
 
 		#endregion

@@ -50,7 +50,6 @@ namespace CNCLib.Wpf.ViewModels
 			get => _eeprom;
 		    set { SetProperty(() => _eeprom == value, () => _eeprom = value); }
 		}
-		private Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
 
 	    #endregion
 
@@ -101,16 +100,16 @@ namespace CNCLib.Wpf.ViewModels
 
 		public bool CanReadEeprom()
 		{
-			return Com.IsConnected;
+			return Global.Instance.Com.Current.IsConnected;
 		}
 
 		public bool CanWriteEeprom()
 		{
-			return Com.IsConnected && _validReadEeprom;
+			return Global.Instance.Com.Current.IsConnected && _validReadEeprom;
 		}
 		public bool CanEraseEeprom()
 		{
-			return Com.IsConnected;
+			return Global.Instance.Com.Current.IsConnected;
 		}
 
 		#endregion

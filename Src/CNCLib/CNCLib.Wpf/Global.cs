@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CNCLib.GCode.Commands;
 using CNCLib.Wpf.Models;
+using CNCLib.Wpf.Helpers;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Wpf
@@ -57,7 +58,14 @@ namespace CNCLib.Wpf
         private bool _resetOnConnect = false;
         public bool ResetOnConnect { get => _resetOnConnect; set { _resetOnConnect = value; RaisePropertyChanged(); } }
 
-	    private CommandList _commands = new CommandList();
+//        public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
+	    public SerialProxy Com { get; set; }  = new SerialProxy();
+
+        public Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<Helpers.JoystickArduinoSerialCommunication>.Instance;
+
+        public Helpers.MachineGCodeHelper GCode => Framework.Tools.Pattern.Singleton<Helpers.MachineGCodeHelper>.Instance;
+
+        private CommandList _commands = new CommandList();
 	    public CommandList Commands { get => _commands; set { _commands = value; RaisePropertyChanged(); }}
 
         public event PropertyChangedEventHandler PropertyChanged;

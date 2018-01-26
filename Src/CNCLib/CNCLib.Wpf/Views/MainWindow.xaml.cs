@@ -46,23 +46,20 @@ namespace CNCLib.Wpf.Views
 			};
 
 			DateTime now = DateTime.Now;
-			Com.Trace.EnableTrace($@"{System.IO.Path.GetTempPath()}CNCLibTrace_{now.Year:D4}{now.Month:D2}{now.Day:D2}_{now.Hour:D2}{now.Minute:D2}{now.Second:D2}.txt");
+		    Global.Instance.Com.Current.Trace.EnableTrace($@"{System.IO.Path.GetTempPath()}CNCLibTrace_{now.Year:D4}{now.Month:D2}{now.Day:D2}_{now.Hour:D2}{now.Minute:D2}{now.Second:D2}.txt");
 		}
-		private Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
 
-	    private Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<Helpers.JoystickArduinoSerialCommunication>.Instance;
-
-	    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (Com.IsConnected)
-				Com.Disconnect();
+			if (Global.Instance.Com.Current.IsConnected)
+			    Global.Instance.Com.Current.Disconnect();
 
-			Com.Trace.CloseTrace();
+		    Global.Instance.Com.Current.Trace.CloseTrace();
 
-            if (ComJoystick.IsConnected)
-                ComJoystick.Disconnect();
+            if (Global.Instance.ComJoystick.IsConnected)
+                Global.Instance.ComJoystick.Disconnect();
 
-            ComJoystick.Trace.CloseTrace();
+		    Global.Instance.ComJoystick.Trace.CloseTrace();
         }
     }
 }

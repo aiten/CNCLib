@@ -1,0 +1,40 @@
+<div>
+    <h1>Serial ports</h1>
+    <button (click)='reload()'>Reload</button>
+</div>
+
+<p *ngIf="!serialports"><em>Loading...</em></p>
+
+<div *ngIf="serialports">
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Port-Name</th>
+                <th>Connected</th>
+                <th>Aborted</th>
+                <th>SingleStep</th>
+                <th>Queue</th>
+                <th>History</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let serialport of serialports">
+                <td>{{ serialport.Id }}</td>
+                <td>{{ serialport.PortName }}</td>
+                <td>{{ serialport.IsConnected }}</td>
+                <td>{{ serialport.IsAborted }}</td>
+                <td>{{ serialport.IsSingleStep }}</td>
+                <td>{{ serialport.CommandsInQueue }}</td>
+                <td>
+                    <button (click)='showHistory(serialport.Id)'>History</button>
+                    <button *ngIf="serialport.IsConnected" (click)='abort(serialport.Id)'>Abort</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div *ngIf="historyportid">
+    <serialporthistory [forserialportid]=historyportid>Loading...</serialporthistory>
+</div>

@@ -24,8 +24,6 @@ namespace CNCLib.Wpf.Helpers
 {
     class JoystickArduinoSerialCommunication : Framework.Arduino.SerialCommunication.Serial
     {
-		private Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
-
         public JoystickArduinoSerialCommunication()
 		{
 			OkTag = "";		// every new line is "end of command"
@@ -36,7 +34,7 @@ namespace CNCLib.Wpf.Helpers
 			Task.Run(() =>
 			{
 			    todo();
-			    Com.WriteCommandHistory(CommandHistoryViewModel.CommandHistoryFile);
+			    Global.Instance.Com.Current.WriteCommandHistory(CommandHistoryViewModel.CommandHistoryFile);
 			});
 		}
 

@@ -73,7 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="netstandard" />
-  </ItemGroup> 
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CNCLibSolutionInfo.cs">
       <Link>Properties\CNCLibSolutionInfo.cs</Link>
@@ -85,6 +85,7 @@
       <DependentUpon>MoveUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Global.cs" />
+    <Compile Include="Helpers\SerialProxy.cs" />
     <Compile Include="Helpers\EepromHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\JoystickArduinoSerialCommunication.cs" />
@@ -272,6 +273,10 @@
     <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
       <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
       <Name>CNCLib.Logic.Contracts.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Serial.Client\CNCLib.Serial.Client.csproj">
+      <Project>{0ef35dce-594a-4ef2-8b82-52d97e4c3016}</Project>
+      <Name>CNCLib.Serial.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
       <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>

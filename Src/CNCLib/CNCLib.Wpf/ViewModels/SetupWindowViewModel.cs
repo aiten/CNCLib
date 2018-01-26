@@ -97,10 +97,6 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region Properties
 
-		private Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
-
-        private Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<JoystickArduinoSerialCommunication>.Instance;
-
         #region Current Machine
 
         public Machine Machine
@@ -128,9 +124,9 @@ namespace CNCLib.Wpf.ViewModels
             set => SetProperty(ref _machines, value);
         }
 
-        public bool Connected => Com.IsConnected;
+        public bool Connected => Global.Instance.Com.Current.IsConnected;
 
-        public bool ConnectedJoystick => ComJoystick.IsConnected;
+        public bool ConnectedJoystick => Global.Instance.ComJoystick.IsConnected;
 
         #endregion
 
@@ -158,13 +154,15 @@ namespace CNCLib.Wpf.ViewModels
         {
 			try
 			{
+                Global.Instance.Com.SetCurrent(Machine.ComPort);
+
                 if (Machine.NeedDtr)
-                    Com.ResetOnConnect = true;
+                    Global.Instance.Com.Current.ResetOnConnect = true;
                 else
-                    Com.ResetOnConnect = ResetOnConnect;
-                Com.CommandToUpper = Machine.CommandToUpper;
-                Com.BaudRate = (int)Machine.BaudRate;
-                Com.Connect(Machine.ComPort);
+                    Global.Instance.Com.Current.ResetOnConnect = ResetOnConnect;
+                Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
+                Global.Instance.Com.Current.BaudRate = (int)Machine.BaudRate;
+                Global.Instance.Com.Current.Connect(Machine.ComPort);
                 await SetGlobal();
 
 				if (SendInitCommands && Machine != null)
@@ -174,11 +172,11 @@ namespace CNCLib.Wpf.ViewModels
 					if (initCommands.Any())
 					{
 						// wait (do not check if reset - arduino may reset even the "reset" is not specified)
-						await Com.WaitUntilResponseAsync(3000);
+						await Global.Instance.Com.Current.WaitUntilResponseAsync(3000);
 
 						foreach (var initcmd in initCommands.OrderBy(cmd => cmd.SeqNo))
 						{
-							Com.QueueCommand(initcmd.CommandString);
+							Global.Instance.Com.Current.QueueCommand(initcmd.CommandString);
 						}
 					}
 				}
@@ -196,10 +194,10 @@ namespace CNCLib.Wpf.ViewModels
         {
             try
             {
-                ComJoystick.ResetOnConnect = true;
-                ComJoystick.CommandToUpper = false;
-                ComJoystick.BaudRate = Joystick.BaudRate;
-                ComJoystick.Connect(Joystick.ComPort);
+                Global.Instance.ComJoystick.ResetOnConnect = true;
+                Global.Instance.ComJoystick.CommandToUpper = false;
+                Global.Instance.ComJoystick.BaudRate = Joystick.BaudRate;
+                Global.Instance.ComJoystick.Connect(Joystick.ComPort);
             }
             catch (Exception e)
             {
@@ -214,7 +212,7 @@ namespace CNCLib.Wpf.ViewModels
 			Global.Instance.SizeX = Machine.SizeX;
             Global.Instance.SizeY = Machine.SizeY;
             Global.Instance.SizeZ = Machine.SizeZ;
-			Com.ArduinoBuffersize = Machine.BufferSize;
+			Global.Instance.Com.Current.ArduinoBuffersize = Machine.BufferSize;
 
 			Global.Instance.Machine = await _machineService.Get(Machine.MachineID);
         }
@@ -226,7 +224,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void DisConnect()
 		{
-			Com.Disconnect();
+			Global.Instance.Com.Current.Disconnect();
 			RaisePropertyChanged(nameof(Connected));
 		}
 		public bool CanDisConnect()
@@ -241,7 +239,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public void DisConnectJoystick()
         {
-            ComJoystick.Disconnect();
+            Global.Instance.ComJoystick.Disconnect();
             RaisePropertyChanged(nameof(ConnectedJoystick));
         }
         public bool CanDisConnectJoystick()
