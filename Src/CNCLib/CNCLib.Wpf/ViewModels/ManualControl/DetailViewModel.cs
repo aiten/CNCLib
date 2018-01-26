@@ -29,7 +29,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			Vm = vm;
 		}
 
-	    public bool Connected => Global.Instance.Com.IsConnected;
+	    public bool Connected => Global.Instance.Com.Current.IsConnected;
 
 	    protected void RunInNewTask(Action todo)
 		{

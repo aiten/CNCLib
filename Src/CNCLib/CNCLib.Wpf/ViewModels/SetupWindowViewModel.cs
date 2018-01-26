@@ -124,7 +124,7 @@ namespace CNCLib.Wpf.ViewModels
             set => SetProperty(ref _machines, value);
         }
 
-        public bool Connected => Global.Instance.Com.IsConnected;
+        public bool Connected => Global.Instance.Com.Current.IsConnected;
 
         public bool ConnectedJoystick => Global.Instance.ComJoystick.IsConnected;
 
@@ -154,13 +154,15 @@ namespace CNCLib.Wpf.ViewModels
         {
 			try
 			{
+                Global.Instance.Com.SetCurrent(Machine.ComPort);
+
                 if (Machine.NeedDtr)
-                    Global.Instance.Com.ResetOnConnect = true;
+                    Global.Instance.Com.Current.ResetOnConnect = true;
                 else
-                    Global.Instance.Com.ResetOnConnect = ResetOnConnect;
-                Global.Instance.Com.CommandToUpper = Machine.CommandToUpper;
-                Global.Instance.Com.BaudRate = (int)Machine.BaudRate;
-                Global.Instance.Com.Connect(Machine.ComPort);
+                    Global.Instance.Com.Current.ResetOnConnect = ResetOnConnect;
+                Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
+                Global.Instance.Com.Current.BaudRate = (int)Machine.BaudRate;
+                Global.Instance.Com.Current.Connect(Machine.ComPort);
                 await SetGlobal();
 
 				if (SendInitCommands && Machine != null)
@@ -170,11 +172,11 @@ namespace CNCLib.Wpf.ViewModels
 					if (initCommands.Any())
 					{
 						// wait (do not check if reset - arduino may reset even the "reset" is not specified)
-						await Global.Instance.Com.WaitUntilResponseAsync(3000);
+						await Global.Instance.Com.Current.WaitUntilResponseAsync(3000);
 
 						foreach (var initcmd in initCommands.OrderBy(cmd => cmd.SeqNo))
 						{
-							Global.Instance.Com.QueueCommand(initcmd.CommandString);
+							Global.Instance.Com.Current.QueueCommand(initcmd.CommandString);
 						}
 					}
 				}
@@ -210,7 +212,7 @@ namespace CNCLib.Wpf.ViewModels
 			Global.Instance.SizeX = Machine.SizeX;
             Global.Instance.SizeY = Machine.SizeY;
             Global.Instance.SizeZ = Machine.SizeZ;
-			Global.Instance.Com.ArduinoBuffersize = Machine.BufferSize;
+			Global.Instance.Com.Current.ArduinoBuffersize = Machine.BufferSize;
 
 			Global.Instance.Machine = await _machineService.Get(Machine.MachineID);
         }
@@ -222,7 +224,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void DisConnect()
 		{
-			Global.Instance.Com.Disconnect();
+			Global.Instance.Com.Current.Disconnect();
 			RaisePropertyChanged(nameof(Connected));
 		}
 		public bool CanDisConnect()

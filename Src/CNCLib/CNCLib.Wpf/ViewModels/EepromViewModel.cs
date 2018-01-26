@@ -100,16 +100,16 @@ namespace CNCLib.Wpf.ViewModels
 
 		public bool CanReadEeprom()
 		{
-			return Global.Instance.Com.IsConnected;
+			return Global.Instance.Com.Current.IsConnected;
 		}
 
 		public bool CanWriteEeprom()
 		{
-			return Global.Instance.Com.IsConnected && _validReadEeprom;
+			return Global.Instance.Com.Current.IsConnected && _validReadEeprom;
 		}
 		public bool CanEraseEeprom()
 		{
-			return Global.Instance.Com.IsConnected;
+			return Global.Instance.Com.Current.IsConnected;
 		}
 
 		#endregion

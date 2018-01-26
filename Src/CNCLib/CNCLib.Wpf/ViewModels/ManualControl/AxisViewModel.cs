@@ -75,7 +75,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 	    #endregion
 
             #region Commands / CanCommands
-            private void SendMoveCommand(string dist) { RunAndUpdate(() => { Global.Instance.Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g91 g0" + AxisName + dist + " g90")); }); }
+            private void SendMoveCommand(string dist) { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g91 g0" + AxisName + dist + " g90")); }); }
 
 		private void SendProbeCommand(int axisindex)
 		{
@@ -85,17 +85,17 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			});
 		}
 
-		public void SendRefMove()	{ RunAndUpdate(() => { Global.Instance.Com.QueueCommand(MachineGCodeHelper.PrepareCommand("g28 " + AxisName + "0")); }); }
-		public void SendG92()		{ RunAndUpdate(() => { Global.Instance.Com.QueueCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); }); }
+		public void SendRefMove()	{ RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g28 " + AxisName + "0")); }); }
+		public void SendG92()		{ RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); }); }
 		public void SendG31()		{ SendProbeCommand(AxisIndex); }
 		public void SendHome() 
 		{
 			RunAndUpdate(() => 
 			{ 
 				if (HomeIsMax)
-				    Global.Instance.Com.QueueCommand("g53 g0"+ AxisName+"#" + (5161+AxisIndex).ToString()); 
+				    Global.Instance.Com.Current.QueueCommand("g53 g0"+ AxisName+"#" + (5161+AxisIndex).ToString()); 
 				else
-				    Global.Instance.Com.QueueCommand("g53 g0" + AxisName + "0");
+				    Global.Instance.Com.Current.QueueCommand("g53 g0" + AxisName + "0");
 			}); 
 		}
 

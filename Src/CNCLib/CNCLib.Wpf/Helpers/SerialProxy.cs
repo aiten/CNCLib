@@ -27,60 +27,25 @@ namespace CNCLib.Wpf.Helpers
 {
     public class SerialProxy
     {
-        private Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<CNCLib.Serial.Client.SerialService>.Instance;
-        private Framework.Arduino.SerialCommunication.ISerial CurrentCom => Com;
-
-        public bool IsConnected => CurrentCom.IsConnected;
-
-        public bool Pause
+        public SerialProxy()
         {
-            get => CurrentCom.Pause;
-            set => CurrentCom.Pause = value;
+            Current = LocalCom;
         }
-        public bool SendNext
-        {
-            get => CurrentCom.SendNext;
-            set => CurrentCom.SendNext = value;
-        }
-        public bool ResetOnConnect
-        {
-            get => CurrentCom.ResetOnConnect;
-            set => CurrentCom.ResetOnConnect = value;
-        }
-        public bool CommandToUpper
-        {
-            get => CurrentCom.CommandToUpper;
-            set => CurrentCom.CommandToUpper = value;
-        }
-        public int BaudRate
-        {
-            get => CurrentCom.BaudRate;
-            set => CurrentCom.BaudRate = value;
-        }
-        public int ArduinoBuffersize
-        {
-            get => CurrentCom.ArduinoBuffersize;
-            set => CurrentCom.ArduinoBuffersize = value;
-        }
+        private Framework.Arduino.SerialCommunication.ISerial RemoteCom => Framework.Tools.Pattern.Singleton<CNCLib.Serial.Client.SerialService>.Instance;
+        private Framework.Arduino.SerialCommunication.ISerial LocalCom => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
+        public Framework.Arduino.SerialCommunication.ISerial Current { get; private set; }
 
-        public void Disconnect() => CurrentCom.Disconnect();
+        public void SetCurrent(string portname)
+        {
+            if (portname.StartsWith("com"))
+            {
+                Current = LocalCom;
+            }
+            else
+            {
+                Current = RemoteCom;
 
-
-        public IEnumerable<SerialCommand> SendCommand(string line) => CurrentCom.SendCommand(line);
-        public async Task<IEnumerable<SerialCommand>> SendCommandAsync(string line, int waitForMilliseconds = int.MaxValue) => await CurrentCom.SendCommandAsync(line, waitForMilliseconds);
-        public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> commands) => await CurrentCom.SendCommandsAsync(commands);
-        public async Task<string> SendCommandAndReadOKReplyAsync(string line, int waitForMilliseconds = Int32.MaxValue) => await CurrentCom.SendCommandAndReadOKReplyAsync(line, waitForMilliseconds);
-        public async Task<IEnumerable<SerialCommand>> SendFileAsync(string filename) => await CurrentCom.SendFileAsync(filename);
-        public IEnumerable<SerialCommand> QueueCommand(string line) => CurrentCom.QueueCommand(line);
-        public async Task<string> WaitUntilResponseAsync(int waitForMilliseconds = Int32.MaxValue) => await CurrentCom.WaitUntilResponseAsync(waitForMilliseconds);
-
-        public void AbortCommands() => CurrentCom.AbortCommands();
-        public void ResumeAfterAbort() => CurrentCom.ResumeAfterAbort();
-
-        public void WritePendingCommandsToFile(string filename) => CurrentCom.WritePendingCommandsToFile(filename);
-        public void WriteCommandHistory(string filename) => CurrentCom.WriteCommandHistory(filename);
-        public void ClearCommandHistory() => CurrentCom.ClearCommandHistory();
+            }
+        }
     }
 }
-
-

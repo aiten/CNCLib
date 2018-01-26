@@ -135,12 +135,13 @@ namespace CNCLib.Wpf.ViewModels
 			{
 				try
 				{
-				    Global.Instance.Com.ResetOnConnect = Global.Instance.ResetOnConnect || Machine.NeedDtr;
-				    Global.Instance.Com.CommandToUpper = Machine.CommandToUpper;
-				    Global.Instance.Com.BaudRate = Machine.BaudRate;
-				    Global.Instance.Com.Connect(Machine.ComPort);
+                    Global.Instance.Com.SetCurrent(Machine.ComPort);
+                    Global.Instance.Com.Current.ResetOnConnect = Global.Instance.ResetOnConnect || Machine.NeedDtr;
+				    Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
+				    Global.Instance.Com.Current.BaudRate = Machine.BaudRate;
+				    Global.Instance.Com.Current.Connect(Machine.ComPort);
 
-					await Global.Instance.Com.SendCommandAsync("?",3000);
+					await Global.Instance.Com.Current.SendCommandAsync("?",3000);
 					await Task.Delay(100);
 
 					var eeprom = await new EepromHelper().ReadEepromAsync();
@@ -173,7 +174,7 @@ namespace CNCLib.Wpf.ViewModels
 				}
 				finally
 				{
-				    Global.Instance.Com.Disconnect();
+				    Global.Instance.Com.Current.Disconnect();
 				}
 			}
 		}

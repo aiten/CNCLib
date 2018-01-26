@@ -45,11 +45,11 @@ namespace CNCLib.Wpf.Helpers
 			string probdistup = machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
 			string probfeed = machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
 
-			var result = await Global.Instance.Com.SendCommandAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90");
+			var result = await Global.Instance.Com.Current.SendCommandAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90");
             if (result?.LastOrDefault()?.ReplyType.HasFlag(Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == false)
 			{
-				Global.Instance.Com.QueueCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
-				Global.Instance.Com.QueueCommand("g91 g0" + axisname + probdistup + " g90");
+				Global.Instance.Com.Current.QueueCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
+				Global.Instance.Com.Current.QueueCommand("g91 g0" + axisname + probdistup + " g90");
 				return true;
 			}
 			return false;
@@ -61,7 +61,7 @@ namespace CNCLib.Wpf.Helpers
 
 		public async Task<UInt32[]> GetEpromValuesAsync(int waitForMilliseconds = 3000)
 		{
-			var cmd = (await Global.Instance.Com.SendCommandAsync("$?", waitForMilliseconds)).FirstOrDefault();
+			var cmd = (await Global.Instance.Com.Current.SendCommandAsync("$?", waitForMilliseconds)).FirstOrDefault();
 			if (cmd != null && string.IsNullOrEmpty(cmd.ResultText)==false)
 			{
 				string[] seperators = { "\n", "\r" };
@@ -106,14 +106,14 @@ namespace CNCLib.Wpf.Helpers
 
 		public async Task WriteEepromValuesAsync(EepromV1 ee)
 		{
-			await Global.Instance.Com.SendCommandAsync(@"$!");
-			await Global.Instance.Com.SendCommandsAsync(ee.ToGCode());
+			await Global.Instance.Com.Current.SendCommandAsync(@"$!");
+			await Global.Instance.Com.Current.SendCommandsAsync(ee.ToGCode());
 		}
 
 		public async Task EraseEepromValuesAsync()
 		{
-			await Global.Instance.Com.SendCommandAsync(@"$!");
-			await Global.Instance.Com.SendCommandAsync(@"$0=0");
+			await Global.Instance.Com.Current.SendCommandAsync(@"$!");
+			await Global.Instance.Com.Current.SendCommandAsync(@"$0=0");
 		}
 
 		#endregion
@@ -164,7 +164,7 @@ namespace CNCLib.Wpf.Helpers
 				{
                     if (s.TrimEnd().EndsWith("?"))
                     {
-                        var result = await Global.Instance.Com.SendCommandAsync(s.TrimEnd().TrimEnd('?'));
+                        var result = await Global.Instance.Com.Current.SendCommandAsync(s.TrimEnd().TrimEnd('?'));
                         if (result?.LastOrDefault()?.ReplyType.HasFlag(Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == false)
                         {
                             return;
@@ -172,7 +172,7 @@ namespace CNCLib.Wpf.Helpers
                     }
                     else
                     {
-                        await Global.Instance.Com.SendCommandAsync(s);
+                        await Global.Instance.Com.Current.SendCommandAsync(s);
                     }
                 }
 			}

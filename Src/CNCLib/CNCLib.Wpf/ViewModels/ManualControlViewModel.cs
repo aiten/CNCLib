@@ -73,7 +73,7 @@ namespace CNCLib.Wpf.ViewModels
 
             WorkOffset = new WorkOffsetViewModel(this);
 
-		    Global.Instance.Com.CommandQueueEmpty += OnCommandQueueEmpty;
+		    Global.Instance.Com.Current.CommandQueueEmpty += OnCommandQueueEmpty;
 		}
 
 		#endregion
@@ -153,7 +153,7 @@ namespace CNCLib.Wpf.ViewModels
 
         #region Properties
 
-	    public bool Connected => Global.Instance.Com.IsConnected;
+	    public bool Connected => Global.Instance.Com.Current.IsConnected;
 
 	    #endregion
 

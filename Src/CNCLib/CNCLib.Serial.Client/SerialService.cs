@@ -35,29 +35,36 @@ namespace CNCLib.Serial.Client
 
         public void Connect(string portname)
         {
-            using (HttpClient client = CreateHttpClient())
+            int lastslash = portname.LastIndexOf('/');
+            if (lastslash > 0)
             {
-                // first ge all ports
-                HttpResponseMessage responseAll = client.GetAsync($@"{_api}").GetAwaiter().GetResult();
-                if (responseAll.IsSuccessStatusCode)
+                WebServerUrl = portname.Substring(0, lastslash);
+                portname = portname.Substring(lastslash + 1);
+
+                using (HttpClient client = CreateHttpClient())
                 {
-                    IEnumerable<SerialPortDefinition> allPorts = responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>().GetAwaiter().GetResult();
-                    var port = allPorts.FirstOrDefault((p) => 0==string.Compare(p.PortName,portname,StringComparison.OrdinalIgnoreCase));
-                    if (port != null)
+                    // first ge all ports
+                    HttpResponseMessage responseAll = client.GetAsync($@"{_api}").GetAwaiter().GetResult();
+                    if (responseAll.IsSuccessStatusCode)
                     {
-                        HttpResponseMessage response = client.PostAsJsonAsync(
-                            $@"{_api}/{port.Id}/connect?baudRate={BaudRate}&resetOnConnect={ResetOnConnect}", "x").GetAwaiter().GetResult();
-                        if (response.IsSuccessStatusCode)
+                        IEnumerable<SerialPortDefinition> allPorts = responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>().GetAwaiter().GetResult();
+                        var port = allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portname, StringComparison.OrdinalIgnoreCase));
+                        if (port != null)
                         {
-                            SerialPortDefinition value = response.Content.ReadAsAsync<SerialPortDefinition>().GetAwaiter().GetResult();
-                            IsConnected = true;
-                            PortId = port.Id;
-                            return;
+                            HttpResponseMessage response = client.PostAsJsonAsync(
+                                $@"{_api}/{port.Id}/connect?baudRate={BaudRate}&resetOnConnect={ResetOnConnect}", "x").GetAwaiter().GetResult();
+                            if (response.IsSuccessStatusCode)
+                            {
+                                SerialPortDefinition value = response.Content.ReadAsAsync<SerialPortDefinition>().GetAwaiter().GetResult();
+                                IsConnected = true;
+                                PortId = port.Id;
+                                return;
+                            }
                         }
                     }
-                }
 
-                throw new Exception("Connect to SerialPort failed");
+                    throw new Exception("Connect to SerialPort failed");
+                }
             }
         }
 

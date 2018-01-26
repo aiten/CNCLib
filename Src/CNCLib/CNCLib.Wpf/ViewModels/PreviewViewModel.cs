@@ -38,7 +38,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public PreviewViewModel()
 		{
-			Global.Instance.Com.CommandSending += CommandSending;
+			Global.Instance.Com.Current.CommandSending += CommandSending;
 		}
 
 		#endregion
@@ -233,7 +233,7 @@ namespace CNCLib.Wpf.ViewModels
 
 				try
 				{
-					Global.Instance.Com.ClearCommandHistory();
+					Global.Instance.Com.Current.ClearCommandHistory();
 
                     if (Global.Instance.Machine.CommandSyntax == CommandSyntax.HPGL && IsHPGLAndPlotter())
                     {
@@ -242,7 +242,7 @@ namespace CNCLib.Wpf.ViewModels
                             string cmdstr = cmd.ImportInfo;
                             if (!string.IsNullOrEmpty(cmdstr))
                             {
-                                foreach (var c in Global.Instance.Com.QueueCommand(cmdstr))
+                                foreach (var c in Global.Instance.Com.Current.QueueCommand(cmdstr))
                                 {
                                     c.Tag = cmd;
                                 }
@@ -261,7 +261,7 @@ namespace CNCLib.Wpf.ViewModels
                             {
                                 foreach (string str in cmds)
                                 {
-                                    foreach (var c in Global.Instance.Com.QueueCommand(str))
+                                    foreach (var c in Global.Instance.Com.Current.QueueCommand(str))
                                     {
                                         c.Tag = cmd;
                                     }
@@ -313,7 +313,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public bool CanSendTo()
 		{
-			return !_loadingOrSending && Global.Instance.Com.IsConnected && Commands.Count > 0 && IsHPGLAndPlotter();
+			return !_loadingOrSending && Global.Instance.Com.Current.IsConnected && Commands.Count > 0 && IsHPGLAndPlotter();
 		}
 
 		public bool CanLoad()
@@ -357,12 +357,12 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void GotoPos(Point3D pt)
 		{
-			Global.Instance.Com.QueueCommand(
+			Global.Instance.Com.Current.QueueCommand(
 			    $@"g0 x{(pt.X0).ToString(CultureInfo.InvariantCulture)} y{(pt.Y0).ToString(CultureInfo.InvariantCulture)}");
 		}
 		public bool CanGotoPos(Point3D pt)
 		{
-			return !_loadingOrSending && Global.Instance.Com.IsConnected;
+			return !_loadingOrSending && Global.Instance.Com.Current.IsConnected;
 		}
 
 		#endregion

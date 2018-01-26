@@ -35,7 +35,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		#region Commands / CanCommands
 
-		public void SendG92() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("g92"); }); }
+		public void SendG92() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g92"); }); }
 			
 		#endregion
 

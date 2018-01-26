@@ -30,24 +30,24 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ToolViewModel(IManualControlViewModel vm)
 			: base(vm)
 		{
-		    Global.Instance.Com.CommandQueueChanged += OnCommandQueueChanged;
+		    Global.Instance.Com.Current.CommandQueueChanged += OnCommandQueueChanged;
 		}
 
 		public void Dispose()
 		{
-		    Global.Instance.Com.CommandQueueChanged -= OnCommandQueueChanged;
+		    Global.Instance.Com.Current.CommandQueueChanged -= OnCommandQueueChanged;
 		}
 
 		#endregion
 
 		#region Properties
 
-		public int PendingCommandCount => Global.Instance.Com.CommandsInQueue;
+		public int PendingCommandCount => Global.Instance.Com.Current.CommandsInQueue;
 
 	    public bool Pause
 		{
-			get => Global.Instance.Com.Pause;
-	        set => Global.Instance.Com.Pause = value;
+			get => Global.Instance.Com.Current.Pause;
+	        set => Global.Instance.Com.Current.Pause = value;
 	    }
 
 		private bool _updateAfterSendNext = false;
@@ -66,7 +66,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		private void SetSendNext()
 		{
 			_updateAfterSendNext = true;
-		    Global.Instance.Com.SendNext = true; 
+		    Global.Instance.Com.Current.SendNext = true; 
 		}
 
 		#endregion
@@ -85,25 +85,25 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			return CanSendGCode() && Global.Instance.Machine.Laser;
 		}
 
-		public void SendInfo() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("?"); }); }
-		public void SendDebug() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("&"); }); }
-		public void SendAbort() { RunAndUpdate(() => { Global.Instance.Com.AbortCommands(); Global.Instance.Com.ResumeAfterAbort(); Global.Instance.Com.QueueCommand("!"); }); }
-		public void SendResurrect() { RunAndUpdate(() => { Global.Instance.Com.AbortCommands(); Global.Instance.Com.ResumeAfterAbort(); Global.Instance.Com.QueueCommand("!!!"); }); }
-		public void ClearQueue() { RunAndUpdate(() => { Global.Instance.Com.AbortCommands(); Global.Instance.Com.ResumeAfterAbort(); }); }
-		public void SendM03SpindleOn() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("m3"); }); }
-		public void SendM05SpindleOff() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("m5"); }); }
-		public void SendM07CoolandOn() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("m7"); }); }
-		public void SendM09CoolandOff() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("m9"); }); }
-		public void SendM106LaserOn() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("m106 s255"); }); }
-		public void SendM106LaserOnMin() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("m106 s1"); }); }
-		public void SendM107LaserOff() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("m107"); }); }
-        public void SendM100ProbeDefault() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("m100"); }); }
-        public void SendM101ProbeInvert() { RunAndUpdate(() => { Global.Instance.Com.QueueCommand("m101"); }); }
+		public void SendInfo() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("?"); }); }
+		public void SendDebug() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("&"); }); }
+		public void SendAbort() { RunAndUpdate(() => { Global.Instance.Com.Current.AbortCommands(); Global.Instance.Com.Current.ResumeAfterAbort(); Global.Instance.Com.Current.QueueCommand("!"); }); }
+		public void SendResurrect() { RunAndUpdate(() => { Global.Instance.Com.Current.AbortCommands(); Global.Instance.Com.Current.ResumeAfterAbort(); Global.Instance.Com.Current.QueueCommand("!!!"); }); }
+		public void ClearQueue() { RunAndUpdate(() => { Global.Instance.Com.Current.AbortCommands(); Global.Instance.Com.Current.ResumeAfterAbort(); }); }
+		public void SendM03SpindleOn() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m3"); }); }
+		public void SendM05SpindleOff() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m5"); }); }
+		public void SendM07CoolandOn() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m7"); }); }
+		public void SendM09CoolandOff() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m9"); }); }
+		public void SendM106LaserOn() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m106 s255"); }); }
+		public void SendM106LaserOnMin() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m106 s1"); }); }
+		public void SendM107LaserOff() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m107"); }); }
+        public void SendM100ProbeDefault() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m100"); }); }
+        public void SendM101ProbeInvert() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m101"); }); }
         public void SendM114PrintPos()
 		{
 			RunAndUpdate(async () =>
 			{
-				string message = await Global.Instance.Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"));
+				string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"));
 
 				if (!string.IsNullOrEmpty(message))
 				{
@@ -112,7 +112,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 					SetPositions(message.Split(':'), 0);
 				}
 
-				message = await Global.Instance.Com.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"));
+				message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"));
 
 				if (!string.IsNullOrEmpty(message))
 				{
@@ -122,7 +122,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 				}
 			});
 		}
-		public void WritePending() { RunInNewTask(() => { Global.Instance.Com.WritePendingCommandsToFile(System.IO.Path.GetTempPath() + "PendingCommands.nc"); }); }
+		public void WritePending() { RunInNewTask(() => { Global.Instance.Com.Current.WritePendingCommandsToFile(System.IO.Path.GetTempPath() + "PendingCommands.nc"); }); }
 
 		#endregion
 
