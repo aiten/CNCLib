@@ -81,12 +81,34 @@ namespace CNCLib.Serial.Client
 
         public void AbortCommands()
         {
-            throw new NotImplementedException();
+            if (PortId != 0)
+            {
+                using (HttpClient client = CreateHttpClient())
+                {
+                    HttpResponseMessage response = client.PostAsJsonAsync($@"{_api}/{PortId}/abort", "x").GetAwaiter().GetResult();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return;
+                    }
+                }
+            }
+            throw new Exception("AbortCommands to SerialPort failed");
         }
 
         public void ResumeAfterAbort()
         {
-            throw new NotImplementedException();
+            if (PortId != 0)
+            {
+                using (HttpClient client = CreateHttpClient())
+                {
+                    HttpResponseMessage response = client.PostAsJsonAsync($@"{_api}/{PortId}/resume", "x").GetAwaiter().GetResult();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return;
+                    }
+                }
+            }
+            throw new Exception("ResumeAfterAbort to SerialPort failed");
         }
 
         public IEnumerable<SerialCommand> SendCommand(string line)

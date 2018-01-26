@@ -45,8 +45,8 @@ namespace CNCLib.Wpf.Helpers
 			string probdistup = machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
 			string probfeed = machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
 
-			await Global.Instance.Com.SendCommandAndReadOKReplyAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90");
-			if ((Global.Instance.Com.LastCommand.ReplyType & Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == 0)
+			var result = await Global.Instance.Com.SendCommandAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90");
+            if (result?.LastOrDefault()?.ReplyType.HasFlag(Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == false)
 			{
 				Global.Instance.Com.QueueCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
 				Global.Instance.Com.QueueCommand("g91 g0" + axisname + probdistup + " g90");
@@ -164,8 +164,8 @@ namespace CNCLib.Wpf.Helpers
 				{
                     if (s.TrimEnd().EndsWith("?"))
                     {
-                        await Global.Instance.Com.SendCommandAndReadOKReplyAsync(s.TrimEnd().TrimEnd('?'));
-                        if ((Global.Instance.Com.LastCommand.ReplyType & Framework.Arduino.SerialCommunication.EReplyType.ReplyError) != 0)
+                        var result = await Global.Instance.Com.SendCommandAsync(s.TrimEnd().TrimEnd('?'));
+                        if (result?.LastOrDefault()?.ReplyType.HasFlag(Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == false)
                         {
                             return;
                         }

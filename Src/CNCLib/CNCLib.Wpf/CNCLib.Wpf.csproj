@@ -85,6 +85,7 @@
       <DependentUpon>MoveUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Global.cs" />
+    <Compile Include="Helpers\SerialProxy.cs" />
     <Compile Include="Helpers\EepromHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\JoystickArduinoSerialCommunication.cs" />

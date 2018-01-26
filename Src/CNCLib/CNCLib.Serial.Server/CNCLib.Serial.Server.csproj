@@ -6,7 +6,6 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
-    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

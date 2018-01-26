@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnChanges } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -11,7 +11,7 @@ import { SerialPortDefinition } from '../models/serial.port.definition';
     selector: 'serialporthistory',
     templateUrl: './serialporthistory.component.html'
 })
-export class SerialPortHistoryComponent implements OnInit {
+export class SerialPortHistoryComponent implements OnChanges {
     @Input() forserialportid: number;
     serialcommands: SerialCommand[];
 
@@ -32,15 +32,15 @@ export class SerialPortHistoryComponent implements OnInit {
 
     public clear() {
         console.log(this.forserialportid);
-        this.http.post(this.baseUrl + 'api/SerialPort/' + this.forserialportid + '/history/clear',"x").
+        this.http.post(this.baseUrl + 'api/SerialPort/' + this.forserialportid + '/history/clear', "x").
             subscribe(result => {
                 this.refresh();
             }, error => console.error(error));
 
     }
 
-    ngOnInit() {
-        console.log('ngOnInit');
+    ngOnChanges() {
+        console.log('ngOnChanges');
         this.refresh();
     }
 }
