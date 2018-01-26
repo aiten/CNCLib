@@ -76,7 +76,6 @@ namespace CNCLib.Serial.Server
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
-
         }
     }
 }
