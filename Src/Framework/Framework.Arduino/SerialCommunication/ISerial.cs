@@ -34,13 +34,11 @@ namespace Framework.Arduino.SerialCommunication
 
         #region Pubic
 
-        IEnumerable<SerialCommand> SendCommand(string line);
-        IEnumerable<SerialCommand> QueueCommand(string line);
-        Task<IEnumerable<SerialCommand>> SendCommandAsync(string line, int waitForMilliseconds = int.MaxValue);
-        Task<string> SendCommandAndReadOKReplyAsync(string line, int waitForMilliseconds = int.MaxValue);
-        Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> commands);
-        Task<string> WaitUntilResponseAsync(int maxMilliseconds = int.MaxValue);
-        Task<IEnumerable<SerialCommand>> SendFileAsync(string filename);
+        Task<IEnumerable<SerialCommand>> QueueCommandsAsync(IEnumerable<string> commands);
+        Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> commands, int maxMilliseconds);
+
+        Task<string> WaitUntilResponseAsync(int maxMilliseconds);
+        Task<bool> WaitUntilQueueEmptyAsync(int maxMilliseconds);
 
         #endregion;
 
@@ -67,6 +65,8 @@ namespace Framework.Arduino.SerialCommunication
 
         int CommandsInQueue { get; }
 
+        IEnumerable<SerialCommand> PendingCommands { get; }
+
         bool Pause { get; set; }
         bool SendNext { get; set; }
 
@@ -88,10 +88,8 @@ namespace Framework.Arduino.SerialCommunication
         #region CommandHistory
 
         SerialCommand LastCommand { get; }
-        void WriteCommandHistory(string filename);
         List<SerialCommand> CommandHistoryCopy { get; }
         void ClearCommandHistory();
-        void WritePendingCommandsToFile(string filename);
 
         #endregion
     }

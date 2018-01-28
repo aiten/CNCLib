@@ -34,9 +34,9 @@ export class SerialPortsComponent
         this.historyportid = showhistoryportid;
     }
 
-    abort(serialportid: number)
+    clearQueue(serialportid: number)
     {
-        console.log('Abort ' + serialportid);
+        console.log('ClearQueue ' + serialportid);
         this.http.post(this.baseUrl + 'api/SerialPort/' + serialportid + '/abort',"x").
             subscribe(result =>
             {

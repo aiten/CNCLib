@@ -29,6 +29,7 @@ using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Drawing;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
+using Framework.Arduino.SerialCommunication;
 
 namespace CNCLib.Wpf.ViewModels
 {

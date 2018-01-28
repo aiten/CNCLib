@@ -120,12 +120,7 @@ namespace CNCLib.Serial.Server.Controllers
                 return NotFound();
             }
 
-            var ret = new List<SerialCommand>();
-            foreach (var command in commands.Commands)
-            {
-                ret.AddRange(port.Serial.QueueCommand(command));
-            }
-
+            var ret = await port.Serial.QueueCommandsAsync(commands.Commands);
             return Ok(ret);
 	    }
 
@@ -139,12 +134,7 @@ namespace CNCLib.Serial.Server.Controllers
 	            return NotFound();
 	        }
 
-            var ret = new List<SerialCommand>();
-            foreach (var command in commands.Commands)
-            {
-                ret.AddRange(await port.Serial.SendCommandAsync(command));
-            }
-
+            var ret = await port.Serial.SendCommandsAsync(commands.Commands, commands.TimeOut);
             return Ok(ret);
         }
 

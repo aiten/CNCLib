@@ -24,6 +24,7 @@ using System.Windows.Media.Converters;
 using CNCLib.GCode;
 using CNCLib.Wpf.Helpers;
 using Framework.Wpf.Helpers;
+using Framework.Arduino.SerialCommunication;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
@@ -152,7 +153,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 	    private async Task<decimal?> GetParameterValue(int parameter)
 	    {
-	        string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand($"(print, #{parameter})"));
+	        string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand($"(print, #{parameter})"),10*1000);
 
 	        if (!string.IsNullOrEmpty(message))
 	        {

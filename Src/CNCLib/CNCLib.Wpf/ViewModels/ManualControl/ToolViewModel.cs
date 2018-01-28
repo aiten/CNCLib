@@ -19,6 +19,7 @@
 using System;
 using System.Windows.Input;
 using Framework.Wpf.Helpers;
+using Framework.Arduino.SerialCommunication;
 using CNCLib.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
@@ -103,7 +104,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			RunAndUpdate(async () =>
 			{
-				string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"));
+				string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"),10*1000);
 
 				if (!string.IsNullOrEmpty(message))
 				{
@@ -112,7 +113,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 					SetPositions(message.Split(':'), 0);
 				}
 
-				message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"));
+				message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"), 10*1000);
 
 				if (!string.IsNullOrEmpty(message))
 				{
