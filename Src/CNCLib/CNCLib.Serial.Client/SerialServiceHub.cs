@@ -32,65 +32,89 @@ namespace CNCLib.Serial.Client
 {
     public class SerialServiceHub : ServiceBase
     {
-        protected readonly string _api = @"api/SerialPort";
-
-        static async Task Run()
+        public SerialServiceHub(string adr)
         {
+            WebServerUrl = adr + "/serialSignalR";
+        }
 
-            var connection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:5000/stocks")
+        HubConnection _connection;
+        CancellationTokenSource _cts;
+
+        public async Task Stop()
+        {
+            if (_connection!=null)
+            {
+                await _connection.DisposeAsync();
+                _connection = null;
+            }
+        }
+
+        public async Task Start()
+        {
+            _connection = new HubConnectionBuilder()
+            .WithUrl(WebServerUrl)
             .WithConsoleLogger()
             .WithMessagePackProtocol()
             .WithTransport(TransportType.WebSockets)
             .Build();
 
-            await connection.StartAsync();
-
+            await _connection.StartAsync();
+            _cts = new CancellationTokenSource();
+/*
             Console.WriteLine("Starting connection. Press Ctrl-C to close.");
-            var cts = new CancellationTokenSource();
             Console.CancelKeyPress += (sender, a) =>
-        {
-            a.Cancel = true;
-            cts.Cancel();
-        };
-
-            connection.Closed += e =>
+            {
+                a.Cancel = true;
+                _cts.Cancel();
+            };
+*/
+            _connection.Closed += e =>
             {
                 Console.WriteLine("Connection closed with error: {0}", e);
 
-                cts.Cancel();
+                _cts.Cancel();
                 return Task.CompletedTask;
             };
 
-            connection.On("marketOpened", async () =>
+            _connection.On("queueEmpty", async () =>
             {
-                await StartStreaming();
+                Console.WriteLine("QueueEmpty");
+            });
+            _connection.On("connected", async () =>
+            {
+                Console.WriteLine("Connected");
             });
 
-            // Do an initial check to see if we can start streaming the stocks
-            var state = await connection.InvokeAsync<string>("GetMarketState");
-            if (string.Equals(state, "Open"))
-            {
-                await StartStreaming();
-            }
+            _connection.Connected +=
+                async () => { Console.WriteLine("Connected"); };
 
-            // Keep client running until cancel requested.
-            while (!cts.IsCancellationRequested)
-            {
-                await Task.Delay(250);
-            }
+            /*
 
-            async Task StartStreaming()
-            {
-                var channel = await connection.StreamAsync<Stock>("StreamStocks", CancellationToken.None);
-                while (await channel.WaitToReadAsync() && !cts.IsCancellationRequested)
-                {
-                    while (channel.TryRead(out var stock))
-                    {
-                        Console.WriteLine($"{stock.Symbol} {stock.Price}");
-                    }
-                }
-            }
+                            // Do an initial check to see if we can start streaming the stocks
+                            var state = await connection.InvokeAsync<string>("GetMarketState");
+                            if (string.Equals(state, "Open"))
+                            {
+                                await StartStreaming();
+                            }
+
+                            // Keep client running until cancel requested.
+                            while (!cts.IsCancellationRequested)
+                            {
+                                await Task.Delay(250);
+                            }
+
+                            async Task StartStreaming()
+                            {
+                                var channel = await connection.StreamAsync<Stock>("StreamStocks", CancellationToken.None);
+                                while (await channel.WaitToReadAsync() && !cts.IsCancellationRequested)
+                                {
+                                    while (channel.TryRead(out var stock))
+                                    {
+                                        Console.WriteLine($"{stock.Symbol} {stock.Price}");
+                                    }
+                                }
+                            }
+                        */
         }
     }
 }

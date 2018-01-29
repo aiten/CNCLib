@@ -19,17 +19,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CNCLib.Serial.Server.Hubs;
 using CNCLib.Serial.Server.SerialPort;
 using CNCLib.Serial.Shared;
 using Framework.Arduino.SerialCommunication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace CNCLib.Serial.Server.Controllers
 {
     [Route("api/[controller]")]
     public class SerialPortController : Controller
 	{
-	    protected string CurrentUri => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
+        protected string CurrentUri => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
 
 	    private SerialPortDefinition GetDefinition(SerialPortWrapper port)
 	    {
@@ -91,7 +93,7 @@ namespace CNCLib.Serial.Server.Controllers
 	        port.Serial.BaudRate = baudrate ?? 250000;
 	        port.Serial.ResetOnConnect = resetOnConnect ?? true;
 
-            port.Serial.Connect(port.PortName);
+            await port.Serial.ConnectAsync(port.PortName);
 
 	        return Ok(GetDefinition(port));
 	    }
@@ -105,7 +107,7 @@ namespace CNCLib.Serial.Server.Controllers
 	            return NotFound();
 	        }
 
-	        port.Serial.Disconnect();
+	        port.Serial.DisconnectAsync();
 	        port.Serial = null;
 
             return Ok();

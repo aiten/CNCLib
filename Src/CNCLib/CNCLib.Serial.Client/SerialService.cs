@@ -30,10 +30,11 @@ namespace CNCLib.Serial.Client
     public class SerialService : ServiceBase, ISerial
     {
         protected readonly string _api = @"api/SerialPort";
+        private SerialServiceHub _serviceHub;
 
         public int PortId { get; private set; }
 
-        public void Connect(string portname)
+        public async Task ConnectAsync(string portname)
         {
             int lastslash = portname.LastIndexOf('/');
             if (lastslash > 0)
@@ -47,17 +48,21 @@ namespace CNCLib.Serial.Client
                     HttpResponseMessage responseAll = client.GetAsync($@"{_api}").GetAwaiter().GetResult();
                     if (responseAll.IsSuccessStatusCode)
                     {
-                        IEnumerable<SerialPortDefinition> allPorts = responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>().GetAwaiter().GetResult();
+                        IEnumerable<SerialPortDefinition> allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
                         var port = allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portname, StringComparison.OrdinalIgnoreCase));
                         if (port != null)
                         {
-                            HttpResponseMessage response = client.PostAsJsonAsync(
-                                $@"{_api}/{port.Id}/connect?baudRate={BaudRate}&resetOnConnect={ResetOnConnect}", "x").GetAwaiter().GetResult();
+                            HttpResponseMessage response = await client.PostAsJsonAsync(
+                                $@"{_api}/{port.Id}/connect?baudRate={BaudRate}&resetOnConnect={ResetOnConnect}", "x");
                             if (response.IsSuccessStatusCode)
                             {
-                                SerialPortDefinition value = response.Content.ReadAsAsync<SerialPortDefinition>().GetAwaiter().GetResult();
+                                SerialPortDefinition value = await response.Content.ReadAsAsync<SerialPortDefinition>();
                                 IsConnected = true;
                                 PortId = port.Id;
+
+                                _serviceHub = new SerialServiceHub(WebServerUrl);
+                                await _serviceHub.Start();
+
                                 return;
                             }
                         }
@@ -68,7 +73,7 @@ namespace CNCLib.Serial.Client
             }
         }
 
-        public async void Disconnect()
+        public async Task DisconnectAsync()
         {
             if (PortId != 0)
             {
@@ -77,6 +82,8 @@ namespace CNCLib.Serial.Client
                     HttpResponseMessage response = await client.PostAsJsonAsync($@"{_api}/{PortId}/disconnect", "x");
                     if (response.IsSuccessStatusCode)
                     {
+                        _serviceHub?.Stop();
+                        _serviceHub = null;
                         IsConnected = false;
                         PortId = 0;
                         return;
@@ -142,7 +149,7 @@ namespace CNCLib.Serial.Client
             {
                 using (HttpClient client = CreateHttpClient())
                 {
-                    client.Timeout = new TimeSpan(10000l * (((long) waitForMilliseconds) + 5000));
+                    client.Timeout = new TimeSpan(10000L * (((long) waitForMilliseconds) + 5000));
                     var cmds = new SerialCommands() { Commands = lines.ToArray(), TimeOut = waitForMilliseconds };
                     HttpResponseMessage response = await client.PostAsJsonAsync($@"{_api}/{PortId}/send", cmds);
                     if (response.IsSuccessStatusCode)

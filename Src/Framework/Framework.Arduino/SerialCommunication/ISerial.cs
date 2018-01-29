@@ -25,8 +25,8 @@ namespace Framework.Arduino.SerialCommunication
     public interface ISerial : IDisposable
     {
         #region Setup/Init
-        void Connect(string portname);
-        void Disconnect();
+        Task ConnectAsync(string portname);
+        Task DisconnectAsync();
         void AbortCommands();
         void ResumeAfterAbort();
 

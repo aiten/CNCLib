@@ -141,7 +141,7 @@ namespace CNCLib.Wpf.ViewModels
                     Global.Instance.Com.Current.ResetOnConnect = Global.Instance.ResetOnConnect || Machine.NeedDtr;
 				    Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
 				    Global.Instance.Com.Current.BaudRate = Machine.BaudRate;
-				    Global.Instance.Com.Current.Connect(Machine.ComPort);
+				    Global.Instance.Com.Current.ConnectAsync(Machine.ComPort);
 
 					await Global.Instance.Com.Current.SendCommandAsync("?",3000);
 					await Task.Delay(100);
@@ -176,7 +176,7 @@ namespace CNCLib.Wpf.ViewModels
 				}
 				finally
 				{
-				    Global.Instance.Com.Current.Disconnect();
+				    Global.Instance.Com.Current.DisconnectAsync();
 				}
 			}
 		}

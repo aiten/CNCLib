@@ -29,25 +29,17 @@ namespace CNCLib.Serial.Server.SerialPort
     {
         #region ctr/SignalR
 
-        public SerialPortWrapper(IHubContext<CNCLibHub> clients)
-        {
-            Clients = clients;
-        }
-
-        private IHubContext<CNCLibHub> clients;
-
-        private IHubContext<CNCLibHub> Clients
-        {
-            get;
-            set;
-        }
 
         public void InitPort()
         {
             if (Serial == null)
             {
                 Serial = new Framework.Arduino.SerialCommunication.Serial();
-                Serial.CommandQueueEmpty += async (sender, e) => await Clients.Clients.All.InvokeAsync("queueEmpty");
+                Serial.CommandQueueEmpty += async (sender, e) =>
+                {
+                    var clients = Dependency.Resolve<IHubContext<CNCLibHub>>();
+                    await clients.Clients.All.InvokeAsync("queueEmpty");
+                };
             }
         }
 

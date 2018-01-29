@@ -116,7 +116,7 @@ namespace Framework.Arduino.SerialCommunication
 		/// Connect to the Arduino serial port 
 		/// </summary>
 		/// <param name="portname">e.g. Com1</param>
-		public void Connect(string portname)
+		public async Task ConnectAsync(string portname)
         {
             // Create a new SerialPort object with default settings.
 			Aborted = false;
@@ -159,12 +159,12 @@ namespace Framework.Arduino.SerialCommunication
 		/// <summary>
 		/// Disconnect from arduino 
 		/// </summary>
-		public void Disconnect()
+		public async Task DisconnectAsync()
         {
-            Disconnect(true);
+            await Disconnect(true);
         }
 
-        private void Disconnect(bool join)
+        private async Task Disconnect(bool join)
         {
             Trace.WriteTraceFlush("Disconnecting",join.ToString());
             Aborted = true;
@@ -276,7 +276,7 @@ namespace Framework.Arduino.SerialCommunication
 
 		public void Dispose()
 		{
-			Disconnect();
+			DisconnectAsync();
 			if (_trace!=null)
 			{
 				_trace.Dispose();

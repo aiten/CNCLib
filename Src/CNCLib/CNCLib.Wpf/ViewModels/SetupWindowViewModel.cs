@@ -162,7 +162,7 @@ namespace CNCLib.Wpf.ViewModels
                     Global.Instance.Com.Current.ResetOnConnect = ResetOnConnect;
                 Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
                 Global.Instance.Com.Current.BaudRate = (int)Machine.BaudRate;
-                Global.Instance.Com.Current.Connect(Machine.ComPort);
+                Global.Instance.Com.Current.ConnectAsync(Machine.ComPort);
                 await SetGlobal();
 
 				if (SendInitCommands && Machine != null)
@@ -193,7 +193,7 @@ namespace CNCLib.Wpf.ViewModels
                 Global.Instance.ComJoystick.ResetOnConnect = true;
                 Global.Instance.ComJoystick.CommandToUpper = false;
                 Global.Instance.ComJoystick.BaudRate = Joystick.BaudRate;
-                Global.Instance.ComJoystick.Connect(Joystick.ComPort);
+                Global.Instance.ComJoystick.ConnectAsync(Joystick.ComPort);
             }
             catch (Exception e)
             {
@@ -220,7 +220,7 @@ namespace CNCLib.Wpf.ViewModels
 
 		public void DisConnect()
 		{
-			Global.Instance.Com.Current.Disconnect();
+			Global.Instance.Com.Current.DisconnectAsync();
 			RaisePropertyChanged(nameof(Connected));
 		}
 		public bool CanDisConnect()
@@ -235,7 +235,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public void DisConnectJoystick()
         {
-            Global.Instance.ComJoystick.Disconnect();
+            Global.Instance.ComJoystick.DisconnectAsync();
             RaisePropertyChanged(nameof(ConnectedJoystick));
         }
         public bool CanDisConnectJoystick()
