@@ -19,10 +19,12 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using Framework.Wpf.Helpers;
+using Framework.Arduino.SerialCommunication;
 using System.IO;
 using System;
 using System.Linq;
 using CNCLib.Wpf.Helpers;
+using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
@@ -76,7 +78,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 				        lines.Add(MachineGCodeHelper.PrepareCommand(line));
 				    }
 				}
-			    SendM28(sDFileName, lines.ToArray());
+			    SendM28(sDFileName, lines.ToArray()).GetAwaiter().GetResult();
 			});
 		}
 	    public void SendM28PreView() { SendM28PreView(SDFileName); }
@@ -86,30 +88,25 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 	        RunInNewTask(() =>
 	        {
 	            var lines = Global.Instance.Commands.ToStringList();
-	            SendM28(sDFileName, lines.ToArray());
+	            SendM28(sDFileName, lines.ToArray()).GetAwaiter().GetResult();
 	        });
 	    }
 
-        private void SendM28(string sDFileName, string[] lines)
+        private async Task SendM28(string sDFileName, string[] lines)
 	    {
-	        bool savefileinresponse = false;
-	        var checkresponse = new Framework.Arduino.SerialCommunication.CommandEventHandler((obj, e) =>
+            const int SDTimeoutCreate = 10000;
+            const int SDTimeoutCopy = 10*60*1000;
+            const int SDTimeoutSave = 10000;
+            var result = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m28 " + sDFileName), SDTimeoutCreate);
+	        if (!string.IsNullOrEmpty(result) && result.Contains(sDFileName))
 	        {
-	            savefileinresponse = e.Info.Contains(sDFileName);
-	        });
+	            await Global.Instance.Com.Current.SendCommandsAsync(lines, SDTimeoutCopy);
+                var resultDone = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m29"), SDTimeoutSave);
 
-	        Global.Instance.Com.Current.ReplyUnknown += checkresponse;
-	        Global.Instance.Com.Current.SendCommand(MachineGCodeHelper.PrepareCommand("m28 " + sDFileName));
-	        Global.Instance.Com.Current.ReplyUnknown -= checkresponse;
-	        if (savefileinresponse)
-	        {
-	            Global.Instance.Com.Current.SendCommandsAsync(lines).GetAwaiter().GetResult();
+                if (!string.IsNullOrEmpty(resultDone) && result.Contains("Done"))
+                {
 
-	            bool filesavednresponse = false;
-	            checkresponse = (obj, e) => { filesavednresponse = e.Info.Contains("Done"); };
-	            Global.Instance.Com.Current.ReplyUnknown += checkresponse;
-	            Global.Instance.Com.Current.SendCommand(MachineGCodeHelper.PrepareCommand("m29"));
-	            Global.Instance.Com.Current.ReplyUnknown -= checkresponse;
+                }
 	        }
 	    }
 
@@ -127,7 +124,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			RunAndUpdate(async () =>
 			{
-				string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"));
+				string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"),10000);
 				if (!string.IsNullOrEmpty(message))
 				{
 					message = message.Replace("ok", "");

@@ -173,11 +173,7 @@ namespace CNCLib.Wpf.ViewModels
 					{
 						// wait (do not check if reset - arduino may reset even the "reset" is not specified)
 						await Global.Instance.Com.Current.WaitUntilResponseAsync(3000);
-
-						foreach (var initcmd in initCommands.OrderBy(cmd => cmd.SeqNo))
-						{
-							Global.Instance.Com.Current.QueueCommand(initcmd.CommandString);
-						}
+                        await Global.Instance.Com.Current.QueueCommandsAsync(initCommands.OrderBy(cmd => cmd.SeqNo).Select(e => e.CommandString));
 					}
 				}
 			}

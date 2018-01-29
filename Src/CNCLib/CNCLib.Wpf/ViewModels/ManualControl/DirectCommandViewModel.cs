@@ -18,6 +18,7 @@
 
 using System.Windows.Input;
 using System.Collections.ObjectModel;
+using Framework.Arduino.SerialCommunication;
 using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl

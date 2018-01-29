@@ -118,22 +118,17 @@ namespace CNCLib.Serial.Client
             throw new Exception("ResumeAfterAbort to SerialPort failed");
         }
 
-        public IEnumerable<SerialCommand> SendCommand(string line)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<SerialCommand> QueueCommand(string line)
+        public async Task<IEnumerable<SerialCommand>> QueueCommandsAsync(IEnumerable<string> lines)
         {
             if (PortId != 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
-                    var cmds = new SerialCommands() { Commands = new string[] { line } };
+                    var cmds = new SerialCommands() { Commands = lines.ToArray() };
                     HttpResponseMessage response = client.PostAsJsonAsync($@"{_api}/{PortId}/queue", cmds).Result;
                     if (response.IsSuccessStatusCode)
                     {
-                        var value = response.Content.ReadAsAsync<IEnumerable<SerialCommand>>().Result;
+                        var value = await response.Content.ReadAsAsync<IEnumerable<SerialCommand>>();
                         return value;
                     }
                 }
@@ -141,17 +136,18 @@ namespace CNCLib.Serial.Client
             throw new Exception("Queue to SerialPort failed");
         }
 
-        public async Task<IEnumerable<SerialCommand>> SendCommandAsync(string line, int waitForMilliseconds = Int32.MaxValue)
+        public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> lines, int waitForMilliseconds)
         {
             if (PortId != 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
-                    var cmds = new SerialCommands() { Commands = new string[] { line } };
+                    client.Timeout = new TimeSpan(10000l * (((long) waitForMilliseconds) + 5000));
+                    var cmds = new SerialCommands() { Commands = lines.ToArray(), TimeOut = waitForMilliseconds };
                     HttpResponseMessage response = await client.PostAsJsonAsync($@"{_api}/{PortId}/send", cmds);
                     if (response.IsSuccessStatusCode)
                     {
-                        var value = response.Content.ReadAsAsync<IEnumerable<SerialCommand>>().Result;
+                        var value = await response.Content.ReadAsAsync<IEnumerable<SerialCommand>>();
                         return value;
                     }
                 }
@@ -159,28 +155,18 @@ namespace CNCLib.Serial.Client
             throw new Exception("Send to SerialPort failed");
         }
 
-        public async Task<string> SendCommandAndReadOKReplyAsync(string line, int waitForMilliseconds = Int32.MaxValue)
-        {
-            var ret = await SendCommandAsync(line, waitForMilliseconds);
-            if (ret.Any())
-            {
-                var last = ret.Last();
-                return last.ReplyType == EReplyType.ReplyOK ? last.ResultText : null;
-            }
-            throw new Exception("Send to SerialPort failed");
-        }
-
-        public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> commands)
+        public Task<bool> WaitUntilResponseAsync(int maxMilliseconds)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<string> WaitUntilResponseAsync(int maxMilliseconds = Int32.MaxValue)
+        public Task<bool> WaitUntilQueueEmptyAsync(int maxMilliseconds)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<SerialCommand>> SendFileAsync(string filename)
+
+        Task<string> ISerial.WaitUntilResponseAsync(int maxMilliseconds)
         {
             throw new NotImplementedException();
         }
@@ -236,6 +222,9 @@ namespace CNCLib.Serial.Client
                 throw new Exception("ClearCommandHistory to SerialPort failed");
             }
         }
+
+        public IEnumerable<SerialCommand> PendingCommands => throw new NotImplementedException();
+
         public void ClearCommandHistory()
         {
             if (PortId != 0)
@@ -250,11 +239,6 @@ namespace CNCLib.Serial.Client
                 }
             }
             throw new Exception("ClearCommandHistory to SerialPort failed");
-        }
-
-        public void WritePendingCommandsToFile(string filename)
-        {
-            throw new NotImplementedException();
         }
     }
 }

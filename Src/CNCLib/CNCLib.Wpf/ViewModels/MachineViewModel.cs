@@ -26,6 +26,8 @@ using CNCLib.Wpf.Helpers;
 using CNCLib.Wpf.Models;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
+using Framework.Arduino.SerialCommunication;
+
 
 namespace CNCLib.Wpf.ViewModels
 {

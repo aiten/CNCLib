@@ -19,6 +19,7 @@
 using System.Linq;
 using CNCLib.Wpf.Models;
 using Framework.Tools.Dependency;
+using Framework.Arduino.SerialCommunication;
 using CNCLib.Logic.Client;
 using System.Threading.Tasks;
 using System;
@@ -108,7 +109,7 @@ namespace CNCLib.Wpf.Helpers
 			string[] cmds = commandstring.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
 			foreach (var s in cmds)
 			{
-				await Global.Instance.ComJoystick.SendCommandAsync(s);
+				await Global.Instance.ComJoystick.SendCommandAsync(s,int.MaxValue);
 			}
 		}
 	}

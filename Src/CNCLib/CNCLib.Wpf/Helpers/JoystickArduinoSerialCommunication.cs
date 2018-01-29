@@ -19,6 +19,7 @@
 using CNCLib.Wpf.ViewModels.ManualControl;
 using System;
 using System.Threading.Tasks;
+using Framework.Arduino.SerialCommunication;
 
 namespace CNCLib.Wpf.Helpers
 {

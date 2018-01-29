@@ -28,7 +28,7 @@
                 <td>{{ serialport.CommandsInQueue }}</td>
                 <td>
                     <button (click)='showHistory(serialport.Id)'>History</button>
-                    <button *ngIf="serialport.IsConnected" (click)='abort(serialport.Id)'>Abort</button>
+                    <button *ngIf="serialport.IsConnected" (click)='clearQueue(serialport.Id)'>Clear Queue</button>
                 </td>
             </tr>
         </tbody>

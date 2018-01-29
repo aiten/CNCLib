@@ -60,11 +60,13 @@ namespace Framework.Arduino.SerialCommunication
 		public event CommandEventHandler CommandQueueChanged;
 		public event CommandEventHandler CommandQueueEmpty;
 
-		#endregion
+        #endregion
 
         #region Properties
 
-		public int CommandsInQueue
+        public const int DefaultTimeout = 10*60*1000;
+
+        public int CommandsInQueue
 		{
 			get
 			{
@@ -75,8 +77,19 @@ namespace Framework.Arduino.SerialCommunication
 			}
 		}
 
-		//public bool IsConnected { get { return true; }  }
-		public bool IsConnected => _serialPort != null && _serialPort.IsOpen;
+        public IEnumerable<SerialCommand> PendingCommands
+        {
+            get
+            {
+                lock (_pendingCommands)
+                {
+                    return _pendingCommands.ToArray();
+                }
+            }
+        }
+
+        //public bool IsConnected { get { return true; }  }
+        public bool IsConnected => _serialPort != null && _serialPort.IsOpen;
 
         public bool Aborted { get; protected set; }
 
@@ -271,25 +284,6 @@ namespace Framework.Arduino.SerialCommunication
 			}
 		}
 
-		/// <summary>
-		/// write all pending (command with no reliy) to file
-		/// Intended to be used if user abort queue because of an error
-		/// </summary>
-		/// <param name="filename"></param>
-		public void WritePendingCommandsToFile(string filename)
-		{
-			using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
-			{
-				lock (_pendingCommands)
-				{
-					foreach (SerialCommand cmd in _pendingCommands)
-					{
-						sw.WriteLine(cmd.CommandText);
-					}
-				}
-			}
-		}
-
 		#endregion
 
 		#region overrides
@@ -303,71 +297,16 @@ namespace Framework.Arduino.SerialCommunication
 
 		#region Send Command(s)
 
-	    /// <summary>
-	    /// Send a command to the arduino and wait until a (OK) reply
-	    /// Queue must be empty
-	    /// </summary>
-	    /// <param name="line">command line</param>
-	    /// <param name="waitForMilliseconds"></param>
-	    /// <returns>ok result from arduino or empty(if error)</returns>
-	    public async Task<string> SendCommandAndReadOKReplyAsync(string line, int waitForMilliseconds=int.MaxValue)
-		{
-			string message = null;
-			if (await WaitUntilNoPendingCommandsAsync(waitForMilliseconds))
-			{
-				var commands = QueueCommand(line);
-				if (await WaitUntilCommandsDoneAsync(commands, waitForMilliseconds))
-				{
-					var lastCmd = commands.Last();
-					if (lastCmd.ReplyType.HasFlag(EReplyType.ReplyOK))
-						message = lastCmd.ResultText;
-				}
-			}
-			return message;
-		}
-
-        /// <summary>
-        /// Send command and wait until the command is transfered and we got a reply (no command pending)
-        /// </summary>
-        /// <param name="line">command line to send</param>
-        /// <param name="waitForMilliseconds"></param>
-        public async Task<IEnumerable<SerialCommand>> SendCommandAsync(string line, int waitForMilliseconds = int.MaxValue)
-        {
-            var ret = SplitAndQueueCommand(line);
-			if (!await WaitUntilNoPendingCommandsAsync(waitForMilliseconds))
-				throw new TimeoutException();
-
-			return ret;
-        }
-
-		/// <summary>
-		/// Send command and wait until the command is transfered and we got a reply (no command pending)
-		/// </summary>
-		/// <param name="line">command line to send</param>
-		public IEnumerable<SerialCommand> SendCommand(string line)
-		{
-			return SendCommandAsync(line).ConfigureAwait(false).GetAwaiter().GetResult();
-		}
-
-		/// <summary>
-		/// Queue command - do not wait - not for transfer and not for replay
-		/// </summary>
-		/// <param name="line">command line to send</param>
-		public IEnumerable<SerialCommand> QueueCommand(string line)
-		{
-			return SplitAndQueueCommand(line);
-		}
-
 		/// <summary>
 		/// Send multiple command lines to the arduino. Wait until the commands are transferrd and we got a reply (no command pending)
 		/// </summary>
 		/// <param name="commands"></param>
-		public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> commands)
+		public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> commands, int waitForMilliseconds)
         {
             if (commands != null)
             {
-				var ret = QueueCommands(commands);
-				await WaitUntilNoPendingCommandsAsync();
+				var ret = await QueueCommandsAsync(commands);
+				await WaitUntilQueueEmptyAsync(waitForMilliseconds);
 				return ret;
             }
 			return new List<SerialCommand>();
@@ -377,7 +316,7 @@ namespace Framework.Arduino.SerialCommunication
 		/// Send multiple command lines to the arduino. Do no wait
 		/// </summary>
 		/// <param name="commands"></param>
-		public IEnumerable<SerialCommand> QueueCommands(IEnumerable<string> commands)
+		public async Task<IEnumerable<SerialCommand>> QueueCommandsAsync(IEnumerable<string> commands)
 		{
 			var list = new List<SerialCommand>();
 
@@ -394,44 +333,14 @@ namespace Framework.Arduino.SerialCommunication
 			return list;
 		}
 
-		/// <summary>
-		/// Send commands stored in a file. Wait until the commands are transferrd and we got a reply (no command pending)
-		/// </summary>
-		/// <param name="filename">used for a StreamReader</param>
-		public async Task<IEnumerable<SerialCommand>> SendFileAsync(string filename)
-		{
-			var list = QueueFile(filename);
-			await WaitUntilNoPendingCommandsAsync();
-			return list;
-		}
-
-		/// <summary>
-		/// Send commands stored in a file. Wait until the commands are transferrd and we got a reply (no command pending)
-		/// </summary>
-		/// <param name="filename">used for a StreamReader</param>
-		public IEnumerable<SerialCommand> QueueFile(string filename)
-		{
-			using (var sr = new StreamReader(filename))
-			{
-				Aborted = false;
-                string line;
-				var lines = new List<string>();
-				while ((line = sr.ReadLine()) != null && !Aborted)
-				{
-					lines.Add(line);
-				}
-				return QueueCommands(lines.ToArray());
-			}
-		}
-
-		/// <summary>
+    	/// <summary>
 		/// Wait until any response is received from the arduino
 		/// Use the function e.g. after a reset to receive the boot message
 		/// No command must be sent
 		/// </summary>
 		/// <param name="maxMilliseconds"></param>
 		/// <returns></returns>
-		public async Task<string> WaitUntilResponseAsync(int maxMilliseconds = int.MaxValue)
+		public async Task<string> WaitUntilResponseAsync(int maxMilliseconds)
 		{
 			string message = null;
 			var checkresponse = new CommandEventHandler((obj, e) =>
@@ -598,7 +507,7 @@ namespace Framework.Arduino.SerialCommunication
 		/// </summary>
 		/// <param name="maxMilliseconds"></param>
 		/// <returns>true = ok, false = timeout or aborting</returns>
-		private async Task<bool> WaitUntilNoPendingCommandsAsync(int maxMilliseconds=int.MaxValue)
+		public async Task<bool> WaitUntilQueueEmptyAsync(int maxMilliseconds=DefaultTimeout)
 		{
 			var sw = Stopwatch.StartNew();
 			while (Continue)
@@ -629,7 +538,7 @@ namespace Framework.Arduino.SerialCommunication
 			return false; // aborting
 		}
 
-		private async Task<bool> WaitUntilCommandsDoneAsync(IEnumerable<SerialCommand> commands, int maxMilliseconds = int.MaxValue)
+		private async Task<bool> WaitUntilCommandsDoneAsync(IEnumerable<SerialCommand> commands, int maxMilliseconds)
 		{
 			var sw = Stopwatch.StartNew();
 			while (Continue)
@@ -970,22 +879,6 @@ namespace Framework.Arduino.SerialCommunication
 			lock (_commands)
 			{
 				_commands.Clear();
-			}
-		}
-
-		public void WriteCommandHistory(string filename)
-		{
-			lock (_commands)
-			{
-				using (var sr = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
-				{
-                    foreach (SerialCommand cmds in _commands)
-					{
-						sr.Write(cmds.SentTime); sr.Write(":");
-						sr.Write(cmds.CommandText); sr.Write(" => ");
-						sr.WriteLine(cmds.ResultText);
-					}
-				}
 			}
 		}
 
