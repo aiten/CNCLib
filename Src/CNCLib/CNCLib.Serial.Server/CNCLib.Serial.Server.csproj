@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-alpha2-final" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.1.0" />
     <PackageReference Include="System.IO.Ports" Version="4.5.0-preview1-25914-04" />
   </ItemGroup>
@@ -27,6 +28,10 @@
     <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Web\Framework.Web.csproj" />
     <ProjectReference Include="..\CNCLib.Serial.Shared\CNCLib.Serial.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Hubs\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

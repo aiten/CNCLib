@@ -1,3 +1,23 @@
+////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2018 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using CNCLib.Serial.Server.Hubs;
+using CNCLib.Serial.Server.SerialPort;
 using Framework.Tools.Dependency;
 using Framework.Web;
 using Microsoft.AspNetCore.Builder;
@@ -22,6 +42,9 @@ namespace CNCLib.Serial.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+//            services.AddScoped<CNCLibHub>();
+
             services.AddMvc().
                 AddJsonOptions(options =>
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver());
@@ -36,6 +59,7 @@ namespace CNCLib.Serial.Server
             Dependency.Initialize(new AspNetDependencyProvider(services));
             Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
+            Dependency.Container.RegisterType<SerialPortWrapper>();
 
         }
 
@@ -56,6 +80,11 @@ namespace CNCLib.Serial.Server
             }
 
             app.UseStaticFiles();
+
+            app.UseSignalR(router =>
+            {
+                router.MapHub<CNCLibHub>("serialSignalR");
+            });
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

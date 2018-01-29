@@ -31,7 +31,7 @@ namespace CNCLib.Serial.Server.Controllers
 	{
 	    protected string CurrentUri => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
 
-	    private SerialPortDefinition GetDefinition(SerialPortHelper port)
+	    private SerialPortDefinition GetDefinition(SerialPortWrapper port)
 	    {
 	        return new SerialPortDefinition()
 	        {
@@ -44,18 +44,23 @@ namespace CNCLib.Serial.Server.Controllers
             };
 	    }
 
-        #region Query/Info
+	    private SerialPortWrapper GetPort(int id)
+	    {
+	        return SerialPortList.GetPort(id);
+	    }
+
+	    #region Query/Info
 
         [HttpGet]
 	    public async Task<IEnumerable<SerialPortDefinition>> Get()
         {
-            return SerialPortHelper.Ports.Select((e) => GetDefinition(e));
+            return SerialPortList.Ports.Select((e) => GetDefinition(e));
         }
 
 	    [HttpGet("{id:int}")]
 	    public async Task<IActionResult> Get(int id)
 	    {
-	        var port = SerialPortHelper.GetPort(id);
+	        var port = GetPort(id);
 	        if (port == null)
 	        {
 	            return NotFound();
@@ -66,7 +71,7 @@ namespace CNCLib.Serial.Server.Controllers
 	    [HttpPost("refresh")]
 	    public async Task<IEnumerable<SerialPortDefinition>> Refresh()
 	    {
-            SerialPortHelper.Refresh();
+	        SerialPortList.Refresh();
             return await Get();
 	    }
 
@@ -77,7 +82,7 @@ namespace CNCLib.Serial.Server.Controllers
         [HttpPost("{id:int}/connect")]
 	    public async Task<IActionResult> Connect(int id, int? baudrate=null,bool? resetOnConnect=true)
 	    {
-	        var port = SerialPortHelper.GetPort(id);
+	        var port = GetPort(id);
 	        if (port == null)
 	        {
 	            return NotFound();
@@ -94,7 +99,7 @@ namespace CNCLib.Serial.Server.Controllers
 	    [HttpPost("{id:int}/disconnect")]
 	    public async Task<IActionResult> DisConnect(int id)
 	    {
-	        var port = SerialPortHelper.GetPort(id);
+	        var port = GetPort(id);
 	        if (port == null)
 	        {
 	            return NotFound();
@@ -113,7 +118,7 @@ namespace CNCLib.Serial.Server.Controllers
         [HttpPost("{id:int}/queue")]
 	    public async Task<IActionResult> QueueCommand(int id, [FromBody] SerialCommands commands)
 	    {
-	        var port = SerialPortHelper.GetPort(id);
+	        var port = GetPort(id);
 
             if (port == null || commands == null || commands.Commands == null)
             {
@@ -127,7 +132,7 @@ namespace CNCLib.Serial.Server.Controllers
 	    [HttpPost("{id:int}/send")]
 	    public async Task<IActionResult> SendCommand(int id, [FromBody] SerialCommands commands)
 	    {
-	        var port = SerialPortHelper.GetPort(id);
+	        var port = GetPort(id);
 
 	        if (port == null || commands==null || commands.Commands==null)
 	        {
@@ -141,7 +146,7 @@ namespace CNCLib.Serial.Server.Controllers
 	    [HttpPost("{id:int}/abort")]
 	    public async Task<IActionResult> AbortCommand(int id)
 	    {
-	        var port = SerialPortHelper.GetPort(id);
+	        var port = GetPort(id);
 	        if (port == null)
 	        {
 	            return NotFound();
@@ -154,7 +159,7 @@ namespace CNCLib.Serial.Server.Controllers
 	    [HttpPost("{id:int}/resume")]
 	    public async Task<IActionResult> ResumeCommand(int id)
 	    {
-	        var port = SerialPortHelper.GetPort(id);
+	        var port = GetPort(id);
 	        if (port == null)
 	        {
 	            return NotFound();
@@ -167,7 +172,7 @@ namespace CNCLib.Serial.Server.Controllers
 	    [HttpPost("{id:int}/enablesinglestep")]
 	    public async Task<IActionResult> EnableSingleStepCommand(int id)
 	    {
-	        var port = SerialPortHelper.GetPort(id);
+	        var port = GetPort(id);
 	        if (port == null)
 	        {
 	            return NotFound();
@@ -180,7 +185,7 @@ namespace CNCLib.Serial.Server.Controllers
 	    [HttpPost("{id:int}/disbablesinglestep")]
 	    public async Task<IActionResult> DisableSingleStepCommand(int id)
 	    {
-	        var port = SerialPortHelper.GetPort(id);
+	        var port = GetPort(id);
 	        if (port == null)
 	        {
 	            return NotFound();
@@ -193,7 +198,7 @@ namespace CNCLib.Serial.Server.Controllers
 	    [HttpPost("{id:int}/singlestep")]
 	    public async Task<IActionResult> SingleStepCommand(int id)
 	    {
-	        var port = SerialPortHelper.GetPort(id);
+	        var port = GetPort(id);
 	        if (port == null)
 	        {
 	            return NotFound();
@@ -210,7 +215,7 @@ namespace CNCLib.Serial.Server.Controllers
         [HttpPost("{id:int}/history/clear")]
 	    public async Task<IActionResult> ClearCommandHistory(int id)
 	    {
-	        var port = SerialPortHelper.GetPort(id);
+	        var port = GetPort(id);
 	        if (port == null)
 	        {
 	            return NotFound();
@@ -223,7 +228,7 @@ namespace CNCLib.Serial.Server.Controllers
         [HttpGet("{id:int}/history")]
 	    public async Task<IActionResult> GetCommandHistory(int id)
 	    {
-	        var port = SerialPortHelper.GetPort(id);
+	        var port = GetPort(id);
 	        if (port == null)
 	        {
 	            return NotFound();
