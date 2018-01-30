@@ -17,11 +17,18 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using CNCLib.Serial.Server.Hubs;
+using CNCLib.Serial.Server.SerialPort;
 using Framework.Tools.Dependency;
+using Framework.Web;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
 
 namespace CNCLib.Serial.Server.SerialPort
 {
@@ -37,7 +44,7 @@ namespace CNCLib.Serial.Server.SerialPort
                 Serial = new Framework.Arduino.SerialCommunication.Serial();
                 Serial.CommandQueueEmpty += async (sender, e) =>
                 {
-                    var clients = Dependency.Resolve<IHubContext<CNCLibHub>>();
+                    var clients = Startup.Services.GetService<IHubContext<CNCLibHub>>();
                     await clients.Clients.All.InvokeAsync("queueEmpty");
                 };
             }

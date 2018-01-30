@@ -41,6 +41,7 @@ namespace CNCLib.Serial.Server
         }
 
         public IConfiguration Configuration { get; }
+        public static IServiceProvider Services { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -66,6 +67,8 @@ namespace CNCLib.Serial.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
+            Services = serviceProvider;
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -88,8 +91,7 @@ namespace CNCLib.Serial.Server
 
             TimerCallback callback = (x) =>
             {
-                var hub = serviceProvider.GetService<IHubContext<CNCLibHub>>();
-                //hub.Clients.All.InvokeAsync("heartbeat", DateTime.Now);
+                var hub = Services.GetService<IHubContext<CNCLibHub>>();
                 hub.Clients.All.InvokeAsync("heartbeat");
             };
 

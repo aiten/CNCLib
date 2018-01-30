@@ -32,13 +32,15 @@ namespace CNCLib.Serial.Client
 {
     public class SerialServiceHub : ServiceBase
     {
-        public SerialServiceHub(string adr)
+        public SerialServiceHub(string adr, ISerial serial)
         {
             WebServerUrl = adr + "/serialSignalR";
+            _serial = serial;
         }
 
         HubConnection _connection;
         CancellationTokenSource _cts;
+        ISerial _serial;
 
         public async Task Stop()
         {
@@ -49,7 +51,7 @@ namespace CNCLib.Serial.Client
             }
         }
 
-        public async Task Start()
+        public async Task<HubConnection> Start()
         {
             _connection = new HubConnectionBuilder()
             .WithUrl(WebServerUrl)
@@ -87,6 +89,11 @@ namespace CNCLib.Serial.Client
 
             _connection.On("heartbeat", async () =>
             {
+                if (_serial != null)
+                {
+                    //_serial.CommandQueueEmpty?.Invoke(_serial,new SerialEventArgs("info",null));
+                }
+
                 Console.WriteLine("heartbeat");
             });
 
@@ -120,6 +127,7 @@ namespace CNCLib.Serial.Client
                                 }
                             }
                         */
+            return _connection;
         }
     }
 }
