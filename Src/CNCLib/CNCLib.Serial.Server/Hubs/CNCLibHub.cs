@@ -48,6 +48,5 @@ namespace CNCLib.Serial.Server.Hubs
         {
             await Clients.All.InvokeAsync("connected");
         }
-
     }
 }

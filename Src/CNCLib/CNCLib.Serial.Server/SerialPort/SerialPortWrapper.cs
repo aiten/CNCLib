@@ -16,26 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Threading;
 using CNCLib.Serial.Server.Hubs;
-using CNCLib.Serial.Server.SerialPort;
-using Framework.Tools.Dependency;
-using Framework.Web;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SpaServices.Webpack;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 
 namespace CNCLib.Serial.Server.SerialPort
 {
     public class SerialPortWrapper
     {
         #region ctr/SignalR
-
 
         public void InitPort()
         {

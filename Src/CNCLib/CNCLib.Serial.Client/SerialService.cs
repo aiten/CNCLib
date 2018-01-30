@@ -21,12 +21,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CNCLib.Serial.Shared;
 using Framework.Arduino.SerialCommunication;
 using Framework.Tools.Helpers;
-using CNCLib.Serial.Shared;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.AspNetCore.Sockets;
-
 
 namespace CNCLib.Serial.Client
 {
@@ -40,12 +38,10 @@ namespace CNCLib.Serial.Client
             _serviceHub = new SerialServiceHub(WebServerUrl, this);
             var connection = await _serviceHub.Start();
 
-            connection.On("queueEmpty", async () =>
+            connection.On("queueEmpty", () =>
             {
                 CommandQueueEmpty?.Invoke(this, new SerialEventArgs(null,null));
-                Console.WriteLine("QueueEmpty");
             });
-
         }
 
         public int PortId { get; private set; }
@@ -77,15 +73,13 @@ namespace CNCLib.Serial.Client
                                 PortId = port.Id;
 
                                 await InitServiceHub();
-
                                 return;
                             }
                         }
                     }
-
-                    throw new Exception("Connect to SerialPort failed");
                 }
             }
+            throw new Exception("Connect to SerialPort failed");
         }
 
         public async Task DisconnectAsync()
@@ -186,7 +180,6 @@ namespace CNCLib.Serial.Client
         {
             throw new NotImplementedException();
         }
-
 
         Task<string> ISerial.WaitUntilResponseAsync(int maxMilliseconds)
         {
