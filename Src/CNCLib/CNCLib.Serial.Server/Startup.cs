@@ -16,12 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+using System.Threading;
 using CNCLib.Serial.Server.Hubs;
 using CNCLib.Serial.Server.SerialPort;
 using Framework.Tools.Dependency;
 using Framework.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -85,6 +88,14 @@ namespace CNCLib.Serial.Server
             {
                 router.MapHub<CNCLibHub>("serialSignalR");
             });
+
+            TimerCallback callback = (x) => {
+                var hub = Framework.Tools.Dependency.Dependency.Resolve<IHubContext<CNCLibHub>>();
+                hub.Clients.All.InvokeAsync("heartbeat", DateTime.Now);
+            };
+
+            var timer = new Timer(callback);
+            timer.Change(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(10));
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

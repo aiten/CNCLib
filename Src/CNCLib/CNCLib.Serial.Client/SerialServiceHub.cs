@@ -85,6 +85,11 @@ namespace CNCLib.Serial.Client
                 Console.WriteLine("Connected");
             });
 
+            _connection.On("heartbeat", async () =>
+            {
+                Console.WriteLine("heartbeat");
+            });
+
             _connection.Connected +=
                 async () => { Console.WriteLine("Connected"); };
 
