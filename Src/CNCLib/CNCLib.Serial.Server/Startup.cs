@@ -46,7 +46,6 @@ namespace CNCLib.Serial.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
-            services.AddScoped<CNCLibHub>();
 
             services.AddMvc().
                 AddJsonOptions(options =>
@@ -62,12 +61,10 @@ namespace CNCLib.Serial.Server
             Dependency.Initialize(new AspNetDependencyProvider(services));
             Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
-            Dependency.Container.RegisterType<SerialPortWrapper>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -89,9 +86,11 @@ namespace CNCLib.Serial.Server
                 router.MapHub<CNCLibHub>("serialSignalR");
             });
 
-            TimerCallback callback = (x) => {
-                var hub = Framework.Tools.Dependency.Dependency.Resolve<IHubContext<CNCLibHub>>();
-                hub.Clients.All.InvokeAsync("heartbeat", DateTime.Now);
+            TimerCallback callback = (x) =>
+            {
+                var hub = serviceProvider.GetService<IHubContext<CNCLibHub>>();
+                //hub.Clients.All.InvokeAsync("heartbeat", DateTime.Now);
+                hub.Clients.All.InvokeAsync("heartbeat");
             };
 
             var timer = new Timer(callback);

@@ -29,6 +29,11 @@ namespace CNCLib.Serial.Server.Hubs
             return base.OnDisconnectedAsync(exception);
         }
 
+        public async Task HeartBeat()
+        {
+            await Clients.All.InvokeAsync("heartbeat");
+        }
+
         public async Task QueueEmptyId(int id)
         {
             await Clients.All.InvokeAsync("queueEmpty", id);

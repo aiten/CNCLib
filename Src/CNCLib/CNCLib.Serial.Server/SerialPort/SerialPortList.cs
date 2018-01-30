@@ -49,14 +49,15 @@ namespace CNCLib.Serial.Server.SerialPort
             var portnames = System.IO.Ports.SerialPort.GetPortNames();
 
 if (Environment.MachineName == "AIT7" && !portnames.Any())
-    portnames = new string[] { "com1" };
+    portnames = new string[] { "com1", "com3", "com4", "com5", "com6", "com10" };
 
             return portnames.Select((port, index) =>
             {
-                var helper = Dependency.Resolve<SerialPortWrapper>();
-                helper.Id = GetIdFromPortName(port);
-                helper.PortName = port;
-                return helper;
+                return new SerialPortWrapper()
+                {
+                    Id = GetIdFromPortName(port),
+                    PortName = port
+                };
             } );
         }
 
