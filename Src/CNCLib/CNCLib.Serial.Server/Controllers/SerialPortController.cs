@@ -22,7 +22,6 @@ using System.Threading.Tasks;
 using CNCLib.Serial.Server.Hubs;
 using CNCLib.Serial.Server.SerialPort;
 using CNCLib.Serial.Shared;
-using Framework.Arduino.SerialCommunication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 

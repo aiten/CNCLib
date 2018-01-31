@@ -16,19 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using CNCLib.Serial.Server.Hubs;
-using Framework.Tools.Dependency;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Serial.Server.SerialPort
 {
     public class SerialPortWrapper
     {
         #region ctr/SignalR
-
 
         public void InitPort()
         {
@@ -37,7 +33,7 @@ namespace CNCLib.Serial.Server.SerialPort
                 Serial = new Framework.Arduino.SerialCommunication.Serial();
                 Serial.CommandQueueEmpty += async (sender, e) =>
                 {
-                    var clients = Dependency.Resolve<IHubContext<CNCLibHub>>();
+                    var clients = Startup.Services.GetService<IHubContext<CNCLibHub>>();
                     await clients.Clients.All.InvokeAsync("queueEmpty");
                 };
             }

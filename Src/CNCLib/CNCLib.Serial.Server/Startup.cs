@@ -19,7 +19,6 @@
 using System;
 using System.Threading;
 using CNCLib.Serial.Server.Hubs;
-using CNCLib.Serial.Server.SerialPort;
 using Framework.Tools.Dependency;
 using Framework.Web;
 using Microsoft.AspNetCore.Builder;
@@ -41,8 +40,8 @@ namespace CNCLib.Serial.Server
         }
 
         public IConfiguration Configuration { get; }
+        public static IServiceProvider Services { get; private set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
@@ -51,8 +50,6 @@ namespace CNCLib.Serial.Server
                 AddJsonOptions(options =>
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
-
-            // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" });
@@ -63,9 +60,10 @@ namespace CNCLib.Serial.Server
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
+            Services = serviceProvider;
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -88,18 +86,13 @@ namespace CNCLib.Serial.Server
 
             TimerCallback callback = (x) =>
             {
-                var hub = serviceProvider.GetService<IHubContext<CNCLibHub>>();
-                //hub.Clients.All.InvokeAsync("heartbeat", DateTime.Now);
+                var hub = Services.GetService<IHubContext<CNCLibHub>>();
                 hub.Clients.All.InvokeAsync("heartbeat");
             };
-
             var timer = new Timer(callback);
-            timer.Change(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(10));
+            timer.Change(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(30));
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1");

@@ -73,14 +73,15 @@ namespace CNCLib.Wpf.ViewModels
 
             WorkOffset = new WorkOffsetViewModel(this);
 
-		    Global.Instance.Com.Current.CommandQueueEmpty += OnCommandQueueEmpty;
+		    Global.Instance.Com.LocalCom.CommandQueueEmpty += OnCommandQueueEmpty;
+		    Global.Instance.Com.RemoteCom.CommandQueueEmpty += OnCommandQueueEmpty;
 		}
 
-		#endregion
+        #endregion
 
-		#region AxisVM
+        #region AxisVM
 
-		public AxisViewModel AxisX { get; }
+        public AxisViewModel AxisX { get; }
 
 		public AxisViewModel AxisY { get; }
 

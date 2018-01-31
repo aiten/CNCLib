@@ -19,9 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CNCLib.Serial.Server.Hubs;
-using Framework.Tools.Dependency;
-using Microsoft.AspNetCore.SignalR;
 
 namespace CNCLib.Serial.Server.SerialPort
 {
