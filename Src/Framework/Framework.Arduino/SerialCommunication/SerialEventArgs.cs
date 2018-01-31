@@ -29,16 +29,32 @@ namespace Framework.Arduino.SerialCommunication
 				Info = cmd.CommandText;
 			else
 				Info = info;
-			Continue = false;
-			Abort = false;
 		}
+	    public SerialEventArgs(SerialCommand cmd)
+	    {
+	        Command = cmd;
+	        if (cmd != null)
+	            Info = cmd.CommandText;
+	    }
 
-		public bool Continue { get; set; }
-		public bool Abort { get; set; }
+	    public SerialEventArgs(int queueLenght, SerialCommand cmd)
+	    {
+	        QueueLenght = queueLenght;
+	        Command = cmd;
+	        if (cmd != null)
+	            Info = cmd.CommandText;
+	    }
+        public SerialEventArgs()
+	    {
+	    }
+
+        public bool Continue { get; set; } = false;
+	    public bool Abort { get; set; } = false;
 		public string Result { get; set; }
 
 		public string Info { get; }
+	    public int QueueLenght { get; }
 
-		public SerialCommand Command { get; }
+        public SerialCommand Command { get; }
 	}
 }

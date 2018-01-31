@@ -34,7 +34,12 @@ namespace CNCLib.Serial.Server.SerialPort
                 Serial.CommandQueueEmpty += async (sender, e) =>
                 {
                     var clients = Startup.Services.GetService<IHubContext<CNCLibHub>>();
-                    await clients.Clients.All.InvokeAsync("queueEmpty");
+                    await clients.Clients.All.InvokeAsync("queueEmpty", Id);
+                };
+                Serial.CommandQueueChanged += async (sender, e) =>
+                {
+                    var clients = Startup.Services.GetService<IHubContext<CNCLibHub>>();
+                    await clients.Clients.All.InvokeAsync("queueChanged", Id, e.QueueLenght);
                 };
             }
         }

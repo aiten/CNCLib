@@ -176,7 +176,7 @@ namespace CNCLib.Wpf.ViewModels
 				}
 				finally
 				{
-				    Global.Instance.Com.Current.DisconnectAsync();
+				    await Global.Instance.Com.Current.DisconnectAsync();
 				}
 			}
 		}

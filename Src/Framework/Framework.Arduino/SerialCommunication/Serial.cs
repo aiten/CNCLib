@@ -151,9 +151,9 @@ namespace Framework.Arduino.SerialCommunication
 			}
 
 			if (!wasempty)
-				OnComandQueueChanged(new SerialEventArgs(null, null));
+				OnComandQueueChanged(new SerialEventArgs(0, null));
 
-			OnComandQueueEmpty(new SerialEventArgs(null, null));
+			OnComandQueueEmpty(new SerialEventArgs(0,null));
 		}
 
 		/// <summary>
@@ -226,9 +226,9 @@ namespace Framework.Arduino.SerialCommunication
 			}
 
 			if (!wasempty)
-				OnComandQueueChanged(new SerialEventArgs(null, null));
+				OnComandQueueChanged(new SerialEventArgs(0,null));
 
-			OnComandQueueChanged(new SerialEventArgs(null, null));
+			OnComandQueueChanged(new SerialEventArgs(0, null));
 
 			Aborted = true;
         }
@@ -398,18 +398,21 @@ namespace Framework.Arduino.SerialCommunication
 			cmd = cmd.Replace('\t', ' ');
 
 			var c = new SerialCommand { SeqId = _commandSeqId++, CommandText = cmd };
+            int queueLenght;
 
 			lock (_pendingCommands)
-            {
-                if (_pendingCommands.Count == 0)
+			{
+			    queueLenght = _pendingCommands.Count;
+                if (queueLenght == 0)
                 {
                     _autoEvent.Set();           // start Async task now!
                 }
 
                 _pendingCommands.Add(c);
-            };
+			    queueLenght++;
+			};
 			Trace.WriteTrace("Queue", cmd);
-			OnComandQueueChanged(new SerialEventArgs(null, c));
+			OnComandQueueChanged(new SerialEventArgs(queueLenght,c));
 			return c;
 		}
 
@@ -417,7 +420,7 @@ namespace Framework.Arduino.SerialCommunication
         {
             // SendCommands is called in the async Write thread 
 
-            var eventarg = new SerialEventArgs(null, cmd);
+            var eventarg = new SerialEventArgs(cmd);
             OnCommandSending(eventarg);
 
             if (eventarg.Abort || Aborted) return;
@@ -455,7 +458,7 @@ namespace Framework.Arduino.SerialCommunication
             if (WriteSerial(commandtext,true))
             {
                 cmd.SentTime = DateTime.Now;
-                eventarg = new SerialEventArgs(null, cmd);
+                eventarg = new SerialEventArgs(cmd);
                 OnCommandSent(eventarg);
             }
         }
@@ -524,7 +527,7 @@ namespace Framework.Arduino.SerialCommunication
 				if (cmd == null)
 					return true;
 
-				var eventarg = new SerialEventArgs(null,cmd);
+				var eventarg = new SerialEventArgs(cmd);
                 OnWaitCommandSent(eventarg);
                 if (Aborted || eventarg.Abort)
 					return false;
@@ -549,7 +552,7 @@ namespace Framework.Arduino.SerialCommunication
 					return true;
 
 				// wait
-				var eventarg = new SerialEventArgs(null, noReplayCmd);
+				var eventarg = new SerialEventArgs(noReplayCmd);
 				OnWaitCommandSent(eventarg);
 				if (Aborted || eventarg.Abort)
 					return false;
@@ -608,7 +611,7 @@ namespace Framework.Arduino.SerialCommunication
 					}
 					else
 					{
-						var eventarg = new SerialEventArgs(null, nextcmd);
+						var eventarg = new SerialEventArgs(nextcmd);
 						OnWaitForSend(eventarg);
 						if (Aborted || eventarg.Abort) return;
 
@@ -747,20 +750,20 @@ namespace Framework.Arduino.SerialCommunication
 
 				if (endcommand && cmd != null)
 				{
-					bool isEmpty;
+				    int queueLenght;
 					lock (_pendingCommands)
 					{
 						if (_pendingCommands.Count > 0) // may cause because of a reset
 							_pendingCommands.RemoveAt(0);
 
-						isEmpty = _pendingCommands.Count == 0;
+					    queueLenght = _pendingCommands.Count;
 						_autoEvent.Set();
 					}
-					OnComandQueueChanged(new SerialEventArgs(null, cmd));
+					OnComandQueueChanged(new SerialEventArgs(queueLenght,cmd));
 
-					if (isEmpty)
+					if (queueLenght == 0)
                     {
-                        OnComandQueueEmpty(new SerialEventArgs(null, cmd));
+                        OnComandQueueEmpty(new SerialEventArgs(queueLenght,cmd));
                         ClearSystemKeepAlive();
                     }
                 }

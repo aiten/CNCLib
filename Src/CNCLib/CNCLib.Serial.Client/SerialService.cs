@@ -38,9 +38,13 @@ namespace CNCLib.Serial.Client
             _serviceHub = new SerialServiceHub(WebServerUrl, this);
             var connection = await _serviceHub.Start();
 
-            connection.On("queueEmpty", () =>
+            connection.On("queueEmpty", (int id) =>
             {
-                CommandQueueEmpty?.Invoke(this, new SerialEventArgs(null,null));
+                CommandQueueEmpty?.Invoke(this, new SerialEventArgs());
+            });
+            connection.On("queueChanged", (int id, int queuelength) =>
+            {
+                CommandQueueChanged?.Invoke(this, new SerialEventArgs(queuelength,null));
             });
         }
 

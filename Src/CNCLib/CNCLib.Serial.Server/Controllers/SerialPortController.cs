@@ -101,7 +101,9 @@ namespace CNCLib.Serial.Server.Controllers
 
             await port.Serial.ConnectAsync(port.PortName);
 
-	        return Ok(GetDefinition(port));
+	        await _hubcontext.Clients.All.InvokeAsync("connected", id);
+
+            return Ok(GetDefinition(port));
 	    }
 
 	    [HttpPost("{id:int}/disconnect")]
@@ -113,10 +115,10 @@ namespace CNCLib.Serial.Server.Controllers
 	            return NotFound();
 	        }
 
-	        await _hubcontext.Clients.All.InvokeAsync("connected");
-
             await port.Serial.DisconnectAsync();
 	        port.Serial = null;
+
+	        await _hubcontext.Clients.All.InvokeAsync("disconnected",id);
 
             return Ok();
 	    }

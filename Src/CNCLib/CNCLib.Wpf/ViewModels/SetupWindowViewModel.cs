@@ -19,6 +19,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -150,7 +151,7 @@ namespace CNCLib.Wpf.ViewModels
 
         #region Operations
 
-        public async Task Connect()
+        public async Task<bool> Connect(CancellationToken ctk)
         {
 			try
 			{
@@ -162,7 +163,7 @@ namespace CNCLib.Wpf.ViewModels
                     Global.Instance.Com.Current.ResetOnConnect = ResetOnConnect;
                 Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
                 Global.Instance.Com.Current.BaudRate = (int)Machine.BaudRate;
-                Global.Instance.Com.Current.ConnectAsync(Machine.ComPort);
+                await Global.Instance.Com.Current.ConnectAsync(Machine.ComPort);
                 await SetGlobal();
 
 				if (SendInitCommands && Machine != null)
@@ -180,27 +181,29 @@ namespace CNCLib.Wpf.ViewModels
 			catch(Exception e)
 			{
 				MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
+				return false;
 			}
 			RaisePropertyChanged(nameof(Connected));
 			CommandManager.InvalidateRequerySuggested();
+            return true;
 		}
 
-        public void ConnectJoystick()
+        public async Task<bool> ConnectJoystick(CancellationToken ctk)
         {
             try
             {
                 Global.Instance.ComJoystick.ResetOnConnect = true;
                 Global.Instance.ComJoystick.CommandToUpper = false;
                 Global.Instance.ComJoystick.BaudRate = Joystick.BaudRate;
-                Global.Instance.ComJoystick.ConnectAsync(Joystick.ComPort);
+                await Global.Instance.ComJoystick.ConnectAsync(Joystick.ComPort);
             }
             catch (Exception e)
             {
 				MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
             RaisePropertyChanged(nameof(ConnectedJoystick));
+            return true;
         }
 
         private async Task SetGlobal()
@@ -218,10 +221,11 @@ namespace CNCLib.Wpf.ViewModels
             return !Connected && Machine != null;
         }
 
-		public void DisConnect()
+		public async Task<bool> DisConnect(CancellationToken ctk)
 		{
-			Global.Instance.Com.Current.DisconnectAsync();
+			await Global.Instance.Com.Current.DisconnectAsync();
 			RaisePropertyChanged(nameof(Connected));
+		    return true;
 		}
 		public bool CanDisConnect()
 		{
@@ -233,10 +237,11 @@ namespace CNCLib.Wpf.ViewModels
             return !ConnectedJoystick;
         }
 
-        public void DisConnectJoystick()
+        public async Task<bool> DisConnectJoystick(CancellationToken ctk)
         {
-            Global.Instance.ComJoystick.DisconnectAsync();
+            await Global.Instance.ComJoystick.DisconnectAsync();
             RaisePropertyChanged(nameof(ConnectedJoystick));
+            return true;
         }
         public bool CanDisConnectJoystick()
         {
@@ -288,12 +293,12 @@ namespace CNCLib.Wpf.ViewModels
 		#region Commands
 
 		public ICommand SetupMachineCommand => new DelegateCommand(SetupMachine, CanSetupMachine);
-		public ICommand ConnectCommand => new DelegateCommand(async () => await Connect(), CanConnect);
-		public ICommand DisConnectCommand	=> new DelegateCommand(DisConnect, CanDisConnect);
+		public ICommand ConnectCommand => new DelegateCommandAsync<bool>(Connect, CanConnect);
+		public ICommand DisConnectCommand	=> new DelegateCommandAsync<bool>(DisConnect, CanDisConnect);
 		public ICommand EepromCommand => new DelegateCommand(SetEeprom, CanDisConnect);
 		public ICommand SetDefaultMachineCommand => new DelegateCommand(SetDefaultMachine, CanSetupMachine);
-        public ICommand ConnectJoystickCommand => new DelegateCommand(ConnectJoystick, CanConnectJoystick);
-        public ICommand DisConnectJoystickCommand => new DelegateCommand(DisConnectJoystick, CanDisConnectJoystick);
+        public ICommand ConnectJoystickCommand => new DelegateCommandAsync<bool>(ConnectJoystick, CanConnectJoystick);
+        public ICommand DisConnectJoystickCommand => new DelegateCommandAsync<bool>(DisConnectJoystick, CanDisConnectJoystick);
 		public ICommand SetupJoystickCommand => new DelegateCommand(SetupJoystick, CanSetupJoystick);
 
 		#endregion
