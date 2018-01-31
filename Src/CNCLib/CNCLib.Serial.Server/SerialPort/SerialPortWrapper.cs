@@ -16,7 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Threading;
+using System.Threading.Tasks;
 using CNCLib.Serial.Server.Hubs;
+using Framework.Tools.Helpers;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -38,11 +41,28 @@ namespace CNCLib.Serial.Server.SerialPort
                 };
                 Serial.CommandQueueChanged += async (sender, e) =>
                 {
-                    var clients = Startup.Services.GetService<IHubContext<CNCLibHub>>();
-                    await clients.Clients.All.InvokeAsync("queueChanged", Id, e.QueueLenght);
+                    _delayExecuteQueueChanged.Execute(1000, () => _pendingLastQueueLength = e.QueueLenght, () =>
+                    {
+                        var clients = Startup.Services.GetService<IHubContext<CNCLibHub>>();
+                        clients.Clients.All.InvokeAsync("queueChanged", Id, _pendingLastQueueLength);
+                    });
+                };
+                Serial.CommandSending += async (sender, e) =>
+                {
+                    _delayExecuteSendingCommand.Execute(1000, () => _pendingSendingCommandSeqId = e.SeqId, () =>
+                    {
+                        var clients = Startup.Services.GetService<IHubContext<CNCLibHub>>();
+                        clients.Clients.All.InvokeAsync("sendingCommand", Id, _pendingSendingCommandSeqId);
+                    });
                 };
             }
         }
+
+        DelayedExecution _delayExecuteQueueChanged = new DelayedExecution();
+        int _pendingLastQueueLength;
+
+        DelayedExecution _delayExecuteSendingCommand = new DelayedExecution();
+        int _pendingSendingCommandSeqId;
 
         #endregion
 

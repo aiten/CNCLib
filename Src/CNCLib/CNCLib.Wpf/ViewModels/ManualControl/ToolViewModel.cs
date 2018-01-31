@@ -31,19 +31,21 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public ToolViewModel(IManualControlViewModel vm)
 			: base(vm)
 		{
-		    Global.Instance.Com.Current.CommandQueueChanged += OnCommandQueueChanged;
-		}
+		    Global.Instance.Com.LocalCom.CommandQueueChanged += OnCommandQueueChanged;
+            Global.Instance.Com.RemoteCom.CommandQueueChanged += OnCommandQueueChanged;
+        }
 
-		public void Dispose()
+        public void Dispose()
 		{
-		    Global.Instance.Com.Current.CommandQueueChanged -= OnCommandQueueChanged;
-		}
+		    Global.Instance.Com.LocalCom.CommandQueueChanged -= OnCommandQueueChanged;
+            Global.Instance.Com.RemoteCom.CommandQueueChanged -= OnCommandQueueChanged;
+        }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-		public int PendingCommandCount => Global.Instance.Com.Current.CommandsInQueue;
+        public int PendingCommandCount { get; set; }
 
 	    public bool Pause
 		{
@@ -55,7 +57,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
 		private void OnCommandQueueChanged(object sender, Framework.Arduino.SerialCommunication.SerialEventArgs arg)
 		{
-			RaisePropertyChanged(nameof(PendingCommandCount));
+            PendingCommandCount = arg.QueueLenght;
+
+            RaisePropertyChanged(nameof(PendingCommandCount));
 
 			if (_updateAfterSendNext)
 			{

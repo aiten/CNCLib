@@ -39,14 +39,15 @@ namespace CNCLib.Wpf.ViewModels
 
 		public PreviewViewModel()
 		{
-			Global.Instance.Com.Current.CommandSending += CommandSending;
-		}
+			Global.Instance.Com.LocalCom.CommandSending += CommandSending;
+            Global.Instance.Com.RemoteCom.CommandSending += CommandSending;
+        }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-	    private CommandList _commands = new CommandList();
+        private CommandList _commands = new CommandList();
 
 		public CommandList Commands
 		{

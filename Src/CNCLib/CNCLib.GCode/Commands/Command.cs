@@ -398,6 +398,13 @@ namespace CNCLib.GCode.Commands
 			}
 		}
 
-		#endregion
-	}
+        #endregion
+
+        #region Execute on Machine
+
+        public int? SeqIdFrom { get; set; }
+        public int? SeqIdTo { get; set; }
+
+        #endregion
+    }
 }

@@ -46,7 +46,7 @@ namespace CNCLib.Wpf.Helpers
 			string probdistup = machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
 			string probfeed = machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
 
-			var result = await Global.Instance.Com.Current.SendCommandAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90",int.MaxValue);
+			var result = await Global.Instance.Com.Current.SendCommandAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90", DefaultProbeTimeout);
             if (result?.LastOrDefault()?.ReplyType.HasFlag(Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == false)
 			{
 				Global.Instance.Com.Current.QueueCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
@@ -60,6 +60,7 @@ namespace CNCLib.Wpf.Helpers
 
         #region EEprom
 
+        public const int DefaultProbeTimeout = 15000;
         public const int DefaultEpromTimeout = 3000;
 
 		public async Task<UInt32[]> GetEpromValuesAsync(int waitForMilliseconds)

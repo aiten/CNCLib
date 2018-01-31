@@ -46,6 +46,10 @@ namespace CNCLib.Serial.Client
             {
                 CommandQueueChanged?.Invoke(this, new SerialEventArgs(queuelength,null));
             });
+            connection.On("sendingCommand", (int id, int seqId) =>
+            {
+                CommandSending?.Invoke(this, new SerialEventArgs(new SerialCommand() { SeqId = seqId } ));
+            });
         }
 
         public int PortId { get; private set; }

@@ -25,25 +25,40 @@ namespace Framework.Arduino.SerialCommunication
 		public SerialEventArgs(string info, SerialCommand cmd)
 		{
 			Command = cmd;
-			if (cmd != null && string.IsNullOrEmpty(info))
-				Info = cmd.CommandText;
-			else
-				Info = info;
-		}
-	    public SerialEventArgs(SerialCommand cmd)
+            if (cmd != null && string.IsNullOrEmpty(info))
+            {
+                Info = cmd.CommandText;
+            }
+            else
+            {
+                Info = info;
+            }
+
+            if (cmd != null)
+            {
+                SeqId = cmd.SeqId;
+            }
+        }
+        public SerialEventArgs(SerialCommand cmd)
 	    {
 	        Command = cmd;
-	        if (cmd != null)
-	            Info = cmd.CommandText;
+            if (cmd != null)
+            {
+                Info = cmd.CommandText;
+                SeqId = cmd.SeqId;
+            }
 	    }
 
-	    public SerialEventArgs(int queueLenght, SerialCommand cmd)
-	    {
-	        QueueLenght = queueLenght;
-	        Command = cmd;
-	        if (cmd != null)
-	            Info = cmd.CommandText;
-	    }
+        public SerialEventArgs(int queueLenght, SerialCommand cmd)
+        {
+            QueueLenght = queueLenght;
+            Command = cmd;
+            if (cmd != null)
+            {
+                Info = cmd.CommandText;
+                SeqId = cmd.SeqId;
+            }
+        }
         public SerialEventArgs()
 	    {
 	    }
@@ -54,6 +69,8 @@ namespace Framework.Arduino.SerialCommunication
 
 		public string Info { get; }
 	    public int QueueLenght { get; }
+
+        public int SeqId { get; }
 
         public SerialCommand Command { get; }
 	}

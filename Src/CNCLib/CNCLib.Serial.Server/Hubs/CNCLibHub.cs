@@ -38,15 +38,22 @@ namespace CNCLib.Serial.Server.Hubs
         {
             await Clients.All.InvokeAsync("queueEmpty", id);
         }
+
         public async Task QueueChanged(int id, int queueLength)
         {
             await Clients.All.InvokeAsync("queueChanged", id, queueLength);
+        }
+
+        public async Task SendingCommand(int id, int seqid)
+        {
+            await Clients.All.InvokeAsync("sendingCommand", id, seqid);
         }
 
         public async Task Connected(int id)
         {
             await Clients.All.InvokeAsync("connected",id);
         }
+
         public async Task Disconnected(int id)
         {
             await Clients.All.InvokeAsync("disconnected", id);
