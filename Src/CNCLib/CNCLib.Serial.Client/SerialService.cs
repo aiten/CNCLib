@@ -40,15 +40,18 @@ namespace CNCLib.Serial.Client
 
             connection.On("queueEmpty", (int id) =>
             {
-                CommandQueueEmpty?.Invoke(this, new SerialEventArgs());
+                if (PortId == id)
+                    CommandQueueEmpty?.Invoke(this, new SerialEventArgs());
             });
             connection.On("queueChanged", (int id, int queuelength) =>
             {
-                CommandQueueChanged?.Invoke(this, new SerialEventArgs(queuelength,null));
+                if (PortId == id)
+                    CommandQueueChanged?.Invoke(this, new SerialEventArgs(queuelength,null));
             });
             connection.On("sendingCommand", (int id, int seqId) =>
             {
-                CommandSending?.Invoke(this, new SerialEventArgs(new SerialCommand() { SeqId = seqId } ));
+                if (PortId == id)
+                    CommandSending?.Invoke(this, new SerialEventArgs(new SerialCommand() { SeqId = seqId } ));
             });
         }
 

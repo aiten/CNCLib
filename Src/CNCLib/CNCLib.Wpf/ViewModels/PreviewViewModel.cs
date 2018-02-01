@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -199,8 +200,9 @@ namespace CNCLib.Wpf.ViewModels
 
 		private void CommandSending(object sender, Framework.Arduino.SerialCommunication.SerialEventArgs arg)
 		{
-			Commands.Current = Commands.FirstOrDefault(c => c == arg.Command.Tag);
-			if (Commands.Current != _lastCurrentCommand)
+		    int seqId = arg.SeqId;
+		    Commands.Current = Commands.FirstOrDefault(c => (c.SeqIdFrom??0) >= seqId && (c.SeqIdTo ?? 0) <= seqId);
+            if (Commands.Current != _lastCurrentCommand)
 			{
 				_lastCurrentCommand = Commands.Current;
 				RefreshPreview?.Invoke();
@@ -227,6 +229,22 @@ namespace CNCLib.Wpf.ViewModels
 
         #region Operations
 
+	    private void SendCommands(string[] commands, Command cmd)
+	    {
+	        var cmdlist = new List<SerialCommand>();
+
+	        if (commands != null)
+	        {
+	            foreach (string str in commands)
+	            {
+	                cmdlist.AddRange(Global.Instance.Com.Current.QueueCommand(str));
+	            }
+
+	            cmd.SeqIdFrom = cmdlist.Min((c) => c.SeqId);
+	            cmd.SeqIdTo = cmdlist.Max((c) => c.SeqId);
+	        }
+        }
+
         public void SendTo()
 		{
 			Task.Run(() =>
@@ -244,10 +262,7 @@ namespace CNCLib.Wpf.ViewModels
                             string cmdstr = cmd.ImportInfo;
                             if (!string.IsNullOrEmpty(cmdstr))
                             {
-                                foreach (var c in Global.Instance.Com.Current.QueueCommand(cmdstr))
-                                {
-                                    c.Tag = cmd;
-                                }
+                                SendCommands(new string[] { cmdstr }, cmd);
                             }
                         });
                     }
@@ -255,20 +270,11 @@ namespace CNCLib.Wpf.ViewModels
                     {
                         Command last = null;
                         var state = new CommandState();
+                        var cmdlist = new List<SerialCommand>();
 
                         Commands.ForEach(cmd =>
                         {
-                            string[] cmds = cmd.GetGCodeCommands(last?.CalculatedEndPosition, state);
-                            if (cmds != null)
-                            {
-                                foreach (string str in cmds)
-                                {
-                                    foreach (var c in Global.Instance.Com.Current.QueueCommand(str))
-                                    {
-                                        c.Tag = cmd;
-                                    }
-                                }
-                            }
+                            SendCommands(cmd.GetGCodeCommands(last?.CalculatedEndPosition, state), cmd);
                             last = cmd;
                         });
                     }

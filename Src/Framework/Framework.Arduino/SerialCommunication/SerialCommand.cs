@@ -30,7 +30,5 @@ namespace Framework.Arduino.SerialCommunication
         public DateTime? ReplyReceivedTime { get; set; }
 
         public string ResultText { get; set; }
-
-        public object Tag { get; set; }
     }
 }

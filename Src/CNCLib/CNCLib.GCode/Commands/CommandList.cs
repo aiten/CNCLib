@@ -21,99 +21,116 @@ using System.Collections.Generic;
 namespace CNCLib.GCode.Commands
 {
     public class CommandList : List<Command>
-	{
-		#region Properties
+    {
+        #region Properties
 
-		public Command Current { get; set; }
+        public Command Current { get; set; }
 
-		#endregion
+        #endregion
 
-		#region Add/Update
+        #region Add/Update
 
-		public void AddCommand(Command cmd)
-		{
-			if (Count > 0)
-			{
-				this[Count - 1].NextCommand = cmd;
-				cmd.PrevCommand = this[Count - 1];
-			}
-			cmd.NextCommand = null;
-			base.Add(cmd);
-		}
+        public void AddCommand(Command cmd)
+        {
+            if (Count > 0)
+            {
+                this[Count - 1].NextCommand = cmd;
+                cmd.PrevCommand = this[Count - 1];
+            }
 
-		public new void Add(Command cmd)
-		{
-			AddCommand(cmd);
-		}
-		public void AddCommands(IEnumerable<Command> cmds)
-		{
-			foreach (Command cmd in cmds)
-			{
-				AddCommand(cmd);
-			}
-		}
+            cmd.NextCommand = null;
+            base.Add(cmd);
+        }
 
-		public void UpdateCache()
-		{
-			foreach (Command cmd in this)
-			{
-				cmd.UpdateCalculatedEndPosition();
-			}
-		}
+        public new void Add(Command cmd)
+        {
+            AddCommand(cmd);
+        }
 
-		#endregion
+        public void AddCommands(IEnumerable<Command> cmds)
+        {
+            foreach (Command cmd in cmds)
+            {
+                AddCommand(cmd);
+            }
+        }
 
-		#region Paint + Convert
+        public void UpdateCache()
+        {
+            foreach (Command cmd in this)
+            {
+                cmd.UpdateCalculatedEndPosition();
+            }
+        }
 
-		public void Paint(IOutputCommand output, object param)
-		{
-			var commandstate = new CommandState();
-			bool haveseencurrent = Current == null;
+        #endregion
 
-			foreach (Command cmd in this)
-			{
-				if (!haveseencurrent)
-					haveseencurrent = cmd == Current;
-				commandstate.IsSelected = haveseencurrent;
-				cmd.Draw(output, commandstate, param);
-			}
-		}
+        #region Paint + Convert
 
-		public IEnumerable<string> ToStringList()
-		{
-			var list = new List<string>();
+        public void Paint(IOutputCommand output, object param)
+        {
+            var commandstate = new CommandState();
+            bool haveseencurrent = Current == null;
 
-			Command last = null;
-			var state = new CommandState();
+            foreach (Command cmd in this)
+            {
+                if (!haveseencurrent)
+                    haveseencurrent = cmd == Current;
+                commandstate.IsSelected = haveseencurrent;
+                cmd.Draw(output, commandstate, param);
+            }
+        }
 
-			foreach (Command r in this)
-			{
-				string[] cmds = r.GetGCodeCommands(last?.CalculatedEndPosition, state);
-				if (cmds != null)
-				{
-					foreach (string str in cmds)
-					{
-						list.Add(str);
-					}
-				}
-				last = r;
-			}
-			return list;
-		}
+        public IEnumerable<string> ToStringList()
+        {
+            var list = new List<string>();
 
-		public CommandList Convert(ConvertOptions options)
-		{
-			var list = new CommandList();
-			var state = new CommandState();
+            Command last = null;
+            var state = new CommandState();
 
-			foreach (Command r in this)
-			{
-				list.AddCommands(r.ConvertCommand(state, options));
-			}
+            foreach (Command r in this)
+            {
+                string[] cmds = r.GetGCodeCommands(last?.CalculatedEndPosition, state);
+                if (cmds != null)
+                {
+                    foreach (string str in cmds)
+                    {
+                        list.Add(str);
+                    }
+                }
 
-			return list;
+                last = r;
+            }
 
-			#endregion
-		}
-	}
+            return list;
+        }
+
+        public CommandList Convert(ConvertOptions options)
+        {
+            var list = new CommandList();
+            var state = new CommandState();
+
+            foreach (Command r in this)
+            {
+                list.AddCommands(r.ConvertCommand(state, options));
+            }
+
+            return list;
+        }
+
+        #endregion
+
+        #region Execute on Machine
+
+        public void ClearExecutionState()
+        {
+            foreach (Command cmd in this)
+            {
+                cmd.SeqIdFrom = null;
+                cmd.SeqIdTo = null;
+            }
+        }
+
+        #endregion
+    }
 }
