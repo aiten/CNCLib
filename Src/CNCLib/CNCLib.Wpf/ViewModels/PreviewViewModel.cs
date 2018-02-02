@@ -200,11 +200,11 @@ namespace CNCLib.Wpf.ViewModels
 
 		private void CommandSending(object sender, Framework.Arduino.SerialCommunication.SerialEventArgs arg)
 		{
-		    if (_currentDrawSeqIdToCmdList != null)
-		    {
-		        int seqId = arg.SeqId;
+		    int seqId = arg.SeqId;
 
-		        Commands.Current = _currentDrawSeqIdToCmdList.FirstOrDefault(c => c.SeqIdFrom >= seqId && c.SeqIdTo <= seqId)?.Cmd;
+		    if (_currentDrawSeqIdToCmd != null && _currentDrawSeqIdToCmd.ContainsKey(seqId))
+		    {
+                Commands.Current = _currentDrawSeqIdToCmd[seqId];
 		        if (Commands.Current != _lastCurrentCommand)
 		        {
 		            _lastCurrentCommand = Commands.Current;
@@ -233,10 +233,11 @@ namespace CNCLib.Wpf.ViewModels
 
         #region Operations
 
-	    private async Task SendCommands(List<ComandToIndex> list)
+	    private async Task SendCommands(List<CommandToIndex> list)
 	    {
 	        var cmdlist = new List<string>();
 	        int idx = 0;
+            var cmddict = new Dictionary<int, CommandToIndex>();
 
 	        foreach (var c in list)
 	        {
@@ -244,24 +245,34 @@ namespace CNCLib.Wpf.ViewModels
 	            c.IdxTo   = idx + c.CommandText.Length - 1;
 	            idx += c.CommandText.Length;
 	            cmdlist.AddRange(c.CommandText);
+                for (idx = c.IdxFrom; idx<=c.IdxTo;idx++)
+	                cmddict[idx] = c;
 	        }
 
-	        var serialcommands = await Global.Instance.Com.Current.QueueCommandsAsync(cmdlist);
+            var serialcommands = await Global.Instance.Com.Current.QueueCommandsAsync(cmdlist);
 
 	        foreach (var serialcmd in serialcommands)
 	        {
-	            var ctox = list.FirstOrDefault((ct) => ct.IdxFrom >= serialcmd.CommandIndex && ct.IdxTo <= serialcmd.CommandIndex);
-	            if (ctox != null)
-	            {
+	            //var ctox = list.FirstOrDefault((ct) => ct.IdxFrom >= serialcmd.CommandIndex && ct.IdxTo <= serialcmd.CommandIndex);
+                if (cmddict.ContainsKey(serialcmd.CommandIndex))
+                {
+                    var ctox = cmddict[serialcmd.CommandIndex];
 	                ctox.SeqIdFrom = Math.Min(ctox.SeqIdFrom, serialcmd.SeqId);
 	                ctox.SeqIdTo   = Math.Max(ctox.SeqIdTo, serialcmd.SeqId);
                 }
             }
 
-	        _currentDrawSeqIdToCmdList = list;
+	        var dict = new Dictionary<int, Command>();
+	        foreach (var c in list)
+	        {
+	            for (idx = c.SeqIdFrom; idx <= c.SeqIdTo; idx++)
+	                dict[idx] = c.Cmd;
+	        }
+
+            _currentDrawSeqIdToCmd = dict;
 	    }
 
-	    class ComandToIndex
+	    class CommandToIndex
 	    {
 	        public Command Cmd { get; set; }
             public string[] CommandText { get; set; }
@@ -271,7 +282,7 @@ namespace CNCLib.Wpf.ViewModels
 	        public int IdxTo { get; set; }
         }
 
-	    private List<ComandToIndex> _currentDrawSeqIdToCmdList;
+	    private Dictionary<int,Command> _currentDrawSeqIdToCmd;
 
         public void SendTo()
 		{
@@ -282,7 +293,7 @@ namespace CNCLib.Wpf.ViewModels
 				try
 				{
 					Global.Instance.Com.Current.ClearCommandHistory();
-				    var cmddeflist = new List<ComandToIndex>();
+				    var cmddeflist = new List<CommandToIndex>();
 
                     if (Global.Instance.Machine.CommandSyntax == CommandSyntax.HPGL && IsHPGLAndPlotter())
                     {
@@ -292,7 +303,7 @@ namespace CNCLib.Wpf.ViewModels
                             if (!string.IsNullOrEmpty(cmdstr))
                             {
                                 cmddeflist.Add(
-                                    new ComandToIndex()
+                                    new CommandToIndex()
                                     {
                                         Cmd = cmd,
                                         CommandText = new string[] { cmdstr }
@@ -308,7 +319,7 @@ namespace CNCLib.Wpf.ViewModels
                         Commands.ForEach(cmd =>
                         {
                             cmddeflist.Add(
-                                new ComandToIndex()
+                                new CommandToIndex()
                                 {
                                     Cmd = cmd,
                                     CommandText = cmd.GetGCodeCommands(last?.CalculatedEndPosition, state)
