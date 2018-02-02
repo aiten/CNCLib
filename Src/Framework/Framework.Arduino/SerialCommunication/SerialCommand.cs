@@ -22,6 +22,9 @@ namespace Framework.Arduino.SerialCommunication
 {
     public class SerialCommand
     {
+        /// <summary>
+        /// Sequence Id (incremented with each command)
+        /// </summary>
         public int SeqId { get; set; }
         public DateTime? SentTime { get; set; }
         public string CommandText { get; set; }
@@ -30,5 +33,10 @@ namespace Framework.Arduino.SerialCommunication
         public DateTime? ReplyReceivedTime { get; set; }
 
         public string ResultText { get; set; }
+
+        /// <summary>
+        /// Index of array passed by PostCommands or SendCommands resulting in this SerialCommand
+        /// </summary>
+        public int CommandIndex { get; set; } 
     }
 }

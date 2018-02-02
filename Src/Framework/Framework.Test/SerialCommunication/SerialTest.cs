@@ -76,7 +76,7 @@ namespace Framework.Test.SerialCommunication
         }
 
         [TestMethod]
-        public void ConnectSerialTest()
+        public async Task ConnectSerialTest()
         {
             var serialport = Substitute.For<ISerialPort>();
             var basestream = Substitute.For<MemoryStream>();
@@ -87,10 +87,10 @@ namespace Framework.Test.SerialCommunication
             Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
 
             var serial = new Serial();
-            serial.ConnectAsync("com2");
+            await serial.ConnectAsync("com2");
             serial.CommandsInQueue.Should().Be(0);
 
-            serial.DisconnectAsync();
+            await serial.DisconnectAsync();
         }
 
         [TestMethod]
@@ -102,11 +102,11 @@ namespace Framework.Test.SerialCommunication
                                         serial.OkTag + "\n\r"
                                     });
 
-            serial.ConnectAsync("com2");
+            await serial.ConnectAsync("com2");
 
             await serial.SendCommandAsync("?");
 
-            serial.DisconnectAsync();
+            await serial.DisconnectAsync();
 
             await serialport.BaseStream.Received(1).WriteAsync(Arg.Is<Byte[]>(e => (char)e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
             await Task.FromResult(0);
@@ -122,12 +122,12 @@ namespace Framework.Test.SerialCommunication
                                         serial.OkTag + "\n\r"
                                     });
 
-            serial.ConnectAsync("com2");
+            await serial.ConnectAsync("com2");
 
             await serial.SendCommandAsync("?");
             await serial.SendCommandAsync("?");
 
-            serial.DisconnectAsync();
+            await serial.DisconnectAsync();
             await serialport.BaseStream.Received(2).WriteAsync(Arg.Is<Byte[]>(e => (char) e[0] == '?'), 0,  2, Arg.Any<System.Threading.CancellationToken>());
             await Task.FromResult(0);
         }
@@ -178,11 +178,11 @@ namespace Framework.Test.SerialCommunication
 
             var eventCalls = SubscribeForEventCall(serial);
 
-            serial.ConnectAsync("com2");
+            await serial.ConnectAsync("com2");
 
             await serial.SendCommandAsync("?");
 
-            serial.DisconnectAsync();
+            await serial.DisconnectAsync();
 
             eventCalls.EventWaitForSend.Should().Be(0);
             eventCalls.EventCommandSending.Should().Be(1);
@@ -211,11 +211,11 @@ namespace Framework.Test.SerialCommunication
 
             var eventCalls = SubscribeForEventCall(serial);
 
-            serial.ConnectAsync("com2");
+            await serial.ConnectAsync("com2");
 
             await serial.SendCommandAsync("?");
 
-            serial.DisconnectAsync();
+            await serial.DisconnectAsync();
 
             eventCalls.EventWaitForSend.Should().Be(0);
             eventCalls.EventCommandSending.Should().Be(1);
@@ -246,11 +246,11 @@ namespace Framework.Test.SerialCommunication
 
             serial.ErrorIsReply = false;
 
-            serial.ConnectAsync("com2");
+            await serial.ConnectAsync("com2");
 
             await serial.SendCommandAsync("?");
 
-            serial.DisconnectAsync();
+            await serial.DisconnectAsync();
 
             eventCalls.EventWaitForSend.Should().Be(0);
             eventCalls.EventCommandSending.Should().Be(1);
@@ -280,11 +280,11 @@ namespace Framework.Test.SerialCommunication
 
             serial.ErrorIsReply = true;     // no OK is needed
 
-            serial.ConnectAsync("com2");
+            await serial.ConnectAsync("com2");
 
             await serial.SendCommandAsync("?");
 
-            serial.DisconnectAsync();
+            await serial.DisconnectAsync();
 
             eventCalls.EventWaitForSend.Should().Be(0);
             eventCalls.EventCommandSending.Should().Be(1);
@@ -313,11 +313,11 @@ namespace Framework.Test.SerialCommunication
 
             serial.ErrorIsReply = true;     // no OK is needed
 
-            serial.ConnectAsync("com2");
+            await serial.ConnectAsync("com2");
 
             await serial.SendCommandAsync("?");
 
-            serial.DisconnectAsync();
+            await serial.DisconnectAsync();
 
             eventCalls.EventWaitForSend.Should().Be(0);
             eventCalls.EventCommandSending.Should().Be(1);

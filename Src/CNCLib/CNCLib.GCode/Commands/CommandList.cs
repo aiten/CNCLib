@@ -119,18 +119,5 @@ namespace CNCLib.GCode.Commands
         }
 
         #endregion
-
-        #region Execute on Machine
-
-        public void ClearExecutionState()
-        {
-            foreach (Command cmd in this)
-            {
-                cmd.SeqIdFrom = null;
-                cmd.SeqIdTo = null;
-            }
-        }
-
-        #endregion
     }
 }

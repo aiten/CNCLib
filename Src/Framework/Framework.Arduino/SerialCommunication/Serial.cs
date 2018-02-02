@@ -322,12 +322,19 @@ namespace Framework.Arduino.SerialCommunication
 
 			if (commands != null)
 			{
+			    int commandindex = 0;
 				foreach (string cmd in commands)
 				{
 					var cmds = SplitAndQueueCommand(cmd);
 					if (Aborted)
 						break;
-					list.AddRange(cmds);
+
+                    foreach (SerialCommand serialCommand in cmds)
+                    {
+                        serialCommand.CommandIndex = commandindex;
+                        list.Add(serialCommand);
+                    }
+				    commandindex++;
 				}
 			}
 			return list;
