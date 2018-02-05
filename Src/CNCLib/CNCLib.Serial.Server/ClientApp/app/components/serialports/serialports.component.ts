@@ -23,10 +23,22 @@ export class SerialPortsComponent
 
     reload()
     {
-        this.http.get(this.baseUrl + 'api/SerialPort').subscribe(result => {
+        this.http.get(this.baseUrl + 'api/SerialPort').subscribe(result => 
+        {
             this.serialports = result.json() as SerialPortDefinition[];
             this.counter = this.counter + 1;
         }, error => console.error(error));
+    }
+
+    refresh()
+    {
+        console.log('Refresh');
+        this.http.post(this.baseUrl + 'api/SerialPort/refresh', "x").
+            subscribe(result =>
+            {
+                this.serialports = result.json() as SerialPortDefinition[];
+                this.counter = this.counter + 1;
+            }, error => console.error(error));
     }
 
     showHistory(showhistoryportid: number)
@@ -43,6 +55,15 @@ export class SerialPortsComponent
                 this.http.post(this.baseUrl + 'api/SerialPort/' + serialportid + '/resume', "x").
                     subscribe(result => {
                     }, error => console.error(error))
+            }, error => console.error(error));
+    }
+
+    disconnect(serialportid: number)
+    {
+        console.log('Disconnect ' + serialportid);
+        this.http.post(this.baseUrl + 'api/SerialPort/' + serialportid + '/disconnect', "x").
+            subscribe(result =>
+            {
             }, error => console.error(error));
     }
 }

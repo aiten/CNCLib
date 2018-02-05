@@ -1,6 +1,7 @@
 <div>
     <h1>Serial ports</h1>
     <button (click)='reload()'>Reload</button>
+    <button (click)='refresh()'>Refresh(scan ports)</button>
 </div>
 
 <p *ngIf="!serialports"><em>Loading...</em></p>
@@ -29,6 +30,7 @@
                 <td>
                     <button (click)='showHistory(serialport.Id)'>History</button>
                     <button *ngIf="serialport.IsConnected" (click)='clearQueue(serialport.Id)'>Clear Queue</button>
+                    <button *ngIf="serialport.IsConnected" (click)='disconnect(serialport.Id)'>Disconnect</button>
                 </td>
             </tr>
         </tbody>

@@ -96,6 +96,15 @@ namespace CNCLib.Serial.Server.Controllers
 	            return NotFound();
 	        }
 
+	        if (port.IsConnected)
+	        {
+	            if (port.Serial.BaudRate == (baudrate ?? 250000) && (resetOnConnect ?? true) == false)
+	            {
+	                return Ok(GetDefinition(port));
+	            }
+	            await port.Serial.DisconnectAsync();
+	        }
+
 	        port.Serial.BaudRate = baudrate ?? 250000;
 	        port.Serial.ResetOnConnect = resetOnConnect ?? true;
 

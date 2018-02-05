@@ -71,7 +71,7 @@ if (Environment.MachineName == "AIT7" && !portnames.Any())
 
                 if (existingport != null)
                 {
-                    newlist.Add(existingport);
+                    newlist.Add(port);
                 }
             }
 
