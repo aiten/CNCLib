@@ -1,0 +1,39 @@
+<div>
+    <h1>Machine control</h1>
+</div>
+
+<p *ngIf="!serialports"><em>Loading...</em></p>
+
+<div *ngIf="serialports">
+    <div *ngIf="useserialport">
+        <div *ngIf="!useserialport.IsConnected">
+            <machinecontrolconnect [entry]="useserialport">Loading...</machinecontrolconnect>
+        </div>
+    </div>
+    <div *ngIf="!useserialport">
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Port-Name</th>
+                    <th>Connected</th>
+                    <th>Task</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let serialport of serialports">
+                    <td>{{ serialport.Id }}</td>
+                    <td>{{ serialport.PortName }}</td>
+                    <td>{{ serialport.IsConnected }}</td>
+                    <td>
+                        <button *ngIf="!serialport.IsConnected" (click)='useport(serialport)'>Use</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div *ngIf="historyportid">
+    <serialporthistory [forserialportid]=historyportid>Loading...</serialporthistory>
+</div>

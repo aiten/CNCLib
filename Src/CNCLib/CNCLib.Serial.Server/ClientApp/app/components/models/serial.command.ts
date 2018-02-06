@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 
-export class SerialCommand {
+export class SerialCommand 
+{
     SeqId: number;
     SendTime: string;
     CommandText: number;
