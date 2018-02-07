@@ -1,13 +1,16 @@
-import { Component, Inject, Output } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
-import { SerialPortDefinition } from '../models/serial.port.definition';
+import { SerialPortDefinition } from '../../models/serial.port.definition';
+import { machinecontrolURL } from '../machinecontrol.routing';
+
+
 
 @Component({
-    selector: 'machinecontroldetail',
-    templateUrl: './machinecontrol-detail.component.html'
+    selector: 'machinecontroloverview',
+    templateUrl: './machinecontrol-overview.component.html'
 })
-export class MachineControlDetailComponent
+export class MachineControlOverviewComponent
 {
     serialports: SerialPortDefinition[];
     useserialport: SerialPortDefinition;
@@ -17,11 +20,11 @@ export class MachineControlDetailComponent
         @Inject('BASE_URL') public baseUrl: string,
         public router: Router) 
     {
-        this.reload();
     }
 
-    useport(serialport: SerialPortDefinition) 
+    useport(serialport: SerialPortDefinition)
     {
+        this.router.navigate([machinecontrolURL, serialport.Id]);
         this.useserialport = serialport;
     }
 
@@ -31,5 +34,10 @@ export class MachineControlDetailComponent
         {
             this.serialports = result.json() as SerialPortDefinition[];
         }, error => console.error(error));
+    }
+
+    ngOnInit() 
+    {
+        this.reload();
     }
 }

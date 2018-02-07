@@ -2,8 +2,8 @@ import { Component, Inject, Input } from '@angular/core';
 import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
-import { SerialPortDefinition } from '../models/serial.port.definition';
-import { SerialConnect } from '../models/serial.connect';
+import { SerialPortDefinition } from '../../models/serial.port.definition';
+import { SerialConnect } from '../../models/serial.connect';
 
 @Component({
     selector: 'machinecontrolconnect',
@@ -17,7 +17,6 @@ export class MachineControlConnectComponent
     isLoading: boolean = true;
     isLoaded: boolean = false;
     connectOptions: SerialConnect;
-
 
     setupForm: FormGroup;
 
@@ -47,7 +46,15 @@ export class MachineControlConnectComponent
         console.log(value);
         Object.assign(this.connectOptions, value);
 
-        console.log('save' + this.entry.Id);
-        this.router.navigate([this.baseUrl + '/machinecontrol', this.entry.Id]);
+        console.log('save:' + this.entry.Id);
+
+        this.http.post(this.baseUrl + 'api/SerialPort/' + this.entry.Id + '/connect/?baudrate=' + this.connectOptions.baudRate, "x").
+            subscribe(result =>
+            {
+               //  this.load
+            }, error => console.error(error))
+
+
+
     }
 }

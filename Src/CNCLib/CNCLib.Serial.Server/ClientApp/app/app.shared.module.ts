@@ -9,9 +9,7 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { SerialPortsComponent } from './components/serialports/serialports.component';
 import { SerialPortHistoryComponent } from './components/serialporthistory/serialporthistory.component';
-import { MachineControlOverviewComponent } from './components/machinecontrol-overview/machinecontrol-overview.component';
-import { MachineControlConnectComponent } from './components/machinecontrol-connect/machinecontrol-connect.component';
-import { MachineControlDetailComponent } from './components/machinecontrol-detail/machinecontrol-detail.component';
+import { machineControlRoutes, machineControlRoutingComponents } from './components/machinecontrol/machinecontrol.routing';
 
 @NgModule({
     declarations: [
@@ -19,9 +17,7 @@ import { MachineControlDetailComponent } from './components/machinecontrol-detai
         NavMenuComponent,
         SerialPortsComponent,
         SerialPortHistoryComponent,
-        MachineControlOverviewComponent,
-        MachineControlConnectComponent,
-        MachineControlDetailComponent,
+        ...machineControlRoutingComponents,
         HomeComponent
     ],
     imports: [
@@ -33,14 +29,7 @@ import { MachineControlDetailComponent } from './components/machinecontrol-detai
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
             { path: 'serialports', component: SerialPortsComponent },
-            {
-                path: 'machinecontrol', component: MachineControlOverviewComponent,
-                children:
-                [
-                    { path: '', component: MachineControlOverviewComponent },
-                    { path: 'detail/:id', component: MachineControlDetailComponent }
-                ]
-            },
+            ...machineControlRoutes,
 
             { path: '**', redirectTo: 'home' }
         ])
