@@ -11,7 +11,11 @@ import { SerialPortsComponent } from './components/serialports/serialports.compo
 import { SerialPortHistoryComponent } from './components/serialporthistory/serialporthistory.component';
 import { machineControlRoutes, machineControlRoutingComponents } from './components/machinecontrol/machinecontrol.routing';
 
-@NgModule({
+import { SerialServerService } from './services/serialserver.service';
+import { LocalSerialServerService } from './services/local.serialserver.service';
+
+@NgModule(
+{
     declarations: [
         AppComponent,
         NavMenuComponent,
@@ -33,7 +37,12 @@ import { machineControlRoutes, machineControlRoutingComponents } from './compone
 
             { path: '**', redirectTo: 'home' }
         ])
-    ]
+    ],
+    providers: [
+        { provide: SerialServerService, useClass: LocalSerialServerService },
+    ],
 })
-export class AppModuleShared {
+
+export class AppModuleShared
+{
 }

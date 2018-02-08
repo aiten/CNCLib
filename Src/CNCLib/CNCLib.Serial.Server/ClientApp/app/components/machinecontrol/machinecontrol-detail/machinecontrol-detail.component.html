@@ -8,4 +8,7 @@
     <div *ngIf="!serialport.IsConnected">
         <machinecontrolconnect [entry]="serialport">Loading...</machinecontrolconnect>
     </div>
+    <div *ngIf="serialport.IsConnected">
+
+    </div>
 </div>

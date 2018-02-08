@@ -1,8 +1,26 @@
+////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2018 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
 import { Component, Injectable, Inject, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
-import { SerialPortDefinition } from '../../models/serial.port.definition';
+import { SerialPortDefinition } from '../../../models/serial.port.definition';
+import { SerialServerService } from '../../../services/serialserver.service';
 
 @Component({
     selector: 'machinecontroldetail',
@@ -10,36 +28,28 @@ import { SerialPortDefinition } from '../../models/serial.port.definition';
 })
 export class MachineControlDetailComponent
 {
-    serialport: SerialPortDefinition = new SerialPortDefinition();
-    errorMessage: string = '';
+    serialport!: SerialPortDefinition;
     isLoading: boolean = true;
-    serialId: number = 0;
 
     constructor(
-        private http: Http,
-        @Inject('BASE_URL') public baseUrl: string,
-        public router: Router,
+        private serivalServerService: SerialServerService,
         private route: ActivatedRoute
     ) 
     {
     }
 
-    load(id: number)
-    {
-        this.http.get(this.baseUrl + 'api/SerialPort/' + id).subscribe(result =>
-        {
-            this.serialport = result.json() as SerialPortDefinition;
-            this.isLoading = false;
-            console.log(this.serialport);
-        });
-    }
-
-    ngOnInit()
+    async ngOnInit() : Promise<void>
     {
         this.route.params.subscribe(params =>
         {
-            this.serialId = params['id'];
-            this.load(this.serialId);
+            let serialId = params['id'];
+            this.load(serialId);
         });
+    }
+
+    async load(id: number): Promise<void> 
+    {
+        this.serialport = await this.serivalServerService.getPort(id);
+        this.isLoading = false;
     }
 }
