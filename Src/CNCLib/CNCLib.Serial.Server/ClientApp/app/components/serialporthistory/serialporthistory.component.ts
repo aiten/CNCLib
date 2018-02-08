@@ -12,8 +12,8 @@ import { SerialPortDefinition } from '../models/serial.port.definition';
     templateUrl: './serialporthistory.component.html'
 })
 export class SerialPortHistoryComponent implements OnChanges {
-    @Input() forserialportid: number;
-    serialcommands: SerialCommand[];
+    @Input() forserialportid!: number;
+    serialcommands!: SerialCommand[];
 
     constructor(
         public http: Http,

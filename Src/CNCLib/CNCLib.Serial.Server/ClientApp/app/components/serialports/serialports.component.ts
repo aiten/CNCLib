@@ -9,8 +9,8 @@ import { SerialPortDefinition } from '../models/serial.port.definition';
 })
 export class SerialPortsComponent
 {
-    public serialports: SerialPortDefinition[];
-    public historyportid: number;
+    public serialports!: SerialPortDefinition[];
+    public historyportid!: number;
     public counter: number = 0;
 
     constructor(

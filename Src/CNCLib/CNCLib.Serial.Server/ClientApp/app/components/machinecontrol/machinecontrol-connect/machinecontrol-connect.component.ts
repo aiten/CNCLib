@@ -11,12 +11,12 @@ import { SerialConnect } from '../../models/serial.connect';
 })
 export class MachineControlConnectComponent
 {
-    @Input() entry: SerialPortDefinition;
+    @Input() entry: SerialPortDefinition = new SerialPortDefinition();
 
     errorMessage: string = '';
     isLoading: boolean = true;
     isLoaded: boolean = false;
-    connectOptions: SerialConnect;
+    connectOptions: SerialConnect = new SerialConnect();
 
     setupForm: FormGroup;
 
@@ -27,8 +27,6 @@ export class MachineControlConnectComponent
         private fb: FormBuilder
     )
     {
-        this.connectOptions = new SerialConnect();
-
         this.setupForm = fb.group(
             {
                 baudrate: [115200]
@@ -53,8 +51,6 @@ export class MachineControlConnectComponent
             {
                //  this.load
             }, error => console.error(error))
-
-
 
     }
 }

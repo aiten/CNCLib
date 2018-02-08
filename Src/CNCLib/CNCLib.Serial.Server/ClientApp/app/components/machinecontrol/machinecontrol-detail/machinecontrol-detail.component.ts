@@ -10,9 +10,10 @@ import { SerialPortDefinition } from '../../models/serial.port.definition';
 })
 export class MachineControlDetailComponent
 {
-    serialport: SerialPortDefinition;
+    serialport: SerialPortDefinition = new SerialPortDefinition();
     errorMessage: string = '';
     isLoading: boolean = true;
+    serialId: number = 0;
 
     constructor(
         private http: Http,
@@ -32,8 +33,6 @@ export class MachineControlDetailComponent
             console.log(this.serialport);
         });
     }
-
-    serialId: number;
 
     ngOnInit()
     {

@@ -12,8 +12,7 @@ import { machinecontrolURL } from '../machinecontrol.routing';
 })
 export class MachineControlOverviewComponent
 {
-    serialports: SerialPortDefinition[];
-    useserialport: SerialPortDefinition;
+    serialports!: SerialPortDefinition[];
 
     constructor(
         private http: Http,
@@ -25,7 +24,6 @@ export class MachineControlOverviewComponent
     useport(serialport: SerialPortDefinition)
     {
         this.router.navigate([machinecontrolURL, serialport.Id]);
-        this.useserialport = serialport;
     }
 
     reload()

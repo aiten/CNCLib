@@ -8,10 +8,10 @@ import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
 })
 export class HomeComponent implements OnInit
 {
-    appName: string;
-    appVersion: string;
-    appCopyright: string;
-    appVersionInfo: CNCLibServerInfo;
+    appName: string = '';
+    appVersion: string = '';
+    appCopyright: string = '';
+    appVersionInfo: CNCLibServerInfo = new CNCLibServerInfo();
 
     constructor(
         private http: Http,
