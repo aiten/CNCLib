@@ -20,7 +20,7 @@
                 <td>{{ serialport.PortName }}</td>
                 <td>{{ serialport.IsConnected }}</td>
                 <td>
-                    <button *ngIf="!serialport.IsConnected" (click)='useport(serialport)'>Use</button>
+                    <button (click)='useport(serialport)'>Use</button>
                 </td>
             </tr>
         </tbody>

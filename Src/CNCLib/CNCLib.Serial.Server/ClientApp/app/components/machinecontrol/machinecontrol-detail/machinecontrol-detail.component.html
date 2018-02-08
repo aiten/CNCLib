@@ -1,3 +1,4 @@
+
 <div>
     <h1>Machine control</h1>
 </div>
@@ -9,6 +10,18 @@
         <machinecontrolconnect [entry]="serialport">Loading...</machinecontrolconnect>
     </div>
     <div *ngIf="serialport.IsConnected">
+        <button (click)='postcommand("?")'>?</button>
 
+        <div class="grid-container">
+            <div class="grid-item"></div>
+            <div class="grid-item"><button (click)='postcommand("g91 g0y10 g90")'>Y+10</button></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"><button (click)='postcommand("g91 g0x-10 g90")'>X-10</button></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"><button (click)='postcommand("g91 g0x10 g90")'>X+10</button></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"><button (click)='postcommand("g91 g0y-10 g90")'>Y-10</button></div>
+            <div class="grid-item"></div>
+        </div>
     </div>
 </div>

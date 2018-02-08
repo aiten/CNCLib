@@ -4,7 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { SerialServerService } from './serialserver.service';
 import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
-import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
+import { CNCLibServerInfo } from '../models/CNCLib.Server.Info';
+import { QueueSendCommand } from '../models/queue.send.command';
 
 @Injectable()
 export class LocalSerialServerService implements SerialServerService 
@@ -72,6 +73,16 @@ export class LocalSerialServerService implements SerialServerService
     clearHistory(serialportid: number): Promise<void>
     {
         return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/history/clear', "x").toPromise()
+            .catch(this.handleErrorPromise);
+    }
+
+    queueCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>
+    {
+        let cmd = new QueueSendCommand();
+        cmd.Commands = command;
+        cmd.TimeOut = timeout;
+
+        return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/queue', cmd).toPromise()
             .catch(this.handleErrorPromise);
     }
 

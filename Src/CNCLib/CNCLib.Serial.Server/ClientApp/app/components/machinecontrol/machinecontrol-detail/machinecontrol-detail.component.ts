@@ -22,9 +22,10 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { SerialPortDefinition } from '../../../models/serial.port.definition';
 import { SerialServerService } from '../../../services/serialserver.service';
 
-@Component({
+@Component({ 
     selector: 'machinecontroldetail',
-    templateUrl: './machinecontrol-detail.component.html'
+    templateUrl: './machinecontrol-detail.component.html',
+    styleUrls: [ './machinecontrol-detail.component.css' ]
 })
 export class MachineControlDetailComponent
 {
@@ -51,5 +52,10 @@ export class MachineControlDetailComponent
     {
         this.serialport = await this.serivalServerService.getPort(id);
         this.isLoading = false;
+    }
+
+    async postcommand(command: string): Promise<void>
+    {
+        await this.serivalServerService.queueCommands(this.serialport.Id, [command], 1000 );
     }
 }

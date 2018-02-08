@@ -21,4 +21,5 @@ export abstract class SerialServerService
     public abstract getHistory(serialportid: number): Promise<SerialCommand[]>;
     public abstract clearHistory(serialportid: number): Promise<void>;
 
+    public abstract queueCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>;
 }
