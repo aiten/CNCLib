@@ -15,8 +15,8 @@
                 <th>Connected</th>
                 <th>Aborted</th>
                 <th>SingleStep</th>
-                <th>Queue</th>
-                <th>History</th>
+                <th>Queue-Length</th>
+                <th>Task</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +28,7 @@
                 <td>{{ serialport.IsSingleStep }}</td>
                 <td>{{ serialport.CommandsInQueue }}</td>
                 <td>
+                    <button (click)='machineControl(serialport.Id)'>Use</button>
                     <button (click)='showHistory(serialport.Id)'>History</button>
                     <button *ngIf="serialport.IsConnected" (click)='clearQueue(serialport.Id)'>Clear Queue</button>
                     <button *ngIf="serialport.IsConnected" (click)='disconnect(serialport.Id)'>Disconnect</button>
