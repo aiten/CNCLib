@@ -71,5 +71,6 @@ export class MachineControlConnectComponent
         console.log('save:' + this.entry.Id);
 
         await this.serivalServerService.connect(this.entry.Id, this.connectOptions.baudRate, this.connectOptions.resetOnConnect);
+        window.location.reload();
     }
 }

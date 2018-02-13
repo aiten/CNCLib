@@ -67,10 +67,12 @@ export class SerialPortsComponent
     {
         await this.serivalServerService.abort(serialportid);
         await this.serivalServerService.resume(serialportid);
+        await this.reload();
     }
 
     async disconnect(serialportid: number): Promise<void>
     {
         await this.serivalServerService.disconnect(serialportid);
+        await this.reload();
     }
 }
