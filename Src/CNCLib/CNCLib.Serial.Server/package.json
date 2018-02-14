@@ -21,6 +21,7 @@
     "@types/chai": "4.0.1",
     "@types/jasmine": "2.5.53",
     "@types/webpack-env": "1.13.0",
+    "@aspnet/signalr-client": "1.0.0-alpha2-final",
     "angular-router-loader": "0.8.2",
     "angular2-template-loader": "0.6.2",
     "aspnet-prerendering": "^3.0.1",

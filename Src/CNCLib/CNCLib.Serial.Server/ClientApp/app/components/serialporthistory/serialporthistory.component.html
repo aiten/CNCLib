@@ -26,3 +26,26 @@
         </tr>
     </tbody>
 </table>
+<!-->
+<div class="row" *ngIf="messages.length > 0">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Messages</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let message of messages; let i = index">
+                <td>{{i + 1}}</td>
+                <td>{{message}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row" *ngIf="messages.length <= 0">
+    <span>No messages</span>
+</div>
+</!-->

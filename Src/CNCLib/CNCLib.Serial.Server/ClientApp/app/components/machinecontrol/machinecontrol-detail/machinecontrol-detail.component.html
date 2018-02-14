@@ -15,45 +15,51 @@
         <div class="grid-container">
             <div class="grid-item"></div>
             <div class="grid-item">
-                <button style="width: 90px" (click)='postcommand("g91 g0y0.1 g90")'>Y+0.1</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0y1 g90")'>Y+1</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0y10 g90")'>Y+10</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0y100 g90")'>Y+100</button>
+                <div>+Y</div>
+                <button style="width: 40px" (click)='postcommand("g91 g0y0.1 g90")'>0.1</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0y1 g90")'>1</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0y10 g90")'>10</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0y100 g90")'>100</button>
+            </div>
+            <div class="grid-item" style="margin-left: 10px">
+                <div>+Z</div>
+                <button style="width: 40px" (click)='postcommand("g91 g0z100 g90")'>100</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0z10 g90")'>10</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0z1 g90")'>1</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0z0.1 g90")'>0.1</button>
             </div>
             <div class="grid-item">
-                <button style="width: 90px" (click)='postcommand("g91 g0z-100 g90")'>Z-100</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0z-10 g90")'>Z-10</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0z-1 g90")'>Z-1</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0z-0.1 g90")'>Z-0.1</button>
-            </div>
-            <div class="grid-item">
-                <button style="width: 90px" (click)='postcommand("g91 g0x-100 g90")'>X-100</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0x-10 g90")'>X-10</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0x-1 g90")'>X-1</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0x-0.1 g90")'>X-0.1</button>
-            </div>
-            <div class="grid-item"></div>
-            <div class="grid-item">
-                <button style="width: 90px" (click)='postcommand("g91 g0x0.1 g90")'>X+0.1</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0x1 g90")'>X+1</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0x10 g90")'>X+10</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0x100 g90")'>X+100</button>
+                <div>-X</div>
+                <button style="width: 40px" (click)='postcommand("g91 g0x-100 g90")'>100</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0x-10 g90")'>10</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0x-1 g90")'>1</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0x-0.1 g90")'>0.1</button>
             </div>
             <div class="grid-item"></div>
             <div class="grid-item">
-                <button style="width: 90px" (click)='postcommand("g91 g0y-100 g90")'>Y-100</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0y-10 g90")'>Y-10</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0y-1 g90")'>Y-1</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0y-0.1 g90")'>Y-0.1</button>
+                <div>+X</div>
+                <button style="width: 40px" (click)='postcommand("g91 g0x0.1 g90")'>0.1</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0x1 g90")'>1</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0x10 g90")'>10</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0x100 g90")'>100</button>
             </div>
+            <div class="grid-item"></div>
             <div class="grid-item">
-                <button style="width: 90px" (click)='postcommand("g91 g0z1 g90")'>Z+1</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0z0.1 g90")'>Z+0.1</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0z100 g90")'>Z+100</button>
-                <button style="width: 90px" (click)='postcommand("g91 g0z10 g90")'>Z+10</button>
+                <div>-Y</div>
+                <button style="width: 40px" (click)='postcommand("g91 g0y-100 g90")'>100</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0y-10 g90")'>10</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0y-1 g90")'>1</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0y-0.1 g90")'>0.1</button>
+            </div>
+            <div class="grid-item" style="margin-left: 10px">
+                <div>-Z</div>
+                <button style="width: 40px" (click)='postcommand("g91 g0z-1 g90")'>1</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0z-0.1 g90")'>0.1</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0z-100 g90")'>100</button>
+                <button style="width: 40px" (click)='postcommand("g91 g0z-10 g90")'>10</button>
             </div>
         </div>
         
-        <serialporthistory [forserialportid]=serialport.Id>Loading...</serialporthistory>
+        <serialporthistory [forserialportid]=serialport.Id [autoreloadonempty]=true>Loading...</serialporthistory>
     </div>
 </div>

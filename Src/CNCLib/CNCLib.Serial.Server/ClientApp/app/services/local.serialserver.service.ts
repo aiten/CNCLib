@@ -54,7 +54,7 @@ export class LocalSerialServerService implements SerialServerService
 
     refresh(): Promise<SerialPortDefinition[]> 
     {
-        return this.http.post<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort',"x").toPromise()
+        return this.http.post<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort/refresh',"x").toPromise()
             .catch(this.handleErrorPromise);
     }
 
