@@ -23,6 +23,15 @@ namespace Framework.Tools.Helpers
 {
     public class IOHelper
     {
+        public static bool IsWindows
+        {
+            get
+            {
+                PlatformID id = Environment.OSVersion.Platform;
+                return id == PlatformID.Win32Windows || id == PlatformID.Win32NT; // WinCE not supported
+            }
+        }
+
         public static string ExpandEnvironmentVariables(string filename)
         {
             string pathname = Environment.ExpandEnvironmentVariables(filename);

@@ -27,7 +27,14 @@ namespace Framework.Arduino.SerialCommunication
     {
         public static void RegisterTypes()
         {
-            Dependency.Container.RegisterType<SerialCommunication.ISerialPort, SerialPortLib>();
+            if (false && Framework.Tools.Helpers.IOHelper.IsWindows)
+            {
+//                Dependency.Container.RegisterType<SerialCommunication.ISerialPort, SerialPort>();
+            }
+            else
+            {
+                Dependency.Container.RegisterType<SerialCommunication.ISerialPort, SerialPortLib>();
+            }
         }
     }
 }

@@ -25,54 +25,62 @@ namespace Framework.Arduino.SerialCommunication
     /// <summary>
     /// Implementation for ISerialPort for dependency injection 
     /// </summary>
-    internal class SerialPortLib : SerialPortLib2.SerialPortInput, ISerialPort
+    internal class SerialPortLib : RJCP.IO.Ports.SerialPortStream, ISerialPort
     {
-        public string[] GetPortNames()
+
+        public new Parity Parity { get => (Parity)base.Parity; set => base.Parity = (RJCP.IO.Ports.Parity)value; }
+        public new StopBits StopBits { get => (StopBits)base.StopBits; set => base.StopBits = (RJCP.IO.Ports.StopBits)value; }
+        public new Handshake Handshake { get => (Handshake)base.Handshake; set => base.Handshake = (RJCP.IO.Ports.Handshake) value; }
+
+        public new string[] GetPortNames()
         {
-            return GetPorts();
+            return RJCP.IO.Ports.SerialPortStream.GetPortNames();
         }
-        public string PortName { get; set; }
-        public int BaudRate { get; set; }
-        public Parity Parity { get; set; }
-        public int DataBits { get; set; }
-        public StopBits StopBits { get; set; }
-        public Handshake Handshake { get; set; }
-        public string NewLine { get; set; } = "\r\n";
-        public bool DtrEnable { get; set; }
+        public Stream BaseStream { get => this; }
 
-        public bool IsOpen { get => base.IsConnected; }
+        /*
+                        public string PortName { get; set; }
+                        public int BaudRate { get; set; }
+                        public Parity Parity { get; set; }
+                        public int DataBits { get; set; }
+                        public StopBits StopBits { get; set; }
+                        public Handshake Handshake { get; set; }
+                        public string NewLine { get; set; } = "\r\n";
+                        public bool DtrEnable { get; set; }
 
-        public int ReadTimeout { get; set; }
-        public int WriteTimeout { get; set; }
+                        public bool IsOpen { get => base.IsConnected; }
 
-        public Stream BaseStream { get => Stream; } 
+                        public int ReadTimeout { get; set; }
+                        public int WriteTimeout { get; set; }
 
-        public Encoding Encoding { get; } = new ASCIIEncoding();
+                        public Stream BaseStream { get => Stream; } 
 
-        public void Close()
-        {
-            Disconnect();
-        }
+                        public Encoding Encoding { get; } = new ASCIIEncoding();
+                        public void Close()
+                        {
+                            Disconnect();
+                        }
 
-        public void DiscardOutBuffer()
-        {
-            throw new NotImplementedException();
-        }
+                        public void DiscardOutBuffer()
+                        {
+                            throw new NotImplementedException();
+                        }
 
-        public void Dispose()
-        {
-        }
+                        public void Dispose()
+                        {
+                        }
 
-        public void Open()
-        {
-            SetPort(PortName, BaudRate, (SerialPortLib2.Port.Handshake) Handshake);
-            Connect();
-            BaseStream.ReadTimeout = ReadTimeout;
-        }
+                public void Open()
+                {
+                    SetPort(PortName, BaudRate, (SerialPortLib2.Port.Handshake) Handshake);
+                    Connect();
+                    BaseStream.ReadTimeout = ReadTimeout;
+                }
 
-        public void WriteLine(string msg)
-        {
-            throw new NotImplementedException();
-        }
+                public void WriteLine(string msg)
+                {
+                    throw new NotImplementedException();
+                }
+                */
     }
 }

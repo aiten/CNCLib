@@ -4,7 +4,7 @@
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SerialPortLib2" Version="1.0.8" />
+    <PackageReference Include="SerialPortStream" Version="2.1.2" />
   </ItemGroup>
   
   <ItemGroup>

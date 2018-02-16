@@ -268,6 +268,8 @@ namespace Framework.Arduino.SerialCommunication
 
 			if (ResetOnConnect)
 				_serialPort.DtrEnable = true;
+            else
+                _serialPort.DtrEnable = false;
 
             // Set the read/write timeouts
             _serialPort.ReadTimeout = 500;
