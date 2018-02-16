@@ -57,6 +57,7 @@
     "typescript": "2.7.1",
     "url-loader": "0.5.9",
     "webpack": "3.10.0",
+    "uglifyjs-webpack-plugin": "1.1.8",
     "webpack-hot-middleware": "2.18.2",
     "webpack-merge": "4.1.0",
     "zone.js": "0.8.12"

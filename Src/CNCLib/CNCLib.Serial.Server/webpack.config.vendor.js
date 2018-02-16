@@ -23,6 +23,7 @@ const nonTreeShakableModules = [
     'jquery',
 ];
 const allModules = treeShakableModules.concat(nonTreeShakableModules);
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = (env) => {
     const extractCSS = new ExtractTextPlugin('vendor.css');
@@ -67,7 +68,7 @@ module.exports = (env) => {
                 name: '[name]_[hash]'
             })
         ].concat(isDevBuild ? [] : [
-            new webpack.optimize.UglifyJsPlugin()
+            new UglifyJSPlugin()
         ])
     });
 
