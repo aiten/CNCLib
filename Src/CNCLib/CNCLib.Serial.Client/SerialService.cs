@@ -223,6 +223,8 @@ namespace CNCLib.Serial.Client
         public int MaxCommandHistoryCount { get; set; }
         public int ArduinoBuffersize { get; set; }
         public int ArduinoLineSize { get; set; }
+        public bool Aborted { get; }
+
         public SerialCommand LastCommand { get; }
         public void WriteCommandHistory(string filename)
         {

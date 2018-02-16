@@ -58,6 +58,7 @@ namespace CNCLib.Serial.Server
             Dependency.Initialize(new AspNetDependencyProvider(services));
             Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
+            Framework.Arduino.SerialCommunication.LiveDependencySetup.RegisterTypes();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)

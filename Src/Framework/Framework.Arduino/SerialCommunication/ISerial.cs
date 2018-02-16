@@ -82,6 +82,7 @@ namespace Framework.Arduino.SerialCommunication
         int MaxCommandHistoryCount { get; set; }
         int ArduinoBuffersize { get; set; }
         int ArduinoLineSize { get; set; }
+        bool Aborted { get; }
 
         #endregion
 

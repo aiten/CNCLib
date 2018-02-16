@@ -22,11 +22,38 @@ using System.Text;
 
 namespace Framework.Arduino.SerialCommunication
 {
+    public enum Parity
+    {
+        None = 0,
+        Odd = 1,
+        Even = 2,
+        Mark = 3,
+        Space = 4
+    }
+
+    public enum StopBits
+    {
+        None = 0,
+        One = 1,
+        Two = 2,
+        OnePointFive = 3
+    }
+
+    public enum Handshake
+    {
+        None = 0,
+        XOnXOff = 1,
+        RequestToSend = 2,
+        RequestToSendXOnXOff = 3
+    }
+
     /// <summary>
     /// Interface to mock SerialPort
     /// </summary>
     public interface ISerialPort : IDisposable
     {
+        string[] GetPortNames();
+
         void Open();
         void Close();
 
@@ -36,10 +63,10 @@ namespace Framework.Arduino.SerialCommunication
 
         string PortName { get; set; }
         int BaudRate { get; set; }
-        System.IO.Ports.Parity Parity { get; set; }
+        Parity Parity { get; set; }
         int DataBits { get; set; }
-        System.IO.Ports.StopBits StopBits { get; set; }
-        System.IO.Ports.Handshake Handshake { get; set; }
+        StopBits StopBits { get; set; }
+        Handshake Handshake { get; set; }
         string NewLine { get; set; }
 
         bool DtrEnable { get; set; }
@@ -52,12 +79,5 @@ namespace Framework.Arduino.SerialCommunication
         Stream BaseStream { get; }
 
         Encoding Encoding { get; }
-    }
-
-    /// <summary>
-    /// Implementation for ISerialPort for dependency injection 
-    /// </summary>
-    internal class SerialPort : System.IO.Ports.SerialPort, ISerialPort
-    {
     }
 }

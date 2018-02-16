@@ -19,12 +19,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Framework.Arduino.SerialCommunication;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Serial.Server.SerialPort
 {
     public class SerialPortList
     {
         #region INTERNAL List
+
+        public static ISerialPort SerialPort { get; private set; }
 
         public static SerialPortWrapper[] Ports { get; private set; } = GetPortDefinitions().ToArray();
 
@@ -35,24 +39,31 @@ namespace CNCLib.Serial.Server.SerialPort
             return port;
         }
 
-        private static int GetIdFromPortName(string portname)
+        private static int GetIdFromPortName(string portname,int index)
         {
             string portNo = portname.Remove(0,3); // remove "com"
-            return (int) uint.Parse(portNo);
+            if (int.TryParse(portNo, out int id))
+                return id;
+            return index;
         }
 
         private static IEnumerable<SerialPortWrapper> GetPortDefinitions()
         {
-            var portnames = System.IO.Ports.SerialPort.GetPortNames();
+            if (SerialPort == null)
+            {
+                SerialPort = Dependency.Container.Resolve<ISerialPort>();
+            }
 
-if (Environment.MachineName == "AIT7" && !portnames.Any())
-    portnames = new string[] { "com1", "com3", "com4", "com5", "com6", "com10" };
+            var portnames = SerialPort.GetPortNames();
+
+            if (Environment.MachineName == "AIT7" && !portnames.Any())
+                portnames = new string[] { "com1", "com3", "com4", "com5", "com6", "com10" };
 
             return portnames.Select((port, index) =>
             {
                 return new SerialPortWrapper()
                 {
-                    Id = GetIdFromPortName(port),
+                    Id = GetIdFromPortName(port,index),
                     PortName = port
                 };
             } );

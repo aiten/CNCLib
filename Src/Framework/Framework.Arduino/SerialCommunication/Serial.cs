@@ -22,7 +22,6 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading;
-using System.IO.Ports;
 using Framework.Tools.Helpers;
 using System.Threading.Tasks;
 using System.Diagnostics;
@@ -257,9 +256,10 @@ namespace Framework.Arduino.SerialCommunication
                 _serialPort.Dispose();
                 _serialPort = null;
             }
+
             _serialPort = Dependency.Resolve<ISerialPort>();
 
-			_serialPort.PortName = portname;
+            _serialPort.PortName = portname;
             _serialPort.BaudRate = BaudRate;
             _serialPort.Parity = Parity.None;
             _serialPort.DataBits = 8;

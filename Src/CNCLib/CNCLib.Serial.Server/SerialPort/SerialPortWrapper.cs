@@ -19,6 +19,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CNCLib.Serial.Server.Hubs;
+using Framework.Arduino.SerialCommunication;
+using Framework.Tools.Dependency;
 using Framework.Tools.Helpers;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +35,8 @@ namespace CNCLib.Serial.Server.SerialPort
         {
             if (Serial == null)
             {
-                Serial = new Framework.Arduino.SerialCommunication.Serial();
+                Serial = Dependency.Container.Resolve<ISerial>();
+
                 Serial.CommandQueueEmpty += async (sender, e) =>
                 {
                     var clients = Startup.Services.GetService<IHubContext<CNCLibHub>>();
@@ -72,7 +75,7 @@ namespace CNCLib.Serial.Server.SerialPort
 
         public string PortName { get; set; }
 
-        public Framework.Arduino.SerialCommunication.Serial Serial { get; set; }
+        public ISerial Serial { get; set; }
 
         public bool IsConnected => Serial != null ? Serial.IsConnected : false;
 
