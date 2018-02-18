@@ -132,13 +132,17 @@ namespace Framework.Arduino.SerialCommunication
             _readThread.Start();
             _writeThread.Start();
 
-			if (!ResetOnConnect)
+            if (ResetOnConnect)
+            {
+                _serialPort.DtrEnable = true;
+            }
+            else
 			{
 				_serialPort.DiscardOutBuffer();
 				_serialPort.WriteLine("");
 			}
 
-            _serialPort.DtrEnable = true;
+            //_serialPort.DtrEnable = true;
             _serialPort.RtsEnable = true;
 
             bool wasempty;
@@ -269,9 +273,6 @@ namespace Framework.Arduino.SerialCommunication
             _serialPort.DataBits = 8;
             _serialPort.StopBits = StopBits.One;
             _serialPort.Handshake = Handshake.None;
-
-			if (ResetOnConnect)
-				_serialPort.DtrEnable = true;
 
             // Set the read/write timeouts
             _serialPort.ReadTimeout = 500;
