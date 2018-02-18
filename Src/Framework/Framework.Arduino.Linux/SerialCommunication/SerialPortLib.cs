@@ -18,6 +18,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Framework.Arduino.SerialCommunication
@@ -27,7 +28,11 @@ namespace Framework.Arduino.SerialCommunication
     /// </summary>
     public class SerialPortLib : RJCP.IO.Ports.SerialPortStream, ISerialPort
     {
-        //public SerialPortLib() : base("/dev/ttyUSB1",115200,8,RJCP.IO.Ports.Parity.None,RJCP.IO.Ports.StopBits.One) { }
+        public SerialPortLib()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                DtrEnable = false;
+        }
 
         public new Parity Parity { get => (Parity)base.Parity; set => base.Parity = ConvertTo(value); }
         public new StopBits StopBits { get => ConvertTo(base.StopBits); set => base.StopBits = ConvertTo(value); }
