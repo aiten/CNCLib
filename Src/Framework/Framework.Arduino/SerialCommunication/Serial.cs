@@ -123,7 +123,8 @@ namespace Framework.Arduino.SerialCommunication
 			SetupCom(portname);
 
 			_serialPortCancellationTokenSource = new CancellationTokenSource();
-			_serialPort.Open();
+
+            _serialPort.Open();
 
 			_readThread = new Thread(Read);
 			_writeThread = new Thread(Write);
@@ -137,7 +138,10 @@ namespace Framework.Arduino.SerialCommunication
 				_serialPort.WriteLine("");
 			}
 
-			bool wasempty;
+            _serialPort.DtrEnable = true;
+            _serialPort.RtsEnable = true;
+
+            bool wasempty;
 
 			lock (_pendingCommands)
 			{
@@ -268,8 +272,6 @@ namespace Framework.Arduino.SerialCommunication
 
 			if (ResetOnConnect)
 				_serialPort.DtrEnable = true;
-            else
-                _serialPort.DtrEnable = false;
 
             // Set the read/write timeouts
             _serialPort.ReadTimeout = 500;

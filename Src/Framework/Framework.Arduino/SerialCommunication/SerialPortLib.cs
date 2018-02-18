@@ -27,60 +27,62 @@ namespace Framework.Arduino.SerialCommunication
     /// </summary>
     internal class SerialPortLib : RJCP.IO.Ports.SerialPortStream, ISerialPort
     {
+        public SerialPortLib() : base("/dev/ttyUSB1",115200,8,RJCP.IO.Ports.Parity.None,RJCP.IO.Ports.StopBits.One) { }
 
-        public new Parity Parity { get => (Parity)base.Parity; set => base.Parity = (RJCP.IO.Ports.Parity)value; }
-        public new StopBits StopBits { get => (StopBits)base.StopBits; set => base.StopBits = (RJCP.IO.Ports.StopBits)value; }
-        public new Handshake Handshake { get => (Handshake)base.Handshake; set => base.Handshake = (RJCP.IO.Ports.Handshake) value; }
+        public new Parity Parity { get => (Parity)base.Parity; set => base.Parity = ConvertTo(value); }
+        public new StopBits StopBits { get => ConvertTo(base.StopBits); set => base.StopBits = ConvertTo(value); }
+        public new Handshake Handshake { get => (Handshake)base.Handshake; set => base.Handshake = ConvertTo(value); }
+
+        private RJCP.IO.Ports.Parity ConvertTo(Parity pt)
+        {
+            switch (pt)
+            {
+                case Parity.None: return RJCP.IO.Ports.Parity.None;
+                case Parity.Odd:  return RJCP.IO.Ports.Parity.Odd;
+                case Parity.Even: return RJCP.IO.Ports.Parity.Even;
+                case Parity.Mark: return RJCP.IO.Ports.Parity.Mark;
+                case Parity.Space:return RJCP.IO.Ports.Parity.Space;
+            }
+            throw new ArgumentException();
+        }
+
+        private RJCP.IO.Ports.Handshake ConvertTo(Handshake hs)
+        {
+            switch (hs)
+            {
+                case Handshake.None: return RJCP.IO.Ports.Handshake.None;
+                case Handshake.XOnXOff: return RJCP.IO.Ports.Handshake.XOn;
+                case Handshake.RequestToSend: return RJCP.IO.Ports.Handshake.Rts;
+                case Handshake.RequestToSendXOnXOff: return RJCP.IO.Ports.Handshake.RtsXOn;
+            }
+            throw new ArgumentException();
+        }
+
+        private RJCP.IO.Ports.StopBits ConvertTo(StopBits sb)
+        {
+            switch (sb)
+            {
+                case StopBits.One:  return RJCP.IO.Ports.StopBits.One;
+                case StopBits.Two:  return RJCP.IO.Ports.StopBits.Two;
+                case StopBits.OnePointFive: return RJCP.IO.Ports.StopBits.One5;
+            }
+            throw new ArgumentException();
+        }
+        private StopBits ConvertTo(RJCP.IO.Ports.StopBits sb)
+        {
+            switch (sb)
+            {
+                case RJCP.IO.Ports.StopBits.One: return StopBits.One;
+                case RJCP.IO.Ports.StopBits.Two: return StopBits.Two;
+                case RJCP.IO.Ports.StopBits.One5: return StopBits.OnePointFive;
+            }
+            throw new ArgumentException();
+        }
 
         public new string[] GetPortNames()
         {
             return RJCP.IO.Ports.SerialPortStream.GetPortNames();
         }
         public Stream BaseStream { get => this; }
-
-        /*
-                        public string PortName { get; set; }
-                        public int BaudRate { get; set; }
-                        public Parity Parity { get; set; }
-                        public int DataBits { get; set; }
-                        public StopBits StopBits { get; set; }
-                        public Handshake Handshake { get; set; }
-                        public string NewLine { get; set; } = "\r\n";
-                        public bool DtrEnable { get; set; }
-
-                        public bool IsOpen { get => base.IsConnected; }
-
-                        public int ReadTimeout { get; set; }
-                        public int WriteTimeout { get; set; }
-
-                        public Stream BaseStream { get => Stream; } 
-
-                        public Encoding Encoding { get; } = new ASCIIEncoding();
-                        public void Close()
-                        {
-                            Disconnect();
-                        }
-
-                        public void DiscardOutBuffer()
-                        {
-                            throw new NotImplementedException();
-                        }
-
-                        public void Dispose()
-                        {
-                        }
-
-                public void Open()
-                {
-                    SetPort(PortName, BaudRate, (SerialPortLib2.Port.Handshake) Handshake);
-                    Connect();
-                    BaseStream.ReadTimeout = ReadTimeout;
-                }
-
-                public void WriteLine(string msg)
-                {
-                    throw new NotImplementedException();
-                }
-                */
     }
 }

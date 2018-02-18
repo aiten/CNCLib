@@ -70,6 +70,8 @@ namespace Framework.Arduino.SerialCommunication
         string NewLine { get; set; }
 
         bool DtrEnable { get; set; }
+        bool RtsEnable { get; set; }
+
         bool IsOpen { get; }
 
         // Set the read/write timeouts
