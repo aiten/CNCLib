@@ -59,11 +59,19 @@ namespace CNCLib.Serial.Client
 
         public async Task ConnectAsync(string portname)
         {
-            int lastslash = portname.LastIndexOf('/');
+            // linuxport => http://a0:5000/dev/ttyUSB0
+            // win       => http://a0:5000/com4
+
+            int lastcolon = portname.LastIndexOf(':');
+            int lastslash = portname.IndexOf('/', lastcolon);
             if (lastslash > 0)
             {
                 WebServerUrl = portname.Substring(0, lastslash);
                 portname = portname.Substring(lastslash + 1);
+                if (portname.IndexOf('/') >= 0)
+                {
+                    portname = "/" + portname;
+                }
 
                 using (HttpClient client = CreateHttpClient())
                 {

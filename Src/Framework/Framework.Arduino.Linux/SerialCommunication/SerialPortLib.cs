@@ -25,9 +25,9 @@ namespace Framework.Arduino.SerialCommunication
     /// <summary>
     /// Implementation for ISerialPort for dependency injection 
     /// </summary>
-    internal class SerialPortLib : RJCP.IO.Ports.SerialPortStream, ISerialPort
+    public class SerialPortLib : RJCP.IO.Ports.SerialPortStream, ISerialPort
     {
-        public SerialPortLib() : base("/dev/ttyUSB1",115200,8,RJCP.IO.Ports.Parity.None,RJCP.IO.Ports.StopBits.One) { }
+        //public SerialPortLib() : base("/dev/ttyUSB1",115200,8,RJCP.IO.Ports.Parity.None,RJCP.IO.Ports.StopBits.One) { }
 
         public new Parity Parity { get => (Parity)base.Parity; set => base.Parity = ConvertTo(value); }
         public new StopBits StopBits { get => ConvertTo(base.StopBits); set => base.StopBits = ConvertTo(value); }

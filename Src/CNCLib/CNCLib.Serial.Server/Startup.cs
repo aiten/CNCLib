@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using CNCLib.Serial.Server.Hubs;
 using Framework.Tools.Dependency;
@@ -58,7 +59,12 @@ namespace CNCLib.Serial.Server
             Dependency.Initialize(new AspNetDependencyProvider(services));
             Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
-            Framework.Arduino.SerialCommunication.LiveDependencySetup.RegisterTypes();
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Dependency.Container.RegisterType<Framework.Arduino.SerialCommunication.ISerialPort,
+                    Framework.Arduino.SerialCommunication.SerialPortLib>();
+            }
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)

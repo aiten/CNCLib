@@ -35,19 +35,29 @@ namespace Framework.Tools
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         static extern uint SetThreadExecutionState(EXECUTION_STATE esFlags);
 
+        static uint OsSetThreadExecutionState(EXECUTION_STATE esFlags)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return SetThreadExecutionState(esFlags);
+            }
+            return uint.MaxValue;
+        }
+
         public static void KeepAlive()
         {
-            SetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_SYSTEM_REQUIRED | EXECUTION_STATE.ES_CONTINUOUS);
+            OsSetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_SYSTEM_REQUIRED |
+                                        EXECUTION_STATE.ES_CONTINUOUS);
         }
 
         public static void AllowIdle()
         {
-            SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
+            OsSetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
         }
 
         public static void ResetTimer()
         {
-            SetThreadExecutionState(EXECUTION_STATE.ES_NONE);
+            OsSetThreadExecutionState(EXECUTION_STATE.ES_NONE);
         }
     }
 }

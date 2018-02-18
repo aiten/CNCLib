@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Framework.Arduino.Linux\Framework.Arduino.Linux.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Web\Framework.Web.csproj" />
     <ProjectReference Include="..\CNCLib.Serial.Shared\CNCLib.Serial.Shared.csproj" />

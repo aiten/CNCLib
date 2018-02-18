@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic", "CNCLib.Logic\CNCLib.Logic.csproj", "{36B9838B-493F-4BAC-A8D3-35298C4FFDC7}"
 EndProject
@@ -94,6 +94,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Serial.Client", "CNCLib.Serial.Client\CNCLib.Serial.Client.csproj", "{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Serial.Shared", "CNCLib.Serial.Shared\CNCLib.Serial.Shared.csproj", "{8715E92C-ACA6-4B39-8A31-69CFB8357224}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino.Linux", "..\Framework\Framework.Arduino.Linux\Framework.Arduino.Linux.csproj", "{172CF0A8-7CF4-4E61-A6CE-6743273F6952}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -229,6 +231,10 @@ Global
 		{8715E92C-ACA6-4B39-8A31-69CFB8357224}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8715E92C-ACA6-4B39-8A31-69CFB8357224}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8715E92C-ACA6-4B39-8A31-69CFB8357224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{172CF0A8-7CF4-4E61-A6CE-6743273F6952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{172CF0A8-7CF4-4E61-A6CE-6743273F6952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{172CF0A8-7CF4-4E61-A6CE-6743273F6952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{172CF0A8-7CF4-4E61-A6CE-6743273F6952}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -242,6 +248,7 @@ Global
 		{BBECB408-5426-4CE7-B7B6-970BDE436486} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
 		{2E4BAA13-7562-4336-91A4-B8211816D936} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
 		{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
+		{172CF0A8-7CF4-4E61-A6CE-6743273F6952} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {149E2CA7-C574-4FFF-8699-9678D9AFC1FA}

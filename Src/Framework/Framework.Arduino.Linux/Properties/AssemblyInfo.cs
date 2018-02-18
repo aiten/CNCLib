@@ -16,25 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Framework.Tools.Dependency;
+using System.Runtime.InteropServices;
 
-namespace Framework.Arduino.SerialCommunication
-{
-    public class LiveDependencySetup
-    {
-        public static void RegisterTypes()
-        {
-            if (false && Framework.Tools.Helpers.IOHelper.IsWindows)
-            {
-//                Dependency.Container.RegisterType<SerialCommunication.ISerialPort, SerialPort>();
-            }
-            else
-            {
-                Dependency.Container.RegisterType<SerialCommunication.ISerialPort, SerialPortLib>();
-            }
-        }
-    }
-}
+//[assembly: AssemblyTitle("Framework.Arduino")]
+//[assembly: AssemblyProduct("Framework.Arduino")]
+
+[assembly: Guid("77f5a48d-e908-4a95-a09e-771e8be8817b")]
+
