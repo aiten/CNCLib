@@ -304,7 +304,7 @@ namespace CNCLib.Tests.Load
             int idx = 0;
             foreach (var command in list)
             {
-                list.ElementAt(idx).GetGCodeCommands(null, null)[0].ShouldBeEquivalentTo(expectgcode[idx]);
+                list.ElementAt(idx).GetGCodeCommands(null, null)[0].Should().BeEquivalentTo(expectgcode[idx]);
                 idx++;
             }
         }

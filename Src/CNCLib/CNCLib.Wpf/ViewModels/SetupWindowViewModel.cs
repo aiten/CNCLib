@@ -19,6 +19,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -146,6 +147,8 @@ namespace CNCLib.Wpf.ViewModels
 		}
 
         public bool NeedDtr => Machine != null && Machine.NeedDtr;
+
+        public string CNCLibVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         #endregion
 

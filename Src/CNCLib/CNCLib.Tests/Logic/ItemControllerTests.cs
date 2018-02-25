@@ -82,7 +82,7 @@ namespace CNCLib.Tests.Logic
                 ItemID = 1,
                 Name = "Test1"
             }
-            .ShouldBeEquivalentTo(all.FirstOrDefault());
+            .Should().BeEquivalentTo(all.FirstOrDefault());
 		}
 
 		[TestMethod]
@@ -100,7 +100,7 @@ namespace CNCLib.Tests.Logic
                 ItemID = 1,
                 Name = "Test1"
             }
-            .ShouldBeEquivalentTo(all);
+            .Should().BeEquivalentTo(all);
 		}
 
 		[TestMethod]

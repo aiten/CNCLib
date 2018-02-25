@@ -70,7 +70,7 @@ namespace CNCLib.Tests.Logic
 			var all = (await ctrl.GetAll()).ToArray();
 
             all.Should().HaveCount(2);
-            all.FirstOrDefault().ShouldBeEquivalentTo(
+            all.FirstOrDefault().Should().BeEquivalentTo(
                 new
                 {
                     ItemID = 1,
@@ -95,7 +95,7 @@ namespace CNCLib.Tests.Logic
 			var all = await ctrl.GetAll(typeof(string));
 
             all.Should().HaveCount(2);
-            all.FirstOrDefault().ShouldBeEquivalentTo(
+            all.FirstOrDefault().Should().BeEquivalentTo(
                 new
                 {
                     ItemID = 1,
@@ -113,7 +113,7 @@ namespace CNCLib.Tests.Logic
 			var ctrl = new DynItemController(srv);
 			var all = await ctrl.Get(1);
 
-            all.ShouldBeEquivalentTo(
+            all.Should().BeEquivalentTo(
                 new
                 {
                     ItemID = 1,
