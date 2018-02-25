@@ -35,6 +35,7 @@ namespace Framework.Web
         {
             if (obj == null)
             {
+                await Task.Delay(0); // avoid CS1998
                 return controller.NotFound();
             }
 

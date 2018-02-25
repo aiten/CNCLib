@@ -32,9 +32,15 @@ namespace CNCLib.WebAPI.Controllers
         public LoadOptionsController(IRest<LoadOptions> controller) : base(controller)
         {
         }
+
+        [HttpGet]
+	    public async Task<IActionResult> Get()
+	    {
+	        return await this.GetAll<LoadOptions>(Rest);
+	    }
     }
 
-	public class LoadInfoRest : IRest<LoadOptions>
+    public class LoadInfoRest : IRest<LoadOptions>
 	{
         public LoadInfoRest(ILoadOptionsService service)
         {

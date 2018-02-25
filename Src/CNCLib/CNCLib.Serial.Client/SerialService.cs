@@ -59,6 +59,18 @@ namespace CNCLib.Serial.Client
 
         public async Task ConnectAsync(string portname)
         {
+            if (WaitForSend != null ||
+                CommandSent != null ||
+                WaitCommandSent != null ||
+                ReplyReceived != null ||
+                ReplyOK != null ||
+                ReplyError != null ||
+                ReplyInfo != null ||
+                ReplyUnknown != null)
+            {
+                // dummy do not get "unused"                
+            }
+
             // linuxport => http://a0:5000/dev/ttyUSB0
             // win       => http://a0:5000/com4
 

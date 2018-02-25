@@ -115,13 +115,16 @@ namespace CNCLib.GCode.GUI.ViewModels
             _allLoadOptions.Clear();
 
             var items = await _loadOptionsService.GetAll();
-            foreach (var s in items.OrderBy(o => o.SettingName))
+            if (items != null)
             {
-                var option = _mapper.Map<LoadOptions>(s);
-                _allLoadOptions.Add(option);
-                if (setselectedid.HasValue && option.Id == setselectedid.Value)
+                foreach (var s in items.OrderBy(o => o.SettingName))
                 {
-                    SelectedLoadOption = option;
+                    var option = _mapper.Map<LoadOptions>(s);
+                    _allLoadOptions.Add(option);
+                    if (setselectedid.HasValue && option.Id == setselectedid.Value)
+                    {
+                        SelectedLoadOption = option;
+                    }
                 }
             }
             _allSettingsLoaded = true;

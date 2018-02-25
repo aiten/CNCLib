@@ -117,8 +117,10 @@ namespace Framework.Arduino.SerialCommunication
 		/// <param name="portname">e.g. Com1</param>
 		public async Task ConnectAsync(string portname)
         {
+            await Task.Delay(0); // avoid CS1998
+
             // Create a new SerialPort object with default settings.
-			Aborted = false;
+            Aborted = false;
 
 			SetupCom(portname);
 
@@ -161,7 +163,7 @@ namespace Framework.Arduino.SerialCommunication
 				OnComandQueueChanged(new SerialEventArgs(0, null));
 
 			OnComandQueueEmpty(new SerialEventArgs(0,null));
-		}
+        }
 
 		/// <summary>
 		/// Disconnect from arduino 
@@ -195,6 +197,7 @@ namespace Framework.Arduino.SerialCommunication
             {
                while (!_writeThread.Join(100))
                 {
+                    await Task.Delay(1);
                     _autoEvent.Set();
                 }
 			}
@@ -281,7 +284,7 @@ namespace Framework.Arduino.SerialCommunication
 
 		public void Dispose()
 		{
-			DisconnectAsync();
+			DisconnectAsync().GetAwaiter().GetResult();
 			if (_trace!=null)
 			{
 				_trace.Dispose();
@@ -325,24 +328,28 @@ namespace Framework.Arduino.SerialCommunication
 		{
 			var list = new List<SerialCommand>();
 
-			if (commands != null)
-			{
-			    int commandindex = 0;
-				foreach (string cmd in commands)
-				{
-					var cmds = SplitAndQueueCommand(cmd);
-					if (Aborted)
-						break;
+		    if (commands != null)
+		    {
+		        int commandindex = 0;
+		        foreach (string cmd in commands)
+		        {
+		            var cmds = SplitAndQueueCommand(cmd);
+		            if (Aborted)
+		                break;
 
-                    foreach (SerialCommand serialCommand in cmds)
-                    {
-                        serialCommand.CommandIndex = commandindex;
-                        list.Add(serialCommand);
-                    }
-				    commandindex++;
-				}
-			}
-			return list;
+		            foreach (SerialCommand serialCommand in cmds)
+		            {
+		                serialCommand.CommandIndex = commandindex;
+		                list.Add(serialCommand);
+		            }
+		            commandindex++;
+		        }
+		    }
+		    else
+		    {
+		        await Task.Delay(0); // avoid CS1998
+            }
+            return list;
 		}
 
     	/// <summary>
@@ -489,7 +496,7 @@ namespace Framework.Arduino.SerialCommunication
             catch (InvalidOperationException e)
             {
                 Trace.WriteTraceFlush("WriteInvalidOperationException", $@"{commandtext} => {e.Message}");
-                Disconnect(false);
+                Disconnect(false).GetAwaiter().GetResult();
             }
             catch (IOException e)
             {
@@ -513,7 +520,7 @@ namespace Framework.Arduino.SerialCommunication
             }
             catch (Exception)
             {
-                Disconnect(false);
+                Disconnect(false).GetAwaiter().GetResult();
             }
         }
 

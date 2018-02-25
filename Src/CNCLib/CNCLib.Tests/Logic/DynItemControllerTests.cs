@@ -75,7 +75,8 @@ namespace CNCLib.Tests.Logic
                 {
                     ItemID = 1,
                     Name = "Test1"
-                }
+                },
+                options => options.ExcludingMissingMembers()
             );
 		}
 
@@ -100,7 +101,8 @@ namespace CNCLib.Tests.Logic
                 {
                     ItemID = 1,
                     Name = "Test1"
-                }
+                },
+                options => options.ExcludingMissingMembers()
             );
         }
 
@@ -118,7 +120,8 @@ namespace CNCLib.Tests.Logic
                 {
                     ItemID = 1,
                     Name = "Test1"
-                }
+                }, 
+                options => options.ExcludingMissingMembers()
             );
 		}
 

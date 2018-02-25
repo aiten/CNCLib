@@ -82,7 +82,7 @@ namespace CNCLib.Tests.Logic
                 ItemID = 1,
                 Name = "Test1"
             }
-            .Should().BeEquivalentTo(all.FirstOrDefault());
+            .Should().BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
 		}
 
 		[TestMethod]
@@ -100,7 +100,7 @@ namespace CNCLib.Tests.Logic
                 ItemID = 1,
                 Name = "Test1"
             }
-            .Should().BeEquivalentTo(all);
+            .Should().BeEquivalentTo(all, options => options.ExcludingMissingMembers());
 		}
 
 		[TestMethod]
