@@ -110,7 +110,9 @@ namespace CNCLib.Wpf.ViewModels
                 if (value != null)
                 {
                     RaisePropertyChanged(nameof(NeedDtr));
+#pragma warning disable CS4014
                     SetGlobal();
+#pragma warning restore CS4014
                 }
             }
 		}

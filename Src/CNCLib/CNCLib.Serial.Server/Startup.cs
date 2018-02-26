@@ -91,11 +91,11 @@ namespace CNCLib.Serial.Server
                 router.MapHub<CNCLibHub>("serialSignalR");
             });
 
-            TimerCallback callback = (x) =>
+            void callback(object x)
             {
                 var hub = Services.GetService<IHubContext<CNCLibHub>>();
                 hub.Clients.All.InvokeAsync("heartbeat");
-            };
+            }
             var timer = new Timer(callback);
             timer.Change(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(30));
 

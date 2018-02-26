@@ -52,13 +52,12 @@ namespace CNCLib.Wpf.Views
 				vm.EditMachine = async mID =>  
 				{
 				    var dlg = new MachineView();
-				    var vmdlg = dlg.DataContext as MachineViewModel;
-				    if (vmdlg != null)
-				    {
-				        await vmdlg.LoadMachine(mID);
-				        dlg.ShowDialog();
-				    }
-				};
+                    if (dlg.DataContext is MachineViewModel vmdlg)
+                    {
+                        await vmdlg.LoadMachine(mID);
+                        dlg.ShowDialog();
+                    }
+                };
 			}
 
 			if (vm.ShowEeprom == null)
