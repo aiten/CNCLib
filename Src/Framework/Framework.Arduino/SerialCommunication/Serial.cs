@@ -745,13 +745,23 @@ namespace Framework.Arduino.SerialCommunication
 				if (message.StartsWith((OkTag)))
 				{
 					endcommand = true;
-					OnReplyDone(new SerialEventArgs(message, cmd));
+                    if (cmd != null)
+                    {
+                        cmd.ReplyType |= EReplyType.ReplyOK;
+                    }
+                    OnReplyDone(new SerialEventArgs(message, cmd));
 				}
 				else if (message.StartsWith(ErrorTag, StringComparison.OrdinalIgnoreCase))
 				{
-					if (ErrorIsReply)
-						endcommand = true;
-					OnReplyError(new SerialEventArgs(message, cmd));
+                    if (ErrorIsReply)
+                    {
+                        endcommand = true;
+                    }
+                    if (cmd != null)
+                    {
+                        cmd.ReplyType |= EReplyType.ReplyError;
+                    }
+                    OnReplyError(new SerialEventArgs(message, cmd));
 				}
 				else if (message.StartsWith(InfoTag, StringComparison.OrdinalIgnoreCase))
 				{
@@ -764,7 +774,11 @@ namespace Framework.Arduino.SerialCommunication
 				}
 				else
 				{
-					OnReplyUnknown(new SerialEventArgs(message, cmd));
+                    if (cmd != null)
+                    {
+                        cmd.ReplyType |= EReplyType.ReplyUnkown;
+                    }
+                    OnReplyUnknown(new SerialEventArgs(message, cmd));
 				}
 
 				if (endcommand && cmd != null)
@@ -836,22 +850,16 @@ namespace Framework.Arduino.SerialCommunication
         }
         protected virtual void OnReplyError(SerialEventArgs info)
         {
-			WriteLastCommandReplyType(EReplyType.ReplyError);
-
 			if (ReplyError != null)
 				Task.Run(() => ReplyError?.Invoke(this, info));
         }
         protected virtual void OnReplyDone(SerialEventArgs info)
         {
-			WriteLastCommandReplyType(EReplyType.ReplyOK);
-
 			if (ReplyOK != null)
 				Task.Run(() => ReplyOK?.Invoke(this, info));
         }
         protected virtual void OnReplyUnknown(SerialEventArgs info)
         {
-			WriteLastCommandReplyType(EReplyType.ReplyUnkown);
-
 			if (ReplyUnknown != null)
 				Task.Run(() => ReplyUnknown?.Invoke(this, info));
         }
@@ -867,18 +875,7 @@ namespace Framework.Arduino.SerialCommunication
 				Task.Run(() => CommandQueueEmpty?.Invoke(this, info));
 		}
 
-		private void WriteLastCommandReplyType(EReplyType replytype)
-		{
-			lock (_commands)
-			{
-				if (_commands.Count > 0)
-				{
-					_commands.Last().ReplyType |= replytype;
-				}
-			}
-		}
-
-#endregion
+        #endregion
 
 		#region Command History 
 
