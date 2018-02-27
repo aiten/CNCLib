@@ -22,12 +22,12 @@
                         <span class='glyphicon glyphicon-th-list'></span> Serial ports
                     </a>
                 </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/machinecontrol']">
+                        <span class='glyphicon glyphicon-refresh'></span> Machine control
+                    </a>
+                </li>
             </ul>
-            <li [routerLinkActive]="['link-active']">
-                <a [routerLink]="['/machinecontrol']">
-                    <span class='glyphicon glyphicon-refresh'></span> Machine control
-                </a>
-            </li>
         </div>
     </div>
 </div>
