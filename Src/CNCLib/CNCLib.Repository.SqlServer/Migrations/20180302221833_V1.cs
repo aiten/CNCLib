@@ -8,12 +8,11 @@ namespace CNCLib.Repository.SqlServer.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "NeedDtr",
+            migrationBuilder.AddColumn<bool>(
+                name: "DtrIsReset",
                 table: "Machine",
-                newName: "DtrIsReset");
-
-            migrationBuilder.Sql("update Machine set DtrIsReset = CASE WHEN [DtrIsReset]=0 THEN 1 ELSE 0 END");
+                nullable: false,
+                defaultValue: false);
 
             migrationBuilder.AddColumn<string>(
                 name: "SerialServer",
@@ -25,10 +24,16 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 table: "Machine",
                 nullable: false,
                 defaultValue: 5000);
+
+            migrationBuilder.Sql("update Machine set DtrIsReset = CASE WHEN [NeedDtr]=0 THEN 1 ELSE 0 END");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "DtrIsReset",
+                table: "Machine");
+
             migrationBuilder.DropColumn(
                 name: "SerialServer",
                 table: "Machine");
@@ -36,13 +41,6 @@ namespace CNCLib.Repository.SqlServer.Migrations
             migrationBuilder.DropColumn(
                 name: "SerialServerPort",
                 table: "Machine");
-
-            migrationBuilder.Sql("update Machine set DtrIsReset = CASE WHEN [DtrIsReset]=0 THEN 1 ELSE 0 END");
-
-            migrationBuilder.RenameColumn(
-                name: "DtrIsReset",
-                table: "Machine",
-                newName: "NeedDtr");
         }
     }
 }

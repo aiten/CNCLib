@@ -110,6 +110,8 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
+                    b.Property<bool>("NeedDtr");
+
                     b.Property<decimal>("ProbeDist");
 
                     b.Property<decimal>("ProbeDistUp");
