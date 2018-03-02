@@ -140,7 +140,7 @@ namespace CNCLib.Tests.Wpf
 				ComPort = "Com7",
 				Axis = 3,
 				BaudRate = 115200,
-                NeedDtr = false,
+                DtrIsReset = true,
                 CommandToUpper = true,
 				SizeX = 1234,
 				SizeY = 5678,

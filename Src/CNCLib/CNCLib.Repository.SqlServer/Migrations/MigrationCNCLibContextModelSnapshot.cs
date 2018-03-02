@@ -104,13 +104,13 @@ namespace CNCLib.Repository.SqlServer.Migrations
 
                     b.Property<bool>("Coolant");
 
+                    b.Property<bool>("DtrIsReset");
+
                     b.Property<bool>("Laser");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64);
-
-                    b.Property<bool>("NeedDtr");
 
                     b.Property<decimal>("ProbeDist");
 
@@ -127,6 +127,10 @@ namespace CNCLib.Repository.SqlServer.Migrations
                     b.Property<bool>("Rotate");
 
                     b.Property<bool>("SDSupport");
+
+                    b.Property<string>("SerialServer");
+
+                    b.Property<int>("SerialServerPort");
 
                     b.Property<decimal>("SizeA");
 

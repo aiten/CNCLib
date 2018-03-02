@@ -255,9 +255,9 @@ namespace CNCLib.Wpf.Models
         public Logic.Contracts.DTO.CommandSyntax CommandSyntax { get { return EepromV1.GetCommandSyntax(Info1); } set { } }
 
         [Category(CATEGORY_INFO)]
-        [DisplayName("NeedDtr")]
-        [Description("Dtr must be set to connect to machine (Arduino zero), otherwise Dtr cause a reset")]
-        public bool NeedDtr { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_NEED_DTR)); } set { } }
+        [DisplayName("DtrIsReset")]
+        [Description("For Arduino Uno, Mega, ... Dtr cause a reset when connecting. For a Arduino zero Dtr must be set/used to transfer data (no reset)")]
+        public bool DtrIsReset { get { return !(((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_NEED_DTR)); } set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("Need EEprom Flush")]

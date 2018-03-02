@@ -23,10 +23,12 @@ namespace CNCLib.Repository.Contracts.Entities
     public class Machine
 	{
 		public int MachineID { get; set; }
-		public string ComPort { get; set; }
+        public string SerialServer { get; set; }
+        public int SerialServerPort { get; set; }
+        public string ComPort { get; set; }
 		public int Axis { get; set; }
 		public int BaudRate { get; set; }
-        public bool NeedDtr { get; set; }
+        public bool DtrIsReset { get; set; }
         public string Name { get; set; }
 		public decimal SizeX { get; set; }
 		public decimal SizeY { get; set; }

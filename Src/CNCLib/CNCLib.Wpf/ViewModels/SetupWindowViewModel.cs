@@ -110,7 +110,7 @@ namespace CNCLib.Wpf.ViewModels
                 SetProperty(ref _selectedMachine, value);
                 if (value != null)
                 {
-                    RaisePropertyChanged(nameof(NeedDtr));
+                    RaisePropertyChanged(nameof(DtrIsReset));
                     SetGlobal().Ignore();
                 }
             }
@@ -147,7 +147,7 @@ namespace CNCLib.Wpf.ViewModels
 		    set => SetProperty(ref _sendInitCommands, value);
 		}
 
-        public bool NeedDtr => Machine != null && Machine.NeedDtr;
+        public bool DtrIsReset => Machine != null && Machine.DtrIsReset;
 
         public string CNCLibVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
@@ -159,15 +159,27 @@ namespace CNCLib.Wpf.ViewModels
         {
 			try
 			{
-                Global.Instance.Com.SetCurrent(Machine.ComPort);
+                string comport = Machine.ComPort;
 
-                if (Machine.NeedDtr)
-                    Global.Instance.Com.Current.ResetOnConnect = true;
-                else
+                if (string.IsNullOrEmpty(Machine.SerialServer) == false)
+                {
+                    if (comport.StartsWith(@"/"))       // linux: /dev/tty
+                    {
+                        comport = comport.Substring(1);
+                    }
+                    comport = $@"http://{Machine.SerialServer}:{Machine.SerialServerPort}/{comport}";
+                }
+
+                Global.Instance.Com.SetCurrent(comport);
+
+                if (Machine.DtrIsReset)
                     Global.Instance.Com.Current.ResetOnConnect = ResetOnConnect;
+                else
+                    Global.Instance.Com.Current.ResetOnConnect = true;
+
                 Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
                 Global.Instance.Com.Current.BaudRate = (int)Machine.BaudRate;
-                await Global.Instance.Com.Current.ConnectAsync(Machine.ComPort);
+                await Global.Instance.Com.Current.ConnectAsync(comport);
                 await SetGlobal();
 
 				if (SendInitCommands && Machine != null)

@@ -10,9 +10,10 @@ using System;
 namespace CNCLib.Repository.SqLite.Migrations
 {
     [DbContext(typeof(MigrationCNCLibContext))]
-    partial class MigrationCNCLibContextModelSnapshot : ModelSnapshot
+    [Migration("20180302205946_V1")]
+    partial class V1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

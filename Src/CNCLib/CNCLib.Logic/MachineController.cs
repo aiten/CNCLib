@@ -101,6 +101,7 @@ namespace CNCLib.Logic
 			{
 				Name = "New",
 				ComPort = "comX",
+                SerialServerPort = 5000,
 				Axis = 3,
 				SizeX = 130m,
 				SizeY = 45m,
@@ -109,7 +110,7 @@ namespace CNCLib.Logic
 				SizeB = 360m,
 				SizeC = 360m,
 				BaudRate = 115200,
-                NeedDtr = false,
+                DtrIsReset = true,
                 BufferSize = 63,
 				CommandToUpper = false,
 				ProbeSizeZ = 25,

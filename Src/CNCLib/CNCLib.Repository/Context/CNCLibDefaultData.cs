@@ -66,7 +66,7 @@ namespace CNCLib.Repository.Context
                 SizeB = 360m,
                 SizeC = 360m,
                 BaudRate = 115200,
-                NeedDtr = false,
+                DtrIsReset = true,
                 BufferSize = 63,
                 CommandToUpper = false,
                 CommandSyntax = 1, // CommandSyntax.GCode
@@ -95,7 +95,7 @@ namespace CNCLib.Repository.Context
                 SizeB = 360m,
                 SizeC = 360m,
                 BaudRate = 115200,
-                NeedDtr = false,
+                DtrIsReset = true,
                 BufferSize = 63,
                 CommandToUpper = false,
                 CommandSyntax = 1, // CommandSyntax.GCode
@@ -122,7 +122,7 @@ namespace CNCLib.Repository.Context
                 SizeB = 360m,
                 SizeC = 360m,
                 BaudRate = 250000,
-                NeedDtr = false,
+                DtrIsReset = true,
                 BufferSize = 63,
                 CommandToUpper = false,
                 ProbeSizeZ = 25m,
@@ -148,7 +148,7 @@ namespace CNCLib.Repository.Context
                 SizeB = 360m,
                 SizeC = 360m,
                 BaudRate = 250000,
-                NeedDtr = false,
+                DtrIsReset = true,
                 BufferSize = 63,
                 CommandToUpper = false,
                 ProbeSizeZ = 25m,
@@ -174,7 +174,7 @@ namespace CNCLib.Repository.Context
                 SizeB = 360m,
                 SizeC = 360m,
                 BaudRate = 115200,
-                NeedDtr = false,
+                DtrIsReset = true,
                 BufferSize = 63,
                 CommandToUpper = false,
                 CommandSyntax = 1, // CommandSyntax.GCode
@@ -189,9 +189,11 @@ namespace CNCLib.Repository.Context
                 Laser = true
             };
 
-			var miniCNC = new Machine
-			{
-				Name = "MiniCNC",
+            var miniCNC = new Machine
+            {
+                Name = "MiniCNC(remove)",
+                SerialServer = "localhost",
+                SerialServerPort = 5000,
 				ComPort = "com6",
 				Axis = 3,
 				SizeX = 150m,
@@ -201,7 +203,7 @@ namespace CNCLib.Repository.Context
 				SizeB = 360m,
 				SizeC = 360m,
 				BaudRate = 250000,
-                NeedDtr = false,
+                DtrIsReset = true,
                 BufferSize = 63,
 				CommandToUpper = false,
 				ProbeSizeZ = 1.5m,

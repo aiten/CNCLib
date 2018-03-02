@@ -38,7 +38,17 @@ namespace CNCLib.Wpf.Models
 		[Description("Internal Id of machine")]
 		public int MachineID { get; set; }
 
-		[Category(CATEGORY_COMMUNICATION)]
+        [Category(CATEGORY_COMMUNICATION)]
+        [DisplayName("SerialServer")]
+        [Description("Name of the CNCLib.Serial.Server, e.g. IP-Address, localhost or url - if empty, local port is used")]
+        public string SerialServer { get; set; }
+
+        [Category(CATEGORY_COMMUNICATION)]
+        [DisplayName("SerialServerPort")]
+        [Description("Port of the CNCLib.Serial.Server, default is 5000")]
+        public int SerialServerPort { get; set; }
+
+        [Category(CATEGORY_COMMUNICATION)]
 		[DisplayName("ComPort")]
 		[Description("Com of attached arduino")]
 		public string ComPort { get; set; }
@@ -49,9 +59,9 @@ namespace CNCLib.Wpf.Models
 		public int BaudRate { get; set; }
 
         [Category(CATEGORY_COMMUNICATION)]
-        [DisplayName("NeedDtr")]
-        [Description("Dtr is necessary to read/write data (Arduion Zero)")]
-        public bool NeedDtr { get; set; }
+        [DisplayName("DtrIsReset")]
+        [Description("For Arduino Uno, Mega, ... Dtr cause a reset when connecting. For a Arduino zero Dtr must be set/used to transfer data (no reset)")]
+        public bool DtrIsReset { get; set; }
 
         [Category(CATEGORY_SIZE)]
 		[DisplayName("Axis")]

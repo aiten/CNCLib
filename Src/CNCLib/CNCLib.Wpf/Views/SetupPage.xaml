@@ -19,7 +19,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <StackPanel Orientation="Vertical">
-                    <CheckBox Content="Reset on Connect" IsChecked="{Binding ResetOnConnect}" IsEnabled="{Binding NeedDtr, Converter={StaticResource InvertBoolConverter}}" VerticalAlignment="Center" Margin="0,0,10,0"     />
+                    <CheckBox Content="Reset on Connect" IsChecked="{Binding ResetOnConnect}" IsEnabled="{Binding DtrIsReset}" VerticalAlignment="Center" Margin="0,0,10,0"     />
                     <CheckBox Content="Send InitCommands" IsChecked="{Binding SendInitCommands}" VerticalAlignment="Center" Margin="0,0,10,0"     />
                 </StackPanel>
                 <Button Command="{Binding ConnectCommand}" Content="Connect" Width="100"  />

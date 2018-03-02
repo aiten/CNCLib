@@ -266,7 +266,7 @@ namespace CNCLib.Tests.Repository
 				ComPort = "com47",
 				Axis = 2,
 				BaudRate = 6500,
-                NeedDtr = false,
+                DtrIsReset = true,
                 Name = name,
 				SizeX = 1m,
 				SizeY = 1m,
