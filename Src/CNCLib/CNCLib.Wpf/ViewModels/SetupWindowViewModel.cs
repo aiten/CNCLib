@@ -27,6 +27,7 @@ using System.Windows.Input;
 using CNCLib.ServiceProxy;
 using CNCLib.Wpf.Helpers;
 using CNCLib.Wpf.Models;
+using Framework.Tools;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
@@ -110,9 +111,7 @@ namespace CNCLib.Wpf.ViewModels
                 if (value != null)
                 {
                     RaisePropertyChanged(nameof(NeedDtr));
-#pragma warning disable CS4014
-                    SetGlobal();
-#pragma warning restore CS4014
+                    SetGlobal().Ignore();
                 }
             }
 		}

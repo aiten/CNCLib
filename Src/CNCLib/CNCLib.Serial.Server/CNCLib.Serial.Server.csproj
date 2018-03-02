@@ -24,6 +24,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="CNCLib.Serial.Server.Start.cmd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="CNCLib.Serial.Server.Start.cmd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Arduino.Linux\Framework.Arduino.Linux.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Web\Framework.Web.csproj" />

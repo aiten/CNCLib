@@ -1,0 +1,1 @@
+dotnet "%~dp0\CNCLib.Serial.Server.dll" --urls "http://*:5000"
