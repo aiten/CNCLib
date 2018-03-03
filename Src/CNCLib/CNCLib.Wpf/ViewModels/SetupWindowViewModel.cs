@@ -159,16 +159,7 @@ namespace CNCLib.Wpf.ViewModels
         {
 			try
 			{
-                string comport = Machine.ComPort;
-
-                if (string.IsNullOrEmpty(Machine.SerialServer) == false)
-                {
-                    if (comport.StartsWith(@"/"))       // linux: /dev/tty
-                    {
-                        comport = comport.Substring(1);
-                    }
-                    comport = $@"http://{Machine.SerialServer}:{Machine.SerialServerPort}/{comport}";
-                }
+                string comport = Machine.GetComPort();
 
                 Global.Instance.Com.SetCurrent(comport);
 

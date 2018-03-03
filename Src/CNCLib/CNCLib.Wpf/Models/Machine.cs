@@ -53,7 +53,22 @@ namespace CNCLib.Wpf.Models
 		[Description("Com of attached arduino")]
 		public string ComPort { get; set; }
 
-		[Category(CATEGORY_COMMUNICATION)]
+	    public string GetComPort()
+	    {
+	        string comport = ComPort;
+
+	        if (string.IsNullOrEmpty(SerialServer) == false)
+	        {
+	            if (comport.StartsWith(@"/")) // linux: /dev/tty
+	            {
+	                comport = comport.Substring(1);
+	            }
+	            comport = $@"http://{SerialServer}:{SerialServerPort}/{comport}";
+	        }
+	        return comport;
+	    }
+
+	    [Category(CATEGORY_COMMUNICATION)]
 		[DisplayName("BaudRate")]
 		[Description("BaudRate")]
 		public int BaudRate { get; set; }
