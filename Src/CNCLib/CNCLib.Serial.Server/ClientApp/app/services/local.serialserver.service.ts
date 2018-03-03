@@ -58,9 +58,9 @@ export class LocalSerialServerService implements SerialServerService
             .catch(this.handleErrorPromise);
     }
 
-    connect(serialportid: number, baudrate: number, resetonConnect: boolean): Promise<void>
+    connect(serialportid: number, baudrate: number, dtrIsReset: boolean, resetonConnect: boolean): Promise<void>
     {
-        return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/connect/?baudrate=' + baudrate + '&resetOnConnect=' + (resetonConnect ? 'true' : 'false'), "x").toPromise()
+        return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/connect/?baudrate=' + baudrate + '&dtrIsReset=' + (dtrIsReset ? 'true' : 'false') + '&resetOnConnect=' + (resetonConnect ? 'true' : 'false'), "x").toPromise()
             .catch(this.handleErrorPromise);
     }
 

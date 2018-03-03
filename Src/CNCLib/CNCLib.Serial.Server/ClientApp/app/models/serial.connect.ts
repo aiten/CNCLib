@@ -22,4 +22,5 @@ export class SerialConnect
 {
     baudRate!: number;
     resetOnConnect!: boolean;
+    dtrIsReset!: boolean;
 }

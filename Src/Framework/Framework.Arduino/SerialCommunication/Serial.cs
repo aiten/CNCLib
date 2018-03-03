@@ -94,7 +94,10 @@ namespace Framework.Arduino.SerialCommunication
 
 		public int BaudRate { get; set; }				= 115200;
 		public bool ResetOnConnect { get; set; }		= false;
-		public string OkTag { get; set; }				= @"ok";
+        public bool DtrIsReset { get; set; } = true;        // true for Arduino Uno, Mega, false for Arduino Zero 
+
+
+        public string OkTag { get; set; }				= @"ok";
 		public string ErrorTag { get; set; }			= @"error:";
 		public string InfoTag { get; set; }				= @"info:";
 		public bool CommandToUpper { get; set; }		= false;
@@ -134,7 +137,9 @@ namespace Framework.Arduino.SerialCommunication
             _readThread.Start();
             _writeThread.Start();
 
-            if (ResetOnConnect)
+            // we need Dtr if not used as Reset
+            // otherwise reset if dtr is set
+            if (!DtrIsReset || ResetOnConnect)
             {
                 _serialPort.DtrEnable = true;
             }

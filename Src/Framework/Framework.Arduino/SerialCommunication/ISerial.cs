@@ -73,7 +73,17 @@ namespace Framework.Arduino.SerialCommunication
         Tools.Helpers.TraceStream Trace { get; }
 
         int BaudRate { get; set; }
+
+        /// <summary>
+        /// Dtr is used as reset, e.g Arduino Uno, Mega, ..., not reset for Arduino Zero
+        /// </summary>
+        bool DtrIsReset { get; set; }
+
+        /// <summary>
+        /// Reset on Connect (only possible if DtrIsReset is true)
+        /// </summary>
         bool ResetOnConnect { get; set; }
+
         string OkTag { get; set; }
         string ErrorTag { get; set; }
         string InfoTag { get; set; }

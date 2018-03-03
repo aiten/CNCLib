@@ -88,9 +88,13 @@ namespace CNCLib.Serial.Server.Controllers
         #region Connect/Disconnect
 
         [HttpPost("{id:int}/connect")]
-	    public async Task<IActionResult> Connect(int id, int? baudrate=null,bool? resetOnConnect=true)
-	    {
-	        var port = await GetPort(id);
+	    public async Task<IActionResult> Connect(int id, int? baudrate=null, bool? dtrIsReset = true, bool? resetOnConnect=false)
+        {
+            bool dtrIsResetN0 = dtrIsReset ?? true;
+            bool resetOnConnectN0 = resetOnConnect ?? false;
+            int baudrateN0 = baudrate ?? 250000;
+
+            var port = await GetPort(id);
 	        if (port == null)
 	        {
 	            return NotFound();
@@ -98,15 +102,16 @@ namespace CNCLib.Serial.Server.Controllers
 
 	        if (port.IsConnected)
 	        {
-	            if (port.Serial.BaudRate == (baudrate ?? 250000) && (resetOnConnect ?? true) == false)
+	            if (port.Serial.BaudRate == baudrateN0 && resetOnConnectN0 == false)
 	            {
 	                return Ok(GetDefinition(port));
 	            }
 	            await port.Serial.DisconnectAsync();
 	        }
 
-	        port.Serial.BaudRate = baudrate ?? 250000;
-	        port.Serial.ResetOnConnect = resetOnConnect ?? true;
+	        port.Serial.BaudRate = baudrateN0;
+	        port.Serial.DtrIsReset = dtrIsResetN0;
+            port.Serial.ResetOnConnect = resetOnConnectN0;
 
             await port.Serial.ConnectAsync(port.PortName);
 

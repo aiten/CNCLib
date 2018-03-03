@@ -46,6 +46,7 @@ export class MachineControlConnectComponent
         this.setupForm = fb.group(
             {
                 baudRate: [115200],
+                dtrIsReset: true,
                 resetOnConnect: false
             });
 
@@ -70,7 +71,7 @@ export class MachineControlConnectComponent
 
         console.log('save:' + this.entry.Id);
 
-        await this.serivalServerService.connect(this.entry.Id, this.connectOptions.baudRate, this.connectOptions.resetOnConnect);
+        await this.serivalServerService.connect(this.entry.Id, this.connectOptions.baudRate, this.connectOptions.dtrIsReset, this.connectOptions.resetOnConnect);
         window.location.reload();
     }
 }

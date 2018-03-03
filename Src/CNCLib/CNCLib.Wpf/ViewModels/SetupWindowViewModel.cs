@@ -172,10 +172,8 @@ namespace CNCLib.Wpf.ViewModels
 
                 Global.Instance.Com.SetCurrent(comport);
 
-                if (Machine.DtrIsReset)
-                    Global.Instance.Com.Current.ResetOnConnect = ResetOnConnect;
-                else
-                    Global.Instance.Com.Current.ResetOnConnect = true;
+			    Global.Instance.Com.Current.DtrIsReset = Machine.DtrIsReset;
+                Global.Instance.Com.Current.ResetOnConnect = ResetOnConnect;
 
                 Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
                 Global.Instance.Com.Current.BaudRate = (int)Machine.BaudRate;
@@ -208,6 +206,7 @@ namespace CNCLib.Wpf.ViewModels
         {
             try
             {
+                Global.Instance.ComJoystick.DtrIsReset = true;
                 Global.Instance.ComJoystick.ResetOnConnect = true;
                 Global.Instance.ComJoystick.CommandToUpper = false;
                 Global.Instance.ComJoystick.BaudRate = Joystick.BaudRate;

@@ -30,7 +30,7 @@ export abstract class SerialServerService
 
     public abstract refresh(): Promise<SerialPortDefinition[]>;
 
-    public abstract connect(serialportid: number, baudrate: number, resetonConnect: boolean): Promise<void>;
+    public abstract connect(serialportid: number, baudrate: number, dtrIsReset: boolean, resetonConnect: boolean): Promise<void>;
     public abstract disconnect(serialportid: number): Promise<void>;
 
     public abstract abort(serialportid: number): Promise<void>;

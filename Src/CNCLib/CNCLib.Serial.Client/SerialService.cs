@@ -96,7 +96,7 @@ namespace CNCLib.Serial.Client
                         if (port != null)
                         {
                             HttpResponseMessage response = await client.PostAsJsonAsync(
-                                $@"{_api}/{port.Id}/connect?baudRate={BaudRate}&resetOnConnect={ResetOnConnect}", "x");
+                                $@"{_api}/{port.Id}/connect?baudRate={BaudRate}&dtrIsReset={DtrIsReset}&resetOnConnect={ResetOnConnect}", "x");
                             if (response.IsSuccessStatusCode)
                             {
                                 SerialPortDefinition value = await response.Content.ReadAsAsync<SerialPortDefinition>();
@@ -234,6 +234,7 @@ namespace CNCLib.Serial.Client
         public bool SendNext { get; set; }
         public TraceStream Trace { get; } = new TraceStream();
         public int BaudRate { get; set; }
+        public bool DtrIsReset { get; set; }
         public bool ResetOnConnect { get; set; }
         public string OkTag { get; set; }
         public string ErrorTag { get; set; }
