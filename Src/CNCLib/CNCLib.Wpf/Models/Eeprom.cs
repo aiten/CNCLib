@@ -257,7 +257,7 @@ namespace CNCLib.Wpf.Models
         [Category(CATEGORY_INFO)]
         [DisplayName("DtrIsReset")]
         [Description("For Arduino Uno, Mega, ... Dtr cause a reset when connecting. For a Arduino zero Dtr must be set/used to transfer data (no reset)")]
-        public bool DtrIsReset { get { return !(((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_NEED_DTR)); } set { } }
+        public bool DtrIsReset { get { return (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_DTR_IS_RESET)); } set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("Need EEprom Flush")]

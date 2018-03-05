@@ -155,7 +155,8 @@ namespace CNCLib.GCode
 			EEPROM_INFO_KILL = (1 << 15),
 
             EEPROM_INFO_NEED_EEPROM_FLUSH = (1 << 16),
-            EEPROM_INFO_NEED_DTR = (1 << 17)
+            EEPROM_INFO_NEED_DTR = (1 << 17),       // deprecated
+		    EEPROM_INFO_DTR_IS_RESET = (1 << 18)
         }
 
         public static Logic.Contracts.DTO.CommandSyntax GetCommandSyntax(uint info1)
