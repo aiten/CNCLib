@@ -39,7 +39,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		{
 			Vm.RunAndUpdate(todo);
 		}
-		protected void SetPositions(string[] positions, int positionIdx)
+		protected void SetPositions(decimal[] positions, int positionIdx)
 		{
 			Vm.SetPositions(positions, positionIdx);
 		}

@@ -17,10 +17,12 @@
 */
 
 using System;
+using System.Linq;
 using System.Windows.Input;
 using Framework.Wpf.Helpers;
 using Framework.Arduino.SerialCommunication;
 using CNCLib.Wpf.Helpers;
+using System.Globalization;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
@@ -104,27 +106,79 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 		public void SendM107LaserOff() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m107"); }); }
         public void SendM100ProbeDefault() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m100"); }); }
         public void SendM101ProbeInvert() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m101"); }); }
-        public void SendM114PrintPos()
+
+	    private decimal[] Convert(string[] list)
+	    {
+            var ret = new decimal[list.Length];
+	        for (int i = 0; i < list.Length; i++)
+	        {
+	            ret[i] = decimal.Parse(list[i], CultureInfo.InvariantCulture);
+	        }
+	        return ret;
+	    }
+
+	    string TrimMsg(string msg, string replace)
+	    {
+	        return msg.Replace("ok", "").Replace(" ", "").Replace(replace, "").Replace(">", "");
+
+	    }
+
+	    decimal[] Convert(string msg, string replace)
+	    {
+	        return Convert(TrimMsg(msg, replace).Split(':', ','));
+	    }
+	    decimal[] TryConvert(string[] tags, string txt)
+	    {
+	        string tag = tags.FirstOrDefault((s) => s.StartsWith(txt));
+	        if (tag != null)
+	        {
+	            return Convert(TrimMsg(tag, txt).Split(':', ','));
+	        }
+	        return null;
+	    }
+
+
+        public void ReadPosition()
 		{
 			RunAndUpdate(async () =>
 			{
-				string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"),10*1000);
+				string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("?"),10*1000);
 
-				if (!string.IsNullOrEmpty(message))
-				{
-					message = message.Replace("ok", "");
-					message = message.Replace(" ", "");
-					SetPositions(message.Split(':'), 0);
-				}
+			    if (!string.IsNullOrEmpty(message))
+			    {
+			        if (message.Contains("MPos:"))
+			        {
+			            // new or grbl format
+			            string[] tags = message.Split('|');
 
-				message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"), 10*1000);
+			            var mpos = TryConvert(tags, "MPos:") ;
+			            if (mpos != null)
+			            {
+			                SetPositions(mpos, 0);
 
-				if (!string.IsNullOrEmpty(message))
-				{
-					message = message.Replace("ok", "");
-					message = message.Replace(" ", "");
-					SetPositions(message.Split(':'), 1);
-				}
+			                var wco = TryConvert(tags, "WCO:");
+			                if (wco != null)
+			                {
+			                    for (int i = 0; i < wco.Length; i++)
+			                        mpos[i] -= wco[i];
+			                }
+		                    SetPositions(mpos, 1);
+                        }
+			        }
+                    else
+			        {
+			            decimal[] mpos = Convert(message,"dummy");
+			            SetPositions(mpos, 0);
+
+                        message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"), 10 * 1000);
+
+			            if (!string.IsNullOrEmpty(message))
+			            {
+			                decimal[] rpos = Convert(message,"dummy");
+			                SetPositions(rpos, 1);
+			            }
+			        }
+                }
 			});
 		}
 		public void WritePending() { RunInNewTask(() => { Global.Instance.Com.Current.WritePendingCommandsToFile(System.IO.Path.GetTempPath() + "PendingCommands.nc"); }); }
@@ -146,7 +200,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         public ICommand SendM106LaserOnCommand => new DelegateCommand(SendM106LaserOn, CanSendLaser);
 		public ICommand SendM106LaserOnMinCommand => new DelegateCommand(SendM106LaserOnMin, CanSendLaser);
 		public ICommand SendM107LaserOffCommand => new DelegateCommand(SendM107LaserOff, CanSendLaser);
-		public ICommand SendM114Command => new DelegateCommand(SendM114PrintPos, CanSend);
+		public ICommand ReadPositionCommand => new DelegateCommand(ReadPosition, CanSend);
 		public ICommand WritePendingCommands => new DelegateCommand(WritePending, CanSend);
 		public ICommand SendNextCommands => new DelegateCommand(SetSendNext, () => CanSend() && Pause && PendingCommandCount > 0);
 

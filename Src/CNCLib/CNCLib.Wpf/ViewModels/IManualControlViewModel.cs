@@ -24,6 +24,6 @@ namespace CNCLib.Wpf.ViewModels
 	{
 		void RunInNewTask(Action todo);
 		void RunAndUpdate(Action todo);
-		void SetPositions(string[] positions, int positionIdx);
+		void SetPositions(decimal[] positions, int positionIdx);
 	}
 }

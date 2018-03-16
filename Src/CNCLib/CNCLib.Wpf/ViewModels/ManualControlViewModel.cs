@@ -160,25 +160,25 @@ namespace CNCLib.Wpf.ViewModels
 
 		#region Interface Implementation
 
-		public void SetPositions(string[] positions, int positionIdx)
+		public void SetPositions(decimal[] positions, int positionIdx)
 		{
 			if (positionIdx == 0)
 			{
-				if (positions.Length >= 1) AxisX.Pos = positions[0];
-				if (positions.Length >= 2) AxisY.Pos = positions[1];
-				if (positions.Length >= 3) AxisZ.Pos = positions[2];
-				if (positions.Length >= 4) AxisA.Pos = positions[3];
-				if (positions.Length >= 5) AxisB.Pos = positions[4];
-				if (positions.Length >= 6) AxisC.Pos = positions[5];
+				if (positions.Length >= 1) AxisX.Pos = positions[0].ToString();
+				if (positions.Length >= 2) AxisY.Pos = positions[1].ToString();
+				if (positions.Length >= 3) AxisZ.Pos = positions[2].ToString();
+				if (positions.Length >= 4) AxisA.Pos = positions[3].ToString();
+				if (positions.Length >= 5) AxisB.Pos = positions[4].ToString();
+				if (positions.Length >= 6) AxisC.Pos = positions[5].ToString();
 			}
 			else if(positionIdx == 1)
 			{
-				if (positions.Length >= 1) AxisX.RelPos = positions[0];
-				if (positions.Length >= 2) AxisY.RelPos = positions[1];
-				if (positions.Length >= 3) AxisZ.RelPos = positions[2];
-				if (positions.Length >= 4) AxisA.RelPos = positions[3];
-				if (positions.Length >= 5) AxisB.RelPos = positions[4];
-				if (positions.Length >= 6) AxisC.RelPos = positions[5];
+				if (positions.Length >= 1) AxisX.RelPos = positions[0].ToString();
+				if (positions.Length >= 2) AxisY.RelPos = positions[1].ToString();
+				if (positions.Length >= 3) AxisZ.RelPos = positions[2].ToString();
+				if (positions.Length >= 4) AxisA.RelPos = positions[3].ToString();
+				if (positions.Length >= 5) AxisB.RelPos = positions[4].ToString();
+				if (positions.Length >= 6) AxisC.RelPos = positions[5].ToString();
 			}
 		}
 		public void RunAndUpdate(Action todo)

@@ -108,7 +108,7 @@
                 <TabControl Margin="5,0,5,0" Custom:TabControlHelper.IsUnderlined="True">
                     <TabItem Header="Machine position" Custom:ControlsHelper.HeaderFontSize="15">
                         <StackPanel Orientation="Vertical" Margin="0,0,3,0">
-                            <Button Command="{Binding Tool.SendM114Command}" Content="Read positions"/>
+                            <Button Command="{Binding Tool.ReadPositionCommand}" Content="Read positions"/>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Absolut" Width="50" Margin="20,0,0,0"/>
                                 <Label Content="Current" Width="50" />

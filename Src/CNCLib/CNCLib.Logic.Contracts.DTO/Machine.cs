@@ -24,6 +24,7 @@ namespace CNCLib.Logic.Contracts.DTO
     {
         GCodeBasic = 0,
         GCode = 1,
+        Grbl = 2,
         HPGL = 7           // max 3 bit
     }
 
