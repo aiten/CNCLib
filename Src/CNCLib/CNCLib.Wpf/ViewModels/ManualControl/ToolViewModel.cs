@@ -112,7 +112,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             var ret = new decimal[list.Length];
 	        for (int i = 0; i < list.Length; i++)
 	        {
-	            ret[i] = decimal.Parse(list[i], CultureInfo.InvariantCulture);
+                decimal val;
+                if (decimal.TryParse(list[i], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out val))
+	                ret[i] = val;
 	        }
 	        return ret;
 	    }
@@ -148,8 +150,10 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 			    {
 			        if (message.Contains("MPos:"))
 			        {
-			            // new or grbl format
-			            string[] tags = message.Split('|');
+                        // new or grbl format
+                        message = message.Replace("ok", "").Replace("<", "").Replace(">", "").Trim();
+
+                        string[] tags = message.Split('|');
 
 			            var mpos = TryConvert(tags, "MPos:") ;
 			            if (mpos != null)
