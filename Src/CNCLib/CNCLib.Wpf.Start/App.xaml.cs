@@ -75,7 +75,6 @@ namespace CNCLib.Wpf.Start
 			IMapper mapper = config.CreateMapper();
 			Dependency.Container.RegisterInstance(mapper);
 
-
             // Open Database here
 
             string dbfile = userprofilepath + @"\CNCLib.db";
