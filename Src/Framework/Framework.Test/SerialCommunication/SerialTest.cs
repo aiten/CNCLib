@@ -104,7 +104,7 @@ namespace Framework.Test.SerialCommunication
 
             await serial.ConnectAsync("com2");
 
-            await serial.SendCommandAsync("?");
+            await serial.SendCommandAsync("?",1000);
 
             await serial.DisconnectAsync();
 
