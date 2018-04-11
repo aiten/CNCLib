@@ -40,7 +40,7 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>true</DelaySign>
@@ -129,7 +129,7 @@
       <Version>3.3.0</Version>
     </PackageReference>
     <PackageReference Include="MahApps.Metro">
-      <Version>1.5.0</Version>
+      <Version>1.6.1</Version>
     </PackageReference>
     <PackageReference Include="Prism.Core">
       <Version>7.0.0.396</Version>
