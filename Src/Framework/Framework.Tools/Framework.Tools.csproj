@@ -6,7 +6,7 @@
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-25914-04" />
     <PackageReference Include="Unity">
-      <Version>5.6.1</Version>
+      <Version>5.8.5</Version>
     </PackageReference>
   </ItemGroup>
 
