@@ -29,12 +29,12 @@ import { machinecontrolURL } from '../machinecontrol/machinecontrol.routing';
 export class SerialPortsComponent
 {
     public serialports!: SerialPortDefinition[];
-    public historyportid!: number;
+    public historyportid: number = -1;
 
     constructor(
         private serivalServerService: SerialServerService,
         private router: Router
-    )
+    ) 
     {
     }
 
