@@ -11,6 +11,7 @@
     </div>
     <div *ngIf="serialport.IsConnected">
         <button (click)='postcommand("?")'>?</button>
+        <input #gCode (keyup.enter)="postcommand(gCode.value); gCode.value=''"/>
 
         <div class="grid-container">
             <div class="grid-item"></div>
@@ -59,7 +60,7 @@
                 <button style="width: 40px" (click)='postcommand("g91 g0z-10 g90")'>10</button>
             </div>
         </div>
-        
+
         <serialporthistory [forserialportid]=serialport.Id [autoreloadonempty]=true>Loading...</serialporthistory>
     </div>
 </div>
