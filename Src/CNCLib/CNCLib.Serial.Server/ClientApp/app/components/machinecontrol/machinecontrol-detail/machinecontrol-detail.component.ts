@@ -58,4 +58,8 @@ export class MachineControlDetailComponent
     {
         await this.serivalServerService.queueCommands(this.serialport.Id, [command], 1000 );
     }
+
+    async sendWhileOkcommands(commands: string[]): Promise<void> {
+        await this.serivalServerService.sendWhileOkCommands(this.serialport.Id, commands, 10000);
+    }
 }

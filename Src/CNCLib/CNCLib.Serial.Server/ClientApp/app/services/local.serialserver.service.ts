@@ -104,6 +104,15 @@ export class LocalSerialServerService implements SerialServerService
             .catch(this.handleErrorPromise);
     }
 
+    sendWhileOkCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]> {
+        let cmd = new QueueSendCommand();
+        cmd.Commands = command;
+        cmd.TimeOut = timeout;
+
+        return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/sendWhileOk', cmd).toPromise()
+            .catch(this.handleErrorPromise);
+    }
+
     private handleErrorPromise(error: Response | any)
     {
         console.error(error.message || error);

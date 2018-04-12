@@ -40,4 +40,6 @@ export abstract class SerialServerService
     public abstract clearHistory(serialportid: number): Promise<void>;
 
     public abstract queueCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>;
+
+    public abstract sendWhileOkCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>;
 }

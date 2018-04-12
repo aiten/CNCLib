@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using CNCLib.Serial.Server.Hubs;
 using CNCLib.Serial.Server.SerialPort;
 using CNCLib.Serial.Shared;
+using Framework.Arduino.SerialCommunication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -169,7 +170,30 @@ namespace CNCLib.Serial.Server.Controllers
             return Ok(ret);
         }
 
-	    [HttpPost("{id:int}/abort")]
+        [HttpPost("{id:int}/sendWhileOk")]
+        public async Task<IActionResult> SendWhileOkCommand(int id, [FromBody] SerialCommands commands)
+        {
+            var port = await GetPort(id);
+
+            if (port == null || commands == null || commands.Commands == null)
+            {
+                return NotFound();
+            }
+
+            var ret = new List<SerialCommand>();
+            foreach(var c in commands.Commands)
+            {
+                var result = await port.Serial.SendCommandsAsync(new string[] { c }, commands.TimeOut);
+                ret.AddRange(result);
+                if (result.Count() > 0 && result.LastOrDefault().ReplyType != Framework.Arduino.SerialCommunication.EReplyType.ReplyOK)
+                {
+                   break;
+                }
+            }
+            return Ok(ret);
+        }
+
+        [HttpPost("{id:int}/abort")]
 	    public async Task<IActionResult> AbortCommand(int id)
 	    {
 	        var port = await GetPort(id);
