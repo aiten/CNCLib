@@ -17,12 +17,12 @@
     </thead>
     <tbody>
         <tr *ngFor="let serialcommand of serialcommands">
-            <td>{{ serialcommand.SeqId }}</td>
-            <td>{{ serialcommand.SentTime}}</td>
+            <td>{{ serialcommand.SeqId}}</td>
+            <td>{{ serialcommand.SentTime | date:'mediumTime'}}</td>
             <td>{{ serialcommand.CommandText}}</td>
             <td>{{ serialcommand.ReplyType}}</td>
             <td>{{ serialcommand.ResultText}}</td>
-            <td>{{ serialcommand.ReplyReceivedTime}}</td>
+            <td>{{ serialcommand.ReplyReceivedTime | date:'mediumTime'}}</td>
         </tr>
     </tbody>
 </table>

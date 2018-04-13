@@ -20,6 +20,7 @@ import { NgModule } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
 import { AppModuleShared } from './app.shared.module';
 import { AppComponent } from './components/app/app.component';
+import { LOCALE_ID } from '@angular/core';
 
 @NgModule(
     {
@@ -27,7 +28,11 @@ import { AppComponent } from './components/app/app.component';
     imports: [
         ServerModule,
         AppModuleShared
-    ]
+        ],
+    providers: [
+        // does not work for pipe: https://thorsten-hans.com/i18n-in-angular-apps-c0ed022c8a02
+        { provide: LOCALE_ID, useValue: window.navigator.language }
+        ]
 })
 export class AppModule 
 {

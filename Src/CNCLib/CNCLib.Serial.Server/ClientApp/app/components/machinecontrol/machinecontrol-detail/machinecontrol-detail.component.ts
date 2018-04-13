@@ -39,6 +39,10 @@ export class MachineControlDetailComponent
     {
     }
 
+    probeSize: number = 25.0;
+    retractDist: number = 3.0;
+    probeDist: number = 10.0;
+
     async ngOnInit() : Promise<void>
     {
         this.route.params.subscribe(params =>

@@ -16,7 +16,7 @@
 
 .grid-container2 {
     display: grid;
-    grid-template-columns: 360px 350px;
+    grid-template-columns: 360px 500px;
     background-color: #ffffff;
     padding: 0px;
 }
