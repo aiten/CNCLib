@@ -57,7 +57,7 @@ namespace CNCLib.Serial.Server.SerialPort
             var portnames = SerialPort.GetPortNames();
 
             if (Environment.MachineName == "AIT7" && !portnames.Any())
-                portnames = new string[] { "com1", "com3", "com4", "com5", "com6", "com10" };
+                portnames = new string[] { "com0", "com1", "com3", "com4", "com5", "com6", "com10" };
 
             return portnames.Select((port, index) =>
             {
