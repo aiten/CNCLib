@@ -52,12 +52,12 @@ namespace CNCLib.Wpf.Views
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (Global.Instance.Com.LocalCom.IsConnected)
-			    Global.Instance.Com.LocalCom.DisconnectAsync().GetAwaiter().GetResult();
+			    Global.Instance.Com.LocalCom.DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
 		    Global.Instance.Com.LocalCom.Trace.CloseTrace();
 
             if (Global.Instance.ComJoystick.IsConnected)
-                Global.Instance.ComJoystick.DisconnectAsync().GetAwaiter().GetResult();
+                Global.Instance.ComJoystick.DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
 		    Global.Instance.ComJoystick.Trace.CloseTrace();
         }

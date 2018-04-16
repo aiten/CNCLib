@@ -289,7 +289,7 @@ namespace Framework.Arduino.SerialCommunication
 
 		public void Dispose()
 		{
-			DisconnectAsync().GetAwaiter().GetResult();
+			DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 			if (_trace!=null)
 			{
 				_trace.Dispose();
@@ -501,7 +501,7 @@ namespace Framework.Arduino.SerialCommunication
             catch (InvalidOperationException e)
             {
                 Trace.WriteTraceFlush("WriteInvalidOperationException", $@"{commandtext} => {e.Message}");
-                Disconnect(false).GetAwaiter().GetResult();
+                Disconnect(false).ConfigureAwait(false).GetAwaiter().GetResult();
             }
             catch (IOException e)
             {
@@ -525,7 +525,7 @@ namespace Framework.Arduino.SerialCommunication
             }
             catch (Exception)
             {
-                Disconnect(false).GetAwaiter().GetResult();
+                Disconnect(false).ConfigureAwait(false).GetAwaiter().GetResult();
             }
         }
 

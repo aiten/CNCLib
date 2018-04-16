@@ -78,7 +78,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 				        lines.Add(MachineGCodeHelper.PrepareCommand(line));
 				    }
 				}
-			    SendM28(sDFileName, lines.ToArray()).GetAwaiter().GetResult();
+			    SendM28(sDFileName, lines.ToArray()).ConfigureAwait(false).GetAwaiter().GetResult();
 			});
 		}
 	    public void SendM28PreView() { SendM28PreView(SDFileName); }
@@ -88,7 +88,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 	        RunInNewTask(() =>
 	        {
 	            var lines = Global.Instance.Commands.ToStringList();
-	            SendM28(sDFileName, lines.ToArray()).GetAwaiter().GetResult();
+	            SendM28(sDFileName, lines.ToArray()).ConfigureAwait(false).GetAwaiter().GetResult();
 	        });
 	    }
 

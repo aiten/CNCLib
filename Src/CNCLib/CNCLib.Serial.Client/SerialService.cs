@@ -139,7 +139,7 @@ namespace CNCLib.Serial.Client
             {
                 using (HttpClient client = CreateHttpClient())
                 {
-                    HttpResponseMessage response = client.PostAsJsonAsync($@"{_api}/{PortId}/abort", "x").GetAwaiter().GetResult();
+                    HttpResponseMessage response = client.PostAsJsonAsync($@"{_api}/{PortId}/abort", "x").ConfigureAwait(false).GetAwaiter().GetResult();
                     if (response.IsSuccessStatusCode)
                     {
                         return;
@@ -155,7 +155,7 @@ namespace CNCLib.Serial.Client
             {
                 using (HttpClient client = CreateHttpClient())
                 {
-                    HttpResponseMessage response = client.PostAsJsonAsync($@"{_api}/{PortId}/resume", "x").GetAwaiter().GetResult();
+                    HttpResponseMessage response = client.PostAsJsonAsync($@"{_api}/{PortId}/resume", "x").ConfigureAwait(false).GetAwaiter().GetResult();
                     if (response.IsSuccessStatusCode)
                     {
                         return;
@@ -260,7 +260,7 @@ namespace CNCLib.Serial.Client
                 {
                     using (HttpClient client = CreateHttpClient())
                     {
-                        HttpResponseMessage response = client.GetAsync($@"{_api}/{PortId}/history").GetAwaiter().GetResult();
+                        HttpResponseMessage response = client.GetAsync($@"{_api}/{PortId}/history").ConfigureAwait(false).GetAwaiter().GetResult();
                         if (response.IsSuccessStatusCode)
                         {
                             var value = response.Content.ReadAsAsync<List<SerialCommand>>().Result;
@@ -280,7 +280,7 @@ namespace CNCLib.Serial.Client
             {
                 using (HttpClient client = CreateHttpClient())
                 {
-                    HttpResponseMessage response = client.PostAsJsonAsync($@"{_api}/{PortId}/history/clear", "x").GetAwaiter().GetResult();
+                    HttpResponseMessage response = client.PostAsJsonAsync($@"{_api}/{PortId}/history/clear", "x").ConfigureAwait(false).GetAwaiter().GetResult();
                     if (response.IsSuccessStatusCode)
                     {
                         return;
