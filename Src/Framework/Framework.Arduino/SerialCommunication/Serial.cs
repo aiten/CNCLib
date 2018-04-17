@@ -218,7 +218,6 @@ namespace Framework.Arduino.SerialCommunication
                 {
                     // ignore exception
                 }
-                _serialPort.Dispose();
 				_serialPortCancellationTokenSource?.Dispose();
 				_serialPort = null;
 				_serialPortCancellationTokenSource = null;
@@ -269,7 +268,6 @@ namespace Framework.Arduino.SerialCommunication
         {
             if (_serialPort != null)
             {
-                _serialPort.Dispose();
                 _serialPort = null;
             }
 
