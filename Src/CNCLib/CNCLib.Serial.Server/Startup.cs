@@ -45,6 +45,10 @@ namespace CNCLib.Serial.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()));
+
             services.AddSignalR();
 
             services.AddMvc().
@@ -85,6 +89,8 @@ namespace CNCLib.Serial.Server
             }
 
             app.UseStaticFiles();
+
+            app.UseCors("AllowAll");
 
             app.UseSignalR(router =>
             {

@@ -22,20 +22,26 @@ import { AppModuleShared } from './app.shared.module';
 import { AppComponent } from './components/app/app.component';
 import { HttpClientModule } from '@angular/common/http';
 
-@NgModule({
+@NgModule(
+    {
     bootstrap: [ AppComponent ],
-    imports: [
+    imports:
+    [
         BrowserModule,
         HttpClientModule,
         AppModuleShared
     ],
-    providers: [
+    providers:
+    [
         { provide: 'BASE_URL', useFactory: getBaseUrl }
     ]
 })
-export class AppModule {
+export class AppModule 
+{
 }
 
-export function getBaseUrl() {
+export function getBaseUrl() 
+{
+    //return 'http://10.1.1.20:5000/';    // CORS must be enabled!!!
     return document.getElementsByTagName('base')[0].href;
 }

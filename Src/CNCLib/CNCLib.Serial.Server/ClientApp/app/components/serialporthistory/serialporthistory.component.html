@@ -18,11 +18,11 @@
     <tbody>
         <tr *ngFor="let serialcommand of serialcommands">
             <td>{{ serialcommand.SeqId}}</td>
-            <td>{{ serialcommand.SentTime | date:'mediumTime'}}</td>
+            <td>{{ serialcommand.SentTime | date:'HH:mm:ss'}}</td>
             <td>{{ serialcommand.CommandText}}</td>
             <td>{{ serialcommand.ReplyType}}</td>
             <td>{{ serialcommand.ResultText}}</td>
-            <td>{{ serialcommand.ReplyReceivedTime | date:'mediumTime'}}</td>
+            <td>{{ serialcommand.ReplyReceivedTime | date:'HH:mm:ss'}}</td>
         </tr>
     </tbody>
 </table>

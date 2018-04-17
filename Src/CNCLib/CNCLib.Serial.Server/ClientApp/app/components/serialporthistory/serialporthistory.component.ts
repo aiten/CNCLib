@@ -20,6 +20,7 @@ export class SerialPortHistoryComponent implements OnChanges
 
     constructor(
         private serivalServerService: SerialServerService,
+        @Inject('BASE_URL') public baseUrl: string,
     ) 
     {
     }
@@ -28,7 +29,8 @@ export class SerialPortHistoryComponent implements OnChanges
     {
         if (this.autoreloadonempty) 
         {
-            this._hubConnection = new HubConnection('/serialSignalR');
+            this._hubConnection = new HubConnection(this.baseUrl + 'serialSignalR');
+            //this._hubConnection = new HubConnection('/serialSignalR');
 
             this._hubConnection.on('queueEmpty',
                 (portid: number) => 
