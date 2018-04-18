@@ -16,10 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.ServiceProcess;
 
 namespace CNCLib.Serial.Server
 {
@@ -27,18 +31,68 @@ namespace CNCLib.Serial.Server
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            if (RunsAsService())
+            {
+                var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                Environment.CurrentDirectory = dir;
+
+                ServiceBase.Run(new ServiceBase[] { new CNCLibServerService() });
+            }
+            else
+            {
+                BuildWebHost(args).Run();
+            }
+        }
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        private static bool CheckForConsoleWindow()
+        {
+            return GetConsoleWindow() == IntPtr.Zero;
+        }
+
+        private static bool RunsAsService()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return CheckForConsoleWindow();
+            }
+
+            return false;   // never can be a windows service
+        }
+
+        private sealed class CNCLibServerService : ServiceBase
+        {
+            private IWebHost _webHost;
+            protected override void OnStart(string[] args)
+            {
+                try
+                {
+//                  string[] imagePathArgs = Environment.GetCommandLineArgs();
+                    _webHost = BuildWebHost(args);
+                    _webHost.Start();
+                }
+                catch (Exception e)
+                {
+                    File.AppendAllText(Path.Combine(Path.GetTempPath(),@"CNCLibError.txt"), "OnStartError: " + e.Message + Environment.NewLine);
+                    throw;
+                }
+            }
+
+            protected override void OnStop()
+            {
+                _webHost.Dispose();
+            }
         }
 
         public static IWebHost BuildWebHost(string[] args)
         {
-
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("hosting.json", optional: true)
                 .AddCommandLine(args)
                 .Build();
-
             return WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
                 .UseConfiguration(config)
