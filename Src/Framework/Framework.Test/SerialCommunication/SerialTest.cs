@@ -48,7 +48,6 @@ namespace Framework.Test.SerialCommunication
                 ReturnsForAnyArgs(async x =>
                 {
                     sendReply = true;
-                    await Task.FromResult(0);
                 });
 
 
