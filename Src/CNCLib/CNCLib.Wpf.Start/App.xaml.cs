@@ -33,6 +33,7 @@ using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 
 namespace CNCLib.Wpf.Start
 {
@@ -41,9 +42,13 @@ namespace CNCLib.Wpf.Start
     /// </summary>
     public partial class App : Application
 	{
-		private void AppStartup(object sender, StartupEventArgs e)
+	    private ILogger _logger => LogManager.GetCurrentClassLogger();
+
+	    private void AppStartup(object sender, StartupEventArgs e)
 		{
-			string userprofilepath = Environment.GetEnvironmentVariable(@"USERPROFILE");
+		    _logger.Info(@"Starting ...");
+
+            string userprofilepath = Environment.GetEnvironmentVariable(@"USERPROFILE");
 			AppDomain.CurrentDomain.SetData("DataDirectory", userprofilepath);
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
@@ -84,7 +89,9 @@ namespace CNCLib.Wpf.Start
 		    }
 		    catch (Exception ex)
 		    {
-		        MessageBox.Show(
+		        _logger.Error(ex);
+
+                MessageBox.Show(
 		            $"Cannot create/connect database in {dbfile} \n\r" +
 		            ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 		        Current.Shutdown();

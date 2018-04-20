@@ -42,6 +42,6 @@ export class AppModule
 
 export function getBaseUrl() 
 {
-    //return 'http://10.1.1.20:5000/';    // CORS must be enabled!!!
-    return document.getElementsByTagName('base')[0].href;
+    return 'http://10.1.1.20:5000/';    // CORS must be enabled!!!
+    //return document.getElementsByTagName('base')[0].href;
 }

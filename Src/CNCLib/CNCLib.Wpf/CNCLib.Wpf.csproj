@@ -284,6 +284,9 @@
     <PackageReference Include="MahApps.Metro">
       <Version>1.6.1</Version>
     </PackageReference>
+    <PackageReference Include="NLog.Config">
+      <Version>4.5.3</Version>
+    </PackageReference>
     <PackageReference Include="Prism.Core">
       <Version>7.0.0.396</Version>
     </PackageReference>

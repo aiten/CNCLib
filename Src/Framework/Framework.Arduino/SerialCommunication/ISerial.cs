@@ -70,8 +70,6 @@ namespace Framework.Arduino.SerialCommunication
         bool Pause { get; set; }
         bool SendNext { get; set; }
 
-        Tools.Helpers.TraceStream Trace { get; }
-
         int BaudRate { get; set; }
 
         /// <summary>

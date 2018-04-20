@@ -232,7 +232,6 @@ namespace CNCLib.Serial.Client
         public int CommandsInQueue { get; }
         public bool Pause { get; set; }
         public bool SendNext { get; set; }
-        public TraceStream Trace { get; } = new TraceStream();
         public int BaudRate { get; set; }
         public bool DtrIsReset { get; set; }
         public bool ResetOnConnect { get; set; }

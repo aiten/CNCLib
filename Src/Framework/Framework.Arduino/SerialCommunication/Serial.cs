@@ -22,10 +22,10 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading;
-using Framework.Tools.Helpers;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Framework.Tools.Dependency;
+using NLog;
 
 namespace Framework.Arduino.SerialCommunication
 {
@@ -38,9 +38,9 @@ namespace Framework.Arduino.SerialCommunication
 		Thread _readThread;
 		Thread _writeThread;
 		AutoResetEvent _autoEvent = new AutoResetEvent(false);
-		TraceStream _trace = new TraceStream();
 		List<SerialCommand> _pendingCommands = new List<SerialCommand>();
         int _commandSeqId;
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -105,10 +105,11 @@ namespace Framework.Arduino.SerialCommunication
         public int MaxCommandHistoryCount { get; set; } = int.MaxValue;
 		public int ArduinoBuffersize { get; set; }		= 64;
         public int ArduinoLineSize { get; set; }        = 128;
-        public TraceStream Trace => _trace;
         public bool Pause { get; set; }                 = false;
 		public bool SendNext { get; set; }              = false;
 		private bool Continue => (_serialPortCancellationTokenSource != null && !_serialPortCancellationTokenSource.IsCancellationRequested);
+
+        protected ILogger Trace => _logger;
 
         #endregion
 
@@ -121,6 +122,7 @@ namespace Framework.Arduino.SerialCommunication
 		public async Task ConnectAsync(string portname)
         {
             await Task.Delay(0); // avoid CS1998
+            Trace?.Trace($@"Connect: {portname}");
 
             // Create a new SerialPort object with default settings.
             Aborted = false;
@@ -180,7 +182,7 @@ namespace Framework.Arduino.SerialCommunication
 
         private async Task Disconnect(bool join)
         {
-            Trace.WriteTraceFlush("Disconnecting",join.ToString());
+            Trace?.Trace("Disconnecting",join.ToString());
             Aborted = true;
 			_serialPortCancellationTokenSource?.Cancel();
 
@@ -223,7 +225,7 @@ namespace Framework.Arduino.SerialCommunication
 				_serialPortCancellationTokenSource = null;
 
 			}
-			Trace.WriteTraceFlush("Disconnected", join.ToString());
+			Trace?.Trace("Disconnected", join.ToString());
         }
 
         /// <summary>
@@ -288,11 +290,6 @@ namespace Framework.Arduino.SerialCommunication
 		public void Dispose()
 		{
 			DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-			if (_trace!=null)
-			{
-				_trace.Dispose();
-				_trace = null;
-			}
 		}
 
 		#endregion
@@ -433,7 +430,7 @@ namespace Framework.Arduino.SerialCommunication
                 _pendingCommands.Add(c);
 			    queueLenght++;
 			};
-			Trace.WriteTrace("Queue", cmd);
+			Trace?.Trace("Queue", cmd);
 			OnComandQueueChanged(new SerialEventArgs(queueLenght,c));
 			return c;
 		}
@@ -487,7 +484,7 @@ namespace Framework.Arduino.SerialCommunication
 
         private bool WriteSerial(string commandtext, bool addNewLine)
         {
-            Trace.WriteTrace("Write", commandtext);
+            Trace?.Trace("Write", commandtext);
             try
             {
 				if (addNewLine)
@@ -498,17 +495,17 @@ namespace Framework.Arduino.SerialCommunication
             }
             catch (InvalidOperationException e)
             {
-                Trace.WriteTraceFlush("WriteInvalidOperationException", $@"{commandtext} => {e.Message}");
+                Trace?.Error("WriteInvalidOperationException", $@"{commandtext} => {e.Message}");
                 Disconnect(false).ConfigureAwait(false).GetAwaiter().GetResult();
             }
             catch (IOException e)
             {
-                Trace.WriteTraceFlush("WriteIOException", $@"{commandtext} => {e.Message}");
+                Trace?.Error("WriteIOException", $@"{commandtext} => {e.Message}");
                 ErrorSerial();
             }
             catch (Exception e)
             {
-                Trace.WriteTraceFlush("WriteException", $@"{commandtext} => {e.GetType()} {e.Message}");
+                Trace?.Error("WriteException", $@"{commandtext} => {e.GetType()} {e.Message}");
             }
             return false;
         }
@@ -684,17 +681,17 @@ namespace Framework.Arduino.SerialCommunication
 				}
 				catch (InvalidOperationException e)
 				{
-					Trace.WriteTraceFlush("ReadInvalidOperationException", e.Message);
+					Trace?.Error("ReadInvalidOperationException", e.Message);
 					Thread.Sleep(250);
 				}
 				catch (IOException e)
 				{
-					Trace.WriteTraceFlush("ReadIOException", e.Message);
+					Trace?.Error("ReadIOException", e.Message);
 					Thread.Sleep(250);
 				}
 				catch (Exception e)
 				{
-					Trace.WriteTraceFlush("ReadException", e.Message);
+					Trace?.Error("ReadException", e.Message);
 					Thread.Sleep(250);
 				}
 
@@ -722,7 +719,7 @@ namespace Framework.Arduino.SerialCommunication
 
 			if (string.IsNullOrEmpty(message) == false)
 			{
-				Trace.WriteTrace("Read", message.Replace("\n", @"\n").Replace("\r", @"\r").Replace("\t", @"\t"));
+				Trace?.Trace("Read", message.Replace("\n", @"\n").Replace("\r", @"\r").Replace("\t", @"\t"));
 
 				bool endcommand = false;
 

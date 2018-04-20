@@ -19,11 +19,15 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using NLog.Web;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
+using NLog;
+using ILogger = NLog.ILogger;
 
 namespace CNCLib.Serial.Server
 {
@@ -31,16 +35,30 @@ namespace CNCLib.Serial.Server
     {
         public static void Main(string[] args)
         {
+            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            try
+            {
+                StartWebService(args);
+            }
+            catch (Exception e)
+            {
+                logger.Error(e);
+                throw;
+            }
+        }
+
+        private static void StartWebService(string[] args)
+        {
             if (RunsAsService())
             {
-                var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                Environment.CurrentDirectory = dir;
+                Environment.CurrentDirectory = BaseDirectory;
 
                 ServiceBase.Run(new ServiceBase[] { new CNCLibServerService() });
             }
             else
             {
                 BuildWebHost(args).Run();
+                LogManager.Shutdown();
             }
         }
 
@@ -65,6 +83,8 @@ namespace CNCLib.Serial.Server
         private sealed class CNCLibServerService : ServiceBase
         {
             private IWebHost _webHost;
+            private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+
             protected override void OnStart(string[] args)
             {
                 try
@@ -75,18 +95,21 @@ namespace CNCLib.Serial.Server
                 }
                 catch (Exception e)
                 {
-                    File.AppendAllText(Path.Combine(Path.GetTempPath(),@"CNCLibError.txt"), "OnStartError: " + e.Message + Environment.NewLine);
+                    _logger.Fatal(e);
                     throw;
                 }
             }
 
             protected override void OnStop()
             {
+                LogManager.Shutdown();
                 _webHost.Dispose();
             }
         }
 
-        public static IWebHost BuildWebHost(string[] args)
+        private static string BaseDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+        private static IWebHost BuildWebHost(string[] args)
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -97,6 +120,11 @@ namespace CNCLib.Serial.Server
                 .UseKestrel()
                 .UseConfiguration(config)
                 .UseStartup<Startup>()
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                })
+                .UseNLog()
                 .Build();
         }
     }
