@@ -69,8 +69,6 @@ namespace Framework.Test.SerialCommunication
                     return 0;
                 });
 
-
-
             return serialport;
         }
 
