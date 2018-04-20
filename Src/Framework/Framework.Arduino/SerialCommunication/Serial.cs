@@ -684,6 +684,11 @@ namespace Framework.Arduino.SerialCommunication
 					Trace?.Error("ReadInvalidOperationException", e.Message);
 					Thread.Sleep(250);
 				}
+                catch (ThreadAbortException)
+                {
+                    // terminated by user request
+                    throw;
+                }
 				catch (IOException e)
 				{
 					Trace?.Error("ReadIOException", e.Message);

@@ -6,6 +6,7 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
+    <RuntimeFrameworkVersion>2.0.*</RuntimeFrameworkVersion>
   </PropertyGroup>
 
   <ItemGroup>
