@@ -18,6 +18,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using CNCLib.Serial.Server.Controllers;
 using CNCLib.Serial.Server.Hubs;
 using Framework.Arduino.SerialCommunication;
 using Framework.Tools.Dependency;
@@ -39,23 +40,20 @@ namespace CNCLib.Serial.Server.SerialPort
 
                 Serial.CommandQueueEmpty += async (sender, e) =>
                 {
-                    var clients = Startup.Services.GetService<IHubContext<CNCLibHub>>();
-                    await clients.Clients.All.InvokeAsync("queueEmpty", Id);
+                    await Startup.Hub.Clients.All.SendAsync("queueEmpty", Id);
                 };
                 Serial.CommandQueueChanged += (sender, e) =>
                 {
                     _delayExecuteQueueChanged.Execute(1000, () => _pendingLastQueueLength = e.QueueLenght, () =>
                     {
-                        var clients = Startup.Services.GetService<IHubContext<CNCLibHub>>();
-                        clients.Clients.All.InvokeAsync("queueChanged", Id, _pendingLastQueueLength);
+                        Startup.Hub.Clients.All.SendAsync("queueChanged", Id, _pendingLastQueueLength);
                     });
                 };
                 Serial.CommandSending += (sender, e) =>
                 {
                     _delayExecuteSendingCommand.Execute(1000, () => _pendingSendingCommandSeqId = e.SeqId, () =>
                     {
-                        var clients = Startup.Services.GetService<IHubContext<CNCLibHub>>();
-                        clients.Clients.All.InvokeAsync("sendingCommand", Id, _pendingSendingCommandSeqId);
+                        Startup.Hub.Clients.All.SendAsync("sendingCommand", Id, _pendingSendingCommandSeqId);
                     });
                 };
             }

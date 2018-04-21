@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Threading;
 using CNCLib.Serial.Server.Hubs;
@@ -42,6 +43,7 @@ namespace CNCLib.Serial.Server
 
         public IConfiguration Configuration { get; }
         public static IServiceProvider Services { get; private set; }
+        public static IHubContext<CNCLibHub> Hub => Services.GetService<IHubContext<CNCLibHub>>();
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -49,7 +51,7 @@ namespace CNCLib.Serial.Server
                 .AllowAnyMethod()
                 .AllowAnyHeader()));
 
-            services.AddSignalR();
+            services.AddSignalR((HubOptions hu) => hu.EnableDetailedErrors = true);
 
             services.AddMvc().
                 AddJsonOptions(options =>
@@ -73,7 +75,8 @@ namespace CNCLib.Serial.Server
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
-            Services = serviceProvider;
+            Services = app.ApplicationServices;
+            //Services = serviceProvider;
 
             if (env.IsDevelopment())
             {
@@ -94,13 +97,12 @@ namespace CNCLib.Serial.Server
 
             app.UseSignalR(router =>
             {
-                router.MapHub<CNCLibHub>("serialSignalR");
+                router.MapHub<CNCLibHub>("/serialSignalR");
             });
 
             void callback(object x)
             {
-                var hub = Services.GetService<IHubContext<CNCLibHub>>();
-                hub.Clients.All.InvokeAsync("heartbeat");
+                Hub.Clients.All.SendAsync("heartbeat");
             }
             var timer = new Timer(callback);
             timer.Change(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(30));

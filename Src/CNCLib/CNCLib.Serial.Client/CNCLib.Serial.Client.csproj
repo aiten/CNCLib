@@ -4,9 +4,9 @@
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
    <ItemGroup>
-     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.4" />
-     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-alpha2-final" />
-     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
+     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.5-preview1" />
+     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-preview2-final" />
+     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0-preview2-26406-04" />
    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />

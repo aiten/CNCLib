@@ -3,7 +3,7 @@
   <Import Project="$(ProjectDir)..\CNCLib.targets" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0-preview2-final" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.1.0-preview2-final" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.0-preview2-26406-04" />
     <PackageReference Include="NLog.Config" Version="4.5.3" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.2" />
@@ -60,7 +60,7 @@
 
   <ItemGroup>
     <Content Update="NLog.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

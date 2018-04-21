@@ -31,32 +31,32 @@ namespace CNCLib.Serial.Server.Hubs
 
         public async Task HeartBeat()
         {
-            await Clients.All.InvokeAsync("heartbeat");
+            await Clients.All.SendAsync("heartbeat");
         }
 
         public async Task QueueEmpty(int id)
         {
-            await Clients.All.InvokeAsync("queueEmpty", id);
+            await Clients.All.SendAsync("queueEmpty", id);
         }
 
         public async Task QueueChanged(int id, int queueLength)
         {
-            await Clients.All.InvokeAsync("queueChanged", id, queueLength);
+            await Clients.All.SendAsync("queueChanged", id, queueLength);
         }
 
         public async Task SendingCommand(int id, int seqid)
         {
-            await Clients.All.InvokeAsync("sendingCommand", id, seqid);
+            await Clients.All.SendAsync("sendingCommand", id, seqid);
         }
 
         public async Task Connected(int id)
         {
-            await Clients.All.InvokeAsync("connected",id);
+            await Clients.All.SendAsync("connected",id);
         }
 
         public async Task Disconnected(int id)
         {
-            await Clients.All.InvokeAsync("disconnected", id);
+            await Clients.All.SendAsync("disconnected", id);
         }
     }
 }

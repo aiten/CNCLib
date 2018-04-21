@@ -20,8 +20,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Framework.Arduino.SerialCommunication;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.AspNetCore.Sockets;
 
 namespace CNCLib.Serial.Client
 {
@@ -51,8 +51,8 @@ namespace CNCLib.Serial.Client
             _connection = new HubConnectionBuilder()
             .WithUrl(WebServerUrl)
 //            .WithConsoleLogger()
-            .WithMessagePackProtocol()
-            .WithTransport(TransportType.WebSockets)
+//            .WithMessagePackProtocol()
+            .WithTransport(TransportType.ServerSentEvents)
             .Build();
 
             await _connection.StartAsync();
@@ -61,7 +61,6 @@ namespace CNCLib.Serial.Client
             _connection.Closed += e =>
             {
                 _cts.Cancel();
-                return Task.CompletedTask;
             };
 
             return _connection;

@@ -34,10 +34,12 @@ namespace CNCLib.Serial.Server.Controllers
         protected string CurrentUri => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
 
 	    private IHubContext<CNCLibHub> _hubcontext;
+	    static public IHubContext<CNCLibHub> _myhubcontext;
 
         public SerialPortController(IHubContext<CNCLibHub> hubcontext)
         {
             _hubcontext = hubcontext;
+            _myhubcontext = _hubcontext;
         }
 
         private SerialPortDefinition GetDefinition(SerialPortWrapper port)
@@ -116,7 +118,7 @@ namespace CNCLib.Serial.Server.Controllers
 
             await port.Serial.ConnectAsync(port.PortName);
 
-	        await _hubcontext.Clients.All.InvokeAsync("connected", id);
+	        await _hubcontext.Clients.All.SendAsync("connected", id);
 
             return Ok(GetDefinition(port));
 	    }
@@ -133,7 +135,7 @@ namespace CNCLib.Serial.Server.Controllers
             await port.Serial.DisconnectAsync();
 	        port.Serial = null;
 
-	        await _hubcontext.Clients.All.InvokeAsync("disconnected",id);
+	        await _hubcontext.Clients.All.SendAsync("disconnected",id);
 
             return Ok();
 	    }

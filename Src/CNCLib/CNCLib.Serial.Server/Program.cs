@@ -38,6 +38,7 @@ namespace CNCLib.Serial.Server
             var logger = NLogBuilder.ConfigureNLog("NLog.config").GetCurrentClassLogger();
             try
             {
+                logger.Info("Starting (Main)");
                 StartWebService(args);
             }
             catch (Exception e)
