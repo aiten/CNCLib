@@ -47,7 +47,9 @@ namespace CNCLib.Serial.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
+            services.AddCors(options => options.AddPolicy("AllowAll", p => 
+                p.AllowAnyOrigin()
+                .AllowCredentials()
                 .AllowAnyMethod()
                 .AllowAnyHeader()));
 

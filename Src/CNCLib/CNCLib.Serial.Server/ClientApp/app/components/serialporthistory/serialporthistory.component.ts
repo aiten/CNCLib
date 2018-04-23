@@ -1,8 +1,8 @@
-import { Component, Inject, Input, OnChanges } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnInit } from '@angular/core';
 import { SerialCommand } from '../../models/serial.command';
 import { SerialPortDefinition } from '../../models/serial.port.definition';
 import { SerialServerService } from '../../services/serialserver.service';
-import { HubConnection } from '@aspnet/signalr-client';
+import { HubConnection } from '@aspnet/signalr';
 
 @Component({
     selector: 'serialporthistory',
@@ -29,9 +29,10 @@ export class SerialPortHistoryComponent implements OnChanges
     {
         if (this.autoreloadonempty) 
         {
-            this._hubConnection = new HubConnection(this.baseUrl + 'serialSignalR');
-            //this._hubConnection = new HubConnection('/serialSignalR');
+            console.log('SignalR to ' + this.baseUrl + 'serialSignalR');
 
+            this._hubConnection = new HubConnection(this.baseUrl + 'serialSignalR');
+            
             this._hubConnection.on('queueEmpty',
                 (portid: number) => 
                 {
@@ -42,15 +43,20 @@ export class SerialPortHistoryComponent implements OnChanges
 //            const received = `Received: ${data}`;
 //            this.messages.push(received);
                 });
+            this._hubConnection.on('heartbeat',
+                () => 
+                {
+                    console.log('SignalR received: heartbeat');
+                });
 
             this._hubConnection.start()
                 .then(() => 
                 {
-                    console.log('Hub connection started')
+                    console.log('Hub connection started');
                 })
                 .catch(err => 
                 {
-                    console.log('Error while establishing connection')
+                    console.log('Error while establishing connection');
                 });
         }
     }
