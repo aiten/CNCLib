@@ -52,7 +52,7 @@ namespace CNCLib.Serial.Client
             .WithUrl(WebServerUrl)
 //            .WithConsoleLogger()
 //            .WithMessagePackProtocol()
-            .WithTransport(TransportType.ServerSentEvents)
+            .WithTransport(TransportType.All)
             .Build();
 
             await _connection.StartAsync();
