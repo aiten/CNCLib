@@ -31,7 +31,7 @@ namespace Framework.Web
             return $"{controller.Request.Scheme}://{controller.Request.Host}{controller.Request.Path}{controller.Request.QueryString}";
         }
 
-        public static async Task<IActionResult> NotFoundOrOk<T>(this Controller controller, T obj)
+        public static async Task<ActionResult<T>> NotFoundOrOk<T>(this Controller controller, T obj)
         {
             if (obj == null)
             {
@@ -42,19 +42,19 @@ namespace Framework.Web
             return controller.Ok(obj);
         }
 
-        public static async Task<IActionResult> GetAll<T>(this Controller controller, IRest<T> rest) 
+        public static async Task<ActionResult<IEnumerable<T>>> GetAll<T>(this Controller controller, IRest<T> rest) 
 		{
 		    IEnumerable<T> all = await rest.Get();
-		    return await NotFoundOrOk<IEnumerable<T>>(controller, all);
+		    return await NotFoundOrOk(controller, all);
 		}
 
-        public static async Task<IActionResult> Get<T>(this Controller controller, IRest<T> rest, int id)
+        public static async Task<ActionResult<T>> Get<T>(this Controller controller, IRest<T> rest, int id)
         {
             T obj = await rest.Get(id);
-            return await NotFoundOrOk<T>(controller,obj);
+            return await NotFoundOrOk(controller,obj);
         }
 
-        public static async Task<IActionResult> Post<T>(this Controller controller, IRest<T> rest, T obj)
+        public static async Task<ActionResult<T>> Post<T>(this Controller controller, IRest<T> rest, T obj)
         {
             if (!controller.ModelState.IsValid || obj == null)
             {
@@ -71,7 +71,7 @@ namespace Framework.Web
             }
         }
 
-        public static async Task<IActionResult> Put<T>(this Controller controller, IRest<T> rest, int id, T value)
+        public static async Task<ActionResult<T>> Put<T>(this Controller controller, IRest<T> rest, int id, T value)
         {
             if (!controller.ModelState.IsValid || value == null)
             {
@@ -94,7 +94,7 @@ namespace Framework.Web
             }
         }
 
-        public static async Task<IActionResult> Delete<T>(this Controller controller, IRest<T> rest, int id)
+        public static async Task<ActionResult<T>> Delete<T>(this Controller controller, IRest<T> rest, int id)
         {
             T value = await rest.Get(id);
             if (value == null)

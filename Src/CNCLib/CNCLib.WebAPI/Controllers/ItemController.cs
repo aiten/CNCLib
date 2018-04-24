@@ -37,7 +37,7 @@ namespace CNCLib.WebAPI.Controllers
 	    readonly IItemService _service;
 
         [HttpGet]
-	    public async Task<IActionResult> Get(string classname)
+	    public async Task<ActionResult<IEnumerable<Item>>> Get(string classname)
 	    {
 	        if (classname == null)
 	        {

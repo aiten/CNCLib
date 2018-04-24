@@ -40,27 +40,27 @@ namespace Framework.Web
 		}
 */
         [HttpGet("{id:int}")]
-		public async Task<IActionResult> Get(int id)
+		public async Task<ActionResult<T>> Get(int id)
 		{
-		    return await this.Get<T>(Rest,id);
+		    return await this.Get(Rest,id);
 		}
 
         [HttpPost]
-		public async Task<IActionResult> Post([FromBody]T value)
+		public async Task<ActionResult<T>> Post([FromBody]T value)
 		{
-		    return await this.Post<T>(Rest, value);
+		    return await this.Post(Rest, value);
 		}
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Put(int id, [FromBody]T value)
+        public async Task<ActionResult<T>> Put(int id, [FromBody]T value)
 		{
-		    return await this.Put<T>(Rest, id, value);
+		    return await this.Put(Rest, id, value);
 		}
 
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult<T>> Delete(int id)
 		{
-		    return await this.Delete<T>(Rest, id);
+		    return await this.Delete(Rest, id);
 		}
 	}
 }

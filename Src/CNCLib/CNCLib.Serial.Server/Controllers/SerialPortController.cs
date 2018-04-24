@@ -69,14 +69,14 @@ namespace CNCLib.Serial.Server.Controllers
         }
 
 	    [HttpGet("{id:int}")]
-	    public async Task<IActionResult> Get(int id)
+	    public async Task<ActionResult<SerialPortDefinition>> Get(int id)
 	    {
 	        var port = await GetPort(id);
 	        if (port == null)
 	        {
 	            return NotFound();
 	        }
-	        return Ok(GetDefinition(port));
+	        return GetDefinition(port);
 	    }
 
 	    [HttpPost("refresh")]
@@ -91,7 +91,7 @@ namespace CNCLib.Serial.Server.Controllers
         #region Connect/Disconnect
 
         [HttpPost("{id:int}/connect")]
-	    public async Task<IActionResult> Connect(int id, int? baudrate=null, bool? dtrIsReset = true, bool? resetOnConnect=false)
+	    public async Task<ActionResult<SerialPortDefinition>> Connect(int id, int? baudrate=null, bool? dtrIsReset = true, bool? resetOnConnect=false)
         {
             bool dtrIsResetN0 = dtrIsReset ?? true;
             bool resetOnConnectN0 = resetOnConnect ?? false;
@@ -124,7 +124,7 @@ namespace CNCLib.Serial.Server.Controllers
 	    }
 
 	    [HttpPost("{id:int}/disconnect")]
-	    public async Task<IActionResult> DisConnect(int id)
+	    public async Task<ActionResult<SerialPortDefinition>> DisConnect(int id)
 	    {
 	        var port = await GetPort(id);
 	        if (port == null)
@@ -145,7 +145,7 @@ namespace CNCLib.Serial.Server.Controllers
         #region Send/Queue/Commands
 
         [HttpPost("{id:int}/queue")]
-	    public async Task<IActionResult> QueueCommand(int id, [FromBody] SerialCommands commands)
+	    public async Task<ActionResult<IEnumerable<Framework.Arduino.SerialCommunication.SerialCommand>>> QueueCommand(int id, [FromBody] SerialCommands commands)
 	    {
 	        var port = await GetPort(id);
 
@@ -159,7 +159,7 @@ namespace CNCLib.Serial.Server.Controllers
 	    }
 
 	    [HttpPost("{id:int}/send")]
-	    public async Task<IActionResult> SendCommand(int id, [FromBody] SerialCommands commands)
+	    public async Task<ActionResult<IEnumerable<Framework.Arduino.SerialCommunication.SerialCommand>>> SendCommand(int id, [FromBody] SerialCommands commands)
 	    {
 	        var port = await GetPort(id);
 
@@ -173,7 +173,7 @@ namespace CNCLib.Serial.Server.Controllers
         }
 
         [HttpPost("{id:int}/sendWhileOk")]
-        public async Task<IActionResult> SendWhileOkCommand(int id, [FromBody] SerialCommands commands)
+        public async Task<ActionResult<IEnumerable<Framework.Arduino.SerialCommunication.SerialCommand>>> SendWhileOkCommand(int id, [FromBody] SerialCommands commands)
         {
             var port = await GetPort(id);
 
@@ -278,7 +278,7 @@ namespace CNCLib.Serial.Server.Controllers
 	    }
 
         [HttpGet("{id:int}/history")]
-	    public async Task<IActionResult> GetCommandHistory(int id)
+	    public async Task<ActionResult<IEnumerable<Framework.Arduino.SerialCommunication.SerialCommand>>> GetCommandHistory(int id)
 	    {
 	        var port = await GetPort(id);
 	        if (port == null)

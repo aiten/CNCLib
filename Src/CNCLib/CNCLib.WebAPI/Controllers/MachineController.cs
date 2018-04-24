@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
@@ -36,7 +37,7 @@ namespace CNCLib.WebAPI.Controllers
         readonly IMachineService _machineservice;
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<IEnumerable<Machine>>> Get()
         {
             return await this.GetAll<Machine>(Rest);
         }

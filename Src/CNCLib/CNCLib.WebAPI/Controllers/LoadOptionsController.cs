@@ -34,9 +34,9 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         [HttpGet]
-	    public async Task<IActionResult> Get()
+	    public async Task<ActionResult<IEnumerable<LoadOptions>>> Get()
 	    {
-	        return await this.GetAll<LoadOptions>(Rest);
+	        return await this.GetAll(Rest);
 	    }
     }
 
