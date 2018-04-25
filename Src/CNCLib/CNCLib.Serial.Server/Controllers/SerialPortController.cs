@@ -57,7 +57,15 @@ namespace CNCLib.Serial.Server.Controllers
 
 	    private async Task<SerialPortWrapper> GetPort(int id)
 	    {
-	        return await Task.FromResult(SerialPortList.GetPort(id));
+	        var port = SerialPortList.GetPort(id);
+	        if (port == null)
+	        {
+                // rescan
+	            SerialPortList.Refresh();
+	            port = SerialPortList.GetPort(id);
+            }
+
+            return await Task.FromResult(port);
 	    }
 
 	    #region Query/Info
