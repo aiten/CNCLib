@@ -55,6 +55,32 @@ namespace CNCLib.Serial.Client
             });
         }
 
+        private async Task<SerialPortDefinition> GetSerialPortDefinition(HttpClient client, string portname)
+        {
+            // first ge all ports
+            HttpResponseMessage responseAll = client.GetAsync($@"{_api}").GetAwaiter().GetResult();
+            if (responseAll.IsSuccessStatusCode)
+            {
+                IEnumerable<SerialPortDefinition> allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
+                return allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portname, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return null;
+        }
+
+        private async Task<SerialPortDefinition> RefreshAndGetSerialPortDefinition(HttpClient client, string portname)
+        {
+            HttpResponseMessage responseAll = client.PostAsJsonAsync($@"{_api}/refresh","dummy").GetAwaiter().GetResult();
+            if (responseAll.IsSuccessStatusCode)
+            {
+                IEnumerable<SerialPortDefinition> allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
+                return allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portname, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return null;
+        }
+
+
         public int PortId { get; private set; }
 
         public async Task ConnectAsync(string portname)
@@ -87,25 +113,24 @@ namespace CNCLib.Serial.Client
 
                 using (HttpClient client = CreateHttpClient())
                 {
-                    // first ge all ports
-                    HttpResponseMessage responseAll = client.GetAsync($@"{_api}").GetAwaiter().GetResult();
-                    if (responseAll.IsSuccessStatusCode)
+                    var port = await GetSerialPortDefinition(client, portname);
+                    if (port == null)
                     {
-                        IEnumerable<SerialPortDefinition> allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
-                        var port = allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portname, StringComparison.OrdinalIgnoreCase));
-                        if (port != null)
-                        {
-                            HttpResponseMessage response = await client.PostAsJsonAsync(
-                                $@"{_api}/{port.Id}/connect?baudRate={BaudRate}&dtrIsReset={DtrIsReset}&resetOnConnect={ResetOnConnect}", "x");
-                            if (response.IsSuccessStatusCode)
-                            {
-                                SerialPortDefinition value = await response.Content.ReadAsAsync<SerialPortDefinition>();
-                                IsConnected = true;
-                                PortId = port.Id;
+                        port = await RefreshAndGetSerialPortDefinition(client, portname);
+                    }
 
-                                await InitServiceHub();
-                                return;
-                            }
+                    if (port != null)
+                    {
+                        HttpResponseMessage response = await client.PostAsJsonAsync(
+                            $@"{_api}/{port.Id}/connect?baudRate={BaudRate}&dtrIsReset={DtrIsReset}&resetOnConnect={ResetOnConnect}", "x");
+                        if (response.IsSuccessStatusCode)
+                        {
+                            SerialPortDefinition value = await response.Content.ReadAsAsync<SerialPortDefinition>();
+                            IsConnected = true;
+                            PortId = port.Id;
+
+                            await InitServiceHub();
+                            return;
                         }
                     }
                 }

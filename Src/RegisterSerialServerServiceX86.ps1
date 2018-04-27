@@ -7,8 +7,7 @@ $mycreds = New-Object System.Management.Automation.PSCredential($login, $scurity
 sc.exe delete CNCLib.SerialServer
 
 $CNCServerDir = (${env:ProgramFiles(x86)}, ${env:ProgramFiles} -ne $null)[0]
-$CNCServerDll = "$CNCServerDir\CNCLib.Serial.Server\CNCLib.Serial.Server.dll"
-$CNCServerExe = """dotnet"" ""$CNCServerDll"""
+$CNCServerExe = "$CNCServerDir\CNCLib.Serial.Server\CNCLib.Serial.Server.exe"
 
 New-Service -Name "CNCLib.SerialServer" -BinaryPathName "$CNCServerExe" -StartupType Automatic -Credential $mycreds 
 Start-Service "CNCLib.SerialServer" -Verbose
