@@ -55,7 +55,7 @@ namespace CNCLib.Serial.Client
             });
         }
 
-        public int PortId { get; private set; }
+        public int PortId { get; private set; } = -1;
 
         public async Task ConnectAsync(string portname)
         {
@@ -115,7 +115,7 @@ namespace CNCLib.Serial.Client
 
         public async Task DisconnectAsync()
         {
-            if (PortId != 0)
+            if (PortId >= 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
@@ -125,7 +125,7 @@ namespace CNCLib.Serial.Client
                         _serviceHub?.Stop();
                         _serviceHub = null;
                         IsConnected = false;
-                        PortId = 0;
+                        PortId = -1;
                         return;
                     }
                 }
@@ -135,7 +135,7 @@ namespace CNCLib.Serial.Client
 
         public void AbortCommands()
         {
-            if (PortId != 0)
+            if (PortId >= 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
@@ -151,7 +151,7 @@ namespace CNCLib.Serial.Client
 
         public void ResumeAfterAbort()
         {
-            if (PortId != 0)
+            if (PortId >= 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
@@ -167,7 +167,7 @@ namespace CNCLib.Serial.Client
 
         public async Task<IEnumerable<SerialCommand>> QueueCommandsAsync(IEnumerable<string> lines)
         {
-            if (PortId != 0)
+            if (PortId >= 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
@@ -185,7 +185,7 @@ namespace CNCLib.Serial.Client
 
         public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> lines, int waitForMilliseconds)
         {
-            if (PortId != 0)
+            if (PortId >= 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
@@ -255,7 +255,7 @@ namespace CNCLib.Serial.Client
         {
             get
             {
-                if (PortId != 0)
+                if (PortId >= 0)
                 {
                     using (HttpClient client = CreateHttpClient())
                     {
@@ -275,7 +275,7 @@ namespace CNCLib.Serial.Client
 
         public void ClearCommandHistory()
         {
-            if (PortId != 0)
+            if (PortId >= 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
