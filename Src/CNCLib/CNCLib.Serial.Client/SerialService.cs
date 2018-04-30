@@ -55,6 +55,8 @@ namespace CNCLib.Serial.Client
             });
         }
 
+        public int PortId { get; private set; } = -1;
+
         private async Task<SerialPortDefinition> GetSerialPortDefinition(HttpClient client, string portname)
         {
             // first ge all ports
@@ -79,9 +81,6 @@ namespace CNCLib.Serial.Client
 
             return null;
         }
-
-
-        public int PortId { get; private set; }
 
         public async Task ConnectAsync(string portname)
         {
@@ -140,7 +139,7 @@ namespace CNCLib.Serial.Client
 
         public async Task DisconnectAsync()
         {
-            if (PortId != 0)
+            if (PortId >= 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
@@ -150,7 +149,7 @@ namespace CNCLib.Serial.Client
                         _serviceHub?.Stop();
                         _serviceHub = null;
                         IsConnected = false;
-                        PortId = 0;
+                        PortId = -1;
                         return;
                     }
                 }
@@ -160,7 +159,7 @@ namespace CNCLib.Serial.Client
 
         public void AbortCommands()
         {
-            if (PortId != 0)
+            if (PortId >= 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
@@ -176,7 +175,7 @@ namespace CNCLib.Serial.Client
 
         public void ResumeAfterAbort()
         {
-            if (PortId != 0)
+            if (PortId >= 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
@@ -192,7 +191,7 @@ namespace CNCLib.Serial.Client
 
         public async Task<IEnumerable<SerialCommand>> QueueCommandsAsync(IEnumerable<string> lines)
         {
-            if (PortId != 0)
+            if (PortId >= 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
@@ -210,7 +209,7 @@ namespace CNCLib.Serial.Client
 
         public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> lines, int waitForMilliseconds)
         {
-            if (PortId != 0)
+            if (PortId >= 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
@@ -280,7 +279,7 @@ namespace CNCLib.Serial.Client
         {
             get
             {
-                if (PortId != 0)
+                if (PortId >= 0)
                 {
                     using (HttpClient client = CreateHttpClient())
                     {
@@ -300,7 +299,7 @@ namespace CNCLib.Serial.Client
 
         public void ClearCommandHistory()
         {
-            if (PortId != 0)
+            if (PortId >= 0)
             {
                 using (HttpClient client = CreateHttpClient())
                 {
