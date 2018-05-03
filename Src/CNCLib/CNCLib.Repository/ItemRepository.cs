@@ -35,6 +35,7 @@ namespace CNCLib.Repository
 		{
 			return await Context.Items.
 				Include(d => d.ItemProperties).
+                AsNoTracking().
 				ToArrayAsync();
 		}
 
@@ -43,6 +44,7 @@ namespace CNCLib.Repository
 			return await Context.Items.
 				Where(m => m.ClassName == typeidstring).
 				Include(d => d.ItemProperties).
+			    AsNoTracking().
 				ToArrayAsync();
 		}
 
@@ -73,7 +75,6 @@ namespace CNCLib.Repository
 			var itemInDb = await Context.Items.
 				Where(m => m.ItemID == id).
 				Include(d => d.ItemProperties).
-			    AsNoTracking().
                 FirstOrDefaultAsync();
 
 			if (itemInDb == default(Contracts.Entities.Item))

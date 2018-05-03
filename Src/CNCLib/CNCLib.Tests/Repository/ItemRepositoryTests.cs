@@ -191,15 +191,18 @@ namespace CNCLib.Tests.Repository
             int newcount;
 
             using (var uowwrite = Dependency.Resolve<IUnitOfWork>())
+		    using (var repwrite = Dependency.ResolveRepository<IItemRepository>(uowwrite))
+		    {
+		        await repwrite.Store(item);
+		        await uowwrite.Save();
+
+		        id = item.ItemID;
+		        Assert.AreNotEqual(0, id);
+		    }
+
+            using (var uowwrite = Dependency.Resolve<IUnitOfWork>())
             using (var repwrite = Dependency.ResolveRepository<IItemRepository>(uowwrite))
             {
-				await repwrite.Store(item);
-				await uowwrite.Save();
-
-                id = item.ItemID;
-                Assert.AreNotEqual(0, id);
-
-
                 item.Name = "UpdateOneValuesChangeAndRead#2";
                 item.ItemProperties.Add(new ItemProperty { Name = "Name#1", Value = "New#1", ItemID = id });
                 item.ItemProperties.Add(new ItemProperty { Name = "Name#2", Value = "New#2", ItemID = id });
