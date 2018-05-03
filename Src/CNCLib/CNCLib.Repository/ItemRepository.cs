@@ -51,6 +51,7 @@ namespace CNCLib.Repository
 			return await Context.Items.
 				Where(m => m.ItemID == id).
 				Include(d => d.ItemProperties).
+			    AsNoTracking().
 				FirstOrDefaultAsync();
         }
 
@@ -64,7 +65,7 @@ namespace CNCLib.Repository
 
 		public async Task Store(Contracts.Entities.Item item)
 		{
-			// search und update machine
+			// search und update item / itemproperties
 
 			int id = item.ItemID;
 		    var optValues = item.ItemProperties?.ToList() ?? new List<Contracts.Entities.ItemProperty>();
@@ -72,7 +73,8 @@ namespace CNCLib.Repository
 			var itemInDb = await Context.Items.
 				Where(m => m.ItemID == id).
 				Include(d => d.ItemProperties).
-				FirstOrDefaultAsync();
+			    AsNoTracking().
+                FirstOrDefaultAsync();
 
 			if (itemInDb == default(Contracts.Entities.Item))
 			{
@@ -88,7 +90,7 @@ namespace CNCLib.Repository
 
                 Uow.SetValue(itemInDb,item);
 
-				// search und update machinecommands (add and delete)
+				// search und itemProperties (add and delete)
 
 				Sync<Contracts.Entities.ItemProperty>(
                     itemInDb.ItemProperties,
