@@ -73,7 +73,7 @@ namespace CNCLib.Serial.Server
 
         private static bool RunsAsService()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment() == false)
             {
                 return CheckForConsoleWindow();
             }
