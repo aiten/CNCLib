@@ -3,6 +3,7 @@ import { SerialCommand } from '../../models/serial.command';
 import { SerialPortDefinition } from '../../models/serial.port.definition';
 import { SerialServerService } from '../../services/serialserver.service';
 import { HubConnection } from '@aspnet/signalr';
+import { HubConnectionBuilder } from '@aspnet/signalr';
 
 @Component({
     selector: 'serialporthistory',
@@ -31,7 +32,8 @@ export class SerialPortHistoryComponent implements OnChanges
         {
             console.log('SignalR to ' + this.baseUrl + 'serialSignalR');
 
-            this._hubConnection = new HubConnection(this.baseUrl + 'serialSignalR');
+//            this._hubConnection = new HubConnection(this.baseUrl + 'serialSignalR');
+            this._hubConnection = new HubConnectionBuilder().withUrl(this.baseUrl + 'serialSignalR').build();
             
             this._hubConnection.on('queueEmpty',
                 (portid: number) => 

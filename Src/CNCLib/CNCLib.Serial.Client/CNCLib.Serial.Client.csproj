@@ -5,9 +5,8 @@
   </PropertyGroup>
    <ItemGroup>
      <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.5" />
-     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-preview2-final" />
-     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0-preview2-26406-04" />
-     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0-preview2-26406-04" />
+     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-rc1-final" />
+     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0-rc1" />
    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />

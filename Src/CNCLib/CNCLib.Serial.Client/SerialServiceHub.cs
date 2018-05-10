@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Framework.Arduino.SerialCommunication;
@@ -52,7 +53,7 @@ namespace CNCLib.Serial.Client
             .WithUrl(WebServerUrl)
 //            .WithConsoleLogger()
 //            .WithMessagePackProtocol()
-            .WithTransport(TransportType.All)
+ //           .WithTransport(TransportType.All)
             .Build();
 
             await _connection.StartAsync();
@@ -61,6 +62,7 @@ namespace CNCLib.Serial.Client
             _connection.Closed += e =>
             {
                 _cts.Cancel();
+                return Task.CompletedTask;
             };
 
             return _connection;
