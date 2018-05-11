@@ -217,8 +217,8 @@ namespace CNCLib.GCode.Load
 
 				if (LoadOptions.EngravePosInParameter)
 				{
-					Commands.AddCommand(new SetParameterCommand { GCodeAdd = "#1 = " + LoadOptions.EngravePosUp.ToString(CultureInfo.InvariantCulture) } );
-					Commands.AddCommand(new SetParameterCommand { GCodeAdd = "#2 = " + LoadOptions.EngravePosDown.ToString(CultureInfo.InvariantCulture) });
+					Commands.AddCommand(new SetParameterCommand { ParameterNo = 1, GCodeAdd = LoadOptions.EngravePosUp.ToString(CultureInfo.InvariantCulture) } );
+					Commands.AddCommand(new SetParameterCommand { ParameterNo = 2, GCodeAdd = LoadOptions.EngravePosDown.ToString(CultureInfo.InvariantCulture) });
 				}
 			}
 
@@ -319,7 +319,7 @@ namespace CNCLib.GCode.Load
                 var r = new G01Command();
                 if (LoadOptions.EngravePosInParameter)
                 {
-                    r.AddVariableParam('Z', "2");
+                    r.AddVariableParam('Z', "2",false);
                 }
                 else
                 {
@@ -348,7 +348,7 @@ namespace CNCLib.GCode.Load
                 var r = new G00Command();
                 if (LoadOptions.EngravePosInParameter)
                 {
-                    r.AddVariableParam('Z', "1");
+                    r.AddVariableParam('Z', "1", false);
                 }
                 else
                 {

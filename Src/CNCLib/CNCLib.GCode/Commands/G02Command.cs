@@ -43,15 +43,15 @@ namespace CNCLib.GCode.Commands
         public override void Draw(IOutputCommand output, CommandState state, object param)
 		{
             double I, J, K;
-            if (!TryGetVariable('I', out I))
+            if (!TryGetVariable('I', state, out I))
             {
                 I = 0;
             }
-            if (!TryGetVariable('J', out J))
+            if (!TryGetVariable('J', state, out J))
             {
                 J = 0;
             }
-			if (!TryGetVariable('K', out K))
+			if (!TryGetVariable('K', state, out K))
 			{
 				K = 0;
 			}

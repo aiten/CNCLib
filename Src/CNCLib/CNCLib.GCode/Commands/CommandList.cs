@@ -57,9 +57,11 @@ namespace CNCLib.GCode.Commands
 
         public void UpdateCache()
         {
+            var state = new CommandState();
             foreach (Command cmd in this)
             {
-                cmd.UpdateCalculatedEndPosition();
+                cmd.SetCommandState(state);
+                cmd.UpdateCalculatedEndPosition(state);
             }
         }
 
@@ -77,6 +79,7 @@ namespace CNCLib.GCode.Commands
                 if (!haveseencurrent)
                     haveseencurrent = cmd == Current;
                 commandstate.IsSelected = haveseencurrent;
+                cmd.SetCommandState(commandstate);
                 cmd.Draw(output, commandstate, param);
             }
         }
@@ -112,6 +115,7 @@ namespace CNCLib.GCode.Commands
 
             foreach (Command r in this)
             {
+                r.SetCommandState(state);
                 list.AddCommands(r.ConvertCommand(state, options));
             }
 

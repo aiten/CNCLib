@@ -107,12 +107,16 @@ namespace CNCLib.GCode.Load
             {
 				cmd = ReadMCommand();
             }
+            else if (_stream.NextCharToUpper == '#')
+            {
+				cmd = ReadSetParameterCommand();
+            }
             else
             {
-				cmd = ReadOtherCommand();
+                cmd = ReadOtherCommand();
             }
 
-			if (cmd != null)
+            if (cmd != null)
 			{
 				if (linenumber.HasValue)
 				{
@@ -188,6 +192,14 @@ namespace CNCLib.GCode.Load
 			cmd.ReadFrom(_stream);
             return cmd;
         }
+
+        private Command ReadSetParameterCommand()
+        {
+            Command cmd = CommandFactory.Create("#");
+            cmd.ReadFrom(_stream);
+            return cmd;
+        }
+
     }
 }
 

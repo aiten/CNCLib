@@ -25,18 +25,18 @@ namespace CNCLib.GCode.Commands
 {
     public class CommandFactory
     {
-		private Dictionary<string, Type> _shapes = new Dictionary<string, Type>(); 
+		private Dictionary<string, Type> _commandTypes = new Dictionary<string, Type>(); 
         
 		public CommandFactory()
 		{
 			RegisterAll();
 		}
 
-		public void RegisterShape(string name, Type shape)
+		public void RegisterCommandType(string name, Type shape)
         {
             if (name.Contains(" "))
                 throw new ArgumentException();
-            _shapes.Add(name, shape);
+            _commandTypes.Add(name, shape);
         }
 
         public Command Create(string name)
@@ -48,7 +48,7 @@ namespace CNCLib.GCode.Commands
 
             if (IsRegistered(name))
 			{
-				Type shape = _shapes[name.ToUpper()];
+				Type shape = _commandTypes[name.ToUpper()];
 				return (Command)Activator.CreateInstance(shape);
 			}
 			return null;
@@ -81,12 +81,12 @@ namespace CNCLib.GCode.Commands
 
         public string[] GetKeys()
         {
-            return _shapes.Keys.ToArray();
+            return _commandTypes.Keys.ToArray();
         }
 
 		public bool IsRegistered(string name)
 		{
-			return _shapes.ContainsKey(name.ToUpper());
+			return _commandTypes.ContainsKey(name.ToUpper());
 		} 
 
 		private void RegisterAll()
@@ -106,7 +106,7 @@ namespace CNCLib.GCode.Commands
 
 						foreach (string ascode in ascodes.Split(','))
 						{
-							RegisterShape(ascode, t);
+							RegisterCommandType(ascode, t);
 						}
 					}
 				}

@@ -34,11 +34,11 @@ namespace CNCLib.GCode.Commands
         #region GCode
         #endregion
 
-        #region Draw
-        public override void Draw(IOutputCommand output, CommandState state, object param)
-        {
-            //base.Draw(output, state, param);
+        #region Itteration
 
+        public override void SetCommandState(CommandState state)
+        {
+            base.SetCommandState(state);
             state.LaserOn = true;
         }
 

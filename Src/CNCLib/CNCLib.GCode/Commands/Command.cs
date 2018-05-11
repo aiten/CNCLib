@@ -78,6 +78,7 @@ namespace CNCLib.GCode.Commands
 			public char Name { get; set; }
 			public double? Value { get; set; }
 			public string Parameter { get; set; }
+            public bool ParameterIsTerm { get; set; }
 
 			public bool ForceFloatingPoint { get; set; }
 
@@ -96,7 +97,10 @@ namespace CNCLib.GCode.Commands
 				if (string.IsNullOrEmpty(Parameter))
 					return Name.ToString();
 
-				return Name + "#" + Parameter;
+			    if (ParameterIsTerm)
+			        return Name + "[" + Parameter + "]";
+
+                return Name + "#" + Parameter;
 			}
 
 			public Variable ShallowCopy()
@@ -124,19 +128,19 @@ namespace CNCLib.GCode.Commands
 		{
 			AddVariable(new Variable { Name = name });
 		}
-		public void AddVariableParam(char name, string paramvalue)
+		public void AddVariableParam(char name, string paramvalue, bool isTerm)
 		{
-			AddVariable(new Variable { Name = name, Parameter = paramvalue });
+			AddVariable(new Variable { Name = name, Parameter = paramvalue, ParameterIsTerm = isTerm });
 		}
 		public void AddVariable(char name, decimal value)
 		{
 			AddVariable(new Variable { Name = name, Value = (double) value });
 		}
 
-		public double GetVariable(char name, double defaultvalue)
+		public double GetVariable(char name, CommandState state, double defaultvalue)
 		{
 			double ret;
-			if (TryGetVariable(name, out ret))
+			if (TryGetVariable(name, state, out ret))
 				return ret;
 			return defaultvalue;
 		}
@@ -146,13 +150,21 @@ namespace CNCLib.GCode.Commands
 			return _variables.Find(n => n.Name == name);
 		}
 
-		public bool TryGetVariable(char name, out double val)
+		public bool TryGetVariable(char name, CommandState state, out double val)
 		{
 			Variable var = GetVariable(name);
 			if (var?.Value != null)
 			{
 				val = var.Value.Value;
 				return true;
+			}
+            else if (var?.Parameter != null)
+			{
+			    if (int.TryParse(var.Parameter, out int parameterno) && state.ParameterValues.ContainsKey(parameterno))
+			    {
+			        val = state.ParameterValues[parameterno];
+			        return true;
+			    }
 			}
 			val = 0;
 			return false;
@@ -178,11 +190,19 @@ namespace CNCLib.GCode.Commands
 			return true;
 		}
 
-		#endregion
+        #endregion
 
-		#region Draw
+        #region Iteration
 
-		public virtual Command[] ConvertCommand(CommandState state, ConvertOptions options)
+	    public virtual void SetCommandState(CommandState state)
+	    {
+	    }
+
+        #endregion
+
+        #region Draw
+
+        public virtual Command[] ConvertCommand(CommandState state, ConvertOptions options)
 		{
 			return new [] { this };
 		}
@@ -286,16 +306,16 @@ namespace CNCLib.GCode.Commands
 
 		#region Serialisation
 
-		public void UpdateCalculatedEndPosition()
+		public virtual void UpdateCalculatedEndPosition(CommandState state)
 		{
 			if (PositionValid)
 			{
 				var sc = new Point3D();
 				double val;
 
-				if (TryGetVariable('X', out val)) sc.X = val;
-				if (TryGetVariable('Y', out val)) sc.Y = val;
-				if (TryGetVariable('Z', out val)) sc.Z = val;
+				if (TryGetVariable('X', state, out val)) sc.X = val;
+				if (TryGetVariable('Y', state, out val)) sc.Y = val;
+				if (TryGetVariable('Z', state, out val)) sc.Z = val;
 				if (!sc.HasAllValues && PrevCommand != null)
 				{
 					sc.AssignMissing(PrevCommand.CalculatedEndPosition);
@@ -308,7 +328,7 @@ namespace CNCLib.GCode.Commands
 			}
 		}			
 
-		private void ReadFromToEnd(CommandStream stream)
+		protected void ReadFromToEnd(CommandStream stream)
 		{
 			GCodeAdd = "";
 			while (!stream.IsEOF())
@@ -326,11 +346,34 @@ namespace CNCLib.GCode.Commands
 			{
 				stream.Next();
 				int paramNr = stream.GetInt();
-				AddVariableParam(param,paramNr.ToString());
+				AddVariableParam(param,paramNr.ToString(),false);
 				return 0;
 			}
+			else if (stream.NextChar == '[')
+			{
+			    int depth = 1;
+			    stream.Next();
+                var sb = new StringBuilder();
 
-			stream.SkipSpaces();
+			    while (!stream.IsEndCommand() && depth != 0)
+			    {
+			        switch (stream.NextChar)
+			        {
+                        case '[': depth++; break;
+			            case ']': depth--; break;
+			        }
+
+			        if (depth != 0)
+			        {
+			            sb.Append(stream.NextChar);
+			        }
+			        stream.Next();
+			    }
+			    AddVariableParam(param, sb.ToString(), true);
+			    return 0;
+			}
+
+            stream.SkipSpaces();
 
 			if (stream.IsNumber())
 			{

@@ -16,6 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Collections.Generic;
+
 namespace CNCLib.GCode.Commands
 {
 	public class CommandState
@@ -31,5 +33,7 @@ namespace CNCLib.GCode.Commands
 		public Command.Variable G82R { get; set; }
 		public Command.Variable G82P { get; set; }
 		public Command.Variable G82Z { get; set; }
+
+        public Dictionary<int,double> ParameterValues { get; private set; } = new Dictionary<int, double>();
 	}
 }
