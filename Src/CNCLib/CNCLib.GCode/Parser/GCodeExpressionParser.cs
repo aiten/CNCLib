@@ -1,0 +1,125 @@
+////////////////////////////////////////////////////////
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2018 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+*/
+////////////////////////////////////////////////////////
+
+using Framework.Tools.Helpers;
+using Framework.Tools.Parser;
+using System.Collections.Generic;
+
+////////////////////////////////////////////////////////
+
+namespace CNCLib.GCode.Parser
+{
+    public class GCodeExpressionParser : ExpressionParser
+    {
+        public GCodeExpressionParser(CommandStream reader) : base(reader)
+        {
+            LeftParenthesis = '[';
+            RightParenthesis = ']';
+        }
+
+        public Dictionary<int, double> ParameterValues { get; set; }
+
+        protected override void ScannNextToken()
+        {
+            char ch = _reader.NextChar;
+            while (ch != 0)
+            {
+                if (ch == ';' || ch == '(') // comment
+                {
+                    //ch = _gcodeparser->SkipSpacesOrComment();
+                    Error("NotImplemented yet");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (ch == '\0')
+            {
+                _state._detailtoken = ETokenType.EndOfLineSy;
+                return;
+            }
+
+            base.ScannNextToken();
+
+        }
+
+        protected override string ReadIdent()
+        {
+            // read variable name of gcode : #1 or #<_x>
+
+            var idx = _reader.PushIdx();
+
+            char ch = _reader.NextChar;
+            if (ch == '#')
+            {
+                // start of GCODE variable => format #1 or #<_x>
+                _reader.Next();
+                _state._number = _reader.GetInt();
+
+                /*
+                                _reader.Next();
+                                _state._number = _gcodeparser->ParseParamNo();
+    
+                                if (_gcodeparser->IsError())
+                                {
+                                    Error(_gcodeparser->GetError());
+                                    return string.Empty;
+                                }
+    
+                                return _state._number.ToString();
+                            }
+                            else
+                            {
+                                return base.ReadIdent();
+                            }
+                */
+            }
+
+            _reader.PopIdx(idx);
+            return base.ReadIdent();
+        }
+
+        protected override bool IsIdentStart(char ch)
+        {
+            return ch == '#' || base.IsIdentStart(ch);
+        } // start of function or variable
+
+        protected override bool EvalVariable(string var_name, ref double answer)
+        {
+            if (var_name[0] == '#')
+            {
+                // assigned in ReadIdent
+                int paramNo = int.Parse(var_name.TrimStart('#'));
+                if (ParameterValues.ContainsKey(paramNo))
+                {
+                    answer = ParameterValues[paramNo];
+                }
+                else
+                {
+                    answer = 0.0;
+                }
+
+                return true;
+            }
+
+            return base.EvalVariable(var_name, ref answer);
+        }
+    }
+}
