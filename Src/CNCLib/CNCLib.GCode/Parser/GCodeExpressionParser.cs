@@ -41,7 +41,7 @@ namespace CNCLib.GCode.Parser
             {
                 if (ch == ';' || ch == '(') // comment
                 {
-                    //ch = _gcodeparser->SkipSpacesOrComment();
+                    ch = new GCodeParser(_reader).SkipSpacesOrComment();
                     Error("NotImplemented yet");
                 }
                 else

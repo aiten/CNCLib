@@ -233,6 +233,11 @@ namespace Framework.Tools.Helpers
             return str.ToString();
         }
 
-        #endregion
+        public string ReadToEnd()
+        {
+            return ReadString(new char[0]);
+        }
     }
+
+    #endregion
 }

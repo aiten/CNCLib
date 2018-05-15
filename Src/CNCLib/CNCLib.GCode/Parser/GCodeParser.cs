@@ -24,11 +24,67 @@ namespace CNCLib.GCode.Parser
 {
     public class GCodeParser : Framework.Tools.Parser.Parser
     {
+        string MESSAGE_GCODE_CommentNestingError = "Comment nesting error";
+
         public GCodeParser(CommandStream reader) : base(reader) { }
 
         public override void Parse()
         {
 
+        }
+
+
+        public static bool IsCommentStart(char ch)
+        {
+            return ch == '(' || ch == '*' || ch == ';';
+        }
+
+        ////////////////////////////////////////////////////////////
+
+        public char SkipSpacesOrComment()
+        {
+            switch (_reader.SkipSpaces())
+            {
+                case '(': SkipCommentNested(); break;
+                case '*':
+                case ';': SkipCommentSingleLine(); break;
+            }
+
+            return _reader.NextChar;
+        }
+
+        ////////////////////////////////////////////////////////////
+
+        void SkipCommentSingleLine()
+        {
+            _reader.ReadToEnd();
+        }
+
+        void SkipCommentNested()
+        {
+            int cnt = 0;
+//            char* start = (char*)_reader->GetBuffer();
+
+            for (char ch = _reader.NextChar; ch != 0; ch = _reader.Next())
+            {
+                switch (ch)
+                {
+                    case ')':
+                    {
+                        cnt--;
+                        if (cnt == 0)
+                        {
+                            _reader.Next();
+//                            CommentMessage(start);
+                            return;
+                        }
+                        break;
+                    }
+                    case '(': cnt++; break;
+                }
+            }
+
+            Error(MESSAGE_GCODE_CommentNestingError);
         }
     }
 }
