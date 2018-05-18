@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using CNCLib.GCode.Parser;
 using Framework.Tools.Helpers;
 using Framework.Tools.Drawing;
 
@@ -160,7 +161,18 @@ namespace CNCLib.GCode.Commands
 			}
             else if (var?.Parameter != null)
 			{
-			    if (int.TryParse(var.Parameter, out int parameterno) && state.ParameterValues.ContainsKey(parameterno))
+			    if (var.ParameterIsTerm)
+			    {
+			        var linestream = new CommandStream() {Line = var.Parameter };
+			        var expressionparser = new GCodeExpressionParser(linestream) { ParameterValues = state.ParameterValues };
+			        expressionparser.Parse();
+			        if (!expressionparser.IsError())
+			        {
+			            val = expressionparser.Answer;
+			            return true;
+                    }
+                }
+			    else if (int.TryParse(var.Parameter, out int parameterno) && state.ParameterValues.ContainsKey(parameterno))
 			    {
 			        val = state.ParameterValues[parameterno];
 			        return true;
@@ -369,7 +381,8 @@ namespace CNCLib.GCode.Commands
 			        }
 			        stream.Next();
 			    }
-			    AddVariableParam(param, sb.ToString(), true);
+
+                AddVariableParam(param, sb.ToString(),  true);
 			    return 0;
 			}
 

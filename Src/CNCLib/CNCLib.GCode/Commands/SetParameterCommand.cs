@@ -17,8 +17,10 @@
 */
 
 using System.Globalization;
+using CNCLib.GCode.Parser;
 using Framework.Tools.Drawing;
 using Framework.Tools.Helpers;
+using Newtonsoft.Json;
 
 namespace CNCLib.GCode.Commands
 {
@@ -100,7 +102,7 @@ namespace CNCLib.GCode.Commands
 
         public override void UpdateCalculatedEndPosition(CommandState state)
         {
-            if (ParameterNo >= 0 && EvaluateParameterValue(out double paramvalue))
+            if (ParameterNo >= 0 && EvaluateParameterValue(state, out double paramvalue))
             {
                 ParameterValue = paramvalue;
                 SetCommandState(state);
@@ -109,10 +111,19 @@ namespace CNCLib.GCode.Commands
             base.UpdateCalculatedEndPosition(state);
         }
 
-        private bool EvaluateParameterValue(out double paramvalue)
+        private bool EvaluateParameterValue(CommandState state, out double paramvalue)
         {
-            //TODO: evaluate expression, e.g. 4+6*sin[45]
-            return double.TryParse(GCodeAdd, NumberStyles.Any, CultureInfo.InvariantCulture, out paramvalue);
+            var linestream = new CommandStream() { Line = GCodeAdd };
+            var expressionparser = new GCodeExpressionParser(linestream) { ParameterValues = state.ParameterValues };
+            expressionparser.Parse();
+            if (!expressionparser.IsError())
+            {
+                paramvalue = 0;
+                return false;
+            }
+
+            paramvalue = expressionparser.Answer;
+            return true;
         }
 
         #endregion
@@ -121,4 +132,4 @@ namespace CNCLib.GCode.Commands
 
         #endregion
     }
-    }
+}

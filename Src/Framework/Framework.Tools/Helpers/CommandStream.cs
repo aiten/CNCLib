@@ -24,10 +24,15 @@ namespace Framework.Tools.Helpers
 {
 	public class CommandStream
     {
+
+        #region privat properties/members
+
         string _line;
         int _idx;
         char _endCommandChar = ';';
         string _spaceChar = " \t";
+
+        #endregion
 
         public string Line			{ set { _line = value; _idx = 0; } get => _line.Substring(_idx); }
 
@@ -60,10 +65,12 @@ namespace Framework.Tools.Helpers
             SkipSpaces();
         }
 
-        public void Next()
+        public char Next()
         {
             if (!IsEOF())
                 _idx++;
+
+            return NextChar;
         }
 
         public bool IsEOF()
@@ -110,41 +117,53 @@ namespace Framework.Tools.Helpers
             return -1;
         }
 
-		public string ReadString(char[] termchar)
-		{
-			var sb = new StringBuilder();
+        #region next char type
 
-			while (!IsEOF() && !termchar.Contains(NextChar))
-			{
-				sb.Append(NextChar);
-				Next();
-			}
-			return sb.ToString();
-		}
-
-        public string ReadDigits()
+        public static bool IsAlpha(char ch)
         {
-            var str = new StringBuilder();
-            while (char.IsDigit(NextChar))
-            {
-                str.Append(NextChar);
-                Next();
-            }
-            return str.ToString();
+            ch = char.ToUpper(ch);
+            return ch == '_' || IsUpperAZ(ch);
+        }
+
+        public static bool IsLowerAZ(char ch)
+        {
+            return ch >= 'a' && ch <= 'z';
+        }
+
+        public static bool IsUpperAZ(char ch)
+        {
+            return ch >= 'A' && ch <= 'Z';
+        }
+
+        public static bool IsDigit(char ch)
+        {
+            return char.IsDigit(ch);
         }
 
         public bool IsNumber()
         {
             SkipSpaces();
-            return NextChar == '-' || char.IsDigit(NextChar);
+            return IsNumber(NextChar);
         }
- 
+        static public bool IsNumber(char ch)
+        {
+            return ch == '-' || char.IsDigit(ch) || ch == '.';
+        }
+
+        #endregion
+
+        #region Get Numbers
+
         public int GetInt()
         {
             SkipSpaces();
 
             int startidx = _idx;
-            while (char.IsDigit(NextChar) || NextChar == '-')
+
+            if (NextChar == '-')
+                Next();
+
+            while (char.IsDigit(NextChar))
                 Next();
 
 			string str = _line.Substring(startidx, _idx - startidx);
@@ -185,5 +204,40 @@ namespace Framework.Tools.Helpers
 
 			return val;
 		}
+
+        #endregion
+
+        #region Read
+
+        public string ReadString(char[] termchar)
+        {
+            var sb = new StringBuilder();
+
+            while (!IsEOF() && !termchar.Contains(NextChar))
+            {
+                sb.Append(NextChar);
+                Next();
+            }
+            return sb.ToString();
+        }
+
+        public string ReadDigits()
+        {
+            var str = new StringBuilder();
+
+            while (char.IsDigit(NextChar))
+            {
+                str.Append(NextChar);
+                Next();
+            }
+            return str.ToString();
+        }
+
+        public string ReadToEnd()
+        {
+            return ReadString(new char[0]);
+        }
     }
+
+    #endregion
 }
