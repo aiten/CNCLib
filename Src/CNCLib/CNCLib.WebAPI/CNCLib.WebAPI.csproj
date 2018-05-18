@@ -24,7 +24,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.1.0-rc1-final" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.0-rc1" />
     <PackageReference Include="Microsoft.Azure.WebSites.DataProtection" Version="0.1.78-alpha" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.3" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
   </ItemGroup>
 
