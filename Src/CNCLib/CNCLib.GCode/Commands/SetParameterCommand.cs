@@ -116,7 +116,7 @@ namespace CNCLib.GCode.Commands
             var linestream = new CommandStream() { Line = GCodeAdd };
             var expressionparser = new GCodeExpressionParser(linestream) { ParameterValues = state.ParameterValues };
             expressionparser.Parse();
-            if (!expressionparser.IsError())
+            if (expressionparser.IsError())
             {
                 paramvalue = 0;
                 return false;
