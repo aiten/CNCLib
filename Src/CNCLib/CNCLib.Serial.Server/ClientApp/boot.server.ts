@@ -16,18 +16,20 @@
   http://www.gnu.org/licenses/
 */
 
+import { APP_BASE_HREF } from '@angular/common';
+import { ApplicationRef, NgZone, enableProdMode } from '@angular/core';
+import { INITIAL_CONFIG, PlatformState, platformDynamicServer } from '@angular/platform-server';
+import { RenderResult, createServerRenderer } from 'aspnet-prerendering';
 import 'reflect-metadata';
 import 'zone.js';
-import 'rxjs/add/operator/first';
-import { APP_BASE_HREF } from '@angular/common';
-import { enableProdMode, ApplicationRef, NgZone, ValueProvider } from '@angular/core';
-import { platformDynamicServer, PlatformState, INITIAL_CONFIG } from '@angular/platform-server';
-import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
+import { Observable, Subject, asapScheduler, pipe, of, from, interval, merge, fromEvent } from 'rxjs';
+import { first } from "rxjs/operators";
 import { AppModule } from './app/app.server.module';
 
 enableProdMode();
 
 export default createServerRenderer(params => {
+
     const providers = [
         { provide: INITIAL_CONFIG, useValue: { document: '<app></app>', url: params.url } },
         { provide: APP_BASE_HREF, useValue: params.baseUrl },
@@ -41,7 +43,8 @@ export default createServerRenderer(params => {
 
         return new Promise<RenderResult>((resolve, reject) => {
             zone.onError.subscribe((errorInfo: any) => reject(errorInfo));
-            appRef.isStable.first(isStable => isStable).subscribe(() => {
+
+            appRef.isStable.pipe(first((isStable: boolean) => isStable)).subscribe(() => {
                 // Because 'onStable' fires before 'onError', we have to delay slightly before
                 // completing the request in case there's an error to report
                 setImmediate(() => {

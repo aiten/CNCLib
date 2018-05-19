@@ -19,7 +19,7 @@
 import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
-import { Observable } from 'rxjs/Observable';
+//import { Observable } from 'rxjs/Observable';
 
 export abstract class SerialServerService
 {
