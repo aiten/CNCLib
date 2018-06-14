@@ -24,6 +24,7 @@ using CNCLib.Repository.Contracts;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using System.Threading.Tasks;
+using FluentAssertions;
 
 namespace CNCLib.Tests.Repository
 {
@@ -43,7 +44,7 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
                 var machines = await rep.GetMachines();
-				Assert.AreEqual(true, machines.Length >= 2);
+				machines.Length.Should().BeGreaterOrEqualTo(2);
 			}
 	    }
 
@@ -54,7 +55,7 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
                 var machines = await rep.GetMachine(1);
-				Assert.AreEqual(1, machines.MachineID);
+				machines.MachineID.Should().Be(1);
 			}
 		}
 
@@ -65,7 +66,7 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
             {
                 var machines = await rep.GetMachine(1000);
-				Assert.IsNull(machines);
+				machines.Should().BeNull();
 			}
 		}
 
@@ -78,7 +79,7 @@ namespace CNCLib.Tests.Repository
                 var machine = CreateMachine("AddOneMachine");
 				await rep.Store(machine);
 				await uow.Save();
-				Assert.AreNotEqual(0, machine.MachineID);
+				machine.MachineID.Should().NotBe(0);
 			}
 		}
 		[TestMethod]
@@ -91,7 +92,7 @@ namespace CNCLib.Tests.Repository
 				AddMachinCommands(machine);
 				await rep.Store(machine);
 				await uow.Save();
-                Assert.AreNotEqual(0, machine.MachineID);
+                 machine.MachineID.Should().NotBe(0);
             }
         }
 
@@ -103,8 +104,8 @@ namespace CNCLib.Tests.Repository
 
             var machineread = await ReadMachine(id);
 
-            Assert.AreEqual(0, machineread.MachineCommands.Count);
-            Assert.AreEqual(0, machineread.MachineInitCommands.Count);
+            machineread.MachineCommands.Count.Should().Be(0);
+            machineread.MachineInitCommands.Count.Should().Be(0);
 
             CompareMachine(machine, machineread);
         }
@@ -118,8 +119,8 @@ namespace CNCLib.Tests.Repository
 
             var machineread = await ReadMachine(id);
 
-            Assert.AreEqual(count, machineread.MachineCommands.Count);
-            Assert.AreEqual(0, machineread.MachineInitCommands.Count);
+            machineread.MachineCommands.Count.Should().Be(count);
+            machineread.MachineInitCommands.Count.Should().Be(0);
 
             CompareMachine(machine, machineread);
        }
@@ -133,8 +134,8 @@ namespace CNCLib.Tests.Repository
 
             var machineread = await ReadMachine(id);
 
-            Assert.AreEqual(0, machineread.MachineCommands.Count);
-            Assert.AreEqual(count, machineread.MachineInitCommands.Count);
+            machineread.MachineCommands.Count.Should().Be(0);
+            machineread.MachineInitCommands.Count.Should().Be(count);
 
             CompareMachine(machine, machineread);
        }
@@ -151,7 +152,7 @@ namespace CNCLib.Tests.Repository
 				await rep.Store(machine);
 				await uow.Save();
                 id = machine.MachineID;
-                Assert.AreNotEqual(0, id);
+                id.Should().NotBe(0);
 
                 machine.Name = "UpdateOneMachineAndRead#2";
 
@@ -160,7 +161,7 @@ namespace CNCLib.Tests.Repository
             }
 
             var machineread = await ReadMachine(id);
-            Assert.AreEqual(0, machineread.MachineCommands.Count);
+            machineread.MachineCommands.Count.Should().Be(0);
             CompareMachine(machine, machineread);
        }
 
@@ -177,7 +178,7 @@ namespace CNCLib.Tests.Repository
 				await rep.Store(machine);
 				await uow.Save();
                 id = machine.MachineID;
-                Assert.AreNotEqual(0, id);
+                id.Should().NotBe(0);
 
                 machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
 				await rep.Store(machine);
@@ -185,7 +186,7 @@ namespace CNCLib.Tests.Repository
             }
 
             var machineread = await ReadMachine(id);
-            Assert.AreEqual(count, machineread.MachineCommands.Count);
+            machineread.MachineCommands.Count.Should().Be(count);
             CompareMachine(machine, machineread);
        }
 
@@ -213,7 +214,7 @@ namespace CNCLib.Tests.Repository
             }
 
             var machineread = await ReadMachine(id);
-            Assert.AreEqual(newcount, machineread.MachineCommands.Count);
+            machineread.MachineCommands.Count.Should().Be(newcount);
             CompareMachine(machine, machineread);
        }
 
@@ -230,7 +231,7 @@ namespace CNCLib.Tests.Repository
 				await rep.Delete(machine);
 				await uow.Save();
 
-                Assert.IsNull(await rep.GetMachine(id));
+                (await rep.GetMachine(id)).Should().BeNull();
             }
        }
 
@@ -244,7 +245,7 @@ namespace CNCLib.Tests.Repository
 				await rep.Store(machine);
 				await uow.Save();
                 id = machine.MachineID;
-                Assert.AreNotEqual(0, id);
+                id.Should().NotBe(0);
             }
 
             return id;
@@ -307,17 +308,17 @@ namespace CNCLib.Tests.Repository
 
 		private static void CompareMachine(Machine machine, Machine machineread)
 		{
-			Assert.AreEqual(true, machineread.CompareProperties(machine));
-            Assert.AreEqual(machine.MachineCommands?.Count ?? 0, machineread.MachineCommands.Count);
-			Assert.AreEqual(machine.MachineInitCommands?.Count ?? 0, machineread.MachineInitCommands.Count);
+			machineread.CompareProperties(machine).Should().Be(true);
+            (machine.MachineCommands?.Count ?? 0).Should().Be(machineread.MachineCommands.Count);
+			(machine.MachineInitCommands?.Count ?? 0).Should().Be(machineread.MachineInitCommands.Count);
 
 			foreach (MachineCommand mc in machineread.MachineCommands)
 			{
-				Assert.AreEqual(true, mc.CompareProperties(machine.MachineCommands.Single(m => m.MachineCommandID == mc.MachineCommandID)));
+				mc.CompareProperties(machine.MachineCommands.Single(m => m.MachineCommandID == mc.MachineCommandID)).Should().Be(true);
 			}
 			foreach (MachineInitCommand mc in machineread.MachineInitCommands)
 			{
-				Assert.AreEqual(true, mc.CompareProperties(machine.MachineInitCommands.Single(m => m.MachineInitCommandID == mc.MachineInitCommandID)));
+				mc.CompareProperties(machine.MachineInitCommands.Single(m => m.MachineInitCommandID == mc.MachineInitCommandID)).Should().Be(true);
 			}
 		}
 	}

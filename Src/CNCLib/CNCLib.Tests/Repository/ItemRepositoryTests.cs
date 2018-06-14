@@ -24,6 +24,7 @@ using CNCLib.Repository.Contracts;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using System.Threading.Tasks;
+using FluentAssertions;
 
 namespace CNCLib.Tests.Repository
 {
@@ -43,7 +44,7 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
 			{
 				var item = await rep.Get(1000);
-				Assert.IsNull(item);
+				item.Should().BeNull();
 			}
 		}
 
@@ -57,7 +58,7 @@ namespace CNCLib.Tests.Repository
 			{
 				await rep.Store(item);
 				await uow.Save();
-				Assert.AreNotEqual(0, item.ItemID);
+				item.ItemID.Should().NotBe(0);
 			}
 		}
 
@@ -73,7 +74,7 @@ namespace CNCLib.Tests.Repository
 				await rep.Store(item);
 				await uow.Save();
             }
-            Assert.AreNotEqual(0, item.ItemID);
+            item.ItemID.Should().NotBe(0);
         }
 
         [TestMethod]
@@ -86,7 +87,7 @@ namespace CNCLib.Tests.Repository
             using (var repread = Dependency.ResolveRepository<IItemRepository>(uowread))
             {
                 var optread = await repread.Get(id);
-                Assert.AreEqual(0, optread.ItemProperties.Count);
+                optread.ItemProperties.Count.Should().Be(0);
                 CompareItem(item, optread);
             }
         }
@@ -100,7 +101,7 @@ namespace CNCLib.Tests.Repository
                 await repwrite.Store(item);
 				await uowwrite.Save();
                 id = item.ItemID;
-                Assert.AreNotEqual(0, id);
+                id.Should().NotBe(0);
             }
 
             return id;
@@ -116,9 +117,9 @@ namespace CNCLib.Tests.Repository
             using (var uowread = Dependency.Resolve<IUnitOfWork>())
             using (var repread = Dependency.ResolveRepository<IItemRepository>(uowread))
             {
-                Assert.AreNotEqual(0, id);
+                id.Should().NotBe(0);
                 var optread = await repread.Get(id);
-                Assert.AreEqual(count, optread.ItemProperties.Count);
+                optread.ItemProperties.Count.Should().Be(count);
                 CompareItem(item, optread);
             }
 		}
@@ -136,7 +137,7 @@ namespace CNCLib.Tests.Repository
 				await uowwrite.Save();
 
                 id = item.ItemID;
-                Assert.AreNotEqual(0, id);
+                id.Should().NotBe(0);
 
                 item.Name = "UpdateOneAndRead#2";
 				await repwrite.Store(item);
@@ -147,7 +148,7 @@ namespace CNCLib.Tests.Repository
             using (var repread = Dependency.ResolveRepository<IItemRepository>(uowread))
             {
                 var optread = await repread.Get(id);
-                Assert.AreEqual(0, optread.ItemProperties.Count);
+                optread.ItemProperties.Count.Should().Be(0);
                 CompareItem(item, optread);
 			}
 		}
@@ -166,7 +167,7 @@ namespace CNCLib.Tests.Repository
 				await uowwrite.Save();
 
                 id = item.ItemID;
-                Assert.AreNotEqual(0, id);
+                id.Should().NotBe(0);
 
                 item.Name = "UpdateOneNoCommandChangeAndRead#2";
 				await repwrite.Store(item);
@@ -177,7 +178,7 @@ namespace CNCLib.Tests.Repository
             using (var repread = Dependency.ResolveRepository<IItemRepository>(uowread))
             {
                 var optread = await repread.Get(id);
-				Assert.AreEqual(count, optread.ItemProperties.Count);
+				optread.ItemProperties.Count.Should().Be(count);
 				CompareItem(item, optread);
 			}
 		}
@@ -197,7 +198,7 @@ namespace CNCLib.Tests.Repository
 		        await uowwrite.Save();
 
 		        id = item.ItemID;
-		        Assert.AreNotEqual(0, id);
+		        id.Should().NotBe(0);
 		    }
 
             using (var uowwrite = Dependency.Resolve<IUnitOfWork>())
@@ -220,7 +221,7 @@ namespace CNCLib.Tests.Repository
             {
                 var optread = await repread.Get(id);
 
-				Assert.AreEqual(newcount, optread.ItemProperties.Count);
+				optread.ItemProperties.Count.Should().Be(newcount);
 
 				CompareItem(item, optread);
 			}
@@ -240,7 +241,7 @@ namespace CNCLib.Tests.Repository
 				await uowwrite.Save();
 
                 id = item.ItemID;
-                Assert.AreNotEqual(0, id);
+                id.Should().NotBe(0);
             }
 
             using (var uowdelete = Dependency.Resolve<IUnitOfWork>())
@@ -254,7 +255,7 @@ namespace CNCLib.Tests.Repository
             using (var repread = Dependency.ResolveRepository<IItemRepository>(uowread))
             {
                 var itemread = await repread.Get(id);
-                Assert.IsNull(itemread);
+                itemread.Should().BeNull();
             }
         }
 
@@ -283,12 +284,12 @@ namespace CNCLib.Tests.Repository
 
 		private static void CompareItem(Item e1, Item e2)
 		{
-			Assert.AreEqual(true, e1.CompareProperties(e2));
-            Assert.AreEqual(e1.ItemProperties?.Count ?? 0, e2.ItemProperties.Count);
+			e1.CompareProperties(e2).Should().Be(true);
+            (e1.ItemProperties?.Count ?? 0).Should().Be(e2.ItemProperties.Count);
 
 			foreach (ItemProperty mc in e2.ItemProperties)
 			{
-				Assert.AreEqual(true, mc.CompareProperties(e1.ItemProperties.Single(m => m.Name == mc.Name)));
+				mc.CompareProperties(e1.ItemProperties.Single(m => m.Name == mc.Name)).Should().Be(true);
 			}
 		}
 	}

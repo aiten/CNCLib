@@ -22,6 +22,7 @@ using CNCLib.Repository.Contracts;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using System.Threading.Tasks;
+using FluentAssertions;
 
 namespace CNCLib.Tests.Repository
 {
@@ -41,7 +42,7 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
             {
                 var entity = await rep.Get("Test","Test");
-				Assert.AreEqual(null, entity);
+				entity.Should().BeNull();
 			}
 	    }
 
@@ -65,7 +66,7 @@ namespace CNCLib.Tests.Repository
             using (var repread = Dependency.ResolveRepository<IConfigurationRepository>(uowread))
             {
                 var read = await repread.Get("Test", "TestNew2");
-                Assert.AreEqual("Content2", read.Value);
+                read.Value.Should().Be("Content2");
             }
         }
 
@@ -79,14 +80,14 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
             {
 				var read = await rep.Get("Test", "TestNew3");
-				Assert.AreEqual("Content3", read.Value);
+				read.Value.Should().Be("Content3");
 
 				await rep.Delete(read);
 
 				await uow.Save();
 
 				var readagain = await rep.Get("Test", "TestNew3");
-				Assert.AreEqual(null, readagain);
+				readagain.Should().BeNull();
 			}
 		}
 
@@ -100,7 +101,7 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
             {
 				var readagain = await rep.Get("Test", "TestNew4");
-				Assert.AreEqual("Content5", readagain.Value);
+				readagain.Value.Should().Be("Content5");
 			}
 		}
 

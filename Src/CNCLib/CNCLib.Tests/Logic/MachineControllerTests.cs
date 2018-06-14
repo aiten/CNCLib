@@ -25,6 +25,7 @@ using System.Linq;
 using NSubstitute;
 using Framework.Tools.Dependency;
 using System.Threading.Tasks;
+using FluentAssertions;
 
 namespace CNCLib.Tests.Logic
 {
@@ -62,7 +63,7 @@ namespace CNCLib.Tests.Logic
 			var machineID = await ctrl.Add(machineEntity1);
 
 			await rep.ReceivedWithAnyArgs().Store(new Machine());
-			Assert.AreEqual(machineID, 0);
+			machineID.Should().Be(0);
 		}
 
 		[TestMethod]
@@ -114,7 +115,7 @@ namespace CNCLib.Tests.Logic
 			var ctrl = new MachineController();
 
 			var machines = (await ctrl.GetAll()).ToArray();
-			Assert.AreEqual(true, machines.Length == 0);
+			machines.Length.Should().Be(0);
 		}
 
 		[TestMethod]
@@ -128,14 +129,14 @@ namespace CNCLib.Tests.Logic
 			var ctrl = new MachineController();
 
 			var machines = (await ctrl.GetAll()).ToArray();
-			Assert.AreEqual(true, machines.Length == 1);
-			Assert.AreEqual(1, machines[0].MachineID);
-			Assert.AreEqual("Maxi", machines[0].Name);
-			Assert.AreEqual(115200, machines[0].BufferSize);
-			Assert.IsNotNull(machines[0].MachineCommands);
-			Assert.IsNotNull(machines[0].MachineInitCommands);
-			Assert.AreEqual(0, machines[0].MachineCommands.Count());
-			Assert.AreEqual(0, machines[0].MachineInitCommands.Count());
+			machines.Length.Should().Be(1);
+			machines[0].MachineID.Should().Be(1);
+			machines[0].Name.Should().Be("Maxi");
+			machines[0].BufferSize.Should().Be(115200);
+			machines[0].MachineCommands.Should().NotBeNull();
+			machines[0].MachineInitCommands.Should().NotBeNull();
+			machines[0].MachineCommands.Count().Should().Be(0);
+			machines[0].MachineInitCommands.Count().Should().Be(0);
 		}
 
 		[TestMethod]
@@ -156,18 +157,18 @@ namespace CNCLib.Tests.Logic
 			var ctrl = new MachineController();
 
 			var machines = (await ctrl.GetAll()).ToArray();
-			Assert.AreEqual(true, machines.Length == 2);
-			Assert.AreEqual(1, machines[0].MachineID);
-			Assert.AreEqual("Maxi", machines[0].Name);
-			Assert.AreEqual(115200, machines[0].BufferSize);
-			Assert.AreEqual(1, machines[1].MachineCommands.Count());
-			Assert.AreEqual(1, machines[1].MachineInitCommands.Count());
-			Assert.AreEqual(0, machines[0].MachineCommands.Count());
-			Assert.AreEqual(0, machines[0].MachineInitCommands.Count());
-			Assert.AreEqual("Test", machines[1].MachineCommands.First().CommandName);
-			Assert.AreEqual("f", machines[1].MachineCommands.First().CommandString);
-			Assert.AreEqual(0, machines[1].MachineInitCommands.First().SeqNo);
-			Assert.AreEqual("f", machines[1].MachineInitCommands.First().CommandString);
+			machines.Length.Should().Be(2);
+			machines[0].MachineID.Should().Be(1);
+			machines[0].Name.Should().Be("Maxi");
+			machines[0].BufferSize.Should().Be(115200);
+			machines[1].MachineCommands.Count().Should().Be(1);
+			machines[1].MachineInitCommands.Count().Should().Be(1);
+			machines[0].MachineCommands.Count().Should().Be(0);
+			machines[0].MachineInitCommands.Count().Should().Be(0);
+			machines[1].MachineCommands.First().CommandName.Should().Be("Test");
+			machines[1].MachineCommands.First().CommandString.Should().Be("f");
+			machines[1].MachineInitCommands.First().SeqNo.Should().Be(0);
+			machines[1].MachineInitCommands.First().CommandString.Should().Be("f");
 		}
 
 		[TestMethod]
@@ -183,12 +184,12 @@ namespace CNCLib.Tests.Logic
 			var ctrl = new MachineController();
 
 			var machine = await ctrl.Get(1);
-			Assert.AreEqual(machineEntity1.Name, machine.Name);
-			Assert.AreEqual(machineEntity1.MachineID, machine.MachineID);
-			Assert.IsNotNull(machine.MachineCommands);
-			Assert.IsNotNull(machine.MachineInitCommands);
-			Assert.AreEqual(0, machine.MachineCommands.Count());
-			Assert.AreEqual(0, machine.MachineInitCommands.Count());
+			machineEntity1.Name.Should().Be(machine.Name);
+			machineEntity1.MachineID.Should().Be(machine.MachineID);
+			machine.MachineCommands.Should().NotBeNull();
+			machine.MachineInitCommands.Should().NotBeNull();
+			machine.MachineCommands.Count().Should().Be(0);
+			machine.MachineInitCommands.Count().Should().Be(0);
 		}
 
 		[TestMethod]
@@ -204,7 +205,7 @@ namespace CNCLib.Tests.Logic
 			var ctrl = new MachineController();
 
 			var machine = await ctrl.Get(3);
-			Assert.IsNull(machine);
+			machine.Should().BeNull();
 		}
 
 		[TestMethod]
@@ -213,8 +214,8 @@ namespace CNCLib.Tests.Logic
 			var ctrl = new MachineController();
 
 			var machine = await ctrl.DefaultMachine();
-			Assert.IsNotNull(machine);
-			Assert.AreEqual("New", machine.Name);
+			machine.Should().NotBeNull();
+			machine.Name.Should().Be("New");
 		}
 
 		[TestMethod]
@@ -226,7 +227,7 @@ namespace CNCLib.Tests.Logic
 			rep.Get("Environment", "DefaultMachineID").Returns(new Configuration { Value = "14" });
 			int dm = await ctrl.GetDetaultMachine();
 
-			Assert.AreEqual(14, dm);
+			dm.Should().Be(14);
 		}
 
 		[TestMethod]
@@ -237,7 +238,7 @@ namespace CNCLib.Tests.Logic
 
 			rep.Get("Environment", "DefaultMachineID").Returns((Configuration)null);
 
-			Assert.AreEqual(-1, await ctrl.GetDetaultMachine());
+			(await ctrl.GetDetaultMachine()).Should().Be(-1);
 		}
 
 		[TestMethod]

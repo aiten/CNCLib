@@ -25,6 +25,7 @@ using Framework.Tools.Dependency;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Client;
 using System.Threading.Tasks;
+using FluentAssertions;
 
 namespace CNCLib.Tests.Logic
 {
@@ -52,10 +53,12 @@ namespace CNCLib.Tests.Logic
 
 			var all = await ctrl.GetAll();
 
-			Assert.AreEqual(1, all.Count());
-			Assert.AreEqual(1, all.FirstOrDefault().Id);
-			Assert.AreEqual("Entry1", all.FirstOrDefault().SettingName);
-			Assert.AreEqual("HA", all.FirstOrDefault().FileName);
+
+		    all.Count().Should().Be(1);
+		    all.FirstOrDefault().Id.Should().Be(1);
+
+            all.FirstOrDefault().SettingName.Should().Be("Entry1");
+		    all.FirstOrDefault().FileName.Should().Be("HA");
 		}
 
 		[TestMethod]
@@ -68,9 +71,9 @@ namespace CNCLib.Tests.Logic
 
 			var all = await ctrl.Get(1);
 
-			Assert.AreEqual(1, all.Id);
-			Assert.AreEqual("Entry1", all.SettingName);
-			Assert.AreEqual("HA", all.FileName);
+		    all.Id.Should().Be(1);
+			all.SettingName.Should().Be("Entry1");
+			all.FileName.Should().Be("HA");
 		}
 
 		[TestMethod]
@@ -83,7 +86,7 @@ namespace CNCLib.Tests.Logic
 
 			var all = await ctrl.Get(2);
 
-			Assert.IsNull(all);
+		    all.Should().BeNull();
 		}
 
 
