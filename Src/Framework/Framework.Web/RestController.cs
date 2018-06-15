@@ -46,13 +46,14 @@ namespace Framework.Web
 		}
 
         [HttpPost]
-		public async Task<ActionResult<T>> Post([FromBody]T value)
+		public async Task<IActionResult> Post([FromBody]T value)
 		{
+            // return url to new object
 		    return await this.Post(Rest, value);
 		}
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<T>> Put(int id, [FromBody]T value)
+        public async Task<IActionResult> Put(int id, [FromBody]T value)
 		{
 		    return await this.Put(Rest, id, value);
 		}

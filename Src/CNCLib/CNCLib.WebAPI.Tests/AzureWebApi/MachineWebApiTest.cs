@@ -22,6 +22,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi
@@ -42,13 +43,13 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                 HttpResponseMessage response = await client.GetAsync(api + "/1");
 
-                Assert.AreEqual(true, response.IsSuccessStatusCode);
+                response.IsSuccessStatusCode.Should().BeTrue();
 
                 if (response.IsSuccessStatusCode)
                 {
                     Machine m = await response.Content.ReadAsAsync<Machine>();
 
-                    Assert.AreEqual(1, m.MachineID);
+                    m.MachineID.Should().Be(1);
                 }
             }
         }
@@ -65,7 +66,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 var m = new Machine { Name = "MyUnitTest", ComPort = "comxx", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 
                 HttpResponseMessage response = await client.PostAsJsonAsync(api, m);
-                Assert.AreEqual(true, response.IsSuccessStatusCode);
+                response.IsSuccessStatusCode.Should().BeTrue();
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -73,13 +74,13 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                     // HTTPGET again
                     HttpResponseMessage responseget = await client.GetAsync(newmachineUrl);
-                    Assert.AreEqual(true, responseget.IsSuccessStatusCode);
+                    responseget.IsSuccessStatusCode.Should().BeTrue();
 
                     if (responseget.IsSuccessStatusCode)
                     {
                         Machine mget = await responseget.Content.ReadAsAsync<Machine>();
 
-                        Assert.AreEqual("MyUnitTest", mget.Name);
+                        mget.Name.Should().Be("MyUnitTest");
 
                         // HTTP PUT
                         mget.ComPort = "ComHA";
@@ -87,13 +88,13 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                         // HTTPGET again2
                         HttpResponseMessage responseget2 = await client.GetAsync(newmachineUrl);
-                        Assert.AreEqual(true, responseget2.IsSuccessStatusCode);
+                        responseget2.IsSuccessStatusCode.Should().BeTrue();
 
                         if (responseget2.IsSuccessStatusCode)
                         {
                             Machine mget2 = await responseget2.Content.ReadAsAsync<Machine>();
 
-                            Assert.AreEqual("ComHA", mget2.ComPort);
+                            mget2.ComPort.Should().Be("ComHA");
                         }
 
                         // HTTP DELETE
@@ -101,12 +102,12 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                         // HTTPGET again3
                         HttpResponseMessage responseget3 = await client.GetAsync(newmachineUrl);
-                        Assert.AreEqual(HttpStatusCode.NotFound, responseget3.StatusCode);
+                        responseget3.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
                         if (responseget2.IsSuccessStatusCode)
                         {
                             Machine mget3 = await responseget3.Content.ReadAsAsync<Machine>();
-                            Assert.IsNull(mget3);
+                            mget3.Should().BeNull();
                         }
                     }
                 }

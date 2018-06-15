@@ -54,7 +54,7 @@ namespace Framework.Web
             return await NotFoundOrOk(controller,obj);
         }
 
-        public static async Task<ActionResult<T>> Post<T>(this Controller controller, IRest<T> rest, T obj)
+        public static async Task<IActionResult> Post<T>(this Controller controller, IRest<T> rest, T obj)
         {
             if (!controller.ModelState.IsValid || obj == null)
             {
@@ -71,7 +71,7 @@ namespace Framework.Web
             }
         }
 
-        public static async Task<ActionResult<T>> Put<T>(this Controller controller, IRest<T> rest, int id, T value)
+        public static async Task<IActionResult> Put<T>(this Controller controller, IRest<T> rest, int id, T value)
         {
             if (!controller.ModelState.IsValid || value == null)
             {

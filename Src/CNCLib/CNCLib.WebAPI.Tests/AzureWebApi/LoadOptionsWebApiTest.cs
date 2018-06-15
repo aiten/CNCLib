@@ -23,6 +23,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using CNCLib.Logic.Contracts.DTO;
 using System.Net;
+using FluentAssertions;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
@@ -42,13 +43,13 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                 HttpResponseMessage response = await client.GetAsync(api + "/1");
 
-                Assert.AreEqual(true, response.IsSuccessStatusCode);
+                response.IsSuccessStatusCode.Should().BeTrue();
 
                 if (response.IsSuccessStatusCode)
                 {
                     LoadOptions l = await response.Content.ReadAsAsync<LoadOptions>();
 
-                    Assert.IsNotNull(l);
+                    l.Should().NotBeNull();
                 }
             }
         }
@@ -65,7 +66,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 var m = new LoadOptions { SettingName = "Settingname" };
 
                 HttpResponseMessage response = await client.PostAsJsonAsync(api, m);
-                Assert.AreEqual(true, response.IsSuccessStatusCode);
+                response.IsSuccessStatusCode.Should().BeTrue();
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -73,13 +74,13 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                     // HTTPGET again
                     HttpResponseMessage responseget = await client.GetAsync(newmUrl);
-                    Assert.AreEqual(true, responseget.IsSuccessStatusCode);
+                    responseget.IsSuccessStatusCode.Should().BeTrue();
 
                     if (responseget.IsSuccessStatusCode)
                     {
 						LoadOptions mget = await responseget.Content.ReadAsAsync<LoadOptions>();
 
-                        Assert.AreEqual("Settingname", mget.SettingName);
+                        mget.SettingName.Should().Be("Settingname");
 
                         // HTTP PUT
                         mget.SettingName = "ComHA";
@@ -87,13 +88,13 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                         // HTTPGET again2
                         HttpResponseMessage responseget2 = await client.GetAsync(newmUrl);
-                        Assert.AreEqual(true, responseget2.IsSuccessStatusCode);
+                        responseget2.IsSuccessStatusCode.Should().BeTrue();
 
                         if (responseget2.IsSuccessStatusCode)
                         {
 							LoadOptions mget2 = await responseget2.Content.ReadAsAsync<LoadOptions>();
 
-                            Assert.AreEqual("ComHA", mget2.SettingName);
+                            mget2.SettingName.Should().Be("ComHA");
                         }
 
                         // HTTP DELETE
@@ -101,12 +102,12 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                         // HTTPGET again3
                         HttpResponseMessage responseget3 = await client.GetAsync(newmUrl);
-						Assert.AreEqual(HttpStatusCode.NotFound, responseget3.StatusCode);
+						responseget3.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
 						if (responseget2.IsSuccessStatusCode)
                         {
                             Machine mget3 = await responseget3.Content.ReadAsAsync<Machine>();
-                            Assert.IsNull(mget3);
+                            mget3.Should().BeNull();
                         }
                     }
                 }

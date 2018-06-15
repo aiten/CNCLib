@@ -24,6 +24,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using CNCLib.Logic.Contracts.DTO;
 using System.Reflection;
+using FluentAssertions;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
@@ -54,7 +55,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
 				string[] gcode = await response.Content.ReadAsAsync<string[]>();
 
-				Assert.IsNotNull(gcode);
+				gcode.Should().NotBeNull();
 			}
 		}
 
@@ -90,7 +91,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
 				string[] gcode = await response.Content.ReadAsAsync<string[]>();
 
-				Assert.IsNotNull(gcode);
+			    gcode.Should().NotBeNull();
 			}
 		}
 
@@ -139,7 +140,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
 				string[] gcode = await response.Content.ReadAsAsync<string[]>();
 
-				Assert.IsNotNull(gcode);
+			    gcode.Should().NotBeNull();
 			}
 		}
 	}

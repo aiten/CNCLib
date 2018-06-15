@@ -20,6 +20,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
+using FluentAssertions;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -42,7 +43,7 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
             {
                 var users = await rep.GetUsers();
-				Assert.AreEqual(true, users.Length >= 2);
+				users.Length.Should().BeGreaterOrEqualTo(2);
 			}
 	    }
 
@@ -53,7 +54,7 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
             {
                 var users = await rep.GetUser(1);
-				Assert.AreEqual(1, users.UserID);
+				users.UserID.Should().Be(1);
 			}
 		}
 
@@ -64,10 +65,10 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
             {
                 var users = await rep.GetUser(1);
-                Assert.AreEqual(1, users.UserID);
+                users.UserID.Should().Be(1);
 
                 var usersbyName = await rep.GetUser(users.UserName);
-                Assert.AreEqual(users.UserID, usersbyName.UserID);
+                usersbyName.UserID.Should().Be(users.UserID);
             }
         }
 
@@ -78,7 +79,7 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
             {
                 var users = await rep.GetUser(1000);
-				Assert.IsNull(users);
+				users.Should().BeNull();
 			}
 		}
 
@@ -89,7 +90,7 @@ namespace CNCLib.Tests.Repository
             using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
             {
                 var users = await rep.GetUser("UserNotExist");
-                Assert.IsNull(users);
+                users.Should().BeNull();
             }
         }
 
@@ -102,7 +103,7 @@ namespace CNCLib.Tests.Repository
                 var user = CreateUser("AddOneUser");
 				await rep.Store(user);
 				await uow.Save();
-				Assert.AreNotEqual(0, user.UserID);
+				user.UserID.Should().NotBe(0);
 			}
 		}
 
@@ -129,7 +130,7 @@ namespace CNCLib.Tests.Repository
 				await rep.Store(user);
 				await uow.Save();
                 id = user.UserID;
-                Assert.AreNotEqual(0, id);
+                id.Should().NotBe(0);
 
                 user.UserName = "UpdateOneUserAndRead#2";
 
@@ -151,7 +152,7 @@ namespace CNCLib.Tests.Repository
 				await rep.Store(user);
 				await uow.Save();
                 id = user.UserID;
-                Assert.AreNotEqual(0, id);
+                id.Should().NotBe(0);
             }
 
             return id;
@@ -179,7 +180,7 @@ namespace CNCLib.Tests.Repository
 
 		private static void CompareUser(User user, User userread)
 		{
-			Assert.AreEqual(true, userread.CompareProperties(user));
+			userread.CompareProperties(user).Should().Be(true);
  		}
 	}
 }

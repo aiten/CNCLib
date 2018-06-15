@@ -48,9 +48,9 @@ namespace CNCLib.Tests.Load
 
             list.Count().Should().Be(2);
 
-            Assert.IsTrue(list.First() is G01Command);       // G0 F500
-            Assert.IsTrue(list.ElementAt(1) is G00Command);       // G0 z1
-            //Assert.IsTrue(list.ElementAt(2) is G00Command);       // G0 0,0 => PU0,0, is skipped by new version
+            list.First().Should().BeOfType<G01Command>();           // G0 F500
+            list.ElementAt(1).Should().BeOfType<G00Command>();      // G0 z1
+            //list.ElementAt(2).Should().BeOfType<G00Command>();    // G0 0,0 => PU0,0, is skipped by new version
         }
 
         [TestMethod]

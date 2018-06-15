@@ -34,7 +34,7 @@ namespace CNCLib.ServiceProxy.WebAPI
 			{
 				HttpResponseMessage response = await client.PostAsJsonAsync(_api, value);
 
-				if (response.IsSuccessStatusCode)
+				if (!response.IsSuccessStatusCode)
 					return -1;
 
 				return await response.Content.ReadAsAsync<int>();

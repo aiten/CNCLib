@@ -45,9 +45,9 @@ namespace Framework.Test.Drawing
 			var ptSrc = new Point3D(1.0, 2.0, 3.0);
 			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(-1.0, Math.Round((ptDest.X??throw new ArgumentException()),5));
-			Assert.AreEqual(-2.0, Math.Round((ptDest.Y??throw new ArgumentException()),5));
-			Assert.AreEqual(3.0, (ptDest.Z??throw new ArgumentException()));
+			Math.Round((ptDest.X??throw new ArgumentException()),5).Should().Be(-1.0);
+			Math.Round((ptDest.Y??throw new ArgumentException()),5).Should().Be(-2.0);
+			(ptDest.Z??throw new ArgumentException()).Should().Be(3.0);
 
 		}
 
@@ -58,9 +58,9 @@ namespace Framework.Test.Drawing
 			var ptSrc = new Point3D(1.0, 2.0, 3.0);
 			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(-1.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
-			Assert.AreEqual(-2.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
-			Assert.AreEqual(3.0, (ptDest.Z??throw new ArgumentException()));
+			Math.Round((ptDest.X??throw new ArgumentException()), 5).Should().Be(-1.0);
+			Math.Round((ptDest.Y??throw new ArgumentException()), 5).Should().Be(-2.0);
+			(ptDest.Z??throw new ArgumentException()).Should().Be(3.0);
 		}
 
 		[TestMethod]
@@ -70,9 +70,9 @@ namespace Framework.Test.Drawing
 			var ptSrc = new Point3D(1.0, 2.0, 3.0);
 			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(-2.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
-			Assert.AreEqual(1.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
-			Assert.AreEqual(3.0, (ptDest.Z??throw new ArgumentException()));
+			Math.Round((ptDest.X??throw new ArgumentException()), 5).Should().Be(-2.0);
+			Math.Round((ptDest.Y??throw new ArgumentException()), 5).Should().Be(1.0);
+			(ptDest.Z??throw new ArgumentException()).Should().Be(3.0);
 		}
 		[TestMethod]
 		public void RotateZAngleMinus90Grad()
@@ -81,9 +81,9 @@ namespace Framework.Test.Drawing
 			var ptSrc = new Point3D(1.0, 2.0, 3.0);
 			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(2.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
-			Assert.AreEqual(-1.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
-			Assert.AreEqual(3.0, (ptDest.Z??throw new ArgumentException()));
+			Math.Round((ptDest.X??throw new ArgumentException()), 5).Should().Be(2.0);
+			Math.Round((ptDest.Y??throw new ArgumentException()), 5).Should().Be(-1.0);
+			(ptDest.Z??throw new ArgumentException()).Should().Be(3.0);
 		}
 
 		[TestMethod]
@@ -93,9 +93,9 @@ namespace Framework.Test.Drawing
 			var ptSrc = new Point3D(1.0, 2.0, 3.0);
 			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(1.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
-			Assert.AreEqual(-3.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
-			Assert.AreEqual(2.0, Math.Round((ptDest.Z??throw new ArgumentException()),5));
+			Math.Round((ptDest.X??throw new ArgumentException()), 5).Should().Be(1.0);
+			Math.Round((ptDest.Y??throw new ArgumentException()), 5).Should().Be(-3.0);
+			Math.Round((ptDest.Z??throw new ArgumentException()),5).Should().Be(2.0);
 		}
 		[TestMethod]
 		public void RotateXAngleMinus90Grad()
@@ -104,9 +104,9 @@ namespace Framework.Test.Drawing
 			var ptSrc = new Point3D(1.0, 2.0, 3.0);
 			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(1.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
-			Assert.AreEqual(3.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
-			Assert.AreEqual(-2.0, Math.Round((ptDest.Z??throw new ArgumentException()),5));
+			Math.Round((ptDest.X??throw new ArgumentException()), 5).Should().Be(1.0);
+			Math.Round((ptDest.Y??throw new ArgumentException()), 5).Should().Be(3.0);
+			Math.Round((ptDest.Z??throw new ArgumentException()),5).Should().Be(-2.0);
 		}
 
 		[TestMethod]
@@ -116,9 +116,9 @@ namespace Framework.Test.Drawing
 			var ptSrc = new Point3D(1.0, 2.0, 3.0);
 			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(-3.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
-			Assert.AreEqual(2.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
-			Assert.AreEqual(1.0, Math.Round((ptDest.Z??throw new ArgumentException()), 5));
+			Math.Round((ptDest.X??throw new ArgumentException()), 5).Should().Be(-3.0);
+			Math.Round((ptDest.Y??throw new ArgumentException()), 5).Should().Be(2.0);
+			Math.Round((ptDest.Z??throw new ArgumentException()), 5).Should().Be(1.0);
 		}
 		[TestMethod]
 		public void RotateYAngleMinus90Grad()
@@ -127,9 +127,9 @@ namespace Framework.Test.Drawing
 			var ptSrc = new Point3D(1.0, 2.0, 3.0);
 			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(3.0, Math.Round((ptDest.X??throw new ArgumentException()), 5));
-			Assert.AreEqual(2.0, Math.Round((ptDest.Y??throw new ArgumentException()), 5));
-			Assert.AreEqual(-1.0, Math.Round((ptDest.Z??throw new ArgumentException()), 5));
+			Math.Round((ptDest.X??throw new ArgumentException()), 5).Should().Be(3.0);
+			Math.Round((ptDest.Y??throw new ArgumentException()), 5).Should().Be(2.0);
+			Math.Round((ptDest.Z??throw new ArgumentException()), 5).Should().Be(-1.0);
 		}
 		[TestMethod]
 		public void RotateXyzAngle90Grad()
@@ -138,9 +138,9 @@ namespace Framework.Test.Drawing
 			var ptSrc = new Point3D(1.0, 2.0, 3.0);
 			var ptDest = r.Rotate(ptSrc);
 
-			Assert.AreEqual(Math.Round(-2.2200846792814621,10), Math.Round((ptDest.X??throw new ArgumentException()), 10));
-			Assert.AreEqual(Math.Round(-1.8213672050459184, 10), Math.Round((ptDest.Y??throw new ArgumentException()), 10));
-			Assert.AreEqual(Math.Round(2.3987174742355446, 10), Math.Round((ptDest.Z??throw new ArgumentException()), 10));
+			Math.Round((ptDest.X??throw new ArgumentException()), 10).Should().Be(Math.Round(-2.2200846792814621,10));
+			Math.Round((ptDest.Y??throw new ArgumentException()), 10).Should().Be(Math.Round(-1.8213672050459184, 10));
+			Math.Round((ptDest.Z??throw new ArgumentException()), 10).Should().Be(Math.Round(2.3987174742355446, 10));
 		}
 
 		[TestMethod]
@@ -152,9 +152,9 @@ namespace Framework.Test.Drawing
 			var ptRot  = r1.Rotate(ptSrc);
 			var ptDest = r2.Rotate(ptRot);
 
-			Assert.AreEqual(1.0, Math.Round((ptDest.X??throw new ArgumentException()), 10));
-			Assert.AreEqual(2.0, Math.Round((ptDest.Y??throw new ArgumentException()), 10));
-			Assert.AreEqual(3.0, Math.Round((ptDest.Z??throw new ArgumentException()), 10));
+			Math.Round((ptDest.X??throw new ArgumentException()), 10).Should().Be(1.0);
+			Math.Round((ptDest.Y??throw new ArgumentException()), 10).Should().Be(2.0);
+			Math.Round((ptDest.Z??throw new ArgumentException()), 10).Should().Be(3.0);
 		}
 	}
 }
