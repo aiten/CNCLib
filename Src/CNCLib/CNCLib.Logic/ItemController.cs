@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
 using Framework.Logic;
 using CNCLib.Repository.Contracts;
@@ -29,69 +30,74 @@ using System.Threading.Tasks;
 namespace CNCLib.Logic
 {
     public class ItemController : ControllerBase, IItemController
-	{
-		public async Task<IEnumerable<Item>> GetAll()
+    {
+        private IUnitOfWork _unitOfWork;
+        private IItemRepository _repository;
+
+        public ItemController(IUnitOfWork unitOfWork, IItemRepository repository)
+        {
+            _unitOfWork = unitOfWork;
+            _repository = repository;
+        }
+
+        public async Task<IEnumerable<Item>> GetAll()
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
-			{
-				return Convert(await rep.Get());
-			}
+			return Convert(await _repository.Get());
 		}
 
 		public async Task<IEnumerable<Item>> GetByClassName(string classname)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
-			{
-				return Convert(await rep.Get(classname));
-			}
+			return Convert(await _repository.Get(classname));
 		}
 
 		public async Task<Item> Get(int id)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
-			{
-				return Convert(await rep.Get(id));
-			}
+			return Convert(await _repository.Get(id));
 		}
 
 
 		public async Task Delete(Item item)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
-			{
-				await rep.Delete(item.Convert());
-				await uow.Save();
-			}
+			await _repository.Delete(item.Convert());
+			await _unitOfWork.SaveChangesAsync();
 		}
 
 		public async Task<int> Add(Item item)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
-			{
-				var me = item.Convert();
-				me.ItemID = 0;
-				foreach (var mc in me.ItemProperties) mc.ItemID = 0;
-				await rep.Store(me);
-				await uow.Save();
-				return me.ItemID;
-			}
-		}
+		    try
+		    {
+		        _unitOfWork.BeginTransaction();
+		        var me = item.Convert();
+		        me.ItemID = 0;
+		        foreach (var mc in me.ItemProperties) mc.ItemID = 0;
+		        await _repository.Store(me);
+		        await _unitOfWork.SaveChangesAsync();
+		        _unitOfWork.CommitTransaction();
+		        return me.ItemID;
+		    }
+		    catch (Exception)
+		    {
+		        _unitOfWork.RollbackTransaction();
+		        throw;
+		    }
+        }
 
 		public async Task<int> Update(Item item)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
-			{
+		    try
+		    {
+		        _unitOfWork.BeginTransaction();
 				var me = item.Convert();
-				await rep.Store(me);
-				await uow.Save();
-				return me.ItemID;
-			}
+				await _repository.Store(me);
+				await _unitOfWork.SaveChangesAsync();
+		        _unitOfWork.CommitTransaction();
+		        return me.ItemID;
+		    }
+		    catch (Exception)
+		    {
+		        _unitOfWork.RollbackTransaction();
+		        throw;
+		    }
 		}
 
 		private static Item Convert(Repository.Contracts.Entities.Item item)
@@ -109,9 +115,5 @@ namespace CNCLib.Logic
 			}
 			return l;
 		}
-
-		#region IDisposable Support
-        // see ControllerBase
-        #endregion
     }
 }

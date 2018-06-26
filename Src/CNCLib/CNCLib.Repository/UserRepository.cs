@@ -19,14 +19,15 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class UserRepository : CNCLibRepository, IUserRepository
+    public class UserRepository : CNCLibRepository<Contracts.Entities.User>, IUserRepository
 	{
-        public UserRepository(IUnitOfWork uow) : base(uow)
+        public UserRepository(CNCLibContext context) : base(context)
         {
         }
 
@@ -52,7 +53,7 @@ namespace CNCLib.Repository
 
         public async Task Delete(Contracts.Entities.User user)
         {
-			Uow.MarkDeleted(user);
+			base.Delete(user);
 			await Task.FromResult(0);
 		}
 
@@ -70,13 +71,13 @@ namespace CNCLib.Repository
 			{
 				// add new
 
-				Uow.MarkNew(user);
+				Add(user);
 			}
 			else
 			{
 				// syn with existing
 
-				Uow.SetValue(UserInDb,user);
+				SetValue(UserInDb,user);
 
 				// search und update Usercommands (add and delete)
 			}

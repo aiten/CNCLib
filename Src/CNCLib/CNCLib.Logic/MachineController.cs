@@ -30,67 +30,58 @@ namespace CNCLib.Logic
 {
     public class MachineController : ControllerBase, IMachineController
 	{
-		public async Task<IEnumerable<Machine>> GetAll()
+	    private IUnitOfWork _unitOfWork;
+	    private IMachineRepository _repository;
+	    private IConfigurationRepository _repositoryConfig;
+
+        public MachineController(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig)
+	    {
+	        _unitOfWork = unitOfWork;
+	        _repository = repository;
+	        _repositoryConfig = repositoryConfig;
+	    }
+
+        public async Task<IEnumerable<Machine>> GetAll()
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+			var machines = await _repository.GetMachines();
+			var l = new List<Machine>();
+			foreach (var m in machines)
 			{
-				var machines = await rep.GetMachines();
-				var l = new List<Machine>();
-				foreach (var m in machines)
-				{
-					l.Add(m.Convert());
-				}
-				return l;
+				l.Add(m.Convert());
 			}
+			return l;
 		}
 
         public async Task<Machine> Get(int id)
         {
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
-			{
-				var machine = await rep.GetMachine(id);
-			    var dto = machine?.Convert();
-				return dto;
-			}
+			var machine = await _repository.GetMachine(id);
+			var dto = machine?.Convert();
+			return dto;
 		}
 
 		public async Task Delete(Machine m)
         {
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
-			{
-				await rep.Delete(m.Convert());
-				await uow.Save();
-			}
+			await _repository.Delete(m.Convert());
+			await _unitOfWork.SaveChangesAsync();
 		}
 
 		public async Task<int> Add(Machine m)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
-			{
-				var me = m.Convert();
-				me.MachineID = 0;
-				foreach (var mc in me.MachineInitCommands) mc.MachineID = 0;
-				foreach (var mi in me.MachineInitCommands) mi.MachineID = 0;
-				await rep.Store(me);
-				await uow.Save();
-				return me.MachineID;
-			}
+			var me = m.Convert();
+			me.MachineID = 0;
+			foreach (var mc in me.MachineInitCommands) mc.MachineID = 0;
+			foreach (var mi in me.MachineInitCommands) mi.MachineID = 0;
+			await _repository.Store(me);
+			await _unitOfWork.SaveChangesAsync();
+			return me.MachineID;
 		}
 
 		public async Task<int> Update(Machine m)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
-			{
-				var me = m.Convert();
-				await rep.Store(me);
-				await uow.Save();
-				return me.MachineID;
-			}
+			var me = m.Convert();
+			await _repository.Store(me);
+			await _unitOfWork.SaveChangesAsync();
+			return me.MachineID;
 		}
 
 		#region Default machine
@@ -130,26 +121,18 @@ namespace CNCLib.Logic
 
 		public async Task<int> GetDetaultMachine()
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
-			{
-				var config = await rep.Get("Environment", "DefaultMachineID");
+			var config = await _repositoryConfig.Get("Environment", "DefaultMachineID");
 
-				if (config == default(Repository.Contracts.Entities.Configuration))
-					return -1;
+			if (config == default(Repository.Contracts.Entities.Configuration))
+				return -1;
 
-				return int.Parse(config.Value);
-			}
+			return int.Parse(config.Value);
 		}
 
 		public async Task SetDetaultMachine(int defaultMachineID)
 		{
-			using (var uow = Dependency.Resolve<IUnitOfWork>())
-			using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
-			{
-				await rep.Save(new Repository.Contracts.Entities.Configuration { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
-				await uow.Save();
-			}
+			await _repositoryConfig.Save(new Repository.Contracts.Entities.Configuration { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
+			await _unitOfWork.SaveChangesAsync();
 		}
 
         #endregion

@@ -21,13 +21,14 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using CNCLib.Repository.Contracts;
 using System.Threading.Tasks;
+using CNCLib.Repository.Context;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class MachineRepository : CNCLibRepository, IMachineRepository
+    public class MachineRepository : CNCLibRepository<Contracts.Entities.Machine>, IMachineRepository
 	{
-        public MachineRepository(IUnitOfWork uow) : base(uow)
+        public MachineRepository(CNCLibContext context) : base(context)
         {
         }
 
@@ -52,7 +53,7 @@ namespace CNCLib.Repository
         {
 			m.MachineCommands = null;
 			m.MachineInitCommands = null;
-			Uow.MarkDeleted(m);
+			base.Delete(m);
 			await Task.FromResult(0);
 			//Uow.ExecuteSqlCommand("delete from MachineCommand where MachineID = " + m.MachineID); => delete cascade
 			//Uow.ExecuteSqlCommand("delete from MachineInitCommand where MachineID = " + m.MachineID); => delete cascade
@@ -90,17 +91,17 @@ namespace CNCLib.Repository
 			{
 				// add new
 
-				Uow.MarkNew(machine);
+				Add(machine);
                 foreach (var mc in machineCommands)
-			        Uow.MarkNew(mc);
+			        Add(mc);
 			    foreach (var mic in machineInitCommands)
-			        Uow.MarkNew(mic);
+			        Add(mic);
 			}
             else
 			{
 				// syn with existing
 
-				Uow.SetValue(machineInDb,machine);
+				SetValue(machineInDb,machine);
 
 				// search und update machinecommands (add and delete)
 

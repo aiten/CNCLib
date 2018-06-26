@@ -55,12 +55,5 @@ namespace Framework.Tools.Dependency
         {
             return Container.Resolve<TInterface>();
         }
-
-        public static TInterface ResolveRepository<TInterface>(IUnitOfWork uow)
-        {
-            var rep = Container.Resolve<TInterface>();
-            ((IBaseRepository)rep).Uow = uow;
-            return rep;
-        }
     }
 }

@@ -20,8 +20,7 @@ using System;
 
 namespace Framework.Tools.Pattern
 {
-	public interface IBaseRepository : IDisposable
+	public interface IBaseRepository
     {
-        IUnitOfWork Uow { get; set; }
     }
 }

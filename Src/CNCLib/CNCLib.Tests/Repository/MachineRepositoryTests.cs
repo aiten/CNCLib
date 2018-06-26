@@ -23,8 +23,11 @@ using System.Linq;
 using CNCLib.Repository.Contracts;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
+using Framework.EF;
 using System.Threading.Tasks;
+using CNCLib.Repository.Context;
 using FluentAssertions;
+using CNCLib.Repository;
 
 namespace CNCLib.Tests.Repository
 {
@@ -40,9 +43,10 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task QueryAllMachines()
         {
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            using (var ctx = new CNCLibContext())
+            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new MachineRepository(ctx);
                 var machines = await rep.GetMachines();
 				machines.Length.Should().BeGreaterOrEqualTo(2);
 			}
@@ -51,9 +55,10 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public async Task QueryOneMachineFound()
 		{
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new MachineRepository(ctx);
                 var machines = await rep.GetMachine(1);
 				machines.MachineID.Should().Be(1);
 			}
@@ -62,9 +67,10 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public async Task QueryOneMachineNotFound()
 		{
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new MachineRepository(ctx);
                 var machines = await rep.GetMachine(1000);
 				machines.Should().BeNull();
 			}
@@ -73,25 +79,27 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public async Task AddOneMachine()
 		{
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new MachineRepository(ctx);
                 var machine = CreateMachine("AddOneMachine");
 				await rep.Store(machine);
-				await uow.Save();
+				await uow.SaveChangesAsync();
 				machine.MachineID.Should().NotBe(0);
 			}
 		}
 		[TestMethod]
 		public async Task AddOneMachineWithCommands()
 		{
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new MachineRepository(ctx);
                 var machine = CreateMachine("AddOneMachineWithCommands");
 				AddMachinCommands(machine);
 				await rep.Store(machine);
-				await uow.Save();
+				await uow.SaveChangesAsync();
                  machine.MachineID.Should().NotBe(0);
             }
         }
@@ -146,18 +154,19 @@ namespace CNCLib.Tests.Repository
             var machine = CreateMachine("UpdateOneMachineAndRead");
             int id;
 
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+           using (var ctx = new CNCLibContext())
+           using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
-				await rep.Store(machine);
-				await uow.Save();
+                var rep = new MachineRepository(ctx);
+                await rep.Store(machine);
+				await uow.SaveChangesAsync();
                 id = machine.MachineID;
                 id.Should().NotBe(0);
 
                 machine.Name = "UpdateOneMachineAndRead#2";
 
 				await rep.Store(machine);
-				await uow.Save();
+				await uow.SaveChangesAsync();
             }
 
             var machineread = await ReadMachine(id);
@@ -172,17 +181,18 @@ namespace CNCLib.Tests.Repository
             int count = AddMachinCommands(machine);
             int id;
 
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+           using (var ctx = new CNCLibContext())
+           using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
-				await rep.Store(machine);
-				await uow.Save();
+                var rep = new MachineRepository(ctx);
+                await rep.Store(machine);
+				await uow.SaveChangesAsync();
                 id = machine.MachineID;
                 id.Should().NotBe(0);
 
                 machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
 				await rep.Store(machine);
-				await uow.Save();
+				await uow.SaveChangesAsync();
             }
 
             var machineread = await ReadMachine(id);
@@ -198,9 +208,10 @@ namespace CNCLib.Tests.Repository
             int id = await WriteMachine(machine);
             int newcount;
 
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+           using (var ctx = new CNCLibContext())
+           using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new MachineRepository(ctx);
                 machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
                 machine.MachineCommands.Add(new MachineCommand { CommandName = "Name#1", CommandString = "New#1", MachineID = id });
                 machine.MachineCommands.Add(new MachineCommand { CommandName = "Name#2", CommandString = "New#2", MachineID = id });
@@ -210,7 +221,7 @@ namespace CNCLib.Tests.Repository
                 newcount = count + 2 - 1;
 
 				await rep.Store(machine);
-				await uow.Save();
+				await uow.SaveChangesAsync();
             }
 
             var machineread = await ReadMachine(id);
@@ -225,11 +236,12 @@ namespace CNCLib.Tests.Repository
             int count = AddMachinCommands(machine);
             int id = await WriteMachine(machine);
 
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+           using (var ctx = new CNCLibContext())
+           using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
-				await rep.Delete(machine);
-				await uow.Save();
+                var rep = new MachineRepository(ctx);
+                await rep.Delete(machine);
+				await uow.SaveChangesAsync();
 
                 (await rep.GetMachine(id)).Should().BeNull();
             }
@@ -239,11 +251,12 @@ namespace CNCLib.Tests.Repository
         {
             int id;
 
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            using (var ctx = new CNCLibContext())
+            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
-				await rep.Store(machine);
-				await uow.Save();
+                var rep = new MachineRepository(ctx);
+                await rep.Store(machine);
+				await uow.SaveChangesAsync();
                 id = machine.MachineID;
                 id.Should().NotBe(0);
             }
@@ -253,9 +266,10 @@ namespace CNCLib.Tests.Repository
 
         private static async Task<Machine> ReadMachine(int id)
         {
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IMachineRepository>(uow))
+            using (var ctx = new CNCLibContext())
+            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new MachineRepository(ctx);
                 return await rep.GetMachine(id);
             }
         }

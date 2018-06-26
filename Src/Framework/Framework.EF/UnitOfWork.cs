@@ -24,44 +24,18 @@ using Framework.Tools.Pattern;
 
 namespace Framework.EF
 {
-    public class UnitOfWork<T> : IUnitOfWork where T : DbContext, new()
+    public class UnitOfWork<T> : IUnitOfWork where T : DbContext
 	{
-		private T _context;
+	    public UnitOfWork(T context)
+	    {
+	        Context = context;
+	    }
 
-		public T Context
+        public T Context { get; private set; }
+
+		public async Task<int> SaveChangesAsync()
 		{
-			get
-			{
-				if (_context == null)
-					_context = new T();
-				return _context;
-			}
-		}
-
-		public void MarkDirty(object entity)
-		{
-			Context.Entry(entity).State = EntityState.Modified;
-		}
-
-		public void SetValue(object entity, object values)
-		{
-			Context.Entry(entity).CurrentValues.SetValues(values);
-		}
-
-		public void MarkNew(object entity)
-		{
-
-			Context.Entry(entity).State = EntityState.Added;
-		}
-
-		public void MarkDeleted(object entity)
-		{
-			Context.Entry(entity).State = EntityState.Deleted;
-		}
-
-		public async Task Save()
-		{
-			await Context.SaveChangesAsync();
+			return await Context.SaveChangesAsync();
 		}
 
 		public async Task<int> ExecuteSqlCommand(string sql)
@@ -74,7 +48,9 @@ namespace Framework.EF
 			return await Context.Database.ExecuteSqlCommandAsync(sql, parameters);
 		}
 
-		bool _disposed; 
+        #region Dispose
+
+        bool _disposed; 
 
 		public void Dispose()
 		{
@@ -92,17 +68,18 @@ namespace Framework.EF
 				if (InTransaction)
 					RollbackTransaction();
 
-				_context?.Dispose();
+				Context?.Dispose();
 			}
 
 			_disposed = true;
-			_context = null;
+			Context = null;
 		}
 
+        #endregion
 
-		#region Transaction
+        #region Transaction
 
-		private IDbContextTransaction _dbTran;
+        private IDbContextTransaction _dbTran;
 
 		public bool InTransaction => _dbTran != null;
 

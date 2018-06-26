@@ -23,12 +23,7 @@ namespace Framework.Tools.Pattern
 {
 	public interface IUnitOfWork : IDisposable
     {
-        void MarkDirty(object entity);
-		void MarkNew(object entity);
-		void MarkDeleted(object entity);
-		void SetValue(object entity, object values);
-
-		Task Save();
+		Task<int> SaveChangesAsync();
 
 		// SQL Commands
 

@@ -25,32 +25,25 @@ using System.Linq;
 using NSubstitute;
 using Framework.Tools.Dependency;
 using System.Threading.Tasks;
+using CNCLib.Logic.Contracts;
 using FluentAssertions;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Tests.Logic
 {
     [TestClass]
 	public class MachineControllerTests : CNCUnitTest
 	{
-		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
-		{
-			//			var mockfactory = CreateMock();
-			var rep = Substitute.For<TInterface>();
-			//			mockfactory.Register(typeof(TInterface), rep);
-
-			Dependency.Container.RegisterInstance(rep);
-
-			return rep;
-		}
-
-		[TestMethod]
+        [TestMethod]
 		public async Task AddMachine()
 		{
-			var rep = CreateMock<IMachineRepository>();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IMachineRepository>();
+		    var repC = Substitute.For<IConfigurationRepository>();
 
-			var ctrl = new MachineController();
+			var ctrl = new MachineController(unitOfWork, rep, repC);
 
-			var machineEntity1 = new CNCLib.Logic.Contracts.DTO.Machine
+            var machineEntity1 = new CNCLib.Logic.Contracts.DTO.Machine
 			{
 				MachineID = 1,
 				Name = "Maxi",
@@ -69,11 +62,13 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task UpdateMachine()
 		{
-			var rep = CreateMock<IMachineRepository>();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IMachineRepository>();
+		    var repC = Substitute.For<IConfigurationRepository>();
 
-			var ctrl = new MachineController();
+		    var ctrl = new MachineController(unitOfWork, rep, repC);
 
-			var machineEntity1 = new Machine { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+            var machineEntity1 = new Machine { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			rep.GetMachine(1).Returns(machineEntity1);
 
 			var machine = await ctrl.Get(1);
@@ -88,11 +83,13 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task DeleteMachine()
 		{
-			var rep = CreateMock<IMachineRepository>();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IMachineRepository>();
+		    var repC = Substitute.For<IConfigurationRepository>();
 
-			var ctrl = new MachineController();
+		    var ctrl = new MachineController(unitOfWork, rep, repC);
 
-			var machineEntity1 = new Machine { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+            var machineEntity1 = new Machine { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			rep.GetMachine(1).Returns(machineEntity1);
 
 			var machine = await ctrl.Get(1);
@@ -107,12 +104,14 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task GetMachinesNone()
 		{
-			var rep = CreateMock<IMachineRepository>();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IMachineRepository>();
+		    var repC = Substitute.For<IConfigurationRepository>();
 
-			var machineEntity = new Machine[0];
+		    var ctrl = new MachineController(unitOfWork, rep, repC);
+
+            var machineEntity = new Machine[0];
 			rep.GetMachines().Returns(machineEntity);
-
-			var ctrl = new MachineController();
 
 			var machines = (await ctrl.GetAll()).ToArray();
 			machines.Length.Should().Be(0);
@@ -121,12 +120,14 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task GetMachinesOne()
 		{
-			var rep = CreateMock<IMachineRepository>();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IMachineRepository>();
+		    var repC = Substitute.For<IConfigurationRepository>();
 
-			var machineEntity = new [] { new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] } };
+		    var ctrl = new MachineController(unitOfWork, rep, repC);
+
+            var machineEntity = new [] { new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] } };
 			rep.GetMachines().Returns(machineEntity);
-
-			var ctrl = new MachineController();
 
 			var machines = (await ctrl.GetAll()).ToArray();
 			machines.Length.Should().Be(1);
@@ -142,9 +143,13 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task GetMachinesMany()
 		{
-			var rep = CreateMock<IMachineRepository>();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IMachineRepository>();
+		    var repC = Substitute.For<IConfigurationRepository>();
 
-			var machineEntity = new []
+		    var ctrl = new MachineController(unitOfWork, rep, repC);
+
+            var machineEntity = new []
 			{ new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] },
 			  new Machine
 			  { MachineID = 2, Name = "Maxi", BufferSize = 115200,
@@ -153,8 +158,6 @@ namespace CNCLib.Tests.Logic
 			};
 
 			rep.GetMachines().Returns(machineEntity);
-
-			var ctrl = new MachineController();
 
 			var machines = (await ctrl.GetAll()).ToArray();
 			machines.Length.Should().Be(2);
@@ -174,14 +177,16 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task QueryOneMachinesFound()
 		{
-			var rep = CreateMock<IMachineRepository>();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IMachineRepository>();
+		    var repC = Substitute.For<IConfigurationRepository>();
 
-			var machineEntity1 = new Machine { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+		    var ctrl = new MachineController(unitOfWork, rep, repC);
+
+            var machineEntity1 = new Machine { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			var machineEntity2 = new Machine { MachineID = 2, Name = "Mini", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			rep.GetMachine(1).Returns(machineEntity1);
 			rep.GetMachine(2).Returns(machineEntity2);
-
-			var ctrl = new MachineController();
 
 			var machine = await ctrl.Get(1);
 			machineEntity1.Name.Should().Be(machine.Name);
@@ -195,14 +200,16 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task QueryOneMachinesNotFound()
 		{
-			var rep = CreateMock<IMachineRepository>();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IMachineRepository>();
+		    var repC = Substitute.For<IConfigurationRepository>();
 
-			var machineEntity1 = new Machine { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+		    var ctrl = new MachineController(unitOfWork, rep, repC);
+
+            var machineEntity1 = new Machine { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			var machineEntity2 = new Machine { MachineID = 2, Name = "Mini", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			rep.GetMachine(1).Returns(machineEntity1);
 			rep.GetMachine(2).Returns(machineEntity2);
-
-			var ctrl = new MachineController();
 
 			var machine = await ctrl.Get(3);
 			machine.Should().BeNull();
@@ -211,9 +218,13 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task DefaultMachine()
 		{
-			var ctrl = new MachineController();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IMachineRepository>();
+		    var repC = Substitute.For<IConfigurationRepository>();
 
-			var machine = await ctrl.DefaultMachine();
+		    var ctrl = new MachineController(unitOfWork, rep, repC);
+
+            var machine = await ctrl.DefaultMachine();
 			machine.Should().NotBeNull();
 			machine.Name.Should().Be("New");
 		}
@@ -221,10 +232,13 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task GetDefaultMachine()
 		{
-			var rep = CreateMock<IConfigurationRepository>();
-			var ctrl = new MachineController();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IMachineRepository>();
+		    var repC = Substitute.For<IConfigurationRepository>();
 
-			rep.Get("Environment", "DefaultMachineID").Returns(new Configuration { Value = "14" });
+		    var ctrl = new MachineController(unitOfWork, rep, repC);
+
+            repC.Get("Environment", "DefaultMachineID").Returns(new Configuration { Value = "14" });
 			int dm = await ctrl.GetDetaultMachine();
 
 			dm.Should().Be(14);
@@ -233,10 +247,13 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task GetDefaultMachineNotSet()
 		{
-			var rep = CreateMock<IConfigurationRepository>();
-			var ctrl = new MachineController();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IMachineRepository>();
+		    var repC = Substitute.For<IConfigurationRepository>();
 
-			rep.Get("Environment", "DefaultMachineID").Returns((Configuration)null);
+		    var ctrl = new MachineController(unitOfWork, rep, repC);
+
+			repC.Get("Environment", "DefaultMachineID").Returns((Configuration)null);
 
 			(await ctrl.GetDetaultMachine()).Should().Be(-1);
 		}
@@ -244,15 +261,17 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task SetDefaultMachine()
 		{
-			var rep = CreateMock<IConfigurationRepository>();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IMachineRepository>();
+		    var repC = Substitute.For<IConfigurationRepository>();
 
-			var ctrl = new MachineController();
+		    var ctrl = new MachineController(unitOfWork, rep, repC);
 
-			await ctrl.SetDetaultMachine(15);
+            await ctrl.SetDetaultMachine(15);
 
-			rep.Get("Environment", "DefaultMachineID").Returns(new Configuration { Value = "14" });
+			repC.Get("Environment", "DefaultMachineID").Returns(new Configuration { Value = "14" });
 
-			await rep.Received().Save(Arg.Is<Configuration>(x => x.Group == "Environment" && x.Name == "DefaultMachineID" && x.Value == "15"));
+			await repC.Received().Save(Arg.Is<Configuration>(x => x.Group == "Environment" && x.Name == "DefaultMachineID" && x.Value == "15"));
 		}
 	}
 }

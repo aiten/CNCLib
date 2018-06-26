@@ -19,15 +19,15 @@
 using CNCLib.Repository.Context;
 using Framework.EF;
 using Framework.Tools.Pattern;
+using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-	public class CNCLibRepository : RepositoryBase
+    public abstract class CNCLibRepository<TEntity> : RepositoryBase<CNCLibContext, TEntity>
+        where TEntity : class
 	{
-        public CNCLibRepository(IUnitOfWork uow) : base(uow)
+        public CNCLibRepository(CNCLibContext dbcontext) : base(dbcontext)
         {
         }
-
-        public CNCLibContext Context => ((UnitOfWork<CNCLibContext>)Uow).Context;
 	}
 }

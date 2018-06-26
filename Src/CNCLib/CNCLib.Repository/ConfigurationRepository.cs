@@ -19,14 +19,15 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class ConfigurationRepository : CNCLibRepository, IConfigurationRepository
+    public class ConfigurationRepository : CNCLibRepository<Contracts.Entities.Configuration>, IConfigurationRepository
 	{
-        public ConfigurationRepository(IUnitOfWork uow) : base(uow)
+        public ConfigurationRepository(CNCLibContext dbcontext) : base(dbcontext)
         {
         }
 
@@ -37,7 +38,7 @@ namespace CNCLib.Repository
 
 		public async Task Delete(Contracts.Entities.Configuration configuration)
         {
-			Uow.MarkDeleted(configuration);
+			base.Delete(configuration);
 			await Task.FromResult(0);
         }
 
@@ -53,48 +54,13 @@ namespace CNCLib.Repository
 				// add new
 
 				cInDb = configuration;
-				Uow.MarkNew(cInDb);
+				Add(cInDb);
 			}
 			else
 			{
 				// syn with existing
-				Uow.SetValue(cInDb,configuration);
+				SetValue(cInDb,configuration);
 			}
 		}
-
-		#region IDisposable Support
-		private bool disposedValue = false; // To detect redundant calls
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!disposedValue)
-			{
-				if (disposing)
-				{
-					// TODO: dispose managed state (managed objects).
-				}
-
-				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-				// TODO: set large fields to null.
-
-				disposedValue = true;
-			}
-		}
-
-		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-		// ~ConfigurationRepository() {
-		//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-		//   Dispose(false);
-		// }
-
-		// This code added to correctly implement the disposable pattern.
-		public void Dispose()
-		{
-			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-			Dispose(true);
-			// TODO: uncomment the following line if the finalizer is overridden above.
-			// GC.SuppressFinalize(this);
-		}
-		#endregion
 	}
 }

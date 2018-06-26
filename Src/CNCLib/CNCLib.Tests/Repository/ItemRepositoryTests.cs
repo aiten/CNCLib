@@ -24,7 +24,10 @@ using CNCLib.Repository.Contracts;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using System.Threading.Tasks;
+using CNCLib.Repository;
+using CNCLib.Repository.Context;
 using FluentAssertions;
+using Framework.EF;
 
 namespace CNCLib.Tests.Repository
 {
@@ -40,9 +43,10 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public async Task QueryNotFound()
 		{
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
-			{
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
+		    {
+		        var rep = new ItemRepository(ctx);
 				var item = await rep.Get(1000);
 				item.Should().BeNull();
 			}
@@ -53,11 +57,12 @@ namespace CNCLib.Tests.Repository
 		{
             var item = CreateItem("AddOne");
 
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
 			{
-				await rep.Store(item);
-				await uow.Save();
+			    var rep = new ItemRepository(ctx);
+                await rep.Store(item);
+				await uow.SaveChangesAsync();
 				item.ItemID.Should().NotBe(0);
 			}
 		}
@@ -68,11 +73,12 @@ namespace CNCLib.Tests.Repository
             var item = CreateItem("AddOneWithValues");
             AddItemProperties(item);
 
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IItemRepository>(uow))
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
 			{
-				await rep.Store(item);
-				await uow.Save();
+			    var rep = new ItemRepository(ctx);
+                await rep.Store(item);
+				await uow.SaveChangesAsync();
             }
             item.ItemID.Should().NotBe(0);
         }
@@ -83,9 +89,10 @@ namespace CNCLib.Tests.Repository
             var item = CreateItem("AddOneAndRead");
             int id = await WriteItem(item);
 
-            using (var uowread = Dependency.Resolve<IUnitOfWork>())
-            using (var repread = Dependency.ResolveRepository<IItemRepository>(uowread))
+            using (var ctx = new CNCLibContext())
+            using (var uowread = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var repread = new ItemRepository(ctx);
                 var optread = await repread.Get(id);
                 optread.ItemProperties.Count.Should().Be(0);
                 CompareItem(item, optread);
@@ -95,11 +102,12 @@ namespace CNCLib.Tests.Repository
         private static async Task<int> WriteItem(Item item)
         {
             int id;
-            using (var uowwrite = Dependency.Resolve<IUnitOfWork>())
-            using (var repwrite = Dependency.ResolveRepository<IItemRepository>(uowwrite))
+            using (var ctx = new CNCLibContext())
+            using (var uowwrite = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var repwrite = new ItemRepository(ctx);
                 await repwrite.Store(item);
-				await uowwrite.Save();
+				await uowwrite.SaveChangesAsync();
                 id = item.ItemID;
                 id.Should().NotBe(0);
             }
@@ -114,9 +122,10 @@ namespace CNCLib.Tests.Repository
             int count = AddItemProperties(item);
             int id = await WriteItem(item);
 
-            using (var uowread = Dependency.Resolve<IUnitOfWork>())
-            using (var repread = Dependency.ResolveRepository<IItemRepository>(uowread))
+		    using (var ctx = new CNCLibContext())
+		    using (var uowread = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var repread = new ItemRepository(ctx);
                 id.Should().NotBe(0);
                 var optread = await repread.Get(id);
                 optread.ItemProperties.Count.Should().Be(count);
@@ -130,23 +139,25 @@ namespace CNCLib.Tests.Repository
             var item = CreateItem("UpdateOneAndRead");
             int id;
 
-            using (var uowwrite = Dependency.Resolve<IUnitOfWork>())
-            using (var repwrite = Dependency.ResolveRepository<IItemRepository>(uowwrite))
+		    using (var ctx = new CNCLibContext())
+		    using (var uowwrite = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var repwrite = new ItemRepository(ctx);
                 await repwrite.Store(item);
-				await uowwrite.Save();
+				await uowwrite.SaveChangesAsync();
 
                 id = item.ItemID;
                 id.Should().NotBe(0);
 
                 item.Name = "UpdateOneAndRead#2";
 				await repwrite.Store(item);
-				await uowwrite.Save();
+				await uowwrite.SaveChangesAsync();
             }
 
-            using (var uowread = Dependency.Resolve<IUnitOfWork>())
-            using (var repread = Dependency.ResolveRepository<IItemRepository>(uowread))
+		    using (var ctx = new CNCLibContext())
+		    using (var uowwread = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var repread = new ItemRepository(ctx);
                 var optread = await repread.Get(id);
                 optread.ItemProperties.Count.Should().Be(0);
                 CompareItem(item, optread);
@@ -160,23 +171,25 @@ namespace CNCLib.Tests.Repository
             var item = CreateItem("UpdateOneNoCommandChangeAndRead");
             int count = AddItemProperties(item);
 
-            using (var uowwrite = Dependency.Resolve<IUnitOfWork>())
-            using (var repwrite = Dependency.ResolveRepository<IItemRepository>(uowwrite))
+		    using (var ctx = new CNCLibContext())
+		    using (var uowwrite = new UnitOfWork<CNCLibContext>(ctx))
             {
-				await repwrite.Store(item);
-				await uowwrite.Save();
+                var repwrite = new ItemRepository(ctx);
+                await repwrite.Store(item);
+				await uowwrite.SaveChangesAsync();
 
                 id = item.ItemID;
                 id.Should().NotBe(0);
 
                 item.Name = "UpdateOneNoCommandChangeAndRead#2";
 				await repwrite.Store(item);
-				await uowwrite.Save();
+				await uowwrite.SaveChangesAsync();
             }
 
-            using (var uowread = Dependency.Resolve<IUnitOfWork>())
-            using (var repread = Dependency.ResolveRepository<IItemRepository>(uowread))
+		    using (var ctx = new CNCLibContext())
+		    using (var uowwread = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var repread = new ItemRepository(ctx);
                 var optread = await repread.Get(id);
 				optread.ItemProperties.Count.Should().Be(count);
 				CompareItem(item, optread);
@@ -191,19 +204,21 @@ namespace CNCLib.Tests.Repository
             int count = AddItemProperties(item);
             int newcount;
 
-            using (var uowwrite = Dependency.Resolve<IUnitOfWork>())
-		    using (var repwrite = Dependency.ResolveRepository<IItemRepository>(uowwrite))
+		    using (var ctx = new CNCLibContext())
+		    using (var uowwrite = new UnitOfWork<CNCLibContext>(ctx))
 		    {
-		        await repwrite.Store(item);
-		        await uowwrite.Save();
+		        var repwrite = new ItemRepository(ctx);
+                await repwrite.Store(item);
+		        await uowwrite.SaveChangesAsync();
 
 		        id = item.ItemID;
 		        id.Should().NotBe(0);
 		    }
 
-            using (var uowwrite = Dependency.Resolve<IUnitOfWork>())
-            using (var repwrite = Dependency.ResolveRepository<IItemRepository>(uowwrite))
+		    using (var ctx = new CNCLibContext())
+		    using (var uowwrite = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var repwrite = new ItemRepository(ctx);
                 item.Name = "UpdateOneValuesChangeAndRead#2";
                 item.ItemProperties.Add(new ItemProperty { Name = "Name#1", Value = "New#1", ItemID = id });
                 item.ItemProperties.Add(new ItemProperty { Name = "Name#2", Value = "New#2", ItemID = id });
@@ -213,12 +228,13 @@ namespace CNCLib.Tests.Repository
                 newcount = count + 2 - 1;
 
 				await repwrite.Store(item);
-				await uowwrite.Save();
+				await uowwrite.SaveChangesAsync();
             }
 
-            using (var uowread = Dependency.Resolve<IUnitOfWork>())
-            using (var repread = Dependency.ResolveRepository<IItemRepository>(uowread))
+		    using (var ctx = new CNCLibContext())
+		    using (var uowread  = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var repread = new ItemRepository(ctx);
                 var optread = await repread.Get(id);
 
 				optread.ItemProperties.Count.Should().Be(newcount);
@@ -234,26 +250,29 @@ namespace CNCLib.Tests.Repository
             int count = AddItemProperties(item);
             int id;
 
-            using (var uowwrite = Dependency.Resolve<IUnitOfWork>())
-            using (var repwrite = Dependency.ResolveRepository<IItemRepository>(uowwrite))
+		    using (var ctx = new CNCLibContext())
+		    using (var uowwrite = new UnitOfWork<CNCLibContext>(ctx))
             {
-				await repwrite.Store(item);
-				await uowwrite.Save();
+                var repwrite = new ItemRepository(ctx);
+                await repwrite.Store(item);
+				await uowwrite.SaveChangesAsync();
 
                 id = item.ItemID;
                 id.Should().NotBe(0);
             }
 
-            using (var uowdelete = Dependency.Resolve<IUnitOfWork>())
-            using (var repdelete = Dependency.ResolveRepository<IItemRepository>(uowdelete))
+		    using (var ctx = new CNCLibContext())
+		    using (var uowdelete = new UnitOfWork<CNCLibContext>(ctx))
             {
-				await repdelete.Delete(item);
-				await uowdelete.Save();
+                var repdelete = new ItemRepository(ctx);
+                await repdelete.Delete(item);
+				await uowdelete.SaveChangesAsync();
             }
 
-            using (var uowread = Dependency.Resolve<IUnitOfWork>())
-            using (var repread = Dependency.ResolveRepository<IItemRepository>(uowread))
+		    using (var ctx = new CNCLibContext())
+		    using (var uowread = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var repread = new ItemRepository(ctx);
                 var itemread = await repread.Get(id);
                 itemread.Should().BeNull();
             }

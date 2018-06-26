@@ -22,7 +22,10 @@ using CNCLib.Repository.Contracts;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using System.Threading.Tasks;
+using CNCLib.Repository;
+using CNCLib.Repository.Context;
 using FluentAssertions;
+using Framework.EF;
 
 namespace CNCLib.Tests.Repository
 {
@@ -38,9 +41,10 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
         public async Task GetEmptyConfiguration()
         {
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
+            using (var ctx = new CNCLibContext())
+            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new ConfigurationRepository(ctx);
                 var entity = await rep.Get("Test","Test");
 				entity.Should().BeNull();
 			}
@@ -49,11 +53,12 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public async Task SaveConfiguration()
 		{
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
-				await rep.Save(new Configuration("Test", "TestNew1", "Content"));
-				await uow.Save();
+                var rep = new ConfigurationRepository(ctx);
+                await rep.Save(new Configuration("Test", "TestNew1", "Content"));
+				await uow.SaveChangesAsync();
 			}
 		}
 
@@ -62,9 +67,10 @@ namespace CNCLib.Tests.Repository
         {
 			await WriteConfiguration("Test", "TestNew2", "Content2");
 
-            using (var uowread = Dependency.Resolve<IUnitOfWork>())
-            using (var repread = Dependency.ResolveRepository<IConfigurationRepository>(uowread))
+            using (var ctx = new CNCLibContext())
+            using (var uowread = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var repread = new ConfigurationRepository(ctx);
                 var read = await repread.Get("Test", "TestNew2");
                 read.Value.Should().Be("Content2");
             }
@@ -76,15 +82,16 @@ namespace CNCLib.Tests.Repository
 		{
 			await WriteConfiguration("Test", "TestNew3", "Content3");
 
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new ConfigurationRepository(ctx);
 				var read = await rep.Get("Test", "TestNew3");
 				read.Value.Should().Be("Content3");
 
 				await rep.Delete(read);
 
-				await uow.Save();
+				await uow.SaveChangesAsync();
 
 				var readagain = await rep.Get("Test", "TestNew3");
 				readagain.Should().BeNull();
@@ -97,9 +104,10 @@ namespace CNCLib.Tests.Repository
             await WriteConfiguration("Test", "TestNew4", "Content4");
 			await WriteConfiguration("Test", "TestNew4", "Content5");
 
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IConfigurationRepository>(uow))
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new ConfigurationRepository(ctx);
 				var readagain = await rep.Get("Test", "TestNew4");
 				readagain.Value.Should().Be("Content5");
 			}
@@ -107,11 +115,12 @@ namespace CNCLib.Tests.Repository
 
         private static async Task WriteConfiguration(string module, string name, string content)
         {
-            using (var uowwrite = Dependency.Resolve<IUnitOfWork>())
-            using (var repwrite = Dependency.ResolveRepository<IConfigurationRepository>(uowwrite))
+            using (var ctx = new CNCLibContext())
+            using (var uowwrite = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var repwrite = new ConfigurationRepository(ctx);
 				await repwrite.Save(new Configuration(module,name,content));
-				await uowwrite.Save();
+				await uowwrite.SaveChangesAsync();
             }
         }
     }

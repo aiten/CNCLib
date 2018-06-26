@@ -21,13 +21,14 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using CNCLib.Repository.Contracts;
 using System.Threading.Tasks;
+using CNCLib.Repository.Context;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class ItemRepository : CNCLibRepository, IItemRepository
+    public class ItemRepository : CNCLibRepository<Contracts.Entities.Item>, IItemRepository
 	{
-        public ItemRepository(IUnitOfWork uow) : base(uow)
+        public ItemRepository(CNCLibContext context) : base(context)
         {
         }
 
@@ -60,7 +61,7 @@ namespace CNCLib.Repository
 		public async Task Delete(Contracts.Entities.Item e)
         {
 			e.ItemProperties = null;
-			Uow.MarkDeleted(e);
+			base.Delete(e);
 			await Task.FromResult(0);
 			// Uow.ExecuteSqlCommand("delete from ItemProperty where ItemID = " + e.ItemID); => delete cascade
 		}
@@ -80,16 +81,16 @@ namespace CNCLib.Repository
 			if (itemInDb == default(Contracts.Entities.Item))
 			{
                 // add new
-				Uow.MarkNew(item);
+				Add(item);
 			    foreach (var iv in optValues)
-			        Uow.MarkNew(iv);
+			        Add(iv);
 
             }
             else
 			{
                 // syn with existing
 
-                Uow.SetValue(itemInDb,item);
+                SetValue(itemInDb,item);
 
 				// search und itemProperties (add and delete)
 

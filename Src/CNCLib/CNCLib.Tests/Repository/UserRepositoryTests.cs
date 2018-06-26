@@ -18,9 +18,12 @@
 
 using System.Linq;
 using System.Threading.Tasks;
+using CNCLib.Repository;
+using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
+using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -39,9 +42,10 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task QueryAllUsers()
         {
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
+            using (var ctx = new CNCLibContext())
+            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new UserRepository(ctx);
                 var users = await rep.GetUsers();
 				users.Length.Should().BeGreaterOrEqualTo(2);
 			}
@@ -50,9 +54,10 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public async Task QueryOneUserFound()
 		{
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new UserRepository(ctx);
                 var users = await rep.GetUser(1);
 				users.UserID.Should().Be(1);
 			}
@@ -61,9 +66,10 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task QueryOneUserByNameFound()
         {
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
+            using (var ctx = new CNCLibContext())
+            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new UserRepository(ctx);
                 var users = await rep.GetUser(1);
                 users.UserID.Should().Be(1);
 
@@ -75,9 +81,10 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
 		public async Task QueryOneUserNotFound()
 		{
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new UserRepository(ctx);
                 var users = await rep.GetUser(1000);
 				users.Should().BeNull();
 			}
@@ -86,9 +93,10 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task QueryOneUserByNameNotFound()
         {
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
+            using (var ctx = new CNCLibContext())
+            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new UserRepository(ctx);
                 var users = await rep.GetUser("UserNotExist");
                 users.Should().BeNull();
             }
@@ -97,12 +105,13 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
 		public async Task AddOneUser()
 		{
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
+		    using (var ctx = new CNCLibContext())
+		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new UserRepository(ctx);
                 var user = CreateUser("AddOneUser");
 				await rep.Store(user);
-				await uow.Save();
+				await uow.SaveChangesAsync();
 				user.UserID.Should().NotBe(0);
 			}
 		}
@@ -124,18 +133,19 @@ namespace CNCLib.Tests.Repository
             var user = CreateUser("UpdateOneUserAndRead");
             int id;
 
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
+           using (var ctx = new CNCLibContext())
+           using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
-				await rep.Store(user);
-				await uow.Save();
+                var rep = new UserRepository(ctx);
+                await rep.Store(user);
+				await uow.SaveChangesAsync();
                 id = user.UserID;
                 id.Should().NotBe(0);
 
                 user.UserName = "UpdateOneUserAndRead#2";
 
 				await rep.Store(user);
-				await uow.Save();
+				await uow.SaveChangesAsync();
             }
 
             var userread = await ReadUser(id);
@@ -146,11 +156,12 @@ namespace CNCLib.Tests.Repository
         {
             int id;
 
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
+            using (var ctx = new CNCLibContext())
+            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
-				await rep.Store(user);
-				await uow.Save();
+                var rep = new UserRepository(ctx);
+                await rep.Store(user);
+				await uow.SaveChangesAsync();
                 id = user.UserID;
                 id.Should().NotBe(0);
             }
@@ -160,9 +171,10 @@ namespace CNCLib.Tests.Repository
 
         private static async Task<User> ReadUser(int id)
         {
-            using (var uow = Dependency.Resolve<IUnitOfWork>())
-            using (var rep = Dependency.ResolveRepository<IUserRepository>(uow))
+            using (var ctx = new CNCLibContext())
+            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var rep = new UserRepository(ctx);
                 return await rep.GetUser(id);
             }
         }

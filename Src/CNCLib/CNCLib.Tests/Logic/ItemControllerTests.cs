@@ -24,6 +24,7 @@ using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
 using Framework.Tools.Dependency;
+using Framework.Tools.Pattern;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 
@@ -49,12 +50,13 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task GetItemNone()
 		{
-			var rep = CreateMock<IItemRepository>();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IItemRepository>();
+
+		    var ctrl = new ItemController(unitOfWork, rep);
 
 			var itemEntity = new Item[0];
 			rep.Get().Returns(itemEntity);
-
-			var ctrl = new ItemController();
 
 			var all = (await ctrl.GetAll()).ToArray();
 			all.Should().BeEmpty();
@@ -63,16 +65,17 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task GetItemAll()
 		{
-			var rep = CreateMock<IItemRepository>();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IItemRepository>();
 
-			var itemEntity = new []
+		    var ctrl = new ItemController(unitOfWork, rep);
+
+            var itemEntity = new []
 			{
 				new Item { ItemID=1,Name="Test1" },
 				new Item { ItemID=2,Name="Test2" }
 			};
 			rep.Get().Returns(itemEntity);
-
-			var ctrl = new ItemController();
 
 			var all = (await ctrl.GetAll()).ToArray();
 
@@ -88,10 +91,12 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task GetItem()
 		{
-			var rep = CreateMock<IItemRepository>();
-			rep.Get(1).Returns(new Item { ItemID = 1, Name = "Test1" });
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IItemRepository>();
 
-			var ctrl = new ItemController();
+		    var ctrl = new ItemController(unitOfWork, rep);
+
+		    rep.Get(1).Returns(new Item { ItemID = 1, Name = "Test1" });
 
 			var all = await ctrl.Get(1);
 
@@ -106,11 +111,12 @@ namespace CNCLib.Tests.Logic
 		[TestMethod]
 		public async Task GetItemNull()
 		{
-			var rep = CreateMock<IItemRepository>();
+		    var unitOfWork = Substitute.For<IUnitOfWork>();
+		    var rep = Substitute.For<IItemRepository>();
 
-			var ctrl = new ItemController();
+		    var ctrl = new ItemController(unitOfWork, rep);
 
-			var all = await ctrl.Get(10);
+            var all = await ctrl.Get(10);
 
             all.Should().BeNull();
 		}
@@ -120,11 +126,12 @@ namespace CNCLib.Tests.Logic
         {
             // arrange
 
-            var rep = CreateMock<IItemRepository>();
+            var unitOfWork = Substitute.For<IUnitOfWork>();
+            var rep = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemController();
+            var ctrl = new ItemController(unitOfWork, rep);
 
-			var item = new CNCLib.Logic.Contracts.DTO.Item { ItemID = 3000, Name = "Hallo" };
+            var item = new CNCLib.Logic.Contracts.DTO.Item { ItemID = 3000, Name = "Hallo" };
 
             //act
 
