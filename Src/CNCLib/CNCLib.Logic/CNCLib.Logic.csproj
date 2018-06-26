@@ -14,6 +14,6 @@
     <ProjectReference Include="..\CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj">    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="7.0.0" />
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
   </ItemGroup>
 </Project>
