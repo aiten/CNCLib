@@ -39,14 +39,14 @@ namespace CNCLib.Wpf.WebAPI.Start
                 XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             Dependency.Initialize(new LiveDependencyProvider());
-			Dependency.Container.RegisterTypesIncludingInternals(
+			Dependency.Container.RegisterTypesIncludingInternalsScoped(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
                 //				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
                 typeof(ServiceProxy.WebAPI.MachineService).Assembly,
 				typeof(Logic.Client.DynItemController).Assembly);
             //			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-            Dependency.Container.RegisterTypesByName(
+            Dependency.Container.RegisterTypesByNameScoped(
                 n => n.EndsWith("ViewModel"),
                 typeof(ViewModels.MachineViewModel).Assembly,
                 typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);

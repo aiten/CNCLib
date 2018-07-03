@@ -42,6 +42,14 @@ namespace Framework.Tools.Dependency
         /// <returns></returns>
         IDependencyContainer RegisterType(Type typeFrom, Type typeTo);
 
+        /// <summary>
+        /// Register typefrom to typeTo 
+        /// </summary>
+        /// <param name="typeFrom"></param>
+        /// <param name="typeTo"></param>
+        /// <returns></returns>
+        IDependencyContainer RegisterTypeScoped(Type typeFrom, Type typeTo);
+
 
         /// <summary>
         /// This can be called in unit tests to reset the container to an empty state. 

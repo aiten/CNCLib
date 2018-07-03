@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity;
+using Unity.Lifetime;
 
 namespace Framework.Tools.Dependency
 {
@@ -59,6 +60,16 @@ namespace Framework.Tools.Dependency
         public IDependencyContainer RegisterType(Type typeFrom, Type typeTo)
         {
             _container.RegisterType(typeFrom,typeTo);
+            return this;
+        }
+
+        /// <summary>
+        /// Registers a type for the given interface.
+        /// </summary>
+        /// <returns>This instance.</returns>
+        public IDependencyContainer RegisterTypeScoped(Type typeFrom, Type typeTo)
+        {
+            _container.RegisterType(typeFrom, typeTo, new PerResolveLifetimeManager());
             return this;
         }
 

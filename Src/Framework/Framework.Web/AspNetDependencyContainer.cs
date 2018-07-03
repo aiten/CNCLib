@@ -59,6 +59,16 @@ namespace Framework.Web
         }
 
         /// <summary>
+        /// Registers a type for the given interface.
+        /// </summary>
+        /// <returns>This instance.</returns>
+        public IDependencyContainer RegisterTypeScoped(Type typeFrom, Type typeTo)
+        {
+            _container.AddScoped(typeFrom, typeTo);
+            return this;
+        }
+
+        /// <summary>
         /// Registers instance for a specified interface.
         /// </summary>
         /// <returns>This instance.</returns>

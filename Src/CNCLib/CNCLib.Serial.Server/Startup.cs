@@ -74,12 +74,12 @@ namespace CNCLib.Serial.Server
             });
 
             Dependency.Initialize(new AspNetDependencyProvider(services));
-            Dependency.Container.RegisterTypesIncludingInternals(
+            Dependency.Container.RegisterTypesIncludingInternalsScoped(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                Dependency.Container.RegisterType<Framework.Arduino.SerialCommunication.ISerialPort,
+                Dependency.Container.RegisterTypeScoped<Framework.Arduino.SerialCommunication.ISerialPort,
                     Framework.Arduino.SerialCommunication.SerialPortLib>();
             }
         }
