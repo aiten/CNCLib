@@ -27,6 +27,11 @@ namespace CNCLib.Repository.Context
 	{
 	    public static Action<DbContextOptionsBuilder> OnConfigure;
 
+	    public CNCLibContext()
+	    {
+
+	    }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             OnConfigure?.Invoke(optionsBuilder);

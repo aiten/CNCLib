@@ -18,6 +18,7 @@
 
 using AutoMapper;
 using CNCLib.Logic;
+using CNCLib.Repository.Context;
 using CNCLib.WebAPI.Controllers;
 using Framework.EF;
 using Framework.Tools.Dependency;
@@ -59,6 +60,8 @@ namespace CNCLib.WebAPI
             });
 
             Dependency.Initialize(new AspNetDependencyProvider(services));
+
+            Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
 
             Dependency.Container.RegisterTypesIncludingInternalsScoped(
                 typeof(ServiceProxy.Logic.MachineService).Assembly,

@@ -41,6 +41,9 @@ namespace CNCLib.Wpf.Sql.Start
                 XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
 		    Dependency.Initialize(new LiveDependencyProvider());
+
+		    Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
+
             Dependency.Container.RegisterTypesIncludingInternalsScoped(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
                 typeof(ServiceProxy.Logic.MachineService).Assembly,
