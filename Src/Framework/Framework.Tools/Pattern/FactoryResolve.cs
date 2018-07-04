@@ -17,11 +17,16 @@
 */
 
 using System;
+using System.Xml;
+using Framework.Tools.Dependency;
 
 namespace Framework.Tools.Pattern
 {
-	public interface IFactory<T> where T : class
+	public class FactoryResolve<T> : IFactory<T> where T : class
 	{
-	    T Create();
+	    public T Create()
+	    {
+            return Dependency.Dependency.Resolve<T>();
+	    }
 	}
 }

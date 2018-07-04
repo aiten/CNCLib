@@ -26,6 +26,7 @@ using Framework.Tools.Dependency;
 using CNCLib.ServiceProxy;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Tests.Wpf
 {
@@ -70,7 +71,7 @@ namespace CNCLib.Tests.Wpf
 			Machine machine = CreateMachine(1);
 			rep.Get(1).Returns(machine);
 
-			var mv = new MachineViewModel(rep);
+			var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep));
 			await mv.LoadMachine(1);
 
 			mv.AddNewMachine.Should().Be(false);
@@ -115,7 +116,7 @@ namespace CNCLib.Tests.Wpf
 			Machine machinedef = CreateMachine(0);
 			rep.DefaultMachine().Returns(machinedef);
 
-			var mv = new MachineViewModel(rep);
+			var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep));
 			mv.LoadMachine(-1);
 
 			mv.AddNewMachine.Should().BeTrue();

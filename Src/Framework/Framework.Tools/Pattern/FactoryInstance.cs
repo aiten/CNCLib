@@ -17,11 +17,22 @@
 */
 
 using System;
+using System.Xml;
 
 namespace Framework.Tools.Pattern
 {
-	public interface IFactory<T> where T : class
-	{
-	    T Create();
-	}
+    public class FactoryInstance<T> : IFactory<T> where T : class
+    {
+        public FactoryInstance(T obj)
+        {
+            _obj = obj;
+        }
+
+        private T _obj;
+
+        public T Create()
+        {
+            return _obj;
+        }
+    }
 }

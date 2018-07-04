@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using CNCLib.Wpf.ViewModels;
 using Framework.Tools.Dependency;
@@ -49,12 +50,15 @@ namespace CNCLib.Wpf.Views
 */
 			if (vm.EditMachine == null)
 			{
-				vm.EditMachine = async mID =>  
+				vm.EditMachine = mID =>  
 				{
 				    var dlg = new MachineView();
                     if (dlg.DataContext is MachineViewModel vmdlg)
                     {
-                        await vmdlg.LoadMachine(mID);
+                        Task.Run(() =>
+                        {
+                            vmdlg.LoadMachine(mID).ConfigureAwait(false).GetAwaiter().GetResult();
+                        }).Wait(); 
                         dlg.ShowDialog();
                     }
                 };

@@ -25,6 +25,7 @@ using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.ServiceProxy;
 using Framework.Tools.Dependency;
+using Framework.Tools.Pattern;
 
 namespace CNCLib.Wpf.WebAPI.Start
 {
@@ -45,6 +46,9 @@ namespace CNCLib.Wpf.WebAPI.Start
                 typeof(ServiceProxy.WebAPI.MachineService).Assembly,
 				typeof(Logic.Client.DynItemController).Assembly);
             //			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+
+		    Dependency.Container.RegisterTypeScoped<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
+		    Dependency.Container.RegisterTypeScoped<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
 
             Dependency.Container.RegisterTypesByNameScoped(
                 n => n.EndsWith("ViewModel"),

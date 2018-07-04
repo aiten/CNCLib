@@ -27,6 +27,7 @@ using CNCLib.Wpf.Models;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 using Framework.Arduino.SerialCommunication;
+using Framework.Tools.Pattern;
 
 
 namespace CNCLib.Wpf.ViewModels
@@ -35,13 +36,13 @@ namespace CNCLib.Wpf.ViewModels
 	{
 		#region crt
 
-		public MachineViewModel(IMachineService machineService)
+		public MachineViewModel(IFactory<IMachineService> machineService)
 		{
             _machineService = machineService ?? throw new ArgumentNullException();
             AddNewMachine = false;
 		}
 
-        readonly IMachineService _machineService;
+        readonly IFactory<IMachineService> _machineService;
 
         #endregion
 
@@ -80,11 +81,11 @@ namespace CNCLib.Wpf.ViewModels
 			AddNewMachine = machineID <= 0;
 			if (AddNewMachine)
 			{
-				dto = await _machineService.DefaultMachine();
+				dto = await _machineService.Create().DefaultMachine();
 			}
 			else
 			{
-				dto = await _machineService.Get(machineID);
+				dto = await _machineService.Create().Get(machineID);
 			}
 
 			Machine = dto.Convert();
@@ -99,7 +100,7 @@ namespace CNCLib.Wpf.ViewModels
 		{
 			var m = _currentMachine.Convert();
 
-			int id = await _machineService.Update(m);
+			int id = await _machineService.Create().Update(m);
 
 			await LoadMachine(id);
             CloseAction();
@@ -112,7 +113,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public async void DeleteMachine()
         {
-    		await _machineService.Delete(_currentMachine.Convert());
+    		await _machineService.Create().Delete(_currentMachine.Convert());
 			CloseAction();
 		}
 

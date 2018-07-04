@@ -28,6 +28,7 @@ using CNCLib.ServiceProxy;
 using CNCLib.Wpf.Helpers;
 using CNCLib.Wpf.Models;
 using Framework.Tools;
+using Framework.Tools.Pattern;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
@@ -37,13 +38,13 @@ namespace CNCLib.Wpf.ViewModels
     {
 		#region crt
 
-		public SetupWindowViewModel(IMachineService machineService)
+		public SetupWindowViewModel(IFactory<IMachineService> machineService)
 		{
             _machineService = machineService ?? throw new ArgumentNullException(); 
              ResetOnConnect = false;
 		}
 
-        readonly IMachineService _machineService;
+        readonly IFactory<IMachineService> _machineService;
 
 
         public override async Task Loaded()
@@ -63,12 +64,13 @@ namespace CNCLib.Wpf.ViewModels
 		private async Task LoadMachines(int defaultmachineid)
         {
             var machines = new ObservableCollection<Machine>();
+            var service = _machineService.Create();
 
-			foreach(var m in await _machineService.GetAll())
+            foreach (var m in await service.GetAll())
 			{
 				machines.Add(Converter.Convert(m));
 			}
-			int defaultM = await _machineService.GetDetaultMachine();
+			int defaultM = await service.GetDetaultMachine();
 
 			Machines = machines;
 
@@ -219,7 +221,7 @@ namespace CNCLib.Wpf.ViewModels
             Global.Instance.SizeZ = Machine.SizeZ;
 			Global.Instance.Com.Current.ArduinoBuffersize = Machine.BufferSize;
 
-			Global.Instance.Machine = await _machineService.Get(Machine.MachineID);
+			Global.Instance.Machine = await _machineService.Create().Get(Machine.MachineID);
         }
 
 		public bool CanConnect()
@@ -257,7 +259,8 @@ namespace CNCLib.Wpf.ViewModels
         public async void SetupMachine()
         {
             int mID = Machine?.MachineID ?? -1;
-			EditMachine?.Invoke(mID);
+			//EditMachine?.Invoke(mID);
+            EditMachine(mID);
             await LoadMachines(mID);
         }
 
@@ -271,7 +274,7 @@ namespace CNCLib.Wpf.ViewModels
 	   {
             if (Machine != null)
             {
-                _machineService.SetDetaultMachine(Machine.MachineID);
+                _machineService.Create().SetDetaultMachine(Machine.MachineID);
             }
 	   }
 

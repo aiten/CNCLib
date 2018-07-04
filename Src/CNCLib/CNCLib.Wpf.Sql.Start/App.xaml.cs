@@ -24,6 +24,7 @@ using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
 using CNCLib.Repository.Context;
+using CNCLib.ServiceProxy;
 using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
@@ -52,6 +53,9 @@ namespace CNCLib.Wpf.Sql.Start
 				typeof(Logic.Client.DynItemController).Assembly,
 				typeof(MachineController).Assembly);
 			Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+
+		    Dependency.Container.RegisterTypeScoped<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
+		    Dependency.Container.RegisterTypeScoped<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
 
             Dependency.Container.RegisterTypesByNameScoped(
                 n => n.EndsWith("ViewModel"),

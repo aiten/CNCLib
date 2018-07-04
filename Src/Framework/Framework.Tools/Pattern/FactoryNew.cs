@@ -17,11 +17,15 @@
 */
 
 using System;
+using System.Xml;
 
 namespace Framework.Tools.Pattern
 {
-	public interface IFactory<T> where T : class
-	{
-	    T Create();
-	}
+    public class FactoryNew<T> : IFactory<T> where T : class, new()
+    {
+        public T Create()
+        {
+            return new T();
+        }
+    }
 }

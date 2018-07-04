@@ -28,6 +28,7 @@ using System.Xml.Serialization;
 using AutoMapper;
 using CNCLib.GCode.GUI.Models;
 using CNCLib.ServiceProxy;
+using Framework.Tools.Pattern;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
@@ -37,13 +38,13 @@ namespace CNCLib.GCode.GUI.ViewModels
     {
 		#region crt
 
-		public LoadOptionViewModel(ILoadOptionsService loadOptionsService, IMapper mapper)
+		public LoadOptionViewModel(IFactory<ILoadOptionsService> loadOptionsService, IMapper mapper)
 		{
             _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
             _mapper = mapper ?? throw new ArgumentNullException();
         }
 
-        readonly ILoadOptionsService _loadOptionsService;
+        readonly IFactory<ILoadOptionsService> _loadOptionsService;
         readonly IMapper _mapper;
 
         public override async Task Loaded()
@@ -114,7 +115,7 @@ namespace CNCLib.GCode.GUI.ViewModels
         {
             _allLoadOptions.Clear();
 
-            var items = await _loadOptionsService.GetAll();
+            var items = await _loadOptionsService.Create().GetAll();
             if (items != null)
             {
                 foreach (var s in items.OrderBy(o => o.SettingName))
@@ -195,7 +196,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             {
                 Busy = true;
                 var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(LoadOptionsValue);
-                await _loadOptionsService.Update(opt);
+                await _loadOptionsService.Create().Update(opt);
                 await LoadAllSettings(LoadOptionsValue.Id);
             }
             catch (Exception ex)
@@ -214,7 +215,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             {
                 Busy = true;
                 var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(LoadOptionsValue);
-                int id = await _loadOptionsService.Add(opt);
+                int id = await _loadOptionsService.Create().Add(opt);
                 await LoadAllSettings(id);
             }
             catch (Exception ex)
@@ -234,7 +235,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             {
                 Busy = true;
                 var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
-                await _loadOptionsService.Delete(opt);
+                await _loadOptionsService.Create().Delete(opt);
                 await LoadAllSettings(AllLoadOptions?.FirstOrDefault(o => o.Id != opt.Id)?.Id);
             }
             catch (Exception ex)
@@ -266,7 +267,7 @@ namespace CNCLib.GCode.GUI.ViewModels
                             opt.SettingName = $"{opt.SettingName}#imported#{DateTime.Now}"; 
                         }
 
-                        int id = await _loadOptionsService.Add(opt);
+                        int id = await _loadOptionsService.Create().Add(opt);
                         await LoadAllSettings(id);
                     }
                 }
