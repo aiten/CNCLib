@@ -29,7 +29,7 @@ namespace Framework.Tools.Dependency
     /// </summary>
     public abstract class UnityDependencyContainer : IDependencyContainer
     {
-        private UnityContainer _container;
+        private IUnityContainer _container;
 
         protected UnityDependencyContainer()
         {
@@ -40,7 +40,7 @@ namespace Framework.Tools.Dependency
         /// Get the Unity container
         /// use the container e.g. in WebApi to use this container instead
         /// </summary>
-        public UnityContainer MyUnityContainer => _container;
+        public IUnityContainer MyUnityContainer => _container;
 
         /// <summary>
         /// This can be called in unit tests to reset the container to an empty state. 
@@ -86,11 +86,48 @@ namespace Framework.Tools.Dependency
         public abstract object Resolve(Type t);
 
         /// <summary>
+        /// Create unity child container
+        /// </summary>
+        /// <returns></returns>
+        public IDependencyContainer CreateChildContainer()
+        {
+            var newcontainer = (UnityDependencyContainer) MemberwiseClone();
+            newcontainer._container = _container.CreateChildContainer();
+
+            return newcontainer;
+        }
+
+        /// <summary>
         /// Gets an enumeration containing all types registered with the dependency container.
         /// </summary>
         public IEnumerable<Type> RegisteredTypes
         {
             get { return _container.Registrations.Select(r => r.RegisteredType); }
         }
+
+        #region IDisposable Support
+
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _container.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

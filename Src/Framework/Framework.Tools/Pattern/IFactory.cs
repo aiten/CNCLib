@@ -20,8 +20,13 @@ using System;
 
 namespace Framework.Tools.Pattern
 {
-	public interface IFactory<T> where T : class
+    public interface IScope<T> : IDisposable where T : class
+    {
+        T Instance { get; }
+    }
+
+    public interface IFactory<T> where T : class
 	{
-	    T Create();
+	    IScope<T> Create();
 	}
 }

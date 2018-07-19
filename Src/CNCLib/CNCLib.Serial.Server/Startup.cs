@@ -127,7 +127,7 @@ namespace CNCLib.Serial.Server
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    template: "{instance}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>

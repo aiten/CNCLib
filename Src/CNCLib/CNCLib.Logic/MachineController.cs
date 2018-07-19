@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts;
@@ -36,9 +37,9 @@ namespace CNCLib.Logic
 
         public MachineController(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig)
 	    {
-	        _unitOfWork = unitOfWork;
-	        _repository = repository;
-	        _repositoryConfig = repositoryConfig;
+	        _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
+	        _repository = repository ?? throw new ArgumentNullException(); ;
+	        _repositoryConfig = repositoryConfig ?? throw new ArgumentNullException(); ;
 	    }
 
         public async Task<IEnumerable<Machine>> GetAll()

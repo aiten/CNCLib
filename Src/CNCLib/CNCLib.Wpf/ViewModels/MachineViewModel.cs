@@ -71,24 +71,32 @@ namespace CNCLib.Wpf.ViewModels
 
 	    public bool AddNewMachine { get; set; }
 
-		#endregion
+        #endregion
 
-		#region Operations
+        #region Operations
 
-		public async Task LoadMachine(int machineID)
+	    public async Task LoadMachine(int machineID)
+	    {
+	        using (var scope = _machineService.Create())
+	        {
+	            await MyLoadMachine(machineID,scope);
+	        }
+        }
+
+        private async Task MyLoadMachine(int machineID, IScope<IMachineService> scope)
 		{
 			Logic.Contracts.DTO.Machine dto;
 			AddNewMachine = machineID <= 0;
-			if (AddNewMachine)
-			{
-				dto = await _machineService.Create().DefaultMachine();
-			}
-			else
-			{
-				dto = await _machineService.Create().Get(machineID);
-			}
+		    if (AddNewMachine)
+		    {
+		        dto = await scope.Instance.DefaultMachine();
+		    }
+		    else
+		    {
+		        dto = await scope.Instance.Get(machineID);
+		    }
 
-			Machine = dto.Convert();
+		    Machine = dto.Convert();
 
 			RaisePropertyChanged(nameof(Machine));
 
@@ -100,10 +108,13 @@ namespace CNCLib.Wpf.ViewModels
 		{
 			var m = _currentMachine.Convert();
 
-			int id = await _machineService.Create().Update(m);
+		    using (var scope = _machineService.Create())
+		    {
+		        int id = await scope.Instance.Update(m);
+		        await MyLoadMachine(id,scope);
+		    }
 
-			await LoadMachine(id);
-            CloseAction();
+		    CloseAction();
         }
 
 		public bool CanSaveMachine()
@@ -113,8 +124,12 @@ namespace CNCLib.Wpf.ViewModels
 
         public async void DeleteMachine()
         {
-    		await _machineService.Create().Delete(_currentMachine.Convert());
-			CloseAction();
+            using (var scope = _machineService.Create())
+            {
+                await scope.Instance.Delete(_currentMachine.Convert());
+            }
+
+            CloseAction();
 		}
 
 		public bool CanDeleteMachine()
@@ -124,7 +139,10 @@ namespace CNCLib.Wpf.ViewModels
 
 		public async void AddMachine()
         {
-            await LoadMachine(-1);
+            using (var scope = _machineService.Create())
+            {
+                await MyLoadMachine(-1,scope);
+            }
         }
 
 		public bool CanAddMachine()

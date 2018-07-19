@@ -98,5 +98,34 @@ namespace Framework.Web
                 throw new ResolutionFailedException($"Resolution for {t.FullName} failed", ex);
             }
         }
+
+        public IDependencyContainer CreateChildContainer()
+        {
+            throw new NotImplementedException();
+        }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+ //                   _container.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

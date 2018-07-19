@@ -64,15 +64,21 @@ namespace CNCLib.Wpf.ViewModels
 		private async Task LoadMachines(int defaultmachineid)
         {
             var machines = new ObservableCollection<Machine>();
-            var service = _machineService.Create();
+            int defaultM;
 
-            foreach (var m in await service.GetAll())
-			{
-				machines.Add(Converter.Convert(m));
-			}
-			int defaultM = await service.GetDetaultMachine();
+            using (var scope = _machineService.Create())
+            {
+                var service = scope.Instance;
 
-			Machines = machines;
+                foreach (var m in await service.GetAll())
+                {
+                    machines.Add(Converter.Convert(m));
+                }
+
+                defaultM = await service.GetDetaultMachine();
+            }
+
+            Machines = machines;
 
 			var defaultmachine = machines.FirstOrDefault(m => m.MachineID == defaultmachineid);
 
@@ -221,7 +227,10 @@ namespace CNCLib.Wpf.ViewModels
             Global.Instance.SizeZ = Machine.SizeZ;
 			Global.Instance.Com.Current.ArduinoBuffersize = Machine.BufferSize;
 
-			Global.Instance.Machine = await _machineService.Create().Get(Machine.MachineID);
+            using (var scope = _machineService.Create())
+            {
+                Global.Instance.Machine = await scope.Instance.Get(Machine.MachineID);
+            }
         }
 
 		public bool CanConnect()
@@ -274,7 +283,10 @@ namespace CNCLib.Wpf.ViewModels
 	   {
             if (Machine != null)
             {
-                _machineService.Create().SetDetaultMachine(Machine.MachineID);
+                using (var scope = _machineService.Create())
+                {
+                    scope.Instance.SetDetaultMachine(Machine.MachineID);
+                }
             }
 	   }
 

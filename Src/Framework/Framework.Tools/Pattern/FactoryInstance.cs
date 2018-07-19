@@ -21,6 +21,38 @@ using System.Xml;
 
 namespace Framework.Tools.Pattern
 {
+    public sealed class ScopeInstance<T> : IScope<T>, IDisposable where T : class
+    {
+        private readonly T _instance;
+        private bool _isDisposed;
+
+        public ScopeInstance(T instance)
+        {
+            _instance = instance;
+        }
+
+        public T Instance
+        {
+            get
+            {
+                if (_isDisposed)
+                {
+                    throw new ObjectDisposedException("this", "Bad person.");
+                }
+                return _instance;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+            _isDisposed = true;
+        }
+    }
+
     public class FactoryInstance<T> : IFactory<T> where T : class
     {
         public FactoryInstance(T obj)
@@ -30,9 +62,9 @@ namespace Framework.Tools.Pattern
 
         private T _obj;
 
-        public T Create()
+        IScope<T> IFactory<T>.Create()
         {
-            return _obj;
+            return new ScopeInstance<T>(_obj);
         }
     }
 }

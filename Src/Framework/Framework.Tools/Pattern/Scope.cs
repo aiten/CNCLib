@@ -17,15 +17,9 @@
 */
 
 using System;
-using System.Xml;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Framework.Tools.Pattern
 {
-    public class FactoryNew<T> : IFactory<T> where T : class, new()
-    {
-        public T Create()
-        {
-            return new T();
-        }
-    }
 }

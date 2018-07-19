@@ -43,21 +43,28 @@ namespace CNCLib.Wpf.Sql.Start
 
 		    Dependency.Initialize(new LiveDependencyProvider());
 
+            //scoped
+
 		    Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
+		    Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
             Dependency.Container.RegisterTypesIncludingInternalsScoped(
-                typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
-                typeof(ServiceProxy.Logic.MachineService).Assembly,
-//				typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
-				typeof(Repository.MachineRepository).Assembly,
-				typeof(Logic.Client.DynItemController).Assembly,
-				typeof(MachineController).Assembly);
-			Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+				typeof(Repository.MachineRepository).Assembly
+            );
 
-		    Dependency.Container.RegisterTypeScoped<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
-		    Dependency.Container.RegisterTypeScoped<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
+            //transient
 
-            Dependency.Container.RegisterTypesByNameScoped(
+		    Dependency.Container.RegisterTypesIncludingInternals(
+		        typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
+		        typeof(ServiceProxy.Logic.MachineService).Assembly,
+		        typeof(Logic.Client.DynItemController).Assembly,
+		        typeof(MachineController).Assembly);
+
+
+            Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
+		    Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
+
+            Dependency.Container.RegisterTypesByName(
                 n => n.EndsWith("ViewModel"),
                 typeof(ViewModels.MachineViewModel).Assembly,
                 typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);

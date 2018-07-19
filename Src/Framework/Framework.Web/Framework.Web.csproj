@@ -4,7 +4,7 @@
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>  
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
     <PackageReference Include="Unity">
       <Version>5.8.6</Version>

@@ -17,16 +17,58 @@
 */
 
 using System;
-using System.Xml;
 using Framework.Tools.Dependency;
 
 namespace Framework.Tools.Pattern
 {
-	public class FactoryResolve<T> : IFactory<T> where T : class
+    public sealed class ScopeResolve<T> : IScope<T>, IDisposable where T : class
+    {
+        private readonly IDependencyContainer _container;
+        private readonly T _instance;
+        private bool _isDisposed;
+
+        public ScopeResolve(IDependencyContainer container, T instance)
+        {
+            _container = container;
+            _instance = instance;
+        }
+
+        public T Instance
+        {
+            get
+            {
+                if (_isDisposed)
+                {
+                    throw new ObjectDisposedException("this", "Bad person.");
+                }
+                return _instance;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+            _isDisposed = true;
+            _container.Dispose();
+        }
+    }
+
+    public class FactoryResolve<T> : IFactory<T> where T : class
 	{
-	    public T Create()
+	    private readonly IDependencyContainer _container;
+
+	    public FactoryResolve()
 	    {
-            return Dependency.Dependency.Resolve<T>();
+	        _container = Dependency.Dependency.Container;
+	    }
+
+	    public IScope<T> Create()
+	    {
+	        var childContainer = _container.CreateChildContainer();
+	        return new ScopeResolve<T>(childContainer, childContainer.Resolve<T>());
 	    }
 	}
 }

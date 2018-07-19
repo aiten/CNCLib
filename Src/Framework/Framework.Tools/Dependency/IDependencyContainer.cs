@@ -24,7 +24,7 @@ namespace Framework.Tools.Dependency
     /// <summary>
     /// Inversion of Control container, which enables Dependency Injection. 
     /// </summary>
-    public interface IDependencyContainer
+    public interface IDependencyContainer : IDisposable
     {
         /// <summary>
         /// Registers the given object for the interface. 
@@ -59,6 +59,12 @@ namespace Framework.Tools.Dependency
         void ResetContainer();
 
         /// <summary>
+        /// Create a ChildContainer => see unity CreateChildContainer()
+        /// </summary>
+        /// <returns></returns>
+        IDependencyContainer CreateChildContainer();
+
+        /// <summary>
         /// Resolve an instance of the default requested type from the container. 
         /// </summary>
         /// <param name="t">Type for which a specific instance should be resolved</param>
@@ -70,5 +76,7 @@ namespace Framework.Tools.Dependency
         /// Gets an enumeration containing all types registered with the dependency container.
         /// </summary>
         IEnumerable<Type> RegisteredTypes { get; }
+
+
     }
 }
