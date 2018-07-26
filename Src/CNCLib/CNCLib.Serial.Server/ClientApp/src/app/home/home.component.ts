@@ -39,11 +39,9 @@ export class HomeComponent implements OnInit
 
     async ngOnInit(): Promise<void>
     {
-      /*
         this.appVersionInfo = await this.serivalServerService.getInfo();
         this.appVersion = this.appVersionInfo.Version;
         this.appName = this.appVersionInfo.Name;
         this.appCopyright = this.appVersionInfo.Copyright;
-      */
     }
 }
