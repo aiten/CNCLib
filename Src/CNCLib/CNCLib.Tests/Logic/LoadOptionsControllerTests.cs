@@ -43,7 +43,7 @@ namespace CNCLib.Tests.Logic
 		public async Task GetAllLoadOptions()
 		{
 			var rep = CreateMock<IDynItemController>();
-			var ctrl = new LoadOptionsController();
+			var ctrl = new LoadOptionsManager();
 
 			rep.GetAll(typeof(LoadOptions)).Returns(new DynItem[]
 			{
@@ -65,7 +65,7 @@ namespace CNCLib.Tests.Logic
 		public async Task GetLoadOptions()
 		{
 			var rep = CreateMock<IDynItemController>();
-			var ctrl = new LoadOptionsController();
+			var ctrl = new LoadOptionsManager();
 
 			rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
@@ -80,7 +80,7 @@ namespace CNCLib.Tests.Logic
 		public async Task GetLoadOptionsNull()
 		{
 			var rep = CreateMock<IDynItemController>();
-			var ctrl = new LoadOptionsController();
+			var ctrl = new LoadOptionsManager();
 
 			rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
@@ -94,7 +94,7 @@ namespace CNCLib.Tests.Logic
 		public async Task AddLoadOptions()
 		{
 			var rep = CreateMock<IDynItemController>();
-			var ctrl = new LoadOptionsController();
+			var ctrl = new LoadOptionsManager();
 
 			var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
@@ -107,7 +107,7 @@ namespace CNCLib.Tests.Logic
 		public async Task UpdateLoadOptions()
 		{
 			var rep = CreateMock<IDynItemController>();
-			var ctrl = new LoadOptionsController();
+			var ctrl = new LoadOptionsManager();
 
 			var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
@@ -120,7 +120,7 @@ namespace CNCLib.Tests.Logic
 		public async Task DeleteLoadOptions()
 		{
 			var rep = CreateMock<IDynItemController>();
-			var ctrl = new LoadOptionsController();
+			var ctrl = new LoadOptionsManager();
 
 			var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
 

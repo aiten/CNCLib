@@ -26,7 +26,7 @@ using Framework.Tools.Dependency;
 
 namespace CNCLib.Logic
 {
-    public class LoadOptionsController : ControllerBase, ILoadOptionsController
+    public class LoadOptionsManager : ControllerBase, ILoadOptionsManager
 	{
 		public async Task<IEnumerable<LoadOptions>> GetAll()
 		{

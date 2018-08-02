@@ -69,7 +69,7 @@ namespace CNCLib.WebAPI
                 typeof(ServiceProxy.Logic.MachineService).Assembly,
                 typeof(Repository.MachineRepository).Assembly,
                 typeof(Logic.Client.DynItemController).Assembly,
-                typeof(Logic.MachineController).Assembly);
+                typeof(Logic.MachineManager).Assembly);
 
             Dependency.Container.RegisterType<IRest<Logic.Contracts.DTO.Machine>, MachineRest>();
             Dependency.Container.RegisterType<IRest<Logic.Contracts.DTO.LoadOptions>, LoadInfoRest>();

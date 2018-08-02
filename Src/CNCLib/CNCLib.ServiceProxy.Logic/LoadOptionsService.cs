@@ -28,36 +28,36 @@ namespace CNCLib.ServiceProxy.Logic
 {
     public class LoadOptionsService : DisposeWrapper, ILoadOptionsService
 	{
-        public LoadOptionsService(ILoadOptionsController controller)
+        public LoadOptionsService(ILoadOptionsManager manager)
         {
-            _controller = controller ?? throw new ArgumentNullException();
+            _manager = manager ?? throw new ArgumentNullException();
         }
 
-        readonly ILoadOptionsController _controller;
+        readonly ILoadOptionsManager _manager;
 
 		public async Task<int> Add(LoadOptions value)
 		{
-			return await _controller.Add(value);
+			return await _manager.Add(value);
 		}
 
 		public async Task Delete(LoadOptions value)
 		{
-			await _controller.Delete(value);
+			await _manager.Delete(value);
 		}
 
 		public async Task<LoadOptions> Get(int id)
 		{
-			return await _controller.Get(id);
+			return await _manager.Get(id);
 		}
 
 		public async Task<IEnumerable<LoadOptions>> GetAll()
 		{
-			return await _controller.GetAll();
+			return await _manager.GetAll();
 		}
 
 		public async Task<int> Update(LoadOptions value)
 		{
-			return await _controller.Update(value);
+			return await _manager.Update(value);
 		}
 
         #region IDisposable Support

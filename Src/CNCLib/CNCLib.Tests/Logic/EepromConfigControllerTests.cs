@@ -48,7 +48,7 @@ namespace CNCLib.Tests.Logic
             //var itemEntity = new Item[0];
             //rep.Get().Returns(itemEntity);
 
-            var ctrl = new EepromConfigurationController();
+            var ctrl = new EepromConfigurationManager();
 
             var input = new EepromConfigurationInput
             {

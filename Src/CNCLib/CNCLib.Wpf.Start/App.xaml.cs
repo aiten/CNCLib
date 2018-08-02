@@ -65,7 +65,7 @@ namespace CNCLib.Wpf.Start
 //				typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
 				typeof(Repository.MachineRepository).Assembly,
 				typeof(Logic.Client.DynItemController).Assembly,
-				typeof(MachineController).Assembly);
+				typeof(MachineManager).Assembly);
 
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 

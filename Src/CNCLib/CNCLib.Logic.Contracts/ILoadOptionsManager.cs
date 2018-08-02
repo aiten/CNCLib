@@ -17,15 +17,11 @@
 */
 
 using System;
-using System.Threading.Tasks;
 using Framework.Contracts.Logic;
 
 namespace CNCLib.Logic.Contracts
 {
-    public interface IMachineController : IDisposable, ICUDController<DTO.Machine>
+    public interface ILoadOptionsManager : IDisposable, ICUDController<DTO.LoadOptions>
 	{
-		Task<DTO.Machine> DefaultMachine();
-		Task<int> GetDetaultMachine();
-		Task SetDetaultMachine(int defaultMachineID);
 	}
 }

@@ -28,12 +28,12 @@ using Framework.Contracts.Repository;
 
 namespace CNCLib.Logic
 {
-    public class ItemController : ControllerBase, IItemController
+    public class ItemManager : ControllerBase, IItemManager
     {
         private IUnitOfWork _unitOfWork;
         private IItemRepository _repository;
 
-        public ItemController(IUnitOfWork unitOfWork, IItemRepository repository)
+        public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository)
         {
             _unitOfWork = unitOfWork;
             _repository = repository;

@@ -26,16 +26,16 @@ namespace CNCLib.ServiceProxy.Logic
 {
     public class EepromConfigurationService : DisposeWrapper, IEepromConfigurationService
     {
-        public EepromConfigurationService(IEepromConfigurationController controller)
+        public EepromConfigurationService(IEepromConfigurationManager manager)
         {
-            _controller = controller ?? throw new ArgumentNullException();
+            _manager = manager ?? throw new ArgumentNullException();
         }
 
-        readonly IEepromConfigurationController _controller;
+        readonly IEepromConfigurationManager _manager;
 
         public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
         {
-            return await _controller.CalculateConfig(param);
+            return await _manager.CalculateConfig(param);
         }
 
         protected override void DisposeManaged()

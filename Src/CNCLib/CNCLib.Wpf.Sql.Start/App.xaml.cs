@@ -59,7 +59,7 @@ namespace CNCLib.Wpf.Sql.Start
 		        typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
 		        typeof(ServiceProxy.Logic.MachineService).Assembly,
 		        typeof(Logic.Client.DynItemController).Assembly,
-		        typeof(MachineController).Assembly);
+		        typeof(MachineManager).Assembly);
 
 
             Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();

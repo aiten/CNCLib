@@ -30,13 +30,13 @@ using Framework.Tools.Pattern;
 
 namespace CNCLib.Logic
 {
-    public class MachineController : ControllerBase, IMachineController
+    public class MachineManager : ControllerBase, IMachineManager
 	{
 	    private IUnitOfWork _unitOfWork;
 	    private IMachineRepository _repository;
 	    private IConfigurationRepository _repositoryConfig;
 
-        public MachineController(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig)
+        public MachineManager(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig)
 	    {
 	        _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
 	        _repository = repository ?? throw new ArgumentNullException(); ;

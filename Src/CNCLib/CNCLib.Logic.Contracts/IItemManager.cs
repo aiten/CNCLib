@@ -16,12 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Framework.Contracts.Logic;
 
 namespace CNCLib.Logic.Contracts
 {
-    public interface ILoadOptionsController : IDisposable, ICUDController<DTO.LoadOptions>
+    public interface IItemManager : ICUDController<DTO.Item>
 	{
+		Task<IEnumerable<DTO.Item>> GetByClassName(string classname);
 	}
 }

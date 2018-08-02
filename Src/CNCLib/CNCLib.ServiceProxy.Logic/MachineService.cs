@@ -27,51 +27,51 @@ namespace CNCLib.ServiceProxy.Logic
 {
     public class MachineService : DisposeWrapper, IMachineService
 	{
-        public MachineService(IMachineController controller)
+        public MachineService(IMachineManager manager)
         {
-            _controller = controller ?? throw new ArgumentNullException();
+            _manager = manager ?? throw new ArgumentNullException();
         }
 
-		readonly IMachineController _controller;
+		readonly IMachineManager _manager;
 
 		public async Task<int> Add(Machine value)
 		{
-			return await _controller.Add(value);
+			return await _manager.Add(value);
 		}
 
 		public async Task<Machine> DefaultMachine()
 		{
-			return await _controller.DefaultMachine();
+			return await _manager.DefaultMachine();
 		}
 
 		public async Task Delete(Machine value)
 		{
-			await _controller.Delete(value);
+			await _manager.Delete(value);
 		}
 
 		public async Task<Machine> Get(int id)
 		{
-			return await _controller.Get(id);
+			return await _manager.Get(id);
 		}
 
 		public async Task<IEnumerable<Machine>> GetAll()
 		{
-			return await _controller.GetAll();
+			return await _manager.GetAll();
 		}
 
 		public async Task<int> GetDetaultMachine()
 		{
-			return await _controller.GetDetaultMachine();
+			return await _manager.GetDetaultMachine();
 		}
 
 		public async Task SetDetaultMachine(int defaultMachineID)
 		{
-			await _controller.SetDetaultMachine(defaultMachineID);
+			await _manager.SetDetaultMachine(defaultMachineID);
 		}
 
 		public async Task<int> Update(Machine value)
 		{
-			return await _controller.Update(value);
+			return await _manager.Update(value);
 		}
 
         #region IDisposable Support

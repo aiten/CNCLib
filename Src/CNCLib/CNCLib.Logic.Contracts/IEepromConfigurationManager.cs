@@ -16,14 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
-using Framework.Contracts.Logic;
 
 namespace CNCLib.Logic.Contracts
 {
-    public interface IItemController : ICUDController<DTO.Item>
+    public interface IEepromConfigurationManager : IDisposable
 	{
-		Task<IEnumerable<DTO.Item>> GetByClassName(string classname);
+		Task<DTO.EepromConfiguration> CalculateConfig(DTO.EepromConfigurationInput param);
 	}
 }

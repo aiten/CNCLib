@@ -18,11 +18,14 @@
 
 using System;
 using System.Threading.Tasks;
+using Framework.Contracts.Logic;
 
 namespace CNCLib.Logic.Contracts
 {
-    public interface IEepromConfigurationController : IDisposable
+    public interface IMachineManager : IDisposable, ICUDController<DTO.Machine>
 	{
-		Task<DTO.EepromConfiguration> CalculateConfig(DTO.EepromConfigurationInput param);
+		Task<DTO.Machine> DefaultMachine();
+		Task<int> GetDetaultMachine();
+		Task SetDetaultMachine(int defaultMachineID);
 	}
 }

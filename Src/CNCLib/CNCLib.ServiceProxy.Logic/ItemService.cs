@@ -28,40 +28,40 @@ namespace CNCLib.ServiceProxy.Logic
 {
     public class ItemService : DisposeWrapper, IItemService
 	{
-        public ItemService(IItemController controller)
+        public ItemService(IItemManager manager)
         {
-            _controller = controller ?? throw new ArgumentNullException();
+            _manager = manager ?? throw new ArgumentNullException();
         }
 
-        readonly IItemController _controller;
+        readonly IItemManager _manager;
 
 		public async Task<int> Add(Item value)
 		{
-			return await _controller.Add(value);
+			return await _manager.Add(value);
 		}
 
 		public async Task Delete(Item value)
 		{
-			await _controller.Delete(value);
+			await _manager.Delete(value);
 		}
 
 		public async Task<Item> Get(int id)
 		{
-			return await _controller.Get(id);
+			return await _manager.Get(id);
 		}
 
 		public async Task<IEnumerable<Item>> GetAll()
 		{
-			return await _controller.GetAll();
+			return await _manager.GetAll();
 		}
 		public async Task<IEnumerable<Item>> GetByClassName(string classname)
 		{
-			return await _controller.GetByClassName(classname);
+			return await _manager.GetByClassName(classname);
 		}
 
 		public async Task<int> Update(Item value)
 		{
-			return await _controller.Update(value);
+			return await _manager.Update(value);
 		}
 
         #region IDisposable Support
