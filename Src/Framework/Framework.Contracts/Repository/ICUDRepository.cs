@@ -21,12 +21,14 @@ using System.Threading.Tasks;
 
 namespace Framework.Contracts.Repository
 {
-    public interface ICUDRepository<TEntry, TId>: IBaseRepository where TEntry : class
+    public interface ICUDRepository<TEntry, TKey>: IBaseRepository where TEntry : class
     {
         Task<IEnumerable<TEntry>> GetAll();
-        Task<TEntry> Get(TId id);
-        Task<TEntry> GetTracking(TId id);
-        void Add(TEntry period);
-        void Delete(TEntry period);
+        Task<TEntry> Get(TKey key);
+        Task<TEntry> GetTracking(TKey key);
+        void Add(TEntry entity);
+        void Delete(TEntry entity);
+
+        Task Store(TEntry item);
     }
 }

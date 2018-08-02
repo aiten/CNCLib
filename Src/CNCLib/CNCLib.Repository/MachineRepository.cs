@@ -18,12 +18,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using CNCLib.Repository.Contracts;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
+using CNCLib.Repository.Contracts;
 using Framework.EF;
-using Framework.Tools.Pattern;
+using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {

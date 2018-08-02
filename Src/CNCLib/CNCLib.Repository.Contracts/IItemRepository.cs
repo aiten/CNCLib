@@ -25,6 +25,5 @@ namespace CNCLib.Repository.Contracts
 	public interface IItemRepository: ICUDRepository<Entities.Item, int>
     {
 		Task<IEnumerable<Entities.Item>> Get(string typeidstring);
-		Task Store(Entities.Item item);
 	}
 }

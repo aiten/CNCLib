@@ -24,6 +24,5 @@ namespace CNCLib.Repository.Contracts
 	public interface IUserRepository: ICUDRepository<Entities.User, int>
     {
         Task<Entities.User> GetUser(string username);
-		Task Store(Entities.User u);
 	}
 }
