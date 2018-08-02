@@ -17,7 +17,7 @@
 */
 
 using System;
-using Framework.Logic.Contracts;
+using Framework.Contracts.Logic;
 using CNCLib.Logic.Contracts.DTO;
 using System.Threading.Tasks;
 

@@ -16,93 +16,58 @@
   http://www.gnu.org/licenses/
 */
 
+
 using System;
 using System.Threading.Tasks;
+using Framework.Contracts.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Framework.Tools.Pattern;
 
 namespace Framework.EF
 {
-    public class UnitOfWork<T> : IUnitOfWork where T : DbContext
-	{
-	    public UnitOfWork(T context)
-	    {
-	        Context = context;
-	    }
-
+    public class UnitOfWork<T>: IUnitOfWork where T: DbContext
+    {
         public T Context { get; private set; }
 
-		public async Task<int> SaveChangesAsync()
-		{
-			return await Context.SaveChangesAsync();
-		}
+        public UnitOfWork(T context)
+        {
+            Context = context;
+        }
 
-		public async Task<int> ExecuteSqlCommand(string sql)
-		{
-		    return await Context.Database.ExecuteSqlCommandAsync(sql);
-		}
+        public int SaveChanges()
+        {
+            return Context.SaveChanges();
+        }
 
-		public async Task<int> ExecuteSqlCommand(string sql, params object[] parameters)
-		{
-			return await Context.Database.ExecuteSqlCommandAsync(sql, parameters);
-		}
+        public async Task<int> SaveChangesAsync()
+        {
+            return await Context.SaveChangesAsync();
+        }
 
-        #region Dispose
+        public async Task<int> ExecuteSqlCommand(string sql)
+        {
+            return await Context.Database.ExecuteSqlCommandAsync(sql);
+        }
 
-        bool _disposed; 
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		public void Dispose(bool disposing)
-		{
-			if (_disposed)
-				return;
-
-			if (disposing)
-			{
-				if (InTransaction)
-					RollbackTransaction();
-
-				Context?.Dispose();
-			}
-
-			_disposed = true;
-			Context = null;
-		}
-
-        #endregion
-
+        public async Task<int> ExecuteSqlCommand(string sql, params object[] parameters)
+        {
+            return await Context.Database.ExecuteSqlCommandAsync(sql, parameters);
+        }
         #region Transaction
 
-        private IDbContextTransaction _dbTran;
+        public bool IsInTransaction { get; private set; }
 
-		public bool InTransaction => _dbTran != null;
+        public ITransaction BeginTransaction()
+        {
+            if (IsInTransaction) throw new ArgumentException();
+            IsInTransaction = true;
+            return new Transaction(this, Context.Database.BeginTransaction());
+        }
 
-	    public void BeginTransaction()
-		{
-			if (InTransaction) throw new ArgumentException();
-			_dbTran = Context.Database.BeginTransaction();
-		}
+        public void FinishTransaction(ITransaction trans)
+        {
+            IsInTransaction = false;
+        }
 
-		public void CommitTransaction()
-		{
-			if (InTransaction==false) throw new ArgumentException();
-			_dbTran.Commit();
-			_dbTran = null;
-		}
-
-		public void RollbackTransaction()
-		{
-			if (InTransaction==false) throw new ArgumentException();
-			_dbTran.Rollback();
-			_dbTran = null;
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }

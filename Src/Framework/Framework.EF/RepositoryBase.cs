@@ -24,11 +24,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Framework.EF
 {
-    public abstract class RestRepositoryBase<TDbContext, TEntity> : RepositoryBase<TDbContext, TEntity>
+    public abstract class CUDRepositoryBase<TDbContext, TEntity> : RepositoryBase<TDbContext, TEntity>
         where TDbContext : DbContext
         where TEntity : class
     {
-        protected RestRepositoryBase(TDbContext dbContext) : base(dbContext)
+        protected CUDRepositoryBase(TDbContext dbContext) : base(dbContext)
         {
         }
     }

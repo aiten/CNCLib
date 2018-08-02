@@ -42,8 +42,8 @@ namespace CNCLib.Tests.Repository
         public async Task GetEmptyConfiguration()
         {
             using (var ctx = new CNCLibContext())
-            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new ConfigurationRepository(ctx);
                 var entity = await rep.Get("Test","Test");
 				entity.Should().BeNull();
@@ -54,8 +54,8 @@ namespace CNCLib.Tests.Repository
 		public async Task SaveConfiguration()
 		{
 		    using (var ctx = new CNCLibContext())
-		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
-            {
+		    {
+		        var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new ConfigurationRepository(ctx);
                 await rep.Save(new Configuration("Test", "TestNew1", "Content"));
 				await uow.SaveChangesAsync();
@@ -68,8 +68,8 @@ namespace CNCLib.Tests.Repository
 			await WriteConfiguration("Test", "TestNew2", "Content2");
 
             using (var ctx = new CNCLibContext())
-            using (var uowread = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var uowread = new UnitOfWork<CNCLibContext>(ctx);
                 var repread = new ConfigurationRepository(ctx);
                 var read = await repread.Get("Test", "TestNew2");
                 read.Value.Should().Be("Content2");
@@ -83,8 +83,8 @@ namespace CNCLib.Tests.Repository
 			await WriteConfiguration("Test", "TestNew3", "Content3");
 
 		    using (var ctx = new CNCLibContext())
-		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
-            {
+		    {
+		        var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new ConfigurationRepository(ctx);
 				var read = await rep.Get("Test", "TestNew3");
 				read.Value.Should().Be("Content3");
@@ -105,8 +105,8 @@ namespace CNCLib.Tests.Repository
 			await WriteConfiguration("Test", "TestNew4", "Content5");
 
 		    using (var ctx = new CNCLibContext())
-		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
-            {
+		    {
+		        var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new ConfigurationRepository(ctx);
 				var readagain = await rep.Get("Test", "TestNew4");
 				readagain.Value.Should().Be("Content5");
@@ -116,8 +116,8 @@ namespace CNCLib.Tests.Repository
         private static async Task WriteConfiguration(string module, string name, string content)
         {
             using (var ctx = new CNCLibContext())
-            using (var uowwrite = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var uowwrite = new UnitOfWork<CNCLibContext>(ctx);
                 var repwrite = new ConfigurationRepository(ctx);
 				await repwrite.Save(new Configuration(module,name,content));
 				await uowwrite.SaveChangesAsync();

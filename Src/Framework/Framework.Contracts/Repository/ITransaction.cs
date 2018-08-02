@@ -18,14 +18,11 @@
 
 using System;
 using System.Threading.Tasks;
-using Framework.Contracts.Logic;
 
-namespace CNCLib.Logic.Contracts
+namespace Framework.Contracts.Repository
 {
-    public interface IMachineController : IDisposable, IRestController<DTO.Machine>
-	{
-		Task<DTO.Machine> DefaultMachine();
-		Task<int> GetDetaultMachine();
-		Task SetDetaultMachine(int defaultMachineID);
-	}
+    public interface ITransaction : IDisposable
+    {
+        Task CommitTransactionAsync();
+    }
 }

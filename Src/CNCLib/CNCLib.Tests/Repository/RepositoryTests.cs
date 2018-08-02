@@ -24,6 +24,7 @@ using Framework.EF;
 using System.Linq;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
+using Framework.Contracts.Repository;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using Microsoft.EntityFrameworkCore;

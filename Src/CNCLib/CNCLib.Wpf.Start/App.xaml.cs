@@ -29,6 +29,7 @@ using CNCLib.Logic.Contracts;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.ServiceProxy;
+using Framework.Contracts.Repository;
 using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
@@ -58,7 +59,7 @@ namespace CNCLib.Wpf.Start
 
 		    Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
 
-		    Dependency.Container.RegisterTypesIncludingInternalsScoped(
+		    Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
 				typeof(ServiceProxy.Logic.MachineService).Assembly,
 //				typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
@@ -68,10 +69,10 @@ namespace CNCLib.Wpf.Start
 
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-		    Dependency.Container.RegisterTypeScoped<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
-		    Dependency.Container.RegisterTypeScoped<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
+		    Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
+		    Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
 
-            Dependency.Container.RegisterTypesByNameScoped(
+            Dependency.Container.RegisterTypesByName(
                 n => n.EndsWith("ViewModel"),
                 typeof(ViewModels.MachineViewModel).Assembly,
                 typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);

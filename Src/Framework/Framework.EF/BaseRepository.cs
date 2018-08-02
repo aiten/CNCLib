@@ -16,13 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using Framework.Tools.Pattern;
 using Microsoft.EntityFrameworkCore;
 
-namespace Framework.EF1
+namespace Framework.EF
 {
     /// <summary>
     /// </summary>

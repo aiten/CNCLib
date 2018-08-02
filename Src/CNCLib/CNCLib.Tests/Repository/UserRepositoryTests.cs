@@ -43,8 +43,8 @@ namespace CNCLib.Tests.Repository
         public async Task QueryAllUsers()
         {
             using (var ctx = new CNCLibContext())
-            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
                 var users = await rep.GetUsers();
 				users.Length.Should().BeGreaterOrEqualTo(2);
@@ -55,8 +55,8 @@ namespace CNCLib.Tests.Repository
 		public async Task QueryOneUserFound()
 		{
 		    using (var ctx = new CNCLibContext())
-		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
                 var users = await rep.GetUser(1);
 				users.UserID.Should().Be(1);
@@ -67,8 +67,8 @@ namespace CNCLib.Tests.Repository
         public async Task QueryOneUserByNameFound()
         {
             using (var ctx = new CNCLibContext())
-            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
                 var users = await rep.GetUser(1);
                 users.UserID.Should().Be(1);
@@ -82,8 +82,8 @@ namespace CNCLib.Tests.Repository
 		public async Task QueryOneUserNotFound()
 		{
 		    using (var ctx = new CNCLibContext())
-		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
                 var users = await rep.GetUser(1000);
 				users.Should().BeNull();
@@ -94,8 +94,8 @@ namespace CNCLib.Tests.Repository
         public async Task QueryOneUserByNameNotFound()
         {
             using (var ctx = new CNCLibContext())
-            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
                 var users = await rep.GetUser("UserNotExist");
                 users.Should().BeNull();
@@ -106,8 +106,8 @@ namespace CNCLib.Tests.Repository
 		public async Task AddOneUser()
 		{
 		    using (var ctx = new CNCLibContext())
-		    using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
                 var user = CreateUser("AddOneUser");
 				await rep.Store(user);
@@ -134,8 +134,8 @@ namespace CNCLib.Tests.Repository
             int id;
 
            using (var ctx = new CNCLibContext())
-           using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
                 await rep.Store(user);
 				await uow.SaveChangesAsync();
@@ -157,8 +157,8 @@ namespace CNCLib.Tests.Repository
             int id;
 
             using (var ctx = new CNCLibContext())
-            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
                 await rep.Store(user);
 				await uow.SaveChangesAsync();
@@ -172,8 +172,8 @@ namespace CNCLib.Tests.Repository
         private static async Task<User> ReadUser(int id)
         {
             using (var ctx = new CNCLibContext())
-            using (var uow = new UnitOfWork<CNCLibContext>(ctx))
             {
+                var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
                 return await rep.GetUser(id);
             }

@@ -11,6 +11,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Framework.Contracts\Framework.Contracts.csproj" />
     <ProjectReference Include="..\Framework.Tools\Framework.Tools.csproj">
     </ProjectReference>
   </ItemGroup>

@@ -19,7 +19,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Framework.Logic.Contracts
+namespace Framework.Contracts.Logic
 {
 	public interface IRestController<T>
 	{

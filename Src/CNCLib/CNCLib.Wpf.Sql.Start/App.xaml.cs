@@ -25,6 +25,7 @@ using CNCLib.GCode.GUI;
 using CNCLib.Logic;
 using CNCLib.Repository.Context;
 using CNCLib.ServiceProxy;
+using Framework.Contracts.Repository;
 using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
@@ -48,7 +49,7 @@ namespace CNCLib.Wpf.Sql.Start
 		    Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
 		    Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-            Dependency.Container.RegisterTypesIncludingInternalsScoped(
+            Dependency.Container.RegisterTypesIncludingInternals(
 				typeof(Repository.MachineRepository).Assembly
             );
 

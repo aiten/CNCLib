@@ -23,6 +23,7 @@ using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Converter;
 using CNCLib.Repository.Contracts;
+using Framework.Contracts.Repository;
 using Framework.Logic;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;

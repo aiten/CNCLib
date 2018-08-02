@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Framework.Logic;
 using CNCLib.Repository.Contracts;
 using CNCLib.Logic.Converter;
@@ -25,7 +26,7 @@ using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
-using System.Threading.Tasks;
+using Framework.Contracts.Repository;
 
 namespace CNCLib.Logic
 {
@@ -64,39 +65,31 @@ namespace CNCLib.Logic
 
 		public async Task<int> Add(Item item)
 		{
-		    try
-		    {
-		        _unitOfWork.BeginTransaction();
-		        var me = item.Convert();
-		        me.ItemID = 0;
-		        foreach (var mc in me.ItemProperties) mc.ItemID = 0;
-		        await _repository.Store(me);
-		        await _unitOfWork.SaveChangesAsync();
-		        _unitOfWork.CommitTransaction();
-		        return me.ItemID;
-		    }
-		    catch (Exception)
-		    {
-		        _unitOfWork.RollbackTransaction();
-		        throw;
-		    }
+            using (var trans = _unitOfWork.BeginTransaction())
+            {
+                ;
+                var me = item.Convert();
+                me.ItemID = 0;
+                foreach (var mc in me.ItemProperties) mc.ItemID = 0;
+                await _repository.Store(me);
+                await _unitOfWork.SaveChangesAsync();
+                await trans.CommitTransactionAsync();
+
+                return me.ItemID;
+            }
         }
 
 		public async Task<int> Update(Item item)
 		{
-		    try
+		    using (var trans = _unitOfWork.BeginTransaction())
 		    {
-		        _unitOfWork.BeginTransaction();
+                _unitOfWork.BeginTransaction();
 				var me = item.Convert();
 				await _repository.Store(me);
 				await _unitOfWork.SaveChangesAsync();
-		        _unitOfWork.CommitTransaction();
+		        await trans.CommitTransactionAsync();
+
 		        return me.ItemID;
-		    }
-		    catch (Exception)
-		    {
-		        _unitOfWork.RollbackTransaction();
-		        throw;
 		    }
 		}
 

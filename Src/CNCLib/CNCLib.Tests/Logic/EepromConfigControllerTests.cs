@@ -35,7 +35,7 @@ namespace CNCLib.Tests.Logic
             var rep = Substitute.For<TInterface>();
             Dependency.Container.RegisterInstance(rep);
 
-            Dependency.Container.RegisterType<Framework.Tools.Pattern.IUnitOfWork, Framework.EF.UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
+            Dependency.Container.RegisterType<Framework.Contracts.Repository.IUnitOfWork, Framework.EF.UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
             return rep;
         }
 

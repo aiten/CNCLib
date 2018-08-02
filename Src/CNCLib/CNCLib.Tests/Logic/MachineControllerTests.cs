@@ -27,6 +27,7 @@ using Framework.Tools.Dependency;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts;
 using FluentAssertions;
+using Framework.Contracts.Repository;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Tests.Logic

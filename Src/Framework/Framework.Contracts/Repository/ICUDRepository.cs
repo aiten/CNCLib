@@ -16,16 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Framework.Contracts.Logic;
 
-namespace CNCLib.Logic.Contracts
+namespace Framework.Contracts.Repository
 {
-    public interface IMachineController : IDisposable, IRestController<DTO.Machine>
-	{
-		Task<DTO.Machine> DefaultMachine();
-		Task<int> GetDetaultMachine();
-		Task SetDetaultMachine(int defaultMachineID);
-	}
+    public interface ICUDRepository<TEntry, TId> where TEntry : class
+    {
+        Task<IEnumerable<TEntry>> GetAll();
+        Task<TEntry> Get(TId id);
+        Task<TEntry> GetTracking(TId id);
+        void Add(TEntry period);
+        void Delete(TEntry period);
+    }
 }

@@ -16,24 +16,23 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Threading.Tasks;
 
-namespace Framework.Tools.Pattern
+namespace Framework.Contracts.Repository
 {
-	public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
-		Task<int> SaveChangesAsync();
+        Task<int> SaveChangesAsync();
+        
+        // SQL Commands
 
-		// SQL Commands
+        Task<int> ExecuteSqlCommand(string sql);
+        Task<int> ExecuteSqlCommand(string sql, params object[] parameters);
+        
+        // Transaction
 
-		Task<int> ExecuteSqlCommand(string sql);
-		Task<int> ExecuteSqlCommand(string sql, params object[] parameters);
-
-		// Transaction
-
-		void BeginTransaction();
-		void CommitTransaction();
-		void RollbackTransaction();
+        bool IsInTransaction { get; }
+        ITransaction BeginTransaction();
+        void FinishTransaction(ITransaction trans);     // called by ITransaction to track nested transactions, must not be called directly
     }
 }

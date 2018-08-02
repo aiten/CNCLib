@@ -18,7 +18,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Framework.Logic.Contracts;
+using Framework.Contracts.Logic;
 
 namespace CNCLib.Logic.Contracts
 {

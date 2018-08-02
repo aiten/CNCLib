@@ -20,6 +20,7 @@ using AutoMapper;
 using CNCLib.Logic;
 using CNCLib.Repository.Context;
 using CNCLib.WebAPI.Controllers;
+using Framework.Contracts.Repository;
 using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
@@ -62,17 +63,17 @@ namespace CNCLib.WebAPI
             Dependency.Initialize(new AspNetDependencyProvider(services));
 
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
+            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<Repository.Context.CNCLibContext>>();
 
-            Dependency.Container.RegisterTypesIncludingInternalsScoped(
+            Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(ServiceProxy.Logic.MachineService).Assembly,
                 typeof(Repository.MachineRepository).Assembly,
                 typeof(Logic.Client.DynItemController).Assembly,
                 typeof(Logic.MachineController).Assembly);
-            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<Repository.Context.CNCLibContext>>();
 
-            Dependency.Container.RegisterTypeScoped<IRest<Logic.Contracts.DTO.Machine>, MachineRest>();
-            Dependency.Container.RegisterTypeScoped<IRest<Logic.Contracts.DTO.LoadOptions>, LoadInfoRest>();
-            Dependency.Container.RegisterTypeScoped<IRest<Logic.Contracts.DTO.Item>, ItemRest>();
+            Dependency.Container.RegisterType<IRest<Logic.Contracts.DTO.Machine>, MachineRest>();
+            Dependency.Container.RegisterType<IRest<Logic.Contracts.DTO.LoadOptions>, LoadInfoRest>();
+            Dependency.Container.RegisterType<IRest<Logic.Contracts.DTO.Item>, ItemRest>();
 
             var config = new MapperConfiguration(cfg =>
             {
