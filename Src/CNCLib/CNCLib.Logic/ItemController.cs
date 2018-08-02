@@ -24,8 +24,6 @@ using CNCLib.Repository.Contracts;
 using CNCLib.Logic.Converter;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
 using Framework.Contracts.Repository;
 
 namespace CNCLib.Logic
@@ -43,7 +41,7 @@ namespace CNCLib.Logic
 
         public async Task<IEnumerable<Item>> GetAll()
 		{
-			return Convert(await _repository.Get());
+			return Convert(await _repository.GetAll());
 		}
 
 		public async Task<IEnumerable<Item>> GetByClassName(string classname)
@@ -59,7 +57,7 @@ namespace CNCLib.Logic
 
 		public async Task Delete(Item item)
 		{
-			await _repository.Delete(item.Convert());
+			_repository.Delete(item.Convert());
 			await _unitOfWork.SaveChangesAsync();
 		}
 
@@ -99,7 +97,7 @@ namespace CNCLib.Logic
 			return dto;
 		}
 
-		private static IEnumerable<Item> Convert(Repository.Contracts.Entities.Item[] items)
+		private static IEnumerable<Item> Convert(IEnumerable<Repository.Contracts.Entities.Item> items)
 		{
 			var l = new List<Item>();
 			foreach (var i in items)

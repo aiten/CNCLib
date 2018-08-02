@@ -17,14 +17,15 @@
 */
 
 using System.Threading.Tasks;
-using Framework.Tools.Pattern;
+using Framework.Contracts.Repository;
 
 namespace CNCLib.Repository.Contracts
 {
 	public interface IConfigurationRepository : IBaseRepository
     {
 		Task<Entities.Configuration> Get(string group, string name);
-		Task Delete(Entities.Configuration configuration);
+        void Add(Entities.Configuration configuration);
+		void Delete(Entities.Configuration configuration);
 		Task Save(Entities.Configuration configuration);
 	}
 }

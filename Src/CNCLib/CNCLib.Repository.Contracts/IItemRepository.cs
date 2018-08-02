@@ -16,17 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Framework.Tools.Pattern;
+using Framework.Contracts.Repository;
 
 namespace CNCLib.Repository.Contracts
 {
-	public interface IItemRepository: IBaseRepository
-	{
-		Task<Entities.Item[]> Get();
-		Task<Entities.Item[]> Get(string typeidstring);
-		Task<Entities.Item> Get(int id);
-		Task Delete(Entities.Item item);
+	public interface IItemRepository: ICUDRepository<Entities.Item, int>
+    {
+		Task<IEnumerable<Entities.Item>> Get(string typeidstring);
 		Task Store(Entities.Item item);
 	}
 }

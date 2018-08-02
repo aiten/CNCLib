@@ -94,12 +94,12 @@ namespace Framework.EF
             Context.Entry(entity).State = EntityState.Modified;
         }
 
-        protected void Add<TEntity>(TEntity entity) where TEntity : class
+        protected void AddEntity<TEntity>(TEntity entity) where TEntity : class
         {
             Context.Entry(entity).State = EntityState.Added;
         }
 
-        protected void Delete<TEntity>(TEntity entity) where TEntity : class
+        protected void DeleteEntity<TEntity>(TEntity entity) where TEntity : class
         {
             Context.Entry(entity).State = EntityState.Deleted;
         }
@@ -112,7 +112,7 @@ namespace Framework.EF
 
         public void Sync<TEntity>(ICollection<TEntity> inDb, ICollection<TEntity> toDb, Func<TEntity, TEntity, bool> predicate) where TEntity : class
         {
-            // 1. Delete from DB (in DB) and update
+            // 1. DeleteEntity from DB (in DB) and update
             var delete = new List<TEntity>();
 
             foreach (TEntity entityInDb in inDb)
@@ -130,17 +130,17 @@ namespace Framework.EF
 
             foreach (var del in delete)
             {
-                Delete(del);
+                DeleteEntity(del);
             }
 
-            // 2. Add To DB
+            // 2. AddEntity To DB
 
             foreach (TEntity entityToDb in toDb)
             {
                 var entityInDb = inDb.FirstOrDefault(x => predicate(x, entityToDb));
                 if (entityInDb == null || predicate(entityToDb, entityInDb) == false)
                 {
-                    Add(entityToDb);
+                    AddEntity(entityToDb);
                 }
             }
         }

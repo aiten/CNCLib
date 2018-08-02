@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Contracts.Repository
 {
-    public interface ICUDRepository<TEntry, TId> where TEntry : class
+    public interface ICUDRepository<TEntry, TId>: IBaseRepository where TEntry : class
     {
         Task<IEnumerable<TEntry>> GetAll();
         Task<TEntry> Get(TId id);

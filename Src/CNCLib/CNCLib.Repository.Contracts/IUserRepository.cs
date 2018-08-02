@@ -16,17 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Contracts.Repository;
 using System.Threading.Tasks;
-using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository.Contracts
 {
-	public interface IUserRepository: IBaseRepository
-	{
-		Task<Entities.User[]> GetUsers();
-		Task<Entities.User> GetUser(int id);
+	public interface IUserRepository: ICUDRepository<Entities.User, int>
+    {
         Task<Entities.User> GetUser(string username);
-        Task Delete(Entities.User u);
 		Task Store(Entities.User u);
 	}
 }

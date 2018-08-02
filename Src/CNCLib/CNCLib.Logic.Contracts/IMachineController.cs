@@ -22,7 +22,7 @@ using Framework.Contracts.Logic;
 
 namespace CNCLib.Logic.Contracts
 {
-    public interface IMachineController : IDisposable, IRestController<DTO.Machine>
+    public interface IMachineController : IDisposable, ICUDController<DTO.Machine>
 	{
 		Task<DTO.Machine> DefaultMachine();
 		Task<int> GetDetaultMachine();

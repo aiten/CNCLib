@@ -70,7 +70,7 @@ namespace CNCLib.Tests.Logic
 		    var ctrl = new MachineController(unitOfWork, rep, repC);
 
             var machineEntity1 = new Machine { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
-			rep.GetMachine(1).Returns(machineEntity1);
+			rep.Get(1).Returns(machineEntity1);
 
 			var machine = await ctrl.Get(1);
 			machine.Name = "SuperMaxi";
@@ -91,15 +91,15 @@ namespace CNCLib.Tests.Logic
 		    var ctrl = new MachineController(unitOfWork, rep, repC);
 
             var machineEntity1 = new Machine { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
-			rep.GetMachine(1).Returns(machineEntity1);
+			rep.Get(1).Returns(machineEntity1);
 
 			var machine = await ctrl.Get(1);
 			machine.Name = "SuperMaxi";
 
 			await ctrl.Delete(machine);
 
-			await rep.Received().Delete(Arg.Is<Machine>(x => x.Name == "SuperMaxi"));
-			await rep.Received().Delete(Arg.Is<Machine>(x => x.MachineID == 11));
+			rep.Received().Delete(Arg.Is<Machine>(x => x.Name == "SuperMaxi"));
+			rep.Received().Delete(Arg.Is<Machine>(x => x.MachineID == 11));
 		}
 
 		[TestMethod]
@@ -112,7 +112,7 @@ namespace CNCLib.Tests.Logic
 		    var ctrl = new MachineController(unitOfWork, rep, repC);
 
             var machineEntity = new Machine[0];
-			rep.GetMachines().Returns(machineEntity);
+			rep.GetAll().Returns(machineEntity);
 
 			var machines = (await ctrl.GetAll()).ToArray();
 			machines.Length.Should().Be(0);
@@ -128,7 +128,7 @@ namespace CNCLib.Tests.Logic
 		    var ctrl = new MachineController(unitOfWork, rep, repC);
 
             var machineEntity = new [] { new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] } };
-			rep.GetMachines().Returns(machineEntity);
+			rep.GetAll().Returns(machineEntity);
 
 			var machines = (await ctrl.GetAll()).ToArray();
 			machines.Length.Should().Be(1);
@@ -158,7 +158,7 @@ namespace CNCLib.Tests.Logic
 								MachineInitCommands = new [] { new MachineInitCommand { MachineID =2,MachineInitCommandID=1,SeqNo=0,CommandString="f"  } } }
 			};
 
-			rep.GetMachines().Returns(machineEntity);
+			rep.GetAll().Returns(machineEntity);
 
 			var machines = (await ctrl.GetAll()).ToArray();
 			machines.Length.Should().Be(2);
@@ -186,8 +186,8 @@ namespace CNCLib.Tests.Logic
 
             var machineEntity1 = new Machine { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			var machineEntity2 = new Machine { MachineID = 2, Name = "Mini", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
-			rep.GetMachine(1).Returns(machineEntity1);
-			rep.GetMachine(2).Returns(machineEntity2);
+			rep.Get(1).Returns(machineEntity1);
+			rep.Get(2).Returns(machineEntity2);
 
 			var machine = await ctrl.Get(1);
 			machineEntity1.Name.Should().Be(machine.Name);
@@ -209,8 +209,8 @@ namespace CNCLib.Tests.Logic
 
             var machineEntity1 = new Machine { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
 			var machineEntity2 = new Machine { MachineID = 2, Name = "Mini", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
-			rep.GetMachine(1).Returns(machineEntity1);
-			rep.GetMachine(2).Returns(machineEntity2);
+			rep.Get(1).Returns(machineEntity1);
+			rep.Get(2).Returns(machineEntity2);
 
 			var machine = await ctrl.Get(3);
 			machine.Should().BeNull();

@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,33 +32,48 @@ namespace CNCLib.Repository
         {
         }
 
-        public async Task<Contracts.Entities.User[]> GetUsers()
+        #region CUD
+
+        public async Task<IEnumerable<Contracts.Entities.User>> GetAll()
 		{
-            return await Context.Users.
-                ToArrayAsync();
+            return await Query.
+                ToListAsync();
 		}
 
-		public async Task<Contracts.Entities.User> GetUser(int id)
+		public async Task<Contracts.Entities.User> Get(int id)
         {
-			return await Context.Users.
+			return await Query.
 				Where(m => m.UserID == id).
 				FirstOrDefaultAsync();
         }
 
-        public async Task<Contracts.Entities.User> GetUser(string username)
-        {
-            return await Context.Users.
-                Where(m => m.UserName == username).
-                FirstOrDefaultAsync();
-        }
+	    public async Task<Contracts.Entities.User> GetTracking(int id)
+	    {
+	        return await TrackingQuery.
+	            Where(m => m.UserID == id).
+	            FirstOrDefaultAsync();
+	    }
 
-        public async Task Delete(Contracts.Entities.User user)
+        public void Add(Contracts.Entities.User user)
+	    {
+	        AddEntity(user);
+	    }
+
+        public void Delete(Contracts.Entities.User user)
         {
-			base.Delete(user);
-			await Task.FromResult(0);
+			DeleteEntity(user);
 		}
 
-		public async Task Store(Contracts.Entities.User user)
+        #endregion
+
+	    public async Task<Contracts.Entities.User> GetUser(string username)
+	    {
+	        return await Query.
+	            Where(m => m.UserName == username).
+	            FirstOrDefaultAsync();
+	    }
+
+        public async Task Store(Contracts.Entities.User user)
 		{
 			// search und update User
 
@@ -71,7 +87,7 @@ namespace CNCLib.Repository
 			{
 				// add new
 
-				Add(user);
+				AddEntity(user);
 			}
 			else
 			{
@@ -82,40 +98,5 @@ namespace CNCLib.Repository
 				// search und update Usercommands (add and delete)
 			}
 		}
-
-		#region IDisposable Support
-		private bool disposedValue = false; // To detect redundant calls
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!disposedValue)
-			{
-				if (disposing)
-				{
-					// TODO: dispose managed state (managed objects).
-				}
-
-				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-				// TODO: set large fields to null.
-
-				disposedValue = true;
-			}
-		}
-
-		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-		// ~UserRepository() {
-		//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-		//   Dispose(false);
-		// }
-
-		// This code added to correctly implement the disposable pattern.
-		public void Dispose()
-		{
-			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-			Dispose(true);
-			// TODO: uncomment the following line if the finalizer is overridden above.
-			// GC.SuppressFinalize(this);
-		}
-		#endregion
 	}
 }

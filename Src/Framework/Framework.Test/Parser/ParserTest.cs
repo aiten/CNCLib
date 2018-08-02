@@ -106,7 +106,7 @@ namespace Framework.Test.Parser
 
         #endregion
 
-        #region Add/Sub/Mul/Div
+        #region AddEntity/Sub/Mul/Div
 
         [TestMethod]
         public void ParserAdd()

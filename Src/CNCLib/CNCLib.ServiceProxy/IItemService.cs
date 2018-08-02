@@ -24,7 +24,7 @@ using Framework.Contracts.Logic;
 
 namespace CNCLib.ServiceProxy
 {
-	public interface IItemService : IDisposable, IRestController<Item>
+	public interface IItemService : IDisposable, ICUDController<Item>
 	{
 		Task<IEnumerable<Item>> GetByClassName(string classname);
 	}

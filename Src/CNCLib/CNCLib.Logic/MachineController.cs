@@ -45,7 +45,7 @@ namespace CNCLib.Logic
 
         public async Task<IEnumerable<Machine>> GetAll()
 		{
-			var machines = await _repository.GetMachines();
+			var machines = await _repository.GetAll();
 			var l = new List<Machine>();
 			foreach (var m in machines)
 			{
@@ -56,14 +56,14 @@ namespace CNCLib.Logic
 
         public async Task<Machine> Get(int id)
         {
-			var machine = await _repository.GetMachine(id);
+			var machine = await _repository.Get(id);
 			var dto = machine?.Convert();
 			return dto;
 		}
 
 		public async Task Delete(Machine m)
         {
-			await _repository.Delete(m.Convert());
+			_repository.Delete(m.Convert());
 			await _unitOfWork.SaveChangesAsync();
 		}
 

@@ -33,28 +33,32 @@ namespace CNCLib.Repository
 
         public async Task<Contracts.Entities.Configuration> Get(string group, string  name)
         {
-			return await Context.Configurations.Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
+			return await Query.Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
         }
 
-		public async Task Delete(Contracts.Entities.Configuration configuration)
+		public void Delete(Contracts.Entities.Configuration configuration)
         {
-			base.Delete(configuration);
-			await Task.FromResult(0);
+			DeleteEntity(configuration);
         }
 
+	    public void Add(Contracts.Entities.Configuration configuration)
+	    {
+	        AddEntity(configuration);
+	    }
 
-		public async Task Save(Contracts.Entities.Configuration configuration)
+
+        public async Task Save(Contracts.Entities.Configuration configuration)
 		{
 			// search und update machine
 
-			var cInDb = await Context.Configurations.Where(c => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
+			var cInDb = await TrackingQuery.Where(c => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
 
 			if (cInDb == default(Contracts.Entities.Configuration))
 			{
 				// add new
 
 				cInDb = configuration;
-				Add(cInDb);
+				AddEntity(cInDb);
 			}
 			else
 			{

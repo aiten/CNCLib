@@ -89,7 +89,7 @@ namespace CNCLib.Tests.Repository
 				var read = await rep.Get("Test", "TestNew3");
 				read.Value.Should().Be("Content3");
 
-				await rep.Delete(read);
+				rep.Delete(read);
 
 				await uow.SaveChangesAsync();
 

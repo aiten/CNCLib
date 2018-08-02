@@ -32,41 +32,53 @@ namespace CNCLib.Repository
         {
         }
 
-        public async Task<Contracts.Entities.Item[]> Get()
+        #region CUD
+
+        public async Task<IEnumerable<Contracts.Entities.Item>> GetAll()
 		{
-			return await Context.Items.
+			return await Query.
 				Include(d => d.ItemProperties).
-                AsNoTracking().
-				ToArrayAsync();
+				ToListAsync();
 		}
 
-		public async Task<Contracts.Entities.Item[]> Get(string typeidstring)
+	    public async Task<Contracts.Entities.Item> Get(int id)
+	    {
+	        return await Query.
+	            Where(m => m.ItemID == id).
+	            Include(d => d.ItemProperties).
+	            FirstOrDefaultAsync();
+	    }
+
+	    public async Task<Contracts.Entities.Item> GetTracking(int id)
+	    {
+	        return await TrackingQuery.
+	            Where(m => m.ItemID == id).
+	            Include(d => d.ItemProperties).
+	            FirstOrDefaultAsync();
+	    }
+
+        public async Task<IEnumerable<Contracts.Entities.Item>> Get(string typeidstring)
 		{
-			return await Context.Items.
-				Where(m => m.ClassName == typeidstring).
+			return await Query.
+                Where(m => m.ClassName == typeidstring).
 				Include(d => d.ItemProperties).
-			    AsNoTracking().
-				ToArrayAsync();
+			    ToListAsync();
 		}
 
-		public async Task<Contracts.Entities.Item> Get(int id)
-        {
-			return await Context.Items.
-				Where(m => m.ItemID == id).
-				Include(d => d.ItemProperties).
-			    AsNoTracking().
-				FirstOrDefaultAsync();
-        }
+	    public void Add(Contracts.Entities.Item e)
+	    {
+	        AddEntity(e);
+	    }
 
-		public async Task Delete(Contracts.Entities.Item e)
-        {
-			e.ItemProperties = null;
-			base.Delete(e);
-			await Task.FromResult(0);
-			// Uow.ExecuteSqlCommand("delete from ItemProperty where ItemID = " + e.ItemID); => delete cascade
-		}
+        public void Delete(Contracts.Entities.Item e)
+	    {
+	        e.ItemProperties = null;
+	        DeleteEntity(e);
+	    }
 
-		public async Task Store(Contracts.Entities.Item item)
+        #endregion
+
+	    public async Task Store(Contracts.Entities.Item item)
 		{
 			// search und update item / itemproperties
 
@@ -81,9 +93,9 @@ namespace CNCLib.Repository
 			if (itemInDb == default(Contracts.Entities.Item))
 			{
                 // add new
-				Add(item);
+				AddEntity(item);
 			    foreach (var iv in optValues)
-			        Add(iv);
+			        AddEntity(iv);
 
             }
             else
@@ -100,40 +112,5 @@ namespace CNCLib.Repository
 					(x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
 			}
 		}
-
-		#region IDisposable Support
-		private bool disposedValue = false; // To detect redundant calls
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!disposedValue)
-			{
-				if (disposing)
-				{
-					// TODO: dispose managed state (managed objects).
-				}
-
-				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-				// TODO: set large fields to null.
-
-				disposedValue = true;
-			}
-		}
-
-		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-		// ~MachineRepository() {
-		//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-		//   Dispose(false);
-		// }
-
-		// This code added to correctly implement the disposable pattern.
-		public void Dispose()
-		{
-			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-			Dispose(true);
-			// TODO: uncomment the following line if the finalizer is overridden above.
-			// GC.SuppressFinalize(this);
-		}
-		#endregion
 	}
 }

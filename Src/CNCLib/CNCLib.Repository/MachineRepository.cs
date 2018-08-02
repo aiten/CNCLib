@@ -32,41 +32,56 @@ namespace CNCLib.Repository
         {
         }
 
-        public async Task<Contracts.Entities.Machine[]> GetMachines()
+        #region CUD
+
+        public async Task<IEnumerable<Contracts.Entities.Machine>> GetAll()
 		{
-            return await Context.Machines.
+            return await Query.
                 Include(d => d.MachineCommands).
                 Include(d => d.MachineInitCommands).
-                ToArrayAsync();
+                ToListAsync();
 		}
 
-		public async Task<Contracts.Entities.Machine> GetMachine(int id)
+		public async Task<Contracts.Entities.Machine> Get(int id)
         {
-			return await Context.Machines.
+			return await Query.
 				Where(m => m.MachineID == id).
 				Include(d => d.MachineCommands).
 				Include(d => d.MachineInitCommands).
 				FirstOrDefaultAsync();
         }
 
-		public async Task Delete(Contracts.Entities.Machine m)
+	    public async Task<Contracts.Entities.Machine> GetTracking(int id)
+	    {
+	        return await TrackingQuery.
+	            Where(m => m.MachineID == id).
+	            Include(d => d.MachineCommands).
+	            Include(d => d.MachineInitCommands).
+	            FirstOrDefaultAsync();
+	    }
+
+	    public void Add(Contracts.Entities.Machine m)
+	    {
+	        AddEntity(m);
+	    }
+
+        public void Delete(Contracts.Entities.Machine m)
         {
 			m.MachineCommands = null;
 			m.MachineInitCommands = null;
-			base.Delete(m);
-			await Task.FromResult(0);
-			//Uow.ExecuteSqlCommand("delete from MachineCommand where MachineID = " + m.MachineID); => delete cascade
-			//Uow.ExecuteSqlCommand("delete from MachineInitCommand where MachineID = " + m.MachineID); => delete cascade
+			DeleteEntity(m);
 		}
 
-		public async Task<Contracts.Entities.MachineCommand[]> GetMachineCommands(int machineID)
+        #endregion
+
+        public async Task<IEnumerable<Contracts.Entities.MachineCommand>> GetMachineCommands(int machineID)
 		{
 			return await Context.MachineCommands.
 				Where(c => c.MachineID == machineID).
 				ToArrayAsync();
 		}
 
-		public async Task<Contracts.Entities.MachineInitCommand[]> GetMachineInitCommands(int machineID)
+		public async Task<IEnumerable<Contracts.Entities.MachineInitCommand>> GetMachineInitCommands(int machineID)
 		{
 			return await Context.MachineInitCommands.
 				Where(c => c.MachineID == machineID).
@@ -91,11 +106,11 @@ namespace CNCLib.Repository
 			{
 				// add new
 
-				Add(machine);
+				AddEntity(machine);
                 foreach (var mc in machineCommands)
-			        Add(mc);
+			        AddEntity(mc);
 			    foreach (var mic in machineInitCommands)
-			        Add(mic);
+			        AddEntity(mic);
 			}
             else
 			{
@@ -117,40 +132,5 @@ namespace CNCLib.Repository
 
 			}
 		}
-
-		#region IDisposable Support
-		private bool disposedValue = false; // To detect redundant calls
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!disposedValue)
-			{
-				if (disposing)
-				{
-					// TODO: dispose managed state (managed objects).
-				}
-
-				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-				// TODO: set large fields to null.
-
-				disposedValue = true;
-			}
-		}
-
-		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-		// ~MachineRepository() {
-		//   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-		//   Dispose(false);
-		// }
-
-		// This code added to correctly implement the disposable pattern.
-		public void Dispose()
-		{
-			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-			Dispose(true);
-			// TODO: uncomment the following line if the finalizer is overridden above.
-			// GC.SuppressFinalize(this);
-		}
-		#endregion
 	}
 }

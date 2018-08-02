@@ -265,7 +265,7 @@ namespace CNCLib.Tests.Repository
 		    {
 		        var uowdelete = new UnitOfWork<CNCLibContext>(ctx);
                 var repdelete = new ItemRepository(ctx);
-                await repdelete.Delete(item);
+                repdelete.Delete(item);
 				await uowdelete.SaveChangesAsync();
             }
 

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Contracts.Logic
 {
-	public interface IRestController<T>
+	public interface ICUDController<T>
 	{
 		Task<T> Get(int id);
 		Task<IEnumerable<T>> GetAll();

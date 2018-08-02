@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Framework.Tools.Pattern
+namespace Framework.Contracts.Repository
 {
 	public interface IBaseRepository
     {

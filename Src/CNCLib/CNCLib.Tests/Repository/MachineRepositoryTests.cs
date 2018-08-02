@@ -47,8 +47,8 @@ namespace CNCLib.Tests.Repository
             {
                 var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new MachineRepository(ctx);
-                var machines = await rep.GetMachines();
-				machines.Length.Should().BeGreaterOrEqualTo(2);
+                var machines = await rep.GetAll();
+				machines.Count().Should().BeGreaterOrEqualTo(2);
 			}
 	    }
 
@@ -59,7 +59,7 @@ namespace CNCLib.Tests.Repository
             {
                 var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new MachineRepository(ctx);
-                var machines = await rep.GetMachine(1);
+                var machines = await rep.Get(1);
 				machines.MachineID.Should().Be(1);
 			}
 		}
@@ -71,7 +71,7 @@ namespace CNCLib.Tests.Repository
             {
                 var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new MachineRepository(ctx);
-                var machines = await rep.GetMachine(1000);
+                var machines = await rep.Get(1000);
 				machines.Should().BeNull();
 			}
 		}
@@ -240,10 +240,10 @@ namespace CNCLib.Tests.Repository
             {
                 var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new MachineRepository(ctx);
-                await rep.Delete(machine);
+                rep.Delete(machine);
 				await uow.SaveChangesAsync();
 
-                (await rep.GetMachine(id)).Should().BeNull();
+                (await rep.Get(id)).Should().BeNull();
             }
        }
 
@@ -270,7 +270,7 @@ namespace CNCLib.Tests.Repository
             {
                 var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new MachineRepository(ctx);
-                return await rep.GetMachine(id);
+                return await rep.Get(id);
             }
         }
 

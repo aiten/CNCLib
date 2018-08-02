@@ -57,7 +57,7 @@ namespace CNCLib.Tests.Logic
 		    var ctrl = new ItemController(unitOfWork, rep);
 
 			var itemEntity = new Item[0];
-			rep.Get().Returns(itemEntity);
+			rep.GetAll().Returns(itemEntity);
 
 			var all = (await ctrl.GetAll()).ToArray();
 			all.Should().BeEmpty();
@@ -76,7 +76,7 @@ namespace CNCLib.Tests.Logic
 				new Item { ItemID=1,Name="Test1" },
 				new Item { ItemID=2,Name="Test2" }
 			};
-			rep.Get().Returns(itemEntity);
+			rep.GetAll().Returns(itemEntity);
 
 			var all = (await ctrl.GetAll()).ToArray();
 
@@ -139,7 +139,7 @@ namespace CNCLib.Tests.Logic
             await ctrl.Delete(item);
 
 			//assert
-			await rep.Received().Delete(Arg.Is<Item>(x => x.ItemID == item.ItemID));
+			rep.Received().Delete(Arg.Is<Item>(x => x.ItemID == item.ItemID));
 		}
 	}
 }

@@ -46,8 +46,8 @@ namespace CNCLib.Tests.Repository
             {
                 var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
-                var users = await rep.GetUsers();
-				users.Length.Should().BeGreaterOrEqualTo(2);
+                var users = await rep.GetAll();
+				users.Count().Should().BeGreaterOrEqualTo(2);
 			}
 	    }
 
@@ -58,7 +58,7 @@ namespace CNCLib.Tests.Repository
             {
                 var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
-                var users = await rep.GetUser(1);
+                var users = await rep.Get(1);
 				users.UserID.Should().Be(1);
 			}
 		}
@@ -70,7 +70,7 @@ namespace CNCLib.Tests.Repository
             {
                 var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
-                var users = await rep.GetUser(1);
+                var users = await rep.Get(1);
                 users.UserID.Should().Be(1);
 
                 var usersbyName = await rep.GetUser(users.UserName);
@@ -85,7 +85,7 @@ namespace CNCLib.Tests.Repository
             {
                 var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
-                var users = await rep.GetUser(1000);
+                var users = await rep.Get(1000);
 				users.Should().BeNull();
 			}
 		}
@@ -175,7 +175,7 @@ namespace CNCLib.Tests.Repository
             {
                 var uow = new UnitOfWork<CNCLibContext>(ctx);
                 var rep = new UserRepository(ctx);
-                return await rep.GetUser(id);
+                return await rep.Get(id);
             }
         }
 
