@@ -62,7 +62,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Web", "..\Framework\Framework.Web\Framework.Web.csproj", "{2E4BAA13-7562-4336-91A4-B8211816D936}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Logic.Contracts", "..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj", "{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Contracts", "..\Framework\Framework.Logic.Contracts\Framework.Contracts.csproj", "{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Contracts.DTO", "CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
 EndProject

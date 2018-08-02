@@ -117,9 +117,9 @@
       <Project>{77f5a48d-e908-4a95-a09e-771e8be8817b}</Project>
       <Name>Framework.Arduino</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Logic.Contracts.csproj">
+    <ProjectReference Include="..\..\Framework\Framework.Logic.Contracts\Framework.Contracts.csproj">
       <Project>{e598aaa4-fe51-46bd-b852-4a9eeb21a5c5}</Project>
-      <Name>Framework.Logic.Contracts</Name>
+      <Name>Framework.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
       <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>
