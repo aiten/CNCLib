@@ -80,6 +80,8 @@
     <Compile Include="Logic\ItemControllerTests.cs" />
     <Compile Include="Logic\LoadOptionsControllerTests.cs" />
     <Compile Include="Repository\ItemRepositoryTests.cs" />
+    <Compile Include="Repository\CUDRepositoryTests.cs" />
+    <Compile Include="Repository\UserRepository2Tests.cs" />
     <Compile Include="Repository\UserRepositoryTests.cs" />
     <Compile Include="Wpf\MachineViewModelTests.cs" />
     <Compile Include="Logic\MachineControllerTests.cs" />
