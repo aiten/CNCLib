@@ -22,57 +22,18 @@ using Microsoft.EntityFrameworkCore;
 using CNCLib.Repository.Contracts;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
+using Framework.EF;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class MachineRepository : CNCLibRepository<Contracts.Entities.Machine>, IMachineRepository
+    public class MachineRepository : CUDRepositoryBase<CNCLibContext, Contracts.Entities.Machine,int>, IMachineRepository
 	{
         public MachineRepository(CNCLibContext context) : base(context)
         {
+            IsPrimary = (m, id) => m.MachineID == id;
+            AddInclude = i => i.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands);
         }
-
-        #region CUD
-
-        public async Task<IEnumerable<Contracts.Entities.Machine>> GetAll()
-		{
-            return await Query.
-                Include(d => d.MachineCommands).
-                Include(d => d.MachineInitCommands).
-                ToListAsync();
-		}
-
-		public async Task<Contracts.Entities.Machine> Get(int id)
-        {
-			return await Query.
-				Where(m => m.MachineID == id).
-				Include(d => d.MachineCommands).
-				Include(d => d.MachineInitCommands).
-				FirstOrDefaultAsync();
-        }
-
-	    public async Task<Contracts.Entities.Machine> GetTracking(int id)
-	    {
-	        return await TrackingQuery.
-	            Where(m => m.MachineID == id).
-	            Include(d => d.MachineCommands).
-	            Include(d => d.MachineInitCommands).
-	            FirstOrDefaultAsync();
-	    }
-
-	    public void Add(Contracts.Entities.Machine m)
-	    {
-	        AddEntity(m);
-	    }
-
-        public void Delete(Contracts.Entities.Machine m)
-        {
-			m.MachineCommands = null;
-			m.MachineInitCommands = null;
-			DeleteEntity(m);
-		}
-
-        #endregion
 
         public async Task<IEnumerable<Contracts.Entities.MachineCommand>> GetMachineCommands(int machineID)
 		{

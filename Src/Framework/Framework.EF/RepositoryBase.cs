@@ -24,15 +24,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Framework.EF
 {
-    public abstract class CUDRepositoryBase<TDbContext, TEntity> : RepositoryBase<TDbContext, TEntity>
-        where TDbContext : DbContext
-        where TEntity : class
-    {
-        protected CUDRepositoryBase(TDbContext dbContext) : base(dbContext)
-        {
-        }
-    }
-
     public abstract class RepositoryBase<TDbContext, TEntity> : RepositoryBase<TDbContext>
         where TDbContext : DbContext
         where TEntity : class

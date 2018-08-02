@@ -22,7 +22,7 @@ using Framework.Contracts.Logic;
 
 namespace CNCLib.Logic.Contracts
 {
-    public interface IItemManager : ICUDController<DTO.Item>
+    public interface IItemManager : ICUDManager<DTO.Item,int>
 	{
 		Task<IEnumerable<DTO.Item>> GetByClassName(string classname);
 	}

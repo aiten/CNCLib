@@ -21,11 +21,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
+using Framework.EF;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class ConfigurationRepository : CNCLibRepository<Contracts.Entities.Configuration>, IConfigurationRepository
+    public class ConfigurationRepository : CUDRepositoryBase<CNCLibContext, Contracts.Entities.Configuration, int>, IConfigurationRepository
 	{
         public ConfigurationRepository(CNCLibContext dbcontext) : base(dbcontext)
         {
@@ -35,17 +36,6 @@ namespace CNCLib.Repository
         {
 			return await Query.Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
         }
-
-		public void Delete(Contracts.Entities.Configuration configuration)
-        {
-			DeleteEntity(configuration);
-        }
-
-	    public void Add(Contracts.Entities.Configuration configuration)
-	    {
-	        AddEntity(configuration);
-	    }
-
 
         public async Task Save(Contracts.Entities.Configuration configuration)
 		{

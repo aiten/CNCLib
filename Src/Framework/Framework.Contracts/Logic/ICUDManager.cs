@@ -16,18 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Repository.Context;
-using Framework.EF;
-using Framework.Tools.Pattern;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace CNCLib.Repository
+namespace Framework.Contracts.Logic
 {
-    public abstract class CNCLibRepository<TEntity> : RepositoryBase<CNCLibContext, TEntity>
-        where TEntity : class
-	{
-        public CNCLibRepository(CNCLibContext dbcontext) : base(dbcontext)
-        {
-        }
+	public interface ICUDManager<T, TId> where T : class
+    {
+		Task<T> Get(TId id);
+		Task<IEnumerable<T>> GetAll();
+		Task<TId> Add(T value);
+		Task<TId> Update(T value);
+		Task Delete(T value);
 	}
 }

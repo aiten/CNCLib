@@ -22,55 +22,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
+using Framework.EF;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class UserRepository : CNCLibRepository<Contracts.Entities.User>, IUserRepository
+    public class UserRepository : CUDRepositoryBase<CNCLibContext, Contracts.Entities.User, int>, IUserRepository
 	{
         public UserRepository(CNCLibContext context) : base(context)
         {
+            IsPrimary = (m, id) => m.UserID == id;
         }
 
         #region CUD
-
-        public async Task<IEnumerable<Contracts.Entities.User>> GetAll()
-		{
-            return await Query.
-                ToListAsync();
-		}
-
-		public async Task<Contracts.Entities.User> Get(int id)
-        {
-			return await Query.
-				Where(m => m.UserID == id).
-				FirstOrDefaultAsync();
-        }
-
-	    public async Task<Contracts.Entities.User> GetTracking(int id)
-	    {
-	        return await TrackingQuery.
-	            Where(m => m.UserID == id).
-	            FirstOrDefaultAsync();
-	    }
-
-        public void Add(Contracts.Entities.User user)
-	    {
-	        AddEntity(user);
-	    }
-
-        public void Delete(Contracts.Entities.User user)
-        {
-			DeleteEntity(user);
-		}
 
         #endregion
 
 	    public async Task<Contracts.Entities.User> GetUser(string username)
 	    {
-	        return await Query.
-	            Where(m => m.UserName == username).
-	            FirstOrDefaultAsync();
+	        return await Get<string>(username, (m, key) => m.UserName == key);
 	    }
 
         public async Task Store(Contracts.Entities.User user)

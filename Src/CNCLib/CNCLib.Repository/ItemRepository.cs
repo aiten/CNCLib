@@ -22,63 +22,31 @@ using Microsoft.EntityFrameworkCore;
 using CNCLib.Repository.Contracts;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
+using Framework.EF;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class ItemRepository : CNCLibRepository<Contracts.Entities.Item>, IItemRepository
+    public class ItemRepository : CUDRepositoryBase<CNCLibContext, Contracts.Entities.Item, int>, IItemRepository
 	{
         public ItemRepository(CNCLibContext context) : base(context)
         {
+            IsPrimary = (m, id) => m.ItemID == id;
+            AddInclude = i => i.Include(x => x.ItemProperties);
         }
 
         #region CUD
-
-        public async Task<IEnumerable<Contracts.Entities.Item>> GetAll()
-		{
-			return await Query.
-				Include(d => d.ItemProperties).
-				ToListAsync();
-		}
-
-	    public async Task<Contracts.Entities.Item> Get(int id)
-	    {
-	        return await Query.
-	            Where(m => m.ItemID == id).
-	            Include(d => d.ItemProperties).
-	            FirstOrDefaultAsync();
-	    }
-
-	    public async Task<Contracts.Entities.Item> GetTracking(int id)
-	    {
-	        return await TrackingQuery.
-	            Where(m => m.ItemID == id).
-	            Include(d => d.ItemProperties).
-	            FirstOrDefaultAsync();
-	    }
-
-        public async Task<IEnumerable<Contracts.Entities.Item>> Get(string typeidstring)
-		{
-			return await Query.
-                Where(m => m.ClassName == typeidstring).
-				Include(d => d.ItemProperties).
-			    ToListAsync();
-		}
-
-	    public void Add(Contracts.Entities.Item e)
-	    {
-	        AddEntity(e);
-	    }
-
-        public void Delete(Contracts.Entities.Item e)
-	    {
-	        e.ItemProperties = null;
-	        DeleteEntity(e);
-	    }
-
         #endregion
 
-	    public async Task Store(Contracts.Entities.Item item)
+	    public async Task<IEnumerable<Contracts.Entities.Item>> Get(string typeidstring)
+	    {
+	        return await Query.
+	            Where(m => m.ClassName == typeidstring).
+	            Include(d => d.ItemProperties).
+	            ToListAsync();
+	    }
+
+        public async Task Store(Contracts.Entities.Item item)
 		{
 			// search und update item / itemproperties
 
