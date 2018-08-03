@@ -16,22 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CNCLib.Repository.Context;
 using CNCLib.Repository;
-using Framework.EF;
-using System.Linq;
+using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
-using CNCLib.Repository.Contracts.Entities;
 using Framework.Contracts.Repository;
+using Framework.EF;
 using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository
 {
-	[TestClass]
+    [TestClass]
 	public class RepositoryTests : CNCUnitTest
 	{
 		public TestContext TestContext { get; set; }

@@ -29,6 +29,6 @@ namespace Framework.Contracts.Repository
         void Add(TEntry entity);
         void Delete(TEntry entity);
 
-        Task Store(TEntry item);
+        Task Store(TEntry item);    // TEntiy must not be tracked and should not have a identity (id)
     }
 }

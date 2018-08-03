@@ -33,6 +33,5 @@ namespace Framework.Contracts.Repository
 
         bool IsInTransaction { get; }
         ITransaction BeginTransaction();
-        void FinishTransaction(ITransaction trans);     // called by ITransaction to track nested transactions, must not be called directly
     }
 }

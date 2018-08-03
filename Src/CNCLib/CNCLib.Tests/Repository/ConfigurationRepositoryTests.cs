@@ -17,14 +17,10 @@
 */
 
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using CNCLib.Repository;
-using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
-using Framework.EF;
 using Framework.Tools.Dependency;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

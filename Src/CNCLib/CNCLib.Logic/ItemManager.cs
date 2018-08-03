@@ -81,7 +81,6 @@ namespace CNCLib.Logic
 		{
 		    using (var trans = _unitOfWork.BeginTransaction())
 		    {
-                _unitOfWork.BeginTransaction();
 				var me = item.Convert();
 				await _repository.Store(me);
 				await _unitOfWork.SaveChangesAsync();
