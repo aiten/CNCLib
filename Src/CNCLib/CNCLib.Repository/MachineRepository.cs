@@ -27,40 +27,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class MachineRepository : CRUDRepositoryBase<CNCLibContext, Contracts.Entities.Machine,int>, IMachineRepository
+    public class MachineRepository : CRUDRepositoryBase<CNCLibContext, Machine,int>, IMachineRepository
 	{
         public MachineRepository(CNCLibContext context) : base(context)
         {
-            IsPrimary = (m, id) => m.MachineID == id;
-            AddInclude = i => i.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands);
         }
 
-	    public IQueryable<Machine> GetPrimary(IQueryable<Machine> query, int key)
+	    protected override IQueryable<Machine> AddInclude(IQueryable<Machine> query)
 	    {
-	        return query.Where(m => m.MachineID == key);
+	        return query.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands);
 	    }
 
-        public async Task<IEnumerable<Contracts.Entities.MachineCommand>> GetMachineCommands(int machineID)
+	    protected override IQueryable<Machine> AddPrimaryWhere(IQueryable<Machine> query, int key)
+	    {
+            return query.Where(m => m.MachineID == key);
+	    }
+
+        public async Task<IEnumerable<MachineCommand>> GetMachineCommands(int machineID)
 		{
 			return await Context.MachineCommands.
 				Where(c => c.MachineID == machineID).
 				ToListAsync();
 		}
 
-		public async Task<IEnumerable<Contracts.Entities.MachineInitCommand>> GetMachineInitCommands(int machineID)
+		public async Task<IEnumerable<MachineInitCommand>> GetMachineInitCommands(int machineID)
 		{
 			return await Context.MachineInitCommands.
 				Where(c => c.MachineID == machineID).
 				ToListAsync();
 		}
 
-		public async Task Store(Contracts.Entities.Machine machine)
+		public async Task Store(Machine machine)
 		{
 			// search und update machine
 
 			int id = machine.MachineID;
-		    var machineCommands = machine.MachineCommands?.ToList() ?? new List<Contracts.Entities.MachineCommand>();
-		    var machineInitCommands = machine.MachineInitCommands?.ToList() ?? new List<Contracts.Entities.MachineInitCommand>();
+		    var machineCommands = machine.MachineCommands?.ToList() ?? new List<MachineCommand>();
+		    var machineInitCommands = machine.MachineInitCommands?.ToList() ?? new List<MachineInitCommand>();
 
             var machineInDb = await Context.Machines.
 				Where(m => m.MachineID == id).
@@ -68,7 +71,7 @@ namespace CNCLib.Repository
 				Include(d => d.MachineInitCommands).
 				FirstOrDefaultAsync();
 
-			if (machineInDb == default(Contracts.Entities.Machine))
+			if (machineInDb == default(Machine))
 			{
 				// add new
 
@@ -86,12 +89,12 @@ namespace CNCLib.Repository
 
 				// search und update machinecommands (add and delete)
 
-				Sync<Contracts.Entities.MachineCommand>(
+				Sync<MachineCommand>(
 					machineInDb.MachineCommands, 
 					machineCommands, 
 					(x, y) => x.MachineCommandID > 0 && x.MachineCommandID == y.MachineCommandID);
 
-				Sync<Contracts.Entities.MachineInitCommand>(
+				Sync<MachineInitCommand>(
 					machineInDb.MachineInitCommands,
 					machineInitCommands,
 					(x, y) => x.MachineInitCommandID > 0 && x.MachineInitCommandID == y.MachineInitCommandID);

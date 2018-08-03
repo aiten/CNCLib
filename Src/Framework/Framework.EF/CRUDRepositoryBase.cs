@@ -24,10 +24,11 @@ using System.Threading.Tasks;
 using Framework.Tools.Pattern;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Unity.Policy.Mapping;
 
 namespace Framework.EF
 {
-    public abstract class CRUDRepositoryBase<TDbContext, TEntity, TId> : RepositoryBase<TDbContext, TEntity>
+    public abstract class CRUDRepositoryBase<TDbContext, TEntity, TKey> : RepositoryBase<TDbContext, TEntity>
         where TDbContext : DbContext
         where TEntity : class
     {
@@ -37,36 +38,22 @@ namespace Framework.EF
 
         #region CRUD
 
-        protected Func<TEntity, TId, bool> IsPrimary { get; set; }
-        protected Func<IQueryable<TEntity>, IQueryable<TEntity>> AddInclude { get; set; } = m => m;
+        protected abstract IQueryable<TEntity> AddInclude(IQueryable<TEntity> query);
+        protected abstract IQueryable<TEntity> AddPrimaryWhere(IQueryable<TEntity> query, TKey key);
 
         public async Task<IEnumerable<TEntity>> GetAll()
         {
             return await Query.ToListAsync();
         }
 
-        public async Task<TEntity> Get(TId id)
+        public async Task<TEntity> Get(TKey key)
         {
-            return await Get(id, IsPrimary);
+            return await AddPrimaryWhere(AddInclude(Query),key).FirstOrDefaultAsync();
         }
 
-        public async Task<TEntity> Get<TPk>(TPk key, Func<TEntity, TPk, bool> isKey)
+        public async Task<TEntity> GetTracking(TKey key)
         {
-            return await AddInclude(Query).
-                Where(m => isKey(m,key)).
-                FirstOrDefaultAsync();
-        }
-
-        public async Task<TEntity> GetTracking(TId id)
-        {
-            return await GetTracking(id, IsPrimary);
-        }
-
-        public async Task<TEntity> GetTracking<TPk>(TPk key, Func<TEntity, TPk, bool> isKey)
-        {
-            return await AddInclude(TrackingQuery).
-                Where(m => isKey(m, key)).
-                FirstOrDefaultAsync();
+            return await AddPrimaryWhere(AddInclude(TrackingQuery), key).FirstOrDefaultAsync();
         }
 
         public void Add(TEntity entity)
@@ -80,7 +67,5 @@ namespace Framework.EF
         }
 
         #endregion
-
-
     }
 }

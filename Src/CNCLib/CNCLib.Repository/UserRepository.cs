@@ -22,28 +22,34 @@ using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
+using CNCLib.Repository.Contracts.Entities;
 using Framework.EF;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class UserRepository : CRUDRepositoryBase<CNCLibContext, Contracts.Entities.User, int>, IUserRepository
+    public class UserRepository : CRUDRepositoryBase<CNCLibContext, User, int>, IUserRepository
 	{
         public UserRepository(CNCLibContext context) : base(context)
         {
-            IsPrimary = (m, id) => m.UserID == id;
         }
 
-        #region CRUD
-
-        #endregion
-
-	    public async Task<Contracts.Entities.User> GetUser(string username)
+	    protected override IQueryable<User> AddInclude(IQueryable<User> query)
 	    {
-	        return await Get<string>(username, (m, key) => m.UserName == key);
+	        return query;
 	    }
 
-        public async Task Store(Contracts.Entities.User user)
+	    protected override IQueryable<User> AddPrimaryWhere(IQueryable<User> query, int key)
+	    {
+	        return query.Where(m => m.UserID == key);
+	    }
+
+        public async Task<User> GetUser(string username)
+	    {
+	        return await AddInclude(Query).Where(u => u.UserName == username).FirstOrDefaultAsync();
+	    }
+
+        public async Task Store(User user)
 		{
 			// search und update User
 
@@ -53,7 +59,7 @@ namespace CNCLib.Repository
 				Where(m => m.UserID == id).
 				FirstOrDefaultAsync();
 
-			if (UserInDb == default(Contracts.Entities.User))
+			if (UserInDb == default(User))
 			{
 				// add new
 

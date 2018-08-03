@@ -16,34 +16,53 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using CNCLib.Repository;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
+using CNCLib.Repository.Contracts.Entities;
 using Framework.EF;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class ConfigurationRepository : CRUDRepositoryBase<CNCLibContext, Contracts.Entities.Configuration, int>, IConfigurationRepository
+    public struct ConfigurationPrimary
+    {
+        public string Group { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class ConfigurationRepository : CRUDRepositoryBase<CNCLibContext, Configuration, ConfigurationPrimary>, IConfigurationRepository
 	{
         public ConfigurationRepository(CNCLibContext dbcontext) : base(dbcontext)
         {
         }
 
-        public async Task<Contracts.Entities.Configuration> Get(string group, string  name)
+	    protected override IQueryable<Configuration> AddInclude(IQueryable<Configuration> query)
+	    {
+	        return query;
+	    }
+
+	    protected override IQueryable<Configuration> AddPrimaryWhere(IQueryable<Configuration> query, ConfigurationPrimary key)
+	    {
+	        return query.Where(c => c.Group == key.Group && c.Name == key.Name);
+	    }
+
+        public async Task<Configuration> Get(string group, string  name)
         {
 			return await Query.Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
         }
 
-        public async Task Save(Contracts.Entities.Configuration configuration)
+        public async Task Save(Configuration configuration)
 		{
 			// search und update machine
 
 			var cInDb = await TrackingQuery.Where(c => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
 
-			if (cInDb == default(Contracts.Entities.Configuration))
+			if (cInDb == default(Configuration))
 			{
 				// add new
 
@@ -58,3 +77,4 @@ namespace CNCLib.Repository
 		}
 	}
 }
+

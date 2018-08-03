@@ -30,14 +30,22 @@ namespace CNCLib.Repository
 	{
         public ItemRepository(CNCLibContext context) : base(context)
         {
-            IsPrimary = (m, id) => m.ItemID == id;
-            AddInclude = i => i.Include(x => x.ItemProperties);
         }
+
+	    protected override IQueryable<Contracts.Entities.Item> AddInclude(IQueryable<Contracts.Entities.Item> query)
+	    {
+	        return query.Include(x => x.ItemProperties);
+	    }
+
+	    protected override IQueryable<Contracts.Entities.Item> AddPrimaryWhere(IQueryable<Contracts.Entities.Item> query, int key)
+	    {
+	        return query.Where(m => m.ItemID == key);
+	    }
 
         #region CRUD
         #endregion
 
-	    public async Task<IEnumerable<Contracts.Entities.Item>> Get(string typeidstring)
+        public async Task<IEnumerable<Contracts.Entities.Item>> Get(string typeidstring)
 	    {
 	        return await Query.
 	            Where(m => m.ClassName == typeidstring).

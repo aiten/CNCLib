@@ -35,10 +35,10 @@ namespace CNCLib.Repository.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // TODO Think about how to handle CRUDRepo correctly.
-            //optionsBuilder.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
+            optionsBuilder.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
             OnConfigure?.Invoke(optionsBuilder);
         }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Machine> Machines { get; set; }
 		public DbSet<MachineCommand> MachineCommands { get; set; }
