@@ -79,8 +79,9 @@
     <Compile Include="Logic\EepromConfigControllerTests.cs" />
     <Compile Include="Logic\ItemControllerTests.cs" />
     <Compile Include="Logic\LoadOptionsControllerTests.cs" />
+    <Compile Include="Repository\CRUDTestContext.cs" />
     <Compile Include="Repository\ItemRepositoryTests.cs" />
-    <Compile Include="Repository\CUDRepositoryTests.cs" />
+    <Compile Include="Repository\CRUDRepositoryTests.cs" />
     <Compile Include="Repository\UserRepository2Tests.cs" />
     <Compile Include="Repository\UserRepositoryTests.cs" />
     <Compile Include="Wpf\MachineViewModelTests.cs" />

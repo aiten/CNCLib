@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace CNCLib.ServiceProxy
 {
-	public interface IMachineService : IDisposable, ICUDManager<Machine,int>
+	public interface IMachineService : IDisposable, ICRUDManager<Machine,int>
 	{
 		Task<Machine> DefaultMachine();
 		Task<int> GetDetaultMachine();

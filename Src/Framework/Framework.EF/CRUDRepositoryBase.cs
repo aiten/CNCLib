@@ -27,15 +27,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Framework.EF
 {
-    public abstract class CUDRepositoryBase<TDbContext, TEntity, TId> : RepositoryBase<TDbContext, TEntity>
+    public abstract class CRUDRepositoryBase<TDbContext, TEntity, TId> : RepositoryBase<TDbContext, TEntity>
         where TDbContext : DbContext
         where TEntity : class
     {
-        protected CUDRepositoryBase(TDbContext dbContext) : base(dbContext)
+        protected CRUDRepositoryBase(TDbContext dbContext) : base(dbContext)
         {
         }
 
-        #region CUD
+        #region CRUD
 
         protected Func<TEntity, TId, bool> IsPrimary { get; set; }
         protected Func<IQueryable<TEntity>, IQueryable<TEntity>> AddInclude { get; set; } = m => m;

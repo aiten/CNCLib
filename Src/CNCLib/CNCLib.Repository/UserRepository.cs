@@ -27,14 +27,14 @@ using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class UserRepository : CUDRepositoryBase<CNCLibContext, Contracts.Entities.User, int>, IUserRepository
+    public class UserRepository : CRUDRepositoryBase<CNCLibContext, Contracts.Entities.User, int>, IUserRepository
 	{
         public UserRepository(CNCLibContext context) : base(context)
         {
             IsPrimary = (m, id) => m.UserID == id;
         }
 
-        #region CUD
+        #region CRUD
 
         #endregion
 

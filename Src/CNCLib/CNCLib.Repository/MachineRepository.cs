@@ -21,12 +21,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
+using CNCLib.Repository.Contracts.Entities;
 using Framework.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class MachineRepository : CUDRepositoryBase<CNCLibContext, Contracts.Entities.Machine,int>, IMachineRepository
+    public class MachineRepository : CRUDRepositoryBase<CNCLibContext, Contracts.Entities.Machine,int>, IMachineRepository
 	{
         public MachineRepository(CNCLibContext context) : base(context)
         {
@@ -34,18 +35,23 @@ namespace CNCLib.Repository
             AddInclude = i => i.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands);
         }
 
+	    public IQueryable<Machine> GetPrimary(IQueryable<Machine> query, int key)
+	    {
+	        return query.Where(m => m.MachineID == key);
+	    }
+
         public async Task<IEnumerable<Contracts.Entities.MachineCommand>> GetMachineCommands(int machineID)
 		{
 			return await Context.MachineCommands.
 				Where(c => c.MachineID == machineID).
-				ToArrayAsync();
+				ToListAsync();
 		}
 
 		public async Task<IEnumerable<Contracts.Entities.MachineInitCommand>> GetMachineInitCommands(int machineID)
 		{
 			return await Context.MachineInitCommands.
 				Where(c => c.MachineID == machineID).
-				ToArrayAsync();
+				ToListAsync();
 		}
 
 		public async Task Store(Contracts.Entities.Machine machine)

@@ -26,7 +26,7 @@ using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public class ConfigurationRepository : CUDRepositoryBase<CNCLibContext, Contracts.Entities.Configuration, int>, IConfigurationRepository
+    public class ConfigurationRepository : CRUDRepositoryBase<CNCLibContext, Contracts.Entities.Configuration, int>, IConfigurationRepository
 	{
         public ConfigurationRepository(CNCLibContext dbcontext) : base(dbcontext)
         {

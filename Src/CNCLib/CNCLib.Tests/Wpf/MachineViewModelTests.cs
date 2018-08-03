@@ -35,7 +35,7 @@ namespace CNCLib.Tests.Wpf
 	{
 		/*
 				[ClassInitialize]
-				public static void ClassInit(CUDTestContext testContext)
+				public static void ClassInit(CRUDTestContext testContext)
 				{
 				}
 

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Repository.Contracts
 {
-	public interface IUserRepository: ICUDRepository<Entities.User, int>
+	public interface IUserRepository: ICRUDRepository<Entities.User, int>
     {
         Task<Entities.User> GetUser(string username);
 	}

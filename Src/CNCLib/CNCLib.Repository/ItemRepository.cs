@@ -26,7 +26,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class ItemRepository : CUDRepositoryBase<CNCLibContext, Contracts.Entities.Item, int>, IItemRepository
+    public class ItemRepository : CRUDRepositoryBase<CNCLibContext, Contracts.Entities.Item, int>, IItemRepository
 	{
         public ItemRepository(CNCLibContext context) : base(context)
         {
@@ -34,7 +34,7 @@ namespace CNCLib.Repository
             AddInclude = i => i.Include(x => x.ItemProperties);
         }
 
-        #region CUD
+        #region CRUD
         #endregion
 
 	    public async Task<IEnumerable<Contracts.Entities.Item>> Get(string typeidstring)

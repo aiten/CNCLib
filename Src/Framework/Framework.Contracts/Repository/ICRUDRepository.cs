@@ -19,14 +19,16 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Framework.Contracts.Logic
+namespace Framework.Contracts.Repository
 {
-	public interface ICUDManager<T, TId> where T : class
+    public interface ICRUDRepository<TEntry, TKey>: IBaseRepository where TEntry : class
     {
-		Task<T> Get(TId id);
-		Task<IEnumerable<T>> GetAll();
-		Task<TId> Add(T value);
-		Task<TId> Update(T value);
-		Task Delete(T value);
-	}
+        Task<IEnumerable<TEntry>> GetAll();
+        Task<TEntry> Get(TKey key);
+        Task<TEntry> GetTracking(TKey key);
+        void Add(TEntry entity);
+        void Delete(TEntry entity);
+
+        Task Store(TEntry item);
+    }
 }

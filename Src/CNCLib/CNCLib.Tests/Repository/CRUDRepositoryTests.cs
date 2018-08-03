@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository;
-using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
@@ -34,36 +33,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository
 {
-    public class CUDTestContext<TEntry, TKey, TIRepository> : IDisposable where TEntry : class  where TIRepository : ICUDRepository<TEntry, TKey>
-    {
-        public CNCLibContext DbContext { get; private set; }
-        public IUnitOfWork UnitOfWork { get; private set; }
-        public TIRepository Repository { get; private set; }
-
-        public CUDTestContext(CNCLibContext dbContext, IUnitOfWork uow, TIRepository repository)
-        {
-            DbContext = dbContext;
-            UnitOfWork = uow;
-            Repository = repository;
-        }
-
-        public void Dispose()
-        {
-            DbContext.Dispose();
-            DbContext = null;
-        }
-    }
-
     [TestClass]
-	public abstract class CUDRepositoryTests<TEntity, TKey, TIRepository> : RepositoryTests where TEntity : class where TIRepository : ICUDRepository<TEntity, TKey>
+	public abstract class CRUDRepositoryTests<TEntity, TKey, TIRepository> : RepositoryTests where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey>
     {
-        protected abstract CUDTestContext<TEntity, TKey, TIRepository> CreateCUDTestContext();
+        protected abstract CRUDTestContext<TEntity, TKey, TIRepository> CreateCRUDTestContext();
         protected abstract TKey GetEntityKey(TEntity entity);
         protected abstract bool CompareEntity(TEntity entity1, TEntity entity2);
 
         protected async Task<IEnumerable<TEntity>> GetAll()
         {
-            using (var ctx = CreateCUDTestContext())
+            using (var ctx = CreateCRUDTestContext())
             {
                 IEnumerable<TEntity> entities = await ctx.Repository.GetAll();
                 entities.Should().NotBeNull();
@@ -73,7 +52,7 @@ namespace CNCLib.Tests.Repository
 
         protected async Task<TEntity> GetTrackingOK(TKey key)
         {
-            using (var ctx = CreateCUDTestContext())
+            using (var ctx = CreateCRUDTestContext())
             {
                 TEntity entity = await ctx.Repository.GetTracking(key);
                 entity.Should().NotBeNull();
@@ -84,7 +63,7 @@ namespace CNCLib.Tests.Repository
 
         protected async Task<TEntity> GetOK(TKey key)
         {
-            using (var ctx = CreateCUDTestContext())
+            using (var ctx = CreateCRUDTestContext())
             {
                 TEntity entity = await ctx.Repository.Get(key);
                 entity.Should().BeOfType(typeof(TEntity));
@@ -95,7 +74,7 @@ namespace CNCLib.Tests.Repository
 
         protected async Task GetNotExist(TKey key)
         {
-            using (var ctx = CreateCUDTestContext())
+            using (var ctx = CreateCRUDTestContext())
             {
                 var entity = await ctx.Repository.Get(key);
                 entity.Should().BeNull();
@@ -110,7 +89,7 @@ namespace CNCLib.Tests.Repository
             // first add entity
 
             TKey key;
-            using (var ctx = CreateCUDTestContext())
+            using (var ctx = CreateCRUDTestContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entityToAdd = createTestEntity();
@@ -127,7 +106,7 @@ namespace CNCLib.Tests.Repository
             allWithAdd.Count().Should().Be(allWithoutAdd.Count() + 1);
 
             // read again and update 
-            using (var ctx = CreateCUDTestContext())
+            using (var ctx = CreateCRUDTestContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entity = await ctx.Repository.GetTracking(key);
@@ -140,7 +119,7 @@ namespace CNCLib.Tests.Repository
             }
 
             // read again and delete 
-            using (var ctx = CreateCUDTestContext())
+            using (var ctx = CreateCRUDTestContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entity = await ctx.Repository.GetTracking(key);
@@ -158,7 +137,7 @@ namespace CNCLib.Tests.Repository
 
             // read again to test is not exist
 
-            using (var ctx = CreateCUDTestContext())
+            using (var ctx = CreateCRUDTestContext())
             {
                 TEntity entity = await ctx.Repository.GetTracking(key);
                 entity.Should().BeNull();
@@ -170,7 +149,7 @@ namespace CNCLib.Tests.Repository
             // first add entity
 
             TKey key;
-            using (var ctx = CreateCUDTestContext())
+            using (var ctx = CreateCRUDTestContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entityToAdd = createTestEntity();
@@ -184,7 +163,7 @@ namespace CNCLib.Tests.Repository
 
             // read again to test is not exist
 
-            using (var ctx = CreateCUDTestContext())
+            using (var ctx = CreateCRUDTestContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entity = await ctx.Repository.GetTracking(key);

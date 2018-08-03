@@ -33,11 +33,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-	public class UserRepository2Tests : CUDRepositoryTests<User,int, IUserRepository>
+	public class UserRepository2Tests : CRUDRepositoryTests<User,int, IUserRepository>
 	{
-	    protected override CUDTestContext<User, int, IUserRepository> CreateCUDTestContext()
+	    protected override CRUDTestContext<User, int, IUserRepository> CreateCRUDTestContext()
 	    {
-	        return Dependency.Resolve<CUDTestContext<User, int, IUserRepository>>();
+	        return Dependency.Resolve<CRUDTestContext<User, int, IUserRepository>>();
 	    }
 
 	    protected override int GetEntityKey(User entity)
@@ -47,7 +47,10 @@ namespace CNCLib.Tests.Repository
 
 	    protected override bool CompareEntity(User entity1, User entity2)
 	    {
-	        return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] {@"UserID"});
+            //entity1.Should().BeEquivalentTo(entity2, opts => 
+            //    opts.Excluding(x => x.UserID)
+            //);
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] {@"UserID"});
 	    }
 
         [ClassInitialize]
@@ -56,7 +59,7 @@ namespace CNCLib.Tests.Repository
 			RepositoryTests.ClassInit(testContext);
 		}
 
-        #region CUD Test
+        #region CRUD Test
 
         [TestMethod]
 	    public async Task GetAllTest()
@@ -106,7 +109,7 @@ namespace CNCLib.Tests.Repository
 	    [TestMethod]
 	    public async Task QueryOneUserByNameFound()
 	    {
-	        using (var ctx = CreateCUDTestContext())
+	        using (var ctx = CreateCRUDTestContext())
 	        {
 	            var users = await ctx.Repository.Get(2);
 	            users.UserID.Should().Be(2);
@@ -119,7 +122,7 @@ namespace CNCLib.Tests.Repository
 	    [TestMethod]
 	    public async Task QueryOneUserByNameNotFound()
 	    {
-	        using (var ctx = CreateCUDTestContext())
+	        using (var ctx = CreateCRUDTestContext())
 	        {
 	            var users = await ctx.Repository.GetUser("UserNotExist");
 	            users.Should().BeNull();
@@ -132,12 +135,12 @@ namespace CNCLib.Tests.Repository
 	    {
 	        string existingusername;
 
-            using (var ctx = CreateCUDTestContext())
+            using (var ctx = CreateCRUDTestContext())
 	        {
 	            existingusername = (await ctx.Repository.Get(2)).UserName;
 	        }
 
-	        using (var ctx = CreateCUDTestContext())
+	        using (var ctx = CreateCRUDTestContext())
 	        {
 	            User entityToAdd = new User() { UserName = existingusername };
 	            ctx.Repository.Add(entityToAdd);

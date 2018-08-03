@@ -22,7 +22,7 @@ using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.ServiceProxy
 {
-    public interface ILoadOptionsService : IDisposable, ICUDManager<LoadOptions,int>
+    public interface ILoadOptionsService : IDisposable, ICRUDManager<LoadOptions,int>
 	{
 	}
 }

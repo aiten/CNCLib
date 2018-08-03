@@ -20,6 +20,7 @@ using System;
 using CNCLib.Repository.Contracts.Entities;
 using CNCLib.Repository.Mappings;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace CNCLib.Repository.Context
 {
@@ -34,6 +35,8 @@ namespace CNCLib.Repository.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // TODO Think about how to handle CRUDRepo correctly.
+            //optionsBuilder.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
             OnConfigure?.Invoke(optionsBuilder);
         }
         public DbSet<User> Users { get; set; }

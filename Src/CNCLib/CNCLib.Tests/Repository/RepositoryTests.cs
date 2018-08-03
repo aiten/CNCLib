@@ -71,7 +71,7 @@ namespace CNCLib.Tests.Repository
 		    Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-		    Dependency.Container.RegisterType(typeof(TestContext),typeof(TestContext));
+		    Dependency.Container.RegisterType(typeof(CRUDTestContext<,,>),typeof(CRUDTestContext<,,>));
 		}
     }
 }
