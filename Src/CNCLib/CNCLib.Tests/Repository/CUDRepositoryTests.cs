@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository;
@@ -33,13 +34,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository
 {
-    public class TestContext<TEntry, TKey, TIRepository> : IDisposable where TEntry : class  where TIRepository : ICUDRepository<TEntry, TKey>
+    public class CUDTestContext<TEntry, TKey, TIRepository> : IDisposable where TEntry : class  where TIRepository : ICUDRepository<TEntry, TKey>
     {
-        public DbContext DbContext { get; private set; }
+        public CNCLibContext DbContext { get; private set; }
         public IUnitOfWork UnitOfWork { get; private set; }
         public TIRepository Repository { get; private set; }
 
-        public TestContext(DbContext dbContext, IUnitOfWork uow, TIRepository repository)
+        public CUDTestContext(CNCLibContext dbContext, IUnitOfWork uow, TIRepository repository)
         {
             DbContext = dbContext;
             UnitOfWork = uow;
@@ -54,27 +55,141 @@ namespace CNCLib.Tests.Repository
     }
 
     [TestClass]
-	public class CUDRepositoryTests<TEntry, TKey, TIRepository> : RepositoryTests where TEntry : class where TIRepository : ICUDRepository<TEntry, TKey>
+	public abstract class CUDRepositoryTests<TEntity, TKey, TIRepository> : RepositoryTests where TEntity : class where TIRepository : ICUDRepository<TEntity, TKey>
     {
-	    protected async Task<TEntry> GetById<TKey>(ICUDRepository<TEntry, TKey> repository, TKey key) 
-	    {
-	        var entity = await repository.Get(key);
+        protected abstract CUDTestContext<TEntity, TKey, TIRepository> CreateCUDTestContext();
+        protected abstract TKey GetEntityKey(TEntity entity);
+        protected abstract bool CompareEntity(TEntity entity1, TEntity entity2);
 
-	        entity.Should().BeOfType(typeof(TEntry));
-	        return entity;
-	    }
+        protected async Task<IEnumerable<TEntity>> GetAll()
+        {
+            using (var ctx = CreateCUDTestContext())
+            {
+                IEnumerable<TEntity> entities = await ctx.Repository.GetAll();
+                entities.Should().NotBeNull();
+                return entities;
+            }
+        }
 
-	    public async Task<TEntry> GetId(ICUDRepository<TEntry, TKey> repository, TKey key, Action<TEntry> addAsserts)
-	    {
-	        TEntry entity = await GetById(repository, key);
-	        addAsserts(entity);
-	        return entity;
-	    }
+        protected async Task<TEntity> GetTrackingOK(TKey key)
+        {
+            using (var ctx = CreateCUDTestContext())
+            {
+                TEntity entity = await ctx.Repository.GetTracking(key);
+                entity.Should().NotBeNull();
+                entity.Should().BeOfType(typeof(TEntity));
+                return entity;
+            }
+        }
 
-	    public async Task GetIdNotExist(ICUDRepository<TEntry, TKey> repository, TKey key)
-	    {
-	        var entity = await repository.Get(key);
-	        entity.Should().BeNull();
-	    }
+        protected async Task<TEntity> GetOK(TKey key)
+        {
+            using (var ctx = CreateCUDTestContext())
+            {
+                TEntity entity = await ctx.Repository.Get(key);
+                entity.Should().BeOfType(typeof(TEntity));
+                entity.Should().NotBeNull();
+                return entity;
+            }
+        }
+
+        protected async Task GetNotExist(TKey key)
+        {
+            using (var ctx = CreateCUDTestContext())
+            {
+                var entity = await ctx.Repository.Get(key);
+                entity.Should().BeNull();
+            }
+        }
+
+        public async Task AddUpdateDelete(Func<TEntity> createTestEntity, Action<TEntity> updateEntity)
+        {
+            var allWithoutAdd = await GetAll();
+            allWithoutAdd.Should().NotBeNull();
+
+            // first add entity
+
+            TKey key;
+            using (var ctx = CreateCUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                TEntity entityToAdd = createTestEntity();
+                ctx.Repository.Add(entityToAdd);
+
+                await ctx.UnitOfWork.SaveChangesAsync();
+                await trans.CommitTransactionAsync();
+
+                key = GetEntityKey(entityToAdd);
+            }
+
+            var allWithAdd = await GetAll();
+            allWithAdd.Should().NotBeNull();
+            allWithAdd.Count().Should().Be(allWithoutAdd.Count() + 1);
+
+            // read again and update 
+            using (var ctx = CreateCUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                TEntity entity = await ctx.Repository.GetTracking(key);
+                GetEntityKey(entity).Should().Be(key);
+                CompareEntity(entity, createTestEntity()).Should().BeTrue();
+                updateEntity(entity);
+
+                await ctx.UnitOfWork.SaveChangesAsync();
+                await trans.CommitTransactionAsync();
+            }
+
+            // read again and delete 
+            using (var ctx = CreateCUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                TEntity entity = await ctx.Repository.GetTracking(key);
+                GetEntityKey(entity).Should().Be(key);
+
+                var compareEntity = createTestEntity();
+                updateEntity(compareEntity);
+                CompareEntity(entity, compareEntity).Should().BeTrue();
+
+                ctx.Repository.Delete(entity);
+
+                await ctx.UnitOfWork.SaveChangesAsync();
+                await trans.CommitTransactionAsync();
+            }
+
+            // read again to test is not exist
+
+            using (var ctx = CreateCUDTestContext())
+            {
+                TEntity entity = await ctx.Repository.GetTracking(key);
+                entity.Should().BeNull();
+            }
+        }
+
+        public async Task AddRollBack(Func<TEntity> createTestEntity)
+        {
+            // first add entity
+
+            TKey key;
+            using (var ctx = CreateCUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                TEntity entityToAdd = createTestEntity();
+                ctx.Repository.Add(entityToAdd);
+
+                await ctx.UnitOfWork.SaveChangesAsync();
+                // await trans.CommitTransactionAsync(); => no commit => Rollback
+
+                key = GetEntityKey(entityToAdd);
+            }
+
+            // read again to test is not exist
+
+            using (var ctx = CreateCUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                TEntity entity = await ctx.Repository.GetTracking(key);
+                entity.Should().BeNull();
+            }
+        }
     }
 }

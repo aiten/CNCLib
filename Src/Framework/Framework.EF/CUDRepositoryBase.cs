@@ -69,14 +69,14 @@ namespace Framework.EF
                 FirstOrDefaultAsync();
         }
 
-        public void Add(TEntity user)
+        public void Add(TEntity entity)
         {
-            AddEntity(user);
+            AddEntity(entity);
         }
 
-        public void Delete(TEntity user)
+        public void Delete(TEntity entity)
         {
-            DeleteEntity(user);
+            DeleteEntity(entity);
         }
 
         #endregion

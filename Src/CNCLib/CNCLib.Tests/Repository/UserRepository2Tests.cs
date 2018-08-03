@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Drawing.Design;
 using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository;
@@ -26,6 +27,7 @@ using FluentAssertions;
 using Framework.EF;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository
@@ -33,22 +35,115 @@ namespace CNCLib.Tests.Repository
     [TestClass]
 	public class UserRepository2Tests : CUDRepositoryTests<User,int, IUserRepository>
 	{
-		[ClassInitialize]
+	    protected override CUDTestContext<User, int, IUserRepository> CreateCUDTestContext()
+	    {
+	        return Dependency.Resolve<CUDTestContext<User, int, IUserRepository>>();
+	    }
+
+	    protected override int GetEntityKey(User entity)
+	    {
+	        return entity.UserID;
+	    }
+
+	    protected override bool CompareEntity(User entity1, User entity2)
+	    {
+	        return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] {@"UserID"});
+	    }
+
+        [ClassInitialize]
 		public new static void ClassInit(TestContext testContext)
 		{
 			RepositoryTests.ClassInit(testContext);
 		}
 
-	    [TestMethod]
-	    public async Task GetOK()
+        #region CUD Test
+
+        [TestMethod]
+	    public async Task GetAllTest()
 	    {
-	        using (var ctx = Dependency.Resolve<TestContext<User,int,IUserRepository>>())
+	        var entities = await GetAll();
+	        entities.Count().Should().BeGreaterThan(1);
+	        entities.ElementAt(0).UserName.Should().Be("Herbert");
+	        entities.ElementAt(1).UserName.Should().Be("Edith");
+	    }
+
+        [TestMethod]
+	    public async Task GetOKTest()
+	    {
+	        var entity = await GetOK(1);
+            entity.UserID.Should().Be(1);
+	    }
+
+	    [TestMethod]
+	    public async Task GetTrackingOKTest()
+	    {
+	        var entity = await GetTrackingOK(2);
+	        entity.UserID.Should().Be(2);
+	    }
+
+        [TestMethod]
+	    public async Task GetNotExistTest()
+	    {
+	        await GetNotExist(2342341);
+	    }
+
+	    [TestMethod]
+	    public async Task AddUpdateDeleteTest()
+	    {
+	        await AddUpdateDelete(
+	            () => new User() { UserName = "Hallo", UserPassword = "1234"}, 
+	            (entity) => entity.UserPassword = "3456");
+	    }
+
+	    [TestMethod]
+	    public async Task AddRollbackTest()
+	    {
+	        await AddRollBack(() => new User() {UserName = "Hallo", UserPassword = "1234"});
+	    }
+
+        #endregion
+
+	    [TestMethod]
+	    public async Task QueryOneUserByNameFound()
+	    {
+	        using (var ctx = CreateCUDTestContext())
 	        {
-	            await GetId(ctx.Repository,1, (entity) =>
-	            {
-	                entity.UserID.Should().Be(1);
-                });
+	            var users = await ctx.Repository.Get(2);
+	            users.UserID.Should().Be(2);
+
+	            var usersbyName = await ctx.Repository.GetUser(users.UserName);
+	            usersbyName.UserID.Should().Be(users.UserID);
 	        }
 	    }
-	}
+
+	    [TestMethod]
+	    public async Task QueryOneUserByNameNotFound()
+	    {
+	        using (var ctx = CreateCUDTestContext())
+	        {
+	            var users = await ctx.Repository.GetUser("UserNotExist");
+	            users.Should().BeNull();
+	        }
+	    }
+
+	    [TestMethod]
+	    [ExpectedException(typeof(DbUpdateException))]
+        public async Task InserftDuplicateUserName()
+	    {
+	        string existingusername;
+
+            using (var ctx = CreateCUDTestContext())
+	        {
+	            existingusername = (await ctx.Repository.Get(2)).UserName;
+	        }
+
+	        using (var ctx = CreateCUDTestContext())
+	        {
+	            User entityToAdd = new User() { UserName = existingusername };
+	            ctx.Repository.Add(entityToAdd);
+
+	            await ctx.UnitOfWork.SaveChangesAsync();
+	        }
+	    }
+    }
 }

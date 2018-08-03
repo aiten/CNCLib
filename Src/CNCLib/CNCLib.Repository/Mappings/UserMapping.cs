@@ -38,6 +38,7 @@ namespace CNCLib.Repository.Mappings
                 HasMaxLength(128);
 
             entity.Property(m => m.UserPassword).
+                IsUnicode().
                 HasMaxLength(255);
         }
     }

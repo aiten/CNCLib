@@ -67,8 +67,9 @@ namespace CNCLib.Tests.Repository
             Dependency.Container.RegisterType<IMachineRepository, MachineRepository>();
             Dependency.Container.RegisterType<IItemRepository, ItemRepository>();
             Dependency.Container.RegisterType<IUserRepository, UserRepository>();
+
+		    Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
-		    Dependency.Container.RegisterTypeScoped<DbContext, CNCLibContext>();
 
 		    Dependency.Container.RegisterType(typeof(TestContext),typeof(TestContext));
 		}
