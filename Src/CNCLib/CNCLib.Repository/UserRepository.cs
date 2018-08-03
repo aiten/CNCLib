@@ -16,15 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using Framework.EF;
-using Framework.Tools.Pattern;
+using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {

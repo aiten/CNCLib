@@ -229,8 +229,6 @@ namespace CNCLib.Repository.Context
 				miniCNC
             };
 
-            context.Machines.AddRange(machines);
-
             var machinecommands = new []
             {
                 //ProxxonMF70
@@ -305,6 +303,7 @@ namespace CNCLib.Repository.Context
                 new MachineInitCommand { Machine = minilaser, SeqNo=7, CommandString = @"g0 y0"  }
             };
 
+            context.Machines.AddRange(machines);
             context.MachineCommands.AddRange(machinecommands);
             context.MachineInitCommands.AddRange(machineinitcommands);
         }
@@ -350,8 +349,6 @@ namespace CNCLib.Repository.Context
             };
 
             var items = new[] { cutItem, cutHoleItem, graveItem, graveIMGItem, graveIMGG00G01Item, graveMillItem, cutMillItem };
-
-            context.Items.AddRange(items);
 
             var itemproperties = new[]
             {
@@ -458,6 +455,7 @@ namespace CNCLib.Repository.Context
 
              };
 
+            context.Items.AddRange(items);
             context.ItemProperties.AddRange(itemproperties);
         }
 

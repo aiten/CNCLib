@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CNCLib.Repository.Contracts.Entities;
 using Framework.Contracts.Repository;
 
 namespace CNCLib.Repository.Contracts
@@ -26,5 +27,6 @@ namespace CNCLib.Repository.Contracts
     {
 		Task<IEnumerable<Entities.MachineCommand>> GetMachineCommands(int machineID);
 		Task<IEnumerable<Entities.MachineInitCommand>> GetMachineInitCommands(int machineID);
-	}
+        void Add(Machine entity);
+    }
 }

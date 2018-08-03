@@ -42,6 +42,11 @@ namespace Framework.EF
         protected abstract IQueryable<TEntity> AddInclude(IQueryable<TEntity> query);
         protected abstract IQueryable<TEntity> AddPrimaryWhere(IQueryable<TEntity> query, TKey key);
 
+        protected virtual void SetEntityAdded(TEntity entity)
+        {
+            AddEntity(entity);
+        }
+
         public async Task<IEnumerable<TEntity>> GetAll()
         {
             return await Query.ToListAsync();
@@ -67,10 +72,9 @@ namespace Framework.EF
             SetValue(entityInDB, values);
         }
 
-
         public void Add(TEntity entity)
         {
-            AddEntity(entity);
+            SetEntityAdded(entity);
         }
 
         public void Delete(TEntity entity)

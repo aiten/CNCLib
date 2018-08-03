@@ -21,21 +21,105 @@ using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository;
 using CNCLib.Repository.Context;
+using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
 using Framework.EF;
+using Framework.Tools.Dependency;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-	public class MachineRepositoryTests : RepositoryTests
-	{
-		[ClassInitialize]
-		public new static void ClassInit(TestContext testContext)
-		{
-			RepositoryTests.ClassInit(testContext);
-		}
+    public class MachineRepositoryTests : CRUDRepositoryTests<Machine, int, IMachineRepository>
+    {
+        #region crt and overrides
+
+        protected override CRUDTestContext<Machine, int, IMachineRepository> CreateCRUDTestContext()
+        {
+            return Dependency.Resolve<CRUDTestContext<Machine, int, IMachineRepository>>();
+        }
+
+        [ClassInitialize]
+        public new static void ClassInit(TestContext testContext)
+        {
+            RepositoryTests.ClassInit(testContext);
+        }
+
+        protected override int GetEntityKey(Machine entity)
+        {
+            return entity.MachineID;
+        }
+        protected override Machine SetEntityKey(Machine entity, int key)
+        {
+            entity.MachineID = key;
+            return entity;
+        }
+
+        protected override bool CompareEntity(Machine entity1, Machine entity2)
+        {
+            //entity1.Should().BeEquivalentTo(entity2, opts => 
+            //    opts.Excluding(x => x.UserID)
+            //);
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, 0, new[] { @"MachineID", @"MachineCommandID", @"MachineInitCommandID" });
+        }
+
+        #endregion
+
+        #region CRUD Test
+
+        [TestMethod]
+        public async Task GetAllTest()
+        {
+            var entities = await GetAll();
+            entities.Count().Should().BeGreaterThan(1);
+            entities.Where(i => i.Name == "DC-K40-Laser").Count().Should().Be(1);
+            entities.Where(i => i.Name == "Laser").Count().Should().Be(1);
+        }
+
+        [TestMethod]
+        public async Task GetOKTest()
+        {
+            var entity = await GetOK(1);
+            entity.MachineID.Should().Be(1);
+        }
+
+        [TestMethod]
+        public async Task GetTrackingOKTest()
+        {
+            var entity = await GetTrackingOK(2);
+            entity.MachineID.Should().Be(2);
+        }
+
+        [TestMethod]
+        public async Task GetNotExistTest()
+        {
+            await GetNotExist(2342341);
+        }
+
+        [TestMethod]
+        public async Task AddUpdateDeleteTest()
+        {
+            await AddUpdateDelete(
+                () => CreateMachine(@"AddUpdateDeleteTest"),
+                (entity) => entity.Name = "DummyNameUpdate");
+        }
+
+        [TestMethod]
+        public async Task AddUpdateDeleteWithPropertiesTest()
+        {
+            await AddUpdateDelete(
+                () => AddMachinInitCommands((AddMachinCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))),
+                (entity) => entity.Name = "DummyNameUpdate");
+        }
+
+        [TestMethod]
+        public async Task AddRollbackTest()
+        {
+            await AddRollBack(() => CreateMachine(@"AddRollbackTest"));
+        }
+
+        #endregion
 
         [TestMethod]
         public async Task QueryAllMachines()
@@ -119,7 +203,7 @@ namespace CNCLib.Tests.Repository
        public async Task AddOneMachineWithCommandsAndRead()
        {
             var machine = CreateMachine("AddOneMachineWithCommandsAndRead");
-            int count = AddMachinCommands(machine);
+            int count = AddMachinCommands(machine).MachineCommands.Count();
             int id = await WriteMachine(machine);
 
             var machineread = await ReadMachine(id);
@@ -134,7 +218,7 @@ namespace CNCLib.Tests.Repository
        public async Task AddOneMachineWithInitCommandsAndRead()
        {
             var machine = CreateMachine("AddOneMachineWithInitCommandsAndRead");
-            int count = AddMachinInitCommands(machine);
+            int count = AddMachinInitCommands(machine).MachineInitCommands.Count();
             int id = await WriteMachine(machine);
 
             var machineread = await ReadMachine(id);
@@ -175,7 +259,7 @@ namespace CNCLib.Tests.Repository
        public async Task UpdateOneMachineNoCommandChangeAndRead()
        {
             var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
-            int count = AddMachinCommands(machine);
+            int count = AddMachinCommands(machine).MachineCommands.Count();
             int id;
 
            using (var ctx = new CNCLibContext())
@@ -201,7 +285,7 @@ namespace CNCLib.Tests.Repository
        public async Task UpdateOneMachineCommandChangeAndRead()
        {
             var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
-            int count = AddMachinCommands(machine);
+            int count = AddMachinCommands(machine).MachineCommands.Count();
             int id = await WriteMachine(machine);
             int newcount;
 
@@ -230,7 +314,7 @@ namespace CNCLib.Tests.Repository
        public async Task DeleteMachineWithCommandAndRead()
        {
             var machine = CreateMachine("DeleteMachineWithCommandAndRead");
-            int count = AddMachinCommands(machine);
+            int count = AddMachinCommands(machine).MachineCommands.Count();
             int id = await WriteMachine(machine);
 
            using (var ctx = new CNCLibContext())
@@ -293,28 +377,30 @@ namespace CNCLib.Tests.Repository
 				ProbeSizeZ = 1m,
 				ProbeDistUp = 1m,
 				ProbeDist = 1m,
-				ProbeFeed = 1m
+				ProbeFeed = 1m,
+                MachineInitCommands = new HashSet<MachineInitCommand>(),
+                MachineCommands = new HashSet<MachineCommand>()
 			};
 			return machine;
 		}
 
-		private static int AddMachinCommands(Machine machine)
+		private static Machine AddMachinCommands(Machine machine)
 		{
 		    machine.MachineCommands = new List<MachineCommand>
 		    {
-		        new MachineCommand {CommandName = "Name1", CommandString = "Test1"},
-		        new MachineCommand {CommandName = "Name1", CommandString = "Test2"}
+		        new MachineCommand {CommandName = "Name1", CommandString = "Test1", Machine = machine},
+		        new MachineCommand {CommandName = "Name1", CommandString = "Test2", Machine = machine}
 		    };
-		    return machine.MachineCommands.Count;
+		    return machine;
 		}
-		private static int AddMachinInitCommands(Machine machine)
+		private static Machine AddMachinInitCommands(Machine machine)
 		{
 		    machine.MachineInitCommands = new List<MachineInitCommand>
 		    {
-		        new MachineInitCommand {SeqNo = 0, CommandString = "Test1"},
-		        new MachineInitCommand {SeqNo = 1, CommandString = "Test2"}
+		        new MachineInitCommand {SeqNo = 0, CommandString = "Test1", Machine = machine},
+		        new MachineInitCommand {SeqNo = 1, CommandString = "Test2", Machine = machine}
 		    };
-		    return machine.MachineInitCommands.Count;
+		    return machine;
 		}
 
 		private static void CompareMachine(Machine machine, Machine machineread)

@@ -21,31 +21,41 @@ using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
+using CNCLib.Repository.Contracts.Entities;
 using Framework.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class ItemRepository : CRUDRepositoryBase<CNCLibContext, Contracts.Entities.Item, int>, IItemRepository
+    public class ItemRepository : CRUDRepositoryBase<CNCLibContext, Item, int>, IItemRepository
 	{
         public ItemRepository(CNCLibContext context) : base(context)
         {
         }
 
-	    protected override IQueryable<Contracts.Entities.Item> AddInclude(IQueryable<Contracts.Entities.Item> query)
+	    protected override IQueryable<Item> AddInclude(IQueryable<Item> query)
 	    {
 	        return query.Include(x => x.ItemProperties);
 	    }
 
-	    protected override IQueryable<Contracts.Entities.Item> AddPrimaryWhere(IQueryable<Contracts.Entities.Item> query, int key)
+	    protected override IQueryable<Item> AddPrimaryWhere(IQueryable<Item> query, int key)
 	    {
 	        return query.Where(m => m.ItemID == key);
 	    }
+	    protected override void SetEntityAdded(Item entity)
+	    {
+	        base.SetEntityAdded(entity);
+	        foreach (var ip in entity.ItemProperties)
+	        {
+	            AddEntity(ip);
+	        }
+	    }
+
 
         #region CRUD
         #endregion
 
-        public async Task<IEnumerable<Contracts.Entities.Item>> Get(string typeidstring)
+        public async Task<IEnumerable<Item>> Get(string typeidstring)
 	    {
 	        return await Query.
 	            Where(m => m.ClassName == typeidstring).
@@ -53,19 +63,19 @@ namespace CNCLib.Repository
 	            ToListAsync();
 	    }
 
-        public async Task Store(Contracts.Entities.Item item)
+        public async Task Store(Item item)
 		{
 			// search und update item / itemproperties
 
 			int id = item.ItemID;
-		    var optValues = item.ItemProperties?.ToList() ?? new List<Contracts.Entities.ItemProperty>();
+		    var optValues = item.ItemProperties?.ToList() ?? new List<ItemProperty>();
 
 			var itemInDb = await Context.Items.
 				Where(m => m.ItemID == id).
 				Include(d => d.ItemProperties).
                 FirstOrDefaultAsync();
 
-			if (itemInDb == default(Contracts.Entities.Item))
+			if (itemInDb == default(Item))
 			{
                 // add new
 				AddEntity(item);
@@ -81,7 +91,7 @@ namespace CNCLib.Repository
 
 				// search und itemProperties (add and delete)
 
-				Sync<Contracts.Entities.ItemProperty>(
+				Sync<ItemProperty>(
                     itemInDb.ItemProperties,
                     optValues, 
 					(x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);

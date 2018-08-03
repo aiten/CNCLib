@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CNCLib.Repository.Contracts.Entities;
 using CNCLib.Repository.Contracts;
@@ -70,7 +71,7 @@ namespace CNCLib.Tests.Logic
 
 		    var ctrl = new MachineManager(unitOfWork, rep, repC);
 
-            var machineEntity1 = new Machine { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+            var machineEntity1 = new Machine { MachineID = 11, Name = "Maxi", MachineCommands = new List<MachineCommand>(), MachineInitCommands = new MachineInitCommand[0] };
 			rep.Get(1).Returns(machineEntity1);
 
 			var machine = await ctrl.Get(1);
@@ -91,7 +92,7 @@ namespace CNCLib.Tests.Logic
 
 		    var ctrl = new MachineManager(unitOfWork, rep, repC);
 
-            var machineEntity1 = new Machine { MachineID = 11, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+            var machineEntity1 = new Machine { MachineID = 11, Name = "Maxi", MachineCommands = new List<MachineCommand>(), MachineInitCommands = new MachineInitCommand[0] };
 			rep.Get(1).Returns(machineEntity1);
 
 			var machine = await ctrl.Get(1);
@@ -128,7 +129,7 @@ namespace CNCLib.Tests.Logic
 
 		    var ctrl = new MachineManager(unitOfWork, rep, repC);
 
-            var machineEntity = new [] { new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] } };
+            var machineEntity = new [] { new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new List<MachineCommand>(), MachineInitCommands = new MachineInitCommand[0] } };
 			rep.GetAll().Returns(machineEntity);
 
 			var machines = (await ctrl.GetAll()).ToArray();
@@ -152,11 +153,11 @@ namespace CNCLib.Tests.Logic
 		    var ctrl = new MachineManager(unitOfWork, rep, repC);
 
             var machineEntity = new []
-			{ new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] },
+			{ new Machine { MachineID = 1, Name = "Maxi", BufferSize = 115200, MachineCommands = new List<MachineCommand>(), MachineInitCommands = new List<MachineInitCommand>() },
 			  new Machine
 			  { MachineID = 2, Name = "Maxi", BufferSize = 115200,
-								MachineCommands = new [] { new MachineCommand { MachineID =2,MachineCommandID=1,CommandName="Test",CommandString="f"  } },
-								MachineInitCommands = new [] { new MachineInitCommand { MachineID =2,MachineInitCommandID=1,SeqNo=0,CommandString="f"  } } }
+								MachineCommands = new List<MachineCommand>() { new MachineCommand { MachineID =2,MachineCommandID=1,CommandName="Test",CommandString="f"  } },
+								MachineInitCommands = new List<MachineInitCommand>() { new MachineInitCommand { MachineID =2,MachineInitCommandID=1,SeqNo=0,CommandString="f"  } } }
 			};
 
 			rep.GetAll().Returns(machineEntity);
@@ -185,8 +186,8 @@ namespace CNCLib.Tests.Logic
 
 		    var ctrl = new MachineManager(unitOfWork, rep, repC);
 
-            var machineEntity1 = new Machine { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
-			var machineEntity2 = new Machine { MachineID = 2, Name = "Mini", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+            var machineEntity1 = new Machine { MachineID = 1, Name = "Maxi", MachineCommands = new List<MachineCommand>(), MachineInitCommands = new MachineInitCommand[0] };
+			var machineEntity2 = new Machine { MachineID = 2, Name = "Mini", MachineCommands = new List<MachineCommand>(), MachineInitCommands = new MachineInitCommand[0] };
 			rep.Get(1).Returns(machineEntity1);
 			rep.Get(2).Returns(machineEntity2);
 
@@ -208,8 +209,8 @@ namespace CNCLib.Tests.Logic
 
 		    var ctrl = new MachineManager(unitOfWork, rep, repC);
 
-            var machineEntity1 = new Machine { MachineID = 1, Name = "Maxi", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
-			var machineEntity2 = new Machine { MachineID = 2, Name = "Mini", MachineCommands = new MachineCommand[0], MachineInitCommands = new MachineInitCommand[0] };
+            var machineEntity1 = new Machine { MachineID = 1, Name = "Maxi", MachineCommands = new List<MachineCommand> (), MachineInitCommands = new MachineInitCommand[0] };
+			var machineEntity2 = new Machine { MachineID = 2, Name = "Mini", MachineCommands = new List<MachineCommand> (), MachineInitCommands = new MachineInitCommand[0] };
 			rep.Get(1).Returns(machineEntity1);
 			rep.Get(2).Returns(machineEntity2);
 

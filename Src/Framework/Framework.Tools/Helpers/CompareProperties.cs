@@ -30,8 +30,11 @@ namespace Framework.Tools.Helpers
 
     public class CompareProperties
     {
-        public static bool AreObjectsPropertiesEqual(object objectA, object objectB, params string[] ignoreList)
+        public static bool AreObjectsPropertiesEqual(object objectA, object objectB, int depth, params string[] ignoreList)
         {
+#warning TODO: no depth
+            if (depth > 10) return true;
+
             if (objectA != null && objectB != null)
             {
                 Type objectType;
@@ -98,7 +101,7 @@ namespace Framework.Tools.Helpers
                                             return false;
                                         }
                                     }
-                                    else if (!AreObjectsPropertiesEqual(collectionItem1, collectionItem2, ignoreList))
+                                    else if (!AreObjectsPropertiesEqual(collectionItem1, collectionItem2, depth + 1, ignoreList))
                                     {
                                         return false;
                                     }
@@ -109,7 +112,7 @@ namespace Framework.Tools.Helpers
                     else if (propertyInfo.PropertyType.IsClass)
                     {
                         if (!AreObjectsPropertiesEqual(propertyInfo.GetValue(objectA, null),
-                                                 propertyInfo.GetValue(objectB, null), ignoreList))
+                                                 propertyInfo.GetValue(objectB, null), depth + 1, ignoreList))
                         {
                             return false;
                         }

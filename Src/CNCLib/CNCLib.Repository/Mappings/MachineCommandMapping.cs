@@ -39,18 +39,10 @@ namespace CNCLib.Repository.Mappings
             entity.Property(m => m.JoystickMessage).
 				HasMaxLength(64);
 
-			/*
-            ==> Index should ignore null
+            entity.HasOne(mc => mc.Machine)
+                .WithMany(m => m.MachineCommands)
+                .HasForeignKey(mc => mc.MachineID);
 
-                        Property(m => m.MachineID)
-                            .HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute("IDX_MachinePosXPosY", 0) { IsUnique = true }));
-
-                        Property(m => m.PosX)
-                            .HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute("IDX_MachinePosXPosY", 1) { IsUnique = true }));
-
-                        Property(m => m.PosY)
-                            .HasColumnAnnotation(IndexAnnotation.AnnotationName, new IndexAnnotation(new IndexAttribute("IDX_MachinePosXPosY", 2) { IsUnique = true }));
-            */
-		}
-	}
+        }
+    }
 }

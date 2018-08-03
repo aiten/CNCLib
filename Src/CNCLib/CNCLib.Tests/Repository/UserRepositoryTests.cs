@@ -30,12 +30,20 @@ namespace CNCLib.Tests.Repository
     [TestClass]
 	public class UserRepositoryTests : CRUDRepositoryTests<User,int, IUserRepository>
 	{
-	    protected override CRUDTestContext<User, int, IUserRepository> CreateCRUDTestContext()
+        #region crt and overrides
+
+        protected override CRUDTestContext<User, int, IUserRepository> CreateCRUDTestContext()
 	    {
 	        return Dependency.Resolve<CRUDTestContext<User, int, IUserRepository>>();
 	    }
 
-	    protected override int GetEntityKey(User entity)
+	    [ClassInitialize]
+	    public new static void ClassInit(TestContext testContext)
+	    {
+	        RepositoryTests.ClassInit(testContext);
+	    }
+
+        protected override int GetEntityKey(User entity)
 	    {
 	        return entity.UserID;
 	    }
@@ -50,14 +58,10 @@ namespace CNCLib.Tests.Repository
             //entity1.Should().BeEquivalentTo(entity2, opts => 
             //    opts.Excluding(x => x.UserID)
             //);
-            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] {@"UserID"});
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, 0, new[] {@"UserID"});
 	    }
 
-        [ClassInitialize]
-		public new static void ClassInit(TestContext testContext)
-		{
-			RepositoryTests.ClassInit(testContext);
-		}
+        #endregion
 
         #region CRUD Test
 
@@ -106,7 +110,9 @@ namespace CNCLib.Tests.Repository
 
         #endregion
 
-	    [TestMethod]
+        #region Additional Tests
+
+        [TestMethod]
 	    public async Task QueryOneUserByNameFound()
 	    {
 	        using (var ctx = CreateCRUDTestContext())
@@ -148,5 +154,7 @@ namespace CNCLib.Tests.Repository
 	            await ctx.UnitOfWork.SaveChangesAsync();
 	        }
 	    }
+
+        #endregion
     }
 }

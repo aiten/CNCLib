@@ -29,6 +29,14 @@ namespace CNCLib.Tests.Repository
     [TestClass]
     public class ConfigurationRepositoryTests : CRUDRepositoryTests<Configuration, ConfigurationPrimary, IConfigurationRepository>
     {
+        #region crt and overrides
+
+        [ClassInitialize]
+        public new static void ClassInit(TestContext testContext)
+        {
+            RepositoryTests.ClassInit(testContext);
+        }
+
         protected override CRUDTestContext<Configuration, ConfigurationPrimary, IConfigurationRepository> CreateCRUDTestContext()
         {
             return Dependency.Resolve<CRUDTestContext<Configuration, ConfigurationPrimary, IConfigurationRepository>>();
@@ -50,14 +58,11 @@ namespace CNCLib.Tests.Repository
             //entity1.Should().BeEquivalentTo(entity2, opts => 
             //    opts.Excluding(x => x.UserID)
             //);
-            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new string[0]);
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, 0, new string[0]);
         }
 
-		[ClassInitialize]
-		public new static void ClassInit(TestContext testContext)
-		{
-			RepositoryTests.ClassInit(testContext);
-		}
+        #endregion
+
         #region CRUD Test
 
         [TestMethod]
@@ -113,6 +118,8 @@ namespace CNCLib.Tests.Repository
 
         #endregion
 
+        #region Additiona Tests
+
         [TestMethod]
         public async Task GetEmptyConfiguration()
         {
@@ -132,5 +139,7 @@ namespace CNCLib.Tests.Repository
 				await ctx.UnitOfWork.SaveChangesAsync();
 			}
 		}
+
+        #endregion
     }
 }

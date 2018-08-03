@@ -33,6 +33,10 @@ namespace CNCLib.Repository.Mappings
             entity.Property(m => m.Name).
                 IsRequired().
                 HasMaxLength(255);
+
+            entity.HasOne(i => i.Item)
+                .WithMany(ip => ip.ItemProperties)
+                .HasForeignKey(ip => ip.ItemID);
         }
     }
 }

@@ -23,31 +23,103 @@ using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository;
 using CNCLib.Repository.Context;
+using CNCLib.Repository.Contracts;
 using FluentAssertions;
 using Framework.EF;
+using Framework.Tools.Dependency;
 
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-	public class ItemRepositoryTests : RepositoryTests
+    public class ItemRepositoryTests : CRUDRepositoryTests<Item, int, IItemRepository>
 	{
-		[ClassInitialize]
-		public new static void ClassInit(TestContext testContext)
-		{
-			RepositoryTests.ClassInit(testContext);
-		}
+        #region crt and overrides
 
-		[TestMethod]
-		public async Task QueryNotFound()
-		{
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uow = new UnitOfWork<CNCLibContext>(ctx);
-		        var rep = new ItemRepository(ctx);
-				var item = await rep.Get(1000);
-				item.Should().BeNull();
-			}
-		}
+        protected override CRUDTestContext<Item, int, IItemRepository> CreateCRUDTestContext()
+        {
+            return Dependency.Resolve<CRUDTestContext<Item, int, IItemRepository>>();
+        }
+
+        [ClassInitialize]
+        public new static void ClassInit(TestContext testContext)
+        {
+            RepositoryTests.ClassInit(testContext);
+        }
+
+        protected override int GetEntityKey(Item entity)
+        {
+            return entity.ItemID;
+        }
+        protected override Item SetEntityKey(Item entity, int key)
+        {
+            entity.ItemID = key;
+            return entity;
+        }
+
+        protected override bool CompareEntity(Item entity1, Item entity2)
+        {
+            //entity1.Should().BeEquivalentTo(entity2, opts => 
+            //    opts.Excluding(x => x.UserID)
+            //);
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, 0, new[] { @"ItemID" });
+        }
+
+        #endregion
+
+        #region CRUD Test
+
+        [TestMethod]
+        public async Task GetAllTest()
+        {
+            var entities = await GetAll();
+            entities.Count().Should().BeGreaterThan(1);
+            entities.Where(i => i.Name == "laser cut 160mg paper").Count().Should().Be(1);
+            entities.Where(i => i.Name == "laser cut hole 130mg black").Count().Should().Be(1);
+        }
+
+        [TestMethod]
+        public async Task GetOKTest()
+        {
+            var entity = await GetOK(1);
+            entity.ItemID.Should().Be(1);
+        }
+
+        [TestMethod]
+        public async Task GetTrackingOKTest()
+        {
+            var entity = await GetTrackingOK(2);
+            entity.ItemID.Should().Be(2);
+        }
+
+        [TestMethod]
+        public async Task GetNotExistTest()
+        {
+            await GetNotExist(2342341);
+        }
+
+        [TestMethod]
+        public async Task AddUpdateDeleteTest()
+        {
+            await AddUpdateDelete(
+                () => CreateItem(@"AddUpdateDeleteTest"),
+                (entity) => entity.ClassName = "DummyClassUpdate");
+        }
+
+	    [TestMethod]
+	    public async Task AddUpdateDeleteWithItemPropertiesTest()
+	    {
+	        await AddUpdateDelete(
+	            () => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")),
+	            (entity) => entity.ClassName = "DummyClassUpdate");
+	    }
+
+        [TestMethod]
+        public async Task AddRollbackTest()
+        {
+            await AddRollBack(() => CreateItem(@"AddRollbackTest"));
+        }
+
+        #endregion
 
 		[TestMethod]
 		public async Task AddOne()
@@ -116,7 +188,7 @@ namespace CNCLib.Tests.Repository
 		public async Task AddOneWithValuesAndRead()
 		{
             var item = CreateItem("AddOneMachineWithCommandsAndRead");
-            int count = AddItemProperties(item);
+            int count = AddItemProperties(item).ItemProperties.Count();
             int id = await WriteItem(item);
 
 		    using (var ctx = new CNCLibContext())
@@ -166,7 +238,7 @@ namespace CNCLib.Tests.Repository
 		{
             int id;
             var item = CreateItem("UpdateOneNoCommandChangeAndRead");
-            int count = AddItemProperties(item);
+            int count = AddItemProperties(item).ItemProperties.Count();
 
 		    using (var ctx = new CNCLibContext())
 		    {
@@ -198,7 +270,7 @@ namespace CNCLib.Tests.Repository
 		{
             int id;
             var item = CreateItem("UpdateOneValuesChangeAndRead");
-            int count = AddItemProperties(item);
+            int count = AddItemProperties(item).ItemProperties.Count(); 
             int newcount;
 
 		    using (var ctx = new CNCLibContext())
@@ -244,7 +316,7 @@ namespace CNCLib.Tests.Repository
 		public async Task DeleteWithProperties()
 		{
             var item = CreateItem("DeleteWithProperties");
-            int count = AddItemProperties(item);
+            int count = AddItemProperties(item).ItemProperties.Count(); 
             int id;
 
 		    using (var ctx = new CNCLibContext())
@@ -281,21 +353,22 @@ namespace CNCLib.Tests.Repository
 			var e = new Item
 			{
 				Name = name,
-                ClassName = "Dummy"
+                ClassName = "Dummy",
+                ItemProperties = new List<ItemProperty>()
 			};
 			return e;
 		}
 
-		private static int AddItemProperties(Item e)
+		private static Item AddItemProperties(Item e)
 		{
 			int count = 3;
 		    e.ItemProperties = new List<ItemProperty>
 		    {
-		        new ItemProperty {Name = "Name1", Value = "Test1"},
-		        new ItemProperty {Name = "Name2", Value = "Test2"},
-		        new ItemProperty {Name = "Name3"}
+		        new ItemProperty {Name = "Name1", Value = "Test1", Item = e },
+		        new ItemProperty {Name = "Name2", Value = "Test2", Item = e},
+		        new ItemProperty {Name = "Name3", Item = e}
 		    };
-		    return count;
+		    return e;
 		}
 
 		private static void CompareItem(Item e1, Item e2)

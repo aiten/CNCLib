@@ -151,7 +151,7 @@ namespace CNCLib.GCode.GUI.ViewModels
                 });
             }
 
-            if (Can() && SelectedLoadOption != null && !Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(SelectedLoadOption, LoadOptionsValue, ignorelist.ToArray()))
+            if (Can() && SelectedLoadOption != null && !Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(SelectedLoadOption, LoadOptionsValue, 0, ignorelist.ToArray()))
             {
                 return true;
             }

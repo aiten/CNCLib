@@ -31,7 +31,8 @@ namespace CNCLib.Repository.Mappings
             entity.HasKey(m => m.ItemID);
 
             entity.
-                HasIndex(c => c.Name ).IsUnique();
+                HasIndex(c => c.Name ).
+                IsUnique();
 
             entity.Property(m => m.Name).
                 IsRequired().
