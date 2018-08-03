@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Collections.Generic;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Tools.Dependency;
 using AutoMapper;
@@ -24,28 +25,34 @@ namespace CNCLib.Logic.Converter
 {
 	static class Converter
 	{
-		public static Machine Convert(this Repository.Contracts.Entities.Machine from)
+		public static Machine ToDto(this Repository.Contracts.Entities.Machine from)
 		{
 			var map = Dependency.Resolve<IMapper>();
 			return map.Map<Machine>(from);
 		}
 
-		public static Repository.Contracts.Entities.Machine Convert(this Machine from)
+		public static Repository.Contracts.Entities.Machine ToEntity(this Machine from)
 		{
 			var map = Dependency.Resolve<IMapper>();
 			return map.Map<Repository.Contracts.Entities.Machine>(from);
 		}
 
-        public static Item Convert(this Repository.Contracts.Entities.Item from)
+        public static Item ToDto(this Repository.Contracts.Entities.Item from)
         {
 			var map = Dependency.Resolve<IMapper>();
 			return map.Map<Item>(from);
         }
 
-		public static Repository.Contracts.Entities.Item Convert(this Item from)
+		public static Repository.Contracts.Entities.Item ToEntity(this Item from)
 		{
 			var map = Dependency.Resolve<IMapper>();
 			return map.Map<Repository.Contracts.Entities.Item>(from);
 		}
-	}
+
+	    public static IEnumerable<Item> ToDto(this IEnumerable<Repository.Contracts.Entities.Item> items)
+	    {
+	        var map = Dependency.Resolve<IMapper>();
+	        return map.Map<IEnumerable<Item>>(items);
+        }
+    }
 }

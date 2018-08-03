@@ -25,8 +25,6 @@ using CNCLib.Logic.Converter;
 using CNCLib.Repository.Contracts;
 using Framework.Contracts.Repository;
 using Framework.Logic;
-using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
 
 namespace CNCLib.Logic
 {
@@ -49,7 +47,7 @@ namespace CNCLib.Logic
 			var l = new List<Machine>();
 			foreach (var m in machines)
 			{
-				l.Add(m.Convert());
+				l.Add(m.ToDto());
 			}
 			return l;
 		}
@@ -57,19 +55,19 @@ namespace CNCLib.Logic
         public async Task<Machine> Get(int id)
         {
 			var machine = await _repository.Get(id);
-			var dto = machine?.Convert();
+			var dto = machine?.ToDto();
 			return dto;
 		}
 
 		public async Task Delete(Machine m)
         {
-			_repository.Delete(m.Convert());
+			_repository.Delete(m.ToEntity());
 			await _unitOfWork.SaveChangesAsync();
 		}
 
 		public async Task<int> Add(Machine m)
 		{
-			var me = m.Convert();
+			var me = m.ToEntity();
 			me.MachineID = 0;
 			foreach (var mc in me.MachineInitCommands) mc.MachineID = 0;
 			foreach (var mi in me.MachineInitCommands) mi.MachineID = 0;
@@ -80,7 +78,7 @@ namespace CNCLib.Logic
 
 		public async Task<int> Update(Machine m)
 		{
-			var me = m.Convert();
+			var me = m.ToEntity();
 			await _repository.Store(me);
 			await _unitOfWork.SaveChangesAsync();
 			return me.MachineID;

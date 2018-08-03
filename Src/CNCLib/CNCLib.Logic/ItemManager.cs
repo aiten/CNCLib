@@ -41,23 +41,22 @@ namespace CNCLib.Logic
 
         public async Task<IEnumerable<Item>> GetAll()
 		{
-			return Convert(await _repository.GetAll());
+			return (await _repository.GetAll()).ToDto();
 		}
 
 		public async Task<IEnumerable<Item>> GetByClassName(string classname)
 		{
-			return Convert(await _repository.Get(classname));
+			return (await _repository.Get(classname)).ToDto();
 		}
 
 		public async Task<Item> Get(int id)
 		{
-			return Convert(await _repository.Get(id));
+			return (await _repository.Get(id)).ToDto();
 		}
-
 
 		public async Task Delete(Item item)
 		{
-			_repository.Delete(item.Convert());
+			_repository.Delete(item.ToEntity());
 			await _unitOfWork.SaveChangesAsync();
 		}
 
@@ -65,8 +64,7 @@ namespace CNCLib.Logic
 		{
             using (var trans = _unitOfWork.BeginTransaction())
             {
-                ;
-                var me = item.Convert();
+                var me = item.ToEntity();
                 me.ItemID = 0;
                 foreach (var mc in me.ItemProperties) mc.ItemID = 0;
                 await _repository.Store(me);
@@ -81,29 +79,13 @@ namespace CNCLib.Logic
 		{
 		    using (var trans = _unitOfWork.BeginTransaction())
 		    {
-				var me = item.Convert();
+				var me = item.ToEntity();
 				await _repository.Store(me);
 				await _unitOfWork.SaveChangesAsync();
 		        await trans.CommitTransactionAsync();
 
 		        return me.ItemID;
 		    }
-		}
-
-		private static Item Convert(Repository.Contracts.Entities.Item item)
-		{
-		    var dto = item?.Convert();
-			return dto;
-		}
-
-		private static IEnumerable<Item> Convert(IEnumerable<Repository.Contracts.Entities.Item> items)
-		{
-			var l = new List<Item>();
-			foreach (var i in items)
-			{
-				l.Add(i.Convert());
-			}
-			return l;
 		}
     }
 }
