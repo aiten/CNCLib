@@ -39,8 +39,13 @@ namespace CNCLib.Tests.Repository
 	    {
 	        return entity.UserID;
 	    }
+	    protected override User SetEntityKey(User entity, int key)
+	    {
+	        entity.UserID = key;
+	        return entity;
+	    }
 
-	    protected override bool CompareEntity(User entity1, User entity2)
+        protected override bool CompareEntity(User entity1, User entity2)
 	    {
             //entity1.Should().BeEquivalentTo(entity2, opts => 
             //    opts.Excluding(x => x.UserID)

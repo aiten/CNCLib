@@ -29,6 +29,7 @@ using CNCLib.Logic.Contracts;
 using FluentAssertions;
 using Framework.Contracts.Repository;
 using Framework.Tools.Pattern;
+using Framework.EF;
 
 namespace CNCLib.Tests.Logic
 {
@@ -56,7 +57,7 @@ namespace CNCLib.Tests.Logic
 
 			var machineID = await ctrl.Add(machineEntity1);
 
-			await rep.ReceivedWithAnyArgs().Store(new Machine());
+			rep.ReceivedWithAnyArgs().Add(new Machine());
 			machineID.Should().Be(0);
 		}
 
@@ -77,8 +78,8 @@ namespace CNCLib.Tests.Logic
 
 			await ctrl.Update(machine);
 
-			await rep.Received().Store(Arg.Is<Machine>(x => x.Name == "SuperMaxi"));
-			await rep.Received().Store(Arg.Is<Machine>(x => x.MachineID == 11));
+			await rep.Received().Update(machine.MachineID,Arg.Is<Machine>(x => x.Name == "SuperMaxi"));
+			await rep.Received().Update(machine.MachineID, Arg.Is<Machine>(x => x.MachineID == 11));
 		}
 
 		[TestMethod]

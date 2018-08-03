@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -56,6 +57,17 @@ namespace Framework.EF
             return await AddPrimaryWhere(AddInclude(TrackingQuery), key).FirstOrDefaultAsync();
         }
 
+        public async Task Update(TKey key, TEntity values)
+        {
+            var entityInDB = await GetTracking(key);
+            if (entityInDB == default(TEntity))
+            {
+                throw new DBConcurrencyException();
+            }
+            SetValue(entityInDB, values);
+        }
+
+
         public void Add(TEntity entity)
         {
             AddEntity(entity);
@@ -64,6 +76,11 @@ namespace Framework.EF
         public void Delete(TEntity entity)
         {
             DeleteEntity(entity);
+        }
+
+        public void SetValue(TEntity entity, object values)
+        {
+            base.SetValue(entity,values);
         }
 
         #endregion

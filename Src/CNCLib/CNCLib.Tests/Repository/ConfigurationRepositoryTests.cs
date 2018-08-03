@@ -38,6 +38,12 @@ namespace CNCLib.Tests.Repository
         {
             return new ConfigurationPrimary() { Group = entity.Group, Name = entity.Name };
         }
+        protected override Configuration SetEntityKey(Configuration entity, ConfigurationPrimary key)
+        {
+            entity.Group = key.Group;
+            entity.Name = key.Name;
+            return entity;
+        }
 
         protected override bool CompareEntity(Configuration entity1, Configuration entity2)
         {

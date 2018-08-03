@@ -26,9 +26,11 @@ namespace Framework.Contracts.Repository
         Task<IEnumerable<TEntry>> GetAll();
         Task<TEntry> Get(TKey key);
         Task<TEntry> GetTracking(TKey key);
+        Task Update(TKey key, TEntry values);               // shortcut to GetTracking and SetValue
+
+
         void Add(TEntry entity);
         void Delete(TEntry entity);
-
-        Task Store(TEntry item);    // TEntiy must not be tracked and should not have a identity (id)
+        void SetValue(TEntry entity, object values);
     }
 }

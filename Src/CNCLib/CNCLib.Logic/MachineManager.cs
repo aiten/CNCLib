@@ -71,15 +71,15 @@ namespace CNCLib.Logic
 			me.MachineID = 0;
 			foreach (var mc in me.MachineInitCommands) mc.MachineID = 0;
 			foreach (var mi in me.MachineInitCommands) mi.MachineID = 0;
-			await _repository.Store(me);
+			_repository.Add(me);
 			await _unitOfWork.SaveChangesAsync();
 			return me.MachineID;
 		}
 
 		public async Task<int> Update(Machine m)
 		{
-			var me = m.ToEntity();
-			await _repository.Store(me);
+		    var me = m.ToEntity();
+			await _repository.Update(me.MachineID,me);
 			await _unitOfWork.SaveChangesAsync();
 			return me.MachineID;
 		}

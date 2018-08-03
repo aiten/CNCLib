@@ -67,7 +67,7 @@ namespace CNCLib.Logic
                 var me = item.ToEntity();
                 me.ItemID = 0;
                 foreach (var mc in me.ItemProperties) mc.ItemID = 0;
-                await _repository.Store(me);
+                _repository.Add(me);
                 await _unitOfWork.SaveChangesAsync();
                 await trans.CommitTransactionAsync();
 
@@ -77,6 +77,8 @@ namespace CNCLib.Logic
 
 		public async Task<int> Update(Item item)
 		{
+            throw new NotImplementedException();
+/*
 		    using (var trans = _unitOfWork.BeginTransaction())
 		    {
 				var me = item.ToEntity();
@@ -86,6 +88,7 @@ namespace CNCLib.Logic
 
 		        return me.ItemID;
 		    }
+*/
 		}
     }
 }

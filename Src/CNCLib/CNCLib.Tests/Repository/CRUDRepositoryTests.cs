@@ -22,6 +22,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Framework.Contracts.Repository;
+using Framework.EF;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository
@@ -32,6 +33,7 @@ namespace CNCLib.Tests.Repository
     {
         protected abstract CRUDTestContext<TEntity, TKey, TIRepository> CreateCRUDTestContext();
         protected abstract TKey GetEntityKey(TEntity entity);
+        protected abstract TEntity SetEntityKey(TEntity entity, TKey key);
         protected abstract bool CompareEntity(TEntity entity1, TEntity entity2);
 
         protected async Task<IEnumerable<TEntity>> GetAll()
@@ -112,6 +114,24 @@ namespace CNCLib.Tests.Repository
                 await trans.CommitTransactionAsync();
             }
 
+            // read again
+            using (var ctx = CreateCRUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                TEntity entity = await ctx.Repository.Get(key);
+                GetEntityKey(entity).Should().Be(key);
+            }
+
+            // update (with methode update)
+            using (var ctx = CreateCRUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                await ctx.Repository.Update(key, SetEntityKey(createTestEntity(),key));
+
+                await ctx.UnitOfWork.SaveChangesAsync();
+                await trans.CommitTransactionAsync();
+            }
+
             // read again and delete 
             using (var ctx = CreateCRUDTestContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
@@ -120,7 +140,6 @@ namespace CNCLib.Tests.Repository
                 GetEntityKey(entity).Should().Be(key);
 
                 var compareEntity = createTestEntity();
-                updateEntity(compareEntity);
                 CompareEntity(entity, compareEntity).Should().BeTrue();
 
                 ctx.Repository.Delete(entity);
@@ -186,7 +205,7 @@ namespace CNCLib.Tests.Repository
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entityToAdd = createTestEntity();
-                await ctx.Repository.Store(entityToAdd);
+                await ctx.Repository.Store(entityToAdd,key);
 
                 await ctx.UnitOfWork.SaveChangesAsync();
                 await trans.CommitTransactionAsync();
@@ -211,7 +230,7 @@ namespace CNCLib.Tests.Repository
                 TEntity entityToUpdate = createTestEntity();
                 updateEntity(entityToUpdate);
 
-                await ctx.Repository.Store(entityToUpdate);
+                await ctx.Repository.Store(entityToUpdate,key);
 
                 await ctx.UnitOfWork.SaveChangesAsync();
                 await trans.CommitTransactionAsync();

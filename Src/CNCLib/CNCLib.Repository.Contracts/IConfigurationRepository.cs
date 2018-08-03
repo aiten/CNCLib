@@ -30,5 +30,7 @@ namespace CNCLib.Repository.Contracts
     public interface IConfigurationRepository : ICRUDRepository<Entities.Configuration, ConfigurationPrimary>
     {
 		Task<Entities.Configuration> Get(string group, string name);
-	}
+
+        Task Store(Entities.Configuration cfg);
+    }
 }
