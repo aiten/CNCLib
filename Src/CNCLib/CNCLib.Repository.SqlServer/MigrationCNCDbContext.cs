@@ -33,7 +33,7 @@ namespace CNCLib.Repository.SqlServer {
             };
         }
 
-        public static void InitializeDatabase(string connectstring, bool dropdatabase)
+        public static void InitializeDatabase(string connectstring, bool dropdatabase, bool isTest)
         {
             if (!string.IsNullOrEmpty(connectstring))
                 ConnectString = connectstring;
@@ -46,7 +46,7 @@ namespace CNCLib.Repository.SqlServer {
                 ctx.Database.Migrate();
                 if (!ctx.Machines.Any())
                 {
-                    new CNCLibDefaultData().CNCSeed(ctx);
+                    new CNCLibDefaultData().CNCSeed(ctx, isTest);
                     ctx.SaveChanges();
                 }
             }

@@ -88,7 +88,7 @@ namespace CNCLib.Wpf.Sql.Start
 
             try
             {
-		        CNCLib.Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false);
+		        CNCLib.Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false, false);
 		    }
 			catch (Exception ex)
 			{

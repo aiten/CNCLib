@@ -272,7 +272,7 @@ namespace CNCLib.Tests.Logic
 
 			repC.Get("Environment", "DefaultMachineID").Returns(new Configuration { Value = "14" });
 
-			await repC.Received().Save(Arg.Is<Configuration>(x => x.Group == "Environment" && x.Name == "DefaultMachineID" && x.Value == "15"));
+			await repC.Received().Store(Arg.Is<Configuration>(x => x.Group == "Environment" && x.Name == "DefaultMachineID" && x.Value == "15"));
 		}
 	}
 }

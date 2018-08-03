@@ -20,21 +20,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CNCLib.Repository;
-using CNCLib.Repository.Contracts;
-using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
 using Framework.Contracts.Repository;
-using Framework.EF;
-using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-	public abstract class CRUDRepositoryTests<TEntity, TKey, TIRepository> : RepositoryTests where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey>
+    public abstract class CRUDRepositoryTests<TEntity, TKey, TIRepository> : RepositoryTests where TEntity : class
+        where TIRepository : ICRUDRepository<TEntity, TKey>
     {
         protected abstract CRUDTestContext<TEntity, TKey, TIRepository> CreateCRUDTestContext();
         protected abstract TKey GetEntityKey(TEntity entity);
@@ -168,6 +162,78 @@ namespace CNCLib.Tests.Repository
             {
                 TEntity entity = await ctx.Repository.GetTracking(key);
                 entity.Should().BeNull();
+            }
+        }
+
+        public async Task Store(Func<TEntity> createTestEntity, Action<TEntity> updateEntity)
+        {
+            // test if entry not exist in DB
+
+            TKey key = GetEntityKey(createTestEntity());
+
+            using (var ctx = CreateCRUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                TEntity entityToTest = createTestEntity();
+                var notFound = await ctx.Repository.Get(key);
+                notFound.Should().BeNull();
+            }
+
+            // first add entity
+            // only usefull if key is no identity
+
+            using (var ctx = CreateCRUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                TEntity entityToAdd = createTestEntity();
+                await ctx.Repository.Store(entityToAdd);
+
+                await ctx.UnitOfWork.SaveChangesAsync();
+                await trans.CommitTransactionAsync();
+            }
+
+            // Read and Update Entity
+            // only usefull if key is no identity
+
+            using (var ctx = CreateCRUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                var entityinDb = await ctx.Repository.Get(key);
+                entityinDb.Should().NotBeNull();
+                CompareEntity(createTestEntity(), entityinDb).Should().BeTrue();
+            }
+
+            // modify existing
+
+            using (var ctx = CreateCRUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                TEntity entityToUpdate = createTestEntity();
+                updateEntity(entityToUpdate);
+
+                await ctx.Repository.Store(entityToUpdate);
+
+                await ctx.UnitOfWork.SaveChangesAsync();
+                await trans.CommitTransactionAsync();
+            }
+
+            // read again (modified)
+
+            using (var ctx = CreateCRUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                var entityinDb = await ctx.Repository.Get(key);
+                entityinDb.Should().NotBeNull();
+
+                TEntity entityToCompare = createTestEntity();
+                updateEntity(entityToCompare);
+
+                CompareEntity(entityToCompare, entityinDb).Should().BeTrue();
+
+                ctx.Repository.Delete(entityinDb);
+
+                await ctx.UnitOfWork.SaveChangesAsync();
+                await trans.CommitTransactionAsync();
             }
         }
     }

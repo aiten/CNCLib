@@ -16,17 +16,19 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Globalization;
 using CNCLib.Repository.Contracts.Entities;
 
 namespace CNCLib.Repository.Context
 {
     public class CNCLibDefaultData
     {
-        public void CNCSeed(CNCLibContext context)
+        public void CNCSeed(CNCLibContext context, bool isTest)
         {
             var users = UserSeed(context);
             MachineSeed(context,users);
             ItemSeed(context);
+            ConfigurationSeed(context, isTest);
         }
 
         private User[] UserSeed(CNCLibContext context)
@@ -306,6 +308,7 @@ namespace CNCLib.Repository.Context
             context.MachineCommands.AddRange(machinecommands);
             context.MachineInitCommands.AddRange(machineinitcommands);
         }
+
         private void ItemSeed(CNCLibContext context)
         {
             var cutItem = new Item
@@ -456,6 +459,22 @@ namespace CNCLib.Repository.Context
              };
 
             context.ItemProperties.AddRange(itemproperties);
+        }
+
+        private void ConfigurationSeed(CNCLibContext context, bool isTest)
+        {
+            if (isTest)
+            {
+                var cfgs = new Configuration[]
+                {
+                    new Configuration() { Group = "TestGroup", Name = "TestInt", Type = typeof(int).FullName, Value = 1.ToString() },
+                    new Configuration() { Group = "TestGroup", Name = "TestBool", Type = typeof(bool).FullName, Value = true.ToString() },
+                    new Configuration() { Group = "TestGroup", Name = "TestString", Type = typeof(string).FullName, Value = "String" },
+                    new Configuration() { Group = "TestGroup", Name = "TestDecimal", Type = typeof(decimal).FullName, Value = 1.2345m.ToString(CultureInfo.InvariantCulture) },
+                };
+
+                context.Configurations.AddRange(cfgs);
+            }
         }
     }
 }

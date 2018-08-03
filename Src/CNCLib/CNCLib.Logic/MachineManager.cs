@@ -133,7 +133,7 @@ namespace CNCLib.Logic
 
 		public async Task SetDetaultMachine(int defaultMachineID)
 		{
-			await _repositoryConfig.Save(new Repository.Contracts.Entities.Configuration { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
+			await _repositoryConfig.Store(new Repository.Contracts.Entities.Configuration { Group = "Environment", Name = "DefaultMachineID", Type = "Int32", Value = defaultMachineID.ToString() });
 			await _unitOfWork.SaveChangesAsync();
 		}
 

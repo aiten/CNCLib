@@ -18,181 +18,130 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using CNCLib.Repository;
-using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
-using Framework.EF;
 using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-	public class UserRepositoryTests : RepositoryTests
+	public class UserRepositoryTests : CRUDRepositoryTests<User,int, IUserRepository>
 	{
-		[ClassInitialize]
+	    protected override CRUDTestContext<User, int, IUserRepository> CreateCRUDTestContext()
+	    {
+	        return Dependency.Resolve<CRUDTestContext<User, int, IUserRepository>>();
+	    }
+
+	    protected override int GetEntityKey(User entity)
+	    {
+	        return entity.UserID;
+	    }
+
+	    protected override bool CompareEntity(User entity1, User entity2)
+	    {
+            //entity1.Should().BeEquivalentTo(entity2, opts => 
+            //    opts.Excluding(x => x.UserID)
+            //);
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] {@"UserID"});
+	    }
+
+        [ClassInitialize]
 		public new static void ClassInit(TestContext testContext)
 		{
 			RepositoryTests.ClassInit(testContext);
 		}
 
+        #region CRUD Test
+
         [TestMethod]
-        public async Task QueryAllUsers()
-        {
-            using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new UserRepository(ctx);
-                var users = await rep.GetAll();
-				users.Count().Should().BeGreaterOrEqualTo(2);
-			}
+	    public async Task GetAllTest()
+	    {
+	        var entities = (await GetAll()).OrderBy(u => u.UserName);
+	        entities.Count().Should().BeGreaterThan(1);
+	        entities.ElementAt(0).UserName.Should().Be("Edith");
+	        entities.ElementAt(1).UserName.Should().Be("Herbert");
 	    }
 
-		[TestMethod]
-		public async Task QueryOneUserFound()
-		{
-		    using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new UserRepository(ctx);
-                var users = await rep.Get(1);
-				users.UserID.Should().Be(1);
-			}
-		}
+        [TestMethod]
+	    public async Task GetOKTest()
+	    {
+	        var entity = await GetOK(1);
+            entity.UserID.Should().Be(1);
+	    }
+
+	    [TestMethod]
+	    public async Task GetTrackingOKTest()
+	    {
+	        var entity = await GetTrackingOK(2);
+	        entity.UserID.Should().Be(2);
+	    }
 
         [TestMethod]
-        public async Task QueryOneUserByNameFound()
-        {
-            using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new UserRepository(ctx);
-                var users = await rep.Get(1);
-                users.UserID.Should().Be(1);
+	    public async Task GetNotExistTest()
+	    {
+	        await GetNotExist(2342341);
+	    }
 
-                var usersbyName = await rep.GetUser(users.UserName);
-                usersbyName.UserID.Should().Be(users.UserID);
-            }
-        }
+	    [TestMethod]
+	    public async Task AddUpdateDeleteTest()
+	    {
+	        await AddUpdateDelete(
+	            () => new User() { UserName = "Hallo", UserPassword = "1234"}, 
+	            (entity) => entity.UserPassword = "3456");
+	    }
 
-        [TestMethod]
-		public async Task QueryOneUserNotFound()
-		{
-		    using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new UserRepository(ctx);
-                var users = await rep.Get(1000);
-				users.Should().BeNull();
-			}
-		}
+	    [TestMethod]
+	    public async Task AddRollbackTest()
+	    {
+	        await AddRollBack(() => new User() {UserName = "Hallo", UserPassword = "1234"});
+	    }
 
-        [TestMethod]
-        public async Task QueryOneUserByNameNotFound()
-        {
-            using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new UserRepository(ctx);
-                var users = await rep.GetUser("UserNotExist");
-                users.Should().BeNull();
-            }
-        }
+        #endregion
 
-        [TestMethod]
-		public async Task AddOneUser()
-		{
-		    using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new UserRepository(ctx);
-                var user = CreateUser("AddOneUser");
-				await rep.Store(user);
-				await uow.SaveChangesAsync();
-				user.UserID.Should().NotBe(0);
-			}
-		}
+	    [TestMethod]
+	    public async Task QueryOneUserByNameFound()
+	    {
+	        using (var ctx = CreateCRUDTestContext())
+	        {
+	            var users = await ctx.Repository.Get(2);
+	            users.UserID.Should().Be(2);
 
-		[TestMethod]
-		public async Task AddOneUserAndRead()
-        {
-            var user = CreateUser("AddOneUserAndRead");
-            int id = await WriteUser(user);
+	            var usersbyName = await ctx.Repository.GetUser(users.UserName);
+	            usersbyName.UserID.Should().Be(users.UserID);
+	        }
+	    }
 
-            var userread = await ReadUser(id);
+	    [TestMethod]
+	    public async Task QueryOneUserByNameNotFound()
+	    {
+	        using (var ctx = CreateCRUDTestContext())
+	        {
+	            var users = await ctx.Repository.GetUser("UserNotExist");
+	            users.Should().BeNull();
+	        }
+	    }
 
-            CompareUser(user, userread);
-        }
+	    [TestMethod]
+	    [ExpectedException(typeof(DbUpdateException))]
+        public async Task InserftDuplicateUserName()
+	    {
+	        string existingusername;
 
-       [TestMethod]
-       public async Task UpdateOneUserAndRead()
-       {
-            var user = CreateUser("UpdateOneUserAndRead");
-            int id;
+            using (var ctx = CreateCRUDTestContext())
+	        {
+	            existingusername = (await ctx.Repository.Get(2)).UserName;
+	        }
 
-           using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new UserRepository(ctx);
-                await rep.Store(user);
-				await uow.SaveChangesAsync();
-                id = user.UserID;
-                id.Should().NotBe(0);
+	        using (var ctx = CreateCRUDTestContext())
+	        {
+	            User entityToAdd = new User() { UserName = existingusername };
+	            ctx.Repository.Add(entityToAdd);
 
-                user.UserName = "UpdateOneUserAndRead#2";
-
-				await rep.Store(user);
-				await uow.SaveChangesAsync();
-            }
-
-            var userread = await ReadUser(id);
-            CompareUser(user, userread);
-       }
-
-        private static async Task<int> WriteUser(User user)
-        {
-            int id;
-
-            using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new UserRepository(ctx);
-                await rep.Store(user);
-				await uow.SaveChangesAsync();
-                id = user.UserID;
-                id.Should().NotBe(0);
-            }
-
-            return id;
-        }
-
-        private static async Task<User> ReadUser(int id)
-        {
-            using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new UserRepository(ctx);
-                return await rep.Get(id);
-            }
-        }
-
-
-        private static User CreateUser(string name)
-		{
-            var user = new User
-            {
-                UserName = name,
-                UserPassword = name.Reverse().ToString()
-			};
-			return user;
-		}
-
-		private static void CompareUser(User user, User userread)
-		{
-			userread.CompareProperties(user).Should().Be(true);
- 		}
-	}
+	            await ctx.UnitOfWork.SaveChangesAsync();
+	        }
+	    }
+    }
 }

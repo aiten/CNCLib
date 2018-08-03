@@ -29,12 +29,6 @@ using Framework.Tools.Pattern;
 
 namespace CNCLib.Repository
 {
-    public struct ConfigurationPrimary
-    {
-        public string Group { get; set; }
-        public string Name { get; set; }
-    }
-
     public class ConfigurationRepository : CRUDRepositoryBase<CNCLibContext, Configuration, ConfigurationPrimary>, IConfigurationRepository
 	{
         public ConfigurationRepository(CNCLibContext dbcontext) : base(dbcontext)
@@ -56,7 +50,7 @@ namespace CNCLib.Repository
 			return await Query.Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
         }
 
-        public async Task Save(Configuration configuration)
+        public async Task Store(Configuration configuration)
 		{
 			// search und update machine
 

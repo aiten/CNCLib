@@ -16,36 +16,107 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CNCLib.Repository.Contracts.Entities;
-using CNCLib.Repository.Contracts;
-using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CNCLib.Repository;
 using CNCLib.Repository.Context;
+using CNCLib.Repository.Contracts;
+using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
 using Framework.EF;
+using Framework.Tools.Dependency;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository
 {
-	[TestClass]
-	public class ConfigurationRepositoryTests : RepositoryTests
-	{
+    [TestClass]
+    public class ConfigurationRepositoryTests : CRUDRepositoryTests<Configuration, ConfigurationPrimary, IConfigurationRepository>
+    {
+        protected override CRUDTestContext<Configuration, ConfigurationPrimary, IConfigurationRepository> CreateCRUDTestContext()
+        {
+            return Dependency.Resolve<CRUDTestContext<Configuration, ConfigurationPrimary, IConfigurationRepository>>();
+        }
+
+        protected override ConfigurationPrimary GetEntityKey(Configuration entity)
+        {
+            return new ConfigurationPrimary() { Group = entity.Group, Name = entity.Name };
+        }
+
+        protected override bool CompareEntity(Configuration entity1, Configuration entity2)
+        {
+            //entity1.Should().BeEquivalentTo(entity2, opts => 
+            //    opts.Excluding(x => x.UserID)
+            //);
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new string[0]);
+        }
+
 		[ClassInitialize]
 		public new static void ClassInit(TestContext testContext)
 		{
 			RepositoryTests.ClassInit(testContext);
 		}
+        #region CRUD Test
 
-		[TestMethod]
+        [TestMethod]
+        public async Task GetAllTest()
+        {
+            var entities = (await GetAll()).OrderBy(cfg => cfg.Name);
+            entities.Count().Should().BeGreaterThan(3);
+            entities.ElementAt(0).Group.Should().Be("TestGroup");
+            entities.ElementAt(0).Name.Should().Be("TestBool");
+        }
+
+        [TestMethod]
+        public async Task GetOKTest()
+        {
+            var entity = await GetOK(new ConfigurationPrimary() { Group = "TestGroup", Name = "TestBool" });
+            entity.Value.Should().Be(@"True");
+        }
+
+        [TestMethod]
+        public async Task GetTrackingOKTest()
+        {
+            var entity = await GetTrackingOK(new ConfigurationPrimary() { Group = "TestGroup", Name = "TestDecimal" });
+            entity.Value.Should().Be(@"1.2345");
+        }
+
+        [TestMethod]
+        public async Task GetNotExistTest()
+        {
+            await GetNotExist(new ConfigurationPrimary() { Group = "NotExist", Name = "NotExist" });
+        }
+
+        [TestMethod]
+        public async Task AddUpdateDeleteTest()
+        {
+            await AddUpdateDelete(
+                () => new Configuration() { Group = "TestGroup", Name = "TestName", Type = "string", Value = "TestValue"},
+                (entity) => entity.Value = "testValueModified");
+        }
+
+        [TestMethod]
+        public async Task AddRollbackTest()
+        {
+            await AddRollBack(() => new Configuration() { Group = "TestGroup", Name = "TestName", Type = "string", Value = "TestValue" });
+        }
+
+        [TestMethod]
+        public async Task StoreTest()
+        {
+            await Store(
+                () => new Configuration() { Group = "TestGroup", Name = "TestName", Type = "string", Value = "TestValue" },
+                (entity) => entity.Value = "testValueModified");
+        }
+
+        #endregion
+
+        [TestMethod]
         public async Task GetEmptyConfiguration()
         {
-            using (var ctx = new CNCLibContext())
+            using (var ctx = CreateCRUDTestContext())
             {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new ConfigurationRepository(ctx);
-                var entity = await rep.Get("Test","Test");
+                var entity = await ctx.Repository.Get("Test","Test");
 				entity.Should().BeNull();
 			}
 	    }
@@ -53,75 +124,11 @@ namespace CNCLib.Tests.Repository
 		[TestMethod]
 		public async Task SaveConfiguration()
 		{
-		    using (var ctx = new CNCLibContext())
+		    using (var ctx = CreateCRUDTestContext())
 		    {
-		        var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new ConfigurationRepository(ctx);
-                await rep.Save(new Configuration("Test", "TestNew1", "Content"));
-				await uow.SaveChangesAsync();
+                await ctx.Repository.Store(new Configuration("Test", "TestNew1", "Content"));
+				await ctx.UnitOfWork.SaveChangesAsync();
 			}
 		}
-
-        [TestMethod]
-        public async Task SaveAndReadConfiguration()
-        {
-			await WriteConfiguration("Test", "TestNew2", "Content2");
-
-            using (var ctx = new CNCLibContext())
-            {
-                var uowread = new UnitOfWork<CNCLibContext>(ctx);
-                var repread = new ConfigurationRepository(ctx);
-                var read = await repread.Get("Test", "TestNew2");
-                read.Value.Should().Be("Content2");
-            }
-        }
-
-
-        [TestMethod]
-		public async Task SaveAndReadAndDeleteConfiguration()
-		{
-			await WriteConfiguration("Test", "TestNew3", "Content3");
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new ConfigurationRepository(ctx);
-				var read = await rep.Get("Test", "TestNew3");
-				read.Value.Should().Be("Content3");
-
-				rep.Delete(read);
-
-				await uow.SaveChangesAsync();
-
-				var readagain = await rep.Get("Test", "TestNew3");
-				readagain.Should().BeNull();
-			}
-		}
-
-		[TestMethod]
-		public async Task SaveExistingConfiguration()
-		{
-            await WriteConfiguration("Test", "TestNew4", "Content4");
-			await WriteConfiguration("Test", "TestNew4", "Content5");
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new ConfigurationRepository(ctx);
-				var readagain = await rep.Get("Test", "TestNew4");
-				readagain.Value.Should().Be("Content5");
-			}
-		}
-
-        private static async Task WriteConfiguration(string module, string name, string content)
-        {
-            using (var ctx = new CNCLibContext())
-            {
-                var uowwrite = new UnitOfWork<CNCLibContext>(ctx);
-                var repwrite = new ConfigurationRepository(ctx);
-				await repwrite.Save(new Configuration(module,name,content));
-				await uowwrite.SaveChangesAsync();
-            }
-        }
     }
 }

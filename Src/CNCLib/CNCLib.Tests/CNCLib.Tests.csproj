@@ -82,7 +82,6 @@
     <Compile Include="Repository\CRUDTestContext.cs" />
     <Compile Include="Repository\ItemRepositoryTests.cs" />
     <Compile Include="Repository\CRUDRepositoryTests.cs" />
-    <Compile Include="Repository\UserRepository2Tests.cs" />
     <Compile Include="Repository\UserRepositoryTests.cs" />
     <Compile Include="Wpf\MachineViewModelTests.cs" />
     <Compile Include="Logic\MachineControllerTests.cs" />

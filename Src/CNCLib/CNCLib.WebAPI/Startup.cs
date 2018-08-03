@@ -98,7 +98,7 @@ namespace CNCLib.WebAPI
                 sqlconnectstring = null;
             }
 
-            CNCLib.Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false);
+            CNCLib.Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false, false);
 
             if (env.IsDevelopment())
             {

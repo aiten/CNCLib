@@ -34,7 +34,7 @@ namespace CNCLib.Repository.SqLite
             };
         }
 
-        public static void InitializeDatabase(string databasefile, bool dropdatabase)
+        public static void InitializeDatabase(string databasefile, bool dropdatabase, bool isTest)
         {
             DatabaseFile = databasefile;
 
@@ -46,7 +46,7 @@ namespace CNCLib.Repository.SqLite
                 ctx.Database.Migrate();
                 if (!ctx.Machines.Any())
                 {
-                    new CNCLibDefaultData().CNCSeed(ctx);
+                    new CNCLibDefaultData().CNCSeed(ctx, isTest);
                     ctx.SaveChanges();
                 }
             }
