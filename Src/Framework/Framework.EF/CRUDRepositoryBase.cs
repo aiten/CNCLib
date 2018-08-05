@@ -42,6 +42,11 @@ namespace Framework.EF
         protected abstract IQueryable<TEntity> AddInclude(IQueryable<TEntity> query);
         protected abstract IQueryable<TEntity> AddPrimaryWhere(IQueryable<TEntity> query, TKey key);
 
+        protected virtual void AssignValuesGraph(TEntity trackingentity, TEntity values)
+        {
+            SetValue(trackingentity,values);
+        }
+
         public async Task<IEnumerable<TEntity>> GetAll()
         {
             return await Query.ToListAsync();
@@ -57,27 +62,6 @@ namespace Framework.EF
             return await AddPrimaryWhere(AddInclude(TrackingQuery), key).FirstOrDefaultAsync();
         }
 
-        public async Task Update(TKey key, TEntity values)
-        {
-            var entityInDB = await GetTracking(key);
-            if (entityInDB == default(TEntity))
-            {
-                throw new DBConcurrencyException();
-            }
-
-            await UpdateGraph(entityInDB, values);
-        }
-
-        protected virtual async Task UpdateGraph(TEntity trackingentity, TEntity values)
-        {
-            SetValue(trackingentity, values);
-        }
-
-        public void SetState(TEntity entity, Framework.Contracts.Repository.EntityState state)
-        {
-            SetEntityState(entity,(EntityState) state);
-        }
-
         public void Add(TEntity entity)
         {
             AddEntity(entity);
@@ -87,11 +71,32 @@ namespace Framework.EF
         {
             DeleteEntity(entity);
         }
-
-        public void SetValue(TEntity entity, object values)
+        public void SetState(TEntity entity, Framework.Contracts.Repository.EntityState state)
         {
-            base.SetValue(entity,values);
+            SetEntityState(entity, (EntityState)state);
         }
+
+        public void SetValue(TEntity entity, TEntity values)
+        {
+            base.SetValue(entity,(object) values);
+        }
+
+        public async Task Update(TKey key, TEntity values)
+        {
+            var entityInDB = await GetTracking(key);
+            if (entityInDB == default(TEntity))
+            {
+                throw new DBConcurrencyException();
+            }
+
+            SetValueGraph(entityInDB, values);
+        }
+
+        public void SetValueGraph(TEntity trackingentity, TEntity values)
+        {
+            AssignValuesGraph(trackingentity, values);
+        }
+
 
         #endregion
     }

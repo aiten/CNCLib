@@ -110,7 +110,12 @@ namespace CNCLib.Tests.Repository
 	    {
 	        await AddUpdateDelete(
 	            () => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")),
-	            (entity) => entity.ClassName = "DummyClassUpdate");
+	            (entity) =>
+	            {
+	                entity.ClassName = "DummyClassUpdate";
+	                entity.ItemProperties.Remove(entity.ItemProperties.First());
+                    entity.ItemProperties.Add(new ItemProperty() { Name = @"NewItemProperty", Value = @"Hallo"});
+	            });
 	    }
 
         [TestMethod]
@@ -120,233 +125,6 @@ namespace CNCLib.Tests.Repository
         }
 
         #endregion
-
-		[TestMethod]
-		public async Task AddOne()
-		{
-            var item = CreateItem("AddOne");
-
-		    using (var ctx = new CNCLibContext())
-			{
-			    var uow = new UnitOfWork<CNCLibContext>(ctx);
-			    var rep = new ItemRepository(ctx);
-                await rep.Store(item);
-				await uow.SaveChangesAsync();
-				item.ItemID.Should().NotBe(0);
-			}
-		}
-
-		[TestMethod]
-		public async Task AddOneWithValues()
-		{
-            var item = CreateItem("AddOneWithValues");
-            AddItemProperties(item);
-
-		    using (var ctx = new CNCLibContext())
-			{
-			    var uow = new UnitOfWork<CNCLibContext>(ctx);
-			    var rep = new ItemRepository(ctx);
-                await rep.Store(item);
-				await uow.SaveChangesAsync();
-            }
-            item.ItemID.Should().NotBe(0);
-        }
-
-        [TestMethod]
-        public async Task AddOneAndRead()
-        {
-            var item = CreateItem("AddOneAndRead");
-            int id = await WriteItem(item);
-
-            using (var ctx = new CNCLibContext())
-            {
-                var uowread = new UnitOfWork<CNCLibContext>(ctx);
-                var repread = new ItemRepository(ctx);
-                var optread = await repread.Get(id);
-                optread.ItemProperties.Count.Should().Be(0);
-                CompareItem(item, optread);
-            }
-        }
-
-        private static async Task<int> WriteItem(Item item)
-        {
-            int id;
-            using (var ctx = new CNCLibContext())
-            {
-                var uowwrite = new UnitOfWork<CNCLibContext>(ctx);
-                var repwrite = new ItemRepository(ctx);
-                await repwrite.Store(item);
-				await uowwrite.SaveChangesAsync();
-                id = item.ItemID;
-                id.Should().NotBe(0);
-            }
-
-            return id;
-        }
-
-        [TestMethod]
-		public async Task AddOneWithValuesAndRead()
-		{
-            var item = CreateItem("AddOneMachineWithCommandsAndRead");
-            int count = AddItemProperties(item).ItemProperties.Count();
-            int id = await WriteItem(item);
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uowread = new UnitOfWork<CNCLibContext>(ctx);
-                var repread = new ItemRepository(ctx);
-                id.Should().NotBe(0);
-                var optread = await repread.Get(id);
-                optread.ItemProperties.Count.Should().Be(count);
-                CompareItem(item, optread);
-            }
-		}
-
-		[TestMethod]
-		public async Task UpdateOneAndRead()
-		{
-            var item = CreateItem("UpdateOneAndRead");
-            int id;
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uowwrite = new UnitOfWork<CNCLibContext>(ctx);
-                var repwrite = new ItemRepository(ctx);
-                await repwrite.Store(item);
-				await uowwrite.SaveChangesAsync();
-
-                id = item.ItemID;
-                id.Should().NotBe(0);
-
-                item.Name = "UpdateOneAndRead#2";
-				await repwrite.Store(item);
-				await uowwrite.SaveChangesAsync();
-            }
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uowwread = new UnitOfWork<CNCLibContext>(ctx);
-                var repread = new ItemRepository(ctx);
-                var optread = await repread.Get(id);
-                optread.ItemProperties.Count.Should().Be(0);
-                CompareItem(item, optread);
-			}
-		}
-
-		[TestMethod]
-		public async Task UpdateOneNoCommandChangeAndRead()
-		{
-            int id;
-            var item = CreateItem("UpdateOneNoCommandChangeAndRead");
-            int count = AddItemProperties(item).ItemProperties.Count();
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uowwrite = new UnitOfWork<CNCLibContext>(ctx);
-                var repwrite = new ItemRepository(ctx);
-                await repwrite.Store(item);
-				await uowwrite.SaveChangesAsync();
-
-                id = item.ItemID;
-                id.Should().NotBe(0);
-
-                item.Name = "UpdateOneNoCommandChangeAndRead#2";
-				await repwrite.Store(item);
-				await uowwrite.SaveChangesAsync();
-            }
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uowwread = new UnitOfWork<CNCLibContext>(ctx);
-                var repread = new ItemRepository(ctx);
-                var optread = await repread.Get(id);
-				optread.ItemProperties.Count.Should().Be(count);
-				CompareItem(item, optread);
-			}
-		}
-
-		[TestMethod]
-		public async Task UpdateOneValuesChangeAndRead()
-		{
-            int id;
-            var item = CreateItem("UpdateOneValuesChangeAndRead");
-            int count = AddItemProperties(item).ItemProperties.Count(); 
-            int newcount;
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uowwrite = new UnitOfWork<CNCLibContext>(ctx);
-		        var repwrite = new ItemRepository(ctx);
-                await repwrite.Store(item);
-		        await uowwrite.SaveChangesAsync();
-
-		        id = item.ItemID;
-		        id.Should().NotBe(0);
-		    }
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uowwrite = new UnitOfWork<CNCLibContext>(ctx);
-                var repwrite = new ItemRepository(ctx);
-                item.Name = "UpdateOneValuesChangeAndRead#2";
-                item.ItemProperties.Add(new ItemProperty { Name = "Name#1", Value = "New#1", ItemID = id });
-                item.ItemProperties.Add(new ItemProperty { Name = "Name#2", Value = "New#2", ItemID = id });
-                item.ItemProperties.Remove(item.ItemProperties.Single(m => m.Value == "Test1"));
-                item.ItemProperties.Single(m => m.Value == "Test2").Value = "Test2.Changed";
-
-                newcount = count + 2 - 1;
-
-				await repwrite.Store(item);
-				await uowwrite.SaveChangesAsync();
-            }
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uowread = new UnitOfWork<CNCLibContext>(ctx);
-                var repread = new ItemRepository(ctx);
-                var optread = await repread.Get(id);
-
-				optread.ItemProperties.Count.Should().Be(newcount);
-
-				CompareItem(item, optread);
-			}
-		}
-
-		[TestMethod]
-		public async Task DeleteWithProperties()
-		{
-            var item = CreateItem("DeleteWithProperties");
-            int count = AddItemProperties(item).ItemProperties.Count(); 
-            int id;
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uowwrite = new UnitOfWork<CNCLibContext>(ctx);
-                var repwrite = new ItemRepository(ctx);
-                await repwrite.Store(item);
-				await uowwrite.SaveChangesAsync();
-
-                id = item.ItemID;
-                id.Should().NotBe(0);
-            }
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uowdelete = new UnitOfWork<CNCLibContext>(ctx);
-                var repdelete = new ItemRepository(ctx);
-                repdelete.Delete(item);
-				await uowdelete.SaveChangesAsync();
-            }
-
-		    using (var ctx = new CNCLibContext())
-		    {
-		        var uowread = new UnitOfWork<CNCLibContext>(ctx);
-                var repread = new ItemRepository(ctx);
-                var itemread = await repread.Get(id);
-                itemread.Should().BeNull();
-            }
-        }
-
 
 		private static Item CreateItem(string name)
 		{
@@ -369,17 +147,6 @@ namespace CNCLib.Tests.Repository
 		        new ItemProperty {Name = "Name3", Item = e}
 		    };
 		    return e;
-		}
-
-		private static void CompareItem(Item e1, Item e2)
-		{
-			e1.CompareProperties(e2).Should().Be(true);
-            (e1.ItemProperties?.Count ?? 0).Should().Be(e2.ItemProperties.Count);
-
-			foreach (ItemProperty mc in e2.ItemProperties)
-			{
-				mc.CompareProperties(e1.ItemProperties.Single(m => m.Name == mc.Name)).Should().Be(true);
-			}
 		}
 	}
 }

@@ -54,15 +54,16 @@ namespace CNCLib.Repository
 	            ToListAsync();
 	    }
 
-	    protected override async Task UpdateGraph(Item trackingentity, Item values)
+	    protected override void AssignValuesGraph(Item trackingentity, Item values)
 	    {
-	        await base.UpdateGraph(trackingentity, values);
+	        base.AssignValuesGraph(trackingentity, values);
 	        Sync<ItemProperty>(
 	            trackingentity.ItemProperties,
-	            values.ItemProperties,
+	           values.ItemProperties,
 	            (x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
         }
 
+/*
         public async Task Store(Item item)
 		{
 			// search und update item / itemproperties
@@ -97,5 +98,6 @@ namespace CNCLib.Repository
 					(x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
 			}
 		}
+*/
 	}
 }

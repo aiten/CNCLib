@@ -106,11 +106,34 @@ namespace CNCLib.Tests.Repository
         }
 
         [TestMethod]
-        public async Task AddUpdateDeleteWithPropertiesTest()
+        public async Task AddUpdateDeleteWithCommandAndInitCommandsTest()
         {
             await AddUpdateDelete(
                 () => AddMachinInitCommands((AddMachinCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))),
-                (entity) => entity.Name = "DummyNameUpdate");
+                (entity) =>
+                {
+                    entity.Name = "DummyNameUpdate";
+                    entity.MachineInitCommands.Remove(entity.MachineInitCommands.First());
+                    entity.MachineInitCommands.Add(new MachineInitCommand() { CommandString = @"CommandStr", SeqNo = 2 });
+
+                    entity.MachineCommands.Remove(entity.MachineCommands.Last());
+                    entity.MachineCommands.Add(new MachineCommand() { CommandString = @"CommandStr", CommandName = "NewName", JoystickMessage = "Maxi", PosX = 2, PosY = 3});
+
+                });
+        }
+
+        [TestMethod]
+        public async Task AddUpdateDeleteWithCommandAndInitCommandsToEmptyTest()
+        {
+            await AddUpdateDelete(
+                () => AddMachinInitCommands((AddMachinCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))),
+                (entity) =>
+                {
+                    entity.Name = "DummyNameUpdate";
+                    entity.MachineInitCommands.Clear();
+                    entity.MachineCommands.Clear();
+
+                });
         }
 
         [TestMethod]
@@ -120,240 +143,6 @@ namespace CNCLib.Tests.Repository
         }
 
         #endregion
-
-        [TestMethod]
-        public async Task QueryAllMachines()
-        {
-            using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new MachineRepository(ctx);
-                var machines = await rep.GetAll();
-				machines.Count().Should().BeGreaterOrEqualTo(2);
-			}
-	    }
-
-		[TestMethod]
-		public async Task QueryOneMachineFound()
-		{
-		    using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new MachineRepository(ctx);
-                var machines = await rep.Get(1);
-				machines.MachineID.Should().Be(1);
-			}
-		}
-
-		[TestMethod]
-		public async Task QueryOneMachineNotFound()
-		{
-		    using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new MachineRepository(ctx);
-                var machines = await rep.Get(1000);
-				machines.Should().BeNull();
-			}
-		}
-
-		[TestMethod]
-		public async Task AddOneMachine()
-		{
-		    using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new MachineRepository(ctx);
-                var machine = CreateMachine("AddOneMachine");
-				await rep.Store(machine);
-				await uow.SaveChangesAsync();
-				machine.MachineID.Should().NotBe(0);
-			}
-		}
-		[TestMethod]
-		public async Task AddOneMachineWithCommands()
-		{
-		    using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new MachineRepository(ctx);
-                var machine = CreateMachine("AddOneMachineWithCommands");
-				AddMachinCommands(machine);
-				await rep.Store(machine);
-				await uow.SaveChangesAsync();
-                 machine.MachineID.Should().NotBe(0);
-            }
-        }
-
-		[TestMethod]
-		public async Task AddOneMachineAndRead()
-        {
-            var machine = CreateMachine("AddOneMachineAndRead");
-            int id = await WriteMachine(machine);
-
-            var machineread = await ReadMachine(id);
-
-            machineread.MachineCommands.Count.Should().Be(0);
-            machineread.MachineInitCommands.Count.Should().Be(0);
-
-            CompareMachine(machine, machineread);
-        }
-
-       [TestMethod]
-       public async Task AddOneMachineWithCommandsAndRead()
-       {
-            var machine = CreateMachine("AddOneMachineWithCommandsAndRead");
-            int count = AddMachinCommands(machine).MachineCommands.Count();
-            int id = await WriteMachine(machine);
-
-            var machineread = await ReadMachine(id);
-
-            machineread.MachineCommands.Count.Should().Be(count);
-            machineread.MachineInitCommands.Count.Should().Be(0);
-
-            CompareMachine(machine, machineread);
-       }
-
-       [TestMethod]
-       public async Task AddOneMachineWithInitCommandsAndRead()
-       {
-            var machine = CreateMachine("AddOneMachineWithInitCommandsAndRead");
-            int count = AddMachinInitCommands(machine).MachineInitCommands.Count();
-            int id = await WriteMachine(machine);
-
-            var machineread = await ReadMachine(id);
-
-            machineread.MachineCommands.Count.Should().Be(0);
-            machineread.MachineInitCommands.Count.Should().Be(count);
-
-            CompareMachine(machine, machineread);
-       }
-
-       [TestMethod]
-       public async Task UpdateOneMachineAndRead()
-       {
-            var machine = CreateMachine("UpdateOneMachineAndRead");
-            int id;
-
-           using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new MachineRepository(ctx);
-                await rep.Store(machine);
-				await uow.SaveChangesAsync();
-                id = machine.MachineID;
-                id.Should().NotBe(0);
-
-                machine.Name = "UpdateOneMachineAndRead#2";
-
-				await rep.Store(machine);
-				await uow.SaveChangesAsync();
-            }
-
-            var machineread = await ReadMachine(id);
-            machineread.MachineCommands.Count.Should().Be(0);
-            CompareMachine(machine, machineread);
-       }
-
-       [TestMethod]
-       public async Task UpdateOneMachineNoCommandChangeAndRead()
-       {
-            var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
-            int count = AddMachinCommands(machine).MachineCommands.Count();
-            int id;
-
-           using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new MachineRepository(ctx);
-                await rep.Store(machine);
-				await uow.SaveChangesAsync();
-                id = machine.MachineID;
-                id.Should().NotBe(0);
-
-                machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
-				await rep.Store(machine);
-				await uow.SaveChangesAsync();
-            }
-
-            var machineread = await ReadMachine(id);
-            machineread.MachineCommands.Count.Should().Be(count);
-            CompareMachine(machine, machineread);
-       }
-
-       [TestMethod]
-       public async Task UpdateOneMachineCommandChangeAndRead()
-       {
-            var machine = CreateMachine("UpdateOneMachineNoCommandChangeAndRead");
-            int count = AddMachinCommands(machine).MachineCommands.Count();
-            int id = await WriteMachine(machine);
-            int newcount;
-
-           using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new MachineRepository(ctx);
-                machine.Name = "UpdateOneMachineNoCommandChangeAndRead#2";
-                machine.MachineCommands.Add(new MachineCommand { CommandName = "Name#1", CommandString = "New#1", MachineID = id });
-                machine.MachineCommands.Add(new MachineCommand { CommandName = "Name#2", CommandString = "New#2", MachineID = id });
-                machine.MachineCommands.Remove(machine.MachineCommands.Single(m => m.CommandString == "Test1"));
-                machine.MachineCommands.Single(m => m.CommandString == "Test2").CommandString = "Test2.Changed";
-
-                newcount = count + 2 - 1;
-
-				await rep.Store(machine);
-				await uow.SaveChangesAsync();
-            }
-
-            var machineread = await ReadMachine(id);
-            machineread.MachineCommands.Count.Should().Be(newcount);
-            CompareMachine(machine, machineread);
-       }
-
-       [TestMethod]
-       public async Task DeleteMachineWithCommandAndRead()
-       {
-            var machine = CreateMachine("DeleteMachineWithCommandAndRead");
-            int count = AddMachinCommands(machine).MachineCommands.Count();
-            int id = await WriteMachine(machine);
-
-           using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new MachineRepository(ctx);
-                rep.Delete(machine);
-				await uow.SaveChangesAsync();
-
-                (await rep.Get(id)).Should().BeNull();
-            }
-       }
-
-        private static async Task<int> WriteMachine(Machine machine)
-        {
-            int id;
-
-            using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new MachineRepository(ctx);
-                await rep.Store(machine);
-				await uow.SaveChangesAsync();
-                id = machine.MachineID;
-                id.Should().NotBe(0);
-            }
-
-            return id;
-        }
-
-        private static async Task<Machine> ReadMachine(int id)
-        {
-            using (var ctx = new CNCLibContext())
-            {
-                var uow = new UnitOfWork<CNCLibContext>(ctx);
-                var rep = new MachineRepository(ctx);
-                return await rep.Get(id);
-            }
-        }
 
         private static Machine CreateMachine(string name)
 		{
@@ -401,22 +190,6 @@ namespace CNCLib.Tests.Repository
 		        new MachineInitCommand {SeqNo = 1, CommandString = "Test2", Machine = machine}
 		    };
 		    return machine;
-		}
-
-		private static void CompareMachine(Machine machine, Machine machineread)
-		{
-			machineread.CompareProperties(machine).Should().Be(true);
-            (machine.MachineCommands?.Count ?? 0).Should().Be(machineread.MachineCommands.Count);
-			(machine.MachineInitCommands?.Count ?? 0).Should().Be(machineread.MachineInitCommands.Count);
-
-			foreach (MachineCommand mc in machineread.MachineCommands)
-			{
-				mc.CompareProperties(machine.MachineCommands.Single(m => m.MachineCommandID == mc.MachineCommandID)).Should().Be(true);
-			}
-			foreach (MachineInitCommand mc in machineread.MachineInitCommands)
-			{
-				mc.CompareProperties(machine.MachineInitCommands.Single(m => m.MachineInitCommandID == mc.MachineInitCommandID)).Should().Be(true);
-			}
 		}
 	}
 }

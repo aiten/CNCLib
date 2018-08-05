@@ -43,6 +43,19 @@ namespace CNCLib.Repository
             return query.Where(m => m.MachineID == key);
 	    }
 
+	    protected override void AssignValuesGraph(Machine trackingentity, Machine values)
+	    {
+	        base.AssignValuesGraph(trackingentity, values);
+	        Sync<MachineCommand>(
+	            trackingentity.MachineCommands,
+	            values.MachineCommands,
+	            (x, y) => x.MachineCommandID > 0 && x.MachineCommandID == y.MachineCommandID);
+	        Sync<MachineInitCommand>(
+	            trackingentity.MachineInitCommands,
+	            values.MachineInitCommands,
+	            (x, y) => x.MachineInitCommandID > 0 && x.MachineInitCommandID == y.MachineInitCommandID);
+	    }
+
         public async Task<IEnumerable<MachineCommand>> GetMachineCommands(int machineID)
 		{
 			return await Context.MachineCommands.
@@ -56,7 +69,7 @@ namespace CNCLib.Repository
 				Where(c => c.MachineID == machineID).
 				ToListAsync();
 		}
-
+/*
         public async Task Store(Machine machine)
 		{
 			// search und update machine
@@ -100,5 +113,6 @@ namespace CNCLib.Repository
 
 			}
 		}
+*/
 	}
 }

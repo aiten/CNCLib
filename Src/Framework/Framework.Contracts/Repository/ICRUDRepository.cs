@@ -35,12 +35,13 @@ namespace Framework.Contracts.Repository
         Task<IEnumerable<TEntry>> GetAll();
         Task<TEntry> Get(TKey key);
         Task<TEntry> GetTracking(TKey key);
-        Task Update(TKey key, TEntry values);               // shortcut to GetTracking and SetValue
+        Task Update(TKey key, TEntry values);               // shortcut to GetTracking and SetValueGraph
 
 
         void Add(TEntry entity);
         void Delete(TEntry entity);
-        void SetValue(TEntry entity, object values);
+        void SetValue(TEntry trackingentity, TEntry values);
+        void SetValueGraph(TEntry trackingentity, TEntry values);
 
         void SetState(TEntry entity, EntityState state);
     }
