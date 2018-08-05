@@ -77,18 +77,15 @@ namespace CNCLib.Logic
 
 		public async Task<int> Update(Item item)
 		{
-            throw new NotImplementedException();
-/*
 		    using (var trans = _unitOfWork.BeginTransaction())
 		    {
 				var me = item.ToEntity();
-				await _repository.Store(me);
+				await _repository.Update(me.ItemID,me);
 				await _unitOfWork.SaveChangesAsync();
 		        await trans.CommitTransactionAsync();
 
 		        return me.ItemID;
 		    }
-*/
 		}
     }
 }

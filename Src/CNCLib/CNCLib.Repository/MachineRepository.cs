@@ -57,19 +57,6 @@ namespace CNCLib.Repository
 				ToListAsync();
 		}
 
-	    protected override void SetEntityAdded(Machine entity)
-        {
-	        base.SetEntityAdded(entity);
-	        foreach (var mc in entity.MachineCommands)
-	        {
-	            AddEntity(mc);
-	        }
-	        foreach (var mic in entity.MachineInitCommands)
-	        {
-	            AddEntity(mic);
-	        }
-	    }
-
         public async Task Store(Machine machine)
 		{
 			// search und update machine

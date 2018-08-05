@@ -42,15 +42,6 @@ namespace CNCLib.Repository
 	    {
 	        return query.Where(m => m.ItemID == key);
 	    }
-	    protected override void SetEntityAdded(Item entity)
-	    {
-	        base.SetEntityAdded(entity);
-	        foreach (var ip in entity.ItemProperties)
-	        {
-	            AddEntity(ip);
-	        }
-	    }
-
 
         #region CRUD
         #endregion
@@ -62,6 +53,15 @@ namespace CNCLib.Repository
 	            Include(d => d.ItemProperties).
 	            ToListAsync();
 	    }
+
+	    protected override async Task UpdateGraph(Item trackingentity, Item values)
+	    {
+	        await base.UpdateGraph(trackingentity, values);
+	        Sync<ItemProperty>(
+	            trackingentity.ItemProperties,
+	            values.ItemProperties,
+	            (x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
+        }
 
         public async Task Store(Item item)
 		{

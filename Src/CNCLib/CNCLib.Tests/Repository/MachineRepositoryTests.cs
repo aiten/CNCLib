@@ -61,7 +61,7 @@ namespace CNCLib.Tests.Repository
             //entity1.Should().BeEquivalentTo(entity2, opts => 
             //    opts.Excluding(x => x.UserID)
             //);
-            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, 0, new[] { @"MachineID", @"MachineCommandID", @"MachineInitCommandID" });
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"MachineID", @"MachineCommandID", @"MachineInitCommandID" });
         }
 
         #endregion

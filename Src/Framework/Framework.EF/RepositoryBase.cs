@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Framework.Tools.Pattern;
 using Microsoft.EntityFrameworkCore;
 
@@ -75,6 +76,11 @@ namespace Framework.EF
             return Context.Set<T>();
         }
 
+        protected void SetEntityState<TEntity>(TEntity entity, EntityState state) where TEntity : class
+        {
+            Context.Entry(entity).State = state;
+        }
+
         protected void SetValue<TEntity>(TEntity entity, object values) where TEntity : class
         {
             Context.Entry(entity).CurrentValues.SetValues(values);
@@ -82,17 +88,17 @@ namespace Framework.EF
 
         protected void SetModified<TEntity>(TEntity entity) where TEntity : class
         {
-            Context.Entry(entity).State = EntityState.Modified;
+            SetEntityState(entity,EntityState.Modified);
         }
 
         protected void AddEntity<TEntity>(TEntity entity) where TEntity : class
         {
-            Context.Entry(entity).State = EntityState.Added;
+            Context.Add(entity);
         }
 
         protected void DeleteEntity<TEntity>(TEntity entity) where TEntity : class
         {
-            Context.Entry(entity).State = EntityState.Deleted;
+            SetEntityState(entity,EntityState.Deleted);
         }
 
         protected RepositoryBase(TDbContext dbContext)

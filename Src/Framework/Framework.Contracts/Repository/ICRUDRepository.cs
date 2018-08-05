@@ -21,6 +21,15 @@ using System.Threading.Tasks;
 
 namespace Framework.Contracts.Repository
 {
+    public enum EntityState
+    {
+        Detached,
+        Unchanged,
+        Deleted,
+        Modified,
+        Added,
+    }
+
     public interface ICRUDRepository<TEntry, TKey>: IBaseRepository where TEntry : class
     {
         Task<IEnumerable<TEntry>> GetAll();
@@ -32,5 +41,7 @@ namespace Framework.Contracts.Repository
         void Add(TEntry entity);
         void Delete(TEntry entity);
         void SetValue(TEntry entity, object values);
+
+        void SetState(TEntry entity, EntityState state);
     }
 }

@@ -30,7 +30,12 @@ namespace Framework.Tools.Helpers
 
     public class CompareProperties
     {
-        public static bool AreObjectsPropertiesEqual(object objectA, object objectB, int depth, params string[] ignoreList)
+        public static bool AreObjectsPropertiesEqual(object objectA, object objectB, params string[] ignoreList)
+        {
+            return AreObjectsPropertiesEqual(objectA, objectB, 0, ignoreList);
+        }
+
+        private static bool AreObjectsPropertiesEqual(object objectA, object objectB, int depth, params string[] ignoreList)
         {
 #warning TODO: no depth
             if (depth > 10) return true;
