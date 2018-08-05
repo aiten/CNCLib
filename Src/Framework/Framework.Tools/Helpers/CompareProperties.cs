@@ -32,13 +32,15 @@ namespace Framework.Tools.Helpers
     {
         public static bool AreObjectsPropertiesEqual(object objectA, object objectB, params string[] ignoreList)
         {
-            return AreObjectsPropertiesEqual(objectA, objectB, 0, ignoreList);
+            return AreObjectsPropertiesEqual(objectA, objectB, new HashSet<object>(), ignoreList);
         }
 
-        private static bool AreObjectsPropertiesEqual(object objectA, object objectB, int depth, params string[] ignoreList)
+        private static bool AreObjectsPropertiesEqual(object objectA, object objectB, HashSet<object> compared, params string[] ignoreList)
         {
-#warning TODO: no depth
-            if (depth > 10) return true;
+            // check for circles e.g. ClassA => ICollection<ClassB> => classA
+            if (compared.Contains(objectA))     // 
+                return true;
+            compared.Add(objectA);
 
             if (objectA != null && objectB != null)
             {
@@ -106,7 +108,7 @@ namespace Framework.Tools.Helpers
                                             return false;
                                         }
                                     }
-                                    else if (!AreObjectsPropertiesEqual(collectionItem1, collectionItem2, depth + 1, ignoreList))
+                                    else if (!AreObjectsPropertiesEqual(collectionItem1, collectionItem2, compared, ignoreList))
                                     {
                                         return false;
                                     }
@@ -117,7 +119,7 @@ namespace Framework.Tools.Helpers
                     else if (propertyInfo.PropertyType.IsClass)
                     {
                         if (!AreObjectsPropertiesEqual(propertyInfo.GetValue(objectA, null),
-                                                 propertyInfo.GetValue(objectB, null), depth + 1, ignoreList))
+                                                 propertyInfo.GetValue(objectB, null), compared, ignoreList))
                         {
                             return false;
                         }
