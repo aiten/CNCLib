@@ -107,7 +107,7 @@ namespace CNCLib.Tests.Repository
             {
                 TEntity entity = await ctx.Repository.GetTracking(key);
                 GetEntityKey(entity).Should().Be(key);
-                CompareEntity(entity, createTestEntity()).Should().BeTrue();
+                CompareEntity(createTestEntity(), entity).Should().BeTrue();
                 updateEntity(entity);
 
                 await ctx.UnitOfWork.SaveChangesAsync();
@@ -140,7 +140,7 @@ namespace CNCLib.Tests.Repository
                 GetEntityKey(entity).Should().Be(key);
 
                 var compareEntity = createTestEntity();
-                CompareEntity(entity, compareEntity).Should().BeTrue();
+                CompareEntity(compareEntity, entity).Should().BeTrue();
 
                 ctx.Repository.Delete(entity);
 
