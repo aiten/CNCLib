@@ -20,11 +20,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
-using Framework.Contracts.Logic;
+using Framework.Contracts.Service;
 
 namespace CNCLib.ServiceProxy
 {
-	public interface IItemService : IDisposable, ICRUDManager<Item,int>
+	public interface IItemService : IDisposable, ICRUDService<Item,int>
 	{
 		Task<IEnumerable<Item>> GetByClassName(string classname);
 	}

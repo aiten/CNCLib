@@ -16,13 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using CNCLib.Logic.Contracts.DTO;
-using Framework.Contracts.Service;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace CNCLib.ServiceProxy
+namespace Framework.Contracts.Service
 {
-    public interface ILoadOptionsService : IDisposable, ICRUDService<LoadOptions,int>
-	{
+	public interface ICRUDService<T, TId> : IGetService<T,TId> where T : class
+    {
+		Task<TId> Add(T value);
+		Task<TId> Update(T value);
+		Task Delete(T value);
 	}
 }

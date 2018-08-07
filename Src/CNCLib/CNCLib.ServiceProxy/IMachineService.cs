@@ -17,13 +17,13 @@
 */
 
 using System;
-using Framework.Contracts.Logic;
 using CNCLib.Logic.Contracts.DTO;
 using System.Threading.Tasks;
+using Framework.Contracts.Service;
 
 namespace CNCLib.ServiceProxy
 {
-	public interface IMachineService : IDisposable, ICRUDManager<Machine,int>
+	public interface IMachineService : IDisposable, ICRUDService<Machine,int>
 	{
 		Task<Machine> DefaultMachine();
 		Task<int> GetDetaultMachine();
