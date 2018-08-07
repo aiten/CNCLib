@@ -16,25 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Threading.Tasks;
-using Framework.Contracts.Repository;
+using System;
 
-namespace Framework.EF
+namespace Framework.Contracts.Repository
 {
-    public static class CRUDRepositoryExtensions
+	public interface IRepository
     {
-        public static async Task Store<TEntity, TKey>(this ICRUDRepository<TEntity, TKey> repository, TEntity entity, TKey key) where TEntity: class
-        {
-            TEntity entityinDb = await repository.GetTracking(key);
-            if (entityinDb == default(TEntity))
-            {
-                repository.Add(entity);
-            }
-            else
-            {
-                // syn with existing
-                repository.SetValue(entityinDb, entity);
-            }
-        }
     }
 }

@@ -21,10 +21,8 @@ using System.Threading.Tasks;
 
 namespace Framework.Contracts.Logic
 {
-	public interface ICRUDManager<T, TId> where T : class
+	public interface ICRUDManager<T, TId> : IGetManager<T,TId> where T : class
     {
-		Task<T> Get(TId id);
-		Task<IEnumerable<T>> GetAll();
 		Task<TId> Add(T value);
 		Task<TId> Update(T value);
 		Task Delete(T value);

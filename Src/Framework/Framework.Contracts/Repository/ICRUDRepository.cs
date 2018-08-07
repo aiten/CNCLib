@@ -30,13 +30,9 @@ namespace Framework.Contracts.Repository
         Added,
     }
 
-    public interface ICRUDRepository<TEntry, TKey>: IBaseRepository where TEntry : class
+    public interface ICRUDRepository<TEntry, TKey>: IGetRepository<TEntry,TKey> where TEntry : class
     {
-        Task<IEnumerable<TEntry>> GetAll();
-        Task<TEntry> Get(TKey key);
-        Task<TEntry> GetTracking(TKey key);
         Task Update(TKey key, TEntry values);               // shortcut to GetTracking and SetValueGraph
-
 
         void Add(TEntry entity);
         void Delete(TEntry entity);

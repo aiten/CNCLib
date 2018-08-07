@@ -19,35 +19,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Framework.Tools.Pattern;
 using Microsoft.EntityFrameworkCore;
 
 namespace Framework.EF
 {
-    public abstract class RepositoryBase<TDbContext, TEntity> : RepositoryBase<TDbContext>
-        where TDbContext : DbContext
-        where TEntity : class
-    {
-        protected RepositoryBase(TDbContext dbContext) : base(dbContext)
-        {
-        }
-
-        /// <summary>
-        /// Returns an IQueryable of the default entity of the DA with AsNoTracking set. This should be the default.
-        /// </summary>
-        /// <returns>Queryable with AsNoTracking() set</returns>
-        protected IQueryable<TEntity> Query => Query<TEntity>();
-
-        /// <summary>
-        /// Returns an IQueryable of the default entity of the DA that has tracking enabled.
-        /// </summary>
-        /// <returns>Queryable with tracking enabled</returns>
-        protected IQueryable<TEntity> TrackingQuery => TrackingQuery<TEntity>();
-    }
-
     public abstract class RepositoryBase<TDbContext> where TDbContext : DbContext
     {
+        protected RepositoryBase(TDbContext dbContext)
+        {
+            Context = dbContext;
+        }
+
         /// <summary>
         /// The DbContext. Should be used rarely, instead use <see cref="Query{T}"/> and <see cref="TrackingQuery{T}"/>.
         /// </summary>
@@ -99,11 +81,6 @@ namespace Framework.EF
         protected void DeleteEntity<TEntity>(TEntity entity) where TEntity : class
         {
             SetEntityState(entity,EntityState.Deleted);
-        }
-
-        protected RepositoryBase(TDbContext dbContext)
-        {
-            Context = dbContext;
         }
 
 

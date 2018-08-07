@@ -16,11 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Framework.Contracts.Repository
+namespace Framework.Contracts.Logic
 {
-	public interface IBaseRepository
+	public interface IGetManager<T, TId> where T : class
     {
-    }
+		Task<T> Get(TId id);
+		Task<IEnumerable<T>> GetAll();
+	}
 }

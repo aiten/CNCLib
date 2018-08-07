@@ -139,7 +139,6 @@ namespace CNCLib.Tests.Repository
 
 		private static Item AddItemProperties(Item e)
 		{
-			int count = 3;
 		    e.ItemProperties = new List<ItemProperty>
 		    {
 		        new ItemProperty {Name = "Name1", Value = "Test1", Item = e },

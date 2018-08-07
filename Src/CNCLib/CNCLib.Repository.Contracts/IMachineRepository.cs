@@ -27,6 +27,5 @@ namespace CNCLib.Repository.Contracts
     {
 		Task<IEnumerable<Entities.MachineCommand>> GetMachineCommands(int machineID);
 		Task<IEnumerable<Entities.MachineInitCommand>> GetMachineInitCommands(int machineID);
-        void Add(Machine entity);
     }
 }
