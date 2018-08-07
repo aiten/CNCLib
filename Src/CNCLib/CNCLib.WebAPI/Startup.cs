@@ -21,7 +21,9 @@ using CNCLib.Logic;
 using CNCLib.Repository.Context;
 using CNCLib.WebAPI.Controllers;
 using Framework.Contracts.Repository;
+using Framework.Contracts.Shared;
 using Framework.EF;
+using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using Framework.Web;
@@ -61,6 +63,8 @@ namespace CNCLib.WebAPI
             });
 
             Dependency.Initialize(new AspNetDependencyProvider(services));
+
+            Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
 
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<Repository.Context.CNCLibContext>>();

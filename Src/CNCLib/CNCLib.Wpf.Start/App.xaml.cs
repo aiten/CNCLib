@@ -30,7 +30,9 @@ using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.ServiceProxy;
 using Framework.Contracts.Repository;
+using Framework.Contracts.Shared;
 using Framework.EF;
+using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using Microsoft.EntityFrameworkCore;
@@ -57,7 +59,8 @@ namespace CNCLib.Wpf.Start
 
 		    Dependency.Initialize(new LiveDependencyProvider());
 
-		    Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
+		    Dependency.Container.RegisterType<ICurrentDateTime,CurrentDateTime>();
+            Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
 
 		    Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,

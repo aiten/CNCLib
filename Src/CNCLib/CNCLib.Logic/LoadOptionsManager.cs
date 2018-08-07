@@ -26,7 +26,7 @@ using Framework.Tools.Dependency;
 
 namespace CNCLib.Logic
 {
-    public class LoadOptionsManager : ControllerBase, ILoadOptionsManager
+    public class LoadOptionsManager : ManagerBase, ILoadOptionsManager
 	{
 		public async Task<IEnumerable<LoadOptions>> GetAll()
 		{
@@ -85,7 +85,7 @@ namespace CNCLib.Logic
 		}
 
         #region IDisposable Support
-        // see ControllerBase
+        // see ManagerBase
         #endregion
     }
 }

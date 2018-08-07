@@ -24,6 +24,8 @@ using System.Windows.Markup;
 using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.ServiceProxy;
+using Framework.Contracts.Shared;
+using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 
@@ -40,7 +42,10 @@ namespace CNCLib.Wpf.WebAPI.Start
                 XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             Dependency.Initialize(new LiveDependencyProvider());
-			Dependency.Container.RegisterTypesIncludingInternals(
+
+		    Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
+
+            Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
                 //				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
                 typeof(ServiceProxy.WebAPI.MachineService).Assembly,

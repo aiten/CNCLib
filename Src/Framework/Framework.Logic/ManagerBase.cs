@@ -20,7 +20,7 @@ using Framework.Tools;
 
 namespace Framework.Logic
 {
-    public class ControllerBase : DisposeWrapper
+    public class ManagerBase : DisposeWrapper
     {
     }
 }

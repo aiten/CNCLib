@@ -24,7 +24,7 @@ using Framework.Logic;
 
 namespace CNCLib.Logic
 {
-    public class EepromConfigurationManager : ControllerBase, IEepromConfigurationManager
+    public class EepromConfigurationManager : ManagerBase, IEepromConfigurationManager
     {
         public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
         {
@@ -64,7 +64,7 @@ namespace CNCLib.Logic
         }
 
         #region IDisposable Support
-        // see ControllerBase
+        // see ManagerBase
         #endregion
     }
 }

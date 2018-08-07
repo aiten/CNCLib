@@ -21,6 +21,8 @@ using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Threading;
 using CNCLib.Serial.Server.Hubs;
+using Framework.Contracts.Shared;
+using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Web;
 using Microsoft.AspNetCore.Builder;
@@ -74,6 +76,9 @@ namespace CNCLib.Serial.Server
             });
 
             Dependency.Initialize(new AspNetDependencyProvider(services));
+
+            Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
+
             Dependency.Container.RegisterTypesIncludingInternalsScoped(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
 

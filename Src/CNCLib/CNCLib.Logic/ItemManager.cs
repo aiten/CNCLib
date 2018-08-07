@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Framework.Logic;
 using CNCLib.Repository.Contracts;
 using CNCLib.Logic.Converter;
@@ -28,35 +29,37 @@ using Framework.Contracts.Repository;
 
 namespace CNCLib.Logic
 {
-    public class ItemManager : ControllerBase, IItemManager
+    public class ItemManager : ManagerBase, IItemManager
     {
         private IUnitOfWork _unitOfWork;
         private IItemRepository _repository;
+        private IMapper _mapper;
 
-        public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository)
+        public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _repository = repository;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
+            _repository = repository ?? throw new ArgumentNullException();
+            _mapper = mapper ?? throw new ArgumentNullException();
         }
 
         public async Task<IEnumerable<Item>> GetAll()
 		{
-			return (await _repository.GetAll()).ToDto();
+			return (await _repository.GetAll()).ToDto(_mapper);
 		}
 
 		public async Task<IEnumerable<Item>> GetByClassName(string classname)
 		{
-			return (await _repository.Get(classname)).ToDto();
+			return (await _repository.Get(classname)).ToDto(_mapper);
 		}
 
 		public async Task<Item> Get(int id)
 		{
-			return (await _repository.Get(id)).ToDto();
+			return (await _repository.Get(id)).ToDto(_mapper);
 		}
 
 		public async Task Delete(Item item)
 		{
-			_repository.Delete(item.ToEntity());
+			_repository.Delete(item.ToEntity(_mapper));
 			await _unitOfWork.SaveChangesAsync();
 		}
 
@@ -64,7 +67,7 @@ namespace CNCLib.Logic
 		{
             using (var trans = _unitOfWork.BeginTransaction())
             {
-                var me = item.ToEntity();
+                var me = item.ToEntity(_mapper);
                 me.ItemID = 0;
                 foreach (var mc in me.ItemProperties) mc.ItemID = 0;
                 _repository.Add(me);
@@ -79,7 +82,7 @@ namespace CNCLib.Logic
 		{
 		    using (var trans = _unitOfWork.BeginTransaction())
 		    {
-				var me = item.ToEntity();
+				var me = item.ToEntity(_mapper);
 				await _repository.Update(me.ItemID,me);
 				await _unitOfWork.SaveChangesAsync();
 		        await trans.CommitTransactionAsync();

@@ -9,6 +9,9 @@
     <PackageReference Include="Unity">
       <Version>5.8.6</Version>
     </PackageReference>
+  </ItemGroup>  
+  <ItemGroup>
+    <ProjectReference Include="..\Framework.Contracts\Framework.Contracts.csproj" />
   </ItemGroup>
 
   
