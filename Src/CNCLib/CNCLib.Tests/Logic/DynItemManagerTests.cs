@@ -30,8 +30,8 @@ using NSubstitute;
 namespace CNCLib.Tests.Logic
 {
     [TestClass]
-	public class DynItemControllerTests : CNCUnitTest
-	{
+	public class DynItemManagerTests : LogicTests
+    {
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
 			var srv = Substitute.For<TInterface>();
@@ -148,9 +148,9 @@ namespace CNCLib.Tests.Logic
 
             var item = await ctrl.Create(1);
             item.Should().NotBeNull();
-            item.Should().BeOfType(typeof(DynItemControllerTestClass));
+            item.Should().BeOfType(typeof(DynItemManagerTestClass));
 
-            var item2 = (DynItemControllerTestClass)item;
+            var item2 = (DynItemManagerTestClass)item;
 
             item2.StringProperty.Should().Be("Hallo", item2.StringProperty);
             item2.IntProperty.Should().Be(1);
@@ -167,7 +167,7 @@ namespace CNCLib.Tests.Logic
             {
                 ItemID = 1,
                 Name = "Hallo",
-                ClassName = typeof(DynItemControllerTestClass).AssemblyQualifiedName,
+                ClassName = typeof(DynItemManagerTestClass).AssemblyQualifiedName,
                 ItemProperties = new[]
                             {
                                 new ItemProperty{ ItemID = 1, Name = "StringProperty", Value = "Hallo" },
@@ -188,7 +188,7 @@ namespace CNCLib.Tests.Logic
 
             Item itemEntity = CreateItem();
 
-            var obj = new DynItemControllerTestClass
+            var obj = new DynItemManagerTestClass
             {
                 StringProperty = "Hallo",
                 IntProperty = 1,
@@ -260,7 +260,7 @@ namespace CNCLib.Tests.Logic
 
 			//act
 
-			await ctrl.Save(1,"Test",new DynItemControllerTestClass {IntProperty=1 });
+			await ctrl.Save(1,"Test",new DynItemManagerTestClass {IntProperty=1 });
 
 			//assert
 			await srv.Received().Update(Arg.Is<Item>(x => x.ItemID == 1));

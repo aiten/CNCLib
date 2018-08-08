@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -33,8 +34,8 @@ using NSubstitute;
 namespace CNCLib.Tests.Logic
 {
     [TestClass]
-	public class ItemControllerTests : CNCUnitTest
-	{
+	public class ItemManagerTests : LogicTests
+    {
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
 			var rep = Substitute.For<TInterface>();
@@ -139,8 +140,8 @@ namespace CNCLib.Tests.Logic
 
             await ctrl.Delete(item);
 
-			//assert
-			rep.Received().Delete(Arg.Is<Item>(x => x.ItemID == item.ItemID));
+            //assert
+            rep.Received().DeleteRange(Arg.Is<IEnumerable<Item>>(x => x.First().ItemID == item.ItemID));
 		}
 	}
 }

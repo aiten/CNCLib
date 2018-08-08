@@ -69,9 +69,9 @@ namespace CNCLib.ServiceProxy.Logic
 			await _manager.SetDetaultMachine(defaultMachineID);
 		}
 
-		public async Task<int> Update(Machine value)
+		public async Task Update(Machine value)
 		{
-			return await _manager.Update(value);
+			await _manager.Update(value);
 		}
 
         #region IDisposable Support

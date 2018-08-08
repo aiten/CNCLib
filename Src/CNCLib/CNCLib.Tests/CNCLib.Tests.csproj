@@ -74,17 +74,18 @@
     </Compile>
     <Compile Include="CNCUnitTest.cs" />
     <Compile Include="Load\LoadHPGLTest.cs" />
-    <Compile Include="Logic\DynItemControllerTestClass.cs" />
-    <Compile Include="Logic\DynItemControllerTests.cs" />
-    <Compile Include="Logic\EepromConfigControllerTests.cs" />
-    <Compile Include="Logic\ItemControllerTests.cs" />
-    <Compile Include="Logic\LoadOptionsControllerTests.cs" />
+    <Compile Include="Logic\DynItemManagerTestClass.cs" />
+    <Compile Include="Logic\DynItemManagerTests.cs" />
+    <Compile Include="Logic\EepromConfigManagerTests.cs" />
+    <Compile Include="Logic\ItemManagerTests.cs" />
+    <Compile Include="Logic\LoadOptionsManagerTests.cs" />
+    <Compile Include="Logic\LogicTests.cs" />
     <Compile Include="Repository\CRUDTestContext.cs" />
     <Compile Include="Repository\ItemRepositoryTests.cs" />
     <Compile Include="Repository\CRUDRepositoryTests.cs" />
     <Compile Include="Repository\UserRepositoryTests.cs" />
     <Compile Include="Wpf\MachineViewModelTests.cs" />
-    <Compile Include="Logic\MachineControllerTests.cs" />
+    <Compile Include="Logic\MachineManagerTests.cs" />
     <Compile Include="Repository\ConfigurationRepositoryTests.cs" />
     <Compile Include="Repository\RepositoryTests.cs" />
     <Compile Include="Repository\MachineRepositoryTests.cs" />

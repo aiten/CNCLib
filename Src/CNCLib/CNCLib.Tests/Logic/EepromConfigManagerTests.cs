@@ -28,7 +28,7 @@ using NSubstitute;
 namespace CNCLib.Tests.Logic
 {
     [TestClass]
-    public class EepromConfigControllerTests : CNCUnitTest
+    public class EepromConfigManagerTests : LogicTests
     {
         private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {

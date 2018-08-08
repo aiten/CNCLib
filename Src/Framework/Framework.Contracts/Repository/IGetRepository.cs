@@ -26,5 +26,7 @@ namespace Framework.Contracts.Repository
         Task<IEnumerable<TEntry>> GetAll();
         Task<TEntry> Get(TKey key);
         Task<TEntry> GetTracking(TKey key);
+        Task<IEnumerable<TEntry>> Get(IEnumerable<TKey> key);
+        Task<IEnumerable<TEntry>> GetTracking(IEnumerable<TKey> key);
     }
 }

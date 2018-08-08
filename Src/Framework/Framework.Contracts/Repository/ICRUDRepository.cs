@@ -35,7 +35,9 @@ namespace Framework.Contracts.Repository
         Task Update(TKey key, TEntry values);               // shortcut to GetTracking and SetValueGraph
 
         void Add(TEntry entity);
+        void AddRange(IEnumerable<TEntry> entities);
         void Delete(TEntry entity);
+        void DeleteRange(IEnumerable<TEntry> entities);
         void SetValue(TEntry trackingentity, TEntry values);
         void SetValueGraph(TEntry trackingentity, TEntry values);
 

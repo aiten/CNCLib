@@ -77,12 +77,22 @@ namespace Framework.EF
         {
             Context.Add(entity);
         }
-
+        protected void AddEntities<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
+        {
+            Context.AddRange(entities);
+        }
         protected void DeleteEntity<TEntity>(TEntity entity) where TEntity : class
         {
-            SetEntityState(entity,EntityState.Deleted);
+            SetEntityState(entity, EntityState.Deleted);
         }
 
+        protected void DeleteEntities<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
+        {
+            foreach (var entity in entities)
+            {
+                SetEntityState(entity, EntityState.Deleted);
+            }
+        }
 
         public void Sync<TEntity>(ICollection<TEntity> inDb, ICollection<TEntity> toDb, Func<TEntity, TEntity, bool> predicate) where TEntity : class
         {

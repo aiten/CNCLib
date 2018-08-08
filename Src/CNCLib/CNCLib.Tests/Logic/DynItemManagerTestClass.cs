@@ -16,20 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace Framework.Contracts.Logic
+namespace CNCLib.Tests.Logic
 {
-	public interface ICRUDManager<T, TId> : IGetManager<T,TId> where T : class
+	public class DynItemManagerTestClass
     {
-		Task<TId> Add(T value);
-		Task Update(T value);
-		Task Delete(T value);
-/*
-        Task<IEnumerable<TId>> Add(IEnumerable<T> values);
-        Task Update(IEnumerable<T> values);
-        Task Delete(IEnumerable<T> values);
-*/
-	}
+        public int IntProperty { get; set; }
+        public string StringProperty { get; set; }
+        public double DoubleProperty { get; set; }
+        public decimal DecimalProperty { get; set; }
+        public int? IntNullProperty { get; set; }
+        public double? DoubleNullProperty { get; set; }
+        public decimal? DecimalNullProperty { get; set; }
+    }
 }

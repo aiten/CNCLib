@@ -84,17 +84,11 @@ namespace CNCLib.ServiceProxy.WebAPI
 			}
 		}
 
-		public async Task<int> Update(LoadOptions value)
+		public async Task Update(LoadOptions value)
 		{
 			using (var client = CreateHttpClient())
 			{
 				HttpResponseMessage response = await client.PutAsJsonAsync(_api + "/" + value.Id, value);
-
-				if (response.IsSuccessStatusCode)
-				{
-					return value.Id;
-				}
-				return -1;
 			}
 		}
 

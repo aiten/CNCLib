@@ -29,14 +29,15 @@ using Framework.Logic;
 
 namespace CNCLib.Logic
 {
-    public class MachineManager : ManagerBase, IMachineManager
+    public class MachineManager : CRUDManager<Machine,int,Repository.Contracts.Entities.Machine>, IMachineManager
 	{
 	    private IUnitOfWork _unitOfWork;
 	    private IMachineRepository _repository;
 	    private IConfigurationRepository _repositoryConfig;
 	    private IMapper _mapper;
 
-        public MachineManager(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig, IMapper mapper)
+        public MachineManager(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig, IMapper mapper) : 
+            base(unitOfWork,repository, mapper)
 	    {
 	        _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
 	        _repository = repository ?? throw new ArgumentNullException();
@@ -44,52 +45,14 @@ namespace CNCLib.Logic
 	        _mapper = mapper ?? throw new ArgumentNullException();
 	    }
 
-        public async Task<IEnumerable<Machine>> GetAll()
-		{
-			var machines = await _repository.GetAll();
-			var l = new List<Machine>();
-			foreach (var m in machines)
-			{
-				l.Add(m.ToDto(_mapper));
-			}
-			return l;
-		}
+	    protected override int GetKey(Repository.Contracts.Entities.Machine entity)
+	    {
+	        return entity.MachineID;
+	    }
 
-        public async Task<Machine> Get(int id)
-        {
-			var machine = await _repository.Get(id);
-			var dto = machine?.ToDto(_mapper);
-			return dto;
-		}
+        #region Default machine
 
-		public async Task Delete(Machine m)
-        {
-			_repository.Delete(m.ToEntity(_mapper));
-			await _unitOfWork.SaveChangesAsync();
-		}
-
-		public async Task<int> Add(Machine m)
-		{
-			var me = m.ToEntity(_mapper);
-			me.MachineID = 0;
-			foreach (var mc in me.MachineInitCommands) mc.MachineID = 0;
-			foreach (var mi in me.MachineInitCommands) mi.MachineID = 0;
-			_repository.Add(me);
-			await _unitOfWork.SaveChangesAsync();
-			return me.MachineID;
-		}
-
-		public async Task<int> Update(Machine m)
-		{
-		    var me = m.ToEntity(_mapper);
-			await _repository.Update(me.MachineID,me);
-			await _unitOfWork.SaveChangesAsync();
-			return me.MachineID;
-		}
-
-		#region Default machine
-
-		public async Task<Machine> DefaultMachine()
+        public async Task<Machine> DefaultMachine()
 		{
 			var dto = new Machine
 			{
@@ -138,10 +101,6 @@ namespace CNCLib.Logic
 			await _unitOfWork.SaveChangesAsync();
 		}
 
-        #endregion
-
-        #region IDisposable Support
-        // see ManagerBase
         #endregion
     }
 }

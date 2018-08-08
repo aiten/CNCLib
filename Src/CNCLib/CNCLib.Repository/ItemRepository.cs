@@ -42,6 +42,10 @@ namespace CNCLib.Repository
 	    {
 	        return query.Where(m => m.ItemID == key);
 	    }
+	    protected override IQueryable<Item> AddPrimaryWhereIn(IQueryable<Item> query, IEnumerable<int> key)
+	    {
+	        return query.Where(m => key.Contains(m.ItemID));
+	    }
 
         #region CRUD
         #endregion

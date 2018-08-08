@@ -43,7 +43,12 @@ namespace CNCLib.Repository
             return query.Where(m => m.MachineID == key);
 	    }
 
-	    protected override void AssignValuesGraph(Machine trackingentity, Machine values)
+	    protected override IQueryable<Machine> AddPrimaryWhereIn(IQueryable<Machine> query, IEnumerable<int> key)
+	    {
+	        return query.Where(m => key.Contains(m.MachineID));
+	    }
+
+        protected override void AssignValuesGraph(Machine trackingentity, Machine values)
 	    {
 	        base.AssignValuesGraph(trackingentity, values);
 	        Sync<MachineCommand>(

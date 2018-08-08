@@ -30,8 +30,8 @@ using FluentAssertions;
 namespace CNCLib.Tests.Logic
 {
     [TestClass]
-	public class LoadOptionsControllerTests : CNCUnitTest
-	{
+	public class LoadOptionsManagerTests : LogicTests
+    {
 		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
 		{
 			var rep = Substitute.For<TInterface>();

@@ -36,8 +36,8 @@ using Framework.EF;
 namespace CNCLib.Tests.Logic
 {
     [TestClass]
-	public class MachineControllerTests : CNCUnitTest
-	{
+	public class MachineManagerTests : LogicTests
+    {
         [TestMethod]
 		public async Task AddMachine()
 		{
@@ -59,8 +59,8 @@ namespace CNCLib.Tests.Logic
 
 			var machineID = await ctrl.Add(machineEntity1);
 
-			rep.ReceivedWithAnyArgs().Add(new Machine());
-			machineID.Should().Be(0);
+			rep.ReceivedWithAnyArgs().AddRange(new Machine[1] );
+			machineID.Should().Be(1);
 		}
 
 		[TestMethod]
@@ -101,8 +101,8 @@ namespace CNCLib.Tests.Logic
 
 			await ctrl.Delete(machine);
 
-			rep.Received().Delete(Arg.Is<Machine>(x => x.Name == "SuperMaxi"));
-			rep.Received().Delete(Arg.Is<Machine>(x => x.MachineID == 11));
+		    rep.Received().DeleteRange(Arg.Is<IEnumerable<Machine>>(x => x.First().Name == "SuperMaxi"));
+		    rep.Received().DeleteRange(Arg.Is<IEnumerable<Machine>>(x => x.First().MachineID == 11));
 		}
 
 		[TestMethod]

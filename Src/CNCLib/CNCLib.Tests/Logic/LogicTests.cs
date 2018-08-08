@@ -16,17 +16,22 @@
   http://www.gnu.org/licenses/
 */
 
+using CNCLib.Repository.Contracts;
+using Framework.Contracts.Logic;
+using Framework.Tools.Dependency;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Logic
 {
-	public class DynItemControllerTestClass
-    {
-        public int IntProperty { get; set; }
-        public string StringProperty { get; set; }
-        public double DoubleProperty { get; set; }
-        public decimal DecimalProperty { get; set; }
-        public int? IntNullProperty { get; set; }
-        public double? DoubleNullProperty { get; set; }
-        public decimal? DecimalNullProperty { get; set; }
+    [TestClass]
+	public class LogicTests : CNCUnitTest
+	{
+		public TestContext TestContext { get; set; }
+		static bool _init = false;
+
+		[TestInitialize]
+		public void Init()
+		{
+		}
     }
 }

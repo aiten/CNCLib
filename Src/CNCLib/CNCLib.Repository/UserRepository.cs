@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
@@ -40,6 +41,10 @@ namespace CNCLib.Repository
 	    protected override IQueryable<User> AddPrimaryWhere(IQueryable<User> query, int key)
 	    {
 	        return query.Where(m => m.UserID == key);
+	    }
+	    protected override IQueryable<User> AddPrimaryWhereIn(IQueryable<User> query, IEnumerable<int> key)
+	    {
+	        return query.Where(m => key.Contains(m.UserID));
 	    }
 
         public async Task<User> GetUser(string username)
@@ -72,5 +77,5 @@ namespace CNCLib.Repository
 				// search und update Usercommands (add and delete)
 			}
 		}
-	}
+    }
 }

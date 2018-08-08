@@ -75,12 +75,11 @@ namespace CNCLib.Logic
 			}
 		}
 
-		public async Task<int> Update(LoadOptions m)
+		public async Task Update(LoadOptions m)
 		{
 			using (var controller = Dependency.Resolve<IDynItemController>())
 			{
 				await controller.Save(m.Id, m.SettingName, m);
-				return m.Id;
 			}
 		}
 

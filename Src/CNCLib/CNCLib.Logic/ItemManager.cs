@@ -29,66 +29,26 @@ using Framework.Contracts.Repository;
 
 namespace CNCLib.Logic
 {
-    public class ItemManager : ManagerBase, IItemManager
+    public class ItemManager : CRUDManager<Item,int, Repository.Contracts.Entities.Item>, IItemManager
     {
         private IUnitOfWork _unitOfWork;
         private IItemRepository _repository;
         private IMapper _mapper;
 
-        public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, IMapper mapper)
+        public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, IMapper mapper) : base(unitOfWork, repository, mapper)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
             _repository = repository ?? throw new ArgumentNullException();
             _mapper = mapper ?? throw new ArgumentNullException();
         }
-
-        public async Task<IEnumerable<Item>> GetAll()
-		{
-			return (await _repository.GetAll()).ToDto(_mapper);
-		}
+        protected override int GetKey(Repository.Contracts.Entities.Item entity)
+        {
+            return entity.ItemID;
+        }
 
 		public async Task<IEnumerable<Item>> GetByClassName(string classname)
 		{
 			return (await _repository.Get(classname)).ToDto(_mapper);
-		}
-
-		public async Task<Item> Get(int id)
-		{
-			return (await _repository.Get(id)).ToDto(_mapper);
-		}
-
-		public async Task Delete(Item item)
-		{
-			_repository.Delete(item.ToEntity(_mapper));
-			await _unitOfWork.SaveChangesAsync();
-		}
-
-		public async Task<int> Add(Item item)
-		{
-            using (var trans = _unitOfWork.BeginTransaction())
-            {
-                var me = item.ToEntity(_mapper);
-                me.ItemID = 0;
-                foreach (var mc in me.ItemProperties) mc.ItemID = 0;
-                _repository.Add(me);
-                await _unitOfWork.SaveChangesAsync();
-                await trans.CommitTransactionAsync();
-
-                return me.ItemID;
-            }
-        }
-
-		public async Task<int> Update(Item item)
-		{
-		    using (var trans = _unitOfWork.BeginTransaction())
-		    {
-				var me = item.ToEntity(_mapper);
-				await _repository.Update(me.ItemID,me);
-				await _unitOfWork.SaveChangesAsync();
-		        await trans.CommitTransactionAsync();
-
-		        return me.ItemID;
-		    }
 		}
     }
 }

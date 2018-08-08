@@ -24,7 +24,7 @@ namespace Framework.Contracts.Service
 	public interface ICRUDService<T, TId> : IGetService<T,TId> where T : class
     {
 		Task<TId> Add(T value);
-		Task<TId> Update(T value);
+		Task Update(T value);
 		Task Delete(T value);
 	}
 }

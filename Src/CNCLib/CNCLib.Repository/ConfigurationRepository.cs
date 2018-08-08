@@ -16,6 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
@@ -40,6 +42,11 @@ namespace CNCLib.Repository
 	    protected override IQueryable<Configuration> AddPrimaryWhere(IQueryable<Configuration> query, ConfigurationPrimary key)
 	    {
 	        return query.Where(c => c.Group == key.Group && c.Name == key.Name);
+	    }
+	    protected override IQueryable<Configuration> AddPrimaryWhereIn(IQueryable<Configuration> query, IEnumerable<ConfigurationPrimary> key)
+	    {
+            throw new NotImplementedException();
+//	        return query.Where(c => c.Group == key.Group && c.Name == key.Name);
 	    }
 
         public async Task<Configuration> Get(string group, string  name)

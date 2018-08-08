@@ -44,10 +44,21 @@ namespace Framework.EF
             AddEntity(entity);
         }
 
+        public void AddRange(IEnumerable<TEntity> entities)
+        {
+            AddEntities(entities);
+        }
+
         public void Delete(TEntity entity)
         {
             DeleteEntity(entity);
         }
+
+        public void DeleteRange(IEnumerable<TEntity> entities)
+        {
+            DeleteEntities(entities);
+        }
+
         public void SetState(TEntity entity, Framework.Contracts.Repository.EntityState state)
         {
             SetEntityState(entity, (EntityState)state);

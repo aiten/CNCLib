@@ -110,8 +110,17 @@ namespace CNCLib.Wpf.ViewModels
 
 		    using (var scope = _machineService.Create())
 		    {
-		        int id = await scope.Instance.Update(m);
-		        await MyLoadMachine(id,scope);
+		        int id = m.MachineID;
+		        if (id == default(int))
+		        {
+		            id = await scope.Instance.Add(m);
+		        }
+		        else
+		        {
+		            await scope.Instance.Update(m);
+                }
+
+                await MyLoadMachine(id,scope);
 		    }
 
 		    CloseAction();

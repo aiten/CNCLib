@@ -59,9 +59,9 @@ namespace CNCLib.ServiceProxy.Logic
 			return await _manager.GetByClassName(classname);
 		}
 
-		public async Task<int> Update(Item value)
+		public async Task Update(Item value)
 		{
-			return await _manager.Update(value);
+			await _manager.Update(value);
 		}
 
         #region IDisposable Support

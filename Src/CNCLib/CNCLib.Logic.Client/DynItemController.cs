@@ -279,8 +279,5 @@ namespace CNCLib.Logic.Client
 			string[] names = t.AssemblyQualifiedName.Split(',');
 			return names[0].Trim() + "," + names[1].Trim();
 		}
-
-        #region IDisposable Support
-        #endregion
     }
 }
