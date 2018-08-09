@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Data;
 using System.Threading.Tasks;
 using Framework.Contracts.Repository;
 
@@ -35,6 +36,18 @@ namespace Framework.EF
                 // syn with existing
                 repository.SetValue(entityinDb, entity);
             }
+        }
+
+        public static async Task Update<TEntity, TKey>(this ICRUDRepository<TEntity, TKey> repository, TKey key, TEntity values)
+            where TEntity : class
+        {
+            TEntity entityInDB = await repository.GetTracking(key);
+            if (entityInDB == default(TEntity))
+            {
+                throw new DBConcurrencyException();
+            }
+
+            repository.SetValueGraph(entityInDB, values);
         }
     }
 }

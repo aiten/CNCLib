@@ -21,12 +21,12 @@ using System.Threading.Tasks;
 
 namespace Framework.Contracts.Repository
 {
-    public interface IGetRepository<TEntry, TKey>: IRepository where TEntry : class
+    public interface IGetRepository<TEntity, TKey>: IRepository where TEntity : class
     {
-        Task<IEnumerable<TEntry>> GetAll();
-        Task<TEntry> Get(TKey key);
-        Task<TEntry> GetTracking(TKey key);
-        Task<IEnumerable<TEntry>> Get(IEnumerable<TKey> key);
-        Task<IEnumerable<TEntry>> GetTracking(IEnumerable<TKey> key);
+        Task<IEnumerable<TEntity>> GetAll();
+        Task<TEntity> Get(TKey key);
+        Task<TEntity> GetTracking(TKey key);
+        Task<IEnumerable<TEntity>> Get(IEnumerable<TKey> key);
+        Task<IEnumerable<TEntity>> GetTracking(IEnumerable<TKey> key);
     }
 }

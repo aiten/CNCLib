@@ -62,9 +62,5 @@ namespace CNCLib.Logic
 
             return await Task.FromResult(result);
         }
-
-        #region IDisposable Support
-        // see ManagerBase
-        #endregion
     }
 }

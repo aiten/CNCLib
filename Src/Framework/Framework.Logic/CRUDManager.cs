@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -26,54 +27,44 @@ using Framework.Tools;
 
 namespace Framework.Logic
 {
-    public abstract class CRUDManager<T, TId, TEntry> : ManagerBase where T : class where TEntry : class
+    public abstract class CRUDManager<T, TKey, TEntity> : ManagerBase where T : class where TEntity : class
     {
         private IMapper _mapper;
-        private ICRUDRepository<TEntry, TId> _repository;
+        private ICRUDRepository<TEntity, TKey> _repository;
         private IUnitOfWork _unitOfWork;
 
-        protected CRUDManager(IUnitOfWork unitOfWork, ICRUDRepository<TEntry, TId> repository, IMapper mapper)
+        protected CRUDManager(IUnitOfWork unitOfWork, ICRUDRepository<TEntity, TKey> repository, IMapper mapper)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
             _repository = repository ?? throw new ArgumentNullException();
             _mapper = mapper ?? throw new ArgumentNullException(); ;
         }
 
-        protected abstract TId GetKey(TEntry entity);
+        protected abstract TKey GetKey(TEntity entity);
 
         public async Task<IEnumerable<T>> GetAll()
         {
-            return _mapper.Map<IEnumerable<TEntry>, IEnumerable<T>>(await _repository.GetAll());
+            return _mapper.Map<IEnumerable<TEntity>, IEnumerable<T>>(await _repository.GetAll());
         }
 
-        public async Task<T> Get(TId key)
+        public async Task<T> Get(TKey key)
         {
-            return _mapper.Map<TEntry, T>(await _repository.Get(key));
+            return _mapper.Map<TEntity, T>(await _repository.Get(key));
         }
 
-        public async Task<IEnumerable<T>> Get(IEnumerable<TId> keys)
+        public async Task<IEnumerable<T>> Get(IEnumerable<TKey> keys)
         {
-            return _mapper.Map<IEnumerable<TEntry>, IEnumerable<T>>(await _repository.Get(keys));
+            return _mapper.Map<IEnumerable<TEntity>, IEnumerable<T>>(await _repository.Get(keys));
         }
 
-        public async Task<TId> Add(T value)
+        public async Task<TKey> Add(T value)
         {
             return (await Add(new List<T>() { value })).First();
-
-            /*
-                        var me = m.ToEntity(_mapper);
-                        me.MachineID = 0;
-                        foreach (var mc in me.MachineInitCommands) mc.MachineID = 0;
-                        foreach (var mi in me.MachineInitCommands) mi.MachineID = 0;
-                        _repository.Add(me);
-                        await _unitOfWork.SaveChangesAsync();
-                        return me.MachineID;
-            */
         }
 
-        public async Task<IEnumerable<TId>> Add(IEnumerable<T> values)
+        public async Task<IEnumerable<TKey>> Add(IEnumerable<T> values)
         {
-            var entities = _mapper.Map<IEnumerable<T>, IEnumerable<TEntry>>(values);
+            var entities = _mapper.Map<IEnumerable<T>, IEnumerable<TEntity>>(values);
             using (var trans = _unitOfWork.BeginTransaction())
             {
                 _repository.AddRange(entities);
@@ -91,7 +82,7 @@ namespace Framework.Logic
         {
             using (var trans = _unitOfWork.BeginTransaction())
             {
-                var entities = _mapper.Map<IEnumerable<T>, IEnumerable<TEntry>>(values);
+                var entities = _mapper.Map<IEnumerable<T>, IEnumerable<TEntity>>(values);
                 _repository.DeleteRange(entities);
                 await trans.CommitTransactionAsync();
             }
@@ -105,10 +96,22 @@ namespace Framework.Logic
         {
             using (var trans = _unitOfWork.BeginTransaction())
             {
-                var entities = _mapper.Map<IEnumerable<T>, IEnumerable<TEntry>>(values);
-                foreach (var entity in entities)
+                var entities = _mapper.Map<IEnumerable<T>, IEnumerable<TEntity>>(values);
+                var entitiesInDb = await _repository.GetTracking(entities.Select(e => GetKey(e)));
+
+                var mergeJoin = entitiesInDb.Join(entities,
+                    e => GetKey(e),
+                    e => GetKey(e),
+                    (EntityInDb, Entity) => new { EntityInDb, Entity });
+
+                if (entities.Count() != entitiesInDb.Count() || entities.Count() != mergeJoin.Count())
                 {
-                    _repository.Update(GetKey(entity),entity);
+                    throw new DBConcurrencyException();
+                }
+
+                foreach (var merged in mergeJoin)
+                {
+                    _repository.SetValue(merged.EntityInDb, merged.Entity);
                 }
                 await trans.CommitTransactionAsync();
             }

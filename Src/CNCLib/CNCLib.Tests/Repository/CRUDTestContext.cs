@@ -22,7 +22,7 @@ using Framework.Contracts.Repository;
 
 namespace CNCLib.Tests.Repository
 {
-    public class CRUDTestContext<TEntry, TKey, TIRepository> : IDisposable where TEntry : class  where TIRepository : ICRUDRepository<TEntry, TKey>
+    public class CRUDTestContext<TEntity, TKey, TIRepository> : IDisposable where TEntity : class  where TIRepository : ICRUDRepository<TEntity, TKey>
     {
         public CNCLibContext DbContext { get; private set; }
         public IUnitOfWork UnitOfWork { get; private set; }
