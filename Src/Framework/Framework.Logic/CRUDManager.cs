@@ -27,34 +27,17 @@ using Framework.Tools;
 
 namespace Framework.Logic
 {
-    public abstract class CRUDManager<T, TKey, TEntity> : ManagerBase where T : class where TEntity : class
+    public abstract class CRUDManager<T, TKey, TEntity> : GetManager<T, TKey, TEntity> where T : class where TEntity : class
     {
         private IMapper _mapper;
         private ICRUDRepository<TEntity, TKey> _repository;
         private IUnitOfWork _unitOfWork;
 
-        protected CRUDManager(IUnitOfWork unitOfWork, ICRUDRepository<TEntity, TKey> repository, IMapper mapper)
+        protected CRUDManager(IUnitOfWork unitOfWork, ICRUDRepository<TEntity, TKey> repository, IMapper mapper) : base  (unitOfWork,  repository,  mapper)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
             _repository = repository ?? throw new ArgumentNullException();
             _mapper = mapper ?? throw new ArgumentNullException(); ;
-        }
-
-        protected abstract TKey GetKey(TEntity entity);
-
-        public async Task<IEnumerable<T>> GetAll()
-        {
-            return _mapper.Map<IEnumerable<TEntity>, IEnumerable<T>>(await _repository.GetAll());
-        }
-
-        public async Task<T> Get(TKey key)
-        {
-            return _mapper.Map<TEntity, T>(await _repository.Get(key));
-        }
-
-        public async Task<IEnumerable<T>> Get(IEnumerable<TKey> keys)
-        {
-            return _mapper.Map<IEnumerable<TEntity>, IEnumerable<T>>(await _repository.Get(keys));
         }
 
         public async Task<TKey> Add(T value)
@@ -87,6 +70,22 @@ namespace Framework.Logic
                 await trans.CommitTransactionAsync();
             }
         }
+
+        public async Task Delete(TKey key)
+        {
+            await Delete(new TKey[] { key });
+        }
+
+        public async Task Delete(IEnumerable<TKey> keys)
+        {
+            using (var trans = _unitOfWork.BeginTransaction())
+            {
+                var entities = await _repository.GetTracking(keys);
+                _repository.DeleteRange(entities);
+                await trans.CommitTransactionAsync();
+            }
+        }
+
         public async Task Update(T value)
         {
             await Update(new T[] { value });

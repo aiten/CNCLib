@@ -67,7 +67,15 @@ namespace CNCLib.Logic
 			}
         }
 
-		public async Task<int> Add(LoadOptions m)
+	    public async Task Delete(int key)
+	    {
+	        using (var controller = Dependency.Resolve<IDynItemController>())
+	        {
+	            await controller.Delete(key);
+	        }
+	    }
+
+        public async Task<int> Add(LoadOptions m)
 		{
 			using (var controller = Dependency.Resolve<IDynItemController>())
 			{
@@ -82,6 +90,31 @@ namespace CNCLib.Logic
 				await controller.Save(m.Id, m.SettingName, m);
 			}
 		}
+
+        public Task<IEnumerable<int>> Add(IEnumerable<LoadOptions> values)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task Update(IEnumerable<LoadOptions> values)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task Delete(IEnumerable<LoadOptions> values)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task Delete(IEnumerable<int> keys)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<IEnumerable<LoadOptions>> Get(IEnumerable<int> key)
+        {
+            throw new System.NotImplementedException();
+        }
 
         #region IDisposable Support
         // see ManagerBase

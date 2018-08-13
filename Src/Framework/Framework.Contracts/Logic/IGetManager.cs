@@ -24,6 +24,7 @@ namespace Framework.Contracts.Logic
 	public interface IGetManager<T, TId> where T : class
     {
 		Task<T> Get(TId id);
-		Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> Get(IEnumerable<TId> key);
+        Task<IEnumerable<T>> GetAll();
 	}
 }

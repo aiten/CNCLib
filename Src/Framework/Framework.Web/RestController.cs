@@ -34,7 +34,7 @@ namespace Framework.Web
         public IRest<T> Rest { get; }
 /*
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetREST()
 		{
 			return await this.GetAll<T>(Rest);
 		}
@@ -42,26 +42,26 @@ namespace Framework.Web
         [HttpGet("{id:int}")]
 		public async Task<ActionResult<T>> Get(int id)
 		{
-		    return await this.Get(Rest,id);
+		    return await this.GetREST(Rest,id);
 		}
 
         [HttpPost]
 		public async Task<ActionResult<T>> Post([FromBody]T value)
 		{
             // return url to new object
-		    return await this.Post(Rest, value);
+		    return await this.PostREST(Rest, value);
 		}
 
         [HttpPut("{id:int}")]
         public async Task<ActionResult<T>> Put(int id, [FromBody]T value)
 		{
-		    return await this.Put(Rest, id, value);
+		    return await this.PutRest(Rest, id, value);
 		}
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<T>> Delete(int id)
 		{
-		    return await this.Delete(Rest, id);
+		    return await this.DeleteREST(Rest, id);
 		}
 	}
 }

@@ -16,26 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using Framework.Tools;
 
-namespace CNCLib.ServiceProxy.WebAPI
+namespace Framework.Service
 {
-    public abstract class ServiceBase : DisposeWrapper
-	{
-		protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibwebapi.azurewebsites.net";
-
-        protected abstract string Api { get; }
-
-		protected HttpClient CreateHttpClient()
-		{
-		    var client = new HttpClient {BaseAddress = new Uri(_webserverurl)};
-		    client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			return client;
-		}
-	}
+    public class ServiceBase : DisposeWrapper
+    {
+    }
 }

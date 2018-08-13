@@ -24,77 +24,21 @@ using System.Threading.Tasks;
 
 namespace CNCLib.ServiceProxy.WebAPI
 {
-    public class MachineService : ServiceBase, IMachineService
+    public class MachineService : CRUDServiceBase<Machine,int>, IMachineService
 	{
-		protected readonly string _api = @"api/Machine";
-
-		public async Task<int> Add(Machine value)
-		{
-			using (HttpClient client = CreateHttpClient())
-			{
-				HttpResponseMessage response = await client.PostAsJsonAsync(_api, value);
-
-				if (!response.IsSuccessStatusCode)
-					return -1;
-
-				return await response.Content.ReadAsAsync<int>();
-			}
-		}
+	    protected override string Api => @"api/Item";
+	    protected override int GetKey(Machine m) => m.MachineID; 
 
 		public async Task<Machine> DefaultMachine()
 		{
 			return await Get(-1);
 		}
 
-		public async Task Delete(Machine value)
-		{
-			using (HttpClient client = CreateHttpClient())
-			{
-				HttpResponseMessage response = await client.DeleteAsync(_api + "/" + value.MachineID);
-
-				if (response.IsSuccessStatusCode)
-				{
-					//return RedirectToAction("Index");
-				}
-				//return HttpNotFound();
-			}
-		}
-
-		public async Task<Machine> Get(int id)
-		{
-			using (HttpClient client = CreateHttpClient())
-			{
-				HttpResponseMessage response = await client.GetAsync(_api + "/" + id);
-				if (response.IsSuccessStatusCode)
-				{
-					Machine value = await response.Content.ReadAsAsync<Machine>();
-
-					return value;
-				}
-			}
-			return null;
-		}
-
-		public async Task<IEnumerable<Machine>> GetAll()
-		{ 
-
-			using (HttpClient client = CreateHttpClient())
-			{
-				HttpResponseMessage response = await client.GetAsync(_api);
-				if (response.IsSuccessStatusCode)
-				{
-					IEnumerable<Machine> machines = await response.Content.ReadAsAsync<IEnumerable<Machine>>();
-					return machines;
-				}
-				return null;
-			}
-		}
-
 		public async Task<int> GetDetaultMachine()
 		{
 			using (HttpClient client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.GetAsync(_api + "/defaultmachine");
+				HttpResponseMessage response = await client.GetAsync(Api + "/defaultmachine");
 				if (response.IsSuccessStatusCode)
 				{
 					int value = await response.Content.ReadAsAsync<int>();
@@ -109,20 +53,12 @@ namespace CNCLib.ServiceProxy.WebAPI
 		{
 			using (HttpClient client = CreateHttpClient())
 			{
-				HttpResponseMessage response = await client.PutAsJsonAsync($"{_api}/defaultmachine?id={id}","dummy");
+				HttpResponseMessage response = await client.PutAsJsonAsync($"{Api}/defaultmachine?id={id}","dummy");
 
 				if (response.IsSuccessStatusCode)
 				{
 					return;
 				}
-			}
-		}
-
-		public async Task Update(Machine value)
-		{
-			using (HttpClient client = CreateHttpClient())
-			{
-				HttpResponseMessage response = await client.PutAsJsonAsync(_api + "/" + value.MachineID, value);
 			}
 		}
 

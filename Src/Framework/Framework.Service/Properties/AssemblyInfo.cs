@@ -16,17 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Runtime.InteropServices;
 
-using System.Collections.Generic;
-using CNCLib.Logic.Contracts.DTO;
-using System.Threading.Tasks;
-using System.Net.Http;
+//[assembly: AssemblyTitle("CNCLib.Logic")]
+//[assembly: AssemblyProduct("CNCLib.Logic")]
 
-namespace CNCLib.ServiceProxy.WebAPI
-{
-    public class LoadOptionsService : CRUDServiceBase<LoadOptions,int>, ILoadOptionsService
-	{
-		protected override string Api => @"api/LoadOptions";
-	    protected override int GetKey(LoadOptions value) => value.Id;
-    }
-}
+[assembly: Guid("C61D81BF-1791-4BFF-991E-48811E8254C0")]
+

@@ -34,7 +34,59 @@ namespace CNCLib.WebAPI.Controllers
             _machineservice = machineservice ?? throw new ArgumentNullException();
         }
 
-        readonly IMachineService _machineservice;
+        private IMachineService _machineservice;
+
+	    #region default REST
+
+	    [HttpGet("test/{id:int}")]
+	    public async Task<ActionResult> Get(int id)
+	    {
+	        return await ControllerExtension.Get<Machine,int>(this,_machineservice, id);
+	    }
+/*
+	    [HttpPost]
+	    [Route("test/bulk")]
+	    public async Task<ActionResult> Add([FromBody] IEnumerable<Machine> values)
+	    {
+	        return await ControllerExtension.Get<Machine, int>(this, _machineservice, values);
+	    }
+*/
+	    [HttpPost]
+	    [Route("test")]
+	    public async Task<ActionResult> Add([FromBody] Machine value)
+	    {
+	        return await ControllerExtension.Add<Machine, int>(this, _machineservice, value);
+	    }
+/*
+	    [HttpPut]
+	    [Route("area/bulk")]
+	    public async Task<IHttpActionResult> Update([FromBody] IEnumerable<Area> values)
+	    {
+	        return await Update(_manager, values);
+	    }
+*/
+	    [HttpPut]
+	    [Route("test/{id}")]
+	    public async Task<ActionResult> Update(int id, [FromBody]Machine value)
+	    {
+	        return await ControllerExtension.Update<Machine, int>(this,_machineservice, id, value.MachineID, value);
+	    }
+
+	    [HttpDelete]
+	    [Route("test/{id}")]
+	    public async Task<ActionResult> Delete(int id)
+	    {
+	        return await ControllerExtension.Delete<Machine, int>(this,_machineservice, id);
+	    }
+/*
+	    [HttpDelete]
+	    [Route("area/bulk")]
+	    public async Task<IHttpActionResult> Delete([FromUri] int[] id)
+	    {
+	        return await DeleteREST(_manager, id);
+	    }
+*/
+	    #endregion
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Machine>>> Get()

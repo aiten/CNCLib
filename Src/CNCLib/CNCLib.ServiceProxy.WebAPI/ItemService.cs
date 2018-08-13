@@ -24,79 +24,22 @@ using System.Net.Http;
 
 namespace CNCLib.ServiceProxy.WebAPI
 {
-    public class ItemService : ServiceBase, IItemService
+    public class ItemService : CRUDServiceBase<Item,int>, IItemService
 	{
-		protected readonly string _api = @"api/Item";
-
-
-		public async Task<int> Add(Item value)
-		{
-			using (HttpClient client = CreateHttpClient())
-			{
-				HttpResponseMessage response = await client.PostAsJsonAsync(_api, value);
-
-				if (!response.IsSuccessStatusCode)
-					return -1;
-
-				return await response.Content.ReadAsAsync<int>();
-			}
-		}
+	    protected override string Api => @"api/Item";
+	    protected override int GetKey(Item i) => i.ItemID;
 
 		public async Task<Item> DefaultItem()
 		{
 			return await Get(-1);
 		}
 
-		public async Task Delete(Item value)
-		{
-			using (HttpClient client = CreateHttpClient())
-			{
-				HttpResponseMessage response = await client.DeleteAsync(_api + "/" + value.ItemID);
-
-				if (response.IsSuccessStatusCode)
-				{
-					//return RedirectToAction("Index");
-				}
-				//return HttpNotFound();
-			}
-		}
-
-		public async Task<Item> Get(int id)
-		{
-			using (HttpClient client = CreateHttpClient())
-			{
-				HttpResponseMessage response = await client.GetAsync(_api + "/" + id);
-				if (response.IsSuccessStatusCode)
-				{
-					Item value = await response.Content.ReadAsAsync<Item>();
-
-					return value;
-				}
-			}
-			return null;
-		}
-
-		public async Task<IEnumerable<Item>> GetAll()
-		{
-			using (HttpClient client = CreateHttpClient())
-			{
-				HttpResponseMessage response = await client.GetAsync(_api);
-				if (response.IsSuccessStatusCode)
-				{
-					IEnumerable<Item> items = await response.Content.ReadAsAsync<IEnumerable<Item>>();
-					return items;
-				}
-				return null;
-			}
-		}
-
-
 		public async Task<IEnumerable<Item>> GetByClassName(string classname)
 		{
 			using (HttpClient client = CreateHttpClient())
 			{
 //			    HttpResponseMessage response = await client.GetAsync(_api + "/" + classname);
-				HttpResponseMessage response = await client.GetAsync(_api + "/?classname=" + classname);
+				HttpResponseMessage response = await client.GetAsync(Api + "/?classname=" + classname);
 				if (response.IsSuccessStatusCode)
 				{
 					IEnumerable<Item> items = await response.Content.ReadAsAsync<IEnumerable<Item>>();
@@ -105,18 +48,5 @@ namespace CNCLib.ServiceProxy.WebAPI
 				return null;
 			}
 		}
-
-
-		public async Task Update(Item value)
-		{
-			using (HttpClient client = CreateHttpClient())
-			{
-				HttpResponseMessage response = await client.PutAsJsonAsync(_api + "/" + value.ItemID, value);
-			}
-		}
-
-		#region IDisposable Support
-		#endregion
-
 	}
 }

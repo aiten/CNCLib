@@ -16,28 +16,39 @@
   http://www.gnu.org/licenses/
 */
 
-
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
-using CNCLib.Logic.Contracts;
-using CNCLib.Logic.Contracts.DTO;
-using Framework.Service;
+using AutoMapper;
+using Framework.Contracts.Logic;
+using Framework.Contracts.Repository;
 
-namespace CNCLib.ServiceProxy.Logic
+namespace Framework.Service
 {
-    public class ItemService : CRUDService<Item,int> , IItemService
-	{
-        public ItemService(IItemManager manager) : base(manager)
+    public abstract class GetService<T, TKey> : ServiceBase where T : class
+    {
+        private ICRUDManager<T, TKey> _manager;
+
+        protected GetService(ICRUDManager<T,TKey> manager)
         {
             _manager = manager ?? throw new ArgumentNullException();
         }
 
-        readonly IItemManager _manager;
+        public async Task<T> Get(TKey id)
+        {
+            return await _manager.Get(id);
+        }
 
-		public async Task<IEnumerable<Item>> GetByClassName(string classname)
-		{
-			return await _manager.GetByClassName(classname);
-		}
+        public async Task<IEnumerable<T>> Get(IEnumerable<TKey> ids)
+        {
+            return await _manager.Get(ids);
+        }
+
+        public async Task<IEnumerable<T>> GetAll()
+        {
+            return await _manager.GetAll();
+        }
     }
 }

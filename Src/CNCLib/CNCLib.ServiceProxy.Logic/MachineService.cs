@@ -21,42 +21,23 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
+using Framework.Service;
 using Framework.Tools;
 
 namespace CNCLib.ServiceProxy.Logic
 {
-    public class MachineService : DisposeWrapper, IMachineService
+    public class MachineService : CRUDService<Machine,int>, IMachineService
 	{
-        public MachineService(IMachineManager manager)
+        public MachineService(IMachineManager manager) : base(manager)
         {
             _manager = manager ?? throw new ArgumentNullException();
         }
 
 		readonly IMachineManager _manager;
 
-		public async Task<int> Add(Machine value)
-		{
-			return await _manager.Add(value);
-		}
-
 		public async Task<Machine> DefaultMachine()
 		{
 			return await _manager.DefaultMachine();
-		}
-
-		public async Task Delete(Machine value)
-		{
-			await _manager.Delete(value);
-		}
-
-		public async Task<Machine> Get(int id)
-		{
-			return await _manager.Get(id);
-		}
-
-		public async Task<IEnumerable<Machine>> GetAll()
-		{
-			return await _manager.GetAll();
 		}
 
 		public async Task<int> GetDetaultMachine()
@@ -68,19 +49,5 @@ namespace CNCLib.ServiceProxy.Logic
 		{
 			await _manager.SetDetaultMachine(defaultMachineID);
 		}
-
-		public async Task Update(Machine value)
-		{
-			await _manager.Update(value);
-		}
-
-        #region IDisposable Support
-
-        protected override void DisposeManaged()
-        {
-        }
-
-        #endregion
-
     }
 }

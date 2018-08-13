@@ -26,10 +26,11 @@ namespace Framework.Contracts.Logic
 		Task<TId> Add(T value);
 		Task Update(T value);
 		Task Delete(T value);
-/*
+        Task Delete(TId key);
+
         Task<IEnumerable<TId>> Add(IEnumerable<T> values);
         Task Update(IEnumerable<T> values);
         Task Delete(IEnumerable<T> values);
-*/
-	}
+        Task Delete(IEnumerable<TId> keys);
+    }
 }

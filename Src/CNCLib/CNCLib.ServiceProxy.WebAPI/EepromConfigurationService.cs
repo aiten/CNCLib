@@ -24,14 +24,14 @@ namespace CNCLib.ServiceProxy.WebAPI
 {
     public class EepromConfigurationService : ServiceBase, IEepromConfigurationService
 	{
-		protected readonly string _api = @"api/EepromConfiguration";
+		protected override string Api => @"api/EepromConfiguration";
 
         public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
         {
             using (HttpClient client = CreateHttpClient())
             {
                 string paramuri = $"teeth={param.Teeth}&toothsizeInMm={param.ToothsizeinMm}&microsteps={param.Microsteps}&stepsPerRotation={param.StepsPerRotation}&estimatedRotationSpeed={param.EstimatedRotationSpeed}&timeToAcc={param.TimeToAcc}&timeToDec={param.TimeToDec}";
-                HttpResponseMessage response = await client.GetAsync(_api + "/" + paramuri);
+                HttpResponseMessage response = await client.GetAsync(Api + "/" + paramuri);
                 if (response.IsSuccessStatusCode)
                 {
                     EepromConfiguration value = await response.Content.ReadAsAsync<EepromConfiguration>();

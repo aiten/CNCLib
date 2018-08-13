@@ -22,51 +22,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
+using Framework.Service;
 using Framework.Tools;
 
 namespace CNCLib.ServiceProxy.Logic
 {
-    public class LoadOptionsService : DisposeWrapper, ILoadOptionsService
+    public class LoadOptionsService : CRUDService<LoadOptions, int>, ILoadOptionsService
 	{
-        public LoadOptionsService(ILoadOptionsManager manager)
+        public LoadOptionsService(ILoadOptionsManager manager) : base(manager)
         {
             _manager = manager ?? throw new ArgumentNullException();
         }
 
         readonly ILoadOptionsManager _manager;
-
-		public async Task<int> Add(LoadOptions value)
-		{
-			return await _manager.Add(value);
-		}
-
-		public async Task Delete(LoadOptions value)
-		{
-			await _manager.Delete(value);
-		}
-
-		public async Task<LoadOptions> Get(int id)
-		{
-			return await _manager.Get(id);
-		}
-
-		public async Task<IEnumerable<LoadOptions>> GetAll()
-		{
-			return await _manager.GetAll();
-		}
-
-		public async Task Update(LoadOptions value)
-		{
-			await _manager.Update(value);
-		}
-
-        #region IDisposable Support
-
-        protected override void DisposeManaged()
-        {
-        }
-
-        #endregion
-
     }
 }

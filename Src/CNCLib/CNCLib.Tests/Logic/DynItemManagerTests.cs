@@ -246,7 +246,7 @@ namespace CNCLib.Tests.Logic
 
             //assert
             await srv.Received().Get(1);
-			await srv.DidNotReceiveWithAnyArgs().Delete(null);
+			await srv.DidNotReceiveWithAnyArgs().Delete((Item) null);
         }
 
 
@@ -265,7 +265,7 @@ namespace CNCLib.Tests.Logic
 			//assert
 			await srv.Received().Update(Arg.Is<Item>(x => x.ItemID == 1));
 			await srv.Received().Update(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y=>y.Name=="IntProperty").Value=="1"));
-			await srv.DidNotReceiveWithAnyArgs().Delete(null);
+			await srv.DidNotReceiveWithAnyArgs().Delete((Item) null);
 		}
 	}
 }
