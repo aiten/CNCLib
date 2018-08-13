@@ -118,7 +118,6 @@ namespace CNCLib.Tests.Repository
 
                     entity.MachineCommands.Remove(entity.MachineCommands.Last());
                     entity.MachineCommands.Add(new MachineCommand() { CommandString = @"CommandStr", CommandName = "NewName", JoystickMessage = "Maxi", PosX = 2, PosY = 3});
-
                 });
         }
 
@@ -132,9 +131,17 @@ namespace CNCLib.Tests.Repository
                     entity.Name = "DummyNameUpdate";
                     entity.MachineInitCommands.Clear();
                     entity.MachineCommands.Clear();
-
                 });
         }
+
+        [TestMethod]
+        public async Task AddUpdateDeleteBulkTest()
+        {
+            await AddUpdateDeleteBulk(
+                () => new Machine[] { CreateMachine(@"AddUpdateDeleteBulkTest1"), CreateMachine(@"AddUpdateDeleteBulkTest2"), CreateMachine(@"AddUpdateDeleteBulkTest2") },
+                (entities) => { int i=0;foreach (var entity in entities) { entity.Name = $"DummyNameUpdate{i++}"; } });
+        }
+
 
         [TestMethod]
         public async Task AddRollbackTest()

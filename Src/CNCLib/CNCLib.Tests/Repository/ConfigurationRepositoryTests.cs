@@ -98,8 +98,16 @@ namespace CNCLib.Tests.Repository
         public async Task AddUpdateDeleteTest()
         {
             await AddUpdateDelete(
-                () => new Configuration() { Group = "TestGroup", Name = "TestName", Type = "string", Value = "TestValue"},
+                () => CreateConfiguration("TestGroup", "TestName"),
                 (entity) => entity.Value = "testValueModified");
+        }
+
+        [TestMethod]
+        public async Task AddUpdateDeleteBulkTest()
+        {
+            await AddUpdateDeleteBulk(
+                () => new [] { CreateConfiguration(@"AddUpdateDeleteBulk","Test1"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test2"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test3") },
+                (entities) => { int i = 0; foreach (var entity in entities) { entity.Name = $"DummyNameUpdate{i++}"; } });
         }
 
         [TestMethod]
@@ -114,6 +122,10 @@ namespace CNCLib.Tests.Repository
             await Store(
                 () => new Configuration() { Group = "TestGroup", Name = "TestName", Type = "string", Value = "TestValue" },
                 (entity) => entity.Value = "testValueModified");
+        }
+        private static Configuration CreateConfiguration(string group, string name)
+        {
+            return new Configuration() { Group = group, Name = name, Type = "string", Value = "TestValue" };
         }
 
         #endregion
