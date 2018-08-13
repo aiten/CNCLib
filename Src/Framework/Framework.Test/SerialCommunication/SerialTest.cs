@@ -39,6 +39,7 @@ namespace Framework.Test.SerialCommunication
             Encoding encoding = Encoding.GetEncoding(1200);
             serialport.Encoding.ReturnsForAnyArgs(encoding);
 
+            Tools.Dependency.Dependency.Container.ResetContainer();
             Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
 
             int resultidx = 0;
@@ -81,6 +82,7 @@ namespace Framework.Test.SerialCommunication
             Encoding encoding = Encoding.GetEncoding(12000);
             serialport.Encoding.ReturnsForAnyArgs(encoding);
 
+            Tools.Dependency.Dependency.Container.ResetContainer();
             Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
 
             using (var serial = new Serial())

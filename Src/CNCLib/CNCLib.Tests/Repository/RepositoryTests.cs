@@ -58,6 +58,7 @@ namespace CNCLib.Tests.Repository
 		[TestInitialize]
 		public void Init()
 		{
+		    Dependency.Container.ResetContainer();
             Dependency.Container.RegisterType<IConfigurationRepository, ConfigurationRepository>();
             Dependency.Container.RegisterType<IMachineRepository, MachineRepository>();
             Dependency.Container.RegisterType<IItemRepository, ItemRepository>();
