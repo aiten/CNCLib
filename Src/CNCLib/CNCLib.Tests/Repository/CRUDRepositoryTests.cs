@@ -157,6 +157,100 @@ namespace CNCLib.Tests.Repository
             }
         }
 
+        public async Task AddUpdateDeleteBulk(Func<IEnumerable<TEntity>> createTestEntities, Action<IEnumerable<TEntity>> updateEntities)
+        {
+            var allWithoutAdd = await GetAll();
+            allWithoutAdd.Should().NotBeNull();
+
+            // first add entity
+
+            IEnumerable<TKey> keys;
+            using (var ctx = CreateCRUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                IEnumerable<TEntity> entitiesToAdd = createTestEntities();
+                ctx.Repository.AddRange(entitiesToAdd);
+
+                await ctx.UnitOfWork.SaveChangesAsync();
+                await trans.CommitTransactionAsync();
+
+                keys = entitiesToAdd.Select(e => GetEntityKey(e));
+            }
+
+            var allWithAdd = await GetAll();
+            allWithAdd.Should().NotBeNull();
+            allWithAdd.Count().Should().Be(allWithoutAdd.Count() + keys.Count());
+
+            // read again and update 
+            using (var ctx = CreateCRUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                IEnumerable<TEntity> entities = await ctx.Repository.GetTracking(keys);
+                IEnumerable<TEntity> compareEntities = createTestEntities();
+                for (int i = 0; i < compareEntities.Count();i++)
+                {
+                    GetEntityKey(entities.ElementAt(i)).Should().Be(keys.ElementAt(i));
+                    CompareEntity(compareEntities.ElementAt(i), entities.ElementAt(i)).Should().BeTrue();
+                }
+                updateEntities(entities);
+
+                await ctx.UnitOfWork.SaveChangesAsync();
+                await trans.CommitTransactionAsync();
+            }
+
+            // read again
+            using (var ctx = CreateCRUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                IEnumerable<TEntity> entities = await ctx.Repository.Get(keys);
+                for (int i = 0; i < entities.Count(); i++)
+                {
+                    GetEntityKey(entities.ElementAt(i)).Should().Be(keys.ElementAt(i));
+                }
+            }
+/*
+            // update (with methode update)
+            using (var ctx = CreateCRUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                await ctx.Repository.Update(key, SetEntityKey(createTestEntity(), key));
+
+                await ctx.UnitOfWork.SaveChangesAsync();
+                await trans.CommitTransactionAsync();
+            }
+*/
+            // read again and delete 
+
+            using (var ctx = CreateCRUDTestContext())
+            using (var trans = ctx.UnitOfWork.BeginTransaction())
+            {
+                IEnumerable<TEntity> entities = await ctx.Repository.GetTracking(keys);
+
+                var compareEntities = createTestEntities();
+                updateEntities(compareEntities);
+
+                for (int i = 0; i < compareEntities.Count(); i++)
+                {
+                    GetEntityKey(entities.ElementAt(i)).Should().Be(keys.ElementAt(i));
+                    CompareEntity(compareEntities.ElementAt(i), entities.ElementAt(i)).Should().BeTrue();
+                }
+
+                ctx.Repository.DeleteRange(entities);
+
+                await ctx.UnitOfWork.SaveChangesAsync();
+                await trans.CommitTransactionAsync();
+            }
+
+            // read again to test is not exist
+
+            using (var ctx = CreateCRUDTestContext())
+            {
+                IEnumerable<TEntity> entities = await ctx.Repository.GetTracking(keys);
+                entities.Count().Should().Be(0);
+            }
+        }
+
+
         public async Task AddRollBack(Func<TEntity> createTestEntity)
         {
             // first add entity

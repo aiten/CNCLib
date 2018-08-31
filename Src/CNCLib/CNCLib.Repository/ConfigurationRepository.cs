@@ -43,10 +43,15 @@ namespace CNCLib.Repository
 	    {
 	        return query.Where(c => c.Group == key.Group && c.Name == key.Name);
 	    }
-	    protected override IQueryable<Configuration> AddPrimaryWhereIn(IQueryable<Configuration> query, IEnumerable<ConfigurationPrimary> key)
+	    protected override IQueryable<Configuration> AddPrimaryWhereIn(IQueryable<Configuration> query, IEnumerable<ConfigurationPrimary> keys)
 	    {
-            throw new NotImplementedException();
-//	        return query.Where(c => c.Group == key.Group && c.Name == key.Name);
+	        var dynquery = query;
+	        foreach (var key in keys)
+	        {
+	            dynquery = dynquery.Where(c => c.Group == key.Group && c.Name == key.Name);
+	        }
+
+	        return dynquery;
 	    }
 
         public async Task<Configuration> Get(string group, string  name)
