@@ -26,15 +26,25 @@ namespace CNCLib.ServiceProxy.WebAPI
 {
     public class MachineService : CRUDServiceBase<Machine,int>, IMachineService
 	{
-	    protected override string Api => @"api/Item";
+	    protected override string Api => @"api/Machine";
 	    protected override int GetKey(Machine m) => m.MachineID; 
 
 		public async Task<Machine> DefaultMachine()
 		{
-			return await Get(-1);
+		    using (HttpClient client = CreateHttpClient())
+		    {
+		        HttpResponseMessage response = await client.GetAsync(Api + "/default");
+		        if (response.IsSuccessStatusCode)
+		        {
+		            var value = await response.Content.ReadAsAsync<Machine>();
+
+		            return value;
+		        }
+		    }
+		    return null;
 		}
 
-		public async Task<int> GetDetaultMachine()
+        public async Task<int> GetDetaultMachine()
 		{
 			using (HttpClient client = CreateHttpClient())
 			{

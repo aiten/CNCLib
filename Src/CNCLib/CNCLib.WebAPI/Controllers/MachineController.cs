@@ -38,7 +38,7 @@ namespace CNCLib.WebAPI.Controllers
 
         #region default REST
 
-	    [HttpGet]
+        [HttpGet]
 	    public async Task<ActionResult<IEnumerable<Machine>>> Get()
 	    {
 	        return await this.GetAll(_service);

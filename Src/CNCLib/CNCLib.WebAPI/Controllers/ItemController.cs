@@ -37,7 +37,7 @@ namespace CNCLib.WebAPI.Controllers
 	    readonly IItemService _service;
 
         [HttpGet]
-	    public async Task<ActionResult<IEnumerable<Item>>> Get(string classname)
+        public async Task<ActionResult<IEnumerable<Item>>> Get(string classname)
 	    {
 	        if (classname == null)
 	        {
@@ -47,5 +47,43 @@ namespace CNCLib.WebAPI.Controllers
 	        IEnumerable<Item> m = await _service.GetByClassName(classname);
 	        return await this.NotFoundOrOk(m);
 	    }
-	}
+
+        #region default REST
+
+/*
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Item>>> Get()
+        {
+            return await this.GetAll(_service);
+        }
+*/
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> Get(int id)
+        {
+            return await this.Get<Item, int>(_service, id);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] Item value)
+        {
+            return await this.Add<Item, int>(_service, value);
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody]Item value)
+        {
+            return await this.Update<Item, int>(_service, id, value.ItemID, value);
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            return await this.Delete<Item, int>(_service, id);
+        }
+
+        #endregion
+
+    }
 }

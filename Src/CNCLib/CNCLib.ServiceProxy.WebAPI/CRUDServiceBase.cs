@@ -77,7 +77,7 @@ namespace CNCLib.ServiceProxy.WebAPI
                 if (!response.IsSuccessStatusCode)
                     return default(TKey);
 
-                return await response.Content.ReadAsAsync<TKey>();
+                return GetKey(await response.Content.ReadAsAsync<T>());
             }
         }
 

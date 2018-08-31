@@ -36,10 +36,40 @@ namespace CNCLib.WebAPI.Controllers
             _service = service ?? throw new ArgumentNullException();
         }
 
-        [HttpGet]
+	    #region default REST
+
+	    [HttpGet]
 	    public async Task<ActionResult<IEnumerable<LoadOptions>>> Get()
 	    {
-	        return await ControllerExtension.GetAll(this, _service);
+	        return await this.GetAll(_service);
 	    }
+
+	    [HttpGet("{id:int}")]
+	    public async Task<ActionResult> Get(int id)
+	    {
+	        return await this.Get<LoadOptions, int>(_service, id);
+	    }
+
+	    [HttpPost]
+	    public async Task<ActionResult> Add([FromBody] LoadOptions value)
+	    {
+	        return await this.Add<LoadOptions, int>(_service, value);
+	    }
+
+	    [HttpPut]
+	    [Route("{id:int}")]
+	    public async Task<ActionResult> Update(int id, [FromBody]LoadOptions value)
+	    {
+	        return await this.Update<LoadOptions, int>(_service, id, value.Id, value);
+	    }
+
+	    [HttpDelete]
+	    [Route("{id:int}")]
+	    public async Task<ActionResult> Delete(int id)
+	    {
+	        return await this.Delete<LoadOptions, int>(_service, id);
+	    }
+
+	    #endregion
 	}
 }
