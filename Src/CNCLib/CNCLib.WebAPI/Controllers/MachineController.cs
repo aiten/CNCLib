@@ -27,78 +27,81 @@ using Microsoft.AspNetCore.Mvc;
 namespace CNCLib.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class MachineController : RestController<Machine>
+    public class MachineController : Controller
 	{
-        public MachineController(IRest<Machine> rest, IMachineService machineservice) : base(rest)
+        public MachineController(IMachineService service)
         {
-            _machineservice = machineservice ?? throw new ArgumentNullException();
+            _service = service ?? throw new ArgumentNullException();
         }
 
-        private IMachineService _machineservice;
+        private IMachineService _service;
 
-	    #region default REST
+        #region default REST
 
-	    [HttpGet("test/{id:int}")]
+	    [HttpGet]
+	    public async Task<ActionResult<IEnumerable<Machine>>> Get()
+	    {
+	        return await this.GetAll(_service);
+	    }
+
+        [HttpGet("{id:int}")]
 	    public async Task<ActionResult> Get(int id)
 	    {
-	        return await ControllerExtension.Get<Machine,int>(this,_machineservice, id);
+	        return await this.Get<Machine,int>(_service, id);
 	    }
-/*
+
 	    [HttpPost]
-	    [Route("test/bulk")]
-	    public async Task<ActionResult> Add([FromBody] IEnumerable<Machine> values)
-	    {
-	        return await ControllerExtension.Get<Machine, int>(this, _machineservice, values);
-	    }
-*/
-	    [HttpPost]
-	    [Route("test")]
 	    public async Task<ActionResult> Add([FromBody] Machine value)
 	    {
-	        return await ControllerExtension.Add<Machine, int>(this, _machineservice, value);
+	        return await this.Add<Machine, int>(_service, value);
 	    }
-/*
+
 	    [HttpPut]
-	    [Route("area/bulk")]
-	    public async Task<IHttpActionResult> Update([FromBody] IEnumerable<Area> values)
-	    {
-	        return await Update(_manager, values);
-	    }
-*/
-	    [HttpPut]
-	    [Route("test/{id}")]
+	    [Route("{id:int}")]
 	    public async Task<ActionResult> Update(int id, [FromBody]Machine value)
 	    {
-	        return await ControllerExtension.Update<Machine, int>(this,_machineservice, id, value.MachineID, value);
+	        return await this.Update<Machine, int>(_service, id, value.MachineID, value);
 	    }
 
-	    [HttpDelete]
-	    [Route("test/{id}")]
+        [HttpDelete]
+	    [Route("{id:int}")]
 	    public async Task<ActionResult> Delete(int id)
 	    {
-	        return await ControllerExtension.Delete<Machine, int>(this,_machineservice, id);
+	        return await this.Delete<Machine, int>(_service, id);
 	    }
-/*
-	    [HttpDelete]
-	    [Route("area/bulk")]
-	    public async Task<IHttpActionResult> Delete([FromUri] int[] id)
-	    {
-	        return await DeleteREST(_manager, id);
-	    }
-*/
-	    #endregion
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Machine>>> Get()
+        #endregion
+
+        #region bulk
+
+        [HttpPost]
+        [Route("bulk")]
+        public async Task<ActionResult> Add([FromBody] IEnumerable<Machine> values)
         {
-            return await this.GetAll<Machine>(Rest);
+            return await this.Add<Machine, int>(_service, values);
         }
+
+	    [HttpPut]
+	    [Route("bulk")]
+	    public async Task<ActionResult> Update([FromBody] IEnumerable<Machine> values)
+	    {
+	        return await this.Update<Machine, int>(_service, values);
+	    }
+
+        [HttpDelete]
+	    [Route("bulk")]
+	    public async Task<ActionResult> Delete(int[] ids)
+	    {
+	        return await this.Delete<Machine, int>(_service, ids);
+	    }
+
+	    #endregion
 
         [Route("default")]
 		[HttpGet]
 		public async Task<IActionResult> DefaultMachine()
 		{
-			var m = await _machineservice.DefaultMachine();
+			var m = await _service.DefaultMachine();
 			if (m == null)
 			{
 				return NotFound();
@@ -110,7 +113,7 @@ namespace CNCLib.WebAPI.Controllers
 		[HttpGet] //Always explicitly state the accepted HTTP method
 		public async Task<IActionResult> GetDetaultMachine()
 		{
-			int id = await _machineservice.GetDetaultMachine();
+			int id = await _service.GetDetaultMachine();
 			return Ok(id);
 		}
 
@@ -125,7 +128,7 @@ namespace CNCLib.WebAPI.Controllers
 
 			try
 			{
-				await _machineservice.SetDetaultMachine(id);
+				await _service.SetDetaultMachine(id);
 				return StatusCode(204);
 			}
 			catch (Exception ex)

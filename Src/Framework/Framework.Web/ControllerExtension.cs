@@ -87,6 +87,26 @@ namespace Framework.Web
             }
         }
 
+        public static async Task<ActionResult> GetAll<T, TKey>(this Controller controller, IGetService<T, TKey> manager)
+            where T : class
+            where TKey : IComparable
+        {
+            try
+            {
+                var dtos = await manager.GetAll();
+                if (dtos == null)
+                {
+                    return controller.NotFound();
+                }
+
+                return controller.Ok(dtos);
+            }
+            catch (Exception ex)
+            {
+                return controller.GenerateErrorResponse(ex);
+            }
+        }
+
         #endregion
 
         #region Add
@@ -110,7 +130,7 @@ namespace Framework.Web
                 return controller.GenerateErrorResponse(ex);
             }
         }
-/*
+
         public static async Task<ActionResult> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
             where T : class
             where TKey : IComparable
@@ -131,30 +151,11 @@ namespace Framework.Web
                 return controller.GenerateErrorResponse(ex);
             }
         }
-*/
+
         #endregion
 
         #region Update
-/*
-        public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
-            where T : class
-            where TKey : IComparable
-        {
-            if (!controller.ModelState.IsValid || values == null)
-            {
-                return controller.BadRequest(controller.ModelState);
-            }
-            try
-            {
-                await manager.Update(values);
-                return controller.StatusCode(System.Net.HttpStatusCode.NoContent);
-            }
-            catch (Exception ex)
-            {
-                return controller.GenerateErrorResponse(ex);
-            }
-        }
-*/
+
         public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, TKey idFromUri, TKey idFromValue, T value)
             where T : class
             where TKey : IComparable
@@ -172,6 +173,25 @@ namespace Framework.Web
             try
             {
                 await manager.Update(value);
+                return controller.NoContent();
+            }
+            catch (Exception ex)
+            {
+                return controller.GenerateErrorResponse(ex);
+            }
+        }
+
+        public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
+            where T : class
+            where TKey : IComparable
+        {
+            if (!controller.ModelState.IsValid || values == null)
+            {
+                return controller.BadRequest(controller.ModelState);
+            }
+            try
+            {
+                await manager.Update(values);
                 return controller.NoContent();
             }
             catch (Exception ex)
@@ -199,7 +219,6 @@ namespace Framework.Web
             }
         }
 
-        /*
         public static async Task<ActionResult> Delete<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<TKey> ids)
             where T : class
             where TKey : IComparable
@@ -207,80 +226,15 @@ namespace Framework.Web
             try
             {
                 await manager.Delete(ids);
-                return controller.StatusCode(System.Net.HttpStatusCode.NoContent);
+                return controller.NoContent();
             }
             catch (Exception ex)
             {
                 return controller.GenerateErrorResponse(ex);
             }
         }
-        */
+
         #endregion
 
-
-
-        public static async Task<ActionResult<IEnumerable<T>>> GetAll<T>(this Controller controller, IRest<T> rest) 
-		{
-		    IEnumerable<T> all = await rest.Get();
-		    return await NotFoundOrOk(controller, all);
-		}
-
-        public static async Task<ActionResult<T>> GetREST<T>(this Controller controller, IRest<T> rest, int id)
-        {
-            T obj = await rest.Get(id);
-            return await NotFoundOrOk(controller,obj);
-        }
-
-        public static async Task<ActionResult<T>> PostREST<T>(this Controller controller, IRest<T> rest, T obj)
-        {
-            if (!controller.ModelState.IsValid || obj == null)
-            {
-                return controller.BadRequest(controller.ModelState);
-            }
-            try
-            {
-                int newid = await rest.Add(obj);
-                return controller.Created($@"{controller.GetCurrentUri()}/{newid}", await rest.Get(newid));
-            }
-            catch (Exception ex)
-            {
-                return controller.BadRequest(ex.Message);
-            }
-        }
-
-        public static async Task<ActionResult<T>> PutRest<T>(this Controller controller, IRest<T> rest, int id, T value)
-        {
-            if (!controller.ModelState.IsValid || value == null)
-            {
-                return controller.BadRequest(controller.ModelState);
-            }
-
-            try
-            {
-                if (rest.CompareId(id, value) == false)
-                {
-                    return controller.BadRequest("Missmatch between id and machineID");
-                }
-
-                await rest.Update(id, value);
-                return controller.StatusCode(204);
-            }
-            catch (Exception ex)
-            {
-                return controller.BadRequest(ex.Message);
-            }
-        }
-
-        public static async Task<ActionResult<T>> DeleteREST<T>(this Controller controller, IRest<T> rest, int id)
-        {
-            T value = await rest.Get(id);
-            if (value == null)
-            {
-                return controller.NotFound();
-            }
-
-            await rest.Delete(id, value);
-            return controller.Ok(value);
-        }
     }
 }

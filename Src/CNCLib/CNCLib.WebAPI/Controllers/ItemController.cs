@@ -27,9 +27,9 @@ using CNCLib.ServiceProxy;
 namespace CNCLib.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class ItemController : RestController<Item>
+    public class ItemController : Controller
     {
-        public ItemController(IItemService service, IRest<Item> rest) : base(rest)
+        public ItemController(IItemService service)
         {
             _service = service ?? throw new ArgumentNullException();
         }
@@ -41,7 +41,7 @@ namespace CNCLib.WebAPI.Controllers
 	    {
 	        if (classname == null)
 	        {
-	            return await this.GetAll<Item>(Rest);
+	            return await this.GetAll(_service);
 	        }
 
 	        IEnumerable<Item> m = await _service.GetByClassName(classname);

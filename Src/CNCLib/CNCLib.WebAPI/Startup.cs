@@ -75,9 +75,6 @@ namespace CNCLib.WebAPI
                 typeof(Logic.Client.DynItemController).Assembly,
                 typeof(Logic.MachineManager).Assembly);
 
-            Dependency.Container.RegisterType<IRest<Logic.Contracts.DTO.Machine>, MachineRest>();
-            Dependency.Container.RegisterType<IRest<Logic.Contracts.DTO.LoadOptions>, LoadInfoRest>();
-            Dependency.Container.RegisterType<IRest<Logic.Contracts.DTO.Item>, ItemRest>();
 
             var config = new MapperConfiguration(cfg =>
             {

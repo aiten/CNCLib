@@ -27,91 +27,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace CNCLib.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class LoadOptionsController : RestController<LoadOptions>
+    public class LoadOptionsController : Controller
 	{
-        public LoadOptionsController(IRest<LoadOptions> controller) : base(controller)
+	    readonly ILoadOptionsService _service;
+
+	    public LoadOptionsController(ILoadOptionsService service)
         {
+            _service = service ?? throw new ArgumentNullException();
         }
 
         [HttpGet]
 	    public async Task<ActionResult<IEnumerable<LoadOptions>>> Get()
 	    {
-	        return await this.GetAll(Rest);
+	        return await ControllerExtension.GetAll(this, _service);
 	    }
-    }
-
-    public class LoadInfoRest : IRest<LoadOptions>
-	{
-        public LoadInfoRest(ILoadOptionsService service)
-        {
-            _service = service ?? throw new ArgumentNullException();
-        }
-
-		readonly ILoadOptionsService _service;
-
-		public async Task<IEnumerable<LoadOptions>> Get()
-		{
-			return await _service.GetAll();
-		}
-
-		public async Task<LoadOptions> Get(int id)
-		{
-			return await _service.Get(id);
-		}
-
-		public async Task<int> Add(LoadOptions value)
-		{
-			return await _service.Add(value);
-		}
-
-		public async Task Update(int id, LoadOptions value)
-		{
-			await _service.Update(value);
-		}
-
-		public async Task Delete(int id, LoadOptions value)
-		{
-			await _service.Delete(value);
-		}
-
-		public bool CompareId(int id, LoadOptions value)
-		{
-			return true;
-		}
-
-		#region IDisposable Support
-		private bool _disposedValue; // To detect redundant calls
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!_disposedValue)
-			{
-				if (disposing)
-				{
-				}
-
-				// TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-				// TODO: set large fields to null.
-
-				_disposedValue = true;
-			}
-		}
-
-		// TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-		// ~MachineRest() {
-		//   // Do not change this code. PutRest cleanup code in Dispose(bool disposing) above.
-		//   Dispose(false);
-		// }
-
-		// This code added to correctly implement the disposable pattern.
-		public void Dispose()
-		{
-			// Do not change this code. PutRest cleanup code in Dispose(bool disposing) above.
-			Dispose(true);
-			// TODO: uncomment the following line if the finalizer is overridden above.
-			// GC.SuppressFinalize(this);
-		}
-		#endregion
-
 	}
 }
