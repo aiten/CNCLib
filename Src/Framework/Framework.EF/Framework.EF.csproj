@@ -7,7 +7,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.2" />
     <PackageReference Include="Unity">
-      <Version>5.8.10</Version>
+      <Version>5.8.11</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

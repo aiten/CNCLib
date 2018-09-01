@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Unity">
-      <Version>5.8.10</Version>
+      <Version>5.8.11</Version>
     </PackageReference>
     <PackageReference Include="FluentAssertions">
       <Version>5.4.1</Version>
