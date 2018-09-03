@@ -45,13 +45,14 @@ namespace CNCLib.Repository
 	    }
 	    protected override IQueryable<Configuration> AddPrimaryWhereIn(IQueryable<Configuration> query, IEnumerable<ConfigurationPrimary> keys)
 	    {
-	        var dynquery = query;
+	        var predicate = PredicateBuilder.False<Configuration>();
+
 	        foreach (var key in keys)
 	        {
-	            dynquery = dynquery.Where(c => c.Group == key.Group && c.Name == key.Name);
+	            predicate = predicate.Or(c => c.Group == key.Group && c.Name == key.Name);
 	        }
 
-	        return dynquery;
+	        return query.Where(predicate);
 	    }
 
         public async Task<Configuration> Get(string group, string  name)

@@ -107,7 +107,7 @@ namespace CNCLib.Tests.Repository
         {
             await AddUpdateDeleteBulk(
                 () => new [] { CreateConfiguration(@"AddUpdateDeleteBulk","Test1"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test2"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test3") },
-                (entities) => { int i = 0; foreach (var entity in entities) { entity.Name = $"DummyNameUpdate{i++}"; } });
+                (entities) => { int i = 0; foreach (var entity in entities) { entity.Value = $"DummyNameValue{i++}"; } });
         }
 
         [TestMethod]
