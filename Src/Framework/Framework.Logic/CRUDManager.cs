@@ -110,7 +110,7 @@ namespace Framework.Logic
 
                 foreach (var merged in mergeJoin)
                 {
-                    _repository.SetValue(merged.EntityInDb, merged.Entity);
+                    _repository.SetValueGraph(merged.EntityInDb, merged.Entity);
                 }
                 await trans.CommitTransactionAsync();
             }
