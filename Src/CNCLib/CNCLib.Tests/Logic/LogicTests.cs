@@ -27,7 +27,6 @@ namespace CNCLib.Tests.Logic
 	public class LogicTests : CNCUnitTest
 	{
 		public TestContext TestContext { get; set; }
-		static bool _init = false;
 
 		[TestInitialize]
 		public void Init()

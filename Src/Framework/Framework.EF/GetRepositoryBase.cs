@@ -51,9 +51,9 @@ namespace Framework.EF
             return await AddPrimaryWhere(AddInclude(Query),key).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> Get(IEnumerable<TKey> key)
+        public async Task<IEnumerable<TEntity>> Get(IEnumerable<TKey> keys)
         {
-            return await AddPrimaryWhereIn(AddInclude(Query), key).ToListAsync();
+            return await AddPrimaryWhereIn(AddInclude(Query), keys).ToListAsync();
         }
 
         public async Task<TEntity> GetTracking(TKey key)
@@ -61,9 +61,9 @@ namespace Framework.EF
             return await AddPrimaryWhere(AddInclude(TrackingQuery), key).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> GetTracking(IEnumerable<TKey> key)
+        public async Task<IEnumerable<TEntity>> GetTracking(IEnumerable<TKey> keys)
         {
-            return await AddPrimaryWhereIn(AddInclude(TrackingQuery), key).ToListAsync();
+            return await AddPrimaryWhereIn(AddInclude(TrackingQuery), keys).ToListAsync();
         }
     }
 }
