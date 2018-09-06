@@ -21,6 +21,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
+using CNCLib.Shared;
+using Framework.Contracts.Shared;
 using Framework.Web;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,15 +32,18 @@ namespace CNCLib.WebAPI.Controllers
     public class LoadOptionsController : Controller
 	{
 	    readonly ILoadOptionsService _service;
+	    private ICNCLibUserContext _usercontext;
 
-	    public LoadOptionsController(ILoadOptionsService service)
+        public LoadOptionsController(ILoadOptionsService service, ICNCLibUserContext usercontext)
         {
             _service = service ?? throw new ArgumentNullException();
+            _usercontext = usercontext ?? throw new ArgumentNullException();
+            ((CNCLibUserContext)_usercontext).InitFromController(this);
         }
 
-	    #region default REST
+        #region default REST
 
-	    [HttpGet]
+        [HttpGet]
 	    public async Task<ActionResult<IEnumerable<LoadOptions>>> Get()
 	    {
 	        return await this.GetAll(_service);

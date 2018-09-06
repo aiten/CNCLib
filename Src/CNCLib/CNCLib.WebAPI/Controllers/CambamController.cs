@@ -23,21 +23,26 @@ using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
+using CNCLib.Shared;
 using CNCLib.WebAPI.Models;
+using Framework.Contracts.Shared;
 
 namespace CNCLib.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     public class CambamController : Controller
 	{
-        public CambamController(ILoadOptionsService loadOptionsService)
+        public CambamController(ILoadOptionsService loadOptionsService, ICNCLibUserContext usercontext)
         {
             _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
+            _usercontext = usercontext ?? throw new ArgumentNullException();
+            ((CNCLibUserContext)_usercontext).InitFromController(this);
         }
 
         readonly ILoadOptionsService _loadOptionsService;
+	    private ICNCLibUserContext _usercontext;
 
-	    [HttpPost]
+        [HttpPost]
         public string Post([FromBody] LoadOptions input)
 		{
 			var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input);

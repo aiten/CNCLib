@@ -60,6 +60,7 @@
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
     </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

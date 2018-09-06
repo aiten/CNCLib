@@ -18,9 +18,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
+using CNCLib.Shared;
+using Framework.Contracts.Shared;
 using Framework.Web;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,12 +33,15 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class MachineController : Controller
 	{
-        public MachineController(IMachineService service)
+        public MachineController(IMachineService service, ICNCLibUserContext usercontext)
         {
             _service = service ?? throw new ArgumentNullException();
+            _usercontext = usercontext ?? throw new ArgumentNullException();
+            ((CNCLibUserContext)_usercontext).InitFromController(this);
         }
 
         private IMachineService _service;
+	    private ICNCLibUserContext _usercontext;
 
         #region default REST
 

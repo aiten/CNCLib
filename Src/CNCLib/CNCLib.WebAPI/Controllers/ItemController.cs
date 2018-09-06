@@ -23,18 +23,23 @@ using Microsoft.AspNetCore.Mvc;
 using Framework.Web;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
+using CNCLib.Shared;
+using Framework.Contracts.Shared;
 
 namespace CNCLib.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     public class ItemController : Controller
     {
-        public ItemController(IItemService service)
+        public ItemController(IItemService service, ICNCLibUserContext usercontext)
         {
             _service = service ?? throw new ArgumentNullException();
+            _usercontext = usercontext ?? throw new ArgumentNullException();
+            ((CNCLibUserContext)_usercontext).InitFromController(this);
         }
 
-	    readonly IItemService _service;
+        readonly IItemService _service;
+        private ICNCLibUserContext _usercontext;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> Get(string classname)

@@ -99,6 +99,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino.Linux", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Service", "..\Framework\Framework.Service\Framework.Service.csproj", "{46095778-4ABF-472E-A7BB-3C339E7CB9C3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Shared", "CNCLib.Shared\CNCLib.Shared.csproj", "{296F367F-4620-429B-9A51-E17675912BCB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -241,6 +243,10 @@ Global
 		{46095778-4ABF-472E-A7BB-3C339E7CB9C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46095778-4ABF-472E-A7BB-3C339E7CB9C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46095778-4ABF-472E-A7BB-3C339E7CB9C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{296F367F-4620-429B-9A51-E17675912BCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{296F367F-4620-429B-9A51-E17675912BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{296F367F-4620-429B-9A51-E17675912BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{296F367F-4620-429B-9A51-E17675912BCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

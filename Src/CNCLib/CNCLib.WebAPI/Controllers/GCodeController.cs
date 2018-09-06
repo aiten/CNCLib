@@ -22,21 +22,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.ServiceProxy;
+using CNCLib.Shared;
 using CNCLib.WebAPI.Models;
+using Framework.Contracts.Shared;
 
 namespace CNCLib.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     public class GCodeController : Controller
 	{
-        public GCodeController(ILoadOptionsService loadOptionsService)
+        public GCodeController(ILoadOptionsService loadOptionsService, ICNCLibUserContext usercontext)
         {
             _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
+            _usercontext = usercontext ?? throw new ArgumentNullException();
+            ((CNCLibUserContext)_usercontext).InitFromController(this);
         }
 
         readonly ILoadOptionsService _loadOptionsService;
+	    private ICNCLibUserContext _usercontext;
 
-	    [HttpPost]
+        [HttpPost]
         public IEnumerable<string> Post([FromBody] LoadOptions input)
 		{
 			return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input).Commands.ToStringList();

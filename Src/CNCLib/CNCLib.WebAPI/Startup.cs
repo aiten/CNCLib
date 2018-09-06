@@ -19,6 +19,7 @@
 using AutoMapper;
 using CNCLib.Logic;
 using CNCLib.Repository.Context;
+using CNCLib.Shared;
 using CNCLib.WebAPI.Controllers;
 using Framework.Contracts.Repository;
 using Framework.Contracts.Shared;
@@ -68,6 +69,7 @@ namespace CNCLib.WebAPI
 
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<Repository.Context.CNCLibContext>>();
+            Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
 
             Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(ServiceProxy.Logic.MachineService).Assembly,
