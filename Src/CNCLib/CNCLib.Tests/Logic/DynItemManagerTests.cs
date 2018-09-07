@@ -21,7 +21,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Logic.Client;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.ServiceProxy;
+using CNCLib.Service.Contracts;
 using FluentAssertions;
 using Framework.Tools.Dependency;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

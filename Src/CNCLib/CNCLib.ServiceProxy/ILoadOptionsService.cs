@@ -20,7 +20,7 @@ using System;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Contracts.Service;
 
-namespace CNCLib.ServiceProxy
+namespace CNCLib.Service.Contracts
 {
     public interface ILoadOptionsService : IDisposable, ICRUDService<LoadOptions,int>
 	{

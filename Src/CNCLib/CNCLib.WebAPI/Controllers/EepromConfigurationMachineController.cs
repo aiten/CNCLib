@@ -20,7 +20,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.ServiceProxy;
+using CNCLib.Service.Contracts;
 using CNCLib.Shared;
 using Framework.Contracts.Shared;
 

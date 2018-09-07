@@ -17,12 +17,10 @@
 */
 
 
-using System.Collections.Generic;
 using CNCLib.Logic.Contracts.DTO;
-using System.Threading.Tasks;
-using System.Net.Http;
+using CNCLib.Service.Contracts;
 
-namespace CNCLib.ServiceProxy.WebAPI
+namespace CNCLib.Service.WebAPI
 {
     public class LoadOptionsService : CRUDServiceBase<LoadOptions,int>, ILoadOptionsService
 	{

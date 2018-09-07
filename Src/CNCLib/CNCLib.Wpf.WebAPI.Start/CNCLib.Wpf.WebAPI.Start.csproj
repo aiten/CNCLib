@@ -145,13 +145,13 @@
       <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>
       <Name>CNCLib.Logic.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.ServiceProxy.WebAPI\CNCLib.ServiceProxy.WebAPI.csproj">
+    <ProjectReference Include="..\CNCLib.ServiceProxy.WebAPI\CNCLib.Service.WebAPI.csproj">
       <Project>{6487301a-6889-412c-92ec-899aad61a9a5}</Project>
-      <Name>CNCLib.ServiceProxy.WebAPI</Name>
+      <Name>CNCLib.Service.WebAPI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
+    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.Service.Contracts.csproj">
       <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
-      <Name>CNCLib.ServiceProxy</Name>
+      <Name>CNCLib.Service.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Wpf\CNCLib.Wpf.csproj">
       <Project>{60555245-d32e-4a94-ab0e-cb2a6693a9ba}</Project>

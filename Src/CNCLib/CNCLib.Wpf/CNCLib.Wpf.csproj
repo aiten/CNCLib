@@ -269,9 +269,9 @@
       <Project>{0ef35dce-594a-4ef2-8b82-52d97e4c3016}</Project>
       <Name>CNCLib.Serial.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
+    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.Service.Contracts.csproj">
       <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
-      <Name>CNCLib.ServiceProxy</Name>
+      <Name>CNCLib.Service.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

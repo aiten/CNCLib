@@ -27,7 +27,7 @@ using System.Windows.Input;
 using System.Xml.Serialization;
 using AutoMapper;
 using CNCLib.GCode.GUI.Models;
-using CNCLib.ServiceProxy;
+using CNCLib.Service.Contracts;
 using Framework.Tools.Pattern;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;

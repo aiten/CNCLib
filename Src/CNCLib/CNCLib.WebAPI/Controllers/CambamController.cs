@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.ServiceProxy;
+using CNCLib.Service.Contracts;
 using CNCLib.Shared;
 using CNCLib.WebAPI.Models;
 using Framework.Contracts.Shared;

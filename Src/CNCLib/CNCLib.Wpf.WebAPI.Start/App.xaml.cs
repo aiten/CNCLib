@@ -23,7 +23,8 @@ using System.Windows;
 using System.Windows.Markup;
 using AutoMapper;
 using CNCLib.GCode.GUI;
-using CNCLib.ServiceProxy;
+using CNCLib.Service.Contracts;
+using CNCLib.Service.WebAPI;
 using Framework.Contracts.Shared;
 using Framework.Tools;
 using Framework.Tools.Dependency;
@@ -48,7 +49,7 @@ namespace CNCLib.Wpf.WebAPI.Start
             Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
                 //				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
-                typeof(ServiceProxy.WebAPI.MachineService).Assembly,
+                typeof(MachineService).Assembly,
 				typeof(Logic.Client.DynItemController).Assembly);
             //			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 

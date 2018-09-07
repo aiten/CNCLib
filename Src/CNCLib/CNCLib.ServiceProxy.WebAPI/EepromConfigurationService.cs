@@ -19,8 +19,9 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Service.Contracts;
 
-namespace CNCLib.ServiceProxy.WebAPI
+namespace CNCLib.Service.WebAPI
 {
     public class EepromConfigurationService : ServiceBase, IEepromConfigurationService
 	{

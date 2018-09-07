@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Contracts.Service;
 
-namespace CNCLib.ServiceProxy
+namespace CNCLib.Service.Contracts
 {
 	public interface IItemService : IDisposable, ICRUDService<Item,int>
 	{

@@ -107,9 +107,9 @@
       <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
       <Name>CNCLib.Logic.Contracts.DTO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
+    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.Service.Contracts.csproj">
       <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
-      <Name>CNCLib.ServiceProxy</Name>
+      <Name>CNCLib.Service.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

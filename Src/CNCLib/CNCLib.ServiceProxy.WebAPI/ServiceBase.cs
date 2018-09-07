@@ -22,7 +22,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Framework.Tools;
 
-namespace CNCLib.ServiceProxy.WebAPI
+namespace CNCLib.Service.WebAPI
 {
     public abstract class ServiceBase : DisposeWrapper
 	{

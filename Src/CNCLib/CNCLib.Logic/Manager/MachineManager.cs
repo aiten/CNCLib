@@ -17,17 +17,15 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Logic.Converter;
 using CNCLib.Repository.Contracts;
 using Framework.Contracts.Repository;
 using Framework.Logic;
 
-namespace CNCLib.Logic
+namespace CNCLib.Logic.Manager
 {
     public class MachineManager : CRUDManager<Machine,int,Repository.Contracts.Entities.Machine>, IMachineManager
 	{

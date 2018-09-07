@@ -29,7 +29,8 @@ using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Manager;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
-using CNCLib.ServiceProxy;
+using CNCLib.Service.Contracts;
+using CNCLib.Service.Logic;
 using Framework.Contracts.Repository;
 using Framework.Contracts.Shared;
 using Framework.EF;
@@ -65,7 +66,7 @@ namespace CNCLib.Wpf.Start
 
 		    Dependency.Container.RegisterTypesIncludingInternals(
                 typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
-				typeof(ServiceProxy.Logic.MachineService).Assembly,
+				typeof(MachineService).Assembly,
 //				typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
 				typeof(Repository.MachineRepository).Assembly,
 				typeof(Logic.Client.DynItemController).Assembly,

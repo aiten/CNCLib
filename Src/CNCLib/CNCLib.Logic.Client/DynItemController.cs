@@ -22,7 +22,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.ServiceProxy;
+using CNCLib.Service.Contracts;
 using Framework.Tools;
 
 namespace CNCLib.Logic.Client

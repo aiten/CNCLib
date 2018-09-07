@@ -16,14 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using CNCLib.Logic.Contracts;
 using Framework.Logic;
 
-namespace CNCLib.Logic
+namespace CNCLib.Logic.Manager
 {
     public class UserContextManager : ManagerBase, IUserContextManager
     {

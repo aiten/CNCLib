@@ -20,7 +20,7 @@ using System;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
 
-namespace CNCLib.ServiceProxy
+namespace CNCLib.Service.Contracts
 {
     public interface IEepromConfigurationService : IDisposable
 	{

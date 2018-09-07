@@ -28,6 +28,7 @@ using Framework.Tools.Dependency;
 using System.Threading.Tasks;
 using AutoMapper;
 using CNCLib.Logic.Contracts;
+using CNCLib.Logic.Manager;
 using FluentAssertions;
 using Framework.Contracts.Repository;
 using Framework.Tools.Pattern;

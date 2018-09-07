@@ -57,10 +57,8 @@
     <ProjectReference Include="..\CNCLib.Repository.SqlServer\CNCLib.Repository.SqlServer.csproj" />
     <ProjectReference Include="..\CNCLib.Repository\CNCLib.Repository.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.ServiceProxy.Logic\CNCLib.ServiceProxy.Logic.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.ServiceProxy.csproj">
-    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.ServiceProxy.Logic\CNCLib.Service.Logic.csproj" />
+    <ProjectReference Include="..\CNCLib.ServiceProxy\CNCLib.Service.Contracts.csproj" />
     <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />
   </ItemGroup>
 

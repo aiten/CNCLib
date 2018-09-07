@@ -18,16 +18,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools;
-using Unity.Policy.Mapping;
 
-namespace CNCLib.ServiceProxy.WebAPI
+namespace CNCLib.Service.WebAPI
 {
     public abstract class CRUDServiceBase<T,TKey> : ServiceBase
         where T : class

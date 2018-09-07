@@ -20,6 +20,7 @@ using AutoMapper;
 using CNCLib.Logic;
 using CNCLib.Logic.Manager;
 using CNCLib.Repository.Context;
+using CNCLib.Service.Logic;
 using CNCLib.Shared;
 using CNCLib.WebAPI.Controllers;
 using Framework.Contracts.Repository;
@@ -73,10 +74,10 @@ namespace CNCLib.WebAPI
             Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
 
             Dependency.Container.RegisterTypesIncludingInternals(
-                typeof(ServiceProxy.Logic.MachineService).Assembly,
+                typeof(MachineService).Assembly,
                 typeof(Repository.MachineRepository).Assembly,
                 typeof(Logic.Client.DynItemController).Assembly,
-                typeof(Logic.MachineManager).Assembly);
+                typeof(MachineManager).Assembly);
 
 
             var config = new MapperConfiguration(cfg =>

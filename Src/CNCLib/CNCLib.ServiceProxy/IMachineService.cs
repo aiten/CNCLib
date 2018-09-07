@@ -17,11 +17,11 @@
 */
 
 using System;
-using CNCLib.Logic.Contracts.DTO;
 using System.Threading.Tasks;
+using CNCLib.Logic.Contracts.DTO;
 using Framework.Contracts.Service;
 
-namespace CNCLib.ServiceProxy
+namespace CNCLib.Service.Contracts
 {
 	public interface IMachineService : IDisposable, ICRUDService<Machine,int>
 	{

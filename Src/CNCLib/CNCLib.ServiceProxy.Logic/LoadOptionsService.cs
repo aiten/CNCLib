@@ -18,14 +18,12 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Service.Contracts;
 using Framework.Service;
-using Framework.Tools;
 
-namespace CNCLib.ServiceProxy.Logic
+namespace CNCLib.Service.Logic
 {
     public class LoadOptionsService : CRUDService<LoadOptions, int>, ILoadOptionsService
 	{
