@@ -29,7 +29,7 @@ namespace CNCLib.WebAPI
     {
         public string UserName { get; private set; }
 
-        public int UserID { get; private set; }
+        public int? UserID { get; private set; }
 
         public void InitFromController(Controller controller)
         {

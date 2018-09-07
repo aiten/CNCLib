@@ -37,13 +37,24 @@ namespace Framework.EF
         {
         }
 
-        protected abstract IQueryable<TEntity> AddInclude(IQueryable<TEntity> query);
         protected abstract IQueryable<TEntity> AddPrimaryWhere(IQueryable<TEntity> query, TKey key);
         protected abstract IQueryable<TEntity> AddPrimaryWhereIn(IQueryable<TEntity> query, IEnumerable<TKey> key);
 
+        protected virtual IQueryable<TEntity> AddInclude(IQueryable<TEntity> query)
+        {
+            return query;
+        }
+
+        protected virtual IQueryable<TEntity> AddOptionalWhere(IQueryable<TEntity> query)
+        {
+            return query;
+        }
+
+        protected IQueryable<TEntity> QueryWithOptional => AddOptionalWhere(Query<TEntity>());
+
         public async Task<IEnumerable<TEntity>> GetAll()
         {
-            return await Query.ToListAsync();
+            return await QueryWithOptional.ToListAsync();
         }
 
         public async Task<TEntity> Get(TKey key)

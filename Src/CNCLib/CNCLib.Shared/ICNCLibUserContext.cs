@@ -22,6 +22,6 @@ namespace CNCLib.Shared
 {
     public interface ICNCLibUserContext : IUserContext
     {
-        int UserID { get;  }
+        int? UserID { get;  }
     }
 }

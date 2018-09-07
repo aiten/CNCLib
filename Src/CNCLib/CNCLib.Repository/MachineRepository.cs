@@ -16,29 +16,43 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
+using CNCLib.Shared;
 using Framework.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
     public class MachineRepository : CRUDRepositoryBase<CNCLibContext, Machine,int>, IMachineRepository
-	{
-        public MachineRepository(CNCLibContext context) : base(context)
+    {
+        private ICNCLibUserContext _userContext;
+
+        public MachineRepository(CNCLibContext context, ICNCLibUserContext userContext) : base(context)
         {
+            _userContext = userContext ?? throw new ArgumentNullException();
         }
 
 	    protected override IQueryable<Machine> AddInclude(IQueryable<Machine> query)
 	    {
 	        return query.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands);
 	    }
+        protected override IQueryable<Machine> AddOptionalWhere(IQueryable<Machine> query)
+        {
+            if (_userContext.UserID.HasValue)
+            {
+                return query.Where(x => x.UserID.HasValue==false || x.UserID.Value == _userContext.UserID.Value);
+            }
 
-	    protected override IQueryable<Machine> AddPrimaryWhere(IQueryable<Machine> query, int key)
+            return base.AddOptionalWhere(query);
+        }
+
+        protected override IQueryable<Machine> AddPrimaryWhere(IQueryable<Machine> query, int key)
 	    {
             return query.Where(m => m.MachineID == key);
 	    }
