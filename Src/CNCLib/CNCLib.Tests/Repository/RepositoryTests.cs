@@ -19,6 +19,8 @@
 using CNCLib.Repository;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
+using CNCLib.Shared;
+using CNCLib.Test;
 using Framework.Contracts.Repository;
 using Framework.EF;
 using Framework.Tools.Dependency;
@@ -64,7 +66,9 @@ namespace CNCLib.Tests.Repository
             Dependency.Container.RegisterType<IItemRepository, ItemRepository>();
             Dependency.Container.RegisterType<IUserRepository, UserRepository>();
 
-		    Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
+		    Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
+
+            Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
 		    Dependency.Container.RegisterType(typeof(CRUDTestContext<,,>),typeof(CRUDTestContext<,,>));
