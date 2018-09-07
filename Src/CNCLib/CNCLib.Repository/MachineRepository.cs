@@ -42,6 +42,7 @@ namespace CNCLib.Repository
 	    {
 	        return query.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands);
 	    }
+
         protected override IQueryable<Machine> AddOptionalWhere(IQueryable<Machine> query)
         {
             if (_userContext.UserID.HasValue)

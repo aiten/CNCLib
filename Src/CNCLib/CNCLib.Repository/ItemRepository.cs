@@ -16,12 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
+using CNCLib.Shared;
 using Framework.EF;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,16 +31,29 @@ namespace CNCLib.Repository
 {
     public class ItemRepository : CRUDRepositoryBase<CNCLibContext, Item, int>, IItemRepository
 	{
-        public ItemRepository(CNCLibContext context) : base(context)
+	    private ICNCLibUserContext _userContext;
+
+	    public ItemRepository(CNCLibContext context, ICNCLibUserContext userContext) : base(context)
         {
+            _userContext = userContext ?? throw new ArgumentNullException();
         }
 
-	    protected override IQueryable<Item> AddInclude(IQueryable<Item> query)
+        protected override IQueryable<Item> AddInclude(IQueryable<Item> query)
 	    {
 	        return query.Include(x => x.ItemProperties);
 	    }
 
-	    protected override IQueryable<Item> AddPrimaryWhere(IQueryable<Item> query, int key)
+	    protected override IQueryable<Item> AddOptionalWhere(IQueryable<Item> query)
+	    {
+	        if (_userContext.UserID.HasValue)
+	        {
+	            return query.Where(x => x.UserID.HasValue == false || x.UserID.Value == _userContext.UserID.Value);
+	        }
+
+	        return base.AddOptionalWhere(query);
+	    }
+
+        protected override IQueryable<Item> AddPrimaryWhere(IQueryable<Item> query, int key)
 	    {
 	        return query.Where(m => m.ItemID == key);
 	    }
@@ -52,7 +67,7 @@ namespace CNCLib.Repository
 
         public async Task<IEnumerable<Item>> Get(string typeidstring)
 	    {
-	        return await Query.
+	        return await QueryWithOptional.
 	            Where(m => m.ClassName == typeidstring).
 	            Include(d => d.ItemProperties).
 	            ToListAsync();
