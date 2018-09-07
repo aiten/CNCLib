@@ -66,11 +66,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Contracts", "..\F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Contracts.DTO", "CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Service.Contracts", "CNCLib.ServiceProxy\CNCLib.Service.Contracts.csproj", "{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Service.Contracts", "CNCLib.Service\CNCLib.Service.Contracts.csproj", "{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Service.Logic", "CNCLib.ServiceProxy.Logic\CNCLib.Service.Logic.csproj", "{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Service.Logic", "CNCLib.Service.Logic\CNCLib.Service.Logic.csproj", "{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Service.WebAPI", "CNCLib.ServiceProxy.WebAPI\CNCLib.Service.WebAPI.csproj", "{6487301A-6889-412C-92EC-899AAD61A9A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Service.WebAPI", "CNCLib.Service.WebAPI\CNCLib.Service.WebAPI.csproj", "{6487301A-6889-412C-92EC-899AAD61A9A5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Wpf.Sql.Start", "CNCLib.Wpf.Sql.Start\CNCLib.Wpf.Sql.Start.csproj", "{E8405B39-EDAD-40C7-BF32-79553A130E34}"
 EndProject
