@@ -158,7 +158,7 @@
       <Project>{d689cd99-a022-4f38-8ae1-a269c82a729c}</Project>
       <Name>CNCLib.Repository</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Service\CNCLib.Service.Contracts.csproj">
+    <ProjectReference Include="..\CNCLib.Service.Contracts\CNCLib.Service.Contracts.csproj">
       <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
       <Name>CNCLib.Service.Contracts</Name>
     </ProjectReference>

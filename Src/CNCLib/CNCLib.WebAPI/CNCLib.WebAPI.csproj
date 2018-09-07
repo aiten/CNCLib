@@ -58,7 +58,7 @@
     <ProjectReference Include="..\CNCLib.Repository\CNCLib.Repository.csproj">
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Service.Logic\CNCLib.Service.Logic.csproj" />
-    <ProjectReference Include="..\CNCLib.Service\CNCLib.Service.Contracts.csproj" />
+    <ProjectReference Include="..\CNCLib.Service.Contracts\CNCLib.Service.Contracts.csproj" />
     <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />
   </ItemGroup>
 

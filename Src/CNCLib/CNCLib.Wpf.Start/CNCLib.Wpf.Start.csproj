@@ -175,9 +175,13 @@
       <Project>{6487301a-6889-412c-92ec-899aad61a9a5}</Project>
       <Name>CNCLib.Service.WebAPI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Service\CNCLib.Service.Contracts.csproj">
+    <ProjectReference Include="..\CNCLib.Service.Contracts\CNCLib.Service.Contracts.csproj">
       <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
       <Name>CNCLib.Service.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj">
+      <Project>{296f367f-4620-429b-9a51-e17675912bcb}</Project>
+      <Name>CNCLib.Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Wpf\CNCLib.Wpf.csproj">
       <Project>{60555245-d32e-4a94-ab0e-cb2a6693a9ba}</Project>

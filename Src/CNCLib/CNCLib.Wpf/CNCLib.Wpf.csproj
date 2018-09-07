@@ -72,6 +72,7 @@
     <Compile Include="..\CNCLibSolutionInfoVersion.cs">
       <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
     </Compile>
+    <Compile Include="CNCLibUserContext.cs" />
     <Compile Include="Controls\MoveUserControl.xaml.cs">
       <DependentUpon>MoveUserControl.xaml</DependentUpon>
     </Compile>
@@ -269,9 +270,13 @@
       <Project>{0ef35dce-594a-4ef2-8b82-52d97e4c3016}</Project>
       <Name>CNCLib.Serial.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Service\CNCLib.Service.Contracts.csproj">
+    <ProjectReference Include="..\CNCLib.Service.Contracts\CNCLib.Service.Contracts.csproj">
       <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
       <Name>CNCLib.Service.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj">
+      <Project>{296f367f-4620-429b-9a51-e17675912bcb}</Project>
+      <Name>CNCLib.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

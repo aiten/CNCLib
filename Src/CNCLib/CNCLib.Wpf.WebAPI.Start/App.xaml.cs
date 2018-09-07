@@ -25,6 +25,7 @@ using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.Service.Contracts;
 using CNCLib.Service.WebAPI;
+using CNCLib.Shared;
 using Framework.Contracts.Shared;
 using Framework.Tools;
 using Framework.Tools.Dependency;
@@ -73,9 +74,12 @@ namespace CNCLib.Wpf.WebAPI.Start
 			IMapper mapper = config.CreateMapper();
 			Dependency.Container.RegisterInstance(mapper);
 
-			// Open WebAPI Connection
-			//
-			bool ok = Task.Run(async () =>
+		    ICNCLibUserContext userContext = new CNCLibUserContext();
+		    Dependency.Container.RegisterInstance(userContext);
+
+            // Open WebAPI Connection
+            //
+            bool ok = Task.Run(async () =>
 			{
 				try
 				{

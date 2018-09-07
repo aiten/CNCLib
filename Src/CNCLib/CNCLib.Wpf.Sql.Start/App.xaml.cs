@@ -27,6 +27,7 @@ using CNCLib.Logic.Manager;
 using CNCLib.Repository.Context;
 using CNCLib.Service.Contracts;
 using CNCLib.Service.Logic;
+using CNCLib.Shared;
 using Framework.Contracts.Repository;
 using Framework.Contracts.Shared;
 using Framework.EF;
@@ -87,8 +88,11 @@ namespace CNCLib.Wpf.Sql.Start
 			IMapper mapper = config.CreateMapper();
 			Dependency.Container.RegisterInstance(mapper);
 
-//	        string sqlconnectstring = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
-		    string sqlconnectstring = null;
+		    ICNCLibUserContext userContext = new CNCLibUserContext();
+		    Dependency.Container.RegisterInstance(userContext);
+
+            //	        string sqlconnectstring = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
+            string sqlconnectstring = null;
 
             // Open Database here
 

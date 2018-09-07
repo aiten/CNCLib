@@ -31,6 +31,7 @@ using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Service.Contracts;
 using CNCLib.Service.Logic;
+using CNCLib.Shared;
 using Framework.Contracts.Repository;
 using Framework.Contracts.Shared;
 using Framework.EF;
@@ -92,6 +93,9 @@ namespace CNCLib.Wpf.Start
 
 			IMapper mapper = config.CreateMapper();
 			Dependency.Container.RegisterInstance(mapper);
+
+		    ICNCLibUserContext userContext = new CNCLibUserContext();
+		    Dependency.Container.RegisterInstance(userContext);
 
             // Open Database here
 

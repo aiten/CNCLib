@@ -15,6 +15,6 @@
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Service\CNCLib.Service.Contracts.csproj" />
+    <ProjectReference Include="..\CNCLib.Service.Contracts\CNCLib.Service.Contracts.csproj" />
   </ItemGroup>
 </Project>
