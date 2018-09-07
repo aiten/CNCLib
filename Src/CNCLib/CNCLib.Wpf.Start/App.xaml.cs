@@ -26,6 +26,7 @@ using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
 using CNCLib.Logic.Contracts;
+using CNCLib.Logic.Manager;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.ServiceProxy;

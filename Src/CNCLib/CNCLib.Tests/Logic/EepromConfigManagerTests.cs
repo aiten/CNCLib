@@ -20,6 +20,7 @@ using System;
 using System.Threading.Tasks;
 using CNCLib.Logic;
 using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Manager;
 using FluentAssertions;
 using Framework.Tools.Dependency;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

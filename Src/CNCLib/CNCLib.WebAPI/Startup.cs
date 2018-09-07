@@ -18,6 +18,7 @@
 
 using AutoMapper;
 using CNCLib.Logic;
+using CNCLib.Logic.Manager;
 using CNCLib.Repository.Context;
 using CNCLib.Shared;
 using CNCLib.WebAPI.Controllers;

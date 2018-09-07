@@ -99,36 +99,6 @@ namespace CNCLib.Logic
 
             return entry;
         }
-
-        private class WindowsLogin
-        {
-            public string Domain { get; set; }
-            public string UserName { get; set; }
-
-            public string DivNo
-            {
-                get
-                {
-                    string trim = UserName.TrimStart('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
-                    return UserName.Substring(0, UserName.Length - trim.Length);
-                }
-            }
-        }
-
-        private static WindowsLogin SplitUserName(string username)
-        {
-            string[] split = username.Split('\\');
-            if (split.Length == 2)
-            {
-                return new WindowsLogin()
-                {
-                    Domain = split[0],
-                    UserName = split[1]
-                };
-            }
-
-            return null;
-        }
 */
     }
 }

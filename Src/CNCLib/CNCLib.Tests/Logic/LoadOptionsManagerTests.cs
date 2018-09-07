@@ -25,6 +25,7 @@ using Framework.Tools.Dependency;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Client;
 using System.Threading.Tasks;
+using CNCLib.Logic.Manager;
 using FluentAssertions;
 
 namespace CNCLib.Tests.Logic

@@ -22,6 +22,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CNCLib.Logic;
+using CNCLib.Logic.Manager;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;

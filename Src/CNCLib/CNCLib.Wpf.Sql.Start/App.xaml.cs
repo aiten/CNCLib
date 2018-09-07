@@ -23,6 +23,7 @@ using System.Windows.Markup;
 using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
+using CNCLib.Logic.Manager;
 using CNCLib.Repository.Context;
 using CNCLib.ServiceProxy;
 using Framework.Contracts.Repository;

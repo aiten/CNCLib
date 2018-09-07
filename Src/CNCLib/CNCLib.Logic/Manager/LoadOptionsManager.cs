@@ -24,7 +24,7 @@ using CNCLib.Logic.Contracts.DTO;
 using Framework.Logic;
 using Framework.Tools.Dependency;
 
-namespace CNCLib.Logic
+namespace CNCLib.Logic.Manager
 {
     public class LoadOptionsManager : ManagerBase, ILoadOptionsManager
 	{

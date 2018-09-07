@@ -22,7 +22,7 @@ using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Logic;
 
-namespace CNCLib.Logic
+namespace CNCLib.Logic.Manager
 {
     public class EepromConfigurationManager : ManagerBase, IEepromConfigurationManager
     {
