@@ -20,8 +20,7 @@ using Framework.Contracts.Shared;
 
 namespace CNCLib.Shared
 {
-    public interface ICNCLibUserContext : IUserContext
+    public interface ICNCLibUserContextRW : ICNCLibUserContext
     {
-        int UserID { get;  }
     }
 }

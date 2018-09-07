@@ -25,10 +25,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CNCLib.WebAPI
 {
-    public class CNCLibUserContext : ICNCLibUserContext
+    public class CNCLibUserContext : ICNCLibUserContextRW
     {
         public string UserName { get; private set; }
 
+        public int UserID { get; private set; }
 
         public void InitFromController(Controller controller)
         {

@@ -16,12 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contracts.Shared;
+using System;
+using System.Threading.Tasks;
+using Framework.Contracts.Logic;
 
-namespace CNCLib.Shared
+namespace CNCLib.Logic.Contracts
 {
-    public interface ICNCLibUserContext : IUserContext
-    {
-        int UserID { get;  }
-    }
+    public interface IUserContextManager
+	{
+	}
 }
