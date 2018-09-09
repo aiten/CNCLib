@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using Framework.Contracts.Repository;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Framework.EF
+namespace Framework.Repository
 {
     public class Transaction : ITransaction
     {

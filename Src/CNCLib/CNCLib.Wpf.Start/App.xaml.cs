@@ -34,7 +34,7 @@ using CNCLib.Service.Logic;
 using CNCLib.Shared;
 using Framework.Contracts.Repository;
 using Framework.Contracts.Shared;
-using Framework.EF;
+using Framework.Repository;
 using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;

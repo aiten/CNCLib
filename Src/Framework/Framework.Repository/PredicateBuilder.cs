@@ -20,9 +20,8 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Collections.Generic;
 
-namespace Framework.EF
+namespace Framework.Repository
 {
 
     public static class PredicateBuilder

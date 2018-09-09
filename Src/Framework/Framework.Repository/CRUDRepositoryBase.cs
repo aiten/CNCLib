@@ -18,11 +18,10 @@
 
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace Framework.EF
+namespace Framework.Repository
 {
     public abstract class CRUDRepositoryBase<TDbContext, TEntity, TKey> : GetRepositoryBase<TDbContext, TEntity, TKey>
         where TDbContext : DbContext

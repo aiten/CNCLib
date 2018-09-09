@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository", "CNCLib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Tests", "CNCLib.Tests\CNCLib.Tests.csproj", "{E73BAF77-EAF6-41F0-BF6A-FF6F5BC71062}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.EF", "..\Framework\Framework.EF\Framework.EF.csproj", "{E768F2ED-C63D-401E-A090-1C0465A84DF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Repository", "..\Framework\Framework.EF\Framework.Repository.csproj", "{E768F2ED-C63D-401E-A090-1C0465A84DF5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Wpf.Start", "CNCLib.Wpf.Start\CNCLib.Wpf.Start.csproj", "{D6077813-9EAF-4807-B4AA-EF00BCCE9827}"
 EndProject

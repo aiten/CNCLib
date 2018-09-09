@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using Framework.Contracts.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace Framework.EF
+namespace Framework.Repository
 {
     public class UnitOfWork<T>: IUnitOfWork where T: DbContext
     {

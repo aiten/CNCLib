@@ -20,7 +20,7 @@ using System.Data;
 using System.Threading.Tasks;
 using Framework.Contracts.Repository;
 
-namespace Framework.EF
+namespace Framework.Repository
 {
     public static class CRUDRepositoryExtensions
     {

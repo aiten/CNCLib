@@ -16,18 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Framework.Tools.Pattern;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Unity.Policy.Mapping;
 
-namespace Framework.EF
+namespace Framework.Repository
 {
     public abstract class GetRepositoryBase<TDbContext, TEntity, TKey> : QueryRepositoryBase<TDbContext, TEntity>
         where TDbContext : DbContext

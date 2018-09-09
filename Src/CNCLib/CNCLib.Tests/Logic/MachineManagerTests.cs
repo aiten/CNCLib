@@ -32,7 +32,6 @@ using CNCLib.Logic.Manager;
 using FluentAssertions;
 using Framework.Contracts.Repository;
 using Framework.Tools.Pattern;
-using Framework.EF;
 
 namespace CNCLib.Tests.Logic
 {

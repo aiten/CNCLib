@@ -115,9 +115,9 @@
       <Project>{77f5a48d-e908-4a95-a09e-771e8be8817b}</Project>
       <Name>Framework.Arduino</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.EF\Framework.EF.csproj">
+    <ProjectReference Include="..\..\Framework\Framework.EF\Framework.Repository.csproj">
       <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
-      <Name>Framework.EF</Name>
+      <Name>Framework.Repository</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Contracts\Framework.Contracts.csproj">
       <Project>{e598aaa4-fe51-46bd-b852-4a9eeb21a5c5}</Project>

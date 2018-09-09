@@ -25,7 +25,7 @@ using CNCLib.Shared;
 using CNCLib.WebAPI.Controllers;
 using Framework.Contracts.Repository;
 using Framework.Contracts.Shared;
-using Framework.EF;
+using Framework.Repository;
 using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;

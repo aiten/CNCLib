@@ -27,6 +27,7 @@ using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
 using Framework.Contracts.Repository;
+using Framework.Repository;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -45,7 +46,7 @@ namespace CNCLib.Tests.Logic
             //			TInterface uow = Substitute.For<Framework.EF.UnitOfWork>();
             //			Dependency.Container.RegisterInstance(uow);
 
-            Dependency.Container.RegisterType<Framework.Contracts.Repository.IUnitOfWork, Framework.EF.UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
+            Dependency.Container.RegisterType<Framework.Contracts.Repository.IUnitOfWork, UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
 
             return rep;
 		}

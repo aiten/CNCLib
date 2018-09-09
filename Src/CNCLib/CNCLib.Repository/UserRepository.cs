@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
-using Framework.EF;
+using Framework.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository

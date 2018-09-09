@@ -16,12 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-namespace Framework.EF
+namespace Framework.Repository
 {
     public abstract class QueryRepositoryBase<TDbContext, TEntity> : RepositoryBase<TDbContext>
         where TDbContext : DbContext

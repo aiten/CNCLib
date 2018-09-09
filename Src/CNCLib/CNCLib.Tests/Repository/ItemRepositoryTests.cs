@@ -25,7 +25,6 @@ using CNCLib.Repository;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using FluentAssertions;
-using Framework.EF;
 using Framework.Tools.Dependency;
 
 namespace CNCLib.Tests.Repository

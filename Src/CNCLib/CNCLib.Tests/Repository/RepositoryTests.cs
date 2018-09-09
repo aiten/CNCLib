@@ -20,9 +20,8 @@ using CNCLib.Repository;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Shared;
-using CNCLib.Test;
 using Framework.Contracts.Repository;
-using Framework.EF;
+using Framework.Repository;
 using Framework.Tools.Dependency;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

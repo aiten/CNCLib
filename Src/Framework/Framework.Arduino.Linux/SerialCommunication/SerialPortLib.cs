@@ -19,9 +19,9 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
+using Framework.Arduino.SerialCommunication;
 
-namespace Framework.Arduino.SerialCommunication
+namespace Framework.Arduino.Linux.SerialCommunication
 {
     /// <summary>
     /// Implementation for ISerialPort for dependency injection 

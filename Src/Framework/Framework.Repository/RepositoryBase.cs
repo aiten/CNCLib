@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-namespace Framework.EF
+namespace Framework.Repository
 {
     public abstract class RepositoryBase<TDbContext> where TDbContext : DbContext
     {
