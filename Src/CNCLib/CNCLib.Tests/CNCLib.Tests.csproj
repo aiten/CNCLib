@@ -99,7 +99,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.EF\Framework.Repository.csproj">
+    <ProjectReference Include="..\..\Framework\Framework.Repository\Framework.Repository.csproj">
       <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
       <Name>Framework.Repository</Name>
     </ProjectReference>

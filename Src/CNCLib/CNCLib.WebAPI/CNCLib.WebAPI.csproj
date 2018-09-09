@@ -36,7 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Contracts\Framework.Contracts.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.EF\Framework.Repository.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Repository\Framework.Repository.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
     </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Web\Framework.Web.csproj">

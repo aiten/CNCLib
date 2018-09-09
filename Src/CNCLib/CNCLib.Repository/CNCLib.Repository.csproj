@@ -7,7 +7,7 @@
      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.2" />
    </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.EF\Framework.Repository.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Repository\Framework.Repository.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj">    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />

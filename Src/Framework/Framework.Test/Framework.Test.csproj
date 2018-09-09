@@ -81,7 +81,7 @@
       <Project>{77f5a48d-e908-4a95-a09e-771e8be8817b}</Project>
       <Name>Framework.Arduino</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Framework.EF\Framework.Repository.csproj">
+    <ProjectReference Include="..\Framework.Repository\Framework.Repository.csproj">
       <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
       <Name>Framework.Repository</Name>
     </ProjectReference>
