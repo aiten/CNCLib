@@ -42,33 +42,33 @@ namespace Framework.Test.SerialCommunication
             Tools.Dependency.Dependency.Container.ResetContainer();
             Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
 
-            int resultidx = 0;
+            int  resultidx = 0;
             bool sendReply = false;
 
-            basestream.WriteAsync(Arg.Any<Byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
-                ReturnsForAnyArgs(async x =>
-                {
-                    sendReply = true;
-                });
+            basestream.WriteAsync(Arg.Any<Byte[]>(), Arg.Any<int>(), Arg.Any<int>(),
+                                  Arg.Any<System.Threading.CancellationToken>())
+                .ReturnsForAnyArgs(async x => { sendReply = true; });
 
 
-            basestream.ReadAsync(Arg.Any<Byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
-                ReturnsForAnyArgs(async x =>
+            basestream.ReadAsync(Arg.Any<Byte[]>(), Arg.Any<int>(), Arg.Any<int>(),
+                                 Arg.Any<System.Threading.CancellationToken>()).ReturnsForAnyArgs(async x =>
+            {
+                if (sendReply)
                 {
-                    if (sendReply)
-                    {
-                        await Task.Delay(10);
-                        sendReply = false;
-                        byte[] encodedStr = encoding.GetBytes(responsstrings[resultidx++]);
-                        for (int i = 0; i < encodedStr.Length; i++)
-                        {
-                            ((Byte[])x[0])[i] = encodedStr[i];
-                        }
-                        return encodedStr.Length;
-                    }
                     await Task.Delay(10);
-                    return 0;
-                });
+                    sendReply = false;
+                    byte[] encodedStr = encoding.GetBytes(responsstrings[resultidx++]);
+                    for (int i = 0; i < encodedStr.Length; i++)
+                    {
+                        ((Byte[]) x[0])[i] = encodedStr[i];
+                    }
+
+                    return encodedStr.Length;
+                }
+
+                await Task.Delay(10);
+                return 0;
+            });
 
             return serialport;
         }
@@ -111,7 +111,7 @@ namespace Framework.Test.SerialCommunication
                 await serial.DisconnectAsync();
 
                 await serialport.BaseStream.Received(1).WriteAsync(Arg.Is<Byte[]>(e => (char) e[0] == '?'), 0, 2,
-                    Arg.Any<System.Threading.CancellationToken>());
+                                                                   Arg.Any<System.Threading.CancellationToken>());
                 await Task.FromResult(0);
             }
         }
@@ -134,7 +134,7 @@ namespace Framework.Test.SerialCommunication
 
                 await serial.DisconnectAsync();
                 await serialport.BaseStream.Received(2).WriteAsync(Arg.Is<Byte[]>(e => (char) e[0] == '?'), 0, 2,
-                    Arg.Any<System.Threading.CancellationToken>());
+                                                                   Arg.Any<System.Threading.CancellationToken>());
                 await Task.FromResult(0);
             }
         }
@@ -143,33 +143,33 @@ namespace Framework.Test.SerialCommunication
 
         sealed class EventCalls
         {
-            public int EventWaitForSend { get; set; }
-            public int EventCommandSending { get; set; }
-            public int EventCommandSent { get; set; }
-            public int EventWaitCommandSent { get; set; }
-            public int EventReplyReceived { get; set; }
-            public int EventReplyOK { get; set; }
-            public int EventReplyError { get; set; }
-            public int EventReplyInfo { get; set; }
-            public int EventReplyUnknown { get; set; }
+            public int EventWaitForSend         { get; set; }
+            public int EventCommandSending      { get; set; }
+            public int EventCommandSent         { get; set; }
+            public int EventWaitCommandSent     { get; set; }
+            public int EventReplyReceived       { get; set; }
+            public int EventReplyOK             { get; set; }
+            public int EventReplyError          { get; set; }
+            public int EventReplyInfo           { get; set; }
+            public int EventReplyUnknown        { get; set; }
             public int EventCommandQueueChanged { get; set; }
-            public int EventCommandQueueEmpty { get; set; }
+            public int EventCommandQueueEmpty   { get; set; }
         }
 
         private EventCalls SubscribeForEventCall(ISerial serial)
         {
             var eventcounts = new EventCalls();
-            serial.WaitForSend += (sender, e) => eventcounts.EventWaitForSend++;
-            serial.CommandSending += (sender, e) => eventcounts.EventCommandSending++;
-            serial.CommandSent += (sender, e) => eventcounts.EventCommandSent++;
-            serial.WaitCommandSent += (sender, e) => eventcounts.EventWaitCommandSent++;
-            serial.ReplyReceived += (sender, e) => eventcounts.EventReplyReceived++;
-            serial.ReplyOK += (sender, e) => eventcounts.EventReplyOK++;
-            serial.ReplyError += (sender, e) => eventcounts.EventReplyError++;
-            serial.ReplyInfo += (sender, e) => eventcounts.EventReplyInfo++;
-            serial.ReplyUnknown += (sender, e) => eventcounts.EventReplyUnknown++;
+            serial.WaitForSend         += (sender, e) => eventcounts.EventWaitForSend++;
+            serial.CommandSending      += (sender, e) => eventcounts.EventCommandSending++;
+            serial.CommandSent         += (sender, e) => eventcounts.EventCommandSent++;
+            serial.WaitCommandSent     += (sender, e) => eventcounts.EventWaitCommandSent++;
+            serial.ReplyReceived       += (sender, e) => eventcounts.EventReplyReceived++;
+            serial.ReplyOK             += (sender, e) => eventcounts.EventReplyOK++;
+            serial.ReplyError          += (sender, e) => eventcounts.EventReplyError++;
+            serial.ReplyInfo           += (sender, e) => eventcounts.EventReplyInfo++;
+            serial.ReplyUnknown        += (sender, e) => eventcounts.EventReplyUnknown++;
             serial.CommandQueueChanged += (sender, e) => eventcounts.EventCommandQueueChanged++;
-            serial.CommandQueueEmpty += (sender, e) => eventcounts.EventCommandQueueEmpty++;
+            serial.CommandQueueEmpty   += (sender, e) => eventcounts.EventCommandQueueEmpty++;
             return eventcounts;
         }
 
@@ -178,7 +178,7 @@ namespace Framework.Test.SerialCommunication
 
         {
             using (var serial = new Serial())
-            { 
+            {
                 /* var serialport = */
                 CreateSerialPortMock(serial, new[]
                 {

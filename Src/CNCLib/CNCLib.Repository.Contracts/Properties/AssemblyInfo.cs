@@ -22,4 +22,3 @@ using System.Runtime.InteropServices;
 //[assembly: AssemblyProduct("CNCLib.Repository.Contracts")]
 
 [assembly: Guid("0ecc8284-505b-43cc-9df9-ac5d5eef786a")]
-

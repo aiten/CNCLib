@@ -28,7 +28,7 @@ namespace CNCLib.GCode.Parser
     {
         public GCodeExpressionParser(CommandStream reader) : base(reader)
         {
-            LeftParenthesis = '[';
+            LeftParenthesis  = '[';
             RightParenthesis = ']';
         }
 
@@ -57,7 +57,6 @@ namespace CNCLib.GCode.Parser
             }
 
             base.ScannNextToken();
-
         }
 
         protected override string ReadIdent()

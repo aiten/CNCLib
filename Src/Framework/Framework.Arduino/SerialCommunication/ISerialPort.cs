@@ -24,26 +24,26 @@ namespace Framework.Arduino.SerialCommunication
 {
     public enum Parity
     {
-        None = 0,
-        Odd = 1,
-        Even = 2,
-        Mark = 3,
+        None  = 0,
+        Odd   = 1,
+        Even  = 2,
+        Mark  = 3,
         Space = 4
     }
 
     public enum StopBits
     {
-        None = 0,
-        One = 1,
-        Two = 2,
+        None         = 0,
+        One          = 1,
+        Two          = 2,
         OnePointFive = 3
     }
 
     public enum Handshake
     {
-        None = 0,
-        XOnXOff = 1,
-        RequestToSend = 2,
+        None                 = 0,
+        XOnXOff              = 1,
+        RequestToSend        = 2,
         RequestToSendXOnXOff = 3
     }
 
@@ -61,13 +61,13 @@ namespace Framework.Arduino.SerialCommunication
         void WriteLine(string msg);
 
 
-        string PortName { get; set; }
-        int BaudRate { get; set; }
-        Parity Parity { get; set; }
-        int DataBits { get; set; }
-        StopBits StopBits { get; set; }
+        string    PortName  { get; set; }
+        int       BaudRate  { get; set; }
+        Parity    Parity    { get; set; }
+        int       DataBits  { get; set; }
+        StopBits  StopBits  { get; set; }
         Handshake Handshake { get; set; }
-        string NewLine { get; set; }
+        string    NewLine   { get; set; }
 
         bool DtrEnable { get; set; }
         bool RtsEnable { get; set; }
@@ -75,7 +75,7 @@ namespace Framework.Arduino.SerialCommunication
         bool IsOpen { get; }
 
         // Set the read/write timeouts
-        int ReadTimeout { get; set; }
+        int ReadTimeout  { get; set; }
         int WriteTimeout { get; set; }
 
         Stream BaseStream { get; }

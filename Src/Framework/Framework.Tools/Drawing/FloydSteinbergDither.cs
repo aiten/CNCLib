@@ -19,26 +19,24 @@
 
 namespace Framework.Tools.Drawing
 {
-	public class FloydSteinbergDither : DitherBase
-	{
+    public class FloydSteinbergDither : DitherBase
+    {
         #region private members
 
         #endregion
 
         #region properties
 
-
         #endregion
 
         #region public
-
 
         #endregion
 
         #region private helper
 
-		protected override void ConvertImage()
-		{
+        protected override void ConvertImage()
+        {
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
@@ -57,22 +55,26 @@ namespace Framework.Tools.Drawing
                     {
                         AddPixelSaturation(x + 1, y + 0, (errorR * 7) / 16, (errorG * 7) / 16, (errorB * 7) / 16, 0);
                     }
+
                     if (y + 1 < Height)
                     {
                         if (x - 1 >= 0)
                         {
-                            AddPixelSaturation(x - 1, y + 1, (errorR * 3) / 16, (errorG * 3) / 16, (errorB * 3) / 16, 0);
+                            AddPixelSaturation(x - 1, y + 1, (errorR * 3) / 16, (errorG * 3) / 16, (errorB * 3) / 16,
+                                               0);
                         }
+
                         AddPixelSaturation(x + 0, y + 1, (errorR * 5) / 16, (errorG * 5) / 16, (errorB * 5) / 16, 0);
                         if (x + 1 < Width)
                         {
-                            AddPixelSaturation(x + 1, y + 1, (errorR * 1) / 16, (errorG * 1) / 16, (errorB * 1) / 16, 0);
+                            AddPixelSaturation(x + 1, y + 1, (errorR * 1) / 16, (errorG * 1) / 16, (errorB * 1) / 16,
+                                               0);
                         }
                     }
                 }
             }
-		}
-	}
+        }
+    }
 
     #endregion
 }

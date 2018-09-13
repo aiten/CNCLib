@@ -31,16 +31,16 @@ namespace CNCLib.Serial.Client
         public SerialServiceHub(string adr, ISerial serial)
         {
             WebServerUrl = adr + "/serialSignalR";
-            _serial = serial;
+            _serial      = serial;
         }
 
-        HubConnection _connection;
+        HubConnection           _connection;
         CancellationTokenSource _cts;
-        ISerial _serial;
+        ISerial                 _serial;
 
         public async Task Stop()
         {
-            if (_connection!=null)
+            if (_connection != null)
             {
                 await _connection.DisposeAsync();
                 _connection = null;
@@ -50,11 +50,11 @@ namespace CNCLib.Serial.Client
         public async Task<HubConnection> Start()
         {
             _connection = new HubConnectionBuilder()
-            .WithUrl(WebServerUrl)
+                .WithUrl(WebServerUrl)
 //            .WithConsoleLogger()
 //            .WithMessagePackProtocol()
- //           .WithTransport(TransportType.All)
-            .Build();
+                //           .WithTransport(TransportType.All)
+                .Build();
 
             await _connection.StartAsync();
             _cts = new CancellationTokenSource();

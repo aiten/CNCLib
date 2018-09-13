@@ -28,10 +28,7 @@ namespace CNCLib.Repository.SqLite
 
         static MigrationCNCLibContext()
         {
-            OnConfigure = (optionsBuilder) =>
-            {
-                optionsBuilder.UseSqlite($"Data Source={DatabaseFile}");
-            };
+            OnConfigure = (optionsBuilder) => { optionsBuilder.UseSqlite($"Data Source={DatabaseFile}"); };
         }
 
         public static void InitializeDatabase(string databasefile, bool dropdatabase, bool isTest)
@@ -41,7 +38,9 @@ namespace CNCLib.Repository.SqLite
             using (var ctx = new CNCLib.Repository.SqLite.MigrationCNCLibContext())
             {
                 if (dropdatabase)
+                {
                     ctx.Database.EnsureDeleted();
+                }
 
                 ctx.Database.Migrate();
                 if (!ctx.Machines.Any())
@@ -53,5 +52,3 @@ namespace CNCLib.Repository.SqLite
         }
     }
 }
-
-

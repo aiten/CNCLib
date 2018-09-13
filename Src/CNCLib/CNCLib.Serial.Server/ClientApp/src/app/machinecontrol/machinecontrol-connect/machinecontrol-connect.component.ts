@@ -24,54 +24,53 @@ import { SerialConnect } from '../../models/serial.connect';
 import { SerialServerService } from '../../services/serialserver.service';
 
 @Component(
-{
+  {
     selector: 'machinecontrolconnect',
     templateUrl: './machinecontrol-connect.component.html'
-})
-export class MachineControlConnectComponent
-{
-    @Input() entry: SerialPortDefinition = new SerialPortDefinition();
+  })
+export class MachineControlConnectComponent {
+  @Input()
+  entry: SerialPortDefinition = new SerialPortDefinition();
 
-    isLoaded: boolean = false;
-    connectOptions: SerialConnect = new SerialConnect();
+  isLoaded: boolean = false;
+  connectOptions: SerialConnect = new SerialConnect();
 
-    setupForm: FormGroup;
+  setupForm: FormGroup;
 
-    constructor(
-        private serivalServerService: SerialServerService,
-        public router: Router,
-        private fb: FormBuilder
-    )
-    {
-        this.setupForm = fb.group(
-            {
-                baudRate: [115200],
-                dtrIsReset: true,
-                resetOnConnect: false
-            });
+  constructor(
+    private serivalServerService: SerialServerService,
+    public router: Router,
+    private fb: FormBuilder
+  ) {
+    this.setupForm = fb.group(
+      {
+        baudRate: [115200],
+        dtrIsReset: true,
+        resetOnConnect: false
+      });
 
-        this.setupForm.valueChanges.subscribe((value) =>
-        {
-            if (this.isLoaded)
-                Object.assign(this.connectOptions, value);
-        });
-
-    }
-
-    ngOnInit() 
-    {
-        this.isLoaded = true;
-    }
-
-    async save(value: any) : Promise<void>
-    {
+    this.setupForm.valueChanges.subscribe((value) => {
+      if (this.isLoaded)
         Object.assign(this.connectOptions, value);
-        console.log(value);
-        console.log(this.connectOptions);
+    });
 
-        console.log('save:' + this.entry.Id);
+  }
 
-        await this.serivalServerService.connect(this.entry.Id, this.connectOptions.baudRate, this.connectOptions.dtrIsReset, this.connectOptions.resetOnConnect);
-        window.location.reload();
-    }
+  ngOnInit() {
+    this.isLoaded = true;
+  }
+
+  async save(value: any): Promise<void> {
+    Object.assign(this.connectOptions, value);
+    console.log(value);
+    console.log(this.connectOptions);
+
+    console.log('save:' + this.entry.Id);
+
+    await this.serivalServerService.connect(this.entry.Id,
+      this.connectOptions.baudRate,
+      this.connectOptions.dtrIsReset,
+      this.connectOptions.resetOnConnect);
+    window.location.reload();
+  }
 }

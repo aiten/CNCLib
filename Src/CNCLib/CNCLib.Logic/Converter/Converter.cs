@@ -23,31 +23,32 @@ using AutoMapper;
 
 namespace CNCLib.Logic.Converter
 {
-	static class Converter
-	{
-		public static Machine ToDto(this Repository.Contracts.Entities.Machine from, IMapper mapper)
-		{
-			return mapper.Map<Machine>(from);
-		}
+    static class Converter
+    {
+        public static Machine ToDto(this Repository.Contracts.Entities.Machine from, IMapper mapper)
+        {
+            return mapper.Map<Machine>(from);
+        }
 
-		public static Repository.Contracts.Entities.Machine ToEntity(this Machine from, IMapper mapper)
-		{
-			return mapper.Map<Repository.Contracts.Entities.Machine>(from);
-		}
+        public static Repository.Contracts.Entities.Machine ToEntity(this Machine from, IMapper mapper)
+        {
+            return mapper.Map<Repository.Contracts.Entities.Machine>(from);
+        }
 
         public static Item ToDto(this Repository.Contracts.Entities.Item from, IMapper mapper)
         {
-			return mapper.Map<Item>(from);
+            return mapper.Map<Item>(from);
         }
 
-		public static Repository.Contracts.Entities.Item ToEntity(this Item from, IMapper mapper)
-		{
-			return mapper.Map<Repository.Contracts.Entities.Item>(from);
-		}
+        public static Repository.Contracts.Entities.Item ToEntity(this Item from, IMapper mapper)
+        {
+            return mapper.Map<Repository.Contracts.Entities.Item>(from);
+        }
 
-	    public static IEnumerable<Item> ToDto(this IEnumerable<Repository.Contracts.Entities.Item> items, IMapper mapper)
-	    {
-	        return mapper.Map<IEnumerable<Item>>(items);
+        public static IEnumerable<Item> ToDto(this IEnumerable<Repository.Contracts.Entities.Item> items,
+                                              IMapper                                              mapper)
+        {
+            return mapper.Map<IEnumerable<Item>>(items);
         }
     }
 }

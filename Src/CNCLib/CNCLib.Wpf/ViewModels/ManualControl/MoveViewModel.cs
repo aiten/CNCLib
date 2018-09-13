@@ -24,9 +24,9 @@ using CNCLib.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
-	public class MoveViewModel : DetailViewModel
-	{
-		public MoveViewModel(IManualControlViewModel vm) : base(vm) 	{}
+    public class MoveViewModel : DetailViewModel
+    {
+        public MoveViewModel(IManualControlViewModel vm) : base(vm) { }
 
         #region Properties
 
@@ -34,25 +34,34 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         #region Commands / CanCommands
 
-	    private void SendMoveCommand(double? dist, char axisname)
-	    {
-	        RunAndUpdate(() =>
-	        {
-	            bool mustUse2Lines = Global.Instance.Machine.CommandSyntax == Logic.Contracts.DTO.CommandSyntax.Grbl;
-                string commandStr = MachineGCodeHelper.PrepareCommand("g91 g0" + axisname + (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
+        private void SendMoveCommand(double? dist, char axisname)
+        {
+            RunAndUpdate(() =>
+            {
+                bool mustUse2Lines = Global.Instance.Machine.CommandSyntax == Logic.Contracts.DTO.CommandSyntax.Grbl;
+                string commandStr =
+                    MachineGCodeHelper.PrepareCommand("g91 g0" + axisname +
+                                                      (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
 
-	            if (!mustUse2Lines)
-	                commandStr += " g90";
+                if (!mustUse2Lines)
+                {
+                    commandStr += " g90";
+                }
 
-	            Global.Instance.Com.Current.QueueCommand(commandStr); ;
+                Global.Instance.Com.Current.QueueCommand(commandStr);
+                ;
 
                 if (mustUse2Lines)
-	                Global.Instance.Com.Current.QueueCommand("g90"); ;
-	        });
-	    }
+                {
+                    Global.Instance.Com.Current.QueueCommand("g90");
+                }
 
-		public bool CanSendCommand(double? dist)
-		{
+                ;
+            });
+        }
+
+        public bool CanSendCommand(double? dist)
+        {
             return CanSend();
         }
 
@@ -60,13 +69,24 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         #region ICommands
 
-        public ICommand SendRightCommand => new DelegateCommand<double?>(dist => SendMoveCommand(dist, 'X'), CanSendCommand);
-        public ICommand SendLeftCommand => new DelegateCommand<double?>(dist => SendMoveCommand(-dist, 'X'), CanSendCommand);
-        public ICommand SendUpCommand => new DelegateCommand<double?>(dist => SendMoveCommand(dist, 'Y'), CanSendCommand);
-        public ICommand SendDownCommand => new DelegateCommand<double?>(dist => SendMoveCommand(-dist, 'Y'), CanSendCommand);
-		public ICommand SendZUpCommand => new DelegateCommand<double?>(dist => SendMoveCommand(dist, 'Z'), CanSendCommand);
-		public ICommand SendZDownCommand => new DelegateCommand<double?>(dist => SendMoveCommand(-dist, 'Z'), CanSendCommand);
+        public ICommand SendRightCommand =>
+            new DelegateCommand<double?>(dist => SendMoveCommand(dist, 'X'), CanSendCommand);
 
-		#endregion
-	}
+        public ICommand SendLeftCommand =>
+            new DelegateCommand<double?>(dist => SendMoveCommand(-dist, 'X'), CanSendCommand);
+
+        public ICommand SendUpCommand =>
+            new DelegateCommand<double?>(dist => SendMoveCommand(dist, 'Y'), CanSendCommand);
+
+        public ICommand SendDownCommand =>
+            new DelegateCommand<double?>(dist => SendMoveCommand(-dist, 'Y'), CanSendCommand);
+
+        public ICommand SendZUpCommand =>
+            new DelegateCommand<double?>(dist => SendMoveCommand(dist, 'Z'), CanSendCommand);
+
+        public ICommand SendZDownCommand =>
+            new DelegateCommand<double?>(dist => SendMoveCommand(-dist, 'Z'), CanSendCommand);
+
+        #endregion
+    }
 }

@@ -29,10 +29,14 @@ namespace Framework.Wpf.Converters
         {
             var parameterString = parameter as string;
             if (parameterString == null || value == null)
+            {
                 return DependencyProperty.UnsetValue;
+            }
 
             if (Enum.IsDefined(value.GetType(), value) == false)
+            {
                 return DependencyProperty.UnsetValue;
+            }
 
             object paramvalue = Enum.Parse(value.GetType(), parameterString);
             return paramvalue.Equals(value);
@@ -41,7 +45,7 @@ namespace Framework.Wpf.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string parameterString = parameter as string;
-            bool valueAsBool = value != null && (bool)value;
+            bool   valueAsBool     = value != null && (bool) value;
 
             if (parameterString == null || !valueAsBool)
             {
@@ -54,6 +58,7 @@ namespace Framework.Wpf.Converters
                     return DependencyProperty.UnsetValue;
                 }
             }
+
             return Enum.Parse(targetType, parameterString);
         }
     }

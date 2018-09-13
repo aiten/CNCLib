@@ -27,90 +27,99 @@ using System;
 namespace CNCLib.Wpf.Helpers
 {
     public class JoystickHelper
-	{
-		internal static async Task<Tuple<Joystick,int>> Load()
-		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
-			{
-				var joystick = await controller.GetAll(typeof(Joystick));
-				if (joystick != null && joystick.Any())
-				{
-					int id = joystick.First().ItemID;
-					return new Tuple<Joystick, int> ((Joystick) await controller.Create(id),id);
-				}
-			}
+    {
+        internal static async Task<Tuple<Joystick, int>> Load()
+        {
+            using (var controller = Dependency.Resolve<IDynItemController>())
+            {
+                var joystick = await controller.GetAll(typeof(Joystick));
+                if (joystick != null && joystick.Any())
+                {
+                    int id = joystick.First().ItemID;
+                    return new Tuple<Joystick, int>((Joystick) await controller.Create(id), id);
+                }
+            }
 
-			return new Tuple<Joystick, int> (new Joystick { BaudRate = 250000, ComPort = @"com7" },-1);
-		}
+            return new Tuple<Joystick, int>(new Joystick { BaudRate = 250000, ComPort = @"com7" }, -1);
+        }
 
-		internal static async Task<int> Save(Joystick joystick, int id)
-		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
-			{
-				if (id >= 0)
-				{
-					await controller.Save(id, "Joystick", joystick);
-					return id;
-				}
-				return await controller.Add("Joystick", joystick);
-			}
-		}
+        internal static async Task<int> Save(Joystick joystick, int id)
+        {
+            using (var controller = Dependency.Resolve<IDynItemController>())
+            {
+                if (id >= 0)
+                {
+                    await controller.Save(id, "Joystick", joystick);
+                    return id;
+                }
+
+                return await controller.Add("Joystick", joystick);
+            }
+        }
 
         public void JoystickReplyReceived(string trim)
-		{
-			// ;btn5		=> look for ;btn5
-			// ;btn5:x		=> x is presscount - always incremented, look for max x in setting => modulo 
+        {
+            // ;btn5		=> look for ;btn5
+            // ;btn5:x		=> x is presscount - always incremented, look for max x in setting => modulo 
 
-			int idx;
+            int idx;
 
-			if ((idx = trim.IndexOf(':')) < 0)
-			{
-				var mc = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == trim);
-				if (mc != null)
-					trim = mc.CommandString;
-			}
-			else
-			{
-				string btn = trim.Substring(0, idx + 1);
-				var mclist = Global.Instance.Machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
+            if ((idx = trim.IndexOf(':')) < 0)
+            {
+                var mc = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == trim);
+                if (mc != null)
+                {
+                    trim = mc.CommandString;
+                }
+            }
+            else
+            {
+                string btn = trim.Substring(0, idx + 1);
+                var mclist = Global.Instance.Machine.MachineCommands
+                    .Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn)
+                    .ToList();
 
-				uint max = 0;
-				foreach (var m in mclist)
-				{
-					uint val;
-					if (uint.TryParse(m.JoystickMessage.Substring(idx + 1), out val))
-					{
-						if (val > max)
-							max = val;
-					}
-				}
+                uint max = 0;
+                foreach (var m in mclist)
+                {
+                    uint val;
+                    if (uint.TryParse(m.JoystickMessage.Substring(idx + 1), out val))
+                    {
+                        if (val > max)
+                        {
+                            max = val;
+                        }
+                    }
+                }
 
-				string findcmd = $"{btn}{uint.Parse(trim.Substring(idx + 1)) % (max + 1)}";
+                string findcmd = $"{btn}{uint.Parse(trim.Substring(idx + 1)) % (max + 1)}";
 
-				var mc = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findcmd);
-				if (mc == null)
-				{
-					// try to find ;btn3 (without :)  
-					findcmd = trim.Substring(0, idx);
-					mc = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findcmd);
-				}
+                var mc = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findcmd);
+                if (mc == null)
+                {
+                    // try to find ;btn3 (without :)  
+                    findcmd = trim.Substring(0, idx);
+                    mc      = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findcmd);
+                }
 
-				if (mc != null)
-					trim = mc.CommandString;
-			}
+                if (mc != null)
+                {
+                    trim = mc.CommandString;
+                }
+            }
 
-			new MachineGCodeHelper().SendCommandAsync(trim).ConfigureAwait(false).GetAwaiter().GetResult();
-		}
+            new MachineGCodeHelper().SendCommandAsync(trim).ConfigureAwait(false).GetAwaiter().GetResult();
+        }
 
 
-		public async Task SendInitCommands(string commandstring)
-		{
-			string[] seperators = { @"\n" };
-			string[] cmds = commandstring.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
-			foreach (var s in cmds)
-			{
-				await Global.Instance.ComJoystick.SendCommandAsync(s,int.MaxValue);
-			}
-		}
-	}
+        public async Task SendInitCommands(string commandstring)
+        {
+            string[] seperators = { @"\n" };
+            string[] cmds       = commandstring.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var s in cmds)
+            {
+                await Global.Instance.ComJoystick.SendCommandAsync(s, int.MaxValue);
+            }
+        }
+    }
 }

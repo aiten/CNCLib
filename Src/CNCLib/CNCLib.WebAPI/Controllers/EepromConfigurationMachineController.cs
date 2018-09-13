@@ -29,29 +29,33 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class EepromConfigurationController : Controller
     {
-        public EepromConfigurationController(IEepromConfigurationService eepromConfigurationService, ICNCLibUserContext usercontext)
+        public EepromConfigurationController(IEepromConfigurationService eepromConfigurationService,
+                                             ICNCLibUserContext          usercontext)
         {
             _eepromConfigurationService = eepromConfigurationService ?? throw new ArgumentNullException();
-            _usercontext = usercontext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext)_usercontext).InitFromController(this);
+            _usercontext                = usercontext ?? throw new ArgumentNullException();
+            ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
 
         readonly IEepromConfigurationService _eepromConfigurationService;
-        private ICNCLibUserContext _usercontext;
+        private  ICNCLibUserContext          _usercontext;
 
         [HttpGet]
-        public async Task<ActionResult<EepromConfiguration>> Get(ushort teeth, double toothsizeInMm, ushort microsteps, ushort stepsPerRotation, double estimatedRotationSpeed, double timeToAcc, double timeToDec)
+        public async Task<ActionResult<EepromConfiguration>> Get(ushort teeth, double toothsizeInMm,
+                                                                 ushort microsteps,
+                                                                 ushort stepsPerRotation, double estimatedRotationSpeed,
+                                                                 double timeToAcc,        double timeToDec)
         {
             // http://localhost:2024/api/EepromConfiguration?teeth=15&toothsizeInMm=2.0&microsteps=16&stepsPerRotation=200&estimatedRotationSpeed=7.8&timeToAcc=0.2&timeToDec=0.15
             var input = new EepromConfigurationInput
             {
-                Teeth = teeth,
-                ToothsizeinMm = toothsizeInMm,
-                Microsteps = microsteps,
-                StepsPerRotation = stepsPerRotation,
+                Teeth                  = teeth,
+                ToothsizeinMm          = toothsizeInMm,
+                Microsteps             = microsteps,
+                StepsPerRotation       = stepsPerRotation,
                 EstimatedRotationSpeed = estimatedRotationSpeed,
-                TimeToAcc = timeToAcc,
-                TimeToDec = timeToDec
+                TimeToAcc              = timeToAcc,
+                TimeToDec              = timeToDec
             };
 
             var m = await _eepromConfigurationService.CalculateConfig(input);
@@ -59,6 +63,7 @@ namespace CNCLib.WebAPI.Controllers
             {
                 return NotFound();
             }
+
             return Ok(m);
         }
     }

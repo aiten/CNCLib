@@ -25,15 +25,15 @@ using Framework.Tools;
 namespace CNCLib.Serial.Client
 {
     public class ServiceBase : DisposeWrapper
-	{
+    {
         protected string WebServerUrl { get; set; } = @"http://localhost:5000";
 
         protected HttpClient CreateHttpClient()
-		{
-		    var client = new HttpClient {BaseAddress = new Uri(WebServerUrl) };
-		    client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			return client;
-		}
-	}
+        {
+            var client = new HttpClient { BaseAddress = new Uri(WebServerUrl) };
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            return client;
+        }
+    }
 }

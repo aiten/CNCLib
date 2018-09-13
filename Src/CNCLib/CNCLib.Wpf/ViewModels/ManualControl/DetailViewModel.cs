@@ -21,41 +21,44 @@ using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
-	public class DetailViewModel : BaseViewModel
-	{
-		protected IManualControlViewModel Vm { get; set; }
-		public DetailViewModel(IManualControlViewModel vm)
-		{
-			Vm = vm;
-		}
+    public class DetailViewModel : BaseViewModel
+    {
+        protected IManualControlViewModel Vm { get; set; }
 
-	    public bool Connected => Global.Instance.Com.Current.IsConnected;
+        public DetailViewModel(IManualControlViewModel vm)
+        {
+            Vm = vm;
+        }
 
-	    protected void RunInNewTask(Action todo)
-		{
-			Vm.RunInNewTask(todo);
-		}
-		protected void RunAndUpdate(Action todo)
-		{
-			Vm.RunAndUpdate(todo);
-		}
-		protected void SetPositions(decimal[] positions, int positionIdx)
-		{
-			Vm.SetPositions(positions, positionIdx);
-		}
+        public bool Connected => Global.Instance.Com.Current.IsConnected;
 
-		#region Command/CanCommand
+        protected void RunInNewTask(Action todo)
+        {
+            Vm.RunInNewTask(todo);
+        }
 
-		public bool CanSend()
-		{
-			return Connected;
-		}
+        protected void RunAndUpdate(Action todo)
+        {
+            Vm.RunAndUpdate(todo);
+        }
+
+        protected void SetPositions(decimal[] positions, int positionIdx)
+        {
+            Vm.SetPositions(positions, positionIdx);
+        }
+
+        #region Command/CanCommand
+
+        public bool CanSend()
+        {
+            return Connected;
+        }
 
         public bool CanSendGCode()
         {
             return CanSend() && Global.Instance.Machine.CommandSyntax != Logic.Contracts.DTO.CommandSyntax.HPGL;
         }
 
-		#endregion
-	}
+        #endregion
+    }
 }

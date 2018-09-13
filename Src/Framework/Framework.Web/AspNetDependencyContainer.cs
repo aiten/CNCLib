@@ -105,6 +105,7 @@ namespace Framework.Web
         }
 
         #region IDisposable Support
+
         private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
@@ -113,7 +114,7 @@ namespace Framework.Web
             {
                 if (disposing)
                 {
- //                   _container.Dispose();
+                    //                   _container.Dispose();
                 }
 
                 disposedValue = true;
@@ -126,6 +127,7 @@ namespace Framework.Web
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
+
         #endregion
     }
 }

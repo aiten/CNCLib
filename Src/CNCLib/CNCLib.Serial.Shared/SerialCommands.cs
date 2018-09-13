@@ -24,6 +24,6 @@ namespace CNCLib.Serial.Shared
     public class SerialCommands
     {
         public string[] Commands { get; set; }
-        public int TimeOut { get; set;  }  = 120 * 1000;
+        public int      TimeOut  { get; set; } = 120 * 1000;
     }
 }

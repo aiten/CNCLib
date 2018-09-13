@@ -25,17 +25,20 @@ namespace CNCLib.GCode.Commands
 {
     public class CommandFactory
     {
-		private Dictionary<string, Type> _commandTypes = new Dictionary<string, Type>(); 
-        
-		public CommandFactory()
-		{
-			RegisterAll();
-		}
+        private Dictionary<string, Type> _commandTypes = new Dictionary<string, Type>();
 
-		public void RegisterCommandType(string name, Type shape)
+        public CommandFactory()
+        {
+            RegisterAll();
+        }
+
+        public void RegisterCommandType(string name, Type shape)
         {
             if (name.Contains(" "))
+            {
                 throw new ArgumentException();
+            }
+
             _commandTypes.Add(name, shape);
         }
 
@@ -47,34 +50,38 @@ namespace CNCLib.GCode.Commands
             }
 
             if (IsRegistered(name))
-			{
-				Type shape = _commandTypes[name.ToUpper()];
-				return (Command)Activator.CreateInstance(shape);
-			}
-			return null;
+            {
+                Type shape = _commandTypes[name.ToUpper()];
+                return (Command) Activator.CreateInstance(shape);
+            }
+
+            return null;
         }
+
         public Command CreateOrDefault(string name)
         {
             string commandname = char.ToUpper(name[0]) == 'M' ? "MXX" : "GXX";
-            int spaceidx = name.IndexOf(' ');
+            int    spaceidx    = name.IndexOf(' ');
             if (spaceidx >= 0)
             {
                 string tmpcommandname = name.Substring(0, spaceidx);
                 if (IsRegistered(tmpcommandname))
                 {
                     commandname = tmpcommandname;
-                    name = name.Substring(spaceidx + 1);
+                    name        = name.Substring(spaceidx + 1);
                 }
             }
             else if (IsRegistered(name))
             {
                 commandname = name;
-                name = "";
+                name        = "";
             }
 
             Command r = Create(commandname);
             if (name.Length > 0)
+            {
                 r.GCodeAdd = name;
+            }
 
             return r;
         }
@@ -84,33 +91,35 @@ namespace CNCLib.GCode.Commands
             return _commandTypes.Keys.ToArray();
         }
 
-		public bool IsRegistered(string name)
-		{
-			return _commandTypes.ContainsKey(name.ToUpper());
-		} 
+        public bool IsRegistered(string name)
+        {
+            return _commandTypes.ContainsKey(name.ToUpper());
+        }
 
-		private void RegisterAll()
-		{
-			Assembly ass = Assembly.GetExecutingAssembly();
+        private void RegisterAll()
+        {
+            Assembly ass = Assembly.GetExecutingAssembly();
 
-			foreach (Type t in ass.GetTypes())
-			{
-				if (t.IsClass)
-				{
-					var isgcode = t.GetCustomAttribute<IsGCommandAttribute>();
-					if (isgcode != null)
-					{
-						string ascodes = isgcode.RegisterAs;
-						if (string.IsNullOrEmpty(ascodes))
-							ascodes = t.Name.Substring(0,3);
+            foreach (Type t in ass.GetTypes())
+            {
+                if (t.IsClass)
+                {
+                    var isgcode = t.GetCustomAttribute<IsGCommandAttribute>();
+                    if (isgcode != null)
+                    {
+                        string ascodes = isgcode.RegisterAs;
+                        if (string.IsNullOrEmpty(ascodes))
+                        {
+                            ascodes = t.Name.Substring(0, 3);
+                        }
 
-						foreach (string ascode in ascodes.Split(','))
-						{
-							RegisterCommandType(ascode, t);
-						}
-					}
-				}
-			}
-		}
+                        foreach (string ascode in ascodes.Split(','))
+                        {
+                            RegisterCommandType(ascode, t);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

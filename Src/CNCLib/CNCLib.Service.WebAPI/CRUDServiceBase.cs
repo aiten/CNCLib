@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Service.WebAPI
 {
-    public abstract class CRUDServiceBase<T,TKey> : ServiceBase
+    public abstract class CRUDServiceBase<T, TKey> : ServiceBase
         where T : class
         where TKey : IComparable
     {
@@ -40,6 +40,7 @@ namespace CNCLib.Service.WebAPI
                     return value;
                 }
             }
+
             return null;
         }
 
@@ -58,6 +59,7 @@ namespace CNCLib.Service.WebAPI
                     IEnumerable<T> dtos = await response.Content.ReadAsAsync<IEnumerable<T>>();
                     return dtos;
                 }
+
                 return null;
             }
         }
@@ -69,7 +71,9 @@ namespace CNCLib.Service.WebAPI
                 HttpResponseMessage response = await client.PostAsJsonAsync(Api, value);
 
                 if (!response.IsSuccessStatusCode)
+                {
                     return default(TKey);
+                }
 
                 return GetKey(await response.Content.ReadAsAsync<T>());
             }
@@ -100,6 +104,7 @@ namespace CNCLib.Service.WebAPI
                 {
                     //return RedirectToAction("Index");
                 }
+
                 //return HttpNotFound();
             }
         }
@@ -121,6 +126,5 @@ namespace CNCLib.Service.WebAPI
         {
             throw new NotImplementedException();
         }
-
     }
 }

@@ -30,28 +30,28 @@ namespace CNCLib.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     public class GCodeController : Controller
-	{
+    {
         public GCodeController(ILoadOptionsService loadOptionsService, ICNCLibUserContext usercontext)
         {
             _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
-            _usercontext = usercontext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext)_usercontext).InitFromController(this);
+            _usercontext        = usercontext ?? throw new ArgumentNullException();
+            ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
 
         readonly ILoadOptionsService _loadOptionsService;
-	    private ICNCLibUserContext _usercontext;
+        private  ICNCLibUserContext  _usercontext;
 
         [HttpPost]
         public IEnumerable<string> Post([FromBody] LoadOptions input)
-		{
-			return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input).Commands.ToStringList();
-		}
+        {
+            return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input).Commands.ToStringList();
+        }
 
-	    [HttpPut]
-		public async Task<IEnumerable<string>> Put([FromBody] CreateGCode input)
-		{
-			LoadOptions opt = await _loadOptionsService.Get(input.LoadOptionsId);
-			return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt).Commands.ToStringList();
-		}
-	}
+        [HttpPut]
+        public async Task<IEnumerable<string>> Put([FromBody] CreateGCode input)
+        {
+            LoadOptions opt = await _loadOptionsService.Get(input.LoadOptionsId);
+            return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt).Commands.ToStringList();
+        }
+    }
 }

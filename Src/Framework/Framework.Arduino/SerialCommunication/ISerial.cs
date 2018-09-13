@@ -25,6 +25,7 @@ namespace Framework.Arduino.SerialCommunication
     public interface ISerial : IDisposable
     {
         #region Setup/Init
+
         Task ConnectAsync(string portname);
         Task DisconnectAsync();
         void AbortCommands();
@@ -35,10 +36,10 @@ namespace Framework.Arduino.SerialCommunication
         #region Pubic
 
         Task<IEnumerable<SerialCommand>> QueueCommandsAsync(IEnumerable<string> commands);
-        Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> commands, int maxMilliseconds);
+        Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string>  commands, int maxMilliseconds);
 
-        Task<string> WaitUntilResponseAsync(int maxMilliseconds);
-        Task<bool> WaitUntilQueueEmptyAsync(int maxMilliseconds);
+        Task<string> WaitUntilResponseAsync(int   maxMilliseconds);
+        Task<bool>   WaitUntilQueueEmptyAsync(int maxMilliseconds);
 
         #endregion;
 
@@ -67,7 +68,7 @@ namespace Framework.Arduino.SerialCommunication
 
         IEnumerable<SerialCommand> PendingCommands { get; }
 
-        bool Pause { get; set; }
+        bool Pause    { get; set; }
         bool SendNext { get; set; }
 
         int BaudRate { get; set; }
@@ -82,23 +83,23 @@ namespace Framework.Arduino.SerialCommunication
         /// </summary>
         bool ResetOnConnect { get; set; }
 
-        string OkTag { get; set; }
-        string ErrorTag { get; set; }
-        string InfoTag { get; set; }
-        bool CommandToUpper { get; set; }
-        bool ErrorIsReply { get; set; }
-        int MaxCommandHistoryCount { get; set; }
-        int ArduinoBuffersize { get; set; }
-        int ArduinoLineSize { get; set; }
-        bool Aborted { get; }
+        string OkTag                  { get; set; }
+        string ErrorTag               { get; set; }
+        string InfoTag                { get; set; }
+        bool   CommandToUpper         { get; set; }
+        bool   ErrorIsReply           { get; set; }
+        int    MaxCommandHistoryCount { get; set; }
+        int    ArduinoBuffersize      { get; set; }
+        int    ArduinoLineSize        { get; set; }
+        bool   Aborted                { get; }
 
         #endregion
 
         #region CommandHistory
 
-        SerialCommand LastCommand { get; }
+        SerialCommand       LastCommand        { get; }
         List<SerialCommand> CommandHistoryCopy { get; }
-        void ClearCommandHistory();
+        void                ClearCommandHistory();
 
         #endregion
     }

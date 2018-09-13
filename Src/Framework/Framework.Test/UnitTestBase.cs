@@ -21,10 +21,10 @@ using Framework.Test.Dependency;
 
 namespace Framework.Test
 {
-	/// <summary>
-	/// Base class for *all* unit tests. 
-	/// </summary>
-	public abstract class UnitTestBase
+    /// <summary>
+    /// Base class for *all* unit tests. 
+    /// </summary>
+    public abstract class UnitTestBase
     {
         private static bool _globalInitialisationRun;
 
@@ -40,17 +40,16 @@ namespace Framework.Test
                 Tools.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
                 _globalInitialisationRun = true;
             }
+
             InitializeCoreDependencies();
-		}
+        }
 
-		protected virtual void InitializeCoreDependencies()
-		{
-		}
+        protected virtual void InitializeCoreDependencies() { }
 
-		/// <summary>
-		/// Resets the dependency container.
-		/// </summary>
-		private static void ReInitializeCoreDependencies()
+        /// <summary>
+        /// Resets the dependency container.
+        /// </summary>
+        private static void ReInitializeCoreDependencies()
         {
             Tools.Dependency.Dependency.Container.ResetContainer();
         }

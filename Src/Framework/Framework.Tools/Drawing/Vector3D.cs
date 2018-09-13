@@ -19,10 +19,10 @@
 
 namespace Framework.Tools.Drawing
 {
-	public class Vector3D
-	{
-		public Point3D From { get; set; }
+    public class Vector3D
+    {
+        public Point3D From { get; set; }
 
-		public Point3D To { get; set; }
-	}
+        public Point3D To { get; set; }
+    }
 }

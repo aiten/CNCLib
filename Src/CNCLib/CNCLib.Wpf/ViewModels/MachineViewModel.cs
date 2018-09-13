@@ -33,14 +33,14 @@ using Framework.Tools.Pattern;
 namespace CNCLib.Wpf.ViewModels
 {
     public class MachineViewModel : BaseViewModel, IDisposable
-	{
-		#region crt
+    {
+        #region crt
 
-		public MachineViewModel(IFactory<IMachineService> machineService)
-		{
+        public MachineViewModel(IFactory<IMachineService> machineService)
+        {
             _machineService = machineService ?? throw new ArgumentNullException();
-            AddNewMachine = false;
-		}
+            AddNewMachine   = false;
+        }
 
         readonly IFactory<IMachineService> _machineService;
 
@@ -48,88 +48,86 @@ namespace CNCLib.Wpf.ViewModels
 
         #region dispose
 
-        public void Dispose()
-		{
-		}
+        public void Dispose() { }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-	    Machine _currentMachine = new Machine();
+        Machine _currentMachine = new Machine();
 
-		public Machine Machine
-		{
-			get => _currentMachine;
-		    set { SetProperty(() => _currentMachine == value, () => _currentMachine = value); }
-		}
+        public Machine Machine
+        {
+            get => _currentMachine;
+            set { SetProperty(() => _currentMachine == value, () => _currentMachine = value); }
+        }
 
-		public ObservableCollection<MachineCommand> MachineCommands => _currentMachine.MachineCommands;
+        public ObservableCollection<MachineCommand> MachineCommands => _currentMachine.MachineCommands;
 
 
-	    public ObservableCollection<MachineInitCommand> MachineInitCommands => _currentMachine.MachineInitCommands;
+        public ObservableCollection<MachineInitCommand> MachineInitCommands => _currentMachine.MachineInitCommands;
 
-	    public bool AddNewMachine { get; set; }
+        public bool AddNewMachine { get; set; }
 
         #endregion
 
         #region Operations
 
-	    public async Task LoadMachine(int machineID)
-	    {
-	        using (var scope = _machineService.Create())
-	        {
-	            await MyLoadMachine(machineID,scope);
-	        }
+        public async Task LoadMachine(int machineID)
+        {
+            using (var scope = _machineService.Create())
+            {
+                await MyLoadMachine(machineID, scope);
+            }
         }
 
         private async Task MyLoadMachine(int machineID, IScope<IMachineService> scope)
-		{
-			Logic.Contracts.DTO.Machine dto;
-			AddNewMachine = machineID <= 0;
-		    if (AddNewMachine)
-		    {
-		        dto = await scope.Instance.DefaultMachine();
-		    }
-		    else
-		    {
-		        dto = await scope.Instance.Get(machineID);
-		    }
+        {
+            Logic.Contracts.DTO.Machine dto;
+            AddNewMachine = machineID <= 0;
+            if (AddNewMachine)
+            {
+                dto = await scope.Instance.DefaultMachine();
+            }
+            else
+            {
+                dto = await scope.Instance.Get(machineID);
+            }
 
-		    Machine = dto.Convert();
+            Machine = dto.Convert();
 
-			RaisePropertyChanged(nameof(Machine));
+            RaisePropertyChanged(nameof(Machine));
 
-			RaisePropertyChanged(nameof(MachineCommands));
-			RaisePropertyChanged(nameof(MachineInitCommands));
-		}
-
-		public async void SaveMachine()
-		{
-			var m = _currentMachine.Convert();
-
-		    using (var scope = _machineService.Create())
-		    {
-		        int id = m.MachineID;
-		        if (id == default(int))
-		        {
-		            id = await scope.Instance.Add(m);
-		        }
-		        else
-		        {
-		            await scope.Instance.Update(m);
-                }
-
-                await MyLoadMachine(id,scope);
-		    }
-
-		    CloseAction();
+            RaisePropertyChanged(nameof(MachineCommands));
+            RaisePropertyChanged(nameof(MachineInitCommands));
         }
 
-		public bool CanSaveMachine()
-		{
-			return true;
-		}
+        public async void SaveMachine()
+        {
+            var m = _currentMachine.Convert();
+
+            using (var scope = _machineService.Create())
+            {
+                int id = m.MachineID;
+                if (id == default(int))
+                {
+                    id = await scope.Instance.Add(m);
+                }
+                else
+                {
+                    await scope.Instance.Update(m);
+                }
+
+                await MyLoadMachine(id, scope);
+            }
+
+            CloseAction();
+        }
+
+        public bool CanSaveMachine()
+        {
+            return true;
+        }
 
         public async void DeleteMachine()
         {
@@ -139,95 +137,96 @@ namespace CNCLib.Wpf.ViewModels
             }
 
             CloseAction();
-		}
+        }
 
-		public bool CanDeleteMachine()
+        public bool CanDeleteMachine()
         {
             return !AddNewMachine;
         }
 
-		public async void AddMachine()
+        public async void AddMachine()
         {
             using (var scope = _machineService.Create())
             {
-                await MyLoadMachine(-1,scope);
+                await MyLoadMachine(-1, scope);
             }
         }
 
-		public bool CanAddMachine()
-		{
-			return !AddNewMachine;
-		}
+        public bool CanAddMachine()
+        {
+            return !AddNewMachine;
+        }
 
-		public async void ReadFromMachine()
-		{
-			if (MessageBox?.Invoke("Read configuration from machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
-			{
-				try
-				{
-				    string comport = Machine.GetComPort();
+        public async void ReadFromMachine()
+        {
+            if (MessageBox?.Invoke("Read configuration from machine?", "CNCLib", MessageBoxButton.OKCancel,
+                                   MessageBoxImage.Question) == MessageBoxResult.OK)
+            {
+                try
+                {
+                    string comport = Machine.GetComPort();
 
                     Global.Instance.Com.SetCurrent(comport);
-				    Global.Instance.Com.Current.DtrIsReset = Machine.DtrIsReset;
+                    Global.Instance.Com.Current.DtrIsReset     = Machine.DtrIsReset;
                     Global.Instance.Com.Current.ResetOnConnect = Global.Instance.ResetOnConnect;
-				    Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
-				    Global.Instance.Com.Current.BaudRate = Machine.BaudRate;
-				    await Global.Instance.Com.Current.ConnectAsync(comport);
+                    Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
+                    Global.Instance.Com.Current.BaudRate       = Machine.BaudRate;
+                    await Global.Instance.Com.Current.ConnectAsync(comport);
 
-					await Global.Instance.Com.Current.SendCommandAsync("?",3000);
-					await Task.Delay(100);
+                    await Global.Instance.Com.Current.SendCommandAsync("?", 3000);
+                    await Task.Delay(100);
 
-					var eeprom = await new EepromHelper().ReadEepromAsync();
-					if (eeprom != null)
-					{
-						Machine.Coolant = eeprom.HasCoolant;
-						Machine.Rotate = eeprom.CanRotate;
-						Machine.Spindle = eeprom.HasSpindle;
-						Machine.SDSupport = eeprom.HasSD;
-						Machine.Rotate = eeprom.CanRotate;
-						Machine.Coolant = eeprom.HasCoolant;
-						Machine.Laser = eeprom.IsLaser;
-						Machine.Axis = (int) eeprom.UseAxis;
+                    var eeprom = await new EepromHelper().ReadEepromAsync();
+                    if (eeprom != null)
+                    {
+                        Machine.Coolant   = eeprom.HasCoolant;
+                        Machine.Rotate    = eeprom.CanRotate;
+                        Machine.Spindle   = eeprom.HasSpindle;
+                        Machine.SDSupport = eeprom.HasSD;
+                        Machine.Rotate    = eeprom.CanRotate;
+                        Machine.Coolant   = eeprom.HasCoolant;
+                        Machine.Laser     = eeprom.IsLaser;
+                        Machine.Axis      = (int) eeprom.UseAxis;
 
-						Machine.SizeX = eeprom.GetAxis(0).Size / 1000m;
-						Machine.SizeY = eeprom.GetAxis(1).Size / 1000m;
-						Machine.SizeZ = eeprom.GetAxis(2).Size / 1000m;
-						Machine.SizeA = eeprom.GetAxis(3).Size / 1000m;
+                        Machine.SizeX = eeprom.GetAxis(0).Size / 1000m;
+                        Machine.SizeY = eeprom.GetAxis(1).Size / 1000m;
+                        Machine.SizeZ = eeprom.GetAxis(2).Size / 1000m;
+                        Machine.SizeA = eeprom.GetAxis(3).Size / 1000m;
 
                         Machine.CommandSyntax = eeprom.CommandSyntax;
 
-						var orig = Machine;
-						Machine = null;
-						Machine = orig;
-					}
-				}
-				catch (Exception e)
-				{
-					MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				}
-				finally
-				{
-				    await Global.Instance.Com.Current.DisconnectAsync();
-				}
-			}
-		}
+                        var orig = Machine;
+                        Machine = null;
+                        Machine = orig;
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK,
+                                       MessageBoxImage.Error);
+                }
+                finally
+                {
+                    await Global.Instance.Com.Current.DisconnectAsync();
+                }
+            }
+        }
 
-		public bool CanReadFromMachine()
-		{
-			return true;
-		}
+        public bool CanReadFromMachine()
+        {
+            return true;
+        }
 
+        #endregion
 
-		#endregion
+        #region Commands
 
-		#region Commands
-
-		public ICommand SaveMachineCommand => new DelegateCommand(SaveMachine, CanSaveMachine);
+        public ICommand SaveMachineCommand   => new DelegateCommand(SaveMachine,   CanSaveMachine);
         public ICommand DeleteMachineCommand => new DelegateCommand(DeleteMachine, CanDeleteMachine);
-        public ICommand AddMachineCommand => new DelegateCommand(AddMachine, CanAddMachine);
+        public ICommand AddMachineCommand    => new DelegateCommand(AddMachine,    CanAddMachine);
 
-		public ICommand ReadFromMachineCommand => new DelegateCommand(ReadFromMachine, CanReadFromMachine);
+        public ICommand ReadFromMachineCommand => new DelegateCommand(ReadFromMachine, CanReadFromMachine);
 
-		#endregion
-	}
+        #endregion
+    }
 }

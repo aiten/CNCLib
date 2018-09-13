@@ -19,11 +19,11 @@
 
 namespace CNCLib.Repository.Contracts.Entities
 {
-	public class ItemProperty
-	{
-		public int ItemID { get; set; }
-		public string Name { get; set; }
-        public string Value { get; set; }
-        public virtual Item Item { get; set; }
+    public class ItemProperty
+    {
+        public         int    ItemID { get; set; }
+        public         string Name   { get; set; }
+        public         string Value  { get; set; }
+        public virtual Item   Item   { get; set; }
     }
 }

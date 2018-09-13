@@ -31,7 +31,7 @@ namespace Framework.Service
     {
         private ICRUDManager<T, TKey> _manager;
 
-        protected CRUDService(ICRUDManager<T,TKey> manager) : base(manager)
+        protected CRUDService(ICRUDManager<T, TKey> manager) : base(manager)
         {
             _manager = manager ?? throw new ArgumentNullException();
         }

@@ -27,20 +27,20 @@ namespace Framework.Tools.Parser
 {
     public class ExpressionParser : Parser
     {
-        private string MESSAGE_EXPR_EMPTY_EXPR = "Empty expression";
-        private string MESSAGE_EXPR_FORMAT = "Expression format error";
-        private string MESSAGE_EXPR_UNKNOWN_FUNCTION = "Unknown function";
-        private string MESSAGE_EXPR_SYNTAX_ERROR = "Syntax error";
+        private string MESSAGE_EXPR_EMPTY_EXPR          = "Empty expression";
+        private string MESSAGE_EXPR_FORMAT              = "Expression format error";
+        private string MESSAGE_EXPR_UNKNOWN_FUNCTION    = "Unknown function";
+        private string MESSAGE_EXPR_SYNTAX_ERROR        = "Syntax error";
         private string MESSAGE_EXPR_MISSINGRPARENTHESIS = "Missing right parenthesis";
-        private string MESSAGE_EXPR_ILLEGAL_OPERATOR = "Illegal operator";
-        private string MESSAGE_EXPR_ILLEGAL_FUNCTION = "Illegal function";
-        private string MESSAGE_EXPR_UNKNOWN_VARIABLE = "Unknown variable";
-        private string MESSAGE_EXPR_FRACTORIAL = "factorial";
+        private string MESSAGE_EXPR_ILLEGAL_OPERATOR    = "Illegal operator";
+        private string MESSAGE_EXPR_ILLEGAL_FUNCTION    = "Illegal function";
+        private string MESSAGE_EXPR_UNKNOWN_VARIABLE    = "Unknown variable";
+        private string MESSAGE_EXPR_FRACTORIAL          = "factorial";
 
 
         public ExpressionParser(CommandStream reader) : base(reader) { }
 
-        protected char LeftParenthesis { get; set; } = '(';
+        protected char LeftParenthesis  { get; set; } = '(';
         protected char RightParenthesis { get; set; } = ')';
 
         public override void Parse()
@@ -56,7 +56,10 @@ namespace Framework.Tools.Parser
 
             Answer = ParseLevel1();
 
-            if (IsError()) return;
+            if (IsError())
+            {
+                return;
+            }
 
             // check for garbage at the end of the expression
             // an expression ends with a character '\0' and GetMainTokenType() = delimeter
@@ -143,7 +146,7 @@ namespace Framework.Tools.Parser
 
             public string _varName;
 
-            public bool _variableOK; // _number = variable with content
+            public bool       _variableOK; // _number = variable with content
             public ETokenType _detailtoken;
         };
 
@@ -153,7 +156,10 @@ namespace Framework.Tools.Parser
         protected void GetNextToken()
         {
             _state._detailtoken = ETokenType.NothingSy;
-            if (IsError()) return;
+            if (IsError())
+            {
+                return;
+            }
 
             char ch = _reader.SkipSpaces();
 
@@ -281,7 +287,7 @@ namespace Framework.Tools.Parser
             if (CommandStream.IsNumber(ch))
             {
                 _state._detailtoken = ETokenType.FloatSy;
-                _state._number = _reader.GetDouble(out bool istFloatingPoint);
+                _state._number      = _reader.GetDouble(out bool istFloatingPoint);
                 return;
             }
 
@@ -370,7 +376,7 @@ namespace Framework.Tools.Parser
                 else
                 {
                     _state._detailtoken = ETokenType.VariableSy;
-                    _state._variableOK = EvalVariable(start, ref _state._number);
+                    _state._variableOK  = EvalVariable(start, ref _state._number);
                 }
 
                 return;
@@ -412,10 +418,10 @@ namespace Framework.Tools.Parser
             switch (var_name.ToUpper())
             {
                 case "E":
-                    answer = (double)2.7182818284590452353602874713527;
+                    answer = (double) 2.7182818284590452353602874713527;
                     return true;
                 case "PI":
-                    answer = (double)3.1415926535897932384626433832795;
+                    answer = (double) 3.1415926535897932384626433832795;
                     return true;
             }
 
@@ -439,7 +445,7 @@ namespace Framework.Tools.Parser
             if (GetTokenType() == ETokenType.VariableSy)
             {
                 // copy current state
-                var e_now = _reader.PushIdx();
+                var          e_now     = _reader.PushIdx();
                 SParserState state_now = _state;
 
                 GetNextToken();
@@ -477,14 +483,14 @@ namespace Framework.Tools.Parser
 
         double ParseLevel2()
         {
-            double ans = ParseLevel3();
+            double     ans        = ParseLevel3();
             ETokenType operatorSy = GetTokenType();
 
             while (operatorSy == ETokenType.AndSy || operatorSy == ETokenType.OrSy ||
                    operatorSy == ETokenType.BitShiftLeftSy || operatorSy == ETokenType.BitShiftRightSy)
             {
                 GetNextToken();
-                ans = EvalOperator(operatorSy, ans, ParseLevel3());
+                ans        = EvalOperator(operatorSy, ans, ParseLevel3());
                 operatorSy = GetTokenType();
             }
 
@@ -496,7 +502,7 @@ namespace Framework.Tools.Parser
 
         double ParseLevel3()
         {
-            double ans = ParseLevel4();
+            double     ans        = ParseLevel4();
             ETokenType operatorSy = GetTokenType();
 
             while (operatorSy == ETokenType.EqualSy || operatorSy == ETokenType.UnEqualSy ||
@@ -504,7 +510,7 @@ namespace Framework.Tools.Parser
                    operatorSy == ETokenType.GreaterSy || operatorSy == ETokenType.GreaterEqualSy)
             {
                 GetNextToken();
-                ans = EvalOperator(operatorSy, ans, ParseLevel4());
+                ans        = EvalOperator(operatorSy, ans, ParseLevel4());
                 operatorSy = GetTokenType();
             }
 
@@ -516,13 +522,13 @@ namespace Framework.Tools.Parser
 
         double ParseLevel4()
         {
-            double ans = ParseLevel5();
+            double     ans        = ParseLevel5();
             ETokenType operatorSy = GetTokenType();
 
             while (operatorSy == ETokenType.PlusSy || operatorSy == ETokenType.MinusSy)
             {
                 GetNextToken();
-                ans = EvalOperator(operatorSy, ans, ParseLevel5());
+                ans        = EvalOperator(operatorSy, ans, ParseLevel5());
                 operatorSy = GetTokenType();
             }
 
@@ -534,14 +540,14 @@ namespace Framework.Tools.Parser
 
         double ParseLevel5()
         {
-            double ans = ParseLevel6();
+            double     ans        = ParseLevel6();
             ETokenType operatorSy = GetTokenType();
 
             while (operatorSy == ETokenType.MultiplySy || operatorSy == ETokenType.DivideSy ||
                    operatorSy == ETokenType.ModuloSy || operatorSy == ETokenType.XOrSy)
             {
                 GetNextToken();
-                ans = EvalOperator(operatorSy, ans, ParseLevel6());
+                ans        = EvalOperator(operatorSy, ans, ParseLevel6());
                 operatorSy = GetTokenType();
             }
 
@@ -553,13 +559,13 @@ namespace Framework.Tools.Parser
 
         double ParseLevel6()
         {
-            double ans = ParseLevel7();
+            double     ans        = ParseLevel7();
             ETokenType operatorSy = GetTokenType();
 
             while (operatorSy == ETokenType.PowSy)
             {
                 GetNextToken();
-                ans = EvalOperator(operatorSy, ans, ParseLevel7());
+                ans        = EvalOperator(operatorSy, ans, ParseLevel7());
                 operatorSy = GetTokenType();
             }
 
@@ -571,7 +577,7 @@ namespace Framework.Tools.Parser
 
         double ParseLevel7()
         {
-            double ans = ParseLevel8();
+            double     ans        = ParseLevel8();
             ETokenType operatorSy = GetTokenType();
 
             while (operatorSy == ETokenType.FactorialSy)
@@ -579,7 +585,7 @@ namespace Framework.Tools.Parser
                 GetNextToken();
                 // factorial does not need a value right from the
                 // operator, so zero is filled in.
-                ans = EvalOperator(operatorSy, ans, 0.0);
+                ans        = EvalOperator(operatorSy, ans, 0.0);
                 operatorSy = GetTokenType();
             }
 
@@ -668,28 +674,28 @@ namespace Framework.Tools.Parser
             switch (operatorSy)
             {
                 // level 2
-                case ETokenType.AndSy: return (double) ((UInt32)(lhs) & (UInt32)(rhs));
-                case ETokenType.OrSy: return (double) ((UInt32)(lhs) | (UInt32)(rhs));
-                case ETokenType.BitShiftLeftSy: return (double) ((UInt32)(lhs) << (UInt16)(rhs));
-                case ETokenType.BitShiftRightSy: return (double) ((UInt32)(lhs) >> (UInt16)(rhs));
+                case ETokenType.AndSy:           return (double) ((UInt32) (lhs) & (UInt32) (rhs));
+                case ETokenType.OrSy:            return (double) ((UInt32) (lhs) | (UInt32) (rhs));
+                case ETokenType.BitShiftLeftSy:  return (double) ((UInt32) (lhs) << (UInt16) (rhs));
+                case ETokenType.BitShiftRightSy: return (double) ((UInt32) (lhs) >> (UInt16) (rhs));
 
                 // level 3
-                case ETokenType.EqualSy: return lhs == rhs ? 1.0 : 0.0;
-                case ETokenType.UnEqualSy: return lhs != rhs ? 1.0 : 0.0;
-                case ETokenType.LessSy: return lhs < rhs ? 1.0 : 0.0;
-                case ETokenType.GreaterSy: return lhs > rhs ? 1.0 : 0.0;
-                case ETokenType.LessEqualSy: return lhs <= rhs ? 1.0 : 0.0;
+                case ETokenType.EqualSy:        return lhs == rhs ? 1.0 : 0.0;
+                case ETokenType.UnEqualSy:      return lhs != rhs ? 1.0 : 0.0;
+                case ETokenType.LessSy:         return lhs < rhs ? 1.0 : 0.0;
+                case ETokenType.GreaterSy:      return lhs > rhs ? 1.0 : 0.0;
+                case ETokenType.LessEqualSy:    return lhs <= rhs ? 1.0 : 0.0;
                 case ETokenType.GreaterEqualSy: return lhs >= rhs ? 1.0 : 0.0;
 
                 // level 4
-                case ETokenType.PlusSy: return lhs + rhs;
+                case ETokenType.PlusSy:  return lhs + rhs;
                 case ETokenType.MinusSy: return lhs - rhs;
 
                 // level 5
                 case ETokenType.MultiplySy: return lhs * rhs;
-                case ETokenType.DivideSy: return lhs / rhs;
-                case ETokenType.ModuloSy: return (double) ((UInt32)(lhs) % (UInt32)(rhs));
-                case ETokenType.XOrSy: return (double) ((UInt32)(lhs) ^ (UInt32)(rhs));
+                case ETokenType.DivideSy:   return lhs / rhs;
+                case ETokenType.ModuloSy:   return (double) ((UInt32) (lhs) % (UInt32) (rhs));
+                case ETokenType.XOrSy:      return (double) ((UInt32) (lhs) ^ (UInt32) (rhs));
 
                 // level 6
                 case ETokenType.PowSy: return Math.Pow(lhs, rhs);
@@ -707,17 +713,17 @@ namespace Framework.Tools.Parser
             switch (operatorSy)
             {
                 // arithmetic
-                case ETokenType.AbsSy: return Math.Abs(value);
-                case ETokenType.ExpSy: return Math.Exp(value);
-                case ETokenType.SignSy: return Sign(value);
-                case ETokenType.SqrtSy: return Math.Sqrt(value);
-                case ETokenType.LogSy: return Math.Log(value,2);
+                case ETokenType.AbsSy:   return Math.Abs(value);
+                case ETokenType.ExpSy:   return Math.Exp(value);
+                case ETokenType.SignSy:  return Sign(value);
+                case ETokenType.SqrtSy:  return Math.Sqrt(value);
+                case ETokenType.LogSy:   return Math.Log(value, 2);
                 case ETokenType.Log10Sy: return Math.Log10(value);
 
                 // trigonometric
-                case ETokenType.SinSy: return Math.Sin(value);
-                case ETokenType.CosSy: return Math.Cos(value);
-                case ETokenType.TanSy: return Math.Tan(value);
+                case ETokenType.SinSy:  return Math.Sin(value);
+                case ETokenType.CosSy:  return Math.Cos(value);
+                case ETokenType.TanSy:  return Math.Tan(value);
                 case ETokenType.AsinSy: return Math.Asin(value);
                 case ETokenType.AcosSy: return Math.Acos(value);
                 case ETokenType.AtanSy: return Math.Atan(value);
@@ -726,8 +732,8 @@ namespace Framework.Tools.Parser
                 case ETokenType.FactorialFncSy: return Factorial(value);
 
                 // cnc
-                case ETokenType.FixSy: return Math.Floor(value);
-                case ETokenType.FupSy: return Math.Ceiling(value);
+                case ETokenType.FixSy:   return Math.Floor(value);
+                case ETokenType.FupSy:   return Math.Ceiling(value);
                 case ETokenType.RoundSy: return Math.Round(value);
             }
 
@@ -739,9 +745,9 @@ namespace Framework.Tools.Parser
         double Factorial(double value)
         {
             double res;
-            var v = (UInt32)(value);
+            var    v = (UInt32) (value);
 
-            if (value != (UInt32)(v))
+            if (value != (UInt32) (v))
             {
                 ErrorAdd(MESSAGE_EXPR_FRACTORIAL);
                 return 0;
@@ -755,14 +761,26 @@ namespace Framework.Tools.Parser
                 v--;
             }
 
-            if (res == 0) res = 1; // 0! is per definition 1
+            if (res == 0)
+            {
+                res = 1; // 0! is per definition 1
+            }
+
             return res;
         }
 
         double Sign(double value)
         {
-            if (value > 0) return 1;
-            if (value < 0) return -1;
+            if (value > 0)
+            {
+                return 1;
+            }
+
+            if (value < 0)
+            {
+                return -1;
+            }
+
             return 0;
         }
 

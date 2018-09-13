@@ -24,42 +24,43 @@ using Newtonsoft.Json;
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand("#")]
-	public class SetParameterCommand : Command
+    [IsGCommand("#")]
+    public class SetParameterCommand : Command
     {
-		#region crt + factory
+        #region crt + factory
 
-		public SetParameterCommand()
-		{
-			Code = "#";
-		}
+        public SetParameterCommand()
+        {
+            Code = "#";
+        }
 
-        public int ParameterNo { get; set; } = -1;
+        public int    ParameterNo    { get; set; } = -1;
         public double ParameterValue { get; private set; }
 
         #endregion
 
         #region GCode
+
         public override string[] GetGCodeCommands(Point3D startfrom, CommandState state)
-		{
-		    string[] ret;
-		    if (ParameterNo >= 0)
-		    {
-		        ret = new[]
-		        {
-		            GCodeLineNumber(" ") + Code + ParameterNo.ToString() + " =" + GCodeAdd
-		        };
-		    }
-		    else
-		    {
-		        ret = new[]
-		        {
-		            GCodeLineNumber(" ") + GCodeAdd
-		        };
+        {
+            string[] ret;
+            if (ParameterNo >= 0)
+            {
+                ret = new[]
+                {
+                    GCodeLineNumber(" ") + Code + ParameterNo.ToString() + " =" + GCodeAdd
+                };
+            }
+            else
+            {
+                ret = new[]
+                {
+                    GCodeLineNumber(" ") + GCodeAdd
+                };
             }
 
             return ret;
-		}
+        }
 
         #endregion
 
@@ -113,7 +114,7 @@ namespace CNCLib.GCode.Commands
 
         private bool EvaluateParameterValue(CommandState state, out double paramvalue)
         {
-            var linestream = new CommandStream() { Line = GCodeAdd };
+            var linestream       = new CommandStream() { Line                              = GCodeAdd };
             var expressionparser = new GCodeExpressionParser(linestream) { ParameterValues = state.ParameterValues };
             expressionparser.Parse();
             if (expressionparser.IsError())

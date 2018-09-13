@@ -19,24 +19,24 @@
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand]
-	public class G81Command : DrillCommand
+    [IsGCommand]
+    public class G81Command : DrillCommand
     {
-		#region crt + factory
+        #region crt + factory
 
-		public G81Command()
-		{
-			Code = "G81";
-		}
+        public G81Command()
+        {
+            Code = "G81";
+        }
 
-		#endregion
+        #endregion
 
-		#region GCode
+        #region GCode
 
-		#endregion
+        #endregion
 
-		#region Draw
+        #region Draw
 
-		#endregion
-	}
+        #endregion
+    }
 }

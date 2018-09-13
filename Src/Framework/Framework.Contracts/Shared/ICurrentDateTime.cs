@@ -22,7 +22,7 @@ namespace Framework.Contracts.Shared
 {
     public interface ICurrentDateTime
     {
-        DateTime Now { get; }
+        DateTime Now   { get; }
         DateTime ToDay { get; }
     }
 }

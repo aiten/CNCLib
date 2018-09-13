@@ -30,13 +30,15 @@ namespace Framework.Contracts.Repository
         Added,
     }
 
-    public interface ICRUDRepository<TEntity, TKey>: IGetRepository<TEntity,TKey> where TEntity : class
+    public interface ICRUDRepository<TEntity, TKey> : IGetRepository<TEntity, TKey> where TEntity : class
     {
-        void Add(TEntity entity);
+        void Add(TEntity                   entity);
         void AddRange(IEnumerable<TEntity> entities);
-        void Delete(TEntity entity);
+
+        void Delete(TEntity                   entity);
         void DeleteRange(IEnumerable<TEntity> entities);
-        void SetValue(TEntity trackingentity, TEntity values);
+
+        void SetValue(TEntity      trackingentity, TEntity values);
         void SetValueGraph(TEntity trackingentity, TEntity values);
 
         void SetState(TEntity entity, EntityState state);

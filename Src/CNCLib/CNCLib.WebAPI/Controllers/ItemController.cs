@@ -33,25 +33,25 @@ namespace CNCLib.WebAPI.Controllers
     {
         public ItemController(IItemService service, ICNCLibUserContext usercontext)
         {
-            _service = service ?? throw new ArgumentNullException();
+            _service     = service ?? throw new ArgumentNullException();
             _usercontext = usercontext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext)_usercontext).InitFromController(this);
+            ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
 
-        readonly IItemService _service;
-        private ICNCLibUserContext _usercontext;
+        readonly IItemService       _service;
+        private  ICNCLibUserContext _usercontext;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> Get(string classname)
-	    {
-	        if (classname == null)
-	        {
-	            return await this.GetAll(_service);
-	        }
+        {
+            if (classname == null)
+            {
+                return await this.GetAll(_service);
+            }
 
-	        IEnumerable<Item> m = await _service.GetByClassName(classname);
-	        return await this.NotFoundOrOk(m);
-	    }
+            IEnumerable<Item> m = await _service.GetByClassName(classname);
+            return await this.NotFoundOrOk(m);
+        }
 
         #region default REST
 
@@ -76,7 +76,7 @@ namespace CNCLib.WebAPI.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody]Item value)
+        public async Task<ActionResult> Update(int id, [FromBody] Item value)
         {
             return await this.Update<Item, int>(_service, id, value.ItemID, value);
         }
@@ -89,6 +89,5 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         #endregion
-
     }
 }

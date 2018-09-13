@@ -29,12 +29,10 @@ namespace Framework.Wpf.Helpers
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public DelegateCommand(Action<T> command, Func<T,bool> canExecute = null) : base(command,canExecute)
-        {
-        }
+        public DelegateCommand(Action<T> command, Func<T, bool> canExecute = null) : base(command, canExecute) { }
 
-		//protected DelegateCommand(Func<T, Task> executeMethod, Func<T, bool> canExecuteMethod) : base(executeMethod, canExecuteMethod)
-		//{
-		//}
-	}
+        //protected DelegateCommand(Func<T, Task> executeMethod, Func<T, bool> canExecuteMethod) : base(executeMethod, canExecuteMethod)
+        //{
+        //}
+    }
 }

@@ -25,9 +25,9 @@ namespace Framework.Tools.Helpers
 {
     public class DelayedExecution
     {
-        Timer   _timer;
-        bool    _pendingTimer = false;
-        bool    _needExecute = false;
+        Timer _timer;
+        bool  _pendingTimer = false;
+        bool  _needExecute  = false;
 
         public void Execute(int delayedMs, Action set, Action execute)
         {
@@ -35,7 +35,7 @@ namespace Framework.Tools.Helpers
             {
                 // first call, start timer
                 _pendingTimer = true;
-                _needExecute = false;
+                _needExecute  = false;
                 set();
                 execute();
 
@@ -64,7 +64,7 @@ namespace Framework.Tools.Helpers
             {
                 // restart again
                 _pendingTimer = true;
-                _needExecute = false;
+                _needExecute  = false;
                 set();
                 execute();
                 _timer.Change(delayedMs, Timeout.Infinite);

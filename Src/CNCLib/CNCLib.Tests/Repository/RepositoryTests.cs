@@ -28,20 +28,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-	public class RepositoryTests : CNCUnitTest
-	{
-		public TestContext TestContext { get; set; }
-		static bool _init = false;
+    public class RepositoryTests : CNCUnitTest
+    {
+        public TestContext TestContext { get; set; }
+        static bool        _init = false;
 
-		[ClassInitialize]
-		public static void ClassInit(TestContext testContext)
-		{
-			if (_init == false)
-			{
+        [ClassInitialize]
+        public static void ClassInit(TestContext testContext)
+        {
+            if (_init == false)
+            {
                 //drop and recreate the test Db everytime the tests are run. 
-                string dbdir = testContext.TestDeploymentDir;
-                string pathRoot = System.IO.Path.GetPathRoot(dbdir);
-                var driveinfo = new System.IO.DriveInfo(pathRoot);
+                string dbdir     = testContext.TestDeploymentDir;
+                string pathRoot  = System.IO.Path.GetPathRoot(dbdir);
+                var    driveinfo = new System.IO.DriveInfo(pathRoot);
 
                 if (driveinfo.DriveType == System.IO.DriveType.Network)
                 {
@@ -49,28 +49,28 @@ namespace CNCLib.Tests.Repository
                     dbdir = System.IO.Path.GetTempPath();
                 }
 
-                string dbfile = $@"{ dbdir }\CNCLibTest.db";
+                string dbfile = $@"{dbdir}\CNCLibTest.db";
                 CNCLib.Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbfile, true, true);
 
                 _init = true;
-			}
-		}
+            }
+        }
 
-		[TestInitialize]
-		public void Init()
-		{
-		    Dependency.Container.ResetContainer();
+        [TestInitialize]
+        public void Init()
+        {
+            Dependency.Container.ResetContainer();
             Dependency.Container.RegisterType<IConfigurationRepository, ConfigurationRepository>();
             Dependency.Container.RegisterType<IMachineRepository, MachineRepository>();
             Dependency.Container.RegisterType<IItemRepository, ItemRepository>();
             Dependency.Container.RegisterType<IUserRepository, UserRepository>();
 
-		    Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
+            Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
 
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-		    Dependency.Container.RegisterType(typeof(CRUDTestContext<,,>),typeof(CRUDTestContext<,,>));
-		}
+            Dependency.Container.RegisterType(typeof(CRUDTestContext<,,>), typeof(CRUDTestContext<,,>));
+        }
     }
 }

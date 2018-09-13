@@ -29,26 +29,28 @@ using Framework.Logic;
 
 namespace CNCLib.Logic.Manager
 {
-    public class ItemManager : CRUDManager<Item,int, Repository.Contracts.Entities.Item>, IItemManager
+    public class ItemManager : CRUDManager<Item, int, Repository.Contracts.Entities.Item>, IItemManager
     {
-        private IUnitOfWork _unitOfWork;
+        private IUnitOfWork     _unitOfWork;
         private IItemRepository _repository;
-        private IMapper _mapper;
+        private IMapper         _mapper;
 
-        public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, IMapper mapper) : base(unitOfWork, repository, mapper)
+        public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, IMapper mapper) :
+            base(unitOfWork, repository, mapper)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
             _repository = repository ?? throw new ArgumentNullException();
-            _mapper = mapper ?? throw new ArgumentNullException();
+            _mapper     = mapper ?? throw new ArgumentNullException();
         }
+
         protected override int GetKey(Repository.Contracts.Entities.Item entity)
         {
             return entity.ItemID;
         }
 
-		public async Task<IEnumerable<Item>> GetByClassName(string classname)
-		{
-			return (await _repository.Get(classname)).ToDto(_mapper);
-		}
+        public async Task<IEnumerable<Item>> GetByClassName(string classname)
+        {
+            return (await _repository.Get(classname)).ToDto(_mapper);
+        }
     }
 }

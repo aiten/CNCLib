@@ -22,26 +22,26 @@ using System.Runtime.CompilerServices;
 namespace Framework.Wpf.ViewModels
 {
     public class BindableBase : Prism.Mvvm.BindableBase
-	{
+    {
         #region properties
 
         protected bool SetProperty(Func<bool> equal, Action action, [CallerMemberName] string propertyName = null)
-		{
-			if (equal())
-			{
-				return false;
-			}
+        {
+            if (equal())
+            {
+                return false;
+            }
 
-			RaisePropertyChanged(action, propertyName);
+            RaisePropertyChanged(action, propertyName);
 
-			return true;
-		}
+            return true;
+        }
 
-		protected void RaisePropertyChanged(Action action, [CallerMemberName] string propertyName = null)
-		{
-			action();
+        protected void RaisePropertyChanged(Action action, [CallerMemberName] string propertyName = null)
+        {
+            action();
             RaisePropertyChanged(propertyName);
-		}
+        }
 
         #endregion
     }

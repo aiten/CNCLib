@@ -29,7 +29,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class MachineRepository : CRUDRepositoryBase<CNCLibContext, Machine,int>, IMachineRepository
+    public class MachineRepository : CRUDRepositoryBase<CNCLibContext, Machine, int>, IMachineRepository
     {
         private ICNCLibUserContext _userContext;
 
@@ -38,57 +38,55 @@ namespace CNCLib.Repository
             _userContext = userContext ?? throw new ArgumentNullException();
         }
 
-	    protected override IQueryable<Machine> AddInclude(IQueryable<Machine> query)
-	    {
-	        return query.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands);
-	    }
+        protected override IQueryable<Machine> AddInclude(IQueryable<Machine> query)
+        {
+            return query.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands);
+        }
 
         protected override IQueryable<Machine> AddOptionalWhere(IQueryable<Machine> query)
         {
             if (_userContext.UserID.HasValue)
             {
-                return query.Where(x => x.UserID.HasValue==false || x.UserID.Value == _userContext.UserID.Value);
+                return query.Where(x => x.UserID.HasValue == false || x.UserID.Value == _userContext.UserID.Value);
             }
 
             return base.AddOptionalWhere(query);
         }
 
         protected override IQueryable<Machine> AddPrimaryWhere(IQueryable<Machine> query, int key)
-	    {
+        {
             return query.Where(m => m.MachineID == key);
-	    }
+        }
 
-	    protected override IQueryable<Machine> AddPrimaryWhereIn(IQueryable<Machine> query, IEnumerable<int> key)
-	    {
-	        return query.Where(m => key.Contains(m.MachineID));
-	    }
+        protected override IQueryable<Machine> AddPrimaryWhereIn(IQueryable<Machine> query, IEnumerable<int> key)
+        {
+            return query.Where(m => key.Contains(m.MachineID));
+        }
 
         protected override void AssignValuesGraph(Machine trackingentity, Machine values)
-	    {
-	        base.AssignValuesGraph(trackingentity, values);
-	        Sync<MachineCommand>(
-	            trackingentity.MachineCommands,
-	            values.MachineCommands,
-	            (x, y) => x.MachineCommandID > 0 && x.MachineCommandID == y.MachineCommandID);
-	        Sync<MachineInitCommand>(
-	            trackingentity.MachineInitCommands,
-	            values.MachineInitCommands,
-	            (x, y) => x.MachineInitCommandID > 0 && x.MachineInitCommandID == y.MachineInitCommandID);
-	    }
+        {
+            base.AssignValuesGraph(trackingentity, values);
+            Sync<MachineCommand>(
+                                 trackingentity.MachineCommands,
+                                 values.MachineCommands,
+                                 (x, y) => x.MachineCommandID > 0 && x.MachineCommandID == y.MachineCommandID);
+            Sync<MachineInitCommand>(
+                                     trackingentity.MachineInitCommands,
+                                     values.MachineInitCommands,
+                                     (x, y) => x.MachineInitCommandID > 0 &&
+                                               x.MachineInitCommandID == y.MachineInitCommandID);
+        }
 
         public async Task<IEnumerable<MachineCommand>> GetMachineCommands(int machineID)
-		{
-			return await Context.MachineCommands.
-				Where(c => c.MachineID == machineID).
-				ToListAsync();
-		}
+        {
+            return await Context.MachineCommands.Where(c => c.MachineID == machineID).ToListAsync();
+        }
 
-		public async Task<IEnumerable<MachineInitCommand>> GetMachineInitCommands(int machineID)
-		{
-			return await Context.MachineInitCommands.
-				Where(c => c.MachineID == machineID).
-				ToListAsync();
-		}
+        public async Task<IEnumerable<MachineInitCommand>> GetMachineInitCommands(int machineID)
+        {
+            return await Context.MachineInitCommands.Where(c => c.MachineID == machineID).ToListAsync();
+        }
+
 /*
         public async Task Store(Machine machine)
 		{
@@ -134,5 +132,5 @@ namespace CNCLib.Repository
 			}
 		}
 */
-	}
+    }
 }

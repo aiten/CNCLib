@@ -31,34 +31,34 @@ namespace CNCLib.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     public class CambamController : Controller
-	{
+    {
         public CambamController(ILoadOptionsService loadOptionsService, ICNCLibUserContext usercontext)
         {
             _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
-            _usercontext = usercontext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext)_usercontext).InitFromController(this);
+            _usercontext        = usercontext ?? throw new ArgumentNullException();
+            ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
 
         readonly ILoadOptionsService _loadOptionsService;
-	    private ICNCLibUserContext _usercontext;
+        private  ICNCLibUserContext  _usercontext;
 
         [HttpPost]
         public string Post([FromBody] LoadOptions input)
-		{
-			var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input);
-			var sw = new StringWriter();
-			new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
-			return sw.ToString();
-		}
+        {
+            var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input);
+            var sw   = new StringWriter();
+            new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
+            return sw.ToString();
+        }
 
-	    [HttpPut]
-		public async Task<string> Put([FromBody] CreateGCode input)
-		{
-			LoadOptions opt = await _loadOptionsService.Get(input.LoadOptionsId);
-			var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt);
-			var sw = new StringWriter();
-			new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
-			return sw.ToString();
-		}
-	}
+        [HttpPut]
+        public async Task<string> Put([FromBody] CreateGCode input)
+        {
+            LoadOptions opt  = await _loadOptionsService.Get(input.LoadOptionsId);
+            var         load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt);
+            var         sw   = new StringWriter();
+            new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
+            return sw.ToString();
+        }
+    }
 }

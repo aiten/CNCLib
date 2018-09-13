@@ -36,32 +36,32 @@ namespace CNCLib.Wpf.ViewModels
 {
     public class SetupWindowViewModel : BaseViewModel
     {
-		#region crt
+        #region crt
 
-		public SetupWindowViewModel(IFactory<IMachineService> machineService)
-		{
-            _machineService = machineService ?? throw new ArgumentNullException(); 
-             ResetOnConnect = false;
-		}
+        public SetupWindowViewModel(IFactory<IMachineService> machineService)
+        {
+            _machineService = machineService ?? throw new ArgumentNullException();
+            ResetOnConnect  = false;
+        }
 
         readonly IFactory<IMachineService> _machineService;
 
 
         public override async Task Loaded()
-		{
-			await base.Loaded();
-			if (_machines == null)
-			{
-				await LoadMachines(-1);
-				await LoadJoystick();
-			}
-		}
+        {
+            await base.Loaded();
+            if (_machines == null)
+            {
+                await LoadMachines(-1);
+                await LoadJoystick();
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region private operations
+        #region private operations
 
-		private async Task LoadMachines(int defaultmachineid)
+        private async Task LoadMachines(int defaultmachineid)
         {
             var machines = new ObservableCollection<Machine>();
             int defaultM;
@@ -80,38 +80,43 @@ namespace CNCLib.Wpf.ViewModels
 
             Machines = machines;
 
-			var defaultmachine = machines.FirstOrDefault(m => m.MachineID == defaultmachineid);
+            var defaultmachine = machines.FirstOrDefault(m => m.MachineID == defaultmachineid);
 
-			if (defaultmachine == null)
-				defaultmachine = machines.FirstOrDefault(m => m.MachineID == defaultM);
+            if (defaultmachine == null)
+            {
+                defaultmachine = machines.FirstOrDefault(m => m.MachineID == defaultM);
+            }
 
-			if (defaultmachine == null && machines.Count > 0)
-				defaultmachine = machines[0];
+            if (defaultmachine == null && machines.Count > 0)
+            {
+                defaultmachine = machines[0];
+            }
 
-			Machine = defaultmachine;
-		}
-		private async Task LoadJoystick()
-		{
-			Joystick = (await JoystickHelper.Load()).Item1;
-			Global.Instance.Joystick = Joystick;
-		}
+            Machine = defaultmachine;
+        }
 
-		#endregion
+        private async Task LoadJoystick()
+        {
+            Joystick                 = (await JoystickHelper.Load()).Item1;
+            Global.Instance.Joystick = Joystick;
+        }
 
-		#region GUI-forward
+        #endregion
 
-		public Action<int> EditMachine { get; set; }
-		public Action EditJoystick { get; set; }
-		public Action ShowEeprom { get; set; }
+        #region GUI-forward
 
-		#endregion
+        public Action<int> EditMachine  { get; set; }
+        public Action      EditJoystick { get; set; }
+        public Action      ShowEeprom   { get; set; }
 
-		#region Properties
+        #endregion
+
+        #region Properties
 
         #region Current Machine
 
         public Machine Machine
-		{
+        {
             get => _selectedMachine;
             set
             {
@@ -122,16 +127,17 @@ namespace CNCLib.Wpf.ViewModels
                     SetGlobal().Ignore();
                 }
             }
-		}
+        }
 
-		public Joystick Joystick { get; set; }
+        public Joystick Joystick { get; set; }
 
-		Machine _selectedMachine;
+        Machine _selectedMachine;
 
         private ObservableCollection<Machine> _machines;
+
         public ObservableCollection<Machine> Machines
-		{
-			get => _machines;
+        {
+            get => _machines;
             set => SetProperty(ref _machines, value);
         }
 
@@ -141,19 +147,25 @@ namespace CNCLib.Wpf.ViewModels
 
         #endregion
 
-        private bool _resetOnConnect=true;
-		public bool ResetOnConnect
-		{
-			get => _resetOnConnect;
-		    set { SetProperty(ref _resetOnConnect, value); Global.Instance.ResetOnConnect = value; }
-		}
+        private bool _resetOnConnect = true;
 
-		private bool _sendInitCommands = true;
-		public bool SendInitCommands
-		{
-			get => _sendInitCommands;
-		    set => SetProperty(ref _sendInitCommands, value);
-		}
+        public bool ResetOnConnect
+        {
+            get => _resetOnConnect;
+            set
+            {
+                SetProperty(ref _resetOnConnect, value);
+                Global.Instance.ResetOnConnect = value;
+            }
+        }
+
+        private bool _sendInitCommands = true;
+
+        public bool SendInitCommands
+        {
+            get => _sendInitCommands;
+            set => SetProperty(ref _sendInitCommands, value);
+        }
 
         public bool DtrIsReset => Machine != null && Machine.DtrIsReset;
 
@@ -165,67 +177,72 @@ namespace CNCLib.Wpf.ViewModels
 
         public async Task<bool> Connect(CancellationToken ctk)
         {
-			try
-			{
+            try
+            {
                 string comport = Machine.GetComPort();
 
                 Global.Instance.Com.SetCurrent(comport);
 
-			    Global.Instance.Com.Current.DtrIsReset = Machine.DtrIsReset;
+                Global.Instance.Com.Current.DtrIsReset     = Machine.DtrIsReset;
                 Global.Instance.Com.Current.ResetOnConnect = ResetOnConnect;
 
                 Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
-                Global.Instance.Com.Current.BaudRate = (int)Machine.BaudRate;
+                Global.Instance.Com.Current.BaudRate       = (int) Machine.BaudRate;
                 await Global.Instance.Com.Current.ConnectAsync(comport);
                 await SetGlobal();
 
-				if (SendInitCommands && Machine != null)
-				{
-					var initCommands = Machine.MachineInitCommands;
+                if (SendInitCommands && Machine != null)
+                {
+                    var initCommands = Machine.MachineInitCommands;
 
-					if (initCommands.Any())
-					{
-						// wait (do not check if reset - arduino may reset even the "reset" is not specified)
-						await Global.Instance.Com.Current.WaitUntilResponseAsync(3000);
-                        await Global.Instance.Com.Current.QueueCommandsAsync(initCommands.OrderBy(cmd => cmd.SeqNo).Select(e => e.CommandString));
-					}
-				}
-			}
-			catch(Exception e)
-			{
-				MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				return false;
-			}
-			RaisePropertyChanged(nameof(Connected));
-			CommandManager.InvalidateRequerySuggested();
+                    if (initCommands.Any())
+                    {
+                        // wait (do not check if reset - arduino may reset even the "reset" is not specified)
+                        await Global.Instance.Com.Current.WaitUntilResponseAsync(3000);
+                        await Global.Instance.Com.Current.QueueCommandsAsync(initCommands.OrderBy(cmd => cmd.SeqNo)
+                                                                                 .Select(e => e.CommandString));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK,
+                                   MessageBoxImage.Error);
+                return false;
+            }
+
+            RaisePropertyChanged(nameof(Connected));
+            CommandManager.InvalidateRequerySuggested();
             return true;
-		}
+        }
 
         public async Task<bool> ConnectJoystick(CancellationToken ctk)
         {
             try
             {
-                Global.Instance.ComJoystick.DtrIsReset = true;
+                Global.Instance.ComJoystick.DtrIsReset     = true;
                 Global.Instance.ComJoystick.ResetOnConnect = true;
                 Global.Instance.ComJoystick.CommandToUpper = false;
-                Global.Instance.ComJoystick.BaudRate = Joystick.BaudRate;
+                Global.Instance.ComJoystick.BaudRate       = Joystick.BaudRate;
                 await Global.Instance.ComJoystick.ConnectAsync(Joystick.ComPort);
             }
             catch (Exception e)
             {
-				MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK,
+                                   MessageBoxImage.Error);
                 return false;
             }
+
             RaisePropertyChanged(nameof(ConnectedJoystick));
             return true;
         }
 
         private async Task SetGlobal()
         {
-			Global.Instance.SizeX = Machine.SizeX;
-            Global.Instance.SizeY = Machine.SizeY;
-            Global.Instance.SizeZ = Machine.SizeZ;
-			Global.Instance.Com.Current.ArduinoBuffersize = Machine.BufferSize;
+            Global.Instance.SizeX                         = Machine.SizeX;
+            Global.Instance.SizeY                         = Machine.SizeY;
+            Global.Instance.SizeZ                         = Machine.SizeZ;
+            Global.Instance.Com.Current.ArduinoBuffersize = Machine.BufferSize;
 
             using (var scope = _machineService.Create())
             {
@@ -233,21 +250,22 @@ namespace CNCLib.Wpf.ViewModels
             }
         }
 
-		public bool CanConnect()
+        public bool CanConnect()
         {
             return !Connected && Machine != null;
         }
 
-		public async Task<bool> DisConnect(CancellationToken ctk)
-		{
-			await Global.Instance.Com.Current.DisconnectAsync();
-			RaisePropertyChanged(nameof(Connected));
-		    return true;
-		}
-		public bool CanDisConnect()
-		{
-			return Connected;
-		}
+        public async Task<bool> DisConnect(CancellationToken ctk)
+        {
+            await Global.Instance.Com.Current.DisconnectAsync();
+            RaisePropertyChanged(nameof(Connected));
+            return true;
+        }
+
+        public bool CanDisConnect()
+        {
+            return Connected;
+        }
 
         public bool CanConnectJoystick()
         {
@@ -260,6 +278,7 @@ namespace CNCLib.Wpf.ViewModels
             RaisePropertyChanged(nameof(ConnectedJoystick));
             return true;
         }
+
         public bool CanDisConnectJoystick()
         {
             return ConnectedJoystick;
@@ -268,19 +287,19 @@ namespace CNCLib.Wpf.ViewModels
         public async void SetupMachine()
         {
             int mID = Machine?.MachineID ?? -1;
-			//EditMachine?.Invoke(mID);
+            //EditMachine?.Invoke(mID);
             EditMachine(mID);
             await LoadMachines(mID);
         }
 
-		public async void SetupJoystick()
-		{
-			EditJoystick?.Invoke();
-			await LoadJoystick();
-		}
+        public async void SetupJoystick()
+        {
+            EditJoystick?.Invoke();
+            await LoadJoystick();
+        }
 
-		public void SetDefaultMachine()
-	   {
+        public void SetDefaultMachine()
+        {
             if (Machine != null)
             {
                 using (var scope = _machineService.Create())
@@ -288,9 +307,9 @@ namespace CNCLib.Wpf.ViewModels
                     scope.Instance.SetDetaultMachine(Machine.MachineID);
                 }
             }
-	   }
+        }
 
-		public bool CanSetupMachine()
+        public bool CanSetupMachine()
         {
             return !Connected;
         }
@@ -299,29 +318,33 @@ namespace CNCLib.Wpf.ViewModels
         {
             return Connected;
         }
-		public bool CanSetupJoystick()
-		{
-			return !ConnectedJoystick;
-		}
 
-		public void SetEeprom()
-		{
-			ShowEeprom?.Invoke();
-		}
+        public bool CanSetupJoystick()
+        {
+            return !ConnectedJoystick;
+        }
 
-		#endregion
+        public void SetEeprom()
+        {
+            ShowEeprom?.Invoke();
+        }
 
-		#region Commands
+        #endregion
 
-		public ICommand SetupMachineCommand => new DelegateCommand(SetupMachine, CanSetupMachine);
-		public ICommand ConnectCommand => new DelegateCommandAsync<bool>(Connect, CanConnect);
-		public ICommand DisConnectCommand	=> new DelegateCommandAsync<bool>(DisConnect, CanDisConnect);
-		public ICommand EepromCommand => new DelegateCommand(SetEeprom, CanDisConnect);
-		public ICommand SetDefaultMachineCommand => new DelegateCommand(SetDefaultMachine, CanSetupMachine);
-        public ICommand ConnectJoystickCommand => new DelegateCommandAsync<bool>(ConnectJoystick, CanConnectJoystick);
-        public ICommand DisConnectJoystickCommand => new DelegateCommandAsync<bool>(DisConnectJoystick, CanDisConnectJoystick);
-		public ICommand SetupJoystickCommand => new DelegateCommand(SetupJoystick, CanSetupJoystick);
+        #region Commands
 
-		#endregion
-	}
+        public ICommand SetupMachineCommand      => new DelegateCommand(SetupMachine, CanSetupMachine);
+        public ICommand ConnectCommand           => new DelegateCommandAsync<bool>(Connect,    CanConnect);
+        public ICommand DisConnectCommand        => new DelegateCommandAsync<bool>(DisConnect, CanDisConnect);
+        public ICommand EepromCommand            => new DelegateCommand(SetEeprom,         CanDisConnect);
+        public ICommand SetDefaultMachineCommand => new DelegateCommand(SetDefaultMachine, CanSetupMachine);
+        public ICommand ConnectJoystickCommand   => new DelegateCommandAsync<bool>(ConnectJoystick, CanConnectJoystick);
+
+        public ICommand DisConnectJoystickCommand =>
+            new DelegateCommandAsync<bool>(DisConnectJoystick, CanDisConnectJoystick);
+
+        public ICommand SetupJoystickCommand => new DelegateCommand(SetupJoystick, CanSetupJoystick);
+
+        #endregion
+    }
 }

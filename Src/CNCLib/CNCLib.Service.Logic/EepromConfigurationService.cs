@@ -39,8 +39,6 @@ namespace CNCLib.Service.Logic
             return await _manager.CalculateConfig(param);
         }
 
-        protected override void DisposeManaged()
-        {
-        }
+        protected override void DisposeManaged() { }
     }
 }

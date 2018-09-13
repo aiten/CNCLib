@@ -25,28 +25,28 @@ using Framework.Service;
 
 namespace CNCLib.Service.Logic
 {
-    public class MachineService : CRUDService<Machine,int>, IMachineService
-	{
+    public class MachineService : CRUDService<Machine, int>, IMachineService
+    {
         public MachineService(IMachineManager manager) : base(manager)
         {
             _manager = manager ?? throw new ArgumentNullException();
         }
 
-		readonly IMachineManager _manager;
+        readonly IMachineManager _manager;
 
-		public async Task<Machine> DefaultMachine()
-		{
-			return await _manager.DefaultMachine();
-		}
+        public async Task<Machine> DefaultMachine()
+        {
+            return await _manager.DefaultMachine();
+        }
 
-		public async Task<int> GetDetaultMachine()
-		{
-			return await _manager.GetDetaultMachine();
-		}
+        public async Task<int> GetDetaultMachine()
+        {
+            return await _manager.GetDetaultMachine();
+        }
 
-		public async Task SetDetaultMachine(int defaultMachineID)
-		{
-			await _manager.SetDetaultMachine(defaultMachineID);
-		}
+        public async Task SetDetaultMachine(int defaultMachineID)
+        {
+            await _manager.SetDetaultMachine(defaultMachineID);
+        }
     }
 }

@@ -39,11 +39,14 @@ namespace CNCLib.Serial.Server.SerialPort
             return port;
         }
 
-        private static int GetIdFromPortName(string portname,int index)
+        private static int GetIdFromPortName(string portname, int index)
         {
-            string portNo = portname.Remove(0,3); // remove "com"
+            string portNo = portname.Remove(0, 3); // remove "com"
             if (int.TryParse(portNo, out int id))
+            {
                 return id;
+            }
+
             return index;
         }
 
@@ -57,16 +60,18 @@ namespace CNCLib.Serial.Server.SerialPort
             var portnames = SerialPort.GetPortNames();
 
             if (Environment.MachineName == "AIT7" && !portnames.Any())
+            {
                 portnames = new string[] { "com0", "com1", "com3", "com4", "com5", "com6", "com10" };
+            }
 
             return portnames.Select((port, index) =>
             {
                 return new SerialPortWrapper()
                 {
-                    Id = GetIdFromPortName(port,index),
+                    Id       = GetIdFromPortName(port, index),
                     PortName = port
                 };
-            } );
+            });
         }
 
         public static void Refresh()

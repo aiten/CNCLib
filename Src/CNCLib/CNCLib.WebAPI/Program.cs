@@ -72,18 +72,19 @@ namespace CNCLib.WebAPI
 
         private static bool RunsAsService()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment() == false)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) &&
+                Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment() == false)
             {
                 return CheckForConsoleWindow();
             }
 
-            return false;   // never can be a windows service
+            return false; // never can be a windows service
         }
 
         private sealed class CNCLibServerService : ServiceBase
         {
-            private IWebHost _webHost;
-            private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+            private          IWebHost _webHost;
+            private readonly ILogger  _logger = LogManager.GetCurrentClassLogger();
 
             protected override void OnStart(string[] args)
             {
@@ -120,10 +121,7 @@ namespace CNCLib.WebAPI
                 .UseKestrel()
                 .UseConfiguration(config)
                 .UseStartup<Startup>()
-                .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                })
+                .ConfigureLogging(logging => { logging.ClearProviders(); })
                 .UseNLog()
                 .Build();
         }

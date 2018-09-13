@@ -22,45 +22,66 @@ using System.Text;
 
 namespace Framework.Tools.Helpers
 {
-	public class CommandStream
+    public class CommandStream
     {
-
         #region privat properties/members
 
         string _line;
-        int _idx;
-        char _endCommandChar = ';';
-        string _spaceChar = " \t";
+        int    _idx;
+        char   _endCommandChar = ';';
+        string _spaceChar      = " \t";
 
         #endregion
 
-        public string Line			{ set { _line = value; _idx = 0; } get => _line.Substring(_idx); }
+        public string Line
+        {
+            set
+            {
+                _line = value;
+                _idx  = 0;
+            }
+            get => _line.Substring(_idx);
+        }
 
-        public char NextChar => IsEOF() ? ((char) 0) : _line[_idx];
+        public char NextChar        => IsEOF() ? ((char) 0) : _line[_idx];
         public char NextCharToUpper => char.ToUpper(NextChar);
 
-        public int PushIdx()		{ return _idx; }
-		public void PopIdx(int idx) { _idx = idx; }
+        public int PushIdx()
+        {
+            return _idx;
+        }
 
-        public char SkipSpaces()	
+        public void PopIdx(int idx)
+        {
+            _idx = idx;
+        }
+
+        public char SkipSpaces()
         {
             while (!IsEOF() && (_spaceChar.Contains(_line[_idx])))
+            {
                 _idx++;
+            }
 
-			return NextChar;
+            return NextChar;
         }
-		public char SkipSpacesToUpper()
-		{
-			return char.ToUpper(SkipSpaces());
-		}
 
-		public void SkipEndCommand()
+        public char SkipSpacesToUpper()
+        {
+            return char.ToUpper(SkipSpaces());
+        }
+
+        public void SkipEndCommand()
         {
             while (!IsEOF() && _line[_idx] != _endCommandChar)
+            {
                 _idx++;
+            }
 
             if (NextChar == _endCommandChar)
+            {
                 _idx++;
+            }
 
             SkipSpaces();
         }
@@ -68,7 +89,9 @@ namespace Framework.Tools.Helpers
         public char Next()
         {
             if (!IsEOF())
+            {
                 _idx++;
+            }
 
             return NextChar;
         }
@@ -86,19 +109,24 @@ namespace Framework.Tools.Helpers
 
         public bool IsCommand(string cmd)
         {
-            if (_line.Length < _idx+cmd.Length)
+            if (_line.Length < _idx + cmd.Length)
+            {
                 return false;
+            }
 
             int i = 0;
             foreach (char ch in cmd)
             {
-                if (_line[_idx+i] != ch)
+                if (_line[_idx + i] != ch)
+                {
                     return false;
+                }
+
                 i++;
             }
 
- //           if (!Line.StartsWith(cmd)) => slow
- //               return false;
+            //           if (!Line.StartsWith(cmd)) => slow
+            //               return false;
 
             _idx += cmd.Length;
             return true;
@@ -110,10 +138,13 @@ namespace Framework.Tools.Helpers
             foreach (string cmd in cmds)
             {
                 if (IsCommand(cmd))
+                {
                     return i;
+                }
+
                 i++;
             }
- 
+
             return -1;
         }
 
@@ -145,6 +176,7 @@ namespace Framework.Tools.Helpers
             SkipSpaces();
             return IsNumber(NextChar);
         }
+
         static public bool IsNumber(char ch)
         {
             return ch == '-' || char.IsDigit(ch) || ch == '.';
@@ -161,49 +193,62 @@ namespace Framework.Tools.Helpers
             int startidx = _idx;
 
             if (NextChar == '-')
+            {
                 Next();
+            }
 
             while (char.IsDigit(NextChar))
+            {
                 Next();
+            }
 
-			string str = _line.Substring(startidx, _idx - startidx);
-            int ret = int.Parse(str);
+            string str = _line.Substring(startidx, _idx - startidx);
+            int    ret = int.Parse(str);
             SkipSpaces();
             return ret;
         }
-		public double GetDouble(out bool isFloatingPoint)
-		{
-			return (double)GetDecimal(out isFloatingPoint);
-		}
-		public decimal GetDecimal(out bool isFloatingPoint)
-		{
-			isFloatingPoint = false;
-			SkipSpaces();
-			bool negativ = NextChar == '-';
-			if (negativ) Next();
 
-			decimal val = 0;
-			if (NextChar != '.')
-				val = Math.Abs(GetInt());		// -0.4 will return 0 => will be positiv
+        public double GetDouble(out bool isFloatingPoint)
+        {
+            return (double) GetDecimal(out isFloatingPoint);
+        }
 
-			if (NextChar == '.')
-			{
-				isFloatingPoint = true;
-				Next();
-				decimal scale = 0.1m;
-				while (char.IsDigit(NextChar))
-				{
-					val += scale * (NextChar - '0');
-					scale /= 10;
-					Next();
-				}
-			}
+        public decimal GetDecimal(out bool isFloatingPoint)
+        {
+            isFloatingPoint = false;
+            SkipSpaces();
+            bool negativ = NextChar == '-';
+            if (negativ)
+            {
+                Next();
+            }
 
-			if (negativ)
-				val = -val;
+            decimal val = 0;
+            if (NextChar != '.')
+            {
+                val = Math.Abs(GetInt()); // -0.4 will return 0 => will be positiv
+            }
 
-			return val;
-		}
+            if (NextChar == '.')
+            {
+                isFloatingPoint = true;
+                Next();
+                decimal scale = 0.1m;
+                while (char.IsDigit(NextChar))
+                {
+                    val   += scale * (NextChar - '0');
+                    scale /= 10;
+                    Next();
+                }
+            }
+
+            if (negativ)
+            {
+                val = -val;
+            }
+
+            return val;
+        }
 
         #endregion
 
@@ -218,6 +263,7 @@ namespace Framework.Tools.Helpers
                 sb.Append(NextChar);
                 Next();
             }
+
             return sb.ToString();
         }
 
@@ -230,6 +276,7 @@ namespace Framework.Tools.Helpers
                 str.Append(NextChar);
                 Next();
             }
+
             return str.ToString();
         }
 

@@ -24,13 +24,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CNCLib.Tests.Logic
 {
     [TestClass]
-	public class LogicTests : CNCUnitTest
-	{
-		public TestContext TestContext { get; set; }
+    public class LogicTests : CNCUnitTest
+    {
+        public TestContext TestContext { get; set; }
 
-		[TestInitialize]
-		public void Init()
-		{
-		}
+        [TestInitialize]
+        public void Init() { }
     }
 }

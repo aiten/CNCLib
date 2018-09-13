@@ -22,4 +22,3 @@ using System.Runtime.InteropServices;
 //[assembly: AssemblyProduct("CNCLib.Logic.Client")]
 
 [assembly: Guid("B482661F-0614-46F0-A3F5-74355D9C00E8")]
-

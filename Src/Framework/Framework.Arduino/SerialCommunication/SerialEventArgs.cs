@@ -20,11 +20,11 @@ using System;
 
 namespace Framework.Arduino.SerialCommunication
 {
-	public class SerialEventArgs : EventArgs
-	{
-		public SerialEventArgs(string info, SerialCommand cmd)
-		{
-			Command = cmd;
+    public class SerialEventArgs : EventArgs
+    {
+        public SerialEventArgs(string info, SerialCommand cmd)
+        {
+            Command = cmd;
             if (cmd != null && string.IsNullOrEmpty(info))
             {
                 Info = cmd.CommandText;
@@ -39,39 +39,39 @@ namespace Framework.Arduino.SerialCommunication
                 SeqId = cmd.SeqId;
             }
         }
+
         public SerialEventArgs(SerialCommand cmd)
-	    {
-	        Command = cmd;
+        {
+            Command = cmd;
             if (cmd != null)
             {
-                Info = cmd.CommandText;
+                Info  = cmd.CommandText;
                 SeqId = cmd.SeqId;
             }
-	    }
+        }
 
         public SerialEventArgs(int queueLenght, SerialCommand cmd)
         {
             QueueLenght = queueLenght;
-            Command = cmd;
+            Command     = cmd;
             if (cmd != null)
             {
-                Info = cmd.CommandText;
+                Info  = cmd.CommandText;
                 SeqId = cmd.SeqId;
             }
         }
-        public SerialEventArgs()
-	    {
-	    }
 
-        public bool Continue { get; set; } = false;
-	    public bool Abort { get; set; } = false;
-		public string Result { get; set; }
+        public SerialEventArgs() { }
 
-		public string Info { get; }
-	    public int QueueLenght { get; }
+        public bool   Continue { get; set; } = false;
+        public bool   Abort    { get; set; } = false;
+        public string Result   { get; set; }
+
+        public string Info        { get; }
+        public int    QueueLenght { get; }
 
         public int SeqId { get; }
 
         public SerialCommand Command { get; }
-	}
+    }
 }

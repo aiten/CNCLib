@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace Framework.Tools.Drawing
 {
-	public class ImageHelper
+    public class ImageHelper
     {
         public static void Save(Bitmap image, int maxWidth, int maxHeight, int quality, string filePath)
         {
@@ -48,17 +48,17 @@ namespace Framework.Tools.Drawing
         public static Bitmap ScaleTo(Bitmap image, int maxWidth, int maxHeight)
         {
             // Get the image's original width and height
-            int originalWidth = image.Width;
+            int originalWidth  = image.Width;
             int originalHeight = image.Height;
 
             // To preserve the aspect ratio
-            float ratioX = (float)maxWidth / (float)originalWidth;
-            float ratioY = (float)maxHeight / (float)originalHeight;
-            float ratio = Math.Min(ratioX, ratioY);
+            float ratioX = (float) maxWidth / (float) originalWidth;
+            float ratioY = (float) maxHeight / (float) originalHeight;
+            float ratio  = Math.Min(ratioX, ratioY);
 
             // New width and height based on aspect ratio
-            int newWidth = (int)(originalWidth * ratio);
-            int newHeight = (int)(originalHeight * ratio);
+            int newWidth  = (int) (originalWidth * ratio);
+            int newHeight = (int) (originalHeight * ratio);
 
             // Convert other formats (including CMYK) to RGB.
             var newImage = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
@@ -67,13 +67,13 @@ namespace Framework.Tools.Drawing
             using (Graphics graphics = Graphics.FromImage(newImage))
             {
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.InterpolationMode = InterpolationMode.HighQualityBilinear; // HighQualityBicubic;
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.InterpolationMode  = InterpolationMode.HighQualityBilinear; // HighQualityBicubic;
+                graphics.InterpolationMode  = InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode      = SmoothingMode.HighQuality;
                 graphics.DrawImage(image, 0, 0, newWidth, newHeight);
             }
 
-			newImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+            newImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 
             return newImage;
         }

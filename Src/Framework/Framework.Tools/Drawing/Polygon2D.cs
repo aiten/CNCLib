@@ -32,11 +32,11 @@ namespace Framework.Tools.Drawing
             set => _points = value.ToArray();
         }
 
-        public bool IsClosed => _points.Length >= 2 && _points[0].Compare(_points[_points.Length - 1]);
-        public double MaxX => _points.Max(c => c.X);
-        public double MinX => _points.Min(c => c.X);
-        public double MaxY => _points.Max(c => c.Y);
-        public double MinY => _points.Min(c => c.Y);
+        public bool   IsClosed => _points.Length >= 2 && _points[0].Compare(_points[_points.Length - 1]);
+        public double MaxX     => _points.Max(c => c.X);
+        public double MinX     => _points.Min(c => c.X);
+        public double MaxY     => _points.Max(c => c.Y);
+        public double MinY     => _points.Min(c => c.Y);
 
         #region PointInPolygon
 
@@ -56,23 +56,27 @@ namespace Framework.Tools.Drawing
             foreach (var pt in pts)
             {
                 if (!IsPointInPolygon(pt, constant, multiple))
+                {
                     return false;
+                }
             }
+
             return true;
         }
 
         private bool IsPointInPolygon(Point2D pt, double[] constant, double[] multiple)
         {
-            int i, j = _points.Length - 1;
+            int  i, j     = _points.Length - 1;
             bool oddNodes = false;
 
             for (i = 0; i < _points.Length; i++)
             {
                 if ((_points[i].Y < pt.Y && _points[j].Y >= pt.Y
-                || _points[j].Y < pt.Y && _points[i].Y >= pt.Y))
+                     || _points[j].Y < pt.Y && _points[i].Y >= pt.Y))
                 {
                     oddNodes ^= (pt.Y * multiple[i] + constant[i] < pt.X);
                 }
+
                 j = i;
             }
 
@@ -94,9 +98,11 @@ namespace Framework.Tools.Drawing
                 }
                 else
                 {
-                    constant[i] = _points[i].X - (_points[i].Y * _points[j].X) / (_points[j].Y - _points[i].Y) + (_points[i].Y * _points[i].X) / (_points[j].Y - _points[i].Y);
+                    constant[i] = _points[i].X - (_points[i].Y * _points[j].X) / (_points[j].Y - _points[i].Y) +
+                                  (_points[i].Y * _points[i].X) / (_points[j].Y - _points[i].Y);
                     multiple[i] = (_points[j].X - _points[i].X) / (_points[j].Y - _points[i].Y);
                 }
+
                 j = i;
             }
 

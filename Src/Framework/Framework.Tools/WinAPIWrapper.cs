@@ -21,14 +21,14 @@ using System.Runtime.InteropServices;
 
 namespace Framework.Tools
 {
-	public class WinAPIWrapper
+    public class WinAPIWrapper
     {
         [Flags]
         public enum EXECUTION_STATE : uint
         {
-            ES_NONE = 0,
-            ES_CONTINUOUS = 0x80000000,
-            ES_SYSTEM_REQUIRED = 0x00000001,
+            ES_NONE             = 0,
+            ES_CONTINUOUS       = 0x80000000,
+            ES_SYSTEM_REQUIRED  = 0x00000001,
             ES_DISPLAY_REQUIRED = 0x00000002
         }
 
@@ -41,13 +41,14 @@ namespace Framework.Tools
             {
                 return SetThreadExecutionState(esFlags);
             }
+
             return uint.MaxValue;
         }
 
         public static void KeepAlive()
         {
             OsSetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_SYSTEM_REQUIRED |
-                                        EXECUTION_STATE.ES_CONTINUOUS);
+                                      EXECUTION_STATE.ES_CONTINUOUS);
         }
 
         public static void AllowIdle()

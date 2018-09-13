@@ -29,27 +29,28 @@ namespace Framework.Test.Drawing
         {
             return new Polygon2D
             {
-                Points = new []
+                Points = new[]
                 {
-                    new Point2D { X=0, Y=0 },
-                    new Point2D { X=100, Y=0 },
-                    new Point2D { X=100, Y=100 },
-                    new Point2D { X=0, Y=100 },
-                    new Point2D { X=0, Y=0 }
+                    new Point2D { X = 0, Y   = 0 },
+                    new Point2D { X = 100, Y = 0 },
+                    new Point2D { X = 100, Y = 100 },
+                    new Point2D { X = 0, Y   = 100 },
+                    new Point2D { X = 0, Y   = 0 }
                 }
             };
         }
+
         private static Polygon2D CreateOpenPolygon()
         {
             return new Polygon2D
             {
-                Points = new []
+                Points = new[]
                 {
-                    new Point2D { X=0, Y=0 },
-                    new Point2D { X=100, Y=0 },
-                    new Point2D { X=100, Y=100 },
-                    new Point2D { X=0, Y=100 }
-                 }
+                    new Point2D { X = 0, Y   = 0 },
+                    new Point2D { X = 100, Y = 0 },
+                    new Point2D { X = 100, Y = 100 },
+                    new Point2D { X = 0, Y   = 100 }
+                }
             };
         }
 
@@ -64,7 +65,7 @@ namespace Framework.Test.Drawing
         public void PointInPolygonOnLine()
         {
             Polygon2D polygon = CreateClosedPolygon();
-            polygon.IsPointInPolygon(new Point2D { X = 100, Y = 2 }).Should().Be(true,"point on line is in polygon");
+            polygon.IsPointInPolygon(new Point2D { X = 100, Y = 2 }).Should().Be(true, "point on line is in polygon");
         }
 
         [TestMethod]
@@ -81,7 +82,7 @@ namespace Framework.Test.Drawing
         public void MinMax()
         {
             Polygon2D polygon = CreateClosedPolygon();
-            polygon.MaxX.Should().BeApproximately(100.0,double.Epsilon);
+            polygon.MaxX.Should().BeApproximately(100.0, double.Epsilon);
             polygon.MaxY.Should().BeApproximately(100.0, double.Epsilon);
             polygon.MinX.Should().BeApproximately(0.0, double.Epsilon);
             polygon.MinY.Should().BeApproximately(0.0, double.Epsilon);

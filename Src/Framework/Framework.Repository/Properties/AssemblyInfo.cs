@@ -22,4 +22,3 @@ using System.Runtime.InteropServices;
 //[assembly: AssemblyProduct("Framework.EF")]
 
 [assembly: Guid("0e649aba-8872-4634-9be8-083e34f3c339")]
-

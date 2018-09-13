@@ -37,71 +37,76 @@ namespace CNCLib.Wpf.WebAPI.Start
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-	{
-		private void AppStartup(object sender, StartupEventArgs e)
-		{
+    {
+        private void AppStartup(object sender, StartupEventArgs e)
+        {
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
-                XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+                                                                                                                       XmlLanguage
+                                                                                                                           .GetLanguage(CultureInfo
+                                                                                                                                            .CurrentCulture
+                                                                                                                                            .IetfLanguageTag)));
 
             Dependency.Initialize(new LiveDependencyProvider());
 
-		    Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
+            Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
 
             Dependency.Container.RegisterTypesIncludingInternals(
-                typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
-                //				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
-                typeof(MachineService).Assembly,
-				typeof(Logic.Client.DynItemController).Assembly);
+                                                                 typeof(Framework.Arduino.SerialCommunication.Serial)
+                                                                     .Assembly,
+                                                                 //				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
+                                                                 typeof(MachineService).Assembly,
+                                                                 typeof(Logic.Client.DynItemController).Assembly);
             //			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-		    Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
-		    Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
+            Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
+            Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
 
             Dependency.Container.RegisterTypesByName(
-                n => n.EndsWith("ViewModel"),
-                typeof(ViewModels.MachineViewModel).Assembly,
-                typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+                                                     n => n.EndsWith("ViewModel"),
+                                                     typeof(ViewModels.MachineViewModel).Assembly,
+                                                     typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
             var config = new MapperConfiguration(cfg =>
-				{
+            {
 //					cfg.AddProfile<LogicAutoMapperProfile>();
-					cfg.AddProfile<WpfAutoMapperProfile>();
-                    cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                cfg.AddProfile<WpfAutoMapperProfile>();
+                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+            });
+            config.AssertConfigurationIsValid();
 
-                });
-			config.AssertConfigurationIsValid();
+            IMapper mapper = config.CreateMapper();
+            Dependency.Container.RegisterInstance(mapper);
 
-			IMapper mapper = config.CreateMapper();
-			Dependency.Container.RegisterInstance(mapper);
-
-		    ICNCLibUserContext userContext = new CNCLibUserContext();
-		    Dependency.Container.RegisterInstance(userContext);
+            ICNCLibUserContext userContext = new CNCLibUserContext();
+            Dependency.Container.RegisterInstance(userContext);
 
             // Open WebAPI Connection
             //
             bool ok = Task.Run(async () =>
-			{
-				try
-				{
-					using (var controller = Dependency.Resolve<IMachineService>())
-					{
-						var m = await controller.Get(1000000);
+            {
+                try
+                {
+                    using (var controller = Dependency.Resolve<IMachineService>())
+                    {
+                        var m = await controller.Get(1000000);
 /*
 						if (m == -1)
 						{
 							throw new ArgumentException("cannot connect to service");
 						}
 */
-					}
-					return true;
-				}
-				catch (Exception ex)
-				{
-					MessageBox.Show($"Cannot connect to WebAPI: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-					Current.Shutdown();
-					return false;
-				}
-			}).ConfigureAwait(true).GetAwaiter().GetResult();
-		}
-	}
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Cannot connect to WebAPI: {ex.Message}", "Error", MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+                    Current.Shutdown();
+                    return false;
+                }
+            }).ConfigureAwait(true).GetAwaiter().GetResult();
+        }
+    }
 }

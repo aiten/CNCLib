@@ -24,58 +24,58 @@ using Framework.Wpf.ViewModels;
 namespace CNCLib.Wpf.ViewModels
 {
     public class ManualControlViewModel : BaseViewModel, IManualControlViewModel
-	{
-		#region crt
+    {
+        #region crt
 
-		public ManualControlViewModel()
-		{
-			AxisX = new AxisViewModel(this)
-			{
-				AxisIndex = 0
-			};
-			AxisY = new AxisViewModel(this)
-			{
-				AxisIndex = 1
-			};
-			AxisZ = new AxisViewModel(this)
-			{
-				AxisIndex = 2,
-				HomeIsMax = true
-			};
-			AxisA = new AxisViewModel(this)
-			{
-				AxisIndex = 3
-			};
-			AxisB = new AxisViewModel(this)
-			{
-				AxisIndex = 4
-			};
-			AxisC = new AxisViewModel(this)
-			{
-				AxisIndex = 5
-			};
+        public ManualControlViewModel()
+        {
+            AxisX = new AxisViewModel(this)
+            {
+                AxisIndex = 0
+            };
+            AxisY = new AxisViewModel(this)
+            {
+                AxisIndex = 1
+            };
+            AxisZ = new AxisViewModel(this)
+            {
+                AxisIndex = 2,
+                HomeIsMax = true
+            };
+            AxisA = new AxisViewModel(this)
+            {
+                AxisIndex = 3
+            };
+            AxisB = new AxisViewModel(this)
+            {
+                AxisIndex = 4
+            };
+            AxisC = new AxisViewModel(this)
+            {
+                AxisIndex = 5
+            };
 
             Move = new MoveViewModel(this);
 
             CommandHistory = new CommandHistoryViewModel(this);
 
-			SD = new SDViewModel(this);
+            SD = new SDViewModel(this);
 
-			DirectCommand = new DirectCommandViewModel(this);
+            DirectCommand = new DirectCommandViewModel(this);
 
-			Shift = new ShiftViewModel(this);
+            Shift = new ShiftViewModel(this);
 
-			Tool = new ToolViewModel(this);
+            Tool = new ToolViewModel(this);
 
-			Rotate = new RotateViewModel(this);
+            Rotate = new RotateViewModel(this);
 
             Custom = new CustomViewModel(this);
 
             WorkOffset = new WorkOffsetViewModel(this);
 
-		    Global.Instance.Com.LocalCom.CommandQueueEmpty += OnCommandQueueEmpty;
-		    Global.Instance.Com.RemoteCom.CommandQueueEmpty += OnCommandQueueEmpty;
-		}
+            Global.Instance.Com.LocalCom.CommandQueueEmpty  += OnCommandQueueEmpty;
+            Global.Instance.Com.RemoteCom.CommandQueueEmpty += OnCommandQueueEmpty;
+        }
 
         #endregion
 
@@ -83,15 +83,15 @@ namespace CNCLib.Wpf.ViewModels
 
         public AxisViewModel AxisX { get; }
 
-		public AxisViewModel AxisY { get; }
+        public AxisViewModel AxisY { get; }
 
-		public AxisViewModel AxisZ { get; }
+        public AxisViewModel AxisZ { get; }
 
-		public AxisViewModel AxisA { get; }
+        public AxisViewModel AxisA { get; }
 
-		public AxisViewModel AxisB { get; }
-		
-		public AxisViewModel AxisC { get; }
+        public AxisViewModel AxisB { get; }
+
+        public AxisViewModel AxisC { get; }
 
         #endregion
 
@@ -105,44 +105,41 @@ namespace CNCLib.Wpf.ViewModels
 
         public CommandHistoryViewModel CommandHistory { get; }
 
-		#endregion
+        #endregion
 
-		#region SD_VM
+        #region SD_VM
 
-		public SDViewModel SD { get; } 
-
-		#endregion
-
-		#region DirectCommandVM
-
-		public DirectCommandViewModel DirectCommand { get; }
-
-		#endregion
-
-		#region ShiftVM
-
-		public ShiftViewModel Shift { get; }
+        public SDViewModel SD { get; }
 
         #endregion
 
-	    #region WorkOffsetVM
+        #region DirectCommandVM
 
-	    public WorkOffsetViewModel WorkOffset { get; }
+        public DirectCommandViewModel DirectCommand { get; }
 
-	    #endregion
+        #endregion
 
+        #region ShiftVM
+
+        public ShiftViewModel Shift { get; }
+
+        #endregion
+
+        #region WorkOffsetVM
+
+        public WorkOffsetViewModel WorkOffset { get; }
+
+        #endregion
 
         #region ToolVM
 
+        public ToolViewModel Tool { get; }
 
-        public ToolViewModel Tool { get; } 
+        #endregion
 
-		#endregion
+        #region RotateVM
 
-		#region RotateVM
-
-
-		public RotateViewModel Rotate { get; }
+        public RotateViewModel Rotate { get; }
 
         #endregion
 
@@ -154,52 +151,95 @@ namespace CNCLib.Wpf.ViewModels
 
         #region Properties
 
-	    public bool Connected => Global.Instance.Com.Current.IsConnected;
+        public bool Connected => Global.Instance.Com.Current.IsConnected;
 
-	    #endregion
+        #endregion
 
-		#region Interface Implementation
+        #region Interface Implementation
 
-		public void SetPositions(decimal[] positions, int positionIdx)
-		{
-			if (positionIdx == 0)
-			{
-				if (positions.Length >= 1) AxisX.Pos = positions[0].ToString();
-				if (positions.Length >= 2) AxisY.Pos = positions[1].ToString();
-				if (positions.Length >= 3) AxisZ.Pos = positions[2].ToString();
-				if (positions.Length >= 4) AxisA.Pos = positions[3].ToString();
-				if (positions.Length >= 5) AxisB.Pos = positions[4].ToString();
-				if (positions.Length >= 6) AxisC.Pos = positions[5].ToString();
-			}
-			else if(positionIdx == 1)
-			{
-				if (positions.Length >= 1) AxisX.RelPos = positions[0].ToString();
-				if (positions.Length >= 2) AxisY.RelPos = positions[1].ToString();
-				if (positions.Length >= 3) AxisZ.RelPos = positions[2].ToString();
-				if (positions.Length >= 4) AxisA.RelPos = positions[3].ToString();
-				if (positions.Length >= 5) AxisB.RelPos = positions[4].ToString();
-				if (positions.Length >= 6) AxisC.RelPos = positions[5].ToString();
-			}
-		}
-		public void RunAndUpdate(Action todo)
-		{
-			todo();
-		}
+        public void SetPositions(decimal[] positions, int positionIdx)
+        {
+            if (positionIdx == 0)
+            {
+                if (positions.Length >= 1)
+                {
+                    AxisX.Pos = positions[0].ToString();
+                }
 
-		private void OnCommandQueueEmpty(object sender, Framework.Arduino.SerialCommunication.SerialEventArgs arg)
-		{
-			CommandHistory.RefreshAfterCommand();
-		}
+                if (positions.Length >= 2)
+                {
+                    AxisY.Pos = positions[1].ToString();
+                }
 
-		public void RunInNewTask(Action todo)
-		{
-			Task.Run(() =>
-			{
-				RunAndUpdate(todo);
-			}
-			);
-		}
+                if (positions.Length >= 3)
+                {
+                    AxisZ.Pos = positions[2].ToString();
+                }
 
-		#endregion
-	}
+                if (positions.Length >= 4)
+                {
+                    AxisA.Pos = positions[3].ToString();
+                }
+
+                if (positions.Length >= 5)
+                {
+                    AxisB.Pos = positions[4].ToString();
+                }
+
+                if (positions.Length >= 6)
+                {
+                    AxisC.Pos = positions[5].ToString();
+                }
+            }
+            else if (positionIdx == 1)
+            {
+                if (positions.Length >= 1)
+                {
+                    AxisX.RelPos = positions[0].ToString();
+                }
+
+                if (positions.Length >= 2)
+                {
+                    AxisY.RelPos = positions[1].ToString();
+                }
+
+                if (positions.Length >= 3)
+                {
+                    AxisZ.RelPos = positions[2].ToString();
+                }
+
+                if (positions.Length >= 4)
+                {
+                    AxisA.RelPos = positions[3].ToString();
+                }
+
+                if (positions.Length >= 5)
+                {
+                    AxisB.RelPos = positions[4].ToString();
+                }
+
+                if (positions.Length >= 6)
+                {
+                    AxisC.RelPos = positions[5].ToString();
+                }
+            }
+        }
+
+        public void RunAndUpdate(Action todo)
+        {
+            todo();
+        }
+
+        private void OnCommandQueueEmpty(object sender, Framework.Arduino.SerialCommunication.SerialEventArgs arg)
+        {
+            CommandHistory.RefreshAfterCommand();
+        }
+
+        public void RunInNewTask(Action todo)
+        {
+            Task.Run(() => { RunAndUpdate(todo); });
+        }
+
+        #endregion
+    }
 }

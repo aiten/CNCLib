@@ -23,22 +23,30 @@ using System.Runtime.CompilerServices;
 
 namespace Framework.Wpf.Helpers
 {
-	public class NotificationObject : INotifyPropertyChanged
-	{
-		public event PropertyChangedEventHandler PropertyChanged;
+    public class NotificationObject : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
 
-		// Set Property if value is different
-		protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null) where T : IComparable
-		{
-			if (Equals(storage, value)) return false;	// ref equal
-			if (storage != null && storage.CompareTo(value) == 0) return false;	// logical equal
+        // Set Property if value is different
+        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+            where T : IComparable
+        {
+            if (Equals(storage, value))
+            {
+                return false; // ref equal
+            }
+
+            if (storage != null && storage.CompareTo(value) == 0)
+            {
+                return false; // logical equal
+            }
 
             storage = value;
-			RaisePropertyChanged(propertyName);
-			return true;
-		}
+            RaisePropertyChanged(propertyName);
+            return true;
+        }
 
-        protected bool SetProperty(Func<bool> equal, Action action,  [CallerMemberName] string propertyName = null)
+        protected bool SetProperty(Func<bool> equal, Action action, [CallerMemberName] string propertyName = null)
         {
             if (equal())
             {
@@ -51,21 +59,21 @@ namespace Framework.Wpf.Helpers
             return true;
         }
 
-		protected void OnProperty(Action action, [CallerMemberName] string propertyName = null)
-		{
-			action();
-			RaisePropertyChanged(propertyName);
-		}
+        protected void OnProperty(Action action, [CallerMemberName] string propertyName = null)
+        {
+            action();
+            RaisePropertyChanged(propertyName);
+        }
 
-		protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
-		{
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-		protected void OnPropertyChanged<TProperty>(Expression<Func<TProperty>> projection)
-		{
-			var memberExpression = (MemberExpression)projection.Body;
-			RaisePropertyChanged(memberExpression.Member.Name);
-		}
-	}
+        protected void OnPropertyChanged<TProperty>(Expression<Func<TProperty>> projection)
+        {
+            var memberExpression = (MemberExpression) projection.Body;
+            RaisePropertyChanged(memberExpression.Member.Name);
+        }
+    }
 }

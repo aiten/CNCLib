@@ -24,14 +24,15 @@ using CNCLib.Service.Contracts;
 namespace CNCLib.Service.WebAPI
 {
     public class EepromConfigurationService : ServiceBase, IEepromConfigurationService
-	{
-		protected override string Api => @"api/EepromConfiguration";
+    {
+        protected override string Api => @"api/EepromConfiguration";
 
         public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
         {
             using (HttpClient client = CreateHttpClient())
             {
-                string paramuri = $"teeth={param.Teeth}&toothsizeInMm={param.ToothsizeinMm}&microsteps={param.Microsteps}&stepsPerRotation={param.StepsPerRotation}&estimatedRotationSpeed={param.EstimatedRotationSpeed}&timeToAcc={param.TimeToAcc}&timeToDec={param.TimeToDec}";
+                string paramuri =
+                    $"teeth={param.Teeth}&toothsizeInMm={param.ToothsizeinMm}&microsteps={param.Microsteps}&stepsPerRotation={param.StepsPerRotation}&estimatedRotationSpeed={param.EstimatedRotationSpeed}&timeToAcc={param.TimeToAcc}&timeToDec={param.TimeToDec}";
                 HttpResponseMessage response = await client.GetAsync(Api + "/" + paramuri);
                 if (response.IsSuccessStatusCode)
                 {
@@ -39,11 +40,12 @@ namespace CNCLib.Service.WebAPI
                     return value;
                 }
             }
+
             return null;
         }
 
-		#region IDisposable Support
-        #endregion
+        #region IDisposable Support
 
+        #endregion
     }
 }

@@ -76,7 +76,5 @@ namespace Framework.Tools.Dependency
         /// Gets an enumeration containing all types registered with the dependency container.
         /// </summary>
         IEnumerable<Type> RegisteredTypes { get; }
-
-
     }
 }

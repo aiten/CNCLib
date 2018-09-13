@@ -51,7 +51,7 @@ namespace CNCLib.Serial.Server.Hubs
 
         public async Task Connected(int id)
         {
-            await Clients.All.SendAsync("connected",id);
+            await Clients.All.SendAsync("connected", id);
         }
 
         public async Task Disconnected(int id)

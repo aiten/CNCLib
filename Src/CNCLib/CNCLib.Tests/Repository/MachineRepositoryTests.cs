@@ -49,6 +49,7 @@ namespace CNCLib.Tests.Repository
         {
             return entity.MachineID;
         }
+
         protected override Machine SetEntityKey(Machine entity, int key)
         {
             entity.MachineID = key;
@@ -60,7 +61,13 @@ namespace CNCLib.Tests.Repository
             //entity1.Should().BeEquivalentTo(entity2, opts => 
             //    opts.Excluding(x => x.UserID)
             //);
-            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"MachineID", @"MachineCommandID", @"MachineInitCommandID" });
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2,
+                                                                                       new[]
+                                                                                       {
+                                                                                           @"MachineID",
+                                                                                           @"MachineCommandID",
+                                                                                           @"MachineInitCommandID"
+                                                                                       });
         }
 
         #endregion
@@ -100,45 +107,72 @@ namespace CNCLib.Tests.Repository
         public async Task AddUpdateDeleteTest()
         {
             await AddUpdateDelete(
-                () => CreateMachine(@"AddUpdateDeleteTest"),
-                (entity) => entity.Name = "DummyNameUpdate");
+                                  () => CreateMachine(@"AddUpdateDeleteTest"),
+                                  (entity) => entity.Name = "DummyNameUpdate");
         }
 
         [TestMethod]
         public async Task AddUpdateDeleteWithCommandAndInitCommandsTest()
         {
             await AddUpdateDelete(
-                () => AddMachinInitCommands((AddMachinCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))),
-                (entity) =>
-                {
-                    entity.Name = "DummyNameUpdate";
-                    entity.MachineInitCommands.Remove(entity.MachineInitCommands.First());
-                    entity.MachineInitCommands.Add(new MachineInitCommand() { CommandString = @"CommandStr", SeqNo = 2 });
+                                  () =>
+                                      AddMachinInitCommands((AddMachinCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest"))
+                                                            )),
+                                  (entity) =>
+                                  {
+                                      entity.Name = "DummyNameUpdate";
+                                      entity.MachineInitCommands.Remove(entity.MachineInitCommands.First());
+                                      entity.MachineInitCommands.Add(new MachineInitCommand()
+                                      {
+                                          CommandString = @"CommandStr",
+                                          SeqNo         = 2
+                                      });
 
-                    entity.MachineCommands.Remove(entity.MachineCommands.Last());
-                    entity.MachineCommands.Add(new MachineCommand() { CommandString = @"CommandStr", CommandName = "NewName", JoystickMessage = "Maxi", PosX = 2, PosY = 3});
-                });
+                                      entity.MachineCommands.Remove(entity.MachineCommands.Last());
+                                      entity.MachineCommands.Add(new MachineCommand()
+                                      {
+                                          CommandString   = @"CommandStr",
+                                          CommandName     = "NewName",
+                                          JoystickMessage = "Maxi",
+                                          PosX            = 2,
+                                          PosY            = 3
+                                      });
+                                  });
         }
 
         [TestMethod]
         public async Task AddUpdateDeleteWithCommandAndInitCommandsToEmptyTest()
         {
             await AddUpdateDelete(
-                () => AddMachinInitCommands((AddMachinCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))),
-                (entity) =>
-                {
-                    entity.Name = "DummyNameUpdate";
-                    entity.MachineInitCommands.Clear();
-                    entity.MachineCommands.Clear();
-                });
+                                  () =>
+                                      AddMachinInitCommands((AddMachinCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest"))
+                                                            )),
+                                  (entity) =>
+                                  {
+                                      entity.Name = "DummyNameUpdate";
+                                      entity.MachineInitCommands.Clear();
+                                      entity.MachineCommands.Clear();
+                                  });
         }
 
         [TestMethod]
         public async Task AddUpdateDeleteBulkTest()
         {
             await AddUpdateDeleteBulk(
-                () => new Machine[] { CreateMachine(@"AddUpdateDeleteBulkTest1"), CreateMachine(@"AddUpdateDeleteBulkTest2"), CreateMachine(@"AddUpdateDeleteBulkTest2") },
-                (entities) => { int i=0;foreach (var entity in entities) { entity.Name = $"DummyNameUpdate{i++}"; } });
+                                      () => new Machine[]
+                                      {
+                                          CreateMachine(@"AddUpdateDeleteBulkTest1"),
+                                          CreateMachine(@"AddUpdateDeleteBulkTest2"),
+                                          CreateMachine(@"AddUpdateDeleteBulkTest2")
+                                      },
+                                      (entities) =>
+                                      {
+                                          int i = 0;
+                                          foreach (var entity in entities)
+                                          {
+                                              entity.Name = $"DummyNameUpdate{i++}";
+                                          }
+                                      });
         }
 
 
@@ -151,51 +185,52 @@ namespace CNCLib.Tests.Repository
         #endregion
 
         private static Machine CreateMachine(string name)
-		{
-			var machine = new Machine
-			{
-				ComPort = "com47",
-				Axis = 2,
-				BaudRate = 6500,
-                DtrIsReset = true,
-                Name = name,
-				SizeX = 1m,
-				SizeY = 1m,
-				SizeZ = 1m,
-				SizeA = 1m,
-				SizeB = 1m,
-				SizeC = 1m,
-				BufferSize = 63,
-				CommandToUpper = true,
-				ProbeSizeX = 1m,
-				ProbeSizeY = 1m,
-				ProbeSizeZ = 1m,
-				ProbeDistUp = 1m,
-				ProbeDist = 1m,
-				ProbeFeed = 1m,
+        {
+            var machine = new Machine
+            {
+                ComPort             = "com47",
+                Axis                = 2,
+                BaudRate            = 6500,
+                DtrIsReset          = true,
+                Name                = name,
+                SizeX               = 1m,
+                SizeY               = 1m,
+                SizeZ               = 1m,
+                SizeA               = 1m,
+                SizeB               = 1m,
+                SizeC               = 1m,
+                BufferSize          = 63,
+                CommandToUpper      = true,
+                ProbeSizeX          = 1m,
+                ProbeSizeY          = 1m,
+                ProbeSizeZ          = 1m,
+                ProbeDistUp         = 1m,
+                ProbeDist           = 1m,
+                ProbeFeed           = 1m,
                 MachineInitCommands = new HashSet<MachineInitCommand>(),
-                MachineCommands = new HashSet<MachineCommand>()
-			};
-			return machine;
-		}
+                MachineCommands     = new HashSet<MachineCommand>()
+            };
+            return machine;
+        }
 
-		private static Machine AddMachinCommands(Machine machine)
-		{
-		    machine.MachineCommands = new List<MachineCommand>
-		    {
-		        new MachineCommand {CommandName = "Name1", CommandString = "Test1", Machine = machine},
-		        new MachineCommand {CommandName = "Name1", CommandString = "Test2", Machine = machine}
-		    };
-		    return machine;
-		}
-		private static Machine AddMachinInitCommands(Machine machine)
-		{
-		    machine.MachineInitCommands = new List<MachineInitCommand>
-		    {
-		        new MachineInitCommand {SeqNo = 0, CommandString = "Test1", Machine = machine},
-		        new MachineInitCommand {SeqNo = 1, CommandString = "Test2", Machine = machine}
-		    };
-		    return machine;
-		}
-	}
+        private static Machine AddMachinCommands(Machine machine)
+        {
+            machine.MachineCommands = new List<MachineCommand>
+            {
+                new MachineCommand { CommandName = "Name1", CommandString = "Test1", Machine = machine },
+                new MachineCommand { CommandName = "Name1", CommandString = "Test2", Machine = machine }
+            };
+            return machine;
+        }
+
+        private static Machine AddMachinInitCommands(Machine machine)
+        {
+            machine.MachineInitCommands = new List<MachineInitCommand>
+            {
+                new MachineInitCommand { SeqNo = 0, CommandString = "Test1", Machine = machine },
+                new MachineInitCommand { SeqNo = 1, CommandString = "Test2", Machine = machine }
+            };
+            return machine;
+        }
+    }
 }

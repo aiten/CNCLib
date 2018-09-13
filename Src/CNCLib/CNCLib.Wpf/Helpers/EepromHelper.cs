@@ -25,49 +25,52 @@ using CNCLib.Wpf.Models;
 namespace CNCLib.Wpf.Helpers
 {
     class EepromHelper
-	{
-		public async Task<Eeprom> ReadEepromAsync()
-		{
-			UInt32[] values = await new MachineGCodeHelper().GetEpromValuesAsync(MachineGCodeHelper.DefaultEpromTimeout);
-			if (values != null)
-			{
-				var ee = new EepromV1 { Values = values };
+    {
+        public async Task<Eeprom> ReadEepromAsync()
+        {
+            UInt32[] values =
+                await new MachineGCodeHelper().GetEpromValuesAsync(MachineGCodeHelper.DefaultEpromTimeout);
+            if (values != null)
+            {
+                var ee = new EepromV1 { Values = values };
 
-				if (ee.IsValid)
-				{
-					File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromRead.nc"), ee.ToGCode());
-					byte numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
+                if (ee.IsValid)
+                {
+                    File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromRead.nc"), ee.ToGCode());
+                    byte numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
 
-					var eeprom = Eeprom.Create(ee[EepromV1.EValueOffsets32.Signatrue],numaxis);
-					eeprom.Values = values;
+                    var eeprom = Eeprom.Create(ee[EepromV1.EValueOffsets32.Signatrue], numaxis);
+                    eeprom.Values = values;
                     eeprom.ReadFrom(ee);
 
-					return eeprom;
-				}
-			}
-			return null;
-		}
+                    return eeprom;
+                }
+            }
 
-		public async Task<bool> WriteEepromAsync(Eeprom EepromValue)
-		{
-			var ee = new EepromV1 { Values = EepromValue.Values };
+            return null;
+        }
 
-			if (ee.IsValid)
-			{
+        public async Task<bool> WriteEepromAsync(Eeprom EepromValue)
+        {
+            var ee = new EepromV1 { Values = EepromValue.Values };
+
+            if (ee.IsValid)
+            {
                 EepromValue.WriteTo(ee);
 
-				File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromWrite.nc"), ee.ToGCode());
+                File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromWrite.nc"), ee.ToGCode());
 
-				await new MachineGCodeHelper().WriteEepromValuesAsync(ee);
-				return true;
-			}
-			return false;
-		}
+                await new MachineGCodeHelper().WriteEepromValuesAsync(ee);
+                return true;
+            }
 
-		public async Task<bool> EraseEepromAsync()
-		{
-			await new MachineGCodeHelper().EraseEepromValuesAsync();
-			return true;
-		}
-	}
+            return false;
+        }
+
+        public async Task<bool> EraseEepromAsync()
+        {
+            await new MachineGCodeHelper().EraseEepromValuesAsync();
+            return true;
+        }
+    }
 }

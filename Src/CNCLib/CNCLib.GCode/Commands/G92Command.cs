@@ -19,24 +19,24 @@
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand]
-	public class G92Command : Command
+    [IsGCommand]
+    public class G92Command : Command
     {
-		#region crt + factory
+        #region crt + factory
 
-		public G92Command()
-		{
-			Code = GetType().Name.Substring(0, 3);
-		}
+        public G92Command()
+        {
+            Code = GetType().Name.Substring(0, 3);
+        }
 
-		#endregion
+        #endregion
 
-		#region GCode
+        #region GCode
 
-		#endregion
+        #endregion
 
-		#region Draw
+        #region Draw
 
-		#endregion
-	}
+        #endregion
+    }
 }

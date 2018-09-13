@@ -29,9 +29,9 @@ using Framework.Tools.Dependency;
 
 namespace Framework.Arduino.SerialCommunication
 {
-	public static class SerialExtension
+    public static class SerialExtension
     {
-        const int DefaultTimeout = 10*60*1000;
+        const int DefaultTimeout = 10 * 60 * 1000;
 
         /// <summary>
         /// Send command and wait until the command is transfered and we got a reply (no command pending)
@@ -39,14 +39,17 @@ namespace Framework.Arduino.SerialCommunication
         /// <param name="line">command line to send</param>
         public static IEnumerable<SerialCommand> SendCommand(this ISerial serial, string line)
         {
-            return serial.SendCommandsAsync(new string[] { line }, DefaultTimeout).ConfigureAwait(false).GetAwaiter().GetResult();
+            return serial.SendCommandsAsync(new string[] { line }, DefaultTimeout).ConfigureAwait(false).GetAwaiter()
+                .GetResult();
         }
 
         /// <summary>
         /// Send command and wait until the command is transfered and we got a reply (no command pending)
         /// </summary>
         /// <param name="line">command line to send</param>
-        public static async Task<IEnumerable<SerialCommand>> SendCommandAsync(this ISerial serial, string line, int waitForMilliseconds = DefaultTimeout)
+        public static async Task<IEnumerable<SerialCommand>> SendCommandAsync(this ISerial serial, string line,
+                                                                              int waitForMilliseconds =
+                                                                                  DefaultTimeout)
         {
             return await serial.SendCommandsAsync(new string[] { line }, waitForMilliseconds);
         }
@@ -74,7 +77,9 @@ namespace Framework.Arduino.SerialCommunication
         /// Send commands stored in a file. Wait until the commands are transferrd and we got a reply (no command pending)
         /// </summary>
         /// <param name="filename">used for a StreamReader</param>
-        public static async Task<IEnumerable<SerialCommand>> SendFileAsync(this ISerial serial, string filename, int waitForMilliseconds = DefaultTimeout)
+        public static async Task<IEnumerable<SerialCommand>> SendFileAsync(this ISerial serial, string filename,
+                                                                           int waitForMilliseconds =
+                                                                               DefaultTimeout)
         {
             var list = await serial.QueueFileAsync(filename);
             await serial.WaitUntilQueueEmptyAsync(waitForMilliseconds);
@@ -90,11 +95,12 @@ namespace Framework.Arduino.SerialCommunication
             using (var sr = new StreamReader(filename))
             {
                 string line;
-                var lines = new List<string>();
+                var    lines = new List<string>();
                 while ((line = sr.ReadLine()) != null)
                 {
                     lines.Add(line);
                 }
+
                 return await serial.QueueCommandsAsync(lines.ToArray());
             }
         }
@@ -107,7 +113,8 @@ namespace Framework.Arduino.SerialCommunication
         /// <param name="line">command line</param>
         /// <param name="waitForMilliseconds"></param>
         /// <returns>ok result from arduino or empty(if error)</returns>
-        public static async Task<string> SendCommandAndReadOKReplyAsync(this ISerial serial, string line, int waitForMilliseconds)
+        public static async Task<string> SendCommandAndReadOKReplyAsync(this ISerial serial, string line,
+                                                                        int          waitForMilliseconds)
         {
             var ret = await serial.SendCommandAsync(line, waitForMilliseconds);
             if (ret.Any())
@@ -118,6 +125,7 @@ namespace Framework.Arduino.SerialCommunication
                     return last.ResultText;
                 }
             }
+
             return null;
         }
 
@@ -144,8 +152,10 @@ namespace Framework.Arduino.SerialCommunication
             {
                 foreach (SerialCommand cmds in serial.CommandHistoryCopy)
                 {
-                    sr.Write(cmds.SentTime); sr.Write(":");
-                    sr.Write(cmds.CommandText); sr.Write(" => ");
+                    sr.Write(cmds.SentTime);
+                    sr.Write(":");
+                    sr.Write(cmds.CommandText);
+                    sr.Write(" => ");
                     sr.WriteLine(cmds.ResultText);
                 }
             }

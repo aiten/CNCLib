@@ -27,19 +27,19 @@ using CNCLib.Logic.Manager;
 namespace CNCLib.Tests
 {
     public abstract class CNCUnitTest : UnitTestBase
-	{
-		protected override void InitializeCoreDependencies()
-		{
-			var config = new MapperConfiguration(cfg =>
-			{
-				cfg.AddProfile<LogicAutoMapperProfile>();
-				cfg.AddProfile<WpfAutoMapperProfile>();
+    {
+        protected override void InitializeCoreDependencies()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<LogicAutoMapperProfile>();
+                cfg.AddProfile<WpfAutoMapperProfile>();
                 cfg.AddProfile<GCodeGUIAutoMapperProfile>();
             });
-			config.AssertConfigurationIsValid();
+            config.AssertConfigurationIsValid();
 
-			IMapper mapper = config.CreateMapper();
-			Dependency.Container.RegisterInstance(mapper);
-		}
-	}
+            IMapper mapper = config.CreateMapper();
+            Dependency.Container.RegisterInstance(mapper);
+        }
+    }
 }

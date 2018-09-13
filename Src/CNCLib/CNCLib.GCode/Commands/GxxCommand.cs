@@ -19,30 +19,37 @@
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand("GXX")]
-	public class GxxCommand : Command
+    [IsGCommand("GXX")]
+    public class GxxCommand : Command
     {
-		#region crt + factory
+        #region crt + factory
 
-		public GxxCommand()
-		{
-			Code = "";
-		}
+        public GxxCommand()
+        {
+            Code = "";
+        }
 
-		#endregion
+        #endregion
 
         #region GCode
-        public override void SetCode(string code) { Code = code; }
+
+        public override void SetCode(string code)
+        {
+            Code = code;
+        }
 
         #endregion
 
         #region Draw
+
         public override void Draw(IOutputCommand output, CommandState state, object param)
         {
-            if (state.UseLaser == false && string.IsNullOrEmpty(GCodeAdd) == false && GCodeAdd.StartsWith("; LaserOnCommand"))
+            if (state.UseLaser == false && string.IsNullOrEmpty(GCodeAdd) == false &&
+                GCodeAdd.StartsWith("; LaserOnCommand"))
             {
                 state.UseLaser = true;
             }
+
             base.Draw(output, state, param);
         }
 

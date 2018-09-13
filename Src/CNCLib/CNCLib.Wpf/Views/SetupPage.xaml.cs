@@ -28,9 +28,9 @@ namespace CNCLib.Wpf.Views
     /// Interaction logic for SetupPage.xaml
     /// </summary>
     public partial class SetupPage : Page
-	{
-		public SetupPage()
-		{
+    {
+        public SetupPage()
+        {
             var vm = Dependency.Resolve<SetupWindowViewModel>();
             DataContext = vm;
 
@@ -48,41 +48,39 @@ namespace CNCLib.Wpf.Views
 
 			Loaded += loaded;
 */
-			if (vm.EditMachine == null)
-			{
-				vm.EditMachine = mID =>  
-				{
-				    var dlg = new MachineView();
+            if (vm.EditMachine == null)
+            {
+                vm.EditMachine = mID =>
+                {
+                    var dlg = new MachineView();
                     if (dlg.DataContext is MachineViewModel vmdlg)
                     {
-                        Task.Run(() =>
-                        {
-                            vmdlg.LoadMachine(mID).ConfigureAwait(false).GetAwaiter().GetResult();
-                        }).Wait(); 
+                        Task.Run(() => { vmdlg.LoadMachine(mID).ConfigureAwait(false).GetAwaiter().GetResult(); })
+                            .Wait();
                         dlg.ShowDialog();
                     }
                 };
-			}
+            }
 
-			if (vm.ShowEeprom == null)
-			{
-				vm.ShowEeprom = () =>
-				{
-				    var dlg = new EepromView();
-				    var vmdlg = dlg.DataContext as EepromViewModel;
-				    dlg.ShowDialog();
-				};
-			}
+            if (vm.ShowEeprom == null)
+            {
+                vm.ShowEeprom = () =>
+                {
+                    var dlg   = new EepromView();
+                    var vmdlg = dlg.DataContext as EepromViewModel;
+                    dlg.ShowDialog();
+                };
+            }
 
-			if (vm.EditJoystick == null)
-			{
-				vm.EditJoystick = () =>
-				{
-				    var dlg = new JoystickView();
-				    var vmdlg = dlg.DataContext as JoystickView;
-				    dlg.ShowDialog();
-				};
-			}
-		}
-	}
+            if (vm.EditJoystick == null)
+            {
+                vm.EditJoystick = () =>
+                {
+                    var dlg   = new JoystickView();
+                    var vmdlg = dlg.DataContext as JoystickView;
+                    dlg.ShowDialog();
+                };
+            }
+        }
+    }
 }

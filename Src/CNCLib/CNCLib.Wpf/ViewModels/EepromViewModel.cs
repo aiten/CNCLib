@@ -27,31 +27,30 @@ using Framework.Wpf.ViewModels;
 namespace CNCLib.Wpf.ViewModels
 {
     public class EepromViewModel : BaseViewModel, IDisposable
-	{
-		#region crt
+    {
+        #region crt
 
-		bool _validReadEeprom;
+        bool _validReadEeprom;
 
-		#endregion
+        #endregion
 
-		#region dispose
+        #region dispose
 
-		public void Dispose()
-		{
-		}
+        public void Dispose() { }
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-		private Eeprom _eeprom = new Eeprom();
-		public Eeprom EepromValue
-		{
-			get => _eeprom;
-		    set { SetProperty(() => _eeprom == value, () => _eeprom = value); }
-		}
+        private Eeprom _eeprom = new Eeprom();
 
-	    #endregion
+        public Eeprom EepromValue
+        {
+            get => _eeprom;
+            set { SetProperty(() => _eeprom == value, () => _eeprom = value); }
+        }
+
+        #endregion
 
         #region Operations
 
@@ -61,65 +60,68 @@ namespace CNCLib.Wpf.ViewModels
         }
 
         public async void WriteEeprom()
-		{
-			if (MessageBox?.Invoke("Send 'Write EEprom commands' to machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
-			{
-				if (await new EepromHelper().WriteEepromAsync(EepromValue))
-				{
+        {
+            if (MessageBox?.Invoke("Send 'Write EEprom commands' to machine?", "CNCLib", MessageBoxButton.OKCancel,
+                                   MessageBoxImage.Question) == MessageBoxResult.OK)
+            {
+                if (await new EepromHelper().WriteEepromAsync(EepromValue))
+                {
                     MessageRestart();
                     CloseAction();
-				}
-			}
-		}
+                }
+            }
+        }
 
-		public async void ReadEeprom()
-		{
-			var eeprom = await new EepromHelper().ReadEepromAsync();
-			if (eeprom != null)
-			{
-				_validReadEeprom = true;
-				EepromValue = eeprom;
-			}
-			else
-			{
-				EepromValue = Eeprom.Create(0,0);
-			}
-		}
+        public async void ReadEeprom()
+        {
+            var eeprom = await new EepromHelper().ReadEepromAsync();
+            if (eeprom != null)
+            {
+                _validReadEeprom = true;
+                EepromValue      = eeprom;
+            }
+            else
+            {
+                EepromValue = Eeprom.Create(0, 0);
+            }
+        }
 
-		public async void EraseEeprom()
-		{
-			if (MessageBox?.Invoke("Send 'Erase EEprom command' to machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
-			{
-				if (await new EepromHelper().EraseEepromAsync())
-				{
+        public async void EraseEeprom()
+        {
+            if (MessageBox?.Invoke("Send 'Erase EEprom command' to machine?", "CNCLib", MessageBoxButton.OKCancel,
+                                   MessageBoxImage.Question) == MessageBoxResult.OK)
+            {
+                if (await new EepromHelper().EraseEepromAsync())
+                {
                     MessageRestart();
                     CloseAction();
-				}
-			}
-		}
+                }
+            }
+        }
 
-		public bool CanReadEeprom()
-		{
-			return Global.Instance.Com.Current.IsConnected;
-		}
+        public bool CanReadEeprom()
+        {
+            return Global.Instance.Com.Current.IsConnected;
+        }
 
-		public bool CanWriteEeprom()
-		{
-			return Global.Instance.Com.Current.IsConnected && _validReadEeprom;
-		}
-		public bool CanEraseEeprom()
-		{
-			return Global.Instance.Com.Current.IsConnected;
-		}
+        public bool CanWriteEeprom()
+        {
+            return Global.Instance.Com.Current.IsConnected && _validReadEeprom;
+        }
 
-		#endregion
+        public bool CanEraseEeprom()
+        {
+            return Global.Instance.Com.Current.IsConnected;
+        }
 
-		#region Commands
+        #endregion
 
-		public ICommand ReadEepromCommand => new DelegateCommand(ReadEeprom, CanReadEeprom);
+        #region Commands
+
+        public ICommand ReadEepromCommand  => new DelegateCommand(ReadEeprom,  CanReadEeprom);
         public ICommand WriteEepromCommand => new DelegateCommand(WriteEeprom, CanWriteEeprom);
-		public ICommand EraseEepromCommand => new DelegateCommand(EraseEeprom, CanEraseEeprom);
+        public ICommand EraseEepromCommand => new DelegateCommand(EraseEeprom, CanEraseEeprom);
 
-		#endregion
-	}
+        #endregion
+    }
 }

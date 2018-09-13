@@ -34,9 +34,9 @@ namespace CNCLib.Wpf.Views
     /// Interaction logic for PreviewPage.xaml
     /// </summary>
     public partial class PreviewPage : Page
-	{
+    {
         public PreviewPage()
-		{
+        {
             var vm = Dependency.Resolve<PreviewViewModel>();
             DataContext = vm;
 
@@ -47,68 +47,71 @@ namespace CNCLib.Wpf.Views
             ToggleSettings();
 
             Global.Instance.PropertyChanged += (sender, e) =>
-		    {
-		        if (e.PropertyName == nameof(Global.SizeX) || e.PropertyName == nameof(Global.SizeY))
-		        {
-		            gcode.SizeX = (double) Global.Instance.SizeX;
-		            gcode.SizeY = (double) Global.Instance.SizeY;
-		        }
-		    };
+            {
+                if (e.PropertyName == nameof(Global.SizeX) || e.PropertyName == nameof(Global.SizeY))
+                {
+                    gcode.SizeX = (double) Global.Instance.SizeX;
+                    gcode.SizeY = (double) Global.Instance.SizeY;
+                }
+            };
 
-			if (vm.GetLoadInfo == null)
-				vm.GetLoadInfo = arg =>
-				    {
-				        var dlg = new LoadOptionView();
-				        var vmdlg = dlg.DataContext as LoadOptionViewModel;
-				        if (vmdlg != null)
-				        {
-				            vmdlg.LoadOptionsValue =
-				                Dependency.Resolve<IMapper>().Map<GCode.GUI.Models.LoadOptions>(arg.LoadOption);
-				            vmdlg.UseAzure = arg.UseAzure;
-				            if (!dlg.ShowDialog() ?? false)
-				                return false;
+            if (vm.GetLoadInfo == null)
+            {
+                vm.GetLoadInfo = arg =>
+                {
+                    var dlg   = new LoadOptionView();
+                    var vmdlg = dlg.DataContext as LoadOptionViewModel;
+                    if (vmdlg != null)
+                    {
+                        vmdlg.LoadOptionsValue =
+                            Dependency.Resolve<IMapper>().Map<GCode.GUI.Models.LoadOptions>(arg.LoadOption);
+                        vmdlg.UseAzure = arg.UseAzure;
+                        if (!dlg.ShowDialog() ?? false)
+                        {
+                            return false;
+                        }
 
-				            arg.LoadOption = Dependency.Resolve<IMapper>()
-				                .Map<Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
-				            arg.UseAzure = vmdlg.UseAzure;
-				        }
-				        return true;
-				    };
+                        arg.LoadOption = Dependency.Resolve<IMapper>()
+                            .Map<Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
+                        arg.UseAzure = vmdlg.UseAzure;
+                    }
 
-
-			if (vm.RefreshPreview == null)
-			{
-				vm.RefreshPreview = () =>
-				{
-				    gcode.Dispatcher.Invoke(() => gcode.InvalidateVisual());
-				};
-			}
-		}
-
-	    private bool _isSettingsVisible = true;
-
-	    void ToggleSettings()
-	    {
-	        if (_isSettingsVisible)
-	        {
-	            _settings.Visibility = Visibility.Hidden;
-	            _settings.Width = 0;
-	            _toggle.Content = ">";
-	        }
-	        else
-	        {
-	            _settings.Visibility = Visibility.Visible;
-	            _settings.Width = 100;
-	            _toggle.Content = "<";
+                    return true;
+                };
             }
-            _isSettingsVisible = !_isSettingsVisible;
 
-	    }
-	    bool CanToggleSettings()
-	    {
-	        return true;
-	    }
+
+            if (vm.RefreshPreview == null)
+            {
+                vm.RefreshPreview = () => { gcode.Dispatcher.Invoke(() => gcode.InvalidateVisual()); };
+            }
+        }
+
+        private bool _isSettingsVisible = true;
+
+        void ToggleSettings()
+        {
+            if (_isSettingsVisible)
+            {
+                _settings.Visibility = Visibility.Hidden;
+                _settings.Width      = 0;
+                _toggle.Content      = ">";
+            }
+            else
+            {
+                _settings.Visibility = Visibility.Visible;
+                _settings.Width      = 100;
+                _toggle.Content      = "<";
+            }
+
+            _isSettingsVisible = !_isSettingsVisible;
+        }
+
+        bool CanToggleSettings()
+        {
+            return true;
+        }
 
         public ICommand ToggleSettingsCommand => new DelegateCommand(ToggleSettings, CanToggleSettings);
-	}
+    }
 }

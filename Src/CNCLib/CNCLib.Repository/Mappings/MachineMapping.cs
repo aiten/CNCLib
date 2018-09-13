@@ -22,7 +22,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CNCLib.Repository.Mappings
 {
-	public static class MachineMapping
+    public static class MachineMapping
     {
         public static void Map(this EntityTypeBuilder<Machine> entity)
         {
@@ -30,13 +30,9 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasKey(m => m.MachineID);
 
-            entity.Property(m => m.Name).
-                IsRequired().
-                HasMaxLength(64);
+            entity.Property(m => m.Name).IsRequired().HasMaxLength(64);
 
-            entity.Property(m => m.ComPort).
-                IsRequired().
-                HasMaxLength(32);
+            entity.Property(m => m.ComPort).IsRequired().HasMaxLength(32);
 
             entity.Property(m => m.Axis).IsRequired();
 
@@ -44,12 +40,10 @@ namespace CNCLib.Repository.Mappings
             entity.Property(m => m.SizeY).IsRequired();
             entity.Property(m => m.SizeZ).IsRequired();
 
-            entity.Property(m => m.CommandSyntax).
-                IsRequired();
+            entity.Property(m => m.CommandSyntax).IsRequired();
 
             entity.Property(m => m.UserID);
 //                IsOptional();
-
         }
     }
 }

@@ -23,9 +23,9 @@ using Framework.Contracts.Repository;
 
 namespace CNCLib.Repository.Contracts
 {
-	public interface IMachineRepository: ICRUDRepository<Entities.Machine, int>
+    public interface IMachineRepository : ICRUDRepository<Entities.Machine, int>
     {
-		Task<IEnumerable<Entities.MachineCommand>> GetMachineCommands(int machineID);
-		Task<IEnumerable<Entities.MachineInitCommand>> GetMachineInitCommands(int machineID);
+        Task<IEnumerable<Entities.MachineCommand>>     GetMachineCommands(int     machineID);
+        Task<IEnumerable<Entities.MachineInitCommand>> GetMachineInitCommands(int machineID);
     }
 }

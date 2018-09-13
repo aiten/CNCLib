@@ -26,82 +26,88 @@ namespace Framework.Wpf.Helpers
     public class DelegateCommandAsync<T> : ICommand
     {
         private readonly Func<CancellationToken, Task<T>> _command;
-        private readonly Func<bool> _canExecute;
-		private readonly CancelAsyncCommand _cancelCommand = new CancelAsyncCommand();
+        private readonly Func<bool>                       _canExecute;
+        private readonly CancelAsyncCommand               _cancelCommand = new CancelAsyncCommand();
 
-		public event EventHandler CanExecuteChanged
+        public event EventHandler CanExecuteChanged
         {
             add => CommandManager.RequerySuggested += value;
-		    remove => CommandManager.RequerySuggested -= value;
-		}
+            remove => CommandManager.RequerySuggested -= value;
+        }
 
-		protected void RaiseCanExecuteChanged()
-		{
-			CommandManager.InvalidateRequerySuggested();
-		}
-
-		public DelegateCommandAsync(Func<CancellationToken, Task<T>> command, Func<bool> canExecute = null)
+        protected void RaiseCanExecuteChanged()
         {
-            _command = command ?? throw new ArgumentNullException();
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        public DelegateCommandAsync(Func<CancellationToken, Task<T>> command, Func<bool> canExecute = null)
+        {
+            _command    = command ?? throw new ArgumentNullException();
             _canExecute = canExecute;
         }
 
         public async void Execute(object parameter)
         {
-			_cancelCommand.NotifyCommandStarting();
-			RaiseCanExecuteChanged();
-			await _command(_cancelCommand.Token);
-			_cancelCommand.NotifyCommandFinished();
-			RaiseCanExecuteChanged();
+            _cancelCommand.NotifyCommandStarting();
+            RaiseCanExecuteChanged();
+            await _command(_cancelCommand.Token);
+            _cancelCommand.NotifyCommandFinished();
+            RaiseCanExecuteChanged();
         }
 
-		public ICommand CancelCommand => _cancelCommand;
+        public ICommand CancelCommand => _cancelCommand;
 
         public bool CanExecute(object parameter)
         {
             return _canExecute == null || _canExecute();
         }
 
-		private sealed class CancelAsyncCommand : ICommand
-		{
-			private CancellationTokenSource _cts = new CancellationTokenSource();
-			private bool _commandExecuting;
+        private sealed class CancelAsyncCommand : ICommand
+        {
+            private CancellationTokenSource _cts = new CancellationTokenSource();
+            private bool                    _commandExecuting;
 
-			public event EventHandler CanExecuteChanged
-			{
-				add => CommandManager.RequerySuggested += value;
-			    remove => CommandManager.RequerySuggested -= value;
-			}
+            public event EventHandler CanExecuteChanged
+            {
+                add => CommandManager.RequerySuggested += value;
+                remove => CommandManager.RequerySuggested -= value;
+            }
 
-			private void RaiseCanExecuteChanged()
-			{
-				CommandManager.InvalidateRequerySuggested();
-			}
+            private void RaiseCanExecuteChanged()
+            {
+                CommandManager.InvalidateRequerySuggested();
+            }
 
-			public CancellationToken Token => _cts.Token;
+            public CancellationToken Token => _cts.Token;
 
-		    public void NotifyCommandStarting()
-			{
-				_commandExecuting = true;
-				if (!_cts.IsCancellationRequested)
-					return;
-				_cts = new CancellationTokenSource();
-				RaiseCanExecuteChanged();
-			}
-			public void NotifyCommandFinished()
-			{
-				_commandExecuting = false;
-				RaiseCanExecuteChanged();
-			}
-			public bool CanExecute(object parameter)
-			{
-				return _commandExecuting && !_cts.IsCancellationRequested;
-			}
-			public void Execute(object parameter)
-			{
-				_cts.Cancel();
-				RaiseCanExecuteChanged();
-			}
-		}
-	}
+            public void NotifyCommandStarting()
+            {
+                _commandExecuting = true;
+                if (!_cts.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                _cts = new CancellationTokenSource();
+                RaiseCanExecuteChanged();
+            }
+
+            public void NotifyCommandFinished()
+            {
+                _commandExecuting = false;
+                RaiseCanExecuteChanged();
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return _commandExecuting && !_cts.IsCancellationRequested;
+            }
+
+            public void Execute(object parameter)
+            {
+                _cts.Cancel();
+                RaiseCanExecuteChanged();
+            }
+        }
+    }
 }

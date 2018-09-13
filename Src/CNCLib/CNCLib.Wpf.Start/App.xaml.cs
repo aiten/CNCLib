@@ -47,72 +47,76 @@ namespace CNCLib.Wpf.Start
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-	{
-	    private ILogger _logger => LogManager.GetCurrentClassLogger();
+    {
+        private ILogger _logger => LogManager.GetCurrentClassLogger();
 
-	    private void AppStartup(object sender, StartupEventArgs e)
-		{
-		    _logger.Info(@"Starting ...");
+        private void AppStartup(object sender, StartupEventArgs e)
+        {
+            _logger.Info(@"Starting ...");
 
             string userprofilepath = Environment.GetEnvironmentVariable(@"USERPROFILE");
-			AppDomain.CurrentDomain.SetData("DataDirectory", userprofilepath);
+            AppDomain.CurrentDomain.SetData("DataDirectory", userprofilepath);
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
-                XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+                                                                                                                       XmlLanguage
+                                                                                                                           .GetLanguage(CultureInfo
+                                                                                                                                            .CurrentCulture
+                                                                                                                                            .IetfLanguageTag)));
 
-		    Dependency.Initialize(new LiveDependencyProvider());
+            Dependency.Initialize(new LiveDependencyProvider());
 
-		    Dependency.Container.RegisterType<ICurrentDateTime,CurrentDateTime>();
+            Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
 
-		    Dependency.Container.RegisterTypesIncludingInternals(
-                typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
-				typeof(MachineService).Assembly,
+            Dependency.Container.RegisterTypesIncludingInternals(
+                                                                 typeof(Framework.Arduino.SerialCommunication.Serial)
+                                                                     .Assembly,
+                                                                 typeof(MachineService).Assembly,
 //				typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
-				typeof(Repository.MachineRepository).Assembly,
-				typeof(Logic.Client.DynItemController).Assembly,
-				typeof(MachineManager).Assembly);
+                                                                 typeof(Repository.MachineRepository).Assembly,
+                                                                 typeof(Logic.Client.DynItemController).Assembly,
+                                                                 typeof(MachineManager).Assembly);
 
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-		    Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
-		    Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
+            Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
+            Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
 
             Dependency.Container.RegisterTypesByName(
-                n => n.EndsWith("ViewModel"),
-                typeof(ViewModels.MachineViewModel).Assembly,
-                typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+                                                     n => n.EndsWith("ViewModel"),
+                                                     typeof(ViewModels.MachineViewModel).Assembly,
+                                                     typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
             var config = new MapperConfiguration(cfg =>
-				{
-					cfg.AddProfile<LogicAutoMapperProfile>();
-					cfg.AddProfile<WpfAutoMapperProfile>();
-                    cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                });
-			config.AssertConfigurationIsValid();
+            {
+                cfg.AddProfile<LogicAutoMapperProfile>();
+                cfg.AddProfile<WpfAutoMapperProfile>();
+                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+            });
+            config.AssertConfigurationIsValid();
 
-			IMapper mapper = config.CreateMapper();
-			Dependency.Container.RegisterInstance(mapper);
+            IMapper mapper = config.CreateMapper();
+            Dependency.Container.RegisterInstance(mapper);
 
-		    ICNCLibUserContext userContext = new CNCLibUserContext();
-		    Dependency.Container.RegisterInstance(userContext);
+            ICNCLibUserContext userContext = new CNCLibUserContext();
+            Dependency.Container.RegisterInstance(userContext);
 
             // Open Database here
 
             string dbfile = userprofilepath + @"\CNCLib.db";
             try
-		    {
-                CNCLib.Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbfile,false, false);
-		    }
-		    catch (Exception ex)
-		    {
-		        _logger.Error(ex);
+            {
+                CNCLib.Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbfile, false, false);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
 
                 MessageBox.Show(
-		            $"Cannot create/connect database in {dbfile} \n\r" +
-		            ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-		        Current.Shutdown();
-		    }
-		}
-	}
+                                $"Cannot create/connect database in {dbfile} \n\r" +
+                                ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Current.Shutdown();
+            }
+        }
+    }
 }

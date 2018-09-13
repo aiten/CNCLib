@@ -21,11 +21,12 @@ using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.Models
 {
-	public class SentCNCCommand : NotificationObject
+    public class SentCNCCommand : NotificationObject
     {
         #region CommandText
 
         private string _commandText;
+
         public string CommandText
         {
             get => _commandText;
@@ -37,6 +38,7 @@ namespace CNCLib.Wpf.Models
         #region CommandDate
 
         private DateTime _commandDate;
+
         public DateTime CommandDate
         {
             get => _commandDate;
@@ -48,6 +50,7 @@ namespace CNCLib.Wpf.Models
         #region Result
 
         private string _result;
+
         public string Result
         {
             get => _result;
@@ -55,6 +58,5 @@ namespace CNCLib.Wpf.Models
         }
 
         #endregion
-
     }
 }

@@ -27,11 +27,9 @@ namespace Framework.Repository
         where TDbContext : DbContext
         where TEntity : class
     {
-        protected GetRepositoryBase(TDbContext dbContext) : base(dbContext)
-        {
-        }
+        protected GetRepositoryBase(TDbContext dbContext) : base(dbContext) { }
 
-        protected abstract IQueryable<TEntity> AddPrimaryWhere(IQueryable<TEntity> query, TKey key);
+        protected abstract IQueryable<TEntity> AddPrimaryWhere(IQueryable<TEntity>   query, TKey              key);
         protected abstract IQueryable<TEntity> AddPrimaryWhereIn(IQueryable<TEntity> query, IEnumerable<TKey> key);
 
         protected virtual IQueryable<TEntity> AddInclude(IQueryable<TEntity> query)
@@ -53,7 +51,7 @@ namespace Framework.Repository
 
         public async Task<TEntity> Get(TKey key)
         {
-            return await AddPrimaryWhere(AddInclude(Query),key).FirstOrDefaultAsync();
+            return await AddPrimaryWhere(AddInclude(Query), key).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<TEntity>> Get(IEnumerable<TKey> keys)

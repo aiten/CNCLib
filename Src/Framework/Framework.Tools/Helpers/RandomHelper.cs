@@ -41,7 +41,9 @@ namespace Framework.Tools.Helpers
 
             // Add random chars
             for (var i = 0; i < size; i++)
-                randStr.Append((char)(26 * _randomSeed.NextDouble() + start));
+            {
+                randStr.Append((char) (26 * _randomSeed.NextDouble() + start));
+            }
 
             return randStr.ToString();
         }
@@ -74,8 +76,9 @@ namespace Framework.Tools.Helpers
         public static DateTime RandomDate(DateTime from, DateTime to)
         {
             var range = new TimeSpan(to.Ticks - from.Ticks);
-            return from + new TimeSpan((long)(range.Ticks * _randomSeed.NextDouble()));
+            return from + new TimeSpan((long) (range.Ticks * _randomSeed.NextDouble()));
         }
+
 /*
         public static Color RandomColor()
         {

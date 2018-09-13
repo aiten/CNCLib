@@ -29,7 +29,7 @@ using CNCLib.Logic.Contracts.DTO;
 namespace CNCLib.GCode
 {
     public class GCodeLoad
-	{
+    {
         public async Task<CommandList> Load(LoadOptions loadinfo, bool azure)
         {
             if (azure)
@@ -40,13 +40,15 @@ namespace CNCLib.GCode
             {
                 LoadLocal(loadinfo);
             }
+
             return Commands;
         }
 
         private readonly string webserverurl = @"https://cnclibwebapi.azurewebsites.net";
-        private readonly string api = @"api/GCode";
+        private readonly string api          = @"api/GCode";
 
         #region private
+
         private CommandList Commands { get; } = new CommandList();
 
         private void LoadLocal(LoadOptions loadinfo)
@@ -63,8 +65,12 @@ namespace CNCLib.GCode
                 {
                     string gcodeFileName = Environment.ExpandEnvironmentVariables(loadinfo.GCodeWriteToFileName);
                     WriteGCodeFile(gcodeFileName);
-                    WriteCamBamFile(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb");
-                    WriteImportInfoFile(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl");
+                    WriteCamBamFile(load,
+                                    Path.GetDirectoryName(gcodeFileName) + @"\" +
+                                    Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb");
+                    WriteImportInfoFile(load,
+                                        Path.GetDirectoryName(gcodeFileName) + @"\" +
+                                        Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl");
                 }
             }
             catch (Exception)
@@ -80,7 +86,7 @@ namespace CNCLib.GCode
                 info.FileContent = File.ReadAllBytes(info.FileName);
 
                 HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
-                string[] gcode = await response.Content.ReadAsAsync<string[]>();
+                string[]            gcode    = await response.Content.ReadAsAsync<string[]>();
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -97,53 +103,60 @@ namespace CNCLib.GCode
         }
 
         private void WriteGCodeFile(string filename)
-		{
-			using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
-			{
-				Command last = null;
-				var state = new CommandState();
-				foreach (var r in Commands)
-				{
-					string[] cmds = r.GetGCodeCommands(last?.CalculatedEndPosition,state);
-					if (cmds != null)
-					{
-						foreach (string str in cmds)
-						{
-							sw.WriteLine(str);
-						}
-					}
-					last = r;
-				}
-			}
-		}
+        {
+            using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
+            {
+                Command last  = null;
+                var     state = new CommandState();
+                foreach (var r in Commands)
+                {
+                    string[] cmds = r.GetGCodeCommands(last?.CalculatedEndPosition, state);
+                    if (cmds != null)
+                    {
+                        foreach (string str in cmds)
+                        {
+                            sw.WriteLine(str);
+                        }
+                    }
 
-		private static void WriteCamBamFile(LoadBase load, string filename)
-		{
-			using (TextWriter writer = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
-			{
-				var x = new XmlSerializer(typeof(CamBam.CamBam));
-				x.Serialize(writer, load.CamBam);
-			}
-		}
+                    last = r;
+                }
+            }
+        }
+
+        private static void WriteCamBamFile(LoadBase load, string filename)
+        {
+            using (TextWriter writer = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
+            {
+                var x = new XmlSerializer(typeof(CamBam.CamBam));
+                x.Serialize(writer, load.CamBam);
+            }
+        }
 
         private void WriteImportInfoFile(LoadBase load, string filename)
-		{
-			if (Commands.Exists(c => !string.IsNullOrEmpty(c.ImportInfo)))
-			{
-				using (TextWriter writer = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
-				{
-					Commands.ForEach(c => { if (!string.IsNullOrEmpty(c.ImportInfo)) writer.WriteLine(c.ImportInfo); });
-				}
-			}
-		}
+        {
+            if (Commands.Exists(c => !string.IsNullOrEmpty(c.ImportInfo)))
+            {
+                using (TextWriter writer = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
+                {
+                    Commands.ForEach(c =>
+                    {
+                        if (!string.IsNullOrEmpty(c.ImportInfo))
+                        {
+                            writer.WriteLine(c.ImportInfo);
+                        }
+                    });
+                }
+            }
+        }
 
-		private HttpClient CreateHttpClient()
-		{
-		    var client = new HttpClient {BaseAddress = new Uri(webserverurl)};
-		    client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			return client;
-		}
+        private HttpClient CreateHttpClient()
+        {
+            var client = new HttpClient { BaseAddress = new Uri(webserverurl) };
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            return client;
+        }
 
         #endregion
     }

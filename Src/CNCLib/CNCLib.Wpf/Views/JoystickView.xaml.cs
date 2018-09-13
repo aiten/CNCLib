@@ -34,17 +34,19 @@ namespace CNCLib.Wpf.Views
 
             InitializeComponent();
 
-			if (vm.CloseAction == null)
-				vm.CloseAction = () => Close();
+            if (vm.CloseAction == null)
+            {
+                vm.CloseAction = () => Close();
+            }
 
-			Loaded += async (v, e) =>
-			{
-			    var vmm = DataContext as BaseViewModel;
-			    if (vmm != null)
-			    {
-			        await vmm.Loaded();
-			    }
-			};
-		}
-	}
+            Loaded += async (v, e) =>
+            {
+                var vmm = DataContext as BaseViewModel;
+                if (vmm != null)
+                {
+                    await vmm.Loaded();
+                }
+            };
+        }
+    }
 }

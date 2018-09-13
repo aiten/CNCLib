@@ -19,29 +19,30 @@
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand]
-	public class G19Command : Command
+    [IsGCommand]
+    public class G19Command : Command
     {
-		#region crt + factory
+        #region crt + factory
 
-		public G19Command()
-		{
-			Code = GetType().Name.Substring(0, 3);
-		}
+        public G19Command()
+        {
+            Code = GetType().Name.Substring(0, 3);
+        }
 
-		#endregion
+        #endregion
 
-		#region GCode
+        #region GCode
 
-		#endregion
+        #endregion
 
-		#region Draw
-		public override void Draw(IOutputCommand output, CommandState state, object param)
-		{
-			base.Draw(output, state, param);
-			state.CurrentPane = Pane.YZPane;
-		}
+        #region Draw
 
-		#endregion
-	}
+        public override void Draw(IOutputCommand output, CommandState state, object param)
+        {
+            base.Draw(output, state, param);
+            state.CurrentPane = Pane.YZPane;
+        }
+
+        #endregion
+    }
 }

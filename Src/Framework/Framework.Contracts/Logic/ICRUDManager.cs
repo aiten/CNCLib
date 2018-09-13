@@ -21,16 +21,18 @@ using System.Threading.Tasks;
 
 namespace Framework.Contracts.Logic
 {
-	public interface ICRUDManager<T, TId> : IGetManager<T,TId> where T : class
+    public interface ICRUDManager<T, TId> : IGetManager<T, TId> where T : class
     {
-		Task<TId> Add(T value);
-		Task Update(T value);
-		Task Delete(T value);
+        Task<TId> Add(T value);
+
+        Task Update(T   value);
+        Task Delete(T   value);
         Task Delete(TId key);
 
         Task<IEnumerable<TId>> Add(IEnumerable<T> values);
-        Task Update(IEnumerable<T> values);
-        Task Delete(IEnumerable<T> values);
+
+        Task Update(IEnumerable<T>   values);
+        Task Delete(IEnumerable<T>   values);
         Task Delete(IEnumerable<TId> keys);
     }
 }

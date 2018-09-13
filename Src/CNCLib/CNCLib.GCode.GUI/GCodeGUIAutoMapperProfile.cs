@@ -21,10 +21,10 @@ using AutoMapper;
 namespace CNCLib.GCode.GUI
 {
     public sealed class GCodeGUIAutoMapperProfile : Profile
-	{
-		public GCodeGUIAutoMapperProfile()
-		{
-			CreateMap<Models.LoadOptions, Logic.Contracts.DTO.LoadOptions>().ReverseMap();
-		}
-	}
+    {
+        public GCodeGUIAutoMapperProfile()
+        {
+            CreateMap<Models.LoadOptions, Logic.Contracts.DTO.LoadOptions>().ReverseMap();
+        }
+    }
 }

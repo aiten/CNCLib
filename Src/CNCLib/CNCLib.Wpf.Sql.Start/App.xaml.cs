@@ -41,55 +41,59 @@ namespace CNCLib.Wpf.Sql.Start
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-	{
-		private void AppStartup(object sender, StartupEventArgs e)
-		{
+    {
+        private void AppStartup(object sender, StartupEventArgs e)
+        {
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
-                XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+                                                                                                                       XmlLanguage
+                                                                                                                           .GetLanguage(CultureInfo
+                                                                                                                                            .CurrentCulture
+                                                                                                                                            .IetfLanguageTag)));
 
-		    Dependency.Initialize(new LiveDependencyProvider());
+            Dependency.Initialize(new LiveDependencyProvider());
 
-		    Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
+            Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
 
             //scoped
 
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
-		    Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
             Dependency.Container.RegisterTypesIncludingInternals(
-				typeof(Repository.MachineRepository).Assembly
-            );
+                                                                 typeof(Repository.MachineRepository).Assembly
+                                                                );
 
             //transient
 
-		    Dependency.Container.RegisterTypesIncludingInternals(
-		        typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
-		        typeof(MachineService).Assembly,
-		        typeof(Logic.Client.DynItemController).Assembly,
-		        typeof(MachineManager).Assembly);
+            Dependency.Container.RegisterTypesIncludingInternals(
+                                                                 typeof(Framework.Arduino.SerialCommunication.Serial)
+                                                                     .Assembly,
+                                                                 typeof(MachineService).Assembly,
+                                                                 typeof(Logic.Client.DynItemController).Assembly,
+                                                                 typeof(MachineManager).Assembly);
 
 
             Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
-		    Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
+            Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
 
             Dependency.Container.RegisterTypesByName(
-                n => n.EndsWith("ViewModel"),
-                typeof(ViewModels.MachineViewModel).Assembly,
-                typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+                                                     n => n.EndsWith("ViewModel"),
+                                                     typeof(ViewModels.MachineViewModel).Assembly,
+                                                     typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
             var config = new MapperConfiguration(cfg =>
-				{
-					cfg.AddProfile<LogicAutoMapperProfile>();
-					cfg.AddProfile<WpfAutoMapperProfile>();
-                    cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                });
-			config.AssertConfigurationIsValid();
+            {
+                cfg.AddProfile<LogicAutoMapperProfile>();
+                cfg.AddProfile<WpfAutoMapperProfile>();
+                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+            });
+            config.AssertConfigurationIsValid();
 
-			IMapper mapper = config.CreateMapper();
-			Dependency.Container.RegisterInstance(mapper);
+            IMapper mapper = config.CreateMapper();
+            Dependency.Container.RegisterInstance(mapper);
 
-		    ICNCLibUserContext userContext = new CNCLibUserContext();
-		    Dependency.Container.RegisterInstance(userContext);
+            ICNCLibUserContext userContext = new CNCLibUserContext();
+            Dependency.Container.RegisterInstance(userContext);
 
             //	        string sqlconnectstring = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
             string sqlconnectstring = null;
@@ -98,13 +102,14 @@ namespace CNCLib.Wpf.Sql.Start
 
             try
             {
-		        CNCLib.Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false, false);
-		    }
-			catch (Exception ex)
-			{
-				MessageBox.Show("Cannot connect to database" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				Current.Shutdown();
-			}
-		}
-	}
+                CNCLib.Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false, false);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Cannot connect to database" + ex.Message, "Error", MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                Current.Shutdown();
+            }
+        }
+    }
 }

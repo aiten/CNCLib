@@ -21,7 +21,7 @@ using System.Reflection;
 
 namespace Framework.Tools.Pattern
 {
-    public class Singleton<T> where T: new()
+    public class Singleton<T> where T : new()
     {
         private static T _instance;
 
@@ -33,6 +33,7 @@ namespace Framework.Tools.Pattern
                 {
                     _instance = new T();
                 }
+
                 return _instance;
             }
         }

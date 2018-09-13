@@ -27,7 +27,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-    public class ConfigurationRepositoryTests : CRUDRepositoryTests<Configuration, ConfigurationPrimary, IConfigurationRepository>
+    public class
+        ConfigurationRepositoryTests : CRUDRepositoryTests<Configuration, ConfigurationPrimary, IConfigurationRepository
+        >
     {
         #region crt and overrides
 
@@ -37,7 +39,8 @@ namespace CNCLib.Tests.Repository
             RepositoryTests.ClassInit(testContext);
         }
 
-        protected override CRUDTestContext<Configuration, ConfigurationPrimary, IConfigurationRepository> CreateCRUDTestContext()
+        protected override CRUDTestContext<Configuration, ConfigurationPrimary, IConfigurationRepository>
+            CreateCRUDTestContext()
         {
             return Dependency.Resolve<CRUDTestContext<Configuration, ConfigurationPrimary, IConfigurationRepository>>();
         }
@@ -46,10 +49,11 @@ namespace CNCLib.Tests.Repository
         {
             return new ConfigurationPrimary() { Group = entity.Group, Name = entity.Name };
         }
+
         protected override Configuration SetEntityKey(Configuration entity, ConfigurationPrimary key)
         {
             entity.Group = key.Group;
-            entity.Name = key.Name;
+            entity.Name  = key.Name;
             return entity;
         }
 
@@ -98,31 +102,56 @@ namespace CNCLib.Tests.Repository
         public async Task AddUpdateDeleteTest()
         {
             await AddUpdateDelete(
-                () => CreateConfiguration("TestGroup", "TestName"),
-                (entity) => entity.Value = "testValueModified");
+                                  () => CreateConfiguration("TestGroup", "TestName"),
+                                  (entity) => entity.Value = "testValueModified");
         }
 
         [TestMethod]
         public async Task AddUpdateDeleteBulkTest()
         {
             await AddUpdateDeleteBulk(
-                () => new [] { CreateConfiguration(@"AddUpdateDeleteBulk","Test1"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test2"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test3") },
-                (entities) => { int i = 0; foreach (var entity in entities) { entity.Value = $"DummyNameValue{i++}"; } });
+                                      () => new[]
+                                      {
+                                          CreateConfiguration(@"AddUpdateDeleteBulk", "Test1"),
+                                          CreateConfiguration(@"AddUpdateDeleteBulk", "Test2"),
+                                          CreateConfiguration(@"AddUpdateDeleteBulk", "Test3")
+                                      },
+                                      (entities) =>
+                                      {
+                                          int i = 0;
+                                          foreach (var entity in entities)
+                                          {
+                                              entity.Value = $"DummyNameValue{i++}";
+                                          }
+                                      });
         }
 
         [TestMethod]
         public async Task AddRollbackTest()
         {
-            await AddRollBack(() => new Configuration() { Group = "TestGroup", Name = "TestName", Type = "string", Value = "TestValue" });
+            await AddRollBack(() => new Configuration()
+            {
+                Group = "TestGroup",
+                Name  = "TestName",
+                Type  = "string",
+                Value = "TestValue"
+            });
         }
 
         [TestMethod]
         public async Task StoreTest()
         {
             await Store(
-                () => new Configuration() { Group = "TestGroup", Name = "TestName", Type = "string", Value = "TestValue" },
-                (entity) => entity.Value = "testValueModified");
+                        () => new Configuration()
+                        {
+                            Group = "TestGroup",
+                            Name  = "TestName",
+                            Type  = "string",
+                            Value = "TestValue"
+                        },
+                        (entity) => entity.Value = "testValueModified");
         }
+
         private static Configuration CreateConfiguration(string group, string name)
         {
             return new Configuration() { Group = group, Name = name, Type = "string", Value = "TestValue" };
@@ -137,20 +166,20 @@ namespace CNCLib.Tests.Repository
         {
             using (var ctx = CreateCRUDTestContext())
             {
-                var entity = await ctx.Repository.Get("Test","Test");
-				entity.Should().BeNull();
-			}
-	    }
+                var entity = await ctx.Repository.Get("Test", "Test");
+                entity.Should().BeNull();
+            }
+        }
 
-		[TestMethod]
-		public async Task SaveConfiguration()
-		{
-		    using (var ctx = CreateCRUDTestContext())
-		    {
+        [TestMethod]
+        public async Task SaveConfiguration()
+        {
+            using (var ctx = CreateCRUDTestContext())
+            {
                 await ctx.Repository.Store(new Configuration("Test", "TestNew1", "Content"));
-				await ctx.UnitOfWork.SaveChangesAsync();
-			}
-		}
+                await ctx.UnitOfWork.SaveChangesAsync();
+            }
+        }
 
         #endregion
     }

@@ -39,7 +39,7 @@ namespace Framework.Test.Dependency
             }
             catch (Unity.Exceptions.ResolutionFailedException)
             {
-                return Substitute.For(new [] { t }, new object[0]);
+                return Substitute.For(new[] { t }, new object[0]);
             }
         }
     }

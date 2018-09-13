@@ -25,66 +25,64 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels
 {
-	public class JoystickViewModel : BaseViewModel, IDisposable
-	{
+    public class JoystickViewModel : BaseViewModel, IDisposable
+    {
+        #region crt
 
-		#region crt
-
-		public override async Task Loaded()
-		{
-			await base.Loaded();
-			await LoadJoystick();
-		}
-
-		#endregion
-
-		#region dispose
-
-		public void Dispose()
-		{
-		}
-
-		#endregion
-
-		#region Properties
-
-		Models.Joystick _currentJoystick = new Models.Joystick();
-		int _id = -1;
-
-		public Models.Joystick Joystick
-		{
-			get => _currentJoystick;
-		    set { SetProperty(() => _currentJoystick == value, () => _currentJoystick = value); }
-		}
-
-		#endregion
-
-		#region Operations
-		public async Task LoadJoystick()
-		{
-			var joystick = await JoystickHelper.Load();
-			_id = joystick.Item2;
-			Joystick = joystick.Item1;
-
-			RaisePropertyChanged(nameof(Joystick));
-		}
-
-		public async void SaveJoystick()
-		{
-			_id = await JoystickHelper.Save(_currentJoystick, _id);
-			CloseAction();
+        public override async Task Loaded()
+        {
+            await base.Loaded();
+            await LoadJoystick();
         }
 
-		public bool CanSaveJoystick()
-		{
-			return true;
-		}
+        #endregion
 
-		#endregion
+        #region dispose
 
-		#region Commands
+        public void Dispose() { }
 
-		public ICommand SaveJoystickCommand => new DelegateCommand(SaveJoystick, CanSaveJoystick); 
+        #endregion
+
+        #region Properties
+
+        Models.Joystick _currentJoystick = new Models.Joystick();
+        int             _id              = -1;
+
+        public Models.Joystick Joystick
+        {
+            get => _currentJoystick;
+            set { SetProperty(() => _currentJoystick == value, () => _currentJoystick = value); }
+        }
+
+        #endregion
+
+        #region Operations
+
+        public async Task LoadJoystick()
+        {
+            var joystick = await JoystickHelper.Load();
+            _id      = joystick.Item2;
+            Joystick = joystick.Item1;
+
+            RaisePropertyChanged(nameof(Joystick));
+        }
+
+        public async void SaveJoystick()
+        {
+            _id = await JoystickHelper.Save(_currentJoystick, _id);
+            CloseAction();
+        }
+
+        public bool CanSaveJoystick()
+        {
+            return true;
+        }
+
+        #endregion
+
+        #region Commands
+
+        public ICommand SaveJoystickCommand => new DelegateCommand(SaveJoystick, CanSaveJoystick);
 
         #endregion
     }

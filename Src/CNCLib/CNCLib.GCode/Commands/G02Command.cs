@@ -19,18 +19,18 @@
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand("G2,G02")]
-	public class G02Command : Command
+    [IsGCommand("G2,G02")]
+    public class G02Command : Command
     {
-		#region crt + factory
+        #region crt + factory
 
-		public G02Command()
-		{
+        public G02Command()
+        {
             UseWithoutPrefix = true;
-            PositionValid = true;
-			Movetype = MoveType.Normal;
-			Code = "G2";
-		}
+            PositionValid    = true;
+            Movetype         = MoveType.Normal;
+            Code             = "G2";
+        }
 
         #endregion
 
@@ -41,24 +41,27 @@ namespace CNCLib.GCode.Commands
         #region Draw
 
         public override void Draw(IOutputCommand output, CommandState state, object param)
-		{
+        {
             double I, J, K;
             if (!TryGetVariable('I', state, out I))
             {
                 I = 0;
             }
+
             if (!TryGetVariable('J', state, out J))
             {
                 J = 0;
             }
-			if (!TryGetVariable('K', state, out K))
-			{
-				K = 0;
-			}
 
-			output.DrawArc(this,param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition,new Framework.Tools.Drawing.Point3D { X=I, Y=J, Z=K},true, state.CurrentPane);
-       }
+            if (!TryGetVariable('K', state, out K))
+            {
+                K = 0;
+            }
 
-		#endregion
-	}
+            output.DrawArc(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition,
+                           new Framework.Tools.Drawing.Point3D { X = I, Y = J, Z = K }, true, state.CurrentPane);
+        }
+
+        #endregion
+    }
 }

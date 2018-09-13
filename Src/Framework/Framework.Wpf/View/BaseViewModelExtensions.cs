@@ -49,18 +49,20 @@ namespace Framework.Wpf.View
                     {
                         dlg = new Microsoft.Win32.OpenFileDialog();
                     }
+
                     dlg.FileName = filename;
                     string dir = Path.GetDirectoryName(filename);
                     if (!string.IsNullOrEmpty(dir))
                     {
                         dlg.InitialDirectory = dir;
-                        dlg.FileName = Path.GetFileName(filename);
+                        dlg.FileName         = Path.GetFileName(filename);
                     }
 
                     if ((dlg.ShowDialog() ?? false))
                     {
                         return dlg.FileName;
                     }
+
                     return null;
                 };
             }
@@ -75,33 +77,45 @@ namespace Framework.Wpf.View
                 vm.DefaulInitForBaseViewModel();
 
                 var closeAction = new Action(() => view.Close());
-                var dialogOkAction = new Action(() => { view.DialogResult = true; view.Close(); });
-                var dialogCancelAction = new Action(() => { view.DialogResult = false; view.Close(); });
+                var dialogOkAction = new Action(() =>
+                {
+                    view.DialogResult = true;
+                    view.Close();
+                });
+                var dialogCancelAction = new Action(() =>
+                {
+                    view.DialogResult = false;
+                    view.Close();
+                });
                 var loadedEvent = new RoutedEventHandler(async (v, e) =>
                 {
                     var vmm = view.DataContext as BaseViewModel;
-                    if (vmm != null) await vmm.Loaded();
+                    if (vmm != null)
+                    {
+                        await vmm.Loaded();
+                    }
                 });
 
-                RoutedEventHandler unloadedEvent=null;
+                RoutedEventHandler unloadedEvent = null;
 
                 unloadedEvent = (v, e) =>
                 {
-                    vm.CloseAction = null;
-                    vm.DialogOKAction = null;
-                    vm.DialogCancelAction = null;
-                    view.Loaded -= loadedEvent;
-                    view.Unloaded -= unloadedEvent;
+                    vm.CloseAction        =  null;
+                    vm.DialogOKAction     =  null;
+                    vm.DialogCancelAction =  null;
+                    view.Loaded           -= loadedEvent;
+                    view.Unloaded         -= unloadedEvent;
                 };
 
-                vm.CloseAction = closeAction;
-                vm.DialogOKAction = dialogOkAction;
+                vm.CloseAction        = closeAction;
+                vm.DialogOKAction     = dialogOkAction;
                 vm.DialogCancelAction = dialogCancelAction;
 
-                view.Loaded += loadedEvent;
+                view.Loaded   += loadedEvent;
                 view.Unloaded += unloadedEvent;
             }
         }
+
         public static void DefaulInitForBaseViewModel(this Page view)
         {
             var vm = view.DataContext as BaseViewModel;
@@ -113,7 +127,10 @@ namespace Framework.Wpf.View
                 view.Loaded += async (v, e) =>
                 {
                     var vmm = view.DataContext as BaseViewModel;
-                    if (vmm != null) await vmm.Loaded();
+                    if (vmm != null)
+                    {
+                        await vmm.Loaded();
+                    }
                 };
             }
         }

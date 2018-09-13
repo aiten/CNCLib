@@ -21,9 +21,9 @@ using System;
 namespace CNCLib.Wpf.ViewModels
 {
     public interface IManualControlViewModel
-	{
-		void RunInNewTask(Action todo);
-		void RunAndUpdate(Action todo);
-		void SetPositions(decimal[] positions, int positionIdx);
-	}
+    {
+        void RunInNewTask(Action    todo);
+        void RunAndUpdate(Action    todo);
+        void SetPositions(decimal[] positions, int positionIdx);
+    }
 }

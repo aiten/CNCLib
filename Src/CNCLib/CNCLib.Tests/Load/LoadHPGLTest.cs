@@ -35,8 +35,8 @@ namespace CNCLib.Tests.Load
         {
             var loadinfo = new LoadOptions
             {
-                LoadType = LoadOptions.ELoadType.HPGL,
-                AutoScale = false,
+                LoadType    = LoadOptions.ELoadType.HPGL,
+                AutoScale   = false,
                 FileContent = Encoding.ASCII.GetBytes("IN;PU0,0")
             };
 
@@ -48,8 +48,8 @@ namespace CNCLib.Tests.Load
 
             list.Count().Should().Be(2);
 
-            list.First().Should().BeOfType<G01Command>();           // G0 F500
-            list.ElementAt(1).Should().BeOfType<G00Command>();      // G0 z1
+            list.First().Should().BeOfType<G01Command>();      // G0 F500
+            list.ElementAt(1).Should().BeOfType<G00Command>(); // G0 z1
             //list.ElementAt(2).Should().BeOfType<G00Command>();    // G0 0,0 => PU0,0, is skipped by new version
         }
 
@@ -58,10 +58,10 @@ namespace CNCLib.Tests.Load
         {
             var loadinfo = new LoadOptions
             {
-                LoadType = LoadOptions.ELoadType.HPGL,
-                AutoScale = false,
+                LoadType    = LoadOptions.ELoadType.HPGL,
+                AutoScale   = false,
                 PenMoveType = LoadOptions.PenType.CommandString,
-                MoveSpeed = 499,
+                MoveSpeed   = 499,
                 FileContent = Encoding.ASCII.GetBytes("IN;PU1000,100;PU0,0;PD400,400;PU0,0")
                 // leading PU1000,100 and trailing PU0,0 is skipped
             };
@@ -78,7 +78,7 @@ namespace CNCLib.Tests.Load
                 "M106 S255",
                 "G1 X10 Y10",
                 "M107",
-                "M5"            // ShutdownCommands
+                "M5" // ShutdownCommands
             };
 
             var list = load.Commands.Where(e => IsGCommand(e));
@@ -91,11 +91,11 @@ namespace CNCLib.Tests.Load
         {
             var loadinfo = new LoadOptions
             {
-                LoadType = LoadOptions.ELoadType.HPGL,
-                AutoScale = false,
-                PenMoveType = LoadOptions.PenType.ZMove,
+                LoadType              = LoadOptions.ELoadType.HPGL,
+                AutoScale             = false,
+                PenMoveType           = LoadOptions.PenType.ZMove,
                 EngravePosInParameter = true,
-                FileContent = Encoding.ASCII.GetBytes("IN;PU0,0;PD400,400")
+                FileContent           = Encoding.ASCII.GetBytes("IN;PU0,0;PD400,400")
             };
 
             var load = LoadBase.Create(loadinfo);
@@ -122,15 +122,15 @@ namespace CNCLib.Tests.Load
         {
             var loadinfo = new LoadOptions
             {
-                LoadType = LoadOptions.ELoadType.HPGL,
-                AutoScale = false,
-                PenMoveType = LoadOptions.PenType.ZMove,
+                LoadType              = LoadOptions.ELoadType.HPGL,
+                AutoScale             = false,
+                PenMoveType           = LoadOptions.PenType.ZMove,
                 EngravePosInParameter = false,
-                EngravePosUp = 1.23m,
-                EngravePosDown = 0.12m,
-                EngraveDownSpeed = 123,
-                MoveSpeed = 499,
-                FileContent = Encoding.ASCII.GetBytes("IN;PU0,0;PD400,400;PD800,400")
+                EngravePosUp          = 1.23m,
+                EngravePosDown        = 0.12m,
+                EngraveDownSpeed      = 123,
+                MoveSpeed             = 499,
+                FileContent           = Encoding.ASCII.GetBytes("IN;PU0,0;PD400,400;PD800,400")
             };
 
             var load = LoadBase.Create(loadinfo);
@@ -155,8 +155,8 @@ namespace CNCLib.Tests.Load
 
         static bool IsGCommand(Command e)
         {
-            return  e is G00Command || e is G01Command || e is M3Command || e is M4Command || e is M5Command || 
-                    e is M106Command || e is M107Command || e is MxxCommand;
+            return e is G00Command || e is G01Command || e is M3Command || e is M4Command || e is M5Command ||
+                   e is M106Command || e is M107Command || e is MxxCommand;
         }
 
         [TestMethod]
@@ -164,10 +164,10 @@ namespace CNCLib.Tests.Load
         {
             var loadinfo = new LoadOptions
             {
-                LoadType = LoadOptions.ELoadType.HPGL,
-                AutoScale = false,
+                LoadType    = LoadOptions.ELoadType.HPGL,
+                AutoScale   = false,
                 PenMoveType = LoadOptions.PenType.CommandString,
-                MoveSpeed = 499,
+                MoveSpeed   = 499,
                 FileContent = Encoding.ASCII.GetBytes("IN;PU0,0;PD400,400;PD800,400;PU800,800;PD1200,1200")
             };
 
@@ -188,7 +188,7 @@ namespace CNCLib.Tests.Load
                 "M106",
                 "G1 X30 Y30",
                 "M107",
-                "M5"            // ShutdownCommands
+                "M5" // ShutdownCommands
             };
 
             var list = load.Commands.Where(e => IsGCommand(e));
@@ -201,10 +201,10 @@ namespace CNCLib.Tests.Load
         {
             var loadinfo = new LoadOptions
             {
-                LoadType = LoadOptions.ELoadType.HPGL,
-                AutoScale = false,
+                LoadType    = LoadOptions.ELoadType.HPGL,
+                AutoScale   = false,
                 PenMoveType = LoadOptions.PenType.CommandString,
-                MoveSpeed = 499,
+                MoveSpeed   = 499,
                 ConvertType = LoadOptions.ConvertTypeEnum.InvertLineSequence,
                 FileContent = Encoding.ASCII.GetBytes("IN;PU0,0;PD400,400;PD800,400;PU800,800;PD1200,1200;PU;SP0;PU0,0")
             };
@@ -226,30 +226,31 @@ namespace CNCLib.Tests.Load
                 "M106",
                 "G1 X30 Y30",
                 "M107",
-                "M5"            // ShutdownCommands
+                "M5" // ShutdownCommands
             };
 
             var list = load.Commands.Where(e => IsGCommand(e));
 
             CheckGCode(list, gcode);
         }
+
         [TestMethod]
         public void LoadHPGLConvertClosedLine()
         {
             var loadinfo = new LoadOptions
             {
-                LoadType = LoadOptions.ELoadType.HPGL,
-                AutoScale = false,
+                LoadType    = LoadOptions.ELoadType.HPGL,
+                AutoScale   = false,
                 PenMoveType = LoadOptions.PenType.CommandString,
-                MoveSpeed = 499,
-                LaserSize = 0,
+                MoveSpeed   = 499,
+                LaserSize   = 0,
                 ConvertType = LoadOptions.ConvertTypeEnum.InvertLineSequence,
-                FileContent = Encoding.ASCII.GetBytes("IN;"+
-                        "PU0,0;PD0,400,400,400,400,0,0,0;" +
-                        "PU50,50;PD350,50,350,350,50,350,50,50;" +
-                        "PU100,100;PD300,100,300,300,100,300,100,100;" +
-                        "PU150,150;PD250,150,250,250,150,250,150,150;" +
-                        "PU;SP0")
+                FileContent = Encoding.ASCII.GetBytes("IN;" +
+                                                      "PU0,0;PD0,400,400,400,400,0,0,0;" +
+                                                      "PU50,50;PD350,50,350,350,50,350,50,50;" +
+                                                      "PU100,100;PD300,100,300,300,100,300,100,100;" +
+                                                      "PU150,150;PD250,150,250,250,150,250,150,150;" +
+                                                      "PU;SP0")
             };
 
             var load = LoadBase.Create(loadinfo);

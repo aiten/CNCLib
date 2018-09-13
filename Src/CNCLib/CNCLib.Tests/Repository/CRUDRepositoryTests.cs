@@ -29,12 +29,14 @@ namespace CNCLib.Tests.Repository
 {
     [TestClass]
     public abstract class CRUDRepositoryTests<TEntity, TKey, TIRepository> : RepositoryTests where TEntity : class
-        where TIRepository : ICRUDRepository<TEntity, TKey>
+                                                                                             where TIRepository :
+                                                                                             ICRUDRepository<TEntity,
+                                                                                                 TKey>
     {
         protected abstract CRUDTestContext<TEntity, TKey, TIRepository> CreateCRUDTestContext();
-        protected abstract TKey GetEntityKey(TEntity entity);
-        protected abstract TEntity SetEntityKey(TEntity entity, TKey key);
-        protected abstract bool CompareEntity(TEntity entity1, TEntity entity2);
+        protected abstract TKey                                         GetEntityKey(TEntity  entity);
+        protected abstract TEntity                                      SetEntityKey(TEntity  entity,  TKey    key);
+        protected abstract bool                                         CompareEntity(TEntity entity1, TEntity entity2);
 
         protected async Task<IEnumerable<TEntity>> GetAll()
         {
@@ -126,7 +128,7 @@ namespace CNCLib.Tests.Repository
             using (var ctx = CreateCRUDTestContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
-                await ctx.Repository.Update(key, SetEntityKey(createTestEntity(),key));
+                await ctx.Repository.Update(key, SetEntityKey(createTestEntity(), key));
 
                 await ctx.UnitOfWork.SaveChangesAsync();
                 await trans.CommitTransactionAsync();
@@ -157,7 +159,8 @@ namespace CNCLib.Tests.Repository
             }
         }
 
-        public async Task AddUpdateDeleteBulk(Func<IEnumerable<TEntity>> createTestEntities, Action<IEnumerable<TEntity>> updateEntities)
+        public async Task AddUpdateDeleteBulk(Func<IEnumerable<TEntity>>   createTestEntities,
+                                              Action<IEnumerable<TEntity>> updateEntities)
         {
             var allWithoutAdd = await GetAll();
             allWithoutAdd.Should().NotBeNull();
@@ -185,13 +188,14 @@ namespace CNCLib.Tests.Repository
             using (var ctx = CreateCRUDTestContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
-                IEnumerable<TEntity> entities = await ctx.Repository.GetTracking(keys);
+                IEnumerable<TEntity> entities        = await ctx.Repository.GetTracking(keys);
                 IEnumerable<TEntity> compareEntities = createTestEntities();
-                for (int i = 0; i < compareEntities.Count();i++)
+                for (int i = 0; i < compareEntities.Count(); i++)
                 {
                     GetEntityKey(entities.ElementAt(i)).Should().Be(keys.ElementAt(i));
                     CompareEntity(compareEntities.ElementAt(i), entities.ElementAt(i)).Should().BeTrue();
                 }
+
                 updateEntities(entities);
 
                 await ctx.UnitOfWork.SaveChangesAsync();
@@ -288,7 +292,7 @@ namespace CNCLib.Tests.Repository
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entityToTest = createTestEntity();
-                var notFound = await ctx.Repository.Get(key);
+                var     notFound     = await ctx.Repository.Get(key);
                 notFound.Should().BeNull();
             }
 
@@ -299,7 +303,7 @@ namespace CNCLib.Tests.Repository
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entityToAdd = createTestEntity();
-                await ctx.Repository.Store(entityToAdd,key);
+                await ctx.Repository.Store(entityToAdd, key);
 
                 await ctx.UnitOfWork.SaveChangesAsync();
                 await trans.CommitTransactionAsync();
@@ -324,7 +328,7 @@ namespace CNCLib.Tests.Repository
                 TEntity entityToUpdate = createTestEntity();
                 updateEntity(entityToUpdate);
 
-                await ctx.Repository.Store(entityToUpdate,key);
+                await ctx.Repository.Store(entityToUpdate, key);
 
                 await ctx.UnitOfWork.SaveChangesAsync();
                 await trans.CommitTransactionAsync();

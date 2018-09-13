@@ -22,8 +22,8 @@ using Framework.Contracts.Repository;
 
 namespace CNCLib.Repository.Contracts
 {
-	public interface IItemRepository: ICRUDRepository<Entities.Item, int>
+    public interface IItemRepository : ICRUDRepository<Entities.Item, int>
     {
-		Task<IEnumerable<Entities.Item>> Get(string typeidstring);
-	}
+        Task<IEnumerable<Entities.Item>> Get(string typeidstring);
+    }
 }

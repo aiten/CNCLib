@@ -21,7 +21,5 @@ using Framework.Contracts.Logic;
 
 namespace CNCLib.Logic.Contracts
 {
-    public interface ILoadOptionsManager : IDisposable, ICRUDManager<DTO.LoadOptions,int>
-	{
-	}
+    public interface ILoadOptionsManager : IDisposable, ICRUDManager<DTO.LoadOptions, int> { }
 }

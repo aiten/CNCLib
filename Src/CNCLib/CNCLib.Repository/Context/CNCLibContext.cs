@@ -24,28 +24,26 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace CNCLib.Repository.Context
 {
-	public class CNCLibContext : DbContext
-	{
-	    public static Action<DbContextOptionsBuilder> OnConfigure;
+    public class CNCLibContext : DbContext
+    {
+        public static Action<DbContextOptionsBuilder> OnConfigure;
 
-	    public CNCLibContext()
-	    {
-
-	    }
+        public CNCLibContext() { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
+            optionsBuilder.ConfigureWarnings(warnings =>
+                                                 warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
             OnConfigure?.Invoke(optionsBuilder);
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Machine> Machines { get; set; }
-		public DbSet<MachineCommand> MachineCommands { get; set; }
-		public DbSet<MachineInitCommand> MachineInitCommands { get; set; }
-		public DbSet<Configuration> Configurations { get; set; }
-        public DbSet<Item> Items { get; set; }
-        public DbSet<ItemProperty> ItemProperties { get; set; }
+        public DbSet<User>               Users               { get; set; }
+        public DbSet<Machine>            Machines            { get; set; }
+        public DbSet<MachineCommand>     MachineCommands     { get; set; }
+        public DbSet<MachineInitCommand> MachineInitCommands { get; set; }
+        public DbSet<Configuration>      Configurations      { get; set; }
+        public DbSet<Item>               Items               { get; set; }
+        public DbSet<ItemProperty>       ItemProperties      { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -78,7 +76,6 @@ namespace CNCLib.Repository.Context
             // -------------------------------------
 
             base.OnModelCreating(modelBuilder);
-
         }
     }
 }

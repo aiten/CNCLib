@@ -28,10 +28,7 @@ namespace CNCLib.GCode.Parser
 
         public GCodeParser(CommandStream reader) : base(reader) { }
 
-        public override void Parse()
-        {
-
-        }
+        public override void Parse() { }
 
 
         public static bool IsCommentStart(char ch)
@@ -45,9 +42,13 @@ namespace CNCLib.GCode.Parser
         {
             switch (_reader.SkipSpaces())
             {
-                case '(': SkipCommentNested(); break;
+                case '(':
+                    SkipCommentNested();
+                    break;
                 case '*':
-                case ';': SkipCommentSingleLine(); break;
+                case ';':
+                    SkipCommentSingleLine();
+                    break;
             }
 
             return _reader.NextChar;
@@ -78,9 +79,12 @@ namespace CNCLib.GCode.Parser
 //                            CommentMessage(start);
                             return;
                         }
+
                         break;
                     }
-                    case '(': cnt++; break;
+                    case '(':
+                        cnt++;
+                        break;
                 }
             }
 

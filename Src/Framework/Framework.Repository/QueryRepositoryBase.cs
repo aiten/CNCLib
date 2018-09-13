@@ -25,9 +25,7 @@ namespace Framework.Repository
         where TDbContext : DbContext
         where TEntity : class
     {
-        protected QueryRepositoryBase(TDbContext dbContext) : base(dbContext)
-        {
-        }
+        protected QueryRepositoryBase(TDbContext dbContext) : base(dbContext) { }
 
         /// <summary>
         /// Returns an IQueryable of the default entity of the DA with AsNoTracking set. This should be the default.

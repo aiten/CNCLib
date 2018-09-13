@@ -22,27 +22,28 @@ using Framework.Arduino.SerialCommunication;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
-	public class ShiftViewModel : DetailViewModel
-	{
-		public ShiftViewModel(IManualControlViewModel vm)
-			: base(vm)
-		{
-		}
+    public class ShiftViewModel : DetailViewModel
+    {
+        public ShiftViewModel(IManualControlViewModel vm)
+            : base(vm) { }
 
-		#region Properties
+        #region Properties
 
+        #endregion
 
-		#endregion
+        #region Commands / CanCommands
 
-		#region Commands / CanCommands
+        public void SendG92()
+        {
+            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g92"); });
+        }
 
-		public void SendG92() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g92"); }); }
-			
-		#endregion
+        #endregion
 
-		#region ICommand
-		public ICommand SendG92Command => new DelegateCommand(SendG92, CanSendGCode);	   
+        #region ICommand
 
-		#endregion
-	}
+        public ICommand SendG92Command => new DelegateCommand(SendG92, CanSendGCode);
+
+        #endregion
+    }
 }

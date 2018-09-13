@@ -24,12 +24,12 @@ namespace CNCLib.Repository.Contracts
     public struct ConfigurationPrimary
     {
         public string Group { get; set; }
-        public string Name { get; set; }
+        public string Name  { get; set; }
     }
 
     public interface IConfigurationRepository : ICRUDRepository<Entities.Configuration, ConfigurationPrimary>
     {
-		Task<Entities.Configuration> Get(string group, string name);
+        Task<Entities.Configuration> Get(string group, string name);
 
         Task Store(Entities.Configuration cfg);
     }

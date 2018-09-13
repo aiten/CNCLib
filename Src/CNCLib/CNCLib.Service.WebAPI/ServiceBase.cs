@@ -25,17 +25,18 @@ using Framework.Tools;
 namespace CNCLib.Service.WebAPI
 {
     public abstract class ServiceBase : DisposeWrapper
-	{
-		protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibwebapi.azurewebsites.net";
+    {
+        protected readonly string _webserverurl =
+            ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibwebapi.azurewebsites.net";
 
         protected abstract string Api { get; }
 
-		protected HttpClient CreateHttpClient()
-		{
-		    var client = new HttpClient {BaseAddress = new Uri(_webserverurl)};
-		    client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			return client;
-		}
-	}
+        protected HttpClient CreateHttpClient()
+        {
+            var client = new HttpClient { BaseAddress = new Uri(_webserverurl) };
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            return client;
+        }
+    }
 }

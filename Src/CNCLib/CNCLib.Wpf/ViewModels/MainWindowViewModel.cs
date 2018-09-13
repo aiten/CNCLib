@@ -21,15 +21,18 @@ using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.ViewModels
 {
-	public class MainWindowViewModel : BaseViewModel
+    public class MainWindowViewModel : BaseViewModel
     {
-		#region Properties
-		#endregion
+        #region Properties
 
-		#region Operations
-		#endregion
+        #endregion
 
-		#region Commands
-		#endregion
-	}
+        #region Operations
+
+        #endregion
+
+        #region Commands
+
+        #endregion
+    }
 }

@@ -19,7 +19,7 @@
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand("M4")]
+    [IsGCommand("M4")]
     public class M4Command : Command
     {
         #region crt + factory
@@ -32,6 +32,7 @@ namespace CNCLib.GCode.Commands
         #endregion
 
         #region GCode
+
         #endregion
 
         #region Itteration

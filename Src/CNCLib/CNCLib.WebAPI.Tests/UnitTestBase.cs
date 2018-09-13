@@ -21,10 +21,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.WebAPI.Tests
 {
-	/// <summary>
-	/// Base class for *all* unit tests. 
-	/// </summary>
-	public abstract class UnitTestBase
+    /// <summary>
+    /// Base class for *all* unit tests. 
+    /// </summary>
+    public abstract class UnitTestBase
     {
         private static bool _globalInitialisationRun;
 
@@ -40,17 +40,16 @@ namespace CNCLib.WebAPI.Tests
                 Framework.Tools.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
                 _globalInitialisationRun = true;
             }
+
             InitializeCoreDependencies();
-		}
+        }
 
-		protected virtual void InitializeCoreDependencies()
-		{
-		}
+        protected virtual void InitializeCoreDependencies() { }
 
-		/// <summary>
-		/// Resets the dependency container.
-		/// </summary>
-		private static void ReInitializeCoreDependencies()
+        /// <summary>
+        /// Resets the dependency container.
+        /// </summary>
+        private static void ReInitializeCoreDependencies()
         {
             Framework.Tools.Dependency.Dependency.Container.ResetContainer();
         }

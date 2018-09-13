@@ -50,56 +50,102 @@ namespace CNCLib.Wpf.Controls
         #region Commands
 
         public static readonly DependencyProperty LeftCommandProperty = DependencyProperty.Register(
-            "Left", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+                                                                                                    "Left",
+                                                                                                    typeof(ICommand),
+                                                                                                    typeof(
+                                                                                                        MoveUserControl
+                                                                                                    ),
+                                                                                                    new
+                                                                                                        PropertyMetadata(default
+                                                                                                                         (ICommand
+                                                                                                                         )));
 
         public ICommand Left
         {
-            get => (ICommand)GetValue(LeftCommandProperty);
+            get => (ICommand) GetValue(LeftCommandProperty);
             set => SetValue(LeftCommandProperty, value);
         }
 
         public static readonly DependencyProperty RightCommandProperty = DependencyProperty.Register(
-            "Right", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+                                                                                                     "Right",
+                                                                                                     typeof(ICommand),
+                                                                                                     typeof(
+                                                                                                         MoveUserControl
+                                                                                                     ),
+                                                                                                     new
+                                                                                                         PropertyMetadata(default
+                                                                                                                          (ICommand
+                                                                                                                          )));
 
         public ICommand Right
         {
-            get => (ICommand)GetValue(RightCommandProperty);
+            get => (ICommand) GetValue(RightCommandProperty);
             set => SetValue(RightCommandProperty, value);
         }
 
         public static readonly DependencyProperty UpCommandProperty = DependencyProperty.Register(
-            "Up", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+                                                                                                  "Up",
+                                                                                                  typeof(ICommand),
+                                                                                                  typeof(MoveUserControl
+                                                                                                  ),
+                                                                                                  new
+                                                                                                      PropertyMetadata(default
+                                                                                                                       (ICommand
+                                                                                                                       )));
 
         public ICommand Up
         {
-            get => (ICommand)GetValue(UpCommandProperty);
+            get => (ICommand) GetValue(UpCommandProperty);
             set => SetValue(UpCommandProperty, value);
         }
 
         public static readonly DependencyProperty DownCommandProperty = DependencyProperty.Register(
-            "Down", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+                                                                                                    "Down",
+                                                                                                    typeof(ICommand),
+                                                                                                    typeof(
+                                                                                                        MoveUserControl
+                                                                                                    ),
+                                                                                                    new
+                                                                                                        PropertyMetadata(default
+                                                                                                                         (ICommand
+                                                                                                                         )));
 
         public ICommand Down
         {
-            get => (ICommand)GetValue(DownCommandProperty);
+            get => (ICommand) GetValue(DownCommandProperty);
             set => SetValue(DownCommandProperty, value);
         }
 
         public static readonly DependencyProperty ZUpCommandProperty = DependencyProperty.Register(
-            "ZUp", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+                                                                                                   "ZUp",
+                                                                                                   typeof(ICommand),
+                                                                                                   typeof(
+                                                                                                       MoveUserControl),
+                                                                                                   new
+                                                                                                       PropertyMetadata(default
+                                                                                                                        (ICommand
+                                                                                                                        )));
 
         public ICommand ZUp
         {
-            get => (ICommand)GetValue(ZUpCommandProperty);
+            get => (ICommand) GetValue(ZUpCommandProperty);
             set => SetValue(ZUpCommandProperty, value);
         }
 
         public static readonly DependencyProperty ZDownCommandProperty = DependencyProperty.Register(
-            "ZDown", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+                                                                                                     "ZDown",
+                                                                                                     typeof(ICommand),
+                                                                                                     typeof(
+                                                                                                         MoveUserControl
+                                                                                                     ),
+                                                                                                     new
+                                                                                                         PropertyMetadata(default
+                                                                                                                          (ICommand
+                                                                                                                          )));
 
         public ICommand ZDown
         {
-            get => (ICommand)GetValue(ZDownCommandProperty);
+            get => (ICommand) GetValue(ZDownCommandProperty);
             set => SetValue(ZDownCommandProperty, value);
         }
 
@@ -112,7 +158,7 @@ namespace CNCLib.Wpf.Controls
             return true;
         }
 
-        public ICommand RightDist1Command => new DelegateCommand(() => OnRight(MoveDistance.Distance1),CanSend);
+        public ICommand RightDist1Command => new DelegateCommand(() => OnRight(MoveDistance.Distance1), CanSend);
         public ICommand RightDist2Command => new DelegateCommand(() => OnRight(MoveDistance.Distance2), CanSend);
         public ICommand RightDist3Command => new DelegateCommand(() => OnRight(MoveDistance.Distance3), CanSend);
         public ICommand RightDist4Command => new DelegateCommand(() => OnRight(MoveDistance.Distance4), CanSend);
@@ -138,7 +184,7 @@ namespace CNCLib.Wpf.Controls
         public ICommand ZUpDist2Command => new DelegateCommand(() => OnZUp(MoveDistance.Distance2), CanSend);
         public ICommand ZUpDist3Command => new DelegateCommand(() => OnZUp(MoveDistance.Distance3), CanSend);
         public ICommand ZUpDist4Command => new DelegateCommand(() => OnZUp(MoveDistance.Distance4), CanSend);
-                        
+
         public ICommand ZDownDist1Command => new DelegateCommand(() => OnZDown(MoveDistance.Distance1), CanSend);
         public ICommand ZDownDist2Command => new DelegateCommand(() => OnZDown(MoveDistance.Distance2), CanSend);
         public ICommand ZDownDist3Command => new DelegateCommand(() => OnZDown(MoveDistance.Distance3), CanSend);
@@ -157,7 +203,7 @@ namespace CNCLib.Wpf.Controls
             UseDefault
         };
 
-        private double _moveDist = 10.0;
+        private double _moveDist      = 10.0;
         private double _moveDistance3 = 10.0;
         private double _moveDistanze4 = 100.0;
         private double _moveDistance2 = 1.0;
@@ -176,13 +222,21 @@ namespace CNCLib.Wpf.Controls
         public double MoveDistance3
         {
             get => _moveDistance3;
-            set { _moveDistance3 = value; RaisePropertyChanged(); }
+            set
+            {
+                _moveDistance3 = value;
+                RaisePropertyChanged();
+            }
         }
 
         public double MoveDistance4
         {
             get => _moveDistanze4;
-            set { _moveDistanze4 = value; RaisePropertyChanged(); }
+            set
+            {
+                _moveDistanze4 = value;
+                RaisePropertyChanged();
+            }
         }
 
         public double MoveDistance2
@@ -194,6 +248,7 @@ namespace CNCLib.Wpf.Controls
                 RaisePropertyChanged();
             }
         }
+
         public double MoveDistance1
         {
             get => _moveDistance1;
@@ -203,6 +258,7 @@ namespace CNCLib.Wpf.Controls
                 RaisePropertyChanged();
             }
         }
+
         #endregion
 
         #region private events
@@ -217,19 +273,24 @@ namespace CNCLib.Wpf.Controls
                 case Key.RightShift:
                     return true;
             }
+
             return false;
         }
 
         private void Grid_PreviewKeyUp(object sender, KeyEventArgs e)
         {
             if (IsModifyMoveDistKey(e.Key))
+            {
                 SetMoveDist();
+            }
         }
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (IsModifyMoveDistKey(e.Key))
+            {
                 SetMoveDist();
+            }
 
             switch (e.Key)
             {
@@ -259,7 +320,7 @@ namespace CNCLib.Wpf.Controls
                     break;
             }
         }
- 
+
         private void _dist_TextChanged(object sender, TextChangedEventArgs e)
         {
             double movedist;
@@ -277,42 +338,54 @@ namespace CNCLib.Wpf.Controls
         {
             double? dist = GetDist(mode);
             if (ZDown != null && ZDown.CanExecute(dist))
+            {
                 ZDown.Execute(dist);
+            }
         }
 
         private void OnZUp(MoveDistance mode)
         {
             double? dist = GetDist(mode);
             if (ZUp != null && ZUp.CanExecute(dist))
+            {
                 ZUp.Execute(dist);
+            }
         }
 
         private void OnDown(MoveDistance mode)
         {
             double? dist = GetDist(mode);
             if (Down != null && Down.CanExecute(dist))
+            {
                 Down.Execute(dist);
+            }
         }
 
         private void OnUp(MoveDistance mode)
         {
             double? dist = GetDist(mode);
             if (Up != null && Up.CanExecute(dist))
+            {
                 Up.Execute(dist);
+            }
         }
 
         private void OnRight(MoveDistance mode)
         {
             double? dist = GetDist(mode);
             if (Right != null && Right.CanExecute(dist))
+            {
                 Right.Execute(dist);
+            }
         }
 
         private void OnLeft(MoveDistance mode)
         {
             double? dist = GetDist(mode);
             if (Left != null && Left.CanExecute(dist))
+            {
                 Left.Execute(dist);
+            }
         }
 
         #endregion
@@ -321,20 +394,29 @@ namespace CNCLib.Wpf.Controls
 
         private void SetMoveDist()
         {
-            MoveDist = GetDist(GetDistanceMode());
+            MoveDist   = GetDist(GetDistanceMode());
             _dist.Text = MoveDist.ToString();
         }
 
         private MoveDistance GetDistanceMode()
         {
-            bool isCtrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            bool isCtrl  = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
             bool isShift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
             if (isCtrl && isShift)
+            {
                 return MoveDistance.Distance1;
+            }
+
             if (isShift)
+            {
                 return MoveDistance.Distance4;
+            }
+
             if (isCtrl)
+            {
                 return MoveDistance.Distance2;
+            }
+
             return MoveDistance.Distance3;
         }
 
@@ -343,9 +425,9 @@ namespace CNCLib.Wpf.Controls
             switch (mode)
             {
                 case MoveDistance.UseDefault: return MoveDist;
-                case MoveDistance.Distance4: return MoveDistance4;
-                case MoveDistance.Distance2: return MoveDistance2;
-                case MoveDistance.Distance1: return MoveDistance1;
+                case MoveDistance.Distance4:  return MoveDistance4;
+                case MoveDistance.Distance2:  return MoveDistance2;
+                case MoveDistance.Distance1:  return MoveDistance1;
                 default:
                 case MoveDistance.Distance3: return MoveDistance3;
             }

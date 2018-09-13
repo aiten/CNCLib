@@ -23,10 +23,10 @@ using Framework.Contracts.Service;
 
 namespace CNCLib.Service.Contracts
 {
-	public interface IMachineService : IDisposable, ICRUDService<Machine,int>
-	{
-		Task<Machine> DefaultMachine();
-		Task<int> GetDetaultMachine();
-		Task SetDetaultMachine(int defaultMachineID);
-	}
+    public interface IMachineService : IDisposable, ICRUDService<Machine, int>
+    {
+        Task<Machine> DefaultMachine();
+        Task<int>     GetDetaultMachine();
+        Task          SetDetaultMachine(int defaultMachineID);
+    }
 }

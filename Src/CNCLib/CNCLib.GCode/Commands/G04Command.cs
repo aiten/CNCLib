@@ -19,24 +19,24 @@
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand("G4,G04")]
-	public class G04Command : Command
+    [IsGCommand("G4,G04")]
+    public class G04Command : Command
     {
-		#region crt + factory
+        #region crt + factory
 
-		public G04Command()
-		{
-			Code = "G4";
-		}
+        public G04Command()
+        {
+            Code = "G4";
+        }
 
-		#endregion
+        #endregion
 
-		#region GCode
+        #region GCode
 
-		#endregion
+        #endregion
 
-		#region Draw
+        #region Draw
 
-		#endregion
-	}
+        #endregion
+    }
 }

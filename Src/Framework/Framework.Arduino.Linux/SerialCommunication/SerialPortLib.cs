@@ -31,23 +31,40 @@ namespace Framework.Arduino.Linux.SerialCommunication
         public SerialPortLib()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
                 DtrEnable = false;
+            }
         }
 
-        public new Parity Parity { get => (Parity)base.Parity; set => base.Parity = ConvertTo(value); }
-        public new StopBits StopBits { get => ConvertTo(base.StopBits); set => base.StopBits = ConvertTo(value); }
-        public new Handshake Handshake { get => (Handshake)base.Handshake; set => base.Handshake = ConvertTo(value); }
+        public new Parity Parity
+        {
+            get => (Parity) base.Parity;
+            set => base.Parity = ConvertTo(value);
+        }
+
+        public new StopBits StopBits
+        {
+            get => ConvertTo(base.StopBits);
+            set => base.StopBits = ConvertTo(value);
+        }
+
+        public new Handshake Handshake
+        {
+            get => (Handshake) base.Handshake;
+            set => base.Handshake = ConvertTo(value);
+        }
 
         private RJCP.IO.Ports.Parity ConvertTo(Parity pt)
         {
             switch (pt)
             {
-                case Parity.None: return RJCP.IO.Ports.Parity.None;
-                case Parity.Odd:  return RJCP.IO.Ports.Parity.Odd;
-                case Parity.Even: return RJCP.IO.Ports.Parity.Even;
-                case Parity.Mark: return RJCP.IO.Ports.Parity.Mark;
-                case Parity.Space:return RJCP.IO.Ports.Parity.Space;
+                case Parity.None:  return RJCP.IO.Ports.Parity.None;
+                case Parity.Odd:   return RJCP.IO.Ports.Parity.Odd;
+                case Parity.Even:  return RJCP.IO.Ports.Parity.Even;
+                case Parity.Mark:  return RJCP.IO.Ports.Parity.Mark;
+                case Parity.Space: return RJCP.IO.Ports.Parity.Space;
             }
+
             throw new ArgumentException();
         }
 
@@ -55,11 +72,12 @@ namespace Framework.Arduino.Linux.SerialCommunication
         {
             switch (hs)
             {
-                case Handshake.None: return RJCP.IO.Ports.Handshake.None;
-                case Handshake.XOnXOff: return RJCP.IO.Ports.Handshake.XOn;
-                case Handshake.RequestToSend: return RJCP.IO.Ports.Handshake.Rts;
+                case Handshake.None:                 return RJCP.IO.Ports.Handshake.None;
+                case Handshake.XOnXOff:              return RJCP.IO.Ports.Handshake.XOn;
+                case Handshake.RequestToSend:        return RJCP.IO.Ports.Handshake.Rts;
                 case Handshake.RequestToSendXOnXOff: return RJCP.IO.Ports.Handshake.RtsXOn;
             }
+
             throw new ArgumentException();
         }
 
@@ -67,20 +85,23 @@ namespace Framework.Arduino.Linux.SerialCommunication
         {
             switch (sb)
             {
-                case StopBits.One:  return RJCP.IO.Ports.StopBits.One;
-                case StopBits.Two:  return RJCP.IO.Ports.StopBits.Two;
+                case StopBits.One:          return RJCP.IO.Ports.StopBits.One;
+                case StopBits.Two:          return RJCP.IO.Ports.StopBits.Two;
                 case StopBits.OnePointFive: return RJCP.IO.Ports.StopBits.One5;
             }
+
             throw new ArgumentException();
         }
+
         private StopBits ConvertTo(RJCP.IO.Ports.StopBits sb)
         {
             switch (sb)
             {
-                case RJCP.IO.Ports.StopBits.One: return StopBits.One;
-                case RJCP.IO.Ports.StopBits.Two: return StopBits.Two;
+                case RJCP.IO.Ports.StopBits.One:  return StopBits.One;
+                case RJCP.IO.Ports.StopBits.Two:  return StopBits.Two;
                 case RJCP.IO.Ports.StopBits.One5: return StopBits.OnePointFive;
             }
+
             throw new ArgumentException();
         }
 
@@ -88,6 +109,7 @@ namespace Framework.Arduino.Linux.SerialCommunication
         {
             return RJCP.IO.Ports.SerialPortStream.GetPortNames();
         }
-        public Stream BaseStream { get => this; }
+
+        public Stream BaseStream => this;
     }
 }

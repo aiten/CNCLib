@@ -44,7 +44,11 @@ namespace CNCLib.Wpf.Views
             get
             {
                 var vm = DataContext as ManualControlViewModel;
-                if (vm != null) return Global.Instance.Com.Current.IsConnected;
+                if (vm != null)
+                {
+                    return Global.Instance.Com.Current.IsConnected;
+                }
+
                 return false;
             }
         }

@@ -21,33 +21,33 @@ using Framework.Tools.Drawing;
 
 namespace CNCLib.GCode.Commands
 {
-	public class DrillCommand : Command
+    public class DrillCommand : Command
     {
-		#region crt + factory
+        #region crt + factory
 
-		public DrillCommand()
-		{
+        public DrillCommand()
+        {
             UseWithoutPrefix = true;
-            PositionValid = true;
-			Movetype = MoveType.Fast;
-		}
-
-		#endregion
-
-		#region GCode
-
-		#endregion
-
-		#region Draw
-
-		public override void Draw(IOutputCommand output, CommandState state, object param)
-		{
-			int radius = 10;
-			base.Draw(output, state, param);
-			Point3D ptFrom = CalculatedEndPosition;
-			output.DrawEllipse(this, param, Convert(MoveType.Normal, state), ptFrom, radius, radius);
+            PositionValid    = true;
+            Movetype         = MoveType.Fast;
         }
 
-		#endregion
-	}
+        #endregion
+
+        #region GCode
+
+        #endregion
+
+        #region Draw
+
+        public override void Draw(IOutputCommand output, CommandState state, object param)
+        {
+            int radius = 10;
+            base.Draw(output, state, param);
+            Point3D ptFrom = CalculatedEndPosition;
+            output.DrawEllipse(this, param, Convert(MoveType.Normal, state), ptFrom, radius, radius);
+        }
+
+        #endregion
+    }
 }

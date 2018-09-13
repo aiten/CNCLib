@@ -44,26 +44,30 @@ namespace CNCLib.Serial.Server.SerialPort
                 };
                 Serial.CommandQueueChanged += (sender, e) =>
                 {
-                    _delayExecuteQueueChanged.Execute(1000, () => _pendingLastQueueLength = e.QueueLenght, () =>
-                    {
-                        Startup.Hub.Clients.All.SendAsync("queueChanged", Id, _pendingLastQueueLength);
-                    });
+                    _delayExecuteQueueChanged.Execute(1000, () => _pendingLastQueueLength = e.QueueLenght,
+                                                      () =>
+                                                      {
+                                                          Startup.Hub.Clients.All.SendAsync("queueChanged", Id,
+                                                                                            _pendingLastQueueLength);
+                                                      });
                 };
                 Serial.CommandSending += (sender, e) =>
                 {
-                    _delayExecuteSendingCommand.Execute(1000, () => _pendingSendingCommandSeqId = e.SeqId, () =>
-                    {
-                        Startup.Hub.Clients.All.SendAsync("sendingCommand", Id, _pendingSendingCommandSeqId);
-                    });
+                    _delayExecuteSendingCommand.Execute(1000, () => _pendingSendingCommandSeqId = e.SeqId,
+                                                        () =>
+                                                        {
+                                                            Startup.Hub.Clients.All.SendAsync("sendingCommand", Id,
+                                                                                              _pendingSendingCommandSeqId);
+                                                        });
                 };
             }
         }
 
         DelayedExecution _delayExecuteQueueChanged = new DelayedExecution();
-        int _pendingLastQueueLength;
+        int              _pendingLastQueueLength;
 
         DelayedExecution _delayExecuteSendingCommand = new DelayedExecution();
-        int _pendingSendingCommandSeqId;
+        int              _pendingSendingCommandSeqId;
 
         #endregion
 
@@ -77,10 +81,9 @@ namespace CNCLib.Serial.Server.SerialPort
 
         public bool IsConnected => Serial != null ? Serial.IsConnected : false;
 
-        public bool IsAborted => Serial != null ? Serial.Aborted : false;
-        public bool IsSingleStep => Serial != null ? Serial.Pause : false;
-        public int CommandsInQueue => Serial != null ? Serial.CommandsInQueue : 0;
-
+        public bool IsAborted       => Serial != null ? Serial.Aborted : false;
+        public bool IsSingleStep    => Serial != null ? Serial.Pause : false;
+        public int  CommandsInQueue => Serial != null ? Serial.CommandsInQueue : 0;
 
         #endregion
     }

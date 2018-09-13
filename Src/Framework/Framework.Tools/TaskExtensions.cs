@@ -22,12 +22,8 @@ namespace Framework.Tools
 {
     public static class TaskExtensions
     {
-        public static void Ignore(this Task t)
-        {
-        }
+        public static void Ignore(this Task t) { }
 
-        public static void Ignore<TResult>(this Task<TResult> t)
-        {
-        }
+        public static void Ignore<TResult>(this Task<TResult> t) { }
     }
 }

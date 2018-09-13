@@ -30,9 +30,7 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasKey(mc => mc.MachineInitCommandID);
 
-            entity.Property(m => m.CommandString).
-                IsRequired().
-                HasMaxLength(64);
+            entity.Property(m => m.CommandString).IsRequired().HasMaxLength(64);
 
             entity.HasOne(mic => mic.Machine)
                 .WithMany(m => m.MachineInitCommands)

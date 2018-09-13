@@ -21,10 +21,11 @@ using System.Threading.Tasks;
 
 namespace Framework.Contracts.Service
 {
-	public interface IGetService<T, TKey> where T : class
+    public interface IGetService<T, TKey> where T : class
     {
-		Task<T> Get(TKey id);
+        Task<T> Get(TKey id);
+
         Task<IEnumerable<T>> Get(IEnumerable<TKey> keys);
-		Task<IEnumerable<T>> GetAll();
-	}
+        Task<IEnumerable<T>> GetAll();
+    }
 }

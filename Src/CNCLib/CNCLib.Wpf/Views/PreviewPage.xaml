@@ -1,11 +1,11 @@
 ﻿<Page x:Class="CNCLib.Wpf.Views.PreviewPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:gctrl="clr-namespace:CNCLib.GCode.GUI.Controls;assembly=CNCLib.GCode.GUI"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       d:DesignHeight="300" d:DesignWidth="300"
       x:Name="myPreviewPage"
       Title="PreviewPage">
@@ -13,87 +13,92 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
             <DockPanel Margin="0,0,0,2">
-                <Button x:Name="_toggle" Content=">" Command="{Binding ElementName=myPreviewPage, Path=ToggleSettingsCommand}" Margin="0,0,5,0" />
-                <Button Content="SendTo" Command="{Binding SendToCommand}" Margin="0,0,5,0"/>
-                <Button Content="Load" Command="{Binding LoadCommand}" Margin="0,0,5,0"/>
-                <Label Content="Zoom:"/>
-                <Button Content="[XY]" Command="{Binding Path=ResetViewCommandXY}" DockPanel.Dock="Right"/>
-                <Button Content="[XZ]" Command="{Binding Path=ResetViewCommandXZ}" DockPanel.Dock="Right"/>
-                <Button Content="[YZ]" Command="{Binding Path=ResetViewCommandYZ}" DockPanel.Dock="Right"/>
-                <Slider Value="{Binding Path=Zoom}" Minimum="0.1" Maximum="25" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                <Button x:Name="_toggle" Content=">"
+                        Command="{Binding ElementName=myPreviewPage, Path=ToggleSettingsCommand}" Margin="0,0,5,0" />
+                <Button Content="SendTo" Command="{Binding SendToCommand}" Margin="0,0,5,0" />
+                <Button Content="Load" Command="{Binding LoadCommand}" Margin="0,0,5,0" />
+                <Label Content="Zoom:" />
+                <Button Content="[XY]" Command="{Binding Path=ResetViewCommandXY}" DockPanel.Dock="Right" />
+                <Button Content="[XZ]" Command="{Binding Path=ResetViewCommandXZ}" DockPanel.Dock="Right" />
+                <Button Content="[YZ]" Command="{Binding Path=ResetViewCommandYZ}" DockPanel.Dock="Right" />
+                <Slider Value="{Binding Path=Zoom}" Minimum="0.1" Maximum="25" Margin="5,0,5,0"
+                        VerticalAlignment="Center" />
             </DockPanel>
         </StackPanel>
-        <StackPanel DockPanel.Dock="Left" >
-            <StackPanel x:Name="_settings"  Orientation="Vertical" Margin="0,0,0,2">
-                <DockPanel >
-                    <xctk:ColorPicker SelectedColor="{Binding Path=MachineColor}"  Width="40" DockPanel.Dock="Right"/>
+        <StackPanel DockPanel.Dock="Left">
+            <StackPanel x:Name="_settings" Orientation="Vertical" Margin="0,0,0,2">
+                <DockPanel>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=MachineColor}" Width="40" DockPanel.Dock="Right" />
                     <Label Content="Machine:" />
                 </DockPanel>
                 <DockPanel>
-                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOnColor}" Width="40" DockPanel.Dock="Right"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOnColor}" Width="40" DockPanel.Dock="Right" />
                     <Label Content="Laser On:" />
                 </DockPanel>
                 <DockPanel>
-                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOffColor}" Width="40" DockPanel.Dock="Right"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=LaserOffColor}" Width="40" DockPanel.Dock="Right" />
                     <Label Content="Laser Off:" />
                 </DockPanel>
                 <DockPanel>
-                    <xctk:ColorPicker SelectedColor="{Binding Path=CutColor}" Width="40" DockPanel.Dock="Right"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutColor}" Width="40" DockPanel.Dock="Right" />
                     <Label Content="Cut:" />
                 </DockPanel>
                 <DockPanel>
-                    <xctk:ColorPicker SelectedColor="{Binding Path=CutDotColor}" Width="40" DockPanel.Dock="Right"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutDotColor}" Width="40" DockPanel.Dock="Right" />
                     <Label Content="CutDot:" />
                 </DockPanel>
                 <DockPanel>
-                    <xctk:ColorPicker SelectedColor="{Binding Path=CutEllipseColor}" Width="40" DockPanel.Dock="Right"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutEllipseColor}" Width="40" DockPanel.Dock="Right" />
                     <Label Content="CutElipse:" />
                 </DockPanel>
                 <DockPanel>
-                    <xctk:ColorPicker SelectedColor="{Binding Path=CutArcColor}" Width="40" DockPanel.Dock="Right"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=CutArcColor}" Width="40" DockPanel.Dock="Right" />
                     <Label Content="CutArc:" />
                 </DockPanel>
                 <DockPanel>
-                    <xctk:ColorPicker SelectedColor="{Binding Path=FastColor}" Width="40" DockPanel.Dock="Right"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=FastColor}" Width="40" DockPanel.Dock="Right" />
                     <Label Content="Fast:" />
                 </DockPanel>
                 <DockPanel>
-                    <xctk:ColorPicker SelectedColor="{Binding Path=HelpLineColor}" Width="40" DockPanel.Dock="Right"/>
+                    <xctk:ColorPicker SelectedColor="{Binding Path=HelpLineColor}" Width="40" DockPanel.Dock="Right" />
                     <Label Content="Help:" />
                 </DockPanel>
                 <Label Content="Laser size:" />
-                <TextBox Text="{Binding Path=LaserSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" MinWidth="30"/>
+                <TextBox Text="{Binding Path=LaserSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                         VerticalAlignment="Center" MinWidth="30" />
                 <Label Content="Cutter:" />
-                <TextBox Text="{Binding Path=CutterSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" MinWidth="30"/>
+                <TextBox Text="{Binding Path=CutterSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                         VerticalAlignment="Center" MinWidth="30" />
             </StackPanel>
         </StackPanel>
         <DockPanel DockPanel.Dock="Bottom" Margin="0,1,0,1">
             <StackPanel Orientation="Horizontal" MinWidth="110">
                 <Label Content="{Binding Path=MouseOverPositionX,ElementName=gcode}" Padding="0" />
-                <Label Content=" : " Padding="0"/>
-                <Label Content="{Binding Path=MouseOverPositionY,ElementName=gcode}"  Padding="0"/>
+                <Label Content=" : " Padding="0" />
+                <Label Content="{Binding Path=MouseOverPositionY,ElementName=gcode}" Padding="0" />
             </StackPanel>
-            <Slider Value="{Binding Path=OffsetX}" Minimum="-1000" Maximum="1000" Margin="0,0,15,0"/>
+            <Slider Value="{Binding Path=OffsetX}" Minimum="-1000" Maximum="1000" Margin="0,0,15,0" />
         </DockPanel>
-        <Slider Value="{Binding Path=OffsetY}" Minimum="-1000" Maximum="1000" DockPanel.Dock="Right" Orientation="Vertical" IsDirectionReversed="True"/>
+        <Slider Value="{Binding Path=OffsetY}" Minimum="-1000" Maximum="1000" DockPanel.Dock="Right"
+                Orientation="Vertical" IsDirectionReversed="True" />
         <gctrl:GCodeUserControl x:Name="gcode"
-                               Commands="{Binding Path=Commands}"
-                               MachineColor="{Binding Path=MachineColor}"
-                               LaserOnColor="{Binding Path=LaserOnColor}"
-                               LaserOffColor="{Binding Path=LaserOffColor}"
-                               LaserSize="{Binding Path=LaserSize}"
-                               CutColor="{Binding Path=CutColor}"
-                               CutDotColor="{Binding Path=CutDotColor}"
-                               CutEllipseColor="{Binding Path=CutEllipseColor}"
-                               CutArcColor="{Binding Path=CutArcColor}"
-                               FastMoveColor="{Binding Path=FastColor}"
-                               HelpLineColor="{Binding Path=HelpLineColor}"
-                               CutterSize="{Binding Path=CutterSize}"
-                               Zoom="{Binding Path=Zoom,Mode=TwoWay}" 
-                               RotateAngle="{Binding Path=RotateAngle,Mode=TwoWay}" 
-                               RotateVector="{Binding Path=RotateVector,Mode=TwoWay}" 
-                               OffsetX="{Binding Path=OffsetX,Mode=TwoWay}"
-                               OffsetY="{Binding Path=OffsetY,Mode=TwoWay}"
-                               GotoPos="{Binding Path=GotoPosCommand}"/>
+                                Commands="{Binding Path=Commands}"
+                                MachineColor="{Binding Path=MachineColor}"
+                                LaserOnColor="{Binding Path=LaserOnColor}"
+                                LaserOffColor="{Binding Path=LaserOffColor}"
+                                LaserSize="{Binding Path=LaserSize}"
+                                CutColor="{Binding Path=CutColor}"
+                                CutDotColor="{Binding Path=CutDotColor}"
+                                CutEllipseColor="{Binding Path=CutEllipseColor}"
+                                CutArcColor="{Binding Path=CutArcColor}"
+                                FastMoveColor="{Binding Path=FastColor}"
+                                HelpLineColor="{Binding Path=HelpLineColor}"
+                                CutterSize="{Binding Path=CutterSize}"
+                                Zoom="{Binding Path=Zoom,Mode=TwoWay}"
+                                RotateAngle="{Binding Path=RotateAngle,Mode=TwoWay}"
+                                RotateVector="{Binding Path=RotateVector,Mode=TwoWay}"
+                                OffsetX="{Binding Path=OffsetX,Mode=TwoWay}"
+                                OffsetY="{Binding Path=OffsetY,Mode=TwoWay}"
+                                GotoPos="{Binding Path=GotoPosCommand}" />
     </DockPanel>
 </Page>

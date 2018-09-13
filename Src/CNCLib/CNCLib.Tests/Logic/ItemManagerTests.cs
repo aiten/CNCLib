@@ -36,95 +36,97 @@ using NSubstitute;
 namespace CNCLib.Tests.Logic
 {
     [TestClass]
-	public class ItemManagerTests : LogicTests
+    public class ItemManagerTests : LogicTests
     {
-		private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
+        private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
-			var rep = Substitute.For<TInterface>();
+            var rep = Substitute.For<TInterface>();
             Dependency.Container.RegisterInstance(rep);
 
             //			TInterface uow = Substitute.For<Framework.EF.UnitOfWork>();
             //			Dependency.Container.RegisterInstance(uow);
 
-            Dependency.Container.RegisterType<Framework.Contracts.Repository.IUnitOfWork, UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
+            Dependency.Container
+                .RegisterType<Framework.Contracts.Repository.IUnitOfWork,
+                    UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
 
             return rep;
-		}
+        }
 
 
-		[TestMethod]
-		public async Task GetItemNone()
-		{
-		    var unitOfWork = Substitute.For<IUnitOfWork>();
-		    var rep = Substitute.For<IItemRepository>();
+        [TestMethod]
+        public async Task GetItemNone()
+        {
+            var unitOfWork = Substitute.For<IUnitOfWork>();
+            var rep        = Substitute.For<IItemRepository>();
 
-		    var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
 
-			var itemEntity = new Item[0];
-			rep.GetAll().Returns(itemEntity);
+            var itemEntity = new Item[0];
+            rep.GetAll().Returns(itemEntity);
 
-			var all = (await ctrl.GetAll()).ToArray();
-			all.Should().BeEmpty();
-		}
+            var all = (await ctrl.GetAll()).ToArray();
+            all.Should().BeEmpty();
+        }
 
-		[TestMethod]
-		public async Task GetItemAll()
-		{
-		    var unitOfWork = Substitute.For<IUnitOfWork>();
-		    var rep = Substitute.For<IItemRepository>();
+        [TestMethod]
+        public async Task GetItemAll()
+        {
+            var unitOfWork = Substitute.For<IUnitOfWork>();
+            var rep        = Substitute.For<IItemRepository>();
 
-		    var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
 
-            var itemEntity = new []
-			{
-				new Item { ItemID=1,Name="Test1" },
-				new Item { ItemID=2,Name="Test2" }
-			};
-			rep.GetAll().Returns(itemEntity);
+            var itemEntity = new[]
+            {
+                new Item { ItemID = 1, Name = "Test1" },
+                new Item { ItemID = 2, Name = "Test2" }
+            };
+            rep.GetAll().Returns(itemEntity);
 
-			var all = (await ctrl.GetAll()).ToArray();
+            var all = (await ctrl.GetAll()).ToArray();
 
             all.Should().HaveCount(2);
             new
-            {
-                ItemID = 1,
-                Name = "Test1"
-            }
-            .Should().BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
-		}
+                {
+                    ItemID = 1,
+                    Name   = "Test1"
+                }
+                .Should().BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
+        }
 
-		[TestMethod]
-		public async Task GetItem()
-		{
-		    var unitOfWork = Substitute.For<IUnitOfWork>();
-		    var rep = Substitute.For<IItemRepository>();
+        [TestMethod]
+        public async Task GetItem()
+        {
+            var unitOfWork = Substitute.For<IUnitOfWork>();
+            var rep        = Substitute.For<IItemRepository>();
 
-		    var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
 
-		    rep.Get(1).Returns(new Item { ItemID = 1, Name = "Test1" });
+            rep.Get(1).Returns(new Item { ItemID = 1, Name = "Test1" });
 
-			var all = await ctrl.Get(1);
+            var all = await ctrl.Get(1);
 
             new
-            {
-                ItemID = 1,
-                Name = "Test1"
-            }
-            .Should().BeEquivalentTo(all, options => options.ExcludingMissingMembers());
-		}
+                {
+                    ItemID = 1,
+                    Name   = "Test1"
+                }
+                .Should().BeEquivalentTo(all, options => options.ExcludingMissingMembers());
+        }
 
-		[TestMethod]
-		public async Task GetItemNull()
-		{
-		    var unitOfWork = Substitute.For<IUnitOfWork>();
-		    var rep = Substitute.For<IItemRepository>();
+        [TestMethod]
+        public async Task GetItemNull()
+        {
+            var unitOfWork = Substitute.For<IUnitOfWork>();
+            var rep        = Substitute.For<IItemRepository>();
 
-		    var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
 
             var all = await ctrl.Get(10);
 
             all.Should().BeNull();
-		}
+        }
 
         [TestMethod]
         public async Task DeleteItemNone()
@@ -132,7 +134,7 @@ namespace CNCLib.Tests.Logic
             // arrange
 
             var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep = Substitute.For<IItemRepository>();
+            var rep        = Substitute.For<IItemRepository>();
 
             var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
 
@@ -144,6 +146,6 @@ namespace CNCLib.Tests.Logic
 
             //assert
             rep.Received().DeleteRange(Arg.Is<IEnumerable<Item>>(x => x.First().ItemID == item.ItemID));
-		}
-	}
+        }
+    }
 }

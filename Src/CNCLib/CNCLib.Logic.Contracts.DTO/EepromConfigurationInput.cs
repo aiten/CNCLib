@@ -19,14 +19,14 @@
 
 namespace CNCLib.Logic.Contracts.DTO
 {
-	public class EepromConfigurationInput
+    public class EepromConfigurationInput
     {
-        public ushort Teeth { get; set; }
-        public double ToothsizeinMm { get; set; }
-        public ushort Microsteps { get; set; }
-        public ushort StepsPerRotation { get; set; }
+        public ushort Teeth                  { get; set; }
+        public double ToothsizeinMm          { get; set; }
+        public ushort Microsteps             { get; set; }
+        public ushort StepsPerRotation       { get; set; }
         public double EstimatedRotationSpeed { get; set; }
-        public double TimeToAcc { get; set; }
-        public double TimeToDec { get; set; }
+        public double TimeToAcc              { get; set; }
+        public double TimeToDec              { get; set; }
     }
 }

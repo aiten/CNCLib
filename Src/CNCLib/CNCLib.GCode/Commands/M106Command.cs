@@ -19,7 +19,7 @@
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand("M106")]
+    [IsGCommand("M106")]
     public class M106Command : Command
     {
         #region crt + factory
@@ -32,6 +32,7 @@ namespace CNCLib.GCode.Commands
         #endregion
 
         #region GCode
+
         #endregion
 
         #region Itteration
@@ -39,7 +40,8 @@ namespace CNCLib.GCode.Commands
         public override void SetCommandState(CommandState state)
         {
             base.SetCommandState(state);
-            state.LaserOn = true; state.UseLaser = true;
+            state.LaserOn  = true;
+            state.UseLaser = true;
         }
 
         #endregion

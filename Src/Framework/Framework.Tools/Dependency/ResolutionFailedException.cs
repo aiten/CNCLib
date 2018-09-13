@@ -27,16 +27,10 @@ namespace Framework.Tools.Dependency
     [Serializable]
     public sealed class ResolutionFailedException : Exception
     {
-        public ResolutionFailedException(string msg) : base(msg)
-        {
-        }
+        public ResolutionFailedException(string msg) : base(msg) { }
 
-        public ResolutionFailedException(string msg, Exception inner) : base(msg, inner)
-        {
-        }
+        public ResolutionFailedException(string msg, Exception inner) : base(msg, inner) { }
 
-        private ResolutionFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+        private ResolutionFailedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

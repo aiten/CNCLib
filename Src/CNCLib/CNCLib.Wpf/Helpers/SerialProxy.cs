@@ -31,8 +31,13 @@ namespace CNCLib.Wpf.Helpers
         {
             Current = LocalCom;
         }
-        public Framework.Arduino.SerialCommunication.ISerial RemoteCom => Framework.Tools.Pattern.Singleton<CNCLib.Serial.Client.SerialService>.Instance;
-        public Framework.Arduino.SerialCommunication.ISerial LocalCom => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
+
+        public Framework.Arduino.SerialCommunication.ISerial RemoteCom =>
+            Framework.Tools.Pattern.Singleton<CNCLib.Serial.Client.SerialService>.Instance;
+
+        public Framework.Arduino.SerialCommunication.ISerial LocalCom => Framework.Tools.Pattern
+            .Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
+
         public Framework.Arduino.SerialCommunication.ISerial Current { get; private set; }
 
         public void SetCurrent(string portname)

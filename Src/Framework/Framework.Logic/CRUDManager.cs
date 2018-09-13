@@ -27,17 +27,21 @@ using Framework.Tools;
 
 namespace Framework.Logic
 {
-    public abstract class CRUDManager<T, TKey, TEntity> : GetManager<T, TKey, TEntity> where T : class where TEntity : class
+    public abstract class CRUDManager<T, TKey, TEntity> : GetManager<T, TKey, TEntity>
+        where T : class where TEntity : class
     {
-        private IMapper _mapper;
+        private IMapper                        _mapper;
         private ICRUDRepository<TEntity, TKey> _repository;
-        private IUnitOfWork _unitOfWork;
+        private IUnitOfWork                    _unitOfWork;
 
-        protected CRUDManager(IUnitOfWork unitOfWork, ICRUDRepository<TEntity, TKey> repository, IMapper mapper) : base  (unitOfWork,  repository,  mapper)
+        protected CRUDManager(IUnitOfWork unitOfWork, ICRUDRepository<TEntity, TKey> repository, IMapper mapper) : base(
+                                                                                                                        unitOfWork,
+                                                                                                                        repository,
+                                                                                                                        mapper)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
             _repository = repository ?? throw new ArgumentNullException();
-            _mapper = mapper ?? throw new ArgumentNullException(); ;
+            _mapper     = mapper ?? throw new ArgumentNullException();
         }
 
         public async Task<TKey> Add(T value)
@@ -58,7 +62,7 @@ namespace Framework.Logic
 
         public async Task Delete(T value)
         {
-            await Delete(new T[]{value});
+            await Delete(new T[] { value });
         }
 
         public async Task Delete(IEnumerable<T> values)
@@ -95,13 +99,13 @@ namespace Framework.Logic
         {
             using (var trans = _unitOfWork.BeginTransaction())
             {
-                var entities = _mapper.Map<IEnumerable<T>, IEnumerable<TEntity>>(values);
+                var entities     = _mapper.Map<IEnumerable<T>, IEnumerable<TEntity>>(values);
                 var entitiesInDb = await _repository.GetTracking(entities.Select(e => GetKey(e)));
 
                 var mergeJoin = entitiesInDb.Join(entities,
-                    e => GetKey(e),
-                    e => GetKey(e),
-                    (EntityInDb, Entity) => new { EntityInDb, Entity });
+                                                  e => GetKey(e),
+                                                  e => GetKey(e),
+                                                  (EntityInDb, Entity) => new { EntityInDb, Entity });
 
                 if (entities.Count() != entitiesInDb.Count() || entities.Count() != mergeJoin.Count())
                 {
@@ -112,6 +116,7 @@ namespace Framework.Logic
                 {
                     _repository.SetValueGraph(merged.EntityInDb, merged.Entity);
                 }
+
                 await trans.CommitTransactionAsync();
             }
         }

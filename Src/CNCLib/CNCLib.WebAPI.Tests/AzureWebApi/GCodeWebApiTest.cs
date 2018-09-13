@@ -28,7 +28,7 @@ using FluentAssertions;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
-	[TestClass]
+    [TestClass]
     public class GCodeWebApiTest : AzureWebApiTest
     {
         private readonly string api = "/api/GCode";
@@ -42,106 +42,106 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
+                var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
 
-				Assembly ass = Assembly.GetExecutingAssembly();
-				string asspath = Path.GetDirectoryName(ass.Location);
+                Assembly ass     = Assembly.GetExecutingAssembly();
+                string   asspath = Path.GetDirectoryName(ass.Location);
 
-				info.FileName = asspath + @"\TestData\heikes-mietzi.hpgl";
-				info.FileContent = File.ReadAllBytes(info.FileName);
+                info.FileName    = asspath + @"\TestData\heikes-mietzi.hpgl";
+                info.FileContent = File.ReadAllBytes(info.FileName);
 
-				HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
-				response.EnsureSuccessStatusCode();
+                HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
+                response.EnsureSuccessStatusCode();
 
-				string[] gcode = await response.Content.ReadAsAsync<string[]>();
+                string[] gcode = await response.Content.ReadAsAsync<string[]>();
 
-				gcode.Should().NotBeNull();
-			}
-		}
+                gcode.Should().NotBeNull();
+            }
+        }
 
-		[TestMethod]
-		public async Task PutImage()
-		{
-			using (var client = new HttpClient())
-			{
-				client.BaseAddress = new Uri(AzureUrl);
-				client.DefaultRequestHeaders.Accept.Clear();
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        [TestMethod]
+        public async Task PutImage()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(AzureUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				var info = new LoadOptions
-				{
-					LoadType = LoadOptions.ELoadType.Image,
-					AutoScale = true,
-					AutoScaleSizeX = 100,
-					AutoScaleSizeY = 100,
-					MoveSpeed = 450,
-					PenMoveType = LoadOptions.PenType.CommandString,
-					ImageDPIX = 66.7m,
-					ImageDPIY = 66.7m
-				};
+                var info = new LoadOptions
+                {
+                    LoadType       = LoadOptions.ELoadType.Image,
+                    AutoScale      = true,
+                    AutoScaleSizeX = 100,
+                    AutoScaleSizeY = 100,
+                    MoveSpeed      = 450,
+                    PenMoveType    = LoadOptions.PenType.CommandString,
+                    ImageDPIX      = 66.7m,
+                    ImageDPIY      = 66.7m
+                };
 
-				Assembly ass = Assembly.GetExecutingAssembly();
-				string asspath = Path.GetDirectoryName(ass.Location);
+                Assembly ass     = Assembly.GetExecutingAssembly();
+                string   asspath = Path.GetDirectoryName(ass.Location);
 
-				info.FileName = asspath + @"\TestData\Wendelin_Ait110.png";
-				info.FileContent = File.ReadAllBytes(info.FileName);
+                info.FileName    = asspath + @"\TestData\Wendelin_Ait110.png";
+                info.FileContent = File.ReadAllBytes(info.FileName);
 
-				HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
-				response.EnsureSuccessStatusCode();
+                HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
+                response.EnsureSuccessStatusCode();
 
-				string[] gcode = await response.Content.ReadAsAsync<string[]>();
+                string[] gcode = await response.Content.ReadAsAsync<string[]>();
 
-			    gcode.Should().NotBeNull();
-			}
-		}
+                gcode.Should().NotBeNull();
+            }
+        }
 
         public class CreateGCode
         {
-            public int LoadOptionsId { get; set; }
-            public string FileName { get; set; }
+            public int    LoadOptionsId { get; set; }
+            public string FileName      { get; set; }
 
             public Byte[] FileContent { get; set; }
         }
 
         [TestMethod]
-		public async Task PutImageWithStoredOptions()
-		{
-			using (var client = new HttpClient())
-			{
-				client.BaseAddress = new Uri(AzureUrl);
-				client.DefaultRequestHeaders.Accept.Clear();
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-				/*
-								LoadOptions info = new LoadOptions()
-								{
-									LoadType = LoadOptions.ELoadType.Image,
-									AutoScale = true,
-									AutoScaleSizeX = 100,
-									AutoScaleSizeY = 100,
-									MoveSpeed = 450,
-									PenMoveType = LoadOptions.PenType.CommandString,
-									ImageDPIX = 66.7m,
-									ImageDPIY = 66.7m
-								};
-				*/
-				Assembly ass = Assembly.GetExecutingAssembly();
-				string asspath = Path.GetDirectoryName(ass.Location);
+        public async Task PutImageWithStoredOptions()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(AzureUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                /*
+                                LoadOptions info = new LoadOptions()
+                                {
+                                    LoadType = LoadOptions.ELoadType.Image,
+                                    AutoScale = true,
+                                    AutoScaleSizeX = 100,
+                                    AutoScaleSizeY = 100,
+                                    MoveSpeed = 450,
+                                    PenMoveType = LoadOptions.PenType.CommandString,
+                                    ImageDPIX = 66.7m,
+                                    ImageDPIY = 66.7m
+                                };
+                */
+                Assembly ass     = Assembly.GetExecutingAssembly();
+                string   asspath = Path.GetDirectoryName(ass.Location);
 
-				var input = new CreateGCode
-				{
-					LoadOptionsId = 3,
-					FileName = asspath + @"\TestData\Wendelin_Ait110.png"
-				};
+                var input = new CreateGCode
+                {
+                    LoadOptionsId = 3,
+                    FileName      = asspath + @"\TestData\Wendelin_Ait110.png"
+                };
 
-				input.FileContent = File.ReadAllBytes(input.FileName);
+                input.FileContent = File.ReadAllBytes(input.FileName);
 
-				HttpResponseMessage response = await client.PutAsJsonAsync(api, input);
-				response.EnsureSuccessStatusCode();
+                HttpResponseMessage response = await client.PutAsJsonAsync(api, input);
+                response.EnsureSuccessStatusCode();
 
-				string[] gcode = await response.Content.ReadAsAsync<string[]>();
+                string[] gcode = await response.Content.ReadAsAsync<string[]>();
 
-			    gcode.Should().NotBeNull();
-			}
-		}
-	}
+                gcode.Should().NotBeNull();
+            }
+        }
+    }
 }

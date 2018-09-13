@@ -32,14 +32,9 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasIndex(e => e.UserName).IsUnique();
 
-            entity.Property(m => m.UserName).
-                IsRequired().
-                IsUnicode().
-                HasMaxLength(128);
+            entity.Property(m => m.UserName).IsRequired().IsUnicode().HasMaxLength(128);
 
-            entity.Property(m => m.UserPassword).
-                IsUnicode().
-                HasMaxLength(255);
+            entity.Property(m => m.UserPassword).IsUnicode().HasMaxLength(255);
         }
     }
 }

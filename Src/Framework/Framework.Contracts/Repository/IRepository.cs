@@ -20,7 +20,5 @@ using System;
 
 namespace Framework.Contracts.Repository
 {
-	public interface IRepository
-    {
-    }
+    public interface IRepository { }
 }

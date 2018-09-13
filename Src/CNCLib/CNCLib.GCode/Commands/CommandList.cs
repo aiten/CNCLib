@@ -35,7 +35,7 @@ namespace CNCLib.GCode.Commands
             if (Count > 0)
             {
                 this[Count - 1].NextCommand = cmd;
-                cmd.PrevCommand = this[Count - 1];
+                cmd.PrevCommand             = this[Count - 1];
             }
 
             cmd.NextCommand = null;
@@ -71,13 +71,16 @@ namespace CNCLib.GCode.Commands
 
         public void Paint(IOutputCommand output, object param)
         {
-            var commandstate = new CommandState();
+            var  commandstate    = new CommandState();
             bool haveseencurrent = Current == null;
 
             foreach (Command cmd in this)
             {
                 if (!haveseencurrent)
+                {
                     haveseencurrent = cmd == Current;
+                }
+
                 commandstate.IsSelected = haveseencurrent;
                 cmd.SetCommandState(commandstate);
                 cmd.Draw(output, commandstate, param);
@@ -88,8 +91,8 @@ namespace CNCLib.GCode.Commands
         {
             var list = new List<string>();
 
-            Command last = null;
-            var state = new CommandState();
+            Command last  = null;
+            var     state = new CommandState();
 
             foreach (Command r in this)
             {
@@ -110,7 +113,7 @@ namespace CNCLib.GCode.Commands
 
         public CommandList Convert(ConvertOptions options)
         {
-            var list = new CommandList();
+            var list  = new CommandList();
             var state = new CommandState();
 
             foreach (Command r in this)

@@ -24,7 +24,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Framework.Repository
 {
-    public class UnitOfWork<T>: IUnitOfWork where T: DbContext
+    public class UnitOfWork<T> : IUnitOfWork where T : DbContext
     {
         public T Context { get; private set; }
 
@@ -52,13 +52,18 @@ namespace Framework.Repository
         {
             return await Context.Database.ExecuteSqlCommandAsync(sql, parameters);
         }
+
         #region Transaction
 
         public bool IsInTransaction { get; private set; }
 
         public ITransaction BeginTransaction()
         {
-            if (IsInTransaction) throw new ArgumentException();
+            if (IsInTransaction)
+            {
+                throw new ArgumentException();
+            }
+
             IsInTransaction = true;
             return new Transaction(this, Context.Database.BeginTransaction());
         }

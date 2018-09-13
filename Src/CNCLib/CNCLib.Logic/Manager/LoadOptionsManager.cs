@@ -27,69 +27,70 @@ using Framework.Tools.Dependency;
 namespace CNCLib.Logic.Manager
 {
     public class LoadOptionsManager : ManagerBase, ILoadOptionsManager
-	{
-		public async Task<IEnumerable<LoadOptions>> GetAll()
-		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
-			{
-				var list = new List<LoadOptions>();
-				foreach (DynItem item in await controller.GetAll(typeof(LoadOptions)))
-				{
-					var li = (LoadOptions) await controller.Create(item.ItemID);
-					li.Id = item.ItemID;
-					list.Add(li);
-				}
-				return list;
-			}
-		}
-
-		public async Task<LoadOptions> Get(int id)
-		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
-			{
-				object obj = await controller.Create(id);
-				if (obj != null)
-				{
-					var li = (LoadOptions)obj;
-					li.Id = id;
-					return (LoadOptions)obj;
-				}
-
-				return null;
-			}
-		}
-
-		public async Task Delete(LoadOptions m)
+    {
+        public async Task<IEnumerable<LoadOptions>> GetAll()
         {
-			using (var controller = Dependency.Resolve<IDynItemController>())
-			{
-				await controller.Delete(m.Id);
-			}
+            using (var controller = Dependency.Resolve<IDynItemController>())
+            {
+                var list = new List<LoadOptions>();
+                foreach (DynItem item in await controller.GetAll(typeof(LoadOptions)))
+                {
+                    var li = (LoadOptions) await controller.Create(item.ItemID);
+                    li.Id = item.ItemID;
+                    list.Add(li);
+                }
+
+                return list;
+            }
         }
 
-	    public async Task Delete(int key)
-	    {
-	        using (var controller = Dependency.Resolve<IDynItemController>())
-	        {
-	            await controller.Delete(key);
-	        }
-	    }
+        public async Task<LoadOptions> Get(int id)
+        {
+            using (var controller = Dependency.Resolve<IDynItemController>())
+            {
+                object obj = await controller.Create(id);
+                if (obj != null)
+                {
+                    var li = (LoadOptions) obj;
+                    li.Id = id;
+                    return (LoadOptions) obj;
+                }
+
+                return null;
+            }
+        }
+
+        public async Task Delete(LoadOptions m)
+        {
+            using (var controller = Dependency.Resolve<IDynItemController>())
+            {
+                await controller.Delete(m.Id);
+            }
+        }
+
+        public async Task Delete(int key)
+        {
+            using (var controller = Dependency.Resolve<IDynItemController>())
+            {
+                await controller.Delete(key);
+            }
+        }
 
         public async Task<int> Add(LoadOptions m)
-		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
-			{
-				return await controller.Add(m.SettingName, m);
-			}
-		}
+        {
+            using (var controller = Dependency.Resolve<IDynItemController>())
+            {
+                return await controller.Add(m.SettingName, m);
+            }
+        }
 
-		public async Task Update(LoadOptions m)
-		{
-			using (var controller = Dependency.Resolve<IDynItemController>())
-			{
-				await controller.Save(m.Id, m.SettingName, m);
-			}
-		}
+        public async Task Update(LoadOptions m)
+        {
+            using (var controller = Dependency.Resolve<IDynItemController>())
+            {
+                await controller.Save(m.Id, m.SettingName, m);
+            }
+        }
 
         public Task<IEnumerable<int>> Add(IEnumerable<LoadOptions> values)
         {
@@ -117,7 +118,9 @@ namespace CNCLib.Logic.Manager
         }
 
         #region IDisposable Support
+
         // see ManagerBase
+
         #endregion
     }
 }

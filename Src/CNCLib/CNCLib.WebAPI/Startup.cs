@@ -52,18 +52,15 @@ namespace CNCLib.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()));
+                                                              .AllowAnyMethod()
+                                                              .AllowAnyHeader()));
 
-            services.AddMvc().
-                AddJsonOptions(options =>
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services.AddMvc().AddJsonOptions(options =>
+                                                 options.SerializerSettings.ContractResolver =
+                                                     new DefaultContractResolver());
 
             // Register the Swagger generator, defining one or more Swagger documents
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" });
-            });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" }); });
 
             Dependency.Initialize(new AspNetDependencyProvider(services));
 
@@ -74,20 +71,16 @@ namespace CNCLib.WebAPI
             Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
 
             Dependency.Container.RegisterTypesIncludingInternals(
-                typeof(MachineService).Assembly,
-                typeof(Repository.MachineRepository).Assembly,
-                typeof(Logic.Client.DynItemController).Assembly,
-                typeof(MachineManager).Assembly);
+                                                                 typeof(MachineService).Assembly,
+                                                                 typeof(Repository.MachineRepository).Assembly,
+                                                                 typeof(Logic.Client.DynItemController).Assembly,
+                                                                 typeof(MachineManager).Assembly);
 
 
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<LogicAutoMapperProfile>();
-            });
+            var config = new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); });
 
             IMapper mapper = config.CreateMapper();
             Dependency.Container.RegisterInstance(mapper);
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -114,10 +107,7 @@ namespace CNCLib.WebAPI
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1"); });
 
             app.UseCors("AllowAll");
             app.UseMvc();

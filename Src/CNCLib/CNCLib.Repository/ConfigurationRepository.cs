@@ -28,57 +28,59 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class ConfigurationRepository : CRUDRepositoryBase<CNCLibContext, Configuration, ConfigurationPrimary>, IConfigurationRepository
-	{
-        public ConfigurationRepository(CNCLibContext dbcontext) : base(dbcontext)
+    public class ConfigurationRepository : CRUDRepositoryBase<CNCLibContext, Configuration, ConfigurationPrimary>,
+                                           IConfigurationRepository
+    {
+        public ConfigurationRepository(CNCLibContext dbcontext) : base(dbcontext) { }
+
+        protected override IQueryable<Configuration> AddInclude(IQueryable<Configuration> query)
         {
+            return query;
         }
 
-	    protected override IQueryable<Configuration> AddInclude(IQueryable<Configuration> query)
-	    {
-	        return query;
-	    }
-
-	    protected override IQueryable<Configuration> AddPrimaryWhere(IQueryable<Configuration> query, ConfigurationPrimary key)
-	    {
-	        return query.Where(c => c.Group == key.Group && c.Name == key.Name);
-	    }
-	    protected override IQueryable<Configuration> AddPrimaryWhereIn(IQueryable<Configuration> query, IEnumerable<ConfigurationPrimary> keys)
-	    {
-	        var predicate = PredicateBuilder.False<Configuration>();
-
-	        foreach (var key in keys)
-	        {
-	            predicate = predicate.Or(c => c.Group == key.Group && c.Name == key.Name);
-	        }
-
-	        return query.Where(predicate);
-	    }
-
-        public async Task<Configuration> Get(string group, string  name)
+        protected override IQueryable<Configuration> AddPrimaryWhere(IQueryable<Configuration> query,
+                                                                     ConfigurationPrimary      key)
         {
-			return await Query.Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
+            return query.Where(c => c.Group == key.Group && c.Name == key.Name);
+        }
+
+        protected override IQueryable<Configuration> AddPrimaryWhereIn(IQueryable<Configuration>         query,
+                                                                       IEnumerable<ConfigurationPrimary> keys)
+        {
+            var predicate = PredicateBuilder.False<Configuration>();
+
+            foreach (var key in keys)
+            {
+                predicate = predicate.Or(c => c.Group == key.Group && c.Name == key.Name);
+            }
+
+            return query.Where(predicate);
+        }
+
+        public async Task<Configuration> Get(string group, string name)
+        {
+            return await Query.Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
         }
 
         public async Task Store(Configuration configuration)
-		{
-			// search und update machine
+        {
+            // search und update machine
 
-			var cInDb = await TrackingQuery.Where(c => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
+            var cInDb = await TrackingQuery.Where(c => c.Group == configuration.Group && c.Name == configuration.Name)
+                .FirstOrDefaultAsync();
 
-			if (cInDb == default(Configuration))
-			{
-				// add new
+            if (cInDb == default(Configuration))
+            {
+                // add new
 
-				cInDb = configuration;
-				AddEntity(cInDb);
-			}
-			else
-			{
-				// syn with existing
-				SetValue(cInDb,configuration);
-			}
-		}
-	}
+                cInDb = configuration;
+                AddEntity(cInDb);
+            }
+            else
+            {
+                // syn with existing
+                SetValue(cInDb, configuration);
+            }
+        }
+    }
 }
-

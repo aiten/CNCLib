@@ -19,7 +19,7 @@
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand("MXX")]
+    [IsGCommand("MXX")]
     public class MxxCommand : Command
     {
         #region crt + factory
@@ -32,11 +32,16 @@ namespace CNCLib.GCode.Commands
         #endregion
 
         #region GCode
-        public override void SetCode(string code ) { Code = code;  }
+
+        public override void SetCode(string code)
+        {
+            Code = code;
+        }
 
         #endregion
 
         #region Draw
+
         public override void Draw(IOutputCommand output, CommandState state, object param)
         {
             //base.Draw(output, state, param);

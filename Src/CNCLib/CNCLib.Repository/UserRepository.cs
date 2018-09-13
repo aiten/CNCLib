@@ -28,54 +28,51 @@ using Microsoft.EntityFrameworkCore;
 namespace CNCLib.Repository
 {
     public class UserRepository : CRUDRepositoryBase<CNCLibContext, User, int>, IUserRepository
-	{
-        public UserRepository(CNCLibContext context) : base(context)
+    {
+        public UserRepository(CNCLibContext context) : base(context) { }
+
+        protected override IQueryable<User> AddInclude(IQueryable<User> query)
         {
+            return query;
         }
 
-	    protected override IQueryable<User> AddInclude(IQueryable<User> query)
-	    {
-	        return query;
-	    }
+        protected override IQueryable<User> AddPrimaryWhere(IQueryable<User> query, int key)
+        {
+            return query.Where(m => m.UserID == key);
+        }
 
-	    protected override IQueryable<User> AddPrimaryWhere(IQueryable<User> query, int key)
-	    {
-	        return query.Where(m => m.UserID == key);
-	    }
-	    protected override IQueryable<User> AddPrimaryWhereIn(IQueryable<User> query, IEnumerable<int> key)
-	    {
-	        return query.Where(m => key.Contains(m.UserID));
-	    }
+        protected override IQueryable<User> AddPrimaryWhereIn(IQueryable<User> query, IEnumerable<int> key)
+        {
+            return query.Where(m => key.Contains(m.UserID));
+        }
 
         public async Task<User> GetUser(string username)
-	    {
-	        return await AddInclude(Query).Where(u => u.UserName == username).FirstOrDefaultAsync();
-	    }
+        {
+            return await AddInclude(Query).Where(u => u.UserName == username).FirstOrDefaultAsync();
+        }
 
         public async Task Store(User user)
-		{
-			// search und update User
+        {
+            // search und update User
 
-			int id = user.UserID;
+            int id = user.UserID;
 
-			var UserInDb = await Context.Users.
-				Where(m => m.UserID == id).
-				FirstOrDefaultAsync();
+            var UserInDb = await Context.Users.Where(m => m.UserID == id).FirstOrDefaultAsync();
 
-			if (UserInDb == default(User))
-			{
-				// add new
+            if (UserInDb == default(User))
+            {
+                // add new
 
-				AddEntity(user);
-			}
-			else
-			{
-				// syn with existing
+                AddEntity(user);
+            }
+            else
+            {
+                // syn with existing
 
-				SetValue(UserInDb,user);
+                SetValue(UserInDb, user);
 
-				// search und update Usercommands (add and delete)
-			}
-		}
+                // search und update Usercommands (add and delete)
+            }
+        }
     }
 }

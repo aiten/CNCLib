@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 namespace CNCLib.Logic.Contracts
 {
     public interface IEepromConfigurationManager : IDisposable
-	{
-		Task<DTO.EepromConfiguration> CalculateConfig(DTO.EepromConfigurationInput param);
-	}
+    {
+        Task<DTO.EepromConfiguration> CalculateConfig(DTO.EepromConfigurationInput param);
+    }
 }

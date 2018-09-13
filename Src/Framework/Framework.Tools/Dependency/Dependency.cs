@@ -40,6 +40,7 @@ namespace Framework.Tools.Dependency
             {
                 throw new InvalidOperationException("Cannot initialize Dependency class twice.");
             }
+
             _provider = provider;
         }
 

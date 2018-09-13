@@ -32,8 +32,22 @@ namespace Framework.Arduino.SerialCommunication
             return System.IO.Ports.SerialPort.GetPortNames();
         }
 
-        public new Parity Parity { get => (Parity) base.Parity; set => base.Parity = (System.IO.Ports.Parity) value;  }
-        public new StopBits StopBits { get => (StopBits)base.StopBits; set => base.StopBits = (System.IO.Ports.StopBits)value;  }
-        public new Handshake Handshake { get => (Handshake)base.Handshake; set => base.Handshake = (System.IO.Ports.Handshake)value;  }
+        public new Parity Parity
+        {
+            get => (Parity) base.Parity;
+            set => base.Parity = (System.IO.Ports.Parity) value;
+        }
+
+        public new StopBits StopBits
+        {
+            get => (StopBits) base.StopBits;
+            set => base.StopBits = (System.IO.Ports.StopBits) value;
+        }
+
+        public new Handshake Handshake
+        {
+            get => (Handshake) base.Handshake;
+            set => base.Handshake = (System.IO.Ports.Handshake) value;
+        }
     }
 }

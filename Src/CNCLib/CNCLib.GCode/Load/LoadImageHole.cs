@@ -23,17 +23,17 @@ using Framework.Tools.Helpers;
 
 namespace CNCLib.GCode.Load
 {
-	public class LoadImageHole : LoadImageBase
+    public class LoadImageHole : LoadImageBase
     {
         public int ImageToDotSizeX => LoadOptions.DotSizeX;
         public int ImageToDotSizeY => LoadOptions.DotSizeY;
 
         protected override double PixelDistX => (double) LoadOptions.DotDistX;
         protected override double PixelDistY => (double) LoadOptions.DotDistY;
-        protected double LaserSize => (double) LoadOptions.LaserSize;
+        protected          double LaserSize  => (double) LoadOptions.LaserSize;
 
 
-        public bool UseYShift => LoadOptions.UseYShift;
+        public bool UseYShift   => LoadOptions.UseYShift;
         public bool RotateHeart => LoadOptions.RotateHeart;
 
         public LoadOptions.EHoleType HoleType => LoadOptions.HoleType;
@@ -45,7 +45,7 @@ namespace CNCLib.GCode.Load
             PreLoad();
 
             AddCommentForLaser();
-            
+
             using (var bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
             {
                 System.Drawing.Bitmap b;
@@ -70,6 +70,7 @@ namespace CNCLib.GCode.Load
 
                 WriteGCode(b);
             }
+
             PostLoad();
         }
 
@@ -79,24 +80,30 @@ namespace CNCLib.GCode.Load
 
             double topPos = SizeY * (PixelSizeY + PixelDistY);
 
-            for (int iy = 0; ; iy++)
+            for (int iy = 0;; iy++)
             {
                 double yy = ToYPos(iy);
-                if (yy >= SizeY) break;
+                if (yy >= SizeY)
+                {
+                    break;
+                }
 
-                for (int ix = 0; ; ix++)
+                for (int ix = 0;; ix++)
                 {
                     double y = yy;
                     double x = ToXPos(ix, iy, ref yy);
-                    if (x >= SizeX) break;
+                    if (x >= SizeX)
+                    {
+                        break;
+                    }
 
                     if (x >= 0 && x + ImageToDotSizeX <= SizeX &&
                         y >= 0 && y + ImageToDotSizeY <= SizeY)
                     {
                         // Rect (x1,y1, ImageToDotSizeX, ImageToDotSizeY)  is on printingarea
 
-                        double posx = x * (PixelSizeX+ PixelDistX) + ShiftX + PixelDistX/2;
-                        double posy = y * (PixelSizeY+ PixelDistY) + ShiftY + PixelDistY/2;
+                        double posx = x * (PixelSizeX + PixelDistX) + ShiftX + PixelDistX / 2;
+                        double posy = y * (PixelSizeY + PixelDistY) + ShiftY + PixelDistY / 2;
                         // x,y left,top corner
 
                         AddCommandX(posx, topPos - posy,
@@ -121,7 +128,10 @@ namespace CNCLib.GCode.Load
                 case LoadOptions.EHoleType.Circle:
                 case LoadOptions.EHoleType.Diamond:
                     if (iy % 2 == 0 && UseYShift)
+                    {
                         xdiff = ImageToDotSizeX / 2.0;
+                    }
+
                     break;
             }
 
@@ -136,14 +146,21 @@ namespace CNCLib.GCode.Load
                 case LoadOptions.EHoleType.Hexagon:
                 case LoadOptions.EHoleType.Circle:
                     if (UseYShift)
+                    {
                         return (ypos * 0.86602540378443864676372317075294);
+                    }
+
                     break;
 
                 case LoadOptions.EHoleType.Diamond:
                     if (UseYShift)
+                    {
                         return (ypos * 0.5);
+                    }
+
                     break;
             }
+
             return (ypos);
         }
 
@@ -163,7 +180,7 @@ namespace CNCLib.GCode.Load
             {
                 for (int dy = 0; dy < ImageToDotSizeY; dy++)
                 {
-                    var col = Bitmap.GetPixel((int)(x + dx), (int)(y + dy));
+                    var col = Bitmap.GetPixel((int) (x + dx), (int) (y + dy));
                     colorsum += FindNearestColorGrayScale(col.R, col.G, col.B);
                 }
             }
@@ -177,7 +194,7 @@ namespace CNCLib.GCode.Load
             // x,y left,top corner
             // size 0..1
 
-            size = size * size;     // squared area 
+            size = size * size; // squared area 
 
             if (LoadOptions.ImageInvert)
             {
@@ -205,15 +222,26 @@ namespace CNCLib.GCode.Load
 
             switch (holetype)
             {
-                case LoadOptions.EHoleType.Hexagon: CreateHexagon(centerX, centerY, dotsizeX / 2.0); break;
-                case LoadOptions.EHoleType.Circle: CreateCircle(centerX, centerY, dotsizeX / 2.0); break;
-                case LoadOptions.EHoleType.Square: CreateSquare(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0); break;
-                case LoadOptions.EHoleType.Diamond: CreateDiamond(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0); break;
-                case LoadOptions.EHoleType.Heart: CreateHeart(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0, RotateHeart && ix%2 == 0); break;
+                case LoadOptions.EHoleType.Hexagon:
+                    CreateHexagon(centerX, centerY, dotsizeX / 2.0);
+                    break;
+                case LoadOptions.EHoleType.Circle:
+                    CreateCircle(centerX, centerY, dotsizeX / 2.0);
+                    break;
+                case LoadOptions.EHoleType.Square:
+                    CreateSquare(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0);
+                    break;
+                case LoadOptions.EHoleType.Diamond:
+                    CreateDiamond(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0);
+                    break;
+                case LoadOptions.EHoleType.Heart:
+                    CreateHeart(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0, RotateHeart && ix % 2 == 0);
+                    break;
             }
 
             LaserOff();
         }
+
         private void CreateToSmallShape(double x, double y)
         {
             Command cc = new G00Command();
@@ -229,7 +257,11 @@ namespace CNCLib.GCode.Load
 
         private void CreateSquare(double x, double y, double hsizeX2, double hsizeY2)
         {
-            if (hsizeX2 < 0.000001) return;     // true black do nothing
+            if (hsizeX2 < 0.000001)
+            {
+                return; // true black do nothing
+            }
+
             if (hsizeX2 * 2 < LaserSize)
             {
                 CreateToSmallShape(x, y);
@@ -265,7 +297,11 @@ namespace CNCLib.GCode.Load
 
         private void CreateDiamond(double x, double y, double hsizeX2, double hsizeY2)
         {
-            if (hsizeX2 < 0.000001) return;     // true black do nothing
+            if (hsizeX2 < 0.000001)
+            {
+                return; // true black do nothing
+            }
+
             if (hsizeX2 * 2 < LaserSize)
             {
                 CreateToSmallShape(x, y);
@@ -306,8 +342,12 @@ namespace CNCLib.GCode.Load
 
         private void CreateHexagon(double x, double y, double radius)
         {
-            if (radius < 0.000001) return;     // true black do nothing
-            if (radius*2 < LaserSize)
+            if (radius < 0.000001)
+            {
+                return; // true black do nothing
+            }
+
+            if (radius * 2 < LaserSize)
             {
                 CreateToSmallShape(x, y);
                 return;
@@ -338,7 +378,11 @@ namespace CNCLib.GCode.Load
 
         private void CreateCircle(double x, double y, double radius)
         {
-            if (radius < 0.000001) return;     // true black do nothing
+            if (radius < 0.000001)
+            {
+                return; // true black do nothing
+            }
+
             if (radius * 2 < LaserSize)
             {
                 CreateToSmallShape(x, y);
@@ -361,7 +405,11 @@ namespace CNCLib.GCode.Load
 
         private void CreateHeart(double x, double y, double hsizeX2, double hsizeY2, bool mirror)
         {
-            if (hsizeX2 < 0.000001) return;     // true black do nothing
+            if (hsizeX2 < 0.000001)
+            {
+                return; // true black do nothing
+            }
+
             if (hsizeX2 * 2 < LaserSize)
             {
                 CreateToSmallShape(x, y);
@@ -369,7 +417,7 @@ namespace CNCLib.GCode.Load
             }
 
             hsizeX2 *= 0.9;
-            hsizeY2 = hsizeX2;
+            hsizeY2 =  hsizeX2;
             double mr = mirror ? -1.0 : 1.0;
 
             Command c = new G00Command();
@@ -380,22 +428,27 @@ namespace CNCLib.GCode.Load
 
             c = new G01Command();
             c.AddVariable('X', ToGCode(x));
-            c.AddVariable('Y', ToGCode(y + hsizeY2*mr));
+            c.AddVariable('Y', ToGCode(y + hsizeY2 * mr));
             Commands.Add(c);
 
             if (mirror)
+            {
                 c = new G03Command();
+            }
             else
-                 c= new G02Command();
-            c.AddVariable('X', ToGCode(x+ hsizeX2));
+            {
+                c = new G02Command();
+            }
+
+            c.AddVariable('X', ToGCode(x + hsizeX2));
             c.AddVariable('Y', ToGCode(y));
-            c.AddVariable('I', ToGCode( hsizeX2 / 2.0));
+            c.AddVariable('I', ToGCode(hsizeX2 / 2.0));
             c.AddVariable('J', ToGCode(-hsizeY2 / 2.0 * mr));
             Commands.Add(c);
 
             c = new G01Command();
             c.AddVariable('X', ToGCode(x));
-            c.AddVariable('Y', ToGCode(y-hsizeY2 * mr));
+            c.AddVariable('Y', ToGCode(y - hsizeY2 * mr));
             Commands.Add(c);
 
             c = new G01Command();
@@ -404,9 +457,14 @@ namespace CNCLib.GCode.Load
             Commands.Add(c);
 
             if (mirror)
+            {
                 c = new G03Command();
+            }
             else
+            {
                 c = new G02Command();
+            }
+
             c.AddVariable('X', ToGCode(x));
             c.AddVariable('Y', ToGCode(y + hsizeY2 * mr));
             c.AddVariable('I', ToGCode(hsizeX2 / 2.0));
@@ -415,4 +473,3 @@ namespace CNCLib.GCode.Load
         }
     }
 }
-

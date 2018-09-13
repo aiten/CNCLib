@@ -27,8 +27,8 @@ using Framework.Service;
 
 namespace CNCLib.Service.Logic
 {
-    public class ItemService : CRUDService<Item,int> , IItemService
-	{
+    public class ItemService : CRUDService<Item, int>, IItemService
+    {
         public ItemService(IItemManager manager) : base(manager)
         {
             _manager = manager ?? throw new ArgumentNullException();
@@ -36,9 +36,9 @@ namespace CNCLib.Service.Logic
 
         readonly IItemManager _manager;
 
-		public async Task<IEnumerable<Item>> GetByClassName(string classname)
-		{
-			return await _manager.GetByClassName(classname);
-		}
+        public async Task<IEnumerable<Item>> GetByClassName(string classname)
+        {
+            return await _manager.GetByClassName(classname);
+        }
     }
 }

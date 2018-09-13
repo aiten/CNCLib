@@ -28,27 +28,27 @@ namespace CNCLib.Wpf.Views
     /// Interaction logic for EepromView.xaml
     /// </summary>
     public partial class EepromView : Window
-	{
-		public EepromView()
-		{
+    {
+        public EepromView()
+        {
             var vm = Dependency.Resolve<ViewModels.EepromViewModel>();
             DataContext = vm;
 
             InitializeComponent();
 
             this.DefaulInitForBaseViewModel();
-		}
+        }
 
         private void PropertyGrid_PreparePropertyItem(object sender, PropertyItemEventArgs e)
         {
-            var grid = (PropertyGrid)e.Source;
+            var grid = (PropertyGrid) e.Source;
         }
 
         private void PropertyGrid_IsPropertyBrowsable(object sender, IsPropertyBrowsableArgs e)
         {
             if (_grid.SelectedObject != null)
             {
-                var data = (Eeprom)_grid.SelectedObject;
+                var data = (Eeprom) _grid.SelectedObject;
                 e.IsBrowsable = data.IsPropertyBrowsable(e.PropertyDescriptor);
             }
         }

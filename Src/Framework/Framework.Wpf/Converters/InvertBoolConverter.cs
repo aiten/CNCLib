@@ -22,19 +22,19 @@ using System.Windows.Data;
 
 namespace Framework.Wpf.Converters
 {
-	[ValueConversion(typeof(bool), typeof(bool))]
-	public class InvertBoolConverter : IValueConverter
-	{
-		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-		{
-			bool booleanValue = value != null && (bool)value;
-			return !booleanValue;
-		}
+    [ValueConversion(typeof(bool), typeof(bool))]
+    public class InvertBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool booleanValue = value != null && (bool) value;
+            return !booleanValue;
+        }
 
-		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-		{
-			bool booleanValue = value != null && (bool)value;
-			return !booleanValue;
-		}
-	}
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool booleanValue = value != null && (bool) value;
+            return !booleanValue;
+        }
+    }
 }

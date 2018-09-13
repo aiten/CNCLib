@@ -23,54 +23,68 @@ using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
-	public class DirectCommandViewModel : DetailViewModel
-	{
-		public DirectCommandViewModel(IManualControlViewModel vm) : base(vm)
-		{
-		}
+    public class DirectCommandViewModel : DetailViewModel
+    {
+        public DirectCommandViewModel(IManualControlViewModel vm) : base(vm) { }
 
-		#region Properties
+        #region Properties
 
-		#endregion
+        #endregion
 
-		#region DirectCommand
+        #region DirectCommand
 
-		private string _directCommand;
-		public string DirectCommand
-		{
-			get => _directCommand;
-		    set => SetProperty(ref _directCommand, value);
-		}
+        private string _directCommand;
 
-		private void AddDirectCommandHistory(string cmd)
-		{
-			if (_directCommandHistory == null) _directCommandHistory = new ObservableCollection<string>();
-			_directCommandHistory.Add(cmd);
-			DirectCommandHistory = _directCommandHistory;
-		}
+        public string DirectCommand
+        {
+            get => _directCommand;
+            set => SetProperty(ref _directCommand, value);
+        }
 
-		private ObservableCollection<string> _directCommandHistory;
-		public ObservableCollection<string> DirectCommandHistory
-		{
-			get => _directCommandHistory;
-		    set { SetProperty(ref _directCommandHistory, value); RaisePropertyChanged(nameof(DirectCommandHistory)); }
-		}
+        private void AddDirectCommandHistory(string cmd)
+        {
+            if (_directCommandHistory == null)
+            {
+                _directCommandHistory = new ObservableCollection<string>();
+            }
 
-		#endregion
+            _directCommandHistory.Add(cmd);
+            DirectCommandHistory = _directCommandHistory;
+        }
 
-		#region Commands / CanCommands
+        private ObservableCollection<string> _directCommandHistory;
 
-		public void SendDirect() { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(DirectCommand); }); AddDirectCommandHistory(DirectCommand); }
-		public bool CanSendDirectCommand()
-		{
-			return Connected && !string.IsNullOrEmpty(DirectCommand);
-		}
+        public ObservableCollection<string> DirectCommandHistory
+        {
+            get => _directCommandHistory;
+            set
+            {
+                SetProperty(ref _directCommandHistory, value);
+                RaisePropertyChanged(nameof(DirectCommandHistory));
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region ICommand
-		public ICommand SendDirectCommand => new DelegateCommand(SendDirect, CanSendDirectCommand);
+        #region Commands / CanCommands
 
-		#endregion
-	}
+        public void SendDirect()
+        {
+            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(DirectCommand); });
+            AddDirectCommandHistory(DirectCommand);
+        }
+
+        public bool CanSendDirectCommand()
+        {
+            return Connected && !string.IsNullOrEmpty(DirectCommand);
+        }
+
+        #endregion
+
+        #region ICommand
+
+        public ICommand SendDirectCommand => new DelegateCommand(SendDirect, CanSendDirectCommand);
+
+        #endregion
+    }
 }

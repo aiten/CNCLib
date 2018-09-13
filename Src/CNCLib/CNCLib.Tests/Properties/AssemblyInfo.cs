@@ -23,4 +23,3 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("CNCLib.Tests")]
 
 [assembly: Guid("08c0ca35-14d2-4875-9c1d-0363ab95a30d")]
-

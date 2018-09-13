@@ -22,4 +22,3 @@ using System.Runtime.InteropServices;
 //[assembly: AssemblyProduct("Framework.Arduino")]
 
 [assembly: Guid("77f5a48d-e908-4a95-a09e-771e8be8817b")]
-

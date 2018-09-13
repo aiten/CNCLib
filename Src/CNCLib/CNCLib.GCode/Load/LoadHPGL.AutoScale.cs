@@ -29,7 +29,7 @@ namespace CNCLib.GCode.Load
         private class AutoScale
         {
             public LoadOptions LoadOptions { get; set; }
-            public LoadHPGL LoadX { get; set; }
+            public LoadHPGL    LoadX       { get; set; }
 
             public void AutoScaleList(IList<HPGLCommand> list)
             {
@@ -52,8 +52,8 @@ namespace CNCLib.GCode.Load
                     Y = list.Where(x => x.IsPenCommand).Max(c => c.PointTo.Y)
                 };
 
-                decimal sizex = (decimal)((maxpt.X0) - (minpt.X0));
-                decimal sizey = (decimal)((maxpt.Y0) - (minpt.Y0));
+                decimal sizex = (decimal) ((maxpt.X0) - (minpt.X0));
+                decimal sizey = (decimal) ((maxpt.Y0) - (minpt.Y0));
 
                 decimal borderX = LoadX.LoadOptions.AutoScaleBorderDistX;
                 decimal borderY = LoadX.LoadOptions.AutoScaleBorderDistY;
@@ -79,8 +79,8 @@ namespace CNCLib.GCode.Load
                     }
                 }
 
-                LoadX.LoadOptions.OfsX = -((decimal)(minpt.X0) - borderX / LoadX.LoadOptions.ScaleX);
-                LoadX.LoadOptions.OfsY = -((decimal)(minpt.Y0) - borderY / LoadX.LoadOptions.ScaleY);
+                LoadX.LoadOptions.OfsX = -((decimal) (minpt.X0) - borderX / LoadX.LoadOptions.ScaleX);
+                LoadX.LoadOptions.OfsY = -((decimal) (minpt.Y0) - borderY / LoadX.LoadOptions.ScaleY);
             }
         }
     }

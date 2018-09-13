@@ -22,7 +22,5 @@ using Framework.Contracts.Service;
 
 namespace CNCLib.Service.Contracts
 {
-    public interface ILoadOptionsService : IDisposable, ICRUDService<LoadOptions,int>
-	{
-	}
+    public interface ILoadOptionsService : IDisposable, ICRUDService<LoadOptions, int> { }
 }

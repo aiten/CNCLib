@@ -24,56 +24,58 @@ using CNCLib.Service.Contracts;
 
 namespace CNCLib.Service.WebAPI
 {
-    public class MachineService : CRUDServiceBase<Machine,int>, IMachineService
-	{
-	    protected override string Api => @"api/Machine";
-	    protected override int GetKey(Machine m) => m.MachineID; 
+    public class MachineService : CRUDServiceBase<Machine, int>, IMachineService
+    {
+        protected override string Api               => @"api/Machine";
+        protected override int    GetKey(Machine m) => m.MachineID;
 
-		public async Task<Machine> DefaultMachine()
-		{
-		    using (HttpClient client = CreateHttpClient())
-		    {
-		        HttpResponseMessage response = await client.GetAsync(Api + "/default");
-		        if (response.IsSuccessStatusCode)
-		        {
-		            var value = await response.Content.ReadAsAsync<Machine>();
+        public async Task<Machine> DefaultMachine()
+        {
+            using (HttpClient client = CreateHttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(Api + "/default");
+                if (response.IsSuccessStatusCode)
+                {
+                    var value = await response.Content.ReadAsAsync<Machine>();
 
-		            return value;
-		        }
-		    }
-		    return null;
-		}
+                    return value;
+                }
+            }
+
+            return null;
+        }
 
         public async Task<int> GetDetaultMachine()
-		{
-			using (HttpClient client = CreateHttpClient())
-			{
-				HttpResponseMessage response = await client.GetAsync(Api + "/defaultmachine");
-				if (response.IsSuccessStatusCode)
-				{
-					int value = await response.Content.ReadAsAsync<int>();
+        {
+            using (HttpClient client = CreateHttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(Api + "/defaultmachine");
+                if (response.IsSuccessStatusCode)
+                {
+                    int value = await response.Content.ReadAsAsync<int>();
 
-					return value;
-				}
-			}
-			return -1;
-		}
+                    return value;
+                }
+            }
 
-		public async Task SetDetaultMachine(int id)
-		{
-			using (HttpClient client = CreateHttpClient())
-			{
-				HttpResponseMessage response = await client.PutAsJsonAsync($"{Api}/defaultmachine?id={id}","dummy");
+            return -1;
+        }
 
-				if (response.IsSuccessStatusCode)
-				{
-					return;
-				}
-			}
-		}
+        public async Task SetDetaultMachine(int id)
+        {
+            using (HttpClient client = CreateHttpClient())
+            {
+                HttpResponseMessage response = await client.PutAsJsonAsync($"{Api}/defaultmachine?id={id}", "dummy");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+            }
+        }
 
         #region IDisposable Support
-        #endregion
 
+        #endregion
     }
 }

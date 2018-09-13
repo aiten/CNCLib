@@ -20,18 +20,20 @@ using System;
 
 namespace CNCLib.GCode.Commands
 {
-	[AttributeUsage(AttributeTargets.Class)]
-	public class IsGCommandAttribute : Attribute
-	{
-		public bool IsGComamnd { get; set; }
-		public string RegisterAs { get; set; }
-		public IsGCommandAttribute()
-		{
-			IsGComamnd = true;
-		}
-		public IsGCommandAttribute(string registeras)
-		{
-			RegisterAs = registeras;
-		}
-	}
+    [AttributeUsage(AttributeTargets.Class)]
+    public class IsGCommandAttribute : Attribute
+    {
+        public bool   IsGComamnd { get; set; }
+        public string RegisterAs { get; set; }
+
+        public IsGCommandAttribute()
+        {
+            IsGComamnd = true;
+        }
+
+        public IsGCommandAttribute(string registeras)
+        {
+            RegisterAs = registeras;
+        }
+    }
 }

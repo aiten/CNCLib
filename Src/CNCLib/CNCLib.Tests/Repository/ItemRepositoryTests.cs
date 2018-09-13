@@ -31,7 +31,7 @@ namespace CNCLib.Tests.Repository
 {
     [TestClass]
     public class ItemRepositoryTests : CRUDRepositoryTests<Item, int, IItemRepository>
-	{
+    {
         #region crt and overrides
 
         protected override CRUDTestContext<Item, int, IItemRepository> CreateCRUDTestContext()
@@ -49,6 +49,7 @@ namespace CNCLib.Tests.Repository
         {
             return entity.ItemID;
         }
+
         protected override Item SetEntityKey(Item entity, int key)
         {
             entity.ItemID = key;
@@ -60,7 +61,8 @@ namespace CNCLib.Tests.Repository
             //entity1.Should().BeEquivalentTo(entity2, opts => 
             //    opts.Excluding(x => x.UserID)
             //);
-            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"ItemID" });
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2,
+                                                                                       new[] { @"ItemID" });
         }
 
         #endregion
@@ -100,22 +102,26 @@ namespace CNCLib.Tests.Repository
         public async Task AddUpdateDeleteTest()
         {
             await AddUpdateDelete(
-                () => CreateItem(@"AddUpdateDeleteTest"),
-                (entity) => entity.ClassName = "DummyClassUpdate");
+                                  () => CreateItem(@"AddUpdateDeleteTest"),
+                                  (entity) => entity.ClassName = "DummyClassUpdate");
         }
 
-	    [TestMethod]
-	    public async Task AddUpdateDeleteWithItemPropertiesTest()
-	    {
-	        await AddUpdateDelete(
-	            () => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")),
-	            (entity) =>
-	            {
-	                entity.ClassName = "DummyClassUpdate";
-	                entity.ItemProperties.Remove(entity.ItemProperties.First());
-                    entity.ItemProperties.Add(new ItemProperty() { Name = @"NewItemProperty", Value = @"Hallo"});
-	            });
-	    }
+        [TestMethod]
+        public async Task AddUpdateDeleteWithItemPropertiesTest()
+        {
+            await AddUpdateDelete(
+                                  () => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")),
+                                  (entity) =>
+                                  {
+                                      entity.ClassName = "DummyClassUpdate";
+                                      entity.ItemProperties.Remove(entity.ItemProperties.First());
+                                      entity.ItemProperties.Add(new ItemProperty()
+                                      {
+                                          Name  = @"NewItemProperty",
+                                          Value = @"Hallo"
+                                      });
+                                  });
+        }
 
         [TestMethod]
         public async Task AddRollbackTest()
@@ -125,26 +131,26 @@ namespace CNCLib.Tests.Repository
 
         #endregion
 
-		private static Item CreateItem(string name)
-		{
-			var e = new Item
-			{
-				Name = name,
-                ClassName = "Dummy",
+        private static Item CreateItem(string name)
+        {
+            var e = new Item
+            {
+                Name           = name,
+                ClassName      = "Dummy",
                 ItemProperties = new List<ItemProperty>()
-			};
-			return e;
-		}
+            };
+            return e;
+        }
 
-		private static Item AddItemProperties(Item e)
-		{
-		    e.ItemProperties = new List<ItemProperty>
-		    {
-		        new ItemProperty {Name = "Name1", Value = "Test1", Item = e },
-		        new ItemProperty {Name = "Name2", Value = "Test2", Item = e},
-		        new ItemProperty {Name = "Name3", Item = e}
-		    };
-		    return e;
-		}
-	}
+        private static Item AddItemProperties(Item e)
+        {
+            e.ItemProperties = new List<ItemProperty>
+            {
+                new ItemProperty { Name = "Name1", Value = "Test1", Item = e },
+                new ItemProperty { Name = "Name2", Value = "Test2", Item = e },
+                new ItemProperty { Name = "Name3", Item  = e }
+            };
+            return e;
+        }
+    }
 }

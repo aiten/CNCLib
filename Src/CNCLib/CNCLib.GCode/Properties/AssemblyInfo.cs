@@ -22,4 +22,3 @@ using System.Runtime.InteropServices;
 //[assembly: AssemblyProduct("CNCLib.GCode")]
 
 [assembly: Guid("ec34f292-5d9c-4fb5-b7dc-32957563e3a9")]
-

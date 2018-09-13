@@ -26,26 +26,72 @@ namespace CNCLib.GCode.Load
     {
         private class HPGLLine
         {
-            public IEnumerable<HPGLCommand> PreCommands { get; set; }
-            public IEnumerable<HPGLCommand> Commands { get; set; }
+            public IEnumerable<HPGLCommand> PreCommands  { get; set; }
+            public IEnumerable<HPGLCommand> Commands     { get; set; }
             public IEnumerable<HPGLCommand> PostCommands { get; set; }
 
             //public Polygon2D Polygon { get { Load(); return _polygon; } }
 
-            public double MaxX { get { Load();  return _maxX; } }
-            public double MinX { get { Load(); return _minX; } }
-            public double MaxY { get { Load(); return _maxY; } }
-            public double MinY { get { Load(); return _minY; } }
+            public double MaxX
+            {
+                get
+                {
+                    Load();
+                    return _maxX;
+                }
+            }
 
-            public bool IsClosed  { get { Load();  return _isClosed;  } }
+            public double MinX
+            {
+                get
+                {
+                    Load();
+                    return _minX;
+                }
+            }
+
+            public double MaxY
+            {
+                get
+                {
+                    Load();
+                    return _maxY;
+                }
+            }
+
+            public double MinY
+            {
+                get
+                {
+                    Load();
+                    return _minY;
+                }
+            }
+
+            public bool IsClosed
+            {
+                get
+                {
+                    Load();
+                    return _isClosed;
+                }
+            }
 
             public bool IsEmbedded(HPGLLine to)
             {
-                if (ReferenceEquals(this, to)) return false;
+                if (ReferenceEquals(this, to))
+                {
+                    return false;
+                }
+
                 bool isRectangleEmbedded =
-                        MaxX >= to.MaxX && MinX <= to.MinX &&
-                        MaxY >= to.MaxY && MinY <= to.MinY;
-                if (!isRectangleEmbedded) return false;
+                    MaxX >= to.MaxX && MinX <= to.MinX &&
+                    MaxY >= to.MaxY && MinY <= to.MinY;
+                if (!isRectangleEmbedded)
+                {
+                    return false;
+                }
+
                 return IsEmbeddedEx(to);
             }
 
@@ -69,24 +115,29 @@ namespace CNCLib.GCode.Load
                     if (Commands != null && Commands.Any())
                     {
                         points.Add(Commands.First().PointFrom);
-                        points.AddRange(Commands.Select(c => new Point2D { X = c.PointTo.X ?? 0.0, Y = c.PointTo.Y ?? 0.0 }));
+                        points.AddRange(Commands.Select(c => new Point2D
+                        {
+                            X = c.PointTo.X ?? 0.0,
+                            Y = c.PointTo.Y ?? 0.0
+                        }));
                     }
-                    _polygon = new Polygon2D { Points = points };
-                    _maxX = _polygon.MaxX;
-                    _minX = _polygon.MinX;
-                    _maxY = _polygon.MaxY;
-                    _minY = _polygon.MinY;
+
+                    _polygon  = new Polygon2D { Points = points };
+                    _maxX     = _polygon.MaxX;
+                    _minX     = _polygon.MinX;
+                    _maxY     = _polygon.MaxY;
+                    _minY     = _polygon.MinY;
                     _isClosed = _polygon.IsClosed;
                     _isLoaded = true;
                 }
             }
 
-            private bool _isLoaded = false;
-            private bool _isClosed;
-            private double _maxX;
-            private double _minX;
-            private double _maxY;
-            private double _minY;
+            private bool      _isLoaded = false;
+            private bool      _isClosed;
+            private double    _maxX;
+            private double    _minX;
+            private double    _maxY;
+            private double    _minY;
             private Polygon2D _polygon;
         }
     }

@@ -26,7 +26,7 @@ using Framework.Service;
 namespace CNCLib.Service.Logic
 {
     public class LoadOptionsService : CRUDService<LoadOptions, int>, ILoadOptionsService
-	{
+    {
         public LoadOptionsService(ILoadOptionsManager manager) : base(manager)
         {
             _manager = manager ?? throw new ArgumentNullException();

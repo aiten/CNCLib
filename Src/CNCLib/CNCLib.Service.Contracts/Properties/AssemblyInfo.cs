@@ -22,4 +22,3 @@ using System.Runtime.InteropServices;
 //[assembly: AssemblyProduct("CNCLib.ServiceProxy")]
 
 [assembly: Guid("f4c854c1-3154-4e73-85b0-2c9fcbc9ad17")]
-

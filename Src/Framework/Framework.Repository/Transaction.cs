@@ -30,7 +30,7 @@ namespace Framework.Repository
         public Transaction(IUnitOfWork unitOfWork, IDbContextTransaction dbTran)
         {
             UnitOfWork = unitOfWork;
-            _dbTran = dbTran;
+            _dbTran    = dbTran;
         }
 
         #region Transaction
@@ -44,7 +44,11 @@ namespace Framework.Repository
 
         public async Task CommitTransactionAsync()
         {
-            if (InTransaction == false) throw new ArgumentException();
+            if (InTransaction == false)
+            {
+                throw new ArgumentException();
+            }
+
             await UnitOfWork.SaveChangesAsync();
             _dbTran.Commit();
             _dbTran = null;
@@ -52,7 +56,11 @@ namespace Framework.Repository
 
         public void RollbackTransaction()
         {
-            if (InTransaction == false) throw new ArgumentException();
+            if (InTransaction == false)
+            {
+                throw new ArgumentException();
+            }
+
             _dbTran.Rollback();
             _dbTran = null;
         }

@@ -35,7 +35,7 @@
                                      Geometry="F1 M 28.1543,15.7399L 33.0454,15.7399L 33.0454,23.0909L 28.1543,23.0909L 28.1543,15.7399 Z " />
                 </DrawingGroup.Children>
             </DrawingGroup>
-            </DrawingImage.Drawing>
+        </DrawingImage.Drawing>
     </DrawingImage>
 
 </ResourceDictionary>

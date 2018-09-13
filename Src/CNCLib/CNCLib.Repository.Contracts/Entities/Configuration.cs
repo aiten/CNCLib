@@ -19,26 +19,25 @@
 
 namespace CNCLib.Repository.Contracts.Entities
 {
-	public class Configuration
-	{
-		public string Group { get; set; }
-		public string Name { get; set; }
-		public string Type { get; set; }
-		public string Value { get; set; }
-        public int? UserID { get; set; }
-        public virtual User User { get; set; }
+    public class Configuration
+    {
+        public         string Group  { get; set; }
+        public         string Name   { get; set; }
+        public         string Type   { get; set; }
+        public         string Value  { get; set; }
+        public         int?   UserID { get; set; }
+        public virtual User   User   { get; set; }
 
 
-        public Configuration()
-		{
-		}
-		public Configuration(string group, string name, object value)
-		{
-			Name = name;
-			Group = group;
-			Value = value.ToString();
+        public Configuration() { }
 
-			Type = value.GetType().ToString();
-		}
-	}
+        public Configuration(string group, string name, object value)
+        {
+            Name  = name;
+            Group = group;
+            Value = value.ToString();
+
+            Type = value.GetType().ToString();
+        }
+    }
 }

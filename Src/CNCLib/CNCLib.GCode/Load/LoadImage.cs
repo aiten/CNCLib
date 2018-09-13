@@ -23,7 +23,7 @@ using Framework.Tools.Helpers;
 
 namespace CNCLib.GCode.Load
 {
-	public class LoadImage : LoadImageBase
+    public class LoadImage : LoadImageBase
     {
         double _shiftLaserOn;
         double _shiftLaserOff;
@@ -32,13 +32,13 @@ namespace CNCLib.GCode.Load
         {
             PreLoad();
 
-			AddCommentForLaser();
+            AddCommentForLaser();
 
             //            const double SHIFT = Math.PI / 16.0;
             //            const double SHIFT = Math.PI / 8.0;
             const double SHIFT = 0;
 
-            _shiftLaserOn = -SHIFT * (double) LoadOptions.LaserSize;
+            _shiftLaserOn  = -SHIFT * (double) LoadOptions.LaserSize;
             _shiftLaserOff = SHIFT * (double) LoadOptions.LaserSize;
 
             using (var bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
@@ -65,10 +65,13 @@ namespace CNCLib.GCode.Load
 
                 if (b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format1bppIndexed &&
                     b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format4bppIndexed)
-                        throw new ArgumentException("Bitmap must be Format1bbp");
+                {
+                    throw new ArgumentException("Bitmap must be Format1bbp");
+                }
 
                 WriteGCode(b);
-             }
+            }
+
             PostLoad();
         }
 
@@ -81,20 +84,25 @@ namespace CNCLib.GCode.Load
                 case LoadOptions.DitherFilter.FloydSteinbergDither:
                     AddComment("Image Converted with FloydSteinbergDither");
                     AddComment("GrayThreshold", LoadOptions.GrayThreshold);
-                    b = new Framework.Tools.Drawing.FloydSteinbergDither { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
+                    b = new Framework.Tools.Drawing.FloydSteinbergDither { Graythreshold = LoadOptions.GrayThreshold }
+                        .Process(b);
                     break;
                 case LoadOptions.DitherFilter.NewspaperDither:
                     AddComment("Image Converted with NewspaperDither");
                     AddComment("GrayThreshold", LoadOptions.GrayThreshold);
-                    AddComment("Dithersize", LoadOptions.NewspaperDitherSize);
-                    b = new Framework.Tools.Drawing.NewspapergDither { Graythreshold = LoadOptions.GrayThreshold, DotSize = LoadOptions.NewspaperDitherSize }.Process(b);
+                    AddComment("Dithersize",    LoadOptions.NewspaperDitherSize);
+                    b = new Framework.Tools.Drawing.NewspapergDither
+                    {
+                        Graythreshold = LoadOptions.GrayThreshold,
+                        DotSize       = LoadOptions.NewspaperDitherSize
+                    }.Process(b);
                     break;
             }
 
             return b;
         }
- 
-        protected override void WriteGCode() 
+
+        protected override void WriteGCode()
         {
             ForceLaserOff();
             int black = System.Drawing.Color.Black.ToArgb();
@@ -102,7 +110,7 @@ namespace CNCLib.GCode.Load
 
             for (int y = 0; y < SizeY; y++)
             {
-                bool wasLaserOn = true;
+                bool wasLaserOn  = true;
                 bool lastLaserOn = false;
 
                 for (int x = 0; x < SizeX; x++)
@@ -125,17 +133,27 @@ namespace CNCLib.GCode.Load
                     {
                         wasLaserOn = isLaserOn;
                         if (isLaserOn)
+                        {
                             AddCommandX(x, y, ref lasty, false);
+                        }
                     }
+
                     lastLaserOn = isLaserOn;
 
                     if (isLaserOn)
+                    {
                         LaserOn();
+                    }
                     else
+                    {
                         LaserOff();
+                    }
                 }
+
                 if (lastLaserOn)
+                {
                     AddCommandX(SizeX, y, ref lasty, wasLaserOn);
+                }
 
                 LaserOff();
             }
@@ -148,30 +166,35 @@ namespace CNCLib.GCode.Load
 
             if (y != lasty)
             {
-                var cy = new G00Command();
-                double x1 = (x * PixelSizeX) + ShiftX + shift - (double)LoadOptions.LaserAccDist;
+                var    cy = new G00Command();
+                double x1 = (x * PixelSizeX) + ShiftX + shift - (double) LoadOptions.LaserAccDist;
 
-				cy.AddVariable('X', ToGCode(x1));
+                cy.AddVariable('X', ToGCode(x1));
                 cy.AddVariable('Y', ToGCode((SizeY - y - 1) * PixelSizeY + ShiftY));
                 lasty = y;
                 Commands.Add(cy);
             }
 
-			Command cx;
-			// if we have no laser on/off we switch with g01 and g00
-			bool use_g1 = HaveLaserOnOffCommand() || laserOn;
-			if (use_g1)
-				cx = new G01Command();
-			else
-				cx = new G00Command();
+            Command cx;
+            // if we have no laser on/off we switch with g01 and g00
+            bool use_g1 = HaveLaserOnOffCommand() || laserOn;
+            if (use_g1)
+            {
+                cx = new G01Command();
+            }
+            else
+            {
+                cx = new G00Command();
+            }
 
             cx.AddVariable('X', ToGCode((x * PixelSizeX) + ShiftX + shift));
 
-			if (!use_g1)
-				cx.AddVariableNoValue('F');
+            if (!use_g1)
+            {
+                cx.AddVariableNoValue('F');
+            }
 
-			Commands.Add(cx);
+            Commands.Add(cx);
         }
     }
 }
-

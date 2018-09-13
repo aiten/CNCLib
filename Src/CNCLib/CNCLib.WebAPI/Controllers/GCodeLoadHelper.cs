@@ -22,32 +22,34 @@ using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.WebAPI.Controllers
 {
-	public class GCodeLoadHelper
-	{
-		public static LoadBase CallLoad(string filename, byte[] filecontent, LoadOptions opt)
-		{
-			string pathfilename = Path.GetFileName(filename);
-			string tmpfile = Path.GetTempPath() + pathfilename;
+    public class GCodeLoadHelper
+    {
+        public static LoadBase CallLoad(string filename, byte[] filecontent, LoadOptions opt)
+        {
+            string pathfilename = Path.GetFileName(filename);
+            string tmpfile      = Path.GetTempPath() + pathfilename;
 
-			opt.FileName = tmpfile;
-			opt.ImageWriteToFileName = null;
+            opt.FileName             = tmpfile;
+            opt.ImageWriteToFileName = null;
 
-			try
-			{
-				File.WriteAllBytes(tmpfile, filecontent);
+            try
+            {
+                File.WriteAllBytes(tmpfile, filecontent);
 
-				LoadBase load = LoadBase.Create(opt);
+                LoadBase load = LoadBase.Create(opt);
 
-				if (load == null)
-					return null;
+                if (load == null)
+                {
+                    return null;
+                }
 
-				load.Load();
-				return load;
-			}
-			finally
-			{
-				File.Delete(tmpfile);
-			}
-		}
-	}
+                load.Load();
+                return load;
+            }
+            finally
+            {
+                File.Delete(tmpfile);
+            }
+        }
+    }
 }

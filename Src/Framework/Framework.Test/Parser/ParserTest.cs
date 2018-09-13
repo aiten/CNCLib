@@ -102,8 +102,6 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(-0.5);
         }
 
-
-
         #endregion
 
         #region AddEntity/Sub/Mul/Div
@@ -194,7 +192,7 @@ namespace Framework.Test.Parser
             parser.Parse();
 
             parser.IsError().Should().BeFalse();
-            parser.Answer.Should().Be(8.0+2.0);
+            parser.Answer.Should().Be(8.0 + 2.0);
         }
 
         [TestMethod]
@@ -220,7 +218,6 @@ namespace Framework.Test.Parser
             parser.IsError().Should().BeFalse();
             parser.Answer.Should().Be(2.0);
         }
-
 
         #endregion
 
@@ -274,15 +271,14 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(2.0);
         }
 
-
         #endregion
-       
+
         #region Functions
 
         [TestMethod]
         public void ParserAbsCeilFloor()
         {
-            var stream = new CommandStream() { Line = "ABS(-1)+FIX(1.8)+FUP(0.5)+ROUND(1.7)" };    // FIX=>floor, FUP=>Ceil
+            var stream = new CommandStream() { Line = "ABS(-1)+FIX(1.8)+FUP(0.5)+ROUND(1.7)" }; // FIX=>floor, FUP=>Ceil
             var parser = new ExpressionParser(stream);
 
             parser.Parse();
@@ -307,7 +303,10 @@ namespace Framework.Test.Parser
         [TestMethod]
         public void ParserSinCosTan()
         {
-            var stream = new CommandStream() { Line = "SIN(1.5707963267948966192313216916398)+COS(0)+TAN(0.78539816339744830961566084581988)" };
+            var stream = new CommandStream()
+            {
+                Line = "SIN(1.5707963267948966192313216916398)+COS(0)+TAN(0.78539816339744830961566084581988)"
+            };
             var parser = new ExpressionParser(stream);
 
             parser.Parse();
@@ -364,8 +363,6 @@ namespace Framework.Test.Parser
             parser.IsError().Should().BeFalse();
             parser.Answer.Should().Be(2.0);
         }
-
-
 
         #endregion
 

@@ -21,12 +21,11 @@ using System.Collections.Generic;
 
 namespace Framework.Arduino.SerialCommunication
 {
-	public class HPGLSerial : Serial
+    public class HPGLSerial : Serial
     {
-
         readonly int maxmessagelength = 128;
 
-         #region Overrrids
+        #region Overrrids
 
         protected override string[] SplitCommand(string line)
         {
@@ -35,8 +34,8 @@ namespace Framework.Arduino.SerialCommunication
 
         protected string[] SplitHPGL(string line)
         {
-            string[] cmds = line.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            var cmdlist = new List<string>();
+            string[] cmds    = line.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            var      cmdlist = new List<string>();
 
             foreach (string l in cmds)
             {
@@ -44,16 +43,18 @@ namespace Framework.Arduino.SerialCommunication
                 while (message.Length > maxmessagelength)
                 {
                     string cmd = message.Substring(0, 2);
-                    int idx = 0;
+                    int    idx = 0;
                     while (idx < maxmessagelength && idx != -1)
                     {
                         idx = message.IndexOf(',', idx + 1);
                         idx = message.IndexOf(',', idx + 1);
                     }
+
                     if (idx == -1)
                     {
                         break;
                     }
+
                     string sendmessage = message.Substring(0, idx);
                     message = cmd + message.Substring(idx + 1);
                     cmdlist.Add(sendmessage);
@@ -61,10 +62,10 @@ namespace Framework.Arduino.SerialCommunication
 
                 cmdlist.Add(message);
             }
+
             return cmdlist.ToArray();
         }
 
         #endregion
-
-     }
+    }
 }

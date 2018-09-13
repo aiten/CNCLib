@@ -19,7 +19,7 @@
 
 namespace Framework.Tools.Drawing
 {
-	public class NewspapergDither : FloydSteinbergDither
+    public class NewspapergDither : FloydSteinbergDither
     {
         #region private members
 
@@ -32,7 +32,6 @@ namespace Framework.Tools.Drawing
         #endregion
 
         #region public
-
 
         #endregion
 
@@ -59,14 +58,17 @@ namespace Framework.Tools.Drawing
             {
                 for (int ix = 0; ix < DotSize; ix++)
                 {
-                    if (IsPixel(x + ix,y + iy))
+                    if (IsPixel(x + ix, y + iy))
                     {
-                        Color currentPixel = GetPixel(x+ix, y+iy);
+                        Color currentPixel = GetPixel(x + ix, y + iy);
                         if (currentPixel.R == 0)
+                        {
                             count++;
+                        }
                     }
                 }
             }
+
             return count;
         }
 
@@ -78,22 +80,28 @@ namespace Framework.Tools.Drawing
 
         private Offsets[] _offsets = new Offsets[]
         {
-            new Offsets { X =0, Y=0 },
-            new Offsets { X = -1, Y = 0 },  new Offsets { X = 0,  Y = 1 }, new Offsets { X = 1, Y = 0 },  new Offsets { X = 0,  Y = -1 },
-            new Offsets { X = -1, Y = 1 },  new Offsets { X = 1,  Y = 1 }, new Offsets { X = 1, Y = -1 }, new Offsets { X = -1,  Y = -1 },
+            new Offsets { X = 0, Y  = 0 },
+            new Offsets { X = -1, Y = 0 }, new Offsets { X = 0, Y = 1 }, new Offsets { X = 1, Y = 0 },
+            new Offsets { X = 0, Y  = -1 },
+            new Offsets { X = -1, Y = 1 }, new Offsets { X = 1, Y = 1 }, new Offsets { X = 1, Y = -1 },
+            new Offsets { X = -1, Y = -1 },
 
-            new Offsets { X = -2, Y = 0 },  new Offsets { X = 0,  Y = 2 }, new Offsets { X = 2, Y = 0 },    new Offsets { X = 0,  Y = -2 },
-            new Offsets { X = -2, Y = 1 },  new Offsets { X = 1,  Y = 2 }, new Offsets { X = 2, Y = -1 },   new Offsets { X = -1, Y = -2 },
-            new Offsets { X = -1, Y = 2 },  new Offsets { X = 2,  Y = 1 }, new Offsets { X = 1, Y = -2 },   new Offsets { X = -2, Y = -1 },
-            new Offsets { X = -2, Y = 2 },  new Offsets { X = 2,  Y = 2 }, new Offsets { X = 2, Y = -2 },   new Offsets { X = -2, Y = -2 }
+            new Offsets { X = -2, Y = 0 }, new Offsets { X = 0, Y = 2 }, new Offsets { X = 2, Y = 0 },
+            new Offsets { X = 0, Y  = -2 },
+            new Offsets { X = -2, Y = 1 }, new Offsets { X = 1, Y = 2 }, new Offsets { X = 2, Y = -1 },
+            new Offsets { X = -1, Y = -2 },
+            new Offsets { X = -1, Y = 2 }, new Offsets { X = 2, Y = 1 }, new Offsets { X = 1, Y = -2 },
+            new Offsets { X = -2, Y = -1 },
+            new Offsets { X = -2, Y = 2 }, new Offsets { X = 2, Y = 2 }, new Offsets { X = 2, Y = -2 },
+            new Offsets { X = -2, Y = -2 }
         };
 
         private void FillBlack(int x, int y, int count)
         {
-            var black = new Color { R = 0, G = 0, B = 0, A = 0 };
+            var black = new Color { R = 0, G   = 0, B   = 0, A   = 0 };
             var white = new Color { R = 255, G = 255, B = 255, A = 255 };
 
-            for (int i=0;i<DotSize*DotSize;i++)
+            for (int i = 0; i < DotSize * DotSize; i++)
             {
                 int xx = x + DotSize / 2 + _offsets[i].X;
                 int yy = y + DotSize / 2 + _offsets[i].Y;

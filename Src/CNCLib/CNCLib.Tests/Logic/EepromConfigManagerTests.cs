@@ -37,7 +37,9 @@ namespace CNCLib.Tests.Logic
             var rep = Substitute.For<TInterface>();
             Dependency.Container.RegisterInstance(rep);
 
-            Dependency.Container.RegisterType<Framework.Contracts.Repository.IUnitOfWork, UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
+            Dependency.Container
+                .RegisterType<Framework.Contracts.Repository.IUnitOfWork,
+                    UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
             return rep;
         }
 
@@ -54,13 +56,13 @@ namespace CNCLib.Tests.Logic
 
             var input = new EepromConfigurationInput
             {
-                Teeth = 15,
-                ToothsizeinMm = 2.0,
-                Microsteps = 16,
-                StepsPerRotation = 200,
+                Teeth                  = 15,
+                ToothsizeinMm          = 2.0,
+                Microsteps             = 16,
+                StepsPerRotation       = 200,
                 EstimatedRotationSpeed = 7.8,
-                TimeToAcc = 0.2,
-                TimeToDec = 0.15
+                TimeToAcc              = 0.2,
+                TimeToDec              = 0.15
             };
             var result = await ctrl.CalculateConfig(input);
             result.Should().NotBeNull();

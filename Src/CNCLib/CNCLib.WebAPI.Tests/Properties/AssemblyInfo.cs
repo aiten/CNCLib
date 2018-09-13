@@ -23,4 +23,3 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("CNCLib.WebAPI.Test")]
 
 [assembly: Guid("6d3326b2-794c-48fd-b351-483d721bd0f9")]
-

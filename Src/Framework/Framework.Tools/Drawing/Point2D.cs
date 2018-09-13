@@ -22,13 +22,13 @@ using System;
 namespace Framework.Tools.Drawing
 {
     public class Point2D
-	{
-		public double X { get; set; }
-		public double Y { get; set; }
+    {
+        public double X { get; set; }
+        public double Y { get; set; }
 
         public bool Compare(Point2D to)
         {
             return Math.Abs(X - to.X) < double.Epsilon && Math.Abs(Y - to.Y) < double.Epsilon;
         }
-	}
+    }
 }

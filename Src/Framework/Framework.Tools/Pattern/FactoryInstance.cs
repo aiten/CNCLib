@@ -23,8 +23,8 @@ namespace Framework.Tools.Pattern
 {
     public sealed class ScopeInstance<T> : IScope<T>, IDisposable where T : class
     {
-        private readonly T _instance;
-        private bool _isDisposed;
+        private readonly T    _instance;
+        private          bool _isDisposed;
 
         public ScopeInstance(T instance)
         {
@@ -39,6 +39,7 @@ namespace Framework.Tools.Pattern
                 {
                     throw new ObjectDisposedException("this", "Bad person.");
                 }
+
                 return _instance;
             }
         }
@@ -49,6 +50,7 @@ namespace Framework.Tools.Pattern
             {
                 return;
             }
+
             _isDisposed = true;
         }
     }

@@ -27,7 +27,7 @@ using FluentAssertions;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
-	[TestClass]
+    [TestClass]
     public class LoadOptionsWebApiTest : AzureWebApiTest
     {
         private readonly string api = "/api/loadoptions";
@@ -78,7 +78,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                     if (responseget.IsSuccessStatusCode)
                     {
-						LoadOptions mget = await responseget.Content.ReadAsAsync<LoadOptions>();
+                        LoadOptions mget = await responseget.Content.ReadAsAsync<LoadOptions>();
 
                         mget.SettingName.Should().Be("Settingname");
 
@@ -92,7 +92,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                         if (responseget2.IsSuccessStatusCode)
                         {
-							LoadOptions mget2 = await responseget2.Content.ReadAsAsync<LoadOptions>();
+                            LoadOptions mget2 = await responseget2.Content.ReadAsAsync<LoadOptions>();
 
                             mget2.SettingName.Should().Be("ComHA");
                         }
@@ -102,9 +102,9 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                         // HTTPGET again3
                         HttpResponseMessage responseget3 = await client.GetAsync(newmUrl);
-						responseget3.StatusCode.Should().Be(HttpStatusCode.NotFound);
+                        responseget3.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
-						if (responseget2.IsSuccessStatusCode)
+                        if (responseget2.IsSuccessStatusCode)
                         {
                             Machine mget3 = await responseget3.Content.ReadAsAsync<Machine>();
                             mget3.Should().BeNull();

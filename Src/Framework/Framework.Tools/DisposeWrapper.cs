@@ -20,14 +20,12 @@ using System;
 
 namespace Framework.Tools
 {
-	public class DisposeWrapper : IDisposable
+    public class DisposeWrapper : IDisposable
     {
         #region IDisposable Support
 
-        private bool _disposedValue = false; // To detect redundant calls
-        protected virtual void DisposeManaged()
-        {
-        }
+        private           bool _disposedValue = false; // To detect redundant calls
+        protected virtual void DisposeManaged() { }
 
         protected virtual void DisposeUnManaged()
         {
@@ -66,6 +64,7 @@ namespace Framework.Tools
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
+
         #endregion
     }
 }

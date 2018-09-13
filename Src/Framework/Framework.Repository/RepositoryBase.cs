@@ -33,10 +33,7 @@ namespace Framework.Repository
         /// <summary>
         /// The DbContext. Should be used rarely, instead use <see cref="Query{T}"/> and <see cref="TrackingQuery{T}"/>.
         /// </summary>
-        protected TDbContext Context
-        {
-            get; private set;
-        }
+        protected TDbContext Context { get; private set; }
 
         /// <summary>
         /// Returns an IQueryable of the Entity with AsNoTracking set. This should be the default.
@@ -70,17 +67,19 @@ namespace Framework.Repository
 
         protected void SetModified<TEntity>(TEntity entity) where TEntity : class
         {
-            SetEntityState(entity,EntityState.Modified);
+            SetEntityState(entity, EntityState.Modified);
         }
 
         protected void AddEntity<TEntity>(TEntity entity) where TEntity : class
         {
             Context.Add(entity);
         }
+
         protected void AddEntities<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
             Context.AddRange(entities);
         }
+
         protected void DeleteEntity<TEntity>(TEntity entity) where TEntity : class
         {
             SetEntityState(entity, EntityState.Deleted);
@@ -94,7 +93,8 @@ namespace Framework.Repository
             }
         }
 
-        public void Sync<TEntity>(ICollection<TEntity> inDb, ICollection<TEntity> toDb, Func<TEntity, TEntity, bool> predicate) where TEntity : class
+        public void Sync<TEntity>(ICollection<TEntity>         inDb, ICollection<TEntity> toDb,
+                                  Func<TEntity, TEntity, bool> predicate) where TEntity : class
         {
             // 1. DeleteEntity from DB (in DB) and update
             var delete = new List<TEntity>();

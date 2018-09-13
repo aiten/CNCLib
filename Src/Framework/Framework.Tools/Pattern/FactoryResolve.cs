@@ -24,13 +24,13 @@ namespace Framework.Tools.Pattern
     public sealed class ScopeResolve<T> : IScope<T>, IDisposable where T : class
     {
         private readonly IDependencyContainer _container;
-        private readonly T _instance;
-        private bool _isDisposed;
+        private readonly T                    _instance;
+        private          bool                 _isDisposed;
 
         public ScopeResolve(IDependencyContainer container, T instance)
         {
             _container = container;
-            _instance = instance;
+            _instance  = instance;
         }
 
         public T Instance
@@ -41,6 +41,7 @@ namespace Framework.Tools.Pattern
                 {
                     throw new ObjectDisposedException("this", "Bad person.");
                 }
+
                 return _instance;
             }
         }
@@ -51,24 +52,25 @@ namespace Framework.Tools.Pattern
             {
                 return;
             }
+
             _isDisposed = true;
             _container.Dispose();
         }
     }
 
     public class FactoryResolve<T> : IFactory<T> where T : class
-	{
-	    private readonly IDependencyContainer _container;
+    {
+        private readonly IDependencyContainer _container;
 
-	    public FactoryResolve()
-	    {
-	        _container = Dependency.Dependency.Container;
-	    }
+        public FactoryResolve()
+        {
+            _container = Dependency.Dependency.Container;
+        }
 
-	    public IScope<T> Create()
-	    {
-	        var childContainer = _container.CreateChildContainer();
-	        return new ScopeResolve<T>(childContainer, childContainer.Resolve<T>());
-	    }
-	}
+        public IScope<T> Create()
+        {
+            var childContainer = _container.CreateChildContainer();
+            return new ScopeResolve<T>(childContainer, childContainer.Resolve<T>());
+        }
+    }
 }

@@ -27,15 +27,13 @@ namespace Framework.Repository
         where TDbContext : DbContext
         where TEntity : class
     {
-        protected CRUDRepositoryBase(TDbContext dbContext) : base(dbContext)
-        {
-        }
+        protected CRUDRepositoryBase(TDbContext dbContext) : base(dbContext) { }
 
         #region CRUD
 
         protected virtual void AssignValuesGraph(TEntity trackingentity, TEntity values)
         {
-            SetValue(trackingentity,values);
+            SetValue(trackingentity, values);
         }
 
         public void Add(TEntity entity)
@@ -60,12 +58,12 @@ namespace Framework.Repository
 
         public void SetState(TEntity entity, Framework.Contracts.Repository.EntityState state)
         {
-            SetEntityState(entity, (EntityState)state);
+            SetEntityState(entity, (EntityState) state);
         }
 
         public void SetValue(TEntity entity, TEntity values)
         {
-            base.SetValue(entity,(object) values);
+            base.SetValue(entity, (object) values);
         }
 
         public async Task Update(TKey key, TEntity values)
@@ -83,7 +81,6 @@ namespace Framework.Repository
         {
             AssignValuesGraph(trackingentity, values);
         }
-
 
         #endregion
     }

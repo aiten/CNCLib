@@ -19,12 +19,12 @@
 
 namespace CNCLib.Repository.Contracts.Entities
 {
-	public class MachineInitCommand
-	{
-		public int MachineInitCommandID { get; set; }
-		public int SeqNo { get; set; }
-		public string CommandString { get; set; }
-		public int MachineID { get; set; }
-		public virtual Machine Machine { get; set; }
-	}
+    public class MachineInitCommand
+    {
+        public         int     MachineInitCommandID { get; set; }
+        public         int     SeqNo                { get; set; }
+        public         string  CommandString        { get; set; }
+        public         int     MachineID            { get; set; }
+        public virtual Machine Machine              { get; set; }
+    }
 }

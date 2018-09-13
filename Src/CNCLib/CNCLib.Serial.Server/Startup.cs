@@ -46,42 +46,39 @@ namespace CNCLib.Serial.Server
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-        public static IServiceProvider Services { get; private set; }
-        public static IHubContext<CNCLibHub> Hub => Services.GetService<IHubContext<CNCLibHub>>();
+        public        IConfiguration         Configuration { get; }
+        public static IServiceProvider       Services      { get; private set; }
+        public static IHubContext<CNCLibHub> Hub           => Services.GetService<IHubContext<CNCLibHub>>();
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("AllowAll", p => 
-                p.AllowAnyOrigin()
-                .AllowCredentials()
-                .AllowAnyMethod()
-                .AllowAnyHeader()));
+            services.AddCors(options => options.AddPolicy("AllowAll", p =>
+                                                              p.AllowAnyOrigin()
+                                                                  .AllowCredentials()
+                                                                  .AllowAnyMethod()
+                                                                  .AllowAnyHeader()));
 
             services.AddSignalR((HubOptions hu) => hu.EnableDetailedErrors = true);
 
-            services.AddMvc().
-				SetCompatibilityVersion(CompatibilityVersion.Version_2_1).
-                AddJsonOptions(options =>
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options =>
+                                                                                                           options
+                                                                                                                   .SerializerSettings
+                                                                                                                   .ContractResolver
+                                                                                                               = new
+                                                                                                                   DefaultContractResolver());
 
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" });
-            });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" }); });
 
             Dependency.Initialize(new AspNetDependencyProvider(services));
 
             Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
 
             Dependency.Container.RegisterTypesIncludingInternalsScoped(
-                typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
+                                                                       typeof(Framework.Arduino.SerialCommunication.
+                                                                           Serial).Assembly);
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -111,29 +108,24 @@ namespace CNCLib.Serial.Server
 
             app.UseCors("AllowAll");
 
-            app.UseSignalR(router =>
-            {
-                router.MapHub<CNCLibHub>("/serialSignalR");
-            });
+            app.UseSignalR(router => { router.MapHub<CNCLibHub>("/serialSignalR"); });
 
             void callback(object x)
             {
                 Hub.Clients.All.SendAsync("heartbeat");
             }
+
             var timer = new Timer(callback);
             timer.Change(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(30));
 
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1"); });
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{instance}/{action=Index}/{id?}");
+                                name: "default",
+                                template: "{instance}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>

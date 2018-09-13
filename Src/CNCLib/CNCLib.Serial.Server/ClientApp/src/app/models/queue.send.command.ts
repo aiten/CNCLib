@@ -18,8 +18,7 @@
 
 import { Component, Inject } from '@angular/core';
 
-export class QueueSendCommand 
-{
-    Commands: string[] = [];
-    TimeOut: number = 10000;
+export class QueueSendCommand {
+  Commands: string[] = [];
+  TimeOut: number = 10000;
 }

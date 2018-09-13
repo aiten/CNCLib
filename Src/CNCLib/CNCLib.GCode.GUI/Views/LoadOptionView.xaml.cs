@@ -27,10 +27,10 @@ namespace CNCLib.GCode.GUI.Views
     /// Interaction logic for EepromView.xaml
     /// </summary>
     public partial class LoadOptionView : Window
-	{
-		public LoadOptionView()
-		{
-			InitializeComponent();
+    {
+        public LoadOptionView()
+        {
+            InitializeComponent();
 
             var vm = Dependency.Resolve<LoadOptionViewModel>();
             DataContext = vm;

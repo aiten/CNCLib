@@ -24,8 +24,8 @@ using Framework.Contracts.Service;
 
 namespace CNCLib.Service.Contracts
 {
-	public interface IItemService : IDisposable, ICRUDService<Item,int>
-	{
-		Task<IEnumerable<Item>> GetByClassName(string classname);
-	}
+    public interface IItemService : IDisposable, ICRUDService<Item, int>
+    {
+        Task<IEnumerable<Item>> GetByClassName(string classname);
+    }
 }

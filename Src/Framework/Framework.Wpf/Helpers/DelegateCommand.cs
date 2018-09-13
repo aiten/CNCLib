@@ -30,9 +30,7 @@ namespace Framework.Wpf.Helpers
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public DelegateCommand(Action command, Func<bool> canExecute) : base(command,canExecute) 
-        {
-        }
+        public DelegateCommand(Action command, Func<bool> canExecute) : base(command, canExecute) { }
 
         public new DelegateCommand ObservesProperty<T>(Expression<Func<T>> propertyExpression)
         {

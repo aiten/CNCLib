@@ -35,11 +35,15 @@ namespace Framework.Tools.Helpers
             return AreObjectsPropertiesEqual(objectA, objectB, new HashSet<object>(), ignoreList);
         }
 
-        private static bool AreObjectsPropertiesEqual(object objectA, object objectB, HashSet<object> compared, params string[] ignoreList)
+        private static bool AreObjectsPropertiesEqual(object          objectA, object objectB, HashSet<object> compared,
+                                                      params string[] ignoreList)
         {
             // check for circles e.g. ClassA => ICollection<ClassB> => classA
-            if (compared.Contains(objectA))     // 
+            if (compared.Contains(objectA)) // 
+            {
                 return true;
+            }
+
             compared.Add(objectA);
 
             if (objectA != null && objectB != null)
@@ -48,7 +52,9 @@ namespace Framework.Tools.Helpers
 
                 objectType = objectA.GetType();
 
-                foreach (PropertyInfo propertyInfo in objectType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.CanRead && !ignoreList.Contains(p.Name)))
+                foreach (PropertyInfo propertyInfo in objectType
+                    .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(p => p.CanRead && !ignoreList.Contains(p.Name)))
                 {
                     object valueA;
                     object valueB;
@@ -68,8 +74,8 @@ namespace Framework.Tools.Helpers
                     {
                         IEnumerable<object> collectionItems1;
                         IEnumerable<object> collectionItems2;
-                        int collectionItemsCount1;
-                        int collectionItemsCount2;
+                        int                 collectionItemsCount1;
+                        int                 collectionItemsCount2;
 
                         if (valueA == null && valueB != null || valueA != null && valueB == null)
                         {
@@ -77,8 +83,8 @@ namespace Framework.Tools.Helpers
                         }
                         else if (valueA != null && valueB != null)
                         {
-                            collectionItems1 = ((IEnumerable)valueA).Cast<object>();
-                            collectionItems2 = ((IEnumerable)valueB).Cast<object>();
+                            collectionItems1      = ((IEnumerable) valueA).Cast<object>();
+                            collectionItems2      = ((IEnumerable) valueB).Cast<object>();
                             collectionItemsCount1 = collectionItems1.Count();
                             collectionItemsCount2 = collectionItems2.Count();
 
@@ -95,10 +101,10 @@ namespace Framework.Tools.Helpers
                                 {
                                     object collectionItem1;
                                     object collectionItem2;
-                                    Type collectionItemType;
+                                    Type   collectionItemType;
 
-                                    collectionItem1 = collectionItems1.ElementAt(i);
-                                    collectionItem2 = collectionItems2.ElementAt(i);
+                                    collectionItem1    = collectionItems1.ElementAt(i);
+                                    collectionItem2    = collectionItems2.ElementAt(i);
                                     collectionItemType = collectionItem1.GetType();
 
                                     if (CanDirectlyCompare(collectionItemType))
@@ -108,7 +114,8 @@ namespace Framework.Tools.Helpers
                                             return false;
                                         }
                                     }
-                                    else if (!AreObjectsPropertiesEqual(collectionItem1, collectionItem2, compared, ignoreList))
+                                    else if (!AreObjectsPropertiesEqual(collectionItem1, collectionItem2, compared,
+                                                                        ignoreList))
                                     {
                                         return false;
                                     }
@@ -119,7 +126,7 @@ namespace Framework.Tools.Helpers
                     else if (propertyInfo.PropertyType.IsClass)
                     {
                         if (!AreObjectsPropertiesEqual(propertyInfo.GetValue(objectA, null),
-                                                 propertyInfo.GetValue(objectB, null), compared, ignoreList))
+                                                       propertyInfo.GetValue(objectB, null), compared, ignoreList))
                         {
                             return false;
                         }
@@ -133,7 +140,9 @@ namespace Framework.Tools.Helpers
             else
             {
                 if (!object.Equals(objectA, objectB))
+                {
                     return false;
+                }
             }
 
             return true;
@@ -155,13 +164,19 @@ namespace Framework.Tools.Helpers
             selfValueComparer = valueA as IComparable;
 
             if (valueA == null && valueB != null || valueA != null && valueB == null)
+            {
                 return false; // one of the values is null
+            }
 
             if (selfValueComparer != null && selfValueComparer.CompareTo(valueB) != 0)
+            {
                 return false; // the comparison using IComparable failed
+            }
 
             if (!object.Equals(valueA, valueB))
+            {
                 return false; // the comparison using Equals failed
+            }
 
             return true;
         }

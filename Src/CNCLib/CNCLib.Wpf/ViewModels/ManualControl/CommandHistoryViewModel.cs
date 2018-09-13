@@ -25,58 +25,63 @@ using Framework.Wpf.Helpers;
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class CommandHistoryViewModel : DetailViewModel
-	{
-		public CommandHistoryViewModel(IManualControlViewModel vm)
-			: base(vm)
-		{
-		}
+    {
+        public CommandHistoryViewModel(IManualControlViewModel vm)
+            : base(vm) { }
 
-		public const string CommandHistoryFile = @"%USERPROFILE%\Documents\Command.txt";
+        public const string CommandHistoryFile = @"%USERPROFILE%\Documents\Command.txt";
 
-		#region Properties
+        #region Properties
 
-		private ObservableCollection<SentCNCCommand> _commandHistoryCollection;
-		public ObservableCollection<SentCNCCommand> CommandHistoryCollection
-		{
-			get => _commandHistoryCollection;
-		    set => SetProperty(ref _commandHistoryCollection, value);
-		}
+        private ObservableCollection<SentCNCCommand> _commandHistoryCollection;
 
-		#endregion
+        public ObservableCollection<SentCNCCommand> CommandHistoryCollection
+        {
+            get => _commandHistoryCollection;
+            set => SetProperty(ref _commandHistoryCollection, value);
+        }
 
-		#region Commands / CanCommands
+        #endregion
 
-		public void RefreshAfterCommand()
-		{
-			RefreshCommandHistory();
-		}
+        #region Commands / CanCommands
 
-		public void RefreshCommandHistory()
-		{
-			var results = new ObservableCollection<SentCNCCommand>();
+        public void RefreshAfterCommand()
+        {
+            RefreshCommandHistory();
+        }
 
-			foreach (var rc in Global.Instance.Com.Current.CommandHistoryCopy)
-			{
+        public void RefreshCommandHistory()
+        {
+            var results = new ObservableCollection<SentCNCCommand>();
+
+            foreach (var rc in Global.Instance.Com.Current.CommandHistoryCopy)
+            {
                 DateTime senttime = rc.SentTime ?? DateTime.Today;
 
-                results.Add(new SentCNCCommand { CommandDate = senttime, CommandText = rc.CommandText, Result = rc.ResultText });
+                results.Add(new SentCNCCommand
+                {
+                    CommandDate = senttime,
+                    CommandText = rc.CommandText,
+                    Result      = rc.ResultText
+                });
+            }
 
-			}
-			CommandHistoryCollection = results;
-		}
-		public void ClearCommandHistory()
-		{
-		    Global.Instance.Com.Current.ClearCommandHistory();
-			RefreshCommandHistory();
-		}
+            CommandHistoryCollection = results;
+        }
 
-		#endregion
+        public void ClearCommandHistory()
+        {
+            Global.Instance.Com.Current.ClearCommandHistory();
+            RefreshCommandHistory();
+        }
 
-		#region ICommand
+        #endregion
 
-		public ICommand RefreshHistoryCommand => new DelegateCommand(RefreshCommandHistory, CanSend);
-		public ICommand ClearHistoryCommand => new DelegateCommand(ClearCommandHistory, CanSend);
+        #region ICommand
 
-		#endregion
-	}
+        public ICommand RefreshHistoryCommand => new DelegateCommand(RefreshCommandHistory, CanSend);
+        public ICommand ClearHistoryCommand   => new DelegateCommand(ClearCommandHistory,   CanSend);
+
+        #endregion
+    }
 }

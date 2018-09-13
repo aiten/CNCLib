@@ -28,49 +28,49 @@ namespace CNCLib.Serial.Server.Controllers
 {
     [Route("api/[controller]")]
     public class InfoController : Controller
-	{
+    {
         protected string CurrentUri => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
 
         #region Query/Info
 
-	    [HttpGet]
-	    public Info Get()
-	    {
-	        return new Info()
-	        {
-	            Version = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
-	            Name = Assembly.GetExecutingAssembly().GetName().Name,
-	            FullName = Assembly.GetExecutingAssembly().GetName().FullName,
-	            Copyright = ((AssemblyCopyrightAttribute) Assembly.GetExecutingAssembly()
-	                .GetCustomAttribute(typeof(AssemblyCopyrightAttribute))).Copyright
-	        };
-	    }
+        [HttpGet]
+        public Info Get()
+        {
+            return new Info()
+            {
+                Version  = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+                Name     = Assembly.GetExecutingAssembly().GetName().Name,
+                FullName = Assembly.GetExecutingAssembly().GetName().FullName,
+                Copyright = ((AssemblyCopyrightAttribute) Assembly.GetExecutingAssembly()
+                    .GetCustomAttribute(typeof(AssemblyCopyrightAttribute))).Copyright
+            };
+        }
 
         [HttpGet("version")]
-	    public string GetVersion()
+        public string GetVersion()
         {
             return Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
-	    [HttpGet("name")]
-	    public string GetName()
-	    {
-	        return Assembly.GetExecutingAssembly().GetName().Name;
-	    }
+        [HttpGet("name")]
+        public string GetName()
+        {
+            return Assembly.GetExecutingAssembly().GetName().Name;
+        }
 
-	    [HttpGet("fullname")]
-	    public string GetFullName()
-	    {
-	        return Assembly.GetExecutingAssembly().GetName().FullName;
-	    }
+        [HttpGet("fullname")]
+        public string GetFullName()
+        {
+            return Assembly.GetExecutingAssembly().GetName().FullName;
+        }
 
         [HttpGet("copyright")]
-	    public string GetCopyright()
-	    {
-	        return ((AssemblyCopyrightAttribute)Assembly.GetExecutingAssembly().GetCustomAttribute(typeof(AssemblyCopyrightAttribute))).Copyright;
-	    }
+        public string GetCopyright()
+        {
+            return ((AssemblyCopyrightAttribute) Assembly.GetExecutingAssembly()
+                .GetCustomAttribute(typeof(AssemblyCopyrightAttribute))).Copyright;
+        }
 
         #endregion
-
     }
 }

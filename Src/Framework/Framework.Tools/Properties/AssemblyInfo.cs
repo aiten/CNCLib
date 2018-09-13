@@ -22,4 +22,3 @@ using System.Runtime.InteropServices;
 //[assembly: AssemblyProduct("Framework.Tools")]
 
 [assembly: Guid("99c91315-0574-4842-b3d2-f1eeca448a45")]
-

@@ -19,7 +19,7 @@
 namespace CNCLib.GCode.Commands
 {
     public class ConvertOptions
-	{
-		public bool SubstG82 { get; set; }
-	}
+    {
+        public bool SubstG82 { get; set; }
+    }
 }

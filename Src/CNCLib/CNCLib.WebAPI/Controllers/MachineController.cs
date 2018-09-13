@@ -32,50 +32,50 @@ namespace CNCLib.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     public class MachineController : Controller
-	{
+    {
         public MachineController(IMachineService service, ICNCLibUserContext usercontext)
         {
-            _service = service ?? throw new ArgumentNullException();
+            _service     = service ?? throw new ArgumentNullException();
             _usercontext = usercontext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext)_usercontext).InitFromController(this);
+            ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
 
-        private IMachineService _service;
-	    private ICNCLibUserContext _usercontext;
+        private IMachineService    _service;
+        private ICNCLibUserContext _usercontext;
 
         #region default REST
 
         [HttpGet]
-	    public async Task<ActionResult<IEnumerable<Machine>>> Get()
-	    {
-	        return await this.GetAll(_service);
-	    }
+        public async Task<ActionResult<IEnumerable<Machine>>> Get()
+        {
+            return await this.GetAll(_service);
+        }
 
         [HttpGet("{id:int}")]
-	    public async Task<ActionResult> Get(int id)
-	    {
-	        return await this.Get<Machine,int>(_service, id);
-	    }
+        public async Task<ActionResult> Get(int id)
+        {
+            return await this.Get<Machine, int>(_service, id);
+        }
 
-	    [HttpPost]
-	    public async Task<ActionResult> Add([FromBody] Machine value)
-	    {
-	        return await this.Add<Machine, int>(_service, value);
-	    }
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] Machine value)
+        {
+            return await this.Add<Machine, int>(_service, value);
+        }
 
-	    [HttpPut]
-	    [Route("{id:int}")]
-	    public async Task<ActionResult> Update(int id, [FromBody]Machine value)
-	    {
-	        return await this.Update<Machine, int>(_service, id, value.MachineID, value);
-	    }
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] Machine value)
+        {
+            return await this.Update<Machine, int>(_service, id, value.MachineID, value);
+        }
 
         [HttpDelete]
-	    [Route("{id:int}")]
-	    public async Task<ActionResult> Delete(int id)
-	    {
-	        return await this.Delete<Machine, int>(_service, id);
-	    }
+        [Route("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            return await this.Delete<Machine, int>(_service, id);
+        }
 
         #endregion
 
@@ -88,60 +88,61 @@ namespace CNCLib.WebAPI.Controllers
             return await this.Add<Machine, int>(_service, values);
         }
 
-	    [HttpPut]
-	    [Route("bulk")]
-	    public async Task<ActionResult> Update([FromBody] IEnumerable<Machine> values)
-	    {
-	        return await this.Update<Machine, int>(_service, values);
-	    }
+        [HttpPut]
+        [Route("bulk")]
+        public async Task<ActionResult> Update([FromBody] IEnumerable<Machine> values)
+        {
+            return await this.Update<Machine, int>(_service, values);
+        }
 
         [HttpDelete]
-	    [Route("bulk")]
-	    public async Task<ActionResult> Delete(int[] ids)
-	    {
-	        return await this.Delete<Machine, int>(_service, ids);
-	    }
+        [Route("bulk")]
+        public async Task<ActionResult> Delete(int[] ids)
+        {
+            return await this.Delete<Machine, int>(_service, ids);
+        }
 
-	    #endregion
+        #endregion
 
         [Route("default")]
-		[HttpGet]
-		public async Task<IActionResult> DefaultMachine()
-		{
-			var m = await _service.DefaultMachine();
-			if (m == null)
-			{
-				return NotFound();
-			}
-			return Ok(m);
-		}
+        [HttpGet]
+        public async Task<IActionResult> DefaultMachine()
+        {
+            var m = await _service.DefaultMachine();
+            if (m == null)
+            {
+                return NotFound();
+            }
 
-		[Route("defaultmachine")]
-		[HttpGet] //Always explicitly state the accepted HTTP method
-		public async Task<IActionResult> GetDetaultMachine()
-		{
-			int id = await _service.GetDetaultMachine();
-			return Ok(id);
-		}
+            return Ok(m);
+        }
 
-		[Route("defaultmachine")]
-		[HttpPut] //Always explicitly state the accepted HTTP method
-		public async Task<IActionResult> SetDetaultMachine(int id)
-		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
+        [Route("defaultmachine")]
+        [HttpGet] //Always explicitly state the accepted HTTP method
+        public async Task<IActionResult> GetDetaultMachine()
+        {
+            int id = await _service.GetDetaultMachine();
+            return Ok(id);
+        }
 
-			try
-			{
-				await _service.SetDetaultMachine(id);
-				return StatusCode(204);
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
-		}
-	}
+        [Route("defaultmachine")]
+        [HttpPut] //Always explicitly state the accepted HTTP method
+        public async Task<IActionResult> SetDetaultMachine(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await _service.SetDetaultMachine(id);
+                return StatusCode(204);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+    }
 }

@@ -23,11 +23,11 @@ namespace CNCLib.Serial.Shared
 {
     public class SerialPortDefinition
     {
-        public int Id { get; set; }
-        public string PortName { get; set; }
-        public bool IsConnected { get; set; }
-        public bool IsAborted { get; set; }
-        public bool IsSingleStep { get; set; }
-        public int CommandsInQueue { get; set; }
+        public int    Id              { get; set; }
+        public string PortName        { get; set; }
+        public bool   IsConnected     { get; set; }
+        public bool   IsAborted       { get; set; }
+        public bool   IsSingleStep    { get; set; }
+        public int    CommandsInQueue { get; set; }
     }
 }

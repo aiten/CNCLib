@@ -21,35 +21,38 @@ using CNCLib.GCode;
 
 namespace CNCLib.Wpf.Helpers
 {
-	public static class Extensions
-	{
-		public static string GetAxisName(this Logic.Contracts.DTO.Machine m, int axis)
-		{
-			return GCodeHelper.IndexToAxisName(axis);
-		}
+    public static class Extensions
+    {
+        public static string GetAxisName(this Logic.Contracts.DTO.Machine m, int axis)
+        {
+            return GCodeHelper.IndexToAxisName(axis);
+        }
 
-		public static decimal GetSize(this Logic.Contracts.DTO.Machine m, int axis)
-		{
-			switch (axis)
-			{
-				case 0: return m.SizeX;
-				case 1: return m.SizeY;
-				case 2: return m.SizeZ;
-				case 3: return m.SizeA;
-				case 4: return m.SizeB;
-				case 5: return m.SizeC;
-			}
-			throw new NotImplementedException();
-		}
-		public static decimal GetProbeSize(this Logic.Contracts.DTO.Machine m, int axis)
-		{
-			switch (axis)
-			{
-				case 0: return m.ProbeSizeX;
-				case 1: return m.ProbeSizeY;
-				case 2: return m.ProbeSizeZ;
-			}
-			return 0m;
-		}
-	}
+        public static decimal GetSize(this Logic.Contracts.DTO.Machine m, int axis)
+        {
+            switch (axis)
+            {
+                case 0: return m.SizeX;
+                case 1: return m.SizeY;
+                case 2: return m.SizeZ;
+                case 3: return m.SizeA;
+                case 4: return m.SizeB;
+                case 5: return m.SizeC;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public static decimal GetProbeSize(this Logic.Contracts.DTO.Machine m, int axis)
+        {
+            switch (axis)
+            {
+                case 0: return m.ProbeSizeX;
+                case 1: return m.ProbeSizeY;
+                case 2: return m.ProbeSizeZ;
+            }
+
+            return 0m;
+        }
+    }
 }

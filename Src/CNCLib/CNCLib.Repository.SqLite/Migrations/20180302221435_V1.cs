@@ -9,21 +9,21 @@ namespace CNCLib.Repository.SqLite.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "DtrIsReset",
-                table: "Machine",
-                nullable: false,
-                defaultValue: true);
+                                             name: "DtrIsReset",
+                                             table: "Machine",
+                                             nullable: false,
+                                             defaultValue: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "SerialServer",
-                table: "Machine",
-                nullable: true);
+                                               name: "SerialServer",
+                                               table: "Machine",
+                                               nullable: true);
 
             migrationBuilder.AddColumn<int>(
-                name: "SerialServerPort",
-                table: "Machine",
-                nullable: false,
-                defaultValue: 5000);
+                                            name: "SerialServerPort",
+                                            table: "Machine",
+                                            nullable: false,
+                                            defaultValue: 5000);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -20,7 +20,5 @@ using Framework.Contracts.Shared;
 
 namespace CNCLib.Shared
 {
-    public interface ICNCLibUserContextRW : ICNCLibUserContext
-    {
-    }
+    public interface ICNCLibUserContextRW : ICNCLibUserContext { }
 }

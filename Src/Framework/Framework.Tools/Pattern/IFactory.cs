@@ -26,7 +26,7 @@ namespace Framework.Tools.Pattern
     }
 
     public interface IFactory<T> where T : class
-	{
-	    IScope<T> Create();
-	}
+    {
+        IScope<T> Create();
+    }
 }

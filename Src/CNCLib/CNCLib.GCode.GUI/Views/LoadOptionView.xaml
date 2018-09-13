@@ -1,12 +1,12 @@
 ﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:fhlp="clr-namespace:Framework.Wpf.Converters;assembly=Framework.Wpf"
-        xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="CNCLib.GCode.GUI.Views.LoadOptionView"
-        mc:Ignorable="d"
-        Title="Load options" Height="700" Width="600">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:fhlp="clr-namespace:Framework.Wpf.Converters;assembly=Framework.Wpf"
+    xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="CNCLib.GCode.GUI.Views.LoadOptionView"
+    mc:Ignorable="d"
+    Title="Load options" Height="700" Width="600">
 
     <Window.Resources>
         <fhlp:EnumBooleanConverter x:Key="EnumBooleanConverter" />
@@ -14,13 +14,13 @@
     </Window.Resources>
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="10,10,10,10">
-            <Label Content="File:"/>
+            <Label Content="File:" />
             <TextBox Text="{Binding LoadOptionsValue.FileName}" VerticalContentAlignment="Center" MinWidth="300" />
-            <Button Command="{Binding BrowseFileNameCommand}"  Content="?"/>
+            <Button Command="{Binding BrowseFileNameCommand}" Content="?" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="10,10,10,10">
-            <Button Command="{Binding DialogOKCommand}"  Content="Ok" Width="100"/>
-            <Button Command="{Binding DialogCancelCommand}"  Content="Cancel" Width="100"/>
+            <Button Command="{Binding DialogOKCommand}" Content="Ok" Width="100" />
+            <Button Command="{Binding DialogCancelCommand}" Content="Cancel" Width="100" />
         </StackPanel>
 
         <TabControl Custom:TabControlHelper.IsUnderlined="True">
@@ -29,29 +29,38 @@
                     <GroupBox Header="Settings">
                         <StackPanel Margin="5,5,0,0">
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                <Label Content="Name" Width="120"/>
+                                <Label Content="Name" Width="120" />
                                 <TextBox Width="200" Text="{Binding LoadOptionsValue.SettingName}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                <Label Content="Prefefined settings" Width="120"/>
-                                <ComboBox Width="200" SelectedItem="{Binding SelectedLoadOption}" ItemsSource="{Binding AllLoadOptions}" DisplayMemberPath="SettingName" />
+                                <Label Content="Prefefined settings" Width="120" />
+                                <ComboBox Width="200" SelectedItem="{Binding SelectedLoadOption}"
+                                          ItemsSource="{Binding AllLoadOptions}" DisplayMemberPath="SettingName" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="120,10,0,0">
-                                <Button Command="{Binding SaveSettingCommand}"  Content="Save" Width="60"/>
-                                <Button Command="{Binding SaveAsSettingCommand}"  Content="Save as" Width="60"/>
-                                <Button Command="{Binding DeleteSettingCommand}"  Content="Delete" Width="60"/>
-                                <Button Command="{Binding ExportSettingCommand}"  Content="Export" Width="60"/>
-                                <Button Command="{Binding ImportSettingCommand}"  Content="Import" Width="60"/>
+                                <Button Command="{Binding SaveSettingCommand}" Content="Save" Width="60" />
+                                <Button Command="{Binding SaveAsSettingCommand}" Content="Save as" Width="60" />
+                                <Button Command="{Binding DeleteSettingCommand}" Content="Delete" Width="60" />
+                                <Button Command="{Binding ExportSettingCommand}" Content="Export" Width="60" />
+                                <Button Command="{Binding ImportSettingCommand}" Content="Import" Width="60" />
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="File import type">
                         <StackPanel Margin="5,5,0,0">
-                            <RadioButton GroupName="LoadTypeGroup" Content="GCode"  IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=GCode, Converter={StaticResource EnumBooleanConverter}}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
-                            <RadioButton GroupName="LoadTypeGroup" Content="HPGL"  IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=HPGL, Converter={StaticResource EnumBooleanConverter}}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
-                            <RadioButton GroupName="LoadTypeGroup" Content="Image"  IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=Image, Converter={StaticResource EnumBooleanConverter}}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
-                            <RadioButton GroupName="LoadTypeGroup" Content="Image-Hole"  IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=ImageHole, Converter={StaticResource EnumBooleanConverter}}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
-                            <CheckBox Content="Use Azure" IsChecked="{Binding UseAzure}"  Margin="0,15,0,0"   />
+                            <RadioButton GroupName="LoadTypeGroup" Content="GCode"
+                                         IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=GCode, Converter={StaticResource EnumBooleanConverter}}"
+                                         Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="LoadTypeGroup" Content="HPGL"
+                                         IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=HPGL, Converter={StaticResource EnumBooleanConverter}}"
+                                         Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="LoadTypeGroup" Content="Image"
+                                         IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=Image, Converter={StaticResource EnumBooleanConverter}}"
+                                         Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="LoadTypeGroup" Content="Image-Hole"
+                                         IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=ImageHole, Converter={StaticResource EnumBooleanConverter}}"
+                                         Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                            <CheckBox Content="Use Azure" IsChecked="{Binding UseAzure}" Margin="0,15,0,0" />
 
 
                         </StackPanel>
@@ -60,23 +69,28 @@
                     <GroupBox Header="Output">
                         <StackPanel Margin="5,5,0,0">
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                <Label Content="Save GCode to" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.GCodeWriteToFileName}" VerticalContentAlignment="Center" />
-                                <Button Command="{Binding BrowseGCodeFileNameCommand}"  Content="?"/>
-                                <Label Content="filename"/>
+                                <Label Content="Save GCode to" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.GCodeWriteToFileName}"
+                                         VerticalContentAlignment="Center" />
+                                <Button Command="{Binding BrowseGCodeFileNameCommand}" Content="?" />
+                                <Label Content="filename" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Startup commands" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.StartupCommands}" VerticalContentAlignment="Center" MinWidth="100"/>
-                                <Label Content="gcode"/>
+                                <Label Content="Startup commands" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.StartupCommands}"
+                                         VerticalContentAlignment="Center" MinWidth="100" />
+                                <Label Content="gcode" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Shutdown commands" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.ShutdownCommands}" VerticalContentAlignment="Center" MinWidth="100"/>
-                                <Label Content="gcode"/>
+                                <Label Content="Shutdown commands" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.ShutdownCommands}"
+                                         VerticalContentAlignment="Center" MinWidth="100" />
+                                <Label Content="gcode" />
                             </StackPanel>
-                            <CheckBox Content="Add line numbers" IsChecked="{Binding LoadOptionsValue.AddLineNumbers}"    Margin="120,5,0,0" />
-                            <CheckBox Content="Substitute G82" IsChecked="{Binding LoadOptionsValue.SubstG82}"    Margin="120,5,0,0"  />
+                            <CheckBox Content="Add line numbers" IsChecked="{Binding LoadOptionsValue.AddLineNumbers}"
+                                      Margin="120,5,0,0" />
+                            <CheckBox Content="Substitute G82" IsChecked="{Binding LoadOptionsValue.SubstG82}"
+                                      Margin="120,5,0,0" />
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
@@ -86,56 +100,73 @@
                 <StackPanel>
                     <GroupBox Header="Auto Scale">
                         <StackPanel>
-                            <CheckBox Content="Auto scale"  IsChecked="{Binding LoadOptionsValue.AutoScale}"   Margin="10,10,0,0"  />
+                            <CheckBox Content="Auto scale" IsChecked="{Binding LoadOptionsValue.AutoScale}"
+                                      Margin="10,10,0,0" />
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="" Width="120"/>
+                                <Label Content="" Width="120" />
                                 <Label Content="X" Width="60" HorizontalContentAlignment="Center" />
-                                <Label Content="Y" Width="60" HorizontalContentAlignment="Center"/>
+                                <Label Content="Y" Width="60" HorizontalContentAlignment="Center" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.AutoScale}">
-                                <Label Content="Scale to" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.AutoScaleSizeX}" VerticalContentAlignment="Center" Width="60" />
-                                <TextBox Text="{Binding LoadOptionsValue.AutoScaleSizeY}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="mm"/>
+                                <Label Content="Scale to" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.AutoScaleSizeX}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <TextBox Text="{Binding LoadOptionsValue.AutoScaleSizeY}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <Label Content="mm" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.AutoScale}">
-                                <Label Content="Boarder Distance" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.AutoScaleBorderDistX}" VerticalContentAlignment="Center" Width="60" />
-                                <TextBox Text="{Binding LoadOptionsValue.AutoScaleBorderDistY}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="mm"/>
+                                <Label Content="Boarder Distance" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.AutoScaleBorderDistX}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <TextBox Text="{Binding LoadOptionsValue.AutoScaleBorderDistY}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <Label Content="mm" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.AutoScale}">
-                                <Label Content="DPI" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.ImageDPIX}" VerticalContentAlignment="Center" Width="60" />
-                                <TextBox Text="{Binding LoadOptionsValue.ImageDPIY}" VerticalContentAlignment="Center" Width="60" />
-                                <Button Command="{Binding SetSameDPICommand}"  Content="="/>
+                                <Label Content="DPI" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.ImageDPIX}" VerticalContentAlignment="Center"
+                                         Width="60" />
+                                <TextBox Text="{Binding LoadOptionsValue.ImageDPIY}" VerticalContentAlignment="Center"
+                                         Width="60" />
+                                <Button Command="{Binding SetSameDPICommand}" Content="=" />
                             </StackPanel>
-                            <CheckBox Content="Keep X/Y ratio" IsChecked="{Binding LoadOptionsValue.AutoScaleKeepRatio}" IsEnabled="{Binding LoadOptionsValue.AutoScale}" Margin="120,5,0,0"   />
-                            <CheckBox Content="Center" IsChecked="{Binding LoadOptionsValue.AutoScaleCenter}"  IsEnabled="{Binding LoadOptionsValue.AutoScale}"  Margin="120,5,0,0"  />
+                            <CheckBox Content="Keep X/Y ratio"
+                                      IsChecked="{Binding LoadOptionsValue.AutoScaleKeepRatio}"
+                                      IsEnabled="{Binding LoadOptionsValue.AutoScale}" Margin="120,5,0,0" />
+                            <CheckBox Content="Center" IsChecked="{Binding LoadOptionsValue.AutoScaleCenter}"
+                                      IsEnabled="{Binding LoadOptionsValue.AutoScale}" Margin="120,5,0,0" />
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Manual Scale">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="" Width="120"/>
+                                <Label Content="" Width="120" />
                                 <Label Content="X" Width="60" HorizontalContentAlignment="Center" />
-                                <Label Content="Y" Width="60" HorizontalContentAlignment="Center"/>
+                                <Label Content="Y" Width="60" HorizontalContentAlignment="Center" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.AutoScale, Converter={StaticResource InvertBoolConverter}}">
-                                <Label Content="Scale" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.ScaleX}" VerticalContentAlignment="Center" Width="60" />
-                                <TextBox Text="{Binding LoadOptionsValue.ScaleY}" VerticalContentAlignment="Center" Width="60" />
-                                <Button Command="{Binding SetSameScaleToCommand}"  Content="="/>
-                                <Label Content="1=100%"/>
+                            <StackPanel Orientation="Horizontal"
+                                        IsEnabled="{Binding LoadOptionsValue.AutoScale, Converter={StaticResource InvertBoolConverter}}">
+                                <Label Content="Scale" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.ScaleX}" VerticalContentAlignment="Center"
+                                         Width="60" />
+                                <TextBox Text="{Binding LoadOptionsValue.ScaleY}" VerticalContentAlignment="Center"
+                                         Width="60" />
+                                <Button Command="{Binding SetSameScaleToCommand}" Content="=" />
+                                <Label Content="1=100%" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal"  IsEnabled="{Binding LoadOptionsValue.AutoScale, Converter={StaticResource InvertBoolConverter}}">
-                                <Label Content="Offset" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.OfsX}" VerticalContentAlignment="Center" Width="60" />
-                                <TextBox Text="{Binding LoadOptionsValue.OfsY}" VerticalContentAlignment="Center" Width="60" />
-                                <Button Command="{Binding SetSameOfsCommand}"  Content="="/>
-                                <Label Content="mm"/>
+                            <StackPanel Orientation="Horizontal"
+                                        IsEnabled="{Binding LoadOptionsValue.AutoScale, Converter={StaticResource InvertBoolConverter}}">
+                                <Label Content="Offset" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.OfsX}" VerticalContentAlignment="Center"
+                                         Width="60" />
+                                <TextBox Text="{Binding LoadOptionsValue.OfsY}" VerticalContentAlignment="Center"
+                                         Width="60" />
+                                <Button Command="{Binding SetSameOfsCommand}" Content="=" />
+                                <Label Content="mm" />
                             </StackPanel>
-                            <CheckBox Content="Swap X/Y" IsChecked="{Binding LoadOptionsValue.SwapXY}"    Margin="120,5,0,0"  />
+                            <CheckBox Content="Swap X/Y" IsChecked="{Binding LoadOptionsValue.SwapXY}"
+                                      Margin="120,5,0,0" />
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
@@ -146,58 +177,69 @@
                         <!-- IsEnabled="{Binding IsChecked, ElementName=_HPGLLaser}"> -->
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Laser first on" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.LaserFirstOnCommand}" VerticalContentAlignment="Center" Width="180" />
-                                <Label Content="gcode"/>
+                                <Label Content="Laser first on" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.LaserFirstOnCommand}"
+                                         VerticalContentAlignment="Center" Width="180" />
+                                <Label Content="gcode" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Laser on" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.LaserOnCommand}" VerticalContentAlignment="Center" Width="180" />
-                                <Label Content="gcode"/>
+                                <Label Content="Laser on" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.LaserOnCommand}"
+                                         VerticalContentAlignment="Center" Width="180" />
+                                <Label Content="gcode" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Laser off" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.LaserOffCommand}" VerticalContentAlignment="Center" Width="180" />
-                                <Label Content="gcode"/>
+                                <Label Content="Laser off" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.LaserOffCommand}"
+                                         VerticalContentAlignment="Center" Width="180" />
+                                <Label Content="gcode" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Laser size" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.LaserSize}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="mm"/>
+                                <Label Content="Laser size" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.LaserSize}" VerticalContentAlignment="Center"
+                                         Width="60" />
+                                <Label Content="mm" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Acceleration distance" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.LaserAccDist}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="mm"/>
+                                <Label Content="Acceleration distance" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.LaserAccDist}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <Label Content="mm" />
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Engrave" IsEnabled="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=ZMove, Converter={StaticResource EnumBooleanConverter}}">
+                    <GroupBox Header="Engrave"
+                              IsEnabled="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=ZMove, Converter={StaticResource EnumBooleanConverter}}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Z position Up" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.EngravePosUp}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="mm"/>
+                                <Label Content="Z position Up" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.EngravePosUp}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <Label Content="mm" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Z position Down" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.EngravePosDown}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="mm"/>
+                                <Label Content="Z position Down" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.EngravePosDown}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <Label Content="mm" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Move speed down" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.EngraveDownSpeed}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="mm/min"/>
+                                <Label Content="Move speed down" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.EngraveDownSpeed}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <Label Content="mm/min" />
                             </StackPanel>
-                            <CheckBox Content="Use gcode parameter"  IsChecked="{Binding LoadOptionsValue.EngravePosInParameter}"   Margin="120,10,0,0"  />
+                            <CheckBox Content="Use gcode parameter"
+                                      IsChecked="{Binding LoadOptionsValue.EngravePosInParameter}" Margin="120,10,0,0" />
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Laser + Engrave">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Move speed" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.MoveSpeed}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="mm/min"/>
+                                <Label Content="Move speed" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.MoveSpeed}" VerticalContentAlignment="Center"
+                                         Width="60" />
+                                <Label Content="mm/min" />
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
@@ -205,31 +247,40 @@
             </TabItem>
             <TabItem Header="HPGL" Custom:ControlsHelper.HeaderFontSize="15">
                 <StackPanel>
-                    <RadioButton x:Name="_HPGLLaser" GroupName="PenMoveTypeGroup" Content="Generate for Laser"  IsChecked="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=CommandString, Converter={StaticResource EnumBooleanConverter}}"   Margin="10,10,0,0"  />
-                    <RadioButton GroupName="PenMoveTypeGroup" Content="Generate for engrave"  IsChecked="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=ZMove, Converter={StaticResource EnumBooleanConverter}}"   Margin="10,10,0,0"  />
+                    <RadioButton x:Name="_HPGLLaser" GroupName="PenMoveTypeGroup" Content="Generate for Laser"
+                                 IsChecked="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=CommandString, Converter={StaticResource EnumBooleanConverter}}"
+                                 Margin="10,10,0,0" />
+                    <RadioButton GroupName="PenMoveTypeGroup" Content="Generate for engrave"
+                                 IsChecked="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=ZMove, Converter={StaticResource EnumBooleanConverter}}"
+                                 Margin="10,10,0,0" />
                     <GroupBox Header="Smooth" Margin="0,5,0,0">
                         <StackPanel>
-                            <CheckBox Content="Smooth"  IsChecked="{Binding LoadOptionsValue.SmoothEnabled}"   Margin="10,10,0,0"  />
+                            <CheckBox Content="Smooth" IsChecked="{Binding LoadOptionsValue.SmoothEnabled}"
+                                      Margin="10,10,0,0" />
                             <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.SmoothEnabled}">
-                                <Label Content="Minimum line lenght" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.SmoothMinLineLenght}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="mm"/>
+                                <Label Content="Minimum line lenght" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.SmoothMinLineLenght}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <Label Content="mm" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.SmoothEnabled}">
-                                <Label Content="Max error" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.SmoothMaxError}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="mm"/>
+                                <Label Content="Max error" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.SmoothMaxError}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <Label Content="mm" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.SmoothEnabled}">
-                                <Label Content="Minimum angle" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.SmoothMinAngle}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="rad"/>
+                                <Label Content="Minimum angle" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.SmoothMinAngle}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <Label Content="rad" />
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Reorder lines" Margin="0,5,0,0">
                         <StackPanel>
-                            <CheckBox Content="Reorder closed lines"  IsChecked="{Binding LoadOptionsValue.ConvertEnabled}"   Margin="10,10,0,0"  />
+                            <CheckBox Content="Reorder closed lines"
+                                      IsChecked="{Binding LoadOptionsValue.ConvertEnabled}" Margin="10,10,0,0" />
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
@@ -239,61 +290,87 @@
                     <GroupBox Header="Image">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Gray threshold" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.GrayThreshold}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="1..255"/>
+                                <Label Content="Gray threshold" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.GrayThreshold}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <Label Content="1..255" />
                             </StackPanel>
-                            <RadioButton GroupName="DitherFilterGroup" Content="Floyd-Steinberg-Dither"  IsChecked="{Binding LoadOptionsValue.Dither, ConverterParameter=FloydSteinbergDither, Converter={StaticResource EnumBooleanConverter}}"   Margin="120,10,0,0" />
+                            <RadioButton GroupName="DitherFilterGroup" Content="Floyd-Steinberg-Dither"
+                                         IsChecked="{Binding LoadOptionsValue.Dither, ConverterParameter=FloydSteinbergDither, Converter={StaticResource EnumBooleanConverter}}"
+                                         Margin="120,10,0,0" />
                             <StackPanel Orientation="Horizontal">
-                                <RadioButton GroupName="DitherFilterGroup" Content="Newspaper-Dither"  IsChecked="{Binding LoadOptionsValue.Dither, ConverterParameter=NewspaperDither, Converter={StaticResource EnumBooleanConverter}}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
-                                <Label Content="Dot size"  Margin="10,0,0,0"/>
-                                <TextBox Text="{Binding LoadOptionsValue.NewspaperDitherSize}" VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="1,2,3,4,5"/>
+                                <RadioButton GroupName="DitherFilterGroup" Content="Newspaper-Dither"
+                                             IsChecked="{Binding LoadOptionsValue.Dither, ConverterParameter=NewspaperDither, Converter={StaticResource EnumBooleanConverter}}"
+                                             Margin="120,0,0,0" VerticalContentAlignment="Center" />
+                                <Label Content="Dot size" Margin="10,0,0,0" />
+                                <TextBox Text="{Binding LoadOptionsValue.NewspaperDitherSize}"
+                                         VerticalContentAlignment="Center" Width="60" />
+                                <Label Content="1,2,3,4,5" />
                             </StackPanel>
-                            <CheckBox Content="Invert image"  IsChecked="{Binding LoadOptionsValue.ImageInvert}"   Margin="120,5,0,10"  />
+                            <CheckBox Content="Invert image" IsChecked="{Binding LoadOptionsValue.ImageInvert}"
+                                      Margin="120,5,0,10" />
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Save image to" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.ImageWriteToFileName}" VerticalContentAlignment="Center" />
-                                <Button Command="{Binding BrowseImageFileNameCommand}"  Content="?"/>
-                                <Label Content="filename"/>
+                                <Label Content="Save image to" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.ImageWriteToFileName}"
+                                         VerticalContentAlignment="Center" />
+                                <Button Command="{Binding BrowseImageFileNameCommand}" Content="?" />
+                                <Label Content="filename" />
                             </StackPanel>
 
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Image hole" IsEnabled="{Binding LoadOptionsValue.LoadType, ConverterParameter=ImageHole, Converter={StaticResource EnumBooleanConverter}}">
+                    <GroupBox Header="Image hole"
+                              IsEnabled="{Binding LoadOptionsValue.LoadType, ConverterParameter=ImageHole, Converter={StaticResource EnumBooleanConverter}}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="" Width="120"/>
+                                <Label Content="" Width="120" />
                                 <Label Content="X" Width="60" HorizontalContentAlignment="Center" />
-                                <Label Content="Y" Width="60" HorizontalContentAlignment="Center"/>
+                                <Label Content="Y" Width="60" HorizontalContentAlignment="Center" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Dot size" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.DotSizeX}" VerticalContentAlignment="Center" Width="60" />
-                                <TextBox Text="{Binding LoadOptionsValue.DotSizeY}" VerticalContentAlignment="Center" Width="60" />
-                                <Button Command="{Binding SetSameDotSizeCommand}"  Content="="/>
-                                <Label Content="count"/>
+                                <Label Content="Dot size" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.DotSizeX}" VerticalContentAlignment="Center"
+                                         Width="60" />
+                                <TextBox Text="{Binding LoadOptionsValue.DotSizeY}" VerticalContentAlignment="Center"
+                                         Width="60" />
+                                <Button Command="{Binding SetSameDotSizeCommand}" Content="=" />
+                                <Label Content="count" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Dot distance" Width="120"/>
-                                <TextBox Text="{Binding LoadOptionsValue.DotDistX}" VerticalContentAlignment="Center" Width="60" />
-                                <TextBox Text="{Binding LoadOptionsValue.DotDistY}" VerticalContentAlignment="Center" Width="60" />
-                                <Button Command="{Binding SetSameDotDistCommand}"  Content="="/>
-                                <Label Content="mm"/>
+                                <Label Content="Dot distance" Width="120" />
+                                <TextBox Text="{Binding LoadOptionsValue.DotDistX}" VerticalContentAlignment="Center"
+                                         Width="60" />
+                                <TextBox Text="{Binding LoadOptionsValue.DotDistY}" VerticalContentAlignment="Center"
+                                         Width="60" />
+                                <Button Command="{Binding SetSameDotDistCommand}" Content="=" />
+                                <Label Content="mm" />
                             </StackPanel>
 
-                            <CheckBox Content="Shift Y"  IsChecked="{Binding LoadOptionsValue.UseYShift}"   Margin="120,5,0,10"  />
+                            <CheckBox Content="Shift Y" IsChecked="{Binding LoadOptionsValue.UseYShift}"
+                                      Margin="120,5,0,10" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,-5">
-                                <Label Content="Hole types" Width="120"/>
-                                <RadioButton GroupName="HoleTypeGroup" Content="Square"  IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Square, Converter={StaticResource EnumBooleanConverter}}"   Margin="0,0,0,0" VerticalContentAlignment="Center" />
+                                <Label Content="Hole types" Width="120" />
+                                <RadioButton GroupName="HoleTypeGroup" Content="Square"
+                                             IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Square, Converter={StaticResource EnumBooleanConverter}}"
+                                             Margin="0,0,0,0" VerticalContentAlignment="Center" />
                             </StackPanel>
-                            <RadioButton GroupName="HoleTypeGroup" Content="Circle"  IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Circle, Converter={StaticResource EnumBooleanConverter}}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
-                            <RadioButton GroupName="HoleTypeGroup" Content="Hexagon"  IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Hexagon, Converter={StaticResource EnumBooleanConverter}}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="HoleTypeGroup" Content="Circle"
+                                         IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Circle, Converter={StaticResource EnumBooleanConverter}}"
+                                         Margin="120,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="HoleTypeGroup" Content="Hexagon"
+                                         IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Hexagon, Converter={StaticResource EnumBooleanConverter}}"
+                                         Margin="120,0,0,0" VerticalContentAlignment="Center" />
 
-                            <RadioButton GroupName="HoleTypeGroup" Content="Diamond"  IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Diamond, Converter={StaticResource EnumBooleanConverter}}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
+                            <RadioButton GroupName="HoleTypeGroup" Content="Diamond"
+                                         IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Diamond, Converter={StaticResource EnumBooleanConverter}}"
+                                         Margin="120,0,0,0" VerticalContentAlignment="Center" />
                             <StackPanel Orientation="Horizontal">
-                                <RadioButton GroupName="HoleTypeGroup" Content="Heart"  IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Heart, Converter={StaticResource EnumBooleanConverter}}"   Margin="120,0,0,0" VerticalContentAlignment="Center" />
-                                <CheckBox Content="Rotate"  IsChecked="{Binding LoadOptionsValue.RotateHeart}"  IsEnabled="{Binding LoadOptionsValue.HoleType, ConverterParameter=Heart, Converter={StaticResource EnumBooleanConverter}}"  Margin="30,0,0,0"  />
+                                <RadioButton GroupName="HoleTypeGroup" Content="Heart"
+                                             IsChecked="{Binding LoadOptionsValue.HoleType, ConverterParameter=Heart, Converter={StaticResource EnumBooleanConverter}}"
+                                             Margin="120,0,0,0" VerticalContentAlignment="Center" />
+                                <CheckBox Content="Rotate" IsChecked="{Binding LoadOptionsValue.RotateHeart}"
+                                          IsEnabled="{Binding LoadOptionsValue.HoleType, ConverterParameter=Heart, Converter={StaticResource EnumBooleanConverter}}"
+                                          Margin="30,0,0,0" />
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>

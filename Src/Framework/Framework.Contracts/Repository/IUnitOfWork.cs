@@ -23,15 +23,15 @@ namespace Framework.Contracts.Repository
     public interface IUnitOfWork
     {
         Task<int> SaveChangesAsync();
-        
+
         // SQL Commands
 
         Task<int> ExecuteSqlCommand(string sql);
         Task<int> ExecuteSqlCommand(string sql, params object[] parameters);
-        
+
         // Transaction
 
-        bool IsInTransaction { get; }
+        bool         IsInTransaction { get; }
         ITransaction BeginTransaction();
     }
 }

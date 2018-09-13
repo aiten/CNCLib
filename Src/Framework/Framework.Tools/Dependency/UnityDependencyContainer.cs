@@ -59,7 +59,7 @@ namespace Framework.Tools.Dependency
         /// <returns>This instance.</returns>
         public IDependencyContainer RegisterType(Type typeFrom, Type typeTo)
         {
-            _container.RegisterType(typeFrom,typeTo);
+            _container.RegisterType(typeFrom, typeTo);
             return this;
         }
 
@@ -128,6 +128,7 @@ namespace Framework.Tools.Dependency
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
+
         #endregion
     }
 }

@@ -22,7 +22,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CNCLib.Repository.Mappings
 {
-	public static class ConfigurationMapping
+    public static class ConfigurationMapping
     {
         public static void Map(this EntityTypeBuilder<Configuration> entity)
         {
@@ -30,20 +30,13 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasKey(m => new { m.Group, m.Name });
 
-            entity.Property(m => m.Group).
-                IsRequired().
-                HasMaxLength(256);
+            entity.Property(m => m.Group).IsRequired().HasMaxLength(256);
 
-            entity.Property(m => m.Name).
-                IsRequired().
-                HasMaxLength(256);
+            entity.Property(m => m.Name).IsRequired().HasMaxLength(256);
 
-            entity.Property(m => m.Type).
-                IsRequired().
-                HasMaxLength(256);
+            entity.Property(m => m.Type).IsRequired().HasMaxLength(256);
 
-            entity.Property(m => m.Value).
-                HasMaxLength(4000);
+            entity.Property(m => m.Value).HasMaxLength(4000);
 
 //            entity.Property(m => m.UserID).
 //                IsOptional();

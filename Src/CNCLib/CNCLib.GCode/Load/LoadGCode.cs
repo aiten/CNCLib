@@ -26,90 +26,94 @@ namespace CNCLib.GCode.Load
     public class LoadGCode : LoadBase
     {
         CommandStream _stream = new CommandStream();
-        Command _lastnoPrefixCommand;
+        Command       _lastnoPrefixCommand;
 
         public override void Load()
         {
-			PreLoad();
+            PreLoad();
 
-			_lastnoPrefixCommand = null;
+            _lastnoPrefixCommand = null;
 
             using (StreamReader sr = GetStreamReader())
             {
-				try
-				{
-					string line;
-					while ((line = sr.ReadLine()) != null)
-					{
-						_stream.Line = line;
-						Command();
-					}
-				}
-				catch (FormatException)
-				{
-					Commands.Clear();
-				}
-			}
+                try
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        _stream.Line = line;
+                        Command();
+                    }
+                }
+                catch (FormatException)
+                {
+                    Commands.Clear();
+                }
+            }
 
-			PostLoad();
-		}
+            PostLoad();
+        }
 
-		public void Load(string[] lines)
-		{
-			_lastnoPrefixCommand = null;
-
-			try
-			{
-				foreach (string line in lines)
-				{
-					_stream.Line = line;
-					Command();
-				}
-			}
-			catch (FormatException)
-			{
-				Commands.Clear();
-			}
-
-			PostLoad();
-		}
-
-		private void Command()
+        public void Load(string[] lines)
         {
-			int? linenumber=null;
+            _lastnoPrefixCommand = null;
+
+            try
+            {
+                foreach (string line in lines)
+                {
+                    _stream.Line = line;
+                    Command();
+                }
+            }
+            catch (FormatException)
+            {
+                Commands.Clear();
+            }
+
+            PostLoad();
+        }
+
+        private void Command()
+        {
+            int? linenumber = null;
 
             if (_stream.NextCharToUpper == 'N')
             {
-				_stream.Next();
+                _stream.Next();
 
-				if (!_stream.IsNumber())
-					throw new FormatException();
+                if (!_stream.IsNumber())
+                {
+                    throw new FormatException();
+                }
 
-				linenumber = _stream.GetInt();
-				_stream.SkipSpaces();
+                linenumber = _stream.GetInt();
+                _stream.SkipSpaces();
             }
 
             _stream.SkipSpaces();
-			Command cmd;
+            Command cmd;
 
             if (_stream.NextCharToUpper == 'G')
             {
-				cmd = ReadGCommand();
+                cmd = ReadGCommand();
             }
             else if ("XYZABCF".IndexOf(_stream.NextCharToUpper) >= 0)
             {
-				if (_lastnoPrefixCommand == null)
-					throw new FormatException();
+                if (_lastnoPrefixCommand == null)
+                {
+                    throw new FormatException();
+                }
 
-				cmd = ReadGNoPrefixCommand();
+                cmd = ReadGNoPrefixCommand();
             }
             else if (_stream.NextCharToUpper == 'M')
             {
-				cmd = ReadMCommand();
+                cmd = ReadMCommand();
             }
             else if (_stream.NextCharToUpper == '#')
             {
-				cmd = ReadSetParameterCommand();
+                cmd = ReadSetParameterCommand();
             }
             else
             {
@@ -117,20 +121,20 @@ namespace CNCLib.GCode.Load
             }
 
             if (cmd != null)
-			{
-				if (linenumber.HasValue)
-				{
-					cmd.LineNumber = linenumber;
-				}
+            {
+                if (linenumber.HasValue)
+                {
+                    cmd.LineNumber = linenumber;
+                }
 
-				Commands.AddCommand(cmd);
-			}
+                Commands.AddCommand(cmd);
+            }
         }
 
         private Command AddGxxMxxCommand(Command cmd, string cmdname)
         {
             cmd.SetCode(cmdname);
-			cmd.ReadFrom(_stream);
+            cmd.ReadFrom(_stream);
             return cmd;
         }
 
@@ -146,13 +150,15 @@ namespace CNCLib.GCode.Load
             if (cmd != null)
             {
                 if (cmd.UseWithoutPrefix)
+                {
                     _lastnoPrefixCommand = cmd;
+                }
 
-				cmd.ReadFrom(_stream);
+                cmd.ReadFrom(_stream);
             }
             else
             {
-				cmd = AddGxxMxxCommand(CommandFactory.Create("GXX"), cmdname);
+                cmd = AddGxxMxxCommand(CommandFactory.Create("GXX"), cmdname);
             }
 
             return cmd;
@@ -177,19 +183,20 @@ namespace CNCLib.GCode.Load
 
             if (cmd != null)
             {
-				cmd.ReadFrom(_stream);
+                cmd.ReadFrom(_stream);
             }
             else
             {
-				cmd = AddGxxMxxCommand(CommandFactory.Create("MXX"), cmdname);
+                cmd = AddGxxMxxCommand(CommandFactory.Create("MXX"), cmdname);
             }
+
             return cmd;
         }
 
         private Command ReadOtherCommand()
         {
             Command cmd = CommandFactory.Create("GXX");
-			cmd.ReadFrom(_stream);
+            cmd.ReadFrom(_stream);
             return cmd;
         }
 
@@ -199,7 +206,5 @@ namespace CNCLib.GCode.Load
             cmd.ReadFrom(_stream);
             return cmd;
         }
-
     }
 }
-

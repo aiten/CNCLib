@@ -20,74 +20,124 @@ using System;
 
 namespace Framework.Tools.Drawing
 {
-	public class Point3D
-	{
-		public Point3D(double x, double y, double z)
-		{
-			X = x; Y = y; Z = z;
-		}
-		public Point3D()
-		{
-			//X = new decimal?();
-			//Y = new decimal?();
-			//Z = new decimal?();
-		}
-		public double? X { get; set; }
-		public double? Y { get; set; }
-		public double? Z { get; set; }
+    public class Point3D
+    {
+        public Point3D(double x, double y, double z)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+        }
+
+        public Point3D()
+        {
+            //X = new decimal?();
+            //Y = new decimal?();
+            //Z = new decimal?();
+        }
+
+        public double? X { get; set; }
+        public double? Y { get; set; }
+        public double? Z { get; set; }
 
         public double X0 => X ?? 0.0;
-	    public double Y0 => Y ?? 0.0;
-	    public double Z0 => Z ?? 0.0;
+        public double Y0 => Y ?? 0.0;
+        public double Z0 => Z ?? 0.0;
 
-        public static implicit operator Point2D (Point3D pt)
+        public static implicit operator Point2D(Point3D pt)
         {
             return new Point2D { X = pt.X0, Y = pt.Y0 };
         }
 
-		public double? this[int axis]
-		{
-			get
-			{
-				if (axis == 0) return X;
-				if (axis == 1) return Y;
-				if (axis == 2) return Z;
-				throw new ArgumentOutOfRangeException();
-			}
-			set
-			{
-				if (axis == 0) X = value;
-				else if (axis == 1) Y = value;
-				else if (axis == 2) Z = value;
-				else throw new ArgumentOutOfRangeException();
-			}
-		}
+        public double? this[int axis]
+        {
+            get
+            {
+                if (axis == 0)
+                {
+                    return X;
+                }
+
+                if (axis == 1)
+                {
+                    return Y;
+                }
+
+                if (axis == 2)
+                {
+                    return Z;
+                }
+
+                throw new ArgumentOutOfRangeException();
+            }
+            set
+            {
+                if (axis == 0)
+                {
+                    X = value;
+                }
+                else if (axis == 1)
+                {
+                    Y = value;
+                }
+                else if (axis == 2)
+                {
+                    Z = value;
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
 
         public bool Compare2D(Point3D to)
         {
-            return Math.Abs((X0) - (to.X0)) < double.Epsilon && 
+            return Math.Abs((X0) - (to.X0)) < double.Epsilon &&
                    Math.Abs((Y0) - (to.Y0)) < double.Epsilon;
         }
 
-		public bool HasAllValues => X.HasValue && Y.HasValue && Z.HasValue;
+        public bool HasAllValues => X.HasValue && Y.HasValue && Z.HasValue;
 
-	    public void AssignMissing(Point3D from)
-		{
-			if (!X.HasValue && from.X.HasValue) X = from.X;
-			if (!Y.HasValue && from.Y.HasValue) Y = from.Y;
-			if (!Z.HasValue && from.Z.HasValue) Z = from.Z;
-		}
+        public void AssignMissing(Point3D from)
+        {
+            if (!X.HasValue && from.X.HasValue)
+            {
+                X = @from.X;
+            }
 
-		public static implicit operator System.Drawing.Point(Point3D sc)
-		{
-			return new System.Drawing.Point((int) (sc.X0), (int) (sc.Y0));
-		}
+            if (!Y.HasValue && from.Y.HasValue)
+            {
+                Y = @from.Y;
+            }
 
-		public void Offset(Point3D p)
-		{
-			if (X.HasValue && p.X.HasValue) X += p.X;
-			if (Y.HasValue && p.Y.HasValue) Y += p.Y;
-			if (Z.HasValue && p.Z.HasValue) Z += p.Z;
-		}
-	}
+            if (!Z.HasValue && from.Z.HasValue)
+            {
+                Z = @from.Z;
+            }
+        }
+
+        public static implicit operator System.Drawing.Point(Point3D sc)
+        {
+            return new System.Drawing.Point((int) (sc.X0), (int) (sc.Y0));
+        }
+
+        public void Offset(Point3D p)
+        {
+            if (X.HasValue && p.X.HasValue)
+            {
+                X += p.X;
+            }
+
+            if (Y.HasValue && p.Y.HasValue)
+            {
+                Y += p.Y;
+            }
+
+            if (Z.HasValue && p.Z.HasValue)
+            {
+                Z += p.Z;
+            }
+        }
+    }
 }

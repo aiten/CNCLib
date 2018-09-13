@@ -19,14 +19,14 @@
 
 namespace CNCLib.Tests.Logic
 {
-	public class DynItemManagerTestClass
+    public class DynItemManagerTestClass
     {
-        public int IntProperty { get; set; }
-        public string StringProperty { get; set; }
-        public double DoubleProperty { get; set; }
-        public decimal DecimalProperty { get; set; }
-        public int? IntNullProperty { get; set; }
-        public double? DoubleNullProperty { get; set; }
+        public int      IntProperty         { get; set; }
+        public string   StringProperty      { get; set; }
+        public double   DoubleProperty      { get; set; }
+        public decimal  DecimalProperty     { get; set; }
+        public int?     IntNullProperty     { get; set; }
+        public double?  DoubleNullProperty  { get; set; }
         public decimal? DecimalNullProperty { get; set; }
     }
 }

@@ -20,28 +20,31 @@ using System.Linq;
 using CNCLib.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace CNCLib.Repository.SqlServer {
+namespace CNCLib.Repository.SqlServer
+{
     public class MigrationCNCLibContext : CNCLibContext
     {
-        public static string ConnectString { get; set; } = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
+        public static string ConnectString { get; set; } =
+            @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
 
         static MigrationCNCLibContext()
         {
-            OnConfigure = (optionsBuilder) =>
-            {
-                optionsBuilder.UseSqlServer(ConnectString);
-            };
+            OnConfigure = (optionsBuilder) => { optionsBuilder.UseSqlServer(ConnectString); };
         }
 
         public static void InitializeDatabase(string connectstring, bool dropdatabase, bool isTest)
         {
             if (!string.IsNullOrEmpty(connectstring))
+            {
                 ConnectString = connectstring;
+            }
 
             using (var ctx = new MigrationCNCLibContext())
             {
                 if (dropdatabase)
+                {
                     ctx.Database.EnsureDeleted();
+                }
 
                 ctx.Database.Migrate();
                 if (!ctx.Machines.Any())
@@ -53,5 +56,3 @@ namespace CNCLib.Repository.SqlServer {
         }
     }
 }
-
-

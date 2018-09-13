@@ -22,7 +22,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CNCLib.Repository.Mappings
 {
-	public static class ItemPropertyMapping
+    public static class ItemPropertyMapping
     {
         public static void Map(this EntityTypeBuilder<ItemProperty> entity)
         {
@@ -30,9 +30,7 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasKey(m => new { m.ItemID, m.Name });
 
-            entity.Property(m => m.Name).
-                IsRequired().
-                HasMaxLength(255);
+            entity.Property(m => m.Name).IsRequired().HasMaxLength(255);
 
             entity.HasOne(i => i.Item)
                 .WithMany(ip => ip.ItemProperties)

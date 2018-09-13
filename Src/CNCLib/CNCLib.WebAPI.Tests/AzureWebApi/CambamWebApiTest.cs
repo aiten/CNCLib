@@ -42,22 +42,23 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
+                var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
 
-				Assembly ass = Assembly.GetExecutingAssembly();
-				string asspath = Path.GetDirectoryName(ass.Location);
+                Assembly ass     = Assembly.GetExecutingAssembly();
+                string   asspath = Path.GetDirectoryName(ass.Location);
 
-				info.FileName = asspath + @"\TestData\heikes-mietzi.hpgl";
-				info.FileContent = File.ReadAllBytes(info.FileName);
+                info.FileName    = asspath + @"\TestData\heikes-mietzi.hpgl";
+                info.FileContent = File.ReadAllBytes(info.FileName);
 
-				HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
-				response.EnsureSuccessStatusCode();
+                HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
+                response.EnsureSuccessStatusCode();
 
-				string cambam = await response.Content.ReadAsAsync<string>();
+                string cambam = await response.Content.ReadAsAsync<string>();
 
-				cambam.Should().NotBeNull();
-			}
-		}
+                cambam.Should().NotBeNull();
+            }
+        }
+
         /*
                 [TestMethod]
                 public async Task PutImage()

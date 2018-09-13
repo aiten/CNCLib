@@ -40,17 +40,20 @@ namespace CNCLib.Wpf.Models
 
         [Category(CATEGORY_PLOTTER)]
         [DisplayName("MovePenDownFeedrate")]
-        [Description("Z-axis speed to set pen, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
+        [Description(
+            "Z-axis speed to set pen, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
         public uint MovePenDownFeedrate { get; set; }
 
         [Category(CATEGORY_PLOTTER)]
         [DisplayName("MovePenUpFeedrate")]
-        [Description("Z-axis speed to rise pen, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
+        [Description(
+            "Z-axis speed to rise pen, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
         public uint MovePenUpFeedrate { get; set; }
 
         [Category(CATEGORY_PLOTTER)]
         [DisplayName("MovePenChangeFeedrate")]
-        [Description("Z-axis speed while pen is changed, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
+        [Description(
+            "Z-axis speed while pen is changed, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
         public uint MovePenChangeFeedrate { get; set; }
 
         [Category(CATEGORY_PLOTTER)]
@@ -115,14 +118,14 @@ namespace CNCLib.Wpf.Models
             base.ReadFrom(ee);
 
             PenDownFeedrate = ee[EepromV1.EValueOffsets32Plotter.EPenDownFeedrate];
-            PenUpFeedrate = ee[EepromV1.EValueOffsets32Plotter.EPenUpFeedrate];
+            PenUpFeedrate   = ee[EepromV1.EValueOffsets32Plotter.EPenUpFeedrate];
 
-            MovePenDownFeedrate = ee[EepromV1.EValueOffsets32Plotter.EMovePenDownFeedrate];
-            MovePenUpFeedrate = ee[EepromV1.EValueOffsets32Plotter.EMovePenUpFeedrate];
+            MovePenDownFeedrate   = ee[EepromV1.EValueOffsets32Plotter.EMovePenDownFeedrate];
+            MovePenUpFeedrate     = ee[EepromV1.EValueOffsets32Plotter.EMovePenUpFeedrate];
             MovePenChangeFeedrate = ee[EepromV1.EValueOffsets32Plotter.EMovePenChangeFeedrate];
 
             PenDownPos = ee[EepromV1.EValueOffsets32Plotter.EPenDownPos];
-            PenUpPos = ee[EepromV1.EValueOffsets32Plotter.EPenUpPos];
+            PenUpPos   = ee[EepromV1.EValueOffsets32Plotter.EPenUpPos];
 
             PenChangePos_x = ee[EepromV1.EValueOffsets32Plotter.EPenChangePosX];
             PenChangePos_y = ee[EepromV1.EValueOffsets32Plotter.EPenChangePosY];
@@ -131,10 +134,10 @@ namespace CNCLib.Wpf.Models
             PenChangePos_x_ofs = ee[EepromV1.EValueOffsets32Plotter.EPenChangePosXOfs];
             PenChangePos_y_ofs = ee[EepromV1.EValueOffsets32Plotter.EPenChangePosYOfs];
 
-            ServoClampOpenPos = ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampOpenPos];
+            ServoClampOpenPos  = ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampOpenPos];
             ServoClampClosePos = ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampClosePos];
 
-            ServoClampOpenDelay = ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampOpenDelay];
+            ServoClampOpenDelay  = ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampOpenDelay];
             ServoClampCloseDelay = ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampCloseDelay];
         }
 
@@ -142,26 +145,26 @@ namespace CNCLib.Wpf.Models
         {
             base.WriteTo(ee);
             ee[EepromV1.EValueOffsets32Plotter.EPenDownFeedrate] = PenDownFeedrate;
-            ee[EepromV1.EValueOffsets32Plotter.EPenUpFeedrate] = PenUpFeedrate;
-             
-            ee[EepromV1.EValueOffsets32Plotter.EMovePenDownFeedrate]= MovePenDownFeedrate;
-            ee[EepromV1.EValueOffsets32Plotter.EMovePenUpFeedrate]= MovePenUpFeedrate;
-            ee[EepromV1.EValueOffsets32Plotter.EMovePenChangeFeedrate]= MovePenChangeFeedrate;
- 
-            ee[EepromV1.EValueOffsets32Plotter.EPenDownPos]= PenDownPos;
-            ee[EepromV1.EValueOffsets32Plotter.EPenUpPos]= PenUpPos;
-             
-            ee[EepromV1.EValueOffsets32Plotter.EPenChangePosX] = PenChangePos_x;
-            ee[EepromV1.EValueOffsets32Plotter.EPenChangePosY]= PenChangePos_y;
-            ee[EepromV1.EValueOffsets32Plotter.EPenChangePosZ]= PenChangePos_z;
-            
-            ee[EepromV1.EValueOffsets32Plotter.EPenChangePosXOfs]= PenChangePos_x_ofs;
-            ee[EepromV1.EValueOffsets32Plotter.EPenChangePosYOfs]= PenChangePos_y_ofs;
+            ee[EepromV1.EValueOffsets32Plotter.EPenUpFeedrate]   = PenUpFeedrate;
 
-            ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampOpenPos] = ServoClampOpenPos;
+            ee[EepromV1.EValueOffsets32Plotter.EMovePenDownFeedrate]   = MovePenDownFeedrate;
+            ee[EepromV1.EValueOffsets32Plotter.EMovePenUpFeedrate]     = MovePenUpFeedrate;
+            ee[EepromV1.EValueOffsets32Plotter.EMovePenChangeFeedrate] = MovePenChangeFeedrate;
+
+            ee[EepromV1.EValueOffsets32Plotter.EPenDownPos] = PenDownPos;
+            ee[EepromV1.EValueOffsets32Plotter.EPenUpPos]   = PenUpPos;
+
+            ee[EepromV1.EValueOffsets32Plotter.EPenChangePosX] = PenChangePos_x;
+            ee[EepromV1.EValueOffsets32Plotter.EPenChangePosY] = PenChangePos_y;
+            ee[EepromV1.EValueOffsets32Plotter.EPenChangePosZ] = PenChangePos_z;
+
+            ee[EepromV1.EValueOffsets32Plotter.EPenChangePosXOfs] = PenChangePos_x_ofs;
+            ee[EepromV1.EValueOffsets32Plotter.EPenChangePosYOfs] = PenChangePos_y_ofs;
+
+            ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampOpenPos]  = ServoClampOpenPos;
             ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampClosePos] = ServoClampClosePos;
 
-            ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampOpenDelay] = ServoClampOpenDelay;
+            ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampOpenDelay]  = ServoClampOpenDelay;
             ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampCloseDelay] = ServoClampCloseDelay;
         }
     }

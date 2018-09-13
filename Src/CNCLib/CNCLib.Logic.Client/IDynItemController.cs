@@ -23,18 +23,18 @@ using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.Logic.Client
 {
-	public interface IDynItemController : IDisposable
-	{
-		Task<DynItem> Get(int id);
+    public interface IDynItemController : IDisposable
+    {
+        Task<DynItem> Get(int id);
 
-		Task<IEnumerable<DynItem>> GetAll();
+        Task<IEnumerable<DynItem>> GetAll();
 
-		Task<IEnumerable<DynItem>> GetAll(Type t);
+        Task<IEnumerable<DynItem>> GetAll(Type t);
 
-		Task<object> Create(int id);
+        Task<object> Create(int id);
 
         Task<int> Add(string name, object value);
-        Task Save(int id, string name, object value);
-        Task Delete(int id);
+        Task      Save(int   id,   string name, object value);
+        Task      Delete(int id);
     }
 }

@@ -20,20 +20,20 @@ using System.Collections.Generic;
 
 namespace CNCLib.GCode.Commands
 {
-	public class CommandState
-	{
-		public bool UseLaser { get; set; } = false;
-		public bool LaserOn { get; set; } = false;
-		public bool SpindleOn { get; set; } = false;
-		public bool CoolantOn { get; set; } = false;
-		public Pane CurrentPane { get; set; } = Pane.XYPane;
+    public class CommandState
+    {
+        public bool UseLaser    { get; set; } = false;
+        public bool LaserOn     { get; set; } = false;
+        public bool SpindleOn   { get; set; } = false;
+        public bool CoolantOn   { get; set; } = false;
+        public Pane CurrentPane { get; set; } = Pane.XYPane;
 
-		public bool IsSelected { get; set; } = true;
+        public bool IsSelected { get; set; } = true;
 
-		public Command.Variable G82R { get; set; }
-		public Command.Variable G82P { get; set; }
-		public Command.Variable G82Z { get; set; }
+        public Command.Variable G82R { get; set; }
+        public Command.Variable G82P { get; set; }
+        public Command.Variable G82Z { get; set; }
 
-        public Dictionary<int,double> ParameterValues { get; private set; } = new Dictionary<int, double>();
-	}
+        public Dictionary<int, double> ParameterValues { get; private set; } = new Dictionary<int, double>();
+    }
 }

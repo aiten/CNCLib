@@ -26,40 +26,38 @@ namespace CNCLib.Wpf.Helpers
     class JoystickArduinoSerialCommunication : Framework.Arduino.SerialCommunication.Serial
     {
         public JoystickArduinoSerialCommunication()
-		{
-			OkTag = "";		// every new line is "end of command"
-		}
+        {
+            OkTag = ""; // every new line is "end of command"
+        }
 
-		public void RunCommandInNewTask(Action todo)
-		{
-			Task.Run(() =>
-			{
-			    todo();
-			    Global.Instance.Com.Current.WriteCommandHistory(CommandHistoryViewModel.CommandHistoryFile);
-			});
-		}
+        public void RunCommandInNewTask(Action todo)
+        {
+            Task.Run(() =>
+            {
+                todo();
+                Global.Instance.Com.Current.WriteCommandHistory(CommandHistoryViewModel.CommandHistoryFile);
+            });
+        }
 
-		protected override void OnReplyReceived(Framework.Arduino.SerialCommunication.SerialEventArgs info)
-		{
-			base.OnReplyReceived(info);
+        protected override void OnReplyReceived(Framework.Arduino.SerialCommunication.SerialEventArgs info)
+        {
+            base.OnReplyReceived(info);
 
-			if (info.Info.StartsWith(";CNCJoystick"))
-			{
-				if (Global.Instance.Joystick?.InitCommands != null)
-				{
-					RunCommandInNewTask(async () =>
-					{
-						await new JoystickHelper().SendInitCommands(Global.Instance.Joystick?.InitCommands);
-					});
-				}
-			}
-			else
-			{
-				RunCommandInNewTask(() =>
-				{
-					new JoystickHelper().JoystickReplyReceived(info.Info.Trim());
-				});
-			}
-		}
-	}
+            if (info.Info.StartsWith(";CNCJoystick"))
+            {
+                if (Global.Instance.Joystick?.InitCommands != null)
+                {
+                    RunCommandInNewTask(async () =>
+                    {
+                        await new JoystickHelper().SendInitCommands(Global.Instance.Joystick
+                                                                        ?.InitCommands);
+                    });
+                }
+            }
+            else
+            {
+                RunCommandInNewTask(() => { new JoystickHelper().JoystickReplyReceived(info.Info.Trim()); });
+            }
+        }
+    }
 }

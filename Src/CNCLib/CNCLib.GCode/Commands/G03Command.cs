@@ -19,44 +19,47 @@
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand("G3,G03")]
-	public class G03Command : Command
+    [IsGCommand("G3,G03")]
+    public class G03Command : Command
     {
-		#region crt + factory
+        #region crt + factory
 
-		public G03Command()
-		{
+        public G03Command()
+        {
             UseWithoutPrefix = true;
-            PositionValid = true;
-			Movetype = MoveType.Normal;
-			Code = "G3";
-		}
+            PositionValid    = true;
+            Movetype         = MoveType.Normal;
+            Code             = "G3";
+        }
 
-		#endregion
+        #endregion
 
-		#region GCode
+        #region GCode
 
-		#endregion
+        #endregion
 
-		#region Draw
+        #region Draw
 
-		public override void Draw(IOutputCommand output, CommandState state, object param)
-		{
+        public override void Draw(IOutputCommand output, CommandState state, object param)
+        {
             double I, J, K;
             if (!TryGetVariable('I', state, out I))
             {
                 I = 0;
             }
+
             if (!TryGetVariable('J', state, out J))
             {
                 J = 0;
             }
-			if (!TryGetVariable('K', state, out K))
-			{
-				K = 0;
-			}
 
-			output.DrawArc(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition, new Framework.Tools.Drawing.Point3D { X = I, Y = J, Z = K },false, state.CurrentPane);
+            if (!TryGetVariable('K', state, out K))
+            {
+                K = 0;
+            }
+
+            output.DrawArc(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition,
+                           new Framework.Tools.Drawing.Point3D { X = I, Y = J, Z = K }, false, state.CurrentPane);
         }
 
         #endregion

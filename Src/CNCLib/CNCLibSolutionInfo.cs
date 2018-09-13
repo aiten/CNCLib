@@ -23,4 +23,3 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("CNCLib")]
 [assembly: ComVisible(false)]
 [assembly: AssemblyCompany("Herbert Aitenbichler")]
-

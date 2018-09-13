@@ -25,29 +25,30 @@ using CNCLib.Service.Contracts;
 
 namespace CNCLib.Service.WebAPI
 {
-    public class ItemService : CRUDServiceBase<Item,int>, IItemService
-	{
-	    protected override string Api => @"api/Item";
-	    protected override int GetKey(Item i) => i.ItemID;
+    public class ItemService : CRUDServiceBase<Item, int>, IItemService
+    {
+        protected override string Api            => @"api/Item";
+        protected override int    GetKey(Item i) => i.ItemID;
 
-		public async Task<Item> DefaultItem()
-		{
-			return await Get(-1);
-		}
+        public async Task<Item> DefaultItem()
+        {
+            return await Get(-1);
+        }
 
-		public async Task<IEnumerable<Item>> GetByClassName(string classname)
-		{
-			using (HttpClient client = CreateHttpClient())
-			{
+        public async Task<IEnumerable<Item>> GetByClassName(string classname)
+        {
+            using (HttpClient client = CreateHttpClient())
+            {
 //			    HttpResponseMessage response = await client.GetAsync(_api + "/" + classname);
-				HttpResponseMessage response = await client.GetAsync(Api + "/?classname=" + classname);
-				if (response.IsSuccessStatusCode)
-				{
-					IEnumerable<Item> items = await response.Content.ReadAsAsync<IEnumerable<Item>>();
-					return items;
-				}
-				return null;
-			}
-		}
-	}
+                HttpResponseMessage response = await client.GetAsync(Api + "/?classname=" + classname);
+                if (response.IsSuccessStatusCode)
+                {
+                    IEnumerable<Item> items = await response.Content.ReadAsAsync<IEnumerable<Item>>();
+                    return items;
+                }
+
+                return null;
+            }
+        }
+    }
 }

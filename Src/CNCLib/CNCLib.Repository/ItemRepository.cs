@@ -30,56 +30,56 @@ using Microsoft.EntityFrameworkCore;
 namespace CNCLib.Repository
 {
     public class ItemRepository : CRUDRepositoryBase<CNCLibContext, Item, int>, IItemRepository
-	{
-	    private ICNCLibUserContext _userContext;
+    {
+        private ICNCLibUserContext _userContext;
 
-	    public ItemRepository(CNCLibContext context, ICNCLibUserContext userContext) : base(context)
+        public ItemRepository(CNCLibContext context, ICNCLibUserContext userContext) : base(context)
         {
             _userContext = userContext ?? throw new ArgumentNullException();
         }
 
         protected override IQueryable<Item> AddInclude(IQueryable<Item> query)
-	    {
-	        return query.Include(x => x.ItemProperties);
-	    }
+        {
+            return query.Include(x => x.ItemProperties);
+        }
 
-	    protected override IQueryable<Item> AddOptionalWhere(IQueryable<Item> query)
-	    {
-	        if (_userContext.UserID.HasValue)
-	        {
-	            return query.Where(x => x.UserID.HasValue == false || x.UserID.Value == _userContext.UserID.Value);
-	        }
+        protected override IQueryable<Item> AddOptionalWhere(IQueryable<Item> query)
+        {
+            if (_userContext.UserID.HasValue)
+            {
+                return query.Where(x => x.UserID.HasValue == false || x.UserID.Value == _userContext.UserID.Value);
+            }
 
-	        return base.AddOptionalWhere(query);
-	    }
+            return base.AddOptionalWhere(query);
+        }
 
         protected override IQueryable<Item> AddPrimaryWhere(IQueryable<Item> query, int key)
-	    {
-	        return query.Where(m => m.ItemID == key);
-	    }
-	    protected override IQueryable<Item> AddPrimaryWhereIn(IQueryable<Item> query, IEnumerable<int> key)
-	    {
-	        return query.Where(m => key.Contains(m.ItemID));
-	    }
+        {
+            return query.Where(m => m.ItemID == key);
+        }
+
+        protected override IQueryable<Item> AddPrimaryWhereIn(IQueryable<Item> query, IEnumerable<int> key)
+        {
+            return query.Where(m => key.Contains(m.ItemID));
+        }
 
         #region CRUD
+
         #endregion
 
         public async Task<IEnumerable<Item>> Get(string typeidstring)
-	    {
-	        return await QueryWithOptional.
-	            Where(m => m.ClassName == typeidstring).
-	            Include(d => d.ItemProperties).
-	            ToListAsync();
-	    }
+        {
+            return await QueryWithOptional.Where(m => m.ClassName == typeidstring).Include(d => d.ItemProperties)
+                .ToListAsync();
+        }
 
-	    protected override void AssignValuesGraph(Item trackingentity, Item values)
-	    {
-	        base.AssignValuesGraph(trackingentity, values);
-	        Sync<ItemProperty>(
-	            trackingentity.ItemProperties,
-	           values.ItemProperties,
-	            (x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
+        protected override void AssignValuesGraph(Item trackingentity, Item values)
+        {
+            base.AssignValuesGraph(trackingentity, values);
+            Sync<ItemProperty>(
+                               trackingentity.ItemProperties,
+                               values.ItemProperties,
+                               (x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
         }
 
 /*
@@ -118,5 +118,5 @@ namespace CNCLib.Repository
 			}
 		}
 */
-	}
+    }
 }

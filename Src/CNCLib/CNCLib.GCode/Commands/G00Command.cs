@@ -19,28 +19,27 @@
 
 namespace CNCLib.GCode.Commands
 {
-	[IsGCommand("G0,G00")]
+    [IsGCommand("G0,G00")]
     public class G00Command : Command
     {
+        #region crt + factory
 
-		#region crt + factory
-
-		public G00Command()
-		{
+        public G00Command()
+        {
             UseWithoutPrefix = true;
-            PositionValid = true;
-			Movetype = MoveType.Fast;
-			Code = "G0";
-		}
+            PositionValid    = true;
+            Movetype         = MoveType.Fast;
+            Code             = "G0";
+        }
 
-		#endregion
+        #endregion
 
-		#region GCode
+        #region GCode
 
-		#endregion
+        #endregion
 
-		#region Draw
+        #region Draw
 
-		#endregion
-	}
+        #endregion
+    }
 }

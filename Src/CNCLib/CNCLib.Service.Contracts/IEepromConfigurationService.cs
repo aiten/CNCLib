@@ -23,7 +23,7 @@ using CNCLib.Logic.Contracts.DTO;
 namespace CNCLib.Service.Contracts
 {
     public interface IEepromConfigurationService : IDisposable
-	{
-		Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param);
-	}
+    {
+        Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param);
+    }
 }

@@ -36,16 +36,16 @@ namespace CNCLib.GCode.GUI.ViewModels
 {
     public class LoadOptionViewModel : BaseViewModel
     {
-		#region crt
+        #region crt
 
-		public LoadOptionViewModel(IFactory<ILoadOptionsService> loadOptionsService, IMapper mapper)
-		{
+        public LoadOptionViewModel(IFactory<ILoadOptionsService> loadOptionsService, IMapper mapper)
+        {
             _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
-            _mapper = mapper ?? throw new ArgumentNullException();
+            _mapper             = mapper ?? throw new ArgumentNullException();
         }
 
         readonly IFactory<ILoadOptionsService> _loadOptionsService;
-        readonly IMapper _mapper;
+        readonly IMapper                       _mapper;
 
         public override async Task Loaded()
         {
@@ -53,7 +53,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             RaisePropertyChanged(nameof(LoadOptionsValue));
             using (var scope = _loadOptionsService.Create())
             {
-                await LoadAllSettings(LoadOptionsValue.Id,scope);
+                await LoadAllSettings(LoadOptionsValue.Id, scope);
             }
         }
 
@@ -72,13 +72,15 @@ namespace CNCLib.GCode.GUI.ViewModels
         #region Properties
 
         private LoadOptions _loadOptions = new LoadOptions();
+
         public LoadOptions LoadOptionsValue
         {
             get => _loadOptions;
-            set { SetProperty(() => _loadOptions == value, () => _loadOptions = value);  }
+            set { SetProperty(() => _loadOptions == value, () => _loadOptions = value); }
         }
 
         private ObservableCollection<LoadOptions> _allLoadOptions = new ObservableCollection<LoadOptions>();
+
         public ObservableCollection<LoadOptions> AllLoadOptions
         {
             get => _allLoadOptions;
@@ -86,17 +88,22 @@ namespace CNCLib.GCode.GUI.ViewModels
         }
 
         private LoadOptions _selectedloadOptions = null;
+
         public LoadOptions SelectedLoadOption
         {
             get => _selectedloadOptions;
-            set {
-                    SetProperty(() => _selectedloadOptions == value, () => _selectedloadOptions = value);
-                    if (value != null && _allSettingsLoaded)
-                        LoadOptionsValue = _mapper.Map<LoadOptions>(value);
+            set
+            {
+                SetProperty(() => _selectedloadOptions == value, () => _selectedloadOptions = value);
+                if (value != null && _allSettingsLoaded)
+                {
+                    LoadOptionsValue = _mapper.Map<LoadOptions>(value);
                 }
+            }
         }
 
         private bool _useAzure = false;
+
         public bool UseAzure
         {
             get => _useAzure;
@@ -104,6 +111,7 @@ namespace CNCLib.GCode.GUI.ViewModels
         }
 
         private bool _busy = false;
+
         public bool Busy
         {
             get => _busy;
@@ -131,6 +139,7 @@ namespace CNCLib.GCode.GUI.ViewModels
                     }
                 }
             }
+
             _allSettingsLoaded = true;
         }
 
@@ -138,12 +147,14 @@ namespace CNCLib.GCode.GUI.ViewModels
         {
             return Busy == false;
         }
+
         public bool CanSave()
         {
-            List<String> ignorelist = new List<string>(); 
+            List<String> ignorelist = new List<string>();
             if (LoadOptionsValue.AutoScale)
             {
-                ignorelist.AddRange(new string[] {
+                ignorelist.AddRange(new string[]
+                {
                     "ScaleX",
                     "ScaleY",
                     "OffsetX",
@@ -151,34 +162,40 @@ namespace CNCLib.GCode.GUI.ViewModels
                 });
             }
 
-            if (Can() && SelectedLoadOption != null && !Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(SelectedLoadOption, LoadOptionsValue, ignorelist.ToArray()))
+            if (Can() && SelectedLoadOption != null &&
+                !Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(SelectedLoadOption,
+                                                                                     LoadOptionsValue,
+                                                                                     ignorelist.ToArray()))
             {
                 return true;
             }
+
             return false;
         }
 
         void BrowseFileName()
         {
-            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.FileName,false);
+            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.FileName, false);
             if (filename != null)
             {
                 LoadOptionsValue.FileName = filename;
                 RaisePropertyChanged(nameof(LoadOptionsValue));
             }
         }
+
         void BrowseGCodeFileName()
         {
-            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.GCodeWriteToFileName,false);
+            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.GCodeWriteToFileName, false);
             if (filename != null)
             {
                 LoadOptionsValue.GCodeWriteToFileName = filename;
                 RaisePropertyChanged(nameof(LoadOptionsValue));
             }
         }
+
         void BrowseImageFileName()
         {
-            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.ImageWriteToFileName,false);
+            string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.ImageWriteToFileName, false);
             if (filename != null)
             {
                 LoadOptionsValue.ImageWriteToFileName = filename;
@@ -202,19 +219,20 @@ namespace CNCLib.GCode.GUI.ViewModels
                 using (var scope = _loadOptionsService.Create())
                 {
                     await scope.Instance.Update(opt);
-                    await LoadAllSettings(LoadOptionsValue.Id,scope);
+                    await LoadAllSettings(LoadOptionsValue.Id, scope);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox?.Invoke("Save Options failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox?.Invoke("Save Options failed: " + ex.Message, "Error", MessageBoxButton.OK,
+                                   MessageBoxImage.Error);
             }
             finally
             {
                 Busy = false;
             }
-
         }
+
         async Task SaveAsSettings()
         {
             try
@@ -224,18 +242,18 @@ namespace CNCLib.GCode.GUI.ViewModels
                 using (var scope = _loadOptionsService.Create())
                 {
                     int id = await scope.Instance.Add(opt);
-                    await LoadAllSettings(id,scope);
+                    await LoadAllSettings(id, scope);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox?.Invoke("SaveAs Options failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox?.Invoke("SaveAs Options failed: " + ex.Message, "Error", MessageBoxButton.OK,
+                                   MessageBoxImage.Error);
             }
             finally
             {
                 Busy = false;
             }
-
         }
 
         async Task DeleteSettings()
@@ -252,7 +270,8 @@ namespace CNCLib.GCode.GUI.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox?.Invoke("Delete Options failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox?.Invoke("Delete Options failed: " + ex.Message, "Error", MessageBoxButton.OK,
+                                   MessageBoxImage.Error);
             }
             finally
             {
@@ -271,24 +290,25 @@ namespace CNCLib.GCode.GUI.ViewModels
                     using (var sr = new StreamReader(filename))
                     {
                         var serializer = new XmlSerializer(typeof(Logic.Contracts.DTO.LoadOptions));
-                        var opt = (Logic.Contracts.DTO.LoadOptions)serializer.Deserialize(sr);
+                        var opt        = (Logic.Contracts.DTO.LoadOptions) serializer.Deserialize(sr);
                         sr.Close();
 
-                        if (_allLoadOptions.FirstOrDefault(o => o.SettingName == opt.SettingName)!=null)
+                        if (_allLoadOptions.FirstOrDefault(o => o.SettingName == opt.SettingName) != null)
                         {
-                            opt.SettingName = $"{opt.SettingName}#imported#{DateTime.Now}"; 
+                            opt.SettingName = $"{opt.SettingName}#imported#{DateTime.Now}";
                         }
 
                         using (var scope = _loadOptionsService.Create())
                         {
                             int id = await scope.Instance.Add(opt);
-                            await LoadAllSettings(id,scope);
+                            await LoadAllSettings(id, scope);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox?.Invoke("ImportSettings failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox?.Invoke("ImportSettings failed: " + ex.Message, "Error", MessageBoxButton.OK,
+                                       MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -296,6 +316,7 @@ namespace CNCLib.GCode.GUI.ViewModels
                 }
             }
         }
+
         void ExportSettings()
         {
             string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.SettingName + @".xml", true);
@@ -327,24 +348,60 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         #region Commands
 
-        public ICommand BrowseFileNameCommand => new DelegateCommand(BrowseFileName, Can);
+        public ICommand BrowseFileNameCommand      => new DelegateCommand(BrowseFileName,      Can);
         public ICommand BrowseGCodeFileNameCommand => new DelegateCommand(BrowseGCodeFileName, Can);
         public ICommand BrowseImageFileNameCommand => new DelegateCommand(BrowseImageFileName, Can);
-        public ICommand SetSameDPICommand => new DelegateCommand(() => { LoadOptionsValue.ImageDPIY = LoadOptionsValue.ImageDPIX; RaiseLoadOptionsChanged(); }, Can);
-        public ICommand SetSameScaleToCommand => new DelegateCommand(() => { LoadOptionsValue.ScaleY = LoadOptionsValue.ScaleX; RaiseLoadOptionsChanged(); }, Can);
-        public ICommand SetSameOfsCommand => new DelegateCommand(() => { LoadOptionsValue.OfsY = LoadOptionsValue.OfsX; RaiseLoadOptionsChanged(); }, Can);
-        public ICommand SetSameDotSizeCommand => new DelegateCommand(() => { LoadOptionsValue.DotSizeY = LoadOptionsValue.DotSizeX; RaiseLoadOptionsChanged(); }, Can);
-        public ICommand SetSameDotDistCommand => new DelegateCommand(() => { LoadOptionsValue.DotDistY = LoadOptionsValue.DotDistX; RaiseLoadOptionsChanged(); }, Can);
+
+        public ICommand SetSameDPICommand => new DelegateCommand(() =>
+        {
+            LoadOptionsValue.ImageDPIY = LoadOptionsValue.ImageDPIX;
+            RaiseLoadOptionsChanged();
+        }, Can);
+
+        public ICommand SetSameScaleToCommand => new DelegateCommand(() =>
+        {
+            LoadOptionsValue.ScaleY = LoadOptionsValue.ScaleX;
+            RaiseLoadOptionsChanged();
+        }, Can);
+
+        public ICommand SetSameOfsCommand => new DelegateCommand(() =>
+        {
+            LoadOptionsValue.OfsY = LoadOptionsValue.OfsX;
+            RaiseLoadOptionsChanged();
+        }, Can);
+
+        public ICommand SetSameDotSizeCommand => new DelegateCommand(() =>
+        {
+            LoadOptionsValue.DotSizeY = LoadOptionsValue.DotSizeX;
+            RaiseLoadOptionsChanged();
+        }, Can);
+
+        public ICommand SetSameDotDistCommand => new DelegateCommand(() =>
+        {
+            LoadOptionsValue.DotDistY = LoadOptionsValue.DotDistX;
+            RaiseLoadOptionsChanged();
+        }, Can);
+
         public ICommand SaveSettingCommand => new DelegateCommand(async () => await SaveSettings(), CanSave)
             .ObservesProperty(() => Busy);
-        public ICommand SaveAsSettingCommand => new DelegateCommand(async () => await SaveAsSettings(), () => Can() && !string.IsNullOrEmpty(LoadOptionsValue.SettingName))
+
+        public ICommand SaveAsSettingCommand => new DelegateCommand(async () => await SaveAsSettings(),
+                                                                    () =>
+                                                                        Can() &&
+                                                                        !string.IsNullOrEmpty(LoadOptionsValue
+                                                                                                  .SettingName))
             .ObservesProperty(() => Busy);
-        public ICommand DeleteSettingCommand => new DelegateCommand(async () => await DeleteSettings(), () => Can() && SelectedLoadOption != null)
-            .ObservesProperty(() => Busy);
+
+        public ICommand DeleteSettingCommand =>
+            new DelegateCommand(async () => await DeleteSettings(), () => Can() && SelectedLoadOption != null)
+                .ObservesProperty(() => Busy);
+
         public ICommand ImportSettingCommand => new DelegateCommand(async () => await ImportSettings(), Can)
             .ObservesProperty(() => Busy);
-        public ICommand ExportSettingCommand => new DelegateCommand(ExportSettings, () => Can() && SelectedLoadOption != null)
-            .ObservesProperty(() => Busy);
+
+        public ICommand ExportSettingCommand =>
+            new DelegateCommand(ExportSettings, () => Can() && SelectedLoadOption != null)
+                .ObservesProperty(() => Busy);
 
         #endregion
     }

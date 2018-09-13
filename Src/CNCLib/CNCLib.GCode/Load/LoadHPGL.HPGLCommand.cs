@@ -30,21 +30,25 @@ namespace CNCLib.GCode.Load
                 PenDown,
                 Other
             };
+
             public HPGLCommandType CommandType { get; set; } = HPGLCommandType.Other;
-            public bool IsPenCommand => CommandType == HPGLCommandType.PenUp || CommandType == HPGLCommandType.PenDown;
-            public bool IsPenDownCommand => CommandType == HPGLCommandType.PenDown;
-            public bool IsPointToValid => IsPenCommand;
-            public Point3D PointFrom { get; set; }
-            public Point3D PointTo { get; set; }
-            public double? LineAngle { get; set; }
+
+            public bool IsPenCommand =>
+                CommandType == HPGLCommandType.PenUp || CommandType == HPGLCommandType.PenDown;
+
+            public bool    IsPenDownCommand      => CommandType == HPGLCommandType.PenDown;
+            public bool    IsPointToValid        => IsPenCommand;
+            public Point3D PointFrom             { get; set; }
+            public Point3D PointTo               { get; set; }
+            public double? LineAngle             { get; set; }
             public double? DiffLineAngleWithNext { get; set; }
-            public string CommandString { get; set; }
+            public string  CommandString         { get; set; }
 
             public void ResetCalculated()
             {
-                PointFrom = null;
+                PointFrom             = null;
                 DiffLineAngleWithNext = null;
-                LineAngle = null;
+                LineAngle             = null;
             }
         }
     }

@@ -30,51 +30,51 @@ namespace CNCLib.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     public class LoadOptionsController : Controller
-	{
-	    readonly ILoadOptionsService _service;
-	    private ICNCLibUserContext _usercontext;
+    {
+        readonly ILoadOptionsService _service;
+        private  ICNCLibUserContext  _usercontext;
 
         public LoadOptionsController(ILoadOptionsService service, ICNCLibUserContext usercontext)
         {
-            _service = service ?? throw new ArgumentNullException();
+            _service     = service ?? throw new ArgumentNullException();
             _usercontext = usercontext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext)_usercontext).InitFromController(this);
+            ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
 
         #region default REST
 
         [HttpGet]
-	    public async Task<ActionResult<IEnumerable<LoadOptions>>> Get()
-	    {
-	        return await this.GetAll(_service);
-	    }
+        public async Task<ActionResult<IEnumerable<LoadOptions>>> Get()
+        {
+            return await this.GetAll(_service);
+        }
 
-	    [HttpGet("{id:int}")]
-	    public async Task<ActionResult> Get(int id)
-	    {
-	        return await this.Get<LoadOptions, int>(_service, id);
-	    }
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> Get(int id)
+        {
+            return await this.Get<LoadOptions, int>(_service, id);
+        }
 
-	    [HttpPost]
-	    public async Task<ActionResult> Add([FromBody] LoadOptions value)
-	    {
-	        return await this.Add<LoadOptions, int>(_service, value);
-	    }
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] LoadOptions value)
+        {
+            return await this.Add<LoadOptions, int>(_service, value);
+        }
 
-	    [HttpPut]
-	    [Route("{id:int}")]
-	    public async Task<ActionResult> Update(int id, [FromBody]LoadOptions value)
-	    {
-	        return await this.Update<LoadOptions, int>(_service, id, value.Id, value);
-	    }
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] LoadOptions value)
+        {
+            return await this.Update<LoadOptions, int>(_service, id, value.Id, value);
+        }
 
-	    [HttpDelete]
-	    [Route("{id:int}")]
-	    public async Task<ActionResult> Delete(int id)
-	    {
-	        return await this.Delete<LoadOptions, int>(_service, id);
-	    }
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            return await this.Delete<LoadOptions, int>(_service, id);
+        }
 
-	    #endregion
-	}
+        #endregion
+    }
 }

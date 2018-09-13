@@ -21,16 +21,19 @@ using System.Threading.Tasks;
 
 namespace Framework.Contracts.Service
 {
-	public interface ICRUDService<T, TKey> : IGetService<T,TKey> where T : class
+    public interface ICRUDService<T, TKey> : IGetService<T, TKey> where T : class
     {
-		Task<TKey> Add(T value);
-		Task Update(T value);
-		Task Delete(T value);
+        Task<TKey> Add(T value);
+
+        Task Update(T value);
+
+        Task Delete(T    value);
         Task Delete(TKey key);
 
         Task<IEnumerable<TKey>> Add(IEnumerable<T> values);
-        Task Update(IEnumerable<T> values);
-        Task Delete(IEnumerable<T> values);
+
+        Task Update(IEnumerable<T>    values);
+        Task Delete(IEnumerable<T>    values);
         Task Delete(IEnumerable<TKey> keys);
     }
 }

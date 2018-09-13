@@ -23,46 +23,89 @@ using Framework.Arduino.SerialCommunication;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
 {
-	public class RotateViewModel : DetailViewModel
-	{
-		public RotateViewModel(IManualControlViewModel vm)
-			: base(vm)
-		{
-		}
+    public class RotateViewModel : DetailViewModel
+    {
+        public RotateViewModel(IManualControlViewModel vm)
+            : base(vm) { }
 
-		#region Properties
+        #region Properties
 
+        #endregion
 
-		#endregion
+        #region Commands / CanCommands
 
-		#region Commands / CanCommands
+        public bool CanSendRotate()
+        {
+            return CanSend() && Global.Instance.Machine.Rotate;
+        }
 
-		public bool CanSendRotate()
-		{
-			return CanSend() && Global.Instance.Machine.Rotate;
-		}
+        public void SendG69()
+        {
+            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g69")); });
+        }
 
-		public void SendG69()							{ RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g69")); }); }
-		public void SendG68X0Y0R90()					{ RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68 x0y0r90")); }); }
-		public void SendG68X0Y0R270()                   { RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68 x0y0r270")); }); }
-		public void SendG6810()							{ RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.10")); }); }
-		public void SendG6811()							{ RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.11")); }); }
-		public void SendG6813()							{ RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.13 j0k0")); }); }
-		public void SendG6814()							{ RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.14 i0")); }); }
+        public void SendG68X0Y0R90()
+        {
+            RunAndUpdate(() =>
+            {
+                Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68 x0y0r90"));
+            });
+        }
 
-		#endregion
+        public void SendG68X0Y0R270()
+        {
+            RunAndUpdate(() =>
+            {
+                Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper
+                                                             .PrepareCommand("g68 x0y0r270"));
+            });
+        }
 
-		#region ICommand
-		public ICommand SendG69Command			=> new DelegateCommand(SendG69, CanSendRotate);
-		public ICommand SendG68X0Y0R90Command	=> new DelegateCommand(SendG68X0Y0R90, CanSendRotate);
-		public ICommand SendG68X0Y0R270Command	=> new DelegateCommand(SendG68X0Y0R270, CanSendRotate);
+        public void SendG6810()
+        {
+            RunAndUpdate(() =>
+            {
+                Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.10"));
+            });
+        }
 
-		public ICommand SendG6810Command		=> new DelegateCommand(SendG6810, CanSendRotate);
-		public ICommand SendG6811Command		=> new DelegateCommand(SendG6811, CanSendRotate);
-		public ICommand SendG6813Command		=> new DelegateCommand(SendG6813, CanSendRotate);
-		public ICommand SendG6814Command		=> new DelegateCommand(SendG6814, CanSendRotate);
+        public void SendG6811()
+        {
+            RunAndUpdate(() =>
+            {
+                Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.11"));
+            });
+        }
 
+        public void SendG6813()
+        {
+            RunAndUpdate(() =>
+            {
+                Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.13 j0k0"));
+            });
+        }
 
-		#endregion
-	}
+        public void SendG6814()
+        {
+            RunAndUpdate(() =>
+            {
+                Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.14 i0"));
+            });
+        }
+
+        #endregion
+
+        #region ICommand
+
+        public ICommand SendG69Command         => new DelegateCommand(SendG69,         CanSendRotate);
+        public ICommand SendG68X0Y0R90Command  => new DelegateCommand(SendG68X0Y0R90,  CanSendRotate);
+        public ICommand SendG68X0Y0R270Command => new DelegateCommand(SendG68X0Y0R270, CanSendRotate);
+
+        public ICommand SendG6810Command => new DelegateCommand(SendG6810, CanSendRotate);
+        public ICommand SendG6811Command => new DelegateCommand(SendG6811, CanSendRotate);
+        public ICommand SendG6813Command => new DelegateCommand(SendG6813, CanSendRotate);
+        public ICommand SendG6814Command => new DelegateCommand(SendG6814, CanSendRotate);
+
+        #endregion
+    }
 }
