@@ -26,22 +26,21 @@ import { Routes, RouterModule } from '@angular/router';
 export const machinecontrolURL = '/machinecontrol';
 
 export const machineControlRoutes =
-[
-  {
-    path: 'machinecontrol',
-    component: MachineControlComponent,
-    children:
     [
-      { path: '', component: MachineControlOverviewComponent },
-      { path: ':id', component: MachineControlDetailComponent },
-    ]
-  }
-];
+        {
+            path: 'machinecontrol', component: MachineControlComponent,
+            children:
+            [
+                { path: '', component: MachineControlOverviewComponent },
+                { path: ':id', component: MachineControlDetailComponent },
+            ]
+        }
+    ];
 
 export const machineControlRoutingComponents =
-[
-  MachineControlComponent,
-  MachineControlOverviewComponent,
-  MachineControlDetailComponent,
-  MachineControlConnectComponent
-];
+    [
+        MachineControlComponent,
+        MachineControlOverviewComponent,
+        MachineControlDetailComponent,
+        MachineControlConnectComponent
+    ];

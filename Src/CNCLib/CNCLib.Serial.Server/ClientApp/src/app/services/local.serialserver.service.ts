@@ -26,93 +26,96 @@ import { CNCLibServerInfo } from '../models/CNCLib.Server.Info';
 import { QueueSendCommand } from '../models/queue.send.command';
 
 @Injectable()
-export class LocalSerialServerService implements SerialServerService {
-  constructor(
-    private http: HttpClient,
-    @Inject('BASE_URL') public baseUrl: string,
-  ) {
-  }
+export class LocalSerialServerService implements SerialServerService 
+{
+    constructor(
+        private http: HttpClient,
+        @Inject('BASE_URL') public baseUrl: string,
+    ) 
+    {
+    }
 
-  getInfo(): Promise<CNCLibServerInfo> {
-    return this.http.get<CNCLibServerInfo>(this.baseUrl + 'api/Info').toPromise()
-      .catch(this.handleErrorPromise);
-  }
+    getInfo(): Promise<CNCLibServerInfo>
+    {
+        return this.http.get<CNCLibServerInfo>(this.baseUrl + 'api/Info').toPromise()
+            .catch(this.handleErrorPromise);
+    }
 
-  getPorts(): Promise<SerialPortDefinition[]> {
-    return this.http.get<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort').toPromise()
-      .catch(this.handleErrorPromise);
-  }
+    getPorts(): Promise<SerialPortDefinition[]> 
+    {
+        return this.http.get<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort').toPromise()
+            .catch(this.handleErrorPromise);
+    }
 
-  getPort(id: number): Promise<SerialPortDefinition> {
-    return this.http.get<SerialPortDefinition>(this.baseUrl + 'api/SerialPort/' + id).toPromise();
-  }
+    getPort(id: number): Promise<SerialPortDefinition>
+    {
+        return this.http.get<SerialPortDefinition>(this.baseUrl + 'api/SerialPort/' + id).toPromise();
+    }
 
-  refresh(): Promise<SerialPortDefinition[]> {
-    return this.http.post<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort/refresh', "x").toPromise()
-      .catch(this.handleErrorPromise);
-  }
+    refresh(): Promise<SerialPortDefinition[]> 
+    {
+        return this.http.post<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort/refresh',"x").toPromise()
+            .catch(this.handleErrorPromise);
+    }
 
-  connect(serialportid: number, baudrate: number, dtrIsReset: boolean, resetonConnect: boolean): Promise<void> {
-    return this.http
-      .post<void>(this.baseUrl +
-        'api/SerialPort/' +
-        serialportid +
-        '/connect/?baudrate=' +
-        baudrate +
-        '&dtrIsReset=' +
-        (dtrIsReset ? 'true' : 'false') +
-        '&resetOnConnect=' +
-        (resetonConnect ? 'true' : 'false'),
-        "x").toPromise()
-      .catch(this.handleErrorPromise);
-  }
+    connect(serialportid: number, baudrate: number, dtrIsReset: boolean, resetonConnect: boolean): Promise<void>
+    {
+        return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/connect/?baudrate=' + baudrate + '&dtrIsReset=' + (dtrIsReset ? 'true' : 'false') + '&resetOnConnect=' + (resetonConnect ? 'true' : 'false'), "x").toPromise()
+            .catch(this.handleErrorPromise);
+    }
 
-  disconnect(serialportid: number): Promise<void> {
-    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/disconnect', "x").toPromise()
-      .catch(this.handleErrorPromise);
-  }
+    disconnect(serialportid: number): Promise<void>
+    {
+        return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/disconnect', "x").toPromise()
+            .catch(this.handleErrorPromise);
+    }
 
-  abort(serialportid: number): Promise<void> {
-    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/abort', "x").toPromise()
-      .catch(this.handleErrorPromise);
-  }
+    abort(serialportid: number): Promise<void>
+    {
+        return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/abort', "x").toPromise()
+            .catch(this.handleErrorPromise);
+    }
 
-  resume(serialportid: number): Promise<void> {
-    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/resume', "x").toPromise()
-      .catch(this.handleErrorPromise);
-  }
+    resume(serialportid: number): Promise<void>
+    {
+        return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/resume', "x").toPromise()
+            .catch(this.handleErrorPromise);
+    }
 
-  getHistory(serialportid: number): Promise<SerialCommand[]> {
-    return this.http.get<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/history').toPromise()
-      .catch(this.handleErrorPromise);
-  }
+    getHistory(serialportid: number): Promise<SerialCommand[]> 
+    {
+        return this.http.get<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/history').toPromise()
+            .catch(this.handleErrorPromise);
+    }
 
-  clearHistory(serialportid: number): Promise<void> {
-    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/history/clear', "x").toPromise()
-      .catch(this.handleErrorPromise);
-  }
+    clearHistory(serialportid: number): Promise<void>
+    {
+        return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/history/clear', "x").toPromise()
+            .catch(this.handleErrorPromise);
+    }
 
-  queueCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]> {
-    let cmd = new QueueSendCommand();
-    cmd.Commands = command;
-    cmd.TimeOut = timeout;
+    queueCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>
+    {
+        let cmd = new QueueSendCommand();
+        cmd.Commands = command;
+        cmd.TimeOut = timeout;
 
-    return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/queue', cmd).toPromise()
-      .catch(this.handleErrorPromise);
-  }
+        return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/queue', cmd).toPromise()
+            .catch(this.handleErrorPromise);
+    }
 
-  sendWhileOkCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]> {
-    let cmd = new QueueSendCommand();
-    cmd.Commands = command;
-    cmd.TimeOut = timeout;
+    sendWhileOkCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]> {
+        let cmd = new QueueSendCommand();
+        cmd.Commands = command;
+        cmd.TimeOut = timeout;
 
-    return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/sendWhileOk', cmd)
-      .toPromise()
-      .catch(this.handleErrorPromise);
-  }
+        return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/sendWhileOk', cmd).toPromise()
+            .catch(this.handleErrorPromise);
+    }
 
-  private handleErrorPromise(error: Response | any) {
-    console.error(error.message || error);
-    return Promise.reject(error.message || error);
-  }
+    private handleErrorPromise(error: Response | any)
+    {
+        console.error(error.message || error);
+        return Promise.reject(error.message || error);
+    }	
 }

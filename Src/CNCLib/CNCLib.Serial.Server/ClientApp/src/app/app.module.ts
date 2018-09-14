@@ -49,16 +49,15 @@ import { LocalSerialServerService } from './services/local.serialserver.service'
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'home', component: HomeComponent },
-      { path: 'serialports', component: SerialPortsComponent },
-      ...machineControlRoutes,
+      	{ path: '', component: HomeComponent, pathMatch: 'full' },
+        { path: 'home', component: HomeComponent },
+        { path: 'serialports', component: SerialPortsComponent },
+        ...machineControlRoutes,
     ])
   ],
   providers: [
-    { provide: SerialServerService, useClass: LocalSerialServerService },
+        { provide: SerialServerService, useClass: LocalSerialServerService },
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }
