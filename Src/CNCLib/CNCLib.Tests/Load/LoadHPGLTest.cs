@@ -72,13 +72,7 @@ namespace CNCLib.Tests.Load
 
             string[] gcode =
             {
-                "G1 F499",
-                "M107",
-                "G0 X0 Y0",
-                "M106 S255",
-                "G1 X10 Y10",
-                "M107",
-                "M5" // ShutdownCommands
+                "G1 F499", "M107", "G0 X0 Y0", "M106 S255", "G1 X10 Y10", "M107", "M5" // ShutdownCommands
             };
 
             var list = load.Commands.Where(e => IsGCommand(e));
@@ -104,12 +98,7 @@ namespace CNCLib.Tests.Load
 
             string[] gcode =
             {
-                "G1 F500",
-                "G0 Z#1",
-                "G0 X0 Y0",
-                "G1 Z#2",
-                "G1 X10 Y10",
-                "G0 Z#1"
+                "G1 F500", "G0 Z#1", "G0 X0 Y0", "G1 Z#2", "G1 X10 Y10", "G0 Z#1"
             };
 
             var list = load.Commands.Where(e => e is G00Command || e is G01Command);
@@ -139,13 +128,7 @@ namespace CNCLib.Tests.Load
 
             string[] gcode =
             {
-                "G1 F499",
-                "G0 Z1.23",
-                "G0 X0 Y0",
-                "G1 Z0.12 F123",
-                "G1 X10 Y10 F499",
-                "G1 X20 Y10",
-                "G0 Z1.23"
+                "G1 F499", "G0 Z1.23", "G0 X0 Y0", "G1 Z0.12 F123", "G1 X10 Y10 F499", "G1 X20 Y10", "G0 Z1.23"
             };
 
             var list = load.Commands.Where(e => e is G00Command || e is G01Command);
@@ -155,8 +138,7 @@ namespace CNCLib.Tests.Load
 
         static bool IsGCommand(Command e)
         {
-            return e is G00Command || e is G01Command || e is M3Command || e is M4Command || e is M5Command ||
-                   e is M106Command || e is M107Command || e is MxxCommand;
+            return e is G00Command || e is G01Command || e is M3Command || e is M4Command || e is M5Command || e is M106Command || e is M107Command || e is MxxCommand;
         }
 
         [TestMethod]
@@ -177,18 +159,7 @@ namespace CNCLib.Tests.Load
 
             string[] gcode =
             {
-                "G1 F499",
-                "M107",
-                "G0 X0 Y0",
-                "M106 S255",
-                "G1 X10 Y10",
-                "G1 X20 Y10",
-                "M107",
-                "G0 X20 Y20",
-                "M106",
-                "G1 X30 Y30",
-                "M107",
-                "M5" // ShutdownCommands
+                "G1 F499", "M107", "G0 X0 Y0", "M106 S255", "G1 X10 Y10", "G1 X20 Y10", "M107", "G0 X20 Y20", "M106", "G1 X30 Y30", "M107", "M5" // ShutdownCommands
             };
 
             var list = load.Commands.Where(e => IsGCommand(e));
@@ -215,18 +186,7 @@ namespace CNCLib.Tests.Load
 
             string[] gcode =
             {
-                "G1 F499",
-                "M107",
-                "G0 X0 Y0",
-                "M106 S255",
-                "G1 X10 Y10",
-                "G1 X20 Y10",
-                "M107",
-                "G0 X20 Y20",
-                "M106",
-                "G1 X30 Y30",
-                "M107",
-                "M5" // ShutdownCommands
+                "G1 F499", "M107", "G0 X0 Y0", "M106 S255", "G1 X10 Y10", "G1 X20 Y10", "M107", "G0 X20 Y20", "M106", "G1 X30 Y30", "M107", "M5" // ShutdownCommands
             };
 
             var list = load.Commands.Where(e => IsGCommand(e));
@@ -245,12 +205,8 @@ namespace CNCLib.Tests.Load
                 MoveSpeed   = 499,
                 LaserSize   = 0,
                 ConvertType = LoadOptions.ConvertTypeEnum.InvertLineSequence,
-                FileContent = Encoding.ASCII.GetBytes("IN;" +
-                                                      "PU0,0;PD0,400,400,400,400,0,0,0;" +
-                                                      "PU50,50;PD350,50,350,350,50,350,50,50;" +
-                                                      "PU100,100;PD300,100,300,300,100,300,100,100;" +
-                                                      "PU150,150;PD250,150,250,250,150,250,150,150;" +
-                                                      "PU;SP0")
+                FileContent = Encoding.ASCII.GetBytes("IN;" + "PU0,0;PD0,400,400,400,400,0,0,0;" + "PU50,50;PD350,50,350,350,50,350,50,50;" + "PU100,100;PD300,100,300,300,100,300,100,100;" +
+                                                      "PU150,150;PD250,150,250,250,150,250,150,150;" + "PU;SP0")
             };
 
             var load = LoadBase.Create(loadinfo);
@@ -259,37 +215,9 @@ namespace CNCLib.Tests.Load
 
             string[] gcode =
             {
-                "G1 F499",
-                "M107",
-                "G0 X3.75 Y3.75",
-                "M106 S255",
-                "G1 X6.25 Y3.75",
-                "G1 X6.25 Y6.25",
-                "G1 X3.75 Y6.25",
-                "G1 X3.75 Y3.75",
-                "M107",
-                "G0 X2.5 Y2.5",
-                "M106",
-                "G1 X7.5 Y2.5",
-                "G1 X7.5 Y7.5",
-                "G1 X2.5 Y7.5",
-                "G1 X2.5 Y2.5",
-                "M107",
-                "G0 X1.25 Y1.25",
-                "M106",
-                "G1 X8.75 Y1.25",
-                "G1 X8.75 Y8.75",
-                "G1 X1.25 Y8.75",
-                "G1 X1.25 Y1.25",
-                "M107",
-                "G0 X0 Y0",
-                "M106",
-                "G1 X0 Y10",
-                "G1 X10 Y10",
-                "G1 X10 Y0",
-                "G1 X0 Y0",
-                "M107",
-                "M5"
+                "G1 F499", "M107", "G0 X3.75 Y3.75", "M106 S255", "G1 X6.25 Y3.75", "G1 X6.25 Y6.25", "G1 X3.75 Y6.25", "G1 X3.75 Y3.75", "M107", "G0 X2.5 Y2.5", "M106", "G1 X7.5 Y2.5",
+                "G1 X7.5 Y7.5", "G1 X2.5 Y7.5", "G1 X2.5 Y2.5", "M107", "G0 X1.25 Y1.25", "M106", "G1 X8.75 Y1.25", "G1 X8.75 Y8.75", "G1 X1.25 Y8.75", "G1 X1.25 Y1.25", "M107", "G0 X0 Y0", "M106",
+                "G1 X0 Y10", "G1 X10 Y10", "G1 X10 Y0", "G1 X0 Y0", "M107", "M5"
             };
 
             var list = load.Commands.Where(e => IsGCommand(e));

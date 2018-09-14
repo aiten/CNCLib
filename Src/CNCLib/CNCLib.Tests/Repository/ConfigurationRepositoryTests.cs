@@ -27,9 +27,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-    public class
-        ConfigurationRepositoryTests : CRUDRepositoryTests<Configuration, ConfigurationPrimary, IConfigurationRepository
-        >
+    public class ConfigurationRepositoryTests : CRUDRepositoryTests<Configuration, ConfigurationPrimary, IConfigurationRepository>
     {
         #region crt and overrides
 
@@ -39,8 +37,7 @@ namespace CNCLib.Tests.Repository
             RepositoryTests.ClassInit(testContext);
         }
 
-        protected override CRUDTestContext<Configuration, ConfigurationPrimary, IConfigurationRepository>
-            CreateCRUDTestContext()
+        protected override CRUDTestContext<Configuration, ConfigurationPrimary, IConfigurationRepository> CreateCRUDTestContext()
         {
             return Dependency.Resolve<CRUDTestContext<Configuration, ConfigurationPrimary, IConfigurationRepository>>();
         }
@@ -101,29 +98,23 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task AddUpdateDeleteTest()
         {
-            await AddUpdateDelete(
-                                  () => CreateConfiguration("TestGroup", "TestName"),
-                                  (entity) => entity.Value = "testValueModified");
+            await AddUpdateDelete(() => CreateConfiguration("TestGroup", "TestName"), (entity) => entity.Value = "testValueModified");
         }
 
         [TestMethod]
         public async Task AddUpdateDeleteBulkTest()
         {
-            await AddUpdateDeleteBulk(
-                                      () => new[]
-                                      {
-                                          CreateConfiguration(@"AddUpdateDeleteBulk", "Test1"),
-                                          CreateConfiguration(@"AddUpdateDeleteBulk", "Test2"),
-                                          CreateConfiguration(@"AddUpdateDeleteBulk", "Test3")
-                                      },
-                                      (entities) =>
-                                      {
-                                          int i = 0;
-                                          foreach (var entity in entities)
-                                          {
-                                              entity.Value = $"DummyNameValue{i++}";
-                                          }
-                                      });
+            await AddUpdateDeleteBulk(() => new[]
+            {
+                CreateConfiguration(@"AddUpdateDeleteBulk", "Test1"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test2"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test3")
+            }, (entities) =>
+            {
+                int i = 0;
+                foreach (var entity in entities)
+                {
+                    entity.Value = $"DummyNameValue{i++}";
+                }
+            });
         }
 
         [TestMethod]
@@ -141,15 +132,13 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task StoreTest()
         {
-            await Store(
-                        () => new Configuration()
-                        {
-                            Group = "TestGroup",
-                            Name  = "TestName",
-                            Type  = "string",
-                            Value = "TestValue"
-                        },
-                        (entity) => entity.Value = "testValueModified");
+            await Store(() => new Configuration()
+            {
+                Group = "TestGroup",
+                Name  = "TestName",
+                Type  = "string",
+                Value = "TestValue"
+            }, (entity) => entity.Value = "testValueModified");
         }
 
         private static Configuration CreateConfiguration(string group, string name)

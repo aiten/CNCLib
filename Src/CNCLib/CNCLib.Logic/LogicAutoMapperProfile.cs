@@ -25,8 +25,7 @@ namespace CNCLib.Logic
         public LogicAutoMapperProfile()
         {
             CreateMap<Repository.Contracts.Entities.Machine, Contracts.DTO.Machine>().ReverseMap();
-            CreateMap<Repository.Contracts.Entities.MachineInitCommand, Contracts.DTO.MachineInitCommand>()
-                .ReverseMap();
+            CreateMap<Repository.Contracts.Entities.MachineInitCommand, Contracts.DTO.MachineInitCommand>().ReverseMap();
             CreateMap<Repository.Contracts.Entities.MachineCommand, Contracts.DTO.MachineCommand>().ReverseMap();
 
             CreateMap<Repository.Contracts.Entities.Item, Contracts.DTO.Item>().ReverseMap();

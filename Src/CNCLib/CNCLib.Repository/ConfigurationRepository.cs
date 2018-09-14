@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,24 +27,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class ConfigurationRepository : CRUDRepositoryBase<CNCLibContext, Configuration, ConfigurationPrimary>,
-                                           IConfigurationRepository
+    public class ConfigurationRepository : CRUDRepositoryBase<CNCLibContext, Configuration, ConfigurationPrimary>, IConfigurationRepository
     {
-        public ConfigurationRepository(CNCLibContext dbcontext) : base(dbcontext) { }
+        public ConfigurationRepository(CNCLibContext dbcontext) : base(dbcontext)
+        {
+        }
 
         protected override IQueryable<Configuration> AddInclude(IQueryable<Configuration> query)
         {
             return query;
         }
 
-        protected override IQueryable<Configuration> AddPrimaryWhere(IQueryable<Configuration> query,
-                                                                     ConfigurationPrimary      key)
+        protected override IQueryable<Configuration> AddPrimaryWhere(IQueryable<Configuration> query, ConfigurationPrimary key)
         {
             return query.Where(c => c.Group == key.Group && c.Name == key.Name);
         }
 
-        protected override IQueryable<Configuration> AddPrimaryWhereIn(IQueryable<Configuration>         query,
-                                                                       IEnumerable<ConfigurationPrimary> keys)
+        protected override IQueryable<Configuration> AddPrimaryWhereIn(IQueryable<Configuration> query, IEnumerable<ConfigurationPrimary> keys)
         {
             var predicate = PredicateBuilder.False<Configuration>();
 
@@ -66,8 +64,7 @@ namespace CNCLib.Repository
         {
             // search und update machine
 
-            var cInDb = await TrackingQuery.Where(c => c.Group == configuration.Group && c.Name == configuration.Name)
-                .FirstOrDefaultAsync();
+            var cInDb = await TrackingQuery.Where(c => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
 
             if (cInDb == default(Configuration))
             {

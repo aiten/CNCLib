@@ -84,9 +84,7 @@ namespace CNCLib.GCode.Load
                     return false;
                 }
 
-                bool isRectangleEmbedded =
-                    MaxX >= to.MaxX && MinX <= to.MinX &&
-                    MaxY >= to.MaxY && MinY <= to.MinY;
+                bool isRectangleEmbedded = MaxX >= to.MaxX && MinX <= to.MinX && MaxY >= to.MaxY && MinY <= to.MinY;
                 if (!isRectangleEmbedded)
                 {
                     return false;

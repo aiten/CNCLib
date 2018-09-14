@@ -19,9 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using Framework.Contracts.Logic;
 using Framework.Contracts.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,8 +29,7 @@ namespace Framework.Web
     {
         public static string GetCurrentUri(this Controller controller)
         {
-            return
-                $"{controller.Request.Scheme}://{controller.Request.Host}{controller.Request.Path}{controller.Request.QueryString}";
+            return $"{controller.Request.Scheme}://{controller.Request.Host}{controller.Request.Path}{controller.Request.QueryString}";
         }
 
         public static string GetCurrentUri(this Controller controller, string removetraining)
@@ -68,10 +65,7 @@ namespace Framework.Web
 
         #region Get/GetAll
 
-        public static async Task<ActionResult> Get<T, TKey>(this Controller controller, IGetService<T, TKey> manager,
-                                                            TKey            id)
-            where T : class
-            where TKey : IComparable
+        public static async Task<ActionResult> Get<T, TKey>(this Controller controller, IGetService<T, TKey> manager, TKey id) where T : class where TKey : IComparable
         {
             try
             {
@@ -89,9 +83,7 @@ namespace Framework.Web
             }
         }
 
-        public static async Task<ActionResult> GetAll<T, TKey>(this Controller controller, IGetService<T, TKey> manager)
-            where T : class
-            where TKey : IComparable
+        public static async Task<ActionResult> GetAll<T, TKey>(this Controller controller, IGetService<T, TKey> manager) where T : class where TKey : IComparable
         {
             try
             {
@@ -113,10 +105,7 @@ namespace Framework.Web
 
         #region Add
 
-        public static async Task<ActionResult> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager,
-                                                            T               value)
-            where T : class
-            where TKey : IComparable
+        public static async Task<ActionResult> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, T value) where T : class where TKey : IComparable
         {
             if (!controller.ModelState.IsValid || value == null)
             {
@@ -135,10 +124,7 @@ namespace Framework.Web
             }
         }
 
-        public static async Task<ActionResult> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager,
-                                                            IEnumerable<T>  values)
-            where T : class
-            where TKey : IComparable
+        public static async Task<ActionResult> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values) where T : class where TKey : IComparable
         {
             if (!controller.ModelState.IsValid || values == null)
             {
@@ -162,11 +148,8 @@ namespace Framework.Web
 
         #region Update
 
-        public static async Task<ActionResult> Update<T, TKey>(this Controller       controller,
-                                                               ICRUDService<T, TKey> manager,     TKey idFromUri,
-                                                               TKey                  idFromValue, T    value)
-            where T : class
-            where TKey : IComparable
+        public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, TKey idFromUri, TKey idFromValue, T value)
+            where T : class where TKey : IComparable
         {
             if (!controller.ModelState.IsValid || value == null)
             {
@@ -189,10 +172,7 @@ namespace Framework.Web
             }
         }
 
-        public static async Task<ActionResult> Update<T, TKey>(this Controller       controller,
-                                                               ICRUDService<T, TKey> manager, IEnumerable<T> values)
-            where T : class
-            where TKey : IComparable
+        public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values) where T : class where TKey : IComparable
         {
             if (!controller.ModelState.IsValid || values == null)
             {
@@ -214,10 +194,7 @@ namespace Framework.Web
 
         #region Delete
 
-        public static async Task<ActionResult> Delete<T, TKey>(this Controller       controller,
-                                                               ICRUDService<T, TKey> manager, TKey id)
-            where T : class
-            where TKey : IComparable
+        public static async Task<ActionResult> Delete<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, TKey id) where T : class where TKey : IComparable
         {
             try
             {
@@ -230,10 +207,7 @@ namespace Framework.Web
             }
         }
 
-        public static async Task<ActionResult> Delete<T, TKey>(this Controller       controller,
-                                                               ICRUDService<T, TKey> manager, IEnumerable<TKey> ids)
-            where T : class
-            where TKey : IComparable
+        public static async Task<ActionResult> Delete<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<TKey> ids) where T : class where TKey : IComparable
         {
             try
             {

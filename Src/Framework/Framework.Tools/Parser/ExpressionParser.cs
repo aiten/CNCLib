@@ -17,7 +17,6 @@
 ////////////////////////////////////////////////////////
 
 using System;
-using System.IO;
 using System.Text;
 using Framework.Tools.Helpers;
 
@@ -38,7 +37,9 @@ namespace Framework.Tools.Parser
         private string MESSAGE_EXPR_FRACTORIAL          = "factorial";
 
 
-        public ExpressionParser(CommandStream reader) : base(reader) { }
+        public ExpressionParser(CommandStream reader) : base(reader)
+        {
+        }
 
         protected char LeftParenthesis  { get; set; } = '(';
         protected char RightParenthesis { get; set; } = ')';
@@ -428,7 +429,9 @@ namespace Framework.Tools.Parser
             return false;
         }
 
-        protected virtual void AssignVariable(string var_name, double value) { }
+        protected virtual void AssignVariable(string var_name, double value)
+        {
+        }
 
 
         ETokenType GetTokenType()
@@ -486,8 +489,7 @@ namespace Framework.Tools.Parser
             double     ans        = ParseLevel3();
             ETokenType operatorSy = GetTokenType();
 
-            while (operatorSy == ETokenType.AndSy || operatorSy == ETokenType.OrSy ||
-                   operatorSy == ETokenType.BitShiftLeftSy || operatorSy == ETokenType.BitShiftRightSy)
+            while (operatorSy == ETokenType.AndSy || operatorSy == ETokenType.OrSy || operatorSy == ETokenType.BitShiftLeftSy || operatorSy == ETokenType.BitShiftRightSy)
             {
                 GetNextToken();
                 ans        = EvalOperator(operatorSy, ans, ParseLevel3());
@@ -505,8 +507,7 @@ namespace Framework.Tools.Parser
             double     ans        = ParseLevel4();
             ETokenType operatorSy = GetTokenType();
 
-            while (operatorSy == ETokenType.EqualSy || operatorSy == ETokenType.UnEqualSy ||
-                   operatorSy == ETokenType.LessSy || operatorSy == ETokenType.LessEqualSy ||
+            while (operatorSy == ETokenType.EqualSy || operatorSy == ETokenType.UnEqualSy || operatorSy == ETokenType.LessSy || operatorSy == ETokenType.LessEqualSy ||
                    operatorSy == ETokenType.GreaterSy || operatorSy == ETokenType.GreaterEqualSy)
             {
                 GetNextToken();
@@ -543,8 +544,7 @@ namespace Framework.Tools.Parser
             double     ans        = ParseLevel6();
             ETokenType operatorSy = GetTokenType();
 
-            while (operatorSy == ETokenType.MultiplySy || operatorSy == ETokenType.DivideSy ||
-                   operatorSy == ETokenType.ModuloSy || operatorSy == ETokenType.XOrSy)
+            while (operatorSy == ETokenType.MultiplySy || operatorSy == ETokenType.DivideSy || operatorSy == ETokenType.ModuloSy || operatorSy == ETokenType.XOrSy)
             {
                 GetNextToken();
                 ans        = EvalOperator(operatorSy, ans, ParseLevel6());

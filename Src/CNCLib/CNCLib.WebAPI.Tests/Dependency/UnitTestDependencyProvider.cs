@@ -23,8 +23,7 @@ namespace CNCLib.WebAPI.Tests.Dependency
 {
     public sealed class UnitTestDependencyProvider : IDependencyProvider
     {
-        private readonly Lazy<IDependencyContainer> _dependencyContainer =
-            new Lazy<IDependencyContainer>(() => new MockingDependencyContainer());
+        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new MockingDependencyContainer());
 
         public IDependencyContainer Container => _dependencyContainer.Value;
     }

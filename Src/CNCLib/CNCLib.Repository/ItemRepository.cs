@@ -69,17 +69,13 @@ namespace CNCLib.Repository
 
         public async Task<IEnumerable<Item>> Get(string typeidstring)
         {
-            return await QueryWithOptional.Where(m => m.ClassName == typeidstring).Include(d => d.ItemProperties)
-                .ToListAsync();
+            return await QueryWithOptional.Where(m => m.ClassName == typeidstring).Include(d => d.ItemProperties).ToListAsync();
         }
 
         protected override void AssignValuesGraph(Item trackingentity, Item values)
         {
             base.AssignValuesGraph(trackingentity, values);
-            Sync<ItemProperty>(
-                               trackingentity.ItemProperties,
-                               values.ItemProperties,
-                               (x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
+            Sync<ItemProperty>(trackingentity.ItemProperties, values.ItemProperties, (x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
         }
 
 /*

@@ -30,10 +30,7 @@ namespace Framework.Wpf.View
         {
             if (vm.MessageBox == null)
             {
-                vm.MessageBox = (messageBoxText, caption, button, icon) =>
-                {
-                    return MessageBox.Show(messageBoxText, caption, button, icon);
-                };
+                vm.MessageBox = (messageBoxText, caption, button, icon) => { return MessageBox.Show(messageBoxText, caption, button, icon); };
             }
 
             if (vm.BrowseFileNameFunc == null)

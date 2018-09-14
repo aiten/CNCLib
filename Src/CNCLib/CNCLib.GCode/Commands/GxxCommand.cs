@@ -44,8 +44,7 @@ namespace CNCLib.GCode.Commands
 
         public override void Draw(IOutputCommand output, CommandState state, object param)
         {
-            if (state.UseLaser == false && string.IsNullOrEmpty(GCodeAdd) == false &&
-                GCodeAdd.StartsWith("; LaserOnCommand"))
+            if (state.UseLaser == false && string.IsNullOrEmpty(GCodeAdd) == false && GCodeAdd.StartsWith("; LaserOnCommand"))
             {
                 state.UseLaser = true;
             }

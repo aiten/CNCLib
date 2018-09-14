@@ -66,15 +66,8 @@ namespace CNCLib.Repository
         protected override void AssignValuesGraph(Machine trackingentity, Machine values)
         {
             base.AssignValuesGraph(trackingentity, values);
-            Sync<MachineCommand>(
-                                 trackingentity.MachineCommands,
-                                 values.MachineCommands,
-                                 (x, y) => x.MachineCommandID > 0 && x.MachineCommandID == y.MachineCommandID);
-            Sync<MachineInitCommand>(
-                                     trackingentity.MachineInitCommands,
-                                     values.MachineInitCommands,
-                                     (x, y) => x.MachineInitCommandID > 0 &&
-                                               x.MachineInitCommandID == y.MachineInitCommandID);
+            Sync<MachineCommand>(trackingentity.MachineCommands, values.MachineCommands, (x,             y) => x.MachineCommandID > 0 && x.MachineCommandID == y.MachineCommandID);
+            Sync<MachineInitCommand>(trackingentity.MachineInitCommands, values.MachineInitCommands, (x, y) => x.MachineInitCommandID > 0 && x.MachineInitCommandID == y.MachineInitCommandID);
         }
 
         public async Task<IEnumerable<MachineCommand>> GetMachineCommands(int machineID)

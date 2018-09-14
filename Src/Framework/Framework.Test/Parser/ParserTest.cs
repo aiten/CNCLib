@@ -21,7 +21,6 @@ using FluentAssertions;
 using Framework.Tools.Helpers;
 using Framework.Tools.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Remotion.Linq.Parsing.Structure;
 
 namespace Framework.Test.Parser
 {

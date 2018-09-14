@@ -44,7 +44,9 @@ namespace Framework.Test
             InitializeCoreDependencies();
         }
 
-        protected virtual void InitializeCoreDependencies() { }
+        protected virtual void InitializeCoreDependencies()
+        {
+        }
 
         /// <summary>
         /// Resets the dependency container.

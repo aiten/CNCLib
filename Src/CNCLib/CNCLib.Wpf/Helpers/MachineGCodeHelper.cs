@@ -46,16 +46,10 @@ namespace CNCLib.Wpf.Helpers
             string probdistup = machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
             string probfeed   = machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
 
-            var result =
-                await
-                    Global.Instance.Com.Current
-                        .SendCommandAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90",
-                                          DefaultProbeTimeout);
-            if (result?.LastOrDefault()?.ReplyType
-                    .HasFlag(Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == false)
+            var result = await Global.Instance.Com.Current.SendCommandAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90", DefaultProbeTimeout);
+            if (result?.LastOrDefault()?.ReplyType.HasFlag(Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == false)
             {
-                Global.Instance.Com.Current.QueueCommand("g92 " + axisname +
-                                                         (-probesize).ToString(CultureInfo.InvariantCulture));
+                Global.Instance.Com.Current.QueueCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
                 Global.Instance.Com.Current.QueueCommand("g91 g0" + axisname + probdistup + " g90");
                 return true;
             }
@@ -85,8 +79,7 @@ namespace CNCLib.Wpf.Helpers
                     string[] assign = line.Split('=');
 
                     int slot;
-                    if (assign.Length == 2 && assign[0].StartsWith("$") &&
-                        int.TryParse(assign[0].TrimStart('$'), out slot))
+                    if (assign.Length == 2 && assign[0].StartsWith("$") && int.TryParse(assign[0].TrimStart('$'), out slot))
                     {
                         uint   slotvalue;
                         string valuestr = assign[1];
@@ -178,8 +171,7 @@ namespace CNCLib.Wpf.Helpers
                 string[] infos = s.Split(':');
                 int      axis;
 
-                if (infos.Length > 1 && string.Compare(infos[0], ";probe", true) == 0 &&
-                    -1 != (axis = GCodeHelper.AxisNameToIndex(infos[1])))
+                if (infos.Length > 1 && string.Compare(infos[0], ";probe", true) == 0 && -1 != (axis = GCodeHelper.AxisNameToIndex(infos[1])))
                 {
                     if (false == await SendProbeCommandAsync(machine, axis))
                     {
@@ -194,10 +186,8 @@ namespace CNCLib.Wpf.Helpers
                 {
                     if (s.TrimEnd().EndsWith("?"))
                     {
-                        var result =
-                            await Global.Instance.Com.Current.SendCommandAsync(s.TrimEnd().TrimEnd('?'), DefaulTimeout);
-                        if (result?.LastOrDefault()?.ReplyType
-                                .HasFlag(Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == false)
+                        var result = await Global.Instance.Com.Current.SendCommandAsync(s.TrimEnd().TrimEnd('?'), DefaulTimeout);
+                        if (result?.LastOrDefault()?.ReplyType.HasFlag(Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == false)
                         {
                             return;
                         }

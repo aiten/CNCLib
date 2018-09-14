@@ -141,11 +141,9 @@ namespace Framework.Test.Drawing
             var ptSrc  = new Point3D(1.0, 2.0, 3.0);
             var ptDest = r.Rotate(ptSrc);
 
-            Math.Round((ptDest.X ?? throw new ArgumentException()), 10).Should()
-                .Be(Math.Round(-2.2200846792814621, 10));
-            Math.Round((ptDest.Y ?? throw new ArgumentException()), 10).Should()
-                .Be(Math.Round(-1.8213672050459184, 10));
-            Math.Round((ptDest.Z ?? throw new ArgumentException()), 10).Should().Be(Math.Round(2.3987174742355446, 10));
+            Math.Round((ptDest.X ?? throw new ArgumentException()), 10).Should().Be(Math.Round(-2.2200846792814621, 10));
+            Math.Round((ptDest.Y ?? throw new ArgumentException()), 10).Should().Be(Math.Round(-1.8213672050459184, 10));
+            Math.Round((ptDest.Z ?? throw new ArgumentException()), 10).Should().Be(Math.Round(2.3987174742355446,  10));
         }
 
         [TestMethod]

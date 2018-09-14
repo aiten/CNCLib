@@ -16,8 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Windows;
 using Framework.Tools.Dependency;
 using Framework.Wpf.ViewModels;
 using MahApps.Metro.Controls;

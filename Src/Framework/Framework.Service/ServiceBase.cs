@@ -20,5 +20,7 @@ using Framework.Tools;
 
 namespace Framework.Service
 {
-    public class ServiceBase : DisposeWrapper { }
+    public class ServiceBase : DisposeWrapper
+    {
+    }
 }

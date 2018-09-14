@@ -22,7 +22,6 @@ using CNCLib.Logic;
 using Framework.Tools.Dependency;
 using CNCLib.Wpf;
 using CNCLib.GCode.GUI;
-using CNCLib.Logic.Manager;
 
 namespace CNCLib.Tests
 {

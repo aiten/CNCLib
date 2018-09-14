@@ -23,11 +23,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Framework.Repository
 {
-    public abstract class CRUDRepositoryBase<TDbContext, TEntity, TKey> : GetRepositoryBase<TDbContext, TEntity, TKey>
-        where TDbContext : DbContext
-        where TEntity : class
+    public abstract class CRUDRepositoryBase<TDbContext, TEntity, TKey> : GetRepositoryBase<TDbContext, TEntity, TKey> where TDbContext : DbContext where TEntity : class
     {
-        protected CRUDRepositoryBase(TDbContext dbContext) : base(dbContext) { }
+        protected CRUDRepositoryBase(TDbContext dbContext) : base(dbContext)
+        {
+        }
 
         #region CRUD
 

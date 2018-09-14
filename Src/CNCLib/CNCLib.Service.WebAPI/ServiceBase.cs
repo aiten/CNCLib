@@ -26,8 +26,7 @@ namespace CNCLib.Service.WebAPI
 {
     public abstract class ServiceBase : DisposeWrapper
     {
-        protected readonly string _webserverurl =
-            ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibwebapi.azurewebsites.net";
+        protected readonly string _webserverurl = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibwebapi.azurewebsites.net";
 
         protected abstract string Api { get; }
 

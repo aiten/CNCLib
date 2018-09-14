@@ -47,8 +47,7 @@ namespace Framework.Tools
 
         public static void KeepAlive()
         {
-            OsSetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_SYSTEM_REQUIRED |
-                                      EXECUTION_STATE.ES_CONTINUOUS);
+            OsSetThreadExecutionState(EXECUTION_STATE.ES_DISPLAY_REQUIRED | EXECUTION_STATE.ES_SYSTEM_REQUIRED | EXECUTION_STATE.ES_CONTINUOUS);
         }
 
         public static void AllowIdle()

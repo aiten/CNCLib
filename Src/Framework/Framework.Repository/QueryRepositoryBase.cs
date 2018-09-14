@@ -21,11 +21,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Framework.Repository
 {
-    public abstract class QueryRepositoryBase<TDbContext, TEntity> : RepositoryBase<TDbContext>
-        where TDbContext : DbContext
-        where TEntity : class
+    public abstract class QueryRepositoryBase<TDbContext, TEntity> : RepositoryBase<TDbContext> where TDbContext : DbContext where TEntity : class
     {
-        protected QueryRepositoryBase(TDbContext dbContext) : base(dbContext) { }
+        protected QueryRepositoryBase(TDbContext dbContext) : base(dbContext)
+        {
+        }
 
         /// <summary>
         /// Returns an IQueryable of the default entity of the DA with AsNoTracking set. This should be the default.

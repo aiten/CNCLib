@@ -17,7 +17,6 @@
 */
 
 using System;
-using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Threading;
 using CNCLib.Serial.Server.Hubs;
@@ -31,7 +30,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
@@ -52,20 +50,11 @@ namespace CNCLib.Serial.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("AllowAll", p =>
-                                                              p.AllowAnyOrigin()
-                                                                  .AllowCredentials()
-                                                                  .AllowAnyMethod()
-                                                                  .AllowAnyHeader()));
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowCredentials().AllowAnyMethod().AllowAnyHeader()));
 
             services.AddSignalR((HubOptions hu) => hu.EnableDetailedErrors = true);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options =>
-                                                                                                           options
-                                                                                                                   .SerializerSettings
-                                                                                                                   .ContractResolver
-                                                                                                               = new
-                                                                                                                   DefaultContractResolver());
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
@@ -76,14 +65,11 @@ namespace CNCLib.Serial.Server
 
             Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
 
-            Dependency.Container.RegisterTypesIncludingInternalsScoped(
-                                                                       typeof(Framework.Arduino.SerialCommunication.
-                                                                           Serial).Assembly);
+            Dependency.Container.RegisterTypesIncludingInternalsScoped(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                Dependency.Container.RegisterTypeScoped<Framework.Arduino.SerialCommunication.ISerialPort,
-                    SerialPortLib>();
+                Dependency.Container.RegisterTypeScoped<Framework.Arduino.SerialCommunication.ISerialPort, SerialPortLib>();
             }
         }
 
@@ -121,12 +107,7 @@ namespace CNCLib.Serial.Server
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1"); });
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                                name: "default",
-                                template: "{instance}/{action=Index}/{id?}");
-            });
+            app.UseMvc(routes => { routes.MapRoute(name: "default", template: "{instance}/{action=Index}/{id?}"); });
 
             app.UseSpa(spa =>
             {

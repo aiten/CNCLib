@@ -49,105 +49,29 @@ namespace CNCLib.Wpf.Controls
 
         #region Commands
 
-        public static readonly DependencyProperty LeftCommandProperty = DependencyProperty.Register(
-                                                                                                    "Left",
-                                                                                                    typeof(ICommand),
-                                                                                                    typeof(
-                                                                                                        MoveUserControl
-                                                                                                    ),
-                                                                                                    new
-                                                                                                        PropertyMetadata(default
-                                                                                                                         (ICommand
-                                                                                                                         )));
+        public static readonly DependencyProperty LeftCommandProperty = DependencyProperty.Register("Left", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand Left
-        {
-            get => (ICommand) GetValue(LeftCommandProperty);
-            set => SetValue(LeftCommandProperty, value);
-        }
+        public ICommand Left { get => (ICommand) GetValue(LeftCommandProperty); set => SetValue(LeftCommandProperty, value); }
 
-        public static readonly DependencyProperty RightCommandProperty = DependencyProperty.Register(
-                                                                                                     "Right",
-                                                                                                     typeof(ICommand),
-                                                                                                     typeof(
-                                                                                                         MoveUserControl
-                                                                                                     ),
-                                                                                                     new
-                                                                                                         PropertyMetadata(default
-                                                                                                                          (ICommand
-                                                                                                                          )));
+        public static readonly DependencyProperty RightCommandProperty = DependencyProperty.Register("Right", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand Right
-        {
-            get => (ICommand) GetValue(RightCommandProperty);
-            set => SetValue(RightCommandProperty, value);
-        }
+        public ICommand Right { get => (ICommand) GetValue(RightCommandProperty); set => SetValue(RightCommandProperty, value); }
 
-        public static readonly DependencyProperty UpCommandProperty = DependencyProperty.Register(
-                                                                                                  "Up",
-                                                                                                  typeof(ICommand),
-                                                                                                  typeof(MoveUserControl
-                                                                                                  ),
-                                                                                                  new
-                                                                                                      PropertyMetadata(default
-                                                                                                                       (ICommand
-                                                                                                                       )));
+        public static readonly DependencyProperty UpCommandProperty = DependencyProperty.Register("Up", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand Up
-        {
-            get => (ICommand) GetValue(UpCommandProperty);
-            set => SetValue(UpCommandProperty, value);
-        }
+        public ICommand Up { get => (ICommand) GetValue(UpCommandProperty); set => SetValue(UpCommandProperty, value); }
 
-        public static readonly DependencyProperty DownCommandProperty = DependencyProperty.Register(
-                                                                                                    "Down",
-                                                                                                    typeof(ICommand),
-                                                                                                    typeof(
-                                                                                                        MoveUserControl
-                                                                                                    ),
-                                                                                                    new
-                                                                                                        PropertyMetadata(default
-                                                                                                                         (ICommand
-                                                                                                                         )));
+        public static readonly DependencyProperty DownCommandProperty = DependencyProperty.Register("Down", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand Down
-        {
-            get => (ICommand) GetValue(DownCommandProperty);
-            set => SetValue(DownCommandProperty, value);
-        }
+        public ICommand Down { get => (ICommand) GetValue(DownCommandProperty); set => SetValue(DownCommandProperty, value); }
 
-        public static readonly DependencyProperty ZUpCommandProperty = DependencyProperty.Register(
-                                                                                                   "ZUp",
-                                                                                                   typeof(ICommand),
-                                                                                                   typeof(
-                                                                                                       MoveUserControl),
-                                                                                                   new
-                                                                                                       PropertyMetadata(default
-                                                                                                                        (ICommand
-                                                                                                                        )));
+        public static readonly DependencyProperty ZUpCommandProperty = DependencyProperty.Register("ZUp", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand ZUp
-        {
-            get => (ICommand) GetValue(ZUpCommandProperty);
-            set => SetValue(ZUpCommandProperty, value);
-        }
+        public ICommand ZUp { get => (ICommand) GetValue(ZUpCommandProperty); set => SetValue(ZUpCommandProperty, value); }
 
-        public static readonly DependencyProperty ZDownCommandProperty = DependencyProperty.Register(
-                                                                                                     "ZDown",
-                                                                                                     typeof(ICommand),
-                                                                                                     typeof(
-                                                                                                         MoveUserControl
-                                                                                                     ),
-                                                                                                     new
-                                                                                                         PropertyMetadata(default
-                                                                                                                          (ICommand
-                                                                                                                          )));
+        public static readonly DependencyProperty ZDownCommandProperty = DependencyProperty.Register("ZDown", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand ZDown
-        {
-            get => (ICommand) GetValue(ZDownCommandProperty);
-            set => SetValue(ZDownCommandProperty, value);
-        }
+        public ICommand ZDown { get => (ICommand) GetValue(ZDownCommandProperty); set => SetValue(ZDownCommandProperty, value); }
 
         #endregion
 
@@ -429,7 +353,8 @@ namespace CNCLib.Wpf.Controls
                 case MoveDistance.Distance2:  return MoveDistance2;
                 case MoveDistance.Distance1:  return MoveDistance1;
                 default:
-                case MoveDistance.Distance3: return MoveDistance3;
+                case MoveDistance.Distance3:
+                    return MoveDistance3;
             }
         }
 

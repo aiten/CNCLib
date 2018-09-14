@@ -26,9 +26,13 @@ namespace CNCLib.GCode.Parser
     {
         string MESSAGE_GCODE_CommentNestingError = "Comment nesting error";
 
-        public GCodeParser(CommandStream reader) : base(reader) { }
+        public GCodeParser(CommandStream reader) : base(reader)
+        {
+        }
 
-        public override void Parse() { }
+        public override void Parse()
+        {
+        }
 
 
         public static bool IsCommentStart(char ch)

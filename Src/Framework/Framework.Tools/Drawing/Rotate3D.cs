@@ -82,11 +82,7 @@ namespace Framework.Tools.Drawing
             double fy = y;
             double fz = z;
 
-            return new Point3D(
-                               fx * _vect[0, 0] + fy * _vect[0, 1] + fz * _vect[0, 2],
-                               fx * _vect[1, 0] + fy * _vect[1, 1] + fz * _vect[1, 2],
-                               fx * _vect[2, 0] + fy * _vect[2, 1] + fz * _vect[2, 2]
-                              );
+            return new Point3D(fx * _vect[0, 0] + fy * _vect[0, 1] + fz * _vect[0, 2], fx * _vect[1, 0] + fy * _vect[1, 1] + fz * _vect[1, 2], fx * _vect[2, 0] + fy * _vect[2, 1] + fz * _vect[2, 2]);
         }
 
         public Point3D Rotate(Point3D pt)

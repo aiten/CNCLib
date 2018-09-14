@@ -16,12 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Framework.Arduino.SerialCommunication;
-using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CNCLib.Serial.Client
@@ -49,12 +46,12 @@ namespace CNCLib.Serial.Client
 
         public async Task<HubConnection> Start()
         {
-            _connection = new HubConnectionBuilder()
-                .WithUrl(WebServerUrl)
+            _connection = new HubConnectionBuilder().WithUrl(WebServerUrl)
 //            .WithConsoleLogger()
 //            .WithMessagePackProtocol()
                 //           .WithTransport(TransportType.All)
-                .Build();
+                .
+                Build();
 
             await _connection.StartAsync();
             _cts = new CancellationTokenSource();

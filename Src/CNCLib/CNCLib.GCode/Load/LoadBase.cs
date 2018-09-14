@@ -252,8 +252,7 @@ namespace CNCLib.GCode.Load
 
         protected bool HaveLaserOnOffCommand()
         {
-            return string.IsNullOrEmpty(LoadOptions.LaserOnCommand) == false ||
-                   string.IsNullOrEmpty(LoadOptions.LaserOffCommand) == false;
+            return string.IsNullOrEmpty(LoadOptions.LaserOnCommand) == false || string.IsNullOrEmpty(LoadOptions.LaserOffCommand) == false;
         }
 
         protected void LaserOn()

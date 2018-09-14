@@ -22,13 +22,11 @@ using CNCLib.Logic.Manager;
 using CNCLib.Repository.Context;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
-using CNCLib.WebAPI.Controllers;
 using Framework.Contracts.Repository;
 using Framework.Contracts.Shared;
 using Framework.Repository;
 using Framework.Tools;
 using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
 using Framework.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -51,13 +49,9 @@ namespace CNCLib.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
-                                                              .AllowAnyMethod()
-                                                              .AllowAnyHeader()));
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
-            services.AddMvc().AddJsonOptions(options =>
-                                                 options.SerializerSettings.ContractResolver =
-                                                     new DefaultContractResolver());
+            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" }); });
@@ -70,10 +64,7 @@ namespace CNCLib.WebAPI
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<Repository.Context.CNCLibContext>>();
             Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
 
-            Dependency.Container.RegisterTypesIncludingInternals(
-                                                                 typeof(MachineService).Assembly,
-                                                                 typeof(Repository.MachineRepository).Assembly,
-                                                                 typeof(Logic.Client.DynItemController).Assembly,
+            Dependency.Container.RegisterTypesIncludingInternals(typeof(MachineService).Assembly, typeof(Repository.MachineRepository).Assembly, typeof(Logic.Client.DynItemController).Assembly,
                                                                  typeof(MachineManager).Assembly);
 
 
@@ -86,8 +77,7 @@ namespace CNCLib.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            string sqlconnectstring =
-                @"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = Herbert; Password = Edith1234;";
+            string sqlconnectstring = @"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = Herbert; Password = Edith1234;";
 
             // Open Database here
 

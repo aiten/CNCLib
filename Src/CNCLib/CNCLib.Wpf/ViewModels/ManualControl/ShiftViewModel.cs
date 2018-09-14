@@ -24,8 +24,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class ShiftViewModel : DetailViewModel
     {
-        public ShiftViewModel(IManualControlViewModel vm)
-            : base(vm) { }
+        public ShiftViewModel(IManualControlViewModel vm) : base(vm)
+        {
+        }
 
         #region Properties
 

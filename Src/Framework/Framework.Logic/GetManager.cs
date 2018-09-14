@@ -18,12 +18,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Framework.Contracts.Repository;
-using Framework.Tools;
 
 namespace Framework.Logic
 {

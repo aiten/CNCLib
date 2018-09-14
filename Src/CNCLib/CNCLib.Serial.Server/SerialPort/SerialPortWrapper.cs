@@ -16,15 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Threading;
-using System.Threading.Tasks;
-using CNCLib.Serial.Server.Controllers;
-using CNCLib.Serial.Server.Hubs;
 using Framework.Arduino.SerialCommunication;
 using Framework.Tools.Dependency;
 using Framework.Tools.Helpers;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Serial.Server.SerialPort
 {
@@ -38,27 +33,16 @@ namespace CNCLib.Serial.Server.SerialPort
             {
                 Serial = Dependency.Container.Resolve<ISerial>();
 
-                Serial.CommandQueueEmpty += async (sender, e) =>
-                {
-                    await Startup.Hub.Clients.All.SendAsync("queueEmpty", Id);
-                };
+                Serial.CommandQueueEmpty += async (sender, e) => { await Startup.Hub.Clients.All.SendAsync("queueEmpty", Id); };
                 Serial.CommandQueueChanged += (sender, e) =>
                 {
                     _delayExecuteQueueChanged.Execute(1000, () => _pendingLastQueueLength = e.QueueLenght,
-                                                      () =>
-                                                      {
-                                                          Startup.Hub.Clients.All.SendAsync("queueChanged", Id,
-                                                                                            _pendingLastQueueLength);
-                                                      });
+                                                      () => { Startup.Hub.Clients.All.SendAsync("queueChanged", Id, _pendingLastQueueLength); });
                 };
                 Serial.CommandSending += (sender, e) =>
                 {
                     _delayExecuteSendingCommand.Execute(1000, () => _pendingSendingCommandSeqId = e.SeqId,
-                                                        () =>
-                                                        {
-                                                            Startup.Hub.Clients.All.SendAsync("sendingCommand", Id,
-                                                                                              _pendingSendingCommandSeqId);
-                                                        });
+                                                        () => { Startup.Hub.Clients.All.SendAsync("sendingCommand", Id, _pendingSendingCommandSeqId); });
                 };
             }
         }

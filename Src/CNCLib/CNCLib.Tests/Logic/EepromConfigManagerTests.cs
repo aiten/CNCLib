@@ -18,7 +18,6 @@
 
 using System;
 using System.Threading.Tasks;
-using CNCLib.Logic;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Manager;
 using FluentAssertions;
@@ -37,9 +36,7 @@ namespace CNCLib.Tests.Logic
             var rep = Substitute.For<TInterface>();
             Dependency.Container.RegisterInstance(rep);
 
-            Dependency.Container
-                .RegisterType<Framework.Contracts.Repository.IUnitOfWork,
-                    UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
+            Dependency.Container.RegisterType<Framework.Contracts.Repository.IUnitOfWork, UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
             return rep;
         }
 

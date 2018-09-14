@@ -35,8 +35,7 @@ namespace Framework.Tools.Helpers
             return AreObjectsPropertiesEqual(objectA, objectB, new HashSet<object>(), ignoreList);
         }
 
-        private static bool AreObjectsPropertiesEqual(object          objectA, object objectB, HashSet<object> compared,
-                                                      params string[] ignoreList)
+        private static bool AreObjectsPropertiesEqual(object objectA, object objectB, HashSet<object> compared, params string[] ignoreList)
         {
             // check for circles e.g. ClassA => ICollection<ClassB> => classA
             if (compared.Contains(objectA)) // 
@@ -52,9 +51,7 @@ namespace Framework.Tools.Helpers
 
                 objectType = objectA.GetType();
 
-                foreach (PropertyInfo propertyInfo in objectType
-                    .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                    .Where(p => p.CanRead && !ignoreList.Contains(p.Name)))
+                foreach (PropertyInfo propertyInfo in objectType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.CanRead && !ignoreList.Contains(p.Name)))
                 {
                     object valueA;
                     object valueB;
@@ -114,8 +111,7 @@ namespace Framework.Tools.Helpers
                                             return false;
                                         }
                                     }
-                                    else if (!AreObjectsPropertiesEqual(collectionItem1, collectionItem2, compared,
-                                                                        ignoreList))
+                                    else if (!AreObjectsPropertiesEqual(collectionItem1, collectionItem2, compared, ignoreList))
                                     {
                                         return false;
                                     }
@@ -125,8 +121,7 @@ namespace Framework.Tools.Helpers
                     }
                     else if (propertyInfo.PropertyType.IsClass)
                     {
-                        if (!AreObjectsPropertiesEqual(propertyInfo.GetValue(objectA, null),
-                                                       propertyInfo.GetValue(objectB, null), compared, ignoreList))
+                        if (!AreObjectsPropertiesEqual(propertyInfo.GetValue(objectA, null), propertyInfo.GetValue(objectB, null), compared, ignoreList))
                         {
                             return false;
                         }

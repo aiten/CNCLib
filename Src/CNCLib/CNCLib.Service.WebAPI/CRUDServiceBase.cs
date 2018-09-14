@@ -23,9 +23,7 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Service.WebAPI
 {
-    public abstract class CRUDServiceBase<T, TKey> : ServiceBase
-        where T : class
-        where TKey : IComparable
+    public abstract class CRUDServiceBase<T, TKey> : ServiceBase where T : class where TKey : IComparable
     {
         protected abstract TKey GetKey(T value);
 

@@ -320,10 +320,7 @@ namespace CNCLib.GCode.GUI
         {
             // with e.g.  867
             // max pt.X = 686 , pt.x can be 0
-            return new Point3D(
-                               AdjustX(Math.Round(pt.X / _ratioX / Zoom, 3)),
-                               AdjustY(Math.Round(pt.Y / _ratioY / Zoom, 3)),
-                               0);
+            return new Point3D(AdjustX(Math.Round(pt.X / _ratioX / Zoom, 3)), AdjustY(Math.Round(pt.Y / _ratioY / Zoom, 3)), 0);
         }
 
         double _rotateScaleX;
@@ -454,12 +451,11 @@ namespace CNCLib.GCode.GUI
 
             set._fastPen   = new Pen(colorconverter(FastMoveColor), fastSize);
             set._noMovePen = new Pen(colorconverter(Color.Blue),    fastSize);
-            set._laserCutPen =
-                new Pen(colorconverter(LaserOnColor), (float) ToClientSizeX(LaserSize))
-                {
-                    StartCap = LineCap.Round,
-                    EndCap   = LineCap.Round
-                };
+            set._laserCutPen = new Pen(colorconverter(LaserOnColor), (float) ToClientSizeX(LaserSize))
+            {
+                StartCap = LineCap.Round,
+                EndCap   = LineCap.Round
+            };
             set._laserFastPen = new Pen(colorconverter(LaserOffColor), (float) (fastSize / 2.0));
         }
 
@@ -480,19 +476,15 @@ namespace CNCLib.GCode.GUI
 
             var pts = new[]
             {
-                ToClientF(new Point3D(0,     0,     0)), ToClientF(new Point3D(0,     SizeY, 0)),
-                ToClientF(new Point3D(SizeX, SizeY, 0)), ToClientF(new Point3D(SizeX, 0,     0))
+                ToClientF(new Point3D(0, 0, 0)), ToClientF(new Point3D(0, SizeY, 0)), ToClientF(new Point3D(SizeX, SizeY, 0)), ToClientF(new Point3D(SizeX, 0, 0))
             };
             g1.FillPolygon(new SolidBrush(MachineColor), pts);
 
             // draw axis
 
-            g1.DrawLine(new Pen(Color.Red, 0.25f), ToClientF(new Point3D(-SizeX * 0.1, 0, 0)),
-                        ToClientF(new Point3D(SizeX * 1.1,                             0, 0)));
-            g1.DrawLine(new Pen(Color.Green, 0.25f), ToClientF(new Point3D(0, -SizeY * 0.1, 0)),
-                        ToClientF(new Point3D(0,                              SizeY * 1.1,  0)));
-            g1.DrawLine(new Pen(Color.Blue, 0.25f), ToClientF(new Point3D(0, 0, -SizeZ * 0.1)),
-                        ToClientF(new Point3D(0,                             0, SizeZ * 1.1)));
+            g1.DrawLine(new Pen(Color.Red,   0.25f), ToClientF(new Point3D(-SizeX * 0.1, 0,            0)),            ToClientF(new Point3D(SizeX * 1.1, 0,           0)));
+            g1.DrawLine(new Pen(Color.Green, 0.25f), ToClientF(new Point3D(0,            -SizeY * 0.1, 0)),            ToClientF(new Point3D(0,           SizeY * 1.1, 0)));
+            g1.DrawLine(new Pen(Color.Blue,  0.25f), ToClientF(new Point3D(0,            0,            -SizeZ * 0.1)), ToClientF(new Point3D(0,           0,           SizeZ * 1.1)));
 
             for (int i = 1;; i++)
             {
@@ -502,9 +494,7 @@ namespace CNCLib.GCode.GUI
                     break;
                 }
 
-                g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(i * 10.0, 0, 0)),
-                            ToClientF(new Point3D(i * 10.0, SizeY,
-                                                  0)));
+                g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(i * 10.0, 0, 0)), ToClientF(new Point3D(i * 10.0, SizeY, 0)));
             }
 
             for (int i = 1;; i++)
@@ -515,8 +505,7 @@ namespace CNCLib.GCode.GUI
                     break;
                 }
 
-                g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(0, i * 10.0, 0)),
-                            ToClientF(new Point3D(SizeX,                                              i * 10.0, 0)));
+                g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(0, i * 10.0, 0)), ToClientF(new Point3D(SizeX, i * 10.0, 0)));
             }
 
             commands?.Paint(this, ee);
@@ -599,8 +588,7 @@ namespace CNCLib.GCode.GUI
             }
         }
 
-        public void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptCenter, int xradius,
-                                int     yradius)
+        public void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptCenter, int xradius, int yradius)
         {
             if (drawtype == DrawType.NoDraw)
             {
@@ -609,13 +597,10 @@ namespace CNCLib.GCode.GUI
 
             var e    = (PaintEventArgs) param;
             var from = ToClientF(ptCenter);
-            e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X - xradius / 2, from.Y - yradius / 2,
-                                   xradius, yradius);
+            e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X - xradius / 2, from.Y - yradius / 2, xradius, yradius);
         }
 
-        public void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo,
-                            Point3D ptIIJ,
-                            bool    clockwise, Pane pane)
+        public void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D ptIIJ, bool clockwise, Pane pane)
         {
             if (drawtype == DrawType.NoDraw)
             {
@@ -643,9 +628,7 @@ namespace CNCLib.GCode.GUI
             return Math.Sqrt(dx * dx + dy * dy);
         }
 
-        private void Arc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo,
-                         double  offset0,
-                         double  offset1, int axis_0, int axis_1, int axis_linear, bool isclockwise)
+        private void Arc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, double offset0, double offset1, int axis_0, int axis_1, int axis_linear, bool isclockwise)
         {
             Pen pen = GetPen(drawtype, LineDrawType.Arc);
 
@@ -676,8 +659,7 @@ namespace CNCLib.GCode.GUI
             double rt_axis1 = (ptTo[axis_1] ?? 0.0) - center_axis1;
 
             // CCW angle between position and target from circle center. Only one atan2() trig computation required.
-            double angular_travel = Math.Atan2(r_axis0 * rt_axis1 - r_axis1 * rt_axis0,
-                                               r_axis0 * rt_axis0 + r_axis1 * rt_axis1);
+            double angular_travel = Math.Atan2(r_axis0 * rt_axis1 - r_axis1 * rt_axis0, r_axis0 * rt_axis0 + r_axis1 * rt_axis1);
 
             if (Math.Abs(angular_travel) < double.Epsilon)
             {
@@ -713,8 +695,7 @@ namespace CNCLib.GCode.GUI
             //
             // segments for full circle => (CONST_K * r * M_PI * b + CONST_D)		(r in mm, b ...2?)
 
-            uint segments = (uint) Math.Abs(Math.Floor(((2 * SEGMENTS_K * Math.PI)) * radius + SEGMENTS_D) *
-                                            angular_travel / (2.0 * Math.PI));
+            uint segments = (uint) Math.Abs(Math.Floor(((2 * SEGMENTS_K * Math.PI)) * radius + SEGMENTS_D) * angular_travel / (2.0 * Math.PI));
 
             if (segments > 1)
             {

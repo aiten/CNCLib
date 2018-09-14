@@ -18,7 +18,6 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CNCLib.Logic;
 using System.Linq;
 using NSubstitute;
 using Framework.Tools.Dependency;
@@ -46,10 +45,11 @@ namespace CNCLib.Tests.Logic
             var rep  = CreateMock<IDynItemController>();
             var ctrl = new LoadOptionsManager();
 
-            rep.GetAll(typeof(LoadOptions)).Returns(new DynItem[]
-            {
-                new DynItem { ItemID = 1, Name = "Entry1" }
-            });
+            rep.GetAll(typeof(LoadOptions)).
+                Returns(new DynItem[]
+                {
+                    new DynItem { ItemID = 1, Name = "Entry1" }
+                });
             rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
             var all = await ctrl.GetAll();
@@ -101,8 +101,7 @@ namespace CNCLib.Tests.Logic
 
             await ctrl.Add(opt);
 
-            await rep.Received().Add(Arg.Is<string>(x => x == "Entry1"),
-                                     Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
+            await rep.Received().Add(Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
         }
 
         [TestMethod]
@@ -115,8 +114,7 @@ namespace CNCLib.Tests.Logic
 
             await ctrl.Update(opt);
 
-            await rep.Received().Save(Arg.Is<int>(x => x == 1), Arg.Is<string>(x => x == "Entry1"),
-                                      Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
+            await rep.Received().Save(Arg.Is<int>(x => x == 1), Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
         }
 
         [TestMethod]

@@ -34,9 +34,7 @@ namespace CNCLib.Logic.Manager
         private IConfigurationRepository _repositoryConfig;
         private IMapper                  _mapper;
 
-        public MachineManager(IUnitOfWork              unitOfWork,       IMachineRepository repository,
-                              IConfigurationRepository repositoryConfig, IMapper            mapper) :
-            base(unitOfWork, repository, mapper)
+        public MachineManager(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig, IMapper mapper) : base(unitOfWork, repository, mapper)
         {
             _unitOfWork       = unitOfWork ?? throw new ArgumentNullException();
             _repository       = repository ?? throw new ArgumentNullException();

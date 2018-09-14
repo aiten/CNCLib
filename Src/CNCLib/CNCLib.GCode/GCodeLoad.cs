@@ -65,12 +65,8 @@ namespace CNCLib.GCode
                 {
                     string gcodeFileName = Environment.ExpandEnvironmentVariables(loadinfo.GCodeWriteToFileName);
                     WriteGCodeFile(gcodeFileName);
-                    WriteCamBamFile(load,
-                                    Path.GetDirectoryName(gcodeFileName) + @"\" +
-                                    Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb");
-                    WriteImportInfoFile(load,
-                                        Path.GetDirectoryName(gcodeFileName) + @"\" +
-                                        Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl");
+                    WriteCamBamFile(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb");
+                    WriteImportInfoFile(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl");
                 }
             }
             catch (Exception)

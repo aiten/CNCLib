@@ -26,11 +26,7 @@ namespace Framework.Tools.Drawing
     {
         private Point2D[] _points = new Point2D[0];
 
-        public IEnumerable<Point2D> Points
-        {
-            get => _points;
-            set => _points = value.ToArray();
-        }
+        public IEnumerable<Point2D> Points { get => _points; set => _points = value.ToArray(); }
 
         public bool   IsClosed => _points.Length >= 2 && _points[0].Compare(_points[_points.Length - 1]);
         public double MaxX     => _points.Max(c => c.X);
@@ -71,8 +67,7 @@ namespace Framework.Tools.Drawing
 
             for (i = 0; i < _points.Length; i++)
             {
-                if ((_points[i].Y < pt.Y && _points[j].Y >= pt.Y
-                     || _points[j].Y < pt.Y && _points[i].Y >= pt.Y))
+                if ((_points[i].Y < pt.Y && _points[j].Y >= pt.Y || _points[j].Y < pt.Y && _points[i].Y >= pt.Y))
                 {
                     oddNodes ^= (pt.Y * multiple[i] + constant[i] < pt.X);
                 }
@@ -98,8 +93,7 @@ namespace Framework.Tools.Drawing
                 }
                 else
                 {
-                    constant[i] = _points[i].X - (_points[i].Y * _points[j].X) / (_points[j].Y - _points[i].Y) +
-                                  (_points[i].Y * _points[i].X) / (_points[j].Y - _points[i].Y);
+                    constant[i] = _points[i].X - (_points[i].Y * _points[j].X) / (_points[j].Y - _points[i].Y) + (_points[i].Y * _points[i].X) / (_points[j].Y - _points[i].Y);
                     multiple[i] = (_points[j].X - _points[i].X) / (_points[j].Y - _points[i].Y);
                 }
 

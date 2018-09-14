@@ -37,10 +37,11 @@ namespace Framework.Arduino.SerialCommunication
         CancellationTokenSource _serialPortCancellationTokenSource;
         Thread                  _readThread;
         Thread                  _writeThread;
-        AutoResetEvent          _autoEvent       = new AutoResetEvent(false);
-        List<SerialCommand>     _pendingCommands = new List<SerialCommand>();
         int                     _commandSeqId;
-        readonly ILogger        _logger = LogManager.GetCurrentClassLogger();
+
+        readonly AutoResetEvent      _autoEvent       = new AutoResetEvent(false);
+        readonly List<SerialCommand> _pendingCommands = new List<SerialCommand>();
+        readonly ILogger             _logger          = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -108,8 +109,7 @@ namespace Framework.Arduino.SerialCommunication
         public bool   Pause                  { get; set; } = false;
         public bool   SendNext               { get; set; } = false;
 
-        private bool Continue => (_serialPortCancellationTokenSource != null &&
-                                  !_serialPortCancellationTokenSource.IsCancellationRequested);
+        private bool Continue => (_serialPortCancellationTokenSource != null && !_serialPortCancellationTokenSource.IsCancellationRequested);
 
         protected ILogger Trace => _logger;
 
@@ -285,11 +285,6 @@ namespace Framework.Arduino.SerialCommunication
 
         protected virtual void SetupCom(string portname)
         {
-            if (_serialPort != null)
-            {
-                _serialPort = null;
-            }
-
             _serialPort = Dependency.Resolve<ISerialPort>();
 
             _serialPort.PortName  = portname;
@@ -326,8 +321,8 @@ namespace Framework.Arduino.SerialCommunication
         /// Send multiple command lines to the arduino. Wait until the commands are transferrd and we got a reply (no command pending)
         /// </summary>
         /// <param name="commands"></param>
-        public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> commands,
-                                                                        int                 waitForMilliseconds)
+        /// <param name="waitForMilliseconds"></param>
+        public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> commands, int waitForMilliseconds)
         {
             if (commands != null)
             {
@@ -458,7 +453,6 @@ namespace Framework.Arduino.SerialCommunication
                 queueLenght++;
             }
 
-            ;
             Trace?.Trace("Queue", cmd);
             OnComandQueueChanged(new SerialEventArgs(queueLenght, c));
             return c;
@@ -717,8 +711,7 @@ namespace Framework.Arduino.SerialCommunication
         {
             byte[] encodedStr = _serialPort.Encoding.GetBytes(str);
 
-            await _serialPort.BaseStream.WriteAsync(encodedStr, 0, encodedStr.Length,
-                                                    _serialPortCancellationTokenSource.Token);
+            await _serialPort.BaseStream.WriteAsync(encodedStr, 0, encodedStr.Length, _serialPortCancellationTokenSource.Token);
             await _serialPort.BaseStream.FlushAsync();
         }
 
@@ -727,9 +720,7 @@ namespace Framework.Arduino.SerialCommunication
             int readmaxsize = 256;
             var buffer      = new byte[readmaxsize];
 
-            int readsize =
-                await _serialPort.BaseStream.ReadAsync(buffer, 0, readmaxsize,
-                                                       _serialPortCancellationTokenSource.Token);
+            int readsize = await _serialPort.BaseStream.ReadAsync(buffer, 0, readmaxsize, _serialPortCancellationTokenSource.Token);
             return _serialPort.Encoding.GetString(buffer, 0, readsize);
         }
 
@@ -994,7 +985,7 @@ namespace Framework.Arduino.SerialCommunication
 
         #region Command History 
 
-        List<SerialCommand> _commands = new List<SerialCommand>();
+        readonly List<SerialCommand> _commands = new List<SerialCommand>();
 
         public List<SerialCommand> CommandHistoryCopy
         {

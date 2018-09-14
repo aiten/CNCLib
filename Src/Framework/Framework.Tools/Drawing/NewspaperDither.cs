@@ -80,19 +80,14 @@ namespace Framework.Tools.Drawing
 
         private Offsets[] _offsets = new Offsets[]
         {
-            new Offsets { X = 0, Y  = 0 },
-            new Offsets { X = -1, Y = 0 }, new Offsets { X = 0, Y = 1 }, new Offsets { X = 1, Y = 0 },
-            new Offsets { X = 0, Y  = -1 },
-            new Offsets { X = -1, Y = 1 }, new Offsets { X = 1, Y = 1 }, new Offsets { X = 1, Y = -1 },
-            new Offsets { X = -1, Y = -1 },
-
-            new Offsets { X = -2, Y = 0 }, new Offsets { X = 0, Y = 2 }, new Offsets { X = 2, Y = 0 },
-            new Offsets { X = 0, Y  = -2 },
-            new Offsets { X = -2, Y = 1 }, new Offsets { X = 1, Y = 2 }, new Offsets { X = 2, Y = -1 },
-            new Offsets { X = -1, Y = -2 },
-            new Offsets { X = -1, Y = 2 }, new Offsets { X = 2, Y = 1 }, new Offsets { X = 1, Y = -2 },
-            new Offsets { X = -2, Y = -1 },
-            new Offsets { X = -2, Y = 2 }, new Offsets { X = 2, Y = 2 }, new Offsets { X = 2, Y = -2 },
+            new Offsets { X = 0, Y  = 0 }, new Offsets { X = -1, Y = 0 }, new Offsets { X = 0, Y = 1 }, new Offsets { X = 1, Y = 0 }, new Offsets { X = 0, Y = -1 },
+            new Offsets { X = -1, Y = 1 },
+            new Offsets { X = 1, Y  = 1 }, new Offsets { X = 1, Y = -1 }, new Offsets { X = -1, Y = -1 }, new Offsets { X = -2, Y = 0 }, new Offsets { X = 0, Y = 2 },
+            new Offsets { X = 2, Y  = 0 },
+            new Offsets { X = 0, Y  = -2 }, new Offsets { X = -2, Y = 1 }, new Offsets { X = 1, Y = 2 }, new Offsets { X = 2, Y = -1 }, new Offsets { X = -1, Y = -2 },
+            new Offsets { X = -1, Y = 2 },
+            new Offsets { X = 2, Y  = 1 }, new Offsets { X = 1, Y = -2 }, new Offsets { X = -2, Y = -1 }, new Offsets { X = -2, Y = 2 }, new Offsets { X = 2, Y = 2 },
+            new Offsets { X = 2, Y  = -2 },
             new Offsets { X = -2, Y = -2 }
         };
 

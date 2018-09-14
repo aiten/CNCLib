@@ -35,8 +35,7 @@ namespace CNCLib.Logic.Manager
         private IItemRepository _repository;
         private IMapper         _mapper;
 
-        public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, IMapper mapper) :
-            base(unitOfWork, repository, mapper)
+        public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, IMapper mapper) : base(unitOfWork, repository, mapper)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
             _repository = repository ?? throw new ArgumentNullException();

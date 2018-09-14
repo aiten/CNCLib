@@ -93,8 +93,7 @@ namespace Framework.Repository
             }
         }
 
-        public void Sync<TEntity>(ICollection<TEntity>         inDb, ICollection<TEntity> toDb,
-                                  Func<TEntity, TEntity, bool> predicate) where TEntity : class
+        public void Sync<TEntity>(ICollection<TEntity> inDb, ICollection<TEntity> toDb, Func<TEntity, TEntity, bool> predicate) where TEntity : class
         {
             // 1. DeleteEntity from DB (in DB) and update
             var delete = new List<TEntity>();

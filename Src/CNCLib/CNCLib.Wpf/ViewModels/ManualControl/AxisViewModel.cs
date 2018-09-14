@@ -50,27 +50,15 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         private string  _param = "0";
         public  decimal ParamDec => decimal.Parse(Param);
 
-        public string Param
-        {
-            get => _param;
-            set => SetProperty(ref _param, value);
-        }
+        public string Param { get => _param; set => SetProperty(ref _param, value); }
 
         private string _pos = "";
 
-        public string Pos
-        {
-            get => _pos;
-            set => SetProperty(ref _pos, value);
-        }
+        public string Pos { get => _pos; set => SetProperty(ref _pos, value); }
 
         private string _relPos = "";
 
-        public string RelPos
-        {
-            get => _relPos;
-            set => SetProperty(ref _relPos, value);
-        }
+        public string RelPos { get => _relPos; set => SetProperty(ref _relPos, value); }
 
         public bool Enabled => Global.Instance.Machine.Axis > AxisIndex && Size > 0m;
 
@@ -88,12 +76,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private void SendMoveCommand(string dist)
         {
-            RunAndUpdate(() =>
-            {
-                Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g91 g0" +
-                                                                                           AxisName +
-                                                                                           dist + " g90"));
-            });
+            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g91 g0" + AxisName + dist + " g90")); });
         }
 
         private void SendProbeCommand(int axisindex)
@@ -103,20 +86,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendRefMove()
         {
-            RunAndUpdate(() =>
-            {
-                Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper
-                                                             .PrepareCommand("g28 " + AxisName + "0"));
-            });
+            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g28 " + AxisName + "0")); });
         }
 
         public void SendG92()
         {
-            RunAndUpdate(() =>
-            {
-                Global.Instance.Com.Current.QueueCommand("g92 " + AxisName +
-                                                         ParamDec.ToString(CultureInfo.InvariantCulture));
-            });
+            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); });
         }
 
         public void SendG31()

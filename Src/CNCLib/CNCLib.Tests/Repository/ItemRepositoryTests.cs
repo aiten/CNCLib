@@ -21,8 +21,6 @@ using CNCLib.Repository.Contracts.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CNCLib.Repository;
-using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using FluentAssertions;
 using Framework.Tools.Dependency;
@@ -61,8 +59,7 @@ namespace CNCLib.Tests.Repository
             //entity1.Should().BeEquivalentTo(entity2, opts => 
             //    opts.Excluding(x => x.UserID)
             //);
-            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2,
-                                                                                       new[] { @"ItemID" });
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"ItemID" });
         }
 
         #endregion
@@ -101,26 +98,22 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task AddUpdateDeleteTest()
         {
-            await AddUpdateDelete(
-                                  () => CreateItem(@"AddUpdateDeleteTest"),
-                                  (entity) => entity.ClassName = "DummyClassUpdate");
+            await AddUpdateDelete(() => CreateItem(@"AddUpdateDeleteTest"), (entity) => entity.ClassName = "DummyClassUpdate");
         }
 
         [TestMethod]
         public async Task AddUpdateDeleteWithItemPropertiesTest()
         {
-            await AddUpdateDelete(
-                                  () => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")),
-                                  (entity) =>
-                                  {
-                                      entity.ClassName = "DummyClassUpdate";
-                                      entity.ItemProperties.Remove(entity.ItemProperties.First());
-                                      entity.ItemProperties.Add(new ItemProperty()
-                                      {
-                                          Name  = @"NewItemProperty",
-                                          Value = @"Hallo"
-                                      });
-                                  });
+            await AddUpdateDelete(() => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")), (entity) =>
+            {
+                entity.ClassName = "DummyClassUpdate";
+                entity.ItemProperties.Remove(entity.ItemProperties.First());
+                entity.ItemProperties.Add(new ItemProperty()
+                {
+                    Name  = @"NewItemProperty",
+                    Value = @"Hallo"
+                });
+            });
         }
 
         [TestMethod]

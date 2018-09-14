@@ -31,8 +31,7 @@ namespace Framework.Tools.Dependency
         /// <param name="container"></param>
         /// <param name="obj">Object that should be returned for Resolve&lt;TInterface&gt;() calls.</param>
         /// <returns>This instance.</returns>
-        public static IDependencyContainer RegisterInstance<TInterface>(this IDependencyContainer container,
-                                                                        TInterface                obj)
+        public static IDependencyContainer RegisterInstance<TInterface>(this IDependencyContainer container, TInterface obj)
         {
             container.RegisterInstance(typeof(TInterface), obj);
             return container;
@@ -46,8 +45,7 @@ namespace Framework.Tools.Dependency
         /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
         /// <typeparam name="TType">Type that implements interface. On Resolve&lt;TInterface&gt;() calls a new instance is returned every time.</typeparam>
         /// <returns>This instance.</returns>
-        public static IDependencyContainer RegisterType<TInterface, TType>(this IDependencyContainer container)
-            where TType : TInterface
+        public static IDependencyContainer RegisterType<TInterface, TType>(this IDependencyContainer container) where TType : TInterface
         {
             container.RegisterType(typeof(TInterface), typeof(TType));
             return container;
@@ -71,8 +69,7 @@ namespace Framework.Tools.Dependency
         /// <param name="assemblies">List of assemblies in which all types should be registered with their interfaces. 
         /// This includes internal types. </param>
         /// <returns>This instance.</returns>
-        public static IDependencyContainer RegisterTypesIncludingInternals(
-            this IDependencyContainer container, params Assembly[] assemblies)
+        public static IDependencyContainer RegisterTypesIncludingInternals(this IDependencyContainer container, params Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
             {
@@ -90,9 +87,7 @@ namespace Framework.Tools.Dependency
             return container;
         }
 
-        public static IDependencyContainer RegisterTypesByName(this IDependencyContainer container,
-                                                               Func<string, bool>        checkname,
-                                                               params Assembly[]         assemblies)
+        public static IDependencyContainer RegisterTypesByName(this IDependencyContainer container, Func<string, bool> checkname, params Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
             {
@@ -118,8 +113,7 @@ namespace Framework.Tools.Dependency
         /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
         /// <typeparam name="TType">Type that implements interface. On Resolve&lt;TInterface&gt;() calls a new instance is returned every time.</typeparam>
         /// <returns>This instance.</returns>
-        public static IDependencyContainer RegisterTypeScoped<TInterface, TType>(this IDependencyContainer container)
-            where TType : TInterface
+        public static IDependencyContainer RegisterTypeScoped<TInterface, TType>(this IDependencyContainer container) where TType : TInterface
         {
             container.RegisterTypeScoped(typeof(TInterface), typeof(TType));
             return container;
@@ -143,8 +137,7 @@ namespace Framework.Tools.Dependency
         /// <param name="assemblies">List of assemblies in which all types should be registered with their interfaces. 
         /// This includes internal types. </param>
         /// <returns>This instance.</returns>
-        public static IDependencyContainer RegisterTypesIncludingInternalsScoped(
-            this IDependencyContainer container, params Assembly[] assemblies)
+        public static IDependencyContainer RegisterTypesIncludingInternalsScoped(this IDependencyContainer container, params Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
             {
@@ -162,9 +155,7 @@ namespace Framework.Tools.Dependency
             return container;
         }
 
-        public static IDependencyContainer RegisterTypesByNameScoped(this IDependencyContainer container,
-                                                                     Func<string, bool>        checkname,
-                                                                     params Assembly[]         assemblies)
+        public static IDependencyContainer RegisterTypesByNameScoped(this IDependencyContainer container, Func<string, bool> checkname, params Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
             {

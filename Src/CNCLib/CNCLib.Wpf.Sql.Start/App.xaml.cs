@@ -44,11 +44,7 @@ namespace CNCLib.Wpf.Sql.Start
     {
         private void AppStartup(object sender, StartupEventArgs e)
         {
-            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
-                                                                                                                       XmlLanguage
-                                                                                                                           .GetLanguage(CultureInfo
-                                                                                                                                            .CurrentCulture
-                                                                                                                                            .IetfLanguageTag)));
+            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             Dependency.Initialize(new LiveDependencyProvider());
 
@@ -59,27 +55,18 @@ namespace CNCLib.Wpf.Sql.Start
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-            Dependency.Container.RegisterTypesIncludingInternals(
-                                                                 typeof(Repository.MachineRepository).Assembly
-                                                                );
+            Dependency.Container.RegisterTypesIncludingInternals(typeof(Repository.MachineRepository).Assembly);
 
             //transient
 
-            Dependency.Container.RegisterTypesIncludingInternals(
-                                                                 typeof(Framework.Arduino.SerialCommunication.Serial)
-                                                                     .Assembly,
-                                                                 typeof(MachineService).Assembly,
-                                                                 typeof(Logic.Client.DynItemController).Assembly,
-                                                                 typeof(MachineManager).Assembly);
+            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly, typeof(MachineService).Assembly,
+                                                                 typeof(Logic.Client.DynItemController).Assembly, typeof(MachineManager).Assembly);
 
 
             Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
             Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
 
-            Dependency.Container.RegisterTypesByName(
-                                                     n => n.EndsWith("ViewModel"),
-                                                     typeof(ViewModels.MachineViewModel).Assembly,
-                                                     typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), typeof(ViewModels.MachineViewModel).Assembly, typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -106,8 +93,7 @@ namespace CNCLib.Wpf.Sql.Start
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Cannot connect to database" + ex.Message, "Error", MessageBoxButton.OK,
-                                MessageBoxImage.Error);
+                MessageBox.Show("Cannot connect to database" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Current.Shutdown();
             }
         }

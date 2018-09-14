@@ -16,8 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.EntityFrameworkCore;
-
 namespace CNCLib.Repository.Context
 {
 /*

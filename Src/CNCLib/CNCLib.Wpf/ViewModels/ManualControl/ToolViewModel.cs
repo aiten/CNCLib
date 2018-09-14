@@ -30,8 +30,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
     {
         #region ctr
 
-        public ToolViewModel(IManualControlViewModel vm)
-            : base(vm)
+        public ToolViewModel(IManualControlViewModel vm) : base(vm)
         {
             Global.Instance.Com.LocalCom.CommandQueueChanged  += OnCommandQueueChanged;
             Global.Instance.Com.RemoteCom.CommandQueueChanged += OnCommandQueueChanged;
@@ -49,11 +48,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public int PendingCommandCount { get; set; }
 
-        public bool Pause
-        {
-            get => Global.Instance.Com.Current.Pause;
-            set => Global.Instance.Com.Current.Pause = value;
-        }
+        public bool Pause { get => Global.Instance.Com.Current.Pause; set => Global.Instance.Com.Current.Pause = value; }
 
         private bool _updateAfterSendNext = false;
 
@@ -220,9 +215,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         {
             RunAndUpdate(async () =>
             {
-                string message =
-                    await Global.Instance.Com.Current
-                        .SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("?"), 10 * 1000);
+                string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("?"), 10 * 1000);
 
                 if (!string.IsNullOrEmpty(message))
                 {
@@ -255,10 +248,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                         decimal[] mpos = Convert(message, "dummy");
                         SetPositions(mpos, 0);
 
-                        message =
-                            await Global.Instance.Com.Current
-                                .SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"),
-                                                                10 * 1000);
+                        message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"), 10 * 1000);
 
                         if (!string.IsNullOrEmpty(message))
                         {
@@ -272,11 +262,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void WritePending()
         {
-            RunInNewTask(() =>
-            {
-                Global.Instance.Com.Current.WritePendingCommandsToFile(System.IO.Path.GetTempPath() +
-                                                                       "PendingCommands.nc");
-            });
+            RunInNewTask(() => { Global.Instance.Com.Current.WritePendingCommandsToFile(System.IO.Path.GetTempPath() + "PendingCommands.nc"); });
         }
 
         #endregion

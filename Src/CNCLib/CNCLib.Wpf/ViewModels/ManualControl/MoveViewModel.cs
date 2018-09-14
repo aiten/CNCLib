@@ -26,7 +26,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class MoveViewModel : DetailViewModel
     {
-        public MoveViewModel(IManualControlViewModel vm) : base(vm) { }
+        public MoveViewModel(IManualControlViewModel vm) : base(vm)
+        {
+        }
 
         #region Properties
 
@@ -38,10 +40,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         {
             RunAndUpdate(() =>
             {
-                bool mustUse2Lines = Global.Instance.Machine.CommandSyntax == Logic.Contracts.DTO.CommandSyntax.Grbl;
-                string commandStr =
-                    MachineGCodeHelper.PrepareCommand("g91 g0" + axisname +
-                                                      (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
+                bool   mustUse2Lines = Global.Instance.Machine.CommandSyntax == Logic.Contracts.DTO.CommandSyntax.Grbl;
+                string commandStr    = MachineGCodeHelper.PrepareCommand("g91 g0" + axisname + (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
 
                 if (!mustUse2Lines)
                 {

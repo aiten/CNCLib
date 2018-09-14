@@ -177,9 +177,8 @@ namespace CNCLib.GCode.Commands
             {
                 if (var.ParameterIsTerm)
                 {
-                    var linestream = new CommandStream() { Line = var.Parameter };
-                    var expressionparser =
-                        new GCodeExpressionParser(linestream) { ParameterValues = state.ParameterValues };
+                    var linestream       = new CommandStream() { Line                              = var.Parameter };
+                    var expressionparser = new GCodeExpressionParser(linestream) { ParameterValues = state.ParameterValues };
                     expressionparser.Parse();
                     if (!expressionparser.IsError())
                     {
@@ -187,8 +186,7 @@ namespace CNCLib.GCode.Commands
                         return true;
                     }
                 }
-                else if (int.TryParse(var.Parameter, out int parameterno) &&
-                         state.ParameterValues.ContainsKey(parameterno))
+                else if (int.TryParse(var.Parameter, out int parameterno) && state.ParameterValues.ContainsKey(parameterno))
                 {
                     val = state.ParameterValues[parameterno];
                     return true;
@@ -227,7 +225,9 @@ namespace CNCLib.GCode.Commands
 
         #region Iteration
 
-        public virtual void SetCommandState(CommandState state) { }
+        public virtual void SetCommandState(CommandState state)
+        {
+        }
 
         #endregion
 
@@ -279,7 +279,9 @@ namespace CNCLib.GCode.Commands
 
         #region GCode
 
-        public virtual void SetCode(string code) { } // allow genieric Gxx & Mxx to set code
+        public virtual void SetCode(string code)
+        {
+        } // allow genieric Gxx & Mxx to set code
 
         public string GCodeAdd { get; set; }
 

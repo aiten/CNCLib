@@ -16,9 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Repository.Contracts;
-using Framework.Contracts.Logic;
-using Framework.Tools.Dependency;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Logic
@@ -29,6 +26,8 @@ namespace CNCLib.Tests.Logic
         public TestContext TestContext { get; set; }
 
         [TestInitialize]
-        public void Init() { }
+        public void Init()
+        {
+        }
     }
 }

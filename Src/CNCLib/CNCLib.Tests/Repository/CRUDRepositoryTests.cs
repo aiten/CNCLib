@@ -28,10 +28,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-    public abstract class CRUDRepositoryTests<TEntity, TKey, TIRepository> : RepositoryTests where TEntity : class
-                                                                                             where TIRepository :
-                                                                                             ICRUDRepository<TEntity,
-                                                                                                 TKey>
+    public abstract class CRUDRepositoryTests<TEntity, TKey, TIRepository> : RepositoryTests where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey>
     {
         protected abstract CRUDTestContext<TEntity, TKey, TIRepository> CreateCRUDTestContext();
         protected abstract TKey                                         GetEntityKey(TEntity  entity);
@@ -159,8 +156,7 @@ namespace CNCLib.Tests.Repository
             }
         }
 
-        public async Task AddUpdateDeleteBulk(Func<IEnumerable<TEntity>>   createTestEntities,
-                                              Action<IEnumerable<TEntity>> updateEntities)
+        public async Task AddUpdateDeleteBulk(Func<IEnumerable<TEntity>> createTestEntities, Action<IEnumerable<TEntity>> updateEntities)
         {
             var allWithoutAdd = await GetAll();
             allWithoutAdd.Should().NotBeNull();

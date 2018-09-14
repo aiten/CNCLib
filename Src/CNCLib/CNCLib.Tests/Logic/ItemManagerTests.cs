@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using CNCLib.Logic;
 using CNCLib.Logic.Manager;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
@@ -29,7 +28,6 @@ using FluentAssertions;
 using Framework.Contracts.Repository;
 using Framework.Repository;
 using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 
@@ -46,9 +44,7 @@ namespace CNCLib.Tests.Logic
             //			TInterface uow = Substitute.For<Framework.EF.UnitOfWork>();
             //			Dependency.Container.RegisterInstance(uow);
 
-            Dependency.Container
-                .RegisterType<Framework.Contracts.Repository.IUnitOfWork,
-                    UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
+            Dependency.Container.RegisterType<Framework.Contracts.Repository.IUnitOfWork, UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
 
             return rep;
         }
@@ -79,8 +75,7 @@ namespace CNCLib.Tests.Logic
 
             var itemEntity = new[]
             {
-                new Item { ItemID = 1, Name = "Test1" },
-                new Item { ItemID = 2, Name = "Test2" }
+                new Item { ItemID = 1, Name = "Test1" }, new Item { ItemID = 2, Name = "Test2" }
             };
             rep.GetAll().Returns(itemEntity);
 
@@ -91,8 +86,8 @@ namespace CNCLib.Tests.Logic
                 {
                     ItemID = 1,
                     Name   = "Test1"
-                }
-                .Should().BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
+                }.Should().
+                BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
         }
 
         [TestMethod]
@@ -111,8 +106,8 @@ namespace CNCLib.Tests.Logic
                 {
                     ItemID = 1,
                     Name   = "Test1"
-                }
-                .Should().BeEquivalentTo(all, options => options.ExcludingMissingMembers());
+                }.Should().
+                BeEquivalentTo(all, options => options.ExcludingMissingMembers());
         }
 
         [TestMethod]

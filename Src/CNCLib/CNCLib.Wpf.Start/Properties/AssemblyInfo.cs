@@ -22,8 +22,7 @@ using System.Windows;
 [assembly: AssemblyTitle("CNCLib.Wpf.Start")]
 [assembly: AssemblyProduct("CNCLib.Wpf.Start")]
 
-[assembly: ThemeInfo(
-    ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
+[assembly: ThemeInfo(ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
     //(used if a resource is not found in the page, 
     // or application resource dictionaries)
     ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located

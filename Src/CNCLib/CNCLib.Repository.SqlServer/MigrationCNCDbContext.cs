@@ -24,8 +24,7 @@ namespace CNCLib.Repository.SqlServer
 {
     public class MigrationCNCLibContext : CNCLibContext
     {
-        public static string ConnectString { get; set; } =
-            @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
+        public static string ConnectString { get; set; } = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
 
         static MigrationCNCLibContext()
         {

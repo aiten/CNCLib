@@ -22,7 +22,6 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Service.Contracts;
 using CNCLib.Shared;
-using Framework.Contracts.Shared;
 using Framework.Web;
 using Microsoft.AspNetCore.Mvc;
 

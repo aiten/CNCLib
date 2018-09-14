@@ -29,7 +29,9 @@ namespace CNCLib.Repository.Contracts.Entities
         public virtual User   User   { get; set; }
 
 
-        public Configuration() { }
+        public Configuration()
+        {
+        }
 
         public Configuration(string group, string name, object value)
         {

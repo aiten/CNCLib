@@ -24,8 +24,7 @@ namespace Framework.Repository
 {
     public static class CRUDRepositoryExtensions
     {
-        public static async Task Store<TEntity, TKey>(this ICRUDRepository<TEntity, TKey> repository, TEntity entity,
-                                                      TKey                                key) where TEntity : class
+        public static async Task Store<TEntity, TKey>(this ICRUDRepository<TEntity, TKey> repository, TEntity entity, TKey key) where TEntity : class
         {
             TEntity entityinDb = await repository.GetTracking(key);
             if (entityinDb == default(TEntity))
@@ -39,9 +38,7 @@ namespace Framework.Repository
             }
         }
 
-        public static async Task Update<TEntity, TKey>(this ICRUDRepository<TEntity, TKey> repository, TKey key,
-                                                       TEntity                             values)
-            where TEntity : class
+        public static async Task Update<TEntity, TKey>(this ICRUDRepository<TEntity, TKey> repository, TKey key, TEntity values) where TEntity : class
         {
             TEntity entityInDB = await repository.GetTracking(key);
             if (entityInDB == default(TEntity))

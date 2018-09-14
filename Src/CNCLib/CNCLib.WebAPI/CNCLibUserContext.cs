@@ -16,11 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Security.Principal;
-using System.ServiceModel.Channels;
 using CNCLib.Shared;
-using Framework.Contracts.Shared;
-using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CNCLib.WebAPI

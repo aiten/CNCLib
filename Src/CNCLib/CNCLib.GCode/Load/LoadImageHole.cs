@@ -64,8 +64,7 @@ namespace CNCLib.GCode.Load
                         b = ScaleImage(bx);
                         break;
 
-                    default:
-                        throw new ArgumentException("Bitmap.PixelFormat not supported");
+                    default: throw new ArgumentException("Bitmap.PixelFormat not supported");
                 }
 
                 WriteGCode(b);
@@ -97,8 +96,7 @@ namespace CNCLib.GCode.Load
                         break;
                     }
 
-                    if (x >= 0 && x + ImageToDotSizeX <= SizeX &&
-                        y >= 0 && y + ImageToDotSizeY <= SizeY)
+                    if (x >= 0 && x + ImageToDotSizeX <= SizeX && y >= 0 && y + ImageToDotSizeY <= SizeY)
                     {
                         // Rect (x1,y1, ImageToDotSizeX, ImageToDotSizeY)  is on printingarea
 
@@ -106,9 +104,7 @@ namespace CNCLib.GCode.Load
                         double posy = y * (PixelSizeY + PixelDistY) + ShiftY + PixelDistY / 2;
                         // x,y left,top corner
 
-                        AddCommandX(posx, topPos - posy,
-                                    GetDotSize(x, y),
-                                    HoleType, ix);
+                        AddCommandX(posx, topPos - posy, GetDotSize(x, y), HoleType, ix);
                     }
                 }
 

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Contracts.Service
 {
-    public interface IGetService<T, TKey> where T : class
+    public interface IGetService<T, in TKey> where T : class
     {
         Task<T> Get(TKey id);
 

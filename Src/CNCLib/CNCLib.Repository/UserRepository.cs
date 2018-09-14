@@ -29,7 +29,9 @@ namespace CNCLib.Repository
 {
     public class UserRepository : CRUDRepositoryBase<CNCLibContext, User, int>, IUserRepository
     {
-        public UserRepository(CNCLibContext context) : base(context) { }
+        public UserRepository(CNCLibContext context) : base(context)
+        {
+        }
 
         protected override IQueryable<User> AddInclude(IQueryable<User> query)
         {

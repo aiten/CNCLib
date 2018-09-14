@@ -16,11 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Globalization;
 using CNCLib.GCode.Parser;
 using Framework.Tools.Drawing;
 using Framework.Tools.Helpers;
-using Newtonsoft.Json;
 
 namespace CNCLib.GCode.Commands
 {

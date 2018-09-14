@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using CNCLib.Logic.Contracts.DTO;
@@ -27,8 +26,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class CustomViewModel : DetailViewModel
     {
-        public CustomViewModel(IManualControlViewModel vm)
-            : base(vm)
+        public CustomViewModel(IManualControlViewModel vm) : base(vm)
         {
             Global.Instance.PropertyChanged += (sender, e) =>
             {

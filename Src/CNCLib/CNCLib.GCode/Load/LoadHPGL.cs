@@ -82,14 +82,10 @@ namespace CNCLib.GCode.Load
                                 }
 
                                 list.Add(new HPGLCommand
-                                         {
-                                             CommandType =
-                                                 isPenUp
-                                                     ? HPGLCommand.HPGLCommandType.PenUp
-                                                     : HPGLCommand.HPGLCommandType.PenDown,
-                                             PointTo = pt
-                                         }
-                                        );
+                                {
+                                    CommandType = isPenUp ? HPGLCommand.HPGLCommandType.PenUp : HPGLCommand.HPGLCommandType.PenDown,
+                                    PointTo     = pt
+                                });
 
                                 last = pt;
 
@@ -427,8 +423,7 @@ namespace CNCLib.GCode.Load
             if (list.Any())
             {
                 var firstfrom = list.First().PointFrom;
-                using (var sw =
-                    new StreamWriter(Environment.ExpandEnvironmentVariables($"%TMP%\\CNCLib_Line{lineIdx}.plt")))
+                using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables($"%TMP%\\CNCLib_Line{lineIdx}.plt")))
                 {
                     sw.WriteLine($"PU {(int) (firstfrom.X0 * 40)},{(int) (firstfrom.Y0 * 40)}");
                     foreach (var cmd in list)

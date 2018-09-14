@@ -100,10 +100,7 @@ namespace Framework.Tools.Dependency
         /// <summary>
         /// Gets an enumeration containing all types registered with the dependency container.
         /// </summary>
-        public IEnumerable<Type> RegisteredTypes
-        {
-            get { return _container.Registrations.Select(r => r.RegisteredType); }
-        }
+        public IEnumerable<Type> RegisteredTypes { get { return _container.Registrations.Select(r => r.RegisteredType); } }
 
         #region IDisposable Support
 

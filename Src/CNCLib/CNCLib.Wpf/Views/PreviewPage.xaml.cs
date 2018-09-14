@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -63,17 +62,15 @@ namespace CNCLib.Wpf.Views
                     var vmdlg = dlg.DataContext as LoadOptionViewModel;
                     if (vmdlg != null)
                     {
-                        vmdlg.LoadOptionsValue =
-                            Dependency.Resolve<IMapper>().Map<GCode.GUI.Models.LoadOptions>(arg.LoadOption);
-                        vmdlg.UseAzure = arg.UseAzure;
+                        vmdlg.LoadOptionsValue = Dependency.Resolve<IMapper>().Map<GCode.GUI.Models.LoadOptions>(arg.LoadOption);
+                        vmdlg.UseAzure         = arg.UseAzure;
                         if (!dlg.ShowDialog() ?? false)
                         {
                             return false;
                         }
 
-                        arg.LoadOption = Dependency.Resolve<IMapper>()
-                            .Map<Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
-                        arg.UseAzure = vmdlg.UseAzure;
+                        arg.LoadOption = Dependency.Resolve<IMapper>().Map<Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
+                        arg.UseAzure   = vmdlg.UseAzure;
                     }
 
                     return true;

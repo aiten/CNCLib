@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CNCLib.Serial.Shared
+﻿namespace CNCLib.Serial.Shared
 {
     public class Info
     {

@@ -40,20 +40,17 @@ namespace CNCLib.Wpf.Models
 
         [Category(CATEGORY_PLOTTER)]
         [DisplayName("MovePenDownFeedrate")]
-        [Description(
-            "Z-axis speed to set pen, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
+        [Description("Z-axis speed to set pen, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
         public uint MovePenDownFeedrate { get; set; }
 
         [Category(CATEGORY_PLOTTER)]
         [DisplayName("MovePenUpFeedrate")]
-        [Description(
-            "Z-axis speed to rise pen, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
+        [Description("Z-axis speed to rise pen, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
         public uint MovePenUpFeedrate { get; set; }
 
         [Category(CATEGORY_PLOTTER)]
         [DisplayName("MovePenChangeFeedrate")]
-        [Description(
-            "Z-axis speed while pen is changed, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
+        [Description("Z-axis speed while pen is changed, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
         public uint MovePenChangeFeedrate { get; set; }
 
         [Category(CATEGORY_PLOTTER)]

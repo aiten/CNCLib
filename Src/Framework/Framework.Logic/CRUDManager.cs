@@ -23,21 +23,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Framework.Contracts.Repository;
-using Framework.Tools;
 
 namespace Framework.Logic
 {
-    public abstract class CRUDManager<T, TKey, TEntity> : GetManager<T, TKey, TEntity>
-        where T : class where TEntity : class
+    public abstract class CRUDManager<T, TKey, TEntity> : GetManager<T, TKey, TEntity> where T : class where TEntity : class
     {
         private IMapper                        _mapper;
         private ICRUDRepository<TEntity, TKey> _repository;
         private IUnitOfWork                    _unitOfWork;
 
-        protected CRUDManager(IUnitOfWork unitOfWork, ICRUDRepository<TEntity, TKey> repository, IMapper mapper) : base(
-                                                                                                                        unitOfWork,
-                                                                                                                        repository,
-                                                                                                                        mapper)
+        protected CRUDManager(IUnitOfWork unitOfWork, ICRUDRepository<TEntity, TKey> repository, IMapper mapper) : base(unitOfWork, repository, mapper)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
             _repository = repository ?? throw new ArgumentNullException();
@@ -102,10 +97,7 @@ namespace Framework.Logic
                 var entities     = _mapper.Map<IEnumerable<T>, IEnumerable<TEntity>>(values);
                 var entitiesInDb = await _repository.GetTracking(entities.Select(e => GetKey(e)));
 
-                var mergeJoin = entitiesInDb.Join(entities,
-                                                  e => GetKey(e),
-                                                  e => GetKey(e),
-                                                  (EntityInDb, Entity) => new { EntityInDb, Entity });
+                var mergeJoin = entitiesInDb.Join(entities, e => GetKey(e), e => GetKey(e), (EntityInDb, Entity) => new { EntityInDb, Entity });
 
                 if (entities.Count() != entitiesInDb.Count() || entities.Count() != mergeJoin.Count())
                 {

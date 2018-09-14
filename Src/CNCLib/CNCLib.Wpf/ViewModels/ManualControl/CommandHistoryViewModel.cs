@@ -26,8 +26,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class CommandHistoryViewModel : DetailViewModel
     {
-        public CommandHistoryViewModel(IManualControlViewModel vm)
-            : base(vm) { }
+        public CommandHistoryViewModel(IManualControlViewModel vm) : base(vm)
+        {
+        }
 
         public const string CommandHistoryFile = @"%USERPROFILE%\Documents\Command.txt";
 
@@ -35,11 +36,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private ObservableCollection<SentCNCCommand> _commandHistoryCollection;
 
-        public ObservableCollection<SentCNCCommand> CommandHistoryCollection
-        {
-            get => _commandHistoryCollection;
-            set => SetProperty(ref _commandHistoryCollection, value);
-        }
+        public ObservableCollection<SentCNCCommand> CommandHistoryCollection { get => _commandHistoryCollection; set => SetProperty(ref _commandHistoryCollection, value); }
 
         #endregion
 

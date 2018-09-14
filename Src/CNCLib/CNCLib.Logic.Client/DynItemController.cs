@@ -179,9 +179,7 @@ namespace CNCLib.Logic.Client
                             value = (string) str;
                         }
                     }
-                    else if (
-                        pi.PropertyType == typeof(int) ||
-                        pi.PropertyType == typeof(Byte))
+                    else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(Byte))
                     {
                         value = pi.GetValue(obj).ToString();
                     }

@@ -28,8 +28,7 @@ namespace Framework.Wpf.Helpers
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Set Property if value is different
-        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
-            where T : IComparable
+        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null) where T : IComparable
         {
             if (Equals(storage, value))
             {

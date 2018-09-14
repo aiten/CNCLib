@@ -17,7 +17,6 @@
 */
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Framework.Contracts.Repository
 {
@@ -32,10 +31,10 @@ namespace Framework.Contracts.Repository
 
     public interface ICRUDRepository<TEntity, TKey> : IGetRepository<TEntity, TKey> where TEntity : class
     {
-        void Add(TEntity                   entity);
-        void AddRange(IEnumerable<TEntity> entities);
+        void Add(TEntity    entity);
+        void Delete(TEntity entity);
 
-        void Delete(TEntity                   entity);
+        void AddRange(IEnumerable<TEntity>    entities);
         void DeleteRange(IEnumerable<TEntity> entities);
 
         void SetValue(TEntity      trackingentity, TEntity values);

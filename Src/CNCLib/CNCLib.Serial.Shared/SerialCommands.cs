@@ -16,9 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-
 namespace CNCLib.Serial.Shared
 {
     public class SerialCommands

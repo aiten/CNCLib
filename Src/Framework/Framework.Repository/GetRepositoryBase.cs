@@ -23,11 +23,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Framework.Repository
 {
-    public abstract class GetRepositoryBase<TDbContext, TEntity, TKey> : QueryRepositoryBase<TDbContext, TEntity>
-        where TDbContext : DbContext
-        where TEntity : class
+    public abstract class GetRepositoryBase<TDbContext, TEntity, TKey> : QueryRepositoryBase<TDbContext, TEntity> where TDbContext : DbContext where TEntity : class
     {
-        protected GetRepositoryBase(TDbContext dbContext) : base(dbContext) { }
+        protected GetRepositoryBase(TDbContext dbContext) : base(dbContext)
+        {
+        }
 
         protected abstract IQueryable<TEntity> AddPrimaryWhere(IQueryable<TEntity>   query, TKey              key);
         protected abstract IQueryable<TEntity> AddPrimaryWhereIn(IQueryable<TEntity> query, IEnumerable<TKey> key);

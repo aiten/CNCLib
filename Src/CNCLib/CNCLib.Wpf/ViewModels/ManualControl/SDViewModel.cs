@@ -30,25 +30,19 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class SDViewModel : DetailViewModel
     {
-        public SDViewModel(IManualControlViewModel vm) : base(vm) { }
+        public SDViewModel(IManualControlViewModel vm) : base(vm)
+        {
+        }
 
         #region Properties
 
         private string _fileName = @"%USERPROFILE%\Documents\test.GCode";
 
-        public string FileName
-        {
-            get => _fileName;
-            set => SetProperty(ref _fileName, value);
-        }
+        public string FileName { get => _fileName; set => SetProperty(ref _fileName, value); }
 
         private string _SDFileName = @"auto0.g";
 
-        public string SDFileName
-        {
-            get => _SDFileName;
-            set => SetProperty(ref _SDFileName, value);
-        }
+        public string SDFileName { get => _SDFileName; set => SetProperty(ref _SDFileName, value); }
 
         #endregion
 
@@ -115,18 +109,15 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             const int SDTimeoutCreate = 10000;
             const int SDTimeoutCopy   = 10 * 60 * 1000;
             const int SDTimeoutSave   = 10000;
-            var result =
-                await Global.Instance.Com.Current
-                    .SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m28 " + sDFileName),
-                                                    SDTimeoutCreate);
+            var       result          = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m28 " + sDFileName), SDTimeoutCreate);
             if (!string.IsNullOrEmpty(result) && result.Contains(sDFileName))
             {
                 await Global.Instance.Com.Current.SendCommandsAsync(lines, SDTimeoutCopy);
-                var resultDone =
-                    await Global.Instance.Com.Current
-                        .SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m29"), SDTimeoutSave);
+                var resultDone = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m29"), SDTimeoutSave);
 
-                if (!string.IsNullOrEmpty(resultDone) && result.Contains("Done")) { }
+                if (!string.IsNullOrEmpty(resultDone) && result.Contains("Done"))
+                {
+                }
             }
         }
 
@@ -137,11 +128,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendM30File(string filename)
         {
-            RunAndUpdate(() =>
-            {
-                Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper
-                                                             .PrepareCommand("m30 " + filename));
-            });
+            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m30 " + filename)); });
         }
 
         public void SendFileDirect()
@@ -153,9 +140,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         {
             RunAndUpdate(async () =>
             {
-                string message =
-                    await Global.Instance.Com.Current
-                        .SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"), 10000);
+                string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"), 10000);
                 if (!string.IsNullOrEmpty(message))
                 {
                     message = message.Replace("ok", "");

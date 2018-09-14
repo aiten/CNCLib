@@ -81,10 +81,7 @@ namespace Framework.Web
         /// <summary>
         /// Gets an enumeration containing all types registered with the dependency container.
         /// </summary>
-        public IEnumerable<Type> RegisteredTypes
-        {
-            get { return _container.Select(r => r.ServiceType); }
-        }
+        public IEnumerable<Type> RegisteredTypes { get { return _container.Select(r => r.ServiceType); } }
 
         public virtual object Resolve(Type t)
         {

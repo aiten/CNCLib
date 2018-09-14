@@ -20,8 +20,6 @@
 //
 //#define EXPRPARSER_MAXTOKENLENGTH 16
 
-using System;
-using System.IO;
 using Framework.Tools.Helpers;
 
 ////////////////////////////////////////////////////////

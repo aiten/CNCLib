@@ -29,8 +29,7 @@ namespace CNCLib.WebAPI.Tests.Dependency
         {
             if (!t.IsInterface)
             {
-                throw new
-                    ResolutionFailedException($"Tried to resolve type {t.FullName}. This is not an interface which indicates a bug.");
+                throw new ResolutionFailedException($"Tried to resolve type {t.FullName}. This is not an interface which indicates a bug.");
             }
 
             try

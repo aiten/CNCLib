@@ -40,31 +40,21 @@ namespace CNCLib.Wpf.WebAPI.Start
     {
         private void AppStartup(object sender, StartupEventArgs e)
         {
-            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
-                                                                                                                       XmlLanguage
-                                                                                                                           .GetLanguage(CultureInfo
-                                                                                                                                            .CurrentCulture
-                                                                                                                                            .IetfLanguageTag)));
+            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             Dependency.Initialize(new LiveDependencyProvider());
 
             Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
 
-            Dependency.Container.RegisterTypesIncludingInternals(
-                                                                 typeof(Framework.Arduino.SerialCommunication.Serial)
-                                                                     .Assembly,
+            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
                                                                  //				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
-                                                                 typeof(MachineService).Assembly,
-                                                                 typeof(Logic.Client.DynItemController).Assembly);
+                                                                 typeof(MachineService).Assembly, typeof(Logic.Client.DynItemController).Assembly);
             //			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
             Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
             Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
 
-            Dependency.Container.RegisterTypesByName(
-                                                     n => n.EndsWith("ViewModel"),
-                                                     typeof(ViewModels.MachineViewModel).Assembly,
-                                                     typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), typeof(ViewModels.MachineViewModel).Assembly, typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -83,30 +73,32 @@ namespace CNCLib.Wpf.WebAPI.Start
             // Open WebAPI Connection
             //
             bool ok = Task.Run(async () =>
-            {
-                try
                 {
-                    using (var controller = Dependency.Resolve<IMachineService>())
+                    try
                     {
-                        var m = await controller.Get(1000000);
+                        using (var controller = Dependency.Resolve<IMachineService>())
+                        {
+                            var m = await controller.Get(1000000);
 /*
 						if (m == -1)
 						{
 							throw new ArgumentException("cannot connect to service");
 						}
 */
-                    }
+                        }
 
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Cannot connect to WebAPI: {ex.Message}", "Error", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
-                    Current.Shutdown();
-                    return false;
-                }
-            }).ConfigureAwait(true).GetAwaiter().GetResult();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Cannot connect to WebAPI: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        Current.Shutdown();
+                        return false;
+                    }
+                }).
+                ConfigureAwait(true).
+                GetAwaiter().
+                GetResult();
         }
     }
 }

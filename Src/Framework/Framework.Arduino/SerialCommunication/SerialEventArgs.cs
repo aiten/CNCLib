@@ -61,7 +61,9 @@ namespace Framework.Arduino.SerialCommunication
             }
         }
 
-        public SerialEventArgs() { }
+        public SerialEventArgs()
+        {
+        }
 
         public bool   Continue { get; set; } = false;
         public bool   Abort    { get; set; } = false;

@@ -135,11 +135,7 @@ namespace CNCLib.Wpf.ViewModels
 
         private ObservableCollection<Machine> _machines;
 
-        public ObservableCollection<Machine> Machines
-        {
-            get => _machines;
-            set => SetProperty(ref _machines, value);
-        }
+        public ObservableCollection<Machine> Machines { get => _machines; set => SetProperty(ref _machines, value); }
 
         public bool Connected => Global.Instance.Com.Current.IsConnected;
 
@@ -161,11 +157,7 @@ namespace CNCLib.Wpf.ViewModels
 
         private bool _sendInitCommands = true;
 
-        public bool SendInitCommands
-        {
-            get => _sendInitCommands;
-            set => SetProperty(ref _sendInitCommands, value);
-        }
+        public bool SendInitCommands { get => _sendInitCommands; set => SetProperty(ref _sendInitCommands, value); }
 
         public bool DtrIsReset => Machine != null && Machine.DtrIsReset;
 
@@ -199,15 +191,13 @@ namespace CNCLib.Wpf.ViewModels
                     {
                         // wait (do not check if reset - arduino may reset even the "reset" is not specified)
                         await Global.Instance.Com.Current.WaitUntilResponseAsync(3000);
-                        await Global.Instance.Com.Current.QueueCommandsAsync(initCommands.OrderBy(cmd => cmd.SeqNo)
-                                                                                 .Select(e => e.CommandString));
+                        await Global.Instance.Com.Current.QueueCommandsAsync(initCommands.OrderBy(cmd => cmd.SeqNo).Select(e => e.CommandString));
                     }
                 }
             }
             catch (Exception e)
             {
-                MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK,
-                                   MessageBoxImage.Error);
+                MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
@@ -228,8 +218,7 @@ namespace CNCLib.Wpf.ViewModels
             }
             catch (Exception e)
             {
-                MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK,
-                                   MessageBoxImage.Error);
+                MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 

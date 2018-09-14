@@ -43,8 +43,7 @@ namespace CNCLib.GCode.Commands
     {
         void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo);
 
-        void DrawArc(Command cmd,       object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D ptIIJ,
-                     bool    clockwise, Pane   pane);
+        void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D ptIIJ, bool clockwise, Pane pane);
 
         void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptCenter, int xradius, int yradius);
     }

@@ -73,19 +73,11 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         private LoadOptions _loadOptions = new LoadOptions();
 
-        public LoadOptions LoadOptionsValue
-        {
-            get => _loadOptions;
-            set { SetProperty(() => _loadOptions == value, () => _loadOptions = value); }
-        }
+        public LoadOptions LoadOptionsValue { get => _loadOptions; set { SetProperty(() => _loadOptions == value, () => _loadOptions = value); } }
 
         private ObservableCollection<LoadOptions> _allLoadOptions = new ObservableCollection<LoadOptions>();
 
-        public ObservableCollection<LoadOptions> AllLoadOptions
-        {
-            get => _allLoadOptions;
-            set => SetProperty(ref _allLoadOptions, value);
-        }
+        public ObservableCollection<LoadOptions> AllLoadOptions { get => _allLoadOptions; set => SetProperty(ref _allLoadOptions, value); }
 
         private LoadOptions _selectedloadOptions = null;
 
@@ -104,19 +96,11 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         private bool _useAzure = false;
 
-        public bool UseAzure
-        {
-            get => _useAzure;
-            set { SetProperty(() => _useAzure == value, () => _useAzure = value); }
-        }
+        public bool UseAzure { get => _useAzure; set { SetProperty(() => _useAzure == value, () => _useAzure = value); } }
 
         private bool _busy = false;
 
-        public bool Busy
-        {
-            get => _busy;
-            set { SetProperty(() => _busy == value, () => _busy = value); }
-        }
+        public bool Busy { get => _busy; set { SetProperty(() => _busy == value, () => _busy = value); } }
 
         #endregion
 
@@ -155,17 +139,11 @@ namespace CNCLib.GCode.GUI.ViewModels
             {
                 ignorelist.AddRange(new string[]
                 {
-                    "ScaleX",
-                    "ScaleY",
-                    "OffsetX",
-                    "OffsetY"
+                    "ScaleX", "ScaleY", "OffsetX", "OffsetY"
                 });
             }
 
-            if (Can() && SelectedLoadOption != null &&
-                !Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(SelectedLoadOption,
-                                                                                     LoadOptionsValue,
-                                                                                     ignorelist.ToArray()))
+            if (Can() && SelectedLoadOption != null && !Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(SelectedLoadOption, LoadOptionsValue, ignorelist.ToArray()))
             {
                 return true;
             }
@@ -224,8 +202,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox?.Invoke("Save Options failed: " + ex.Message, "Error", MessageBoxButton.OK,
-                                   MessageBoxImage.Error);
+                MessageBox?.Invoke("Save Options failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
@@ -247,8 +224,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox?.Invoke("SaveAs Options failed: " + ex.Message, "Error", MessageBoxButton.OK,
-                                   MessageBoxImage.Error);
+                MessageBox?.Invoke("SaveAs Options failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
@@ -270,8 +246,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox?.Invoke("Delete Options failed: " + ex.Message, "Error", MessageBoxButton.OK,
-                                   MessageBoxImage.Error);
+                MessageBox?.Invoke("Delete Options failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
@@ -307,8 +282,7 @@ namespace CNCLib.GCode.GUI.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    MessageBox?.Invoke("ImportSettings failed: " + ex.Message, "Error", MessageBoxButton.OK,
-                                       MessageBoxImage.Error);
+                    MessageBox?.Invoke("ImportSettings failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -382,26 +356,18 @@ namespace CNCLib.GCode.GUI.ViewModels
             RaiseLoadOptionsChanged();
         }, Can);
 
-        public ICommand SaveSettingCommand => new DelegateCommand(async () => await SaveSettings(), CanSave)
-            .ObservesProperty(() => Busy);
+        public ICommand SaveSettingCommand => new DelegateCommand(async () => await SaveSettings(), CanSave).ObservesProperty(() => Busy);
 
-        public ICommand SaveAsSettingCommand => new DelegateCommand(async () => await SaveAsSettings(),
-                                                                    () =>
-                                                                        Can() &&
-                                                                        !string.IsNullOrEmpty(LoadOptionsValue
-                                                                                                  .SettingName))
-            .ObservesProperty(() => Busy);
+        public ICommand SaveAsSettingCommand =>
+            new DelegateCommand(async () => await SaveAsSettings(), () => Can() && !string.IsNullOrEmpty(LoadOptionsValue.SettingName)).ObservesProperty(() => Busy);
 
         public ICommand DeleteSettingCommand =>
-            new DelegateCommand(async () => await DeleteSettings(), () => Can() && SelectedLoadOption != null)
-                .ObservesProperty(() => Busy);
+            new DelegateCommand(async () => await DeleteSettings(), () => Can() && SelectedLoadOption != null).ObservesProperty(() => Busy);
 
-        public ICommand ImportSettingCommand => new DelegateCommand(async () => await ImportSettings(), Can)
-            .ObservesProperty(() => Busy);
+        public ICommand ImportSettingCommand => new DelegateCommand(async () => await ImportSettings(), Can).ObservesProperty(() => Busy);
 
         public ICommand ExportSettingCommand =>
-            new DelegateCommand(ExportSettings, () => Can() && SelectedLoadOption != null)
-                .ObservesProperty(() => Busy);
+            new DelegateCommand(ExportSettings, () => Can() && SelectedLoadOption != null).ObservesProperty(() => Busy);
 
         #endregion
     }

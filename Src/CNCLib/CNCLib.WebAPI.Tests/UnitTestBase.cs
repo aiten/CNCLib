@@ -44,7 +44,9 @@ namespace CNCLib.WebAPI.Tests
             InitializeCoreDependencies();
         }
 
-        protected virtual void InitializeCoreDependencies() { }
+        protected virtual void InitializeCoreDependencies()
+        {
+        }
 
         /// <summary>
         /// Resets the dependency container.

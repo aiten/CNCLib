@@ -58,8 +58,8 @@ namespace CNCLib.GCode.Commands
                 K = 0;
             }
 
-            output.DrawArc(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition,
-                           new Framework.Tools.Drawing.Point3D { X = I, Y = J, Z = K }, false, state.CurrentPane);
+            output.DrawArc(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition, new Framework.Tools.Drawing.Point3D { X = I, Y = J, Z = K }, false,
+                           state.CurrentPane);
         }
 
         #endregion

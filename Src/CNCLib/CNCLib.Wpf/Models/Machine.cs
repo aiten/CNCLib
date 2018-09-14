@@ -40,8 +40,7 @@ namespace CNCLib.Wpf.Models
 
         [Category(CATEGORY_COMMUNICATION)]
         [DisplayName("SerialServer")]
-        [Description(
-            "Name of the CNCLib.Serial.Server, e.g. IP-Address, localhost or url - if empty, local port is used")]
+        [Description("Name of the CNCLib.Serial.Server, e.g. IP-Address, localhost or url - if empty, local port is used")]
         public string SerialServer { get; set; }
 
         [Category(CATEGORY_COMMUNICATION)]
@@ -78,8 +77,7 @@ namespace CNCLib.Wpf.Models
 
         [Category(CATEGORY_COMMUNICATION)]
         [DisplayName("DtrIsReset")]
-        [Description(
-            "For Arduino Uno, Mega, ... Dtr cause a reset when connecting. For a Arduino zero Dtr must be set/used to transfer data (no reset)")]
+        [Description("For Arduino Uno, Mega, ... Dtr cause a reset when connecting. For a Arduino zero Dtr must be set/used to transfer data (no reset)")]
         public bool DtrIsReset { get; set; }
 
         [Category(CATEGORY_SIZE)]

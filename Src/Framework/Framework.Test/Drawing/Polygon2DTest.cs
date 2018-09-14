@@ -31,11 +31,7 @@ namespace Framework.Test.Drawing
             {
                 Points = new[]
                 {
-                    new Point2D { X = 0, Y   = 0 },
-                    new Point2D { X = 100, Y = 0 },
-                    new Point2D { X = 100, Y = 100 },
-                    new Point2D { X = 0, Y   = 100 },
-                    new Point2D { X = 0, Y   = 0 }
+                    new Point2D { X = 0, Y = 0 }, new Point2D { X = 100, Y = 0 }, new Point2D { X = 100, Y = 100 }, new Point2D { X = 0, Y = 100 }, new Point2D { X = 0, Y = 0 }
                 }
             };
         }
@@ -46,10 +42,7 @@ namespace Framework.Test.Drawing
             {
                 Points = new[]
                 {
-                    new Point2D { X = 0, Y   = 0 },
-                    new Point2D { X = 100, Y = 0 },
-                    new Point2D { X = 100, Y = 100 },
-                    new Point2D { X = 0, Y   = 100 }
+                    new Point2D { X = 0, Y = 0 }, new Point2D { X = 100, Y = 0 }, new Point2D { X = 100, Y = 100 }, new Point2D { X = 0, Y = 100 }
                 }
             };
         }

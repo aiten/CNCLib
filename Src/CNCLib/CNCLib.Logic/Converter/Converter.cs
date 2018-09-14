@@ -18,7 +18,6 @@
 
 using System.Collections.Generic;
 using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools.Dependency;
 using AutoMapper;
 
 namespace CNCLib.Logic.Converter
@@ -45,8 +44,7 @@ namespace CNCLib.Logic.Converter
             return mapper.Map<Repository.Contracts.Entities.Item>(from);
         }
 
-        public static IEnumerable<Item> ToDto(this IEnumerable<Repository.Contracts.Entities.Item> items,
-                                              IMapper                                              mapper)
+        public static IEnumerable<Item> ToDto(this IEnumerable<Repository.Contracts.Entities.Item> items, IMapper mapper)
         {
             return mapper.Map<IEnumerable<Item>>(items);
         }

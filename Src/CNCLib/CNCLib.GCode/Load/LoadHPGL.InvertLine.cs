@@ -121,9 +121,7 @@ namespace CNCLib.GCode.Load
 
                         if (LoadOptions.LaserSize != 0)
                         {
-                            linesOnLevel =
-                                OffsetLines(_scale / 2.0 * (double) LoadOptions.LaserSize * ((level % 2 == 0) ? 1.0 : -1.0),
-                                            linesOnLevel);
+                            linesOnLevel = OffsetLines(_scale / 2.0 * (double) LoadOptions.LaserSize * ((level % 2 == 0) ? 1.0 : -1.0), linesOnLevel);
                         }
 
                         orderdlist.AddRange(OptimizeDistanze(linesOnLevel));
@@ -152,8 +150,7 @@ namespace CNCLib.GCode.Load
                 var co        = new ClipperOffset();
                 var solution  = new List<List<IntPoint>>();
                 var solution2 = new List<List<IntPoint>>();
-                solution.Add(line.Commands.Select(x => new IntPoint(_scale * x.PointFrom.X0, _scale * x.PointFrom.Y0))
-                                 .ToList());
+                solution.Add(line.Commands.Select(x => new IntPoint(_scale * x.PointFrom.X0, _scale * x.PointFrom.Y0)).ToList());
                 co.AddPaths(solution, JoinType.jtRound, EndType.etClosedPolygon);
                 co.Execute(ref solution2, offset);
                 var existingline = line;

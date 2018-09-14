@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools.Pattern;
 using System;
 
 namespace Framework.Tools.Dependency

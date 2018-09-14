@@ -178,11 +178,7 @@ namespace Framework.Tools.Drawing
         protected void AddPixelSaturation(int x, int y, int r, int g, int b, int a)
         {
             Color pixel = GetPixel(x, y);
-            SetPixel(x, y,
-                     Color.Saturation(pixel.R + r),
-                     Color.Saturation(pixel.G + g),
-                     Color.Saturation(pixel.B + b),
-                     Color.Saturation(pixel.A + a));
+            SetPixel(x, y, Color.Saturation(pixel.R + r), Color.Saturation(pixel.G + g), Color.Saturation(pixel.B + b), Color.Saturation(pixel.A + a));
         }
 
         protected void ReadImage(Bitmap imageX)

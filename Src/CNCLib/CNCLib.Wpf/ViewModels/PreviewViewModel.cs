@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -63,139 +62,71 @@ namespace CNCLib.Wpf.ViewModels
 
         private decimal _offsetX = 0;
 
-        public decimal OffsetX
-        {
-            get => _offsetX;
-            set { SetProperty(() => _offsetX == value, () => _offsetX = value); }
-        }
+        public decimal OffsetX { get => _offsetX; set { SetProperty(() => _offsetX == value, () => _offsetX = value); } }
 
         private decimal _offsetY = 0;
 
-        public decimal OffsetY
-        {
-            get => _offsetY;
-            set { SetProperty(() => _offsetY == value, () => _offsetY = value); }
-        }
+        public decimal OffsetY { get => _offsetY; set { SetProperty(() => _offsetY == value, () => _offsetY = value); } }
 
         private double _zoom = 1;
 
-        public double Zoom
-        {
-            get => _zoom;
-            set { SetProperty(() => Math.Abs(_zoom - value) < double.Epsilon, () => _zoom = value); }
-        }
+        public double Zoom { get => _zoom; set { SetProperty(() => Math.Abs(_zoom - value) < double.Epsilon, () => _zoom = value); } }
 
         private double _rotateAngle = 0.0;
 
-        public double RotateAngle
-        {
-            get => _rotateAngle;
-            set { SetProperty(() => Math.Abs(_rotateAngle - value) < double.Epsilon, () => _rotateAngle = value); }
-        }
+        public double RotateAngle { get => _rotateAngle; set { SetProperty(() => Math.Abs(_rotateAngle - value) < double.Epsilon, () => _rotateAngle = value); } }
 
         private double[] _rotateVector = new double[] { 0, 0, 1 };
 
-        public double[] RotateVector
-        {
-            get => _rotateVector;
-            set { SetProperty(() => _rotateVector == value, () => _rotateVector = value); }
-        }
+        public double[] RotateVector { get => _rotateVector; set { SetProperty(() => _rotateVector == value, () => _rotateVector = value); } }
 
         private decimal _laserSize = 0.25m;
 
-        public decimal LaserSize
-        {
-            get => _laserSize;
-            set { SetProperty(() => _laserSize == value, () => _laserSize = value); }
-        }
+        public decimal LaserSize { get => _laserSize; set { SetProperty(() => _laserSize == value, () => _laserSize = value); } }
 
         private decimal _cutterSize = 0;
 
-        public decimal CutterSize
-        {
-            get => _cutterSize;
-            set { SetProperty(() => _cutterSize == value, () => _cutterSize = value); }
-        }
+        public decimal CutterSize { get => _cutterSize; set { SetProperty(() => _cutterSize == value, () => _cutterSize = value); } }
 
         private Color _machineColor = Colors.Black;
 
-        public Color MachineColor
-        {
-            get => _machineColor;
-            set { SetProperty(() => _machineColor == value, () => _machineColor = value); }
-        }
+        public Color MachineColor { get => _machineColor; set { SetProperty(() => _machineColor == value, () => _machineColor = value); } }
 
         private Color _laserOnColor = Colors.Red;
 
-        public Color LaserOnColor
-        {
-            get => _laserOnColor;
-            set { SetProperty(() => _laserOnColor == value, () => _laserOnColor = value); }
-        }
+        public Color LaserOnColor { get => _laserOnColor; set { SetProperty(() => _laserOnColor == value, () => _laserOnColor = value); } }
 
         private Color _laserOffColor = Colors.Orange;
 
-        public Color LaserOffColor
-        {
-            get => _laserOffColor;
-            set { SetProperty(() => _laserOffColor == value, () => _laserOffColor = value); }
-        }
+        public Color LaserOffColor { get => _laserOffColor; set { SetProperty(() => _laserOffColor == value, () => _laserOffColor = value); } }
 
         private Color _cutColor = Colors.LightGray;
 
-        public Color CutColor
-        {
-            get => _cutColor;
-            set { SetProperty(() => _cutColor == value, () => _cutColor = value); }
-        }
+        public Color CutColor { get => _cutColor; set { SetProperty(() => _cutColor == value, () => _cutColor = value); } }
 
         private Color _cutDotColor = Colors.Blue;
 
-        public Color CutDotColor
-        {
-            get => _cutDotColor;
-            set { SetProperty(() => _cutDotColor == value, () => _cutDotColor = value); }
-        }
+        public Color CutDotColor { get => _cutDotColor; set { SetProperty(() => _cutDotColor == value, () => _cutDotColor = value); } }
 
         private Color _cutEllipseColor = Colors.Cyan;
 
-        public Color CutEllipseColor
-        {
-            get => _cutEllipseColor;
-            set { SetProperty(() => _cutEllipseColor == value, () => _cutEllipseColor = value); }
-        }
+        public Color CutEllipseColor { get => _cutEllipseColor; set { SetProperty(() => _cutEllipseColor == value, () => _cutEllipseColor = value); } }
 
         private Color _cutArcColor = Colors.Beige;
 
-        public Color CutArcColor
-        {
-            get => _cutArcColor;
-            set { SetProperty(() => _cutArcColor == value, () => _cutArcColor = value); }
-        }
+        public Color CutArcColor { get => _cutArcColor; set { SetProperty(() => _cutArcColor == value, () => _cutArcColor = value); } }
 
         private Color _fastColor = Colors.Green;
 
-        public Color FastColor
-        {
-            get => _fastColor;
-            set { SetProperty(() => _fastColor == value, () => _fastColor = value); }
-        }
+        public Color FastColor { get => _fastColor; set { SetProperty(() => _fastColor == value, () => _fastColor = value); } }
 
         private Color _helpLineColor = Colors.LightBlue;
 
-        public Color HelpLineColor
-        {
-            get => _helpLineColor;
-            set { SetProperty(() => _helpLineColor == value, () => _helpLineColor = value); }
-        }
+        public Color HelpLineColor { get => _helpLineColor; set { SetProperty(() => _helpLineColor == value, () => _helpLineColor = value); } }
 
         private string _cmdHistoryFileName = @"%USERPROFILE%\Documents\Command.txt";
 
-        public string CmdHistoryFileName
-        {
-            get => _cmdHistoryFileName;
-            set { SetProperty(() => _cmdHistoryFileName == value, () => _cmdHistoryFileName = value); }
-        }
+        public string CmdHistoryFileName { get => _cmdHistoryFileName; set { SetProperty(() => _cmdHistoryFileName == value, () => _cmdHistoryFileName = value); } }
 
         #endregion
 
@@ -336,12 +267,11 @@ namespace CNCLib.Wpf.ViewModels
                             string cmdstr = cmd.ImportInfo;
                             if (!string.IsNullOrEmpty(cmdstr))
                             {
-                                cmddeflist.Add(
-                                               new CommandToIndex()
-                                               {
-                                                   Cmd         = cmd,
-                                                   CommandText = new string[] { cmdstr }
-                                               });
+                                cmddeflist.Add(new CommandToIndex()
+                                {
+                                    Cmd         = cmd,
+                                    CommandText = new string[] { cmdstr }
+                                });
                             }
                         });
                     }
@@ -352,12 +282,11 @@ namespace CNCLib.Wpf.ViewModels
 
                         Commands.ForEach(cmd =>
                         {
-                            cmddeflist.Add(
-                                           new CommandToIndex()
-                                           {
-                                               Cmd         = cmd,
-                                               CommandText = cmd.GetGCodeCommands(last?.CalculatedEndPosition, state)
-                                           });
+                            cmddeflist.Add(new CommandToIndex()
+                            {
+                                Cmd         = cmd,
+                                CommandText = cmd.GetGCodeCommands(last?.CalculatedEndPosition, state)
+                            });
                             last = cmd;
                         });
                     }
@@ -394,8 +323,7 @@ namespace CNCLib.Wpf.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    MessageBox?.Invoke("Load failed with error: " + ex.Message, "CNCLib", MessageBoxButton.OK,
-                                       MessageBoxImage.Stop);
+                    MessageBox?.Invoke("Load failed with error: " + ex.Message, "CNCLib", MessageBoxButton.OK, MessageBoxImage.Stop);
                 }
                 finally
                 {
@@ -407,8 +335,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public bool CanSendTo()
         {
-            return !_loadingOrSending && Global.Instance.Com.Current.IsConnected && Commands.Count > 0 &&
-                   IsHPGLAndPlotter();
+            return !_loadingOrSending && Global.Instance.Com.Current.IsConnected && Commands.Count > 0 && IsHPGLAndPlotter();
         }
 
         public bool CanLoad()
@@ -452,8 +379,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public void GotoPos(Point3D pt)
         {
-            Global.Instance.Com.Current.QueueCommand(
-                                                     $@"g0 x{(pt.X0).ToString(CultureInfo.InvariantCulture)} y{(pt.Y0).ToString(CultureInfo.InvariantCulture)}");
+            Global.Instance.Com.Current.QueueCommand($@"g0 x{(pt.X0).ToString(CultureInfo.InvariantCulture)} y{(pt.Y0).ToString(CultureInfo.InvariantCulture)}");
         }
 
         public bool CanGotoPos(Point3D pt)
@@ -467,10 +393,7 @@ namespace CNCLib.Wpf.ViewModels
 
         private ICommand _LoadCommand;
 
-        public ICommand LoadCommand
-        {
-            get { return _LoadCommand ?? (_LoadCommand = new DelegateCommand(async () => await Load(), CanLoad)); }
-        }
+        public ICommand LoadCommand { get { return _LoadCommand ?? (_LoadCommand = new DelegateCommand(async () => await Load(), CanLoad)); } }
 
         public ICommand SendToCommand      => new DelegateCommand(SendTo,      CanSendTo);
         public ICommand ResetViewCommandXY => new DelegateCommand(ResetViewXY, CanResetView);

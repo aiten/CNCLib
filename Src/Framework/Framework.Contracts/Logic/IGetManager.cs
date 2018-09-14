@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace Framework.Contracts.Logic
 {
-    public interface IGetManager<T, TId> where T : class
+    public interface IGetManager<T, in TId> where T : class
     {
         Task<T> Get(TId id);
 

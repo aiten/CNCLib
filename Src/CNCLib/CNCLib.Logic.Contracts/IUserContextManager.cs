@@ -16,11 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Threading.Tasks;
-using Framework.Contracts.Logic;
-
 namespace CNCLib.Logic.Contracts
 {
-    public interface IUserContextManager { }
+    public interface IUserContextManager
+    {
+    }
 }

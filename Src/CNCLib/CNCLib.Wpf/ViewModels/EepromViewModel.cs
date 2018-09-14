@@ -36,7 +36,9 @@ namespace CNCLib.Wpf.ViewModels
 
         #region dispose
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
 
         #endregion
 
@@ -44,11 +46,7 @@ namespace CNCLib.Wpf.ViewModels
 
         private Eeprom _eeprom = new Eeprom();
 
-        public Eeprom EepromValue
-        {
-            get => _eeprom;
-            set { SetProperty(() => _eeprom == value, () => _eeprom = value); }
-        }
+        public Eeprom EepromValue { get => _eeprom; set { SetProperty(() => _eeprom == value, () => _eeprom = value); } }
 
         #endregion
 
@@ -61,8 +59,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public async void WriteEeprom()
         {
-            if (MessageBox?.Invoke("Send 'Write EEprom commands' to machine?", "CNCLib", MessageBoxButton.OKCancel,
-                                   MessageBoxImage.Question) == MessageBoxResult.OK)
+            if (MessageBox?.Invoke("Send 'Write EEprom commands' to machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
                 if (await new EepromHelper().WriteEepromAsync(EepromValue))
                 {
@@ -88,8 +85,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public async void EraseEeprom()
         {
-            if (MessageBox?.Invoke("Send 'Erase EEprom command' to machine?", "CNCLib", MessageBoxButton.OKCancel,
-                                   MessageBoxImage.Question) == MessageBoxResult.OK)
+            if (MessageBox?.Invoke("Send 'Erase EEprom command' to machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
                 if (await new EepromHelper().EraseEepromAsync())
                 {

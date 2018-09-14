@@ -48,7 +48,9 @@ namespace CNCLib.Wpf.ViewModels
 
         #region dispose
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
 
         #endregion
 
@@ -56,11 +58,7 @@ namespace CNCLib.Wpf.ViewModels
 
         Machine _currentMachine = new Machine();
 
-        public Machine Machine
-        {
-            get => _currentMachine;
-            set { SetProperty(() => _currentMachine == value, () => _currentMachine = value); }
-        }
+        public Machine Machine { get => _currentMachine; set { SetProperty(() => _currentMachine == value, () => _currentMachine = value); } }
 
         public ObservableCollection<MachineCommand> MachineCommands => _currentMachine.MachineCommands;
 
@@ -159,8 +157,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public async void ReadFromMachine()
         {
-            if (MessageBox?.Invoke("Read configuration from machine?", "CNCLib", MessageBoxButton.OKCancel,
-                                   MessageBoxImage.Question) == MessageBoxResult.OK)
+            if (MessageBox?.Invoke("Read configuration from machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
                 try
                 {
@@ -202,8 +199,7 @@ namespace CNCLib.Wpf.ViewModels
                 }
                 catch (Exception e)
                 {
-                    MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK,
-                                       MessageBoxImage.Error);
+                    MessageBox?.Invoke("Open serial port failed? " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 finally
                 {

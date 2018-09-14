@@ -59,8 +59,7 @@ namespace CNCLib.Tests.Repository
             //entity1.Should().BeEquivalentTo(entity2, opts => 
             //    opts.Excluding(x => x.UserID)
             //);
-            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2,
-                                                                                       new[] { @"UserID" });
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"UserID" });
         }
 
         #endregion
@@ -99,9 +98,7 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task AddUpdateDeleteTest()
         {
-            await AddUpdateDelete(
-                                  () => new User() { UserName = "Hallo", UserPassword = "1234" },
-                                  (entity) => entity.UserPassword = "3456");
+            await AddUpdateDelete(() => new User() { UserName = "Hallo", UserPassword = "1234" }, (entity) => entity.UserPassword = "3456");
         }
 
         [TestMethod]

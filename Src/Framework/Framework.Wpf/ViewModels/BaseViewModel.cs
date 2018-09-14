@@ -75,7 +75,9 @@ namespace Framework.Wpf.ViewModels
 
         #endregion
 
-        public virtual void Cleanup() { }
+        public virtual void Cleanup()
+        {
+        }
 
         public virtual async Task Loaded()
         {

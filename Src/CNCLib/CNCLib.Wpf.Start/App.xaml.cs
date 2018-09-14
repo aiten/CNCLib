@@ -18,17 +18,13 @@
 
 using System;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Markup;
 using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
-using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Manager;
 using CNCLib.Repository.Context;
-using CNCLib.Repository.Contracts;
 using CNCLib.Service.Contracts;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
@@ -38,7 +34,6 @@ using Framework.Repository;
 using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
-using Microsoft.EntityFrameworkCore;
 using NLog;
 
 namespace CNCLib.Wpf.Start
@@ -57,35 +52,23 @@ namespace CNCLib.Wpf.Start
             string userprofilepath = Environment.GetEnvironmentVariable(@"USERPROFILE");
             AppDomain.CurrentDomain.SetData("DataDirectory", userprofilepath);
 
-            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
-                                                                                                                       XmlLanguage
-                                                                                                                           .GetLanguage(CultureInfo
-                                                                                                                                            .CurrentCulture
-                                                                                                                                            .IetfLanguageTag)));
+            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             Dependency.Initialize(new LiveDependencyProvider());
 
             Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
 
-            Dependency.Container.RegisterTypesIncludingInternals(
-                                                                 typeof(Framework.Arduino.SerialCommunication.Serial)
-                                                                     .Assembly,
-                                                                 typeof(MachineService).Assembly,
+            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly, typeof(MachineService).Assembly,
 //				typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
-                                                                 typeof(Repository.MachineRepository).Assembly,
-                                                                 typeof(Logic.Client.DynItemController).Assembly,
-                                                                 typeof(MachineManager).Assembly);
+                                                                 typeof(Repository.MachineRepository).Assembly, typeof(Logic.Client.DynItemController).Assembly, typeof(MachineManager).Assembly);
 
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
             Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
             Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
 
-            Dependency.Container.RegisterTypesByName(
-                                                     n => n.EndsWith("ViewModel"),
-                                                     typeof(ViewModels.MachineViewModel).Assembly,
-                                                     typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), typeof(ViewModels.MachineViewModel).Assembly, typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -112,9 +95,7 @@ namespace CNCLib.Wpf.Start
             {
                 _logger.Error(ex);
 
-                MessageBox.Show(
-                                $"Cannot create/connect database in {dbfile} \n\r" +
-                                ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Cannot create/connect database in {dbfile} \n\r" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Current.Shutdown();
             }
         }

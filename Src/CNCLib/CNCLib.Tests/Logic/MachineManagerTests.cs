@@ -16,22 +16,18 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CNCLib.Repository.Contracts.Entities;
 using CNCLib.Repository.Contracts;
-using CNCLib.Logic;
 using System.Linq;
 using NSubstitute;
 using Framework.Tools.Dependency;
 using System.Threading.Tasks;
 using AutoMapper;
-using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Manager;
 using FluentAssertions;
 using Framework.Contracts.Repository;
-using Framework.Tools.Pattern;
 
 namespace CNCLib.Tests.Logic
 {
@@ -369,9 +365,7 @@ namespace CNCLib.Tests.Logic
 
             repC.Get("Environment", "DefaultMachineID").Returns(new Configuration { Value = "14" });
 
-            await repC.Received()
-                .Store(Arg.Is<Configuration>(x => x.Group == "Environment" && x.Name == "DefaultMachineID" &&
-                                                  x.Value == "15"));
+            await repC.Received().Store(Arg.Is<Configuration>(x => x.Group == "Environment" && x.Name == "DefaultMachineID" && x.Value == "15"));
         }
     }
 }

@@ -74,10 +74,8 @@ namespace CNCLib.Wpf.Helpers
             }
             else
             {
-                string btn = trim.Substring(0, idx + 1);
-                var mclist = Global.Instance.Machine.MachineCommands
-                    .Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn)
-                    .ToList();
+                string btn    = trim.Substring(0, idx + 1);
+                var    mclist = Global.Instance.Machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
 
                 uint max = 0;
                 foreach (var m in mclist)

@@ -28,8 +28,7 @@ namespace CNCLib.Wpf.Helpers
     {
         public async Task<Eeprom> ReadEepromAsync()
         {
-            UInt32[] values =
-                await new MachineGCodeHelper().GetEpromValuesAsync(MachineGCodeHelper.DefaultEpromTimeout);
+            UInt32[] values = await new MachineGCodeHelper().GetEpromValuesAsync(MachineGCodeHelper.DefaultEpromTimeout);
             if (values != null)
             {
                 var ee = new EepromV1 { Values = values };

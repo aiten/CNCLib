@@ -20,7 +20,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media.Converters;
 using CNCLib.GCode;
 using CNCLib.Wpf.Helpers;
 using Framework.Wpf.Helpers;
@@ -30,8 +29,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class WorkOffsetViewModel : DetailViewModel
     {
-        public WorkOffsetViewModel(IManualControlViewModel vm)
-            : base(vm) { }
+        public WorkOffsetViewModel(IManualControlViewModel vm) : base(vm)
+        {
+        }
 
         #region Properties
 
@@ -43,113 +43,41 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             RaisePropertyChanged($"G{54 + offset}{GCodeHelper.IndexToAxisName(axis)}");
         }
 
-        public decimal? G54X
-        {
-            get => _g54[0, 0];
-            set => SetField(0, 0, value);
-        }
+        public decimal? G54X { get => _g54[0, 0]; set => SetField(0, 0, value); }
 
-        public decimal? G54Y
-        {
-            get => _g54[1, 0];
-            set => SetField(1, 0, value);
-        }
+        public decimal? G54Y { get => _g54[1, 0]; set => SetField(1, 0, value); }
 
-        public decimal? G54Z
-        {
-            get => _g54[2, 0];
-            set => SetField(2, 0, value);
-        }
+        public decimal? G54Z { get => _g54[2, 0]; set => SetField(2, 0, value); }
 
-        public decimal? G55X
-        {
-            get => _g54[0, 1];
-            set => SetField(0, 1, value);
-        }
+        public decimal? G55X { get => _g54[0, 1]; set => SetField(0, 1, value); }
 
-        public decimal? G55Y
-        {
-            get => _g54[1, 1];
-            set => SetField(1, 1, value);
-        }
+        public decimal? G55Y { get => _g54[1, 1]; set => SetField(1, 1, value); }
 
-        public decimal? G55Z
-        {
-            get => _g54[2, 1];
-            set => SetField(2, 1, value);
-        }
+        public decimal? G55Z { get => _g54[2, 1]; set => SetField(2, 1, value); }
 
-        public decimal? G56X
-        {
-            get => _g54[0, 2];
-            set => SetField(0, 2, value);
-        }
+        public decimal? G56X { get => _g54[0, 2]; set => SetField(0, 2, value); }
 
-        public decimal? G56Y
-        {
-            get => _g54[1, 2];
-            set => SetField(1, 2, value);
-        }
+        public decimal? G56Y { get => _g54[1, 2]; set => SetField(1, 2, value); }
 
-        public decimal? G56Z
-        {
-            get => _g54[2, 2];
-            set => SetField(2, 2, value);
-        }
+        public decimal? G56Z { get => _g54[2, 2]; set => SetField(2, 2, value); }
 
-        public decimal? G57X
-        {
-            get => _g54[0, 3];
-            set => SetField(0, 3, value);
-        }
+        public decimal? G57X { get => _g54[0, 3]; set => SetField(0, 3, value); }
 
-        public decimal? G57Y
-        {
-            get => _g54[1, 3];
-            set => SetField(1, 3, value);
-        }
+        public decimal? G57Y { get => _g54[1, 3]; set => SetField(1, 3, value); }
 
-        public decimal? G57Z
-        {
-            get => _g54[2, 3];
-            set => SetField(2, 3, value);
-        }
+        public decimal? G57Z { get => _g54[2, 3]; set => SetField(2, 3, value); }
 
-        public decimal? G58X
-        {
-            get => _g54[0, 4];
-            set => SetField(0, 4, value);
-        }
+        public decimal? G58X { get => _g54[0, 4]; set => SetField(0, 4, value); }
 
-        public decimal? G58Y
-        {
-            get => _g54[1, 4];
-            set => SetField(1, 4, value);
-        }
+        public decimal? G58Y { get => _g54[1, 4]; set => SetField(1, 4, value); }
 
-        public decimal? G58Z
-        {
-            get => _g54[2, 4];
-            set => SetField(2, 4, value);
-        }
+        public decimal? G58Z { get => _g54[2, 4]; set => SetField(2, 4, value); }
 
-        public decimal? G59X
-        {
-            get => _g54[0, 5];
-            set => SetField(0, 5, value);
-        }
+        public decimal? G59X { get => _g54[0, 5]; set => SetField(0, 5, value); }
 
-        public decimal? G59Y
-        {
-            get => _g54[1, 5];
-            set => SetField(1, 5, value);
-        }
+        public decimal? G59Y { get => _g54[1, 5]; set => SetField(1, 5, value); }
 
-        public decimal? G59Z
-        {
-            get => _g54[2, 5];
-            set => SetField(2, 5, value);
-        }
+        public decimal? G59Z { get => _g54[2, 5]; set => SetField(2, 5, value); }
 
         #endregion
 
@@ -192,10 +120,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private async Task<decimal?> GetParameterValue(int parameter)
         {
-            string message =
-                await Global.Instance.Com.Current
-                    .SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand($"(print, #{parameter})"),
-                                                    10 * 1000);
+            string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand($"(print, #{parameter})"), 10 * 1000);
 
             if (!string.IsNullOrEmpty(message))
             {
@@ -241,15 +166,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SetG5x(int offsetG)
         {
-            string x = _g54[0, offsetG].HasValue
-                ? $" X{_g54[0, offsetG].Value.ToString(CultureInfo.InvariantCulture)}"
-                : "";
-            string y = _g54[1, offsetG].HasValue
-                ? $" Y{_g54[1, offsetG].Value.ToString(CultureInfo.InvariantCulture)}"
-                : "";
-            string z = _g54[2, offsetG].HasValue
-                ? $" Z{_g54[2, offsetG].Value.ToString(CultureInfo.InvariantCulture)}"
-                : "";
+            string x = _g54[0, offsetG].HasValue ? $" X{_g54[0, offsetG].Value.ToString(CultureInfo.InvariantCulture)}" : "";
+            string y = _g54[1, offsetG].HasValue ? $" Y{_g54[1, offsetG].Value.ToString(CultureInfo.InvariantCulture)}" : "";
+            string z = _g54[2, offsetG].HasValue ? $" Z{_g54[2, offsetG].Value.ToString(CultureInfo.InvariantCulture)}" : "";
 
             // p0 => current
             // p1 => g54

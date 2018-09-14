@@ -45,8 +45,7 @@ namespace CNCLib.Repository.Context
 
             var users = new[]
             {
-                user1,
-                user2
+                user1, user2
             };
 
             context.Users.AddRange(users);
@@ -81,8 +80,7 @@ namespace CNCLib.Repository.Context
                 Coolant        = true,
                 Rotate         = true,
                 Laser          = false,
-
-                User = users[0]
+                User           = users[0]
             };
 
             var kk1000s = new Machine
@@ -221,12 +219,7 @@ namespace CNCLib.Repository.Context
 
             var machines = new[]
             {
-                proxonMF70,
-                kk1000s,
-                laser,
-                minilaser,
-                dck40laser,
-                miniCNC
+                proxonMF70, kk1000s, laser, minilaser, dck40laser, miniCNC
             };
 
             var machinecommands = new[]
@@ -668,14 +661,10 @@ namespace CNCLib.Repository.Context
 
             var machineinitcommands = new[]
             {
-                new MachineInitCommand { Machine = minilaser, SeqNo = 0, CommandString = @"g0 x2" },
-                new MachineInitCommand { Machine = minilaser, SeqNo = 1, CommandString = @"g28 x0" },
-                new MachineInitCommand { Machine = minilaser, SeqNo = 2, CommandString = @"g0 x36" },
-                new MachineInitCommand { Machine = minilaser, SeqNo = 3, CommandString = @"g0 x0" },
-                new MachineInitCommand { Machine = minilaser, SeqNo = 4, CommandString = @"g0 y2" },
-                new MachineInitCommand { Machine = minilaser, SeqNo = 5, CommandString = @"g28 y0" },
-                new MachineInitCommand { Machine = minilaser, SeqNo = 6, CommandString = @"g0 y36" },
-                new MachineInitCommand { Machine = minilaser, SeqNo = 7, CommandString = @"g0 y0" }
+                new MachineInitCommand { Machine = minilaser, SeqNo = 0, CommandString = @"g0 x2" }, new MachineInitCommand { Machine  = minilaser, SeqNo = 1, CommandString = @"g28 x0" },
+                new MachineInitCommand { Machine = minilaser, SeqNo = 2, CommandString = @"g0 x36" }, new MachineInitCommand { Machine = minilaser, SeqNo = 3, CommandString = @"g0 x0" },
+                new MachineInitCommand { Machine = minilaser, SeqNo = 4, CommandString = @"g0 y2" }, new MachineInitCommand { Machine  = minilaser, SeqNo = 5, CommandString = @"g28 y0" },
+                new MachineInitCommand { Machine = minilaser, SeqNo = 6, CommandString = @"g0 y36" }, new MachineInitCommand { Machine = minilaser, SeqNo = 7, CommandString = @"g0 y0" }
             };
 
             context.Machines.AddRange(machines);
@@ -723,44 +712,33 @@ namespace CNCLib.Repository.Context
                 Name      = @"mill cut"
             };
 
-            var items = new[]
-                { cutItem, cutHoleItem, graveItem, graveIMGItem, graveIMGG00G01Item, graveMillItem, cutMillItem };
+            var items = new[] { cutItem, cutHoleItem, graveItem, graveIMGItem, graveIMGG00G01Item, graveMillItem, cutMillItem };
 
             var itemproperties = new[]
             {
                 //cut
                 new ItemProperty { Item = cutItem, Name = @"SettingName", Value         = cutItem.Name },
                 new ItemProperty { Item = cutItem, Name = @"LaserFirstOnCommand", Value = @"M3 S255\ng4 P0.3" },
-                new ItemProperty { Item = cutItem, Name = @"LaserOnCommand", Value      = @"M3\ng4 P0.3" },
-                new ItemProperty { Item = cutItem, Name = @"LaserOffCommand", Value     = @"M5" },
-                new ItemProperty { Item = cutItem, Name = @"LaserLastOffCommand", Value = @"M5" },
-                new ItemProperty { Item = cutItem, Name = @"LaserSize", Value           = @"0.3" },
-                new ItemProperty { Item = cutItem, Name = @"PenMoveType", Value         = @"CommandString" },
-                new ItemProperty { Item = cutItem, Name = @"AutoScale", Value           = @"true" },
-                new ItemProperty { Item = cutItem, Name = @"AutoScaleSizeX", Value      = @"150" },
-                new ItemProperty { Item = cutItem, Name = @"AutoScaleSizeY", Value      = @"150" },
+                new ItemProperty { Item = cutItem, Name = @"LaserOnCommand", Value      = @"M3\ng4 P0.3" }, new ItemProperty { Item   = cutItem, Name = @"LaserOffCommand", Value = @"M5" },
+                new ItemProperty { Item = cutItem, Name = @"LaserLastOffCommand", Value = @"M5" }, new ItemProperty { Item            = cutItem, Name = @"LaserSize", Value       = @"0.3" },
+                new ItemProperty { Item = cutItem, Name = @"PenMoveType", Value         = @"CommandString" }, new ItemProperty { Item = cutItem, Name = @"AutoScale", Value       = @"true" },
+                new ItemProperty { Item = cutItem, Name = @"AutoScaleSizeX", Value      = @"150" }, new ItemProperty { Item           = cutItem, Name = @"AutoScaleSizeY", Value  = @"150" },
                 new ItemProperty { Item = cutItem, Name = @"AutoScaleCenter", Value     = @"true" },
                 new ItemProperty { Item = cutItem, Name = @"ConvertType", Value         = @"InvertLineSequence" },
-                new ItemProperty { Item = cutItem, Name = @"MoveSpeed", Value           = @"450" },
-                new ItemProperty { Item = cutItem, Name = @"LoadType", Value            = @"HPGL" },
+                new ItemProperty { Item = cutItem, Name = @"MoveSpeed", Value           = @"450" }, new ItemProperty { Item = cutItem, Name = @"LoadType", Value = @"HPGL" },
                 new ItemProperty { Item = cutItem, Name = @"FileName", Value            = @"Examples\Ghost.hpgl" },
 
 
                 //cut-image
                 new ItemProperty { Item = cutHoleItem, Name = @"SettingName", Value         = cutHoleItem.Name },
                 new ItemProperty { Item = cutHoleItem, Name = @"LaserFirstOnCommand", Value = @"M3 S255\ng4 P0.25" },
-                new ItemProperty { Item = cutHoleItem, Name = @"LaserOnCommand", Value      = @"M3\ng4 P0.25" },
-                new ItemProperty { Item = cutHoleItem, Name = @"LaserOffCommand", Value     = @"M5" },
+                new ItemProperty { Item = cutHoleItem, Name = @"LaserOnCommand", Value      = @"M3\ng4 P0.25" }, new ItemProperty { Item = cutHoleItem, Name = @"LaserOffCommand", Value = @"M5" },
                 new ItemProperty { Item = cutHoleItem, Name = @"LaserLastOffCommand", Value = @"M5" },
                 new ItemProperty { Item = cutHoleItem, Name = @"PenMoveType", Value         = @"CommandString" },
-                new ItemProperty { Item = cutHoleItem, Name = @"AutoScale", Value           = @"true" },
-                new ItemProperty { Item = cutHoleItem, Name = @"AutoScaleSizeX", Value      = @"200" },
-                new ItemProperty { Item = cutHoleItem, Name = @"AutoScaleSizeY", Value      = @"290" },
-                new ItemProperty { Item = cutHoleItem, Name = @"MoveSpeed", Value           = @"500" },
-                new ItemProperty { Item = cutHoleItem, Name = @"ImageDPIX", Value           = @"12" },
-                new ItemProperty { Item = cutHoleItem, Name = @"ImageDPIY", Value           = @"12" },
-                new ItemProperty { Item = cutHoleItem, Name = @"DotDistX", Value            = @"0.7" },
-                new ItemProperty { Item = cutHoleItem, Name = @"DotDistY", Value            = @"0.7" },
+                new ItemProperty { Item = cutHoleItem, Name = @"AutoScale", Value           = @"true" }, new ItemProperty { Item = cutHoleItem, Name = @"AutoScaleSizeX", Value = @"200" },
+                new ItemProperty { Item = cutHoleItem, Name = @"AutoScaleSizeY", Value      = @"290" }, new ItemProperty { Item  = cutHoleItem, Name = @"MoveSpeed", Value      = @"500" },
+                new ItemProperty { Item = cutHoleItem, Name = @"ImageDPIX", Value           = @"12" }, new ItemProperty { Item   = cutHoleItem, Name = @"ImageDPIY", Value      = @"12" },
+                new ItemProperty { Item = cutHoleItem, Name = @"DotDistX", Value            = @"0.7" }, new ItemProperty { Item  = cutHoleItem, Name = @"DotDistY", Value       = @"0.7" },
                 new ItemProperty { Item = cutHoleItem, Name = @"HoleType", Value            = @"Diamond" },
                 new ItemProperty { Item = cutHoleItem, Name = @"LoadType", Value            = @"ImageHole" },
                 new ItemProperty { Item = cutHoleItem, Name = @"FileName", Value            = @"Examples\girl1.jpg" },
@@ -768,23 +746,17 @@ namespace CNCLib.Repository.Context
                 //grave laser
                 new ItemProperty { Item = graveItem, Name = @"SettingName", Value         = graveItem.Name },
                 new ItemProperty { Item = graveItem, Name = @"PenMoveType", Value         = @"CommandString" },
-                new ItemProperty { Item = graveItem, Name = @"MoveSpeed", Value           = @"450" },
-                new ItemProperty { Item = graveItem, Name = @"LoadType", Value            = @"HPGL" },
-                new ItemProperty { Item = graveItem, Name = @"LaserFirstOnCommand", Value = @"M3 S255" },
-                new ItemProperty { Item = graveItem, Name = @"LaserOnCommand", Value      = @"M3" },
-                new ItemProperty { Item = graveItem, Name = @"LaserOffCommand", Value     = @"M5" },
-                new ItemProperty { Item = graveItem, Name = @"LaserLastOffCommand", Value = @"M5" },
+                new ItemProperty { Item = graveItem, Name = @"MoveSpeed", Value           = @"450" }, new ItemProperty { Item     = graveItem, Name = @"LoadType", Value            = @"HPGL" },
+                new ItemProperty { Item = graveItem, Name = @"LaserFirstOnCommand", Value = @"M3 S255" }, new ItemProperty { Item = graveItem, Name = @"LaserOnCommand", Value      = @"M3" },
+                new ItemProperty { Item = graveItem, Name = @"LaserOffCommand", Value     = @"M5" }, new ItemProperty { Item      = graveItem, Name = @"LaserLastOffCommand", Value = @"M5" },
                 new ItemProperty { Item = graveItem, Name = @"FileName", Value            = @"Examples\snoopy.plt" },
 
                 //grave Image
                 new ItemProperty { Item = graveIMGItem, Name = @"SettingName", Value    = graveIMGItem.Name },
                 new ItemProperty { Item = graveIMGItem, Name = @"PenMoveType", Value    = @"CommandString" },
-                new ItemProperty { Item = graveIMGItem, Name = @"MoveSpeed", Value      = @"450" },
-                new ItemProperty { Item = graveIMGItem, Name = @"AutoScale", Value      = @"true" },
-                new ItemProperty { Item = graveIMGItem, Name = @"ImageDPIX", Value      = @"66.7" },
-                new ItemProperty { Item = graveIMGItem, Name = @"ImageDPIY", Value      = @"66.7" },
-                new ItemProperty { Item = graveIMGItem, Name = @"AutoScaleSizeX", Value = @"150" },
-                new ItemProperty { Item = graveIMGItem, Name = @"AutoScaleSizeY", Value = @"150" },
+                new ItemProperty { Item = graveIMGItem, Name = @"MoveSpeed", Value      = @"450" }, new ItemProperty { Item  = graveIMGItem, Name = @"AutoScale", Value      = @"true" },
+                new ItemProperty { Item = graveIMGItem, Name = @"ImageDPIX", Value      = @"66.7" }, new ItemProperty { Item = graveIMGItem, Name = @"ImageDPIY", Value      = @"66.7" },
+                new ItemProperty { Item = graveIMGItem, Name = @"AutoScaleSizeX", Value = @"150" }, new ItemProperty { Item  = graveIMGItem, Name = @"AutoScaleSizeY", Value = @"150" },
                 new ItemProperty { Item = graveIMGItem, Name = @"LoadType", Value       = @"Image" },
                 new ItemProperty { Item = graveIMGItem, Name = @"FileName", Value       = @"Examples\girl2.png" },
 
@@ -820,8 +792,7 @@ namespace CNCLib.Repository.Context
                 new ItemProperty { Item = graveMillItem, Name = @"LoadType", Value              = @"HPGL" },
                 new ItemProperty { Item = graveMillItem, Name = @"EngravePosUp", Value          = @"1.5" },
                 new ItemProperty { Item = graveMillItem, Name = @"EngravePosDown", Value        = @"-0.75" },
-                new ItemProperty { Item = graveMillItem, Name = @"EngravePosInParameter", Value = @"false" },
-                new ItemProperty
+                new ItemProperty { Item = graveMillItem, Name = @"EngravePosInParameter", Value = @"false" }, new ItemProperty
                 {
                     Item  = graveMillItem,
                     Name  = @"FileName",
@@ -829,18 +800,13 @@ namespace CNCLib.Repository.Context
                 },
 
                 //cut mill
-                new ItemProperty { Item = cutMillItem, Name = @"SettingName", Value           = cutMillItem.Name },
-                new ItemProperty { Item = cutMillItem, Name = @"LaserSize", Value             = @"1" },
-                new ItemProperty { Item = cutMillItem, Name = @"PenMoveType", Value           = @"ZMove" },
-                new ItemProperty { Item = cutMillItem, Name = @"AutoScale", Value             = @"true" },
-                new ItemProperty { Item = cutMillItem, Name = @"AutoScaleSizeX", Value        = @"150" },
-                new ItemProperty { Item = cutMillItem, Name = @"AutoScaleSizeY", Value        = @"150" },
+                new ItemProperty { Item = cutMillItem, Name = @"SettingName", Value           = cutMillItem.Name }, new ItemProperty { Item = cutMillItem, Name = @"LaserSize", Value      = @"1" },
+                new ItemProperty { Item = cutMillItem, Name = @"PenMoveType", Value           = @"ZMove" }, new ItemProperty { Item         = cutMillItem, Name = @"AutoScale", Value      = @"true" },
+                new ItemProperty { Item = cutMillItem, Name = @"AutoScaleSizeX", Value        = @"150" }, new ItemProperty { Item           = cutMillItem, Name = @"AutoScaleSizeY", Value = @"150" },
                 new ItemProperty { Item = cutMillItem, Name = @"AutoScaleCenter", Value       = @"true" },
                 new ItemProperty { Item = cutMillItem, Name = @"ConvertType", Value           = @"InvertLineSequence" },
-                new ItemProperty { Item = cutMillItem, Name = @"MoveSpeed", Value             = @"450" },
-                new ItemProperty { Item = cutMillItem, Name = @"LoadType", Value              = @"HPGL" },
-                new ItemProperty { Item = cutMillItem, Name = @"EngravePosUp", Value          = @"1.5" },
-                new ItemProperty { Item = cutMillItem, Name = @"EngravePosDown", Value        = @"-4" },
+                new ItemProperty { Item = cutMillItem, Name = @"MoveSpeed", Value             = @"450" }, new ItemProperty { Item = cutMillItem, Name = @"LoadType", Value       = @"HPGL" },
+                new ItemProperty { Item = cutMillItem, Name = @"EngravePosUp", Value          = @"1.5" }, new ItemProperty { Item = cutMillItem, Name = @"EngravePosDown", Value = @"-4" },
                 new ItemProperty { Item = cutMillItem, Name = @"EngravePosInParameter", Value = @"false" },
                 new ItemProperty { Item = cutMillItem, Name = @"FileName", Value              = @"Examples\witch.hpgl" }
             };

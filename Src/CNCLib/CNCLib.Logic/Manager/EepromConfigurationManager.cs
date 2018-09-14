@@ -45,15 +45,13 @@ namespace CNCLib.Logic.Manager
             if (Math.Abs(param.TimeToAcc) > double.Epsilon)
             {
                 result.EstimatedAccelerationInMmSec2 = result.EstimatedMaxSpeedInMmSec / param.TimeToAcc;
-                result.EstimatedAcc =
-                    Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToAcc) * acc_corr;
+                result.EstimatedAcc                  = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToAcc) * acc_corr;
             }
 
             if (Math.Abs(param.TimeToDec) > double.Epsilon)
             {
                 result.EstimatedDecelerationInMmSec2 = result.EstimatedMaxSpeedInMmSec / param.TimeToDec;
-                result.EstimatedDec =
-                    Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToDec) * acc_corr;
+                result.EstimatedDec                  = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToDec) * acc_corr;
             }
 
             result.EstimatedJerkSpeed = result.EstimatedMaxStepRate / jerkfactor;

@@ -164,15 +164,9 @@ namespace Framework.Tools.Clipper
             return result;
         }
 
-        public int ChildCount
-        {
-            get { return m_Childs.Count; }
-        }
+        public int ChildCount { get { return m_Childs.Count; } }
 
-        public Path Contour
-        {
-            get { return m_polygon; }
-        }
+        public Path Contour { get { return m_polygon; } }
 
         internal void AddChild(PolyNode Child)
         {
@@ -210,20 +204,11 @@ namespace Framework.Tools.Clipper
             }
         }
 
-        public List<PolyNode> Childs
-        {
-            get { return m_Childs; }
-        }
+        public List<PolyNode> Childs { get { return m_Childs; } }
 
-        public PolyNode Parent
-        {
-            get { return m_Parent; }
-        }
+        public PolyNode Parent { get { return m_Parent; } }
 
-        public bool IsHole
-        {
-            get { return IsHoleNode(); }
-        }
+        public bool IsHole { get { return IsHoleNode(); } }
 
         public bool IsOpen { get; set; }
     }
@@ -751,26 +736,19 @@ namespace Framework.Tools.Clipper
         }
         //------------------------------------------------------------------------------
 
-        internal bool PointOnLineSegment(IntPoint pt,
-                                         IntPoint linePt1, IntPoint linePt2, bool UseFullRange)
+        internal bool PointOnLineSegment(IntPoint pt, IntPoint linePt1, IntPoint linePt2, bool UseFullRange)
         {
             if (UseFullRange)
             {
-                return ((pt.X == linePt1.X) && (pt.Y == linePt1.Y)) ||
-                       ((pt.X == linePt2.X) && (pt.Y == linePt2.Y)) ||
-                       (((pt.X > linePt1.X) == (pt.X < linePt2.X)) &&
-                        ((pt.Y > linePt1.Y) == (pt.Y < linePt2.Y)) &&
-                        ((Int128.Int128Mul((pt.X - linePt1.X),      (linePt2.Y - linePt1.Y)) ==
-                          Int128.Int128Mul((linePt2.X - linePt1.X), (pt.Y - linePt1.Y)))));
+                return ((pt.X == linePt1.X) && (pt.Y == linePt1.Y)) || ((pt.X == linePt2.X) && (pt.Y == linePt2.Y)) ||
+                       (((pt.X > linePt1.X) == (pt.X < linePt2.X)) && ((pt.Y > linePt1.Y) == (pt.Y < linePt2.Y)) &&
+                        ((Int128.Int128Mul((pt.X - linePt1.X), (linePt2.Y - linePt1.Y)) == Int128.Int128Mul((linePt2.X - linePt1.X), (pt.Y - linePt1.Y)))));
             }
             else
             {
-                return ((pt.X == linePt1.X) && (pt.Y == linePt1.Y)) ||
-                       ((pt.X == linePt2.X) && (pt.Y == linePt2.Y)) ||
-                       (((pt.X > linePt1.X) == (pt.X < linePt2.X)) &&
-                        ((pt.Y > linePt1.Y) == (pt.Y < linePt2.Y)) &&
-                        ((pt.X - linePt1.X) * (linePt2.Y - linePt1.Y) ==
-                         (linePt2.X - linePt1.X) * (pt.Y - linePt1.Y)));
+                return ((pt.X == linePt1.X) && (pt.Y == linePt1.Y)) || ((pt.X == linePt2.X) && (pt.Y == linePt2.Y)) ||
+                       (((pt.X > linePt1.X) == (pt.X < linePt2.X)) && ((pt.Y > linePt1.Y) == (pt.Y < linePt2.Y)) &&
+                        ((pt.X - linePt1.X) * (linePt2.Y - linePt1.Y) == (linePt2.X - linePt1.X) * (pt.Y - linePt1.Y)));
             }
         }
         //------------------------------------------------------------------------------
@@ -800,45 +778,37 @@ namespace Framework.Tools.Clipper
         {
             if (UseFullRange)
             {
-                return Int128.Int128Mul(e1.Delta.Y, e2.Delta.X) ==
-                       Int128.Int128Mul(e1.Delta.X, e2.Delta.Y);
+                return Int128.Int128Mul(e1.Delta.Y, e2.Delta.X) == Int128.Int128Mul(e1.Delta.X, e2.Delta.Y);
             }
             else
             {
-                return (cInt) (e1.Delta.Y) * (e2.Delta.X) ==
-                       (cInt) (e1.Delta.X) * (e2.Delta.Y);
+                return (cInt) (e1.Delta.Y) * (e2.Delta.X) == (cInt) (e1.Delta.X) * (e2.Delta.Y);
             }
         }
         //------------------------------------------------------------------------------
 
-        internal static bool SlopesEqual(IntPoint pt1, IntPoint pt2,
-                                         IntPoint pt3, bool     UseFullRange)
+        internal static bool SlopesEqual(IntPoint pt1, IntPoint pt2, IntPoint pt3, bool UseFullRange)
         {
             if (UseFullRange)
             {
-                return Int128.Int128Mul(pt1.Y - pt2.Y, pt2.X - pt3.X) ==
-                       Int128.Int128Mul(pt1.X - pt2.X, pt2.Y - pt3.Y);
+                return Int128.Int128Mul(pt1.Y - pt2.Y, pt2.X - pt3.X) == Int128.Int128Mul(pt1.X - pt2.X, pt2.Y - pt3.Y);
             }
             else
             {
-                return
-                    (cInt) (pt1.Y - pt2.Y) * (pt2.X - pt3.X) - (cInt) (pt1.X - pt2.X) * (pt2.Y - pt3.Y) == 0;
+                return (cInt) (pt1.Y - pt2.Y) * (pt2.X - pt3.X) - (cInt) (pt1.X - pt2.X) * (pt2.Y - pt3.Y) == 0;
             }
         }
         //------------------------------------------------------------------------------
 
-        internal static bool SlopesEqual(IntPoint pt1, IntPoint pt2,
-                                         IntPoint pt3, IntPoint pt4, bool UseFullRange)
+        internal static bool SlopesEqual(IntPoint pt1, IntPoint pt2, IntPoint pt3, IntPoint pt4, bool UseFullRange)
         {
             if (UseFullRange)
             {
-                return Int128.Int128Mul(pt1.Y - pt2.Y, pt3.X - pt4.X) ==
-                       Int128.Int128Mul(pt1.X - pt2.X, pt3.Y - pt4.Y);
+                return Int128.Int128Mul(pt1.Y - pt2.Y, pt3.X - pt4.X) == Int128.Int128Mul(pt1.X - pt2.X, pt3.Y - pt4.Y);
             }
             else
             {
-                return
-                    (cInt) (pt1.Y - pt2.Y) * (pt3.X - pt4.X) - (cInt) (pt1.X - pt2.X) * (pt3.Y - pt4.Y) == 0;
+                return (cInt) (pt1.Y - pt2.Y) * (pt3.X - pt4.X) - (cInt) (pt1.X - pt2.X) * (pt3.Y - pt4.Y) == 0;
             }
         }
         //------------------------------------------------------------------------------
@@ -901,8 +871,7 @@ namespace Framework.Tools.Clipper
         }
         //------------------------------------------------------------------------------
 
-        private void InitEdge(TEdge e,     TEdge    eNext,
-                              TEdge ePrev, IntPoint pt)
+        private void InitEdge(TEdge e, TEdge eNext, TEdge ePrev, IntPoint pt)
         {
             e.Next   = eNext;
             e.Prev   = ePrev;
@@ -1128,8 +1097,7 @@ namespace Framework.Tools.Clipper
                         Horz = Horz.Next;
                     }
 
-                    if (Horz.Next.Top.X == Result.Prev.Top.X ||
-                        Horz.Next.Top.X > Result.Prev.Top.X)
+                    if (Horz.Next.Top.X == Result.Prev.Top.X || Horz.Next.Top.X > Result.Prev.Top.X)
                     {
                         Result = Horz.Next;
                     }
@@ -1239,10 +1207,7 @@ namespace Framework.Tools.Clipper
                 {
                     break; //only two vertices
                 }
-                else if (Closed &&
-                         SlopesEqual(E.Prev.Curr, E.Curr, E.Next.Curr, m_UseFullRange) &&
-                         (!PreserveCollinear ||
-                          !Pt2IsBetweenPt1AndPt3(E.Prev.Curr, E.Curr, E.Next.Curr)))
+                else if (Closed && SlopesEqual(E.Prev.Curr, E.Curr, E.Next.Curr, m_UseFullRange) && (!PreserveCollinear || !Pt2IsBetweenPt1AndPt3(E.Prev.Curr, E.Curr, E.Next.Curr)))
                 {
                     //Collinear edges are allowed for open paths but in closed paths
                     //the default is to merge adjacent collinear edges into a single edge.
@@ -1733,8 +1698,7 @@ namespace Framework.Tools.Clipper
         internal void SwapPositionsInAEL(TEdge edge1, TEdge edge2)
         {
             //check that one or other edge hasn't already been removed from AEL ...
-            if (edge1.NextInAEL == edge1.PrevInAEL ||
-                edge2.NextInAEL == edge2.PrevInAEL)
+            if (edge1.NextInAEL == edge1.PrevInAEL || edge2.NextInAEL == edge2.PrevInAEL)
             {
                 return;
             }
@@ -1941,22 +1905,19 @@ namespace Framework.Tools.Clipper
         public bool StrictlySimple { get; set; }
         //------------------------------------------------------------------------------
 
-        public bool Execute(ClipType     clipType, Paths solution,
-                            PolyFillType FillType = PolyFillType.pftEvenOdd)
+        public bool Execute(ClipType clipType, Paths solution, PolyFillType FillType = PolyFillType.pftEvenOdd)
         {
             return Execute(clipType, solution, FillType, FillType);
         }
         //------------------------------------------------------------------------------
 
-        public bool Execute(ClipType     clipType, PolyTree polytree,
-                            PolyFillType FillType = PolyFillType.pftEvenOdd)
+        public bool Execute(ClipType clipType, PolyTree polytree, PolyFillType FillType = PolyFillType.pftEvenOdd)
         {
             return Execute(clipType, polytree, FillType, FillType);
         }
         //------------------------------------------------------------------------------
 
-        public bool Execute(ClipType     clipType,     Paths        solution,
-                            PolyFillType subjFillType, PolyFillType clipFillType)
+        public bool Execute(ClipType clipType, Paths solution, PolyFillType subjFillType, PolyFillType clipFillType)
         {
             if (m_ExecuteLocked)
             {
@@ -1965,8 +1926,7 @@ namespace Framework.Tools.Clipper
 
             if (m_HasOpenPaths)
             {
-                throw
-                    new ClipperException("Error: PolyTree struct is needed for open path clipping.");
+                throw new ClipperException("Error: PolyTree struct is needed for open path clipping.");
             }
 
             m_ExecuteLocked = true;
@@ -1995,8 +1955,7 @@ namespace Framework.Tools.Clipper
         }
         //------------------------------------------------------------------------------
 
-        public bool Execute(ClipType     clipType,     PolyTree     polytree,
-                            PolyFillType subjFillType, PolyFillType clipFillType)
+        public bool Execute(ClipType clipType, PolyTree polytree, PolyFillType subjFillType, PolyFillType clipFillType)
         {
             if (m_ExecuteLocked)
             {
@@ -2032,9 +1991,7 @@ namespace Framework.Tools.Clipper
         {
             //skip if an outermost polygon or
             //already already points to the correct FirstLeft ...
-            if (outRec.FirstLeft == null ||
-                (outRec.IsHole != outRec.FirstLeft.IsHole &&
-                 outRec.FirstLeft.Pts != null))
+            if (outRec.FirstLeft == null || (outRec.IsHole != outRec.FirstLeft.IsHole && outRec.FirstLeft.Pts != null))
             {
                 return;
             }
@@ -2236,8 +2193,7 @@ namespace Framework.Tools.Clipper
                 }
 
                 //if output polygons share an Edge with a horizontal rb, they'll need joining later ...
-                if (Op1 != null && IsHorizontal(rb) &&
-                    m_GhostJoins.Count > 0 && rb.WindDelta != 0)
+                if (Op1 != null && IsHorizontal(rb) && m_GhostJoins.Count > 0 && rb.WindDelta != 0)
                 {
                     for (int i = 0; i < m_GhostJoins.Count; i++)
                     {
@@ -2251,11 +2207,8 @@ namespace Framework.Tools.Clipper
                     }
                 }
 
-                if (lb.OutIdx >= 0 && lb.PrevInAEL != null &&
-                    lb.PrevInAEL.Curr.X == lb.Bot.X &&
-                    lb.PrevInAEL.OutIdx >= 0 &&
-                    SlopesEqual(lb.PrevInAEL.Curr, lb.PrevInAEL.Top, lb.Curr, lb.Top, m_UseFullRange) &&
-                    lb.WindDelta != 0 && lb.PrevInAEL.WindDelta != 0)
+                if (lb.OutIdx >= 0 && lb.PrevInAEL != null && lb.PrevInAEL.Curr.X == lb.Bot.X && lb.PrevInAEL.OutIdx >= 0 &&
+                    SlopesEqual(lb.PrevInAEL.Curr, lb.PrevInAEL.Top, lb.Curr, lb.Top, m_UseFullRange) && lb.WindDelta != 0 && lb.PrevInAEL.WindDelta != 0)
                 {
                     OutPt Op2 = AddOutPt(lb.PrevInAEL, lb.Bot);
                     AddJoin(Op1, Op2, lb.Top);
@@ -2263,9 +2216,8 @@ namespace Framework.Tools.Clipper
 
                 if (lb.NextInAEL != rb)
                 {
-                    if (rb.OutIdx >= 0 && rb.PrevInAEL.OutIdx >= 0 &&
-                        SlopesEqual(rb.PrevInAEL.Curr, rb.PrevInAEL.Top, rb.Curr, rb.Top, m_UseFullRange) &&
-                        rb.WindDelta != 0 && rb.PrevInAEL.WindDelta != 0)
+                    if (rb.OutIdx >= 0 && rb.PrevInAEL.OutIdx >= 0 && SlopesEqual(rb.PrevInAEL.Curr, rb.PrevInAEL.Top, rb.Curr, rb.Top, m_UseFullRange) && rb.WindDelta != 0 &&
+                        rb.PrevInAEL.WindDelta != 0)
                     {
                         OutPt Op2 = AddOutPt(rb.PrevInAEL, rb.Bot);
                         AddJoin(Op1, Op2, rb.Top);
@@ -2309,8 +2261,7 @@ namespace Framework.Tools.Clipper
                     startEdge = m_ActiveEdges;
                 }
 
-                while (startEdge.NextInAEL != null &&
-                       !E2InsertsBeforeE1(startEdge.NextInAEL, edge))
+                while (startEdge.NextInAEL != null && !E2InsertsBeforeE1(startEdge.NextInAEL, edge))
                 {
                     startEdge = startEdge.NextInAEL;
                 }
@@ -2428,10 +2379,8 @@ namespace Framework.Tools.Clipper
                         case PolyFillType.pftEvenOdd:
                         case PolyFillType.pftNonZero:
                             return (edge.WindCnt2 != 0);
-                        case PolyFillType.pftPositive:
-                            return (edge.WindCnt2 > 0);
-                        default:
-                            return (edge.WindCnt2 < 0);
+                        case PolyFillType.pftPositive: return (edge.WindCnt2 > 0);
+                        default:                       return (edge.WindCnt2 < 0);
                     }
                 case ClipType.ctUnion:
                     switch (pft2)
@@ -2439,10 +2388,8 @@ namespace Framework.Tools.Clipper
                         case PolyFillType.pftEvenOdd:
                         case PolyFillType.pftNonZero:
                             return (edge.WindCnt2 == 0);
-                        case PolyFillType.pftPositive:
-                            return (edge.WindCnt2 <= 0);
-                        default:
-                            return (edge.WindCnt2 >= 0);
+                        case PolyFillType.pftPositive: return (edge.WindCnt2 <= 0);
+                        default:                       return (edge.WindCnt2 >= 0);
                     }
                 case ClipType.ctDifference:
                     if (edge.PolyTyp == PolyType.ptSubject)
@@ -2452,10 +2399,8 @@ namespace Framework.Tools.Clipper
                             case PolyFillType.pftEvenOdd:
                             case PolyFillType.pftNonZero:
                                 return (edge.WindCnt2 == 0);
-                            case PolyFillType.pftPositive:
-                                return (edge.WindCnt2 <= 0);
-                            default:
-                                return (edge.WindCnt2 >= 0);
+                            case PolyFillType.pftPositive: return (edge.WindCnt2 <= 0);
+                            default:                       return (edge.WindCnt2 >= 0);
                         }
                     }
                     else
@@ -2465,10 +2410,8 @@ namespace Framework.Tools.Clipper
                             case PolyFillType.pftEvenOdd:
                             case PolyFillType.pftNonZero:
                                 return (edge.WindCnt2 != 0);
-                            case PolyFillType.pftPositive:
-                                return (edge.WindCnt2 > 0);
-                            default:
-                                return (edge.WindCnt2 < 0);
+                            case PolyFillType.pftPositive: return (edge.WindCnt2 > 0);
+                            default:                       return (edge.WindCnt2 < 0);
                         }
                     }
                 case ClipType.ctXor:
@@ -2479,10 +2422,8 @@ namespace Framework.Tools.Clipper
                             case PolyFillType.pftEvenOdd:
                             case PolyFillType.pftNonZero:
                                 return (edge.WindCnt2 == 0);
-                            case PolyFillType.pftPositive:
-                                return (edge.WindCnt2 <= 0);
-                            default:
-                                return (edge.WindCnt2 >= 0);
+                            case PolyFillType.pftPositive: return (edge.WindCnt2 <= 0);
+                            default:                       return (edge.WindCnt2 >= 0);
                         }
                     }
                     else
@@ -2843,8 +2784,7 @@ namespace Framework.Tools.Clipper
             {
                 cInt xPrev = TopX(prevE, pt.Y);
                 cInt xE    = TopX(e,     pt.Y);
-                if ((xPrev == xE) && (e.WindDelta != 0) && (prevE.WindDelta != 0) &&
-                    SlopesEqual(new IntPoint(xPrev, pt.Y), prevE.Top, new IntPoint(xE, pt.Y), e.Top, m_UseFullRange))
+                if ((xPrev == xE) && (e.WindDelta != 0) && (prevE.WindDelta != 0) && SlopesEqual(new IntPoint(xPrev, pt.Y), prevE.Top, new IntPoint(xE, pt.Y), e.Top, m_UseFullRange))
                 {
                     OutPt outPt = AddOutPt(prevE, pt);
                     AddJoin(result, outPt, e.Top);
@@ -3024,8 +2964,7 @@ namespace Framework.Tools.Clipper
 
             double dx2n = Math.Abs(GetDx(btmPt2.Pt, p.Pt));
 
-            if (Math.Max(dx1p, dx1n) == Math.Max(dx2p, dx2n) &&
-                Math.Min(dx1p, dx1n) == Math.Min(dx2p, dx2n))
+            if (Math.Max(dx1p, dx1n) == Math.Max(dx2p, dx2n) && Math.Min(dx1p, dx1n) == Math.Min(dx2p, dx2n))
             {
                 return Area(btmPt1) > 0; //if otherwise identical use orientation
             }
@@ -3333,8 +3272,7 @@ namespace Framework.Tools.Clipper
                     return;
                 }
                 //if intersecting a subj line with a subj poly ...
-                else if (e1.PolyTyp == e2.PolyTyp &&
-                         e1.WindDelta != e2.WindDelta && m_ClipType == ClipType.ctUnion)
+                else if (e1.PolyTyp == e2.PolyTyp && e1.WindDelta != e2.WindDelta && m_ClipType == ClipType.ctUnion)
                 {
                     if (e1.WindDelta == 0)
                     {
@@ -3361,8 +3299,7 @@ namespace Framework.Tools.Clipper
                 }
                 else if (e1.PolyTyp != e2.PolyTyp)
                 {
-                    if ((e1.WindDelta == 0) && Math.Abs(e2.WindCnt) == 1 &&
-                        (m_ClipType != ClipType.ctUnion || e2.WindCnt2 == 0))
+                    if ((e1.WindDelta == 0) && Math.Abs(e2.WindCnt) == 1 && (m_ClipType != ClipType.ctUnion || e2.WindCnt2 == 0))
                     {
                         AddOutPt(e1, pt);
                         if (e1Contributing)
@@ -3370,8 +3307,7 @@ namespace Framework.Tools.Clipper
                             e1.OutIdx = Unassigned;
                         }
                     }
-                    else if ((e2.WindDelta == 0) && (Math.Abs(e1.WindCnt) == 1) &&
-                             (m_ClipType != ClipType.ctUnion || e1.WindCnt2 == 0))
+                    else if ((e2.WindDelta == 0) && (Math.Abs(e1.WindCnt) == 1) && (m_ClipType != ClipType.ctUnion || e1.WindCnt2 == 0))
                     {
                         AddOutPt(e2, pt);
                         if (e2Contributing)
@@ -3489,8 +3425,7 @@ namespace Framework.Tools.Clipper
 
             if (e1Contributing && e2Contributing)
             {
-                if ((e1Wc != 0 && e1Wc != 1) || (e2Wc != 0 && e2Wc != 1) ||
-                    (e1.PolyTyp != e2.PolyTyp && m_ClipType != ClipType.ctXor))
+                if ((e1Wc != 0 && e1Wc != 1) || (e2Wc != 0 && e2Wc != 1) || (e1.PolyTyp != e2.PolyTyp && m_ClipType != ClipType.ctXor))
                 {
                     AddLocalMaxPoly(e1, e2, pt);
                 }
@@ -3573,8 +3508,7 @@ namespace Framework.Tools.Clipper
 
                             break;
                         case ClipType.ctDifference:
-                            if (((e1.PolyTyp == PolyType.ptClip) && (e1Wc2 > 0) && (e2Wc2 > 0)) ||
-                                ((e1.PolyTyp == PolyType.ptSubject) && (e1Wc2 <= 0) && (e2Wc2 <= 0)))
+                            if (((e1.PolyTyp == PolyType.ptClip) && (e1Wc2 > 0) && (e2Wc2 > 0)) || ((e1.PolyTyp == PolyType.ptSubject) && (e1Wc2 <= 0) && (e2Wc2 <= 0)))
                             {
                                 AddLocalMinPoly(e1, e2, pt);
                             }
@@ -3737,16 +3671,14 @@ namespace Framework.Tools.Clipper
 
                     ;
 
-                    if ((dir == Direction.dLeftToRight && e.Curr.X > horzRight) ||
-                        (dir == Direction.dRightToLeft && e.Curr.X < horzLeft))
+                    if ((dir == Direction.dLeftToRight && e.Curr.X > horzRight) || (dir == Direction.dRightToLeft && e.Curr.X < horzLeft))
                     {
                         break;
                     }
 
                     //Also break if we've got to the end of an intermediate horizontal edge ...
                     //nb: Smaller Dx's are to the right of larger Dx's ABOVE the horizontal.
-                    if (e.Curr.X == horzEdge.Top.X && horzEdge.NextInLML != null &&
-                        e.Dx < horzEdge.NextInLML.Dx)
+                    if (e.Curr.X == horzEdge.Top.X && horzEdge.NextInLML != null && e.Dx < horzEdge.NextInLML.Dx)
                     {
                         break;
                     }
@@ -3762,9 +3694,7 @@ namespace Framework.Tools.Clipper
                         TEdge eNextHorz = m_SortedEdges;
                         while (eNextHorz != null)
                         {
-                            if (eNextHorz.OutIdx >= 0 &&
-                                HorzSegmentsOverlap(horzEdge.Bot.X,
-                                                    horzEdge.Top.X, eNextHorz.Bot.X, eNextHorz.Top.X))
+                            if (eNextHorz.OutIdx >= 0 && HorzSegmentsOverlap(horzEdge.Bot.X, horzEdge.Top.X, eNextHorz.Bot.X, eNextHorz.Top.X))
                             {
                                 OutPt op2 = GetLastOutPt(eNextHorz);
                                 AddJoin(op2, op1, eNextHorz.Top);
@@ -3827,9 +3757,7 @@ namespace Framework.Tools.Clipper
                 TEdge eNextHorz = m_SortedEdges;
                 while (eNextHorz != null)
                 {
-                    if (eNextHorz.OutIdx >= 0 &&
-                        HorzSegmentsOverlap(horzEdge.Bot.X,
-                                            horzEdge.Top.X, eNextHorz.Bot.X, eNextHorz.Top.X))
+                    if (eNextHorz.OutIdx >= 0 && HorzSegmentsOverlap(horzEdge.Bot.X, horzEdge.Top.X, eNextHorz.Bot.X, eNextHorz.Top.X))
                     {
                         OutPt op2 = GetLastOutPt(eNextHorz);
                         AddJoin(op2, op1, eNextHorz.Top);
@@ -3856,17 +3784,13 @@ namespace Framework.Tools.Clipper
                     //nb: HorzEdge is no longer horizontal here
                     TEdge ePrev = horzEdge.PrevInAEL;
                     TEdge eNext = horzEdge.NextInAEL;
-                    if (ePrev != null && ePrev.Curr.X == horzEdge.Bot.X &&
-                        ePrev.Curr.Y == horzEdge.Bot.Y && ePrev.WindDelta != 0 &&
-                        (ePrev.OutIdx >= 0 && ePrev.Curr.Y > ePrev.Top.Y &&
-                         SlopesEqual(horzEdge, ePrev, m_UseFullRange)))
+                    if (ePrev != null && ePrev.Curr.X == horzEdge.Bot.X && ePrev.Curr.Y == horzEdge.Bot.Y && ePrev.WindDelta != 0 &&
+                        (ePrev.OutIdx >= 0 && ePrev.Curr.Y > ePrev.Top.Y && SlopesEqual(horzEdge, ePrev, m_UseFullRange)))
                     {
                         OutPt op2 = AddOutPt(ePrev, horzEdge.Bot);
                         AddJoin(op1, op2, horzEdge.Top);
                     }
-                    else if (eNext != null && eNext.Curr.X == horzEdge.Bot.X &&
-                             eNext.Curr.Y == horzEdge.Bot.Y && eNext.WindDelta != 0 &&
-                             eNext.OutIdx >= 0 && eNext.Curr.Y > eNext.Top.Y &&
+                    else if (eNext != null && eNext.Curr.X == horzEdge.Bot.X && eNext.Curr.Y == horzEdge.Bot.Y && eNext.WindDelta != 0 && eNext.OutIdx >= 0 && eNext.Curr.Y > eNext.Top.Y &&
                              SlopesEqual(horzEdge, eNext, m_UseFullRange))
                     {
                         OutPt op2 = AddOutPt(eNext, horzEdge.Bot);
@@ -3935,8 +3859,7 @@ namespace Framework.Tools.Clipper
         {
             //as above but returns null if MaxPair isn't in AEL (unless it's horizontal)
             TEdge result = GetMaximaPair(e);
-            if (result == null || result.OutIdx == Skip ||
-                ((result.NextInAEL == result.PrevInAEL) && !IsHorizontal(result)))
+            if (result == null || result.OutIdx == Skip || ((result.NextInAEL == result.PrevInAEL) && !IsHorizontal(result)))
             {
                 return null;
             }
@@ -4048,8 +3971,7 @@ namespace Framework.Tools.Clipper
 
         private bool EdgesAdjacent(IntersectNode inode)
         {
-            return (inode.Edge1.NextInSEL == inode.Edge2) ||
-                   (inode.Edge1.PrevInSEL == inode.Edge2);
+            return (inode.Edge1.NextInSEL == inode.Edge2) || (inode.Edge1.PrevInSEL == inode.Edge2);
         }
         //------------------------------------------------------------------------------
 
@@ -4284,9 +4206,7 @@ namespace Framework.Tools.Clipper
                     if (StrictlySimple)
                     {
                         TEdge ePrev = e.PrevInAEL;
-                        if ((e.OutIdx >= 0) && (e.WindDelta != 0) && ePrev != null &&
-                            (ePrev.OutIdx >= 0) && (ePrev.Curr.X == e.Curr.X) &&
-                            (ePrev.WindDelta != 0))
+                        if ((e.OutIdx >= 0) && (e.WindDelta != 0) && ePrev != null && (ePrev.OutIdx >= 0) && (ePrev.Curr.X == e.Curr.X) && (ePrev.WindDelta != 0))
                         {
                             IntPoint ip = new IntPoint(e.Curr);
 #if use_xyz
@@ -4323,20 +4243,14 @@ namespace Framework.Tools.Clipper
                     //if output polygons share an edge, they'll need joining later ...
                     TEdge ePrev = e.PrevInAEL;
                     TEdge eNext = e.NextInAEL;
-                    if (ePrev != null && ePrev.Curr.X == e.Bot.X &&
-                        ePrev.Curr.Y == e.Bot.Y && op != null &&
-                        ePrev.OutIdx >= 0 && ePrev.Curr.Y > ePrev.Top.Y &&
-                        SlopesEqual(e.Curr, e.Top, ePrev.Curr, ePrev.Top, m_UseFullRange) &&
-                        (e.WindDelta != 0) && (ePrev.WindDelta != 0))
+                    if (ePrev != null && ePrev.Curr.X == e.Bot.X && ePrev.Curr.Y == e.Bot.Y && op != null && ePrev.OutIdx >= 0 && ePrev.Curr.Y > ePrev.Top.Y &&
+                        SlopesEqual(e.Curr, e.Top, ePrev.Curr, ePrev.Top, m_UseFullRange) && (e.WindDelta != 0) && (ePrev.WindDelta != 0))
                     {
                         OutPt op2 = AddOutPt(ePrev, e.Bot);
                         AddJoin(op, op2, e.Top);
                     }
-                    else if (eNext != null && eNext.Curr.X == e.Bot.X &&
-                             eNext.Curr.Y == e.Bot.Y && op != null &&
-                             eNext.OutIdx >= 0 && eNext.Curr.Y > eNext.Top.Y &&
-                             SlopesEqual(e.Curr, e.Top, eNext.Curr, eNext.Top, m_UseFullRange) &&
-                             (e.WindDelta != 0) && (eNext.WindDelta != 0))
+                    else if (eNext != null && eNext.Curr.X == e.Bot.X && eNext.Curr.Y == e.Bot.Y && op != null && eNext.OutIdx >= 0 && eNext.Curr.Y > eNext.Top.Y &&
+                             SlopesEqual(e.Curr, e.Top, eNext.Curr, eNext.Top, m_UseFullRange) && (e.WindDelta != 0) && (eNext.WindDelta != 0))
                     {
                         OutPt op2 = AddOutPt(eNext, e.Bot);
                         AddJoin(op, op2, e.Top);
@@ -4487,8 +4401,7 @@ namespace Framework.Tools.Clipper
             {
                 OutRec outRec = m_PolyOuts[i];
                 int    cnt    = PointCount(outRec.Pts);
-                if ((outRec.IsOpen && cnt < 2) ||
-                    (!outRec.IsOpen && cnt < 3))
+                if ((outRec.IsOpen && cnt < 2) || (!outRec.IsOpen && cnt < 3))
                 {
                     continue;
                 }
@@ -4520,8 +4433,7 @@ namespace Framework.Tools.Clipper
                     outRec.PolyNode.IsOpen = true;
                     polytree.AddChild(outRec.PolyNode);
                 }
-                else if (outRec.FirstLeft != null &&
-                         outRec.FirstLeft.PolyNode != null)
+                else if (outRec.FirstLeft != null && outRec.FirstLeft.PolyNode != null)
                 {
                     outRec.FirstLeft.PolyNode.AddChild(outRec.PolyNode);
                 }
@@ -4579,8 +4491,7 @@ namespace Framework.Tools.Clipper
 
                 //test for duplicate points and collinear edges ...
                 if ((pp.Pt == pp.Next.Pt) || (pp.Pt == pp.Prev.Pt) ||
-                    (SlopesEqual(pp.Prev.Pt, pp.Pt, pp.Next.Pt, m_UseFullRange) &&
-                     (!preserveCol || !Pt2IsBetweenPt1AndPt3(pp.Prev.Pt, pp.Pt, pp.Next.Pt))))
+                    (SlopesEqual(pp.Prev.Pt, pp.Pt, pp.Next.Pt, m_UseFullRange) && (!preserveCol || !Pt2IsBetweenPt1AndPt3(pp.Prev.Pt, pp.Pt, pp.Next.Pt))))
                 {
                     lastOK       = null;
                     pp.Prev.Next = pp.Next;
@@ -4663,8 +4574,7 @@ namespace Framework.Tools.Clipper
         }
         //------------------------------------------------------------------------------
 
-        bool JoinHorz(OutPt    op1, OutPt op1b, OutPt op2, OutPt op2b,
-                      IntPoint Pt,  bool  DiscardLeft)
+        bool JoinHorz(OutPt op1, OutPt op1b, OutPt op2, OutPt op2b, IntPoint Pt, bool DiscardLeft)
         {
             Direction Dir1 = (op1.Pt.X > op1b.Pt.X ? Direction.dRightToLeft : Direction.dLeftToRight);
             Direction Dir2 = (op2.Pt.X > op2b.Pt.X ? Direction.dRightToLeft : Direction.dLeftToRight);
@@ -4680,8 +4590,7 @@ namespace Framework.Tools.Clipper
             //otherwise make sure we're AT or LEFT of Pt. (Likewise with Op2b.)
             if (Dir1 == Direction.dLeftToRight)
             {
-                while (op1.Next.Pt.X <= Pt.X &&
-                       op1.Next.Pt.X >= op1.Pt.X && op1.Next.Pt.Y == Pt.Y)
+                while (op1.Next.Pt.X <= Pt.X && op1.Next.Pt.X >= op1.Pt.X && op1.Next.Pt.Y == Pt.Y)
                 {
                     op1 = op1.Next;
                 }
@@ -4701,8 +4610,7 @@ namespace Framework.Tools.Clipper
             }
             else
             {
-                while (op1.Next.Pt.X >= Pt.X &&
-                       op1.Next.Pt.X <= op1.Pt.X && op1.Next.Pt.Y == Pt.Y)
+                while (op1.Next.Pt.X >= Pt.X && op1.Next.Pt.X <= op1.Pt.X && op1.Next.Pt.Y == Pt.Y)
                 {
                     op1 = op1.Next;
                 }
@@ -4723,8 +4631,7 @@ namespace Framework.Tools.Clipper
 
             if (Dir2 == Direction.dLeftToRight)
             {
-                while (op2.Next.Pt.X <= Pt.X &&
-                       op2.Next.Pt.X >= op2.Pt.X && op2.Next.Pt.Y == Pt.Y)
+                while (op2.Next.Pt.X <= Pt.X && op2.Next.Pt.X >= op2.Pt.X && op2.Next.Pt.Y == Pt.Y)
                 {
                     op2 = op2.Next;
                 }
@@ -4746,8 +4653,7 @@ namespace Framework.Tools.Clipper
             }
             else
             {
-                while (op2.Next.Pt.X >= Pt.X &&
-                       op2.Next.Pt.X <= op2.Pt.X && op2.Next.Pt.Y == Pt.Y)
+                while (op2.Next.Pt.X >= Pt.X && op2.Next.Pt.X <= op2.Pt.X && op2.Next.Pt.Y == Pt.Y)
                 {
                     op2 = op2.Next;
                 }
@@ -4942,8 +4848,7 @@ namespace Framework.Tools.Clipper
                     op1b = op1b.Next;
                 }
 
-                bool Reverse1 = ((op1b.Pt.Y > op1.Pt.Y) ||
-                                 !SlopesEqual(op1.Pt, op1b.Pt, j.OffPt, m_UseFullRange));
+                bool Reverse1 = ((op1b.Pt.Y > op1.Pt.Y) || !SlopesEqual(op1.Pt, op1b.Pt, j.OffPt, m_UseFullRange));
                 if (Reverse1)
                 {
                     op1b = op1.Prev;
@@ -4952,8 +4857,7 @@ namespace Framework.Tools.Clipper
                         op1b = op1b.Prev;
                     }
 
-                    if ((op1b.Pt.Y > op1.Pt.Y) ||
-                        !SlopesEqual(op1.Pt, op1b.Pt, j.OffPt, m_UseFullRange))
+                    if ((op1b.Pt.Y > op1.Pt.Y) || !SlopesEqual(op1.Pt, op1b.Pt, j.OffPt, m_UseFullRange))
                     {
                         return false;
                     }
@@ -4966,8 +4870,7 @@ namespace Framework.Tools.Clipper
                     op2b = op2b.Next;
                 }
 
-                bool Reverse2 = ((op2b.Pt.Y > op2.Pt.Y) ||
-                                 !SlopesEqual(op2.Pt, op2b.Pt, j.OffPt, m_UseFullRange));
+                bool Reverse2 = ((op2b.Pt.Y > op2.Pt.Y) || !SlopesEqual(op2.Pt, op2b.Pt, j.OffPt, m_UseFullRange));
                 if (Reverse2)
                 {
                     op2b = op2.Prev;
@@ -4976,15 +4879,13 @@ namespace Framework.Tools.Clipper
                         op2b = op2b.Prev;
                     }
 
-                    if ((op2b.Pt.Y > op2.Pt.Y) ||
-                        !SlopesEqual(op2.Pt, op2b.Pt, j.OffPt, m_UseFullRange))
+                    if ((op2b.Pt.Y > op2.Pt.Y) || !SlopesEqual(op2.Pt, op2b.Pt, j.OffPt, m_UseFullRange))
                     {
                         return false;
                     }
                 }
 
-                if ((op1b == op1) || (op2b == op2) || (op1b == op2b) ||
-                    ((outRec1 == outRec2) && (Reverse1 == Reverse2)))
+                if ((op1b == op1) || (op2b == op2) || (op1b == op2b) || ((outRec1 == outRec2) && (Reverse1 == Reverse2)))
                 {
                     return false;
                 }
@@ -5034,8 +4935,7 @@ namespace Framework.Tools.Clipper
                 IntPoint ipNext = (i == cnt ? path[0] : path[i]);
                 if (ipNext.Y == pt.Y)
                 {
-                    if ((ipNext.X == pt.X) || (ip.Y == pt.Y &&
-                                               ((ipNext.X > pt.X) == (ip.X < pt.X))))
+                    if ((ipNext.X == pt.X) || (ip.Y == pt.Y && ((ipNext.X > pt.X) == (ip.X < pt.X))))
                     {
                         return -1;
                     }
@@ -5051,8 +4951,7 @@ namespace Framework.Tools.Clipper
                         }
                         else
                         {
-                            double d = (double) (ip.X - pt.X) * (ipNext.Y - pt.Y) -
-                                       (double) (ipNext.X - pt.X) * (ip.Y - pt.Y);
+                            double d = (double) (ip.X - pt.X) * (ipNext.Y - pt.Y) - (double) (ipNext.X - pt.X) * (ip.Y - pt.Y);
                             if (d == 0)
                             {
                                 return -1;
@@ -5067,8 +4966,7 @@ namespace Framework.Tools.Clipper
                     {
                         if (ipNext.X > pt.X)
                         {
-                            double d = (double) (ip.X - pt.X) * (ipNext.Y - pt.Y) -
-                                       (double) (ipNext.X - pt.X) * (ip.Y - pt.Y);
+                            double d = (double) (ip.X - pt.X) * (ipNext.Y - pt.Y) - (double) (ipNext.X - pt.X) * (ip.Y - pt.Y);
                             if (d == 0)
                             {
                                 return -1;
@@ -5104,8 +5002,7 @@ namespace Framework.Tools.Clipper
 
                 if (poly1y == pty)
                 {
-                    if ((poly1x == ptx) || (poly0y == pty &&
-                                            ((poly1x > ptx) == (poly0x < ptx))))
+                    if ((poly1x == ptx) || (poly0y == pty && ((poly1x > ptx) == (poly0x < ptx))))
                     {
                         return -1;
                     }
@@ -5121,8 +5018,7 @@ namespace Framework.Tools.Clipper
                         }
                         else
                         {
-                            double d = (double) (poly0x - ptx) * (poly1y - pty) -
-                                       (double) (poly1x - ptx) * (poly0y - pty);
+                            double d = (double) (poly0x - ptx) * (poly1y - pty) - (double) (poly1x - ptx) * (poly0y - pty);
                             if (d == 0)
                             {
                                 return -1;
@@ -5138,8 +5034,7 @@ namespace Framework.Tools.Clipper
                     {
                         if (poly1x > ptx)
                         {
-                            double d = (double) (poly0x - ptx) * (poly1y - pty) -
-                                       (double) (poly1x - ptx) * (poly0y - pty);
+                            double d = (double) (poly0x - ptx) * (poly1y - pty) - (double) (poly1x - ptx) * (poly0y - pty);
                             if (d == 0)
                             {
                                 return -1;
@@ -5521,8 +5416,7 @@ namespace Framework.Tools.Clipper
         // Convert self-intersecting polygons into simple polygons
         //------------------------------------------------------------------------------
 
-        public static Paths SimplifyPolygon(Path         poly,
-                                            PolyFillType fillType = PolyFillType.pftEvenOdd)
+        public static Paths SimplifyPolygon(Path poly, PolyFillType fillType = PolyFillType.pftEvenOdd)
         {
             Paths   result = new Paths();
             Clipper c      = new Clipper();
@@ -5533,8 +5427,7 @@ namespace Framework.Tools.Clipper
         }
         //------------------------------------------------------------------------------
 
-        public static Paths SimplifyPolygons(Paths        polys,
-                                             PolyFillType fillType = PolyFillType.pftEvenOdd)
+        public static Paths SimplifyPolygons(Paths polys, PolyFillType fillType = PolyFillType.pftEvenOdd)
         {
             Paths   result = new Paths();
             Clipper c      = new Clipper();
@@ -5569,8 +5462,7 @@ namespace Framework.Tools.Clipper
         }
         //---------------------------------------------------------------------------
 
-        private static bool SlopesNearCollinear(IntPoint pt1,
-                                                IntPoint pt2, IntPoint pt3, double distSqrd)
+        private static bool SlopesNearCollinear(IntPoint pt1, IntPoint pt2, IntPoint pt3, double distSqrd)
         {
             //this function is more accurate when the point that's GEOMETRICALLY 
             //between the other 2 points is the one that's tested for distance.  
@@ -5697,8 +5589,7 @@ namespace Framework.Tools.Clipper
         }
         //------------------------------------------------------------------------------
 
-        public static Paths CleanPolygons(Paths  polys,
-                                          double distance = 1.415)
+        public static Paths CleanPolygons(Paths polys, double distance = 1.415)
         {
             Paths result = new Paths(polys.Count);
             for (int i = 0; i < polys.Count; i++)
@@ -5803,8 +5694,7 @@ namespace Framework.Tools.Clipper
                 }
             }
 
-            c.Execute(ClipType.ctUnion, solution,
-                      PolyFillType.pftNonZero, PolyFillType.pftNonZero);
+            c.Execute(ClipType.ctUnion, solution, PolyFillType.pftNonZero, PolyFillType.pftNonZero);
             return solution;
         }
         //------------------------------------------------------------------------------
@@ -5904,8 +5794,7 @@ namespace Framework.Tools.Clipper
         private const double two_pi            = Math.PI * 2;
         private const double def_arc_tolerance = 0.25;
 
-        public ClipperOffset(
-            double miterLimit = 2.0, double arcTolerance = def_arc_tolerance)
+        public ClipperOffset(double miterLimit = 2.0, double arcTolerance = def_arc_tolerance)
         {
             MiterLimit   = miterLimit;
             ArcTolerance = arcTolerance;
@@ -5956,9 +5845,7 @@ namespace Framework.Tools.Clipper
                 {
                     j++;
                     newNode.m_polygon.Add(path[i]);
-                    if (path[i].Y > newNode.m_polygon[k].Y ||
-                        (path[i].Y == newNode.m_polygon[k].Y &&
-                         path[i].X < newNode.m_polygon[k].X))
+                    if (path[i].Y > newNode.m_polygon[k].Y || (path[i].Y == newNode.m_polygon[k].Y && path[i].X < newNode.m_polygon[k].X))
                     {
                         k = j;
                     }
@@ -5985,9 +5872,7 @@ namespace Framework.Tools.Clipper
             else
             {
                 IntPoint ip = m_polyNodes.Childs[(int) m_lowest.X].m_polygon[(int) m_lowest.Y];
-                if (newNode.m_polygon[k].Y > ip.Y ||
-                    (newNode.m_polygon[k].Y == ip.Y &&
-                     newNode.m_polygon[k].X < ip.X))
+                if (newNode.m_polygon[k].Y > ip.Y || (newNode.m_polygon[k].Y == ip.Y && newNode.m_polygon[k].X < ip.X))
                 {
                     m_lowest = new IntPoint(m_polyNodes.ChildCount - 1, k);
                 }
@@ -6008,15 +5893,12 @@ namespace Framework.Tools.Clipper
         {
             //fixup orientations of all closed paths if the orientation of the
             //closed path with the lowermost vertex is wrong ...
-            if (m_lowest.X >= 0 &&
-                !Clipper.Orientation(m_polyNodes.Childs[(int) m_lowest.X].m_polygon))
+            if (m_lowest.X >= 0 && !Clipper.Orientation(m_polyNodes.Childs[(int) m_lowest.X].m_polygon))
             {
                 for (int i = 0; i < m_polyNodes.ChildCount; i++)
                 {
                     PolyNode node = m_polyNodes.Childs[i];
-                    if (node.m_endtype == EndType.etClosedPolygon ||
-                        (node.m_endtype == EndType.etClosedLine &&
-                         Clipper.Orientation(node.m_polygon)))
+                    if (node.m_endtype == EndType.etClosedPolygon || (node.m_endtype == EndType.etClosedLine && Clipper.Orientation(node.m_polygon)))
                     {
                         node.m_polygon.Reverse();
                     }
@@ -6027,8 +5909,7 @@ namespace Framework.Tools.Clipper
                 for (int i = 0; i < m_polyNodes.ChildCount; i++)
                 {
                     PolyNode node = m_polyNodes.Childs[i];
-                    if (node.m_endtype == EndType.etClosedLine &&
-                        !Clipper.Orientation(node.m_polygon))
+                    if (node.m_endtype == EndType.etClosedLine && !Clipper.Orientation(node.m_polygon))
                     {
                         node.m_polygon.Reverse();
                     }
@@ -6117,8 +5998,7 @@ namespace Framework.Tools.Clipper
 
                 int len = m_srcPoly.Count;
 
-                if (len == 0 || (delta <= 0 && (len < 3 ||
-                                                node.m_endtype != EndType.etClosedPolygon)))
+                if (len == 0 || (delta <= 0 && (len < 3 || node.m_endtype != EndType.etClosedPolygon)))
                 {
                     continue;
                 }
@@ -6132,9 +6012,7 @@ namespace Framework.Tools.Clipper
                         double X = 1.0, Y = 0.0;
                         for (int j = 1; j <= steps; j++)
                         {
-                            m_destPoly.Add(new IntPoint(
-                                                        Round(m_srcPoly[0].X + X * delta),
-                                                        Round(m_srcPoly[0].Y + Y * delta)));
+                            m_destPoly.Add(new IntPoint(Round(m_srcPoly[0].X + X * delta), Round(m_srcPoly[0].Y + Y * delta)));
                             double X2 = X;
                             X = X * m_cos - m_sin * Y;
                             Y = X2 * m_sin + Y * m_cos;
@@ -6145,9 +6023,7 @@ namespace Framework.Tools.Clipper
                         double X = -1.0, Y = -1.0;
                         for (int j = 0; j < 4; ++j)
                         {
-                            m_destPoly.Add(new IntPoint(
-                                                        Round(m_srcPoly[0].X + X * delta),
-                                                        Round(m_srcPoly[0].Y + Y * delta)));
+                            m_destPoly.Add(new IntPoint(Round(m_srcPoly[0].X + X * delta), Round(m_srcPoly[0].Y + Y * delta)));
                             if (X < 0)
                             {
                                 X = 1;
@@ -6175,8 +6051,7 @@ namespace Framework.Tools.Clipper
                     m_normals.Add(GetUnitNormal(m_srcPoly[j], m_srcPoly[j + 1]));
                 }
 
-                if (node.m_endtype == EndType.etClosedLine ||
-                    node.m_endtype == EndType.etClosedPolygon)
+                if (node.m_endtype == EndType.etClosedLine || node.m_endtype == EndType.etClosedPolygon)
                 {
                     m_normals.Add(GetUnitNormal(m_srcPoly[len - 1], m_srcPoly[0]));
                 }
@@ -6233,11 +6108,9 @@ namespace Framework.Tools.Clipper
                     if (node.m_endtype == EndType.etOpenButt)
                     {
                         int j = len - 1;
-                        pt1 = new IntPoint((cInt) Round(m_srcPoly[j].X + m_normals[j].X *
-                                                        delta), (cInt) Round(m_srcPoly[j].Y + m_normals[j].Y * delta));
+                        pt1 = new IntPoint((cInt) Round(m_srcPoly[j].X + m_normals[j].X * delta), (cInt) Round(m_srcPoly[j].Y + m_normals[j].Y * delta));
                         m_destPoly.Add(pt1);
-                        pt1 = new IntPoint((cInt) Round(m_srcPoly[j].X - m_normals[j].X *
-                                                        delta), (cInt) Round(m_srcPoly[j].Y - m_normals[j].Y * delta));
+                        pt1 = new IntPoint((cInt) Round(m_srcPoly[j].X - m_normals[j].X * delta), (cInt) Round(m_srcPoly[j].Y - m_normals[j].Y * delta));
                         m_destPoly.Add(pt1);
                     }
                     else
@@ -6272,11 +6145,9 @@ namespace Framework.Tools.Clipper
 
                     if (node.m_endtype == EndType.etOpenButt)
                     {
-                        pt1 = new IntPoint((cInt) Round(m_srcPoly[0].X - m_normals[0].X * delta),
-                                           (cInt) Round(m_srcPoly[0].Y - m_normals[0].Y * delta));
+                        pt1 = new IntPoint((cInt) Round(m_srcPoly[0].X - m_normals[0].X * delta), (cInt) Round(m_srcPoly[0].Y - m_normals[0].Y * delta));
                         m_destPoly.Add(pt1);
-                        pt1 = new IntPoint((cInt) Round(m_srcPoly[0].X + m_normals[0].X * delta),
-                                           (cInt) Round(m_srcPoly[0].Y + m_normals[0].Y * delta));
+                        pt1 = new IntPoint((cInt) Round(m_srcPoly[0].X + m_normals[0].X * delta), (cInt) Round(m_srcPoly[0].Y + m_normals[0].Y * delta));
                         m_destPoly.Add(pt1);
                     }
                     else
@@ -6309,8 +6180,7 @@ namespace Framework.Tools.Clipper
             clpr.AddPaths(m_destPolys, PolyType.ptSubject, true);
             if (delta > 0)
             {
-                clpr.Execute(ClipType.ctUnion, solution,
-                             PolyFillType.pftPositive, PolyFillType.pftPositive);
+                clpr.Execute(ClipType.ctUnion, solution, PolyFillType.pftPositive, PolyFillType.pftPositive);
             }
             else
             {
@@ -6344,8 +6214,7 @@ namespace Framework.Tools.Clipper
             clpr.AddPaths(m_destPolys, PolyType.ptSubject, true);
             if (delta > 0)
             {
-                clpr.Execute(ClipType.ctUnion, solution,
-                             PolyFillType.pftPositive, PolyFillType.pftPositive);
+                clpr.Execute(ClipType.ctUnion, solution, PolyFillType.pftPositive, PolyFillType.pftPositive);
             }
             else
             {
@@ -6391,8 +6260,7 @@ namespace Framework.Tools.Clipper
                 double cosA = (m_normals[k].X * m_normals[j].X + m_normals[j].Y * m_normals[k].Y);
                 if (cosA > 0) // angle ==> 0 degrees
                 {
-                    m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + m_normals[k].X * m_delta),
-                                                Round(m_srcPoly[j].Y + m_normals[k].Y * m_delta)));
+                    m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + m_normals[k].X * m_delta), Round(m_srcPoly[j].Y + m_normals[k].Y * m_delta)));
                     return;
                 }
 
@@ -6409,11 +6277,9 @@ namespace Framework.Tools.Clipper
 
             if (m_sinA * m_delta < 0)
             {
-                m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + m_normals[k].X * m_delta),
-                                            Round(m_srcPoly[j].Y + m_normals[k].Y * m_delta)));
+                m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + m_normals[k].X * m_delta), Round(m_srcPoly[j].Y + m_normals[k].Y * m_delta)));
                 m_destPoly.Add(m_srcPoly[j]);
-                m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + m_normals[j].X * m_delta),
-                                            Round(m_srcPoly[j].Y + m_normals[j].Y * m_delta)));
+                m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + m_normals[j].X * m_delta), Round(m_srcPoly[j].Y + m_normals[j].Y * m_delta)));
             }
             else
             {
@@ -6421,8 +6287,7 @@ namespace Framework.Tools.Clipper
                 {
                     case JoinType.jtMiter:
                     {
-                        double r = 1 + (m_normals[j].X * m_normals[k].X +
-                                        m_normals[j].Y * m_normals[k].Y);
+                        double r = 1 + (m_normals[j].X * m_normals[k].X + m_normals[j].Y * m_normals[k].Y);
                         if (r >= m_miterLim)
                         {
                             DoMiter(j, k, r);
@@ -6449,45 +6314,34 @@ namespace Framework.Tools.Clipper
 
         internal void DoSquare(int j, int k)
         {
-            double dx = Math.Tan(Math.Atan2(m_sinA,
-                                            m_normals[k].X * m_normals[j].X + m_normals[k].Y * m_normals[j].Y) / 4);
-            m_destPoly.Add(new IntPoint(
-                                        Round(m_srcPoly[j].X + m_delta * (m_normals[k].X - m_normals[k].Y * dx)),
-                                        Round(m_srcPoly[j].Y + m_delta * (m_normals[k].Y + m_normals[k].X * dx))));
-            m_destPoly.Add(new IntPoint(
-                                        Round(m_srcPoly[j].X + m_delta * (m_normals[j].X + m_normals[j].Y * dx)),
-                                        Round(m_srcPoly[j].Y + m_delta * (m_normals[j].Y - m_normals[j].X * dx))));
+            double dx = Math.Tan(Math.Atan2(m_sinA, m_normals[k].X * m_normals[j].X + m_normals[k].Y * m_normals[j].Y) / 4);
+            m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + m_delta * (m_normals[k].X - m_normals[k].Y * dx)), Round(m_srcPoly[j].Y + m_delta * (m_normals[k].Y + m_normals[k].X * dx))));
+            m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + m_delta * (m_normals[j].X + m_normals[j].Y * dx)), Round(m_srcPoly[j].Y + m_delta * (m_normals[j].Y - m_normals[j].X * dx))));
         }
         //------------------------------------------------------------------------------
 
         internal void DoMiter(int j, int k, double r)
         {
             double q = m_delta / r;
-            m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + (m_normals[k].X + m_normals[j].X) * q),
-                                        Round(m_srcPoly[j].Y + (m_normals[k].Y + m_normals[j].Y) * q)));
+            m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + (m_normals[k].X + m_normals[j].X) * q), Round(m_srcPoly[j].Y + (m_normals[k].Y + m_normals[j].Y) * q)));
         }
         //------------------------------------------------------------------------------
 
         internal void DoRound(int j, int k)
         {
-            double a = Math.Atan2(m_sinA,
-                                  m_normals[k].X * m_normals[j].X + m_normals[k].Y * m_normals[j].Y);
-            int steps = Math.Max((int) Round(m_StepsPerRad * Math.Abs(a)), 1);
+            double a     = Math.Atan2(m_sinA, m_normals[k].X * m_normals[j].X + m_normals[k].Y * m_normals[j].Y);
+            int    steps = Math.Max((int) Round(m_StepsPerRad * Math.Abs(a)), 1);
 
             double X = m_normals[k].X, Y = m_normals[k].Y, X2;
             for (int i = 0; i < steps; ++i)
             {
-                m_destPoly.Add(new IntPoint(
-                                            Round(m_srcPoly[j].X + X * m_delta),
-                                            Round(m_srcPoly[j].Y + Y * m_delta)));
+                m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + X * m_delta), Round(m_srcPoly[j].Y + Y * m_delta)));
                 X2 = X;
                 X  = X * m_cos - m_sin * Y;
                 Y  = X2 * m_sin + Y * m_cos;
             }
 
-            m_destPoly.Add(new IntPoint(
-                                        Round(m_srcPoly[j].X + m_normals[j].X * m_delta),
-                                        Round(m_srcPoly[j].Y + m_normals[j].Y * m_delta)));
+            m_destPoly.Add(new IntPoint(Round(m_srcPoly[j].X + m_normals[j].X * m_delta), Round(m_srcPoly[j].Y + m_normals[j].Y * m_delta)));
         }
 
         //------------------------------------------------------------------------------
@@ -6495,7 +6349,9 @@ namespace Framework.Tools.Clipper
 
     class ClipperException : Exception
     {
-        public ClipperException(string description) : base(description) { }
+        public ClipperException(string description) : base(description)
+        {
+        }
     }
 
     //------------------------------------------------------------------------------

@@ -47,8 +47,7 @@ namespace CNCLib.GCode.Load
 
             if (!string.IsNullOrEmpty(LoadOptions.ImageWriteToFileName))
             {
-                b.Save(Environment.ExpandEnvironmentVariables(LoadOptions.ImageWriteToFileName),
-                       System.Drawing.Imaging.ImageFormat.Bmp);
+                b.Save(Environment.ExpandEnvironmentVariables(LoadOptions.ImageWriteToFileName), System.Drawing.Imaging.ImageFormat.Bmp);
             }
 
             AddComment("Image.Width",                     b.Width);
@@ -120,8 +119,7 @@ namespace CNCLib.GCode.Load
             {
                 AddComment("ScaleX", scaleX);
                 AddComment("ScaleY", scaleY);
-                b = Framework.Tools.Drawing.ImageHelper.ScaleTo(bx, (int) (b.Width * scaleX),
-                                                                (int) (b.Height * scaleY));
+                b = Framework.Tools.Drawing.ImageHelper.ScaleTo(bx, (int) (b.Width * scaleX), (int) (b.Height * scaleY));
                 b.SetResolution((float) dpiX, (float) dpiY);
             }
 

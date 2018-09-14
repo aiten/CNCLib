@@ -24,7 +24,6 @@ using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Service.Contracts;
 using CNCLib.Shared;
 using CNCLib.WebAPI.Models;
-using Framework.Contracts.Shared;
 
 namespace CNCLib.WebAPI.Controllers
 {

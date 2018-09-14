@@ -66,8 +66,7 @@ namespace CNCLib.GCode.Load
 
                 if (LoadX.LoadOptions.AutoScaleKeepRatio)
                 {
-                    LoadX.LoadOptions.ScaleX =
-                        LoadX.LoadOptions.ScaleY = Math.Min(LoadX.LoadOptions.ScaleX, LoadX.LoadOptions.ScaleY);
+                    LoadX.LoadOptions.ScaleX = LoadX.LoadOptions.ScaleY = Math.Min(LoadX.LoadOptions.ScaleX, LoadX.LoadOptions.ScaleY);
 
                     if (LoadX.LoadOptions.AutoScaleCenter)
                     {

@@ -61,8 +61,7 @@ namespace CNCLib.Tests.Logic
 
             var itemEntity = new[]
             {
-                new Item { ItemID = 1, Name = "Test1" },
-                new Item { ItemID = 2, Name = "Test2" }
+                new Item { ItemID = 1, Name = "Test1" }, new Item { ItemID = 2, Name = "Test2" }
             };
             srv.GetAll().Returns(itemEntity);
 
@@ -70,14 +69,13 @@ namespace CNCLib.Tests.Logic
             var all  = (await ctrl.GetAll()).ToArray();
 
             all.Should().HaveCount(2);
-            all.FirstOrDefault().Should().BeEquivalentTo(
-                                                         new
-                                                         {
-                                                             ItemID = 1,
-                                                             Name   = "Test1"
-                                                         },
-                                                         options => options.ExcludingMissingMembers()
-                                                        );
+            all.FirstOrDefault().
+                Should().
+                BeEquivalentTo(new
+                {
+                    ItemID = 1,
+                    Name   = "Test1"
+                }, options => options.ExcludingMissingMembers());
         }
 
         [TestMethod]
@@ -87,8 +85,7 @@ namespace CNCLib.Tests.Logic
 
             var itemEntity = new[]
             {
-                new Item { ItemID = 1, Name = "Test1" },
-                new Item { ItemID = 2, Name = "Test2" }
+                new Item { ItemID = 1, Name = "Test1" }, new Item { ItemID = 2, Name = "Test2" }
             };
             srv.GetByClassName("System.String,mscorlib").Returns(itemEntity);
 
@@ -96,14 +93,13 @@ namespace CNCLib.Tests.Logic
             var all  = await ctrl.GetAll(typeof(string));
 
             all.Should().HaveCount(2);
-            all.FirstOrDefault().Should().BeEquivalentTo(
-                                                         new
-                                                         {
-                                                             ItemID = 1,
-                                                             Name   = "Test1"
-                                                         },
-                                                         options => options.ExcludingMissingMembers()
-                                                        );
+            all.FirstOrDefault().
+                Should().
+                BeEquivalentTo(new
+                {
+                    ItemID = 1,
+                    Name   = "Test1"
+                }, options => options.ExcludingMissingMembers());
         }
 
         [TestMethod]
@@ -115,14 +111,12 @@ namespace CNCLib.Tests.Logic
             var ctrl = new DynItemController(srv);
             var all  = await ctrl.Get(1);
 
-            all.Should().BeEquivalentTo(
-                                        new
-                                        {
-                                            ItemID = 1,
-                                            Name   = "Test1"
-                                        },
-                                        options => options.ExcludingMissingMembers()
-                                       );
+            all.Should().
+                BeEquivalentTo(new
+                {
+                    ItemID = 1,
+                    Name   = "Test1"
+                }, options => options.ExcludingMissingMembers());
         }
 
         [TestMethod]
@@ -171,13 +165,12 @@ namespace CNCLib.Tests.Logic
                 ClassName = typeof(DynItemManagerTestClass).AssemblyQualifiedName,
                 ItemProperties = new[]
                 {
-                    new ItemProperty { ItemID = 1, Name = "StringProperty", Value  = "Hallo" },
-                    new ItemProperty { ItemID = 1, Name = "IntProperty", Value     = "1" },
-                    new ItemProperty { ItemID = 1, Name = "DoubleProperty", Value  = "1.234" },
-                    new ItemProperty { ItemID = 1, Name = "DecimalProperty", Value = "9.876" },
-                    new ItemProperty { ItemID = 1, Name = "IntNullProperty" },
-                    new ItemProperty { ItemID = 1, Name = "DoubleNullProperty", Value  = "1.234" },
-                    new ItemProperty { ItemID = 1, Name = "DecimalNullProperty", Value = "9.876" }
+                    new ItemProperty { ItemID = 1, Name = "StringProperty", Value                        = "Hallo" },
+                    new ItemProperty { ItemID = 1, Name = "IntProperty", Value                           = "1" },
+                    new ItemProperty { ItemID = 1, Name = "DoubleProperty", Value                        = "1.234" },
+                    new ItemProperty { ItemID = 1, Name = "DecimalProperty", Value                       = "9.876" },
+                    new ItemProperty { ItemID = 1, Name = "IntNullProperty" }, new ItemProperty { ItemID = 1, Name = "DoubleNullProperty", Value = "1.234" },
+                    new ItemProperty { ItemID = 1, Name = "DecimalNullProperty", Value                   = "9.876" }
                 }
             };
         }
@@ -206,15 +199,9 @@ namespace CNCLib.Tests.Logic
             await srv.Received().Add(Arg.Is<Item>(x => x.Name == "Hallo"));
             await srv.Received().Add(Arg.Is<Item>(x => x.ItemID == 0));
             await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Count == 7));
-            await srv.Received()
-                .Add(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "StringProperty").Value ==
-                                       "Hallo"));
-            await srv.Received()
-                .Add(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "DoubleProperty").Value ==
-                                       "1.234"));
-            await srv.Received()
-                .Add(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "DecimalNullProperty").Value ==
-                                       "9.876"));
+            await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "StringProperty").Value == "Hallo"));
+            await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "DoubleProperty").Value == "1.234"));
+            await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "DecimalNullProperty").Value == "9.876"));
         }
 
         [TestMethod]
@@ -271,8 +258,7 @@ namespace CNCLib.Tests.Logic
 
             //assert
             await srv.Received().Update(Arg.Is<Item>(x => x.ItemID == 1));
-            await srv.Received()
-                .Update(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "IntProperty").Value == "1"));
+            await srv.Received().Update(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "IntProperty").Value == "1"));
             await srv.DidNotReceiveWithAnyArgs().Delete((Item) null);
         }
     }

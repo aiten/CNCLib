@@ -59,12 +59,10 @@ namespace CNCLib.GCode.Load
                         b = ConvertImage(ScaleImage(bx));
                         break;
 
-                    default:
-                        throw new ArgumentException("Bitmap.PixelFormat not supported");
+                    default: throw new ArgumentException("Bitmap.PixelFormat not supported");
                 }
 
-                if (b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format1bppIndexed &&
-                    b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format4bppIndexed)
+                if (b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format1bppIndexed && b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format4bppIndexed)
                 {
                     throw new ArgumentException("Bitmap must be Format1bbp");
                 }
@@ -84,8 +82,7 @@ namespace CNCLib.GCode.Load
                 case LoadOptions.DitherFilter.FloydSteinbergDither:
                     AddComment("Image Converted with FloydSteinbergDither");
                     AddComment("GrayThreshold", LoadOptions.GrayThreshold);
-                    b = new Framework.Tools.Drawing.FloydSteinbergDither { Graythreshold = LoadOptions.GrayThreshold }
-                        .Process(b);
+                    b = new Framework.Tools.Drawing.FloydSteinbergDither { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
                     break;
                 case LoadOptions.DitherFilter.NewspaperDither:
                     AddComment("Image Converted with NewspaperDither");
