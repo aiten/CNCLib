@@ -100,25 +100,18 @@ namespace CNCLib.GCode.Parser
             return ch == '#' || base.IsIdentStart(ch);
         } // start of function or variable
 
-        protected override bool EvalVariable(string var_name, ref double answer)
+        protected override bool EvalVariable(string varName, ref double answer)
         {
-            if (var_name[0] == '#')
+            if (varName[0] == '#')
             {
                 // assigned in ReadIdent
-                int paramNo = int.Parse(var_name.TrimStart('#'));
-                if (ParameterValues.ContainsKey(paramNo))
-                {
-                    answer = ParameterValues[paramNo];
-                }
-                else
-                {
-                    answer = 0.0;
-                }
+                int paramNo = int.Parse(varName.TrimStart('#'));
+                answer = ParameterValues.ContainsKey(paramNo) ? ParameterValues[paramNo] : 0.0;
 
                 return true;
             }
 
-            return base.EvalVariable(var_name, ref answer);
+            return base.EvalVariable(varName, ref answer);
         }
     }
 }

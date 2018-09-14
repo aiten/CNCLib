@@ -63,7 +63,7 @@ namespace Framework.Repository
 
         public void SetValue(TEntity entity, TEntity values)
         {
-            base.SetValue(entity, (object) values);
+            base.SetValue(entity, values);
         }
 
         public async Task Update(TKey key, TEntity values)

@@ -30,7 +30,7 @@ namespace CNCLib.GCode.Load
 {
     public partial class LoadHPGL : LoadBase
     {
-        bool _DEBUG = false;
+        readonly bool _DEBUG = false;
 
         #region Read PLT
 

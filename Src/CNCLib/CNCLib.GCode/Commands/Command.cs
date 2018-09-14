@@ -43,8 +43,8 @@ namespace CNCLib.GCode.Commands
             Movetype      = MoveType.NoMove;
         }
 
-        private Point3D        _calculatedEndPosition;
-        private List<Variable> _variables = new List<Variable>();
+        private          Point3D        _calculatedEndPosition;
+        private readonly List<Variable> _variables = new List<Variable>();
 
         #endregion
 

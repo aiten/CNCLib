@@ -24,7 +24,7 @@ namespace CNCLib.GCode.Parser
 {
     public class GCodeParser : Framework.Tools.Parser.Parser
     {
-        string MESSAGE_GCODE_CommentNestingError = "Comment nesting error";
+        readonly string MESSAGE_GCODE_CommentNestingError = "Comment nesting error";
 
         public GCodeParser(CommandStream reader) : base(reader)
         {

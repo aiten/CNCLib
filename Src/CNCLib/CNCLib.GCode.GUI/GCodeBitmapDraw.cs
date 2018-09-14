@@ -554,8 +554,8 @@ namespace CNCLib.GCode.GUI
         public Pen _helpLinePen;
         public Pen _helpLinePen10;
 
-        PenSet _dithered = new PenSet();
-        PenSet _selected = new PenSet();
+        readonly PenSet _dithered = new PenSet();
+        readonly PenSet _selected = new PenSet();
 
         public void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo)
         {

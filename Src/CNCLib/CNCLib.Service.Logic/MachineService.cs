@@ -27,12 +27,12 @@ namespace CNCLib.Service.Logic
 {
     public class MachineService : CRUDService<Machine, int>, IMachineService
     {
+        readonly IMachineManager _manager;
+
         public MachineService(IMachineManager manager) : base(manager)
         {
             _manager = manager ?? throw new ArgumentNullException();
         }
-
-        readonly IMachineManager _manager;
 
         public async Task<Machine> DefaultMachine()
         {

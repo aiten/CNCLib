@@ -357,11 +357,11 @@ namespace CNCLib.GCode.GUI.Controls
 
         private EDraggingType _draggingType = EDraggingType.NoDragging;
 
-        private Point     _mouseDownPos;
-        private Point3D   _mouseDownCNCPos;
-        private double    _mouseDownCNCOffsetX;
-        private double    _mouseDownCNCOffsetY;
-        private Stopwatch _sw = new Stopwatch();
+        private          Point     _mouseDownPos;
+        private          Point3D   _mouseDownCNCPos;
+        private          double    _mouseDownCNCOffsetX;
+        private          double    _mouseDownCNCOffsetY;
+        private readonly Stopwatch _sw = new Stopwatch();
 
         private void GCodeUserControl_MouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -408,14 +408,7 @@ namespace CNCLib.GCode.GUI.Controls
                     _sw.Start();
                     Mouse.Capture(this);
 
-                    if (e.RightButton == MouseButtonState.Pressed)
-                    {
-                        _draggingType = EDraggingType.RotateAngle;
-                    }
-                    else
-                    {
-                        _draggingType = EDraggingType.Position;
-                    }
+                    _draggingType = e.RightButton == MouseButtonState.Pressed ? EDraggingType.RotateAngle : EDraggingType.Position;
                 }
             }
         }

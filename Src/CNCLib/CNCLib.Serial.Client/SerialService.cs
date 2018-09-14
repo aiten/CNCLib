@@ -121,7 +121,7 @@ namespace CNCLib.Serial.Client
                         HttpResponseMessage response = await client.PostAsJsonAsync($@"{_api}/{port.Id}/connect?baudRate={BaudRate}&dtrIsReset={DtrIsReset}&resetOnConnect={ResetOnConnect}", "x");
                         if (response.IsSuccessStatusCode)
                         {
-                            SerialPortDefinition value = await response.Content.ReadAsAsync<SerialPortDefinition>();
+                            var value = await response.Content.ReadAsAsync<SerialPortDefinition>();
                             IsConnected = true;
                             PortId      = port.Id;
 

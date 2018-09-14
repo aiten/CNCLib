@@ -89,7 +89,7 @@ namespace CNCLib.Wpf.Start
             string dbfile = userprofilepath + @"\CNCLib.db";
             try
             {
-                CNCLib.Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbfile, false, false);
+                Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbfile, false, false);
             }
             catch (Exception ex)
             {

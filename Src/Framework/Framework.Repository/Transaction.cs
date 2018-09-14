@@ -37,7 +37,7 @@ namespace Framework.Repository
 
         private IDbContextTransaction _dbTran;
 
-        public bool InTransaction { get { return _dbTran != null; } }
+        public bool InTransaction => _dbTran != null;
 
         public async Task CommitTransactionAsync()
         {

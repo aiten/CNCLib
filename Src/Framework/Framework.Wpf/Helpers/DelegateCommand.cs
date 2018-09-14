@@ -32,7 +32,7 @@ namespace Framework.Wpf.Helpers
 
         public new DelegateCommand ObservesProperty<T>(Expression<Func<T>> propertyExpression)
         {
-            base.ObservesProperty<T>(propertyExpression);
+            base.ObservesProperty(propertyExpression);
             return this;
         }
     }

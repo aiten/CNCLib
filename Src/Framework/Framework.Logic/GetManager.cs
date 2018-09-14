@@ -26,16 +26,13 @@ namespace Framework.Logic
 {
     public abstract class GetManager<T, TKey, TEntity> : ManagerBase where T : class where TEntity : class
     {
-        private IMapper                       _mapper;
-        private IGetRepository<TEntity, TKey> _repository;
-        private IUnitOfWork                   _unitOfWork;
+        private readonly IMapper                       _mapper;
+        private readonly IGetRepository<TEntity, TKey> _repository;
 
         protected GetManager(IUnitOfWork unitOfWork, IGetRepository<TEntity, TKey> repository, IMapper mapper)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
             _repository = repository ?? throw new ArgumentNullException();
             _mapper     = mapper ?? throw new ArgumentNullException();
-            ;
         }
 
         protected abstract TKey GetKey(TEntity entity);

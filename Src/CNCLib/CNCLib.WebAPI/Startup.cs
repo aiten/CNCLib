@@ -61,7 +61,7 @@ namespace CNCLib.WebAPI
             Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
 
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
-            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<Repository.Context.CNCLibContext>>();
+            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
             Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
 
             Dependency.Container.RegisterTypesIncludingInternals(typeof(MachineService).Assembly, typeof(Repository.MachineRepository).Assembly, typeof(Logic.Client.DynItemController).Assembly,
@@ -86,7 +86,7 @@ namespace CNCLib.WebAPI
                 sqlconnectstring = null;
             }
 
-            CNCLib.Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false, false);
+            Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false, false);
 
             if (env.IsDevelopment())
             {

@@ -37,8 +37,8 @@ namespace CNCLib.WebAPI.Controllers
             ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
 
-        readonly IItemService       _service;
-        private  ICNCLibUserContext _usercontext;
+        readonly         IItemService       _service;
+        private readonly ICNCLibUserContext _usercontext;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> Get(string classname)

@@ -31,9 +31,9 @@ namespace CNCLib.Logic.Manager
 {
     public class ItemManager : CRUDManager<Item, int, Repository.Contracts.Entities.Item>, IItemManager
     {
-        private IUnitOfWork     _unitOfWork;
-        private IItemRepository _repository;
-        private IMapper         _mapper;
+        private          IUnitOfWork     _unitOfWork;
+        private readonly IItemRepository _repository;
+        private readonly IMapper         _mapper;
 
         public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, IMapper mapper) : base(unitOfWork, repository, mapper)
         {

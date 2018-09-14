@@ -46,7 +46,7 @@ namespace CNCLib.Tests.Logic
             var ctrl = new LoadOptionsManager();
 
             rep.GetAll(typeof(LoadOptions)).
-                Returns(new DynItem[]
+                Returns(new[]
                 {
                     new DynItem { ItemID = 1, Name = "Entry1" }
                 });

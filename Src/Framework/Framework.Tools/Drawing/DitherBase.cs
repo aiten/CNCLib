@@ -30,10 +30,10 @@ namespace Framework.Tools.Drawing
         int   _scansize;
         int[] _rgbValues;
 
-        int _addForA = 3;
-        int _addForR = 2;
-        int _addForG = 1;
-        int _addForB = 0;
+        int          _addForA = 3;
+        readonly int _addForR = 2;
+        readonly int _addForG = 1;
+        readonly int _addForB = 0;
 
         #endregion
 

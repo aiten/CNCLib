@@ -35,7 +35,7 @@ namespace CNCLib.Repository.SqLite
         {
             DatabaseFile = databasefile;
 
-            using (var ctx = new CNCLib.Repository.SqLite.MigrationCNCLibContext())
+            using (var ctx = new MigrationCNCLibContext())
             {
                 if (dropdatabase)
                 {

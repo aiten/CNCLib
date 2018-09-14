@@ -35,7 +35,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         #region Properties
 
-        private decimal?[,] _g54 = new decimal?[3, 6];
+        private readonly decimal?[,] _g54 = new decimal?[3, 6];
 
         private void SetField(int axis, int offset, decimal? val)
         {

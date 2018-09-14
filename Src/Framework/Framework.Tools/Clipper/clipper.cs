@@ -164,9 +164,9 @@ namespace Framework.Tools.Clipper
             return result;
         }
 
-        public int ChildCount { get { return m_Childs.Count; } }
+        public int ChildCount => m_Childs.Count;
 
-        public Path Contour { get { return m_polygon; } }
+        public Path Contour => m_polygon;
 
         internal void AddChild(PolyNode Child)
         {
@@ -204,11 +204,11 @@ namespace Framework.Tools.Clipper
             }
         }
 
-        public List<PolyNode> Childs { get { return m_Childs; } }
+        public List<PolyNode> Childs => m_Childs;
 
-        public PolyNode Parent { get { return m_Parent; } }
+        public PolyNode Parent => m_Parent;
 
-        public bool IsHole { get { return IsHoleNode(); } }
+        public bool IsHole => IsHoleNode();
 
         public bool IsOpen { get; set; }
     }
@@ -1818,17 +1818,17 @@ namespace Framework.Tools.Clipper
         public const int ioStrictlySimple    = 2;
         public const int ioPreserveCollinear = 4;
 
-        private ClipType            m_ClipType;
-        private Maxima              m_Maxima;
-        private TEdge               m_SortedEdges;
-        private List<IntersectNode> m_IntersectList;
-        IComparer<IntersectNode>    m_IntersectNodeComparer;
-        private bool                m_ExecuteLocked;
-        private PolyFillType        m_ClipFillType;
-        private PolyFillType        m_SubjFillType;
-        private List<Join>          m_Joins;
-        private List<Join>          m_GhostJoins;
-        private bool                m_UsingPolyTree;
+        private          ClipType                 m_ClipType;
+        private          Maxima                   m_Maxima;
+        private          TEdge                    m_SortedEdges;
+        private readonly List<IntersectNode>      m_IntersectList;
+        readonly         IComparer<IntersectNode> m_IntersectNodeComparer;
+        private          bool                     m_ExecuteLocked;
+        private          PolyFillType             m_ClipFillType;
+        private          PolyFillType             m_SubjFillType;
+        private readonly List<Join>               m_Joins;
+        private readonly List<Join>               m_GhostJoins;
+        private          bool                     m_UsingPolyTree;
 #if use_xyz
       public delegate void ZFillCallback(IntPoint bot1, IntPoint top1, 
         IntPoint bot2, IntPoint top2, ref IntPoint pt);
@@ -5778,15 +5778,15 @@ namespace Framework.Tools.Clipper
 
     public class ClipperOffset
     {
-        private Paths             m_destPolys;
-        private Path              m_srcPoly;
-        private Path              m_destPoly;
-        private List<DoublePoint> m_normals = new List<DoublePoint>();
-        private double            m_delta,    m_sinA, m_sin, m_cos;
-        private double            m_miterLim, m_StepsPerRad;
+        private          Paths             m_destPolys;
+        private          Path              m_srcPoly;
+        private          Path              m_destPoly;
+        private readonly List<DoublePoint> m_normals = new List<DoublePoint>();
+        private          double            m_delta,    m_sinA, m_sin, m_cos;
+        private          double            m_miterLim, m_StepsPerRad;
 
-        private IntPoint m_lowest;
-        private PolyNode m_polyNodes = new PolyNode();
+        private          IntPoint m_lowest;
+        private readonly PolyNode m_polyNodes = new PolyNode();
 
         public double ArcTolerance { get; set; }
         public double MiterLimit   { get; set; }

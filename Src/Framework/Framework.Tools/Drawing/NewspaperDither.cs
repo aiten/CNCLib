@@ -78,7 +78,7 @@ namespace Framework.Tools.Drawing
             public int Y { get; set; }
         }
 
-        private Offsets[] _offsets = new Offsets[]
+        private readonly Offsets[] _offsets = new[]
         {
             new Offsets { X = 0, Y  = 0 }, new Offsets { X = -1, Y = 0 }, new Offsets { X = 0, Y = 1 }, new Offsets { X = 1, Y = 0 }, new Offsets { X = 0, Y = -1 },
             new Offsets { X = -1, Y = 1 },

@@ -37,8 +37,8 @@ namespace CNCLib.WebAPI.Controllers
             ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
 
-        private IMachineService    _service;
-        private ICNCLibUserContext _usercontext;
+        private readonly IMachineService    _service;
+        private readonly ICNCLibUserContext _usercontext;
 
         #region default REST
 
@@ -49,9 +49,9 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult<Machine>> Get(int id)
         {
-            return await this.Get<Machine, int>(_service, id);
+            return await this.Get(_service, id);
         }
 
         [HttpPost]

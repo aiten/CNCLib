@@ -52,7 +52,7 @@ namespace CNCLib.Serial.Server
         {
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowCredentials().AllowAnyMethod().AllowAnyHeader()));
 
-            services.AddSignalR((HubOptions hu) => hu.EnableDetailedErrors = true);
+            services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 

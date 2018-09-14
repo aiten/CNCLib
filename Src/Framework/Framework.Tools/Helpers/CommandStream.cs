@@ -26,10 +26,10 @@ namespace Framework.Tools.Helpers
     {
         #region privat properties/members
 
-        string _line;
-        int    _idx;
-        char   _endCommandChar = ';';
-        string _spaceChar      = " \t";
+        string          _line;
+        int             _idx;
+        readonly char   _endCommandChar = ';';
+        readonly string _spaceChar      = " \t";
 
         #endregion
 
@@ -177,7 +177,7 @@ namespace Framework.Tools.Helpers
             return IsNumber(NextChar);
         }
 
-        static public bool IsNumber(char ch)
+        public static bool IsNumber(char ch)
         {
             return ch == '-' || char.IsDigit(ch) || ch == '.';
         }

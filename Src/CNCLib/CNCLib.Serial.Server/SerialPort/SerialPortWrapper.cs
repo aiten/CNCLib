@@ -47,11 +47,11 @@ namespace CNCLib.Serial.Server.SerialPort
             }
         }
 
-        DelayedExecution _delayExecuteQueueChanged = new DelayedExecution();
-        int              _pendingLastQueueLength;
+        readonly DelayedExecution _delayExecuteQueueChanged = new DelayedExecution();
+        int                       _pendingLastQueueLength;
 
-        DelayedExecution _delayExecuteSendingCommand = new DelayedExecution();
-        int              _pendingSendingCommandSeqId;
+        readonly DelayedExecution _delayExecuteSendingCommand = new DelayedExecution();
+        int                       _pendingSendingCommandSeqId;
 
         #endregion
 
@@ -63,11 +63,11 @@ namespace CNCLib.Serial.Server.SerialPort
 
         public ISerial Serial { get; set; }
 
-        public bool IsConnected => Serial != null ? Serial.IsConnected : false;
+        public bool IsConnected => Serial != null && Serial.IsConnected;
 
-        public bool IsAborted       => Serial != null ? Serial.Aborted : false;
-        public bool IsSingleStep    => Serial != null ? Serial.Pause : false;
-        public int  CommandsInQueue => Serial != null ? Serial.CommandsInQueue : 0;
+        public bool IsAborted       => Serial != null && Serial.Aborted;
+        public bool IsSingleStep    => Serial?.Pause ?? false;
+        public int  CommandsInQueue => Serial?.CommandsInQueue ?? 0;
 
         #endregion
     }

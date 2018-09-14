@@ -109,10 +109,10 @@ namespace CNCLib.Wpf
 //        public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
         public SerialProxy Com { get; set; } = new SerialProxy();
 
-        public Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<Helpers.JoystickArduinoSerialCommunication>.Instance;
+        public Framework.Arduino.SerialCommunication.ISerial ComJoystick => Framework.Tools.Pattern.Singleton<JoystickArduinoSerialCommunication>.Instance;
 
-        public Helpers.MachineGCodeHelper GCode =>
-            Framework.Tools.Pattern.Singleton<Helpers.MachineGCodeHelper>.Instance;
+        public MachineGCodeHelper GCode =>
+            Framework.Tools.Pattern.Singleton<MachineGCodeHelper>.Instance;
 
         private CommandList _commands = new CommandList();
 

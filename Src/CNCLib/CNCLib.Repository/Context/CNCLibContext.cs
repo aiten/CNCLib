@@ -28,10 +28,6 @@ namespace CNCLib.Repository.Context
     {
         public static Action<DbContextOptionsBuilder> OnConfigure;
 
-        public CNCLibContext()
-        {
-        }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));

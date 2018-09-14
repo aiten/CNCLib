@@ -25,7 +25,7 @@ namespace Framework.Service
 {
     public abstract class CRUDService<T, TKey> : GetService<T, TKey> where T : class
     {
-        private ICRUDManager<T, TKey> _manager;
+        private readonly ICRUDManager<T, TKey> _manager;
 
         protected CRUDService(ICRUDManager<T, TKey> manager) : base(manager)
         {

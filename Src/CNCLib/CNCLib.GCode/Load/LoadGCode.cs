@@ -25,8 +25,8 @@ namespace CNCLib.GCode.Load
 {
     public class LoadGCode : LoadBase
     {
-        CommandStream _stream = new CommandStream();
-        Command       _lastnoPrefixCommand;
+        readonly CommandStream _stream = new CommandStream();
+        Command                _lastnoPrefixCommand;
 
         public override void Load()
         {

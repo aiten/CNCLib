@@ -47,7 +47,7 @@ namespace CNCLib.Wpf.Helpers
             string probfeed   = machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
 
             var result = await Global.Instance.Com.Current.SendCommandAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90", DefaultProbeTimeout);
-            if (result?.LastOrDefault()?.ReplyType.HasFlag(Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == false)
+            if (result?.LastOrDefault()?.ReplyType.HasFlag(EReplyType.ReplyError) == false)
             {
                 Global.Instance.Com.Current.QueueCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
                 Global.Instance.Com.Current.QueueCommand("g91 g0" + axisname + probdistup + " g90");
@@ -171,14 +171,14 @@ namespace CNCLib.Wpf.Helpers
                 string[] infos = s.Split(':');
                 int      axis;
 
-                if (infos.Length > 1 && string.Compare(infos[0], ";probe", true) == 0 && -1 != (axis = GCodeHelper.AxisNameToIndex(infos[1])))
+                if (infos.Length > 1 && string.Compare(infos[0], @";probe", true) == 0 && -1 != (axis = GCodeHelper.AxisNameToIndex(infos[1])))
                 {
                     if (false == await SendProbeCommandAsync(machine, axis))
                     {
                         break;
                     }
                 }
-                else if (infos.Length == 1 && string.Compare(infos[0], ";beep", true) == 0)
+                else if (infos.Length == 1 && string.Compare(infos[0], @";beep", true) == 0)
                 {
                     SystemSounds.Beep.Play();
                 }
@@ -187,7 +187,7 @@ namespace CNCLib.Wpf.Helpers
                     if (s.TrimEnd().EndsWith("?"))
                     {
                         var result = await Global.Instance.Com.Current.SendCommandAsync(s.TrimEnd().TrimEnd('?'), DefaulTimeout);
-                        if (result?.LastOrDefault()?.ReplyType.HasFlag(Framework.Arduino.SerialCommunication.EReplyType.ReplyError) == false)
+                        if (result?.LastOrDefault()?.ReplyType.HasFlag(EReplyType.ReplyError) == false)
                         {
                             return;
                         }

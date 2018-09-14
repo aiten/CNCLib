@@ -173,7 +173,7 @@ namespace CNCLib.Tests.Repository
                 await ctx.UnitOfWork.SaveChangesAsync();
                 await trans.CommitTransactionAsync();
 
-                keys = entitiesToAdd.Select(e => GetEntityKey(e));
+                keys = entitiesToAdd.Select(GetEntityKey);
             }
 
             var allWithAdd = await GetAll();

@@ -28,7 +28,13 @@ namespace Framework.Tools.Parser
 {
     public abstract class Parser
     {
-        private string _error;
+        private   string        _error;
+        protected CommandStream _reader;
+
+        protected Parser(CommandStream reader)
+        {
+            _reader = reader;
+        }
 
         public bool IsError()
         {
@@ -52,14 +58,8 @@ namespace Framework.Tools.Parser
             _error = error;
         }
 
-        public Parser(CommandStream reader)
-        {
-            _reader = reader;
-        }
-
         public abstract void Parse();
 
-        protected CommandStream _reader;
 
         protected bool IsToken(string b, bool expectdel, bool ignorecase)
         {

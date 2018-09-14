@@ -38,8 +38,8 @@ namespace CNCLib.WebAPI.Controllers
             ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
 
-        readonly ILoadOptionsService _loadOptionsService;
-        private  ICNCLibUserContext  _usercontext;
+        readonly         ILoadOptionsService _loadOptionsService;
+        private readonly ICNCLibUserContext  _usercontext;
 
         [HttpPost]
         public string Post([FromBody] LoadOptions input)

@@ -74,8 +74,8 @@ namespace CNCLib.Tests.Repository
         {
             var entities = await GetAll();
             entities.Count().Should().BeGreaterThan(1);
-            entities.Where(i => i.Name == "DC-K40-Laser").Count().Should().Be(1);
-            entities.Where(i => i.Name == "Laser").Count().Should().Be(1);
+            entities.Count(i => i.Name == "DC-K40-Laser").Should().Be(1);
+            entities.Count(i => i.Name == "Laser").Should().Be(1);
         }
 
         [TestMethod]
@@ -143,7 +143,7 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task AddUpdateDeleteBulkTest()
         {
-            await AddUpdateDeleteBulk(() => new Machine[]
+            await AddUpdateDeleteBulk(() => new[]
             {
                 CreateMachine(@"AddUpdateDeleteBulkTest1"), CreateMachine(@"AddUpdateDeleteBulkTest2"), CreateMachine(@"AddUpdateDeleteBulkTest2")
             }, (entities) =>

@@ -44,7 +44,7 @@ namespace CNCLib.Tests.Logic
             //			TInterface uow = Substitute.For<Framework.EF.UnitOfWork>();
             //			Dependency.Container.RegisterInstance(uow);
 
-            Dependency.Container.RegisterType<Framework.Contracts.Repository.IUnitOfWork, UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
+            Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
 
             return rep;
         }

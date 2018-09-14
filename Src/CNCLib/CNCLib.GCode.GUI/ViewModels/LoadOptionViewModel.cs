@@ -137,7 +137,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             List<String> ignorelist = new List<string>();
             if (LoadOptionsValue.AutoScale)
             {
-                ignorelist.AddRange(new string[]
+                ignorelist.AddRange(new[]
                 {
                     "ScaleX", "ScaleY", "OffsetX", "OffsetY"
                 });

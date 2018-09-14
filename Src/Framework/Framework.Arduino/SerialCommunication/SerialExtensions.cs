@@ -35,7 +35,7 @@ namespace Framework.Arduino.SerialCommunication
         /// <param name="line">command line to send</param>
         public static IEnumerable<SerialCommand> SendCommand(this ISerial serial, string line)
         {
-            return serial.SendCommandsAsync(new string[] { line }, DefaultTimeout).ConfigureAwait(false).GetAwaiter().GetResult();
+            return serial.SendCommandsAsync(new[] { line }, DefaultTimeout).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Framework.Arduino.SerialCommunication
         /// <param name="waitForMilliseconds"></param>
         public static async Task<IEnumerable<SerialCommand>> SendCommandAsync(this ISerial serial, string line, int waitForMilliseconds = DefaultTimeout)
         {
-            return await serial.SendCommandsAsync(new string[] { line }, waitForMilliseconds);
+            return await serial.SendCommandsAsync(new[] { line }, waitForMilliseconds);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Framework.Arduino.SerialCommunication
         /// <param name="line">command line to send</param>
         public static IEnumerable<SerialCommand> QueueCommand(this ISerial serial, string line)
         {
-            return serial.QueueCommandsAsync(new string[] { line }).ConfigureAwait(false).GetAwaiter().GetResult();
+            return serial.QueueCommandsAsync(new[] { line }).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
 

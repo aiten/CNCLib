@@ -30,7 +30,7 @@ namespace Framework.Wpf.View
         {
             if (vm.MessageBox == null)
             {
-                vm.MessageBox = (messageBoxText, caption, button, icon) => { return MessageBox.Show(messageBoxText, caption, button, icon); };
+                vm.MessageBox = MessageBox.Show;
             }
 
             if (vm.BrowseFileNameFunc == null)
@@ -73,7 +73,7 @@ namespace Framework.Wpf.View
             {
                 vm.DefaulInitForBaseViewModel();
 
-                var closeAction = new Action(() => view.Close());
+                var closeAction = new Action(view.Close);
                 var dialogOkAction = new Action(() =>
                 {
                     view.DialogResult = true;

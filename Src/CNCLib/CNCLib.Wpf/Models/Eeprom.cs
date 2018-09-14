@@ -197,82 +197,82 @@ namespace CNCLib.Wpf.Models
         [Category(CATEGORY_INFO)]
         [DisplayName("HasSpindle")]
         [Description("Maschine has a spindle, can use m3/m5")]
-        public bool HasSpindle { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE)); } set { } }
+        public bool HasSpindle { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("AnalogSpindle")]
         [Description("Can set the speed of the spindle with e.g.  m3 s1000")]
-        public bool HasAnalogSpindle { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE_ANALOG)); } set { } }
+        public bool HasAnalogSpindle { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE_ANALOG)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasSpindleDirection")]
         [Description("Can set spindle direction, mse m3/m4")]
-        public bool HasSpindleDirection { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE_DIR)); } set { } }
+        public bool HasSpindleDirection { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE_DIR)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasCoolant")]
         [Description("Machine has coolant (use m7/m9)")]
-        public bool HasCoolant { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_COOLANT)); } set { } }
+        public bool HasCoolant { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_COOLANT)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasProbe")]
         [Description("Machine has probe input (use g31)")]
-        public bool HasProbe { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_PROBE)); } set { } }
+        public bool HasProbe { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_PROBE)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasSD")]
         [Description("Machine has a SD card")]
-        public bool HasSD { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SD)); } set { } }
+        public bool HasSD { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SD)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasEeprom")]
         [Description("Configuration can be written to eeprom")]
-        public bool HasEeprom { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_EEPROM)); } set { } }
+        public bool HasEeprom { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_EEPROM)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("CanRotate")]
         [Description("Machine can rotate coordinate system (g68/g69)")]
-        public bool CanRotate { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_ROTATE)); } set { } }
+        public bool CanRotate { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_ROTATE)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasHold")]
         [Description("Machine has a hold input")]
-        public bool HasHold { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_HOLD)); } set { } }
+        public bool HasHold { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_HOLD)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasResume")]
         [Description("Machine has a resume input")]
-        public bool HasResume { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_RESUME)); } set { } }
+        public bool HasResume { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_RESUME)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasHoldResume")]
         [Description("Machine has a hold/resume input")]
-        public bool HasHoldResume { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_HOLDRESUME)); } set { } }
+        public bool HasHoldResume { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_HOLDRESUME)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasKill")]
         [Description("Machine has a kill input")]
-        public bool HasKill { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_KILL)); } set { } }
+        public bool HasKill { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_KILL)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("IsLaser")]
         [Description("Machine is a laser")]
-        public bool IsLaser { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_LASER)); } set { } }
+        public bool IsLaser { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_LASER)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("CommandSyntax")]
         [Description("Capability of macine commands")]
-        public Logic.Contracts.DTO.CommandSyntax CommandSyntax { get { return EepromV1.GetCommandSyntax(Info1); } set { } }
+        public Logic.Contracts.DTO.CommandSyntax CommandSyntax { get => EepromV1.GetCommandSyntax(Info1); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("DtrIsReset")]
         [Description("For Arduino Uno, Mega, ... Dtr cause a reset when connecting. For a Arduino zero Dtr must be set/used to transfer data (no reset)")]
-        public bool DtrIsReset { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_DTR_IS_RESET)); } set { } }
+        public bool DtrIsReset { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_DTR_IS_RESET)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("Need EEprom Flush")]
         [Description("EEprom Flush command must be executed to save to EEprom (Arduino zero)")]
-        public bool NeedEEpromFlush { get { return (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_NEED_EEPROM_FLUSH)); } set { } }
+        public bool NeedEEpromFlush { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_NEED_EEPROM_FLUSH)); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("Info2")]

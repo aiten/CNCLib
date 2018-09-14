@@ -61,16 +61,13 @@ namespace CNCLib.Serial.Server.SerialPort
 
             if (Environment.MachineName == "AIT7" && !portnames.Any())
             {
-                portnames = new string[] { "com0", "com1", "com3", "com4", "com5", "com6", "com10" };
+                portnames = new[] { "com0", "com1", "com3", "com4", "com5", "com6", "com10" };
             }
 
-            return portnames.Select((port, index) =>
+            return portnames.Select((port, index) => new SerialPortWrapper()
             {
-                return new SerialPortWrapper()
-                {
-                    Id       = GetIdFromPortName(port, index),
-                    PortName = port
-                };
+                Id       = GetIdFromPortName(port, index),
+                PortName = port
             });
         }
 

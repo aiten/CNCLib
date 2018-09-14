@@ -35,8 +35,8 @@ namespace CNCLib.WebAPI.Controllers
             ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
 
-        readonly IEepromConfigurationService _eepromConfigurationService;
-        private  ICNCLibUserContext          _usercontext;
+        readonly         IEepromConfigurationService _eepromConfigurationService;
+        private readonly ICNCLibUserContext          _usercontext;
 
         [HttpGet]
         public async Task<ActionResult<EepromConfiguration>> Get(ushort teeth, double toothsizeInMm, ushort microsteps, ushort stepsPerRotation, double estimatedRotationSpeed, double timeToAcc,

@@ -190,17 +190,17 @@ namespace CNCLib.Wpf.Models
         [Description("Syntax of machine commands, e.g. GCode, HPGL")]
         public Logic.Contracts.DTO.CommandSyntax CommandSyntax { get; set; }
 
-        private ObservableCollection<MachineCommand> _MachineCommands;
+        private ObservableCollection<MachineCommand> _machineCommands;
 
         [Browsable(false)]
         public ObservableCollection<MachineCommand> MachineCommands
         {
             get
             {
-                if (_MachineCommands == null)
+                if (_machineCommands == null)
                 {
-                    _MachineCommands = new ObservableCollection<MachineCommand>();
-                    _MachineCommands.CollectionChanged += ((sender, e) =>
+                    _machineCommands = new ObservableCollection<MachineCommand>();
+                    _machineCommands.CollectionChanged += ((sender, e) =>
                     {
                         if (e.NewItems != null)
                         {
@@ -212,21 +212,21 @@ namespace CNCLib.Wpf.Models
                     });
                 }
 
-                return _MachineCommands;
+                return _machineCommands;
             }
         }
 
-        private ObservableCollection<MachineInitCommand> _MachineInitCommands;
+        private ObservableCollection<MachineInitCommand> _machineInitCommands;
 
         [Browsable(false)]
         public ObservableCollection<MachineInitCommand> MachineInitCommands
         {
             get
             {
-                if (_MachineInitCommands == null)
+                if (_machineInitCommands == null)
                 {
-                    _MachineInitCommands = new ObservableCollection<MachineInitCommand>();
-                    _MachineInitCommands.CollectionChanged += ((sender, e) =>
+                    _machineInitCommands = new ObservableCollection<MachineInitCommand>();
+                    _machineInitCommands.CollectionChanged += ((sender, e) =>
                     {
                         if (e.NewItems != null)
                         {
@@ -238,7 +238,7 @@ namespace CNCLib.Wpf.Models
                     });
                 }
 
-                return _MachineInitCommands;
+                return _machineInitCommands;
             }
         }
     }

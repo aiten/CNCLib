@@ -819,7 +819,7 @@ namespace CNCLib.Repository.Context
         {
             if (isTest)
             {
-                var cfgs = new Configuration[]
+                var cfgs = new[]
                 {
                     new Configuration()
                     {

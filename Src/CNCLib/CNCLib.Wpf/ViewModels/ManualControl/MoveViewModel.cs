@@ -49,14 +49,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                 }
 
                 Global.Instance.Com.Current.QueueCommand(commandStr);
-                ;
 
                 if (mustUse2Lines)
                 {
                     Global.Instance.Com.Current.QueueCommand("g90");
                 }
-
-                ;
             });
         }
 

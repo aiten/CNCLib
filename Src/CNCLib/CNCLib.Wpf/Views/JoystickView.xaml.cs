@@ -36,7 +36,7 @@ namespace CNCLib.Wpf.Views
 
             if (vm.CloseAction == null)
             {
-                vm.CloseAction = () => Close();
+                vm.CloseAction = Close;
             }
 
             Loaded += async (v, e) =>

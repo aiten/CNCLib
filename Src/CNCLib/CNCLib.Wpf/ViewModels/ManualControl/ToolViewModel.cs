@@ -52,7 +52,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private bool _updateAfterSendNext = false;
 
-        private void OnCommandQueueChanged(object sender, Framework.Arduino.SerialCommunication.SerialEventArgs arg)
+        private void OnCommandQueueChanged(object sender, SerialEventArgs arg)
         {
             PendingCommandCount = arg.QueueLenght;
 

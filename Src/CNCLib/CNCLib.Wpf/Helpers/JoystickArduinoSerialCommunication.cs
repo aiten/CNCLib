@@ -39,7 +39,7 @@ namespace CNCLib.Wpf.Helpers
             });
         }
 
-        protected override void OnReplyReceived(Framework.Arduino.SerialCommunication.SerialEventArgs info)
+        protected override void OnReplyReceived(SerialEventArgs info)
         {
             base.OnReplyReceived(info);
 

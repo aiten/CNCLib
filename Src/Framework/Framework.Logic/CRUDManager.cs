@@ -28,9 +28,9 @@ namespace Framework.Logic
 {
     public abstract class CRUDManager<T, TKey, TEntity> : GetManager<T, TKey, TEntity> where T : class where TEntity : class
     {
-        private IMapper                        _mapper;
-        private ICRUDRepository<TEntity, TKey> _repository;
-        private IUnitOfWork                    _unitOfWork;
+        private readonly IMapper                        _mapper;
+        private readonly ICRUDRepository<TEntity, TKey> _repository;
+        private readonly IUnitOfWork                    _unitOfWork;
 
         protected CRUDManager(IUnitOfWork unitOfWork, ICRUDRepository<TEntity, TKey> repository, IMapper mapper) : base(unitOfWork, repository, mapper)
         {
@@ -51,13 +51,13 @@ namespace Framework.Logic
             {
                 _repository.AddRange(entities);
                 await trans.CommitTransactionAsync();
-                return entities.Select(e => GetKey(e));
+                return entities.Select(GetKey);
             }
         }
 
         public async Task Delete(T value)
         {
-            await Delete(new T[] { value });
+            await Delete(new[] { value });
         }
 
         public async Task Delete(IEnumerable<T> values)
@@ -72,7 +72,7 @@ namespace Framework.Logic
 
         public async Task Delete(TKey key)
         {
-            await Delete(new TKey[] { key });
+            await Delete(new[] { key });
         }
 
         public async Task Delete(IEnumerable<TKey> keys)
@@ -87,7 +87,7 @@ namespace Framework.Logic
 
         public async Task Update(T value)
         {
-            await Update(new T[] { value });
+            await Update(new[] { value });
         }
 
         public async Task Update(IEnumerable<T> values)
@@ -95,9 +95,9 @@ namespace Framework.Logic
             using (var trans = _unitOfWork.BeginTransaction())
             {
                 var entities     = _mapper.Map<IEnumerable<T>, IEnumerable<TEntity>>(values);
-                var entitiesInDb = await _repository.GetTracking(entities.Select(e => GetKey(e)));
+                var entitiesInDb = await _repository.GetTracking(entities.Select(GetKey));
 
-                var mergeJoin = entitiesInDb.Join(entities, e => GetKey(e), e => GetKey(e), (EntityInDb, Entity) => new { EntityInDb, Entity });
+                var mergeJoin = entitiesInDb.Join(entities, GetKey, GetKey, (EntityInDb, Entity) => new { EntityInDb, Entity });
 
                 if (entities.Count() != entitiesInDb.Count() || entities.Count() != mergeJoin.Count())
                 {

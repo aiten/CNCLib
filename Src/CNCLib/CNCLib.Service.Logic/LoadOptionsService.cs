@@ -27,11 +27,11 @@ namespace CNCLib.Service.Logic
 {
     public class LoadOptionsService : CRUDService<LoadOptions, int>, ILoadOptionsService
     {
+        readonly ILoadOptionsManager _manager;
+
         public LoadOptionsService(ILoadOptionsManager manager) : base(manager)
         {
             _manager = manager ?? throw new ArgumentNullException();
         }
-
-        readonly ILoadOptionsManager _manager;
     }
 }

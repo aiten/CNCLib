@@ -71,8 +71,8 @@ namespace CNCLib.Tests.Repository
         {
             var entities = await GetAll();
             entities.Count().Should().BeGreaterThan(1);
-            entities.Where(i => i.Name == "laser cut 160mg paper").Count().Should().Be(1);
-            entities.Where(i => i.Name == "laser cut hole 130mg black").Count().Should().Be(1);
+            entities.Count(i => i.Name == "laser cut 160mg paper").Should().Be(1);
+            entities.Count(i => i.Name == "laser cut hole 130mg black").Should().Be(1);
         }
 
         [TestMethod]

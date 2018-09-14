@@ -61,7 +61,7 @@ namespace Framework.Tools.Pattern
             _obj = obj;
         }
 
-        private T _obj;
+        private readonly T _obj;
 
         IScope<T> IFactory<T>.Create()
         {

@@ -49,13 +49,13 @@ namespace CNCLib.Wpf.Helpers
             return null;
         }
 
-        public async Task<bool> WriteEepromAsync(Eeprom EepromValue)
+        public async Task<bool> WriteEepromAsync(Eeprom eepromValue)
         {
-            var ee = new EepromV1 { Values = EepromValue.Values };
+            var ee = new EepromV1 { Values = eepromValue.Values };
 
             if (ee.IsValid)
             {
-                EepromValue.WriteTo(ee);
+                eepromValue.WriteTo(ee);
 
                 File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromWrite.nc"), ee.ToGCode());
 

@@ -247,7 +247,7 @@ namespace Framework.Test.Parser
         }
 
         [TestMethod]
-        public void ParserCompareGT()
+        public void ParserCompareGt()
         {
             var stream = new CommandStream() { Line = "(1>2)+(1>=1)+(4>1)" };
             var parser = new ExpressionParser(stream);
@@ -259,7 +259,7 @@ namespace Framework.Test.Parser
         }
 
         [TestMethod]
-        public void ParserCompareLT()
+        public void ParserCompareLt()
         {
             var stream = new CommandStream() { Line = "(1<2)+(1<=1)+(4<1)" };
             var parser = new ExpressionParser(stream);
@@ -368,7 +368,7 @@ namespace Framework.Test.Parser
         #region Variable
 
         [TestMethod]
-        public void ParserConstantValuePI()
+        public void ParserConstantValuePi()
         {
             var stream = new CommandStream() { Line = "PI" };
             var parser = new ExpressionParser(stream);

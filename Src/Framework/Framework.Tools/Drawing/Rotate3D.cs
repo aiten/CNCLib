@@ -34,7 +34,7 @@ namespace Framework.Tools.Drawing
 
         #region 3D Rotate
 
-        double[,] _vect = new double[3, 3];
+        readonly double[,] _vect = new double[3, 3];
 
         public void Set3DRotate(double rad, double[] vect)
         {

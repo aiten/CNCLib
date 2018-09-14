@@ -47,7 +47,7 @@ namespace CNCLib.Tests.Logic
             {
                 MachineID = 1,
                 Name      = "Maxi",
-                MachineCommands = new CNCLib.Logic.Contracts.DTO.MachineCommand[]
+                MachineCommands = new[]
                 {
                     new CNCLib.Logic.Contracts.DTO.MachineCommand
                     {
@@ -59,7 +59,7 @@ namespace CNCLib.Tests.Logic
                         PosY             = 1
                     }
                 },
-                MachineInitCommands = new CNCLib.Logic.Contracts.DTO.MachineInitCommand[]
+                MachineInitCommands = new[]
                 {
                     new CNCLib.Logic.Contracts.DTO.MachineInitCommand
                     {
@@ -94,7 +94,7 @@ namespace CNCLib.Tests.Logic
                 MachineInitCommands = new MachineInitCommand[0]
             };
             rep.Get(11).Returns(machineEntity1);
-            rep.GetTracking(Arg.Any<IEnumerable<int>>()).Returns(new Machine[] { machineEntity1 });
+            rep.GetTracking(Arg.Any<IEnumerable<int>>()).Returns(new[] { machineEntity1 });
 
             var machine = await ctrl.Get(11);
             machine.Name = "SuperMaxi";

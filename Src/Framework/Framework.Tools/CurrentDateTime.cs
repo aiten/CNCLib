@@ -12,8 +12,8 @@ namespace Framework.Tools
 {
     public class CurrentDateTime : ICurrentDateTime
     {
-        public DateTime Now { get { return DateTime.Now; } }
+        public DateTime Now => DateTime.Now;
 
-        public DateTime ToDay { get { return DateTime.Today; } }
+        public DateTime ToDay => DateTime.Today;
     }
 }

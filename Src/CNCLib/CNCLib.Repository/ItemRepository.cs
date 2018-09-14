@@ -31,7 +31,7 @@ namespace CNCLib.Repository
 {
     public class ItemRepository : CRUDRepositoryBase<CNCLibContext, Item, int>, IItemRepository
     {
-        private ICNCLibUserContext _userContext;
+        private readonly ICNCLibUserContext _userContext;
 
         public ItemRepository(CNCLibContext context, ICNCLibUserContext userContext) : base(context)
         {
@@ -75,7 +75,7 @@ namespace CNCLib.Repository
         protected override void AssignValuesGraph(Item trackingentity, Item values)
         {
             base.AssignValuesGraph(trackingentity, values);
-            Sync<ItemProperty>(trackingentity.ItemProperties, values.ItemProperties, (x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
+            Sync(trackingentity.ItemProperties, values.ItemProperties, (x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
         }
 
 /*

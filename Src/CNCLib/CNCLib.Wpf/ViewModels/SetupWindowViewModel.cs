@@ -179,7 +179,7 @@ namespace CNCLib.Wpf.ViewModels
                 Global.Instance.Com.Current.ResetOnConnect = ResetOnConnect;
 
                 Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
-                Global.Instance.Com.Current.BaudRate       = (int) Machine.BaudRate;
+                Global.Instance.Com.Current.BaudRate       = Machine.BaudRate;
                 await Global.Instance.Com.Current.ConnectAsync(comport);
                 await SetGlobal();
 

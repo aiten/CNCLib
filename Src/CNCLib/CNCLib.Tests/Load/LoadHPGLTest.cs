@@ -75,7 +75,7 @@ namespace CNCLib.Tests.Load
                 "G1 F499", "M107", "G0 X0 Y0", "M106 S255", "G1 X10 Y10", "M107", "M5" // ShutdownCommands
             };
 
-            var list = load.Commands.Where(e => IsGCommand(e));
+            var list = load.Commands.Where(IsGCommand);
 
             CheckGCode(list, gcode);
         }
@@ -162,7 +162,7 @@ namespace CNCLib.Tests.Load
                 "G1 F499", "M107", "G0 X0 Y0", "M106 S255", "G1 X10 Y10", "G1 X20 Y10", "M107", "G0 X20 Y20", "M106", "G1 X30 Y30", "M107", "M5" // ShutdownCommands
             };
 
-            var list = load.Commands.Where(e => IsGCommand(e));
+            var list = load.Commands.Where(IsGCommand);
 
             CheckGCode(list, gcode);
         }
@@ -189,7 +189,7 @@ namespace CNCLib.Tests.Load
                 "G1 F499", "M107", "G0 X0 Y0", "M106 S255", "G1 X10 Y10", "G1 X20 Y10", "M107", "G0 X20 Y20", "M106", "G1 X30 Y30", "M107", "M5" // ShutdownCommands
             };
 
-            var list = load.Commands.Where(e => IsGCommand(e));
+            var list = load.Commands.Where(IsGCommand);
 
             CheckGCode(list, gcode);
         }
@@ -220,7 +220,7 @@ namespace CNCLib.Tests.Load
                 "G1 X0 Y10", "G1 X10 Y10", "G1 X10 Y0", "G1 X0 Y0", "M107", "M5"
             };
 
-            var list = load.Commands.Where(e => IsGCommand(e));
+            var list = load.Commands.Where(IsGCommand);
 
             CheckGCode(list, gcode);
         }

@@ -146,13 +146,13 @@ namespace CNCLib.Wpf.ViewModels
 
         #region private/intern
 
-        LoadOptions loadinfo          = new LoadOptions();
+        LoadOptions _loadinfo         = new LoadOptions();
         bool        _useAzure         = false;
         bool        _loadingOrSending = false;
 
         Command _lastCurrentCommand = null;
 
-        private void CommandSending(object sender, Framework.Arduino.SerialCommunication.SerialEventArgs arg)
+        private void CommandSending(object sender, SerialEventArgs arg)
         {
             int seqId = arg.SeqId;
 
@@ -270,7 +270,7 @@ namespace CNCLib.Wpf.ViewModels
                                 cmddeflist.Add(new CommandToIndex()
                                 {
                                     Cmd         = cmd,
-                                    CommandText = new string[] { cmdstr }
+                                    CommandText = new[] { cmdstr }
                                 });
                             }
                         });
@@ -302,16 +302,16 @@ namespace CNCLib.Wpf.ViewModels
 
         public async Task Load()
         {
-            if (loadinfo.AutoScaleSizeX == 0 || loadinfo.AutoScaleSizeY == 0)
+            if (_loadinfo.AutoScaleSizeX == 0 || _loadinfo.AutoScaleSizeY == 0)
             {
-                loadinfo.AutoScaleSizeX = Global.Instance.SizeX;
-                loadinfo.AutoScaleSizeY = Global.Instance.SizeY;
+                _loadinfo.AutoScaleSizeX = Global.Instance.SizeX;
+                _loadinfo.AutoScaleSizeY = Global.Instance.SizeY;
             }
 
-            var arg = new GetLoadInfoArg { LoadOption = loadinfo, UseAzure = _useAzure };
+            var arg = new GetLoadInfoArg { LoadOption = _loadinfo, UseAzure = _useAzure };
             if ((GetLoadInfo?.Invoke(arg)).GetValueOrDefault(false))
             {
-                loadinfo  = arg.LoadOption;
+                _loadinfo = arg.LoadOption;
                 _useAzure = arg.UseAzure;
 
                 var ld = new GCodeLoad();
@@ -319,7 +319,7 @@ namespace CNCLib.Wpf.ViewModels
                 try
                 {
                     _loadingOrSending = true;
-                    Commands          = await ld.Load(loadinfo, _useAzure);
+                    Commands          = await ld.Load(_loadinfo, _useAzure);
                 }
                 catch (Exception ex)
                 {
@@ -391,9 +391,9 @@ namespace CNCLib.Wpf.ViewModels
 
         #region Commands
 
-        private ICommand _LoadCommand;
+        private ICommand _loadCommand;
 
-        public ICommand LoadCommand { get { return _LoadCommand ?? (_LoadCommand = new DelegateCommand(async () => await Load(), CanLoad)); } }
+        public ICommand LoadCommand { get { return _loadCommand ?? (_loadCommand = new DelegateCommand(async () => await Load(), CanLoad)); } }
 
         public ICommand SendToCommand      => new DelegateCommand(SendTo,      CanSendTo);
         public ICommand ResetViewCommandXY => new DelegateCommand(ResetViewXY, CanResetView);

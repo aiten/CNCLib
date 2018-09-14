@@ -29,7 +29,7 @@ namespace Framework.Web
     /// </summary>
     public class AspNetDependencyContainer : IDependencyContainer
     {
-        private IServiceCollection _container;
+        private readonly IServiceCollection _container;
 
         public AspNetDependencyContainer(IServiceCollection services)
         {

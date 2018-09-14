@@ -76,7 +76,7 @@ namespace CNCLib.GCode.Commands
 
         public override void ReadFrom(CommandStream stream)
         {
-            int save_index = stream.PushIdx();
+            int saveIndex = stream.PushIdx();
 
             stream.Next();
 
@@ -92,7 +92,7 @@ namespace CNCLib.GCode.Commands
                 else
                 {
                     // error => do not analyse line
-                    stream.PopIdx(save_index);
+                    stream.PopIdx(saveIndex);
                 }
             }
 

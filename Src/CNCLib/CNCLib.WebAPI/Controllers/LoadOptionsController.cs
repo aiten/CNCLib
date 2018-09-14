@@ -30,8 +30,8 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class LoadOptionsController : Controller
     {
-        readonly ILoadOptionsService _service;
-        private  ICNCLibUserContext  _usercontext;
+        readonly         ILoadOptionsService _service;
+        private readonly ICNCLibUserContext  _usercontext;
 
         public LoadOptionsController(ILoadOptionsService service, ICNCLibUserContext usercontext)
         {

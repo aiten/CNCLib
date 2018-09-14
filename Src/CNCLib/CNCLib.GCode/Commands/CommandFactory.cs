@@ -25,7 +25,7 @@ namespace CNCLib.GCode.Commands
 {
     public class CommandFactory
     {
-        private Dictionary<string, Type> _commandTypes = new Dictionary<string, Type>();
+        private readonly Dictionary<string, Type> _commandTypes = new Dictionary<string, Type>();
 
         public CommandFactory()
         {

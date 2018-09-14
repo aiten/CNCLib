@@ -42,7 +42,7 @@ namespace CNCLib.Service.WebAPI
             return null;
         }
 
-        public async Task<IEnumerable<T>> Get(IEnumerable<TKey> keys)
+        public Task<IEnumerable<T>> Get(IEnumerable<TKey> keys)
         {
             throw new NotImplementedException();
         }
@@ -77,7 +77,7 @@ namespace CNCLib.Service.WebAPI
             }
         }
 
-        public async Task<IEnumerable<TKey>> Add(IEnumerable<T> values)
+        public Task<IEnumerable<TKey>> Add(IEnumerable<T> values)
         {
             throw new NotImplementedException();
         }
@@ -87,7 +87,7 @@ namespace CNCLib.Service.WebAPI
             await Delete(GetKey(value));
         }
 
-        public async Task Delete(IEnumerable<T> values)
+        public Task Delete(IEnumerable<T> values)
         {
             throw new NotImplementedException();
         }
@@ -107,7 +107,7 @@ namespace CNCLib.Service.WebAPI
             }
         }
 
-        public async Task Delete(IEnumerable<TKey> keys)
+        public Task Delete(IEnumerable<TKey> keys)
         {
             throw new NotImplementedException();
         }
@@ -120,7 +120,7 @@ namespace CNCLib.Service.WebAPI
             }
         }
 
-        public async Task Update(IEnumerable<T> values)
+        public Task Update(IEnumerable<T> values)
         {
             throw new NotImplementedException();
         }

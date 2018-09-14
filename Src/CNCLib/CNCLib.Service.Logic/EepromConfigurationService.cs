@@ -27,12 +27,12 @@ namespace CNCLib.Service.Logic
 {
     public class EepromConfigurationService : DisposeWrapper, IEepromConfigurationService
     {
+        readonly IEepromConfigurationManager _manager;
+
         public EepromConfigurationService(IEepromConfigurationManager manager)
         {
             _manager = manager ?? throw new ArgumentNullException();
         }
-
-        readonly IEepromConfigurationManager _manager;
 
         public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
         {

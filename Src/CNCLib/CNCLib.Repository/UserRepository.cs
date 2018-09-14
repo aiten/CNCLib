@@ -59,9 +59,9 @@ namespace CNCLib.Repository
 
             int id = user.UserID;
 
-            var UserInDb = await Context.Users.Where(m => m.UserID == id).FirstOrDefaultAsync();
+            var userInDb = await Context.Users.Where(m => m.UserID == id).FirstOrDefaultAsync();
 
-            if (UserInDb == default(User))
+            if (userInDb == default(User))
             {
                 // add new
 
@@ -71,7 +71,7 @@ namespace CNCLib.Repository
             {
                 // syn with existing
 
-                SetValue(UserInDb, user);
+                SetValue(userInDb, user);
 
                 // search und update Usercommands (add and delete)
             }

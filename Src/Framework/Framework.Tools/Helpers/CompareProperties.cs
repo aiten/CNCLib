@@ -47,17 +47,12 @@ namespace Framework.Tools.Helpers
 
             if (objectA != null && objectB != null)
             {
-                Type objectType;
-
-                objectType = objectA.GetType();
+                var objectType = objectA.GetType();
 
                 foreach (PropertyInfo propertyInfo in objectType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.CanRead && !ignoreList.Contains(p.Name)))
                 {
-                    object valueA;
-                    object valueB;
-
-                    valueA = propertyInfo.GetValue(objectA, null);
-                    valueB = propertyInfo.GetValue(objectB, null);
+                    var valueA = propertyInfo.GetValue(objectA, null);
+                    var valueB = propertyInfo.GetValue(objectB, null);
 
                     if (CanDirectlyCompare(propertyInfo.PropertyType))
                     {
@@ -69,52 +64,41 @@ namespace Framework.Tools.Helpers
                     // if it implements IEnumerable, then scan any items
                     else if (typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType))
                     {
-                        IEnumerable<object> collectionItems1;
-                        IEnumerable<object> collectionItems2;
-                        int                 collectionItemsCount1;
-                        int                 collectionItemsCount2;
-
                         if (valueA == null && valueB != null || valueA != null && valueB == null)
                         {
                             return false;
                         }
-                        else if (valueA != null && valueB != null)
+
+                        var collectionItems1      = ((IEnumerable) valueA).Cast<object>();
+                        var collectionItems2      = ((IEnumerable) valueB).Cast<object>();
+                        var collectionItemsCount1 = collectionItems1.Count();
+                        var collectionItemsCount2 = collectionItems2.Count();
+
+                        // check the counts to ensure they match
+                        if (collectionItemsCount1 != collectionItemsCount2)
                         {
-                            collectionItems1      = ((IEnumerable) valueA).Cast<object>();
-                            collectionItems2      = ((IEnumerable) valueB).Cast<object>();
-                            collectionItemsCount1 = collectionItems1.Count();
-                            collectionItemsCount2 = collectionItems2.Count();
+                            return false;
+                        }
+                        // and if they do, compare each item...
+                        // this assumes both collections have the same order
+                        else
+                        {
+                            for (int i = 0; i < collectionItemsCount1; i++)
+                            {
+                                var collectionItem1    = collectionItems1.ElementAt(i);
+                                var collectionItem2    = collectionItems2.ElementAt(i);
+                                var collectionItemType = collectionItem1.GetType();
 
-                            // check the counts to ensure they match
-                            if (collectionItemsCount1 != collectionItemsCount2)
-                            {
-                                return false;
-                            }
-                            // and if they do, compare each item...
-                            // this assumes both collections have the same order
-                            else
-                            {
-                                for (int i = 0; i < collectionItemsCount1; i++)
+                                if (CanDirectlyCompare(collectionItemType))
                                 {
-                                    object collectionItem1;
-                                    object collectionItem2;
-                                    Type   collectionItemType;
-
-                                    collectionItem1    = collectionItems1.ElementAt(i);
-                                    collectionItem2    = collectionItems2.ElementAt(i);
-                                    collectionItemType = collectionItem1.GetType();
-
-                                    if (CanDirectlyCompare(collectionItemType))
-                                    {
-                                        if (!AreValuesEqual(collectionItem1, collectionItem2))
-                                        {
-                                            return false;
-                                        }
-                                    }
-                                    else if (!AreObjectsPropertiesEqual(collectionItem1, collectionItem2, compared, ignoreList))
+                                    if (!AreValuesEqual(collectionItem1, collectionItem2))
                                     {
                                         return false;
                                     }
+                                }
+                                else if (!AreObjectsPropertiesEqual(collectionItem1, collectionItem2, compared, ignoreList))
+                                {
+                                    return false;
                                 }
                             }
                         }
@@ -134,7 +118,7 @@ namespace Framework.Tools.Helpers
             }
             else
             {
-                if (!object.Equals(objectA, objectB))
+                if (!Equals(objectA, objectB))
                 {
                     return false;
                 }
@@ -154,9 +138,7 @@ namespace Framework.Tools.Helpers
 
         private static bool AreValuesEqual(object valueA, object valueB)
         {
-            IComparable selfValueComparer;
-
-            selfValueComparer = valueA as IComparable;
+            var selfValueComparer = valueA as IComparable;
 
             if (valueA == null && valueB != null || valueA != null && valueB == null)
             {
@@ -168,7 +150,7 @@ namespace Framework.Tools.Helpers
                 return false; // the comparison using IComparable failed
             }
 
-            if (!object.Equals(valueA, valueB))
+            if (!Equals(valueA, valueB))
             {
                 return false; // the comparison using Equals failed
             }

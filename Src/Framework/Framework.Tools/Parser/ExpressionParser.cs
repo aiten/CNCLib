@@ -26,15 +26,15 @@ namespace Framework.Tools.Parser
 {
     public class ExpressionParser : Parser
     {
-        private string MESSAGE_EXPR_EMPTY_EXPR          = "Empty expression";
-        private string MESSAGE_EXPR_FORMAT              = "Expression format error";
-        private string MESSAGE_EXPR_UNKNOWN_FUNCTION    = "Unknown function";
-        private string MESSAGE_EXPR_SYNTAX_ERROR        = "Syntax error";
-        private string MESSAGE_EXPR_MISSINGRPARENTHESIS = "Missing right parenthesis";
-        private string MESSAGE_EXPR_ILLEGAL_OPERATOR    = "Illegal operator";
-        private string MESSAGE_EXPR_ILLEGAL_FUNCTION    = "Illegal function";
-        private string MESSAGE_EXPR_UNKNOWN_VARIABLE    = "Unknown variable";
-        private string MESSAGE_EXPR_FRACTORIAL          = "factorial";
+        private readonly string MESSAGE_EXPR_EMPTY_EXPR          = "Empty expression";
+        private readonly string MESSAGE_EXPR_FORMAT              = "Expression format error";
+        private readonly string MESSAGE_EXPR_UNKNOWN_FUNCTION    = "Unknown function";
+        private readonly string MESSAGE_EXPR_SYNTAX_ERROR        = "Syntax error";
+        private readonly string MESSAGE_EXPR_MISSINGRPARENTHESIS = "Missing right parenthesis";
+        private readonly string MESSAGE_EXPR_ILLEGAL_OPERATOR    = "Illegal operator";
+        private readonly string MESSAGE_EXPR_ILLEGAL_FUNCTION    = "Illegal function";
+        private readonly string MESSAGE_EXPR_UNKNOWN_VARIABLE    = "Unknown variable";
+        private readonly string MESSAGE_EXPR_FRACTORIAL          = "factorial";
 
 
         public ExpressionParser(CommandStream reader) : base(reader)
@@ -455,9 +455,8 @@ namespace Framework.Tools.Parser
                 if (GetTokenType() == ETokenType.AssignSy)
                 {
                     // assignment
-                    double ans;
                     GetNextToken();
-                    ans = ParseLevel2();
+                    var ans = ParseLevel2();
 
                     AssignVariable(state_now._varName, ans);
 
@@ -744,8 +743,7 @@ namespace Framework.Tools.Parser
 
         double Factorial(double value)
         {
-            double res;
-            var    v = (UInt32) (value);
+            var v = (UInt32) (value);
 
             if (value != (UInt32) (v))
             {
@@ -753,7 +751,7 @@ namespace Framework.Tools.Parser
                 return 0;
             }
 
-            res = (double) v;
+            var res = (double) v;
             v--;
             while (v > 1)
             {
