@@ -29,12 +29,12 @@ namespace CNCLib.Service.Logic
 {
     public class ItemService : CRUDService<Item, int>, IItemService
     {
+        readonly IItemManager _manager;
+
         public ItemService(IItemManager manager) : base(manager)
         {
             _manager = manager ?? throw new ArgumentNullException();
         }
-
-        readonly IItemManager _manager;
 
         public async Task<IEnumerable<Item>> GetByClassName(string classname)
         {
