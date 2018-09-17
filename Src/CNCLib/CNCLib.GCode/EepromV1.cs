@@ -28,9 +28,9 @@ namespace CNCLib.GCode
         public const uint SIGNATURE        = 0x21436501;
         public const uint SIGNATUREPLOTTER = 0x21438701;
 
-        UInt32[] _values;
+        uint[] _values;
 
-        public UInt32[] Values
+        public uint[] Values
         {
             get => _values;
             set
@@ -175,15 +175,15 @@ namespace CNCLib.GCode
 
         #region Get/Set
 
-        public UInt32 this[EValueOffsets32 ofs] { get => GetValue32(ofs); set => SetValue32(ofs, value); }
+        public uint this[EValueOffsets32 ofs] { get => GetValue32(ofs); set => SetValue32(ofs, value); }
 
-        public UInt16 this[EValueOffsets16 ofs] { get => GetValue16(ofs); set => SetValue16(ofs, value); }
+        public ushort this[EValueOffsets16 ofs] { get => GetValue16(ofs); set => SetValue16(ofs, value); }
 
         public byte this[EValueOffsets8 ofs] { get => GetValue8(ofs); set => SetValue8(ofs, value); }
 
-        public UInt32 this[int axis, EAxisOffsets32 ofs] { get => GetAxisValue32(axis, ofs); set => SetAxisValue32(axis, ofs, value); }
+        public uint this[int axis, EAxisOffsets32 ofs] { get => GetAxisValue32(axis, ofs); set => SetAxisValue32(axis, ofs, value); }
 
-        public UInt16 this[int axis, EAxisOffsets16 ofs] { get => GetAxisValue16(axis, ofs); set => SetAxisValue16(axis, ofs, value); }
+        public ushort this[int axis, EAxisOffsets16 ofs] { get => GetAxisValue16(axis, ofs); set => SetAxisValue16(axis, ofs, value); }
 
         public byte this[int axis, EAxisOffsets8 ofs] { get => GetAxisValue8(axis, ofs); set => SetAxisValue8(axis, ofs, value); }
 
@@ -197,9 +197,9 @@ namespace CNCLib.GCode
             return (EValueOffsets16) ((uint) ofs + (_ofsAfterAxis << 8));
         }
 
-        public UInt32 this[EValueOffsets32Plotter ofs] { get => GetValue32(AddPlotterOfs(ofs)); set => SetValue32(AddPlotterOfs(ofs), value); }
+        public uint this[EValueOffsets32Plotter ofs] { get => GetValue32(AddPlotterOfs(ofs)); set => SetValue32(AddPlotterOfs(ofs), value); }
 
-        public UInt16 this[EValueOffsets16Plotter ofs] { get => GetValue16(AddPlotterOfs(ofs)); set => SetValue16(AddPlotterOfs(ofs), value); }
+        public ushort this[EValueOffsets16Plotter ofs] { get => GetValue16(AddPlotterOfs(ofs)); set => SetValue16(AddPlotterOfs(ofs), value); }
 
         public List<string> ToGCode()
         {
@@ -236,7 +236,7 @@ namespace CNCLib.GCode
 
         #region Read
 
-        public UInt32 GetValue32(EValueOffsets32 ofs)
+        public uint GetValue32(EValueOffsets32 ofs)
         {
             return Values[(int) ofs];
         }
@@ -245,7 +245,7 @@ namespace CNCLib.GCode
         {
             var offsets = GetIndex(ofsidx);
 
-            UInt32 val = GetValue32(offsets.Item1);
+            uint val = GetValue32(offsets.Item1);
             return (ushort) ((val >> (offsets.Item2 * 16)) & 0xffff);
         }
 
@@ -253,11 +253,11 @@ namespace CNCLib.GCode
         {
             var offsets = GetIndex(ofsidx);
 
-            UInt32 val = GetValue32(offsets.Item1);
+            uint val = GetValue32(offsets.Item1);
             return (byte) ((val >> (offsets.Item2 * 8)) & 0xff);
         }
 
-        public UInt32 GetAxisValue32(int axis, EAxisOffsets32 ofs)
+        public uint GetAxisValue32(int axis, EAxisOffsets32 ofs)
         {
             return Values[_ofsAxis + axis * _sizeAxis + (int) ofs];
         }
@@ -266,7 +266,7 @@ namespace CNCLib.GCode
         {
             var offsets = GetIndex(ofsidx);
 
-            UInt32 val = GetAxisValue32(axis, offsets.Item1);
+            uint val = GetAxisValue32(axis, offsets.Item1);
             return (ushort) ((val >> (offsets.Item2 * 16)) & 0xffff);
         }
 
@@ -274,7 +274,7 @@ namespace CNCLib.GCode
         {
             var offsets = GetIndex(ofsidx);
 
-            UInt32 val = GetAxisValue32(axis, offsets.Item1);
+            uint val = GetAxisValue32(axis, offsets.Item1);
             return (byte) ((val >> (offsets.Item2 * 8)) & 0xff);
         }
 
@@ -282,7 +282,7 @@ namespace CNCLib.GCode
 
         #region Write
 
-        public void SetValue32(EValueOffsets32 ofs, UInt32 value)
+        public void SetValue32(EValueOffsets32 ofs, uint value)
         {
             Values[(int) ofs] = value;
         }
@@ -291,23 +291,23 @@ namespace CNCLib.GCode
         {
             var offsets = GetIndex(ofsidx);
 
-            UInt32 mask = ((UInt32) 0xff) << (offsets.Item2 * 8);
-            UInt32 val  = GetValue32(offsets.Item1) & (~mask);
+            uint mask = ((uint) 0xff) << (offsets.Item2 * 8);
+            uint val  = GetValue32(offsets.Item1) & (~mask);
 
-            SetValue32(offsets.Item1, val + ((UInt32) value << (offsets.Item2 * 8)));
+            SetValue32(offsets.Item1, val + ((uint) value << (offsets.Item2 * 8)));
         }
 
         public void SetValue16(EValueOffsets16 ofsidx, ushort value)
         {
             var offsets = GetIndex(ofsidx);
 
-            UInt32 mask = ((UInt32) 0xffff) << (offsets.Item2 * 16);
-            UInt32 val  = GetValue32(offsets.Item1) & (~mask);
+            uint mask = ((uint) 0xffff) << (offsets.Item2 * 16);
+            uint val  = GetValue32(offsets.Item1) & (~mask);
 
-            SetValue32(offsets.Item1, val + ((UInt32) value << (offsets.Item2 * 16)));
+            SetValue32(offsets.Item1, val + ((uint) value << (offsets.Item2 * 16)));
         }
 
-        public void SetAxisValue32(int axis, EAxisOffsets32 ofs, UInt32 value)
+        public void SetAxisValue32(int axis, EAxisOffsets32 ofs, uint value)
         {
             Values[_ofsAxis + axis * _sizeAxis + (int) ofs] = value;
         }
@@ -316,19 +316,19 @@ namespace CNCLib.GCode
         {
             var offsets = GetIndex(ofsidx);
 
-            UInt32 mask = ((UInt32) 0xffff) << (offsets.Item2 * 16);
-            UInt32 val  = GetAxisValue32(axis, offsets.Item1) & (~mask);
+            uint mask = ((uint) 0xffff) << (offsets.Item2 * 16);
+            uint val  = GetAxisValue32(axis, offsets.Item1) & (~mask);
 
-            SetAxisValue32(axis, offsets.Item1, val + ((UInt32) value << (offsets.Item2 * 16)));
+            SetAxisValue32(axis, offsets.Item1, val + ((uint) value << (offsets.Item2 * 16)));
         }
 
         public void SetAxisValue8(int axis, EAxisOffsets8 ofsidx, byte value)
         {
             var offsets = GetIndex(ofsidx);
 
-            UInt32 mask = ((UInt32) 0xff) << (offsets.Item2 * 8);
-            UInt32 val  = GetAxisValue32(axis, offsets.Item1) & (~mask);
-            SetAxisValue32(axis, offsets.Item1, val + ((UInt32) value << (offsets.Item2 * 8)));
+            uint mask = ((uint) 0xff) << (offsets.Item2 * 8);
+            uint val  = GetAxisValue32(axis, offsets.Item1) & (~mask);
+            SetAxisValue32(axis, offsets.Item1, val + ((uint) value << (offsets.Item2 * 8)));
         }
 
         #endregion
@@ -347,8 +347,8 @@ namespace CNCLib.GCode
             {
                 _numAxis      = (Values[1] >> 0) & 0xff;
                 _usedAxis     = (Values[1] >> 8) & 0xff;
-                _ofsAxis      = ((Values[1] >> 16) & 0xff) / sizeof(UInt32);
-                _sizeAxis     = ((Values[1] >> 24) & 0xff) / sizeof(UInt32);
+                _ofsAxis      = ((Values[1] >> 16) & 0xff) / sizeof(uint);
+                _sizeAxis     = ((Values[1] >> 24) & 0xff) / sizeof(uint);
                 _ofsAfterAxis = _ofsAxis + _sizeAxis * _numAxis;
             }
         }

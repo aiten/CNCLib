@@ -91,22 +91,22 @@ namespace CNCLib.Wpf.Models
         [Category(CATEGORY_PLOTTER)]
         [DisplayName("ServoClampOpenPos")]
         [Description("Clamp open servo pos, in micro seconds, values 1000..2000")]
-        public UInt16 ServoClampOpenPos { get; set; }
+        public ushort ServoClampOpenPos { get; set; }
 
         [Category(CATEGORY_PLOTTER)]
         [DisplayName("ServoClampClosePos")]
         [Description("Clamp close servo pos, in micro seconds, values 1000..2000")]
-        public UInt16 ServoClampClosePos { get; set; }
+        public ushort ServoClampClosePos { get; set; }
 
         [Category(CATEGORY_PLOTTER)]
         [DisplayName("ServoClampOpenDelay")]
         [Description("Delay to open clamp, in milli seconds, 1000 = 1sec)")]
-        public UInt16 ServoClampOpenDelay { get; set; }
+        public ushort ServoClampOpenDelay { get; set; }
 
         [Category(CATEGORY_PLOTTER)]
         [DisplayName("ServoClampCloseDelay")]
         [Description("Delay to close clamp, in milli seconds, 1000 = 1sec)")]
-        public UInt16 ServoClampCloseDelay { get; set; }
+        public ushort ServoClampCloseDelay { get; set; }
 
         #endregion
 

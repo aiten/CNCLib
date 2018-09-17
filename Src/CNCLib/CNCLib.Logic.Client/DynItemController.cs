@@ -91,9 +91,9 @@ namespace CNCLib.Logic.Client
                 {
                     pi.SetValue(obj, int.Parse(ip.Value));
                 }
-                else if (pi.PropertyType == typeof(Byte))
+                else if (pi.PropertyType == typeof(byte))
                 {
-                    pi.SetValue(obj, Byte.Parse(ip.Value));
+                    pi.SetValue(obj, byte.Parse(ip.Value));
                 }
                 else if (pi.PropertyType == typeof(bool))
                 {
@@ -145,11 +145,11 @@ namespace CNCLib.Logic.Client
                 {
                     pi.SetValue(obj, Enum.Parse(pi.PropertyType, ip.Value));
                 }
-                else if (pi.PropertyType == typeof(Byte[]))
+                else if (pi.PropertyType == typeof(byte[]))
                 {
                     if (!string.IsNullOrEmpty(ip.Value))
                     {
-                        Byte[] bytes = System.Convert.FromBase64String(ip.Value);
+                        byte[] bytes = System.Convert.FromBase64String(ip.Value);
                         pi.SetValue(obj, bytes);
                     }
                 }
@@ -179,7 +179,7 @@ namespace CNCLib.Logic.Client
                             value = (string) str;
                         }
                     }
-                    else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(Byte))
+                    else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(byte))
                     {
                         value = pi.GetValue(obj).ToString();
                     }
@@ -227,9 +227,9 @@ namespace CNCLib.Logic.Client
                     {
                         value = pi.GetValue(obj).ToString();
                     }
-                    else if (pi.PropertyType == typeof(Byte[]))
+                    else if (pi.PropertyType == typeof(byte[]))
                     {
-                        var bytes = (Byte[]) pi.GetValue(obj);
+                        var bytes = (byte[]) pi.GetValue(obj);
                         if (bytes != null)
                         {
                             value = System.Convert.ToBase64String(bytes);

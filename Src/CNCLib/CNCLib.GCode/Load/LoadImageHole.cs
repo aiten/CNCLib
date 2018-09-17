@@ -160,7 +160,7 @@ namespace CNCLib.GCode.Load
             return (ypos);
         }
 
-        private double FindNearestColorGrayScale(Byte colorR, Byte colorG, Byte colorB)
+        private double FindNearestColorGrayScale(byte colorR, byte colorG, byte colorB)
         {
             // max value is 255
             // 0.2126*255 + 0.7152*255 + 0.0722*255

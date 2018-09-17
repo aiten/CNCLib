@@ -64,7 +64,7 @@ namespace CNCLib.Wpf.Helpers
         public const int DefaultProbeTimeout = 15000;
         public const int DefaultEpromTimeout = 3000;
 
-        public async Task<UInt32[]> GetEpromValuesAsync(int waitForMilliseconds)
+        public async Task<uint[]> GetEpromValuesAsync(int waitForMilliseconds)
         {
             var cmd = (await Global.Instance.Com.Current.SendCommandAsync("$?", waitForMilliseconds)).FirstOrDefault();
             if (cmd != null && string.IsNullOrEmpty(cmd.ResultText) == false)
@@ -89,7 +89,7 @@ namespace CNCLib.Wpf.Helpers
                             valuestr = valuestr.Substring(0, idx1);
                         }
 
-                        if (UInt32.TryParse(valuestr, out slotvalue))
+                        if (uint.TryParse(valuestr, out slotvalue))
                         {
                             intvalues[slot] = slotvalue;
                             if (maxslot < slot)
@@ -102,7 +102,7 @@ namespace CNCLib.Wpf.Helpers
 
                 if (maxslot > 0)
                 {
-                    var ret = new UInt32[maxslot + 1];
+                    var ret = new uint[maxslot + 1];
                     for (int i = 0; i <= maxslot; i++)
                     {
                         if (intvalues.ContainsKey(i))

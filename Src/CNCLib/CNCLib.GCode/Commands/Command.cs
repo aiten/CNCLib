@@ -382,7 +382,7 @@ namespace CNCLib.GCode.Commands
             }
             else
             {
-                _calculatedEndPosition = (PrevCommand == null) ? new Point3D() : PrevCommand._calculatedEndPosition;
+                _calculatedEndPosition = PrevCommand == null ? new Point3D() : PrevCommand._calculatedEndPosition;
             }
         }
 

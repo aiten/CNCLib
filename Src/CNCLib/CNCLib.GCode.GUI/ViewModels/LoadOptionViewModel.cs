@@ -134,7 +134,7 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         public bool CanSave()
         {
-            List<String> ignorelist = new List<string>();
+            List<string> ignorelist = new List<string>();
             if (LoadOptionsValue.AutoScale)
             {
                 ignorelist.AddRange(new[]

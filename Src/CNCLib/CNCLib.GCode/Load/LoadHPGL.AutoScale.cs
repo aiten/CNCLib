@@ -52,8 +52,8 @@ namespace CNCLib.GCode.Load
                     Y = list.Where(x => x.IsPenCommand).Max(c => c.PointTo.Y)
                 };
 
-                decimal sizex = (decimal) ((maxpt.X0) - (minpt.X0));
-                decimal sizey = (decimal) ((maxpt.Y0) - (minpt.Y0));
+                decimal sizex = (decimal) (maxpt.X0 - minpt.X0);
+                decimal sizey = (decimal) (maxpt.Y0 - minpt.Y0);
 
                 decimal borderX = LoadX.LoadOptions.AutoScaleBorderDistX;
                 decimal borderY = LoadX.LoadOptions.AutoScaleBorderDistY;

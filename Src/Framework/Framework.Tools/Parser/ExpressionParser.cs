@@ -673,10 +673,10 @@ namespace Framework.Tools.Parser
             switch (operatorSy)
             {
                 // level 2
-                case ETokenType.AndSy:           return (double) ((UInt32) (lhs) & (UInt32) (rhs));
-                case ETokenType.OrSy:            return (double) ((UInt32) (lhs) | (UInt32) (rhs));
-                case ETokenType.BitShiftLeftSy:  return (double) ((UInt32) (lhs) << (UInt16) (rhs));
-                case ETokenType.BitShiftRightSy: return (double) ((UInt32) (lhs) >> (UInt16) (rhs));
+                case ETokenType.AndSy:           return (double) ((uint) (lhs) & (uint) (rhs));
+                case ETokenType.OrSy:            return (double) ((uint) (lhs) | (uint) (rhs));
+                case ETokenType.BitShiftLeftSy:  return (double) ((uint) (lhs) << (ushort) (rhs));
+                case ETokenType.BitShiftRightSy: return (double) ((uint) (lhs) >> (ushort) (rhs));
 
                 // level 3
                 case ETokenType.EqualSy:        return lhs == rhs ? 1.0 : 0.0;
@@ -693,8 +693,8 @@ namespace Framework.Tools.Parser
                 // level 5
                 case ETokenType.MultiplySy: return lhs * rhs;
                 case ETokenType.DivideSy:   return lhs / rhs;
-                case ETokenType.ModuloSy:   return (double) ((UInt32) (lhs) % (UInt32) (rhs));
-                case ETokenType.XOrSy:      return (double) ((UInt32) (lhs) ^ (UInt32) (rhs));
+                case ETokenType.ModuloSy:   return (double) ((uint) (lhs) % (uint) (rhs));
+                case ETokenType.XOrSy:      return (double) ((uint) (lhs) ^ (uint) (rhs));
 
                 // level 6
                 case ETokenType.PowSy: return Math.Pow(lhs, rhs);
@@ -743,9 +743,9 @@ namespace Framework.Tools.Parser
 
         double Factorial(double value)
         {
-            var v = (UInt32) (value);
+            var v = (uint) (value);
 
-            if (value != (UInt32) (v))
+            if (value != (uint) (v))
             {
                 ErrorAdd(MESSAGE_EXPR_FRACTORIAL);
                 return 0;

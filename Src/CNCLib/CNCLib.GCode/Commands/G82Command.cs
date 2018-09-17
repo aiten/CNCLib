@@ -94,7 +94,7 @@ namespace CNCLib.GCode.Commands
             CopyVariable('F', move2);
             list.Add(move2);
 
-            if (p != null && Math.Abs((p.Value ?? 0.0)) > double.Epsilon)
+            if (p != null && Math.Abs(p.Value ?? 0.0) > double.Epsilon)
             {
                 var move3 = new G04Command();
                 move3.AddVariable('P', p);

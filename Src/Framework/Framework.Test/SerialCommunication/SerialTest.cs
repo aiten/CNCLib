@@ -45,7 +45,7 @@ namespace Framework.Test.SerialCommunication
             int  resultidx = 0;
             bool sendReply = false;
 
-            basestream.WriteAsync(Arg.Any<Byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
+            basestream.WriteAsync(Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
                 ReturnsForAnyArgs(async x =>
                 {
                     sendReply = true;
@@ -53,7 +53,7 @@ namespace Framework.Test.SerialCommunication
                 });
 
 
-            basestream.ReadAsync(Arg.Any<Byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
+            basestream.ReadAsync(Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
                 ReturnsForAnyArgs(async x =>
                 {
                     if (sendReply)
@@ -63,7 +63,7 @@ namespace Framework.Test.SerialCommunication
                         byte[] encodedStr = encoding.GetBytes(responsstrings[resultidx++]);
                         for (int i = 0; i < encodedStr.Length; i++)
                         {
-                            ((Byte[]) x[0])[i] = encodedStr[i];
+                            ((byte[]) x[0])[i] = encodedStr[i];
                         }
 
                         return encodedStr.Length;
@@ -113,7 +113,7 @@ namespace Framework.Test.SerialCommunication
 
                 await serial.DisconnectAsync();
 
-                await serialport.BaseStream.Received(1).WriteAsync(Arg.Is<Byte[]>(e => (char) e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
+                await serialport.BaseStream.Received(1).WriteAsync(Arg.Is<byte[]>(e => (char) e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
                 await Task.FromResult(0);
             }
         }
@@ -134,7 +134,7 @@ namespace Framework.Test.SerialCommunication
                 await serial.SendCommandAsync("?");
 
                 await serial.DisconnectAsync();
-                await serialport.BaseStream.Received(2).WriteAsync(Arg.Is<Byte[]>(e => (char) e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
+                await serialport.BaseStream.Received(2).WriteAsync(Arg.Is<byte[]>(e => (char) e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
                 await Task.FromResult(0);
             }
         }

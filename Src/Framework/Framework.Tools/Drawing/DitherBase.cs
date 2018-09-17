@@ -192,7 +192,7 @@ namespace Framework.Tools.Drawing
             _scansize = Math.Abs(bmpData.Stride);
 
             int bytes     = _scansize * Height;
-            var rgbValues = new Byte[bytes];
+            var rgbValues = new byte[bytes];
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
             imageX.UnlockBits(bmpData);
             _rgbValues = new int[bytes];
@@ -226,7 +226,7 @@ namespace Framework.Tools.Drawing
             BitmapData bmpData = bsrc.LockBits(rect, ImageLockMode.WriteOnly, bsrc.PixelFormat);
             IntPtr     ptr     = bmpData.Scan0;
 
-            var rgbValues = new Byte[_rgbValues.Length];
+            var rgbValues = new byte[_rgbValues.Length];
 
             for (var i = 0; i < _rgbValues.Length; i++)
             {

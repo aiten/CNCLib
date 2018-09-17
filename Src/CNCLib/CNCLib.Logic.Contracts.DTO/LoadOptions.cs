@@ -35,7 +35,7 @@ namespace CNCLib.Logic.Contracts.DTO
         public ELoadType LoadType { get; set; } = ELoadType.GCode;
 
         public string FileName    { get; set; }
-        public Byte[] FileContent { get; set; }
+        public byte[] FileContent { get; set; }
 
         public string SettingName { get; set; }
 
@@ -118,7 +118,7 @@ namespace CNCLib.Logic.Contracts.DTO
         //IMG
         public string ImageWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\image.bmp";
 
-        public Byte GrayThreshold { get; set; } = 127;
+        public byte GrayThreshold { get; set; } = 127;
 
         public decimal? ImageDPIX { get; set; }
         public decimal? ImageDPIY { get; set; }

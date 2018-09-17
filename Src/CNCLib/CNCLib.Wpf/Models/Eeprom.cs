@@ -123,7 +123,7 @@ namespace CNCLib.Wpf.Models
             No    = 255
         };
 
-        public UInt32[] Values { get; set; }
+        public uint[] Values { get; set; }
 
         #region General
 

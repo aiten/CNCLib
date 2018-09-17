@@ -28,7 +28,8 @@ namespace CNCLib.GCode.CamBam
         [XmlType("layer")]
         public class Layer
         {
-            public String               Name  { get; set; }
+            public string Name { get; set; }
+
             public System.Drawing.Color Color { get; set; }
 
             public List<Object> Objects { get; set; } = new List<Object>();
