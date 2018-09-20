@@ -330,12 +330,7 @@ namespace CNCLib.GCode.Commands
 
         protected string GCodeLineNumber(string postString)
         {
-            if (LineNumber.HasValue)
-            {
-                return $"N{LineNumber}{postString}";
-            }
-
-            return "";
+            return LineNumber.HasValue ? $"N{LineNumber}{postString}" : "";
         }
 
         public virtual string[] GetGCodeCommands(Point3D startfrom, CommandState state)

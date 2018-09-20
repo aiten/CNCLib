@@ -110,11 +110,8 @@ namespace CNCLib.Serial.Client
 
                 using (HttpClient client = CreateHttpClient())
                 {
-                    var port = await GetSerialPortDefinition(client, portname);
-                    if (port == null)
-                    {
-                        port = await RefreshAndGetSerialPortDefinition(client, portname);
-                    }
+                    var port = await GetSerialPortDefinition(client, portname) ??
+                               await RefreshAndGetSerialPortDefinition(client, portname);
 
                     if (port != null)
                     {
