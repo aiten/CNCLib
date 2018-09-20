@@ -36,7 +36,6 @@ namespace Framework.Tools.Parser
         private readonly string MESSAGE_EXPR_UNKNOWN_VARIABLE    = "Unknown variable";
         private readonly string MESSAGE_EXPR_FRACTORIAL          = "factorial";
 
-
         public ExpressionParser(CommandStream reader) : base(reader)
         {
         }

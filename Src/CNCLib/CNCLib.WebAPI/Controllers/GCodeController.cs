@@ -30,15 +30,15 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class GCodeController : Controller
     {
+        private readonly ILoadOptionsService _loadOptionsService;
+        private readonly ICNCLibUserContext  _usercontext;
+
         public GCodeController(ILoadOptionsService loadOptionsService, ICNCLibUserContext usercontext)
         {
             _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
             _usercontext        = usercontext ?? throw new ArgumentNullException();
             ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
-
-        readonly         ILoadOptionsService _loadOptionsService;
-        private readonly ICNCLibUserContext  _usercontext;
 
         [HttpPost]
         public IEnumerable<string> Post([FromBody] LoadOptions input)

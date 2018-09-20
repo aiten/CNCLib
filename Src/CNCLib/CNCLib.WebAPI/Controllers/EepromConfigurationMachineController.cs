@@ -28,15 +28,15 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class EepromConfigurationController : Controller
     {
+        private readonly IEepromConfigurationService _eepromConfigurationService;
+        private readonly ICNCLibUserContext          _usercontext;
+
         public EepromConfigurationController(IEepromConfigurationService eepromConfigurationService, ICNCLibUserContext usercontext)
         {
             _eepromConfigurationService = eepromConfigurationService ?? throw new ArgumentNullException();
             _usercontext                = usercontext ?? throw new ArgumentNullException();
             ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
-
-        readonly         IEepromConfigurationService _eepromConfigurationService;
-        private readonly ICNCLibUserContext          _usercontext;
 
         [HttpGet]
         public async Task<ActionResult<EepromConfiguration>> Get(ushort teeth, double toothsizeInMm, ushort microsteps, ushort stepsPerRotation, double estimatedRotationSpeed, double timeToAcc,

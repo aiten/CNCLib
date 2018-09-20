@@ -1818,17 +1818,17 @@ namespace Framework.Tools.Clipper
         public const int ioStrictlySimple    = 2;
         public const int ioPreserveCollinear = 4;
 
-        private          ClipType                 m_ClipType;
-        private          Maxima                   m_Maxima;
-        private          TEdge                    m_SortedEdges;
-        private readonly List<IntersectNode>      m_IntersectList;
-        readonly         IComparer<IntersectNode> m_IntersectNodeComparer;
-        private          bool                     m_ExecuteLocked;
-        private          PolyFillType             m_ClipFillType;
-        private          PolyFillType             m_SubjFillType;
-        private readonly List<Join>               m_Joins;
-        private readonly List<Join>               m_GhostJoins;
-        private          bool                     m_UsingPolyTree;
+        private ClipType                 m_ClipType;
+        private Maxima                   m_Maxima;
+        private TEdge                    m_SortedEdges;
+        private List<IntersectNode>      m_IntersectList;
+        private IComparer<IntersectNode> m_IntersectNodeComparer;
+        private bool                     m_ExecuteLocked;
+        private PolyFillType             m_ClipFillType;
+        private PolyFillType             m_SubjFillType;
+        private List<Join>               m_Joins;
+        private List<Join>               m_GhostJoins;
+        private bool                     m_UsingPolyTree;
 #if use_xyz
       public delegate void ZFillCallback(IntPoint bot1, IntPoint top1, 
         IntPoint bot2, IntPoint top2, ref IntPoint pt);

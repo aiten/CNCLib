@@ -25,7 +25,8 @@ namespace Framework.Tools.Pattern
     {
         private readonly IDependencyContainer _container;
         private readonly T                    _instance;
-        private          bool                 _isDisposed;
+
+        private bool _isDisposed;
 
         public ScopeResolve(IDependencyContainer container, T instance)
         {

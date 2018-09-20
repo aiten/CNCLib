@@ -22,8 +22,9 @@ namespace Framework.Tools.Pattern
 {
     public sealed class ScopeInstance<T> : IScope<T>, IDisposable where T : class
     {
-        private readonly T    _instance;
-        private          bool _isDisposed;
+        private readonly T _instance;
+
+        private bool _isDisposed;
 
         public ScopeInstance(T instance)
         {

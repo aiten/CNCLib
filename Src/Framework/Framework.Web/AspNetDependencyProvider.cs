@@ -26,12 +26,12 @@ namespace Framework.Web
     /// </summary>
     public sealed class AspNetDependencyProvider : IDependencyProvider
     {
+        private readonly IDependencyContainer _dependencyContainer;
+
         public AspNetDependencyProvider(IServiceCollection services)
         {
             _dependencyContainer = new AspNetDependencyContainer(services);
         }
-
-        private readonly IDependencyContainer _dependencyContainer;
 
         public IDependencyContainer Container => _dependencyContainer;
     }

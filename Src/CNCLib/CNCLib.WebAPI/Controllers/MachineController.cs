@@ -30,15 +30,15 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class MachineController : Controller
     {
+        private readonly IMachineService    _service;
+        private readonly ICNCLibUserContext _usercontext;
+
         public MachineController(IMachineService service, ICNCLibUserContext usercontext)
         {
             _service     = service ?? throw new ArgumentNullException();
             _usercontext = usercontext ?? throw new ArgumentNullException();
             ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
-
-        private readonly IMachineService    _service;
-        private readonly ICNCLibUserContext _usercontext;
 
         #region default REST
 

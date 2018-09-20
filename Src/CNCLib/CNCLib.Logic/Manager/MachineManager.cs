@@ -30,9 +30,9 @@ namespace CNCLib.Logic.Manager
     public class MachineManager : CRUDManager<Machine, int, Repository.Contracts.Entities.Machine>, IMachineManager
     {
         private readonly IUnitOfWork              _unitOfWork;
-        private          IMachineRepository       _repository;
+        private readonly IMachineRepository       _repository;
         private readonly IConfigurationRepository _repositoryConfig;
-        private          IMapper                  _mapper;
+        private readonly IMapper                  _mapper;
 
         public MachineManager(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig, IMapper mapper) : base(unitOfWork, repository, mapper)
         {

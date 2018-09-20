@@ -83,8 +83,8 @@ namespace CNCLib.Serial.Server
 
         private sealed class CNCLibServerService : ServiceBase
         {
-            private          IWebHost _webHost;
-            private readonly ILogger  _logger = LogManager.GetCurrentClassLogger();
+            private IWebHost _webHost;
+            private ILogger  _logger = LogManager.GetCurrentClassLogger();
 
             protected override void OnStart(string[] args)
             {

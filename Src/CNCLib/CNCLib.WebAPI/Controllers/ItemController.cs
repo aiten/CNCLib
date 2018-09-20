@@ -30,15 +30,15 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class ItemController : Controller
     {
+        private readonly IItemService       _service;
+        private readonly ICNCLibUserContext _usercontext;
+
         public ItemController(IItemService service, ICNCLibUserContext usercontext)
         {
             _service     = service ?? throw new ArgumentNullException();
             _usercontext = usercontext ?? throw new ArgumentNullException();
             ((CNCLibUserContext) _usercontext).InitFromController(this);
         }
-
-        readonly         IItemService       _service;
-        private readonly ICNCLibUserContext _usercontext;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> Get(string classname)
