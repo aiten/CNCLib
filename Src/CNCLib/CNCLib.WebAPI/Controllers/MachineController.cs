@@ -31,7 +31,7 @@ namespace CNCLib.WebAPI.Controllers
     public class MachineController : Controller
     {
         private readonly IMachineService    _service;
-        private readonly ICNCLibUserContext _usercontext;
+        private readonly ICNCLibUserContext _userContext;
 
         public MachineController(IMachineService service, ICNCLibUserContext usercontext)
         {

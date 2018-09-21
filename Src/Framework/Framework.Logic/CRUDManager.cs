@@ -158,7 +158,7 @@ namespace Framework.Logic
 
         protected virtual void UpdateEntity(TEntity entityInDb, TEntity values)
         {
-            _repository.SetValue(entityInDb, values);
+            _repository.SetValueGraph(entityInDb, values);
         }
 
         protected virtual async Task Modified()
