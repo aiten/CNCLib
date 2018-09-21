@@ -49,13 +49,13 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult<LoadOptions>> Get(int id)
         {
             return await this.Get<LoadOptions, int>(_service, id);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] LoadOptions value)
+        public async Task<ActionResult<LoadOptions>> Add([FromBody] LoadOptions value)
         {
             return await this.Add<LoadOptions, int>(_service, value);
         }

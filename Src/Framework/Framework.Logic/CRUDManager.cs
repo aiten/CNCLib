@@ -46,12 +46,21 @@ namespace Framework.Logic
 
         public async Task<IEnumerable<TKey>> Add(IEnumerable<T> values)
         {
-            var entities = _mapper.Map<IEnumerable<T>, IEnumerable<TEntity>>(values);
             using (var trans = _unitOfWork.BeginTransaction())
             {
+                await ValidateDto(values, ValidationType.AddValidation);
+                var entities = MapFromDtos(values, ValidationType.AddValidation);
+
+                foreach (var entity in entities)
+                {
+                    AddEntity(entity);
+                }
+
                 _repository.AddRange(entities);
                 await trans.CommitTransactionAsync();
-                return entities.Select(GetKey);
+                await Modified();
+
+                return entities.Select(e => GetKey(e));
             }
         }
 
@@ -64,9 +73,12 @@ namespace Framework.Logic
         {
             using (var trans = _unitOfWork.BeginTransaction())
             {
-                var entities = _mapper.Map<IEnumerable<T>, IEnumerable<TEntity>>(values);
+                await ValidateDto(values, ValidationType.DeletValidatione);
+                var entities = MapFromDtos(values, ValidationType.DeletValidatione);
+
                 _repository.DeleteRange(entities);
                 await trans.CommitTransactionAsync();
+                await Modified();
             }
         }
 
@@ -82,6 +94,7 @@ namespace Framework.Logic
                 var entities = await _repository.GetTracking(keys);
                 _repository.DeleteRange(entities);
                 await trans.CommitTransactionAsync();
+                await Modified();
             }
         }
 
@@ -94,23 +107,70 @@ namespace Framework.Logic
         {
             using (var trans = _unitOfWork.BeginTransaction())
             {
-                var entities     = _mapper.Map<IEnumerable<T>, IEnumerable<TEntity>>(values);
-                var entitiesInDb = await _repository.GetTracking(entities.Select(GetKey));
+                await ValidateDto(values, ValidationType.UpdateValidation);
 
-                var mergeJoin = entitiesInDb.Join(entities, GetKey, GetKey, (EntityInDb, Entity) => new { EntityInDb, Entity });
+                var entities = MapFromDtos(values, ValidationType.UpdateValidation);
+
+                var entitiesInDb = await _repository.GetTracking(entities.Select(e => GetKey(e)));
+
+                var mergeJoin = entitiesInDb.Join(entities, e => GetKey(e), e => GetKey(e), (EntityInDb, Entity) => new { EntityInDb, Entity });
 
                 if (entities.Count() != entitiesInDb.Count() || entities.Count() != mergeJoin.Count())
                 {
-                    throw new DBConcurrencyException();
+                    throw new ArgumentException();
                 }
 
                 foreach (var merged in mergeJoin)
                 {
-                    _repository.SetValueGraph(merged.EntityInDb, merged.Entity);
+                    UpdateEntity(merged.EntityInDb, merged.Entity);
                 }
 
                 await trans.CommitTransactionAsync();
+                await Modified();
             }
         }
+
+        #region Validadation and Modification overrides
+
+        protected enum ValidationType
+        {
+            AddValidation,
+            UpdateValidation,
+            DeletValidatione
+        }
+
+        protected virtual async Task ValidateDto(IEnumerable<T> values, ValidationType validation)
+        {
+            foreach (var dto in values)
+            {
+                await ValidateDto(dto, validation);
+            }
+        }
+
+#pragma warning disable 1998
+        protected virtual async Task ValidateDto(T dto, ValidationType validation)
+        {
+        }
+
+        protected virtual void AddEntity(TEntity entityInDb)
+        {
+        }
+
+        protected virtual void UpdateEntity(TEntity entityInDb, TEntity values)
+        {
+            _repository.SetValue(entityInDb, values);
+        }
+
+        protected virtual async Task Modified()
+        {
+        }
+#pragma warning restore 1998
+
+        protected virtual IEnumerable<TEntity> MapFromDtos(IEnumerable<T> values, ValidationType validation)
+        {
+            return _mapper.Map<IEnumerable<T>, IEnumerable<TEntity>>(values);
+        }
+
+        #endregion
     }
 }

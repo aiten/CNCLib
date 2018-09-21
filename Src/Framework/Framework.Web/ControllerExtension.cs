@@ -25,6 +25,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Framework.Web
 {
+    public class UriAndValue<TDto> where TDto : class
+    {
+        public string Uri { get; set; }
+
+        public TDto Value { get; set; }
+    }
+
     public static class ControllerExtension
     {
         public static string GetCurrentUri(this Controller controller)
@@ -65,7 +72,7 @@ namespace Framework.Web
 
         #region Get/GetAll
 
-        public static async Task<ActionResult> Get<T, TKey>(this Controller controller, IGetService<T, TKey> manager, TKey id) where T : class where TKey : IComparable
+        public static async Task<ActionResult<T>> Get<T, TKey>(this Controller controller, IGetService<T, TKey> manager, TKey id) where T : class where TKey : IComparable
         {
             try
             {
@@ -83,7 +90,7 @@ namespace Framework.Web
             }
         }
 
-        public static async Task<ActionResult> GetAll<T, TKey>(this Controller controller, IGetService<T, TKey> manager) where T : class where TKey : IComparable
+        public static async Task<ActionResult<IEnumerable<T>>> GetAll<T, TKey>(this Controller controller, IGetService<T, TKey> manager) where T : class where TKey : IComparable
         {
             try
             {
@@ -105,7 +112,7 @@ namespace Framework.Web
 
         #region Add
 
-        public static async Task<ActionResult> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, T value) where T : class where TKey : IComparable
+        public static async Task<ActionResult<T>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, T value) where T : class where TKey : IComparable
         {
             if (!controller.ModelState.IsValid || value == null)
             {
@@ -124,7 +131,7 @@ namespace Framework.Web
             }
         }
 
-        public static async Task<ActionResult> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values) where T : class where TKey : IComparable
+        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values) where T : class where TKey : IComparable
         {
             if (!controller.ModelState.IsValid || values == null)
             {
@@ -133,9 +140,12 @@ namespace Framework.Web
 
             try
             {
-                string            uri     = controller.GetCurrentUri("/bulk");
-                IEnumerable<TKey> newids  = await manager.Add(values);
-                var               newuris = newids.Select(id => uri + "/" + id);
+                IEnumerable<TKey> newids     = await manager.Add(values);
+                IEnumerable<T>    newobjects = await manager.Get(newids);
+
+                string uri     = controller.GetCurrentUri("/bulk");
+                var    newuris = newids.Select(id => uri + "/" + id);
+                var    results = newids.Select((id, idx) => new UriAndValue<T>() { Uri = uri + "/" + id, Value = newobjects.ElementAt(idx) });
                 return controller.Ok(newuris);
             }
             catch (Exception ex)
