@@ -33,12 +33,12 @@ namespace CNCLib.WebAPI.Controllers
         public MachineController(IMachineService service, ICNCLibUserContext usercontext)
         {
             _service     = service ?? throw new ArgumentNullException();
-            _usercontext = usercontext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext) _usercontext).InitFromController(this);
+            _userContext = usercontext ?? throw new ArgumentNullException();
+            ((CNCLibUserContext) _userContext).InitFromController(this);
         }
 
         private readonly IMachineService    _service;
-        private readonly ICNCLibUserContext _usercontext;
+        private readonly ICNCLibUserContext _userContext;
 
         #region default REST
 
@@ -55,7 +55,7 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] Machine value)
+        public async Task<ActionResult<Machine>> Add([FromBody] Machine value)
         {
             return await this.Add<Machine, int>(_service, value);
         }
@@ -80,7 +80,7 @@ namespace CNCLib.WebAPI.Controllers
 
         [HttpPost]
         [Route("bulk")]
-        public async Task<ActionResult> Add([FromBody] IEnumerable<Machine> values)
+        public async Task<ActionResult<IEnumerable<UriAndValue<Machine>>>> Add([FromBody] IEnumerable<Machine> values)
         {
             return await this.Add<Machine, int>(_service, values);
         }
@@ -103,7 +103,7 @@ namespace CNCLib.WebAPI.Controllers
 
         [Route("default")]
         [HttpGet]
-        public async Task<IActionResult> DefaultMachine()
+        public async Task<ActionResult<Machine>> DefaultMachine()
         {
             var m = await _service.DefaultMachine();
             if (m == null)
@@ -116,7 +116,7 @@ namespace CNCLib.WebAPI.Controllers
 
         [Route("defaultmachine")]
         [HttpGet] //Always explicitly state the accepted HTTP method
-        public async Task<IActionResult> GetDetaultMachine()
+        public async Task<ActionResult<int>> GetDetaultMachine()
         {
             int id = await _service.GetDetaultMachine();
             return Ok(id);
@@ -124,7 +124,7 @@ namespace CNCLib.WebAPI.Controllers
 
         [Route("defaultmachine")]
         [HttpPut] //Always explicitly state the accepted HTTP method
-        public async Task<IActionResult> SetDetaultMachine(int id)
+        public async Task<ActionResult> SetDetaultMachine(int id)
         {
             if (!ModelState.IsValid)
             {

@@ -207,7 +207,7 @@ namespace CNCLib.Serial.Server.Controllers
         }
 
         [HttpPost("{id:int}/abort")]
-        public async Task<IActionResult> AbortCommand(int id)
+        public async Task<ActionResult> AbortCommand(int id)
         {
             var port = await GetPort(id);
             if (port == null)
@@ -220,7 +220,7 @@ namespace CNCLib.Serial.Server.Controllers
         }
 
         [HttpPost("{id:int}/resume")]
-        public async Task<IActionResult> ResumeCommand(int id)
+        public async Task<ActionResult> ResumeCommand(int id)
         {
             var port = await GetPort(id);
             if (port == null)
@@ -233,7 +233,7 @@ namespace CNCLib.Serial.Server.Controllers
         }
 
         [HttpPost("{id:int}/enablesinglestep")]
-        public async Task<IActionResult> EnableSingleStepCommand(int id)
+        public async Task<ActionResult> EnableSingleStepCommand(int id)
         {
             var port = await GetPort(id);
             if (port == null)
@@ -246,7 +246,7 @@ namespace CNCLib.Serial.Server.Controllers
         }
 
         [HttpPost("{id:int}/disbablesinglestep")]
-        public async Task<IActionResult> DisableSingleStepCommand(int id)
+        public async Task<ActionResult> DisableSingleStepCommand(int id)
         {
             var port = await GetPort(id);
             if (port == null)
@@ -259,7 +259,7 @@ namespace CNCLib.Serial.Server.Controllers
         }
 
         [HttpPost("{id:int}/singlestep")]
-        public async Task<IActionResult> SingleStepCommand(int id)
+        public async Task<ActionResult> SingleStepCommand(int id)
         {
             var port = await GetPort(id);
             if (port == null)
