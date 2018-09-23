@@ -128,7 +128,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                 string pos = message.Split('\n').FirstOrDefault();
                 if (decimal.TryParse(pos, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal val))
                 {
-                    return val / 1000m;
+                    return val;
                 }
             }
 
@@ -164,6 +164,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             return CanSendGCode();
         }
 
+        public void SetG5xRel(int offsetG)
+        {
+            Global.Instance.Com.Current.QueueCommand($"g10 l2 g91 p{offsetG + 1} x0y0");
+        }
+
         public void SetG5x(int offsetG)
         {
             string x = _g54[0, offsetG].HasValue ? $" X{_g54[0, offsetG].Value.ToString(CultureInfo.InvariantCulture)}" : "";
@@ -194,16 +199,27 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         public ICommand SendG59Command => new DelegateCommand(SendG59,         CanSendGCode);
         public ICommand GetG54Command  => new DelegateCommand(() => GetG5x(0), () => CanGetG5x(0));
         public ICommand SetG54Command  => new DelegateCommand(() => SetG5x(0), () => CanSetG5x(0));
+        public ICommand SetG54RelCommand => new DelegateCommand(() => SetG5xRel(0), () => CanSetG5x(0));
+
         public ICommand GetG55Command  => new DelegateCommand(() => GetG5x(1), () => CanGetG5x(1));
         public ICommand SetG55Command  => new DelegateCommand(() => SetG5x(1), () => CanSetG5x(1));
+        public ICommand SetG55RelCommand => new DelegateCommand(() => SetG5xRel(1), () => CanSetG5x(1));
+
         public ICommand GetG56Command  => new DelegateCommand(() => GetG5x(2), () => CanGetG5x(2));
         public ICommand SetG56Command  => new DelegateCommand(() => SetG5x(2), () => CanSetG5x(2));
-        public ICommand GetG57Command  => new DelegateCommand(() => GetG5x(3), () => CanGetG5x(2));
-        public ICommand SetG57Command  => new DelegateCommand(() => SetG5x(3), () => CanSetG5x(2));
-        public ICommand GetG58Command  => new DelegateCommand(() => GetG5x(4), () => CanGetG5x(2));
-        public ICommand SetG58Command  => new DelegateCommand(() => SetG5x(4), () => CanSetG5x(2));
-        public ICommand GetG59Command  => new DelegateCommand(() => GetG5x(5), () => CanGetG5x(2));
-        public ICommand SetG59Command  => new DelegateCommand(() => SetG5x(5), () => CanSetG5x(2));
+        public ICommand SetG56RelCommand => new DelegateCommand(() => SetG5xRel(2), () => CanSetG5x(2));
+
+        public ICommand GetG57Command  => new DelegateCommand(() => GetG5x(3), () => CanGetG5x(3));
+        public ICommand SetG57Command  => new DelegateCommand(() => SetG5x(3), () => CanSetG5x(3));
+        public ICommand SetG57RelCommand => new DelegateCommand(() => SetG5xRel(3), () => CanSetG5x(3));
+
+        public ICommand GetG58Command  => new DelegateCommand(() => GetG5x(4), () => CanGetG5x(4));
+        public ICommand SetG58Command  => new DelegateCommand(() => SetG5x(4), () => CanSetG5x(4));
+        public ICommand SetG58RelCommand => new DelegateCommand(() => SetG5xRel(4), () => CanSetG5x(4));
+
+        public ICommand GetG59Command  => new DelegateCommand(() => GetG5x(5), () => CanGetG5x(5));
+        public ICommand SetG59Command  => new DelegateCommand(() => SetG5x(5), () => CanSetG5x(5));
+        public ICommand SetG59RelCommand => new DelegateCommand(() => SetG5xRel(5), () => CanSetG5x(5));
 
         #endregion
     }
