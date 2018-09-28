@@ -28,8 +28,10 @@ using Framework.Repository;
 using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Web;
+using Framework.Web.Filter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
@@ -51,7 +53,15 @@ namespace CNCLib.WebAPI
         {
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
-            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services.AddTransient<UnhandledExceptionFilter>();
+            services.AddTransient<ValidateRequestDataFilter>();
+            services.AddMvc(options =>
+            {
+                options.Filters.AddService<ValidateRequestDataFilter>();
+                options.Filters.AddService<UnhandledExceptionFilter>();
+            }).
+                SetCompatibilityVersion(CompatibilityVersion.Version_2_1).
+                AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" }); });

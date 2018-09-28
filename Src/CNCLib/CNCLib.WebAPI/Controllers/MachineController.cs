@@ -126,20 +126,8 @@ namespace CNCLib.WebAPI.Controllers
         [HttpPut] //Always explicitly state the accepted HTTP method
         public async Task<ActionResult> SetDetaultMachine(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                await _service.SetDetaultMachine(id);
-                return StatusCode(204);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _service.SetDetaultMachine(id);
+            return StatusCode(204);
         }
     }
 }

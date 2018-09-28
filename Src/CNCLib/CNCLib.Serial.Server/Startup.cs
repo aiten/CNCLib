@@ -25,6 +25,7 @@ using Framework.Contracts.Shared;
 using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Web;
+using Framework.Web.Filter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -44,9 +45,9 @@ namespace CNCLib.Serial.Server
             Configuration = configuration;
         }
 
-        public        IConfiguration         Configuration { get; }
-        public static IServiceProvider       Services      { get; private set; }
-        public static IHubContext<CNCLibHub> Hub           => Services.GetService<IHubContext<CNCLibHub>>();
+        public IConfiguration Configuration { get; }
+        public static IServiceProvider Services { get; private set; }
+        public static IHubContext<CNCLibHub> Hub => Services.GetService<IHubContext<CNCLibHub>>();
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -54,7 +55,13 @@ namespace CNCLib.Serial.Server
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services.AddTransient<UnhandledExceptionFilter>();
+            services.AddTransient<ValidateRequestDataFilter>();
+            services.AddMvc(options =>
+            {
+                options.Filters.AddService<ValidateRequestDataFilter>();
+                options.Filters.AddService<UnhandledExceptionFilter>();
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });

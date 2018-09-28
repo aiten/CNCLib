@@ -62,50 +62,28 @@ namespace Framework.Web
             return controller.Ok(obj);
         }
 
-        public static ActionResult GenerateErrorResponse(this Controller controller, Exception ex)
-        {
-            //		    logger.Log(ex);
-            //return controller.InternalServerError(ex);
-            //return controller.Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
-            return null;
-        }
-
         #region Get/GetAll
 
         public static async Task<ActionResult<T>> Get<T, TKey>(this Controller controller, IGetService<T, TKey> manager, TKey id) where T : class where TKey : IComparable
         {
-            try
+            var dto = await manager.Get(id);
+            if (dto == null)
             {
-                var dto = await manager.Get(id);
-                if (dto == null)
-                {
-                    return controller.NotFound();
-                }
+                return controller.NotFound();
+            }
 
-                return controller.Ok(dto);
-            }
-            catch (Exception ex)
-            {
-                return controller.GenerateErrorResponse(ex);
-            }
+            return controller.Ok(dto);
         }
 
         public static async Task<ActionResult<IEnumerable<T>>> GetAll<T, TKey>(this Controller controller, IGetService<T, TKey> manager) where T : class where TKey : IComparable
         {
-            try
+            var dtos = await manager.GetAll();
+            if (dtos == null)
             {
-                var dtos = await manager.GetAll();
-                if (dtos == null)
-                {
-                    return controller.NotFound();
-                }
+                return controller.NotFound();
+            }
 
-                return controller.Ok(dtos);
-            }
-            catch (Exception ex)
-            {
-                return controller.GenerateErrorResponse(ex);
-            }
+            return controller.Ok(dtos);
         }
 
         #endregion
@@ -114,44 +92,20 @@ namespace Framework.Web
 
         public static async Task<ActionResult<T>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, T value) where T : class where TKey : IComparable
         {
-            if (!controller.ModelState.IsValid || value == null)
-            {
-                return controller.BadRequest(controller.ModelState);
-            }
-
-            try
-            {
-                TKey   newid  = await manager.Add(value);
-                string newuri = controller.GetCurrentUri() + "/" + newid;
-                return controller.Created(newuri, await manager.Get(newid));
-            }
-            catch (Exception ex)
-            {
-                return controller.GenerateErrorResponse(ex);
-            }
+            TKey   newid  = await manager.Add(value);
+            string newuri = controller.GetCurrentUri() + "/" + newid;
+            return controller.Created(newuri, await manager.Get(newid));
         }
 
         public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values) where T : class where TKey : IComparable
         {
-            if (!controller.ModelState.IsValid || values == null)
-            {
-                return controller.BadRequest(controller.ModelState);
-            }
+            IEnumerable<TKey> newids     = await manager.Add(values);
+            IEnumerable<T>    newobjects = await manager.Get(newids);
 
-            try
-            {
-                IEnumerable<TKey> newids     = await manager.Add(values);
-                IEnumerable<T>    newobjects = await manager.Get(newids);
-
-                string uri     = controller.GetCurrentUri("/bulk");
-                var    newuris = newids.Select(id => uri + "/" + id);
-                var    results = newids.Select((id, idx) => new UriAndValue<T>() { Uri = uri + "/" + id, Value = newobjects.ElementAt(idx) });
-                return controller.Ok(newuris);
-            }
-            catch (Exception ex)
-            {
-                return controller.GenerateErrorResponse(ex);
-            }
+            string uri     = controller.GetCurrentUri("/bulk");
+            var    newuris = newids.Select(id => uri + "/" + id);
+            var    results = newids.Select((id, idx) => new UriAndValue<T>() { Uri = uri + "/" + id, Value = newobjects.ElementAt(idx) });
+            return controller.Ok(newuris);
         }
 
         #endregion
@@ -161,43 +115,19 @@ namespace Framework.Web
         public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, TKey idFromUri, TKey idFromValue, T value)
             where T : class where TKey : IComparable
         {
-            if (!controller.ModelState.IsValid || value == null)
-            {
-                return controller.BadRequest(controller.ModelState);
-            }
-
             if (idFromUri.CompareTo(idFromValue) != 0)
             {
                 return controller.BadRequest("Missmatch between id and dto.Id");
             }
 
-            try
-            {
-                await manager.Update(value);
-                return controller.NoContent();
-            }
-            catch (Exception ex)
-            {
-                return controller.GenerateErrorResponse(ex);
-            }
+            await manager.Update(value);
+            return controller.NoContent();
         }
 
         public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values) where T : class where TKey : IComparable
         {
-            if (!controller.ModelState.IsValid || values == null)
-            {
-                return controller.BadRequest(controller.ModelState);
-            }
-
-            try
-            {
-                await manager.Update(values);
-                return controller.NoContent();
-            }
-            catch (Exception ex)
-            {
-                return controller.GenerateErrorResponse(ex);
-            }
+            await manager.Update(values);
+            return controller.NoContent();
         }
 
         #endregion
@@ -206,28 +136,14 @@ namespace Framework.Web
 
         public static async Task<ActionResult> Delete<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, TKey id) where T : class where TKey : IComparable
         {
-            try
-            {
-                await manager.Delete(id);
-                return controller.NoContent();
-            }
-            catch (Exception ex)
-            {
-                return controller.GenerateErrorResponse(ex);
-            }
+            await manager.Delete(id);
+            return controller.NoContent();
         }
 
         public static async Task<ActionResult> Delete<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<TKey> ids) where T : class where TKey : IComparable
         {
-            try
-            {
-                await manager.Delete(ids);
-                return controller.NoContent();
-            }
-            catch (Exception ex)
-            {
-                return controller.GenerateErrorResponse(ex);
-            }
+            await manager.Delete(ids);
+            return controller.NoContent();
         }
 
         #endregion
