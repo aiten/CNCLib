@@ -190,35 +190,35 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         #region ICommand
 
-        public ICommand SendG53Command => new DelegateCommand(SendG53,         CanSendGCode);
-        public ICommand SendG54Command => new DelegateCommand(SendG54,         CanSendGCode);
-        public ICommand SendG55Command => new DelegateCommand(SendG55,         CanSendGCode);
-        public ICommand SendG56Command => new DelegateCommand(SendG56,         CanSendGCode);
-        public ICommand SendG57Command => new DelegateCommand(SendG57,         CanSendGCode);
-        public ICommand SendG58Command => new DelegateCommand(SendG58,         CanSendGCode);
-        public ICommand SendG59Command => new DelegateCommand(SendG59,         CanSendGCode);
-        public ICommand GetG54Command  => new DelegateCommand(() => GetG5x(0), () => CanGetG5x(0));
-        public ICommand SetG54Command  => new DelegateCommand(() => SetG5x(0), () => CanSetG5x(0));
+        public ICommand SendG53Command   => new DelegateCommand(SendG53,            CanSendGCode);
+        public ICommand SendG54Command   => new DelegateCommand(SendG54,            CanSendGCode);
+        public ICommand SendG55Command   => new DelegateCommand(SendG55,            CanSendGCode);
+        public ICommand SendG56Command   => new DelegateCommand(SendG56,            CanSendGCode);
+        public ICommand SendG57Command   => new DelegateCommand(SendG57,            CanSendGCode);
+        public ICommand SendG58Command   => new DelegateCommand(SendG58,            CanSendGCode);
+        public ICommand SendG59Command   => new DelegateCommand(SendG59,            CanSendGCode);
+        public ICommand GetG54Command    => new DelegateCommand(() => GetG5x(0),    () => CanGetG5x(0));
+        public ICommand SetG54Command    => new DelegateCommand(() => SetG5x(0),    () => CanSetG5x(0));
         public ICommand SetG54RelCommand => new DelegateCommand(() => SetG5xRel(0), () => CanSetG5x(0));
 
-        public ICommand GetG55Command  => new DelegateCommand(() => GetG5x(1), () => CanGetG5x(1));
-        public ICommand SetG55Command  => new DelegateCommand(() => SetG5x(1), () => CanSetG5x(1));
+        public ICommand GetG55Command    => new DelegateCommand(() => GetG5x(1),    () => CanGetG5x(1));
+        public ICommand SetG55Command    => new DelegateCommand(() => SetG5x(1),    () => CanSetG5x(1));
         public ICommand SetG55RelCommand => new DelegateCommand(() => SetG5xRel(1), () => CanSetG5x(1));
 
-        public ICommand GetG56Command  => new DelegateCommand(() => GetG5x(2), () => CanGetG5x(2));
-        public ICommand SetG56Command  => new DelegateCommand(() => SetG5x(2), () => CanSetG5x(2));
+        public ICommand GetG56Command    => new DelegateCommand(() => GetG5x(2),    () => CanGetG5x(2));
+        public ICommand SetG56Command    => new DelegateCommand(() => SetG5x(2),    () => CanSetG5x(2));
         public ICommand SetG56RelCommand => new DelegateCommand(() => SetG5xRel(2), () => CanSetG5x(2));
 
-        public ICommand GetG57Command  => new DelegateCommand(() => GetG5x(3), () => CanGetG5x(3));
-        public ICommand SetG57Command  => new DelegateCommand(() => SetG5x(3), () => CanSetG5x(3));
+        public ICommand GetG57Command    => new DelegateCommand(() => GetG5x(3),    () => CanGetG5x(3));
+        public ICommand SetG57Command    => new DelegateCommand(() => SetG5x(3),    () => CanSetG5x(3));
         public ICommand SetG57RelCommand => new DelegateCommand(() => SetG5xRel(3), () => CanSetG5x(3));
 
-        public ICommand GetG58Command  => new DelegateCommand(() => GetG5x(4), () => CanGetG5x(4));
-        public ICommand SetG58Command  => new DelegateCommand(() => SetG5x(4), () => CanSetG5x(4));
+        public ICommand GetG58Command    => new DelegateCommand(() => GetG5x(4),    () => CanGetG5x(4));
+        public ICommand SetG58Command    => new DelegateCommand(() => SetG5x(4),    () => CanSetG5x(4));
         public ICommand SetG58RelCommand => new DelegateCommand(() => SetG5xRel(4), () => CanSetG5x(4));
 
-        public ICommand GetG59Command  => new DelegateCommand(() => GetG5x(5), () => CanGetG5x(5));
-        public ICommand SetG59Command  => new DelegateCommand(() => SetG5x(5), () => CanSetG5x(5));
+        public ICommand GetG59Command    => new DelegateCommand(() => GetG5x(5),    () => CanGetG5x(5));
+        public ICommand SetG59Command    => new DelegateCommand(() => SetG5x(5),    () => CanSetG5x(5));
         public ICommand SetG59RelCommand => new DelegateCommand(() => SetG5xRel(5), () => CanSetG5x(5));
 
         #endregion

@@ -23,7 +23,7 @@ namespace Framework.Web.Filter
 {
     public sealed class ErrorResponseData
     {
-        public string Error { get; set; }
+        public string Error   { get; set; }
         public object Message { get; set; }
 
         public ErrorResponseData(string error, object message)
@@ -34,7 +34,7 @@ namespace Framework.Web.Filter
 
         public ErrorResponseData(Exception exception)
         {
-            Error = Regex.Replace(exception.GetType().Name,"(Error|Exception)$", string.Empty);
+            Error   = Regex.Replace(exception.GetType().Name, "(Error|Exception)$", string.Empty);
             Message = exception.Message;
         }
     }

@@ -53,7 +53,7 @@ namespace Framework.Web.Filter
         protected struct ExceptionResponse
         {
             public HttpStatusCode StatusCode { get; }
-            public Exception Exception { get; }
+            public Exception      Exception  { get; }
 
             public ExceptionResponse(HttpStatusCode statusCode, Exception exception)
             {

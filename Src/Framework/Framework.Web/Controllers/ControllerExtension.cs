@@ -23,7 +23,8 @@ using System.Threading.Tasks;
 using Framework.Contracts.Service;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Framework.Web
+namespace Framework.Web.Controllers
+
 {
     public class UriAndValue<TDto> where TDto : class
     {
@@ -97,7 +98,8 @@ namespace Framework.Web
             return controller.Created(newuri, await manager.Get(newid));
         }
 
-        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values) where T : class where TKey : IComparable
+        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
+            where T : class where TKey : IComparable
         {
             IEnumerable<TKey> newids     = await manager.Add(values);
             IEnumerable<T>    newobjects = await manager.Get(newids);
