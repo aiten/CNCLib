@@ -38,3 +38,4 @@ bin
 /Doc/Screen2.jpg
 /Doc/Screen1a.jpg
 /Src/CNCLib/CNCLib.WebAPI.Orig
+/Src/CNCLib/CNCLib.Serial.Server/wwwroot/dist

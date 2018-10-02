@@ -76,6 +76,11 @@ namespace Framework.Logic
                 await ValidateDto(values, ValidationType.DeletValidatione);
                 var entities = MapFromDtos(values, ValidationType.DeletValidatione);
 
+                foreach (var entity in entities)
+                {
+                    DeleteEntity(entity);
+                }
+
                 _repository.DeleteRange(entities);
                 await trans.CommitTransactionAsync();
                 await Modified();
@@ -92,6 +97,12 @@ namespace Framework.Logic
             using (var trans = _unitOfWork.BeginTransaction())
             {
                 var entities = await _repository.GetTracking(keys);
+
+                foreach (var entity in entities)
+                {
+                    DeleteEntity(entity);
+                }
+
                 _repository.DeleteRange(entities);
                 await trans.CommitTransactionAsync();
                 await Modified();
@@ -153,6 +164,9 @@ namespace Framework.Logic
         }
 
         protected virtual void AddEntity(TEntity entityInDb)
+        {
+        }
+        protected virtual void DeleteEntity(TEntity entityInDb)
         {
         }
 
