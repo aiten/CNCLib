@@ -5,7 +5,7 @@
   </PropertyGroup>  
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.5.10" />
-    <PackageReference Include="System.Drawing.Common" Version="4.5.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
     <PackageReference Include="Unity">
       <Version>5.8.11</Version>
     </PackageReference>
