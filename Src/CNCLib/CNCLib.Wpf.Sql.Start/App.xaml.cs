@@ -25,6 +25,7 @@ using CNCLib.GCode.GUI;
 using CNCLib.Logic;
 using CNCLib.Logic.Manager;
 using CNCLib.Repository.Context;
+using CNCLib.Repository.SqlServer;
 using CNCLib.Service.Contracts;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
@@ -34,6 +35,7 @@ using Framework.Repository;
 using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
+using NLog;
 
 namespace CNCLib.Wpf.Sql.Start
 {
@@ -42,8 +44,17 @@ namespace CNCLib.Wpf.Sql.Start
     /// </summary>
     public partial class App : Application
     {
+        private ILogger _logger => LogManager.GetCurrentClassLogger();
+
         private void AppStartup(object sender, StartupEventArgs e)
         {
+            GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
+
+            LogManager.ThrowExceptions = true;
+            Logger logger = LogManager.GetLogger("foo");
+
+            _logger.Info(@"Starting ...");
+
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             Dependency.Initialize(new LiveDependencyProvider());

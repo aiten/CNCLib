@@ -30,6 +30,7 @@ using Framework.Contracts.Shared;
 using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
+using NLog;
 
 namespace CNCLib.Wpf.WebAPI.Start
 {
@@ -38,8 +39,11 @@ namespace CNCLib.Wpf.WebAPI.Start
     /// </summary>
     public partial class App : Application
     {
+        private ILogger _logger => LogManager.GetCurrentClassLogger();
+
         private void AppStartup(object sender, StartupEventArgs e)
         {
+            _logger.Info(@"Starting ...");
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             Dependency.Initialize(new LiveDependencyProvider());
