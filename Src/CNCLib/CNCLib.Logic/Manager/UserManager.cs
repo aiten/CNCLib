@@ -43,7 +43,7 @@ namespace CNCLib.Logic.Manager
 
         protected override int GetKey(UserEntity entity)
         {
-            return entity.UserID;
+            return entity.UserId;
         }
 
         public async Task<User> GetByName(string username)

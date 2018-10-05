@@ -240,7 +240,7 @@ namespace CNCLib.Logic.Client
                         throw new NotImplementedException();
                     }
 
-                    var prop = new ItemProperty { Name = pi.Name, ItemID = id };
+                    var prop = new ItemProperty { Name = pi.Name, ItemId = id };
                     if (!string.IsNullOrEmpty(value))
                     {
                         prop.Value = value;
@@ -277,7 +277,7 @@ namespace CNCLib.Logic.Client
             var list = GetProperties(id, obj);
             var item = new Item
             {
-                ItemID         = id,
+                ItemId         = id,
                 Name           = name,
                 ClassName      = GetClassName(obj.GetType()),
                 ItemProperties = list.ToArray()
@@ -295,7 +295,7 @@ namespace CNCLib.Logic.Client
             var l = new List<DynItem>();
             foreach (var o in allitems)
             {
-                l.Add(new DynItem { ItemID = o.ItemID, Name = o.Name });
+                l.Add(new DynItem { ItemId = o.ItemId, Name = o.Name });
             }
 
             return l;
@@ -303,7 +303,7 @@ namespace CNCLib.Logic.Client
 
         private static DynItem Convert(Item item)
         {
-            return new DynItem { ItemID = item.ItemID, Name = item.Name };
+            return new DynItem { ItemId = item.ItemId, Name = item.Name };
         }
 
         private static string GetClassName(Type t)

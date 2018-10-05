@@ -45,9 +45,9 @@ namespace CNCLib.Repository
 
         protected override IQueryable<Item> AddOptionalWhere(IQueryable<Item> query)
         {
-            if (_userContext.UserID.HasValue)
+            if (_userContext.UserId.HasValue)
             {
-                return query.Where(x => x.UserID.HasValue == false || x.UserID.Value == _userContext.UserID.Value);
+                return query.Where(x => x.UserId.HasValue == false || x.UserId.Value == _userContext.UserId.Value);
             }
 
             return base.AddOptionalWhere(query);
@@ -55,12 +55,12 @@ namespace CNCLib.Repository
 
         protected override IQueryable<Item> AddPrimaryWhere(IQueryable<Item> query, int key)
         {
-            return query.Where(m => m.ItemID == key);
+            return query.Where(m => m.ItemId == key);
         }
 
         protected override IQueryable<Item> AddPrimaryWhereIn(IQueryable<Item> query, IEnumerable<int> key)
         {
-            return query.Where(m => key.Contains(m.ItemID));
+            return query.Where(m => key.Contains(m.ItemId));
         }
 
         #region CRUD
@@ -75,7 +75,7 @@ namespace CNCLib.Repository
         protected override void AssignValuesGraph(Item trackingentity, Item values)
         {
             base.AssignValuesGraph(trackingentity, values);
-            Sync(trackingentity.ItemProperties, values.ItemProperties, (x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
+            Sync(trackingentity.ItemProperties, values.ItemProperties, (x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name);
         }
 
 /*
@@ -83,11 +83,11 @@ namespace CNCLib.Repository
 		{
 			// search und update item / itemproperties
 
-			int id = item.ItemID;
+			int id = item.ItemId;
 		    var optValues = item.ItemProperties?.ToList() ?? new List<ItemProperty>();
 
 			var itemInDb = await Context.Items.
-				Where(m => m.ItemID == id).
+				Where(m => m.ItemId == id).
 				Include(d => d.ItemProperties).
                 FirstOrDefaultAsync();
 
@@ -110,7 +110,7 @@ namespace CNCLib.Repository
 				Sync<ItemProperty>(
                     itemInDb.ItemProperties,
                     optValues, 
-					(x, y) => x.ItemID > 0 && x.ItemID == y.ItemID && x.Name == y.Name);
+					(x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name);
 			}
 		}
 */

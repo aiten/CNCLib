@@ -39,7 +39,7 @@ namespace CNCLib.Repository.Mappings
             entity.Property(c => c.Value).HasMaxLength(4000);
 
             entity.HasOne(c => c.User);
-            entity.Property(c => c.UserID);
+            entity.Property(c => c.UserId);
 //                IsOptional();
         }
     }

@@ -51,14 +51,14 @@ namespace CNCLib.Logic.Manager
 
         protected override int GetKey(MachineEntity entity)
         {
-            return entity.MachineID;
+            return entity.MachineId;
         }
 
         protected override void AddEntity(MachineEntity entityInDb)
         {
-            if (_userContext.UserID.HasValue)
+            if (_userContext.UserId.HasValue)
             {
-                entityInDb.UserID = _userContext.UserID;
+                entityInDb.UserId = _userContext.UserId;
             }
             base.AddEntity(entityInDb);
         }
@@ -67,7 +67,7 @@ namespace CNCLib.Logic.Manager
         {
             // do not overwrite user!
 
-            values.UserID = entityInDb.UserID;
+            values.UserId = entityInDb.UserId;
             values.User = entityInDb.User;
 
             base.UpdateEntity(entityInDb, values);
@@ -110,7 +110,7 @@ namespace CNCLib.Logic.Manager
 
         public async Task<int> GetDetaultMachine()
         {
-            var config = await _repositoryConfig.Get("Environment", "DefaultMachineID");
+            var config = await _repositoryConfig.Get("Environment", "DefaultMachineId");
 
             if (config == default(ConfigurationEntity))
             {
@@ -120,14 +120,14 @@ namespace CNCLib.Logic.Manager
             return int.Parse(config.Value);
         }
 
-        public async Task SetDetaultMachine(int defaultMachineID)
+        public async Task SetDetaultMachine(int defaultMachineId)
         {
             await _repositoryConfig.Store(new ConfigurationEntity
             {
                 Group = "Environment",
-                Name  = "DefaultMachineID",
+                Name  = "DefaultMachineId",
                 Type  = "Int32",
-                Value = defaultMachineID.ToString()
+                Value = defaultMachineId.ToString()
             });
             await _unitOfWork.SaveChangesAsync();
         }

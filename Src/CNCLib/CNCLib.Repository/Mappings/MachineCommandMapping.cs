@@ -28,13 +28,13 @@ namespace CNCLib.Repository.Mappings
         {
             entity.ToTable("MachineCommand");
 
-            entity.HasKey(mc => mc.MachineCommandID);
+            entity.HasKey(mc => mc.MachineCommandId);
 
             entity.Property(m => m.CommandString).IsRequired().HasMaxLength(64);
             entity.Property(m => m.CommandName).IsRequired().HasMaxLength(64);
             entity.Property(m => m.JoystickMessage).HasMaxLength(64);
 
-            entity.HasOne(mc => mc.Machine).WithMany(m => m.MachineCommands).HasForeignKey(mc => mc.MachineID);
+            entity.HasOne(mc => mc.Machine).WithMany(m => m.MachineCommands).HasForeignKey(mc => mc.MachineId);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace CNCLib.Wpf
 
         public string UserName { get; private set; }
 
-        public int? UserID { get; private set; }
+        public int? UserId { get; private set; }
 
         public async Task InitUserContext()
         {
@@ -50,10 +50,10 @@ namespace CNCLib.Wpf
                         {
                             UserName = this.UserName
                         };
-                        user.UserID = await userservice.Add(user);
+                        user.UserId = await userservice.Add(user);
                     }
 
-                    UserID = user.UserID;
+                    UserId = user.UserId;
                 }
             }
             catch (Exception exception)

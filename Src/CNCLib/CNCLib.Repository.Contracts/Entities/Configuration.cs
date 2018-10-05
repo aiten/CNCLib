@@ -25,7 +25,7 @@ namespace CNCLib.Repository.Contracts.Entities
         public         string Name   { get; set; }
         public         string Type   { get; set; }
         public         string Value  { get; set; }
-        public         int?   UserID { get; set; }
+        public         int?   UserId { get; set; }
         public virtual User   User   { get; set; }
 
 

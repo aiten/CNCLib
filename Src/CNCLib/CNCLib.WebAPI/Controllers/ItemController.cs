@@ -77,7 +77,7 @@ namespace CNCLib.WebAPI.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] Item value)
         {
-            return await this.Update<Item, int>(_service, id, value.ItemID, value);
+            return await this.Update<Item, int>(_service, id, value.ItemId, value);
         }
 
         [HttpDelete]

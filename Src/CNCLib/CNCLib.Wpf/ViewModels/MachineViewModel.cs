@@ -72,25 +72,25 @@ namespace CNCLib.Wpf.ViewModels
 
         #region Operations
 
-        public async Task LoadMachine(int machineID)
+        public async Task LoadMachine(int machineId)
         {
             using (var scope = _machineService.Create())
             {
-                await MyLoadMachine(machineID, scope);
+                await MyLoadMachine(machineId, scope);
             }
         }
 
-        private async Task MyLoadMachine(int machineID, IScope<IMachineService> scope)
+        private async Task MyLoadMachine(int machineId, IScope<IMachineService> scope)
         {
             MachineDto dto;
-            AddNewMachine = machineID <= 0;
+            AddNewMachine = machineId <= 0;
             if (AddNewMachine)
             {
                 dto = await scope.Instance.DefaultMachine();
             }
             else
             {
-                dto = await scope.Instance.Get(machineID);
+                dto = await scope.Instance.Get(machineId);
             }
 
             Machine = dto.Convert();
@@ -107,7 +107,7 @@ namespace CNCLib.Wpf.ViewModels
 
             using (var scope = _machineService.Create())
             {
-                int id = m.MachineID;
+                int id = m.MachineId;
                 if (id == default(int))
                 {
                     id = await scope.Instance.Add(m);

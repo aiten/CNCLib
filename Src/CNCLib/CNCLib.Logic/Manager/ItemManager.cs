@@ -49,14 +49,14 @@ namespace CNCLib.Logic.Manager
 
         protected override int GetKey(ItemEntity entity)
         {
-            return entity.ItemID;
+            return entity.ItemId;
         }
 
         protected override void AddEntity(ItemEntity entityInDb)
         {
-            if (_userContext.UserID.HasValue)
+            if (_userContext.UserId.HasValue)
             {
-                entityInDb.UserID = _userContext.UserID;
+                entityInDb.UserId = _userContext.UserId;
             }
 
             base.AddEntity(entityInDb);
@@ -66,7 +66,7 @@ namespace CNCLib.Logic.Manager
         {
             // do not overwrite user!
 
-            values.UserID = entityInDb.UserID;
+            values.UserId = entityInDb.UserId;
             values.User   = entityInDb.User;
 
             base.UpdateEntity(entityInDb, values);

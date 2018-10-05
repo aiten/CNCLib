@@ -22,7 +22,7 @@ namespace CNCLib.Repository.Contracts.Entities
 {
     public class Machine
     {
-        public int    MachineID        { get; set; }
+        public int    MachineId        { get; set; }
         public string SerialServer     { get; set; }
         public int    SerialServerPort { get; set; }
         public string ComPort          { get; set; }
@@ -54,7 +54,7 @@ namespace CNCLib.Repository.Contracts.Entities
         public bool    Rotate         { get; set; }
         public int     CommandSyntax  { get; set; }
 
-        public         int? UserID { get; set; }
+        public         int? UserId { get; set; }
         public virtual User User   { get; set; }
 
         public virtual ICollection<MachineCommand>     MachineCommands     { get; set; }

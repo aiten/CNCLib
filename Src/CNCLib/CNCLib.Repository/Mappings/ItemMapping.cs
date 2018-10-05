@@ -28,7 +28,7 @@ namespace CNCLib.Repository.Mappings
         {
             entity.ToTable("Item");
 
-            entity.HasKey(i => i.ItemID);
+            entity.HasKey(i => i.ItemId);
 
             entity.HasIndex(i => i.Name).IsUnique();
 
@@ -37,7 +37,7 @@ namespace CNCLib.Repository.Mappings
             entity.Property(i => i.ClassName).IsRequired().HasMaxLength(255);
 
             entity.HasOne(i => i.User);
-            entity.Property(i => i.UserID);
+            entity.Property(i => i.UserId);
         }
     }
 }

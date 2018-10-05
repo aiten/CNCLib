@@ -62,9 +62,9 @@ namespace CNCLib.Repository
 
         protected override IQueryable<Configuration> AddOptionalWhere(IQueryable<Configuration> query)
         {
-            if (_userContext.UserID.HasValue)
+            if (_userContext.UserId.HasValue)
             {
-                return query.Where(x => x.UserID.HasValue == false || x.UserID.Value == _userContext.UserID.Value);
+                return query.Where(x => x.UserId.HasValue == false || x.UserId.Value == _userContext.UserId.Value);
             }
 
             return base.AddOptionalWhere(query);
@@ -86,13 +86,13 @@ namespace CNCLib.Repository
                 // add new
 
                 cInDb = configuration;
-                cInDb.UserID = _userContext.UserID;
+                cInDb.UserId = _userContext.UserId;
                 AddEntity(cInDb);
             }
             else
             {
                 // syn with existing
-                configuration.UserID = cInDb.UserID;
+                configuration.UserId = cInDb.UserId;
                 configuration.User = cInDb.User;
                 SetValue(cInDb, configuration);
             }

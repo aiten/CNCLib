@@ -49,14 +49,14 @@ namespace CNCLib.Tests.Logic
 
             var machineEntity1 = new MachineDto
             {
-                MachineID = 1,
+                MachineId = 1,
                 Name      = "Maxi",
                 MachineCommands = new[]
                 {
                     new MachineCommandDto
                     {
-                        MachineID        = 1,
-                        MachineCommandID = 1,
+                        MachineId        = 1,
+                        MachineCommandId = 1,
                         CommandName      = @"1",
                         CommandString    = @"1",
                         PosX             = 0,
@@ -67,18 +67,18 @@ namespace CNCLib.Tests.Logic
                 {
                     new MachineInitCommandDto
                     {
-                        MachineID            = 1,
-                        MachineInitCommandID = 1,
+                        MachineId            = 1,
+                        MachineInitCommandId = 1,
                         CommandString        = "2",
                         SeqNo                = 1
                     }
                 }
             };
 
-            var machineID = await ctrl.Add(machineEntity1);
+            var machineId = await ctrl.Add(machineEntity1);
 
             rep.ReceivedWithAnyArgs().AddRange(new Machine[1]);
-            machineID.Should().Be(1);
+            machineId.Should().Be(1);
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace CNCLib.Tests.Logic
 
             var machineEntity1 = new Machine
             {
-                MachineID           = 11,
+                MachineId           = 11,
                 Name                = "Maxi",
                 MachineCommands     = new List<MachineCommand>(),
                 MachineInitCommands = new MachineInitCommand[0]
@@ -119,7 +119,7 @@ namespace CNCLib.Tests.Logic
 
             var machineEntity1 = new Machine
             {
-                MachineID           = 11,
+                MachineId           = 11,
                 Name                = "Maxi",
                 MachineCommands     = new List<MachineCommand>(),
                 MachineInitCommands = new MachineInitCommand[0]
@@ -132,7 +132,7 @@ namespace CNCLib.Tests.Logic
             await ctrl.Delete(machine);
 
             rep.Received().DeleteRange(Arg.Is<IEnumerable<Machine>>(x => x.First().Name == "SuperMaxi"));
-            rep.Received().DeleteRange(Arg.Is<IEnumerable<Machine>>(x => x.First().MachineID == 11));
+            rep.Received().DeleteRange(Arg.Is<IEnumerable<Machine>>(x => x.First().MachineId == 11));
         }
 
         [TestMethod]
@@ -164,7 +164,7 @@ namespace CNCLib.Tests.Logic
             {
                 new Machine
                 {
-                    MachineID           = 1,
+                    MachineId           = 1,
                     Name                = "Maxi",
                     BufferSize          = 115200,
                     MachineCommands     = new List<MachineCommand>(),
@@ -175,7 +175,7 @@ namespace CNCLib.Tests.Logic
 
             var machines = (await ctrl.GetAll()).ToArray();
             machines.Length.Should().Be(1);
-            machines[0].MachineID.Should().Be(1);
+            machines[0].MachineId.Should().Be(1);
             machines[0].Name.Should().Be("Maxi");
             machines[0].BufferSize.Should().Be(115200);
             machines[0].MachineCommands.Should().NotBeNull();
@@ -197,7 +197,7 @@ namespace CNCLib.Tests.Logic
             {
                 new Machine
                 {
-                    MachineID           = 1,
+                    MachineId           = 1,
                     Name                = "Maxi",
                     BufferSize          = 115200,
                     MachineCommands     = new List<MachineCommand>(),
@@ -205,15 +205,15 @@ namespace CNCLib.Tests.Logic
                 },
                 new Machine
                 {
-                    MachineID  = 2,
+                    MachineId  = 2,
                     Name       = "Maxi",
                     BufferSize = 115200,
                     MachineCommands = new List<MachineCommand>()
                     {
                         new MachineCommand
                         {
-                            MachineID        = 2,
-                            MachineCommandID = 1,
+                            MachineId        = 2,
+                            MachineCommandId = 1,
                             CommandName      = "Test",
                             CommandString    = "f"
                         }
@@ -222,8 +222,8 @@ namespace CNCLib.Tests.Logic
                     {
                         new MachineInitCommand
                         {
-                            MachineID            = 2,
-                            MachineInitCommandID = 1,
+                            MachineId            = 2,
+                            MachineInitCommandId = 1,
                             SeqNo                = 0,
                             CommandString        = "f"
                         }
@@ -235,7 +235,7 @@ namespace CNCLib.Tests.Logic
 
             var machines = (await ctrl.GetAll()).ToArray();
             machines.Length.Should().Be(2);
-            machines[0].MachineID.Should().Be(1);
+            machines[0].MachineId.Should().Be(1);
             machines[0].Name.Should().Be("Maxi");
             machines[0].BufferSize.Should().Be(115200);
             machines[1].MachineCommands.Count().Should().Be(1);
@@ -259,14 +259,14 @@ namespace CNCLib.Tests.Logic
 
             var machineEntity1 = new Machine
             {
-                MachineID           = 1,
+                MachineId           = 1,
                 Name                = "Maxi",
                 MachineCommands     = new List<MachineCommand>(),
                 MachineInitCommands = new MachineInitCommand[0]
             };
             var machineEntity2 = new Machine
             {
-                MachineID           = 2,
+                MachineId           = 2,
                 Name                = "Mini",
                 MachineCommands     = new List<MachineCommand>(),
                 MachineInitCommands = new MachineInitCommand[0]
@@ -276,7 +276,7 @@ namespace CNCLib.Tests.Logic
 
             var machine = await ctrl.Get(1);
             machineEntity1.Name.Should().Be(machine.Name);
-            machineEntity1.MachineID.Should().Be(machine.MachineID);
+            machineEntity1.MachineId.Should().Be(machine.MachineId);
             machine.MachineCommands.Should().NotBeNull();
             machine.MachineInitCommands.Should().NotBeNull();
             machine.MachineCommands.Count().Should().Be(0);
@@ -294,14 +294,14 @@ namespace CNCLib.Tests.Logic
 
             var machineEntity1 = new Machine
             {
-                MachineID           = 1,
+                MachineId           = 1,
                 Name                = "Maxi",
                 MachineCommands     = new List<MachineCommand>(),
                 MachineInitCommands = new MachineInitCommand[0]
             };
             var machineEntity2 = new Machine
             {
-                MachineID           = 2,
+                MachineId           = 2,
                 Name                = "Mini",
                 MachineCommands     = new List<MachineCommand>(),
                 MachineInitCommands = new MachineInitCommand[0]
@@ -336,7 +336,7 @@ namespace CNCLib.Tests.Logic
 
             var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
-            repC.Get("Environment", "DefaultMachineID").Returns(new Configuration { Value = "14" });
+            repC.Get("Environment", "DefaultMachineId").Returns(new Configuration { Value = "14" });
             int dm = await ctrl.GetDetaultMachine();
 
             dm.Should().Be(14);
@@ -351,7 +351,7 @@ namespace CNCLib.Tests.Logic
 
             var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
-            repC.Get("Environment", "DefaultMachineID").Returns((Configuration) null);
+            repC.Get("Environment", "DefaultMachineId").Returns((Configuration) null);
 
             (await ctrl.GetDetaultMachine()).Should().Be(-1);
         }
@@ -367,9 +367,9 @@ namespace CNCLib.Tests.Logic
 
             await ctrl.SetDetaultMachine(15);
 
-            repC.Get("Environment", "DefaultMachineID").Returns(new Configuration { Value = "14" });
+            repC.Get("Environment", "DefaultMachineId").Returns(new Configuration { Value = "14" });
 
-            await repC.Received().Store(Arg.Is<Configuration>(x => x.Group == "Environment" && x.Name == "DefaultMachineID" && x.Value == "15"));
+            await repC.Received().Store(Arg.Is<Configuration>(x => x.Group == "Environment" && x.Name == "DefaultMachineId" && x.Value == "15"));
         }
     }
 }

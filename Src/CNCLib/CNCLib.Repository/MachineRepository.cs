@@ -45,9 +45,9 @@ namespace CNCLib.Repository
 
         protected override IQueryable<Machine> AddOptionalWhere(IQueryable<Machine> query)
         {
-            if (_userContext.UserID.HasValue)
+            if (_userContext.UserId.HasValue)
             {
-                return query.Where(x => x.UserID.HasValue == false || x.UserID.Value == _userContext.UserID.Value);
+                return query.Where(x => x.UserId.HasValue == false || x.UserId.Value == _userContext.UserId.Value);
             }
 
             return base.AddOptionalWhere(query);
@@ -55,75 +55,29 @@ namespace CNCLib.Repository
 
         protected override IQueryable<Machine> AddPrimaryWhere(IQueryable<Machine> query, int key)
         {
-            return query.Where(m => m.MachineID == key);
+            return query.Where(m => m.MachineId == key);
         }
 
         protected override IQueryable<Machine> AddPrimaryWhereIn(IQueryable<Machine> query, IEnumerable<int> key)
         {
-            return query.Where(m => key.Contains(m.MachineID));
+            return query.Where(m => key.Contains(m.MachineId));
         }
 
         protected override void AssignValuesGraph(Machine trackingentity, Machine values)
         {
             base.AssignValuesGraph(trackingentity, values);
-            Sync(trackingentity.MachineCommands,     values.MachineCommands,     (x, y) => x.MachineCommandID > 0 && x.MachineCommandID == y.MachineCommandID);
-            Sync(trackingentity.MachineInitCommands, values.MachineInitCommands, (x, y) => x.MachineInitCommandID > 0 && x.MachineInitCommandID == y.MachineInitCommandID);
+            Sync(trackingentity.MachineCommands,     values.MachineCommands,     (x, y) => x.MachineCommandId > 0 && x.MachineCommandId == y.MachineCommandId);
+            Sync(trackingentity.MachineInitCommands, values.MachineInitCommands, (x, y) => x.MachineInitCommandId > 0 && x.MachineInitCommandId == y.MachineInitCommandId);
         }
 
-        public async Task<IEnumerable<MachineCommand>> GetMachineCommands(int machineID)
+        public async Task<IEnumerable<MachineCommand>> GetMachineCommands(int machineId)
         {
-            return await Context.MachineCommands.Where(c => c.MachineID == machineID).ToListAsync();
+            return await Context.MachineCommands.Where(c => c.MachineId == machineId).ToListAsync();
         }
 
-        public async Task<IEnumerable<MachineInitCommand>> GetMachineInitCommands(int machineID)
+        public async Task<IEnumerable<MachineInitCommand>> GetMachineInitCommands(int machineId)
         {
-            return await Context.MachineInitCommands.Where(c => c.MachineID == machineID).ToListAsync();
+            return await Context.MachineInitCommands.Where(c => c.MachineId == machineId).ToListAsync();
         }
-
-/*
-        public async Task Store(Machine machine)
-		{
-			// search und update machine
-
-			int id = machine.MachineID;
-		    var machineCommands = machine.MachineCommands?.ToList() ?? new List<MachineCommand>();
-		    var machineInitCommands = machine.MachineInitCommands?.ToList() ?? new List<MachineInitCommand>();
-
-            var machineInDb = await Context.Machines.
-				Where(m => m.MachineID == id).
-				Include(d => d.MachineCommands).
-				Include(d => d.MachineInitCommands).
-				FirstOrDefaultAsync();
-
-			if (machineInDb == default(Machine))
-			{
-				// add new
-				AddEntity(machine);
-                foreach (var mc in machineCommands)
-			        AddEntity(mc);
-			    foreach (var mic in machineInitCommands)
-			        AddEntity(mic);
-			}
-            else
-			{
-				// syn with existing
-
-				SetValue(machineInDb,machine);
-
-				// search und update machinecommands (add and delete)
-
-				Sync<MachineCommand>(
-					machineInDb.MachineCommands, 
-					machineCommands, 
-					(x, y) => x.MachineCommandID > 0 && x.MachineCommandID == y.MachineCommandID);
-
-				Sync<MachineInitCommand>(
-					machineInDb.MachineInitCommands,
-					machineInitCommands,
-					(x, y) => x.MachineInitCommandID > 0 && x.MachineInitCommandID == y.MachineInitCommandID);
-
-			}
-		}
-*/
     }
 }

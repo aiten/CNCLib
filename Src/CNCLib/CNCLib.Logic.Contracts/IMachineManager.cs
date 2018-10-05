@@ -26,6 +26,6 @@ namespace CNCLib.Logic.Contracts
     {
         Task<DTO.Machine> DefaultMachine();
         Task<int>         GetDetaultMachine();
-        Task              SetDetaultMachine(int defaultMachineID);
+        Task              SetDetaultMachine(int defaultMachineId);
     }
 }

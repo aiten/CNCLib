@@ -77,7 +77,7 @@ namespace CNCLib.Tests.Logic
 
             var itemEntity = new[]
             {
-                new Item { ItemID = 1, Name = "Test1" }, new Item { ItemID = 2, Name = "Test2" }
+                new Item { ItemId = 1, Name = "Test1" }, new Item { ItemId = 2, Name = "Test2" }
             };
             rep.GetAll().Returns(itemEntity);
 
@@ -86,7 +86,7 @@ namespace CNCLib.Tests.Logic
             all.Should().HaveCount(2);
             new
                 {
-                    ItemID = 1,
+                    ItemId = 1,
                     Name   = "Test1"
                 }.Should().
                 BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
@@ -100,13 +100,13 @@ namespace CNCLib.Tests.Logic
 
             var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
-            rep.Get(1).Returns(new Item { ItemID = 1, Name = "Test1" });
+            rep.Get(1).Returns(new Item { ItemId = 1, Name = "Test1" });
 
             var all = await ctrl.Get(1);
 
             new
                 {
-                    ItemID = 1,
+                    ItemId = 1,
                     Name   = "Test1"
                 }.Should().
                 BeEquivalentTo(all, options => options.ExcludingMissingMembers());
@@ -135,14 +135,14 @@ namespace CNCLib.Tests.Logic
 
             var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
-            var item = new ItemDto { ItemID = 3000, Name = "Hallo" };
+            var item = new ItemDto { ItemId = 3000, Name = "Hallo" };
 
             //act
 
             await ctrl.Delete(item);
 
             //assert
-            rep.Received().DeleteRange(Arg.Is<IEnumerable<Item>>(x => x.First().ItemID == item.ItemID));
+            rep.Received().DeleteRange(Arg.Is<IEnumerable<Item>>(x => x.First().ItemId == item.ItemId));
         }
     }
 }
