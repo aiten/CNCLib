@@ -28,7 +28,7 @@ namespace CNCLib.Repository.Mappings
         {
             entity.ToTable("Machine");
 
-            entity.HasKey(m => m.MachineID);
+            entity.HasKey(m => m.MachineId);
 
             entity.Property(m => m.Name).IsRequired().HasMaxLength(64);
 
@@ -42,7 +42,8 @@ namespace CNCLib.Repository.Mappings
 
             entity.Property(m => m.CommandSyntax).IsRequired();
 
-            entity.Property(m => m.UserID);
+            entity.HasOne(p => p.User);
+            entity.Property(m => m.UserId);
 //                IsOptional();
         }
     }

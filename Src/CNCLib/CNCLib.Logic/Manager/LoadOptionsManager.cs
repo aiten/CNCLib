@@ -35,8 +35,8 @@ namespace CNCLib.Logic.Manager
                 var list = new List<LoadOptions>();
                 foreach (DynItem item in await controller.GetAll(typeof(LoadOptions)))
                 {
-                    var li = (LoadOptions) await controller.Create(item.ItemID);
-                    li.Id = item.ItemID;
+                    var li = (LoadOptions) await controller.Create(item.ItemId);
+                    li.Id = item.ItemId;
                     list.Add(li);
                 }
 

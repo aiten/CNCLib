@@ -132,39 +132,39 @@ namespace CNCLib.Tests.Wpf
             {
                 new MachineCommand
                 {
-                    MachineID        = machineid,
+                    MachineId        = machineid,
                     CommandName      = "Test1",
                     CommandString    = "G20",
-                    MachineCommandID = machineid * 10 + 0
+                    MachineCommandId = machineid * 10 + 0
                 },
                 new MachineCommand
                 {
-                    MachineID        = machineid,
+                    MachineId        = machineid,
                     CommandName      = "Test2",
                     CommandString    = "G21",
-                    MachineCommandID = machineid * 10 + 1
+                    MachineCommandId = machineid * 10 + 1
                 }
             };
             var machineinitcommand = new[]
             {
                 new MachineInitCommand
                 {
-                    MachineID            = machineid,
+                    MachineId            = machineid,
                     SeqNo                = 1,
                     CommandString        = "G20",
-                    MachineInitCommandID = machineid * 20
+                    MachineInitCommandId = machineid * 20
                 },
                 new MachineInitCommand
                 {
-                    MachineID            = 1,
+                    MachineId            = 1,
                     SeqNo                = 2,
                     CommandString        = "G21",
-                    MachineInitCommandID = machineid * 20 + 1
+                    MachineInitCommandId = machineid * 20 + 1
                 }
             };
             var machine = new Machine
             {
-                MachineID           = machineid,
+                MachineId           = machineid,
                 Name                = "Maxi" + machineid.ToString(),
                 ComPort             = "Com7",
                 Axis                = 3,

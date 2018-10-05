@@ -23,13 +23,15 @@ using CNCLib.Wpf.Models;
 using CNCLib.Wpf.Helpers;
 using Framework.Tools.Pattern;
 
+using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
+
 namespace CNCLib.Wpf
 {
     public class Global : Singleton<Global>, INotifyPropertyChanged
     {
-        private Logic.Contracts.DTO.Machine _machine = new Logic.Contracts.DTO.Machine();
+        private MachineDto _machine = new MachineDto();
 
-        public Logic.Contracts.DTO.Machine Machine
+        public MachineDto Machine
         {
             get => _machine;
             set

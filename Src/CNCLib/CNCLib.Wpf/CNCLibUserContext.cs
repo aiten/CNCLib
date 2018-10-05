@@ -16,7 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Service.Contracts;
 using CNCLib.Shared;
+using Framework.Tools.Dependency;
+using System;
+using System.Threading.Tasks;
 
 namespace CNCLib.Wpf
 {
@@ -24,11 +29,38 @@ namespace CNCLib.Wpf
     {
         public CNCLibUserContext()
         {
-            UserName = @"WPF";
+            //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            UserName = Environment.UserName;
         }
 
         public string UserName { get; private set; }
 
-        public int? UserID { get; private set; }
+        public int? UserId { get; private set; }
+
+        public async Task InitUserContext()
+        {
+            try
+            {
+                using (var userservice = Dependency.Resolve<IUserService>())
+                {
+                    var user = await userservice.GetByName(UserName);
+                    if (user == null)
+                    {
+                        user = new User()
+                        {
+                            UserName = this.UserName
+                        };
+                        user.UserId = await userservice.Add(user);
+                    }
+
+                    UserId = user.UserId;
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+        }
     }
 }

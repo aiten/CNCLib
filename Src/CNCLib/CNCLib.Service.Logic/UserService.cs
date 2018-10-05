@@ -16,13 +16,27 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+using System.Threading.Tasks;
+using CNCLib.Logic.Contracts;
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Service.Contracts;
+using Framework.Service;
 
-namespace CNCLib.Repository.Contracts.Entities
+namespace CNCLib.Service.Logic
 {
-    public class User
+    public class UserService : CRUDService<User, int>, IUserService
     {
-        public int    UserId       { get; set; }
-        public string UserName     { get; set; }
-        public string UserPassword { get; set; }
+        readonly IUserManager _manager;
+
+        public UserService(IUserManager manager) : base(manager)
+        {
+            _manager = manager ?? throw new ArgumentNullException();
+        }
+
+        public async Task<User> GetByName(string username)
+        {
+            return await _manager.GetByName(username);
+        }
     }
 }

@@ -22,29 +22,55 @@ using AutoMapper;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Repository.Contracts;
+using CNCLib.Shared;
 using Framework.Contracts.Repository;
 using Framework.Logic;
 
+using ConfigurationEntity = CNCLib.Repository.Contracts.Entities.Configuration;
+using MachineEntity = CNCLib.Repository.Contracts.Entities.Machine;
+
 namespace CNCLib.Logic.Manager
 {
-    public class MachineManager : CRUDManager<Machine, int, Repository.Contracts.Entities.Machine>, IMachineManager
+    public class MachineManager : CRUDManager<Machine, int, MachineEntity>, IMachineManager
     {
         private readonly IUnitOfWork              _unitOfWork;
         private readonly IMachineRepository       _repository;
         private readonly IConfigurationRepository _repositoryConfig;
+        private readonly ICNCLibUserContext       _userContext;
         private readonly IMapper                  _mapper;
 
-        public MachineManager(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig, IMapper mapper) : base(unitOfWork, repository, mapper)
+        public MachineManager(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig, ICNCLibUserContext userContext, IMapper mapper) :
+            base(unitOfWork, repository, mapper)
         {
             _unitOfWork       = unitOfWork ?? throw new ArgumentNullException();
             _repository       = repository ?? throw new ArgumentNullException();
             _repositoryConfig = repositoryConfig ?? throw new ArgumentNullException();
+            _userContext      = userContext ?? throw new ArgumentNullException();
             _mapper           = mapper ?? throw new ArgumentNullException();
         }
 
-        protected override int GetKey(Repository.Contracts.Entities.Machine entity)
+        protected override int GetKey(MachineEntity entity)
         {
-            return entity.MachineID;
+            return entity.MachineId;
+        }
+
+        protected override void AddEntity(MachineEntity entityInDb)
+        {
+            if (_userContext.UserId.HasValue)
+            {
+                entityInDb.UserId = _userContext.UserId;
+            }
+            base.AddEntity(entityInDb);
+        }
+
+        protected override void UpdateEntity(MachineEntity entityInDb, MachineEntity values)
+        {
+            // do not overwrite user!
+
+            values.UserId = entityInDb.UserId;
+            values.User = entityInDb.User;
+
+            base.UpdateEntity(entityInDb, values);
         }
 
         #region Default machine
@@ -84,9 +110,9 @@ namespace CNCLib.Logic.Manager
 
         public async Task<int> GetDetaultMachine()
         {
-            var config = await _repositoryConfig.Get("Environment", "DefaultMachineID");
+            var config = await _repositoryConfig.Get("Environment", "DefaultMachineId");
 
-            if (config == default(Repository.Contracts.Entities.Configuration))
+            if (config == default(ConfigurationEntity))
             {
                 return -1;
             }
@@ -94,14 +120,14 @@ namespace CNCLib.Logic.Manager
             return int.Parse(config.Value);
         }
 
-        public async Task SetDetaultMachine(int defaultMachineID)
+        public async Task SetDetaultMachine(int defaultMachineId)
         {
-            await _repositoryConfig.Store(new Repository.Contracts.Entities.Configuration
+            await _repositoryConfig.Store(new ConfigurationEntity
             {
                 Group = "Environment",
-                Name  = "DefaultMachineID",
+                Name  = "DefaultMachineId",
                 Type  = "Int32",
-                Value = defaultMachineID.ToString()
+                Value = defaultMachineId.ToString()
             });
             await _unitOfWork.SaveChangesAsync();
         }

@@ -23,6 +23,6 @@ namespace CNCLib.Repository.Contracts
 {
     public interface IUserRepository : ICRUDRepository<Entities.User, int>
     {
-        Task<Entities.User> GetUser(string username);
+        Task<Entities.User> GetByName(string username);
     }
 }

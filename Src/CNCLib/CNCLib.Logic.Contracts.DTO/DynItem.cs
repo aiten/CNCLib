@@ -21,7 +21,7 @@ namespace CNCLib.Logic.Contracts.DTO
 {
     public class DynItem
     {
-        public int    ItemID { get; set; }
+        public int    ItemId { get; set; }
         public string Name   { get; set; }
     }
 }

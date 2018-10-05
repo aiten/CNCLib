@@ -28,7 +28,7 @@ namespace CNCLib.Repository.Mappings
         {
             entity.ToTable("User");
 
-            entity.HasKey(m => m.UserID);
+            entity.HasKey(m => m.UserId);
 
             entity.HasIndex(e => e.UserName).IsUnique();
 

@@ -57,7 +57,7 @@ namespace CNCLib.Tests.Repository
         protected override bool CompareEntity(Configuration entity1, Configuration entity2)
         {
             //entity1.Should().BeEquivalentTo(entity2, opts => 
-            //    opts.Excluding(x => x.UserID)
+            //    opts.Excluding(x => x.UserId)
             //);
             return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new string[0]);
         }

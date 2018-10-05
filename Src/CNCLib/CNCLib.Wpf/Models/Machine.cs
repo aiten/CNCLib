@@ -34,9 +34,9 @@ namespace CNCLib.Wpf.Models
         [ReadOnly(false)]
         [Browsable(false)]
         [Category(CATEGORY_INTERNAL)]
-        [DisplayName("Machine ID")]
+        [DisplayName("Machine Id")]
         [Description("Internal Id of machine")]
-        public int MachineID { get; set; }
+        public int MachineId { get; set; }
 
         [Category(CATEGORY_COMMUNICATION)]
         [DisplayName("SerialServer")]
@@ -206,7 +206,7 @@ namespace CNCLib.Wpf.Models
                         {
                             foreach (MachineCommand item in e.NewItems)
                             {
-                                item.MachineID = MachineID;
+                                item.MachineId = MachineId;
                             }
                         }
                     });
@@ -232,7 +232,7 @@ namespace CNCLib.Wpf.Models
                         {
                             foreach (MachineInitCommand item in e.NewItems)
                             {
-                                item.MachineID = MachineID;
+                                item.MachineId = MachineId;
                             }
                         }
                     });

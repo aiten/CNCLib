@@ -27,6 +27,6 @@ namespace CNCLib.Service.Contracts
     {
         Task<Machine> DefaultMachine();
         Task<int>     GetDetaultMachine();
-        Task          SetDetaultMachine(int defaultMachineID);
+        Task          SetDetaultMachine(int defaultMachineId);
     }
 }
