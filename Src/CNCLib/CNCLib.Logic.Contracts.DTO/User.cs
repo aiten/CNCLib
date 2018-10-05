@@ -16,12 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Framework.Contracts.Logic;
 
-namespace CNCLib.Logic.Contracts
+namespace CNCLib.Logic.Contracts.DTO
 {
-    public interface IUserContextManager
+    public class User
     {
+        public int    UserID       { get; set; }
+        public string UserName     { get; set; }
+        public string UserPassword { get; set; }
     }
 }

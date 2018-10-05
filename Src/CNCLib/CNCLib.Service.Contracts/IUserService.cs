@@ -17,11 +17,13 @@
 */
 
 using System;
-using Framework.Contracts.Logic;
+using System.Threading.Tasks;
+using CNCLib.Logic.Contracts.DTO;
+using Framework.Contracts.Service;
 
-namespace CNCLib.Logic.Contracts
+namespace CNCLib.Service.Contracts
 {
-    public interface IUserContextManager
+    public interface IUserService : IDisposable, ICRUDService<User, int>
     {
     }
 }

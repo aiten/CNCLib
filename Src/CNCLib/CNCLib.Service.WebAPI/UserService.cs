@@ -16,12 +16,20 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Framework.Contracts.Logic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Service.Contracts;
 
-namespace CNCLib.Logic.Contracts
+namespace CNCLib.Service.WebAPI
 {
-    public interface IUserContextManager
+    public class UserService : CRUDServiceBase<User, int>, IUserService
     {
+        protected override string Api            => @"api/user";
+        protected override int    GetKey(User u) => u.UserID;
+
+        #region IDisposable Support
+
+        #endregion
     }
 }

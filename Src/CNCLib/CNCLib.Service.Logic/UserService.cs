@@ -17,11 +17,21 @@
 */
 
 using System;
-using Framework.Contracts.Logic;
+using System.Threading.Tasks;
+using CNCLib.Logic.Contracts;
+using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Service.Contracts;
+using Framework.Service;
 
-namespace CNCLib.Logic.Contracts
+namespace CNCLib.Service.Logic
 {
-    public interface IUserContextManager
+    public class UserService : CRUDService<User, int>, IUserService
     {
+        readonly IUserManager _manager;
+
+        public UserService(IUserManager manager) : base(manager)
+        {
+            _manager = manager ?? throw new ArgumentNullException();
+        }
     }
 }

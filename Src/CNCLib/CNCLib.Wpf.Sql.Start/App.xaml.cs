@@ -79,8 +79,8 @@ namespace CNCLib.Wpf.Sql.Start
             IMapper mapper = config.CreateMapper();
             Dependency.Container.RegisterInstance(mapper);
 
-            ICNCLibUserContext userContext = new CNCLibUserContext();
-            Dependency.Container.RegisterInstance(userContext);
+            var userContext = new CNCLibUserContext();
+            Dependency.Container.RegisterInstance((ICNCLibUserContext) userContext);
 
             //	        string sqlconnectstring = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
             string sqlconnectstring = null;
@@ -95,6 +95,17 @@ namespace CNCLib.Wpf.Sql.Start
             {
                 MessageBox.Show("Cannot connect to database" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Current.Shutdown();
+            }
+
+            try
+            {
+                var userservice = Dependency.Resolve<IUserService>();
+                var user = userservice.Get(1).ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
             }
         }
     }

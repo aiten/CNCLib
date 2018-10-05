@@ -21,7 +21,7 @@ using Framework.Contracts.Logic;
 
 namespace CNCLib.Logic.Contracts
 {
-    public interface IUserContextManager
+    public interface IUserManager : IDisposable, ICRUDManager<DTO.User, int>
     {
     }
 }

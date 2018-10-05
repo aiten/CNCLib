@@ -25,6 +25,8 @@ using CNCLib.Repository.Contracts;
 using Framework.Contracts.Repository;
 using Framework.Logic;
 
+using ConfigurationEntity = CNCLib.Repository.Contracts.Entities.Configuration;
+
 namespace CNCLib.Logic.Manager
 {
     public class MachineManager : CRUDManager<Machine, int, Repository.Contracts.Entities.Machine>, IMachineManager
@@ -86,7 +88,7 @@ namespace CNCLib.Logic.Manager
         {
             var config = await _repositoryConfig.Get("Environment", "DefaultMachineID");
 
-            if (config == default(Repository.Contracts.Entities.Configuration))
+            if (config == default(ConfigurationEntity))
             {
                 return -1;
             }
@@ -96,7 +98,7 @@ namespace CNCLib.Logic.Manager
 
         public async Task SetDetaultMachine(int defaultMachineID)
         {
-            await _repositoryConfig.Store(new Repository.Contracts.Entities.Configuration
+            await _repositoryConfig.Store(new ConfigurationEntity
             {
                 Group = "Environment",
                 Name  = "DefaultMachineID",
