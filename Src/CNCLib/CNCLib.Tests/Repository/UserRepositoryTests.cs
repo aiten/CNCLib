@@ -119,7 +119,7 @@ namespace CNCLib.Tests.Repository
                 var users = await ctx.Repository.Get(2);
                 users.UserID.Should().Be(2);
 
-                var usersbyName = await ctx.Repository.GetUser(users.UserName);
+                var usersbyName = await ctx.Repository.GetByName(users.UserName);
                 usersbyName.UserID.Should().Be(users.UserID);
             }
         }
@@ -129,7 +129,7 @@ namespace CNCLib.Tests.Repository
         {
             using (var ctx = CreateCRUDTestContext())
             {
-                var users = await ctx.Repository.GetUser("UserNotExist");
+                var users = await ctx.Repository.GetByName("UserNotExist");
                 users.Should().BeNull();
             }
         }

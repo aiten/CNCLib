@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
@@ -27,6 +28,22 @@ namespace CNCLib.Service.WebAPI
     {
         protected override string Api            => @"api/user";
         protected override int    GetKey(User u) => u.UserID;
+
+        public async Task<User> GetByName(string username)
+        {
+            throw new NotImplementedException();
+            using (HttpClient client = CreateHttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(Api + "/" + username);
+                if (response.IsSuccessStatusCode)
+                {
+                    User value = await response.Content.ReadAsAsync<User>();
+                    return value;
+                }
+            }
+
+            return null;
+        }
 
         #region IDisposable Support
 

@@ -29,6 +29,7 @@ using Framework.Wpf.ViewModels;
 using Framework.Arduino.SerialCommunication;
 using Framework.Tools.Pattern;
 
+using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
 
 namespace CNCLib.Wpf.ViewModels
 {
@@ -81,7 +82,7 @@ namespace CNCLib.Wpf.ViewModels
 
         private async Task MyLoadMachine(int machineID, IScope<IMachineService> scope)
         {
-            Logic.Contracts.DTO.Machine dto;
+            MachineDto dto;
             AddNewMachine = machineID <= 0;
             if (AddNewMachine)
             {

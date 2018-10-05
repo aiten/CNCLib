@@ -33,5 +33,10 @@ namespace CNCLib.Service.Logic
         {
             _manager = manager ?? throw new ArgumentNullException();
         }
+
+        public async Task<User> GetByName(string username)
+        {
+            return await _manager.GetByName(username);
+        }
     }
 }

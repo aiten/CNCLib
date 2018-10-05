@@ -25,5 +25,6 @@ namespace CNCLib.Service.Contracts
 {
     public interface IUserService : IDisposable, ICRUDService<User, int>
     {
+        Task<User> GetByName(string username);
     }
 }

@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using Framework.Tools.Drawing;

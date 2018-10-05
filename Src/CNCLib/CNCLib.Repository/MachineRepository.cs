@@ -40,7 +40,7 @@ namespace CNCLib.Repository
 
         protected override IQueryable<Machine> AddInclude(IQueryable<Machine> query)
         {
-            return query.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands);
+            return query.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands).Include(x => x.User);
         }
 
         protected override IQueryable<Machine> AddOptionalWhere(IQueryable<Machine> query)

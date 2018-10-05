@@ -18,6 +18,7 @@
 
 using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using AutoMapper;
@@ -97,15 +98,10 @@ namespace CNCLib.Wpf.Sql.Start
                 Current.Shutdown();
             }
 
-            try
+            var task = Task.Run(async () => await userContext.InitUserContext());
+            while (!task.IsCompleted)
             {
-                var userservice = Dependency.Resolve<IUserService>();
-                var user = userservice.Get(1).ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw;
+                Task.Yield();
             }
         }
     }

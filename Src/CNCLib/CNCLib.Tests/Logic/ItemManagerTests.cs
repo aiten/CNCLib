@@ -31,6 +31,8 @@ using Framework.Tools.Dependency;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 
+using ItemDto = CNCLib.Logic.Contracts.DTO.Item;
+
 namespace CNCLib.Tests.Logic
 {
     [TestClass]
@@ -56,7 +58,7 @@ namespace CNCLib.Tests.Logic
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var itemEntity = new Item[0];
             rep.GetAll().Returns(itemEntity);
@@ -71,7 +73,7 @@ namespace CNCLib.Tests.Logic
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var itemEntity = new[]
             {
@@ -96,7 +98,7 @@ namespace CNCLib.Tests.Logic
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             rep.Get(1).Returns(new Item { ItemID = 1, Name = "Test1" });
 
@@ -116,7 +118,7 @@ namespace CNCLib.Tests.Logic
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var all = await ctrl.Get(10);
 
@@ -131,9 +133,9 @@ namespace CNCLib.Tests.Logic
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
-            var item = new CNCLib.Logic.Contracts.DTO.Item { ItemID = 3000, Name = "Hallo" };
+            var item = new ItemDto { ItemID = 3000, Name = "Hallo" };
 
             //act
 

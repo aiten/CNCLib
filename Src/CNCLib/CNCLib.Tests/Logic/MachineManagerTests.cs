@@ -29,6 +29,10 @@ using CNCLib.Logic.Manager;
 using FluentAssertions;
 using Framework.Contracts.Repository;
 
+using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
+using MachineInitCommandDto = CNCLib.Logic.Contracts.DTO.MachineInitCommand;
+using MachineCommandDto = CNCLib.Logic.Contracts.DTO.MachineCommand;
+
 namespace CNCLib.Tests.Logic
 {
     [TestClass]
@@ -41,15 +45,15 @@ namespace CNCLib.Tests.Logic
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
-            var machineEntity1 = new CNCLib.Logic.Contracts.DTO.Machine
+            var machineEntity1 = new MachineDto
             {
                 MachineID = 1,
                 Name      = "Maxi",
                 MachineCommands = new[]
                 {
-                    new CNCLib.Logic.Contracts.DTO.MachineCommand
+                    new MachineCommandDto
                     {
                         MachineID        = 1,
                         MachineCommandID = 1,
@@ -61,7 +65,7 @@ namespace CNCLib.Tests.Logic
                 },
                 MachineInitCommands = new[]
                 {
-                    new CNCLib.Logic.Contracts.DTO.MachineInitCommand
+                    new MachineInitCommandDto
                     {
                         MachineID            = 1,
                         MachineInitCommandID = 1,
@@ -84,7 +88,7 @@ namespace CNCLib.Tests.Logic
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var machineEntity1 = new Machine
             {
@@ -111,7 +115,7 @@ namespace CNCLib.Tests.Logic
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var machineEntity1 = new Machine
             {
@@ -138,7 +142,7 @@ namespace CNCLib.Tests.Logic
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var machineEntity = new Machine[0];
             rep.GetAll().Returns(machineEntity);
@@ -154,7 +158,7 @@ namespace CNCLib.Tests.Logic
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var machineEntity = new[]
             {
@@ -187,7 +191,7 @@ namespace CNCLib.Tests.Logic
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var machineEntity = new[]
             {
@@ -251,7 +255,7 @@ namespace CNCLib.Tests.Logic
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var machineEntity1 = new Machine
             {
@@ -286,7 +290,7 @@ namespace CNCLib.Tests.Logic
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var machineEntity1 = new Machine
             {
@@ -316,7 +320,7 @@ namespace CNCLib.Tests.Logic
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var machine = await ctrl.DefaultMachine();
             machine.Should().NotBeNull();
@@ -330,7 +334,7 @@ namespace CNCLib.Tests.Logic
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             repC.Get("Environment", "DefaultMachineID").Returns(new Configuration { Value = "14" });
             int dm = await ctrl.GetDetaultMachine();
@@ -345,7 +349,7 @@ namespace CNCLib.Tests.Logic
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             repC.Get("Environment", "DefaultMachineID").Returns((Configuration) null);
 
@@ -359,7 +363,7 @@ namespace CNCLib.Tests.Logic
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             await ctrl.SetDetaultMachine(15);
 

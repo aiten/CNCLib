@@ -22,31 +22,55 @@ using AutoMapper;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Repository.Contracts;
+using CNCLib.Shared;
 using Framework.Contracts.Repository;
 using Framework.Logic;
 
 using ConfigurationEntity = CNCLib.Repository.Contracts.Entities.Configuration;
+using MachineEntity = CNCLib.Repository.Contracts.Entities.Machine;
 
 namespace CNCLib.Logic.Manager
 {
-    public class MachineManager : CRUDManager<Machine, int, Repository.Contracts.Entities.Machine>, IMachineManager
+    public class MachineManager : CRUDManager<Machine, int, MachineEntity>, IMachineManager
     {
         private readonly IUnitOfWork              _unitOfWork;
         private readonly IMachineRepository       _repository;
         private readonly IConfigurationRepository _repositoryConfig;
+        private readonly ICNCLibUserContext       _userContext;
         private readonly IMapper                  _mapper;
 
-        public MachineManager(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig, IMapper mapper) : base(unitOfWork, repository, mapper)
+        public MachineManager(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig, ICNCLibUserContext userContext, IMapper mapper) :
+            base(unitOfWork, repository, mapper)
         {
             _unitOfWork       = unitOfWork ?? throw new ArgumentNullException();
             _repository       = repository ?? throw new ArgumentNullException();
             _repositoryConfig = repositoryConfig ?? throw new ArgumentNullException();
+            _userContext      = userContext ?? throw new ArgumentNullException();
             _mapper           = mapper ?? throw new ArgumentNullException();
         }
 
-        protected override int GetKey(Repository.Contracts.Entities.Machine entity)
+        protected override int GetKey(MachineEntity entity)
         {
             return entity.MachineID;
+        }
+
+        protected override void AddEntity(MachineEntity entityInDb)
+        {
+            if (_userContext.UserID.HasValue)
+            {
+                entityInDb.UserID = _userContext.UserID;
+            }
+            base.AddEntity(entityInDb);
+        }
+
+        protected override void UpdateEntity(MachineEntity entityInDb, MachineEntity values)
+        {
+            // do not overwrite user!
+
+            values.UserID = entityInDb.UserID;
+            values.User = entityInDb.User;
+
+            base.UpdateEntity(entityInDb, values);
         }
 
         #region Default machine

@@ -17,11 +17,13 @@
 */
 
 using System;
+using System.Threading.Tasks;
 using Framework.Contracts.Logic;
 
 namespace CNCLib.Logic.Contracts
 {
     public interface IUserManager : IDisposable, ICRUDManager<DTO.User, int>
     {
+        Task<DTO.User> GetByName(string username);
     }
 }

@@ -17,12 +17,10 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Logic.Converter;
 using CNCLib.Repository.Contracts;
 using Framework.Contracts.Repository;
 using Framework.Logic;
@@ -46,6 +44,11 @@ namespace CNCLib.Logic.Manager
         protected override int GetKey(UserEntity entity)
         {
             return entity.UserID;
+        }
+
+        public async Task<User> GetByName(string username)
+        {
+            return MapToDto(await _repository.GetByName(username));
         }
     }
 }

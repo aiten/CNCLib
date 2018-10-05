@@ -48,7 +48,7 @@ namespace CNCLib.Repository
             return query.Where(m => key.Contains(m.UserID));
         }
 
-        public async Task<User> GetUser(string username)
+        public async Task<User> GetByName(string username)
         {
             return await AddInclude(Query).Where(u => u.UserName == username).FirstOrDefaultAsync();
         }

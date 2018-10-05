@@ -28,15 +28,16 @@ namespace CNCLib.Repository.Mappings
         {
             entity.ToTable("Item");
 
-            entity.HasKey(m => m.ItemID);
+            entity.HasKey(i => i.ItemID);
 
-            entity.HasIndex(c => c.Name).IsUnique();
+            entity.HasIndex(i => i.Name).IsUnique();
 
-            entity.Property(m => m.Name).IsRequired().HasMaxLength(64);
+            entity.Property(i => i.Name).IsRequired().HasMaxLength(64);
 
-            entity.Property(m => m.ClassName).IsRequired().HasMaxLength(255);
+            entity.Property(i => i.ClassName).IsRequired().HasMaxLength(255);
 
-            entity.Property(m => m.UserID);
+            entity.HasOne(i => i.User);
+            entity.Property(i => i.UserID);
         }
     }
 }

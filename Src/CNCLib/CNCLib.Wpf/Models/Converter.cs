@@ -19,17 +19,19 @@
 using AutoMapper;
 using Framework.Tools.Dependency;
 
+using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
+
 namespace CNCLib.Wpf.Models
 {
     static class Converter
     {
-        public static Logic.Contracts.DTO.Machine Convert(this Machine from)
+        public static MachineDto Convert(this Machine from)
         {
             var map = Dependency.Resolve<IMapper>();
-            return map.Map<Logic.Contracts.DTO.Machine>(from);
+            return map.Map<MachineDto>(from);
         }
 
-        public static Machine Convert(this Logic.Contracts.DTO.Machine from)
+        public static Machine Convert(this MachineDto from)
         {
             var map = Dependency.Resolve<IMapper>();
             var to  = map.Map<Machine>(from);
