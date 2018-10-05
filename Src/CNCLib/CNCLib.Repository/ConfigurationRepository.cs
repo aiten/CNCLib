@@ -16,12 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
+using CNCLib.Shared;
 using Framework.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,8 +31,11 @@ namespace CNCLib.Repository
 {
     public class ConfigurationRepository : CRUDRepositoryBase<CNCLibContext, Configuration, ConfigurationPrimary>, IConfigurationRepository
     {
-        public ConfigurationRepository(CNCLibContext dbcontext) : base(dbcontext)
+        private readonly ICNCLibUserContext _userContext;
+
+        public ConfigurationRepository(CNCLibContext dbcontext, ICNCLibUserContext userContext) : base(dbcontext)
         {
+            _userContext = userContext ?? throw new ArgumentNullException();
         }
 
         protected override IQueryable<Configuration> AddInclude(IQueryable<Configuration> query)
@@ -55,27 +60,40 @@ namespace CNCLib.Repository
             return query.Where(predicate);
         }
 
+        protected override IQueryable<Configuration> AddOptionalWhere(IQueryable<Configuration> query)
+        {
+            if (_userContext.UserID.HasValue)
+            {
+                return query.Where(x => x.UserID.HasValue == false || x.UserID.Value == _userContext.UserID.Value);
+            }
+
+            return base.AddOptionalWhere(query);
+        }
+
         public async Task<Configuration> Get(string group, string name)
         {
-            return await Query.Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
+            return await AddOptionalWhere(Query).Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
         }
 
         public async Task Store(Configuration configuration)
         {
             // search und update machine
 
-            var cInDb = await TrackingQuery.Where(c => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
+            var cInDb = await AddOptionalWhere(TrackingQuery).Where(c => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
 
             if (cInDb == default(Configuration))
             {
                 // add new
 
                 cInDb = configuration;
+                cInDb.UserID = _userContext.UserID;
                 AddEntity(cInDb);
             }
             else
             {
                 // syn with existing
+                configuration.UserID = cInDb.UserID;
+                configuration.User = cInDb.User;
                 SetValue(cInDb, configuration);
             }
         }

@@ -40,7 +40,7 @@ namespace CNCLib.Repository
 
         protected override IQueryable<Item> AddInclude(IQueryable<Item> query)
         {
-            return query.Include(x => x.ItemProperties);
+            return query.Include(x => x.ItemProperties).Include(x => x.User);
         }
 
         protected override IQueryable<Item> AddOptionalWhere(IQueryable<Item> query)

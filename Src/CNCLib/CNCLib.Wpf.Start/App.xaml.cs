@@ -18,6 +18,7 @@
 
 using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using AutoMapper;
@@ -81,8 +82,8 @@ namespace CNCLib.Wpf.Start
             IMapper mapper = config.CreateMapper();
             Dependency.Container.RegisterInstance(mapper);
 
-            ICNCLibUserContext userContext = new CNCLibUserContext();
-            Dependency.Container.RegisterInstance(userContext);
+            var userContext = new CNCLibUserContext();
+            Dependency.Container.RegisterInstance((ICNCLibUserContext)userContext);
 
             // Open Database here
 
@@ -97,6 +98,12 @@ namespace CNCLib.Wpf.Start
 
                 MessageBox.Show($"Cannot create/connect database in {dbfile} \n\r" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Current.Shutdown();
+            }
+
+            var task = Task.Run(async () => await userContext.InitUserContext());
+            while (!task.IsCompleted)
+            {
+                Task.Yield();
             }
         }
     }
