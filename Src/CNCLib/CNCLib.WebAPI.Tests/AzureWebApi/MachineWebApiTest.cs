@@ -49,7 +49,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 {
                     Machine m = await response.Content.ReadAsAsync<Machine>();
 
-                    m.MachineID.Should().Be(1);
+                    m.MachineId.Should().Be(1);
                 }
             }
         }

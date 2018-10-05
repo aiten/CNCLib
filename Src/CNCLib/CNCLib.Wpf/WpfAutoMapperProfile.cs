@@ -18,15 +18,19 @@
 
 using AutoMapper;
 
+using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
+using MachineInitCommandDto = CNCLib.Logic.Contracts.DTO.MachineInitCommand;
+using MachineCommandDto = CNCLib.Logic.Contracts.DTO.MachineCommand;
+
 namespace CNCLib.Wpf
 {
     public sealed class WpfAutoMapperProfile : Profile
     {
         public WpfAutoMapperProfile()
         {
-            CreateMap<Models.Machine, Logic.Contracts.DTO.Machine>().ReverseMap();
-            CreateMap<Models.MachineInitCommand, Logic.Contracts.DTO.MachineInitCommand>().ReverseMap();
-            CreateMap<Models.MachineCommand, Logic.Contracts.DTO.MachineCommand>().ReverseMap();
+            CreateMap<Models.Machine, MachineDto>().ReverseMap();
+            CreateMap<Models.MachineInitCommand, MachineInitCommandDto>().ReverseMap();
+            CreateMap<Models.MachineCommand, MachineCommandDto>().ReverseMap();
         }
     }
 }

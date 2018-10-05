@@ -27,6 +27,8 @@ using Framework.Tools.Dependency;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.View;
 
+using LoadOptionsDto = CNCLib.Logic.Contracts.DTO.LoadOptions;
+
 namespace CNCLib.Wpf.Views
 {
     /// <summary>
@@ -69,7 +71,7 @@ namespace CNCLib.Wpf.Views
                             return false;
                         }
 
-                        arg.LoadOption = Dependency.Resolve<IMapper>().Map<Logic.Contracts.DTO.LoadOptions>(vmdlg.LoadOptionsValue);
+                        arg.LoadOption = Dependency.Resolve<IMapper>().Map<LoadOptionsDto>(vmdlg.LoadOptionsValue);
                         arg.UseAzure   = vmdlg.UseAzure;
                     }
 

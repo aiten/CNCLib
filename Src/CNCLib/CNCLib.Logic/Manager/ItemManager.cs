@@ -24,27 +24,52 @@ using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Converter;
 using CNCLib.Repository.Contracts;
+using CNCLib.Shared;
 using Framework.Contracts.Repository;
 using Framework.Logic;
 
+using ItemEntity = CNCLib.Repository.Contracts.Entities.Item;
+
 namespace CNCLib.Logic.Manager
 {
-    public class ItemManager : CRUDManager<Item, int, Repository.Contracts.Entities.Item>, IItemManager
+    public class ItemManager : CRUDManager<Item, int, ItemEntity>, IItemManager
     {
-        private readonly IUnitOfWork     _unitOfWork;
-        private readonly IItemRepository _repository;
-        private readonly IMapper         _mapper;
+        private readonly IUnitOfWork        _unitOfWork;
+        private readonly IItemRepository    _repository;
+        private readonly ICNCLibUserContext _userContext;
+        private readonly IMapper            _mapper;
 
-        public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, IMapper mapper) : base(unitOfWork, repository, mapper)
+        public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, ICNCLibUserContext userContext, IMapper mapper) : base(unitOfWork, repository, mapper)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException();
-            _repository = repository ?? throw new ArgumentNullException();
-            _mapper     = mapper ?? throw new ArgumentNullException();
+            _unitOfWork  = unitOfWork ?? throw new ArgumentNullException();
+            _repository  = repository ?? throw new ArgumentNullException();
+            _userContext = userContext ?? throw new ArgumentNullException();
+            _mapper      = mapper ?? throw new ArgumentNullException();
         }
 
-        protected override int GetKey(Repository.Contracts.Entities.Item entity)
+        protected override int GetKey(ItemEntity entity)
         {
-            return entity.ItemID;
+            return entity.ItemId;
+        }
+
+        protected override void AddEntity(ItemEntity entityInDb)
+        {
+            if (_userContext.UserId.HasValue)
+            {
+                entityInDb.UserId = _userContext.UserId;
+            }
+
+            base.AddEntity(entityInDb);
+        }
+
+        protected override void UpdateEntity(ItemEntity entityInDb, ItemEntity values)
+        {
+            // do not overwrite user!
+
+            values.UserId = entityInDb.UserId;
+            values.User   = entityInDb.User;
+
+            base.UpdateEntity(entityInDb, values);
         }
 
         public async Task<IEnumerable<Item>> GetByClassName(string classname)

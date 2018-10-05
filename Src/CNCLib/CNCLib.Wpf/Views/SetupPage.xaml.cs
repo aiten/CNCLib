@@ -50,12 +50,12 @@ namespace CNCLib.Wpf.Views
 */
             if (vm.EditMachine == null)
             {
-                vm.EditMachine = mID =>
+                vm.EditMachine = mId =>
                 {
                     var dlg = new MachineView();
                     if (dlg.DataContext is MachineViewModel vmdlg)
                     {
-                        Task.Run(() => { vmdlg.LoadMachine(mID).ConfigureAwait(false).GetAwaiter().GetResult(); }).Wait();
+                        Task.Run(() => { vmdlg.LoadMachine(mId).ConfigureAwait(false).GetAwaiter().GetResult(); }).Wait();
                         dlg.ShowDialog();
                     }
                 };

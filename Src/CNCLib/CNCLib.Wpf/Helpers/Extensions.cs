@@ -19,16 +19,18 @@
 using System;
 using CNCLib.GCode;
 
+using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
+
 namespace CNCLib.Wpf.Helpers
 {
     public static class Extensions
     {
-        public static string GetAxisName(this Logic.Contracts.DTO.Machine m, int axis)
+        public static string GetAxisName(this MachineDto m, int axis)
         {
             return GCodeHelper.IndexToAxisName(axis);
         }
 
-        public static decimal GetSize(this Logic.Contracts.DTO.Machine m, int axis)
+        public static decimal GetSize(this MachineDto m, int axis)
         {
             switch (axis)
             {
@@ -43,7 +45,7 @@ namespace CNCLib.Wpf.Helpers
             throw new NotImplementedException();
         }
 
-        public static decimal GetProbeSize(this Logic.Contracts.DTO.Machine m, int axis)
+        public static decimal GetProbeSize(this MachineDto m, int axis)
         {
             switch (axis)
             {

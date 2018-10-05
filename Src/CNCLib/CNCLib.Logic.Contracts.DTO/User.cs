@@ -17,7 +17,7 @@
 */
 
 
-namespace CNCLib.Repository.Contracts.Entities
+namespace CNCLib.Logic.Contracts.DTO
 {
     public class User
     {

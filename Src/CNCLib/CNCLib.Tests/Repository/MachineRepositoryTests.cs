@@ -45,23 +45,23 @@ namespace CNCLib.Tests.Repository
 
         protected override int GetEntityKey(Machine entity)
         {
-            return entity.MachineID;
+            return entity.MachineId;
         }
 
         protected override Machine SetEntityKey(Machine entity, int key)
         {
-            entity.MachineID = key;
+            entity.MachineId = key;
             return entity;
         }
 
         protected override bool CompareEntity(Machine entity1, Machine entity2)
         {
             //entity1.Should().BeEquivalentTo(entity2, opts => 
-            //    opts.Excluding(x => x.UserID)
+            //    opts.Excluding(x => x.UserId)
             //);
             return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[]
             {
-                @"MachineID", @"MachineCommandID", @"MachineInitCommandID"
+                @"MachineId", @"MachineCommandId", @"MachineInitCommandId"
             });
         }
 
@@ -82,14 +82,14 @@ namespace CNCLib.Tests.Repository
         public async Task GetOKTest()
         {
             var entity = await GetOK(1);
-            entity.MachineID.Should().Be(1);
+            entity.MachineId.Should().Be(1);
         }
 
         [TestMethod]
         public async Task GetTrackingOKTest()
         {
             var entity = await GetTrackingOK(2);
-            entity.MachineID.Should().Be(2);
+            entity.MachineId.Should().Be(2);
         }
 
         [TestMethod]

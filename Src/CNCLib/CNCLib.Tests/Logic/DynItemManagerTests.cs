@@ -61,7 +61,7 @@ namespace CNCLib.Tests.Logic
 
             var itemEntity = new[]
             {
-                new Item { ItemID = 1, Name = "Test1" }, new Item { ItemID = 2, Name = "Test2" }
+                new Item { ItemId = 1, Name = "Test1" }, new Item { ItemId = 2, Name = "Test2" }
             };
             srv.GetAll().Returns(itemEntity);
 
@@ -73,7 +73,7 @@ namespace CNCLib.Tests.Logic
                 Should().
                 BeEquivalentTo(new
                 {
-                    ItemID = 1,
+                    ItemId = 1,
                     Name   = "Test1"
                 }, options => options.ExcludingMissingMembers());
         }
@@ -85,7 +85,7 @@ namespace CNCLib.Tests.Logic
 
             var itemEntity = new[]
             {
-                new Item { ItemID = 1, Name = "Test1" }, new Item { ItemID = 2, Name = "Test2" }
+                new Item { ItemId = 1, Name = "Test1" }, new Item { ItemId = 2, Name = "Test2" }
             };
             srv.GetByClassName("System.String,mscorlib").Returns(itemEntity);
 
@@ -97,7 +97,7 @@ namespace CNCLib.Tests.Logic
                 Should().
                 BeEquivalentTo(new
                 {
-                    ItemID = 1,
+                    ItemId = 1,
                     Name   = "Test1"
                 }, options => options.ExcludingMissingMembers());
         }
@@ -106,7 +106,7 @@ namespace CNCLib.Tests.Logic
         public async Task GetItem()
         {
             var srv = CreateMock<IItemService>();
-            srv.Get(1).Returns(new Item { ItemID = 1, Name = "Test1" });
+            srv.Get(1).Returns(new Item { ItemId = 1, Name = "Test1" });
 
             var ctrl = new DynItemController(srv);
             var all  = await ctrl.Get(1);
@@ -114,7 +114,7 @@ namespace CNCLib.Tests.Logic
             all.Should().
                 BeEquivalentTo(new
                 {
-                    ItemID = 1,
+                    ItemId = 1,
                     Name   = "Test1"
                 }, options => options.ExcludingMissingMembers());
         }
@@ -160,17 +160,17 @@ namespace CNCLib.Tests.Logic
         {
             return new Item
             {
-                ItemID    = 1,
+                ItemId    = 1,
                 Name      = "Hallo",
                 ClassName = typeof(DynItemManagerTestClass).AssemblyQualifiedName,
                 ItemProperties = new[]
                 {
-                    new ItemProperty { ItemID = 1, Name = "StringProperty", Value                        = "Hallo" },
-                    new ItemProperty { ItemID = 1, Name = "IntProperty", Value                           = "1" },
-                    new ItemProperty { ItemID = 1, Name = "DoubleProperty", Value                        = "1.234" },
-                    new ItemProperty { ItemID = 1, Name = "DecimalProperty", Value                       = "9.876" },
-                    new ItemProperty { ItemID = 1, Name = "IntNullProperty" }, new ItemProperty { ItemID = 1, Name = "DoubleNullProperty", Value = "1.234" },
-                    new ItemProperty { ItemID = 1, Name = "DecimalNullProperty", Value                   = "9.876" }
+                    new ItemProperty { ItemId = 1, Name = "StringProperty", Value                        = "Hallo" },
+                    new ItemProperty { ItemId = 1, Name = "IntProperty", Value                           = "1" },
+                    new ItemProperty { ItemId = 1, Name = "DoubleProperty", Value                        = "1.234" },
+                    new ItemProperty { ItemId = 1, Name = "DecimalProperty", Value                       = "9.876" },
+                    new ItemProperty { ItemId = 1, Name = "IntNullProperty" }, new ItemProperty { ItemId = 1, Name = "DoubleNullProperty", Value = "1.234" },
+                    new ItemProperty { ItemId = 1, Name = "DecimalNullProperty", Value                   = "9.876" }
                 }
             };
         }
@@ -197,7 +197,7 @@ namespace CNCLib.Tests.Logic
             int id = await ctrl.Add("Hallo", obj);
 
             await srv.Received().Add(Arg.Is<Item>(x => x.Name == "Hallo"));
-            await srv.Received().Add(Arg.Is<Item>(x => x.ItemID == 0));
+            await srv.Received().Add(Arg.Is<Item>(x => x.ItemId == 0));
             await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.Count == 7));
             await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "StringProperty").Value == "Hallo"));
             await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "DoubleProperty").Value == "1.234"));
@@ -257,7 +257,7 @@ namespace CNCLib.Tests.Logic
             await ctrl.Save(1, "Test", new DynItemManagerTestClass { IntProperty = 1 });
 
             //assert
-            await srv.Received().Update(Arg.Is<Item>(x => x.ItemID == 1));
+            await srv.Received().Update(Arg.Is<Item>(x => x.ItemId == 1));
             await srv.Received().Update(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "IntProperty").Value == "1"));
             await srv.DidNotReceiveWithAnyArgs().Delete((Item) null);
         }

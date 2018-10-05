@@ -45,21 +45,21 @@ namespace CNCLib.Tests.Repository
 
         protected override int GetEntityKey(Item entity)
         {
-            return entity.ItemID;
+            return entity.ItemId;
         }
 
         protected override Item SetEntityKey(Item entity, int key)
         {
-            entity.ItemID = key;
+            entity.ItemId = key;
             return entity;
         }
 
         protected override bool CompareEntity(Item entity1, Item entity2)
         {
             //entity1.Should().BeEquivalentTo(entity2, opts => 
-            //    opts.Excluding(x => x.UserID)
+            //    opts.Excluding(x => x.UserId)
             //);
-            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"ItemID" });
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"ItemId" });
         }
 
         #endregion
@@ -79,14 +79,14 @@ namespace CNCLib.Tests.Repository
         public async Task GetOKTest()
         {
             var entity = await GetOK(1);
-            entity.ItemID.Should().Be(1);
+            entity.ItemId.Should().Be(1);
         }
 
         [TestMethod]
         public async Task GetTrackingOKTest()
         {
             var entity = await GetTrackingOK(2);
-            entity.ItemID.Should().Be(2);
+            entity.ItemId.Should().Be(2);
         }
 
         [TestMethod]

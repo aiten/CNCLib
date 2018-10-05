@@ -48,7 +48,7 @@ namespace CNCLib.Tests.Logic
             rep.GetAll(typeof(LoadOptions)).
                 Returns(new[]
                 {
-                    new DynItem { ItemID = 1, Name = "Entry1" }
+                    new DynItem { ItemId = 1, Name = "Entry1" }
                 });
             rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 

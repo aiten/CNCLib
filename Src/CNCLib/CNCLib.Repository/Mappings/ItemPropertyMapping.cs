@@ -28,11 +28,11 @@ namespace CNCLib.Repository.Mappings
         {
             entity.ToTable("ItemProperty");
 
-            entity.HasKey(m => new { m.ItemID, m.Name });
+            entity.HasKey(m => new { ItemId = m.ItemId, m.Name });
 
             entity.Property(m => m.Name).IsRequired().HasMaxLength(255);
 
-            entity.HasOne(i => i.Item).WithMany(ip => ip.ItemProperties).HasForeignKey(ip => ip.ItemID);
+            entity.HasOne(i => i.Item).WithMany(ip => ip.ItemProperties).HasForeignKey(ip => ip.ItemId);
         }
     }
 }

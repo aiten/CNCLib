@@ -32,6 +32,8 @@ using Framework.Tools.Pattern;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
+using LoadOptionsDto = CNCLib.Logic.Contracts.DTO.LoadOptions;
+
 namespace CNCLib.GCode.GUI.ViewModels
 {
     public class LoadOptionViewModel : BaseViewModel
@@ -193,7 +195,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             try
             {
                 Busy = true;
-                var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(LoadOptionsValue);
+                var opt = _mapper.Map<LoadOptionsDto>(LoadOptionsValue);
                 using (var scope = _loadOptionsService.Create())
                 {
                     await scope.Instance.Update(opt);
@@ -215,7 +217,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             try
             {
                 Busy = true;
-                var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(LoadOptionsValue);
+                var opt = _mapper.Map<LoadOptionsDto>(LoadOptionsValue);
                 using (var scope = _loadOptionsService.Create())
                 {
                     int id = await scope.Instance.Add(opt);
@@ -237,7 +239,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             try
             {
                 Busy = true;
-                var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+                var opt = _mapper.Map<LoadOptionsDto>(SelectedLoadOption);
                 using (var scope = _loadOptionsService.Create())
                 {
                     await scope.Instance.Delete(opt);
@@ -264,8 +266,8 @@ namespace CNCLib.GCode.GUI.ViewModels
                 {
                     using (var sr = new StreamReader(filename))
                     {
-                        var serializer = new XmlSerializer(typeof(Logic.Contracts.DTO.LoadOptions));
-                        var opt        = (Logic.Contracts.DTO.LoadOptions) serializer.Deserialize(sr);
+                        var serializer = new XmlSerializer(typeof(LoadOptionsDto));
+                        var opt        = (LoadOptionsDto) serializer.Deserialize(sr);
                         sr.Close();
 
                         if (_allLoadOptions.FirstOrDefault(o => o.SettingName == opt.SettingName) != null)
@@ -300,7 +302,7 @@ namespace CNCLib.GCode.GUI.ViewModels
 
                 using (var sw = new StreamWriter(filename))
                 {
-                    var serializer = new XmlSerializer(typeof(Logic.Contracts.DTO.LoadOptions));
+                    var serializer = new XmlSerializer(typeof(LoadOptionsDto));
                     serializer.Serialize(sw, opt);
                     sw.Close();
                 }

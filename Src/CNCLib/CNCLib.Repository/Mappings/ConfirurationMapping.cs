@@ -28,17 +28,18 @@ namespace CNCLib.Repository.Mappings
         {
             entity.ToTable("Configuration");
 
-            entity.HasKey(m => new { m.Group, m.Name });
+            entity.HasKey(c => new { c.Group, c.Name });
 
-            entity.Property(m => m.Group).IsRequired().HasMaxLength(256);
+            entity.Property(c => c.Group).IsRequired().HasMaxLength(256);
 
-            entity.Property(m => m.Name).IsRequired().HasMaxLength(256);
+            entity.Property(c => c.Name).IsRequired().HasMaxLength(256);
 
-            entity.Property(m => m.Type).IsRequired().HasMaxLength(256);
+            entity.Property(c => c.Type).IsRequired().HasMaxLength(256);
 
-            entity.Property(m => m.Value).HasMaxLength(4000);
+            entity.Property(c => c.Value).HasMaxLength(4000);
 
-//            entity.Property(m => m.UserID).
+            entity.HasOne(c => c.User);
+            entity.Property(c => c.UserId);
 //                IsOptional();
         }
     }

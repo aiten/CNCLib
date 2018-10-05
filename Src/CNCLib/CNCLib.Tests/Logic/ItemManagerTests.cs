@@ -31,6 +31,8 @@ using Framework.Tools.Dependency;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 
+using ItemDto = CNCLib.Logic.Contracts.DTO.Item;
+
 namespace CNCLib.Tests.Logic
 {
     [TestClass]
@@ -56,7 +58,7 @@ namespace CNCLib.Tests.Logic
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var itemEntity = new Item[0];
             rep.GetAll().Returns(itemEntity);
@@ -71,11 +73,11 @@ namespace CNCLib.Tests.Logic
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var itemEntity = new[]
             {
-                new Item { ItemID = 1, Name = "Test1" }, new Item { ItemID = 2, Name = "Test2" }
+                new Item { ItemId = 1, Name = "Test1" }, new Item { ItemId = 2, Name = "Test2" }
             };
             rep.GetAll().Returns(itemEntity);
 
@@ -84,7 +86,7 @@ namespace CNCLib.Tests.Logic
             all.Should().HaveCount(2);
             new
                 {
-                    ItemID = 1,
+                    ItemId = 1,
                     Name   = "Test1"
                 }.Should().
                 BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
@@ -96,15 +98,15 @@ namespace CNCLib.Tests.Logic
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
-            rep.Get(1).Returns(new Item { ItemID = 1, Name = "Test1" });
+            rep.Get(1).Returns(new Item { ItemId = 1, Name = "Test1" });
 
             var all = await ctrl.Get(1);
 
             new
                 {
-                    ItemID = 1,
+                    ItemId = 1,
                     Name   = "Test1"
                 }.Should().
                 BeEquivalentTo(all, options => options.ExcludingMissingMembers());
@@ -116,7 +118,7 @@ namespace CNCLib.Tests.Logic
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             var all = await ctrl.Get(10);
 
@@ -131,16 +133,16 @@ namespace CNCLib.Tests.Logic
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
-            var item = new CNCLib.Logic.Contracts.DTO.Item { ItemID = 3000, Name = "Hallo" };
+            var item = new ItemDto { ItemId = 3000, Name = "Hallo" };
 
             //act
 
             await ctrl.Delete(item);
 
             //assert
-            rep.Received().DeleteRange(Arg.Is<IEnumerable<Item>>(x => x.First().ItemID == item.ItemID));
+            rep.Received().DeleteRange(Arg.Is<IEnumerable<Item>>(x => x.First().ItemId == item.ItemId));
         }
     }
 }
