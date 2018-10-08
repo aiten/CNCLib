@@ -17,36 +17,36 @@
 */
 
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
-using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Service.Contracts;
-using Framework.Service;
 
-namespace CNCLib.Service.Logic
+namespace CNCLib.Service.WebAPI
 {
-    public class MachineService : CRUDService<Machine, int>, IMachineService
+    public class UserService : CRUDServiceBase<User, int>, IUserService
     {
-        readonly IMachineManager _manager;
+        protected override string Api            => @"api/user";
+        protected override int    GetKey(User u) => u.UserId;
 
-        public MachineService(IMachineManager manager) : base(manager)
+        public async Task<User> GetByName(string username)
         {
-            _manager = manager ?? throw new ArgumentNullException();
+            throw new NotImplementedException();
+            using (HttpClient client = CreateHttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(Api + "/" + username);
+                if (response.IsSuccessStatusCode)
+                {
+                    User value = await response.Content.ReadAsAsync<User>();
+                    return value;
+                }
+            }
+
+            return null;
         }
 
-        public async Task<Machine> DefaultMachine()
-        {
-            return await _manager.DefaultMachine();
-        }
+        #region IDisposable Support
 
-        public async Task<int> GetDetaultMachine()
-        {
-            return await _manager.GetDetaultMachine();
-        }
-
-        public async Task SetDetaultMachine(int defaultMachineId)
-        {
-            await _manager.SetDetaultMachine(defaultMachineId);
-        }
+        #endregion
     }
 }

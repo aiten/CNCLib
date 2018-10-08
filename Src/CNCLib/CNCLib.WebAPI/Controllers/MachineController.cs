@@ -22,7 +22,6 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Service.Contracts;
 using CNCLib.Shared;
-using Framework.Web;
 using Framework.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -65,7 +64,7 @@ namespace CNCLib.WebAPI.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] Machine value)
         {
-            return await this.Update<Machine, int>(_service, id, value.MachineID, value);
+            return await this.Update<Machine, int>(_service, id, value.MachineId, value);
         }
 
         [HttpDelete]

@@ -45,21 +45,21 @@ namespace CNCLib.Tests.Repository
 
         protected override int GetEntityKey(User entity)
         {
-            return entity.UserID;
+            return entity.UserId;
         }
 
         protected override User SetEntityKey(User entity, int key)
         {
-            entity.UserID = key;
+            entity.UserId = key;
             return entity;
         }
 
         protected override bool CompareEntity(User entity1, User entity2)
         {
             //entity1.Should().BeEquivalentTo(entity2, opts => 
-            //    opts.Excluding(x => x.UserID)
+            //    opts.Excluding(x => x.UserId)
             //);
-            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"UserID" });
+            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"UserId" });
         }
 
         #endregion
@@ -79,14 +79,14 @@ namespace CNCLib.Tests.Repository
         public async Task GetOKTest()
         {
             var entity = await GetOK(1);
-            entity.UserID.Should().Be(1);
+            entity.UserId.Should().Be(1);
         }
 
         [TestMethod]
         public async Task GetTrackingOKTest()
         {
             var entity = await GetTrackingOK(2);
-            entity.UserID.Should().Be(2);
+            entity.UserId.Should().Be(2);
         }
 
         [TestMethod]
@@ -117,10 +117,10 @@ namespace CNCLib.Tests.Repository
             using (var ctx = CreateCRUDTestContext())
             {
                 var users = await ctx.Repository.Get(2);
-                users.UserID.Should().Be(2);
+                users.UserId.Should().Be(2);
 
-                var usersbyName = await ctx.Repository.GetUser(users.UserName);
-                usersbyName.UserID.Should().Be(users.UserID);
+                var usersbyName = await ctx.Repository.GetByName(users.UserName);
+                usersbyName.UserId.Should().Be(users.UserId);
             }
         }
 
@@ -129,7 +129,7 @@ namespace CNCLib.Tests.Repository
         {
             using (var ctx = CreateCRUDTestContext())
             {
-                var users = await ctx.Repository.GetUser("UserNotExist");
+                var users = await ctx.Repository.GetByName("UserNotExist");
                 users.Should().BeNull();
             }
         }

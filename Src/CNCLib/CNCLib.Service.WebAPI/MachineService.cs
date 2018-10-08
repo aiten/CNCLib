@@ -27,7 +27,7 @@ namespace CNCLib.Service.WebAPI
     public class MachineService : CRUDServiceBase<Machine, int>, IMachineService
     {
         protected override string Api               => @"api/Machine";
-        protected override int    GetKey(Machine m) => m.MachineID;
+        protected override int    GetKey(Machine m) => m.MachineId;
 
         public async Task<Machine> DefaultMachine()
         {

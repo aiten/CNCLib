@@ -30,7 +30,7 @@ namespace CNCLib.Logic.Contracts.DTO
 
     public class Machine
     {
-        public int     MachineID        { get; set; }
+        public int     MachineId        { get; set; }
         public string  SerialServer     { get; set; }
         public int     SerialServerPort { get; set; }
         public string  ComPort          { get; set; }

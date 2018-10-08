@@ -22,9 +22,9 @@ namespace CNCLib.Repository.Contracts.Entities
 {
     public class Item
     {
-        public int ItemID { get; set; }
+        public int ItemId { get; set; }
 
-        public         int? UserID { get; set; }
+        public         int? UserId { get; set; }
         public virtual User User   { get; set; }
 
         public         string                    Name           { get; set; }

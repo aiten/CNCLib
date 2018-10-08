@@ -16,13 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+using System.Threading.Tasks;
+using CNCLib.Logic.Contracts.DTO;
+using Framework.Contracts.Service;
 
-namespace CNCLib.Repository.Contracts.Entities
+namespace CNCLib.Service.Contracts
 {
-    public class User
+    public interface IUserService : IDisposable, ICRUDService<User, int>
     {
-        public int    UserId       { get; set; }
-        public string UserName     { get; set; }
-        public string UserPassword { get; set; }
+        Task<User> GetByName(string username);
     }
 }

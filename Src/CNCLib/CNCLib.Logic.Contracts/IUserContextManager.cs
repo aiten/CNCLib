@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+
 namespace CNCLib.Logic.Contracts
 {
     public interface IUserContextManager

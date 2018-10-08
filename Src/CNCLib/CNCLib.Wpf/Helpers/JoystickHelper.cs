@@ -35,7 +35,7 @@ namespace CNCLib.Wpf.Helpers
                 var joystick = await controller.GetAll(typeof(Joystick));
                 if (joystick != null && joystick.Any())
                 {
-                    int id = joystick.First().ItemID;
+                    int id = joystick.First().ItemId;
                     return new Tuple<Joystick, int>((Joystick) await controller.Create(id), id);
                 }
             }

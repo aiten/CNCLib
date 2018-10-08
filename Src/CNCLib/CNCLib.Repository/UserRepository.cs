@@ -40,15 +40,15 @@ namespace CNCLib.Repository
 
         protected override IQueryable<User> AddPrimaryWhere(IQueryable<User> query, int key)
         {
-            return query.Where(m => m.UserID == key);
+            return query.Where(m => m.UserId == key);
         }
 
         protected override IQueryable<User> AddPrimaryWhereIn(IQueryable<User> query, IEnumerable<int> key)
         {
-            return query.Where(m => key.Contains(m.UserID));
+            return query.Where(m => key.Contains(m.UserId));
         }
 
-        public async Task<User> GetUser(string username)
+        public async Task<User> GetByName(string username)
         {
             return await AddInclude(Query).Where(u => u.UserName == username).FirstOrDefaultAsync();
         }
@@ -57,9 +57,9 @@ namespace CNCLib.Repository
         {
             // search und update User
 
-            int id = user.UserID;
+            int id = user.UserId;
 
-            var userInDb = await Context.Users.Where(m => m.UserID == id).FirstOrDefaultAsync();
+            var userInDb = await Context.Users.Where(m => m.UserId == id).FirstOrDefaultAsync();
 
             if (userInDb == default(User))
             {

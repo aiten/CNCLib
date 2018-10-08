@@ -80,8 +80,8 @@ namespace CNCLib.Wpf.ViewModels
 
             Machines = machines;
 
-            var defaultmachine = machines.FirstOrDefault(m => m.MachineID == defaultmachineid) ??
-                                 machines.FirstOrDefault(m => m.MachineID == defaultM);
+            var defaultmachine = machines.FirstOrDefault(m => m.MachineId == defaultmachineid) ??
+                                 machines.FirstOrDefault(m => m.MachineId == defaultM);
 
             if (defaultmachine == null && machines.Count > 0)
             {
@@ -231,7 +231,7 @@ namespace CNCLib.Wpf.ViewModels
 
             using (var scope = _machineService.Create())
             {
-                Global.Instance.Machine = await scope.Instance.Get(Machine.MachineID);
+                Global.Instance.Machine = await scope.Instance.Get(Machine.MachineId);
             }
         }
 
@@ -271,10 +271,10 @@ namespace CNCLib.Wpf.ViewModels
 
         public async void SetupMachine()
         {
-            int mID = Machine?.MachineID ?? -1;
-            //EditMachine?.Invoke(mID);
-            EditMachine(mID);
-            await LoadMachines(mID);
+            int mId = Machine?.MachineId ?? -1;
+            //EditMachine?.Invoke(mId);
+            EditMachine(mId);
+            await LoadMachines(mId);
         }
 
         public async void SetupJoystick()
@@ -289,7 +289,7 @@ namespace CNCLib.Wpf.ViewModels
             {
                 using (var scope = _machineService.Create())
                 {
-                    scope.Instance.SetDetaultMachine(Machine.MachineID);
+                    scope.Instance.SetDetaultMachine(Machine.MachineId);
                 }
             }
         }
