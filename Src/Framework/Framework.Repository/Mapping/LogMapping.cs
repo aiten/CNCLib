@@ -34,13 +34,14 @@ namespace Framework.Repository.Mapping
             entity.Property(l => l.Level).IsRequired().IsUnicode().HasMaxLength(50);
             entity.Property(l => l.Message).IsRequired().IsUnicode();
             entity.Property(l => l.UserName).IsUnicode().HasMaxLength(250);
+            entity.Property(l => l.MachineName).IsUnicode().HasMaxLength(64);
             entity.Property(l => l.ServerName).IsUnicode().HasMaxLength(64);
             entity.Property(l => l.Port).IsUnicode().HasMaxLength(256);
             entity.Property(l => l.Url).IsUnicode().HasMaxLength(500);
             entity.Property(l => l.ServerAddress).IsUnicode().HasMaxLength(100);
             entity.Property(l => l.RemoteAddress).IsUnicode().HasMaxLength(100);
             entity.Property(l => l.Logger).IsUnicode().HasMaxLength(250);
-            entity.Property(l => l.Callsite).IsUnicode();
+            entity.Property(l => l.StackTrace).IsUnicode();
             entity.Property(l => l.Exception).IsUnicode();
         }
     }

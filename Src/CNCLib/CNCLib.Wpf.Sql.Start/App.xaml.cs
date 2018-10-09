@@ -51,7 +51,7 @@ namespace CNCLib.Wpf.Sql.Start
         {
             GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
 
-            LogManager.ThrowExceptions = true;
+            // LogManager.ThrowExceptions = true;
             Logger logger = LogManager.GetLogger("foo");
 
             _logger.Info(@"Starting ...");
@@ -105,6 +105,8 @@ namespace CNCLib.Wpf.Sql.Start
             }
             catch (Exception ex)
             {
+                _logger.Error(ex);
+
                 MessageBox.Show("Cannot connect to database" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Current.Shutdown();
             }
@@ -114,6 +116,11 @@ namespace CNCLib.Wpf.Sql.Start
             {
                 Task.Yield();
             }
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            LogManager.Shutdown();
         }
     }
 }

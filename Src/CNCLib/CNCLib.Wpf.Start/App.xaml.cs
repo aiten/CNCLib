@@ -26,6 +26,7 @@ using CNCLib.GCode.GUI;
 using CNCLib.Logic;
 using CNCLib.Logic.Manager;
 using CNCLib.Repository.Context;
+using CNCLib.Repository.SqLite;
 using CNCLib.Service.Contracts;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
@@ -48,10 +49,17 @@ namespace CNCLib.Wpf.Start
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
-            _logger.Info(@"Starting ...");
-
             string userprofilepath = Environment.GetEnvironmentVariable(@"USERPROFILE");
             AppDomain.CurrentDomain.SetData("DataDirectory", userprofilepath);
+
+            string dbfile = userprofilepath + @"\CNCLib.db";
+
+            GlobalDiagnosticsContext.Set("connectionString", $"Data Source={dbfile}");
+
+            LogManager.ThrowExceptions = true;
+            Logger logger = LogManager.GetLogger("foo");
+
+            _logger.Info(@"Starting ...");
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
@@ -87,7 +95,6 @@ namespace CNCLib.Wpf.Start
 
             // Open Database here
 
-            string dbfile = userprofilepath + @"\CNCLib.db";
             try
             {
                 Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbfile, false, false);
@@ -105,6 +112,11 @@ namespace CNCLib.Wpf.Start
             {
                 Task.Yield();
             }
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            LogManager.Shutdown();
         }
     }
 }
