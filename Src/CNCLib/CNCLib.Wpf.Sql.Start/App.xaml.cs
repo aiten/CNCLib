@@ -51,10 +51,11 @@ namespace CNCLib.Wpf.Sql.Start
         {
             GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
 
-            // LogManager.ThrowExceptions = true;
+            LogManager.ThrowExceptions = true;
             Logger logger = LogManager.GetLogger("foo");
 
             _logger.Info(@"Starting ...");
+            LogManager.ThrowExceptions = false;
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
@@ -62,23 +63,21 @@ namespace CNCLib.Wpf.Sql.Start
 
             Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
 
-            //scoped
-
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(Repository.MachineRepository).Assembly);
-
-            //transient
-
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly, typeof(MachineService).Assembly,
-                                                                 typeof(Logic.Client.DynItemController).Assembly, typeof(MachineManager).Assembly);
-
+            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly, 
+                                                                 typeof(MachineService).Assembly,
+                                                                 typeof(Repository.MachineRepository).Assembly, 
+                                                                 typeof(Logic.Client.DynItemController).Assembly, 
+                                                                 typeof(MachineManager).Assembly);
 
             Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
             Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
 
-            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), typeof(ViewModels.MachineViewModel).Assembly, typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), 
+                                                     typeof(ViewModels.MachineViewModel).Assembly, 
+                                                     typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
             var config = new MapperConfiguration(cfg =>
             {

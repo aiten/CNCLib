@@ -60,24 +60,29 @@ namespace CNCLib.Wpf.Start
             Logger logger = LogManager.GetLogger("foo");
 
             _logger.Info(@"Starting ...");
+            LogManager.ThrowExceptions = false;
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             Dependency.Initialize(new LiveDependencyProvider());
 
             Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
+
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
-
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly, typeof(MachineService).Assembly,
-//				typeof(CNCLib.ServiceProxy.WebAPI.MachineService).Assembly,
-                                                                 typeof(Repository.MachineRepository).Assembly, typeof(Logic.Client.DynItemController).Assembly, typeof(MachineManager).Assembly);
-
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+
+            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly, 
+                                                                 typeof(MachineService).Assembly,
+                                                                 typeof(Repository.MachineRepository).Assembly, 
+                                                                 typeof(Logic.Client.DynItemController).Assembly, 
+                                                                 typeof(MachineManager).Assembly);
 
             Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
             Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
 
-            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), typeof(ViewModels.MachineViewModel).Assembly, typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), 
+                                                     typeof(ViewModels.MachineViewModel).Assembly, 
+                                                     typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -91,7 +96,7 @@ namespace CNCLib.Wpf.Start
             Dependency.Container.RegisterInstance(mapper);
 
             var userContext = new CNCLibUserContext();
-            Dependency.Container.RegisterInstance((ICNCLibUserContext)userContext);
+            Dependency.Container.RegisterInstance((ICNCLibUserContext) userContext);
 
             // Open Database here
 
