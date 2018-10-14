@@ -55,10 +55,12 @@ namespace CNCLib.WebAPI
 
             services.AddTransient<UnhandledExceptionFilter>();
             services.AddTransient<ValidateRequestDataFilter>();
+            services.AddTransient<MethodCallLogFilter>();
             services.AddMvc(options =>
                 {
                     options.Filters.AddService<ValidateRequestDataFilter>();
                     options.Filters.AddService<UnhandledExceptionFilter>();
+                    options.Filters.AddService<MethodCallLogFilter>();
                 }).
                 SetCompatibilityVersion(CompatibilityVersion.Version_2_1).
                 AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
