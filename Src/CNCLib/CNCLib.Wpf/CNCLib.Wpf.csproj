@@ -83,6 +83,7 @@
     <Compile Include="Helpers\JoystickArduinoSerialCommunication.cs" />
     <Compile Include="Helpers\JoystickHelper.cs" />
     <Compile Include="Helpers\MachineGCodeHelper.cs" />
+    <Compile Include="LiveDependencyRegisterExtensions.cs" />
     <Compile Include="Models\EepromPlotter.cs" />
     <Compile Include="Models\Eeprom.cs" />
     <Compile Include="ViewModels\EepromViewModel.cs" />
@@ -290,7 +291,7 @@
       <Version>1.6.5</Version>
     </PackageReference>
     <PackageReference Include="Prism.Core">
-      <Version>7.0.0.396</Version>
+      <Version>7.1.0.431</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

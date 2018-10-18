@@ -16,6 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Tools.Logging;
+
 namespace CNCLib.Wpf.Helpers
 {
     public class SerialProxy
@@ -28,7 +30,9 @@ namespace CNCLib.Wpf.Helpers
         public Framework.Arduino.SerialCommunication.ISerial RemoteCom =>
             Framework.Tools.Pattern.Singleton<Serial.Client.SerialService>.Instance;
 
-        public Framework.Arduino.SerialCommunication.ISerial LocalCom => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
+        private static  Framework.Arduino.SerialCommunication.Serial _localSerial = new Framework.Arduino.SerialCommunication.Serial(new Logger<Framework.Arduino.SerialCommunication.Serial>());
+
+        public Framework.Arduino.SerialCommunication.ISerial LocalCom => _localSerial;
 
         public Framework.Arduino.SerialCommunication.ISerial Current { get; private set; }
 

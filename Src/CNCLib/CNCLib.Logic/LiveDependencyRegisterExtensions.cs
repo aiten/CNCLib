@@ -16,15 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Framework.Contracts.Shared;
+using Framework.Contracts.Repository;
+using Framework.Tools.Dependency;
 
-namespace Framework.Tools
+namespace CNCLib.Logic
 {
-    public class CurrentDateTime : ICurrentDateTime
+    public static class LiveDependencyRegisterExtensions
     {
-        public DateTime Now => DateTime.Now;
-
-        public DateTime ToDay => DateTime.Today;
+        public static IDependencyContainer RegisterLogic(this IDependencyContainer container)
+        {
+            Dependency.Container.RegisterTypesIncludingInternals(typeof(Manager.MachineManager).Assembly);
+            return container;
+        }
     }
 }

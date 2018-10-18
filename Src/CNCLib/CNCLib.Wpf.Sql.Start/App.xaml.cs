@@ -24,17 +24,22 @@ using System.Windows.Markup;
 using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
+using CNCLib.Logic.Client;
 using CNCLib.Logic.Manager;
+using CNCLib.Repository;
 using CNCLib.Repository.Context;
+using CNCLib.Repository.SqlServer;
 using CNCLib.Service.Contracts;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
+using Framework.Arduino.SerialCommunication;
 using Framework.Contracts.Repository;
 using Framework.Contracts.Shared;
 using Framework.Repository;
 using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
+using NLog;
 
 namespace CNCLib.Wpf.Sql.Start
 {
@@ -43,42 +48,35 @@ namespace CNCLib.Wpf.Sql.Start
     /// </summary>
     public partial class App : Application
     {
+        private ILogger _logger => LogManager.GetCurrentClassLogger();
+
         private void AppStartup(object sender, StartupEventArgs e)
         {
+            GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
+
+            LogManager.ThrowExceptions = true;
+            Logger logger = LogManager.GetLogger("foo");
+
+            _logger.Info(@"Starting ...");
+            LogManager.ThrowExceptions = false;
+
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             Dependency.Initialize(new LiveDependencyProvider());
 
-            Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
-
-            //scoped
-
-            Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
-            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
-
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(Repository.MachineRepository).Assembly);
-
-            //transient
-
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly, typeof(MachineService).Assembly,
-                                                                 typeof(Logic.Client.DynItemController).Assembly, typeof(MachineManager).Assembly);
-
-
-            Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
-            Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
-
-            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), typeof(ViewModels.MachineViewModel).Assembly, typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
-
-            var config = new MapperConfiguration(cfg =>
+            Dependency.Container.RegisterFrameWorkTools();
+            Dependency.Container.RegisterRepository();
+            Dependency.Container.RegisterLogic();
+            Dependency.Container.RegisterLogicClient();
+            Dependency.Container.RegisterSerialCommunication();
+            Dependency.Container.RegisterServiceAsLogic();
+            Dependency.Container.RegisterCNCLibWpf();
+            Dependency.Container.RegisterMapper(new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<LogicAutoMapperProfile>();
                 cfg.AddProfile<WpfAutoMapperProfile>();
                 cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-            });
-            config.AssertConfigurationIsValid();
-
-            IMapper mapper = config.CreateMapper();
-            Dependency.Container.RegisterInstance(mapper);
+            }));
 
             var userContext = new CNCLibUserContext();
             Dependency.Container.RegisterInstance((ICNCLibUserContext) userContext);
@@ -94,6 +92,8 @@ namespace CNCLib.Wpf.Sql.Start
             }
             catch (Exception ex)
             {
+                _logger.Error(ex);
+
                 MessageBox.Show("Cannot connect to database" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Current.Shutdown();
             }
@@ -103,6 +103,11 @@ namespace CNCLib.Wpf.Sql.Start
             {
                 Task.Yield();
             }
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            LogManager.Shutdown();
         }
     }
 }

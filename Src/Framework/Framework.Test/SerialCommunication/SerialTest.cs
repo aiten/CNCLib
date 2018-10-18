@@ -20,8 +20,12 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
+
 using Framework.Arduino.SerialCommunication;
+using Framework.Contracts.Logging;
 using Framework.Tools.Dependency;
+using Framework.Tools.Logging;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 
@@ -75,6 +79,11 @@ namespace Framework.Test.SerialCommunication
             return serialport;
         }
 
+        private ILogger<Serial> CreateLogger()
+        {
+            return new Logger<Serial>();
+        }
+
         [TestMethod]
         public async Task ConnectSerialTest()
         {
@@ -87,7 +96,7 @@ namespace Framework.Test.SerialCommunication
             Tools.Dependency.Dependency.Container.ResetContainer();
             Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
 
-            using (var serial = new Serial())
+            using (var serial = new Serial(CreateLogger()))
             {
                 await serial.ConnectAsync("com2");
                 serial.CommandsInQueue.Should().Be(0);
@@ -99,7 +108,7 @@ namespace Framework.Test.SerialCommunication
         [TestMethod]
         public async Task WriteOneCommandSerialTest()
         {
-            using (var serial = new Serial())
+            using (var serial = new Serial(CreateLogger()))
             {
                 var serialport = CreateSerialPortMock(serial, new[]
                 {
@@ -120,7 +129,7 @@ namespace Framework.Test.SerialCommunication
         [TestMethod]
         public async Task WriteTwoCommandSerialTest()
         {
-            using (var serial = new Serial())
+            using (var serial = new Serial(CreateLogger()))
             {
                 var serialport = CreateSerialPortMock(serial, new[]
                 {
@@ -176,7 +185,7 @@ namespace Framework.Test.SerialCommunication
         public async Task OkEventSerialTest()
 
         {
-            using (var serial = new Serial())
+            using (var serial = new Serial(CreateLogger()))
             {
                 /* var serialport = */
                 CreateSerialPortMock(serial, new[]
@@ -211,7 +220,7 @@ namespace Framework.Test.SerialCommunication
         [TestMethod]
         public async Task InfoEventSerialTest()
         {
-            using (var serial = new Serial())
+            using (var serial = new Serial(CreateLogger()))
             {
                 /* var serialport = */
                 CreateSerialPortMock(serial, new[]
@@ -246,7 +255,7 @@ namespace Framework.Test.SerialCommunication
         [TestMethod]
         public async Task ErrorEventWithOkSerialTest()
         {
-            using (var serial = new Serial())
+            using (var serial = new Serial(CreateLogger()))
             {
                 /* var serialport = */
                 CreateSerialPortMock(serial, new[]
@@ -283,7 +292,7 @@ namespace Framework.Test.SerialCommunication
         [TestMethod]
         public async Task ErrorEventWithOutOkSerialTest()
         {
-            using (var serial = new Serial())
+            using (var serial = new Serial(CreateLogger()))
             {
                 /* var serialport = */
                 CreateSerialPortMock(serial, new[]
@@ -318,7 +327,7 @@ namespace Framework.Test.SerialCommunication
         [TestMethod]
         public async Task UnknownEventSerialTest()
         {
-            using (var serial = new Serial())
+            using (var serial = new Serial(CreateLogger()))
             {
                 /* var serialport = */
                 CreateSerialPortMock(serial, new[]

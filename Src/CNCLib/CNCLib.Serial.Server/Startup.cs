@@ -72,7 +72,7 @@ namespace CNCLib.Serial.Server
 
             Dependency.Initialize(new AspNetDependencyProvider(services));
 
-            Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
+            Dependency.Container.RegisterFrameWorkTools();
 
             Dependency.Container.RegisterTypesIncludingInternalsScoped(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
 

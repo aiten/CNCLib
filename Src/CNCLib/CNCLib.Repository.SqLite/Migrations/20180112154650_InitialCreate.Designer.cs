@@ -31,21 +31,21 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .IsRequired()
                         .HasMaxLength(256);
 
-                    b.Property<int?>("UserID");
+                    b.Property<int?>("UserId");
 
                     b.Property<string>("Value")
                         .HasMaxLength(4000);
 
                     b.HasKey("Group", "Name");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Configuration");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.Item", b =>
                 {
-                    b.Property<int>("ItemID")
+                    b.Property<int>("ItemId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClassName")
@@ -56,35 +56,35 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<int?>("UserID");
+                    b.Property<int?>("UserId");
 
-                    b.HasKey("ItemID");
+                    b.HasKey("ItemId");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Item");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.ItemProperty", b =>
                 {
-                    b.Property<int>("ItemID");
+                    b.Property<int>("ItemId");
 
                     b.Property<string>("Name")
                         .HasMaxLength(255);
 
                     b.Property<string>("Value");
 
-                    b.HasKey("ItemID", "Name");
+                    b.HasKey("ItemId", "Name");
 
                     b.ToTable("ItemProperty");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.Machine", b =>
                 {
-                    b.Property<int>("MachineID")
+                    b.Property<int>("MachineId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Axis");
@@ -141,18 +141,18 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.Property<bool>("Spindle");
 
-                    b.Property<int?>("UserID");
+                    b.Property<int?>("UserId");
 
-                    b.HasKey("MachineID");
+                    b.HasKey("MachineId");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Machine");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.MachineCommand", b =>
                 {
-                    b.Property<int>("MachineCommandID")
+                    b.Property<int>("MachineCommandId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("CommandName")
@@ -166,42 +166,42 @@ namespace CNCLib.Repository.SqLite.Migrations
                     b.Property<string>("JoystickMessage")
                         .HasMaxLength(64);
 
-                    b.Property<int>("MachineID");
+                    b.Property<int>("MachineId");
 
                     b.Property<int?>("PosX");
 
                     b.Property<int?>("PosY");
 
-                    b.HasKey("MachineCommandID");
+                    b.HasKey("MachineCommandId");
 
-                    b.HasIndex("MachineID");
+                    b.HasIndex("MachineId");
 
                     b.ToTable("MachineCommand");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.MachineInitCommand", b =>
                 {
-                    b.Property<int>("MachineInitCommandID")
+                    b.Property<int>("MachineInitCommandId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("CommandString")
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<int>("MachineID");
+                    b.Property<int>("MachineId");
 
                     b.Property<int>("SeqNo");
 
-                    b.HasKey("MachineInitCommandID");
+                    b.HasKey("MachineInitCommandId");
 
-                    b.HasIndex("MachineID");
+                    b.HasIndex("MachineId");
 
                     b.ToTable("MachineInitCommand");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.User", b =>
                 {
-                    b.Property<int>("UserID")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("UserName")
@@ -212,7 +212,7 @@ namespace CNCLib.Repository.SqLite.Migrations
                     b.Property<string>("UserPassword")
                         .HasMaxLength(255);
 
-                    b.HasKey("UserID");
+                    b.HasKey("UserId");
 
                     b.HasIndex("UserName")
                         .IsUnique();
@@ -224,21 +224,21 @@ namespace CNCLib.Repository.SqLite.Migrations
                 {
                     b.HasOne("CNCLib.Repository.Contracts.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.Item", b =>
                 {
                     b.HasOne("CNCLib.Repository.Contracts.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.ItemProperty", b =>
                 {
                     b.HasOne("CNCLib.Repository.Contracts.Entities.Item", "Item")
                         .WithMany("ItemProperties")
-                        .HasForeignKey("ItemID")
+                        .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -246,14 +246,14 @@ namespace CNCLib.Repository.SqLite.Migrations
                 {
                     b.HasOne("CNCLib.Repository.Contracts.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.MachineCommand", b =>
                 {
                     b.HasOne("CNCLib.Repository.Contracts.Entities.Machine", "Machine")
                         .WithMany("MachineCommands")
-                        .HasForeignKey("MachineID")
+                        .HasForeignKey("MachineId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -261,7 +261,7 @@ namespace CNCLib.Repository.SqLite.Migrations
                 {
                     b.HasOne("CNCLib.Repository.Contracts.Entities.Machine", "Machine")
                         .WithMany("MachineInitCommands")
-                        .HasForeignKey("MachineID")
+                        .HasForeignKey("MachineId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
