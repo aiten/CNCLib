@@ -20,12 +20,14 @@ using CNCLib.Wpf.ViewModels.ManualControl;
 using System;
 using System.Threading.Tasks;
 using Framework.Arduino.SerialCommunication;
+using Framework.Contracts.Logging;
+using SerialCom = Framework.Arduino.SerialCommunication.Serial;
 
 namespace CNCLib.Wpf.Helpers
 {
-    class JoystickArduinoSerialCommunication : Framework.Arduino.SerialCommunication.Serial
+    class JoystickArduinoSerialCommunication : SerialCom
     {
-        public JoystickArduinoSerialCommunication()
+        public JoystickArduinoSerialCommunication(ILogger<SerialCom> logger) : base(logger)
         {
             OkTag = ""; // every new line is "end of command"
         }

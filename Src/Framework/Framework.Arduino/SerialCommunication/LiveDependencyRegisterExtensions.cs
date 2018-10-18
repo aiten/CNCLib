@@ -16,15 +16,16 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Framework.Contracts.Shared;
+using Framework.Tools.Dependency;
 
-namespace Framework.Tools
+namespace Framework.Arduino.SerialCommunication
 {
-    public class CurrentDateTime : ICurrentDateTime
+    public static class LiveDependencyRegisterExtensions
     {
-        public DateTime Now => DateTime.Now;
-
-        public DateTime ToDay => DateTime.Today;
+        public static IDependencyContainer RegisterSerialCommunication(this IDependencyContainer container)
+        {
+            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
+            return container;
+        }
     }
 }

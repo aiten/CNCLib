@@ -16,15 +16,22 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Framework.Contracts.Shared;
+using AutoMapper;
+using Framework.Tools.Dependency;
+using Framework.Tools.Pattern;
 
-namespace Framework.Tools
+namespace CNCLib.Wpf
 {
-    public class CurrentDateTime : ICurrentDateTime
+    public static class LiveDependencyRegisterExtensions
     {
-        public DateTime Now => DateTime.Now;
+        public static IDependencyContainer RegisterMapper(this IDependencyContainer container, MapperConfiguration mapperConfiguration)
+        {
+            mapperConfiguration.AssertConfigurationIsValid();
 
-        public DateTime ToDay => DateTime.Today;
+            IMapper mapper = mapperConfiguration.CreateMapper();
+            Dependency.Container.RegisterInstance(mapper);
+
+            return container;
+        }
     }
 }

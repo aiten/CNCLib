@@ -3,14 +3,16 @@ using System;
 using CNCLib.Repository.SqLite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CNCLib.Repository.SqLite.Migrations
 {
     [DbContext(typeof(MigrationCNCLibContext))]
-    partial class MigrationCNCLibContextModelSnapshot : ModelSnapshot
+    [Migration("20181009082734_V2")]
+    partial class V2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -24,8 +24,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Framework.Contracts.Logging;
 using Framework.Tools.Dependency;
-using NLog;
 
 namespace Framework.Arduino.SerialCommunication
 {
@@ -41,9 +41,14 @@ namespace Framework.Arduino.SerialCommunication
 
         readonly AutoResetEvent      _autoEvent       = new AutoResetEvent(false);
         readonly List<SerialCommand> _pendingCommands = new List<SerialCommand>();
-        readonly ILogger             _logger          = LogManager.GetCurrentClassLogger();
+        readonly ILogger             _logger;
 
         #endregion
+
+        public Serial(ILogger<Serial> logger)
+        {
+            _logger = logger;
+        }
 
         #region Events
 
@@ -187,7 +192,7 @@ namespace Framework.Arduino.SerialCommunication
 
         private async Task Disconnect(bool join)
         {
-            Trace?.Trace("Disconnecting", join.ToString());
+            Trace?.Trace($"Disconnecting: { join.ToString() }");
             Aborted = true;
             _serialPortCancellationTokenSource?.Cancel();
 
@@ -233,7 +238,7 @@ namespace Framework.Arduino.SerialCommunication
                 _serialPortCancellationTokenSource = null;
             }
 
-            Trace?.Trace("Disconnected", join.ToString());
+            Trace?.Trace($"Disconnected: { join.ToString()}");
         }
 
         /// <summary>
@@ -453,7 +458,7 @@ namespace Framework.Arduino.SerialCommunication
                 queueLenght++;
             }
 
-            Trace?.Trace("Queue", cmd);
+            Trace?.Trace($"Queue: {cmd}");
             OnComandQueueChanged(new SerialEventArgs(queueLenght, c));
             return c;
         }
@@ -515,7 +520,7 @@ namespace Framework.Arduino.SerialCommunication
 
         private bool WriteSerial(string commandtext, bool addNewLine)
         {
-            Trace?.Trace("Write", commandtext);
+            Trace?.Trace($"Write: {commandtext}");
             try
             {
                 if (addNewLine)
@@ -528,17 +533,17 @@ namespace Framework.Arduino.SerialCommunication
             }
             catch (InvalidOperationException e)
             {
-                Trace?.Error("WriteInvalidOperationException", $@"{commandtext} => {e.Message}");
+                Trace?.Error($"WriteInvalidOperationException: {commandtext} => {e.Message}");
                 Disconnect(false).ConfigureAwait(false).GetAwaiter().GetResult();
             }
             catch (IOException e)
             {
-                Trace?.Error("WriteIOException", $@"{commandtext} => {e.Message}");
+                Trace?.Error($"WriteIOException: {commandtext} => {e.Message}");
                 ErrorSerial();
             }
             catch (Exception e)
             {
-                Trace?.Error("WriteException", $@"{commandtext} => {e.GetType()} {e.Message}");
+                Trace?.Error($"WriteException: {commandtext} => {e.GetType()} {e.Message}");
             }
 
             return false;
@@ -738,7 +743,7 @@ namespace Framework.Arduino.SerialCommunication
                 }
                 catch (InvalidOperationException e)
                 {
-                    Trace?.Error("ReadInvalidOperationException", e.Message);
+                    Trace?.Error($"ReadInvalidOperationException: {e.Message}");
                     Thread.Sleep(250);
                 }
                 catch (ThreadAbortException)
@@ -748,12 +753,12 @@ namespace Framework.Arduino.SerialCommunication
                 }
                 catch (IOException e)
                 {
-                    Trace?.Error("ReadIOException", e.Message);
+                    Trace?.Error($"ReadIOException: { e.Message }");
                     Thread.Sleep(250);
                 }
                 catch (Exception e)
                 {
-                    Trace?.Error("ReadException", e.Message);
+                    Trace?.Error($"ReadException: { e.Message }");
                     Thread.Sleep(250);
                 }
 
@@ -783,7 +788,7 @@ namespace Framework.Arduino.SerialCommunication
 
             if (string.IsNullOrEmpty(message) == false)
             {
-                Trace?.Trace("Read", message.Replace("\n", @"\n").Replace("\r", @"\r").Replace("\t", @"\t"));
+                Trace?.Trace($"Read: { message.Replace("\n", @"\n").Replace("\r", @"\r").Replace("\t", @"\t") }");
 
                 bool endcommand = false;
 

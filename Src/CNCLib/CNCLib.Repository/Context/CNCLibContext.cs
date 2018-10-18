@@ -19,6 +19,8 @@
 using System;
 using CNCLib.Repository.Contracts.Entities;
 using CNCLib.Repository.Mappings;
+using Framework.Contracts.Repository.Entities;
+using Framework.Repository.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -71,6 +73,8 @@ namespace CNCLib.Repository.Context
             //modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             // -------------------------------------
+
+            modelBuilder.Entity<Log>().Map();
 
             base.OnModelCreating(modelBuilder);
         }

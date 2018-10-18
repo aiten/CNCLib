@@ -23,13 +23,16 @@ using System.Windows;
 using System.Windows.Markup;
 using AutoMapper;
 using CNCLib.GCode.GUI;
+using CNCLib.Logic.Client;
 using CNCLib.Service.Contracts;
 using CNCLib.Service.WebAPI;
 using CNCLib.Shared;
+using Framework.Arduino.SerialCommunication;
 using Framework.Contracts.Shared;
 using Framework.Tools;
 using Framework.Tools.Dependency;
 using Framework.Tools.Pattern;
+using NLog;
 
 namespace CNCLib.Wpf.WebAPI.Start
 {
@@ -38,34 +41,26 @@ namespace CNCLib.Wpf.WebAPI.Start
     /// </summary>
     public partial class App : Application
     {
+        private ILogger _logger => LogManager.GetCurrentClassLogger();
+
         private void AppStartup(object sender, StartupEventArgs e)
         {
+            _logger.Info(@"Starting ...");
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             Dependency.Initialize(new LiveDependencyProvider());
 
-            Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
+            Dependency.Container.RegisterFrameWorkTools();
+            Dependency.Container.RegisterLogicClient();
+            Dependency.Container.RegisterSerialCommunication();
+            Dependency.Container.RegisterServiceAsWebAPI();
+            Dependency.Container.RegisterCNCLibWpf();
 
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly,
-                                                                 //				typeof(CNCLib.ServiceProxy.Logic.MachineService).Assembly,
-                                                                 typeof(MachineService).Assembly, typeof(Logic.Client.DynItemController).Assembly);
-            //			Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLibContext>>();
-
-            Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
-            Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
-
-            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), typeof(ViewModels.MachineViewModel).Assembly, typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
-
-            var config = new MapperConfiguration(cfg =>
+            Dependency.Container.RegisterMapper(new MapperConfiguration(cfg =>
             {
-//					cfg.AddProfile<LogicAutoMapperProfile>();
                 cfg.AddProfile<WpfAutoMapperProfile>();
                 cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-            });
-            config.AssertConfigurationIsValid();
-
-            IMapper mapper = config.CreateMapper();
-            Dependency.Container.RegisterInstance(mapper);
+            }));
 
             ICNCLibUserContext userContext = new CNCLibUserContext();
             Dependency.Container.RegisterInstance(userContext);

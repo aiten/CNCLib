@@ -17,14 +17,22 @@
 */
 
 using System;
-using Framework.Contracts.Shared;
+using System.Collections.Generic;
+using System.Text;
+using Framework.Contracts.Logging;
 
-namespace Framework.Tools
+namespace Framework.Tools.Logging
 {
-    public class CurrentDateTime : ICurrentDateTime
+    public sealed class LoggerFactory : ILoggerFactory
     {
-        public DateTime Now => DateTime.Now;
+        public ILogger CreateLogger(Type type)
+        {
+            return new Logger(type);
+        }
 
-        public DateTime ToDay => DateTime.Today;
+        public ILogger CreateLogger(string key)
+        {
+            return new Logger(key);
+        }
     }
 }
