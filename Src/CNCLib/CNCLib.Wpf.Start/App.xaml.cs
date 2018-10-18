@@ -24,12 +24,15 @@ using System.Windows.Markup;
 using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
+using CNCLib.Logic.Client;
 using CNCLib.Logic.Manager;
+using CNCLib.Repository;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.SqLite;
 using CNCLib.Service.Contracts;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
+using Framework.Arduino.SerialCommunication;
 using Framework.Contracts.Repository;
 using Framework.Contracts.Shared;
 using Framework.Repository;
@@ -66,34 +69,19 @@ namespace CNCLib.Wpf.Start
 
             Dependency.Initialize(new LiveDependencyProvider());
 
-            Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
-
-            Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
-            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
-
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly, 
-                                                                 typeof(MachineService).Assembly,
-                                                                 typeof(Repository.MachineRepository).Assembly, 
-                                                                 typeof(Logic.Client.DynItemController).Assembly, 
-                                                                 typeof(MachineManager).Assembly);
-
-            Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
-            Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
-
-            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), 
-                                                     typeof(ViewModels.MachineViewModel).Assembly, 
-                                                     typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
-
-            var config = new MapperConfiguration(cfg =>
+            Dependency.Container.RegisterFrameWorkTools();
+            Dependency.Container.RegisterRepository();
+            Dependency.Container.RegisterLogic();
+            Dependency.Container.RegisterLogicClient();
+            Dependency.Container.RegisterSerialCommunication();
+            Dependency.Container.RegisterServiceAsLogic();
+            Dependency.Container.RegisterCNCLibWpf();
+            Dependency.Container.RegisterMapper(new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<LogicAutoMapperProfile>();
                 cfg.AddProfile<WpfAutoMapperProfile>();
                 cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-            });
-            config.AssertConfigurationIsValid();
-
-            IMapper mapper = config.CreateMapper();
-            Dependency.Container.RegisterInstance(mapper);
+            }));
 
             var userContext = new CNCLibUserContext();
             Dependency.Container.RegisterInstance((ICNCLibUserContext) userContext);

@@ -38,9 +38,9 @@ namespace CNCLib.WebAPI
         {
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
-            GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
+#if DEBUG
             LogManager.ThrowExceptions = true;
-
+#endif
             try
             {
                 StartWebService(args);

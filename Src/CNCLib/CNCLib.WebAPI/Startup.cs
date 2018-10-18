@@ -18,10 +18,14 @@
 
 using AutoMapper;
 using CNCLib.Logic;
+using CNCLib.Logic.Client;
 using CNCLib.Logic.Manager;
+using CNCLib.Repository;
 using CNCLib.Repository.Context;
+using CNCLib.Repository.SqlServer;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
+using CNCLib.Wpf;
 using Framework.Contracts.Repository;
 using Framework.Contracts.Shared;
 using Framework.Repository;
@@ -35,6 +39,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using NLog;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace CNCLib.WebAPI
@@ -70,20 +75,15 @@ namespace CNCLib.WebAPI
 
             Dependency.Initialize(new AspNetDependencyProvider(services));
 
-            Dependency.Container.RegisterType<ICurrentDateTime, CurrentDateTime>();
+            Dependency.Container.RegisterFrameWorkTools();
+            Dependency.Container.RegisterRepository();
+            Dependency.Container.RegisterLogic();
+            Dependency.Container.RegisterLogicClient();
+            Dependency.Container.RegisterServiceAsLogic();
 
-            Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
-            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
             Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
 
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(MachineService).Assembly, typeof(Repository.MachineRepository).Assembly, typeof(Logic.Client.DynItemController).Assembly,
-                                                                 typeof(MachineManager).Assembly);
-
-
-            var config = new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); });
-
-            IMapper mapper = config.CreateMapper();
-            Dependency.Container.RegisterInstance(mapper);
+            Dependency.Container.RegisterMapper(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,7 +96,13 @@ namespace CNCLib.WebAPI
             if (env.IsDevelopment())
             {
                 sqlconnectstring = null;
+                GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
             }
+            else
+            {
+                GlobalDiagnosticsContext.Set("connectionString", sqlconnectstring);
+            }
+
 
             Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false, false);
 

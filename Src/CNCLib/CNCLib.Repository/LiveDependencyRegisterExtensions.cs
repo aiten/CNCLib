@@ -16,15 +16,22 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Framework.Contracts.Shared;
+using CNCLib.Repository.Context;
+using Framework.Contracts.Repository;
+using Framework.Repository;
+using Framework.Tools.Dependency;
 
-namespace Framework.Tools
+namespace CNCLib.Repository
 {
-    public class CurrentDateTime : ICurrentDateTime
+    public static class LiveDependencyRegisterExtensions
     {
-        public DateTime Now => DateTime.Now;
+        public static IDependencyContainer RegisterRepository(this IDependencyContainer container)
+        {
+            Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
+            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-        public DateTime ToDay => DateTime.Today;
+            Dependency.Container.RegisterTypesIncludingInternals(typeof(Repository.MachineRepository).Assembly);
+            return container;
+        }
     }
 }

@@ -18,12 +18,17 @@
 
 using System;
 using System.Collections.Generic;
+using Framework.Contracts.Logging;
 
 namespace Framework.Arduino.SerialCommunication
 {
     public class HPGLSerial : Serial
     {
         readonly int maxmessagelength = 128;
+
+        public HPGLSerial(ILogger<Serial> logger) : base(logger)
+        {
+        }
 
         #region Overrrids
 

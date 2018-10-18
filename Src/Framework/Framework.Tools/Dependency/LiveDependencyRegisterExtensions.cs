@@ -17,14 +17,21 @@
 */
 
 using System;
+using System.Linq;
+using System.Reflection;
 using Framework.Contracts.Shared;
 
-namespace Framework.Tools
+namespace Framework.Tools.Dependency
 {
-    public class CurrentDateTime : ICurrentDateTime
+    public static class LiveDependencyRegisterExtensions
     {
-        public DateTime Now => DateTime.Now;
+        public static IDependencyContainer RegisterFrameWorkTools(this IDependencyContainer container)
+        {
+            container.RegisterType<ICurrentDateTime, CurrentDateTime>();
+            container.RegisterType<Framework.Contracts.Logging.ILoggerFactory, Framework.Tools.Logging.LoggerFactory>();
+            container.RegisterType(typeof(Framework.Contracts.Logging.ILogger<>), typeof(Framework.Tools.Logging.Logger<>));
 
-        public DateTime ToDay => DateTime.Today;
+            return container;
+        }
     }
 }
