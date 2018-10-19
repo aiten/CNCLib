@@ -33,6 +33,7 @@ import { machineControlRoutes, machineControlRoutingComponents } from './machine
 import { SerialServerService } from './services/serialserver.service';
 import { LocalSerialServerService } from './services/local.serialserver.service';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { LocalSerialServerService } from './services/local.serialserver.service'
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    FontAwesomeModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
