@@ -33,6 +33,13 @@ import { machineControlRoutes, machineControlRoutingComponents } from './machine
 import { SerialServerService } from './services/serialserver.service';
 import { LocalSerialServerService } from './services/local.serialserver.service';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faSync } from '@fortawesome/free-solid-svg-icons';
+import { faPlug } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faHome, faSync, faPlug);
 
 @NgModule({
   declarations: [
@@ -47,6 +54,7 @@ import { LocalSerialServerService } from './services/local.serialserver.service'
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    FontAwesomeModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
       	{ path: '', component: HomeComponent, pathMatch: 'full' },
