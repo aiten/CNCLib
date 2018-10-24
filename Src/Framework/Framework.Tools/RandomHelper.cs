@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Text;
-
 namespace Framework.Tools
 {
+    using System;
+    using System.Text;
+
     public static class RandomHelper
     {
         private static readonly Random _randomSeed = new Random();

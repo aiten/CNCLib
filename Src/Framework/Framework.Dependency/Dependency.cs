@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
 namespace Framework.Dependency
 {
+    using System;
+
     /// <summary>
     /// Static class that gives access to the DependencyContainer of the module. 
     /// 

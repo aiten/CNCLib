@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Runtime.InteropServices;
-
 namespace Framework.WinAPI
 {
+    using System;
+    using System.Runtime.InteropServices;
+
     public class WinAPIWrapper
     {
         [Flags]

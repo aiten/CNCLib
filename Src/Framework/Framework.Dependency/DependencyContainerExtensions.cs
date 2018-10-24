@@ -16,12 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Linq;
-using System.Reflection;
-
 namespace Framework.Dependency
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+
     public static class DependencyContainerExtensions
     {
         /// <summary>

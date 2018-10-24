@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.IO;
-
 namespace Framework.Tools
 {
+    using System;
+    using System.IO;
+
     public class IOHelper
     {
         public static bool IsWindows

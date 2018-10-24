@@ -16,16 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Framework.Contracts.Service;
-using Microsoft.AspNetCore.Mvc;
-
 namespace Framework.Web.Controllers
-
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    using Framework.Contracts.Service;
+
     public class UriAndValue<TDto> where TDto : class
     {
         public string Uri { get; set; }

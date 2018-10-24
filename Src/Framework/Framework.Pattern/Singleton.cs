@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Linq;
-using System.Reflection;
-
 namespace Framework.Pattern
 {
+    using System.Linq;
+    using System.Reflection;
+
     public class Singleton<T> where T : new()
     {
         private static T _instance;

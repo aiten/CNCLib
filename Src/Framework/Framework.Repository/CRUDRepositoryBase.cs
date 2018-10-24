@@ -16,13 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
-using System.Data;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-
 namespace Framework.Repository
 {
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
+
     public abstract class CRUDRepositoryBase<TDbContext, TEntity, TKey> : GetRepositoryBase<TDbContext, TEntity, TKey> where TDbContext : DbContext where TEntity : class
     {
         protected CRUDRepositoryBase(TDbContext dbContext) : base(dbContext)

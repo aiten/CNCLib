@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Framework.Test.Dependency;
-
 namespace Framework.Test
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Framework.Test.Dependency;
+
     /// <summary>
     /// Base class for *all* unit tests. 
     /// </summary>

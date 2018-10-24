@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
 namespace Framework.Pattern
 {
+    using System;
+
     public class DisposeWrapper : IDisposable
     {
         #region IDisposable Support

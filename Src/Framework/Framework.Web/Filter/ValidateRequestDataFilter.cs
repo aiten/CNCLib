@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-
 namespace Framework.Web.Filter
 {
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Filters;
+
     public sealed class ValidateRequestDataFilter : IActionFilter
     {
         public void OnActionExecuting(ActionExecutingContext context)

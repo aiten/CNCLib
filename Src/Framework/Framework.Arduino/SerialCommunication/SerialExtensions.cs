@@ -16,14 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Threading.Tasks;
-
 namespace Framework.Arduino.SerialCommunication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.IO;
+    using System.Threading.Tasks;
+
     public static class SerialExtension
     {
         const int DefaultTimeout = 10 * 60 * 1000;

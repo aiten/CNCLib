@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
 namespace Framework.Arduino.SerialCommunication
 {
+    using System;
+
     public class SerialEventArgs : EventArgs
     {
         public SerialEventArgs(string info, SerialCommand cmd)

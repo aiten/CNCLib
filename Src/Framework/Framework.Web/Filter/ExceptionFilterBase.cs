@@ -16,14 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Net;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-
 namespace Framework.Web.Filter
 {
+    using System;
+    using System.Net;
+
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.Extensions.Logging;
+
     public abstract class ExceptionFilterBase : ActionContextLoggerProvider, IExceptionFilter
     {
         protected ExceptionFilterBase(ILoggerFactory loggerFactory) : base(loggerFactory)

@@ -16,13 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using FluentAssertions;
-using Framework.Drawing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Framework.Test.Drawing
 {
+    using System;
+
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Framework.Drawing;
+
     [TestClass]
     public class Rotate3DTest
     {

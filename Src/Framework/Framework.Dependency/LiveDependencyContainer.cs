@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Unity;
-
 namespace Framework.Dependency
 {
+    using System;
+    using Unity;
+
     /// <summary>
     /// Dependency Contaienr for use in Live. Throws an exception when a Type cannot be resolved.
     /// </summary>

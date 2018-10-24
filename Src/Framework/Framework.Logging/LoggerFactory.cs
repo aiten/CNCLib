@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Framework.Contracts.Logging;
-
 namespace Framework.Logging
 {
+    using System;
+    using Framework.Contracts.Logging;
+
     public sealed class LoggerFactory : ILoggerFactory
     {
         public ILogger CreateLogger(Type type)

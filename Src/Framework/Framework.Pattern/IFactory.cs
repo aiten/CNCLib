@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
 namespace Framework.Pattern
 {
+    using System;
+
     public interface IScope<T> : IDisposable where T : class
     {
         T Instance { get; }

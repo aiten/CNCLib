@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-
 namespace Framework.Dependency
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Inversion of Control container, which enables Dependency Injection. 
     /// </summary>

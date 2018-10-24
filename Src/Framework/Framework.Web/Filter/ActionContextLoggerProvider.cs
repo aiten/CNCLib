@@ -16,13 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.Extensions.Logging;
-
 namespace Framework.Web.Filter
 {
+    using System;
+
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Controllers;
+    using Microsoft.Extensions.Logging;
+
     public abstract class ActionContextLoggerProvider
     {
         private readonly ILoggerFactory _loggerFactory;

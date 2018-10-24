@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Windows.Data;
-
 namespace Framework.Wpf.Converters
 {
+    using System;
+    using System.Windows.Data;
+
     public class IsBiggerThanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

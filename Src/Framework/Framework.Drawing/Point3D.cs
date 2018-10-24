@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
 namespace Framework.Drawing
 {
+    using System;
+
     public class Point3D
     {
         public Point3D(double x, double y, double z)

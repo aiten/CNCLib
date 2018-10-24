@@ -16,16 +16,18 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Framework.Contracts.Logic;
-using Framework.Contracts.Repository;
-
 namespace Framework.Logic
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using AutoMapper;
+
+    using Framework.Contracts.Logic;
+    using Framework.Contracts.Repository;
+
     public abstract class CRUDManager<T, TKey, TEntity> : GetManager<T, TKey, TEntity>, ICRUDManager<T, TKey> where T : class where TEntity : class
     {
         private readonly IMapper                        _mapper;

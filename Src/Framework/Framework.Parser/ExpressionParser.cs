@@ -14,15 +14,12 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 */
-////////////////////////////////////////////////////////
-
-using System;
-using System.Text;
-
-///////////////////////////////////////////////////////
 
 namespace Framework.Parser
 {
+    using System;
+    using System.Text;
+
     public class ExpressionParser : Parser
     {
         private readonly string MESSAGE_EXPR_EMPTY_EXPR          = "Empty expression";

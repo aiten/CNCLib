@@ -16,13 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.ComponentModel;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-
 namespace Framework.Wpf.Helpers
 {
+    using System;
+    using System.ComponentModel;
+    using System.Linq.Expressions;
+    using System.Runtime.CompilerServices;
+
     public class NotificationObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

@@ -16,19 +16,20 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using Framework.Contracts.Logging;
-using Framework.WinAPI;
-
 namespace Framework.Arduino.SerialCommunication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.IO;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Diagnostics;
+
+    using Contracts.Logging;
+    using WinAPI;
+
     public class Serial : ISerial
     {
         #region Private Members

@@ -16,11 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using Framework.Dependency;
 
 namespace Framework.Pattern
 {
+    using System;
+
     public sealed class ScopeResolve<T> : IScope<T>, IDisposable where T : class
     {
         private readonly IDependencyContainer _container;

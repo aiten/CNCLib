@@ -16,12 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-
 namespace Framework.Drawing
 {
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+
     public abstract class DitherBase
     {
         #region private members

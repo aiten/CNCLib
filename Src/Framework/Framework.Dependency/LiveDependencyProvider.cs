@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
 namespace Framework.Dependency
 {
+    using System;
+
     /// <summary>
     /// Implementation of IDependencyProvider that returns a single instance of LiveDependencyContainer.
     /// </summary>

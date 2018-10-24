@@ -16,12 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Globalization;
-using System.Windows.Data;
-
 namespace Framework.Wpf.Converters
 {
+    using System;
+    using System.Globalization;
+    using System.Windows.Data;
+
     [ValueConversion(typeof(bool), typeof(bool))]
     public class InvertBoolConverter : IValueConverter
     {

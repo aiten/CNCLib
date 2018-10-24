@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
 namespace Framework.Arduino.SerialCommunication
 {
+    using System;
+
     public delegate void CommandEventHandler(object sender, SerialEventArgs e);
 
     [Flags]

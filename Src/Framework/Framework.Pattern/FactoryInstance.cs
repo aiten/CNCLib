@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
 namespace Framework.Pattern
 {
+    using System;
+
     public sealed class ScopeInstance<T> : IScope<T>, IDisposable where T : class
     {
         private readonly T _instance;

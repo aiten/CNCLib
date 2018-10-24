@@ -16,13 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using FluentAssertions;
-using Framework.Parser;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Framework.Test.Parser
 {
+    using System;
+
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Framework.Parser;
+
     [TestClass]
     public class ParserTest
     {

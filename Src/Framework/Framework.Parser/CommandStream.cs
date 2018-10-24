@@ -16,12 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Linq;
-using System.Text;
-
 namespace Framework.Parser
 {
+    using System;
+    using System.Linq;
+    using System.Text;
+
     public class CommandStream
     {
         #region privat properties/members

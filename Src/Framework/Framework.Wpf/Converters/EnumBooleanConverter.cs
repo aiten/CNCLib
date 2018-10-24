@@ -16,13 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-
 namespace Framework.Wpf.Converters
 {
+    using System;
+    using System.Globalization;
+    using System.Windows;
+    using System.Windows.Data;
+
     public class EnumBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

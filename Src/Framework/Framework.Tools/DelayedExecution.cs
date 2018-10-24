@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Threading;
-
 namespace Framework.Tools
 {
+    using System;
+    using System.Threading;
+
     public class DelayedExecution
     {
         Timer _timer;

@@ -18,14 +18,14 @@
 
 // based on https://www.codeproject.com/Articles/318877/Comparing-the-properties-of-two-objects-via-Reflec
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
 namespace Framework.Tools
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
     ////////////////////////////////////////////////////////
 
     public class CompareProperties

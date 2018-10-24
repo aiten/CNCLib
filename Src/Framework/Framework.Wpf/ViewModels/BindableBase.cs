@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Runtime.CompilerServices;
-
 namespace Framework.Wpf.ViewModels
 {
+    using System;
+    using System.Runtime.CompilerServices;
+
     public class BindableBase : Prism.Mvvm.BindableBase
     {
         #region properties

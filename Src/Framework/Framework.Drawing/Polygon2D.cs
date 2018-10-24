@@ -16,12 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Framework.Drawing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class Polygon2D
     {
         private Point2D[] _points = new Point2D[0];

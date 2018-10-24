@@ -16,12 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Data;
-using System.Threading.Tasks;
-using Framework.Contracts.Repository;
-
 namespace Framework.Repository
 {
+    using System.Data;
+    using System.Threading.Tasks;
+
+    using Framework.Contracts.Repository;
+
     public static class CRUDRepositoryExtensions
     {
         public static async Task Store<TEntity, TKey>(this ICRUDRepository<TEntity, TKey> repository, TEntity entity, TKey key) where TEntity : class

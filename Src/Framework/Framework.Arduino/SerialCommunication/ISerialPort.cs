@@ -16,12 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.IO;
-using System.Text;
-
 namespace Framework.Arduino.SerialCommunication
 {
+    using System;
+    using System.IO;
+    using System.Text;
+
     public enum Parity
     {
         None  = 0,

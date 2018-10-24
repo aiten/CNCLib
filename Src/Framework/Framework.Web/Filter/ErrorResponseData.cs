@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Text.RegularExpressions;
-
 namespace Framework.Web.Filter
 {
+    using System;
+    using System.Text.RegularExpressions;
+
     public sealed class ErrorResponseData
     {
         public string Error   { get; set; }

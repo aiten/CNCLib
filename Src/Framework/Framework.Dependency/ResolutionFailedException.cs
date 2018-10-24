@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Runtime.Serialization;
-
 namespace Framework.Dependency
 {
+    using System;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// Exception that signifies that a dependency could not be resolved. 
     /// </summary>

@@ -16,15 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-
 // see https://msdn.microsoft.com/magazine/dn605875
 
 namespace Framework.Wpf.Helpers
 {
+    using System;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
+
     public sealed class NotifyTaskCompletion<TResult> : INotifyPropertyChanged
     {
         public NotifyTaskCompletion(Task<TResult> task)

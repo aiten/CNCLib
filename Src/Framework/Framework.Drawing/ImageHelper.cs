@@ -16,14 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Linq;
-
 namespace Framework.Drawing
 {
+    using System;
+    using System.Drawing;
+    using System.Drawing.Drawing2D;
+    using System.Drawing.Imaging;
+    using System.Linq;
+
     public class ImageHelper
     {
         public static void Save(Bitmap image, int maxWidth, int maxHeight, int quality, string filePath)

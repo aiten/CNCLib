@@ -16,20 +16,21 @@
   http://www.gnu.org/licenses/
 */
 
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Contracts.Logging;
-using Framework.Dependency;
-using Framework.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NSubstitute;
-
 namespace Framework.Test.SerialCommunication
 {
+    using System.IO;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NSubstitute;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Contracts.Logging;
+    using Framework.Dependency;
+    using Framework.Logging;
+
     [TestClass]
     public class SerialTest : UnitTestBase
     {

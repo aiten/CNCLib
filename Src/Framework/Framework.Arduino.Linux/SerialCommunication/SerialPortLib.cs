@@ -16,13 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using Framework.Arduino.SerialCommunication;
-
 namespace Framework.Arduino.Linux.SerialCommunication
 {
+    using System;
+    using System.IO;
+    using System.Runtime.InteropServices;
+    using Framework.Arduino.SerialCommunication;
+
     /// <summary>
     /// Implementation for ISerialPort for dependency injection 
     /// </summary>
