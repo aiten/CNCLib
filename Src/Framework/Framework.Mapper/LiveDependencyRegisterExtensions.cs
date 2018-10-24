@@ -16,17 +16,21 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
+using AutoMapper;
+using Framework.Dependency;
 
-namespace Framework.Tools.Pattern
+namespace Framework.Mapper
 {
-    public interface IScope<T> : IDisposable where T : class
+    public static class LiveDependencyRegisterExtensions
     {
-        T Instance { get; }
-    }
+        public static IDependencyContainer RegisterMapper(this IDependencyContainer container, MapperConfiguration mapperConfiguration)
+        {
+            mapperConfiguration.AssertConfigurationIsValid();
 
-    public interface IFactory<T> where T : class
-    {
-        IScope<T> Create();
+            IMapper mapper = mapperConfiguration.CreateMapper();
+            Dependency.Dependency.Container.RegisterInstance(mapper);
+
+            return container;
+        }
     }
 }

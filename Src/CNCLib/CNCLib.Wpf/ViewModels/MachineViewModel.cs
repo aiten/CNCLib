@@ -27,7 +27,7 @@ using CNCLib.Wpf.Models;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 using Framework.Arduino.SerialCommunication;
-using Framework.Tools.Pattern;
+using Framework.Pattern;
 
 using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
 

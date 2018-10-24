@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using CNCLib.Repository.Contracts;
 using FluentAssertions;
 using Framework.Dependency;
+using Framework.Tools;
 
 namespace CNCLib.Tests.Repository
 {
@@ -59,7 +60,7 @@ namespace CNCLib.Tests.Repository
             //entity1.Should().BeEquivalentTo(entity2, opts => 
             //    opts.Excluding(x => x.UserId)
             //);
-            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"ItemId" });
+            return CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"ItemId" });
         }
 
         #endregion

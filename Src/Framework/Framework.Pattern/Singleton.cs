@@ -19,7 +19,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Framework.Tools.Pattern
+namespace Framework.Pattern
 {
     public class Singleton<T> where T : new()
     {

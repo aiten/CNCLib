@@ -47,20 +47,15 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="netstandard" />
@@ -250,6 +245,10 @@
     <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj">
       <Project>{081814da-adc7-4b65-ae16-856c1b3d3ce8}</Project>
       <Name>Framework.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Pattern\Framework.Pattern.csproj">
+      <Project>{786e7311-ac37-40d0-b34f-813d6e988ebf}</Project>
+      <Name>Framework.Pattern</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
       <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>

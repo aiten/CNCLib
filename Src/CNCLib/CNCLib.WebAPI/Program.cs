@@ -24,7 +24,6 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
-using CNCLib.Repository.SqlServer;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using NLog;

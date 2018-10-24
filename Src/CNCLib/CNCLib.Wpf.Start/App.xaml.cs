@@ -25,21 +25,14 @@ using AutoMapper;
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
 using CNCLib.Logic.Client;
-using CNCLib.Logic.Manager;
 using CNCLib.Repository;
-using CNCLib.Repository.Context;
-using CNCLib.Repository.SqLite;
-using CNCLib.Service.Contracts;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
 using Framework.Arduino.SerialCommunication;
-using Framework.Contracts.Repository;
-using Framework.Contracts.Shared;
 using Framework.Dependency;
-using Framework.Repository;
 using Framework.Tools;
-using Framework.Tools.Mapper;
-using Framework.Tools.Pattern;
+using Framework.Mapper;
+using Framework.Logging;
 using NLog;
 
 namespace CNCLib.Wpf.Start
@@ -61,7 +54,7 @@ namespace CNCLib.Wpf.Start
             GlobalDiagnosticsContext.Set("connectionString", $"Data Source={dbfile}");
 
             LogManager.ThrowExceptions = true;
-            Logger logger = LogManager.GetLogger("foo");
+            var logger = LogManager.GetLogger("foo");
 
             _logger.Info(@"Starting ...");
             LogManager.ThrowExceptions = false;
@@ -71,6 +64,7 @@ namespace CNCLib.Wpf.Start
             Dependency.Initialize(new LiveDependencyProvider());
 
             Dependency.Container.RegisterFrameWorkTools();
+            Dependency.Container.RegisterFrameWorkLogging();
             Dependency.Container.RegisterRepository();
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();

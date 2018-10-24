@@ -2,10 +2,7 @@
   <Import Project="$(ProjectDir)..\SolutionItems\Framework.targets" />
    <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>  
-  <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
-  </ItemGroup>
+  </PropertyGroup>
 
   
 </Project>

@@ -16,6 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Runtime.InteropServices;
+using System;
 
-[assembly: Guid("99c91315-0574-4842-b3d2-f1eeca448a45")]
+namespace Framework.Pattern
+{
+    public interface IScope<T> : IDisposable where T : class
+    {
+        T Instance { get; }
+    }
+
+    public interface IFactory<T> where T : class
+    {
+        IScope<T> Create();
+    }
+}

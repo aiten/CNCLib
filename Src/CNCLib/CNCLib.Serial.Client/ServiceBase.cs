@@ -19,7 +19,7 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Framework.Tools;
+using Framework.Pattern;
 
 namespace CNCLib.Serial.Client
 {

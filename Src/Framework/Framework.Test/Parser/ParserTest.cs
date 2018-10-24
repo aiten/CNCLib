@@ -18,8 +18,7 @@
 
 using System;
 using FluentAssertions;
-using Framework.Tools.Helpers;
-using Framework.Tools.Parser;
+using Framework.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Framework.Test.Parser

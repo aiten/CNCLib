@@ -20,11 +20,11 @@
 //
 //#define EXPRPARSER_MAXTOKENLENGTH 16
 
-using Framework.Tools.Helpers;
+
 
 ////////////////////////////////////////////////////////
 
-namespace Framework.Tools.Parser
+namespace Framework.Parser
 {
     public abstract class Parser
     {

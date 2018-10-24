@@ -16,13 +16,13 @@
 */
 ////////////////////////////////////////////////////////
 
-using Framework.Tools.Helpers;
+using Framework.Parser;
 
 ///////////////////////////////////////////////////////
 
 namespace CNCLib.GCode.Parser
 {
-    public class GCodeParser : Framework.Tools.Parser.Parser
+    public class GCodeParser : Framework.Parser.Parser
     {
         readonly string MESSAGE_GCODE_CommentNestingError = "Comment nesting error";
 

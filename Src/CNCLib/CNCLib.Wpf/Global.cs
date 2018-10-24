@@ -22,7 +22,7 @@ using CNCLib.GCode.Commands;
 using CNCLib.Wpf.Models;
 using CNCLib.Wpf.Helpers;
 using Framework.Logging;
-using Framework.Tools.Pattern;
+using Framework.Pattern;
 
 using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
 
@@ -109,15 +109,14 @@ namespace CNCLib.Wpf
             }
         }
 
-//        public Framework.Arduino.SerialCommunication.ISerial Com => Framework.Tools.Pattern.Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
+//        public Framework.Arduino.SerialCommunication.ISerial Com => Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
         public SerialProxy Com { get; set; } = new SerialProxy();
 
         private JoystickArduinoSerialCommunication _joystickSerialCommunication = new JoystickArduinoSerialCommunication(new Logger<Framework.Arduino.SerialCommunication.Serial>());
 
         public Framework.Arduino.SerialCommunication.ISerial ComJoystick => _joystickSerialCommunication;
 
-        public MachineGCodeHelper GCode =>
-            Framework.Tools.Pattern.Singleton<MachineGCodeHelper>.Instance;
+        public MachineGCodeHelper GCode => Singleton<MachineGCodeHelper>.Instance;
 
         private CommandList _commands = new CommandList();
 

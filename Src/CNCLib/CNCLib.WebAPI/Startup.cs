@@ -19,18 +19,14 @@
 using AutoMapper;
 using CNCLib.Logic;
 using CNCLib.Logic.Client;
-using CNCLib.Logic.Manager;
 using CNCLib.Repository;
-using CNCLib.Repository.Context;
 using CNCLib.Repository.SqlServer;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
-using Framework.Contracts.Repository;
-using Framework.Contracts.Shared;
 using Framework.Dependency;
-using Framework.Repository;
+using Framework.Logging;
 using Framework.Tools;
-using Framework.Tools.Mapper;
+using Framework.Mapper;
 using Framework.Web;
 using Framework.Web.Filter;
 using Microsoft.AspNetCore.Builder;
@@ -76,6 +72,7 @@ namespace CNCLib.WebAPI
             Dependency.Initialize(new AspNetDependencyProvider(services));
 
             Dependency.Container.RegisterFrameWorkTools();
+            Dependency.Container.RegisterFrameWorkLogging();
             Dependency.Container.RegisterRepository();
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();

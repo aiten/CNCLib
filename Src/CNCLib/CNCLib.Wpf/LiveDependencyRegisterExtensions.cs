@@ -17,10 +17,8 @@
 */
 
 using CNCLib.Service.Contracts;
-using Framework.Contracts.Shared;
 using Framework.Dependency;
-using Framework.Tools;
-using Framework.Tools.Pattern;
+using Framework.Pattern;
 
 namespace CNCLib.Wpf
 {

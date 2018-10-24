@@ -22,7 +22,7 @@ using System.Globalization;
 using CNCLib.Logic.Contracts.DTO;
 using System.IO;
 using Framework.Drawing;
-using Framework.Tools.Helpers;
+using Framework.Tools;
 
 namespace CNCLib.GCode.Load
 {

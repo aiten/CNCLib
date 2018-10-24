@@ -19,7 +19,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Framework.Tools
+namespace Framework.WinAPI
 {
     public class WinAPIWrapper
     {

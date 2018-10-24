@@ -19,7 +19,7 @@
 using System;
 using Framework.Dependency;
 
-namespace Framework.Tools.Pattern
+namespace Framework.Pattern
 {
     public sealed class ScopeResolve<T> : IScope<T>, IDisposable where T : class
     {

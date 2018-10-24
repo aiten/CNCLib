@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools;
+using Framework.Pattern;
 
 namespace Framework.Service
 {

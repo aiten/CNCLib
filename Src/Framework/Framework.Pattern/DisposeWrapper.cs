@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Framework.Tools
+namespace Framework.Pattern
 {
     public class DisposeWrapper : IDisposable
     {

@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contracts.Repository;
 using Framework.Dependency;
 
 namespace CNCLib.Logic

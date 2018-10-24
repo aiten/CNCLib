@@ -28,7 +28,8 @@ using System.Xml.Serialization;
 using AutoMapper;
 using CNCLib.GCode.GUI.Models;
 using CNCLib.Service.Contracts;
-using Framework.Tools.Pattern;
+using Framework.Pattern;
+using Framework.Tools;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
@@ -145,7 +146,7 @@ namespace CNCLib.GCode.GUI.ViewModels
                 });
             }
 
-            if (Can() && SelectedLoadOption != null && !Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(SelectedLoadOption, LoadOptionsValue, ignorelist.ToArray()))
+            if (Can() && SelectedLoadOption != null && !CompareProperties.AreObjectsPropertiesEqual(SelectedLoadOption, LoadOptionsValue, ignorelist.ToArray()))
             {
                 return true;
             }

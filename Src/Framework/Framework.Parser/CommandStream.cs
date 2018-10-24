@@ -20,7 +20,7 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace Framework.Tools.Helpers
+namespace Framework.Parser
 {
     public class CommandStream
     {

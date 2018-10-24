@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Drawing\Framework.Drawing.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Parser\Framework.Parser.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">

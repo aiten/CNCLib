@@ -19,7 +19,7 @@
 using System;
 using System.Threading;
 
-namespace Framework.Tools.Helpers
+namespace Framework.Tools
 {
     public class DelayedExecution
     {

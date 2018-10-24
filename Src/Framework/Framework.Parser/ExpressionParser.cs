@@ -18,11 +18,10 @@
 
 using System;
 using System.Text;
-using Framework.Tools.Helpers;
 
 ///////////////////////////////////////////////////////
 
-namespace Framework.Tools.Parser
+namespace Framework.Parser
 {
     public class ExpressionParser : Parser
     {

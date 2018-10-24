@@ -28,11 +28,10 @@ using CNCLib.Service.Contracts;
 using CNCLib.Service.WebAPI;
 using CNCLib.Shared;
 using Framework.Arduino.SerialCommunication;
-using Framework.Contracts.Shared;
 using Framework.Dependency;
+using Framework.Logging;
 using Framework.Tools;
-using Framework.Tools.Mapper;
-using Framework.Tools.Pattern;
+using Framework.Mapper;
 using NLog;
 
 namespace CNCLib.Wpf.WebAPI.Start
@@ -52,6 +51,7 @@ namespace CNCLib.Wpf.WebAPI.Start
             Dependency.Initialize(new LiveDependencyProvider());
 
             Dependency.Container.RegisterFrameWorkTools();
+            Dependency.Container.RegisterFrameWorkLogging();
             Dependency.Container.RegisterLogicClient();
             Dependency.Container.RegisterSerialCommunication();
             Dependency.Container.RegisterServiceAsWebAPI();

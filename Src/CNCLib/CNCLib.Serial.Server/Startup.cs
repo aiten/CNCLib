@@ -21,9 +21,9 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using CNCLib.Serial.Server.Hubs;
 using Framework.Arduino.Linux.SerialCommunication;
-using Framework.Contracts.Shared;
 using Framework.Dependency;
 using Framework.Tools;
+using Framework.Logging;
 using Framework.Web;
 using Framework.Web.Filter;
 using Microsoft.AspNetCore.Builder;
@@ -73,6 +73,7 @@ namespace CNCLib.Serial.Server
             Dependency.Initialize(new AspNetDependencyProvider(services));
 
             Dependency.Container.RegisterFrameWorkTools();
+            Dependency.Container.RegisterFrameWorkLogging();
 
             Dependency.Container.RegisterTypesIncludingInternalsScoped(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
 

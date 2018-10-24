@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Framework.Tools.Pattern
+namespace Framework.Pattern
 {
     public sealed class ScopeInstance<T> : IScope<T>, IDisposable where T : class
     {

@@ -17,6 +17,7 @@
 */
 
 using Framework.Logging;
+using Framework.Pattern;
 
 namespace CNCLib.Wpf.Helpers
 {
@@ -27,8 +28,7 @@ namespace CNCLib.Wpf.Helpers
             Current = LocalCom;
         }
 
-        public Framework.Arduino.SerialCommunication.ISerial RemoteCom =>
-            Framework.Tools.Pattern.Singleton<Serial.Client.SerialService>.Instance;
+        public Framework.Arduino.SerialCommunication.ISerial RemoteCom => Singleton<Serial.Client.SerialService>.Instance;
 
         private static  Framework.Arduino.SerialCommunication.Serial _localSerial = new Framework.Arduino.SerialCommunication.Serial(new Logger<Framework.Arduino.SerialCommunication.Serial>());
 

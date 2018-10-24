@@ -28,7 +28,7 @@ using CNCLib.Service.Contracts;
 using CNCLib.Wpf.Helpers;
 using CNCLib.Wpf.Models;
 using Framework.Tools;
-using Framework.Tools.Pattern;
+using Framework.Pattern;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 

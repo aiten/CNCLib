@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 using CNCLib.Service.Contracts;
 using FluentAssertions;
 using Framework.Dependency;
-using Framework.Tools.Pattern;
+using Framework.Pattern;
 
 namespace CNCLib.Tests.Wpf
 {

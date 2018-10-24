@@ -24,7 +24,7 @@ using System.Linq;
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
 using Framework.Drawing;
-using Framework.Tools.Helpers;
+using Framework.Parser;
 
 namespace CNCLib.GCode.Load
 {

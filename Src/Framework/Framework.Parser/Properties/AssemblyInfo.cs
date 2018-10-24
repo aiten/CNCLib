@@ -16,21 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using AutoMapper;
-using Framework.Dependency;
+using System.Runtime.InteropServices;
 
-namespace Framework.Tools.Mapper
-{
-    public static class LiveDependencyRegisterExtensions
-    {
-        public static IDependencyContainer RegisterMapper(this IDependencyContainer container, MapperConfiguration mapperConfiguration)
-        {
-            mapperConfiguration.AssertConfigurationIsValid();
-
-            IMapper mapper = mapperConfiguration.CreateMapper();
-            Dependency.Dependency.Container.RegisterInstance(mapper);
-
-            return container;
-        }
-    }
-}
+[assembly: Guid("99c91315-0574-4842-b3d2-f1eeca448a45")]

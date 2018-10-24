@@ -5,9 +5,8 @@
   </PropertyGroup>
    <ItemGroup>
      <PackageReference Include="AutoMapper" Version="7.0.1" />
-   </ItemGroup>  
-  <ItemGroup>
-    <ProjectReference Include="..\Framework.Tools\Framework.Tools.csproj">
-    </ProjectReference>
-  </ItemGroup>
+   </ItemGroup>
+   <ItemGroup>
+     <ProjectReference Include="..\Framework.Pattern\Framework.Pattern.csproj" />
+   </ItemGroup>
 </Project>

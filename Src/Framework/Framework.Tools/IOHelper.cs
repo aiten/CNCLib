@@ -2,7 +2,7 @@
 /*
   This file is part of CNCLib - A library for stepper motors.
 
-  Copyright (c) 2013-2018 Herbert Aitenbichler
+  Copyright (c) 2013-2014 Herbert Aitenbichler
 
   CNCLib is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -16,18 +16,27 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contracts.Shared;
-using Framework.Dependency;
+using System;
+using System.IO;
 
 namespace Framework.Tools
 {
-    public static class LiveDependencyRegisterExtensions
+    public class IOHelper
     {
-        public static IDependencyContainer RegisterFrameWorkTools(this IDependencyContainer container)
+        public static bool IsWindows
         {
-            container.RegisterType<ICurrentDateTime, CurrentDateTime>();
+            get
+            {
+                PlatformID id = Environment.OSVersion.Platform;
+                return id == PlatformID.Win32Windows || id == PlatformID.Win32NT; // WinCE not supported
+            }
+        }
 
-            return container;
+        public static string ExpandEnvironmentVariables(string filename)
+        {
+            string pathname = Environment.ExpandEnvironmentVariables(filename);
+            string fullpath = Path.GetFullPath(pathname);
+            return fullpath;
         }
     }
 }

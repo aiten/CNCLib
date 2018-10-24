@@ -25,6 +25,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Framework.Contracts.Logging;
+using Framework.WinAPI;
 
 namespace Framework.Arduino.SerialCommunication
 {
@@ -884,13 +885,13 @@ namespace Framework.Arduino.SerialCommunication
 
         private static void SetSystemKeepAlive()
         {
-            Tools.WinAPIWrapper.KeepAlive();
-            Tools.WinAPIWrapper.ResetTimer();
+            WinAPIWrapper.KeepAlive();
+            WinAPIWrapper.ResetTimer();
         }
 
         private static void ClearSystemKeepAlive()
         {
-            Tools.WinAPIWrapper.AllowIdle();
+            WinAPIWrapper.AllowIdle();
         }
 
         #endregion
