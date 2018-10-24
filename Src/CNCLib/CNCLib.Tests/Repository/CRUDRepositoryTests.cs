@@ -250,7 +250,6 @@ namespace CNCLib.Tests.Repository
             }
         }
 
-
         public async Task AddRollBack(Func<TEntity> createTestEntity)
         {
             // first add entity

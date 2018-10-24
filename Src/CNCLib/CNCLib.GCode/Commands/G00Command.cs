@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-
 namespace CNCLib.GCode.Commands
 {
     [IsGCommand("G0,G00")]

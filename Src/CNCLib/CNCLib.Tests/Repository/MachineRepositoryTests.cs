@@ -157,7 +157,6 @@ namespace CNCLib.Tests.Repository
             });
         }
 
-
         [TestMethod]
         public async Task AddRollbackTest()
         {

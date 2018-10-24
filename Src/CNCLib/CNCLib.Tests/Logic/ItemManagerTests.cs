@@ -51,7 +51,6 @@ namespace CNCLib.Tests.Logic
             return rep;
         }
 
-
         [TestMethod]
         public async Task GetItemNone()
         {

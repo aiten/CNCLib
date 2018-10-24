@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-
 using Framework.Drawing;
 
 namespace CNCLib.GCode.Commands

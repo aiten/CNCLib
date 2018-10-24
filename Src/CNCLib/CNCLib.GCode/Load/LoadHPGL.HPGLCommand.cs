@@ -29,7 +29,7 @@ namespace CNCLib.GCode.Load
                 PenUp,
                 PenDown,
                 Other
-            };
+            }
 
             public HPGLCommandType CommandType { get; set; } = HPGLCommandType.Other;
 

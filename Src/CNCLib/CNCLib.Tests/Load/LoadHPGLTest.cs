@@ -225,7 +225,6 @@ namespace CNCLib.Tests.Load
             CheckGCode(list, gcode);
         }
 
-
         private static void CheckGCode(IEnumerable<Command> list, string[] expectgcode)
         {
             list.Count().Should().Be(expectgcode.Length);

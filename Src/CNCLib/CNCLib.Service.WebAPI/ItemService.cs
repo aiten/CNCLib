@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;

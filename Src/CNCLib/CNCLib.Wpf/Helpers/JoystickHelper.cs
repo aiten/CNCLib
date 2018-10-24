@@ -109,7 +109,6 @@ namespace CNCLib.Wpf.Helpers
             new MachineGCodeHelper().SendCommandAsync(trim).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-
         public async Task SendInitCommands(string commandstring)
         {
             string[] seperators = { @"\n" };

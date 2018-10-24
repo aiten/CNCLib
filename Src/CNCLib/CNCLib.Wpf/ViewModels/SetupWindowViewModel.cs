@@ -46,7 +46,6 @@ namespace CNCLib.Wpf.ViewModels
 
         readonly IFactory<IMachineService> _machineService;
 
-
         public override async Task Loaded()
         {
             await base.Loaded();

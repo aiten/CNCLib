@@ -34,7 +34,6 @@ namespace CNCLib.GCode.Parser
         {
         }
 
-
         public static bool IsCommentStart(char ch)
         {
             return ch == '(' || ch == '*' || ch == ';';

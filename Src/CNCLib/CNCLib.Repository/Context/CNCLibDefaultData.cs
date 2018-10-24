@@ -728,7 +728,6 @@ namespace CNCLib.Repository.Context
                 new ItemProperty { Item = cutItem, Name = @"MoveSpeed", Value           = @"450" }, new ItemProperty { Item = cutItem, Name = @"LoadType", Value = @"HPGL" },
                 new ItemProperty { Item = cutItem, Name = @"FileName", Value            = @"Examples\Ghost.hpgl" },
 
-
                 //cut-image
                 new ItemProperty { Item = cutHoleItem, Name = @"SettingName", Value         = cutHoleItem.Name },
                 new ItemProperty { Item = cutHoleItem, Name = @"LaserFirstOnCommand", Value = @"M3 S255\ng4 P0.25" },

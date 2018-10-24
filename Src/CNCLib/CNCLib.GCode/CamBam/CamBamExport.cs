@@ -32,14 +32,14 @@ namespace CNCLib.GCode.CamBam
             public System.Drawing.Color Color { get; set; }
 
             public List<Object> Objects { get; set; } = new List<Object>();
-        };
+        }
 
         public List<Layer> Lasers { get; set; } = new List<Layer>();
 
         public class Object
         {
             public int Id { get; set; }
-        };
+        }
 
         public class PLine : Object
         {

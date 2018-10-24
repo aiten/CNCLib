@@ -18,8 +18,4 @@
 
 using System.Runtime.InteropServices;
 
-//[assembly: AssemblyTitle("CNCLib.ServiceProxy.Logic")]
-//[assembly: AssemblyProduct("CNCLib.ServiceProxy.Logic")]
-
-
 [assembly: Guid("f6696f23-9dcc-4d9a-9418-e7d1fed7eabd")]

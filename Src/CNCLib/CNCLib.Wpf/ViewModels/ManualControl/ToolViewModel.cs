@@ -210,7 +210,6 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             return null;
         }
 
-
         public void ReadPosition()
         {
             RunAndUpdate(async () =>

@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-
 namespace CNCLib.WebAPI.Tests.AzureWebApi
 {
     public class AzureWebApiTest : UnitTestBase

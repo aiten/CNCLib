@@ -16,9 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.GCode.Commands;
 using System;
+
+using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
+
 using Framework.Tools;
 
 namespace CNCLib.GCode.Load
@@ -31,7 +33,6 @@ namespace CNCLib.GCode.Load
         protected override double PixelDistX => (double) LoadOptions.DotDistX;
         protected override double PixelDistY => (double) LoadOptions.DotDistY;
         protected          double LaserSize  => (double) LoadOptions.LaserSize;
-
 
         public bool UseYShift   => LoadOptions.UseYShift;
         public bool RotateHeart => LoadOptions.RotateHeart;
@@ -208,7 +209,6 @@ namespace CNCLib.GCode.Load
                     size *= 1.0 / 0.86602540378443864676372317075294;
                     break;
             }
-
 
             double dotsizeX = size * PixelSizeX * ImageToDotSizeX * scaleX;
             double dotsizeY = size * PixelSizeY * ImageToDotSizeY * scaleY;

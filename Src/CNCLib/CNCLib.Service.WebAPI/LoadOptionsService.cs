@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Service.Contracts;
 

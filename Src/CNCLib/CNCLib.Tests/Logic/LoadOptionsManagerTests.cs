@@ -54,7 +54,6 @@ namespace CNCLib.Tests.Logic
 
             var all = await ctrl.GetAll();
 
-
             all.Count().Should().Be(1);
             all.FirstOrDefault().Id.Should().Be(1);
 
@@ -89,8 +88,7 @@ namespace CNCLib.Tests.Logic
 
             all.Should().BeNull();
         }
-
-
+        
         [TestMethod]
         public async Task AddLoadOptions()
         {

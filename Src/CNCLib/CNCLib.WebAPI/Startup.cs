@@ -100,7 +100,6 @@ namespace CNCLib.WebAPI
                 GlobalDiagnosticsContext.Set("connectionString", sqlconnectstring);
             }
 
-
             Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false, false);
 
             if (env.IsDevelopment())

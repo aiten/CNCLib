@@ -60,7 +60,6 @@ namespace CNCLib.Wpf
             }
         }
 
-
         private decimal _sizeX = 140m;
 
         public decimal SizeX

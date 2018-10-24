@@ -41,7 +41,6 @@ namespace CNCLib.GCode.GUI.Models
 
         public string FileName { get => _fileName; set => SetProperty(ref _fileName, value); }
 
-
         public byte[] FileContent { get; set; }
 
         public string SettingName { get; set; }

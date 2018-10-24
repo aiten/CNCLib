@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-
 namespace CNCLib.Logic.Contracts.DTO
 {
     public class DynItem

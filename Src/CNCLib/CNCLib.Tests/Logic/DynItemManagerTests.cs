@@ -39,7 +39,6 @@ namespace CNCLib.Tests.Logic
             return srv;
         }
 
-
         [TestMethod]
         public async Task GetItemNone()
         {
@@ -242,7 +241,6 @@ namespace CNCLib.Tests.Logic
             await srv.Received().Get(1);
             await srv.DidNotReceiveWithAnyArgs().Delete((Item) null);
         }
-
 
         [TestMethod]
         public async Task SaveItem()

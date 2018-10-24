@@ -63,7 +63,6 @@ namespace CNCLib.Wpf.ViewModels
 
         public ObservableCollection<MachineCommand> MachineCommands => _currentMachine.MachineCommands;
 
-
         public ObservableCollection<MachineInitCommand> MachineInitCommands => _currentMachine.MachineInitCommands;
 
         public bool AddNewMachine { get; set; }
