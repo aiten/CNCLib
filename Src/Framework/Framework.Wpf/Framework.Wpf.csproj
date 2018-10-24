@@ -19,8 +19,4 @@
   <ItemGroup>
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Framework.Tools\Framework.Tools.csproj">
-    </ProjectReference>
-  </ItemGroup>
 </Project>

@@ -2,11 +2,7 @@
   <Import Project="$(ProjectDir)..\SolutionItems\Framework.targets" />
    <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>  
-  <ItemGroup>
-    <ProjectReference Include="..\Framework.Contracts\Framework.Contracts.csproj" />
-    <ProjectReference Include="..\Framework.Dependency\Framework.Dependency.csproj" />
-  </ItemGroup>
+  </PropertyGroup>
 
   
 </Project>

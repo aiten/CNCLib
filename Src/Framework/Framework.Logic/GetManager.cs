@@ -21,10 +21,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Framework.Contracts.Repository;
+using Framework.Contracts.Logic;
 
 namespace Framework.Logic
 {
-    public abstract class GetManager<T, TKey, TEntity> : ManagerBase where T : class where TEntity : class
+    public abstract class GetManager<T, TKey, TEntity> : ManagerBase, IGetManager<T, TKey> where T : class where TEntity : class
     {
         private readonly IMapper                       _mapper;
         private readonly IGetRepository<TEntity, TKey> _repository;

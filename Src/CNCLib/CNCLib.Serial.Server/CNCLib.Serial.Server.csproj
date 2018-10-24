@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Logging\Framework.Logging.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Web\Framework.Web.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Arduino.Linux\Framework.Arduino.Linux.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />
