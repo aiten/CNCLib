@@ -16,20 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Tools.Dependency
-{
-    /// <summary>
-    /// Provides an IDependencyContainer implementation. 
-    /// </summary>
-    public interface IDependencyProvider
-    {
-        /// <summary>
-        /// Returns an instance of an IDependencyContainer. 
-        /// 
-        /// In live this is always a singleton for the whole application. 
-        /// In unit tests this may be a TaskLocal container wihch allows tests
-        /// to run parallel without interfering with each other.
-        /// </summary>
-        IDependencyContainer Container { get; }
-    }
-}
+using System.Runtime.InteropServices;
+
+//[assembly: AssemblyTitle("Framework.Tools")]
+//[assembly: AssemblyProduct("Framework.Tools")]
+
+[assembly: Guid("99c91315-0574-4842-b3d2-f1eeca448a45")]

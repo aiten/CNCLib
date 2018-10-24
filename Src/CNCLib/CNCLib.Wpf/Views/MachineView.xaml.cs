@@ -17,7 +17,7 @@
 */
 
 using System.Windows;
-using Framework.Tools.Dependency;
+using Framework.Dependency;
 using Framework.Wpf.View;
 
 namespace CNCLib.Wpf.Views

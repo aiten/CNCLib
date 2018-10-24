@@ -20,7 +20,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace Framework.Tools.Drawing
+namespace Framework.Drawing
 {
     public abstract class DitherBase
     {

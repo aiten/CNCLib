@@ -20,8 +20,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CNCLib.Logic.Contracts.DTO;
+using Framework.Drawing;
 using Framework.Tools.Clipper;
-using Framework.Tools.Drawing;
 
 namespace CNCLib.GCode.Load
 {

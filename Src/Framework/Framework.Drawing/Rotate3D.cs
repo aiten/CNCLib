@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Framework.Tools.Drawing
+namespace Framework.Drawing
 {
     public class Rotate3D
     {

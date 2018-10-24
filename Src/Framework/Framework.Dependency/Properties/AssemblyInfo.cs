@@ -16,26 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Unity;
+using System.Runtime.InteropServices;
 
-namespace Framework.Tools.Dependency
-{
-    /// <summary>
-    /// Dependency Contaienr for use in Live. Throws an exception when a Type cannot be resolved.
-    /// </summary>
-    public sealed class LiveDependencyContainer : UnityDependencyContainer
-    {
-        public override object Resolve(Type t)
-        {
-            try
-            {
-                return MyUnityContainer.Resolve(t);
-            }
-            catch (ResolutionFailedException ex)
-            {
-                throw new ResolutionFailedException($"Resolution for {t.FullName} failed", ex);
-            }
-        }
-    }
-}
+//[assembly: AssemblyTitle("Framework.Tools")]
+//[assembly: AssemblyProduct("Framework.Tools")]
+
+[assembly: Guid("99c91315-0574-4842-b3d2-f1eeca448a45")]

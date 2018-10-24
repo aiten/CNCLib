@@ -17,10 +17,9 @@
 */
 
 using AutoMapper;
-using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
+using Framework.Dependency;
 
-namespace CNCLib.Wpf
+namespace Framework.Tools.Mapper
 {
     public static class LiveDependencyRegisterExtensions
     {
@@ -29,7 +28,7 @@ namespace CNCLib.Wpf
             mapperConfiguration.AssertConfigurationIsValid();
 
             IMapper mapper = mapperConfiguration.CreateMapper();
-            Dependency.Container.RegisterInstance(mapper);
+            Dependency.Dependency.Container.RegisterInstance(mapper);
 
             return container;
         }

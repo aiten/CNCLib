@@ -16,19 +16,26 @@
   http://www.gnu.org/licenses/
 */
 
-
 using System;
+using Unity;
 
-namespace Framework.Tools.Drawing
+namespace Framework.Dependency
 {
-    public class Point2D
+    /// <summary>
+    /// Dependency Contaienr for use in Live. Throws an exception when a Type cannot be resolved.
+    /// </summary>
+    public sealed class LiveDependencyContainer : UnityDependencyContainer
     {
-        public double X { get; set; }
-        public double Y { get; set; }
-
-        public bool Compare(Point2D to)
+        public override object Resolve(Type t)
         {
-            return Math.Abs(X - to.X) < double.Epsilon && Math.Abs(Y - to.Y) < double.Epsilon;
+            try
+            {
+                return MyUnityContainer.Resolve(t);
+            }
+            catch (ResolutionFailedException ex)
+            {
+                throw new ResolutionFailedException($"Resolution for {t.FullName} failed", ex);
+            }
         }
     }
 }

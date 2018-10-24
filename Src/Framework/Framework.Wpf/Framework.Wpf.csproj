@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)..\Framework.targets" />
+  <Import Project="$(ProjectDir)..\SolutionItems\Framework.targets" />
    <PropertyGroup>
 	<TargetFramework>net471</TargetFramework>
   </PropertyGroup>

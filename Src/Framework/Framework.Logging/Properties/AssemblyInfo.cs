@@ -16,23 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Framework.Contracts.Logging;
+using System.Runtime.InteropServices;
 
-namespace Framework.Tools.Logging
-{
-    public sealed class LoggerFactory : ILoggerFactory
-    {
-        public ILogger CreateLogger(Type type)
-        {
-            return new Logger(type);
-        }
+//[assembly: AssemblyTitle("Framework.Tools")]
+//[assembly: AssemblyProduct("Framework.Tools")]
 
-        public ILogger CreateLogger(string key)
-        {
-            return new Logger(key);
-        }
-    }
-}
+[assembly: Guid("99c91315-0574-4842-b3d2-f1eeca448a45")]

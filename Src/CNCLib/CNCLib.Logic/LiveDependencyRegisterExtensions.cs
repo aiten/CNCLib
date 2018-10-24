@@ -17,7 +17,7 @@
 */
 
 using Framework.Contracts.Repository;
-using Framework.Tools.Dependency;
+using Framework.Dependency;
 
 namespace CNCLib.Logic
 {

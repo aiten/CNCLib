@@ -18,11 +18,11 @@
 
 using System.Linq;
 using CNCLib.Wpf.Models;
-using Framework.Tools.Dependency;
 using Framework.Arduino.SerialCommunication;
 using CNCLib.Logic.Client;
 using System.Threading.Tasks;
 using System;
+using Framework.Dependency;
 
 namespace CNCLib.Wpf.Helpers
 {

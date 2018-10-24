@@ -23,7 +23,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CNCLib.Repository.Contracts;
 using FluentAssertions;
-using Framework.Tools.Dependency;
+using Framework.Dependency;
 
 namespace CNCLib.Tests.Repository
 {

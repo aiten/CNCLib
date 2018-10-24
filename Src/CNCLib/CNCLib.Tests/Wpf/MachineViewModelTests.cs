@@ -22,10 +22,10 @@ using System.Linq;
 using NSubstitute;
 using CNCLib.Wpf.ViewModels;
 using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools.Dependency;
 using System.Threading.Tasks;
 using CNCLib.Service.Contracts;
 using FluentAssertions;
+using Framework.Dependency;
 using Framework.Tools.Pattern;
 
 namespace CNCLib.Tests.Wpf

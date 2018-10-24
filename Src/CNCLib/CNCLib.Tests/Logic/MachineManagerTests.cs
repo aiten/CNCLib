@@ -22,13 +22,12 @@ using CNCLib.Repository.Contracts.Entities;
 using CNCLib.Repository.Contracts;
 using System.Linq;
 using NSubstitute;
-using Framework.Tools.Dependency;
 using System.Threading.Tasks;
 using AutoMapper;
 using CNCLib.Logic.Manager;
 using FluentAssertions;
 using Framework.Contracts.Repository;
-
+using Framework.Dependency;
 using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
 using MachineInitCommandDto = CNCLib.Logic.Contracts.DTO.MachineInitCommand;
 using MachineCommandDto = CNCLib.Logic.Contracts.DTO.MachineCommand;

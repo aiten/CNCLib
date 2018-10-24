@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
-using Framework.Tools.Dependency;
+using Framework.Dependency;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

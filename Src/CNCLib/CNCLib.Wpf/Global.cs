@@ -21,7 +21,7 @@ using System.Runtime.CompilerServices;
 using CNCLib.GCode.Commands;
 using CNCLib.Wpf.Models;
 using CNCLib.Wpf.Helpers;
-using Framework.Tools.Logging;
+using Framework.Logging;
 using Framework.Tools.Pattern;
 
 using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;

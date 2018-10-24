@@ -19,6 +19,7 @@
 using System;
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
+using Framework.Drawing;
 using Framework.Tools.Helpers;
 
 namespace CNCLib.GCode.Load
@@ -82,13 +83,13 @@ namespace CNCLib.GCode.Load
                 case LoadOptions.DitherFilter.FloydSteinbergDither:
                     AddComment("Image Converted with FloydSteinbergDither");
                     AddComment("GrayThreshold", LoadOptions.GrayThreshold);
-                    b = new Framework.Tools.Drawing.FloydSteinbergDither { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
+                    b = new FloydSteinbergDither { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
                     break;
                 case LoadOptions.DitherFilter.NewspaperDither:
                     AddComment("Image Converted with NewspaperDither");
                     AddComment("GrayThreshold", LoadOptions.GrayThreshold);
                     AddComment("Dithersize",    LoadOptions.NewspaperDitherSize);
-                    b = new Framework.Tools.Drawing.NewspapergDither
+                    b = new NewspapergDither
                     {
                         Graythreshold = LoadOptions.GrayThreshold,
                         DotSize       = LoadOptions.NewspaperDitherSize

@@ -17,9 +17,9 @@
 */
 
 using System;
+using Framework.Dependency;
 using Unity;
 using NSubstitute;
-using Framework.Tools.Dependency;
 
 namespace Framework.Test.Dependency
 {

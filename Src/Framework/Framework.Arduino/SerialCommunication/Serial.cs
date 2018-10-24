@@ -25,7 +25,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Framework.Contracts.Logging;
-using Framework.Tools.Dependency;
 
 namespace Framework.Arduino.SerialCommunication
 {
@@ -290,7 +289,7 @@ namespace Framework.Arduino.SerialCommunication
 
         protected virtual void SetupCom(string portname)
         {
-            _serialPort = Dependency.Resolve<ISerialPort>();
+            _serialPort = Dependency.Dependency.Resolve<ISerialPort>();
 
             _serialPort.PortName  = portname;
             _serialPort.BaudRate  = BaudRate;

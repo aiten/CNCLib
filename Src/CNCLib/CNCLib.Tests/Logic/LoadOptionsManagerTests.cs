@@ -20,12 +20,12 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using NSubstitute;
-using Framework.Tools.Dependency;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Client;
 using System.Threading.Tasks;
 using CNCLib.Logic.Manager;
 using FluentAssertions;
+using Framework.Dependency;
 
 namespace CNCLib.Tests.Logic
 {

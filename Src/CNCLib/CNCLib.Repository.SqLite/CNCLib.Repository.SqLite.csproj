@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)..\CNCLib.targets" />
+  <Import Project="$(ProjectDir)..\SolutionItems\CNCLib.targets" />
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>

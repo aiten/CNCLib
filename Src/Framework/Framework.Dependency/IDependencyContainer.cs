@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Framework.Tools.Dependency
+namespace Framework.Dependency
 {
     /// <summary>
     /// Inversion of Control container, which enables Dependency Injection. 

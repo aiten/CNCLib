@@ -23,7 +23,7 @@ using AutoMapper;
 using CNCLib.GCode.GUI.ViewModels;
 using CNCLib.GCode.GUI.Views;
 using CNCLib.Wpf.ViewModels;
-using Framework.Tools.Dependency;
+using Framework.Dependency;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.View;
 

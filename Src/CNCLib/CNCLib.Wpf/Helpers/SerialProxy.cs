@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools.Logging;
+using Framework.Logging;
 
 namespace CNCLib.Wpf.Helpers
 {

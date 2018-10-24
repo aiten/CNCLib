@@ -17,7 +17,7 @@
 */
 
 using System;
-using Framework.Tools.Dependency;
+using Framework.Dependency;
 
 namespace Framework.Test.Dependency
 {

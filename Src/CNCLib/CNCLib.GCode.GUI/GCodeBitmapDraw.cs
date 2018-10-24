@@ -19,9 +19,9 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Framework.Tools.Drawing;
 using CNCLib.GCode.Commands;
 using System.Drawing.Drawing2D;
+using Framework.Drawing;
 
 namespace CNCLib.GCode.GUI
 {

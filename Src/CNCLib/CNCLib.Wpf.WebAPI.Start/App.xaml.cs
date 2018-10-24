@@ -29,8 +29,9 @@ using CNCLib.Service.WebAPI;
 using CNCLib.Shared;
 using Framework.Arduino.SerialCommunication;
 using Framework.Contracts.Shared;
+using Framework.Dependency;
 using Framework.Tools;
-using Framework.Tools.Dependency;
+using Framework.Tools.Mapper;
 using Framework.Tools.Pattern;
 using NLog;
 

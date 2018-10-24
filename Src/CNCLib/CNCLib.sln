@@ -27,14 +27,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Wpf.Start", "CNCLib.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino", "..\Framework\Framework.Arduino\Framework.Arduino.csproj", "{77F5A48D-E908-4A95-A09E-771E8BE8817B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0942B8A6-0C1A-47A0-B67F-C98979BA830C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{0942B8A6-0C1A-47A0-B67F-C98979BA830C}"
 	ProjectSection(SolutionItems) = preProject
-		CNCLib.targets = CNCLib.targets
-		CNCLibPublic.snk = CNCLibPublic.snk
-		CNCLibSolutionInfo.cs = CNCLibSolutionInfo.cs
-		CNCLibSolutionInfoVersion.cs = CNCLibSolutionInfoVersion.cs
-		..\Framework\FrameworkSolutionInfo.cs = ..\Framework\FrameworkSolutionInfo.cs
-		..\Framework\FrameworkSolutionInfoVersion.cs = ..\Framework\FrameworkSolutionInfoVersion.cs
+		SolutionItems\CNCLib.targets = SolutionItems\CNCLib.targets
+		SolutionItems\CNCLibSolutionInfo.cs = SolutionItems\CNCLibSolutionInfo.cs
+		SolutionItems\CNCLibSolutionInfoVersion.cs = SolutionItems\CNCLibSolutionInfoVersion.cs
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.Contracts", "CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj", "{0ECC8284-505B-43CC-9DF9-AC5D5EEF786A}"
@@ -100,6 +97,20 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Service", "..\Framework\Framework.Service\Framework.Service.csproj", "{46095778-4ABF-472E-A7BB-3C339E7CB9C3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Shared", "CNCLib.Shared\CNCLib.Shared.csproj", "{296F367F-4620-429B-9A51-E17675912BCB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Dependency", "..\Framework\Framework.Dependency\Framework.Dependency.csproj", "{992EB691-DFE9-4B45-88F7-12D59A79FD03}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Drawing", "..\Framework\Framework.Drawing\Framework.Drawing.csproj", "{E30BF689-6836-4464-8221-F0FEF41C09A9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Logging", "..\Framework\Framework.Logging\Framework.Logging.csproj", "{D1DC4BBD-4550-4C53-88E7-2ABA7C396F80}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{0E1AA4F8-C6E5-4372-BE9C-01C49A661EEE}"
+	ProjectSection(SolutionItems) = preProject
+		..\Framework\SolutionItems\Framework.targets = ..\Framework\SolutionItems\Framework.targets
+		..\Framework\SolutionItems\FrameworkSolutionInfo.cs = ..\Framework\SolutionItems\FrameworkSolutionInfo.cs
+		..\Framework\SolutionItems\FrameworkSolutionInfoVersion.cs = ..\Framework\SolutionItems\FrameworkSolutionInfoVersion.cs
+		..\Framework\SolutionItems\FrameworkStandard.targets = ..\Framework\SolutionItems\FrameworkStandard.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -247,6 +258,18 @@ Global
 		{296F367F-4620-429B-9A51-E17675912BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{296F367F-4620-429B-9A51-E17675912BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{296F367F-4620-429B-9A51-E17675912BCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{992EB691-DFE9-4B45-88F7-12D59A79FD03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{992EB691-DFE9-4B45-88F7-12D59A79FD03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{992EB691-DFE9-4B45-88F7-12D59A79FD03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{992EB691-DFE9-4B45-88F7-12D59A79FD03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E30BF689-6836-4464-8221-F0FEF41C09A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E30BF689-6836-4464-8221-F0FEF41C09A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E30BF689-6836-4464-8221-F0FEF41C09A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E30BF689-6836-4464-8221-F0FEF41C09A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1DC4BBD-4550-4C53-88E7-2ABA7C396F80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1DC4BBD-4550-4C53-88E7-2ABA7C396F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1DC4BBD-4550-4C53-88E7-2ABA7C396F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1DC4BBD-4550-4C53-88E7-2ABA7C396F80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -262,6 +285,10 @@ Global
 		{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
 		{172CF0A8-7CF4-4E61-A6CE-6743273F6952} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
 		{46095778-4ABF-472E-A7BB-3C339E7CB9C3} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
+		{992EB691-DFE9-4B45-88F7-12D59A79FD03} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
+		{E30BF689-6836-4464-8221-F0FEF41C09A9} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
+		{D1DC4BBD-4550-4C53-88E7-2ABA7C396F80} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
+		{0E1AA4F8-C6E5-4372-BE9C-01C49A661EEE} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {149E2CA7-C574-4FFF-8699-9678D9AFC1FA}

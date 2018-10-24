@@ -23,9 +23,8 @@ using FluentAssertions;
 
 using Framework.Arduino.SerialCommunication;
 using Framework.Contracts.Logging;
-using Framework.Tools.Dependency;
-using Framework.Tools.Logging;
-
+using Framework.Dependency;
+using Framework.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 
@@ -42,8 +41,8 @@ namespace Framework.Test.SerialCommunication
             Encoding encoding = Encoding.GetEncoding(1200);
             serialport.Encoding.ReturnsForAnyArgs(encoding);
 
-            Tools.Dependency.Dependency.Container.ResetContainer();
-            Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
+            Framework.Dependency.Dependency.Container.ResetContainer();
+            Framework.Dependency.Dependency.Container.RegisterInstance(serialport);
 
             int  resultidx = 0;
             bool sendReply = false;
@@ -93,8 +92,8 @@ namespace Framework.Test.SerialCommunication
             Encoding encoding = Encoding.GetEncoding(12000);
             serialport.Encoding.ReturnsForAnyArgs(encoding);
 
-            Tools.Dependency.Dependency.Container.ResetContainer();
-            Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
+            Framework.Dependency.Dependency.Container.ResetContainer();
+            Framework.Dependency.Dependency.Container.RegisterInstance(serialport);
 
             using (var serial = new Serial(CreateLogger()))
             {

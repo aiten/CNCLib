@@ -23,7 +23,7 @@ using CNCLib.Logic.Client;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Service.Contracts;
 using FluentAssertions;
-using Framework.Tools.Dependency;
+using Framework.Dependency;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 

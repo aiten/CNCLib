@@ -16,27 +16,20 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Runtime.Serialization;
-
-namespace Framework.Tools.Dependency
+namespace Framework.Dependency
 {
     /// <summary>
-    /// Exception that signifies that a dependency could not be resolved. 
+    /// Provides an IDependencyContainer implementation. 
     /// </summary>
-    [Serializable]
-    public sealed class ResolutionFailedException : Exception
+    public interface IDependencyProvider
     {
-        public ResolutionFailedException(string msg) : base(msg)
-        {
-        }
-
-        public ResolutionFailedException(string msg, Exception inner) : base(msg, inner)
-        {
-        }
-
-        private ResolutionFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+        /// <summary>
+        /// Returns an instance of an IDependencyContainer. 
+        /// 
+        /// In live this is always a singleton for the whole application. 
+        /// In unit tests this may be a TaskLocal container wihch allows tests
+        /// to run parallel without interfering with each other.
+        /// </summary>
+        IDependencyContainer Container { get; }
     }
 }

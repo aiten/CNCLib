@@ -17,21 +17,16 @@
 */
 
 using System;
-using System.Linq;
-using System.Reflection;
-using Framework.Contracts.Shared;
 
-namespace Framework.Tools.Dependency
+namespace Framework.Dependency
 {
-    public static class LiveDependencyRegisterExtensions
+    /// <summary>
+    /// Implementation of IDependencyProvider that returns a single instance of LiveDependencyContainer.
+    /// </summary>
+    public sealed class LiveDependencyProvider : IDependencyProvider
     {
-        public static IDependencyContainer RegisterFrameWorkTools(this IDependencyContainer container)
-        {
-            container.RegisterType<ICurrentDateTime, CurrentDateTime>();
-            container.RegisterType<Framework.Contracts.Logging.ILoggerFactory, Framework.Tools.Logging.LoggerFactory>();
-            container.RegisterType(typeof(Framework.Contracts.Logging.ILogger<>), typeof(Framework.Tools.Logging.Logger<>));
+        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new LiveDependencyContainer());
 
-            return container;
-        }
+        public IDependencyContainer Container => _dependencyContainer.Value;
     }
 }

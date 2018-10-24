@@ -17,6 +17,8 @@
 */
 
 
+using Framework.Drawing;
+
 namespace CNCLib.GCode.Commands
 {
     [IsGCommand("G3,G03")]
@@ -58,7 +60,7 @@ namespace CNCLib.GCode.Commands
                 K = 0;
             }
 
-            output.DrawArc(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition, new Framework.Tools.Drawing.Point3D { X = I, Y = J, Z = K }, false,
+            output.DrawArc(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition, new Point3D { X = I, Y = J, Z = K }, false,
                            state.CurrentPane);
         }
 

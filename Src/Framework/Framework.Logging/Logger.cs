@@ -17,15 +17,10 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Framework.Contracts.Logging;
-using Framework.Contracts.Shared;
-using ILogger = Framework.Contracts.Logging.ILogger;
-
 using NLog;
 
-namespace Framework.Tools.Logging
+namespace Framework.Logging
 {
     public sealed class Logger<TType> : Logger, ILogger<TType>
     {

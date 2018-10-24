@@ -16,17 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 
-namespace Framework.Tools.Dependency
+namespace Framework.Drawing
 {
-    /// <summary>
-    /// Implementation of IDependencyProvider that returns a single instance of LiveDependencyContainer.
-    /// </summary>
-    public sealed class LiveDependencyProvider : IDependencyProvider
+    public class Vector3D
     {
-        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new LiveDependencyContainer());
+        public Point3D From { get; set; }
 
-        public IDependencyContainer Container => _dependencyContainer.Value;
+        public Point3D To { get; set; }
     }
 }

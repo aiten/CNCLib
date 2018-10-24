@@ -26,8 +26,8 @@ using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
 using Framework.Contracts.Repository;
+using Framework.Dependency;
 using Framework.Repository;
-using Framework.Tools.Dependency;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 

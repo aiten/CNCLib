@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Framework.Tools.Dependency
+namespace Framework.Dependency
 {
     /// <summary>
     /// Static class that gives access to the DependencyContainer of the module. 

@@ -21,8 +21,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using CNCLib.GCode.Parser;
+using Framework.Drawing;
 using Framework.Tools.Helpers;
-using Framework.Tools.Drawing;
 
 namespace CNCLib.GCode.Commands
 {

@@ -17,7 +17,7 @@
 */
 
 
-namespace Framework.Tools.Drawing
+namespace Framework.Drawing
 {
     public class NewspapergDither : FloydSteinbergDither
     {

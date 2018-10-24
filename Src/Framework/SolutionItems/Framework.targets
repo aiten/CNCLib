@@ -15,8 +15,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Compile Include="..\FrameworkSolutionInfo.cs" Link="Properties\FrameworkSolutionInfo.cs" />
-    <Compile Include="..\FrameworkSolutionInfoVersion.cs" Link="Properties\FrameworkSolutionInfoVersion.cs" />
+    <Compile Include="..\SolutionItems\FrameworkSolutionInfo.cs" Link="Properties\FrameworkSolutionInfo.cs" />
+    <Compile Include="..\SolutionItems\FrameworkSolutionInfoVersion.cs" Link="Properties\FrameworkSolutionInfoVersion.cs" />
   </ItemGroup>  
   
 </Project>

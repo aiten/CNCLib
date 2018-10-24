@@ -37,7 +37,7 @@ namespace CNCLib.WebAPI.Tests
             }
             else
             {
-                Framework.Tools.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
+                Framework.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
                 _globalInitialisationRun = true;
             }
 
@@ -53,7 +53,7 @@ namespace CNCLib.WebAPI.Tests
         /// </summary>
         private static void ReInitializeCoreDependencies()
         {
-            Framework.Tools.Dependency.Dependency.Container.ResetContainer();
+            Framework.Dependency.Dependency.Container.ResetContainer();
         }
     }
 }

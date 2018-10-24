@@ -20,7 +20,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace Framework.Tools.Dependency
+namespace Framework.Dependency
 {
     public static class DependencyContainerExtensions
     {

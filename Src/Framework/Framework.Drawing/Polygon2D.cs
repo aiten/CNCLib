@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Framework.Tools.Drawing
+namespace Framework.Drawing
 {
     public class Polygon2D
     {

@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Framework.Tools.Dependency;
+using Framework.Dependency;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Framework.Web

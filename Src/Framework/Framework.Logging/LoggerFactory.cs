@@ -16,13 +16,21 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+using Framework.Contracts.Logging;
 
-namespace Framework.Tools.Drawing
+namespace Framework.Logging
 {
-    public class Vector3D
+    public sealed class LoggerFactory : ILoggerFactory
     {
-        public Point3D From { get; set; }
+        public ILogger CreateLogger(Type type)
+        {
+            return new Logger(type);
+        }
 
-        public Point3D To { get; set; }
+        public ILogger CreateLogger(string key)
+        {
+            return new Logger(key);
+        }
     }
 }

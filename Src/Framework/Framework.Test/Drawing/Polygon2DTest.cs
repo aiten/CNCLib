@@ -17,7 +17,7 @@
 */
 
 using FluentAssertions;
-using Framework.Tools.Drawing;
+using Framework.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Framework.Test.Drawing

@@ -22,7 +22,7 @@ using System.Linq;
 using Unity;
 using Unity.Lifetime;
 
-namespace Framework.Tools.Dependency
+namespace Framework.Dependency
 {
     /// <summary>
     /// Inversion of Control container, which enables Dependency Injection. 

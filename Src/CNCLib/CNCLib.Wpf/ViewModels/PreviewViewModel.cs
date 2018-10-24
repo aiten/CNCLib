@@ -26,10 +26,10 @@ using System.Windows.Media;
 using CNCLib.GCode;
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools.Drawing;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 using Framework.Arduino.SerialCommunication;
+using Framework.Drawing;
 
 namespace CNCLib.Wpf.ViewModels
 {
