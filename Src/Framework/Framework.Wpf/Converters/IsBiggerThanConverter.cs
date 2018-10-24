@@ -27,7 +27,7 @@ namespace Framework.Wpf.Converters
         {
             double x = System.Convert.ToDouble(parameter);
             double v = System.Convert.ToDouble(value);
-            return (v > x);
+            return v > x;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

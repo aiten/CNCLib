@@ -21,18 +21,22 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
+
 using AutoMapper;
+
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
 using CNCLib.Logic.Client;
 using CNCLib.Repository;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
+
 using Framework.Arduino.SerialCommunication;
 using Framework.Dependency;
 using Framework.Tools;
 using Framework.Mapper;
 using Framework.Logging;
+
 using NLog;
 
 namespace CNCLib.Wpf.Start

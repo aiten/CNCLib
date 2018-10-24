@@ -58,7 +58,7 @@ namespace Framework.Parser
 
         public char SkipSpaces()
         {
-            while (!IsEOF() && (_spaceChar.Contains(_line[_idx])))
+            while (!IsEOF() && _spaceChar.Contains(_line[_idx]))
             {
                 _idx++;
             }

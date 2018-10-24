@@ -17,6 +17,7 @@
 */
 
 using CNCLib.Repository.Context;
+
 using Framework.Contracts.Repository;
 using Framework.Dependency;
 using Framework.Repository;

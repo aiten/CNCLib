@@ -22,7 +22,9 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+
 using CNCLib.GCode.Commands;
+
 using Framework.Drawing;
 
 namespace CNCLib.GCode.GUI.Controls

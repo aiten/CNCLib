@@ -17,6 +17,7 @@
 */
 
 using System.Threading.Tasks;
+
 using Framework.Contracts.Repository;
 
 namespace CNCLib.Repository.Contracts

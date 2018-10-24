@@ -20,7 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+
 using CNCLib.GCode.Parser;
+
 using Framework.Drawing;
 using Framework.Parser;
 

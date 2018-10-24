@@ -18,7 +18,9 @@
 
 using System;
 using System.IO;
+
 using CNCLib.GCode.Commands;
+
 using Framework.Parser;
 
 namespace CNCLib.GCode.Load

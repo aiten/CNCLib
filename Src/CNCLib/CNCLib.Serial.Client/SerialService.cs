@@ -21,8 +21,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+
 using CNCLib.Serial.Shared;
+
 using Framework.Arduino.SerialCommunication;
+
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CNCLib.Serial.Client
@@ -110,8 +113,7 @@ namespace CNCLib.Serial.Client
 
                 using (HttpClient client = CreateHttpClient())
                 {
-                    var port = await GetSerialPortDefinition(client, portname) ??
-                               await RefreshAndGetSerialPortDefinition(client, portname);
+                    var port = await GetSerialPortDefinition(client, portname) ?? await RefreshAndGetSerialPortDefinition(client, portname);
 
                     if (port != null)
                     {

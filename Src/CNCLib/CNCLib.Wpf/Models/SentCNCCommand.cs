@@ -17,6 +17,7 @@
 */
 
 using System;
+
 using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.Models

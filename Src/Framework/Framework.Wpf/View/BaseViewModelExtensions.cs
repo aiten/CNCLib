@@ -22,6 +22,7 @@ namespace Framework.Wpf.View
     using System.IO;
     using System.Windows;
     using System.Windows.Controls;
+
     using Framework.Wpf.ViewModels;
 
     public static class BaseViewModelExtensions
@@ -55,7 +56,7 @@ namespace Framework.Wpf.View
                         dlg.FileName         = Path.GetFileName(filename);
                     }
 
-                    if ((dlg.ShowDialog() ?? false))
+                    if (dlg.ShowDialog() ?? false)
                     {
                         return dlg.FileName;
                     }

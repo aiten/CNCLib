@@ -18,6 +18,7 @@
 
 using Framework.Dependency;
 using Framework.Wpf.ViewModels;
+
 using MahApps.Metro.Controls;
 
 namespace CNCLib.Wpf.Views

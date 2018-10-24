@@ -20,6 +20,7 @@ using System;
 using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
+
 using Framework.Pattern;
 
 namespace CNCLib.Service.WebAPI

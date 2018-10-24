@@ -19,6 +19,7 @@
 using System;
 
 using CNCLib.GCode.Commands;
+
 using Framework.Drawing;
 
 namespace CNCLib.GCode.Load

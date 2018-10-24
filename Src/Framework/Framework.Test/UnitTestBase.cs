@@ -19,6 +19,7 @@
 namespace Framework.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using Framework.Test.Dependency;
 
     /// <summary>

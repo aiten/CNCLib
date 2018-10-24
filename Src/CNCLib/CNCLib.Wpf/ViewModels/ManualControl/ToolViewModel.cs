@@ -19,9 +19,12 @@
 using System;
 using System.Linq;
 using System.Windows.Input;
+
 using Framework.Wpf.Helpers;
 using Framework.Arduino.SerialCommunication;
+
 using CNCLib.Wpf.Helpers;
+
 using System.Globalization;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl

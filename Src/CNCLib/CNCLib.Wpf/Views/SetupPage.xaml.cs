@@ -18,7 +18,9 @@
 
 using System.Threading.Tasks;
 using System.Windows.Controls;
+
 using CNCLib.Wpf.ViewModels;
+
 using Framework.Dependency;
 using Framework.Wpf.View;
 

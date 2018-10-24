@@ -17,6 +17,7 @@
 */
 
 using AutoMapper;
+
 using Framework.Dependency;
 
 namespace Framework.Mapper

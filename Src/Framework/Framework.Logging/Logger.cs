@@ -21,6 +21,7 @@ namespace Framework.Logging
     using System;
 
     using Framework.Contracts.Logging;
+
     using NLog;
 
     public sealed class Logger<TType> : Logger, ILogger<TType>

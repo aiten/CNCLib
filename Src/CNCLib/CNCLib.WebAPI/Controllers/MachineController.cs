@@ -19,10 +19,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Service.Contracts;
 using CNCLib.Shared;
+
 using Framework.Web.Controllers;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace CNCLib.WebAPI.Controllers
@@ -115,7 +118,8 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         [Route("defaultmachine")]
-        [HttpGet] //Always explicitly state the accepted HTTP method
+        [HttpGet]
+        //Always explicitly state the accepted HTTP method
         public async Task<ActionResult<int>> GetDetaultMachine()
         {
             int id = await _service.GetDetaultMachine();
@@ -123,7 +127,8 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         [Route("defaultmachine")]
-        [HttpPut] //Always explicitly state the accepted HTTP method
+        [HttpPut]
+        //Always explicitly state the accepted HTTP method
         public async Task<ActionResult> SetDetaultMachine(int id)
         {
             await _service.SetDetaultMachine(id);

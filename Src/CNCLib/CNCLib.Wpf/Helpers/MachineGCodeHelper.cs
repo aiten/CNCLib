@@ -20,9 +20,12 @@ using System;
 using System.Linq;
 using System.Globalization;
 using System.Threading.Tasks;
+
 using Framework.Arduino.SerialCommunication;
+
 using CNCLib.GCode;
 using CNCLib.Logic.Contracts.DTO;
+
 using System.Media;
 using System.Collections.Generic;
 

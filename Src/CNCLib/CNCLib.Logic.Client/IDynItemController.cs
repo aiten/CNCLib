@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using CNCLib.Logic.Contracts.DTO;
 
 namespace CNCLib.Logic.Client

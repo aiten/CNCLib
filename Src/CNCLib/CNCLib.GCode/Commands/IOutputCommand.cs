@@ -17,6 +17,7 @@
 */
 
 using System;
+
 using Framework.Drawing;
 
 namespace CNCLib.GCode.Commands

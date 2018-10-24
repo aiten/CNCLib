@@ -28,6 +28,7 @@ namespace Framework.Arduino.SerialCommunication
     using System.Diagnostics;
 
     using Contracts.Logging;
+
     using WinAPI;
 
     public class Serial : ISerial
@@ -115,7 +116,7 @@ namespace Framework.Arduino.SerialCommunication
         public bool   Pause                  { get; set; } = false;
         public bool   SendNext               { get; set; } = false;
 
-        private bool Continue => (_serialPortCancellationTokenSource != null && !_serialPortCancellationTokenSource.IsCancellationRequested);
+        private bool Continue => _serialPortCancellationTokenSource != null && !_serialPortCancellationTokenSource.IsCancellationRequested;
 
         protected ILogger Trace => _logger;
 
@@ -193,10 +194,9 @@ namespace Framework.Arduino.SerialCommunication
 
         private async Task Disconnect(bool join)
         {
-            Trace?.Trace($"Disconnecting: { join.ToString() }");
+            Trace?.Trace($"Disconnecting: {join.ToString()}");
             Aborted = true;
             _serialPortCancellationTokenSource?.Cancel();
-
 
             if (join && _readThread != null)
             {
@@ -239,7 +239,7 @@ namespace Framework.Arduino.SerialCommunication
                 _serialPortCancellationTokenSource = null;
             }
 
-            Trace?.Trace($"Disconnected: { join.ToString()}");
+            Trace?.Trace($"Disconnected: {join.ToString()}");
         }
 
         /// <summary>
@@ -754,12 +754,12 @@ namespace Framework.Arduino.SerialCommunication
                 }
                 catch (IOException e)
                 {
-                    Trace?.Error($"ReadIOException: { e.Message }");
+                    Trace?.Error($"ReadIOException: {e.Message}");
                     Thread.Sleep(250);
                 }
                 catch (Exception e)
                 {
-                    Trace?.Error($"ReadException: { e.Message }");
+                    Trace?.Error($"ReadException: {e.Message}");
                     Thread.Sleep(250);
                 }
 
@@ -789,7 +789,7 @@ namespace Framework.Arduino.SerialCommunication
 
             if (string.IsNullOrEmpty(message) == false)
             {
-                Trace?.Trace($"Read: { message.Replace("\n", @"\n").Replace("\r", @"\r").Replace("\t", @"\t") }");
+                Trace?.Trace($"Read: {message.Replace("\n", @"\n").Replace("\r", @"\r").Replace("\t", @"\t")}");
 
                 bool endcommand = false;
 
@@ -813,10 +813,9 @@ namespace Framework.Arduino.SerialCommunication
                     cmd.ReplyReceivedTime = DateTime.Now;
                 }
 
-
                 OnReplyReceived(new SerialEventArgs(message, cmd));
 
-                if (message.StartsWith((OkTag)))
+                if (message.StartsWith(OkTag))
                 {
                     endcommand = true;
                     if (cmd != null)

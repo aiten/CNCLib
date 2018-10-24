@@ -21,6 +21,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+
 using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.Controls

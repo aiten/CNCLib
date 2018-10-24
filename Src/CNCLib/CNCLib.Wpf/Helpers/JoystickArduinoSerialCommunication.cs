@@ -17,10 +17,13 @@
 */
 
 using CNCLib.Wpf.ViewModels.ManualControl;
+
 using System;
 using System.Threading.Tasks;
+
 using Framework.Arduino.SerialCommunication;
 using Framework.Contracts.Logging;
+
 using SerialCom = Framework.Arduino.SerialCommunication.Serial;
 
 namespace CNCLib.Wpf.Helpers

@@ -19,7 +19,9 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+
 using CNCLib.Wpf.Models;
+
 using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl

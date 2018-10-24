@@ -19,11 +19,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
+
 using FluentAssertions;
+
 using Framework.Dependency;
 using Framework.Tools;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository

@@ -17,7 +17,9 @@
 */
 
 using System;
+
 using CNCLib.Logic.Contracts.DTO;
+
 using Framework.Contracts.Service;
 
 namespace CNCLib.Service.Contracts

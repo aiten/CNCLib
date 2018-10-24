@@ -21,6 +21,7 @@ namespace Framework.Test.Parser
     using System;
 
     using FluentAssertions;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Framework.Parser;

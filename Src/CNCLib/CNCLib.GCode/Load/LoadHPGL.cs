@@ -21,8 +21,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
+
 using Framework.Drawing;
 using Framework.Parser;
 

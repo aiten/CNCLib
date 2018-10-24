@@ -17,6 +17,7 @@
 */
 
 using System;
+
 using Framework.Contracts.Logic;
 
 namespace CNCLib.Logic.Contracts

@@ -23,9 +23,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+
 using CNCLib.GCode;
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
+
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 using Framework.Arduino.SerialCommunication;

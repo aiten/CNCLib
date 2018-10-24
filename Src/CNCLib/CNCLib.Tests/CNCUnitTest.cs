@@ -17,10 +17,13 @@
 */
 
 using Framework.Test;
+
 using AutoMapper;
+
 using CNCLib.Logic;
 using CNCLib.Wpf;
 using CNCLib.GCode.GUI;
+
 using Framework.Dependency;
 
 namespace CNCLib.Tests

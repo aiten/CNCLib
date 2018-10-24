@@ -17,25 +17,31 @@
 */
 
 using AutoMapper;
+
 using CNCLib.Logic;
 using CNCLib.Logic.Client;
 using CNCLib.Repository;
 using CNCLib.Repository.SqlServer;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
+
 using Framework.Dependency;
 using Framework.Logging;
 using Framework.Tools;
 using Framework.Mapper;
 using Framework.Web;
 using Framework.Web.Filter;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json.Serialization;
+
 using NLog;
+
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace CNCLib.WebAPI

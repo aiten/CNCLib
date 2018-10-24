@@ -18,8 +18,10 @@
 
 using System.Linq;
 using System.Windows.Input;
+
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Wpf.Helpers;
+
 using Framework.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl

@@ -17,7 +17,9 @@
 */
 
 using System;
+
 using CNCLib.Repository.Context;
+
 using Framework.Contracts.Repository;
 
 namespace CNCLib.Tests.Repository

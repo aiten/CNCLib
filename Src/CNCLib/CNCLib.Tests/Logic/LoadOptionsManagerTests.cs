@@ -17,14 +17,22 @@
 */
 
 using System;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using System.Linq;
+
 using NSubstitute;
+
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Client;
+
 using System.Threading.Tasks;
+
 using CNCLib.Logic.Manager;
+
 using FluentAssertions;
+
 using Framework.Dependency;
 
 namespace CNCLib.Tests.Logic
@@ -88,7 +96,7 @@ namespace CNCLib.Tests.Logic
 
             all.Should().BeNull();
         }
-        
+
         [TestMethod]
         public async Task AddLoadOptions()
         {

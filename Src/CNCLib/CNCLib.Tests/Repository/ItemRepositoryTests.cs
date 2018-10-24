@@ -17,12 +17,17 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using CNCLib.Repository.Contracts.Entities;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using CNCLib.Repository.Contracts;
+
 using FluentAssertions;
+
 using Framework.Dependency;
 using Framework.Tools;
 

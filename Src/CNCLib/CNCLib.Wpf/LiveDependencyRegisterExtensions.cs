@@ -17,6 +17,7 @@
 */
 
 using CNCLib.Service.Contracts;
+
 using Framework.Dependency;
 using Framework.Pattern;
 
@@ -29,9 +30,7 @@ namespace CNCLib.Wpf
             Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
             Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
 
-            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"),
-                                                     typeof(ViewModels.MachineViewModel).Assembly,
-                                                     typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), typeof(ViewModels.MachineViewModel).Assembly, typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
             return container;
         }

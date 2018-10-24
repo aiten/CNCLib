@@ -22,6 +22,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 using CNCLib.GCode.Commands;
+
 using Framework.Drawing;
 
 namespace CNCLib.GCode.GUI

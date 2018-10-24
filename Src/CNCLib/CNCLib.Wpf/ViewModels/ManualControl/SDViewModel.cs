@@ -18,12 +18,16 @@
 
 using System.Collections.Generic;
 using System.Windows.Input;
+
 using Framework.Wpf.Helpers;
 using Framework.Arduino.SerialCommunication;
+
 using System.IO;
 using System;
 using System.Linq;
+
 using CNCLib.Wpf.Helpers;
+
 using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl

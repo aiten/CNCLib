@@ -21,17 +21,21 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
+
 using AutoMapper;
+
 using CNCLib.GCode.GUI;
 using CNCLib.Logic.Client;
 using CNCLib.Service.Contracts;
 using CNCLib.Service.WebAPI;
 using CNCLib.Shared;
+
 using Framework.Arduino.SerialCommunication;
 using Framework.Dependency;
 using Framework.Logging;
 using Framework.Tools;
 using Framework.Mapper;
+
 using NLog;
 
 namespace CNCLib.Wpf.WebAPI.Start

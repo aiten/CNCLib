@@ -17,6 +17,7 @@
 */
 
 using System.Windows;
+
 using Framework.Dependency;
 using Framework.Wpf.ViewModels;
 

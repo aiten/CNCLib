@@ -17,7 +17,9 @@
 */
 
 using AutoMapper;
+
 using Framework.Dependency;
+
 using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
 
 namespace CNCLib.Wpf.Models

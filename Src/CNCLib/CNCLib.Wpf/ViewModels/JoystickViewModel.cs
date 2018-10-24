@@ -18,9 +18,12 @@
 
 using System;
 using System.Windows.Input;
+
 using Framework.Wpf.ViewModels;
 using Framework.Wpf.Helpers;
+
 using CNCLib.Wpf.Helpers;
+
 using System.Threading.Tasks;
 
 namespace CNCLib.Wpf.ViewModels

@@ -17,6 +17,7 @@
 */
 
 using CNCLib.WebAPI.Tests.Dependency;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.WebAPI.Tests

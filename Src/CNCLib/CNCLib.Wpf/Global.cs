@@ -18,9 +18,11 @@
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
 using CNCLib.GCode.Commands;
 using CNCLib.Wpf.Models;
 using CNCLib.Wpf.Helpers;
+
 using Framework.Logging;
 using Framework.Pattern;
 

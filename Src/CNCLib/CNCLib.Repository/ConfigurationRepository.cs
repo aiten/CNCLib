@@ -20,11 +20,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 using CNCLib.Shared;
+
 using Framework.Repository;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
@@ -85,7 +88,7 @@ namespace CNCLib.Repository
             {
                 // add new
 
-                cInDb = configuration;
+                cInDb        = configuration;
                 cInDb.UserId = _userContext.UserId;
                 AddEntity(cInDb);
             }
@@ -93,7 +96,7 @@ namespace CNCLib.Repository
             {
                 // syn with existing
                 configuration.UserId = cInDb.UserId;
-                configuration.User = cInDb.User;
+                configuration.User   = cInDb.User;
                 SetValue(cInDb, configuration);
             }
         }

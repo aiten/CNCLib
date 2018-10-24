@@ -17,7 +17,9 @@
 */
 
 using System.Windows;
+
 using CNCLib.GCode.GUI.ViewModels;
+
 using Framework.Dependency;
 using Framework.Wpf.View;
 

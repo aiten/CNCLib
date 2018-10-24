@@ -17,6 +17,7 @@
 */
 
 using CNCLib.Repository.Contracts.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

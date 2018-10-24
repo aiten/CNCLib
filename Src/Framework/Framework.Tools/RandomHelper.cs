@@ -37,7 +37,7 @@ namespace Framework.Tools
             var randStr = new StringBuilder(size);
 
             // Ascii start position (65 = A / 97 = a)
-            int start = (lowerCase) ? 97 : 65;
+            int start = lowerCase ? 97 : 65;
 
             // Add random chars
             for (var i = 0; i < size; i++)
@@ -65,7 +65,7 @@ namespace Framework.Tools
 
         public static bool RandomBool()
         {
-            return (_randomSeed.NextDouble() > 0.5);
+            return _randomSeed.NextDouble() > 0.5;
         }
 
         public static DateTime RandomDate()

@@ -17,6 +17,7 @@
 */
 
 using System.ComponentModel;
+
 using CNCLib.GCode;
 
 namespace CNCLib.Wpf.Models

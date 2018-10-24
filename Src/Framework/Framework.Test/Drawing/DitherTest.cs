@@ -22,6 +22,7 @@ namespace Framework.Test.Drawing
     using System.Drawing.Imaging;
 
     using FluentAssertions;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Framework.Drawing;

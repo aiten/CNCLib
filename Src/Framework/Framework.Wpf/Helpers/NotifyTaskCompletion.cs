@@ -83,8 +83,7 @@ namespace Framework.Wpf.Helpers
 
         public Task<TResult> Task { get; }
 
-        public TResult Result =>
-            (Task.Status == TaskStatus.RanToCompletion) ? Task.Result : default(TResult);
+        public TResult Result => Task.Status == TaskStatus.RanToCompletion ? Task.Result : default(TResult);
 
         public TaskStatus Status         => Task.Status;
         public bool       IsCompleted    => Task.IsCompleted;

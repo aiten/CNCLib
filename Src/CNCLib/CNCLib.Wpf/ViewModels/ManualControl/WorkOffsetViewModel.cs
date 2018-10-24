@@ -20,8 +20,10 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
 using CNCLib.GCode;
 using CNCLib.Wpf.Helpers;
+
 using Framework.Wpf.Helpers;
 using Framework.Arduino.SerialCommunication;
 

@@ -23,6 +23,7 @@ namespace Framework.Test.Dependency
     using Framework.Dependency;
 
     using Unity;
+
     using NSubstitute;
 
     public sealed class MockingDependencyContainer : UnityDependencyContainer

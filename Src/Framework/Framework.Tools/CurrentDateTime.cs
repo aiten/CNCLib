@@ -19,6 +19,7 @@
 namespace Framework.Tools
 {
     using System;
+
     using Framework.Contracts.Shared;
 
     public class CurrentDateTime : ICurrentDateTime

@@ -20,6 +20,7 @@ namespace Framework.Repository
 {
     using System;
     using System.Threading.Tasks;
+
     using Framework.Contracts.Repository;
 
     using Microsoft.EntityFrameworkCore;

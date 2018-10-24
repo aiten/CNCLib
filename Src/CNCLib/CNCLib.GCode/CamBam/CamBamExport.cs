@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using System.Xml.Serialization;
+
 using Framework.Drawing;
 
 namespace CNCLib.GCode.CamBam

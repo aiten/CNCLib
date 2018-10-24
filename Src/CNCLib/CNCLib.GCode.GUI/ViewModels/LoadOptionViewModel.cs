@@ -25,9 +25,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
+
 using AutoMapper;
+
 using CNCLib.GCode.GUI.Models;
 using CNCLib.Service.Contracts;
+
 using Framework.Pattern;
 using Framework.Tools;
 using Framework.Wpf.Helpers;

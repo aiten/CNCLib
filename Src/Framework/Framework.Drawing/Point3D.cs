@@ -93,7 +93,7 @@ namespace Framework.Drawing
 
         public bool Compare2D(Point3D to)
         {
-            return Math.Abs((X0) - (to.X0)) < double.Epsilon && Math.Abs((Y0) - (to.Y0)) < double.Epsilon;
+            return Math.Abs(X0 - to.X0) < double.Epsilon && Math.Abs(Y0 - to.Y0) < double.Epsilon;
         }
 
         public bool HasAllValues => X.HasValue && Y.HasValue && Z.HasValue;

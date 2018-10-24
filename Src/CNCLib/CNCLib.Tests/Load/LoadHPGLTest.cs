@@ -17,12 +17,18 @@
 */
 
 using System.Text;
+
 using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts.DTO;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using System.Linq;
+
 using CNCLib.GCode.Commands;
+
 using FluentAssertions;
+
 using System.Collections.Generic;
 
 namespace CNCLib.Tests.Load

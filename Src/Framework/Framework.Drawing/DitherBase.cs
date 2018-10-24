@@ -68,7 +68,7 @@ namespace Framework.Drawing
                     return 255;
                 }
 
-                return (byte) (r);
+                return (byte) r;
             }
         }
 

@@ -168,6 +168,7 @@ namespace Framework.Logic
         protected virtual void AddEntity(TEntity entityInDb)
         {
         }
+
         protected virtual void DeleteEntity(TEntity entityInDb)
         {
         }

@@ -19,6 +19,7 @@
 namespace Framework.Dependency
 {
     using System;
+
     using Unity;
 
     /// <summary>

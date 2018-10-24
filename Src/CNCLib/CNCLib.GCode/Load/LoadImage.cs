@@ -17,8 +17,10 @@
 */
 
 using System;
+
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contracts.DTO;
+
 using Framework.Drawing;
 using Framework.Tools;
 

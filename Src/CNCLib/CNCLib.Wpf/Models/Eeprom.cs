@@ -19,7 +19,9 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+
 using CNCLib.GCode;
+
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace CNCLib.Wpf.Models

@@ -23,7 +23,9 @@ namespace Framework.Test.SerialCommunication
     using System.Threading.Tasks;
 
     using FluentAssertions;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using NSubstitute;
 
     using Framework.Arduino.SerialCommunication;
@@ -54,7 +56,6 @@ namespace Framework.Test.SerialCommunication
                     sendReply = true;
                     await Task.FromResult(0);
                 });
-
 
             basestream.ReadAsync(Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
                 ReturnsForAnyArgs(async x =>

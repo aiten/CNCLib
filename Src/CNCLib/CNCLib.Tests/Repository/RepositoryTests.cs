@@ -20,9 +20,11 @@ using CNCLib.Repository;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Shared;
+
 using Framework.Contracts.Repository;
 using Framework.Dependency;
 using Framework.Repository;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository

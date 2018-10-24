@@ -17,6 +17,7 @@
 */
 
 using CNCLib.GCode.Parser;
+
 using Framework.Drawing;
 using Framework.Parser;
 
