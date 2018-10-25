@@ -18,7 +18,4 @@
 
 using System.Runtime.InteropServices;
 
-//[assembly: AssemblyTitle("CNCLib.Logic.Contracts")]
-//[assembly: AssemblyProduct("CNCLib.Logic.Contracts")]
-
 [assembly: Guid("e598aaa4-fe51-46bd-b852-4a9eeb21a5c5")]

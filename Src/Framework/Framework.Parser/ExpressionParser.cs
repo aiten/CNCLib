@@ -58,7 +58,7 @@ namespace Framework.Parser
             }
 
             // check for garbage at the end of the expression
-            // an expression ends with a character '\0' and GetMainTokenType() = delimeter
+            // an expression ends with a character '\0' and GetMainTokenType() = delimiter
             if (GetTokenType() != ETokenType.EndOfLineSy)
             {
                 ErrorAdd(MESSAGE_EXPR_FORMAT);
@@ -294,7 +294,7 @@ namespace Framework.Parser
                 ch = _reader.SkipSpaces();
 
                 // check if this is a variable or a function.
-                // a function has a parentesis '(' open after the name
+                // a function has a parenthesis '(' open after the name
 
                 if (ch == LeftParenthesis)
                 {
@@ -457,26 +457,24 @@ namespace Framework.Parser
 
                     return ans;
                 }
-                else
-                {
-                    if (!_state._variableOK)
-                    {
-                        // unknown variable
-                        ErrorAdd(MESSAGE_EXPR_UNKNOWN_VARIABLE);
-                        return 0;
-                    }
 
-                    // go back to previous token
-                    _reader.PopIdx(e_now);
-                    _state = state_now;
+                if (!_state._variableOK)
+                {
+                    // unknown variable
+                    ErrorAdd(MESSAGE_EXPR_UNKNOWN_VARIABLE);
+                    return 0;
                 }
+
+                // go back to previous token
+                _reader.PopIdx(e_now);
+                _state = state_now;
             }
 
             return ParseLevel2();
         }
 
         ////////////////////////////////////////////////////////////
-        // conditional operators and bitshift
+        // conditional operators and bit shift
 
         double ParseLevel2()
         {

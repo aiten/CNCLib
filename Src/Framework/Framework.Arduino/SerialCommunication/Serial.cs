@@ -127,16 +127,16 @@ namespace Framework.Arduino.SerialCommunication
         /// <summary>
         /// Connect to the Arduino serial port 
         /// </summary>
-        /// <param name="portname">e.g. Com1</param>
-        public async Task ConnectAsync(string portname)
+        /// <param name="portName">e.g. Com1</param>
+        public async Task ConnectAsync(string portName)
         {
             await Task.Delay(0); // avoid CS1998
-            Trace?.Trace($@"Connect: {portname}");
+            Trace?.Trace($@"Connect: {portName}");
 
             // Create a new SerialPort object with default settings.
             Aborted = false;
 
-            SetupCom(portname);
+            SetupCom(portName);
 
             _serialPortCancellationTokenSource = new CancellationTokenSource();
 

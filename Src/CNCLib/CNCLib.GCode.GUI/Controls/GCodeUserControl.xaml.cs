@@ -65,8 +65,8 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnCommandsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl.InvalidateVisual();
         }
 
         #region View Properties
@@ -80,8 +80,8 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnZoomChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl.OnZoomChanged(e);
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl.OnZoomChanged(e);
         }
 
         private void OnZoomChanged(DependencyPropertyChangedEventArgs e)
@@ -108,9 +108,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnOffsetXChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.OffsetX = (double) e.NewValue;
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.OffsetX = (double) e.NewValue;
+            gcodeControl.InvalidateVisual();
         }
 
         /// <summary>
@@ -122,9 +122,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnOffsetYChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.OffsetY = (double) e.NewValue;
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.OffsetY = (double) e.NewValue;
+            gcodeControl.InvalidateVisual();
         }
 
         /// <summary>
@@ -136,10 +136,10 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnRotateAngleChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl                                   = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.Rotate = godeCtrl._rotate = new Rotate3D((double) e.NewValue, godeCtrl.RotateVector);
-            //godeCtrl._rotateInvers = new Rotate3D(-(double)e.NewValue, godeCtrl._rotaryVector);
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.Rotate = gcodeControl._rotate = new Rotate3D((double) e.NewValue, gcodeControl.RotateVector);
+            //gcodeControl._rotateInvers = new Rotate3D(-(double)e.NewValue, gcodeControl._rotaryVector);
+            gcodeControl.InvalidateVisual();
         }
 
         /// <summary>
@@ -152,9 +152,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnRotateVectorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl                                   = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.Rotate = godeCtrl._rotate = new Rotate3D(godeCtrl.RotateAngle, (double[]) e.NewValue);
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.Rotate = gcodeControl._rotate = new Rotate3D(gcodeControl.RotateAngle, (double[]) e.NewValue);
+            gcodeControl.InvalidateVisual();
         }
 
         #endregion
@@ -171,9 +171,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnMachineColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.MachineColor = ColorToColor((Color) e.NewValue);
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.MachineColor = ColorToColor((Color) e.NewValue);
+            gcodeControl.InvalidateVisual();
         }
 
         /// <summary>
@@ -186,9 +186,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnLaserOnColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.LaserOnColor = ColorToColor((Color) e.NewValue);
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.LaserOnColor = ColorToColor((Color) e.NewValue);
+            gcodeControl.InvalidateVisual();
         }
 
         /// <summary>
@@ -201,9 +201,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnLaserOffColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.LaserOffColor = ColorToColor((Color) e.NewValue);
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.LaserOffColor = ColorToColor((Color) e.NewValue);
+            gcodeControl.InvalidateVisual();
         }
 
         /// <summary>
@@ -215,9 +215,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnCutColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.CutColor = ColorToColor((Color) e.NewValue);
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.CutColor = ColorToColor((Color) e.NewValue);
+            gcodeControl.InvalidateVisual();
         }
 
         /// <summary>
@@ -230,9 +230,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnCutDotColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.CutDotColor = ColorToColor((Color) e.NewValue);
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.CutDotColor = ColorToColor((Color) e.NewValue);
+            gcodeControl.InvalidateVisual();
         }
 
 
@@ -246,9 +246,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnCutEllipseColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.CutEllipseColor = ColorToColor((Color) e.NewValue);
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.CutEllipseColor = ColorToColor((Color) e.NewValue);
+            gcodeControl.InvalidateVisual();
         }
 
         /// <summary>
@@ -261,9 +261,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnCutArcColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.CutArcColor = ColorToColor((Color) e.NewValue);
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.CutArcColor = ColorToColor((Color) e.NewValue);
+            gcodeControl.InvalidateVisual();
         }
 
         /// <summary>
@@ -276,9 +276,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnFastMoveColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.FastMoveColor = ColorToColor((Color) e.NewValue);
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.FastMoveColor = ColorToColor((Color) e.NewValue);
+            gcodeControl.InvalidateVisual();
         }
 
         /// <summary>
@@ -291,9 +291,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnHelpLineColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.HelpLineColor = ColorToColor((Color) e.NewValue);
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.HelpLineColor = ColorToColor((Color) e.NewValue);
+            gcodeControl.InvalidateVisual();
         }
 
         #endregion
@@ -307,9 +307,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnLaserSizeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.LaserSize = (double) e.NewValue;
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.LaserSize = (double) e.NewValue;
+            gcodeControl.InvalidateVisual();
         }
 
         /// <summary>
@@ -321,9 +321,9 @@ namespace CNCLib.GCode.GUI.Controls
 
         private static void OnCutterSizeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var godeCtrl = (GCodeUserControl) dependencyObject;
-            godeCtrl._bitmapDraw.CutterSize = (double) e.NewValue;
-            godeCtrl.InvalidateVisual();
+            var gcodeControl = (GCodeUserControl) dependencyObject;
+            gcodeControl._bitmapDraw.CutterSize = (double) e.NewValue;
+            gcodeControl.InvalidateVisual();
         }
 
         /// <summary>
@@ -395,10 +395,10 @@ namespace CNCLib.GCode.GUI.Controls
 
                 if (IsGotoPosKey())
                 {
-                    var gcoderotated = _bitmapDraw.FromClient(pt, 0.0);
-                    if (GotoPos != null && GotoPos.CanExecute(gcoderotated))
+                    var gcodeRotated = _bitmapDraw.FromClient(pt, 0.0);
+                    if (GotoPos != null && GotoPos.CanExecute(gcodeRotated))
                     {
-                        GotoPos.Execute(gcoderotated);
+                        GotoPos.Execute(gcodeRotated);
                     }
                 }
                 else
@@ -419,10 +419,10 @@ namespace CNCLib.GCode.GUI.Controls
         {
             var mousePos     = e.GetPosition(this);
             var pt           = new System.Drawing.PointF((float) mousePos.X, (float) mousePos.Y);
-            var gcoderotated = _bitmapDraw.FromClient(pt, 0.0);
+            var gcodeRotated = _bitmapDraw.FromClient(pt, 0.0);
 
-            MouseOverPositionX = Math.Round(gcoderotated.X0, 3);
-            MouseOverPositionY = Math.Round(gcoderotated.Y0, 3);
+            MouseOverPositionX = Math.Round(gcodeRotated.X0, 3);
+            MouseOverPositionY = Math.Round(gcodeRotated.Y0, 3);
 
             if (MouseOverPositionX >= 10000.0)
             {
@@ -464,11 +464,11 @@ namespace CNCLib.GCode.GUI.Controls
                     double diffX = mousePos.X - _mouseDownPos.X;
                     double diffY = mousePos.Y - _mouseDownPos.Y;
 
-                    double maxdiffX = RenderSize.Width;
-                    double maxdiffY = RenderSize.Height;
+                    double maxDiffX = RenderSize.Width;
+                    double maxDiffY = RenderSize.Height;
 
-                    double rotateX = diffX / maxdiffX;
-                    double rotateY = diffY / maxdiffY;
+                    double rotateX = diffX / maxDiffX;
+                    double rotateY = diffY / maxDiffY;
 
                     RotateAngle = 2.0 * Math.PI * (Math.Abs(rotateX) > Math.Abs(rotateY) ? rotateX : rotateY);
 

@@ -131,11 +131,11 @@ namespace CNCLib.Wpf.Models
             PenChangePos_x_ofs = ee[EepromV1.EValueOffsets32Plotter.EPenChangePosXOfs];
             PenChangePos_y_ofs = ee[EepromV1.EValueOffsets32Plotter.EPenChangePosYOfs];
 
-            ServoClampOpenPos  = ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampOpenPos];
-            ServoClampClosePos = ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampClosePos];
+            ServoClampOpenPos  = ee[EepromV1.EValueOffsets16Plotter.EPenChangeServoClampOpenPos];
+            ServoClampClosePos = ee[EepromV1.EValueOffsets16Plotter.EPenChangeServoClampClosePos];
 
-            ServoClampOpenDelay  = ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampOpenDelay];
-            ServoClampCloseDelay = ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampCloseDelay];
+            ServoClampOpenDelay  = ee[EepromV1.EValueOffsets16Plotter.EPenChangeServoClampOpenDelay];
+            ServoClampCloseDelay = ee[EepromV1.EValueOffsets16Plotter.EPenChangeServoClampCloseDelay];
         }
 
         public override void WriteTo(EepromV1 ee)
@@ -158,11 +158,11 @@ namespace CNCLib.Wpf.Models
             ee[EepromV1.EValueOffsets32Plotter.EPenChangePosXOfs] = PenChangePos_x_ofs;
             ee[EepromV1.EValueOffsets32Plotter.EPenChangePosYOfs] = PenChangePos_y_ofs;
 
-            ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampOpenPos]  = ServoClampOpenPos;
-            ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampClosePos] = ServoClampClosePos;
+            ee[EepromV1.EValueOffsets16Plotter.EPenChangeServoClampOpenPos]  = ServoClampOpenPos;
+            ee[EepromV1.EValueOffsets16Plotter.EPenChangeServoClampClosePos] = ServoClampClosePos;
 
-            ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampOpenDelay]  = ServoClampOpenDelay;
-            ee[EepromV1.EValueOffsets16Plotter.EPenchangeServoClampCloseDelay] = ServoClampCloseDelay;
+            ee[EepromV1.EValueOffsets16Plotter.EPenChangeServoClampOpenDelay]  = ServoClampOpenDelay;
+            ee[EepromV1.EValueOffsets16Plotter.EPenChangeServoClampCloseDelay] = ServoClampCloseDelay;
         }
     }
 }

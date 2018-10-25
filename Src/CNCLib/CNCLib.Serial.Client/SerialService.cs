@@ -65,14 +65,14 @@ namespace CNCLib.Serial.Client
 
         public int PortId { get; private set; } = -1;
 
-        private async Task<SerialPortDefinition> GetSerialPortDefinition(HttpClient client, string portname)
+        private async Task<SerialPortDefinition> GetSerialPortDefinition(HttpClient client, string portName)
         {
             // first ge all ports
             HttpResponseMessage responseAll = client.GetAsync($@"{_api}").GetAwaiter().GetResult();
             if (responseAll.IsSuccessStatusCode)
             {
                 IEnumerable<SerialPortDefinition> allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
-                return allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portname, StringComparison.OrdinalIgnoreCase));
+                return allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portName, StringComparison.OrdinalIgnoreCase));
             }
 
             return null;
@@ -90,7 +90,7 @@ namespace CNCLib.Serial.Client
             return null;
         }
 
-        public async Task ConnectAsync(string portname)
+        public async Task ConnectAsync(string portName)
         {
             if (WaitForSend != null || CommandSent != null || WaitCommandSent != null || ReplyReceived != null || ReplyOK != null || ReplyError != null || ReplyInfo != null || ReplyUnknown != null)
             {
@@ -100,20 +100,20 @@ namespace CNCLib.Serial.Client
             // linuxport => http://a0:5000/dev/ttyUSB0
             // win       => http://a0:5000/com4
 
-            int lastcolon = portname.LastIndexOf(':');
-            int lastslash = portname.IndexOf('/', lastcolon);
-            if (lastslash > 0)
+            int lastColon = portName.LastIndexOf(':');
+            int lastSlash = portName.IndexOf('/', lastColon);
+            if (lastSlash > 0)
             {
-                WebServerUrl = portname.Substring(0, lastslash);
-                portname     = portname.Substring(lastslash + 1);
-                if (portname.IndexOf('/') >= 0)
+                WebServerUrl = portName.Substring(0, lastSlash);
+                portName     = portName.Substring(lastSlash + 1);
+                if (portName.IndexOf('/') >= 0)
                 {
-                    portname = "/" + portname;
+                    portName = "/" + portName;
                 }
 
                 using (HttpClient client = CreateHttpClient())
                 {
-                    var port = await GetSerialPortDefinition(client, portname) ?? await RefreshAndGetSerialPortDefinition(client, portname);
+                    var port = await GetSerialPortDefinition(client, portName) ?? await RefreshAndGetSerialPortDefinition(client, portName);
 
                     if (port != null)
                     {

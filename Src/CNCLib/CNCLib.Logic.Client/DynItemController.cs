@@ -31,16 +31,16 @@ namespace CNCLib.Logic.Client
 {
     public class DynItemController : DisposeWrapper, IDynItemController
     {
-        readonly IItemService _itemservice;
+        readonly IItemService _itemService;
 
-        public DynItemController(IItemService itemservice)
+        public DynItemController(IItemService itemService)
         {
-            _itemservice = itemservice ?? throw new ArgumentNullException();
+            _itemService = itemService ?? throw new ArgumentNullException();
         }
 
         public async Task<DynItem> Get(int id)
         {
-            Item item = await _itemservice.Get(id);
+            Item item = await _itemService.Get(id);
             if (item == null)
             {
                 return null;
@@ -51,19 +51,19 @@ namespace CNCLib.Logic.Client
 
         public async Task<IEnumerable<DynItem>> GetAll(Type t)
         {
-            IEnumerable<Item> allitems = await _itemservice.GetByClassName(GetClassName(t));
-            return Convert(allitems);
+            IEnumerable<Item> allItems = await _itemService.GetByClassName(GetClassName(t));
+            return Convert(allItems);
         }
 
         public async Task<IEnumerable<DynItem>> GetAll()
         {
-            IEnumerable<Item> allitems = await _itemservice.GetAll();
-            return Convert(allitems);
+            IEnumerable<Item> allItems = await _itemService.GetAll();
+            return Convert(allItems);
         }
 
         public async Task<object> Create(int id)
         {
-            Item item = await _itemservice.Get(id);
+            Item item = await _itemService.Get(id);
 
             if (item == null)
             {
@@ -257,20 +257,20 @@ namespace CNCLib.Logic.Client
 
         public async Task<int> Add(string name, object obj)
         {
-            return await _itemservice.Add(ConvertToItem(name, obj, 0));
+            return await _itemService.Add(ConvertToItem(name, obj, 0));
         }
 
         public async Task Save(int id, string name, object obj)
         {
-            await _itemservice.Update(ConvertToItem(name, obj, id));
+            await _itemService.Update(ConvertToItem(name, obj, id));
         }
 
         public async Task Delete(int id)
         {
-            var item = await _itemservice.Get(id);
+            var item = await _itemService.Get(id);
             if (item != null)
             {
-                await _itemservice.Delete(item);
+                await _itemService.Delete(item);
             }
         }
 
@@ -287,15 +287,15 @@ namespace CNCLib.Logic.Client
             return item;
         }
 
-        private static IEnumerable<DynItem> Convert(IEnumerable<Item> allitems)
+        private static IEnumerable<DynItem> Convert(IEnumerable<Item> allItems)
         {
-            if (allitems == null)
+            if (allItems == null)
             {
                 return null;
             }
 
             var l = new List<DynItem>();
-            foreach (var o in allitems)
+            foreach (var o in allItems)
             {
                 l.Add(new DynItem { ItemId = o.ItemId, Name = o.Name });
             }

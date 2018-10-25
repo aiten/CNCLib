@@ -451,7 +451,7 @@ namespace CNCLib.Wpf.Models
 
                 GetAxis(i).StepperDirection = (ee[EepromV1.EValueOffsets8.StepperDirection] & (1 << i)) != 0;
 
-                this[i] = (EReverenceSequence) ee[i, EepromV1.EAxisOffsets8.EReverenceSeqence];
+                this[i] = (EReverenceSequence) ee[i, EepromV1.EAxisOffsets8.EReverenceSequence];
 
                 if (ee.DWSizeAxis > EepromV1.SIZEOFAXIX_EX)
                 {
@@ -486,7 +486,7 @@ namespace CNCLib.Wpf.Models
             {
                 ee[i, EepromV1.EAxisOffsets32.Size]                 = GetAxis(i).Size;
                 ee[i, EepromV1.EAxisOffsets8.EReverenceType]        = (byte) GetAxis(i).RefMove;
-                ee[i, EepromV1.EAxisOffsets8.EReverenceSeqence]     = (byte) (EReverenceSequence) this[i];
+                ee[i, EepromV1.EAxisOffsets8.EReverenceSequence]     = (byte) (EReverenceSequence) this[i];
                 ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin] = GetAxis(i).RefHitValueMin;
                 ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax] = GetAxis(i).RefHitValueMax;
 

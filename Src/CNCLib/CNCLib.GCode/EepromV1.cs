@@ -103,7 +103,7 @@ namespace CNCLib.GCode
         public enum EAxisOffsets8
         {
             EReverenceType        = (EAxisOffsets32.Ofsett1 << 8) + 00,
-            EReverenceSeqence     = (EAxisOffsets32.Ofsett1 << 8) + 1,
+            EReverenceSequence     = (EAxisOffsets32.Ofsett1 << 8) + 1,
             EReverenceHitValueMin = (EAxisOffsets32.Ofsett1 << 8) + 2,
             EReverenceHitValueMax = (EAxisOffsets32.Ofsett1 << 8) + 3
         }
@@ -127,17 +127,17 @@ namespace CNCLib.GCode
             EPenChangePosXOfs,
             EPenChangePosYOfs,
 
-            EPenchangeServoClampPos,
-            EPenchangeServoClampDelay
+            EPenChangeServoClampPos,
+            EPenChangeServoClampDelay
         }
 
         public enum EValueOffsets16Plotter
         {
-            EPenchangeServoClampOpenPos  = (EValueOffsets32Plotter.EPenchangeServoClampPos << 8) + 00,
-            EPenchangeServoClampClosePos = (EValueOffsets32Plotter.EPenchangeServoClampPos << 8) + 01,
+            EPenChangeServoClampOpenPos  = (EValueOffsets32Plotter.EPenChangeServoClampPos << 8) + 00,
+            EPenChangeServoClampClosePos = (EValueOffsets32Plotter.EPenChangeServoClampPos << 8) + 01,
 
-            EPenchangeServoClampOpenDelay  = (EValueOffsets32Plotter.EPenchangeServoClampDelay << 8) + 00,
-            EPenchangeServoClampCloseDelay = (EValueOffsets32Plotter.EPenchangeServoClampDelay << 8) + 01
+            EPenChangeServoClampOpenDelay  = (EValueOffsets32Plotter.EPenChangeServoClampDelay << 8) + 00,
+            EPenChangeServoClampCloseDelay = (EValueOffsets32Plotter.EPenChangeServoClampDelay << 8) + 01
         }
 
         [Flags]

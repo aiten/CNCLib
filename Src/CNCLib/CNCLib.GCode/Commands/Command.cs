@@ -175,7 +175,8 @@ namespace CNCLib.GCode.Commands
                 val = var.Value.Value;
                 return true;
             }
-            else if (var?.Parameter != null)
+
+            if (var?.Parameter != null)
             {
                 if (var.ParameterIsTerm)
                 {
@@ -404,7 +405,8 @@ namespace CNCLib.GCode.Commands
                 AddVariableParam(param, paramNr.ToString(), false);
                 return 0;
             }
-            else if (stream.NextChar == '[')
+
+            if (stream.NextChar == '[')
             {
                 int depth = 1;
                 stream.Next();
@@ -443,7 +445,8 @@ namespace CNCLib.GCode.Commands
                 AddVariable(param, val, isFloatingPoint);
                 return val;
             }
-            else if (allowNameOnly)
+
+            if (allowNameOnly)
             {
                 AddVariableNoValue(param);
                 return null;
