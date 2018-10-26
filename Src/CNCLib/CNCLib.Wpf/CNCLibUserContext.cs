@@ -19,9 +19,11 @@
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Service.Contracts;
 using CNCLib.Shared;
-using Framework.Tools.Dependency;
+
 using System;
 using System.Threading.Tasks;
+
+using Framework.Dependency;
 
 namespace CNCLib.Wpf
 {

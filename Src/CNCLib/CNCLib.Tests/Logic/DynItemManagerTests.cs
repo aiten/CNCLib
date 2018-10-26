@@ -19,12 +19,17 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+
 using CNCLib.Logic.Client;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Service.Contracts;
+
 using FluentAssertions;
-using Framework.Tools.Dependency;
+
+using Framework.Dependency;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using NSubstitute;
 
 namespace CNCLib.Tests.Logic
@@ -38,7 +43,6 @@ namespace CNCLib.Tests.Logic
             Dependency.Container.RegisterInstance(srv);
             return srv;
         }
-
 
         [TestMethod]
         public async Task GetItemNone()
@@ -242,7 +246,6 @@ namespace CNCLib.Tests.Logic
             await srv.Received().Get(1);
             await srv.DidNotReceiveWithAnyArgs().Delete((Item) null);
         }
-
 
         [TestMethod]
         public async Task SaveItem()

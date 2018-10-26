@@ -16,13 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.GCode.Commands;
 using System;
 using System.Globalization;
-using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools.Drawing;
 using System.IO;
-using Framework.Tools.Helpers;
+
+using CNCLib.GCode.Commands;
+using CNCLib.Logic.Contracts.DTO;
+
+using Framework.Drawing;
+using Framework.Tools;
 
 namespace CNCLib.GCode.Load
 {
@@ -128,7 +130,6 @@ namespace CNCLib.GCode.Load
             {
                 AddCommands(LoadOptions.StartupCommands);
             }
-
 
             _layer       = CamBam.AddLayer();
             _layer.Name  = @"Standard";

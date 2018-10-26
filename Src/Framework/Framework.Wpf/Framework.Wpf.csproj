@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)..\Framework.targets" />
+  <Import Project="$(ProjectDir)..\SolutionItems\Framework.targets" />
    <PropertyGroup>
 	<TargetFramework>net471</TargetFramework>
   </PropertyGroup>
@@ -8,22 +8,15 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Framework.Tools\Framework.Tools.csproj">
-    </ProjectReference>
   </ItemGroup>
 </Project>

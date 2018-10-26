@@ -17,8 +17,8 @@
 */
 
 using Framework.Arduino.SerialCommunication;
-using Framework.Tools.Dependency;
-using Framework.Tools.Helpers;
+using Framework.Dependency;
+using Framework.Tools;
 using Microsoft.AspNetCore.SignalR;
 
 namespace CNCLib.Serial.Server.SerialPort

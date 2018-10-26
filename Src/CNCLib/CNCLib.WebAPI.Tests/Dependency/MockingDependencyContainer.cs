@@ -17,8 +17,11 @@
 */
 
 using System;
-using Framework.Tools.Dependency;
+
+using Framework.Dependency;
+
 using NSubstitute;
+
 using Unity;
 
 namespace CNCLib.WebAPI.Tests.Dependency

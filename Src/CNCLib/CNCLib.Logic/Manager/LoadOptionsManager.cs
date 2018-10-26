@@ -18,11 +18,13 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using CNCLib.Logic.Client;
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
+
+using Framework.Dependency;
 using Framework.Logic;
-using Framework.Tools.Dependency;
 
 namespace CNCLib.Logic.Manager
 {

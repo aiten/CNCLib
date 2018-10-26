@@ -16,11 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Framework.Tools.Dependency;
-
 namespace Framework.Test.Dependency
 {
+    using System;
+
+    using Framework.Dependency;
+
     public sealed class UnitTestDependencyProvider : IDependencyProvider
     {
         private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new MockingDependencyContainer());

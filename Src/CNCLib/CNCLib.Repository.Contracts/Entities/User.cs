@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-
 namespace CNCLib.Repository.Contracts.Entities
 {
     public class User

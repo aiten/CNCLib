@@ -16,11 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools.Dependency;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Framework.Web
 {
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Framework.Dependency;
+
     /// <summary>
     /// Implementation of IDependencyProvider that returns a single instance of LiveDependencyContainer.
     /// </summary>

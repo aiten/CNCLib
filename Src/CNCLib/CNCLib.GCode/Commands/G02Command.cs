@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Drawing;
 
 namespace CNCLib.GCode.Commands
 {
@@ -58,7 +59,7 @@ namespace CNCLib.GCode.Commands
                 K = 0;
             }
 
-            output.DrawArc(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition, new Framework.Tools.Drawing.Point3D { X = I, Y = J, Z = K }, true, state.CurrentPane);
+            output.DrawArc(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition, new Point3D { X = I, Y = J, Z = K }, true, state.CurrentPane);
         }
 
         #endregion

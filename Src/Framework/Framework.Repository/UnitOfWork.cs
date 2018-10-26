@@ -16,14 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-
-using System;
-using System.Threading.Tasks;
-using Framework.Contracts.Repository;
-using Microsoft.EntityFrameworkCore;
-
 namespace Framework.Repository
 {
+    using System;
+    using System.Threading.Tasks;
+
+    using Framework.Contracts.Repository;
+
+    using Microsoft.EntityFrameworkCore;
+
     public class UnitOfWork<T> : IUnitOfWork where T : DbContext
     {
         public T Context { get; private set; }

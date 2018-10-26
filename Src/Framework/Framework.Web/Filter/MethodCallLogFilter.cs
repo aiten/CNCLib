@@ -16,12 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-
 namespace Framework.Web.Filter
 {
+    using System.Diagnostics;
+
+    using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.Extensions.Logging;
+
     public sealed class MethodCallLogFilter : IActionFilter
     {
         private readonly ILogger<MethodCallLogFilter> _logger;

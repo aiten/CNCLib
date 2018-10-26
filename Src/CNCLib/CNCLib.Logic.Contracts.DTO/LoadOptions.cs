@@ -69,7 +69,6 @@ namespace CNCLib.Logic.Contracts.DTO
         public decimal AutoScaleBorderDistX { get; set; } = 0.5m;
         public decimal AutoScaleBorderDistY { get; set; } = 0.5m;
 
-
         public enum PenType
         {
             ZMove         = 0,
@@ -114,8 +113,8 @@ namespace CNCLib.Logic.Contracts.DTO
         public decimal? SmoothMinLineLenght { get; set; } = 1m;
         public decimal? SmoothMaxError      { get; set; } = 1m / 40m;
 
-
         //IMG
+
         public string ImageWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\image.bmp";
 
         public byte GrayThreshold { get; set; } = 127;

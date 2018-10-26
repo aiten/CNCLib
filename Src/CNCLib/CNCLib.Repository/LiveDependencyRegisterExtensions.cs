@@ -17,9 +17,10 @@
 */
 
 using CNCLib.Repository.Context;
+
 using Framework.Contracts.Repository;
+using Framework.Dependency;
 using Framework.Repository;
-using Framework.Tools.Dependency;
 
 namespace CNCLib.Repository
 {

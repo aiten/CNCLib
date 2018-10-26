@@ -21,13 +21,15 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+
 using CNCLib.Service.Contracts;
 using CNCLib.Wpf.Helpers;
 using CNCLib.Wpf.Models;
+
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 using Framework.Arduino.SerialCommunication;
-using Framework.Tools.Pattern;
+using Framework.Pattern;
 
 using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
 
@@ -62,7 +64,6 @@ namespace CNCLib.Wpf.ViewModels
         public Machine Machine { get => _currentMachine; set { SetProperty(() => _currentMachine == value, () => _currentMachine = value); } }
 
         public ObservableCollection<MachineCommand> MachineCommands => _currentMachine.MachineCommands;
-
 
         public ObservableCollection<MachineInitCommand> MachineInitCommands => _currentMachine.MachineInitCommands;
 

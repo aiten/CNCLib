@@ -17,16 +17,24 @@
 */
 
 using System;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using System.Linq;
+
 using NSubstitute;
+
 using CNCLib.Wpf.ViewModels;
 using CNCLib.Logic.Contracts.DTO;
-using Framework.Tools.Dependency;
+
 using System.Threading.Tasks;
+
 using CNCLib.Service.Contracts;
+
 using FluentAssertions;
-using Framework.Tools.Pattern;
+
+using Framework.Dependency;
+using Framework.Pattern;
 
 namespace CNCLib.Tests.Wpf
 {

@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools.Dependency;
+using Framework.Dependency;
 
 namespace Framework.Arduino.SerialCommunication
 {
@@ -24,7 +24,7 @@ namespace Framework.Arduino.SerialCommunication
     {
         public static IDependencyContainer RegisterSerialCommunication(this IDependencyContainer container)
         {
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
+            Dependency.Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
             return container;
         }
     }

@@ -19,10 +19,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
+
 using Framework.Repository;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository

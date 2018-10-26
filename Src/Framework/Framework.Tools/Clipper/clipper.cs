@@ -49,7 +49,6 @@
 
 #define use_lines
 
-
 using System;
 using System.Collections.Generic;
 
@@ -90,7 +89,6 @@ namespace Framework.Tools.Clipper
             Y = ip.Y;
         }
     };
-
 
     //------------------------------------------------------------------------------
     // PolyTree & PolyNode classes
@@ -212,7 +210,6 @@ namespace Framework.Tools.Clipper
 
         public bool IsOpen { get; set; }
     }
-
 
     //------------------------------------------------------------------------------
     // Int128 struct (enables safe math on signed 64bit integers)
@@ -1125,7 +1122,6 @@ namespace Framework.Tools.Clipper
             return Result;
         }
         //------------------------------------------------------------------------------
-
 
         public bool AddPath(Path pg, PolyType polyType, bool Closed)
         {
@@ -2716,8 +2712,8 @@ namespace Framework.Tools.Clipper
                 m_SortedEdges = edge2;
             }
         }
-        //------------------------------------------------------------------------------
 
+        //------------------------------------------------------------------------------
 
         private void AddLocalMaxPoly(TEdge e1, TEdge e2, IntPoint pt)
         {

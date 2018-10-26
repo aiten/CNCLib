@@ -16,11 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Framework.Test.Dependency;
-
 namespace Framework.Test
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Framework.Test.Dependency;
+
     /// <summary>
     /// Base class for *all* unit tests. 
     /// </summary>
@@ -37,7 +38,7 @@ namespace Framework.Test
             }
             else
             {
-                Tools.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
+                Framework.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
                 _globalInitialisationRun = true;
             }
 
@@ -53,7 +54,7 @@ namespace Framework.Test
         /// </summary>
         private static void ReInitializeCoreDependencies()
         {
-            Tools.Dependency.Dependency.Container.ResetContainer();
+            Framework.Dependency.Dependency.Container.ResetContainer();
         }
     }
 }

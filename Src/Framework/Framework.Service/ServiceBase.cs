@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools;
-
 namespace Framework.Service
 {
+    using Framework.Pattern;
+
     public class ServiceBase : DisposeWrapper
     {
     }

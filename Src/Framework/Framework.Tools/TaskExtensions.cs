@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Threading.Tasks;
-
 namespace Framework.Tools
 {
+    using System.Threading.Tasks;
+
     public static class TaskExtensions
     {
         public static void Ignore(this Task t)

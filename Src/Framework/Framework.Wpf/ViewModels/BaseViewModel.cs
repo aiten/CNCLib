@@ -16,14 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using Framework.Wpf.Helpers;
-
 namespace Framework.Wpf.ViewModels
 {
+    using System;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Input;
+
+    using Framework.Wpf.Helpers;
+
     public class BaseViewModel : BindableBase
     {
         #region ModalDialogs

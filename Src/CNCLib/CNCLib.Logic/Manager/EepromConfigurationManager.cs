@@ -18,8 +18,10 @@
 
 using System;
 using System.Threading.Tasks;
+
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
+
 using Framework.Logic;
 
 namespace CNCLib.Logic.Manager

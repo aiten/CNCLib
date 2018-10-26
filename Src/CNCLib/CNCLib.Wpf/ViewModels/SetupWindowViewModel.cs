@@ -24,11 +24,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+
 using CNCLib.Service.Contracts;
 using CNCLib.Wpf.Helpers;
 using CNCLib.Wpf.Models;
+
 using Framework.Tools;
-using Framework.Tools.Pattern;
+using Framework.Pattern;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
@@ -45,7 +47,6 @@ namespace CNCLib.Wpf.ViewModels
         }
 
         readonly IFactory<IMachineService> _machineService;
-
 
         public override async Task Loaded()
         {
@@ -80,8 +81,7 @@ namespace CNCLib.Wpf.ViewModels
 
             Machines = machines;
 
-            var defaultmachine = machines.FirstOrDefault(m => m.MachineId == defaultmachineid) ??
-                                 machines.FirstOrDefault(m => m.MachineId == defaultM);
+            var defaultmachine = machines.FirstOrDefault(m => m.MachineId == defaultmachineid) ?? machines.FirstOrDefault(m => m.MachineId == defaultM);
 
             if (defaultmachine == null && machines.Count > 0)
             {

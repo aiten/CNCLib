@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)..\Framework.targets" />
+  <Import Project="$(ProjectDir)..\SolutionItems\Framework.targets" />
    <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
    <ItemGroup>
      <PackageReference Include="AutoMapper" Version="7.0.1" />
-   </ItemGroup>  
-  <ItemGroup>
-    <ProjectReference Include="..\Framework.Tools\Framework.Tools.csproj">
-    </ProjectReference>
-  </ItemGroup>
+   </ItemGroup>
+   <ItemGroup>
+     <ProjectReference Include="..\Framework.Contracts\Framework.Contracts.csproj" />
+     <ProjectReference Include="..\Framework.Pattern\Framework.Pattern.csproj" />
+   </ItemGroup>
 </Project>

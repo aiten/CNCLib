@@ -16,13 +16,16 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Unity;
-using NSubstitute;
-using Framework.Tools.Dependency;
-
 namespace Framework.Test.Dependency
 {
+    using System;
+
+    using Framework.Dependency;
+
+    using Unity;
+
+    using NSubstitute;
+
     public sealed class MockingDependencyContainer : UnityDependencyContainer
     {
         public override object Resolve(Type t)

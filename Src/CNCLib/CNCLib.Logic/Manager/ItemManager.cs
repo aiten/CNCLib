@@ -19,12 +19,15 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using AutoMapper;
+
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Converter;
 using CNCLib.Repository.Contracts;
 using CNCLib.Shared;
+
 using Framework.Contracts.Repository;
 using Framework.Logic;
 

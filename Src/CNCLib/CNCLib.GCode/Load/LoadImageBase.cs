@@ -16,8 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.GCode.Commands;
 using System;
+
+using CNCLib.GCode.Commands;
+
+using Framework.Drawing;
 
 namespace CNCLib.GCode.Load
 {
@@ -119,7 +122,7 @@ namespace CNCLib.GCode.Load
             {
                 AddComment("ScaleX", scaleX);
                 AddComment("ScaleY", scaleY);
-                b = Framework.Tools.Drawing.ImageHelper.ScaleTo(bx, (int) (b.Width * scaleX), (int) (b.Height * scaleY));
+                b = ImageHelper.ScaleTo(bx, (int) (b.Width * scaleX), (int) (b.Height * scaleY));
                 b.SetResolution((float) dpiX, (float) dpiY);
             }
 

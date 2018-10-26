@@ -17,6 +17,7 @@
 */
 
 using System;
+
 using CNCLib.GCode;
 
 using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;

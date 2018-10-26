@@ -18,7 +18,9 @@
 
 using System;
 using System.Threading.Tasks;
+
 using CNCLib.Wpf.ViewModels.ManualControl;
+
 using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.ViewModels

@@ -18,11 +18,14 @@
 
 using System;
 using System.Threading.Tasks;
+
 using AutoMapper;
+
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Repository.Contracts;
 using CNCLib.Shared;
+
 using Framework.Contracts.Repository;
 using Framework.Logic;
 
@@ -60,6 +63,7 @@ namespace CNCLib.Logic.Manager
             {
                 entityInDb.UserId = _userContext.UserId;
             }
+
             base.AddEntity(entityInDb);
         }
 
@@ -68,7 +72,7 @@ namespace CNCLib.Logic.Manager
             // do not overwrite user!
 
             values.UserId = entityInDb.UserId;
-            values.User = entityInDb.User;
+            values.User   = entityInDb.User;
 
             base.UpdateEntity(entityInDb, values);
         }

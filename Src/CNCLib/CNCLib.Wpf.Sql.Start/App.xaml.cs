@@ -21,24 +21,22 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
+
 using AutoMapper;
+
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
 using CNCLib.Logic.Client;
-using CNCLib.Logic.Manager;
 using CNCLib.Repository;
-using CNCLib.Repository.Context;
 using CNCLib.Repository.SqlServer;
-using CNCLib.Service.Contracts;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
+
 using Framework.Arduino.SerialCommunication;
-using Framework.Contracts.Repository;
-using Framework.Contracts.Shared;
-using Framework.Repository;
+using Framework.Dependency;
 using Framework.Tools;
-using Framework.Tools.Dependency;
-using Framework.Tools.Pattern;
+using Framework.Mapper;
+
 using NLog;
 
 namespace CNCLib.Wpf.Sql.Start
@@ -65,6 +63,7 @@ namespace CNCLib.Wpf.Sql.Start
             Dependency.Initialize(new LiveDependencyProvider());
 
             Dependency.Container.RegisterFrameWorkTools();
+            Framework.Logging.LiveDependencyRegisterExtensions.RegisterFrameWorkLogging(Dependency.Container);
             Dependency.Container.RegisterRepository();
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();

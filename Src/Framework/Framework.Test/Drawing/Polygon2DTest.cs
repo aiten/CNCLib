@@ -16,12 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-using FluentAssertions;
-using Framework.Tools.Drawing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Framework.Test.Drawing
 {
+    using FluentAssertions;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Framework.Drawing;
+
     [TestClass]
     public class Polygon2DTest
     {

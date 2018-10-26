@@ -19,7 +19,9 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+
 using CNCLib.GCode;
+
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace CNCLib.Wpf.Models
@@ -332,7 +334,6 @@ namespace CNCLib.Wpf.Models
             [Description("Default probe size in mm/1000 (used in Lcd)")]
             public uint ProbeSize { get; set; }
 
-
             [Browsable(false)]
             public uint DWEESizeOf { get; set; }
 
@@ -348,7 +349,6 @@ namespace CNCLib.Wpf.Models
         {
             return _axis[axis];
         }
-
 
         [ExpandableObject]
         [Category("Axis")]

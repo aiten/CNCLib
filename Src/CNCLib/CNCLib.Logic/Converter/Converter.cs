@@ -17,7 +17,9 @@
 */
 
 using System.Collections.Generic;
+
 using CNCLib.Logic.Contracts.DTO;
+
 using AutoMapper;
 
 namespace CNCLib.Logic.Converter

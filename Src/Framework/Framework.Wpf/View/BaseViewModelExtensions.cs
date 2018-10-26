@@ -16,14 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using Framework.Wpf.ViewModels;
-
 namespace Framework.Wpf.View
 {
+    using System;
+    using System.IO;
+    using System.Windows;
+    using System.Windows.Controls;
+
+    using Framework.Wpf.ViewModels;
+
     public static class BaseViewModelExtensions
     {
         public static void DefaulInitForBaseViewModel(this BaseViewModel vm)
@@ -55,7 +56,7 @@ namespace Framework.Wpf.View
                         dlg.FileName         = Path.GetFileName(filename);
                     }
 
-                    if ((dlg.ShowDialog() ?? false))
+                    if (dlg.ShowDialog() ?? false)
                     {
                         return dlg.FileName;
                     }

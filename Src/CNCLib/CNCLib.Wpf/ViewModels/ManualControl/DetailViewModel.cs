@@ -17,6 +17,7 @@
 */
 
 using System;
+
 using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl

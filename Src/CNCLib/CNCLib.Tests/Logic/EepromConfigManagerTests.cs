@@ -18,12 +18,17 @@
 
 using System;
 using System.Threading.Tasks;
+
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Manager;
+
 using FluentAssertions;
+
+using Framework.Dependency;
 using Framework.Repository;
-using Framework.Tools.Dependency;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using NSubstitute;
 
 namespace CNCLib.Tests.Logic

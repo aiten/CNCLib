@@ -16,11 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using Framework.Contracts.Shared;
-
 namespace Framework.Tools
 {
+    using System;
+
+    using Framework.Contracts.Shared;
+
     public class CurrentDateTime : ICurrentDateTime
     {
         public DateTime Now => DateTime.Now;

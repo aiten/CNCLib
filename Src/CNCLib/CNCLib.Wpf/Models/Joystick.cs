@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-
 using System.ComponentModel;
 
 namespace CNCLib.Wpf.Models

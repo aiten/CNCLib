@@ -17,6 +17,7 @@
 */
 
 using System;
+
 using Framework.Wpf.ViewModels;
 
 namespace CNCLib.GCode.GUI.Models
@@ -40,7 +41,6 @@ namespace CNCLib.GCode.GUI.Models
         private string _fileName;
 
         public string FileName { get => _fileName; set => SetProperty(ref _fileName, value); }
-
 
         public byte[] FileContent { get; set; }
 

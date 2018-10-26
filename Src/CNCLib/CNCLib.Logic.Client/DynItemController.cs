@@ -21,9 +21,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using System.Threading.Tasks;
+
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Service.Contracts;
-using Framework.Tools;
+
+using Framework.Pattern;
 
 namespace CNCLib.Logic.Client
 {

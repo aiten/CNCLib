@@ -17,12 +17,18 @@
 */
 
 using System.Text;
+
 using CNCLib.GCode.Load;
 using CNCLib.Logic.Contracts.DTO;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using System.Linq;
+
 using CNCLib.GCode.Commands;
+
 using FluentAssertions;
+
 using System.Collections.Generic;
 
 namespace CNCLib.Tests.Load
@@ -224,7 +230,6 @@ namespace CNCLib.Tests.Load
 
             CheckGCode(list, gcode);
         }
-
 
         private static void CheckGCode(IEnumerable<Command> list, string[] expectgcode)
         {

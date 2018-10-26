@@ -17,6 +17,7 @@
 */
 
 using System.Globalization;
+
 using CNCLib.Repository.Contracts.Entities;
 
 namespace CNCLib.Repository.Context
@@ -727,7 +728,6 @@ namespace CNCLib.Repository.Context
                 new ItemProperty { Item = cutItem, Name = @"ConvertType", Value         = @"InvertLineSequence" },
                 new ItemProperty { Item = cutItem, Name = @"MoveSpeed", Value           = @"450" }, new ItemProperty { Item = cutItem, Name = @"LoadType", Value = @"HPGL" },
                 new ItemProperty { Item = cutItem, Name = @"FileName", Value            = @"Examples\Ghost.hpgl" },
-
 
                 //cut-image
                 new ItemProperty { Item = cutHoleItem, Name = @"SettingName", Value         = cutHoleItem.Name },

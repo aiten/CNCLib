@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)..\Framework.targets" />
+  <Import Project="$(ProjectDir)..\SolutionItems\Framework.targets" />
   <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -19,7 +19,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj"></ProjectReference>
     <ProjectReference Include="..\Framework.Arduino\Framework.Arduino.csproj" />
   </ItemGroup>
   

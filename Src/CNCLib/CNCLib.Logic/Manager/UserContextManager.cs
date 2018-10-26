@@ -17,6 +17,7 @@
 */
 
 using CNCLib.Logic.Contracts;
+
 using Framework.Logic;
 
 namespace CNCLib.Logic.Manager

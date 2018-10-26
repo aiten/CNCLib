@@ -17,12 +17,17 @@
 */
 
 using System.Linq;
+
 using CNCLib.Wpf.Models;
-using Framework.Tools.Dependency;
+
 using Framework.Arduino.SerialCommunication;
+
 using CNCLib.Logic.Client;
+
 using System.Threading.Tasks;
 using System;
+
+using Framework.Dependency;
 
 namespace CNCLib.Wpf.Helpers
 {
@@ -108,7 +113,6 @@ namespace CNCLib.Wpf.Helpers
 
             new MachineGCodeHelper().SendCommandAsync(trim).ConfigureAwait(false).GetAwaiter().GetResult();
         }
-
 
         public async Task SendInitCommands(string commandstring)
         {

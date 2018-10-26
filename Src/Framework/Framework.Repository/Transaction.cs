@@ -16,13 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Threading.Tasks;
-using Framework.Contracts.Repository;
-using Microsoft.EntityFrameworkCore.Storage;
-
 namespace Framework.Repository
 {
+    using System;
+    using System.Threading.Tasks;
+
+    using Framework.Contracts.Repository;
+
+    using Microsoft.EntityFrameworkCore.Storage;
+
     public class Transaction : ITransaction
     {
         public IUnitOfWork UnitOfWork { get; private set; }

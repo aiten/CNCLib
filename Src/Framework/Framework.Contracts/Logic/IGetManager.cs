@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace Framework.Contracts.Logic
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface IGetManager<T, in TId> where T : class
     {
         Task<T> Get(TId id);

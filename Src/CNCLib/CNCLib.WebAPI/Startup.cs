@@ -17,29 +17,31 @@
 */
 
 using AutoMapper;
+
 using CNCLib.Logic;
 using CNCLib.Logic.Client;
-using CNCLib.Logic.Manager;
 using CNCLib.Repository;
-using CNCLib.Repository.Context;
 using CNCLib.Repository.SqlServer;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
-using CNCLib.Wpf;
-using Framework.Contracts.Repository;
-using Framework.Contracts.Shared;
-using Framework.Repository;
+
+using Framework.Dependency;
+using Framework.Logging;
 using Framework.Tools;
-using Framework.Tools.Dependency;
+using Framework.Mapper;
 using Framework.Web;
 using Framework.Web.Filter;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json.Serialization;
+
 using NLog;
+
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace CNCLib.WebAPI
@@ -76,6 +78,7 @@ namespace CNCLib.WebAPI
             Dependency.Initialize(new AspNetDependencyProvider(services));
 
             Dependency.Container.RegisterFrameWorkTools();
+            Dependency.Container.RegisterFrameWorkLogging();
             Dependency.Container.RegisterRepository();
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();
@@ -102,7 +105,6 @@ namespace CNCLib.WebAPI
             {
                 GlobalDiagnosticsContext.Set("connectionString", sqlconnectstring);
             }
-
 
             Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false, false);
 

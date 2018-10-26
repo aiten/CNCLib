@@ -16,12 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace Framework.Arduino.SerialCommunication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface ISerial : IDisposable
     {
         #region Setup/Init

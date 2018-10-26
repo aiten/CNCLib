@@ -43,13 +43,10 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -66,10 +63,10 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="..\CNCLibSolutionInfo.cs">
+    <Compile Include="..\SolutionItems\CNCLibSolutionInfo.cs">
       <Link>Properties\CNCLibSolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="..\CNCLibSolutionInfoVersion.cs">
+    <Compile Include="..\SolutionItems\CNCLibSolutionInfoVersion.cs">
       <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
     </Compile>
     <Compile Include="CNCLibUserContext.cs" />
@@ -99,6 +96,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Framework.Dependency\Framework.Dependency.csproj">
+      <Project>{992eb691-dfe9-4b45-88f7-12d59a79fd03}</Project>
+      <Name>Framework.Dependency</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Drawing\Framework.Drawing.csproj">
+      <Project>{e30bf689-6836-4464-8221-f0fef41c09a9}</Project>
+      <Name>Framework.Drawing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Logging\Framework.Logging.csproj">
+      <Project>{d1dc4bbd-4550-4c53-88e7-2aba7c396f80}</Project>
+      <Name>Framework.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Pattern\Framework.Pattern.csproj">
+      <Project>{786e7311-ac37-40d0-b34f-813d6e988ebf}</Project>
+      <Name>Framework.Pattern</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Repository\Framework.Repository.csproj">
       <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
       <Name>Framework.Repository</Name>

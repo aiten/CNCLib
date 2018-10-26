@@ -19,10 +19,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
+
 using FluentAssertions;
-using Framework.Tools.Dependency;
+
+using Framework.Dependency;
+using Framework.Tools;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository
@@ -59,7 +64,7 @@ namespace CNCLib.Tests.Repository
             //entity1.Should().BeEquivalentTo(entity2, opts => 
             //    opts.Excluding(x => x.UserId)
             //);
-            return Framework.Tools.Helpers.CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[]
+            return CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[]
             {
                 @"MachineId", @"MachineCommandId", @"MachineInitCommandId"
             });
@@ -155,7 +160,6 @@ namespace CNCLib.Tests.Repository
                 }
             });
         }
-
 
         [TestMethod]
         public async Task AddRollbackTest()

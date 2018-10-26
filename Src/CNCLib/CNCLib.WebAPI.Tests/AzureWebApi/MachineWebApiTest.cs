@@ -21,8 +21,11 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+
 using CNCLib.Logic.Contracts.DTO;
+
 using FluentAssertions;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.WebAPI.Tests.AzureWebApi

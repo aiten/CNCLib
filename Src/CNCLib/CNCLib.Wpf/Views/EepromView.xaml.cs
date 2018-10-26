@@ -17,9 +17,12 @@
 */
 
 using System.Windows;
+
 using CNCLib.Wpf.Models;
-using Framework.Tools.Dependency;
+
+using Framework.Dependency;
 using Framework.Wpf.View;
+
 using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace CNCLib.Wpf.Views

@@ -16,14 +16,17 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Drawing;
-using System.Drawing.Imaging;
-using FluentAssertions;
-using Framework.Tools.Drawing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Framework.Test.Drawing
 {
+    using System.Drawing;
+    using System.Drawing.Imaging;
+
+    using FluentAssertions;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Framework.Drawing;
+
     [TestClass]
     public class DitherTest
     {

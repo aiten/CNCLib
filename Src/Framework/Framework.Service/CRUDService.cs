@@ -16,13 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Framework.Contracts.Logic;
-
 namespace Framework.Service
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    using Framework.Contracts.Logic;
+
     public abstract class CRUDService<T, TKey> : GetService<T, TKey> where T : class
     {
         private readonly ICRUDManager<T, TKey> _manager;

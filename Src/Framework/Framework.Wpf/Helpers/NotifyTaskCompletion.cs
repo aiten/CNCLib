@@ -16,15 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-
 // see https://msdn.microsoft.com/magazine/dn605875
 
 namespace Framework.Wpf.Helpers
 {
+    using System;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
+
     public sealed class NotifyTaskCompletion<TResult> : INotifyPropertyChanged
     {
         public NotifyTaskCompletion(Task<TResult> task)
@@ -83,8 +83,7 @@ namespace Framework.Wpf.Helpers
 
         public Task<TResult> Task { get; }
 
-        public TResult Result =>
-            (Task.Status == TaskStatus.RanToCompletion) ? Task.Result : default(TResult);
+        public TResult Result => Task.Status == TaskStatus.RanToCompletion ? Task.Result : default(TResult);
 
         public TaskStatus Status         => Task.Status;
         public bool       IsCompleted    => Task.IsCompleted;

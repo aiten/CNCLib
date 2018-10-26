@@ -20,9 +20,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+
 using CNCLib.GCode.Parser;
-using Framework.Tools.Helpers;
-using Framework.Tools.Drawing;
+
+using Framework.Drawing;
+using Framework.Parser;
 
 namespace CNCLib.GCode.Commands
 {

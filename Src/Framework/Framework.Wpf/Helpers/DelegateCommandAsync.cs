@@ -16,13 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
-
 namespace Framework.Wpf.Helpers
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+
     public class DelegateCommandAsync<T> : ICommand
     {
         private readonly Func<CancellationToken, Task<T>> _command;

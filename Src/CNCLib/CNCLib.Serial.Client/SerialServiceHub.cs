@@ -18,7 +18,9 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+
 using Framework.Arduino.SerialCommunication;
+
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CNCLib.Serial.Client

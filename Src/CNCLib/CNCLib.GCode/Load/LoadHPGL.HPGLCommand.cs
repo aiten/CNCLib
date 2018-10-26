@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools.Drawing;
+using Framework.Drawing;
 
 namespace CNCLib.GCode.Load
 {
@@ -29,7 +29,7 @@ namespace CNCLib.GCode.Load
                 PenUp,
                 PenDown,
                 Other
-            };
+            }
 
             public HPGLCommandType CommandType { get; set; } = HPGLCommandType.Other;
 

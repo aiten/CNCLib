@@ -18,8 +18,10 @@
 
 using System.Threading.Tasks;
 using System.Windows.Controls;
+
 using CNCLib.Wpf.ViewModels;
-using Framework.Tools.Dependency;
+
+using Framework.Dependency;
 using Framework.Wpf.View;
 
 namespace CNCLib.Wpf.Views

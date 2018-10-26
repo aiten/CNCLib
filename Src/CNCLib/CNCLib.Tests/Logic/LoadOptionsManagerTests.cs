@@ -17,15 +17,23 @@
 */
 
 using System;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using System.Linq;
+
 using NSubstitute;
-using Framework.Tools.Dependency;
+
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Logic.Client;
+
 using System.Threading.Tasks;
+
 using CNCLib.Logic.Manager;
+
 using FluentAssertions;
+
+using Framework.Dependency;
 
 namespace CNCLib.Tests.Logic
 {
@@ -53,7 +61,6 @@ namespace CNCLib.Tests.Logic
             rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
             var all = await ctrl.GetAll();
-
 
             all.Count().Should().Be(1);
             all.FirstOrDefault().Id.Should().Be(1);
@@ -89,7 +96,6 @@ namespace CNCLib.Tests.Logic
 
             all.Should().BeNull();
         }
-
 
         [TestMethod]
         public async Task AddLoadOptions()

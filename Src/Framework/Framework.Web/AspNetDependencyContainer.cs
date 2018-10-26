@@ -16,14 +16,16 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Framework.Tools.Dependency;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Framework.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Framework.Dependency;
+
     /// <summary>
     /// Dependency Contaienr for use in Live. Throws an exception when a Type cannot be resolved.
     /// </summary>

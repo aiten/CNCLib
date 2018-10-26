@@ -16,21 +16,23 @@
   http://www.gnu.org/licenses/
 */
 
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Contracts.Logging;
-using Framework.Tools.Dependency;
-using Framework.Tools.Logging;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NSubstitute;
-
 namespace Framework.Test.SerialCommunication
 {
+    using System.IO;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using FluentAssertions;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using NSubstitute;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Contracts.Logging;
+    using Framework.Dependency;
+    using Framework.Logging;
+
     [TestClass]
     public class SerialTest : UnitTestBase
     {
@@ -42,8 +44,8 @@ namespace Framework.Test.SerialCommunication
             Encoding encoding = Encoding.GetEncoding(1200);
             serialport.Encoding.ReturnsForAnyArgs(encoding);
 
-            Tools.Dependency.Dependency.Container.ResetContainer();
-            Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
+            Framework.Dependency.Dependency.Container.ResetContainer();
+            Framework.Dependency.Dependency.Container.RegisterInstance(serialport);
 
             int  resultidx = 0;
             bool sendReply = false;
@@ -54,7 +56,6 @@ namespace Framework.Test.SerialCommunication
                     sendReply = true;
                     await Task.FromResult(0);
                 });
-
 
             basestream.ReadAsync(Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
                 ReturnsForAnyArgs(async x =>
@@ -93,8 +94,8 @@ namespace Framework.Test.SerialCommunication
             Encoding encoding = Encoding.GetEncoding(12000);
             serialport.Encoding.ReturnsForAnyArgs(encoding);
 
-            Tools.Dependency.Dependency.Container.ResetContainer();
-            Tools.Dependency.Dependency.Container.RegisterInstance(serialport);
+            Framework.Dependency.Dependency.Container.ResetContainer();
+            Framework.Dependency.Dependency.Container.RegisterInstance(serialport);
 
             using (var serial = new Serial(CreateLogger()))
             {

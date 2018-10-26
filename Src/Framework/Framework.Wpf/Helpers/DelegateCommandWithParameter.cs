@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Windows.Input;
-
 namespace Framework.Wpf.Helpers
 {
+    using System;
+    using System.Windows.Input;
+
     public class DelegateCommand<T> : Prism.Commands.DelegateCommand<T>
     {
         public override event EventHandler CanExecuteChanged { add => CommandManager.RequerySuggested += value; remove => CommandManager.RequerySuggested -= value; }

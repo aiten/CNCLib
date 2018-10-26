@@ -16,19 +16,21 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using Framework.Contracts.Logging;
-using Framework.Tools.Dependency;
-
 namespace Framework.Arduino.SerialCommunication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.IO;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Diagnostics;
+
+    using Contracts.Logging;
+
+    using WinAPI;
+
     public class Serial : ISerial
     {
         #region Private Members
@@ -114,7 +116,7 @@ namespace Framework.Arduino.SerialCommunication
         public bool   Pause                  { get; set; } = false;
         public bool   SendNext               { get; set; } = false;
 
-        private bool Continue => (_serialPortCancellationTokenSource != null && !_serialPortCancellationTokenSource.IsCancellationRequested);
+        private bool Continue => _serialPortCancellationTokenSource != null && !_serialPortCancellationTokenSource.IsCancellationRequested;
 
         protected ILogger Trace => _logger;
 
@@ -192,10 +194,9 @@ namespace Framework.Arduino.SerialCommunication
 
         private async Task Disconnect(bool join)
         {
-            Trace?.Trace($"Disconnecting: { join.ToString() }");
+            Trace?.Trace($"Disconnecting: {join.ToString()}");
             Aborted = true;
             _serialPortCancellationTokenSource?.Cancel();
-
 
             if (join && _readThread != null)
             {
@@ -238,7 +239,7 @@ namespace Framework.Arduino.SerialCommunication
                 _serialPortCancellationTokenSource = null;
             }
 
-            Trace?.Trace($"Disconnected: { join.ToString()}");
+            Trace?.Trace($"Disconnected: {join.ToString()}");
         }
 
         /// <summary>
@@ -290,7 +291,7 @@ namespace Framework.Arduino.SerialCommunication
 
         protected virtual void SetupCom(string portname)
         {
-            _serialPort = Dependency.Resolve<ISerialPort>();
+            _serialPort = Dependency.Dependency.Resolve<ISerialPort>();
 
             _serialPort.PortName  = portname;
             _serialPort.BaudRate  = BaudRate;
@@ -753,12 +754,12 @@ namespace Framework.Arduino.SerialCommunication
                 }
                 catch (IOException e)
                 {
-                    Trace?.Error($"ReadIOException: { e.Message }");
+                    Trace?.Error($"ReadIOException: {e.Message}");
                     Thread.Sleep(250);
                 }
                 catch (Exception e)
                 {
-                    Trace?.Error($"ReadException: { e.Message }");
+                    Trace?.Error($"ReadException: {e.Message}");
                     Thread.Sleep(250);
                 }
 
@@ -788,7 +789,7 @@ namespace Framework.Arduino.SerialCommunication
 
             if (string.IsNullOrEmpty(message) == false)
             {
-                Trace?.Trace($"Read: { message.Replace("\n", @"\n").Replace("\r", @"\r").Replace("\t", @"\t") }");
+                Trace?.Trace($"Read: {message.Replace("\n", @"\n").Replace("\r", @"\r").Replace("\t", @"\t")}");
 
                 bool endcommand = false;
 
@@ -812,10 +813,9 @@ namespace Framework.Arduino.SerialCommunication
                     cmd.ReplyReceivedTime = DateTime.Now;
                 }
 
-
                 OnReplyReceived(new SerialEventArgs(message, cmd));
 
-                if (message.StartsWith((OkTag)))
+                if (message.StartsWith(OkTag))
                 {
                     endcommand = true;
                     if (cmd != null)
@@ -885,13 +885,13 @@ namespace Framework.Arduino.SerialCommunication
 
         private static void SetSystemKeepAlive()
         {
-            Tools.WinAPIWrapper.KeepAlive();
-            Tools.WinAPIWrapper.ResetTimer();
+            WinAPIWrapper.KeepAlive();
+            WinAPIWrapper.ResetTimer();
         }
 
         private static void ClearSystemKeepAlive()
         {
-            Tools.WinAPIWrapper.AllowIdle();
+            WinAPIWrapper.AllowIdle();
         }
 
         #endregion

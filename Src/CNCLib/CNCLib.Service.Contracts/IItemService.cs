@@ -19,7 +19,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using CNCLib.Logic.Contracts.DTO;
+
 using Framework.Contracts.Service;
 
 namespace CNCLib.Service.Contracts

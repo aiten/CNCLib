@@ -17,8 +17,9 @@
 */
 
 using CNCLib.GCode.Parser;
-using Framework.Tools.Drawing;
-using Framework.Tools.Helpers;
+
+using Framework.Drawing;
+using Framework.Parser;
 
 namespace CNCLib.GCode.Commands
 {

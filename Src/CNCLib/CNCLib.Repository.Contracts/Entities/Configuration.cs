@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-
 namespace CNCLib.Repository.Contracts.Entities
 {
     public class Configuration
@@ -27,7 +26,6 @@ namespace CNCLib.Repository.Contracts.Entities
         public         string Value  { get; set; }
         public         int?   UserId { get; set; }
         public virtual User   User   { get; set; }
-
 
         public Configuration()
         {

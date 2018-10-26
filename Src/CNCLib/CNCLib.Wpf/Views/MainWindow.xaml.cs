@@ -16,8 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools.Dependency;
+using Framework.Dependency;
 using Framework.Wpf.ViewModels;
+
 using MahApps.Metro.Controls;
 
 namespace CNCLib.Wpf.Views

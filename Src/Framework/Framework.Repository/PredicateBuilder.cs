@@ -16,12 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-
-using System;
-using System.Linq.Expressions;
-
 namespace Framework.Repository
 {
+    using System;
+    using System.Linq.Expressions;
+
     public static class PredicateBuilder
     {
         public static Expression<Func<T, bool>> True<T>()

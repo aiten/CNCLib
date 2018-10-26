@@ -16,12 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using Framework.Contracts.Logging;
-
 namespace Framework.Arduino.SerialCommunication
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Contracts.Logging;
+
     public class HPGLSerial : Serial
     {
         readonly int maxmessagelength = 128;

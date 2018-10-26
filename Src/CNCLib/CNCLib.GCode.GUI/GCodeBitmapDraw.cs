@@ -18,10 +18,12 @@
 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
-using Framework.Tools.Drawing;
-using CNCLib.GCode.Commands;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
+
+using CNCLib.GCode.Commands;
+
+using Framework.Drawing;
 
 namespace CNCLib.GCode.GUI
 {
@@ -752,7 +754,6 @@ namespace CNCLib.GCode.GUI
             // Ensure last segment arrives at target location.
             Line(param, pen, last, ptTo);
         }
-
 
         private bool PreDrawLineOrArc(object param, DrawType drawtype, PointF from, PointF to)
         {

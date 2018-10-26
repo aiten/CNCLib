@@ -20,15 +20,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using AutoMapper;
+
 using CNCLib.Logic.Manager;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
+
 using FluentAssertions;
+
 using Framework.Contracts.Repository;
+using Framework.Dependency;
 using Framework.Repository;
-using Framework.Tools.Dependency;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using NSubstitute;
 
 using ItemDto = CNCLib.Logic.Contracts.DTO.Item;
@@ -50,7 +56,6 @@ namespace CNCLib.Tests.Logic
 
             return rep;
         }
-
 
         [TestMethod]
         public async Task GetItemNone()

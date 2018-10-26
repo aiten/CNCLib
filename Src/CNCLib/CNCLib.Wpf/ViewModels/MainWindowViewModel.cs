@@ -18,7 +18,6 @@
 
 using Framework.Wpf.ViewModels;
 
-
 namespace CNCLib.Wpf.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel

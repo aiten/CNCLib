@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools;
-
 namespace Framework.Logic
 {
+    using Framework.Pattern;
+
     public class ManagerBase : DisposeWrapper
     {
     }

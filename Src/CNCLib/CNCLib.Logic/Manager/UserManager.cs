@@ -18,12 +18,16 @@
 
 using System;
 using System.Threading.Tasks;
+
 using AutoMapper;
+
 using CNCLib.Logic.Contracts;
 using CNCLib.Logic.Contracts.DTO;
 using CNCLib.Repository.Contracts;
+
 using Framework.Contracts.Repository;
 using Framework.Logic;
+
 using UserEntity = CNCLib.Repository.Contracts.Entities.User;
 
 namespace CNCLib.Logic.Manager

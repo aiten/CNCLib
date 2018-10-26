@@ -17,7 +17,8 @@
 */
 
 using System;
-using Framework.Tools.Dependency;
+
+using Framework.Dependency;
 
 namespace CNCLib.WebAPI.Tests.Dependency
 {
