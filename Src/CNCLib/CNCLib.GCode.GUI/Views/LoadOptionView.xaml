@@ -247,10 +247,10 @@
             </TabItem>
             <TabItem Header="HPGL" Custom:ControlsHelper.HeaderFontSize="15">
                 <StackPanel>
-                    <RadioButton x:Name="_HPGLLaser" GroupName="PenMoveTypeGroup" Content="Generate for Laser"
+                    <RadioButton x:Name="_HPGLLaser" GroupName="PenCommandMoveTypeGroup" Content="Generate for Laser"
                                  IsChecked="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=CommandString, Converter={StaticResource EnumBooleanConverter}}"
                                  Margin="10,10,0,0" />
-                    <RadioButton GroupName="PenMoveTypeGroup" Content="Generate for engrave"
+                    <RadioButton GroupName="PenCommandMoveTypeGroup" Content="Generate for engrave"
                                  IsChecked="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=ZMove, Converter={StaticResource EnumBooleanConverter}}"
                                  Margin="10,10,0,0" />
                     <GroupBox Header="Smooth" Margin="0,5,0,0">
@@ -258,7 +258,7 @@
                             <CheckBox Content="Smooth" IsChecked="{Binding LoadOptionsValue.SmoothEnabled}"
                                       Margin="10,10,0,0" />
                             <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.SmoothEnabled}">
-                                <Label Content="Minimum line lenght" Width="120" />
+                                <Label Content="Minimum line length" Width="120" />
                                 <TextBox Text="{Binding LoadOptionsValue.SmoothMinLineLenght}"
                                          VerticalContentAlignment="Center" Width="60" />
                                 <Label Content="mm" />

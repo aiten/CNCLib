@@ -30,7 +30,7 @@ namespace CNCLib.GCode.Commands
 {
     public abstract class Command
     {
-        public enum MoveType
+        public enum CommandMoveType
         {
             NoMove,
             Fast,  // Go
@@ -42,7 +42,7 @@ namespace CNCLib.GCode.Commands
         protected Command()
         {
             PositionValid = false;
-            Movetype      = MoveType.NoMove;
+            MoveType      = CommandMoveType.NoMove;
         }
 
         private Point3D        _calculatedEndPosition;
@@ -62,7 +62,7 @@ namespace CNCLib.GCode.Commands
 
         public bool     UseWithoutPrefix { get; protected set; }
         public bool     PositionValid    { get; protected set; }
-        public MoveType Movetype         { get; protected set; }
+        public CommandMoveType MoveType         { get; protected set; }
 
         public string SubCode { get; protected set; }
         public string Code    { get; protected set; }
@@ -126,9 +126,9 @@ namespace CNCLib.GCode.Commands
 
         public void AddVariable(char name, Variable var)
         {
-            var newvar = var.ShallowCopy();
-            newvar.Name = name;
-            _variables.Add(newvar);
+            var newVar = var.ShallowCopy();
+            newVar.Name = name;
+            _variables.Add(newVar);
         }
 
         public void AddVariable(char name, double value, bool isFloatingPoint)
@@ -180,12 +180,12 @@ namespace CNCLib.GCode.Commands
             {
                 if (var.ParameterIsTerm)
                 {
-                    var linestream       = new CommandStream() { Line                              = var.Parameter };
-                    var expressionparser = new GCodeExpressionParser(linestream) { ParameterValues = state.ParameterValues };
-                    expressionparser.Parse();
-                    if (!expressionparser.IsError())
+                    var lineStream       = new CommandStream() { Line                              = var.Parameter };
+                    var expressionParser = new GCodeExpressionParser(lineStream) { ParameterValues = state.ParameterValues };
+                    expressionParser.Parse();
+                    if (!expressionParser.IsError())
                     {
-                        val = expressionparser.Answer;
+                        val = expressionParser.Answer;
                         return true;
                     }
                 }
@@ -241,18 +241,18 @@ namespace CNCLib.GCode.Commands
             return new[] { this };
         }
 
-        public DrawType Convert(MoveType movetype, CommandState state)
+        public DrawType Convert(CommandMoveType moveType, CommandState state)
         {
-            var drawtype = DrawType.NoDraw;
+            var drawType = DrawType.NoDraw;
 
-            if (movetype != MoveType.NoMove)
+            if (moveType != CommandMoveType.NoMove)
             {
                 if (state.IsSelected)
                 {
-                    drawtype |= DrawType.Selected;
+                    drawType |= DrawType.Selected;
                 }
 
-                drawtype |= DrawType.Draw;
+                drawType |= DrawType.Draw;
 
                 if (state.UseLaser)
                 {
@@ -261,21 +261,21 @@ namespace CNCLib.GCode.Commands
                         return DrawType.NoDraw;
                     }
 
-                    drawtype |= DrawType.Laser;
+                    drawType |= DrawType.Laser;
                 }
 
-                if (movetype == MoveType.Normal)
+                if (moveType == CommandMoveType.Normal)
                 {
-                    drawtype |= DrawType.Cut;
+                    drawType |= DrawType.Cut;
                 }
             }
 
-            return drawtype;
+            return drawType;
         }
 
         public virtual void Draw(IOutputCommand output, CommandState state, object param)
         {
-            output.DrawLine(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition);
+            output.DrawLine(this, param, Convert(MoveType, state), CalculatedStartPosition, CalculatedEndPosition);
         }
 
         #endregion
@@ -284,7 +284,7 @@ namespace CNCLib.GCode.Commands
 
         public virtual void SetCode(string code)
         {
-        } // allow genieric Gxx & Mxx to set code
+        } // allow generic Gxx & Mxx to set code
 
         public string GCodeAdd { get; set; }
 
@@ -336,11 +336,11 @@ namespace CNCLib.GCode.Commands
             return LineNumber.HasValue ? $"N{LineNumber}{postString}" : "";
         }
 
-        public virtual string[] GetGCodeCommands(Point3D startfrom, CommandState state)
+        public virtual string[] GetGCodeCommands(Point3D startFrom, CommandState state)
         {
             var ret = new[]
             {
-                GCodeHelper(startfrom)
+                GCodeHelper(startFrom)
             };
             return ret;
         }

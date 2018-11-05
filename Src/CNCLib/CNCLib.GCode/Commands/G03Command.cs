@@ -29,7 +29,7 @@ namespace CNCLib.GCode.Commands
         {
             UseWithoutPrefix = true;
             PositionValid    = true;
-            Movetype         = MoveType.Normal;
+            MoveType         = CommandMoveType.Normal;
             Code             = "G3";
         }
 
@@ -59,7 +59,7 @@ namespace CNCLib.GCode.Commands
                 K = 0;
             }
 
-            output.DrawArc(this, param, Convert(Movetype, state), CalculatedStartPosition, CalculatedEndPosition, new Point3D { X = I, Y = J, Z = K }, false, state.CurrentPane);
+            output.DrawArc(this, param, Convert(MoveType, state), CalculatedStartPosition, CalculatedEndPosition, new Point3D { X = I, Y = J, Z = K }, false, state.CurrentPane);
         }
 
         #endregion

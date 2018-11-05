@@ -651,8 +651,8 @@ namespace Framework.Arduino.SerialCommunication
 
             while (Continue)
             {
-                SerialCommand nextcmd         = null;
-                int           queuedcmdlenght = 0;
+                SerialCommand nextCmd         = null;
+                int           queuedCmdLength = 0;
 
                 // commands are sent to the arduino until the buffer is full
                 // In the _pendingCommand list also the commands are still stored with no reply.
@@ -663,32 +663,32 @@ namespace Framework.Arduino.SerialCommunication
                     {
                         if (cmd.SentTime.HasValue)
                         {
-                            queuedcmdlenght += cmd.CommandText.Length;
-                            queuedcmdlenght += 2; // CRLF
+                            queuedCmdLength += cmd.CommandText.Length;
+                            queuedCmdLength += 2; // CRLF
                         }
                         else
                         {
-                            nextcmd = cmd;
+                            nextCmd = cmd;
                             break;
                         }
                     }
                 }
 
                 // nextcmd			=> next command to be sent
-                // queuedcmdlenght	=> lenght of command in the arduino buffer
+                // queuedCmdLength	=> length of command in the arduino buffer
 
-                if (nextcmd != null && (!Pause || SendNext))
+                if (nextCmd != null && (!Pause || SendNext))
                 {
-                    if (queuedcmdlenght == 0 || queuedcmdlenght + nextcmd.CommandText.Length + 2 < ArduinoBuffersize)
+                    if (queuedCmdLength == 0 || queuedCmdLength + nextCmd.CommandText.Length + 2 < ArduinoBuffersize)
                     {
                         // send everyting if queue is empty
                         // or send command if pending commands + this fit into arduino queue
-                        SendCommand(nextcmd);
+                        SendCommand(nextCmd);
                         SendNext = false;
                     }
                     else
                     {
-                        var eventarg = new SerialEventArgs(nextcmd);
+                        var eventarg = new SerialEventArgs(nextCmd);
                         OnWaitForSend(eventarg);
                         if (Aborted || eventarg.Abort)
                         {

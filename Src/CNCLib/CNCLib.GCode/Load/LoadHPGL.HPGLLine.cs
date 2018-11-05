@@ -96,9 +96,6 @@ namespace CNCLib.GCode.Load
 
             public bool IsEmbeddedEx(HPGLLine to)
             {
-                // TODO: we test points only!!!
-                // but it would be necessary to thes the whole line 
-
                 return _polygon.ArePointsInPolygon(to._polygon.Points);
             }
 

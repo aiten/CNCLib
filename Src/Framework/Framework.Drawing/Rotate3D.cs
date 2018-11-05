@@ -42,10 +42,10 @@ namespace Framework.Drawing
             double n2 = -vect[1];
             double n3 = vect[2];
 
-            double vectorlenght = Math.Sqrt(n1 * n1 + n2 * n2 + n3 * n3);
-            n1 = n1 / vectorlenght;
-            n2 = n2 / vectorlenght;
-            n3 = n3 / vectorlenght;
+            double vectorLength = Math.Sqrt(n1 * n1 + n2 * n2 + n3 * n3);
+            n1 = n1 / vectorLength;
+            n2 = n2 / vectorLength;
+            n3 = n3 / vectorLength;
 
             double cos = Math.Cos(rad);
             double sin = Math.Sin(rad);

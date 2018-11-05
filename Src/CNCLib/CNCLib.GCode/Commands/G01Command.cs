@@ -27,7 +27,7 @@ namespace CNCLib.GCode.Commands
         {
             UseWithoutPrefix = true;
             PositionValid    = true;
-            Movetype         = MoveType.Normal;
+            MoveType         = CommandMoveType.Normal;
             Code             = "G1";
         }
 

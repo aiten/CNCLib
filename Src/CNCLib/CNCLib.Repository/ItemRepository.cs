@@ -80,42 +80,5 @@ namespace CNCLib.Repository
             base.AssignValuesGraph(trackingentity, values);
             Sync(trackingentity.ItemProperties, values.ItemProperties, (x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name);
         }
-
-/*
-        public async Task Store(Item item)
-		{
-			// search und update item / itemproperties
-
-			int id = item.ItemId;
-		    var optValues = item.ItemProperties?.ToList() ?? new List<ItemProperty>();
-
-			var itemInDb = await Context.Items.
-				Where(m => m.ItemId == id).
-				Include(d => d.ItemProperties).
-                FirstOrDefaultAsync();
-
-			if (itemInDb == default(Item))
-			{
-                // add new
-				AddEntity(item);
-			    foreach (var iv in optValues)
-			        AddEntity(iv);
-
-            }
-            else
-			{
-                // syn with existing
-
-                SetValue(itemInDb,item);
-
-				// search und itemProperties (add and delete)
-
-				Sync<ItemProperty>(
-                    itemInDb.ItemProperties,
-                    optValues, 
-					(x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name);
-			}
-		}
-*/
     }
 }

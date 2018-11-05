@@ -27,7 +27,7 @@ namespace Framework.Web
     using Framework.Dependency;
 
     /// <summary>
-    /// Dependency Contaienr for use in Live. Throws an exception when a Type cannot be resolved.
+    /// Dependency container for use in Live. Throws an exception when a Type cannot be resolved.
     /// </summary>
     public class AspNetDependencyContainer : IDependencyContainer
     {

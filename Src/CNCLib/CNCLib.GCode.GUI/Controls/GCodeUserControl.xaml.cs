@@ -350,7 +350,7 @@ namespace CNCLib.GCode.GUI.Controls
 
         #region Drag/Drop
 
-        enum EDraggingType
+        private enum EDraggingType
         {
             NoDragging,
             Position,
@@ -379,7 +379,7 @@ namespace CNCLib.GCode.GUI.Controls
             InvalidateVisual();
         }
 
-        Rotate3D _rotate = new Rotate3D();
+        private Rotate3D _rotate = new Rotate3D();
 
         private bool IsGotoPosKey()
         {
@@ -529,7 +529,7 @@ namespace CNCLib.GCode.GUI.Controls
 
         #region private
 
-        static System.Drawing.Color ColorToColor(Color color)
+        private static System.Drawing.Color ColorToColor(Color color)
         {
             return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
         }

@@ -71,19 +71,19 @@ namespace CNCLib.GCode.Commands
 
         public void Paint(IOutputCommand output, object param)
         {
-            var  commandstate    = new CommandState();
-            bool haveseencurrent = Current == null;
+            var  commandState    = new CommandState();
+            bool haveSeenCurrent = Current == null;
 
             foreach (Command cmd in this)
             {
-                if (!haveseencurrent)
+                if (!haveSeenCurrent)
                 {
-                    haveseencurrent = cmd == Current;
+                    haveSeenCurrent = cmd == Current;
                 }
 
-                commandstate.IsSelected = haveseencurrent;
-                cmd.SetCommandState(commandstate);
-                cmd.Draw(output, commandstate, param);
+                commandState.IsSelected = haveSeenCurrent;
+                cmd.SetCommandState(commandState);
+                cmd.Draw(output, commandState, param);
             }
         }
 

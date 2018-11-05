@@ -28,7 +28,7 @@ namespace CNCLib.GCode.Commands
         {
             UseWithoutPrefix = true;
             PositionValid    = true;
-            Movetype         = MoveType.Fast;
+            MoveType         = CommandMoveType.Fast;
         }
 
         #endregion
@@ -44,7 +44,7 @@ namespace CNCLib.GCode.Commands
             int radius = 10;
             base.Draw(output, state, param);
             Point3D ptFrom = CalculatedEndPosition;
-            output.DrawEllipse(this, param, Convert(MoveType.Normal, state), ptFrom, radius, radius);
+            output.DrawEllipse(this, param, Convert(CommandMoveType.Normal, state), ptFrom, radius, radius);
         }
 
         #endregion

@@ -85,14 +85,14 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         public ObservableCollection<LoadOptions> AllLoadOptions { get => _allLoadOptions; set => SetProperty(ref _allLoadOptions, value); }
 
-        private LoadOptions _selectedloadOptions = null;
+        private LoadOptions _selectedLoadOptions = null;
 
         public LoadOptions SelectedLoadOption
         {
-            get => _selectedloadOptions;
+            get => _selectedLoadOptions;
             set
             {
-                SetProperty(() => _selectedloadOptions == value, () => _selectedloadOptions = value);
+                SetProperty(() => _selectedLoadOptions == value, () => _selectedLoadOptions = value);
                 if (value != null && _allSettingsLoaded)
                 {
                     LoadOptionsValue = _mapper.Map<LoadOptions>(value);

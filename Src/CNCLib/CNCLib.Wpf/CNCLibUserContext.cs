@@ -43,16 +43,16 @@ namespace CNCLib.Wpf
         {
             try
             {
-                using (var userservice = Dependency.Resolve<IUserService>())
+                using (var userService = Dependency.Resolve<IUserService>())
                 {
-                    var user = await userservice.GetByName(UserName);
+                    var user = await userService.GetByName(UserName);
                     if (user == null)
                     {
                         user = new User()
                         {
                             UserName = this.UserName
                         };
-                        user.UserId = await userservice.Add(user);
+                        user.UserId = await userService.Add(user);
                     }
 
                     UserId = user.UserId;

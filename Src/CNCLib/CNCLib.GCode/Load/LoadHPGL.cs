@@ -112,7 +112,7 @@ namespace CNCLib.GCode.Load
 
         private void RemoveFirstPenUp(IList<HPGLCommand> list)
         {
-            // remove first PU0,0 PU50,50 PU 100,100 => autoscale problem
+            // remove first PU0,0 PU50,50 PU 100,100 => autoScale problem
             var rlist      = list.TakeWhile(h => !h.IsPenCommand || !h.IsPenDownCommand).ToList();
             int countPenUp = rlist.Count(h => h.IsPenCommand);
 
@@ -132,7 +132,7 @@ namespace CNCLib.GCode.Load
 
         private void RemoveLastPenUp(IList<HPGLCommand> list)
         {
-            // remove last PU0,0 => autoscale problem
+            // remove last PU0,0 => autoScale problem
             var rlist = list.Reverse().TakeWhile(h => !h.IsPenCommand || !h.IsPenDownCommand).ToList();
 
             foreach (var h in rlist)

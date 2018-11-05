@@ -188,7 +188,6 @@ namespace Framework.Test.SerialCommunication
         {
             using (var serial = new Serial(CreateLogger()))
             {
-                /* var serialport = */
                 CreateSerialPortMock(serial, new[]
                 {
                     serial.OkTag + "\n\r"
