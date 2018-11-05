@@ -6,7 +6,7 @@
   ;--------------------------------
 ;global
 
-  !define CopyFromFolder "C:\dev\CNCLib\Src\CNCLib\CNCLib.Wpf.Start\bin\Debug"
+  !define CopyFromFolder "..\CNCLib\CNCLib.Wpf.Start\bin\Debug"
 
 ;--------------------------------
 ;General
@@ -16,6 +16,16 @@
 
   ;Define name of the product
   !define PRODUCT "CNCLib"
+  !define COMPANYNAME "Aitenbichler Herbert"
+  !define DESCRIPTION "CNCLib - a program to control your Arduino based CNC machine"
+  # These three must be integers
+  !define VERSIONMAJOR 1
+  !define VERSIONMINOR 0
+  !define VERSIONBUILD 10 
+  
+  !define HELPURL "https://github.com/aiten/CNCLib" # "Support Information" link
+  !define UPDATEURL "https://github.com/aiten/CNCLib" # "Product Updates" link
+  !define ABOUTURL "https://github.com/aiten/CNCLib" # "Publisher" link
 
   ;Define optional URL that will be opened after the installation was successful
   !define AFTER_INSTALLATION_URL "https://github.com/aiten/CNCLib"
@@ -178,13 +188,25 @@ Section "Main Component"
   ;Registry information for add/remove programs
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "DisplayName" "${PRODUCT}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "UninstallString" '"$INSTDIR\${PRODUCT}_uninstaller.exe"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "InstallLocation" "$\"$INSTDIR$\""
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "DisplayIcon" "$\"$INSTDIR\CNCLib_uninstaller.exe$\""
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "Publisher" "${COMPANYNAME}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "HelpLink" "${HELPURL}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "URLUpdateInfo" "${UPDATEURL}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "URLInfoAbout" "${ABOUTURL}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "DisplayVersion" "${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}"
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "VersionMajor" ${VERSIONMAJOR}
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "VersionMinor" ${VERSIONMINOR}
+
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}" "NoRepair" 1
 
   ;Create optional start menu shortcut for uninstaller and Main component
   CreateDirectory "$SMPROGRAMS\${PRODUCT}"
-  ;CreateShortCut "$SMPROGRAMS\${PRODUCT}\Main Component.lnk" "$INSTDIR\example_file_component_01.txt" "" "$INSTDIR\example_file_component_01.txt" 0
+  CreateShortCut "$SMPROGRAMS\${PRODUCT}\CNCLib.Wpf.lnk" "$INSTDIR\CNCLib.Wpf.Start.exe" "" "$INSTDIR\CNCLib.Wpf.Start.exe" 0
   ;CreateShortCut "$SMPROGRAMS\${PRODUCT}\Uninstall ${PRODUCT}.lnk" "$INSTDIR\${PRODUCT}_uninstaller.exe" "" "$INSTDIR\${PRODUCT}_uninstaller.exe" 0
+
+  CreateShortCut "$DESKTOP\CNCLib.Wpf.lnk" "$INSTDIR\CNCLib.Wpf.Start.exe" "" "$INSTDIR\CNCLib.Wpf.Start.exe" 0
 
   ;Create uninstaller
   WriteUninstaller "${PRODUCT}_uninstaller.exe"
@@ -213,6 +235,8 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\${PRODUCT}\*.*"
   RmDir  "$SMPROGRAMS\${PRODUCT}"
 
+  Delete "$DESKTOP\CNCLib.Wpf.lnk"
+  
 SectionEnd
 
 
