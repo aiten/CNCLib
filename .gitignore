@@ -25,7 +25,6 @@ PublishProfiles/
 /Src/CNCLib/TestResults
 
 obj
-bin
 
 *.opendb
 *.db
