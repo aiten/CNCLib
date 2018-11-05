@@ -5,6 +5,8 @@
 *.sdf
 *.user
 
+StypeCop.Cache
+
 Debug/
 Release/
 ipch/

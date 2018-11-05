@@ -69,13 +69,13 @@ namespace Framework.Repository
 
         public async Task Update(TKey key, TEntity values)
         {
-            var entityInDB = await GetTracking(key);
-            if (entityInDB == default(TEntity))
+            var entityInDb = await GetTracking(key);
+            if (entityInDb == default(TEntity))
             {
                 throw new DBConcurrencyException();
             }
 
-            SetValueGraph(entityInDB, values);
+            SetValueGraph(entityInDb, values);
         }
 
         public void SetValueGraph(TEntity trackingentity, TEntity values)

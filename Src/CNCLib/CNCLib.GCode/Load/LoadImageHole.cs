@@ -99,7 +99,7 @@ namespace CNCLib.GCode.Load
 
                     if (x >= 0 && x + ImageToDotSizeX <= SizeX && y >= 0 && y + ImageToDotSizeY <= SizeY)
                     {
-                        // Rect (x1,y1, ImageToDotSizeX, ImageToDotSizeY)  is on printingarea
+                        // Rect (x1,y1, ImageToDotSizeX, ImageToDotSizeY)  is on printing area
 
                         double posx = x * (PixelSizeX + PixelDistX) + ShiftX + PixelDistX / 2;
                         double posy = y * (PixelSizeY + PixelDistY) + ShiftY + PixelDistY / 2;

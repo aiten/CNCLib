@@ -559,9 +559,9 @@ namespace CNCLib.GCode.GUI
         readonly PenSet _dithered = new PenSet();
         readonly PenSet _selected = new PenSet();
 
-        public void DrawLine(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo)
+        public void DrawLine(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo)
         {
-            if (drawtype == DrawType.NoDraw)
+            if (drawType == DrawType.NoDraw)
             {
                 return;
             }
@@ -571,9 +571,9 @@ namespace CNCLib.GCode.GUI
             var from = ToClientF(ptFrom);
             var to   = ToClientF(ptTo);
 
-            if (PreDrawLineOrArc(param, drawtype, from, to))
+            if (PreDrawLineOrArc(param, drawType, from, to))
             {
-                e.Graphics.DrawLine(GetPen(drawtype, LineDrawType.Line), from, to);
+                e.Graphics.DrawLine(GetPen(drawType, LineDrawType.Line), from, to);
             }
         }
 
@@ -590,21 +590,21 @@ namespace CNCLib.GCode.GUI
             }
         }
 
-        public void DrawEllipse(Command cmd, object param, DrawType drawtype, Point3D ptCenter, int xradius, int yradius)
+        public void DrawEllipse(Command cmd, object param, DrawType drawType, Point3D ptCenter, int xradius, int yradius)
         {
-            if (drawtype == DrawType.NoDraw)
+            if (drawType == DrawType.NoDraw)
             {
                 return;
             }
 
             var e    = (PaintEventArgs) param;
             var from = ToClientF(ptCenter);
-            e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Ellipse), from.X - xradius / 2, from.Y - yradius / 2, xradius, yradius);
+            e.Graphics.DrawEllipse(GetPen(drawType, LineDrawType.Ellipse), from.X - xradius / 2, from.Y - yradius / 2, xradius, yradius);
         }
 
-        public void DrawArc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, Point3D ptIIJ, bool clockwise, Pane pane)
+        public void DrawArc(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo, Point3D ptIIJ, bool clockwise, Pane pane)
         {
-            if (drawtype == DrawType.NoDraw)
+            if (drawType == DrawType.NoDraw)
             {
                 return;
             }
@@ -613,10 +613,10 @@ namespace CNCLib.GCode.GUI
             {
                 default:
                 case Pane.XYPane:
-                    Arc(cmd, param, drawtype, ptFrom, ptTo, ptIIJ.X0, ptIIJ.Y0, 0, 1, 2, clockwise);
+                    Arc(cmd, param, drawType, ptFrom, ptTo, ptIIJ.X0, ptIIJ.Y0, 0, 1, 2, clockwise);
                     break;
                 case Pane.XZPane:
-                    Arc(cmd, param, drawtype, ptFrom, ptTo, ptIIJ.X0, ptIIJ.Z0, 0, 2, 1, clockwise);
+                    Arc(cmd, param, drawType, ptFrom, ptTo, ptIIJ.X0, ptIIJ.Z0, 0, 2, 1, clockwise);
                     break;
             }
         }

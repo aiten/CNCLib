@@ -115,19 +115,7 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 client.BaseAddress = new Uri(AzureUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                /*
-                                LoadOptions info = new LoadOptions()
-                                {
-                                    LoadType = LoadOptions.ELoadType.Image,
-                                    AutoScale = true,
-                                    AutoScaleSizeX = 100,
-                                    AutoScaleSizeY = 100,
-                                    MoveSpeed = 450,
-                                    PenMoveType = LoadOptions.PenType.CommandString,
-                                    ImageDPIX = 66.7m,
-                                    ImageDPIY = 66.7m
-                                };
-                */
+
                 Assembly ass     = Assembly.GetExecutingAssembly();
                 string   asspath = Path.GetDirectoryName(ass.Location);
 

@@ -71,24 +71,6 @@ namespace CNCLib.GCode.Parser
                 // start of GCODE variable => format #1 or #<_x>
                 _reader.Next();
                 _state._number = _reader.GetInt();
-
-                /*
-                                _reader.Next();
-                                _state._number = _gcodeparser->ParseParamNo();
-    
-                                if (_gcodeparser->IsError())
-                                {
-                                    Error(_gcodeparser->GetError());
-                                    return string.Empty;
-                                }
-    
-                                return _state._number.ToString();
-                            }
-                            else
-                            {
-                                return base.ReadIdent();
-                            }
-                */
             }
 
             _reader.PopIdx(idx);

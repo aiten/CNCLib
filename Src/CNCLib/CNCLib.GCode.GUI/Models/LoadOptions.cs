@@ -124,7 +124,7 @@ namespace CNCLib.GCode.GUI.Models
         }
 
         public decimal? SmoothMinAngle      { get; set; } = (decimal) (45 * (Math.PI / 180));
-        public decimal? SmoothMinLineLenght { get; set; } = 1m;
+        public decimal? SmoothMinLineLength { get; set; } = 1m;
         public decimal? SmoothMaxError      { get; set; } = 1m / 40m;
 
         public enum ConvertTypeEnum

@@ -18,7 +18,4 @@
 
 using System.Runtime.InteropServices;
 
-//[assembly: AssemblyTitle("Framework.Test")]
-//[assembly: AssemblyProduct("Framework.Test")]
-
 [assembly: Guid("bbecb408-5426-4ce7-b7b6-970bde436486")]

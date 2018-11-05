@@ -226,7 +226,7 @@ namespace Framework.Parser
             decimal val = 0;
             if (NextChar != '.')
             {
-                val = Math.Abs(GetInt()); // -0.4 will return 0 => will be positiv
+                val = Math.Abs(GetInt()); // -0.4 will return 0 => will be positive
             }
 
             if (NextChar == '.')

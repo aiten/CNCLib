@@ -18,7 +18,4 @@
 
 using System.Runtime.InteropServices;
 
-//[assembly: AssemblyTitle("CNCLib.ServiceProxy.WebAPI")]
-//[assembly: AssemblyProduct("CNCLib.ServiceProxy.WebAPI")]
-
 [assembly: Guid("6487301a-6889-412c-92ec-899aad61a9a5")]

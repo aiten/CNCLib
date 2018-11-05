@@ -40,7 +40,7 @@ namespace CNCLib.GCode.Commands
 
         #region GCode
 
-        public override string[] GetGCodeCommands(Point3D startfrom, CommandState state)
+        public override string[] GetGCodeCommands(Point3D startFrom, CommandState state)
         {
             string[] ret;
             if (ParameterNo >= 0)
@@ -92,7 +92,7 @@ namespace CNCLib.GCode.Commands
                 }
                 else
                 {
-                    // error => do not analyse line
+                    // error => do not analyze line
                     stream.PopIdx(saveIndex);
                 }
             }

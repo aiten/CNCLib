@@ -81,25 +81,22 @@ namespace Framework.Tools
                         }
                         // and if they do, compare each item...
                         // this assumes both collections have the same order
-                        else
+                        for (int i = 0; i < collectionItemsCount1; i++)
                         {
-                            for (int i = 0; i < collectionItemsCount1; i++)
-                            {
-                                var collectionItem1    = collectionItems1.ElementAt(i);
-                                var collectionItem2    = collectionItems2.ElementAt(i);
-                                var collectionItemType = collectionItem1.GetType();
+                            var collectionItem1    = collectionItems1.ElementAt(i);
+                            var collectionItem2    = collectionItems2.ElementAt(i);
+                            var collectionItemType = collectionItem1.GetType();
 
-                                if (CanDirectlyCompare(collectionItemType))
-                                {
-                                    if (!AreValuesEqual(collectionItem1, collectionItem2))
-                                    {
-                                        return false;
-                                    }
-                                }
-                                else if (!AreObjectsPropertiesEqual(collectionItem1, collectionItem2, compared, ignoreList))
+                            if (CanDirectlyCompare(collectionItemType))
+                            {
+                                if (!AreValuesEqual(collectionItem1, collectionItem2))
                                 {
                                     return false;
                                 }
+                            }
+                            else if (!AreObjectsPropertiesEqual(collectionItem1, collectionItem2, compared, ignoreList))
+                            {
+                                return false;
                             }
                         }
                     }

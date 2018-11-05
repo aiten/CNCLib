@@ -26,7 +26,7 @@ namespace Framework.Arduino.SerialCommunication
     {
         #region Setup/Init
 
-        Task ConnectAsync(string portname);
+        Task ConnectAsync(string portName);
         Task DisconnectAsync();
         void AbortCommands();
         void ResumeAfterAbort();

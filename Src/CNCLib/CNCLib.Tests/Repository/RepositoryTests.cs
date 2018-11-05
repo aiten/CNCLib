@@ -40,7 +40,7 @@ namespace CNCLib.Tests.Repository
         {
             if (_init == false)
             {
-                //drop and recreate the test Db everytime the tests are run. 
+                //drop and recreate the test Db every time the tests are run. 
                 string dbdir     = testContext.TestDeploymentDir;
                 string pathRoot  = System.IO.Path.GetPathRoot(dbdir);
                 var    driveinfo = new System.IO.DriveInfo(pathRoot);

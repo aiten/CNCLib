@@ -119,7 +119,7 @@ namespace CNCLib.GCode.Load
 
                 var         newline       = new List<HPGLCommand>();
                 HPGLCommand prev          = null;
-                double      minLineLenght = LoadOptions.SmoothMinLineLenght.HasValue ? (double) LoadOptions.SmoothMinLineLenght.Value : double.MaxValue;
+                double      minLineLenght = LoadOptions.SmoothMinLineLength.HasValue ? (double) LoadOptions.SmoothMinLineLength.Value : double.MaxValue;
                 double      maxerror      = LoadOptions.SmoothMaxError.HasValue ? (double) LoadOptions.SmoothMaxError.Value : 1.0 / 40.0;
                 minLineLenght /= (double) LoadOptions.ScaleX;
                 maxerror      /= (double) LoadOptions.ScaleX;

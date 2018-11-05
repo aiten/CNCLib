@@ -76,7 +76,7 @@ namespace CNCLib.Repository
 
                 SetValue(userInDb, user);
 
-                // search und update Usercommands (add and delete)
+                // search und update User Commands (add and delete)
             }
         }
     }

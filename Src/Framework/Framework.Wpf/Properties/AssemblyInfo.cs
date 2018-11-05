@@ -18,7 +18,4 @@
 
 using System.Runtime.InteropServices;
 
-//[assembly: AssemblyTitle("Framework.Wpf")]
-//[assembly: AssemblyProduct("Framework.Wpf")]
-
 [assembly: Guid("496ce574-65b5-44fc-afca-1d5b622c0dda")]

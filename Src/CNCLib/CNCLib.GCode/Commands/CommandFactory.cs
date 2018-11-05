@@ -60,24 +60,24 @@ namespace CNCLib.GCode.Commands
 
         public Command CreateOrDefault(string name)
         {
-            string commandname = char.ToUpper(name[0]) == 'M' ? "MXX" : "GXX";
-            int    spaceidx    = name.IndexOf(' ');
-            if (spaceidx >= 0)
+            string commandName = char.ToUpper(name[0]) == 'M' ? "MXX" : "GXX";
+            int    spaceIdx    = name.IndexOf(' ');
+            if (spaceIdx >= 0)
             {
-                string tmpcommandname = name.Substring(0, spaceidx);
-                if (IsRegistered(tmpcommandname))
+                string tmpCommandName = name.Substring(0, spaceIdx);
+                if (IsRegistered(tmpCommandName))
                 {
-                    commandname = tmpcommandname;
-                    name        = name.Substring(spaceidx + 1);
+                    commandName = tmpCommandName;
+                    name        = name.Substring(spaceIdx + 1);
                 }
             }
             else if (IsRegistered(name))
             {
-                commandname = name;
+                commandName = name;
                 name        = "";
             }
 
-            Command r = Create(commandname);
+            Command r = Create(commandName);
             if (name.Length > 0)
             {
                 r.GCodeAdd = name;
@@ -104,18 +104,18 @@ namespace CNCLib.GCode.Commands
             {
                 if (t.IsClass)
                 {
-                    var isgcode = t.GetCustomAttribute<IsGCommandAttribute>();
-                    if (isgcode != null)
+                    var isGcode = t.GetCustomAttribute<IsGCommandAttribute>();
+                    if (isGcode != null)
                     {
-                        string ascodes = isgcode.RegisterAs;
-                        if (string.IsNullOrEmpty(ascodes))
+                        string asCodes = isGcode.RegisterAs;
+                        if (string.IsNullOrEmpty(asCodes))
                         {
-                            ascodes = t.Name.Substring(0, 3);
+                            asCodes = t.Name.Substring(0, 3);
                         }
 
-                        foreach (string ascode in ascodes.Split(','))
+                        foreach (string asCode in asCodes.Split(','))
                         {
-                            RegisterCommandType(ascode, t);
+                            RegisterCommandType(asCode, t);
                         }
                     }
                 }

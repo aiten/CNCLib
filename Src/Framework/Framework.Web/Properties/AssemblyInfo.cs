@@ -18,7 +18,4 @@
 
 using System.Runtime.InteropServices;
 
-//[assembly: AssemblyTitle("Framework.Web")]
-//[assembly: AssemblyProduct("Framework.Web")]
-
 [assembly: Guid("2e4baa13-7562-4336-91a4-b8211816d936")]
