@@ -6,8 +6,11 @@
   ;--------------------------------
 ;global
 
-  !define CopyFromFolder "..\CNCLib\CNCLib.Wpf.Start\bin\Debug"
 
+   !ifndef CopyFromFolder
+    !define CopyFromFolder "..\CNCLib\CNCLib.Wpf.Start\bin\Debug"
+  !endif 
+  
 ;--------------------------------
 ;General
 
@@ -44,7 +47,17 @@
   ;Define optional a directory for program files that change (Windows AppData example)
   !define INSTDIR_DATA "$APPDATA\${PRODUCT}"
 
-
+  VIAddVersionKey "ProductName" "${PRODUCT}"
+  VIAddVersionKey "Comments" "${DESCRIPTION}"
+  VIAddVersionKey "CompanyName" "${COMPANYNAME}"
+  VIAddVersionKey "LegalTrademarks" "${PRODUCT} is a trademark of ${COMPANYNAME}"
+  VIAddVersionKey "LegalCopyright" "(c) by ${COMPANYNAME}"
+  VIAddVersionKey "FileDescription" "${PRODUCT}"
+  VIAddVersionKey "FileVersion" "${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}"
+  
+  VIFileVersion ${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}.0
+  VIProductVersion ${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}.0
+  
   ;Request rights if you want to install the program to program files
   RequestExecutionLevel admin
 
