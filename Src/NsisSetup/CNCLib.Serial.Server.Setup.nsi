@@ -7,17 +7,17 @@
 ;global
 
   ;Define the main name of the installer
-  !define PRODUCT "CNCLib"
+  !define PRODUCT "CNCLib.Serial.Server"
   !define PRODUCT_SUBDIR "${PRODUCT}"
-  !define PRODUCT_EXE "CNCLib.Wpf.Start.exe"
-  !define PRODUCT_LNK "CNCLib.lnk"
+  !define PRODUCT_EXE "CNCLib.Serial.Server.Start.cmd"
+  !define PRODUCT_LNK "CNCLib.Serial.Server.lnk"
 
   !include "CNCLib.Global.nsi"
 
   ;--------------------------------
 
   !ifndef CopyFromFolder
-    !define CopyFromFolder "..\CNCLib\CNCLib.Wpf.Start\bin\Debug"
+    !define CopyFromFolder "..\CNCLib\CNCLib.Serial.Server\bin\Debug\netcoreapp2.1"
   !endif 
   
 ;--------------------------------
