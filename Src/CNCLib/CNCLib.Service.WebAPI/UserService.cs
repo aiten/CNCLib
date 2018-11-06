@@ -30,9 +30,10 @@ namespace CNCLib.Service.WebAPI
         protected override string Api            => @"api/user";
         protected override int    GetKey(User u) => u.UserId;
 
-        public async Task<User> GetByName(string username)
+        public Task<User> GetByName(string username)
         {
             throw new NotImplementedException();
+            /*
             using (HttpClient client = CreateHttpClient())
             {
                 HttpResponseMessage response = await client.GetAsync(Api + "/" + username);
@@ -44,6 +45,7 @@ namespace CNCLib.Service.WebAPI
             }
 
             return null;
+            */
         }
 
         #region IDisposable Support
