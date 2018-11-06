@@ -44,7 +44,6 @@ namespace CNCLib.Wpf.Views
                 }
             };
 
-#warning TODO: trace 
 //            DateTime now = DateTime.Now;
 //		    Global.Instance.Com.LocalCom.Trace.EnableTrace($@"{System.IO.Path.GetTempPath()}CNCLibTrace_{now.Year:D4}{now.Month:D2}{now.Day:D2}_{now.Hour:D2}{now.Minute:D2}{now.Second:D2}.txt");
         }
@@ -56,7 +55,6 @@ namespace CNCLib.Wpf.Views
                 Global.Instance.Com.LocalCom.DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
-#warning TODO: trace 
 //            Global.Instance.Com.LocalCom.Trace.CloseTrace();
 
             if (Global.Instance.ComJoystick.IsConnected)
@@ -64,7 +62,6 @@ namespace CNCLib.Wpf.Views
                 Global.Instance.ComJoystick.DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
-#warning TODO: trace 
 //		    Global.Instance.ComJoystick.Trace.CloseTrace();
         }
     }
