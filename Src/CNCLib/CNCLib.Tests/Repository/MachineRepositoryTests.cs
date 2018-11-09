@@ -26,6 +26,7 @@ using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
 
 using Framework.Dependency;
+using Framework.Test.Repository;
 using Framework.Tools;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -33,19 +34,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-    public class MachineRepositoryTests : CRUDRepositoryTests<Machine, int, IMachineRepository>
+    public class MachineRepositoryTests : RepositoryTests<Machine, int, IMachineRepository>
     {
         #region crt and overrides
 
-        protected override CRUDTestContext<Machine, int, IMachineRepository> CreateCRUDTestContext()
+        protected override GetTestDbContext<Machine, int, IMachineRepository> CreateTestDbContext()
         {
-            return Dependency.Resolve<CRUDTestContext<Machine, int, IMachineRepository>>();
+            return Dependency.Resolve<GetTestDbContext<Machine, int, IMachineRepository>>();
         }
 
         [ClassInitialize]
-        public new static void ClassInit(TestContext testContext)
+        public static void ClassInit(TestContext testContext)
         {
-            RepositoryTests.ClassInit(testContext);
+            ClassInitBase(testContext);
         }
 
         protected override int GetEntityKey(Machine entity)

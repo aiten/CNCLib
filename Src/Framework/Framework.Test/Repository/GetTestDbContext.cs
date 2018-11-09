@@ -16,31 +16,16 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
-using CNCLib.Repository.Context;
-
 using Framework.Contracts.Repository;
 
-namespace CNCLib.Tests.Repository
+using Microsoft.EntityFrameworkCore;
+
+namespace Framework.Test.Repository
 {
-    public class CRUDTestContext<TEntity, TKey, TIRepository> : IDisposable where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey>
+    public class GetTestDbContext<TEntity, TKey, TIRepository> : TestDbContext<TIRepository> where TEntity : class where TIRepository : IGetRepository<TEntity, TKey>
     {
-        public CNCLibContext DbContext  { get; private set; }
-        public IUnitOfWork   UnitOfWork { get; private set; }
-        public TIRepository  Repository { get; private set; }
-
-        public CRUDTestContext(CNCLibContext dbContext, IUnitOfWork uow, TIRepository repository)
+        public GetTestDbContext(DbContext dbContext, IUnitOfWork uow, TIRepository repository) : base(dbContext,uow,repository)
         {
-            DbContext  = dbContext;
-            UnitOfWork = uow;
-            Repository = repository;
-        }
-
-        public void Dispose()
-        {
-            DbContext.Dispose();
-            DbContext = null;
         }
     }
 }

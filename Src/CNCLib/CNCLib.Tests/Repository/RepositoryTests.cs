@@ -24,43 +24,46 @@ using CNCLib.Shared;
 using Framework.Contracts.Repository;
 using Framework.Dependency;
 using Framework.Repository;
+using Framework.Test.Repository;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-    public class RepositoryTests : CNCUnitTest
+    public abstract class RepositoryTests<TEntity, TKey, TIRepository> : CRUDRepositoryTests<TEntity, TKey, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey>
     {
         public TestContext TestContext { get; set; }
         static bool        _init = false;
 
         [ClassInitialize]
-        public static void ClassInit(TestContext testContext)
+        public static void ClassInitBase(TestContext testContext)
         {
             if (_init == false)
             {
                 //drop and recreate the test Db every time the tests are run. 
-                string dbdir     = testContext.TestDeploymentDir;
-                string pathRoot  = System.IO.Path.GetPathRoot(dbdir);
-                var    driveinfo = new System.IO.DriveInfo(pathRoot);
+                string dbDir     = testContext.TestDeploymentDir;
+                string pathRoot  = System.IO.Path.GetPathRoot(dbDir);
+                var    driveInfo = new System.IO.DriveInfo(pathRoot);
 
-                if (driveinfo.DriveType == System.IO.DriveType.Network)
+                if (driveInfo.DriveType == System.IO.DriveType.Network)
                 {
                     // a db file doesn't work on network-drive 
-                    dbdir = System.IO.Path.GetTempPath();
+                    dbDir = System.IO.Path.GetTempPath();
                 }
 
-                string dbfile = $@"{dbdir}\CNCLibTest.db";
-                CNCLib.Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbfile, true, true);
+                string dbFile = $@"{dbDir}\CNCLibTest.db";
+                CNCLib.Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbFile, true, true);
 
                 _init = true;
             }
         }
 
-        [TestInitialize]
-        public void Init()
+        protected override void InitializeCoreDependencies()
         {
+            base.InitializeCoreDependencies();
+
             Dependency.Container.ResetContainer();
             Dependency.Container.RegisterType<IConfigurationRepository, ConfigurationRepository>();
             Dependency.Container.RegisterType<IMachineRepository, MachineRepository>();
@@ -69,10 +72,11 @@ namespace CNCLib.Tests.Repository
 
             Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
 
+            Dependency.Container.RegisterTypeScoped<DbContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-            Dependency.Container.RegisterType(typeof(CRUDTestContext<,,>), typeof(CRUDTestContext<,,>));
+            Dependency.Container.RegisterType(typeof(CRUDTestDbContext<,,>), typeof(CRUDTestDbContext<,,>));
         }
     }
 }

@@ -40,3 +40,5 @@ obj
 /Doc/Screen1a.jpg
 /Src/CNCLib/CNCLib.WebAPI.Orig
 /Src/CNCLib/CNCLib.Serial.Server/wwwroot/dist
+/Src/NsisSetup/Output/CNCLib_install.exe
+/Src/publishSerialServerForWinService.ps1

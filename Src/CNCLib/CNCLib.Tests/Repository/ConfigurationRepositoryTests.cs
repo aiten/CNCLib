@@ -25,6 +25,7 @@ using CNCLib.Repository.Contracts.Entities;
 using FluentAssertions;
 
 using Framework.Dependency;
+using Framework.Test.Repository;
 using Framework.Tools;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,19 +33,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-    public class ConfigurationRepositoryTests : CRUDRepositoryTests<Configuration, ConfigurationPrimary, IConfigurationRepository>
+    public class ConfigurationRepositoryTests : RepositoryTests<Configuration, ConfigurationPrimary, IConfigurationRepository>
     {
         #region crt and overrides
-
         [ClassInitialize]
-        public new static void ClassInit(TestContext testContext)
+        public static void ClassInit(TestContext testContext)
         {
-            RepositoryTests.ClassInit(testContext);
+            ClassInitBase(testContext);
         }
 
-        protected override CRUDTestContext<Configuration, ConfigurationPrimary, IConfigurationRepository> CreateCRUDTestContext()
+        protected override GetTestDbContext<Configuration, ConfigurationPrimary, IConfigurationRepository> CreateTestDbContext()
         {
-            return Dependency.Resolve<CRUDTestContext<Configuration, ConfigurationPrimary, IConfigurationRepository>>();
+            return Dependency.Resolve<GetTestDbContext<Configuration, ConfigurationPrimary, IConfigurationRepository>>();
         }
 
         protected override ConfigurationPrimary GetEntityKey(Configuration entity)
@@ -158,7 +158,7 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task GetEmptyConfiguration()
         {
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             {
                 var entity = await ctx.Repository.Get("Test", "Test");
                 entity.Should().BeNull();
@@ -168,7 +168,7 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task SaveConfiguration()
         {
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             {
                 await ctx.Repository.Store(new Configuration("Test", "TestNew1", "Content"));
                 await ctx.UnitOfWork.SaveChangesAsync();

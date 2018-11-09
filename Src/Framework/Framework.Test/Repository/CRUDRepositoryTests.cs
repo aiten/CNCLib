@@ -26,68 +26,19 @@ using FluentAssertions;
 using Framework.Contracts.Repository;
 using Framework.Repository;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace CNCLib.Tests.Repository
+namespace Framework.Test.Repository
 {
-    [TestClass]
-    public abstract class CRUDRepositoryTests<TEntity, TKey, TIRepository> : RepositoryTests where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey>
+    public abstract class CRUDRepositoryTests<TEntity, TKey, TIRepository> : GetRepositoryTests<TEntity, TKey, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey>
     {
-        protected abstract CRUDTestContext<TEntity, TKey, TIRepository> CreateCRUDTestContext();
-        protected abstract TKey                                         GetEntityKey(TEntity  entity);
-        protected abstract TEntity                                      SetEntityKey(TEntity  entity,  TKey    key);
-        protected abstract bool                                         CompareEntity(TEntity entity1, TEntity entity2);
-
-        protected async Task<IEnumerable<TEntity>> GetAll()
-        {
-            using (var ctx = CreateCRUDTestContext())
-            {
-                IEnumerable<TEntity> entities = await ctx.Repository.GetAll();
-                entities.Should().NotBeNull();
-                return entities;
-            }
-        }
-
-        protected async Task<TEntity> GetTrackingOK(TKey key)
-        {
-            using (var ctx = CreateCRUDTestContext())
-            {
-                TEntity entity = await ctx.Repository.GetTracking(key);
-                entity.Should().NotBeNull();
-                entity.Should().BeOfType(typeof(TEntity));
-                return entity;
-            }
-        }
-
-        protected async Task<TEntity> GetOK(TKey key)
-        {
-            using (var ctx = CreateCRUDTestContext())
-            {
-                TEntity entity = await ctx.Repository.Get(key);
-                entity.Should().BeOfType(typeof(TEntity));
-                entity.Should().NotBeNull();
-                return entity;
-            }
-        }
-
-        protected async Task GetNotExist(TKey key)
-        {
-            using (var ctx = CreateCRUDTestContext())
-            {
-                var entity = await ctx.Repository.Get(key);
-                entity.Should().BeNull();
-            }
-        }
-
         public async Task AddUpdateDelete(Func<TEntity> createTestEntity, Action<TEntity> updateEntity)
         {
-            var allWithoutAdd = await GetAll();
+            var allWithoutAdd = (await GetAll()).ToList();
             allWithoutAdd.Should().NotBeNull();
 
             // first add entity
 
             TKey key;
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entityToAdd = createTestEntity();
@@ -99,12 +50,12 @@ namespace CNCLib.Tests.Repository
                 key = GetEntityKey(entityToAdd);
             }
 
-            var allWithAdd = await GetAll();
+            var allWithAdd = (await GetAll()).ToList();
             allWithAdd.Should().NotBeNull();
             allWithAdd.Count().Should().Be(allWithoutAdd.Count() + 1);
 
             // read again and update 
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entity = await ctx.Repository.GetTracking(key);
@@ -117,7 +68,7 @@ namespace CNCLib.Tests.Repository
             }
 
             // read again
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entity = await ctx.Repository.Get(key);
@@ -125,7 +76,7 @@ namespace CNCLib.Tests.Repository
             }
 
             // update (with methode update)
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 await ctx.Repository.Update(key, SetEntityKey(createTestEntity(), key));
@@ -135,7 +86,7 @@ namespace CNCLib.Tests.Repository
             }
 
             // read again and delete 
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entity = await ctx.Repository.GetTracking(key);
@@ -152,7 +103,7 @@ namespace CNCLib.Tests.Repository
 
             // read again to test is not exist
 
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             {
                 TEntity entity = await ctx.Repository.GetTracking(key);
                 entity.Should().BeNull();
@@ -161,13 +112,13 @@ namespace CNCLib.Tests.Repository
 
         public async Task AddUpdateDeleteBulk(Func<IEnumerable<TEntity>> createTestEntities, Action<IEnumerable<TEntity>> updateEntities)
         {
-            var allWithoutAdd = await GetAll();
+            var allWithoutAdd = (await GetAll()).ToList();
             allWithoutAdd.Should().NotBeNull();
 
             // first add entity
 
             IEnumerable<TKey> keys;
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 IEnumerable<TEntity> entitiesToAdd = createTestEntities();
@@ -179,12 +130,12 @@ namespace CNCLib.Tests.Repository
                 keys = entitiesToAdd.Select(GetEntityKey);
             }
 
-            var allWithAdd = await GetAll();
+            var allWithAdd = (await GetAll()).ToList();
             allWithAdd.Should().NotBeNull();
             allWithAdd.Count().Should().Be(allWithoutAdd.Count() + keys.Count());
 
             // read again and update 
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 IEnumerable<TEntity> entities        = await ctx.Repository.GetTracking(keys);
@@ -202,7 +153,7 @@ namespace CNCLib.Tests.Repository
             }
 
             // read again
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 IEnumerable<TEntity> entities = await ctx.Repository.Get(keys);
@@ -211,20 +162,10 @@ namespace CNCLib.Tests.Repository
                     GetEntityKey(entities.ElementAt(i)).Should().Be(keys.ElementAt(i));
                 }
             }
-/*
-            // update (with methode update)
-            using (var ctx = CreateCRUDTestContext())
-            using (var trans = ctx.UnitOfWork.BeginTransaction())
-            {
-                await ctx.Repository.Update(key, SetEntityKey(createTestEntity(), key));
 
-                await ctx.UnitOfWork.SaveChangesAsync();
-                await trans.CommitTransactionAsync();
-            }
-*/
             // read again and delete 
 
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 IEnumerable<TEntity> entities = await ctx.Repository.GetTracking(keys);
@@ -246,7 +187,7 @@ namespace CNCLib.Tests.Repository
 
             // read again to test is not exist
 
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             {
                 IEnumerable<TEntity> entities = await ctx.Repository.GetTracking(keys);
                 entities.Count().Should().Be(0);
@@ -258,7 +199,7 @@ namespace CNCLib.Tests.Repository
             // first add entity
 
             TKey key;
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entityToAdd = createTestEntity();
@@ -272,7 +213,7 @@ namespace CNCLib.Tests.Repository
 
             // read again to test is not exist
 
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entity = await ctx.Repository.GetTracking(key);
@@ -286,7 +227,7 @@ namespace CNCLib.Tests.Repository
 
             TKey key = GetEntityKey(createTestEntity());
 
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entityToTest = createTestEntity();
@@ -295,9 +236,9 @@ namespace CNCLib.Tests.Repository
             }
 
             // first add entity
-            // only usefull if key is no identity
+            // only useful if key is no identity
 
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entityToAdd = createTestEntity();
@@ -308,19 +249,19 @@ namespace CNCLib.Tests.Repository
             }
 
             // Read and Update Entity
-            // only usefull if key is no identity
+            // only useful if key is no identity
 
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
-                var entityinDb = await ctx.Repository.Get(key);
-                entityinDb.Should().NotBeNull();
-                CompareEntity(createTestEntity(), entityinDb).Should().BeTrue();
+                var entityInDb = await ctx.Repository.Get(key);
+                entityInDb.Should().NotBeNull();
+                CompareEntity(createTestEntity(), entityInDb).Should().BeTrue();
             }
 
             // modify existing
 
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
                 TEntity entityToUpdate = createTestEntity();
@@ -334,18 +275,18 @@ namespace CNCLib.Tests.Repository
 
             // read again (modified)
 
-            using (var ctx = CreateCRUDTestContext())
+            using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
-                var entityinDb = await ctx.Repository.Get(key);
-                entityinDb.Should().NotBeNull();
+                var entityInDb = await ctx.Repository.Get(key);
+                entityInDb.Should().NotBeNull();
 
                 TEntity entityToCompare = createTestEntity();
                 updateEntity(entityToCompare);
 
-                CompareEntity(entityToCompare, entityinDb).Should().BeTrue();
+                CompareEntity(entityToCompare, entityInDb).Should().BeTrue();
 
-                ctx.Repository.Delete(entityinDb);
+                ctx.Repository.Delete(entityInDb);
 
                 await ctx.UnitOfWork.SaveChangesAsync();
                 await trans.CommitTransactionAsync();

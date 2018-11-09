@@ -29,24 +29,25 @@ using CNCLib.Repository.Contracts;
 using FluentAssertions;
 
 using Framework.Dependency;
+using Framework.Test.Repository;
 using Framework.Tools;
 
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-    public class ItemRepositoryTests : CRUDRepositoryTests<Item, int, IItemRepository>
+    public class ItemRepositoryTests : RepositoryTests<Item, int, IItemRepository>
     {
         #region crt and overrides
 
-        protected override CRUDTestContext<Item, int, IItemRepository> CreateCRUDTestContext()
+        protected override GetTestDbContext<Item, int, IItemRepository> CreateTestDbContext()
         {
-            return Dependency.Resolve<CRUDTestContext<Item, int, IItemRepository>>();
+            return Dependency.Resolve<GetTestDbContext<Item, int, IItemRepository>>();
         }
 
         [ClassInitialize]
-        public new static void ClassInit(TestContext testContext)
+        public static void ClassInit(TestContext testContext)
         {
-            RepositoryTests.ClassInit(testContext);
+            ClassInitBase(testContext);
         }
 
         protected override int GetEntityKey(Item entity)

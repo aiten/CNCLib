@@ -78,9 +78,7 @@
     <Compile Include="Logic\ItemManagerTests.cs" />
     <Compile Include="Logic\LoadOptionsManagerTests.cs" />
     <Compile Include="Logic\LogicTests.cs" />
-    <Compile Include="Repository\CRUDTestContext.cs" />
     <Compile Include="Repository\ItemRepositoryTests.cs" />
-    <Compile Include="Repository\CRUDRepositoryTests.cs" />
     <Compile Include="Repository\UserRepositoryTests.cs" />
     <Compile Include="Wpf\MachineViewModelTests.cs" />
     <Compile Include="Logic\MachineManagerTests.cs" />
