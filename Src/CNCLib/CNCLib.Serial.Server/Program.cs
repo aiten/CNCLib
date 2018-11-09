@@ -35,6 +35,9 @@ namespace CNCLib.Serial.Server
     {
         public static void Main(string[] args)
         {
+#if DEBUG
+            LogManager.ThrowExceptions = true;
+#endif
             var logger = NLogBuilder.ConfigureNLog("NLog.config").GetCurrentClassLogger();
             try
             {
