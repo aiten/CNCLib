@@ -40,6 +40,8 @@ namespace CNCLib.WebAPI
     {
         public static void Main(string[] args)
         {
+            GlobalDiagnosticsContext.Set("logDir", $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Web/logs");
+
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
 #if DEBUG

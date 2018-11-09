@@ -38,6 +38,22 @@ namespace CNCLib.Serial.Server
 #if DEBUG
             LogManager.ThrowExceptions = true;
 #endif
+            string localAppData;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                localAppData = "~";
+            }
+            else
+            {
+                localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                if (!Directory.Exists(localAppData))
+                {
+                    // service user
+                    localAppData = Environment.GetEnvironmentVariable("ProgramData");
+                }
+            }
+
+            GlobalDiagnosticsContext.Set("logDir", $"{ localAppData }/CNCLib.Serial.Server/logs");
             var logger = NLogBuilder.ConfigureNLog("NLog.config").GetCurrentClassLogger();
             try
             {

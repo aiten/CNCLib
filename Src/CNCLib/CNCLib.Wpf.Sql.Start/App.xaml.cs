@@ -50,6 +50,7 @@ namespace CNCLib.Wpf.Sql.Start
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
+            GlobalDiagnosticsContext.Set("logDir", $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Sql/logs");
             GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
 
 #if DEBUG

@@ -55,6 +55,7 @@ namespace CNCLib.Wpf.Start
 
             string dbfile = userprofilepath + @"\CNCLib.db";
 
+            GlobalDiagnosticsContext.Set("logDir", $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib/logs");
             GlobalDiagnosticsContext.Set("connectionString", $"Data Source={dbfile}");
 
             LogManager.ThrowExceptions = true;

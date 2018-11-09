@@ -49,6 +49,8 @@ namespace CNCLib.Wpf.WebAPI.Start
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
+            GlobalDiagnosticsContext.Set("logDir", $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Web/logs");
+
             _logger.Info(@"Starting ...");
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
