@@ -26,14 +26,17 @@ using FluentAssertions;
 using Framework.Contracts.Repository;
 using Framework.Repository;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Framework.Test.Repository
 {
-    public abstract class GetRepositoryTests<TEntity, TKey, TIRepository> : UnitTestBase where TEntity : class where TIRepository : IGetRepository<TEntity, TKey>
+    public abstract class GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : UnitTestBase where TEntity : class where TIRepository : IGetRepository<TEntity, TKey> where TDbContext : DbContext
     {
-        protected abstract GetTestDbContext<TEntity, TKey, TIRepository> CreateTestDbContext();
-        protected abstract TKey                                         GetEntityKey(TEntity  entity);
-        protected abstract TEntity                                      SetEntityKey(TEntity  entity,  TKey    key);
-        protected abstract bool                                         CompareEntity(TEntity entity1, TEntity entity2);
+        protected abstract GetTestDbContext<TDbContext, TEntity, TKey, TIRepository> CreateTestDbContext();
+
+        protected abstract TKey GetEntityKey(TEntity    entity);
+        protected abstract TEntity SetEntityKey(TEntity entity,  TKey    key);
+        protected abstract bool CompareEntity(TEntity   entity1, TEntity entity2);
 
         protected async Task<IEnumerable<TEntity>> GetAll()
         {

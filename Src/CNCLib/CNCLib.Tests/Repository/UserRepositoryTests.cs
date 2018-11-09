@@ -19,6 +19,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using CNCLib.Repository.Context;
 using CNCLib.Repository.Contracts;
 using CNCLib.Repository.Contracts.Entities;
 
@@ -34,13 +35,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-    public class UserRepositoryTests : RepositoryTests<User, int, IUserRepository>
+    public class UserRepositoryTests : RepositoryTests<CNCLibContext, User, int, IUserRepository>
     {
         #region crt and overrides
 
-        protected override GetTestDbContext<User, int, IUserRepository> CreateTestDbContext()
+        protected override GetTestDbContext<CNCLibContext, User, int, IUserRepository> CreateTestDbContext()
         {
-            return Dependency.Resolve<GetTestDbContext<User, int, IUserRepository>>();
+            return Dependency.Resolve<GetTestDbContext<CNCLibContext, User, int, IUserRepository>>();
         }
 
         [ClassInitialize]

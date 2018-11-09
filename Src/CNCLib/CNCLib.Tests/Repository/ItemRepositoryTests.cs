@@ -31,17 +31,18 @@ using FluentAssertions;
 using Framework.Dependency;
 using Framework.Test.Repository;
 using Framework.Tools;
+using CNCLib.Repository.Context;
 
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-    public class ItemRepositoryTests : RepositoryTests<Item, int, IItemRepository>
+    public class ItemRepositoryTests : RepositoryTests<CNCLibContext, Item, int, IItemRepository>
     {
         #region crt and overrides
 
-        protected override GetTestDbContext<Item, int, IItemRepository> CreateTestDbContext()
+        protected override GetTestDbContext<CNCLibContext, Item, int, IItemRepository> CreateTestDbContext()
         {
-            return Dependency.Resolve<GetTestDbContext<Item, int, IItemRepository>>();
+            return Dependency.Resolve<GetTestDbContext<CNCLibContext, Item, int, IItemRepository>>();
         }
 
         [ClassInitialize]

@@ -32,7 +32,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CNCLib.Tests.Repository
 {
     [TestClass]
-    public abstract class RepositoryTests<TEntity, TKey, TIRepository> : CRUDRepositoryTests<TEntity, TKey, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey>
+    public abstract class RepositoryTests<TDbContext, TEntity, TKey, TIRepository> : CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
         public TestContext TestContext { get; set; }
         static bool        _init = false;
@@ -72,11 +72,10 @@ namespace CNCLib.Tests.Repository
 
             Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
 
-            Dependency.Container.RegisterTypeScoped<DbContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-            Dependency.Container.RegisterType(typeof(CRUDTestDbContext<,,>), typeof(CRUDTestDbContext<,,>));
+            Dependency.Container.RegisterType(typeof(CRUDTestDbContext<,,,>), typeof(CRUDTestDbContext<,,,>));
         }
     }
 }

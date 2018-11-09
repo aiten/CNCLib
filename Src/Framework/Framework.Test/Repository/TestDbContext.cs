@@ -24,13 +24,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Framework.Test.Repository
 {
-    public class TestDbContext<TIRepository> : IDisposable where TIRepository : IRepository
+    public class TestDbContext<TDbContext, TIRepository> : IDisposable where TIRepository : IRepository where TDbContext : DbContext
     {
-        public DbContext DbContext  { get; private set; }
+        public TDbContext DbContext  { get; private set; }
         public IUnitOfWork   UnitOfWork { get; private set; }
         public TIRepository  Repository { get; private set; }
 
-        public TestDbContext(DbContext dbContext, IUnitOfWork uow, TIRepository repository)
+        public TestDbContext(TDbContext dbContext, IUnitOfWork uow, TIRepository repository)
         {
             DbContext  = dbContext;
             UnitOfWork = uow;

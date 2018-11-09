@@ -22,9 +22,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Framework.Test.Repository
 {
-    public class CRUDTestDbContext<TEntity, TKey, TIRepository> : TestDbContext<TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey>
+    public class CRUDTestDbContext<TDbContext, TEntity, TKey, TIRepository> : TestDbContext<TDbContext, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
-        public CRUDTestDbContext(DbContext dbContext, IUnitOfWork uow, TIRepository repository) : base(dbContext,uow,repository)
+        public CRUDTestDbContext(TDbContext dbContext, IUnitOfWork uow, TIRepository repository) : base(dbContext,uow,repository)
         {
         }
     }

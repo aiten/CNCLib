@@ -26,9 +26,11 @@ using FluentAssertions;
 using Framework.Contracts.Repository;
 using Framework.Repository;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Framework.Test.Repository
 {
-    public abstract class CRUDRepositoryTests<TEntity, TKey, TIRepository> : GetRepositoryTests<TEntity, TKey, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey>
+    public abstract class CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
         public async Task AddUpdateDelete(Func<TEntity> createTestEntity, Action<TEntity> updateEntity)
         {
