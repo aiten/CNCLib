@@ -46,7 +46,7 @@ namespace CNCLib.Serial.Server
             else
             {
                 localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                if (!Directory.Exists(localAppData))
+                if (!Directory.Exists(localAppData) || RunsAsService())
                 {
                     // service user
                     localAppData = Environment.GetEnvironmentVariable("ProgramData");
