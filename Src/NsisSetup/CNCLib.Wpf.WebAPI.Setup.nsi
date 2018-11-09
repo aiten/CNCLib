@@ -34,7 +34,10 @@
   ;Define optional a directory for program files that change (Windows AppData example)
   !define INSTDIR_DATA "$APPDATA\${PRODUCT_SUBDIR}"
 
-  ;Request rights if you want to install the program to program files
+  ;Define optional a directory for program files that change (Windows AppData example)
+  !define INSTDIR_DATALOCAL "$LOCALAPPDATA\${PRODUCT_SUBDIR}"
+
+   ;Request rights if you want to install the program to program files
   RequestExecutionLevel admin
 
   ;Show 'console' in installer and uninstaller
@@ -43,7 +46,6 @@
 
   ;Get installation folder from registry if available
   InstallDirRegKey HKLM "${PRODUCT_REGKEY}" ""
-
 
 ;--------------------------------
 ;Interface Settings
@@ -129,6 +131,11 @@ Section "Main Component"
 
   CreateShortCut "$DESKTOP\${PRODUCT_LNK}" "$INSTDIR\${PRODUCT_EXE}" "" "$INSTDIR\${PRODUCT_EXE}" 0
 
+  ;Create ProgramData 
+  CreateDirectory "${INSTDIR_DATA}"
+  CreateDirectory "${INSTDIR_DATALOCAL}"
+  CreateDirectory "${INSTDIR_DATALOCAL}\logs"
+
   ;Create uninstaller
   WriteUninstaller "${UNINSTALLERFILE}"
 
@@ -152,12 +159,16 @@ Section "Uninstall"
   RMDir /r "${INSTDIR_DATA}\*.*"
   RMDir "${INSTDIR_DATA}"
 
+  ;Delete the appdata directory + files
+  RMDir /r "${INSTDIR_DATALOCAL}\*.*"
+  RMDir "${INSTDIR_DATALOCAL}"
+  
   ;Delete Start Menu Shortcuts
   Delete "$SMPROGRAMS\${PRODUCT}\*.*"
   RmDir  "$SMPROGRAMS\${PRODUCT}"
 
   Delete "$DESKTOP\${PRODUCT_LNK}"
-  
+ 
 SectionEnd
 
 

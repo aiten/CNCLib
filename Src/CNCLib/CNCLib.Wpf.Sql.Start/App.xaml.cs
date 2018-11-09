@@ -52,11 +52,15 @@ namespace CNCLib.Wpf.Sql.Start
         {
             GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
 
+#if DEBUG
             LogManager.ThrowExceptions = true;
+#endif
             Logger logger = LogManager.GetLogger("foo");
 
             _logger.Info(@"Starting ...");
+#if DEBUG
             LogManager.ThrowExceptions = false;
+#endif
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 

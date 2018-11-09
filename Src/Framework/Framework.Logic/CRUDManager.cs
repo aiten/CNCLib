@@ -75,8 +75,8 @@ namespace Framework.Logic
         {
             using (var trans = _unitOfWork.BeginTransaction())
             {
-                await ValidateDto(values, ValidationType.DeletValidatione);
-                var entities = MapFromDtos(values, ValidationType.DeletValidatione);
+                await ValidateDto(values, ValidationType.DeleteValidation);
+                var entities = MapFromDtos(values, ValidationType.DeleteValidation);
 
                 foreach (var entity in entities)
                 {
@@ -149,7 +149,7 @@ namespace Framework.Logic
         {
             AddValidation,
             UpdateValidation,
-            DeletValidatione
+            DeleteValidation
         }
 
         protected virtual async Task ValidateDto(IEnumerable<T> values, ValidationType validation)

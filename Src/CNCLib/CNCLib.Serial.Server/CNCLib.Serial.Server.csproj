@@ -55,7 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="CNCLib.Serial.Server.Start.cmd">
+    <None Update="Scripts\CNCLib.Serial.Server.Start.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
