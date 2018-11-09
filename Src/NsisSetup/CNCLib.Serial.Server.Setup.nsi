@@ -9,7 +9,7 @@
   ;Define the main name of the installer
   !define PRODUCT "CNCLib.Serial.Server"
   !define PRODUCT_SUBDIR "${PRODUCT}"
-  !define PRODUCT_EXE "CNCLib.Serial.Server.Start.cmd"
+  !define PRODUCT_EXE "Scripts\CNCLib.Serial.Server.Start.cmd"
   !define PRODUCT_LNK "CNCLib.Serial.Server.lnk"
 
   !include "CNCLib.Global.nsi"
