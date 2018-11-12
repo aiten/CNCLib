@@ -41,12 +41,7 @@ namespace CNCLib.Logic.Client
         public async Task<DynItem> Get(int id)
         {
             Item item = await _itemService.Get(id);
-            if (item == null)
-            {
-                return null;
-            }
-
-            return Convert(item);
+            return item == null ? null : Convert(item);
         }
 
         public async Task<IEnumerable<DynItem>> GetAll(Type t)

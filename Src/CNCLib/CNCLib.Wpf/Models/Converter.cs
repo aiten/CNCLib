@@ -37,7 +37,7 @@ namespace CNCLib.Wpf.Models
             var map = Dependency.Resolve<IMapper>();
             var to  = map.Map<Machine>(from);
 
-            // automapper do not map readonly observable collections
+            // AutoMapper do not map readonly observable collections
             foreach (var m in from.MachineCommands)
             {
                 to.MachineCommands.Add(map.Map<MachineCommand>(m));

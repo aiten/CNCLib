@@ -65,7 +65,7 @@ namespace CNCLib.Wpf.Helpers
         public void JoystickReplyReceived(string trim)
         {
             // ;btn5		=> look for ;btn5
-            // ;btn5:x		=> x is presscount - always incremented, look for max x in setting => modulo 
+            // ;btn5:x		=> x is pressCount - always incremented, look for max x in setting => modulo 
 
             int idx;
 

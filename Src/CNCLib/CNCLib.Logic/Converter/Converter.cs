@@ -24,7 +24,7 @@ using AutoMapper;
 
 namespace CNCLib.Logic.Converter
 {
-    static internal class Converter
+    internal static class Converter
     {
         public static Machine ToDto(this Repository.Contracts.Entities.Machine from, IMapper mapper)
         {

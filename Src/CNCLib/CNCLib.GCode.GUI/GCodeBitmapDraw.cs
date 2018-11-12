@@ -693,7 +693,7 @@ namespace CNCLib.GCode.GUI
                 return;
             }
 
-            // difference to Grbl => use dynamic calculation of segements => suitable for small r
+            // difference to Grbl => use dynamic calculation of segments => suitable for small r
             //
             // segments for full circle => (CONST_K * r * M_PI * b + CONST_D)		(r in mm, b ...2?)
 

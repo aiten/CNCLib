@@ -88,7 +88,7 @@ namespace CNCLib.Serial.Server.SerialPort
                 }
             }
 
-            //addnew ports 
+            //add new ports 
             foreach (var port in currentPortDefinition)
             {
                 var existingPort = newList.Find((p) => port.PortName == p.PortName);
