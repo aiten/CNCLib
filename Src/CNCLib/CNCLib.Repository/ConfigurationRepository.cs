@@ -36,7 +36,7 @@ namespace CNCLib.Repository
     {
         private readonly ICNCLibUserContext _userContext;
 
-        public ConfigurationRepository(CNCLibContext dbcontext, ICNCLibUserContext userContext) : base(dbcontext)
+        public ConfigurationRepository(CNCLibContext dbContext, ICNCLibUserContext userContext) : base(dbContext)
         {
             _userContext = userContext ?? throw new ArgumentNullException();
         }

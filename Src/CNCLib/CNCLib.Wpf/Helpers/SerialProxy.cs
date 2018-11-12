@@ -36,9 +36,9 @@ namespace CNCLib.Wpf.Helpers
 
         public Framework.Arduino.SerialCommunication.ISerial Current { get; private set; }
 
-        public void SetCurrent(string portname)
+        public void SetCurrent(string portName)
         {
-            Current = portname.StartsWith("com") ? LocalCom : RemoteCom;
+            Current = portName.StartsWith("com") ? LocalCom : RemoteCom;
         }
     }
 }

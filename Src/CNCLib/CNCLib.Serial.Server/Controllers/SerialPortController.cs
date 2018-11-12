@@ -33,13 +33,13 @@ namespace CNCLib.Serial.Server.Controllers
     {
         protected string CurrentUri => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
 
-        private readonly IHubContext<CNCLibHub> _hubcontext;
-        private static   IHubContext<CNCLibHub> _myhubcontext;
+        private readonly IHubContext<CNCLibHub> _hubContext;
+        private static   IHubContext<CNCLibHub> _myHubContext;
 
-        public SerialPortController(IHubContext<CNCLibHub> hubcontext)
+        public SerialPortController(IHubContext<CNCLibHub> hubContext)
         {
-            _hubcontext   = hubcontext;
-            _myhubcontext = _hubcontext;
+            _hubContext   = hubContext;
+            _myHubContext = _hubContext;
         }
 
         private SerialPortDefinition GetDefinition(SerialPortWrapper port)
@@ -100,11 +100,11 @@ namespace CNCLib.Serial.Server.Controllers
         #region Connect/Disconnect
 
         [HttpPost("{id:int}/connect")]
-        public async Task<ActionResult<SerialPortDefinition>> Connect(int id, int? baudrate = null, bool? dtrIsReset = true, bool? resetOnConnect = false)
+        public async Task<ActionResult<SerialPortDefinition>> Connect(int id, int? baudRate = null, bool? dtrIsReset = true, bool? resetOnConnect = false)
         {
             bool dtrIsResetN0     = dtrIsReset ?? true;
             bool resetOnConnectN0 = resetOnConnect ?? false;
-            int  baudrateN0       = baudrate ?? 250000;
+            int  baudRateN0       = baudRate ?? 250000;
 
             var port = await GetPort(id);
             if (port == null)
@@ -114,7 +114,7 @@ namespace CNCLib.Serial.Server.Controllers
 
             if (port.IsConnected)
             {
-                if (port.Serial.BaudRate == baudrateN0 && resetOnConnectN0 == false)
+                if (port.Serial.BaudRate == baudRateN0 && resetOnConnectN0 == false)
                 {
                     return Ok(GetDefinition(port));
                 }
@@ -122,13 +122,13 @@ namespace CNCLib.Serial.Server.Controllers
                 await port.Serial.DisconnectAsync();
             }
 
-            port.Serial.BaudRate       = baudrateN0;
+            port.Serial.BaudRate       = baudRateN0;
             port.Serial.DtrIsReset     = dtrIsResetN0;
             port.Serial.ResetOnConnect = resetOnConnectN0;
 
             await port.Serial.ConnectAsync(port.PortName);
 
-            await _hubcontext.Clients.All.SendAsync("connected", id);
+            await _hubContext.Clients.All.SendAsync("connected", id);
 
             return Ok(GetDefinition(port));
         }
@@ -145,7 +145,7 @@ namespace CNCLib.Serial.Server.Controllers
             await port.Serial.DisconnectAsync();
             port.Serial = null;
 
-            await _hubcontext.Clients.All.SendAsync("disconnected", id);
+            await _hubContext.Clients.All.SendAsync("disconnected", id);
 
             return Ok();
         }
@@ -297,8 +297,8 @@ namespace CNCLib.Serial.Server.Controllers
                 return NotFound();
             }
 
-            var cmdlist = port.Serial.CommandHistoryCopy;
-            return Ok(cmdlist);
+            var cmdList = port.Serial.CommandHistoryCopy;
+            return Ok(cmdList);
         }
 
         #endregion

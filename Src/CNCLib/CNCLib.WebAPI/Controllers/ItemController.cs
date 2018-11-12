@@ -34,13 +34,13 @@ namespace CNCLib.WebAPI.Controllers
     public class ItemController : Controller
     {
         private readonly IItemService       _service;
-        private readonly ICNCLibUserContext _usercontext;
+        private readonly ICNCLibUserContext _userContext;
 
-        public ItemController(IItemService service, ICNCLibUserContext usercontext)
+        public ItemController(IItemService service, ICNCLibUserContext userContext)
         {
             _service     = service ?? throw new ArgumentNullException();
-            _usercontext = usercontext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext) _usercontext).InitFromController(this);
+            _userContext = userContext ?? throw new ArgumentNullException();
+            ((CNCLibUserContext) _userContext).InitFromController(this);
         }
 
         [HttpGet]

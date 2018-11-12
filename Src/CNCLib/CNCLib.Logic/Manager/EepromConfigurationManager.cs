@@ -33,10 +33,10 @@ namespace CNCLib.Logic.Manager
             var result = new EepromConfiguration();
 
             double acc_corr   = 1.0615;
-            double jerkfactor = 25;
+            double jerkFactor = 25;
 
-            result.StepsPerRotation        = param.Microsteps * (uint) param.StepsPerRotation;
-            result.DistancePerRotationInMm = param.Teeth * param.ToothsizeinMm;
+            result.StepsPerRotation        = param.MicroSteps * (uint) param.StepsPerRotation;
+            result.DistancePerRotationInMm = param.Teeth * param.ToothSizeInMm;
             if (Math.Abs(result.DistancePerRotationInMm) > double.Epsilon)
             {
                 result.StepsPerMm = result.StepsPerRotation / result.DistancePerRotationInMm;
@@ -56,7 +56,7 @@ namespace CNCLib.Logic.Manager
                 result.EstimatedDec                  = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToDec) * acc_corr;
             }
 
-            result.EstimatedJerkSpeed = result.EstimatedMaxStepRate / jerkfactor;
+            result.EstimatedJerkSpeed = result.EstimatedMaxStepRate / jerkFactor;
 
             result.MaxStepRate    = (uint) Math.Round(result.EstimatedMaxStepRate, 0);
             result.Acc            = (ushort) Math.Round(result.EstimatedAcc,       0);

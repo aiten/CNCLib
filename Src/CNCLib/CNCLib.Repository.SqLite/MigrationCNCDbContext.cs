@@ -31,13 +31,13 @@ namespace CNCLib.Repository.SqLite
             OnConfigure = (optionsBuilder) => { optionsBuilder.UseSqlite($"Data Source={DatabaseFile}"); };
         }
 
-        public static void InitializeDatabase(string databasefile, bool dropdatabase, bool isTest)
+        public static void InitializeDatabase(string databaseFile, bool dropDatabase, bool isTest)
         {
-            DatabaseFile = databasefile;
+            DatabaseFile = databaseFile;
 
             using (var ctx = new MigrationCNCLibContext())
             {
-                if (dropdatabase)
+                if (dropDatabase)
                 {
                     ctx.Database.EnsureDeleted();
                 }

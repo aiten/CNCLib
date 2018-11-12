@@ -47,11 +47,11 @@ namespace CNCLib.Serial.Client
                     CommandQueueEmpty?.Invoke(this, new SerialEventArgs());
                 }
             });
-            connection.On("queueChanged", (int id, int queuelength) =>
+            connection.On("queueChanged", (int id, int queueLength) =>
             {
                 if (PortId == id)
                 {
-                    CommandQueueChanged?.Invoke(this, new SerialEventArgs(queuelength, null));
+                    CommandQueueChanged?.Invoke(this, new SerialEventArgs(queueLength, null));
                 }
             });
             connection.On("sendingCommand", (int id, int seqId) =>
@@ -78,13 +78,13 @@ namespace CNCLib.Serial.Client
             return null;
         }
 
-        private async Task<SerialPortDefinition> RefreshAndGetSerialPortDefinition(HttpClient client, string portname)
+        private async Task<SerialPortDefinition> RefreshAndGetSerialPortDefinition(HttpClient client, string portName)
         {
             HttpResponseMessage responseAll = client.PostAsJsonAsync($@"{_api}/refresh", "dummy").GetAwaiter().GetResult();
             if (responseAll.IsSuccessStatusCode)
             {
                 IEnumerable<SerialPortDefinition> allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
-                return allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portname, StringComparison.OrdinalIgnoreCase));
+                return allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portName, StringComparison.OrdinalIgnoreCase));
             }
 
             return null;
@@ -97,7 +97,7 @@ namespace CNCLib.Serial.Client
                 // dummy do not get "unused"                
             }
 
-            // linuxport => http://a0:5000/dev/ttyUSB0
+            // linuxPort => http://a0:5000/dev/ttyUSB0
             // win       => http://a0:5000/com4
 
             int lastColon = portName.LastIndexOf(':');

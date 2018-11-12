@@ -28,7 +28,7 @@ namespace CNCLib.Wpf.Models
 {
     public class Eeprom
     {
-        public static Eeprom Create(uint signature, int numaxis)
+        public static Eeprom Create(uint signature, int numAxis)
         {
             if (signature == EepromV1.SIGNATUREPLOTTER)
             {
@@ -41,9 +41,9 @@ namespace CNCLib.Wpf.Models
         public bool? IsPropertyBrowsable(PropertyDescriptor property)
         {
             string propertyName = property.Name;
-            bool   isaxis       = property.ComponentType.Name == nameof(SAxis);
+            bool   isAxis       = property.ComponentType.Name == nameof(SAxis);
 
-            if (isaxis)
+            if (isAxis)
             {
                 if (GetAxis(0).DWEESizeOf <= EepromV1.SIZEOFAXIX_EX)
                 {
@@ -54,7 +54,7 @@ namespace CNCLib.Wpf.Models
                         case nameof(SAxis.MaxStepRate):
                         case nameof(SAxis.StepsPerMm1000):
                         case nameof(SAxis.ProbeSize):
-                        case nameof(SAxis.RefMoveSteprate):
+                        case nameof(SAxis.RefMoveStepRate):
                             return false;
                     }
                 }
@@ -66,27 +66,27 @@ namespace CNCLib.Wpf.Models
                     return false;
                 }
 
-                if (propertyName == nameof(AxisY) || propertyName == nameof(RefSeqence2))
+                if (propertyName == nameof(AxisY) || propertyName == nameof(RefSequence2))
                 {
                     return NumAxis >= 2;
                 }
 
-                if (propertyName == nameof(AxisZ) || propertyName == nameof(RefSeqence3))
+                if (propertyName == nameof(AxisZ) || propertyName == nameof(RefSequence3))
                 {
                     return NumAxis >= 3;
                 }
 
-                if (propertyName == nameof(AxisA) || propertyName == nameof(RefSeqence4))
+                if (propertyName == nameof(AxisA) || propertyName == nameof(RefSequence4))
                 {
                     return NumAxis >= 4;
                 }
 
-                if (propertyName == nameof(AxisB) || propertyName == nameof(RefSeqence5))
+                if (propertyName == nameof(AxisB) || propertyName == nameof(RefSequence5))
                 {
                     return NumAxis >= 5;
                 }
 
-                if (propertyName == nameof(AxisC) || propertyName == nameof(RefSeqence6))
+                if (propertyName == nameof(AxisC) || propertyName == nameof(RefSequence6))
                 {
                     return NumAxis >= 6;
                 }
@@ -328,7 +328,7 @@ namespace CNCLib.Wpf.Models
 
             [DisplayName("RefMoveStepRate")]
             [Description("Steprate for reference-move (AVR 8bit max 16bit, less than 'MaxStepRate'), 0 for machine default")]
-            public uint RefMoveSteprate { get; set; }
+            public uint RefMoveStepRate { get; set; }
 
             [DisplayName("ProbeSize")]
             [Description("Default probe size in mm/1000 (used in Lcd)")]
@@ -389,43 +389,43 @@ namespace CNCLib.Wpf.Models
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 1")]
         [Description("Axis for reference-sequence 1")]
-        public EReverenceSequence RefSeqence1 { get => _refSeqences[0]; set => _refSeqences[0] = value; }
+        public EReverenceSequence RefSequence1 { get => _refSequences[0]; set => _refSequences[0] = value; }
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 2")]
         [Description("Axis for reference-sequence 2")]
-        public EReverenceSequence RefSeqence2 { get => _refSeqences[1]; set => _refSeqences[1] = value; }
+        public EReverenceSequence RefSequence2 { get => _refSequences[1]; set => _refSequences[1] = value; }
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 3")]
         [Description("Axis for reference-sequence 3")]
-        public EReverenceSequence RefSeqence3 { get => _refSeqences[2]; set => _refSeqences[2] = value; }
+        public EReverenceSequence RefSequence3 { get => _refSequences[2]; set => _refSequences[2] = value; }
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 4")]
         [Description("Axis for reference-sequence 4")]
-        public EReverenceSequence RefSeqence4 { get => _refSeqences[3]; set => _refSeqences[3] = value; }
+        public EReverenceSequence RefSequence4 { get => _refSequences[3]; set => _refSequences[3] = value; }
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 5")]
         [Description("Axis for reference-sequence 5")]
-        public EReverenceSequence RefSeqence5 { get => _refSeqences[4]; set => _refSeqences[4] = value; }
+        public EReverenceSequence RefSequence5 { get => _refSequences[4]; set => _refSequences[4] = value; }
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 6")]
         [Description("Axis for reference-sequence 6")]
-        public EReverenceSequence RefSeqence6 { get => _refSeqences[5]; set => _refSeqences[5] = value; }
+        public EReverenceSequence RefSequence6 { get => _refSequences[5]; set => _refSequences[5] = value; }
 
         #endregion
 
         #region Refmove-General
 
-        protected EReverenceSequence[] _refSeqences = new EReverenceSequence[EEPROM_NUM_AXIS]
+        protected EReverenceSequence[] _refSequences = new EReverenceSequence[EEPROM_NUM_AXIS]
         {
             EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No
         };
 
-        public EReverenceSequence this[int i] { get => _refSeqences[i]; set => _refSeqences[i] = value; }
+        public EReverenceSequence this[int i] { get => _refSequences[i]; set => _refSequences[i] = value; }
 
         #endregion
 
@@ -433,7 +433,7 @@ namespace CNCLib.Wpf.Models
 
         public virtual void ReadFrom(EepromV1 ee)
         {
-            byte numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
+            byte numAxis = ee[EepromV1.EValueOffsets8.NumAxis];
 
             NumAxis = ee[EepromV1.EValueOffsets8.NumAxis];
             UseAxis = ee[EepromV1.EValueOffsets8.UseAxis];
@@ -441,7 +441,7 @@ namespace CNCLib.Wpf.Models
             Info1 = ee[EepromV1.EValueOffsets32.Info1];
             Info2 = ee[EepromV1.EValueOffsets32.Info2];
 
-            for (int i = 0; i < numaxis; i++)
+            for (int i = 0; i < numAxis; i++)
             {
                 GetAxis(i).DWEESizeOf     = ee.DWSizeAxis;
                 GetAxis(i).Size           = ee[i, EepromV1.EAxisOffsets32.Size];
@@ -460,7 +460,7 @@ namespace CNCLib.Wpf.Models
                     GetAxis(i).Dec             = ee[i, EepromV1.EAxisOffsets16.Dec];
                     GetAxis(i).StepsPerMm1000  = BitConverter.ToSingle(BitConverter.GetBytes(ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000]), 0);
                     GetAxis(i).ProbeSize       = ee[i, EepromV1.EAxisOffsets32.ProbeSize];
-                    GetAxis(i).RefMoveSteprate = ee[i, EepromV1.EAxisOffsets32.RefMoveStepRate];
+                    GetAxis(i).RefMoveStepRate = ee[i, EepromV1.EAxisOffsets32.RefMoveStepRate];
                 }
             }
 
@@ -480,9 +480,9 @@ namespace CNCLib.Wpf.Models
 
         public virtual void WriteTo(EepromV1 ee)
         {
-            byte numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
+            byte numAxis = ee[EepromV1.EValueOffsets8.NumAxis];
 
-            for (int i = 0; i < numaxis; i++)
+            for (int i = 0; i < numAxis; i++)
             {
                 ee[i, EepromV1.EAxisOffsets32.Size]                 = GetAxis(i).Size;
                 ee[i, EepromV1.EAxisOffsets8.EReverenceType]        = (byte) GetAxis(i).RefMove;
@@ -505,7 +505,7 @@ namespace CNCLib.Wpf.Models
                     ee[i, EepromV1.EAxisOffsets16.Dec]             = GetAxis(i).Dec;
                     ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000]  = BitConverter.ToUInt32(BitConverter.GetBytes(GetAxis(i).StepsPerMm1000), 0);
                     ee[i, EepromV1.EAxisOffsets32.ProbeSize]       = GetAxis(i).ProbeSize;
-                    ee[i, EepromV1.EAxisOffsets32.RefMoveStepRate] = GetAxis(i).RefMoveSteprate;
+                    ee[i, EepromV1.EAxisOffsets32.RefMoveStepRate] = GetAxis(i).RefMoveStepRate;
                 }
             }
 

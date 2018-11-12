@@ -16,6 +16,6 @@
 
         <xctk:PropertyGrid DataContext="{Binding EepromValue}" SelectedObject="{Binding}"
                            PreparePropertyItem="PropertyGrid_PreparePropertyItem"
-                           IsPropertyBrowsable="PropertyGrid_IsPropertyBrowsable" Name="_grid" />
+                           IsPropertyBrowsable="PropertyGrid_IsPropertyBrowseable" Name="_grid" />
     </DockPanel>
 </Window>

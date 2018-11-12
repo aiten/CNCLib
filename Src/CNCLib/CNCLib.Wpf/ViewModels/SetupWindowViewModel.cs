@@ -62,7 +62,7 @@ namespace CNCLib.Wpf.ViewModels
 
         #region private operations
 
-        private async Task LoadMachines(int defaultmachineid)
+        private async Task LoadMachines(int defaultMachineId)
         {
             var machines = new ObservableCollection<Machine>();
             int defaultM;
@@ -76,19 +76,19 @@ namespace CNCLib.Wpf.ViewModels
                     machines.Add(Converter.Convert(m));
                 }
 
-                defaultM = await service.GetDetaultMachine();
+                defaultM = await service.GetDefaultMachine();
             }
 
             Machines = machines;
 
-            var defaultmachine = machines.FirstOrDefault(m => m.MachineId == defaultmachineid) ?? machines.FirstOrDefault(m => m.MachineId == defaultM);
+            var defaultMachine = machines.FirstOrDefault(m => m.MachineId == defaultMachineId) ?? machines.FirstOrDefault(m => m.MachineId == defaultM);
 
-            if (defaultmachine == null && machines.Count > 0)
+            if (defaultMachine == null && machines.Count > 0)
             {
-                defaultmachine = machines[0];
+                defaultMachine = machines[0];
             }
 
-            Machine = defaultmachine;
+            Machine = defaultMachine;
         }
 
         private async Task LoadJoystick()
@@ -289,7 +289,7 @@ namespace CNCLib.Wpf.ViewModels
             {
                 using (var scope = _machineService.Create())
                 {
-                    scope.Instance.SetDetaultMachine(Machine.MachineId);
+                    scope.Instance.SetDefaultMachine(Machine.MachineId);
                 }
             }
         }

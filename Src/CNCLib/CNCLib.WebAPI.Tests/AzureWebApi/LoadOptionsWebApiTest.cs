@@ -74,43 +74,43 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Uri newmUrl = response.Headers.Location;
+                    Uri newUrl = response.Headers.Location;
 
                     // HTTPGET again
-                    HttpResponseMessage responseget = await client.GetAsync(newmUrl);
-                    responseget.IsSuccessStatusCode.Should().BeTrue();
+                    HttpResponseMessage responseGet = await client.GetAsync(newUrl);
+                    responseGet.IsSuccessStatusCode.Should().BeTrue();
 
-                    if (responseget.IsSuccessStatusCode)
+                    if (responseGet.IsSuccessStatusCode)
                     {
-                        LoadOptions mget = await responseget.Content.ReadAsAsync<LoadOptions>();
+                        LoadOptions mget = await responseGet.Content.ReadAsAsync<LoadOptions>();
 
                         mget.SettingName.Should().Be("Settingname");
 
                         // HTTP PUT
                         mget.SettingName = "ComHA";
-                        var responsePut = await client.PutAsJsonAsync(newmUrl, mget);
+                        var responsePut = await client.PutAsJsonAsync(newUrl, mget);
 
                         // HTTPGET again2
-                        HttpResponseMessage responseget2 = await client.GetAsync(newmUrl);
-                        responseget2.IsSuccessStatusCode.Should().BeTrue();
+                        HttpResponseMessage responseGet2 = await client.GetAsync(newUrl);
+                        responseGet2.IsSuccessStatusCode.Should().BeTrue();
 
-                        if (responseget2.IsSuccessStatusCode)
+                        if (responseGet2.IsSuccessStatusCode)
                         {
-                            LoadOptions mget2 = await responseget2.Content.ReadAsAsync<LoadOptions>();
+                            LoadOptions mget2 = await responseGet2.Content.ReadAsAsync<LoadOptions>();
 
                             mget2.SettingName.Should().Be("ComHA");
                         }
 
                         // HTTP DELETE
-                        response = await client.DeleteAsync(newmUrl);
+                        response = await client.DeleteAsync(newUrl);
 
                         // HTTPGET again3
-                        HttpResponseMessage responseget3 = await client.GetAsync(newmUrl);
-                        responseget3.StatusCode.Should().Be(HttpStatusCode.NotFound);
+                        HttpResponseMessage responseGet3 = await client.GetAsync(newUrl);
+                        responseGet3.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
-                        if (responseget2.IsSuccessStatusCode)
+                        if (responseGet3.IsSuccessStatusCode)
                         {
-                            Machine mget3 = await responseget3.Content.ReadAsAsync<Machine>();
+                            Machine mget3 = await responseGet3.Content.ReadAsAsync<Machine>();
                             mget3.Should().BeNull();
                         }
                     }

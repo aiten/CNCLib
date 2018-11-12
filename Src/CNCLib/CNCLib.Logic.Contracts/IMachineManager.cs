@@ -26,7 +26,7 @@ namespace CNCLib.Logic.Contracts
     public interface IMachineManager : IDisposable, ICRUDManager<DTO.Machine, int>
     {
         Task<DTO.Machine> DefaultMachine();
-        Task<int>         GetDetaultMachine();
-        Task              SetDetaultMachine(int defaultMachineId);
+        Task<int>         GetDefaultMachine();
+        Task              SetDefaultMachine(int defaultMachineId);
     }
 }

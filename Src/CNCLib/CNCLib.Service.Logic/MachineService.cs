@@ -41,14 +41,14 @@ namespace CNCLib.Service.Logic
             return await _manager.DefaultMachine();
         }
 
-        public async Task<int> GetDetaultMachine()
+        public async Task<int> GetDefaultMachine()
         {
-            return await _manager.GetDetaultMachine();
+            return await _manager.GetDefaultMachine();
         }
 
-        public async Task SetDetaultMachine(int defaultMachineId)
+        public async Task SetDefaultMachine(int defaultMachineId)
         {
-            await _manager.SetDetaultMachine(defaultMachineId);
+            await _manager.SetDefaultMachine(defaultMachineId);
         }
     }
 }

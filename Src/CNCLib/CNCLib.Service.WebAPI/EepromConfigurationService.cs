@@ -32,9 +32,9 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                string paramuri =
-                    $"teeth={param.Teeth}&toothsizeInMm={param.ToothsizeinMm}&microsteps={param.Microsteps}&stepsPerRotation={param.StepsPerRotation}&estimatedRotationSpeed={param.EstimatedRotationSpeed}&timeToAcc={param.TimeToAcc}&timeToDec={param.TimeToDec}";
-                HttpResponseMessage response = await client.GetAsync(Api + "/" + paramuri);
+                string paramUri =
+                    $"teeth={param.Teeth}&toothSizeInMm={param.ToothSizeInMm}&microSteps={param.MicroSteps}&stepsPerRotation={param.StepsPerRotation}&estimatedRotationSpeed={param.EstimatedRotationSpeed}&timeToAcc={param.TimeToAcc}&timeToDec={param.TimeToDec}";
+                HttpResponseMessage response = await client.GetAsync(Api + "/" + paramUri);
                 if (response.IsSuccessStatusCode)
                 {
                     EepromConfiguration value = await response.Content.ReadAsAsync<EepromConfiguration>();

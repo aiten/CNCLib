@@ -47,7 +47,7 @@ namespace CNCLib.Wpf.Views
             var grid = (PropertyGrid) e.Source;
         }
 
-        private void PropertyGrid_IsPropertyBrowsable(object sender, IsPropertyBrowsableArgs e)
+        private void PropertyGrid_IsPropertyBrowseable(object sender, IsPropertyBrowsableArgs e)
         {
             if (_grid.SelectedObject != null)
             {

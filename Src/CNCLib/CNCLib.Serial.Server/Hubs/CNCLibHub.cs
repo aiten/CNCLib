@@ -44,9 +44,9 @@ namespace CNCLib.Serial.Server.Hubs
             await Clients.All.SendAsync("queueChanged", id, queueLength);
         }
 
-        public async Task SendingCommand(int id, int seqid)
+        public async Task SendingCommand(int id, int seqId)
         {
-            await Clients.All.SendAsync("sendingCommand", id, seqid);
+            await Clients.All.SendAsync("sendingCommand", id, seqId);
         }
 
         public async Task Connected(int id)

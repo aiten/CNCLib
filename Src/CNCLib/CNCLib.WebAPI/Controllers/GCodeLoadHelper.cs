@@ -25,17 +25,17 @@ namespace CNCLib.WebAPI.Controllers
 {
     public class GCodeLoadHelper
     {
-        public static LoadBase CallLoad(string filename, byte[] filecontent, LoadOptions opt)
+        public static LoadBase CallLoad(string filename, byte[] fileContent, LoadOptions opt)
         {
-            string pathfilename = Path.GetFileName(filename);
-            string tmpfile      = Path.GetTempPath() + pathfilename;
+            string pathFileName = Path.GetFileName(filename);
+            string tmpFile      = Path.GetTempPath() + pathFileName;
 
-            opt.FileName             = tmpfile;
+            opt.FileName             = tmpFile;
             opt.ImageWriteToFileName = null;
 
             try
             {
-                File.WriteAllBytes(tmpfile, filecontent);
+                File.WriteAllBytes(tmpFile, fileContent);
 
                 LoadBase load = LoadBase.Create(opt);
 
@@ -49,7 +49,7 @@ namespace CNCLib.WebAPI.Controllers
             }
             finally
             {
-                File.Delete(tmpfile);
+                File.Delete(tmpFile);
             }
         }
     }

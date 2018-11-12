@@ -35,7 +35,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBox Text="\n" Grid.Row="0" Grid.Column="0" IsReadOnly="True" />
-                        <Label Content="Command seperator, the comands are sent sequential" Grid.Row="0"
+                        <Label Content="Command separator, the commands are sent sequential" Grid.Row="0"
                                Grid.Column="1" />
                         <TextBox Text=";beep" Grid.Row="1" Grid.Column="0" />
                         <Label Content="Play a beep on the PC speaker" Grid.Row="1" Grid.Column="1" />
@@ -43,7 +43,7 @@
                         <Label Content="Start a Z probe with the parameters stored in the machine definition"
                                Grid.Row="2" Grid.Column="1" />
                         <TextBox Text="?" Grid.Row="3" Grid.Column="0" />
-                        <Label Content="If the command ends with ? and the commnd fails, the execution is aborted"
+                        <Label Content="If the command ends with ? and the command fails, the execution is aborted"
                                Grid.Row="3" Grid.Column="1" />
                         <TextBox Text=";btn1" Grid.Row="4" Grid.Column="0" />
                         <Label Content="Button 1 of joystick is pressed (JoystickMessage)" Grid.Row="4" Grid.Column="1" />

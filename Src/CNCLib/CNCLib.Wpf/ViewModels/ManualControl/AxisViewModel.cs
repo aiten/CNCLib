@@ -81,7 +81,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g91 g0" + AxisName + dist + " g90")); });
         }
 
-        private void SendProbeCommand(int axisindex)
+        private void SendProbeCommand(int axisIndex)
         {
             RunAndUpdate(async () => { await new MachineGCodeHelper().SendProbeCommandAsync(AxisIndex); });
         }

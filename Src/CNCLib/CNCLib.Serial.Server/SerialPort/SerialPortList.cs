@@ -39,9 +39,9 @@ namespace CNCLib.Serial.Server.SerialPort
             return port;
         }
 
-        private static int GetIdFromPortName(string portname, int index)
+        private static int GetIdFromPortName(string portName, int index)
         {
-            string portNo = portname.Remove(0, 3); // remove "com"
+            string portNo = portName.Remove(0, 3); // remove "com"
             if (int.TryParse(portNo, out int id))
             {
                 return id;
@@ -57,14 +57,14 @@ namespace CNCLib.Serial.Server.SerialPort
                 SerialPort = Dependency.Container.Resolve<ISerialPort>();
             }
 
-            var portnames = SerialPort.GetPortNames();
+            var portNames = SerialPort.GetPortNames();
 
-            if (Environment.MachineName == "AIT7" && !portnames.Any())
+            if (Environment.MachineName == "AIT7" && !portNames.Any())
             {
-                portnames = new[] { "com0", "com1", "com3", "com4", "com5", "com6", "com10" };
+                portNames = new[] { "com0", "com1", "com3", "com4", "com5", "com6", "com10" };
             }
 
-            return portnames.Select((port, index) => new SerialPortWrapper()
+            return portNames.Select((port, index) => new SerialPortWrapper()
             {
                 Id       = GetIdFromPortName(port, index),
                 PortName = port
@@ -73,32 +73,32 @@ namespace CNCLib.Serial.Server.SerialPort
 
         public static void Refresh()
         {
-            var currentportdefinition = GetPortDefinitions().ToList();
+            var currentPortDefinition = GetPortDefinitions().ToList();
 
-            var newlist = new List<SerialPortWrapper>();
+            var newList = new List<SerialPortWrapper>();
 
-            // add same(existing) portname
+            // add same(existing) portName
             foreach (var port in Ports)
             {
-                var existingport = currentportdefinition.Find((p) => port.PortName == p.PortName);
+                var existingPort = currentPortDefinition.Find((p) => port.PortName == p.PortName);
 
-                if (existingport != null)
+                if (existingPort != null)
                 {
-                    newlist.Add(port);
+                    newList.Add(port);
                 }
             }
 
             //addnew ports 
-            foreach (var port in currentportdefinition)
+            foreach (var port in currentPortDefinition)
             {
-                var existingport = newlist.Find((p) => port.PortName == p.PortName);
-                if (existingport == null)
+                var existingPort = newList.Find((p) => port.PortName == p.PortName);
+                if (existingPort == null)
                 {
-                    newlist.Add(port);
+                    newList.Add(port);
                 }
             }
 
-            Ports = newlist.ToArray();
+            Ports = newList.ToArray();
         }
 
         #endregion

@@ -33,7 +33,7 @@
                                 <TextBox Width="200" Text="{Binding LoadOptionsValue.SettingName}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                <Label Content="Prefefined settings" Width="120" />
+                                <Label Content="Predefined settings" Width="120" />
                                 <ComboBox Width="200" SelectedItem="{Binding SelectedLoadOption}"
                                           ItemsSource="{Binding AllLoadOptions}" DisplayMemberPath="SettingName" />
                             </StackPanel>
@@ -259,7 +259,7 @@
                                       Margin="10,10,0,0" />
                             <StackPanel Orientation="Horizontal" IsEnabled="{Binding LoadOptionsValue.SmoothEnabled}">
                                 <Label Content="Minimum line length" Width="120" />
-                                <TextBox Text="{Binding LoadOptionsValue.SmoothMinLineLenght}"
+                                <TextBox Text="{Binding LoadOptionsValue.SmoothMinLineLength}"
                                          VerticalContentAlignment="Center" Width="60" />
                                 <Label Content="mm" />
                             </StackPanel>

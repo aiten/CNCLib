@@ -37,9 +37,9 @@ namespace CNCLib.Wpf.Helpers
                 if (ee.IsValid)
                 {
                     File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromRead.nc"), ee.ToGCode());
-                    byte numaxis = ee[EepromV1.EValueOffsets8.NumAxis];
+                    byte numAxis = ee[EepromV1.EValueOffsets8.NumAxis];
 
-                    var eeprom = Eeprom.Create(ee[EepromV1.EValueOffsets32.Signature], numaxis);
+                    var eeprom = Eeprom.Create(ee[EepromV1.EValueOffsets32.Signature], numAxis);
                     eeprom.Values = values;
                     eeprom.ReadFrom(ee);
 

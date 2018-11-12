@@ -49,7 +49,7 @@
                 </DockPanel>
                 <DockPanel>
                     <xctk:ColorPicker SelectedColor="{Binding Path=CutEllipseColor}" Width="40" DockPanel.Dock="Right" />
-                    <Label Content="CutElipse:" />
+                    <Label Content="CutEllipse:" />
                 </DockPanel>
                 <DockPanel>
                     <xctk:ColorPicker SelectedColor="{Binding Path=CutArcColor}" Width="40" DockPanel.Dock="Right" />

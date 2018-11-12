@@ -353,15 +353,15 @@ namespace CNCLib.GCode.GUI
 
         public Point3D FromClient(PointF pt, double z)
         {
-            var    notrotated      = FromClient(pt);
-            double notrotatedX     = notrotated.X0;
-            double notrotatedY     = notrotated.Y0;
-            double notrotatedAngel = Math.Atan2(notrotatedY, notrotatedX);
-            double c               = Math.Sqrt(notrotatedX * notrotatedX + notrotatedY * notrotatedY);
+            var    notRotated      = FromClient(pt);
+            double notRotatedX     = notRotated.X0;
+            double notRotatedY     = notRotated.Y0;
+            double notRotatedAngel = Math.Atan2(notRotatedY, notRotatedX);
+            double c               = Math.Sqrt(notRotatedX * notRotatedX + notRotatedY * notRotatedY);
 
             double anglec = Math.PI - (_rotateAngleY - _rotateAngleX);
-            double anglea = _rotateAngleY - notrotatedAngel;
-            double angleb = notrotatedAngel - _rotateAngleX;
+            double anglea = _rotateAngleY - notRotatedAngel;
+            double angleb = notRotatedAngel - _rotateAngleX;
             double rateC  = c / Math.Sin(anglec);
 
             double a = Math.Sin(anglea) * rateC;
@@ -430,20 +430,20 @@ namespace CNCLib.GCode.GUI
             }
         }
 
-        void InitPen(PenSet set, Func<Color, Color> colorconverter)
+        void InitPen(PenSet set, Func<Color, Color> colorConverter)
         {
-            float cutsize  = CutterSize > 0 ? (float) ToClientSizeX(CutterSize) : 2;
+            float cutSize  = CutterSize > 0 ? (float) ToClientSizeX(CutterSize) : 2;
             float fastSize = 0.5f;
 
-            set._cutPen = new Pen(colorconverter(CutColor), cutsize)
+            set._cutPen = new Pen(colorConverter(CutColor), cutSize)
             {
                 StartCap = LineCap.Round,
                 EndCap   = LineCap.Round
             };
 
-            set._cutDotPen     = new Pen(colorconverter(CutDotColor),     cutsize);
-            set._cutEllipsePen = new Pen(colorconverter(CutEllipseColor), cutsize);
-            set._cutArcPen = new Pen(colorconverter(CutArcColor), cutsize)
+            set._cutDotPen     = new Pen(colorConverter(CutDotColor),     cutSize);
+            set._cutEllipsePen = new Pen(colorConverter(CutEllipseColor), cutSize);
+            set._cutArcPen = new Pen(colorConverter(CutArcColor), cutSize)
             {
                 StartCap = LineCap.Round,
                 EndCap   = LineCap.Round
@@ -451,14 +451,14 @@ namespace CNCLib.GCode.GUI
 
             set._cutPens = new[] { set._cutPen, set._cutDotPen, set._cutEllipsePen, set._cutArcPen };
 
-            set._fastPen   = new Pen(colorconverter(FastMoveColor), fastSize);
-            set._noMovePen = new Pen(colorconverter(Color.Blue),    fastSize);
-            set._laserCutPen = new Pen(colorconverter(LaserOnColor), (float) ToClientSizeX(LaserSize))
+            set._fastPen   = new Pen(colorConverter(FastMoveColor), fastSize);
+            set._noMovePen = new Pen(colorConverter(Color.Blue),    fastSize);
+            set._laserCutPen = new Pen(colorConverter(LaserOnColor), (float) ToClientSizeX(LaserSize))
             {
                 StartCap = LineCap.Round,
                 EndCap   = LineCap.Round
             };
-            set._laserFastPen = new Pen(colorconverter(LaserOffColor), (float) (fastSize / 2.0));
+            set._laserFastPen = new Pen(colorConverter(LaserOffColor), (float) (fastSize / 2.0));
         }
 
         public Bitmap DrawToBitmap(CommandList commands)
@@ -630,9 +630,9 @@ namespace CNCLib.GCode.GUI
             return Math.Sqrt(dx * dx + dy * dy);
         }
 
-        private void Arc(Command cmd, object param, DrawType drawtype, Point3D ptFrom, Point3D ptTo, double offset0, double offset1, int axis_0, int axis_1, int axis_linear, bool isclockwise)
+        private void Arc(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo, double offset0, double offset1, int axis_0, int axis_1, int axis_linear, bool isClockwise)
         {
-            Pen pen = GetPen(drawtype, LineDrawType.Arc);
+            Pen pen = GetPen(drawType, LineDrawType.Arc);
 
             var    current      = new Point3D(ptFrom.X0, ptFrom.Y0, ptFrom.Z0);
             var    last         = new Point3D(ptFrom.X0, ptFrom.Y0, ptFrom.Z0);
@@ -666,7 +666,7 @@ namespace CNCLib.GCode.GUI
             if (Math.Abs(angular_travel) < double.Epsilon)
             {
                 // 360Grad
-                if (isclockwise)
+                if (isClockwise)
                 {
                     angular_travel = -2.0 * Math.PI;
                 }
@@ -682,7 +682,7 @@ namespace CNCLib.GCode.GUI
                     angular_travel += 2.0 * Math.PI;
                 }
 
-                if (isclockwise)
+                if (isClockwise)
                 {
                     angular_travel -= 2.0 * Math.PI;
                 }
@@ -755,19 +755,19 @@ namespace CNCLib.GCode.GUI
             Line(param, pen, last, ptTo);
         }
 
-        private bool PreDrawLineOrArc(object param, DrawType drawtype, PointF from, PointF to)
+        private bool PreDrawLineOrArc(object param, DrawType drawType, PointF from, PointF to)
         {
             var e = (PaintEventArgs) param;
 
             if (from.Equals(to))
             {
-                if ((drawtype & DrawType.Laser) == DrawType.Laser)
+                if ((drawType & DrawType.Laser) == DrawType.Laser)
                 {
-                    e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), @from.X, @from.Y, 1, 1);
+                    e.Graphics.DrawEllipse(GetPen(drawType, LineDrawType.Dot), @from.X, @from.Y, 1, 1);
                 }
                 else
                 {
-                    e.Graphics.DrawEllipse(GetPen(drawtype, LineDrawType.Dot), @from.X, @from.Y, 4, 4);
+                    e.Graphics.DrawEllipse(GetPen(drawType, LineDrawType.Dot), @from.X, @from.Y, 4, 4);
                 }
 
                 return false;
@@ -800,7 +800,7 @@ namespace CNCLib.GCode.GUI
             Arc     = 3
         }
 
-        private Pen GetPen(DrawType moveType, LineDrawType drawtype)
+        private Pen GetPen(DrawType moveType, LineDrawType drawType)
         {
             PenSet set = (moveType & DrawType.Selected) == DrawType.Selected ? _selected : _dithered;
 
@@ -817,7 +817,7 @@ namespace CNCLib.GCode.GUI
                 return isCut ? set._laserCutPen : set._laserFastPen;
             }
 
-            return isCut ? set._cutPens[(int) drawtype] : set._fastPen;
+            return isCut ? set._cutPens[(int) drawType] : set._fastPen;
         }
 
         #endregion

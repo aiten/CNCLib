@@ -117,7 +117,7 @@
                         <StackPanel Orientation="Vertical" Margin="0,0,3,0">
                             <Button Command="{Binding Tool.ReadPositionCommand}" Content="Read positions" />
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Absolut" Width="50" Margin="20,0,0,0" />
+                                <Label Content="Absolute" Width="60" Margin="10,0,0,0" />
                                 <Label Content="Current" Width="50" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Visibility="{Binding AxisX.Visibility}">
@@ -290,12 +290,12 @@
                 <TabItem Header="Extras" Custom:ControlsHelper.HeaderFontSize="15">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
-                            <Button Command="{Binding Tool.SendM03SpindleOnCommand}" Content="Spindel On" />
-                            <Button Command="{Binding Tool.SendM05SpindleOffCommand}" Content="Spindel Off" />
+                            <Button Command="{Binding Tool.SendM03SpindleOnCommand}" Content="Spindle On" />
+                            <Button Command="{Binding Tool.SendM05SpindleOffCommand}" Content="Spindle Off" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
-                            <Button Command="{Binding Tool.SendM07CoolandOnCommand}" Content="Cooland On" />
-                            <Button Command="{Binding Tool.SendM09CoolandOffCommand}" Content="Cooland Off" />
+                            <Button Command="{Binding Tool.SendM07CoolantOnCommand}" Content="Coolant On" />
+                            <Button Command="{Binding Tool.SendM09CoolantOffCommand}" Content="Coolant Off" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
                             <Button Command="{Binding Tool.SendM106LaserOnCommand}" Content="Laser On" />

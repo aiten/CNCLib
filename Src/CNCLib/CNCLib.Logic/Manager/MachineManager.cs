@@ -112,7 +112,7 @@ namespace CNCLib.Logic.Manager
             return await Task.FromResult(dto);
         }
 
-        public async Task<int> GetDetaultMachine()
+        public async Task<int> GetDefaultMachine()
         {
             var config = await _repositoryConfig.Get("Environment", "DefaultMachineId");
 
@@ -124,7 +124,7 @@ namespace CNCLib.Logic.Manager
             return int.Parse(config.Value);
         }
 
-        public async Task SetDetaultMachine(int defaultMachineId)
+        public async Task SetDefaultMachine(int defaultMachineId)
         {
             await _repositoryConfig.Store(new ConfigurationEntity
             {

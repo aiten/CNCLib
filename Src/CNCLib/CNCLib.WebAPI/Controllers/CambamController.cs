@@ -33,15 +33,15 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class CambamController : Controller
     {
-        public CambamController(ILoadOptionsService loadOptionsService, ICNCLibUserContext usercontext)
+        public CambamController(ILoadOptionsService loadOptionsService, ICNCLibUserContext userContext)
         {
             _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
-            _usercontext        = usercontext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext) _usercontext).InitFromController(this);
+            _userContext        = userContext ?? throw new ArgumentNullException();
+            ((CNCLibUserContext) _userContext).InitFromController(this);
         }
 
         readonly ILoadOptionsService _loadOptionsService;
-        readonly ICNCLibUserContext  _usercontext;
+        readonly ICNCLibUserContext  _userContext;
 
         [HttpPost]
         public string Post([FromBody] LoadOptions input)

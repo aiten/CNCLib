@@ -39,14 +39,14 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGL00()
         {
-            var loadinfo = new LoadOptions
+            var loadInfo = new LoadOptions
             {
                 LoadType    = LoadOptions.ELoadType.HPGL,
                 AutoScale   = false,
                 FileContent = Encoding.ASCII.GetBytes("IN;PU0,0")
             };
 
-            var load = LoadBase.Create(loadinfo);
+            var load = LoadBase.Create(loadInfo);
 
             load.Load();
 
@@ -62,7 +62,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGLSkipPU()
         {
-            var loadinfo = new LoadOptions
+            var loadInfo = new LoadOptions
             {
                 LoadType    = LoadOptions.ELoadType.HPGL,
                 AutoScale   = false,
@@ -72,7 +72,7 @@ namespace CNCLib.Tests.Load
                 // leading PU1000,100 and trailing PU0,0 is skipped
             };
 
-            var load = LoadBase.Create(loadinfo);
+            var load = LoadBase.Create(loadInfo);
 
             load.Load();
 
@@ -89,7 +89,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGLGengraveParam()
         {
-            var loadinfo = new LoadOptions
+            var loadInfo = new LoadOptions
             {
                 LoadType              = LoadOptions.ELoadType.HPGL,
                 AutoScale             = false,
@@ -98,7 +98,7 @@ namespace CNCLib.Tests.Load
                 FileContent           = Encoding.ASCII.GetBytes("IN;PU0,0;PD400,400")
             };
 
-            var load = LoadBase.Create(loadinfo);
+            var load = LoadBase.Create(loadInfo);
 
             load.Load();
 
@@ -115,7 +115,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGLGengraveNoParamAndSpeed()
         {
-            var loadinfo = new LoadOptions
+            var loadInfo = new LoadOptions
             {
                 LoadType              = LoadOptions.ELoadType.HPGL,
                 AutoScale             = false,
@@ -128,7 +128,7 @@ namespace CNCLib.Tests.Load
                 FileContent           = Encoding.ASCII.GetBytes("IN;PU0,0;PD400,400;PD800,400")
             };
 
-            var load = LoadBase.Create(loadinfo);
+            var load = LoadBase.Create(loadInfo);
 
             load.Load();
 
@@ -150,7 +150,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGLLaser()
         {
-            var loadinfo = new LoadOptions
+            var loadInfo = new LoadOptions
             {
                 LoadType    = LoadOptions.ELoadType.HPGL,
                 AutoScale   = false,
@@ -159,7 +159,7 @@ namespace CNCLib.Tests.Load
                 FileContent = Encoding.ASCII.GetBytes("IN;PU0,0;PD400,400;PD800,400;PU800,800;PD1200,1200")
             };
 
-            var load = LoadBase.Create(loadinfo);
+            var load = LoadBase.Create(loadInfo);
 
             load.Load();
 
@@ -176,7 +176,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGLConvertOpenLine()
         {
-            var loadinfo = new LoadOptions
+            var loadInfo = new LoadOptions
             {
                 LoadType    = LoadOptions.ELoadType.HPGL,
                 AutoScale   = false,
@@ -186,7 +186,7 @@ namespace CNCLib.Tests.Load
                 FileContent = Encoding.ASCII.GetBytes("IN;PU0,0;PD400,400;PD800,400;PU800,800;PD1200,1200;PU;SP0;PU0,0")
             };
 
-            var load = LoadBase.Create(loadinfo);
+            var load = LoadBase.Create(loadInfo);
 
             load.Load();
 
@@ -203,7 +203,7 @@ namespace CNCLib.Tests.Load
         [TestMethod]
         public void LoadHPGLConvertClosedLine()
         {
-            var loadinfo = new LoadOptions
+            var loadInfo = new LoadOptions
             {
                 LoadType    = LoadOptions.ELoadType.HPGL,
                 AutoScale   = false,
@@ -215,7 +215,7 @@ namespace CNCLib.Tests.Load
                                                       "PU150,150;PD250,150,250,250,150,250,150,150;" + "PU;SP0")
             };
 
-            var load = LoadBase.Create(loadinfo);
+            var load = LoadBase.Create(loadInfo);
 
             load.Load();
 
@@ -231,14 +231,14 @@ namespace CNCLib.Tests.Load
             CheckGCode(list, gcode);
         }
 
-        private static void CheckGCode(IEnumerable<Command> list, string[] expectgcode)
+        private static void CheckGCode(IEnumerable<Command> list, string[] expectGcode)
         {
-            list.Count().Should().Be(expectgcode.Length);
+            list.Count().Should().Be(expectGcode.Length);
 
             int idx = 0;
             foreach (var command in list)
             {
-                list.ElementAt(idx).GetGCodeCommands(null, null)[0].Should().BeEquivalentTo(expectgcode[idx]);
+                list.ElementAt(idx).GetGCodeCommands(null, null)[0].Should().BeEquivalentTo(expectGcode[idx]);
                 idx++;
             }
         }

@@ -30,7 +30,7 @@ namespace CNCLib.Repository.Contracts.Entities
         public int    BaudRate         { get; set; }
         public bool   DtrIsReset       { get; set; }
 
-        public bool NeedDtr { get; set; } // do not delete the column because SQLite limitation of droping clumns
+        public bool NeedDtr { get; set; } // do not delete the column because SQLite limitation of drop columns
 
         public string  Name           { get; set; }
         public decimal SizeX          { get; set; }

@@ -55,16 +55,16 @@ namespace CNCLib.Tests.Wpf
 /*
 		private FactoryType2Obj CreateMock()
 		{
-			var mockfactory = new FactoryType2Obj();
-			BaseViewModel.LogicFactory = mockfactory;
-			return mockfactory;
+			var mockFactory = new FactoryType2Obj();
+			BaseViewModel.LogicFactory = mockFactory;
+			return mockFactory;
         }
 */
         private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
-//			var mockfactory = CreateMock();
+//			var mockFactory = CreateMock();
             var rep = Substitute.For<TInterface>();
-//			mockfactory.Register(typeof(TInterface), rep);
+//			mockFactory.Register(typeof(TInterface), rep);
 
             Dependency.Container.RegisterInstance(rep);
 
@@ -121,59 +121,59 @@ namespace CNCLib.Tests.Wpf
             Machine machine1 = CreateMachine(1);
             rep.Get(1).Returns(machine1);
 
-            Machine machinedef = CreateMachine(0);
-            rep.DefaultMachine().Returns(machinedef);
+            Machine machineDef = CreateMachine(0);
+            rep.DefaultMachine().Returns(machineDef);
 
             var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep));
             mv.LoadMachine(-1);
 
             mv.AddNewMachine.Should().BeTrue();
-            mv.Machine.Name.Should().Be(machinedef.Name);
+            mv.Machine.Name.Should().Be(machineDef.Name);
 
-            mv.MachineCommands.Count.Should().Be(machinedef.MachineCommands.Count());
-            mv.MachineInitCommands.Count.Should().Be(machinedef.MachineInitCommands.Count());
+            mv.MachineCommands.Count.Should().Be(machineDef.MachineCommands.Count());
+            mv.MachineInitCommands.Count.Should().Be(machineDef.MachineInitCommands.Count());
         }
 
-        private Machine CreateMachine(int machineid)
+        private Machine CreateMachine(int machineId)
         {
-            var machinecommand = new[]
+            var machineCommands = new[]
             {
                 new MachineCommand
                 {
-                    MachineId        = machineid,
+                    MachineId        = machineId,
                     CommandName      = "Test1",
                     CommandString    = "G20",
-                    MachineCommandId = machineid * 10 + 0
+                    MachineCommandId = machineId * 10 + 0
                 },
                 new MachineCommand
                 {
-                    MachineId        = machineid,
+                    MachineId        = machineId,
                     CommandName      = "Test2",
                     CommandString    = "G21",
-                    MachineCommandId = machineid * 10 + 1
+                    MachineCommandId = machineId * 10 + 1
                 }
             };
-            var machineinitcommand = new[]
+            var machineInitCommands = new[]
             {
                 new MachineInitCommand
                 {
-                    MachineId            = machineid,
+                    MachineId            = machineId,
                     SeqNo                = 1,
                     CommandString        = "G20",
-                    MachineInitCommandId = machineid * 20
+                    MachineInitCommandId = machineId * 20
                 },
                 new MachineInitCommand
                 {
                     MachineId            = 1,
                     SeqNo                = 2,
                     CommandString        = "G21",
-                    MachineInitCommandId = machineid * 20 + 1
+                    MachineInitCommandId = machineId * 20 + 1
                 }
             };
             var machine = new Machine
             {
-                MachineId           = machineid,
-                Name                = "Maxi" + machineid.ToString(),
+                MachineId           = machineId,
+                Name                = "Maxi" + machineId.ToString(),
                 ComPort             = "Com7",
                 Axis                = 3,
                 BaudRate            = 115200,
@@ -196,8 +196,8 @@ namespace CNCLib.Tests.Wpf
                 Spindle             = true,
                 Coolant             = true,
                 Rotate              = true,
-                MachineCommands     = machinecommand,
-                MachineInitCommands = machineinitcommand
+                MachineCommands     = machineCommands,
+                MachineInitCommands = machineInitCommands
             };
 
             return machine;

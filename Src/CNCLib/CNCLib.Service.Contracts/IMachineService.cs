@@ -28,7 +28,7 @@ namespace CNCLib.Service.Contracts
     public interface IMachineService : IDisposable, ICRUDService<Machine, int>
     {
         Task<Machine> DefaultMachine();
-        Task<int>     GetDetaultMachine();
-        Task          SetDetaultMachine(int defaultMachineId);
+        Task<int>     GetDefaultMachine();
+        Task          SetDefaultMachine(int defaultMachineId);
     }
 }

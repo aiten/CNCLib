@@ -49,9 +49,9 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
 
                 Assembly ass     = Assembly.GetExecutingAssembly();
-                string   asspath = Path.GetDirectoryName(ass.Location);
+                string   assPath = Path.GetDirectoryName(ass.Location);
 
-                info.FileName    = asspath + @"\TestData\heikes-mietzi.hpgl";
+                info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
                 info.FileContent = File.ReadAllBytes(info.FileName);
 
                 HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
@@ -85,9 +85,9 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 };
 
                 Assembly ass     = Assembly.GetExecutingAssembly();
-                string   asspath = Path.GetDirectoryName(ass.Location);
+                string   assPath = Path.GetDirectoryName(ass.Location);
 
-                info.FileName    = asspath + @"\TestData\Wendelin_Ait110.png";
+                info.FileName    = assPath + @"\TestData\Wendelin_Ait110.png";
                 info.FileContent = File.ReadAllBytes(info.FileName);
 
                 HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
@@ -117,12 +117,12 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 Assembly ass     = Assembly.GetExecutingAssembly();
-                string   asspath = Path.GetDirectoryName(ass.Location);
+                string   assPath = Path.GetDirectoryName(ass.Location);
 
                 var input = new CreateGCode
                 {
                     LoadOptionsId = 3,
-                    FileName      = asspath + @"\TestData\Wendelin_Ait110.png"
+                    FileName      = assPath + @"\TestData\Wendelin_Ait110.png"
                 };
 
                 input.FileContent = File.ReadAllBytes(input.FileName);

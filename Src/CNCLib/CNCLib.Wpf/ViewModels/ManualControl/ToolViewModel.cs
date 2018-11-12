@@ -142,12 +142,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m5"); });
         }
 
-        public void SendM07CoolandOn()
+        public void SendM07CoolantOn()
         {
             RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m7"); });
         }
 
-        public void SendM09CoolandOff()
+        public void SendM09CoolantOff()
         {
             RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m9"); });
         }
@@ -228,21 +228,21 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
                         string[] tags = message.Split('|');
 
-                        var mpos = TryConvert(tags, "MPos:");
-                        if (mpos != null)
+                        var mPos = TryConvert(tags, "MPos:");
+                        if (mPos != null)
                         {
-                            SetPositions(mpos, 0);
+                            SetPositions(mPos, 0);
 
                             var wco = TryConvert(tags, "WCO:");
                             if (wco != null)
                             {
                                 for (int i = 0; i < wco.Length; i++)
                                 {
-                                    mpos[i] -= wco[i];
+                                    mPos[i] -= wco[i];
                                 }
                             }
 
-                            SetPositions(mpos, 1);
+                            SetPositions(mPos, 1);
                         }
                     }
                     else
@@ -254,8 +254,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
                         if (!string.IsNullOrEmpty(message))
                         {
-                            decimal[] rpos = Convert(message, "dummy");
-                            SetPositions(rpos, 1);
+                            decimal[] rPos = Convert(message, "dummy");
+                            SetPositions(rPos, 1);
                         }
                     }
                 }
@@ -278,8 +278,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         public ICommand SendClearQueue              => new DelegateCommand(ClearQueue,           CanSend);
         public ICommand SendM03SpindleOnCommand     => new DelegateCommand(SendM03SpindleOn,     CanSendSpindle);
         public ICommand SendM05SpindleOffCommand    => new DelegateCommand(SendM05SpindleOff,    CanSendSpindle);
-        public ICommand SendM07CoolandOnCommand     => new DelegateCommand(SendM07CoolandOn,     CanSendCoolant);
-        public ICommand SendM09CoolandOffCommand    => new DelegateCommand(SendM09CoolandOff,    CanSendCoolant);
+        public ICommand SendM07CoolantOnCommand     => new DelegateCommand(SendM07CoolantOn,     CanSendCoolant);
+        public ICommand SendM09CoolantOffCommand    => new DelegateCommand(SendM09CoolantOff,    CanSendCoolant);
         public ICommand SendM100ProbeDefaultCommand => new DelegateCommand(SendM100ProbeDefault, CanSend);
         public ICommand SendM101ProbeInvertCommand  => new DelegateCommand(SendM101ProbeInvert,  CanSend);
         public ICommand SendM106LaserOnCommand      => new DelegateCommand(SendM106LaserOn,      CanSendLaser);

@@ -34,13 +34,13 @@ namespace CNCLib.WebAPI.Controllers
     public class LoadOptionsController : Controller
     {
         private readonly ILoadOptionsService _service;
-        private readonly ICNCLibUserContext  _usercontext;
+        private readonly ICNCLibUserContext  _userContext;
 
-        public LoadOptionsController(ILoadOptionsService service, ICNCLibUserContext usercontext)
+        public LoadOptionsController(ILoadOptionsService service, ICNCLibUserContext userContext)
         {
             _service     = service ?? throw new ArgumentNullException();
-            _usercontext = usercontext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext) _usercontext).InitFromController(this);
+            _userContext = userContext ?? throw new ArgumentNullException();
+            ((CNCLibUserContext) _userContext).InitFromController(this);
         }
 
         #region default REST

@@ -39,12 +39,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         #region Commands / CanCommands
 
-        private void SendMoveCommand(double? dist, char axisname)
+        private void SendMoveCommand(double? dist, char axisName)
         {
             RunAndUpdate(() =>
             {
                 bool   mustUse2Lines = Global.Instance.Machine.CommandSyntax == Logic.Contracts.DTO.CommandSyntax.Grbl;
-                string commandStr    = MachineGCodeHelper.PrepareCommand("g91 g0" + axisname + (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
+                string commandStr    = MachineGCodeHelper.PrepareCommand("g91 g0" + axisName + (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
 
                 if (!mustUse2Lines)
                 {

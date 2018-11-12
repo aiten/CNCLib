@@ -130,7 +130,7 @@ namespace CNCLib.Wpf.Controls
 
         private double _moveDist      = 10.0;
         private double _moveDistance3 = 10.0;
-        private double _moveDistanze4 = 100.0;
+        private double _moveDistance4 = 100.0;
         private double _moveDistance2 = 1.0;
         private double _moveDistance1 = 0.1;
 
@@ -156,10 +156,10 @@ namespace CNCLib.Wpf.Controls
 
         public double MoveDistance4
         {
-            get => _moveDistanze4;
+            get => _moveDistance4;
             set
             {
-                _moveDistanze4 = value;
+                _moveDistance4 = value;
                 RaisePropertyChanged();
             }
         }
@@ -248,10 +248,10 @@ namespace CNCLib.Wpf.Controls
 
         private void _dist_TextChanged(object sender, TextChangedEventArgs e)
         {
-            double movedist;
-            if (double.TryParse(_dist.Text, out movedist))
+            double moveDist;
+            if (double.TryParse(_dist.Text, out moveDist))
             {
-                MoveDist = movedist;
+                MoveDist = moveDist;
             }
         }
 

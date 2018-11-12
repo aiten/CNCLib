@@ -148,7 +148,7 @@ namespace CNCLib.Wpf.ViewModels
 
         #region private/intern
 
-        LoadOptions _loadinfo         = new LoadOptions();
+        LoadOptions _loadInfo         = new LoadOptions();
         bool        _useAzure         = false;
         bool        _loadingOrSending = false;
 
@@ -198,32 +198,32 @@ namespace CNCLib.Wpf.ViewModels
 
         private async Task SendCommands(List<CommandToIndex> list)
         {
-            var cmdlist = new List<string>();
+            var cmdList = new List<string>();
             int idx     = 0;
-            var cmddict = new Dictionary<int, CommandToIndex>();
+            var cmdDict = new Dictionary<int, CommandToIndex>();
 
             foreach (var c in list)
             {
                 c.IdxFrom =  idx;
                 c.IdxTo   =  idx + c.CommandText.Length - 1;
                 idx       += c.CommandText.Length;
-                cmdlist.AddRange(c.CommandText);
+                cmdList.AddRange(c.CommandText);
                 for (idx = c.IdxFrom; idx <= c.IdxTo; idx++)
                 {
-                    cmddict[idx] = c;
+                    cmdDict[idx] = c;
                 }
             }
 
-            var serialcommands = await Global.Instance.Com.Current.QueueCommandsAsync(cmdlist);
+            var serialCommands = await Global.Instance.Com.Current.QueueCommandsAsync(cmdList);
 
-            foreach (var serialcmd in serialcommands)
+            foreach (var serialCmd in serialCommands)
             {
-                //var ctox = list.FirstOrDefault((ct) => ct.IdxFrom >= serialcmd.CommandIndex && ct.IdxTo <= serialcmd.CommandIndex);
-                if (cmddict.ContainsKey(serialcmd.CommandIndex))
+                //var ctx = list.FirstOrDefault((ct) => ct.IdxFrom >= serialCmd.CommandIndex && ct.IdxTo <= serialCmd.CommandIndex);
+                if (cmdDict.ContainsKey(serialCmd.CommandIndex))
                 {
-                    var ctox = cmddict[serialcmd.CommandIndex];
-                    ctox.SeqIdFrom = Math.Min(ctox.SeqIdFrom, serialcmd.SeqId);
-                    ctox.SeqIdTo   = Math.Max(ctox.SeqIdTo, serialcmd.SeqId);
+                    var ctx = cmdDict[serialCmd.CommandIndex];
+                    ctx.SeqIdFrom = Math.Min(ctx.SeqIdFrom, serialCmd.SeqId);
+                    ctx.SeqIdTo   = Math.Max(ctx.SeqIdTo, serialCmd.SeqId);
                 }
             }
 
@@ -260,19 +260,19 @@ namespace CNCLib.Wpf.ViewModels
                 try
                 {
                     Global.Instance.Com.Current.ClearCommandHistory();
-                    var cmddeflist = new List<CommandToIndex>();
+                    var cmdDefList = new List<CommandToIndex>();
 
                     if (Global.Instance.Machine.CommandSyntax == CommandSyntax.HPGL && IsHPGLAndPlotter())
                     {
                         Commands.ForEach(cmd =>
                         {
-                            string cmdstr = cmd.ImportInfo;
-                            if (!string.IsNullOrEmpty(cmdstr))
+                            string cmdStr = cmd.ImportInfo;
+                            if (!string.IsNullOrEmpty(cmdStr))
                             {
-                                cmddeflist.Add(new CommandToIndex()
+                                cmdDefList.Add(new CommandToIndex()
                                 {
                                     Cmd         = cmd,
-                                    CommandText = new[] { cmdstr }
+                                    CommandText = new[] { cmdStr }
                                 });
                             }
                         });
@@ -284,7 +284,7 @@ namespace CNCLib.Wpf.ViewModels
 
                         Commands.ForEach(cmd =>
                         {
-                            cmddeflist.Add(new CommandToIndex()
+                            cmdDefList.Add(new CommandToIndex()
                             {
                                 Cmd         = cmd,
                                 CommandText = cmd.GetGCodeCommands(last?.CalculatedEndPosition, state)
@@ -293,7 +293,7 @@ namespace CNCLib.Wpf.ViewModels
                         });
                     }
 
-                    await SendCommands(cmddeflist);
+                    await SendCommands(cmdDefList);
                 }
                 finally
                 {
@@ -304,16 +304,16 @@ namespace CNCLib.Wpf.ViewModels
 
         public async Task Load()
         {
-            if (_loadinfo.AutoScaleSizeX == 0 || _loadinfo.AutoScaleSizeY == 0)
+            if (_loadInfo.AutoScaleSizeX == 0 || _loadInfo.AutoScaleSizeY == 0)
             {
-                _loadinfo.AutoScaleSizeX = Global.Instance.SizeX;
-                _loadinfo.AutoScaleSizeY = Global.Instance.SizeY;
+                _loadInfo.AutoScaleSizeX = Global.Instance.SizeX;
+                _loadInfo.AutoScaleSizeY = Global.Instance.SizeY;
             }
 
-            var arg = new GetLoadInfoArg { LoadOption = _loadinfo, UseAzure = _useAzure };
+            var arg = new GetLoadInfoArg { LoadOption = _loadInfo, UseAzure = _useAzure };
             if ((GetLoadInfo?.Invoke(arg)).GetValueOrDefault(false))
             {
-                _loadinfo = arg.LoadOption;
+                _loadInfo = arg.LoadOption;
                 _useAzure = arg.UseAzure;
 
                 var ld = new GCodeLoad();
@@ -321,7 +321,7 @@ namespace CNCLib.Wpf.ViewModels
                 try
                 {
                     _loadingOrSending = true;
-                    Commands          = await ld.Load(_loadinfo, _useAzure);
+                    Commands          = await ld.Load(_loadInfo, _useAzure);
                 }
                 catch (Exception ex)
                 {

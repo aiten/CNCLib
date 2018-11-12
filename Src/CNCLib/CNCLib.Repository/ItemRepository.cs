@@ -70,9 +70,9 @@ namespace CNCLib.Repository
 
         #endregion
 
-        public async Task<IEnumerable<Item>> Get(string typeidstring)
+        public async Task<IEnumerable<Item>> Get(string typeIdString)
         {
-            return await QueryWithOptional.Where(m => m.ClassName == typeidstring).Include(d => d.ItemProperties).ToListAsync();
+            return await QueryWithOptional.Where(m => m.ClassName == typeIdString).Include(d => d.ItemProperties).ToListAsync();
         }
 
         protected override void AssignValuesGraph(Item trackingEntity, Item values)

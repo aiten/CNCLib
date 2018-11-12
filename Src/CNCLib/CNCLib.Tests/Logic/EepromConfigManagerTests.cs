@@ -59,8 +59,8 @@ namespace CNCLib.Tests.Logic
             var input = new EepromConfigurationInput
             {
                 Teeth                  = 15,
-                ToothsizeinMm          = 2.0,
-                Microsteps             = 16,
+                ToothSizeInMm          = 2.0,
+                MicroSteps             = 16,
                 StepsPerRotation       = 200,
                 EstimatedRotationSpeed = 7.8,
                 TimeToAcc              = 0.2,

@@ -56,7 +56,7 @@ namespace CNCLib.Repository.Context
 
         private void MachineSeed(CNCLibContext context, User[] users)
         {
-            var proxonMF70 = new Machine
+            var proxxonMF70 = new Machine
             {
                 Name           = "Proxxon MF70",
                 ComPort        = "com4",
@@ -137,7 +137,7 @@ namespace CNCLib.Repository.Context
                 Laser          = true
             };
 
-            var minilaser = new Machine
+            var miniLaser = new Machine
             {
                 Name           = "MinLaser",
                 ComPort        = "com4",
@@ -163,7 +163,7 @@ namespace CNCLib.Repository.Context
                 Laser          = true
             };
 
-            var dck40laser = new Machine
+            var dck40Laser = new Machine
             {
                 Name           = "DC-K40-Laser",
                 ComPort        = "com3",
@@ -220,15 +220,15 @@ namespace CNCLib.Repository.Context
 
             var machines = new[]
             {
-                proxonMF70, kk1000s, laser, minilaser, dck40laser, miniCNC
+                proxxonMF70, kk1000s, laser, miniLaser, dck40Laser, miniCNC
             };
 
-            var machinecommands = new[]
+            var machineCommands = new[]
             {
                 //ProxxonMF70
                 new MachineCommand
                 {
-                    Machine         = proxonMF70,
+                    Machine         = proxxonMF70,
                     CommandName     = "Set XY = 0",
                     CommandString   = @"g92 x0\ng92 y0\n;beep",
                     PosX            = 0,
@@ -237,7 +237,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = proxonMF70,
+                    Machine         = proxxonMF70,
                     CommandName     = "Set X = 0",
                     CommandString   = @"g92 x0",
                     PosX            = 0,
@@ -246,7 +246,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = proxonMF70,
+                    Machine         = proxxonMF70,
                     CommandName     = "Set Y = 0",
                     CommandString   = @"g92 y0",
                     PosX            = 0,
@@ -255,7 +255,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = proxonMF70,
+                    Machine         = proxxonMF70,
                     CommandName     = "Set Z = 0",
                     CommandString   = @"g92 z0",
                     PosX            = 0,
@@ -264,7 +264,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = proxonMF70,
+                    Machine         = proxxonMF70,
                     CommandName     = "Probe Z",
                     CommandString   = @";probe:z",
                     PosX            = 0,
@@ -273,7 +273,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = proxonMF70,
+                    Machine         = proxxonMF70,
                     CommandName     = "Spindle On",
                     CommandString   = @"m3",
                     PosX            = 1,
@@ -282,7 +282,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = proxonMF70,
+                    Machine         = proxxonMF70,
                     CommandName     = "Spindle Off",
                     CommandString   = @"m5",
                     PosX            = 1,
@@ -291,7 +291,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = proxonMF70,
+                    Machine         = proxxonMF70,
                     CommandName     = "Coolant On",
                     CommandString   = @"m7",
                     PosX            = 1,
@@ -300,7 +300,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = proxonMF70,
+                    Machine         = proxxonMF70,
                     CommandName     = "Coolant Off",
                     CommandString   = @"m9",
                     PosX            = 1,
@@ -456,10 +456,10 @@ namespace CNCLib.Repository.Context
                     JoystickMessage = ";btn2:2"
                 },
 
-                //minlaser
+                //minLaser
                 new MachineCommand
                 {
-                    Machine         = minilaser,
+                    Machine         = miniLaser,
                     CommandName     = "Set XY = 0",
                     CommandString   = @"g92 x0\ng92 y0\n;beep",
                     PosX            = 0,
@@ -468,7 +468,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = minilaser,
+                    Machine         = miniLaser,
                     CommandName     = "Set X = 0",
                     CommandString   = @"g92 x0\n;beep",
                     PosX            = 0,
@@ -477,7 +477,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = minilaser,
+                    Machine         = miniLaser,
                     CommandName     = "Set Y = 0",
                     CommandString   = @"g92 y0\n;beep",
                     PosX            = 0,
@@ -486,7 +486,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = minilaser,
+                    Machine         = miniLaser,
                     CommandName     = "Laser Off",
                     CommandString   = @"m107",
                     PosX            = 1,
@@ -495,7 +495,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = minilaser,
+                    Machine         = miniLaser,
                     CommandName     = "Laser On",
                     CommandString   = @"m106",
                     PosX            = 1,
@@ -504,7 +504,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = minilaser,
+                    Machine         = miniLaser,
                     CommandName     = "Laser Min",
                     CommandString   = @"m106 s1",
                     PosX            = 1,
@@ -513,7 +513,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = minilaser,
+                    Machine         = miniLaser,
                     CommandName     = "Laser Max",
                     CommandString   = @"m106 s255",
                     PosX            = 1,
@@ -522,7 +522,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine       = minilaser,
+                    Machine       = miniLaser,
                     CommandName   = "Square",
                     CommandString = @"m106 s2\ng0x0y0\ng0x36\ng0y36\ng0x0\ng0y0m107",
                     PosX          = 3,
@@ -532,7 +532,7 @@ namespace CNCLib.Repository.Context
                 //co2 laser
                 new MachineCommand
                 {
-                    Machine         = dck40laser,
+                    Machine         = dck40Laser,
                     CommandName     = "Set XY = 0",
                     CommandString   = @"g92 x0\ng92 y0\n;beep",
                     PosX            = 0,
@@ -541,7 +541,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = dck40laser,
+                    Machine         = dck40Laser,
                     CommandName     = "Set X = 0",
                     CommandString   = @"g92 x0",
                     PosX            = 0,
@@ -550,7 +550,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = dck40laser,
+                    Machine         = dck40Laser,
                     CommandName     = "Set Y = 0",
                     CommandString   = @"g92 y0",
                     PosX            = 0,
@@ -559,7 +559,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = dck40laser,
+                    Machine         = dck40Laser,
                     CommandName     = "Laser Off",
                     CommandString   = @"m107",
                     PosX            = 1,
@@ -568,7 +568,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = dck40laser,
+                    Machine         = dck40Laser,
                     CommandName     = "Laser On",
                     CommandString   = @"m106",
                     PosX            = 1,
@@ -577,7 +577,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = dck40laser,
+                    Machine         = dck40Laser,
                     CommandName     = "Laser Min",
                     CommandString   = @"m106 s1",
                     PosX            = 1,
@@ -586,7 +586,7 @@ namespace CNCLib.Repository.Context
                 },
                 new MachineCommand
                 {
-                    Machine         = dck40laser,
+                    Machine         = dck40Laser,
                     CommandName     = "Laser Max",
                     CommandString   = @"m106 s255",
                     PosX            = 1,
@@ -660,17 +660,17 @@ namespace CNCLib.Repository.Context
                 }
             };
 
-            var machineinitcommands = new[]
+            var machineInitCommands = new[]
             {
-                new MachineInitCommand { Machine = minilaser, SeqNo = 0, CommandString = @"g0 x2" }, new MachineInitCommand { Machine  = minilaser, SeqNo = 1, CommandString = @"g28 x0" },
-                new MachineInitCommand { Machine = minilaser, SeqNo = 2, CommandString = @"g0 x36" }, new MachineInitCommand { Machine = minilaser, SeqNo = 3, CommandString = @"g0 x0" },
-                new MachineInitCommand { Machine = minilaser, SeqNo = 4, CommandString = @"g0 y2" }, new MachineInitCommand { Machine  = minilaser, SeqNo = 5, CommandString = @"g28 y0" },
-                new MachineInitCommand { Machine = minilaser, SeqNo = 6, CommandString = @"g0 y36" }, new MachineInitCommand { Machine = minilaser, SeqNo = 7, CommandString = @"g0 y0" }
+                new MachineInitCommand { Machine = miniLaser, SeqNo = 0, CommandString = @"g0 x2" }, new MachineInitCommand { Machine  = miniLaser, SeqNo = 1, CommandString = @"g28 x0" },
+                new MachineInitCommand { Machine = miniLaser, SeqNo = 2, CommandString = @"g0 x36" }, new MachineInitCommand { Machine = miniLaser, SeqNo = 3, CommandString = @"g0 x0" },
+                new MachineInitCommand { Machine = miniLaser, SeqNo = 4, CommandString = @"g0 y2" }, new MachineInitCommand { Machine  = miniLaser, SeqNo = 5, CommandString = @"g28 y0" },
+                new MachineInitCommand { Machine = miniLaser, SeqNo = 6, CommandString = @"g0 y36" }, new MachineInitCommand { Machine = miniLaser, SeqNo = 7, CommandString = @"g0 y0" }
             };
 
             context.Machines.AddRange(machines);
-            context.MachineCommands.AddRange(machinecommands);
-            context.MachineInitCommands.AddRange(machineinitcommands);
+            context.MachineCommands.AddRange(machineCommands);
+            context.MachineInitCommands.AddRange(machineInitCommands);
         }
 
         private void ItemSeed(CNCLibContext context)
@@ -715,7 +715,7 @@ namespace CNCLib.Repository.Context
 
             var items = new[] { cutItem, cutHoleItem, graveItem, graveIMGItem, graveIMGG00G01Item, graveMillItem, cutMillItem };
 
-            var itemproperties = new[]
+            var itemProperties = new[]
             {
                 //cut
                 new ItemProperty { Item = cutItem, Name = @"SettingName", Value         = cutItem.Name },
@@ -812,14 +812,14 @@ namespace CNCLib.Repository.Context
             };
 
             context.Items.AddRange(items);
-            context.ItemProperties.AddRange(itemproperties);
+            context.ItemProperties.AddRange(itemProperties);
         }
 
         private void ConfigurationSeed(CNCLibContext context, bool isTest)
         {
             if (isTest)
             {
-                var cfgs = new[]
+                var configurations = new[]
                 {
                     new Configuration()
                     {
@@ -851,7 +851,7 @@ namespace CNCLib.Repository.Context
                     },
                 };
 
-                context.Configurations.AddRange(cfgs);
+                context.Configurations.AddRange(configurations);
             }
         }
     }

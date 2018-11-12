@@ -49,9 +49,9 @@ namespace CNCLib.WebAPI.Tests.AzureWebApi
                 var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
 
                 Assembly ass     = Assembly.GetExecutingAssembly();
-                string   asspath = Path.GetDirectoryName(ass.Location);
+                string   assPath = Path.GetDirectoryName(ass.Location);
 
-                info.FileName    = asspath + @"\TestData\heikes-mietzi.hpgl";
+                info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
                 info.FileContent = File.ReadAllBytes(info.FileName);
 
                 HttpResponseMessage response = await client.PostAsJsonAsync(api, info);

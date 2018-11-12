@@ -36,10 +36,10 @@ namespace CNCLib.WebAPI.Controllers
         private readonly IMachineService    _service;
         private readonly ICNCLibUserContext _userContext;
 
-        public MachineController(IMachineService service, ICNCLibUserContext usercontext)
+        public MachineController(IMachineService service, ICNCLibUserContext userContext)
         {
             _service     = service ?? throw new ArgumentNullException();
-            _userContext = usercontext ?? throw new ArgumentNullException();
+            _userContext = userContext ?? throw new ArgumentNullException();
             ((CNCLibUserContext) _userContext).InitFromController(this);
         }
 
@@ -120,18 +120,18 @@ namespace CNCLib.WebAPI.Controllers
         [Route("defaultmachine")]
         [HttpGet]
         //Always explicitly state the accepted HTTP method
-        public async Task<ActionResult<int>> GetDetaultMachine()
+        public async Task<ActionResult<int>> GetDefaultMachine()
         {
-            int id = await _service.GetDetaultMachine();
+            int id = await _service.GetDefaultMachine();
             return Ok(id);
         }
 
         [Route("defaultmachine")]
         [HttpPut]
         //Always explicitly state the accepted HTTP method
-        public async Task<ActionResult> SetDetaultMachine(int id)
+        public async Task<ActionResult> SetDefaultMachine(int id)
         {
-            await _service.SetDetaultMachine(id);
+            await _service.SetDefaultMachine(id);
             return StatusCode(204);
         }
     }

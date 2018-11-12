@@ -55,9 +55,9 @@ namespace CNCLib.Wpf.Views
                 vm.EditMachine = mId =>
                 {
                     var dlg = new MachineView();
-                    if (dlg.DataContext is MachineViewModel vmdlg)
+                    if (dlg.DataContext is MachineViewModel viewModel)
                     {
-                        Task.Run(() => { vmdlg.LoadMachine(mId).ConfigureAwait(false).GetAwaiter().GetResult(); }).Wait();
+                        Task.Run(() => { viewModel.LoadMachine(mId).ConfigureAwait(false).GetAwaiter().GetResult(); }).Wait();
                         dlg.ShowDialog();
                     }
                 };
@@ -68,7 +68,7 @@ namespace CNCLib.Wpf.Views
                 vm.ShowEeprom = () =>
                 {
                     var dlg   = new EepromView();
-                    var vmdlg = dlg.DataContext as EepromViewModel;
+                    var viewModel = dlg.DataContext as EepromViewModel;
                     dlg.ShowDialog();
                 };
             }
@@ -78,7 +78,7 @@ namespace CNCLib.Wpf.Views
                 vm.EditJoystick = () =>
                 {
                     var dlg   = new JoystickView();
-                    var vmdlg = dlg.DataContext as JoystickView;
+                    var viewModel = dlg.DataContext as JoystickView;
                     dlg.ShowDialog();
                 };
             }

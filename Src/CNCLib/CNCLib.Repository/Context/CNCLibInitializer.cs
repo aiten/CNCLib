@@ -25,7 +25,7 @@ namespace CNCLib.Repository.Context
 		{
 			base.InitializeDatabase(context);
 
-			// add Testdata to database if no data are stored
+			// add TestData to database if no data are stored
 
 			if (context.Machines.CountAsync().ConfigureAwait(false).GetAwaiter().GetResult() == 0 && context.Configurations.CountAsync().ConfigureAwait(false).GetAwaiter().GetResult() == 0 && context.Items.CountAsync().ConfigureAwait(false).GetAwaiter().GetResult() == 0)
 			{

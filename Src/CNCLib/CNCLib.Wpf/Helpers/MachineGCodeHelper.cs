@@ -35,25 +35,25 @@ namespace CNCLib.Wpf.Helpers
     {
         #region Probe
 
-        public async Task<bool> SendProbeCommandAsync(int axisindex)
+        public async Task<bool> SendProbeCommandAsync(int axisIndex)
         {
-            return await SendProbeCommandAsync(Global.Instance.Machine, axisindex);
+            return await SendProbeCommandAsync(Global.Instance.Machine, axisIndex);
         }
 
-        public async Task<bool> SendProbeCommandAsync(Machine machine, int axisindex)
+        public async Task<bool> SendProbeCommandAsync(Machine machine, int axisIndex)
         {
-            string  axisname  = machine.GetAxisName(axisindex);
-            decimal probesize = machine.GetProbeSize(axisindex);
+            string  axisName  = machine.GetAxisName(axisIndex);
+            decimal probeSize = machine.GetProbeSize(axisIndex);
 
-            string probdist   = machine.ProbeDist.ToString(CultureInfo.InvariantCulture);
-            string probdistup = machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
-            string probfeed   = machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
+            string probDist   = machine.ProbeDist.ToString(CultureInfo.InvariantCulture);
+            string probDistUp = machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
+            string probFeed   = machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
 
-            var result = await Global.Instance.Com.Current.SendCommandAsync("g91 g31 " + axisname + "-" + probdist + " F" + probfeed + " g90", DefaultProbeTimeout);
+            var result = await Global.Instance.Com.Current.SendCommandAsync("g91 g31 " + axisName + "-" + probDist + " F" + probFeed + " g90", DefaultProbeTimeout);
             if (result?.LastOrDefault()?.ReplyType.HasFlag(EReplyType.ReplyError) == false)
             {
-                Global.Instance.Com.Current.QueueCommand("g92 " + axisname + (-probesize).ToString(CultureInfo.InvariantCulture));
-                Global.Instance.Com.Current.QueueCommand("g91 g0" + axisname + probdistup + " g90");
+                Global.Instance.Com.Current.QueueCommand("g92 " + axisName + (-probeSize).ToString(CultureInfo.InvariantCulture));
+                Global.Instance.Com.Current.QueueCommand("g91 g0" + axisName + probDistUp + " g90");
                 return true;
             }
 
@@ -74,8 +74,8 @@ namespace CNCLib.Wpf.Helpers
             {
                 string[] seperators = { "\n", "\r" };
                 string[] lines      = cmd.ResultText.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
-                var      intvalues  = new Dictionary<int, uint>();
-                int      maxslot    = -1;
+                var      intValues  = new Dictionary<int, uint>();
+                int      maxSlot    = -1;
                 foreach (var line in lines)
                 {
                     // e.g. $1=65535(ffff)
@@ -84,33 +84,33 @@ namespace CNCLib.Wpf.Helpers
                     int slot;
                     if (assign.Length == 2 && assign[0].StartsWith("$") && int.TryParse(assign[0].TrimStart('$'), out slot))
                     {
-                        uint   slotvalue;
-                        string valuestr = assign[1];
-                        int    idx1     = valuestr.IndexOf('(');
+                        uint   slotValue;
+                        string valueStr = assign[1];
+                        int    idx1     = valueStr.IndexOf('(');
                         if (idx1 > 0)
                         {
-                            valuestr = valuestr.Substring(0, idx1);
+                            valueStr = valueStr.Substring(0, idx1);
                         }
 
-                        if (uint.TryParse(valuestr, out slotvalue))
+                        if (uint.TryParse(valueStr, out slotValue))
                         {
-                            intvalues[slot] = slotvalue;
-                            if (maxslot < slot)
+                            intValues[slot] = slotValue;
+                            if (maxSlot < slot)
                             {
-                                maxslot = slot;
+                                maxSlot = slot;
                             }
                         }
                     }
                 }
 
-                if (maxslot > 0)
+                if (maxSlot > 0)
                 {
-                    var ret = new uint[maxslot + 1];
-                    for (int i = 0; i <= maxslot; i++)
+                    var ret = new uint[maxSlot + 1];
+                    for (int i = 0; i <= maxSlot; i++)
                     {
-                        if (intvalues.ContainsKey(i))
+                        if (intValues.ContainsKey(i))
                         {
-                            ret[i] = intvalues[i];
+                            ret[i] = intValues[i];
                         }
                     }
 
@@ -135,16 +135,16 @@ namespace CNCLib.Wpf.Helpers
 
         #endregion
 
-        public static string PrepareCommand(string commandstring)
+        public static string PrepareCommand(string commandString)
         {
             string prefix = GetCommandPrefix();
 
             if (string.IsNullOrEmpty(prefix))
             {
-                return commandstring;
+                return commandString;
             }
 
-            return prefix + commandstring;
+            return prefix + commandString;
         }
 
         protected static string GetCommandPrefix()
@@ -160,15 +160,15 @@ namespace CNCLib.Wpf.Helpers
 
         public const int DefaulTimeout = 120 * 1000;
 
-        public async Task SendCommandAsync(string commandstring)
+        public async Task SendCommandAsync(string commandString)
         {
-            await SendCommandAsync(Global.Instance.Machine, commandstring);
+            await SendCommandAsync(Global.Instance.Machine, commandString);
         }
 
-        public async Task SendCommandAsync(Machine machine, string commandstring)
+        public async Task SendCommandAsync(Machine machine, string commandString)
         {
             string[] seperators = { @"\n" };
-            string[] cmds       = commandstring.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
+            string[] cmds       = commandString.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in cmds)
             {
                 string[] infos = s.Split(':');

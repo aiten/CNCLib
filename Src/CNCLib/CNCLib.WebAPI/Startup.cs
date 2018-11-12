@@ -92,21 +92,21 @@ namespace CNCLib.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            string sqlconnectstring = $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};";
+            string sqlConnectString = $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};";
 
             // Open Database here
 
             if (env.IsDevelopment())
             {
-                sqlconnectstring = null;
+                sqlConnectString = null;
                 GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
             }
             else
             {
-                GlobalDiagnosticsContext.Set("connectionString", sqlconnectstring);
+                GlobalDiagnosticsContext.Set("connectionString", sqlConnectString);
             }
 
-            Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false, false);
+            Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlConnectString, false, false);
 
             if (env.IsDevelopment())
             {

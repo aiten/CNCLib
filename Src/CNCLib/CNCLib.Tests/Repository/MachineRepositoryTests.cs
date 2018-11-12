@@ -114,7 +114,7 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task AddUpdateDeleteWithCommandAndInitCommandsTest()
         {
-            await AddUpdateDelete(() => AddMachinInitCommands((AddMachinCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))), (entity) =>
+            await AddUpdateDelete(() => AddMachineInitCommands((AddMachineCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))), (entity) =>
             {
                 entity.Name = "DummyNameUpdate";
                 entity.MachineInitCommands.Remove(entity.MachineInitCommands.First());
@@ -139,7 +139,7 @@ namespace CNCLib.Tests.Repository
         [TestMethod]
         public async Task AddUpdateDeleteWithCommandAndInitCommandsToEmptyTest()
         {
-            await AddUpdateDelete(() => AddMachinInitCommands((AddMachinCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))), (entity) =>
+            await AddUpdateDelete(() => AddMachineInitCommands((AddMachineCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))), (entity) =>
             {
                 entity.Name = "DummyNameUpdate";
                 entity.MachineInitCommands.Clear();
@@ -200,7 +200,7 @@ namespace CNCLib.Tests.Repository
             return machine;
         }
 
-        private static Machine AddMachinCommands(Machine machine)
+        private static Machine AddMachineCommands(Machine machine)
         {
             machine.MachineCommands = new List<MachineCommand>
             {
@@ -210,7 +210,7 @@ namespace CNCLib.Tests.Repository
             return machine;
         }
 
-        private static Machine AddMachinInitCommands(Machine machine)
+        private static Machine AddMachineInitCommands(Machine machine)
         {
             machine.MachineInitCommands = new List<MachineInitCommand>
             {

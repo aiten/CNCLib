@@ -346,7 +346,7 @@ namespace CNCLib.Tests.Logic
             var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
             repC.Get("Environment", "DefaultMachineId").Returns(new Configuration { Value = "14" });
-            int dm = await ctrl.GetDetaultMachine();
+            int dm = await ctrl.GetDefaultMachine();
 
             dm.Should().Be(14);
         }
@@ -362,7 +362,7 @@ namespace CNCLib.Tests.Logic
 
             repC.Get("Environment", "DefaultMachineId").Returns((Configuration) null);
 
-            (await ctrl.GetDetaultMachine()).Should().Be(-1);
+            (await ctrl.GetDefaultMachine()).Should().Be(-1);
         }
 
         [TestMethod]
@@ -374,7 +374,7 @@ namespace CNCLib.Tests.Logic
 
             var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
 
-            await ctrl.SetDetaultMachine(15);
+            await ctrl.SetDefaultMachine(15);
 
             repC.Get("Environment", "DefaultMachineId").Returns(new Configuration { Value = "14" });
 

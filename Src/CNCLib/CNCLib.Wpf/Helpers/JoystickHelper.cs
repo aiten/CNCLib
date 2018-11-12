@@ -80,10 +80,10 @@ namespace CNCLib.Wpf.Helpers
             else
             {
                 string btn    = trim.Substring(0, idx + 1);
-                var    mclist = Global.Instance.Machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
+                var    machineCommands = Global.Instance.Machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
 
                 uint max = 0;
-                foreach (var m in mclist)
+                foreach (var m in machineCommands)
                 {
                     uint val;
                     if (uint.TryParse(m.JoystickMessage.Substring(idx + 1), out val))
@@ -95,14 +95,14 @@ namespace CNCLib.Wpf.Helpers
                     }
                 }
 
-                string findcmd = $"{btn}{uint.Parse(trim.Substring(idx + 1)) % (max + 1)}";
+                string findCmd = $"{btn}{uint.Parse(trim.Substring(idx + 1)) % (max + 1)}";
 
-                var mc = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findcmd);
+                var mc = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
                 if (mc == null)
                 {
                     // try to find ;btn3 (without :)  
-                    findcmd = trim.Substring(0, idx);
-                    mc      = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findcmd);
+                    findCmd = trim.Substring(0, idx);
+                    mc      = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
                 }
 
                 if (mc != null)
@@ -114,10 +114,10 @@ namespace CNCLib.Wpf.Helpers
             new MachineGCodeHelper().SendCommandAsync(trim).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-        public async Task SendInitCommands(string commandstring)
+        public async Task SendInitCommands(string commandString)
         {
             string[] seperators = { @"\n" };
-            string[] cmds       = commandstring.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
+            string[] cmds       = commandString.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
             foreach (var s in cmds)
             {
                 await Global.Instance.ComJoystick.SendCommandAsync(s, int.MaxValue);

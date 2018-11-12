@@ -45,7 +45,7 @@ namespace CNCLib.Service.WebAPI
             return null;
         }
 
-        public async Task<int> GetDetaultMachine()
+        public async Task<int> GetDefaultMachine()
         {
             using (HttpClient client = CreateHttpClient())
             {
@@ -61,7 +61,7 @@ namespace CNCLib.Service.WebAPI
             return -1;
         }
 
-        public async Task SetDetaultMachine(int id)
+        public async Task SetDefaultMachine(int id)
         {
             using (HttpClient client = CreateHttpClient())
             {

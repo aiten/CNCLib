@@ -31,16 +31,16 @@ namespace CNCLib.Repository.SqlServer
             OnConfigure = (optionsBuilder) => { optionsBuilder.UseSqlServer(ConnectString); };
         }
 
-        public static void InitializeDatabase(string connectstring, bool dropdatabase, bool isTest)
+        public static void InitializeDatabase(string connectString, bool dropDatabase, bool isTest)
         {
-            if (!string.IsNullOrEmpty(connectstring))
+            if (!string.IsNullOrEmpty(connectString))
             {
-                ConnectString = connectstring;
+                ConnectString = connectString;
             }
 
             using (var ctx = new MigrationCNCLibContext())
             {
-                if (dropdatabase)
+                if (dropDatabase)
                 {
                     ctx.Database.EnsureDeleted();
                 }
