@@ -41,7 +41,7 @@ namespace CNCLib.Serial.Server
             string localAppData;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                localAppData = "~";
+                localAppData = "/var/log";
             }
             else
             {
