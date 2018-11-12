@@ -158,7 +158,7 @@ namespace CNCLib.Wpf.Models
         public uint RefMoveSteprate { get; set; }
 
         [Category(CATEGORY_GENERAL)]
-        [DisplayName("MoveAwayFromRefernece")]
+        [DisplayName("MoveAwayFromReference")]
         [Description("Distance between refmove hit and 0 (in mm1000)")]
         public uint MoveAwayFromRefernece { get; set; }
 
@@ -468,7 +468,7 @@ namespace CNCLib.Wpf.Models
             SpindleFadeTime = ee[EepromV1.EValueOffsets8.SpindleFadeTime];
 
             RefMoveSteprate       = ee[EepromV1.EValueOffsets32.RefMoveStepRate];
-            MoveAwayFromRefernece = ee[EepromV1.EValueOffsets32.MoveAwayFromRefernece];
+            MoveAwayFromRefernece = ee[EepromV1.EValueOffsets32.MoveAwayFromReference];
 
             MaxStepRate = ee[EepromV1.EValueOffsets32.MaxStepRate];
             Acc         = ee[EepromV1.EValueOffsets16.Acc];
@@ -513,7 +513,7 @@ namespace CNCLib.Wpf.Models
             ee[EepromV1.EValueOffsets8.SpindleFadeTime]  = SpindleFadeTime;
 
             ee[EepromV1.EValueOffsets32.RefMoveStepRate]       = RefMoveSteprate;
-            ee[EepromV1.EValueOffsets32.MoveAwayFromRefernece] = MoveAwayFromRefernece;
+            ee[EepromV1.EValueOffsets32.MoveAwayFromReference] = MoveAwayFromRefernece;
 
             ee[EepromV1.EValueOffsets32.MaxStepRate] = MaxStepRate;
             ee[EepromV1.EValueOffsets16.Acc]         = Acc;

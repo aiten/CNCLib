@@ -111,7 +111,7 @@ namespace CNCLib.GCode.Load
 
             private IEnumerable<HPGLLine> OrderClosedLine(IEnumerable<HPGLLine> closedLines)
             {
-                var orderdList = new List<HPGLLine>();
+                var orderedList = new List<HPGLLine>();
                 if (closedLines.Any())
                 {
                     CalcClosedLineParent(closedLines);
@@ -126,11 +126,11 @@ namespace CNCLib.GCode.Load
                             linesOnLevel = OffsetLines(_scale / 2.0 * (double) LoadOptions.LaserSize * ((level % 2 == 0) ? 1.0 : -1.0), linesOnLevel);
                         }
 
-                        orderdList.AddRange(OptimizeDistance(linesOnLevel));
+                        orderedList.AddRange(OptimizeDistance(linesOnLevel));
                     }
                 }
 
-                return orderdList;
+                return orderedList;
             }
 
             private IEnumerable<HPGLLine> OffsetLines(double offset, IEnumerable<HPGLLine> lines)

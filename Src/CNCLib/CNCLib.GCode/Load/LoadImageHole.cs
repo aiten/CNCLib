@@ -349,10 +349,10 @@ namespace CNCLib.GCode.Load
                 return;
             }
 
-            double rotateangel = Math.PI / 6.0;
+            double rotateAngle = Math.PI / 6.0;
 
-            double startx = x + radius * Math.Cos(rotateangel);
-            double starty = y + radius * Math.Sin(rotateangel);
+            double startx = x + radius * Math.Cos(rotateAngle);
+            double starty = y + radius * Math.Sin(rotateAngle);
 
             Command c = new G00Command();
             c.AddVariable('X', ToGCode(startx - StartLaserDist));

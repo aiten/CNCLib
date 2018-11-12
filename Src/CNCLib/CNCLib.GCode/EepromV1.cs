@@ -50,7 +50,7 @@ namespace CNCLib.GCode
 
         public enum EValueOffsets32
         {
-            Signatrue = 0,
+            Signature = 0,
             InfoOffset1,
             Info1,
             Info2,
@@ -59,7 +59,7 @@ namespace CNCLib.GCode
             MaxStepRate,
             OffsetAccDec,
             RefMoveStepRate,
-            MoveAwayFromRefernece,
+            MoveAwayFromReference,
             StepsPerMm1000
         }
 
