@@ -35,23 +35,23 @@ namespace CNCLib.GCode.Load
 
             public IList<HPGLCommand> SmoothList(IList<HPGLCommand> list)
             {
-                var newlist = new List<HPGLCommand>();
+                var newList = new List<HPGLCommand>();
 
-                int startidx = 0;
-                while (startidx < list.Count)
+                int startIdx = 0;
+                while (startIdx < list.Count)
                 {
-                    var nopenlist = list.Skip(startidx).TakeWhile(e => !e.IsPenDownCommand);
-                    newlist.AddRange(nopenlist);
-                    startidx += nopenlist.Count();
+                    var newOpenList = list.Skip(startIdx).TakeWhile(e => !e.IsPenDownCommand);
+                    newList.AddRange(newOpenList);
+                    startIdx += newOpenList.Count();
 
-                    var line = list.Skip(startidx).TakeWhile(e => e.IsPenDownCommand);
-                    startidx += line.Count();
+                    var line = list.Skip(startIdx).TakeWhile(e => e.IsPenDownCommand);
+                    startIdx += line.Count();
 
-                    newlist.AddRange(SmoothLine(line));
+                    newList.AddRange(SmoothLine(line));
                 }
 
-                CalculateAngles(newlist, null);
-                return newlist;
+                CalculateAngles(newList, null);
+                return newList;
             }
 
             int _lineIdx = 1;
@@ -66,21 +66,21 @@ namespace CNCLib.GCode.Load
                 var    list     = new List<HPGLCommand>();
                 double maxAngle = LoadOptions.SmoothMinAngle.HasValue ? (double) LoadOptions.SmoothMinAngle.Value : (45 * (Math.PI / 180));
 
-                int startidx = 0;
-                while (startidx < line.Count())
+                int startIdx = 0;
+                while (startIdx < line.Count())
                 {
                     // check for angle
-                    var linepart = line.Skip(startidx).TakeWhile(c => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) < maxAngle);
-                    if (linepart.Any())
+                    var linePart = line.Skip(startIdx).TakeWhile(c => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) < maxAngle);
+                    if (linePart.Any())
                     {
-                        startidx += linepart.Count();
-                        list.AddRange(SplitLine(linepart));
+                        startIdx += linePart.Count();
+                        list.AddRange(SplitLine(linePart));
                     }
                     else
                     {
-                        linepart =  line.Skip(startidx).TakeWhile(c => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) >= maxAngle);
-                        startidx += linepart.Count();
-                        list.AddRange(linepart);
+                        linePart =  line.Skip(startIdx).TakeWhile(c => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) >= maxAngle);
+                        startIdx += linePart.Count();
+                        list.AddRange(linePart);
                     }
                 }
 
@@ -94,7 +94,7 @@ namespace CNCLib.GCode.Load
                     return line;
                 }
 
-                Point3D firstfrom = line.ElementAt(0).PointFrom;
+                Point3D firstFrom = line.ElementAt(0).PointFrom;
                 for (int i = 0; i < 100; i++)
                 {
                     var newline = SplitLineImpl(line);
@@ -104,7 +104,7 @@ namespace CNCLib.GCode.Load
                     }
 
                     line = newline;
-                    CalculateAngles(line, firstfrom);
+                    CalculateAngles(line, firstFrom);
                 }
 
                 return line;
@@ -119,10 +119,10 @@ namespace CNCLib.GCode.Load
 
                 var         newline       = new List<HPGLCommand>();
                 HPGLCommand prev          = null;
-                double      minLineLenght = LoadOptions.SmoothMinLineLength.HasValue ? (double) LoadOptions.SmoothMinLineLength.Value : double.MaxValue;
-                double      maxerror      = LoadOptions.SmoothMaxError.HasValue ? (double) LoadOptions.SmoothMaxError.Value : 1.0 / 40.0;
-                minLineLenght /= (double) LoadOptions.ScaleX;
-                maxerror      /= (double) LoadOptions.ScaleX;
+                double      minLineLength = LoadOptions.SmoothMinLineLength.HasValue ? (double) LoadOptions.SmoothMinLineLength.Value : double.MaxValue;
+                double      maxError      = LoadOptions.SmoothMaxError.HasValue ? (double) LoadOptions.SmoothMaxError.Value : 1.0 / 40.0;
+                minLineLength /= (double) LoadOptions.ScaleX;
+                maxError      /= (double) LoadOptions.ScaleX;
 
                 foreach (var pt in line)
                 {
@@ -131,11 +131,11 @@ namespace CNCLib.GCode.Load
 
                     double c = Math.Sqrt(x * x + y * y);
 
-                    if (minLineLenght <= c)
+                    if (minLineLength <= c)
                     {
                         double alpha     = pt.DiffLineAngleWithNext ?? (prev?.DiffLineAngleWithNext ?? 0.0);
                         double beta      = prev != null ? (prev.DiffLineAngleWithNext ?? 0.0) : alpha;
-                        double swapscale = 1.0;
+                        double swapScale = 1.0;
 
                         if ((alpha >= 0.0 && beta >= 0.0) || (alpha <= 0.0 && beta <= 0.0))
                         {
@@ -143,7 +143,7 @@ namespace CNCLib.GCode.Load
                         else
                         {
                             beta      = -beta;
-                            swapscale = 0.5;
+                            swapScale = 0.5;
                         }
 
                         if ((alpha >= 0.0 && beta >= 0.0) || (alpha <= 0.0 && beta <= 0.0))
@@ -153,11 +153,11 @@ namespace CNCLib.GCode.Load
                             double b = Math.Sin(beta) / Math.Sin(gamma) * c;
                             //double a = Math.Sin(alpha) / Math.Sin(gamma) * c;
 
-                            double hc  = b * Math.Sin(alpha) * swapscale;
+                            double hc  = b * Math.Sin(alpha) * swapScale;
                             double dc  = Math.Sqrt(b * b - hc * hc);
                             double hc4 = hc / 4.0;
 
-                            if (Math.Abs(hc4) > maxerror && Math.Abs(hc4) < c && Math.Abs(dc) < c)
+                            if (Math.Abs(hc4) > maxError && Math.Abs(hc4) < c && Math.Abs(dc) < c)
                             {
                                 newline.Add(GetNewCommand(pt, dc, hc4));
                             }
@@ -176,11 +176,11 @@ namespace CNCLib.GCode.Load
             /// </summary>
             private HPGLCommand GetNewCommand(HPGLCommand pt, double x, double y)
             {
-                double diffalpha = Math.Atan2(y, x);
-                double linealpha = diffalpha + (pt.LineAngle ?? 0);
+                double diffAlpha = Math.Atan2(y, x);
+                double lineAlpha = diffAlpha + (pt.LineAngle ?? 0);
 
-                double dx = x * Math.Cos(linealpha);
-                double dy = x * Math.Sin(linealpha);
+                double dx = x * Math.Cos(lineAlpha);
+                double dy = x * Math.Sin(lineAlpha);
 
                 return new HPGLCommand
                 {
@@ -189,14 +189,14 @@ namespace CNCLib.GCode.Load
                 };
             }
 
-            public static void CalculateAngles(IEnumerable<HPGLCommand> list, Point3D firstfrom)
+            public static void CalculateAngles(IEnumerable<HPGLCommand> list, Point3D firstFrom)
             {
                 HPGLCommand last = null;
-                if (firstfrom != null)
+                if (firstFrom != null)
                 {
                     last = new HPGLCommand
                     {
-                        PointTo     = firstfrom,
+                        PointTo     = firstFrom,
                         CommandType = HPGLCommand.HPGLCommandType.PenDown
                     };
                 }

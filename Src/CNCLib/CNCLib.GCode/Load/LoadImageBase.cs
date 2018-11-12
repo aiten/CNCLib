@@ -61,9 +61,9 @@ namespace CNCLib.GCode.Load
 
             if (LoadOptions.MoveSpeed.HasValue)
             {
-                var setspeed = new G01Command();
-                setspeed.AddVariable('F', LoadOptions.MoveSpeed.Value);
-                Commands.Add(setspeed);
+                var setSpeed = new G01Command();
+                setSpeed.AddVariable('F', LoadOptions.MoveSpeed.Value);
+                Commands.Add(setSpeed);
             }
 
             WriteGCode();
@@ -91,15 +91,15 @@ namespace CNCLib.GCode.Load
                 double scaleDPIY = dpiY;
                 if (PixelDistX > 0.0)
                 {
-                    double dotsize = 25.4 / scaleDPIX + PixelDistX;
-                    scaleDPIX = 25.4 / dotsize;
+                    double dotSize = 25.4 / scaleDPIX + PixelDistX;
+                    scaleDPIX = 25.4 / dotSize;
                     AddComment("DPI_X(Dist)", scaleDPIX);
                 }
 
                 if (PixelDistY > 0.0)
                 {
-                    double dotsize = 25.4 / scaleDPIY + PixelDistY;
-                    scaleDPIY = 25.4 / dotsize;
+                    double dotSize = 25.4 / scaleDPIY + PixelDistY;
+                    scaleDPIY = 25.4 / dotSize;
                     AddComment("DPI_Y(Dist)", scaleDPIY);
                 }
 

@@ -54,11 +54,11 @@ namespace CNCLib.GCode.Load
                     while (!stream.IsEOF())
                     {
                         stream.SkipSpaces();
-                        int cmdidx = stream.IsCommand(cmds);
+                        int cmdIdx = stream.IsCommand(cmds);
 
-                        if (cmdidx >= 0)
+                        if (cmdIdx >= 0)
                         {
-                            switch (cmdidx)
+                            switch (cmdIdx)
                             {
                                 case 0:
                                     isPenUp = true;
@@ -77,7 +77,7 @@ namespace CNCLib.GCode.Load
 
                                 AdjustOrig(ref pt);
 
-                                if (cmdidx == 3) // move rel
+                                if (cmdIdx == 3) // move rel
                                 {
                                     pt.X += last.X;
                                     pt.Y += last.Y;
@@ -100,8 +100,8 @@ namespace CNCLib.GCode.Load
                         }
                         else
                         {
-                            var hpglcmd = stream.ReadString(new[] { ';' });
-                            list.Add(new HPGLCommand { CommandString = hpglcmd });
+                            var hpglCmd = stream.ReadString(new[] { ';' });
+                            list.Add(new HPGLCommand { CommandString = hpglCmd });
                         }
                     }
                 }
@@ -172,13 +172,13 @@ namespace CNCLib.GCode.Load
 
             if (LoadOptions.AutoScale)
             {
-                var autoscale = new AutoScale
+                var autoScale = new AutoScale
                 {
                     LoadOptions = LoadOptions,
                     LoadX       = this
                 };
 
-                autoscale.AutoScaleList(list);
+                autoScale.AutoScaleList(list);
             }
 
             if (LoadOptions.SmoothType != LoadOptions.SmoothTypeEnum.NoSmooth)
@@ -240,9 +240,9 @@ namespace CNCLib.GCode.Load
 
             if (LoadOptions.MoveSpeed.HasValue)
             {
-                var setspeed = new G01Command();
-                setspeed.AddVariable('F', LoadOptions.MoveSpeed.Value);
-                Commands.Add(setspeed);
+                var setSpeed = new G01Command();
+                setSpeed.AddVariable('F', LoadOptions.MoveSpeed.Value);
+                Commands.Add(setSpeed);
             }
 
             foreach (var cmd in list)
@@ -424,10 +424,10 @@ namespace CNCLib.GCode.Load
         {
             if (list.Any())
             {
-                var firstfrom = list.First().PointFrom;
+                var firstFrom = list.First().PointFrom;
                 using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables($"%TMP%\\CNCLib_Line{lineIdx}.plt")))
                 {
-                    sw.WriteLine($"PU {(int) (firstfrom.X0 * 40)},{(int) (firstfrom.Y0 * 40)}");
+                    sw.WriteLine($"PU {(int) (firstFrom.X0 * 40)},{(int) (firstFrom.Y0 * 40)}");
                     foreach (var cmd in list)
                     {
                         sw.WriteLine($"PD {(int) (cmd.PointTo.X0 * 40)},{(int) (cmd.PointTo.Y0 * 40)}");

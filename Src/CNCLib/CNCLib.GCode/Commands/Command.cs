@@ -70,7 +70,7 @@ namespace CNCLib.GCode.Commands
         public int? LineNumber { get; set; }
 
         /// <summary>
-        /// Importinfo, e.g. HPGL Command
+        /// ImportInfo, e.g. HPGL Command
         /// </summary>
         public string ImportInfo { get; set; }
 
@@ -153,8 +153,7 @@ namespace CNCLib.GCode.Commands
 
         public double GetVariable(char name, CommandState state, double defaultValue)
         {
-            double ret;
-            if (TryGetVariable(name, state, out ret))
+            if (TryGetVariable(name, state, out var ret))
             {
                 return ret;
             }

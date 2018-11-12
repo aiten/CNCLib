@@ -38,70 +38,70 @@ namespace CNCLib.GCode.Load
             {
                 // split 
 
-                int startidx = 0;
+                int startIdx = 0;
 
-                var                      linelist     = new List<HPGLLine>();
+                var                      lineList     = new List<HPGLLine>();
                 IEnumerable<HPGLCommand> postCommands = null;
-                IEnumerable<HPGLCommand> preCommands  = list.Skip(startidx).TakeWhile(e => !e.IsPenCommand);
+                IEnumerable<HPGLCommand> preCommands  = list.Skip(startIdx).TakeWhile(e => !e.IsPenCommand);
 
-                startidx += preCommands.Count();
+                startIdx += preCommands.Count();
 
-                while (startidx < list.Count)
+                while (startIdx < list.Count)
                 {
-                    HPGLLine line = GetHPGLLine(list, ref startidx);
+                    HPGLLine line = GetHPGLLine(list, ref startIdx);
 
-                    if (startidx >= list.Count && !line.Commands.Any())
+                    if (startIdx >= list.Count && !line.Commands.Any())
                     {
                         postCommands = line.PreCommands;
                     }
                     else
                     {
-                        linelist.Add(line);
+                        lineList.Add(line);
                     }
                 }
 
                 // rearrange
 
-                var lines = OrderLines(linelist);
+                var lines = OrderLines(lineList);
 
                 // rebuild list
 
-                var newlist = new List<HPGLCommand>();
-                newlist.AddRange(preCommands);
+                var newList = new List<HPGLCommand>();
+                newList.AddRange(preCommands);
 
                 foreach (var line in lines)
                 {
-                    newlist.AddRange(line.PreCommands);
-                    newlist.AddRange(line.Commands);
-                    newlist.AddRange(line.PostCommands);
+                    newList.AddRange(line.PreCommands);
+                    newList.AddRange(line.Commands);
+                    newList.AddRange(line.PostCommands);
                 }
 
                 if (postCommands != null)
                 {
-                    newlist.AddRange(postCommands);
+                    newList.AddRange(postCommands);
                 }
 
-                return newlist;
+                return newList;
             }
 
             private IEnumerable<HPGLLine> OrderLines(IEnumerable<HPGLLine> lines)
             {
-                var newlist = new List<HPGLLine>();
-                newlist.AddRange(lines.Where(l => !l.IsClosed));
-                newlist.AddRange(OrderClosedLine(lines.Where(l => l.IsClosed)));
+                var newList = new List<HPGLLine>();
+                newList.AddRange(lines.Where(l => !l.IsClosed));
+                newList.AddRange(OrderClosedLine(lines.Where(l => l.IsClosed)));
 
-                return newlist;
+                return newList;
             }
 
             private void CalcClosedLineParent(IEnumerable<HPGLLine> closedLines)
             {
                 foreach (var line in closedLines)
                 {
-                    foreach (var parentline in closedLines.Where(l => l.IsEmbedded(line)))
+                    foreach (var parentLine in closedLines.Where(l => l.IsEmbedded(line)))
                     {
-                        if (line.ParentLine == null || line.ParentLine.IsEmbedded(parentline))
+                        if (line.ParentLine == null || line.ParentLine.IsEmbedded(parentLine))
                         {
-                            line.ParentLine = parentline;
+                            line.ParentLine = parentLine;
                         }
                     }
                 }
@@ -111,13 +111,13 @@ namespace CNCLib.GCode.Load
 
             private IEnumerable<HPGLLine> OrderClosedLine(IEnumerable<HPGLLine> closedLines)
             {
-                var orderdlist = new List<HPGLLine>();
+                var orderdList = new List<HPGLLine>();
                 if (closedLines.Any())
                 {
                     CalcClosedLineParent(closedLines);
-                    int maxlevel = closedLines.Max(l => l.Level);
+                    int maxLevel = closedLines.Max(l => l.Level);
 
-                    for (int level = maxlevel; level >= 0; level--)
+                    for (int level = maxLevel; level >= 0; level--)
                     {
                         var linesOnLevel = closedLines.Where(l => l.Level == level);
 
@@ -126,11 +126,11 @@ namespace CNCLib.GCode.Load
                             linesOnLevel = OffsetLines(_scale / 2.0 * (double) LoadOptions.LaserSize * ((level % 2 == 0) ? 1.0 : -1.0), linesOnLevel);
                         }
 
-                        orderdlist.AddRange(OptimizeDistanze(linesOnLevel));
+                        orderdList.AddRange(OptimizeDistance(linesOnLevel));
                     }
                 }
 
-                return orderdlist;
+                return orderdList;
             }
 
             private IEnumerable<HPGLLine> OffsetLines(double offset, IEnumerable<HPGLLine> lines)
@@ -155,11 +155,11 @@ namespace CNCLib.GCode.Load
                 solution.Add(line.Commands.Select(x => new IntPoint(_scale * x.PointFrom.X0, _scale * x.PointFrom.Y0)).ToList());
                 co.AddPaths(solution, JoinType.jtRound, EndType.etClosedPolygon);
                 co.Execute(ref solution2, offset);
-                var existingline = line;
+                var existingLine = line;
 
                 foreach (var polygon in solution2)
                 {
-                    var         newcmds = new List<HPGLCommand>();
+                    var         newCmds = new List<HPGLCommand>();
                     HPGLCommand last    = null;
 
                     foreach (var pt in polygon)
@@ -170,7 +170,7 @@ namespace CNCLib.GCode.Load
                             PointFrom   = from,
                             CommandType = HPGLCommand.HPGLCommandType.PenDown
                         };
-                        newcmds.Add(hpgl);
+                        newCmds.Add(hpgl);
                         if (last != null)
                         {
                             last.PointTo = @from;
@@ -179,12 +179,12 @@ namespace CNCLib.GCode.Load
                         last = hpgl;
                     }
 
-                    last.PointTo = newcmds.First().PointFrom;
+                    last.PointTo = newCmds.First().PointFrom;
 
-                    if (existingline == null)
+                    if (existingLine == null)
                     {
                         // add new line
-                        existingline = new HPGLLine
+                        existingLine = new HPGLLine
                         {
                             PreCommands = new List<HPGLCommand>
                             {
@@ -193,63 +193,63 @@ namespace CNCLib.GCode.Load
                             PostCommands = new List<HPGLCommand>(),
                             ParentLine   = line.ParentLine
                         };
-                        newlines.Add(existingline);
+                        newlines.Add(existingLine);
                     }
 
-                    existingline.Commands                                      = newcmds;
-                    existingline.PreCommands.Last(l => l.IsPenCommand).PointTo = newcmds.First().PointFrom;
-                    existingline                                               = null;
+                    existingLine.Commands                                      = newCmds;
+                    existingLine.PreCommands.Last(l => l.IsPenCommand).PointTo = newCmds.First().PointFrom;
+                    existingLine                                               = null;
                 }
 
                 return newlines;
             }
 
-            private static IEnumerable<HPGLLine> OptimizeDistanze(IEnumerable<HPGLLine> lines)
+            private static IEnumerable<HPGLLine> OptimizeDistance(IEnumerable<HPGLLine> lines)
             {
-                var newlist = new List<HPGLLine> { lines.First() };
+                var newList = new List<HPGLLine> { lines.First() };
                 var list    = new List<HPGLLine>();
                 list.AddRange(lines.Skip(1));
 
                 while (list.Any())
                 {
-                    Point3D  ptfrom      = newlist.Last().Commands.Last().PointTo;
-                    double   maxdist     = double.MaxValue;
+                    Point3D  fromPt      = newList.Last().Commands.Last().PointTo;
+                    double   maxDist     = double.MaxValue;
                     HPGLLine minDistLine = null;
 
                     foreach (var l in list)
                     {
                         Point3D pt   = l.Commands.First().PointFrom;
-                        double  dx   = (pt.X ?? 0.0) - (ptfrom.X ?? 0.0);
-                        double  dy   = (pt.Y ?? 0.0) - (ptfrom.Y ?? 0.0);
+                        double  dx   = (pt.X ?? 0.0) - (fromPt.X ?? 0.0);
+                        double  dy   = (pt.Y ?? 0.0) - (fromPt.Y ?? 0.0);
                         double  dist = Math.Sqrt(dx * dx + dy * dy);
 
-                        if (dist < maxdist)
+                        if (dist < maxDist)
                         {
-                            maxdist     = dist;
+                            maxDist     = dist;
                             minDistLine = l;
                         }
                     }
 
                     list.Remove(minDistLine);
-                    newlist.Add(minDistLine);
+                    newList.Add(minDistLine);
                 }
 
-                return newlist;
+                return newList;
             }
 
-            private static HPGLLine GetHPGLLine(IList<HPGLCommand> list, ref int startidx)
+            private static HPGLLine GetHPGLLine(IList<HPGLCommand> list, ref int startIdx)
             {
                 var line = new HPGLLine
                 {
-                    PreCommands = list.Skip(startidx).TakeWhile(e => !e.IsPenDownCommand)
+                    PreCommands = list.Skip(startIdx).TakeWhile(e => !e.IsPenDownCommand)
                 };
-                startidx += line.PreCommands.Count();
+                startIdx += line.PreCommands.Count();
 
-                line.Commands =  list.Skip(startidx).TakeWhile(e => e.IsPenDownCommand);
-                startidx      += line.Commands.Count();
+                line.Commands =  list.Skip(startIdx).TakeWhile(e => e.IsPenDownCommand);
+                startIdx      += line.Commands.Count();
 
-                line.PostCommands =  list.Skip(startidx).TakeWhile(e => false); // always empty
-                startidx          += line.PostCommands.Count();
+                line.PostCommands =  list.Skip(startIdx).TakeWhile(e => false); // always empty
+                startIdx          += line.PostCommands.Count();
                 return line;
             }
         }

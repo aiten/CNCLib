@@ -171,22 +171,22 @@ namespace CNCLib.GCode.Load
         private double GetDotSize(double x, double y)
         {
             // max value is 255
-            double colorsum = 0;
+            double colorSum = 0;
 
             for (int dx = 0; dx < ImageToDotSizeX; dx++)
             {
                 for (int dy = 0; dy < ImageToDotSizeY; dy++)
                 {
                     var col = Bitmap.GetPixel((int) (x + dx), (int) (y + dy));
-                    colorsum += FindNearestColorGrayScale(col.R, col.G, col.B);
+                    colorSum += FindNearestColorGrayScale(col.R, col.G, col.B);
                 }
             }
 
             // return 0..1
-            return (colorsum / (ImageToDotSizeX * ImageToDotSizeY)) / 255.0;
+            return (colorSum / (ImageToDotSizeX * ImageToDotSizeY)) / 255.0;
         }
 
-        private void AddCommandX(double x, double y, double size, LoadOptions.EHoleType holetype, int ix)
+        private void AddCommandX(double x, double y, double size, LoadOptions.EHoleType holeType, int ix)
         {
             // x,y left,top corner
             // size 0..1
@@ -210,28 +210,28 @@ namespace CNCLib.GCode.Load
                     break;
             }
 
-            double dotsizeX = size * PixelSizeX * ImageToDotSizeX * scaleX;
-            double dotsizeY = size * PixelSizeY * ImageToDotSizeY * scaleY;
+            double dotSizeX = size * PixelSizeX * ImageToDotSizeX * scaleX;
+            double dotSizeY = size * PixelSizeY * ImageToDotSizeY * scaleY;
 
             double centerX = x + ImageToDotSizeX / 2.0;
             double centerY = y - ImageToDotSizeY / 2.0;
 
-            switch (holetype)
+            switch (holeType)
             {
                 case LoadOptions.EHoleType.Hexagon:
-                    CreateHexagon(centerX, centerY, dotsizeX / 2.0);
+                    CreateHexagon(centerX, centerY, dotSizeX / 2.0);
                     break;
                 case LoadOptions.EHoleType.Circle:
-                    CreateCircle(centerX, centerY, dotsizeX / 2.0);
+                    CreateCircle(centerX, centerY, dotSizeX / 2.0);
                     break;
                 case LoadOptions.EHoleType.Square:
-                    CreateSquare(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0);
+                    CreateSquare(centerX, centerY, dotSizeX / 2.0, dotSizeY / 2.0);
                     break;
                 case LoadOptions.EHoleType.Diamond:
-                    CreateDiamond(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0);
+                    CreateDiamond(centerX, centerY, dotSizeX / 2.0, dotSizeY / 2.0);
                     break;
                 case LoadOptions.EHoleType.Heart:
-                    CreateHeart(centerX, centerY, dotsizeX / 2.0, dotsizeY / 2.0, RotateHeart && ix % 2 == 0);
+                    CreateHeart(centerX, centerY, dotSizeX / 2.0, dotSizeY / 2.0, RotateHeart && ix % 2 == 0);
                     break;
             }
 
@@ -363,10 +363,10 @@ namespace CNCLib.GCode.Load
             //for (double rad = Math.PI / 3.0; rad < Math.PI * 2.0 + 0.1; rad += Math.PI / 3.0)
             for (double rad = 0; rad < Math.PI * 2.0 + 0.1; rad += Math.PI / 3.0)
             {
-                double radrotated = rad + Math.PI / 6.0;
+                double radRotated = rad + Math.PI / 6.0;
                 c = new G01Command();
-                c.AddVariable('X', ToGCode(x + radius * Math.Cos(radrotated)));
-                c.AddVariable('Y', ToGCode(y + radius * Math.Sin(radrotated)));
+                c.AddVariable('X', ToGCode(x + radius * Math.Cos(radRotated)));
+                c.AddVariable('Y', ToGCode(y + radius * Math.Sin(radRotated)));
 
                 Commands.Add(c);
             }

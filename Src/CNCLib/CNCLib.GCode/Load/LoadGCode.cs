@@ -28,13 +28,13 @@ namespace CNCLib.GCode.Load
     public class LoadGCode : LoadBase
     {
         readonly CommandStream _stream = new CommandStream();
-        Command                _lastnoPrefixCommand;
+        Command                _lastNoPrefixCommand;
 
         public override void Load()
         {
             PreLoad();
 
-            _lastnoPrefixCommand = null;
+            _lastNoPrefixCommand = null;
 
             using (StreamReader sr = GetStreamReader())
             {
@@ -58,7 +58,7 @@ namespace CNCLib.GCode.Load
 
         public void Load(string[] lines)
         {
-            _lastnoPrefixCommand = null;
+            _lastNoPrefixCommand = null;
 
             try
             {
@@ -78,7 +78,7 @@ namespace CNCLib.GCode.Load
 
         private void Command()
         {
-            int? linenumber = null;
+            int? lineNumber = null;
 
             if (_stream.NextCharToUpper == 'N')
             {
@@ -89,7 +89,7 @@ namespace CNCLib.GCode.Load
                     throw new FormatException();
                 }
 
-                linenumber = _stream.GetInt();
+                lineNumber = _stream.GetInt();
                 _stream.SkipSpaces();
             }
 
@@ -102,7 +102,7 @@ namespace CNCLib.GCode.Load
             }
             else if ("XYZABCF".IndexOf(_stream.NextCharToUpper) >= 0)
             {
-                if (_lastnoPrefixCommand == null)
+                if (_lastNoPrefixCommand == null)
                 {
                     throw new FormatException();
                 }
@@ -124,18 +124,18 @@ namespace CNCLib.GCode.Load
 
             if (cmd != null)
             {
-                if (linenumber.HasValue)
+                if (lineNumber.HasValue)
                 {
-                    cmd.LineNumber = linenumber;
+                    cmd.LineNumber = lineNumber;
                 }
 
                 Commands.AddCommand(cmd);
             }
         }
 
-        private Command AddGxxMxxCommand(Command cmd, string cmdname)
+        private Command AddGxxMxxCommand(Command cmd, string cmdName)
         {
-            cmd.SetCode(cmdname);
+            cmd.SetCode(cmdName);
             cmd.ReadFrom(_stream);
             return cmd;
         }
@@ -144,23 +144,23 @@ namespace CNCLib.GCode.Load
         {
             _stream.Next();
 
-            string cmdname = "G" + _stream.ReadDigits();
+            string cmdName = "G" + _stream.ReadDigits();
             _stream.SkipSpaces();
 
-            Command cmd = CommandFactory.Create(cmdname);
+            Command cmd = CommandFactory.Create(cmdName);
 
             if (cmd != null)
             {
                 if (cmd.UseWithoutPrefix)
                 {
-                    _lastnoPrefixCommand = cmd;
+                    _lastNoPrefixCommand = cmd;
                 }
 
                 cmd.ReadFrom(_stream);
             }
             else
             {
-                cmd = AddGxxMxxCommand(CommandFactory.Create("GXX"), cmdname);
+                cmd = AddGxxMxxCommand(CommandFactory.Create("GXX"), cmdName);
             }
 
             return cmd;
@@ -170,7 +170,7 @@ namespace CNCLib.GCode.Load
         {
             // g without prefix
 
-            Command cmd = CommandFactory.Create(_lastnoPrefixCommand.Code);
+            Command cmd = CommandFactory.Create(_lastNoPrefixCommand.Code);
             cmd?.ReadFrom(_stream);
             return cmd;
         }
@@ -178,10 +178,10 @@ namespace CNCLib.GCode.Load
         private Command ReadMCommand()
         {
             _stream.Next();
-            string cmdname = "M" + _stream.ReadDigits();
+            string cmdName = "M" + _stream.ReadDigits();
             _stream.SkipSpaces();
 
-            Command cmd = CommandFactory.Create(cmdname);
+            Command cmd = CommandFactory.Create(cmdName);
 
             if (cmd != null)
             {
@@ -189,7 +189,7 @@ namespace CNCLib.GCode.Load
             }
             else
             {
-                cmd = AddGxxMxxCommand(CommandFactory.Create("MXX"), cmdname);
+                cmd = AddGxxMxxCommand(CommandFactory.Create("MXX"), cmdName);
             }
 
             return cmd;
