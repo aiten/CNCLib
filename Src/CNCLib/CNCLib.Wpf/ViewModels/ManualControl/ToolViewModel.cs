@@ -247,8 +247,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                     }
                     else
                     {
-                        decimal[] mpos = Convert(message, "dummy");
-                        SetPositions(mpos, 0);
+                        decimal[] mPos = Convert(message, "dummy");
+                        SetPositions(mPos, 0);
 
                         message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"), 10 * 1000);
 

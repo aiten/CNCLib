@@ -41,22 +41,19 @@ using NLog;
 
 namespace CNCLib.Wpf.Start
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         private ILogger _logger => LogManager.GetCurrentClassLogger();
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
-            string userprofilepath = Environment.GetEnvironmentVariable(@"USERPROFILE");
-            AppDomain.CurrentDomain.SetData("DataDirectory", userprofilepath);
+            string userProfilePath = Environment.GetEnvironmentVariable(@"USERPROFILE");
+            AppDomain.CurrentDomain.SetData("DataDirectory", userProfilePath);
 
-            string dbfile = userprofilepath + @"\CNCLib.db";
+            string dbFile = userProfilePath + @"\CNCLib.db";
 
             GlobalDiagnosticsContext.Set("logDir", $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib/logs");
-            GlobalDiagnosticsContext.Set("connectionString", $"Data Source={dbfile}");
+            GlobalDiagnosticsContext.Set("connectionString", $"Data Source={dbFile}");
 
             LogManager.ThrowExceptions = true;
             var logger = LogManager.GetLogger("foo");
@@ -90,13 +87,13 @@ namespace CNCLib.Wpf.Start
 
             try
             {
-                Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbfile, false, false);
+                Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbFile, false, false);
             }
             catch (Exception ex)
             {
                 _logger.Error(ex);
 
-                MessageBox.Show($"Cannot create/connect database in {dbfile} \n\r" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Cannot create/connect database in {dbFile} \n\r" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Current.Shutdown();
             }
 

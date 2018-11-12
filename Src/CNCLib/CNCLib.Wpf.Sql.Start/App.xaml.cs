@@ -41,9 +41,6 @@ using NLog;
 
 namespace CNCLib.Wpf.Sql.Start
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         private ILogger _logger => LogManager.GetCurrentClassLogger();
@@ -85,14 +82,14 @@ namespace CNCLib.Wpf.Sql.Start
             var userContext = new CNCLibUserContext();
             Dependency.Container.RegisterInstance((ICNCLibUserContext) userContext);
 
-            //	        string sqlconnectstring = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
-            string sqlconnectstring = null;
+            //	        string sqlConnectString = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
+            string sqlConnectString = null;
 
             // Open Database here
 
             try
             {
-                Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlconnectstring, false, false);
+                Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlConnectString, false, false);
             }
             catch (Exception ex)
             {

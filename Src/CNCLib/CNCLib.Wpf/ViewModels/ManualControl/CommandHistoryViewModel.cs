@@ -55,11 +55,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
             foreach (var rc in Global.Instance.Com.Current.CommandHistoryCopy)
             {
-                DateTime senttime = rc.SentTime ?? DateTime.Today;
+                DateTime sentTime = rc.SentTime ?? DateTime.Today;
 
                 results.Add(new SentCNCCommand
                 {
-                    CommandDate = senttime,
+                    CommandDate = sentTime,
                     CommandText = rc.CommandText,
                     Result      = rc.ResultText
                 });

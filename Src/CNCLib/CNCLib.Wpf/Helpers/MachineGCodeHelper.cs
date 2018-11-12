@@ -72,8 +72,8 @@ namespace CNCLib.Wpf.Helpers
             var cmd = (await Global.Instance.Com.Current.SendCommandAsync("$?", waitForMilliseconds)).FirstOrDefault();
             if (cmd != null && string.IsNullOrEmpty(cmd.ResultText) == false)
             {
-                string[] seperators = { "\n", "\r" };
-                string[] lines      = cmd.ResultText.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
+                string[] separators = { "\n", "\r" };
+                string[] lines      = cmd.ResultText.Split(separators, StringSplitOptions.RemoveEmptyEntries);
                 var      intValues  = new Dictionary<int, uint>();
                 int      maxSlot    = -1;
                 foreach (var line in lines)
@@ -158,7 +158,7 @@ namespace CNCLib.Wpf.Helpers
             return null;
         }
 
-        public const int DefaulTimeout = 120 * 1000;
+        public const int DefaultTimeout = 120 * 1000;
 
         public async Task SendCommandAsync(string commandString)
         {
@@ -167,8 +167,8 @@ namespace CNCLib.Wpf.Helpers
 
         public async Task SendCommandAsync(Machine machine, string commandString)
         {
-            string[] seperators = { @"\n" };
-            string[] cmds       = commandString.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
+            string[] separators = { @"\n" };
+            string[] cmds       = commandString.Split(separators, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in cmds)
             {
                 string[] infos = s.Split(':');
@@ -189,7 +189,7 @@ namespace CNCLib.Wpf.Helpers
                 {
                     if (s.TrimEnd().EndsWith("?"))
                     {
-                        var result = await Global.Instance.Com.Current.SendCommandAsync(s.TrimEnd().TrimEnd('?'), DefaulTimeout);
+                        var result = await Global.Instance.Com.Current.SendCommandAsync(s.TrimEnd().TrimEnd('?'), DefaultTimeout);
                         if (result?.LastOrDefault()?.ReplyType.HasFlag(EReplyType.ReplyError) == false)
                         {
                             return;
@@ -197,7 +197,7 @@ namespace CNCLib.Wpf.Helpers
                     }
                     else
                     {
-                        await Global.Instance.Com.Current.SendCommandAsync(s, DefaulTimeout);
+                        await Global.Instance.Com.Current.SendCommandAsync(s, DefaultTimeout);
                     }
                 }
             }

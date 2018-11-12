@@ -155,12 +155,12 @@ namespace CNCLib.Wpf.Models
         [Category(CATEGORY_GENERAL)]
         [DisplayName("RefMoveStepRate")]
         [Description("Steprate for reference-move (AVR 8bit max 16bit, less than 'MaxStepRate')")]
-        public uint RefMoveSteprate { get; set; }
+        public uint RefMoveStepRate { get; set; }
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("MoveAwayFromReference")]
         [Description("Distance between refmove hit and 0 (in mm1000)")]
-        public uint MoveAwayFromRefernece { get; set; }
+        public uint MoveAwayFromReference { get; set; }
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Scale mm to machine")]
@@ -467,8 +467,8 @@ namespace CNCLib.Wpf.Models
             MaxSpindleSpeed = ee[EepromV1.EValueOffsets16.MaxSpindleSpeed];
             SpindleFadeTime = ee[EepromV1.EValueOffsets8.SpindleFadeTime];
 
-            RefMoveSteprate       = ee[EepromV1.EValueOffsets32.RefMoveStepRate];
-            MoveAwayFromRefernece = ee[EepromV1.EValueOffsets32.MoveAwayFromReference];
+            RefMoveStepRate       = ee[EepromV1.EValueOffsets32.RefMoveStepRate];
+            MoveAwayFromReference = ee[EepromV1.EValueOffsets32.MoveAwayFromReference];
 
             MaxStepRate = ee[EepromV1.EValueOffsets32.MaxStepRate];
             Acc         = ee[EepromV1.EValueOffsets16.Acc];
@@ -512,8 +512,8 @@ namespace CNCLib.Wpf.Models
             ee[EepromV1.EValueOffsets16.MaxSpindleSpeed] = MaxSpindleSpeed;
             ee[EepromV1.EValueOffsets8.SpindleFadeTime]  = SpindleFadeTime;
 
-            ee[EepromV1.EValueOffsets32.RefMoveStepRate]       = RefMoveSteprate;
-            ee[EepromV1.EValueOffsets32.MoveAwayFromReference] = MoveAwayFromRefernece;
+            ee[EepromV1.EValueOffsets32.RefMoveStepRate]       = RefMoveStepRate;
+            ee[EepromV1.EValueOffsets32.MoveAwayFromReference] = MoveAwayFromReference;
 
             ee[EepromV1.EValueOffsets32.MaxStepRate] = MaxStepRate;
             ee[EepromV1.EValueOffsets16.Acc]         = Acc;

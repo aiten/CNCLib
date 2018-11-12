@@ -40,9 +40,6 @@ using NLog;
 
 namespace CNCLib.Wpf.WebAPI.Start
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         private ILogger _logger => LogManager.GetCurrentClassLogger();

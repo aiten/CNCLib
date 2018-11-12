@@ -116,8 +116,8 @@ namespace CNCLib.Wpf.Helpers
 
         public async Task SendInitCommands(string commandString)
         {
-            string[] seperators = { @"\n" };
-            string[] cmds       = commandString.Split(seperators, StringSplitOptions.RemoveEmptyEntries);
+            string[] separators = { @"\n" };
+            string[] cmds       = commandString.Split(separators, StringSplitOptions.RemoveEmptyEntries);
             foreach (var s in cmds)
             {
                 await Global.Instance.ComJoystick.SendCommandAsync(s, int.MaxValue);
