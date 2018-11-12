@@ -27,7 +27,7 @@ namespace Framework.Wpf.View
 
     public static class BaseViewModelExtensions
     {
-        public static void DefaulInitForBaseViewModel(this BaseViewModel vm)
+        public static void DefaultInitForBaseViewModel(this BaseViewModel vm)
         {
             if (vm.MessageBox == null)
             {
@@ -36,10 +36,10 @@ namespace Framework.Wpf.View
 
             if (vm.BrowseFileNameFunc == null)
             {
-                vm.BrowseFileNameFunc = (filename, savefile) =>
+                vm.BrowseFileNameFunc = (filename, saveFile) =>
                 {
                     Microsoft.Win32.FileDialog dlg;
-                    if (savefile)
+                    if (saveFile)
                     {
                         dlg = new Microsoft.Win32.SaveFileDialog();
                     }
@@ -66,13 +66,13 @@ namespace Framework.Wpf.View
             }
         }
 
-        public static void DefaulInitForBaseViewModel(this Window view)
+        public static void DefaultInitForBaseViewModel(this Window view)
         {
             var vm = view.DataContext as BaseViewModel;
 
             if (vm != null)
             {
-                vm.DefaulInitForBaseViewModel();
+                vm.DefaultInitForBaseViewModel();
 
                 var closeAction = new Action(view.Close);
                 var dialogOkAction = new Action(() =>
@@ -114,13 +114,13 @@ namespace Framework.Wpf.View
             }
         }
 
-        public static void DefaulInitForBaseViewModel(this Page view)
+        public static void DefaultInitForBaseViewModel(this Page view)
         {
             var vm = view.DataContext as BaseViewModel;
 
             if (vm != null)
             {
-                vm.DefaulInitForBaseViewModel();
+                vm.DefaultInitForBaseViewModel();
 
                 view.Loaded += async (v, e) =>
                 {

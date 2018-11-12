@@ -38,7 +38,7 @@ namespace CNCLib.Wpf.Views
 
             InitializeComponent();
 
-            this.DefaulInitForBaseViewModel();
+            this.DefaultInitForBaseViewModel();
 /*
             RoutedEventHandler loaded =null;
 			loaded = new RoutedEventHandler(async (object v, RoutedEventArgs e) =>

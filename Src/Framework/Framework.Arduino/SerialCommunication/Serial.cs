@@ -43,13 +43,12 @@ namespace Framework.Arduino.SerialCommunication
 
         readonly AutoResetEvent      _autoEvent       = new AutoResetEvent(false);
         readonly List<SerialCommand> _pendingCommands = new List<SerialCommand>();
-        readonly ILogger             _logger;
 
         #endregion
 
         public Serial(ILogger<Serial> logger)
         {
-            _logger = logger;
+            Logger = logger;
         }
 
         #region Events
@@ -111,14 +110,14 @@ namespace Framework.Arduino.SerialCommunication
         public bool   CommandToUpper         { get; set; } = false;
         public bool   ErrorIsReply           { get; set; } = true; // each command must end with "ok" of "Error"
         public int    MaxCommandHistoryCount { get; set; } = int.MaxValue;
-        public int    ArduinoBuffersize      { get; set; } = 64;
+        public int    ArduinoBufferSize      { get; set; } = 64;
         public int    ArduinoLineSize        { get; set; } = 128;
         public bool   Pause                  { get; set; } = false;
         public bool   SendNext               { get; set; } = false;
 
         private bool Continue => _serialPortCancellationTokenSource != null && !_serialPortCancellationTokenSource.IsCancellationRequested;
 
-        protected ILogger Trace => _logger;
+        protected ILogger Logger { get; }
 
         #endregion
 
@@ -131,7 +130,7 @@ namespace Framework.Arduino.SerialCommunication
         public async Task ConnectAsync(string portName)
         {
             await Task.Delay(0); // avoid CS1998
-            Trace?.Trace($@"Connect: {portName}");
+            Logger?.Trace($@"Connect: {portName}");
 
             // Create a new SerialPort object with default settings.
             Aborted = false;
@@ -163,11 +162,11 @@ namespace Framework.Arduino.SerialCommunication
             //_serialPort.DtrEnable = true;
             _serialPort.RtsEnable = true;
 
-            bool wasempty;
+            bool wasEmpty;
 
             lock (_pendingCommands)
             {
-                wasempty = _pendingCommands.Count == 0;
+                wasEmpty = _pendingCommands.Count == 0;
                 _pendingCommands.Clear();
             }
 
@@ -176,12 +175,12 @@ namespace Framework.Arduino.SerialCommunication
                 _commands.Clear();
             }
 
-            if (!wasempty)
+            if (!wasEmpty)
             {
-                OnComandQueueChanged(new SerialEventArgs(0, null));
+                OnCommandQueueChanged(new SerialEventArgs(0, null));
             }
 
-            OnComandQueueEmpty(new SerialEventArgs(0, null));
+            OnCommandQueueEmpty(new SerialEventArgs(0, null));
         }
 
         /// <summary>
@@ -194,7 +193,7 @@ namespace Framework.Arduino.SerialCommunication
 
         private async Task Disconnect(bool join)
         {
-            Trace?.Trace($"Disconnecting: {join.ToString()}");
+            Logger?.Trace($"Disconnecting: {join.ToString()}");
             Aborted = true;
             _serialPortCancellationTokenSource?.Cancel();
 
@@ -239,34 +238,34 @@ namespace Framework.Arduino.SerialCommunication
                 _serialPortCancellationTokenSource = null;
             }
 
-            Trace?.Trace($"Disconnected: {join.ToString()}");
+            Logger?.Trace($"Disconnected: {join.ToString()}");
         }
 
         /// <summary>
-        /// Start "Abort", but leave communication opend. but do not send and command.
+        /// Start "Abort", but leave communication opened. but do not send and command.
         /// All pending commands are removed
         /// </summary>
         public void AbortCommands()
         {
-            bool wasempty;
+            bool wasEmpty;
             lock (_pendingCommands)
             {
-                wasempty = _pendingCommands.Count == 0;
+                wasEmpty = _pendingCommands.Count == 0;
                 _pendingCommands.Clear();
             }
 
-            if (!wasempty)
+            if (!wasEmpty)
             {
-                OnComandQueueChanged(new SerialEventArgs(0, null));
+                OnCommandQueueChanged(new SerialEventArgs(0, null));
             }
 
-            OnComandQueueChanged(new SerialEventArgs(0, null));
+            OnCommandQueueChanged(new SerialEventArgs(0, null));
 
             Aborted = true;
         }
 
         /// <summary>
-        /// ResumeAfterAbort must be called after AbortCommands to continune. 
+        /// ResumeAfterAbort must be called after AbortCommands to continue. 
         /// </summary>
         public void ResumeAfterAbort()
         {
@@ -289,11 +288,11 @@ namespace Framework.Arduino.SerialCommunication
             Aborted = false;
         }
 
-        protected virtual void SetupCom(string portname)
+        protected virtual void SetupCom(string portName)
         {
             _serialPort = Dependency.Dependency.Resolve<ISerialPort>();
 
-            _serialPort.PortName  = portname;
+            _serialPort.PortName  = portName;
             _serialPort.BaudRate  = BaudRate;
             _serialPort.Parity    = Parity.None;
             _serialPort.DataBits  = 8;
@@ -324,7 +323,7 @@ namespace Framework.Arduino.SerialCommunication
         #region Send Command(s)
 
         /// <summary>
-        /// Send multiple command lines to the arduino. Wait until the commands are transferrd and we got a reply (no command pending)
+        /// Send multiple command lines to the arduino. Wait until the commands are transferred and we got a reply (no command pending)
         /// </summary>
         /// <param name="commands"></param>
         /// <param name="waitForMilliseconds"></param>
@@ -350,7 +349,7 @@ namespace Framework.Arduino.SerialCommunication
 
             if (commands != null)
             {
-                int commandindex = 0;
+                int commandIndex = 0;
                 foreach (string cmd in commands)
                 {
                     var cmds = SplitAndQueueCommand(cmd);
@@ -361,11 +360,11 @@ namespace Framework.Arduino.SerialCommunication
 
                     foreach (SerialCommand serialCommand in cmds)
                     {
-                        serialCommand.CommandIndex = commandindex;
+                        serialCommand.CommandIndex = commandIndex;
                         list.Add(serialCommand);
                     }
 
-                    commandindex++;
+                    commandIndex++;
                 }
             }
             else
@@ -386,11 +385,11 @@ namespace Framework.Arduino.SerialCommunication
         public async Task<string> WaitUntilResponseAsync(int maxMilliseconds)
         {
             string message       = null;
-            var    checkresponse = new CommandEventHandler((obj, e) => { message = e.Info; });
+            var    checkResponse = new CommandEventHandler((obj, e) => { message = e.Info; });
 
             try
             {
-                ReplyReceived += checkresponse;
+                ReplyReceived += checkResponse;
 
                 var sw = Stopwatch.StartNew();
                 while (Continue && message == null && sw.ElapsedMilliseconds < maxMilliseconds)
@@ -403,7 +402,7 @@ namespace Framework.Arduino.SerialCommunication
             }
             finally
             {
-                ReplyReceived -= checkresponse;
+                ReplyReceived -= checkResponse;
             }
 
             return message;
@@ -415,19 +414,19 @@ namespace Framework.Arduino.SerialCommunication
 
         private IEnumerable<SerialCommand> SplitAndQueueCommand(string line)
         {
-            var      cmdlist = new List<SerialCommand>();
+            var      cmdList = new List<SerialCommand>();
             string[] cmds    = SplitCommand(line);
             foreach (string cmd in cmds)
             {
-                SerialCommand pcmd = QueueCommandString(cmd);
-                if (pcmd != null)
+                SerialCommand cmdToQueue = QueueCommandString(cmd);
+                if (cmdToQueue != null)
                 {
                     // sending is done in Write-Thread
-                    cmdlist.Add(pcmd);
+                    cmdList.Add(cmdToQueue);
                 }
             }
 
-            return cmdlist;
+            return cmdList;
         }
 
         private SerialCommand QueueCommandString(string cmd)
@@ -445,22 +444,22 @@ namespace Framework.Arduino.SerialCommunication
             cmd = cmd.Replace('\t', ' ');
 
             var c = new SerialCommand { SeqId = _commandSeqId++, CommandText = cmd };
-            int queueLenght;
+            int queueLength;
 
             lock (_pendingCommands)
             {
-                queueLenght = _pendingCommands.Count;
-                if (queueLenght == 0)
+                queueLength = _pendingCommands.Count;
+                if (queueLength == 0)
                 {
                     _autoEvent.Set(); // start Async task now!
                 }
 
                 _pendingCommands.Add(c);
-                queueLenght++;
+                queueLength++;
             }
 
-            Trace?.Trace($"Queue: {cmd}");
-            OnComandQueueChanged(new SerialEventArgs(queueLenght, c));
+            Logger?.Trace($"Queue: {cmd}");
+            OnCommandQueueChanged(new SerialEventArgs(queueLength, c));
             return c;
         }
 
@@ -468,10 +467,10 @@ namespace Framework.Arduino.SerialCommunication
         {
             // SendCommands is called in the async Write thread 
 
-            var eventarg = new SerialEventArgs(cmd);
-            OnCommandSending(eventarg);
+            var eventArgs = new SerialEventArgs(cmd);
+            OnCommandSending(eventArgs);
 
-            if (eventarg.Abort || Aborted)
+            if (eventArgs.Abort || Aborted)
             {
                 return;
             }
@@ -486,22 +485,22 @@ namespace Framework.Arduino.SerialCommunication
                 _commands.Add(cmd);
             }
 
-            string commandtext = cmd.CommandText;
+            string commandText = cmd.CommandText;
 
             const int CRLF_SIZE = 2;
 
-            if (commandtext.Length >= ArduinoLineSize + CRLF_SIZE)
+            if (commandText.Length >= ArduinoLineSize + CRLF_SIZE)
             {
-                commandtext = commandtext.Substring(0, ArduinoLineSize - 1 - CRLF_SIZE);
+                commandText = commandText.Substring(0, ArduinoLineSize - 1 - CRLF_SIZE);
             }
 
-            while (commandtext.Length > ArduinoBuffersize - 1)
+            while (commandText.Length > ArduinoBufferSize - 1)
             {
                 // give "control" class the chance to read from arduino to control buffer
 
-                int    firstSize = ArduinoBuffersize * 2 / 3;
-                string firstX    = commandtext.Substring(0, firstSize);
-                commandtext = commandtext.Substring(firstSize);
+                int    firstSize = ArduinoBufferSize * 2 / 3;
+                string firstX    = commandText.Substring(0, firstSize);
+                commandText = commandText.Substring(firstSize);
 
                 if (!WriteSerial(firstX, false))
                 {
@@ -511,40 +510,40 @@ namespace Framework.Arduino.SerialCommunication
                 Thread.Sleep(250);
             }
 
-            if (WriteSerial(commandtext, true))
+            if (WriteSerial(commandText, true))
             {
                 cmd.SentTime = DateTime.Now;
-                eventarg     = new SerialEventArgs(cmd);
-                OnCommandSent(eventarg);
+                eventArgs     = new SerialEventArgs(cmd);
+                OnCommandSent(eventArgs);
             }
         }
 
-        private bool WriteSerial(string commandtext, bool addNewLine)
+        private bool WriteSerial(string commandText, bool addNewLine)
         {
-            Trace?.Trace($"Write: {commandtext}");
+            Logger?.Trace($"Write: {commandText}");
             try
             {
                 if (addNewLine)
                 {
-                    commandtext = commandtext + _serialPort.NewLine;
+                    commandText = commandText + _serialPort.NewLine;
                 }
 
-                WriteToSerialAsync(commandtext).ConfigureAwait(false).GetAwaiter().GetResult();
+                WriteToSerialAsync(commandText).ConfigureAwait(false).GetAwaiter().GetResult();
                 return true;
             }
             catch (InvalidOperationException e)
             {
-                Trace?.Error($"WriteInvalidOperationException: {commandtext} => {e.Message}");
+                Logger?.Error($"WriteInvalidOperationException: {commandText} => {e.Message}");
                 Disconnect(false).ConfigureAwait(false).GetAwaiter().GetResult();
             }
             catch (IOException e)
             {
-                Trace?.Error($"WriteIOException: {commandtext} => {e.Message}");
+                Logger?.Error($"WriteIOException: {commandText} => {e.Message}");
                 ErrorSerial();
             }
             catch (Exception e)
             {
-                Trace?.Error($"WriteException: {commandtext} => {e.GetType()} {e.Message}");
+                Logger?.Error($"WriteException: {commandText} => {e.GetType()} {e.Message}");
             }
 
             return false;
@@ -588,9 +587,9 @@ namespace Framework.Arduino.SerialCommunication
                     return true;
                 }
 
-                var eventarg = new SerialEventArgs(cmd);
-                OnWaitCommandSent(eventarg);
-                if (Aborted || eventarg.Abort)
+                var eventArgs = new SerialEventArgs(cmd);
+                OnWaitCommandSent(eventArgs);
+                if (Aborted || eventArgs.Abort)
                 {
                     return false;
                 }
@@ -622,9 +621,9 @@ namespace Framework.Arduino.SerialCommunication
                 }
 
                 // wait
-                var eventarg = new SerialEventArgs(noReplayCmd);
-                OnWaitCommandSent(eventarg);
-                if (Aborted || eventarg.Abort)
+                var eventArgs = new SerialEventArgs(noReplayCmd);
+                OnWaitCommandSent(eventArgs);
+                if (Aborted || eventArgs.Abort)
                 {
                     return false;
                 }
@@ -647,7 +646,7 @@ namespace Framework.Arduino.SerialCommunication
         {
             Thread.CurrentThread.Priority = ThreadPriority.AboveNormal;
 
-            // Aync write thread to send commands to the arduino
+            // Async write thread to send commands to the arduino
 
             while (Continue)
             {
@@ -674,23 +673,23 @@ namespace Framework.Arduino.SerialCommunication
                     }
                 }
 
-                // nextcmd			=> next command to be sent
+                // nextCmd			=> next command to be sent
                 // queuedCmdLength	=> length of command in the arduino buffer
 
                 if (nextCmd != null && (!Pause || SendNext))
                 {
-                    if (queuedCmdLength == 0 || queuedCmdLength + nextCmd.CommandText.Length + 2 < ArduinoBuffersize)
+                    if (queuedCmdLength == 0 || queuedCmdLength + nextCmd.CommandText.Length + 2 < ArduinoBufferSize)
                     {
-                        // send everyting if queue is empty
+                        // send everything if queue is empty
                         // or send command if pending commands + this fit into arduino queue
                         SendCommand(nextCmd);
                         SendNext = false;
                     }
                     else
                     {
-                        var eventarg = new SerialEventArgs(nextCmd);
-                        OnWaitForSend(eventarg);
-                        if (Aborted || eventarg.Abort)
+                        var eventArgs = new SerialEventArgs(nextCmd);
+                        OnWaitForSend(eventArgs);
+                        if (Aborted || eventArgs.Abort)
                         {
                             return;
                         }
@@ -708,7 +707,7 @@ namespace Framework.Arduino.SerialCommunication
                 }
                 else
                 {
-                    _autoEvent.WaitOne(100); // no command in queue => wait => CreateCommand(...) will set Autoevent
+                    _autoEvent.WaitOne(100); // no command in queue => wait => CreateCommand(...) will set AutoEvent
                 }
             }
         }
@@ -723,11 +722,11 @@ namespace Framework.Arduino.SerialCommunication
 
         private async Task<string> ReadFromSerialAsync()
         {
-            int readmaxsize = 256;
-            var buffer      = new byte[readmaxsize];
+            int readMaxSize = 256;
+            var buffer      = new byte[readMaxSize];
 
-            int readsize = await _serialPort.BaseStream.ReadAsync(buffer, 0, readmaxsize, _serialPortCancellationTokenSource.Token);
-            return _serialPort.Encoding.GetString(buffer, 0, readsize);
+            int readSize = await _serialPort.BaseStream.ReadAsync(buffer, 0, readMaxSize, _serialPortCancellationTokenSource.Token);
+            return _serialPort.Encoding.GetString(buffer, 0, readSize);
         }
 
         private void Read()
@@ -744,7 +743,7 @@ namespace Framework.Arduino.SerialCommunication
                 }
                 catch (InvalidOperationException e)
                 {
-                    Trace?.Error($"ReadInvalidOperationException: {e.Message}");
+                    Logger?.Error($"ReadInvalidOperationException: {e.Message}");
                     Thread.Sleep(250);
                 }
                 catch (ThreadAbortException)
@@ -754,23 +753,23 @@ namespace Framework.Arduino.SerialCommunication
                 }
                 catch (IOException e)
                 {
-                    Trace?.Error($"ReadIOException: {e.Message}");
+                    Logger?.Error($"ReadIOException: {e.Message}");
                     Thread.Sleep(250);
                 }
                 catch (Exception e)
                 {
-                    Trace?.Error($"ReadException: {e.Message}");
+                    Logger?.Error($"ReadException: {e.Message}");
                     Thread.Sleep(250);
                 }
 
-                string inputbuffer = sb.ToString();
+                string inputBuffer = sb.ToString();
 
                 int idx;
-                while ((idx = inputbuffer.IndexOf('\n')) >= 0)
+                while ((idx = inputBuffer.IndexOf('\n')) >= 0)
                 {
-                    string message = inputbuffer.Substring(0, idx + 1);
+                    string message = inputBuffer.Substring(0, idx + 1);
                     sb.Remove(0, idx + 1);
-                    inputbuffer = sb.ToString();
+                    inputBuffer = sb.ToString();
                     MessageReceived(message);
                 }
             }
@@ -789,9 +788,9 @@ namespace Framework.Arduino.SerialCommunication
 
             if (string.IsNullOrEmpty(message) == false)
             {
-                Trace?.Trace($"Read: {message.Replace("\n", @"\n").Replace("\r", @"\r").Replace("\t", @"\t")}");
+                Logger?.Trace($"Read: {message.Replace("\n", @"\n").Replace("\r", @"\r").Replace("\t", @"\t")}");
 
-                bool endcommand = false;
+                bool endCommand = false;
 
                 message = message.Trim();
 
@@ -817,7 +816,7 @@ namespace Framework.Arduino.SerialCommunication
 
                 if (message.StartsWith(OkTag))
                 {
-                    endcommand = true;
+                    endCommand = true;
                     if (cmd != null)
                     {
                         cmd.ReplyType |= EReplyType.ReplyOK;
@@ -829,7 +828,7 @@ namespace Framework.Arduino.SerialCommunication
                 {
                     if (ErrorIsReply)
                     {
-                        endcommand = true;
+                        endCommand = true;
                     }
 
                     if (cmd != null)
@@ -852,15 +851,15 @@ namespace Framework.Arduino.SerialCommunication
                 {
                     if (cmd != null)
                     {
-                        cmd.ReplyType |= EReplyType.ReplyUnkown;
+                        cmd.ReplyType |= EReplyType.ReplyUnknown;
                     }
 
                     OnReplyUnknown(new SerialEventArgs(message, cmd));
                 }
 
-                if (endcommand && cmd != null)
+                if (endCommand && cmd != null)
                 {
-                    int queueLenght;
+                    int queueLength;
                     lock (_pendingCommands)
                     {
                         if (_pendingCommands.Count > 0) // may cause because of a reset
@@ -868,15 +867,15 @@ namespace Framework.Arduino.SerialCommunication
                             _pendingCommands.RemoveAt(0);
                         }
 
-                        queueLenght = _pendingCommands.Count;
+                        queueLength = _pendingCommands.Count;
                         _autoEvent.Set();
                     }
 
-                    OnComandQueueChanged(new SerialEventArgs(queueLenght, cmd));
+                    OnCommandQueueChanged(new SerialEventArgs(queueLength, cmd));
 
-                    if (queueLenght == 0)
+                    if (queueLength == 0)
                     {
-                        OnComandQueueEmpty(new SerialEventArgs(queueLenght, cmd));
+                        OnCommandQueueEmpty(new SerialEventArgs(queueLength, cmd));
                         ClearSystemKeepAlive();
                     }
                 }
@@ -970,7 +969,7 @@ namespace Framework.Arduino.SerialCommunication
             }
         }
 
-        protected virtual void OnComandQueueChanged(SerialEventArgs info)
+        protected virtual void OnCommandQueueChanged(SerialEventArgs info)
         {
             if (CommandQueueChanged != null)
             {
@@ -978,7 +977,7 @@ namespace Framework.Arduino.SerialCommunication
             }
         }
 
-        protected virtual void OnComandQueueEmpty(SerialEventArgs info)
+        protected virtual void OnCommandQueueEmpty(SerialEventArgs info)
         {
             if (CommandQueueEmpty != null)
             {

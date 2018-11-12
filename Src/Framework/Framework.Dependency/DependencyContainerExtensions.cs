@@ -63,7 +63,7 @@ namespace Framework.Dependency
 
         /// <summary>
         /// Registers public and internal types of the given assemblies with the unity container. This is necessary
-        /// to workaround the internalsvisibleto hacks in the code base.
+        /// to workaround the internals visible to hacks in the code base.
         /// </summary>
         /// <param name="container"></param>
         /// <param name="assemblies">List of assemblies in which all types should be registered with their interfaces. 
@@ -75,11 +75,11 @@ namespace Framework.Dependency
             {
                 foreach (var type in assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract))
                 {
-                    string interfacename = "I" + type.Name;
-                    var    interfacetype = type.GetInterface(interfacename);
-                    if (interfacetype != null)
+                    string interfaceName = "I" + type.Name;
+                    var    interfaceType = type.GetInterface(interfaceName);
+                    if (interfaceType != null)
                     {
-                        container.RegisterType(interfacetype, type);
+                        container.RegisterType(interfaceType, type);
                     }
                 }
             }
@@ -87,13 +87,13 @@ namespace Framework.Dependency
             return container;
         }
 
-        public static IDependencyContainer RegisterTypesByName(this IDependencyContainer container, Func<string, bool> checkname, params Assembly[] assemblies)
+        public static IDependencyContainer RegisterTypesByName(this IDependencyContainer container, Func<string, bool> checkName, params Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
             {
                 foreach (var type in assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract))
                 {
-                    if (checkname(type.Name))
+                    if (checkName(type.Name))
                     {
                         container.RegisterType(type, type);
                     }
@@ -131,7 +131,7 @@ namespace Framework.Dependency
 
         /// <summary>
         /// Registers public and internal types of the given assemblies with the unity container. This is necessary
-        /// to workaround the internalsvisibleto hacks in the code base.
+        /// to workaround the internals visible to hacks in the code base.
         /// </summary>
         /// <param name="container"></param>
         /// <param name="assemblies">List of assemblies in which all types should be registered with their interfaces. 
@@ -143,11 +143,11 @@ namespace Framework.Dependency
             {
                 foreach (var type in assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract))
                 {
-                    string interfacename = "I" + type.Name;
-                    var    interfacetype = type.GetInterface(interfacename);
-                    if (interfacetype != null)
+                    string interfaceName = "I" + type.Name;
+                    var    interfaceType = type.GetInterface(interfaceName);
+                    if (interfaceType != null)
                     {
-                        container.RegisterTypeScoped(interfacetype, type);
+                        container.RegisterTypeScoped(interfaceType, type);
                     }
                 }
             }
@@ -155,13 +155,13 @@ namespace Framework.Dependency
             return container;
         }
 
-        public static IDependencyContainer RegisterTypesByNameScoped(this IDependencyContainer container, Func<string, bool> checkname, params Assembly[] assemblies)
+        public static IDependencyContainer RegisterTypesByNameScoped(this IDependencyContainer container, Func<string, bool> checkName, params Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
             {
                 foreach (var type in assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract))
                 {
-                    if (checkname(type.Name))
+                    if (checkName(type.Name))
                     {
                         container.RegisterTypeScoped(type, type);
                     }

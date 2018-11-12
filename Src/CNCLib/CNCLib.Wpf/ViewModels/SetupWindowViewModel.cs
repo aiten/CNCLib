@@ -227,7 +227,7 @@ namespace CNCLib.Wpf.ViewModels
             Global.Instance.SizeX                         = Machine.SizeX;
             Global.Instance.SizeY                         = Machine.SizeY;
             Global.Instance.SizeZ                         = Machine.SizeZ;
-            Global.Instance.Com.Current.ArduinoBuffersize = Machine.BufferSize;
+            Global.Instance.Com.Current.ArduinoBufferSize = Machine.BufferSize;
 
             using (var scope = _machineService.Create())
             {

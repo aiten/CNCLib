@@ -38,8 +38,8 @@ namespace Framework.Wpf.Converters
                 return DependencyProperty.UnsetValue;
             }
 
-            object paramvalue = Enum.Parse(value.GetType(), parameterString);
-            return paramvalue.Equals(value);
+            object paramValue = Enum.Parse(value.GetType(), parameterString);
+            return paramValue.Equals(value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

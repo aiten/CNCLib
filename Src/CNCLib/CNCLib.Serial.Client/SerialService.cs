@@ -267,7 +267,7 @@ namespace CNCLib.Serial.Client
         public bool                      CommandToUpper         { get; set; }
         public bool                      ErrorIsReply           { get; set; }
         public int                       MaxCommandHistoryCount { get; set; }
-        public int                       ArduinoBuffersize      { get; set; }
+        public int                       ArduinoBufferSize      { get; set; }
         public int                       ArduinoLineSize        { get; set; }
         public bool                      Aborted                { get; }
 

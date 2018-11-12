@@ -112,7 +112,7 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         #region Operations
 
-        private async Task LoadAllSettings(int? setselectedid, IScope<ILoadOptionsService> scope)
+        private async Task LoadAllSettings(int? setSelectedId, IScope<ILoadOptionsService> scope)
         {
             _allLoadOptions.Clear();
 
@@ -123,7 +123,7 @@ namespace CNCLib.GCode.GUI.ViewModels
                 {
                     var option = _mapper.Map<LoadOptions>(s);
                     _allLoadOptions.Add(option);
-                    if (setselectedid.HasValue && option.Id == setselectedid.Value)
+                    if (setSelectedId.HasValue && option.Id == setSelectedId.Value)
                     {
                         SelectedLoadOption = option;
                     }
@@ -140,16 +140,16 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         public bool CanSave()
         {
-            List<string> ignorelist = new List<string>();
+            var ignoreList = new List<string>();
             if (LoadOptionsValue.AutoScale)
             {
-                ignorelist.AddRange(new[]
+                ignoreList.AddRange(new[]
                 {
                     "ScaleX", "ScaleY", "OffsetX", "OffsetY"
                 });
             }
 
-            if (Can() && SelectedLoadOption != null && !CompareProperties.AreObjectsPropertiesEqual(SelectedLoadOption, LoadOptionsValue, ignorelist.ToArray()))
+            if (Can() && SelectedLoadOption != null && !CompareProperties.AreObjectsPropertiesEqual(SelectedLoadOption, LoadOptionsValue, ignoreList.ToArray()))
             {
                 return true;
             }

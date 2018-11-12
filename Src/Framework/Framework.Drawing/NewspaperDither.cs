@@ -18,7 +18,7 @@
 
 namespace Framework.Drawing
 {
-    public class NewspapergDither : FloydSteinbergDither
+    public class NewspaperDither : FloydSteinbergDither
     {
         #region private members
 

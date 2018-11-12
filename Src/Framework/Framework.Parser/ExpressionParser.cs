@@ -143,7 +143,7 @@ namespace Framework.Parser
             public string _varName;
 
             public bool       _variableOK; // _number = variable with content
-            public ETokenType _detailtoken;
+            public ETokenType _detailToken;
         };
 
         protected SParserState _state;
@@ -151,7 +151,7 @@ namespace Framework.Parser
 
         protected void GetNextToken()
         {
-            _state._detailtoken = ETokenType.NothingSy;
+            _state._detailToken = ETokenType.NothingSy;
             if (IsError())
             {
                 return;
@@ -161,68 +161,68 @@ namespace Framework.Parser
 
             if (ch == '\0')
             {
-                _state._detailtoken = ETokenType.EndOfLineSy;
+                _state._detailToken = ETokenType.EndOfLineSy;
                 return;
             }
 
-            ScannNextToken();
+            ScanNextToken();
         }
 
-        protected virtual void ScannNextToken()
+        protected virtual void ScanNextToken()
         {
             char ch = _reader.NextChar;
             if (IsToken("||", false, false))
             {
-                _state._detailtoken = ETokenType.XOrSy;
+                _state._detailToken = ETokenType.XOrSy;
                 return;
             }
 
             if (IsToken("<<", false, false))
             {
-                _state._detailtoken = ETokenType.BitShiftLeftSy;
+                _state._detailToken = ETokenType.BitShiftLeftSy;
                 return;
             }
 
             if (IsToken(">>", false, false))
             {
-                _state._detailtoken = ETokenType.BitShiftRightSy;
+                _state._detailToken = ETokenType.BitShiftRightSy;
                 return;
             }
 
             if (IsToken("==", false, false))
             {
-                _state._detailtoken = ETokenType.EqualSy;
+                _state._detailToken = ETokenType.EqualSy;
                 return;
             }
 
             if (IsToken("!=", false, false))
             {
-                _state._detailtoken = ETokenType.UnEqualSy;
+                _state._detailToken = ETokenType.UnEqualSy;
                 return;
             }
 
             if (IsToken(">=", false, false))
             {
-                _state._detailtoken = ETokenType.GreaterEqualSy;
+                _state._detailToken = ETokenType.GreaterEqualSy;
                 return;
             }
 
             if (IsToken("<=", false, false))
             {
-                _state._detailtoken = ETokenType.LessEqualSy;
+                _state._detailToken = ETokenType.LessEqualSy;
                 return;
             }
 
             if (ch == LeftParenthesis)
             {
-                _state._detailtoken = ETokenType.LeftParenthesisSy;
+                _state._detailToken = ETokenType.LeftParenthesisSy;
                 _reader.Next();
                 return;
             }
 
             if (ch == RightParenthesis)
             {
-                _state._detailtoken = ETokenType.RightParenthesisSy;
+                _state._detailToken = ETokenType.RightParenthesisSy;
                 _reader.Next();
                 return;
             }
@@ -230,51 +230,51 @@ namespace Framework.Parser
             switch (ch)
             {
                 case '>':
-                    _state._detailtoken = ETokenType.GreaterSy;
+                    _state._detailToken = ETokenType.GreaterSy;
                     _reader.Next();
                     return;
                 case '<':
-                    _state._detailtoken = ETokenType.LessSy;
+                    _state._detailToken = ETokenType.LessSy;
                     _reader.Next();
                     return;
                 case '&':
-                    _state._detailtoken = ETokenType.AndSy;
+                    _state._detailToken = ETokenType.AndSy;
                     _reader.Next();
                     return;
                 case '|':
-                    _state._detailtoken = ETokenType.OrSy;
+                    _state._detailToken = ETokenType.OrSy;
                     _reader.Next();
                     return;
                 case '-':
-                    _state._detailtoken = ETokenType.MinusSy;
+                    _state._detailToken = ETokenType.MinusSy;
                     _reader.Next();
                     return;
                 case '+':
-                    _state._detailtoken = ETokenType.PlusSy;
+                    _state._detailToken = ETokenType.PlusSy;
                     _reader.Next();
                     return;
                 case '*':
-                    _state._detailtoken = ETokenType.MultiplySy;
+                    _state._detailToken = ETokenType.MultiplySy;
                     _reader.Next();
                     return;
                 case '/':
-                    _state._detailtoken = ETokenType.DivideSy;
+                    _state._detailToken = ETokenType.DivideSy;
                     _reader.Next();
                     return;
                 case '%':
-                    _state._detailtoken = ETokenType.ModuloSy;
+                    _state._detailToken = ETokenType.ModuloSy;
                     _reader.Next();
                     return;
                 case '^':
-                    _state._detailtoken = ETokenType.PowSy;
+                    _state._detailToken = ETokenType.PowSy;
                     _reader.Next();
                     return;
                 case '!':
-                    _state._detailtoken = ETokenType.FactorialSy;
+                    _state._detailToken = ETokenType.FactorialSy;
                     _reader.Next();
                     return;
                 case '=':
-                    _state._detailtoken = ETokenType.AssignSy;
+                    _state._detailToken = ETokenType.AssignSy;
                     _reader.Next();
                     return;
             }
@@ -282,7 +282,7 @@ namespace Framework.Parser
             // check for a value
             if (CommandStream.IsNumber(ch))
             {
-                _state._detailtoken = ETokenType.FloatSy;
+                _state._detailToken = ETokenType.FloatSy;
                 _state._number      = _reader.GetDouble(out bool istFloatingPoint);
                 return;
             }
@@ -301,67 +301,67 @@ namespace Framework.Parser
                     switch (start.ToUpper())
                     {
                         case "ABS":
-                            _state._detailtoken = ETokenType.AbsSy;
+                            _state._detailToken = ETokenType.AbsSy;
                             return;
 
                         case "EXP":
-                            _state._detailtoken = ETokenType.ExpSy;
+                            _state._detailToken = ETokenType.ExpSy;
                             return;
 
                         case "SIGN":
-                            _state._detailtoken = ETokenType.SignSy;
+                            _state._detailToken = ETokenType.SignSy;
                             return;
 
                         case "SQRT":
-                            _state._detailtoken = ETokenType.SqrtSy;
+                            _state._detailToken = ETokenType.SqrtSy;
                             return;
 
                         case "LOG":
-                            _state._detailtoken = ETokenType.LogSy;
+                            _state._detailToken = ETokenType.LogSy;
                             return;
 
                         case "LOG10":
-                            _state._detailtoken = ETokenType.Log10Sy;
+                            _state._detailToken = ETokenType.Log10Sy;
                             return;
 
                         case "SIN":
-                            _state._detailtoken = ETokenType.SinSy;
+                            _state._detailToken = ETokenType.SinSy;
                             return;
 
                         case "COS":
-                            _state._detailtoken = ETokenType.CosSy;
+                            _state._detailToken = ETokenType.CosSy;
                             return;
 
                         case "TAN":
-                            _state._detailtoken = ETokenType.TanSy;
+                            _state._detailToken = ETokenType.TanSy;
                             return;
 
                         case "ASIN":
-                            _state._detailtoken = ETokenType.AsinSy;
+                            _state._detailToken = ETokenType.AsinSy;
                             return;
 
                         case "ACOS":
-                            _state._detailtoken = ETokenType.AcosSy;
+                            _state._detailToken = ETokenType.AcosSy;
                             return;
 
                         case "ATAN":
-                            _state._detailtoken = ETokenType.AtanSy;
+                            _state._detailToken = ETokenType.AtanSy;
                             return;
 
                         case "FACTORIAL":
-                            _state._detailtoken = ETokenType.FactorialFncSy;
+                            _state._detailToken = ETokenType.FactorialFncSy;
                             return;
 
                         case "FIX":
-                            _state._detailtoken = ETokenType.FixSy;
+                            _state._detailToken = ETokenType.FixSy;
                             return;
 
                         case "FUP":
-                            _state._detailtoken = ETokenType.FupSy;
+                            _state._detailToken = ETokenType.FupSy;
                             return;
 
                         case "ROUND":
-                            _state._detailtoken = ETokenType.RoundSy;
+                            _state._detailToken = ETokenType.RoundSy;
                             return;
 
                         default:
@@ -371,7 +371,7 @@ namespace Framework.Parser
                 }
                 else
                 {
-                    _state._detailtoken = ETokenType.VariableSy;
+                    _state._detailToken = ETokenType.VariableSy;
                     _state._variableOK  = EvalVariable(start, ref _state._number);
                 }
 
@@ -379,7 +379,7 @@ namespace Framework.Parser
             }
 
             // something unknown is found, wrong characters -> a syntax error
-            _state._detailtoken = ETokenType.UnknownSy;
+            _state._detailToken = ETokenType.UnknownSy;
             Error(MESSAGE_EXPR_SYNTAX_ERROR);
             return;
         }
@@ -431,7 +431,7 @@ namespace Framework.Parser
 
         ETokenType GetTokenType()
         {
-            return _state._detailtoken;
+            return _state._detailToken;
         }
 
         ////////////////////////////////////////////////////////////

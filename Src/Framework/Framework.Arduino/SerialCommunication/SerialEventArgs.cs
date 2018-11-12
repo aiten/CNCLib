@@ -50,9 +50,9 @@ namespace Framework.Arduino.SerialCommunication
             }
         }
 
-        public SerialEventArgs(int queueLenght, SerialCommand cmd)
+        public SerialEventArgs(int queueLength, SerialCommand cmd)
         {
-            QueueLenght = queueLenght;
+            QueueLength = queueLength;
             Command     = cmd;
             if (cmd != null)
             {
@@ -70,7 +70,7 @@ namespace Framework.Arduino.SerialCommunication
         public string Result   { get; set; }
 
         public string Info        { get; }
-        public int    QueueLenght { get; }
+        public int    QueueLength { get; }
 
         public int SeqId { get; }
 

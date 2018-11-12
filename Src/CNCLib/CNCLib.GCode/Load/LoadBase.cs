@@ -153,20 +153,20 @@ namespace CNCLib.GCode.Load
 
                 if (LoadOptions.AddLineNumbers)
                 {
-                    int linenumber = 1;
+                    int lineNumber = 1;
 
                     foreach (Command r in Commands)
                     {
                         if (r.LineNumber.HasValue)
                         {
-                            linenumber = r.LineNumber.Value;
+                            lineNumber = r.LineNumber.Value;
                         }
                         else
                         {
-                            r.LineNumber = linenumber;
+                            r.LineNumber = lineNumber;
                         }
 
-                        linenumber++;
+                        lineNumber++;
                     }
                 }
 
@@ -178,9 +178,9 @@ namespace CNCLib.GCode.Load
 
         #region C-Code Comments
 
-        protected void AddCommands(string commandstring)
+        protected void AddCommands(string commandString)
         {
-            var cmds = commandstring.Split(new[] { @"\n", @"\r" }, StringSplitOptions.RemoveEmptyEntries);
+            var cmds = commandString.Split(new[] { @"\n", @"\r" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in cmds)
             {
                 var r = CommandFactory.CreateOrDefault(s);
@@ -198,34 +198,34 @@ namespace CNCLib.GCode.Load
             Commands.Add(new GxxCommand { GCodeAdd = "; " + propertyName });
         }
 
-        protected void AddComment(string propertyName, string propertyvalue)
+        protected void AddComment(string propertyName, string propertyValue)
         {
-            Commands.Add(new GxxCommand { GCodeAdd = "; " + propertyName + " = " + propertyvalue });
+            Commands.Add(new GxxCommand { GCodeAdd = "; " + propertyName + " = " + propertyValue });
         }
 
-        protected void AddComment(string propertyName, decimal propertyvalue)
+        protected void AddComment(string propertyName, decimal propertyValue)
         {
-            AddComment(propertyName, propertyvalue.ToString(CultureInfo.InvariantCulture));
+            AddComment(propertyName, propertyValue.ToString(CultureInfo.InvariantCulture));
         }
 
-        protected void AddComment(string propertyName, decimal? propertyvalue)
+        protected void AddComment(string propertyName, decimal? propertyValue)
         {
-            AddComment(propertyName, propertyvalue.HasValue ? propertyvalue.Value.ToString(CultureInfo.InvariantCulture) : "");
+            AddComment(propertyName, propertyValue.HasValue ? propertyValue.Value.ToString(CultureInfo.InvariantCulture) : "");
         }
 
-        protected void AddComment(string propertyName, double propertyvalue)
+        protected void AddComment(string propertyName, double propertyValue)
         {
-            AddComment(propertyName, propertyvalue.ToString(CultureInfo.InvariantCulture));
+            AddComment(propertyName, propertyValue.ToString(CultureInfo.InvariantCulture));
         }
 
-        protected void AddComment(string propertyName, byte propertyvalue)
+        protected void AddComment(string propertyName, byte propertyValue)
         {
-            AddComment(propertyName, propertyvalue.ToString());
+            AddComment(propertyName, propertyValue.ToString());
         }
 
-        protected void AddComment(string propertyName, int propertyvalue)
+        protected void AddComment(string propertyName, int propertyValue)
         {
-            AddComment(propertyName, propertyvalue.ToString());
+            AddComment(propertyName, propertyValue.ToString());
         }
 
         protected void AddCommentForLaser()

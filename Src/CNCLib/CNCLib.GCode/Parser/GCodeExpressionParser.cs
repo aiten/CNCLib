@@ -34,7 +34,7 @@ namespace CNCLib.GCode.Parser
 
         public Dictionary<int, double> ParameterValues { get; set; }
 
-        protected override void ScannNextToken()
+        protected override void ScanNextToken()
         {
             char ch = _reader.NextChar;
             while (ch != 0)
@@ -52,11 +52,11 @@ namespace CNCLib.GCode.Parser
 
             if (ch == '\0')
             {
-                _state._detailtoken = ETokenType.EndOfLineSy;
+                _state._detailToken = ETokenType.EndOfLineSy;
                 return;
             }
 
-            base.ScannNextToken();
+            base.ScanNextToken();
         }
 
         protected override string ReadIdent()

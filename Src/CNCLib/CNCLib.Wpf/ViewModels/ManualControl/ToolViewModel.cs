@@ -57,7 +57,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private void OnCommandQueueChanged(object sender, SerialEventArgs arg)
         {
-            PendingCommandCount = arg.QueueLenght;
+            PendingCommandCount = arg.QueueLength;
 
             RaisePropertyChanged(nameof(PendingCommandCount));
 

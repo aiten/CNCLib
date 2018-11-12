@@ -31,40 +31,40 @@ namespace CNCLib.GCode
 {
     public class GCodeLoad
     {
-        public async Task<CommandList> Load(LoadOptions loadinfo, bool azure)
+        public async Task<CommandList> Load(LoadOptions loadInfo, bool azure)
         {
             if (azure)
             {
-                await LoadAzureAsync(loadinfo);
+                await LoadAzureAsync(loadInfo);
             }
             else
             {
-                LoadLocal(loadinfo);
+                LoadLocal(loadInfo);
             }
 
             return Commands;
         }
 
-        private readonly string webserverurl = @"https://cnclibwebapi.azurewebsites.net";
+        private readonly string webServerUrl = @"https://cnclibwebapi.azurewebsites.net";
         private readonly string api          = @"api/GCode";
 
         #region private
 
         private CommandList Commands { get; } = new CommandList();
 
-        private void LoadLocal(LoadOptions loadinfo)
+        private void LoadLocal(LoadOptions loadInfo)
         {
             try
             {
-                LoadBase load = LoadBase.Create(loadinfo);
+                LoadBase load = LoadBase.Create(loadInfo);
 
-                load.LoadOptions = loadinfo;
+                load.LoadOptions = loadInfo;
                 load.Load();
                 Commands.Clear();
                 Commands.AddRange(load.Commands);
-                if (!string.IsNullOrEmpty(loadinfo.GCodeWriteToFileName))
+                if (!string.IsNullOrEmpty(loadInfo.GCodeWriteToFileName))
                 {
-                    string gcodeFileName = Environment.ExpandEnvironmentVariables(loadinfo.GCodeWriteToFileName);
+                    string gcodeFileName = Environment.ExpandEnvironmentVariables(loadInfo.GCodeWriteToFileName);
                     WriteGCodeFile(gcodeFileName);
                     WriteCamBamFile(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb");
                     WriteImportInfoFile(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl");
@@ -149,7 +149,7 @@ namespace CNCLib.GCode
 
         private HttpClient CreateHttpClient()
         {
-            var client = new HttpClient { BaseAddress = new Uri(webserverurl) };
+            var client = new HttpClient { BaseAddress = new Uri(webServerUrl) };
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return client;

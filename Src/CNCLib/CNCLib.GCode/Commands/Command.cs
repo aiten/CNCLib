@@ -141,9 +141,9 @@ namespace CNCLib.GCode.Commands
             AddVariable(new Variable { Name = name });
         }
 
-        public void AddVariableParam(char name, string paramvalue, bool isTerm)
+        public void AddVariableParam(char name, string paramValue, bool isTerm)
         {
-            AddVariable(new Variable { Name = name, Parameter = paramvalue, ParameterIsTerm = isTerm });
+            AddVariable(new Variable { Name = name, Parameter = paramValue, ParameterIsTerm = isTerm });
         }
 
         public void AddVariable(char name, decimal value)
@@ -151,7 +151,7 @@ namespace CNCLib.GCode.Commands
             AddVariable(new Variable { Name = name, Value = (double) value });
         }
 
-        public double GetVariable(char name, CommandState state, double defaultvalue)
+        public double GetVariable(char name, CommandState state, double defaultValue)
         {
             double ret;
             if (TryGetVariable(name, state, out ret))
@@ -159,7 +159,7 @@ namespace CNCLib.GCode.Commands
                 return ret;
             }
 
-            return defaultvalue;
+            return defaultValue;
         }
 
         public Variable GetVariable(char name)
@@ -189,9 +189,9 @@ namespace CNCLib.GCode.Commands
                         return true;
                     }
                 }
-                else if (int.TryParse(var.Parameter, out int parameterno) && state.ParameterValues.ContainsKey(parameterno))
+                else if (int.TryParse(var.Parameter, out int parameterNo) && state.ParameterValues.ContainsKey(parameterNo))
                 {
-                    val = state.ParameterValues[parameterno];
+                    val = state.ParameterValues[parameterNo];
                     return true;
                 }
             }

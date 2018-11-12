@@ -92,10 +92,10 @@ namespace Framework.Dependency
         /// <returns></returns>
         public IDependencyContainer CreateChildContainer()
         {
-            var newcontainer = (UnityDependencyContainer) MemberwiseClone();
-            newcontainer._container = _container.CreateChildContainer();
+            var newContainer = (UnityDependencyContainer) MemberwiseClone();
+            newContainer._container = _container.CreateChildContainer();
 
-            return newcontainer;
+            return newContainer;
         }
 
         /// <summary>

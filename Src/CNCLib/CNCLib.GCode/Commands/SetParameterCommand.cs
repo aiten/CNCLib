@@ -102,27 +102,27 @@ namespace CNCLib.GCode.Commands
 
         public override void UpdateCalculatedEndPosition(CommandState state)
         {
-            if (ParameterNo >= 0 && EvaluateParameterValue(state, out double paramvalue))
+            if (ParameterNo >= 0 && EvaluateParameterValue(state, out double paramValue))
             {
-                ParameterValue = paramvalue;
+                ParameterValue = paramValue;
                 SetCommandState(state);
             }
 
             base.UpdateCalculatedEndPosition(state);
         }
 
-        private bool EvaluateParameterValue(CommandState state, out double paramvalue)
+        private bool EvaluateParameterValue(CommandState state, out double paramValue)
         {
-            var linestream       = new CommandStream() { Line                              = GCodeAdd };
-            var expressionparser = new GCodeExpressionParser(linestream) { ParameterValues = state.ParameterValues };
-            expressionparser.Parse();
-            if (expressionparser.IsError())
+            var lineStream       = new CommandStream() { Line                              = GCodeAdd };
+            var expressionParser = new GCodeExpressionParser(lineStream) { ParameterValues = state.ParameterValues };
+            expressionParser.Parse();
+            if (expressionParser.IsError())
             {
-                paramvalue = 0;
+                paramValue = 0;
                 return false;
             }
 
-            paramvalue = expressionparser.Answer;
+            paramValue = expressionParser.Answer;
             return true;
         }
 

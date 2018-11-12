@@ -39,7 +39,7 @@ namespace CNCLib.Wpf.Views
 
             InitializeComponent();
 
-            this.DefaulInitForBaseViewModel();
+            this.DefaultInitForBaseViewModel();
         }
 
         private void PropertyGrid_PreparePropertyItem(object sender, PropertyItemEventArgs e)

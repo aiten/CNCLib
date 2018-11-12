@@ -32,9 +32,9 @@ namespace Framework.Repository
 
         #region CRUD
 
-        protected virtual void AssignValuesGraph(TEntity trackingentity, TEntity values)
+        protected virtual void AssignValuesGraph(TEntity trackingEntity, TEntity values)
         {
-            SetValue(trackingentity, values);
+            SetValue(trackingEntity, values);
         }
 
         public void Add(TEntity entity)
@@ -78,9 +78,9 @@ namespace Framework.Repository
             SetValueGraph(entityInDb, values);
         }
 
-        public void SetValueGraph(TEntity trackingentity, TEntity values)
+        public void SetValueGraph(TEntity trackingEntity, TEntity values)
         {
-            AssignValuesGraph(trackingentity, values);
+            AssignValuesGraph(trackingEntity, values);
         }
 
         #endregion

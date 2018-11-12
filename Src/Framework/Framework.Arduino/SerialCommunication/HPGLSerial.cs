@@ -25,7 +25,7 @@ namespace Framework.Arduino.SerialCommunication
 
     public class HPGLSerial : Serial
     {
-        readonly int maxmessagelength = 128;
+        readonly int maxMessageLength = 128;
 
         public HPGLSerial(ILogger<Serial> logger) : base(logger)
         {
@@ -41,16 +41,16 @@ namespace Framework.Arduino.SerialCommunication
         protected string[] SplitHPGL(string line)
         {
             string[] cmds    = line.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            var      cmdlist = new List<string>();
+            var      cmdList = new List<string>();
 
             foreach (string l in cmds)
             {
                 string message = l;
-                while (message.Length > maxmessagelength)
+                while (message.Length > maxMessageLength)
                 {
                     string cmd = message.Substring(0, 2);
                     int    idx = 0;
-                    while (idx < maxmessagelength && idx != -1)
+                    while (idx < maxMessageLength && idx != -1)
                     {
                         idx = message.IndexOf(',', idx + 1);
                         idx = message.IndexOf(',', idx + 1);
@@ -61,15 +61,15 @@ namespace Framework.Arduino.SerialCommunication
                         break;
                     }
 
-                    string sendmessage = message.Substring(0, idx);
+                    string sendMessage = message.Substring(0, idx);
                     message = cmd + message.Substring(idx + 1);
-                    cmdlist.Add(sendmessage);
+                    cmdList.Add(sendMessage);
                 }
 
-                cmdlist.Add(message);
+                cmdList.Add(message);
             }
 
-            return cmdlist.ToArray();
+            return cmdList.ToArray();
         }
 
         #endregion

@@ -79,7 +79,7 @@ namespace Framework.Drawing
         }
 
         /// <summary>
-        /// Method to get encoder infor for given image format.
+        /// Method to get encoder info for given image format.
         /// </summary>
         /// <param name="format">Image format</param>
         /// <returns>image codec info.</returns>

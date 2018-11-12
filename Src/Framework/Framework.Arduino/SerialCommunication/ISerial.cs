@@ -89,7 +89,7 @@ namespace Framework.Arduino.SerialCommunication
         bool   CommandToUpper         { get; set; }
         bool   ErrorIsReply           { get; set; }
         int    MaxCommandHistoryCount { get; set; }
-        int    ArduinoBuffersize      { get; set; }
+        int    ArduinoBufferSize      { get; set; }
         int    ArduinoLineSize        { get; set; }
         bool   Aborted                { get; }
 

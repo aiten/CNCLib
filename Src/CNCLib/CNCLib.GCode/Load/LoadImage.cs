@@ -91,7 +91,7 @@ namespace CNCLib.GCode.Load
                     AddComment("Image Converted with NewspaperDither");
                     AddComment("GrayThreshold", LoadOptions.GrayThreshold);
                     AddComment("Dithersize",    LoadOptions.NewspaperDitherSize);
-                    b = new NewspapergDither
+                    b = new NewspaperDither
                     {
                         Graythreshold = LoadOptions.GrayThreshold,
                         DotSize       = LoadOptions.NewspaperDitherSize

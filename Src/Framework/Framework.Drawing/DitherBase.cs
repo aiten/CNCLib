@@ -27,7 +27,7 @@ namespace Framework.Drawing
         #region private members
 
         int   _bytesPerPixel = 4;
-        int   _scansize;
+        int   _scanSize;
         int[] _rgbValues;
 
         int          _addForA = 3;
@@ -131,7 +131,7 @@ namespace Framework.Drawing
 
         protected int ToByteIdx(int x, int y)
         {
-            return y * _scansize + x * _bytesPerPixel;
+            return y * _scanSize + x * _bytesPerPixel;
         }
 
         protected bool IsPixel(int x, int y)
@@ -189,9 +189,9 @@ namespace Framework.Drawing
             var        rect    = new Rectangle(0, 0, Width, Height);
             BitmapData bmpData = imageX.LockBits(rect, ImageLockMode.ReadOnly, imageX.PixelFormat);
             IntPtr     ptr     = bmpData.Scan0;
-            _scansize = Math.Abs(bmpData.Stride);
+            _scanSize = Math.Abs(bmpData.Stride);
 
-            int bytes     = _scansize * Height;
+            int bytes     = _scanSize * Height;
             var rgbValues = new byte[bytes];
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
             imageX.UnlockBits(bmpData);
@@ -250,9 +250,9 @@ namespace Framework.Drawing
 
             BitmapData bmpData   = b.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format1bppIndexed);
             IntPtr     ptr       = bmpData.Scan0;
-            int        scansize  = Math.Abs(bmpData.Stride);
-            int        bytes     = scansize * Height;
-            var        rgbvalues = new byte[bytes];
+            int        scanSize  = Math.Abs(bmpData.Stride);
+            int        bytes     = scanSize * Height;
+            var        rgbValues = new byte[bytes];
 
             for (var y = 0; y < Height; y++)
             {
@@ -261,12 +261,12 @@ namespace Framework.Drawing
                     Color currentPixel = GetPixel(x, y);
                     if (currentPixel.R != 0)
                     {
-                        rgbvalues[y * scansize + x / 8] += (byte) (0x80 >> (x % 8));
+                        rgbValues[y * scanSize + x / 8] += (byte) (0x80 >> (x % 8));
                     }
                 }
             }
 
-            System.Runtime.InteropServices.Marshal.Copy(rgbvalues, 0, ptr, bytes);
+            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
             b.UnlockBits(bmpData);
 
             b.SetResolution(bsrc.HorizontalResolution, bsrc.VerticalResolution);
@@ -288,9 +288,9 @@ namespace Framework.Drawing
 
             BitmapData bmpData   = b.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format4bppIndexed);
             IntPtr     ptr       = bmpData.Scan0;
-            int        scansize  = Math.Abs(bmpData.Stride);
-            int        bytes     = scansize * Height;
-            var        rgbvalues = new byte[bytes];
+            int        scanSize  = Math.Abs(bmpData.Stride);
+            int        bytes     = scanSize * Height;
+            var        rgbValues = new byte[bytes];
 
             for (var y = 0; y < Height; y++)
             {
@@ -299,12 +299,12 @@ namespace Framework.Drawing
                     Color currentPixel = GetPixel(x, y);
                     if (currentPixel.R != 0)
                     {
-                        rgbvalues[y * scansize + x / 2] += (x % 2 == 0) ? (byte) 0xf0 : (byte) 0xf;
+                        rgbValues[y * scanSize + x / 2] += (x % 2 == 0) ? (byte) 0xf0 : (byte) 0xf;
                     }
                 }
             }
 
-            System.Runtime.InteropServices.Marshal.Copy(rgbvalues, 0, ptr, bytes);
+            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
             b.UnlockBits(bmpData);
 
             b.SetResolution(bsrc.HorizontalResolution, bsrc.VerticalResolution);

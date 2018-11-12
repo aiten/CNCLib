@@ -190,7 +190,7 @@ namespace Framework.Parser
         {
             SkipSpaces();
 
-            int startidx = _idx;
+            int startIdx = _idx;
 
             if (NextChar == '-')
             {
@@ -202,7 +202,7 @@ namespace Framework.Parser
                 Next();
             }
 
-            string str = _line.Substring(startidx, _idx - startidx);
+            string str = _line.Substring(startIdx, _idx - startIdx);
             int    ret = int.Parse(str);
             SkipSpaces();
             return ret;
@@ -217,8 +217,8 @@ namespace Framework.Parser
         {
             isFloatingPoint = false;
             SkipSpaces();
-            bool negativ = NextChar == '-';
-            if (negativ)
+            bool negative = NextChar == '-';
+            if (negative)
             {
                 Next();
             }
@@ -242,7 +242,7 @@ namespace Framework.Parser
                 }
             }
 
-            if (negativ)
+            if (negative)
             {
                 val = -val;
             }
@@ -254,11 +254,11 @@ namespace Framework.Parser
 
         #region Read
 
-        public string ReadString(char[] termchar)
+        public string ReadString(char[] termChar)
         {
             var sb = new StringBuilder();
 
-            while (!IsEOF() && !termchar.Contains(NextChar))
+            while (!IsEOF() && !termChar.Contains(NextChar))
             {
                 sb.Append(NextChar);
                 Next();

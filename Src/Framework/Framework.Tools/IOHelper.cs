@@ -32,11 +32,11 @@ namespace Framework.Tools
             }
         }
 
-        public static string ExpandEnvironmentVariables(string filename)
+        public static string ExpandEnvironmentVariables(string fileName)
         {
-            string pathname = Environment.ExpandEnvironmentVariables(filename);
-            string fullpath = Path.GetFullPath(pathname);
-            return fullpath;
+            string pathName = Environment.ExpandEnvironmentVariables(fileName);
+            string fullPath = Path.GetFullPath(pathName);
+            return fullPath;
         }
     }
 }

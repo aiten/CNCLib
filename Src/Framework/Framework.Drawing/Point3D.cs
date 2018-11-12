@@ -53,40 +53,25 @@ namespace Framework.Drawing
         {
             get
             {
-                if (axis == 0)
+                switch (axis)
                 {
-                    return X;
+                    case 0:  return X;
+                    case 1:  return Y;
+                    case 2:  return Z;
+                    default: throw new ArgumentOutOfRangeException();
                 }
-
-                if (axis == 1)
-                {
-                    return Y;
-                }
-
-                if (axis == 2)
-                {
-                    return Z;
-                }
-
-                throw new ArgumentOutOfRangeException();
             }
             set
             {
-                if (axis == 0)
+                switch (axis)
                 {
-                    X = value;
-                }
-                else if (axis == 1)
-                {
-                    Y = value;
-                }
-                else if (axis == 2)
-                {
-                    Z = value;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException();
+                    case 0:  X = value;
+                        break;
+                    case 1:  Y = value;
+                        break;
+                    case 2:  Z = value;
+                        break;
+                    default: throw new ArgumentOutOfRangeException();
                 }
             }
         }

@@ -36,7 +36,7 @@ namespace CNCLib.Serial.Server.SerialPort
                 Serial.CommandQueueEmpty += async (sender, e) => { await Startup.Hub.Clients.All.SendAsync("queueEmpty", Id); };
                 Serial.CommandQueueChanged += (sender, e) =>
                 {
-                    _delayExecuteQueueChanged.Execute(1000, () => _pendingLastQueueLength = e.QueueLenght,
+                    _delayExecuteQueueChanged.Execute(1000, () => _pendingLastQueueLength = e.QueueLength,
                                                       () => { Startup.Hub.Clients.All.SendAsync("queueChanged", Id, _pendingLastQueueLength); });
                 };
                 Serial.CommandSending += (sender, e) =>

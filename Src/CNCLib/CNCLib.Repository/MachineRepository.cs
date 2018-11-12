@@ -66,11 +66,11 @@ namespace CNCLib.Repository
             return query.Where(m => key.Contains(m.MachineId));
         }
 
-        protected override void AssignValuesGraph(Machine trackingentity, Machine values)
+        protected override void AssignValuesGraph(Machine trackingEntity, Machine values)
         {
-            base.AssignValuesGraph(trackingentity, values);
-            Sync(trackingentity.MachineCommands,     values.MachineCommands,     (x, y) => x.MachineCommandId > 0 && x.MachineCommandId == y.MachineCommandId);
-            Sync(trackingentity.MachineInitCommands, values.MachineInitCommands, (x, y) => x.MachineInitCommandId > 0 && x.MachineInitCommandId == y.MachineInitCommandId);
+            base.AssignValuesGraph(trackingEntity, values);
+            Sync(trackingEntity.MachineCommands,     values.MachineCommands,     (x, y) => x.MachineCommandId > 0 && x.MachineCommandId == y.MachineCommandId);
+            Sync(trackingEntity.MachineInitCommands, values.MachineInitCommands, (x, y) => x.MachineInitCommandId > 0 && x.MachineInitCommandId == y.MachineInitCommandId);
         }
 
         public async Task<IEnumerable<MachineCommand>> GetMachineCommands(int machineId)

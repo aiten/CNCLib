@@ -37,8 +37,8 @@ namespace CNCLib.Wpf.Views
 
             InitializeComponent();
 
-            vm.SD.DefaulInitForBaseViewModel();
-            this.DefaulInitForBaseViewModel();
+            vm.SD.DefaultInitForBaseViewModel();
+            this.DefaultInitForBaseViewModel();
         }
 
         public bool IsConnected

@@ -41,7 +41,7 @@ namespace Framework.Web.Controllers
             return $"{controller.Request.Scheme}://{controller.Request.Host}{controller.Request.Path}{controller.Request.QueryString}";
         }
 
-        public static string GetCurrentUri(this Controller controller, string removetraining)
+        public static string GetCurrentUri(this Controller controller, string removeTraining)
         {
             if (controller.Request == null)
             {
@@ -49,8 +49,8 @@ namespace Framework.Web.Controllers
                 return "dummy";
             }
 
-            string totaluri = controller.GetCurrentUri();
-            return totaluri.Substring(0, totaluri.Length - removetraining.Length);
+            string totalUri = controller.GetCurrentUri();
+            return totalUri.Substring(0, totalUri.Length - removeTraining.Length);
         }
 
         public static async Task<ActionResult<T>> NotFoundOrOk<T>(this Controller controller, T obj)
@@ -94,21 +94,21 @@ namespace Framework.Web.Controllers
 
         public static async Task<ActionResult<T>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, T value) where T : class where TKey : IComparable
         {
-            TKey   newid  = await manager.Add(value);
-            string newuri = controller.GetCurrentUri() + "/" + newid;
-            return controller.Created(newuri, await manager.Get(newid));
+            TKey   newId  = await manager.Add(value);
+            string newUri = controller.GetCurrentUri() + "/" + newId;
+            return controller.Created(newUri, await manager.Get(newId));
         }
 
         public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
             where T : class where TKey : IComparable
         {
-            IEnumerable<TKey> newids     = await manager.Add(values);
-            IEnumerable<T>    newobjects = await manager.Get(newids);
+            IEnumerable<TKey> newIds     = await manager.Add(values);
+            IEnumerable<T>    newObjects = await manager.Get(newIds);
 
             string uri     = controller.GetCurrentUri("/bulk");
-            var    newuris = newids.Select(id => uri + "/" + id);
-            var    results = newids.Select((id, idx) => new UriAndValue<T>() { Uri = uri + "/" + id, Value = newobjects.ElementAt(idx) });
-            return controller.Ok(newuris);
+            var    newUris = newIds.Select(id => uri + "/" + id);
+            var    results = newIds.Select((id, idx) => new UriAndValue<T>() { Uri = uri + "/" + id, Value = newObjects.ElementAt(idx) });
+            return controller.Ok(newUris);
         }
 
         #endregion
@@ -120,7 +120,7 @@ namespace Framework.Web.Controllers
         {
             if (idFromUri.CompareTo(idFromValue) != 0)
             {
-                return controller.BadRequest("Missmatch between id and dto.Id");
+                return controller.BadRequest("Mismatch between id and dto.Id");
             }
 
             await manager.Update(value);

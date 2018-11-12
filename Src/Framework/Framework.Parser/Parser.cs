@@ -52,7 +52,7 @@ namespace Framework.Parser
         public abstract void Parse();
 
 
-        protected bool IsToken(string b, bool expectdel, bool ignorecase)
+        protected bool IsToken(string b, bool expectDel, bool ignoreCase)
         {
             return _reader.IsCommand(b);
         }

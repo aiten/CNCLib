@@ -77,7 +77,7 @@ namespace Framework.Test.Repository
                 GetEntityKey(entity).Should().Be(key);
             }
 
-            // update (with methode update)
+            // update (with method update)
             using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {

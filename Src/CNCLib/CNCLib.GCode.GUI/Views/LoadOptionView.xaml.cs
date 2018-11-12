@@ -37,7 +37,7 @@ namespace CNCLib.GCode.GUI.Views
             var vm = Dependency.Resolve<LoadOptionViewModel>();
             DataContext = vm;
 
-            this.DefaulInitForBaseViewModel();
+            this.DefaultInitForBaseViewModel();
         }
     }
 }

@@ -37,8 +37,8 @@ namespace Framework.Contracts.Repository
         void AddRange(IEnumerable<TEntity>    entities);
         void DeleteRange(IEnumerable<TEntity> entities);
 
-        void SetValue(TEntity      trackingentity, TEntity values);
-        void SetValueGraph(TEntity trackingentity, TEntity values);
+        void SetValue(TEntity      trackingEntity, TEntity values);
+        void SetValueGraph(TEntity trackingEntity, TEntity values);
 
         void SetState(TEntity entity, EntityState state);
     }

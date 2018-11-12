@@ -23,7 +23,7 @@ namespace Framework.Dependency
     using Unity;
 
     /// <summary>
-    /// Dependency Contaienr for use in Live. Throws an exception when a Type cannot be resolved.
+    /// Dependency Container for use in Live. Throws an exception when a Type cannot be resolved.
     /// </summary>
     public sealed class LiveDependencyContainer : UnityDependencyContainer
     {

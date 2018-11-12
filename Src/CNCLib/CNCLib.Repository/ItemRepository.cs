@@ -75,10 +75,10 @@ namespace CNCLib.Repository
             return await QueryWithOptional.Where(m => m.ClassName == typeidstring).Include(d => d.ItemProperties).ToListAsync();
         }
 
-        protected override void AssignValuesGraph(Item trackingentity, Item values)
+        protected override void AssignValuesGraph(Item trackingEntity, Item values)
         {
-            base.AssignValuesGraph(trackingentity, values);
-            Sync(trackingentity.ItemProperties, values.ItemProperties, (x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name);
+            base.AssignValuesGraph(trackingEntity, values);
+            Sync(trackingEntity.ItemProperties, values.ItemProperties, (x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace CNCLib.Wpf.Views
 
             InitializeComponent();
 
-            this.DefaulInitForBaseViewModel();
+            this.DefaultInitForBaseViewModel();
         }
     }
 }

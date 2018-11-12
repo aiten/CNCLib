@@ -35,7 +35,7 @@ namespace Framework.Dependency
         IDependencyContainer RegisterInstance(Type typeFrom, object obj);
 
         /// <summary>
-        /// Register typefrom to typeTo 
+        /// Register typeFrom to typeTo 
         /// </summary>
         /// <param name="typeFrom"></param>
         /// <param name="typeTo"></param>
@@ -43,7 +43,7 @@ namespace Framework.Dependency
         IDependencyContainer RegisterType(Type typeFrom, Type typeTo);
 
         /// <summary>
-        /// Register typefrom to typeTo 
+        /// Register typeFrom to typeTo 
         /// </summary>
         /// <param name="typeFrom"></param>
         /// <param name="typeTo"></param>

@@ -87,13 +87,13 @@ namespace CNCLib.GCode.GUI.Controls
         private void OnZoomChanged(DependencyPropertyChangedEventArgs e)
         {
             var center    = new System.Drawing.PointF((float) (ActualWidth / 2.0), (float) (ActualHeight / 2.0));
-            var centerold = _bitmapDraw.FromClient(center);
+            var centerOld = _bitmapDraw.FromClient(center);
 
             _bitmapDraw.Zoom = (double) e.NewValue;
 
-            var centernew = _bitmapDraw.FromClient(center);
-            OffsetX += centerold.X0 - centernew.X0;
-            OffsetY -= centerold.Y0 - centernew.Y0;
+            var centerNew = _bitmapDraw.FromClient(center);
+            OffsetX += centerOld.X0 - centerNew.X0;
+            OffsetY -= centerOld.Y0 - centerNew.Y0;
 
             // adjust x/y to center again
             InvalidateVisual();

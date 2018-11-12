@@ -29,6 +29,6 @@ namespace Framework.Arduino.SerialCommunication
         ReplyOK     = 1,
         ReplyError  = 2,
         ReplyInfo   = 4,
-        ReplyUnkown = 8
+        ReplyUnknown = 8
     }
 }

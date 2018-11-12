@@ -23,17 +23,17 @@ namespace CNCLib.GCode.Commands
     [AttributeUsage(AttributeTargets.Class)]
     public class IsGCommandAttribute : Attribute
     {
-        public bool   IsGComamnd { get; set; }
+        public bool   IsGCommand { get; set; }
         public string RegisterAs { get; set; }
 
         public IsGCommandAttribute()
         {
-            IsGComamnd = true;
+            IsGCommand = true;
         }
 
-        public IsGCommandAttribute(string registeras)
+        public IsGCommandAttribute(string registerAs)
         {
-            RegisterAs = registeras;
+            RegisterAs = registerAs;
         }
     }
 }

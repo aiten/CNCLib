@@ -29,7 +29,7 @@ namespace Framework.Arduino.SerialCommunication
         const int DefaultTimeout = 10 * 60 * 1000;
 
         /// <summary>
-        /// Send command and wait until the command is transfered and we got a reply (no command pending)
+        /// Send command and wait until the command is transferred and we got a reply (no command pending)
         /// </summary>
         /// <param name="serial"></param>
         /// <param name="line">command line to send</param>
@@ -39,7 +39,7 @@ namespace Framework.Arduino.SerialCommunication
         }
 
         /// <summary>
-        /// Send command and wait until the command is transfered and we got a reply (no command pending)
+        /// Send command and wait until the command is transferred and we got a reply (no command pending)
         /// </summary>
         /// <param name="serial"></param>
         /// <param name="line">command line to send</param>
@@ -50,7 +50,7 @@ namespace Framework.Arduino.SerialCommunication
         }
 
         /// <summary>
-        /// Send multiple command lines to the arduino. Wait until the commands are transferrd and we got a reply (no command pending)
+        /// Send multiple command lines to the arduino. Wait until the commands are transferred and we got a reply (no command pending)
         /// </summary>
         /// <param name="serial"></param>
         /// <param name="commands"></param>
@@ -71,7 +71,7 @@ namespace Framework.Arduino.SerialCommunication
 
 
         /// <summary>
-        /// Send commands stored in a file. Wait until the commands are transferrd and we got a reply (no command pending)
+        /// Send commands stored in a file. Wait until the commands are transferred and we got a reply (no command pending)
         /// </summary>
         /// <param name="serial"></param>
         /// <param name="filename">used for a StreamReader</param>
@@ -84,7 +84,7 @@ namespace Framework.Arduino.SerialCommunication
         }
 
         /// <summary>
-        /// Send commands stored in a file. Wait until the commands are transferrd and we got a reply (no command pending)
+        /// Send commands stored in a file. Wait until the commands are transferred and we got a reply (no command pending)
         /// </summary>
         /// <param name="serial"></param>
         /// <param name="filename">used for a StreamReader</param>
@@ -128,7 +128,7 @@ namespace Framework.Arduino.SerialCommunication
         }
 
         /// <summary>
-        /// write all pending (command with no reliy) to file
+        /// write all pending (command with no reply) to file
         /// Intended to be used if user abort queue because of an error
         /// </summary>
         /// <param name="serial"></param>

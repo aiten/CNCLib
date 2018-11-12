@@ -22,19 +22,19 @@ namespace CNCLib.GCode
 {
     public class GCodeHelper
     {
-        public static int AxisNameToIndex(string axisname)
+        public static int AxisNameToIndex(string axisName)
         {
-            if (axisname.Length == 1)
+            if (axisName.Length == 1)
             {
-                return AxisNameToIndex(axisname[0]);
+                return AxisNameToIndex(axisName[0]);
             }
 
             return -1;
         }
 
-        public static int AxisNameToIndex(char axisname)
+        public static int AxisNameToIndex(char axisName)
         {
-            switch (char.ToUpper(axisname))
+            switch (char.ToUpper(axisName))
             {
                 case 'X': return 0;
                 case 'Y': return 1;
