@@ -54,8 +54,8 @@ namespace CNCLib.GCode.Load
                     Y = list.Where(x => x.IsPenCommand).Max(c => c.PointTo.Y)
                 };
 
-                decimal sizex = (decimal) (maxPt.X0 - minPt.X0);
-                decimal sizey = (decimal) (maxPt.Y0 - minPt.Y0);
+                decimal sizeX = (decimal) (maxPt.X0 - minPt.X0);
+                decimal sizeY = (decimal) (maxPt.Y0 - minPt.Y0);
 
                 decimal borderX = LoadX.LoadOptions.AutoScaleBorderDistX;
                 decimal borderY = LoadX.LoadOptions.AutoScaleBorderDistY;
@@ -63,8 +63,8 @@ namespace CNCLib.GCode.Load
                 decimal destSizeX = LoadX.LoadOptions.AutoScaleSizeX - 2m * borderX;
                 decimal destSizeY = LoadX.LoadOptions.AutoScaleSizeY - 2m * borderY;
 
-                LoadX.LoadOptions.ScaleX = destSizeX / sizex;
-                LoadX.LoadOptions.ScaleY = destSizeY / sizey;
+                LoadX.LoadOptions.ScaleX = destSizeX / sizeX;
+                LoadX.LoadOptions.ScaleY = destSizeY / sizeY;
 
                 if (LoadX.LoadOptions.AutoScaleKeepRatio)
                 {
@@ -72,8 +72,8 @@ namespace CNCLib.GCode.Load
 
                     if (LoadX.LoadOptions.AutoScaleCenter)
                     {
-                        decimal sizeXscaled = LoadX.LoadOptions.ScaleX * sizex;
-                        decimal sizeYscaled = LoadX.LoadOptions.ScaleY * sizey;
+                        decimal sizeXscaled = LoadX.LoadOptions.ScaleX * sizeX;
+                        decimal sizeYscaled = LoadX.LoadOptions.ScaleY * sizeY;
 
                         borderX += (destSizeX - sizeXscaled) / 2m;
                         borderY += (destSizeY - sizeYscaled) / 2m;

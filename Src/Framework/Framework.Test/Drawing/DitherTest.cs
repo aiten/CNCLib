@@ -58,15 +58,15 @@ namespace Framework.Test.Drawing
         {
             var dt = new DitherTestClass();
 
-            const int XSIZE = 100;
-            const int YSIZE = 100;
+            const int WIDTH = 100;
+            const int HEIGHT = 100;
 
-            var b1 = new Bitmap(XSIZE, YSIZE);
+            var b1 = new Bitmap(WIDTH, HEIGHT);
             var b2 = dt.Process(b1);
 
-            for (int x = 0; x < XSIZE; x++)
+            for (int x = 0; x < WIDTH; x++)
             {
-                for (int y = 0; y < YSIZE; y++)
+                for (int y = 0; y < HEIGHT; y++)
                 {
                     Color col = b2.GetPixel(x, y);
 
@@ -92,18 +92,18 @@ namespace Framework.Test.Drawing
         {
             var dt = new FloydSteinbergDither();
 
-            const int XSIZE = 100;
-            const int YSIZE = 100;
+            const int WIDTH = 100;
+            const int HEIGHT = 100;
 
-            var b1 = new Bitmap(XSIZE, YSIZE);
+            var b1 = new Bitmap(WIDTH, HEIGHT);
 
             b1.SetPixel(50, 50, Color.FromArgb(255, 255, 255, 255));
 
             var b2 = dt.Process(b1);
 
-            for (int x = 0; x < XSIZE; x++)
+            for (int x = 0; x < WIDTH; x++)
             {
-                for (int y = 0; y < YSIZE; y++)
+                for (int y = 0; y < HEIGHT; y++)
                 {
                     Color col = b2.GetPixel(x, y);
 
@@ -131,10 +131,10 @@ namespace Framework.Test.Drawing
         {
             var dt = new FloydSteinbergDither();
 
-            const int XSIZE = 100;
-            const int YSIZE = 100;
+            const int WIDTH = 100;
+            const int HEIGHT = 100;
 
-            var b1 = new Bitmap(XSIZE, YSIZE, PixelFormat.Format32bppArgb);
+            var b1 = new Bitmap(WIDTH, HEIGHT, PixelFormat.Format32bppArgb);
 
             b1.SetPixel(50, 50, Color.FromArgb(255, 127, 127, 127));
             b1.SetPixel(50, 51, Color.FromArgb(255, 127, 127, 127));
@@ -143,9 +143,9 @@ namespace Framework.Test.Drawing
 
             var b2 = dt.Process(b1);
 
-            for (int x = 0; x < XSIZE; x++)
+            for (int x = 0; x < WIDTH; x++)
             {
-                for (int y = 0; y < YSIZE; y++)
+                for (int y = 0; y < HEIGHT; y++)
                 {
                     Color col = b2.GetPixel(x, y);
 

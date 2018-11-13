@@ -260,7 +260,7 @@ namespace CNCLib.GCode.GUI
             {
                 if (_renderSize.Height != 0 && value.Width > 0 && value.Height > 0)
                 {
-                    //RecalcClientCoord();
+                    //ReCalcClientCoordinates();
                 }
 
                 _renderSize = value;
@@ -359,13 +359,13 @@ namespace CNCLib.GCode.GUI
             double notRotatedAngel = Math.Atan2(notRotatedY, notRotatedX);
             double c               = Math.Sqrt(notRotatedX * notRotatedX + notRotatedY * notRotatedY);
 
-            double anglec = Math.PI - (_rotateAngleY - _rotateAngleX);
-            double anglea = _rotateAngleY - notRotatedAngel;
-            double angleb = notRotatedAngel - _rotateAngleX;
-            double rateC  = c / Math.Sin(anglec);
+            double angleC = Math.PI - (_rotateAngleY - _rotateAngleX);
+            double angleA = _rotateAngleY - notRotatedAngel;
+            double angleB = notRotatedAngel - _rotateAngleX;
+            double rateC  = c / Math.Sin(angleC);
 
-            double a = Math.Sin(anglea) * rateC;
-            double b = Math.Sin(angleb) * rateC;
+            double a = Math.Sin(angleA) * rateC;
+            double b = Math.Sin(angleB) * rateC;
 
             return new Point3D(z * _rotateZscaleX + a / _rotateScaleX, z * _rotateZscaleY + b / _rotateScaleY, z);
         }
@@ -590,7 +590,7 @@ namespace CNCLib.GCode.GUI
             }
         }
 
-        public void DrawEllipse(Command cmd, object param, DrawType drawType, Point3D ptCenter, int xradius, int yradius)
+        public void DrawEllipse(Command cmd, object param, DrawType drawType, Point3D ptCenter, int radiusX, int radiusY)
         {
             if (drawType == DrawType.NoDraw)
             {
@@ -599,7 +599,7 @@ namespace CNCLib.GCode.GUI
 
             var e    = (PaintEventArgs) param;
             var from = ToClientF(ptCenter);
-            e.Graphics.DrawEllipse(GetPen(drawType, LineDrawType.Ellipse), from.X - xradius / 2, from.Y - yradius / 2, xradius, yradius);
+            e.Graphics.DrawEllipse(GetPen(drawType, LineDrawType.Ellipse), from.X - radiusX / 2, from.Y - radiusY / 2, radiusX, radiusY);
         }
 
         public void DrawArc(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo, Point3D ptIIJ, bool clockwise, Pane pane)
@@ -721,9 +721,9 @@ namespace CNCLib.GCode.GUI
                     if (count < arc_correction)
                     {
                         // Apply vector rotation matrix 
-                        double r_axisi = r_axis0 * sin_T + r_axis1 * cos_T;
+                        double r_axisI = r_axis0 * sin_T + r_axis1 * cos_T;
                         r_axis0 = r_axis0 * cos_T - r_axis1 * sin_T;
-                        r_axis1 = r_axisi;
+                        r_axis1 = r_axisI;
                         count++;
                     }
                     else

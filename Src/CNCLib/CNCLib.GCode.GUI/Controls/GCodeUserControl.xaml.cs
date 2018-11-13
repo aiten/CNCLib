@@ -138,7 +138,6 @@ namespace CNCLib.GCode.GUI.Controls
         {
             var gcodeControl = (GCodeUserControl) dependencyObject;
             gcodeControl._bitmapDraw.Rotate = gcodeControl._rotate = new Rotate3D((double) e.NewValue, gcodeControl.RotateVector);
-            //gcodeControl._rotateInvers = new Rotate3D(-(double)e.NewValue, gcodeControl._rotaryVector);
             gcodeControl.InvalidateVisual();
         }
 

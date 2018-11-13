@@ -74,7 +74,7 @@ namespace Framework.Drawing
 
         #region properties
 
-        public int Graythreshold { get; set; } = 127;
+        public int GrayThreshold { get; set; } = 127;
 
         #endregion
 
@@ -121,7 +121,7 @@ namespace Framework.Drawing
 
         protected Color FindNearestColorGrayScale(Color col)
         {
-            if (Luminance(col) > Graythreshold)
+            if (Luminance(col) > GrayThreshold)
             {
                 return new Color { R = 255, G = 255, B = 255, A = 255 };
             }

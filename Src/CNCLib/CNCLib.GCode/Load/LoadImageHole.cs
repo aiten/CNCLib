@@ -101,11 +101,11 @@ namespace CNCLib.GCode.Load
                     {
                         // Rect (x1,y1, ImageToDotSizeX, ImageToDotSizeY)  is on printing area
 
-                        double posx = x * (PixelSizeX + PixelDistX) + ShiftX + PixelDistX / 2;
-                        double posy = y * (PixelSizeY + PixelDistY) + ShiftY + PixelDistY / 2;
+                        double posX = x * (PixelSizeX + PixelDistX) + ShiftX + PixelDistX / 2;
+                        double posY = y * (PixelSizeY + PixelDistY) + ShiftY + PixelDistY / 2;
                         // x,y left,top corner
 
-                        AddCommandX(posx, topPos - posy, GetDotSize(x, y), HoleType, ix);
+                        AddCommandX(posX, topPos - posY, GetDotSize(x, y), HoleType, ix);
                     }
                 }
 
@@ -115,7 +115,7 @@ namespace CNCLib.GCode.Load
 
         private double ToXPos(int ix, int iy, ref double y)
         {
-            double xdiff = 0;
+            double diffX = 0;
 
             switch (HoleType)
             {
@@ -126,25 +126,25 @@ namespace CNCLib.GCode.Load
                 case LoadOptions.EHoleType.Diamond:
                     if (iy % 2 == 0 && UseYShift)
                     {
-                        xdiff = ImageToDotSizeX / 2.0;
+                        diffX = ImageToDotSizeX / 2.0;
                     }
 
                     break;
             }
 
-            return (ix * ImageToDotSizeX + xdiff);
+            return (ix * ImageToDotSizeX + diffX);
         }
 
         private double ToYPos(int iy)
         {
-            double ypos = iy * ImageToDotSizeY;
+            double posY = iy * ImageToDotSizeY;
             switch (HoleType)
             {
                 case LoadOptions.EHoleType.Hexagon:
                 case LoadOptions.EHoleType.Circle:
                     if (UseYShift)
                     {
-                        return (ypos * 0.86602540378443864676372317075294);
+                        return (posY * 0.86602540378443864676372317075294);
                     }
 
                     break;
@@ -152,13 +152,13 @@ namespace CNCLib.GCode.Load
                 case LoadOptions.EHoleType.Diamond:
                     if (UseYShift)
                     {
-                        return (ypos * 0.5);
+                        return (posY * 0.5);
                     }
 
                     break;
             }
 
-            return (ypos);
+            return (posY);
         }
 
         private double FindNearestColorGrayScale(byte colorR, byte colorG, byte colorB)

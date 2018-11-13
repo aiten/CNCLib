@@ -85,7 +85,7 @@ namespace CNCLib.GCode.Load
                 case LoadOptions.DitherFilter.FloydSteinbergDither:
                     AddComment("Image Converted with FloydSteinbergDither");
                     AddComment("GrayThreshold", LoadOptions.GrayThreshold);
-                    b = new FloydSteinbergDither { Graythreshold = LoadOptions.GrayThreshold }.Process(b);
+                    b = new FloydSteinbergDither { GrayThreshold = LoadOptions.GrayThreshold }.Process(b);
                     break;
                 case LoadOptions.DitherFilter.NewspaperDither:
                     AddComment("Image Converted with NewspaperDither");
@@ -93,7 +93,7 @@ namespace CNCLib.GCode.Load
                     AddComment("Dithersize",    LoadOptions.NewspaperDitherSize);
                     b = new NewspaperDither
                     {
-                        Graythreshold = LoadOptions.GrayThreshold,
+                        GrayThreshold = LoadOptions.GrayThreshold,
                         DotSize       = LoadOptions.NewspaperDitherSize
                     }.Process(b);
                     break;
@@ -106,7 +106,7 @@ namespace CNCLib.GCode.Load
         {
             ForceLaserOff();
             int black = System.Drawing.Color.Black.ToArgb();
-            int lasty = -1;
+            int lastY = -1;
 
             for (int y = 0; y < SizeY; y++)
             {
@@ -126,7 +126,7 @@ namespace CNCLib.GCode.Load
 
                     if (isLaserOn != wasLaserOn && x != 0)
                     {
-                        AddCommandX(x, y, ref lasty, wasLaserOn);
+                        AddCommandX(x, y, ref lastY, wasLaserOn);
                         wasLaserOn = isLaserOn;
                     }
                     else if (x == 0)
@@ -134,7 +134,7 @@ namespace CNCLib.GCode.Load
                         wasLaserOn = isLaserOn;
                         if (isLaserOn)
                         {
-                            AddCommandX(x, y, ref lasty, false);
+                            AddCommandX(x, y, ref lastY, false);
                         }
                     }
 
@@ -152,26 +152,26 @@ namespace CNCLib.GCode.Load
 
                 if (lastLaserOn)
                 {
-                    AddCommandX(SizeX, y, ref lasty, wasLaserOn);
+                    AddCommandX(SizeX, y, ref lastY, wasLaserOn);
                 }
 
                 LaserOff();
             }
         }
 
-        private void AddCommandX(int x, int y, ref int lasty, bool laserOn)
+        private void AddCommandX(int x, int y, ref int lastY, bool laserOn)
         {
             // start laser a bit later but switch it off earlier
             double shift = laserOn ? _shiftLaserOff : _shiftLaserOn;
 
-            if (y != lasty)
+            if (y != lastY)
             {
                 var    cy = new G00Command();
                 double x1 = (x * PixelSizeX) + ShiftX + shift - (double) LoadOptions.LaserAccDist;
 
                 cy.AddVariable('X', ToGCode(x1));
                 cy.AddVariable('Y', ToGCode((SizeY - y - 1) * PixelSizeY + ShiftY));
-                lasty = y;
+                lastY = y;
                 Commands.Add(cy);
             }
 
