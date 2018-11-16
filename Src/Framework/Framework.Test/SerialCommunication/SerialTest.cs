@@ -31,21 +31,23 @@ namespace Framework.Test.SerialCommunication
     using Framework.Arduino.SerialCommunication;
     using Framework.Contracts.Logging;
     using Framework.Dependency;
-    using Framework.Logging;
+    using Logging;
 
     [TestClass]
     public class SerialTest : UnitTestBase
     {
-        private ISerialPort CreateSerialPortMock(ISerial serial, string[] responseStrings)
+        private ISerialPort CreateSerialPortMock(ISerial xxxx, string[] responseStrings)
         {
             var serialPort = Substitute.For<ISerialPort>();
             var baseStream = Substitute.For<MemoryStream>();
+
             serialPort.BaseStream.ReturnsForAnyArgs(baseStream);
+
             Encoding encoding = Encoding.GetEncoding(1200);
             serialPort.Encoding.ReturnsForAnyArgs(encoding);
 
-            Framework.Dependency.Dependency.Container.ResetContainer();
-            Framework.Dependency.Dependency.Container.RegisterInstance(serialPort);
+            Dependency.Container.ResetContainer();
+            Dependency.Container.RegisterInstance(serialPort);
 
             int  resultIdx = 0;
             bool sendReply = false;
@@ -80,6 +82,14 @@ namespace Framework.Test.SerialCommunication
             return serialPort;
         }
 
+        private void ReleaseSerialPortMock()
+        {
+            var serialPort = Dependency.Resolve<ISerialPort>();
+            Dependency.Container.ResetContainer();
+
+            serialPort.Dispose();
+        }
+
         private ILogger<Serial> CreateLogger()
         {
             return new Logger<Serial>();
@@ -90,12 +100,14 @@ namespace Framework.Test.SerialCommunication
         {
             var serialPort = Substitute.For<ISerialPort>();
             var baseStream = Substitute.For<MemoryStream>();
+
             serialPort.BaseStream.ReturnsForAnyArgs(baseStream);
+
             Encoding encoding = Encoding.GetEncoding(12000);
             serialPort.Encoding.ReturnsForAnyArgs(encoding);
 
-            Framework.Dependency.Dependency.Container.ResetContainer();
-            Framework.Dependency.Dependency.Container.RegisterInstance(serialPort);
+            Dependency.Container.ResetContainer();
+            Dependency.Container.RegisterInstance(serialPort);
 
             using (var serial = new Serial(CreateLogger()))
             {
@@ -104,6 +116,9 @@ namespace Framework.Test.SerialCommunication
 
                 await serial.DisconnectAsync();
             }
+
+            Dependency.Container.ResetContainer();
+            serialPort.Dispose();
         }
 
         [TestMethod]
@@ -125,6 +140,8 @@ namespace Framework.Test.SerialCommunication
                 await serialPort.BaseStream.Received(1).WriteAsync(Arg.Is<byte[]>(e => (char) e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
                 await Task.FromResult(0);
             }
+
+            ReleaseSerialPortMock();
         }
 
         [TestMethod]
@@ -146,6 +163,8 @@ namespace Framework.Test.SerialCommunication
                 await serialPort.BaseStream.Received(2).WriteAsync(Arg.Is<byte[]>(e => (char) e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
                 await Task.FromResult(0);
             }
+
+            ReleaseSerialPortMock();
         }
 
         #region events
@@ -215,6 +234,8 @@ namespace Framework.Test.SerialCommunication
 
                 await Task.FromResult(0);
             }
+
+            ReleaseSerialPortMock();
         }
 
         [TestMethod]
@@ -250,6 +271,8 @@ namespace Framework.Test.SerialCommunication
 
                 await Task.FromResult(0);
             }
+
+            ReleaseSerialPortMock();
         }
 
         [TestMethod]
@@ -287,6 +310,8 @@ namespace Framework.Test.SerialCommunication
 
                 await Task.FromResult(0);
             }
+
+            ReleaseSerialPortMock();
         }
 
         [TestMethod]
@@ -322,6 +347,8 @@ namespace Framework.Test.SerialCommunication
                 eventCalls.EventCommandQueueChanged.Should().Be(2);
                 eventCalls.EventCommandQueueEmpty.Should().Be(2);
             }
+
+            ReleaseSerialPortMock();
         }
 
         [TestMethod]
@@ -357,6 +384,8 @@ namespace Framework.Test.SerialCommunication
                 eventCalls.EventCommandQueueChanged.Should().Be(2);
                 eventCalls.EventCommandQueueEmpty.Should().Be(2);
             }
+
+            ReleaseSerialPortMock();
         }
 
         #endregion
