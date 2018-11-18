@@ -36,7 +36,10 @@ namespace Framework.Test.SerialCommunication
     [TestClass]
     public class SerialTest : UnitTestBase
     {
-        private ISerialPort CreateSerialPortMock(ISerial xxxx, string[] responseStrings)
+        int  _resultIdx;
+        bool _sendReply;
+
+        private ISerialPort CreateSerialPortMock(string[] responseStrings)
         {
             var serialPort = Substitute.For<ISerialPort>();
             var baseStream = Substitute.For<MemoryStream>();
@@ -49,24 +52,24 @@ namespace Framework.Test.SerialCommunication
             Dependency.Container.ResetContainer();
             Dependency.Container.RegisterInstance(serialPort);
 
-            int  resultIdx = 0;
-            bool sendReply = false;
+            _resultIdx = 0;
+            _sendReply = false;
 
             baseStream.WriteAsync(Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
                 ReturnsForAnyArgs(async x =>
                 {
-                    sendReply = true;
+                    _sendReply = true;
                     await Task.FromResult(0);
                 });
 
             baseStream.ReadAsync(Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
                 ReturnsForAnyArgs(async x =>
                 {
-                    if (sendReply)
+                    if (_sendReply)
                     {
                         await Task.Delay(10);
-                        sendReply = false;
-                        byte[] encodedStr = encoding.GetBytes(responseStrings[resultIdx++]);
+                        _sendReply = false;
+                        byte[] encodedStr = encoding.GetBytes(responseStrings[_resultIdx++]);
                         for (int i = 0; i < encodedStr.Length; i++)
                         {
                             ((byte[]) x[0])[i] = encodedStr[i];
@@ -80,14 +83,6 @@ namespace Framework.Test.SerialCommunication
                 });
 
             return serialPort;
-        }
-
-        private void ReleaseSerialPortMock()
-        {
-            var serialPort = Dependency.Resolve<ISerialPort>();
-            Dependency.Container.ResetContainer();
-
-            serialPort.Dispose();
         }
 
         private ILogger<Serial> CreateLogger()
@@ -115,45 +110,41 @@ namespace Framework.Test.SerialCommunication
                 serial.CommandsInQueue.Should().Be(0);
 
                 await serial.DisconnectAsync();
-            }
 
-            Dependency.Container.ResetContainer();
-            serialPort.Dispose();
+                Dependency.Container.ResetContainer();
+                serialPort.Dispose();
+            }
         }
 
         [TestMethod]
         public async Task WriteOneCommandSerialTest()
         {
             using (var serial = new Serial(CreateLogger()))
+            using (var serialPort = CreateSerialPortMock(new[]
+                            {
+                                serial.OkTag + "\n\r"
+                            }))
             {
-                var serialPort = CreateSerialPortMock(serial, new[]
-                {
-                    serial.OkTag + "\n\r"
-                });
-
                 await serial.ConnectAsync("com2");
 
                 await serial.SendCommandAsync("?", 1000);
 
                 await serial.DisconnectAsync();
 
-                await serialPort.BaseStream.Received(1).WriteAsync(Arg.Is<byte[]>(e => (char) e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
+                await serialPort.BaseStream.Received(1).WriteAsync(Arg.Is<byte[]>(e => (char)e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
                 await Task.FromResult(0);
             }
-
-            ReleaseSerialPortMock();
         }
 
         [TestMethod]
         public async Task WriteTwoCommandSerialTest()
         {
             using (var serial = new Serial(CreateLogger()))
-            {
-                var serialPort = CreateSerialPortMock(serial, new[]
+            using (var serialPort = CreateSerialPortMock(new[]
                 {
                     serial.OkTag + "\n\r", serial.OkTag + "\n\r"
-                });
-
+                }))
+            { 
                 await serial.ConnectAsync("com2");
 
                 await serial.SendCommandAsync("?");
@@ -163,8 +154,6 @@ namespace Framework.Test.SerialCommunication
                 await serialPort.BaseStream.Received(2).WriteAsync(Arg.Is<byte[]>(e => (char) e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
                 await Task.FromResult(0);
             }
-
-            ReleaseSerialPortMock();
         }
 
         #region events
@@ -206,12 +195,11 @@ namespace Framework.Test.SerialCommunication
 
         {
             using (var serial = new Serial(CreateLogger()))
-            {
-                CreateSerialPortMock(serial, new[]
+            using (var serialPort = CreateSerialPortMock(new[]
                 {
                     serial.OkTag + "\n\r"
-                });
-
+                }))
+            { 
                 var eventCalls = SubscribeForEventCall(serial);
 
                 await serial.ConnectAsync("com2");
@@ -234,21 +222,17 @@ namespace Framework.Test.SerialCommunication
 
                 await Task.FromResult(0);
             }
-
-            ReleaseSerialPortMock();
         }
 
         [TestMethod]
         public async Task InfoEventSerialTest()
         {
             using (var serial = new Serial(CreateLogger()))
-            {
-                /* var serialPort = */
-                CreateSerialPortMock(serial, new[]
+            using (var serialPort = CreateSerialPortMock(new[]
                 {
                     serial.InfoTag + "\n\r" + serial.OkTag + "\n\r"
-                });
-
+                }))
+            { 
                 var eventCalls = SubscribeForEventCall(serial);
 
                 await serial.ConnectAsync("com2");
@@ -271,21 +255,17 @@ namespace Framework.Test.SerialCommunication
 
                 await Task.FromResult(0);
             }
-
-            ReleaseSerialPortMock();
         }
 
         [TestMethod]
         public async Task ErrorEventWithOkSerialTest()
         {
             using (var serial = new Serial(CreateLogger()))
-            {
-                /* var serialPort = */
-                CreateSerialPortMock(serial, new[]
+            using (var serialPort = CreateSerialPortMock(new[]
                 {
                     serial.ErrorTag + "\n\r" + serial.OkTag + "\n\r"
-                });
-
+                }))
+            { 
                 var eventCalls = SubscribeForEventCall(serial);
 
                 serial.ErrorIsReply = false;
@@ -310,21 +290,17 @@ namespace Framework.Test.SerialCommunication
 
                 await Task.FromResult(0);
             }
-
-            ReleaseSerialPortMock();
         }
 
         [TestMethod]
         public async Task ErrorEventWithOutOkSerialTest()
         {
             using (var serial = new Serial(CreateLogger()))
-            {
-                /* var serialPort = */
-                CreateSerialPortMock(serial, new[]
+            using (var serialPort = CreateSerialPortMock(new[]
                 {
                     serial.ErrorTag + "\n\r"
-                });
-
+                }))
+            { 
                 var eventCalls = SubscribeForEventCall(serial);
 
                 serial.ErrorIsReply = true; // no OK is needed
@@ -347,21 +323,17 @@ namespace Framework.Test.SerialCommunication
                 eventCalls.EventCommandQueueChanged.Should().Be(2);
                 eventCalls.EventCommandQueueEmpty.Should().Be(2);
             }
-
-            ReleaseSerialPortMock();
         }
 
         [TestMethod]
         public async Task UnknownEventSerialTest()
         {
             using (var serial = new Serial(CreateLogger()))
-            {
-                /* var serialPort = */
-                CreateSerialPortMock(serial, new[]
+            using (var serialPort = CreateSerialPortMock(new[]
                 {
                     "Hallo\n\r" + serial.OkTag + "\n\r"
-                });
-
+                }))
+            { 
                 var eventCalls = SubscribeForEventCall(serial);
 
                 serial.ErrorIsReply = true; // no OK is needed
@@ -384,8 +356,6 @@ namespace Framework.Test.SerialCommunication
                 eventCalls.EventCommandQueueChanged.Should().Be(2);
                 eventCalls.EventCommandQueueEmpty.Should().Be(2);
             }
-
-            ReleaseSerialPortMock();
         }
 
         #endregion
