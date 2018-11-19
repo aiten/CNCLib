@@ -16,10 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
+
 namespace Framework.Test.SerialCommunication
 {
     using System.IO;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using FluentAssertions;
@@ -59,26 +61,31 @@ namespace Framework.Test.SerialCommunication
                 ReturnsForAnyArgs(async x =>
                 {
                     _sendReply = true;
-                    await Task.FromResult(0);
+                    var cancellationToken = (CancellationToken)x[3];
+                    await Task.Delay(0, cancellationToken);
                 });
 
             baseStream.ReadAsync(Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
                 ReturnsForAnyArgs(async x =>
                 {
-                    if (_sendReply)
+                    var cancellationToken = (CancellationToken) x[3];
+                    while (!cancellationToken.IsCancellationRequested)
                     {
-                        await Task.Delay(10);
-                        _sendReply = false;
-                        byte[] encodedStr = encoding.GetBytes(responseStrings[_resultIdx++]);
-                        for (int i = 0; i < encodedStr.Length; i++)
+                        if (_sendReply)
                         {
-                            ((byte[]) x[0])[i] = encodedStr[i];
+                            _sendReply = false;
+                            byte[] encodedStr = encoding.GetBytes(responseStrings[_resultIdx++]);
+                            for (int i = 0; i < encodedStr.Length; i++)
+                            {
+                                ((byte[]) x[0])[i] = encodedStr[i];
+                            }
+
+                            return encodedStr.Length;
                         }
 
-                        return encodedStr.Length;
+                        await Task.Delay(1, cancellationToken);
                     }
 
-                    await Task.Delay(10);
                     return 0;
                 });
 

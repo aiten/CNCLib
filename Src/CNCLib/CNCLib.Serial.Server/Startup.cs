@@ -70,7 +70,7 @@ namespace CNCLib.Serial.Server
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" }); });
 
-            Dependency.Initialize(new AspNetDependencyProvider(services));
+            Dependency.Initialize(new MsDependencyProvider(services));
 
             Dependency.Container.RegisterFrameWorkTools();
             Dependency.Container.RegisterFrameWorkLogging();

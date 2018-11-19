@@ -16,24 +16,23 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Web
+namespace Framework.Dependency
 {
-    using Microsoft.Extensions.DependencyInjection;
-
-    using Framework.Dependency;
+    using System;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// Implementation of IDependencyProvider that returns a single instance of LiveDependencyContainer.
+    /// Inversion of Control container, which enables Dependency Injection. 
     /// </summary>
-    public sealed class AspNetDependencyProvider : IDependencyProvider
+    public interface IDependencyResolver
     {
-        private readonly IDependencyContainer _dependencyContainer;
+        /// <summary>
+        /// Resolve an instance of the default requested type from the container. 
+        /// </summary>
+        /// <param name="t">Type for which a specific instance should be resolved</param>
+        /// <returns>An object that implements type t.</returns>
+        object Resolve(Type t);
 
-        public AspNetDependencyProvider(IServiceCollection services)
-        {
-            _dependencyContainer = new AspNetDependencyContainer(services);
-        }
-
-        public IDependencyContainer Container => _dependencyContainer;
+        IDependencyScope CreateScope();
     }
 }

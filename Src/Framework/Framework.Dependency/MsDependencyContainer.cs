@@ -32,7 +32,7 @@ namespace Framework.Dependency
     {
         private readonly IServiceCollection _container;
 
-        protected MsDependencyContainer(IServiceCollection services)
+        public MsDependencyContainer(IServiceCollection services)
         {
             _container = services;
         }
@@ -89,22 +89,13 @@ namespace Framework.Dependency
         /// </summary>
         public IEnumerable<Type> RegisteredTypes { get { return _container.Select(r => r.ServiceType); } }
 
-        public virtual object Resolve(Type t)
+        /// <summary>
+        /// Create an object to resolve a dependency
+        /// </summary>
+        /// <returns></returns>
+        public IDependencyResolver GetResolver()
         {
-            try
-            {
-                var sp = _container.BuildServiceProvider();
-                return sp.GetService(t);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Resolution for {t.FullName} failed", ex);
-            }
-        }
-
-        public IDependencyContainer CreateChildContainer()
-        {
-            return new MsDependencyContainer(_container);
+            return new MsDependencyResolver(_container.BuildServiceProvider()); 
         }
 
         #region IDisposable Support

@@ -16,23 +16,19 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Web
+namespace Framework.Dependency
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    using Framework.Dependency;
 
     /// <summary>
-    /// Dependency container for use in Live. Throws an exception when a Type cannot be resolved.
+    /// Compare with IServiceScope (aspNetCore). 
     /// </summary>
-    public class AspNetDependencyContainer : MsDependencyContainer
+    public interface IDependencyScope : IDisposable
     {
-        public AspNetDependencyContainer(IServiceCollection services) : base(services)
-        {
-        }
+        /// <summary>
+        /// Instance of IDependencyResolver to resolve services (objects)
+        /// </summary>
+        IDependencyResolver Resolver { get; }
     }
 }

@@ -16,6 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Framework.Dependency
 {
     /// <summary>
@@ -28,6 +30,11 @@ namespace Framework.Dependency
         public MsDependencyProvider()
         {
             _dependencyContainer = new MsDependencyContainer();
+        }
+
+        public MsDependencyProvider(IServiceCollection services)
+        {
+            _dependencyContainer = new MsDependencyContainer(services);
         }
 
         public IDependencyContainer Container => _dependencyContainer;

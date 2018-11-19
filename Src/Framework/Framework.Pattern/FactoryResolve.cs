@@ -16,22 +16,24 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Dependency;
-
 namespace Framework.Pattern
 {
     using System;
 
+    using Framework.Dependency;
+
+    // Factory/Scope using Resolve of dependencyInjection
+
     public sealed class ScopeResolve<T> : IScope<T>, IDisposable where T : class
     {
-        private readonly IDependencyContainer _container;
+        private readonly IDependencyScope     _scope;
         private readonly T                    _instance;
 
         private bool _isDisposed;
 
-        public ScopeResolve(IDependencyContainer container, T instance)
+        public ScopeResolve(IDependencyScope scope, T instance)
         {
-            _container = container;
+            _scope = scope;
             _instance  = instance;
         }
 
@@ -56,7 +58,7 @@ namespace Framework.Pattern
             }
 
             _isDisposed = true;
-            _container.Dispose();
+            _scope.Dispose();
         }
     }
 
@@ -66,13 +68,13 @@ namespace Framework.Pattern
 
         public FactoryResolve()
         {
-            _container = Dependency.Dependency.Container;
+            _container = Dependency.Container;
         }
 
         public IScope<T> Create()
         {
-            var childContainer = _container.CreateChildContainer();
-            return new ScopeResolve<T>(childContainer, childContainer.Resolve<T>());
+            var childContainer = _container.GetResolver().CreateScope();
+            return new ScopeResolve<T>(childContainer, childContainer.Resolver.Resolve<T>());
         }
     }
 }

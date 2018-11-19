@@ -181,7 +181,11 @@ namespace Framework.Dependency
         /// <exception cref="ResolutionFailedException">Thrown when no type was registered for the given interface.</exception>
         public static TInterface Resolve<TInterface>(this IDependencyContainer container)
         {
-            return (TInterface) container.Resolve(typeof(TInterface));
+            return (TInterface) container.GetResolver().Resolve(typeof(TInterface));
+        }
+        public static TInterface Resolve<TInterface>(this IDependencyResolver resolver)
+        {
+            return (TInterface)resolver.Resolve(typeof(TInterface));
         }
     }
 }

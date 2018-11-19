@@ -59,17 +59,9 @@ namespace Framework.Dependency
         void ResetContainer();
 
         /// <summary>
-        /// Create a ChildContainer => see unity CreateChildContainer()
+        /// Get an instance of an object which can resolve the "service" (object). 
         /// </summary>
-        /// <returns></returns>
-        IDependencyContainer CreateChildContainer();
-
-        /// <summary>
-        /// Resolve an instance of the default requested type from the container. 
-        /// </summary>
-        /// <param name="t">Type for which a specific instance should be resolved</param>
-        /// <returns>An object that implements type t.</returns>
-        object Resolve(Type t);
+        IDependencyResolver GetResolver();
 
         /// <summary>
         /// Gets an enumeration containing all types registered with the dependency container.

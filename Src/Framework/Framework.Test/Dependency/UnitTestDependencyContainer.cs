@@ -27,22 +27,5 @@ namespace Framework.Test.Dependency
 
     public sealed class UnitTestDependencyContainer : MsDependencyContainer
     {
-        public override object Resolve(Type t)
-        {
-/*
-            if (!t.IsInterface)
-            {
-                throw new ResolutionFailedException($"Tried to resolve type {t.FullName}. This is not an interface which indicates a bug.");
-            }
-*/
-            try
-            {
-                return base.Resolve(t);
-            }
-            catch (Exception e)
-            {
-                return Substitute.For(new[] { t }, new object[0]);
-            }
-        }
     }
 }
