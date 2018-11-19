@@ -16,6 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
+#if asdfasdfa
+
 using System;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -204,3 +206,5 @@ namespace CNCLib.Tests.Wpf
         }
     }
 }
+
+#endif

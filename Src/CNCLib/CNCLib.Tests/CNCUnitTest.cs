@@ -21,9 +21,6 @@ using Framework.Test;
 using AutoMapper;
 
 using CNCLib.Logic;
-using CNCLib.Wpf;
-using CNCLib.GCode.GUI;
-
 using Framework.Dependency;
 
 namespace CNCLib.Tests
@@ -35,8 +32,8 @@ namespace CNCLib.Tests
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<LogicAutoMapperProfile>();
-                cfg.AddProfile<WpfAutoMapperProfile>();
-                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+//                cfg.AddProfile<WpfAutoMapperProfile>();
+//                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
             });
             config.AssertConfigurationIsValid();
 

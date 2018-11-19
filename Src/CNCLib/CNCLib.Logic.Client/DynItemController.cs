@@ -303,7 +303,7 @@ namespace CNCLib.Logic.Client
             return new DynItem { ItemId = item.ItemId, Name = item.Name };
         }
 
-        private static string GetClassName(Type t)
+        public static string GetClassName(Type t)
         {
             string[] names = t.AssemblyQualifiedName.Split(',');
             return names[0].Trim() + "," + names[1].Trim();

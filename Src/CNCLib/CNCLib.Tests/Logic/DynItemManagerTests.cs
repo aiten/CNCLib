@@ -91,7 +91,7 @@ namespace CNCLib.Tests.Logic
             {
                 new Item { ItemId = 1, Name = "Test1" }, new Item { ItemId = 2, Name = "Test2" }
             };
-            srv.GetByClassName("System.String,mscorlib").Returns(itemEntity);
+            srv.GetByClassName(DynItemController.GetClassName(typeof(string))).Returns(itemEntity);
 
             var ctrl = new DynItemController(srv);
             var all  = await ctrl.GetAll(typeof(string));
