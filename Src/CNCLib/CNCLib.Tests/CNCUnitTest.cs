@@ -30,7 +30,7 @@ namespace CNCLib.Tests
 {
     public abstract class CNCUnitTest : UnitTestBase
     {
-        protected override void InitializeCoreDependencies()
+        protected override void InitializeDependencies()
         {
             var config = new MapperConfiguration(cfg =>
             {

@@ -27,9 +27,7 @@ namespace Framework.Dependency
     /// </summary>
     public sealed class LiveDependencyContainer : MsDependencyContainer
     {
-        private readonly IServiceCollection _container;
-
-        public LiveDependencyContainer(IServiceCollection services) : base(services)
+        public LiveDependencyContainer()
         {
         }
     }

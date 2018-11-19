@@ -16,22 +16,29 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using FluentAssertions;
-
-using Framework.Contracts.Repository;
-using Framework.Repository;
-
-using Microsoft.EntityFrameworkCore;
-
 namespace Framework.Test.Repository
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using FluentAssertions;
+
+    using Framework.Contracts.Repository;
+    using Framework.Dependency;
+    using Framework.Repository;
+
+    using Microsoft.EntityFrameworkCore;
+
     public abstract class CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
+        protected override void InitializeDependencies()
+        {
+            base.InitializeDependencies();
+            Dependency.Container.RegisterType(typeof(CRUDTestDbContext<,,,>), typeof(CRUDTestDbContext<,,,>));
+        }
+
         public async Task AddUpdateDelete(Func<TEntity> createTestEntity, Action<TEntity> updateEntity)
         {
             var allWithoutAdd = (await GetAll()).ToList();

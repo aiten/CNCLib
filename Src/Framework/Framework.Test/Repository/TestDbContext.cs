@@ -16,14 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
-using Framework.Contracts.Repository;
-
-using Microsoft.EntityFrameworkCore;
-
 namespace Framework.Test.Repository
 {
+    using System;
+
+    using Framework.Contracts.Repository;
+
+    using Microsoft.EntityFrameworkCore;
+
     public class TestDbContext<TDbContext, TIRepository> : IDisposable where TIRepository : IRepository where TDbContext : DbContext
     {
         public TDbContext DbContext  { get; private set; }

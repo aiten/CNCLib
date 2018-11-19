@@ -20,23 +20,17 @@ using System;
 
 using Framework.Dependency;
 
-using Microsoft.Extensions.DependencyInjection;
-
 using NSubstitute;
 
 namespace CNCLib.WebAPI.Tests.Dependency
 {
     public sealed class MockingDependencyContainer : MsDependencyContainer
     {
-        public MockingDependencyContainer(IServiceCollection services) : base(services)
-        {
-        }
-
         public override object Resolve(Type t)
         {
             if (!t.IsInterface)
             {
-                throw new ResolutionFailedException($"Tried to resolve type {t.FullName}. This is not an interface which indicates a bug.");
+                throw new Exception($"Tried to resolve type {t.FullName}. This is not an interface which indicates a bug.");
             }
 
             try

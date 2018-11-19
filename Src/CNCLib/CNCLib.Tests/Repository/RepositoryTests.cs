@@ -60,22 +60,16 @@ namespace CNCLib.Tests.Repository
             }
         }
 
-        protected override void InitializeCoreDependencies()
+        protected override void InitializeDependencies()
         {
-            base.InitializeCoreDependencies();
+            base.InitializeDependencies();
 
-            Dependency.Container.ResetContainer();
             Dependency.Container.RegisterType<IConfigurationRepository, ConfigurationRepository>();
             Dependency.Container.RegisterType<IMachineRepository, MachineRepository>();
             Dependency.Container.RegisterType<IItemRepository, ItemRepository>();
             Dependency.Container.RegisterType<IUserRepository, UserRepository>();
 
             Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
-
-            Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
-            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
-
-            Dependency.Container.RegisterType(typeof(CRUDTestDbContext<,,,>), typeof(CRUDTestDbContext<,,,>));
         }
     }
 }

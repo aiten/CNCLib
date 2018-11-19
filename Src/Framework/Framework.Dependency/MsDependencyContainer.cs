@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Framework.Dependency
 {
@@ -31,9 +32,13 @@ namespace Framework.Dependency
     {
         private readonly IServiceCollection _container;
 
-        public MsDependencyContainer(IServiceCollection services)
+        protected MsDependencyContainer(IServiceCollection services)
         {
             _container = services;
+        }
+        public MsDependencyContainer()
+        {
+            _container = new ServiceCollection();
         }
 
         /// <summary>
@@ -43,7 +48,8 @@ namespace Framework.Dependency
         /// </summary>
         public void ResetContainer()
         {
-            throw new NotImplementedException();
+            _container.Clear();
+//            throw new NotImplementedException();
 //            _container.Dispose();
 //            _container = new UnityContainer();
         }
@@ -90,9 +96,9 @@ namespace Framework.Dependency
                 var sp = _container.BuildServiceProvider();
                 return sp.GetService(t);
             }
-            catch (ResolutionFailedException ex)
+            catch (Exception ex)
             {
-                throw new ResolutionFailedException($"Resolution for {t.FullName} failed", ex);
+                throw new Exception($"Resolution for {t.FullName} failed", ex);
             }
         }
 

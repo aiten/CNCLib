@@ -185,7 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions">
-      <Version>5.4.2</Version>
+      <Version>5.5.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore">
       <Version>2.1.4</Version>

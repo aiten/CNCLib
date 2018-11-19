@@ -46,11 +46,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore">
       <Version>2.1.4</Version>
     </PackageReference>
-    <PackageReference Include="Unity">
-      <Version>5.8.11</Version>
-    </PackageReference>
     <PackageReference Include="FluentAssertions">
-      <Version>5.4.2</Version>
+      <Version>5.5.1</Version>
     </PackageReference>
     <PackageReference Include="NSubstitute">
       <Version>3.1.0</Version>
@@ -66,13 +63,14 @@
     <Compile Include="..\SolutionItems\FrameworkSolutionInfoVersion.cs">
       <Link>Properties\FrameworkSolutionInfoVersion.cs</Link>
     </Compile>
-    <Compile Include="Dependency\MockingDependencyContainer.cs" />
+    <Compile Include="Dependency\UnitTestDependencyContainer.cs" />
     <Compile Include="Dependency\UnitTestDependencyProvider.cs" />
     <Compile Include="Drawing\DitherTest.cs" />
     <Compile Include="Drawing\Polygon2DTest.cs" />
     <Compile Include="Drawing\Rotate3DTest.cs" />
     <Compile Include="Parser\ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\RepositoryBaseTests.cs" />
     <Compile Include="Repository\GetRepositoryTests.cs" />
     <Compile Include="Repository\CRUDRepositoryTests.cs" />
     <Compile Include="Repository\GetTestDbContext.cs" />

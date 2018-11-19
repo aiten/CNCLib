@@ -4,7 +4,7 @@
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>  
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.10" />
+    <PackageReference Include="NLog" Version="4.5.11" />
   </ItemGroup>  
   <ItemGroup>
     <ProjectReference Include="..\Framework.Contracts\Framework.Contracts.csproj" />

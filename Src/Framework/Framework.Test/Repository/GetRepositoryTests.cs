@@ -16,22 +16,29 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using FluentAssertions;
-
-using Framework.Contracts.Repository;
-using Framework.Repository;
-
-using Microsoft.EntityFrameworkCore;
-
 namespace Framework.Test.Repository
 {
-    public abstract class GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : UnitTestBase where TEntity : class where TIRepository : IGetRepository<TEntity, TKey> where TDbContext : DbContext
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using FluentAssertions;
+
+    using Framework.Contracts.Repository;
+    using Framework.Dependency;
+    using Framework.Repository;
+
+    using Microsoft.EntityFrameworkCore;
+
+    public abstract class GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : RepositoryBaseTests<TDbContext> where TEntity : class where TIRepository : IGetRepository<TEntity, TKey> where TDbContext : DbContext
     {
+        protected override void InitializeDependencies()
+        {
+            base.InitializeDependencies();
+            Dependency.Container.RegisterType(typeof(GetTestDbContext<,,,>), typeof(GetTestDbContext<,,,>));
+        }
+
         protected abstract GetTestDbContext<TDbContext, TEntity, TKey, TIRepository> CreateTestDbContext();
 
         protected abstract TKey GetEntityKey(TEntity    entity);

@@ -16,8 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Framework.Dependency
 {
     /// <summary>
@@ -27,9 +25,9 @@ namespace Framework.Dependency
     {
         private readonly IDependencyContainer _dependencyContainer;
 
-        public MsDependencyProvider(IServiceCollection services)
+        public MsDependencyProvider()
         {
-            _dependencyContainer = new MsDependencyContainer(services);
+            _dependencyContainer = new MsDependencyContainer();
         }
 
         public IDependencyContainer Container => _dependencyContainer;

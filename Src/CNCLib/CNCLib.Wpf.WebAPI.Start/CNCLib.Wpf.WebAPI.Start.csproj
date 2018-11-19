@@ -173,7 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper">
-      <Version>7.0.1</Version>
+      <Version>8.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

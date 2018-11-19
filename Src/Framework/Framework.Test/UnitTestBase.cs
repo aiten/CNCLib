@@ -42,10 +42,10 @@ namespace Framework.Test
                 _globalInitialisationRun = true;
             }
 
-            InitializeCoreDependencies();
+            InitializeDependencies();
         }
 
-        protected virtual void InitializeCoreDependencies()
+        protected virtual void InitializeDependencies()
         {
         }
 

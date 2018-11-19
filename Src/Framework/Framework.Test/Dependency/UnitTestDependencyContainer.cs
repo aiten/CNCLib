@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Framework.Test.Dependency
 {
@@ -26,12 +25,8 @@ namespace Framework.Test.Dependency
 
     using NSubstitute;
 
-    public sealed class MockingDependencyContainer : MsDependencyContainer
+    public sealed class UnitTestDependencyContainer : MsDependencyContainer
     {
-        public MockingDependencyContainer(IServiceCollection services) : base(services)
-        {
-        }
-
         public override object Resolve(Type t)
         {
 /*
@@ -44,7 +39,7 @@ namespace Framework.Test.Dependency
             {
                 return base.Resolve(t);
             }
-            catch (Unity.Exceptions.ResolutionFailedException)
+            catch (Exception e)
             {
                 return Substitute.For(new[] { t }, new object[0]);
             }

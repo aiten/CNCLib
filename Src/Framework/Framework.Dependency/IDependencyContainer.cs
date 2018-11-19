@@ -69,7 +69,6 @@ namespace Framework.Dependency
         /// </summary>
         /// <param name="t">Type for which a specific instance should be resolved</param>
         /// <returns>An object that implements type t.</returns>
-        /// <exception cref="ResolutionFailedException">Thrown when no type was registered for the given interface.</exception>
         object Resolve(Type t);
 
         /// <summary>

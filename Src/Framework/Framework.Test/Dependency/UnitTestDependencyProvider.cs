@@ -16,8 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Framework.Test.Dependency
 {
     using System;
@@ -26,7 +24,7 @@ namespace Framework.Test.Dependency
 
     public sealed class UnitTestDependencyProvider : IDependencyProvider
     {
-        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new MockingDependencyContainer(new ServiceCollection()));
+        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new UnitTestDependencyContainer());
 
         public IDependencyContainer Container => _dependencyContainer.Value;
     }

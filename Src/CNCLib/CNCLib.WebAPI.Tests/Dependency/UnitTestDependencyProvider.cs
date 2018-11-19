@@ -20,13 +20,11 @@ using System;
 
 using Framework.Dependency;
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CNCLib.WebAPI.Tests.Dependency
 {
     public sealed class UnitTestDependencyProvider : IDependencyProvider
     {
-        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new MockingDependencyContainer(new ServiceCollection()));
+        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new MockingDependencyContainer());
 
         public IDependencyContainer Container => _dependencyContainer.Value;
     }

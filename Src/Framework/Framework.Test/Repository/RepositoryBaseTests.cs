@@ -18,14 +18,29 @@
 
 namespace Framework.Test.Repository
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using FluentAssertions;
+
     using Framework.Contracts.Repository;
+    using Framework.Dependency;
+    using Framework.Repository;
 
     using Microsoft.EntityFrameworkCore;
 
-    public class CRUDTestDbContext<TDbContext, TEntity, TKey, TIRepository> : TestDbContext<TDbContext, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
+    public abstract class RepositoryBaseTests<TDbContext> : UnitTestBase where TDbContext : DbContext
     {
-        public CRUDTestDbContext(TDbContext dbContext, IUnitOfWork uow, TIRepository repository) : base(dbContext,uow,repository)
+        protected override void InitializeDependencies()
         {
+            base.InitializeDependencies();
+
+            Dependency.Container.RegisterTypeScoped<TDbContext, TDbContext>();
+            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<TDbContext>>();
+
+            Dependency.Container.RegisterType(typeof(TestDbContext<,>), typeof(TestDbContext<,>));
         }
     }
 }

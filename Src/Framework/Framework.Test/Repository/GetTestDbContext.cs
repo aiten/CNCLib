@@ -16,12 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contracts.Repository;
-
-using Microsoft.EntityFrameworkCore;
-
 namespace Framework.Test.Repository
 {
+    using Framework.Contracts.Repository;
+
+    using Microsoft.EntityFrameworkCore;
+
     public class GetTestDbContext<TDbContext, TEntity, TKey, TIRepository> : TestDbContext<TDbContext, TIRepository> where TEntity : class where TIRepository : IGetRepository<TEntity, TKey> where TDbContext : DbContext
     {
         public GetTestDbContext(TDbContext dbContext, IUnitOfWork uow, TIRepository repository) : base(dbContext,uow,repository)
