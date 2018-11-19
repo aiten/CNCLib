@@ -4,9 +4,7 @@
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>  
   <ItemGroup>
-    <PackageReference Include="Unity">
-      <Version>5.8.11</Version>
-    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
   </ItemGroup>
 
   

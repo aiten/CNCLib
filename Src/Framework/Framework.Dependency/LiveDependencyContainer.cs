@@ -16,27 +16,21 @@
   http://www.gnu.org/licenses/
 */
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Framework.Dependency
 {
     using System;
 
-    using Unity;
-
     /// <summary>
     /// Dependency Container for use in Live. Throws an exception when a Type cannot be resolved.
     /// </summary>
-    public sealed class LiveDependencyContainer : UnityDependencyContainer
+    public sealed class LiveDependencyContainer : MsDependencyContainer
     {
-        public override object Resolve(Type t)
+        private readonly IServiceCollection _container;
+
+        public LiveDependencyContainer(IServiceCollection services) : base(services)
         {
-            try
-            {
-                return MyUnityContainer.Resolve(t);
-            }
-            catch (ResolutionFailedException ex)
-            {
-                throw new ResolutionFailedException($"Resolution for {t.FullName} failed", ex);
-            }
         }
     }
 }

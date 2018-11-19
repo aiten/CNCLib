@@ -16,32 +16,25 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Framework.Dependency
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Unity;
-    using Unity.Lifetime;
-
     /// <summary>
-    /// Inversion of Control container, which enables Dependency Injection. 
+    /// Dependency container for use in Live. Throws an exception when a Type cannot be resolved.
     /// </summary>
-    public abstract class UnityDependencyContainer : IDependencyContainer
+    public class MsDependencyContainer : IDependencyContainer
     {
-        private IUnityContainer _container;
+        private readonly IServiceCollection _container;
 
-        protected UnityDependencyContainer()
+        public MsDependencyContainer(IServiceCollection services)
         {
-            _container = new UnityContainer();
+            _container = services;
         }
-
-        /// <summary>
-        /// Get the Unity container
-        /// use the container e.g. in WebApi to use this container instead
-        /// </summary>
-        public IUnityContainer MyUnityContainer => _container;
 
         /// <summary>
         /// This can be called in unit tests to reset the container to an empty state. 
@@ -50,8 +43,9 @@ namespace Framework.Dependency
         /// </summary>
         public void ResetContainer()
         {
-            _container.Dispose();
-            _container = new UnityContainer();
+            throw new NotImplementedException();
+//            _container.Dispose();
+//            _container = new UnityContainer();
         }
 
         /// <summary>
@@ -60,7 +54,7 @@ namespace Framework.Dependency
         /// <returns>This instance.</returns>
         public IDependencyContainer RegisterType(Type typeFrom, Type typeTo)
         {
-            _container.RegisterType(typeFrom, typeTo);
+            _container.AddTransient(typeFrom, typeTo);
             return this;
         }
 
@@ -70,7 +64,7 @@ namespace Framework.Dependency
         /// <returns>This instance.</returns>
         public IDependencyContainer RegisterTypeScoped(Type typeFrom, Type typeTo)
         {
-            _container.RegisterType(typeFrom, typeTo, new PerResolveLifetimeManager());
+            _container.AddScoped(typeFrom, typeTo);
             return this;
         }
 
@@ -80,28 +74,32 @@ namespace Framework.Dependency
         /// <returns>This instance.</returns>
         public IDependencyContainer RegisterInstance(Type typeFrom, object obj)
         {
-            _container.RegisterInstance(typeFrom, obj);
+            _container.AddSingleton(typeFrom, obj);
             return this;
-        }
-
-        public abstract object Resolve(Type t);
-
-        /// <summary>
-        /// Create unity child container
-        /// </summary>
-        /// <returns></returns>
-        public IDependencyContainer CreateChildContainer()
-        {
-            var newContainer = (UnityDependencyContainer) MemberwiseClone();
-            newContainer._container = _container.CreateChildContainer();
-
-            return newContainer;
         }
 
         /// <summary>
         /// Gets an enumeration containing all types registered with the dependency container.
         /// </summary>
-        public IEnumerable<Type> RegisteredTypes { get { return _container.Registrations.Select(r => r.RegisteredType); } }
+        public IEnumerable<Type> RegisteredTypes { get { return _container.Select(r => r.ServiceType); } }
+
+        public virtual object Resolve(Type t)
+        {
+            try
+            {
+                var sp = _container.BuildServiceProvider();
+                return sp.GetService(t);
+            }
+            catch (ResolutionFailedException ex)
+            {
+                throw new ResolutionFailedException($"Resolution for {t.FullName} failed", ex);
+            }
+        }
+
+        public IDependencyContainer CreateChildContainer()
+        {
+            return new MsDependencyContainer(_container);
+        }
 
         #region IDisposable Support
 
@@ -113,7 +111,7 @@ namespace Framework.Dependency
             {
                 if (disposing)
                 {
-                    _container.Dispose();
+                    //                   _container.Dispose();
                 }
 
                 disposedValue = true;

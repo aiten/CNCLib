@@ -16,6 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Framework.Dependency
 {
     using System;
@@ -25,7 +27,7 @@ namespace Framework.Dependency
     /// </summary>
     public sealed class LiveDependencyProvider : IDependencyProvider
     {
-        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new LiveDependencyContainer());
+        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new LiveDependencyContainer(new ServiceCollection()));
 
         public IDependencyContainer Container => _dependencyContainer.Value;
     }

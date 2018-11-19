@@ -18,16 +18,20 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Framework.Test.Dependency
+namespace Framework.Dependency
 {
-    using System;
-
-    using Framework.Dependency;
-
-    public sealed class UnitTestDependencyProvider : IDependencyProvider
+    /// <summary>
+    /// Implementation of IDependencyProvider that returns a single instance of LiveDependencyContainer.
+    /// </summary>
+    public sealed class MsDependencyProvider : IDependencyProvider
     {
-        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new MockingDependencyContainer(new ServiceCollection()));
+        private readonly IDependencyContainer _dependencyContainer;
 
-        public IDependencyContainer Container => _dependencyContainer.Value;
+        public MsDependencyProvider(IServiceCollection services)
+        {
+            _dependencyContainer = new MsDependencyContainer(services);
+        }
+
+        public IDependencyContainer Container => _dependencyContainer;
     }
 }

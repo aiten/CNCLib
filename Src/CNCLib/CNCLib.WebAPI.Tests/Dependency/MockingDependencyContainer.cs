@@ -20,14 +20,18 @@ using System;
 
 using Framework.Dependency;
 
-using NSubstitute;
+using Microsoft.Extensions.DependencyInjection;
 
-using Unity;
+using NSubstitute;
 
 namespace CNCLib.WebAPI.Tests.Dependency
 {
-    public sealed class MockingDependencyContainer : UnityDependencyContainer
+    public sealed class MockingDependencyContainer : MsDependencyContainer
     {
+        public MockingDependencyContainer(IServiceCollection services) : base(services)
+        {
+        }
+
         public override object Resolve(Type t)
         {
             if (!t.IsInterface)
@@ -37,9 +41,9 @@ namespace CNCLib.WebAPI.Tests.Dependency
 
             try
             {
-                return MyUnityContainer.Resolve(t);
+                return base.Resolve(t);
             }
-            catch (Unity.Exceptions.ResolutionFailedException)
+            catch (Exception e)
             {
                 return Substitute.For(new[] { t }, new object[0]);
             }

@@ -16,18 +16,22 @@
   http://www.gnu.org/licenses/
 */
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Framework.Test.Dependency
 {
     using System;
 
     using Framework.Dependency;
 
-    using Unity;
-
     using NSubstitute;
 
-    public sealed class MockingDependencyContainer : UnityDependencyContainer
+    public sealed class MockingDependencyContainer : MsDependencyContainer
     {
+        public MockingDependencyContainer(IServiceCollection services) : base(services)
+        {
+        }
+
         public override object Resolve(Type t)
         {
 /*
@@ -38,7 +42,7 @@ namespace Framework.Test.Dependency
 */
             try
             {
-                return MyUnityContainer.Resolve(t);
+                return base.Resolve(t);
             }
             catch (Unity.Exceptions.ResolutionFailedException)
             {
