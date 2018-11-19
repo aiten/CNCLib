@@ -100,26 +100,13 @@ namespace Framework.Test.SerialCommunication
         [TestMethod]
         public async Task ConnectSerialTest()
         {
-            var serialPort = Substitute.For<ISerialPort>();
-            var baseStream = Substitute.For<MemoryStream>();
-
-            serialPort.BaseStream.ReturnsForAnyArgs(baseStream);
-
-            Encoding encoding = Encoding.GetEncoding(12000);
-            serialPort.Encoding.ReturnsForAnyArgs(encoding);
-
-            Dependency.Container.ResetContainer();
-            Dependency.Container.RegisterInstance(serialPort);
-
             using (var serial = new Serial(CreateLogger()))
+            using (var serialPort = CreateSerialPortMock(new string[0]))
             {
                 await serial.ConnectAsync("com2");
                 serial.CommandsInQueue.Should().Be(0);
 
                 await serial.DisconnectAsync();
-
-                Dependency.Container.ResetContainer();
-                serialPort.Dispose();
             }
         }
 
