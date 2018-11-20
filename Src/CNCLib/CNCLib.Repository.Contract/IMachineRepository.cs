@@ -19,13 +19,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using CNCLib.Repository.Contract.Entity;
+
 using Framework.Contract.Repository;
 
 namespace CNCLib.Repository.Contract
 {
-    public interface IMachineRepository : ICRUDRepository<Entities.Machine, int>
+    public interface IMachineRepository : ICRUDRepository<Machine, int>
     {
-        Task<IEnumerable<Entities.MachineCommand>>     GetMachineCommands(int     machineId);
-        Task<IEnumerable<Entities.MachineInitCommand>> GetMachineInitCommands(int machineId);
+        Task<IEnumerable<MachineCommand>>     GetMachineCommands(int     machineId);
+        Task<IEnumerable<MachineInitCommand>> GetMachineInitCommands(int machineId);
     }
 }

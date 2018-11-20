@@ -26,27 +26,27 @@ namespace CNCLib.Logic.Converter
 {
     internal static class Converter
     {
-        public static Machine ToDto(this Repository.Contract.Entities.Machine from, IMapper mapper)
+        public static Machine ToDto(this Repository.Contract.Entity.Machine from, IMapper mapper)
         {
             return mapper.Map<Machine>(from);
         }
 
-        public static Repository.Contract.Entities.Machine ToEntity(this Machine from, IMapper mapper)
+        public static Repository.Contract.Entity.Machine ToEntity(this Machine from, IMapper mapper)
         {
-            return mapper.Map<Repository.Contract.Entities.Machine>(from);
+            return mapper.Map<Repository.Contract.Entity.Machine>(from);
         }
 
-        public static Item ToDto(this Repository.Contract.Entities.Item from, IMapper mapper)
+        public static Item ToDto(this Repository.Contract.Entity.Item from, IMapper mapper)
         {
             return mapper.Map<Item>(from);
         }
 
-        public static Repository.Contract.Entities.Item ToEntity(this Item from, IMapper mapper)
+        public static Repository.Contract.Entity.Item ToEntity(this Item from, IMapper mapper)
         {
-            return mapper.Map<Repository.Contract.Entities.Item>(from);
+            return mapper.Map<Repository.Contract.Entity.Item>(from);
         }
 
-        public static IEnumerable<Item> ToDto(this IEnumerable<Repository.Contract.Entities.Item> items, IMapper mapper)
+        public static IEnumerable<Item> ToDto(this IEnumerable<Repository.Contract.Entity.Item> items, IMapper mapper)
         {
             return mapper.Map<IEnumerable<Item>>(items);
         }

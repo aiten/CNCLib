@@ -18,7 +18,7 @@
 
 using System;
 
-using CNCLib.Repository.Contract.Entities;
+using CNCLib.Repository.Contract.Entity;
 using CNCLib.Repository.Mappings;
 
 using Framework.Contract.Repository.Entities;

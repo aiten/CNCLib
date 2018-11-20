@@ -31,7 +31,7 @@ using CNCLib.Shared;
 using Framework.Contract.Repository;
 using Framework.Logic;
 
-using ItemEntity = CNCLib.Repository.Contract.Entities.Item;
+using ItemEntity = CNCLib.Repository.Contract.Entity.Item;
 
 namespace CNCLib.Logic.Manager
 {

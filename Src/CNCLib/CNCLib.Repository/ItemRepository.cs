@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contract;
-using CNCLib.Repository.Contract.Entities;
+using CNCLib.Repository.Contract.Entity;
 using CNCLib.Shared;
 
 using Framework.Repository;

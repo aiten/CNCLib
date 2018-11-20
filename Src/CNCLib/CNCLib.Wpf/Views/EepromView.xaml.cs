@@ -21,7 +21,7 @@ using System.Windows;
 using CNCLib.Wpf.Models;
 
 using Framework.Dependency;
-using Framework.Wpf.View;
+using Framework.Wpf.Views;
 
 using Xceed.Wpf.Toolkit.PropertyGrid;
 

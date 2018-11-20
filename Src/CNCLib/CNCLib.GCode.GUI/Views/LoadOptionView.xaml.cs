@@ -21,7 +21,7 @@ using System.Windows;
 using CNCLib.GCode.GUI.ViewModels;
 
 using Framework.Dependency;
-using Framework.Wpf.View;
+using Framework.Wpf.Views;
 
 namespace CNCLib.GCode.GUI.Views
 {

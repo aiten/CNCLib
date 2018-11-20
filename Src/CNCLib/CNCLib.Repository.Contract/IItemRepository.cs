@@ -19,12 +19,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using CNCLib.Repository.Contract.Entity;
+
 using Framework.Contract.Repository;
 
 namespace CNCLib.Repository.Contract
 {
-    public interface IItemRepository : ICRUDRepository<Entities.Item, int>
+    public interface IItemRepository : ICRUDRepository<Item, int>
     {
-        Task<IEnumerable<Entities.Item>> Get(string typeIdString);
+        Task<IEnumerable<Item>> Get(string typeIdString);
     }
 }

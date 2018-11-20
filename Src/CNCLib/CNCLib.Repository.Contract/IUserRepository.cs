@@ -18,12 +18,14 @@
 
 using System.Threading.Tasks;
 
+using CNCLib.Repository.Contract.Entity;
+
 using Framework.Contract.Repository;
 
 namespace CNCLib.Repository.Contract
 {
-    public interface IUserRepository : ICRUDRepository<Entities.User, int>
+    public interface IUserRepository : ICRUDRepository<User, int>
     {
-        Task<Entities.User> GetByName(string username);
+        Task<User> GetByName(string username);
     }
 }

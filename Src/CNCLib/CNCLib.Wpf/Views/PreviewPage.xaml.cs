@@ -28,7 +28,7 @@ using CNCLib.Wpf.ViewModels;
 
 using Framework.Dependency;
 using Framework.Wpf.Helpers;
-using Framework.Wpf.View;
+using Framework.Wpf.Views;
 
 using LoadOptionsDto = CNCLib.Logic.Contract.DTO.LoadOptions;
 

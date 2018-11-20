@@ -18,6 +18,8 @@
 
 using System.Threading.Tasks;
 
+using CNCLib.Repository.Contract.Entity;
+
 using Framework.Contract.Repository;
 
 namespace CNCLib.Repository.Contract
@@ -28,10 +30,10 @@ namespace CNCLib.Repository.Contract
         public string Name  { get; set; }
     }
 
-    public interface IConfigurationRepository : ICRUDRepository<Entities.Configuration, ConfigurationPrimary>
+    public interface IConfigurationRepository : ICRUDRepository<Configuration, ConfigurationPrimary>
     {
-        Task<Entities.Configuration> Get(string group, string name);
+        Task<Configuration> Get(string group, string name);
 
-        Task Store(Entities.Configuration cfg);
+        Task Store(Configuration cfg);
     }
 }

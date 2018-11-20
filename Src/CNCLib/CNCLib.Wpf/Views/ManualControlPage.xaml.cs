@@ -21,7 +21,7 @@ using System.Windows.Controls;
 using CNCLib.Wpf.ViewModels;
 
 using Framework.Dependency;
-using Framework.Wpf.View;
+using Framework.Wpf.Views;
 
 namespace CNCLib.Wpf.Views
 {
