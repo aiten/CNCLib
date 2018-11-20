@@ -4,14 +4,14 @@
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Contracts\Framework.Contracts.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Contract\Framework.Contract.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj">    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">    </ProjectReference>
     <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj">    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Client\CNCLib.Logic.Client.csproj">    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj">    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj">    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Logic.Contract\CNCLib.Logic.Contract.csproj">    </ProjectReference>
+    <ProjectReference Include="..\CNCLib.Repository.Contract\CNCLib.Repository.Contract.csproj">    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>

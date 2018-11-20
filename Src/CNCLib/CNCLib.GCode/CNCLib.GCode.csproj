@@ -8,7 +8,7 @@
     <ProjectReference Include="..\..\Framework\Framework.Parser\Framework.Parser.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
+    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj">
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

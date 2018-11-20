@@ -4,8 +4,8 @@
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Contracts\Framework.Contracts.csproj" />
-    <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
+    <ProjectReference Include="..\..\Framework\Framework.Contract\Framework.Contract.csproj" />
+    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj">
     </ProjectReference>
   </ItemGroup>
 </Project>

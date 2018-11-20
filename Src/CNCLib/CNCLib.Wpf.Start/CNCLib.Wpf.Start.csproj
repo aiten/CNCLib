@@ -125,9 +125,9 @@
       <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
       <Name>Framework.Repository</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Contracts\Framework.Contracts.csproj">
+    <ProjectReference Include="..\..\Framework\Framework.Contract\Framework.Contract.csproj">
       <Project>{e598aaa4-fe51-46bd-b852-4a9eeb21a5c5}</Project>
-      <Name>Framework.Contracts</Name>
+      <Name>Framework.Contract</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj">
       <Project>{081814da-adc7-4b65-ae16-856c1b3d3ce8}</Project>
@@ -149,21 +149,21 @@
       <Project>{d7277bf7-35e8-47c7-8e4a-448e2224f559}</Project>
       <Name>CNCLib.Logic.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
+    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj">
       <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
-      <Name>CNCLib.Logic.Contracts.DTO</Name>
+      <Name>CNCLib.Logic.Contract.DTO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">
+    <ProjectReference Include="..\CNCLib.Logic.Contract\CNCLib.Logic.Contract.csproj">
       <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>
-      <Name>CNCLib.Logic.Contracts</Name>
+      <Name>CNCLib.Logic.Contract</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic\CNCLib.Logic.csproj">
       <Project>{36b9838b-493f-4bac-a8d3-35298c4ffdc7}</Project>
       <Name>CNCLib.Logic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj">
+    <ProjectReference Include="..\CNCLib.Repository.Contract\CNCLib.Repository.Contract.csproj">
       <Project>{0ecc8284-505b-43cc-9df9-ac5d5eef786a}</Project>
-      <Name>CNCLib.Repository.Contracts</Name>
+      <Name>CNCLib.Repository.Contract</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Repository.SqLite\CNCLib.Repository.SqLite.csproj">
       <Project>{972c43c8-8bf9-41fa-ba3c-299ac44a6938}</Project>
@@ -181,9 +181,9 @@
       <Project>{6487301a-6889-412c-92ec-899aad61a9a5}</Project>
       <Name>CNCLib.Service.WebAPI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Service.Contracts\CNCLib.Service.Contracts.csproj">
+    <ProjectReference Include="..\CNCLib.Service.Contract\CNCLib.Service.Contract.csproj">
       <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
-      <Name>CNCLib.Service.Contracts</Name>
+      <Name>CNCLib.Service.Contract</Name>
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj">
       <Project>{296f367f-4620-429b-9a51-e17675912bcb}</Project>

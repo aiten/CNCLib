@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.GCode.GUI", "CNCLib.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository", "CNCLib.Repository\CNCLib.Repository.csproj", "{D689CD99-A022-4F38-8AE1-A269C82A729C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Tests", "CNCLib.Tests\CNCLib.Tests.csproj", "{E73BAF77-EAF6-41F0-BF6A-FF6F5BC71062}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNCLib.Test", "CNCLib.Test\CNCLib.Test.csproj", "{E73BAF77-EAF6-41F0-BF6A-FF6F5BC71062}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Repository", "..\Framework\Framework.Repository\Framework.Repository.csproj", "{E768F2ED-C63D-401E-A090-1C0465A84DF5}"
 EndProject
@@ -42,7 +42,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Test", "..\Framew
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.WebAPI", "CNCLib.WebAPI\CNCLib.WebAPI.csproj", "{DA845EDE-FADC-455C-AEF7-D1844B258784}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.WebAPI.Tests", "CNCLib.WebAPI.Tests\CNCLib.WebAPI.Tests.csproj", "{6D3326B2-794C-48FD-B351-483D721BD0F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.WebAPI.Test", "CNCLib.WebAPI.Test\CNCLib.WebAPI.Test.csproj", "{6D3326B2-794C-48FD-B351-483D721BD0F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{CEB14D54-F5E6-4001-BDB3-4FBA632A7778}"
 EndProject

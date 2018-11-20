@@ -83,9 +83,9 @@
     <Compile Include="GCodeGUIAutoMapperProfile.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Contracts\Framework.Contracts.csproj">
+    <ProjectReference Include="..\..\Framework\Framework.Contract\Framework.Contract.csproj">
       <Project>{e598aaa4-fe51-46bd-b852-4a9eeb21a5c5}</Project>
-      <Name>Framework.Contracts</Name>
+      <Name>Framework.Contract</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Dependency\Framework.Dependency.csproj">
       <Project>{992eb691-dfe9-4b45-88f7-12d59a79fd03}</Project>
@@ -115,13 +115,13 @@
       <Project>{f9c446f4-6365-4189-95c5-009ef0160882}</Project>
       <Name>CNCLib.GCode</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
+    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj">
       <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
-      <Name>CNCLib.Logic.Contracts.DTO</Name>
+      <Name>CNCLib.Logic.Contract.DTO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Service.Contracts\CNCLib.Service.Contracts.csproj">
+    <ProjectReference Include="..\CNCLib.Service.Contract\CNCLib.Service.Contract.csproj">
       <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
-      <Name>CNCLib.Service.Contracts</Name>
+      <Name>CNCLib.Service.Contract</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

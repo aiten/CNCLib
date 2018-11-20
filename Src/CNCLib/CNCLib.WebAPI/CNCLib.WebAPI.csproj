@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Contracts\Framework.Contracts.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Contract\Framework.Contract.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Logging\Framework.Logging.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Mapper\Framework.Mapper.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Repository\Framework.Repository.csproj" />
@@ -45,19 +45,19 @@
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Client\CNCLib.Logic.Client.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj">
+    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj">
+    <ProjectReference Include="..\CNCLib.Logic.Contract\CNCLib.Logic.Contract.csproj">
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic\CNCLib.Logic.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj">
+    <ProjectReference Include="..\CNCLib.Repository.Contract\CNCLib.Repository.Contract.csproj">
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Repository.SqlServer\CNCLib.Repository.SqlServer.csproj" />
     <ProjectReference Include="..\CNCLib.Repository\CNCLib.Repository.csproj">
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Service.Logic\CNCLib.Service.Logic.csproj" />
-    <ProjectReference Include="..\CNCLib.Service.Contracts\CNCLib.Service.Contracts.csproj" />
+    <ProjectReference Include="..\CNCLib.Service.Contract\CNCLib.Service.Contract.csproj" />
     <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />
   </ItemGroup>
 
