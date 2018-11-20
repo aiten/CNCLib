@@ -16,12 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Framework.Dependency
 {
-    using System;
-
     /// <summary>
     /// Dependency Container for use in Live. Throws an exception when a Type cannot be resolved.
     /// </summary>

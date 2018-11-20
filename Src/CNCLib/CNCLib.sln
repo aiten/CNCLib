@@ -34,9 +34,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		SolutionItems\CNCLibSolutionInfoVersion.cs = SolutionItems\CNCLibSolutionInfoVersion.cs
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.Contracts", "CNCLib.Repository.Contracts\CNCLib.Repository.Contracts.csproj", "{0ECC8284-505B-43CC-9DF9-AC5D5EEF786A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.Contract", "CNCLib.Repository.Contract\CNCLib.Repository.Contract.csproj", "{0ECC8284-505B-43CC-9DF9-AC5D5EEF786A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Contracts", "CNCLib.Logic.Contracts\CNCLib.Logic.Contracts.csproj", "{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Contract", "CNCLib.Logic.Contract\CNCLib.Logic.Contract.csproj", "{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Test", "..\Framework\Framework.Test\Framework.Test.csproj", "{BBECB408-5426-4CE7-B7B6-970BDE436486}"
 EndProject
@@ -59,11 +59,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Web", "..\Framework\Framework.Web\Framework.Web.csproj", "{2E4BAA13-7562-4336-91A4-B8211816D936}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Contracts", "..\Framework\Framework.Contracts\Framework.Contracts.csproj", "{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Contract", "..\Framework\Framework.Contract\Framework.Contract.csproj", "{E598AAA4-FE51-46BD-B852-4A9EEB21A5C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Contracts.DTO", "CNCLib.Logic.Contracts.DTO\CNCLib.Logic.Contracts.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Contract.DTO", "CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Service.Contracts", "CNCLib.Service.Contracts\CNCLib.Service.Contracts.csproj", "{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Service.Contract", "CNCLib.Service.Contract\CNCLib.Service.Contract.csproj", "{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Service.Logic", "CNCLib.Service.Logic\CNCLib.Service.Logic.csproj", "{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}"
 EndProject
