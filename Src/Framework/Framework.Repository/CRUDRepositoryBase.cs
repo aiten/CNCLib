@@ -57,7 +57,7 @@ namespace Framework.Repository
             DeleteEntities(entities);
         }
 
-        public void SetState(TEntity entity, Framework.Contracts.Repository.EntityState state)
+        public void SetState(TEntity entity, Contract.Repository.EntityState state)
         {
             SetEntityState(entity, (EntityState) state);
         }

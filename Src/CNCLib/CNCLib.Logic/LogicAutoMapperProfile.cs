@@ -18,18 +18,20 @@
 
 using AutoMapper;
 
+using CNCLib.Repository.Contract.Entities;
+
 namespace CNCLib.Logic
 {
     public sealed class LogicAutoMapperProfile : Profile
     {
         public LogicAutoMapperProfile()
         {
-            CreateMap<Repository.Contracts.Entities.Machine, Contracts.DTO.Machine>().ReverseMap();
-            CreateMap<Repository.Contracts.Entities.MachineInitCommand, Contracts.DTO.MachineInitCommand>().ReverseMap();
-            CreateMap<Repository.Contracts.Entities.MachineCommand, Contracts.DTO.MachineCommand>().ReverseMap();
+            CreateMap<Machine, Contract.DTO.Machine>().ReverseMap();
+            CreateMap<MachineInitCommand, Contract.DTO.MachineInitCommand>().ReverseMap();
+            CreateMap<MachineCommand, Contract.DTO.MachineCommand>().ReverseMap();
 
-            CreateMap<Repository.Contracts.Entities.Item, Contracts.DTO.Item>().ReverseMap();
-            CreateMap<Repository.Contracts.Entities.ItemProperty, Contracts.DTO.ItemProperty>().ReverseMap();
+            CreateMap<Item, Contract.DTO.Item>().ReverseMap();
+            CreateMap<ItemProperty, Contract.DTO.ItemProperty>().ReverseMap();
         }
     }
 }

@@ -20,9 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contracts;
-using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Service.Contracts;
+using CNCLib.Logic.Contract;
+using CNCLib.Logic.Contract.DTO;
+using CNCLib.Service.Contract;
 
 using Framework.Service;
 

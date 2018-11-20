@@ -21,14 +21,14 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using CNCLib.Logic.Contracts;
-using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Repository.Contracts;
+using CNCLib.Logic.Contract;
+using CNCLib.Logic.Contract.DTO;
+using CNCLib.Repository.Contract;
 
-using Framework.Contracts.Repository;
+using Framework.Contract.Repository;
 using Framework.Logic;
 
-using UserEntity = CNCLib.Repository.Contracts.Entities.User;
+using UserEntity = CNCLib.Repository.Contract.Entities.User;
 
 namespace CNCLib.Logic.Manager
 {

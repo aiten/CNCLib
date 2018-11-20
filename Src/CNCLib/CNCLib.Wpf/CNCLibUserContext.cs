@@ -16,12 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Service.Contracts;
 using CNCLib.Shared;
 
 using System;
 using System.Threading.Tasks;
+
+using CNCLib.Logic.Contract.DTO;
+using CNCLib.Service.Contract;
 
 using Framework.Dependency;
 

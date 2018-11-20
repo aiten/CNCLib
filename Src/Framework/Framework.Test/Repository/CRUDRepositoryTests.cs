@@ -16,6 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Contract.Repository;
+
 namespace Framework.Test.Repository
 {
     using System;
@@ -25,7 +27,6 @@ namespace Framework.Test.Repository
 
     using FluentAssertions;
 
-    using Framework.Contracts.Repository;
     using Framework.Dependency;
     using Framework.Repository;
 

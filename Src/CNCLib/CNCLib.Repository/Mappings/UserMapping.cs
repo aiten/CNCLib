@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Repository.Contracts.Entities;
+using CNCLib.Repository.Contract.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

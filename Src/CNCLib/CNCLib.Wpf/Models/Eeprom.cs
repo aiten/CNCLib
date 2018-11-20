@@ -21,6 +21,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 using CNCLib.GCode;
+using CNCLib.Logic.Contract.DTO;
 
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
@@ -264,7 +265,7 @@ namespace CNCLib.Wpf.Models
         [Category(CATEGORY_INFO)]
         [DisplayName("CommandSyntax")]
         [Description("Capability of macine commands")]
-        public Logic.Contracts.DTO.CommandSyntax CommandSyntax { get => EepromV1.GetCommandSyntax(Info1); set { } }
+        public CommandSyntax CommandSyntax { get => EepromV1.GetCommandSyntax(Info1); set { } }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("DtrIsReset")]

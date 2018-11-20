@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.WebAPI.Tests.Dependency;
+using CNCLib.WebAPI.Test.Dependency;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CNCLib.WebAPI.Tests
+namespace CNCLib.WebAPI.Test
 {
     /// <summary>
     /// Base class for *all* unit tests. 

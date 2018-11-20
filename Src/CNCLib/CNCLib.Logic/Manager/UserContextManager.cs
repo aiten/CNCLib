@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Logic.Contracts;
+using CNCLib.Logic.Contract;
 
 using Framework.Logic;
 

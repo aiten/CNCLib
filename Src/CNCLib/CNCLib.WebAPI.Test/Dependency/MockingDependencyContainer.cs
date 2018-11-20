@@ -16,13 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
 using Framework.Dependency;
 
-using NSubstitute;
-
-namespace CNCLib.WebAPI.Tests.Dependency
+namespace CNCLib.WebAPI.Test.Dependency
 {
     public sealed class MockingDependencyContainer : MsDependencyContainer
     {

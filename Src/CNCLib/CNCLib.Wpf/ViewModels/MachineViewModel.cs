@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-using CNCLib.Service.Contracts;
+using CNCLib.Service.Contract;
 using CNCLib.Wpf.Helpers;
 using CNCLib.Wpf.Models;
 
@@ -31,7 +31,7 @@ using Framework.Wpf.ViewModels;
 using Framework.Arduino.SerialCommunication;
 using Framework.Pattern;
 
-using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
+using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
 
 namespace CNCLib.Wpf.ViewModels
 {

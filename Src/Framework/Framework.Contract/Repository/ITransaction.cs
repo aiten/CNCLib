@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contracts.Repository
-{
-    using System;
-    using System.Threading.Tasks;
+using System;
+using System.Threading.Tasks;
 
+namespace Framework.Contract.Repository
+{
     public interface ITransaction : IDisposable
     {
         Task CommitTransactionAsync();

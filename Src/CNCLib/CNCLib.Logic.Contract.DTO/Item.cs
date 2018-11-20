@@ -18,7 +18,7 @@
 
 using System.Collections.Generic;
 
-namespace CNCLib.Logic.Contracts.DTO
+namespace CNCLib.Logic.Contract.DTO
 {
     public class Item
     {

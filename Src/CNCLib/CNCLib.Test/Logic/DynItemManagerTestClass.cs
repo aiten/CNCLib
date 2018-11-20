@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-namespace CNCLib.Tests.Logic
+namespace CNCLib.Test.Logic
 {
     public class DynItemManagerTestClass
     {

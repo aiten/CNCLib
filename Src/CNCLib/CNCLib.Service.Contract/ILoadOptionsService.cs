@@ -18,11 +18,11 @@
 
 using System;
 
-using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contract.DTO;
 
-using Framework.Contracts.Service;
+using Framework.Contract.Service;
 
-namespace CNCLib.Service.Contracts
+namespace CNCLib.Service.Contract
 {
     public interface ILoadOptionsService : IDisposable, ICRUDService<LoadOptions, int>
     {

@@ -16,6 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Contract.Service;
+
 namespace Framework.Web.Controllers
 {
     using System;
@@ -24,8 +26,6 @@ namespace Framework.Web.Controllers
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
-
-    using Framework.Contracts.Service;
 
     public class UriAndValue<TDto> where TDto : class
     {

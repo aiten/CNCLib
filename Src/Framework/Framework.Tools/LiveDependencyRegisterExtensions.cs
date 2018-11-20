@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contracts.Shared;
+using Framework.Contract.Shared;
 using Framework.Dependency;
 
 namespace Framework.Tools

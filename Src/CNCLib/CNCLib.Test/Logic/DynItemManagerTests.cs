@@ -21,8 +21,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Client;
-using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Service.Contracts;
+using CNCLib.Logic.Contract.DTO;
+using CNCLib.Service.Contract;
 
 using FluentAssertions;
 
@@ -32,7 +32,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using NSubstitute;
 
-namespace CNCLib.Tests.Logic
+namespace CNCLib.Test.Logic
 {
     [TestClass]
     public class DynItemManagerTests : LogicTests

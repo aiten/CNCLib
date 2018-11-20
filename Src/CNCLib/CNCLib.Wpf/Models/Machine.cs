@@ -19,6 +19,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
+using CNCLib.Logic.Contract.DTO;
+
 namespace CNCLib.Wpf.Models
 {
     public class Machine
@@ -188,7 +190,7 @@ namespace CNCLib.Wpf.Models
         [Category(CATEGORY_FEATURES)]
         [DisplayName("CommandSyntax")]
         [Description("Syntax of machine commands, e.g. GCode, HPGL")]
-        public Logic.Contracts.DTO.CommandSyntax CommandSyntax { get; set; }
+        public CommandSyntax CommandSyntax { get; set; }
 
         private ObservableCollection<MachineCommand> _machineCommands;
 

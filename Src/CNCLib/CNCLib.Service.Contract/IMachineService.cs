@@ -19,11 +19,11 @@
 using System;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contract.DTO;
 
-using Framework.Contracts.Service;
+using Framework.Contract.Service;
 
-namespace CNCLib.Service.Contracts
+namespace CNCLib.Service.Contract
 {
     public interface IMachineService : IDisposable, ICRUDService<Machine, int>
     {

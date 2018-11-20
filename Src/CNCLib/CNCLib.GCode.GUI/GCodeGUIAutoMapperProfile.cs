@@ -18,13 +18,15 @@
 
 using AutoMapper;
 
+using CNCLib.Logic.Contract.DTO;
+
 namespace CNCLib.GCode.GUI
 {
     public sealed class GCodeGUIAutoMapperProfile : Profile
     {
         public GCodeGUIAutoMapperProfile()
         {
-            CreateMap<Models.LoadOptions, Logic.Contracts.DTO.LoadOptions>().ReverseMap();
+            CreateMap<Models.LoadOptions, LoadOptions>().ReverseMap();
         }
     }
 }

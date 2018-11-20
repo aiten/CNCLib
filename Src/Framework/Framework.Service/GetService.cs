@@ -16,13 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Contract.Logic;
+
 namespace Framework.Service
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
-    using Framework.Contracts.Logic;
 
     public abstract class GetService<T, TKey> : ServiceBase where T : class
     {

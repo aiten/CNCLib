@@ -17,6 +17,8 @@
 */
 
 
+using Framework.Contract.Logging;
+
 namespace Framework.Test.SerialCommunication
 {
     using System.IO;
@@ -31,7 +33,6 @@ namespace Framework.Test.SerialCommunication
     using NSubstitute;
 
     using Framework.Arduino.SerialCommunication;
-    using Framework.Contracts.Logging;
     using Framework.Dependency;
     using Logging;
 

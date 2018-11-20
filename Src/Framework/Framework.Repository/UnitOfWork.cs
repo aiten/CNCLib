@@ -16,12 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Contract.Repository;
+
 namespace Framework.Repository
 {
     using System;
     using System.Threading.Tasks;
-
-    using Framework.Contracts.Repository;
 
     using Microsoft.EntityFrameworkCore;
 

@@ -26,7 +26,7 @@ using CNCLib.Wpf.Helpers;
 using Framework.Logging;
 using Framework.Pattern;
 
-using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
+using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
 
 namespace CNCLib.Wpf
 {

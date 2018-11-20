@@ -18,7 +18,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CNCLib.Tests.Logic
+namespace CNCLib.Test.Logic
 {
     [TestClass]
     public class LogicTests : CNCUnitTest

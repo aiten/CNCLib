@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Service.Contracts;
+using CNCLib.Service.Contract;
 
 using Framework.Dependency;
 using Framework.Pattern;

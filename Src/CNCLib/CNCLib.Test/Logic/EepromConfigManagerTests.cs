@@ -19,11 +19,12 @@
 using System;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contract.DTO;
 using CNCLib.Logic.Manager;
 
 using FluentAssertions;
 
+using Framework.Contract.Repository;
 using Framework.Dependency;
 using Framework.Repository;
 
@@ -31,7 +32,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using NSubstitute;
 
-namespace CNCLib.Tests.Logic
+namespace CNCLib.Test.Logic
 {
     [TestClass]
     public class EepromConfigManagerTests : LogicTests
@@ -41,7 +42,7 @@ namespace CNCLib.Tests.Logic
             var rep = Substitute.For<TInterface>();
             Dependency.Container.RegisterInstance(rep);
 
-            Dependency.Container.RegisterType<Framework.Contracts.Repository.IUnitOfWork, UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
+            Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
             return rep;
         }
 

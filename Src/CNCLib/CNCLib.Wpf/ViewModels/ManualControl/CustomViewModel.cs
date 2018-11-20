@@ -19,7 +19,7 @@
 using System.Linq;
 using System.Windows.Input;
 
-using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contract.DTO;
 using CNCLib.Wpf.Helpers;
 
 using Framework.Wpf.Helpers;

@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-using CNCLib.Service.Contracts;
+using CNCLib.Service.Contract;
 using CNCLib.Wpf.Helpers;
 using CNCLib.Wpf.Models;
 

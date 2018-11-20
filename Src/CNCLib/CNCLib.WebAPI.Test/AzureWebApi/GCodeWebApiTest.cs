@@ -16,21 +16,20 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
-
-using CNCLib.Logic.Contracts.DTO;
-
 using System.Reflection;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Contract.DTO;
 
 using FluentAssertions;
 
-namespace CNCLib.WebAPI.Tests.AzureWebApi
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace CNCLib.WebAPI.Test.AzureWebApi
 {
     [TestClass]
     public class GCodeWebApiTest : AzureWebApiTest

@@ -16,8 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Service.Contracts;
+using CNCLib.Logic.Contract.DTO;
+using CNCLib.Service.Contract;
 
 namespace CNCLib.Service.WebAPI
 {

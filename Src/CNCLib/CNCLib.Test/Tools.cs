@@ -19,7 +19,7 @@
 using System;
 using System.ComponentModel;
 
-namespace CNCLib.Tests
+namespace CNCLib.Test
 {
     static class Tools
     {

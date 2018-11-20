@@ -18,7 +18,7 @@
 
 using System.Collections.Generic;
 
-namespace CNCLib.Repository.Contracts.Entities
+namespace CNCLib.Repository.Contract.Entities
 {
     public class Item
     {

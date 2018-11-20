@@ -19,8 +19,8 @@
 using System;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contracts;
-using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contract;
+using CNCLib.Logic.Contract.DTO;
 
 using Framework.Logic;
 

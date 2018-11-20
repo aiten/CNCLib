@@ -20,11 +20,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contract.DTO;
 
-using Framework.Contracts.Service;
+using Framework.Contract.Service;
 
-namespace CNCLib.Service.Contracts
+namespace CNCLib.Service.Contract
 {
     public interface IItemService : IDisposable, ICRUDService<Item, int>
     {

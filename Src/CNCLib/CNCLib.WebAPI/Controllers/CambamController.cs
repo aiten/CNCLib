@@ -21,10 +21,11 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
+using CNCLib.Logic.Contract.DTO;
+using CNCLib.Service.Contract;
+
 using Microsoft.AspNetCore.Mvc;
 
-using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Service.Contracts;
 using CNCLib.Shared;
 using CNCLib.WebAPI.Models;
 

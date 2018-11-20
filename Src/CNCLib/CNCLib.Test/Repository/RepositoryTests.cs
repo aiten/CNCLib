@@ -17,19 +17,17 @@
 */
 
 using CNCLib.Repository;
-using CNCLib.Repository.Context;
-using CNCLib.Repository.Contracts;
+using CNCLib.Repository.Contract;
 using CNCLib.Shared;
 
-using Framework.Contracts.Repository;
+using Framework.Contract.Repository;
 using Framework.Dependency;
-using Framework.Repository;
 using Framework.Test.Repository;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CNCLib.Tests.Repository
+namespace CNCLib.Test.Repository
 {
     [TestClass]
     public abstract class RepositoryTests<TDbContext, TEntity, TKey, TIRepository> : CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext

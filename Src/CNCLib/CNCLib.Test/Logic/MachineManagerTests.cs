@@ -17,32 +17,29 @@
 */
 
 using System.Collections.Generic;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using CNCLib.Repository.Contracts.Entities;
-using CNCLib.Repository.Contracts;
-
 using System.Linq;
-
-using NSubstitute;
-
 using System.Threading.Tasks;
 
 using AutoMapper;
 
 using CNCLib.Logic.Manager;
+using CNCLib.Repository.Contract;
+using CNCLib.Repository.Contract.Entities;
 
 using FluentAssertions;
 
-using Framework.Contracts.Repository;
+using Framework.Contract.Repository;
 using Framework.Dependency;
 
-using MachineDto = CNCLib.Logic.Contracts.DTO.Machine;
-using MachineInitCommandDto = CNCLib.Logic.Contracts.DTO.MachineInitCommand;
-using MachineCommandDto = CNCLib.Logic.Contracts.DTO.MachineCommand;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CNCLib.Tests.Logic
+using NSubstitute;
+
+using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
+using MachineInitCommandDto = CNCLib.Logic.Contract.DTO.MachineInitCommand;
+using MachineCommandDto = CNCLib.Logic.Contract.DTO.MachineCommand;
+
+namespace CNCLib.Test.Logic
 {
     [TestClass]
     public class MachineManagerTests : LogicTests

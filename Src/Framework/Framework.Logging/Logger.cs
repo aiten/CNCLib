@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Contract.Logging;
+
 namespace Framework.Logging
 {
     using System;
-
-    using Framework.Contracts.Logging;
 
     using NLog;
 
@@ -31,7 +31,7 @@ namespace Framework.Logging
         }
     }
 
-    public class Logger : Contracts.Logging.ILogger
+    public class Logger : Contract.Logging.ILogger
     {
         private readonly global::NLog.Logger _logger;
 

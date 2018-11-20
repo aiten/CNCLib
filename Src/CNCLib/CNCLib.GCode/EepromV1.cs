@@ -19,6 +19,8 @@
 using System;
 using System.Collections.Generic;
 
+using CNCLib.Logic.Contract.DTO;
+
 namespace CNCLib.GCode
 {
     public class EepromV1
@@ -166,9 +168,9 @@ namespace CNCLib.GCode
             EEPROM_INFO_DTR_IS_RESET      = (1 << 18)
         }
 
-        public static Logic.Contracts.DTO.CommandSyntax GetCommandSyntax(uint info1)
+        public static CommandSyntax GetCommandSyntax(uint info1)
         {
-            return (Logic.Contracts.DTO.CommandSyntax) ((info1 >> 6) & 7);
+            return (CommandSyntax) ((info1 >> 6) & 7);
         }
 
         #endregion

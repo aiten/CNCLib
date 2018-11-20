@@ -16,6 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Contract.Logging;
+
 namespace Framework.Arduino.SerialCommunication
 {
     using System;
@@ -26,8 +28,6 @@ namespace Framework.Arduino.SerialCommunication
     using System.Threading;
     using System.Threading.Tasks;
     using System.Diagnostics;
-
-    using Contracts.Logging;
 
     using WinAPI;
 

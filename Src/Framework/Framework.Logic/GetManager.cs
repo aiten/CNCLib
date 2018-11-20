@@ -16,6 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Contract.Logic;
+using Framework.Contract.Repository;
+
 namespace Framework.Logic
 {
     using System;
@@ -23,9 +26,6 @@ namespace Framework.Logic
     using System.Threading.Tasks;
 
     using AutoMapper;
-
-    using Framework.Contracts.Repository;
-    using Framework.Contracts.Logic;
 
     public abstract class GetManager<T, TKey, TEntity> : ManagerBase, IGetManager<T, TKey> where T : class where TEntity : class
     {

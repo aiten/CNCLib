@@ -18,9 +18,9 @@
 
 using System.Threading.Tasks;
 
-using Framework.Contracts.Repository;
+using Framework.Contract.Repository;
 
-namespace CNCLib.Repository.Contracts
+namespace CNCLib.Repository.Contract
 {
     public struct ConfigurationPrimary
     {

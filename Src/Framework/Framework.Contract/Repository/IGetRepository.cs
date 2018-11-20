@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contracts.Repository
-{
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
+namespace Framework.Contract.Repository
+{
     public interface IGetRepository<TEntity, in TKey> : IRepository where TEntity : class
     {
         Task<IEnumerable<TEntity>> GetAll();

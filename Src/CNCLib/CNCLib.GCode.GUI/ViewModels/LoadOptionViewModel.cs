@@ -29,14 +29,14 @@ using System.Xml.Serialization;
 using AutoMapper;
 
 using CNCLib.GCode.GUI.Models;
-using CNCLib.Service.Contracts;
+using CNCLib.Service.Contract;
 
 using Framework.Pattern;
 using Framework.Tools;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
-using LoadOptionsDto = CNCLib.Logic.Contracts.DTO.LoadOptions;
+using LoadOptionsDto = CNCLib.Logic.Contract.DTO.LoadOptions;
 
 namespace CNCLib.GCode.GUI.ViewModels
 {
@@ -297,7 +297,7 @@ namespace CNCLib.GCode.GUI.ViewModels
             string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.SettingName + @".xml", true);
             if (filename != null)
             {
-                var opt = _mapper.Map<Logic.Contracts.DTO.LoadOptions>(SelectedLoadOption);
+                var opt = _mapper.Map<LoadOptionsDto>(SelectedLoadOption);
 
                 using (var sw = new StreamWriter(filename))
                 {

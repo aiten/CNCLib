@@ -20,8 +20,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using CNCLib.Repository.Context;
-using CNCLib.Repository.Contracts;
-using CNCLib.Repository.Contracts.Entities;
+using CNCLib.Repository.Contract;
+using CNCLib.Repository.Contract.Entities;
 
 using FluentAssertions;
 
@@ -32,7 +32,7 @@ using Framework.Tools;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CNCLib.Tests.Repository
+namespace CNCLib.Test.Repository
 {
     [TestClass]
     public class UserRepositoryTests : RepositoryTests<CNCLibContext, User, int, IUserRepository>

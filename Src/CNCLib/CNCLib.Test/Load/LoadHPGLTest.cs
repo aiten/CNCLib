@@ -16,22 +16,19 @@
   http://www.gnu.org/licenses/
 */
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-using CNCLib.GCode.Load;
-using CNCLib.Logic.Contracts.DTO;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using System.Linq;
-
 using CNCLib.GCode.Commands;
+using CNCLib.GCode.Load;
+using CNCLib.Logic.Contract.DTO;
 
 using FluentAssertions;
 
-using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CNCLib.Tests.Load
+namespace CNCLib.Test.Load
 {
     [TestClass]
     public class LoadHPGLTest

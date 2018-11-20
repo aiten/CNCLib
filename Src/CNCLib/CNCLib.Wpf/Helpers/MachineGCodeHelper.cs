@@ -24,10 +24,11 @@ using System.Threading.Tasks;
 using Framework.Arduino.SerialCommunication;
 
 using CNCLib.GCode;
-using CNCLib.Logic.Contracts.DTO;
 
 using System.Media;
 using System.Collections.Generic;
+
+using CNCLib.Logic.Contract.DTO;
 
 namespace CNCLib.Wpf.Helpers
 {

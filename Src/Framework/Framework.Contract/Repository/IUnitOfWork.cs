@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contracts.Repository
-{
-    using System.Threading.Tasks;
+using System.Threading.Tasks;
 
+namespace Framework.Contract.Repository
+{
     public interface IUnitOfWork
     {
         Task<int> SaveChangesAsync();

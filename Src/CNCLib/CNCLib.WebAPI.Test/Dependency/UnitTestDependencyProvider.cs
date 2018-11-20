@@ -20,7 +20,7 @@ using System;
 
 using Framework.Dependency;
 
-namespace CNCLib.WebAPI.Tests.Dependency
+namespace CNCLib.WebAPI.Test.Dependency
 {
     public sealed class UnitTestDependencyProvider : IDependencyProvider
     {

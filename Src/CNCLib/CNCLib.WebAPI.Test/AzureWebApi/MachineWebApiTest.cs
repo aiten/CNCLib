@@ -22,13 +22,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contract.DTO;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CNCLib.WebAPI.Tests.AzureWebApi
+namespace CNCLib.WebAPI.Test.AzureWebApi
 {
     [TestClass]
     public class MachineWebApiTest : AzureWebApiTest

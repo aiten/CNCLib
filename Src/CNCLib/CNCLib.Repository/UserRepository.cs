@@ -21,8 +21,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using CNCLib.Repository.Context;
-using CNCLib.Repository.Contracts;
-using CNCLib.Repository.Contracts.Entities;
+using CNCLib.Repository.Contract;
+using CNCLib.Repository.Contract.Entities;
 
 using Framework.Repository;
 

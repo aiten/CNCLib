@@ -24,12 +24,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using CNCLib.Logic.Manager;
-using CNCLib.Repository.Contracts;
-using CNCLib.Repository.Contracts.Entities;
+using CNCLib.Repository.Contract;
+using CNCLib.Repository.Contract.Entities;
 
 using FluentAssertions;
 
-using Framework.Contracts.Repository;
+using Framework.Contract.Repository;
 using Framework.Dependency;
 using Framework.Repository;
 
@@ -37,9 +37,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using NSubstitute;
 
-using ItemDto = CNCLib.Logic.Contracts.DTO.Item;
+using ItemDto = CNCLib.Logic.Contract.DTO.Item;
 
-namespace CNCLib.Tests.Logic
+namespace CNCLib.Test.Logic
 {
     [TestClass]
     public class ItemManagerTests : LogicTests

@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contracts.Logic
-{
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
+namespace Framework.Contract.Logic
+{
     public interface ICRUDManager<T, TId> : IGetManager<T, TId> where T : class
     {
         Task<TId> Add(T value);

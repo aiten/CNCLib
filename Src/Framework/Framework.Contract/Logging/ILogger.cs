@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contracts.Logging
-{
-    using System;
-    using System.ComponentModel;
+using System;
+using System.ComponentModel;
 
+namespace Framework.Contract.Logging
+{
     public interface ILogger
     {
         void Trace([Localizable(false)] string message);

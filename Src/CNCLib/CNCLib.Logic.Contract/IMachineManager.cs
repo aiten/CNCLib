@@ -19,9 +19,9 @@
 using System;
 using System.Threading.Tasks;
 
-using Framework.Contracts.Logic;
+using Framework.Contract.Logic;
 
-namespace CNCLib.Logic.Contracts
+namespace CNCLib.Logic.Contract
 {
     public interface IMachineManager : IDisposable, ICRUDManager<DTO.Machine, int>
     {

@@ -17,25 +17,22 @@
 */
 
 using System;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using System.Linq;
-
-using NSubstitute;
-
-using CNCLib.Logic.Contracts.DTO;
-using CNCLib.Logic.Client;
-
 using System.Threading.Tasks;
 
+using CNCLib.Logic.Client;
+using CNCLib.Logic.Contract.DTO;
 using CNCLib.Logic.Manager;
 
 using FluentAssertions;
 
 using Framework.Dependency;
 
-namespace CNCLib.Tests.Logic
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using NSubstitute;
+
+namespace CNCLib.Test.Logic
 {
     [TestClass]
     public class LoadOptionsManagerTests : LogicTests

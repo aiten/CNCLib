@@ -26,7 +26,7 @@ using AutoMapper;
 
 using CNCLib.GCode.GUI;
 using CNCLib.Logic.Client;
-using CNCLib.Service.Contracts;
+using CNCLib.Service.Contract;
 using CNCLib.Service.WebAPI;
 using CNCLib.Shared;
 

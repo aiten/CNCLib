@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contracts.Repository
+namespace Framework.Contract.Repository
 {
     public interface IRepository
     {

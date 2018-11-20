@@ -19,7 +19,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace CNCLib.Logic.Contracts
+namespace CNCLib.Logic.Contract
 {
     public interface IEepromConfigurationManager : IDisposable
     {

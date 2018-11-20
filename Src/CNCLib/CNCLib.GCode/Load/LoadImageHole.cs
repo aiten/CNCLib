@@ -19,7 +19,7 @@
 using System;
 
 using CNCLib.GCode.Commands;
-using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contract.DTO;
 
 using Framework.Tools;
 

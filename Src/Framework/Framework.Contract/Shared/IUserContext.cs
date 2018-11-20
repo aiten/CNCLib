@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contracts.Shared
+namespace Framework.Contract.Shared
 {
     public interface IUserContext
     {

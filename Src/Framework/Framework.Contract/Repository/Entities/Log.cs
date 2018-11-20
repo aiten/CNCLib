@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contracts.Repository.Entities
-{
-    using System;
+using System;
 
+namespace Framework.Contract.Repository.Entities
+{
     public class Log
     {
         public int      Id            { get; set; }

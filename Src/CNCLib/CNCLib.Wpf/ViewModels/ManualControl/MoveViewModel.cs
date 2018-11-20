@@ -23,6 +23,7 @@ using Framework.Wpf.Helpers;
 
 using System.Globalization;
 
+using CNCLib.Logic.Contract.DTO;
 using CNCLib.Wpf.Helpers;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
@@ -43,7 +44,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         {
             RunAndUpdate(() =>
             {
-                bool   mustUse2Lines = Global.Instance.Machine.CommandSyntax == Logic.Contracts.DTO.CommandSyntax.Grbl;
+                bool   mustUse2Lines = Global.Instance.Machine.CommandSyntax == CommandSyntax.Grbl;
                 string commandStr    = MachineGCodeHelper.PrepareCommand("g91 g0" + axisName + (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
 
                 if (!mustUse2Lines)

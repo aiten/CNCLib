@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contracts.Shared
-{
-    using System;
+using System;
 
+namespace Framework.Contract.Shared
+{
     public interface ICurrentDateTime
     {
         DateTime Now   { get; }

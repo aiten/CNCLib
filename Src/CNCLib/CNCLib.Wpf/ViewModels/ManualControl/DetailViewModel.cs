@@ -18,6 +18,8 @@
 
 using System;
 
+using CNCLib.Logic.Contract.DTO;
+
 using Framework.Wpf.ViewModels;
 
 namespace CNCLib.Wpf.ViewModels.ManualControl
@@ -57,7 +59,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public bool CanSendGCode()
         {
-            return CanSend() && Global.Instance.Machine.CommandSyntax != Logic.Contracts.DTO.CommandSyntax.HPGL;
+            return CanSend() && Global.Instance.Machine.CommandSyntax != CommandSyntax.HPGL;
         }
 
         #endregion

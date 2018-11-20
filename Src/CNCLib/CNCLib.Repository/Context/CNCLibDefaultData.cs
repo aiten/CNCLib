@@ -18,7 +18,7 @@
 
 using System.Globalization;
 
-using CNCLib.Repository.Contracts.Entities;
+using CNCLib.Repository.Contract.Entities;
 
 namespace CNCLib.Repository.Context
 {

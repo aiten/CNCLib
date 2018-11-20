@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Contract.Logging;
 using Framework.Dependency;
 
 namespace Framework.Logging
@@ -24,8 +25,8 @@ namespace Framework.Logging
     {
         public static IDependencyContainer RegisterFrameWorkLogging(this IDependencyContainer container)
         {
-            container.RegisterType<Framework.Contracts.Logging.ILoggerFactory, LoggerFactory>();
-            container.RegisterType(typeof(Framework.Contracts.Logging.ILogger<>), typeof(Logger<>));
+            container.RegisterType<ILoggerFactory, LoggerFactory>();
+            container.RegisterType(typeof(ILogger<>), typeof(Logger<>));
 
             return container;
         }

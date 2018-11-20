@@ -19,7 +19,7 @@
 using System.IO;
 
 using CNCLib.GCode.Load;
-using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contract.DTO;
 
 namespace CNCLib.WebAPI.Controllers
 {

@@ -30,7 +30,7 @@ using Framework.Dependency;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.View;
 
-using LoadOptionsDto = CNCLib.Logic.Contracts.DTO.LoadOptions;
+using LoadOptionsDto = CNCLib.Logic.Contract.DTO.LoadOptions;
 
 namespace CNCLib.Wpf.Views
 {

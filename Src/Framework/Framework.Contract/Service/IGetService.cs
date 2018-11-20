@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contracts.Service
-{
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
+namespace Framework.Contract.Service
+{
     public interface IGetService<T, in TKey> where T : class
     {
         Task<T> Get(TKey id);

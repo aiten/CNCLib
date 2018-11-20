@@ -16,6 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Contract.Logic;
+using Framework.Contract.Repository;
+
 namespace Framework.Logic
 {
     using System;
@@ -24,9 +27,6 @@ namespace Framework.Logic
     using System.Threading.Tasks;
 
     using AutoMapper;
-
-    using Framework.Contracts.Logic;
-    using Framework.Contracts.Repository;
 
     public abstract class CRUDManager<T, TKey, TEntity> : GetManager<T, TKey, TEntity>, ICRUDManager<T, TKey> where T : class where TEntity : class
     {

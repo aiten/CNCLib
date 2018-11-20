@@ -19,9 +19,9 @@
 using System;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contract.DTO;
 
-namespace CNCLib.Service.Contracts
+namespace CNCLib.Service.Contract
 {
     public interface IEepromConfigurationService : IDisposable
     {

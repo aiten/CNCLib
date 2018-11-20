@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contracts.Repository
-{
-    using System.Collections.Generic;
+using System.Collections.Generic;
 
+namespace Framework.Contract.Repository
+{
     public enum EntityState
     {
         Detached,

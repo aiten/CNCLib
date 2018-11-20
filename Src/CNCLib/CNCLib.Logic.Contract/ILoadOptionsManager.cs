@@ -18,9 +18,9 @@
 
 using System;
 
-using Framework.Contracts.Logic;
+using Framework.Contract.Logic;
 
-namespace CNCLib.Logic.Contracts
+namespace CNCLib.Logic.Contract
 {
     public interface ILoadOptionsManager : IDisposable, ICRUDManager<DTO.LoadOptions, int>
     {

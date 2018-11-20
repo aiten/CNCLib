@@ -16,14 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Test;
-
 using AutoMapper;
 
 using CNCLib.Logic;
-using Framework.Dependency;
 
-namespace CNCLib.Tests
+using Framework.Dependency;
+using Framework.Test;
+
+namespace CNCLib.Test
 {
     public abstract class CNCUnitTest : UnitTestBase
     {
