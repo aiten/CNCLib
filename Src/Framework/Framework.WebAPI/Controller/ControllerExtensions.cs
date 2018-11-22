@@ -34,7 +34,7 @@ namespace Framework.WebAPI.Controllers
         public TDto Value { get; set; }
     }
 
-    public static class ControllerExtension
+    public static class ControllerExtensions
     {
         public static string GetCurrentUri(this Controller controller)
         {
