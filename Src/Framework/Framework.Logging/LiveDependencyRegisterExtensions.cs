@@ -16,12 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Dependency;
-using Framework.Dependency.Abstraction;
-using Framework.Logging.Abstraction;
-
 namespace Framework.Logging
 {
+    using Abstraction;
+
+    using Dependency;
+    using Dependency.Abstraction;
+
     public static class LiveDependencyRegisterExtensions
     {
         public static IDependencyContainer RegisterFrameWorkLogging(this IDependencyContainer container)

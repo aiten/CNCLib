@@ -50,48 +50,35 @@ namespace Framework.Dependency
 
         /// <summary>
         /// This can be called in unit tests to reset the container to an empty state. 
-        /// 
-        /// NOTE: After calling this you should call the module's DependencyInitializer again!
+        /// NOTE: After calling this you should call the module's DependencyInitializer again.
         /// </summary>
         public void ResetContainer()
         {
             _container.Clear();
         }
 
-        /// <summary>
-        /// Registers a type for the given interface.
-        /// </summary>
-        /// <returns>This instance.</returns>
+        /// <inheritdoc />
         public IDependencyContainer RegisterType(Type typeFrom, Type typeTo)
         {
             _container.AddTransient(typeFrom, typeTo);
             return this;
         }
 
-        /// <summary>
-        /// Registers a type for the given interface.
-        /// </summary>
-        /// <returns>This instance.</returns>
+        /// <inheritdoc />
         public IDependencyContainer RegisterTypeScoped(Type typeFrom, Type typeTo)
         {
             _container.AddScoped(typeFrom, typeTo);
             return this;
         }
 
-        /// <summary>
-        /// Registers instance for a specified interface.
-        /// </summary>
-        /// <returns>This instance.</returns>
+        /// <inheritdoc />
         public IDependencyContainer RegisterInstance(Type typeFrom, object obj)
         {
             _container.AddSingleton(typeFrom, obj);
             return this;
         }
 
-        /// <summary>
-        /// Create an object to resolve a dependency
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public IDependencyResolver GetResolver()
         {
             return new MsDependencyResolver(_container.BuildServiceProvider());
@@ -99,7 +86,7 @@ namespace Framework.Dependency
 
         #region IDisposable Support
 
-        private bool disposedValue = false; // To detect redundant calls
+        private bool disposedValue = false;
 
         protected virtual void Dispose(bool disposing)
         {

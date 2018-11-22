@@ -24,8 +24,7 @@ namespace Framework.Dependency.Abstraction
     public interface IDependencyProvider
     {
         /// <summary>
-        /// Returns an instance of an IDependencyContainer. 
-        /// 
+        /// Gets an instance of an IDependencyContainer. 
         /// In live this is always a singleton for the whole application. 
         /// In unit tests this may be a TaskLocal container which allows tests
         /// to run parallel without interfering with each other.

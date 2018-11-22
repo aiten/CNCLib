@@ -30,7 +30,7 @@ namespace Framework.Dependency
         /// Registers the given object for the interface. 
         /// </summary>
         /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
-        /// <param name="container"></param>
+        /// <param name="container">Dependency container.</param>
         /// <param name="obj">Object that should be returned for Resolve&lt;TInterface&gt;() calls.</param>
         /// <returns>This instance.</returns>
         public static IDependencyContainer RegisterInstance<TInterface>(this IDependencyContainer container, TInterface obj)
@@ -44,6 +44,7 @@ namespace Framework.Dependency
         /// <summary>
         /// Registers a type for the given interface.
         /// </summary>
+        /// <param name="container">Dependency container.</param>
         /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
         /// <typeparam name="TType">Type that implements interface. On Resolve&lt;TInterface&gt;() calls a new instance is returned every time.</typeparam>
         /// <returns>This instance.</returns>
@@ -56,7 +57,9 @@ namespace Framework.Dependency
         /// <summary>
         /// Registers a type for the given interface.
         /// </summary>
+        /// <param name="container">Dependency container.</param>
         /// <returns>This instance.</returns>
+        /// <typeparam name="TType">Type that implements interface.</typeparam>
         public static IDependencyContainer RegisterType<TType>(this IDependencyContainer container)
         {
             container.RegisterType(typeof(TType), typeof(TType));
@@ -67,7 +70,7 @@ namespace Framework.Dependency
         /// Registers public and internal types of the given assemblies with the unity container. This is necessary
         /// to workaround the internals visible to hacks in the code base.
         /// </summary>
-        /// <param name="container"></param>
+        /// <param name="container">Dependency container.</param>
         /// <param name="assemblies">List of assemblies in which all types should be registered with their interfaces. 
         /// This includes internal types. </param>
         /// <returns>This instance.</returns>
@@ -114,6 +117,7 @@ namespace Framework.Dependency
         /// </summary>
         /// <typeparam name="TInterface">Interface that can be later resolved.</typeparam>
         /// <typeparam name="TType">Type that implements interface. On Resolve&lt;TInterface&gt;() calls a new instance is returned every time.</typeparam>
+        /// <param name="container">Dependency container.</param>
         /// <returns>This instance.</returns>
         public static IDependencyContainer RegisterTypeScoped<TInterface, TType>(this IDependencyContainer container) where TType : TInterface
         {
@@ -124,7 +128,9 @@ namespace Framework.Dependency
         /// <summary>
         /// Registers a type for the given interface.
         /// </summary>
+        /// <param name="container">Dependency container.</param>
         /// <returns>This instance.</returns>
+        /// <typeparam name="TType">Type that implements interface.</typeparam>
         public static IDependencyContainer RegisterTypeScoped<TType>(this IDependencyContainer container)
         {
             container.RegisterTypeScoped(typeof(TType), typeof(TType));
@@ -135,7 +141,7 @@ namespace Framework.Dependency
         /// Registers public and internal types of the given assemblies with the unity container. This is necessary
         /// to workaround the internals visible to hacks in the code base.
         /// </summary>
-        /// <param name="container"></param>
+        /// <param name="container">Dependency container.</param>
         /// <param name="assemblies">List of assemblies in which all types should be registered with their interfaces. 
         /// This includes internal types. </param>
         /// <returns>This instance.</returns>
@@ -178,6 +184,7 @@ namespace Framework.Dependency
         /// <summary>
         /// Resolves the interface to a specific type that was registered earlier. 
         /// </summary>
+        /// <param name="container">Dependency container.</param>
         /// <typeparam name="TInterface">Interface for which the registered type is looked up.</typeparam>
         /// <returns>An instance of the interface that was registered with the container earlier.</returns>
         /// <exception cref="ResolutionFailedException">Thrown when no type was registered for the given interface.</exception>

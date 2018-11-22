@@ -29,31 +29,30 @@ namespace Framework.Dependency.Abstraction
         /// <summary>
         /// Registers the given object for the interface. 
         /// </summary>
-        /// <param name="typeFrom"></param>
+        /// <param name="typeFrom">Type from.</param>
         /// <param name="obj">Object that should be returned for Resolve&lt;TInterface&gt;() calls.</param>
         /// <returns>This instance.</returns>
         IDependencyContainer RegisterInstance(Type typeFrom, object obj);
 
         /// <summary>
-        /// Register typeFrom to typeTo 
+        /// Register typeFrom to typeTo.
         /// </summary>
-        /// <param name="typeFrom"></param>
-        /// <param name="typeTo"></param>
+        /// <param name="typeFrom">Type from.</param>
+        /// <param name="typeTo">Type to.</param>
         /// <returns></returns>
         IDependencyContainer RegisterType(Type typeFrom, Type typeTo);
 
         /// <summary>
-        /// Register typeFrom to typeTo 
+        /// Register typeFrom to typeTo.
         /// </summary>
-        /// <param name="typeFrom"></param>
-        /// <param name="typeTo"></param>
+        /// <param name="typeFrom">Type from.</param>
+        /// <param name="typeTo">Type to.</param>
         /// <returns></returns>
         IDependencyContainer RegisterTypeScoped(Type typeFrom, Type typeTo);
 
         /// <summary>
         /// This can be called in unit tests to reset the container to an empty state. 
-        /// 
-        /// NOTE: After calling this you should call the module's DependencyInitializer again!
+        /// NOTE: After calling this you should call the module's DependencyInitializer again.
         /// </summary>
         void ResetContainer();
 

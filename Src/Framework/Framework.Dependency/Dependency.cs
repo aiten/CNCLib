@@ -24,7 +24,6 @@ namespace Framework.Dependency
 
     /// <summary>
     /// Static class that gives access to the DependencyContainer of the module. 
-    /// 
     /// Further offers methods to simplify dealing with often needed tasks.
     /// </summary>
     public static class Dependency
@@ -32,7 +31,7 @@ namespace Framework.Dependency
         private static IDependencyProvider _provider;
 
         /// <summary>
-        /// Initializes the class. This 
+        /// Initializes the class.
         /// </summary>
         /// <param name="provider">Class that provides the dependency container.</param>
         public static void Initialize(IDependencyProvider provider)
@@ -53,6 +52,7 @@ namespace Framework.Dependency
         /// <summary>
         /// Resolves a dependency by forwarding the call to the <see cref="Container"/>.
         /// </summary>
+        /// <typeparam name="TInterface">Interface to be resolved.</typeparam>
         public static TInterface Resolve<TInterface>()
         {
             return Container.Resolve<TInterface>();

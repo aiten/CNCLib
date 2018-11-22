@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.ComponentModel;
-
 namespace Framework.Logging.Abstraction
 {
+    using System;
+    using System.ComponentModel;
+
     public interface ILogger
     {
         void Trace([Localizable(false)] string message);

@@ -514,7 +514,7 @@ namespace Framework.Arduino.SerialCommunication
             if (WriteSerial(commandText, true))
             {
                 cmd.SentTime = DateTime.Now;
-                eventArgs     = new SerialEventArgs(cmd);
+                eventArgs    = new SerialEventArgs(cmd);
                 OnCommandSent(eventArgs);
             }
         }

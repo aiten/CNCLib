@@ -26,7 +26,7 @@ namespace Framework.Dependency.Abstraction
     public interface IDependencyScope : IDisposable
     {
         /// <summary>
-        /// Instance of IDependencyResolver to resolve services (objects)
+        /// Gets an instance of IDependencyResolver to resolve services (objects).
         /// </summary>
         IDependencyResolver Resolver { get; }
     }

@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Logging.Abstraction;
-
 namespace Framework.Logging
 {
     using System;
+
+    using Abstraction;
 
     using NLog;
 

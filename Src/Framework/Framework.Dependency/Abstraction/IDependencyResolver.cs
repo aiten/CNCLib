@@ -28,7 +28,7 @@ namespace Framework.Dependency.Abstraction
         /// <summary>
         /// Resolve an instance of the default requested type from the container. 
         /// </summary>
-        /// <param name="t">Type for which a specific instance should be resolved</param>
+        /// <param name="t">Type for which a specific instance should be resolved.</param>
         /// <returns>An object that implements type t.</returns>
         object Resolve(Type t);
 
