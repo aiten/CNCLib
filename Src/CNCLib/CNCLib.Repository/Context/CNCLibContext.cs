@@ -22,7 +22,7 @@ using CNCLib.Repository.Contract.Entity;
 using CNCLib.Repository.Mappings;
 
 using Framework.Contract.Repository.Entities;
-using Framework.Repository.Mapping;
+using Framework.Repository.Mappings;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;

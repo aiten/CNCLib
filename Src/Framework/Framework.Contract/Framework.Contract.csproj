@@ -2,5 +2,8 @@
   <Import Project="$(ProjectDir)..\SolutionItems\Framework.targets" />
    <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>  
+  </PropertyGroup>
+   <ItemGroup>
+     <Folder Include="Repository\" />
+   </ItemGroup>  
 </Project>

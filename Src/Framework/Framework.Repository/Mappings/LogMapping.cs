@@ -21,7 +21,7 @@ using Framework.Contract.Repository.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Framework.Repository.Mapping
+namespace Framework.Repository.Mappings
 {
     public static class LogMapping
     {

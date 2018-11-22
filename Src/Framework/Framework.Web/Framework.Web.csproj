@@ -10,5 +10,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Framework.Contract\Framework.Contract.csproj" />
     <ProjectReference Include="..\Framework.Dependency\Framework.Dependency.csproj" />
+  </ItemGroup>  
+  <ItemGroup>
+    <Folder Include="Abstraction\" />
   </ItemGroup>
 </Project>
