@@ -7,8 +7,6 @@
      <PackageReference Include="AutoMapper" Version="8.0.0" />
    </ItemGroup>
    <ItemGroup>
-     <ProjectReference Include="..\Framework.Logic.Abstraction\Framework.Logic.Abstraction.csproj" />
      <ProjectReference Include="..\Framework.Pattern\Framework.Pattern.csproj" />
-     <ProjectReference Include="..\Framework.Repository.Abstraction\Framework.Repository.Abstraction.csproj" />
    </ItemGroup>
 </Project>

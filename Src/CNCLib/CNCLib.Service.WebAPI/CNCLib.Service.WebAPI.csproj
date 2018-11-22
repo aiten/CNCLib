@@ -8,7 +8,6 @@
      <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
    </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Contract\Framework.Contract.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Pattern\Framework.Pattern.csproj" />
     <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj">
     </ProjectReference>

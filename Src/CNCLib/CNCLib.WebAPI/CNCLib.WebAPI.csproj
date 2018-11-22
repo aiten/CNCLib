@@ -35,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Contract\Framework.Contract.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Logging\Framework.Logging.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Mapper\Framework.Mapper.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Repository\Framework.Repository.csproj" />

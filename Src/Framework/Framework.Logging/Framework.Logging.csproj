@@ -7,7 +7,6 @@
     <PackageReference Include="NLog" Version="4.5.11" />
   </ItemGroup>  
   <ItemGroup>
-    <ProjectReference Include="..\Framework.Contract\Framework.Contract.csproj" />
     <ProjectReference Include="..\Framework.Dependency\Framework.Dependency.csproj" />
   </ItemGroup>
 

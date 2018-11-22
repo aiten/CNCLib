@@ -4,7 +4,6 @@
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Contract\Framework.Contract.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj">    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">    </ProjectReference>
     <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj">    </ProjectReference>

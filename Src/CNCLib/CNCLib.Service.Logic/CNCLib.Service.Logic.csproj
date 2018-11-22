@@ -4,7 +4,6 @@
 	<TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Contract\Framework.Contract.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Pattern\Framework.Pattern.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Service\Framework.Service.csproj" />
     <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj">    </ProjectReference>

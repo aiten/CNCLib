@@ -8,8 +8,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
   </ItemGroup>  
   <ItemGroup>
-    <ProjectReference Include="..\Framework.Contract\Framework.Contract.csproj" />
     <ProjectReference Include="..\Framework.Dependency\Framework.Dependency.csproj" />
+    <ProjectReference Include="..\Framework.Service.Abstraction\Framework.Service.Abstraction.csproj" />
   </ItemGroup>  
   <ItemGroup>
     <Folder Include="Abstraction\" />
