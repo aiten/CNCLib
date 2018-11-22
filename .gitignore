@@ -44,3 +44,4 @@ obj
 /Src/publishSerialServerForWinService.ps1
 /Src/NsisSetup/Output/CNCLib.Sql_install.exe
 /Src/NsisSetup/Output/CNCLib.Web_install.exe
+*.Cache

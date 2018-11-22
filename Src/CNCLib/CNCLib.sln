@@ -49,7 +49,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A7A2
 		PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1 = PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.WebAPI", "..\Framework\Framework.Web\Framework.WebAPI.csproj", "{2E4BAA13-7562-4336-91A4-B8211816D936}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.WebAPI", "..\Framework\Framework.WebAPI\Framework.WebAPI.csproj", "{2E4BAA13-7562-4336-91A4-B8211816D936}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Contract.DTO", "CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
 EndProject

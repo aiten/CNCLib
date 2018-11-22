@@ -24,6 +24,5 @@ namespace CNCLib.Logic.Contract.DTO
         public string Name   { get; set; }
 
         public string Value { get; set; }
-        //public virtual Item Item { get; set; }
     }
 }

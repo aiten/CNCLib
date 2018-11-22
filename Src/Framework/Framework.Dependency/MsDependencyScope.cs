@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Dependency.Abstraction;
-
 namespace Framework.Dependency
 {
+    using Abstraction;
+
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
@@ -29,12 +29,12 @@ namespace Framework.Dependency
     {
         private readonly IServiceScope _serviceScope;
 
-        public  IDependencyResolver Resolver { get; private set; }
+        public IDependencyResolver Resolver { get; private set; }
 
         public MsDependencyScope(IServiceScope serviceScope)
         {
             _serviceScope = serviceScope;
-            Resolver = new MsDependencyResolver(_serviceScope.ServiceProvider);
+            Resolver      = new MsDependencyResolver(_serviceScope.ServiceProvider);
         }
 
         #region IDisposable Support

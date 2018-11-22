@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Dependency.Abstraction;
-
 namespace Framework.Dependency
 {
     using System;
+
+    using Abstraction;
 
     using Microsoft.Extensions.DependencyInjection;
 

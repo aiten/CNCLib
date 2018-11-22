@@ -24,7 +24,7 @@ using CNCLib.Logic.Contract.DTO;
 using CNCLib.Service.Contract;
 using CNCLib.Shared;
 
-using Framework.Web.Controllers;
+using Framework.WebAPI.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 

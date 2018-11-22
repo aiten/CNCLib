@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Dependency.Abstraction;
-
 namespace Framework.Dependency
 {
     using System;
+
+    using Framework.Dependency.Abstraction;
 
     /// <summary>
     /// Static class that gives access to the DependencyContainer of the module. 

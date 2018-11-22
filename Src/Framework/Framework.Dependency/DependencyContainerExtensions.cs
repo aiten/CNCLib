@@ -16,13 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Dependency.Abstraction;
-
 namespace Framework.Dependency
 {
     using System;
     using System.Linq;
     using System.Reflection;
+
+    using Abstraction;
 
     public static class DependencyContainerExtensions
     {
@@ -185,9 +185,10 @@ namespace Framework.Dependency
         {
             return (TInterface) container.GetResolver().Resolve(typeof(TInterface));
         }
+
         public static TInterface Resolve<TInterface>(this IDependencyResolver resolver)
         {
-            return (TInterface)resolver.Resolve(typeof(TInterface));
+            return (TInterface) resolver.Resolve(typeof(TInterface));
         }
     }
 }

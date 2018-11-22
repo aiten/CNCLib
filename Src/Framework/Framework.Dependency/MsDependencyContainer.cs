@@ -16,13 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Dependency.Abstraction;
-
 namespace Framework.Dependency
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using Abstraction;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -37,10 +37,16 @@ namespace Framework.Dependency
         {
             _container = services;
         }
+
         public MsDependencyContainer()
         {
             _container = new ServiceCollection();
         }
+
+        /// <summary>
+        /// Gets an enumeration containing all types registered with the dependency container.
+        /// </summary>
+        public IEnumerable<Type> RegisteredTypes => _container.Select(r => r.ServiceType);
 
         /// <summary>
         /// This can be called in unit tests to reset the container to an empty state. 
@@ -50,9 +56,6 @@ namespace Framework.Dependency
         public void ResetContainer()
         {
             _container.Clear();
-//            throw new NotImplementedException();
-//            _container.Dispose();
-//            _container = new UnityContainer();
         }
 
         /// <summary>
@@ -86,17 +89,12 @@ namespace Framework.Dependency
         }
 
         /// <summary>
-        /// Gets an enumeration containing all types registered with the dependency container.
-        /// </summary>
-        public IEnumerable<Type> RegisteredTypes { get { return _container.Select(r => r.ServiceType); } }
-
-        /// <summary>
         /// Create an object to resolve a dependency
         /// </summary>
         /// <returns></returns>
         public IDependencyResolver GetResolver()
         {
-            return new MsDependencyResolver(_container.BuildServiceProvider()); 
+            return new MsDependencyResolver(_container.BuildServiceProvider());
         }
 
         #region IDisposable Support
@@ -109,7 +107,6 @@ namespace Framework.Dependency
             {
                 if (disposing)
                 {
-                    //                   _container.Dispose();
                 }
 
                 disposedValue = true;
@@ -119,6 +116,7 @@ namespace Framework.Dependency
         public void Dispose()
         {
             Dispose(true);
+
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }

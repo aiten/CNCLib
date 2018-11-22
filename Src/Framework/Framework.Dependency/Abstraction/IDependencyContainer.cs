@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-
 namespace Framework.Dependency.Abstraction
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Inversion of Control container, which enables Dependency Injection. 
     /// </summary>
@@ -49,7 +49,6 @@ namespace Framework.Dependency.Abstraction
         /// <param name="typeTo"></param>
         /// <returns></returns>
         IDependencyContainer RegisterTypeScoped(Type typeFrom, Type typeTo);
-
 
         /// <summary>
         /// This can be called in unit tests to reset the container to an empty state. 

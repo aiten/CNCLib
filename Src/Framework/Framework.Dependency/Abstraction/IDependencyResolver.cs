@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
 namespace Framework.Dependency.Abstraction
 {
+    using System;
+
     /// <summary>
     /// Inversion of Control container, which enables Dependency Injection. 
     /// </summary>

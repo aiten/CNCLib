@@ -16,26 +16,26 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Web.Filter
+using System.Net;
+
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
+
+namespace Framework.WebAPI.Filter
 {
-    using System;
-    using System.Text.RegularExpressions;
-
-    public sealed class ErrorResponseData
+    public sealed class UnhandledExceptionFilter : ExceptionFilterBase
     {
-        public string Error   { get; set; }
-        public object Message { get; set; }
-
-        public ErrorResponseData(string error, object message)
+        public UnhandledExceptionFilter(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
-            Error   = error;
-            Message = message;
         }
 
-        public ErrorResponseData(Exception exception)
+        protected override ExceptionResponse? GetResponse(ExceptionContext exceptionContext)
         {
-            Error   = Regex.Replace(exception.GetType().Name, "(Error|Exception)$", string.Empty);
-            Message = exception.Message;
+            var logger    = CreateLogger(exceptionContext);
+            var exception = exceptionContext.Exception;
+            logger.LogError(exception.Message, exception);
+
+            return new ExceptionResponse(HttpStatusCode.InternalServerError, exception);
         }
     }
 }

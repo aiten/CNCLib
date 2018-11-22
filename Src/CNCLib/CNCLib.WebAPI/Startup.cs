@@ -29,8 +29,8 @@ using Framework.Dependency;
 using Framework.Logging;
 using Framework.Tools;
 using Framework.Mapper;
-using Framework.Web;
-using Framework.Web.Filter;
+using Framework.WebAPI;
+using Framework.WebAPI.Filter;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
