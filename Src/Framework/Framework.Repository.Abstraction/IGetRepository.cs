@@ -19,7 +19,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Framework.Contract.Repository
+namespace Framework.Repository.Abstraction
 {
     public interface IGetRepository<TEntity, in TKey> : IRepository where TEntity : class
     {

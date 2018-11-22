@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 using CNCLib.Repository.Contract.Entity;
 
-using Framework.Contract.Repository;
+using Framework.Repository.Abstraction;
 
 namespace CNCLib.Repository.Contract
 {

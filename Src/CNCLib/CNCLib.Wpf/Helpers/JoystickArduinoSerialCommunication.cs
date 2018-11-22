@@ -22,7 +22,7 @@ using System;
 using System.Threading.Tasks;
 
 using Framework.Arduino.SerialCommunication;
-using Framework.Contract.Logging;
+using Framework.Logging.Abstraction;
 
 using SerialCom = Framework.Arduino.SerialCommunication.Serial;
 

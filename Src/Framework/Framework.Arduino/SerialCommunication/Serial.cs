@@ -16,7 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contract.Logging;
+using Framework.Arduino.SerialCommunication.Abstraction;
+using Framework.Logging.Abstraction;
 
 namespace Framework.Arduino.SerialCommunication
 {

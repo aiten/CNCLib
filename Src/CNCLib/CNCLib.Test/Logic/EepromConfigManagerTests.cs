@@ -24,9 +24,9 @@ using CNCLib.Logic.Manager;
 
 using FluentAssertions;
 
-using Framework.Contract.Repository;
 using Framework.Dependency;
 using Framework.Repository;
+using Framework.Repository.Abstraction;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

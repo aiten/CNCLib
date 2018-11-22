@@ -17,6 +17,7 @@
 */
 
 using Framework.Arduino.SerialCommunication;
+using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
 using Framework.Tools;
 using Microsoft.AspNetCore.SignalR;

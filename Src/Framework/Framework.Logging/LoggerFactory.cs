@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contract.Logging;
+using Framework.Logging.Abstraction;
 
 namespace Framework.Logging
 {

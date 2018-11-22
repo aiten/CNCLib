@@ -25,8 +25,8 @@ using CNCLib.Logic.Contract;
 using CNCLib.Logic.Contract.DTO;
 using CNCLib.Repository.Contract;
 
-using Framework.Contract.Repository;
 using Framework.Logic;
+using Framework.Repository.Abstraction;
 
 using UserEntity = CNCLib.Repository.Contract.Entity.User;
 

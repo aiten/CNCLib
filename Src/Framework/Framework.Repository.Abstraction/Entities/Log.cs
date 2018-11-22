@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Framework.Contract.Repository.Entities
+namespace Framework.Repository.Abstraction.Entities
 {
     public class Log
     {

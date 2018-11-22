@@ -19,7 +19,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Framework.Contract.Logging
+namespace Framework.Logging.Abstraction
 {
     public interface ILogger
     {

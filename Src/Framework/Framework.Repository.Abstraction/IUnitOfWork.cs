@@ -18,7 +18,7 @@
 
 using System.Threading.Tasks;
 
-namespace Framework.Contract.Repository
+namespace Framework.Repository.Abstraction
 {
     public interface IUnitOfWork
     {

@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contract.Repository;
+using Framework.Repository.Abstraction;
 
 namespace Framework.Repository
 {

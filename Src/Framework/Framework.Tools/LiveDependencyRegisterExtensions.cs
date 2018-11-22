@@ -16,8 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contract.Shared;
 using Framework.Dependency;
+using Framework.Dependency.Abstraction;
+using Framework.Tools.Abstraction;
 
 namespace Framework.Tools
 {

@@ -19,7 +19,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Framework.Contract.Service
+namespace Framework.Service.Abstraction
 {
     public interface IGetService<T, in TKey> where T : class
     {

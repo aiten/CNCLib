@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contract.Shared;
+using Framework.Tools.Abstraction;
 
 namespace CNCLib.Shared
 {

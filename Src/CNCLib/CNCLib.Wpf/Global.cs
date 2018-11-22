@@ -23,6 +23,7 @@ using CNCLib.GCode.Commands;
 using CNCLib.Wpf.Models;
 using CNCLib.Wpf.Helpers;
 
+using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Logging;
 using Framework.Pattern;
 
@@ -115,7 +116,7 @@ namespace CNCLib.Wpf
 
         private JoystickArduinoSerialCommunication _joystickSerialCommunication = new JoystickArduinoSerialCommunication(new Logger<Framework.Arduino.SerialCommunication.Serial>());
 
-        public Framework.Arduino.SerialCommunication.ISerial ComJoystick => _joystickSerialCommunication;
+        public ISerial ComJoystick => _joystickSerialCommunication;
 
         public MachineGCodeHelper GCode => Singleton<MachineGCodeHelper>.Instance;
 

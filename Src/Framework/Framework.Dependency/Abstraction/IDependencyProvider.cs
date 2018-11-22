@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Dependency
+namespace Framework.Dependency.Abstraction
 {
     /// <summary>
     /// Provides an IDependencyContainer implementation. 

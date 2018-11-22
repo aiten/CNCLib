@@ -28,8 +28,8 @@ using CNCLib.Repository.Contract.Entity;
 
 using FluentAssertions;
 
-using Framework.Contract.Repository;
 using Framework.Dependency;
+using Framework.Repository.Abstraction;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

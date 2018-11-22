@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contract.Shared
+namespace Framework.Tools.Abstraction
 {
     public interface IUserContext
     {

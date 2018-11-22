@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Logging;
 using Framework.Pattern;
 
@@ -28,13 +29,13 @@ namespace CNCLib.Wpf.Helpers
             Current = LocalCom;
         }
 
-        public Framework.Arduino.SerialCommunication.ISerial RemoteCom => Singleton<Serial.Client.SerialService>.Instance;
+        public ISerial RemoteCom => Singleton<Serial.Client.SerialService>.Instance;
 
         private static Framework.Arduino.SerialCommunication.Serial _localSerial = new Framework.Arduino.SerialCommunication.Serial(new Logger<Framework.Arduino.SerialCommunication.Serial>());
 
-        public Framework.Arduino.SerialCommunication.ISerial LocalCom => _localSerial;
+        public ISerial LocalCom => _localSerial;
 
-        public Framework.Arduino.SerialCommunication.ISerial Current { get; private set; }
+        public ISerial Current { get; private set; }
 
         public void SetCurrent(string portName)
         {

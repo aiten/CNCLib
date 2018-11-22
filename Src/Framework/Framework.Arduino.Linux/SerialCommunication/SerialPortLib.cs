@@ -16,6 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Arduino.SerialCommunication.Abstraction;
+
 namespace Framework.Arduino.Linux.SerialCommunication
 {
     using System;

@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contract.Logging;
+using Framework.Logging.Abstraction;
 
 namespace Framework.Logging
 {
@@ -31,7 +31,7 @@ namespace Framework.Logging
         }
     }
 
-    public class Logger : Contract.Logging.ILogger
+    public class Logger : Abstraction.ILogger
     {
         private readonly global::NLog.Logger _logger;
 

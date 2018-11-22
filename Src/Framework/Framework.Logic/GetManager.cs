@@ -16,8 +16,8 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contract.Logic;
-using Framework.Contract.Repository;
+using Framework.Logic.Abstraction;
+using Framework.Repository.Abstraction;
 
 namespace Framework.Logic
 {

@@ -19,7 +19,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Framework.Contract.Logic;
+using Framework.Logic.Abstraction;
 
 namespace CNCLib.Logic.Contract
 {

@@ -18,9 +18,10 @@
 
 using CNCLib.Repository.Context;
 
-using Framework.Contract.Repository;
 using Framework.Dependency;
+using Framework.Dependency.Abstraction;
 using Framework.Repository;
+using Framework.Repository.Abstraction;
 
 namespace CNCLib.Repository
 {

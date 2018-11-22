@@ -16,11 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Dependency
-{
-    using System;
-    using System.Collections.Generic;
+using System;
 
+namespace Framework.Dependency.Abstraction
+{
     /// <summary>
     /// Compare with IServiceScope (aspNetCore). 
     /// </summary>

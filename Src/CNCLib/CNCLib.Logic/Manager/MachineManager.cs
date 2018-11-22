@@ -26,8 +26,8 @@ using CNCLib.Logic.Contract.DTO;
 using CNCLib.Repository.Contract;
 using CNCLib.Shared;
 
-using Framework.Contract.Repository;
 using Framework.Logic;
+using Framework.Repository.Abstraction;
 
 using ConfigurationEntity = CNCLib.Repository.Contract.Entity.Configuration;
 using MachineEntity = CNCLib.Repository.Contract.Entity.Machine;

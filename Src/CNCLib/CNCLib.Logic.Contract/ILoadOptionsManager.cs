@@ -18,7 +18,7 @@
 
 using System;
 
-using Framework.Contract.Logic;
+using Framework.Logic.Abstraction;
 
 namespace CNCLib.Logic.Contract
 {

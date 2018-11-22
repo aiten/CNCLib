@@ -19,7 +19,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Framework.Contract.Service
+namespace Framework.Service.Abstraction
 {
     public interface ICRUDService<T, TKey> : IGetService<T, TKey> where T : class
     {

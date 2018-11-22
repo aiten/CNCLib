@@ -18,7 +18,7 @@
 
 using System.Collections.Generic;
 
-namespace Framework.Contract.Repository
+namespace Framework.Repository.Abstraction
 {
     public enum EntityState
     {

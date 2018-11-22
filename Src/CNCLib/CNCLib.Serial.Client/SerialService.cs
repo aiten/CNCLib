@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 using CNCLib.Serial.Shared;
 
 using Framework.Arduino.SerialCommunication;
+using Framework.Arduino.SerialCommunication.Abstraction;
 
 using Microsoft.AspNetCore.SignalR.Client;
 

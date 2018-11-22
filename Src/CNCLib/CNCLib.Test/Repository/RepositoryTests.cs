@@ -20,8 +20,8 @@ using CNCLib.Repository;
 using CNCLib.Repository.Contract;
 using CNCLib.Shared;
 
-using Framework.Contract.Repository;
 using Framework.Dependency;
+using Framework.Repository.Abstraction;
 using Framework.Test.Repository;
 
 using Microsoft.EntityFrameworkCore;

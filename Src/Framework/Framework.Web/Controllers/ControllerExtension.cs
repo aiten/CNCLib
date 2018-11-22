@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Contract.Service;
+using Framework.Service.Abstraction;
 
 namespace Framework.Web.Controllers
 {

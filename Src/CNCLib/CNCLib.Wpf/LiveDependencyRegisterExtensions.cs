@@ -19,6 +19,7 @@
 using CNCLib.Service.Contract;
 
 using Framework.Dependency;
+using Framework.Dependency.Abstraction;
 using Framework.Pattern;
 
 namespace CNCLib.Wpf

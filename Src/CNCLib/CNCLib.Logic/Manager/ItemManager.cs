@@ -28,8 +28,8 @@ using CNCLib.Logic.Converter;
 using CNCLib.Repository.Contract;
 using CNCLib.Shared;
 
-using Framework.Contract.Repository;
 using Framework.Logic;
+using Framework.Repository.Abstraction;
 
 using ItemEntity = CNCLib.Repository.Contract.Entity.Item;
 

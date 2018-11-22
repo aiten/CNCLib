@@ -21,6 +21,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using CNCLib.Serial.Server.Hubs;
 using Framework.Arduino.Linux.SerialCommunication;
+using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
 using Framework.Tools;
 using Framework.Logging;
@@ -79,7 +80,7 @@ namespace CNCLib.Serial.Server
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                Dependency.Container.RegisterTypeScoped<Framework.Arduino.SerialCommunication.ISerialPort, SerialPortLib>();
+                Dependency.Container.RegisterTypeScoped<ISerialPort, SerialPortLib>();
             }
         }
 

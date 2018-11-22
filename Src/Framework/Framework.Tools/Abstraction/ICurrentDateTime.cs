@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Framework.Contract.Shared
+namespace Framework.Tools.Abstraction
 {
     public interface ICurrentDateTime
     {

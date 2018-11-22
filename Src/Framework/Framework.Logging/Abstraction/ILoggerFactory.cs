@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Framework.Contract.Logging
+namespace Framework.Logging.Abstraction
 {
     public interface ILoggerFactory
     {

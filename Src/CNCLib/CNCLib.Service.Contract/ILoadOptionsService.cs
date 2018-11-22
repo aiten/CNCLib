@@ -20,7 +20,7 @@ using System;
 
 using CNCLib.Logic.Contract.DTO;
 
-using Framework.Contract.Service;
+using Framework.Service.Abstraction;
 
 namespace CNCLib.Service.Contract
 {

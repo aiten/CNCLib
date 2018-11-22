@@ -19,6 +19,7 @@
 using AutoMapper;
 
 using Framework.Dependency;
+using Framework.Dependency.Abstraction;
 
 namespace Framework.Mapper
 {

@@ -17,6 +17,7 @@
 */
 
 using Framework.Dependency;
+using Framework.Dependency.Abstraction;
 
 namespace Framework.Arduino.SerialCommunication
 {

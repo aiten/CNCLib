@@ -21,7 +21,7 @@ using System;
 using CNCLib.Repository.Contract.Entity;
 using CNCLib.Repository.Mappings;
 
-using Framework.Contract.Repository.Entities;
+using Framework.Repository.Abstraction.Entities;
 using Framework.Repository.Mappings;
 
 using Microsoft.EntityFrameworkCore;

@@ -19,7 +19,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Framework.Contract.Logic
+namespace Framework.Logic.Abstraction
 {
     public interface ICRUDManager<T, TId> : IGetManager<T, TId> where T : class
     {

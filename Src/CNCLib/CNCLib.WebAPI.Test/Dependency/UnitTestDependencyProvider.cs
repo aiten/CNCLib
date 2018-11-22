@@ -19,6 +19,7 @@
 using System;
 
 using Framework.Dependency;
+using Framework.Dependency.Abstraction;
 
 namespace CNCLib.WebAPI.Test.Dependency
 {
