@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace Framework.Service.Abstraction
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface ICRUDService<T, TKey> : IGetService<T, TKey> where T : class
     {
         Task<TKey> Add(T value);

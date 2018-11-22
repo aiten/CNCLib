@@ -16,8 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Repository.Abstraction;
-
 namespace Framework.Test.Repository
 {
     using System;
@@ -29,6 +27,7 @@ namespace Framework.Test.Repository
 
     using Framework.Dependency;
     using Framework.Repository;
+    using Framework.Repository.Abstraction;
 
     using Microsoft.EntityFrameworkCore;
 

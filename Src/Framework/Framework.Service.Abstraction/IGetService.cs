@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace Framework.Service.Abstraction
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface IGetService<T, in TKey> where T : class
     {
         Task<T> Get(TKey id);

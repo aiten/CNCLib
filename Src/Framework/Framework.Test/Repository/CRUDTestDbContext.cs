@@ -16,15 +16,16 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Repository.Abstraction;
-
 namespace Framework.Test.Repository
 {
     using Microsoft.EntityFrameworkCore;
 
-    public class CRUDTestDbContext<TDbContext, TEntity, TKey, TIRepository> : TestDbContext<TDbContext, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
+    using Framework.Repository.Abstraction;
+
+    public class CRUDTestDbContext<TDbContext, TEntity, TKey, TIRepository> : TestDbContext<TDbContext, TIRepository>
+        where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
-        public CRUDTestDbContext(TDbContext dbContext, IUnitOfWork uow, TIRepository repository) : base(dbContext,uow,repository)
+        public CRUDTestDbContext(TDbContext dbContext, IUnitOfWork uow, TIRepository repository) : base(dbContext, uow, repository)
         {
         }
     }

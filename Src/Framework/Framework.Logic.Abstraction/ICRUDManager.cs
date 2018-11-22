@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace Framework.Logic.Abstraction
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface ICRUDManager<T, TId> : IGetManager<T, TId> where T : class
     {
         Task<TId> Add(T value);

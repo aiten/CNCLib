@@ -16,13 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using AutoMapper;
-
-using Framework.Dependency;
-using Framework.Dependency.Abstraction;
-
 namespace Framework.Mapper
 {
+    using AutoMapper;
+
+    using Dependency;
+    using Dependency.Abstraction;
+
     public static class LiveDependencyRegisterExtensions
     {
         public static IDependencyContainer RegisterMapper(this IDependencyContainer container, MapperConfiguration mapperConfiguration)
@@ -30,7 +30,7 @@ namespace Framework.Mapper
             mapperConfiguration.AssertConfigurationIsValid();
 
             IMapper mapper = mapperConfiguration.CreateMapper();
-            Dependency.Dependency.Container.RegisterInstance(mapper);
+            Dependency.Container.RegisterInstance(mapper);
 
             return container;
         }

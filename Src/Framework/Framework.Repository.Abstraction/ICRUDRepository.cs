@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
-
 namespace Framework.Repository.Abstraction
 {
+    using System.Collections.Generic;
+
     public enum EntityState
     {
         Detached,

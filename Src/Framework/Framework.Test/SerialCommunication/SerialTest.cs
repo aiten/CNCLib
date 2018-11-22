@@ -16,10 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-
-using Framework.Arduino.SerialCommunication.Abstraction;
-using Framework.Logging.Abstraction;
-
 namespace Framework.Test.SerialCommunication
 {
     using System.IO;
@@ -34,7 +30,11 @@ namespace Framework.Test.SerialCommunication
     using NSubstitute;
 
     using Framework.Arduino.SerialCommunication;
+    using Framework.Arduino.SerialCommunication.Abstraction;
     using Framework.Dependency;
+
+    using Framework.Logging.Abstraction;
+
     using Logging;
 
     [TestClass]
@@ -63,7 +63,7 @@ namespace Framework.Test.SerialCommunication
                 ReturnsForAnyArgs(async x =>
                 {
                     _sendReply = true;
-                    var cancellationToken = (CancellationToken)x[3];
+                    var cancellationToken = (CancellationToken) x[3];
                     await Task.Delay(0, cancellationToken);
                 });
 
@@ -117,9 +117,9 @@ namespace Framework.Test.SerialCommunication
         {
             using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(new[]
-                            {
-                                serial.OkTag + "\n\r"
-                            }))
+            {
+                serial.OkTag + "\n\r"
+            }))
             {
                 await serial.ConnectAsync("com2");
 
@@ -127,7 +127,7 @@ namespace Framework.Test.SerialCommunication
 
                 await serial.DisconnectAsync();
 
-                await serialPort.BaseStream.Received(1).WriteAsync(Arg.Is<byte[]>(e => (char)e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
+                await serialPort.BaseStream.Received(1).WriteAsync(Arg.Is<byte[]>(e => (char) e[0] == '?'), 0, 2, Arg.Any<System.Threading.CancellationToken>());
                 await Task.FromResult(0);
             }
         }
@@ -137,10 +137,10 @@ namespace Framework.Test.SerialCommunication
         {
             using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(new[]
-                {
-                    serial.OkTag + "\n\r", serial.OkTag + "\n\r"
-                }))
-            { 
+            {
+                serial.OkTag + "\n\r", serial.OkTag + "\n\r"
+            }))
+            {
                 await serial.ConnectAsync("com2");
 
                 await serial.SendCommandAsync("?");
@@ -192,10 +192,10 @@ namespace Framework.Test.SerialCommunication
         {
             using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(new[]
-                {
-                    serial.OkTag + "\n\r"
-                }))
-            { 
+            {
+                serial.OkTag + "\n\r"
+            }))
+            {
                 var eventCalls = SubscribeForEventCall(serial);
 
                 await serial.ConnectAsync("com2");
@@ -225,10 +225,10 @@ namespace Framework.Test.SerialCommunication
         {
             using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(new[]
-                {
-                    serial.InfoTag + "\n\r" + serial.OkTag + "\n\r"
-                }))
-            { 
+            {
+                serial.InfoTag + "\n\r" + serial.OkTag + "\n\r"
+            }))
+            {
                 var eventCalls = SubscribeForEventCall(serial);
 
                 await serial.ConnectAsync("com2");
@@ -258,10 +258,10 @@ namespace Framework.Test.SerialCommunication
         {
             using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(new[]
-                {
-                    serial.ErrorTag + "\n\r" + serial.OkTag + "\n\r"
-                }))
-            { 
+            {
+                serial.ErrorTag + "\n\r" + serial.OkTag + "\n\r"
+            }))
+            {
                 var eventCalls = SubscribeForEventCall(serial);
 
                 serial.ErrorIsReply = false;
@@ -293,10 +293,10 @@ namespace Framework.Test.SerialCommunication
         {
             using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(new[]
-                {
-                    serial.ErrorTag + "\n\r"
-                }))
-            { 
+            {
+                serial.ErrorTag + "\n\r"
+            }))
+            {
                 var eventCalls = SubscribeForEventCall(serial);
 
                 serial.ErrorIsReply = true; // no OK is needed
@@ -326,10 +326,10 @@ namespace Framework.Test.SerialCommunication
         {
             using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(new[]
-                {
-                    "Hallo\n\r" + serial.OkTag + "\n\r"
-                }))
-            { 
+            {
+                "Hallo\n\r" + serial.OkTag + "\n\r"
+            }))
+            {
                 var eventCalls = SubscribeForEventCall(serial);
 
                 serial.ErrorIsReply = true; // no OK is needed

@@ -32,7 +32,7 @@ namespace Framework.Repository
         }
 
         /// <summary>
-        /// The DbContext. Should be used rarely, instead use <see cref="Query{T}"/> and <see cref="TrackingQuery{T}"/>.
+        /// Gets or sets the DbContext. Should be used rarely, instead use <see cref="Query{T}"/> and <see cref="TrackingQuery{T}"/>.
         /// </summary>
         protected TDbContext Context { get; private set; }
 
@@ -40,7 +40,7 @@ namespace Framework.Repository
         /// Returns an IQueryable of the Entity with AsNoTracking set. This should be the default.
         /// </summary>
         /// <typeparam name="T">Entity for which to return the IQueryable.</typeparam>
-        /// <returns>Queryable with AsNoTracking() set</returns>
+        /// <returns>Queryable with AsNoTracking() set.</returns>
         protected IQueryable<T> Query<T>() where T : class
         {
             return Context.Set<T>().AsNoTracking();
@@ -49,8 +49,8 @@ namespace Framework.Repository
         /// <summary>
         /// Returns an IQueryable that has tracking enabled.
         /// </summary>
-        /// <typeparam name="T">Entity for which to return the IQueryable</typeparam>
-        /// <returns>Queryable with tracking enabled</returns>
+        /// <typeparam name="T">Entity for which to return the IQueryable.</typeparam>
+        /// <returns>Queryable with tracking enabled.</returns>
         protected IQueryable<T> TrackingQuery<T>() where T : class
         {
             return Context.Set<T>();

@@ -16,13 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Dependency.Abstraction;
-
 namespace Framework.Test.Dependency
 {
     using System;
-
-    using Framework.Dependency;
+    using Framework.Dependency.Abstraction;
 
     public sealed class UnitTestDependencyProvider : IDependencyProvider
     {

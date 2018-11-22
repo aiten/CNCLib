@@ -16,19 +16,19 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Repository.Abstraction;
-
 namespace Framework.Test.Repository
 {
     using System;
+
+    using Framework.Repository.Abstraction;
 
     using Microsoft.EntityFrameworkCore;
 
     public class TestDbContext<TDbContext, TIRepository> : IDisposable where TIRepository : IRepository where TDbContext : DbContext
     {
-        public TDbContext DbContext  { get; private set; }
-        public IUnitOfWork   UnitOfWork { get; private set; }
-        public TIRepository  Repository { get; private set; }
+        public TDbContext   DbContext  { get; private set; }
+        public IUnitOfWork  UnitOfWork { get; private set; }
+        public TIRepository Repository { get; private set; }
 
         public TestDbContext(TDbContext dbContext, IUnitOfWork uow, TIRepository repository)
         {

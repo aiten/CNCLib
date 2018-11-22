@@ -16,16 +16,16 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Logic.Abstraction;
-using Framework.Repository.Abstraction;
-
 namespace Framework.Logic
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using Abstraction;
+    
     using AutoMapper;
+    using Repository.Abstraction;
 
     public abstract class GetManager<T, TKey, TEntity> : ManagerBase, IGetManager<T, TKey> where T : class where TEntity : class
     {

@@ -16,8 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Repository.Abstraction;
-
 namespace Framework.Test.Repository
 {
     using System;
@@ -25,14 +23,17 @@ namespace Framework.Test.Repository
     using System.Linq;
     using System.Threading.Tasks;
 
+
     using FluentAssertions;
 
     using Framework.Dependency;
     using Framework.Repository;
+    using Framework.Repository.Abstraction;
 
     using Microsoft.EntityFrameworkCore;
 
-    public abstract class CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
+    public abstract class CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository>
+        where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
         protected override void InitializeDependencies()
         {

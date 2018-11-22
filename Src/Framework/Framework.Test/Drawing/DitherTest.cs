@@ -58,7 +58,7 @@ namespace Framework.Test.Drawing
         {
             var dt = new DitherTestClass();
 
-            const int WIDTH = 100;
+            const int WIDTH  = 100;
             const int HEIGHT = 100;
 
             var b1 = new Bitmap(WIDTH, HEIGHT);
@@ -92,7 +92,7 @@ namespace Framework.Test.Drawing
         {
             var dt = new FloydSteinbergDither();
 
-            const int WIDTH = 100;
+            const int WIDTH  = 100;
             const int HEIGHT = 100;
 
             var b1 = new Bitmap(WIDTH, HEIGHT);
@@ -131,7 +131,7 @@ namespace Framework.Test.Drawing
         {
             var dt = new FloydSteinbergDither();
 
-            const int WIDTH = 100;
+            const int WIDTH  = 100;
             const int HEIGHT = 100;
 
             var b1 = new Bitmap(WIDTH, HEIGHT, PixelFormat.Format32bppArgb);

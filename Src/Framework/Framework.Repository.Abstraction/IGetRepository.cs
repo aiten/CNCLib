@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace Framework.Repository.Abstraction
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface IGetRepository<TEntity, in TKey> : IRepository where TEntity : class
     {
         Task<IEnumerable<TEntity>> GetAll();

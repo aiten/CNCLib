@@ -16,9 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Logic.Abstraction;
-using Framework.Repository.Abstraction;
-
 namespace Framework.Logic
 {
     using System;
@@ -26,7 +23,10 @@ namespace Framework.Logic
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Abstraction;
     using AutoMapper;
+
+    using Repository.Abstraction;
 
     public abstract class CRUDManager<T, TKey, TEntity> : GetManager<T, TKey, TEntity>, ICRUDManager<T, TKey> where T : class where TEntity : class
     {

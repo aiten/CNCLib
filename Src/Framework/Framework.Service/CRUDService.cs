@@ -16,13 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Logic.Abstraction;
-
 namespace Framework.Service
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+
+    using Logic.Abstraction;
 
     public abstract class CRUDService<T, TKey> : GetService<T, TKey> where T : class
     {

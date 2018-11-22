@@ -16,12 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Repository.Abstraction;
-
 namespace Framework.Repository
 {
     using System.Data;
     using System.Threading.Tasks;
+
+    using Abstraction;
 
     public static class CRUDRepositoryExtensions
     {

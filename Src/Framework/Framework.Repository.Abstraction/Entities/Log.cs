@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
 namespace Framework.Repository.Abstraction.Entities
 {
+    using System;
+
     public class Log
     {
         public int      Id            { get; set; }

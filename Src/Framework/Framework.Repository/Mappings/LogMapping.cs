@@ -16,13 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Repository.Abstraction.Entities;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 namespace Framework.Repository.Mappings
 {
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+    using Abstraction.Entities;
+
     public static class LogMapping
     {
         public static void Map(this EntityTypeBuilder<Log> entity)
