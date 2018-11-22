@@ -38,8 +38,7 @@
     <ProjectReference Include="..\..\Framework\Framework.Logging\Framework.Logging.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Mapper\Framework.Mapper.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Repository\Framework.Repository.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.Web\Framework.Web.csproj">
-    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Framework.Web\Framework.WebAPI.csproj" />
     <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj">
     </ProjectReference>
     <ProjectReference Include="..\CNCLib.Logic.Client\CNCLib.Logic.Client.csproj">

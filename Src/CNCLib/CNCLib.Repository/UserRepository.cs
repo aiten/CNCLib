@@ -30,7 +30,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class UserRepository : CRUDRepositoryBase<CNCLibContext, User, int>, IUserRepository
+    public class UserRepository : CRUDRepository<CNCLibContext, User, int>, IUserRepository
     {
         public UserRepository(CNCLibContext context) : base(context)
         {

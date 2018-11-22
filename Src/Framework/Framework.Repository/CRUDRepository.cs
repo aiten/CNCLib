@@ -24,9 +24,9 @@ namespace Framework.Repository
 
     using Microsoft.EntityFrameworkCore;
 
-    public abstract class CRUDRepositoryBase<TDbContext, TEntity, TKey> : GetRepositoryBase<TDbContext, TEntity, TKey> where TDbContext : DbContext where TEntity : class
+    public abstract class CRUDRepository<TDbContext, TEntity, TKey> : GetRepository<TDbContext, TEntity, TKey> where TDbContext : DbContext where TEntity : class
     {
-        protected CRUDRepositoryBase(TDbContext dbContext) : base(dbContext)
+        protected CRUDRepository(TDbContext dbContext) : base(dbContext)
         {
         }
 

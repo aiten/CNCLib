@@ -32,7 +32,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class MachineRepository : CRUDRepositoryBase<CNCLibContext, Machine, int>, IMachineRepository
+    public class MachineRepository : CRUDRepository<CNCLibContext, Machine, int>, IMachineRepository
     {
         private readonly ICNCLibUserContext _userContext;
 
