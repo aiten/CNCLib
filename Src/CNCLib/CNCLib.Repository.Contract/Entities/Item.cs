@@ -16,28 +16,19 @@
   http://www.gnu.org/licenses/
 */
 
-namespace CNCLib.Repository.Contract.Entity
+using System.Collections.Generic;
+
+namespace CNCLib.Repository.Contract.Entities
 {
-    public class Configuration
+    public class Item
     {
-        public         string Group  { get; set; }
-        public         string Name   { get; set; }
-        public         string Type   { get; set; }
-        public         string Value  { get; set; }
-        public         int?   UserId { get; set; }
-        public virtual User   User   { get; set; }
+        public int ItemId { get; set; }
 
-        public Configuration()
-        {
-        }
+        public         int? UserId { get; set; }
+        public virtual User User   { get; set; }
 
-        public Configuration(string group, string name, object value)
-        {
-            Name  = name;
-            Group = group;
-            Value = value.ToString();
-
-            Type = value.GetType().ToString();
-        }
+        public         string                    Name           { get; set; }
+        public         string                    ClassName      { get; set; }
+        public virtual ICollection<ItemProperty> ItemProperties { get; set; }
     }
 }

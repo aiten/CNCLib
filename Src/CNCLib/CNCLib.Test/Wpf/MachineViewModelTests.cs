@@ -27,11 +27,11 @@ using System.Linq;
 using NSubstitute;
 
 using CNCLib.Wpf.ViewModels;
-using CNCLib.Logic.Contracts.DTO;
+using CNCLib.Logic.Contract.DTO;
 
 using System.Threading.Tasks;
 
-using CNCLib.Service.Contracts;
+using CNCLib.Service.Contract;
 
 using FluentAssertions;
 

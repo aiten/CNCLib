@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-namespace CNCLib.Repository.Contract.Entity
+namespace CNCLib.Repository.Contract.Entities
 {
     public class MachineInitCommand
     {

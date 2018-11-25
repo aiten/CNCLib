@@ -18,7 +18,7 @@
 
 using System.Threading.Tasks;
 
-using CNCLib.Repository.Contract.Entity;
+using CNCLib.Repository.Contract.Entities;
 
 using Framework.Repository.Abstraction;
 

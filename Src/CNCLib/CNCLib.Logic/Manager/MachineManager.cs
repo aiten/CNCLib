@@ -29,8 +29,8 @@ using CNCLib.Shared;
 using Framework.Logic;
 using Framework.Repository.Abstraction;
 
-using ConfigurationEntity = CNCLib.Repository.Contract.Entity.Configuration;
-using MachineEntity = CNCLib.Repository.Contract.Entity.Machine;
+using ConfigurationEntity = CNCLib.Repository.Contract.Entities.Configuration;
+using MachineEntity = CNCLib.Repository.Contract.Entities.Machine;
 
 namespace CNCLib.Logic.Manager
 {

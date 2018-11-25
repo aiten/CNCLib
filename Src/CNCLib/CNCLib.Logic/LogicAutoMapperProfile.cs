@@ -18,7 +18,7 @@
 
 using AutoMapper;
 
-using CNCLib.Repository.Contract.Entity;
+using CNCLib.Repository.Contract.Entities;
 
 namespace CNCLib.Logic
 {

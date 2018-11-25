@@ -18,7 +18,7 @@
 
 using System.Globalization;
 
-using CNCLib.Repository.Contract.Entity;
+using CNCLib.Repository.Contract.Entities;
 
 namespace CNCLib.Repository.Context
 {
@@ -677,39 +677,39 @@ namespace CNCLib.Repository.Context
         {
             var cutItem = new Item
             {
-                ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO",
+                ClassName = @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO",
                 Name      = @"laser cut 160mg paper"
             };
             var cutHoleItem = new Item
             {
-                ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO",
+                ClassName = @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO",
                 Name      = @"laser cut hole 130mg black"
             };
 
             var graveItem = new Item
             {
-                ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO",
+                ClassName = @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO",
                 Name      = @"laser grave"
             };
             var graveIMGItem = new Item
             {
-                ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO",
+                ClassName = @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO",
                 Name      = @"laser grave image"
             };
             var graveIMGG00G01Item = new Item
             {
-                ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO",
+                ClassName = @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO",
                 Name      = @"laser grave image (G0G1)"
             };
 
             var graveMillItem = new Item
             {
-                ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO",
+                ClassName = @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO",
                 Name      = @"mill grave"
             };
             var cutMillItem = new Item
             {
-                ClassName = @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO",
+                ClassName = @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO",
                 Name      = @"mill cut"
             };
 

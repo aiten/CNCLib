@@ -24,7 +24,7 @@ using AutoMapper;
 
 using CNCLib.Logic.Manager;
 using CNCLib.Repository.Contract;
-using CNCLib.Repository.Contract.Entity;
+using CNCLib.Repository.Contract.Entities;
 
 using FluentAssertions;
 

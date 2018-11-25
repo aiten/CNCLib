@@ -21,7 +21,7 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.Configuration", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.Configuration", b =>
                 {
                     b.Property<string>("Group")
                         .HasMaxLength(256);
@@ -45,7 +45,7 @@ namespace CNCLib.Repository.SqlServer.Migrations
                     b.ToTable("Configuration");
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.Item", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.Item", b =>
                 {
                     b.Property<int>("ItemID")
                         .ValueGeneratedOnAdd();
@@ -70,7 +70,7 @@ namespace CNCLib.Repository.SqlServer.Migrations
                     b.ToTable("Item");
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.ItemProperty", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.ItemProperty", b =>
                 {
                     b.Property<int>("ItemID");
 
@@ -84,7 +84,7 @@ namespace CNCLib.Repository.SqlServer.Migrations
                     b.ToTable("ItemProperty");
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.Machine", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.Machine", b =>
                 {
                     b.Property<int>("MachineID")
                         .ValueGeneratedOnAdd();
@@ -152,7 +152,7 @@ namespace CNCLib.Repository.SqlServer.Migrations
                     b.ToTable("Machine");
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.MachineCommand", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.MachineCommand", b =>
                 {
                     b.Property<int>("MachineCommandID")
                         .ValueGeneratedOnAdd();
@@ -181,7 +181,7 @@ namespace CNCLib.Repository.SqlServer.Migrations
                     b.ToTable("MachineCommand");
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.MachineInitCommand", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.MachineInitCommand", b =>
                 {
                     b.Property<int>("MachineInitCommandID")
                         .ValueGeneratedOnAdd();
@@ -201,7 +201,7 @@ namespace CNCLib.Repository.SqlServer.Migrations
                     b.ToTable("MachineInitCommand");
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.User", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.User", b =>
                 {
                     b.Property<int>("UserID")
                         .ValueGeneratedOnAdd();
@@ -222,46 +222,46 @@ namespace CNCLib.Repository.SqlServer.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.Configuration", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.Configuration", b =>
                 {
-                    b.HasOne("CNCLib.Repository.Contracts.Entities.User", "User")
+                    b.HasOne("CNCLib.Repository.Contract.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.Item", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.Item", b =>
                 {
-                    b.HasOne("CNCLib.Repository.Contracts.Entities.User", "User")
+                    b.HasOne("CNCLib.Repository.Contract.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.ItemProperty", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.ItemProperty", b =>
                 {
-                    b.HasOne("CNCLib.Repository.Contracts.Entities.Item", "Item")
+                    b.HasOne("CNCLib.Repository.Contract.Entities.Item", "Item")
                         .WithMany("ItemProperties")
                         .HasForeignKey("ItemID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.Machine", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.Machine", b =>
                 {
-                    b.HasOne("CNCLib.Repository.Contracts.Entities.User", "User")
+                    b.HasOne("CNCLib.Repository.Contract.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.MachineCommand", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.MachineCommand", b =>
                 {
-                    b.HasOne("CNCLib.Repository.Contracts.Entities.Machine", "Machine")
+                    b.HasOne("CNCLib.Repository.Contract.Entities.Machine", "Machine")
                         .WithMany("MachineCommands")
                         .HasForeignKey("MachineID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Contracts.Entities.MachineInitCommand", b =>
+            modelBuilder.Entity("CNCLib.Repository.Contract.Entities.MachineInitCommand", b =>
                 {
-                    b.HasOne("CNCLib.Repository.Contracts.Entities.Machine", "Machine")
+                    b.HasOne("CNCLib.Repository.Contract.Entities.Machine", "Machine")
                         .WithMany("MachineInitCommands")
                         .HasForeignKey("MachineID")
                         .OnDelete(DeleteBehavior.Cascade);
