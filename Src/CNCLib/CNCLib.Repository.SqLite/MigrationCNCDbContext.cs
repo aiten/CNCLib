@@ -43,11 +43,8 @@ namespace CNCLib.Repository.SqLite
                 }
 
                 ctx.Database.Migrate();
-                if (!ctx.Machines.Any())
-                {
-                    new CNCLibDefaultData().CNCSeed(ctx, isTest);
-                    ctx.SaveChanges();
-                }
+
+                ctx.InitOrUpdateDatabase(isTest);
             }
         }
     }

@@ -17,6 +17,7 @@
 */
 
 using System;
+using System.Linq;
 
 using CNCLib.Repository.Contract.Entities;
 using CNCLib.Repository.Mappings;
@@ -80,6 +81,29 @@ namespace CNCLib.Repository.Context
             modelBuilder.Entity<Log>().Map();
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        protected void InitOrUpdateDatabase(bool isTest)
+        {
+            if (Machines.Any())
+            {
+                ModifyWrongData();
+                SaveChanges();
+            }
+            else
+            {
+                new CNCLibDefaultData().CNCSeed(this, isTest);
+                SaveChanges();
+            }
+        }
+
+        private void ModifyWrongData()
+        {
+            // Contracts => Contract
+            foreach (var item in Items.Where(i => i.ClassName == @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO"))
+            {
+                item.ClassName = @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO";
+            }
         }
     }
 }
