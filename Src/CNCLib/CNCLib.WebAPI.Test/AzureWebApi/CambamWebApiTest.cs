@@ -27,16 +27,15 @@ using CNCLib.Logic.Contract.DTO;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace CNCLib.WebAPI.Test.AzureWebApi
 {
-    [TestClass]
     public class CambamWebApiTest : AzureWebApiTest
     {
         private readonly string api = "/api/Cambam";
 
-        [TestMethod]
+        [Fact]
         public async Task PutHpgl()
         {
             using (var client = new HttpClient())
@@ -48,7 +47,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
                 var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
 
                 Assembly ass     = Assembly.GetExecutingAssembly();
-                string   assPath = Path.GetDirectoryName(ass.Location);
+                string   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
                 info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
                 info.FileContent = File.ReadAllBytes(info.FileName);

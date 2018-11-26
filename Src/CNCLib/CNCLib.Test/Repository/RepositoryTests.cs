@@ -25,18 +25,23 @@ using Framework.Repository.Abstraction;
 using Framework.Test.Repository;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace CNCLib.Test.Repository
 {
-    [TestClass]
+    [Collection("RepositoryTests")]
     public abstract class RepositoryTests<TDbContext, TEntity, TKey, TIRepository> : CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
-        public TestContext TestContext { get; set; }
         static bool        _init = false;
 
-        [ClassInitialize]
-        public static void ClassInitBase(TestContext testContext)
+        public RepositoryTests()
+        {
+            ClassInitBase();
+            InitializeDependencies();
+        }
+
+        public static void ClassInitBase()
         {
             if (_init == false)
             {
@@ -59,16 +64,7 @@ namespace CNCLib.Test.Repository
             }
         }
 
-        protected override void InitializeDependencies()
-        {
-            base.InitializeDependencies();
-
-            Dependency.Container.RegisterType<IConfigurationRepository, ConfigurationRepository>();
-            Dependency.Container.RegisterType<IMachineRepository, MachineRepository>();
-            Dependency.Container.RegisterType<IItemRepository, ItemRepository>();
-            Dependency.Container.RegisterType<IUserRepository, UserRepository>();
-
-            Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
-        }
+        private ICNCLibUserContext _userContext = new CNCLibUserContext();
+        protected ICNCLibUserContext UserContext => _userContext;
     }
 }

@@ -35,12 +35,6 @@ namespace Framework.Test.Repository
     public abstract class CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository>
         where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
-        protected override void InitializeDependencies()
-        {
-            base.InitializeDependencies();
-            Dependency.Container.RegisterType(typeof(CRUDTestDbContext<,,,>), typeof(CRUDTestDbContext<,,,>));
-        }
-
         public async Task AddUpdateDelete(Func<TEntity> createTestEntity, Action<TEntity> updateEntity)
         {
             var allWithoutAdd = (await GetAll()).ToList();

@@ -16,9 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.WebAPI.Test.Dependency;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace CNCLib.WebAPI.Test
 {
@@ -27,34 +25,5 @@ namespace CNCLib.WebAPI.Test
     /// </summary>
     public abstract class UnitTestBase
     {
-        private static bool _globalInitialisationRun;
-
-        [TestInitialize]
-        public void InitializeTest()
-        {
-            if (_globalInitialisationRun)
-            {
-                ReInitializeCoreDependencies();
-            }
-            else
-            {
-                Framework.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
-                _globalInitialisationRun = true;
-            }
-
-            InitializeCoreDependencies();
-        }
-
-        protected virtual void InitializeCoreDependencies()
-        {
-        }
-
-        /// <summary>
-        /// Resets the dependency container.
-        /// </summary>
-        private static void ReInitializeCoreDependencies()
-        {
-            Framework.Dependency.Dependency.Container.ResetContainer();
-        }
     }
 }

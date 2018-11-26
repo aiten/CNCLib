@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using CNCLib.Repository;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contract;
 using CNCLib.Repository.Contract.Entities;
@@ -27,27 +28,24 @@ using CNCLib.Repository.Contract.Entities;
 using FluentAssertions;
 
 using Framework.Dependency;
+using Framework.Repository;
 using Framework.Test.Repository;
 using Framework.Tools;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace CNCLib.Test.Repository
 {
-    [TestClass]
     public class MachineRepositoryTests : RepositoryTests<CNCLibContext, Machine, int, IMachineRepository>
     {
         #region crt and overrides
 
         protected override GetTestDbContext<CNCLibContext, Machine, int, IMachineRepository> CreateTestDbContext()
         {
-            return Dependency.Resolve<GetTestDbContext<CNCLibContext, Machine, int, IMachineRepository>>();
-        }
-
-        [ClassInitialize]
-        public static void ClassInit(TestContext testContext)
-        {
-            ClassInitBase(testContext);
+            var context = new CNCLibContext();
+            var uow     = new UnitOfWork<CNCLibContext>(context);
+            var rep     = new MachineRepository(context, UserContext);
+            return new GetTestDbContext<CNCLibContext, Machine, int, IMachineRepository>(context, uow, rep);
         }
 
         protected override int GetEntityKey(Machine entity)
@@ -76,7 +74,7 @@ namespace CNCLib.Test.Repository
 
         #region CRUD Test
 
-        [TestMethod]
+        [Fact]
         public async Task GetAllTest()
         {
             var entities = await GetAll();
@@ -85,33 +83,33 @@ namespace CNCLib.Test.Repository
             entities.Count(i => i.Name == "Laser").Should().Be(1);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetOKTest()
         {
             var entity = await GetOK(1);
             entity.MachineId.Should().Be(1);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetTrackingOKTest()
         {
             var entity = await GetTrackingOK(2);
             entity.MachineId.Should().Be(2);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetNotExistTest()
         {
             await GetNotExist(2342341);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddUpdateDeleteTest()
         {
             await AddUpdateDelete(() => CreateMachine(@"AddUpdateDeleteTest"), (entity) => entity.Name = "DummyNameUpdate");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddUpdateDeleteWithCommandAndInitCommandsTest()
         {
             await AddUpdateDelete(() => AddMachineInitCommands((AddMachineCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))), (entity) =>
@@ -136,7 +134,7 @@ namespace CNCLib.Test.Repository
             });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddUpdateDeleteWithCommandAndInitCommandsToEmptyTest()
         {
             await AddUpdateDelete(() => AddMachineInitCommands((AddMachineCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))), (entity) =>
@@ -147,7 +145,7 @@ namespace CNCLib.Test.Repository
             });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddUpdateDeleteBulkTest()
         {
             await AddUpdateDeleteBulk(() => new[]
@@ -163,7 +161,7 @@ namespace CNCLib.Test.Repository
             });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddRollbackTest()
         {
             await AddRollBack(() => CreateMachine(@"AddRollbackTest"));
