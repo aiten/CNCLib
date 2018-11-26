@@ -26,16 +26,15 @@ using CNCLib.Logic.Contract.DTO;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace CNCLib.WebAPI.Test.AzureWebApi
 {
-    [TestClass]
     public class MachineWebApiTest : AzureWebApiTest
     {
         private readonly string api = @"api/Machine";
 
-        [TestMethod]
+        [Fact]
         public async Task GetMachine1()
         {
             using (var client = new HttpClient())
@@ -57,7 +56,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateDeleteMachine()
         {
             using (var client = new HttpClient())
