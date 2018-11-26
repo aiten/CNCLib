@@ -22,14 +22,13 @@ namespace Framework.Test.Drawing
 
     using FluentAssertions;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Framework.Drawing;
 
-    [TestClass]
+    using Xunit;
+
     public class Rotate3DTest
     {
-        [TestMethod]
+        [Fact]
         public void NoRotateAngle0()
         {
             var r      = new Rotate3D();
@@ -41,7 +40,7 @@ namespace Framework.Test.Drawing
             (ptDest.Z ?? throw new ArgumentException()).Should().Be(3.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void RotateZAngle180Grad()
         {
             var r      = new Rotate3D(Math.PI, new[] { 0, 0, 1.0 });
@@ -53,7 +52,7 @@ namespace Framework.Test.Drawing
             (ptDest.Z ?? throw new ArgumentException()).Should().Be(3.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void RotateZAngleMinus180Grad()
         {
             var r      = new Rotate3D(-Math.PI, new[] { 0, 0, 1.0 });
@@ -65,7 +64,7 @@ namespace Framework.Test.Drawing
             (ptDest.Z ?? throw new ArgumentException()).Should().Be(3.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void RotateZAngle90Grad()
         {
             var r      = new Rotate3D(Math.PI / 2.0, new[] { 0, 0, 1.0 });
@@ -77,7 +76,7 @@ namespace Framework.Test.Drawing
             (ptDest.Z ?? throw new ArgumentException()).Should().Be(3.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void RotateZAngleMinus90Grad()
         {
             var r      = new Rotate3D(-Math.PI / 2.0, new[] { 0, 0, 1.0 });
@@ -89,7 +88,7 @@ namespace Framework.Test.Drawing
             (ptDest.Z ?? throw new ArgumentException()).Should().Be(3.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void RotateXAngle90Grad()
         {
             var r      = new Rotate3D(Math.PI / 2.0, new[] { 1.0, 0, 0 });
@@ -101,7 +100,7 @@ namespace Framework.Test.Drawing
             Math.Round((ptDest.Z ?? throw new ArgumentException()), 5).Should().Be(2.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void RotateXAngleMinus90Grad()
         {
             var r      = new Rotate3D(-Math.PI / 2.0, new[] { 1.0, 0, 0 });
@@ -113,7 +112,7 @@ namespace Framework.Test.Drawing
             Math.Round((ptDest.Z ?? throw new ArgumentException()), 5).Should().Be(-2.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void RotateYAngle90Grad()
         {
             var r      = new Rotate3D(Math.PI / 2.0, new[] { 0, 1.0, 0 });
@@ -125,7 +124,7 @@ namespace Framework.Test.Drawing
             Math.Round((ptDest.Z ?? throw new ArgumentException()), 5).Should().Be(1.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void RotateYAngleMinus90Grad()
         {
             var r      = new Rotate3D(-Math.PI / 2.0, new[] { 0, 1.0, 0 });
@@ -137,7 +136,7 @@ namespace Framework.Test.Drawing
             Math.Round((ptDest.Z ?? throw new ArgumentException()), 5).Should().Be(-1.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void RotateXyzAngle90Grad()
         {
             var r      = new Rotate3D(Math.PI / 2.0, new[] { 1.0, 1.0, 1.0 });
@@ -149,7 +148,7 @@ namespace Framework.Test.Drawing
             Math.Round((ptDest.Z ?? throw new ArgumentException()), 10).Should().Be(Math.Round(2.3987174742355446,  10));
         }
 
-        [TestMethod]
+        [Fact]
         public void RotateXyzAngle90GradAndBack()
         {
             var r1     = new Rotate3D(Math.PI / 2.0,  new[] { 1.0, 1.0, 1.0 });

@@ -19,6 +19,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using CNCLib.Repository;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contract;
 using CNCLib.Repository.Contract.Entities;
@@ -26,26 +27,24 @@ using CNCLib.Repository.Contract.Entities;
 using FluentAssertions;
 
 using Framework.Dependency;
+using Framework.Repository;
 using Framework.Test.Repository;
 using Framework.Tools;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace CNCLib.Test.Repository
 {
-    [TestClass]
     public class ConfigurationRepositoryTests : RepositoryTests<CNCLibContext, Configuration, ConfigurationPrimary, IConfigurationRepository>
     {
         #region crt and overrides
-        [ClassInitialize]
-        public static void ClassInit(TestContext testContext)
-        {
-            ClassInitBase(testContext);
-        }
 
         protected override GetTestDbContext<CNCLibContext, Configuration, ConfigurationPrimary, IConfigurationRepository> CreateTestDbContext()
         {
-            return Dependency.Resolve<GetTestDbContext<CNCLibContext, Configuration, ConfigurationPrimary, IConfigurationRepository>>();
+            var context = new CNCLibContext();
+            var uow = new UnitOfWork<CNCLibContext>(context);
+            var rep = new ConfigurationRepository(context, UserContext);
+            return new GetTestDbContext<CNCLibContext, Configuration, ConfigurationPrimary, IConfigurationRepository>(context, uow, rep);
         }
 
         protected override ConfigurationPrimary GetEntityKey(Configuration entity)
@@ -72,7 +71,7 @@ namespace CNCLib.Test.Repository
 
         #region CRUD Test
 
-        [TestMethod]
+        [Fact]
         public async Task GetAllTest()
         {
             var entities = (await GetAll()).OrderBy(cfg => cfg.Name);
@@ -81,33 +80,33 @@ namespace CNCLib.Test.Repository
             entities.ElementAt(0).Name.Should().Be("TestBool");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetOKTest()
         {
             var entity = await GetOK(new ConfigurationPrimary() { Group = "TestGroup", Name = "TestBool" });
             entity.Value.Should().Be(@"True");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetTrackingOKTest()
         {
             var entity = await GetTrackingOK(new ConfigurationPrimary() { Group = "TestGroup", Name = "TestDecimal" });
             entity.Value.Should().Be(@"1.2345");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetNotExistTest()
         {
             await GetNotExist(new ConfigurationPrimary() { Group = "NotExist", Name = "NotExist" });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddUpdateDeleteTest()
         {
             await AddUpdateDelete(() => CreateConfiguration("TestGroup", "TestName"), (entity) => entity.Value = "testValueModified");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddUpdateDeleteBulkTest()
         {
             await AddUpdateDeleteBulk(() => new[]
@@ -123,7 +122,7 @@ namespace CNCLib.Test.Repository
             });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddRollbackTest()
         {
             await AddRollBack(() => new Configuration()
@@ -135,7 +134,7 @@ namespace CNCLib.Test.Repository
             });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task StoreTest()
         {
             await Store(() => new Configuration()
@@ -156,7 +155,7 @@ namespace CNCLib.Test.Repository
 
         #region Additiona Tests
 
-        [TestMethod]
+        [Fact]
         public async Task GetEmptyConfiguration()
         {
             using (var ctx = CreateTestDbContext())
@@ -166,7 +165,7 @@ namespace CNCLib.Test.Repository
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task SaveConfiguration()
         {
             using (var ctx = CreateTestDbContext())

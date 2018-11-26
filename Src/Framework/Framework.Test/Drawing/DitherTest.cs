@@ -23,11 +23,10 @@ namespace Framework.Test.Drawing
 
     using FluentAssertions;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Framework.Drawing;
 
-    [TestClass]
+    using Xunit;
+
     public class DitherTest
     {
         public class DitherTestClass : DitherBase
@@ -53,7 +52,7 @@ namespace Framework.Test.Drawing
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void ReadWriteImage()
         {
             var dt = new DitherTestClass();
@@ -87,7 +86,7 @@ namespace Framework.Test.Drawing
         }
 
 
-        [TestMethod]
+        [Fact]
         public void FloydSteinberg1()
         {
             var dt = new FloydSteinbergDither();
@@ -126,7 +125,7 @@ namespace Framework.Test.Drawing
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void FloydSteinberg2()
         {
             var dt = new FloydSteinbergDither();

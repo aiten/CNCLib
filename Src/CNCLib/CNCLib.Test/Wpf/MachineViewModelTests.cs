@@ -73,7 +73,7 @@ namespace CNCLib.Tests.Wpf
             return rep;
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetMachine()
         {
             var rep = CreateMock<IMachineService>();
@@ -115,7 +115,7 @@ namespace CNCLib.Tests.Wpf
             mv.Machine.Rotate.Should().Be(machine.Rotate);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetMachineAddNew()
         {
             var rep = CreateMock<IMachineService>();

@@ -16,45 +16,28 @@
   http://www.gnu.org/licenses/
 */
 
+using Framework.Test.Dependency;
+
 namespace Framework.Test
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Framework.Test.Dependency;
-
     /// <summary>
     /// Base class for *all* unit tests. 
     /// </summary>
-    public abstract class UnitTestBase
+    public class UnitTestBase
     {
-        private static bool _globalInitialisationRun;
+        private static object _lockObject = new object();
 
-        [TestInitialize]
-        public void InitializeTest()
+        protected UnitTestBase()
         {
-            if (_globalInitialisationRun)
+            lock (_lockObject)
             {
-                ReInitializeCoreDependencies();
+                if (Framework.Dependency.Dependency.IsInitialized == false)
+                    Framework.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
             }
-            else
-            {
-                Framework.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
-                _globalInitialisationRun = true;
-            }
-
-            InitializeDependencies();
         }
 
         protected virtual void InitializeDependencies()
         {
-        }
-
-        /// <summary>
-        /// Resets the dependency container.
-        /// </summary>
-        private static void ReInitializeCoreDependencies()
-        {
-            Framework.Dependency.Dependency.Container.ResetContainer();
         }
     }
 }

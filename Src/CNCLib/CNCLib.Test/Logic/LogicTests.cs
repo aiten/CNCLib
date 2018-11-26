@@ -16,18 +16,9 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace CNCLib.Test.Logic
 {
-    [TestClass]
     public class LogicTests : CNCUnitTest
     {
-        public TestContext TestContext { get; set; }
-
-        [TestInitialize]
-        public void Init()
-        {
-        }
     }
 }

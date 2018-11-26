@@ -26,14 +26,13 @@ using CNCLib.Logic.Contract.DTO;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace CNCLib.Test.Load
 {
-    [TestClass]
     public class LoadHPGLTest
     {
-        [TestMethod]
+        [Fact]
         public void LoadHPGL00()
         {
             var loadInfo = new LoadOptions
@@ -56,7 +55,7 @@ namespace CNCLib.Test.Load
             //list.ElementAt(2).Should().BeOfType<G00Command>();    // G0 0,0 => PU0,0, is skipped by new version
         }
 
-        [TestMethod]
+        [Fact]
         public void LoadHPGLSkipPU()
         {
             var loadInfo = new LoadOptions
@@ -83,7 +82,7 @@ namespace CNCLib.Test.Load
             CheckGCode(list, gcode);
         }
 
-        [TestMethod]
+        [Fact]
         public void LoadHPGLGengraveParam()
         {
             var loadInfo = new LoadOptions
@@ -109,7 +108,7 @@ namespace CNCLib.Test.Load
             CheckGCode(list, gcode);
         }
 
-        [TestMethod]
+        [Fact]
         public void LoadHPGLGengraveNoParamAndSpeed()
         {
             var loadInfo = new LoadOptions
@@ -144,7 +143,7 @@ namespace CNCLib.Test.Load
             return e is G00Command || e is G01Command || e is M3Command || e is M4Command || e is M5Command || e is M106Command || e is M107Command || e is MxxCommand;
         }
 
-        [TestMethod]
+        [Fact]
         public void LoadHPGLLaser()
         {
             var loadInfo = new LoadOptions
@@ -170,7 +169,7 @@ namespace CNCLib.Test.Load
             CheckGCode(list, gcode);
         }
 
-        [TestMethod]
+        [Fact]
         public void LoadHPGLConvertOpenLine()
         {
             var loadInfo = new LoadOptions
@@ -197,7 +196,7 @@ namespace CNCLib.Test.Load
             CheckGCode(list, gcode);
         }
 
-        [TestMethod]
+        [Fact]
         public void LoadHPGLConvertClosedLine()
         {
             var loadInfo = new LoadOptions

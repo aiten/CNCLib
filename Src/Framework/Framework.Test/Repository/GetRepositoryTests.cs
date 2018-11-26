@@ -34,12 +34,6 @@ namespace Framework.Test.Repository
     public abstract class GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : RepositoryBaseTests<TDbContext>
         where TEntity : class where TIRepository : IGetRepository<TEntity, TKey> where TDbContext : DbContext
     {
-        protected override void InitializeDependencies()
-        {
-            base.InitializeDependencies();
-            Dependency.Container.RegisterType(typeof(GetTestDbContext<,,,>), typeof(GetTestDbContext<,,,>));
-        }
-
         protected abstract GetTestDbContext<TDbContext, TEntity, TKey, TIRepository> CreateTestDbContext();
 
         protected abstract TKey    GetEntityKey(TEntity  entity);

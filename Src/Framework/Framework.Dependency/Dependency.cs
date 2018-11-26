@@ -45,6 +45,11 @@ namespace Framework.Dependency
         }
 
         /// <summary>
+        /// Test if container is initialized.
+        /// </summary>
+        public static bool IsInitialized => _provider != null;
+
+        /// <summary>
         /// Returns the DependencyContainer that should be used to register and resolve dependencies.
         /// </summary>
         public static IDependencyContainer Container => _provider.Container;

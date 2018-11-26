@@ -22,7 +22,7 @@ using Framework.Logic.Abstraction;
 
 namespace CNCLib.Logic.Contract
 {
-    public interface ILoadOptionsManager : IDisposable, ICRUDManager<DTO.LoadOptions, int>
+    public interface ILoadOptionsManager : ICRUDManager<DTO.LoadOptions, int>
     {
     }
 }

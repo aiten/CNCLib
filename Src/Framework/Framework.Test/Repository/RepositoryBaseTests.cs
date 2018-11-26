@@ -33,14 +33,5 @@ namespace Framework.Test.Repository
 
     public abstract class RepositoryBaseTests<TDbContext> : UnitTestBase where TDbContext : DbContext
     {
-        protected override void InitializeDependencies()
-        {
-            base.InitializeDependencies();
-
-            Dependency.Container.RegisterTypeScoped<TDbContext, TDbContext>();
-            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<TDbContext>>();
-
-            Dependency.Container.RegisterType(typeof(TestDbContext<,>), typeof(TestDbContext<,>));
-        }
     }
 }

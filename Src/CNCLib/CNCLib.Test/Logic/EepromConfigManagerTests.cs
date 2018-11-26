@@ -24,29 +24,21 @@ using CNCLib.Logic.Manager;
 
 using FluentAssertions;
 
-using Framework.Dependency;
-using Framework.Repository;
-using Framework.Repository.Abstraction;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using NSubstitute;
+
+using Xunit;
 
 namespace CNCLib.Test.Logic
 {
-    [TestClass]
     public class EepromConfigManagerTests : LogicTests
     {
         private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
             var rep = Substitute.For<TInterface>();
-            Dependency.Container.RegisterInstance(rep);
-
-            Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
             return rep;
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CalculateMaxStepRate()
         {
             // no repository is needed

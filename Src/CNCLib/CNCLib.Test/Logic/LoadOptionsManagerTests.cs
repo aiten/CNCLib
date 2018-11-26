@@ -26,29 +26,25 @@ using CNCLib.Logic.Manager;
 
 using FluentAssertions;
 
-using Framework.Dependency;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using NSubstitute;
+
+using Xunit;
 
 namespace CNCLib.Test.Logic
 {
-    [TestClass]
     public class LoadOptionsManagerTests : LogicTests
     {
         private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
             var rep = Substitute.For<TInterface>();
-            Dependency.Container.RegisterInstance(rep);
             return rep;
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetAllLoadOptions()
         {
             var rep  = CreateMock<IDynItemController>();
-            var ctrl = new LoadOptionsManager();
+            var ctrl = new LoadOptionsManager(rep);
 
             rep.GetAll(typeof(LoadOptions)).
                 Returns(new[]
@@ -66,11 +62,11 @@ namespace CNCLib.Test.Logic
             all.FirstOrDefault().FileName.Should().Be("HA");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetLoadOptions()
         {
             var rep  = CreateMock<IDynItemController>();
-            var ctrl = new LoadOptionsManager();
+            var ctrl = new LoadOptionsManager(rep);
 
             rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
@@ -81,11 +77,11 @@ namespace CNCLib.Test.Logic
             all.FileName.Should().Be("HA");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetLoadOptionsNull()
         {
             var rep  = CreateMock<IDynItemController>();
-            var ctrl = new LoadOptionsManager();
+            var ctrl = new LoadOptionsManager(rep);
 
             rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
@@ -94,11 +90,11 @@ namespace CNCLib.Test.Logic
             all.Should().BeNull();
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddLoadOptions()
         {
             var rep  = CreateMock<IDynItemController>();
-            var ctrl = new LoadOptionsManager();
+            var ctrl = new LoadOptionsManager(rep);
 
             var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
@@ -107,11 +103,11 @@ namespace CNCLib.Test.Logic
             await rep.Received().Add(Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task UpdateLoadOptions()
         {
             var rep  = CreateMock<IDynItemController>();
-            var ctrl = new LoadOptionsManager();
+            var ctrl = new LoadOptionsManager(rep);
 
             var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
@@ -120,11 +116,11 @@ namespace CNCLib.Test.Logic
             await rep.Received().Save(Arg.Is<int>(x => x == 1), Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task DeleteLoadOptions()
         {
             var rep  = CreateMock<IDynItemController>();
-            var ctrl = new LoadOptionsManager();
+            var ctrl = new LoadOptionsManager(rep);
 
             var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
