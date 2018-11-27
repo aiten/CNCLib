@@ -16,32 +16,21 @@
   http://www.gnu.org/licenses/
 */
 
-#if asdfasdfa
-
 using System;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using System.Linq;
-
-using NSubstitute;
-
-using CNCLib.Wpf.ViewModels;
-using CNCLib.Logic.Contract.DTO;
-
 using System.Threading.Tasks;
 
+using CNCLib.Logic.Contract.DTO;
 using CNCLib.Service.Contract;
-
+using CNCLib.Wpf.ViewModels;
 using FluentAssertions;
-
-using Framework.Dependency;
 using Framework.Pattern;
+using NSubstitute;
+using Xunit;
 
 namespace CNCLib.Tests.Wpf
 {
-    [TestClass]
-    public class MachineViewModelTests : CNCUnitTest
+    public class MachineViewModelTests 
     {
         /*
                 [ClassInitialize]
@@ -67,8 +56,6 @@ namespace CNCLib.Tests.Wpf
 //			var mockFactory = CreateMock();
             var rep = Substitute.For<TInterface>();
 //			mockFactory.Register(typeof(TInterface), rep);
-
-            Dependency.Container.RegisterInstance(rep);
 
             return rep;
         }
@@ -206,5 +193,3 @@ namespace CNCLib.Tests.Wpf
         }
     }
 }
-
-#endif
