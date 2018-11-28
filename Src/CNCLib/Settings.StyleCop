@@ -12,6 +12,108 @@
   <Analyzers>
     <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
       <Rules>
+        <Rule Name="PropertySummaryDocumentationMustMatchAccessors">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+        <Rule Name="ConstructorSummaryDocumentationMustBeginWithStandardText">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+      </Rules>
+      <AnalyzerSettings />
+    </Analyzer>
+    <Analyzer AnalyzerId="StyleCop.CSharp.OrderingRules">
+      <Rules>
+        <Rule Name="ElementsMustBeOrderedByAccess">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+      </Rules>
+      <AnalyzerSettings />
+    </Analyzer>
+    <Analyzer AnalyzerId="StyleCop.CSharp.OrderingRules">
+      <Rules>
+        <Rule Name="ElementsMustAppearInTheCorrectOrder">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+      </Rules>
+      <AnalyzerSettings />
+    </Analyzer>
+    <Analyzer AnalyzerId="StyleCop.CSharp.SpacingRules">
+      <Rules>
+        <Rule Name="CodeMustNotContainMultipleWhitespaceInARow">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+      </Rules>
+      <AnalyzerSettings />
+    </Analyzer>
+    <Analyzer AnalyzerId="StyleCop.CSharp.LayoutRules">
+      <Rules>
+        <Rule Name="SingleLineCommentsMustNotBeFollowedByBlankLine">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+      </Rules>
+      <AnalyzerSettings />
+    </Analyzer>
+    <Analyzer AnalyzerId="StyleCop.CSharp.LayoutRules">
+      <Rules>
+        <Rule Name="SingleLineCommentsMustNotBeFollowedByBlankLine">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+      </Rules>
+      <AnalyzerSettings />
+    </Analyzer>
+    <Analyzers>
+      <Analyzer AnalyzerId="StyleCop.CSharp.LayoutRules">
+        <Rules>
+          <Rule Name="SingleLineCommentsMustNotBeFollowedByBlankLine">
+            <RuleSettings>
+              <BooleanProperty Name="Enabled">False</BooleanProperty>
+            </RuleSettings>
+          </Rule>
+        </Rules>
+        <AnalyzerSettings />
+      </Analyzer>
+      <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
+        <Rules>
+          <Rule Name="ConstructorSummaryDocumentationMustBeginWithStandardText">
+            <RuleSettings>
+              <BooleanProperty Name="Enabled">False</BooleanProperty>
+            </RuleSettings>
+          </Rule>
+          <Rule Name="PropertySummaryDocumentationMustMatchAccessors">
+            <RuleSettings>
+              <BooleanProperty Name="Enabled">False</BooleanProperty>
+            </RuleSettings>
+          </Rule>
+        </Rules>
+        <AnalyzerSettings />
+      </Analyzer>
+      <Analyzer AnalyzerId="StyleCop.CSharp.SpacingRules">
+        <Rules>
+          <Rule Name="CodeMustNotContainMultipleWhitespaceInARow">
+            <RuleSettings>
+              <BooleanProperty Name="Enabled">False</BooleanProperty>
+            </RuleSettings>
+          </Rule>
+        </Rules>
+        <AnalyzerSettings />
+      </Analyzer>
+    </Analyzers>
+    <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
+      <Rules>
         <Rule Name="PropertySummaryDocumentationMustOmitSetAccessorWithRestrictedAccess">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>
@@ -136,11 +238,6 @@
         </Rule>
       </Rules>
       <AnalyzerSettings />
-    </Analyzer>
-    <Analyzer AnalyzerId="StyleCop.CSharp.OrderingRules">
-      <AnalyzerSettings>
-        <BooleanProperty Name="GeneratedCodeElementOrder">False</BooleanProperty>
-      </AnalyzerSettings>
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.ReadabilityRules">
       <Rules>

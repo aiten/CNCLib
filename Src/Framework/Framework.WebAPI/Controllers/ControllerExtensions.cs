@@ -59,7 +59,7 @@ namespace Framework.WebAPI.Controllers
             }
 
             string totalUri = controller.GetCurrentUri();
-            return totalUri.Substring(0, totalUri.Length - removeTraining.Length);
+            return totalUri.Substring(0, totalUri.Length - removeTrailing.Length);
         }
 
         public static async Task<ActionResult<T>> NotFoundOrOk<T>(this Controller controller, T obj)
