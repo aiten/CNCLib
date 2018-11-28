@@ -43,7 +43,7 @@ namespace Framework.Test.Drawing
         [Fact]
         public void RotateZAngle180Grad()
         {
-            var r      = new Rotate3D(Math.PI, new[] {0, 0, 1.0});
+            var r      = new Rotate3D(Math.PI, new[] { 0, 0, 1.0 });
             var ptSrc  = new Point3D(1.0, 2.0, 3.0);
             var ptDest = r.Rotate(ptSrc);
 
@@ -55,7 +55,7 @@ namespace Framework.Test.Drawing
         [Fact]
         public void RotateZAngleMinus180Grad()
         {
-            var r      = new Rotate3D(-Math.PI, new[] {0, 0, 1.0});
+            var r      = new Rotate3D(-Math.PI, new[] { 0, 0, 1.0 });
             var ptSrc  = new Point3D(1.0, 2.0, 3.0);
             var ptDest = r.Rotate(ptSrc);
 
@@ -67,7 +67,7 @@ namespace Framework.Test.Drawing
         [Fact]
         public void RotateZAngle90Grad()
         {
-            var r      = new Rotate3D(Math.PI / 2.0, new[] {0, 0, 1.0});
+            var r      = new Rotate3D(Math.PI / 2.0, new[] { 0, 0, 1.0 });
             var ptSrc  = new Point3D(1.0, 2.0, 3.0);
             var ptDest = r.Rotate(ptSrc);
 
@@ -79,7 +79,7 @@ namespace Framework.Test.Drawing
         [Fact]
         public void RotateZAngleMinus90Grad()
         {
-            var r      = new Rotate3D(-Math.PI / 2.0, new[] {0, 0, 1.0});
+            var r      = new Rotate3D(-Math.PI / 2.0, new[] { 0, 0, 1.0 });
             var ptSrc  = new Point3D(1.0, 2.0, 3.0);
             var ptDest = r.Rotate(ptSrc);
 
@@ -91,7 +91,7 @@ namespace Framework.Test.Drawing
         [Fact]
         public void RotateXAngle90Grad()
         {
-            var r      = new Rotate3D(Math.PI / 2.0, new[] {1.0, 0, 0});
+            var r      = new Rotate3D(Math.PI / 2.0, new[] { 1.0, 0, 0 });
             var ptSrc  = new Point3D(1.0, 2.0, 3.0);
             var ptDest = r.Rotate(ptSrc);
 
@@ -103,7 +103,7 @@ namespace Framework.Test.Drawing
         [Fact]
         public void RotateXAngleMinus90Grad()
         {
-            var r      = new Rotate3D(-Math.PI / 2.0, new[] {1.0, 0, 0});
+            var r      = new Rotate3D(-Math.PI / 2.0, new[] { 1.0, 0, 0 });
             var ptSrc  = new Point3D(1.0, 2.0, 3.0);
             var ptDest = r.Rotate(ptSrc);
 
@@ -115,7 +115,7 @@ namespace Framework.Test.Drawing
         [Fact]
         public void RotateYAngle90Grad()
         {
-            var r      = new Rotate3D(Math.PI / 2.0, new[] {0, 1.0, 0});
+            var r      = new Rotate3D(Math.PI / 2.0, new[] { 0, 1.0, 0 });
             var ptSrc  = new Point3D(1.0, 2.0, 3.0);
             var ptDest = r.Rotate(ptSrc);
 
@@ -127,7 +127,7 @@ namespace Framework.Test.Drawing
         [Fact]
         public void RotateYAngleMinus90Grad()
         {
-            var r      = new Rotate3D(-Math.PI / 2.0, new[] {0, 1.0, 0});
+            var r      = new Rotate3D(-Math.PI / 2.0, new[] { 0, 1.0, 0 });
             var ptSrc  = new Point3D(1.0, 2.0, 3.0);
             var ptDest = r.Rotate(ptSrc);
 
@@ -139,7 +139,7 @@ namespace Framework.Test.Drawing
         [Fact]
         public void RotateXyzAngle90Grad()
         {
-            var r      = new Rotate3D(Math.PI / 2.0, new[] {1.0, 1.0, 1.0});
+            var r      = new Rotate3D(Math.PI / 2.0, new[] { 1.0, 1.0, 1.0 });
             var ptSrc  = new Point3D(1.0, 2.0, 3.0);
             var ptDest = r.Rotate(ptSrc);
 
@@ -151,8 +151,8 @@ namespace Framework.Test.Drawing
         [Fact]
         public void RotateXyzAngle90GradAndBack()
         {
-            var r1     = new Rotate3D(Math.PI / 2.0,  new[] {1.0, 1.0, 1.0});
-            var r2     = new Rotate3D(-Math.PI / 2.0, new[] {1.0, 1.0, 1.0});
+            var r1     = new Rotate3D(Math.PI / 2.0,  new[] { 1.0, 1.0, 1.0 });
+            var r2     = new Rotate3D(-Math.PI / 2.0, new[] { 1.0, 1.0, 1.0 });
             var ptSrc  = new Point3D(1.0, 2.0, 3.0);
             var ptRot  = r1.Rotate(ptSrc);
             var ptDest = r2.Rotate(ptRot);

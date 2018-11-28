@@ -42,7 +42,7 @@ namespace Framework.WebAPI.Filter
                     var errorResponseData = new ErrorResponseData(context.Exception);
                     var jsonResult = new JsonResult(errorResponseData)
                     {
-                        StatusCode = (int) response.Value.StatusCode
+                        StatusCode = (int)response.Value.StatusCode
                     };
                     context.Result = jsonResult;
                 }

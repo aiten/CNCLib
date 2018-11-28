@@ -29,7 +29,11 @@ namespace Framework.Wpf.Helpers
         private readonly Func<bool>                       _canExecute;
         private readonly CancelAsyncCommand               _cancelCommand = new CancelAsyncCommand();
 
-        public event EventHandler CanExecuteChanged { add => CommandManager.RequerySuggested += value; remove => CommandManager.RequerySuggested -= value; }
+        public event EventHandler CanExecuteChanged
+        {
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
+        }
 
         protected void RaiseCanExecuteChanged()
         {
@@ -63,7 +67,11 @@ namespace Framework.Wpf.Helpers
             private CancellationTokenSource _cts = new CancellationTokenSource();
             private bool                    _commandExecuting;
 
-            public event EventHandler CanExecuteChanged { add => CommandManager.RequerySuggested += value; remove => CommandManager.RequerySuggested -= value; }
+            public event EventHandler CanExecuteChanged
+            {
+                add => CommandManager.RequerySuggested += value;
+                remove => CommandManager.RequerySuggested -= value;
+            }
 
             private void RaiseCanExecuteChanged()
             {

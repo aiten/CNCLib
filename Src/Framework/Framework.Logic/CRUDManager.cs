@@ -44,7 +44,7 @@ namespace Framework.Logic
 
         public async Task<TKey> Add(T value)
         {
-            return (await Add(new List<T>() {value})).First();
+            return (await Add(new List<T>() { value })).First();
         }
 
         public async Task<IEnumerable<TKey>> Add(IEnumerable<T> values)
@@ -69,7 +69,7 @@ namespace Framework.Logic
 
         public async Task Delete(T value)
         {
-            await Delete(new[] {value});
+            await Delete(new[] { value });
         }
 
         public async Task Delete(IEnumerable<T> values)
@@ -92,7 +92,7 @@ namespace Framework.Logic
 
         public async Task Delete(TKey key)
         {
-            await Delete(new[] {key});
+            await Delete(new[] { key });
         }
 
         public async Task Delete(IEnumerable<TKey> keys)
@@ -114,7 +114,7 @@ namespace Framework.Logic
 
         public async Task Update(T value)
         {
-            await Update(new[] {value});
+            await Update(new[] { value });
         }
 
         public async Task Update(IEnumerable<T> values)
@@ -127,7 +127,7 @@ namespace Framework.Logic
 
                 var entitiesInDb = await _repository.GetTracking(entities.Select(e => GetKey(e)));
 
-                var mergeJoin = entitiesInDb.Join(entities, e => GetKey(e), e => GetKey(e), (EntityInDb, Entity) => new {EntityInDb, Entity});
+                var mergeJoin = entitiesInDb.Join(entities, e => GetKey(e), e => GetKey(e), (EntityInDb, Entity) => new { EntityInDb, Entity });
 
                 if (entities.Count() != entitiesInDb.Count() || entities.Count() != mergeJoin.Count())
                 {

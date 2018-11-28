@@ -61,6 +61,7 @@ namespace Framework.Tools
                             return false;
                         }
                     }
+
                     // if it implements IEnumerable, then scan any items
                     else if (typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType))
                     {
@@ -69,8 +70,8 @@ namespace Framework.Tools
                             return false;
                         }
 
-                        var collectionItems1      = ((IEnumerable) valueA).Cast<object>();
-                        var collectionItems2      = ((IEnumerable) valueB).Cast<object>();
+                        var collectionItems1      = ((IEnumerable)valueA).Cast<object>();
+                        var collectionItems2      = ((IEnumerable)valueB).Cast<object>();
                         var collectionItemsCount1 = collectionItems1.Count();
                         var collectionItemsCount2 = collectionItems2.Count();
 

@@ -85,7 +85,6 @@ namespace Framework.Test.Drawing
             }
         }
 
-
         [Fact]
         public void FloydSteinberg1()
         {

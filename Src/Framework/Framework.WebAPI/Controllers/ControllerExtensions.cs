@@ -116,7 +116,7 @@ namespace Framework.WebAPI.Controllers
 
             string uri     = controller.GetCurrentUri("/bulk");
             var    newUris = newIds.Select(id => uri + "/" + id);
-            var    results = newIds.Select((id, idx) => new UriAndValue<T>() {Uri = uri + "/" + id, Value = newObjects.ElementAt(idx)});
+            var    results = newIds.Select((id, idx) => new UriAndValue<T>() { Uri = uri + "/" + id, Value = newObjects.ElementAt(idx) });
             return controller.Ok(newUris);
         }
 

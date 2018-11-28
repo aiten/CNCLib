@@ -27,13 +27,13 @@ namespace Framework.Wpf.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool booleanValue = value != null && (bool) value;
+            bool booleanValue = value != null && (bool)value;
             return !booleanValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool booleanValue = value != null && (bool) value;
+            bool booleanValue = value != null && (bool)value;
             return !booleanValue;
         }
     }

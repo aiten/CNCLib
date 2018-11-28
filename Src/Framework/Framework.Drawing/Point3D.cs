@@ -65,11 +65,14 @@ namespace Framework.Drawing
             {
                 switch (axis)
                 {
-                    case 0:  X = value;
+                    case 0:
+                        X = value;
                         break;
-                    case 1:  Y = value;
+                    case 1:
+                        Y = value;
                         break;
-                    case 2:  Z = value;
+                    case 2:
+                        Z = value;
                         break;
                     default: throw new ArgumentOutOfRangeException();
                 }
@@ -103,7 +106,7 @@ namespace Framework.Drawing
 
         public static implicit operator System.Drawing.Point(Point3D sc)
         {
-            return new System.Drawing.Point((int) (sc.X0), (int) (sc.Y0));
+            return new System.Drawing.Point((int)(sc.X0), (int)(sc.Y0));
         }
 
         public void Offset(Point3D p)

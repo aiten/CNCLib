@@ -43,7 +43,7 @@ namespace Framework.Parser
             get => _line.Substring(_idx);
         }
 
-        public char NextChar        => IsEOF() ? ((char) 0) : _line[_idx];
+        public char NextChar        => IsEOF()?((char)0):_line[_idx];
         public char NextCharToUpper => char.ToUpper(NextChar);
 
         public int PushIdx()
@@ -210,7 +210,7 @@ namespace Framework.Parser
 
         public double GetDouble(out bool isFloatingPoint)
         {
-            return (double) GetDecimal(out isFloatingPoint);
+            return (double)GetDecimal(out isFloatingPoint);
         }
 
         public decimal GetDecimal(out bool isFloatingPoint)

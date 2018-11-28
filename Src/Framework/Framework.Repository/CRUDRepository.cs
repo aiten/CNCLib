@@ -59,7 +59,7 @@ namespace Framework.Repository
 
         public void SetState(TEntity entity, Abstraction.EntityState state)
         {
-            SetEntityState(entity, (EntityState) state);
+            SetEntityState(entity, (EntityState)state);
         }
 
         public void SetValue(TEntity entity, TEntity values)

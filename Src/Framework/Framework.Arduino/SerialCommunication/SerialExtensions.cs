@@ -71,7 +71,6 @@ namespace Framework.Arduino.SerialCommunication
             return serial.QueueCommandsAsync(new[] { line }).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-
         /// <summary>
         /// Send commands stored in a file. Wait until the commands are transferred and we got a reply (no command pending)
         /// </summary>
@@ -104,7 +103,6 @@ namespace Framework.Arduino.SerialCommunication
                 return await serial.QueueCommandsAsync(lines.ToArray());
             }
         }
-
 
         /// <summary>
         /// Send a command to the arduino and wait until a (OK) reply
@@ -145,7 +143,6 @@ namespace Framework.Arduino.SerialCommunication
                 }
             }
         }
-
 
         public static void WriteCommandHistory(this ISerial serial, string filename)
         {

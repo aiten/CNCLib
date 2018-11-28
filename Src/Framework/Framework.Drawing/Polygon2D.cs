@@ -26,7 +26,11 @@ namespace Framework.Drawing
     {
         private Point2D[] _points = new Point2D[0];
 
-        public IEnumerable<Point2D> Points { get => _points; set => _points = value.ToArray(); }
+        public IEnumerable<Point2D> Points
+        {
+            get => _points;
+            set => _points = value.ToArray();
+        }
 
         public bool   IsClosed => _points.Length >= 2 && _points[0].Compare(_points[_points.Length - 1]);
         public double MaxX     => _points.Max(c => c.X);

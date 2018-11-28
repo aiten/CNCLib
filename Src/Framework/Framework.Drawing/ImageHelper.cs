@@ -52,13 +52,13 @@ namespace Framework.Drawing
             int originalHeight = image.Height;
 
             // To preserve the aspect ratio
-            float ratioX = (float) maxWidth / (float) originalWidth;
-            float ratioY = (float) maxHeight / (float) originalHeight;
+            float ratioX = (float)maxWidth / (float)originalWidth;
+            float ratioY = (float)maxHeight / (float)originalHeight;
             float ratio  = Math.Min(ratioX, ratioY);
 
             // New width and height based on aspect ratio
-            int newWidth  = (int) (originalWidth * ratio);
-            int newHeight = (int) (originalHeight * ratio);
+            int newWidth  = (int)(originalWidth * ratio);
+            int newHeight = (int)(originalHeight * ratio);
 
             // Convert other formats (including CMYK) to RGB.
             var newImage = new Bitmap(newWidth, newHeight, PixelFormat.Format24bppRgb);
