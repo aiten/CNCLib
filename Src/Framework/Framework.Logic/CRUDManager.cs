@@ -59,8 +59,17 @@ namespace Framework.Logic
                     AddEntity(entity);
                 }
 
-                _repository.AddRange(entities);
-                await trans.CommitTransactionAsync();
+                try
+                {
+                    _repository.AddRange(entities);
+                    await trans.CommitTransactionAsync();
+                }
+                catch (Exception)
+                {
+                    // Console.WriteLine(e);
+                    throw;
+                }
+
                 await Modified();
 
                 return entities.Select(e => GetKey(e));
@@ -84,9 +93,17 @@ namespace Framework.Logic
                     DeleteEntity(entity);
                 }
 
-                _repository.DeleteRange(entities);
-                await trans.CommitTransactionAsync();
-                await Modified();
+                try
+                {
+                    _repository.DeleteRange(entities);
+                    await trans.CommitTransactionAsync();
+                }
+                catch (Exception)
+                {
+                    // for debugging
+                    // Console.WriteLine(e);
+                    throw;
+                }
             }
         }
 
@@ -139,8 +156,16 @@ namespace Framework.Logic
                     UpdateEntity(merged.EntityInDb, merged.Entity);
                 }
 
-                await trans.CommitTransactionAsync();
-                await Modified();
+                try
+                {
+                    await trans.CommitTransactionAsync();
+                    await Modified();
+                }
+                catch (Exception)
+                {
+                    // Console.WriteLine(e);
+                    throw;
+                }
             }
         }
 

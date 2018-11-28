@@ -157,13 +157,13 @@ namespace CNCLib.Test.Repository
 
                 //[SkippableFact(typeof(DbUpdateException))]
 
-                Func<Task> act = () => ctx.UnitOfWork.SaveChangesAsync();
+                Func<Task> act = async () => await ctx.UnitOfWork.SaveChangesAsync();
 
                 //assert
 
                 ;
 
-                Assert.ThrowsAsync<ArgumentException>(act);
+                await Assert.ThrowsAsync<ArgumentException>(act);
             }
         }
 
