@@ -17,7 +17,9 @@
 */
 
 using System.Linq;
+
 using Microsoft.EntityFrameworkCore;
+
 using CNCLib.Repository.Context;
 
 namespace CNCLib.Repository.SqLite

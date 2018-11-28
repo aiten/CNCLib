@@ -126,13 +126,14 @@ namespace CNCLib.Logic.Manager
 
         public async Task SetDefaultMachine(int defaultMachineId)
         {
-            await _repositoryConfig.Store(new ConfigurationEntity
-            {
-                Group = "Environment",
-                Name  = "DefaultMachineId",
-                Type  = "Int32",
-                Value = defaultMachineId.ToString()
-            });
+            await _repositoryConfig.Store(
+                new ConfigurationEntity
+                {
+                    Group = "Environment",
+                    Name  = "DefaultMachineId",
+                    Type  = "Int32",
+                    Value = defaultMachineId.ToString()
+                });
             await _unitOfWork.SaveChangesAsync();
         }
 

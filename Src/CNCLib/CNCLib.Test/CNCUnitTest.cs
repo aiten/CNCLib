@@ -32,12 +32,14 @@ namespace CNCLib.Test
         {
             if (Mapper == null)
             {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<LogicAutoMapperProfile>();
-                    //                cfg.AddProfile<WpfAutoMapperProfile>();
-                    //                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                });
+                var config = new MapperConfiguration(
+                    cfg =>
+                    {
+                        cfg.AddProfile<LogicAutoMapperProfile>();
+
+                        //                cfg.AddProfile<WpfAutoMapperProfile>();
+                        //                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                    });
                 config.AssertConfigurationIsValid();
 
                 Mapper = config.CreateMapper();

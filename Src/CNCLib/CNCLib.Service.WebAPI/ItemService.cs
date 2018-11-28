@@ -27,8 +27,8 @@ namespace CNCLib.Service.WebAPI
 {
     public class ItemService : CRUDServiceBase<Item, int>, IItemService
     {
-        protected override string Api            => @"api/Item";
-        protected override int    GetKey(Item i) => i.ItemId;
+        protected override string Api => @"api/Item";
+        protected override int GetKey(Item i) => i.ItemId;
 
         public async Task<Item> DefaultItem()
         {

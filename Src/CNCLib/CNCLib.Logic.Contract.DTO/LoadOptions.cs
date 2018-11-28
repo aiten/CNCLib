@@ -109,7 +109,7 @@ namespace CNCLib.Logic.Contract.DTO
 
         public ConvertTypeEnum ConvertType { get; set; } = ConvertTypeEnum.NoConvert;
 
-        public decimal? SmoothMinAngle      { get; set; } = (decimal) (45 * (Math.PI / 180));
+        public decimal? SmoothMinAngle      { get; set; } = (decimal)(45 * (Math.PI / 180));
         public decimal? SmoothMinLineLength { get; set; } = 1m;
         public decimal? SmoothMaxError      { get; set; } = 1m / 40m;
 

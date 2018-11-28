@@ -67,6 +67,7 @@ namespace CNCLib.GCode.Parser
         void SkipCommentNested()
         {
             int cnt = 0;
+
 //            char* start = (char*)_reader->GetBuffer();
 
             for (char ch = _reader.NextChar; ch != 0; ch = _reader.Next())
@@ -79,6 +80,7 @@ namespace CNCLib.GCode.Parser
                         if (cnt == 0)
                         {
                             _reader.Next();
+
 //                            CommentMessage(start);
                             return;
                         }

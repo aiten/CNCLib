@@ -52,6 +52,7 @@ namespace CNCLib.Test.Load
 
             list.First().Should().BeOfType<G01Command>();      // G0 F500
             list.ElementAt(1).Should().BeOfType<G00Command>(); // G0 z1
+
             //list.ElementAt(2).Should().BeOfType<G00Command>();    // G0 0,0 => PU0,0, is skipped by new version
         }
 
@@ -65,6 +66,7 @@ namespace CNCLib.Test.Load
                 PenMoveType = LoadOptions.PenType.CommandString,
                 MoveSpeed   = 499,
                 FileContent = Encoding.ASCII.GetBytes("IN;PU1000,100;PU0,0;PD400,400;PU0,0")
+
                 // leading PU1000,100 and trailing PU0,0 is skipped
             };
 
@@ -207,8 +209,9 @@ namespace CNCLib.Test.Load
                 MoveSpeed   = 499,
                 LaserSize   = 0,
                 ConvertType = LoadOptions.ConvertTypeEnum.InvertLineSequence,
-                FileContent = Encoding.ASCII.GetBytes("IN;" + "PU0,0;PD0,400,400,400,400,0,0,0;" + "PU50,50;PD350,50,350,350,50,350,50,50;" + "PU100,100;PD300,100,300,300,100,300,100,100;" +
-                                                      "PU150,150;PD250,150,250,250,150,250,150,150;" + "PU;SP0")
+                FileContent = Encoding.ASCII.GetBytes(
+                    "IN;" + "PU0,0;PD0,400,400,400,400,0,0,0;" + "PU50,50;PD350,50,350,350,50,350,50,50;" + "PU100,100;PD300,100,300,300,100,300,100,100;" +
+                    "PU150,150;PD250,150,250,250,150,250,150,150;" + "PU;SP0")
             };
 
             var load = LoadBase.Create(loadInfo);

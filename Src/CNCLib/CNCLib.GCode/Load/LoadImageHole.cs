@@ -30,9 +30,9 @@ namespace CNCLib.GCode.Load
         public int ImageToDotSizeX => LoadOptions.DotSizeX;
         public int ImageToDotSizeY => LoadOptions.DotSizeY;
 
-        protected override double PixelDistX => (double) LoadOptions.DotDistX;
-        protected override double PixelDistY => (double) LoadOptions.DotDistY;
-        protected          double LaserSize  => (double) LoadOptions.LaserSize;
+        protected override double PixelDistX => (double)LoadOptions.DotDistX;
+        protected override double PixelDistY => (double)LoadOptions.DotDistY;
+        protected          double LaserSize  => (double)LoadOptions.LaserSize;
 
         public bool UseYShift   => LoadOptions.UseYShift;
         public bool RotateHeart => LoadOptions.RotateHeart;
@@ -103,6 +103,7 @@ namespace CNCLib.GCode.Load
 
                         double posX = x * (PixelSizeX + PixelDistX) + ShiftX + PixelDistX / 2;
                         double posY = y * (PixelSizeY + PixelDistY) + ShiftY + PixelDistY / 2;
+
                         // x,y left,top corner
 
                         AddCommandX(posX, topPos - posY, GetDotSize(x, y), HoleType, ix);
@@ -177,7 +178,7 @@ namespace CNCLib.GCode.Load
             {
                 for (int dy = 0; dy < ImageToDotSizeY; dy++)
                 {
-                    var col = Bitmap.GetPixel((int) (x + dx), (int) (y + dy));
+                    var col = Bitmap.GetPixel((int)(x + dx), (int)(y + dy));
                     colorSum += FindNearestColorGrayScale(col.R, col.G, col.B);
                 }
             }
@@ -414,7 +415,7 @@ namespace CNCLib.GCode.Load
 
             hsizeX2 *= 0.9;
             hsizeY2 =  hsizeX2;
-            double mr = mirror ? -1.0 : 1.0;
+            double mr = mirror?-1.0:1.0;
 
             Command c = new G00Command();
             c.AddVariable('X', ToGCode(x));

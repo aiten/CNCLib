@@ -45,6 +45,7 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasOne(p => p.User);
             entity.Property(m => m.UserId);
+
 //                IsOptional();
         }
     }

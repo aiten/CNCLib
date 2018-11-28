@@ -23,14 +23,18 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Contract.DTO;
 using CNCLib.Service.Contract;
 using CNCLib.Wpf.ViewModels;
+
 using FluentAssertions;
+
 using Framework.Pattern;
+
 using NSubstitute;
+
 using Xunit;
 
 namespace CNCLib.Tests.Wpf
 {
-    public class MachineViewModelTests 
+    public class MachineViewModelTests
     {
         /*
                 [ClassInitialize]
@@ -55,6 +59,7 @@ namespace CNCLib.Tests.Wpf
         {
 //			var mockFactory = CreateMock();
             var rep = Substitute.For<TInterface>();
+
 //			mockFactory.Register(typeof(TInterface), rep);
 
             return rep;

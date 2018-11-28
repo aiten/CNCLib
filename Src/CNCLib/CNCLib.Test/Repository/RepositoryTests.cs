@@ -31,9 +31,10 @@ using Xunit;
 namespace CNCLib.Test.Repository
 {
     [Collection("RepositoryTests")]
-    public abstract class RepositoryTests<TDbContext, TEntity, TKey, TIRepository> : CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
+    public abstract class RepositoryTests<TDbContext, TEntity, TKey, TIRepository> : CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository>
+        where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
-        static bool        _init = false;
+        static bool _init = false;
 
         public RepositoryTests()
         {
@@ -46,7 +47,7 @@ namespace CNCLib.Test.Repository
             if (_init == false)
             {
                 //drop and recreate the test Db every time the tests are run. 
- //               string dbDir     = testContext.TestDeploymentDir;
+                //               string dbDir     = testContext.TestDeploymentDir;
                 string dbDir     = System.IO.Path.GetTempPath();
                 string pathRoot  = System.IO.Path.GetPathRoot(dbDir);
                 var    driveInfo = new System.IO.DriveInfo(pathRoot);
@@ -64,7 +65,7 @@ namespace CNCLib.Test.Repository
             }
         }
 
-        private ICNCLibUserContext _userContext = new CNCLibUserContext();
+        private   ICNCLibUserContext _userContext = new CNCLibUserContext();
         protected ICNCLibUserContext UserContext => _userContext;
     }
 }

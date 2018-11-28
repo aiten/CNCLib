@@ -64,10 +64,13 @@ namespace CNCLib.Test.Repository
             //entity1.Should().BeEquivalentTo(entity2, opts => 
             //    opts.Excluding(x => x.UserId)
             //);
-            return CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[]
-            {
-                @"MachineId", @"MachineCommandId", @"MachineInitCommandId"
-            });
+            return CompareProperties.AreObjectsPropertiesEqual(
+                entity1,
+                entity2,
+                new[]
+                {
+                    @"MachineId", @"MachineCommandId", @"MachineInitCommandId"
+                });
         }
 
         #endregion
@@ -112,53 +115,61 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task AddUpdateDeleteWithCommandAndInitCommandsTest()
         {
-            await AddUpdateDelete(() => AddMachineInitCommands((AddMachineCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))), (entity) =>
-            {
-                entity.Name = "DummyNameUpdate";
-                entity.MachineInitCommands.Remove(entity.MachineInitCommands.First());
-                entity.MachineInitCommands.Add(new MachineInitCommand()
+            await AddUpdateDelete(
+                () => AddMachineInitCommands((AddMachineCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))),
+                (entity) =>
                 {
-                    CommandString = @"CommandStr",
-                    SeqNo         = 2
-                });
+                    entity.Name = "DummyNameUpdate";
+                    entity.MachineInitCommands.Remove(entity.MachineInitCommands.First());
+                    entity.MachineInitCommands.Add(
+                        new MachineInitCommand()
+                        {
+                            CommandString = @"CommandStr",
+                            SeqNo         = 2
+                        });
 
-                entity.MachineCommands.Remove(entity.MachineCommands.Last());
-                entity.MachineCommands.Add(new MachineCommand()
-                {
-                    CommandString   = @"CommandStr",
-                    CommandName     = "NewName",
-                    JoystickMessage = "Maxi",
-                    PosX            = 2,
-                    PosY            = 3
+                    entity.MachineCommands.Remove(entity.MachineCommands.Last());
+                    entity.MachineCommands.Add(
+                        new MachineCommand()
+                        {
+                            CommandString   = @"CommandStr",
+                            CommandName     = "NewName",
+                            JoystickMessage = "Maxi",
+                            PosX            = 2,
+                            PosY            = 3
+                        });
                 });
-            });
         }
 
         [Fact]
         public async Task AddUpdateDeleteWithCommandAndInitCommandsToEmptyTest()
         {
-            await AddUpdateDelete(() => AddMachineInitCommands((AddMachineCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))), (entity) =>
-            {
-                entity.Name = "DummyNameUpdate";
-                entity.MachineInitCommands.Clear();
-                entity.MachineCommands.Clear();
-            });
+            await AddUpdateDelete(
+                () => AddMachineInitCommands((AddMachineCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))),
+                (entity) =>
+                {
+                    entity.Name = "DummyNameUpdate";
+                    entity.MachineInitCommands.Clear();
+                    entity.MachineCommands.Clear();
+                });
         }
 
         [Fact]
         public async Task AddUpdateDeleteBulkTest()
         {
-            await AddUpdateDeleteBulk(() => new[]
-            {
-                CreateMachine(@"AddUpdateDeleteBulkTest1"), CreateMachine(@"AddUpdateDeleteBulkTest2"), CreateMachine(@"AddUpdateDeleteBulkTest2")
-            }, (entities) =>
-            {
-                int i = 0;
-                foreach (var entity in entities)
+            await AddUpdateDeleteBulk(
+                () => new[]
                 {
-                    entity.Name = $"DummyNameUpdate{i++}";
-                }
-            });
+                    CreateMachine(@"AddUpdateDeleteBulkTest1"), CreateMachine(@"AddUpdateDeleteBulkTest2"), CreateMachine(@"AddUpdateDeleteBulkTest2")
+                },
+                (entities) =>
+                {
+                    int i = 0;
+                    foreach (var entity in entities)
+                    {
+                        entity.Name = $"DummyNameUpdate{i++}";
+                    }
+                });
         }
 
         [Fact]

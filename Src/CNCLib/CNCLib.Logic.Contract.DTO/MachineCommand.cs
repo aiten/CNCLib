@@ -28,6 +28,7 @@ namespace CNCLib.Logic.Contract.DTO
         public int?   PosY             { get; set; }
 
         public string JoystickMessage { get; set; }
+
         //public virtual Machine Machine { get; set; }
     }
 }

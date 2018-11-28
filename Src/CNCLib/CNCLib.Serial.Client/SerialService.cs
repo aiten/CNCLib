@@ -41,27 +41,33 @@ namespace CNCLib.Serial.Client
             _serviceHub = new SerialServiceHub(WebServerUrl, this);
             var connection = await _serviceHub.Start();
 
-            connection.On("queueEmpty", (int id) =>
-            {
-                if (PortId == id)
+            connection.On(
+                "queueEmpty",
+                (int id) =>
                 {
-                    CommandQueueEmpty?.Invoke(this, new SerialEventArgs());
-                }
-            });
-            connection.On("queueChanged", (int id, int queueLength) =>
-            {
-                if (PortId == id)
+                    if (PortId == id)
+                    {
+                        CommandQueueEmpty?.Invoke(this, new SerialEventArgs());
+                    }
+                });
+            connection.On(
+                "queueChanged",
+                (int id, int queueLength) =>
                 {
-                    CommandQueueChanged?.Invoke(this, new SerialEventArgs(queueLength, null));
-                }
-            });
-            connection.On("sendingCommand", (int id, int seqId) =>
-            {
-                if (PortId == id)
+                    if (PortId == id)
+                    {
+                        CommandQueueChanged?.Invoke(this, new SerialEventArgs(queueLength, null));
+                    }
+                });
+            connection.On(
+                "sendingCommand",
+                (int id, int seqId) =>
                 {
-                    CommandSending?.Invoke(this, new SerialEventArgs(new SerialCommand() { SeqId = seqId }));
-                }
-            });
+                    if (PortId == id)
+                    {
+                        CommandSending?.Invoke(this, new SerialEventArgs(new SerialCommand() { SeqId = seqId }));
+                    }
+                });
         }
 
         public int PortId { get; private set; } = -1;
@@ -215,7 +221,7 @@ namespace CNCLib.Serial.Client
             {
                 using (HttpClient client = CreateHttpClient())
                 {
-                    client.Timeout = new TimeSpan(10000L * (((long) waitForMilliseconds) + 5000));
+                    client.Timeout = new TimeSpan(10000L * (((long)waitForMilliseconds) + 5000));
                     var                 cmds     = new SerialCommands() { Commands = lines.ToArray(), TimeOut = waitForMilliseconds };
                     HttpResponseMessage response = await client.PostAsJsonAsync($@"{_api}/{PortId}/send", cmds);
                     if (response.IsSuccessStatusCode)

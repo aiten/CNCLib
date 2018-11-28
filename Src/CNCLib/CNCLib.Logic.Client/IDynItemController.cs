@@ -35,7 +35,7 @@ namespace CNCLib.Logic.Client
         Task<object> Create(int id);
 
         Task<int> Add(string name, object value);
-        Task      Save(int   id,   string name, object value);
-        Task      Delete(int id);
+        Task Save(int        id,   string name, object value);
+        Task Delete(int      id);
     }
 }

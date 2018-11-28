@@ -64,7 +64,7 @@ namespace CNCLib.GCode.Load
                 }
 
                 var    list     = new List<HPGLCommand>();
-                double maxAngle = LoadOptions.SmoothMinAngle.HasValue ? (double) LoadOptions.SmoothMinAngle.Value : (45 * (Math.PI / 180));
+                double maxAngle = LoadOptions.SmoothMinAngle.HasValue?(double)LoadOptions.SmoothMinAngle.Value:(45 * (Math.PI / 180));
 
                 int startIdx = 0;
                 while (startIdx < line.Count())
@@ -119,10 +119,10 @@ namespace CNCLib.GCode.Load
 
                 var         newline       = new List<HPGLCommand>();
                 HPGLCommand prev          = null;
-                double      minLineLength = LoadOptions.SmoothMinLineLength.HasValue ? (double) LoadOptions.SmoothMinLineLength.Value : double.MaxValue;
-                double      maxError      = LoadOptions.SmoothMaxError.HasValue ? (double) LoadOptions.SmoothMaxError.Value : 1.0 / 40.0;
-                minLineLength /= (double) LoadOptions.ScaleX;
-                maxError      /= (double) LoadOptions.ScaleX;
+                double      minLineLength = LoadOptions.SmoothMinLineLength.HasValue?(double)LoadOptions.SmoothMinLineLength.Value:double.MaxValue;
+                double      maxError      = LoadOptions.SmoothMaxError.HasValue?(double)LoadOptions.SmoothMaxError.Value:1.0 / 40.0;
+                minLineLength /= (double)LoadOptions.ScaleX;
+                maxError      /= (double)LoadOptions.ScaleX;
 
                 foreach (var pt in line)
                 {
@@ -134,7 +134,7 @@ namespace CNCLib.GCode.Load
                     if (minLineLength <= c)
                     {
                         double alpha     = pt.DiffLineAngleWithNext ?? (prev?.DiffLineAngleWithNext ?? 0.0);
-                        double beta      = prev != null ? (prev.DiffLineAngleWithNext ?? 0.0) : alpha;
+                        double beta      = prev != null?(prev.DiffLineAngleWithNext ?? 0.0):alpha;
                         double swapScale = 1.0;
 
                         if ((alpha >= 0.0 && beta >= 0.0) || (alpha <= 0.0 && beta <= 0.0))
@@ -151,6 +151,7 @@ namespace CNCLib.GCode.Load
                             double gamma = Math.PI - alpha - beta;
 
                             double b = Math.Sin(beta) / Math.Sin(gamma) * c;
+
                             //double a = Math.Sin(alpha) / Math.Sin(gamma) * c;
 
                             double hc  = b * Math.Sin(alpha) * swapScale;

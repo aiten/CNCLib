@@ -39,7 +39,7 @@ namespace CNCLib.Wpf.Helpers
 
         public void SetCurrent(string portName)
         {
-            Current = portName.StartsWith("com") ? LocalCom : RemoteCom;
+            Current = portName.StartsWith("com")?LocalCom:RemoteCom;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace CNCLib.WebAPI.Controllers
         {
             _service     = service ?? throw new ArgumentNullException();
             _userContext = userContext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext) _userContext).InitFromController(this);
+            ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 
         [HttpGet]

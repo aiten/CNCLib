@@ -44,14 +44,14 @@ namespace CNCLib.Wpf.Views
 
         private void PropertyGrid_PreparePropertyItem(object sender, PropertyItemEventArgs e)
         {
-            var grid = (PropertyGrid) e.Source;
+            var grid = (PropertyGrid)e.Source;
         }
 
         private void PropertyGrid_IsPropertyBrowseable(object sender, IsPropertyBrowsableArgs e)
         {
             if (_grid.SelectedObject != null)
             {
-                var data = (Eeprom) _grid.SelectedObject;
+                var data = (Eeprom)_grid.SelectedObject;
                 e.IsBrowsable = data.IsPropertyBrowsable(e.PropertyDescriptor);
             }
         }

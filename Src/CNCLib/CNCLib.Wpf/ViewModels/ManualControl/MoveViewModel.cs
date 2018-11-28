@@ -42,23 +42,24 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private void SendMoveCommand(double? dist, char axisName)
         {
-            RunAndUpdate(() =>
-            {
-                bool   mustUse2Lines = Global.Instance.Machine.CommandSyntax == CommandSyntax.Grbl;
-                string commandStr    = MachineGCodeHelper.PrepareCommand("g91 g0" + axisName + (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
-
-                if (!mustUse2Lines)
+            RunAndUpdate(
+                () =>
                 {
-                    commandStr += " g90";
-                }
+                    bool   mustUse2Lines = Global.Instance.Machine.CommandSyntax == CommandSyntax.Grbl;
+                    string commandStr    = MachineGCodeHelper.PrepareCommand("g91 g0" + axisName + (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
 
-                Global.Instance.Com.Current.QueueCommand(commandStr);
+                    if (!mustUse2Lines)
+                    {
+                        commandStr += " g90";
+                    }
 
-                if (mustUse2Lines)
-                {
-                    Global.Instance.Com.Current.QueueCommand("g90");
-                }
-            });
+                    Global.Instance.Com.Current.QueueCommand(commandStr);
+
+                    if (mustUse2Lines)
+                    {
+                        Global.Instance.Com.Current.QueueCommand("g90");
+                    }
+                });
         }
 
         public bool CanSendCommand(double? dist)

@@ -19,7 +19,9 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+
 using CNCLib.Serial.Server.Hubs;
+
 using Framework.Arduino.Linux.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
@@ -35,7 +37,9 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json.Serialization;
+
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace CNCLib.Serial.Server
@@ -59,13 +63,12 @@ namespace CNCLib.Serial.Server
 
             services.AddTransient<UnhandledExceptionFilter>();
             services.AddTransient<ValidateRequestDataFilter>();
-            services.AddMvc(options =>
+            services.AddMvc(
+                options =>
                 {
                     options.Filters.AddService<ValidateRequestDataFilter>();
                     options.Filters.AddService<UnhandledExceptionFilter>();
-                }).
-                SetCompatibilityVersion(CompatibilityVersion.Version_2_1).
-                AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+                }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
@@ -88,6 +91,7 @@ namespace CNCLib.Serial.Server
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             Services = app.ApplicationServices;
+
             //Services = serviceProvider;
 
             if (env.IsDevelopment())
@@ -121,18 +125,19 @@ namespace CNCLib.Serial.Server
 
             app.UseMvc(routes => { routes.MapRoute(name: "default", template: "{instance}/{action=Index}/{id?}"); });
 
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
+            app.UseSpa(
+                spa =>
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
+                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                    // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                    spa.Options.SourcePath = "ClientApp";
+
+                    if (env.IsDevelopment())
+                    {
+                        spa.UseAngularCliServer(npmScript: "start");
+                    }
+                });
         }
     }
 }

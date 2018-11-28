@@ -69,13 +69,13 @@ namespace CNCLib.Test.Logic
             var all  = (await ctrl.GetAll()).ToArray();
 
             all.Should().HaveCount(2);
-            all.FirstOrDefault().
-                Should().
-                BeEquivalentTo(new
+            all.FirstOrDefault().Should().BeEquivalentTo(
+                new
                 {
                     ItemId = 1,
                     Name   = "Test1"
-                }, options => options.ExcludingMissingMembers());
+                },
+                options => options.ExcludingMissingMembers());
         }
 
         [Fact]
@@ -93,13 +93,13 @@ namespace CNCLib.Test.Logic
             var all  = await ctrl.GetAll(typeof(string));
 
             all.Should().HaveCount(2);
-            all.FirstOrDefault().
-                Should().
-                BeEquivalentTo(new
+            all.FirstOrDefault().Should().BeEquivalentTo(
+                new
                 {
                     ItemId = 1,
                     Name   = "Test1"
-                }, options => options.ExcludingMissingMembers());
+                },
+                options => options.ExcludingMissingMembers());
         }
 
         [Fact]
@@ -111,12 +111,13 @@ namespace CNCLib.Test.Logic
             var ctrl = new DynItemController(srv);
             var all  = await ctrl.Get(1);
 
-            all.Should().
-                BeEquivalentTo(new
+            all.Should().BeEquivalentTo(
+                new
                 {
                     ItemId = 1,
                     Name   = "Test1"
-                }, options => options.ExcludingMissingMembers());
+                },
+                options => options.ExcludingMissingMembers());
         }
 
         [Fact]
@@ -145,7 +146,7 @@ namespace CNCLib.Test.Logic
             item.Should().NotBeNull();
             item.Should().BeOfType(typeof(DynItemManagerTestClass));
 
-            var item2 = (DynItemManagerTestClass) item;
+            var item2 = (DynItemManagerTestClass)item;
 
             item2.StringProperty.Should().Be("Hallo", item2.StringProperty);
             item2.IntProperty.Should().Be(1);
@@ -240,7 +241,7 @@ namespace CNCLib.Test.Logic
 
             //assert
             await srv.Received().Get(1);
-            await srv.DidNotReceiveWithAnyArgs().Delete((Item) null);
+            await srv.DidNotReceiveWithAnyArgs().Delete((Item)null);
         }
 
         [Fact]
@@ -258,7 +259,7 @@ namespace CNCLib.Test.Logic
             //assert
             await srv.Received().Update(Arg.Is<Item>(x => x.ItemId == 1));
             await srv.Received().Update(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "IntProperty").Value == "1"));
-            await srv.DidNotReceiveWithAnyArgs().Delete((Item) null);
+            await srv.DidNotReceiveWithAnyArgs().Delete((Item)null);
         }
     }
 }

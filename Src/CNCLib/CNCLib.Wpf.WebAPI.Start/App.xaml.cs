@@ -60,18 +60,21 @@ namespace CNCLib.Wpf.WebAPI.Start
             Dependency.Container.RegisterServiceAsWebAPI();
             Dependency.Container.RegisterCNCLibWpf();
 
-            Dependency.Container.RegisterMapper(new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<WpfAutoMapperProfile>();
-                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-            }));
+            Dependency.Container.RegisterMapper(
+                new MapperConfiguration(
+                    cfg =>
+                    {
+                        cfg.AddProfile<WpfAutoMapperProfile>();
+                        cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                    }));
 
             ICNCLibUserContext userContext = new CNCLibUserContext();
             Dependency.Container.RegisterInstance(userContext);
 
             // Open WebAPI Connection
             //
-            bool ok = Task.Run(async () =>
+            bool ok = Task.Run(
+                async () =>
                 {
                     try
                     {
@@ -94,10 +97,7 @@ namespace CNCLib.Wpf.WebAPI.Start
                         Current.Shutdown();
                         return false;
                     }
-                }).
-                ConfigureAwait(true).
-                GetAwaiter().
-                GetResult();
+                }).ConfigureAwait(true).GetAwaiter().GetResult();
         }
     }
 }

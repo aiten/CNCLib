@@ -35,7 +35,7 @@ namespace CNCLib.Logic.Manager
             double acc_corr   = 1.0615;
             double jerkFactor = 25;
 
-            result.StepsPerRotation        = param.MicroSteps * (uint) param.StepsPerRotation;
+            result.StepsPerRotation        = param.MicroSteps * (uint)param.StepsPerRotation;
             result.DistancePerRotationInMm = param.Teeth * param.ToothSizeInMm;
             if (Math.Abs(result.DistancePerRotationInMm) > double.Epsilon)
             {
@@ -58,11 +58,11 @@ namespace CNCLib.Logic.Manager
 
             result.EstimatedJerkSpeed = result.EstimatedMaxStepRate / jerkFactor;
 
-            result.MaxStepRate    = (uint) Math.Round(result.EstimatedMaxStepRate, 0);
-            result.Acc            = (ushort) Math.Round(result.EstimatedAcc,       0);
-            result.Dec            = (ushort) Math.Round(result.EstimatedDec,       0);
-            result.JerkSpeed      = (uint) Math.Round(result.EstimatedJerkSpeed,   0);
-            result.StepsPerMm1000 = (float) (result.StepsPerMm / 1000.0);
+            result.MaxStepRate    = (uint)Math.Round(result.EstimatedMaxStepRate, 0);
+            result.Acc            = (ushort)Math.Round(result.EstimatedAcc,       0);
+            result.Dec            = (ushort)Math.Round(result.EstimatedDec,       0);
+            result.JerkSpeed      = (uint)Math.Round(result.EstimatedJerkSpeed,   0);
+            result.StepsPerMm1000 = (float)(result.StepsPerMm / 1000.0);
 
             return await Task.FromResult(result);
         }

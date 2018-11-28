@@ -46,8 +46,8 @@ namespace CNCLib.Test.Logic
             var rep  = CreateMock<IDynItemController>();
             var ctrl = new LoadOptionsManager(rep);
 
-            rep.GetAll(typeof(LoadOptions)).
-                Returns(new[]
+            rep.GetAll(typeof(LoadOptions)).Returns(
+                new[]
                 {
                     new DynItem { ItemId = 1, Name = "Entry1" }
                 });

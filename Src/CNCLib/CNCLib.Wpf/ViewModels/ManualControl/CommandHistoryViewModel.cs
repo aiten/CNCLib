@@ -38,7 +38,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private ObservableCollection<SentCNCCommand> _commandHistoryCollection;
 
-        public ObservableCollection<SentCNCCommand> CommandHistoryCollection { get => _commandHistoryCollection; set => SetProperty(ref _commandHistoryCollection, value); }
+        public ObservableCollection<SentCNCCommand> CommandHistoryCollection
+        {
+            get => _commandHistoryCollection;
+            set => SetProperty(ref _commandHistoryCollection, value);
+        }
 
         #endregion
 
@@ -57,12 +61,13 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             {
                 DateTime sentTime = rc.SentTime ?? DateTime.Today;
 
-                results.Add(new SentCNCCommand
-                {
-                    CommandDate = sentTime,
-                    CommandText = rc.CommandText,
-                    Result      = rc.ResultText
-                });
+                results.Add(
+                    new SentCNCCommand
+                    {
+                        CommandDate = sentTime,
+                        CommandText = rc.CommandText,
+                        Result      = rc.ResultText
+                    });
             }
 
             CommandHistoryCollection = results;

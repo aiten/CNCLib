@@ -41,7 +41,7 @@ namespace CNCLib.Wpf.Helpers
                 if (joystick != null && joystick.Any())
                 {
                     int id = joystick.First().ItemId;
-                    return new Tuple<Joystick, int>((Joystick) await controller.Create(id), id);
+                    return new Tuple<Joystick, int>((Joystick)await controller.Create(id), id);
                 }
             }
 
@@ -79,7 +79,7 @@ namespace CNCLib.Wpf.Helpers
             }
             else
             {
-                string btn    = trim.Substring(0, idx + 1);
+                string btn             = trim.Substring(0, idx + 1);
                 var    machineCommands = Global.Instance.Machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
 
                 uint max = 0;

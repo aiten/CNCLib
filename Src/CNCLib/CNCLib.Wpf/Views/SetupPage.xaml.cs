@@ -67,7 +67,7 @@ namespace CNCLib.Wpf.Views
             {
                 vm.ShowEeprom = () =>
                 {
-                    var dlg   = new EepromView();
+                    var dlg       = new EepromView();
                     var viewModel = dlg.DataContext as EepromViewModel;
                     dlg.ShowDialog();
                 };
@@ -77,7 +77,7 @@ namespace CNCLib.Wpf.Views
             {
                 vm.EditJoystick = () =>
                 {
-                    var dlg   = new JoystickView();
+                    var dlg       = new JoystickView();
                     var viewModel = dlg.DataContext as JoystickView;
                     dlg.ShowDialog();
                 };

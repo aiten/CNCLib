@@ -47,7 +47,7 @@ namespace CNCLib.Wpf.Sql.Start
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
-            GlobalDiagnosticsContext.Set("logDir", $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Sql/logs");
+            GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Sql/logs");
             GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
 
 #if DEBUG
@@ -72,15 +72,17 @@ namespace CNCLib.Wpf.Sql.Start
             Dependency.Container.RegisterSerialCommunication();
             Dependency.Container.RegisterServiceAsLogic();
             Dependency.Container.RegisterCNCLibWpf();
-            Dependency.Container.RegisterMapper(new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<LogicAutoMapperProfile>();
-                cfg.AddProfile<WpfAutoMapperProfile>();
-                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-            }));
+            Dependency.Container.RegisterMapper(
+                new MapperConfiguration(
+                    cfg =>
+                    {
+                        cfg.AddProfile<LogicAutoMapperProfile>();
+                        cfg.AddProfile<WpfAutoMapperProfile>();
+                        cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                    }));
 
             var userContext = new CNCLibUserContext();
-            Dependency.Container.RegisterInstance((ICNCLibUserContext) userContext);
+            Dependency.Container.RegisterInstance((ICNCLibUserContext)userContext);
 
             //	        string sqlConnectString = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
             string sqlConnectString = null;

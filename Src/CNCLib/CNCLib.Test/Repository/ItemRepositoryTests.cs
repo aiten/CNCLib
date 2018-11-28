@@ -109,16 +109,19 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task AddUpdateDeleteWithItemPropertiesTest()
         {
-            await AddUpdateDelete(() => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")), (entity) =>
-            {
-                entity.ClassName = "DummyClassUpdate";
-                entity.ItemProperties.Remove(entity.ItemProperties.First());
-                entity.ItemProperties.Add(new ItemProperty()
+            await AddUpdateDelete(
+                () => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")),
+                (entity) =>
                 {
-                    Name  = @"NewItemProperty",
-                    Value = @"Hallo"
+                    entity.ClassName = "DummyClassUpdate";
+                    entity.ItemProperties.Remove(entity.ItemProperties.First());
+                    entity.ItemProperties.Add(
+                        new ItemProperty()
+                        {
+                            Name  = @"NewItemProperty",
+                            Value = @"Hallo"
+                        });
                 });
-            });
         }
 
         [Fact]

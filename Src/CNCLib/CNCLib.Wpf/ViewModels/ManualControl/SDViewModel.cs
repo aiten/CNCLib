@@ -42,11 +42,19 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private string _fileName = @"%USERPROFILE%\Documents\test.GCode";
 
-        public string FileName { get => _fileName; set => SetProperty(ref _fileName, value); }
+        public string FileName
+        {
+            get => _fileName;
+            set => SetProperty(ref _fileName, value);
+        }
 
         private string _SDFileName = @"auto0.g";
 
-        public string SDFileName { get => _SDFileName; set => SetProperty(ref _SDFileName, value); }
+        public string SDFileName
+        {
+            get => _SDFileName;
+            set => SetProperty(ref _SDFileName, value);
+        }
 
         #endregion
 
@@ -64,11 +72,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendM24File(string filename)
         {
-            RunAndUpdate(() =>
-            {
-                Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m23 " + filename));
-                Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m24"));
-            });
+            RunAndUpdate(
+                () =>
+                {
+                    Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m23 " + filename));
+                    Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m24"));
+                });
         }
 
         public void SendM28File()
@@ -78,20 +87,21 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendM28File(string filename, string sDFileName)
         {
-            RunInNewTask(() =>
-            {
-                var lines = new List<string>();
-                using (var sr = new StreamReader(filename))
+            RunInNewTask(
+                () =>
                 {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
+                    var lines = new List<string>();
+                    using (var sr = new StreamReader(filename))
                     {
-                        lines.Add(MachineGCodeHelper.PrepareCommand(line));
+                        string line;
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            lines.Add(MachineGCodeHelper.PrepareCommand(line));
+                        }
                     }
-                }
 
-                SendM28(sDFileName, lines.ToArray()).ConfigureAwait(false).GetAwaiter().GetResult();
-            });
+                    SendM28(sDFileName, lines.ToArray()).ConfigureAwait(false).GetAwaiter().GetResult();
+                });
         }
 
         public void SendM28PreView()
@@ -101,11 +111,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendM28PreView(string sDFileName)
         {
-            RunInNewTask(() =>
-            {
-                var lines = Global.Instance.Commands.ToStringList();
-                SendM28(sDFileName, lines.ToArray()).ConfigureAwait(false).GetAwaiter().GetResult();
-            });
+            RunInNewTask(
+                () =>
+                {
+                    var lines = Global.Instance.Commands.ToStringList();
+                    SendM28(sDFileName, lines.ToArray()).ConfigureAwait(false).GetAwaiter().GetResult();
+                });
         }
 
         private async Task SendM28(string sDFileName, string[] lines)
@@ -142,52 +153,53 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void AddToFile()
         {
-            RunAndUpdate(async () =>
-            {
-                string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"), 10000);
-                if (!string.IsNullOrEmpty(message))
+            RunAndUpdate(
+                async () =>
                 {
-                    message = message.Replace("ok", "");
-                    message = message.Replace(" ",  "");
-                    string[] positions = message.Split(':');
-
-                    using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables(FileName), true))
+                    string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"), 10000);
+                    if (!string.IsNullOrEmpty(message))
                     {
-                        sw.Write("g1");
-                        if (positions.Length >= 1)
-                        {
-                            sw.Write("X" + positions[0]);
-                        }
+                        message = message.Replace("ok", "");
+                        message = message.Replace(" ",  "");
+                        string[] positions = message.Split(':');
 
-                        if (positions.Length >= 2)
+                        using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables(FileName), true))
                         {
-                            sw.Write("Y" + positions[1]);
-                        }
+                            sw.Write("g1");
+                            if (positions.Length >= 1)
+                            {
+                                sw.Write("X" + positions[0]);
+                            }
 
-                        if (positions.Length >= 3)
-                        {
-                            sw.Write("Z" + positions[2]);
-                        }
+                            if (positions.Length >= 2)
+                            {
+                                sw.Write("Y" + positions[1]);
+                            }
 
-                        if (positions.Length >= 4)
-                        {
-                            sw.Write("A" + positions[3]);
-                        }
+                            if (positions.Length >= 3)
+                            {
+                                sw.Write("Z" + positions[2]);
+                            }
 
-                        if (positions.Length >= 5)
-                        {
-                            sw.Write("B" + positions[4]);
-                        }
+                            if (positions.Length >= 4)
+                            {
+                                sw.Write("A" + positions[3]);
+                            }
 
-                        if (positions.Length >= 6)
-                        {
-                            sw.Write("C" + positions[5]);
-                        }
+                            if (positions.Length >= 5)
+                            {
+                                sw.Write("B" + positions[4]);
+                            }
 
-                        sw.WriteLine();
+                            if (positions.Length >= 6)
+                            {
+                                sw.Write("C" + positions[5]);
+                            }
+
+                            sw.WriteLine();
+                        }
                     }
-                }
-            });
+                });
         }
 
         public bool CanSendSDCommand()
@@ -227,14 +239,16 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         public ICommand AddToFileCommand =>
             new DelegateCommand(AddToFile, () => CanSendGCode() && CanSendFileNameCommand());
 
-        public ICommand BrowseForSDFileCommand => new DelegateCommand(() =>
-        {
-            string filename = BrowseFileNameFunc?.Invoke(FileName, false);
-            if (filename != null)
+        public ICommand BrowseForSDFileCommand => new DelegateCommand(
+            () =>
             {
-                FileName = filename;
-            }
-        }, CanSend);
+                string filename = BrowseFileNameFunc?.Invoke(FileName, false);
+                if (filename != null)
+                {
+                    FileName = filename;
+                }
+            },
+            CanSend);
 
         #endregion
     }

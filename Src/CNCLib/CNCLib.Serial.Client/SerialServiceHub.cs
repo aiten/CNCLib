@@ -50,11 +50,11 @@ namespace CNCLib.Serial.Client
         public async Task<HubConnection> Start()
         {
             _connection = new HubConnectionBuilder().WithUrl(WebServerUrl)
+
 //            .WithConsoleLogger()
 //            .WithMessagePackProtocol()
                 //           .WithTransport(TransportType.All)
-                .
-                Build();
+                .Build();
 
             await _connection.StartAsync();
             _cts = new CancellationTokenSource();

@@ -154,9 +154,11 @@ namespace CNCLib.Test.Repository
             {
                 var entityToAdd = new User() { UserName = existingUserName };
                 ctx.Repository.Add(entityToAdd);
+
                 //[SkippableFact(typeof(DbUpdateException))]
 
                 Func<Task> act = () => ctx.UnitOfWork.SaveChangesAsync();
+
                 //assert
 
                 ;

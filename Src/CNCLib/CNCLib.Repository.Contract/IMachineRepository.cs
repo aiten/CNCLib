@@ -27,7 +27,7 @@ namespace CNCLib.Repository.Contract
 {
     public interface IMachineRepository : ICRUDRepository<Machine, int>
     {
-        Task<IEnumerable<MachineCommand>>     GetMachineCommands(int     machineId);
+        Task<IEnumerable<MachineCommand>> GetMachineCommands(int         machineId);
         Task<IEnumerable<MachineInitCommand>> GetMachineInitCommands(int machineId);
     }
 }

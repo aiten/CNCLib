@@ -52,12 +52,13 @@ namespace CNCLib.GCode.Load
 
         protected void AddCamBamPoint(Point3D pt)
         {
-            _pline.Pts.Add(new CamBam.CamBam.PLinePoints
-            {
-                X = pt.X,
-                Y = pt.Y,
-                Z = pt.Z
-            });
+            _pline.Pts.Add(
+                new CamBam.CamBam.PLinePoints
+                {
+                    X = pt.X,
+                    Y = pt.Y,
+                    Z = pt.Z
+                });
         }
 
         protected void AddCamBamPLine()
@@ -190,7 +191,7 @@ namespace CNCLib.GCode.Load
 
         protected decimal ToGCode(double val)
         {
-            return (decimal) Math.Round(val, 2);
+            return (decimal)Math.Round(val, 2);
         }
 
         protected void AddComment(string propertyName)
@@ -210,7 +211,7 @@ namespace CNCLib.GCode.Load
 
         protected void AddComment(string propertyName, decimal? propertyValue)
         {
-            AddComment(propertyName, propertyValue.HasValue ? propertyValue.Value.ToString(CultureInfo.InvariantCulture) : "");
+            AddComment(propertyName, propertyValue.HasValue?propertyValue.Value.ToString(CultureInfo.InvariantCulture):"");
         }
 
         protected void AddComment(string propertyName, double propertyValue)

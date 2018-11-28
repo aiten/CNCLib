@@ -51,7 +51,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public int PendingCommandCount { get; set; }
 
-        public bool Pause { get => Global.Instance.Com.Current.Pause; set => Global.Instance.Com.Current.Pause = value; }
+        public bool Pause
+        {
+            get => Global.Instance.Com.Current.Pause;
+            set => Global.Instance.Com.Current.Pause = value;
+        }
 
         private bool _updateAfterSendNext = false;
 
@@ -64,7 +68,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             if (_updateAfterSendNext)
             {
                 _updateAfterSendNext = false;
-                ((ManualControlViewModel) Vm).CommandHistory.RefreshAfterCommand();
+                ((ManualControlViewModel)Vm).CommandHistory.RefreshAfterCommand();
             }
         }
 
@@ -105,31 +109,34 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendAbort()
         {
-            RunAndUpdate(() =>
-            {
-                Global.Instance.Com.Current.AbortCommands();
-                Global.Instance.Com.Current.ResumeAfterAbort();
-                Global.Instance.Com.Current.QueueCommand("!");
-            });
+            RunAndUpdate(
+                () =>
+                {
+                    Global.Instance.Com.Current.AbortCommands();
+                    Global.Instance.Com.Current.ResumeAfterAbort();
+                    Global.Instance.Com.Current.QueueCommand("!");
+                });
         }
 
         public void SendResurrect()
         {
-            RunAndUpdate(() =>
-            {
-                Global.Instance.Com.Current.AbortCommands();
-                Global.Instance.Com.Current.ResumeAfterAbort();
-                Global.Instance.Com.Current.QueueCommand("!!!");
-            });
+            RunAndUpdate(
+                () =>
+                {
+                    Global.Instance.Com.Current.AbortCommands();
+                    Global.Instance.Com.Current.ResumeAfterAbort();
+                    Global.Instance.Com.Current.QueueCommand("!!!");
+                });
         }
 
         public void ClearQueue()
         {
-            RunAndUpdate(() =>
-            {
-                Global.Instance.Com.Current.AbortCommands();
-                Global.Instance.Com.Current.ResumeAfterAbort();
-            });
+            RunAndUpdate(
+                () =>
+                {
+                    Global.Instance.Com.Current.AbortCommands();
+                    Global.Instance.Com.Current.ResumeAfterAbort();
+                });
         }
 
         public void SendM03SpindleOn()
@@ -215,51 +222,52 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void ReadPosition()
         {
-            RunAndUpdate(async () =>
-            {
-                string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("?"), 10 * 1000);
-
-                if (!string.IsNullOrEmpty(message))
+            RunAndUpdate(
+                async () =>
                 {
-                    if (message.Contains("MPos:"))
+                    string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("?"), 10 * 1000);
+
+                    if (!string.IsNullOrEmpty(message))
                     {
-                        // new or grbl format
-                        message = message.Replace("ok", "").Replace("<", "").Replace(">", "").Trim();
-
-                        string[] tags = message.Split('|');
-
-                        var mPos = TryConvert(tags, "MPos:");
-                        if (mPos != null)
+                        if (message.Contains("MPos:"))
                         {
+                            // new or grbl format
+                            message = message.Replace("ok", "").Replace("<", "").Replace(">", "").Trim();
+
+                            string[] tags = message.Split('|');
+
+                            var mPos = TryConvert(tags, "MPos:");
+                            if (mPos != null)
+                            {
+                                SetPositions(mPos, 0);
+
+                                var wco = TryConvert(tags, "WCO:");
+                                if (wco != null)
+                                {
+                                    for (int i = 0; i < wco.Length; i++)
+                                    {
+                                        mPos[i] -= wco[i];
+                                    }
+                                }
+
+                                SetPositions(mPos, 1);
+                            }
+                        }
+                        else
+                        {
+                            decimal[] mPos = Convert(message, "dummy");
                             SetPositions(mPos, 0);
 
-                            var wco = TryConvert(tags, "WCO:");
-                            if (wco != null)
+                            message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"), 10 * 1000);
+
+                            if (!string.IsNullOrEmpty(message))
                             {
-                                for (int i = 0; i < wco.Length; i++)
-                                {
-                                    mPos[i] -= wco[i];
-                                }
+                                decimal[] rPos = Convert(message, "dummy");
+                                SetPositions(rPos, 1);
                             }
-
-                            SetPositions(mPos, 1);
                         }
                     }
-                    else
-                    {
-                        decimal[] mPos = Convert(message, "dummy");
-                        SetPositions(mPos, 0);
-
-                        message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"), 10 * 1000);
-
-                        if (!string.IsNullOrEmpty(message))
-                        {
-                            decimal[] rPos = Convert(message, "dummy");
-                            SetPositions(rPos, 1);
-                        }
-                    }
-                }
-            });
+                });
         }
 
         public void WritePending()

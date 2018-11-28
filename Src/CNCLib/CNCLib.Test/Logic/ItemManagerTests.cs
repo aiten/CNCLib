@@ -72,11 +72,10 @@ namespace CNCLib.Test.Logic
 
             all.Should().HaveCount(2);
             new
-                {
-                    ItemId = 1,
-                    Name   = "Test1"
-                }.Should().
-                BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
+            {
+                ItemId = 1,
+                Name   = "Test1"
+            }.Should().BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
         }
 
         [Fact]
@@ -92,11 +91,10 @@ namespace CNCLib.Test.Logic
             var all = await ctrl.Get(1);
 
             new
-                {
-                    ItemId = 1,
-                    Name   = "Test1"
-                }.Should().
-                BeEquivalentTo(all, options => options.ExcludingMissingMembers());
+            {
+                ItemId = 1,
+                Name   = "Test1"
+            }.Should().BeEquivalentTo(all, options => options.ExcludingMissingMembers());
         }
 
         [Fact]

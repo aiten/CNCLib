@@ -61,7 +61,11 @@ namespace CNCLib.Wpf.ViewModels
 
         Machine _currentMachine = new Machine();
 
-        public Machine Machine { get => _currentMachine; set { SetProperty(() => _currentMachine == value, () => _currentMachine = value); } }
+        public Machine Machine
+        {
+            get => _currentMachine;
+            set { SetProperty(() => _currentMachine == value, () => _currentMachine = value); }
+        }
 
         public ObservableCollection<MachineCommand> MachineCommands => _currentMachine.MachineCommands;
 
@@ -185,7 +189,7 @@ namespace CNCLib.Wpf.ViewModels
                         Machine.Rotate    = eeprom.CanRotate;
                         Machine.Coolant   = eeprom.HasCoolant;
                         Machine.Laser     = eeprom.IsLaser;
-                        Machine.Axis      = (int) eeprom.UseAxis;
+                        Machine.Axis      = (int)eeprom.UseAxis;
 
                         Machine.SizeX = eeprom.GetAxis(0).Size / 1000m;
                         Machine.SizeY = eeprom.GetAxis(1).Size / 1000m;

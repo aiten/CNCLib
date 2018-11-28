@@ -47,7 +47,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
                 var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
 
                 Assembly ass     = Assembly.GetExecutingAssembly();
-                string assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+                string   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
                 info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
                 info.FileContent = File.ReadAllBytes(info.FileName);

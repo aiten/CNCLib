@@ -42,7 +42,7 @@ namespace CNCLib.Logic.Manager
             var list = new List<LoadOptions>();
             foreach (DynItem item in await _dynItemController.GetAll(typeof(LoadOptions)))
             {
-                var li = (LoadOptions) await _dynItemController.Create(item.ItemId);
+                var li = (LoadOptions)await _dynItemController.Create(item.ItemId);
                 li.Id = item.ItemId;
                 list.Add(li);
             }
@@ -55,9 +55,9 @@ namespace CNCLib.Logic.Manager
             object obj = await _dynItemController.Create(id);
             if (obj != null)
             {
-                var li = (LoadOptions) obj;
+                var li = (LoadOptions)obj;
                 li.Id = id;
-                return (LoadOptions) obj;
+                return (LoadOptions)obj;
             }
 
             return null;
@@ -65,7 +65,7 @@ namespace CNCLib.Logic.Manager
 
         public async Task Delete(LoadOptions m)
         {
-              await _dynItemController.Delete(m.Id);
+            await _dynItemController.Delete(m.Id);
         }
 
         public async Task Delete(int key)

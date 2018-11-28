@@ -353,7 +353,7 @@ namespace CNCLib.Test.Logic
 
             var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
-            repC.Get("Environment", "DefaultMachineId").Returns((Configuration) null);
+            repC.Get("Environment", "DefaultMachineId").Returns((Configuration)null);
 
             (await ctrl.GetDefaultMachine()).Should().Be(-1);
         }

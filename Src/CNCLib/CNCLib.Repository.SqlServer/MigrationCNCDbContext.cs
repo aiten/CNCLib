@@ -17,7 +17,9 @@
 */
 
 using System.Linq;
+
 using CNCLib.Repository.Context;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository.SqlServer

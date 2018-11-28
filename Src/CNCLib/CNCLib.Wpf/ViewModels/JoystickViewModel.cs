@@ -53,7 +53,11 @@ namespace CNCLib.Wpf.ViewModels
         Models.Joystick _currentJoystick = new Models.Joystick();
         int             _id              = -1;
 
-        public Models.Joystick Joystick { get => _currentJoystick; set { SetProperty(() => _currentJoystick == value, () => _currentJoystick = value); } }
+        public Models.Joystick Joystick
+        {
+            get => _currentJoystick;
+            set { SetProperty(() => _currentJoystick == value, () => _currentJoystick = value); }
+        }
 
         #endregion
 

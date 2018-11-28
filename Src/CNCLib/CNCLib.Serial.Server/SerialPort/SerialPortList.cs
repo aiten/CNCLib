@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
@@ -65,11 +66,12 @@ namespace CNCLib.Serial.Server.SerialPort
                 portNames = new[] { "com0", "com1", "com3", "com4", "com5", "com6", "com10" };
             }
 
-            return portNames.Select((port, index) => new SerialPortWrapper()
-            {
-                Id       = GetIdFromPortName(port, index),
-                PortName = port
-            });
+            return portNames.Select(
+                (port, index) => new SerialPortWrapper()
+                {
+                    Id       = GetIdFromPortName(port, index),
+                    PortName = port
+                });
         }
 
         public static void Refresh()

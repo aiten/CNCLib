@@ -42,8 +42,8 @@ namespace CNCLib.Test.Repository
         protected override GetTestDbContext<CNCLibContext, Configuration, ConfigurationPrimary, IConfigurationRepository> CreateTestDbContext()
         {
             var context = new CNCLibContext();
-            var uow = new UnitOfWork<CNCLibContext>(context);
-            var rep = new ConfigurationRepository(context, UserContext);
+            var uow     = new UnitOfWork<CNCLibContext>(context);
+            var rep     = new ConfigurationRepository(context, UserContext);
             return new GetTestDbContext<CNCLibContext, Configuration, ConfigurationPrimary, IConfigurationRepository>(context, uow, rep);
         }
 
@@ -109,41 +109,46 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task AddUpdateDeleteBulkTest()
         {
-            await AddUpdateDeleteBulk(() => new[]
-            {
-                CreateConfiguration(@"AddUpdateDeleteBulk", "Test1"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test2"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test3")
-            }, (entities) =>
-            {
-                int i = 0;
-                foreach (var entity in entities)
+            await AddUpdateDeleteBulk(
+                () => new[]
                 {
-                    entity.Value = $"DummyNameValue{i++}";
-                }
-            });
+                    CreateConfiguration(@"AddUpdateDeleteBulk", "Test1"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test2"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test3")
+                },
+                (entities) =>
+                {
+                    int i = 0;
+                    foreach (var entity in entities)
+                    {
+                        entity.Value = $"DummyNameValue{i++}";
+                    }
+                });
         }
 
         [Fact]
         public async Task AddRollbackTest()
         {
-            await AddRollBack(() => new Configuration()
-            {
-                Group = "TestGroup",
-                Name  = "TestName",
-                Type  = "string",
-                Value = "TestValue"
-            });
+            await AddRollBack(
+                () => new Configuration()
+                {
+                    Group = "TestGroup",
+                    Name  = "TestName",
+                    Type  = "string",
+                    Value = "TestValue"
+                });
         }
 
         [Fact]
         public async Task StoreTest()
         {
-            await Store(() => new Configuration()
-            {
-                Group = "TestGroup",
-                Name  = "TestName",
-                Type  = "string",
-                Value = "TestValue"
-            }, (entity) => entity.Value = "testValueModified");
+            await Store(
+                () => new Configuration()
+                {
+                    Group = "TestGroup",
+                    Name  = "TestName",
+                    Type  = "string",
+                    Value = "TestValue"
+                },
+                (entity) => entity.Value = "testValueModified");
         }
 
         private static Configuration CreateConfiguration(string group, string name)

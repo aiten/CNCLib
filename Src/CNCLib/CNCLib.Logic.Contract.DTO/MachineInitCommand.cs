@@ -25,6 +25,7 @@ namespace CNCLib.Logic.Contract.DTO
         public string CommandString        { get; set; }
 
         public int MachineId { get; set; }
+
         // public virtual Machine Machine { get; set; }
     }
 }

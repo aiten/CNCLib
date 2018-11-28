@@ -48,7 +48,11 @@ namespace CNCLib.Wpf.ViewModels
 
         private Eeprom _eeprom = new Eeprom();
 
-        public Eeprom EepromValue { get => _eeprom; set { SetProperty(() => _eeprom == value, () => _eeprom = value); } }
+        public Eeprom EepromValue
+        {
+            get => _eeprom;
+            set { SetProperty(() => _eeprom == value, () => _eeprom = value); }
+        }
 
         #endregion
 
