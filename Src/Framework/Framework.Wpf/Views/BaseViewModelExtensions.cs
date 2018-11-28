@@ -75,24 +75,27 @@ namespace Framework.Wpf.Views
                 vm.DefaultInitForBaseViewModel();
 
                 var closeAction = new Action(view.Close);
-                var dialogOkAction = new Action(() =>
-                {
-                    view.DialogResult = true;
-                    view.Close();
-                });
-                var dialogCancelAction = new Action(() =>
-                {
-                    view.DialogResult = false;
-                    view.Close();
-                });
-                var loadedEvent = new RoutedEventHandler(async (v, e) =>
-                {
-                    var vmm = view.DataContext as BaseViewModel;
-                    if (vmm != null)
+                var dialogOkAction = new Action(
+                    () =>
                     {
-                        await vmm.Loaded();
-                    }
-                });
+                        view.DialogResult = true;
+                        view.Close();
+                    });
+                var dialogCancelAction = new Action(
+                    () =>
+                    {
+                        view.DialogResult = false;
+                        view.Close();
+                    });
+                var loadedEvent = new RoutedEventHandler(
+                    async (v, e) =>
+                    {
+                        var vmm = view.DataContext as BaseViewModel;
+                        if (vmm != null)
+                        {
+                            await vmm.Loaded();
+                        }
+                    });
 
                 RoutedEventHandler unloadedEvent = null;
 

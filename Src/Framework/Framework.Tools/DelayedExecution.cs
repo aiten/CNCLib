@@ -37,20 +37,24 @@ namespace Framework.Tools
                 set();
                 execute();
 
-                _timer = new Timer((x) =>
-                {
-                    if (_needExecute)
+                _timer = new Timer(
+                    (x) =>
                     {
-                        // "Execute" and start timer again
-                        _needExecute = false;
-                        execute();
-                        _timer.Change(delayedMs, Timeout.Infinite);
-                    }
-                    else
-                    {
-                        _pendingTimer = false;
-                    }
-                }, this, delayedMs, Timeout.Infinite);
+                        if (_needExecute)
+                        {
+                            // "Execute" and start timer again
+                            _needExecute = false;
+                            execute();
+                            _timer.Change(delayedMs, Timeout.Infinite);
+                        }
+                        else
+                        {
+                            _pendingTimer = false;
+                        }
+                    },
+                    this,
+                    delayedMs,
+                    Timeout.Infinite);
             }
             else if (_pendingTimer)
             {

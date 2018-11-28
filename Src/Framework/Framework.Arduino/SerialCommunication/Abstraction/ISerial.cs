@@ -38,8 +38,8 @@ namespace Framework.Arduino.SerialCommunication.Abstraction
         Task<IEnumerable<SerialCommand>> QueueCommandsAsync(IEnumerable<string> commands);
         Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string>  commands, int maxMilliseconds);
 
-        Task<string> WaitUntilResponseAsync(int   maxMilliseconds);
-        Task<bool>   WaitUntilQueueEmptyAsync(int maxMilliseconds);
+        Task<string> WaitUntilResponseAsync(int maxMilliseconds);
+        Task<bool> WaitUntilQueueEmptyAsync(int maxMilliseconds);
 
         #endregion;
 
@@ -99,7 +99,7 @@ namespace Framework.Arduino.SerialCommunication.Abstraction
 
         SerialCommand       LastCommand        { get; }
         List<SerialCommand> CommandHistoryCopy { get; }
-        void                ClearCommandHistory();
+        void ClearCommandHistory();
 
         #endregion
     }
