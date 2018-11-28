@@ -20,20 +20,14 @@ namespace Framework.Logging
 {
     using System;
 
-    using Abstraction;
-
     using NLog;
 
-    public sealed class Logger<TType> : Logger, ILogger<TType>
-    {
-        public Logger() : base(typeof(TType))
-        {
-        }
-    }
-
+    /// <summary>
+    /// Implementation class for ILogger with NLog.
+    /// </summary>
     public class Logger : Abstraction.ILogger
     {
-        private readonly global::NLog.Logger _logger;
+        private readonly NLog.Logger _logger;
 
         public Logger(Type type)
         {

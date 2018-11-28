@@ -16,8 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Tools.Abstraction;
-
 namespace Framework.Tools
 {
     using System;

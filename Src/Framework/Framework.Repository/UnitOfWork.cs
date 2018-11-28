@@ -25,7 +25,8 @@ namespace Framework.Repository
 
     using Microsoft.EntityFrameworkCore;
 
-    public class UnitOfWork<T> : IUnitOfWork where T : DbContext
+    public class UnitOfWork<T> : IUnitOfWork
+        where T : DbContext
     {
         public T Context { get; private set; }
 

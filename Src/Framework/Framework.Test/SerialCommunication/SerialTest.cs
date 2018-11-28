@@ -30,7 +30,6 @@ namespace Framework.Test.SerialCommunication
     using Framework.Arduino.SerialCommunication;
     using Framework.Arduino.SerialCommunication.Abstraction;
     using Framework.Dependency;
-
     using Framework.Logging.Abstraction;
 
     using Logging;
@@ -63,37 +62,35 @@ namespace Framework.Test.SerialCommunication
             _resultIdx = 0;
             _sendReply = false;
 
-            baseStream.WriteAsync(Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
-                ReturnsForAnyArgs(async x =>
-                {
-                    _sendReply = true;
-                    var cancellationToken = (CancellationToken) x[3];
-                    await Task.Delay(0, cancellationToken);
-                });
+            baseStream.WriteAsync(Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).ReturnsForAnyArgs(async x =>
+            {
+                _sendReply = true;
+                var cancellationToken = (CancellationToken) x[3];
+                await Task.Delay(0, cancellationToken);
+            });
 
-            baseStream.ReadAsync(Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).
-                ReturnsForAnyArgs(async x =>
+            baseStream.ReadAsync(Arg.Any<byte[]>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<System.Threading.CancellationToken>()).ReturnsForAnyArgs(async x =>
+            {
+                var cancellationToken = (CancellationToken) x[3];
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    var cancellationToken = (CancellationToken) x[3];
-                    while (!cancellationToken.IsCancellationRequested)
+                    if (_sendReply)
                     {
-                        if (_sendReply)
+                        _sendReply = false;
+                        byte[] encodedStr = encoding.GetBytes(responseStrings[_resultIdx++]);
+                        for (int i = 0; i < encodedStr.Length; i++)
                         {
-                            _sendReply = false;
-                            byte[] encodedStr = encoding.GetBytes(responseStrings[_resultIdx++]);
-                            for (int i = 0; i < encodedStr.Length; i++)
-                            {
-                                ((byte[]) x[0])[i] = encodedStr[i];
-                            }
-
-                            return encodedStr.Length;
+                            ((byte[]) x[0])[i] = encodedStr[i];
                         }
 
-                        await Task.Delay(1, cancellationToken);
+                        return encodedStr.Length;
                     }
 
-                    return 0;
-                });
+                    await Task.Delay(1, cancellationToken);
+                }
+
+                return 0;
+            });
 
             return serialPort;
         }

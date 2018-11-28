@@ -23,8 +23,9 @@ namespace Framework.Logic
     using System.Threading.Tasks;
 
     using Abstraction;
-    
+
     using AutoMapper;
+
     using Repository.Abstraction;
 
     public abstract class GetManager<T, TKey, TEntity> : ManagerBase, IGetManager<T, TKey> where T : class where TEntity : class

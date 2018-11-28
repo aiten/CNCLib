@@ -79,6 +79,7 @@ namespace Framework.Tools
                         {
                             return false;
                         }
+
                         // and if they do, compare each item...
                         // this assumes both collections have the same order
                         for (int i = 0; i < collectionItemsCount1; i++)

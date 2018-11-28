@@ -27,6 +27,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Framework.WebAPI.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Framework.Service.Abstraction;
+
+    using Microsoft.AspNetCore.Mvc;
+
     public class UriAndValue<TDto> where TDto : class
     {
         public string Uri { get; set; }
@@ -41,7 +50,7 @@ namespace Framework.WebAPI.Controllers
             return $"{controller.Request.Scheme}://{controller.Request.Host}{controller.Request.Path}{controller.Request.QueryString}";
         }
 
-        public static string GetCurrentUri(this Controller controller, string removeTraining)
+        public static string GetCurrentUri(this Controller controller, string removeTrailing)
         {
             if (controller.Request == null)
             {
@@ -107,7 +116,7 @@ namespace Framework.WebAPI.Controllers
 
             string uri     = controller.GetCurrentUri("/bulk");
             var    newUris = newIds.Select(id => uri + "/" + id);
-            var    results = newIds.Select((id, idx) => new UriAndValue<T>() { Uri = uri + "/" + id, Value = newObjects.ElementAt(idx) });
+            var    results = newIds.Select((id, idx) => new UriAndValue<T>() {Uri = uri + "/" + id, Value = newObjects.ElementAt(idx)});
             return controller.Ok(newUris);
         }
 

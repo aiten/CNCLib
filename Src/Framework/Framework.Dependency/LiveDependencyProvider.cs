@@ -1,5 +1,4 @@
-﻿////////////////////////////////////////////////////////
-/*
+﻿/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) 2013-2018 Herbert Aitenbichler

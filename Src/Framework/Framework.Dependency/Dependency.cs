@@ -20,7 +20,7 @@ namespace Framework.Dependency
 {
     using System;
 
-    using Framework.Dependency.Abstraction;
+    using Abstraction;
 
     /// <summary>
     /// Static class that gives access to the DependencyContainer of the module. 
@@ -29,6 +29,16 @@ namespace Framework.Dependency
     public static class Dependency
     {
         private static IDependencyProvider _provider;
+
+        /// <summary>
+        /// Test if container is initialized.
+        /// </summary>
+        public static bool IsInitialized => _provider != null;
+
+        /// <summary>
+        /// Returns the DependencyContainer that should be used to register and resolve dependencies.
+        /// </summary>
+        public static IDependencyContainer Container => _provider.Container;
 
         /// <summary>
         /// Initializes the class.
@@ -43,16 +53,6 @@ namespace Framework.Dependency
 
             _provider = provider;
         }
-
-        /// <summary>
-        /// Test if container is initialized.
-        /// </summary>
-        public static bool IsInitialized => _provider != null;
-
-        /// <summary>
-        /// Returns the DependencyContainer that should be used to register and resolve dependencies.
-        /// </summary>
-        public static IDependencyContainer Container => _provider.Container;
 
         /// <summary>
         /// Resolves a dependency by forwarding the call to the <see cref="Container"/>.
