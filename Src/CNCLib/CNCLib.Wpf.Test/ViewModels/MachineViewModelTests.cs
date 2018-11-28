@@ -34,27 +34,8 @@ using Xunit;
 
 namespace CNCLib.Tests.Wpf
 {
-    public class MachineViewModelTests
+    public class MachineViewModelTests : WpfUnitTestBase
     {
-        /*
-                [ClassInitialize]
-                public static void ClassInit(CRUDTestDbContext testContext)
-                {
-                }
-
-                [TestInitialize]
-                public void Init()
-                {
-                }
-        */
-/*
-		private FactoryType2Obj CreateMock()
-		{
-			var mockFactory = new FactoryType2Obj();
-			BaseViewModel.LogicFactory = mockFactory;
-			return mockFactory;
-        }
-*/
         private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
 //			var mockFactory = CreateMock();
@@ -73,7 +54,7 @@ namespace CNCLib.Tests.Wpf
             Machine machine = CreateMachine(1);
             rep.Get(1).Returns(machine);
 
-            var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep));
+            var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper);
             await mv.LoadMachine(1);
 
             mv.AddNewMachine.Should().Be(false);
@@ -118,7 +99,7 @@ namespace CNCLib.Tests.Wpf
             Machine machineDef = CreateMachine(0);
             rep.DefaultMachine().Returns(machineDef);
 
-            var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep));
+            var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper);
             mv.LoadMachine(-1);
 
             mv.AddNewMachine.Should().BeTrue();

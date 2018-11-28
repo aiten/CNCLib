@@ -22,6 +22,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
+using AutoMapper;
+
 using CNCLib.Service.Contract;
 using CNCLib.Wpf.Helpers;
 using CNCLib.Wpf.Models;
@@ -39,13 +41,15 @@ namespace CNCLib.Wpf.ViewModels
     {
         #region crt
 
-        public MachineViewModel(IFactory<IMachineService> machineService)
+        public MachineViewModel(IFactory<IMachineService> machineService, IMapper mapper)
         {
             _machineService = machineService ?? throw new ArgumentNullException();
+            _mapper = mapper ?? throw new ArgumentNullException();
             AddNewMachine   = false;
         }
 
         readonly IFactory<IMachineService> _machineService;
+        private readonly IMapper _mapper;
 
         #endregion
 
@@ -98,7 +102,7 @@ namespace CNCLib.Wpf.ViewModels
                 dto = await scope.Instance.Get(machineId);
             }
 
-            Machine = dto.Convert();
+            Machine = dto.Convert(_mapper);
 
             RaisePropertyChanged(nameof(Machine));
 
@@ -108,7 +112,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public async void SaveMachine()
         {
-            var m = _currentMachine.Convert();
+            var m = _currentMachine.Convert(_mapper);
 
             using (var scope = _machineService.Create())
             {
@@ -137,7 +141,7 @@ namespace CNCLib.Wpf.ViewModels
         {
             using (var scope = _machineService.Create())
             {
-                await scope.Instance.Delete(_currentMachine.Convert());
+                await scope.Instance.Delete(_currentMachine.Convert(_mapper));
             }
 
             CloseAction();

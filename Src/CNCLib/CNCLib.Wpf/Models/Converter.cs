@@ -26,26 +26,24 @@ namespace CNCLib.Wpf.Models
 {
     static class Converter
     {
-        public static MachineDto Convert(this Machine from)
+        public static MachineDto Convert(this Machine from, IMapper mapper)
         {
-            var map = Dependency.Resolve<IMapper>();
-            return map.Map<MachineDto>(from);
+            return mapper.Map<MachineDto>(from);
         }
 
-        public static Machine Convert(this MachineDto from)
+        public static Machine Convert(this MachineDto from, IMapper mapper)
         {
-            var map = Dependency.Resolve<IMapper>();
-            var to  = map.Map<Machine>(from);
+            var to  = mapper.Map<Machine>(from);
 
-            // AutoMapper do not map readonly observable collections
+            // AutoMapper do not mapper readonly observable collections
             foreach (var m in from.MachineCommands)
             {
-                to.MachineCommands.Add(map.Map<MachineCommand>(m));
+                to.MachineCommands.Add(mapper.Map<MachineCommand>(m));
             }
 
             foreach (var mi in from.MachineInitCommands)
             {
-                to.MachineInitCommands.Add(map.Map<MachineInitCommand>(mi));
+                to.MachineInitCommands.Add(mapper.Map<MachineInitCommand>(mi));
             }
 
             return to;
