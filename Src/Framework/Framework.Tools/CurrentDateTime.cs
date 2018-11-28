@@ -19,6 +19,7 @@
 namespace Framework.Tools
 {
     using System;
+
     using Abstraction;
 
     public class CurrentDateTime : ICurrentDateTime
