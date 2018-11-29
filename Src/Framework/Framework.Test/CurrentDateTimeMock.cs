@@ -16,30 +16,29 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Contract
+
+namespace Framework.Test
 {
     using System;
 
-    public class YearMonth
+    using Tools.Abstraction;
+
+    public class CurrentDateTimeMock : ICurrentDateTime
     {
-        public YearMonth()
+        public CurrentDateTimeMock(DateTime now)
         {
+            Now   = now;
+            ToDay = now.Date;
         }
 
-        public YearMonth(int year, int month)
+        public CurrentDateTimeMock()
         {
-            Year  = year;
-            Month = month;
+            Now   = DateTime.Now;
+            ToDay = Now.Date;
         }
 
-        public YearMonth(DateTime date)
-        {
-            Year  = date.Year;
-            Month = date.Month;
-        }
+        public DateTime Now { get; private set; }
 
-        public int Year { get; set; }
-
-        public int Month { get; set; }
+        public DateTime ToDay { get; private set; }
     }
 }

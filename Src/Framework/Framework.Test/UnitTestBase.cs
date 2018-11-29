@@ -17,6 +17,7 @@
 */
 
 using Framework.Test.Dependency;
+using Framework.Tools.Abstraction;
 
 namespace Framework.Test
 {
@@ -32,12 +33,21 @@ namespace Framework.Test
             lock (_lockObject)
             {
                 if (Framework.Dependency.Dependency.IsInitialized == false)
+                {
                     Framework.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
+                }
             }
         }
 
         protected virtual void InitializeDependencies()
         {
         }
+
+        private CurrentDateTimeMock _currentDateTime;
+
+        protected ICurrentDateTime CurrentDateTime => CurrentDateTimeX;
+
+        protected CurrentDateTimeMock CurrentDateTimeX => _currentDateTime ?? (_currentDateTime = new CurrentDateTimeMock());
+
     }
 }
