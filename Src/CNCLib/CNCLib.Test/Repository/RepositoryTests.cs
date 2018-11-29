@@ -25,23 +25,29 @@ using Framework.Repository.Abstraction;
 using Framework.Test.Repository;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace CNCLib.Test.Repository
 {
-    [TestClass]
-    public abstract class RepositoryTests<TDbContext, TEntity, TKey, TIRepository> : CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
+    [Collection("RepositoryTests")]
+    public abstract class RepositoryTests<TDbContext, TEntity, TKey, TIRepository> : CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository>
+        where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
-        public TestContext TestContext { get; set; }
-        static bool        _init = false;
+        static bool _init = false;
 
-        [ClassInitialize]
-        public static void ClassInitBase(TestContext testContext)
+        public RepositoryTests()
+        {
+            ClassInitBase();
+            InitializeDependencies();
+        }
+
+        public static void ClassInitBase()
         {
             if (_init == false)
             {
                 //drop and recreate the test Db every time the tests are run. 
- //               string dbDir     = testContext.TestDeploymentDir;
+                //               string dbDir     = testContext.TestDeploymentDir;
                 string dbDir     = System.IO.Path.GetTempPath();
                 string pathRoot  = System.IO.Path.GetPathRoot(dbDir);
                 var    driveInfo = new System.IO.DriveInfo(pathRoot);
@@ -59,16 +65,7 @@ namespace CNCLib.Test.Repository
             }
         }
 
-        protected override void InitializeDependencies()
-        {
-            base.InitializeDependencies();
-
-            Dependency.Container.RegisterType<IConfigurationRepository, ConfigurationRepository>();
-            Dependency.Container.RegisterType<IMachineRepository, MachineRepository>();
-            Dependency.Container.RegisterType<IItemRepository, ItemRepository>();
-            Dependency.Container.RegisterType<IUserRepository, UserRepository>();
-
-            Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
-        }
+        private   ICNCLibUserContext _userContext = new CNCLibUserContext();
+        protected ICNCLibUserContext UserContext => _userContext;
     }
 }

@@ -1,45 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E8405B39-EDAD-40C7-BF32-79553A130E34}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CNCLib.Wpf.Sql.Start</RootNamespace>
-    <AssemblyName>CNCLib.Wpf.Sql.Start</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(ProjectDir)..\SolutionItems\CNCLibStandard.targets" />
+   <PropertyGroup>
+	<TargetFramework>net471</TargetFramework>
+	<ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
+	<OutputType>WinExe</OutputType>
+	<StartupObject>CNCLib.Wpf.Sql.Start.App</StartupObject>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
-  </PropertyGroup>
+   
+   <ItemGroup>
+   
+    <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+    <Compile Update="Properties\Resources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Resources.resx" />
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+
+     <ApplicationDefinition Include="App.xaml" SubType="Designer" Generator="XamlIntelliSenseFileGenerator" />
+     <Compile Update="App.xaml.cs" DependentUpon="App.xaml" />
+  </ItemGroup>
+  
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -48,9 +29,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -59,169 +38,48 @@
     <Reference Include="netstandard" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\SolutionItems\CNCLibSolutionInfo.cs">
-      <Link>Properties\CNCLibSolutionInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\SolutionItems\CNCLibSolutionInfoVersion.cs">
-      <Link>Properties\CNCLibSolutionInfoVersion.cs</Link>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj">
-      <Project>{77f5a48d-e908-4a95-a09e-771e8be8817b}</Project>
-      <Name>Framework.Arduino</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Dependency\Framework.Dependency.csproj">
-      <Project>{992eb691-dfe9-4b45-88f7-12d59a79fd03}</Project>
-      <Name>Framework.Dependency</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Drawing\Framework.Drawing.csproj">
-      <Project>{e30bf689-6836-4464-8221-f0fef41c09a9}</Project>
-      <Name>Framework.Drawing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Logging\Framework.Logging.csproj">
-      <Project>{d1dc4bbd-4550-4c53-88e7-2aba7c396f80}</Project>
-      <Name>Framework.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Mapper\Framework.Mapper.csproj">
-      <Project>{59e695c4-de46-456a-8eb1-bcde976938cd}</Project>
-      <Name>Framework.Mapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Repository\Framework.Repository.csproj">
-      <Project>{e768f2ed-c63d-401e-a090-1c0465a84df5}</Project>
-      <Name>Framework.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj">
-      <Project>{081814da-adc7-4b65-ae16-856c1b3d3ce8}</Project>
-      <Name>Framework.Logic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Service.Abstraction\Framework.Service.Abstraction.csproj">
-      <Project>{297af6be-0709-436f-a2e4-508481b2705b}</Project>
-      <Name>Framework.Service.Abstraction</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">
-      <Project>{580e882d-3267-43f2-8a73-6737cac731c2}</Project>
-      <Name>Framework.Tools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Wpf\Framework.Wpf.csproj">
-      <Project>{8568383e-054d-4882-8d6a-b956684cfaae}</Project>
-      <Name>Framework.Wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.GCode.GUI\CNCLib.GCode.GUI.csproj">
-      <Project>{55108499-fac2-4f19-b88e-9e240cccbd60}</Project>
-      <Name>CNCLib.GCode.GUI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Client\CNCLib.Logic.Client.csproj">
-      <Project>{d7277bf7-35e8-47c7-8e4a-448e2224f559}</Project>
-      <Name>CNCLib.Logic.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj">
-      <Project>{53fdf483-4a15-4069-8b21-e553d58ba742}</Project>
-      <Name>CNCLib.Logic.Contract.DTO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contract\CNCLib.Logic.Contract.csproj">
-      <Project>{08d4c722-ad44-4ba4-bff6-d5f00b2be561}</Project>
-      <Name>CNCLib.Logic.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic\CNCLib.Logic.csproj">
-      <Project>{36b9838b-493f-4bac-a8d3-35298c4ffdc7}</Project>
-      <Name>CNCLib.Logic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Repository.Contract\CNCLib.Repository.Contract.csproj">
-      <Project>{0ecc8284-505b-43cc-9df9-ac5d5eef786a}</Project>
-      <Name>CNCLib.Repository.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Repository.SqlServer\CNCLib.Repository.SqlServer.csproj">
-      <Project>{bd772f21-d4e2-4577-9af3-fbe59bb72c03}</Project>
-      <Name>CNCLib.Repository.SqlServer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Repository\CNCLib.Repository.csproj">
-      <Project>{d689cd99-a022-4f38-8ae1-a269c82a729c}</Project>
-      <Name>CNCLib.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Service.Logic\CNCLib.Service.Logic.csproj">
-      <Project>{f6696f23-9dcc-4d9a-9418-e7d1fed7eabd}</Project>
-      <Name>CNCLib.Service.Logic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Service.WebAPI\CNCLib.Service.WebAPI.csproj">
-      <Project>{6487301a-6889-412c-92ec-899aad61a9a5}</Project>
-      <Name>CNCLib.Service.WebAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Service.Contract\CNCLib.Service.Contract.csproj">
-      <Project>{f4c854c1-3154-4e73-85b0-2c9fcbc9ad17}</Project>
-      <Name>CNCLib.Service.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj">
-      <Project>{296f367f-4620-429b-9a51-e17675912bcb}</Project>
-      <Name>CNCLib.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Wpf\CNCLib.Wpf.csproj">
-      <Project>{60555245-d32e-4a94-ab0e-cb2a6693a9ba}</Project>
-      <Name>CNCLib.Wpf</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="AutoMapper">
-      <Version>8.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore">
-      <Version>2.1.4</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer">
-      <Version>2.1.4</Version>
-    </PackageReference>
+    <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Dependency\Framework.Dependency.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Logging\Framework.Logging.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Mapper\Framework.Mapper.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Repository\Framework.Repository.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Service.Abstraction\Framework.Service.Abstraction.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Wpf\Framework.Wpf.csproj" />
+    <ProjectReference Include="..\CNCLib.GCode.GUI\CNCLib.GCode.GUI.csproj" />
+    <ProjectReference Include="..\CNCLib.Logic.Client\CNCLib.Logic.Client.csproj" />
+    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj" />
+    <ProjectReference Include="..\CNCLib.Logic.Contract\CNCLib.Logic.Contract.csproj" />
+    <ProjectReference Include="..\CNCLib.Logic\CNCLib.Logic.csproj" />
+    <ProjectReference Include="..\CNCLib.Repository.Contract\CNCLib.Repository.Contract.csproj" />
+    <ProjectReference Include="..\CNCLib.Repository.SqlServer\CNCLib.Repository.SqlServer.csproj" />
+    <ProjectReference Include="..\CNCLib.Repository\CNCLib.Repository.csproj" />
+    <ProjectReference Include="..\CNCLib.Service.Logic\CNCLib.Service.Logic.csproj" />
+    <ProjectReference Include="..\CNCLib.Service.WebAPI\CNCLib.Service.WebAPI.csproj" />
+    <ProjectReference Include="..\CNCLib.Service.Contract\CNCLib.Service.Contract.csproj" />
+    <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />
+    <ProjectReference Include="..\CNCLib.Wpf\CNCLib.Wpf.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Properties\CNCLib.ico" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
+      <Version>2.1.4</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite.Core">
+      <Version>1.0.109.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
 </Project>

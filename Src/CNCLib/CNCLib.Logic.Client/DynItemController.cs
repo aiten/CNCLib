@@ -41,7 +41,7 @@ namespace CNCLib.Logic.Client
         public async Task<DynItem> Get(int id)
         {
             Item item = await _itemService.Get(id);
-            return item == null ? null : Convert(item);
+            return item == null?null:Convert(item);
         }
 
         public async Task<IEnumerable<DynItem>> GetAll(Type t)
@@ -173,7 +173,7 @@ namespace CNCLib.Logic.Client
                         object str = pi.GetValue(obj);
                         if (str != null)
                         {
-                            value = (string) str;
+                            value = (string)str;
                         }
                     }
                     else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(byte))
@@ -182,23 +182,23 @@ namespace CNCLib.Logic.Client
                     }
                     else if (pi.PropertyType == typeof(bool))
                     {
-                        value = (bool) pi.GetValue(obj) ? "true" : "false";
+                        value = (bool)pi.GetValue(obj)?"true":"false";
                     }
                     else if (pi.PropertyType == typeof(decimal))
                     {
-                        value = ((decimal) pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
+                        value = ((decimal)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
                     }
                     else if (pi.PropertyType == typeof(float))
                     {
-                        value = ((float) pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
+                        value = ((float)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
                     }
                     else if (pi.PropertyType == typeof(double))
                     {
-                        value = ((double) pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
+                        value = ((double)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
                     }
                     else if (pi.PropertyType == typeof(int?))
                     {
-                        var val = (int?) pi.GetValue(obj);
+                        var val = (int?)pi.GetValue(obj);
                         if (val.HasValue)
                         {
                             value = val.Value.ToString();
@@ -206,7 +206,7 @@ namespace CNCLib.Logic.Client
                     }
                     else if (pi.PropertyType == typeof(decimal?))
                     {
-                        var val = (decimal?) pi.GetValue(obj);
+                        var val = (decimal?)pi.GetValue(obj);
                         if (val.HasValue)
                         {
                             value = val.Value.ToString(CultureInfo.InvariantCulture);
@@ -214,7 +214,7 @@ namespace CNCLib.Logic.Client
                     }
                     else if (pi.PropertyType == typeof(double?))
                     {
-                        var val = (double?) pi.GetValue(obj);
+                        var val = (double?)pi.GetValue(obj);
                         if (val.HasValue)
                         {
                             value = val.Value.ToString(CultureInfo.InvariantCulture);
@@ -226,7 +226,7 @@ namespace CNCLib.Logic.Client
                     }
                     else if (pi.PropertyType == typeof(byte[]))
                     {
-                        var bytes = (byte[]) pi.GetValue(obj);
+                        var bytes = (byte[])pi.GetValue(obj);
                         if (bytes != null)
                         {
                             value = System.Convert.ToBase64String(bytes);

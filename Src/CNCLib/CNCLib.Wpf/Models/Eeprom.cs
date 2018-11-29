@@ -200,82 +200,146 @@ namespace CNCLib.Wpf.Models
         [Category(CATEGORY_INFO)]
         [DisplayName("HasSpindle")]
         [Description("Maschine has a spindle, can use m3/m5")]
-        public bool HasSpindle { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE)); set { } }
+        public bool HasSpindle
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("AnalogSpindle")]
         [Description("Can set the speed of the spindle with e.g.  m3 s1000")]
-        public bool HasAnalogSpindle { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE_ANALOG)); set { } }
+        public bool HasAnalogSpindle
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE_ANALOG));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasSpindleDirection")]
         [Description("Can set spindle direction, mse m3/m4")]
-        public bool HasSpindleDirection { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE_DIR)); set { } }
+        public bool HasSpindleDirection
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SPINDLE_DIR));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasCoolant")]
         [Description("Machine has coolant (use m7/m9)")]
-        public bool HasCoolant { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_COOLANT)); set { } }
+        public bool HasCoolant
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_COOLANT));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasProbe")]
         [Description("Machine has probe input (use g31)")]
-        public bool HasProbe { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_PROBE)); set { } }
+        public bool HasProbe
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_PROBE));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasSD")]
         [Description("Machine has a SD card")]
-        public bool HasSD { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SD)); set { } }
+        public bool HasSD
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_SD));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasEeprom")]
         [Description("Configuration can be written to eeprom")]
-        public bool HasEeprom { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_EEPROM)); set { } }
+        public bool HasEeprom
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_EEPROM));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("CanRotate")]
         [Description("Machine can rotate coordinate system (g68/g69)")]
-        public bool CanRotate { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_ROTATE)); set { } }
+        public bool CanRotate
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_ROTATE));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasHold")]
         [Description("Machine has a hold input")]
-        public bool HasHold { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_HOLD)); set { } }
+        public bool HasHold
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_HOLD));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasResume")]
         [Description("Machine has a resume input")]
-        public bool HasResume { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_RESUME)); set { } }
+        public bool HasResume
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_RESUME));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasHoldResume")]
         [Description("Machine has a hold/resume input")]
-        public bool HasHoldResume { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_HOLDRESUME)); set { } }
+        public bool HasHoldResume
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_HOLDRESUME));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("HasKill")]
         [Description("Machine has a kill input")]
-        public bool HasKill { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_KILL)); set { } }
+        public bool HasKill
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_KILL));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("IsLaser")]
         [Description("Machine is a laser")]
-        public bool IsLaser { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_LASER)); set { } }
+        public bool IsLaser
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_LASER));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("CommandSyntax")]
         [Description("Capability of macine commands")]
-        public CommandSyntax CommandSyntax { get => EepromV1.GetCommandSyntax(Info1); set { } }
+        public CommandSyntax CommandSyntax
+        {
+            get => EepromV1.GetCommandSyntax(Info1);
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("DtrIsReset")]
         [Description("For Arduino Uno, Mega, ... Dtr cause a reset when connecting. For a Arduino zero Dtr must be set/used to transfer data (no reset)")]
-        public bool DtrIsReset { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_DTR_IS_RESET)); set { } }
+        public bool DtrIsReset
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_DTR_IS_RESET));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("Need EEprom Flush")]
         [Description("EEprom Flush command must be executed to save to EEprom (Arduino zero)")]
-        public bool NeedEEpromFlush { get => (((EepromV1.EInfo1) Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_NEED_EEPROM_FLUSH)); set { } }
+        public bool NeedEEpromFlush
+        {
+            get => (((EepromV1.EInfo1)Info1).HasFlag(EepromV1.EInfo1.EEPROM_INFO_NEED_EEPROM_FLUSH));
+            set { }
+        }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("Info2")]
@@ -340,7 +404,7 @@ namespace CNCLib.Wpf.Models
 
             public override string ToString()
             {
-                return Size.ToString() + (RefMove == EReverenceType.NoReference ? "" : $",{RefMove}");
+                return Size.ToString() + (RefMove == EReverenceType.NoReference?"":$",{RefMove}");
             }
         };
 
@@ -390,32 +454,56 @@ namespace CNCLib.Wpf.Models
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 1")]
         [Description("Axis for reference-sequence 1")]
-        public EReverenceSequence RefSequence1 { get => _refSequences[0]; set => _refSequences[0] = value; }
+        public EReverenceSequence RefSequence1
+        {
+            get => _refSequences[0];
+            set => _refSequences[0] = value;
+        }
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 2")]
         [Description("Axis for reference-sequence 2")]
-        public EReverenceSequence RefSequence2 { get => _refSequences[1]; set => _refSequences[1] = value; }
+        public EReverenceSequence RefSequence2
+        {
+            get => _refSequences[1];
+            set => _refSequences[1] = value;
+        }
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 3")]
         [Description("Axis for reference-sequence 3")]
-        public EReverenceSequence RefSequence3 { get => _refSequences[2]; set => _refSequences[2] = value; }
+        public EReverenceSequence RefSequence3
+        {
+            get => _refSequences[2];
+            set => _refSequences[2] = value;
+        }
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 4")]
         [Description("Axis for reference-sequence 4")]
-        public EReverenceSequence RefSequence4 { get => _refSequences[3]; set => _refSequences[3] = value; }
+        public EReverenceSequence RefSequence4
+        {
+            get => _refSequences[3];
+            set => _refSequences[3] = value;
+        }
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 5")]
         [Description("Axis for reference-sequence 5")]
-        public EReverenceSequence RefSequence5 { get => _refSequences[4]; set => _refSequences[4] = value; }
+        public EReverenceSequence RefSequence5
+        {
+            get => _refSequences[4];
+            set => _refSequences[4] = value;
+        }
 
         [Category(CATEGORY_GENERAL)]
         [DisplayName("Ref-Sequence 6")]
         [Description("Axis for reference-sequence 6")]
-        public EReverenceSequence RefSequence6 { get => _refSequences[5]; set => _refSequences[5] = value; }
+        public EReverenceSequence RefSequence6
+        {
+            get => _refSequences[5];
+            set => _refSequences[5] = value;
+        }
 
         #endregion
 
@@ -426,7 +514,11 @@ namespace CNCLib.Wpf.Models
             EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No, EReverenceSequence.No
         };
 
-        public EReverenceSequence this[int i] { get => _refSequences[i]; set => _refSequences[i] = value; }
+        public EReverenceSequence this[int i]
+        {
+            get => _refSequences[i];
+            set => _refSequences[i] = value;
+        }
 
         #endregion
 
@@ -446,13 +538,13 @@ namespace CNCLib.Wpf.Models
             {
                 GetAxis(i).DWEESizeOf     = ee.DWSizeAxis;
                 GetAxis(i).Size           = ee[i, EepromV1.EAxisOffsets32.Size];
-                GetAxis(i).RefMove        = (EReverenceType) ee[i, EepromV1.EAxisOffsets8.EReverenceType];
+                GetAxis(i).RefMove        = (EReverenceType)ee[i, EepromV1.EAxisOffsets8.EReverenceType];
                 GetAxis(i).RefHitValueMin = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin];
                 GetAxis(i).RefHitValueMax = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax];
 
                 GetAxis(i).StepperDirection = (ee[EepromV1.EValueOffsets8.StepperDirection] & (1 << i)) != 0;
 
-                this[i] = (EReverenceSequence) ee[i, EepromV1.EAxisOffsets8.EReverenceSequence];
+                this[i] = (EReverenceSequence)ee[i, EepromV1.EAxisOffsets8.EReverenceSequence];
 
                 if (ee.DWSizeAxis > EepromV1.SIZEOFAXIX_EX)
                 {
@@ -486,8 +578,8 @@ namespace CNCLib.Wpf.Models
             for (int i = 0; i < numAxis; i++)
             {
                 ee[i, EepromV1.EAxisOffsets32.Size]                 = GetAxis(i).Size;
-                ee[i, EepromV1.EAxisOffsets8.EReverenceType]        = (byte) GetAxis(i).RefMove;
-                ee[i, EepromV1.EAxisOffsets8.EReverenceSequence]     = (byte) (EReverenceSequence) this[i];
+                ee[i, EepromV1.EAxisOffsets8.EReverenceType]        = (byte)GetAxis(i).RefMove;
+                ee[i, EepromV1.EAxisOffsets8.EReverenceSequence]    = (byte)(EReverenceSequence)this[i];
                 ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin] = GetAxis(i).RefHitValueMin;
                 ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax] = GetAxis(i).RefHitValueMax;
 
@@ -497,7 +589,7 @@ namespace CNCLib.Wpf.Models
                     direction += 1 << i;
                 }
 
-                ee[EepromV1.EValueOffsets8.StepperDirection] = (byte) direction;
+                ee[EepromV1.EValueOffsets8.StepperDirection] = (byte)direction;
 
                 if (ee.DWSizeAxis > EepromV1.SIZEOFAXIX_EX)
                 {

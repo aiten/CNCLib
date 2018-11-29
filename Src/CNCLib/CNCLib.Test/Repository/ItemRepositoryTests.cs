@@ -20,34 +20,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using CNCLib.Repository;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contract;
-using CNCLib.Repository.Contract.Entity;
+using CNCLib.Repository.Contract.Entities;
 
 using FluentAssertions;
 
 using Framework.Dependency;
+using Framework.Repository;
 using Framework.Test.Repository;
 using Framework.Tools;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace CNCLib.Test.Repository
 {
-    [TestClass]
     public class ItemRepositoryTests : RepositoryTests<CNCLibContext, Item, int, IItemRepository>
     {
         #region crt and overrides
 
         protected override GetTestDbContext<CNCLibContext, Item, int, IItemRepository> CreateTestDbContext()
         {
-            return Dependency.Resolve<GetTestDbContext<CNCLibContext, Item, int, IItemRepository>>();
-        }
-
-        [ClassInitialize]
-        public static void ClassInit(TestContext testContext)
-        {
-            ClassInitBase(testContext);
+            var context = new CNCLibContext();
+            var uow     = new UnitOfWork<CNCLibContext>(context);
+            var rep     = new ItemRepository(context, UserContext);
+            return new GetTestDbContext<CNCLibContext, Item, int, IItemRepository>(context, uow, rep);
         }
 
         protected override int GetEntityKey(Item entity)
@@ -73,7 +71,7 @@ namespace CNCLib.Test.Repository
 
         #region CRUD Test
 
-        [TestMethod]
+        [Fact]
         public async Task GetAllTest()
         {
             var entities = await GetAll();
@@ -82,48 +80,51 @@ namespace CNCLib.Test.Repository
             entities.Count(i => i.Name == "laser cut hole 130mg black").Should().Be(1);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetOKTest()
         {
             var entity = await GetOK(1);
             entity.ItemId.Should().Be(1);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetTrackingOKTest()
         {
             var entity = await GetTrackingOK(2);
             entity.ItemId.Should().Be(2);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetNotExistTest()
         {
             await GetNotExist(2342341);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddUpdateDeleteTest()
         {
             await AddUpdateDelete(() => CreateItem(@"AddUpdateDeleteTest"), (entity) => entity.ClassName = "DummyClassUpdate");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddUpdateDeleteWithItemPropertiesTest()
         {
-            await AddUpdateDelete(() => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")), (entity) =>
-            {
-                entity.ClassName = "DummyClassUpdate";
-                entity.ItemProperties.Remove(entity.ItemProperties.First());
-                entity.ItemProperties.Add(new ItemProperty()
+            await AddUpdateDelete(
+                () => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")),
+                (entity) =>
                 {
-                    Name  = @"NewItemProperty",
-                    Value = @"Hallo"
+                    entity.ClassName = "DummyClassUpdate";
+                    entity.ItemProperties.Remove(entity.ItemProperties.First());
+                    entity.ItemProperties.Add(
+                        new ItemProperty()
+                        {
+                            Name  = @"NewItemProperty",
+                            Value = @"Hallo"
+                        });
                 });
-            });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddRollbackTest()
         {
             await AddRollBack(() => CreateItem(@"AddRollbackTest"));

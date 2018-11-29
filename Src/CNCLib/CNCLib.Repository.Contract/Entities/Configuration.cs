@@ -16,11 +16,28 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Dependency;
-
-namespace CNCLib.WebAPI.Test.Dependency
+namespace CNCLib.Repository.Contract.Entities
 {
-    public sealed class MockingDependencyContainer : MsDependencyContainer
+    public class Configuration
     {
+        public         string Group  { get; set; }
+        public         string Name   { get; set; }
+        public         string Type   { get; set; }
+        public         string Value  { get; set; }
+        public         int?   UserId { get; set; }
+        public virtual User   User   { get; set; }
+
+        public Configuration()
+        {
+        }
+
+        public Configuration(string group, string name, object value)
+        {
+            Name  = name;
+            Group = group;
+            Value = value.ToString();
+
+            Type = value.GetType().ToString();
+        }
     }
 }

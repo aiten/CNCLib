@@ -153,7 +153,7 @@ namespace CNCLib.Wpf.Helpers
             var prefix = Global.Instance.Machine.CommandSyntax;
             if (prefix == CommandSyntax.HPGL)
             {
-                return ((char) 27).ToString();
+                return ((char)27).ToString();
             }
 
             return null;

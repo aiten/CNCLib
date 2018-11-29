@@ -16,17 +16,29 @@
   http://www.gnu.org/licenses/
 */
 
-namespace CNCLib.Repository.Contract.Entity
+
+namespace Framework.Test
 {
-    public class MachineCommand
+    using System;
+
+    using Tools.Abstraction;
+
+    public class CurrentDateTimeMock : ICurrentDateTime
     {
-        public         int     MachineCommandId { get; set; }
-        public         string  CommandName      { get; set; }
-        public         string  CommandString    { get; set; }
-        public         int     MachineId        { get; set; }
-        public         int?    PosX             { get; set; }
-        public         int?    PosY             { get; set; }
-        public         string  JoystickMessage  { get; set; }
-        public virtual Machine Machine          { get; set; }
+        public CurrentDateTimeMock(DateTime now)
+        {
+            Now   = now;
+            ToDay = now.Date;
+        }
+
+        public CurrentDateTimeMock()
+        {
+            Now   = DateTime.Now;
+            ToDay = Now.Date;
+        }
+
+        public DateTime Now { get; private set; }
+
+        public DateTime ToDay { get; private set; }
     }
 }

@@ -376,9 +376,10 @@ namespace CNCLib.GCode.GUI
 
             double x = ((pt.X0 - OffsetX) * Zoom) * _ratioX;
             double y = (((SizeY - (pt.Y0 + OffsetY))) * Zoom) * _ratioY;
+
             //double z = ((double)((double)(pt.Z ?? 0) - (double)OffsetZ) * Zoom) * _ratioZ;
 
-            return new PointF((float) x, (float) y);
+            return new PointF((float)x, (float)y);
         }
 
         double ToClientSizeX(double X)
@@ -420,8 +421,8 @@ namespace CNCLib.GCode.GUI
             {
                 float fastSize = 0.5f;
 
-                _helpLinePen   = new Pen(_helpLineColor, (float) (fastSize / 2.0));
-                _helpLinePen10 = new Pen(_helpLineColor, (float) (fastSize * 4));
+                _helpLinePen   = new Pen(_helpLineColor, (float)(fastSize / 2.0));
+                _helpLinePen10 = new Pen(_helpLineColor, (float)(fastSize * 4));
 
                 InitPen(_selected, c => c);
                 InitPen(_dithered, c => Color.FromArgb(25, c));
@@ -432,7 +433,7 @@ namespace CNCLib.GCode.GUI
 
         void InitPen(PenSet set, Func<Color, Color> colorConverter)
         {
-            float cutSize  = CutterSize > 0 ? (float) ToClientSizeX(CutterSize) : 2;
+            float cutSize  = CutterSize > 0?(float)ToClientSizeX(CutterSize):2;
             float fastSize = 0.5f;
 
             set._cutPen = new Pen(colorConverter(CutColor), cutSize)
@@ -453,12 +454,12 @@ namespace CNCLib.GCode.GUI
 
             set._fastPen   = new Pen(colorConverter(FastMoveColor), fastSize);
             set._noMovePen = new Pen(colorConverter(Color.Blue),    fastSize);
-            set._laserCutPen = new Pen(colorConverter(LaserOnColor), (float) ToClientSizeX(LaserSize))
+            set._laserCutPen = new Pen(colorConverter(LaserOnColor), (float)ToClientSizeX(LaserSize))
             {
                 StartCap = LineCap.Round,
                 EndCap   = LineCap.Round
             };
-            set._laserFastPen = new Pen(colorConverter(LaserOffColor), (float) (fastSize / 2.0));
+            set._laserFastPen = new Pen(colorConverter(LaserOffColor), (float)(fastSize / 2.0));
         }
 
         public Bitmap DrawToBitmap(CommandList commands)
@@ -496,7 +497,7 @@ namespace CNCLib.GCode.GUI
                     break;
                 }
 
-                g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(i * 10.0, 0, 0)), ToClientF(new Point3D(i * 10.0, SizeY, 0)));
+                g1.DrawLine(((i % 10) == 0)?_helpLinePen10:_helpLinePen, ToClientF(new Point3D(i * 10.0, 0, 0)), ToClientF(new Point3D(i * 10.0, SizeY, 0)));
             }
 
             for (int i = 1;; i++)
@@ -507,7 +508,7 @@ namespace CNCLib.GCode.GUI
                     break;
                 }
 
-                g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(0, i * 10.0, 0)), ToClientF(new Point3D(SizeX, i * 10.0, 0)));
+                g1.DrawLine(((i % 10) == 0)?_helpLinePen10:_helpLinePen, ToClientF(new Point3D(0, i * 10.0, 0)), ToClientF(new Point3D(SizeX, i * 10.0, 0)));
             }
 
             commands?.Paint(this, ee);
@@ -566,7 +567,7 @@ namespace CNCLib.GCode.GUI
                 return;
             }
 
-            var e = (PaintEventArgs) param;
+            var e = (PaintEventArgs)param;
 
             var from = ToClientF(ptFrom);
             var to   = ToClientF(ptTo);
@@ -579,7 +580,7 @@ namespace CNCLib.GCode.GUI
 
         void Line(object param, Pen pen, Point3D ptFrom, Point3D ptTo)
         {
-            var e = (PaintEventArgs) param;
+            var e = (PaintEventArgs)param;
 
             var from = ToClientF(ptFrom);
             var to   = ToClientF(ptTo);
@@ -597,7 +598,7 @@ namespace CNCLib.GCode.GUI
                 return;
             }
 
-            var e    = (PaintEventArgs) param;
+            var e    = (PaintEventArgs)param;
             var from = ToClientF(ptCenter);
             e.Graphics.DrawEllipse(GetPen(drawType, LineDrawType.Ellipse), from.X - radiusX / 2, from.Y - radiusY / 2, radiusX, radiusY);
         }
@@ -697,13 +698,13 @@ namespace CNCLib.GCode.GUI
             //
             // segments for full circle => (CONST_K * r * M_PI * b + CONST_D)		(r in mm, b ...2?)
 
-            uint segments = (uint) Math.Abs(Math.Floor(((2 * SEGMENTS_K * Math.PI)) * radius + SEGMENTS_D) * angular_travel / (2.0 * Math.PI));
+            uint segments = (uint)Math.Abs(Math.Floor(((2 * SEGMENTS_K * Math.PI)) * radius + SEGMENTS_D) * angular_travel / (2.0 * Math.PI));
 
             if (segments > 1)
             {
                 double theta_per_segment = angular_travel / segments;
 
-                int arc_correction = (int) (ARCCORRECTION / theta_per_segment);
+                int arc_correction = (int)(ARCCORRECTION / theta_per_segment);
                 if (arc_correction < 0)
                 {
                     arc_correction = -arc_correction;
@@ -757,7 +758,7 @@ namespace CNCLib.GCode.GUI
 
         private bool PreDrawLineOrArc(object param, DrawType drawType, PointF from, PointF to)
         {
-            var e = (PaintEventArgs) param;
+            var e = (PaintEventArgs)param;
 
             if (from.Equals(to))
             {
@@ -802,7 +803,7 @@ namespace CNCLib.GCode.GUI
 
         private Pen GetPen(DrawType moveType, LineDrawType drawType)
         {
-            PenSet set = (moveType & DrawType.Selected) == DrawType.Selected ? _selected : _dithered;
+            PenSet set = (moveType & DrawType.Selected) == DrawType.Selected?_selected:_dithered;
 
             if ((moveType & DrawType.Draw) == 0)
             {
@@ -814,10 +815,10 @@ namespace CNCLib.GCode.GUI
 
             if (isLaser)
             {
-                return isCut ? set._laserCutPen : set._laserFastPen;
+                return isCut?set._laserCutPen:set._laserFastPen;
             }
 
-            return isCut ? set._cutPens[(int) drawType] : set._fastPen;
+            return isCut?set._cutPens[(int)drawType]:set._fastPen;
         }
 
         #endregion

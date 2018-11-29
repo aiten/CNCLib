@@ -22,16 +22,15 @@ namespace Framework.Test.Parser
 
     using FluentAssertions;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Framework.Parser;
 
-    [TestClass]
+    using Xunit;
+
     public class ParserTest
     {
         #region Constant
 
-        [TestMethod]
+        [Fact]
         public void ParserConstantValueInt()
         {
             var stream = new CommandStream() { Line = "1" };
@@ -43,7 +42,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(1.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserConstantValueIntMinus()
         {
             var stream = new CommandStream() { Line = "-1" };
@@ -55,7 +54,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(-1.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserConstantValueFloat()
         {
             var stream = new CommandStream() { Line = "1.5" };
@@ -67,7 +66,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(1.5);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserConstantValueFloatMinus()
         {
             var stream = new CommandStream() { Line = "-1.5" };
@@ -79,7 +78,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(-1.5);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserConstantValueFloatDot()
         {
             var stream = new CommandStream() { Line = ".5" };
@@ -91,7 +90,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(0.5);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserConstantValueFloatDotMinus()
         {
             var stream = new CommandStream() { Line = "-.5" };
@@ -107,7 +106,7 @@ namespace Framework.Test.Parser
 
         #region AddEntity/Sub/Mul/Div
 
-        [TestMethod]
+        [Fact]
         public void ParserAdd()
         {
             var stream = new CommandStream() { Line = "1+2" };
@@ -119,7 +118,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(3.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserSub()
         {
             var stream = new CommandStream() { Line = "9-2" };
@@ -131,8 +130,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(7.0);
         }
 
-
-        [TestMethod]
+        [Fact]
         public void ParserMul()
         {
             var stream = new CommandStream() { Line = "2*3" };
@@ -144,7 +142,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(6.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserDiv()
         {
             var stream = new CommandStream() { Line = "10/2" };
@@ -156,7 +154,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(5.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserMod()
         {
             var stream = new CommandStream() { Line = "14%10" };
@@ -168,7 +166,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(4.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserPow()
         {
             var stream = new CommandStream() { Line = "2^8" };
@@ -184,7 +182,7 @@ namespace Framework.Test.Parser
 
         #region BitOpAndShift
 
-        [TestMethod]
+        [Fact]
         public void ParserBitLeftRight()
         {
             var stream = new CommandStream() { Line = "(1<<1)+(16>>1)" };
@@ -196,7 +194,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(8.0 + 2.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserBitAndOr()
         {
             var stream = new CommandStream() { Line = "(255&8)+(1|2)" };
@@ -208,7 +206,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(11.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserXOr()
         {
             var stream = new CommandStream() { Line = "(3||1)" };
@@ -224,7 +222,7 @@ namespace Framework.Test.Parser
 
         #region Compare
 
-        [TestMethod]
+        [Fact]
         public void ParserCompareEqual()
         {
             var stream = new CommandStream() { Line = "(1==2)+(1==1)" };
@@ -236,7 +234,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(1.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserCompareNotEqual()
         {
             var stream = new CommandStream() { Line = "(1!=2)+(1!=1)" };
@@ -248,7 +246,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(1.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserCompareGt()
         {
             var stream = new CommandStream() { Line = "(1>2)+(1>=1)+(4>1)" };
@@ -260,7 +258,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(2.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserCompareLt()
         {
             var stream = new CommandStream() { Line = "(1<2)+(1<=1)+(4<1)" };
@@ -276,7 +274,7 @@ namespace Framework.Test.Parser
 
         #region Functions
 
-        [TestMethod]
+        [Fact]
         public void ParserAbsCeilFloor()
         {
             var stream = new CommandStream() { Line = "ABS(-1)+FIX(1.8)+FUP(0.5)+ROUND(1.7)" }; // FIX=>floor, FUP=>Ceil
@@ -288,8 +286,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(5.0);
         }
 
-
-        [TestMethod]
+        [Fact]
         public void ParserSin()
         {
             var stream = new CommandStream() { Line = "SIN(1.5707963267948966192313216916398)" };
@@ -301,7 +298,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(1.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserSinCosTan()
         {
             var stream = new CommandStream()
@@ -316,7 +313,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(3.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserASinACosATan()
         {
             var stream = new CommandStream() { Line = "ASIN(1.0)+ACOS(1.0)+ATAN(1.0)" };
@@ -328,7 +325,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(2.3561944901923448);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserSqrtFractional()
         {
             var stream = new CommandStream() { Line = "SQRT(9)+FACTORIAL(2)" };
@@ -340,8 +337,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(5);
         }
 
-
-        [TestMethod]
+        [Fact]
         public void ParserSign()
         {
             var stream = new CommandStream() { Line = "SIGN(-100)+SIGN(30)+SIGN(0)+SIGN(234.32)" };
@@ -353,7 +349,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(1.0);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserLog()
         {
             var stream = new CommandStream() { Line = "LOG(2)+LOG10(10)" };
@@ -369,7 +365,7 @@ namespace Framework.Test.Parser
 
         #region Variable
 
-        [TestMethod]
+        [Fact]
         public void ParserConstantValuePi()
         {
             var stream = new CommandStream() { Line = "PI" };
@@ -381,7 +377,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(Math.PI);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserConstantValueE()
         {
             var stream = new CommandStream() { Line = "E" };
@@ -393,7 +389,7 @@ namespace Framework.Test.Parser
             parser.Answer.Should().Be(Math.E);
         }
 
-        [TestMethod]
+        [Fact]
         public void ParserAssignVariable()
         {
             var stream = new CommandStream() { Line = "VAR=1" };

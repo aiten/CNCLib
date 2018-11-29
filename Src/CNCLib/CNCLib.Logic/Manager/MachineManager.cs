@@ -29,8 +29,8 @@ using CNCLib.Shared;
 using Framework.Logic;
 using Framework.Repository.Abstraction;
 
-using ConfigurationEntity = CNCLib.Repository.Contract.Entity.Configuration;
-using MachineEntity = CNCLib.Repository.Contract.Entity.Machine;
+using ConfigurationEntity = CNCLib.Repository.Contract.Entities.Configuration;
+using MachineEntity = CNCLib.Repository.Contract.Entities.Machine;
 
 namespace CNCLib.Logic.Manager
 {
@@ -126,13 +126,14 @@ namespace CNCLib.Logic.Manager
 
         public async Task SetDefaultMachine(int defaultMachineId)
         {
-            await _repositoryConfig.Store(new ConfigurationEntity
-            {
-                Group = "Environment",
-                Name  = "DefaultMachineId",
-                Type  = "Int32",
-                Value = defaultMachineId.ToString()
-            });
+            await _repositoryConfig.Store(
+                new ConfigurationEntity
+                {
+                    Group = "Environment",
+                    Name  = "DefaultMachineId",
+                    Type  = "Int32",
+                    Value = defaultMachineId.ToString()
+                });
             await _unitOfWork.SaveChangesAsync();
         }
 

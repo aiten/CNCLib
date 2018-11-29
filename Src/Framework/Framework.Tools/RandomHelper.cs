@@ -37,12 +37,12 @@ namespace Framework.Tools
             var randStr = new StringBuilder(size);
 
             // Ascii start position (65 = A / 97 = a)
-            int start = lowerCase ? 97 : 65;
+            int start = lowerCase?97:65;
 
             // Add random chars
             for (var i = 0; i < size; i++)
             {
-                randStr.Append((char) (26 * _randomSeed.NextDouble() + start));
+                randStr.Append((char)(26 * _randomSeed.NextDouble() + start));
             }
 
             return randStr.ToString();
@@ -76,7 +76,7 @@ namespace Framework.Tools
         public static DateTime RandomDate(DateTime from, DateTime to)
         {
             var range = new TimeSpan(to.Ticks - from.Ticks);
-            return from + new TimeSpan((long) (range.Ticks * _randomSeed.NextDouble()));
+            return from + new TimeSpan((long)(range.Ticks * _randomSeed.NextDouble()));
         }
 
 /*

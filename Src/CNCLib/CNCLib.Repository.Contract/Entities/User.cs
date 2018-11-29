@@ -16,14 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-namespace CNCLib.Repository.Contract.Entity
+namespace CNCLib.Repository.Contract.Entities
 {
-    public class MachineInitCommand
+    public class User
     {
-        public         int     MachineInitCommandId { get; set; }
-        public         int     SeqNo                { get; set; }
-        public         string  CommandString        { get; set; }
-        public         int     MachineId            { get; set; }
-        public virtual Machine Machine              { get; set; }
+        public int    UserId       { get; set; }
+        public string UserName     { get; set; }
+        public string UserPassword { get; set; }
     }
 }

@@ -20,6 +20,7 @@ using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
 using Framework.Tools;
+
 using Microsoft.AspNetCore.SignalR;
 
 namespace CNCLib.Serial.Server.SerialPort
@@ -37,13 +38,17 @@ namespace CNCLib.Serial.Server.SerialPort
                 Serial.CommandQueueEmpty += async (sender, e) => { await Startup.Hub.Clients.All.SendAsync("queueEmpty", Id); };
                 Serial.CommandQueueChanged += (sender, e) =>
                 {
-                    _delayExecuteQueueChanged.Execute(1000, () => _pendingLastQueueLength = e.QueueLength,
-                                                      () => { Startup.Hub.Clients.All.SendAsync("queueChanged", Id, _pendingLastQueueLength); });
+                    _delayExecuteQueueChanged.Execute(
+                        1000,
+                        () => _pendingLastQueueLength = e.QueueLength,
+                        () => { Startup.Hub.Clients.All.SendAsync("queueChanged", Id, _pendingLastQueueLength); });
                 };
                 Serial.CommandSending += (sender, e) =>
                 {
-                    _delayExecuteSendingCommand.Execute(1000, () => _pendingSendingCommandSeqId = e.SeqId,
-                                                        () => { Startup.Hub.Clients.All.SendAsync("sendingCommand", Id, _pendingSendingCommandSeqId); });
+                    _delayExecuteSendingCommand.Execute(
+                        1000,
+                        () => _pendingSendingCommandSeqId = e.SeqId,
+                        () => { Startup.Hub.Clients.All.SendAsync("sendingCommand", Id, _pendingSendingCommandSeqId); });
                 };
             }
         }

@@ -23,7 +23,11 @@ namespace Framework.Wpf.Helpers
 
     public class DelegateCommand<T> : Prism.Commands.DelegateCommand<T>
     {
-        public override event EventHandler CanExecuteChanged { add => CommandManager.RequerySuggested += value; remove => CommandManager.RequerySuggested -= value; }
+        public override event EventHandler CanExecuteChanged
+        {
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
+        }
 
         public DelegateCommand(Action<T> command, Func<T, bool> canExecute = null) : base(command, canExecute)
         {

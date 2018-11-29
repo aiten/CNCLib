@@ -104,7 +104,6 @@ namespace Framework.Arduino.SerialCommunication
         public bool ResetOnConnect { get; set; } = false;
         public bool DtrIsReset     { get; set; } = true; // true for Arduino Uno, Mega, false for Arduino Zero 
 
-
         public string OkTag                  { get; set; } = @"ok";
         public string ErrorTag               { get; set; } = @"error:";
         public string InfoTag                { get; set; } = @"info:";

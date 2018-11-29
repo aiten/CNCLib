@@ -52,27 +52,51 @@ namespace CNCLib.Wpf.Controls
 
         public static readonly DependencyProperty LeftCommandProperty = DependencyProperty.Register("Left", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand Left { get => (ICommand) GetValue(LeftCommandProperty); set => SetValue(LeftCommandProperty, value); }
+        public ICommand Left
+        {
+            get => (ICommand)GetValue(LeftCommandProperty);
+            set => SetValue(LeftCommandProperty, value);
+        }
 
         public static readonly DependencyProperty RightCommandProperty = DependencyProperty.Register("Right", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand Right { get => (ICommand) GetValue(RightCommandProperty); set => SetValue(RightCommandProperty, value); }
+        public ICommand Right
+        {
+            get => (ICommand)GetValue(RightCommandProperty);
+            set => SetValue(RightCommandProperty, value);
+        }
 
         public static readonly DependencyProperty UpCommandProperty = DependencyProperty.Register("Up", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand Up { get => (ICommand) GetValue(UpCommandProperty); set => SetValue(UpCommandProperty, value); }
+        public ICommand Up
+        {
+            get => (ICommand)GetValue(UpCommandProperty);
+            set => SetValue(UpCommandProperty, value);
+        }
 
         public static readonly DependencyProperty DownCommandProperty = DependencyProperty.Register("Down", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand Down { get => (ICommand) GetValue(DownCommandProperty); set => SetValue(DownCommandProperty, value); }
+        public ICommand Down
+        {
+            get => (ICommand)GetValue(DownCommandProperty);
+            set => SetValue(DownCommandProperty, value);
+        }
 
         public static readonly DependencyProperty ZUpCommandProperty = DependencyProperty.Register("ZUp", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand ZUp { get => (ICommand) GetValue(ZUpCommandProperty); set => SetValue(ZUpCommandProperty, value); }
+        public ICommand ZUp
+        {
+            get => (ICommand)GetValue(ZUpCommandProperty);
+            set => SetValue(ZUpCommandProperty, value);
+        }
 
         public static readonly DependencyProperty ZDownCommandProperty = DependencyProperty.Register("ZDown", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand ZDown { get => (ICommand) GetValue(ZDownCommandProperty); set => SetValue(ZDownCommandProperty, value); }
+        public ICommand ZDown
+        {
+            get => (ICommand)GetValue(ZDownCommandProperty);
+            set => SetValue(ZDownCommandProperty, value);
+        }
 
         #endregion
 
@@ -93,7 +117,6 @@ namespace CNCLib.Wpf.Controls
         public ICommand LeftDist3Command => new DelegateCommand(() => OnLeft(MoveDistance.Distance3), CanSend);
         public ICommand LeftDist4Command => new DelegateCommand(() => OnLeft(MoveDistance.Distance4), CanSend);
 
-
         public ICommand UpDist1Command => new DelegateCommand(() => OnUp(MoveDistance.Distance1), CanSend);
         public ICommand UpDist2Command => new DelegateCommand(() => OnUp(MoveDistance.Distance2), CanSend);
         public ICommand UpDist3Command => new DelegateCommand(() => OnUp(MoveDistance.Distance3), CanSend);
@@ -103,7 +126,6 @@ namespace CNCLib.Wpf.Controls
         public ICommand DownDist2Command => new DelegateCommand(() => OnDown(MoveDistance.Distance2), CanSend);
         public ICommand DownDist3Command => new DelegateCommand(() => OnDown(MoveDistance.Distance3), CanSend);
         public ICommand DownDist4Command => new DelegateCommand(() => OnDown(MoveDistance.Distance4), CanSend);
-
 
         public ICommand ZUpDist1Command => new DelegateCommand(() => OnZUp(MoveDistance.Distance1), CanSend);
         public ICommand ZUpDist2Command => new DelegateCommand(() => OnZUp(MoveDistance.Distance2), CanSend);

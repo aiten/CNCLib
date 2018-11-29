@@ -37,11 +37,12 @@ namespace CNCLib.Wpf.Helpers
 
         public void RunCommandInNewTask(Action todo)
         {
-            Task.Run(() =>
-            {
-                todo();
-                Global.Instance.Com.Current.WriteCommandHistory(CommandHistoryViewModel.CommandHistoryFile);
-            });
+            Task.Run(
+                () =>
+                {
+                    todo();
+                    Global.Instance.Com.Current.WriteCommandHistory(CommandHistoryViewModel.CommandHistoryFile);
+                });
         }
 
         protected override void OnReplyReceived(SerialEventArgs info)

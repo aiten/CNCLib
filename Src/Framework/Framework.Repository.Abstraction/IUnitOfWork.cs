@@ -31,7 +31,7 @@ namespace Framework.Repository.Abstraction
 
         // Transaction
 
-        bool         IsInTransaction { get; }
+        bool IsInTransaction { get; }
         ITransaction BeginTransaction();
     }
 }

@@ -16,38 +16,37 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using CNCLib.Repository;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.Contract;
-using CNCLib.Repository.Contract.Entity;
+using CNCLib.Repository.Contract.Entities;
 
 using FluentAssertions;
 
-using Framework.Dependency;
+using Framework.Repository;
 using Framework.Test.Repository;
 using Framework.Tools;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace CNCLib.Test.Repository
 {
-    [TestClass]
     public class UserRepositoryTests : RepositoryTests<CNCLibContext, User, int, IUserRepository>
     {
         #region crt and overrides
 
         protected override GetTestDbContext<CNCLibContext, User, int, IUserRepository> CreateTestDbContext()
         {
-            return Dependency.Resolve<GetTestDbContext<CNCLibContext, User, int, IUserRepository>>();
-        }
-
-        [ClassInitialize]
-        public static void ClassInit(TestContext testContext)
-        {
-            ClassInitBase(testContext);
+            var context = new CNCLibContext();
+            var uow     = new UnitOfWork<CNCLibContext>(context);
+            var rep     = new UserRepository(context);
+            return new GetTestDbContext<CNCLibContext, User, int, IUserRepository>(context, uow, rep);
         }
 
         protected override int GetEntityKey(User entity)
@@ -73,7 +72,7 @@ namespace CNCLib.Test.Repository
 
         #region CRUD Test
 
-        [TestMethod]
+        [Fact]
         public async Task GetAllTest()
         {
             var entities = (await GetAll()).OrderBy(u => u.UserName);
@@ -82,33 +81,33 @@ namespace CNCLib.Test.Repository
             entities.ElementAt(1).UserName.Should().Be("Herbert");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetOKTest()
         {
             var entity = await GetOK(1);
             entity.UserId.Should().Be(1);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetTrackingOKTest()
         {
             var entity = await GetTrackingOK(2);
             entity.UserId.Should().Be(2);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetNotExistTest()
         {
             await GetNotExist(2342341);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddUpdateDeleteTest()
         {
             await AddUpdateDelete(() => new User() { UserName = "Hallo", UserPassword = "1234" }, (entity) => entity.UserPassword = "3456");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddRollbackTest()
         {
             await AddRollBack(() => new User() { UserName = "Hallo", UserPassword = "1234" });
@@ -118,7 +117,7 @@ namespace CNCLib.Test.Repository
 
         #region Additional Tests
 
-        [TestMethod]
+        [Fact]
         public async Task QueryOneUserByNameFound()
         {
             using (var ctx = CreateTestDbContext())
@@ -131,7 +130,7 @@ namespace CNCLib.Test.Repository
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task QueryOneUserByNameNotFound()
         {
             using (var ctx = CreateTestDbContext())
@@ -141,8 +140,7 @@ namespace CNCLib.Test.Repository
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(DbUpdateException))]
+        [Fact]
         public async Task InsertDuplicateUserName()
         {
             string existingUserName;
@@ -157,7 +155,15 @@ namespace CNCLib.Test.Repository
                 var entityToAdd = new User() { UserName = existingUserName };
                 ctx.Repository.Add(entityToAdd);
 
-                await ctx.UnitOfWork.SaveChangesAsync();
+                //[SkippableFact(typeof(DbUpdateException))]
+
+                Func<Task> act = async () => await ctx.UnitOfWork.SaveChangesAsync();
+
+                //assert
+
+                ;
+
+                await Assert.ThrowsAsync<Microsoft.EntityFrameworkCore.DbUpdateException>(act);
             }
         }
 

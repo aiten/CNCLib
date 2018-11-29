@@ -36,11 +36,19 @@ namespace CNCLib.GCode.GUI.Models
 
         private ELoadType _loadType = ELoadType.GCode;
 
-        public ELoadType LoadType { get => _loadType; set => SetProperty(ref _loadType, value); }
+        public ELoadType LoadType
+        {
+            get => _loadType;
+            set => SetProperty(ref _loadType, value);
+        }
 
         private string _fileName;
 
-        public string FileName { get => _fileName; set => SetProperty(ref _fileName, value); }
+        public string FileName
+        {
+            get => _fileName;
+            set => SetProperty(ref _fileName, value);
+        }
 
         public byte[] FileContent { get; set; }
 
@@ -67,7 +75,11 @@ namespace CNCLib.GCode.GUI.Models
         //HPGL+IMG
         private bool _autoScale;
 
-        public bool AutoScale { get => _autoScale; set => SetProperty(ref _autoScale, value); }
+        public bool AutoScale
+        {
+            get => _autoScale;
+            set => SetProperty(ref _autoScale, value);
+        }
 
         public bool AutoScaleKeepRatio { get; set; } = true;
 
@@ -87,7 +99,11 @@ namespace CNCLib.GCode.GUI.Models
 
         private PenType _penMoveType = PenType.ZMove;
 
-        public PenType PenMoveType { get => _penMoveType; set => SetProperty(ref _penMoveType, value); }
+        public PenType PenMoveType
+        {
+            get => _penMoveType;
+            set => SetProperty(ref _penMoveType, value);
+        }
 
         public bool    EngravePosInParameter { get; set; } = true;
         public decimal EngravePosUp          { get; set; } = 1m;
@@ -123,7 +139,7 @@ namespace CNCLib.GCode.GUI.Models
             }
         }
 
-        public decimal? SmoothMinAngle      { get; set; } = (decimal) (45 * (Math.PI / 180));
+        public decimal? SmoothMinAngle      { get; set; } = (decimal)(45 * (Math.PI / 180));
         public decimal? SmoothMinLineLength { get; set; } = 1m;
         public decimal? SmoothMaxError      { get; set; } = 1m / 40m;
 
@@ -136,9 +152,17 @@ namespace CNCLib.GCode.GUI.Models
         public ConvertTypeEnum ConvertType { get; set; } = ConvertTypeEnum.NoConvert;
 
         // calculated
-        public bool SmoothEnabled { get => SmoothType != SmoothTypeEnum.NoSmooth; set => SmoothType = value ? SmoothTypeEnum.SplitLine : SmoothTypeEnum.NoSmooth; }
+        public bool SmoothEnabled
+        {
+            get => SmoothType != SmoothTypeEnum.NoSmooth;
+            set => SmoothType = value?SmoothTypeEnum.SplitLine:SmoothTypeEnum.NoSmooth;
+        }
 
-        public bool ConvertEnabled { get => ConvertType != ConvertTypeEnum.NoConvert; set => ConvertType = value ? ConvertTypeEnum.InvertLineSequence : ConvertTypeEnum.NoConvert; }
+        public bool ConvertEnabled
+        {
+            get => ConvertType != ConvertTypeEnum.NoConvert;
+            set => ConvertType = value?ConvertTypeEnum.InvertLineSequence:ConvertTypeEnum.NoConvert;
+        }
 
         //IMG
         public string ImageWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\image.bmp";
@@ -156,7 +180,11 @@ namespace CNCLib.GCode.GUI.Models
 
         private DitherFilter _dither = DitherFilter.FloydSteinbergDither;
 
-        public DitherFilter Dither { get => _dither; set => SetProperty(ref _dither, value); }
+        public DitherFilter Dither
+        {
+            get => _dither;
+            set => SetProperty(ref _dither, value);
+        }
 
         public bool ImageInvert { get; set; } = false;
 
@@ -182,6 +210,10 @@ namespace CNCLib.GCode.GUI.Models
 
         private EHoleType _holeType = EHoleType.Hexagon;
 
-        public EHoleType HoleType { get => _holeType; set => SetProperty(ref _holeType, value); }
+        public EHoleType HoleType
+        {
+            get => _holeType;
+            set => SetProperty(ref _holeType, value);
+        }
     }
 }

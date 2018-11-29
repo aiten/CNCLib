@@ -16,64 +16,37 @@
   http://www.gnu.org/licenses/
 */
 
-#if asdfasdfa
-
 using System;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using System.Linq;
-
-using NSubstitute;
-
-using CNCLib.Wpf.ViewModels;
-using CNCLib.Logic.Contracts.DTO;
-
 using System.Threading.Tasks;
 
-using CNCLib.Service.Contracts;
+using CNCLib.Logic.Contract.DTO;
+using CNCLib.Service.Contract;
+using CNCLib.Wpf.ViewModels;
 
 using FluentAssertions;
 
-using Framework.Dependency;
 using Framework.Pattern;
+
+using NSubstitute;
+
+using Xunit;
 
 namespace CNCLib.Tests.Wpf
 {
-    [TestClass]
-    public class MachineViewModelTests : CNCUnitTest
+    public class MachineViewModelTests : WpfUnitTestBase
     {
-        /*
-                [ClassInitialize]
-                public static void ClassInit(CRUDTestDbContext testContext)
-                {
-                }
-
-                [TestInitialize]
-                public void Init()
-                {
-                }
-        */
-/*
-		private FactoryType2Obj CreateMock()
-		{
-			var mockFactory = new FactoryType2Obj();
-			BaseViewModel.LogicFactory = mockFactory;
-			return mockFactory;
-        }
-*/
         private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
 //			var mockFactory = CreateMock();
             var rep = Substitute.For<TInterface>();
-//			mockFactory.Register(typeof(TInterface), rep);
 
-            Dependency.Container.RegisterInstance(rep);
+//			mockFactory.Register(typeof(TInterface), rep);
 
             return rep;
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetMachine()
         {
             var rep = CreateMock<IMachineService>();
@@ -81,7 +54,7 @@ namespace CNCLib.Tests.Wpf
             Machine machine = CreateMachine(1);
             rep.Get(1).Returns(machine);
 
-            var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep));
+            var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper);
             await mv.LoadMachine(1);
 
             mv.AddNewMachine.Should().Be(false);
@@ -115,7 +88,7 @@ namespace CNCLib.Tests.Wpf
             mv.Machine.Rotate.Should().Be(machine.Rotate);
         }
 
-        [TestMethod]
+        [Fact]
         public void GetMachineAddNew()
         {
             var rep = CreateMock<IMachineService>();
@@ -126,7 +99,7 @@ namespace CNCLib.Tests.Wpf
             Machine machineDef = CreateMachine(0);
             rep.DefaultMachine().Returns(machineDef);
 
-            var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep));
+            var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper);
             mv.LoadMachine(-1);
 
             mv.AddNewMachine.Should().BeTrue();
@@ -206,5 +179,3 @@ namespace CNCLib.Tests.Wpf
         }
     }
 }
-
-#endif

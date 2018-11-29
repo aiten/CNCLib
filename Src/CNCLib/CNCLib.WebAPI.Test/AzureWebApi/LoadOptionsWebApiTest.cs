@@ -17,6 +17,8 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -26,16 +28,15 @@ using CNCLib.Logic.Contract.DTO;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace CNCLib.WebAPI.Test.AzureWebApi
 {
-    [TestClass]
     public class LoadOptionsWebApiTest : AzureWebApiTest
     {
         private readonly string api = "/api/loadoptions";
 
-        [TestMethod]
+        [Fact]
         public async Task GetOption1()
         {
             using (var client = new HttpClient())
@@ -57,9 +58,32 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
             }
         }
 
-        [TestMethod]
+        private async Task Cleanup(string settingname)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(AzureUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage responseGet = await client.GetAsync(api);
+
+                var all = await responseGet.Content.ReadAsAsync<IEnumerable<LoadOptions>>();
+
+                var setting = all.FirstOrDefault(s => s.SettingName == settingname);
+                if (setting != null)
+                {
+                    await client.DeleteAsync($"{api}/{setting.Id}");
+                }
+            }
+        }
+
+        [Fact]
         public async Task CreateDeleteOption()
         {
+            await Cleanup("Settingname");
+            await Cleanup("ComHA");
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(AzureUrl);
@@ -109,7 +133,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
 
                         if (responseGet3.IsSuccessStatusCode)
                         {
-                            Machine mget3 = await responseGet3.Content.ReadAsAsync<Machine>();
+                            LoadOptions mget3 = await responseGet3.Content.ReadAsAsync<LoadOptions>();
                             mget3.Should().BeNull();
                         }
                     }

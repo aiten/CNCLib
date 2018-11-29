@@ -20,11 +20,10 @@ namespace Framework.Test.Drawing
 {
     using FluentAssertions;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Framework.Drawing;
 
-    [TestClass]
+    using Xunit;
+
     public class Polygon2DTest
     {
         private static Polygon2D CreateClosedPolygon()
@@ -49,21 +48,21 @@ namespace Framework.Test.Drawing
             };
         }
 
-        [TestMethod]
+        [Fact]
         public void PointInPolygon()
         {
             Polygon2D polygon = CreateClosedPolygon();
             polygon.IsPointInPolygon(new Point2D { X = 50, Y = 50 }).Should().Be(true);
         }
 
-        [TestMethod]
+        [Fact]
         public void PointInPolygonOnLine()
         {
             Polygon2D polygon = CreateClosedPolygon();
             polygon.IsPointInPolygon(new Point2D { X = 100, Y = 2 }).Should().Be(true, "point on line is in polygon");
         }
 
-        [TestMethod]
+        [Fact]
         public void PointNotInPolygon()
         {
             Polygon2D polygon = CreateClosedPolygon();
@@ -73,7 +72,7 @@ namespace Framework.Test.Drawing
             polygon.IsPointInPolygon(new Point2D { X = 1, Y = -0.5 }).Should().Be(false);
         }
 
-        [TestMethod]
+        [Fact]
         public void MinMax()
         {
             Polygon2D polygon = CreateClosedPolygon();
@@ -83,7 +82,7 @@ namespace Framework.Test.Drawing
             polygon.MinY.Should().BeApproximately(0.0, double.Epsilon);
         }
 
-        [TestMethod]
+        [Fact]
         public void OpenClosedPolygon()
         {
             Polygon2D polygonClosed = CreateClosedPolygon();

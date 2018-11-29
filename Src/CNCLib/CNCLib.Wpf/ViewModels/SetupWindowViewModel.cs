@@ -25,6 +25,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
+using AutoMapper;
+
 using CNCLib.Service.Contract;
 using CNCLib.Wpf.Helpers;
 using CNCLib.Wpf.Models;
@@ -40,13 +42,15 @@ namespace CNCLib.Wpf.ViewModels
     {
         #region crt
 
-        public SetupWindowViewModel(IFactory<IMachineService> machineService)
+        public SetupWindowViewModel(IFactory<IMachineService> machineService, IMapper mapper)
         {
             _machineService = machineService ?? throw new ArgumentNullException();
+            _mapper         = mapper ?? throw new ArgumentNullException();
             ResetOnConnect  = false;
         }
 
         readonly IFactory<IMachineService> _machineService;
+        private readonly IMapper _mapper;
 
         public override async Task Loaded()
         {
@@ -73,7 +77,7 @@ namespace CNCLib.Wpf.ViewModels
 
                 foreach (var m in await service.GetAll())
                 {
-                    machines.Add(Converter.Convert(m));
+                    machines.Add(Converter.Convert(m, _mapper));
                 }
 
                 defaultM = await service.GetDefaultMachine();
@@ -131,7 +135,11 @@ namespace CNCLib.Wpf.ViewModels
 
         private ObservableCollection<Machine> _machines;
 
-        public ObservableCollection<Machine> Machines { get => _machines; set => SetProperty(ref _machines, value); }
+        public ObservableCollection<Machine> Machines
+        {
+            get => _machines;
+            set => SetProperty(ref _machines, value);
+        }
 
         public bool Connected => Global.Instance.Com.Current.IsConnected;
 
@@ -153,7 +161,11 @@ namespace CNCLib.Wpf.ViewModels
 
         private bool _sendInitCommands = true;
 
-        public bool SendInitCommands { get => _sendInitCommands; set => SetProperty(ref _sendInitCommands, value); }
+        public bool SendInitCommands
+        {
+            get => _sendInitCommands;
+            set => SetProperty(ref _sendInitCommands, value);
+        }
 
         public bool DtrIsReset => Machine != null && Machine.DtrIsReset;
 
@@ -272,6 +284,7 @@ namespace CNCLib.Wpf.ViewModels
         public async void SetupMachine()
         {
             int mId = Machine?.MachineId ?? -1;
+
             //EditMachine?.Invoke(mId);
             EditMachine(mId);
             await LoadMachines(mId);

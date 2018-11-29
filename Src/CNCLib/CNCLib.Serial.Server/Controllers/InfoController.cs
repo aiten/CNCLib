@@ -17,7 +17,9 @@
 */
 
 using System.Reflection;
+
 using CNCLib.Serial.Shared;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace CNCLib.Serial.Server.Controllers
@@ -37,7 +39,7 @@ namespace CNCLib.Serial.Server.Controllers
                 Version   = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
                 Name      = Assembly.GetExecutingAssembly().GetName().Name,
                 FullName  = Assembly.GetExecutingAssembly().GetName().FullName,
-                Copyright = ((AssemblyCopyrightAttribute) Assembly.GetExecutingAssembly().GetCustomAttribute(typeof(AssemblyCopyrightAttribute))).Copyright
+                Copyright = ((AssemblyCopyrightAttribute)Assembly.GetExecutingAssembly().GetCustomAttribute(typeof(AssemblyCopyrightAttribute))).Copyright
             };
         }
 
@@ -62,7 +64,7 @@ namespace CNCLib.Serial.Server.Controllers
         [HttpGet("copyright")]
         public string GetCopyright()
         {
-            return ((AssemblyCopyrightAttribute) Assembly.GetExecutingAssembly().GetCustomAttribute(typeof(AssemblyCopyrightAttribute))).Copyright;
+            return ((AssemblyCopyrightAttribute)Assembly.GetExecutingAssembly().GetCustomAttribute(typeof(AssemblyCopyrightAttribute))).Copyright;
         }
 
         #endregion

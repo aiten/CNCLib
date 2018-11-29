@@ -52,7 +52,7 @@ namespace CNCLib.Wpf.Start
 
             string dbFile = userProfilePath + @"\CNCLib.db";
 
-            GlobalDiagnosticsContext.Set("logDir", $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib/logs");
+            GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib/logs");
             GlobalDiagnosticsContext.Set("connectionString", $"Data Source={dbFile}");
 
             LogManager.ThrowExceptions = true;
@@ -73,15 +73,17 @@ namespace CNCLib.Wpf.Start
             Dependency.Container.RegisterSerialCommunication();
             Dependency.Container.RegisterServiceAsLogic();
             Dependency.Container.RegisterCNCLibWpf();
-            Dependency.Container.RegisterMapper(new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<LogicAutoMapperProfile>();
-                cfg.AddProfile<WpfAutoMapperProfile>();
-                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-            }));
+            Dependency.Container.RegisterMapper(
+                new MapperConfiguration(
+                    cfg =>
+                    {
+                        cfg.AddProfile<LogicAutoMapperProfile>();
+                        cfg.AddProfile<WpfAutoMapperProfile>();
+                        cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                    }));
 
             var userContext = new CNCLibUserContext();
-            Dependency.Container.RegisterInstance((ICNCLibUserContext) userContext);
+            Dependency.Container.RegisterInstance((ICNCLibUserContext)userContext);
 
             // Open Database here
 

@@ -16,16 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Text.RegularExpressions;
-
 namespace Framework.WebAPI.Filter
 {
+    using System;
+    using System.Text.RegularExpressions;
+
     public sealed class ErrorResponseData
     {
-        public string Error   { get; set; }
-        public object Message { get; set; }
-
         public ErrorResponseData(string error, object message)
         {
             Error   = error;
@@ -37,5 +34,9 @@ namespace Framework.WebAPI.Filter
             Error   = Regex.Replace(exception.GetType().Name, "(Error|Exception)$", string.Empty);
             Message = exception.Message;
         }
+
+        public string Error { get; set; }
+
+        public object Message { get; set; }
     }
 }

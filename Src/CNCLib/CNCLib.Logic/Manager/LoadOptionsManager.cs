@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,75 +24,63 @@ using CNCLib.Logic.Client;
 using CNCLib.Logic.Contract;
 using CNCLib.Logic.Contract.DTO;
 
-using Framework.Dependency;
 using Framework.Logic;
 
 namespace CNCLib.Logic.Manager
 {
     public class LoadOptionsManager : ManagerBase, ILoadOptionsManager
     {
+        private readonly IDynItemController _dynItemController;
+
+        public LoadOptionsManager(IDynItemController dynItemController)
+        {
+            _dynItemController = dynItemController ?? throw new ArgumentException();
+        }
+
         public async Task<IEnumerable<LoadOptions>> GetAll()
         {
-            using (var controller = Dependency.Resolve<IDynItemController>())
+            var list = new List<LoadOptions>();
+            foreach (DynItem item in await _dynItemController.GetAll(typeof(LoadOptions)))
             {
-                var list = new List<LoadOptions>();
-                foreach (DynItem item in await controller.GetAll(typeof(LoadOptions)))
-                {
-                    var li = (LoadOptions) await controller.Create(item.ItemId);
-                    li.Id = item.ItemId;
-                    list.Add(li);
-                }
-
-                return list;
+                var li = (LoadOptions)await _dynItemController.Create(item.ItemId);
+                li.Id = item.ItemId;
+                list.Add(li);
             }
+
+            return list;
         }
 
         public async Task<LoadOptions> Get(int id)
         {
-            using (var controller = Dependency.Resolve<IDynItemController>())
+            object obj = await _dynItemController.Create(id);
+            if (obj != null)
             {
-                object obj = await controller.Create(id);
-                if (obj != null)
-                {
-                    var li = (LoadOptions) obj;
-                    li.Id = id;
-                    return (LoadOptions) obj;
-                }
-
-                return null;
+                var li = (LoadOptions)obj;
+                li.Id = id;
+                return (LoadOptions)obj;
             }
+
+            return null;
         }
 
         public async Task Delete(LoadOptions m)
         {
-            using (var controller = Dependency.Resolve<IDynItemController>())
-            {
-                await controller.Delete(m.Id);
-            }
+            await _dynItemController.Delete(m.Id);
         }
 
         public async Task Delete(int key)
         {
-            using (var controller = Dependency.Resolve<IDynItemController>())
-            {
-                await controller.Delete(key);
-            }
+            await _dynItemController.Delete(key);
         }
 
         public async Task<int> Add(LoadOptions m)
         {
-            using (var controller = Dependency.Resolve<IDynItemController>())
-            {
-                return await controller.Add(m.SettingName, m);
-            }
+            return await _dynItemController.Add(m.SettingName, m);
         }
 
         public async Task Update(LoadOptions m)
         {
-            using (var controller = Dependency.Resolve<IDynItemController>())
-            {
-                await controller.Save(m.Id, m.SettingName, m);
-            }
+            await _dynItemController.Save(m.Id, m.SettingName, m);
         }
 
         public Task<IEnumerable<int>> Add(IEnumerable<LoadOptions> values)

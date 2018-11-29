@@ -56,12 +56,12 @@ namespace CNCLib.GCode.Commands
         public Command PrevCommand { get; set; }
 
         public Point3D CalculatedStartPosition =>
-            PrevCommand == null ? new Point3D() : PrevCommand.CalculatedEndPosition;
+            PrevCommand == null?new Point3D():PrevCommand.CalculatedEndPosition;
 
         public Point3D CalculatedEndPosition => _calculatedEndPosition;
 
-        public bool     UseWithoutPrefix { get; protected set; }
-        public bool     PositionValid    { get; protected set; }
+        public bool            UseWithoutPrefix { get; protected set; }
+        public bool            PositionValid    { get; protected set; }
         public CommandMoveType MoveType         { get; protected set; }
 
         public string SubCode { get; protected set; }
@@ -115,7 +115,7 @@ namespace CNCLib.GCode.Commands
 
             public Variable ShallowCopy()
             {
-                return (Variable) MemberwiseClone();
+                return (Variable)MemberwiseClone();
             }
         }
 
@@ -148,7 +148,7 @@ namespace CNCLib.GCode.Commands
 
         public void AddVariable(char name, decimal value)
         {
-            AddVariable(new Variable { Name = name, Value = (double) value });
+            AddVariable(new Variable { Name = name, Value = (double)value });
         }
 
         public double GetVariable(char name, CommandState state, double defaultValue)
@@ -332,7 +332,7 @@ namespace CNCLib.GCode.Commands
 
         protected string GCodeLineNumber(string postString)
         {
-            return LineNumber.HasValue ? $"N{LineNumber}{postString}" : "";
+            return LineNumber.HasValue?$"N{LineNumber}{postString}":"";
         }
 
         public virtual string[] GetGCodeCommands(Point3D startFrom, CommandState state)
@@ -379,7 +379,7 @@ namespace CNCLib.GCode.Commands
             }
             else
             {
-                _calculatedEndPosition = PrevCommand == null ? new Point3D() : PrevCommand._calculatedEndPosition;
+                _calculatedEndPosition = PrevCommand == null?new Point3D():PrevCommand._calculatedEndPosition;
             }
         }
 

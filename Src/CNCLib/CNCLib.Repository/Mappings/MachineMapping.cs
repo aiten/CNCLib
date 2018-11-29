@@ -16,7 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Repository.Contract.Entity;
+using CNCLib.Repository.Contract.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -45,6 +45,7 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasOne(p => p.User);
             entity.Property(m => m.UserId);
+
 //                IsOptional();
         }
     }

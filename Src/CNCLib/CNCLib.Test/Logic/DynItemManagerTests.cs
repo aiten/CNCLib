@@ -26,25 +26,21 @@ using CNCLib.Service.Contract;
 
 using FluentAssertions;
 
-using Framework.Dependency;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using NSubstitute;
+
+using Xunit;
 
 namespace CNCLib.Test.Logic
 {
-    [TestClass]
     public class DynItemManagerTests : LogicTests
     {
         private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
         {
             var srv = Substitute.For<TInterface>();
-            Dependency.Container.RegisterInstance(srv);
             return srv;
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetItemNone()
         {
             var srv = CreateMock<IItemService>();
@@ -58,7 +54,7 @@ namespace CNCLib.Test.Logic
             all.Should().BeEmpty();
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetItemAll()
         {
             var srv = CreateMock<IItemService>();
@@ -73,16 +69,16 @@ namespace CNCLib.Test.Logic
             var all  = (await ctrl.GetAll()).ToArray();
 
             all.Should().HaveCount(2);
-            all.FirstOrDefault().
-                Should().
-                BeEquivalentTo(new
+            all.FirstOrDefault().Should().BeEquivalentTo(
+                new
                 {
                     ItemId = 1,
                     Name   = "Test1"
-                }, options => options.ExcludingMissingMembers());
+                },
+                options => options.ExcludingMissingMembers());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetAllType()
         {
             var srv = CreateMock<IItemService>();
@@ -97,16 +93,16 @@ namespace CNCLib.Test.Logic
             var all  = await ctrl.GetAll(typeof(string));
 
             all.Should().HaveCount(2);
-            all.FirstOrDefault().
-                Should().
-                BeEquivalentTo(new
+            all.FirstOrDefault().Should().BeEquivalentTo(
+                new
                 {
                     ItemId = 1,
                     Name   = "Test1"
-                }, options => options.ExcludingMissingMembers());
+                },
+                options => options.ExcludingMissingMembers());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetItem()
         {
             var srv = CreateMock<IItemService>();
@@ -115,15 +111,16 @@ namespace CNCLib.Test.Logic
             var ctrl = new DynItemController(srv);
             var all  = await ctrl.Get(1);
 
-            all.Should().
-                BeEquivalentTo(new
+            all.Should().BeEquivalentTo(
+                new
                 {
                     ItemId = 1,
                     Name   = "Test1"
-                }, options => options.ExcludingMissingMembers());
+                },
+                options => options.ExcludingMissingMembers());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetItemNull()
         {
             var srv = CreateMock<IItemService>();
@@ -134,7 +131,7 @@ namespace CNCLib.Test.Logic
             all.Should().BeNull();
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateObject()
         {
             var srv = CreateMock<IItemService>();
@@ -149,7 +146,7 @@ namespace CNCLib.Test.Logic
             item.Should().NotBeNull();
             item.Should().BeOfType(typeof(DynItemManagerTestClass));
 
-            var item2 = (DynItemManagerTestClass) item;
+            var item2 = (DynItemManagerTestClass)item;
 
             item2.StringProperty.Should().Be("Hallo", item2.StringProperty);
             item2.IntProperty.Should().Be(1);
@@ -179,7 +176,7 @@ namespace CNCLib.Test.Logic
             };
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddObject()
         {
             var srv = CreateMock<IItemService>();
@@ -208,7 +205,7 @@ namespace CNCLib.Test.Logic
             await srv.Received().Add(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "DecimalNullProperty").Value == "9.876"));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task DeleteItem()
         {
             // arrange
@@ -229,7 +226,7 @@ namespace CNCLib.Test.Logic
             await srv.Received().Delete(itemEntity);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task DeleteItemNone()
         {
             // arrange
@@ -244,10 +241,10 @@ namespace CNCLib.Test.Logic
 
             //assert
             await srv.Received().Get(1);
-            await srv.DidNotReceiveWithAnyArgs().Delete((Item) null);
+            await srv.DidNotReceiveWithAnyArgs().Delete((Item)null);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task SaveItem()
         {
             // arrange
@@ -262,7 +259,7 @@ namespace CNCLib.Test.Logic
             //assert
             await srv.Received().Update(Arg.Is<Item>(x => x.ItemId == 1));
             await srv.Received().Update(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "IntProperty").Value == "1"));
-            await srv.DidNotReceiveWithAnyArgs().Delete((Item) null);
+            await srv.DidNotReceiveWithAnyArgs().Delete((Item)null);
         }
     }
 }

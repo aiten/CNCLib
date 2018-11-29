@@ -16,23 +16,14 @@
   http://www.gnu.org/licenses/
 */
 
-namespace CNCLib.Repository.Context
+namespace CNCLib.Repository.Contract.Entities
 {
-/*
-	public class CNCLibInitializer : MigrateDatabaseToLatestVersion<CNCLibContext, Migrations.Configuration>
-	{
-		public override void InitializeDatabase(CNCLibContext context)
-		{
-			base.InitializeDatabase(context);
-
-			// add TestData to database if no data are stored
-
-			if (context.Machines.CountAsync().ConfigureAwait(false).GetAwaiter().GetResult() == 0 && context.Configurations.CountAsync().ConfigureAwait(false).GetAwaiter().GetResult() == 0 && context.Items.CountAsync().ConfigureAwait(false).GetAwaiter().GetResult() == 0)
-			{
-				CNCLibDefaultData.CNCSeed(context);
-				context.SaveChanges();
-			}
-		}
-	}
-*/
+    public class MachineInitCommand
+    {
+        public         int     MachineInitCommandId { get; set; }
+        public         int     SeqNo                { get; set; }
+        public         string  CommandString        { get; set; }
+        public         int     MachineId            { get; set; }
+        public virtual Machine Machine              { get; set; }
+    }
 }

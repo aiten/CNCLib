@@ -29,13 +29,13 @@ namespace Framework.Dependency
     {
         private readonly IServiceScope _serviceScope;
 
-        public IDependencyResolver Resolver { get; private set; }
-
         public MsDependencyScope(IServiceScope serviceScope)
         {
             _serviceScope = serviceScope;
             Resolver      = new MsDependencyResolver(_serviceScope.ServiceProvider);
         }
+
+        public IDependencyResolver Resolver { get; private set; }
 
         #region IDisposable Support
 
@@ -57,7 +57,7 @@ namespace Framework.Dependency
         public void Dispose()
         {
             Dispose(true);
-            
+
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }

@@ -20,20 +20,14 @@ namespace Framework.Logging
 {
     using System;
 
-    using Abstraction;
-
     using NLog;
 
-    public sealed class Logger<TType> : Logger, ILogger<TType>
-    {
-        public Logger() : base(typeof(TType))
-        {
-        }
-    }
-
+    /// <summary>
+    /// Implementation class for ILogger with NLog.
+    /// </summary>
     public class Logger : Abstraction.ILogger
     {
-        private readonly global::NLog.Logger _logger;
+        private readonly NLog.Logger _logger;
 
         public Logger(Type type)
         {
@@ -50,7 +44,7 @@ namespace Framework.Logging
             _logger.Trace(message);
         }
 
-        public void Trace(string message, Exception exception)
+        public void Trace(Exception exception, string message)
         {
             _logger.Trace(exception, message);
         }
@@ -65,7 +59,7 @@ namespace Framework.Logging
             _logger.Debug(message);
         }
 
-        public void Debug(string message, Exception exception)
+        public void Debug(Exception exception, string message)
         {
             _logger.Debug(exception, message);
         }
@@ -80,7 +74,7 @@ namespace Framework.Logging
             _logger.Info(message);
         }
 
-        public void Info(string message, Exception exception)
+        public void Info(Exception exception, string message)
         {
             _logger.Info(exception, message);
         }
@@ -95,7 +89,7 @@ namespace Framework.Logging
             _logger.Warn(message);
         }
 
-        public void Warn(string message, Exception exception)
+        public void Warn(Exception exception, string message)
         {
             _logger.Warn(exception, message);
         }
@@ -110,7 +104,7 @@ namespace Framework.Logging
             _logger.Error(message);
         }
 
-        public void Error(string message, Exception exception)
+        public void Error(Exception exception, string message)
         {
             _logger.Error(exception, message);
         }
@@ -125,7 +119,7 @@ namespace Framework.Logging
             _logger.Fatal(message);
         }
 
-        public void Fatal(string message, Exception exception)
+        public void Fatal(Exception exception, string message)
         {
             _logger.Fatal(exception, message);
         }

@@ -24,6 +24,7 @@ namespace Framework.Logic
     using System.Threading.Tasks;
 
     using Abstraction;
+
     using AutoMapper;
 
     using Repository.Abstraction;
@@ -58,11 +59,20 @@ namespace Framework.Logic
                     AddEntity(entity);
                 }
 
-                _repository.AddRange(entities);
-                await trans.CommitTransactionAsync();
+                try
+                {
+                    _repository.AddRange(entities);
+                    await trans.CommitTransactionAsync();
+                }
+                catch (Exception)
+                {
+                    // Console.WriteLine(e);
+                    throw;
+                }
+
                 await Modified();
 
-                return entities.Select(e => GetKey(e));
+                return entities.Select(GetKey);
             }
         }
 
@@ -83,9 +93,17 @@ namespace Framework.Logic
                     DeleteEntity(entity);
                 }
 
-                _repository.DeleteRange(entities);
-                await trans.CommitTransactionAsync();
-                await Modified();
+                try
+                {
+                    _repository.DeleteRange(entities);
+                    await trans.CommitTransactionAsync();
+                }
+                catch (Exception)
+                {
+                    // for debugging
+                    // Console.WriteLine(e);
+                    throw;
+                }
             }
         }
 
@@ -124,9 +142,9 @@ namespace Framework.Logic
 
                 var entities = MapFromDtos(values, ValidationType.UpdateValidation);
 
-                var entitiesInDb = await _repository.GetTracking(entities.Select(e => GetKey(e)));
+                var entitiesInDb = await _repository.GetTracking(entities.Select(GetKey));
 
-                var mergeJoin = entitiesInDb.Join(entities, e => GetKey(e), e => GetKey(e), (EntityInDb, Entity) => new { EntityInDb, Entity });
+                var mergeJoin = entitiesInDb.Join(entities, GetKey, GetKey, (EntityInDb, Entity) => new { EntityInDb, Entity });
 
                 if (entities.Count() != entitiesInDb.Count() || entities.Count() != mergeJoin.Count())
                 {
@@ -138,8 +156,16 @@ namespace Framework.Logic
                     UpdateEntity(merged.EntityInDb, merged.Entity);
                 }
 
-                await trans.CommitTransactionAsync();
-                await Modified();
+                try
+                {
+                    await trans.CommitTransactionAsync();
+                    await Modified();
+                }
+                catch (Exception)
+                {
+                    // Console.WriteLine(e);
+                    throw;
+                }
             }
         }
 

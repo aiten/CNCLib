@@ -38,7 +38,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private string _directCommand;
 
-        public string DirectCommand { get => _directCommand; set => SetProperty(ref _directCommand, value); }
+        public string DirectCommand
+        {
+            get => _directCommand;
+            set => SetProperty(ref _directCommand, value);
+        }
 
         private void AddDirectCommandHistory(string cmd)
         {

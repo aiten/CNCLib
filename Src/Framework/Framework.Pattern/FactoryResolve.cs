@@ -28,15 +28,15 @@ namespace Framework.Pattern
 
     public sealed class ScopeResolve<T> : IScope<T>, IDisposable where T : class
     {
-        private readonly IDependencyScope     _scope;
-        private readonly T                    _instance;
+        private readonly IDependencyScope _scope;
+        private readonly T                _instance;
 
         private bool _isDisposed;
 
         public ScopeResolve(IDependencyScope scope, T instance)
         {
-            _scope = scope;
-            _instance  = instance;
+            _scope    = scope;
+            _instance = instance;
         }
 
         public T Instance

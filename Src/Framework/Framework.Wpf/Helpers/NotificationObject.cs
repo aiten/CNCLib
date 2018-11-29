@@ -71,7 +71,7 @@ namespace Framework.Wpf.Helpers
 
         protected void OnPropertyChanged<TProperty>(Expression<Func<TProperty>> projection)
         {
-            var memberExpression = (MemberExpression) projection.Body;
+            var memberExpression = (MemberExpression)projection.Body;
             RaisePropertyChanged(memberExpression.Member.Name);
         }
     }

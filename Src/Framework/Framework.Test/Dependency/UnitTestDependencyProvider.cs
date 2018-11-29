@@ -19,6 +19,7 @@
 namespace Framework.Test.Dependency
 {
     using System;
+
     using Framework.Dependency.Abstraction;
 
     public sealed class UnitTestDependencyProvider : IDependencyProvider

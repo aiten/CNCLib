@@ -23,7 +23,7 @@ namespace CNCLib.Service.WebAPI
 {
     public class LoadOptionsService : CRUDServiceBase<LoadOptions, int>, ILoadOptionsService
     {
-        protected override string Api                       => @"api/LoadOptions";
-        protected override int    GetKey(LoadOptions value) => value.Id;
+        protected override string Api => @"api/LoadOptions";
+        protected override int GetKey(LoadOptions value) => value.Id;
     }
 }

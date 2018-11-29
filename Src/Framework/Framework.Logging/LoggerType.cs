@@ -16,6 +16,19 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Runtime.InteropServices;
+namespace Framework.Logging
+{
+    using Abstraction;
 
-[assembly: Guid("e598aaa4-fe51-46bd-b852-4a9eeb21a5c5")]
+    /// <summary>
+    /// Implementation class for ILogger of "Type" with NLog.
+    /// </summary>
+    /// <typeparam name="TType">Type for logger.</typeparam>
+    public sealed class Logger<TType> : Logger, ILogger<TType>
+    {
+        public Logger()
+            : base(typeof(TType))
+        {
+        }
+    }
+}

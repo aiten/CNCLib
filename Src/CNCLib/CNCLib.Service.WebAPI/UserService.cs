@@ -27,8 +27,8 @@ namespace CNCLib.Service.WebAPI
 {
     public class UserService : CRUDServiceBase<User, int>, IUserService
     {
-        protected override string Api            => @"api/user";
-        protected override int    GetKey(User u) => u.UserId;
+        protected override string Api => @"api/user";
+        protected override int GetKey(User u) => u.UserId;
 
         public Task<User> GetByName(string username)
         {

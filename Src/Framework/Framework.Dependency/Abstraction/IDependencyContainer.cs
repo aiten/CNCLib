@@ -27,6 +27,11 @@ namespace Framework.Dependency.Abstraction
     public interface IDependencyContainer : IDisposable
     {
         /// <summary>
+        /// Gets an enumeration containing all types registered with the dependency container.
+        /// </summary>
+        IEnumerable<Type> RegisteredTypes { get; }
+
+        /// <summary>
         /// Registers the given object for the interface. 
         /// </summary>
         /// <param name="typeFrom">Type from.</param>
@@ -60,10 +65,5 @@ namespace Framework.Dependency.Abstraction
         /// Get an instance of an object which can resolve the "service" (object). 
         /// </summary>
         IDependencyResolver GetResolver();
-
-        /// <summary>
-        /// Gets an enumeration containing all types registered with the dependency container.
-        /// </summary>
-        IEnumerable<Type> RegisteredTypes { get; }
     }
 }

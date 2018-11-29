@@ -22,9 +22,11 @@ namespace Framework.Repository
 
     using Microsoft.EntityFrameworkCore;
 
-    public abstract class QueryRepository<TDbContext, TEntity> : RepositoryBase<TDbContext> where TDbContext : DbContext where TEntity : class
+    public abstract class QueryRepository<TDbContext, TEntity> : RepositoryBase<TDbContext>
+        where TDbContext : DbContext where TEntity : class
     {
-        protected QueryRepository(TDbContext dbContext) : base(dbContext)
+        protected QueryRepository(TDbContext dbContext)
+            : base(dbContext)
         {
         }
 

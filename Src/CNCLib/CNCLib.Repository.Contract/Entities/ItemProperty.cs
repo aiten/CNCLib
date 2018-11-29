@@ -16,17 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-
-using Framework.Dependency;
-using Framework.Dependency.Abstraction;
-
-namespace CNCLib.WebAPI.Test.Dependency
+namespace CNCLib.Repository.Contract.Entities
 {
-    public sealed class UnitTestDependencyProvider : IDependencyProvider
+    public class ItemProperty
     {
-        private readonly Lazy<IDependencyContainer> _dependencyContainer = new Lazy<IDependencyContainer>(() => new MockingDependencyContainer());
-
-        public IDependencyContainer Container => _dependencyContainer.Value;
+        public         int    ItemId { get; set; }
+        public         string Name   { get; set; }
+        public         string Value  { get; set; }
+        public virtual Item   Item   { get; set; }
     }
 }

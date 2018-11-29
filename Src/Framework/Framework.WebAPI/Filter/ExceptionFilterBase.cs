@@ -16,15 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Net;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-
 namespace Framework.WebAPI.Filter
 {
+    using System;
+    using System.Net;
+
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.Extensions.Logging;
+
     public abstract class ExceptionFilterBase : ActionContextLoggerProvider, IExceptionFilter
     {
         protected ExceptionFilterBase(ILoggerFactory loggerFactory) : base(loggerFactory)
@@ -42,7 +42,7 @@ namespace Framework.WebAPI.Filter
                     var errorResponseData = new ErrorResponseData(context.Exception);
                     var jsonResult = new JsonResult(errorResponseData)
                     {
-                        StatusCode = (int) response.Value.StatusCode
+                        StatusCode = (int)response.Value.StatusCode
                     };
                     context.Result = jsonResult;
                 }
@@ -53,14 +53,15 @@ namespace Framework.WebAPI.Filter
 
         protected struct ExceptionResponse
         {
-            public HttpStatusCode StatusCode { get; }
-            public Exception      Exception  { get; }
-
             public ExceptionResponse(HttpStatusCode statusCode, Exception exception)
             {
                 StatusCode = statusCode;
                 Exception  = exception;
             }
+
+            public HttpStatusCode StatusCode { get; }
+
+            public Exception Exception { get; }
         }
     }
 }

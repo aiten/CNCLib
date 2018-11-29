@@ -45,7 +45,7 @@ namespace Framework.Wpf.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string parameterString = parameter as string;
-            bool   valueAsBool     = value != null && (bool) value;
+            bool   valueAsBool     = value != null && (bool)value;
 
             if (parameterString == null || !valueAsBool)
             {

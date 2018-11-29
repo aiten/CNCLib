@@ -45,8 +45,8 @@ namespace CNCLib.GCode.Load
             PixelSizeX = 25.4 / b.HorizontalResolution;
             PixelSizeY = 25.4 / b.VerticalResolution;
 
-            ShiftX = (double) LoadOptions.LaserSize / 2.0;
-            ShiftY = (double) LoadOptions.LaserSize / 2.0;
+            ShiftX = (double)LoadOptions.LaserSize / 2.0;
+            ShiftY = (double)LoadOptions.LaserSize / 2.0;
 
             if (!string.IsNullOrEmpty(LoadOptions.ImageWriteToFileName))
             {
@@ -77,8 +77,8 @@ namespace CNCLib.GCode.Load
             decimal               scaleX = LoadOptions.ScaleX;
             decimal               scaleY = LoadOptions.ScaleY;
 
-            var dpiX = (double) (LoadOptions.ImageDPIX ?? (decimal) b.HorizontalResolution);
-            var dpiY = (double) (LoadOptions.ImageDPIY ?? (decimal) b.VerticalResolution);
+            var dpiX = (double)(LoadOptions.ImageDPIX ?? (decimal)b.HorizontalResolution);
+            var dpiY = (double)(LoadOptions.ImageDPIY ?? (decimal)b.VerticalResolution);
 
             if (LoadOptions.AutoScale)
             {
@@ -103,12 +103,12 @@ namespace CNCLib.GCode.Load
                     AddComment("DPI_Y(Dist)", scaleDPIY);
                 }
 
-                double nowX = (double) b.Width;
-                double nowY = (double) b.Height;
-                double newX = ((double) LoadOptions.AutoScaleSizeX) * scaleDPIX / 25.4;
-                double newY = ((double) LoadOptions.AutoScaleSizeY) * scaleDPIY / 25.4;
-                scaleX = (decimal) (newX / nowX);
-                scaleY = (decimal) (newY / nowY);
+                double nowX = (double)b.Width;
+                double nowY = (double)b.Height;
+                double newX = ((double)LoadOptions.AutoScaleSizeX) * scaleDPIX / 25.4;
+                double newY = ((double)LoadOptions.AutoScaleSizeY) * scaleDPIY / 25.4;
+                scaleX = (decimal)(newX / nowX);
+                scaleY = (decimal)(newY / nowY);
                 if (LoadOptions.AutoScaleKeepRatio)
                 {
                     scaleX = scaleY = Math.Min(scaleX, scaleY);
@@ -122,8 +122,8 @@ namespace CNCLib.GCode.Load
             {
                 AddComment("ScaleX", scaleX);
                 AddComment("ScaleY", scaleY);
-                b = ImageHelper.ScaleTo(bx, (int) (b.Width * scaleX), (int) (b.Height * scaleY));
-                b.SetResolution((float) dpiX, (float) dpiY);
+                b = ImageHelper.ScaleTo(bx, (int)(b.Width * scaleX), (int)(b.Height * scaleY));
+                b.SetResolution((float)dpiX, (float)dpiY);
             }
 
             return b;

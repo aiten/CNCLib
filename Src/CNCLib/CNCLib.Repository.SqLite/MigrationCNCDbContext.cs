@@ -17,7 +17,9 @@
 */
 
 using System.Linq;
+
 using Microsoft.EntityFrameworkCore;
+
 using CNCLib.Repository.Context;
 
 namespace CNCLib.Repository.SqLite
@@ -43,11 +45,8 @@ namespace CNCLib.Repository.SqLite
                 }
 
                 ctx.Database.Migrate();
-                if (!ctx.Machines.Any())
-                {
-                    new CNCLibDefaultData().CNCSeed(ctx, isTest);
-                    ctx.SaveChanges();
-                }
+
+                ctx.InitOrUpdateDatabase(isTest);
             }
         }
     }

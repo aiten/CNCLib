@@ -17,8 +17,9 @@
 */
 
 using System;
+using System.Linq;
 
-using CNCLib.Repository.Contract.Entity;
+using CNCLib.Repository.Contract.Entities;
 using CNCLib.Repository.Mappings;
 
 using Framework.Repository.Abstraction.Entities;
@@ -32,6 +33,10 @@ namespace CNCLib.Repository.Context
     public class CNCLibContext : DbContext
     {
         public static Action<DbContextOptionsBuilder> OnConfigure;
+
+//      public CNCLibContext(DbContextOptions<CNCLibContext> options) : base(options)
+//      {
+//      }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -80,6 +85,29 @@ namespace CNCLib.Repository.Context
             modelBuilder.Entity<Log>().Map();
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        protected void InitOrUpdateDatabase(bool isTest)
+        {
+            if (Machines.Any())
+            {
+                ModifyWrongData();
+                SaveChanges();
+            }
+            else
+            {
+                new CNCLibDefaultData().CNCSeed(this, isTest);
+                SaveChanges();
+            }
+        }
+
+        private void ModifyWrongData()
+        {
+            // Contracts => Contract
+            foreach (var item in Items.Where(i => i.ClassName == @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO"))
+            {
+                item.ClassName = @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO";
+            }
         }
     }
 }

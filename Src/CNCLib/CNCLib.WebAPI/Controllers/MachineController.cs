@@ -24,7 +24,7 @@ using CNCLib.Logic.Contract.DTO;
 using CNCLib.Service.Contract;
 using CNCLib.Shared;
 
-using Framework.WebAPI.Controllers;
+using Framework.WebAPI.Controller;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,7 +40,7 @@ namespace CNCLib.WebAPI.Controllers
         {
             _service     = service ?? throw new ArgumentNullException();
             _userContext = userContext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext) _userContext).InitFromController(this);
+            ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 
         #region default REST
@@ -119,6 +119,7 @@ namespace CNCLib.WebAPI.Controllers
 
         [Route("defaultmachine")]
         [HttpGet]
+
         //Always explicitly state the accepted HTTP method
         public async Task<ActionResult<int>> GetDefaultMachine()
         {
@@ -128,6 +129,7 @@ namespace CNCLib.WebAPI.Controllers
 
         [Route("defaultmachine")]
         [HttpPut]
+
         //Always explicitly state the accepted HTTP method
         public async Task<ActionResult> SetDefaultMachine(int id)
         {

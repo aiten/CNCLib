@@ -20,13 +20,17 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+
 using NLog.Web;
+
 using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
+
 using NLog;
+
 using ILogger = NLog.ILogger;
 
 namespace CNCLib.Serial.Server
@@ -53,7 +57,7 @@ namespace CNCLib.Serial.Server
                 }
             }
 
-            GlobalDiagnosticsContext.Set("logDir", $"{ localAppData }/CNCLib.Serial.Server/logs");
+            GlobalDiagnosticsContext.Set("logDir", $"{localAppData}/CNCLib.Serial.Server/logs");
             var logger = NLogBuilder.ConfigureNLog("NLog.config").GetCurrentClassLogger();
             try
             {

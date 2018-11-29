@@ -68,7 +68,7 @@ namespace Framework.Drawing
                     return 255;
                 }
 
-                return (byte) r;
+                return (byte)r;
             }
         }
 
@@ -96,7 +96,7 @@ namespace Framework.Drawing
         protected int Luminance(Color col)
         {
             // o..255 if RGB is Byte
-            return (int) (0.2126 * col.R + 0.7152 * col.G + 0.0722 * col.B);
+            return (int)(0.2126 * col.R + 0.7152 * col.G + 0.0722 * col.B);
         }
 
         protected Color FindNearestColorBw(Color col)
@@ -147,7 +147,7 @@ namespace Framework.Drawing
                 R = _rgbValues[idx + _addForR],
                 G = _rgbValues[idx + _addForG],
                 B = _rgbValues[idx + _addForB],
-                A = (_addForA < 0) ? 255 : _rgbValues[idx + _addForA]
+                A = (_addForA < 0)?255:_rgbValues[idx + _addForA]
             };
         }
 
@@ -261,7 +261,7 @@ namespace Framework.Drawing
                     Color currentPixel = GetPixel(x, y);
                     if (currentPixel.R != 0)
                     {
-                        rgbValues[y * scanSize + x / 8] += (byte) (0x80 >> (x % 8));
+                        rgbValues[y * scanSize + x / 8] += (byte)(0x80 >> (x % 8));
                     }
                 }
             }
@@ -299,7 +299,7 @@ namespace Framework.Drawing
                     Color currentPixel = GetPixel(x, y);
                     if (currentPixel.R != 0)
                     {
-                        rgbValues[y * scanSize + x / 2] += (x % 2 == 0) ? (byte) 0xf0 : (byte) 0xf;
+                        rgbValues[y * scanSize + x / 2] += (x % 2 == 0)?(byte)0xf0:(byte)0xf;
                     }
                 }
             }

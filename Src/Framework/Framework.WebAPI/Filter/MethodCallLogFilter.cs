@@ -16,13 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Diagnostics;
-
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-
 namespace Framework.WebAPI.Filter
 {
+    using System.Diagnostics;
+
+    using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.Extensions.Logging;
+
     public sealed class MethodCallLogFilter : IActionFilter
     {
         private readonly ILogger<MethodCallLogFilter> _logger;
@@ -36,7 +36,7 @@ namespace Framework.WebAPI.Filter
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            Debug.Assert(_stopWatch == null);
+            Debug.Assert(_stopWatch == null, @"OnActionExecuted must be called");
             _stopWatch = Stopwatch.StartNew();
         }
 

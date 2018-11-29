@@ -136,13 +136,14 @@ namespace CNCLib.GCode
             {
                 using (TextWriter writer = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
                 {
-                    Commands.ForEach(c =>
-                    {
-                        if (!string.IsNullOrEmpty(c.ImportInfo))
+                    Commands.ForEach(
+                        c =>
                         {
-                            writer.WriteLine(c.ImportInfo);
-                        }
-                    });
+                            if (!string.IsNullOrEmpty(c.ImportInfo))
+                            {
+                                writer.WriteLine(c.ImportInfo);
+                            }
+                        });
                 }
             }
         }

@@ -16,13 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Net;
-
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-
 namespace Framework.WebAPI.Filter
 {
+    using System.Net;
+
+    using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.Extensions.Logging;
+
     public sealed class UnhandledExceptionFilter : ExceptionFilterBase
     {
         public UnhandledExceptionFilter(ILoggerFactory loggerFactory) : base(loggerFactory)

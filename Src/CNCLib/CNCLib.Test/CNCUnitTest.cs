@@ -20,25 +20,30 @@ using AutoMapper;
 
 using CNCLib.Logic;
 
-using Framework.Dependency;
 using Framework.Test;
 
 namespace CNCLib.Test
 {
     public abstract class CNCUnitTest : UnitTestBase
     {
-        protected override void InitializeDependencies()
-        {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<LogicAutoMapperProfile>();
-//                cfg.AddProfile<WpfAutoMapperProfile>();
-//                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-            });
-            config.AssertConfigurationIsValid();
+        public static IMapper Mapper { get; private set; }
 
-            IMapper mapper = config.CreateMapper();
-            Dependency.Container.RegisterInstance(mapper);
+        protected CNCUnitTest()
+        {
+            if (Mapper == null)
+            {
+                var config = new MapperConfiguration(
+                    cfg =>
+                    {
+                        cfg.AddProfile<LogicAutoMapperProfile>();
+
+                        //                cfg.AddProfile<WpfAutoMapperProfile>();
+                        //                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                    });
+                config.AssertConfigurationIsValid();
+
+                Mapper = config.CreateMapper();
+            }
         }
     }
 }

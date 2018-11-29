@@ -20,20 +20,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using CNCLib.Logic.Manager;
 using CNCLib.Repository.Contract;
-using CNCLib.Repository.Contract.Entity;
+using CNCLib.Repository.Contract.Entities;
 
 using FluentAssertions;
 
-using Framework.Dependency;
 using Framework.Repository.Abstraction;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using NSubstitute;
+
+using Xunit;
 
 using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
 using MachineInitCommandDto = CNCLib.Logic.Contract.DTO.MachineInitCommand;
@@ -41,17 +38,16 @@ using MachineCommandDto = CNCLib.Logic.Contract.DTO.MachineCommand;
 
 namespace CNCLib.Test.Logic
 {
-    [TestClass]
     public class MachineManagerTests : LogicTests
     {
-        [TestMethod]
+        [Fact]
         public async Task AddMachine()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
             var machineEntity1 = new MachineDto
             {
@@ -87,14 +83,14 @@ namespace CNCLib.Test.Logic
             machineId.Should().Be(1);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task UpdateMachine()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
             var machineEntity1 = new Machine
             {
@@ -114,14 +110,14 @@ namespace CNCLib.Test.Logic
             //await rep.Received().Update(11, Arg.Is<Machine>(x => x.Name == "SuperMaxi"));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task DeleteMachine()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
             var machineEntity1 = new Machine
             {
@@ -141,14 +137,14 @@ namespace CNCLib.Test.Logic
             rep.Received().DeleteRange(Arg.Is<IEnumerable<Machine>>(x => x.First().MachineId == 11));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetMachinesNone()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
             var machineEntity = new Machine[0];
             rep.GetAll().Returns(machineEntity);
@@ -157,14 +153,14 @@ namespace CNCLib.Test.Logic
             machines.Length.Should().Be(0);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetMachinesOne()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
             var machineEntity = new[]
             {
@@ -190,14 +186,14 @@ namespace CNCLib.Test.Logic
             machines[0].MachineInitCommands.Count().Should().Be(0);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetMachinesMany()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
             var machineEntity = new[]
             {
@@ -254,14 +250,14 @@ namespace CNCLib.Test.Logic
             machines[1].MachineInitCommands.First().CommandString.Should().Be("f");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task QueryOneMachinesFound()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
             var machineEntity1 = new Machine
             {
@@ -289,14 +285,14 @@ namespace CNCLib.Test.Logic
             machine.MachineInitCommands.Count().Should().Be(0);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task QueryOneMachinesNotFound()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
             var machineEntity1 = new Machine
             {
@@ -319,28 +315,28 @@ namespace CNCLib.Test.Logic
             machine.Should().BeNull();
         }
 
-        [TestMethod]
+        [Fact]
         public async Task DefaultMachine()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
             var machine = await ctrl.DefaultMachine();
             machine.Should().NotBeNull();
             machine.Name.Should().Be("New");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetDefaultMachine()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
             repC.Get("Environment", "DefaultMachineId").Returns(new Configuration { Value = "14" });
             int dm = await ctrl.GetDefaultMachine();
@@ -348,28 +344,28 @@ namespace CNCLib.Test.Logic
             dm.Should().Be(14);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetDefaultMachineNotSet()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
-            repC.Get("Environment", "DefaultMachineId").Returns((Configuration) null);
+            repC.Get("Environment", "DefaultMachineId").Returns((Configuration)null);
 
             (await ctrl.GetDefaultMachine()).Should().Be(-1);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task SetDefaultMachine()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IMachineRepository>();
             var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
             await ctrl.SetDefaultMachine(15);
 

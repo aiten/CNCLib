@@ -21,49 +21,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using CNCLib.Logic.Manager;
 using CNCLib.Repository.Contract;
-using CNCLib.Repository.Contract.Entity;
+using CNCLib.Repository.Contract.Entities;
 
 using FluentAssertions;
 
-using Framework.Dependency;
-using Framework.Repository;
 using Framework.Repository.Abstraction;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using NSubstitute;
+
+using Xunit;
 
 using ItemDto = CNCLib.Logic.Contract.DTO.Item;
 
 namespace CNCLib.Test.Logic
 {
-    [TestClass]
     public class ItemManagerTests : LogicTests
     {
-        private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
-        {
-            var rep = Substitute.For<TInterface>();
-            Dependency.Container.RegisterInstance(rep);
-
-            //			TInterface uow = Substitute.For<Framework.EF.UnitOfWork>();
-            //			Dependency.Container.RegisterInstance(uow);
-
-            Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork<CNCLib.Repository.Context.CNCLibContext>>();
-
-            return rep;
-        }
-
-        [TestMethod]
+        [Fact]
         public async Task GetItemNone()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
 
             var itemEntity = new Item[0];
             rep.GetAll().Returns(itemEntity);
@@ -72,13 +54,13 @@ namespace CNCLib.Test.Logic
             all.Should().BeEmpty();
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetItemAll()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
 
             var itemEntity = new[]
             {
@@ -90,47 +72,45 @@ namespace CNCLib.Test.Logic
 
             all.Should().HaveCount(2);
             new
-                {
-                    ItemId = 1,
-                    Name   = "Test1"
-                }.Should().
-                BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
+            {
+                ItemId = 1,
+                Name   = "Test1"
+            }.Should().BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetItem()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
 
             rep.Get(1).Returns(new Item { ItemId = 1, Name = "Test1" });
 
             var all = await ctrl.Get(1);
 
             new
-                {
-                    ItemId = 1,
-                    Name   = "Test1"
-                }.Should().
-                BeEquivalentTo(all, options => options.ExcludingMissingMembers());
+            {
+                ItemId = 1,
+                Name   = "Test1"
+            }.Should().BeEquivalentTo(all, options => options.ExcludingMissingMembers());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetItemNull()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
 
             var all = await ctrl.Get(10);
 
             all.Should().BeNull();
         }
 
-        [TestMethod]
+        [Fact]
         public async Task DeleteItemNone()
         {
             // arrange
@@ -138,7 +118,7 @@ namespace CNCLib.Test.Logic
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var rep        = Substitute.For<IItemRepository>();
 
-            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Dependency.Resolve<IMapper>());
+            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
 
             var item = new ItemDto { ItemId = 3000, Name = "Hallo" };
 

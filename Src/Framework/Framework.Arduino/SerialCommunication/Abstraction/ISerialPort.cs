@@ -60,7 +60,6 @@ namespace Framework.Arduino.SerialCommunication.Abstraction
         void DiscardOutBuffer();
         void WriteLine(string msg);
 
-
         string    PortName  { get; set; }
         int       BaudRate  { get; set; }
         Parity    Parity    { get; set; }

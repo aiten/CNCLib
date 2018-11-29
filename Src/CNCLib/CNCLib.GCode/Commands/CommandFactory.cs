@@ -52,7 +52,7 @@ namespace CNCLib.GCode.Commands
             if (IsRegistered(name))
             {
                 Type shape = _commandTypes[name.ToUpper()];
-                return (Command) Activator.CreateInstance(shape);
+                return (Command)Activator.CreateInstance(shape);
             }
 
             return null;
@@ -60,7 +60,7 @@ namespace CNCLib.GCode.Commands
 
         public Command CreateOrDefault(string name)
         {
-            string commandName = char.ToUpper(name[0]) == 'M' ? "MXX" : "GXX";
+            string commandName = char.ToUpper(name[0]) == 'M'?"MXX":"GXX";
             int    spaceIdx    = name.IndexOf(' ');
             if (spaceIdx >= 0)
             {

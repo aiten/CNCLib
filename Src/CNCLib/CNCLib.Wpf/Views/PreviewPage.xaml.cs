@@ -54,8 +54,8 @@ namespace CNCLib.Wpf.Views
             {
                 if (e.PropertyName == nameof(Global.SizeX) || e.PropertyName == nameof(Global.SizeY))
                 {
-                    gcode.SizeX = (double) Global.Instance.SizeX;
-                    gcode.SizeY = (double) Global.Instance.SizeY;
+                    gcode.SizeX = (double)Global.Instance.SizeX;
+                    gcode.SizeY = (double)Global.Instance.SizeY;
                 }
             };
 
@@ -63,7 +63,7 @@ namespace CNCLib.Wpf.Views
             {
                 vm.GetLoadInfo = arg =>
                 {
-                    var dlg   = new LoadOptionView();
+                    var dlg       = new LoadOptionView();
                     var viewModel = dlg.DataContext as LoadOptionViewModel;
                     if (viewModel != null)
                     {

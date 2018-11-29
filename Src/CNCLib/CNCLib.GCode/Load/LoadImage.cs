@@ -41,8 +41,8 @@ namespace CNCLib.GCode.Load
             //            const double SHIFT = Math.PI / 8.0;
             const double SHIFT = 0;
 
-            _shiftLaserOn  = -SHIFT * (double) LoadOptions.LaserSize;
-            _shiftLaserOff = SHIFT * (double) LoadOptions.LaserSize;
+            _shiftLaserOn  = -SHIFT * (double)LoadOptions.LaserSize;
+            _shiftLaserOff = SHIFT * (double)LoadOptions.LaserSize;
 
             using (var bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
             {
@@ -162,12 +162,12 @@ namespace CNCLib.GCode.Load
         private void AddCommandX(int x, int y, ref int lastY, bool laserOn)
         {
             // start laser a bit later but switch it off earlier
-            double shift = laserOn ? _shiftLaserOff : _shiftLaserOn;
+            double shift = laserOn?_shiftLaserOff:_shiftLaserOn;
 
             if (y != lastY)
             {
                 var    cy = new G00Command();
-                double x1 = (x * PixelSizeX) + ShiftX + shift - (double) LoadOptions.LaserAccDist;
+                double x1 = (x * PixelSizeX) + ShiftX + shift - (double)LoadOptions.LaserAccDist;
 
                 cy.AddVariable('X', ToGCode(x1));
                 cy.AddVariable('Y', ToGCode((SizeY - y - 1) * PixelSizeY + ShiftY));
@@ -176,6 +176,7 @@ namespace CNCLib.GCode.Load
             }
 
             Command cx;
+
             // if we have no laser on/off we switch with g01 and g00
             bool useG1 = HaveLaserOnOffCommand() || laserOn;
             if (useG1)

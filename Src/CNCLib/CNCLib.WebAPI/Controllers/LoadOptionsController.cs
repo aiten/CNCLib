@@ -24,7 +24,7 @@ using CNCLib.Logic.Contract.DTO;
 using CNCLib.Service.Contract;
 using CNCLib.Shared;
 
-using Framework.WebAPI.Controllers;
+using Framework.WebAPI.Controller;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,7 +40,7 @@ namespace CNCLib.WebAPI.Controllers
         {
             _service     = service ?? throw new ArgumentNullException();
             _userContext = userContext ?? throw new ArgumentNullException();
-            ((CNCLibUserContext) _userContext).InitFromController(this);
+            ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 
         #region default REST

@@ -25,37 +25,37 @@ namespace Framework.Logging.Abstraction
     {
         void Trace([Localizable(false)] string message);
 
-        void Trace([Localizable(false)] string message, Exception exception);
+        void Trace(Exception exception, [Localizable(false)] string message);
 
         void Trace(Exception exception);
 
         void Debug([Localizable(false)] string message);
 
-        void Debug([Localizable(false)] string message, Exception exception);
+        void Debug(Exception exception, [Localizable(false)] string message);
 
         void Debug(Exception exception);
 
         void Info([Localizable(false)] string message);
 
-        void Info([Localizable(false)] string message, Exception exception);
+        void Info(Exception exception, [Localizable(false)] string message);
 
         void Info(Exception exception);
 
         void Warn([Localizable(false)] string message);
 
-        void Warn([Localizable(false)] string message, Exception exception);
+        void Warn(Exception exception, [Localizable(false)] string message);
 
         void Warn(Exception exception);
 
         void Error([Localizable(false)] string message);
 
-        void Error([Localizable(false)] string message, Exception exception);
+        void Error(Exception exception, [Localizable(false)] string message);
 
         void Error(Exception exception);
 
         void Fatal([Localizable(false)] string message);
 
-        void Fatal([Localizable(false)] string message, Exception exception);
+        void Fatal(Exception exception, [Localizable(false)] string message);
 
         void Fatal(Exception exception);
     }

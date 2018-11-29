@@ -137,7 +137,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         private string GetDesc(int x, int y)
         {
             MachineCommand cmd = GetCmd(x, y);
-            return cmd == null ? "" : cmd.CommandName;
+            return cmd == null?"":cmd.CommandName;
         }
 
         #region Commands / CanCommands
@@ -150,14 +150,15 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendXY(int x, int y)
         {
-            RunAndUpdate(async () =>
-            {
-                var cmd = GetCmd(x, y);
-                if (cmd != null)
+            RunAndUpdate(
+                async () =>
                 {
-                    await new MachineGCodeHelper().SendCommandAsync(cmd.CommandString);
-                }
-            });
+                    var cmd = GetCmd(x, y);
+                    if (cmd != null)
+                    {
+                        await new MachineGCodeHelper().SendCommandAsync(cmd.CommandString);
+                    }
+                });
         }
 
         #endregion

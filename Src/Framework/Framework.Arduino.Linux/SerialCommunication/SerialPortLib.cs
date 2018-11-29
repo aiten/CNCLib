@@ -39,11 +39,23 @@ namespace Framework.Arduino.Linux.SerialCommunication
             }
         }
 
-        public new Parity Parity { get => (Parity) base.Parity; set => base.Parity = ConvertTo(value); }
+        public new Parity Parity
+        {
+            get => (Parity)base.Parity;
+            set => base.Parity = ConvertTo(value);
+        }
 
-        public new StopBits StopBits { get => ConvertTo(base.StopBits); set => base.StopBits = ConvertTo(value); }
+        public new StopBits StopBits
+        {
+            get => ConvertTo(base.StopBits);
+            set => base.StopBits = ConvertTo(value);
+        }
 
-        public new Handshake Handshake { get => (Handshake) base.Handshake; set => base.Handshake = ConvertTo(value); }
+        public new Handshake Handshake
+        {
+            get => (Handshake)base.Handshake;
+            set => base.Handshake = ConvertTo(value);
+        }
 
         private RJCP.IO.Ports.Parity ConvertTo(Parity pt)
         {

@@ -24,7 +24,8 @@ namespace Framework.Repository
 
     using Microsoft.EntityFrameworkCore;
 
-    public abstract class RepositoryBase<TDbContext> where TDbContext : DbContext
+    public abstract class RepositoryBase<TDbContext>
+        where TDbContext : DbContext
     {
         protected RepositoryBase(TDbContext dbContext)
         {

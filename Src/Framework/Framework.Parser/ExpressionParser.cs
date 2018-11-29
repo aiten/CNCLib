@@ -148,7 +148,6 @@ namespace Framework.Parser
 
         protected SParserState _state;
 
-
         protected void GetNextToken()
         {
             _state._detailToken = ETokenType.NothingSy;
@@ -414,10 +413,10 @@ namespace Framework.Parser
             switch (var_name.ToUpper())
             {
                 case "E":
-                    answer = (double) 2.7182818284590452353602874713527;
+                    answer = (double)2.7182818284590452353602874713527;
                     return true;
                 case "PI":
-                    answer = (double) 3.1415926535897932384626433832795;
+                    answer = (double)3.1415926535897932384626433832795;
                     return true;
             }
 
@@ -427,7 +426,6 @@ namespace Framework.Parser
         protected virtual void AssignVariable(string var_name, double value)
         {
         }
-
 
         ETokenType GetTokenType()
         {
@@ -575,6 +573,7 @@ namespace Framework.Parser
             while (operatorSy == ETokenType.FactorialSy)
             {
                 GetNextToken();
+
                 // factorial does not need a value right from the
                 // operator, so zero is filled in.
                 ans        = EvalOperator(operatorSy, ans, 0.0);
@@ -648,11 +647,13 @@ namespace Framework.Parser
                 case ETokenType.FloatSy:
                 case ETokenType.IntegerSy:
                 case ETokenType.VariableSy:
+
                     // this is a number
                     ans = _state._number;
                     GetNextToken();
                     break;
                 default:
+
                     // syntax error or unexpected end of expression
                     ErrorAdd(MESSAGE_EXPR_SYNTAX_ERROR);
                     return 0;
@@ -666,18 +667,18 @@ namespace Framework.Parser
             switch (operatorSy)
             {
                 // level 2
-                case ETokenType.AndSy:           return (double) ((uint) (lhs) & (uint) (rhs));
-                case ETokenType.OrSy:            return (double) ((uint) (lhs) | (uint) (rhs));
-                case ETokenType.BitShiftLeftSy:  return (double) ((uint) (lhs) << (ushort) (rhs));
-                case ETokenType.BitShiftRightSy: return (double) ((uint) (lhs) >> (ushort) (rhs));
+                case ETokenType.AndSy:           return (double)((uint)(lhs) & (uint)(rhs));
+                case ETokenType.OrSy:            return (double)((uint)(lhs) | (uint)(rhs));
+                case ETokenType.BitShiftLeftSy:  return (double)((uint)(lhs) << (ushort)(rhs));
+                case ETokenType.BitShiftRightSy: return (double)((uint)(lhs) >> (ushort)(rhs));
 
                 // level 3
-                case ETokenType.EqualSy:        return lhs == rhs ? 1.0 : 0.0;
-                case ETokenType.UnEqualSy:      return lhs != rhs ? 1.0 : 0.0;
-                case ETokenType.LessSy:         return lhs < rhs ? 1.0 : 0.0;
-                case ETokenType.GreaterSy:      return lhs > rhs ? 1.0 : 0.0;
-                case ETokenType.LessEqualSy:    return lhs <= rhs ? 1.0 : 0.0;
-                case ETokenType.GreaterEqualSy: return lhs >= rhs ? 1.0 : 0.0;
+                case ETokenType.EqualSy:        return lhs == rhs?1.0:0.0;
+                case ETokenType.UnEqualSy:      return lhs != rhs?1.0:0.0;
+                case ETokenType.LessSy:         return lhs < rhs?1.0:0.0;
+                case ETokenType.GreaterSy:      return lhs > rhs?1.0:0.0;
+                case ETokenType.LessEqualSy:    return lhs <= rhs?1.0:0.0;
+                case ETokenType.GreaterEqualSy: return lhs >= rhs?1.0:0.0;
 
                 // level 4
                 case ETokenType.PlusSy:  return lhs + rhs;
@@ -686,8 +687,8 @@ namespace Framework.Parser
                 // level 5
                 case ETokenType.MultiplySy: return lhs * rhs;
                 case ETokenType.DivideSy:   return lhs / rhs;
-                case ETokenType.ModuloSy:   return (double) ((uint) (lhs) % (uint) (rhs));
-                case ETokenType.XOrSy:      return (double) ((uint) (lhs) ^ (uint) (rhs));
+                case ETokenType.ModuloSy:   return (double)((uint)(lhs) % (uint)(rhs));
+                case ETokenType.XOrSy:      return (double)((uint)(lhs) ^ (uint)(rhs));
 
                 // level 6
                 case ETokenType.PowSy: return Math.Pow(lhs, rhs);
@@ -733,18 +734,17 @@ namespace Framework.Parser
             return 0;
         }
 
-
         double Factorial(double value)
         {
-            var v = (uint) (value);
+            var v = (uint)(value);
 
-            if (value != (uint) (v))
+            if (value != (uint)(v))
             {
                 ErrorAdd(MESSAGE_EXPR_FRACTORIAL);
                 return 0;
             }
 
-            var res = (double) v;
+            var res = (double)v;
             v--;
             while (v > 1)
             {
@@ -774,7 +774,6 @@ namespace Framework.Parser
 
             return 0;
         }
-
 
         //bool SaveAssign(char* buffer, char* current, char ch, uint8_t max);
     }

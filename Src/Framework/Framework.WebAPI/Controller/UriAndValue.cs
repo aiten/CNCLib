@@ -16,13 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-namespace CNCLib.Repository.Contract.Entity
+namespace Framework.WebAPI.Controller
 {
-    public class ItemProperty
+    public class UriAndValue<TDto> where TDto : class
     {
-        public         int    ItemId { get; set; }
-        public         string Name   { get; set; }
-        public         string Value  { get; set; }
-        public virtual Item   Item   { get; set; }
+        public string Uri { get; set; }
+
+        public TDto Value { get; set; }
     }
 }

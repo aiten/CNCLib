@@ -52,19 +52,31 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         private string  _param = "0";
         public  decimal ParamDec => decimal.Parse(Param);
 
-        public string Param { get => _param; set => SetProperty(ref _param, value); }
+        public string Param
+        {
+            get => _param;
+            set => SetProperty(ref _param, value);
+        }
 
         private string _pos = "";
 
-        public string Pos { get => _pos; set => SetProperty(ref _pos, value); }
+        public string Pos
+        {
+            get => _pos;
+            set => SetProperty(ref _pos, value);
+        }
 
         private string _relPos = "";
 
-        public string RelPos { get => _relPos; set => SetProperty(ref _relPos, value); }
+        public string RelPos
+        {
+            get => _relPos;
+            set => SetProperty(ref _relPos, value);
+        }
 
         public bool Enabled => Global.Instance.Machine.Axis > AxisIndex && Size > 0m;
 
-        public Visibility Visibility => IsDesignTime || Enabled ? Visibility.Visible : Visibility.Hidden;
+        public Visibility Visibility => IsDesignTime || Enabled?Visibility.Visible:Visibility.Hidden;
 
         private void MachineChanged()
         {
@@ -103,17 +115,18 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendHome()
         {
-            RunAndUpdate(() =>
-            {
-                if (HomeIsMax)
+            RunAndUpdate(
+                () =>
                 {
-                    Global.Instance.Com.Current.QueueCommand("g53 g0" + AxisName + "#" + (5161 + AxisIndex).ToString());
-                }
-                else
-                {
-                    Global.Instance.Com.Current.QueueCommand("g53 g0" + AxisName + "0");
-                }
-            });
+                    if (HomeIsMax)
+                    {
+                        Global.Instance.Com.Current.QueueCommand("g53 g0" + AxisName + "#" + (5161 + AxisIndex).ToString());
+                    }
+                    else
+                    {
+                        Global.Instance.Com.Current.QueueCommand("g53 g0" + AxisName + "0");
+                    }
+                });
         }
 
         public bool CanSendCommand()
@@ -162,11 +175,13 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public ICommand SendRefMoveCommand => new DelegateCommand(SendRefMove, CanSendCommand);
 
-        public ICommand SendG92Command => new DelegateCommand(SendG92, () =>
-        {
-            decimal dummy;
-            return CanSendCommandPlotter() && decimal.TryParse(Param, out dummy);
-        });
+        public ICommand SendG92Command => new DelegateCommand(
+            SendG92,
+            () =>
+            {
+                decimal dummy;
+                return CanSendCommandPlotter() && decimal.TryParse(Param, out dummy);
+            });
 
         public ICommand SendG31Command  => new DelegateCommand(SendG31,  CanSendCommandPlotter);
         public ICommand SendHomeCommand => new DelegateCommand(SendHome, CanSendCommandPlotter);

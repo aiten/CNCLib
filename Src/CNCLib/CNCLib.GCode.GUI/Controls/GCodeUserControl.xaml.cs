@@ -54,18 +54,26 @@ namespace CNCLib.GCode.GUI.Controls
 
         public static readonly DependencyProperty GotoPosCommandProperty = DependencyProperty.Register("GotoPos", typeof(ICommand), typeof(GCodeUserControl), new PropertyMetadata(default(ICommand)));
 
-        public ICommand GotoPos { get => (ICommand) GetValue(GotoPosCommandProperty); set => SetValue(GotoPosCommandProperty, value); }
+        public ICommand GotoPos
+        {
+            get => (ICommand)GetValue(GotoPosCommandProperty);
+            set => SetValue(GotoPosCommandProperty, value);
+        }
 
         /// <summary>
         /// Command Property
         /// </summary>
         public static DependencyProperty CommandsProperty = DependencyProperty.Register("Commands", typeof(CommandList), typeof(GCodeUserControl), new PropertyMetadata(OnCommandsChanged));
 
-        public CommandList Commands { get => (CommandList) GetValue(CommandsProperty); set => SetValue(CommandsProperty, value); }
+        public CommandList Commands
+        {
+            get => (CommandList)GetValue(CommandsProperty);
+            set => SetValue(CommandsProperty, value);
+        }
 
         private static void OnCommandsChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
+            var gcodeControl = (GCodeUserControl)dependencyObject;
             gcodeControl.InvalidateVisual();
         }
 
@@ -76,20 +84,24 @@ namespace CNCLib.GCode.GUI.Controls
         /// </summary>
         public static DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnZoomChanged));
 
-        public double Zoom { get => (double) GetValue(ZoomProperty); set => SetValue(ZoomProperty, value); }
+        public double Zoom
+        {
+            get => (double)GetValue(ZoomProperty);
+            set => SetValue(ZoomProperty, value);
+        }
 
         private static void OnZoomChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
+            var gcodeControl = (GCodeUserControl)dependencyObject;
             gcodeControl.OnZoomChanged(e);
         }
 
         private void OnZoomChanged(DependencyPropertyChangedEventArgs e)
         {
-            var center    = new System.Drawing.PointF((float) (ActualWidth / 2.0), (float) (ActualHeight / 2.0));
+            var center    = new System.Drawing.PointF((float)(ActualWidth / 2.0), (float)(ActualHeight / 2.0));
             var centerOld = _bitmapDraw.FromClient(center);
 
-            _bitmapDraw.Zoom = (double) e.NewValue;
+            _bitmapDraw.Zoom = (double)e.NewValue;
 
             var centerNew = _bitmapDraw.FromClient(center);
             OffsetX += centerOld.X0 - centerNew.X0;
@@ -104,12 +116,16 @@ namespace CNCLib.GCode.GUI.Controls
         /// </summary>
         public static DependencyProperty OffsetXProperty = DependencyProperty.Register("OffsetX", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetXChanged));
 
-        public double OffsetX { get => (double) GetValue(OffsetXProperty); set => SetValue(OffsetXProperty, value); }
+        public double OffsetX
+        {
+            get => (double)GetValue(OffsetXProperty);
+            set => SetValue(OffsetXProperty, value);
+        }
 
         private static void OnOffsetXChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.OffsetX = (double) e.NewValue;
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.OffsetX = (double)e.NewValue;
             gcodeControl.InvalidateVisual();
         }
 
@@ -118,12 +134,16 @@ namespace CNCLib.GCode.GUI.Controls
         /// </summary>
         public static DependencyProperty OffsetYProperty = DependencyProperty.Register("OffsetY", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetYChanged));
 
-        public double OffsetY { get => (double) GetValue(OffsetYProperty); set => SetValue(OffsetYProperty, value); }
+        public double OffsetY
+        {
+            get => (double)GetValue(OffsetYProperty);
+            set => SetValue(OffsetYProperty, value);
+        }
 
         private static void OnOffsetYChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.OffsetY = (double) e.NewValue;
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.OffsetY = (double)e.NewValue;
             gcodeControl.InvalidateVisual();
         }
 
@@ -132,12 +152,16 @@ namespace CNCLib.GCode.GUI.Controls
         /// </summary>
         public static DependencyProperty RotateAngleProperty = DependencyProperty.Register("RotateAngle", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnRotateAngleChanged));
 
-        public double RotateAngle { get => (double) GetValue(RotateAngleProperty); set => SetValue(RotateAngleProperty, value); }
+        public double RotateAngle
+        {
+            get => (double)GetValue(RotateAngleProperty);
+            set => SetValue(RotateAngleProperty, value);
+        }
 
         private static void OnRotateAngleChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.Rotate = gcodeControl._rotate = new Rotate3D((double) e.NewValue, gcodeControl.RotateVector);
+            var gcodeControl                                       = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.Rotate = gcodeControl._rotate = new Rotate3D((double)e.NewValue, gcodeControl.RotateVector);
             gcodeControl.InvalidateVisual();
         }
 
@@ -147,12 +171,16 @@ namespace CNCLib.GCode.GUI.Controls
         public static DependencyProperty RotateVectorProperty =
             DependencyProperty.Register("RotateVector", typeof(double[]), typeof(GCodeUserControl), new PropertyMetadata(new double[] { 0, 0, 1 }, OnRotateVectorChanged));
 
-        public double[] RotateVector { get => (double[]) GetValue(RotateVectorProperty); set => SetValue(RotateVectorProperty, value); }
+        public double[] RotateVector
+        {
+            get => (double[])GetValue(RotateVectorProperty);
+            set => SetValue(RotateVectorProperty, value);
+        }
 
         private static void OnRotateVectorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.Rotate = gcodeControl._rotate = new Rotate3D(gcodeControl.RotateAngle, (double[]) e.NewValue);
+            var gcodeControl                                       = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.Rotate = gcodeControl._rotate = new Rotate3D(gcodeControl.RotateAngle, (double[])e.NewValue);
             gcodeControl.InvalidateVisual();
         }
 
@@ -166,12 +194,16 @@ namespace CNCLib.GCode.GUI.Controls
         public static DependencyProperty MachineColorProperty =
             DependencyProperty.Register("MachineColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Black, OnMachineColorChanged));
 
-        public Color MachineColor { get => (Color) GetValue(MachineColorProperty); set => SetValue(MachineColorProperty, value); }
+        public Color MachineColor
+        {
+            get => (Color)GetValue(MachineColorProperty);
+            set => SetValue(MachineColorProperty, value);
+        }
 
         private static void OnMachineColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.MachineColor = ColorToColor((Color) e.NewValue);
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.MachineColor = ColorToColor((Color)e.NewValue);
             gcodeControl.InvalidateVisual();
         }
 
@@ -181,12 +213,16 @@ namespace CNCLib.GCode.GUI.Controls
         public static DependencyProperty LaserOnColorProperty =
             DependencyProperty.Register("LaserOnColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Red, OnLaserOnColorChanged));
 
-        public Color LaserOnColor { get => (Color) GetValue(LaserOnColorProperty); set => SetValue(LaserOnColorProperty, value); }
+        public Color LaserOnColor
+        {
+            get => (Color)GetValue(LaserOnColorProperty);
+            set => SetValue(LaserOnColorProperty, value);
+        }
 
         private static void OnLaserOnColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.LaserOnColor = ColorToColor((Color) e.NewValue);
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.LaserOnColor = ColorToColor((Color)e.NewValue);
             gcodeControl.InvalidateVisual();
         }
 
@@ -196,12 +232,16 @@ namespace CNCLib.GCode.GUI.Controls
         public static DependencyProperty LaserOffColorProperty =
             DependencyProperty.Register("LaserOffColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnLaserOffColorChanged));
 
-        public Color LaserOffColor { get => (Color) GetValue(LaserOffColorProperty); set => SetValue(LaserOffColorProperty, value); }
+        public Color LaserOffColor
+        {
+            get => (Color)GetValue(LaserOffColorProperty);
+            set => SetValue(LaserOffColorProperty, value);
+        }
 
         private static void OnLaserOffColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.LaserOffColor = ColorToColor((Color) e.NewValue);
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.LaserOffColor = ColorToColor((Color)e.NewValue);
             gcodeControl.InvalidateVisual();
         }
 
@@ -210,12 +250,16 @@ namespace CNCLib.GCode.GUI.Controls
         /// </summary>
         public static DependencyProperty CutColorProperty = DependencyProperty.Register("CutColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutColorChanged));
 
-        public Color CutColor { get => (Color) GetValue(CutColorProperty); set => SetValue(CutColorProperty, value); }
+        public Color CutColor
+        {
+            get => (Color)GetValue(CutColorProperty);
+            set => SetValue(CutColorProperty, value);
+        }
 
         private static void OnCutColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.CutColor = ColorToColor((Color) e.NewValue);
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.CutColor = ColorToColor((Color)e.NewValue);
             gcodeControl.InvalidateVisual();
         }
 
@@ -225,15 +269,18 @@ namespace CNCLib.GCode.GUI.Controls
         public static DependencyProperty CutDotColorProperty =
             DependencyProperty.Register("CutDotColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutDotColorChanged));
 
-        public Color CutDotColor { get => (Color) GetValue(CutDotColorProperty); set => SetValue(CutDotColorProperty, value); }
+        public Color CutDotColor
+        {
+            get => (Color)GetValue(CutDotColorProperty);
+            set => SetValue(CutDotColorProperty, value);
+        }
 
         private static void OnCutDotColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.CutDotColor = ColorToColor((Color) e.NewValue);
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.CutDotColor = ColorToColor((Color)e.NewValue);
             gcodeControl.InvalidateVisual();
         }
-
 
         /// <summary>
         /// CutArcColor Property
@@ -241,12 +288,16 @@ namespace CNCLib.GCode.GUI.Controls
         public static DependencyProperty CutEllipseColorProperty =
             DependencyProperty.Register("CutEllipseColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutEllipseColorChanged));
 
-        public Color CutEllipseColor { get => (Color) GetValue(CutEllipseColorProperty); set => SetValue(CutEllipseColorProperty, value); }
+        public Color CutEllipseColor
+        {
+            get => (Color)GetValue(CutEllipseColorProperty);
+            set => SetValue(CutEllipseColorProperty, value);
+        }
 
         private static void OnCutEllipseColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.CutEllipseColor = ColorToColor((Color) e.NewValue);
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.CutEllipseColor = ColorToColor((Color)e.NewValue);
             gcodeControl.InvalidateVisual();
         }
 
@@ -256,12 +307,16 @@ namespace CNCLib.GCode.GUI.Controls
         public static DependencyProperty CutArcColorProperty =
             DependencyProperty.Register("CutArcColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutArcColorChanged));
 
-        public Color CutArcColor { get => (Color) GetValue(CutArcColorProperty); set => SetValue(CutArcColorProperty, value); }
+        public Color CutArcColor
+        {
+            get => (Color)GetValue(CutArcColorProperty);
+            set => SetValue(CutArcColorProperty, value);
+        }
 
         private static void OnCutArcColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.CutArcColor = ColorToColor((Color) e.NewValue);
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.CutArcColor = ColorToColor((Color)e.NewValue);
             gcodeControl.InvalidateVisual();
         }
 
@@ -271,12 +326,16 @@ namespace CNCLib.GCode.GUI.Controls
         public static DependencyProperty FastMoveColorProperty =
             DependencyProperty.Register("FastMoveColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnFastMoveColorChanged));
 
-        public Color FastMoveColor { get => (Color) GetValue(FastMoveColorProperty); set => SetValue(FastMoveColorProperty, value); }
+        public Color FastMoveColor
+        {
+            get => (Color)GetValue(FastMoveColorProperty);
+            set => SetValue(FastMoveColorProperty, value);
+        }
 
         private static void OnFastMoveColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.FastMoveColor = ColorToColor((Color) e.NewValue);
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.FastMoveColor = ColorToColor((Color)e.NewValue);
             gcodeControl.InvalidateVisual();
         }
 
@@ -286,12 +345,16 @@ namespace CNCLib.GCode.GUI.Controls
         public static DependencyProperty HelpLineColorProperty =
             DependencyProperty.Register("HelpLineColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnHelpLineColorChanged));
 
-        public Color HelpLineColor { get => (Color) GetValue(HelpLineColorProperty); set => SetValue(HelpLineColorProperty, value); }
+        public Color HelpLineColor
+        {
+            get => (Color)GetValue(HelpLineColorProperty);
+            set => SetValue(HelpLineColorProperty, value);
+        }
 
         private static void OnHelpLineColorChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.HelpLineColor = ColorToColor((Color) e.NewValue);
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.HelpLineColor = ColorToColor((Color)e.NewValue);
             gcodeControl.InvalidateVisual();
         }
 
@@ -302,12 +365,16 @@ namespace CNCLib.GCode.GUI.Controls
         /// </summary>
         public static DependencyProperty LaserSizeProperty = DependencyProperty.Register("LaserSize", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.25, OnLaserSizeChanged));
 
-        public double LaserSize { get => (double) GetValue(LaserSizeProperty); set => SetValue(LaserSizeProperty, value); }
+        public double LaserSize
+        {
+            get => (double)GetValue(LaserSizeProperty);
+            set => SetValue(LaserSizeProperty, value);
+        }
 
         private static void OnLaserSizeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.LaserSize = (double) e.NewValue;
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.LaserSize = (double)e.NewValue;
             gcodeControl.InvalidateVisual();
         }
 
@@ -316,12 +383,16 @@ namespace CNCLib.GCode.GUI.Controls
         /// </summary>
         public static DependencyProperty CutterSizeProperty = DependencyProperty.Register("CutterSize", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnCutterSizeChanged));
 
-        public double CutterSize { get => (double) GetValue(CutterSizeProperty); set => SetValue(CutterSizeProperty, value); }
+        public double CutterSize
+        {
+            get => (double)GetValue(CutterSizeProperty);
+            set => SetValue(CutterSizeProperty, value);
+        }
 
         private static void OnCutterSizeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var gcodeControl = (GCodeUserControl) dependencyObject;
-            gcodeControl._bitmapDraw.CutterSize = (double) e.NewValue;
+            var gcodeControl = (GCodeUserControl)dependencyObject;
+            gcodeControl._bitmapDraw.CutterSize = (double)e.NewValue;
             gcodeControl.InvalidateVisual();
         }
 
@@ -333,7 +404,11 @@ namespace CNCLib.GCode.GUI.Controls
 
         public static readonly DependencyProperty MouseOverPositionXProperty = MouseOverPositionXPropertyKey.DependencyProperty;
 
-        public double? MouseOverPositionX { get => (double?) GetValue(MouseOverPositionXProperty); private set => SetValue(MouseOverPositionXPropertyKey, value); }
+        public double? MouseOverPositionX
+        {
+            get => (double?)GetValue(MouseOverPositionXProperty);
+            private set => SetValue(MouseOverPositionXPropertyKey, value);
+        }
 
         /// <summary>
         /// MouseOverY Property
@@ -343,7 +418,11 @@ namespace CNCLib.GCode.GUI.Controls
 
         public static readonly DependencyProperty MouseOverPositionYProperty = MouseOverPositionYPropertyKey.DependencyProperty;
 
-        public double? MouseOverPositionY { get => (double?) GetValue(MouseOverPositionYProperty); private set => SetValue(MouseOverPositionYPropertyKey, value); }
+        public double? MouseOverPositionY
+        {
+            get => (double?)GetValue(MouseOverPositionYProperty);
+            private set => SetValue(MouseOverPositionYPropertyKey, value);
+        }
 
         #endregion
 
@@ -390,7 +469,7 @@ namespace CNCLib.GCode.GUI.Controls
             if (_draggingType == EDraggingType.NoDragging)
             {
                 var mousePos = e.GetPosition(this);
-                var pt       = new System.Drawing.PointF((float) mousePos.X, (float) mousePos.Y);
+                var pt       = new System.Drawing.PointF((float)mousePos.X, (float)mousePos.Y);
 
                 if (IsGotoPosKey())
                 {
@@ -409,7 +488,7 @@ namespace CNCLib.GCode.GUI.Controls
                     _sw.Start();
                     Mouse.Capture(this);
 
-                    _draggingType = e.RightButton == MouseButtonState.Pressed ? EDraggingType.RotateAngle : EDraggingType.Position;
+                    _draggingType = e.RightButton == MouseButtonState.Pressed?EDraggingType.RotateAngle:EDraggingType.Position;
                 }
             }
         }
@@ -417,7 +496,7 @@ namespace CNCLib.GCode.GUI.Controls
         private void GCodeUserControl_MouseMove(object sender, MouseEventArgs e)
         {
             var mousePos     = e.GetPosition(this);
-            var pt           = new System.Drawing.PointF((float) mousePos.X, (float) mousePos.Y);
+            var pt           = new System.Drawing.PointF((float)mousePos.X, (float)mousePos.Y);
             var gcodeRotated = _bitmapDraw.FromClient(pt, 0.0);
 
             MouseOverPositionX = Math.Round(gcodeRotated.X0, 3);
@@ -469,7 +548,7 @@ namespace CNCLib.GCode.GUI.Controls
                     double rotateX = diffX / maxDiffX;
                     double rotateY = diffY / maxDiffY;
 
-                    RotateAngle = 2.0 * Math.PI * (Math.Abs(rotateX) > Math.Abs(rotateY) ? rotateX : rotateY);
+                    RotateAngle = 2.0 * Math.PI * (Math.Abs(rotateX) > Math.Abs(rotateY)?rotateX:rotateY);
 
                     RotateVector[1] = diffX;
                     RotateVector[0] = -diffY;
@@ -513,7 +592,7 @@ namespace CNCLib.GCode.GUI.Controls
             base.OnRenderSizeChanged(sizeInfo);
             if (_draggingType == EDraggingType.NoDragging)
             {
-                _bitmapDraw.RenderSize = new System.Drawing.Size((int) sizeInfo.NewSize.Width, (int) sizeInfo.NewSize.Height);
+                _bitmapDraw.RenderSize = new System.Drawing.Size((int)sizeInfo.NewSize.Width, (int)sizeInfo.NewSize.Height);
                 InvalidateVisual();
             }
         }
@@ -533,7 +612,6 @@ namespace CNCLib.GCode.GUI.Controls
             return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
         }
 
-
         private void DrawCommands(DrawingContext context)
         {
             if (_bitmapDraw.RenderSize.Height == 0 || _bitmapDraw.RenderSize.Width == 0)
@@ -551,7 +629,7 @@ namespace CNCLib.GCode.GUI.Controls
             var stream    = new MemoryStream();
             curBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
             var cc = new ImageSourceConverter().ConvertFrom(stream);
-            context.DrawImage((ImageSource) cc, new Rect(0, 0, ActualWidth, ActualHeight));
+            context.DrawImage((ImageSource)cc, new Rect(0, 0, ActualWidth, ActualHeight));
             curBitmap.Dispose();
         }
 
