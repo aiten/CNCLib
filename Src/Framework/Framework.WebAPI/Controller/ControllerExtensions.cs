@@ -16,32 +16,27 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Framework.Service.Abstraction;
-
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 
 namespace Framework.WebAPI.Controller
 {
-    public class UriAndValue<TDto> where TDto : class
-    {
-        public string Uri { get; set; }
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
-        public TDto Value { get; set; }
-    }
+    using Framework.Service.Abstraction;
+
+    using Microsoft.AspNetCore.Mvc;
 
     public static class ControllerExtensions
     {
-        public static string GetCurrentUri(this Microsoft.AspNetCore.Mvc.Controller controller)
+        public static string GetCurrentUri(this Controller controller)
         {
             return $"{controller.Request.Scheme}://{controller.Request.Host}{controller.Request.Path}{controller.Request.QueryString}";
         }
 
-        public static string GetCurrentUri(this Microsoft.AspNetCore.Mvc.Controller controller, string removeTrailing)
+        public static string GetCurrentUri(this Controller controller, string removeTrailing)
         {
             if (controller.Request == null)
             {
@@ -53,7 +48,7 @@ namespace Framework.WebAPI.Controller
             return totalUri.Substring(0, totalUri.Length - removeTrailing.Length);
         }
 
-        public static async Task<ActionResult<T>> NotFoundOrOk<T>(this Microsoft.AspNetCore.Mvc.Controller controller, T obj)
+        public static async Task<ActionResult<T>> NotFoundOrOk<T>(this Controller controller, T obj)
         {
             if (obj == null)
             {
@@ -66,7 +61,7 @@ namespace Framework.WebAPI.Controller
 
         #region Get/GetAll
 
-        public static async Task<ActionResult<T>> Get<T, TKey>(this Microsoft.AspNetCore.Mvc.Controller controller, IGetService<T, TKey> manager, TKey id) where T : class where TKey : IComparable
+        public static async Task<ActionResult<T>> Get<T, TKey>(this Controller controller, IGetService<T, TKey> manager, TKey id) where T : class where TKey : IComparable
         {
             var dto = await manager.Get(id);
             if (dto == null)
@@ -77,7 +72,7 @@ namespace Framework.WebAPI.Controller
             return controller.Ok(dto);
         }
 
-        public static async Task<ActionResult<IEnumerable<T>>> GetAll<T, TKey>(this Microsoft.AspNetCore.Mvc.Controller controller, IGetService<T, TKey> manager) where T : class where TKey : IComparable
+        public static async Task<ActionResult<IEnumerable<T>>> GetAll<T, TKey>(this Controller controller, IGetService<T, TKey> manager) where T : class where TKey : IComparable
         {
             var dtos = await manager.GetAll();
             if (dtos == null)
@@ -92,18 +87,18 @@ namespace Framework.WebAPI.Controller
 
         #region Add
 
-        public static async Task<ActionResult<T>> Add<T, TKey>(this Microsoft.AspNetCore.Mvc.Controller controller, ICRUDService<T, TKey> manager, T value) where T : class where TKey : IComparable
+        public static async Task<ActionResult<T>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, T value) where T : class where TKey : IComparable
         {
             TKey   newId  = await manager.Add(value);
             string newUri = controller.GetCurrentUri() + "/" + newId;
             return controller.Created(newUri, await manager.Get(newId));
         }
 
-        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> Add<T, TKey>(this Microsoft.AspNetCore.Mvc.Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
+        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
             where T : class where TKey : IComparable
         {
-            IEnumerable<TKey> newIds     = await manager.Add(values);
-            IEnumerable<T>    newObjects = await manager.Get(newIds);
+            var newIds     = await manager.Add(values);
+            var newObjects = await manager.Get(newIds);
 
             string uri     = controller.GetCurrentUri("/bulk");
             var    newUris = newIds.Select(id => uri + "/" + id);
@@ -111,11 +106,36 @@ namespace Framework.WebAPI.Controller
             return controller.Ok(newUris);
         }
 
+        public static async Task<ActionResult<T>> AddNoGet<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, T value, Action<T,TKey> setIdFunc) where T : class where TKey : IComparable
+        {
+            TKey   newId  = await manager.Add(value);
+            string newUri = controller.GetCurrentUri() + "/" + newId;
+            setIdFunc(value, newId);
+            return controller.Created(newUri, value);
+        }
+
+        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> AddNoGet<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values, Action<T, TKey> setIdFunc)
+            where T : class where TKey : IComparable
+        {
+            IEnumerable<TKey> newIds     = await manager.Add(values);
+
+            Func<T, TKey, T> mySetFunc = (v, k) =>
+            {
+                setIdFunc(v, k);
+                return v;
+            };
+
+            string uri     = controller.GetCurrentUri("/bulk");
+            var    newUris = newIds.Select(id => uri + "/" + id);
+            var    results = newIds.Select((id, idx) => new UriAndValue<T>() { Uri = uri + "/" + id, Value = mySetFunc(values.ElementAt(idx),id) });
+            return controller.Ok(newUris);
+        }
+
         #endregion
 
         #region Update
 
-        public static async Task<ActionResult> Update<T, TKey>(this Microsoft.AspNetCore.Mvc.Controller controller, ICRUDService<T, TKey> manager, TKey idFromUri, TKey idFromValue, T value)
+        public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, TKey idFromUri, TKey idFromValue, T value)
             where T : class where TKey : IComparable
         {
             if (idFromUri.CompareTo(idFromValue) != 0)
@@ -127,7 +147,7 @@ namespace Framework.WebAPI.Controller
             return controller.NoContent();
         }
 
-        public static async Task<ActionResult> Update<T, TKey>(this Microsoft.AspNetCore.Mvc.Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values) where T : class where TKey : IComparable
+        public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values) where T : class where TKey : IComparable
         {
             await manager.Update(values);
             return controller.NoContent();
@@ -137,13 +157,13 @@ namespace Framework.WebAPI.Controller
 
         #region Delete
 
-        public static async Task<ActionResult> Delete<T, TKey>(this Microsoft.AspNetCore.Mvc.Controller controller, ICRUDService<T, TKey> manager, TKey id) where T : class where TKey : IComparable
+        public static async Task<ActionResult> Delete<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, TKey id) where T : class where TKey : IComparable
         {
             await manager.Delete(id);
             return controller.NoContent();
         }
 
-        public static async Task<ActionResult> Delete<T, TKey>(this Microsoft.AspNetCore.Mvc.Controller controller, ICRUDService<T, TKey> manager, IEnumerable<TKey> ids) where T : class where TKey : IComparable
+        public static async Task<ActionResult> Delete<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<TKey> ids) where T : class where TKey : IComparable
         {
             await manager.Delete(ids);
             return controller.NoContent();
