@@ -72,7 +72,7 @@ namespace Framework.Logic
 
                 await Modified();
 
-                return entities.Select(e => GetKey(e));
+                return entities.Select(GetKey);
             }
         }
 
@@ -142,9 +142,9 @@ namespace Framework.Logic
 
                 var entities = MapFromDtos(values, ValidationType.UpdateValidation);
 
-                var entitiesInDb = await _repository.GetTracking(entities.Select(e => GetKey(e)));
+                var entitiesInDb = await _repository.GetTracking(entities.Select(GetKey));
 
-                var mergeJoin = entitiesInDb.Join(entities, e => GetKey(e), e => GetKey(e), (EntityInDb, Entity) => new { EntityInDb, Entity });
+                var mergeJoin = entitiesInDb.Join(entities, GetKey, GetKey, (EntityInDb, Entity) => new { EntityInDb, Entity });
 
                 if (entities.Count() != entitiesInDb.Count() || entities.Count() != mergeJoin.Count())
                 {
