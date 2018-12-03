@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Windows.Input;
 
 using CNCLib.Wpf.Helpers;
@@ -27,8 +28,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class RotateViewModel : DetailViewModel
     {
-        public RotateViewModel(IManualControlViewModel vm) : base(vm)
+        private readonly Global _global;
+
+        public RotateViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
+            _global = global ?? throw new ArgumentNullException();
         }
 
         #region Properties
@@ -39,42 +43,42 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public bool CanSendRotate()
         {
-            return CanSend() && Global.Instance.Machine.Rotate;
+            return CanSend() && _global.Machine.Rotate;
         }
 
         public void SendG69()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g69")); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("g69")); });
         }
 
         public void SendG68X0Y0R90()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68 x0y0r90")); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("g68 x0y0r90")); });
         }
 
         public void SendG68X0Y0R270()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68 x0y0r270")); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("g68 x0y0r270")); });
         }
 
         public void SendG6810()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.10")); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("g68.10")); });
         }
 
         public void SendG6811()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.11")); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("g68.11")); });
         }
 
         public void SendG6813()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.13 j0k0")); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("g68.13 j0k0")); });
         }
 
         public void SendG6814()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g68.14 i0")); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("g68.14 i0")); });
         }
 
         #endregion

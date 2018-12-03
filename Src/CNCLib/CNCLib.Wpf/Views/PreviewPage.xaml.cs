@@ -50,12 +50,12 @@ namespace CNCLib.Wpf.Views
 
             ToggleSettings();
 
-            Global.Instance.PropertyChanged += (sender, e) =>
+            vm.Global.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(Global.SizeX) || e.PropertyName == nameof(Global.SizeY))
                 {
-                    gcode.SizeX = (double)Global.Instance.SizeX;
-                    gcode.SizeY = (double)Global.Instance.SizeY;
+                    gcode.SizeX = (double)vm.Global.SizeX;
+                    gcode.SizeY = (double)vm.Global.SizeY;
                 }
             };
 

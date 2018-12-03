@@ -37,17 +37,22 @@ namespace CNCLib.Wpf.ViewModels
 {
     public class PreviewViewModel : BaseViewModel
     {
+        private readonly Global _global;
+
         #region crt
 
-        public PreviewViewModel()
+        public PreviewViewModel(Global global)
         {
-            Global.Instance.Com.LocalCom.CommandSending  += CommandSending;
-            Global.Instance.Com.RemoteCom.CommandSending += CommandSending;
+            _global = global ?? throw new ArgumentNullException();
+            _global.Com.LocalCom.CommandSending  += CommandSending;
+            _global.Com.RemoteCom.CommandSending += CommandSending;
         }
 
         #endregion
 
         #region Properties
+
+        public Global Global => _global;
 
         private CommandList _commands = new CommandList();
 
@@ -57,7 +62,7 @@ namespace CNCLib.Wpf.ViewModels
             set
             {
                 SetProperty(() => _commands == value, () => _commands = value);
-                Global.Instance.Commands = value;
+                _global.Commands = value;
                 _currentDrawSeqIdToCmd   = null;
             }
         }
@@ -171,7 +176,7 @@ namespace CNCLib.Wpf.ViewModels
 
         private bool IsHPGLAndPlotter()
         {
-            if (Global.Instance.Machine.CommandSyntax != CommandSyntax.HPGL)
+            if (_global.Machine.CommandSyntax != CommandSyntax.HPGL)
             {
                 return true;
             }
@@ -214,7 +219,7 @@ namespace CNCLib.Wpf.ViewModels
                 }
             }
 
-            var serialCommands = await Global.Instance.Com.Current.QueueCommandsAsync(cmdList);
+            var serialCommands = await _global.Com.Current.QueueCommandsAsync(cmdList);
 
             foreach (var serialCmd in serialCommands)
             {
@@ -259,10 +264,10 @@ namespace CNCLib.Wpf.ViewModels
 
                 try
                 {
-                    Global.Instance.Com.Current.ClearCommandHistory();
+                    _global.Com.Current.ClearCommandHistory();
                     var cmdDefList = new List<CommandToIndex>();
 
-                    if (Global.Instance.Machine.CommandSyntax == CommandSyntax.HPGL && IsHPGLAndPlotter())
+                    if (_global.Machine.CommandSyntax == CommandSyntax.HPGL && IsHPGLAndPlotter())
                     {
                         Commands.ForEach(cmd =>
                         {
@@ -306,8 +311,8 @@ namespace CNCLib.Wpf.ViewModels
         {
             if (_loadInfo.AutoScaleSizeX == 0 || _loadInfo.AutoScaleSizeY == 0)
             {
-                _loadInfo.AutoScaleSizeX = Global.Instance.SizeX;
-                _loadInfo.AutoScaleSizeY = Global.Instance.SizeY;
+                _loadInfo.AutoScaleSizeX = _global.SizeX;
+                _loadInfo.AutoScaleSizeY = _global.SizeY;
             }
 
             var arg = new GetLoadInfoArg { LoadOption = _loadInfo, UseAzure = _useAzure };
@@ -337,7 +342,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public bool CanSendTo()
         {
-            return !_loadingOrSending && Global.Instance.Com.Current.IsConnected && Commands.Count > 0 && IsHPGLAndPlotter();
+            return !_loadingOrSending && _global.Com.Current.IsConnected && Commands.Count > 0 && IsHPGLAndPlotter();
         }
 
         public bool CanLoad()
@@ -381,12 +386,12 @@ namespace CNCLib.Wpf.ViewModels
 
         public void GotoPos(Point3D pt)
         {
-            Global.Instance.Com.Current.QueueCommand($@"g0 x{(pt.X0).ToString(CultureInfo.InvariantCulture)} y{(pt.Y0).ToString(CultureInfo.InvariantCulture)}");
+            _global.Com.Current.QueueCommand($@"g0 x{(pt.X0).ToString(CultureInfo.InvariantCulture)} y{(pt.Y0).ToString(CultureInfo.InvariantCulture)}");
         }
 
         public bool CanGotoPos(Point3D pt)
         {
-            return !_loadingOrSending && Global.Instance.Com.Current.IsConnected;
+            return !_loadingOrSending && _global.Com.Current.IsConnected;
         }
 
         #endregion

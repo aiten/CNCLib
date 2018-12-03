@@ -27,56 +27,60 @@ namespace CNCLib.Wpf.ViewModels
 {
     public class ManualControlViewModel : BaseViewModel, IManualControlViewModel
     {
+        private readonly Global _global;
+
         #region crt
 
-        public ManualControlViewModel()
+        public ManualControlViewModel(Global global)
         {
-            AxisX = new AxisViewModel(this)
+            _global = global ?? throw new ArgumentNullException();
+
+            AxisX = new AxisViewModel(this, global)
             {
                 AxisIndex = 0
             };
-            AxisY = new AxisViewModel(this)
+            AxisY = new AxisViewModel(this, global)
             {
                 AxisIndex = 1
             };
-            AxisZ = new AxisViewModel(this)
+            AxisZ = new AxisViewModel(this, global)
             {
                 AxisIndex = 2,
                 HomeIsMax = true
             };
-            AxisA = new AxisViewModel(this)
+            AxisA = new AxisViewModel(this, global)
             {
                 AxisIndex = 3
             };
-            AxisB = new AxisViewModel(this)
+            AxisB = new AxisViewModel(this, global)
             {
                 AxisIndex = 4
             };
-            AxisC = new AxisViewModel(this)
+            AxisC = new AxisViewModel(this, global)
             {
                 AxisIndex = 5
             };
 
-            Move = new MoveViewModel(this);
+            Move = new MoveViewModel(this, global);
 
-            CommandHistory = new CommandHistoryViewModel(this);
+            CommandHistory = new CommandHistoryViewModel(this, global);
 
-            SD = new SDViewModel(this);
+            SD = new SDViewModel(this, global);
 
-            DirectCommand = new DirectCommandViewModel(this);
+            DirectCommand = new DirectCommandViewModel(this, global);
 
-            Shift = new ShiftViewModel(this);
+            Shift = new ShiftViewModel(this, global);
 
-            Tool = new ToolViewModel(this);
+            Tool = new ToolViewModel(this, global);
 
-            Rotate = new RotateViewModel(this);
+            Rotate = new RotateViewModel(this, global);
 
-            Custom = new CustomViewModel(this);
+            Custom = new CustomViewModel(this, global);
 
-            WorkOffset = new WorkOffsetViewModel(this);
+            WorkOffset = new WorkOffsetViewModel(this, global);
 
-            Global.Instance.Com.LocalCom.CommandQueueEmpty  += OnCommandQueueEmpty;
-            Global.Instance.Com.RemoteCom.CommandQueueEmpty += OnCommandQueueEmpty;
+            _global.Com.LocalCom.CommandQueueEmpty  += OnCommandQueueEmpty;
+            _global.Com.RemoteCom.CommandQueueEmpty += OnCommandQueueEmpty;
         }
 
         #endregion
@@ -153,7 +157,7 @@ namespace CNCLib.Wpf.ViewModels
 
         #region Properties
 
-        public bool Connected => Global.Instance.Com.Current.IsConnected;
+        public bool Connected => _global.Com.Current.IsConnected;
 
         #endregion
 

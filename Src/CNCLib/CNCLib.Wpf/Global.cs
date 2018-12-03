@@ -111,14 +111,11 @@ namespace CNCLib.Wpf
             }
         }
 
-//        public Framework.Arduino.SerialCommunication.ISerial Com => Singleton<Framework.Arduino.SerialCommunication.Serial>.Instance;
         public SerialProxy Com { get; set; } = new SerialProxy();
 
         private JoystickArduinoSerialCommunication _joystickSerialCommunication = new JoystickArduinoSerialCommunication(new Logger<Framework.Arduino.SerialCommunication.Serial>());
 
         public ISerial ComJoystick => _joystickSerialCommunication;
-
-        public MachineGCodeHelper GCode => Singleton<MachineGCodeHelper>.Instance;
 
         private CommandList _commands = new CommandList();
 

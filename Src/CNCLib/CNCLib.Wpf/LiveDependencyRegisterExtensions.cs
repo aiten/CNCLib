@@ -29,6 +29,8 @@ namespace CNCLib.Wpf
     {
         public static IDependencyContainer RegisterCNCLibWpf(this IDependencyContainer container)
         {
+            Dependency.Container.RegisterInstance(Global.Instance);
+
             Dependency.Container.RegisterType<IJoystickService, JoystickService>();
 
             Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();

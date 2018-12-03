@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
@@ -29,9 +30,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class AxisViewModel : DetailViewModel
     {
-        public AxisViewModel(IManualControlViewModel vm) : base(vm)
+        private readonly Global _global;
+
+        public AxisViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
-            Global.Instance.PropertyChanged += (sender, e) =>
+            _global = global ?? throw new ArgumentNullException();
+            _global.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == "Machine")
                 {
@@ -43,10 +47,10 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         #region Properties
 
         public int     AxisIndex { get; set; }
-        public string  AxisName  => Global.Instance.Machine.GetAxisName(AxisIndex);
-        public decimal Size      => Global.Instance.Machine.GetSize(AxisIndex);
+        public string  AxisName  => _global.Machine.GetAxisName(AxisIndex);
+        public decimal Size      => _global.Machine.GetSize(AxisIndex);
 
-        //public decimal ProbeSize { get { return Global.Instance.Machine.GetProbeSize(AxisIndex); } }
+        //public decimal ProbeSize { get { return _global.Machine.GetProbeSize(AxisIndex); } }
         public bool HomeIsMax { get; set; }
 
         private string  _param = "0";
@@ -74,7 +78,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             set => SetProperty(ref _relPos, value);
         }
 
-        public bool Enabled => Global.Instance.Machine.Axis > AxisIndex && Size > 0m;
+        public bool Enabled => _global.Machine.Axis > AxisIndex && Size > 0m;
 
         public Visibility Visibility => IsDesignTime || Enabled?Visibility.Visible:Visibility.Hidden;
 
@@ -90,22 +94,22 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private void SendMoveCommand(string dist)
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g91 g0" + AxisName + dist + " g90")); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("g91 g0" + AxisName + dist + " g90")); });
         }
 
         private void SendProbeCommand(int axisIndex)
         {
-            RunAndUpdate(async () => { await new MachineGCodeHelper().SendProbeCommandAsync(AxisIndex); });
+            RunAndUpdate(async () => { await _global.Com.Current.SendProbeCommandAsync(_global.Machine, AxisIndex); });
         }
 
         public void SendRefMove()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("g28 " + AxisName + "0")); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("g28 " + AxisName + "0")); });
         }
 
         public void SendG92()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); });
         }
 
         public void SendG31()
@@ -120,11 +124,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                 {
                     if (HomeIsMax)
                     {
-                        Global.Instance.Com.Current.QueueCommand("g53 g0" + AxisName + "#" + (5161 + AxisIndex).ToString());
+                        _global.Com.Current.QueueCommand("g53 g0" + AxisName + "#" + (5161 + AxisIndex).ToString());
                     }
                     else
                     {
-                        Global.Instance.Com.Current.QueueCommand("g53 g0" + AxisName + "0");
+                        _global.Com.Current.QueueCommand("g53 g0" + AxisName + "0");
                     }
                 });
         }

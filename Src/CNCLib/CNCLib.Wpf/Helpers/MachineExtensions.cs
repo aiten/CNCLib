@@ -16,24 +16,51 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Linq;
-
-using CNCLib.Wpf.Models;
+using System.Globalization;
+using System.Threading.Tasks;
 
 using Framework.Arduino.SerialCommunication;
 
-using CNCLib.Logic.Client;
+using CNCLib.GCode;
 
-using System.Threading.Tasks;
-using System;
+using System.Media;
+using System.Collections.Generic;
 
-using Framework.Dependency;
+using CNCLib.Logic.Contract.DTO;
+
+using Framework.Arduino.SerialCommunication.Abstraction;
 
 namespace CNCLib.Wpf.Helpers
 {
-    public class JoystickHelper
+    public static class MachineExtension
     {
-        public void JoystickReplyReceived(string trim)
+        public static string PrepareCommand(this Machine machine, string commandString)
+        {
+            string prefix = machine.GetCommandPrefix();
+
+            if (string.IsNullOrEmpty(prefix))
+            {
+                return commandString;
+            }
+
+            return prefix + commandString;
+        }
+
+        public static string GetCommandPrefix(this Machine machine)
+        {
+            var prefix = machine.CommandSyntax;
+            if (prefix == CommandSyntax.HPGL)
+            {
+                return ((char)27).ToString();
+            }
+
+            return null;
+        }
+
+
+        public static string JoystickReplyReceived(this Machine machine, string trim)
         {
             // ;btn5		=> look for ;btn5
             // ;btn5:x		=> x is pressCount - always incremented, look for max x in setting => modulo 
@@ -42,7 +69,7 @@ namespace CNCLib.Wpf.Helpers
 
             if ((idx = trim.IndexOf(':')) < 0)
             {
-                var mc = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == trim);
+                var mc = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == trim);
                 if (mc != null)
                 {
                     trim = mc.CommandString;
@@ -50,8 +77,8 @@ namespace CNCLib.Wpf.Helpers
             }
             else
             {
-                string btn             = trim.Substring(0, idx + 1);
-                var    machineCommands = Global.Instance.Machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
+                string btn = trim.Substring(0, idx + 1);
+                var machineCommands = machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
 
                 uint max = 0;
                 foreach (var m in machineCommands)
@@ -68,12 +95,12 @@ namespace CNCLib.Wpf.Helpers
 
                 string findCmd = $"{btn}{uint.Parse(trim.Substring(idx + 1)) % (max + 1)}";
 
-                var mc = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
+                var mc = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
                 if (mc == null)
                 {
                     // try to find ;btn3 (without :)  
                     findCmd = trim.Substring(0, idx);
-                    mc      = Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
+                    mc = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
                 }
 
                 if (mc != null)
@@ -82,17 +109,7 @@ namespace CNCLib.Wpf.Helpers
                 }
             }
 
-            new MachineGCodeHelper().SendCommandAsync(trim).ConfigureAwait(false).GetAwaiter().GetResult();
-        }
-
-        public async Task SendInitCommands(string commandString)
-        {
-            string[] separators = { @"\n" };
-            string[] cmds       = commandString.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var s in cmds)
-            {
-                await Global.Instance.ComJoystick.SendCommandAsync(s, int.MaxValue);
-            }
+            return trim;
         }
     }
 }

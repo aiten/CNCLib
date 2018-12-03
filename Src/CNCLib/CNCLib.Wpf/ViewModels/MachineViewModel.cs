@@ -41,15 +41,17 @@ namespace CNCLib.Wpf.ViewModels
     {
         #region crt
 
-        public MachineViewModel(IFactory<IMachineService> machineService, IMapper mapper)
+        public MachineViewModel(IFactory<IMachineService> machineService, IMapper mapper, Global global)
         {
             _machineService = machineService ?? throw new ArgumentNullException();
             _mapper = mapper ?? throw new ArgumentNullException();
+            _global = global ?? throw new ArgumentNullException(); ;
             AddNewMachine   = false;
         }
 
         readonly IFactory<IMachineService> _machineService;
         private readonly IMapper _mapper;
+        private readonly Global _global;
 
         #endregion
 
@@ -173,17 +175,17 @@ namespace CNCLib.Wpf.ViewModels
                 {
                     string comport = Machine.GetComPort();
 
-                    Global.Instance.Com.SetCurrent(comport);
-                    Global.Instance.Com.Current.DtrIsReset     = Machine.DtrIsReset;
-                    Global.Instance.Com.Current.ResetOnConnect = Global.Instance.ResetOnConnect;
-                    Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
-                    Global.Instance.Com.Current.BaudRate       = Machine.BaudRate;
-                    await Global.Instance.Com.Current.ConnectAsync(comport);
+                    _global.Com.SetCurrent(comport);
+                    _global.Com.Current.DtrIsReset     = Machine.DtrIsReset;
+                    _global.Com.Current.ResetOnConnect = _global.ResetOnConnect;
+                    _global.Com.Current.CommandToUpper = Machine.CommandToUpper;
+                    _global.Com.Current.BaudRate       = Machine.BaudRate;
+                    await _global.Com.Current.ConnectAsync(comport);
 
-                    await Global.Instance.Com.Current.SendCommandAsync("?", 3000);
+                    await _global.Com.Current.SendCommandAsync("?", 3000);
                     await Task.Delay(100);
 
-                    var eeprom = await new EepromHelper().ReadEepromAsync();
+                    var eeprom = await _global.Com.Current.ReadEepromAsync();
                     if (eeprom != null)
                     {
                         Machine.Coolant   = eeprom.HasCoolant;
@@ -213,7 +215,7 @@ namespace CNCLib.Wpf.ViewModels
                 }
                 finally
                 {
-                    await Global.Instance.Com.Current.DisconnectAsync();
+                    await _global.Com.Current.DisconnectAsync();
                 }
             }
         }

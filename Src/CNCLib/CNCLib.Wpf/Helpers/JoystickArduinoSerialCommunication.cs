@@ -53,12 +53,21 @@ namespace CNCLib.Wpf.Helpers
             {
                 if (Global.Instance.Joystick?.InitCommands != null)
                 {
-                    RunCommandInNewTask(async () => { await new JoystickHelper().SendInitCommands(Global.Instance.Joystick?.InitCommands); });
+                    RunCommandInNewTask(
+                        async () =>
+                        {
+                            await Global.Instance.ComJoystick.SendJoystickInitCommands(Global.Instance.Joystick?.InitCommands);
+                        });
                 }
             }
             else
             {
-                RunCommandInNewTask(() => { new JoystickHelper().JoystickReplyReceived(info.Info.Trim()); });
+                RunCommandInNewTask(
+                    async () =>
+                    {
+                        string msg = Global.Instance.Machine.JoystickReplyReceived(info.Info.Trim());
+                        await Global.Instance.Com.Current.SendCommandAsync(msg);
+                    });
             }
         }
     }

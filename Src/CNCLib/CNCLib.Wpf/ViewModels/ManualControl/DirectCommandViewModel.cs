@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 
@@ -26,8 +27,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class DirectCommandViewModel : DetailViewModel
     {
-        public DirectCommandViewModel(IManualControlViewModel vm) : base(vm)
+        private readonly Global _global;
+
+        public DirectCommandViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
+            _global = global ?? throw new ArgumentNullException(); ;
         }
 
         #region Properties
@@ -73,7 +77,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendDirect()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(DirectCommand); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand(DirectCommand); });
             AddDirectCommandHistory(DirectCommand);
         }
 
