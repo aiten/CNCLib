@@ -30,6 +30,7 @@ using AutoMapper;
 using CNCLib.Service.Contract;
 using CNCLib.Wpf.Helpers;
 using CNCLib.Wpf.Models;
+using CNCLib.Wpf.Services;
 
 using Framework.Tools;
 using Framework.Pattern;
@@ -42,14 +43,16 @@ namespace CNCLib.Wpf.ViewModels
     {
         #region crt
 
-        public SetupWindowViewModel(IFactory<IMachineService> machineService, IMapper mapper)
+        public SetupWindowViewModel(IFactory<IMachineService> machineService, IFactory<IJoystickService> joystickService, IMapper mapper)
         {
             _machineService = machineService ?? throw new ArgumentNullException();
+            _joystickService = joystickService ?? throw new ArgumentNullException();
             _mapper         = mapper ?? throw new ArgumentNullException();
             ResetOnConnect  = false;
         }
 
         readonly IFactory<IMachineService> _machineService;
+        private readonly IFactory<IJoystickService> _joystickService;
         private readonly IMapper _mapper;
 
         public override async Task Loaded()
@@ -97,8 +100,13 @@ namespace CNCLib.Wpf.ViewModels
 
         private async Task LoadJoystick()
         {
-            Joystick                 = (await JoystickHelper.Load()).Item1;
-            Global.Instance.Joystick = Joystick;
+            using (var scope = _joystickService.Create())
+            {
+
+                Joystick = (await scope.Instance.Load()).Item1;
+
+                Global.Instance.Joystick = Joystick;
+            }
         }
 
         #endregion

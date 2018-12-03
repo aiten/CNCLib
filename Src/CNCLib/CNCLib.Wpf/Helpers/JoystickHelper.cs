@@ -33,35 +33,6 @@ namespace CNCLib.Wpf.Helpers
 {
     public class JoystickHelper
     {
-        internal static async Task<Tuple<Joystick, int>> Load()
-        {
-            using (var controller = Dependency.Resolve<IDynItemController>())
-            {
-                var joystick = await controller.GetAll(typeof(Joystick));
-                if (joystick != null && joystick.Any())
-                {
-                    int id = joystick.First().ItemId;
-                    return new Tuple<Joystick, int>((Joystick)await controller.Create(id), id);
-                }
-            }
-
-            return new Tuple<Joystick, int>(new Joystick { BaudRate = 250000, ComPort = @"com7" }, -1);
-        }
-
-        internal static async Task<int> Save(Joystick joystick, int id)
-        {
-            using (var controller = Dependency.Resolve<IDynItemController>())
-            {
-                if (id >= 0)
-                {
-                    await controller.Save(id, "Joystick", joystick);
-                    return id;
-                }
-
-                return await controller.Add("Joystick", joystick);
-            }
-        }
-
         public void JoystickReplyReceived(string trim)
         {
             // ;btn5		=> look for ;btn5
