@@ -135,7 +135,10 @@ namespace CNCLib.Serial.Server
 
         private static IWebHost BuildWebHost(string[] args)
         {
-            var config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("hosting.json", optional: true).AddCommandLine(args).Build();
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("hosting.json", optional: true)
+                .AddCommandLine(args).Build();
             return WebHost.CreateDefaultBuilder(args).UseKestrel().UseConfiguration(config).UseStartup<Startup>().ConfigureLogging(logging => { logging.ClearProviders(); }).UseNLog().Build();
         }
     }

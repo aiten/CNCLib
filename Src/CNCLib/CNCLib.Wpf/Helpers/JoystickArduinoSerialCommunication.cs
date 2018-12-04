@@ -41,7 +41,6 @@ namespace CNCLib.Wpf.Helpers
                 () =>
                 {
                     todo();
-                    Global.Instance.Com.Current.WriteCommandHistory(CommandHistoryViewModel.CommandHistoryFile);
                 });
         }
 
