@@ -50,12 +50,12 @@ namespace CNCLib.Wpf.Views
 
             ToggleSettings();
 
-            Global.Instance.PropertyChanged += (sender, e) =>
+            vm.Global.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(Global.SizeX) || e.PropertyName == nameof(Global.SizeY))
                 {
-                    gcode.SizeX = (double)Global.Instance.SizeX;
-                    gcode.SizeY = (double)Global.Instance.SizeY;
+                    gcode.SizeX = (double)vm.Global.SizeX;
+                    gcode.SizeY = (double)vm.Global.SizeY;
                 }
             };
 
@@ -67,14 +67,14 @@ namespace CNCLib.Wpf.Views
                     var viewModel = dlg.DataContext as LoadOptionViewModel;
                     if (viewModel != null)
                     {
-                        viewModel.LoadOptionsValue = Dependency.Resolve<IMapper>().Map<GCode.GUI.Models.LoadOptions>(arg.LoadOption);
+                        viewModel.LoadOptionsValue = viewModel.MapLoadOptions(arg.LoadOption);
                         viewModel.UseAzure         = arg.UseAzure;
                         if (!dlg.ShowDialog() ?? false)
                         {
                             return false;
                         }
 
-                        arg.LoadOption = Dependency.Resolve<IMapper>().Map<LoadOptionsDto>(viewModel.LoadOptionsValue);
+                        arg.LoadOption = viewModel.MapLoadOptions(viewModel.LoadOptionsValue);
                         arg.UseAzure   = viewModel.UseAzure;
                     }
 

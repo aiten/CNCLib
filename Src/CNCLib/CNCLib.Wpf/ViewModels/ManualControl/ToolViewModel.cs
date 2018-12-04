@@ -31,18 +31,21 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class ToolViewModel : DetailViewModel, IDisposable
     {
+        private readonly Global _global;
+
         #region ctr
 
-        public ToolViewModel(IManualControlViewModel vm) : base(vm)
+        public ToolViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
-            Global.Instance.Com.LocalCom.CommandQueueChanged  += OnCommandQueueChanged;
-            Global.Instance.Com.RemoteCom.CommandQueueChanged += OnCommandQueueChanged;
+            _global = global ?? throw new ArgumentNullException();
+            _global.Com.LocalCom.CommandQueueChanged  += OnCommandQueueChanged;
+            _global.Com.RemoteCom.CommandQueueChanged += OnCommandQueueChanged;
         }
 
         public void Dispose()
         {
-            Global.Instance.Com.LocalCom.CommandQueueChanged  -= OnCommandQueueChanged;
-            Global.Instance.Com.RemoteCom.CommandQueueChanged -= OnCommandQueueChanged;
+            _global.Com.LocalCom.CommandQueueChanged  -= OnCommandQueueChanged;
+            _global.Com.RemoteCom.CommandQueueChanged -= OnCommandQueueChanged;
         }
 
         #endregion
@@ -53,8 +56,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public bool Pause
         {
-            get => Global.Instance.Com.Current.Pause;
-            set => Global.Instance.Com.Current.Pause = value;
+            get => _global.Com.Current.Pause;
+            set => _global.Com.Current.Pause = value;
         }
 
         private bool _updateAfterSendNext = false;
@@ -74,8 +77,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private void SetSendNext()
         {
-            _updateAfterSendNext                 = true;
-            Global.Instance.Com.Current.SendNext = true;
+            _updateAfterSendNext         = true;
+            _global.Com.Current.SendNext = true;
         }
 
         #endregion
@@ -84,27 +87,27 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public bool CanSendSpindle()
         {
-            return CanSendGCode() && Global.Instance.Machine.Spindle;
+            return CanSendGCode() && _global.Machine.Spindle;
         }
 
         public bool CanSendCoolant()
         {
-            return CanSendGCode() && Global.Instance.Machine.Coolant;
+            return CanSendGCode() && _global.Machine.Coolant;
         }
 
         public bool CanSendLaser()
         {
-            return CanSendGCode() && Global.Instance.Machine.Laser;
+            return CanSendGCode() && _global.Machine.Laser;
         }
 
         public void SendInfo()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("?"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("?"); });
         }
 
         public void SendDebug()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("&"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("&"); });
         }
 
         public void SendAbort()
@@ -112,9 +115,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             RunAndUpdate(
                 () =>
                 {
-                    Global.Instance.Com.Current.AbortCommands();
-                    Global.Instance.Com.Current.ResumeAfterAbort();
-                    Global.Instance.Com.Current.QueueCommand("!");
+                    _global.Com.Current.AbortCommands();
+                    _global.Com.Current.ResumeAfterAbort();
+                    _global.Com.Current.QueueCommand("!");
                 });
         }
 
@@ -123,9 +126,9 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             RunAndUpdate(
                 () =>
                 {
-                    Global.Instance.Com.Current.AbortCommands();
-                    Global.Instance.Com.Current.ResumeAfterAbort();
-                    Global.Instance.Com.Current.QueueCommand("!!!");
+                    _global.Com.Current.AbortCommands();
+                    _global.Com.Current.ResumeAfterAbort();
+                    _global.Com.Current.QueueCommand("!!!");
                 });
         }
 
@@ -134,54 +137,54 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             RunAndUpdate(
                 () =>
                 {
-                    Global.Instance.Com.Current.AbortCommands();
-                    Global.Instance.Com.Current.ResumeAfterAbort();
+                    _global.Com.Current.AbortCommands();
+                    _global.Com.Current.ResumeAfterAbort();
                 });
         }
 
         public void SendM03SpindleOn()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m3"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("m3"); });
         }
 
         public void SendM05SpindleOff()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m5"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("m5"); });
         }
 
         public void SendM07CoolantOn()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m7"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("m7"); });
         }
 
         public void SendM09CoolantOff()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m9"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("m9"); });
         }
 
         public void SendM106LaserOn()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m106 s255"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("m106 s255"); });
         }
 
         public void SendM106LaserOnMin()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m106 s1"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("m106 s1"); });
         }
 
         public void SendM107LaserOff()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m107"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("m107"); });
         }
 
         public void SendM100ProbeDefault()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m100"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("m100"); });
         }
 
         public void SendM101ProbeInvert()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("m101"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("m101"); });
         }
 
         private decimal[] Convert(string[] list)
@@ -225,7 +228,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             RunAndUpdate(
                 async () =>
                 {
-                    string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("?"), 10 * 1000);
+                    string message = await _global.Com.Current.SendCommandAndReadOKReplyAsync(_global.Machine.PrepareCommand("?"), 10 * 1000);
 
                     if (!string.IsNullOrEmpty(message))
                     {
@@ -258,7 +261,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                             decimal[] mPos = Convert(message, "dummy");
                             SetPositions(mPos, 0);
 
-                            message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114 s1"), 10 * 1000);
+                            message = await _global.Com.Current.SendCommandAndReadOKReplyAsync(_global.Machine.PrepareCommand("m114 s1"), 10 * 1000);
 
                             if (!string.IsNullOrEmpty(message))
                             {
@@ -272,7 +275,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void WritePending()
         {
-            RunInNewTask(() => { Global.Instance.Com.Current.WritePendingCommandsToFile(System.IO.Path.GetTempPath() + "PendingCommands.nc"); });
+            RunInNewTask(() => { _global.Com.Current.WritePendingCommandsToFile(System.IO.Path.GetTempPath() + "PendingCommands.nc"); });
         }
 
         #endregion

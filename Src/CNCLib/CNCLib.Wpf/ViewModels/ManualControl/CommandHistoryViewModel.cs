@@ -28,8 +28,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class CommandHistoryViewModel : DetailViewModel
     {
-        public CommandHistoryViewModel(IManualControlViewModel vm) : base(vm)
+        private readonly Global _global;
+
+        public CommandHistoryViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
+            _global = global ?? throw new ArgumentNullException(); ;
         }
 
         public const string CommandHistoryFile = @"%USERPROFILE%\Documents\Command.txt";
@@ -57,7 +60,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         {
             var results = new ObservableCollection<SentCNCCommand>();
 
-            foreach (var rc in Global.Instance.Com.Current.CommandHistoryCopy)
+            foreach (var rc in _global.Com.Current.CommandHistoryCopy)
             {
                 DateTime sentTime = rc.SentTime ?? DateTime.Today;
 
@@ -75,7 +78,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void ClearCommandHistory()
         {
-            Global.Instance.Com.Current.ClearCommandHistory();
+            _global.Com.Current.ClearCommandHistory();
             RefreshCommandHistory();
         }
 

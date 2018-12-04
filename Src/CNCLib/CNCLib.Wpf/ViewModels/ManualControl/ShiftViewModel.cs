@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Windows.Input;
 
 using Framework.Wpf.Helpers;
@@ -25,8 +26,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class ShiftViewModel : DetailViewModel
     {
-        public ShiftViewModel(IManualControlViewModel vm) : base(vm)
+        private readonly Global _global;
+
+        public ShiftViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
+            _global = global ?? throw new ArgumentNullException();
         }
 
         #region Properties
@@ -37,7 +41,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendG92()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g92"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("g92"); });
         }
 
         #endregion

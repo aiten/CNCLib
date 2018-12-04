@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,8 +32,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class WorkOffsetViewModel : DetailViewModel
     {
-        public WorkOffsetViewModel(IManualControlViewModel vm) : base(vm)
+        private readonly Global _global;
+
+        public WorkOffsetViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
+            _global = global ?? throw new ArgumentNullException();
         }
 
         #region Properties
@@ -87,42 +91,42 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendG53()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g53"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("g53"); });
         }
 
         public void SendG54()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g54"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("g54"); });
         }
 
         public void SendG55()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g55"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("g55"); });
         }
 
         public void SendG56()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g56"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("g56"); });
         }
 
         public void SendG57()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g57"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("g57"); });
         }
 
         public void SendG58()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g58"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("g58"); });
         }
 
         public void SendG59()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand("g59"); });
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("g59"); });
         }
 
         private async Task<decimal?> GetParameterValue(int parameter)
         {
-            string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand($"(print, #{parameter})"), 10 * 1000);
+            string message = await _global.Com.Current.SendCommandAndReadOKReplyAsync(_global.Machine.PrepareCommand($"(print, #{parameter})"), 10 * 1000);
 
             if (!string.IsNullOrEmpty(message))
             {
@@ -168,7 +172,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SetG5xRel(int offsetG)
         {
-            Global.Instance.Com.Current.QueueCommand($"g10 l2 g91 p{offsetG + 1} x0y0");
+            _global.Com.Current.QueueCommand($"g10 l2 g91 p{offsetG + 1} x0y0");
         }
 
         public void SetG5x(int offsetG)
@@ -180,7 +184,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             // p0 => current
             // p1 => g54
             // p2 => g55
-            Global.Instance.Com.Current.QueueCommand($"g10 l2 p{offsetG + 1}{x}{y}{z}");
+            _global.Com.Current.QueueCommand($"g10 l2 p{offsetG + 1}{x}{y}{z}");
         }
 
         public bool CanSetG5x(int offsetG)

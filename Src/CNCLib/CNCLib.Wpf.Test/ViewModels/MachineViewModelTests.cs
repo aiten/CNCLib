@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 
 using CNCLib.Logic.Contract.DTO;
 using CNCLib.Service.Contract;
+using CNCLib.Wpf;
 using CNCLib.Wpf.ViewModels;
 
 using FluentAssertions;
@@ -54,7 +55,7 @@ namespace CNCLib.Tests.Wpf
             Machine machine = CreateMachine(1);
             rep.Get(1).Returns(machine);
 
-            var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper);
+            var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper, new Global());
             await mv.LoadMachine(1);
 
             mv.AddNewMachine.Should().Be(false);
@@ -99,7 +100,7 @@ namespace CNCLib.Tests.Wpf
             Machine machineDef = CreateMachine(0);
             rep.DefaultMachine().Returns(machineDef);
 
-            var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper);
+            var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper, new Global());
             mv.LoadMachine(-1);
 
             mv.AddNewMachine.Should().BeTrue();

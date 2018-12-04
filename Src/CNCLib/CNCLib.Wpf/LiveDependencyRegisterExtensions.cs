@@ -17,6 +17,7 @@
 */
 
 using CNCLib.Service.Contract;
+using CNCLib.Wpf.Services;
 
 using Framework.Dependency;
 using Framework.Dependency.Abstraction;
@@ -28,8 +29,13 @@ namespace CNCLib.Wpf
     {
         public static IDependencyContainer RegisterCNCLibWpf(this IDependencyContainer container)
         {
+            Dependency.Container.RegisterInstance(Global.Instance);
+
+            Dependency.Container.RegisterType<IJoystickService, JoystickService>();
+
             Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
             Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
+            Dependency.Container.RegisterType<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>();
 
             Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), typeof(ViewModels.MachineViewModel).Assembly, typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 

@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Windows.Input;
 
 using Framework.Arduino.SerialCommunication;
@@ -30,8 +31,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class MoveViewModel : DetailViewModel
     {
-        public MoveViewModel(IManualControlViewModel vm) : base(vm)
+        private readonly Global _global;
+
+        public MoveViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
+            _global = global ?? throw new ArgumentNullException();
         }
 
         #region Properties
@@ -45,19 +49,19 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             RunAndUpdate(
                 () =>
                 {
-                    bool   mustUse2Lines = Global.Instance.Machine.CommandSyntax == CommandSyntax.Grbl;
-                    string commandStr    = MachineGCodeHelper.PrepareCommand("g91 g0" + axisName + (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
+                    bool   mustUse2Lines = _global.Machine.CommandSyntax == CommandSyntax.Grbl;
+                    string commandStr    = _global.Machine.PrepareCommand("g91 g0" + axisName + (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
 
                     if (!mustUse2Lines)
                     {
                         commandStr += " g90";
                     }
 
-                    Global.Instance.Com.Current.QueueCommand(commandStr);
+                    _global.Com.Current.QueueCommand(commandStr);
 
                     if (mustUse2Lines)
                     {
-                        Global.Instance.Com.Current.QueueCommand("g90");
+                        _global.Com.Current.QueueCommand("g90");
                     }
                 });
         }

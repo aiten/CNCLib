@@ -26,14 +26,16 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class DetailViewModel : BaseViewModel
     {
+        private readonly Global _global;
         protected IManualControlViewModel Vm { get; set; }
 
-        public DetailViewModel(IManualControlViewModel vm)
+        public DetailViewModel(IManualControlViewModel vm, Global global)
         {
+            _global = global ?? throw new ArgumentNullException();
             Vm = vm;
         }
 
-        public bool Connected => Global.Instance.Com.Current.IsConnected;
+        public bool Connected => _global.Com.Current.IsConnected;
 
         protected void RunInNewTask(Action todo)
         {
@@ -59,7 +61,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public bool CanSendGCode()
         {
-            return CanSend() && Global.Instance.Machine.CommandSyntax != CommandSyntax.HPGL;
+            return CanSend() && _global.Machine.CommandSyntax != CommandSyntax.HPGL;
         }
 
         #endregion

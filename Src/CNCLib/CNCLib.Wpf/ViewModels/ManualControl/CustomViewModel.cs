@@ -16,6 +16,7 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Linq;
 using System.Windows.Input;
 
@@ -28,9 +29,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class CustomViewModel : DetailViewModel
     {
-        public CustomViewModel(IManualControlViewModel vm) : base(vm)
+        private readonly Global _global;
+
+        public CustomViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
-            Global.Instance.PropertyChanged += (sender, e) =>
+            _global = global ?? throw new ArgumentNullException(); ;
+            _global.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == "Machine")
                 {
@@ -126,12 +130,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private MachineCommand GetCmd(int x, int y)
         {
-            if (Global.Instance.Machine == null || Global.Instance.Machine.MachineCommands == null)
+            if (_global.Machine == null || _global.Machine.MachineCommands == null)
             {
                 return null;
             }
 
-            return Global.Instance.Machine.MachineCommands.FirstOrDefault(m => m.PosX == x && m.PosY == y);
+            return _global.Machine.MachineCommands.FirstOrDefault(m => m.PosX == x && m.PosY == y);
         }
 
         private string GetDesc(int x, int y)
@@ -156,7 +160,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                     var cmd = GetCmd(x, y);
                     if (cmd != null)
                     {
-                        await new MachineGCodeHelper().SendCommandAsync(cmd.CommandString);
+                        await _global.Com.Current.SendMacroCommandAsync(_global.Machine, cmd.CommandString);
                     }
                 });
         }

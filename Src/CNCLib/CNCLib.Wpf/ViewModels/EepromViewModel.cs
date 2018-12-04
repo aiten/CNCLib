@@ -30,9 +30,16 @@ namespace CNCLib.Wpf.ViewModels
 {
     public class EepromViewModel : BaseViewModel, IDisposable
     {
+        private readonly Global _global;
+
         #region crt
 
         bool _validReadEeprom;
+
+        public EepromViewModel(Global global)
+        {
+            _global = global ?? throw new ArgumentNullException();
+        }
 
         #endregion
 
@@ -67,7 +74,7 @@ namespace CNCLib.Wpf.ViewModels
         {
             if (MessageBox?.Invoke("Send 'Write EEprom commands' to machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
-                if (await new EepromHelper().WriteEepromAsync(EepromValue))
+                if (await _global.Com.Current.WriteEepromAsync(EepromValue))
                 {
                     MessageRestart();
                     CloseAction();
@@ -77,7 +84,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public async void ReadEeprom()
         {
-            var eeprom = await new EepromHelper().ReadEepromAsync();
+            var eeprom = await _global.Com.Current.ReadEepromAsync();
             if (eeprom != null)
             {
                 _validReadEeprom = true;
@@ -93,7 +100,7 @@ namespace CNCLib.Wpf.ViewModels
         {
             if (MessageBox?.Invoke("Send 'Erase EEprom command' to machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
-                if (await new EepromHelper().EraseEepromAsync())
+                if (await _global.Com.Current.EraseEepromAsync())
                 {
                     MessageRestart();
                     CloseAction();
@@ -103,17 +110,17 @@ namespace CNCLib.Wpf.ViewModels
 
         public bool CanReadEeprom()
         {
-            return Global.Instance.Com.Current.IsConnected;
+            return _global.Com.Current.IsConnected;
         }
 
         public bool CanWriteEeprom()
         {
-            return Global.Instance.Com.Current.IsConnected && _validReadEeprom;
+            return _global.Com.Current.IsConnected && _validReadEeprom;
         }
 
         public bool CanEraseEeprom()
         {
-            return Global.Instance.Com.Current.IsConnected;
+            return _global.Com.Current.IsConnected;
         }
 
         #endregion

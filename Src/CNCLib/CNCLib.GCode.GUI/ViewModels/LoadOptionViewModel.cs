@@ -133,6 +133,15 @@ namespace CNCLib.GCode.GUI.ViewModels
             _allSettingsLoaded = true;
         }
 
+        public LoadOptions MapLoadOptions(LoadOptionsDto dto)
+        {
+            return _mapper.Map<LoadOptions>(dto);
+        }
+        public LoadOptionsDto MapLoadOptions(LoadOptions model)
+        {
+            return _mapper.Map<LoadOptionsDto>(model);
+        }
+
         public bool Can()
         {
             return Busy == false;

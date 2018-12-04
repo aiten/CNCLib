@@ -26,11 +26,22 @@ using CNCLib.Wpf.Helpers;
 
 using System.Threading.Tasks;
 
+using CNCLib.Wpf.Services;
+
+using Framework.Pattern;
+
 namespace CNCLib.Wpf.ViewModels
 {
     public class JoystickViewModel : BaseViewModel, IDisposable
     {
+        private readonly IFactory<IJoystickService> _joystickService;
+
         #region crt
+
+        public JoystickViewModel(IFactory<IJoystickService> joystickService)
+        {
+            _joystickService = joystickService ?? throw new ArgumentNullException();
+        }
 
         public override async Task Loaded()
         {
@@ -65,17 +76,23 @@ namespace CNCLib.Wpf.ViewModels
 
         public async Task LoadJoystick()
         {
-            var joystick = await JoystickHelper.Load();
-            _id      = joystick.Item2;
-            Joystick = joystick.Item1;
+            using (var scope = _joystickService.Create())
+            {
+                var joystick = await scope.Instance.Load();
+                _id      = joystick.Item2;
+                Joystick = joystick.Item1;
 
-            RaisePropertyChanged(nameof(Joystick));
+                RaisePropertyChanged(nameof(Joystick));
+            }
         }
 
         public async void SaveJoystick()
         {
-            _id = await JoystickHelper.Save(_currentJoystick, _id);
-            CloseAction();
+            using (var scope = _joystickService.Create())
+            {
+                _id = await scope.Instance.Save(_currentJoystick, _id);
+                CloseAction();
+            }
         }
 
         public bool CanSaveJoystick()

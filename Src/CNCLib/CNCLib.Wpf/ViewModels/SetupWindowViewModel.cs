@@ -30,6 +30,7 @@ using AutoMapper;
 using CNCLib.Service.Contract;
 using CNCLib.Wpf.Helpers;
 using CNCLib.Wpf.Models;
+using CNCLib.Wpf.Services;
 
 using Framework.Tools;
 using Framework.Pattern;
@@ -42,15 +43,19 @@ namespace CNCLib.Wpf.ViewModels
     {
         #region crt
 
-        public SetupWindowViewModel(IFactory<IMachineService> machineService, IMapper mapper)
+        public SetupWindowViewModel(IFactory<IMachineService> machineService, IFactory<IJoystickService> joystickService, IMapper mapper, Global global)
         {
             _machineService = machineService ?? throw new ArgumentNullException();
+            _joystickService = joystickService ?? throw new ArgumentNullException();
             _mapper         = mapper ?? throw new ArgumentNullException();
+            _global         = global ?? throw new ArgumentNullException(); ;
             ResetOnConnect  = false;
         }
 
         readonly IFactory<IMachineService> _machineService;
+        private readonly IFactory<IJoystickService> _joystickService;
         private readonly IMapper _mapper;
+        private readonly Global _global;
 
         public override async Task Loaded()
         {
@@ -97,8 +102,13 @@ namespace CNCLib.Wpf.ViewModels
 
         private async Task LoadJoystick()
         {
-            Joystick                 = (await JoystickHelper.Load()).Item1;
-            Global.Instance.Joystick = Joystick;
+            using (var scope = _joystickService.Create())
+            {
+
+                Joystick = (await scope.Instance.Load()).Item1;
+
+                _global.Joystick = Joystick;
+            }
         }
 
         #endregion
@@ -141,9 +151,9 @@ namespace CNCLib.Wpf.ViewModels
             set => SetProperty(ref _machines, value);
         }
 
-        public bool Connected => Global.Instance.Com.Current.IsConnected;
+        public bool Connected => _global.Com.Current.IsConnected;
 
-        public bool ConnectedJoystick => Global.Instance.ComJoystick.IsConnected;
+        public bool ConnectedJoystick => _global.ComJoystick.IsConnected;
 
         #endregion
 
@@ -155,7 +165,7 @@ namespace CNCLib.Wpf.ViewModels
             set
             {
                 SetProperty(ref _resetOnConnect, value);
-                Global.Instance.ResetOnConnect = value;
+                _global.ResetOnConnect = value;
             }
         }
 
@@ -181,14 +191,14 @@ namespace CNCLib.Wpf.ViewModels
             {
                 string comport = Machine.GetComPort();
 
-                Global.Instance.Com.SetCurrent(comport);
+                _global.Com.SetCurrent(comport);
 
-                Global.Instance.Com.Current.DtrIsReset     = Machine.DtrIsReset;
-                Global.Instance.Com.Current.ResetOnConnect = ResetOnConnect;
+                _global.Com.Current.DtrIsReset     = Machine.DtrIsReset;
+                _global.Com.Current.ResetOnConnect = ResetOnConnect;
 
-                Global.Instance.Com.Current.CommandToUpper = Machine.CommandToUpper;
-                Global.Instance.Com.Current.BaudRate       = Machine.BaudRate;
-                await Global.Instance.Com.Current.ConnectAsync(comport);
+                _global.Com.Current.CommandToUpper = Machine.CommandToUpper;
+                _global.Com.Current.BaudRate       = Machine.BaudRate;
+                await _global.Com.Current.ConnectAsync(comport);
                 await SetGlobal();
 
                 if (SendInitCommands && Machine != null)
@@ -198,8 +208,8 @@ namespace CNCLib.Wpf.ViewModels
                     if (initCommands.Any())
                     {
                         // wait (do not check if reset - arduino may reset even the "reset" is not specified)
-                        await Global.Instance.Com.Current.WaitUntilResponseAsync(3000);
-                        await Global.Instance.Com.Current.QueueCommandsAsync(initCommands.OrderBy(cmd => cmd.SeqNo).Select(e => e.CommandString));
+                        await _global.Com.Current.WaitUntilResponseAsync(3000);
+                        await _global.Com.Current.QueueCommandsAsync(initCommands.OrderBy(cmd => cmd.SeqNo).Select(e => e.CommandString));
                     }
                 }
             }
@@ -218,11 +228,11 @@ namespace CNCLib.Wpf.ViewModels
         {
             try
             {
-                Global.Instance.ComJoystick.DtrIsReset     = true;
-                Global.Instance.ComJoystick.ResetOnConnect = true;
-                Global.Instance.ComJoystick.CommandToUpper = false;
-                Global.Instance.ComJoystick.BaudRate       = Joystick.BaudRate;
-                await Global.Instance.ComJoystick.ConnectAsync(Joystick.ComPort);
+                _global.ComJoystick.DtrIsReset     = true;
+                _global.ComJoystick.ResetOnConnect = true;
+                _global.ComJoystick.CommandToUpper = false;
+                _global.ComJoystick.BaudRate       = Joystick.BaudRate;
+                await _global.ComJoystick.ConnectAsync(Joystick.ComPort);
             }
             catch (Exception e)
             {
@@ -236,14 +246,14 @@ namespace CNCLib.Wpf.ViewModels
 
         private async Task SetGlobal()
         {
-            Global.Instance.SizeX                         = Machine.SizeX;
-            Global.Instance.SizeY                         = Machine.SizeY;
-            Global.Instance.SizeZ                         = Machine.SizeZ;
-            Global.Instance.Com.Current.ArduinoBufferSize = Machine.BufferSize;
+            _global.SizeX                         = Machine.SizeX;
+            _global.SizeY                         = Machine.SizeY;
+            _global.SizeZ                         = Machine.SizeZ;
+            _global.Com.Current.ArduinoBufferSize = Machine.BufferSize;
 
             using (var scope = _machineService.Create())
             {
-                Global.Instance.Machine = await scope.Instance.Get(Machine.MachineId);
+                _global.Machine = await scope.Instance.Get(Machine.MachineId);
             }
         }
 
@@ -254,7 +264,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public async Task<bool> DisConnect(CancellationToken ctk)
         {
-            await Global.Instance.Com.Current.DisconnectAsync();
+            await _global.Com.Current.DisconnectAsync();
             RaisePropertyChanged(nameof(Connected));
             return true;
         }
@@ -271,7 +281,7 @@ namespace CNCLib.Wpf.ViewModels
 
         public async Task<bool> DisConnectJoystick(CancellationToken ctk)
         {
-            await Global.Instance.ComJoystick.DisconnectAsync();
+            await _global.ComJoystick.DisconnectAsync();
             RaisePropertyChanged(nameof(ConnectedJoystick));
             return true;
         }

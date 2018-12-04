@@ -34,8 +34,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 {
     public class SDViewModel : DetailViewModel
     {
-        public SDViewModel(IManualControlViewModel vm) : base(vm)
+        private readonly Global _global;
+
+        public SDViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
+            _global = global ?? throw new ArgumentNullException();
         }
 
         #region Properties
@@ -62,7 +65,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendM20File()
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m20")); });
+            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "m20"); });
         }
 
         public void SendM24File()
@@ -75,8 +78,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             RunAndUpdate(
                 () =>
                 {
-                    Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m23 " + filename));
-                    Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m24"));
+                    _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "m23 " + filename);
+                    _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "m24");
                 });
         }
 
@@ -96,7 +99,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                         string line;
                         while ((line = sr.ReadLine()) != null)
                         {
-                            lines.Add(MachineGCodeHelper.PrepareCommand(line));
+                            lines.Add(_global.Machine.PrepareCommand(line));
                         }
                     }
 
@@ -114,7 +117,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             RunInNewTask(
                 () =>
                 {
-                    var lines = Global.Instance.Commands.ToStringList();
+                    var lines = _global.Commands.ToStringList();
                     SendM28(sDFileName, lines.ToArray()).ConfigureAwait(false).GetAwaiter().GetResult();
                 });
         }
@@ -124,11 +127,11 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             const int SDTimeoutCreate = 10000;
             const int SDTimeoutCopy   = 10 * 60 * 1000;
             const int SDTimeoutSave   = 10000;
-            var       result          = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m28 " + sDFileName), SDTimeoutCreate);
+            var       result          = await _global.Com.Current.SendCommandAndReadOKReplyAsync(_global.Machine.PrepareCommand("m28 " + sDFileName), SDTimeoutCreate);
             if (!string.IsNullOrEmpty(result) && result.Contains(sDFileName))
             {
-                await Global.Instance.Com.Current.SendCommandsAsync(lines, SDTimeoutCopy);
-                var resultDone = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m29"), SDTimeoutSave);
+                await _global.Com.Current.SendCommandsAsync(lines, SDTimeoutCopy);
+                var resultDone = await _global.Com.Current.SendCommandAndReadOKReplyAsync(_global.Machine.PrepareCommand("m29"), SDTimeoutSave);
 
                 if (!string.IsNullOrEmpty(resultDone) && result.Contains("Done"))
                 {
@@ -143,12 +146,12 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendM30File(string filename)
         {
-            RunAndUpdate(() => { Global.Instance.Com.Current.QueueCommand(MachineGCodeHelper.PrepareCommand("m30 " + filename)); });
+            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "m30 " + filename); });
         }
 
         public void SendFileDirect()
         {
-            RunAndUpdate(async () => { await Global.Instance.Com.Current.SendFileAsync(FileName); });
+            RunAndUpdate(async () => { await _global.Com.Current.SendFileAsync(FileName); });
         }
 
         public void AddToFile()
@@ -156,7 +159,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             RunAndUpdate(
                 async () =>
                 {
-                    string message = await Global.Instance.Com.Current.SendCommandAndReadOKReplyAsync(MachineGCodeHelper.PrepareCommand("m114"), 10000);
+                    string message = await _global.Com.Current.SendCommandAndReadOKReplyAsync(_global.Machine.PrepareCommand("m114"), 10000);
                     if (!string.IsNullOrEmpty(message))
                     {
                         message = message.Replace("ok", "");
@@ -204,7 +207,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public bool CanSendSDCommand()
         {
-            return CanSend() && Global.Instance.Machine.SDSupport;
+            return CanSend() && _global.Machine.SDSupport;
         }
 
         public bool CanSendFileNameCommand()
