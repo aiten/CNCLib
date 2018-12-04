@@ -160,7 +160,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
                     var cmd = GetCmd(x, y);
                     if (cmd != null)
                     {
-                        await _global.Com.Current.SendCommandAsync(_global.Machine, cmd.CommandString);
+                        await _global.Com.Current.SendMacroCommandAsync(_global.Machine, cmd.CommandString);
                     }
                 });
         }

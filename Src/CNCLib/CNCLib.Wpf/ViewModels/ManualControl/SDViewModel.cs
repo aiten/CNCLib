@@ -65,7 +65,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendM20File()
         {
-            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("m20")); });
+            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "m20"); });
         }
 
         public void SendM24File()
@@ -78,8 +78,8 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
             RunAndUpdate(
                 () =>
                 {
-                    _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("m23 " + filename));
-                    _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("m24"));
+                    _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "m23 " + filename);
+                    _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "m24");
                 });
         }
 
@@ -146,7 +146,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendM30File(string filename)
         {
-            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("m30 " + filename)); });
+            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "m30 " + filename); });
         }
 
         public void SendFileDirect()

@@ -51,13 +51,15 @@ namespace CNCLib.Wpf.Helpers
 
             if (info.Info.StartsWith(";CNCJoystick"))
             {
-                if (Global.Instance.Joystick?.InitCommands != null)
+                string initCommands = Global.Instance.Joystick?.InitCommands;
+                if (initCommands != null)
                 {
-                    RunCommandInNewTask(
-                        async () =>
-                        {
-                            await Global.Instance.ComJoystick.SendJoystickInitCommands(Global.Instance.Joystick?.InitCommands);
-                        });
+                    RunCommandInNewTask(async () =>
+                    {
+                        string[] separators = { @"\n" };
+                        string[] cmds       = initCommands.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                        await QueueCommandsAsync(cmds);
+                    });
                 }
             }
             else

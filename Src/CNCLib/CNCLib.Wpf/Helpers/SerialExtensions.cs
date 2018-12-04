@@ -183,23 +183,16 @@ namespace CNCLib.Wpf.Helpers
 
         #endregion
 
-        #region Joystick
-
-        public static async Task SendJoystickInitCommands(this ISerial serial, string commandString)
-        {
-            string[] separators = { @"\n" };
-            string[] cmds       = commandString.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var s in cmds)
-            {
-                await serial.SendCommandAsync(s, int.MaxValue);
-            }
-        }
-
-        #endregion
+        #region send/queue
 
         public const int DefaultTimeout = 120 * 1000;
 
-        public static async Task SendCommandAsync(this ISerial serial, Machine machine, string commandString)
+        public static void PrepareAndQueueCommand(this ISerial serial, Machine machine, string commandString)
+        {
+            serial.QueueCommand(machine.PrepareCommand(commandString));
+        }
+
+        public static async Task SendMacroCommandAsync(this ISerial serial, Machine machine, string commandString)
         {
             string[] separators = { @"\n" };
             string[] cmds       = commandString.Split(separators, StringSplitOptions.RemoveEmptyEntries);
@@ -236,5 +229,7 @@ namespace CNCLib.Wpf.Helpers
                 }
             }
         }
+
+        #endregion
     }
 }

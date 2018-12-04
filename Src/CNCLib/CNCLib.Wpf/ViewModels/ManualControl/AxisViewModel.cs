@@ -94,7 +94,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         private void SendMoveCommand(string dist)
         {
-            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("g91 g0" + AxisName + dist + " g90")); });
+            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g91 g0" + AxisName + dist + " g90"); });
         }
 
         private void SendProbeCommand(int axisIndex)
@@ -104,7 +104,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public void SendRefMove()
         {
-            RunAndUpdate(() => { _global.Com.Current.QueueCommand(_global.Machine.PrepareCommand("g28 " + AxisName + "0")); });
+            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g28 " + AxisName + "0"); });
         }
 
         public void SendG92()
