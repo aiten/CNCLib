@@ -67,7 +67,7 @@ namespace CNCLib.Wpf.Helpers
                     async () =>
                     {
                         string msg = Global.Instance.Machine.JoystickReplyReceived(info.Info.Trim());
-                        await Global.Instance.Com.Current.SendCommandAsync(msg);
+                        await Global.Instance.Com.Current.QueueCommandsAsync(new string[] { msg });
                     });
             }
         }
