@@ -6,6 +6,9 @@
 	<OutputType>WinExe</OutputType>
 	<StartupObject>CNCLib.Wpf.Sql.Start.App</StartupObject>
   </PropertyGroup>
+   <ItemGroup>
+     <None Remove="NLog.config" />
+   </ItemGroup>
    
    <ItemGroup>
    
@@ -18,6 +21,10 @@
     </Compile>
 
      <ApplicationDefinition Include="App.xaml" SubType="Designer" Generator="XamlIntelliSenseFileGenerator" />
+
+     <Content Include="NLog.config">
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </Content>
      <Compile Update="App.xaml.cs" DependentUpon="App.xaml" />
   </ItemGroup>
   

@@ -17,7 +17,7 @@
   ;--------------------------------
 
   !ifndef CopyFromFolder
-    !define CopyFromFolder "..\CNCLib\CNCLib.Wpf.Start\bin\Debug"
+    !define CopyFromFolder "..\CNCLib\CNCLib.Wpf.Start\bin\Debug\net471"
   !endif 
   
 ;--------------------------------

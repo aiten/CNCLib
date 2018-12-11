@@ -6,6 +6,9 @@
 	<OutputType>WinExe</OutputType>
 	<StartupObject>CNCLib.Wpf.Start.App</StartupObject>
   </PropertyGroup>
+   <ItemGroup>
+     <None Remove="NLog.config" />
+   </ItemGroup>
    
    <ItemGroup>
    
@@ -18,6 +21,10 @@
     </Compile>
 
      <ApplicationDefinition Include="App.xaml" SubType="Designer" Generator="XamlIntelliSenseFileGenerator" />
+
+     <Content Include="NLog.config">
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </Content>
      <Compile Update="App.xaml.cs" DependentUpon="App.xaml" />
   </ItemGroup>
   
@@ -36,9 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="netstandard" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />
@@ -81,5 +85,5 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-
+  
 </Project>
