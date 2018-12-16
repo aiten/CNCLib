@@ -27,8 +27,8 @@ namespace CNCLib.GCode
     {
         #region Properties
 
-        public const uint SIGNATURE        = 0x21436501;
-        public const uint SIGNATUREPLOTTER = 0x21438701;
+        public const uint SIGNATURE        = 0x21436502;
+        public const uint SIGNATUREPLOTTER = 0x21438702;
 
         uint[] _values;
 
@@ -48,7 +48,7 @@ namespace CNCLib.GCode
         public uint DWSizeAxis   => _sizeAxis;
         public uint OfsAfterAxis => _ofsAfterAxis;
 
-        public const uint SIZEOFAXIX_EX = 2;
+        public const uint SIZEOFAXIS_EX = ((uint) EAxisOffsets32.InitPosition)  + 1;
 
         public enum EValueOffsets32
         {
@@ -89,6 +89,7 @@ namespace CNCLib.GCode
         {
             Size = 0,
             Offset1,
+            InitPosition,
             MaxStepRate,
             OffsetAccDec,
             RefMoveStepRate,

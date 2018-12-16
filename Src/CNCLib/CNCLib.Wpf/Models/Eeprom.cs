@@ -46,7 +46,7 @@ namespace CNCLib.Wpf.Models
 
             if (isAxis)
             {
-                if (GetAxis(0).DWEESizeOf <= EepromV1.SIZEOFAXIX_EX)
+                if (GetAxis(0).DWEESizeOf <= EepromV1.SIZEOFAXIS_EX)
                 {
                     switch (propertyName)
                     {
@@ -395,6 +395,10 @@ namespace CNCLib.Wpf.Models
             [Description("Steprate for reference-move (AVR 8bit max 16bit, less than 'MaxStepRate'), 0 for machine default")]
             public uint RefMoveStepRate { get; set; }
 
+            [DisplayName("Init-Position")]
+            [Description("Position (in mm/1000) while startup. The reference move will overwrite this position.")]
+            public uint InitPosition { get; set; }
+
             [DisplayName("ProbeSize")]
             [Description("Default probe size in mm/1000 (used in Lcd)")]
             public uint ProbeSize { get; set; }
@@ -542,11 +546,13 @@ namespace CNCLib.Wpf.Models
                 GetAxis(i).RefHitValueMin = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin];
                 GetAxis(i).RefHitValueMax = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax];
 
+                GetAxis(i).InitPosition   = ee[i, EepromV1.EAxisOffsets32.InitPosition];
+
                 GetAxis(i).StepperDirection = (ee[EepromV1.EValueOffsets8.StepperDirection] & (1 << i)) != 0;
 
                 this[i] = (EReverenceSequence)ee[i, EepromV1.EAxisOffsets8.EReverenceSequence];
 
-                if (ee.DWSizeAxis > EepromV1.SIZEOFAXIX_EX)
+                if (ee.DWSizeAxis > EepromV1.SIZEOFAXIS_EX)
                 {
                     GetAxis(i).MaxStepRate     = ee[i, EepromV1.EAxisOffsets32.MaxStepRate];
                     GetAxis(i).Acc             = ee[i, EepromV1.EAxisOffsets16.Acc];
@@ -591,7 +597,9 @@ namespace CNCLib.Wpf.Models
 
                 ee[EepromV1.EValueOffsets8.StepperDirection] = (byte)direction;
 
-                if (ee.DWSizeAxis > EepromV1.SIZEOFAXIX_EX)
+                ee[i, EepromV1.EAxisOffsets32.InitPosition] = GetAxis(i).InitPosition;
+
+                if (ee.DWSizeAxis > EepromV1.SIZEOFAXIS_EX)
                 {
                     ee[i, EepromV1.EAxisOffsets32.MaxStepRate]     = GetAxis(i).MaxStepRate;
                     ee[i, EepromV1.EAxisOffsets16.Acc]             = GetAxis(i).Acc;

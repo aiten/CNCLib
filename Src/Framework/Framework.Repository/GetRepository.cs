@@ -49,7 +49,7 @@ namespace Framework.Repository
 
         public async Task<IEnumerable<TEntity>> GetAll()
         {
-            return await QueryWithOptional.ToListAsync();
+            return await AddInclude(QueryWithOptional).ToListAsync();
         }
 
         public async Task<TEntity> Get(TKey key)
