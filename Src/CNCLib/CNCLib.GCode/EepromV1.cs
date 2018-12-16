@@ -48,7 +48,7 @@ namespace CNCLib.GCode
         public uint DWSizeAxis   => _sizeAxis;
         public uint OfsAfterAxis => _ofsAfterAxis;
 
-        public const uint SIZEOFAXIX_EX = 2;
+        public const uint SIZEOFAXIS_EX = ((uint) EAxisOffsets32.InitPosition)  + 1;
 
         public enum EValueOffsets32
         {
@@ -89,7 +89,7 @@ namespace CNCLib.GCode
         {
             Size = 0,
             Offset1,
-            PosNoRefMove,
+            InitPosition,
             MaxStepRate,
             OffsetAccDec,
             RefMoveStepRate,
