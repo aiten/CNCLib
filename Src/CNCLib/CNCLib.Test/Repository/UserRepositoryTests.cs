@@ -53,11 +53,7 @@ namespace CNCLib.Test.Repository
                     return new CRUDTestDbContext<CNCLibContext, User, int, IUserRepository>(context, uow, rep);
                 },
                 GetEntityKey  = (entity) => entity.UserId,
-                SetEntityKey  = (entity,    id) =>
-                {
-                    entity.UserId = id;
-                    return entity;
-                },
+                SetEntityKey  = (entity,  id) => entity.UserId = id,
                 CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"UserId" })
             };
         }

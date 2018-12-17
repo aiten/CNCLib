@@ -51,12 +51,8 @@ namespace CNCLib.Test.Repository
                     var rep     = new MachineRepository(context, UserContext);
                     return new CRUDTestDbContext<CNCLibContext, Machine, int, IMachineRepository>(context, uow, rep);
                 },
-                GetEntityKey = (entity) => entity.MachineId,
-                SetEntityKey = (entity, key) =>
-                {
-                    entity.MachineId = key;
-                    return entity;
-                },
+                GetEntityKey  = (entity) => entity.MachineId,
+                SetEntityKey  = (entity,  key) => entity.MachineId = key,
                 CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"MachineId", @"MachineCommandId", @"MachineInitCommandId" })
             };
         }

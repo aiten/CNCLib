@@ -37,7 +37,7 @@ namespace Framework.Test.Repository
         public Func<GetTestDbContext<TDbContext, TEntity, TKey, TIRepository>> CreateTestDbContext;
 
         public Func<TEntity, TKey>   GetEntityKey;
-        public Func<TEntity, TKey, TEntity> SetEntityKey;
+        public Action<TEntity, TKey> SetEntityKey;
 
         public Func<TEntity, TEntity, bool> CompareEntity;
 

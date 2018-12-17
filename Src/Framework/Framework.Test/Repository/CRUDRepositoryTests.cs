@@ -83,7 +83,10 @@ namespace Framework.Test.Repository
             using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
-                await ctx.Repository.Update(key, SetEntityKey(createTestEntity(), key));
+                var entity = createTestEntity();
+                SetEntityKey(entity, key);
+
+                await ctx.Repository.Update(key, entity);
 
                 await ctx.UnitOfWork.SaveChangesAsync();
                 await trans.CommitTransactionAsync();

@@ -55,7 +55,6 @@ namespace CNCLib.Test.Repository
                 {
                     entity.Group = key.Group;
                     entity.Name = key.Name;
-                    return entity;
                 },
                 CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new string[0])
             };
