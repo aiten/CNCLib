@@ -22,6 +22,7 @@ using CNCLib.Shared;
 
 using Framework.Dependency;
 using Framework.Repository.Abstraction;
+using Framework.Test;
 using Framework.Test.Repository;
 
 using Microsoft.EntityFrameworkCore;
@@ -31,15 +32,14 @@ using Xunit;
 namespace CNCLib.Test.Repository
 {
     [Collection("RepositoryTests")]
-    public abstract class RepositoryTests<TDbContext, TEntity, TKey, TIRepository> : CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository>
-        where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
+    public abstract class RepositoryTests<TDbContext> : UnitTestBase
+        where TDbContext : DbContext
     {
         static bool _init = false;
 
         public RepositoryTests()
         {
             ClassInitBase();
-            InitializeDependencies();
         }
 
         public static void ClassInitBase()

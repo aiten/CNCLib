@@ -31,16 +31,17 @@ namespace Framework.Test.Repository
 
     using Microsoft.EntityFrameworkCore;
 
-    public abstract class GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : RepositoryBaseTests<TDbContext>
+    public class GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : UnitTestBase
         where TEntity : class where TIRepository : IGetRepository<TEntity, TKey> where TDbContext : DbContext
     {
-        protected abstract GetTestDbContext<TDbContext, TEntity, TKey, TIRepository> CreateTestDbContext();
+        public Func<GetTestDbContext<TDbContext, TEntity, TKey, TIRepository>> CreateTestDbContext;
 
-        protected abstract TKey GetEntityKey(TEntity    entity);
-        protected abstract TEntity SetEntityKey(TEntity entity,  TKey    key);
-        protected abstract bool CompareEntity(TEntity   entity1, TEntity entity2);
+        public Func<TEntity, TKey>   GetEntityKey;
+        public Action<TEntity, TKey> SetEntityKey;
 
-        protected async Task<IEnumerable<TEntity>> GetAll()
+        public Func<TEntity, TEntity, bool> CompareEntity;
+
+        public async Task<IEnumerable<TEntity>> GetAll()
         {
             using (var ctx = CreateTestDbContext())
             {
@@ -50,7 +51,7 @@ namespace Framework.Test.Repository
             }
         }
 
-        protected async Task<TEntity> GetTrackingOK(TKey key)
+        public async Task<TEntity> GetTrackingOK(TKey key)
         {
             using (var ctx = CreateTestDbContext())
             {
@@ -61,7 +62,7 @@ namespace Framework.Test.Repository
             }
         }
 
-        protected async Task<TEntity> GetOK(TKey key)
+        public async Task<TEntity> GetOK(TKey key)
         {
             using (var ctx = CreateTestDbContext())
             {
@@ -72,7 +73,7 @@ namespace Framework.Test.Repository
             }
         }
 
-        protected async Task GetNotExist(TKey key)
+        public async Task GetNotExist(TKey key)
         {
             using (var ctx = CreateTestDbContext())
             {

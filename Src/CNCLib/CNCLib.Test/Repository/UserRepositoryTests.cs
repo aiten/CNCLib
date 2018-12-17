@@ -37,35 +37,25 @@ using Xunit;
 
 namespace CNCLib.Test.Repository
 {
-    public class UserRepositoryTests : RepositoryTests<CNCLibContext, User, int, IUserRepository>
+    public class UserRepositoryTests : RepositoryTests<CNCLibContext>
     {
         #region crt and overrides
 
-        protected override GetTestDbContext<CNCLibContext, User, int, IUserRepository> CreateTestDbContext()
+        protected CRUDRepositoryTests<CNCLibContext, User, int, IUserRepository> CreateTestContext()
         {
-            var context = new CNCLibContext();
-            var uow     = new UnitOfWork<CNCLibContext>(context);
-            var rep     = new UserRepository(context);
-            return new GetTestDbContext<CNCLibContext, User, int, IUserRepository>(context, uow, rep);
-        }
-
-        protected override int GetEntityKey(User entity)
-        {
-            return entity.UserId;
-        }
-
-        protected override User SetEntityKey(User entity, int key)
-        {
-            entity.UserId = key;
-            return entity;
-        }
-
-        protected override bool CompareEntity(User entity1, User entity2)
-        {
-            //entity1.Should().BeEquivalentTo(entity2, opts => 
-            //    opts.Excluding(x => x.UserId)
-            //);
-            return CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"UserId" });
+            return new CRUDRepositoryTests<CNCLibContext, User, int, IUserRepository>()
+            {
+                CreateTestDbContext = () =>
+                {
+                    var context = new CNCLibContext();
+                    var uow     = new UnitOfWork<CNCLibContext>(context);
+                    var rep     = new UserRepository(context);
+                    return new CRUDTestDbContext<CNCLibContext, User, int, IUserRepository>(context, uow, rep);
+                },
+                GetEntityKey  = (entity) => entity.UserId,
+                SetEntityKey  = (entity,  id) => entity.UserId = id,
+                CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"UserId" })
+            };
         }
 
         #endregion
@@ -75,7 +65,7 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task GetAllTest()
         {
-            var entities = (await GetAll()).OrderBy(u => u.UserName);
+            var entities = (await CreateTestContext().GetAll()).OrderBy(u => u.UserName);
             entities.Count().Should().BeGreaterThan(1);
             entities.ElementAt(0).UserName.Should().Be("Edith");
             entities.ElementAt(1).UserName.Should().Be("Herbert");
@@ -84,33 +74,33 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task GetOKTest()
         {
-            var entity = await GetOK(1);
+            var entity = await CreateTestContext().GetOK(1);
             entity.UserId.Should().Be(1);
         }
 
         [Fact]
         public async Task GetTrackingOKTest()
         {
-            var entity = await GetTrackingOK(2);
+            var entity = await CreateTestContext().GetTrackingOK(2);
             entity.UserId.Should().Be(2);
         }
 
         [Fact]
         public async Task GetNotExistTest()
         {
-            await GetNotExist(2342341);
+            await CreateTestContext().GetNotExist(2342341);
         }
 
         [Fact]
         public async Task AddUpdateDeleteTest()
         {
-            await AddUpdateDelete(() => new User() { UserName = "Hallo", UserPassword = "1234" }, (entity) => entity.UserPassword = "3456");
+            await CreateTestContext().AddUpdateDelete(() => new User() { UserName = "Hallo", UserPassword = "1234" }, (entity) => entity.UserPassword = "3456");
         }
 
         [Fact]
         public async Task AddRollbackTest()
         {
-            await AddRollBack(() => new User() { UserName = "Hallo", UserPassword = "1234" });
+            await CreateTestContext().AddRollBack(() => new User() { UserName = "Hallo", UserPassword = "1234" });
         }
 
         #endregion
@@ -120,7 +110,7 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task QueryOneUserByNameFound()
         {
-            using (var ctx = CreateTestDbContext())
+            using (var ctx = CreateTestContext().CreateTestDbContext())
             {
                 var users = await ctx.Repository.Get(2);
                 users.UserId.Should().Be(2);
@@ -133,7 +123,7 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task QueryOneUserByNameNotFound()
         {
-            using (var ctx = CreateTestDbContext())
+            using (var ctx = CreateTestContext().CreateTestDbContext())
             {
                 var users = await ctx.Repository.GetByName("UserNotExist");
                 users.Should().BeNull();
@@ -145,12 +135,12 @@ namespace CNCLib.Test.Repository
         {
             string existingUserName;
 
-            using (var ctx = CreateTestDbContext())
+            using (var ctx = CreateTestContext().CreateTestDbContext())
             {
                 existingUserName = (await ctx.Repository.Get(2)).UserName;
             }
 
-            using (var ctx = CreateTestDbContext())
+            using (var ctx = CreateTestContext().CreateTestDbContext())
             {
                 var entityToAdd = new User() { UserName = existingUserName };
                 ctx.Repository.Add(entityToAdd);

@@ -36,41 +36,25 @@ using Xunit;
 
 namespace CNCLib.Test.Repository
 {
-    public class MachineRepositoryTests : RepositoryTests<CNCLibContext, Machine, int, IMachineRepository>
+    public class MachineRepositoryTests : RepositoryTests<CNCLibContext>
     {
         #region crt and overrides
 
-        protected override GetTestDbContext<CNCLibContext, Machine, int, IMachineRepository> CreateTestDbContext()
+        protected CRUDRepositoryTests<CNCLibContext, Machine, int, IMachineRepository> CreateTestContext()
         {
-            var context = new CNCLibContext();
-            var uow     = new UnitOfWork<CNCLibContext>(context);
-            var rep     = new MachineRepository(context, UserContext);
-            return new GetTestDbContext<CNCLibContext, Machine, int, IMachineRepository>(context, uow, rep);
-        }
-
-        protected override int GetEntityKey(Machine entity)
-        {
-            return entity.MachineId;
-        }
-
-        protected override Machine SetEntityKey(Machine entity, int key)
-        {
-            entity.MachineId = key;
-            return entity;
-        }
-
-        protected override bool CompareEntity(Machine entity1, Machine entity2)
-        {
-            //entity1.Should().BeEquivalentTo(entity2, opts => 
-            //    opts.Excluding(x => x.UserId)
-            //);
-            return CompareProperties.AreObjectsPropertiesEqual(
-                entity1,
-                entity2,
-                new[]
+            return new CRUDRepositoryTests<CNCLibContext, Machine, int, IMachineRepository>()
+            {
+                CreateTestDbContext = () =>
                 {
-                    @"MachineId", @"MachineCommandId", @"MachineInitCommandId"
-                });
+                    var context = new CNCLibContext();
+                    var uow     = new UnitOfWork<CNCLibContext>(context);
+                    var rep     = new MachineRepository(context, UserContext);
+                    return new CRUDTestDbContext<CNCLibContext, Machine, int, IMachineRepository>(context, uow, rep);
+                },
+                GetEntityKey  = (entity) => entity.MachineId,
+                SetEntityKey  = (entity,  key) => entity.MachineId = key,
+                CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"MachineId", @"MachineCommandId", @"MachineInitCommandId" })
+            };
         }
 
         #endregion
@@ -80,7 +64,7 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task GetAllTest()
         {
-            var entities = await GetAll();
+            var entities = await CreateTestContext().GetAll();
             entities.Count().Should().BeGreaterThan(1);
             entities.Count(i => i.Name == "DC-K40-Laser").Should().Be(1);
             entities.Count(i => i.Name == "Laser").Should().Be(1);
@@ -89,33 +73,33 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task GetOKTest()
         {
-            var entity = await GetOK(1);
+            var entity = await CreateTestContext().GetOK(1);
             entity.MachineId.Should().Be(1);
         }
 
         [Fact]
         public async Task GetTrackingOKTest()
         {
-            var entity = await GetTrackingOK(2);
+            var entity = await CreateTestContext().GetTrackingOK(2);
             entity.MachineId.Should().Be(2);
         }
 
         [Fact]
         public async Task GetNotExistTest()
         {
-            await GetNotExist(2342341);
+            await CreateTestContext().GetNotExist(2342341);
         }
 
         [Fact]
         public async Task AddUpdateDeleteTest()
         {
-            await AddUpdateDelete(() => CreateMachine(@"AddUpdateDeleteTest"), (entity) => entity.Name = "DummyNameUpdate");
+            await CreateTestContext().AddUpdateDelete(() => CreateMachine(@"AddUpdateDeleteTest"), (entity) => entity.Name = "DummyNameUpdate");
         }
 
         [Fact]
         public async Task AddUpdateDeleteWithCommandAndInitCommandsTest()
         {
-            await AddUpdateDelete(
+            await CreateTestContext().AddUpdateDelete(
                 () => AddMachineInitCommands((AddMachineCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))),
                 (entity) =>
                 {
@@ -144,7 +128,7 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task AddUpdateDeleteWithCommandAndInitCommandsToEmptyTest()
         {
-            await AddUpdateDelete(
+            await CreateTestContext().AddUpdateDelete(
                 () => AddMachineInitCommands((AddMachineCommands(CreateMachine(@"AddUpdateDeleteWithPropertiesTest")))),
                 (entity) =>
                 {
@@ -157,7 +141,7 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task AddUpdateDeleteBulkTest()
         {
-            await AddUpdateDeleteBulk(
+            await CreateTestContext().AddUpdateDeleteBulk(
                 () => new[]
                 {
                     CreateMachine(@"AddUpdateDeleteBulkTest1"), CreateMachine(@"AddUpdateDeleteBulkTest2"), CreateMachine(@"AddUpdateDeleteBulkTest2")
@@ -175,7 +159,7 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task AddRollbackTest()
         {
-            await AddRollBack(() => CreateMachine(@"AddRollbackTest"));
+            await CreateTestContext().AddRollBack(() => CreateMachine(@"AddRollbackTest"));
         }
 
         #endregion

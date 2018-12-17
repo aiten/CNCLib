@@ -22,7 +22,7 @@ namespace Framework.Test.Repository
 
     using Framework.Repository.Abstraction;
 
-    public class CRUDTestDbContext<TDbContext, TEntity, TKey, TIRepository> : TestDbContext<TDbContext, TIRepository>
+    public class CRUDTestDbContext<TDbContext, TEntity, TKey, TIRepository> : GetTestDbContext<TDbContext, TEntity, TKey, TIRepository>
         where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
         public CRUDTestDbContext(TDbContext dbContext, IUnitOfWork uow, TIRepository repository) : base(dbContext, uow, repository)

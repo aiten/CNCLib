@@ -31,7 +31,7 @@ namespace Framework.Test.Repository
 
     using Microsoft.EntityFrameworkCore;
 
-    public abstract class CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository>
+    public class CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository>
         where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
         public async Task AddUpdateDelete(Func<TEntity> createTestEntity, Action<TEntity> updateEntity)
@@ -83,7 +83,10 @@ namespace Framework.Test.Repository
             using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
-                await ctx.Repository.Update(key, SetEntityKey(createTestEntity(), key));
+                var entity = createTestEntity();
+                SetEntityKey(entity, key);
+
+                await ctx.Repository.Update(key, entity);
 
                 await ctx.UnitOfWork.SaveChangesAsync();
                 await trans.CommitTransactionAsync();
@@ -189,7 +192,7 @@ namespace Framework.Test.Repository
                 await trans.CommitTransactionAsync();
             }
 
-            // read again to test is not exist
+            // read again to test if not exist
 
             using (var ctx = CreateTestDbContext())
             {

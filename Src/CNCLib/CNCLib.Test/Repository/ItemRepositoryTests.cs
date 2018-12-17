@@ -36,35 +36,25 @@ using Xunit;
 
 namespace CNCLib.Test.Repository
 {
-    public class ItemRepositoryTests : RepositoryTests<CNCLibContext, Item, int, IItemRepository>
+    public class ItemRepositoryTests : RepositoryTests<CNCLibContext>
     {
         #region crt and overrides
 
-        protected override GetTestDbContext<CNCLibContext, Item, int, IItemRepository> CreateTestDbContext()
+        protected CRUDRepositoryTests<CNCLibContext, Item, int, IItemRepository> CreateTestContext()
         {
-            var context = new CNCLibContext();
-            var uow     = new UnitOfWork<CNCLibContext>(context);
-            var rep     = new ItemRepository(context, UserContext);
-            return new GetTestDbContext<CNCLibContext, Item, int, IItemRepository>(context, uow, rep);
-        }
-
-        protected override int GetEntityKey(Item entity)
-        {
-            return entity.ItemId;
-        }
-
-        protected override Item SetEntityKey(Item entity, int key)
-        {
-            entity.ItemId = key;
-            return entity;
-        }
-
-        protected override bool CompareEntity(Item entity1, Item entity2)
-        {
-            //entity1.Should().BeEquivalentTo(entity2, opts => 
-            //    opts.Excluding(x => x.UserId)
-            //);
-            return CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"ItemId" });
+            return new CRUDRepositoryTests<CNCLibContext, Item, int, IItemRepository>()
+            {
+                CreateTestDbContext = () =>
+                {
+                    var context = new CNCLibContext();
+                    var uow     = new UnitOfWork<CNCLibContext>(context);
+                    var rep     = new ItemRepository(context, UserContext);
+                    return new CRUDTestDbContext<CNCLibContext, Item, int, IItemRepository>(context, uow, rep);
+                },
+                GetEntityKey  = (entity) => entity.ItemId,
+                SetEntityKey  = (entity,  key) => entity.ItemId = key,
+                CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"ItemId" })
+            };
         }
 
         #endregion
@@ -74,7 +64,7 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task GetAllTest()
         {
-            var entities = await GetAll();
+            var entities = await CreateTestContext().GetAll();
             entities.Count().Should().BeGreaterThan(1);
             entities.Count(i => i.Name == "laser cut 160mg paper").Should().Be(1);
             entities.Count(i => i.Name == "laser cut hole 130mg black").Should().Be(1);
@@ -83,33 +73,33 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task GetOKTest()
         {
-            var entity = await GetOK(1);
+            var entity = await CreateTestContext().GetOK(1);
             entity.ItemId.Should().Be(1);
         }
 
         [Fact]
         public async Task GetTrackingOKTest()
         {
-            var entity = await GetTrackingOK(2);
+            var entity = await CreateTestContext().GetTrackingOK(2);
             entity.ItemId.Should().Be(2);
         }
 
         [Fact]
         public async Task GetNotExistTest()
         {
-            await GetNotExist(2342341);
+            await CreateTestContext().GetNotExist(2342341);
         }
 
         [Fact]
         public async Task AddUpdateDeleteTest()
         {
-            await AddUpdateDelete(() => CreateItem(@"AddUpdateDeleteTest"), (entity) => entity.ClassName = "DummyClassUpdate");
+            await CreateTestContext().AddUpdateDelete(() => CreateItem(@"AddUpdateDeleteTest"), (entity) => entity.ClassName = "DummyClassUpdate");
         }
 
         [Fact]
         public async Task AddUpdateDeleteWithItemPropertiesTest()
         {
-            await AddUpdateDelete(
+            await CreateTestContext().AddUpdateDelete(
                 () => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")),
                 (entity) =>
                 {
@@ -127,7 +117,7 @@ namespace CNCLib.Test.Repository
         [Fact]
         public async Task AddRollbackTest()
         {
-            await AddRollBack(() => CreateItem(@"AddRollbackTest"));
+            await CreateTestContext().AddRollBack(() => CreateItem(@"AddRollbackTest"));
         }
 
         #endregion
