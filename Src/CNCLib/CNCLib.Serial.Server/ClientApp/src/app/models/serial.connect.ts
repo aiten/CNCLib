@@ -18,9 +18,8 @@
 
 import { Component, Inject } from '@angular/core';
 
-export class SerialConnect 
-{
-    baudRate!: number;
-    resetOnConnect!: boolean;
-    dtrIsReset!: boolean;
+export class SerialConnect {
+  baudRate!: number;
+  resetOnConnect!: boolean;
+  dtrIsReset!: boolean;
 }

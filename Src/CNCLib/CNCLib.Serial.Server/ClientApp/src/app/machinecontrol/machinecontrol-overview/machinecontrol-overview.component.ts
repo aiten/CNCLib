@@ -25,31 +25,26 @@ import { SerialServerService } from '../../services/serialserver.service';
 const machinecontrolURL = '/machinecontrol';
 
 @Component({
-    selector: 'machinecontroloverview',
-    templateUrl: './machinecontrol-overview.component.html'
+  selector: 'machinecontroloverview',
+  templateUrl: './machinecontrol-overview.component.html'
 })
-export class MachineControlOverviewComponent
-{
-    serialports!: SerialPortDefinition[];
+export class MachineControlOverviewComponent {
+  serialports!: SerialPortDefinition[];
 
-    constructor(
-        private serivalServerService: SerialServerService,
-        public router: Router) 
-    {
-    }
+  constructor(
+    private serialServerService: SerialServerService,
+    public router: Router) {
+  }
 
-    async ngOnInit(): Promise<void>
-    {
-        await this.reload();
-    }
+  async ngOnInit(): Promise<void> {
+    await this.reload();
+  }
 
-    async reload(): Promise<void>
-    {
-        this.serialports = await this.serivalServerService.getPorts();
-    }
+  async reload(): Promise<void> {
+    this.serialports = await this.serialServerService.getPorts();
+  }
 
-    useport(serialport: SerialPortDefinition)
-    {
-        this.router.navigate([machinecontrolURL, serialport.Id]);
-    }
+  useport(serialport: SerialPortDefinition) {
+    this.router.navigate([machinecontrolURL, serialport.Id]);
+  }
 }
