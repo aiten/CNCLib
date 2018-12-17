@@ -23,56 +23,47 @@ import { Router } from '@angular/router';
 import { machinecontrolURL } from '../machinecontrol/machinecontrol.routing';
 
 @Component({
-    selector: 'serialports',
-    templateUrl: './serialports.component.html'
+  selector: 'serialports',
+  templateUrl: './serialports.component.html'
 })
-export class SerialPortsComponent
-{
-    public serialports!: SerialPortDefinition[];
-    public historyportid: number = -1;
+export class SerialPortsComponent {
+  public serialports!: SerialPortDefinition[];
+  public historyportid: number = -1;
 
-    constructor(
-        private serivalServerService: SerialServerService,
-        private router: Router
-    ) 
-    {
-    }
+  constructor(
+    private serivalServerService: SerialServerService,
+    private router: Router
+  ) {
+  }
 
-    async ngOnInit(): Promise<void>
-    {
-        await this.reload();
-    }
+  async ngOnInit(): Promise<void> {
+    await this.reload();
+  }
 
-    async reload(): Promise<void>
-    {
-        this.serialports = await this.serivalServerService.getPorts();
-    }
+  async reload(): Promise<void> {
+    this.serialports = await this.serivalServerService.getPorts();
+  }
 
-    async refresh(): Promise<void>
-    {
-        this.serialports = await this.serivalServerService.refresh();
-    }
+  async refresh(): Promise<void> {
+    this.serialports = await this.serivalServerService.refresh();
+  }
 
-    showHistory(showhistoryportid: number)
-    {
-        this.historyportid = showhistoryportid;
-    }
+  showHistory(showhistoryportid: number) {
+    this.historyportid = showhistoryportid;
+  }
 
-    machineControl(showhistoryportid: number)
-    {
-        this.router.navigate([machinecontrolURL, showhistoryportid]);
-    }
+  machineControl(showhistoryportid: number) {
+    this.router.navigate([machinecontrolURL, showhistoryportid]);
+  }
 
-    async clearQueue(serialportid: number): Promise<void>
-    {
-        await this.serivalServerService.abort(serialportid);
-        await this.serivalServerService.resume(serialportid);
-        await this.reload();
-    }
+  async clearQueue(serialportid: number): Promise<void> {
+    await this.serivalServerService.abort(serialportid);
+    await this.serivalServerService.resume(serialportid);
+    await this.reload();
+  }
 
-    async disconnect(serialportid: number): Promise<void>
-    {
-        await this.serivalServerService.disconnect(serialportid);
-        await this.reload();
-    }
+  async disconnect(serialportid: number): Promise<void> {
+    await this.serivalServerService.disconnect(serialportid);
+    await this.reload();
+  }
 }

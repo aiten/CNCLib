@@ -21,27 +21,24 @@ import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
 import { SerialServerService } from '../services/serialserver.service';
 
 @Component({
-    selector: 'home',
-    templateUrl: './home.component.html'
+  selector: 'home',
+  templateUrl: './home.component.html'
 })
-export class HomeComponent implements OnInit
-{
-    appName: string = '';
-    appVersion: string = '';
-    appCopyright: string = '';
-    appVersionInfo: CNCLibServerInfo = new CNCLibServerInfo();
+export class HomeComponent implements OnInit {
+  appName: string = '';
+  appVersion: string = '';
+  appCopyright: string = '';
+  appVersionInfo: CNCLibServerInfo = new CNCLibServerInfo();
 
-    constructor(
-        private serivalServerService: SerialServerService,
-        )
-    {
-    }
+  constructor(
+    private serialServerService: SerialServerService,
+  ) {
+  }
 
-    async ngOnInit(): Promise<void>
-    {
-        this.appVersionInfo = await this.serivalServerService.getInfo();
-        this.appVersion = this.appVersionInfo.Version;
-        this.appName = this.appVersionInfo.Name;
-        this.appCopyright = this.appVersionInfo.Copyright;
-    }
+  async ngOnInit(): Promise<void> {
+    this.appVersionInfo = await this.serialServerService.getInfo();
+    this.appVersion = this.appVersionInfo.Version;
+    this.appName = this.appVersionInfo.Name;
+    this.appCopyright = this.appVersionInfo.Copyright;
+  }
 }

@@ -1,43 +1,45 @@
 <div>
-    <h1>Serial ports</h1>
-    <button (click)='reload()'>Reload</button>
-    <button (click)='refresh()'>Refresh(scan ports)</button>
+  <h1>Serial ports</h1>
+  <button (click)='reload()'>Reload</button>
+  <button (click)='refresh()'>Refresh(scan ports)</button>
 </div>
 
-<p *ngIf="!serialports"><em>Loading...</em></p>
+<p *ngIf="!serialports">
+  <em>Loading...</em>
+</p>
 
 <div *ngIf="serialports">
-    <table class='table'>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Port-Name</th>
-                <th>Connected</th>
-                <th>Aborted</th>
-                <th>SingleStep</th>
-                <th>Queue-Length</th>
-                <th>Task</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let serialport of serialports">
-                <td>{{ serialport.Id }}</td>
-                <td>{{ serialport.PortName }}</td>
-                <td>{{ serialport.IsConnected }}</td>
-                <td>{{ serialport.IsAborted }}</td>
-                <td>{{ serialport.IsSingleStep }}</td>
-                <td>{{ serialport.CommandsInQueue }}</td>
-                <td>
-                    <button (click)='machineControl(serialport.Id)'>Use</button>
-                    <button (click)='showHistory(serialport.Id)'>History</button>
-                    <button *ngIf="serialport.IsConnected" (click)='clearQueue(serialport.Id)'>Clear Queue</button>
-                    <button *ngIf="serialport.IsConnected" (click)='disconnect(serialport.Id)'>Disconnect</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+  <table class='table'>
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Port-Name</th>
+      <th>Connected</th>
+      <th>Aborted</th>
+      <th>SingleStep</th>
+      <th>Queue-Length</th>
+      <th>Task</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let serialport of serialports">
+      <td>{{ serialport.Id }}</td>
+      <td>{{ serialport.PortName }}</td>
+      <td>{{ serialport.IsConnected }}</td>
+      <td>{{ serialport.IsAborted }}</td>
+      <td>{{ serialport.IsSingleStep }}</td>
+      <td>{{ serialport.CommandsInQueue }}</td>
+      <td>
+        <button (click)='machineControl(serialport.Id)'>Use</button>
+        <button (click)='showHistory(serialport.Id)'>History</button>
+        <button *ngIf="serialport.IsConnected" (click)='clearQueue(serialport.Id)'>Clear Queue</button>
+        <button *ngIf="serialport.IsConnected" (click)='disconnect(serialport.Id)'>Disconnect</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 
 <div *ngIf="historyportid >= 0">
-    <serialporthistory [forserialportid]=historyportid>Loading...</serialporthistory>
+  <serialporthistory [forserialportid]=historyportid>Loading...</serialporthistory>
 </div>

@@ -22,48 +22,42 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { SerialPortDefinition } from '../../models/serial.port.definition';
 import { SerialServerService } from '../../services/serialserver.service';
 
-@Component({ 
-    selector: 'machinecontroldetail',
-    templateUrl: './machinecontrol-detail.component.html',
-    styleUrls: [ './machinecontrol-detail.component.css' ]
+@Component({
+  selector: 'machinecontroldetail',
+  templateUrl: './machinecontrol-detail.component.html',
+  styleUrls: ['./machinecontrol-detail.component.css']
 })
-export class MachineControlDetailComponent
-{
-    serialport!: SerialPortDefinition;
-    isLoading: boolean = true;
+export class MachineControlDetailComponent {
+  serialport!: SerialPortDefinition;
+  isLoading: boolean = true;
 
-    constructor(
-        private serivalServerService: SerialServerService,
-        private route: ActivatedRoute
-    ) 
-    {
-    }
+  constructor(
+    private serialServerService: SerialServerService,
+    private route: ActivatedRoute
+  ) {
+  }
 
-    probeSize: number = 25.0;
-    retractDist: number = 3.0;
-    probeDist: number = 10.0;
+  probeSize: number = 25.0;
+  retractDist: number = 3.0;
+  probeDist: number = 10.0;
 
-    async ngOnInit() : Promise<void>
-    {
-        this.route.params.subscribe(params =>
-        {
-            let serialId = params['id'];
-            this.load(serialId);
-        });
-    }
+  async ngOnInit(): Promise<void> {
+    this.route.params.subscribe(params => {
+      let serialId = params['id'];
+      this.load(serialId);
+    });
+  }
 
-    async load(id: number): Promise<void> 
-    {
-        this.serialport = await this.serivalServerService.getPort(id);
-        this.isLoading = false;
-    }
+  async load(id: number): Promise<void> {
+    this.serialport = await this.serialServerService.getPort(id);
+    this.isLoading = false;
+  }
 
-    async postcommand(command: string): Promise<void>
-    {
-        await this.serivalServerService.queueCommands(this.serialport.Id, [command], 1000 );
-    }
+  async postcommand(command: string): Promise<void> {
+    await this.serialServerService.queueCommands(this.serialport.Id, [command], 1000);
+  }
 
-    async sendWhileOkcommands(commands: string[]): Promise<void> {
-        await this.serivalServerService.sendWhileOkCommands(this.serialport.Id, commands, 10000);
-    }
+  async sendWhileOkcommands(commands: string[]): Promise<void> {
+    await this.serialServerService.sendWhileOkCommands(this.serialport.Id, commands, 10000);
+  }
 }
