@@ -16,9 +16,35 @@
   http://www.gnu.org/licenses/
 */
 
+using AutoMapper;
+
+using CNCLib.Logic;
+
+using Framework.Test;
+
 namespace CNCLib.Test.Logic
 {
-    public class LogicTests : CNCUnitTest
+    public class LogicTests : UnitTestBase
     {
+        public static IMapper Mapper { get; private set; }
+
+        protected LogicTests()
+        {
+            if (Mapper == null)
+            {
+                var config = new MapperConfiguration(
+                    cfg =>
+                    {
+                        cfg.AddProfile<LogicAutoMapperProfile>();
+
+                        //                cfg.AddProfile<WpfAutoMapperProfile>();
+                        //                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                    });
+                config.AssertConfigurationIsValid();
+
+                Mapper = config.CreateMapper();
+            }
+        }
+
     }
 }
