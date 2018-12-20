@@ -30,9 +30,9 @@ namespace Framework.Test.SerialCommunication
     using Framework.Arduino.SerialCommunication;
     using Framework.Arduino.SerialCommunication.Abstraction;
     using Framework.Dependency;
-    using Framework.Logging.Abstraction;
 
     using Logging;
+    using Logging.Abstraction;
 
     using Xunit;
 

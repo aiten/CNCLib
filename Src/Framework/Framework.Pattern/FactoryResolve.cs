@@ -16,13 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Dependency.Abstraction;
-
 namespace Framework.Pattern
 {
     using System;
 
-    using Framework.Dependency;
+    using Dependency;
+    using Dependency.Abstraction;
 
     // Factory/Scope using Resolve of dependencyInjection
 

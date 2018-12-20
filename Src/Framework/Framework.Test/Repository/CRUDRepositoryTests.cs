@@ -25,7 +25,6 @@ namespace Framework.Test.Repository
 
     using FluentAssertions;
 
-    using Framework.Dependency;
     using Framework.Repository;
     using Framework.Repository.Abstraction;
 

@@ -16,11 +16,11 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Test.Dependency;
-using Framework.Tools.Abstraction;
-
 namespace Framework.Test
 {
+    using Dependency;
+    using Tools.Abstraction;
+
     /// <summary>
     /// Base class for *all* unit tests. 
     /// </summary>

@@ -16,12 +16,12 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Logging.Abstraction;
-
 namespace Framework.Arduino.SerialCommunication
 {
     using System;
     using System.Collections.Generic;
+
+    using Logging.Abstraction;
 
     public class HPGLSerial : Serial
     {

@@ -16,16 +16,16 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Dependency;
-using Framework.Dependency.Abstraction;
-
 namespace Framework.Arduino.SerialCommunication
 {
+    using Dependency;
+    using Dependency.Abstraction;
+
     public static class LiveDependencyRegisterExtensions
     {
         public static IDependencyContainer RegisterSerialCommunication(this IDependencyContainer container)
         {
-            Dependency.Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
+            Dependency.Container.RegisterTypesIncludingInternals(typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
             return container;
         }
     }

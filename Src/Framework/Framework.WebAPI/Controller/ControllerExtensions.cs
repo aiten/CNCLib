@@ -16,8 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
-
 namespace Framework.WebAPI.Controller
 {
     using System;
@@ -25,9 +23,9 @@ namespace Framework.WebAPI.Controller
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Framework.Service.Abstraction;
-
     using Microsoft.AspNetCore.Mvc;
+
+    using Service.Abstraction;
 
     public static class ControllerExtensions
     {
