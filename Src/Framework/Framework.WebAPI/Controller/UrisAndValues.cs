@@ -16,24 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Repository.Abstraction
+using System.Collections.Generic;
+
+namespace Framework.WebAPI.Controller
 {
-    using System.Collections.Generic;
-
-    public interface ICRUDRepository<TEntity, TKey> : IGetRepository<TEntity, TKey> where TEntity : class
+    public class UrisAndValues<Tdto>
+        where Tdto : class
     {
-        void Add(TEntity entity);
+        public IEnumerable<string> Uri { get; set; }
 
-        void AddRange(IEnumerable<TEntity> entities);
-
-        void Delete(TEntity entity);
-
-        void DeleteRange(IEnumerable<TEntity> entities);
-
-        void SetValue(TEntity trackingEntity, TEntity values);
-
-        void SetValueGraph(TEntity trackingEntity, TEntity values);
-
-        void SetState(TEntity entity, EntityState state);
+        public IEnumerable<Tdto> Value { get; set; }
     }
 }

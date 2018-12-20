@@ -28,6 +28,7 @@ namespace Framework.Arduino.SerialCommunication
     using System.Diagnostics;
 
     using Arduino.SerialCommunication.Abstraction;
+
     using Logging.Abstraction;
 
     using WinAPI;

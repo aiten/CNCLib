@@ -33,9 +33,49 @@ namespace Framework.Repository
         }
 
         /// <summary>
-        /// Gets or sets the DbContext. Should be used rarely, instead use <see cref="Query{T}"/> and <see cref="TrackingQuery{T}"/>.
+        /// Gets the DbContext. Should be used rarely, instead use <see cref="Query{T}"/> and <see cref="TrackingQuery{T}"/>.
         /// </summary>
         protected TDbContext Context { get; private set; }
+
+        public void Sync<TEntity>(ICollection<TEntity> inDb, ICollection<TEntity> toDb, Func<TEntity, TEntity, bool> predicate)
+            where TEntity : class
+        {
+            //// 1. DeleteEntity from DB (in DB) and update
+            var delete = new List<TEntity>();
+
+            foreach (var entityInDb in inDb)
+            {
+                var entityToDb = toDb.FirstOrDefault(x => predicate(x, entityInDb));
+                if (entityToDb != null && predicate(entityToDb, entityInDb))
+                {
+                    SetValue(entityInDb, entityToDb);
+                }
+                else
+                {
+                    delete.Add(entityInDb);
+                }
+            }
+
+            foreach (var del in delete)
+            {
+                DeleteEntity(del);
+            }
+
+            //// 2. AddEntity To DB
+            foreach (var entityToDb in toDb)
+            {
+                var entityInDb = inDb.FirstOrDefault(x => predicate(x, entityToDb));
+                if (entityInDb == null || predicate(entityToDb, entityInDb) == false)
+                {
+                    AddEntity(entityToDb);
+                }
+            }
+        }
+
+        public void SetState(object entity, EntityState state)
+        {
+            Context.Entry(entity).State = (EntityState)state;
+        }
 
         /// <summary>
         /// Returns an IQueryable of the Entity with AsNoTracking set. This should be the default.
@@ -48,7 +88,7 @@ namespace Framework.Repository
         }
 
         /// <summary>
-        /// Returns an IQueryable that has tracking enabled.
+        /// Gets an IQueryable that has tracking enabled.
         /// </summary>
         /// <typeparam name="T">Entity for which to return the IQueryable.</typeparam>
         /// <returns>Queryable with tracking enabled.</returns>
@@ -92,41 +132,6 @@ namespace Framework.Repository
             foreach (var entity in entities)
             {
                 SetEntityState(entity, EntityState.Deleted);
-            }
-        }
-
-        public void Sync<TEntity>(ICollection<TEntity> inDb, ICollection<TEntity> toDb, Func<TEntity, TEntity, bool> predicate) where TEntity : class
-        {
-            // 1. DeleteEntity from DB (in DB) and update
-            var delete = new List<TEntity>();
-
-            foreach (TEntity entityInDb in inDb)
-            {
-                TEntity entityToDb = toDb.FirstOrDefault(x => predicate(x, entityInDb));
-                if (entityToDb != null && predicate(entityToDb, entityInDb))
-                {
-                    SetValue(entityInDb, entityToDb);
-                }
-                else
-                {
-                    delete.Add(entityInDb);
-                }
-            }
-
-            foreach (var del in delete)
-            {
-                DeleteEntity(del);
-            }
-
-            // 2. AddEntity To DB
-
-            foreach (TEntity entityToDb in toDb)
-            {
-                var entityInDb = inDb.FirstOrDefault(x => predicate(x, entityToDb));
-                if (entityInDb == null || predicate(entityToDb, entityInDb) == false)
-                {
-                    AddEntity(entityToDb);
-                }
             }
         }
     }

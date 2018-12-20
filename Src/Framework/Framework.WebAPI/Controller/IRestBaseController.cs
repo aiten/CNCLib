@@ -16,24 +16,20 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Repository.Abstraction
+namespace Framework.WebAPI.Controller
 {
-    using System.Collections.Generic;
+    using System;
+    using System.Threading.Tasks;
 
-    public interface ICRUDRepository<TEntity, TKey> : IGetRepository<TEntity, TKey> where TEntity : class
+    using Microsoft.AspNetCore.Mvc;
+
+    public interface IRestBaseController<T, TId> : IGetController<T, TId>
+        where TId : IComparable
     {
-        void Add(TEntity entity);
+        Task<ActionResult<T>> Add([FromBody] T value);
 
-        void AddRange(IEnumerable<TEntity> entities);
+        Task<ActionResult<T>> Update(TId id, [FromBody] T value);
 
-        void Delete(TEntity entity);
-
-        void DeleteRange(IEnumerable<TEntity> entities);
-
-        void SetValue(TEntity trackingEntity, TEntity values);
-
-        void SetValueGraph(TEntity trackingEntity, TEntity values);
-
-        void SetState(TEntity entity, EntityState state);
+        Task<ActionResult<T>> Delete(TId id);
     }
 }

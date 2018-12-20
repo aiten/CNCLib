@@ -19,6 +19,7 @@
 namespace Framework.Test
 {
     using Dependency;
+
     using Tools.Abstraction;
 
     /// <summary>
@@ -48,6 +49,5 @@ namespace Framework.Test
         protected ICurrentDateTime CurrentDateTime => CurrentDateTimeX;
 
         protected CurrentDateTimeMock CurrentDateTimeX => _currentDateTime ?? (_currentDateTime = new CurrentDateTimeMock());
-
     }
 }

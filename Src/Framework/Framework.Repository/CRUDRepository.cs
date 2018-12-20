@@ -19,23 +19,20 @@
 namespace Framework.Repository
 {
     using System.Collections.Generic;
-    using System.Data;
-    using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
 
-    public abstract class CRUDRepository<TDbContext, TEntity, TKey> : GetRepository<TDbContext, TEntity, TKey> where TDbContext : DbContext where TEntity : class
+    using EntityState = Abstraction.EntityState;
+
+    public abstract class CRUDRepository<TDbContext, TEntity, TKey> : GetRepository<TDbContext, TEntity, TKey>
+        where TDbContext : DbContext where TEntity : class
     {
-        protected CRUDRepository(TDbContext dbContext) : base(dbContext)
+        protected CRUDRepository(TDbContext dbContext)
+            : base(dbContext)
         {
         }
 
         #region CRUD
-
-        protected virtual void AssignValuesGraph(TEntity trackingEntity, TEntity values)
-        {
-            SetValue(trackingEntity, values);
-        }
 
         public void Add(TEntity entity)
         {
@@ -57,30 +54,29 @@ namespace Framework.Repository
             DeleteEntities(entities);
         }
 
-        public void SetState(TEntity entity, Abstraction.EntityState state)
+        public void SetState(TEntity entity, EntityState state)
         {
-            SetEntityState(entity, (EntityState)state);
+            SetEntityState(entity, (Microsoft.EntityFrameworkCore.EntityState)state);
         }
 
         public void SetValue(TEntity entity, TEntity values)
         {
+            AssignValues(entity, values);
             base.SetValue(entity, values);
-        }
-
-        public async Task Update(TKey key, TEntity values)
-        {
-            var entityInDb = await GetTracking(key);
-            if (entityInDb == default(TEntity))
-            {
-                throw new DBConcurrencyException();
-            }
-
-            SetValueGraph(entityInDb, values);
         }
 
         public void SetValueGraph(TEntity trackingEntity, TEntity values)
         {
             AssignValuesGraph(trackingEntity, values);
+        }
+
+        protected virtual void AssignValues(TEntity trackingEntity, TEntity values)
+        {
+        }
+
+        protected virtual void AssignValuesGraph(TEntity trackingEntity, TEntity values)
+        {
+            SetValue(trackingEntity, values);
         }
 
         #endregion

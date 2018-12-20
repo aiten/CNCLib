@@ -673,12 +673,12 @@ namespace Framework.Parser
                 case ETokenType.BitShiftRightSy: return (double)((uint)(lhs) >> (ushort)(rhs));
 
                 // level 3
-                case ETokenType.EqualSy:        return lhs == rhs?1.0:0.0;
-                case ETokenType.UnEqualSy:      return lhs != rhs?1.0:0.0;
-                case ETokenType.LessSy:         return lhs < rhs?1.0:0.0;
-                case ETokenType.GreaterSy:      return lhs > rhs?1.0:0.0;
-                case ETokenType.LessEqualSy:    return lhs <= rhs?1.0:0.0;
-                case ETokenType.GreaterEqualSy: return lhs >= rhs?1.0:0.0;
+                case ETokenType.EqualSy:        return lhs == rhs ? 1.0 : 0.0;
+                case ETokenType.UnEqualSy:      return lhs != rhs ? 1.0 : 0.0;
+                case ETokenType.LessSy:         return lhs < rhs ? 1.0 : 0.0;
+                case ETokenType.GreaterSy:      return lhs > rhs ? 1.0 : 0.0;
+                case ETokenType.LessEqualSy:    return lhs <= rhs ? 1.0 : 0.0;
+                case ETokenType.GreaterEqualSy: return lhs >= rhs ? 1.0 : 0.0;
 
                 // level 4
                 case ETokenType.PlusSy:  return lhs + rhs;

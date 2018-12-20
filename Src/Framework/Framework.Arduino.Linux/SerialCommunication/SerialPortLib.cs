@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-
 namespace Framework.Arduino.Linux.SerialCommunication
 {
     using System;
