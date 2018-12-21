@@ -37,7 +37,7 @@ namespace Framework.Tools
             var randStr = new StringBuilder(size);
 
             // Ascii start position (65 = A / 97 = a)
-            int start = lowerCase?97:65;
+            int start = lowerCase ? 97 : 65;
 
             // Add random chars
             for (var i = 0; i < size; i++)

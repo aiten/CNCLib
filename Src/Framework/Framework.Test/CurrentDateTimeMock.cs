@@ -16,7 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-
 namespace Framework.Test
 {
     using System;

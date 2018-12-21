@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Arduino.SerialCommunication.Abstraction;
-
 namespace Framework.Arduino.SerialCommunication
 {
+    using Abstraction;
+
     /// <summary>
     /// Implementation for ISerialPort for dependency injection 
     /// </summary>

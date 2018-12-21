@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////
 /*
   This file is part of CNCLib - A library for stepper motors.
 
@@ -16,21 +16,20 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.Wpf.Helpers
+namespace Framework.WebAPI.Controller
 {
     using System;
-    using System.Windows.Input;
+    using System.Threading.Tasks;
 
-    public class DelegateCommand<T> : Prism.Commands.DelegateCommand<T>
+    using Microsoft.AspNetCore.Mvc;
+
+    public interface IRestBaseController<T, TId> : IGetController<T, TId>
+        where TId : IComparable
     {
-        public override event EventHandler CanExecuteChanged
-        {
-            add => CommandManager.RequerySuggested += value;
-            remove => CommandManager.RequerySuggested -= value;
-        }
+        Task<ActionResult<T>> Add([FromBody] T value);
 
-        public DelegateCommand(Action<T> command, Func<T, bool> canExecute = null) : base(command, canExecute)
-        {
-        }
+        Task<ActionResult<T>> Update(TId id, [FromBody] T value);
+
+        Task<ActionResult<T>> Delete(TId id);
     }
 }

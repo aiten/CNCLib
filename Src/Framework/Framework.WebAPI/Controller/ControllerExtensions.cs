@@ -16,8 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
-
 namespace Framework.WebAPI.Controller
 {
     using System;
@@ -25,9 +23,9 @@ namespace Framework.WebAPI.Controller
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Framework.Service.Abstraction;
-
     using Microsoft.AspNetCore.Mvc;
+
+    using Service.Abstraction;
 
     public static class ControllerExtensions
     {
@@ -106,7 +104,8 @@ namespace Framework.WebAPI.Controller
             return controller.Ok(newUris);
         }
 
-        public static async Task<ActionResult<T>> AddNoGet<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, T value, Action<T,TKey> setIdFunc) where T : class where TKey : IComparable
+        public static async Task<ActionResult<T>> AddNoGet<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, T value, Action<T, TKey> setIdFunc)
+            where T : class where TKey : IComparable
         {
             TKey   newId  = await manager.Add(value);
             string newUri = controller.GetCurrentUri() + "/" + newId;
@@ -114,10 +113,14 @@ namespace Framework.WebAPI.Controller
             return controller.Created(newUri, value);
         }
 
-        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> AddNoGet<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values, Action<T, TKey> setIdFunc)
+        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> AddNoGet<T, TKey>(
+            this Controller       controller,
+            ICRUDService<T, TKey> manager,
+            IEnumerable<T>        values,
+            Action<T, TKey>       setIdFunc)
             where T : class where TKey : IComparable
         {
-            IEnumerable<TKey> newIds     = await manager.Add(values);
+            IEnumerable<TKey> newIds = await manager.Add(values);
 
             Func<T, TKey, T> mySetFunc = (v, k) =>
             {
@@ -127,7 +130,7 @@ namespace Framework.WebAPI.Controller
 
             string uri     = controller.GetCurrentUri("/bulk");
             var    newUris = newIds.Select(id => uri + "/" + id);
-            var    results = newIds.Select((id, idx) => new UriAndValue<T>() { Uri = uri + "/" + id, Value = mySetFunc(values.ElementAt(idx),id) });
+            var    results = newIds.Select((id, idx) => new UriAndValue<T>() { Uri = uri + "/" + id, Value = mySetFunc(values.ElementAt(idx), id) });
             return controller.Ok(newUris);
         }
 

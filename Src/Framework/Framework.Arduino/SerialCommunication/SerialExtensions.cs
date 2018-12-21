@@ -16,8 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Arduino.SerialCommunication.Abstraction;
-
 namespace Framework.Arduino.SerialCommunication
 {
     using System;
@@ -25,6 +23,8 @@ namespace Framework.Arduino.SerialCommunication
     using System.Linq;
     using System.IO;
     using System.Threading.Tasks;
+
+    using Abstraction;
 
     public static class SerialExtension
     {

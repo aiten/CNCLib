@@ -18,11 +18,7 @@
 
 namespace Framework.Test.Dependency
 {
-    using System;
-
     using Framework.Dependency;
-
-    using NSubstitute;
 
     public sealed class UnitTestDependencyContainer : MsDependencyContainer
     {

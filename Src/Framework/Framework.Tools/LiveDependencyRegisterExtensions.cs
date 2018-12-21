@@ -16,12 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Dependency;
-using Framework.Dependency.Abstraction;
-using Framework.Tools.Abstraction;
-
 namespace Framework.Tools
 {
+    using Abstraction;
+
+    using Dependency;
+    using Dependency.Abstraction;
+
     public static class LiveDependencyRegisterExtensions
     {
         public static IDependencyContainer RegisterFrameWorkTools(this IDependencyContainer container)

@@ -16,15 +16,15 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-
-using Framework.Wpf.ViewModels;
-
 namespace Framework.Wpf.Views
 {
+    using System;
+    using System.IO;
+    using System.Windows;
+    using System.Windows.Controls;
+
+    using ViewModels;
+
     public static class BaseViewModelExtensions
     {
         public static void DefaultInitForBaseViewModel(this BaseViewModel vm)

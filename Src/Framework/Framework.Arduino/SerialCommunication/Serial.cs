@@ -16,9 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Framework.Arduino.SerialCommunication.Abstraction;
-using Framework.Logging.Abstraction;
-
 namespace Framework.Arduino.SerialCommunication
 {
     using System;
@@ -29,6 +26,10 @@ namespace Framework.Arduino.SerialCommunication
     using System.Threading;
     using System.Threading.Tasks;
     using System.Diagnostics;
+
+    using Arduino.SerialCommunication.Abstraction;
+
+    using Logging.Abstraction;
 
     using WinAPI;
 

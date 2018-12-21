@@ -20,13 +20,10 @@ namespace Framework.Test.Repository
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using FluentAssertions;
 
-    using Framework.Dependency;
-    using Framework.Repository;
     using Framework.Repository.Abstraction;
 
     using Microsoft.EntityFrameworkCore;

@@ -43,7 +43,7 @@ namespace Framework.Parser
             get => _line.Substring(_idx);
         }
 
-        public char NextChar        => IsEOF()?((char)0):_line[_idx];
+        public char NextChar        => IsEOF() ? ((char)0) : _line[_idx];
         public char NextCharToUpper => char.ToUpper(NextChar);
 
         public int PushIdx()

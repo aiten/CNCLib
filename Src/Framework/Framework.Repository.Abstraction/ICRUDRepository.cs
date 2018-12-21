@@ -20,24 +20,18 @@ namespace Framework.Repository.Abstraction
 {
     using System.Collections.Generic;
 
-    public enum EntityState
-    {
-        Detached,
-        Unchanged,
-        Deleted,
-        Modified,
-        Added,
-    }
-
     public interface ICRUDRepository<TEntity, TKey> : IGetRepository<TEntity, TKey> where TEntity : class
     {
-        void Add(TEntity    entity);
+        void Add(TEntity entity);
+
+        void AddRange(IEnumerable<TEntity> entities);
+
         void Delete(TEntity entity);
 
-        void AddRange(IEnumerable<TEntity>    entities);
         void DeleteRange(IEnumerable<TEntity> entities);
 
-        void SetValue(TEntity      trackingEntity, TEntity values);
+        void SetValue(TEntity trackingEntity, TEntity values);
+
         void SetValueGraph(TEntity trackingEntity, TEntity values);
 
         void SetState(TEntity entity, EntityState state);

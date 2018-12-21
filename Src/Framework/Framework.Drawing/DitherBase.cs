@@ -147,7 +147,7 @@ namespace Framework.Drawing
                 R = _rgbValues[idx + _addForR],
                 G = _rgbValues[idx + _addForG],
                 B = _rgbValues[idx + _addForB],
-                A = (_addForA < 0)?255:_rgbValues[idx + _addForA]
+                A = (_addForA < 0) ? 255 : _rgbValues[idx + _addForA]
             };
         }
 
@@ -299,7 +299,7 @@ namespace Framework.Drawing
                     Color currentPixel = GetPixel(x, y);
                     if (currentPixel.R != 0)
                     {
-                        rgbValues[y * scanSize + x / 2] += (x % 2 == 0)?(byte)0xf0:(byte)0xf;
+                        rgbValues[y * scanSize + x / 2] += (x % 2 == 0) ? (byte)0xf0 : (byte)0xf;
                     }
                 }
             }

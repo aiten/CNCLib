@@ -18,6 +18,34 @@
 
 namespace Framework.Repository.Abstraction
 {
+    public enum EntityState
+    {
+        /// <summary>
+        /// see entity framework.
+        /// </summary>
+        Detached,
+
+        /// <summary>
+        /// see entity framework.
+        /// </summary>
+        Unchanged,
+
+        /// <summary>
+        /// see entity framework.
+        /// </summary>
+        Deleted,
+
+        /// <summary>
+        /// see entity framework.
+        /// </summary>
+        Modified,
+
+        /// <summary>
+        /// see entity framework.
+        /// </summary>
+        Added,
+    }
+
     public interface IRepository
     {
     }
