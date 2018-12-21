@@ -16,10 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
-
 namespace Framework.WebAPI.Controller
 {
+    using System.Collections.Generic;
+
     public class UrisAndValues<Tdto>
         where Tdto : class
     {
