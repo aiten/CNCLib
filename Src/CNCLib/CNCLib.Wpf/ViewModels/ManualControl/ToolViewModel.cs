@@ -109,6 +109,10 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
         {
             RunAndUpdate(() => { _global.Com.Current.QueueCommand("&"); });
         }
+        public void SendVersion()
+        {
+            RunAndUpdate(() => { _global.Com.Current.QueueCommand("@"); });
+        }
 
         public void SendAbort()
         {
@@ -284,6 +288,7 @@ namespace CNCLib.Wpf.ViewModels.ManualControl
 
         public ICommand SendInfoCommand             => new DelegateCommand(SendInfo,             CanSend);
         public ICommand SendDebugCommand            => new DelegateCommand(SendDebug,            CanSend);
+        public ICommand SendVersionCommand          => new DelegateCommand(SendVersion, CanSend);
         public ICommand SendAbortCommand            => new DelegateCommand(SendAbort,            CanSend);
         public ICommand SendResurrectCommand        => new DelegateCommand(SendResurrect,        CanSend);
         public ICommand SendClearQueue              => new DelegateCommand(ClearQueue,           CanSend);

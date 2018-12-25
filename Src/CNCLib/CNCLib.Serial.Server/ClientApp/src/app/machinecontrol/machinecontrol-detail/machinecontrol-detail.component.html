@@ -64,11 +64,12 @@
         </div>
       </div>
       <div class="grid-item2">
-        <label style="width: 60px">G-Command: </label><input #gCode (keyup.enter)="postcommand(gCode.value); gCode.value=''"/>
+        <label style="width: 60px">G-Command: </label><input #gCode (keyup.enter)="postcommand(gCode.value); gCode.value=''" />
 
         <p></p><label style="width: 60px">Info</label>
-        <button (click)='postcommand("?")'>?</button>
-        <button (click)='postcommand("&")'>&</button>
+        <button (click)='postcommand("?")'>Info</button>
+        <button (click)='postcommand("&")'>Debug</button>
+        <button (click)='postcommand("@")'>Version</button>
         <button (click)='postcommand("!")'>abort</button>
         <button (click)='postcommand("!!!")'>resurrect</button>
 
@@ -80,9 +81,9 @@
 
         <p></p><label style="width: 60px">Probe</label>
         <button (click)='sendWhileOkcommands(["g91 g31z-"+probeDist+"f100 g90","g92 z-"+probeSize,"g91 g0z"+retractDist+" g90"])'>probe Z</button>
-        <label>dist </label><input style="width: 60px" type="number" step="0.1" min="0" max="100" [value]="probeDist" (input)="probeDist=$event.target.value"/>
-        <label>size </label><input style="width: 60px" type="number" step="0.01" min="0" max="100" [value]="probeSize" (input)="probeSize=$event.target.value"/>
-        <label>retract </label><input style="width: 60px" type="number" step="0.01" min="0" max="100" [value]="retractDist" (input)="retractDist=$event.target.value"/>
+        <label>dist </label><input style="width: 60px" type="number" step="0.1" min="0" max="100" [value]="probeDist" (input)="probeDist=$event.target.value" />
+        <label>size </label><input style="width: 60px" type="number" step="0.01" min="0" max="100" [value]="probeSize" (input)="probeSize=$event.target.value" />
+        <label>retract </label><input style="width: 60px" type="number" step="0.01" min="0" max="100" [value]="retractDist" (input)="retractDist=$event.target.value" />
 
         <p></p><label style="width: 60px">Spindle</label>
         <button (click)='postcommand("m3")'>on</button>
