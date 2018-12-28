@@ -35,5 +35,7 @@ namespace Framework.Repository.Abstraction
         void SetValueGraph(TEntity trackingEntity, TEntity values);
 
         void SetState(TEntity entity, EntityState state);
+
+        void Sync(ICollection<TEntity> inDb, ICollection<TEntity> toDb, Func<TEntity, TEntity, bool> predicate);
     }
 }

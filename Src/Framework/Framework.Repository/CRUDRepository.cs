@@ -18,7 +18,9 @@
 
 namespace Framework.Repository
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -80,5 +82,10 @@ namespace Framework.Repository
         }
 
         #endregion
+
+        public void Sync(ICollection<TEntity> inDb, ICollection<TEntity> toDb, Func<TEntity, TEntity, bool> predicate)
+        {
+            Sync<TEntity>(inDb,toDb,predicate);
+        }
     }
 }

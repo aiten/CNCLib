@@ -31,13 +31,13 @@ namespace Framework.Repository
         }
 
         /// <summary>
-        /// Returns an IQueryable of the default entity of the DA with AsNoTracking set. This should be the default.
+        /// Gets an IQueryable of the default entity of the DA with AsNoTracking set. This should be the default.
         /// </summary>
         /// <returns>Queryable with AsNoTracking() set</returns>
         protected IQueryable<TEntity> Query => Query<TEntity>();
 
         /// <summary>
-        /// Returns an IQueryable of the default entity of the DA that has tracking enabled.
+        /// Gets an IQueryable of the default entity of the DA that has tracking enabled.
         /// </summary>
         /// <returns>Queryable with tracking enabled</returns>
         protected IQueryable<TEntity> TrackingQuery => TrackingQuery<TEntity>();
