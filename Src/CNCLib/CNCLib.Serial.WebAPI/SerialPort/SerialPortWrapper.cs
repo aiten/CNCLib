@@ -16,6 +16,10 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+
+using CNCLib.Serial.Server.Hubs;
+
 using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
@@ -29,26 +33,28 @@ namespace CNCLib.Serial.Server.SerialPort
     {
         #region ctr/SignalR
 
+        public static Func<IHubContext<CNCLibHub>> OnCreateHub { get; set; }
+    
         public void InitPort()
         {
             if (Serial == null)
             {
                 Serial = Dependency.Container.Resolve<ISerial>();
 
-                Serial.CommandQueueEmpty += async (sender, e) => { await Startup.Hub.Clients.All.SendAsync("queueEmpty", Id); };
+                Serial.CommandQueueEmpty += async (sender, e) => { await OnCreateHub().Clients.All.SendAsync("queueEmpty", Id); };
                 Serial.CommandQueueChanged += (sender, e) =>
                 {
                     _delayExecuteQueueChanged.Execute(
                         1000,
                         () => _pendingLastQueueLength = e.QueueLength,
-                        () => { Startup.Hub.Clients.All.SendAsync("queueChanged", Id, _pendingLastQueueLength); });
+                        () => { OnCreateHub().Clients.All.SendAsync("queueChanged", Id, _pendingLastQueueLength); });
                 };
                 Serial.CommandSending += (sender, e) =>
                 {
                     _delayExecuteSendingCommand.Execute(
                         1000,
                         () => _pendingSendingCommandSeqId = e.SeqId,
-                        () => { Startup.Hub.Clients.All.SendAsync("sendingCommand", Id, _pendingSendingCommandSeqId); });
+                        () => { OnCreateHub().Clients.All.SendAsync("sendingCommand", Id, _pendingSendingCommandSeqId); });
                 };
             }
         }

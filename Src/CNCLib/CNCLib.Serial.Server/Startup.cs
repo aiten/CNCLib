@@ -20,7 +20,9 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 
+using CNCLib.Serial.Server.Controllers;
 using CNCLib.Serial.Server.Hubs;
+using CNCLib.Serial.Server.SerialPort;
 
 using Framework.Arduino.Linux.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
@@ -57,6 +59,8 @@ namespace CNCLib.Serial.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var controllerAssembly = typeof(HomeController).Assembly;
+
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowCredentials().AllowAnyMethod().AllowAnyHeader()));
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
@@ -68,7 +72,11 @@ namespace CNCLib.Serial.Server
                 {
                     options.Filters.AddService<ValidateRequestDataFilter>();
                     options.Filters.AddService<UnhandledExceptionFilter>();
-                }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .AddApplicationPart(controllerAssembly);
+
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
@@ -92,6 +100,7 @@ namespace CNCLib.Serial.Server
         {
             Services = app.ApplicationServices;
 
+            SerialPortWrapper.OnCreateHub = () => Hub;
             //Services = serviceProvider;
 
             if (env.IsDevelopment())

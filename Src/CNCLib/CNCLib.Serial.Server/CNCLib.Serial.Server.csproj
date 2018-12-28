@@ -31,8 +31,15 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="Filter\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="Filter\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Filter\**" />
+    <None Remove="Filter\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +49,7 @@
     <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.WebAPI\Framework.WebAPI.csproj" />
     <ProjectReference Include="..\CNCLib.Serial.Shared\CNCLib.Serial.Shared.csproj" />
+    <ProjectReference Include="..\CNCLib.Serial.WebAPI\CNCLib.Serial.WebAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,10 +71,6 @@
     <None Update="Scripts\UnRegisterSerialServerService.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Filter\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
