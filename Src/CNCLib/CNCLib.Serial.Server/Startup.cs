@@ -20,9 +20,9 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-using CNCLib.Serial.Server.Controllers;
-using CNCLib.Serial.Server.Hubs;
-using CNCLib.Serial.Server.SerialPort;
+using CNCLib.Serial.WebAPI.Controllers;
+using CNCLib.Serial.WebAPI.Hubs;
+using CNCLib.Serial.WebAPI.SerialPort;
 
 using Framework.Arduino.Linux.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;

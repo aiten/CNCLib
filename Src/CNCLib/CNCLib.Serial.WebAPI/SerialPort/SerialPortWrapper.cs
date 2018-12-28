@@ -18,16 +18,15 @@
 
 using System;
 
-using CNCLib.Serial.Server.Hubs;
+using CNCLib.Serial.WebAPI.Hubs;
 
-using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
 using Framework.Tools;
 
 using Microsoft.AspNetCore.SignalR;
 
-namespace CNCLib.Serial.Server.SerialPort
+namespace CNCLib.Serial.WebAPI.SerialPort
 {
     public class SerialPortWrapper
     {

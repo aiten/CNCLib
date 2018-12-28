@@ -22,7 +22,7 @@ using CNCLib.Serial.Shared;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace CNCLib.Serial.Server.Controllers
+namespace CNCLib.Serial.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     public class InfoController : Controller

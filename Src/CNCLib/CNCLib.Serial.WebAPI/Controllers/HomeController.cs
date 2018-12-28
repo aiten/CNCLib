@@ -20,7 +20,7 @@ using System.Diagnostics;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace CNCLib.Serial.Server.Controllers
+namespace CNCLib.Serial.WebAPI.Controllers
 {
     public class HomeController : Controller
     {

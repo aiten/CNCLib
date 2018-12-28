@@ -20,16 +20,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using CNCLib.Serial.Server.Hubs;
-using CNCLib.Serial.Server.SerialPort;
 using CNCLib.Serial.Shared;
+using CNCLib.Serial.WebAPI.Hubs;
+using CNCLib.Serial.WebAPI.SerialPort;
 
 using Framework.Arduino.SerialCommunication;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
-namespace CNCLib.Serial.Server.Controllers
+namespace CNCLib.Serial.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     public class SerialPortController : Controller

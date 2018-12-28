@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.SignalR;
 
-namespace CNCLib.Serial.Server.Hubs
+namespace CNCLib.Serial.WebAPI.Hubs
 {
     public class CNCLibHub : Hub
     {
