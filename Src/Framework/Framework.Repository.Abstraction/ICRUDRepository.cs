@@ -18,9 +18,11 @@
 
 namespace Framework.Repository.Abstraction
 {
+    using System;
     using System.Collections.Generic;
 
-    public interface ICRUDRepository<TEntity, TKey> : IGetRepository<TEntity, TKey> where TEntity : class
+    public interface ICRUDRepository<TEntity, TKey> : IGetRepository<TEntity, TKey>
+        where TEntity : class
     {
         void Add(TEntity entity);
 

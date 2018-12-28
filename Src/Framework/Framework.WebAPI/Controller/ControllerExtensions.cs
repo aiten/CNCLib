@@ -31,6 +31,12 @@ namespace Framework.WebAPI.Controller
     {
         public static string GetCurrentUri(this Controller controller)
         {
+            if (controller.Request == null)
+            {
+                // unit test => no Request available 
+                return "dummy";
+            }
+
             return $"{controller.Request.Scheme}://{controller.Request.Host}{controller.Request.Path}{controller.Request.QueryString}";
         }
 
@@ -43,6 +49,13 @@ namespace Framework.WebAPI.Controller
             }
 
             string totalUri = controller.GetCurrentUri();
+
+            int filterIdx = totalUri.LastIndexOf('?');
+            if (filterIdx > 0)
+            {
+                totalUri = totalUri.Substring(0, filterIdx - 1);
+            }
+
             return totalUri.Substring(0, totalUri.Length - removeTrailing.Length);
         }
 
@@ -50,7 +63,7 @@ namespace Framework.WebAPI.Controller
         {
             if (obj == null)
             {
-                await Task.Delay(0); // avoid CS1998
+                await Task.CompletedTask; // avoid CS1998
                 return controller.NotFound();
             }
 

@@ -18,4 +18,4 @@
 
 using System.Runtime.InteropServices;
 
-[assembly: Guid("99c91315-0574-4842-b3d2-f1eeca448a45")]
+[assembly: Guid("F94A6E11-6074-496E-A70F-CEDBC70BE535")]

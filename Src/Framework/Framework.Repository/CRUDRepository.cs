@@ -85,7 +85,7 @@ namespace Framework.Repository
 
         public void Sync(ICollection<TEntity> inDb, ICollection<TEntity> toDb, Func<TEntity, TEntity, bool> predicate)
         {
-            Sync<TEntity>(inDb,toDb,predicate);
+            Sync<TEntity>(inDb, toDb, predicate);
         }
     }
 }
