@@ -24,6 +24,7 @@ using CNCLib.Repository;
 using CNCLib.Repository.SqlServer;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
+using CNCLib.WebAPI.Controllers;
 
 using Framework.Dependency;
 using Framework.Logging;
@@ -58,6 +59,8 @@ namespace CNCLib.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var controllerAssembly = typeof(CambamController).Assembly;
+
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
             services.AddTransient<UnhandledExceptionFilter>();
@@ -69,7 +72,11 @@ namespace CNCLib.WebAPI
                     options.Filters.AddService<ValidateRequestDataFilter>();
                     options.Filters.AddService<UnhandledExceptionFilter>();
                     options.Filters.AddService<MethodCallLogFilter>();
-                }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .AddApplicationPart(controllerAssembly);
+
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" }); });

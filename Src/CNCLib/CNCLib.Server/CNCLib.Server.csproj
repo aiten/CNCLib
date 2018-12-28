@@ -5,9 +5,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>01a35a57-f2ce-48a8-a405-32b243eeec85</UserSecretsId>
-    <ApplicationIcon />
-    <OutputType>Library</OutputType>
-    <StartupObject />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -15,13 +12,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Filter\**" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="Filter\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Filter\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="Filter\**" />
+    <None Remove="wwwroot\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Properties\PublishProfiles\CNCLibWebAPI - Web Deploy.pubxml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Filter\" />
     <Folder Include="Properties\PublishProfiles\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +58,7 @@
     <ProjectReference Include="..\CNCLib.Repository\CNCLib.Repository.csproj" />
     <ProjectReference Include="..\CNCLib.Service.Logic\CNCLib.Service.Logic.csproj" />
     <ProjectReference Include="..\CNCLib.Service.Contract\CNCLib.Service.Contract.csproj" />
+    <ProjectReference Include="..\CNCLib.WebAPI\CNCLib.WebAPI.csproj" />
     <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />
   </ItemGroup>
 
