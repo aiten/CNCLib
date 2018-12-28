@@ -4,7 +4,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <UserSecretsId>01a35a57-f2ce-48a8-a405-32b243eeec85</UserSecretsId>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
@@ -15,27 +14,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Properties\PublishProfiles\**" />
-    <Compile Remove="wwwroot\**" />
-    <Content Remove="Properties\PublishProfiles\**" />
-    <Content Remove="wwwroot\**" />
-    <EmbeddedResource Remove="Properties\PublishProfiles\**" />
-    <EmbeddedResource Remove="wwwroot\**" />
-    <None Remove="Properties\PublishProfiles\**" />
-    <None Remove="wwwroot\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Filter\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.1" />
-    <PackageReference Include="Microsoft.Azure.WebSites.DataProtection" Version="0.1.78-alpha" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,12 +38,6 @@
     <ProjectReference Include="..\CNCLib.Service.Logic\CNCLib.Service.Logic.csproj" />
     <ProjectReference Include="..\CNCLib.Service.Contract\CNCLib.Service.Contract.csproj" />
     <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>
