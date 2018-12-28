@@ -82,7 +82,8 @@ namespace Framework.Repository
         /// </summary>
         /// <typeparam name="T">Entity for which to return the IQueryable.</typeparam>
         /// <returns>Queryable with AsNoTracking() set.</returns>
-        protected IQueryable<T> Query<T>() where T : class
+        protected IQueryable<T> Query<T>()
+            where T : class
         {
             return Context.Set<T>().AsNoTracking();
         }
@@ -92,42 +93,50 @@ namespace Framework.Repository
         /// </summary>
         /// <typeparam name="T">Entity for which to return the IQueryable.</typeparam>
         /// <returns>Queryable with tracking enabled.</returns>
-        protected IQueryable<T> TrackingQuery<T>() where T : class
+        protected IQueryable<T> TrackingQuery<T>()
+            where T : class
         {
             return Context.Set<T>();
         }
 
-        protected void SetEntityState<TEntity>(TEntity entity, EntityState state) where TEntity : class
+        protected void SetEntityState<TEntity>(TEntity entity, EntityState state)
+            where TEntity : class
         {
             Context.Entry(entity).State = state;
         }
 
-        protected void SetValue<TEntity>(TEntity entity, object values) where TEntity : class
+        protected void SetValue<TEntity>(TEntity entity, object values)
+            where TEntity : class
         {
             Context.Entry(entity).CurrentValues.SetValues(values);
         }
 
-        protected void SetModified<TEntity>(TEntity entity) where TEntity : class
+        protected void SetModified<TEntity>(TEntity entity)
+            where TEntity : class
         {
             SetEntityState(entity, EntityState.Modified);
         }
 
-        protected void AddEntity<TEntity>(TEntity entity) where TEntity : class
+        protected void AddEntity<TEntity>(TEntity entity)
+            where TEntity : class
         {
             Context.Add(entity);
         }
 
-        protected void AddEntities<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
+        protected void AddEntities<TEntity>(IEnumerable<TEntity> entities)
+            where TEntity : class
         {
             Context.AddRange(entities);
         }
 
-        protected void DeleteEntity<TEntity>(TEntity entity) where TEntity : class
+        protected void DeleteEntity<TEntity>(TEntity entity)
+            where TEntity : class
         {
             SetEntityState(entity, EntityState.Deleted);
         }
 
-        protected void DeleteEntities<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
+        protected void DeleteEntities<TEntity>(IEnumerable<TEntity> entities)
+            where TEntity : class
         {
             foreach (var entity in entities)
             {

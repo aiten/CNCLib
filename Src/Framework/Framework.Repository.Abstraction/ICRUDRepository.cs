@@ -18,9 +18,11 @@
 
 namespace Framework.Repository.Abstraction
 {
+    using System;
     using System.Collections.Generic;
 
-    public interface ICRUDRepository<TEntity, TKey> : IGetRepository<TEntity, TKey> where TEntity : class
+    public interface ICRUDRepository<TEntity, TKey> : IGetRepository<TEntity, TKey>
+        where TEntity : class
     {
         void Add(TEntity entity);
 
@@ -35,5 +37,7 @@ namespace Framework.Repository.Abstraction
         void SetValueGraph(TEntity trackingEntity, TEntity values);
 
         void SetState(TEntity entity, EntityState state);
+
+        void Sync(ICollection<TEntity> inDb, ICollection<TEntity> toDb, Func<TEntity, TEntity, bool> predicate);
     }
 }
