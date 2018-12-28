@@ -24,13 +24,13 @@ using CNCLib.Repository;
 using CNCLib.Repository.SqlServer;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
+using CNCLib.WebAPI;
 using CNCLib.WebAPI.Controllers;
 
 using Framework.Dependency;
 using Framework.Logging;
-using Framework.Tools;
 using Framework.Mapper;
-using Framework.WebAPI;
+using Framework.Tools;
 using Framework.WebAPI.Filter;
 
 using Microsoft.AspNetCore.Builder;
@@ -45,7 +45,7 @@ using NLog;
 
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace CNCLib.WebAPI
+namespace CNCLib.Server
 {
     public class Startup
     {

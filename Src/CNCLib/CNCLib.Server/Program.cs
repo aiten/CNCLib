@@ -16,11 +16,6 @@
   http://www.gnu.org/licenses/
 */
 
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-
-using NLog.Web;
-
 using System;
 using System.IO;
 using System.Reflection;
@@ -29,12 +24,15 @@ using System.ServiceProcess;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 using NLog;
+using NLog.Web;
 
 using ILogger = NLog.ILogger;
 
-namespace CNCLib.WebAPI
+namespace CNCLib.Server
 {
     public class Program
     {
