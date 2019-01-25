@@ -36,7 +36,7 @@ namespace Framework.Tools.Tools
             // first line is columnLineHeader!!!!
 
             var  list  = new List<T>();
-            var  props = GetPropertyMapping<T>(lines[0]);
+            var  props = GetPropertyMapping(lines[0]);
             bool first = true;
 
             if (props.Any(prop => prop == null))
@@ -59,7 +59,7 @@ namespace Framework.Tools.Tools
             return list;
         }
 
-        private PropertyInfo[] GetPropertyMapping<T>(string[] columnNames)
+        private PropertyInfo[] GetPropertyMapping(string[] columnNames)
         {
             Type t = typeof(T);
             return columnNames.Select((columnName) => t.GetProperty(columnName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)).ToArray();

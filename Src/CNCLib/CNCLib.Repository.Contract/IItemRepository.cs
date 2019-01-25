@@ -27,6 +27,6 @@ namespace CNCLib.Repository.Contract
 {
     public interface IItemRepository : ICRUDRepository<Item, int>
     {
-        Task<IEnumerable<Item>> Get(string typeIdString);
+        Task<IList<Item>> Get(string typeIdString);
     }
 }

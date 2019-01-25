@@ -35,7 +35,7 @@ namespace Framework.Test.Repository
     {
         public async Task AddUpdateDelete(Func<TEntity> createTestEntity, Action<TEntity> updateEntity)
         {
-            var allWithoutAdd = (await GetAll()).ToList();
+            var allWithoutAdd = await GetAll();
             allWithoutAdd.Should().NotBeNull();
 
             // first add entity
@@ -53,7 +53,7 @@ namespace Framework.Test.Repository
                 key = GetEntityKey(entityToAdd);
             }
 
-            var allWithAdd = (await GetAll()).ToList();
+            var allWithAdd = await GetAll();
             allWithAdd.Should().NotBeNull();
             allWithAdd.Count().Should().Be(allWithoutAdd.Count() + 1);
 
@@ -118,7 +118,7 @@ namespace Framework.Test.Repository
 
         public async Task AddUpdateDeleteBulk(Func<IEnumerable<TEntity>> createTestEntities, Action<IEnumerable<TEntity>> updateEntities)
         {
-            var allWithoutAdd = (await GetAll()).ToList();
+            var allWithoutAdd = await GetAll();
             allWithoutAdd.Should().NotBeNull();
 
             // first add entity
@@ -136,7 +136,7 @@ namespace Framework.Test.Repository
                 keys = entitiesToAdd.Select(GetEntityKey);
             }
 
-            var allWithAdd = (await GetAll()).ToList();
+            var allWithAdd = await GetAll();
             allWithAdd.Should().NotBeNull();
             allWithAdd.Count().Should().Be(allWithoutAdd.Count() + keys.Count());
 
