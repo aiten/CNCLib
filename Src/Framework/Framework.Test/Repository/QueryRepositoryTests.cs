@@ -16,24 +16,19 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.WebAPI.Controller
+namespace Framework.Test.Repository
 {
-	using System.Collections.Generic;
-	using System.Linq;
+    using System;
 
-    public class UriAndValue<TDto> where TDto : class
+    using Framework.Repository.Abstraction;
+
+    using Microsoft.EntityFrameworkCore;
+
+    public class QueryRepositoryTests<TDbContext, TEntity, TIRepository> : UnitTestBase
+        where TEntity : class where TIRepository : IQueryRepository<TEntity> where TDbContext : DbContext
     {
-        public string Uri { get; set; }
+        public Func<QueryTestDbContext<TDbContext, TEntity, TIRepository>> CreateTestDbContext;
 
-        public TDto Value { get; set; }
-    }
-
-    public static class UriAndValueExtension
-    {
-        public static UrisAndValues<T> ToUrisAndValues<T>(this IEnumerable<UriAndValue<T>> from) where T : class
-        {
-            var fromArray = from.ToArray();
-            return new UrisAndValues<T>() { Value = fromArray.Select(v => v.Value), Uri = fromArray.Select(u => u.Uri) };
-        }
+        public Func<TEntity, TEntity, bool> CompareEntity;
     }
 }

@@ -20,6 +20,7 @@ namespace Framework.Test.Repository
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using FluentAssertions;
@@ -67,6 +68,16 @@ namespace Framework.Test.Repository
                 entity.Should().BeOfType(typeof(TEntity));
                 entity.Should().NotBeNull();
                 return entity;
+            }
+        }
+
+        public async Task<IEnumerable<TEntity>> GetOK(IEnumerable<TKey> keys)
+        {
+            using (var ctx = CreateTestDbContext())
+            {
+                var entities = (await ctx.Repository.Get(keys)).ToList();
+                entities.Should().NotBeNull();
+                return entities;
             }
         }
 

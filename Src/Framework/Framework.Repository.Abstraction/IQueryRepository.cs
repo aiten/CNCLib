@@ -16,24 +16,13 @@
   http://www.gnu.org/licenses/
 */
 
-namespace Framework.WebAPI.Controller
+namespace Framework.Repository.Abstraction
 {
-	using System.Collections.Generic;
-	using System.Linq;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
-    public class UriAndValue<TDto> where TDto : class
+    public interface IQueryRepository<TEntity> : IRepository
+        where TEntity : class
     {
-        public string Uri { get; set; }
-
-        public TDto Value { get; set; }
-    }
-
-    public static class UriAndValueExtension
-    {
-        public static UrisAndValues<T> ToUrisAndValues<T>(this IEnumerable<UriAndValue<T>> from) where T : class
-        {
-            var fromArray = from.ToArray();
-            return new UrisAndValues<T>() { Value = fromArray.Select(v => v.Value), Uri = fromArray.Select(u => u.Uri) };
-        }
     }
 }

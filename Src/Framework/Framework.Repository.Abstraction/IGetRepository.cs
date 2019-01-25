@@ -21,7 +21,7 @@ namespace Framework.Repository.Abstraction
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IGetRepository<TEntity, TKey> : IRepository
+    public interface IGetRepository<TEntity, TKey> : IQueryRepository<TEntity>
         where TEntity : class
     {
         Task<IEnumerable<TEntity>> GetAll();
