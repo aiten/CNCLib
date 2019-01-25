@@ -1,5 +1,4 @@
-﻿////////////////////////////////////////////////////////
-/*
+﻿/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) 2013-2019 Herbert Aitenbichler
@@ -70,7 +69,7 @@ namespace CNCLib.Repository
 
         #endregion
 
-        public async Task<IEnumerable<Item>> Get(string typeIdString)
+        public async Task<IList<Item>> Get(string typeIdString)
         {
             return await QueryWithOptional.Where(m => m.ClassName == typeIdString).Include(d => d.ItemProperties).ToListAsync();
         }

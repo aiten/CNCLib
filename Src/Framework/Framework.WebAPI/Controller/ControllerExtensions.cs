@@ -1,5 +1,4 @@
-﻿////////////////////////////////////////////////////////
-/*
+﻿/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) 2013-2019 Herbert Aitenbichler
@@ -105,7 +104,7 @@ namespace Framework.WebAPI.Controller
             return controller.Created(newUri, await manager.Get(newId));
         }
 
-        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
+        public static async Task<IEnumerable<UriAndValue<T>>> AddIntern<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
             where T : class where TKey : IComparable
         {
             var newIds     = await manager.Add(values);
@@ -114,8 +113,21 @@ namespace Framework.WebAPI.Controller
             string uri     = controller.GetCurrentUri("/bulk");
             var    newUris = newIds.Select(id => uri + "/" + id);
             var    results = newIds.Select((id, idx) => new UriAndValue<T>() { Uri = uri + "/" + id, Value = newObjects.ElementAt(idx) });
-            return controller.Ok(newUris);
+            return results;
         }
+
+        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
+            where T : class where TKey : IComparable
+        {
+            return controller.Ok(await AddIntern(controller, manager, values));
+        }
+
+        public static async Task<ActionResult<UrisAndValues<T>>> Add2<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
+            where T : class where TKey : IComparable
+        {
+            return controller.Ok((await AddIntern(controller, manager, values)).ToUrisAndValues());
+        }
+
 
         public static async Task<ActionResult<T>> AddNoGet<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, T value, Action<T, TKey> setIdFunc)
             where T : class where TKey : IComparable
@@ -126,7 +138,7 @@ namespace Framework.WebAPI.Controller
             return controller.Created(newUri, value);
         }
 
-        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> AddNoGet<T, TKey>(
+        public static async Task<IEnumerable<UriAndValue<T>>> AddNoGetIntern<T, TKey>(
             this Controller       controller,
             ICRUDService<T, TKey> manager,
             IEnumerable<T>        values,
@@ -144,7 +156,23 @@ namespace Framework.WebAPI.Controller
             string uri     = controller.GetCurrentUri("/bulk");
             var    newUris = newIds.Select(id => uri + "/" + id);
             var    results = newIds.Select((id, idx) => new UriAndValue<T>() { Uri = uri + "/" + id, Value = mySetFunc(values.ElementAt(idx), id) });
-            return controller.Ok(newUris);
+            return results;
+        }
+
+        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> AddNoGet<T, TKey>(
+            this Controller       controller,
+            ICRUDService<T, TKey> manager,
+            IEnumerable<T>        values,
+            Action<T, TKey>       setIdFunc)
+            where T : class where TKey : IComparable
+        {
+            return controller.Ok(await AddNoGetIntern(controller, manager, values, setIdFunc));
+        }
+
+        public static async Task<ActionResult<UrisAndValues<T>>> Add2NoGet<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values, Action<T, TKey> setIdFunc)
+            where T : class where TKey : IComparable
+        {
+            return controller.Ok((await AddNoGetIntern(controller, manager, values, setIdFunc)).ToUrisAndValues());
         }
 
         #endregion

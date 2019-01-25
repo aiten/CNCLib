@@ -1,5 +1,4 @@
-﻿////////////////////////////////////////////////////////
-/*
+﻿/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) 2013-2019 Herbert Aitenbichler
@@ -73,12 +72,12 @@ namespace CNCLib.Repository
             Sync(trackingEntity.MachineInitCommands, values.MachineInitCommands, (x, y) => x.MachineInitCommandId > 0 && x.MachineInitCommandId == y.MachineInitCommandId);
         }
 
-        public async Task<IEnumerable<MachineCommand>> GetMachineCommands(int machineId)
+        public async Task<IList<MachineCommand>> GetMachineCommands(int machineId)
         {
             return await Context.MachineCommands.Where(c => c.MachineId == machineId).ToListAsync();
         }
 
-        public async Task<IEnumerable<MachineInitCommand>> GetMachineInitCommands(int machineId)
+        public async Task<IList<MachineInitCommand>> GetMachineInitCommands(int machineId)
         {
             return await Context.MachineInitCommands.Where(c => c.MachineId == machineId).ToListAsync();
         }

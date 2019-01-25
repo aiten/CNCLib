@@ -1,5 +1,4 @@
-﻿////////////////////////////////////////////////////////
-/*
+﻿/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) 2013-2019 Herbert Aitenbichler
@@ -21,17 +20,17 @@ namespace Framework.Repository.Abstraction
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IGetRepository<TEntity, TKey> : IRepository
+    public interface IGetRepository<TEntity, TKey> : IQueryRepository<TEntity>
         where TEntity : class
     {
-        Task<IEnumerable<TEntity>> GetAll();
+        Task<IList<TEntity>> GetAll();
 
         Task<TEntity> Get(TKey key);
 
-        Task<IEnumerable<TEntity>> Get(IEnumerable<TKey> keys);
+        Task<IList<TEntity>> Get(IEnumerable<TKey> keys);
 
         Task<TEntity> GetTracking(TKey key);
 
-        Task<IEnumerable<TEntity>> GetTracking(IEnumerable<TKey> keys);
+        Task<IList<TEntity>> GetTracking(IEnumerable<TKey> keys);
     }
 }

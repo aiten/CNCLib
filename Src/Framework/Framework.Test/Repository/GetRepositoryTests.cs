@@ -1,5 +1,4 @@
-﻿////////////////////////////////////////////////////////
-/*
+﻿/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) 2013-2019 Herbert Aitenbichler
@@ -20,6 +19,7 @@ namespace Framework.Test.Repository
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using FluentAssertions;
@@ -38,11 +38,11 @@ namespace Framework.Test.Repository
 
         public Func<TEntity, TEntity, bool> CompareEntity;
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public async Task<IList<TEntity>> GetAll()
         {
             using (var ctx = CreateTestDbContext())
             {
-                IEnumerable<TEntity> entities = await ctx.Repository.GetAll();
+                var entities = await ctx.Repository.GetAll();
                 entities.Should().NotBeNull();
                 return entities;
             }
@@ -52,7 +52,7 @@ namespace Framework.Test.Repository
         {
             using (var ctx = CreateTestDbContext())
             {
-                TEntity entity = await ctx.Repository.GetTracking(key);
+                var entity = await ctx.Repository.GetTracking(key);
                 entity.Should().NotBeNull();
                 entity.Should().BeOfType(typeof(TEntity));
                 return entity;
@@ -63,10 +63,20 @@ namespace Framework.Test.Repository
         {
             using (var ctx = CreateTestDbContext())
             {
-                TEntity entity = await ctx.Repository.Get(key);
+                var entity = await ctx.Repository.Get(key);
                 entity.Should().BeOfType(typeof(TEntity));
                 entity.Should().NotBeNull();
                 return entity;
+            }
+        }
+
+        public async Task<IList<TEntity>> GetOK(IEnumerable<TKey> keys)
+        {
+            using (var ctx = CreateTestDbContext())
+            {
+                var entities = await ctx.Repository.Get(keys);
+                entities.Should().NotBeNull();
+                return entities;
             }
         }
 

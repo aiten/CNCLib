@@ -1,5 +1,4 @@
-﻿////////////////////////////////////////////////////////
-/*
+﻿/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) 2013-2019 Herbert Aitenbichler
@@ -18,10 +17,22 @@
 
 namespace Framework.WebAPI.Controller
 {
+	using System.Collections.Generic;
+	using System.Linq;
+
     public class UriAndValue<TDto> where TDto : class
     {
         public string Uri { get; set; }
 
         public TDto Value { get; set; }
+    }
+
+    public static class UriAndValueExtension
+    {
+        public static UrisAndValues<T> ToUrisAndValues<T>(this IEnumerable<UriAndValue<T>> from) where T : class
+        {
+            var fromArray = from.ToArray();
+            return new UrisAndValues<T>() { Value = fromArray.Select(v => v.Value), Uri = fromArray.Select(u => u.Uri) };
+        }
     }
 }

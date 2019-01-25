@@ -1,5 +1,4 @@
-﻿////////////////////////////////////////////////////////
-/*
+﻿/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) 2013-2019 Herbert Aitenbichler
@@ -38,7 +37,7 @@ namespace Framework.Repository
 
         protected IQueryable<TEntity> QueryWithOptional => AddOptionalWhere(Query);
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public async Task<IList<TEntity>> GetAll()
         {
             return await AddInclude(QueryWithOptional).ToListAsync();
         }
@@ -48,7 +47,7 @@ namespace Framework.Repository
             return await AddPrimaryWhere(QueryWithInclude, key).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> Get(IEnumerable<TKey> keys)
+        public async Task<IList<TEntity>> Get(IEnumerable<TKey> keys)
         {
             return await AddPrimaryWhereIn(QueryWithInclude, keys).ToListAsync();
         }
@@ -58,7 +57,7 @@ namespace Framework.Repository
             return await AddPrimaryWhere(TrackingQueryWithInclude, key).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> GetTracking(IEnumerable<TKey> keys)
+        public async Task<IList<TEntity>> GetTracking(IEnumerable<TKey> keys)
         {
             return await AddPrimaryWhereIn(TrackingQueryWithInclude, keys).ToListAsync();
         }
