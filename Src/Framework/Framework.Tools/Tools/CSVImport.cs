@@ -30,7 +30,7 @@ namespace Framework.Tools.Tools
             return MapTo(lines);
         }
 
-        public IEnumerable<T> MapTo(string[][] lines)
+        public IEnumerable<T> MapTo(IList<IList<string>> lines)
         {
             // first line is columnLineHeader!!!!
 
@@ -58,13 +58,13 @@ namespace Framework.Tools.Tools
             return list;
         }
 
-        private PropertyInfo[] GetPropertyMapping(string[] columnNames)
+        private PropertyInfo[] GetPropertyMapping(IList<string> columnNames)
         {
             Type t = typeof(T);
             return columnNames.Select((columnName) => t.GetProperty(columnName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)).ToArray();
         }
 
-        private T Map(string[] line, PropertyInfo[] props)
+        private T Map(IList<string> line, PropertyInfo[] props)
         {
             var newT = new T();
             int idx  = 0;

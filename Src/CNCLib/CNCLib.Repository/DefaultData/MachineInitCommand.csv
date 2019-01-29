@@ -1,0 +1,9 @@
+MachineInitCommandId;CommandString;MachineId;SeqNo
+1;g0 y36;3;6
+2;g28 y0;3;5
+3;g0 y2;3;4
+4;g0 x0;3;3
+5;g0 x36;3;2
+6;g28 x0;3;1
+7;g0 x2;3;0
+8;g0 y0;3;7

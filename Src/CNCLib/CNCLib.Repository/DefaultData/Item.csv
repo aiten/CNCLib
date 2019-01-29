@@ -1,0 +1,8 @@
+ItemId;ClassName;Name;UserId
+1;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;laser cut 160mg paper;
+2;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;laser cut hole 130mg black;
+3;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;laser grave;
+4;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;laser grave image;
+5;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;laser grave image (G0G1);
+6;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;mill grave;
+7;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;mill cut;

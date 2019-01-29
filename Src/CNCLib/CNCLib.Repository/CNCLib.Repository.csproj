@@ -12,4 +12,30 @@
     <ProjectReference Include="..\CNCLib.Repository.Contract\CNCLib.Repository.Contract.csproj">    </ProjectReference>
     <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="DefaultData\Configuration.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DefaultData\Item.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DefaultData\ItemProperty.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DefaultData\Log.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DefaultData\Machine.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DefaultData\MachineCommand.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DefaultData\MachineInitCommand.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DefaultData\User.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
