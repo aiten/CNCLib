@@ -1,1 +1,5 @@
 Group;Name;Type;UserId;Value
+TestGroup;TestBool;System.Boolean;;True
+TestGroup;TestDecimal;System.Decimal;;1.2345
+TestGroup;TestInt;System.Int32;;1
+TestGroup;TestString;System.String;;String

@@ -15,7 +15,6 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -83,6 +82,7 @@ namespace CNCLib.Repository.Context
             {
                 user.UserId = 0;
             }
+
             context.Machines.AddRange(machines);
             context.MachineCommands.AddRange(machineCommands);
             context.MachineInitCommands.AddRange(machineInitCommands);
@@ -98,7 +98,7 @@ namespace CNCLib.Repository.Context
 
             foreach (var itemProperty in itemProperties)
             {
-                itemProperty.Item          = items.First(i => i.ItemId == itemProperty.ItemId);
+                itemProperty.Item   = items.First(i => i.ItemId == itemProperty.ItemId);
                 itemProperty.ItemId = 0;
             }
 
@@ -115,37 +115,8 @@ namespace CNCLib.Repository.Context
         {
             if (isTest)
             {
-                var configurations = new[]
-                {
-                    new Configuration()
-                    {
-                        Group = "TestGroup",
-                        Name  = "TestInt",
-                        Type  = typeof(int).FullName,
-                        Value = 1.ToString()
-                    },
-                    new Configuration()
-                    {
-                        Group = "TestGroup",
-                        Name  = "TestBool",
-                        Type  = typeof(bool).FullName,
-                        Value = true.ToString()
-                    },
-                    new Configuration()
-                    {
-                        Group = "TestGroup",
-                        Name  = "TestString",
-                        Type  = typeof(string).FullName,
-                        Value = "String"
-                    },
-                    new Configuration()
-                    {
-                        Group = "TestGroup",
-                        Name  = "TestDecimal",
-                        Type  = typeof(decimal).FullName,
-                        Value = 1.2345m.ToString(CultureInfo.InvariantCulture)
-                    },
-                };
+                var configurationImport = new CSVImport<Configuration>();
+                var configurations      = configurationImport.Read(DefaultDataDir + @"\DefaultData\Configuration.csv").ToArray();
 
                 context.Configurations.AddRange(configurations);
             }

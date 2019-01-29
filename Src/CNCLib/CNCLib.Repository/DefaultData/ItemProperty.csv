@@ -1,8 +1,87 @@
-ItemId;ClassName;Name;UserId
-1;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;laser cut 160mg paper;
-2;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;laser cut hole 130mg black;
-3;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;laser grave;
-4;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;laser grave image;
-5;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;laser grave image (G0G1);
-6;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;mill grave;
-7;CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO;mill cut;
+ItemId;Name;Value
+1;AutoScale;true
+1;AutoScaleCenter;true
+1;AutoScaleSizeX;150
+1;AutoScaleSizeY;150
+1;ConvertType;InvertLineSequence
+1;FileName;Examples\Ghost.hpgl
+1;LaserFirstOnCommand;M3 S255\ng4 P0.3
+1;LaserLastOffCommand;M5
+1;LaserOffCommand;M5
+1;LaserOnCommand;M3\ng4 P0.3
+1;LaserSize;0.3
+1;LoadType;HPGL
+1;MoveSpeed;450
+1;PenMoveType;CommandString
+1;SettingName;laser cut 160mg paper
+2;AutoScale;true
+2;AutoScaleSizeX;200
+2;AutoScaleSizeY;290
+2;DotDistX;0.7
+2;DotDistY;0.7
+2;FileName;Examples\girl1.jpg
+2;HoleType;Diamond
+2;ImageDPIX;12
+2;ImageDPIY;12
+2;LaserFirstOnCommand;M3 S255\ng4 P0.25
+2;LaserLastOffCommand;M5
+2;LaserOffCommand;M5
+2;LaserOnCommand;M3\ng4 P0.25
+2;LoadType;ImageHole
+2;MoveSpeed;500
+2;PenMoveType;CommandString
+2;SettingName;laser cut hole 130mg black
+3;FileName;Examples\snoopy.plt
+3;LaserFirstOnCommand;M3 S255
+3;LaserLastOffCommand;M5
+3;LaserOffCommand;M5
+3;LaserOnCommand;M3
+3;LoadType;HPGL
+3;MoveSpeed;450
+3;PenMoveType;CommandString
+3;SettingName;laser grave
+4;AutoScale;true
+4;AutoScaleSizeX;150
+4;AutoScaleSizeY;150
+4;FileName;Examples\girl2.png
+4;ImageDPIX;66.7
+4;ImageDPIY;66.7
+4;LoadType;Image
+4;MoveSpeed;450
+4;PenMoveType;CommandString
+4;SettingName;laser grave image
+5;AutoScale;true
+5;AutoScaleSizeX;150
+5;AutoScaleSizeY;150
+5;FileName;Examples\girl2.png
+5;ImageDPIX;66.7
+5;ImageDPIY;66.7
+5;LaserFirstOnCommand;M3 S255
+5;LaserOffCommand;
+5;LaserOnCommand;
+5;LoadType;Image
+5;MoveSpeed;450
+5;PenMoveType;CommandString
+5;SettingName;laser grave image (G0G1)
+6;EngravePosDown;-0.75
+6;EngravePosInParameter;false
+6;EngravePosUp;1.5
+6;FileName;Examples\snoopy.plt
+6;LoadType;HPGL
+6;MoveSpeed;450
+6;PenMoveType;ZMove
+6;SettingName;mill grave
+7;AutoScale;true
+7;AutoScaleCenter;true
+7;AutoScaleSizeX;150
+7;AutoScaleSizeY;150
+7;ConvertType;InvertLineSequence
+7;EngravePosDown;-4
+7;EngravePosInParameter;false
+7;EngravePosUp;1.5
+7;FileName;Examples\witch.hpgl
+7;LaserSize;1
+7;LoadType;HPGL
+7;MoveSpeed;450
+7;PenMoveType;ZMove
+7;SettingName;mill cut

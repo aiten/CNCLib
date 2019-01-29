@@ -15,11 +15,10 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.Generic;
-
 namespace Framework.Tools.Tools
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
     using System.Text;
