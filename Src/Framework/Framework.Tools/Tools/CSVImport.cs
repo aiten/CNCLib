@@ -24,13 +24,13 @@ namespace Framework.Tools.Tools
 
     public class CSVImport<T> : CSVImportBase where T : new()
     {
-        public IEnumerable<T> Read(string fileName)
+        public IList<T> Read(string fileName)
         {
             var lines = ReadStringMatrixFromCsv(fileName, false);
             return MapTo(lines);
         }
 
-        public IEnumerable<T> MapTo(IList<IList<string>> lines)
+        public IList<T> MapTo(IList<IList<string>> lines)
         {
             // first line is columnLineHeader!!!!
 
