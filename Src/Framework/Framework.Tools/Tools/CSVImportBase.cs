@@ -18,6 +18,7 @@
 namespace Framework.Tools.Tools
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
     using System.Text;
@@ -38,27 +39,67 @@ namespace Framework.Tools.Tools
             _nfi.NumberGroupSeparator   = ".";
         }
 
-        public string[][] ReadStringMatrixFromCsv(string fileName, bool skipTitleLine)
+        public IList<IList<string>> ReadStringMatrixFromCsv(string fileName, bool skipTitleLine)
         {
-            int startLine     = 0;
-            int subtractIndex = 0;
 
             string[] lines     = File.ReadAllLines(fileName, Encoding);
             int      lineCount = lines.Length;
-            if (skipTitleLine)
-            {
-                lineCount--;
-                startLine     = 1;
-                subtractIndex = 1;
-            }
 
-            string[][] elements = new string[lineCount][];
-            for (int line = startLine; line < lines.Length; line++)
+            var elements = new List<IList<string>>();
+            bool firstLine = skipTitleLine;
+
+            foreach (var line in lines)
             {
-                elements[line - subtractIndex] = lines[line].Split(';');
+                if (firstLine)
+                {
+                    firstLine = false;
+                }
+                else
+                {
+                    elements.Add(ReadLine(line));
+                }
             }
 
             return elements;
+        }
+
+        private IList<string> ReadLine(string line)
+        {
+            // remark: newline in Quote not implemented 
+            var columns = new List<string>();
+
+            var sb = new StringBuilder(line.Length);
+            char noQuoteChar = '\0';
+            char quoteChar= noQuoteChar;
+            char lastCh = noQuoteChar;
+
+            for (int i = 0; i < line.Length; i++)
+            {
+                char ch = line[i];
+
+                if (ch == quoteChar)
+                {
+                    quoteChar = noQuoteChar;
+                }
+                else if (quoteChar == noQuoteChar && lastCh != '\\' && (ch == '\'' || ch == '"'))
+                {
+                    quoteChar = ch;
+                }
+                else if (quoteChar == noQuoteChar && (ch == ';'))
+                {
+                    columns.Add(sb.ToString());
+                    sb.Clear();
+                }
+                else
+                {
+                    sb.Append(ch);
+                }
+                lastCh = ch;
+            }
+
+            columns.Add(sb.ToString());
+
+            return columns;
         }
 
         public string ExcelString(string excelField)

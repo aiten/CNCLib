@@ -1,0 +1,48 @@
+MachineCommandId;CommandName;CommandString;JoystickMessage;MachineId;PosX;PosY
+1;Probe Z;";probe:z";";btn3s";5;0;4
+2;Set Y = 0;"g92 y0\n;beep";";btn4c";3;0;2
+3;Set X = 0;"g92 x0\n;beep";";btn4s";3;0;1
+4;Set XY = 0;"g92 x0\ng92 y0\n;beep";";btn4";3;0;0
+5;Laser Max;m106 s255;";btn2:2";2;1;3
+6;Laser Min;m106 s1;";btn2:1";2;1;2
+7;Laser On;m106;";btn2:0";2;1;1
+8;Laser Off;m107;";btn1";2;1;0
+9;Set Y = 0;g92 y0;";btn4c";2;0;2
+10;Set X = 0;g92 x0;";btn4s";2;0;1
+11;Set XY = 0;"g92 x0\ng92 y0\n;beep";";btn4";2;0;0
+12;Coolant Off;m9;";btn2s";1;1;3
+13;Coolant On;m7;";btn2";1;1;2
+14;Spindle Off;m5;";btn1s";1;1;1
+15;Spindle On;m3;";btn1";1;1;0
+16;Probe Z;";probe:z";";btn3s";1;0;4
+17;Set Z = 0;g92 z0;";btn3";1;0;3
+18;Set Y = 0;g92 y0;";btn4c";1;0;2
+19;Set X = 0;g92 x0;";btn4s";1;0;1
+20;Set XY = 0;"g92 x0\ng92 y0\n;beep";";btn4";1;0;0
+21;Laser Off;m107;";btn1";3;1;0
+22;Laser On;m106;";btn2:0";3;1;1
+23;Laser Min;m106 s1;";btn2:1";3;1;2
+24;Laser Max;m106 s255;";btn2:2";3;1;3
+25;Set Z = 0;g92 z0;";btn3";5;0;3
+26;Set Y = 0;g92 y0;";btn4c";5;0;2
+27;Set X = 0;g92 x0;";btn4s";5;0;1
+28;Set XY = 0;"g92 x0\ng92 y0\n;beep";";btn4";5;0;0
+29;Laser Max;m106 s255;";btn2:2";4;1;3
+30;Laser Min;m106 s1;";btn2:1";4;1;2
+31;Laser On;m106;";btn2:0";4;1;1
+32;Laser Off;m107;";btn1";4;1;0
+33;Set Y = 0;g92 y0;";btn4c";4;0;2
+34;Spindle On;m3;";btn1";5;1;0
+35;Set X = 0;g92 x0;";btn4s";4;0;1
+36;Spindle Off;m5;";btn1s";5;1;1
+37;Square;m106 s2\ng0x0y0\ng0x36\ng0y36\ng0x0\ng0y0m107;;3;3;0
+38;Set XY = 0;"g92 x0\ng92 y0\n;beep";";btn4";4;0;0
+39;Set XY = 0;"g92 x0\ng92 y0\n;beep";";btn4";6;0;0
+40;Set X = 0;g92 x0;";btn4s";6;0;1
+41;Set Y = 0;g92 y0;";btn4c";6;0;2
+42;Set Z = 0;g92 z0;";btn3";6;0;3
+43;Probe Z;";probe:z";";btn3s";6;0;4
+44;Spindle On;m3;";btn1";6;1;0
+45;Spindle Off;m5;";btn1s";6;1;1
+46;Coolant On;m7;";btn2";6;1;2
+47;Coolant Off;m9;";btn2s";6;1;3
