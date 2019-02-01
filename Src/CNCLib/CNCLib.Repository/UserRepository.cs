@@ -31,28 +31,22 @@ namespace CNCLib.Repository
 {
     public class UserRepository : CRUDRepository<CNCLibContext, User, int>, IUserRepository
     {
+        #region ctr/default/overrides
+
         public UserRepository(CNCLibContext context) : base(context)
         {
         }
 
+        protected override FilterBuilder<User, int> FilterBuilder =>
+            new FilterBuilder<User, int>()
+            {
+                PrimaryWhere   = (query, key) => query.Where(item => item.UserId == key),
+                PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.UserId))
+            };
+
         protected override IQueryable<User> AddInclude(IQueryable<User> query)
         {
             return query;
-        }
-
-        protected override IQueryable<User> AddPrimaryWhere(IQueryable<User> query, int key)
-        {
-            return query.Where(m => m.UserId == key);
-        }
-
-        protected override IQueryable<User> AddPrimaryWhereIn(IQueryable<User> query, IEnumerable<int> key)
-        {
-            return query.Where(m => key.Contains(m.UserId));
-        }
-
-        public async Task<User> GetByName(string username)
-        {
-            return await AddInclude(Query).Where(u => u.UserName == username).FirstOrDefaultAsync();
         }
 
         public async Task Store(User user)
@@ -78,5 +72,16 @@ namespace CNCLib.Repository
                 // search und update User Commands (add and delete)
             }
         }
+
+        #endregion
+
+        #region extra Queries
+
+        public async Task<User> GetByName(string username)
+        {
+            return await AddInclude(Query).Where(u => u.UserName == username).FirstOrDefaultAsync();
+        }
+
+        #endregion
     }
 }
