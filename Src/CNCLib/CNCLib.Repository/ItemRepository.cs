@@ -35,10 +35,19 @@ namespace CNCLib.Repository
     {
         private readonly ICNCLibUserContext _userContext;
 
+        #region ctr/default/overrides
+
         public ItemRepository(CNCLibContext context, ICNCLibUserContext userContext) : base(context)
         {
             _userContext = userContext ?? throw new ArgumentNullException();
         }
+
+        protected override FilterBuilder<Item, int> FilterBuilder =>
+            new FilterBuilder<Item, int>()
+            {
+                PrimaryWhere   = (query, key) => query.Where(item => item.ItemId == key),
+                PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.ItemId))
+            };
 
         protected override IQueryable<Item> AddInclude(IQueryable<Item> query)
         {
@@ -54,30 +63,21 @@ namespace CNCLib.Repository
 
             return base.AddOptionalWhere(query);
         }
-
-        protected override IQueryable<Item> AddPrimaryWhere(IQueryable<Item> query, int key)
+        protected override void AssignValuesGraph(Item trackingEntity, Item values)
         {
-            return query.Where(m => m.ItemId == key);
+            base.AssignValuesGraph(trackingEntity, values);
+            Sync(trackingEntity.ItemProperties, values.ItemProperties, (x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name);
         }
-
-        protected override IQueryable<Item> AddPrimaryWhereIn(IQueryable<Item> query, IEnumerable<int> key)
-        {
-            return query.Where(m => key.Contains(m.ItemId));
-        }
-
-        #region CRUD
 
         #endregion
+
+        #region extra Queries
 
         public async Task<IList<Item>> Get(string typeIdString)
         {
             return await QueryWithOptional.Where(m => m.ClassName == typeIdString).Include(d => d.ItemProperties).ToListAsync();
         }
 
-        protected override void AssignValuesGraph(Item trackingEntity, Item values)
-        {
-            base.AssignValuesGraph(trackingEntity, values);
-            Sync(trackingEntity.ItemProperties, values.ItemProperties, (x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name);
-        }
+        #endregion
     }
 }

@@ -31,11 +31,21 @@ namespace Framework.Repository
         {
         }
 
+        #region QueryProperties
+
         protected IQueryable<TEntity> QueryWithInclude => AddInclude(Query);
 
         protected IQueryable<TEntity> TrackingQueryWithInclude => AddInclude(TrackingQuery);
 
         protected IQueryable<TEntity> QueryWithOptional => AddOptionalWhere(Query);
+
+        protected IQueryable<TEntity> TrackingQueryWithOptional => AddOptionalWhere(TrackingQuery);
+
+        protected virtual FilterBuilder<TEntity, TKey> FilterBuilder { get; } = null;
+
+        #endregion
+
+        #region Get
 
         public async Task<IList<TEntity>> GetAll()
         {
@@ -62,12 +72,24 @@ namespace Framework.Repository
             return await AddPrimaryWhereIn(TrackingQueryWithInclude, keys).ToListAsync();
         }
 
+        #endregion
+
+        #region overrides
+
         protected virtual IQueryable<TEntity> AddOptionalWhere(IQueryable<TEntity> query) => query;
 
         protected abstract IQueryable<TEntity> AddInclude(IQueryable<TEntity> query);
 
-        protected abstract IQueryable<TEntity> AddPrimaryWhere(IQueryable<TEntity> query, TKey key);
+        protected virtual IQueryable<TEntity> AddPrimaryWhere(IQueryable<TEntity> query, TKey key)
+        {
+            return FilterBuilder.PrimaryWhere(query, key);
+        }
 
-        protected abstract IQueryable<TEntity> AddPrimaryWhereIn(IQueryable<TEntity> query, IEnumerable<TKey> key);
+        protected virtual IQueryable<TEntity> AddPrimaryWhereIn(IQueryable<TEntity> query, IEnumerable<TKey> keys)
+        {
+            return FilterBuilder.PrimaryWhereIn(query, keys);
+        }
+
+        #endregion
     }
 }

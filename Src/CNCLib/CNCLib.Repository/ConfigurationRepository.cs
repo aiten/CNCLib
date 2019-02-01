@@ -35,31 +35,33 @@ namespace CNCLib.Repository
     {
         private readonly ICNCLibUserContext _userContext;
 
+        #region ctr/default/overrides
+
         public ConfigurationRepository(CNCLibContext dbContext, ICNCLibUserContext userContext) : base(dbContext)
         {
             _userContext = userContext ?? throw new ArgumentNullException();
         }
 
+        protected override FilterBuilder<Configuration, ConfigurationPrimary> FilterBuilder =>
+            new FilterBuilder<Configuration, ConfigurationPrimary>()
+            {
+                PrimaryWhere = (query, key) => query.Where(c => c.Group == key.Group && c.Name == key.Name),
+                PrimaryWhereIn = (query, keys) =>
+                {
+                    var predicate = PredicateBuilder.False<Configuration>();
+
+                    foreach (var key in keys)
+                    {
+                        predicate = predicate.Or(c => c.Group == key.Group && c.Name == key.Name);
+                    }
+
+                    return query.Where(predicate);
+                }
+            };
+
         protected override IQueryable<Configuration> AddInclude(IQueryable<Configuration> query)
         {
             return query;
-        }
-
-        protected override IQueryable<Configuration> AddPrimaryWhere(IQueryable<Configuration> query, ConfigurationPrimary key)
-        {
-            return query.Where(c => c.Group == key.Group && c.Name == key.Name);
-        }
-
-        protected override IQueryable<Configuration> AddPrimaryWhereIn(IQueryable<Configuration> query, IEnumerable<ConfigurationPrimary> keys)
-        {
-            var predicate = PredicateBuilder.False<Configuration>();
-
-            foreach (var key in keys)
-            {
-                predicate = predicate.Or(c => c.Group == key.Group && c.Name == key.Name);
-            }
-
-            return query.Where(predicate);
         }
 
         protected override IQueryable<Configuration> AddOptionalWhere(IQueryable<Configuration> query)
@@ -70,11 +72,6 @@ namespace CNCLib.Repository
             }
 
             return base.AddOptionalWhere(query);
-        }
-
-        public async Task<Configuration> Get(string group, string name)
-        {
-            return await AddOptionalWhere(Query).Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
         }
 
         public async Task Store(Configuration configuration)
@@ -99,5 +96,16 @@ namespace CNCLib.Repository
                 SetValue(cInDb, configuration);
             }
         }
+
+        #endregion
+
+        #region extra queries
+
+        public async Task<Configuration> Get(string group, string name)
+        {
+            return await AddOptionalWhere(Query).Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
+        }
+
+        #endregion
     }
 }

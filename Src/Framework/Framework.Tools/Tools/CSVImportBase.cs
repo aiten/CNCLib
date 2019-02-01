@@ -35,17 +35,16 @@ namespace Framework.Tools.Tools
             CultureInfo enUS = CultureInfo.CreateSpecificCulture("en-US");
             _nfi = enUS.NumberFormat;
 
-            _nfi.NumberDecimalSeparator = ",";
-            _nfi.NumberGroupSeparator   = ".";
+            //_nfi.NumberDecimalSeparator = ",";
+            //_nfi.NumberGroupSeparator   = ".";
         }
 
         public IList<IList<string>> ReadStringMatrixFromCsv(string fileName, bool skipTitleLine)
         {
-
             string[] lines     = File.ReadAllLines(fileName, Encoding);
             int      lineCount = lines.Length;
 
-            var elements = new List<IList<string>>();
+            var  elements  = new List<IList<string>>();
             bool firstLine = skipTitleLine;
 
             foreach (var line in lines)
@@ -68,10 +67,10 @@ namespace Framework.Tools.Tools
             // remark: newline in Quote not implemented 
             var columns = new List<string>();
 
-            var sb = new StringBuilder(line.Length);
+            var  sb          = new StringBuilder(line.Length);
             char noQuoteChar = '\0';
-            char quoteChar= noQuoteChar;
-            char lastCh = noQuoteChar;
+            char quoteChar   = noQuoteChar;
+            char lastCh      = noQuoteChar;
 
             for (int i = 0; i < line.Length; i++)
             {
@@ -94,6 +93,7 @@ namespace Framework.Tools.Tools
                 {
                     sb.Append(ch);
                 }
+
                 lastCh = ch;
             }
 

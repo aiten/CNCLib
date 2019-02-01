@@ -35,10 +35,19 @@ namespace CNCLib.Repository
     {
         private readonly ICNCLibUserContext _userContext;
 
+        #region ctr/default/overrides
+
         public MachineRepository(CNCLibContext context, ICNCLibUserContext userContext) : base(context)
         {
             _userContext = userContext ?? throw new ArgumentNullException();
         }
+
+        protected override FilterBuilder<Machine, int> FilterBuilder =>
+            new FilterBuilder<Machine, int>()
+            {
+                PrimaryWhere   = (query, key) => query.Where(item => item.MachineId == key),
+                PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.MachineId))
+            };
 
         protected override IQueryable<Machine> AddInclude(IQueryable<Machine> query)
         {
@@ -55,22 +64,16 @@ namespace CNCLib.Repository
             return base.AddOptionalWhere(query);
         }
 
-        protected override IQueryable<Machine> AddPrimaryWhere(IQueryable<Machine> query, int key)
-        {
-            return query.Where(m => m.MachineId == key);
-        }
-
-        protected override IQueryable<Machine> AddPrimaryWhereIn(IQueryable<Machine> query, IEnumerable<int> key)
-        {
-            return query.Where(m => key.Contains(m.MachineId));
-        }
-
         protected override void AssignValuesGraph(Machine trackingEntity, Machine values)
         {
             base.AssignValuesGraph(trackingEntity, values);
             Sync(trackingEntity.MachineCommands,     values.MachineCommands,     (x, y) => x.MachineCommandId > 0 && x.MachineCommandId == y.MachineCommandId);
             Sync(trackingEntity.MachineInitCommands, values.MachineInitCommands, (x, y) => x.MachineInitCommandId > 0 && x.MachineInitCommandId == y.MachineInitCommandId);
         }
+
+        #endregion
+
+        #region extra Queries
 
         public async Task<IList<MachineCommand>> GetMachineCommands(int machineId)
         {
@@ -81,5 +84,7 @@ namespace CNCLib.Repository
         {
             return await Context.MachineInitCommands.Where(c => c.MachineId == machineId).ToListAsync();
         }
+
+        #endregion
     }
 }
