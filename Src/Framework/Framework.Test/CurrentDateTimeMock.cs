@@ -15,12 +15,12 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
+
+using Framework.Tools.Abstraction;
+
 namespace Framework.Test
 {
-    using System;
-
-    using Tools.Abstraction;
-
     public class CurrentDateTimeMock : ICurrentDateTime
     {
         public CurrentDateTimeMock(DateTime now)
