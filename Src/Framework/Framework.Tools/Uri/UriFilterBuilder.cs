@@ -19,17 +19,17 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 
-namespace Framework.Tools.Url
+namespace Framework.Tools.Uri
 {
-    public class UrlFilterBuilder
+    public class UriFilterBuilder
     {
         private StringBuilder _sb = new StringBuilder();
 
-        public UrlFilterBuilder()
+        public UriFilterBuilder()
         {
         }
 
-        public UrlFilterBuilder(string old)
+        public UriFilterBuilder(string old)
         {
             _sb.Append(old);
         }
@@ -47,20 +47,20 @@ namespace Framework.Tools.Url
             }
         }
 
-        public UrlFilterBuilder AddRange<T>(string filterName, IList<T> valueList)
+        public UriFilterBuilder AddRange<T>(string filterName, IList<T> valueList)
         {
             AddNextFilter();
             _sb.Append($"{filterName}={ string.Join($"&{filterName}=", valueList) }");
             return this;
         }
 
-        public UrlFilterBuilder Add(string filterName, DateTime dateValue)
+        public UriFilterBuilder Add(string filterName, DateTime dateValue)
         {
             AddNextFilter();
             _sb.Append($"{filterName}={ ToUrlDate(dateValue) }");
             return this;
         }
-        public UrlFilterBuilder Add<T>(string filterName, T val)
+        public UriFilterBuilder Add<T>(string filterName, T val)
         {
             AddNextFilter();
             _sb.Append($"{filterName}={val}");
