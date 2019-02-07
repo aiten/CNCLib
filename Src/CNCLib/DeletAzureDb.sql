@@ -1,6 +1,6 @@
 select @@version;
 
-select * from __MigrationHistory;
+--select * from __MigrationHistory;
 
 --#exit;
 
@@ -13,3 +13,4 @@ drop table MachineCommand;
 drop table MachineInitCommand;
 drop table Machine;
 drop table [User];
+drop table [Log];

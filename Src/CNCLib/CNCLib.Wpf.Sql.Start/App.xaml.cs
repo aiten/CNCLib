@@ -16,6 +16,7 @@
 */
 
 using System;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
@@ -49,15 +50,22 @@ namespace CNCLib.Wpf.Sql.Start
             GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Sql/logs");
             GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
 
+            try
+            {
 #if DEBUG
-            LogManager.ThrowExceptions = true;
+                LogManager.ThrowExceptions = true;
 #endif
-            Logger logger = LogManager.GetLogger("foo");
+                Logger logger = LogManager.GetLogger("foo");
 
-            _logger.Info(@"Starting ...");
+                _logger.Info(@"Starting ...");
 #if DEBUG
-            LogManager.ThrowExceptions = false;
+                LogManager.ThrowExceptions = false;
 #endif
+            }
+            catch (SqlException exception)
+            {
+                // ignore Sql Exception
+            }
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 

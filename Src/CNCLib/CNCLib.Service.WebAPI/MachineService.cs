@@ -21,6 +21,8 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Contract.DTO;
 using CNCLib.Service.Contract;
 
+using Framework.Tools.Url;
+
 namespace CNCLib.Service.WebAPI
 {
     public class MachineService : CRUDServiceBase<Machine, int>, IMachineService
@@ -64,7 +66,9 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"{Api}/defaultmachine?id={id}", "dummy");
+                var paramUri = new UrlFilterBuilder();
+                paramUri.Add("id", id);
+                HttpResponseMessage response = await client.PutAsJsonAsync($"{Api}/defaultmachine?{paramUri}", "dummy");
 
                 if (response.IsSuccessStatusCode)
                 {

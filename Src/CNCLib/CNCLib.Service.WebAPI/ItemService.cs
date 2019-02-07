@@ -22,6 +22,8 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Contract.DTO;
 using CNCLib.Service.Contract;
 
+using Framework.Tools.Url;
+
 namespace CNCLib.Service.WebAPI
 {
     public class ItemService : CRUDServiceBase<Item, int>, IItemService
@@ -38,8 +40,10 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-//			    HttpResponseMessage response = await client.GetAsync(_api + "/" + classname);
-                HttpResponseMessage response = await client.GetAsync(Api + "/?classname=" + classname);
+                var paramUri = new UrlFilterBuilder();
+                paramUri.Add("classname", classname);
+
+                HttpResponseMessage response = await client.GetAsync($"{Api}/?{paramUri}");
                 if (response.IsSuccessStatusCode)
                 {
                     IEnumerable<Item> items = await response.Content.ReadAsAsync<IEnumerable<Item>>();
