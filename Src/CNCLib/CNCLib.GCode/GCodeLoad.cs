@@ -44,7 +44,7 @@ namespace CNCLib.GCode
             return Commands;
         }
 
-        private readonly string webServerUrl = @"https://cnclibwebapi.azurewebsites.net";
+        private readonly string webServerUri = @"https://cnclibwebapi.azurewebsites.net";
         private readonly string api          = @"api/GCode";
 
         #region private
@@ -149,7 +149,7 @@ namespace CNCLib.GCode
 
         private HttpClient CreateHttpClient()
         {
-            var client = new HttpClient { BaseAddress = new Uri(webServerUrl) };
+            var client = new HttpClient { BaseAddress = new Uri(webServerUri) };
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return client;

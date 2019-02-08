@@ -21,29 +21,29 @@ using System.Collections.Generic;
 
 namespace Framework.Tools.Uri
 {
-    public class UriBuilder
+    public class UriPathBuilder
     {
         public string Api { get; set; }
-        public string Route { get; set; }
-        public string Filter { get; set; }
+        public string Path { get; set; }
+        public string Query { get; set; }
 
         public string Build()
         {
-            if (string.IsNullOrEmpty(Filter))
+            if (string.IsNullOrEmpty(Query))
             {
-                return $"{Api}{Route}";
+                return $"{Api}{Path}";
             }
-            return $"{Api}{Route}?{Filter}";
+            return $"{Api}{Path}?{Query}";
         }
 
-        public static string Build(string api, string route, string filter=null)
+        public static string Build(string api, string path, string query=null)
         {
-            return new UriBuilder() { Api = api, Route = route, Filter = filter }.Build();
+            return new UriPathBuilder() { Api = api, Path = path, Query = query }.Build();
         }
 
-        public static string Build(string api, string route, UriFilterBuilder filter)
+        public static string Build(string api, string route, UriQueryBuilder filter)
         {
-            return new UriBuilder() { Api = api, Route = route, Filter = filter.ToString() }.Build();
+            return new UriPathBuilder() { Api = api, Path = route, Query = filter.ToString() }.Build();
         }
     }
 }

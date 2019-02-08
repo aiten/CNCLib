@@ -19,7 +19,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
 {
     public class AzureWebApiTest : UnitTestBase
     {
-        //public static readonly string AzureUrl = @"http://localhost:55586/";
-        public static readonly string AzureUrl = @"https://cnclibwebapi.azurewebsites.net/";
+        //public static readonly string AzureUri = @"http://localhost:55586/";
+        public static readonly string AzureUri = @"https://cnclibwebapi.azurewebsites.net/";
     }
 }
