@@ -29,7 +29,7 @@ namespace CNCLib.Serial.Client
     {
         public SerialServiceHub(string adr, ISerial serial)
         {
-            WebServerUrl = adr + "/serialSignalR";
+            WebServerUri = adr + "/serialSignalR";
             _serial      = serial;
         }
 
@@ -48,7 +48,7 @@ namespace CNCLib.Serial.Client
 
         public async Task<HubConnection> Start()
         {
-            _connection = new HubConnectionBuilder().WithUrl(WebServerUrl)
+            _connection = new HubConnectionBuilder().WithUrl(WebServerUri)
 
 //            .WithConsoleLogger()
 //            .WithMessagePackProtocol()

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Contract.DTO;
 using CNCLib.Service.Contract;
 
-using Framework.Tools.Url;
+using Framework.Tools.Uri;
 
 namespace CNCLib.Service.WebAPI
 {
@@ -34,7 +34,7 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(Api + "/default");
+                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api,"/default"));
                 if (response.IsSuccessStatusCode)
                 {
                     var value = await response.Content.ReadAsAsync<Machine>();
@@ -50,7 +50,7 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(Api + "/defaultmachine");
+                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api,"/defaultmachine"));
                 if (response.IsSuccessStatusCode)
                 {
                     int value = await response.Content.ReadAsAsync<int>();
@@ -66,9 +66,9 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                var paramUri = new UrlFilterBuilder();
+                var paramUri = new UriQueryBuilder();
                 paramUri.Add("id", id);
-                HttpResponseMessage response = await client.PutAsJsonAsync($"{Api}/defaultmachine?{paramUri}", "dummy");
+                HttpResponseMessage response = await client.PutAsJsonAsync(UriPathBuilder.Build(Api, "/defaultmachine",paramUri), "dummy");
 
                 if (response.IsSuccessStatusCode)
                 {

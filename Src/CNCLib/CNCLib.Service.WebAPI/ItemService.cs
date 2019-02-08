@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Contract.DTO;
 using CNCLib.Service.Contract;
 
-using Framework.Tools.Url;
+using Framework.Tools.Uri;
 
 namespace CNCLib.Service.WebAPI
 {
@@ -40,10 +40,10 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                var paramUri = new UrlFilterBuilder();
+                var paramUri = new UriQueryBuilder();
                 paramUri.Add("classname", classname);
 
-                HttpResponseMessage response = await client.GetAsync($"{Api}/?{paramUri}");
+                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api,"",paramUri));
                 if (response.IsSuccessStatusCode)
                 {
                     IEnumerable<Item> items = await response.Content.ReadAsAsync<IEnumerable<Item>>();

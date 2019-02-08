@@ -38,7 +38,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(AzureUrl);
+                client.BaseAddress = new Uri(AzureUri);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -60,7 +60,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(AzureUrl);
+                client.BaseAddress = new Uri(AzureUri);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -77,10 +77,10 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Uri newMachineUrl = response.Headers.Location;
+                    Uri newMachineUri = response.Headers.Location;
 
                     // HTTPGET again
-                    HttpResponseMessage responseGet = await client.GetAsync(newMachineUrl);
+                    HttpResponseMessage responseGet = await client.GetAsync(newMachineUri);
                     responseGet.IsSuccessStatusCode.Should().BeTrue();
 
                     if (responseGet.IsSuccessStatusCode)
@@ -91,10 +91,10 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
 
                         // HTTP PUT
                         mget.ComPort = "ComHA";
-                        var responsePut = await client.PutAsJsonAsync(newMachineUrl, mget);
+                        var responsePut = await client.PutAsJsonAsync(newMachineUri, mget);
 
                         // HTTPGET again2
-                        HttpResponseMessage responseGet2 = await client.GetAsync(newMachineUrl);
+                        HttpResponseMessage responseGet2 = await client.GetAsync(newMachineUri);
                         responseGet2.IsSuccessStatusCode.Should().BeTrue();
 
                         if (responseGet2.IsSuccessStatusCode)
@@ -105,10 +105,10 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
                         }
 
                         // HTTP DELETE
-                        response = await client.DeleteAsync(newMachineUrl);
+                        response = await client.DeleteAsync(newMachineUri);
 
                         // HTTPGET again3
-                        HttpResponseMessage responseGet3 = await client.GetAsync(newMachineUrl);
+                        HttpResponseMessage responseGet3 = await client.GetAsync(newMachineUri);
                         responseGet3.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
                         if (responseGet3.IsSuccessStatusCode)

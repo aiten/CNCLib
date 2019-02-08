@@ -39,7 +39,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(AzureUrl);
+                client.BaseAddress = new Uri(AzureUri);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -65,7 +65,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(AzureUrl);
+                client.BaseAddress = new Uri(AzureUri);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -109,7 +109,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(AzureUrl);
+                client.BaseAddress = new Uri(AzureUri);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

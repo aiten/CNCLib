@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Contract.DTO;
 using CNCLib.Service.Contract;
 
-using Framework.Tools.Url;
+using Framework.Tools.Uri;
 
 namespace CNCLib.Service.WebAPI
 {
@@ -33,7 +33,7 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                var paramUri = new UrlFilterBuilder();
+                var paramUri = new UriQueryBuilder();
                 paramUri.Add("teeth", param.Teeth)
                     .Add("toothSizeInMm",          param.ToothSizeInMm)
                     .Add("microSteps",             param.MicroSteps)
@@ -42,7 +42,7 @@ namespace CNCLib.Service.WebAPI
                     .Add("timeToAcc",              param.TimeToAcc)
                     .Add("timeToDec",              param.TimeToDec);
 
-                HttpResponseMessage response = await client.GetAsync(Api + "/" + paramUri);
+                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api,"",paramUri));
                 if (response.IsSuccessStatusCode)
                 {
                     EepromConfiguration value = await response.Content.ReadAsAsync<EepromConfiguration>();

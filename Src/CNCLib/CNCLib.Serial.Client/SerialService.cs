@@ -37,7 +37,7 @@ namespace CNCLib.Serial.Client
 
         private async Task InitServiceHub()
         {
-            _serviceHub = new SerialServiceHub(WebServerUrl, this);
+            _serviceHub = new SerialServiceHub(WebServerUri, this);
             var connection = await _serviceHub.Start();
 
             connection.On(
@@ -110,7 +110,7 @@ namespace CNCLib.Serial.Client
             int lastSlash = portName.IndexOf('/', lastColon);
             if (lastSlash > 0)
             {
-                WebServerUrl = portName.Substring(0, lastSlash);
+                WebServerUri = portName.Substring(0, lastSlash);
                 portName     = portName.Substring(lastSlash + 1);
                 if (portName.IndexOf('/') >= 0)
                 {
