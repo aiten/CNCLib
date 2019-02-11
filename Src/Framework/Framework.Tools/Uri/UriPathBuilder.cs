@@ -23,7 +23,6 @@ namespace Framework.Tools.Uri
 {
     public class UriPathBuilder
     {
-        public string Api { get; set; }
         public string Path { get; set; }
         public string Query { get; set; }
 
@@ -31,19 +30,19 @@ namespace Framework.Tools.Uri
         {
             if (string.IsNullOrEmpty(Query))
             {
-                return $"{Api}{Path}";
+                return $"{Path}";
             }
-            return $"{Api}{Path}?{Query}";
+            return $"{Path}?{Query}";
         }
 
-        public static string Build(string api, string path, string query=null)
+        public static string Build(string path, string query=null)
         {
-            return new UriPathBuilder() { Api = api, Path = path, Query = query }.Build();
+            return new UriPathBuilder() { Path = path, Query = query }.Build();
         }
 
-        public static string Build(string api, string route, UriQueryBuilder filter)
+        public static string Build(string path, UriQueryBuilder filter)
         {
-            return new UriPathBuilder() { Api = api, Path = route, Query = filter.ToString() }.Build();
+            return new UriPathBuilder() { Path = path, Query = filter.ToString() }.Build();
         }
     }
 }
