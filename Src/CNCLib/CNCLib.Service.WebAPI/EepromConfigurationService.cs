@@ -42,7 +42,7 @@ namespace CNCLib.Service.WebAPI
                     .Add("timeToAcc",              param.TimeToAcc)
                     .Add("timeToDec",              param.TimeToDec);
 
-                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api,"",paramUri));
+                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api,paramUri));
                 if (response.IsSuccessStatusCode)
                 {
                     EepromConfiguration value = await response.Content.ReadAsAsync<EepromConfiguration>();

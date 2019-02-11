@@ -18,12 +18,14 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Framework.Tools.Uri
 {
     public class UriQueryBuilder
     {
-        private StringBuilder _sb = new StringBuilder();
+        private List<Tuple<string, object>> _list = new List<Tuple<string, object>>();
+        private string                      _old  = "";
 
         public UriQueryBuilder()
         {
@@ -31,45 +33,44 @@ namespace Framework.Tools.Uri
 
         public UriQueryBuilder(string old)
         {
-            _sb.Append(old);
+            _old = old;
         }
 
-        public string ToUriDate(DateTime dt)
+        public UriQueryBuilder(UriQueryBuilder old)
         {
-            return dt.ToString("yyyy-MM-dd");
-        }
-
-        private void AddNextFilter()
-        {
-            if (_sb.Length != 0)
-            {
-                _sb.Append("&");
-            }
+            _list.AddRange(old._list);
         }
 
         public UriQueryBuilder AddRange<T>(string filterName, IList<T> valueList)
         {
-            AddNextFilter();
-            _sb.Append($"{filterName}={ string.Join($"&{filterName}=", valueList) }");
+            _list.AddRange(valueList.Select(val => new Tuple<string, object>(filterName, val)));
             return this;
         }
 
-        public UriQueryBuilder Add(string filterName, DateTime dateValue)
-        {
-            AddNextFilter();
-            _sb.Append($"{filterName}={ ToUriDate(dateValue) }");
-            return this;
-        }
         public UriQueryBuilder Add<T>(string filterName, T val)
         {
-            AddNextFilter();
-            _sb.Append($"{filterName}={val}");
+            _list.Add(new Tuple<string, object>(filterName, val));
             return this;
         }
 
         public override string ToString()
         {
-            return _sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append(_old);
+
+            foreach (var filter in _list)
+            {
+                if (sb.Length != 0)
+                {
+                    sb.Append(@"&");
+                }
+
+                sb.Append(filter.Item1);
+                sb.Append(@"=");
+                sb.Append(filter.Item2.ToUriAsQuery());
+            }
+
+            return sb.ToString();
         }
     }
 }

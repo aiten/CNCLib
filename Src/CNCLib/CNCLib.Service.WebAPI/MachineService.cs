@@ -34,7 +34,7 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api,"/default"));
+                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api + "/default"));
                 if (response.IsSuccessStatusCode)
                 {
                     var value = await response.Content.ReadAsAsync<Machine>();
@@ -50,7 +50,7 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api,"/defaultmachine"));
+                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api + "/defaultmachine"));
                 if (response.IsSuccessStatusCode)
                 {
                     int value = await response.Content.ReadAsAsync<int>();
@@ -68,7 +68,7 @@ namespace CNCLib.Service.WebAPI
             {
                 var paramUri = new UriQueryBuilder();
                 paramUri.Add("id", id);
-                HttpResponseMessage response = await client.PutAsJsonAsync(UriPathBuilder.Build(Api, "/defaultmachine",paramUri), "dummy");
+                HttpResponseMessage response = await client.PutAsJsonAsync(UriPathBuilder.Build(Api + "/defaultmachine",paramUri), "dummy");
 
                 if (response.IsSuccessStatusCode)
                 {
