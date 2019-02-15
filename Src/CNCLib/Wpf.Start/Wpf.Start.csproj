@@ -3,7 +3,7 @@
    <PropertyGroup>
 	<TargetFramework>net471</TargetFramework>
   <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
-	<ApplicationIcon>Properties\ico</ApplicationIcon>
+	<ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
 	<OutputType>WinExe</OutputType>
 	<StartupObject>CNCLib.Wpf.Start.App</StartupObject>
   </PropertyGroup>
@@ -68,9 +68,6 @@
     <ProjectReference Include="..\Service.Contract\Service.Contract.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
     <ProjectReference Include="..\Wpf\Wpf.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Properties\ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
