@@ -8,10 +8,10 @@
     <ProjectReference Include="..\..\Framework\Framework.Pattern\Framework.Pattern.csproj"/>
     <ProjectReference Include="..\..\Framework\Framework.Service.Abstraction\Framework.Service.Abstraction.csproj"/>
     <ProjectReference Include="..\..\Framework\Framework.Wpf\Framework.Wpf.csproj"/>
-    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj"/>
-    <ProjectReference Include="..\CNCLib.Logic.Contract\CNCLib.Logic.Contract.csproj"/>
-    <ProjectReference Include="..\CNCLib.Service.Contract\CNCLib.Service.Contract.csproj"/>
-    <ProjectReference Include="..\CNCLib.Wpf\CNCLib.Wpf.csproj"/>
+    <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj"/>
+    <ProjectReference Include="..\Logic.Contract\Logic.Contract.csproj"/>
+    <ProjectReference Include="..\Service.Contract\Service.Contract.csproj"/>
+    <ProjectReference Include="..\Wpf\Wpf.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions">

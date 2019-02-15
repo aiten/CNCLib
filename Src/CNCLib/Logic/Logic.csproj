@@ -2,16 +2,17 @@
   <Import Project="$(ProjectDir)..\SolutionItems\CNCLib.targets" />
    <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj">    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj">    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Client\CNCLib.Logic.Client.csproj">    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj">    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Logic.Contract\CNCLib.Logic.Contract.csproj">    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Repository.Contract\CNCLib.Repository.Contract.csproj">    </ProjectReference>
-    <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />
+    <ProjectReference Include="..\GCode\GCode.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Logic.Client\Logic.Client.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Logic.Contract\Logic.Contract.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Repository.Contract\Repository.Contract.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />

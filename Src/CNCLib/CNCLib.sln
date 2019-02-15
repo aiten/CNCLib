@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic", "CNCLib.Logic\CNCLib.Logic.csproj", "{36B9838B-493F-4BAC-A8D3-35298C4FFDC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{36B9838B-493F-4BAC-A8D3-35298C4FFDC7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Logic", "..\Framework\Framework.Logic\Framework.Logic.csproj", "{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}"
 EndProject
@@ -11,38 +11,38 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Tools", "..\Frame
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Wpf", "..\Framework\Framework.Wpf\Framework.Wpf.csproj", "{8568383E-054D-4882-8D6A-B956684CFAAE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Wpf", "CNCLib.Wpf\CNCLib.Wpf.csproj", "{60555245-D32E-4A94-AB0E-CB2A6693A9BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wpf", "Wpf\Wpf.csproj", "{60555245-D32E-4A94-AB0E-CB2A6693A9BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.GCode", "CNCLib.GCode\CNCLib.GCode.csproj", "{F9C446F4-6365-4189-95C5-009EF0160882}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCode", "GCode\GCode.csproj", "{F9C446F4-6365-4189-95C5-009EF0160882}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.GCode.GUI", "CNCLib.GCode.GUI\CNCLib.GCode.GUI.csproj", "{55108499-FAC2-4F19-B88E-9E240CCCBD60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCode.GUI", "GCode.GUI\GCode.GUI.csproj", "{55108499-FAC2-4F19-B88E-9E240CCCBD60}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository", "CNCLib.Repository\CNCLib.Repository.csproj", "{D689CD99-A022-4F38-8AE1-A269C82A729C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{D689CD99-A022-4F38-8AE1-A269C82A729C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Test", "CNCLib.Test\CNCLib.Test.csproj", "{E73BAF77-EAF6-41F0-BF6A-FF6F5BC71062}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{E73BAF77-EAF6-41F0-BF6A-FF6F5BC71062}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Repository", "..\Framework\Framework.Repository\Framework.Repository.csproj", "{E768F2ED-C63D-401E-A090-1C0465A84DF5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Wpf.Start", "CNCLib.Wpf.Start\CNCLib.Wpf.Start.csproj", "{D6077813-9EAF-4807-B4AA-EF00BCCE9827}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wpf.Start", "Wpf.Start\Wpf.Start.csproj", "{D6077813-9EAF-4807-B4AA-EF00BCCE9827}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino", "..\Framework\Framework.Arduino\Framework.Arduino.csproj", "{77F5A48D-E908-4A95-A09E-771E8BE8817B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{0942B8A6-0C1A-47A0-B67F-C98979BA830C}"
 	ProjectSection(SolutionItems) = preProject
-		SolutionItems\CNCLib.targets = SolutionItems\CNCLib.targets
 		SolutionItems\CNCLibSolutionInfo.cs = SolutionItems\CNCLibSolutionInfo.cs
 		SolutionItems\CNCLibSolutionInfoVersion.cs = SolutionItems\CNCLibSolutionInfoVersion.cs
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.Contract", "CNCLib.Repository.Contract\CNCLib.Repository.Contract.csproj", "{0ECC8284-505B-43CC-9DF9-AC5D5EEF786A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository.Contract", "Repository.Contract\Repository.Contract.csproj", "{0ECC8284-505B-43CC-9DF9-AC5D5EEF786A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Contract", "CNCLib.Logic.Contract\CNCLib.Logic.Contract.csproj", "{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Contract", "Logic.Contract\Logic.Contract.csproj", "{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Test", "..\Framework\Framework.Test\Framework.Test.csproj", "{BBECB408-5426-4CE7-B7B6-970BDE436486}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.WebAPI", "CNCLib.WebAPI\CNCLib.WebAPI.csproj", "{DA845EDE-FADC-455C-AEF7-D1844B258784}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{DA845EDE-FADC-455C-AEF7-D1844B258784}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.WebAPI.Test", "CNCLib.WebAPI.Test\CNCLib.WebAPI.Test.csproj", "{6D3326B2-794C-48FD-B351-483D721BD0F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI.Test", "WebAPI.Test\WebAPI.Test.csproj", "{6D3326B2-794C-48FD-B351-483D721BD0F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A7A23498-5B70-4D17-A723-0CE3E0FB2096}"
 	ProjectSection(SolutionItems) = preProject
@@ -51,39 +51,39 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A7A2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.WebAPI", "..\Framework\Framework.WebAPI\Framework.WebAPI.csproj", "{2E4BAA13-7562-4336-91A4-B8211816D936}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Contract.DTO", "CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Contract.DTO", "Logic.Contract.DTO\Logic.Contract.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Service.Contract", "CNCLib.Service.Contract\CNCLib.Service.Contract.csproj", "{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Contract", "Service.Contract\Service.Contract.csproj", "{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Service.Logic", "CNCLib.Service.Logic\CNCLib.Service.Logic.csproj", "{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Logic", "Service.Logic\Service.Logic.csproj", "{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Service.WebAPI", "CNCLib.Service.WebAPI\CNCLib.Service.WebAPI.csproj", "{6487301A-6889-412C-92EC-899AAD61A9A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.WebAPI", "Service.WebAPI\Service.WebAPI.csproj", "{6487301A-6889-412C-92EC-899AAD61A9A5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Wpf.Sql.Start", "CNCLib.Wpf.Sql.Start\CNCLib.Wpf.Sql.Start.csproj", "{E8405B39-EDAD-40C7-BF32-79553A130E34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wpf.Sql.Start", "Wpf.Sql.Start\Wpf.Sql.Start.csproj", "{E8405B39-EDAD-40C7-BF32-79553A130E34}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Wpf.WebAPI.Start", "CNCLib.Wpf.WebAPI.Start\CNCLib.Wpf.WebAPI.Start.csproj", "{6D85A506-EEE3-4C6D-9316-AB3A10CBE76F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wpf.WebAPI.Start", "Wpf.WebAPI.Start\Wpf.WebAPI.Start.csproj", "{6D85A506-EEE3-4C6D-9316-AB3A10CBE76F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Logic.Client", "CNCLib.Logic.Client\CNCLib.Logic.Client.csproj", "{D7277BF7-35E8-47C7-8E4A-448E2224F559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Client", "Logic.Client\Logic.Client.csproj", "{D7277BF7-35E8-47C7-8E4A-448E2224F559}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{96217F41-39D9-4FCF-AACF-7EAEB4E4479C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.Migrations.Startup", "CNCLib.Repository.Migrations.Startup\CNCLib.Repository.Migrations.Startup.csproj", "{77F7D0C8-DEE4-4CA6-ABAD-B7602C55BDB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository.Migrations.Startup", "Repository.Migrations.Startup\Repository.Migrations.Startup.csproj", "{77F7D0C8-DEE4-4CA6-ABAD-B7602C55BDB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.SqlServer", "CNCLib.Repository.SqlServer\CNCLib.Repository.SqlServer.csproj", "{BD772F21-D4E2-4577-9AF3-FBE59BB72C03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository.SqlServer", "Repository.SqlServer\Repository.SqlServer.csproj", "{BD772F21-D4E2-4577-9AF3-FBE59BB72C03}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Repository.SqLite", "CNCLib.Repository.SqLite\CNCLib.Repository.SqLite.csproj", "{972C43C8-8BF9-41FA-BA3C-299AC44A6938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository.SqLite", "Repository.SqLite\Repository.SqLite.csproj", "{972C43C8-8BF9-41FA-BA3C-299AC44A6938}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Serial.Server", "CNCLib.Serial.Server\CNCLib.Serial.Server.csproj", "{39FD3420-6140-4A24-82D3-2E9FB14B096E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serial.Server", "Serial.Server\Serial.Server.csproj", "{39FD3420-6140-4A24-82D3-2E9FB14B096E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Serial.Client", "CNCLib.Serial.Client\CNCLib.Serial.Client.csproj", "{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serial.Client", "Serial.Client\Serial.Client.csproj", "{0EF35DCE-594A-4EF2-8B82-52D97E4C3016}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Serial.Shared", "CNCLib.Serial.Shared\CNCLib.Serial.Shared.csproj", "{8715E92C-ACA6-4B39-8A31-69CFB8357224}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serial.Shared", "Serial.Shared\Serial.Shared.csproj", "{8715E92C-ACA6-4B39-8A31-69CFB8357224}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino.Linux", "..\Framework\Framework.Arduino.Linux\Framework.Arduino.Linux.csproj", "{172CF0A8-7CF4-4E61-A6CE-6743273F6952}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Service", "..\Framework\Framework.Service\Framework.Service.csproj", "{46095778-4ABF-472E-A7BB-3C339E7CB9C3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Shared", "CNCLib.Shared\CNCLib.Shared.csproj", "{296F367F-4620-429B-9A51-E17675912BCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{296F367F-4620-429B-9A51-E17675912BCB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Dependency", "..\Framework\Framework.Dependency\Framework.Dependency.csproj", "{992EB691-DFE9-4B45-88F7-12D59A79FD03}"
 EndProject
@@ -127,11 +127,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebAPI", "WebAPI", "{C6E28B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B8C8CCF8-D608-41B8-AD61-3D3FA2A4A30D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Wpf.Test", "CNCLib.Wpf.Test\CNCLib.Wpf.Test.csproj", "{F5D02C98-BBD7-4EEE-8ED4-5F7462BE6826}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wpf.Test", "Wpf.Test\Wpf.Test.csproj", "{F5D02C98-BBD7-4EEE-8ED4-5F7462BE6826}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Serial.WebAPI", "CNCLib.Serial.WebAPI\CNCLib.Serial.WebAPI.csproj", "{0AB25F60-3243-4478-83BE-F9B32D5EDFBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serial.WebAPI", "Serial.WebAPI\Serial.WebAPI.csproj", "{0AB25F60-3243-4478-83BE-F9B32D5EDFBA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CNCLib.Server", "CNCLib.Server\CNCLib.Server.csproj", "{D2B2F798-28FC-4515-966F-B92C3D11D3F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csproj", "{D2B2F798-28FC-4515-966F-B92C3D11D3F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

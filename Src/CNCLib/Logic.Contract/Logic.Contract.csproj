@@ -2,9 +2,10 @@
   <Import Project="$(ProjectDir)..\SolutionItems\CNCLib.targets" />
    <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Logic.Abstraction\Framework.Logic.Abstraction.csproj" />
-    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj">    </ProjectReference>
   </ItemGroup>
 </Project>

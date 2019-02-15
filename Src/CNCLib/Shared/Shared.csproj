@@ -2,6 +2,7 @@
   <Import Project="$(ProjectDir)..\SolutionItems\CNCLib.targets" />
    <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
   </PropertyGroup>
    <ItemGroup>
      <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj" />

@@ -2,7 +2,8 @@
   <Import Project="$(ProjectDir)..\SolutionItems\CNCLibStandard.targets" />
    <PropertyGroup>
 	<TargetFramework>net471</TargetFramework>
-	<ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
+  <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+	<ApplicationIcon>Properties\ico</ApplicationIcon>
 	<OutputType>WinExe</OutputType>
 	<StartupObject>CNCLib.Wpf.WebAPI.Start.App</StartupObject>
   </PropertyGroup>
@@ -55,17 +56,17 @@
     <ProjectReference Include="..\..\Framework\Framework.Service.Abstraction\Framework.Service.Abstraction.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Wpf\Framework.Wpf.csproj" />
-    <ProjectReference Include="..\CNCLib.GCode.GUI\CNCLib.GCode.GUI.csproj" />
-    <ProjectReference Include="..\CNCLib.Logic.Client\CNCLib.Logic.Client.csproj" />
-    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj" />
-    <ProjectReference Include="..\CNCLib.Logic.Contract\CNCLib.Logic.Contract.csproj" />
-    <ProjectReference Include="..\CNCLib.Service.WebAPI\CNCLib.Service.WebAPI.csproj" />
-    <ProjectReference Include="..\CNCLib.Service.Contract\CNCLib.Service.Contract.csproj" />
-    <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />
-    <ProjectReference Include="..\CNCLib.Wpf\CNCLib.Wpf.csproj" />
+    <ProjectReference Include="..\GCode.GUI\GCode.GUI.csproj" />
+    <ProjectReference Include="..\Logic.Client\Logic.Client.csproj" />
+    <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj" />
+    <ProjectReference Include="..\Logic.Contract\Logic.Contract.csproj" />
+    <ProjectReference Include="..\Service.WebAPI\Service.WebAPI.csproj" />
+    <ProjectReference Include="..\Service.Contract\Service.Contract.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+    <ProjectReference Include="..\Wpf\Wpf.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Properties\CNCLib.ico" />
+    <Resource Include="Properties\ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">

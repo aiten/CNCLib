@@ -3,6 +3,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
@@ -32,7 +33,7 @@
     <ProjectReference Include="..\..\Framework\Framework.Arduino.Linux\Framework.Arduino.Linux.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.WebAPI\Framework.WebAPI.csproj" />
-    <ProjectReference Include="..\CNCLib.Serial.Shared\CNCLib.Serial.Shared.csproj" />
+    <ProjectReference Include="..\Serial.Shared\Serial.Shared.csproj" />
   </ItemGroup>
 
 </Project>

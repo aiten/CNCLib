@@ -2,6 +2,7 @@
   <Import Project="$(ProjectDir)..\SolutionItems\CNCLibStandard.targets" />
    <PropertyGroup>
 	<TargetFramework>net471</TargetFramework>
+  <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
   </PropertyGroup>
    
    <ItemGroup>
@@ -82,13 +83,13 @@
     <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Wpf\Framework.Wpf.csproj" />
     <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />
-    <ProjectReference Include="..\CNCLib.GCode.GUI\CNCLib.GCode.GUI.csproj" />
-    <ProjectReference Include="..\CNCLib.GCode\CNCLib.GCode.csproj" />
-    <ProjectReference Include="..\CNCLib.Logic.Client\CNCLib.Logic.Client.csproj" />
-    <ProjectReference Include="..\CNCLib.Logic.Contract.DTO\CNCLib.Logic.Contract.DTO.csproj" />
-    <ProjectReference Include="..\CNCLib.Serial.Client\CNCLib.Serial.Client.csproj" />
-    <ProjectReference Include="..\CNCLib.Service.Contract\CNCLib.Service.Contract.csproj" />
-    <ProjectReference Include="..\CNCLib.Shared\CNCLib.Shared.csproj" />
+    <ProjectReference Include="..\GCode.GUI\GCode.GUI.csproj" />
+    <ProjectReference Include="..\GCode\GCode.csproj" />
+    <ProjectReference Include="..\Logic.Client\Logic.Client.csproj" />
+    <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj" />
+    <ProjectReference Include="..\Serial.Client\Serial.Client.csproj" />
+    <ProjectReference Include="..\Service.Contract\Service.Contract.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper">
