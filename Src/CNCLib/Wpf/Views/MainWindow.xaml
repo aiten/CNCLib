@@ -15,20 +15,17 @@
         <TabControl Grid.Row="0" Grid.RowSpan="2">
             <TabItem Header="Setup">
                 <Frame
-                    Source="/CNCLib.Wpf;component/Views/SetupPage.xaml" />
+                    Source="SetupPage.xaml" />
             </TabItem>
+
             <TabItem Header="Manual Control">
                 <Frame
-                    Source="/CNCLib.Wpf;component/Views/ManualControlPage.xaml" />
+                    Source="ManualControlPage.xaml" />
             </TabItem>
-            <!--<TabItem Header="Paint">
-                <Frame
-                    Source="/CNCLib.Wpf;component/Views/PaintPage.xaml"
-                />
-            </TabItem>-->
+
             <TabItem Header="Preview">
                 <Frame
-                    Source="/CNCLib.Wpf;component/Views/PreviewPage.xaml" />
+                    Source="PreviewPage.xaml" />
             </TabItem>
 
         </TabControl>

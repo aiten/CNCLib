@@ -188,8 +188,7 @@
                                 <Button Command="{Binding SD.SendFileDirectCommand}" Content="Send File" Width="70"
                                         DockPanel.Dock="Right" />
                                 <DockPanel Margin="5,0,5,0">
-                                    <TextBox x:Name="FileName2"
-                                             Text="{Binding SD.FileName, UpdateSourceTrigger=PropertyChanged}"
+                                    <TextBox Text="{Binding SD.FileName, UpdateSourceTrigger=PropertyChanged}"
                                              VerticalAlignment="Center" VerticalContentAlignment="Center" />
                                     <Button Content="?" Command="{Binding SD.BrowseForSDFileCommand}" />
                                 </DockPanel>
@@ -312,46 +311,40 @@
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                             <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
                                         Visibility="{Binding AxisX.Visibility}">
-                                <TextBox x:Name="PositionX"
-                                         Text="{Binding AxisX.Param, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBox Text="{Binding AxisX.Param, UpdateSourceTrigger=PropertyChanged}"
                                          HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
                                 <Button Command="{Binding AxisX.SendG92Command}" Content="Set X" />
                                 <Button Command="{Binding AxisX.SendG31Command}" Content="Probe X" Margin="0,5,0,0" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
                                         Visibility="{Binding AxisY.Visibility}">
-                                <TextBox x:Name="PositionY"
-                                         Text="{Binding AxisY.Param, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBox Text="{Binding AxisY.Param, UpdateSourceTrigger=PropertyChanged}"
                                          VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
                                 <Button Command="{Binding AxisY.SendG92Command}" Content="Set Y" />
                                 <Button Command="{Binding AxisY.SendG31Command}" Content="Probe Y" Margin="0,5,0,0" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
                                         Visibility="{Binding AxisZ.Visibility}">
-                                <TextBox x:Name="PositionZ"
-                                         Text="{Binding AxisZ.Param, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBox Text="{Binding AxisZ.Param, UpdateSourceTrigger=PropertyChanged}"
                                          VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
                                 <Button Command="{Binding AxisZ.SendG92Command}" Content="Set Z" />
                                 <Button Command="{Binding AxisZ.SendG31Command}" Content="Probe Z" Margin="0,5,0,0" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
                                         Visibility="{Binding AxisA.Visibility}">
-                                <TextBox x:Name="PositionA"
-                                         Text="{Binding AxisA.Param, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBox Text="{Binding AxisA.Param, UpdateSourceTrigger=PropertyChanged}"
                                          VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
                                 <Button Command="{Binding AxisA.SendG92Command}" Content="Set A" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
                                         Visibility="{Binding AxisB.Visibility}">
-                                <TextBox x:Name="PositionB"
-                                         Text="{Binding AxisB.Param, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBox Text="{Binding AxisB.Param, UpdateSourceTrigger=PropertyChanged}"
                                          VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
                                 <Button Command="{Binding AxisB.SendG92Command}" Content="Set B" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
                                         Visibility="{Binding AxisC.Visibility}">
-                                <TextBox x:Name="PositionC"
-                                         Text="{Binding AxisC.Param, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBox Text="{Binding AxisC.Param, UpdateSourceTrigger=PropertyChanged}"
                                          VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
                                 <Button Command="{Binding AxisC.SendG92Command}" Content="Set C" />
                             </StackPanel>
@@ -559,8 +552,7 @@
                             <StackPanel Orientation="Horizontal" />
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="SDFile" MinWidth="100" />
-                                <TextBox x:Name="SDFileName2"
-                                         Text="{Binding SD.SDFileName, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBox Text="{Binding SD.SDFileName, UpdateSourceTrigger=PropertyChanged}"
                                          VerticalAlignment="Center" MinWidth="200" VerticalContentAlignment="Center" />
                             </StackPanel>
                         </StackPanel>

@@ -5,10 +5,6 @@
 
       Title="SetupPage">
 
-    <Page.Resources>
-        <fhlp:InvertBoolConverter x:Key="InvertBoolConverter" />
-    </Page.Resources>
-
     <StackPanel Margin="10,10,10,0">
         <StackPanel Margin="0,0,0,10">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
