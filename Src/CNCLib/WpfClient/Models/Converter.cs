@@ -17,11 +17,9 @@
 
 using AutoMapper;
 
-using Framework.Dependency;
-
 using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
 
-namespace CNCLib.Wpf.Models
+namespace CNCLib.WpfClient.Models
 {
     static class Converter
     {

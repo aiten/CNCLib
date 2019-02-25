@@ -22,12 +22,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 using CNCLib.GCode;
-using CNCLib.Wpf.Helpers;
+using CNCLib.WpfClient.Helpers;
 
-using Framework.Wpf.Helpers;
 using Framework.Arduino.SerialCommunication;
+using Framework.Wpf.Helpers;
 
-namespace CNCLib.Wpf.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl
 {
     public class WorkOffsetViewModel : DetailViewModel
     {

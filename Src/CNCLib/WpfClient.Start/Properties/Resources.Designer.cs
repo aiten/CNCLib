@@ -8,10 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CNCLib.Wpf.Start.Properties {
-    using System;
-    
-    
+namespace CNCLib.WpfClient.Start.Properties {
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

@@ -23,7 +23,7 @@ using System.Windows.Input;
 
 using Framework.Wpf.Helpers;
 
-namespace CNCLib.Wpf.Controls
+namespace CNCLib.WpfClient.Controls
 {
     /// <summary>
     /// Interaction logic for MoveUserControl.xaml

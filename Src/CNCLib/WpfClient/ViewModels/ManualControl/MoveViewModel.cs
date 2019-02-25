@@ -16,17 +16,15 @@
 */
 
 using System;
+using System.Globalization;
 using System.Windows.Input;
+
+using CNCLib.Logic.Contract.DTO;
 
 using Framework.Arduino.SerialCommunication;
 using Framework.Wpf.Helpers;
 
-using System.Globalization;
-
-using CNCLib.Logic.Contract.DTO;
-using CNCLib.Wpf.Helpers;
-
-namespace CNCLib.Wpf.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl
 {
     public class MoveViewModel : DetailViewModel
     {

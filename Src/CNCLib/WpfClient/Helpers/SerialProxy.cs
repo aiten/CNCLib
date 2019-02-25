@@ -19,7 +19,7 @@ using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Logging;
 using Framework.Pattern;
 
-namespace CNCLib.Wpf.Helpers
+namespace CNCLib.WpfClient.Helpers
 {
     public class SerialProxy
     {

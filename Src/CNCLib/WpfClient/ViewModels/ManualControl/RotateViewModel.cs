@@ -18,12 +18,11 @@
 using System;
 using System.Windows.Input;
 
-using CNCLib.Wpf.Helpers;
+using CNCLib.WpfClient.Helpers;
 
 using Framework.Wpf.Helpers;
-using Framework.Arduino.SerialCommunication;
 
-namespace CNCLib.Wpf.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl
 {
     public class RotateViewModel : DetailViewModel
     {

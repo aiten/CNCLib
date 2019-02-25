@@ -20,7 +20,7 @@ using System.Windows;
 using Framework.Dependency;
 using Framework.Wpf.ViewModels;
 
-namespace CNCLib.Wpf.Views
+namespace CNCLib.WpfClient.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

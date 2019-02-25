@@ -16,20 +16,16 @@
 */
 
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
-using Framework.Wpf.ViewModels;
-using Framework.Wpf.Helpers;
-
-using CNCLib.Wpf.Helpers;
-
-using System.Threading.Tasks;
-
-using CNCLib.Wpf.Services;
+using CNCLib.WpfClient.Services;
 
 using Framework.Pattern;
+using Framework.Wpf.Helpers;
+using Framework.Wpf.ViewModels;
 
-namespace CNCLib.Wpf.ViewModels
+namespace CNCLib.WpfClient.ViewModels
 {
     public class JoystickViewModel : BaseViewModel, IDisposable
     {

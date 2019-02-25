@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Tools", "..\Frame
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Wpf", "..\Framework\Framework.Wpf\Framework.Wpf.csproj", "{8568383E-054D-4882-8D6A-B956684CFAAE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wpf", "Wpf\Wpf.csproj", "{60555245-D32E-4A94-AB0E-CB2A6693A9BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfClient", "WpfClient\WpfClient.csproj", "{60555245-D32E-4A94-AB0E-CB2A6693A9BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCode", "GCode\GCode.csproj", "{F9C446F4-6365-4189-95C5-009EF0160882}"
 EndProject
@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Repository", "..\Framework\Framework.Repository\Framework.Repository.csproj", "{E768F2ED-C63D-401E-A090-1C0465A84DF5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wpf.Start", "Wpf.Start\Wpf.Start.csproj", "{D6077813-9EAF-4807-B4AA-EF00BCCE9827}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfClient.Start", "WpfClient.Start\WpfClient.Start.csproj", "{D6077813-9EAF-4807-B4AA-EF00BCCE9827}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino", "..\Framework\Framework.Arduino\Framework.Arduino.csproj", "{77F5A48D-E908-4A95-A09E-771E8BE8817B}"
 EndProject
@@ -59,9 +59,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Logic", "Service.Lo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.WebAPI", "Service.WebAPI\Service.WebAPI.csproj", "{6487301A-6889-412C-92EC-899AAD61A9A5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wpf.Sql.Start", "Wpf.Sql.Start\Wpf.Sql.Start.csproj", "{E8405B39-EDAD-40C7-BF32-79553A130E34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfClient.Sql.Start", "WpfClient.Sql.Start\WpfClient.Sql.Start.csproj", "{E8405B39-EDAD-40C7-BF32-79553A130E34}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wpf.WebAPI.Start", "Wpf.WebAPI.Start\Wpf.WebAPI.Start.csproj", "{6D85A506-EEE3-4C6D-9316-AB3A10CBE76F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfClient.WebAPI.Start", "WpfClient.WebAPI.Start\WpfClient.WebAPI.Start.csproj", "{6D85A506-EEE3-4C6D-9316-AB3A10CBE76F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Client", "Logic.Client\Logic.Client.csproj", "{D7277BF7-35E8-47C7-8E4A-448E2224F559}"
 EndProject
@@ -109,7 +109,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Mapper", "..\Fram
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serial.Server", "Serial.Server", "{53BB936A-6E17-4F57-846B-661C629D2A47}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF Client", "WPF Client", "{B57E94D7-E04C-4F3E-8D3C-A530513EF584}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wpf Client", "Wpf Client", "{B57E94D7-E04C-4F3E-8D3C-A530513EF584}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Repository.Abstraction", "..\Framework\Framework.Repository.Abstraction\Framework.Repository.Abstraction.csproj", "{D99587A0-3EA3-43E3-A2C0-63C35CA85EB5}"
 EndProject
@@ -127,7 +127,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebAPI", "WebAPI", "{C6E28B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B8C8CCF8-D608-41B8-AD61-3D3FA2A4A30D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wpf.Test", "Wpf.Test\Wpf.Test.csproj", "{F5D02C98-BBD7-4EEE-8ED4-5F7462BE6826}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfClient.Test", "WpfClient.Test\WpfClient.Test.csproj", "{F5D02C98-BBD7-4EEE-8ED4-5F7462BE6826}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serial.WebAPI", "Serial.WebAPI\Serial.WebAPI.csproj", "{0AB25F60-3243-4478-83BE-F9B32D5EDFBA}"
 EndProject

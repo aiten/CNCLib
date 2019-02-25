@@ -24,17 +24,17 @@ using System.Windows.Input;
 using AutoMapper;
 
 using CNCLib.Service.Contract;
-using CNCLib.Wpf.Helpers;
-using CNCLib.Wpf.Models;
+using CNCLib.WpfClient.Helpers;
+using CNCLib.WpfClient.Models;
 
-using Framework.Wpf.Helpers;
-using Framework.Wpf.ViewModels;
 using Framework.Arduino.SerialCommunication;
 using Framework.Pattern;
+using Framework.Wpf.Helpers;
+using Framework.Wpf.ViewModels;
 
 using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
 
-namespace CNCLib.Wpf.ViewModels
+namespace CNCLib.WpfClient.ViewModels
 {
     public class MachineViewModel : BaseViewModel, IDisposable
     {

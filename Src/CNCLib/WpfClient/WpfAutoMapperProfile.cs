@@ -15,16 +15,13 @@
   http://www.gnu.org/licenses/
 */
 
-using System.Collections.ObjectModel;
-
 using AutoMapper;
 
 using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
 using MachineInitCommandDto = CNCLib.Logic.Contract.DTO.MachineInitCommand;
 using MachineCommandDto = CNCLib.Logic.Contract.DTO.MachineCommand;
-using System.Collections.Generic;
 
-namespace CNCLib.Wpf
+namespace CNCLib.WpfClient
 {
     public sealed class WpfAutoMapperProfile : Profile
     {

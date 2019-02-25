@@ -20,7 +20,7 @@ using Framework.Wpf.ViewModels;
 
 using MahApps.Metro.Controls;
 
-namespace CNCLib.Wpf.Views
+namespace CNCLib.WpfClient.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

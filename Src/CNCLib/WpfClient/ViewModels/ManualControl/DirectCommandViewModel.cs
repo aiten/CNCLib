@@ -16,13 +16,13 @@
 */
 
 using System;
-using System.Windows.Input;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 using Framework.Arduino.SerialCommunication;
 using Framework.Wpf.Helpers;
 
-namespace CNCLib.Wpf.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl
 {
     public class DirectCommandViewModel : DetailViewModel
     {

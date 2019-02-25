@@ -27,16 +27,15 @@ using System.Windows.Input;
 using AutoMapper;
 
 using CNCLib.Service.Contract;
-using CNCLib.Wpf.Helpers;
-using CNCLib.Wpf.Models;
-using CNCLib.Wpf.Services;
+using CNCLib.WpfClient.Models;
+using CNCLib.WpfClient.Services;
 
-using Framework.Tools;
 using Framework.Pattern;
+using Framework.Tools;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
-namespace CNCLib.Wpf.ViewModels
+namespace CNCLib.WpfClient.ViewModels
 {
     public class SetupWindowViewModel : BaseViewModel
     {

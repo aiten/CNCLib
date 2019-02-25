@@ -15,26 +15,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
 using AutoMapper;
 
-using CNCLib.Logic.Contract.DTO;
-using CNCLib.Service.Contract;
-using CNCLib.Wpf;
-using CNCLib.Wpf.ViewModels;
+using CNCLib.WpfClient;
 
-using FluentAssertions;
-
-using Framework.Pattern;
-
-using NSubstitute;
-
-using Xunit;
-
-namespace CNCLib.Tests.Wpf
+namespace WpfClient.Test
 {
     public class WpfUnitTestBase
     {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CNCLib.Wpf.Sql.Start.Properties {
+namespace CNCLib.WpfClient.Sql.Start.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

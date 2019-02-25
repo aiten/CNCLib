@@ -16,13 +16,13 @@
 */
 
 using CNCLib.Service.Contract;
-using CNCLib.Wpf.Services;
+using CNCLib.WpfClient.Services;
 
 using Framework.Dependency;
 using Framework.Dependency.Abstraction;
 using Framework.Pattern;
 
-namespace CNCLib.Wpf
+namespace CNCLib.WpfClient
 {
     public static class LiveDependencyRegisterExtensions
     {

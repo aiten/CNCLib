@@ -32,13 +32,13 @@ using CNCLib.Shared;
 
 using Framework.Arduino.SerialCommunication;
 using Framework.Dependency;
-using Framework.Tools;
-using Framework.Mapper;
 using Framework.Logging;
+using Framework.Mapper;
+using Framework.Tools;
 
 using NLog;
 
-namespace CNCLib.Wpf.Start
+namespace CNCLib.WpfClient.Start
 {
     public partial class App : Application
     {

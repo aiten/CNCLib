@@ -1,4 +1,4 @@
-﻿<Page x:Class="CNCLib.Wpf.Views.SetupPage"
+﻿<Page x:Class="CNCLib.WpfClient.Views.SetupPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:fhlp="clr-namespace:Framework.Wpf.Converters;assembly=Framework.Wpf"

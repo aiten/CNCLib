@@ -19,7 +19,7 @@ using System;
 
 using Framework.Wpf.Helpers;
 
-namespace CNCLib.Wpf.Models
+namespace CNCLib.WpfClient.Models
 {
     public class SentCNCCommand : NotificationObject
     {

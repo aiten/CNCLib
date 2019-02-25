@@ -1,9 +1,9 @@
 ﻿<Page
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="clr-namespace:CNCLib.Wpf.ViewModels"
-    xmlns:ctrl="clr-namespace:CNCLib.Wpf.Controls"
-    xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="CNCLib.Wpf.Views.ManualControlPage"
+    xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:controls="clr-namespace:CNCLib.WpfClient.Controls"
+    x:Class="CNCLib.WpfClient.Views.ManualControlPage"
     Title="ManualControlPage" Width="830" MinHeight="550">
     <!--
 <Page.DataContext>
@@ -15,7 +15,7 @@
             <StackPanel Orientation="Horizontal">
                 <TabControl Custom:TabControlHelper.IsUnderlined="True">
                     <TabItem Header="XYZ" Custom:ControlsHelper.HeaderFontSize="15">
-                        <ctrl:MoveUserControl
+                        <controls:MoveUserControl
                             Right="{Binding Move.SendRightCommand}"
                             Left="{Binding Move.SendLeftCommand}"
                             Up="{Binding Move.SendUpCommand}"

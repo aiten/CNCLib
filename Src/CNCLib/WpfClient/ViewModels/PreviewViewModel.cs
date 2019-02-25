@@ -27,12 +27,12 @@ using CNCLib.GCode;
 using CNCLib.GCode.Commands;
 using CNCLib.Logic.Contract.DTO;
 
-using Framework.Wpf.Helpers;
-using Framework.Wpf.ViewModels;
 using Framework.Arduino.SerialCommunication;
 using Framework.Drawing;
+using Framework.Wpf.Helpers;
+using Framework.Wpf.ViewModels;
 
-namespace CNCLib.Wpf.ViewModels
+namespace CNCLib.WpfClient.ViewModels
 {
     public class PreviewViewModel : BaseViewModel
     {

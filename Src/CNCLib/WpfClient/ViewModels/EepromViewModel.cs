@@ -19,13 +19,13 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 
-using CNCLib.Wpf.Helpers;
-using CNCLib.Wpf.Models;
+using CNCLib.WpfClient.Helpers;
+using CNCLib.WpfClient.Models;
 
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
-namespace CNCLib.Wpf.ViewModels
+namespace CNCLib.WpfClient.ViewModels
 {
     public class EepromViewModel : BaseViewModel, IDisposable
     {

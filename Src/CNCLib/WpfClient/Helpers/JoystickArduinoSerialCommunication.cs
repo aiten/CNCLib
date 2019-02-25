@@ -15,8 +15,6 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Wpf.ViewModels.ManualControl;
-
 using System;
 using System.Threading.Tasks;
 
@@ -25,7 +23,7 @@ using Framework.Logging.Abstraction;
 
 using SerialCom = Framework.Arduino.SerialCommunication.Serial;
 
-namespace CNCLib.Wpf.Helpers
+namespace CNCLib.WpfClient.Helpers
 {
     class JoystickArduinoSerialCommunication : SerialCom
     {

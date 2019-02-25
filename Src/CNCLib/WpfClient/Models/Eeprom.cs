@@ -24,7 +24,7 @@ using CNCLib.Logic.Contract.DTO;
 
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
-namespace CNCLib.Wpf.Models
+namespace CNCLib.WpfClient.Models
 {
     public class Eeprom
     {

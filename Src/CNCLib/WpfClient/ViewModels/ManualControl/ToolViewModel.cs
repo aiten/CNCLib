@@ -16,17 +16,14 @@
 */
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
 
-using Framework.Wpf.Helpers;
 using Framework.Arduino.SerialCommunication;
+using Framework.Wpf.Helpers;
 
-using CNCLib.Wpf.Helpers;
-
-using System.Globalization;
-
-namespace CNCLib.Wpf.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl
 {
     public class ToolViewModel : DetailViewModel, IDisposable
     {

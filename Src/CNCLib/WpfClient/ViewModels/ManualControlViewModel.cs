@@ -18,11 +18,11 @@
 using System;
 using System.Threading.Tasks;
 
-using CNCLib.Wpf.ViewModels.ManualControl;
+using CNCLib.WpfClient.ViewModels.ManualControl;
 
 using Framework.Wpf.ViewModels;
 
-namespace CNCLib.Wpf.ViewModels
+namespace CNCLib.WpfClient.ViewModels
 {
     public class ManualControlViewModel : BaseViewModel, IManualControlViewModel
     {

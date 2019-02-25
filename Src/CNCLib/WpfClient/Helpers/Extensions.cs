@@ -21,7 +21,7 @@ using CNCLib.GCode;
 
 using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
 
-namespace CNCLib.Wpf.Helpers
+namespace CNCLib.WpfClient.Helpers
 {
     public static class Extensions
     {

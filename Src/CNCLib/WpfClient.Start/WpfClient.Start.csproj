@@ -57,7 +57,7 @@
     <ProjectReference Include="..\Service.WebAPI\Service.WebAPI.csproj" />
     <ProjectReference Include="..\Service.Contract\Service.Contract.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
-    <ProjectReference Include="..\Wpf\Wpf.csproj" />
+    <ProjectReference Include="..\WpfClient\WpfClient.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">

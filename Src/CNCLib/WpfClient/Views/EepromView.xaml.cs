@@ -17,14 +17,14 @@
 
 using System.Windows;
 
-using CNCLib.Wpf.Models;
+using CNCLib.WpfClient.Models;
 
 using Framework.Dependency;
 using Framework.Wpf.Views;
 
 using Xceed.Wpf.Toolkit.PropertyGrid;
 
-namespace CNCLib.Wpf.Views
+namespace CNCLib.WpfClient.Views
 {
     /// <summary>
     /// Interaction logic for EepromView.xaml

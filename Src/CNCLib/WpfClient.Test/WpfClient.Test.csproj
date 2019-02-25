@@ -11,7 +11,7 @@
     <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj"/>
     <ProjectReference Include="..\Logic.Contract\Logic.Contract.csproj"/>
     <ProjectReference Include="..\Service.Contract\Service.Contract.csproj"/>
-    <ProjectReference Include="..\Wpf\Wpf.csproj"/>
+    <ProjectReference Include="..\WpfClient\WpfClient.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions">

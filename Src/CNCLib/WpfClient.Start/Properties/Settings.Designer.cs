@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CNCLib.Wpf.Start.Properties {
+namespace CNCLib.WpfClient.Start.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

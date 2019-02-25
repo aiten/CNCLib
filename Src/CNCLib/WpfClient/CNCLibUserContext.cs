@@ -15,17 +15,16 @@
   http://www.gnu.org/licenses/
 */
 
-using CNCLib.Shared;
-
 using System;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Contract.DTO;
 using CNCLib.Service.Contract;
+using CNCLib.Shared;
 
 using Framework.Dependency;
 
-namespace CNCLib.Wpf
+namespace CNCLib.WpfClient
 {
     public class CNCLibUserContext : ICNCLibUserContextRW
     {

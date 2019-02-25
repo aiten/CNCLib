@@ -15,23 +15,11 @@
   http://www.gnu.org/licenses/
 */
 
-using System;
 using System.Linq;
-using System.Globalization;
-using System.Threading.Tasks;
-
-using Framework.Arduino.SerialCommunication;
-
-using CNCLib.GCode;
-
-using System.Media;
-using System.Collections.Generic;
 
 using CNCLib.Logic.Contract.DTO;
 
-using Framework.Arduino.SerialCommunication.Abstraction;
-
-namespace CNCLib.Wpf.Helpers
+namespace CNCLib.WpfClient.Helpers
 {
     public static class MachineExtension
     {

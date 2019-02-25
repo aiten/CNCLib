@@ -18,9 +18,9 @@
 using System;
 using System.Threading.Tasks;
 
-using CNCLib.Wpf.Models;
+using CNCLib.WpfClient.Models;
 
-namespace CNCLib.Wpf.Services
+namespace CNCLib.WpfClient.Services
 {
     public interface IJoystickService
     {

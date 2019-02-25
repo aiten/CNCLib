@@ -19,8 +19,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 using CNCLib.GCode.Commands;
-using CNCLib.Wpf.Models;
-using CNCLib.Wpf.Helpers;
+using CNCLib.WpfClient.Helpers;
+using CNCLib.WpfClient.Models;
 
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Logging;
@@ -28,7 +28,7 @@ using Framework.Pattern;
 
 using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
 
-namespace CNCLib.Wpf
+namespace CNCLib.WpfClient
 {
     public class Global : Singleton<Global>, INotifyPropertyChanged
     {

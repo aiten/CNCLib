@@ -15,7 +15,7 @@
   http://www.gnu.org/licenses/
 */
 
-namespace CNCLib.Wpf.Models
+namespace CNCLib.WpfClient.Models
 {
     public class MachineInitCommand
     {

@@ -15,21 +15,19 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
-using Framework.Wpf.Helpers;
+using CNCLib.WpfClient.Helpers;
+
 using Framework.Arduino.SerialCommunication;
+using Framework.Wpf.Helpers;
 
-using System.IO;
-using System;
-using System.Linq;
-
-using CNCLib.Wpf.Helpers;
-
-using System.Threading.Tasks;
-
-namespace CNCLib.Wpf.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl
 {
     public class SDViewModel : DetailViewModel
     {

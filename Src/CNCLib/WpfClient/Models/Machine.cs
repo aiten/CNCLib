@@ -20,7 +20,7 @@ using System.ComponentModel;
 
 using CNCLib.Logic.Contract.DTO;
 
-namespace CNCLib.Wpf.Models
+namespace CNCLib.WpfClient.Models
 {
     public class Machine
     {

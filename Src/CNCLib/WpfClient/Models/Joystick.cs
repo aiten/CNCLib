@@ -17,7 +17,7 @@
 
 using System.ComponentModel;
 
-namespace CNCLib.Wpf.Models
+namespace CNCLib.WpfClient.Models
 {
     public class Joystick
     {

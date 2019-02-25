@@ -17,7 +17,7 @@
 
 using System;
 
-namespace CNCLib.Wpf.ViewModels
+namespace CNCLib.WpfClient.ViewModels
 {
     public interface IManualControlViewModel
     {

@@ -16,25 +16,22 @@
 */
 
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Media;
 using System.Threading.Tasks;
 
-using Framework.Arduino.SerialCommunication;
-
 using CNCLib.GCode;
+using CNCLib.WpfClient.Models;
 
-using System.Media;
-using System.Collections.Generic;
-using System.IO;
-
-using CNCLib.Wpf.Models;
-
+using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 
 using Machine = CNCLib.Logic.Contract.DTO.Machine;
 
-namespace CNCLib.Wpf.Helpers
+namespace CNCLib.WpfClient.Helpers
 {
     public static class SerialExtension
     {

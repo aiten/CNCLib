@@ -19,7 +19,7 @@ using System.ComponentModel;
 
 using CNCLib.GCode;
 
-namespace CNCLib.Wpf.Models
+namespace CNCLib.WpfClient.Models
 {
     public class EepromPlotter : Eeprom
     {

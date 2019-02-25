@@ -19,11 +19,11 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-using CNCLib.Wpf.Models;
+using CNCLib.WpfClient.Models;
 
 using Framework.Wpf.Helpers;
 
-namespace CNCLib.Wpf.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl
 {
     public class CommandHistoryViewModel : DetailViewModel
     {

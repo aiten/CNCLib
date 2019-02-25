@@ -15,18 +15,14 @@
   http://www.gnu.org/licenses/
 */
 
+using System;
 using System.Linq;
-
-using CNCLib.Wpf.Models;
+using System.Threading.Tasks;
 
 using CNCLib.Logic.Client;
+using CNCLib.WpfClient.Models;
 
-using System.Threading.Tasks;
-using System;
-
-using Framework.Dependency;
-
-namespace CNCLib.Wpf.Services
+namespace CNCLib.WpfClient.Services
 {
     public class JoystickService : IJoystickService
     {

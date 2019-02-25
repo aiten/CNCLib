@@ -17,12 +17,12 @@
 
 using System.Windows.Controls;
 
-using CNCLib.Wpf.ViewModels;
+using CNCLib.WpfClient.ViewModels;
 
 using Framework.Dependency;
 using Framework.Wpf.Views;
 
-namespace CNCLib.Wpf.Views
+namespace CNCLib.WpfClient.Views
 {
     /// <summary>
     /// Interaction logic for ManualControl.xaml

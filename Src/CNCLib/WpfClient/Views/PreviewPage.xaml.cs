@@ -19,19 +19,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-using AutoMapper;
-
 using CNCLib.GCode.GUI.ViewModels;
 using CNCLib.GCode.GUI.Views;
-using CNCLib.Wpf.ViewModels;
+using CNCLib.WpfClient.ViewModels;
 
 using Framework.Dependency;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.Views;
 
-using LoadOptionsDto = CNCLib.Logic.Contract.DTO.LoadOptions;
-
-namespace CNCLib.Wpf.Views
+namespace CNCLib.WpfClient.Views
 {
     /// <summary>
     /// Interaction logic for PreviewPage.xaml

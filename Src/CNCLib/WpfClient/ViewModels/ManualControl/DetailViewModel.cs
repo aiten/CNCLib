@@ -21,7 +21,7 @@ using CNCLib.Logic.Contract.DTO;
 
 using Framework.Wpf.ViewModels;
 
-namespace CNCLib.Wpf.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl
 {
     public class DetailViewModel : BaseViewModel
     {

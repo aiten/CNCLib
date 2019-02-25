@@ -20,11 +20,11 @@ using System.Linq;
 using System.Windows.Input;
 
 using CNCLib.Logic.Contract.DTO;
-using CNCLib.Wpf.Helpers;
+using CNCLib.WpfClient.Helpers;
 
 using Framework.Wpf.Helpers;
 
-namespace CNCLib.Wpf.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl
 {
     public class CustomViewModel : DetailViewModel
     {
