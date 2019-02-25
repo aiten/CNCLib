@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.61">
   <Import Project="$(ProjectDir)..\SolutionItems\CNCLibStandard.targets" />
    <PropertyGroup>
 	<TargetFramework>net471</TargetFramework>
@@ -6,6 +6,7 @@
 	<OutputType>WinExe</OutputType>
 	<StartupObject>CNCLib.Wpf.Sql.Start.App</StartupObject>
 	<ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
+  <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
    <ItemGroup>
      <None Remove="NLog.config" />

@@ -14,18 +14,15 @@
         </Grid.RowDefinitions>
         <TabControl Grid.Row="0" Grid.RowSpan="2">
             <TabItem Header="Setup">
-                <Frame
-                    Source="SetupPage.xaml" />
+                <Frame Source="SetupPage.xaml" />
             </TabItem>
 
             <TabItem Header="Manual Control">
-                <Frame
-                    Source="ManualControlPage.xaml" />
+                <Frame Source="ManualControlPage.xaml" />
             </TabItem>
 
             <TabItem Header="Preview">
-                <Frame
-                    Source="PreviewPage.xaml" />
+                <Frame Source="PreviewPage.xaml" />
             </TabItem>
 
         </TabControl>

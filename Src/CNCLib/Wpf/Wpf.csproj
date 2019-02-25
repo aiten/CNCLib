@@ -1,23 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.61">
   <Import Project="$(ProjectDir)..\SolutionItems\CNCLibStandard.targets" />
    <PropertyGroup>
 	<TargetFramework>net471</TargetFramework>
   <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+  <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
    
    <ItemGroup>
    
-    <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
-    <Compile Update="Properties\Resources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Resources.resx" />
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-
-    <Page Include="**\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
-    <Compile Update="**\*.xaml.cs" SubType="Designer" DependentUpon="%(Filename)" />
-
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -104,11 +94,5 @@
     <PackageReference Include="Prism.Core">
       <Version>7.1.0.431</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 </Project>

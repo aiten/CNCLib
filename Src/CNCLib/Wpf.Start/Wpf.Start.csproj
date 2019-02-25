@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.61">
   <Import Project="$(ProjectDir)..\SolutionItems\CNCLibStandard.targets" />
    <PropertyGroup>
 	<TargetFramework>net471</TargetFramework>
@@ -6,23 +6,13 @@
 	<ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
 	<OutputType>WinExe</OutputType>
 	<StartupObject>CNCLib.Wpf.Start.App</StartupObject>
+	  <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
    <ItemGroup>
      <None Remove="NLog.config" />
    </ItemGroup>
    
    <ItemGroup>
-   
-    <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
-    <Compile Update="Properties\Resources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Resources.resx" />
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-
-     <ApplicationDefinition Include="App.xaml" SubType="Designer" Generator="XamlIntelliSenseFileGenerator" />
-
      <Content Include="NLog.config">
        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
      </Content>
@@ -77,11 +67,5 @@
       <Version>1.0.109.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  
+ 
 </Project>
