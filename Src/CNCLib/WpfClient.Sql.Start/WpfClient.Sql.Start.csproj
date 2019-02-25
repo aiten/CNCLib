@@ -2,11 +2,11 @@
   <Import Project="$(ProjectDir)..\SolutionItems\CNCLibStandard.targets" />
    <PropertyGroup>
 	<TargetFramework>net471</TargetFramework>
-  <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+    <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
 	<OutputType>WinExe</OutputType>
-	<StartupObject>CNCLib.Wpf.Sql.Start.App</StartupObject>
+	<StartupObject>CNCLib.WpfClient.Sql.Start.App</StartupObject>
 	<ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
-  <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
    <ItemGroup>
      <None Remove="NLog.config" />
@@ -14,20 +14,10 @@
    
    <ItemGroup>
    
-    <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
-    <Compile Update="Properties\Resources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Resources.resx" />
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-
-     <ApplicationDefinition Include="App.xaml" SubType="Designer" Generator="XamlIntelliSenseFileGenerator" />
-
      <Content Include="NLog.config">
        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
      </Content>
-     <Compile Update="App.xaml.cs" DependentUpon="App.xaml" />
+
   </ItemGroup>
   
   <ItemGroup>
@@ -80,12 +70,6 @@
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.109.2</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 
 </Project>

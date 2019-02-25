@@ -5,7 +5,7 @@
   <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
 	<ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
 	<OutputType>WinExe</OutputType>
-	<StartupObject>CNCLib.Wpf.Start.App</StartupObject>
+	<StartupObject>CNCLib.WpfClient.Start.App</StartupObject>
 	  <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
    <ItemGroup>

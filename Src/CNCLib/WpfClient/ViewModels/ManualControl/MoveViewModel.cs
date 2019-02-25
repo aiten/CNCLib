@@ -20,6 +20,7 @@ using System.Globalization;
 using System.Windows.Input;
 
 using CNCLib.Logic.Contract.DTO;
+using CNCLib.WpfClient.Helpers;
 
 using Framework.Arduino.SerialCommunication;
 using Framework.Wpf.Helpers;
