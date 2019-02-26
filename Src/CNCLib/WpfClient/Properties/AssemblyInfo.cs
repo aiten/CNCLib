@@ -18,8 +18,8 @@
 using System.Reflection;
 using System.Windows;
 
-[assembly: AssemblyTitle("CNCLib.Wpf")]
-[assembly: AssemblyProduct("CNCLib.Wpf")]
+[assembly: AssemblyTitle("CNCLib.WpfClient")]
+[assembly: AssemblyProduct("CNCLib.WpfClient")]
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located

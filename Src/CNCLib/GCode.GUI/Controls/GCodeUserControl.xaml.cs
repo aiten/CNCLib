@@ -113,7 +113,7 @@ namespace CNCLib.GCode.GUI.Controls
         /// <summary>
         /// OffsetX Property
         /// </summary>
-        public static DependencyProperty OffsetXProperty = DependencyProperty.Register("OffsetX", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetXChanged));
+        public static DependencyProperty OffsetXProperty = DependencyProperty.Register("OffsetX", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnOffsetXChanged));
 
         public double OffsetX
         {
@@ -131,7 +131,7 @@ namespace CNCLib.GCode.GUI.Controls
         /// <summary>
         /// OffsetY Property
         /// </summary>
-        public static DependencyProperty OffsetYProperty = DependencyProperty.Register("OffsetY", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnOffsetYChanged));
+        public static DependencyProperty OffsetYProperty = DependencyProperty.Register("OffsetY", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnOffsetYChanged));
 
         public double OffsetY
         {
@@ -149,7 +149,7 @@ namespace CNCLib.GCode.GUI.Controls
         /// <summary>
         /// RotateAngle Property
         /// </summary>
-        public static DependencyProperty RotateAngleProperty = DependencyProperty.Register("RotateAngle", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnRotateAngleChanged));
+        public static DependencyProperty RotateAngleProperty = DependencyProperty.Register("RotateAngle", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnRotateAngleChanged));
 
         public double RotateAngle
         {
