@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)..\SolutionItems\CNCLib.targets" />
+  
    <PropertyGroup>
      <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>

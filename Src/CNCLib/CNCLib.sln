@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino", "..\Fra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{0942B8A6-0C1A-47A0-B67F-C98979BA830C}"
 	ProjectSection(SolutionItems) = preProject
-		SolutionItems\CNCLibSolutionInfo.cs = SolutionItems\CNCLibSolutionInfo.cs
-		SolutionItems\CNCLibSolutionInfoVersion.cs = SolutionItems\CNCLibSolutionInfoVersion.cs
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
