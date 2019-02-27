@@ -2,7 +2,7 @@
   
 
   <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
+    <TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
     <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
     <IsPackable>false</IsPackable>
   </PropertyGroup>

@@ -2,7 +2,7 @@
  
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>$(TargetFrameworkForAppAndTests)</TargetFramework>
     <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>

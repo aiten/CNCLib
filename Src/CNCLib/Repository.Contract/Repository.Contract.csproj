@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
-   <PropertyGroup>
-	<TargetFramework>netstandard2.0</TargetFramework>
+
+  <PropertyGroup>
+    <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
     <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
   </PropertyGroup>
-   <ItemGroup>
-     <ProjectReference Include="..\..\Framework\Framework.Repository.Abstraction\Framework.Repository.Abstraction.csproj" />
-   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference
+      Include="..\..\Framework\Framework.Repository.Abstraction\Framework.Repository.Abstraction.csproj" />
+  </ItemGroup>
 </Project>
