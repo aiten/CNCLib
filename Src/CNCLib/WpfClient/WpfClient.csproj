@@ -1,12 +1,13 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
-   <PropertyGroup>
-	<TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
-  <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
-  <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+  <PropertyGroup>
+    <TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
+    <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+<!--     -->
+    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
-   
-   <ItemGroup>
-   
+
+  <ItemGroup>
+
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -52,8 +53,8 @@
     </None>
     <None Include="Examples\witch.hpgl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>    
-	<None Include="Examples\girl1.JPG">
+    </None>
+    <None Include="Examples\girl1.JPG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Examples\girl2.png">

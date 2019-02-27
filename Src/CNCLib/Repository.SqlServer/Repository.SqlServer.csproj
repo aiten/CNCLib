@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
     <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+    
+
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.0" />

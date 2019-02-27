@@ -2,6 +2,7 @@
    <PropertyGroup>
 	<TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
   <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+    
 	  <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
    

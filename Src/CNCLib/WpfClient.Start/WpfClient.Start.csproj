@@ -1,23 +1,24 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
-   <PropertyGroup>
-	<TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
-  <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
-	<ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
-	<OutputType>WinExe</OutputType>
-	<StartupObject>CNCLib.WpfClient.Start.App</StartupObject>
-	  <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+  <PropertyGroup>
+    <TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
+    <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+
+    <ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>CNCLib.WpfClient.Start.App</StartupObject>
+    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
-   <ItemGroup>
-     <None Remove="NLog.config" />
-   </ItemGroup>
-   
-   <ItemGroup>
-     <Content Include="NLog.config">
-       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-     </Content>
-     <Compile Update="App.xaml.cs" DependentUpon="App.xaml" />
+  <ItemGroup>
+    <None Remove="NLog.config" />
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Compile Update="App.xaml.cs" DependentUpon="App.xaml" />
+  </ItemGroup>
+
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -66,5 +67,5 @@
       <Version>1.0.109.2</Version>
     </PackageReference>
   </ItemGroup>
- 
+
 </Project>

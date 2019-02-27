@@ -3,6 +3,7 @@
    <PropertyGroup>
 	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
     <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+    
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Framework.Pattern\Framework.Pattern.csproj" />

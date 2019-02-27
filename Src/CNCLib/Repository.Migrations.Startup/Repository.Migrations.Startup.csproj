@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>$(TargetFrameworkForAppAndTests)</TargetFramework>
     <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+    
   </PropertyGroup>
 
   <ItemGroup>

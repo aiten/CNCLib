@@ -3,6 +3,7 @@
    <PropertyGroup>
      <TargetFramework>$(TargetFrameworkForAppAndTests)</TargetFramework>
     <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+    
      <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
    <ItemGroup>

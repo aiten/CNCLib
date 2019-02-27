@@ -1,6 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
    <PropertyGroup>
 	<TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
+    
   <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
 	<ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
 	<OutputType>WinExe</OutputType>

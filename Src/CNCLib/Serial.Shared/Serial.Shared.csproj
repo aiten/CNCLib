@@ -3,5 +3,7 @@
    <PropertyGroup>
 	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
     <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+    
+	
   </PropertyGroup>
 </Project>

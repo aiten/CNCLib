@@ -2,6 +2,7 @@
    <PropertyGroup>
 	<TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
     <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+    
 	<OutputType>WinExe</OutputType>
 	<StartupObject>CNCLib.WpfClient.Sql.Start.App</StartupObject>
 	<ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
