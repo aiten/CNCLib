@@ -19,6 +19,7 @@ using System;
 
 namespace Framework.Tools
 {
+    using System;
     using System.Collections.Generic;
 
     public static class ListExtensions
@@ -27,7 +28,7 @@ namespace Framework.Tools
         {
             if (size < 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(size), size,@"Must not be < 1");
+                throw new ArgumentOutOfRangeException(nameof(size), size, @"Must not be < 1");
             }
 
             var      listList = new List<IEnumerable<T>>();

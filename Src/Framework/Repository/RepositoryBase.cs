@@ -73,7 +73,7 @@ namespace Framework.Repository
 
         public void SetState(object entity, EntityState state)
         {
-            Context.Entry(entity).State = (EntityState)state;
+            Context.Entry(entity).State = state;
         }
 
         /// <summary>

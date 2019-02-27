@@ -164,6 +164,16 @@ namespace Framework.Tools.Tools
             }
         }
 
+        public DateTime ExcelDateOrDateTime(string excelField)
+        {
+            if (excelField.Length > "yyyy/MM/dd".Length)
+            {
+                return ExcelDateTimeYMD(excelField);
+            }
+
+            return ExcelDateYMD(excelField);
+        }
+
         public DateTime ExcelDateYMD(string excelField)
         {
             try
@@ -181,18 +191,16 @@ namespace Framework.Tools.Tools
             }
         }
 
-        public DateTime? ExcelDateTimeYMD(string excelField)
+        public DateTime ExcelDateTimeYMD(string excelField)
         {
-            if (string.IsNullOrEmpty(excelField))
-            {
-                return null;
-            }
-
             try
             {
                 // Parse date and time with custom specifier.
-                // e.g. string dateString = "2017-09-20 00:00:00.000";
-                string      format   = "yyyy-MM-dd hh:mm:ss.fff";
+                // e.g. string dateString = "2017/09/20 00:00:00.000";
+
+                bool   hasFraction = excelField.IndexOf('.') > 0;
+                string format      = hasFraction ? "yyyy/MM/dd hh:mm:ss.fff" : "yyyy/MM/dd hh:mm:ss";
+
                 CultureInfo provider = CultureInfo.InvariantCulture;
 
                 return DateTime.ParseExact(excelField, format, provider);

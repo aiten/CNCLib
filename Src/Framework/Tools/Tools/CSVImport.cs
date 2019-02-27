@@ -40,7 +40,7 @@ namespace Framework.Tools.Tools
 
             if (props.Any(prop => prop == null))
             {
-                throw new ArgumentException("Column cannot be mapped");
+                throw new ArgumentException($"Column cannot be mapped: {string.Join(", ", lines[0].Where((p, idx) => props[idx] == null))}");
             }
 
             foreach (var line in lines)
@@ -107,7 +107,7 @@ namespace Framework.Tools.Tools
                 }
                 else if (pi.PropertyType == typeof(DateTime))
                 {
-                    pi.SetValue(obj, ExcelDateYMD(valueAsString));
+                    pi.SetValue(obj, ExcelDateOrDateTime(valueAsString));
                 }
                 else if (pi.PropertyType == typeof(double))
                 {
@@ -115,27 +115,27 @@ namespace Framework.Tools.Tools
                 }
                 else if (pi.PropertyType == typeof(int?))
                 {
-                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString)?(int?)null:ExcelInt(valueAsString));
+                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString) ? (int?)null : ExcelInt(valueAsString));
                 }
                 else if (pi.PropertyType == typeof(short?))
                 {
-                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString)?(short?)null:ExcelShort(valueAsString));
+                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString) ? (short?)null : ExcelShort(valueAsString));
                 }
                 else if (pi.PropertyType == typeof(byte?))
                 {
-                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString)?(byte?)null:ExcelByte(valueAsString));
+                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString) ? (byte?)null : ExcelByte(valueAsString));
                 }
                 else if (pi.PropertyType == typeof(double?))
                 {
-                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString)?(double?)null:ExcelDouble(valueAsString));
+                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString) ? (double?)null : ExcelDouble(valueAsString));
                 }
                 else if (pi.PropertyType == typeof(decimal?))
                 {
-                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString)?(decimal?)null:ExcelDecimal(valueAsString));
+                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString) ? (decimal?)null : ExcelDecimal(valueAsString));
                 }
                 else if (pi.PropertyType == typeof(DateTime?))
                 {
-                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString)?(DateTime?)null:ExcelDateYMD(valueAsString));
+                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString) ? (DateTime?)null : ExcelDateOrDateTime(valueAsString));
                 }
                 /*
                                 else if (pi.PropertyType.IsEnum)

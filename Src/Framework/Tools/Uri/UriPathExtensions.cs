@@ -34,8 +34,8 @@ namespace Framework.Tools.Uri
                 }
 
                 return dt.ToString("yyyy-MM-dd");
-
             }
+
             return HttpUtility.UrlEncode(val.ToString());
         }
     }
