@@ -6,7 +6,7 @@
     
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Logic.Abstraction\Framework.Logic.Abstraction.csproj" />
+    <ProjectReference Include="..\..\Framework\Logic.Abstraction\Framework.Logic.Abstraction.csproj" />
     <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj">    </ProjectReference>
   </ItemGroup>
 </Project>

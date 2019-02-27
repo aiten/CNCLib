@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Pattern\Framework.Pattern.csproj"/>
-    <ProjectReference Include="..\..\Framework\Framework.Service.Abstraction\Framework.Service.Abstraction.csproj"/>
-    <ProjectReference Include="..\..\Framework\Framework.Wpf\Framework.Wpf.csproj"/>
+    <ProjectReference Include="..\..\Framework\Pattern\Framework.Pattern.csproj"/>
+    <ProjectReference Include="..\..\Framework\Service.Abstraction\Framework.Service.Abstraction.csproj"/>
+    <ProjectReference Include="..\..\Framework\Wpf\Framework.Wpf.csproj"/>
     <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj"/>
     <ProjectReference Include="..\Logic.Contract\Logic.Contract.csproj"/>
     <ProjectReference Include="..\Service.Contract\Service.Contract.csproj"/>

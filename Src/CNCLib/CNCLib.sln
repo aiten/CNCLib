@@ -5,11 +5,11 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{36B9838B-493F-4BAC-A8D3-35298C4FFDC7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Logic", "..\Framework\Framework.Logic\Framework.Logic.csproj", "{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Logic", "..\Framework\Logic\Framework.Logic.csproj", "{081814DA-ADC7-4B65-AE16-856C1B3D3CE8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Tools", "..\Framework\Framework.Tools\Framework.Tools.csproj", "{580E882D-3267-43F2-8A73-6737CAC731C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Tools", "..\Framework\Tools\Framework.Tools.csproj", "{580E882D-3267-43F2-8A73-6737CAC731C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Wpf", "..\Framework\Framework.Wpf\Framework.Wpf.csproj", "{8568383E-054D-4882-8D6A-B956684CFAAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Wpf", "..\Framework\Wpf\Framework.Wpf.csproj", "{8568383E-054D-4882-8D6A-B956684CFAAE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfClient", "WpfClient\WpfClient.csproj", "{60555245-D32E-4A94-AB0E-CB2A6693A9BA}"
 EndProject
@@ -21,11 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{E73BAF77-EAF6-41F0-BF6A-FF6F5BC71062}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Repository", "..\Framework\Framework.Repository\Framework.Repository.csproj", "{E768F2ED-C63D-401E-A090-1C0465A84DF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Repository", "..\Framework\Repository\Framework.Repository.csproj", "{E768F2ED-C63D-401E-A090-1C0465A84DF5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfClient.Start", "WpfClient.Start\WpfClient.Start.csproj", "{D6077813-9EAF-4807-B4AA-EF00BCCE9827}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino", "..\Framework\Framework.Arduino\Framework.Arduino.csproj", "{77F5A48D-E908-4A95-A09E-771E8BE8817B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino", "..\Framework\Arduino\Framework.Arduino.csproj", "{77F5A48D-E908-4A95-A09E-771E8BE8817B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{0942B8A6-0C1A-47A0-B67F-C98979BA830C}"
 	ProjectSection(SolutionItems) = preProject
@@ -36,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository.Contract", "Repo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Contract", "Logic.Contract\Logic.Contract.csproj", "{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Test", "..\Framework\Framework.Test\Framework.Test.csproj", "{BBECB408-5426-4CE7-B7B6-970BDE436486}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.UnitTest", "..\Framework\UnitTest\Framework.UnitTest.csproj", "{BBECB408-5426-4CE7-B7B6-970BDE436486}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{DA845EDE-FADC-455C-AEF7-D1844B258784}"
 EndProject
@@ -47,7 +47,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A7A2
 		PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1 = PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.WebAPI", "..\Framework\Framework.WebAPI\Framework.WebAPI.csproj", "{2E4BAA13-7562-4336-91A4-B8211816D936}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.WebAPI", "..\Framework\WebAPI\Framework.WebAPI.csproj", "{2E4BAA13-7562-4336-91A4-B8211816D936}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Contract.DTO", "Logic.Contract.DTO\Logic.Contract.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
 EndProject
@@ -77,43 +77,40 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serial.Client", "Serial.Cli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serial.Shared", "Serial.Shared\Serial.Shared.csproj", "{8715E92C-ACA6-4B39-8A31-69CFB8357224}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino.Linux", "..\Framework\Framework.Arduino.Linux\Framework.Arduino.Linux.csproj", "{172CF0A8-7CF4-4E61-A6CE-6743273F6952}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Arduino.Linux", "..\Framework\Arduino.Linux\Framework.Arduino.Linux.csproj", "{172CF0A8-7CF4-4E61-A6CE-6743273F6952}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Service", "..\Framework\Framework.Service\Framework.Service.csproj", "{46095778-4ABF-472E-A7BB-3C339E7CB9C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Service", "..\Framework\Service\Framework.Service.csproj", "{46095778-4ABF-472E-A7BB-3C339E7CB9C3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{296F367F-4620-429B-9A51-E17675912BCB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Dependency", "..\Framework\Framework.Dependency\Framework.Dependency.csproj", "{992EB691-DFE9-4B45-88F7-12D59A79FD03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Dependency", "..\Framework\Dependency\Framework.Dependency.csproj", "{992EB691-DFE9-4B45-88F7-12D59A79FD03}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Drawing", "..\Framework\Framework.Drawing\Framework.Drawing.csproj", "{E30BF689-6836-4464-8221-F0FEF41C09A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Drawing", "..\Framework\Drawing\Framework.Drawing.csproj", "{E30BF689-6836-4464-8221-F0FEF41C09A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Logging", "..\Framework\Framework.Logging\Framework.Logging.csproj", "{D1DC4BBD-4550-4C53-88E7-2ABA7C396F80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Logging", "..\Framework\Logging\Framework.Logging.csproj", "{D1DC4BBD-4550-4C53-88E7-2ABA7C396F80}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{0E1AA4F8-C6E5-4372-BE9C-01C49A661EEE}"
 	ProjectSection(SolutionItems) = preProject
-		..\Framework\SolutionItems\Framework.targets = ..\Framework\SolutionItems\Framework.targets
-		..\Framework\SolutionItems\FrameworkSolutionInfo.cs = ..\Framework\SolutionItems\FrameworkSolutionInfo.cs
-		..\Framework\SolutionItems\FrameworkSolutionInfoVersion.cs = ..\Framework\SolutionItems\FrameworkSolutionInfoVersion.cs
-		..\Framework\SolutionItems\FrameworkStandard.targets = ..\Framework\SolutionItems\FrameworkStandard.targets
+		..\Framework\Directory.Build.props = ..\Framework\Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.WinAPI", "..\Framework\Framework.WinAPI\Framework.WinAPI.csproj", "{574CB94B-00EA-45A4-A70E-6DC4102911DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.WinAPI", "..\Framework\WinAPI\Framework.WinAPI.csproj", "{574CB94B-00EA-45A4-A70E-6DC4102911DB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Parser", "..\Framework\Framework.Parser\Framework.Parser.csproj", "{CED0B4BB-4FDA-4699-8560-A7F492EAD8B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Parser", "..\Framework\Parser\Framework.Parser.csproj", "{CED0B4BB-4FDA-4699-8560-A7F492EAD8B0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Pattern", "..\Framework\Framework.Pattern\Framework.Pattern.csproj", "{786E7311-AC37-40D0-B34F-813D6E988EBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Pattern", "..\Framework\Pattern\Framework.Pattern.csproj", "{786E7311-AC37-40D0-B34F-813D6E988EBF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Mapper", "..\Framework\Framework.Mapper\Framework.Mapper.csproj", "{59E695C4-DE46-456A-8EB1-BCDE976938CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Mapper", "..\Framework\Mapper\Framework.Mapper.csproj", "{59E695C4-DE46-456A-8EB1-BCDE976938CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serial.Server", "Serial.Server", "{53BB936A-6E17-4F57-846B-661C629D2A47}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wpf Client", "Wpf Client", "{B57E94D7-E04C-4F3E-8D3C-A530513EF584}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Repository.Abstraction", "..\Framework\Framework.Repository.Abstraction\Framework.Repository.Abstraction.csproj", "{D99587A0-3EA3-43E3-A2C0-63C35CA85EB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Repository.Abstraction", "..\Framework\Repository.Abstraction\Framework.Repository.Abstraction.csproj", "{D99587A0-3EA3-43E3-A2C0-63C35CA85EB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Logic.Abstraction", "..\Framework\Framework.Logic.Abstraction\Framework.Logic.Abstraction.csproj", "{DD31F3D8-18BA-4085-BF04-FED2DAFEB1AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Logic.Abstraction", "..\Framework\Logic.Abstraction\Framework.Logic.Abstraction.csproj", "{DD31F3D8-18BA-4085-BF04-FED2DAFEB1AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Service.Abstraction", "..\Framework\Framework.Service.Abstraction\Framework.Service.Abstraction.csproj", "{297AF6BE-0709-436F-A2E4-508481B2705B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Service.Abstraction", "..\Framework\Service.Abstraction\Framework.Service.Abstraction.csproj", "{297AF6BE-0709-436F-A2E4-508481B2705B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Repository", "{80960867-5CB9-4F9F-B874-D1BD0A9BCA7C}"
 EndProject

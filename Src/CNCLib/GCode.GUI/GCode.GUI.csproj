@@ -27,15 +27,15 @@
     <Reference Include="netstandard" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Dependency\Framework.Dependency.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.Drawing\Framework.Drawing.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.Logging\Framework.Logging.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.Pattern\Framework.Pattern.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.Service.Abstraction\Framework.Service.Abstraction.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.Wpf\Framework.Wpf.csproj" />
-    <ProjectReference Include="..\..\Framework\Framework.Arduino\Framework.Arduino.csproj" />
+    <ProjectReference Include="..\..\Framework\Dependency\Framework.Dependency.csproj" />
+    <ProjectReference Include="..\..\Framework\Drawing\Framework.Drawing.csproj" />
+    <ProjectReference Include="..\..\Framework\Logging\Framework.Logging.csproj" />
+    <ProjectReference Include="..\..\Framework\Logic\Framework.Logic.csproj" />
+    <ProjectReference Include="..\..\Framework\Pattern\Framework.Pattern.csproj" />
+    <ProjectReference Include="..\..\Framework\Service.Abstraction\Framework.Service.Abstraction.csproj" />
+    <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj" />
+    <ProjectReference Include="..\..\Framework\Wpf\Framework.Wpf.csproj" />
+    <ProjectReference Include="..\..\Framework\Arduino\Framework.Arduino.csproj" />
     <ProjectReference Include="..\GCode\GCode.csproj" />
     <ProjectReference Include="..\Logic.Client\Logic.Client.csproj" />
     <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj" />

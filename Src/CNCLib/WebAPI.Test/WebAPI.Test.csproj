@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj" />
+    <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj" />
     <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj" />
     <ProjectReference Include="..\Logic.Contract\Logic.Contract.csproj" />
   </ItemGroup>

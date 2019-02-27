@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+   <PropertyGroup>
+	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
+  </PropertyGroup>
+   <ItemGroup>
+     <PackageReference Include="AutoMapper" Version="8.0.0" />
+   </ItemGroup>
+   <ItemGroup>
+     <ProjectReference Include="..\Logic.Abstraction\Framework.Logic.Abstraction.csproj" />
+     <ProjectReference Include="..\Service.Abstraction\Framework.Service.Abstraction.csproj" />
+   </ItemGroup>
+</Project>

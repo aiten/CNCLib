@@ -7,6 +7,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference
-      Include="..\..\Framework\Framework.Repository.Abstraction\Framework.Repository.Abstraction.csproj" />
+      Include="..\..\Framework\Repository.Abstraction\Framework.Repository.Abstraction.csproj" />
   </ItemGroup>
 </Project>

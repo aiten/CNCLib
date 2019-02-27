@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
    <PropertyGroup>
 	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
-    <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
-    
   </PropertyGroup>
    <ItemGroup>
-     <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj" />
+     <PackageReference Include="AutoMapper" Version="8.0.0" />
+   </ItemGroup>
+   <ItemGroup>
+     <ProjectReference Include="..\Pattern\Framework.Pattern.csproj" />
    </ItemGroup>
 </Project>

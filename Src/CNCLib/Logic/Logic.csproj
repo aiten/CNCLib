@@ -5,8 +5,8 @@
     
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.Logic\Framework.Logic.csproj">    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Framework.Tools\Framework.Tools.csproj">    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Logic\Framework.Logic.csproj">    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj">    </ProjectReference>
     <ProjectReference Include="..\GCode\GCode.csproj">    </ProjectReference>
     <ProjectReference Include="..\Logic.Client\Logic.Client.csproj">    </ProjectReference>
     <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj">    </ProjectReference>
