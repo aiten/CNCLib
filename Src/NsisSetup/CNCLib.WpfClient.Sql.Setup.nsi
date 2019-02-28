@@ -7,17 +7,17 @@
 ;global
 
   ;Define the main name of the installer
-  !define PRODUCT "CNCLib"
+  !define PRODUCT "CNCLib.Sql"
   !define PRODUCT_SUBDIR "${PRODUCT}"
-  !define PRODUCT_EXE "CNCLib.Wpf.Start.exe"
-  !define PRODUCT_LNK "CNCLib.lnk"
+  !define PRODUCT_EXE "CNCLib.WpfClient.Sql.Start.exe"
+  !define PRODUCT_LNK "CNCLib.Sql.lnk"
 
   !include "CNCLib.Global.nsi"
 
   ;--------------------------------
 
   !ifndef CopyFromFolder
-    !define CopyFromFolder "..\CNCLib\CNCLib.Wpf.Start\bin\Debug\net471"
+    !define CopyFromFolder "..\CNCLib\WpfClient.Sql.Start\bin\Debug\net471"
   !endif 
   
 ;--------------------------------

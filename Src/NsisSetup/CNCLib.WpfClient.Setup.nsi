@@ -7,17 +7,17 @@
 ;global
 
   ;Define the main name of the installer
-  !define PRODUCT "CNCLib.Web"
+  !define PRODUCT "CNCLib"
   !define PRODUCT_SUBDIR "${PRODUCT}"
-  !define PRODUCT_EXE "CNCLib.Wpf.WebAPI.Start.exe"
-  !define PRODUCT_LNK "CNCLib.Web.lnk"
+  !define PRODUCT_EXE "CNCLib.WpfClient.Start.exe"
+  !define PRODUCT_LNK "CNCLib.lnk"
 
   !include "CNCLib.Global.nsi"
 
   ;--------------------------------
 
   !ifndef CopyFromFolder
-    !define CopyFromFolder "..\CNCLib\CNCLib.Wpf.WebAPI.Start\bin\Debug\net471"
+    !define CopyFromFolder "..\CNCLib\WpfClient.Start\bin\Debug\net471"
   !endif 
   
 ;--------------------------------
