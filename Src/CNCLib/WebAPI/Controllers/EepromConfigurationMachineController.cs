@@ -18,7 +18,7 @@ using System;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Contract.DTO;
-using CNCLib.Service.Contract;
+using CNCLib.Logic.Contract;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,12 +29,12 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class EepromConfigurationController : Controller
     {
-        private readonly IEepromConfigurationService _eepromConfigurationService;
+        private readonly IEepromConfigurationManager _eepromConfigurationManager;
         private readonly ICNCLibUserContext          _userContext;
 
-        public EepromConfigurationController(IEepromConfigurationService eepromConfigurationService, ICNCLibUserContext userContext)
+        public EepromConfigurationController(IEepromConfigurationManager eepromConfigurationManager, ICNCLibUserContext userContext)
         {
-            _eepromConfigurationService = eepromConfigurationService ?? throw new ArgumentNullException();
+            _eepromConfigurationManager = eepromConfigurationManager ?? throw new ArgumentNullException();
             _userContext                = userContext ?? throw new ArgumentNullException();
             ((CNCLibUserContext)_userContext).InitFromController(this);
         }
@@ -61,7 +61,7 @@ namespace CNCLib.WebAPI.Controllers
                 TimeToDec              = timeToDec
             };
 
-            var m = await _eepromConfigurationService.CalculateConfig(input);
+            var m = await _eepromConfigurationManager.CalculateConfig(input);
             if (m == null)
             {
                 return NotFound();

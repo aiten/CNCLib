@@ -23,7 +23,7 @@ namespace Framework.WebAPI.Controller
 
     using Microsoft.AspNetCore.Mvc;
 
-    using Service.Abstraction;
+    using Logic.Abstraction;
 
     public static class ControllerExtensions
     {
@@ -70,7 +70,7 @@ namespace Framework.WebAPI.Controller
 
         #region Get/GetAll
 
-        public static async Task<ActionResult<T>> Get<T, TKey>(this Controller controller, IGetService<T, TKey> manager, TKey id) where T : class where TKey : IComparable
+        public static async Task<ActionResult<T>> Get<T, TKey>(this Controller controller, IGetManager<T, TKey> manager, TKey id) where T : class where TKey : IComparable
         {
             var dto = await manager.Get(id);
             if (dto == null)
@@ -81,7 +81,7 @@ namespace Framework.WebAPI.Controller
             return controller.Ok(dto);
         }
 
-        public static async Task<ActionResult<IEnumerable<T>>> GetAll<T, TKey>(this Controller controller, IGetService<T, TKey> manager) where T : class where TKey : IComparable
+        public static async Task<ActionResult<IEnumerable<T>>> GetAll<T, TKey>(this Controller controller, IGetManager<T, TKey> manager) where T : class where TKey : IComparable
         {
             var dtos = await manager.GetAll();
             if (dtos == null)
@@ -96,14 +96,14 @@ namespace Framework.WebAPI.Controller
 
         #region Add
 
-        public static async Task<ActionResult<T>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, T value) where T : class where TKey : IComparable
+        public static async Task<ActionResult<T>> Add<T, TKey>(this Controller controller, ICRUDManager<T, TKey> manager, T value) where T : class where TKey : IComparable
         {
             TKey   newId  = await manager.Add(value);
             string newUri = controller.GetCurrentUri() + "/" + newId;
             return controller.Created(newUri, await manager.Get(newId));
         }
 
-        public static async Task<IEnumerable<UriAndValue<T>>> AddIntern<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
+        public static async Task<IEnumerable<UriAndValue<T>>> AddIntern<T, TKey>(this Controller controller, ICRUDManager<T, TKey> manager, IEnumerable<T> values)
             where T : class where TKey : IComparable
         {
             var newIds     = await manager.Add(values);
@@ -115,20 +115,20 @@ namespace Framework.WebAPI.Controller
             return results;
         }
 
-        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> Add<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
+        public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> Add<T, TKey>(this Controller controller, ICRUDManager<T, TKey> manager, IEnumerable<T> values)
             where T : class where TKey : IComparable
         {
             return controller.Ok(await AddIntern(controller, manager, values));
         }
 
-        public static async Task<ActionResult<UrisAndValues<T>>> Add2<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values)
+        public static async Task<ActionResult<UrisAndValues<T>>> Add2<T, TKey>(this Controller controller, ICRUDManager<T, TKey> manager, IEnumerable<T> values)
             where T : class where TKey : IComparable
         {
             return controller.Ok((await AddIntern(controller, manager, values)).ToUrisAndValues());
         }
 
 
-        public static async Task<ActionResult<T>> AddNoGet<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, T value, Action<T, TKey> setIdFunc)
+        public static async Task<ActionResult<T>> AddNoGet<T, TKey>(this Controller controller, ICRUDManager<T, TKey> manager, T value, Action<T, TKey> setIdFunc)
             where T : class where TKey : IComparable
         {
             TKey   newId  = await manager.Add(value);
@@ -139,7 +139,7 @@ namespace Framework.WebAPI.Controller
 
         public static async Task<IEnumerable<UriAndValue<T>>> AddNoGetIntern<T, TKey>(
             this Controller       controller,
-            ICRUDService<T, TKey> manager,
+            ICRUDManager<T, TKey> manager,
             IEnumerable<T>        values,
             Action<T, TKey>       setIdFunc)
             where T : class where TKey : IComparable
@@ -160,7 +160,7 @@ namespace Framework.WebAPI.Controller
 
         public static async Task<ActionResult<IEnumerable<UriAndValue<T>>>> AddNoGet<T, TKey>(
             this Controller       controller,
-            ICRUDService<T, TKey> manager,
+            ICRUDManager<T, TKey> manager,
             IEnumerable<T>        values,
             Action<T, TKey>       setIdFunc)
             where T : class where TKey : IComparable
@@ -168,7 +168,7 @@ namespace Framework.WebAPI.Controller
             return controller.Ok(await AddNoGetIntern(controller, manager, values, setIdFunc));
         }
 
-        public static async Task<ActionResult<UrisAndValues<T>>> Add2NoGet<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values, Action<T, TKey> setIdFunc)
+        public static async Task<ActionResult<UrisAndValues<T>>> Add2NoGet<T, TKey>(this Controller controller, ICRUDManager<T, TKey> manager, IEnumerable<T> values, Action<T, TKey> setIdFunc)
             where T : class where TKey : IComparable
         {
             return controller.Ok((await AddNoGetIntern(controller, manager, values, setIdFunc)).ToUrisAndValues());
@@ -178,7 +178,7 @@ namespace Framework.WebAPI.Controller
 
         #region Update
 
-        public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, TKey idFromUri, TKey idFromValue, T value)
+        public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDManager<T, TKey> manager, TKey idFromUri, TKey idFromValue, T value)
             where T : class where TKey : IComparable
         {
             if (idFromUri.CompareTo(idFromValue) != 0)
@@ -190,7 +190,7 @@ namespace Framework.WebAPI.Controller
             return controller.NoContent();
         }
 
-        public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<T> values) where T : class where TKey : IComparable
+        public static async Task<ActionResult> Update<T, TKey>(this Controller controller, ICRUDManager<T, TKey> manager, IEnumerable<T> values) where T : class where TKey : IComparable
         {
             await manager.Update(values);
             return controller.NoContent();
@@ -200,13 +200,13 @@ namespace Framework.WebAPI.Controller
 
         #region Delete
 
-        public static async Task<ActionResult> Delete<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, TKey id) where T : class where TKey : IComparable
+        public static async Task<ActionResult> Delete<T, TKey>(this Controller controller, ICRUDManager<T, TKey> manager, TKey id) where T : class where TKey : IComparable
         {
             await manager.Delete(id);
             return controller.NoContent();
         }
 
-        public static async Task<ActionResult> Delete<T, TKey>(this Controller controller, ICRUDService<T, TKey> manager, IEnumerable<TKey> ids) where T : class where TKey : IComparable
+        public static async Task<ActionResult> Delete<T, TKey>(this Controller controller, ICRUDManager<T, TKey> manager, IEnumerable<TKey> ids) where T : class where TKey : IComparable
         {
             await manager.Delete(ids);
             return controller.NoContent();

@@ -23,19 +23,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Logging\Framework.Logging.csproj" />
-    <ProjectReference Include="..\..\Framework\Mapper\Framework.Mapper.csproj" />
-    <ProjectReference Include="..\..\Framework\Repository\Framework.Repository.csproj" />
     <ProjectReference Include="..\..\Framework\WebAPI\Framework.WebAPI.csproj" />
     <ProjectReference Include="..\GCode\GCode.csproj" />
     <ProjectReference Include="..\Logic.Client\Logic.Client.csproj" />
-    <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj" />
     <ProjectReference Include="..\Logic.Contract\Logic.Contract.csproj" />
-    <ProjectReference Include="..\Logic\Logic.csproj" />
-    <ProjectReference Include="..\Repository.Contract\Repository.Contract.csproj" />
-    <ProjectReference Include="..\Repository.SqlServer\Repository.SqlServer.csproj" />
-    <ProjectReference Include="..\Repository\Repository.csproj" />
-    <ProjectReference Include="..\Service.Logic\Service.Logic.csproj" />
-    <ProjectReference Include="..\Service.Contract\Service.Contract.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 

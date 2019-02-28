@@ -20,7 +20,6 @@ using CNCLib.Logic;
 using CNCLib.Logic.Client;
 using CNCLib.Repository;
 using CNCLib.Repository.SqlServer;
-using CNCLib.Service.Logic;
 using CNCLib.Shared;
 using CNCLib.WebAPI;
 using CNCLib.WebAPI.Controllers;
@@ -85,7 +84,6 @@ namespace CNCLib.Server
             Dependency.Container.RegisterRepository();
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();
-            Dependency.Container.RegisterServiceAsLogic();
 
             Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
 

@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Contract.DTO;
-using CNCLib.Service.Contract;
+using CNCLib.Logic.Contract;
 using CNCLib.Shared;
 
 using Framework.WebAPI.Controller;
@@ -31,12 +31,12 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class LoadOptionsController : Controller
     {
-        private readonly ILoadOptionsService _service;
+        private readonly ILoadOptionsManager _manager;
         private readonly ICNCLibUserContext  _userContext;
 
-        public LoadOptionsController(ILoadOptionsService service, ICNCLibUserContext userContext)
+        public LoadOptionsController(ILoadOptionsManager manager, ICNCLibUserContext userContext)
         {
-            _service     = service ?? throw new ArgumentNullException();
+            _manager     = manager ?? throw new ArgumentNullException();
             _userContext = userContext ?? throw new ArgumentNullException();
             ((CNCLibUserContext)_userContext).InitFromController(this);
         }
@@ -46,33 +46,33 @@ namespace CNCLib.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LoadOptions>>> Get()
         {
-            return await this.GetAll(_service);
+            return await this.GetAll(_manager);
         }
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<LoadOptions>> Get(int id)
         {
-            return await this.Get<LoadOptions, int>(_service, id);
+            return await this.Get<LoadOptions, int>(_manager, id);
         }
 
         [HttpPost]
         public async Task<ActionResult<LoadOptions>> Add([FromBody] LoadOptions value)
         {
-            return await this.Add<LoadOptions, int>(_service, value);
+            return await this.Add<LoadOptions, int>(_manager, value);
         }
 
         [HttpPut]
         [Route("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] LoadOptions value)
         {
-            return await this.Update<LoadOptions, int>(_service, id, value.Id, value);
+            return await this.Update<LoadOptions, int>(_manager, id, value.Id, value);
         }
 
         [HttpDelete]
         [Route("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            return await this.Delete<LoadOptions, int>(_service, id);
+            return await this.Delete<LoadOptions, int>(_manager, id);
         }
 
         #endregion
