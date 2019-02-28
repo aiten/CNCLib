@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) Herbert Aitenbichler
@@ -13,18 +13,3 @@
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
-
-using Framework.Dependency;
-using Framework.Dependency.Abstraction;
-
-namespace CNCLib.Service.Logic
-{
-    public static class LiveDependencyRegisterExtensions
-    {
-        public static IDependencyContainer RegisterServiceAsLogic(this IDependencyContainer container)
-        {
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(MachineService).Assembly);
-            return container;
-        }
-    }
-}
